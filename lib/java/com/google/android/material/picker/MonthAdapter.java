@@ -123,22 +123,30 @@ class MonthAdapter extends BaseAdapter {
     }
 
     Long date = getItem(position);
-    if (date != null) {
-      if (calendarConstraints.getDateValidator().isValid(date)) {
-        day.setEnabled(true);
-        if (dateSelector.getSelectedDays().contains(date)) {
-          calendarStyle.selectedDay.styleItem(day);
-        } else if (DateUtils.isToday(date)) {
-          calendarStyle.todayDay.styleItem(day);
-        } else {
-          calendarStyle.day.styleItem(day);
-        }
-      } else {
-        day.setEnabled(false);
-        calendarStyle.invalidDay.styleItem(day);
-      }
+    if (date == null) {
+      return day;
     }
-    return day;
+    if (calendarConstraints.getDateValidator().isValid(date)) {
+      day.setEnabled(true);
+      for (long selectedDay : dateSelector.getSelectedDays()) {
+        if (date.equals(DateLongs.canonicalYearMonthDay(selectedDay))) {
+          calendarStyle.selectedDay.styleItem(day);
+          return day;
+        }
+      }
+
+      if (DateUtils.isToday(date)) {
+        calendarStyle.todayDay.styleItem(day);
+        return day;
+      } else {
+        calendarStyle.day.styleItem(day);
+        return day;
+      }
+    } else {
+      day.setEnabled(false);
+      calendarStyle.invalidDay.styleItem(day);
+      return day;
+    }
   }
 
   private void initializeStyles(Context context) {

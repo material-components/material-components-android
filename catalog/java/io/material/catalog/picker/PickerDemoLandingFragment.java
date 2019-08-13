@@ -32,7 +32,7 @@ public class PickerDemoLandingFragment extends DemoLandingFragment {
 
   @Override
   public int getTitleResId() {
-    return R.string.cat_picker_title;
+    return R.string.cat_picker_demo_title;
   }
 
   @Override
@@ -62,7 +62,7 @@ public class PickerDemoLandingFragment extends DemoLandingFragment {
     @Provides
     @ActivityScope
     static FeatureDemo provideFeatureDemo() {
-      return new FeatureDemo(R.string.cat_picker_title, R.drawable.ic_dialog) {
+      return new FeatureDemo(R.string.cat_picker_demo_title, R.drawable.ic_dialog) {
         @Override
         public Fragment createFragment() {
           return new PickerDemoLandingFragment();

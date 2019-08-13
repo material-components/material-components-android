@@ -18,7 +18,6 @@ package com.google.android.material.picker;
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.IntDef;
-import androidx.annotation.VisibleForTesting;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.text.SimpleDateFormat;
@@ -28,7 +27,6 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 
 /** Contains convenience operations for a month within a specific year. */
-@VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
 public final class Month implements Comparable<Month>, Parcelable {
 
   /** The acceptable int values for month when using {@link Month#create(int, int)} */
@@ -47,7 +45,7 @@ public final class Month implements Comparable<Month>, Parcelable {
     Calendar.NOVEMBER,
     Calendar.DECEMBER
   })
-  public @interface Months {}
+  @interface Months {}
 
   private final Calendar calendar;
   private final String longName;
@@ -68,6 +66,16 @@ public final class Month implements Comparable<Month>, Parcelable {
   }
 
   /**
+   * Creates an instance of Month that contains the provided {@code timeInMillis} where {@code
+   * timeInMillis} is in milliseconds since 00:00:00 January 1, 1970, UTC.
+   */
+  public static Month create(long timeInMillis) {
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTimeInMillis(timeInMillis);
+    return new Month(calendar);
+  }
+
+  /**
    * Creates an instance of Month with the given parameters backed by a {@link Calendar}.
    *
    * @param year The year
@@ -75,7 +83,7 @@ public final class Month implements Comparable<Month>, Parcelable {
    *     Calendar#JANUARY}
    * @return A Month object backed by a new {@link Calendar} instance
    */
-  public static Month create(int year, @Months int month) {
+  static Month create(int year, @Months int month) {
     Calendar calendar = Calendar.getInstance();
     calendar.clear();
     calendar.set(Calendar.YEAR, year);

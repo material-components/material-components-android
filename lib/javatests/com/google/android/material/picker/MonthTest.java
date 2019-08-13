@@ -52,7 +52,6 @@ public class MonthTest {
 
   @Test
   public void frDaysInWeek() {
-    ;
     setupLocalizedCalendars(Locale.FRANCE);
     assertDaysInWeek();
   }
