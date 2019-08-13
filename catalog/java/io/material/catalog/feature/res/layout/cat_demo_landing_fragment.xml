@@ -89,6 +89,11 @@
 
       <include layout="@layout/cat_demo_landing_links_section"/>
 
+      <Space
+          android:id="@+id/spacer"
+          android:layout_height="0dp"
+          android:layout_width="match_parent"
+          android:visibility="gone"/>
     </LinearLayout>
   </androidx.core.widget.NestedScrollView>
 

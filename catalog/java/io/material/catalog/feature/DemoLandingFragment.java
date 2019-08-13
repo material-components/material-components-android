@@ -32,6 +32,7 @@ import com.google.android.material.resources.MaterialResources;
 import androidx.fragment.app.Fragment;
 import androidx.core.view.MarginLayoutParamsCompat;
 import androidx.core.view.MenuItemCompat;
+import androidx.core.view.ViewCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -40,6 +41,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.TextView;
 import dagger.android.support.DaggerFragment;
@@ -100,6 +102,16 @@ public abstract class DemoLandingFragment extends DaggerFragment {
     }
     additionalDemosSection.setVisibility(additionalDemos.isEmpty() ? View.GONE : View.VISIBLE);
 
+    View spacer = view.findViewById(R.id.spacer);
+    ViewCompat.setOnApplyWindowInsetsListener(
+        viewGroup,
+        (v, insets) -> {
+          LayoutParams lp = spacer.getLayoutParams();
+          lp.height = insets.getSystemWindowInsetBottom();
+          spacer.setVisibility(View.VISIBLE);
+          spacer.setLayoutParams(lp);
+          return ViewCompat.onApplyWindowInsets(v, insets);
+        });
     return view;
   }
 
