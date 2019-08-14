@@ -19,13 +19,16 @@ import static com.google.android.material.testutils.TestUtilsActions.setCompound
 import static com.google.android.material.testutils.TestUtilsActions.waitFor;
 import static com.google.android.material.testutils.TestUtilsMatchers.withCompoundDrawable;
 import static com.google.android.material.testutils.TextInputLayoutActions.clickIcon;
+import static com.google.android.material.testutils.TextInputLayoutActions.longClickIcon;
 import static com.google.android.material.testutils.TextInputLayoutActions.setCustomEndIconContent;
 import static com.google.android.material.testutils.TextInputLayoutActions.setEndIconMode;
 import static com.google.android.material.testutils.TextInputLayoutActions.setEndIconOnClickListener;
+import static com.google.android.material.testutils.TextInputLayoutActions.setEndIconOnLongClickListener;
 import static com.google.android.material.testutils.TextInputLayoutActions.setError;
 import static com.google.android.material.testutils.TextInputLayoutActions.setStartIcon;
 import static com.google.android.material.testutils.TextInputLayoutActions.setStartIconContentDescription;
 import static com.google.android.material.testutils.TextInputLayoutActions.setStartIconOnClickListener;
+import static com.google.android.material.testutils.TextInputLayoutActions.setStartIconOnLongClickListener;
 import static com.google.android.material.testutils.TextInputLayoutActions.setStartIconTintList;
 import static com.google.android.material.testutils.TextInputLayoutActions.setTransformationMethod;
 import static com.google.android.material.testutils.TextInputLayoutMatchers.doesNotShowEndIcon;
@@ -225,10 +228,10 @@ public class TextInputLayoutIconsTest {
   @Test
   public void testPasswordToggleIsAccessible() {
     onView(
-            allOf(
-                withId(R.id.text_input_end_icon),
-                withContentDescription(R.string.password_toggle_content_description),
-                isDescendantOfA(withId(R.id.textinput_password))))
+        allOf(
+            withId(R.id.text_input_end_icon),
+            withContentDescription(R.string.password_toggle_content_description),
+            isDescendantOfA(withId(R.id.textinput_password))))
         .check(accessibilityAssertion());
   }
 
@@ -346,10 +349,10 @@ public class TextInputLayoutIconsTest {
   @Test
   public void testClearTextEndIconIsAccessible() {
     onView(
-            allOf(
-                withId(R.id.text_input_end_icon),
-                withContentDescription(R.string.clear_text_end_icon_content_description),
-                isDescendantOfA(withId(R.id.textinput_clear))))
+        allOf(
+            withId(R.id.text_input_end_icon),
+            withContentDescription(R.string.clear_text_end_icon_content_description),
+            isDescendantOfA(withId(R.id.textinput_clear))))
         .check(accessibilityAssertion());
   }
 
@@ -414,13 +417,35 @@ public class TextInputLayoutIconsTest {
     onView(withId(R.id.textinput_custom))
         .perform(
             setEndIconOnClickListener(
-                v -> textInputCustomEndIcon.getEditText().setText("Test custom icon.")));
+                v -> textInputCustomEndIcon.getEditText().setText("Custom icon on click.")));
 
     // Click custom end icon
     onView(withId(R.id.textinput_custom)).perform(clickIcon(true));
 
     // Assert onClickListener worked as expected
-    assertEquals("Test custom icon.", textInputCustomEndIcon.getEditText().getText().toString());
+    assertEquals(
+        "Custom icon on click.", textInputCustomEndIcon.getEditText().getText().toString());
+  }
+
+  @Test
+  public void testCustomEndIconOnLongClickListener() {
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout textInputCustomEndIcon = activity.findViewById(R.id.textinput_custom);
+    // Set custom on click listener
+    onView(withId(R.id.textinput_custom))
+        .perform(
+            setEndIconOnLongClickListener(
+                v -> {
+                  textInputCustomEndIcon.getEditText().setText("Custom icon on long click.");
+                  return true;
+                }));
+
+    // Click custom end icon
+    onView(withId(R.id.textinput_custom)).perform(longClickIcon(true));
+
+    // Assert onClickListener worked as expected
+    assertEquals(
+        "Custom icon on long click.", textInputCustomEndIcon.getEditText().getText().toString());
   }
 
   @Test
@@ -497,6 +522,26 @@ public class TextInputLayoutIconsTest {
     assertEquals("Start icon on click", textInputLayout.getEditText().getText().toString());
   }
 
+  @Test
+  public void testStartIconOnLongClickListener() {
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout textInputLayout = activity.findViewById(R.id.textinput_starticon);
+    // Set click listener on start icon
+    onView(withId(R.id.textinput_starticon))
+        .perform(
+            setStartIconOnLongClickListener(
+                v -> {
+                  textInputLayout.getEditText().setText("Start icon on long click");
+                  return true;
+                }));
+
+    // Click start icon
+    onView(withId(R.id.textinput_starticon)).perform(longClickIcon(false));
+
+    // Assert OnClickListener worked as expected
+    assertEquals("Start icon on long click", textInputLayout.getEditText().getText().toString());
+  }
+
   /**
    * Simple test that uses AccessibilityChecks to check that the start icon is 'accessible'.
    */
@@ -535,8 +580,8 @@ public class TextInputLayoutIconsTest {
     onView(withId(R.id.textinput_no_icon)).check(matches(doesNotShowEndIcon()));
   }
 
- @Test
- public void testErrorIconMaintainsCompoundDrawables() {
+  @Test
+  public void testErrorIconMaintainsCompoundDrawables() {
     // Set a known set of test compound drawables on the EditText
     final Drawable start = new ColorDrawable(Color.RED);
     final Drawable top = new ColorDrawable(Color.GREEN);
@@ -560,43 +605,43 @@ public class TextInputLayoutIconsTest {
         .check(matches(withCompoundDrawable(1, top)))
         .check(matches(withCompoundDrawable(2, end)))
         .check(matches(withCompoundDrawable(3, bottom)));
- }
+  }
 
- @Test
- public void testErrorIconMaintainsEndIcon() {
-   // Set error on text field with password toggle icon
-   onView(withId(R.id.textinput_password)).perform(setError("Error"));
-   // Check icon showing is error icon only
-   onView(
-       allOf(
-           withId(R.id.text_input_end_icon),
-           withContentDescription(R.string.error_icon_content_description),
-           isDescendantOfA(withId(R.id.textinput_password))))
-       .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
-   onView(
-       allOf(
-           withId(R.id.text_input_end_icon),
-           withContentDescription(R.string.password_toggle_content_description),
-           isDescendantOfA(withId(R.id.textinput_password))))
-       .check(matches(withEffectiveVisibility(Visibility.GONE)));
+  @Test
+  public void testErrorIconMaintainsEndIcon() {
+    // Set error on text field with password toggle icon
+    onView(withId(R.id.textinput_password)).perform(setError("Error"));
+    // Check icon showing is error icon only
+    onView(
+        allOf(
+            withId(R.id.text_input_end_icon),
+            withContentDescription(R.string.error_icon_content_description),
+            isDescendantOfA(withId(R.id.textinput_password))))
+        .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
+    onView(
+        allOf(
+            withId(R.id.text_input_end_icon),
+            withContentDescription(R.string.password_toggle_content_description),
+            isDescendantOfA(withId(R.id.textinput_password))))
+        .check(matches(withEffectiveVisibility(Visibility.GONE)));
 
-   // Unset error
-   onView(withId(R.id.textinput_password)).perform(setError(null));
+    // Unset error
+    onView(withId(R.id.textinput_password)).perform(setError(null));
 
-   // Check end icon is back
-   onView(
-       allOf(
-           withId(R.id.text_input_end_icon),
-           withContentDescription(R.string.error_icon_content_description),
-           isDescendantOfA(withId(R.id.textinput_password))))
-       .check(matches(withEffectiveVisibility(Visibility.GONE)));
-   onView(
-       allOf(
-           withId(R.id.text_input_end_icon),
-           withContentDescription(R.string.password_toggle_content_description),
-           isDescendantOfA(withId(R.id.textinput_password))))
-       .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
- }
+    // Check end icon is back
+    onView(
+        allOf(
+            withId(R.id.text_input_end_icon),
+            withContentDescription(R.string.error_icon_content_description),
+            isDescendantOfA(withId(R.id.textinput_password))))
+        .check(matches(withEffectiveVisibility(Visibility.GONE)));
+    onView(
+        allOf(
+            withId(R.id.text_input_end_icon),
+            withContentDescription(R.string.password_toggle_content_description),
+            isDescendantOfA(withId(R.id.textinput_password))))
+        .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
+  }
 
   @Test
   public void testErrorIconMaintainsDisguisedInputText() {

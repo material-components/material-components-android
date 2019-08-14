@@ -243,6 +243,7 @@ public class TextInputLayout extends LinearLayout {
   private PorterDuff.Mode startIconTintMode;
   private boolean hasStartIconTintMode;
   private Drawable startIconDummyDrawable;
+  private OnLongClickListener startIconOnLongClickListener;
 
   /**
    * Values for the end icon mode.
@@ -360,6 +361,7 @@ public class TextInputLayout extends LinearLayout {
   private Drawable endIconDummyDrawable;
   private Drawable originalEditTextEndDrawable;
   private final CheckableImageButton errorIconView;
+  private OnLongClickListener endIconOnLongClickListener;
 
   private ColorStateList defaultHintTextColor;
   private ColorStateList focusedTextColor;
@@ -566,8 +568,8 @@ public class TextInputLayout extends LinearLayout {
     }
     errorIconView.setContentDescription(
         getResources().getText(R.string.error_icon_content_description));
-    ViewCompat
-        .setImportantForAccessibility(errorIconView, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO);
+    ViewCompat.setImportantForAccessibility(
+        errorIconView, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO);
     errorIconView.setClickable(false);
     errorIconView.setFocusable(false);
 
@@ -591,6 +593,7 @@ public class TextInputLayout extends LinearLayout {
     inputFrame.addView(startIconView);
     startIconView.setVisibility(GONE);
     setStartIconOnClickListener(null);
+    setStartIconOnLongClickListener(null);
     // Set up start icon if any.
     if (a.hasValue(R.styleable.TextInputLayout_startIconDrawable)) {
       setStartIconDrawable(a.getDrawable(R.styleable.TextInputLayout_startIconDrawable));
@@ -2177,6 +2180,7 @@ public class TextInputLayout extends LinearLayout {
     } else {
       setStartIconVisible(false);
       setStartIconOnClickListener(null);
+      setStartIconOnLongClickListener(null);
       setStartIconContentDescription(null);
     }
   }
@@ -2195,13 +2199,26 @@ public class TextInputLayout extends LinearLayout {
 
   /**
    * Sets the start icon's functionality that is performed when the start icon is clicked. The icon
-   * will not be clickable if its listener is null.
+   * will not be clickable if its click and long click listeners are null.
    *
    * @param startIconOnClickListener the {@link android.view.View.OnClickListener} the start icon
    *     view will have, or null to clear it.
    */
-  public void setStartIconOnClickListener(OnClickListener startIconOnClickListener) {
-    setIconOnClickListener(startIconView, startIconOnClickListener);
+  public void setStartIconOnClickListener(@Nullable OnClickListener startIconOnClickListener) {
+    setIconOnClickListener(startIconView, startIconOnClickListener, startIconOnLongClickListener);
+  }
+
+  /**
+   * Sets the start icon's functionality that is performed when the start icon is long clicked. The
+   * icon will not be clickable if its click and long click listeners are null.
+   *
+   * @param startIconOnLongClickListener the {@link android.view.View.OnLongClickListener} the start
+   *     icon view will have, or null to clear it.
+   */
+  public void setStartIconOnLongClickListener(
+      @Nullable OnLongClickListener startIconOnLongClickListener) {
+    this.startIconOnLongClickListener = startIconOnLongClickListener;
+    setIconOnLongClickListener(startIconView, startIconOnLongClickListener);
   }
 
   /**
@@ -2361,13 +2378,27 @@ public class TextInputLayout extends LinearLayout {
   }
 
   /**
-   * Sets the end icon's functionality that is performed when the icon is clicked.
+   * Sets the end icon's functionality that is performed when the icon is clicked. The icon will not
+   * be clickable if its click and long click listeners are null.
    *
    * @param endIconOnClickListener the {@link android.view.View.OnClickListener} the end icon view
    *     will have
    */
   public void setEndIconOnClickListener(@Nullable OnClickListener endIconOnClickListener) {
-    setIconOnClickListener(endIconView, endIconOnClickListener);
+    setIconOnClickListener(endIconView, endIconOnClickListener, endIconOnLongClickListener);
+  }
+
+  /**
+   * Sets the end icon's functionality that is performed when the end icon is long clicked. The icon
+   * will not be clickable if its click and long click listeners are null.
+   *
+   * @param endIconOnLongClickListener the {@link android.view.View.OnLongClickListener} the start
+   *     icon view will have, or null to clear it.
+   */
+  public void setEndIconOnLongClickListener(
+      @Nullable OnLongClickListener endIconOnLongClickListener) {
+    this.endIconOnLongClickListener = endIconOnLongClickListener;
+    setIconOnLongClickListener(endIconView, endIconOnLongClickListener);
   }
 
   /**
@@ -2944,17 +2975,33 @@ public class TextInputLayout extends LinearLayout {
     }
   }
 
-  private void setIconOnClickListener(@NonNull View iconView, OnClickListener onClickListener) {
-    boolean clickable = onClickListener != null;
+  private static void setIconOnClickListener(
+      @NonNull View iconView,
+      @Nullable OnClickListener onClickListener,
+      @Nullable OnLongClickListener onLongClickListener) {
     iconView.setOnClickListener(onClickListener);
-    iconView.setFocusable(clickable);
-    iconView.setClickable(clickable);
-    int importantForAccessibility =
-        clickable
-            ? ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES
-            : ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO;
+    setIconClickable(iconView, onLongClickListener);
+  }
 
-    ViewCompat.setImportantForAccessibility(iconView, importantForAccessibility);
+  private static void setIconOnLongClickListener(
+      @NonNull View iconView, @Nullable OnLongClickListener onLongClickListener) {
+    iconView.setOnLongClickListener(onLongClickListener);
+    setIconClickable(iconView, onLongClickListener);
+  }
+
+  private static void setIconClickable(
+      @NonNull View iconView, @Nullable OnLongClickListener onLongClickListener) {
+    boolean iconClickable = ViewCompat.hasOnClickListeners(iconView);
+    boolean iconLongClickable = onLongClickListener != null;
+    boolean iconFocusable = iconClickable || iconLongClickable;
+    iconView.setFocusable(iconFocusable);
+    iconView.setClickable(iconClickable);
+    iconView.setLongClickable(iconLongClickable);
+    ViewCompat.setImportantForAccessibility(
+        iconView,
+        iconFocusable
+            ? ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES
+            : ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO);
   }
 
   @Override

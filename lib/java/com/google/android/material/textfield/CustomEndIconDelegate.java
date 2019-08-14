@@ -28,5 +28,6 @@ class CustomEndIconDelegate extends EndIconDelegate {
   @Override
   void initialize() {
     textInputLayout.setEndIconOnClickListener(null);
+    textInputLayout.setEndIconOnLongClickListener(null);
   }
 }

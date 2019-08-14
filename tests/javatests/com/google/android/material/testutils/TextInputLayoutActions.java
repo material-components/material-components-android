@@ -29,6 +29,7 @@ import com.google.android.material.testapp.R;
 import android.text.method.TransformationMethod;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.matcher.ViewMatchers;
@@ -221,6 +222,27 @@ public class TextInputLayoutActions {
     };
   }
 
+  public static ViewAction setEndIconOnLongClickListener(
+      final OnLongClickListener onLongClickListener) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Set end icon OnLongClickListener";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setEndIconOnLongClickListener(onLongClickListener);
+      }
+    };
+  }
+
   public static ViewAction setEndIconMode(final int endIconMode) {
     return new ViewAction() {
       @Override
@@ -338,6 +360,27 @@ public class TextInputLayoutActions {
       public void perform(UiController uiController, View view) {
         TextInputLayout layout = (TextInputLayout) view;
         layout.setStartIconOnClickListener(onClickListener);
+      }
+    };
+  }
+
+  public static ViewAction setStartIconOnLongClickListener(
+      final OnLongClickListener onLongClickListener) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Set a long click listener for the start icon";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setStartIconOnLongClickListener(onLongClickListener);
       }
     };
   }
@@ -539,6 +582,31 @@ public class TextInputLayoutActions {
         CheckableImageButton iconView =
             item.findViewById(isEndIcon ? R.id.text_input_end_icon : R.id.text_input_start_icon);
         iconView.performClick();
+      }
+    };
+  }
+
+  /** Long clicks end or start icon. */
+  public static ViewAction longClickIcon(final boolean isEndIcon) {
+    return new ViewAction() {
+
+      @Override
+      public Matcher<View> getConstraints() {
+        return ViewMatchers.isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Long clicks the end or start icon";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout item = (TextInputLayout) view;
+        // Reach in and find the icon view since we don't have a public API to get a reference to it
+        CheckableImageButton iconView =
+            item.findViewById(isEndIcon ? R.id.text_input_end_icon : R.id.text_input_start_icon);
+        iconView.performLongClick();
       }
     };
   }
