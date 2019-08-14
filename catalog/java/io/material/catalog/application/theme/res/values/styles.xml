@@ -40,7 +40,7 @@
 
   <style name="Widget.Catalog.EdgeToEdgeButton" parent="Widget.Catalog.TocButton">
     <item name="android:id">@id/cat_edge_to_edge_button</item>
-    <item name="android:layout_gravity">center_vertical</item>
+    <item name="android:layout_gravity">center_vertical|start</item>
     <item name="srcCompat">@drawable/ic_edge_to_edge_enable_24dp</item>
   </style>
 
