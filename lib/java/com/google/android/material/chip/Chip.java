@@ -156,6 +156,10 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
   @Dimension(unit = Dimension.PX)
   private int minTouchTargetSize;
 
+  private static final String BUTTON_ACCESSIBILITY_CLASS_NAME = "android.widget.Button";
+  private static final String COMPOUND_BUTTON_ACCESSIBILITY_CLASS_NAME =
+      "android.widget.CompoundButton";
+
   private final ChipTouchHelper touchHelper;
   private final Rect rect = new Rect();
   private final RectF rectF = new RectF();
@@ -257,7 +261,8 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
   @Override
   public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
     super.onInitializeAccessibilityNodeInfo(info);
-    info.setClassName(Chip.class.getName());
+    info.setClassName(
+        isCheckable() ? COMPOUND_BUTTON_ACCESSIBILITY_CLASS_NAME : BUTTON_ACCESSIBILITY_CLASS_NAME);
     info.setCheckable(isCheckable());
     info.setClickable(isClickable());
   }
@@ -1011,7 +1016,10 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
     protected void onPopulateNodeForHost(AccessibilityNodeInfoCompat node) {
       node.setCheckable(isCheckable());
       node.setClickable(isClickable());
-      node.setClassName(Chip.class.getName());
+      node.setClassName(
+          isCheckable()
+              ? COMPOUND_BUTTON_ACCESSIBILITY_CLASS_NAME
+              : BUTTON_ACCESSIBILITY_CLASS_NAME);
       CharSequence chipText = getText();
       if (VERSION.SDK_INT >= VERSION_CODES.M) {
         node.setText(chipText);
