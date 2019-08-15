@@ -24,8 +24,9 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
+import android.os.SystemClock;
+import com.google.android.material.testutils.DisableAnimationsRule;
 import androidx.fragment.app.Fragment;
-import androidx.test.espresso.Espresso;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.filters.MediumTest;
 import androidx.test.rule.ActivityTestRule;
@@ -33,23 +34,23 @@ import androidx.test.runner.AndroidJUnit4;
 import io.material.catalog.R;
 import io.material.catalog.main.MainActivity;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
  * Tests for {@link CardSwipeDismissFragment}
- * TODO(b/138149803) re-enable once no longer flaky
  */
 @MediumTest
 @RunWith(AndroidJUnit4.class)
-@Ignore
 public class CardSwipeDismissFragmentTest {
 
   @Rule
   public final ActivityTestRule<MainActivity> activityTestRule =
       new ActivityTestRule<>(MainActivity.class);
+
+  @Rule
+  public final DisableAnimationsRule disableAnimationsRule = new DisableAnimationsRule();
 
   @Before
   public void setUpAndLaunchFragment() {
@@ -74,9 +75,9 @@ public class CardSwipeDismissFragmentTest {
   public void testSnackbarBehavior_afterSwipingCard() {
     // Test snackbar is displayed after swipe and undo action makes the card be visible.
     onView(withId(R.id.card_content_layout)).perform(swipeRight());
-    Espresso.onIdle();
-
-
+    // Sleep until espresso can recognize the Snackbar
+    SystemClock.sleep(300);
+    
     onView(withText(R.string.cat_card_dismissed)).check(matches(isDisplayed()));
     onView(withText(R.string.cat_card_undo)).perform(click());
 
