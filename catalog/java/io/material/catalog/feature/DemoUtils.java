@@ -18,9 +18,13 @@ package io.material.catalog.feature;
 
 import android.app.Activity;
 import com.google.android.material.snackbar.Snackbar;
+import androidx.core.view.ViewCompat;
+import androidx.core.widget.NestedScrollView;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
+import android.widget.Space;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,5 +58,35 @@ public class DemoUtils {
             activity.findViewById(android.R.id.content), menuItem.getTitle(), Snackbar.LENGTH_SHORT)
         .show();
     return true;
+  }
+
+  public static void addBottomSpaceInsetsIfNeeded(
+      ViewGroup scrollableViewAncestor, ViewGroup viewGroupFitsSystemWindows) {
+    List<ScrollView> scrollViews =
+        DemoUtils.findViewsWithType(scrollableViewAncestor, ScrollView.class);
+    List<NestedScrollView> nestedScrollViews =
+        DemoUtils.findViewsWithType(scrollableViewAncestor, NestedScrollView.class);
+
+    ViewGroup scrollableContent = null;
+    if (!scrollViews.isEmpty()) {
+      scrollableContent = scrollViews.get(0);
+    } else if (!nestedScrollViews.isEmpty()) {
+      scrollableContent = nestedScrollViews.get(0);
+    }
+
+    if (scrollableContent != null && scrollableContent.getChildAt(0) instanceof ViewGroup) {
+      ViewGroup spaceParent = ((ViewGroup) scrollableContent.getChildAt(0));
+      Space space = new Space(scrollableViewAncestor.getContext());
+      space.setVisibility(View.GONE);
+      spaceParent.addView(space);
+
+      ViewCompat.setOnApplyWindowInsetsListener(
+          viewGroupFitsSystemWindows,
+          (v, insets) -> {
+            space.setVisibility(View.VISIBLE);
+            space.getLayoutParams().height = insets.getSystemWindowInsetBottom();
+            return insets;
+          });
+    }
   }
 }
