@@ -26,6 +26,7 @@ import com.google.android.material.appbar.AppBarLayout;
 import androidx.fragment.app.Fragment;
 import androidx.core.content.ContextCompat;
 import androidx.core.math.MathUtils;
+import androidx.core.view.ViewCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -107,6 +108,15 @@ public class TocFragment extends DaggerFragment {
     recyclerView = view.findViewById(R.id.cat_toc_grid);
     themeButton = view.findViewById(R.id.cat_toc_theme_button);
     edgeToEdgeButton = view.findViewById(R.id.cat_edge_to_edge_button);
+
+    ViewCompat.setOnApplyWindowInsetsListener(
+        view,
+        (v, insetsCompat) -> {
+          appBarLayout
+              .findViewById(R.id.cat_toc_collapsingtoolbarlayout)
+              .setPadding(0, insetsCompat.getSystemWindowInsetTop(), 0, 0);
+          return insetsCompat;
+        });
 
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
       addGridTopDividerVisibilityListener();
