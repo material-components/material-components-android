@@ -20,9 +20,13 @@ import io.material.catalog.R;
 
 import android.os.Bundle;
 import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams;
 import io.material.catalog.feature.DemoFragment;
 
 /**
@@ -37,6 +41,20 @@ public class BottomNavigationAnimatedDemoFragment extends DemoFragment {
     View view =
         layoutInflater.inflate(
             R.layout.cat_bottom_navs_animated, viewGroup, false /* attachToRoot */);
+    return view;
+  }
+
+  @Nullable
+  @Override
+  public View onCreateView(
+      LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
+    View view = super.onCreateView(layoutInflater, viewGroup, bundle);
+    CoordinatorLayout coordinatorLayout = view.findViewById(R.id.cat_demo_fragment_container);
+    // For unknown reasons, setting this in the xml is cleared out but setting it here takes effect.
+    CoordinatorLayout.LayoutParams lp =
+        (LayoutParams) coordinatorLayout.getChildAt(0).getLayoutParams();
+    lp.gravity = Gravity.BOTTOM;
+    ViewCompat.setOnApplyWindowInsetsListener(coordinatorLayout, (v, insets) -> insets);
     return view;
   }
 }
