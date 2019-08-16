@@ -16,16 +16,17 @@
 -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:orientation="vertical">
 
   <TextView
-      android:id="@+id/month_title"
-      android:gravity="center_vertical|start"
-      style="@style/TextAppearance.MaterialComponents.Subtitle2"
-      android:layout_width="match_parent"
-      android:layout_height="@dimen/mtrl_calendar_day_height"/>
+    android:id="@+id/month_title"
+    style="@style/TextAppearance.MaterialComponents.Subtitle2"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/mtrl_calendar_day_height"
+    android:focusable="true"
+    android:gravity="center_vertical|start"/>
 
   <include layout="@layout/mtrl_calendar_month"/>
 

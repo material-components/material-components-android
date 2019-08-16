@@ -19,6 +19,7 @@ import com.google.android.material.R;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
+import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.LayoutParams;
 import android.view.LayoutInflater;
@@ -75,8 +76,9 @@ class MonthsPagerAdapter extends RecyclerView.Adapter<MonthsPagerAdapter.ViewHol
 
     ViewHolder(LinearLayout container, boolean showLabel) {
       super(container);
-      this.monthTitle = container.findViewById(R.id.month_title);
-      this.monthGrid = container.findViewById(R.id.month_grid);
+      monthTitle = container.findViewById(R.id.month_title);
+      ViewCompat.setAccessibilityHeading(monthTitle, true);
+      monthGrid = container.findViewById(R.id.month_grid);
       if (!showLabel) {
         monthTitle.setVisibility(View.GONE);
       }
