@@ -19,26 +19,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="io.material.materialthemebuilder">
 
-    <application
-        android:name=".App"
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/MyTheme.DayNight"
-        tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+    <uses-sdk
+      android:minSdkVersion="23"
+      android:targetSdkVersion="29" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
-        <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
-    </application>
+    <application />
 
 </manifest>
