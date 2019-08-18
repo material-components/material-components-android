@@ -873,7 +873,7 @@ public class TextInputLayout extends LinearLayout {
       hoveredStrokeColor =
           ContextCompat.getColor(getContext(), R.color.mtrl_textinput_hovered_box_stroke_color);
     }
-	updateTextInputBoxState();
+    updateTextInputBoxState();
   }
 
   /**
