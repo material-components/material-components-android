@@ -852,6 +852,31 @@ public class TextInputLayout extends LinearLayout {
   }
 
   /**
+   * Set the box's stroke color state list.
+   *
+   * @param boStrokeColorStateList the color state list to use for the box's stroke
+   */
+  public void setBoxStrokeColorStateList(ColorStateList boxStrokeColorStateList) {
+    if (boxStrokeColorStateList != null && boxStrokeColorStateList.isStateful()) {
+      defaultStrokeColor = boxStrokeColorStateList.getDefaultColor();
+      disabledColor =
+          boxStrokeColorStateList.getColorForState(new int[] {-android.R.attr.state_enabled}, -1);
+      hoveredStrokeColor =
+          boxStrokeColorStateList.getColorForState(new int[] {android.R.attr.state_hovered}, -1);
+      focusedStrokeColor =
+          boxStrokeColorStateList.getColorForState(new int[] {android.R.attr.state_focused}, -1);
+    } else {
+      focusedStrokeColor = boxStrokeColorStateList.getDefaultColor();
+      defaultStrokeColor =
+          ContextCompat.getColor(getContext(), R.color.mtrl_textinput_default_box_stroke_color);
+      disabledColor = ContextCompat.getColor(getContext(), R.color.mtrl_textinput_disabled_color);
+      hoveredStrokeColor =
+          ContextCompat.getColor(getContext(), R.color.mtrl_textinput_hovered_box_stroke_color);
+    }
+	updateTextInputBoxState();
+  }
+
+  /**
    * Set the resource used for the filled box's background color.
    *
    * <p>Note: The background color is only supported for filled boxes. When used with box variants
