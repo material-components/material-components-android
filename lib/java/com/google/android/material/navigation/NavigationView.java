@@ -20,8 +20,10 @@ import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
@@ -58,6 +60,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import com.google.android.material.internal.NavigationMenu;
 import com.google.android.material.internal.NavigationMenuPresenter;
 import com.google.android.material.internal.ScrimInsetsFrameLayout;
@@ -101,6 +104,8 @@ public class NavigationView extends ScrimInsetsFrameLayout {
 
   OnNavigationItemSelectedListener listener;
   private final int maxWidth;
+
+  private final int[] tmpLocation = new int[2];
 
   private MenuInflater menuInflater;
 
@@ -228,6 +233,8 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     }
 
     a.recycle();
+
+    setupInsetScrimsListener();
   }
 
   @Override
@@ -637,6 +644,35 @@ public class NavigationView extends ScrimInsetsFrameLayout {
         new int[] {
           baseColor.getColorForState(DISABLED_STATE_SET, defaultColor), colorPrimary, defaultColor
         });
+  }
+
+  /**
+   * Add a listener to wait for layout changes so we can determine the location on screen. Based on
+   * the location we'll try to be smart about showing the scrim at under the status bar and under
+   * the system nav only when we should.
+   */
+  private void setupInsetScrimsListener() {
+    getViewTreeObserver()
+        .addOnGlobalLayoutListener(
+            new OnGlobalLayoutListener() {
+              @Override
+              public void onGlobalLayout() {
+                getLocationOnScreen(tmpLocation);
+                boolean isBehindStatusBar = tmpLocation[1] == 0;
+                presenter.setBehindStatusBar(isBehindStatusBar);
+                setDrawTopInsetForeground(isBehindStatusBar);
+
+                Context context = getContext();
+                if (context instanceof Activity && VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+                  boolean isBehindSystemNav =
+                      ((Activity) context).findViewById(android.R.id.content).getHeight()
+                          == getHeight();
+                  boolean systemNavNotFullyTransparent =
+                      ((Activity) context).getWindow().getNavigationBarColor() == Color.TRANSPARENT;
+                  setDrawBottomInsetForeground(isBehindSystemNav && !systemNavNotFullyTransparent);
+                }
+              }
+            });
   }
 
   /** Listener for handling events on navigation items. */

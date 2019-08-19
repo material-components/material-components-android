@@ -79,6 +79,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
   int itemIconPadding;
   int itemIconSize;
   boolean hasCustomItemIconSize;
+  boolean isBehindStatusBar = true;
   private int itemMaxLines;
 
   /**
@@ -320,14 +321,39 @@ public class NavigationMenuPresenter implements MenuPresenter {
     }
   }
 
+  /** Updates the top padding depending on if this view is drawn behind the status bar. */
+  public void setBehindStatusBar(boolean behindStatusBar) {
+    if (isBehindStatusBar != behindStatusBar) {
+      isBehindStatusBar = behindStatusBar;
+      updateTopPadding();
+    }
+  }
+
+  /** True if the NavigationView will be drawn behind the status bar */
+  public boolean isBehindStatusBar() {
+    return isBehindStatusBar;
+  }
+
+  private void updateTopPadding() {
+    int topPadding = 0;
+    // Set padding if there's no header and we are drawing behind the status bar.
+    if (headerLayout.getChildCount() == 0 && isBehindStatusBar) {
+      topPadding = paddingTopDefault;
+    }
+
+    menuView.setPadding(0, topPadding, 0, menuView.getPaddingBottom());
+  }
+
   public void dispatchApplyWindowInsets(WindowInsetsCompat insets) {
     int top = insets.getSystemWindowInsetTop();
     if (paddingTopDefault != top) {
       paddingTopDefault = top;
-      if (headerLayout.getChildCount() == 0) {
-        menuView.setPadding(0, paddingTopDefault, 0, menuView.getPaddingBottom());
-      }
+      // Apply the padding to the top of the view if it has changed.
+      updateTopPadding();
     }
+
+    // Always apply the bottom padding.
+    menuView.setPadding(0, menuView.getPaddingTop(), 0, insets.getSystemWindowInsetBottom());
     ViewCompat.dispatchApplyWindowInsets(headerLayout, insets);
   }
 
