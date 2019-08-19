@@ -31,6 +31,7 @@ import static com.google.android.material.testutils.TextInputLayoutActions.setHe
 import static com.google.android.material.testutils.TextInputLayoutActions.setHelperTextEnabled;
 import static com.google.android.material.testutils.TextInputLayoutActions.setHint;
 import static com.google.android.material.testutils.TextInputLayoutActions.setHintTextAppearance;
+import static com.google.android.material.testutils.TextInputLayoutActions.setPlaceholderText;
 import static com.google.android.material.testutils.TextInputLayoutActions.setTypeface;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.clearText;
@@ -89,6 +90,7 @@ public class TextInputLayoutTest {
   private static final String ERROR_MESSAGE_2 = "Some other error has occurred";
   private static final String HELPER_MESSAGE_1 = "Helpful helper text";
   private static final String HELPER_MESSAGE_2 = "Some other helper text";
+  private static final String PLACEHOLDER_TEXT = "This text is holding the place";
   private static final String HINT_TEXT = "Hint text";
   private static final String INPUT_TEXT = "Random input text";
   private static final Typeface CUSTOM_TYPEFACE = Typeface.SANS_SERIF;
@@ -183,8 +185,9 @@ public class TextInputLayoutTest {
 
   @Test
   public void testSetHelperTextViaAttribute() {
-    // The text input with id textinput_box_outline has the string textinput_helper set on it via
-    // the helper text attribute. Check that the helper text is displayed via the attribute.
+    // The text input with id textinput_box_outline has the string textinput_helper set on it
+    // via the helper text attribute. Check that the helper text is displayed via the
+    // attribute.
     String helperText =
         activityTestRule.getActivity().getResources().getString(R.string.textinput_helper);
 
@@ -252,6 +255,32 @@ public class TextInputLayoutTest {
     onView(withId(R.id.textinput)).perform(setHelperText(HELPER_MESSAGE_2));
     // And check that it is displayed
     onView(withText(HELPER_MESSAGE_2)).check(matches(isDisplayed()));
+  }
+
+  @Test
+  public void testSetPlaceholderEnablesPlaceholderIsDisplayed() {
+    onView(withId(R.id.textinput_box_outline)).perform(setPlaceholderText(PLACEHOLDER_TEXT));
+
+    // Click on the EditText so that the hint collapses and the placeholder text is shown.
+    onView(withId(R.id.textinput_edittext_outline)).perform(click());
+
+    // Check that the placeholder text is displayed.
+    onView(withText(PLACEHOLDER_TEXT)).check(matches(isDisplayed()));
+  }
+
+  @Test
+  public void testSetPlaceholderTextViaAttribute() {
+    // The text input with id textinput_box_outline has the string textinput_placeholder set on it
+    // via the placeholder text attribute. Check that the placeholder text is displayed via the
+    // attribute.
+    String placeholderText =
+        activityTestRule.getActivity().getResources().getString(R.string.textinput_placeholder);
+
+    // Click on the EditText so that the hint collapses and the placeholder text is shown.
+    onView(withId(R.id.textinput_edittext_outline)).perform(click());
+
+    // Check that the placeholder text is displayed.
+    onView(withText(placeholderText)).check(matches(isDisplayed()));
   }
 
   @Test

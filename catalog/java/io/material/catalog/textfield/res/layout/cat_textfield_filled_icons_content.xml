@@ -47,7 +47,8 @@
       app:endIconMode="clear_text"
       app:errorEnabled="true"
       app:helperText="@string/cat_textfield_filled_clear_button_helper_text"
-      app:helperTextEnabled="true">
+      app:helperTextEnabled="true"
+      app:placeholderText="@string/cat_textfield_placeholder_text">
     <com.google.android.material.textfield.TextInputEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
@@ -64,7 +65,8 @@
       app:endIconMode="custom"
       app:errorEnabled="true"
       app:helperText="@string/cat_textfield_filled_custom_end_icon_helper_text"
-      app:helperTextEnabled="true">
+      app:helperTextEnabled="true"
+      app:placeholderText="@string/cat_textfield_placeholder_text">
     <com.google.android.material.textfield.TextInputEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
@@ -81,6 +83,7 @@
       app:errorEnabled="true"
       app:helperText="@string/cat_textfield_filled_start_icon_helper_text"
       app:helperTextEnabled="true"
+      app:placeholderText="@string/cat_textfield_placeholder_text"
       app:startIconContentDescription="@string/cat_textfield_custom_start_icon_content_description"
       app:startIconDrawable="@drawable/ic_search_24px">
     <com.google.android.material.textfield.TextInputEditText
@@ -102,6 +105,7 @@
       app:errorEnabled="true"
       app:helperText="@string/cat_textfield_filled_start_end_icons_helper_text"
       app:helperTextEnabled="true"
+      app:placeholderText="@string/cat_textfield_placeholder_text"
       app:startIconContentDescription="@string/cat_textfield_custom_start_icon_content_description"
       app:startIconDrawable="@drawable/ic_search_24px">
     <com.google.android.material.textfield.TextInputEditText
