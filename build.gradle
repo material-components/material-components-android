@@ -212,7 +212,7 @@ subprojects {
           }
 
           libraryVariants.all {
-            it.processJavaResources.dependsOn(writeVersionFile)
+            it.processJavaResourcesProvider.get().dependsOn(writeVersionFile)
           }
 
           project.android.sourceSets.main.resources.srcDir JAVA_RESOURCES_TEMP_DIR
