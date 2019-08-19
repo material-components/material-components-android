@@ -25,6 +25,7 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
+import androidx.core.view.ViewCompat;
 import androidx.appcompat.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +35,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.tabs.TabLayout;
@@ -70,6 +72,19 @@ public class TabsControllableDemoFragment extends DemoFragment {
 
     tabLayouts = DemoUtils.findViewsWithType(view, TabLayout.class);
     pager = view.findViewById(R.id.viewpager);
+
+    CoordinatorLayout coordinatorLayout = view.findViewById(R.id.coordinator_layout);
+    ViewCompat.setOnApplyWindowInsetsListener(
+        view,
+        (v, insetsCompat) -> {
+          View scrollable = coordinatorLayout.findViewById(R.id.cat_tabs_controllable_scrollview);
+          scrollable.setPadding(
+              scrollable.getPaddingLeft(),
+              0,
+              scrollable.getPaddingRight(),
+              scrollable.getPaddingBottom());
+          return insetsCompat;
+        });
 
     setupViewPager();
     setAllTabLayoutIcons(ICON_DRAWABLE_RES);
