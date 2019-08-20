@@ -54,4 +54,8 @@
         android:layout_margin="8dp"
         android:text="@string/shrink_fabs_label"/>
   </LinearLayout>
+
+  <io.material.catalog.feature.BottomWindowInsetView
+      android:layout_width="match_parent"
+      android:layout_height="0dp" />
 </LinearLayout>

@@ -32,9 +32,8 @@
         android:layout_height="wrap_content"/>
   </com.google.android.material.appbar.AppBarLayout>
 
-  <androidx.coordinatorlayout.widget.CoordinatorLayout
+  <FrameLayout
       android:id="@+id/cat_demo_fragment_container"
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:fitsSystemWindows="true"/>
+      android:layout_height="match_parent"/>
 </LinearLayout>

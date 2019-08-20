@@ -100,7 +100,7 @@ public abstract class DemoLandingFragment extends DaggerFragment {
     }
     additionalDemosSection.setVisibility(additionalDemos.isEmpty() ? View.GONE : View.VISIBLE);
 
-    DemoUtils.addBottomSpaceInsetsIfNeeded((ViewGroup) view, viewGroup);
+    DemoUtils.addBottomSpaceInsetsIfNeeded((ViewGroup) view);
     return view;
   }
 
