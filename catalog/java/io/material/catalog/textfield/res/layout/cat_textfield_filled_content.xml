@@ -31,8 +31,7 @@
       app:counterMaxLength="10"
       app:errorEnabled="true"
       app:helperText="@string/cat_textfield_filled_helper_text"
-      app:helperTextEnabled="true"
-      app:placeholderText="@string/cat_textfield_placeholder_text">
+      app:helperTextEnabled="true">
     <com.google.android.material.textfield.TextInputEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
@@ -48,8 +47,7 @@
       app:counterMaxLength="10"
       app:errorEnabled="true"
       app:helperText="@string/cat_textfield_filled_dense_helper_text"
-      app:helperTextEnabled="true"
-      app:placeholderText="@string/cat_textfield_placeholder_text">
+      app:helperTextEnabled="true">
     <com.google.android.material.textfield.TextInputEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

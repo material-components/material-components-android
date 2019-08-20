@@ -89,15 +89,6 @@
          If set, this takes precedence over counterOverflowTextAppearance. -->
     <attr name="counterOverflowTextColor" format="reference"/>
 
-
-    <!-- The text to display as placeholder text in the text input area. -->
-    <attr name="placeholderText" format="string"/>
-    <!-- TextAppearance of the placeholder text displayed in the text input area. -->
-    <attr name="placeholderTextAppearance" format="reference"/>
-    <!-- Text color of the placeholder text displayed in the text input area.
-         If set, this takes precedence over placeholderTextAppearance. -->
-    <attr name="placeholderTextColor" format="color"/>
-
     <!-- Drawable to use for the start icon. -->
     <attr name="startIconDrawable" format="reference"/>
     <!-- Text to set as the content description for the start icon. -->

@@ -159,46 +159,6 @@ public class TextInputLayoutActions {
     };
   }
 
-  public static ViewAction setPlaceholderText(final CharSequence placeholder) {
-    return new ViewAction() {
-      @Override
-      public Matcher<View> getConstraints() {
-        return isAssignableFrom(TextInputLayout.class);
-      }
-
-      @Override
-      public String getDescription() {
-        return "Sets the placeholder";
-      }
-
-      @Override
-      public void perform(UiController uiController, View view) {
-        TextInputLayout layout = (TextInputLayout) view;
-        layout.setPlaceholderText(placeholder);
-      }
-    };
-  }
-
-  public static ViewAction setPlaceholderTextAppearance(final int resId) {
-    return new ViewAction() {
-      @Override
-      public Matcher<View> getConstraints() {
-        return isAssignableFrom(TextInputLayout.class);
-      }
-
-      @Override
-      public String getDescription() {
-        return "Sets the placeholder text appearance";
-      }
-
-      @Override
-      public void perform(UiController uiController, View view) {
-        TextInputLayout layout = (TextInputLayout) view;
-        layout.setPlaceholderTextAppearance(resId);
-      }
-    };
-  }
-
   public static ViewAction setTypeface(final Typeface typeface) {
     return new ViewAction() {
       @Override
