@@ -205,6 +205,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   /** Default Shape Appearance to be used in bottomsheet */
   private ShapeAppearanceModel shapeAppearanceModelDefault;
 
+  private boolean isShapeExpanded;
+
   @Nullable private ValueAnimator interpolatorAnimator;
 
   private static final int DEF_STYLE_RES = R.style.Widget_Design_BottomSheet_Modal;
@@ -337,23 +339,26 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     if (ViewCompat.getFitsSystemWindows(parent) && !ViewCompat.getFitsSystemWindows(child)) {
       child.setFitsSystemWindows(true);
     }
-    // Only set MaterialShapeDrawable as background if shapeTheming is enabled, otherwise will
-    // default to android:background declared in styles or layout.
-    if (shapeThemingEnabled && materialShapeDrawable != null) {
-      ViewCompat.setBackground(child, materialShapeDrawable);
-    }
-    // Set elevation on MaterialShapeDrawable
-    if (materialShapeDrawable != null) {
-      // Use elevation attr if set on bottomsheet; otherwise, use elevation of child view.
-      materialShapeDrawable.setElevation(
-          elevation == -1 ? ViewCompat.getElevation(child) : elevation);
-    }
 
     if (viewRef == null) {
       // First layout with this behavior.
       peekHeightMin =
           parent.getResources().getDimensionPixelSize(R.dimen.design_bottom_sheet_peek_height_min);
       viewRef = new WeakReference<>(child);
+      // Only set MaterialShapeDrawable as background if shapeTheming is enabled, otherwise will
+      // default to android:background declared in styles or layout.
+      if (shapeThemingEnabled && materialShapeDrawable != null) {
+        ViewCompat.setBackground(child, materialShapeDrawable);
+      }
+      // Set elevation on MaterialShapeDrawable
+      if (materialShapeDrawable != null) {
+        // Use elevation attr if set on bottomsheet; otherwise, use elevation of child view.
+        materialShapeDrawable.setElevation(
+            elevation == -1 ? ViewCompat.getElevation(child) : elevation);
+        // Update the material shape based on initial state.
+        isShapeExpanded = state == STATE_EXPANDED;
+        materialShapeDrawable.setInterpolation(isShapeExpanded ? 0f : 1f);
+      }
     }
     if (viewDragHelper == null) {
       viewDragHelper = ViewDragHelper.create(parent, dragCallback);
@@ -605,12 +610,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         }
       }
     }
-    if (viewDragHelper.smoothSlideViewTo(child, child.getLeft(), top)) {
-      setStateInternal(STATE_SETTLING);
-      ViewCompat.postOnAnimation(child, new SettleRunnable(child, targetState));
-    } else {
-      setStateInternal(targetState);
-    }
+    startSettlingAnimation(child, targetState, top, false);
     nestedScrolled = false;
   }
 
@@ -715,7 +715,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         V view = viewRef.get();
         if (view != null) {
           if (animate) {
-            startSettlingAnimationPendingLayout(state);
+            settleToStatePendingLayout(state);
           } else {
             view.requestLayout();
           }
@@ -876,7 +876,6 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    *     or {@link #STATE_HALF_EXPANDED}.
    */
   public final void setState(@State int state) {
-    @State int previousState = this.state;
     if (state == this.state) {
       return;
     }
@@ -890,11 +889,10 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       }
       return;
     }
-    startSettlingAnimationPendingLayout(state);
-    updateDrawableOnStateChange(state, previousState);
+    settleToStatePendingLayout(state);
   }
 
-  private void startSettlingAnimationPendingLayout(@State int state) {
+  private void settleToStatePendingLayout(@State int state) {
     final V child = viewRef.get();
     if (child == null) {
       return;
@@ -907,11 +905,11 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
           new Runnable() {
             @Override
             public void run() {
-              startSettlingAnimation(child, finalState);
+              settleToState(child, finalState);
             }
           });
     } else {
-      startSettlingAnimation(child, state);
+      settleToState(child, state);
     }
   }
 
@@ -927,8 +925,6 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   void setStateInternal(@State int state) {
-    int previousState = this.state;
-
     if (this.state == state) {
       return;
     }
@@ -953,26 +949,30 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         bottomSheet, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
     bottomSheet.sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED);
 
-    updateDrawableOnStateChange(state, previousState);
+    updateDrawableForTargetState(state);
     if (callback != null) {
       callback.onStateChanged(bottomSheet, state);
     }
   }
 
-  private void updateDrawableOnStateChange(@State int state, @State int previousState) {
-    if (materialShapeDrawable != null) {
-      // If the BottomSheetBehavior's state is set directly to STATE_EXPANDED from
-      // STATE_HIDDEN or STATE_COLLAPSED, bypassing  STATE_DRAGGING, the corner transition animation
-      // will not be triggered automatically, so we will trigger it here.
-      if (state == STATE_EXPANDED
-          && (previousState == STATE_HIDDEN || previousState == STATE_COLLAPSED)
-          && interpolatorAnimator != null
-          && interpolatorAnimator.getAnimatedFraction() == 1) {
-        interpolatorAnimator.reverse();
-      }
-      if (state == STATE_DRAGGING
-           && previousState == STATE_EXPANDED && interpolatorAnimator != null) {
-        interpolatorAnimator.start();
+  private void updateDrawableForTargetState(@State int state) {
+    if (state == STATE_SETTLING) {
+      // Special case: we want to know which state we're settling to, so wait for another call.
+      return;
+    }
+
+    boolean expand = state == STATE_EXPANDED;
+    if (isShapeExpanded != expand) {
+      isShapeExpanded = expand;
+      if (materialShapeDrawable != null && interpolatorAnimator != null) {
+        if (interpolatorAnimator.isRunning()) {
+          interpolatorAnimator.reverse();
+        } else {
+          float to = expand ? 0f : 1f;
+          float from = 1f - to;
+          interpolatorAnimator.setFloatValues(from, to);
+          interpolatorAnimator.start();
+        }
       }
     }
   }
@@ -1108,7 +1108,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     return fitToContents ? fitToContentsOffset : expandedOffset;
   }
 
-  void startSettlingAnimation(View child, int state) {
+  void settleToState(View child, int state) {
     int top;
     if (state == STATE_COLLAPSED) {
       top = collapsedOffset;
@@ -1126,8 +1126,17 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     } else {
       throw new IllegalArgumentException("Illegal state argument: " + state);
     }
-    if (viewDragHelper.smoothSlideViewTo(child, child.getLeft(), top)) {
+    startSettlingAnimation(child, state, top, false);
+  }
+
+  void startSettlingAnimation(View child, int state, int top, boolean settleFromViewDragHelper) {
+    boolean startedSettling = settleFromViewDragHelper
+        ? viewDragHelper.settleCapturedViewAt(child.getLeft(), top)
+        : viewDragHelper.smoothSlideViewTo(child, child.getLeft(), top);
+    if (startedSettling) {
       setStateInternal(STATE_SETTLING);
+      // STATE_SETTLING won't animate the material shape, so do that here with the target state.
+      updateDrawableForTargetState(state);
       ViewCompat.postOnAnimation(child, new SettleRunnable(child, state));
     } else {
       setStateInternal(state);
@@ -1243,19 +1252,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
               }
             }
           }
-          if (viewDragHelper.settleCapturedViewAt(releasedChild.getLeft(), top)) {
-            setStateInternal(STATE_SETTLING);
-            if (targetState == STATE_EXPANDED && interpolatorAnimator != null) {
-              interpolatorAnimator.reverse();
-            }
-            ViewCompat.postOnAnimation(
-                releasedChild, new SettleRunnable(releasedChild, targetState));
-          } else {
-            if (targetState == STATE_EXPANDED && interpolatorAnimator != null) {
-              interpolatorAnimator.reverse();
-            }
-            setStateInternal(targetState);
-          }
+          startSettlingAnimation(releasedChild, targetState, top, true);
         }
 
         @Override
