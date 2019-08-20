@@ -129,7 +129,7 @@ class MonthAdapter extends BaseAdapter {
     if (calendarConstraints.getDateValidator().isValid(date)) {
       day.setEnabled(true);
       for (long selectedDay : dateSelector.getSelectedDays()) {
-        if (date.equals(DateLongs.canonicalYearMonthDay(selectedDay))) {
+        if (DateLongs.canonicalYearMonthDay(date) == DateLongs.canonicalYearMonthDay(selectedDay)) {
           calendarStyle.selectedDay.styleItem(day);
           return day;
         }
