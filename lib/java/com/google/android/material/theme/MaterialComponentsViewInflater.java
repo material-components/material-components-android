@@ -49,7 +49,7 @@ public class MaterialComponentsViewInflater extends AppCompatViewInflater {
 
   @NonNull
   @Override
-  protected AppCompatButton createButton(Context context, AttributeSet attrs) {
+  protected AppCompatButton createButton(@NonNull Context context, @NonNull AttributeSet attrs) {
     if (shouldInflateAppCompatButton(context, attrs)) {
       return new AppCompatButton(context, attrs);
     }
@@ -59,7 +59,8 @@ public class MaterialComponentsViewInflater extends AppCompatViewInflater {
 
   /** @hide */
   @RestrictTo(LIBRARY_GROUP)
-  protected boolean shouldInflateAppCompatButton(Context context, AttributeSet attrs) {
+  protected boolean shouldInflateAppCompatButton(
+      @NonNull Context context, @NonNull AttributeSet attrs) {
     // Workaround for FloatingToolbar inflating floating_popup_menu_button.xml on API 23-25, which
     // should not have MaterialButton styling.
 
