@@ -19,6 +19,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
@@ -26,7 +27,7 @@ import android.widget.RelativeLayout;
 /** A CircularRevealWidget wrapper for {@link RelativeLayout}. */
 public class CircularRevealRelativeLayout extends RelativeLayout implements CircularRevealWidget {
 
-  private final CircularRevealHelper helper;
+  @NonNull private final CircularRevealHelper helper;
 
   public CircularRevealRelativeLayout(Context context) {
     this(context, null);
@@ -80,7 +81,7 @@ public class CircularRevealRelativeLayout extends RelativeLayout implements Circ
   }
 
   @Override
-  public void draw(Canvas canvas) {
+  public void draw(@NonNull Canvas canvas) {
     if (helper != null) {
       helper.draw(canvas);
     } else {
