@@ -17,6 +17,7 @@
 package com.google.android.material.appbar;
 
 import android.content.Context;
+import androidx.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -36,7 +37,8 @@ class ViewOffsetBehavior<V extends View> extends CoordinatorLayout.Behavior<V> {
   }
 
   @Override
-  public boolean onLayoutChild(CoordinatorLayout parent, V child, int layoutDirection) {
+  public boolean onLayoutChild(
+      @NonNull CoordinatorLayout parent, @NonNull V child, int layoutDirection) {
     // First let lay the child out
     layoutChild(parent, child, layoutDirection);
 
@@ -58,7 +60,8 @@ class ViewOffsetBehavior<V extends View> extends CoordinatorLayout.Behavior<V> {
     return true;
   }
 
-  protected void layoutChild(CoordinatorLayout parent, V child, int layoutDirection) {
+  protected void layoutChild(
+      @NonNull CoordinatorLayout parent, @NonNull V child, int layoutDirection) {
     // Let the parent lay it out by default
     parent.onLayoutChild(child, layoutDirection);
   }
