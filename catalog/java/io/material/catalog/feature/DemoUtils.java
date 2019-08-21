@@ -62,7 +62,8 @@ public class DemoUtils {
     return true;
   }
 
-  public static void addBottomSpaceInsetsIfNeeded(ViewGroup scrollableViewAncestor) {
+  public static void addBottomSpaceInsetsIfNeeded(
+      ViewGroup scrollableViewAncestor, ViewGroup demoContainer) {
     List<? extends ViewGroup> scrollViews =
         DemoUtils.findViewsWithType(scrollableViewAncestor, ScrollView.class);
 
@@ -72,15 +73,23 @@ public class DemoUtils {
     ArrayList<ViewGroup> scrollingViews = new ArrayList<>();
     scrollingViews.addAll(scrollViews);
     scrollingViews.addAll(nestedScrollViews);
-    for (ViewGroup scrollView : scrollingViews) {
-      ViewCompat.setOnApplyWindowInsetsListener(
-          scrollableViewAncestor,
-          (view, insets) -> {
+    ViewCompat.setOnApplyWindowInsetsListener(
+        demoContainer,
+        (view, insets) -> {
+          for (ViewGroup scrollView : scrollingViews) {
             scrollView.addOnLayoutChangeListener(
                 new OnLayoutChangeListener() {
                   @Override
-                  public void onLayoutChange(View v, int left, int top, int right, int bottom,
-                      int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                  public void onLayoutChange(
+                      View v,
+                      int left,
+                      int top,
+                      int right,
+                      int bottom,
+                      int oldLeft,
+                      int oldTop,
+                      int oldRight,
+                      int oldBottom) {
                     scrollView.removeOnLayoutChangeListener(this);
                     int systemWindowInsetBottom = insets.getSystemWindowInsetBottom();
                     if (!shouldApplyBottomInset(scrollView, systemWindowInsetBottom)) {
@@ -96,10 +105,9 @@ public class DemoUtils {
                         insetBottom);
                   }
                 });
-            return insets;
           }
-      );
-    }
+          return insets;
+        });
   }
 
   private static int calculateBottomInset(ViewGroup scrollView, int systemWindowInsetBottom) {

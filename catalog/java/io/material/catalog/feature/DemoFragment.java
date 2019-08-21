@@ -74,7 +74,7 @@ public abstract class DemoFragment extends Fragment
     demoContainer.addView(onCreateDemoView(layoutInflater, viewGroup, bundle));
 
     ViewGroup children = (ViewGroup) demoContainer.getChildAt(0);
-    DemoUtils.addBottomSpaceInsetsIfNeeded(children);
+    DemoUtils.addBottomSpaceInsetsIfNeeded(children, demoContainer);
     return view;
   }
 
