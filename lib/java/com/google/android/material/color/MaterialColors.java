@@ -22,6 +22,7 @@ import android.graphics.Color;
 import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
+import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 import com.google.android.material.resources.MaterialAttributes;
 import androidx.core.graphics.ColorUtils;
@@ -49,7 +50,7 @@ public class MaterialColors {
    * @throws IllegalArgumentException if the attribute is not set in the current theme.
    */
   @ColorInt
-  public static int getColor(View view, @AttrRes int colorAttributeResId) {
+  public static int getColor(@NonNull View view, @AttrRes int colorAttributeResId) {
     return MaterialAttributes.resolveOrThrow(view, colorAttributeResId);
   }
 
@@ -70,7 +71,7 @@ public class MaterialColors {
    */
   @ColorInt
   public static int getColor(
-      View view, @AttrRes int colorAttributeResId, @ColorInt int defaultValue) {
+      @NonNull View view, @AttrRes int colorAttributeResId, @ColorInt int defaultValue) {
     return getColor(view.getContext(), colorAttributeResId, defaultValue);
   }
 
@@ -80,7 +81,7 @@ public class MaterialColors {
    */
   @ColorInt
   public static int getColor(
-      Context context, @AttrRes int colorAttributeResId, @ColorInt int defaultValue) {
+      @NonNull Context context, @AttrRes int colorAttributeResId, @ColorInt int defaultValue) {
     TypedValue typedValue = MaterialAttributes.resolve(context, colorAttributeResId);
     if (typedValue != null) {
       return typedValue.data;
@@ -95,7 +96,7 @@ public class MaterialColors {
    */
   @ColorInt
   public static int layer(
-      View view,
+      @NonNull View view,
       @AttrRes int backgroundColorAttributeResId,
       @AttrRes int overlayColorAttributeResId) {
     return layer(view, backgroundColorAttributeResId, overlayColorAttributeResId, 1f);
@@ -107,7 +108,7 @@ public class MaterialColors {
    */
   @ColorInt
   public static int layer(
-      View view,
+      @NonNull View view,
       @AttrRes int backgroundColorAttributeResId,
       @AttrRes int overlayColorAttributeResId,
       @FloatRange(from = 0.0, to = 1.0) float overlayAlpha) {
