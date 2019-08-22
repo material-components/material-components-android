@@ -34,7 +34,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import androidx.fragment.app.DialogFragment;
@@ -47,6 +46,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import com.google.android.material.dialog.InsetDialogOnTouchListener;
@@ -96,7 +96,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
   private TextView headerSelectionText;
   private CheckableImageButton headerToggleButton;
   private MaterialShapeDrawable background;
-  private MaterialButton confirmButton;
+  private Button confirmButton;
 
   static <S> MaterialDatePicker<S> newInstance(Builder<S> options) {
     MaterialDatePicker<S> materialDatePickerDialogFragment = new MaterialDatePicker<>();
@@ -165,7 +165,6 @@ public final class MaterialDatePicker<S> extends DialogFragment {
       @NonNull LayoutInflater layoutInflater,
       @Nullable ViewGroup viewGroup,
       @Nullable Bundle bundle) {
-
     int layout = fullscreen ? R.layout.mtrl_picker_fullscreen : R.layout.mtrl_picker_dialog;
     View root = layoutInflater.inflate(layout, viewGroup);
     Context context = root.getContext();
@@ -204,7 +203,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
           }
         });
 
-    MaterialButton cancelButton = root.findViewById(R.id.cancel_button);
+    Button cancelButton = root.findViewById(R.id.cancel_button);
     cancelButton.setTag(CANCEL_BUTTON_TAG);
     cancelButton.setOnClickListener(
         new View.OnClickListener() {
