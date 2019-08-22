@@ -23,6 +23,8 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 
 /**
@@ -39,7 +41,7 @@ public class CanvasCompat {
    * Convenience for {@link Canvas#saveLayer(RectF, Paint)} but instead of taking a entire Paint
    * object it takes only the {@code alpha} parameter.
    */
-  public static int saveLayerAlpha(Canvas canvas, RectF bounds, int alpha) {
+  public static int saveLayerAlpha(@NonNull Canvas canvas, @Nullable RectF bounds, int alpha) {
     if (VERSION.SDK_INT > VERSION_CODES.LOLLIPOP) {
       return canvas.saveLayerAlpha(bounds, alpha);
     } else {
@@ -52,7 +54,7 @@ public class CanvasCompat {
    * coordinates of the bounds rectangle.
    */
   public static int saveLayerAlpha(
-      Canvas canvas, float left, float top, float right, float bottom, int alpha) {
+      @NonNull Canvas canvas, float left, float top, float right, float bottom, int alpha) {
     if (VERSION.SDK_INT > VERSION_CODES.LOLLIPOP) {
       return canvas.saveLayerAlpha(left, top, right, bottom, alpha);
     } else {
