@@ -138,7 +138,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   private static final int BADGE_NUMBER_NONE = -1;
 
   /** Maximum value of number that can be displayed in a circular badge. */
-  private static final int MAX_CIRCULAR_BADGE_NUMBER_COUNT = 99;
+  private static final int MAX_CIRCULAR_BADGE_NUMBER_COUNT = 9;
 
   @StyleRes private static final int DEFAULT_STYLE = R.style.Widget_MaterialComponents_Badge;
   @AttrRes private static final int DEFAULT_THEME_ATTR = R.attr.badgeStyle;
@@ -156,15 +156,18 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   private final float badgeRadius;
   private final float badgeWithTextRadius;
   private final float badgeWidePadding;
-  @NonNull private final Rect tmpRect;
   @NonNull private final SavedState savedState;
 
   private float badgeCenterX;
   private float badgeCenterY;
   private int maxBadgeNumber;
+  private float cornerRadius;
+  private float halfBadgeWidth;
+  private float halfBadgeHeight;
+
   // Need to keep a local reference in order to support updating badge gravity.
-  @Nullable private WeakReference<View> anchorView;
-  @Nullable private WeakReference<ViewGroup> customBadgeParent;
+  @Nullable private WeakReference<View> anchorViewRef;
+  @Nullable private WeakReference<ViewGroup> customBadgeParentRef;
 
   /**
    * A {@link Parcelable} implementation used to ensure the state of BadgeDrawable is saved.
@@ -356,7 +359,6 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     this.contextRef = new WeakReference<>(context);
     ThemeEnforcement.checkMaterialTheme(context);
     Resources res = context.getResources();
-    tmpRect = new Rect();
     badgeBounds = new Rect();
     shapeDrawable = new MaterialShapeDrawable();
 
@@ -382,8 +384,9 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
    */
   public void updateBadgeCoordinates(
       @NonNull View anchorView, @Nullable ViewGroup customBadgeParent) {
-    calculateBadgeCenterCoordinates(anchorView, customBadgeParent);
-    updateBounds();
+    this.anchorViewRef = new WeakReference<>(anchorView);
+    this.customBadgeParentRef = new WeakReference<>(customBadgeParent);
+    updateCenterAndBounds();
     invalidateSelf();
   }
 
@@ -472,7 +475,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     if (this.savedState.number != number) {
       this.savedState.number = number;
       textDrawableHelper.setTextWidthDirty(true);
-      updateBounds();
+      updateCenterAndBounds();
       invalidateSelf();
     }
   }
@@ -504,7 +507,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       this.savedState.maxCharacterCount = maxCharacterCount;
       updateMaxBadgeNumber();
       textDrawableHelper.setTextWidthDirty(true);
-      updateBounds();
+      updateCenterAndBounds();
       invalidateSelf();
     }
   }
@@ -522,9 +525,9 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   public void setBadgeGravity(@BadgeGravity int gravity) {
     if (savedState.badgeGravity != gravity) {
       savedState.badgeGravity = gravity;
-      if (anchorView != null && anchorView.get() != null) {
+      if (anchorViewRef != null && anchorViewRef.get() != null) {
         updateBadgeCoordinates(
-            anchorView.get(), customBadgeParent != null ? customBadgeParent.get() : null);
+            anchorViewRef.get(), customBadgeParentRef != null ? customBadgeParentRef.get() : null);
       }
     }
   }
@@ -644,34 +647,98 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       return;
     }
     textDrawableHelper.setTextAppearance(textAppearance, context);
-    updateBounds();
+    updateCenterAndBounds();
   }
 
-  private void updateBounds() {
-    float cornerRadius;
-    tmpRect.set(badgeBounds);
-    if (getNumber() <= MAX_CIRCULAR_BADGE_NUMBER_COUNT) {
-      cornerRadius = !hasNumber() ? badgeRadius : badgeWithTextRadius;
-
-      updateBadgeBounds(badgeBounds, badgeCenterX, badgeCenterY, cornerRadius, cornerRadius);
-    } else {
-      cornerRadius = badgeWithTextRadius;
-      float halfBadgeWidth =
-          textDrawableHelper.getTextWidth(getBadgeText()) / 2f + badgeWidePadding;
-      updateBadgeBounds(badgeBounds, badgeCenterX, badgeCenterY, halfBadgeWidth, cornerRadius);
+  private void updateCenterAndBounds() {
+    Context context = contextRef.get();
+    View anchorView = anchorViewRef != null ? anchorViewRef.get() : null;
+    if (context == null || anchorView == null) {
+      return;
     }
+    Rect tmpRect = new Rect();
+    tmpRect.set(badgeBounds);
+
+    Rect anchorRect = new Rect();
+    // Retrieves the visible bounds of the anchor view.
+    anchorView.getDrawingRect(anchorRect);
+
+    ViewGroup customBadgeParent = customBadgeParentRef != null ? customBadgeParentRef.get() : null;
+    if (customBadgeParent != null || BadgeUtils.USE_COMPAT_PARENT) {
+      // Calculates coordinates relative to the parent.
+      ViewGroup viewGroup =
+          customBadgeParent == null ? (ViewGroup) anchorView.getParent() : customBadgeParent;
+      viewGroup.offsetDescendantRectToMyCoords(anchorView, anchorRect);
+    }
+
+    calculateCenterAndBounds(context, anchorRect, anchorView);
+
+    updateBadgeBounds(badgeBounds, badgeCenterX, badgeCenterY, halfBadgeWidth, halfBadgeHeight);
+
     shapeDrawable.setCornerRadius(cornerRadius);
     if (!tmpRect.equals(badgeBounds)) {
       shapeDrawable.setBounds(badgeBounds);
     }
   }
 
-  private void drawText(@NonNull Canvas canvas) {
+  private void calculateCenterAndBounds(
+      @NonNull Context context, @NonNull Rect anchorRect, @NonNull View anchorView) {
+    switch (savedState.badgeGravity) {
+      case BOTTOM_END:
+      case BOTTOM_START:
+        badgeCenterY = anchorRect.bottom;
+        break;
+      case TOP_END:
+      case TOP_START:
+      default:
+        badgeCenterY = anchorRect.top;
+        break;
+    }
+
+    if (getNumber() <= MAX_CIRCULAR_BADGE_NUMBER_COUNT) {
+      cornerRadius = !hasNumber() ? badgeRadius : badgeWithTextRadius;
+      halfBadgeHeight = cornerRadius;
+      halfBadgeWidth = cornerRadius;
+    } else {
+      cornerRadius = badgeWithTextRadius;
+      halfBadgeHeight = cornerRadius;
+      String badgeText = getBadgeText();
+      halfBadgeWidth = textDrawableHelper.getTextWidth(badgeText) / 2f + badgeWidePadding;
+    }
+
+    int inset =
+        context
+            .getResources()
+            .getDimensionPixelSize(
+                hasNumber()
+                    ? R.dimen.mtrl_badge_text_horizontal_edge_offset
+                    : R.dimen.mtrl_badge_horizontal_edge_offset);
+    // Update the centerX based on the badge width and 'inset' from start or end boundary of anchor.
+    switch (savedState.badgeGravity) {
+      case BOTTOM_START:
+      case TOP_START:
+        badgeCenterX =
+            ViewCompat.getLayoutDirection(anchorView) == View.LAYOUT_DIRECTION_LTR
+                ? anchorRect.left - halfBadgeWidth + inset
+                : anchorRect.right + halfBadgeWidth - inset;
+        break;
+      case BOTTOM_END:
+      case TOP_END:
+      default:
+        badgeCenterX =
+            ViewCompat.getLayoutDirection(anchorView) == View.LAYOUT_DIRECTION_LTR
+                ? anchorRect.right + halfBadgeWidth - inset
+                : anchorRect.left - halfBadgeWidth + inset;
+        break;
+    }
+  }
+
+  private void drawText(Canvas canvas) {
     Rect textBounds = new Rect();
-    String countText = getBadgeText();
-    textDrawableHelper.getTextPaint().getTextBounds(countText, 0, countText.length(), textBounds);
+    String badgeText = getBadgeText();
+    textDrawableHelper.getTextPaint().getTextBounds(badgeText, 0, badgeText.length(), textBounds);
     canvas.drawText(
-        countText,
+        badgeText,
         badgeCenterX,
         badgeCenterY + textBounds.height() / 2,
         textDrawableHelper.getTextPaint());
@@ -697,67 +764,5 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
 
   private void updateMaxBadgeNumber() {
     maxBadgeNumber = (int) Math.pow(10.0d, (double) getMaxCharacterCount() - 1) - 1;
-  }
-
-  private void calculateBadgeCenterCoordinates(
-      @NonNull View anchorView, @Nullable ViewGroup customBadgeParent) {
-    Context context = contextRef.get();
-    if (context == null) {
-      return;
-    }
-    this.anchorView = new WeakReference<>(anchorView);
-    this.customBadgeParent = new WeakReference<>(customBadgeParent);
-    Resources res = context.getResources();
-    Rect anchorRect = new Rect();
-    // Returns the visible bounds of the anchor view.
-    anchorView.getDrawingRect(anchorRect);
-    int deltaY = res.getDimensionPixelSize(R.dimen.mtrl_badge_vertical_offset);
-    switch (savedState.badgeGravity) {
-      case BOTTOM_END:
-      case BOTTOM_START:
-        anchorRect.bottom -= deltaY;
-        break;
-      case TOP_END:
-      case TOP_START:
-      default:
-        anchorRect.top += deltaY;
-        break;
-    }
-    if (customBadgeParent != null || BadgeUtils.USE_COMPAT_PARENT) {
-      // Calculates coordinates relative to the parent.
-      ViewGroup viewGroup =
-          customBadgeParent == null ? (ViewGroup) anchorView.getParent() : customBadgeParent;
-      viewGroup.offsetDescendantRectToMyCoords(anchorView, anchorRect);
-    }
-
-    switch (savedState.badgeGravity) {
-      case BOTTOM_START:
-      case TOP_START:
-        badgeCenterX =
-            ViewCompat.getLayoutDirection(anchorView) == View.LAYOUT_DIRECTION_LTR
-                ? anchorRect.left
-                : anchorRect.right;
-        break;
-      case BOTTOM_END:
-      case TOP_END:
-      default:
-        badgeCenterX =
-            ViewCompat.getLayoutDirection(anchorView) == View.LAYOUT_DIRECTION_LTR
-                ? anchorRect.right
-                : anchorRect.left;
-        break;
-    }
-
-    switch (savedState.badgeGravity) {
-      case BOTTOM_END:
-      case BOTTOM_START:
-        badgeCenterY = anchorRect.bottom;
-        break;
-      case TOP_END:
-      case TOP_START:
-      default:
-        badgeCenterY = anchorRect.top;
-        break;
-    }
   }
 }
