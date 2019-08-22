@@ -23,6 +23,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
@@ -47,7 +48,9 @@ public final class DrawableUtils {
   /** Returns a tint filter for the given tint and mode. */
   @Nullable
   public static PorterDuffColorFilter updateTintFilter(
-      Drawable drawable, @Nullable ColorStateList tint, @Nullable PorterDuff.Mode tintMode) {
+      @NonNull Drawable drawable,
+      @Nullable ColorStateList tint,
+      @Nullable PorterDuff.Mode tintMode) {
     if (tint == null || tintMode == null) {
       return null;
     }
@@ -56,8 +59,9 @@ public final class DrawableUtils {
     return new PorterDuffColorFilter(color, tintMode);
   }
 
+  @NonNull
   public static AttributeSet parseDrawableXml(
-      final Context context, @XmlRes int id, CharSequence startTag) {
+      @NonNull Context context, @XmlRes int id, @NonNull CharSequence startTag) {
     try {
       XmlPullParser parser = context.getResources().getXml(id);
 
