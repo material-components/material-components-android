@@ -97,8 +97,8 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
   private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_CardView;
   private static final String LOG_TAG = "MaterialCardView";
 
-  private final MaterialCardViewHelper cardViewHelper;
-  private final FrameLayout contentLayout;
+  @NonNull private final MaterialCardViewHelper cardViewHelper;
+  @NonNull private final FrameLayout contentLayout;
 
   /**
    * Keep track of when {@link CardView} is done initializing because we don't want to use the
@@ -151,7 +151,7 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
   }
 
   @Override
-  public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
+  public void onInitializeAccessibilityNodeInfo(@NonNull AccessibilityNodeInfo info) {
     super.onInitializeAccessibilityNodeInfo(info);
     info.setClassName(MaterialCardView.class.getName());
     info.setCheckable(isCheckable());
@@ -160,7 +160,7 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
   }
 
   @Override
-  public void onInitializeAccessibilityEvent(AccessibilityEvent accessibilityEvent) {
+  public void onInitializeAccessibilityEvent(@NonNull AccessibilityEvent accessibilityEvent) {
     super.onInitializeAccessibilityEvent(accessibilityEvent);
     accessibilityEvent.setClassName(MaterialCardView.class.getName());
     accessibilityEvent.setChecked(isChecked());
@@ -297,6 +297,7 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
     cardViewHelper.setCardBackgroundColor(color);
   }
 
+  @NonNull
   @Override
   public ColorStateList getCardBackgroundColor() {
     return cardViewHelper.getCardBackgroundColor();

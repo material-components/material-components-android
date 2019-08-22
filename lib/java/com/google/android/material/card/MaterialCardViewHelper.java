@@ -91,9 +91,13 @@ class MaterialCardViewHelper {
 
   private static final int CHECKED_ICON_LAYER_INDEX = 2;
 
-  private final MaterialCardView materialCardView;
+  @NonNull private final MaterialCardView materialCardView;
   private final Rect userContentPadding = new Rect();
+
+  @NonNull
   private final MaterialShapeDrawable bgDrawable; // Will always wrapped in an InsetDrawable
+
+  @NonNull
   private final MaterialShapeDrawable
       foregroundContentDrawable; // Will always wrapped in an InsetDrawable
 
@@ -104,12 +108,12 @@ class MaterialCardViewHelper {
 
   private MaterialShapeDrawable foregroundShapeDrawable;
 
-  private final MaterialShapeDrawable drawableInsetByStroke;
+  @NonNull private final MaterialShapeDrawable drawableInsetByStroke;
   private final Rect temporaryBounds = new Rect();
 
   // If card is clickable, this is the clickableForegroundDrawable otherwise it draws the stroke.
-  private Drawable fgDrawable;
-  private Drawable checkedIcon;
+  @Nullable private Drawable fgDrawable;
+  @Nullable private Drawable checkedIcon;
   private ColorStateList rippleColor;
   private ColorStateList checkedIconTint;
   private ShapeAppearanceModel shapeAppearanceModel; // Shared by background, stroke & ripple
@@ -125,9 +129,11 @@ class MaterialCardViewHelper {
   private boolean isBackgroundOverwritten = false;
   private boolean checkable;
 
-
   public MaterialCardViewHelper(
-      MaterialCardView card, AttributeSet attrs, int defStyleAttr, @StyleRes int defStyleRes) {
+      @NonNull MaterialCardView card,
+      AttributeSet attrs,
+      int defStyleAttr,
+      @StyleRes int defStyleRes) {
     materialCardView = card;
     bgDrawable = new MaterialShapeDrawable(card.getContext(), attrs, defStyleAttr, defStyleRes);
     bgDrawable.initializeElevationOverlay(card.getContext());
@@ -152,7 +158,7 @@ class MaterialCardViewHelper {
     cardViewAttributes.recycle();
   }
 
-  void loadFromAttributes(TypedArray attributes) {
+  void loadFromAttributes(@NonNull TypedArray attributes) {
     // If cardCornerRadius is set, let it override the shape appearance.
     strokeColor = MaterialResources.getColorStateList(
         materialCardView.getContext(),
@@ -241,6 +247,7 @@ class MaterialCardViewHelper {
     return strokeWidth;
   }
 
+  @NonNull
   MaterialShapeDrawable getBackground() {
     return bgDrawable;
   }
@@ -258,6 +265,7 @@ class MaterialCardViewHelper {
     updateContentPadding();
   }
 
+  @NonNull
   Rect getUserContentPadding() {
     return userContentPadding;
   }
@@ -334,7 +342,7 @@ class MaterialCardViewHelper {
       contentView.setOutlineProvider(
           new ViewOutlineProvider() {
             @Override
-            public void getOutline(View view, Outline outline) {
+            public void getOutline(@NonNull View view, @NonNull Outline outline) {
               temporaryBounds.set(
                   strokeWidth,
                   strokeWidth,
@@ -453,7 +461,7 @@ class MaterialCardViewHelper {
     }
   }
 
-  void setShapeAppearanceModel(ShapeAppearanceModel shapeAppearanceModel) {
+  void setShapeAppearanceModel(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
     this.shapeAppearanceModel = shapeAppearanceModel;
     refreshDrawableInsetByStroke(shapeAppearanceModel);
     bgDrawable.setShapeAppearanceModel(shapeAppearanceModel);
@@ -470,7 +478,7 @@ class MaterialCardViewHelper {
     return shapeAppearanceModel;
   }
 
-  private void refreshDrawableInsetByStroke(ShapeAppearanceModel shapeAppearanceModel) {
+  private void refreshDrawableInsetByStroke(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
     shapeAppearanceModelInsetByStroke = new ShapeAppearanceModel(shapeAppearanceModel);
     adjustShapeAppearanceModelInsetByStroke();
     if (drawableInsetByStroke != null) {
@@ -517,6 +525,7 @@ class MaterialCardViewHelper {
    * View} with the same Drawable wrapped into an InsetDrawable will result in the View clearing the
    * original Drawable's callback which should refer to the InsetDrawable.
    */
+  @NonNull
   private Drawable insetDrawable(Drawable originalDrawable) {
     int insetVertical = 0;
     int insetHorizontal = 0;
@@ -623,6 +632,7 @@ class MaterialCardViewHelper {
     return clickableForegroundDrawable;
   }
 
+  @NonNull
   private Drawable createForegroundRippleDrawable() {
     if (RippleUtils.USE_FRAMEWORK_RIPPLE) {
       foregroundShapeDrawable = createForegroundShapeDrawable();
@@ -633,6 +643,7 @@ class MaterialCardViewHelper {
     return createCompatRippleDrawable();
   }
 
+  @NonNull
   private Drawable createCompatRippleDrawable() {
     StateListDrawable rippleDrawable = new StateListDrawable();
     compatRippleDrawable = createForegroundShapeDrawable();
@@ -659,6 +670,7 @@ class MaterialCardViewHelper {
     return checkedLayer;
   }
 
+  @NonNull
   private MaterialShapeDrawable createForegroundShapeDrawable() {
     return new MaterialShapeDrawable(shapeAppearanceModel);
   }
