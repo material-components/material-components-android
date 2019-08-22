@@ -229,7 +229,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   @State int state = STATE_COLLAPSED;
 
-  ViewDragHelper viewDragHelper;
+  @Nullable ViewDragHelper viewDragHelper;
 
   private boolean ignoreEvents;
 
@@ -240,13 +240,13 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   int parentWidth;
   int parentHeight;
 
-  WeakReference<V> viewRef;
+  @Nullable WeakReference<V> viewRef;
 
-  WeakReference<View> nestedScrollingChildRef;
+  @Nullable WeakReference<View> nestedScrollingChildRef;
 
   private BottomSheetCallback callback;
 
-  private VelocityTracker velocityTracker;
+  @Nullable private VelocityTracker velocityTracker;
 
   int activePointerId;
 
@@ -254,11 +254,11 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   boolean touchingScrollingChild;
 
-  private Map<View, Integer> importantForAccessibilityMap;
+  @Nullable private Map<View, Integer> importantForAccessibilityMap;
 
   public BottomSheetBehavior() {}
 
-  public BottomSheetBehavior(Context context, AttributeSet attrs) {
+  public BottomSheetBehavior(@NonNull Context context, @Nullable AttributeSet attrs) {
     super(context, attrs);
     TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BottomSheetBehavior_Layout);
     this.shapeThemingEnabled = a.hasValue(R.styleable.BottomSheetBehavior_Layout_shapeAppearance);
@@ -298,13 +298,15 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     maximumVelocity = configuration.getScaledMaximumFlingVelocity();
   }
 
+  @NonNull
   @Override
-  public Parcelable onSaveInstanceState(CoordinatorLayout parent, V child) {
+  public Parcelable onSaveInstanceState(@NonNull CoordinatorLayout parent, @NonNull V child) {
     return new SavedState(super.onSaveInstanceState(parent, child), this);
   }
 
   @Override
-  public void onRestoreInstanceState(CoordinatorLayout parent, V child, Parcelable state) {
+  public void onRestoreInstanceState(
+      @NonNull CoordinatorLayout parent, @NonNull V child, @NonNull Parcelable state) {
     SavedState ss = (SavedState) state;
     super.onRestoreInstanceState(parent, child, ss.getSuperState());
     // Restore Optional State values designated by saveFlags
@@ -335,7 +337,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   @Override
-  public boolean onLayoutChild(CoordinatorLayout parent, V child, int layoutDirection) {
+  public boolean onLayoutChild(
+      @NonNull CoordinatorLayout parent, @NonNull V child, int layoutDirection) {
     if (ViewCompat.getFitsSystemWindows(parent) && !ViewCompat.getFitsSystemWindows(child)) {
       child.setFitsSystemWindows(true);
     }
@@ -391,7 +394,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   @Override
-  public boolean onInterceptTouchEvent(CoordinatorLayout parent, V child, MotionEvent event) {
+  public boolean onInterceptTouchEvent(
+      @NonNull CoordinatorLayout parent, @NonNull V child, @NonNull MotionEvent event) {
     if (!child.isShown()) {
       ignoreEvents = true;
       return false;
@@ -453,7 +457,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   @Override
-  public boolean onTouchEvent(CoordinatorLayout parent, V child, MotionEvent event) {
+  public boolean onTouchEvent(
+      @NonNull CoordinatorLayout parent, @NonNull V child, @NonNull MotionEvent event) {
     if (!child.isShown()) {
       return false;
     }
@@ -1004,7 +1009,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     }
   }
 
-  private void restoreOptionalState(SavedState ss) {
+  private void restoreOptionalState(@NonNull SavedState ss) {
     if (this.saveFlags == SAVE_NONE) {
       return;
     }
@@ -1024,7 +1029,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     }
   }
 
-  boolean shouldHide(View child, float yvel) {
+  boolean shouldHide(@NonNull View child, float yvel) {
     if (skipCollapsed) {
       return true;
     }
@@ -1036,6 +1041,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     return Math.abs(newTop - collapsedOffset) / (float) peekHeight > HIDE_THRESHOLD;
   }
 
+  @Nullable
   @VisibleForTesting
   View findScrollingChild(View view) {
     if (ViewCompat.isNestedScrollingEnabled(view)) {
@@ -1054,12 +1060,12 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   private void createMaterialShapeDrawable(
-      Context context, AttributeSet attrs, boolean hasBackgroundTint) {
+      @NonNull Context context, AttributeSet attrs, boolean hasBackgroundTint) {
     this.createMaterialShapeDrawable(context, attrs, hasBackgroundTint, null);
   }
 
   private void createMaterialShapeDrawable(
-      Context context,
+      @NonNull Context context,
       AttributeSet attrs,
       boolean hasBackgroundTint,
       @Nullable ColorStateList bottomSheetColor) {
@@ -1087,7 +1093,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     interpolatorAnimator.addUpdateListener(
         new AnimatorUpdateListener() {
           @Override
-          public void onAnimationUpdate(ValueAnimator animation) {
+          public void onAnimationUpdate(@NonNull ValueAnimator animation) {
             float value = (float) animation.getAnimatedValue();
             if (materialShapeDrawable != null) {
               materialShapeDrawable.setInterpolation(value);
@@ -1108,7 +1114,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     return fitToContents ? fitToContentsOffset : expandedOffset;
   }
 
-  void settleToState(View child, int state) {
+  void settleToState(@NonNull View child, int state) {
     int top;
     if (state == STATE_COLLAPSED) {
       top = collapsedOffset;
@@ -1339,11 +1345,11 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     boolean hideable;
     boolean skipCollapsed;
 
-    public SavedState(Parcel source) {
+    public SavedState(@NonNull Parcel source) {
       this(source, null);
     }
 
-    public SavedState(Parcel source, ClassLoader loader) {
+    public SavedState(@NonNull Parcel source, ClassLoader loader) {
       super(source, loader);
       //noinspection ResourceType
       state = source.readInt();
@@ -1353,7 +1359,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       skipCollapsed = source.readInt() == 1;
     }
 
-    public SavedState(Parcelable superState, BottomSheetBehavior behavior) {
+    public SavedState(Parcelable superState, @NonNull BottomSheetBehavior behavior) {
       super(superState);
       this.state = behavior.state;
       this.peekHeight = behavior.peekHeight;
@@ -1363,7 +1369,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     }
 
     @Override
-    public void writeToParcel(Parcel out, int flags) {
+    public void writeToParcel(@NonNull Parcel out, int flags) {
       super.writeToParcel(out, flags);
       out.writeInt(state);
       out.writeInt(peekHeight);
@@ -1374,16 +1380,19 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
     public static final Creator<SavedState> CREATOR =
         new ClassLoaderCreator<SavedState>() {
+          @NonNull
           @Override
-          public SavedState createFromParcel(Parcel in, ClassLoader loader) {
+          public SavedState createFromParcel(@NonNull Parcel in, ClassLoader loader) {
             return new SavedState(in, loader);
           }
 
+          @Nullable
           @Override
-          public SavedState createFromParcel(Parcel in) {
+          public SavedState createFromParcel(@NonNull Parcel in) {
             return new SavedState(in, null);
           }
 
+          @NonNull
           @Override
           public SavedState[] newArray(int size) {
             return new SavedState[size];
@@ -1397,8 +1406,9 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    * @param view The {@link View} with {@link BottomSheetBehavior}.
    * @return The {@link BottomSheetBehavior} associated with the {@code view}.
    */
+  @NonNull
   @SuppressWarnings("unchecked")
-  public static <V extends View> BottomSheetBehavior<V> from(V view) {
+  public static <V extends View> BottomSheetBehavior<V> from(@NonNull V view) {
     ViewGroup.LayoutParams params = view.getLayoutParams();
     if (!(params instanceof CoordinatorLayout.LayoutParams)) {
       throw new IllegalArgumentException("The view is not a child of CoordinatorLayout");

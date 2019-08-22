@@ -38,6 +38,7 @@ public class BottomSheetDialogFragment extends AppCompatDialogFragment {
    */
   private boolean waitingForDismissAllowingStateLoss;
 
+  @NonNull
   @Override
   public Dialog onCreateDialog(Bundle savedInstanceState) {
     return new BottomSheetDialog(getContext(), getTheme());
@@ -57,6 +58,7 @@ public class BottomSheetDialogFragment extends AppCompatDialogFragment {
     }
   }
 
+  @NonNull
   @Override
   public BottomSheetDialog getDialog() {
     return (BottomSheetDialog) super.getDialog();

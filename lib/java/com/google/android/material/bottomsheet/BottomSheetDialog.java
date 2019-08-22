@@ -24,6 +24,7 @@ import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.ViewCompat;
@@ -203,7 +204,8 @@ public class BottomSheetDialog extends AppCompatDialog {
     return container;
   }
 
-  private View wrapInBottomSheet(int layoutResId, View view, ViewGroup.LayoutParams params) {
+  private View wrapInBottomSheet(
+      int layoutResId, @Nullable View view, @Nullable ViewGroup.LayoutParams params) {
     ensureContainerAndBehavior();
     CoordinatorLayout coordinator = (CoordinatorLayout) container.findViewById(R.id.coordinator);
     if (layoutResId != 0 && view == null) {
@@ -234,7 +236,7 @@ public class BottomSheetDialog extends AppCompatDialog {
         new AccessibilityDelegateCompat() {
           @Override
           public void onInitializeAccessibilityNodeInfo(
-              View host, AccessibilityNodeInfoCompat info) {
+              View host, @NonNull AccessibilityNodeInfoCompat info) {
             super.onInitializeAccessibilityNodeInfo(host, info);
             if (cancelable) {
               info.addAction(AccessibilityNodeInfoCompat.ACTION_DISMISS);
@@ -276,7 +278,7 @@ public class BottomSheetDialog extends AppCompatDialog {
     return canceledOnTouchOutside;
   }
 
-  private static int getThemeResId(Context context, int themeId) {
+  private static int getThemeResId(@NonNull Context context, int themeId) {
     if (themeId == 0) {
       // If the provided theme is 0, then retrieve the dialogTheme from our theme
       TypedValue outValue = new TypedValue();
@@ -290,6 +292,7 @@ public class BottomSheetDialog extends AppCompatDialog {
     return themeId;
   }
 
+  @NonNull
   private BottomSheetBehavior.BottomSheetCallback bottomSheetCallback =
       new BottomSheetBehavior.BottomSheetCallback() {
         @Override
