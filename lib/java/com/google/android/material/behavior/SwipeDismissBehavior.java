@@ -162,7 +162,8 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
   }
 
   @Override
-  public boolean onInterceptTouchEvent(CoordinatorLayout parent, V child, MotionEvent event) {
+  public boolean onInterceptTouchEvent(
+      @NonNull CoordinatorLayout parent, @NonNull V child, @NonNull MotionEvent event) {
     boolean dispatchEventToHelper = interceptingEvents;
 
     switch (event.getActionMasked()) {
@@ -219,7 +220,7 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
         }
 
         @Override
-        public void onViewCaptured(View capturedChild, int activePointerId) {
+        public void onViewCaptured(@NonNull View capturedChild, int activePointerId) {
           this.activePointerId = activePointerId;
           originalCapturedViewLeft = capturedChild.getLeft();
 
@@ -239,7 +240,7 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
         }
 
         @Override
-        public void onViewReleased(View child, float xvel, float yvel) {
+        public void onViewReleased(@NonNull View child, float xvel, float yvel) {
           // Reset the active pointer ID
           activePointerId = INVALID_POINTER_ID;
 
@@ -265,7 +266,7 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
           }
         }
 
-        private boolean shouldDismiss(View child, float xvel) {
+        private boolean shouldDismiss(@NonNull View child, float xvel) {
           if (xvel != 0f) {
             final boolean isRtl =
                 ViewCompat.getLayoutDirection(child) == ViewCompat.LAYOUT_DIRECTION_RTL;
@@ -292,12 +293,12 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
         }
 
         @Override
-        public int getViewHorizontalDragRange(View child) {
+        public int getViewHorizontalDragRange(@NonNull View child) {
           return child.getWidth();
         }
 
         @Override
-        public int clampViewPositionHorizontal(View child, int left, int dx) {
+        public int clampViewPositionHorizontal(@NonNull View child, int left, int dx) {
           final boolean isRtl =
               ViewCompat.getLayoutDirection(child) == ViewCompat.LAYOUT_DIRECTION_RTL;
           int min;
@@ -328,12 +329,12 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
         }
 
         @Override
-        public int clampViewPositionVertical(View child, int top, int dy) {
+        public int clampViewPositionVertical(@NonNull View child, int top, int dy) {
           return child.getTop();
         }
 
         @Override
-        public void onViewPositionChanged(View child, int left, int top, int dx, int dy) {
+        public void onViewPositionChanged(@NonNull View child, int left, int top, int dx, int dy) {
           final float startAlphaDistance =
               originalCapturedViewLeft + child.getWidth() * alphaStartSwipeDistance;
           final float endAlphaDistance =
