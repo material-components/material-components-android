@@ -22,6 +22,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.PorterDuff;
 import androidx.annotation.Dimension;
+import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -65,12 +66,12 @@ public class ViewUtils {
     return ViewCompat.getLayoutDirection(view) == ViewCompat.LAYOUT_DIRECTION_RTL;
   }
 
-  public static float dpToPx(Context context, @Dimension(unit = Dimension.DP) int dp) {
+  public static float dpToPx(@NonNull Context context, @Dimension(unit = Dimension.DP) int dp) {
     Resources r = context.getResources();
     return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics());
   }
 
-  public static void requestFocusAndShowKeyboard(final View view) {
+  public static void requestFocusAndShowKeyboard(@NonNull final View view) {
     view.requestFocus();
     view.post(
         new Runnable() {
@@ -116,7 +117,7 @@ public class ViewUtils {
       this.bottom = bottom;
     }
 
-    public RelativePadding(RelativePadding other) {
+    public RelativePadding(@NonNull RelativePadding other) {
       this.start = other.start;
       this.top = other.top;
       this.end = other.end;
@@ -133,7 +134,8 @@ public class ViewUtils {
    * Wrapper around {@link androidx.core.view.OnApplyWindowInsetsListener} that records the
    * initial padding of the view and requests that insets are applied when attached.
    */
-  public static void doOnApplyWindowInsets(View view, final OnApplyWindowInsetsListener listener) {
+  public static void doOnApplyWindowInsets(
+      @NonNull View view, @NonNull final OnApplyWindowInsetsListener listener) {
     // Create a snapshot of the view's padding state.
     final RelativePadding initialPadding =
         new RelativePadding(
@@ -156,7 +158,7 @@ public class ViewUtils {
   }
 
   /** Requests that insets should be applied to this view once it is attached. */
-  public static void requestApplyInsetsWhenAttached(View view) {
+  public static void requestApplyInsetsWhenAttached(@NonNull View view) {
     if (ViewCompat.isAttachedToWindow(view)) {
       // We're already attached, just request as normal.
       ViewCompat.requestApplyInsets(view);
@@ -165,7 +167,7 @@ public class ViewUtils {
       view.addOnAttachStateChangeListener(
           new OnAttachStateChangeListener() {
             @Override
-            public void onViewAttachedToWindow(View v) {
+            public void onViewAttachedToWindow(@NonNull View v) {
               v.removeOnAttachStateChangeListener(this);
               ViewCompat.requestApplyInsets(v);
             }
@@ -180,7 +182,7 @@ public class ViewUtils {
    * Returns the absolute elevation of the parent of the provided {@code view}, or in other words,
    * the sum of the elevations of all ancestors of the {@code view}.
    */
-  public static float getParentAbsoluteElevation(View view) {
+  public static float getParentAbsoluteElevation(@NonNull View view) {
     float absoluteElevation = 0;
     ViewParent viewParent = view.getParent();
     while (viewParent instanceof View) {

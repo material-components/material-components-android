@@ -29,6 +29,7 @@ import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.os.Build;
 import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import com.google.android.material.resources.CancelableFontCallback;
@@ -57,7 +58,7 @@ public final class CollapsingTextHelper {
   private static final boolean USE_SCALING_TEXTURE = Build.VERSION.SDK_INT < 18;
 
   private static final boolean DEBUG_DRAW = false;
-  private static final Paint DEBUG_DRAW_PAINT;
+  @NonNull private static final Paint DEBUG_DRAW_PAINT;
 
   static {
     DEBUG_DRAW_PAINT = DEBUG_DRAW ? new Paint() : null;
@@ -72,9 +73,9 @@ public final class CollapsingTextHelper {
   private boolean drawTitle;
   private float expandedFraction;
 
-  private final Rect expandedBounds;
-  private final Rect collapsedBounds;
-  private final RectF currentBounds;
+  @NonNull private final Rect expandedBounds;
+  @NonNull private final Rect collapsedBounds;
+  @NonNull private final RectF currentBounds;
   private int expandedTextGravity = Gravity.CENTER_VERTICAL;
   private int collapsedTextGravity = Gravity.CENTER_VERTICAL;
   private float expandedTextSize = 15;
@@ -94,12 +95,12 @@ public final class CollapsingTextHelper {
   private CancelableFontCallback expandedFontCallback;
   private CancelableFontCallback collapsedFontCallback;
 
-  private CharSequence text;
-  private CharSequence textToDraw;
+  @Nullable private CharSequence text;
+  @Nullable private CharSequence textToDraw;
   private boolean isRtl;
 
   private boolean useTexture;
-  private Bitmap expandedTitleTexture;
+  @Nullable private Bitmap expandedTitleTexture;
   private Paint texturePaint;
   private float textureAscent;
   private float textureDescent;
@@ -111,8 +112,8 @@ public final class CollapsingTextHelper {
 
   private boolean boundsChanged;
 
-  private final TextPaint textPaint;
-  private final TextPaint tmpPaint;
+  @NonNull private final TextPaint textPaint;
+  @NonNull private final TextPaint tmpPaint;
 
   private TimeInterpolator positionInterpolator;
   private TimeInterpolator textSizeInterpolator;
@@ -184,7 +185,7 @@ public final class CollapsingTextHelper {
     }
   }
 
-  public void setExpandedBounds(Rect bounds) {
+  public void setExpandedBounds(@NonNull Rect bounds) {
     setExpandedBounds(bounds.left, bounds.top, bounds.right, bounds.bottom);
   }
 
@@ -196,11 +197,11 @@ public final class CollapsingTextHelper {
     }
   }
 
-  public void setCollapsedBounds(Rect bounds) {
+  public void setCollapsedBounds(@NonNull Rect bounds) {
     setCollapsedBounds(bounds.left, bounds.top, bounds.right, bounds.bottom);
   }
 
-  public void getCollapsedTextActualBounds(RectF bounds) {
+  public void getCollapsedTextActualBounds(@NonNull RectF bounds) {
     boolean isRtl = calculateIsRtl(text);
 
     bounds.left =
@@ -230,12 +231,12 @@ public final class CollapsingTextHelper {
     return -tmpPaint.ascent();
   }
 
-  private void getTextPaintExpanded(TextPaint textPaint) {
+  private void getTextPaintExpanded(@NonNull TextPaint textPaint) {
     textPaint.setTextSize(expandedTextSize);
     textPaint.setTypeface(expandedTypeface);
   }
 
-  private void getTextPaintCollapsed(TextPaint textPaint) {
+  private void getTextPaintCollapsed(@NonNull TextPaint textPaint) {
     textPaint.setTextSize(collapsedTextSize);
     textPaint.setTypeface(collapsedTypeface);
   }
@@ -576,7 +577,7 @@ public final class CollapsingTextHelper {
         lerp(expandedBounds.bottom, collapsedBounds.bottom, fraction, positionInterpolator);
   }
 
-  public void draw(Canvas canvas) {
+  public void draw(@NonNull Canvas canvas) {
     final int saveCount = canvas.save();
 
     if (textToDraw != null && drawTitle) {
@@ -620,7 +621,7 @@ public final class CollapsingTextHelper {
     canvas.restoreToCount(saveCount);
   }
 
-  private boolean calculateIsRtl(CharSequence text) {
+  private boolean calculateIsRtl(@NonNull CharSequence text) {
     final boolean defaultIsRtl =
         ViewCompat.getLayoutDirection(view) == ViewCompat.LAYOUT_DIRECTION_RTL;
     return (defaultIsRtl
@@ -757,7 +758,7 @@ public final class CollapsingTextHelper {
    *
    * @param text
    */
-  public void setText(CharSequence text) {
+  public void setText(@Nullable CharSequence text) {
     if (text == null || !TextUtils.equals(this.text, text)) {
       this.text = text;
       textToDraw = null;
@@ -766,6 +767,7 @@ public final class CollapsingTextHelper {
     }
   }
 
+  @Nullable
   public CharSequence getText() {
     return text;
   }
@@ -809,14 +811,14 @@ public final class CollapsingTextHelper {
   }
 
   private static float lerp(
-      float startValue, float endValue, float fraction, TimeInterpolator interpolator) {
+      float startValue, float endValue, float fraction, @Nullable TimeInterpolator interpolator) {
     if (interpolator != null) {
       fraction = interpolator.getInterpolation(fraction);
     }
     return AnimationUtils.lerp(startValue, endValue, fraction);
   }
 
-  private static boolean rectEquals(Rect r, int left, int top, int right, int bottom) {
+  private static boolean rectEquals(@NonNull Rect r, int left, int top, int right, int bottom) {
     return !(r.left != left || r.top != top || r.right != right || r.bottom != bottom);
   }
 }

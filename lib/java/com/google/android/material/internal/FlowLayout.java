@@ -24,6 +24,8 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.core.view.MarginLayoutParamsCompat;
 import androidx.core.view.ViewCompat;
@@ -43,28 +45,29 @@ public class FlowLayout extends ViewGroup {
   private int itemSpacing;
   private boolean singleLine;
 
-  public FlowLayout(Context context) {
+  public FlowLayout(@NonNull Context context) {
     this(context, null);
   }
 
-  public FlowLayout(Context context, AttributeSet attrs) {
+  public FlowLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
     this(context, attrs, 0);
   }
 
-  public FlowLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+  public FlowLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
     singleLine = false;
     loadFromAttributes(context, attrs);
   }
 
   @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-  public FlowLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+  public FlowLayout(
+      @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
     super(context, attrs, defStyleAttr, defStyleRes);
     singleLine = false;
     loadFromAttributes(context, attrs);
   }
 
-  private void loadFromAttributes(Context context, AttributeSet attrs) {
+  private void loadFromAttributes(@NonNull Context context, @Nullable AttributeSet attrs) {
     final TypedArray array =
         context.getTheme().obtainStyledAttributes(attrs, R.styleable.FlowLayout, 0, 0);
     lineSpacing = array.getDimensionPixelSize(R.styleable.FlowLayout_lineSpacing, 0);

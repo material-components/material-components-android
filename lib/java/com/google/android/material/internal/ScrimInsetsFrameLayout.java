@@ -38,7 +38,7 @@ import android.widget.FrameLayout;
 @RestrictTo(LIBRARY_GROUP)
 public class ScrimInsetsFrameLayout extends FrameLayout {
 
-  Drawable insetForeground;
+  @Nullable Drawable insetForeground;
 
   Rect insets;
 
@@ -46,15 +46,16 @@ public class ScrimInsetsFrameLayout extends FrameLayout {
   private boolean drawTopInsetForeground = true;
   private boolean drawBottomInsetForeground = true;
 
-  public ScrimInsetsFrameLayout(Context context) {
+  public ScrimInsetsFrameLayout(@NonNull Context context) {
     this(context, null);
   }
 
-  public ScrimInsetsFrameLayout(Context context, AttributeSet attrs) {
+  public ScrimInsetsFrameLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
     this(context, attrs, 0);
   }
 
-  public ScrimInsetsFrameLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+  public ScrimInsetsFrameLayout(
+      @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
 
     final TypedArray a =
@@ -72,7 +73,8 @@ public class ScrimInsetsFrameLayout extends FrameLayout {
         this,
         new androidx.core.view.OnApplyWindowInsetsListener() {
           @Override
-          public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
+          public WindowInsetsCompat onApplyWindowInsets(
+              View v, @NonNull WindowInsetsCompat insets) {
             if (null == ScrimInsetsFrameLayout.this.insets) {
               ScrimInsetsFrameLayout.this.insets = new Rect();
             }

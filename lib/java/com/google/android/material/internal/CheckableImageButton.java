@@ -58,14 +58,14 @@ public class CheckableImageButton extends AppCompatImageButton implements Checka
         this,
         new AccessibilityDelegateCompat() {
           @Override
-          public void onInitializeAccessibilityEvent(View host, AccessibilityEvent event) {
+          public void onInitializeAccessibilityEvent(View host, @NonNull AccessibilityEvent event) {
             super.onInitializeAccessibilityEvent(host, event);
             event.setChecked(isChecked());
           }
 
           @Override
           public void onInitializeAccessibilityNodeInfo(
-              View host, AccessibilityNodeInfoCompat info) {
+              View host, @NonNull AccessibilityNodeInfoCompat info) {
             super.onInitializeAccessibilityNodeInfo(host, info);
             info.setCheckable(isCheckable());
             info.setChecked(isChecked());
@@ -103,6 +103,7 @@ public class CheckableImageButton extends AppCompatImageButton implements Checka
     }
   }
 
+  @NonNull
   @Override
   protected Parcelable onSaveInstanceState() {
     Parcelable superState = super.onSaveInstanceState();
@@ -143,7 +144,7 @@ public class CheckableImageButton extends AppCompatImageButton implements Checka
       super(superState);
     }
 
-    public SavedState(Parcel source, ClassLoader loader) {
+    public SavedState(@NonNull Parcel source, ClassLoader loader) {
       super(source, loader);
       readFromParcel(source);
     }
@@ -154,22 +155,25 @@ public class CheckableImageButton extends AppCompatImageButton implements Checka
       out.writeInt(checked ? 1 : 0);
     }
 
-    private void readFromParcel(Parcel in) {
+    private void readFromParcel(@NonNull Parcel in) {
       checked = in.readInt() == 1;
     }
 
     public static final Creator<SavedState> CREATOR =
         new ClassLoaderCreator<SavedState>() {
+          @NonNull
           @Override
-          public SavedState createFromParcel(Parcel in, ClassLoader loader) {
+          public SavedState createFromParcel(@NonNull Parcel in, ClassLoader loader) {
             return new SavedState(in, loader);
           }
 
+          @NonNull
           @Override
-          public SavedState createFromParcel(Parcel in) {
+          public SavedState createFromParcel(@NonNull Parcel in) {
             return new SavedState(in, null);
           }
 
+          @NonNull
           @Override
           public SavedState[] newArray(int size) {
             return new SavedState[size];

@@ -93,7 +93,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
   private int overScrollMode = -1;
 
   @Override
-  public void initForMenu(Context context, MenuBuilder menu) {
+  public void initForMenu(@NonNull Context context, @NonNull MenuBuilder menu) {
     layoutInflater = LayoutInflater.from(context);
     this.menu = menu;
     Resources res = context.getResources();
@@ -170,6 +170,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
     this.id = id;
   }
 
+  @NonNull
   @Override
   public Parcelable onSaveInstanceState() {
     final Bundle state = new Bundle();
@@ -344,7 +345,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
     menuView.setPadding(0, topPadding, 0, menuView.getPaddingBottom());
   }
 
-  public void dispatchApplyWindowInsets(WindowInsetsCompat insets) {
+  public void dispatchApplyWindowInsets(@NonNull WindowInsetsCompat insets) {
     int top = insets.getSystemWindowInsetTop();
     if (paddingTopDefault != top) {
       paddingTopDefault = top;
@@ -374,7 +375,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
   private static class NormalViewHolder extends ViewHolder {
 
     public NormalViewHolder(
-        LayoutInflater inflater, ViewGroup parent, View.OnClickListener listener) {
+        @NonNull LayoutInflater inflater, ViewGroup parent, View.OnClickListener listener) {
       super(inflater.inflate(R.layout.design_navigation_item, parent, false));
       itemView.setOnClickListener(listener);
     }
@@ -382,14 +383,14 @@ public class NavigationMenuPresenter implements MenuPresenter {
 
   private static class SubheaderViewHolder extends ViewHolder {
 
-    public SubheaderViewHolder(LayoutInflater inflater, ViewGroup parent) {
+    public SubheaderViewHolder(@NonNull LayoutInflater inflater, ViewGroup parent) {
       super(inflater.inflate(R.layout.design_navigation_item_subheader, parent, false));
     }
   }
 
   private static class SeparatorViewHolder extends ViewHolder {
 
-    public SeparatorViewHolder(LayoutInflater inflater, ViewGroup parent) {
+    public SeparatorViewHolder(@NonNull LayoutInflater inflater, ViewGroup parent) {
       super(inflater.inflate(R.layout.design_navigation_item_separator, parent, false));
     }
   }
@@ -471,6 +472,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
       throw new RuntimeException("Unknown item type.");
     }
 
+    @Nullable
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
       switch (viewType) {
@@ -487,7 +489,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
       switch (getItemViewType(position)) {
         case VIEW_TYPE_NORMAL:
           {
@@ -625,7 +627,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
       }
     }
 
-    public void setCheckedItem(MenuItemImpl checkedItem) {
+    public void setCheckedItem(@NonNull MenuItemImpl checkedItem) {
       if (this.checkedItem == checkedItem || !checkedItem.isCheckable()) {
         return;
       }
@@ -640,6 +642,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
       return checkedItem;
     }
 
+    @NonNull
     public Bundle createInstanceState() {
       Bundle state = new Bundle();
       if (checkedItem != null) {
@@ -663,7 +666,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
       return state;
     }
 
-    public void restoreInstanceState(Bundle state) {
+    public void restoreInstanceState(@NonNull Bundle state) {
       int checkedItem = state.getInt(STATE_CHECKED_ITEM, 0);
       if (checkedItem != 0) {
         updateSuspended = true;
@@ -775,7 +778,8 @@ public class NavigationMenuPresenter implements MenuPresenter {
     }
 
     @Override
-    public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfoCompat info) {
+    public void onInitializeAccessibilityNodeInfo(
+        View host, @NonNull AccessibilityNodeInfoCompat info) {
       super.onInitializeAccessibilityNodeInfo(host, info);
       info.setCollectionInfo(CollectionInfoCompat.obtain(adapter.getRowCount(), 0, false));
     }

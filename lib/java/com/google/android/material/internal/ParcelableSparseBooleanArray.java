@@ -20,6 +20,7 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 import android.util.SparseBooleanArray;
 
@@ -39,7 +40,7 @@ public class ParcelableSparseBooleanArray extends SparseBooleanArray implements 
     super(initialCapacity);
   }
 
-  public ParcelableSparseBooleanArray(SparseBooleanArray sparseBooleanArray) {
+  public ParcelableSparseBooleanArray(@NonNull SparseBooleanArray sparseBooleanArray) {
     super(sparseBooleanArray.size());
     for (int i = 0; i < sparseBooleanArray.size(); i++) {
       put(sparseBooleanArray.keyAt(i), sparseBooleanArray.valueAt(i));
@@ -52,7 +53,7 @@ public class ParcelableSparseBooleanArray extends SparseBooleanArray implements 
   }
 
   @Override
-  public void writeToParcel(Parcel dest, int flags) {
+  public void writeToParcel(@NonNull Parcel dest, int flags) {
     int[] keys = new int[size()];
     boolean[] values = new boolean[size()];
 
@@ -68,8 +69,9 @@ public class ParcelableSparseBooleanArray extends SparseBooleanArray implements 
 
   public static final Parcelable.Creator<ParcelableSparseBooleanArray> CREATOR =
       new Parcelable.Creator<ParcelableSparseBooleanArray>() {
+        @NonNull
         @Override
-        public ParcelableSparseBooleanArray createFromParcel(Parcel source) {
+        public ParcelableSparseBooleanArray createFromParcel(@NonNull Parcel source) {
           int size = source.readInt();
           ParcelableSparseBooleanArray read = new ParcelableSparseBooleanArray(size);
 
@@ -86,6 +88,7 @@ public class ParcelableSparseBooleanArray extends SparseBooleanArray implements 
           return read;
         }
 
+        @NonNull
         @Override
         public ParcelableSparseBooleanArray[] newArray(int size) {
           return new ParcelableSparseBooleanArray[size];

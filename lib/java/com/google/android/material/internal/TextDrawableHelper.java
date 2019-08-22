@@ -67,7 +67,7 @@ public class TextDrawableHelper {
 
   private float textWidth;
   private boolean textWidthDirty = true;
-  private WeakReference<TextDrawableDelegate> delegate = new WeakReference<>(null);
+  @Nullable private WeakReference<TextDrawableDelegate> delegate = new WeakReference<>(null);
   @Nullable private TextAppearance textAppearance;
 
   /**
@@ -82,6 +82,7 @@ public class TextDrawableHelper {
     this.delegate = new WeakReference<>(delegate);
   }
 
+  @NonNull
   public TextPaint getTextPaint() {
     return textPaint;
   }
@@ -117,6 +118,7 @@ public class TextDrawableHelper {
    *
    * @see #setTextAppearance(TextAppearance, Context)
    */
+  @Nullable
   public TextAppearance getTextAppearance() {
     return textAppearance;
   }
