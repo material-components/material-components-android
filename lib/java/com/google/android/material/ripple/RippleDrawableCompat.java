@@ -105,7 +105,7 @@ public class RippleDrawableCompat extends Drawable implements Shapeable, TintAwa
   }
 
   @Override
-  protected boolean onStateChange(int[] stateSet) {
+  protected boolean onStateChange(@NonNull int[] stateSet) {
     boolean changed = super.onStateChange(stateSet);
     if (drawableState.delegate.setState(stateSet)) {
       changed = true;
@@ -129,7 +129,7 @@ public class RippleDrawableCompat extends Drawable implements Shapeable, TintAwa
   }
 
   @Override
-  protected void onBoundsChange(Rect bounds) {
+  protected void onBoundsChange(@NonNull Rect bounds) {
     super.onBoundsChange(bounds);
     drawableState.delegate.setBounds(bounds);
   }
@@ -177,11 +177,12 @@ public class RippleDrawableCompat extends Drawable implements Shapeable, TintAwa
       this.shouldDrawDelegate = false;
     }
 
-    public RippleDrawableCompatState(RippleDrawableCompatState orig) {
+    public RippleDrawableCompatState(@NonNull RippleDrawableCompatState orig) {
       this.delegate = (MaterialShapeDrawable) orig.delegate.getConstantState().newDrawable();
       this.shouldDrawDelegate = orig.shouldDrawDelegate;
     }
 
+    @NonNull
     @Override
     public RippleDrawableCompat newDrawable() {
       return new RippleDrawableCompat(new RippleDrawableCompatState(this));
