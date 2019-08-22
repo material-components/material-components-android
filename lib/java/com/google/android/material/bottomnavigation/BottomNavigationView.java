@@ -115,24 +115,25 @@ public class BottomNavigationView extends FrameLayout {
   private static final int DEF_STYLE_RES = R.style.Widget_Design_BottomNavigationView;
   private static final int MENU_PRESENTER_ID = 1;
 
-  private final MenuBuilder menu;
-  private final BottomNavigationMenuView menuView;
+  @NonNull private final MenuBuilder menu;
+  @NonNull private final BottomNavigationMenuView menuView;
   private final BottomNavigationPresenter presenter = new BottomNavigationPresenter();
-  private ColorStateList itemRippleColor;
+  @Nullable private ColorStateList itemRippleColor;
   private MenuInflater menuInflater;
 
   private OnNavigationItemSelectedListener selectedListener;
   private OnNavigationItemReselectedListener reselectedListener;
 
-  public BottomNavigationView(Context context) {
+  public BottomNavigationView(@NonNull Context context) {
     this(context, null);
   }
 
-  public BottomNavigationView(Context context, AttributeSet attrs) {
+  public BottomNavigationView(@NonNull Context context, @Nullable AttributeSet attrs) {
     this(context, attrs, R.attr.bottomNavigationStyle);
   }
 
-  public BottomNavigationView(Context context, AttributeSet attrs, int defStyleAttr) {
+  public BottomNavigationView(
+      @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     super(createThemedContext(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
     // Ensure we are using the correctly themed context rather than the context that was passed in.
     context = getContext();
@@ -233,7 +234,7 @@ public class BottomNavigationView extends FrameLayout {
     this.menu.setCallback(
         new MenuBuilder.Callback() {
           @Override
-          public boolean onMenuItemSelected(MenuBuilder menu, MenuItem item) {
+          public boolean onMenuItemSelected(MenuBuilder menu, @NonNull MenuItem item) {
             if (reselectedListener != null && item.getItemId() == getSelectedItemId()) {
               reselectedListener.onNavigationItemReselected(item);
               return true; // item is already selected
@@ -252,11 +253,12 @@ public class BottomNavigationView extends FrameLayout {
     ViewUtils.doOnApplyWindowInsets(
         this,
         new ViewUtils.OnApplyWindowInsetsListener() {
+          @NonNull
           @Override
           public androidx.core.view.WindowInsetsCompat onApplyWindowInsets(
               View view,
-              androidx.core.view.WindowInsetsCompat insets,
-              RelativePadding initialPadding) {
+              @NonNull androidx.core.view.WindowInsetsCompat insets,
+              @NonNull RelativePadding initialPadding) {
             initialPadding.bottom += insets.getSystemWindowInsetBottom();
             initialPadding.applyToView(view);
             return insets;
@@ -264,6 +266,7 @@ public class BottomNavigationView extends FrameLayout {
         });
   }
 
+  @NonNull
   private MaterialShapeDrawable createMaterialShapeDrawableBackground(Context context) {
     MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable();
     Drawable originalBackground = getBackground();
@@ -482,6 +485,7 @@ public class BottomNavigationView extends FrameLayout {
    * @see #setItemBackground(Drawable)
    * @attr ref R.styleable#BottomNavigationView_itemRippleColor
    */
+  @Nullable
   public ColorStateList getItemRippleColor() {
     return itemRippleColor;
   }
@@ -494,7 +498,7 @@ public class BottomNavigationView extends FrameLayout {
    *     #setItemBackground()}.
    * @attr ref R.styleable#BottomNavigationView_itemRippleColor
    */
-  public void setItemRippleColor(ColorStateList itemRippleColor) {
+  public void setItemRippleColor(@Nullable ColorStateList itemRippleColor) {
     if (this.itemRippleColor == itemRippleColor) {
       // Clear the item background when setItemRippleColor(null) is called for consistency.
       if (itemRippleColor == null && menuView.getItemBackground() != null) {
@@ -745,13 +749,13 @@ public class BottomNavigationView extends FrameLayout {
   }
 
   static class SavedState extends AbsSavedState {
-    Bundle menuPresenterState;
+    @Nullable Bundle menuPresenterState;
 
     public SavedState(Parcelable superState) {
       super(superState);
     }
 
-    public SavedState(Parcel source, ClassLoader loader) {
+    public SavedState(@NonNull Parcel source, ClassLoader loader) {
       super(source, loader);
       readFromParcel(source, loader);
     }
@@ -762,22 +766,25 @@ public class BottomNavigationView extends FrameLayout {
       out.writeBundle(menuPresenterState);
     }
 
-    private void readFromParcel(Parcel in, ClassLoader loader) {
+    private void readFromParcel(@NonNull Parcel in, ClassLoader loader) {
       menuPresenterState = in.readBundle(loader);
     }
 
     public static final Creator<SavedState> CREATOR =
         new ClassLoaderCreator<SavedState>() {
+          @NonNull
           @Override
-          public SavedState createFromParcel(Parcel in, ClassLoader loader) {
+          public SavedState createFromParcel(@NonNull Parcel in, ClassLoader loader) {
             return new SavedState(in, loader);
           }
 
+          @Nullable
           @Override
-          public SavedState createFromParcel(Parcel in) {
+          public SavedState createFromParcel(@NonNull Parcel in) {
             return new SavedState(in, null);
           }
 
+          @NonNull
           @Override
           public SavedState[] newArray(int size) {
             return new SavedState[size];

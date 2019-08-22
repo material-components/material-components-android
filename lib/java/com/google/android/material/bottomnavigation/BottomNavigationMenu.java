@@ -19,6 +19,7 @@ package com.google.android.material.bottomnavigation;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
+import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuItemImpl;
@@ -34,6 +35,7 @@ public final class BottomNavigationMenu extends MenuBuilder {
     super(context);
   }
 
+  @NonNull
   @Override
   public SubMenu addSubMenu(int group, int id, int categoryOrder, CharSequence title) {
     throw new UnsupportedOperationException("BottomNavigationView does not support submenus");

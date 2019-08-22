@@ -59,27 +59,27 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
   private static final int[] DISABLED_STATE_SET = {-android.R.attr.state_enabled};
 
-  private final TransitionSet set;
+  @NonNull private final TransitionSet set;
   private final int inactiveItemMaxWidth;
   private final int inactiveItemMinWidth;
   private final int activeItemMaxWidth;
   private final int activeItemMinWidth;
   private final int itemHeight;
-  private final OnClickListener onClickListener;
+  @NonNull private final OnClickListener onClickListener;
   private final Pools.Pool<BottomNavigationItemView> itemPool =
       new Pools.SynchronizedPool<>(ITEM_POOL_SIZE);
 
   private boolean itemHorizontalTranslationEnabled;
   @LabelVisibilityMode private int labelVisibilityMode;
 
-  private BottomNavigationItemView[] buttons;
+  @Nullable private BottomNavigationItemView[] buttons;
   private int selectedItemId = 0;
   private int selectedItemPosition = 0;
 
   private ColorStateList itemIconTint;
   @Dimension private int itemIconSize;
   private ColorStateList itemTextColorFromUser;
-  private final ColorStateList itemTextColorDefault;
+  @Nullable private final ColorStateList itemTextColorDefault;
   @StyleRes private int itemTextAppearanceInactive;
   @StyleRes private int itemTextAppearanceActive;
   private Drawable itemBackground;
@@ -467,6 +467,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
     return itemHorizontalTranslationEnabled;
   }
 
+  @Nullable
   public ColorStateList createDefaultColorStateList(int baseColorThemeAttr) {
     final TypedValue value = new TypedValue();
     if (!getContext().getTheme().resolveAttribute(baseColorThemeAttr, value, true)) {
@@ -659,7 +660,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
     }
   }
 
-  private void setBadgeIfNeeded(BottomNavigationItemView child) {
+  private void setBadgeIfNeeded(@NonNull BottomNavigationItemView child) {
     int childId = child.getId();
     if (!isValidId(childId)) {
       // Child doesn't have a valid id, do not set any BadgeDrawable on the view.
