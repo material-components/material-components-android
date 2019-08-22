@@ -36,6 +36,7 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
+import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Handler;
@@ -47,6 +48,7 @@ import androidx.annotation.IntRange;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.OnApplyWindowInsetsListener;
@@ -54,6 +56,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -62,6 +65,8 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.view.ViewParent;
+import android.view.WindowInsets;
+import android.view.WindowManager;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.FrameLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -243,10 +248,30 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   protected final SnackbarBaseLayout view;
   private final com.google.android.material.snackbar.ContentViewCallback contentViewCallback;
   private int duration;
+  private boolean ignoreGestureInsetBottom;
   @Nullable private View anchorView;
 
+  @RequiresApi(VERSION_CODES.Q)
+  private final Runnable bottomMarginGestureInsetRunnable =
+      new Runnable() {
+        @Override
+        public void run() {
+          int currentInsetBottom = getScreenHeight() - getViewAbsoluteBottom();
+          if (currentInsetBottom >= extraBottomMarginGestureInset) {
+            // No need to add extra offset if view is already outside of bottom gesture area
+            return;
+          }
+
+          // Move view outside of bottom gesture area
+          MarginLayoutParams layoutParams = (MarginLayoutParams) view.getLayoutParams();
+          layoutParams.bottomMargin += extraBottomMarginGestureInset - currentInsetBottom;
+          view.requestLayout();
+        }
+      };
+
   private final int originalBottomMargin;
-  private int extraBottomMarginInsets;
+  private int extraBottomMarginWindowInset;
+  private int extraBottomMarginGestureInset;
   private int extraBottomMarginAnchorView;
 
   private List<BaseCallback<B>> callbacks;
@@ -326,7 +351,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
           public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
             // Copy over the bottom inset as bottom margin so that we're displayed above the
             // navigation bar.
-            extraBottomMarginInsets = insets.getSystemWindowInsetBottom();
+            extraBottomMarginWindowInset = insets.getSystemWindowInsetBottom();
             updateBottomMargin();
             return insets;
           }
@@ -377,13 +402,27 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
   private void updateBottomMargin() {
     MarginLayoutParams layoutParams = (MarginLayoutParams) view.getLayoutParams();
-    layoutParams.bottomMargin = originalBottomMargin;
-    if (anchorView != null) {
-      layoutParams.bottomMargin += extraBottomMarginAnchorView;
-    } else {
-      layoutParams.bottomMargin += extraBottomMarginInsets;
+    layoutParams.bottomMargin =
+        originalBottomMargin
+            + (anchorView != null ? extraBottomMarginAnchorView : extraBottomMarginWindowInset);
+    view.requestLayout();
+
+    if (VERSION.SDK_INT >= VERSION_CODES.Q && shouldUpdateGestureInset()) {
+      // Ensure there is only one gesture inset runnable running at a time
+      view.removeCallbacks(bottomMarginGestureInsetRunnable);
+      view.post(bottomMarginGestureInsetRunnable);
     }
-    view.setLayoutParams(layoutParams);
+  }
+
+  private boolean shouldUpdateGestureInset() {
+    return extraBottomMarginGestureInset > 0 && !ignoreGestureInsetBottom && isSwipeDismissable();
+  }
+
+  private boolean isSwipeDismissable() {
+    LayoutParams layoutParams = view.getLayoutParams();
+    return layoutParams instanceof CoordinatorLayout.LayoutParams
+        && ((CoordinatorLayout.LayoutParams) layoutParams).getBehavior()
+            instanceof SwipeDismissBehavior;
   }
 
   @LayoutRes
@@ -423,6 +462,26 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   @Duration
   public int getDuration() {
     return duration;
+  }
+
+  /**
+   * Sets whether this bottom bar should adjust it's position based on the system gesture area on
+   * Android Q and above.
+   *
+   * <p>Note: the bottom bar will only adjust it's position if it is dismissable via swipe (because
+   * that would cause a gesture conflict), gesture navigation is enabled, and this {@code
+   * ignoreGestureInsetBottom} flag is false.
+   */
+  public void setIgnoreGestureInsetBottom(boolean ignoreGestureInsetBottom) {
+    this.ignoreGestureInsetBottom = ignoreGestureInsetBottom;
+  }
+
+  /**
+   * Returns whether this bottom bar should adjust it's position based on the system gesture area on
+   * Android Q and above. See {@link #setIgnoreGestureInsetBottom(boolean)}.
+   */
+  public boolean isIgnoreGestureInsetBottom() {
+    return ignoreGestureInsetBottom;
   }
 
   /** Returns the {@link AnimationMode}. */
@@ -585,23 +644,18 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   }
 
   final void showView() {
-    if (this.view.getParent() == null) {
-      ViewGroup.LayoutParams lp = this.view.getLayoutParams();
-
-      if (lp instanceof CoordinatorLayout.LayoutParams) {
-        setUpBehavior((CoordinatorLayout.LayoutParams) lp);
-      }
-
-      extraBottomMarginAnchorView = calculateBottomMarginForAnchorView();
-      updateBottomMargin();
-
-      targetParent.addView(this.view);
-    }
-
     this.view.setOnAttachStateChangeListener(
         new BaseTransientBottomBar.OnAttachStateChangeListener() {
           @Override
-          public void onViewAttachedToWindow(View v) {}
+          public void onViewAttachedToWindow(View v) {
+            if (VERSION.SDK_INT >= VERSION_CODES.Q) {
+              WindowInsets insets = view.getRootWindowInsets();
+              if (insets != null) {
+                extraBottomMarginGestureInset = insets.getMandatorySystemGestureInsets().bottom;
+                updateBottomMargin();
+              }
+            }
+          }
 
           @Override
           public void onViewDetachedFromWindow(View v) {
@@ -620,6 +674,22 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
             }
           }
         });
+
+    if (this.view.getParent() == null) {
+      ViewGroup.LayoutParams lp = this.view.getLayoutParams();
+
+      if (lp instanceof CoordinatorLayout.LayoutParams) {
+        setUpBehavior((CoordinatorLayout.LayoutParams) lp);
+      }
+
+      extraBottomMarginAnchorView = calculateBottomMarginForAnchorView();
+      updateBottomMargin();
+
+      // Set view to INVISIBLE so it doesn't flash on the screen before the inset adjustment is
+      // handled and the enter animation is started
+      view.setVisibility(View.INVISIBLE);
+      targetParent.addView(this.view);
+    }
 
     if (ViewCompat.isLaidOut(this.view)) {
       showViewImpl();
@@ -642,9 +712,24 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
       // If animations are enabled, animate it in
       animateViewIn();
     } else {
-      // Else if animations are disabled just call back now
+      // Else if animations are disabled, just make view VISIBLE and call back now
+      view.setVisibility(View.VISIBLE);
       onViewShown();
     }
+  }
+
+  private int getViewAbsoluteBottom() {
+    int[] absoluteLocation = new int[2];
+    view.getLocationOnScreen(absoluteLocation);
+    return absoluteLocation[1] + view.getHeight();
+  }
+
+  @RequiresApi(VERSION_CODES.JELLY_BEAN_MR1)
+  private int getScreenHeight() {
+    WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+    DisplayMetrics displayMetrics = new DisplayMetrics();
+    windowManager.getDefaultDisplay().getRealMetrics(displayMetrics);
+    return displayMetrics.heightPixels;
   }
 
   private void setUpBehavior(CoordinatorLayout.LayoutParams lp) {
@@ -708,11 +793,20 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   }
 
   void animateViewIn() {
-    if (view.getAnimationMode() == ANIMATION_MODE_FADE) {
-      startFadeInAnimation();
-    } else {
-      startSlideInAnimation();
-    }
+    // Post to make sure animation doesn't start until after all inset handling has completed
+    view.post(
+        new Runnable() {
+          @Override
+          public void run() {
+            // Make view VISIBLE now that we are about to start the enter animation
+            view.setVisibility(View.VISIBLE);
+            if (view.getAnimationMode() == ANIMATION_MODE_FADE) {
+              startFadeInAnimation();
+            } else {
+              startSlideInAnimation();
+            }
+          }
+        });
   }
 
   private void animateViewOut(int event) {
