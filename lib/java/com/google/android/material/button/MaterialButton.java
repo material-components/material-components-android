@@ -166,33 +166,32 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
   private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_Button;
 
-  @Nullable private final MaterialButtonHelper materialButtonHelper;
+  @NonNull private final MaterialButtonHelper materialButtonHelper;
+  @NonNull private final LinkedHashSet<OnCheckedChangeListener> onCheckedChangeListeners =
+      new LinkedHashSet<>();
 
-  private Mode iconTintMode;
-  private ColorStateList iconTint;
-  private Drawable icon;
+  @Nullable private OnPressedChangeListener onPressedChangeListenerInternal;
+  @Nullable private Mode iconTintMode;
+  @Nullable private ColorStateList iconTint;
+  @Nullable private Drawable icon;
+
   @Px private int iconSize;
   @Px private int iconLeft;
   @Px private int iconPadding;
 
   private boolean checked = false;
   private boolean broadcasting = false;
-
-  private final LinkedHashSet<OnCheckedChangeListener> onCheckedChangeListeners =
-      new LinkedHashSet<>();
-  @Nullable private OnPressedChangeListener onPressedChangeListenerInternal;
-
   @IconGravity private int iconGravity;
 
-  public MaterialButton(Context context) {
+  public MaterialButton(@NonNull Context context) {
     this(context, null /* attrs */);
   }
 
-  public MaterialButton(Context context, @Nullable AttributeSet attrs) {
+  public MaterialButton(@NonNull Context context, @Nullable AttributeSet attrs) {
     this(context, attrs, R.attr.materialButtonStyle);
   }
 
-  public MaterialButton(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+  public MaterialButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     super(createThemedContext(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
     // Ensure we are using the correctly themed context rather than the context that was passed in.
     context = getContext();
@@ -226,13 +225,14 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     updateIcon();
   }
 
+  @NonNull
   private String getA11yClassName() {
     // Use the platform widget classes so Talkback can recognize this as a button.
     return (isCheckable() ? CompoundButton.class : Button.class).getName();
   }
 
   @Override
-  public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
+  public void onInitializeAccessibilityNodeInfo(@NonNull AccessibilityNodeInfo info) {
     super.onInitializeAccessibilityNodeInfo(info);
     info.setClassName(getA11yClassName());
     info.setCheckable(isCheckable());
@@ -241,7 +241,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   }
 
   @Override
-  public void onInitializeAccessibilityEvent(AccessibilityEvent accessibilityEvent) {
+  public void onInitializeAccessibilityEvent(@NonNull AccessibilityEvent accessibilityEvent) {
     super.onInitializeAccessibilityEvent(accessibilityEvent);
     accessibilityEvent.setClassName(getA11yClassName());
     accessibilityEvent.setChecked(isChecked());
@@ -356,7 +356,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   }
 
   @Override
-  public void setBackground(Drawable background) {
+  public void setBackground(@NonNull Drawable background) {
     setBackgroundDrawable(background);
   }
 
@@ -370,7 +370,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   }
 
   @Override
-  public void setBackgroundDrawable(Drawable background) {
+  public void setBackgroundDrawable(@NonNull Drawable background) {
     if (isUsingOriginalBackground()) {
       if (background != this.getBackground()) {
         Log.w(
@@ -706,6 +706,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
    * @see #setRippleColor(ColorStateList)
    * @see #setRippleColorResource(int)
    */
+  @Nullable
   public ColorStateList getRippleColor() {
     return isUsingOriginalBackground() ? materialButtonHelper.getRippleColor() : null;
   }

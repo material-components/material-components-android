@@ -76,7 +76,7 @@ class MaterialButtonHelper {
     this.shapeAppearanceModel = shapeAppearanceModel;
   }
 
-  void loadFromAttributes(TypedArray attributes) {
+  void loadFromAttributes(@NonNull TypedArray attributes) {
     insetLeft = attributes.getDimensionPixelOffset(R.styleable.MaterialButton_android_insetLeft, 0);
     insetRight =
         attributes.getDimensionPixelOffset(R.styleable.MaterialButton_android_insetRight, 0);
@@ -149,6 +149,7 @@ class MaterialButtonHelper {
     return backgroundOverwritten;
   }
 
+  @NonNull
   private InsetDrawable wrapDrawableWithInset(Drawable drawable) {
     return new InsetDrawable(drawable, insetLeft, insetTop, insetRight, insetBottom);
   }
@@ -334,7 +335,7 @@ class MaterialButtonHelper {
   }
 
   private void adjustShapeAppearanceModelCornerRadius(
-      ShapeAppearanceModel shapeAppearanceModel, float cornerRadiusAdjustment) {
+      @NonNull ShapeAppearanceModel shapeAppearanceModel, float cornerRadiusAdjustment) {
     shapeAppearanceModel
         .getTopLeftCorner()
         .setCornerSize(
@@ -388,7 +389,7 @@ class MaterialButtonHelper {
     return getMaterialShapeDrawable(true);
   }
 
-  private void updateButtonShape(ShapeAppearanceModel shapeAppearanceModel) {
+  private void updateButtonShape(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
     if (getMaterialShapeDrawable() != null) {
       getMaterialShapeDrawable().setShapeAppearanceModel(shapeAppearanceModel);
     }
