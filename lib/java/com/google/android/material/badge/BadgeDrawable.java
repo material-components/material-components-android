@@ -149,15 +149,15 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
    */
   static final String DEFAULT_EXCEED_MAX_BADGE_NUMBER_SUFFIX = "+";
 
-  private final WeakReference<Context> contextRef;
-  private final MaterialShapeDrawable shapeDrawable;
-  private final TextDrawableHelper textDrawableHelper;
-  private final Rect badgeBounds;
+  @NonNull private final WeakReference<Context> contextRef;
+  @NonNull private final MaterialShapeDrawable shapeDrawable;
+  @NonNull private final TextDrawableHelper textDrawableHelper;
+  @NonNull private final Rect badgeBounds;
   private final float badgeRadius;
   private final float badgeWithTextRadius;
   private final float badgeWidePadding;
-  private final Rect tmpRect;
-  private final SavedState savedState;
+  @NonNull private final Rect tmpRect;
+  @NonNull private final SavedState savedState;
 
   private float badgeCenterX;
   private float badgeCenterY;
@@ -179,11 +179,11 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     private int alpha = 255;
     private int number = BADGE_NUMBER_NONE;
     private int maxCharacterCount;
-    private CharSequence contentDescriptionNumberless;
+    @Nullable private CharSequence contentDescriptionNumberless;
     @PluralsRes private int contentDescriptionQuantityStrings;
     @BadgeGravity private int badgeGravity;
 
-    public SavedState(Context context) {
+    public SavedState(@NonNull Context context) {
       // If the badge text color attribute was not explicitly set, use the text color specified in
       // the TextAppearance.
       TextAppearance textAppearance =
@@ -194,7 +194,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       contentDescriptionQuantityStrings = R.plurals.mtrl_badge_content_description;
     }
 
-    protected SavedState(Parcel in) {
+    protected SavedState(@NonNull Parcel in) {
       backgroundColor = in.readInt();
       badgeTextColor = in.readInt();
       alpha = in.readInt();
@@ -207,11 +207,13 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
 
     public static final Creator<SavedState> CREATOR =
         new Creator<SavedState>() {
+          @NonNull
           @Override
-          public SavedState createFromParcel(Parcel in) {
+          public SavedState createFromParcel(@NonNull Parcel in) {
             return new SavedState(in);
           }
 
+          @NonNull
           @Override
           public SavedState[] newArray(int size) {
             return new SavedState[size];
@@ -224,7 +226,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
       dest.writeInt(backgroundColor);
       dest.writeInt(badgeTextColor);
       dest.writeInt(alpha);
@@ -236,19 +238,23 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     }
   }
 
+  @NonNull
   public SavedState getSavedState() {
     return savedState;
   }
 
   /** Creates an instance of BadgeDrawable with the provided {@link SavedState}. */
-  static BadgeDrawable createFromSavedState(Context context, @NonNull SavedState savedState) {
+  @NonNull
+  static BadgeDrawable createFromSavedState(
+      @NonNull Context context, @NonNull SavedState savedState) {
     BadgeDrawable badge = new BadgeDrawable(context);
     badge.restoreFromSavedState(savedState);
     return badge;
   }
 
   /** Creates an instance of BadgeDrawable with default values. */
-  public static BadgeDrawable create(Context context) {
+  @NonNull
+  public static BadgeDrawable create(@NonNull Context context) {
     return createFromAttributes(context, /* attrs= */ null, DEFAULT_THEME_ATTR, DEFAULT_STYLE);
   }
 
@@ -264,7 +270,8 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
    *     app:maxCharacterCount="2"/>
    * }</pre>
    */
-  public static BadgeDrawable createFromResource(Context context, @XmlRes int id) {
+  @NonNull
+  public static BadgeDrawable createFromResource(@NonNull Context context, @XmlRes int id) {
     AttributeSet attrs = DrawableUtils.parseDrawableXml(context, id, "badge");
     @StyleRes int style = attrs.getStyleAttribute();
     if (style == 0) {
@@ -274,6 +281,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   }
 
   /** Returns a BadgeDrawable from the given attributes. */
+  @NonNull
   private static BadgeDrawable createFromAttributes(
       @NonNull Context context,
       AttributeSet attrs,
@@ -292,7 +300,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     setVisible(visible, /* restart= */ false);
   }
 
-  private void restoreFromSavedState(SavedState savedState) {
+  private void restoreFromSavedState(@NonNull SavedState savedState) {
     setMaxCharacterCount(savedState.maxCharacterCount);
 
     // Only set the badge number if it exists in the style.
@@ -340,11 +348,11 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   }
 
   private static int readColorFromAttributes(
-      Context context, TypedArray a, @StyleableRes int index) {
+      Context context, @NonNull TypedArray a, @StyleableRes int index) {
     return MaterialResources.getColorStateList(context, a, index).getDefaultColor();
   }
 
-  private BadgeDrawable(Context context) {
+  private BadgeDrawable(@NonNull Context context) {
     this.contextRef = new WeakReference<>(context);
     ThemeEnforcement.checkMaterialTheme(context);
     Resources res = context.getResources();
@@ -561,7 +569,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   }
 
   @Override
-  public void draw(Canvas canvas) {
+  public void draw(@NonNull Canvas canvas) {
     Rect bounds = getBounds();
     if (bounds.isEmpty() || getAlpha() == 0 || !isVisible()) {
       return;
@@ -658,7 +666,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     }
   }
 
-  private void drawText(Canvas canvas) {
+  private void drawText(@NonNull Canvas canvas) {
     Rect textBounds = new Rect();
     String countText = getBadgeText();
     textDrawableHelper.getTextPaint().getTextBounds(countText, 0, countText.length(), textBounds);
@@ -669,6 +677,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
         textDrawableHelper.getTextPaint());
   }
 
+  @NonNull
   private String getBadgeText() {
     // If number exceeds max count, show badgeMaxCount+ instead of the number.
     if (getNumber() <= maxBadgeNumber) {

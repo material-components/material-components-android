@@ -54,7 +54,7 @@ public class BadgeUtils {
    * @param halfHeight Half of a badge's height.
    */
   public static void updateBadgeBounds(
-      Rect rect, float centerX, float centerY, float halfWidth, float halfHeight) {
+      @NonNull Rect rect, float centerX, float centerY, float halfWidth, float halfHeight) {
     rect.set(
         (int) (centerX - halfWidth),
         (int) (centerY - halfHeight),
@@ -70,7 +70,9 @@ public class BadgeUtils {
    * ancestor of the anchor.
    */
   public static void attachBadgeDrawable(
-      BadgeDrawable badgeDrawable, View anchor, FrameLayout compatBadgeParent) {
+      @NonNull BadgeDrawable badgeDrawable,
+      @NonNull View anchor,
+      @NonNull FrameLayout compatBadgeParent) {
     setBadgeDrawableBounds(badgeDrawable, anchor, compatBadgeParent);
     if (USE_COMPAT_PARENT) {
       compatBadgeParent.setForeground(badgeDrawable);
@@ -86,7 +88,9 @@ public class BadgeUtils {
    * an ancestor of the anchor.
    */
   public static void detachBadgeDrawable(
-      @Nullable BadgeDrawable badgeDrawable, View anchor, FrameLayout compatBadgeParent) {
+      @Nullable BadgeDrawable badgeDrawable,
+      @NonNull View anchor,
+      @NonNull FrameLayout compatBadgeParent) {
     if (badgeDrawable == null) {
       return;
     }
@@ -102,7 +106,9 @@ public class BadgeUtils {
    * anchor's FrameLayout ancestor (pre-API 18).
    */
   public static void setBadgeDrawableBounds(
-      BadgeDrawable badgeDrawable, View anchor, FrameLayout compatBadgeParent) {
+      @NonNull BadgeDrawable badgeDrawable,
+      @NonNull View anchor,
+      @NonNull FrameLayout compatBadgeParent) {
     Rect badgeBounds = new Rect();
     View badgeParent = USE_COMPAT_PARENT ? compatBadgeParent : anchor;
     badgeParent.getDrawingRect(badgeBounds);
@@ -119,8 +125,9 @@ public class BadgeUtils {
    * @return A parcelable {@link SparseArray} that contains a map of int keys (e.g. menuItemId) to
    *     {@code BadgeDrawable.SavedState SavedStates}.
    */
+  @NonNull
   public static ParcelableSparseArray createParcelableBadgeStates(
-      SparseArray<BadgeDrawable> badgeDrawables) {
+      @NonNull SparseArray<BadgeDrawable> badgeDrawables) {
     ParcelableSparseArray badgeStates = new ParcelableSparseArray();
     for (int i = 0; i < badgeDrawables.size(); i++) {
       int key = badgeDrawables.keyAt(i);
@@ -143,6 +150,7 @@ public class BadgeUtils {
    * @return A {@link SparseArray} that contains a map of int keys (e.g. menuItemId) to {@code
    *     BadgeDrawable BadgeDrawbles}.
    */
+  @NonNull
   public static SparseArray<BadgeDrawable> createBadgeDrawablesFromSavedStates(
       Context context, @NonNull ParcelableSparseArray badgeStates) {
     SparseArray<BadgeDrawable> badgeDrawables = new SparseArray<>(badgeStates.size());
