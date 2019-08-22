@@ -18,6 +18,7 @@ package com.google.android.material.bottomappbar;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 import com.google.android.material.shape.EdgeTreatment;
 import com.google.android.material.shape.ShapePath;
@@ -67,7 +68,8 @@ public class BottomAppBarTopEdgeTreatment extends EdgeTreatment implements Clone
   }
 
   @Override
-  public void getEdgePath(float length, float center, float interpolation, ShapePath shapePath) {
+  public void getEdgePath(
+      float length, float center, float interpolation, @NonNull ShapePath shapePath) {
     if (fabDiameter == 0) {
       // There is no cutout to draw.
       shapePath.lineTo(length, 0);
