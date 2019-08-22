@@ -28,6 +28,8 @@ import android.graphics.RadialGradient;
 import android.graphics.RectF;
 import android.graphics.Region.Op;
 import android.graphics.Shader;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.core.graphics.ColorUtils;
 
@@ -46,9 +48,9 @@ public class ShadowRenderer {
 
   private static final int COLOR_ALPHA_END = 0;
 
-  private final Paint shadowPaint;
-  private final Paint cornerShadowPaint;
-  private final Paint edgeShadowPaint;
+  @NonNull private final Paint shadowPaint;
+  @NonNull private final Paint cornerShadowPaint;
+  @NonNull private final Paint edgeShadowPaint;
 
   private int shadowStartColor;
   private int shadowMiddleColor;
@@ -87,7 +89,8 @@ public class ShadowRenderer {
   }
 
   /** Draws an edge shadow on the canvas in the current bounds with the matrix transform applied. */
-  public void drawEdgeShadow(Canvas canvas, Matrix transform, RectF bounds, int elevation) {
+  public void drawEdgeShadow(
+      @NonNull Canvas canvas, @Nullable Matrix transform, @NonNull RectF bounds, int elevation) {
     bounds.bottom += elevation;
     bounds.offset(0, -elevation);
 
@@ -115,9 +118,9 @@ public class ShadowRenderer {
    * Draws a corner shadow on the canvas in the current bounds with the matrix transform applied.
    */
   public void drawCornerShadow(
-      Canvas canvas,
-      Matrix matrix,
-      RectF bounds,
+      @NonNull Canvas canvas,
+      @Nullable Matrix matrix,
+      @NonNull RectF bounds,
       int elevation,
       float startAngle,
       float sweepAngle) {
@@ -172,6 +175,7 @@ public class ShadowRenderer {
     canvas.restore();
   }
 
+  @NonNull
   public Paint getShadowPaint() {
     return shadowPaint;
   }
