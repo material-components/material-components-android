@@ -47,7 +47,7 @@ public class MotionTiming {
     this.interpolator = interpolator;
   }
 
-  public void apply(Animator animator) {
+  public void apply(@NonNull Animator animator) {
     animator.setStartDelay(getDelay());
     animator.setDuration(getDuration());
     animator.setInterpolator(getInterpolator());
@@ -65,6 +65,7 @@ public class MotionTiming {
     return duration;
   }
 
+  @Nullable
   public TimeInterpolator getInterpolator() {
     return interpolator != null ? interpolator : AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR;
   }
@@ -77,7 +78,8 @@ public class MotionTiming {
     return repeatMode;
   }
 
-  static MotionTiming createFromAnimator(ValueAnimator animator) {
+  @NonNull
+  static MotionTiming createFromAnimator(@NonNull ValueAnimator animator) {
     MotionTiming timing =
         new MotionTiming(
             animator.getStartDelay(), animator.getDuration(), getInterpolatorCompat(animator));
@@ -96,7 +98,7 @@ public class MotionTiming {
    * {@code @android:interpolator/decelerate_quad} respectively. This method maps those compat
    * interpolators back to Material interpolators, which can be instantiated dynamically.
    */
-  private static TimeInterpolator getInterpolatorCompat(ValueAnimator animator) {
+  private static TimeInterpolator getInterpolatorCompat(@NonNull ValueAnimator animator) {
     @Nullable TimeInterpolator interpolator = animator.getInterpolator();
     if (interpolator instanceof AccelerateDecelerateInterpolator || interpolator == null) {
       return AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR;
@@ -110,11 +112,11 @@ public class MotionTiming {
   }
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(@Nullable Object o) {
     if (this == o) {
       return true;
     }
-    if (o == null || getClass() != o.getClass()) {
+    if (!(o instanceof MotionTiming)) {
       return false;
     }
 
@@ -145,6 +147,7 @@ public class MotionTiming {
     return result;
   }
 
+  @NonNull
   @Override
   public String toString() {
     StringBuilder out = new StringBuilder();

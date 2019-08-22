@@ -16,6 +16,7 @@
 package com.google.android.material.animation;
 
 import android.graphics.Matrix;
+import androidx.annotation.NonNull;
 import android.util.Property;
 import android.widget.ImageView;
 
@@ -31,12 +32,13 @@ public class ImageMatrixProperty extends Property<ImageView, Matrix> {
   }
 
   @Override
-  public void set(ImageView object, Matrix value) {
+  public void set(@NonNull ImageView object, @NonNull Matrix value) {
     object.setImageMatrix(value);
   }
 
+  @NonNull
   @Override
-  public Matrix get(ImageView object) {
+  public Matrix get(@NonNull ImageView object) {
     matrix.set(object.getImageMatrix());
     return matrix;
   }
