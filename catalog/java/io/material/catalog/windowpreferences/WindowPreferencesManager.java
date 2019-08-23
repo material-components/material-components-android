@@ -16,12 +16,19 @@
 
 package io.material.catalog.windowpreferences;
 
+import static android.graphics.Color.TRANSPARENT;
+import static android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+import static android.view.View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+import static android.view.View.SYSTEM_UI_FLAG_VISIBLE;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import androidx.annotation.ColorInt;
 import androidx.annotation.RequiresApi;
+import androidx.core.graphics.ColorUtils;
 import android.view.View;
 import android.view.Window;
 import com.google.android.material.color.MaterialColors;
@@ -56,19 +63,42 @@ public class WindowPreferencesManager {
 
   @SuppressWarnings("RestrictTo")
   public void applyEdgeToEdgePreference(Window window) {
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      if (isEdgeToEdgeEnabled()) {
-        window.setStatusBarColor(Color.TRANSPARENT);
-        window.setNavigationBarColor(Color.TRANSPARENT);
-        window.getDecorView().setSystemUiVisibility(EDGE_TO_EDGE_FLAGS);
-      } else {
-        window.setStatusBarColor(
-            MaterialColors.getColor(context, android.R.attr.statusBarColor, Color.BLACK));
-        window.setNavigationBarColor(
-            MaterialColors.getColor(context, android.R.attr.navigationBarColor, Color.BLACK));
-        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
-      }
+    if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
+      return;
     }
+
+    boolean edgeToEdgeEnabled = isEdgeToEdgeEnabled();
+    int statusBarColor = edgeToEdgeEnabled
+        ? TRANSPARENT
+        : MaterialColors.getColor(context, android.R.attr.statusBarColor, Color.BLACK);
+    int navbarColor = edgeToEdgeEnabled
+        ? TRANSPARENT
+        : MaterialColors.getColor(context, android.R.attr.navigationBarColor, Color.BLACK);
+
+    boolean lightBackground = isColorLight(
+        MaterialColors.getColor(context, android.R.attr.colorBackground, Color.BLACK));
+    boolean lightNavbar = isColorLight(navbarColor);
+    boolean showDarkNavbarIcons = lightNavbar || (navbarColor == TRANSPARENT && lightBackground);
+
+    View decorView = window.getDecorView();
+    int currentStatusBar = VERSION.SDK_INT >= VERSION_CODES.M
+        ? decorView.getSystemUiVisibility() & SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        : 0;
+    int currentNavBar = showDarkNavbarIcons && VERSION.SDK_INT >= VERSION_CODES.O
+        ? SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+        : 0;
+
+    window.setNavigationBarColor(navbarColor);
+    window.setStatusBarColor(statusBarColor);
+    int systemUiVisibility = (edgeToEdgeEnabled ? EDGE_TO_EDGE_FLAGS : SYSTEM_UI_FLAG_VISIBLE)
+        | currentStatusBar
+        | currentNavBar;
+
+    decorView.setSystemUiVisibility(systemUiVisibility);
+  }
+
+  private static boolean isColorLight(@ColorInt int color){
+    return color != TRANSPARENT && ColorUtils.calculateLuminance(color) >  0.5;
   }
 
   private SharedPreferences getSharedPreferences() {
