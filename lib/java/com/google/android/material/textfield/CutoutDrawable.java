@@ -36,8 +36,8 @@ import android.view.View;
  * outline mode.
  */
 class CutoutDrawable extends MaterialShapeDrawable {
-  private final Paint cutoutPaint;
-  private final RectF cutoutBounds;
+  @NonNull private final Paint cutoutPaint;
+  @NonNull private final RectF cutoutBounds;
   private int savedLayer;
 
   CutoutDrawable() {
@@ -73,7 +73,7 @@ class CutoutDrawable extends MaterialShapeDrawable {
     }
   }
 
-  void setCutout(RectF bounds) {
+  void setCutout(@NonNull RectF bounds) {
     setCutout(bounds.left, bounds.top, bounds.right, bounds.bottom);
   }
 

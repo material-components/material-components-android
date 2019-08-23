@@ -20,6 +20,7 @@ import com.google.android.material.R;
 
 import android.content.Context;
 import android.os.Build;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 import android.util.AttributeSet;
@@ -65,6 +66,7 @@ public class TextInputEditText extends AppCompatEditText {
     }
   }
 
+  @Nullable
   @Override
   public CharSequence getHint() {
     // Certain test frameworks expect the actionable element to expose its hint as a label. When
@@ -76,8 +78,9 @@ public class TextInputEditText extends AppCompatEditText {
     return super.getHint();
   }
 
+  @Nullable
   @Override
-  public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
+  public InputConnection onCreateInputConnection(@NonNull EditorInfo outAttrs) {
     final InputConnection ic = super.onCreateInputConnection(outAttrs);
     if (ic != null && outAttrs.hintText == null) {
       // If we don't have a hint and our parent is a TextInputLayout, use its hint for the

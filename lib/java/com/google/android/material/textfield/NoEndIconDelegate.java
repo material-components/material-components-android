@@ -16,11 +16,13 @@
 
 package com.google.android.material.textfield;
 
+import androidx.annotation.NonNull;
+
 /**
  * Removes anything related to any {@link TextInputLayout.EndIconMode}.
  */
 class NoEndIconDelegate extends EndIconDelegate {
-  NoEndIconDelegate(TextInputLayout textInputLayout) {
+  NoEndIconDelegate(@NonNull TextInputLayout textInputLayout) {
     super(textInputLayout);
   }
 

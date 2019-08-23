@@ -16,12 +16,14 @@
 
 package com.google.android.material.textfield;
 
+import androidx.annotation.NonNull;
+
 /**
  * Default initialization of a custom {@link TextInputLayout.EndIconMode}.
  */
 class CustomEndIconDelegate extends EndIconDelegate {
 
-  CustomEndIconDelegate(TextInputLayout textInputLayout) {
+  CustomEndIconDelegate(@NonNull TextInputLayout textInputLayout) {
     super(textInputLayout);
   }
 

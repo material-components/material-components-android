@@ -18,6 +18,7 @@ package com.google.android.material.textfield;
 
 import com.google.android.material.R;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -50,7 +51,7 @@ class PasswordToggleEndIconDelegate extends EndIconDelegate {
   private final OnEditTextAttachedListener onEditTextAttachedListener =
       new OnEditTextAttachedListener() {
         @Override
-        public void onEditTextAttached(TextInputLayout textInputLayout) {
+        public void onEditTextAttached(@NonNull TextInputLayout textInputLayout) {
           EditText editText = textInputLayout.getEditText();
           textInputLayout.setEndIconVisible(true);
           endIconView.setChecked(!hasPasswordTransformation());
@@ -62,7 +63,7 @@ class PasswordToggleEndIconDelegate extends EndIconDelegate {
   private final OnEndIconChangedListener onEndIconChangedListener =
       new OnEndIconChangedListener() {
         @Override
-        public void onEndIconChanged(TextInputLayout textInputLayout, int previousIcon) {
+        public void onEndIconChanged(@NonNull TextInputLayout textInputLayout, int previousIcon) {
           EditText editText = textInputLayout.getEditText();
           if (editText != null && previousIcon == TextInputLayout.END_ICON_PASSWORD_TOGGLE) {
             // If the end icon was the password toggle add it back the PasswordTransformation
@@ -72,7 +73,7 @@ class PasswordToggleEndIconDelegate extends EndIconDelegate {
         }
       };
 
-  PasswordToggleEndIconDelegate(TextInputLayout textInputLayout) {
+  PasswordToggleEndIconDelegate(@NonNull TextInputLayout textInputLayout) {
     super(textInputLayout);
   }
 

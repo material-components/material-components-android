@@ -180,8 +180,8 @@ public class TextInputLayout extends LinearLayout {
 
   private static final String LOG_TAG = "TextInputLayout";
 
-  private final FrameLayout inputFrame;
-  private final FrameLayout endIconFrame;
+  @NonNull private final FrameLayout inputFrame;
+  @NonNull private final FrameLayout endIconFrame;
   EditText editText;
   private CharSequence originalHint;
 
@@ -190,7 +190,7 @@ public class TextInputLayout extends LinearLayout {
   boolean counterEnabled;
   private int counterMaxLength;
   private boolean counterOverflowed;
-  private TextView counterView;
+  @Nullable private TextView counterView;
   private int counterOverflowTextAppearance;
   private int counterTextAppearance;
 
@@ -207,9 +207,9 @@ public class TextInputLayout extends LinearLayout {
    */
   private boolean isProvidingHint;
 
-  private MaterialShapeDrawable boxBackground;
-  private MaterialShapeDrawable boxUnderline;
-  private final ShapeAppearanceModel shapeAppearanceModel;
+  @Nullable private MaterialShapeDrawable boxBackground;
+  @Nullable private MaterialShapeDrawable boxUnderline;
+  @NonNull private final ShapeAppearanceModel shapeAppearanceModel;
 
   private final int boxLabelCutoutPaddingPx;
   @BoxBackgroundMode private int boxBackgroundMode;
@@ -237,12 +237,12 @@ public class TextInputLayout extends LinearLayout {
   private final RectF tmpRectF = new RectF();
   private Typeface typeface;
 
-  private final CheckableImageButton startIconView;
+  @NonNull private final CheckableImageButton startIconView;
   private ColorStateList startIconTintList;
   private boolean hasStartIconTintList;
   private PorterDuff.Mode startIconTintMode;
   private boolean hasStartIconTintMode;
-  private Drawable startIconDummyDrawable;
+  @Nullable private Drawable startIconDummyDrawable;
   private OnLongClickListener startIconOnLongClickListener;
 
   /**
@@ -351,16 +351,16 @@ public class TextInputLayout extends LinearLayout {
 
   @EndIconMode private int endIconMode = END_ICON_NONE;
   private final SparseArray<EndIconDelegate> endIconDelegates = new SparseArray<>();
-  private final CheckableImageButton endIconView;
+  @NonNull private final CheckableImageButton endIconView;
   private final LinkedHashSet<OnEndIconChangedListener> endIconChangedListeners =
       new LinkedHashSet<>();
   private ColorStateList endIconTintList;
   private boolean hasEndIconTintList;
   private PorterDuff.Mode endIconTintMode;
   private boolean hasEndIconTintMode;
-  private Drawable endIconDummyDrawable;
+  @Nullable private Drawable endIconDummyDrawable;
   private Drawable originalEditTextEndDrawable;
-  private final CheckableImageButton errorIconView;
+  @NonNull private final CheckableImageButton errorIconView;
   private OnLongClickListener endIconOnLongClickListener;
 
   private ColorStateList defaultHintTextColor;
@@ -388,15 +388,15 @@ public class TextInputLayout extends LinearLayout {
 
   private boolean restoringSavedState;
 
-  public TextInputLayout(Context context) {
+  public TextInputLayout(@NonNull Context context) {
     this(context, null);
   }
 
-  public TextInputLayout(Context context, @Nullable AttributeSet attrs) {
+  public TextInputLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
     this(context, attrs, R.attr.textInputStyle);
   }
 
-  public TextInputLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+  public TextInputLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     super(createThemedContext(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
     // Ensure we are using the correctly themed context rather than the context that was passed in.
     context = getContext();
@@ -713,7 +713,8 @@ public class TextInputLayout extends LinearLayout {
   }
 
   @Override
-  public void addView(View child, int index, final ViewGroup.LayoutParams params) {
+  public void addView(
+      @NonNull View child, int index, @NonNull final ViewGroup.LayoutParams params) {
     if (child instanceof EditText) {
       // Make sure that the EditText is vertically at the bottom, so that it sits on the
       // EditText's underline
@@ -1062,7 +1063,7 @@ public class TextInputLayout extends LinearLayout {
     this.editText.addTextChangedListener(
         new TextWatcher() {
           @Override
-          public void afterTextChanged(Editable s) {
+          public void afterTextChanged(@NonNull Editable s) {
             updateLabelState(!restoringSavedState);
             if (counterEnabled) {
               updateCounter(s.length());
@@ -1725,8 +1726,8 @@ public class TextInputLayout extends LinearLayout {
   }
 
   private static void updateCounterContentDescription(
-      Context context,
-      TextView counterView,
+      @NonNull Context context,
+      @NonNull TextView counterView,
       int length,
       int counterMaxLength,
       boolean counterOverflowed) {
@@ -1748,7 +1749,7 @@ public class TextInputLayout extends LinearLayout {
     super.setEnabled(enabled);
   }
 
-  private static void recursiveSetEnabled(final ViewGroup vg, final boolean enabled) {
+  private static void recursiveSetEnabled(@NonNull final ViewGroup vg, final boolean enabled) {
     for (int i = 0, count = vg.getChildCount(); i < count; i++) {
       final View child = vg.getChildAt(i);
       child.setEnabled(enabled);
@@ -1792,7 +1793,8 @@ public class TextInputLayout extends LinearLayout {
     }
   }
 
-  void setTextAppearanceCompatWithErrorFallback(TextView textView, @StyleRes int textAppearance) {
+  void setTextAppearanceCompatWithErrorFallback(
+      @NonNull TextView textView, @StyleRes int textAppearance) {
     boolean useDefaultColor = false;
     try {
       TextViewCompat.setTextAppearance(textView, textAppearance);
@@ -1833,7 +1835,8 @@ public class TextInputLayout extends LinearLayout {
     }
   }
 
-  private Rect calculateCollapsedTextBounds(Rect rect) {
+  @NonNull
+  private Rect calculateCollapsedTextBounds(@NonNull Rect rect) {
     if (editText == null) {
       throw new IllegalStateException();
     }
@@ -1859,7 +1862,8 @@ public class TextInputLayout extends LinearLayout {
     }
   }
 
-  private Rect calculateExpandedTextBounds(Rect rect) {
+  @NonNull
+  private Rect calculateExpandedTextBounds(@NonNull Rect rect) {
     if (editText == null) {
       throw new IllegalStateException();
     }
@@ -1876,14 +1880,15 @@ public class TextInputLayout extends LinearLayout {
     return bounds;
   }
 
-  private int calculateExpandedLabelTop(Rect rect, float labelHeight) {
+  private int calculateExpandedLabelTop(@NonNull Rect rect, float labelHeight) {
     if (isSingleLineFilledTextField()) {
       return (int) (rect.centerY() - labelHeight / 2);
     }
     return rect.top + editText.getCompoundPaddingTop();
   }
 
-  private int calculateExpandedLabelBottom(Rect rect, Rect bounds, float labelHeight) {
+  private int calculateExpandedLabelBottom(
+      @NonNull Rect rect, @NonNull Rect bounds, float labelHeight) {
     if (boxBackgroundMode == BOX_BACKGROUND_FILLED) {
       // Add the label's height to the top of the bounds rather than calculating from the vertical
       // center for both the top and bottom of the label. This prevents a potential fractional loss
@@ -1987,26 +1992,27 @@ public class TextInputLayout extends LinearLayout {
   }
 
   static class SavedState extends AbsSavedState {
-    CharSequence error;
+    @Nullable CharSequence error;
     boolean isEndIconChecked;
 
     SavedState(Parcelable superState) {
       super(superState);
     }
 
-    SavedState(Parcel source, ClassLoader loader) {
+    SavedState(@NonNull Parcel source, ClassLoader loader) {
       super(source, loader);
       error = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(source);
       isEndIconChecked = (source.readInt() == 1);
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
       super.writeToParcel(dest, flags);
       TextUtils.writeToParcel(error, dest, flags);
       dest.writeInt(isEndIconChecked ? 1 : 0);
     }
 
+    @NonNull
     @Override
     public String toString() {
       return "TextInputLayout.SavedState{"
@@ -2018,16 +2024,19 @@ public class TextInputLayout extends LinearLayout {
 
     public static final Creator<SavedState> CREATOR =
         new ClassLoaderCreator<SavedState>() {
+          @NonNull
           @Override
-          public SavedState createFromParcel(Parcel in, ClassLoader loader) {
+          public SavedState createFromParcel(@NonNull Parcel in, ClassLoader loader) {
             return new SavedState(in, loader);
           }
 
+          @Nullable
           @Override
-          public SavedState createFromParcel(Parcel in) {
+          public SavedState createFromParcel(@NonNull Parcel in) {
             return new SavedState(in, null);
           }
 
+          @NonNull
           @Override
           public SavedState[] newArray(int size) {
             return new SavedState[size];
@@ -2603,7 +2612,7 @@ public class TextInputLayout extends LinearLayout {
    *
    * @param listener listener to add
    */
-  public void addOnEditTextAttachedListener(OnEditTextAttachedListener listener) {
+  public void addOnEditTextAttachedListener(@NonNull OnEditTextAttachedListener listener) {
     editTextAttachedListeners.add(listener);
     if (editText != null) {
       listener.onEditTextAttached(this);
@@ -2815,6 +2824,7 @@ public class TextInputLayout extends LinearLayout {
     }
   }
 
+  @NonNull
   CheckableImageButton getEndIconView() {
     return endIconView;
   }
@@ -2953,7 +2963,7 @@ public class TextInputLayout extends LinearLayout {
   }
 
   private void applyIconTint(
-      CheckableImageButton iconView,
+      @NonNull CheckableImageButton iconView,
       boolean hasIconTintList,
       ColorStateList iconTintList,
       boolean hasIconTintMode,
@@ -3027,7 +3037,7 @@ public class TextInputLayout extends LinearLayout {
     }
   }
 
-  private void updateBoxUnderlineBounds(Rect bounds) {
+  private void updateBoxUnderlineBounds(@NonNull Rect bounds) {
     if (boxUnderline != null) {
       int top = bounds.bottom - boxStrokeWidthFocusedPx;
       boxUnderline.setBounds(bounds.left, top, bounds.right, bounds.bottom);
@@ -3035,13 +3045,13 @@ public class TextInputLayout extends LinearLayout {
   }
 
   @Override
-  public void draw(Canvas canvas) {
+  public void draw(@NonNull Canvas canvas) {
     super.draw(canvas);
     drawHint(canvas);
     drawBoxUnderline(canvas);
   }
 
-  private void drawHint(Canvas canvas) {
+  private void drawHint(@NonNull Canvas canvas) {
     if (hintEnabled) {
       collapsingTextHelper.draw(canvas);
     }
@@ -3094,7 +3104,7 @@ public class TextInputLayout extends LinearLayout {
     }
   }
 
-  private void applyCutoutPadding(RectF cutoutBounds) {
+  private void applyCutoutPadding(@NonNull RectF cutoutBounds) {
     cutoutBounds.left -= boxLabelCutoutPaddingPx;
     cutoutBounds.top -= boxLabelCutoutPaddingPx;
     cutoutBounds.right += boxLabelCutoutPaddingPx;
@@ -3223,7 +3233,7 @@ public class TextInputLayout extends LinearLayout {
       this.animator.addUpdateListener(
           new ValueAnimator.AnimatorUpdateListener() {
             @Override
-            public void onAnimationUpdate(ValueAnimator animator) {
+            public void onAnimationUpdate(@NonNull ValueAnimator animator) {
               collapsingTextHelper.setExpansionFraction((float) animator.getAnimatedValue());
             }
           });
@@ -3271,7 +3281,8 @@ public class TextInputLayout extends LinearLayout {
     }
 
     @Override
-    public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfoCompat info) {
+    public void onInitializeAccessibilityNodeInfo(
+        @NonNull View host, @NonNull AccessibilityNodeInfoCompat info) {
       super.onInitializeAccessibilityNodeInfo(host, info);
       EditText editText = layout.getEditText();
       CharSequence text = (editText != null) ? editText.getText() : null;

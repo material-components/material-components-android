@@ -34,6 +34,8 @@ import android.graphics.drawable.RippleDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import androidx.core.view.ViewCompat;
@@ -91,7 +93,8 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
   private final TextInputLayout.AccessibilityDelegate accessibilityDelegate =
       new AccessibilityDelegate(textInputLayout) {
         @Override
-        public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfoCompat info) {
+        public void onInitializeAccessibilityNodeInfo(
+            View host, @NonNull AccessibilityNodeInfoCompat info) {
           super.onInitializeAccessibilityNodeInfo(host, info);
           // The exposed dropdown menu behaves like a Spinner.
           info.setClassName(Spinner.class.getName());
@@ -103,7 +106,7 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
         }
 
         @Override
-        public void onPopulateAccessibilityEvent(View host, AccessibilityEvent event) {
+        public void onPopulateAccessibilityEvent(View host, @NonNull AccessibilityEvent event) {
           super.onPopulateAccessibilityEvent(host, event);
           AutoCompleteTextView editText =
               castAutoCompleteTextViewOrThrow(textInputLayout.getEditText());
@@ -117,7 +120,7 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
   private final OnEditTextAttachedListener dropdownMenuOnEditTextAttachedListener =
       new OnEditTextAttachedListener() {
         @Override
-        public void onEditTextAttached(TextInputLayout textInputLayout) {
+        public void onEditTextAttached(@NonNull TextInputLayout textInputLayout) {
           AutoCompleteTextView autoCompleteTextView =
               castAutoCompleteTextViewOrThrow(textInputLayout.getEditText());
 
@@ -139,11 +142,11 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
   private long dropdownPopupActivatedAt = Long.MAX_VALUE;
   private StateListDrawable filledPopupBackground;
   private MaterialShapeDrawable outlinedPopupBackground;
-  private AccessibilityManager accessibilityManager;
+  @Nullable private AccessibilityManager accessibilityManager;
   private ValueAnimator fadeOutAnim;
   private ValueAnimator fadeInAnim;
 
-  DropdownMenuEndIconDelegate(TextInputLayout textInputLayout) {
+  DropdownMenuEndIconDelegate(@NonNull TextInputLayout textInputLayout) {
     super(textInputLayout);
   }
 
@@ -215,7 +218,7 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
     return boxBackgroundMode != TextInputLayout.BOX_BACKGROUND_NONE;
   }
 
-  private void showHideDropdown(AutoCompleteTextView editText) {
+  private void showHideDropdown(@Nullable AutoCompleteTextView editText) {
     if (editText == null) {
       return;
     }
@@ -240,7 +243,7 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
     }
   }
 
-  private void setPopupBackground(AutoCompleteTextView editText) {
+  private void setPopupBackground(@NonNull AutoCompleteTextView editText) {
     if (IS_LOLLIPOP) {
       int boxBackgroundMode = textInputLayout.getBoxBackgroundMode();
       if (boxBackgroundMode == TextInputLayout.BOX_BACKGROUND_OUTLINE) {
@@ -252,7 +255,7 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
   }
 
   /* Add ripple effect to non editable layouts. */
-  private void addRippleEffect(AutoCompleteTextView editText) {
+  private void addRippleEffect(@NonNull AutoCompleteTextView editText) {
     if (editText.getKeyListener() != null) {
       return;
     }
@@ -273,10 +276,10 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
   }
 
   private void addRippleEffectOnOutlinedLayout(
-      AutoCompleteTextView editText,
+      @NonNull AutoCompleteTextView editText,
       int rippleColor,
       int[][] states,
-      MaterialShapeDrawable boxBackground) {
+      @NonNull MaterialShapeDrawable boxBackground) {
     LayerDrawable editTextBackground;
     int surfaceColor = MaterialColors.getColor(editText, R.attr.colorSurface);
     MaterialShapeDrawable rippleBackground =
@@ -304,10 +307,10 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
   }
 
   private void addRippleEffectOnFilledLayout(
-      AutoCompleteTextView editText,
+      @NonNull AutoCompleteTextView editText,
       int rippleColor,
       int[][] states,
-      MaterialShapeDrawable boxBackground) {
+      @NonNull MaterialShapeDrawable boxBackground) {
     int boxBackgroundColor = textInputLayout.getBoxBackgroundColor();
     int pressedBackgroundColor = MaterialColors.layer(rippleColor, boxBackgroundColor, 0.1f);
     int[] colors = new int[] {pressedBackgroundColor, boxBackgroundColor};
@@ -332,12 +335,12 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
     }
   }
 
-  private void setUpDropdownShowHideBehavior(final AutoCompleteTextView editText) {
+  private void setUpDropdownShowHideBehavior(@NonNull final AutoCompleteTextView editText) {
     // Set whole layout clickable.
     editText.setOnTouchListener(
         new OnTouchListener() {
           @Override
-          public boolean onTouch(View v, MotionEvent event) {
+          public boolean onTouch(@NonNull View v, @NonNull MotionEvent event) {
             if (event.getAction() == MotionEvent.ACTION_UP) {
               if (isDropdownPopupActive()) {
                 dropdownPopupDirty = false;
@@ -391,6 +394,7 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
     return activeFor < 0 || activeFor > 300;
   }
 
+  @NonNull
   private AutoCompleteTextView castAutoCompleteTextViewOrThrow(EditText editText) {
     if (!(editText instanceof AutoCompleteTextView)) {
       throw new RuntimeException(
@@ -429,7 +433,7 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
     animator.addUpdateListener(
         new AnimatorUpdateListener() {
           @Override
-          public void onAnimationUpdate(ValueAnimator animation) {
+          public void onAnimationUpdate(@NonNull ValueAnimator animation) {
             float alpha = (float) animation.getAnimatedValue();
             endIconView.setAlpha(alpha);
           }
