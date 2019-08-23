@@ -21,6 +21,7 @@ import com.google.android.material.R;
 import android.content.Context;
 import android.graphics.Color;
 import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
 import com.google.android.material.resources.MaterialAttributes;
 import androidx.core.graphics.ColorUtils;
 import com.google.android.material.color.MaterialColors;
@@ -36,7 +37,7 @@ public class ElevationOverlayProvider {
   private final int colorSurface;
   private final float displayDensity;
 
-  public ElevationOverlayProvider(Context context) {
+  public ElevationOverlayProvider(@NonNull Context context) {
     this.elevationOverlayEnabled =
         MaterialAttributes.resolveBoolean(context, R.attr.elevationOverlayEnabled, false);
     this.elevationOverlayColor =
