@@ -48,12 +48,12 @@ public final class TabLayoutMediator {
   @NonNull private final ViewPager2 viewPager;
   private final boolean autoRefresh;
   private final TabConfigurationStrategy tabConfigurationStrategy;
-  private RecyclerView.Adapter<?> adapter;
+  @Nullable private RecyclerView.Adapter<?> adapter;
   private boolean attached;
 
-  private TabLayoutOnPageChangeCallback onPageChangeCallback;
-  private TabLayout.OnTabSelectedListener onTabSelectedListener;
-  private RecyclerView.AdapterDataObserver pagerAdapterObserver;
+  @Nullable private TabLayoutOnPageChangeCallback onPageChangeCallback;
+  @Nullable private TabLayout.OnTabSelectedListener onTabSelectedListener;
+  @Nullable private RecyclerView.AdapterDataObserver pagerAdapterObserver;
 
   /**
    * A callback interface that must be implemented to set the text and styling of newly created
@@ -177,7 +177,7 @@ public final class TabLayoutMediator {
    * callback and not cause a leak.
    */
   private static class TabLayoutOnPageChangeCallback extends ViewPager2.OnPageChangeCallback {
-    private final WeakReference<TabLayout> tabLayoutRef;
+    @NonNull private final WeakReference<TabLayout> tabLayoutRef;
     private int previousScrollState;
     private int scrollState;
 
@@ -242,7 +242,7 @@ public final class TabLayoutMediator {
     }
 
     @Override
-    public void onTabSelected(TabLayout.Tab tab) {
+    public void onTabSelected(@NonNull TabLayout.Tab tab) {
       viewPager.setCurrentItem(tab.getPosition(), true);
     }
 
