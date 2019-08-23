@@ -24,6 +24,7 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleableRes;
@@ -47,7 +48,7 @@ public class MaterialResources {
    */
   @Nullable
   public static ColorStateList getColorStateList(
-      Context context, TypedArray attributes, @StyleableRes int index) {
+      @NonNull Context context, @NonNull TypedArray attributes, @StyleableRes int index) {
     if (attributes.hasValue(index)) {
       int resourceId = attributes.getResourceId(index, 0);
       if (resourceId != 0) {
@@ -76,7 +77,7 @@ public class MaterialResources {
    */
   @Nullable
   public static ColorStateList getColorStateList(
-      Context context, TintTypedArray attributes, @StyleableRes int index) {
+      @NonNull Context context, @NonNull TintTypedArray attributes, @StyleableRes int index) {
     if (attributes.hasValue(index)) {
       int resourceId = attributes.getResourceId(index, 0);
       if (resourceId != 0) {
@@ -107,7 +108,7 @@ public class MaterialResources {
    */
   @Nullable
   public static Drawable getDrawable(
-      Context context, TypedArray attributes, @StyleableRes int index) {
+      @NonNull Context context, @NonNull TypedArray attributes, @StyleableRes int index) {
     if (attributes.hasValue(index)) {
       int resourceId = attributes.getResourceId(index, 0);
       if (resourceId != 0) {
@@ -127,7 +128,7 @@ public class MaterialResources {
    */
   @Nullable
   public static TextAppearance getTextAppearance(
-      Context context, TypedArray attributes, @StyleableRes int index) {
+      @NonNull Context context, @NonNull TypedArray attributes, @StyleableRes int index) {
     if (attributes.hasValue(index)) {
       int resourceId = attributes.getResourceId(index, 0);
       if (resourceId != 0) {
@@ -155,7 +156,10 @@ public class MaterialResources {
    * @see TypedArray#getDimensionPixelSize(int, int)
    */
   public static int getDimensionPixelSize(
-      Context context, TypedArray attributes, @StyleableRes int index, final int defaultValue) {
+      @NonNull Context context,
+      @NonNull TypedArray attributes,
+      @StyleableRes int index,
+      final int defaultValue) {
     TypedValue value = new TypedValue();
     if (!attributes.getValue(index, value) || value.type != TypedValue.TYPE_ATTRIBUTE) {
       return attributes.getDimensionPixelSize(index, defaultValue);
@@ -172,7 +176,8 @@ public class MaterialResources {
    * contain values, the first given index takes precedence and is returned.
    */
   @StyleableRes
-  static int getIndexWithValue(TypedArray attributes, @StyleableRes int a, @StyleableRes int b) {
+  static int getIndexWithValue(
+      @NonNull TypedArray attributes, @StyleableRes int a, @StyleableRes int b) {
     if (attributes.hasValue(a)) {
       return a;
     }
