@@ -74,7 +74,7 @@ Initializes and shows a BadgeDrawable associated with menuItemId. Subsequent
 calls to this method will reuse the existing BadgeDrawable.
 
 ```java
-BadgeDrawable badge = bottomNavigationView.showBadge(menuItemId);
+BadgeDrawable badge = bottomNavigationView.getOrCreateBadge(menuItemId);
 ```
 NOTE: Don't forget to remove any BadgeDrawables that are no longer needed.
 
