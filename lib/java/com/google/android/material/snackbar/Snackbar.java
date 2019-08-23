@@ -65,7 +65,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
  */
 public class Snackbar extends BaseTransientBottomBar<Snackbar> {
 
-  private final AccessibilityManager accessibilityManager;
+  @Nullable private final AccessibilityManager accessibilityManager;
   private boolean hasAction;
 
   private static final int[] SNACKBAR_BUTTON_STYLE_ATTR = new int[] {R.attr.snackbarButtonStyle};
@@ -104,9 +104,9 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
   @Nullable private BaseCallback<Snackbar> callback;
 
   private Snackbar(
-      ViewGroup parent,
-      View content,
-      com.google.android.material.snackbar.ContentViewCallback contentViewCallback) {
+      @NonNull ViewGroup parent,
+      @NonNull View content,
+      @NonNull com.google.android.material.snackbar.ContentViewCallback contentViewCallback) {
     super(parent, content, contentViewCallback);
     accessibilityManager =
         (AccessibilityManager) parent.getContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
@@ -179,7 +179,7 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
    * snackbarButtonStyle}. This method helps to check if a valid {@code snackbarButtonStyle} is set
    * within the current context, so that we know whether we can use the attribute.
    */
-  protected static boolean hasSnackbarButtonStyleAttr(Context context) {
+  protected static boolean hasSnackbarButtonStyleAttr(@NonNull Context context) {
     TypedArray a = context.obtainStyledAttributes(SNACKBAR_BUTTON_STYLE_ATTR);
     int snackbarButtonStyleResId = a.getResourceId(0, -1);
     a.recycle();
@@ -207,6 +207,7 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
     return make(view, view.getResources().getText(resId), duration);
   }
 
+  @Nullable
   private static ViewGroup findSuitableParent(View view) {
     ViewGroup fallback = null;
     do {
@@ -276,7 +277,8 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
    * @param listener callback to be invoked when the action is clicked
    */
   @NonNull
-  public Snackbar setAction(CharSequence text, final View.OnClickListener listener) {
+  public Snackbar setAction(
+      @Nullable CharSequence text, @Nullable final View.OnClickListener listener) {
     final SnackbarContentLayout contentLayout = (SnackbarContentLayout) this.view.getChildAt(0);
     final TextView tv = contentLayout.getActionView();
     if (TextUtils.isEmpty(text) || listener == null) {
@@ -405,7 +407,7 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
    */
   @Deprecated
   @NonNull
-  public Snackbar setCallback(Callback callback) {
+  public Snackbar setCallback(@Nullable Callback callback) {
     // The logic in this method emulates what we had before support for multiple
     // registered callbacks.
     if (this.callback != null) {
