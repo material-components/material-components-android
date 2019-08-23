@@ -20,6 +20,7 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Path;
 import android.graphics.RectF;
+import androidx.annotation.NonNull;
 import com.google.android.material.shadow.ShadowRenderer;
 import java.util.ArrayList;
 import java.util.List;
@@ -212,6 +213,7 @@ public class ShapePath {
    * Creates a ShadowCompatOperation to draw compatibility shadow under the matrix transform for the
    * whole path defined by this ShapePath.
    */
+  @NonNull
   ShadowCompatOperation createShadowCompatOperation(final Matrix transform) {
     // If the shadowCompatOperations don't end on the desired endShadowAngle, add an arc to do so.
     addConnectingShadowIfNecessary(getEndShadowAngle());
@@ -341,7 +343,10 @@ public class ShapePath {
 
     @Override
     public void draw(
-        Matrix transform, ShadowRenderer shadowRenderer, int shadowElevation, Canvas canvas) {
+        Matrix transform,
+        @NonNull ShadowRenderer shadowRenderer,
+        int shadowElevation,
+        @NonNull Canvas canvas) {
       final float height = operation.y - startY;
       final float width = operation.x - startX;
       final RectF rect = new RectF(0, 0, (float) Math.hypot(height, width), 0);
@@ -368,7 +373,10 @@ public class ShapePath {
 
     @Override
     public void draw(
-        Matrix transform, ShadowRenderer shadowRenderer, int shadowElevation, Canvas canvas) {
+        Matrix transform,
+        @NonNull ShadowRenderer shadowRenderer,
+        int shadowElevation,
+        @NonNull Canvas canvas) {
       float startAngle = operation.getStartAngle();
       float sweepAngle = operation.getSweepAngle();
       RectF rect =
@@ -395,7 +403,7 @@ public class ShapePath {
     private float y;
 
     @Override
-    public void applyToPath(Matrix transform, Path path) {
+    public void applyToPath(@NonNull Matrix transform, @NonNull Path path) {
       Matrix inverse = matrix;
       transform.invert(inverse);
       path.transform(inverse);
@@ -428,7 +436,7 @@ public class ShapePath {
     @Deprecated public float endY;
 
     @Override
-    public void applyToPath(Matrix transform, Path path) {
+    public void applyToPath(@NonNull Matrix transform, @NonNull Path path) {
       Matrix inverse = matrix;
       transform.invert(inverse);
       path.transform(inverse);
@@ -512,7 +520,7 @@ public class ShapePath {
     }
 
     @Override
-    public void applyToPath(Matrix transform, Path path) {
+    public void applyToPath(@NonNull Matrix transform, @NonNull Path path) {
       Matrix inverse = matrix;
       transform.invert(inverse);
       path.transform(inverse);

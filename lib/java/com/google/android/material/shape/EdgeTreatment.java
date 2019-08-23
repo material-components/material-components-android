@@ -16,6 +16,8 @@
 
 package com.google.android.material.shape;
 
+import androidx.annotation.NonNull;
+
 /**
  * A basic edge treatment (a single straight line). Sub-classed for custom edge treatments.
  *
@@ -31,7 +33,7 @@ public class EdgeTreatment implements Cloneable {
    *     ShapePath)} instead.
    */
   @Deprecated
-  public void getEdgePath(float length, float interpolation, ShapePath shapePath) {
+  public void getEdgePath(float length, float interpolation, @NonNull ShapePath shapePath) {
     // Best guess at center since it could be offset by corners of different size.
     float center = length / 2f;
     getEdgePath(length, center,  interpolation, shapePath);
@@ -57,10 +59,12 @@ public class EdgeTreatment implements Cloneable {
    *     "heal" or "reveal" an edge treatment.
    * @param shapePath the {@link ShapePath} that this treatment should write to.
    */
-  public void getEdgePath(float length, float center, float interpolation, ShapePath shapePath) {
+  public void getEdgePath(
+      float length, float center, float interpolation, @NonNull ShapePath shapePath) {
     shapePath.lineTo(length, 0);
   }
 
+  @NonNull
   @Override
   public EdgeTreatment clone() {
     try {

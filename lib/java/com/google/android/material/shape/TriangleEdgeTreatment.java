@@ -16,6 +16,8 @@
 
 package com.google.android.material.shape;
 
+import androidx.annotation.NonNull;
+
 /**
  * An edge treatment which draws triangles at the midpoint of an edge, facing into or out of the
  * shape.
@@ -40,7 +42,8 @@ public class TriangleEdgeTreatment extends EdgeTreatment implements Cloneable {
   }
 
   @Override
-  public void getEdgePath(float length, float center, float interpolation, ShapePath shapePath) {
+  public void getEdgePath(
+      float length, float center, float interpolation, @NonNull ShapePath shapePath) {
     shapePath.lineTo(center - (size * interpolation), 0);
     shapePath.lineTo(center, inside ? size * interpolation : -size * interpolation);
     shapePath.lineTo(center + (size * interpolation), 0);

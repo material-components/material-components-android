@@ -16,6 +16,8 @@
 
 package com.google.android.material.shape;
 
+import androidx.annotation.NonNull;
+
 /** A corner treatment which cuts or clips the original corner of a shape with a straight line. */
 public class CutCornerTreatment extends CornerTreatment implements Cloneable {
 
@@ -34,7 +36,7 @@ public class CutCornerTreatment extends CornerTreatment implements Cloneable {
   }
 
   @Override
-  public void getCornerPath(float angle, float interpolation, ShapePath shapePath) {
+  public void getCornerPath(float angle, float interpolation, @NonNull ShapePath shapePath) {
     shapePath.reset(0, cornerSize * interpolation, ShapePath.ANGLE_LEFT, 180 - angle);
     shapePath.lineTo(
         (float) (Math.sin(Math.toRadians(angle)) * cornerSize * interpolation),

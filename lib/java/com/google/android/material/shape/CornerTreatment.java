@@ -16,6 +16,8 @@
 
 package com.google.android.material.shape;
 
+import androidx.annotation.NonNull;
+
 /**
  * A basic corner treatment (a single point which does not affect the shape).
  *
@@ -64,6 +66,7 @@ public class CornerTreatment implements Cloneable {
     this.cornerSize = cornerSize;
   }
 
+  @NonNull
   @Override
   public CornerTreatment clone() {
     try {

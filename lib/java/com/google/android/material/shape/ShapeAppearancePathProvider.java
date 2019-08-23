@@ -68,7 +68,10 @@ public class ShapeAppearancePathProvider {
    * @param path the returned path out-var.
    */
   public void calculatePath(
-      ShapeAppearanceModel shapeAppearanceModel, float interpolation, RectF bounds, Path path) {
+      ShapeAppearanceModel shapeAppearanceModel,
+      float interpolation,
+      RectF bounds,
+      @NonNull Path path) {
     calculatePath(shapeAppearanceModel, interpolation, bounds, null, path);
   }
 
@@ -87,7 +90,7 @@ public class ShapeAppearancePathProvider {
       float interpolation,
       RectF bounds,
       PathListener pathListener,
-      Path path) {
+      @NonNull Path path) {
     path.rewind();
     ShapeAppearancePathSpec spec =
         new ShapeAppearancePathSpec(
@@ -112,7 +115,7 @@ public class ShapeAppearancePathProvider {
     path.close();
   }
 
-  private void setCornerPathAndTransform(ShapeAppearancePathSpec spec, int index) {
+  private void setCornerPathAndTransform(@NonNull ShapeAppearancePathSpec spec, int index) {
     getCornerTreatmentForIndex(index, spec.shapeAppearanceModel)
         .getCornerPath(90, spec.interpolation, cornerPaths[index]);
 
@@ -133,7 +136,7 @@ public class ShapeAppearancePathProvider {
     edgeTransforms[index].preRotate(edgeAngle);
   }
 
-  private void appendCornerPath(ShapeAppearancePathSpec spec, int index) {
+  private void appendCornerPath(@NonNull ShapeAppearancePathSpec spec, int index) {
     scratch[0] = cornerPaths[index].getStartX();
     scratch[1] = cornerPaths[index].getStartY();
     cornerTransforms[index].mapPoints(scratch);
@@ -148,7 +151,7 @@ public class ShapeAppearancePathProvider {
     }
   }
 
-  private void appendEdgePath(ShapeAppearancePathSpec spec, int index) {
+  private void appendEdgePath(@NonNull ShapeAppearancePathSpec spec, int index) {
     int nextIndex = (index + 1) % 4;
     scratch[0] = cornerPaths[index].getEndX();
     scratch[1] = cornerPaths[index].getEndY();
@@ -171,7 +174,7 @@ public class ShapeAppearancePathProvider {
     }
   }
 
-  private float getEdgeCenterForIndex(RectF bounds, int index) {
+  private float getEdgeCenterForIndex(@NonNull RectF bounds, int index) {
     scratch[0] = cornerPaths[index].endX;
     scratch[1] = cornerPaths[index].endY;
     cornerTransforms[index].mapPoints(scratch);
@@ -187,7 +190,7 @@ public class ShapeAppearancePathProvider {
   }
 
   private CornerTreatment getCornerTreatmentForIndex(
-      int index, ShapeAppearanceModel shapeAppearanceModel) {
+      int index, @NonNull ShapeAppearanceModel shapeAppearanceModel) {
     switch (index) {
       case 1:
         return shapeAppearanceModel.getBottomRightCorner();
@@ -202,7 +205,7 @@ public class ShapeAppearancePathProvider {
   }
 
   private EdgeTreatment getEdgeTreatmentForIndex(
-      int index, ShapeAppearanceModel shapeAppearanceModel) {
+      int index, @NonNull ShapeAppearanceModel shapeAppearanceModel) {
     switch (index) {
       case 1:
         return shapeAppearanceModel.getBottomEdge();
@@ -216,7 +219,7 @@ public class ShapeAppearancePathProvider {
     }
   }
 
-  private void getCoordinatesOfCorner(int index, RectF bounds, PointF pointF) {
+  private void getCoordinatesOfCorner(int index, @NonNull RectF bounds, @NonNull PointF pointF) {
     switch (index) {
       case 1: // bottom-right
         pointF.set(bounds.right, bounds.bottom);

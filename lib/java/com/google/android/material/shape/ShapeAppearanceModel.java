@@ -27,6 +27,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import androidx.annotation.AttrRes;
 import androidx.annotation.Dimension;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
@@ -82,7 +83,7 @@ public class ShapeAppearanceModel {
     onShapeAppearanceModelChanged();
   }
 
-  public ShapeAppearanceModel(ShapeAppearanceModel shapeAppearanceModel) {
+  public ShapeAppearanceModel(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
     setTopLeftCornerInternal(shapeAppearanceModel.getTopLeftCorner().clone());
     setTopRightCornerInternal(shapeAppearanceModel.getTopRightCorner().clone());
     setBottomRightCornerInternal(shapeAppearanceModel.getBottomRightCorner().clone());
@@ -95,12 +96,15 @@ public class ShapeAppearanceModel {
   }
 
   public ShapeAppearanceModel(
-      Context context, AttributeSet attrs, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
+      @NonNull Context context,
+      AttributeSet attrs,
+      @AttrRes int defStyleAttr,
+      @StyleRes int defStyleRes) {
     this(context, attrs, defStyleAttr, defStyleRes, 0);
   }
 
   public ShapeAppearanceModel(
-      Context context,
+      @NonNull Context context,
       AttributeSet attrs,
       @AttrRes int defStyleAttr,
       @StyleRes int defStyleRes,
@@ -193,7 +197,7 @@ public class ShapeAppearanceModel {
    *
    * @param cornerTreatment the corner treatment to use for all four corners.
    */
-  public void setAllCorners(CornerTreatment cornerTreatment) {
+  public void setAllCorners(@NonNull CornerTreatment cornerTreatment) {
     boolean changed = setTopLeftCornerInternal(cornerTreatment.clone());
     changed |= setTopRightCornerInternal(cornerTreatment.clone());
     changed |= setBottomRightCornerInternal(cornerTreatment.clone());
@@ -281,7 +285,7 @@ public class ShapeAppearanceModel {
    *
    * @param edgeTreatment the edge treatment to use for all four edges.
    */
-  public void setAllEdges(EdgeTreatment edgeTreatment) {
+  public void setAllEdges(@NonNull EdgeTreatment edgeTreatment) {
     boolean changed = setLeftEdgeInternal(edgeTreatment.clone());
     changed |= setTopEdgeInternal(edgeTreatment.clone());
     changed |= setRightEdgeInternal(edgeTreatment.clone());
