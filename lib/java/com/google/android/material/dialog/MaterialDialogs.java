@@ -25,6 +25,8 @@ import android.graphics.drawable.InsetDrawable;
 import android.os.Build;
 import android.os.Build.VERSION_CODES;
 import androidx.annotation.AttrRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.core.view.ViewCompat;
@@ -40,7 +42,9 @@ public class MaterialDialogs {
 
   private MaterialDialogs() {};
 
-  public static InsetDrawable insetDrawable(Drawable drawable, Rect backgroundInsets) {
+  @NonNull
+  public static InsetDrawable insetDrawable(
+      @Nullable Drawable drawable, @NonNull Rect backgroundInsets) {
     return new InsetDrawable(
         drawable,
         backgroundInsets.left,
@@ -49,8 +53,9 @@ public class MaterialDialogs {
         backgroundInsets.bottom);
   }
 
+  @NonNull
   public static Rect getDialogBackgroundInsets(
-      Context context, @AttrRes int defaultStyleAttribute, int defaultStyleResource) {
+      @NonNull Context context, @AttrRes int defaultStyleAttribute, int defaultStyleResource) {
     TypedArray attributes =
         ThemeEnforcement.obtainStyledAttributes(
             context,
