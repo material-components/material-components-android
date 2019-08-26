@@ -55,12 +55,12 @@ the `com.android.support:design:28.0.0` dependency.
 Note: You should not use the `com.android.support` and
 `com.google.android.material` dependencies in your app at the same time.
 
-### 2. Compile your app with Android P
+### 2. Compile your app with Android 9
 
 In order to use Material Components for Android, and the latest versions of the
 Support Libraries, you will have to update your app's `compileSdkVersion` to
-`28` and download the Android P Preview using the SDK manager. For more
-information on Android P and its timeline, take a look at the [Program
+`28` and download the Android 9 using the SDK manager. For more
+information on Android 9 and its timeline, take a look at the [Program
 Overview](https://developer.android.com/preview/overview) page.
 
 ### 3. Ensure you are using `AppCompatActivity`
