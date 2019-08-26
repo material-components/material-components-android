@@ -25,10 +25,10 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.google.android.material.elevation.ElevationOverlayProvider;
 import androidx.appcompat.widget.SwitchCompat;
 import android.util.AttributeSet;
 import com.google.android.material.color.MaterialColors;
+import com.google.android.material.elevation.ElevationOverlayProvider;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
 
