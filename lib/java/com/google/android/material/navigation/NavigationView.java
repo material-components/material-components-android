@@ -99,7 +99,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
 
   private static final int PRESENTER_NAVIGATION_VIEW_ID = 1;
 
-  private final NavigationMenu menu;
+  @NonNull private final NavigationMenu menu;
   private final NavigationMenuPresenter presenter = new NavigationMenuPresenter();
 
   OnNavigationItemSelectedListener listener;
@@ -109,15 +109,15 @@ public class NavigationView extends ScrimInsetsFrameLayout {
 
   private MenuInflater menuInflater;
 
-  public NavigationView(Context context) {
+  public NavigationView(@NonNull Context context) {
     this(context, null);
   }
 
-  public NavigationView(Context context, AttributeSet attrs) {
+  public NavigationView(@NonNull Context context, @Nullable AttributeSet attrs) {
     this(context, attrs, R.attr.navigationViewStyle);
   }
 
-  public NavigationView(Context context, AttributeSet attrs, int defStyleAttr) {
+  public NavigationView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
 
     // Create the menu
@@ -245,7 +245,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     }
   }
 
-  private boolean hasShapeAppearance(TintTypedArray a) {
+  private boolean hasShapeAppearance(@NonNull TintTypedArray a) {
     return a.hasValue(R.styleable.NavigationView_itemShapeAppearance)
         || a.hasValue(R.styleable.NavigationView_itemShapeAppearanceOverlay);
   }
@@ -271,7 +271,8 @@ public class NavigationView extends ScrimInsetsFrameLayout {
    *
    * @param a The TintTypedArray containing the resolved NavigationView style attributes.
    */
-  private final Drawable createDefaultItemBackground(TintTypedArray a) {
+  @NonNull
+  private final Drawable createDefaultItemBackground(@NonNull TintTypedArray a) {
     int shapeAppearanceResId = a.getResourceId(R.styleable.NavigationView_itemShapeAppearance, 0);
     int shapeAppearanceOverlayResId =
         a.getResourceId(R.styleable.NavigationView_itemShapeAppearanceOverlay, 0);
@@ -342,7 +343,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
   /** @hide */
   @RestrictTo(LIBRARY_GROUP)
   @Override
-  protected void onInsetsChanged(WindowInsetsCompat insets) {
+  protected void onInsetsChanged(@NonNull WindowInsetsCompat insets) {
     presenter.dispatchApplyWindowInsets(insets);
   }
 
@@ -361,6 +362,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
   }
 
   /** Returns the {@link Menu} instance associated with this navigation view. */
+  @NonNull
   public Menu getMenu() {
     return menu;
   }
@@ -626,6 +628,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     return menuInflater;
   }
 
+  @Nullable
   private ColorStateList createDefaultColorStateList(int baseColorThemeAttr) {
     final TypedValue value = new TypedValue();
     if (!getContext().getTheme().resolveAttribute(baseColorThemeAttr, value, true)) {
@@ -691,9 +694,9 @@ public class NavigationView extends ScrimInsetsFrameLayout {
    * User interface state that is stored by NavigationView for implementing onSaveInstanceState().
    */
   public static class SavedState extends AbsSavedState {
-    public Bundle menuState;
+    @Nullable public Bundle menuState;
 
-    public SavedState(Parcel in, ClassLoader loader) {
+    public SavedState(@NonNull Parcel in, @Nullable ClassLoader loader) {
       super(in, loader);
       menuState = in.readBundle(loader);
     }
@@ -710,16 +713,19 @@ public class NavigationView extends ScrimInsetsFrameLayout {
 
     public static final Creator<SavedState> CREATOR =
         new ClassLoaderCreator<SavedState>() {
+          @NonNull
           @Override
-          public SavedState createFromParcel(Parcel in, ClassLoader loader) {
+          public SavedState createFromParcel(@NonNull Parcel in, ClassLoader loader) {
             return new SavedState(in, loader);
           }
 
+          @Nullable
           @Override
-          public SavedState createFromParcel(Parcel in) {
+          public SavedState createFromParcel(@NonNull Parcel in) {
             return new SavedState(in, null);
           }
 
+          @NonNull
           @Override
           public SavedState[] newArray(int size) {
             return new SavedState[size];
