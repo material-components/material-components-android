@@ -20,6 +20,8 @@ import com.google.android.material.R;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.ViewCompat;
@@ -54,7 +56,7 @@ final class MaterialCalendarGridView extends GridView {
         new AccessibilityDelegateCompat() {
           @Override
           public void onInitializeAccessibilityNodeInfo(
-              View view, AccessibilityNodeInfoCompat accessibilityNodeInfoCompat) {
+              View view, @NonNull AccessibilityNodeInfoCompat accessibilityNodeInfoCompat) {
             super.onInitializeAccessibilityNodeInfo(view, accessibilityNodeInfoCompat);
             // Stop announcing of row/col information in favor of internationalized day information.
             accessibilityNodeInfoCompat.setCollectionInfo(null);
@@ -94,6 +96,7 @@ final class MaterialCalendarGridView extends GridView {
     return false;
   }
 
+  @NonNull
   @Override
   public MonthAdapter getAdapter() {
     return (MonthAdapter) super.getAdapter();
@@ -112,7 +115,7 @@ final class MaterialCalendarGridView extends GridView {
   }
 
   @Override
-  protected final void onDraw(Canvas canvas) {
+  protected final void onDraw(@NonNull Canvas canvas) {
     super.onDraw(canvas);
     MonthAdapter monthAdapter = getAdapter();
     DateSelector<?> dateSelector = monthAdapter.dateSelector;
@@ -194,14 +197,17 @@ final class MaterialCalendarGridView extends GridView {
   }
 
   private static boolean skipMonth(
-      Long firstOfMonth, Long lastOfMonth, Long startDay, Long endDay) {
+      @Nullable Long firstOfMonth,
+      @Nullable Long lastOfMonth,
+      @Nullable Long startDay,
+      @Nullable Long endDay) {
     if (firstOfMonth == null || lastOfMonth == null || startDay == null || endDay == null) {
       return true;
     }
     return startDay > lastOfMonth || endDay < firstOfMonth;
   }
 
-  private static int horizontalMidPoint(View view) {
+  private static int horizontalMidPoint(@NonNull View view) {
     return view.getLeft() + view.getWidth() / 2;
   }
 }

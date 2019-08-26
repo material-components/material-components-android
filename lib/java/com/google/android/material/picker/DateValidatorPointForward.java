@@ -17,6 +17,7 @@ package com.google.android.material.picker;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import androidx.annotation.NonNull;
 import com.google.android.material.picker.CalendarConstraints.DateValidator;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -39,11 +40,13 @@ public class DateValidatorPointForward implements DateValidator {
 
   public static final Parcelable.Creator<DateValidatorPointForward> CREATOR =
       new Parcelable.Creator<DateValidatorPointForward>() {
+        @NonNull
         @Override
-        public DateValidatorPointForward createFromParcel(Parcel source) {
+        public DateValidatorPointForward createFromParcel(@NonNull Parcel source) {
           return new DateValidatorPointForward(source.readLong());
         }
 
+        @NonNull
         @Override
         public DateValidatorPointForward[] newArray(int size) {
           return new DateValidatorPointForward[size];
@@ -61,7 +64,7 @@ public class DateValidatorPointForward implements DateValidator {
   }
 
   @Override
-  public void writeToParcel(Parcel dest, int flags) {
+  public void writeToParcel(@NonNull Parcel dest, int flags) {
     dest.writeLong(point);
   }
 

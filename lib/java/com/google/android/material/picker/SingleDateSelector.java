@@ -56,7 +56,7 @@ public class SingleDateSelector implements DateSelector<Long> {
   }
 
   @Override
-  public void setSelection(Long selection) {
+  public void setSelection(@Nullable Long selection) {
     selectedItem = selection == null ? null : DateLongs.canonicalYearMonthDay(selection);
   }
 
@@ -65,11 +65,13 @@ public class SingleDateSelector implements DateSelector<Long> {
     return selectedItem != null;
   }
 
+  @NonNull
   @Override
   public Collection<Pair<Long, Long>> getSelectedRanges() {
     return new ArrayList<>();
   }
 
+  @NonNull
   @Override
   public Collection<Long> getSelectedDays() {
     ArrayList<Long> selections = new ArrayList<>();
@@ -126,8 +128,9 @@ public class SingleDateSelector implements DateSelector<Long> {
         context, R.attr.materialCalendarTheme, MaterialDatePicker.class.getCanonicalName());
   }
 
+  @NonNull
   @Override
-  public String getSelectionDisplayString(Context context) {
+  public String getSelectionDisplayString(@NonNull Context context) {
     Resources res = context.getResources();
     if (selectedItem == null) {
       return res.getString(R.string.mtrl_picker_date_header_unselected);
@@ -146,13 +149,15 @@ public class SingleDateSelector implements DateSelector<Long> {
   /** {@link Parcelable.Creator} */
   public static final Parcelable.Creator<SingleDateSelector> CREATOR =
       new Parcelable.Creator<SingleDateSelector>() {
+        @NonNull
         @Override
-        public SingleDateSelector createFromParcel(Parcel source) {
+        public SingleDateSelector createFromParcel(@NonNull Parcel source) {
           SingleDateSelector singleDateSelector = new SingleDateSelector();
           singleDateSelector.selectedItem = (Long) source.readValue(Long.class.getClassLoader());
           return singleDateSelector;
         }
 
+        @NonNull
         @Override
         public SingleDateSelector[] newArray(int size) {
           return new SingleDateSelector[size];
@@ -165,7 +170,7 @@ public class SingleDateSelector implements DateSelector<Long> {
   }
 
   @Override
-  public void writeToParcel(Parcel dest, int flags) {
+  public void writeToParcel(@NonNull Parcel dest, int flags) {
     dest.writeValue(selectedItem);
   }
 }

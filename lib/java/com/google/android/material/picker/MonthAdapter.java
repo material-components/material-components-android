@@ -18,6 +18,7 @@ package com.google.android.material.picker;
 import com.google.android.material.R;
 
 import android.content.Context;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
@@ -95,8 +96,9 @@ class MonthAdapter extends BaseAdapter {
     return month.daysInMonth + firstPositionInMonth();
   }
 
+  @NonNull
   @Override
-  public TextView getView(int position, View convertView, ViewGroup parent) {
+  public TextView getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
     initializeStyles(parent.getContext());
     TextView day = (TextView) convertView;
     if (convertView == null) {

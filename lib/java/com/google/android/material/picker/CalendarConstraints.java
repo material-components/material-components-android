@@ -18,6 +18,7 @@ package com.google.android.material.picker;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import androidx.annotation.NonNull;
 import java.util.Arrays;
 import java.util.Calendar;
 
@@ -26,9 +27,9 @@ import java.util.Calendar;
  */
 public final class CalendarConstraints implements Parcelable {
 
-  private final Month start;
-  private final Month end;
-  private final Month opening;
+  @NonNull private final Month start;
+  @NonNull private final Month end;
+  @NonNull private final Month opening;
   private final DateValidator validator;
 
   private final int yearSpan;
@@ -41,7 +42,8 @@ public final class CalendarConstraints implements Parcelable {
     boolean isValid(long date);
   }
 
-  private CalendarConstraints(Month start, Month end, Month opening, DateValidator validator) {
+  private CalendarConstraints(
+      @NonNull Month start, @NonNull Month end, @NonNull Month opening, DateValidator validator) {
     this.start = start;
     this.end = end;
     this.opening = opening;
@@ -68,16 +70,19 @@ public final class CalendarConstraints implements Parcelable {
   }
 
   /** Returns the earliest {@link Month} allowed by this set of bounds. */
+  @NonNull
   public Month getStart() {
     return start;
   }
 
   /** Returns the latest {@link Month} allowed by this set of bounds. */
+  @NonNull
   public Month getEnd() {
     return end;
   }
 
   /** Returns the opening {@link Month} within this set of bounds. */
+  @NonNull
   public Month getOpening() {
     return opening;
   }
@@ -124,8 +129,9 @@ public final class CalendarConstraints implements Parcelable {
   /** {@link Parcelable.Creator} */
   public static final Parcelable.Creator<CalendarConstraints> CREATOR =
       new Parcelable.Creator<CalendarConstraints>() {
+        @NonNull
         @Override
-        public CalendarConstraints createFromParcel(Parcel source) {
+        public CalendarConstraints createFromParcel(@NonNull Parcel source) {
           Month start = source.readParcelable(Month.class.getClassLoader());
           Month end = source.readParcelable(Month.class.getClassLoader());
           Month opening = source.readParcelable(Month.class.getClassLoader());
@@ -133,6 +139,7 @@ public final class CalendarConstraints implements Parcelable {
           return new CalendarConstraints(start, end, opening, validator);
         }
 
+        @NonNull
         @Override
         public CalendarConstraints[] newArray(int size) {
           return new CalendarConstraints[size];
@@ -169,7 +176,7 @@ public final class CalendarConstraints implements Parcelable {
 
     public Builder() {}
 
-    Builder(CalendarConstraints clone) {
+    Builder(@NonNull CalendarConstraints clone) {
       start = clone.start;
       end = clone.end;
       opening = clone.opening;
@@ -177,12 +184,14 @@ public final class CalendarConstraints implements Parcelable {
     }
 
     /** The earliest valid {@link Month} that can be selected. Defaults January, 1900. */
+    @NonNull
     public Builder setStart(Month month) {
       start = month;
       return this;
     }
 
     /** The latest valid {@link Month} that can be selected. Defaults December, 2100. */
+    @NonNull
     public Builder setEnd(Month month) {
       end = month;
       return this;
@@ -192,6 +201,7 @@ public final class CalendarConstraints implements Parcelable {
      * The {@link Month} the {@link MaterialCalendar} should open to. If valid, defaults to {@link
      * Month#today()} otherwise {@code start}.
      */
+    @NonNull
     public Builder setOpening(Month month) {
       opening = month;
       return this;
@@ -201,12 +211,14 @@ public final class CalendarConstraints implements Parcelable {
      * Limits valid dates to those for which {@link DateValidator#isValid(long)} is true. Defaults
      * to all dates as valid.
      */
+    @NonNull
     public Builder setValidator(DateValidator validator) {
       this.validator = validator;
       return this;
     }
 
     /** Builds the {@link CalendarConstraints} object using the set parameters or defaults. */
+    @NonNull
     public CalendarConstraints build() {
       if (opening == null) {
         Month today = Month.today();

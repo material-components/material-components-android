@@ -17,6 +17,7 @@ package com.google.android.material.picker;
 
 import com.google.android.material.R;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -30,7 +31,7 @@ abstract class DateFormatTextWatcher implements TextWatcher {
 
   private final String pattern;
   private final DateFormat dateFormat;
-  private final TextInputLayout textInputLayout;
+  @NonNull private final TextInputLayout textInputLayout;
   private final CalendarConstraints constraints;
   private final String invalidFormat;
   private final String outOfRange;
@@ -38,7 +39,7 @@ abstract class DateFormatTextWatcher implements TextWatcher {
   DateFormatTextWatcher(
       String pattern,
       DateFormat dateFormat,
-      TextInputLayout textInputLayout,
+      @NonNull TextInputLayout textInputLayout,
       CalendarConstraints constraints) {
     this.pattern = pattern;
     this.dateFormat = dateFormat;
@@ -57,7 +58,7 @@ abstract class DateFormatTextWatcher implements TextWatcher {
   public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
   @Override
-  public void onTextChanged(CharSequence s, int start, int before, int count) {
+  public void onTextChanged(@NonNull CharSequence s, int start, int before, int count) {
     if (TextUtils.isEmpty(s)) {
       textInputLayout.setError(null);
       onValidDate(null);

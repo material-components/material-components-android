@@ -79,6 +79,7 @@ class YearGridAdapter extends RecyclerView.Adapter<YearGridAdapter.ViewHolder> {
     viewHolder.textView.setOnClickListener(createYearClickListener(year));
   }
 
+  @NonNull
   private OnClickListener createYearClickListener(final int year) {
     return new OnClickListener() {
       @Override

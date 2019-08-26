@@ -37,15 +37,15 @@ import com.google.android.material.picker.MaterialCalendar.OnDayClickListener;
  */
 class MonthsPagerAdapter extends RecyclerView.Adapter<MonthsPagerAdapter.ViewHolder> {
 
-  private final CalendarConstraints calendarConstraints;
+  @NonNull private final CalendarConstraints calendarConstraints;
   private final DateSelector<?> dateSelector;
   private final OnDayClickListener onDayClickListener;
   private final int itemHeight;
 
   MonthsPagerAdapter(
-      Context context,
+      @NonNull Context context,
       DateSelector<?> dateSelector,
-      CalendarConstraints calendarConstraints,
+      @NonNull CalendarConstraints calendarConstraints,
       OnDayClickListener onDayClickListener) {
     Month firstPage = calendarConstraints.getStart();
     Month lastPage = calendarConstraints.getEnd();
@@ -74,7 +74,7 @@ class MonthsPagerAdapter extends RecyclerView.Adapter<MonthsPagerAdapter.ViewHol
     final TextView monthTitle;
     final MaterialCalendarGridView monthGrid;
 
-    ViewHolder(LinearLayout container, boolean showLabel) {
+    ViewHolder(@NonNull LinearLayout container, boolean showLabel) {
       super(container);
       monthTitle = container.findViewById(R.id.month_title);
       ViewCompat.setAccessibilityHeading(monthTitle, true);
@@ -137,11 +137,12 @@ class MonthsPagerAdapter extends RecyclerView.Adapter<MonthsPagerAdapter.ViewHol
     return getPageMonth(position).getLongName();
   }
 
+  @NonNull
   Month getPageMonth(int position) {
     return calendarConstraints.getStart().monthsLater(position);
   }
 
-  int getPosition(Month month) {
+  int getPosition(@NonNull Month month) {
     return calendarConstraints.getStart().monthsUntil(month);
   }
 }

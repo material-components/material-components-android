@@ -77,7 +77,7 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
   }
 
   @Override
-  public void setSelection(Pair<Long, Long> selection) {
+  public void setSelection(@NonNull Pair<Long, Long> selection) {
     if (selection.first != null && selection.second != null) {
       Preconditions.checkArgument(isValidRange(selection.first, selection.second));
     }
@@ -93,6 +93,7 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
     return new Pair<>(selectedStartItem, selectedEndItem);
   }
 
+  @NonNull
   @Override
   public Collection<Pair<Long, Long>> getSelectedRanges() {
     if (selectedStartItem == null || selectedEndItem == null) {
@@ -104,6 +105,7 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
     return ranges;
   }
 
+  @NonNull
   @Override
   public Collection<Long> getSelectedDays() {
     ArrayList<Long> selections = new ArrayList<>();
@@ -117,7 +119,7 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
   }
 
   @Override
-  public int getDefaultThemeResId(Context context) {
+  public int getDefaultThemeResId(@NonNull Context context) {
     Resources res = context.getResources();
     int maximumDefaultFullscreenWidth =
         res.getDimensionPixelSize(R.dimen.mtrl_calendar_maximum_default_fullscreen_width);
@@ -129,8 +131,9 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
         context, defaultThemeAttr, MaterialDatePicker.class.getCanonicalName());
   }
 
+  @NonNull
   @Override
-  public String getSelectionDisplayString(Context context) {
+  public String getSelectionDisplayString(@NonNull Context context) {
     Resources res = context.getResources();
     if (selectedStartItem == null && selectedEndItem == null) {
       return res.getString(R.string.mtrl_picker_range_header_unselected);
@@ -228,9 +231,9 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
   }
 
   private void updateIfValidTextProposal(
-      TextInputLayout startTextInput,
-      TextInputLayout endTextInput,
-      OnSelectionChangedListener<Pair<Long, Long>> listener) {
+      @NonNull TextInputLayout startTextInput,
+      @NonNull TextInputLayout endTextInput,
+      @NonNull OnSelectionChangedListener<Pair<Long, Long>> listener) {
     if (proposedTextStart == null || proposedTextEnd == null) {
       clearInvalidRange(startTextInput, endTextInput);
       return;
@@ -244,7 +247,7 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
     }
   }
 
-  private void clearInvalidRange(TextInputLayout start, TextInputLayout end) {
+  private void clearInvalidRange(@NonNull TextInputLayout start, @NonNull TextInputLayout end) {
     if (start.getError() != null && invalidRangeStartError.contentEquals(start.getError())) {
       start.setError(null);
     }
@@ -253,7 +256,7 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
     }
   }
 
-  private void setInvalidRange(TextInputLayout start, TextInputLayout end) {
+  private void setInvalidRange(@NonNull TextInputLayout start, @NonNull TextInputLayout end) {
     start.setError(invalidRangeStartError);
     end.setError(invalidRangeEndError);
   }
@@ -263,8 +266,9 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
   /** {@link Parcelable.Creator} */
   public static final Parcelable.Creator<RangeDateSelector> CREATOR =
       new Parcelable.Creator<RangeDateSelector>() {
+        @NonNull
         @Override
-        public RangeDateSelector createFromParcel(Parcel source) {
+        public RangeDateSelector createFromParcel(@NonNull Parcel source) {
           RangeDateSelector rangeDateSelector = new RangeDateSelector();
           rangeDateSelector.selectedStartItem =
               (Long) source.readValue(Long.class.getClassLoader());
@@ -272,6 +276,7 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
           return rangeDateSelector;
         }
 
+        @NonNull
         @Override
         public RangeDateSelector[] newArray(int size) {
           return new RangeDateSelector[size];
@@ -284,7 +289,7 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
   }
 
   @Override
-  public void writeToParcel(Parcel dest, int flags) {
+  public void writeToParcel(@NonNull Parcel dest, int flags) {
     dest.writeValue(selectedStartItem);
     dest.writeValue(selectedEndItem);
   }

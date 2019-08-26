@@ -79,9 +79,9 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
   @VisibleForTesting static final Object SELECTOR_TOGGLE_TAG = "SELECTOR_TOGGLE_TAG";
 
   private int themeResId;
-  private DateSelector<S> dateSelector;
-  private CalendarConstraints calendarConstraints;
-  private Month current;
+  @Nullable private DateSelector<S> dateSelector;
+  @Nullable private CalendarConstraints calendarConstraints;
+  @Nullable private Month current;
   private CalendarSelector calendarSelector;
   private CalendarStyle calendarStyle;
   private RecyclerView yearSelector;
@@ -89,8 +89,11 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
   private View yearFrame;
   private View dayFrame;
 
+  @NonNull
   static <T> MaterialCalendar<T> newInstance(
-      DateSelector<T> dateSelector, int themeResId, CalendarConstraints calendarConstraints) {
+      DateSelector<T> dateSelector,
+      int themeResId,
+      @NonNull CalendarConstraints calendarConstraints) {
     MaterialCalendar<T> materialCalendar = new MaterialCalendar<>();
     Bundle args = new Bundle();
     args.putInt(THEME_RES_ID_KEY, themeResId);
@@ -149,7 +152,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
         new AccessibilityDelegateCompat() {
           @Override
           public void onInitializeAccessibilityNodeInfo(
-              View view, AccessibilityNodeInfoCompat accessibilityNodeInfoCompat) {
+              View view, @NonNull AccessibilityNodeInfoCompat accessibilityNodeInfoCompat) {
             super.onInitializeAccessibilityNodeInfo(view, accessibilityNodeInfoCompat);
             // Remove announcing row/col info.
             accessibilityNodeInfoCompat.setCollectionInfo(null);
@@ -223,6 +226,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
     return root;
   }
 
+  @NonNull
   private ItemDecoration createItemDecoration() {
     return new ItemDecoration() {
 
@@ -274,11 +278,13 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
     };
   }
 
+  @Nullable
   Month getCurrentMonth() {
     return current;
   }
 
   /** Returns the {@link CalendarConstraints} in use by this {@link MaterialCalendar}. */
+  @Nullable
   CalendarConstraints getCalendarConstraints() {
     return calendarConstraints;
   }
@@ -307,6 +313,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
     }
   }
 
+  @Nullable
   @Override
   public DateSelector<S> getDateSelector() {
     return dateSelector;
@@ -323,7 +330,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
 
   /** Returns the pixel height of each {@link android.view.View} representing a day. */
   @Px
-  static int getDayHeight(Context context) {
+  static int getDayHeight(@NonNull Context context) {
     return context.getResources().getDimensionPixelSize(R.dimen.mtrl_calendar_day_height);
   }
 
@@ -354,7 +361,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
   }
 
   private void addActionsToMonthNavigation(
-      final View root, final MonthsPagerAdapter monthsPagerAdapter) {
+      @NonNull final View root, @NonNull final MonthsPagerAdapter monthsPagerAdapter) {
     final MaterialButton monthDropSelect = root.findViewById(R.id.month_navigation_fragment_toggle);
     monthDropSelect.setTag(SELECTOR_TOGGLE_TAG);
     ViewCompat.setAccessibilityDelegate(
@@ -363,7 +370,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
 
           @Override
           public void onInitializeAccessibilityNodeInfo(
-              View view, AccessibilityNodeInfoCompat accessibilityNodeInfoCompat) {
+              View view, @NonNull AccessibilityNodeInfoCompat accessibilityNodeInfoCompat) {
             super.onInitializeAccessibilityNodeInfo(view, accessibilityNodeInfoCompat);
             accessibilityNodeInfoCompat.setHintText(
                 dayFrame.getVisibility() == View.VISIBLE
@@ -437,6 +444,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
         });
   }
 
+  @NonNull
   LinearLayoutManager getLayoutManager() {
     return (LinearLayoutManager) recyclerView.getLayoutManager();
   }

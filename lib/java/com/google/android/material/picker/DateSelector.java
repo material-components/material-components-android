@@ -74,6 +74,7 @@ public interface DateSelector<S> extends Parcelable {
    *
    * <p>Uses {@link R.styleable#MaterialCalendar_daySelectedStyle} for styling.
    */
+  @NonNull
   Collection<Long> getSelectedDays();
 
   /**
@@ -81,8 +82,10 @@ public interface DateSelector<S> extends Parcelable {
    *
    * <p>Uses {@link R.styleable#MaterialCalendar_rangeFillColor} for styling.
    */
+  @NonNull
   Collection<Pair<Long, Long>> getSelectedRanges();
 
+  @NonNull
   String getSelectionDisplayString(Context context);
 
   @StringRes
@@ -91,6 +94,7 @@ public interface DateSelector<S> extends Parcelable {
   @StyleRes
   int getDefaultThemeResId(Context context);
 
+  @NonNull
   View onCreateTextInputView(
       @NonNull LayoutInflater layoutInflater,
       @Nullable ViewGroup viewGroup,

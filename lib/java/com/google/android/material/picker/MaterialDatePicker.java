@@ -86,19 +86,20 @@ public final class MaterialDatePicker<S> extends DialogFragment {
       new LinkedHashSet<>();
 
   @StyleRes private int overrideThemeResId;
-  private DateSelector<S> dateSelector;
+  @Nullable private DateSelector<S> dateSelector;
   private PickerFragment<S> pickerFragment;
-  private CalendarConstraints calendarConstraints;
+  @Nullable private CalendarConstraints calendarConstraints;
   private MaterialCalendar<S> calendar;
   @StringRes private int titleTextResId;
   private boolean fullscreen;
 
   private TextView headerSelectionText;
   private CheckableImageButton headerToggleButton;
-  private MaterialShapeDrawable background;
+  @Nullable private MaterialShapeDrawable background;
   private Button confirmButton;
 
-  static <S> MaterialDatePicker<S> newInstance(Builder<S> options) {
+  @NonNull
+  static <S> MaterialDatePicker<S> newInstance(@NonNull Builder<S> options) {
     MaterialDatePicker<S> materialDatePickerDialogFragment = new MaterialDatePicker<>();
     Bundle args = new Bundle();
     args.putInt(OVERRIDE_THEME_RES_ID, options.overrideThemeResId);
@@ -110,7 +111,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
   }
 
   @Override
-  public final void onSaveInstanceState(Bundle bundle) {
+  public final void onSaveInstanceState(@NonNull Bundle bundle) {
     super.onSaveInstanceState(bundle);
     bundle.putInt(OVERRIDE_THEME_RES_ID, overrideThemeResId);
     bundle.putParcelable(GRID_SELECTOR_KEY, dateSelector);
@@ -139,6 +140,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     return dateSelector.getDefaultThemeResId(context);
   }
 
+  @NonNull
   @Override
   public final Dialog onCreateDialog(@Nullable Bundle bundle) {
     Dialog dialog = new Dialog(requireContext(), getThemeResId(requireContext()));
@@ -327,7 +329,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
         });
   }
 
-  private void updateToggleContentDescription(CheckableImageButton toggle) {
+  private void updateToggleContentDescription(@NonNull CheckableImageButton toggle) {
     String contentDescription =
         headerToggleButton.isChecked()
             ? toggle.getContext().getString(R.string.mtrl_picker_toggle_to_calendar_input_mode)
@@ -336,6 +338,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
   }
 
   // Create StateListDrawable programmatically for pre-lollipop support
+  @NonNull
   private static Drawable createHeaderToggleDrawable(Context context) {
     StateListDrawable toggleDrawable = new StateListDrawable();
     toggleDrawable.addState(
@@ -346,7 +349,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     return toggleDrawable;
   }
 
-  static boolean isFullscreen(Context context) {
+  static boolean isFullscreen(@NonNull Context context) {
     int calendarStyle =
         MaterialAttributes.resolveOrThrow(
             context, R.attr.materialCalendarStyle, MaterialCalendar.class.getCanonicalName());
@@ -357,7 +360,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     return fullscreen;
   }
 
-  private static int getDialogPickerHeight(Context context) {
+  private static int getDialogPickerHeight(@NonNull Context context) {
     Resources resources = context.getResources();
     int navigationHeight =
         resources.getDimensionPixelSize(R.dimen.mtrl_calendar_navigation_height)
@@ -374,7 +377,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     return navigationHeight + daysOfWeekHeight + calendarHeight + calendarPadding;
   }
 
-  private static int getPaddedPickerWidth(Context context) {
+  private static int getPaddedPickerWidth(@NonNull Context context) {
     Resources resources = context.getResources();
     int padding = resources.getDimensionPixelOffset(R.dimen.mtrl_calendar_content_padding);
     int daysInWeek = Month.today().daysInWeek;
@@ -474,51 +477,59 @@ public final class MaterialDatePicker<S> extends DialogFragment {
 
     CalendarConstraints calendarConstraints;
     int titleTextResId = 0;
-    S selection = null;
+    @Nullable S selection = null;
 
     private Builder(DateSelector<S> dateSelector) {
       this.dateSelector = dateSelector;
     }
 
     /** Sets the Builder's selection manager to the provided {@link DateSelector}. */
+    @NonNull
     static <S> Builder<S> customDatePicker(DateSelector<S> dateSelector) {
       return new Builder<>(dateSelector);
     }
 
     /** Used to create a Builder using a {@link SingleDateSelector}. */
+    @NonNull
     public static Builder<Long> datePicker() {
       return new Builder<>(new SingleDateSelector());
     }
 
     /** Used to create a Builder using {@link RangeDateSelector}. */
+    @NonNull
     public static Builder<Pair<Long, Long>> dateRangePicker() {
       return new Builder<>(new RangeDateSelector());
     }
 
+    @NonNull
     public Builder<S> setSelection(S selection) {
       this.selection = selection;
       return this;
     }
 
     /** Sets the theme controlling fullscreen mode as well as other styles. */
+    @NonNull
     public Builder<S> setTheme(@StyleRes int themeResId) {
       this.overrideThemeResId = themeResId;
       return this;
     }
 
     /** Sets the first, last, and starting {@link Month}. */
+    @NonNull
     public Builder<S> setCalendarConstraints(CalendarConstraints bounds) {
       this.calendarConstraints = bounds;
       return this;
     }
 
     /** Sets the text used to guide the user at the top of the picker. */
+    @NonNull
     public Builder<S> setTitleTextResId(@StringRes int titleTextResId) {
       this.titleTextResId = titleTextResId;
       return this;
     }
 
     /** Creates a {@link MaterialDatePicker} with the provided options. */
+    @NonNull
     public MaterialDatePicker<S> build() {
       if (calendarConstraints == null) {
         calendarConstraints = new CalendarConstraints.Builder().build();

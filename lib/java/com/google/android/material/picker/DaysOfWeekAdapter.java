@@ -20,6 +20,8 @@ import com.google.android.material.R;
 import android.annotation.SuppressLint;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +40,7 @@ import java.util.Locale;
  */
 class DaysOfWeekAdapter extends BaseAdapter {
 
-  private final Calendar calendar;
+  @NonNull private final Calendar calendar;
   private final int daysInWeek;
   private final int firstDayOfWeek;
   /** Style value from Calendar.NARROW_FORMAT unavailable before 1.8 */
@@ -54,6 +56,7 @@ class DaysOfWeekAdapter extends BaseAdapter {
     firstDayOfWeek = calendar.getFirstDayOfWeek();
   }
 
+  @Nullable
   @Override
   public Integer getItem(int position) {
     if (position >= daysInWeek) {
@@ -73,9 +76,10 @@ class DaysOfWeekAdapter extends BaseAdapter {
     return daysInWeek;
   }
 
+  @Nullable
   @SuppressLint("WrongConstant")
   @Override
-  public View getView(int position, View convertView, ViewGroup parent) {
+  public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
     TextView dayOfWeek = (TextView) convertView;
     if (convertView == null) {
       LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());

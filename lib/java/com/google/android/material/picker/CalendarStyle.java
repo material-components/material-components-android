@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Paint;
+import androidx.annotation.NonNull;
 import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.resources.MaterialResources;
 
@@ -34,43 +35,43 @@ final class CalendarStyle {
    * The {@link R.styleable#MaterialCalendarItem} style for days with no unique characteristics from
    * {@link R.styleable#MaterialCalendar_dayStyle}.
    */
-  final CalendarItemStyle day;
+  @NonNull final CalendarItemStyle day;
   /**
    * The {@link R.styleable#MaterialCalendarItem} style for selected days from {@link
    * R.styleable#MaterialCalendar_daySelectedStyle}.
    */
-  final CalendarItemStyle selectedDay;
+  @NonNull final CalendarItemStyle selectedDay;
   /**
    * The {@link R.styleable#MaterialCalendarItem} style for today from {@link
    * R.styleable#MaterialCalendar_dayTodayStyle}.
    */
-  final CalendarItemStyle todayDay;
+  @NonNull final CalendarItemStyle todayDay;
 
   /**
    * The {@link R.styleable#MaterialCalendarItem} style for years with no unique characteristics
    * from {@link R.styleable#MaterialCalendar_yearStyle}.
    */
-  final CalendarItemStyle year;
+  @NonNull final CalendarItemStyle year;
   /**
    * The {@link R.styleable#MaterialCalendarItem} style for selected years from {@link
    * R.styleable#MaterialCalendar_yearSelectedStyle}.
    */
-  final CalendarItemStyle selectedYear;
+  @NonNull final CalendarItemStyle selectedYear;
   /**
    * The {@link R.styleable#MaterialCalendarItem} style for today's year from {@link
    * R.styleable#MaterialCalendar_yearTodayStyle}.
    */
-  final CalendarItemStyle todayYear;
+  @NonNull final CalendarItemStyle todayYear;
 
-  final CalendarItemStyle invalidDay;
+  @NonNull final CalendarItemStyle invalidDay;
 
   /**
    * A {@link Paint} for styling days between selected days with {@link
    * R.styleable#MaterialCalendar_rangeFillColor}.
    */
-  final Paint rangeFill;
+  @NonNull final Paint rangeFill;
 
-  CalendarStyle(Context context) {
+  CalendarStyle(@NonNull Context context) {
     int calendarStyle =
         MaterialAttributes.resolveOrThrow(
             context, R.attr.materialCalendarStyle, MaterialCalendar.class.getCanonicalName());

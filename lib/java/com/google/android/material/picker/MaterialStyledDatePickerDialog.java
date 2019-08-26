@@ -52,8 +52,8 @@ public class MaterialStyledDatePickerDialog extends DatePickerDialog {
   private static final int DEF_STYLE_RES =
       R.style.MaterialAlertDialog_MaterialComponents_Picker_Date_Spinner;
 
-  private final Drawable background;
-  private final Rect backgroundInsets;
+  @NonNull private final Drawable background;
+  @NonNull private final Rect backgroundInsets;
 
   public MaterialStyledDatePickerDialog(@NonNull Context context) {
     this(context, 0);

@@ -26,6 +26,7 @@ import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
@@ -48,7 +49,8 @@ final class CalendarItemStyle {
    * R.styleable.MaterialCalendarItem#itemShapeAppearance} and {@link
    * R.styleable.MaterialCalendarItem#itemShapeAppearanceOverlay}.
    */
-  private final Rect insets;
+  @NonNull private final Rect insets;
+
   private final ColorStateList textColor;
   private final ColorStateList backgroundColor;
   private final ColorStateList strokeColor;
@@ -61,7 +63,7 @@ final class CalendarItemStyle {
       ColorStateList strokeColor,
       int strokeWidth,
       ShapeAppearanceModel itemShape,
-      Rect insets) {
+      @NonNull Rect insets) {
     Preconditions.checkArgumentNonnegative(insets.left);
     Preconditions.checkArgumentNonnegative(insets.top);
     Preconditions.checkArgumentNonnegative(insets.right);
@@ -79,7 +81,9 @@ final class CalendarItemStyle {
    * Creates a {@link CalendarItemStyle} using the provided {@link
    * R.styleable#MaterialCalendarItem}.
    */
-  static CalendarItemStyle create(Context context, @StyleRes int materialCalendarItemStyle) {
+  @NonNull
+  static CalendarItemStyle create(
+      @NonNull Context context, @StyleRes int materialCalendarItemStyle) {
     Preconditions.checkArgument(
         materialCalendarItemStyle != 0, "Cannot create a CalendarItemStyle with a styleResId of 0");
 
@@ -127,7 +131,7 @@ final class CalendarItemStyle {
   }
 
   /** Applies the {@link R.styleable#MaterialCalendarDay} style to the provided {@code item} */
-  void styleItem(TextView item) {
+  void styleItem(@NonNull TextView item) {
     MaterialShapeDrawable backgroundDrawable = new MaterialShapeDrawable();
     MaterialShapeDrawable shapeMask = new MaterialShapeDrawable();
     backgroundDrawable.setShapeAppearanceModel(itemShape);

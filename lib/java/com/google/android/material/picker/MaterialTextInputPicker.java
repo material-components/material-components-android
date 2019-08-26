@@ -35,11 +35,12 @@ public final class MaterialTextInputPicker<S> extends PickerFragment<S> {
   private static final String GRID_SELECTOR_KEY = "GRID_SELECTOR_KEY";
   private static final String CALENDAR_CONSTRAINTS_KEY = "CALENDAR_CONSTRAINTS_KEY";
 
-  private DateSelector<S> dateSelector;
-  private CalendarConstraints calendarConstraints;
+  @Nullable private DateSelector<S> dateSelector;
+  @Nullable private CalendarConstraints calendarConstraints;
 
+  @NonNull
   static <T> MaterialTextInputPicker<T> newInstance(
-      DateSelector<T> dateSelector, CalendarConstraints calendarConstraints) {
+      @NonNull DateSelector<T> dateSelector, @NonNull CalendarConstraints calendarConstraints) {
     MaterialTextInputPicker<T> materialCalendar = new MaterialTextInputPicker<>();
     Bundle args = new Bundle();
     args.putParcelable(GRID_SELECTOR_KEY, dateSelector);
@@ -84,8 +85,15 @@ public final class MaterialTextInputPicker<S> extends PickerFragment<S> {
         });
   }
 
+  @NonNull
   @Override
   public DateSelector<S> getDateSelector() {
+    if (dateSelector == null) {
+      throw new IllegalStateException(
+          "dateSelector should not be null. Use MaterialTextInputPicker#newInstance() to create"
+              + " this fragment with a DateSelector, and call this method after the fragment has"
+              + " been created.");
+    }
     return dateSelector;
   }
 }

@@ -18,6 +18,7 @@ package com.google.android.material.picker;
 import android.icu.text.DateFormat;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
 import java.text.SimpleDateFormat;
@@ -40,7 +41,7 @@ class DateStrings {
    * @param locale Locale for date string.
    * @return Date string with year, month, and day formatted properly for the specified Locale.
    */
-  static String getYearMonthDay(Date date, Locale locale) {
+  static String getYearMonthDay(@NonNull Date date, @NonNull Locale locale) {
     if (VERSION.SDK_INT >= VERSION_CODES.N) {
       DateFormat df = DateFormat.getInstanceForSkeleton(DateFormat.YEAR_ABBR_MONTH_DAY, locale);
       return df.format(date);
@@ -61,7 +62,7 @@ class DateStrings {
    * @param locale Locale for date string.
    * @return Date string with month and day formatted properly for the specified Locale.
    */
-  static String getMonthDay(Date date, Locale locale) {
+  static String getMonthDay(@NonNull Date date, @NonNull Locale locale) {
     if (VERSION.SDK_INT >= VERSION_CODES.N) {
       DateFormat df = DateFormat.getInstanceForSkeleton(DateFormat.ABBR_MONTH_DAY, locale);
       return df.format(date);
@@ -185,7 +186,8 @@ class DateStrings {
     }
   }
 
-  private static String removeYearFromDateFormatPattern(String pattern) {
+  @NonNull
+  private static String removeYearFromDateFormatPattern(@NonNull String pattern) {
     String yearCharacters = "yY";
 
     int yearPosition = findCharactersInDateFormatPattern(pattern, yearCharacters, 1, 0);
@@ -212,7 +214,10 @@ class DateStrings {
   }
 
   private static int findCharactersInDateFormatPattern(
-      String pattern, String characterSequence, int increment, int initialPosition) {
+      @NonNull String pattern,
+      @NonNull String characterSequence,
+      int increment,
+      int initialPosition) {
     int position = initialPosition;
 
     // Increment while we haven't found the characters we're looking for in the date pattern

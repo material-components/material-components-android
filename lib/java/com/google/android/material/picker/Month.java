@@ -18,6 +18,7 @@ package com.google.android.material.picker;
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.IntDef;
+import androidx.annotation.NonNull;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.text.SimpleDateFormat;
@@ -47,14 +48,14 @@ public final class Month implements Comparable<Month>, Parcelable {
   })
   @interface Months {}
 
-  private final Calendar calendar;
-  private final String longName;
+  @NonNull private final Calendar calendar;
+  @NonNull private final String longName;
   @Months final int month;
   final int year;
   final int daysInWeek;
   final int daysInMonth;
 
-  private Month(Calendar calendar) {
+  private Month(@NonNull Calendar calendar) {
     this.calendar = calendar;
     this.calendar.set(Calendar.DAY_OF_MONTH, 1);
     month = calendar.get(Calendar.MONTH);
@@ -69,6 +70,7 @@ public final class Month implements Comparable<Month>, Parcelable {
    * Creates an instance of Month that contains the provided {@code timeInMillis} where {@code
    * timeInMillis} is in milliseconds since 00:00:00 January 1, 1970, UTC.
    */
+  @NonNull
   public static Month create(long timeInMillis) {
     Calendar calendar = Calendar.getInstance();
     calendar.setTimeInMillis(timeInMillis);
@@ -83,6 +85,7 @@ public final class Month implements Comparable<Month>, Parcelable {
    *     Calendar#JANUARY}
    * @return A Month object backed by a new {@link Calendar} instance
    */
+  @NonNull
   static Month create(int year, @Months int month) {
     Calendar calendar = Calendar.getInstance();
     calendar.clear();
@@ -92,6 +95,7 @@ public final class Month implements Comparable<Month>, Parcelable {
   }
 
   /** Returns the {@link Month} that contains today (as per {@link Calendar#getInstance()}. */
+  @NonNull
   public static Month today() {
     Calendar calendar = Calendar.getInstance();
     return Month.create(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH));
@@ -124,7 +128,7 @@ public final class Month implements Comparable<Month>, Parcelable {
   }
 
   @Override
-  public int compareTo(Month other) {
+  public int compareTo(@NonNull Month other) {
     return calendar.compareTo(other.calendar);
   }
 
@@ -137,7 +141,7 @@ public final class Month implements Comparable<Month>, Parcelable {
    * @throws IllegalArgumentException when {@link Calendar#getInstance()} is not an instance of
    *     {@link GregorianCalendar}
    */
-  int monthsUntil(Month other) {
+  int monthsUntil(@NonNull Month other) {
     if (calendar instanceof GregorianCalendar) {
       return (other.year - year) * 12 + (other.month - month);
     } else {
@@ -168,6 +172,7 @@ public final class Month implements Comparable<Month>, Parcelable {
    * Returns a {@link com.google.android.material.picker.Month} {@code months} months after this
    * instance.
    */
+  @NonNull
   Month monthsLater(int months) {
     Calendar laterMonth = ((Calendar) calendar.clone());
     laterMonth.add(Calendar.MONTH, months);
@@ -175,6 +180,7 @@ public final class Month implements Comparable<Month>, Parcelable {
   }
 
   /** Returns a localized String representation of the month name and year. */
+  @NonNull
   String getLongName() {
     return longName;
   }
@@ -184,13 +190,15 @@ public final class Month implements Comparable<Month>, Parcelable {
   /** {@link Parcelable.Creator} */
   public static final Parcelable.Creator<Month> CREATOR =
       new Parcelable.Creator<Month>() {
+        @NonNull
         @Override
-        public Month createFromParcel(Parcel source) {
+        public Month createFromParcel(@NonNull Parcel source) {
           int year = source.readInt();
           int month = source.readInt();
           return Month.create(year, month);
         }
 
+        @NonNull
         @Override
         public Month[] newArray(int size) {
           return new Month[size];
@@ -203,7 +211,7 @@ public final class Month implements Comparable<Month>, Parcelable {
   }
 
   @Override
-  public void writeToParcel(Parcel dest, int flags) {
+  public void writeToParcel(@NonNull Parcel dest, int flags) {
     dest.writeInt(year);
     dest.writeInt(month);
   }
