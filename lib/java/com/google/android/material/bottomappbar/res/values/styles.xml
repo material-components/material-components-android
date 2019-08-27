@@ -37,8 +37,8 @@
   <style name="Widget.MaterialComponents.BottomAppBar.PrimarySurface" parent="Widget.MaterialComponents.BottomAppBar.Colored"/>
 
   <style name="ThemeOverlay.MaterialComponents.BottomAppBar.Surface" parent="">
-    <item name="colorControlNormal">@color/mtrl_on_surface_emphasis_medium</item>
-    <item name="actionMenuTextColor">@color/mtrl_on_surface_emphasis_medium</item>
+    <item name="colorControlNormal">@color/material_on_surface_emphasis_medium</item>
+    <item name="actionMenuTextColor">@color/material_on_surface_emphasis_medium</item>
   </style>
 
   <style name="ThemeOverlay.MaterialComponents.BottomAppBar.Primary" parent="">

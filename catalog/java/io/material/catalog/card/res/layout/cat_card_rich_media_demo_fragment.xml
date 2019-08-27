@@ -81,7 +81,7 @@
               android:layout_marginLeft="@dimen/cat_card_single_spacing"
               android:background="@android:color/transparent"
               android:contentDescription="@string/cat_card_rich_media_image_view_description"
-              app:backgroundTint="@color/mtrl_on_surface_emphasis_medium"
+              app:backgroundTint="@color/material_on_surface_emphasis_medium"
               app:backgroundTintMode="add"
               app:srcCompat="@drawable/ic_components_24px"/>
         </LinearLayout>
@@ -178,7 +178,7 @@
             android:layout_height="194dp"
             android:background="@android:color/transparent"
             android:contentDescription="@string/cat_card_rich_media_image_view_description"
-            app:backgroundTint="@color/mtrl_on_surface_emphasis_medium"
+            app:backgroundTint="@color/material_on_surface_emphasis_medium"
             app:backgroundTintMode="add"
             app:srcCompat="@drawable/ic_components_24px"/>
 
@@ -243,7 +243,7 @@
             android:layout_height="194dp"
             android:background="@android:color/transparent"
             android:contentDescription="@string/cat_card_rich_media_image_view_description"
-            app:backgroundTint="@color/mtrl_on_surface_emphasis_medium"
+            app:backgroundTint="@color/material_on_surface_emphasis_medium"
             app:backgroundTintMode="add"
             app:srcCompat="@drawable/ic_components_24px"/>
 

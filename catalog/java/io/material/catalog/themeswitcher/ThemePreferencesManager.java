@@ -65,7 +65,8 @@ public class ThemePreferencesManager {
       menuBuilder.setOptionalIconsVisible(true);
 
       ColorStateList defaultColor =
-          AppCompatResources.getColorStateList(context, R.color.mtrl_on_surface_emphasis_medium);
+          AppCompatResources.getColorStateList(
+              context, R.color.material_on_surface_emphasis_medium);
       int selectedColor = MaterialColors.getColor(anchor, resourceProvider.getPrimaryColor());
       int currentThemeId = getCurrentThemeId();
       for (int i = 0; i < menuBuilder.size(); i++) {

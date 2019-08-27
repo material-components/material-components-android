@@ -16,9 +16,9 @@
 -->
 <resources>
   <!-- High emphasis of 87% for type. -->
-  <item name="mtrl_emphasis_high_type" format="float" type="dimen">0.87</item>
+  <item name="material_emphasis_high_type" format="float" type="dimen">0.87</item>
   <!-- Medium emphasis of 60% is the same for type and icon. -->
-  <item name="mtrl_emphasis_medium" format="float" type="dimen">0.6</item>
+  <item name="material_emphasis_medium" format="float" type="dimen">0.6</item>
   <!-- Disabled emphasis of 38% is the same for type and icon. -->
-  <item name="mtrl_emphasis_disabled" format="float" type="dimen">0.38</item>
+  <item name="material_emphasis_disabled" format="float" type="dimen">0.38</item>
 </resources>

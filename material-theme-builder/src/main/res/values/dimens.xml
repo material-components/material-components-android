@@ -27,7 +27,7 @@
     <dimen name="elevation_default_top_app_bar">4dp</dimen>
 
     <!--Emphasis modifiers for "on" colors-->
-    <dimen name="alpha_emphasis_high">@dimen/mtrl_emphasis_high_type</dimen>
-    <dimen name="alpha_emphasis_medium">@dimen/mtrl_emphasis_medium</dimen>
-    <dimen name="alpha_emphasis_disabled">@dimen/mtrl_emphasis_disabled</dimen>
+    <dimen name="alpha_emphasis_high">@dimen/material_emphasis_high_type</dimen>
+    <dimen name="alpha_emphasis_medium">@dimen/material_emphasis_medium</dimen>
+    <dimen name="alpha_emphasis_disabled">@dimen/material_emphasis_disabled</dimen>
 </resources>

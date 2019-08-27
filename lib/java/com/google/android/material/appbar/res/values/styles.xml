@@ -59,15 +59,15 @@
     <item name="android:elevation" tools:ignore="NewApi">@dimen/design_appbar_elevation</item>
     <item name="android:background">?attr/colorPrimary</item>
     <item name="titleTextColor">?attr/colorOnPrimary</item>
-    <item name="subtitleTextColor">@color/mtrl_on_primary_emphasis_medium</item>
+    <item name="subtitleTextColor">@color/material_on_primary_emphasis_medium</item>
     <!-- Note: this theme overlay will only work if the style is applied directly to a Toolbar. -->
     <item name="android:theme">@style/ThemeOverlay.MaterialComponents.Toolbar.Primary</item>
   </style>
 
   <style name="Widget.MaterialComponents.Toolbar.Surface">
     <item name="android:background">?attr/colorSurface</item>
-    <item name="titleTextColor">@color/mtrl_on_surface_emphasis_high_type</item>
-    <item name="subtitleTextColor">@color/mtrl_on_surface_emphasis_medium</item>
+    <item name="titleTextColor">@color/material_on_surface_emphasis_high_type</item>
+    <item name="subtitleTextColor">@color/material_on_surface_emphasis_medium</item>
     <!-- Note: this theme overlay will only work if the style is applied directly to a Toolbar. -->
     <item name="android:theme">@style/ThemeOverlay.MaterialComponents.Toolbar.Surface</item>
   </style>
@@ -80,8 +80,8 @@
   </style>
 
   <style name="ThemeOverlay.MaterialComponents.Toolbar.Surface" parent="">
-    <item name="colorControlNormal">@color/mtrl_on_surface_emphasis_medium</item>
-    <item name="actionMenuTextColor">@color/mtrl_on_surface_emphasis_medium</item>
+    <item name="colorControlNormal">@color/material_on_surface_emphasis_medium</item>
+    <item name="actionMenuTextColor">@color/material_on_surface_emphasis_medium</item>
   </style>
 
   <!-- ActionBar styles -->
@@ -115,7 +115,7 @@
 
   <style name="ThemeOverlay.MaterialComponents.ActionBar.Primary" parent="">
     <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
-    <item name="android:textColorSecondary">@color/mtrl_on_primary_emphasis_medium</item>
+    <item name="android:textColorSecondary">@color/material_on_primary_emphasis_medium</item>
     <item name="actionMenuTextColor">?attr/colorOnPrimary</item>
     <item name="colorControlNormal">?attr/colorOnPrimary</item>
     <!-- Counteracts the effect of setting textColorPrimary for popup menus. -->
@@ -125,10 +125,10 @@
   </style>
 
   <style name="ThemeOverlay.MaterialComponents.ActionBar.Surface" parent="">
-    <item name="android:textColorPrimary">@color/mtrl_on_surface_emphasis_high_type</item>
-    <item name="android:textColorSecondary">@color/mtrl_on_surface_emphasis_medium</item>
-    <item name="actionMenuTextColor">@color/mtrl_on_surface_emphasis_medium</item>
-    <item name="colorControlNormal">@color/mtrl_on_surface_emphasis_medium</item>
+    <item name="android:textColorPrimary">@color/material_on_surface_emphasis_high_type</item>
+    <item name="android:textColorSecondary">@color/material_on_surface_emphasis_medium</item>
+    <item name="actionMenuTextColor">@color/material_on_surface_emphasis_medium</item>
+    <item name="colorControlNormal">@color/material_on_surface_emphasis_medium</item>
     <!-- Counteracts the effect of setting textColorPrimary for popup menus. -->
     <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
     <!-- Used to tint the ActionMode background and preserve the underline. -->

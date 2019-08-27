@@ -15,5 +15,5 @@
   ~ limitations under the License.
 -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:alpha="@dimen/mtrl_emphasis_disabled" android:color="?attr/colorOnPrimary"/>
+  <item android:alpha="@dimen/material_emphasis_medium" android:color="?attr/colorOnSurface"/>
 </selector>
