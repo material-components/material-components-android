@@ -15,10 +15,6 @@
  */
 package com.google.android.material.textfield;
 
-import static com.google.android.material.testutils.TestUtilsActions.waitFor;
-import static com.google.android.material.testutils.TextInputLayoutActions.clickIcon;
-import static com.google.android.material.testutils.TextInputLayoutActions.skipAnimations;
-import static com.google.android.material.testutils.TextInputLayoutMatchers.endIconHasContentDescription;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.clearText;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -30,6 +26,10 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static com.google.android.material.testutils.TestUtilsActions.waitFor;
+import static com.google.android.material.testutils.TextInputLayoutActions.clickIcon;
+import static com.google.android.material.testutils.TextInputLayoutActions.skipAnimations;
+import static com.google.android.material.testutils.TextInputLayoutMatchers.endIconHasContentDescription;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.core.Is.is;

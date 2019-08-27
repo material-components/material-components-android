@@ -25,12 +25,12 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 import android.os.SystemClock;
-import com.google.android.material.testutils.DisableAnimationsRule;
 import androidx.fragment.app.Fragment;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.filters.MediumTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
+import com.google.android.material.testutils.DisableAnimationsRule;
 import io.material.catalog.R;
 import io.material.catalog.main.MainActivity;
 import org.junit.Before;

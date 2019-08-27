@@ -16,15 +16,15 @@
 
 package com.google.android.material.appbar;
 
+import static androidx.test.InstrumentationRegistry.getInstrumentation;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static com.google.android.material.testutils.CollapsingToolbarLayoutActions.setContentScrimColor;
 import static com.google.android.material.testutils.SwipeUtils.swipeDown;
 import static com.google.android.material.testutils.SwipeUtils.swipeUp;
 import static com.google.android.material.testutils.TestUtilsActions.setText;
 import static com.google.android.material.testutils.TestUtilsActions.setTitle;
-import static androidx.test.InstrumentationRegistry.getInstrumentation;
-import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.junit.Assert.assertEquals;
 
 import android.graphics.Color;
@@ -37,13 +37,13 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.StringRes;
 import com.google.android.material.resources.TextAppearanceConfig;
 import com.google.android.material.testapp.R;
-import com.google.android.material.testutils.Shakespeare;
 import androidx.core.view.ViewCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.text.TextUtils;
 import android.widget.TextView;
 import com.google.android.material.internal.BaseDynamicCoordinatorLayoutTest;
+import com.google.android.material.testutils.Shakespeare;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
