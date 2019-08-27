@@ -880,7 +880,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    * @param state One of {@link #STATE_COLLAPSED}, {@link #STATE_EXPANDED}, {@link #STATE_HIDDEN},
    *     or {@link #STATE_HALF_EXPANDED}.
    */
-  public final void setState(@State int state) {
+  public void setState(@State int state) {
     if (state == this.state) {
       return;
     }
@@ -925,7 +925,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    *     {@link #STATE_DRAGGING}, {@link #STATE_SETTLING}, or {@link #STATE_HALF_EXPANDED}.
    */
   @State
-  public final int getState() {
+  public int getState() {
     return state;
   }
 
