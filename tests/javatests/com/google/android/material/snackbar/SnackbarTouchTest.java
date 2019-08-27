@@ -25,8 +25,6 @@ import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.mock;
 
-import com.google.android.material.testapp.R;
-import com.google.android.material.testapp.SnackbarActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -34,6 +32,8 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams;
 import androidx.test.filters.MediumTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
+import com.google.android.material.testapp.R;
+import com.google.android.material.testapp.SnackbarActivity;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

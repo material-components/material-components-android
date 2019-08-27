@@ -25,12 +25,12 @@ import static com.google.android.material.testutils.TestUtilsActions.setExpanded
 import static com.google.android.material.testutils.TestUtilsActions.waitUntilIdle;
 import static org.hamcrest.Matchers.not;
 
-import com.google.android.material.testapp.ExpandableTransformationActivity;
-import com.google.android.material.testapp.R;
 import androidx.test.filters.MediumTest;
 import androidx.test.filters.SmallTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
+import com.google.android.material.testapp.ExpandableTransformationActivity;
+import com.google.android.material.testapp.R;
 import com.google.android.material.testutils.TestUtils;
 import org.junit.Rule;
 import org.junit.Test;

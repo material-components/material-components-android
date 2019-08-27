@@ -19,8 +19,6 @@ package com.google.android.material.snackbar;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import com.google.android.material.testapp.R;
-import com.google.android.material.testapp.SnackbarWithTranslucentNavBarActivity;
 import androidx.core.view.WindowInsetsCompat;
 import android.view.View;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -28,6 +26,8 @@ import androidx.test.filters.MediumTest;
 import androidx.test.filters.SdkSuppress;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
+import com.google.android.material.testapp.R;
+import com.google.android.material.testapp.SnackbarWithTranslucentNavBarActivity;
 import com.google.android.material.testutils.SnackbarUtils;
 import org.junit.Before;
 import org.junit.Rule;

@@ -23,10 +23,10 @@ import static com.google.android.material.testutils.AppBarLayoutMatchers.isColla
 import static com.google.android.material.testutils.SwipeUtils.swipeUp;
 import static com.google.android.material.testutils.TestUtilsMatchers.hasZ;
 
-import com.google.android.material.testapp.AppBarLayoutCollapsePinActivity;
-import com.google.android.material.testapp.R;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
+import com.google.android.material.testapp.AppBarLayoutCollapsePinActivity;
+import com.google.android.material.testapp.R;
 import com.google.android.material.testutils.ActivityUtils;
 import org.junit.Rule;
 import org.junit.Test;

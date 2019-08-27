@@ -16,10 +16,10 @@
 
 package com.google.android.material.testutils;
 
-import com.google.android.material.testapp.R;
 import android.text.TextUtils;
 import android.view.View;
 import com.google.android.material.internal.CheckableImageButton;
+import com.google.android.material.testapp.R;
 import com.google.android.material.textfield.TextInputLayout;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;

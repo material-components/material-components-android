@@ -21,13 +21,13 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.junit.Assert.assertEquals;
 
 import android.graphics.Rect;
-import com.google.android.material.testapp.R;
 import androidx.core.view.ViewCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.test.InstrumentationRegistry;
 import androidx.test.filters.MediumTest;
 import androidx.test.runner.AndroidJUnit4;
+import com.google.android.material.testapp.R;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

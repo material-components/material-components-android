@@ -25,7 +25,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import androidx.annotation.ColorInt;
 import androidx.annotation.DimenRes;
-import com.google.android.material.testapp.R;
 import android.text.method.TransformationMethod;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,6 +33,7 @@ import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.matcher.ViewMatchers;
 import com.google.android.material.internal.CheckableImageButton;
+import com.google.android.material.testapp.R;
 import com.google.android.material.textfield.TextInputLayout;
 import org.hamcrest.Matcher;
 

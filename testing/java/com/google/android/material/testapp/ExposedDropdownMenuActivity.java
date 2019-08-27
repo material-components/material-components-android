@@ -16,9 +16,9 @@
 package com.google.android.material.testapp;
 
 import android.os.Bundle;
-import com.google.android.material.testapp.base.BaseTestActivity;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import com.google.android.material.testapp.base.BaseTestActivity;
 
 /** Test activity that has the different variations of the Exposed Dropdown Menu. */
 public class ExposedDropdownMenuActivity extends BaseTestActivity {

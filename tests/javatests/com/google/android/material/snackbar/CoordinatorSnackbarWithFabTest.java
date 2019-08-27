@@ -25,8 +25,6 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 import android.os.Build;
-import com.google.android.material.testapp.R;
-import com.google.android.material.testapp.custom.TestFloatingBehavior;
 import androidx.appcompat.widget.AppCompatTextView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +34,8 @@ import androidx.test.espresso.ViewAction;
 import androidx.test.filters.MediumTest;
 import androidx.test.runner.AndroidJUnit4;
 import com.google.android.material.internal.BaseDynamicCoordinatorLayoutTest;
+import com.google.android.material.testapp.R;
+import com.google.android.material.testapp.custom.TestFloatingBehavior;
 import com.google.android.material.testutils.SnackbarUtils;
 import org.hamcrest.Matcher;
 import org.junit.After;

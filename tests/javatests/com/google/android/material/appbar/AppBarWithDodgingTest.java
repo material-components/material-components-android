@@ -19,10 +19,10 @@ package com.google.android.material.appbar;
 import static org.junit.Assert.assertTrue;
 
 import android.graphics.Rect;
-import com.google.android.material.testapp.R;
 import androidx.test.filters.SmallTest;
 import androidx.test.runner.AndroidJUnit4;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.testapp.R;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

@@ -21,8 +21,6 @@ import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.Matchers.any;
 
 import androidx.annotation.LayoutRes;
-import com.google.android.material.testapp.DynamicCoordinatorLayoutActivity;
-import com.google.android.material.testapp.R;
 import androidx.core.view.ViewCompat;
 import android.view.View;
 import android.view.ViewStub;
@@ -30,6 +28,8 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
 import androidx.test.rule.ActivityTestRule;
+import com.google.android.material.testapp.DynamicCoordinatorLayoutActivity;
+import com.google.android.material.testapp.R;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;

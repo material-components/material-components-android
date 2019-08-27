@@ -35,12 +35,12 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.core.Is.is;
 
 import android.app.Activity;
-import com.google.android.material.testapp.ExposedDropdownMenuActivity;
-import com.google.android.material.testapp.R;
 import android.widget.AutoCompleteTextView;
 import androidx.test.filters.MediumTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
+import com.google.android.material.testapp.ExposedDropdownMenuActivity;
+import com.google.android.material.testapp.R;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;

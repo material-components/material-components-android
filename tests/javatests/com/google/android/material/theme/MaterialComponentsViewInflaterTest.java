@@ -19,14 +19,14 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.app.Activity;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.testapp.theme.MaterialComponentsViewInflaterActivity;
-import com.google.android.material.testapp.theme.R;
 import android.view.View;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.MediumTest;
 import androidx.test.rule.ActivityTestRule;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.radiobutton.MaterialRadioButton;
+import com.google.android.material.testapp.theme.MaterialComponentsViewInflaterActivity;
+import com.google.android.material.testapp.theme.R;
 import com.google.android.material.textview.MaterialTextView;
 import org.junit.Before;
 import org.junit.Rule;
