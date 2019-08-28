@@ -17,9 +17,15 @@
 package com.google.android.material.shape;
 
 import androidx.annotation.NonNull;
+import android.util.Log;
 
 /**
  * A basic corner treatment (a single point which does not affect the shape).
+ *
+ * <p>If you create your own custom corner treatment and want to use {@link
+ * ShapeAppearanceModel.Builder#setCornerRadius(float)} which updates the size of the corner in the
+ * builder, you will need to override {@link #withSize(float)} to return an instance of your custom
+ * corner treatment for the given size.
  *
  * <p>Note: For corner treatments which result in a concave shape, the parent view must disable
  * clipping of children by calling {@link android.view.ViewGroup#setClipChildren(boolean)}, or by
@@ -27,6 +33,8 @@ import androidx.annotation.NonNull;
  * is any padding on the parent that could intersect the shadow.
  */
 public class CornerTreatment implements Cloneable {
+
+  private static final String TAG = "CornerTreatment";
 
   protected float cornerSize;
 
@@ -75,5 +83,30 @@ public class CornerTreatment implements Cloneable {
       throw new AssertionError(e); // This should never happen, because CornerTreatment handles the
       // cloning, so all subclasses of CornerTreatment will support cloning.
     }
+  }
+
+  /**
+   * Returns a new instance of this {@link CornerTreatment} for the given cornerSize. Extending
+   * classes should override this method to return an instance of their custom class. This is used
+   * by the builder when calling a method to set the size of the corner treatment such as {@link
+   * ShapeAppearanceModel.Builder#setCornerRadius(float)}.
+   */
+  @NonNull
+  public CornerTreatment withSize(float cornerSize) {
+    return new CornerTreatment(cornerSize);
+  }
+
+  /**
+   * Checks that the {@link CornerTreatment} returned by calling withSize() is the class we expect.
+   */
+  @NonNull
+  public static CornerTreatment withSizeAndCornerClassCheck(
+      @NonNull CornerTreatment treatment, float cornerSize) {
+    CornerTreatment updatedTreatment = treatment.withSize(cornerSize);
+    if (!updatedTreatment.getClass().equals(treatment.getClass())) {
+      Log.w(
+          TAG, "CornerTreatments should override withSize() to return an instance of their class");
+    }
+    return updatedTreatment;
   }
 }

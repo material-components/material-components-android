@@ -22,7 +22,7 @@ import androidx.annotation.NonNull;
  * An edge treatment which draws triangles at the midpoint of an edge, facing into or out of the
  * shape.
  */
-public class TriangleEdgeTreatment extends EdgeTreatment implements Cloneable {
+public class TriangleEdgeTreatment extends EdgeTreatment {
 
   private final float size;
   private final boolean inside;

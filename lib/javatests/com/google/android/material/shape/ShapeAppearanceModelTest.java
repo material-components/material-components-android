@@ -158,13 +158,47 @@ public class ShapeAppearanceModelTest {
 
   @Test
   public void setCornerRadius_defaultDoesNotChange() {
-    shapeAppearance = new ShapeAppearanceModel();
-    shapeAppearance.setCornerRadius(DEFAULT_CORNER_SIZE);
-    ShapeAppearanceModel largeCornerShape = new ShapeAppearanceModel();
-    largeCornerShape.setCornerRadius(LARGE_CORNER_SIZE);
+    shapeAppearance =
+        new ShapeAppearanceModel.Builder().setCornerRadius(DEFAULT_CORNER_SIZE).build();
+    ShapeAppearanceModel largeCornerShape =
+        shapeAppearance.toBuilder().setCornerRadius(LARGE_CORNER_SIZE).build();
 
     assertCornerSize(shapeAppearance, DEFAULT_CORNER_SIZE);
     assertCornerSize(largeCornerShape, LARGE_CORNER_SIZE);
+  }
+
+  @Test
+  public void setOneCornerRadius_othersDoNotChange() {
+    shapeAppearance =
+        new ShapeAppearanceModel.Builder()
+            .setAllCorners(new RoundedCornerTreatment(DEFAULT_CORNER_SIZE))
+            .setTopLeftCornerSize(LARGE_CORNER_SIZE)
+            .build();
+
+    assertCornerSizes(
+        shapeAppearance,
+        LARGE_CORNER_SIZE,
+        DEFAULT_CORNER_SIZE,
+        DEFAULT_CORNER_SIZE,
+        DEFAULT_CORNER_SIZE);
+  }
+
+  @Test
+  public void setDifferentCornerTreatments_allTreatmentsSet() {
+    shapeAppearance =
+        new ShapeAppearanceModel.Builder()
+            .setTopLeftCorner(new RoundedCornerTreatment(DEFAULT_CORNER_SIZE))
+            .setTopRightCorner(new CutCornerTreatment(LARGE_CORNER_SIZE))
+            .setBottomLeftCorner(new RoundedCornerTreatment(LARGE_CORNER_SIZE))
+            .setBottomRightCorner(new CutCornerTreatment(DEFAULT_CORNER_SIZE))
+            .build();
+
+    assertCornerSizes(
+        shapeAppearance,
+        DEFAULT_CORNER_SIZE,
+        LARGE_CORNER_SIZE,
+        LARGE_CORNER_SIZE,
+        DEFAULT_CORNER_SIZE);
   }
 
   private AttributeSetBuilder buildStyleAttributeSet() {
@@ -183,10 +217,21 @@ public class ShapeAppearanceModelTest {
     assertCornerSize(shapeAppearance, cornerSize);
   }
 
-  private void assertCornerSize(ShapeAppearanceModel shapeAppearance, float cornerSize) {
-    assertThat(shapeAppearance.getTopLeftCorner().getCornerSize()).isEqualTo(cornerSize);
-    assertThat(shapeAppearance.getTopRightCorner().getCornerSize()).isEqualTo(cornerSize);
-    assertThat(shapeAppearance.getBottomLeftCorner().getCornerSize()).isEqualTo(cornerSize);
-    assertThat(shapeAppearance.getBottomRightCorner().getCornerSize()).isEqualTo(cornerSize);
+  private static void assertCornerSize(ShapeAppearanceModel shapeAppearance, float cornerSize) {
+    assertCornerSizes(shapeAppearance, cornerSize, cornerSize, cornerSize, cornerSize);
+  }
+
+  private static void assertCornerSizes(
+      ShapeAppearanceModel shapeAppearance,
+      float topLeftCornerSize,
+      float topRightCornerSize,
+      float bottomLeftCornerSize,
+      float bottomRightCornerSize) {
+    assertThat(shapeAppearance.getTopLeftCorner().getCornerSize()).isEqualTo(topLeftCornerSize);
+    assertThat(shapeAppearance.getTopRightCorner().getCornerSize()).isEqualTo(topRightCornerSize);
+    assertThat(shapeAppearance.getBottomLeftCorner().getCornerSize())
+        .isEqualTo(bottomLeftCornerSize);
+    assertThat(shapeAppearance.getBottomRightCorner().getCornerSize())
+        .isEqualTo(bottomRightCornerSize);
   }
 }

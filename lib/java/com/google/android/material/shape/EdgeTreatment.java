@@ -26,7 +26,7 @@ import androidx.annotation.NonNull;
  * setting `android:clipChildren="false"` in xml. `clipToPadding` may also need to be false if there
  * is any padding on the parent that could intersect the shadow.
  */
-public class EdgeTreatment implements Cloneable {
+public class EdgeTreatment {
 
   /**
    * @deprecated Does not support interpolation. Use {@link #getEdgePath(float, float, float,
@@ -62,16 +62,5 @@ public class EdgeTreatment implements Cloneable {
   public void getEdgePath(
       float length, float center, float interpolation, @NonNull ShapePath shapePath) {
     shapePath.lineTo(length, 0);
-  }
-
-  @NonNull
-  @Override
-  public EdgeTreatment clone() {
-    try {
-      return (EdgeTreatment) super.clone();
-    } catch (CloneNotSupportedException e) {
-      throw new AssertionError(e); // This should never happen, because EdgeTreatment handles the
-      // cloning, so all subclasses of EdgeTreatment will support cloning.
-    }
   }
 }

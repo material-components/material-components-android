@@ -44,4 +44,10 @@ public class CutCornerTreatment extends CornerTreatment implements Cloneable {
         // on api levels 21 and 22. Using sin() with 90 - angle is helping for now.
         (float) (Math.sin(Math.toRadians(90 - angle)) * cornerSize * interpolation));
   }
+
+  @NonNull
+  @Override
+  public CutCornerTreatment withSize(float cornerSize) {
+    return new CutCornerTreatment(cornerSize);
+  }
 }

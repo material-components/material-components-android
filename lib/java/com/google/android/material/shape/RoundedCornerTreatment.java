@@ -37,4 +37,10 @@ public class RoundedCornerTreatment extends CornerTreatment implements Cloneable
     shapePath.reset(0, radius * interpolation, ShapePath.ANGLE_LEFT, 180 - angle);
     shapePath.addArc(0, 0, 2 * radius * interpolation, 2 * radius * interpolation, 180, angle);
   }
+
+  @NonNull
+  @Override
+  public RoundedCornerTreatment withSize(float cornerSize) {
+    return new RoundedCornerTreatment(cornerSize);
+  }
 }
