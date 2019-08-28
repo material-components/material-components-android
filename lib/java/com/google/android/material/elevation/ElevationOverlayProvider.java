@@ -59,8 +59,8 @@ public class ElevationOverlayProvider {
    * Blends the calculated elevation overlay color (@see #compositeOverlayIfNeeded(int, float)) with
    * the current theme's color int value for {@code R.attr.colorSurface} if needed.
    *
-   * <p>If the provided {@code view} is not null, the absolute elevation of it's parent will be
-   * factored in when determining the overlay color.
+   * <p>If the provided {@code overlayView} is not null, the absolute elevation of it's parent will
+   * be factored in when determining the overlay color.
    */
   @ColorInt
   public int compositeOverlayWithThemeSurfaceColorIfNeeded(
@@ -83,8 +83,8 @@ public class ElevationOverlayProvider {
    * true and the {@code backgroundColor} matches the theme's surface color ({@code
    * R.attr.colorSurface}); otherwise returns the {@code backgroundColor}.
    *
-   * <p>If the provided {@code view} is not null, the absolute elevation of it's parent will be
-   * factored in when determining the overlay color.
+   * <p>If the provided {@code overlayView} is not null, the absolute elevation of it's parent will
+   * be factored in when determining the overlay color.
    */
   @ColorInt
   public int compositeOverlayIfNeeded(
@@ -109,9 +109,9 @@ public class ElevationOverlayProvider {
    * Blends the calculated elevation overlay color with the provided {@code backgroundColor}.
    *
    * <p>An alpha level is applied to the theme's {@code R.attr.elevationOverlayColor} by using a
-   * formula that is based on the provided {@code elevation} value. If the provided {@code view} is
-   * not null, the absolute elevation of it's parent will be factored in when determining the
-   * overlay color.
+   * formula that is based on the provided {@code elevation} value. If the provided {@code
+   * overlayView} is not null, the absolute elevation of it's parent will be factored in when
+   * determining the overlay color.
    */
   @ColorInt
   public int compositeOverlay(
@@ -163,8 +163,8 @@ public class ElevationOverlayProvider {
   }
 
   /**
-   * Returns the absolute elevation of the parent of the provided {@code view}, or in other words,
-   * the sum of the elevations of all ancestors of the {@code view}.
+   * Returns the absolute elevation of the parent of the provided {@code overlayView}, or in other
+   * words, the sum of the elevations of all ancestors of the {@code overlayView}.
    */
   public float getParentAbsoluteElevation(@NonNull View overlayView) {
     return ViewUtils.getParentAbsoluteElevation(overlayView);
