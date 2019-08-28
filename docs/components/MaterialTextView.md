@@ -27,7 +27,7 @@ reference.
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
   android:layout_height="match_parent">
-    <MaterialTextView
+    <com.google.android.material.textview.MaterialTextView
       android:id="@+id/text_view_id"
       android:layout_height="wrap_content"
       android:layout_width="wrap_content"
