@@ -15,8 +15,6 @@
  */
 package com.google.android.material.resources;
 
-import com.google.android.material.R;
-
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;

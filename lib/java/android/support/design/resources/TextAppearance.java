@@ -16,8 +16,6 @@
 
 package com.google.android.material.resources;
 
-import com.google.android.material.R;
-
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;

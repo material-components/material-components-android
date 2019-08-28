@@ -16,8 +16,6 @@
 
 package com.google.android.material.resources;
 
-import com.google.android.material.R;
-
 import static org.junit.Assert.assertEquals;
 
 import android.content.Context;

@@ -687,7 +687,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    *     #PEEK_HEIGHT_AUTO} to configure the sheet to peek automatically at 16:9 ratio keyline.
    * @attr ref com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_peekHeight
    */
-  public final void setPeekHeight(int peekHeight) {
+  public void setPeekHeight(int peekHeight) {
     setPeekHeight(peekHeight, false);
   }
 
@@ -736,7 +736,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    *     sheet is configured to peek automatically at 16:9 ratio keyline
    * @attr ref com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_peekHeight
    */
-  public final int getPeekHeight() {
+  public int getPeekHeight() {
     return peekHeightAuto ? PEEK_HEIGHT_AUTO : peekHeight;
   }
 
