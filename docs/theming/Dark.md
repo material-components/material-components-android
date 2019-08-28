@@ -224,6 +224,22 @@ When calculating the elevation overlay alpha percentage, Material components
 factor in the absolute elevation of their parent view. This is because the
 distance from the light source is the driving factor behind elevation overlays.
 
+If you need to factor in absolute elevation in a custom view that supports
+overlays, then you can use the `MaterialShapeUtils#setParentAbsoluteElevation`
+methods when using a `MaterialShapeDrawable` background. For example:
+
+```java
+@Override
+protected void onAttachedToWindow() {
+  super.onAttachedToWindow();
+
+  MaterialShapeUtils.setParentAbsoluteElevation(this);
+}
+```
+
+Alternatively, you could use the `ElevationOverlayProvider` composite methods
+that take in a `View` parameter or the `getParentAbsoluteElevation` method.
+
 Note: This means that you should consider accessibility contrast ratios for
 text and iconography, when deeply nesting elevated Material components and
 views that support elevation overlays.
