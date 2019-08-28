@@ -23,11 +23,11 @@ import android.graphics.Color;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.google.android.material.resources.MaterialAttributes;
 import androidx.core.graphics.ColorUtils;
 import android.view.View;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.ViewUtils;
+import com.google.android.material.resources.MaterialAttributes;
 
 /** Utility for calculating elevation overlay alpha values and colors. */
 public class ElevationOverlayProvider {

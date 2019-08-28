@@ -24,9 +24,9 @@ import android.graphics.Typeface;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
+import android.text.TextPaint;
 import com.google.android.material.resources.TextAppearance;
 import com.google.android.material.resources.TextAppearanceFontCallback;
-import android.text.TextPaint;
 import java.lang.ref.WeakReference;
 
 /**

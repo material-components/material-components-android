@@ -32,9 +32,6 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
-import com.google.android.material.resources.CancelableFontCallback;
-import com.google.android.material.resources.CancelableFontCallback.ApplyFont;
-import com.google.android.material.resources.TextAppearance;
 import androidx.core.math.MathUtils;
 import androidx.core.text.TextDirectionHeuristicsCompat;
 import androidx.core.view.GravityCompat;
@@ -44,6 +41,9 @@ import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import com.google.android.material.animation.AnimationUtils;
+import com.google.android.material.resources.CancelableFontCallback;
+import com.google.android.material.resources.CancelableFontCallback.ApplyFont;
+import com.google.android.material.resources.TextAppearance;
 
 /**
  * Helper class for rendering and animating collapsed text.

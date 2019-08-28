@@ -25,10 +25,10 @@ import android.content.res.TypedArray;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleableRes;
-import com.google.android.material.resources.MaterialAttributes;
-import com.google.android.material.resources.MaterialResources;
 import androidx.appcompat.widget.AppCompatTextView;
 import android.util.AttributeSet;
+import com.google.android.material.resources.MaterialAttributes;
+import com.google.android.material.resources.MaterialResources;
 
 /**
  * A MaterialTextView is a derivative of {@link AppCompatTextView} that displays text to the user.

@@ -24,10 +24,10 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
-import com.google.android.material.resources.MaterialAttributes;
 import androidx.core.graphics.ColorUtils;
 import android.util.TypedValue;
 import android.view.View;
+import com.google.android.material.resources.MaterialAttributes;
 
 /**
  * A utility class for common color variants used in Material themes.

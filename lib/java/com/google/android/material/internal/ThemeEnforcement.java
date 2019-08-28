@@ -99,7 +99,8 @@ public final class ThemeEnforcement {
    * {@link R.attr#colorSecondary colorSecondary}.
    *
    * <p>New components should prefer to use {@link #obtainStyledAttributes(Context, AttributeSet,
-   * int[], int, int, int...)}, and use {@link com.google.android.material.resources.MaterialResources}
+   * int[], int, int, int...)}, and use
+   * {@link com.google.android.material.resources.MaterialResources}
    * as a replacement for the functionality in {@link androidx.appcompat.widget.TintTypedArray}.
    *
    * <p>If {@link R.attr#enforceTextAppearance} attribute is set to <code>true</code> and

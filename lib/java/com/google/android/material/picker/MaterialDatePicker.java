@@ -34,7 +34,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
-import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -51,6 +50,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import com.google.android.material.dialog.InsetDialogOnTouchListener;
 import com.google.android.material.internal.CheckableImageButton;
+import com.google.android.material.resources.MaterialAttributes;
 import java.util.LinkedHashSet;
 
 /** A {@link Dialog} with a header, {@link MaterialCalendar}, and set of actions. */

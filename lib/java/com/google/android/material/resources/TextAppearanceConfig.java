@@ -16,6 +16,8 @@
 
 package com.google.android.material.resources;
 
+import com.google.android.material.R;
+
 /** Utility for configuring TextAppearance. */
 public class TextAppearanceConfig {
 

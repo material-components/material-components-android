@@ -24,12 +24,12 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import androidx.annotation.Nullable;
-import com.google.android.material.resources.MaterialResources;
 import androidx.core.widget.CompoundButtonCompat;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import android.util.AttributeSet;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.ThemeEnforcement;
+import com.google.android.material.resources.MaterialResources;
 
 /**
  * A class that creates a Material Themed CheckBox.
