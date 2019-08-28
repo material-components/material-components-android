@@ -718,8 +718,8 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
       @NonNull ActionMenuView actionMenuView,
       @FabAlignmentMode int fabAlignmentMode,
       boolean fabAttached) {
-    int toolbarLeftContentEnd = 0;
     boolean isRtl = ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL;
+    int toolbarLeftContentEnd = isRtl ? getMeasuredWidth() : 0;
 
     // Calculate the inner side of the Toolbar's Gravity.START contents.
     for (int i = 0; i < getChildCount(); i++) {
@@ -731,7 +731,9 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
                   == Gravity.START;
       if (isAlignedToStart) {
         toolbarLeftContentEnd =
-            Math.max(toolbarLeftContentEnd, isRtl ? view.getLeft() : view.getRight());
+            isRtl
+                ? Math.min(toolbarLeftContentEnd, view.getLeft())
+                : Math.max(toolbarLeftContentEnd, view.getRight());
       }
     }
 
