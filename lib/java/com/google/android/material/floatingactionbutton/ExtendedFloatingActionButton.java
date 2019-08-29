@@ -209,8 +209,9 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     a.recycle();
 
     ShapeAppearanceModel shapeAppearanceModel =
-        new ShapeAppearanceModel(
-            context, attrs, defStyleAttr, DEF_STYLE_RES, ShapeAppearanceModel.PILL);
+        ShapeAppearanceModel.builder(
+                context, attrs, defStyleAttr, DEF_STYLE_RES, ShapeAppearanceModel.PILL)
+            .build();
     setShapeAppearanceModel(shapeAppearanceModel);
   }
 
@@ -229,7 +230,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
     if (isUsingPillCorner) {
-      getShapeAppearanceModel().setCornerRadius(getAdjustedRadius(getMeasuredHeight()));
+      setShapeAppearanceModel(createPillCornerShapeAppearance());
     }
   }
 
@@ -241,8 +242,16 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
 
   @Override
   public void setShapeAppearanceModel(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
-    isUsingPillCorner = shapeAppearanceModel.isUsingPillCorner();
+    if (shapeAppearanceModel.isUsingPillCorner()) {
+      isUsingPillCorner = true;
+      shapeAppearanceModel = createPillCornerShapeAppearance();
+    }
     super.setShapeAppearanceModel(shapeAppearanceModel);
+  }
+
+  @NonNull
+  private ShapeAppearanceModel createPillCornerShapeAppearance() {
+    return getShapeAppearanceModel().withCornerRadius(getAdjustedRadius(getMeasuredHeight()));
   }
 
   @Override
@@ -757,9 +766,9 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
       new Property<View, Float>(Float.class, "cornerRadius") {
         @Override
         public void set(View object, Float value) {
-          ((ExtendedFloatingActionButton) object)
-              .getShapeAppearanceModel()
-              .setCornerRadius(value.intValue());
+          ExtendedFloatingActionButton efab = ((ExtendedFloatingActionButton) object);
+          efab.setShapeAppearanceModel(
+              efab.getShapeAppearanceModel().withCornerRadius(value.intValue()));
         }
 
         @Override

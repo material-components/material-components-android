@@ -307,7 +307,7 @@ class FloatingActionButtonImpl {
 
   final void setShapeAppearance(ShapeAppearanceModel shapeAppearance, boolean usingDefaultCorner) {
     if (usingDefaultCorner) {
-      shapeAppearance.setCornerRadius(view.getSizeDimension() / 2);
+      shapeAppearance = shapeAppearance.withCornerRadius(view.getSizeDimension() / 2);
     }
 
     this.shapeAppearance = shapeAppearance;
@@ -644,13 +644,13 @@ class FloatingActionButtonImpl {
   }
 
   void updateSize() {
-    if (!usingDefaultCorner || shapeDrawable == null) {
+    if (!usingDefaultCorner || shapeDrawable == null || shapeAppearance == null) {
       // Leave shape appearance as is.
       return;
     }
 
-    ShapeAppearanceModel shapeAppearanceModel = shapeDrawable.getShapeAppearanceModel();
-    shapeAppearanceModel.setCornerRadius(view.getSizeDimension() / 2f);
+    setShapeAppearance(
+        shapeAppearance.withCornerRadius(view.getSizeDimension() / 2f), usingDefaultCorner);
   }
 
   final void updatePadding() {
@@ -734,7 +734,7 @@ class FloatingActionButtonImpl {
   MaterialShapeDrawable createShapeDrawable() {
     ShapeAppearanceModel shapeAppearance = checkNotNull(this.shapeAppearance);
     if (usingDefaultCorner) {
-      shapeAppearance.setCornerRadius(view.getSizeDimension() / 2f);
+      shapeAppearance = shapeAppearance.withCornerRadius(view.getSizeDimension() / 2f);
     }
     return new MaterialShapeDrawable(shapeAppearance);
   }

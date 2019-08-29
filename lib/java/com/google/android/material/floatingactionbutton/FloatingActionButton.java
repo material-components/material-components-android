@@ -235,7 +235,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     MotionSpec hideMotionSpec =
         MotionSpec.createFromAttribute(context, a, R.styleable.FloatingActionButton_hideMotionSpec);
     ShapeAppearanceModel shapeAppearance =
-        new ShapeAppearanceModel(context, attrs, defStyleAttr, DEF_STYLE_RES, -1);
+        ShapeAppearanceModel.builder(context, attrs, defStyleAttr, DEF_STYLE_RES, -1).build();
 
     boolean usingDefaultCorner = isUsingDefaultCorner(shapeAppearance);
     boolean ensureMinTouchTargetSize = a
