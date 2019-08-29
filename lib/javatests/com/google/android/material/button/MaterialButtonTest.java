@@ -24,15 +24,12 @@ import com.google.android.material.shape.CornerFamily;
 import com.google.android.material.shape.CornerTreatment;
 import com.google.android.material.shape.CutCornerTreatment;
 import com.google.android.material.shape.ShapeAppearanceModel;
-import androidx.core.content.ContextCompat;
 import androidx.test.core.app.ApplicationProvider;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.internal.DoNotInstrument;
-import android.graphics.drawable.Drawable;
-import android.view.View.MeasureSpec;
 
 /** Tests for {@link com.google.android.material.button.MaterialButton}. */
 @RunWith(RobolectricTestRunner.class)
@@ -92,27 +89,6 @@ public class MaterialButtonTest {
 
     assertThatCornerFamilyMatches(
         materialButton.getShapeAppearanceModel(), CUT_CORNER_FAMILY_CLASS);
-  }
-
-  @Test
-  public void setIcon_IconUpdated_whenCalledTwice() {
-    MaterialButton materialButton = new MaterialButton(context);
-    materialButton.setText("test");
-    int measureSpec =
-        MeasureSpec.makeMeasureSpec(200, MeasureSpec.AT_MOST);
-
-    Drawable drawable1 = ContextCompat.getDrawable(context, android.R.drawable.btn_plus);
-    materialButton.setIcon(drawable1);
-    materialButton.setIconGravity(MaterialButton.ICON_GRAVITY_START);
-    materialButton.measure(measureSpec, measureSpec);
-
-    assertThat(materialButton.getIcon()).isEqualTo(drawable1);
-
-    Drawable drawable2 = ContextCompat.getDrawable(context, android.R.drawable.btn_minus);
-    materialButton.setIcon(drawable2);
-    materialButton.measure(measureSpec, measureSpec);
-
-    assertThat(materialButton.getIcon()).isEqualTo(drawable2);
   }
 
   private void assertThatCornerFamilyMatches(
