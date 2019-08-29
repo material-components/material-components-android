@@ -663,18 +663,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
       icon.setBounds(iconLeft, 0, iconLeft + width, height);
     }
 
-    // Only update if the icon or the position has changed
-    boolean isIconStart = iconGravity == ICON_GRAVITY_START || iconGravity == ICON_GRAVITY_TEXT_START;
-    Drawable[] existingDrawables = TextViewCompat.getCompoundDrawablesRelative(this);
-    Drawable drawableStart = existingDrawables[0];
-    Drawable drawableEnd = existingDrawables[2];
-    boolean hasIconChanged = isIconStart && drawableStart != icon || !isIconStart && drawableEnd != icon;
-
-    if(!hasIconChanged) {
-      return;
-    }
-
-    if (isIconStart) {
+    if (iconGravity == ICON_GRAVITY_START || iconGravity == ICON_GRAVITY_TEXT_START) {
       TextViewCompat.setCompoundDrawablesRelative(this, icon, null, null, null);
     } else {
       TextViewCompat.setCompoundDrawablesRelative(this, null, null, icon, null);
