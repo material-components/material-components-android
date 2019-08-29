@@ -171,7 +171,7 @@ public class MaterialShapeDrawable extends Drawable
       @Nullable AttributeSet attrs,
       @AttrRes int defStyleAttr,
       @StyleRes int defStyleRes) {
-    this(new ShapeAppearanceModel(context, attrs, defStyleAttr, defStyleRes));
+    this(ShapeAppearanceModel.builder(context, attrs, defStyleAttr, defStyleRes).build());
   }
 
   /**
@@ -470,8 +470,7 @@ public class MaterialShapeDrawable extends Drawable
   }
 
   public void setCornerRadius(float cornerRadius) {
-    drawableState.shapeAppearanceModel.setCornerRadius(cornerRadius);
-    invalidateSelf();
+    setShapeAppearanceModel(drawableState.shapeAppearanceModel.withCornerRadius(cornerRadius));
   }
 
   /**
@@ -1107,30 +1106,15 @@ public class MaterialShapeDrawable extends Drawable
 
   /** Calculates the path that can be used to draw the stroke entirely inside the shape */
   private void calculateStrokePath() {
-    strokeShapeAppearance = new ShapeAppearanceModel(getShapeAppearanceModel());
-    float cornerSizeTopLeft = strokeShapeAppearance.getTopLeftCorner().cornerSize;
-    float cornerSizeTopRight = strokeShapeAppearance.getTopRightCorner().cornerSize;
-    float cornerSizeBottomRight = strokeShapeAppearance.getBottomRightCorner().cornerSize;
-    float cornerSizeBottomLeft = strokeShapeAppearance.getBottomLeftCorner().cornerSize;
-
     // Adjust corner radius in order to draw the stroke so that the corners of the background are
     // drawn on top of the edges.
-    strokeShapeAppearance.setCornerRadii(
-        adjustCornerSizeForStrokeSize(cornerSizeTopLeft),
-        adjustCornerSizeForStrokeSize(cornerSizeTopRight),
-        adjustCornerSizeForStrokeSize(cornerSizeBottomRight),
-        adjustCornerSizeForStrokeSize(cornerSizeBottomLeft));
+    strokeShapeAppearance = getShapeAppearanceModel().withAdjustedCorners(-getStrokeInsetLength());
 
     pathProvider.calculatePath(
         strokeShapeAppearance,
         drawableState.interpolation,
         getBoundsInsetByStroke(),
         pathInsetByStroke);
-  }
-
-  private float adjustCornerSizeForStrokeSize(float cornerSize) {
-    float adjustedCornerSize = cornerSize - getStrokeInsetLength();
-    return Math.max(adjustedCornerSize, 0);
   }
 
   @TargetApi(VERSION_CODES.LOLLIPOP)

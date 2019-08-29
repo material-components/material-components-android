@@ -40,7 +40,6 @@ public class MaterialButtonTest {
   private static final int CUT_CORNER_FAMILY = CornerFamily.CUT;
   private static final Class<CutCornerTreatment> CUT_CORNER_FAMILY_CLASS = CutCornerTreatment.class;
 
-  private final ShapeAppearanceModel shapeAppearanceModel = new ShapeAppearanceModel();
   private final Context context = ApplicationProvider.getApplicationContext();
 
   @Before
@@ -51,7 +50,8 @@ public class MaterialButtonTest {
   @Test
   public void testSetShapeAppearanceModel_setCornerRadius() {
     MaterialButton materialButton = new MaterialButton(context);
-    shapeAppearanceModel.setCornerRadius(LARGE_CORNER_SIZE);
+    ShapeAppearanceModel shapeAppearanceModel =
+        ShapeAppearanceModel.builder().setCornerRadius(LARGE_CORNER_SIZE).build();
 
     materialButton.setShapeAppearanceModel(shapeAppearanceModel);
 
@@ -63,7 +63,10 @@ public class MaterialButtonTest {
   @Test
   public void testSetShapeAppearanceModel() {
     MaterialButton materialButton = new MaterialButton(context);
-    shapeAppearanceModel.setAllCorners(CUT_CORNER_FAMILY, materialButton.getCornerRadius());
+    ShapeAppearanceModel shapeAppearanceModel =
+        ShapeAppearanceModel.builder()
+            .setAllCorners(CUT_CORNER_FAMILY, materialButton.getCornerRadius())
+            .build();
 
     materialButton.setShapeAppearanceModel(shapeAppearanceModel);
 
@@ -76,9 +79,13 @@ public class MaterialButtonTest {
   @Test
   public void testGetShapeAppearanceModel() {
     MaterialButton materialButton = new MaterialButton(context);
-    materialButton
-        .getShapeAppearanceModel()
-        .setAllCorners(CUT_CORNER_FAMILY, materialButton.getCornerRadius());
+
+    ShapeAppearanceModel shapeAppearanceModel =
+        ShapeAppearanceModel.builder()
+            .setAllCorners(CUT_CORNER_FAMILY, materialButton.getCornerRadius())
+            .build();
+
+    materialButton.setShapeAppearanceModel(shapeAppearanceModel);
 
     assertThatCornerFamilyMatches(
         materialButton.getShapeAppearanceModel(), CUT_CORNER_FAMILY_CLASS);

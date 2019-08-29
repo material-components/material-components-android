@@ -476,29 +476,37 @@ public class MaterialButtonToggleGroup extends RelativeLayout {
       for (int i = 0; i < numChildren; i++) {
         MaterialButton button = childrenInOrder.get(i);
         if (button.getShapeAppearanceModel() != null) {
-          ShapeAppearanceModel shapeAppearanceModel = button.getShapeAppearanceModel();
+          ShapeAppearanceModel.Builder shapeAppearanceModelBuilder =
+              button.getShapeAppearanceModel().toBuilder();
           CornerData cornerData = originalCornerData.get(i);
           if (numChildren == 1) {
             // If there is only one child, sets its original corners
-            shapeAppearanceModel.setCornerRadii(
-                cornerData.topLeft,
-                cornerData.topRight,
-                cornerData.bottomRight,
-                cornerData.bottomLeft);
+            shapeAppearanceModelBuilder
+                .setTopLeftCornerSize(cornerData.topLeft)
+                .setTopRightCornerSize(cornerData.topRight)
+                .setBottomRightCornerSize(cornerData.bottomRight)
+                .setBottomLeftCornerSize(cornerData.bottomLeft);
           } else {
             if (i == (ViewUtils.isLayoutRtl(this) ? (numChildren - 1) : 0)) {
               // Keeps the left corners of the first child in LTR, or the last child in RTL
-              shapeAppearanceModel.setCornerRadii(cornerData.topLeft, 0, 0, cornerData.bottomLeft);
+              shapeAppearanceModelBuilder
+                  .setTopLeftCornerSize(cornerData.topLeft)
+                  .setTopRightCornerSize(0)
+                  .setBottomRightCornerSize(0)
+                  .setBottomLeftCornerSize(cornerData.bottomLeft);
             } else if (i != 0 && i < numChildren - 1) {
               // Sets corner radii of all middle children to 0
-              shapeAppearanceModel.setCornerRadius(0);
+              shapeAppearanceModelBuilder.setCornerRadius(0);
             } else if (i == (ViewUtils.isLayoutRtl(this) ? 0 : (numChildren - 1))) {
               // Keeps the right corners of the last child in LTR, or the first child in RTL
-              shapeAppearanceModel.setCornerRadii(
-                  0, cornerData.topRight, cornerData.bottomRight, 0);
+              shapeAppearanceModelBuilder
+                  .setTopLeftCornerSize(0)
+                  .setTopRightCornerSize(cornerData.topRight)
+                  .setBottomRightCornerSize(cornerData.bottomRight)
+                  .setBottomLeftCornerSize(0);
             }
           }
-          button.setShapeAppearanceModel(shapeAppearanceModel);
+          button.setShapeAppearanceModel(shapeAppearanceModelBuilder.build());
         }
       }
     }

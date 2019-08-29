@@ -209,7 +209,7 @@ public class TextInputLayout extends LinearLayout {
 
   @Nullable private MaterialShapeDrawable boxBackground;
   @Nullable private MaterialShapeDrawable boxUnderline;
-  @NonNull private final ShapeAppearanceModel shapeAppearanceModel;
+  @NonNull private ShapeAppearanceModel shapeAppearanceModel;
 
   private final int boxLabelCutoutPaddingPx;
   @BoxBackgroundMode private int boxBackgroundMode;
@@ -437,7 +437,8 @@ public class TextInputLayout extends LinearLayout {
     setHint(a.getText(R.styleable.TextInputLayout_android_hint));
     hintAnimationEnabled = a.getBoolean(R.styleable.TextInputLayout_hintAnimationEnabled, true);
 
-    shapeAppearanceModel = new ShapeAppearanceModel(context, attrs, defStyleAttr, DEF_STYLE_RES);
+    shapeAppearanceModel =
+        ShapeAppearanceModel.builder(context, attrs, defStyleAttr, DEF_STYLE_RES).build();
 
     boxLabelCutoutPaddingPx =
         context
@@ -468,18 +469,20 @@ public class TextInputLayout extends LinearLayout {
         a.getDimension(R.styleable.TextInputLayout_boxCornerRadiusBottomEnd, -1f);
     float boxCornerRadiusBottomStart =
         a.getDimension(R.styleable.TextInputLayout_boxCornerRadiusBottomStart, -1f);
+    ShapeAppearanceModel.Builder shapeBuilder = shapeAppearanceModel.toBuilder();
     if (boxCornerRadiusTopStart >= 0) {
-      shapeAppearanceModel.getTopLeftCorner().setCornerSize(boxCornerRadiusTopStart);
+      shapeBuilder.setTopLeftCornerSize(boxCornerRadiusTopStart);
     }
     if (boxCornerRadiusTopEnd >= 0) {
-      shapeAppearanceModel.getTopRightCorner().setCornerSize(boxCornerRadiusTopEnd);
+      shapeBuilder.setTopRightCornerSize(boxCornerRadiusTopEnd);
     }
     if (boxCornerRadiusBottomEnd >= 0) {
-      shapeAppearanceModel.getBottomRightCorner().setCornerSize(boxCornerRadiusBottomEnd);
+      shapeBuilder.setBottomRightCornerSize(boxCornerRadiusBottomEnd);
     }
     if (boxCornerRadiusBottomStart >= 0) {
-      shapeAppearanceModel.getBottomLeftCorner().setCornerSize(boxCornerRadiusBottomStart);
+      shapeBuilder.setBottomLeftCornerSize(boxCornerRadiusBottomStart);
     }
+    shapeAppearanceModel = shapeBuilder.build();
 
     ColorStateList filledBackgroundColorStateList =
         MaterialResources.getColorStateList(
@@ -936,10 +939,13 @@ public class TextInputLayout extends LinearLayout {
         || shapeAppearanceModel.getBottomRightCorner().getCornerSize() != boxCornerRadiusBottomEnd
         || shapeAppearanceModel.getBottomLeftCorner().getCornerSize()
             != boxCornerRadiusBottomStart) {
-      shapeAppearanceModel.getTopLeftCorner().setCornerSize(boxCornerRadiusTopStart);
-      shapeAppearanceModel.getTopRightCorner().setCornerSize(boxCornerRadiusTopEnd);
-      shapeAppearanceModel.getBottomRightCorner().setCornerSize(boxCornerRadiusBottomEnd);
-      shapeAppearanceModel.getBottomLeftCorner().setCornerSize(boxCornerRadiusBottomStart);
+      shapeAppearanceModel =
+          shapeAppearanceModel.toBuilder()
+              .setTopLeftCornerSize(boxCornerRadiusTopStart)
+              .setTopRightCornerSize(boxCornerRadiusTopEnd)
+              .setBottomRightCornerSize(boxCornerRadiusBottomEnd)
+              .setBottomLeftCornerSize(boxCornerRadiusBottomStart)
+              .build();
       applyBoxAttributes();
     }
   }
@@ -1922,6 +1928,8 @@ public class TextInputLayout extends LinearLayout {
     if (boxBackground == null) {
       return;
     }
+
+    boxBackground.setShapeAppearanceModel(shapeAppearanceModel);
 
     if (canDrawOutlineStroke()) {
       boxBackground.setStroke(boxStrokeWidthPx, boxStrokeColor);

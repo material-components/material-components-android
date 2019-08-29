@@ -160,8 +160,8 @@ public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBack
                 bar.getCradleVerticalOffset());
 
     MaterialShapeDrawable babBackground = (MaterialShapeDrawable) bar.getBackground();
-    babBackground.getShapeAppearanceModel().setTopEdge(topEdge);
-    babBackground.invalidateSelf();
+    babBackground.setShapeAppearanceModel(
+        babBackground.getShapeAppearanceModel().toBuilder().setTopEdge(topEdge).build());
   }
 
   protected void setUpBottomDrawer(View view) {

@@ -122,7 +122,8 @@ final class CalendarItemStyle {
             R.styleable.MaterialCalendarItem_itemShapeAppearanceOverlay, 0);
 
     ShapeAppearanceModel itemShape =
-        new ShapeAppearanceModel(context, shapeAppearanceResId, shapeAppearanceOverlayResId);
+        ShapeAppearanceModel.builder(context, shapeAppearanceResId, shapeAppearanceOverlayResId)
+            .build();
 
     styleableArray.recycle();
 

@@ -117,7 +117,6 @@ class MaterialCardViewHelper {
   private ColorStateList rippleColor;
   private ColorStateList checkedIconTint;
   private ShapeAppearanceModel shapeAppearanceModel; // Shared by background, stroke & ripple
-  private ShapeAppearanceModel shapeAppearanceModelInsetByStroke;
 
   @Nullable private ColorStateList strokeColor;
   @Nullable private Drawable rippleDrawable;
@@ -137,19 +136,22 @@ class MaterialCardViewHelper {
     materialCardView = card;
     bgDrawable = new MaterialShapeDrawable(card.getContext(), attrs, defStyleAttr, defStyleRes);
     bgDrawable.initializeElevationOverlay(card.getContext());
-    shapeAppearanceModel = bgDrawable.getShapeAppearanceModel();
     bgDrawable.setShadowColor(Color.DKGRAY);
-    foregroundContentDrawable = new MaterialShapeDrawable(shapeAppearanceModel);
+    ShapeAppearanceModel.Builder shapeAppearanceModelBuilder =
+        bgDrawable.getShapeAppearanceModel().toBuilder();
+
     TypedArray cardViewAttributes =
         card.getContext()
             .obtainStyledAttributes(attrs, R.styleable.CardView, defStyleAttr, R.style.CardView);
     if (cardViewAttributes.hasValue(R.styleable.CardView_cardCornerRadius)) {
-      shapeAppearanceModel.setCornerRadius(
+      shapeAppearanceModelBuilder.setCornerRadius(
           cardViewAttributes.getDimension(R.styleable.CardView_cardCornerRadius, 0));
     }
 
-    shapeAppearanceModelInsetByStroke = new ShapeAppearanceModel(shapeAppearanceModel);
-    drawableInsetByStroke = new MaterialShapeDrawable(shapeAppearanceModelInsetByStroke);
+    foregroundContentDrawable = new MaterialShapeDrawable();
+    drawableInsetByStroke = new MaterialShapeDrawable();
+    setShapeAppearanceModel(shapeAppearanceModelBuilder.build());
+
     Resources resources = card.getResources();
     // TODO: support custom sizing
     checkedIconMargin = resources.getDimensionPixelSize(R.dimen.mtrl_card_checked_icon_margin);
@@ -184,7 +186,7 @@ class MaterialCardViewHelper {
           ColorStateList.valueOf(
               MaterialColors.getColor(materialCardView, R.attr.colorControlHighlight));
     }
-    adjustShapeAppearanceModelInsetByStroke();
+    refreshDrawableInsetByStroke(shapeAppearanceModel);
 
     ColorStateList foregroundColor =
         MaterialResources.getColorStateList(
@@ -238,7 +240,7 @@ class MaterialCardViewHelper {
       return;
     }
     this.strokeWidth = strokeWidth;
-    adjustShapeAppearanceModelInsetByStroke();
+    refreshDrawableInsetByStroke(shapeAppearanceModel);
     updateStroke();
   }
 
@@ -280,9 +282,7 @@ class MaterialCardViewHelper {
   }
 
   void setCornerRadius(float cornerRadius) {
-    shapeAppearanceModel.setCornerRadius(cornerRadius);
-    shapeAppearanceModelInsetByStroke.setCornerRadius(cornerRadius - strokeWidth);
-    bgDrawable.invalidateSelf();
+    setShapeAppearanceModel(shapeAppearanceModel.withCornerRadius(cornerRadius));
     fgDrawable.invalidateSelf();
     if (shouldAddCornerPaddingOutsideCardBackground()
         || shouldAddCornerPaddingInsideCardBackground()) {
@@ -472,6 +472,10 @@ class MaterialCardViewHelper {
     if (foregroundShapeDrawable != null) {
       foregroundShapeDrawable.setShapeAppearanceModel(shapeAppearanceModel);
     }
+
+    if (compatRippleDrawable != null) {
+      compatRippleDrawable.setShapeAppearanceModel(shapeAppearanceModel);
+    }
   }
 
   ShapeAppearanceModel getShapeAppearanceModel() {
@@ -479,26 +483,15 @@ class MaterialCardViewHelper {
   }
 
   private void refreshDrawableInsetByStroke(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
-    shapeAppearanceModelInsetByStroke = new ShapeAppearanceModel(shapeAppearanceModel);
-    adjustShapeAppearanceModelInsetByStroke();
     if (drawableInsetByStroke != null) {
-      drawableInsetByStroke.setShapeAppearanceModel(shapeAppearanceModel);
+      drawableInsetByStroke.setShapeAppearanceModel(
+          adjustedShapeAppearanceModelInsetByStroke(shapeAppearanceModel));
     }
   }
 
-  private void adjustShapeAppearanceModelInsetByStroke() {
-    shapeAppearanceModelInsetByStroke
-        .getTopLeftCorner()
-        .setCornerSize(shapeAppearanceModel.getTopLeftCorner().getCornerSize() - strokeWidth);
-    shapeAppearanceModelInsetByStroke
-        .getTopRightCorner()
-        .setCornerSize(shapeAppearanceModel.getTopRightCorner().getCornerSize() - strokeWidth);
-    shapeAppearanceModelInsetByStroke
-        .getBottomRightCorner()
-        .setCornerSize(shapeAppearanceModel.getBottomRightCorner().getCornerSize() - strokeWidth);
-    shapeAppearanceModelInsetByStroke
-        .getBottomLeftCorner()
-        .setCornerSize(shapeAppearanceModel.getBottomLeftCorner().getCornerSize() - strokeWidth);
+  private ShapeAppearanceModel adjustedShapeAppearanceModelInsetByStroke(
+      ShapeAppearanceModel shapeAppearanceModel) {
+    return shapeAppearanceModel.withAdjustedCorners(-strokeWidth);
   }
 
   /**

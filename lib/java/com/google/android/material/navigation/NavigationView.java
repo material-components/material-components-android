@@ -278,8 +278,9 @@ public class NavigationView extends ScrimInsetsFrameLayout {
         a.getResourceId(R.styleable.NavigationView_itemShapeAppearanceOverlay, 0);
     MaterialShapeDrawable materialShapeDrawable =
         new MaterialShapeDrawable(
-            new ShapeAppearanceModel(
-                getContext(), shapeAppearanceResId, shapeAppearanceOverlayResId));
+            ShapeAppearanceModel.builder(
+                    getContext(), shapeAppearanceResId, shapeAppearanceOverlayResId)
+                .build());
     materialShapeDrawable.setFillColor(
         MaterialResources.getColorStateList(
             getContext(), a, R.styleable.NavigationView_itemShapeFillColor));

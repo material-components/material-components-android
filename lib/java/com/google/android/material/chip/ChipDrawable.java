@@ -1412,8 +1412,10 @@ public class ChipDrawable extends MaterialShapeDrawable
   }
 
   /**
-   * @deprecated Use {@link com.google.android.material.shape.ShapeAppearanceModel#setAllCorners(int,
-   *     int)} instead.
+   * @deprecated call {@link ShapeAppearanceModel#withCornerRadius()} or call {@link
+   *     ShapeAppearanceModel#toBuilder()} on the {@link #getShapeAppearanceModel()}, modify the
+   *     shape using the builder and then call {@link
+   *     #setShapeAppearanceModel(ShapeAppearanceModel)}.
    */
   @Deprecated
   public void setChipCornerRadiusResource(@DimenRes int id) {
@@ -1421,17 +1423,17 @@ public class ChipDrawable extends MaterialShapeDrawable
   }
 
   /**
-   * @deprecated Use {@link com.google.android.material.shape.ShapeAppearanceModel#setAllCorners(int,
-   *     int)} instead.
+   * @deprecated call {@link ShapeAppearanceModel#withCornerRadius()} or call {@link
+   *     ShapeAppearanceModel#toBuilder()} on the {@link #getShapeAppearanceModel()}, modify the
+   *     shape using the builder and then call {@link
+   *     #setShapeAppearanceModel(ShapeAppearanceModel)}.
    */
   @Deprecated
   public void setChipCornerRadius(float chipCornerRadius) {
     if (this.chipCornerRadius != chipCornerRadius) {
       this.chipCornerRadius = chipCornerRadius;
 
-      ShapeAppearanceModel shapeAppearanceModel = getShapeAppearanceModel();
-      shapeAppearanceModel.setCornerRadius(chipCornerRadius);
-      invalidateSelf();
+      setShapeAppearanceModel(getShapeAppearanceModel().withCornerRadius(chipCornerRadius));
     }
   }
 

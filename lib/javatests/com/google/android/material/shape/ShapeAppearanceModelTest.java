@@ -51,7 +51,7 @@ public class ShapeAppearanceModelTest {
   public void noOverlay_hasDefaultCorners() {
     AttributeSet attributes = buildStyleAttributeSet().build();
 
-    shapeAppearance = new ShapeAppearanceModel(context, attributes, 0, 0);
+    shapeAppearance = ShapeAppearanceModel.builder(context, attributes, 0, 0).build();
 
     assertCornersInstanceOf(RoundedCornerTreatment.class);
     assertCornerSize(DEFAULT_CORNER_SIZE);
@@ -64,7 +64,7 @@ public class ShapeAppearanceModelTest {
             .addAttribute(R.attr.shapeAppearanceOverlay, "@style/ShapeAppearanceOverlay.Cut")
             .build();
 
-    shapeAppearance = new ShapeAppearanceModel(context, attributes, 0, 0);
+    shapeAppearance = ShapeAppearanceModel.builder(context, attributes, 0, 0).build();
 
     assertCornersInstanceOf(CutCornerTreatment.class);
     assertCornerSize(DEFAULT_CORNER_SIZE);
@@ -77,7 +77,7 @@ public class ShapeAppearanceModelTest {
             .addAttribute(R.attr.shapeAppearanceOverlay, "@style/ShapeAppearanceOverlay.TopLeftCut")
             .build();
 
-    shapeAppearance = new ShapeAppearanceModel(context, attributes, 0, 0);
+    shapeAppearance = ShapeAppearanceModel.builder(context, attributes, 0, 0).build();
 
     assertThat(shapeAppearance.getTopLeftCorner()).isInstanceOf(CutCornerTreatment.class);
     assertThat(shapeAppearance.getTopRightCorner()).isInstanceOf(RoundedCornerTreatment.class);
@@ -94,7 +94,7 @@ public class ShapeAppearanceModelTest {
                 R.attr.shapeAppearanceOverlay, "@style/ShapeAppearanceOverlay.BottomRightCut")
             .build();
 
-    shapeAppearance = new ShapeAppearanceModel(context, attributes, 0, 0);
+    shapeAppearance = ShapeAppearanceModel.builder(context, attributes, 0, 0).build();
 
     assertThat(shapeAppearance.getTopLeftCorner()).isInstanceOf(RoundedCornerTreatment.class);
     assertThat(shapeAppearance.getTopRightCorner()).isInstanceOf(RoundedCornerTreatment.class);
@@ -111,7 +111,7 @@ public class ShapeAppearanceModelTest {
                 R.attr.shapeAppearanceOverlay, "@style/ShapeAppearanceOverlay.DifferentCornerSize")
             .build();
 
-    shapeAppearance = new ShapeAppearanceModel(context, attributes, 0, 0);
+    shapeAppearance = ShapeAppearanceModel.builder(context, attributes, 0, 0).build();
 
     assertCornersInstanceOf(RoundedCornerTreatment.class);
     assertCornerSize(LARGE_CORNER_SIZE);
@@ -126,7 +126,7 @@ public class ShapeAppearanceModelTest {
                 "@style/ShapeAppearanceOverlay.TopRightDifferentCornerSize")
             .build();
 
-    shapeAppearance = new ShapeAppearanceModel(context, attributes, 0, 0);
+    shapeAppearance = ShapeAppearanceModel.builder(context, attributes, 0, 0).build();
 
     assertCornersInstanceOf(RoundedCornerTreatment.class);
     assertThat(shapeAppearance.getTopLeftCorner().getCornerSize()).isEqualTo(DEFAULT_CORNER_SIZE);
@@ -146,7 +146,7 @@ public class ShapeAppearanceModelTest {
                 "@style/ShapeAppearanceOverlay.BottomLeftDifferentCornerSize")
             .build();
 
-    shapeAppearance = new ShapeAppearanceModel(context, attributes, 0, 0);
+    shapeAppearance = ShapeAppearanceModel.builder(context, attributes, 0, 0).build();
 
     assertCornersInstanceOf(RoundedCornerTreatment.class);
     assertThat(shapeAppearance.getTopLeftCorner().getCornerSize()).isEqualTo(DEFAULT_CORNER_SIZE);
@@ -158,8 +158,7 @@ public class ShapeAppearanceModelTest {
 
   @Test
   public void setCornerRadius_defaultDoesNotChange() {
-    shapeAppearance =
-        new ShapeAppearanceModel.Builder().setCornerRadius(DEFAULT_CORNER_SIZE).build();
+    shapeAppearance = ShapeAppearanceModel.builder().setCornerRadius(DEFAULT_CORNER_SIZE).build();
     ShapeAppearanceModel largeCornerShape =
         shapeAppearance.toBuilder().setCornerRadius(LARGE_CORNER_SIZE).build();
 
@@ -170,7 +169,7 @@ public class ShapeAppearanceModelTest {
   @Test
   public void setOneCornerRadius_othersDoNotChange() {
     shapeAppearance =
-        new ShapeAppearanceModel.Builder()
+        ShapeAppearanceModel.builder()
             .setAllCorners(new RoundedCornerTreatment(DEFAULT_CORNER_SIZE))
             .setTopLeftCornerSize(LARGE_CORNER_SIZE)
             .build();
@@ -186,7 +185,7 @@ public class ShapeAppearanceModelTest {
   @Test
   public void setDifferentCornerTreatments_allTreatmentsSet() {
     shapeAppearance =
-        new ShapeAppearanceModel.Builder()
+        ShapeAppearanceModel.builder()
             .setTopLeftCorner(new RoundedCornerTreatment(DEFAULT_CORNER_SIZE))
             .setTopRightCorner(new CutCornerTreatment(LARGE_CORNER_SIZE))
             .setBottomLeftCorner(new RoundedCornerTreatment(LARGE_CORNER_SIZE))

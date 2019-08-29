@@ -87,7 +87,7 @@ class MaterialButtonHelper {
     // cornerRadius should override whatever corner radius is set in shapeAppearanceModel
     if (attributes.hasValue(R.styleable.MaterialButton_cornerRadius)) {
       cornerRadius = attributes.getDimensionPixelSize(R.styleable.MaterialButton_cornerRadius, -1);
-      shapeAppearanceModel.setCornerRadius(cornerRadius);
+      setShapeAppearanceModel(shapeAppearanceModel.withCornerRadius(cornerRadius));
       cornerRadiusSet = true;
     }
 
@@ -211,14 +211,12 @@ class MaterialButtonHelper {
     if (IS_LOLLIPOP) {
       maskDrawable = new MaterialShapeDrawable(shapeAppearanceModel);
       if (strokeWidth > 0) {
-        ShapeAppearanceModel temporaryAdjustedShapeAppearanceModel =
-            new ShapeAppearanceModel(shapeAppearanceModel);
-        adjustShapeAppearanceModelCornerRadius(
-            temporaryAdjustedShapeAppearanceModel, strokeWidth / 2f);
-        backgroundDrawable.setShapeAppearanceModel(temporaryAdjustedShapeAppearanceModel);
-        surfaceColorStrokeDrawable.setShapeAppearanceModel(temporaryAdjustedShapeAppearanceModel);
+        ShapeAppearanceModel adjustedShapeAppearanceModel =
+            adjustShapeAppearanceModelCornerRadius(shapeAppearanceModel, strokeWidth / 2f);
+        backgroundDrawable.setShapeAppearanceModel(adjustedShapeAppearanceModel);
+        surfaceColorStrokeDrawable.setShapeAppearanceModel(adjustedShapeAppearanceModel);
         ((MaterialShapeDrawable) maskDrawable)
-            .setShapeAppearanceModel(temporaryAdjustedShapeAppearanceModel);
+            .setShapeAppearanceModel(adjustedShapeAppearanceModel);
       }
 
       DrawableCompat.setTint(maskDrawable, Color.WHITE);
@@ -307,13 +305,12 @@ class MaterialButtonHelper {
                 : Color.TRANSPARENT);
       }
       if (IS_LOLLIPOP) {
-        ShapeAppearanceModel temporaryShapeAppearance =
-            new ShapeAppearanceModel(shapeAppearanceModel);
-        adjustShapeAppearanceModelCornerRadius(temporaryShapeAppearance, strokeWidth / 2f);
-        updateButtonShape(temporaryShapeAppearance);
+        ShapeAppearanceModel shapeAppearance =
+            adjustShapeAppearanceModelCornerRadius(shapeAppearanceModel, strokeWidth / 2f);
+        updateButtonShape(shapeAppearance);
         // Some APIs don't unwrap the drawable correctly.
         if (maskDrawable != null) {
-          ((MaterialShapeDrawable) maskDrawable).setShapeAppearanceModel(temporaryShapeAppearance);
+          ((MaterialShapeDrawable) maskDrawable).setShapeAppearanceModel(shapeAppearance);
         }
       }
     }
@@ -325,8 +322,8 @@ class MaterialButtonHelper {
     if (!cornerRadiusSet || this.cornerRadius != cornerRadius) {
       this.cornerRadius = cornerRadius;
       cornerRadiusSet = true;
-      shapeAppearanceModel.setCornerRadius(cornerRadius + (strokeWidth / 2f));
-      updateButtonShape(shapeAppearanceModel);
+      setShapeAppearanceModel(
+          shapeAppearanceModel.withCornerRadius(cornerRadius + (strokeWidth / 2f)));
     }
   }
 
@@ -334,24 +331,9 @@ class MaterialButtonHelper {
     return cornerRadius;
   }
 
-  private void adjustShapeAppearanceModelCornerRadius(
+  private ShapeAppearanceModel adjustShapeAppearanceModelCornerRadius(
       @NonNull ShapeAppearanceModel shapeAppearanceModel, float cornerRadiusAdjustment) {
-    shapeAppearanceModel
-        .getTopLeftCorner()
-        .setCornerSize(
-            shapeAppearanceModel.getTopLeftCorner().getCornerSize() + cornerRadiusAdjustment);
-    shapeAppearanceModel
-        .getTopRightCorner()
-        .setCornerSize(
-            shapeAppearanceModel.getTopRightCorner().getCornerSize() + cornerRadiusAdjustment);
-    shapeAppearanceModel
-        .getBottomRightCorner()
-        .setCornerSize(
-            shapeAppearanceModel.getBottomRightCorner().getCornerSize() + cornerRadiusAdjustment);
-    shapeAppearanceModel
-        .getBottomLeftCorner()
-        .setCornerSize(
-            shapeAppearanceModel.getBottomLeftCorner().getCornerSize() + cornerRadiusAdjustment);
+    return shapeAppearanceModel.withAdjustedCorners(cornerRadiusAdjustment);
   }
 
   @Nullable

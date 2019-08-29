@@ -1071,7 +1071,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       @Nullable ColorStateList bottomSheetColor) {
     if (this.shapeThemingEnabled) {
       this.shapeAppearanceModelDefault =
-          new ShapeAppearanceModel(context, attrs, R.attr.bottomSheetStyle, DEF_STYLE_RES);
+          ShapeAppearanceModel.builder(context, attrs, R.attr.bottomSheetStyle, DEF_STYLE_RES)
+              .build();
 
       this.materialShapeDrawable = new MaterialShapeDrawable(shapeAppearanceModelDefault);
       this.materialShapeDrawable.initializeElevationOverlay(context);

@@ -213,7 +213,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
     iconSize = attributes.getDimensionPixelSize(R.styleable.MaterialButton_iconSize, 0);
     ShapeAppearanceModel shapeAppearanceModel =
-        new ShapeAppearanceModel(context, attrs, defStyleAttr, DEF_STYLE_RES);
+        ShapeAppearanceModel.builder(context, attrs, defStyleAttr, DEF_STYLE_RES).build();
 
     // Loads and sets background drawable attributes
     materialButtonHelper = new MaterialButtonHelper(this, shapeAppearanceModel);

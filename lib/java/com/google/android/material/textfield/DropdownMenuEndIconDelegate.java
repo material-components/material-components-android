@@ -379,9 +379,13 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
 
   private MaterialShapeDrawable getPopUpMaterialShapeDrawable(
       float topCornerRadius, float bottomCornerRadius, float elevation, int verticalPadding) {
-    ShapeAppearanceModel shapeAppearanceModel = new ShapeAppearanceModel();
-    shapeAppearanceModel.setCornerRadii(
-        topCornerRadius, topCornerRadius, bottomCornerRadius, bottomCornerRadius);
+    ShapeAppearanceModel shapeAppearanceModel =
+        ShapeAppearanceModel.builder()
+            .setTopLeftCornerSize(topCornerRadius)
+            .setTopRightCornerSize(topCornerRadius)
+            .setBottomLeftCornerSize(bottomCornerRadius)
+            .setBottomRightCornerSize(bottomCornerRadius)
+            .build();
     MaterialShapeDrawable popupDrawable =
         MaterialShapeDrawable.createWithElevationOverlay(context, elevation);
     popupDrawable.setShapeAppearanceModel(shapeAppearanceModel);
