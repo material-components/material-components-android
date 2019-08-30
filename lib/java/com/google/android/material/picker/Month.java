@@ -55,9 +55,9 @@ public final class Month implements Comparable<Month>, Parcelable {
   final int daysInWeek;
   final int daysInMonth;
 
-  private Month(@NonNull Calendar calendar) {
-    this.calendar = calendar;
-    this.calendar.set(Calendar.DAY_OF_MONTH, 1);
+  private Month(@NonNull Calendar rawCalendar) {
+    calendar = Calendar.getInstance();
+    calendar.setTimeInMillis(DateLongs.canonicalYearMonthDay(rawCalendar.getTimeInMillis()));
     month = calendar.get(Calendar.MONTH);
     year = calendar.get(Calendar.YEAR);
     daysInWeek = this.calendar.getMaximum(Calendar.DAY_OF_WEEK);
