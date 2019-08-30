@@ -19,7 +19,7 @@ package com.google.android.material.shape;
 import androidx.annotation.NonNull;
 
 /** A corner treatment which cuts or clips the original corner of a shape with a straight line. */
-public class CutCornerTreatment extends CornerTreatment implements Cloneable {
+public class CutCornerTreatment extends CornerTreatment {
 
   /**
    * Instantiates a cut corner treatment of a given size. A cut corner treatment introduces two new

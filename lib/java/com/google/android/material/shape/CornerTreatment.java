@@ -32,7 +32,7 @@ import android.util.Log;
  * setting `android:clipChildren="false"` in xml. `clipToPadding` may also need to be false if there
  * is any padding on the parent that could intersect the shadow.
  */
-public class CornerTreatment implements Cloneable {
+public class CornerTreatment {
 
   private static final String TAG = "CornerTreatment";
 
@@ -68,17 +68,6 @@ public class CornerTreatment implements Cloneable {
 
   public float getCornerSize() {
     return cornerSize;
-  }
-
-  @NonNull
-  @Override
-  public CornerTreatment clone() {
-    try {
-      return (CornerTreatment) super.clone();
-    } catch (CloneNotSupportedException e) {
-      throw new AssertionError(e); // This should never happen, because CornerTreatment handles the
-      // cloning, so all subclasses of CornerTreatment will support cloning.
-    }
   }
 
   /**

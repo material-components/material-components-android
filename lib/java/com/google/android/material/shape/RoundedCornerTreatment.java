@@ -19,7 +19,7 @@ package com.google.android.material.shape;
 import androidx.annotation.NonNull;
 
 /** A corner treatment which rounds a corner of a shape. */
-public class RoundedCornerTreatment extends CornerTreatment implements Cloneable {
+public class RoundedCornerTreatment extends CornerTreatment {
 
   /**
    * Instantiates a rounded corner treatment.
