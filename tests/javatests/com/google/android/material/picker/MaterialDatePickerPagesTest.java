@@ -15,14 +15,13 @@
  */
 package com.google.android.material.picker;
 
+import static com.google.android.material.picker.MaterialDatePickerTestUtils.findFirstVisibleItem;
 import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.IdlingRegistry;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
@@ -73,7 +72,7 @@ public class MaterialDatePickerPagesTest {
     MaterialDatePickerTestUtils.swipeEarlier(dialogFragment);
     MaterialDatePickerTestUtils.swipeEarlier(dialogFragment);
 
-    assertEquals(start, findFirstVisibleItem());
+    assertEquals(start, findFirstVisibleItem(dialogFragment));
   }
 
   @Test
@@ -82,12 +81,12 @@ public class MaterialDatePickerPagesTest {
     MaterialDatePickerTestUtils.swipeLater(dialogFragment);
     MaterialDatePickerTestUtils.swipeLater(dialogFragment);
     MaterialDatePickerTestUtils.swipeLater(dialogFragment);
-    assertEquals(end, findFirstVisibleItem());
+    assertEquals(end, findFirstVisibleItem(dialogFragment));
   }
 
   @Test
   public void calendarOpensOnCurrent() {
-    assertEquals(opening, findFirstVisibleItem());
+    assertEquals(opening, findFirstVisibleItem(dialogFragment));
   }
 
   @Test
@@ -119,14 +118,6 @@ public class MaterialDatePickerPagesTest {
     MaterialDatePickerTestUtils.clickNext();
     MaterialDatePickerTestUtils.clickSelectorToggle();
     MaterialDatePickerTestUtils.clickSelectorToggle();
-    assertEquals(findFirstVisibleItem(), opening.monthsLater(1));
-  }
-
-  private Month findFirstVisibleItem() {
-    RecyclerView recyclerView =
-        dialogFragment.getView().findViewWithTag(MaterialCalendar.MONTHS_VIEW_GROUP_TAG);
-    MonthsPagerAdapter monthsPagerAdapter = (MonthsPagerAdapter) recyclerView.getAdapter();
-    return monthsPagerAdapter.getPageMonth(
-        ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition());
+    assertEquals(findFirstVisibleItem(dialogFragment), opening.monthsLater(1));
   }
 }

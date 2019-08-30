@@ -398,6 +398,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
             } else {
               currentItem = getLayoutManager().findLastVisibleItemPosition();
             }
+            current = monthsPagerAdapter.getPageMonth(currentItem);
             monthDropSelect.setText(monthsPagerAdapter.getPageTitle(currentItem));
           }
 

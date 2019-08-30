@@ -29,6 +29,7 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 import android.app.Activity;
+import androidx.annotation.VisibleForTesting;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -46,6 +47,8 @@ import java.util.Calendar;
 import org.hamcrest.core.IsEqual;
 
 public final class MaterialDatePickerTestUtils {
+
+  @VisibleForTesting public static final Month OPENING = Month.create(2018, Calendar.APRIL);
 
   private MaterialDatePickerTestUtils() {}
 
@@ -68,9 +71,8 @@ public final class MaterialDatePickerTestUtils {
 
     Month start = Month.create(1900, Calendar.JANUARY);
     Month end = Month.create(2100, Calendar.DECEMBER);
-    Month current = Month.create(2018, Calendar.APRIL);
     CalendarConstraints calendarConstraints =
-        new CalendarConstraints.Builder().setStart(start).setEnd(end).setOpening(current).build();
+        new CalendarConstraints.Builder().setStart(start).setEnd(end).setOpening(OPENING).build();
 
     return showDatePicker(activityTestRule, themeResId, calendarConstraints);
   }
@@ -107,9 +109,8 @@ public final class MaterialDatePickerTestUtils {
       ActivityTestRule<? extends AppCompatActivity> activityTestRule, int themeResId) {
     Month start = Month.create(1900, Calendar.JANUARY);
     Month end = Month.create(2100, Calendar.DECEMBER);
-    Month current = Month.create(2018, Calendar.APRIL);
     CalendarConstraints calendarConstraints =
-        new CalendarConstraints.Builder().setStart(start).setEnd(end).setOpening(current).build();
+        new CalendarConstraints.Builder().setStart(start).setEnd(end).setOpening(OPENING).build();
     return showRangePicker(activityTestRule, themeResId, calendarConstraints);
   }
 
@@ -187,7 +188,8 @@ public final class MaterialDatePickerTestUtils {
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
   }
 
-  static void swipeEarlier(DialogFragment dialogFragment) {
+  @VisibleForTesting
+  public static void swipeEarlier(DialogFragment dialogFragment) {
     int orientation = getOrientation(dialogFragment);
     if (orientation == LinearLayoutManager.HORIZONTAL) {
       onMonthsGroup.perform(swipeRight());
@@ -233,6 +235,15 @@ public final class MaterialDatePickerTestUtils {
         hideAllEditTextCursors(viewGroup.getChildAt(i));
       }
     }
+  }
+
+  @VisibleForTesting
+  public static Month findFirstVisibleItem(DialogFragment dialogFragment) {
+    RecyclerView recyclerView =
+        dialogFragment.getView().findViewWithTag(MaterialCalendar.MONTHS_VIEW_GROUP_TAG);
+    MonthsPagerAdapter monthsPagerAdapter = (MonthsPagerAdapter) recyclerView.getAdapter();
+    return monthsPagerAdapter.getPageMonth(
+        ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition());
   }
 
   private static int getOrientation(DialogFragment dialogFragment) {
