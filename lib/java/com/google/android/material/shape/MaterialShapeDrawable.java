@@ -67,8 +67,7 @@ import java.lang.annotation.RetentionPolicy;
  * Base drawable class for Material Shapes that handles shadows, elevation, scale and color for a
  * generated path.
  */
-public class MaterialShapeDrawable extends Drawable
-    implements TintAwareDrawable, ShapeAppearanceModel.OnChangedListener, Shapeable {
+public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable, Shapeable {
 
   private static final float SHADOW_RADIUS_MULTIPLIER = .75f;
 
@@ -204,10 +203,6 @@ public class MaterialShapeDrawable extends Drawable
             edgeShadowOperation[count] = edgePath.createShadowCompatOperation(transform);
           }
         };
-
-    // Listens for modifications made in the ShapeAppearanceModel, and requests a redraw if the
-    // ShapeAppearanceModel has changed.
-    drawableState.shapeAppearanceModel.addOnChangedListener(this);
   }
 
   @Nullable
@@ -237,9 +232,7 @@ public class MaterialShapeDrawable extends Drawable
    */
   @Override
   public void setShapeAppearanceModel(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
-    drawableState.shapeAppearanceModel.removeOnChangedListener(this);
     drawableState.shapeAppearanceModel = shapeAppearanceModel;
-    shapeAppearanceModel.addOnChangedListener(this);
     invalidateSelf();
   }
 
@@ -826,11 +819,6 @@ public class MaterialShapeDrawable extends Drawable
       drawableState.scale = scale;
       invalidateSelf();
     }
-  }
-
-  @Override
-  public void onShapeAppearanceModelChanged() {
-    invalidateSelf();
   }
 
   @Override

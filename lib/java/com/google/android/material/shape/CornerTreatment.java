@@ -36,7 +36,7 @@ public class CornerTreatment implements Cloneable {
 
   private static final String TAG = "CornerTreatment";
 
-  protected float cornerSize;
+  protected final float cornerSize;
 
   public CornerTreatment() {
     // Default Constructor has no size. Using this treatment for all corners will draw a square
@@ -68,10 +68,6 @@ public class CornerTreatment implements Cloneable {
 
   public float getCornerSize() {
     return cornerSize;
-  }
-
-  public void setCornerSize(float cornerSize) {
-    this.cornerSize = cornerSize;
   }
 
   @NonNull
