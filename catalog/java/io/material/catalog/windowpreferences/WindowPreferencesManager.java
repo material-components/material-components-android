@@ -21,6 +21,7 @@ import static android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
 import static android.view.View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
 import static android.view.View.SYSTEM_UI_FLAG_VISIBLE;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -38,6 +39,7 @@ public class WindowPreferencesManager {
 
   private static final String PREFERENCES_NAME = "window_preferences";
   private static final String KEY_EDGE_TO_EDGE_ENABLED = "edge_to_edge_enabled";
+  private static final int EDGE_TO_EDGE_BAR_ALPHA = 128;
 
   @RequiresApi(VERSION_CODES.LOLLIPOP)
   private static final int EDGE_TO_EDGE_FLAGS =
@@ -66,14 +68,10 @@ public class WindowPreferencesManager {
     if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
       return;
     }
-
     boolean edgeToEdgeEnabled = isEdgeToEdgeEnabled();
-    int statusBarColor = edgeToEdgeEnabled
-        ? TRANSPARENT
-        : MaterialColors.getColor(context, android.R.attr.statusBarColor, Color.BLACK);
-    int navbarColor = edgeToEdgeEnabled
-        ? TRANSPARENT
-        : MaterialColors.getColor(context, android.R.attr.navigationBarColor, Color.BLACK);
+
+    int statusBarColor = getStatusBarColor(isEdgeToEdgeEnabled());
+    int navbarColor = getNavBarColor(isEdgeToEdgeEnabled());
 
     boolean lightBackground = isColorLight(
         MaterialColors.getColor(context, android.R.attr.colorBackground, Color.BLACK));
@@ -97,8 +95,36 @@ public class WindowPreferencesManager {
     decorView.setSystemUiVisibility(systemUiVisibility);
   }
 
-  private static boolean isColorLight(@ColorInt int color){
-    return color != TRANSPARENT && ColorUtils.calculateLuminance(color) >  0.5;
+  @SuppressWarnings("RestrictTo")
+  @TargetApi(VERSION_CODES.LOLLIPOP)
+  private int getStatusBarColor(boolean isEdgeToEdgeEnabled) {
+    if (isEdgeToEdgeEnabled && VERSION.SDK_INT < VERSION_CODES.M) {
+      int opaqueStatusBarColor =
+          MaterialColors.getColor(context, android.R.attr.statusBarColor, Color.BLACK);
+      return ColorUtils.setAlphaComponent(opaqueStatusBarColor, EDGE_TO_EDGE_BAR_ALPHA);
+    }
+    if (isEdgeToEdgeEnabled) {
+      return TRANSPARENT;
+    }
+    return MaterialColors.getColor(context, android.R.attr.statusBarColor, Color.BLACK);
+  }
+
+  @SuppressWarnings("RestrictTo")
+  @TargetApi(VERSION_CODES.LOLLIPOP)
+  private int getNavBarColor(boolean isEdgeToEdgeEnabled) {
+    if (isEdgeToEdgeEnabled && VERSION.SDK_INT < VERSION_CODES.O_MR1) {
+      int opaqueNavBarColor =
+          MaterialColors.getColor(context, android.R.attr.navigationBarColor, Color.BLACK);
+      return ColorUtils.setAlphaComponent(opaqueNavBarColor, EDGE_TO_EDGE_BAR_ALPHA);
+    }
+    if (isEdgeToEdgeEnabled) {
+      return TRANSPARENT;
+    }
+    return MaterialColors.getColor(context, android.R.attr.navigationBarColor, Color.BLACK);
+  }
+
+  private static boolean isColorLight(@ColorInt int color) {
+    return color != TRANSPARENT && ColorUtils.calculateLuminance(color) > 0.5;
   }
 
   private SharedPreferences getSharedPreferences() {
