@@ -36,8 +36,7 @@ import io.material.catalog.windowpreferences.WindowPreferencesManager;
 import javax.inject.Inject;
 
 /** Base Activity class that provides a demo screen structure for a single demo. */
-public abstract class DemoActivity extends AppCompatActivity
-    implements HasAndroidInjector {
+public abstract class DemoActivity extends AppCompatActivity implements HasAndroidInjector {
 
   public static final String EXTRA_DEMO_TITLE = "demo_title";
 
@@ -50,6 +49,9 @@ public abstract class DemoActivity extends AppCompatActivity
   protected void onCreate(@Nullable Bundle bundle) {
     safeInject();
     super.onCreate(bundle);
+    WindowPreferencesManager windowPreferencesManager = new WindowPreferencesManager(this);
+    windowPreferencesManager.applyEdgeToEdgePreference(getWindow());
+
     setContentView(R.layout.cat_demo_activity);
 
     toolbar = findViewById(R.id.toolbar);
@@ -57,9 +59,6 @@ public abstract class DemoActivity extends AppCompatActivity
 
     initDemoActionBar();
     demoContainer.addView(onCreateDemoView(LayoutInflater.from(this), demoContainer, bundle));
-
-    WindowPreferencesManager windowPreferencesManager = new WindowPreferencesManager(this);
-    windowPreferencesManager.applyEdgeToEdgePreference(getWindow());
   }
 
   @Override
@@ -88,7 +87,7 @@ public abstract class DemoActivity extends AppCompatActivity
   public AndroidInjector<Object> androidInjector() {
     return androidInjector;
   }
-  
+
   private void safeInject() {
     try {
       AndroidInjection.inject(this);
