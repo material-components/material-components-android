@@ -58,6 +58,7 @@ public class BottomSheetMainDemoFragment extends DemoFragment {
     button.setOnClickListener(
         v -> {
           bottomSheetDialog.show();
+          bottomSheetDialog.setTitle(getText(R.string.cat_bottomsheet_title));
           Button button0 = bottomSheetInternal.findViewById(R.id.cat_bottomsheet_modal_button);
           button0.setOnClickListener(
               v0 ->

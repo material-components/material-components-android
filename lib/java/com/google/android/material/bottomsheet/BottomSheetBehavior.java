@@ -41,6 +41,9 @@ import com.google.android.material.shape.ShapeAppearanceModel;
 import androidx.core.math.MathUtils;
 import androidx.customview.view.AbsSavedState;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
+import androidx.core.view.accessibility.AccessibilityViewCommand;
 import androidx.customview.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -50,7 +53,6 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.view.accessibility.AccessibilityEvent;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams;
 import com.google.android.material.resources.MaterialResources;
@@ -63,6 +65,15 @@ import java.util.Map;
 /**
  * An interaction behavior plugin for a child view of {@link CoordinatorLayout} to make it work as a
  * bottom sheet.
+ *
+ * <p>For a persistent bottom sheet, to send useful accessibility events, use {@link
+ * ViewCompat#setAccessibilityPaneTitle(View, CharSequence)} to set a title when in an expanded
+ * state, and to remove the title when in a collapsed state. This can be tracked in {@link
+ * BottomSheetCallback}.
+ *
+ * <p>For BottomSheetDialog use {@link BottomSheetDialog#setTitle(int)}, and for
+ * BottomSheetDialogFragment use {@link ViewCompat#setAccessibilityPaneTitle(View, CharSequence)}.
+ * The titles need to only be set once here as the views behave like windows in all states.
  */
 public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behavior<V> {
 
@@ -361,6 +372,11 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         // Update the material shape based on initial state.
         isShapeExpanded = state == STATE_EXPANDED;
         materialShapeDrawable.setInterpolation(isShapeExpanded ? 0f : 1f);
+      }
+      updateAccessibilityActions();
+      if (ViewCompat.getImportantForAccessibility(child)
+          == ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_AUTO) {
+        ViewCompat.setImportantForAccessibility(child, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
       }
     }
     if (viewDragHelper == null) {
@@ -678,6 +694,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     }
     // Fix incorrect expanded settings depending on whether or not we are fitting sheet to contents.
     setStateInternal((this.fitToContents && state == STATE_HALF_EXPANDED) ? STATE_EXPANDED : state);
+
+    updateAccessibilityActions();
   }
 
   /**
@@ -796,6 +814,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         // Lift up to collapsed state
         setState(STATE_COLLAPSED);
       }
+      updateAccessibilityActions();
     }
   }
 
@@ -950,14 +969,11 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       updateImportantForAccessibility(false);
     }
 
-    ViewCompat.setImportantForAccessibility(
-        bottomSheet, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
-    bottomSheet.sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED);
-
     updateDrawableForTargetState(state);
     if (callback != null) {
       callback.onStateChanged(bottomSheet, state);
     }
+    updateAccessibilityActions();
   }
 
   private void updateDrawableForTargetState(@State int state) {
@@ -1468,5 +1484,62 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     if (!expanded) {
       importantForAccessibilityMap = null;
     }
+  }
+
+  private void updateAccessibilityActions() {
+    if (viewRef == null) {
+      return;
+    }
+    V child = viewRef.get();
+    if (child == null) {
+      return;
+    }
+    ViewCompat.removeAccessibilityAction(child, AccessibilityNodeInfoCompat.ACTION_COLLAPSE);
+    ViewCompat.removeAccessibilityAction(child, AccessibilityNodeInfoCompat.ACTION_EXPAND);
+    ViewCompat.removeAccessibilityAction(child, AccessibilityNodeInfoCompat.ACTION_DISMISS);
+
+    if (hideable && state != STATE_HIDDEN) {
+      addAccessibilityActionForState(child, AccessibilityActionCompat.ACTION_DISMISS, STATE_HIDDEN);
+    }
+
+    switch (state) {
+      case STATE_EXPANDED:
+        {
+          int nextState = fitToContents ? STATE_COLLAPSED : STATE_HALF_EXPANDED;
+          addAccessibilityActionForState(
+              child, AccessibilityActionCompat.ACTION_COLLAPSE, nextState);
+          break;
+        }
+      case STATE_HALF_EXPANDED:
+        {
+          addAccessibilityActionForState(
+              child, AccessibilityActionCompat.ACTION_COLLAPSE, STATE_COLLAPSED);
+          addAccessibilityActionForState(
+              child, AccessibilityActionCompat.ACTION_EXPAND, STATE_EXPANDED);
+          break;
+        }
+      case STATE_COLLAPSED:
+        {
+          int nextState = fitToContents ? STATE_EXPANDED : STATE_HALF_EXPANDED;
+          addAccessibilityActionForState(child, AccessibilityActionCompat.ACTION_EXPAND, nextState);
+          break;
+        }
+      default: // fall out
+    }
+  }
+
+  private void addAccessibilityActionForState(
+      V child, AccessibilityActionCompat action, final int state) {
+    ViewCompat.replaceAccessibilityAction(
+        child,
+        action,
+        null,
+        new AccessibilityViewCommand() {
+          @Override
+          public boolean perform(@NonNull View view, @Nullable CommandArguments arguments) {
+            setState(state);
+            return true;
+          }
+        });
   }
 }
