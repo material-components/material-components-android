@@ -374,7 +374,7 @@ public class TextInputLayout extends LinearLayout {
   @ColorInt private final int disabledFilledBackgroundColor;
   @ColorInt private final int hoveredFilledBackgroundColor;
 
-  @ColorInt private final int disabledColor;
+  @ColorInt private int disabledColor;
 
   // Only used for testing
   private boolean hintExpanded;
