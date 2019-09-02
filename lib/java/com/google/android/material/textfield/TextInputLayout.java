@@ -854,7 +854,7 @@ public class TextInputLayout extends LinearLayout {
   /**
    * Set the box's stroke color state list.
    *
-   * @param boStrokeColorStateList the color state list to use for the box's stroke
+   * @param boxStrokeColorStateList the color state list to use for the box's stroke
    */
   public void setBoxStrokeColorStateList(ColorStateList boxStrokeColorStateList) {
     if (boxStrokeColorStateList != null && boxStrokeColorStateList.isStateful()) {
