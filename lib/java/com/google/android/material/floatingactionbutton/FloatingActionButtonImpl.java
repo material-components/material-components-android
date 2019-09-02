@@ -94,7 +94,7 @@ class FloatingActionButtonImpl {
   float pressedTranslationZ;
   int minTouchTargetSize;
 
-  private final StateListAnimator stateListAnimator;
+  @NonNull private final StateListAnimator stateListAnimator;
 
   @Nullable private MotionSpec defaultShowMotionSpec;
   @Nullable private MotionSpec defaultHideMotionSpec;
@@ -182,7 +182,7 @@ class FloatingActionButtonImpl {
 
   void initializeBackgroundDrawable(
       ColorStateList backgroundTint,
-      PorterDuff.Mode backgroundTintMode,
+      @Nullable PorterDuff.Mode backgroundTintMode,
       ColorStateList rippleColor,
       int borderWidth) {
     // Now we need to tint the original background with the tint, using
@@ -288,7 +288,7 @@ class FloatingActionButtonImpl {
     view.setImageMatrix(matrix);
   }
 
-  private void calculateImageMatrixFromScale(float scale, Matrix matrix) {
+  private void calculateImageMatrixFromScale(float scale, @NonNull Matrix matrix) {
     matrix.reset();
 
     Drawable drawable = view.getDrawable();
@@ -305,7 +305,8 @@ class FloatingActionButtonImpl {
     }
   }
 
-  final void setShapeAppearance(ShapeAppearanceModel shapeAppearance, boolean usingDefaultCorner) {
+  final void setShapeAppearance(
+      @NonNull ShapeAppearanceModel shapeAppearance, boolean usingDefaultCorner) {
     if (usingDefaultCorner) {
       shapeAppearance = shapeAppearance.withCornerRadius(view.getSizeDimension() / 2);
     }
@@ -586,7 +587,8 @@ class FloatingActionButtonImpl {
             new ImageMatrixProperty(),
             new MatrixEvaluator() {
               @Override
-              public Matrix evaluate(float fraction, Matrix startValue, Matrix endValue) {
+              public Matrix evaluate(
+                  float fraction, @NonNull Matrix startValue, @NonNull Matrix endValue) {
                 // Also set the current imageMatrixScale fraction so it can be used to correctly
                 // calculate the image matrix at any given point.
                 imageMatrixScale = fraction;
@@ -660,7 +662,7 @@ class FloatingActionButtonImpl {
     shadowViewDelegate.setShadowPadding(rect.left, rect.top, rect.right, rect.bottom);
   }
 
-  void getPadding(Rect rect) {
+  void getPadding(@NonNull Rect rect) {
     final int minPadding = ensureMinTouchTargetSize
         ? (minTouchTargetSize - view.getSizeDimension()) / 2
         : 0;
@@ -671,7 +673,7 @@ class FloatingActionButtonImpl {
     rect.set(hPadding, vPadding, hPadding, vPadding);
   }
 
-  void onPaddingUpdated(Rect padding) {
+  void onPaddingUpdated(@NonNull Rect padding) {
     Preconditions.checkNotNull(contentBackground, "Didn't initialize content background");
     if (shouldAddPadding()) {
       InsetDrawable insetDrawable = new InsetDrawable(
@@ -716,6 +718,7 @@ class FloatingActionButtonImpl {
     }
   }
 
+  @NonNull
   private ViewTreeObserver.OnPreDrawListener getOrCreatePreDrawListener() {
     if (preDrawListener == null) {
       preDrawListener =
@@ -759,6 +762,7 @@ class FloatingActionButtonImpl {
     }
   }
 
+  @NonNull
   private ValueAnimator createElevationAnimator(@NonNull ShadowAnimatorImpl impl) {
     final ValueAnimator animator = new ValueAnimator();
     animator.setInterpolator(ELEVATION_ANIM_INTERPOLATOR);
@@ -777,7 +781,7 @@ class FloatingActionButtonImpl {
     private float shadowSizeEnd;
 
     @Override
-    public void onAnimationUpdate(ValueAnimator animator) {
+    public void onAnimationUpdate(@NonNull ValueAnimator animator) {
       if (!validValues) {
         shadowSizeStart = shapeDrawable == null ? 0 : shapeDrawable.getElevation();
         shadowSizeEnd = getTargetShadowSize();

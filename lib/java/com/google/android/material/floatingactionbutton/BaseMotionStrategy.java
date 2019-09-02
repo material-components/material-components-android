@@ -34,14 +34,14 @@ import java.util.List;
 abstract class BaseMotionStrategy implements MotionStrategy {
 
   private final Context context;
-  private final ExtendedFloatingActionButton fab;
+  @NonNull private final ExtendedFloatingActionButton fab;
   private final ArrayList<AnimatorListener> listeners = new ArrayList<>();
   private final AnimatorTracker tracker;
 
   @Nullable private MotionSpec defaultMotionSpec;
   @Nullable private MotionSpec motionSpec;
 
-  BaseMotionStrategy(ExtendedFloatingActionButton fab, AnimatorTracker tracker) {
+  BaseMotionStrategy(@NonNull ExtendedFloatingActionButton fab, AnimatorTracker tracker) {
     this.fab = fab;
     this.context = fab.getContext();
     this.tracker = tracker;
@@ -78,6 +78,7 @@ abstract class BaseMotionStrategy implements MotionStrategy {
     listeners.remove(listener);
   }
 
+  @NonNull
   @Override
   public final List<AnimatorListener> getListeners() {
     return listeners;
@@ -112,6 +113,7 @@ abstract class BaseMotionStrategy implements MotionStrategy {
     return createAnimator(getCurrentMotionSpec());
   }
 
+  @NonNull
   AnimatorSet createAnimator(@NonNull MotionSpec spec) {
     List<Animator> animators = new ArrayList<>();
 

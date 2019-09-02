@@ -79,12 +79,12 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
   private int animState = ANIM_STATE_NONE;
 
   private final AnimatorTracker changeVisibilityTracker = new AnimatorTracker();
-  private final MotionStrategy shrinkStrategy;
-  private final MotionStrategy extendStrategy;
+  @NonNull private final MotionStrategy shrinkStrategy;
+  @NonNull private final MotionStrategy extendStrategy;
   private final MotionStrategy showStrategy = new ShowStrategy(changeVisibilityTracker);
   private final MotionStrategy hideStrategy = new HideStrategy(changeVisibilityTracker);
 
-  private final Behavior<ExtendedFloatingActionButton> behavior;
+  @NonNull private final Behavior<ExtendedFloatingActionButton> behavior;
 
   private boolean isExtended = true;
   private boolean isUsingPillCorner = true;
@@ -137,17 +137,17 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     public void onShrunken(ExtendedFloatingActionButton extendedFab) {}
   }
 
-  public ExtendedFloatingActionButton(Context context) {
+  public ExtendedFloatingActionButton(@NonNull Context context) {
     this(context, null);
   }
 
-  public ExtendedFloatingActionButton(Context context, @Nullable AttributeSet attrs) {
+  public ExtendedFloatingActionButton(@NonNull Context context, @Nullable AttributeSet attrs) {
     this(context, attrs, R.attr.extendedFloatingActionButtonStyle);
   }
 
   @SuppressWarnings("initialization")
   public ExtendedFloatingActionButton(
-      Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+      @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
     behavior = new ExtendedFloatingActionButtonBehavior<>(context, attrs);
     TypedArray a =
@@ -565,7 +565,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
   }
 
   private void performMotion(
-      final MotionStrategy strategy, @Nullable final OnChangedCallback callback) {
+      @NonNull final MotionStrategy strategy, @Nullable final OnChangedCallback callback) {
     if (strategy.shouldCancel()) {
       return;
     }
@@ -639,16 +639,17 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
    * A Property wrapper around the <code>width</code> functionality handled by the {@link
    * LayoutParams#width} value.
    */
-   static final Property<View, Float> WIDTH =
+  static final Property<View, Float> WIDTH =
       new Property<View, Float>(Float.class, "width") {
         @Override
-        public void set(View object, Float value) {
+        public void set(@NonNull View object, @NonNull Float value) {
           object.getLayoutParams().width = value.intValue();
           object.requestLayout();
         }
 
+        @NonNull
         @Override
-        public Float get(View object) {
+        public Float get(@NonNull View object) {
           return (float) object.getLayoutParams().width;
         }
       };
@@ -657,16 +658,17 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
    * A Property wrapper around the <code>height</code> functionality handled by the {@link
    * LayoutParams#height} value.
    */
-   static final Property<View, Float> HEIGHT =
+  static final Property<View, Float> HEIGHT =
       new Property<View, Float>(Float.class, "height") {
         @Override
-        public void set(View object, Float value) {
+        public void set(@NonNull View object, @NonNull Float value) {
           object.getLayoutParams().height = value.intValue();
           object.requestLayout();
         }
 
+        @NonNull
         @Override
-        public Float get(View object) {
+        public Float get(@NonNull View object) {
           return (float) object.getLayoutParams().height;
         }
       };
@@ -679,14 +681,14 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
   static final Property<View, Float> CORNER_RADIUS =
       new Property<View, Float>(Float.class, "cornerRadius") {
         @Override
-        public void set(View object, Float value) {
+        public void set(@NonNull View object, @NonNull Float value) {
           ExtendedFloatingActionButton efab = ((ExtendedFloatingActionButton) object);
           efab.setShapeAppearanceModel(
               efab.getShapeAppearanceModel().withCornerRadius(value.intValue()));
         }
 
         @Override
-        public Float get(View object) {
+        public Float get(@NonNull View object) {
           return ((ExtendedFloatingActionButton) object)
               .getShapeAppearanceModel()
               .getTopRightCorner()
@@ -738,7 +740,8 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
 
     // Behavior attrs should be nullable in the framework
     @SuppressWarnings("argument.type.incompatible")
-    public ExtendedFloatingActionButtonBehavior(Context context, @Nullable AttributeSet attrs) {
+    public ExtendedFloatingActionButtonBehavior(
+        @NonNull Context context, @Nullable AttributeSet attrs) {
       super(context, attrs);
       TypedArray a =
           context.obtainStyledAttributes(
@@ -817,7 +820,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
 
     @Override
     public boolean onDependentViewChanged(
-        CoordinatorLayout parent, ExtendedFloatingActionButton child, View dependency) {
+        CoordinatorLayout parent, @NonNull ExtendedFloatingActionButton child, View dependency) {
       if (dependency instanceof AppBarLayout) {
         // If we're depending on an AppBarLayout we will show/hide it automatically
         // if the FAB is anchored to the AppBarLayout
@@ -846,7 +849,8 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
       internalAutoShrinkCallback = callback;
     }
 
-    private boolean shouldUpdateVisibility(View dependency, ExtendedFloatingActionButton child) {
+    private boolean shouldUpdateVisibility(
+        @NonNull View dependency, @NonNull ExtendedFloatingActionButton child) {
       final CoordinatorLayout.LayoutParams lp =
           (CoordinatorLayout.LayoutParams) child.getLayoutParams();
       if (!autoHideEnabled && !autoShrinkEnabled) {
@@ -863,7 +867,9 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     }
 
     private boolean updateFabVisibilityForAppBarLayout(
-        CoordinatorLayout parent, AppBarLayout appBarLayout, ExtendedFloatingActionButton child) {
+        CoordinatorLayout parent,
+        @NonNull AppBarLayout appBarLayout,
+        @NonNull ExtendedFloatingActionButton child) {
       if (!shouldUpdateVisibility(appBarLayout, child)) {
         return false;
       }
@@ -887,7 +893,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     }
 
     private boolean updateFabVisibilityForBottomSheet(
-        View bottomSheet, ExtendedFloatingActionButton child) {
+        @NonNull View bottomSheet, @NonNull ExtendedFloatingActionButton child) {
       if (!shouldUpdateVisibility(bottomSheet, child)) {
         return false;
       }
@@ -948,7 +954,9 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
 
     @Override
     public boolean onLayoutChild(
-        CoordinatorLayout parent, ExtendedFloatingActionButton child, int layoutDirection) {
+        @NonNull CoordinatorLayout parent,
+        @NonNull ExtendedFloatingActionButton child,
+        int layoutDirection) {
       // First, let's make sure that the visibility of the FAB is consistent
       final List<View> dependencies = parent.getDependencies(child);
       for (int i = 0, count = dependencies.size(); i < count; i++) {
@@ -991,7 +999,8 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
      * offsets our layout position so that we're positioned correctly if we're on one of our
      * parent's edges.
      */
-    private void offsetIfNeeded(CoordinatorLayout parent, ExtendedFloatingActionButton fab) {
+    private void offsetIfNeeded(
+        @NonNull CoordinatorLayout parent, @NonNull ExtendedFloatingActionButton fab) {
       final Rect padding = fab.shadowPadding;
 
       if (padding != null && padding.centerX() > 0 && padding.centerY() > 0) {
@@ -1077,6 +1086,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
       return R.animator.mtrl_extended_fab_change_size_motion_spec;
     }
 
+    @NonNull
     @Override
     public AnimatorSet createAnimator() {
       MotionSpec spec = getCurrentMotionSpec();

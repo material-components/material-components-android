@@ -59,7 +59,7 @@ class BorderDrawable extends Drawable {
 
   private final ShapeAppearancePathProvider pathProvider = new ShapeAppearancePathProvider();
 
-  private final Paint paint;
+  @NonNull private final Paint paint;
   private final Path shapePath = new Path();
   private final Rect rect = new Rect();
   private final RectF rectF = new RectF();
@@ -119,7 +119,7 @@ class BorderDrawable extends Drawable {
   }
 
   @Override
-  public void draw(Canvas canvas) {
+  public void draw(@NonNull Canvas canvas) {
     if (invalidateShader) {
       paint.setShader(createGradientShader());
       invalidateShader = false;
@@ -157,7 +157,7 @@ class BorderDrawable extends Drawable {
   }
 
   @Override
-  public boolean getPadding(Rect padding) {
+  public boolean getPadding(@NonNull Rect padding) {
     if (shapeAppearanceModel.isRoundRect()) {
       final int borderWidth = Math.round(this.borderWidth);
       padding.set(borderWidth, borderWidth, borderWidth, borderWidth);
@@ -210,6 +210,7 @@ class BorderDrawable extends Drawable {
     return invalidateShader;
   }
 
+  @NonNull
   private Shader createGradientShader() {
     final Rect rect = this.rect;
     copyBounds(rect);

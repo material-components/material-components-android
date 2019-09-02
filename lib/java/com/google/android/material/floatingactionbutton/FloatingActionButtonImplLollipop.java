@@ -56,7 +56,7 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
   @Override
   void initializeBackgroundDrawable(
       ColorStateList backgroundTint,
-      PorterDuff.Mode backgroundTintMode,
+      @Nullable PorterDuff.Mode backgroundTintMode,
       ColorStateList rippleColor,
       int borderWidth) {
     // Now we need to tint the shape background with the tint
@@ -211,6 +211,7 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
     return false;
   }
 
+  @NonNull
   BorderDrawable createBorderDrawable(int borderWidth, ColorStateList backgroundTint) {
     final Context context = view.getContext();
     BorderDrawable borderDrawable =  new BorderDrawable(checkNotNull(shapeAppearance));
@@ -224,6 +225,7 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
     return borderDrawable;
   }
 
+  @NonNull
   @Override
   MaterialShapeDrawable createShapeDrawable() {
     ShapeAppearanceModel shapeAppearance = checkNotNull(this.shapeAppearance);
@@ -234,7 +236,7 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
   }
 
   @Override
-  void getPadding(Rect rect) {
+  void getPadding(@NonNull Rect rect) {
     if (shadowViewDelegate.isCompatPaddingEnabled()) {
       super.getPadding(rect);
     } else if (!shouldExpandBoundsForA11y()) {
