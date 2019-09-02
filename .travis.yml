@@ -3,6 +3,7 @@ language: generic
 
 env:
   global:
+  - JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
   - ABI="google_apis;armeabi-v7a"
   - BUILD_TOOLS_VERSION=28.0.3
   - ADB_INSTALL_TIMEOUT=25
@@ -14,6 +15,10 @@ env:
     - EMULATOR_API=24
 
 install:
+  - sudo apt-get -y remove default-jdk default-jre default-jdk-headless default-jre-headless ca-certificates-java openjdk-8-jdk openjdk-8-jdk-headless openjdk-8-jre openjdk-8-jre-headless
+  - sudo rm -rf /usr/local/lib/jvm
+  - sudo apt-get -y update && sudo apt-get -y install openjdk-8-jdk java-common
+  - java -version
   - export ANDROID_HOME=~/android-sdk-linux
   - wget -q "https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip" -O android-sdk-tools.zip
   - unzip -q android-sdk-tools.zip -d ${ANDROID_HOME}
