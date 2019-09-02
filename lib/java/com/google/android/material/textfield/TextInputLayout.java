@@ -366,8 +366,8 @@ public class TextInputLayout extends LinearLayout {
   private ColorStateList defaultHintTextColor;
   private ColorStateList focusedTextColor;
 
-  @ColorInt private final int defaultStrokeColor;
-  @ColorInt private final int hoveredStrokeColor;
+  @ColorInt private int defaultStrokeColor;
+  @ColorInt private int hoveredStrokeColor;
   @ColorInt private int focusedStrokeColor;
 
   @ColorInt private int defaultFilledBackgroundColor;
