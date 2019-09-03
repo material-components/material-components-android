@@ -33,7 +33,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
-import androidx.annotation.VisibleForTesting;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -61,11 +60,9 @@ public final class MaterialDatePicker<S> extends DialogFragment {
   private static final String CALENDAR_CONSTRAINTS_KEY = "CALENDAR_CONSTRAINTS_KEY";
   private static final String TITLE_TEXT_RES_ID_KEY = "TITLE_TEXT_RES_ID_KEY";
 
-  @VisibleForTesting public static final Object CONFIRM_BUTTON_TAG = "CONFIRM_BUTTON_TAG";
-
-  @VisibleForTesting public static final Object CANCEL_BUTTON_TAG = "CANCEL_BUTTON_TAG";
-
-  @VisibleForTesting public static final Object TOGGLE_BUTTON_TAG = "TOGGLE_BUTTON_TAG";
+  static final Object CONFIRM_BUTTON_TAG = "CONFIRM_BUTTON_TAG";
+  static final Object CANCEL_BUTTON_TAG = "CANCEL_BUTTON_TAG";
+  static final Object TOGGLE_BUTTON_TAG = "TOGGLE_BUTTON_TAG";
 
   /**
    * Returns the text to display at the top of the {@link DialogFragment}
@@ -268,8 +265,8 @@ public final class MaterialDatePicker<S> extends DialogFragment {
   }
 
   /**
-   * Returns a {@link S} instance representing the selection or null if the user has not confirmed a
-   * selection.
+   * Returns an {@code S} instance representing the selection or null if the user has not confirmed
+   * a selection.
    */
   @Nullable
   public final S getSelection() {
