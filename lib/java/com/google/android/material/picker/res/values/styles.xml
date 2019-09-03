@@ -152,6 +152,7 @@
   </style>
 
   <style name="Widget.MaterialComponents.MaterialCalendar.Year.Today" parent="Widget.MaterialComponents.MaterialCalendar.Year">
+    <item name="itemStrokeColor">@color/material_on_surface_emphasis_high_type</item>
     <item name="itemStrokeWidth">@dimen/mtrl_calendar_day_today_stroke</item>
   </style>
 
