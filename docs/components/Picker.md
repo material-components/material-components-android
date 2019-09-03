@@ -19,11 +19,18 @@ Date Pickers allow users to select a single date or date range.
 
 ## Demo
 
-Date Pickers are under active development. You can see the current version of the [Material Picker Demo](https://github.com/material-components/material-components-android/tree/master/catalog/java/io/material/catalog/picker/PickerMainDemoFragment.java) in the Material Android Catalog. The demo launches and listens to material pickers with customization options for dialog and fullscreen.
+Date Pickers are under active development. You can see the current version of
+the
+[Material Picker Demo](https://github.com/material-components/material-components-android/tree/master/catalog/java/io/material/catalog/datepicker/DatePickerMainDemoFragment.java)
+in the Material Android Catalog. The demo launches and listens to material
+pickers with customization options for dialog and fullscreen.
 
 ## Code
 
-The [Picker Package](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/picker) contains most of the code for this component, with the main entry point being [Date Range Pickers](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/picker/MaterialDatePicker.java).
+The
+[Picker Package](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/datepicker)
+contains most of the code for this component, with the main entry point being
+[MaterialDatePicker](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/datepicker/MaterialDatePicker.java).
 
 ## Time Pickers
 
