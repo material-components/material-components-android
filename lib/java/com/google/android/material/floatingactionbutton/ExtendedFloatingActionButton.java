@@ -90,14 +90,6 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
   private boolean isUsingPillCorner = true;
 
   /**
-   * @deprecated use {@link OnChangedCallback}
-   */
-  @Deprecated
-  public abstract static class OnChangedListener extends OnChangedCallback {
-
-  }
-
-  /**
    * Callback to be invoked when the visibility or the state of an ExtendedFloatingActionButton
    * changes.
    */
