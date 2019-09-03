@@ -36,7 +36,7 @@ public class CornerTreatment {
 
   private static final String TAG = "CornerTreatment";
 
-  protected final float cornerSize;
+  private final float cornerSize;
 
   public CornerTreatment() {
     // Default Constructor has no size. Using this treatment for all corners will draw a square
