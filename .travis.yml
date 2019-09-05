@@ -15,12 +15,17 @@ env:
     - EMULATOR_API=21
     - EMULATOR_API=24
 
+before_install:
+  - echo JAVA_HOME
+
 install:
+  - echo JAVA_HOME
   - export ANDROID_HOME=~/android-sdk-linux
   - wget -q "https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip" -O android-sdk-tools.zip
   - unzip -q android-sdk-tools.zip -d ${ANDROID_HOME}
   - rm android-sdk-tools.zip
   - PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools
+  - echo JAVA_HOME
   - yes | sdkmanager --update
   - yes | sdkmanager --licenses
   - ./gradlew dependencies || true
@@ -34,6 +39,7 @@ install:
   - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
 
 before_script:
+  - echo JAVA_HOME
   - echo no | avdmanager create avd --force -n test -k "system-images;android-$EMULATOR_API;$ABI"
   - ./gradlew assembleDebugAndroidTest -PdisablePreDex --continue --stacktrace
   - $ANDROID_HOME/emulator/emulator -avd test -no-window &
@@ -41,5 +47,6 @@ before_script:
   - adb shell input keyevent 82
 
 script:
+  - echo JAVA_HOME
   - ./gradlew test -PdisablePreDex --stacktrace
   - ./gradlew connectedAndroidTest -PdisablePreDex --stacktrace
