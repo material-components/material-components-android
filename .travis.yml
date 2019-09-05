@@ -17,6 +17,8 @@ env:
 
 before_install:
   - echo $JAVA_HOME
+  - export JAVA_HOME=/usr/local/lib/jvm/openjdk8
+  - echo $JAVA_HOME
 
 install:
   - echo $JAVA_HOME
