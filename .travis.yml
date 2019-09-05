@@ -1,8 +1,6 @@
 sudo: required
 language: generic
 
-jdk: openjdk8
-
 env:
   global:
   - ABI="google_apis;armeabi-v7a"
@@ -16,21 +14,17 @@ env:
     - EMULATOR_API=24
 
 before_install:
-  - echo $JAVA_HOME
-  # Generic language doesn't respect jdk: declarations and defaults to JDK 11, so manually override back to 8
+  # Generic language doesn't respect jdk: declarations and defaults to JDK 11, so manually clear it
   # https://travis-ci.community/t/oracle-jdk-11-and-10-are-pre-installed-not-the-openjdk-builds/785/19
   - export PATH=$(echo "$PATH" | sed -e 's/:\/usr\/local\/lib\/jvm\/openjdk11\/bin//')
-  - export JAVA_HOME=$(/usr/libexec/java_home -v1.8)
-  - echo $JAVA_HOME
+  - export JAVA_HOME=""
 
 install:
-  - echo $JAVA_HOME
   - export ANDROID_HOME=~/android-sdk-linux
   - wget -q "https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip" -O android-sdk-tools.zip
   - unzip -q android-sdk-tools.zip -d ${ANDROID_HOME}
   - rm android-sdk-tools.zip
   - PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools
-  - echo $JAVA_HOME
   - yes | sdkmanager --update
   - yes | sdkmanager --licenses
   - ./gradlew dependencies || true
@@ -44,7 +38,6 @@ install:
   - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
 
 before_script:
-  - echo $JAVA_HOME
   - echo no | avdmanager create avd --force -n test -k "system-images;android-$EMULATOR_API;$ABI"
   - ./gradlew assembleDebugAndroidTest -PdisablePreDex --continue --stacktrace
   - $ANDROID_HOME/emulator/emulator -avd test -no-window &
@@ -52,6 +45,5 @@ before_script:
   - adb shell input keyevent 82
 
 script:
-  - echo $JAVA_HOME
   - ./gradlew test -PdisablePreDex --stacktrace
   - ./gradlew connectedAndroidTest -PdisablePreDex --stacktrace
