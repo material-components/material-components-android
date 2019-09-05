@@ -17,7 +17,10 @@ env:
 
 before_install:
   - echo $JAVA_HOME
-  - export JAVA_HOME=/usr/local/lib/jvm/openjdk8
+  # Generic language doesn't respect jdk: declarations and defaults to JDK 11, so manually override back to 8
+  # https://travis-ci.community/t/oracle-jdk-11-and-10-are-pre-installed-not-the-openjdk-builds/785/19
+  - export PATH=$(echo "$PATH" | sed -e 's/:\/usr\/local\/lib\/jvm\/openjdk11\/bin//')
+  - export JAVA_HOME=$(/usr/libexec/java_home -v1.8)
   - echo $JAVA_HOME
 
 install:
