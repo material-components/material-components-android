@@ -52,14 +52,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
-import com.google.android.material.shape.ShapeAppearancePathProvider.PathListener;
-import com.google.android.material.shape.ShapePath.ShadowCompatOperation;
 import androidx.core.graphics.drawable.TintAwareDrawable;
 import androidx.core.util.ObjectsCompat;
 import android.util.AttributeSet;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.elevation.ElevationOverlayProvider;
 import com.google.android.material.shadow.ShadowRenderer;
+import com.google.android.material.shape.ShapeAppearancePathProvider.PathListener;
+import com.google.android.material.shape.ShapePath.ShadowCompatOperation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 

@@ -20,11 +20,11 @@ import com.google.android.material.R;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
+import androidx.test.core.app.ApplicationProvider;
 import com.google.android.material.shape.CornerFamily;
 import com.google.android.material.shape.CornerTreatment;
 import com.google.android.material.shape.CutCornerTreatment;
 import com.google.android.material.shape.ShapeAppearanceModel;
-import androidx.test.core.app.ApplicationProvider;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

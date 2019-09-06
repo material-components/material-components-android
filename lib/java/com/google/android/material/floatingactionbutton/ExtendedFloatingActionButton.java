@@ -32,7 +32,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.shape.ShapeAppearanceModel;
 import androidx.core.view.ViewCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -48,6 +47,7 @@ import com.google.android.material.animation.MotionSpec;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.internal.DescendantOffsetUtils;
 import com.google.android.material.internal.ThemeEnforcement;
+import com.google.android.material.shape.ShapeAppearanceModel;
 import java.util.List;
 
 /**

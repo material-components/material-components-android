@@ -42,7 +42,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
-import com.google.android.material.shape.MaterialShapeDrawable;
 import androidx.core.view.ViewCompat;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.view.ContextThemeWrapper;
@@ -53,6 +52,7 @@ import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.resources.MaterialAttributes;
+import com.google.android.material.shape.MaterialShapeDrawable;
 
 /**
  * An extension of {@link AlertDialog.Builder} for use with a Material theme (e.g.,

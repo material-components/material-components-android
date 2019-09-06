@@ -21,12 +21,12 @@ import io.material.catalog.R;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
-import com.google.android.material.shape.MaterialShapeDrawable;
 import androidx.core.view.ViewCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import com.google.android.material.shape.MaterialShapeDrawable;
 import io.material.catalog.feature.DemoFragment;
 
 /** A fragment that displays the Elevation animation demo for the Catalog app. */

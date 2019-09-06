@@ -27,10 +27,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
+import androidx.core.graphics.drawable.TintAwareDrawable;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.shape.Shapeable;
-import androidx.core.graphics.drawable.TintAwareDrawable;
 
 /**
  * A compat {@link Drawable} that is used to provide an overlay for pressed, focused, and hovered

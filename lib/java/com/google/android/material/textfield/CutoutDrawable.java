@@ -27,9 +27,9 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import android.view.View;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
-import android.view.View;
 
 /**
  * A {@link MaterialShapeDrawable} that can draw a cutout for the label in {@link TextInputLayout}'s

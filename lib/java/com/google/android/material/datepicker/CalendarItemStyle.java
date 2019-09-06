@@ -28,12 +28,12 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
-import com.google.android.material.shape.MaterialShapeDrawable;
-import com.google.android.material.shape.ShapeAppearanceModel;
 import androidx.core.util.Preconditions;
 import androidx.core.view.ViewCompat;
 import android.widget.TextView;
 import com.google.android.material.resources.MaterialResources;
+import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.ShapeAppearanceModel;
 
 /**
  * Loads and applies {@link R.styleable#MaterialCalendarDay} attributes to {@link TextView}
