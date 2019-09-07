@@ -17,8 +17,10 @@
 package io.material.catalog.feature;
 
 import android.app.Activity;
-import android.content.Context;
 import com.google.android.material.snackbar.Snackbar;
+
+import androidx.annotation.IdRes;
+import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.NestedScrollView;
 import android.view.MenuItem;
@@ -49,6 +51,20 @@ public class DemoUtils {
         findViewsWithType(viewGroup.getChildAt(i), type, views);
       }
     }
+  }
+
+  @Nullable
+  private static View findParentWithId(View view, @IdRes int id) {
+    if (view.getId() == id) {
+      return view;
+    }
+
+    View parent = (View) view.getParent();
+    if (parent == null) {
+      return null;
+    }
+
+    return findParentWithId(parent, id);
   }
 
   public static boolean showSnackbar(Activity activity, MenuItem menuItem) {
@@ -124,13 +140,9 @@ public class DemoUtils {
     int scrollViewHeight = scrollView.getHeight();
     int[] scrollViewLocation = new int[2];
     scrollView.getLocationOnScreen(scrollViewLocation);
-    Context context = scrollView.getContext();
-
-    return scrollViewHeight + scrollViewLocation[1] >= getContentViewHeight((Activity) context)
+    View contentView = findParentWithId(scrollView, android.R.id.content);
+    int contentViewHeight = contentView != null ? contentView.getHeight() : 0;
+    return scrollViewHeight + scrollViewLocation[1] >= contentViewHeight
         && scrollableContentHeight + systemWindowInsetBottom >= scrollViewHeight;
-  }
-
-  private static int getContentViewHeight(Activity context) {
-    return context.findViewById(android.R.id.content).getHeight();
   }
 }
