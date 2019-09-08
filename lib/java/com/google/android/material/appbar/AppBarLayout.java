@@ -122,7 +122,8 @@ import java.util.List;
  * @see <a href="http://www.google.com/design/spec/layout/structure.html#structure-app-bar">
  *     http://www.google.com/design/spec/layout/structure.html#structure-app-bar</a>
  */
-public class AppBarLayout extends LinearLayout implements CoordinatorLayout.AttachedBehavior {
+@CoordinatorLayout.DefaultBehavior(AppBarLayout.Behavior.class)
+public class AppBarLayout extends LinearLayout {
 
   static final int PENDING_ACTION_NONE = 0x0;
   static final int PENDING_ACTION_EXPANDED = 0x1;
@@ -509,12 +510,6 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     super.onAttachedToWindow();
 
     MaterialShapeUtils.setParentAbsoluteElevation(this);
-  }
-
-  @Override
-  @NonNull
-  public CoordinatorLayout.Behavior<AppBarLayout> getBehavior() {
-    return new AppBarLayout.Behavior();
   }
 
   @RequiresApi(VERSION_CODES.LOLLIPOP)

@@ -97,9 +97,9 @@ import java.util.List;
  * wish to change this at runtime then you can do so via {@link
  * #setBackgroundTintList(ColorStateList)}.
  */
+@CoordinatorLayout.DefaultBehavior(FloatingActionButton.Behavior.class)
 public class FloatingActionButton extends VisibilityAwareImageButton
-    implements TintableBackgroundView, TintableImageSourceView, ExpandableTransformationWidget,
-    CoordinatorLayout.AttachedBehavior {
+    implements TintableBackgroundView, TintableImageSourceView, ExpandableTransformationWidget {
 
   private static final String LOG_TAG = "FloatingActionButton";
   private static final String EXPANDABLE_WIDGET_HELPER_KEY = "expandableWidgetHelper";
@@ -336,12 +336,6 @@ public class FloatingActionButton extends VisibilityAwareImageButton
       rippleColor = color;
       getImpl().setRippleColor(rippleColor);
     }
-  }
-
-  @Override
-  @NonNull
-  public CoordinatorLayout.Behavior<FloatingActionButton> getBehavior() {
-    return new FloatingActionButton.Behavior();
   }
 
   /**
