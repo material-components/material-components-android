@@ -18,7 +18,6 @@ package com.google.android.material.datepicker;
 import android.icu.text.DateFormat;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
 import java.text.SimpleDateFormat;
@@ -31,25 +30,29 @@ class DateStrings {
 
   private DateStrings() {}
 
+  static String getYearMonthDay(long timeInMillis) {
+    return getYearMonthDay(timeInMillis, Locale.getDefault());
+  }
+
   /**
    * Get date string with year, month, and day formatted properly for the specified Locale.
    *
    * <p>Uses {@link DateFormat#getInstanceForSkeleton(String, Locale)} for API 24+, and {@link
    * java.text.DateFormat#MEDIUM} before API 24.
    *
-   * @param date Date to turn into string with year, month, and day.
+   * @param timeInMillis long in UTC milliseconds to turn into string with year, month, and day.
    * @param locale Locale for date string.
    * @return Date string with year, month, and day formatted properly for the specified Locale.
    */
-  static String getYearMonthDay(@NonNull Date date, @NonNull Locale locale) {
+  static String getYearMonthDay(long timeInMillis, Locale locale) {
     if (VERSION.SDK_INT >= VERSION_CODES.N) {
-      DateFormat df = DateFormat.getInstanceForSkeleton(DateFormat.YEAR_ABBR_MONTH_DAY, locale);
-      return df.format(date);
-    } else {
-      java.text.DateFormat df =
-          java.text.DateFormat.getDateInstance(java.text.DateFormat.MEDIUM, locale);
-      return df.format(date);
+      return UtcDates.getYearAbbrMonthDayFormat(locale).format(new Date(timeInMillis));
     }
+    return UtcDates.getMediumFormat(locale).format(new Date(timeInMillis));
+  }
+
+  static String getMonthDay(long timeInMillis) {
+    return getMonthDay(timeInMillis, Locale.getDefault());
   }
 
   /**
@@ -58,46 +61,37 @@ class DateStrings {
    * <p>Uses {@link DateFormat#getInstanceForSkeleton(String, Locale)} for API 24+, and {@link
    * java.text.DateFormat#MEDIUM} before API 24.
    *
-   * @param date Date to turn into string with month and day.
+   * @param timeInMillis long in UTC milliseconds to turn into string with month and day.
    * @param locale Locale for date string.
    * @return Date string with month and day formatted properly for the specified Locale.
    */
-  static String getMonthDay(@NonNull Date date, @NonNull Locale locale) {
+  static String getMonthDay(long timeInMillis, Locale locale) {
     if (VERSION.SDK_INT >= VERSION_CODES.N) {
-      DateFormat df = DateFormat.getInstanceForSkeleton(DateFormat.ABBR_MONTH_DAY, locale);
-      return df.format(date);
-    } else {
-      SimpleDateFormat sdf =
-          (SimpleDateFormat)
-              java.text.DateFormat.getDateInstance(java.text.DateFormat.MEDIUM, locale);
-      sdf.applyPattern(removeYearFromDateFormatPattern(sdf.toPattern()));
-      return sdf.format(date);
+      return UtcDates.getAbbrMonthDayFormat(locale).format(new Date(timeInMillis));
     }
+    return UtcDates.getMediumNoYear(locale).format(new Date(timeInMillis));
   }
 
   static String getMonthDayOfWeekDay(long timeInMillis) {
+    return getMonthDayOfWeekDay(timeInMillis, Locale.getDefault());
+  }
+
+  static String getMonthDayOfWeekDay(long timeInMillis, Locale locale) {
     if (VERSION.SDK_INT >= VERSION_CODES.N) {
-      DateFormat df =
-          DateFormat.getInstanceForSkeleton(DateFormat.ABBR_MONTH_WEEKDAY_DAY, Locale.getDefault());
-      return df.format(new Date(timeInMillis));
-    } else {
-      java.text.DateFormat df =
-          java.text.DateFormat.getDateInstance(java.text.DateFormat.FULL, Locale.getDefault());
-      return df.format(new Date(timeInMillis));
+      return UtcDates.getAbbrMonthWeekdayDayFormat(locale).format(new Date(timeInMillis));
     }
+    return UtcDates.getFullFormat(locale).format(new Date(timeInMillis));
   }
 
   static String getYearMonthDayOfWeekDay(long timeInMillis) {
+    return getYearMonthDayOfWeekDay(timeInMillis, Locale.getDefault());
+  }
+
+  static String getYearMonthDayOfWeekDay(long timeInMillis, Locale locale) {
     if (VERSION.SDK_INT >= VERSION_CODES.N) {
-      DateFormat df =
-          DateFormat.getInstanceForSkeleton(
-              DateFormat.YEAR_ABBR_MONTH_WEEKDAY_DAY, Locale.getDefault());
-      return df.format(new Date(timeInMillis));
-    } else {
-      java.text.DateFormat df =
-          java.text.DateFormat.getDateInstance(java.text.DateFormat.FULL, Locale.getDefault());
-      return df.format(new Date(timeInMillis));
+      return UtcDates.getYearAbbrMonthWeekdayDayFormat(locale).format(new Date(timeInMillis));
     }
+    return UtcDates.getFullFormat(locale).format(new Date(timeInMillis));
   }
 
   static String getDateString(long timeInMillis) {
@@ -111,25 +105,22 @@ class DateStrings {
    *
    * <p>If userDefinedDateFormat is set, this format overrides the rule above.
    *
-   * @param timeInMillis Date to get string for.
+   * @param timeInMillis milliseconds since UTC epoch.
    * @param userDefinedDateFormat {@link SimpleDateFormat} specified by the user, if set.
    * @return Formatted date string.
    */
   static String getDateString(long timeInMillis, @Nullable SimpleDateFormat userDefinedDateFormat) {
-    Calendar currentCalendar = Calendar.getInstance();
-    Locale defaultLocale = Locale.getDefault();
-
-    Date date = new Date(timeInMillis);
-    Calendar calendarDate = Calendar.getInstance();
+    Calendar currentCalendar = UtcDates.getTodayCalendar();
+    Calendar calendarDate = UtcDates.getCalendar();
     calendarDate.setTimeInMillis(timeInMillis);
 
     if (userDefinedDateFormat != null) {
+      Date date = new Date(timeInMillis);
       return userDefinedDateFormat.format(date);
     } else if (currentCalendar.get(Calendar.YEAR) == calendarDate.get(Calendar.YEAR)) {
-      return getMonthDay(date, defaultLocale);
-    } else {
-      return getYearMonthDay(date, defaultLocale);
+      return getMonthDay(timeInMillis);
     }
+    return getYearMonthDay(timeInMillis);
   }
 
   static Pair<String, String> getDateRangeString(@Nullable Long start, @Nullable Long end) {
@@ -162,79 +153,27 @@ class DateStrings {
       return Pair.create(getDateString(start, userDefinedDateFormat), null);
     }
 
-    Calendar currentCalendar = Calendar.getInstance();
-    Locale locale = Locale.getDefault();
-
-    Date startDate = new Date(start);
-    Date endDate = new Date(end);
-    Calendar startCalendar = Calendar.getInstance();
+    Calendar currentCalendar = UtcDates.getTodayCalendar();
+    Calendar startCalendar = UtcDates.getCalendar();
     startCalendar.setTimeInMillis(start);
-    Calendar endCalendar = Calendar.getInstance();
+    Calendar endCalendar = UtcDates.getCalendar();
     endCalendar.setTimeInMillis(end);
 
     if (userDefinedDateFormat != null) {
+      Date startDate = new Date(start);
+      Date endDate = new Date(end);
       return Pair.create(
           userDefinedDateFormat.format(startDate), userDefinedDateFormat.format(endDate));
     } else if (startCalendar.get(Calendar.YEAR) == endCalendar.get(Calendar.YEAR)) {
       if (startCalendar.get(Calendar.YEAR) == currentCalendar.get(Calendar.YEAR)) {
-        return Pair.create(getMonthDay(startDate, locale), getMonthDay(endDate, locale));
+        return Pair.create(
+            getMonthDay(start, Locale.getDefault()), getMonthDay(end, Locale.getDefault()));
       } else {
-        return Pair.create(getMonthDay(startDate, locale), getYearMonthDay(endDate, locale));
+        return Pair.create(
+            getMonthDay(start, Locale.getDefault()), getYearMonthDay(end, Locale.getDefault()));
       }
-    } else {
-      return Pair.create(getYearMonthDay(startDate, locale), getYearMonthDay(endDate, locale));
     }
-  }
-
-  @NonNull
-  private static String removeYearFromDateFormatPattern(@NonNull String pattern) {
-    String yearCharacters = "yY";
-
-    int yearPosition = findCharactersInDateFormatPattern(pattern, yearCharacters, 1, 0);
-
-    if (yearPosition >= pattern.length()) {
-      // No year character was found in this pattern, return as-is
-      return pattern;
-    }
-
-    String monthDayCharacters = "EMd";
-    int yearEndPosition =
-        findCharactersInDateFormatPattern(pattern, monthDayCharacters, 1, yearPosition);
-
-    if (yearEndPosition < pattern.length()) {
-      monthDayCharacters += ",";
-    }
-
-    int yearStartPosition =
-        findCharactersInDateFormatPattern(pattern, monthDayCharacters, -1, yearPosition);
-    yearStartPosition++;
-
-    String yearPattern = pattern.substring(yearStartPosition, yearEndPosition);
-    return pattern.replace(yearPattern, " ").trim();
-  }
-
-  private static int findCharactersInDateFormatPattern(
-      @NonNull String pattern,
-      @NonNull String characterSequence,
-      int increment,
-      int initialPosition) {
-    int position = initialPosition;
-
-    // Increment while we haven't found the characters we're looking for in the date pattern
-    while ((position >= 0 && position < pattern.length())
-        && characterSequence.indexOf(pattern.charAt(position)) == -1) {
-
-      // If an open string is found, increment until we close the string
-      if (pattern.charAt(position) == '\'') {
-        position += increment;
-        while ((position >= 0 && position < pattern.length()) && pattern.charAt(position) != '\'') {
-          position += increment;
-        }
-      }
-
-      position += increment;
-    }
-
-    return position;
+    return Pair.create(
+        getYearMonthDay(start, Locale.getDefault()), getYearMonthDay(end, Locale.getDefault()));
   }
 }

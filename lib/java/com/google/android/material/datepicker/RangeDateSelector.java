@@ -38,7 +38,6 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Locale;
 
 /**
  * A {@link DateSelector} that uses a {@link Pair} of {@link Long} objects to represent a selected
@@ -82,9 +81,9 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
       Preconditions.checkArgument(isValidRange(selection.first, selection.second));
     }
     selectedStartItem =
-        selection.first == null ? null : DateLongs.canonicalYearMonthDay(selection.first);
+        selection.first == null ? null : UtcDates.canonicalYearMonthDay(selection.first);
     selectedEndItem =
-        selection.second == null ? null : DateLongs.canonicalYearMonthDay(selection.second);
+        selection.second == null ? null : UtcDates.canonicalYearMonthDay(selection.second);
   }
 
   @Override
@@ -180,7 +179,7 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
     String pattern = root.getResources().getString(R.string.mtrl_picker_text_input_date_format);
     invalidRangeStartError = root.getResources().getString(R.string.mtrl_picker_invalid_range);
 
-    SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.getDefault());
+    SimpleDateFormat format = UtcDates.getSimpleFormat(pattern);
     format.setLenient(false);
 
     if (selectedStartItem != null) {

@@ -20,7 +20,6 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 import com.google.android.material.datepicker.CalendarConstraints.DateValidator;
 import java.util.Arrays;
-import java.util.Calendar;
 
 /**
  * A {@link CalendarConstraints.DateValidator} that only allows dates from a given point onward to
@@ -31,7 +30,7 @@ public class DateValidatorPointForward implements DateValidator {
   private final long point;
 
   public DateValidatorPointForward() {
-    point = Calendar.getInstance().getTimeInMillis();
+    point = UtcDates.getTodayCalendar().getTimeInMillis();
   }
 
   public DateValidatorPointForward(long point) {
