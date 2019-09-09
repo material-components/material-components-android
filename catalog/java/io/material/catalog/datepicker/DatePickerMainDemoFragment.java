@@ -36,6 +36,7 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.Month;
 import io.material.catalog.feature.DemoFragment;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 /** A fragment that displays the main Picker demos for the Catalog app. */
 public class DatePickerMainDemoFragment extends DemoFragment {
@@ -43,6 +44,7 @@ public class DatePickerMainDemoFragment extends DemoFragment {
   private Snackbar snackbar;
   private static final long TODAY;
   private static final long NEXT_MONTH;
+  private static final Month THIS_MONTH;
   private static final Month JAN_THIS_YEAR;
   private static final Month DEC_THIS_YEAR;
   private static final Month ONE_YEAR_FORWARD;
@@ -50,21 +52,22 @@ public class DatePickerMainDemoFragment extends DemoFragment {
   private static final Pair<Long, Long> NEXT_MONTH_PAIR;
 
   static {
-    Calendar calToday = Calendar.getInstance();
+    Calendar calToday = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
     TODAY = calToday.getTimeInMillis();
-    Calendar calNextMonth = Calendar.getInstance();
+    Calendar calNextMonth = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
     calNextMonth.roll(Calendar.MONTH, 1);
     NEXT_MONTH = calNextMonth.getTimeInMillis();
 
-    Calendar calJanThisYear = Calendar.getInstance();
+    Calendar calJanThisYear = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
     calJanThisYear.set(Calendar.MONTH, Calendar.JANUARY);
     JAN_THIS_YEAR = Month.create(calJanThisYear.getTimeInMillis());
-    Calendar calDecThisYear = Calendar.getInstance();
+    Calendar calDecThisYear = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
     calDecThisYear.set(Calendar.MONTH, Calendar.DECEMBER);
     DEC_THIS_YEAR = Month.create(calDecThisYear.getTimeInMillis());
-    Calendar calOneYearForward = Calendar.getInstance();
+    Calendar calOneYearForward = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
     calOneYearForward.roll(Calendar.YEAR, 1);
     ONE_YEAR_FORWARD = Month.create(calOneYearForward.getTimeInMillis());
+    THIS_MONTH = Month.today();
 
     TODAY_PAIR = new Pair<>(TODAY, TODAY);
     NEXT_MONTH_PAIR = new Pair<>(NEXT_MONTH, NEXT_MONTH);
@@ -157,16 +160,17 @@ public class DatePickerMainDemoFragment extends DemoFragment {
       constraintsBuilder.setStart(JAN_THIS_YEAR);
       constraintsBuilder.setEnd(DEC_THIS_YEAR);
     } else if (boundsChoice == R.id.cat_picker_bounds_one_year_forward) {
+      constraintsBuilder.setStart(THIS_MONTH);
       constraintsBuilder.setEnd(ONE_YEAR_FORWARD);
     }
 
     if (openingChoice == R.id.cat_picker_opening_month_today) {
-      constraintsBuilder.setOpening(Month.today());
+      constraintsBuilder.setOpening(THIS_MONTH);
     } else if (openingChoice == R.id.cat_picker_opening_month_next) {
       constraintsBuilder.setOpening(Month.create(NEXT_MONTH));
     }
 
-    if (validationChoice == R.id.cat_picker_validation_future) {
+    if (validationChoice == R.id.cat_picker_validation_today_onward) {
       constraintsBuilder.setValidator(new DateValidatorPointForward());
     } else if (validationChoice == R.id.cat_picker_validation_weekdays) {
       constraintsBuilder.setValidator(new DateValidatorWeekdays());

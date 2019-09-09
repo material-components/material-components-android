@@ -161,15 +161,15 @@ public class RangeDateSelectorTest {
 
   @Test
   public void setSelectionDirectly() {
-    Calendar setToStart = Calendar.getInstance();
+    Calendar setToStart = UtcDates.getCalendar();
     setToStart.set(2004, Calendar.MARCH, 5);
-    Calendar setToEnd = Calendar.getInstance();
+    Calendar setToEnd = UtcDates.getCalendar();
     setToEnd.set(2005, Calendar.FEBRUARY, 1);
 
     rangeDateSelector.setSelection(
         new Pair<>(setToStart.getTimeInMillis(), setToEnd.getTimeInMillis()));
-    Calendar resultCalendarStart = Calendar.getInstance();
-    Calendar resultCalendarEnd = Calendar.getInstance();
+    Calendar resultCalendarStart = UtcDates.getCalendar();
+    Calendar resultCalendarEnd = UtcDates.getCalendar();
     resultCalendarStart.setTimeInMillis(rangeDateSelector.getSelection().first);
     resultCalendarEnd.setTimeInMillis(rangeDateSelector.getSelection().second);
 
@@ -178,25 +178,27 @@ public class RangeDateSelectorTest {
     assertThat(
         rangeDateSelector
             .getSelectedDays()
-            .contains(DateLongs.canonicalYearMonthDay(setToStart.getTimeInMillis())),
+            .contains(UtcDates.canonicalYearMonthDay(setToStart.getTimeInMillis())),
         is(true));
     assertThat(
         rangeDateSelector
             .getSelectedDays()
-            .contains(DateLongs.canonicalYearMonthDay(setToStart.getTimeInMillis())),
+            .contains(UtcDates.canonicalYearMonthDay(setToStart.getTimeInMillis())),
         is(true));
     assertThat(
         rangeDateSelector
             .getSelectedDays()
-            .contains(DateLongs.canonicalYearMonthDay(Calendar.getInstance().getTimeInMillis())),
+            .contains(
+                UtcDates.canonicalYearMonthDay(UtcDates.getTodayCalendar().getTimeInMillis())),
         is(false));
   }
 
   @Test
   public void invalidSetThrowsException() {
-    Calendar setToStart = Calendar.getInstance();
+    Calendar setToStart = UtcDates.getCalendar();
     setToStart.set(2005, Calendar.FEBRUARY, 1);
-    Calendar setToEnd = Calendar.getInstance();
+    Calendar setToEnd = UtcDates.getCalendar();
+    ;
     setToEnd.set(2004, Calendar.MARCH, 5);
 
     // ThrowingRunnable used by assertThrows is not available until gradle 4.13

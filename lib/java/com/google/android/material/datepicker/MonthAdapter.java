@@ -20,7 +20,6 @@ import com.google.android.material.R;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +38,7 @@ class MonthAdapter extends BaseAdapter {
   /**
    * The maximum number of weeks possible in any month. 6 for {@link java.util.GregorianCalendar}.
    */
-  static final int MAXIMUM_WEEKS = Calendar.getInstance().getMaximum(Calendar.WEEK_OF_MONTH);
+  static final int MAXIMUM_WEEKS = UtcDates.getCalendar().getMaximum(Calendar.WEEK_OF_MONTH);
 
   final Month month;
   /**
@@ -131,13 +130,13 @@ class MonthAdapter extends BaseAdapter {
     if (calendarConstraints.getDateValidator().isValid(date)) {
       day.setEnabled(true);
       for (long selectedDay : dateSelector.getSelectedDays()) {
-        if (DateLongs.canonicalYearMonthDay(date) == DateLongs.canonicalYearMonthDay(selectedDay)) {
+        if (UtcDates.canonicalYearMonthDay(date) == UtcDates.canonicalYearMonthDay(selectedDay)) {
           calendarStyle.selectedDay.styleItem(day);
           return day;
         }
       }
 
-      if (DateUtils.isToday(date)) {
+      if (UtcDates.getTodayCalendar().getTimeInMillis() == date) {
         calendarStyle.todayDay.styleItem(day);
         return day;
       } else {

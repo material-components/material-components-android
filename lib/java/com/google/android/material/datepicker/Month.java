@@ -21,11 +21,9 @@ import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Locale;
 
 /** Contains convenience operations for a month within a specific year. */
 public final class Month implements Comparable<Month>, Parcelable {
@@ -56,14 +54,12 @@ public final class Month implements Comparable<Month>, Parcelable {
   final int daysInMonth;
 
   private Month(@NonNull Calendar rawCalendar) {
-    calendar = Calendar.getInstance();
-    calendar.setTimeInMillis(DateLongs.canonicalYearMonthDay(rawCalendar.getTimeInMillis()));
+    calendar = UtcDates.getDayCopy(rawCalendar);
     month = calendar.get(Calendar.MONTH);
     year = calendar.get(Calendar.YEAR);
-    daysInWeek = this.calendar.getMaximum(Calendar.DAY_OF_WEEK);
-    daysInMonth = this.calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-    longName =
-        new SimpleDateFormat("MMMM, yyyy", Locale.getDefault()).format(this.calendar.getTime());
+    daysInWeek = calendar.getMaximum(Calendar.DAY_OF_WEEK);
+    daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+    longName = UtcDates.getYearMonthFormat().format(calendar.getTime());
   }
 
   /**
@@ -72,7 +68,7 @@ public final class Month implements Comparable<Month>, Parcelable {
    */
   @NonNull
   public static Month create(long timeInMillis) {
-    Calendar calendar = Calendar.getInstance();
+    Calendar calendar = UtcDates.getCalendar();
     calendar.setTimeInMillis(timeInMillis);
     return new Month(calendar);
   }
@@ -87,18 +83,19 @@ public final class Month implements Comparable<Month>, Parcelable {
    */
   @NonNull
   static Month create(int year, @Months int month) {
-    Calendar calendar = Calendar.getInstance();
-    calendar.clear();
+    Calendar calendar = UtcDates.getCalendar();
     calendar.set(Calendar.YEAR, year);
     calendar.set(Calendar.MONTH, month);
     return new Month(calendar);
   }
 
-  /** Returns the {@link Month} that contains today (as per {@link Calendar#getInstance()}. */
+  /**
+   * Returns the {@link Month} that contains today in the default timezone (as per {@link
+   * Calendar#getInstance()}.
+   */
   @NonNull
   public static Month today() {
-    Calendar calendar = Calendar.getInstance();
-    return Month.create(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH));
+    return new Month(UtcDates.getTodayCalendar());
   }
 
   int daysFromStartOfWeekToFirstOfMonth() {
@@ -163,9 +160,9 @@ public final class Month implements Comparable<Month>, Parcelable {
    *     and year
    */
   long getDay(int day) {
-    Calendar calendar = ((Calendar) this.calendar.clone());
-    calendar.set(Calendar.DAY_OF_MONTH, day);
-    return calendar.getTimeInMillis();
+    Calendar dayCalendar = UtcDates.getDayCopy(calendar);
+    dayCalendar.set(Calendar.DAY_OF_MONTH, day);
+    return dayCalendar.getTimeInMillis();
   }
 
   /**
@@ -174,7 +171,7 @@ public final class Month implements Comparable<Month>, Parcelable {
    */
   @NonNull
   Month monthsLater(int months) {
-    Calendar laterMonth = ((Calendar) calendar.clone());
+    Calendar laterMonth = UtcDates.getDayCopy(calendar);
     laterMonth.add(Calendar.MONTH, months);
     return new Month(laterMonth);
   }

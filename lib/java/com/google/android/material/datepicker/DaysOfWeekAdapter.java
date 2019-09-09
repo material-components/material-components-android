@@ -50,8 +50,7 @@ class DaysOfWeekAdapter extends BaseAdapter {
       VERSION.SDK_INT >= VERSION_CODES.O ? NARROW_FORMAT : Calendar.SHORT;
 
   public DaysOfWeekAdapter() {
-    calendar = Calendar.getInstance();
-    calendar.clear();
+    calendar = UtcDates.getCalendar();
     daysInWeek = calendar.getMaximum(Calendar.DAY_OF_WEEK);
     firstDayOfWeek = calendar.getFirstDayOfWeek();
   }

@@ -53,7 +53,7 @@
   <!-- Indicates that the default bounds will be used [CHAR LIMIT=25] -->
   <string name="cat_picker_bounds_default">Default</string>
   <!-- Indicates that the bounds will be restricted to this year only [CHAR LIMIT=25] -->
-  <string name="cat_picker_bounds_this_year">This Year</string>
+  <string name="cat_picker_bounds_this_year">This year</string>
   <!-- Indicates that the bounds will be restricted to dates within 1 year [CHAR LIMIT=25] -->
   <string name="cat_picker_bounds_one_year_forward">Within 1 year</string>
 
@@ -61,8 +61,8 @@
   <string name="cat_picker_validation">Valid Days</string>
   <!-- Indicates that the default valid days will be used [CHAR LIMIT=25] -->
   <string name="cat_picker_validation_default">Default</string>
-  <!-- Indicates that only future days will be valid [CHAR LIMIT=25] -->
-  <string name="cat_picker_validation_future">Future days</string>
+  <!-- Indicates that only today and future days will be valid [CHAR LIMIT=25] -->
+  <string name="cat_picker_validation_today_onward">Today onward</string>
   <!-- Indicates that only weekdays will be valid [CHAR LIMIT=25] -->
   <string name="cat_picker_validation_weekdays">Weekdays</string>
 

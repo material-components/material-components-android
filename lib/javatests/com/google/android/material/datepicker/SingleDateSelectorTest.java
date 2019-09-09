@@ -76,10 +76,10 @@ public class SingleDateSelectorTest {
 
   @Test
   public void setSelectionDirectly() {
-    Calendar setTo = Calendar.getInstance();
+    Calendar setTo = UtcDates.getCalendar();
     setTo.set(2004, Calendar.MARCH, 5);
     singleDateSelector.setSelection(setTo.getTimeInMillis());
-    Calendar resultCalendar = Calendar.getInstance();
+    Calendar resultCalendar = UtcDates.getCalendar();
 
     resultCalendar.setTimeInMillis(singleDateSelector.getSelection());
 
@@ -87,12 +87,13 @@ public class SingleDateSelectorTest {
     assertThat(
         singleDateSelector
             .getSelectedDays()
-            .contains(DateLongs.canonicalYearMonthDay(setTo.getTimeInMillis())),
+            .contains(UtcDates.canonicalYearMonthDay(setTo.getTimeInMillis())),
         is(true));
     assertThat(
         singleDateSelector
             .getSelectedDays()
-            .contains(DateLongs.canonicalYearMonthDay(Calendar.getInstance().getTimeInMillis())),
+            .contains(
+                UtcDates.canonicalYearMonthDay(UtcDates.getTodayCalendar().getTimeInMillis())),
         is(false));
   }
 }

@@ -37,8 +37,6 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
-import java.util.Locale;
 
 /**
  * A {@link DateSelector} that uses a {@link Long} for its selection state.
@@ -57,7 +55,7 @@ public class SingleDateSelector implements DateSelector<Long> {
 
   @Override
   public void setSelection(@Nullable Long selection) {
-    selectedItem = selection == null ? null : DateLongs.canonicalYearMonthDay(selection);
+    selectedItem = selection == null ? null : UtcDates.canonicalYearMonthDay(selection);
   }
 
   @Override
@@ -100,7 +98,7 @@ public class SingleDateSelector implements DateSelector<Long> {
     EditText dateEditText = dateTextInput.getEditText();
 
     String pattern = root.getResources().getString(R.string.mtrl_picker_text_input_date_format);
-    SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.getDefault());
+    SimpleDateFormat format = UtcDates.getSimpleFormat(pattern);
     format.setLenient(false);
 
     if (selectedItem != null) {
@@ -135,7 +133,7 @@ public class SingleDateSelector implements DateSelector<Long> {
     if (selectedItem == null) {
       return res.getString(R.string.mtrl_picker_date_header_unselected);
     }
-    String startString = DateStrings.getYearMonthDay(new Date(selectedItem), Locale.getDefault());
+    String startString = DateStrings.getYearMonthDay(selectedItem);
     return res.getString(R.string.mtrl_picker_date_header_selected, startString);
   }
 

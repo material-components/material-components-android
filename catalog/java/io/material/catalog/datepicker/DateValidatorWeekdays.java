@@ -19,13 +19,14 @@ import android.os.Parcel;
 import com.google.android.material.datepicker.CalendarConstraints.DateValidator;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 /** A {@link DateValidator} that only allows dates from a given point onward to be clicked. */
 public class DateValidatorWeekdays implements DateValidator {
 
-  private final Calendar calendar = Calendar.getInstance();
-
   DateValidatorWeekdays() {}
+
+  private Calendar utc = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 
   public static final Creator<DateValidatorWeekdays> CREATOR =
       new Creator<DateValidatorWeekdays>() {
@@ -42,8 +43,8 @@ public class DateValidatorWeekdays implements DateValidator {
 
   @Override
   public boolean isValid(long date) {
-    calendar.setTimeInMillis(date);
-    int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+    utc.setTimeInMillis(date);
+    int dayOfWeek = utc.get(Calendar.DAY_OF_WEEK);
     return dayOfWeek != Calendar.SATURDAY && dayOfWeek != Calendar.SUNDAY;
   }
 
