@@ -75,7 +75,6 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
   private static final int ANIM_STATE_HIDING = 1;
   private static final int ANIM_STATE_SHOWING = 2;
 
-  private final Rect shadowPadding = new Rect();
   private int animState = ANIM_STATE_NONE;
 
   private final AnimatorTracker changeVisibilityTracker = new AnimatorTracker();
@@ -965,65 +964,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
       }
       // Now let the CoordinatorLayout lay out the FAB
       parent.onLayoutChild(child, layoutDirection);
-      // Now offset it if needed
-      offsetIfNeeded(parent, child);
       return true;
-    }
-
-    @Override
-    public boolean getInsetDodgeRect(
-        @NonNull CoordinatorLayout parent,
-        @NonNull ExtendedFloatingActionButton child,
-        @NonNull Rect rect) {
-      // Since we offset so that any internal shadow padding isn't shown, we need to make
-      // sure that the shadow isn't used for any dodge inset calculations
-      final Rect shadowPadding = child.shadowPadding;
-      rect.set(
-          child.getLeft() + shadowPadding.left,
-          child.getTop() + shadowPadding.top,
-          child.getRight() - shadowPadding.right,
-          child.getBottom() - shadowPadding.bottom);
-      return true;
-    }
-
-    /**
-     * Pre-Lollipop we use padding so that the shadow has enough space to be drawn. This method
-     * offsets our layout position so that we're positioned correctly if we're on one of our
-     * parent's edges.
-     */
-    private void offsetIfNeeded(
-        @NonNull CoordinatorLayout parent, @NonNull ExtendedFloatingActionButton fab) {
-      final Rect padding = fab.shadowPadding;
-
-      if (padding != null && padding.centerX() > 0 && padding.centerY() > 0) {
-        final CoordinatorLayout.LayoutParams lp =
-            (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
-
-        int offsetTB = 0;
-        int offsetLR = 0;
-
-        if (fab.getRight() >= parent.getWidth() - lp.rightMargin) {
-          // If we're on the right edge, shift it the right
-          offsetLR = padding.right;
-        } else if (fab.getLeft() <= lp.leftMargin) {
-          // If we're on the left edge, shift it the left
-          offsetLR = -padding.left;
-        }
-        if (fab.getBottom() >= parent.getHeight() - lp.bottomMargin) {
-          // If we're on the bottom edge, shift it down
-          offsetTB = padding.bottom;
-        } else if (fab.getTop() <= lp.topMargin) {
-          // If we're on the top edge, shift it up
-          offsetTB = -padding.top;
-        }
-
-        if (offsetTB != 0) {
-          ViewCompat.offsetTopAndBottom(fab, offsetTB);
-        }
-        if (offsetLR != 0) {
-          ViewCompat.offsetLeftAndRight(fab, offsetLR);
-        }
-      }
     }
   }
 
