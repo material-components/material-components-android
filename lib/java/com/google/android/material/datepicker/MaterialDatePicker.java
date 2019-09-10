@@ -175,14 +175,19 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     View root = layoutInflater.inflate(layout, viewGroup);
     Context context = root.getContext();
 
-    View frame = root.findViewById(R.id.mtrl_calendar_frame);
+
     if (fullscreen) {
+      View frame = root.findViewById(R.id.mtrl_calendar_frame);
       frame.setLayoutParams(
           new LayoutParams(getPaddedPickerWidth(context), LayoutParams.WRAP_CONTENT));
     } else {
-      frame.setLayoutParams(
-          new LayoutParams(getPaddedPickerWidth(context), getDialogPickerHeight(context)));
+      View pane = root.findViewById(R.id.mtrl_calendar_main_pane);
+      View frame = root.findViewById(R.id.mtrl_calendar_frame);
+      pane.setLayoutParams(
+          new LayoutParams(getPaddedPickerWidth(context), LayoutParams.MATCH_PARENT));
+      frame.setMinimumHeight(getDialogPickerHeight(requireContext()));
     }
+
     headerSelectionText = root.findViewById(R.id.mtrl_picker_header_selection_text);
     ViewCompat.setAccessibilityLiveRegion(
         headerSelectionText, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
@@ -236,8 +241,8 @@ public final class MaterialDatePicker<S> extends DialogFragment {
       window.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
       int inset =
           getResources().getDimensionPixelOffset(R.dimen.mtrl_calendar_dialog_background_inset);
-      window.setBackgroundDrawable(new InsetDrawable(background, inset));
       Rect insets = new Rect(inset, inset, inset, inset);
+      window.setBackgroundDrawable(new InsetDrawable(background, inset, inset, inset, inset));
       window
           .getDecorView()
           .setOnTouchListener(new InsetDialogOnTouchListener(requireDialog(), insets));

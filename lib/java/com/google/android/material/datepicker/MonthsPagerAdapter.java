@@ -92,9 +92,13 @@ class MonthsPagerAdapter extends RecyclerView.Adapter<MonthsPagerAdapter.ViewHol
         (LinearLayout)
             LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.mtrl_calendar_month_labeled, viewGroup, false);
-    container.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, itemHeight));
-    return new ViewHolder(
-        container, /* showLabel= */ MaterialDatePicker.isFullscreen(viewGroup.getContext()));
+
+    if (MaterialDatePicker.isFullscreen(viewGroup.getContext())) {
+      container.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, itemHeight));
+      return new ViewHolder(container, /* showLabel= */ true);
+    } else {
+      return new ViewHolder(container, /* showLabel= */ false);
+    }
   }
 
   @Override
