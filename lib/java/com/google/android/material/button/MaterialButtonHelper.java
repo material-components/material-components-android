@@ -20,6 +20,7 @@ import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -70,10 +71,12 @@ class MaterialButtonHelper {
   private boolean cornerRadiusSet = false;
   private boolean checkable;
   private LayerDrawable rippleDrawable;
+  private boolean cornerAdjustmentEnabled;
 
   MaterialButtonHelper(MaterialButton button, @NonNull ShapeAppearanceModel shapeAppearanceModel) {
     materialButton = button;
     this.shapeAppearanceModel = shapeAppearanceModel;
+    cornerAdjustmentEnabled = CornerAdjustmentFlag.isEnabled(button.getContext());
   }
 
   void loadFromAttributes(@NonNull TypedArray attributes) {
@@ -192,7 +195,8 @@ class MaterialButtonHelper {
    */
   private Drawable createBackground() {
     MaterialShapeDrawable backgroundDrawable = new MaterialShapeDrawable(shapeAppearanceModel);
-    backgroundDrawable.initializeElevationOverlay(materialButton.getContext());
+    Context context = materialButton.getContext();
+    backgroundDrawable.initializeElevationOverlay(context);
     DrawableCompat.setTintList(backgroundDrawable, backgroundTint);
     if (backgroundTintMode != null) {
       DrawableCompat.setTintMode(backgroundDrawable, backgroundTintMode);
@@ -210,7 +214,7 @@ class MaterialButtonHelper {
 
     if (IS_LOLLIPOP) {
       maskDrawable = new MaterialShapeDrawable(shapeAppearanceModel);
-      if (strokeWidth > 0) {
+      if (strokeWidth > 0 && cornerAdjustmentEnabled) {
         ShapeAppearanceModel adjustedShapeAppearanceModel =
             adjustShapeAppearanceModelCornerRadius(shapeAppearanceModel, strokeWidth / 2f);
         backgroundDrawable.setShapeAppearanceModel(adjustedShapeAppearanceModel);
@@ -304,7 +308,7 @@ class MaterialButtonHelper {
                 ? MaterialColors.getColor(materialButton, R.attr.colorSurface)
                 : Color.TRANSPARENT);
       }
-      if (IS_LOLLIPOP) {
+      if (IS_LOLLIPOP && cornerAdjustmentEnabled) {
         ShapeAppearanceModel shapeAppearance =
             adjustShapeAppearanceModelCornerRadius(shapeAppearanceModel, strokeWidth / 2f);
         updateButtonShape(shapeAppearance);
@@ -322,8 +326,10 @@ class MaterialButtonHelper {
     if (!cornerRadiusSet || this.cornerRadius != cornerRadius) {
       this.cornerRadius = cornerRadius;
       cornerRadiusSet = true;
+
       setShapeAppearanceModel(
-          shapeAppearanceModel.withCornerRadius(cornerRadius + (strokeWidth / 2f)));
+          shapeAppearanceModel.withCornerRadius(
+              cornerAdjustmentEnabled ? cornerRadius + (strokeWidth / 2f) : cornerRadius));
     }
   }
 
