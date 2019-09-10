@@ -82,7 +82,7 @@
   <!-- Indicates that a day in the next month will be used for the selection [CHAR LIMIT=25] -->
   <string name="cat_picker_selection_next_month">Next Month</string>
 
-  <!-- Grouping label for a set of radio buttons that choose the opening month [CHAR LIMIT=50] -->
+  <!-- Grouping label for a set of radio buttons that choose the openAt month [CHAR LIMIT=50] -->
   <string name="cat_picker_opening_month">Opening Month</string>
   <!-- Indicates that the picker will open to the default month [CHAR LIMIT=25] -->
   <string name="cat_picker_opening_month_default">Default</string>

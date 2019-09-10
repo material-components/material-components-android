@@ -35,9 +35,9 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 public class MaterialDatePickerPagesTest {
 
-  private static final Month start = Month.create(2000, Calendar.JANUARY);
-  private static final Month end = Month.create(2000, Calendar.MAY);
-  private static final Month opening = Month.create(2000, Calendar.FEBRUARY);
+  private static final Month START = Month.create(2000, Calendar.JANUARY);
+  private static final Month END = Month.create(2000, Calendar.MAY);
+  private static final Month OPEN_AT = Month.create(2000, Calendar.FEBRUARY);
 
   private ListenerIdlingResource listenerIdlingResource;
 
@@ -50,7 +50,11 @@ public class MaterialDatePickerPagesTest {
   @Before
   public void setupDatePickerDialogForSwiping() {
     CalendarConstraints calendarConstraints =
-        new CalendarConstraints.Builder().setStart(start).setEnd(end).setOpening(opening).build();
+        new CalendarConstraints.Builder()
+            .setStart(START.timeInMillis)
+            .setEnd(END.timeInMillis)
+            .setOpenAt(OPEN_AT.timeInMillis)
+            .build();
     FragmentManager fragmentManager = activityTestRule.getActivity().getSupportFragmentManager();
     String tag = "Date DialogFragment";
 
@@ -72,7 +76,7 @@ public class MaterialDatePickerPagesTest {
     MaterialDatePickerTestUtils.swipeEarlier(dialogFragment);
     MaterialDatePickerTestUtils.swipeEarlier(dialogFragment);
 
-    assertEquals(start, findFirstVisibleItem(dialogFragment));
+    assertEquals(START, findFirstVisibleItem(dialogFragment));
   }
 
   @Test
@@ -81,12 +85,12 @@ public class MaterialDatePickerPagesTest {
     MaterialDatePickerTestUtils.swipeLater(dialogFragment);
     MaterialDatePickerTestUtils.swipeLater(dialogFragment);
     MaterialDatePickerTestUtils.swipeLater(dialogFragment);
-    assertEquals(end, findFirstVisibleItem(dialogFragment));
+    assertEquals(END, findFirstVisibleItem(dialogFragment));
   }
 
   @Test
   public void calendarOpensOnCurrent() {
-    assertEquals(opening, findFirstVisibleItem(dialogFragment));
+    assertEquals(OPEN_AT, findFirstVisibleItem(dialogFragment));
   }
 
   @Test
@@ -101,7 +105,7 @@ public class MaterialDatePickerPagesTest {
         });
     Calendar startingTimeOfMonth = Calendar.getInstance();
     startingTimeOfMonth.clear();
-    startingTimeOfMonth.set(opening.year, opening.month, 1);
+    startingTimeOfMonth.set(OPEN_AT.year, OPEN_AT.month, 1);
     MaterialDatePickerTestUtils.swipeEarlier(dialogFragment);
     MaterialDatePickerTestUtils.clickDialogVisibleDay(5);
 
@@ -118,6 +122,6 @@ public class MaterialDatePickerPagesTest {
     MaterialDatePickerTestUtils.clickNext();
     MaterialDatePickerTestUtils.clickSelectorToggle();
     MaterialDatePickerTestUtils.clickSelectorToggle();
-    assertEquals(findFirstVisibleItem(dialogFragment), opening.monthsLater(1));
+    assertEquals(findFirstVisibleItem(dialogFragment), OPEN_AT.monthsLater(1));
   }
 }

@@ -99,7 +99,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
     args.putInt(THEME_RES_ID_KEY, themeResId);
     args.putParcelable(GRID_SELECTOR_KEY, dateSelector);
     args.putParcelable(CALENDAR_CONSTRAINTS_KEY, calendarConstraints);
-    args.putParcelable(CURRENT_MONTH_KEY, calendarConstraints.getOpening());
+    args.putParcelable(CURRENT_MONTH_KEY, calendarConstraints.getOpenAt());
     materialCalendar.setArguments(args);
     return materialCalendar;
   }

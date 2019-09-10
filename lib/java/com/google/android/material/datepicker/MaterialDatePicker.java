@@ -64,6 +64,11 @@ public final class MaterialDatePicker<S> extends DialogFragment {
   static final Object CANCEL_BUTTON_TAG = "CANCEL_BUTTON_TAG";
   static final Object TOGGLE_BUTTON_TAG = "TOGGLE_BUTTON_TAG";
 
+  /** Returns a value of UTC milliseconds representing today for the device's current timezone. */
+  public static long todayInUtcMilliseconds() {
+    return Month.today().timeInMillis;
+  }
+
   /**
    * Returns the text to display at the top of the {@link DialogFragment}
    *
@@ -115,7 +120,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     bundle.putParcelable(
         CALENDAR_CONSTRAINTS_KEY,
         new CalendarConstraints.Builder(calendarConstraints)
-            .setOpening(calendar.getCurrentMonth())
+            .setOpenAt(calendar.getCurrentMonth().timeInMillis)
             .build());
     bundle.putInt(TITLE_TEXT_RES_ID_KEY, titleTextResId);
   }

@@ -33,7 +33,6 @@ import android.widget.RadioGroup;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.DateValidatorPointForward;
 import com.google.android.material.datepicker.MaterialDatePicker;
-import com.google.android.material.datepicker.Month;
 import io.material.catalog.feature.DemoFragment;
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -42,35 +41,40 @@ import java.util.TimeZone;
 public class DatePickerMainDemoFragment extends DemoFragment {
 
   private Snackbar snackbar;
-  private static final long TODAY;
-  private static final long NEXT_MONTH;
-  private static final Month THIS_MONTH;
-  private static final Month JAN_THIS_YEAR;
-  private static final Month DEC_THIS_YEAR;
-  private static final Month ONE_YEAR_FORWARD;
-  private static final Pair<Long, Long> TODAY_PAIR;
-  private static final Pair<Long, Long> NEXT_MONTH_PAIR;
+  private long today;
+  private long nextMonth;
+  private long janThisYear;
+  private long decThisYear;
+  private long oneYearForward;
+  private Pair<Long, Long> todayPair;
+  private Pair<Long, Long> nextMonthPair;
 
-  static {
-    Calendar calToday = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-    TODAY = calToday.getTimeInMillis();
-    Calendar calNextMonth = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-    calNextMonth.roll(Calendar.MONTH, 1);
-    NEXT_MONTH = calNextMonth.getTimeInMillis();
+  private static Calendar getClearedUtc() {
+    Calendar utc = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+    utc.clear();
+    return utc;
+  }
 
-    Calendar calJanThisYear = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-    calJanThisYear.set(Calendar.MONTH, Calendar.JANUARY);
-    JAN_THIS_YEAR = Month.create(calJanThisYear.getTimeInMillis());
-    Calendar calDecThisYear = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-    calDecThisYear.set(Calendar.MONTH, Calendar.DECEMBER);
-    DEC_THIS_YEAR = Month.create(calDecThisYear.getTimeInMillis());
-    Calendar calOneYearForward = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-    calOneYearForward.roll(Calendar.YEAR, 1);
-    ONE_YEAR_FORWARD = Month.create(calOneYearForward.getTimeInMillis());
-    THIS_MONTH = Month.today();
+  private void initSettings() {
+    today = MaterialDatePicker.todayInUtcMilliseconds();
+    Calendar calendar = getClearedUtc();
+    calendar.setTimeInMillis(today);
+    calendar.roll(Calendar.MONTH, 1);
+    nextMonth = calendar.getTimeInMillis();
 
-    TODAY_PAIR = new Pair<>(TODAY, TODAY);
-    NEXT_MONTH_PAIR = new Pair<>(NEXT_MONTH, NEXT_MONTH);
+    calendar.setTimeInMillis(today);
+    calendar.set(Calendar.MONTH, Calendar.JANUARY);
+    janThisYear = calendar.getTimeInMillis();
+    calendar.setTimeInMillis(today);
+    calendar.set(Calendar.MONTH, Calendar.DECEMBER);
+    decThisYear = calendar.getTimeInMillis();
+
+    calendar.setTimeInMillis(today);
+    calendar.roll(Calendar.YEAR, 1);
+    oneYearForward = calendar.getTimeInMillis();
+
+    todayPair = new Pair<>(today, today);
+    nextMonthPair = new Pair<>(nextMonth, nextMonth);
   }
 
   @Override
@@ -94,6 +98,7 @@ public class DatePickerMainDemoFragment extends DemoFragment {
 
     launcher.setOnClickListener(
         v -> {
+          initSettings();
           int selectionModeChoice = selectionMode.getCheckedRadioButtonId();
           int themeChoice = theme.getCheckedRadioButtonId();
           int boundsChoice = bounds.getCheckedRadioButtonId();
@@ -131,43 +136,43 @@ public class DatePickerMainDemoFragment extends DemoFragment {
     return view;
   }
 
-  private static MaterialDatePicker.Builder<?> setupDateSelectorBuilder(
+  private MaterialDatePicker.Builder<?> setupDateSelectorBuilder(
       int selectionModeChoice, int selectionChoice) {
     if (selectionModeChoice == R.id.cat_picker_date_selector_single) {
       MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
       if (selectionChoice == R.id.cat_picker_selection_today) {
-        builder.setSelection(TODAY);
+        builder.setSelection(today);
       } else if (selectionChoice == R.id.cat_picker_selection_next_month) {
-        builder.setSelection(NEXT_MONTH);
+        builder.setSelection(nextMonth);
       }
       return builder;
     } else {
       MaterialDatePicker.Builder<Pair<Long, Long>> builder =
           MaterialDatePicker.Builder.dateRangePicker();
       if (selectionChoice == R.id.cat_picker_selection_today) {
-        builder.setSelection(TODAY_PAIR);
+        builder.setSelection(todayPair);
       } else if (selectionChoice == R.id.cat_picker_selection_next_month) {
-        builder.setSelection(NEXT_MONTH_PAIR);
+        builder.setSelection(nextMonthPair);
       }
       return builder;
     }
   }
 
-  private static CalendarConstraints.Builder setupConstraintsBuilder(
+  private CalendarConstraints.Builder setupConstraintsBuilder(
       int boundsChoice, int openingChoice, int validationChoice) {
     CalendarConstraints.Builder constraintsBuilder = new CalendarConstraints.Builder();
     if (boundsChoice == R.id.cat_picker_bounds_this_year) {
-      constraintsBuilder.setStart(JAN_THIS_YEAR);
-      constraintsBuilder.setEnd(DEC_THIS_YEAR);
+      constraintsBuilder.setStart(janThisYear);
+      constraintsBuilder.setEnd(decThisYear);
     } else if (boundsChoice == R.id.cat_picker_bounds_one_year_forward) {
-      constraintsBuilder.setStart(THIS_MONTH);
-      constraintsBuilder.setEnd(ONE_YEAR_FORWARD);
+      constraintsBuilder.setStart(today);
+      constraintsBuilder.setEnd(oneYearForward);
     }
 
     if (openingChoice == R.id.cat_picker_opening_month_today) {
-      constraintsBuilder.setOpening(THIS_MONTH);
+      constraintsBuilder.setOpenAt(today);
     } else if (openingChoice == R.id.cat_picker_opening_month_next) {
-      constraintsBuilder.setOpening(Month.create(NEXT_MONTH));
+      constraintsBuilder.setOpenAt(nextMonth);
     }
 
     if (validationChoice == R.id.cat_picker_validation_today_onward) {

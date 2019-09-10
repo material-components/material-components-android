@@ -48,7 +48,8 @@ import org.hamcrest.core.IsEqual;
 
 public final class MaterialDatePickerTestUtils {
 
-  @VisibleForTesting public static final Month OPENING = Month.create(2018, Calendar.APRIL);
+  private static final Month OPEN_AT = Month.create(2018, Calendar.APRIL);
+  @VisibleForTesting public static final long OPENING_TIME = OPEN_AT.timeInMillis;
 
   private MaterialDatePickerTestUtils() {}
 
@@ -72,7 +73,11 @@ public final class MaterialDatePickerTestUtils {
     Month start = Month.create(1900, Calendar.JANUARY);
     Month end = Month.create(2100, Calendar.DECEMBER);
     CalendarConstraints calendarConstraints =
-        new CalendarConstraints.Builder().setStart(start).setEnd(end).setOpening(OPENING).build();
+        new CalendarConstraints.Builder()
+            .setStart(start.timeInMillis)
+            .setEnd(end.timeInMillis)
+            .setOpenAt(OPENING_TIME)
+            .build();
 
     return showDatePicker(activityTestRule, themeResId, calendarConstraints);
   }
@@ -110,7 +115,11 @@ public final class MaterialDatePickerTestUtils {
     Month start = Month.create(1900, Calendar.JANUARY);
     Month end = Month.create(2100, Calendar.DECEMBER);
     CalendarConstraints calendarConstraints =
-        new CalendarConstraints.Builder().setStart(start).setEnd(end).setOpening(OPENING).build();
+        new CalendarConstraints.Builder()
+            .setStart(start.timeInMillis)
+            .setEnd(end.timeInMillis)
+            .setOpenAt(OPENING_TIME)
+            .build();
     return showRangePicker(activityTestRule, themeResId, calendarConstraints);
   }
 
@@ -143,6 +152,10 @@ public final class MaterialDatePickerTestUtils {
     return dialogFragment;
   }
 
+  public static void clickDay(long timeInMillis, int day) {
+    clickDay(Month.create(timeInMillis), day);
+  }
+
   public static void clickDay(Month month, int day) {
     onView(
             allOf(
@@ -153,7 +166,7 @@ public final class MaterialDatePickerTestUtils {
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
   }
 
-  static void clickDialogVisibleDay(int day) {
+  public static void clickDialogVisibleDay(int day) {
     onView(
             allOf(
                 isDescendantOfA(withTagValue(equalTo(MaterialCalendar.MONTHS_VIEW_GROUP_TAG))),
@@ -235,6 +248,11 @@ public final class MaterialDatePickerTestUtils {
         hideAllEditTextCursors(viewGroup.getChildAt(i));
       }
     }
+  }
+
+  @VisibleForTesting
+  public static long findFirstVisibleItemTime(DialogFragment dialogFragment) {
+    return findFirstVisibleItem(dialogFragment).timeInMillis;
   }
 
   @VisibleForTesting

@@ -49,7 +49,7 @@ class MonthsPagerAdapter extends RecyclerView.Adapter<MonthsPagerAdapter.ViewHol
       OnDayClickListener onDayClickListener) {
     Month firstPage = calendarConstraints.getStart();
     Month lastPage = calendarConstraints.getEnd();
-    Month currentPage = calendarConstraints.getOpening();
+    Month currentPage = calendarConstraints.getOpenAt();
 
     if (firstPage.compareTo(currentPage) > 0) {
       throw new IllegalArgumentException("firstPage cannot be after currentPage");
