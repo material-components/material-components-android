@@ -149,6 +149,7 @@
     <item name="itemFillColor">?attr/colorPrimary</item>
     <item name="itemTextColor">?attr/colorOnPrimary</item>
     <item name="itemStrokeColor">?attr/colorOnPrimary</item>
+    <item name="itemStrokeWidth">0dp</item>
   </style>
 
   <style name="Widget.MaterialComponents.MaterialCalendar.Year.Today" parent="Widget.MaterialComponents.MaterialCalendar.Year">
