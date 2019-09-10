@@ -34,12 +34,12 @@ class UtcDates {
 
   private UtcDates() {}
 
-  static TimeZone getUtcTimeZone() {
+  static TimeZone getTimeZone() {
     return TimeZone.getTimeZone(UTC);
   }
 
   @TargetApi(VERSION_CODES.N)
-  private static android.icu.util.TimeZone getAndroidUtcTimeZone() {
+  private static android.icu.util.TimeZone getAndroidTimeZone() {
     return android.icu.util.TimeZone.getTimeZone(UTC);
   }
 
@@ -48,7 +48,7 @@ class UtcDates {
   }
 
   static Calendar getCalendar() {
-    Calendar utc = Calendar.getInstance(getUtcTimeZone());
+    Calendar utc = Calendar.getInstance(getTimeZone());
     utc.clear();
     return utc;
   }
@@ -80,13 +80,13 @@ class UtcDates {
   private static android.icu.text.DateFormat getAndroidFormat(String pattern, Locale locale) {
     android.icu.text.DateFormat format =
         android.icu.text.DateFormat.getInstanceForSkeleton(pattern, locale);
-    format.setTimeZone(getAndroidUtcTimeZone());
+    format.setTimeZone(getAndroidTimeZone());
     return format;
   }
 
   private static DateFormat getFormat(int style, Locale locale) {
     DateFormat format = DateFormat.getDateInstance(style, locale);
-    format.setTimeZone(getUtcTimeZone());
+    format.setTimeZone(getTimeZone());
     return format;
   }
 
@@ -96,7 +96,7 @@ class UtcDates {
 
   private static SimpleDateFormat getSimpleFormat(String pattern, Locale locale) {
     SimpleDateFormat format = new SimpleDateFormat(pattern, locale);
-    format.setTimeZone(getUtcTimeZone());
+    format.setTimeZone(getTimeZone());
     return format;
   }
 

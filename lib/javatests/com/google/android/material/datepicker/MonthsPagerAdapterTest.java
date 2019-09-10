@@ -58,9 +58,9 @@ public class MonthsPagerAdapterTest {
             context,
             /* dateSelector= */ null,
             new CalendarConstraints.Builder()
-                .setStart(feb2016)
-                .setEnd(april2016)
-                .setOpening(march2016)
+                .setStart(feb2016.timeInMillis)
+                .setEnd(april2016.timeInMillis)
+                .setOpenAt(march2016.timeInMillis)
                 .build(),
             /* onDayClickListener= */ null);
     assertEquals(3, monthsAdapter.getItemCount());
@@ -74,9 +74,9 @@ public class MonthsPagerAdapterTest {
             context,
             /* dateSelector= */ null,
             new CalendarConstraints.Builder()
-                .setStart(feb2016)
-                .setEnd(feb2016)
-                .setOpening(feb2016)
+                .setStart(feb2016.timeInMillis)
+                .setEnd(feb2016.timeInMillis)
+                .setOpenAt(feb2016.timeInMillis)
                 .build(),
             /* onDayClickListener= */ null);
     assertEquals(1, monthsAdapter.getItemCount());
@@ -92,9 +92,9 @@ public class MonthsPagerAdapterTest {
         context,
         /* dateSelector= */ null,
         new CalendarConstraints.Builder()
-            .setStart(feb2016)
-            .setEnd(march2016)
-            .setOpening(april2016)
+            .setStart(feb2016.timeInMillis)
+            .setEnd(march2016.timeInMillis)
+            .setOpenAt(april2016.timeInMillis)
             .build(),
         /* onDayClickListener= */ null);
   }
@@ -106,9 +106,9 @@ public class MonthsPagerAdapterTest {
         context,
         /* dateSelector= */ null,
         new CalendarConstraints.Builder()
-            .setStart(march2016)
-            .setEnd(feb2016)
-            .setOpening(march2016)
+            .setStart(march2016.timeInMillis)
+            .setEnd(feb2016.timeInMillis)
+            .setOpenAt(march2016.timeInMillis)
             .build(),
         /* onDayClickListener= */ null);
   }
@@ -120,9 +120,9 @@ public class MonthsPagerAdapterTest {
             context,
             /* dateSelector= */ null,
             new CalendarConstraints.Builder()
-                .setStart(feb2016)
-                .setEnd(april2016)
-                .setOpening(march2016)
+                .setStart(feb2016.timeInMillis)
+                .setEnd(april2016.timeInMillis)
+                .setOpenAt(march2016.timeInMillis)
                 .build(),
             /* onDayClickListener= */ null);
     assertEquals(feb2016.getLongName(), monthsAdapter.getPageTitle(/* position= */ 0).toString());

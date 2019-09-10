@@ -30,9 +30,9 @@ import org.robolectric.annotation.internal.DoNotInstrument;
 @DoNotInstrument
 public class CalendarConstraintsTest {
 
-  private static final Month FEB_2016 = Month.create(2016, Calendar.FEBRUARY);
-  private static final Month MARCH_2016 = Month.create(2016, Calendar.MARCH);
-  private static final Month APRIL_2016 = Month.create(2016, Calendar.APRIL);
+  private static final long FEB_2016 = Month.create(2016, Calendar.FEBRUARY).timeInMillis;
+  private static final long MARCH_2016 = Month.create(2016, Calendar.MARCH).timeInMillis;
+  private static final long APRIL_2016 = Month.create(2016, Calendar.APRIL).timeInMillis;
 
   @Rule public final ExpectedException exceptionRule = ExpectedException.none();
 
@@ -48,18 +48,18 @@ public class CalendarConstraintsTest {
   @Test
   public void currentDefaultsToTodayIfWithinBounds() {
     Month today = Month.today();
-    Month start = today.monthsLater(-1);
-    Month end = today.monthsLater(1);
+    long start = today.monthsLater(-1).timeInMillis;
+    long end = today.monthsLater(1).timeInMillis;
     CalendarConstraints calendarConstraints =
         new CalendarConstraints.Builder().setStart(start).setEnd(end).build();
-    assertEquals(today, calendarConstraints.getOpening());
+    assertEquals(today, calendarConstraints.getOpenAt());
   }
 
   @Test
   public void currentDefaultsToStartIfTodayIsInvalid() {
     CalendarConstraints calendarConstraints =
         new CalendarConstraints.Builder().setStart(FEB_2016).setEnd(APRIL_2016).build();
-    assertEquals(FEB_2016, calendarConstraints.getOpening());
+    assertEquals(FEB_2016, calendarConstraints.getOpenAt().timeInMillis);
   }
 
   @Test
@@ -68,7 +68,7 @@ public class CalendarConstraintsTest {
     new CalendarConstraints.Builder()
         .setStart(FEB_2016)
         .setEnd(MARCH_2016)
-        .setOpening(APRIL_2016)
+        .setOpenAt(APRIL_2016)
         .build();
   }
 
@@ -78,7 +78,7 @@ public class CalendarConstraintsTest {
     new CalendarConstraints.Builder()
         .setStart(MARCH_2016)
         .setEnd(FEB_2016)
-        .setOpening(MARCH_2016)
+        .setOpenAt(MARCH_2016)
         .build();
   }
 }

@@ -26,7 +26,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 /** Contains convenience operations for a month within a specific year. */
-public final class Month implements Comparable<Month>, Parcelable {
+final class Month implements Comparable<Month>, Parcelable {
 
   /** The acceptable int values for month when using {@link Month#create(int, int)} */
   @Retention(RetentionPolicy.SOURCE)
@@ -46,20 +46,23 @@ public final class Month implements Comparable<Month>, Parcelable {
   })
   @interface Months {}
 
-  @NonNull private final Calendar calendar;
+  @NonNull private final Calendar firstOfMonth;
   @NonNull private final String longName;
   @Months final int month;
   final int year;
   final int daysInWeek;
   final int daysInMonth;
+  final long timeInMillis;
 
   private Month(@NonNull Calendar rawCalendar) {
-    calendar = UtcDates.getDayCopy(rawCalendar);
-    month = calendar.get(Calendar.MONTH);
-    year = calendar.get(Calendar.YEAR);
-    daysInWeek = calendar.getMaximum(Calendar.DAY_OF_WEEK);
-    daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-    longName = UtcDates.getYearMonthFormat().format(calendar.getTime());
+    rawCalendar.set(Calendar.DAY_OF_MONTH, 1);
+    firstOfMonth = UtcDates.getDayCopy(rawCalendar);
+    month = firstOfMonth.get(Calendar.MONTH);
+    year = firstOfMonth.get(Calendar.YEAR);
+    daysInWeek = firstOfMonth.getMaximum(Calendar.DAY_OF_WEEK);
+    daysInMonth = firstOfMonth.getActualMaximum(Calendar.DAY_OF_MONTH);
+    longName = UtcDates.getYearMonthFormat().format(firstOfMonth.getTime());
+    timeInMillis = firstOfMonth.getTimeInMillis();
   }
 
   /**
@@ -67,7 +70,7 @@ public final class Month implements Comparable<Month>, Parcelable {
    * timeInMillis} is in milliseconds since 00:00:00 January 1, 1970, UTC.
    */
   @NonNull
-  public static Month create(long timeInMillis) {
+  static Month create(long timeInMillis) {
     Calendar calendar = UtcDates.getCalendar();
     calendar.setTimeInMillis(timeInMillis);
     return new Month(calendar);
@@ -94,12 +97,12 @@ public final class Month implements Comparable<Month>, Parcelable {
    * Calendar#getInstance()}.
    */
   @NonNull
-  public static Month today() {
+  static Month today() {
     return new Month(UtcDates.getTodayCalendar());
   }
 
   int daysFromStartOfWeekToFirstOfMonth() {
-    int difference = calendar.get(Calendar.DAY_OF_WEEK) - calendar.getFirstDayOfWeek();
+    int difference = firstOfMonth.get(Calendar.DAY_OF_WEEK) - firstOfMonth.getFirstDayOfWeek();
     if (difference < 0) {
       difference = difference + daysInWeek;
     }
@@ -126,7 +129,7 @@ public final class Month implements Comparable<Month>, Parcelable {
 
   @Override
   public int compareTo(@NonNull Month other) {
-    return calendar.compareTo(other.calendar);
+    return firstOfMonth.compareTo(other.firstOfMonth);
   }
 
   /**
@@ -139,7 +142,7 @@ public final class Month implements Comparable<Month>, Parcelable {
    *     {@link GregorianCalendar}
    */
   int monthsUntil(@NonNull Month other) {
-    if (calendar instanceof GregorianCalendar) {
+    if (firstOfMonth instanceof GregorianCalendar) {
       return (other.year - year) * 12 + (other.month - month);
     } else {
       throw new IllegalArgumentException("Only Gregorian calendars are supported.");
@@ -147,7 +150,7 @@ public final class Month implements Comparable<Month>, Parcelable {
   }
 
   long getStableId() {
-    return calendar.getTimeInMillis();
+    return firstOfMonth.getTimeInMillis();
   }
 
   /**
@@ -160,7 +163,7 @@ public final class Month implements Comparable<Month>, Parcelable {
    *     and year
    */
   long getDay(int day) {
-    Calendar dayCalendar = UtcDates.getDayCopy(calendar);
+    Calendar dayCalendar = UtcDates.getDayCopy(firstOfMonth);
     dayCalendar.set(Calendar.DAY_OF_MONTH, day);
     return dayCalendar.getTimeInMillis();
   }
@@ -171,7 +174,7 @@ public final class Month implements Comparable<Month>, Parcelable {
    */
   @NonNull
   Month monthsLater(int months) {
-    Calendar laterMonth = UtcDates.getDayCopy(calendar);
+    Calendar laterMonth = UtcDates.getDayCopy(firstOfMonth);
     laterMonth.add(Calendar.MONTH, months);
     return new Month(laterMonth);
   }
