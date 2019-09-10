@@ -117,11 +117,13 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     super.onSaveInstanceState(bundle);
     bundle.putInt(OVERRIDE_THEME_RES_ID, overrideThemeResId);
     bundle.putParcelable(GRID_SELECTOR_KEY, dateSelector);
-    bundle.putParcelable(
-        CALENDAR_CONSTRAINTS_KEY,
-        new CalendarConstraints.Builder(calendarConstraints)
-            .setOpenAt(calendar.getCurrentMonth().timeInMillis)
-            .build());
+
+    CalendarConstraints.Builder constraintsBuilder =
+        new CalendarConstraints.Builder(calendarConstraints);
+    if (calendar.getCurrentMonth() != null) {
+      constraintsBuilder.setOpenAt(calendar.getCurrentMonth().timeInMillis);
+    }
+    bundle.putParcelable(CALENDAR_CONSTRAINTS_KEY, constraintsBuilder.build());
     bundle.putInt(TITLE_TEXT_RES_ID_KEY, titleTextResId);
   }
 
