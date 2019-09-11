@@ -756,17 +756,6 @@
 
     <issue
         id="UnusedResources"
-        message="The resource `R.drawable.ic_sliders_24px` appears to be unused"
-        errorLine1="&lt;vector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
-        errorLine2="^">
-        <location
-            file="java/io/material/catalog/assets/res/drawable/ic_sliders_24px.xml"
-            line="16"
-            column="1"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
         message="The resource `R.drawable.ic_steppers_24px` appears to be unused"
         errorLine1="&lt;vector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
         errorLine2="^">

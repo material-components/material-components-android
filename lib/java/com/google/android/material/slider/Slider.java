@@ -271,7 +271,13 @@ public class Slider extends View {
 
     labelTextBounds = new Rect();
 
-    super.setOnFocusChangeListener((v, hasFocus) -> invalidate());
+    super.setOnFocusChangeListener(
+        new OnFocusChangeListener() {
+          @Override
+          public void onFocusChange(View v, boolean hasFocus) {
+            invalidate();
+          }
+        });
 
     setFocusable(true);
     setFocusableInTouchMode(true);

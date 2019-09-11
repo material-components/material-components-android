@@ -199,7 +199,7 @@
         errorLine2="                 ~~~~~~~~~~~~">
         <location
             file="java/com/google/android/material/slider/Slider.java"
-            line="627"
+            line="633"
             column="18"/>
     </issue>
 
