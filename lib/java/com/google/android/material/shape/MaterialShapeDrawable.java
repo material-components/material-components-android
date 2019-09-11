@@ -129,6 +129,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   @Nullable private PorterDuffColorFilter strokeTintFilter;
 
   @Nullable private Rect padding;
+  @NonNull private final RectF pathBounds = new RectF();
 
   /**
    * Returns a {@code MaterialShapeDrawable} with the elevation overlay functionality initialized, a
@@ -933,19 +934,24 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
       prepareCanvasForShadow(canvas);
 
+      // The extra height is the amount that the path draws outside of the bounds of the shape. This
+      // happens for some shapes like TriangleEdgeTreament when it draws a triangle outside.
+      int pathExtraWidth = (int) (pathBounds.width() - getBounds().width());
+      int pathExtraHeight = (int) (pathBounds.height() - getBounds().height());
+
       // Drawing the shadow in a bitmap lets us use the clear paint rather than using clipPath to
       // prevent drawing shadow under the shape. clipPath has problems :-/
       Bitmap shadowLayer =
           Bitmap.createBitmap(
-              getBounds().width() + drawableState.shadowCompatRadius * 2,
-              getBounds().height() + drawableState.shadowCompatRadius * 2,
+              (int) pathBounds.width() + drawableState.shadowCompatRadius * 2 + pathExtraWidth,
+              (int) pathBounds.height() + drawableState.shadowCompatRadius * 2 + pathExtraHeight,
               Bitmap.Config.ARGB_8888);
       Canvas shadowCanvas = new Canvas(shadowLayer);
 
       // Top Left of shadow (left - shadowCompatRadius, top - shadowCompatRadius) should be drawn at
       // (0, 0) on shadowCanvas. Offset is handled by prepareCanvasForShadow and drawCompatShadow.
-      float shadowLeft = getBounds().left - drawableState.shadowCompatRadius;
-      float shadowTop = getBounds().top - drawableState.shadowCompatRadius;
+      float shadowLeft = getBounds().left - drawableState.shadowCompatRadius - pathExtraWidth;
+      float shadowTop = getBounds().top - drawableState.shadowCompatRadius - pathExtraHeight;
       shadowCanvas.translate(-shadowLeft, -shadowTop);
 
       drawCompatShadow(shadowCanvas);
@@ -1129,13 +1135,16 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
   private void calculatePath(@NonNull RectF bounds, @NonNull Path path) {
     calculatePathForSize(bounds, path);
-    if (drawableState.scale == 1f) {
-      return;
+
+    if (drawableState.scale != 1f) {
+      matrix.reset();
+      matrix.setScale(
+          drawableState.scale, drawableState.scale, bounds.width() / 2.0f, bounds.height() / 2.0f);
+      path.transform(matrix);
     }
-    matrix.reset();
-    matrix.setScale(
-        drawableState.scale, drawableState.scale, bounds.width() / 2.0f, bounds.height() / 2.0f);
-    path.transform(matrix);
+
+    // Since the path has just been computed, we update the path bounds.
+    path.computeBounds(pathBounds, true);
   }
 
   private boolean updateTintFilter() {
