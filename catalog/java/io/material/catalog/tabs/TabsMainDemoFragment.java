@@ -22,6 +22,7 @@ import android.os.Bundle;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import com.google.android.material.button.MaterialButton;
+import androidx.core.math.MathUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +45,15 @@ public class TabsMainDemoFragment extends DemoFragment {
   private List<TabLayout> tabLayouts;
 
   @Nullable
+  private final int[] badgeGravityValues =
+      new int[] {
+        BadgeDrawable.TOP_END,
+        BadgeDrawable.TOP_START,
+        BadgeDrawable.BOTTOM_END,
+        BadgeDrawable.BOTTOM_START
+      };
+
+  @Nullable
   @Override
   public View onCreateDemoView(
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
@@ -53,7 +63,6 @@ public class TabsMainDemoFragment extends DemoFragment {
     MaterialButton incrementBadgeNumberButton =
         view.findViewById(R.id.increment_badge_number_button);
     incrementBadgeNumberButton.setOnClickListener(v -> incrementBadgeNumber());
-
     Spinner badgeGravitySpinner = view.findViewById(R.id.badge_gravity_spinner);
     ArrayAdapter<CharSequence> adapter =
         ArrayAdapter.createFromResource(
@@ -62,12 +71,12 @@ public class TabsMainDemoFragment extends DemoFragment {
             android.R.layout.simple_spinner_item);
     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     badgeGravitySpinner.setAdapter(adapter);
-
     badgeGravitySpinner.setOnItemSelectedListener(
         new OnItemSelectedListener() {
           @Override
           public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            updateBadgeGravity(position);
+            updateBadgeGravity(
+                badgeGravityValues[MathUtils.clamp(position, 0, badgeGravityValues.length - 1)]);
           }
 
           @Override

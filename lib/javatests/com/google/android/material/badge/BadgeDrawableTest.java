@@ -20,10 +20,16 @@ import com.google.android.material.R;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.os.Parcel;
+import androidx.annotation.StyleRes;
+import androidx.annotation.XmlRes;
 import androidx.core.content.res.ResourcesCompat;
+import android.util.AttributeSet;
+import android.view.Gravity;
 import androidx.test.core.app.ApplicationProvider;
 import com.google.android.material.badge.BadgeDrawable.SavedState;
+import com.google.android.material.drawable.DrawableUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -73,5 +79,49 @@ public class BadgeDrawableTest {
     assertThat(restoredBadgeDrawable.getAlpha()).isEqualTo(255);
     assertThat(restoredBadgeDrawable.getMaxCharacterCount()).isEqualTo(4);
     assertThat(restoredBadgeDrawable.getBadgeGravity()).isEqualTo(BadgeDrawable.TOP_START);
+  }
+
+  // Verify that the hardcoded badge gravity attribute values match their piped Gravity counter
+  // parts.
+  @Test
+  public void testBadgeGravityAttributeValue_topEnd() {
+    testBadgeGravityValueHelper(R.xml.standalone_badge, Gravity.TOP | Gravity.END);
+  }
+
+  @Test
+  public void testBadgeGravityAttributeValue_topStart() {
+    testBadgeGravityValueHelper(
+        R.xml.standalone_badge_gravity_top_start, Gravity.TOP | Gravity.START);
+  }
+
+  @Test
+  public void testBadgeGravityAttributeValue_bottomEnd() {
+    testBadgeGravityValueHelper(
+        R.xml.standalone_badge_gravity_bottom_end, Gravity.BOTTOM | Gravity.END);
+  }
+
+  @Test
+  public void testBadgeGravityAttributeValue_bottomStart() {
+    testBadgeGravityValueHelper(
+        R.xml.standalone_badge_gravity_bottom_start, Gravity.BOTTOM | Gravity.START);
+  }
+
+  private void testBadgeGravityValueHelper(@XmlRes int xmlId, int expectedValue) {
+    AttributeSet attrs = DrawableUtils.parseDrawableXml(context, xmlId, "badge");
+    @StyleRes int style = attrs.getStyleAttribute();
+    if (style == 0) {
+      style = R.style.Widget_MaterialComponents_Badge;
+    }
+    TypedArray a =
+        context
+            .getTheme()
+            .obtainStyledAttributes(attrs, R.styleable.Badge, R.attr.badgeStyle, style);
+
+    int value = 0;
+    if (a.hasValue(R.styleable.Badge_badgeGravity)) {
+      value = a.getInt(R.styleable.Badge_badgeGravity, 0);
+    }
+    assertThat(value).isEqualTo(expectedValue);
+    a.recycle();
   }
 }
