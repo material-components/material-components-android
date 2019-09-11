@@ -31,5 +31,5 @@
   <integer name="mtrl_calendar_header_orientation">0</integer>
   <integer name="mtrl_calendar_selection_text_lines">2</integer>
 
-  <dimen name="mtrl_calendar_days_of_week_height">16dp</dimen>
+  <dimen name="mtrl_calendar_days_of_week_height">20dp</dimen>
 </resources>
