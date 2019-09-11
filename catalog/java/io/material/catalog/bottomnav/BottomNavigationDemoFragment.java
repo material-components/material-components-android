@@ -21,6 +21,7 @@ import io.material.catalog.R;
 import android.os.Bundle;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
+import androidx.core.math.MathUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,6 +44,16 @@ import java.util.List;
 public abstract class BottomNavigationDemoFragment extends DemoFragment {
 
   private static final int MAX_BOTTOM_NAV_CHILDREN = 5;
+
+  @Nullable
+  private final int[] badgeGravityValues =
+      new int[] {
+        BadgeDrawable.TOP_END,
+        BadgeDrawable.TOP_START,
+        BadgeDrawable.BOTTOM_END,
+        BadgeDrawable.BOTTOM_START
+      };
+
   private int numVisibleChildren = 3;
   protected List<BottomNavigationView> bottomNavigationViews;
 
@@ -175,7 +186,8 @@ public abstract class BottomNavigationDemoFragment extends DemoFragment {
         new OnItemSelectedListener() {
           @Override
           public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            updateBadgeGravity(position);
+            updateBadgeGravity(
+                badgeGravityValues[MathUtils.clamp(position, 0, badgeGravityValues.length - 1)]);
           }
 
           @Override

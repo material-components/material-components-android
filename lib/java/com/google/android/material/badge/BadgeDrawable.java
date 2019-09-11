@@ -47,6 +47,7 @@ import androidx.annotation.XmlRes;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -117,16 +118,16 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   public @interface BadgeGravity {}
 
   /** The badge is positioned along the top and end edges of its anchor view */
-  public static final int TOP_END = 0;
+  public static final int TOP_END = Gravity.TOP | Gravity.END;
 
   /** The badge is positioned along the top and start edges of its anchor view */
-  public static final int TOP_START = 1;
+  public static final int TOP_START = Gravity.TOP | Gravity.START;
 
   /** The badge is positioned along the bottom and end edges of its anchor view */
-  public static final int BOTTOM_END = 2;
+  public static final int BOTTOM_END = Gravity.BOTTOM | Gravity.END;
 
   /** The badge is positioned along the bottom and start edges of its anchor view */
-  public static final int BOTTOM_START = 3;
+  public static final int BOTTOM_START = Gravity.BOTTOM | Gravity.START;
 
   /**
    * Maximum number of characters a badge supports displaying by default. It could be changed using
