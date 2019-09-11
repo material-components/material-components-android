@@ -61,17 +61,6 @@
     </issue>
 
     <issue
-        id="GradleDependency"
-        message="A newer version of androidx.appcompat:appcompat than 1.1.0-alpha04 is available: 1.1.0-beta01"
-        errorLine1="    implementation &apos;androidx.appcompat:appcompat:1.1.0-alpha04&apos;"
-        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="build.gradle"
-            line="31"
-            column="5"/>
-    </issue>
-
-    <issue
         id="AllowBackup"
         message="On SDK version 23 and up, your app data will be automatically backed up and restored on app install. Consider adding the attribute `android:fullBackupContent` to specify an `@xml` resource which configures which files to backup. More info: https://developer.android.com/training/backup/autosyncapi.html"
         errorLine1="    &lt;application"
@@ -470,7 +459,7 @@
         errorLine2="                                      ~~~~">
         <location
             file="src/main/java/io/material/materialthemebuilder/ui/component/ComponentViewHolder.kt"
-            line="96"
+            line="86"
             column="39"/>
     </issue>
 

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
   Copyright 2019 The Android Open Source Project
 
@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<issues format="4" by="lint 3.2.1" client="gradle" variant="all" version="3.2.1">
+<issues format="5" by="lint 3.3.2" client="gradle" variant="all" version="3.3.2">
 
     <issue
         id="ScrollViewSize"
@@ -45,7 +45,7 @@
         errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="java/io/material/catalog/themeswitcher/ThemePreferencesManager.java"
-            line="121"
+            line="122"
             column="5"/>
     </issue>
 
@@ -56,7 +56,7 @@
         errorLine2="                       ~~~~~~~~~~~">
         <location
             file="java/io/material/catalog/font/FontMainDemoFragment.java"
-            line="84"
+            line="94"
             column="24"/>
     </issue>
 
@@ -67,7 +67,7 @@
         errorLine2="    ~~~~~~~~~~~~~~~~~~~">
         <location
             file="build.gradle"
-            line="64"
+            line="75"
             column="5"/>
     </issue>
 
@@ -78,7 +78,7 @@
         errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="java/io/material/catalog/bottomappbar/res/layout/cat_bottomappbar_fragment.xml"
-            line="47"
+            line="49"
             column="7"/>
     </issue>
 
@@ -133,7 +133,7 @@
         errorLine2="          ~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="java/io/material/catalog/topappbar/res/layout/cat_topappbar_collapsing_fragment.xml"
-            line="48"
+            line="47"
             column="11"/>
     </issue>
 
@@ -259,83 +259,6 @@
     </issue>
 
     <issue
-        id="InflateParams"
-        message="Avoid passing `null` as the view root (needed to resolve layout parameters on the inflated layout&apos;s root element)"
-        errorLine1="    View view = layoutInflater.inflate(R.layout.mtrl_theme_switcher_dialog, null);"
-        errorLine2="                                                                            ~~~~">
-        <location
-            file="java/io/material/catalog/themeswitcher/ThemeSwitcherDialogFragment.java"
-            line="95"
-            column="77"/>
-    </issue>
-
-    <issue
-        id="GradleDependency"
-        message="A newer version of androidx.multidex:multidex than 2.0.0 is available: 2.0.1"
-        errorLine1="  api &apos;androidx.multidex:multidex:2.0.0&apos;"
-        errorLine2="  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="build.gradle"
-            line="11"
-            column="3"/>
-    </issue>
-
-    <issue
-        id="PrivateResource"
-        message="The resource `@anim/abc_grow_fade_in_from_bottom` is marked as private in androidx.appcompat:appcompat"
-        errorLine1="            R.anim.abc_grow_fade_in_from_bottom,"
-        errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="java/io/material/catalog/feature/FeatureDemoUtils.java"
-            line="38"
-            column="20"/>
-    </issue>
-
-    <issue
-        id="PrivateResource"
-        message="The resource `@anim/abc_fade_out` is marked as private in androidx.appcompat:appcompat"
-        errorLine1="            R.anim.abc_fade_out,"
-        errorLine2="                   ~~~~~~~~~~~~">
-        <location
-            file="java/io/material/catalog/feature/FeatureDemoUtils.java"
-            line="39"
-            column="20"/>
-    </issue>
-
-    <issue
-        id="PrivateResource"
-        message="The resource `@anim/abc_fade_in` is marked as private in androidx.appcompat:appcompat"
-        errorLine1="            R.anim.abc_fade_in,"
-        errorLine2="                   ~~~~~~~~~~~">
-        <location
-            file="java/io/material/catalog/feature/FeatureDemoUtils.java"
-            line="40"
-            column="20"/>
-    </issue>
-
-    <issue
-        id="PrivateResource"
-        message="The resource `@anim/abc_shrink_fade_out_from_bottom` is marked as private in androidx.appcompat:appcompat"
-        errorLine1="            R.anim.abc_shrink_fade_out_from_bottom)"
-        errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="java/io/material/catalog/feature/FeatureDemoUtils.java"
-            line="41"
-            column="20"/>
-    </issue>
-
-    <issue
-        id="PrivateResource"
-        message="The resource `@drawable/abc_ic_menu_overflow_material` is marked as private in androidx.appcompat:appcompat"
-        errorLine1="    &lt;item name=&quot;srcCompat&quot;>@drawable/abc_ic_menu_overflow_material&lt;/item>"
-        errorLine2="                           ^">
-        <location
-            file="java/io/material/catalog/application/theme/res/values/styles.xml"
-            line="32"
-            column="28"/>
-    </issue>
-
-    <issue
         id="SpUsage"
         message="This dimension is used as a text size: Should use &quot;`sp`&quot; instead of &quot;`dp`&quot;"
         errorLine1="  &lt;dimen name=&quot;cat_checkbox_header_size&quot;>12dp&lt;/dimen>"
@@ -348,17 +271,6 @@
             file="java/io/material/catalog/checkbox/res/layout/cat_checkbox.xml"
             line="82"
             column="7"/>
-    </issue>
-
-    <issue
-        id="SwitchIntDef"
-        message="Switch statement on an `int` with known associated constant missing case `BottomSheetBehavior.STATE_HIDDEN`, `BottomSheetBehavior.STATE_SETTLING`"
-        errorLine1="            switch (newState) {"
-        errorLine2="            ~~~~~~">
-        <location
-            file="java/io/material/catalog/bottomsheet/BottomSheetMainDemoFragment.java"
-            line="132"
-            column="13"/>
     </issue>
 
     <issue
@@ -467,7 +379,7 @@
         errorLine2="   ~~~~~~~~~~~">
         <location
             file="java/io/material/catalog/AndroidManifest.xml"
-            line="23"
+            line="25"
             column="4"/>
     </issue>
 
@@ -502,17 +414,6 @@
             file="java/io/material/catalog/assets/res/drawable/ic_settings_24px.xml"
             line="30"
             column="25"/>
-    </issue>
-
-    <issue
-        id="MergeRootFrame"
-        message="This `&lt;FrameLayout>` can be replaced with a `&lt;merge>` tag"
-        errorLine1="&lt;FrameLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
-        errorLine2="^">
-        <location
-            file="java/io/material/catalog/main/res/layout/cat_main_activity.xml"
-            line="18"
-            column="1"/>
     </issue>
 
     <issue
@@ -1185,17 +1086,6 @@
 
     <issue
         id="UselessParent"
-        message="This `FrameLayout` layout or its `LinearLayout` parent is useless"
-        errorLine1="    &lt;FrameLayout"
-        errorLine2="     ~~~~~~~~~~~">
-        <location
-            file="java/io/material/catalog/bottomsheet/res/layout/cat_bottomsheet_content.xml"
-            line="25"
-            column="6"/>
-    </issue>
-
-    <issue
-        id="UselessParent"
         message="This `ScrollView` layout or its `FrameLayout` parent is useless"
         errorLine1="    &lt;ScrollView"
         errorLine2="     ~~~~~~~~~~">
@@ -1225,13 +1115,6 @@
             file="java/io/material/catalog/shapetheming/res/values/strings.xml"
             line="35"
             column="48"/>
-    </issue>
-
-    <issue
-        id="IconLauncherShape"
-        message="Launcher icons should not fill every pixel of their square region; see the design guide for details">
-        <location
-            file="java/io/material/catalog/res/mipmap-hdpi/ic_launcher_background.png"/>
     </issue>
 
     <issue
@@ -1335,7 +1218,7 @@
         errorLine2="  ^">
         <location
             file="java/io/material/catalog/AndroidManifest.xml"
-            line="23"
+            line="25"
             column="3"/>
     </issue>
 
@@ -1368,7 +1251,7 @@
         errorLine2="            ^">
         <location
             file="java/io/material/catalog/card/CardListDemoFragment.java"
-            line="123"
+            line="167"
             column="13"/>
     </issue>
 
@@ -1390,7 +1273,7 @@
         errorLine2="   ~~~~~~~~~">
         <location
             file="java/io/material/catalog/card/res/layout/cat_card_list_item.xml"
-            line="40"
+            line="42"
             column="4"/>
     </issue>
 
@@ -1436,17 +1319,6 @@
             file="java/io/material/catalog/card/res/layout/cat_card_fragment.xml"
             line="60"
             column="9"/>
-    </issue>
-
-    <issue
-        id="KeyboardInaccessibleWidget"
-        message="&apos;clickable&apos; attribute found, please also add &apos;focusable&apos;"
-        errorLine1="    android:clickable=&quot;true&quot;"
-        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="java/io/material/catalog/card/res/layout/cat_card_list_item.xml"
-            line="28"
-            column="5"/>
     </issue>
 
     <issue
@@ -1544,7 +1416,7 @@
         errorLine2="          ~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="java/io/material/catalog/transformation/res/layout/cat_transformation_fragment.xml"
-            line="87"
+            line="92"
             column="11"/>
     </issue>
 
@@ -1555,7 +1427,7 @@
         errorLine2="          ~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="java/io/material/catalog/transformation/res/layout/cat_transformation_fragment.xml"
-            line="92"
+            line="97"
             column="11"/>
     </issue>
 
@@ -1566,7 +1438,7 @@
         errorLine2="          ~~~~~~~~~~~~~~~~~~~~">
         <location
             file="java/io/material/catalog/transformation/res/layout/cat_transformation_fragment.xml"
-            line="97"
+            line="102"
             column="11"/>
     </issue>
 
@@ -1667,28 +1539,6 @@
             file="java/io/material/catalog/bottomnav/res/layout/cat_bottom_navs_label_visibility_controls.xml"
             line="64"
             column="6"/>
-    </issue>
-
-    <issue
-        id="RtlSymmetry"
-        message="When you define `paddingLeft` you should probably also define `paddingRight` for right-to-left symmetry"
-        errorLine1="      android:paddingLeft=&quot;16dp&quot;"
-        errorLine2="      ~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="java/io/material/catalog/button/res/layout/cat_buttons_fragment.xml"
-            line="28"
-            column="7"/>
-    </issue>
-
-    <issue
-        id="RtlSymmetry"
-        message="When you define `paddingStart` you should probably also define `paddingEnd` for right-to-left symmetry"
-        errorLine1="      android:paddingStart=&quot;16dp&quot;"
-        errorLine2="      ~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="java/io/material/catalog/button/res/layout/cat_buttons_fragment.xml"
-            line="29"
-            column="7"/>
     </issue>
 
     <issue
@@ -1973,7 +1823,7 @@
         errorLine2="                              ~~~~~~~~~~~~">
         <location
             file="java/io/material/catalog/transformation/res/layout/cat_transformation_fragment.xml"
-            line="52"
+            line="57"
             column="31"/>
     </issue>
 
@@ -1984,7 +1834,7 @@
         errorLine2="                              ~~~~~~~~~~~~">
         <location
             file="java/io/material/catalog/transformation/res/layout/cat_transformation_fragment.xml"
-            line="61"
+            line="66"
             column="31"/>
     </issue>
 
@@ -1995,7 +1845,7 @@
         errorLine2="                                  ~~~~~~~~~~~~">
         <location
             file="java/io/material/catalog/transformation/res/layout/cat_transformation_fragment.xml"
-            line="96"
+            line="101"
             column="35"/>
     </issue>
 

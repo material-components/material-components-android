@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
   Copyright 2019 The Android Open Source Project
 
@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<issues format="4" by="lint 3.2.1" client="gradle" variant="all" version="3.2.1">
+<issues format="5" by="lint 3.3.2" client="gradle" variant="all" version="3.3.2">
 
     <issue
         id="OldTargetApi"
@@ -69,28 +69,6 @@
             file="res/layout/design_appbar_dodge_right.xml"
             line="45"
             column="7"/>
-    </issue>
-
-    <issue
-        id="GradleDependency"
-        message="A newer version of androidx.multidex:multidex than 2.0.0 is available: 2.0.1"
-        errorLine1="  api &apos;androidx.multidex:multidex:2.0.0&apos;"
-        errorLine2="  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="build.gradle"
-            line="11"
-            column="3"/>
-    </issue>
-
-    <issue
-        id="PrivateResource"
-        message="The resource `@color/material_grey_800` is marked as private in androidx.appcompat:appcompat"
-        errorLine1="      android:background=&quot;@color/material_grey_800&quot;"
-        errorLine2="                          ~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="res/layout/design_expandable_transformation.xml"
-            line="29"
-            column="27"/>
     </issue>
 
     <issue
