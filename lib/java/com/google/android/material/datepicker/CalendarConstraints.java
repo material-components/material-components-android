@@ -188,7 +188,7 @@ public final class CalendarConstraints implements Parcelable {
     private long start = DEFAULT_START;
     private long end = DEFAULT_END;
     private Long openAt;
-    private DateValidator validator = new DateValidatorPointForward(Long.MIN_VALUE);
+    private DateValidator validator = DateValidatorPointForward.from(Long.MIN_VALUE);
 
     public Builder() {}
 

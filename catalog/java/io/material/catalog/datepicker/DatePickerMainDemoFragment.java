@@ -176,7 +176,7 @@ public class DatePickerMainDemoFragment extends DemoFragment {
     }
 
     if (validationChoice == R.id.cat_picker_validation_today_onward) {
-      constraintsBuilder.setValidator(new DateValidatorPointForward());
+      constraintsBuilder.setValidator(DateValidatorPointForward.now());
     } else if (validationChoice == R.id.cat_picker_validation_weekdays) {
       constraintsBuilder.setValidator(new DateValidatorWeekdays());
     }
