@@ -119,7 +119,7 @@ public class DatePickerMainDemoFragment extends DemoFragment {
           }
 
           if (titleChoice == R.id.cat_picker_title_custom) {
-            builder.setTitleTextResId(R.string.cat_picker_title_custom);
+            builder.setTitleText(R.string.cat_picker_title_custom);
           }
 
           try {

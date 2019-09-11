@@ -56,9 +56,10 @@ import java.util.LinkedHashSet;
 public final class MaterialDatePicker<S> extends DialogFragment {
 
   private static final String OVERRIDE_THEME_RES_ID = "OVERRIDE_THEME_RES_ID";
-  private static final String GRID_SELECTOR_KEY = "GRID_SELECTOR_KEY";
+  private static final String DATE_SELECTOR_KEY = "DATE_SELECTOR_KEY";
   private static final String CALENDAR_CONSTRAINTS_KEY = "CALENDAR_CONSTRAINTS_KEY";
   private static final String TITLE_TEXT_RES_ID_KEY = "TITLE_TEXT_RES_ID_KEY";
+  private static final String TITLE_TEXT_KEY = "TITLE_TEXT_KEY";
 
   static final Object CONFIRM_BUTTON_TAG = "CONFIRM_BUTTON_TAG";
   static final Object CANCEL_BUTTON_TAG = "CANCEL_BUTTON_TAG";
@@ -93,6 +94,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
   @Nullable private CalendarConstraints calendarConstraints;
   private MaterialCalendar<S> calendar;
   @StringRes private int titleTextResId;
+  private CharSequence titleText;
   private boolean fullscreen;
 
   private TextView headerSelectionText;
@@ -105,9 +107,10 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     MaterialDatePicker<S> materialDatePickerDialogFragment = new MaterialDatePicker<>();
     Bundle args = new Bundle();
     args.putInt(OVERRIDE_THEME_RES_ID, options.overrideThemeResId);
-    args.putParcelable(GRID_SELECTOR_KEY, options.dateSelector);
+    args.putParcelable(DATE_SELECTOR_KEY, options.dateSelector);
     args.putParcelable(CALENDAR_CONSTRAINTS_KEY, options.calendarConstraints);
     args.putInt(TITLE_TEXT_RES_ID_KEY, options.titleTextResId);
+    args.putCharSequence(TITLE_TEXT_KEY, options.titleText);
     materialDatePickerDialogFragment.setArguments(args);
     return materialDatePickerDialogFragment;
   }
@@ -116,7 +119,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
   public final void onSaveInstanceState(@NonNull Bundle bundle) {
     super.onSaveInstanceState(bundle);
     bundle.putInt(OVERRIDE_THEME_RES_ID, overrideThemeResId);
-    bundle.putParcelable(GRID_SELECTOR_KEY, dateSelector);
+    bundle.putParcelable(DATE_SELECTOR_KEY, dateSelector);
 
     CalendarConstraints.Builder constraintsBuilder =
         new CalendarConstraints.Builder(calendarConstraints);
@@ -125,6 +128,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     }
     bundle.putParcelable(CALENDAR_CONSTRAINTS_KEY, constraintsBuilder.build());
     bundle.putInt(TITLE_TEXT_RES_ID_KEY, titleTextResId);
+    bundle.putCharSequence(TITLE_TEXT_KEY, titleText);
   }
 
   @Override
@@ -132,9 +136,10 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     super.onCreate(bundle);
     Bundle activeBundle = bundle == null ? getArguments() : bundle;
     overrideThemeResId = activeBundle.getInt(OVERRIDE_THEME_RES_ID);
-    dateSelector = activeBundle.getParcelable(GRID_SELECTOR_KEY);
+    dateSelector = activeBundle.getParcelable(DATE_SELECTOR_KEY);
     calendarConstraints = activeBundle.getParcelable(CALENDAR_CONSTRAINTS_KEY);
     titleTextResId = activeBundle.getInt(TITLE_TEXT_RES_ID_KEY);
+    titleText = activeBundle.getCharSequence(TITLE_TEXT_KEY);
   }
 
   private int getThemeResId(Context context) {
@@ -175,7 +180,6 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     View root = layoutInflater.inflate(layout, viewGroup);
     Context context = root.getContext();
 
-
     if (fullscreen) {
       View frame = root.findViewById(R.id.mtrl_calendar_frame);
       frame.setLayoutParams(
@@ -192,7 +196,12 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     ViewCompat.setAccessibilityLiveRegion(
         headerSelectionText, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
     headerToggleButton = root.findViewById(R.id.mtrl_picker_header_toggle);
-    ((TextView) root.findViewById(R.id.mtrl_picker_title_text)).setText(titleTextResId);
+    TextView titleTextView = root.findViewById(R.id.mtrl_picker_title_text);
+    if (titleText != null) {
+      titleTextView.setText(titleText);
+    } else {
+      titleTextView.setText(titleTextResId);
+    }
     initHeaderToggle(context);
 
     confirmButton = root.findViewById(R.id.confirm_button);
@@ -486,6 +495,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
 
     CalendarConstraints calendarConstraints;
     int titleTextResId = 0;
+    CharSequence titleText = null;
     @Nullable S selection = null;
 
     private Builder(DateSelector<S> dateSelector) {
@@ -498,13 +508,19 @@ public final class MaterialDatePicker<S> extends DialogFragment {
       return new Builder<>(dateSelector);
     }
 
-    /** Used to create a Builder using a {@link SingleDateSelector}. */
+    /**
+     * Used to create a Builder that allows for choosing a single date in the {@code
+     * MaterialDatePicker}.
+     */
     @NonNull
     public static Builder<Long> datePicker() {
       return new Builder<>(new SingleDateSelector());
     }
 
-    /** Used to create a Builder using {@link RangeDateSelector}. */
+    /**
+     * Used to create a Builder that allows for choosing a date range in the {@code
+     * MaterialDatePicker}.
+     */
     @NonNull
     public static Builder<Pair<Long, Long>> dateRangePicker() {
       return new Builder<>(new RangeDateSelector());
@@ -530,10 +546,25 @@ public final class MaterialDatePicker<S> extends DialogFragment {
       return this;
     }
 
-    /** Sets the text used to guide the user at the top of the picker. */
+    /**
+     * Sets the text used to guide the user at the top of the picker. Defaults to a standard title
+     * based upon the type of selection.
+     */
     @NonNull
-    public Builder<S> setTitleTextResId(@StringRes int titleTextResId) {
+    public Builder<S> setTitleText(@StringRes int titleTextResId) {
       this.titleTextResId = titleTextResId;
+      this.titleText = null;
+      return this;
+    }
+
+    /**
+     * Sets the text used to guide the user at the top of the picker. Setting to null will use a
+     * default title based upon the type of selection.
+     */
+    @NonNull
+    public Builder<S> setTitleText(@Nullable CharSequence charSequence) {
+      this.titleText = charSequence;
+      this.titleTextResId = 0;
       return this;
     }
 
