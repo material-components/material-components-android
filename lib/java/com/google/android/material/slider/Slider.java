@@ -129,8 +129,6 @@ import java.util.Locale;
 public class Slider extends View {
 
   private static final String TAG = Slider.class.getSimpleName();
-  private static final String EXCEPTION_MISSING_REQUIRED_ATTRIBUTES =
-      "Attributes valueFrom and valueTo must BOTH be set";
   private static final String EXCEPTION_ILLEGAL_VALUE =
       "Slider value must be greater or equal to valueFrom, and lower or equal to valueTo";
   private static final String EXCEPTION_ILLEGAL_DISCRETE_VALUE =
@@ -312,11 +310,6 @@ public class Slider extends View {
     TypedArray a =
         ThemeEnforcement.obtainStyledAttributes(
             context, attrs, R.styleable.Slider, defStyleAttr, DEF_STYLE_RES);
-    if (!a.hasValue(R.styleable.Slider_android_valueFrom)
-        || !a.hasValue(R.styleable.Slider_android_valueTo)) {
-      Log.e(TAG, EXCEPTION_MISSING_REQUIRED_ATTRIBUTES);
-      throw new InflateException(EXCEPTION_MISSING_REQUIRED_ATTRIBUTES);
-    }
     valueFrom = a.getFloat(R.styleable.Slider_android_valueFrom, 0.0f);
     valueTo = a.getFloat(R.styleable.Slider_android_valueTo, 1.0f);
     setValue(a.getFloat(R.styleable.Slider_android_value, valueFrom));
