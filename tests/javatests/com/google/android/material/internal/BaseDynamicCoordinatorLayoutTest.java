@@ -23,6 +23,7 @@ import static org.hamcrest.Matchers.any;
 import androidx.annotation.LayoutRes;
 import androidx.core.view.ViewCompat;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewStub;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.test.espresso.UiController;
@@ -34,6 +35,7 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 
 /** Base class for tests that are exercising various aspects of {@link CoordinatorLayout}. */
@@ -44,6 +46,17 @@ public abstract class BaseDynamicCoordinatorLayoutTest {
       new ActivityTestRule<>(DynamicCoordinatorLayoutActivity.class);
 
   protected CoordinatorLayout mCoordinatorLayout;
+
+  private int additionalScrollForTouchSlop;
+
+  @Before
+  public void calculateAdditionalScrollForTouchSlop() {
+    ViewConfiguration vc = ViewConfiguration.get(activityTestRule.getActivity());
+    additionalScrollForTouchSlop = vc.getScaledTouchSlop();
+    // The usages don't seem to be totally accurate. Adding a little extra to make sure we scroll
+    // enough.
+    additionalScrollForTouchSlop += 6;
+  }
 
   @After
   public void tearDown() {
@@ -122,5 +135,9 @@ public abstract class BaseDynamicCoordinatorLayoutTest {
         uiController.loopMainThreadUntilIdle();
       }
     };
+  }
+
+  protected int getAdditionalScrollForTouchSlop() {
+    return additionalScrollForTouchSlop;
   }
 }

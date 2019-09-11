@@ -228,6 +228,8 @@ public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
     final int toolbarHeight = mToolbar.getHeight();
     final int tabsHeight = tabLayout.getHeight();
     final int appbarHeight = mAppBar.getHeight();
+    final int toolbarScrollAmount = 3 * toolbarHeight / 4 + getAdditionalScrollForTouchSlop();
+    final int tabsScrollAmount = 3 * toolbarHeight / 4 + getAdditionalScrollForTouchSlop();
 
     // Since AppBarLayout doesn't expose a way to track snap animations, the three possible
     // options are
@@ -261,7 +263,7 @@ public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
         R.id.coordinator_layout,
         centerX,
         originalAppbarBottom + toolbarHeight,
-        3 * toolbarHeight / 4);
+        toolbarScrollAmount);
 
     // Wait for the snap animation to be done
     waitForSnapAnimationToFinish();
@@ -290,7 +292,7 @@ public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
     // Perform a longer swipe-up gesture, this time by 75% of the tab layout height. We expect
     // snap behavior to move the app bar fully away from the screen.
     performVerticalSwipeUpGesture(
-        R.id.coordinator_layout, centerX, originalAppbarBottom + toolbarHeight, 3 * tabsHeight / 4);
+        R.id.coordinator_layout, centerX, originalAppbarBottom + toolbarHeight, tabsScrollAmount);
 
     // Wait for the snap animation to be done
     waitForSnapAnimationToFinish();
@@ -320,7 +322,7 @@ public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
     // snap behavior to move the app bar to snap the tab layout below the system status
     // bar.
     performVerticalSwipeDownGesture(
-        R.id.coordinator_layout, centerX, originalAppbarBottom + toolbarHeight, 3 * tabsHeight / 4);
+        R.id.coordinator_layout, centerX, originalAppbarBottom + toolbarHeight, tabsScrollAmount);
 
     // Wait for the snap animation to be done
     waitForSnapAnimationToFinish();
@@ -348,7 +350,10 @@ public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
     // Perform a longer swipe-up gesture, this time by 75% of the toolbar height. We expect
     // snap behavior to move the app bar back to its original place (fully visible).
     performVerticalSwipeDownGesture(
-        R.id.coordinator_layout, centerX, originalAppbarBottom + toolbarHeight, 3 * tabsHeight / 4);
+        R.id.coordinator_layout,
+        centerX,
+        originalAppbarBottom + toolbarHeight,
+        toolbarScrollAmount);
 
     // Wait for the snap animation to be done
     waitForSnapAnimationToFinish();

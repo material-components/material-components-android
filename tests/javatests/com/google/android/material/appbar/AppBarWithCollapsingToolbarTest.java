@@ -501,7 +501,8 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
     final int appbarHeight = mAppBar.getHeight();
 
     // Perform a swipe-up gesture across the horizontal center of the screen.
-    int swipeAmount = appbarHeight - toolbarHeight - toolbarVerticalMargins;
+    int swipeAmount =
+        appbarHeight - toolbarHeight - toolbarVerticalMargins + getAdditionalScrollForTouchSlop();
     performVerticalSwipeUpGesture(
         R.id.coordinator_layout,
         centerX,
