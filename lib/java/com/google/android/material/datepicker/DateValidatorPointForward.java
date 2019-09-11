@@ -22,21 +22,38 @@ import com.google.android.material.datepicker.CalendarConstraints.DateValidator;
 import java.util.Arrays;
 
 /**
- * A {@link CalendarConstraints.DateValidator} that only allows dates from a given point onward to
- * be clicked.
+ * A {@link CalendarConstraints.DateValidator} that enables dates from a given point forward.
+ * Defaults to the current moment in device time forward using {@link
+ * DateValidatorPointForward#now()}, but can be set to any point, as UTC milliseconds, using {@link
+ * DateValidatorPointForward#from(long)}.
  */
 public class DateValidatorPointForward implements DateValidator {
 
   private final long point;
 
-  public DateValidatorPointForward() {
-    point = UtcDates.getTodayCalendar().getTimeInMillis();
-  }
-
-  public DateValidatorPointForward(long point) {
+  private DateValidatorPointForward(long point) {
     this.point = point;
   }
 
+  /**
+   * Returns a {@link CalendarConstraints.DateValidator} which enables days from {@code point}, in
+   * UTC milliseconds, forward.
+   */
+  @NonNull
+  public static DateValidatorPointForward from(long point) {
+    return new DateValidatorPointForward(point);
+  }
+
+  /**
+   * Returns a {@link CalendarConstraints.DateValidator} enabled from the current moment in device
+   * time forward.
+   */
+  @NonNull
+  public static DateValidatorPointForward now() {
+    return from(UtcDates.getTodayCalendar().getTimeInMillis());
+  }
+
+  /** Part of {@link android.os.Parcelable} requirements. Do not use. */
   public static final Parcelable.Creator<DateValidatorPointForward> CREATOR =
       new Parcelable.Creator<DateValidatorPointForward>() {
         @NonNull
