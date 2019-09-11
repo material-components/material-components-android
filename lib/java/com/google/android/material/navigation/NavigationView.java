@@ -27,6 +27,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
+import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
@@ -108,6 +109,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
   private final int[] tmpLocation = new int[2];
 
   private MenuInflater menuInflater;
+  private OnGlobalLayoutListener onGlobalLayoutListener;
 
   public NavigationView(@NonNull Context context) {
     this(context, null);
@@ -650,33 +652,45 @@ public class NavigationView extends ScrimInsetsFrameLayout {
         });
   }
 
+  @Override
+  protected void onDetachedFromWindow() {
+    super.onDetachedFromWindow();
+    if (Build.VERSION.SDK_INT < 16) {
+      getViewTreeObserver().removeGlobalOnLayoutListener(onGlobalLayoutListener);
+    } else {
+      getViewTreeObserver().removeOnGlobalLayoutListener(onGlobalLayoutListener);
+    }
+  }
+
   /**
    * Add a listener to wait for layout changes so we can determine the location on screen. Based on
    * the location we'll try to be smart about showing the scrim at under the status bar and under
    * the system nav only when we should.
    */
   private void setupInsetScrimsListener() {
+    onGlobalLayoutListener = new OnGlobalLayoutListener() {
+      @Override
+      public void onGlobalLayout() {
+        getLocationOnScreen(tmpLocation);
+        boolean isBehindStatusBar = tmpLocation[1] == 0;
+        presenter.setBehindStatusBar(isBehindStatusBar);
+        setDrawTopInsetForeground(isBehindStatusBar);
+
+        Context context = getContext();
+        if (context instanceof Activity && VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+          boolean isBehindSystemNav =
+              ((Activity) context).findViewById(android.R.id.content).getHeight()
+                  == getHeight();
+          boolean systemNavNotFullyTransparent =
+              ((Activity) context).getWindow().getNavigationBarColor() == Color.TRANSPARENT;
+          setDrawBottomInsetForeground(isBehindSystemNav && !systemNavNotFullyTransparent);
+        }
+      }
+    };
+
     getViewTreeObserver()
         .addOnGlobalLayoutListener(
-            new OnGlobalLayoutListener() {
-              @Override
-              public void onGlobalLayout() {
-                getLocationOnScreen(tmpLocation);
-                boolean isBehindStatusBar = tmpLocation[1] == 0;
-                presenter.setBehindStatusBar(isBehindStatusBar);
-                setDrawTopInsetForeground(isBehindStatusBar);
-
-                Context context = getContext();
-                if (context instanceof Activity && VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-                  boolean isBehindSystemNav =
-                      ((Activity) context).findViewById(android.R.id.content).getHeight()
-                          == getHeight();
-                  boolean systemNavNotFullyTransparent =
-                      ((Activity) context).getWindow().getNavigationBarColor() == Color.TRANSPARENT;
-                  setDrawBottomInsetForeground(isBehindSystemNav && !systemNavNotFullyTransparent);
-                }
-              }
-            });
+            onGlobalLayoutListener);
   }
 
   /** Listener for handling events on navigation items. */
