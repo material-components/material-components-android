@@ -53,7 +53,6 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.customview.view.AbsSavedState;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.GravityCompat;
-import androidx.core.view.MarginLayoutParamsCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.widget.TextViewCompat;
@@ -103,6 +102,8 @@ import java.util.LinkedHashSet;
  *       along with showing an error icon via {@link #setErrorIconDrawable}
  *   <li>Showing helper text via {@link #setHelperTextEnabled(boolean)} and {@link
  *       #setHelperText(CharSequence)}
+ *   <li>Showing prefix text via {@link #setPrefixText(CharSequence)}
+ *   <li>Showing suffix text via {@link #setSuffixText(CharSequence)}
  *   <li>Showing a character counter via {@link #setCounterEnabled(boolean)} and {@link
  *       #setCounterMaxLength(int)}
  *   <li>Password visibility toggling via {@link #setEndIconMode(int)} API and related attribute. If
@@ -180,8 +181,10 @@ public class TextInputLayout extends LinearLayout {
 
   private static final String LOG_TAG = "TextInputLayout";
 
-  @NonNull private final FrameLayout inputFrame;
-  @NonNull private final FrameLayout endIconFrame;
+  private final FrameLayout inputFrame;
+  private final LinearLayout startLayout;
+  private final LinearLayout endLayout;
+  private final FrameLayout endIconFrame;
   EditText editText;
   private CharSequence originalHint;
 
@@ -196,6 +199,11 @@ public class TextInputLayout extends LinearLayout {
 
   @Nullable private ColorStateList counterTextColor;
   @Nullable private ColorStateList counterOverflowTextColor;
+
+  @Nullable private CharSequence prefixText;
+  @NonNull private final TextView prefixTextView;
+  @Nullable private CharSequence suffixText;
+  @NonNull private final TextView suffixTextView;
 
   private boolean hintEnabled;
   private CharSequence hint;
@@ -242,7 +250,8 @@ public class TextInputLayout extends LinearLayout {
   private boolean hasStartIconTintList;
   private PorterDuff.Mode startIconTintMode;
   private boolean hasStartIconTintMode;
-  @Nullable private Drawable startIconDummyDrawable;
+  @Nullable private Drawable startDummyDrawable;
+  private int startDummyDrawableWidth;
   private OnLongClickListener startIconOnLongClickListener;
 
   /**
@@ -358,7 +367,8 @@ public class TextInputLayout extends LinearLayout {
   private boolean hasEndIconTintList;
   private PorterDuff.Mode endIconTintMode;
   private boolean hasEndIconTintMode;
-  @Nullable private Drawable endIconDummyDrawable;
+  @Nullable private Drawable endDummyDrawable;
+  private int endDummyDrawableWidth;
   private Drawable originalEditTextEndDrawable;
   @NonNull private final CheckableImageButton errorIconView;
   private OnLongClickListener endIconOnLongClickListener;
@@ -408,13 +418,26 @@ public class TextInputLayout extends LinearLayout {
     inputFrame = new FrameLayout(context);
     inputFrame.setAddStatesFromChildren(true);
     addView(inputFrame);
+    startLayout = new LinearLayout(context);
+    startLayout.setOrientation(HORIZONTAL);
+    startLayout.setLayoutParams(
+        new FrameLayout.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            Gravity.START | Gravity.LEFT));
+    inputFrame.addView(startLayout);
+    endLayout = new LinearLayout(context);
+    endLayout.setOrientation(HORIZONTAL);
+    endLayout.setLayoutParams(
+        new FrameLayout.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            Gravity.END | Gravity.RIGHT));
+    inputFrame.addView(endLayout);
     endIconFrame = new FrameLayout(context);
     endIconFrame.setLayoutParams(
         new FrameLayout.LayoutParams(
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            Gravity.END | Gravity.RIGHT | Gravity.CENTER_VERTICAL));
-    inputFrame.addView(endIconFrame);
+            ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
     collapsingTextHelper.setTextSizeInterpolator(AnimationUtils.LINEAR_INTERPOLATOR);
     collapsingTextHelper.setPositionInterpolator(AnimationUtils.LINEAR_INTERPOLATOR);
@@ -553,8 +576,7 @@ public class TextInputLayout extends LinearLayout {
     errorIconView =
         (CheckableImageButton)
             LayoutInflater.from(getContext())
-                .inflate(R.layout.design_text_input_end_icon, inputFrame, false);
-    inputFrame.addView(errorIconView);
+                .inflate(R.layout.design_text_input_end_icon, endLayout, false);
     errorIconView.setVisibility(GONE);
     if (a.hasValue(R.styleable.TextInputLayout_errorIconDrawable)) {
       setErrorIconDrawable(a.getDrawable(R.styleable.TextInputLayout_errorIconDrawable));
@@ -582,6 +604,14 @@ public class TextInputLayout extends LinearLayout {
         a.getBoolean(R.styleable.TextInputLayout_helperTextEnabled, false);
     final CharSequence helperText = a.getText(R.styleable.TextInputLayout_helperText);
 
+    final int prefixTextAppearance =
+        a.getResourceId(R.styleable.TextInputLayout_prefixTextAppearance, 0);
+    final CharSequence prefixText = a.getText(R.styleable.TextInputLayout_prefixText);
+
+    final int suffixTextAppearance =
+        a.getResourceId(R.styleable.TextInputLayout_suffixTextAppearance, 0);
+    final CharSequence suffixText = a.getText(R.styleable.TextInputLayout_suffixText);
+
     final boolean counterEnabled = a.getBoolean(R.styleable.TextInputLayout_counterEnabled, false);
     setCounterMaxLength(a.getInt(R.styleable.TextInputLayout_counterMaxLength, INVALID_MAX_LENGTH));
     counterTextAppearance = a.getResourceId(R.styleable.TextInputLayout_counterTextAppearance, 0);
@@ -592,8 +622,7 @@ public class TextInputLayout extends LinearLayout {
     startIconView =
         (CheckableImageButton)
             LayoutInflater.from(getContext())
-                .inflate(R.layout.design_text_input_start_icon, inputFrame, false);
-    inputFrame.addView(startIconView);
+                .inflate(R.layout.design_text_input_start_icon, startLayout, false);
     startIconView.setVisibility(GONE);
     setStartIconOnClickListener(null);
     setStartIconOnLongClickListener(null);
@@ -618,32 +647,6 @@ public class TextInputLayout extends LinearLayout {
           ViewUtils.parseTintMode(
               a.getInt(R.styleable.TextInputLayout_startIconTintMode, -1), null));
     }
-
-    setHelperTextEnabled(helperTextEnabled);
-    setHelperText(helperText);
-    setHelperTextTextAppearance(helperTextTextAppearance);
-    setErrorEnabled(errorEnabled);
-    setErrorTextAppearance(errorTextAppearance);
-    setCounterTextAppearance(counterTextAppearance);
-    setCounterOverflowTextAppearance(counterOverflowTextAppearance);
-
-    if (a.hasValue(R.styleable.TextInputLayout_errorTextColor)) {
-      setErrorTextColor(a.getColorStateList(R.styleable.TextInputLayout_errorTextColor));
-    }
-    if (a.hasValue(R.styleable.TextInputLayout_helperTextTextColor)) {
-      setHelperTextColor(a.getColorStateList(R.styleable.TextInputLayout_helperTextTextColor));
-    }
-    if (a.hasValue(R.styleable.TextInputLayout_hintTextColor)) {
-      setHintTextColor(a.getColorStateList(R.styleable.TextInputLayout_hintTextColor));
-    }
-    if (a.hasValue(R.styleable.TextInputLayout_counterTextColor)) {
-      setCounterTextColor(a.getColorStateList(R.styleable.TextInputLayout_counterTextColor));
-    }
-    if (a.hasValue(R.styleable.TextInputLayout_counterOverflowTextColor)) {
-      setCounterOverflowTextColor(
-          a.getColorStateList(R.styleable.TextInputLayout_counterOverflowTextColor));
-    }
-    setCounterEnabled(counterEnabled);
 
     setBoxBackgroundMode(
         a.getInt(R.styleable.TextInputLayout_boxBackgroundMode, BOX_BACKGROUND_NONE));
@@ -707,6 +710,69 @@ public class TextInputLayout extends LinearLayout {
                 a.getInt(R.styleable.TextInputLayout_endIconTintMode, -1), null));
       }
     }
+
+    // Set up prefix view.
+    prefixTextView = new AppCompatTextView(context);
+    prefixTextView.setId(R.id.textinput_prefix_text);
+    prefixTextView.setLayoutParams(
+        new FrameLayout.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+    ViewCompat.setAccessibilityLiveRegion(
+        prefixTextView, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
+
+    startLayout.addView(startIconView);
+    startLayout.addView(prefixTextView);
+
+    // Set up suffix view.
+    suffixTextView = new AppCompatTextView(context);
+    suffixTextView.setId(R.id.textinput_suffix_text);
+    suffixTextView.setLayoutParams(
+        new FrameLayout.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            Gravity.BOTTOM));
+    ViewCompat.setAccessibilityLiveRegion(
+        suffixTextView, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
+
+    endLayout.addView(suffixTextView);
+    endLayout.addView(errorIconView);
+    endLayout.addView(endIconFrame);
+
+    setHelperTextEnabled(helperTextEnabled);
+    setHelperText(helperText);
+    setHelperTextTextAppearance(helperTextTextAppearance);
+    setErrorEnabled(errorEnabled);
+    setErrorTextAppearance(errorTextAppearance);
+    setCounterTextAppearance(counterTextAppearance);
+    setCounterOverflowTextAppearance(counterOverflowTextAppearance);
+    setPrefixText(prefixText);
+    setPrefixTextAppearance(prefixTextAppearance);
+    setSuffixText(suffixText);
+    setSuffixTextAppearance(suffixTextAppearance);
+
+    if (a.hasValue(R.styleable.TextInputLayout_errorTextColor)) {
+      setErrorTextColor(a.getColorStateList(R.styleable.TextInputLayout_errorTextColor));
+    }
+    if (a.hasValue(R.styleable.TextInputLayout_helperTextTextColor)) {
+      setHelperTextColor(a.getColorStateList(R.styleable.TextInputLayout_helperTextTextColor));
+    }
+    if (a.hasValue(R.styleable.TextInputLayout_hintTextColor)) {
+      setHintTextColor(a.getColorStateList(R.styleable.TextInputLayout_hintTextColor));
+    }
+    if (a.hasValue(R.styleable.TextInputLayout_counterTextColor)) {
+      setCounterTextColor(a.getColorStateList(R.styleable.TextInputLayout_counterTextColor));
+    }
+    if (a.hasValue(R.styleable.TextInputLayout_counterOverflowTextColor)) {
+      setCounterOverflowTextColor(
+          a.getColorStateList(R.styleable.TextInputLayout_counterOverflowTextColor));
+    }
+    if (a.hasValue(R.styleable.TextInputLayout_prefixTextColor)) {
+      setPrefixTextColor(a.getColorStateList(R.styleable.TextInputLayout_prefixTextColor));
+    }
+    if (a.hasValue(R.styleable.TextInputLayout_suffixTextColor)) {
+      setSuffixTextColor(a.getColorStateList(R.styleable.TextInputLayout_suffixTextColor));
+    }
+    setCounterEnabled(counterEnabled);
 
     a.recycle();
 
@@ -1107,10 +1173,13 @@ public class TextInputLayout extends LinearLayout {
 
     indicatorViewController.adjustIndicatorPadding();
 
-    startIconView.bringToFront();
+    startLayout.bringToFront();
+    endLayout.bringToFront();
     endIconFrame.bringToFront();
     errorIconView.bringToFront();
     dispatchOnEditTextAttached();
+    updatePrefixTextViewPadding();
+    updateSuffixTextViewPadding();
 
     // Update the label visibility with no animation, but force a state change
     updateLabelState(false, true);
@@ -1746,6 +1815,175 @@ public class TextInputLayout extends LinearLayout {
             counterMaxLength));
   }
 
+  /**
+   * Sets prefix text that will be displayed in the input area when the hint is collapsed before
+   * text is entered. If the {@code prefix} is {@code null}, any previous prefix text will be hidden
+   * and no prefix text will be shown.
+   *
+   * @param prefixText Prefix text to display
+   * @see #getPrefixText()
+   */
+  public void setPrefixText(@Nullable final CharSequence prefixText) {
+    this.prefixText = TextUtils.isEmpty(prefixText) ? null : prefixText;
+    prefixTextView.setText(prefixText);
+    updatePrefixTextVisibility();
+  }
+
+  /**
+   * Returns the prefix text that was set to be displayed with {@link #setPrefixText(CharSequence)},
+   * or <code>null</code> if there is no prefix text.
+   *
+   * @see #setPrefixText(CharSequence)
+   */
+  @Nullable
+  public CharSequence getPrefixText() {
+    return prefixText;
+  }
+
+  /**
+   * Returns the prefix text view.
+   *
+   * <p>Note: In order for the prefix to work correctly, text should always be set only via {@link
+   * #setPrefixText(CharSequence)}, instead of on the {@link TextView} directly.
+   *
+   * @see #setPrefixText(CharSequence)
+   */
+  @NonNull
+  public TextView getPrefixTextView() {
+    return prefixTextView;
+  }
+
+  private void updatePrefixTextVisibility() {
+    prefixTextView.setVisibility((prefixText != null && !isHintExpanded()) ? VISIBLE : GONE);
+    updateDummyDrawables();
+  }
+
+  /**
+   * Sets the text color used by the prefix text in all states.
+   *
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_prefixTextColor
+   */
+  public void setPrefixTextColor(@NonNull ColorStateList prefixTextColor) {
+    prefixTextView.setTextColor(prefixTextColor);
+  }
+
+  /**
+   * Returns the ColorStateList used for the prefix text.
+   *
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_prefixTextColor
+   */
+  @Nullable
+  public ColorStateList getPrefixTextColor() {
+    return prefixTextView.getTextColors();
+  }
+
+  /**
+   * Sets the text color and size for the prefix text from the specified TextAppearance resource.
+   *
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_prefixTextAppearance
+   */
+  public void setPrefixTextAppearance(@StyleRes int prefixTextAppearance) {
+    TextViewCompat.setTextAppearance(prefixTextView, prefixTextAppearance);
+  }
+
+  private void updatePrefixTextViewPadding() {
+    if (editText == null) {
+      return;
+    }
+    prefixTextView.setPadding(
+        isStartIconVisible() ? 0 : editText.getPaddingLeft(),
+        this.editText.getCompoundPaddingTop(),
+        prefixTextView.getCompoundPaddingRight(),
+        this.editText.getCompoundPaddingBottom());
+  }
+
+  /**
+   * Sets suffix text that will be displayed in the input area when the hint is collapsed before
+   * text is entered. If the {@code suffix} is {@code null}, any previous suffix text will be hidden
+   * and no suffix text will be shown.
+   *
+   * @param suffixText Suffix text to display
+   * @see #getSuffixText()
+   */
+  public void setSuffixText(@Nullable final CharSequence suffixText) {
+    this.suffixText = TextUtils.isEmpty(suffixText) ? null : suffixText;
+    suffixTextView.setText(suffixText);
+    updateSuffixTextVisibility();
+  }
+
+  /**
+   * Returns the suffix text that was set to be displayed with {@link #setSuffixText(CharSequence)},
+   * or <code>null</code> if there is no suffix text.
+   *
+   * @see #setSuffixText(CharSequence)
+   */
+  @Nullable
+  public CharSequence getSuffixText() {
+    return suffixText;
+  }
+
+  /**
+   * Returns the suffix text view.
+   *
+   * <p>Note: In order for the suffix to work correctly, text should always be set only via {@link
+   * #setSuffixText(CharSequence)}, instead of on the {@link TextView} directly.
+   *
+   * @see #setSuffixText(CharSequence)
+   */
+  @NonNull
+  public TextView getSuffixTextView() {
+    return suffixTextView;
+  }
+
+  private void updateSuffixTextVisibility() {
+    int oldSuffixVisibility = suffixTextView.getVisibility();
+    boolean visible =  suffixText != null && !isHintExpanded();
+    suffixTextView.setVisibility(visible ? VISIBLE : GONE);
+    if (oldSuffixVisibility != suffixTextView.getVisibility()) {
+      getEndIconDelegate().onSuffixVisibilityChanged(visible);
+    }
+    updateDummyDrawables();
+  }
+
+  /**
+   * Sets the text color used by the suffix text in all states.
+   *
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_suffixTextColor
+   */
+  public void setSuffixTextColor(@NonNull ColorStateList suffixTextColor) {
+    suffixTextView.setTextColor(suffixTextColor);
+  }
+
+  /**
+   * Returns the ColorStateList used for the suffix text.
+   *
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_suffixTextColor
+   */
+  @Nullable
+  public ColorStateList getSuffixTextColor() {
+    return suffixTextView.getTextColors();
+  }
+
+  /**
+   * Sets the text color and size for the suffix text from the specified TextAppearance resource.
+   *
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_suffixTextAppearance
+   */
+  public void setSuffixTextAppearance(@StyleRes int suffixTextAppearance) {
+    TextViewCompat.setTextAppearance(suffixTextView, suffixTextAppearance);
+  }
+
+  private void updateSuffixTextViewPadding() {
+    if (editText == null) {
+      return;
+    }
+    suffixTextView.setPadding(
+        suffixTextView.getPaddingLeft(),
+        editText.getPaddingTop(),
+        (isEndIconVisible() || isErrorIconVisible()) ? 0 : editText.getPaddingRight(),
+        editText.getPaddingBottom());
+  }
+
   @Override
   public void setEnabled(boolean enabled) {
     // Since we're set to addStatesFromChildren, we need to make sure that we set all
@@ -1847,6 +2085,7 @@ public class TextInputLayout extends LinearLayout {
       throw new IllegalStateException();
     }
     Rect bounds = tmpBoundsRect;
+    boolean isRtl = ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL;
 
     bounds.bottom = rect.bottom;
     switch (boxBackgroundMode) {
@@ -1856,9 +2095,9 @@ public class TextInputLayout extends LinearLayout {
         bounds.right = rect.right - editText.getPaddingRight();
         return bounds;
       case BOX_BACKGROUND_FILLED:
-        bounds.left = rect.left + editText.getCompoundPaddingLeft();
+        bounds.left = getFilledLabelLeftBound(rect.left, isRtl);
         bounds.top = rect.top + boxCollapsedPaddingTopPx;
-        bounds.right = rect.right - editText.getCompoundPaddingRight();
+        bounds.right = getFilledLabelRightBound(rect.right, isRtl);
         return bounds;
       default:
         bounds.left = rect.left + editText.getCompoundPaddingLeft();
@@ -1866,6 +2105,24 @@ public class TextInputLayout extends LinearLayout {
         bounds.right = rect.right - editText.getCompoundPaddingRight();
         return bounds;
     }
+  }
+
+  private int getFilledLabelLeftBound(int rectLeft, boolean isRtl) {
+    int left = rectLeft + editText.getCompoundPaddingLeft();
+    if (prefixText != null && !isRtl) {
+      // Label should be vertically aligned with prefix
+      left = left - prefixTextView.getMeasuredWidth() + prefixTextView.getPaddingLeft();
+    }
+    return left;
+  }
+
+  private int getFilledLabelRightBound(int rectRight, boolean isRtl) {
+    int right = rectRight - editText.getCompoundPaddingRight();
+    if (prefixText != null && isRtl) {
+      // Label should be vertically aligned with prefix if in RTL
+      right = right + prefixTextView.getMeasuredWidth() + prefixTextView.getPaddingRight();
+    }
+    return right;
   }
 
   @NonNull
@@ -2137,7 +2394,7 @@ public class TextInputLayout extends LinearLayout {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
     boolean updatedHeight = updateEditTextHeightBasedOnIcon();
-    boolean updatedIcon = updateIconDummyDrawables();
+    boolean updatedIcon = updateDummyDrawables();
     if (updatedHeight || updatedIcon) {
       editText.post(
           new Runnable() {
@@ -2246,7 +2503,8 @@ public class TextInputLayout extends LinearLayout {
   public void setStartIconVisible(boolean visible) {
     if (isStartIconVisible() != visible) {
       startIconView.setVisibility(visible ? View.VISIBLE : View.GONE);
-      updateIconDummyDrawables();
+      updatePrefixTextViewPadding();
+      updateDummyDrawables();
     }
   }
 
@@ -2419,14 +2677,15 @@ public class TextInputLayout extends LinearLayout {
   }
 
   /**
-   * Sets the current end icon to be VISIBLE or INVISIBLE.
+   * Sets the current end icon to be VISIBLE or GONE.
    *
    * @param visible whether the icon should be set to visible
    */
   public void setEndIconVisible(boolean visible) {
     if (isEndIconVisible() != visible) {
-      endIconView.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
-      updateIconDummyDrawables();
+      endIconView.setVisibility(visible ? View.VISIBLE : View.GONE);
+      updateSuffixTextViewPadding();
+      updateDummyDrawables();
     }
   }
 
@@ -2848,10 +3107,6 @@ public class TextInputLayout extends LinearLayout {
     }
   }
 
-  private boolean hasStartIcon() {
-    return getStartIconDrawable() != null;
-  }
-
   private void applyStartIconTint() {
     applyIconTint(
         startIconView,
@@ -2891,83 +3146,82 @@ public class TextInputLayout extends LinearLayout {
 
   /*
    * We need to add a dummy drawable as the start and/or end compound drawables so that the text is
-   * indented and doesn't display below the icon views.
+   * indented and doesn't display below the icon or suffix/prefix views.
    */
-  private boolean updateIconDummyDrawables() {
+  private boolean updateDummyDrawables() {
     if (editText == null) {
       return false;
     }
 
     boolean updatedIcon = false;
-    // Update start icon drawable if needed.
-    if (hasStartIcon() && isStartIconVisible() && startIconView.getMeasuredWidth() > 0) {
-      if (startIconDummyDrawable == null) {
-        startIconDummyDrawable = new ColorDrawable();
-        int right =
-            startIconView.getMeasuredWidth()
-                - editText.getPaddingLeft()
-                + MarginLayoutParamsCompat.getMarginEnd(
-                    ((MarginLayoutParams) startIconView.getLayoutParams()));
-        startIconDummyDrawable.setBounds(0, 0, right, 1);
+    // Update start dummy drawable if needed.
+    if (startLayout.getMeasuredWidth() > 0) {
+      int right = startLayout.getMeasuredWidth() - editText.getPaddingLeft();
+      if (startDummyDrawable == null || startDummyDrawableWidth != right) {
+        startDummyDrawable = new ColorDrawable();
+        startDummyDrawableWidth = right;
+        startDummyDrawable.setBounds(0, 0, startDummyDrawableWidth, 1);
       }
       final Drawable[] compounds = TextViewCompat.getCompoundDrawablesRelative(editText);
-      if (compounds[0] != startIconDummyDrawable) {
+      if (compounds[0] != startDummyDrawable) {
         TextViewCompat.setCompoundDrawablesRelative(
-            editText, startIconDummyDrawable, compounds[1], compounds[2], compounds[3]);
+            editText, startDummyDrawable, compounds[1], compounds[2], compounds[3]);
         updatedIcon = true;
       }
-    } else if (startIconDummyDrawable != null) {
+    } else if (startDummyDrawable != null) {
       // Remove the dummy start compound drawable if it exists and clear it.
       final Drawable[] compounds = TextViewCompat.getCompoundDrawablesRelative(editText);
       TextViewCompat.setCompoundDrawablesRelative(
           editText, null, compounds[1], compounds[2], compounds[3]);
-      startIconDummyDrawable = null;
+      startDummyDrawable = null;
       updatedIcon = true;
     }
 
-    // Update end icon or error icon drawable if needed.
-    CheckableImageButton iconView = getEndIconToUpdateDummyDrawable();
-    if (iconView != null && iconView.getMeasuredWidth() > 0) {
-      if (endIconDummyDrawable == null) {
-        endIconDummyDrawable = new ColorDrawable();
-        int right =
-            iconView.getMeasuredWidth()
-                - editText.getPaddingRight()
-                + MarginLayoutParamsCompat.getMarginStart(
-                    ((MarginLayoutParams) iconView.getLayoutParams()));
-        endIconDummyDrawable.setBounds(0, 0, right, 1);
-      }
+    // Update end dummy drawable if needed.
+    if (shouldUpdateDummyDrawable()) {
+      int right = endLayout.getMeasuredWidth() - editText.getPaddingRight();
       final Drawable[] compounds = TextViewCompat.getCompoundDrawablesRelative(editText);
-      // Store the user defined end compound drawable so that we can restore it later.
-      if (compounds[2] != endIconDummyDrawable) {
-        originalEditTextEndDrawable = compounds[2];
+      if (endDummyDrawable != null && endDummyDrawableWidth != right) {
+        // If endLayout only changed width, update dummy drawable here so that we don't override
+        // the currently saved originalEditTextEndDrawable.
+        endDummyDrawableWidth = right;
+        endDummyDrawable.setBounds(0, 0, endDummyDrawableWidth, 1);
         TextViewCompat.setCompoundDrawablesRelative(
-            editText, compounds[0], compounds[1], endIconDummyDrawable, compounds[3]);
+            editText, compounds[0], compounds[1], endDummyDrawable, compounds[3]);
         updatedIcon = true;
+      } else {
+        if (endDummyDrawable == null) {
+          endDummyDrawable = new ColorDrawable();
+          endDummyDrawableWidth = right;
+          endDummyDrawable.setBounds(0, 0, endDummyDrawableWidth, 1);
+        }
+        // Store the user defined end compound drawable so that we can restore it later.
+        if (compounds[2] != endDummyDrawable) {
+          originalEditTextEndDrawable = compounds[2];
+          TextViewCompat.setCompoundDrawablesRelative(
+              editText, compounds[0], compounds[1], endDummyDrawable, compounds[3]);
+          updatedIcon = true;
+        }
       }
-    } else if (endIconDummyDrawable != null) {
+    } else if (endDummyDrawable != null) {
       // Remove the dummy end compound drawable if it exists and clear it.
       final Drawable[] compounds = TextViewCompat.getCompoundDrawablesRelative(editText);
-      if (compounds[2] == endIconDummyDrawable) {
+      if (compounds[2] == endDummyDrawable) {
         TextViewCompat.setCompoundDrawablesRelative(
             editText, compounds[0], compounds[1], originalEditTextEndDrawable, compounds[3]);
         updatedIcon = true;
       }
-      endIconDummyDrawable = null;
+      endDummyDrawable = null;
     }
 
     return updatedIcon;
   }
 
-  @Nullable
-  private CheckableImageButton getEndIconToUpdateDummyDrawable() {
-    if (errorIconView.getVisibility() == VISIBLE) {
-      return errorIconView;
-    } else if (hasEndIcon() && isEndIconVisible()) {
-      return endIconView;
-    } else {
-      return null;
-    }
+  private boolean shouldUpdateDummyDrawable() {
+    return (errorIconView.getVisibility() == VISIBLE
+            || (hasEndIcon() && isEndIconVisible())
+            || suffixText != null)
+        && (endLayout.getMeasuredWidth() > 0);
   }
 
   private void applyIconTint(
@@ -3087,6 +3341,8 @@ public class TextInputLayout extends LinearLayout {
     if (cutoutEnabled()) {
       openCutout();
     }
+    updatePrefixTextVisibility();
+    updateSuffixTextVisibility();
   }
 
   private boolean cutoutEnabled() {
@@ -3145,7 +3401,9 @@ public class TextInputLayout extends LinearLayout {
     }
 
     // Drawable state has changed so see if we need to update the label
-    updateLabelState(ViewCompat.isLaidOut(this) && isEnabled());
+    if (editText != null) {
+      updateLabelState(ViewCompat.isLaidOut(this) && isEnabled());
+    }
     updateEditTextBackground();
     updateTextInputBoxState();
 
@@ -3209,9 +3467,14 @@ public class TextInputLayout extends LinearLayout {
   private void setErrorIconVisible(boolean errorIconVisible) {
     errorIconView.setVisibility(errorIconVisible ? VISIBLE : GONE);
     endIconFrame.setVisibility(errorIconVisible ? GONE : VISIBLE);
+    updateSuffixTextViewPadding();
     if (!hasEndIcon()) {
-      updateIconDummyDrawables();
+      updateDummyDrawables();
     }
+  }
+
+  private boolean isErrorIconVisible() {
+    return errorIconView.getVisibility() == VISIBLE;
   }
 
   private void expandHint(boolean animate) {
@@ -3227,6 +3490,8 @@ public class TextInputLayout extends LinearLayout {
       closeCutout();
     }
     hintExpanded = true;
+    updatePrefixTextVisibility();
+    updateSuffixTextVisibility();
   }
 
   @VisibleForTesting

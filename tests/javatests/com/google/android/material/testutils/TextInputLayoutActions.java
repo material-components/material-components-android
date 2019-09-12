@@ -631,4 +631,48 @@ public class TextInputLayoutActions {
       }
     };
   }
+
+  /** Sets prefix. */
+  public static ViewAction setPrefixText(final CharSequence prefixText) {
+    return new ViewAction() {
+
+      @Override
+      public Matcher<View> getConstraints() {
+        return ViewMatchers.isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Sets prefix text.";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setPrefixText(prefixText);
+      }
+    };
+  }
+
+  /** Sets suffix. */
+  public static ViewAction setSuffixText(final CharSequence suffixText) {
+    return new ViewAction() {
+
+      @Override
+      public Matcher<View> getConstraints() {
+        return ViewMatchers.isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Sets suffix text.";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setSuffixText(suffixText);
+      }
+    };
+  }
 }
