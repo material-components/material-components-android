@@ -96,34 +96,4 @@
         android:imeOptions="flagNoExtractUi"/>
 
   </com.google.android.material.textfield.TextInputLayout>
-
-  <com.google.android.material.textfield.TextInputLayout
-      android:id="@+id/textinput_prefix"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      app:prefixText="@string/textinput_prefix_text">
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/textinput_edittext_prefix"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/textinput_hint"
-        android:imeOptions="flagNoExtractUi"/>
-
-  </com.google.android.material.textfield.TextInputLayout>
-
-  <com.google.android.material.textfield.TextInputLayout
-      android:id="@+id/textinput_suffix"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      app:suffixText="@string/textinput_suffix_text">
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/textinput_edittext_suffix"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/textinput_hint"
-        android:imeOptions="flagNoExtractUi"/>
-
-  </com.google.android.material.textfield.TextInputLayout>
 </LinearLayout>

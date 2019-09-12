@@ -89,21 +89,6 @@
          If set, this takes precedence over counterOverflowTextAppearance. -->
     <attr name="counterOverflowTextColor" format="reference"/>
 
-    <!-- The text to display as prefix text in the text input area. -->
-    <attr name="prefixText" format="string"/>
-    <!-- TextAppearance of the prefix text displayed in the text input area. -->
-    <attr name="prefixTextAppearance" format="reference"/>
-    <!-- Text color of the prefix text displayed in the text input area.
-         If set, this takes precedence over prefixTextAppearance. -->
-    <attr name="prefixTextColor" format="color"/>
-    <!-- The text to display as prefix text in the text input area. -->
-    <attr name="suffixText" format="string"/>
-    <!-- TextAppearance of the prefix text displayed in the text input area. -->
-    <attr name="suffixTextAppearance" format="reference"/>
-    <!-- Text color of the prefix text displayed in the text input area.
-         If set, this takes precedence over prefixTextAppearance. -->
-    <attr name="suffixTextColor" format="color"/>
-
     <!-- Drawable to use for the start icon. -->
     <attr name="startIconDrawable" format="reference"/>
     <!-- Text to set as the content description for the start icon. -->

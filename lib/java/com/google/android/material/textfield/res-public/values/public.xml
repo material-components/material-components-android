@@ -43,12 +43,6 @@
   <public name="counterOverflowTextColor" type="attr"/>
   <public name="counterTextAppearance" type="attr"/>
   <public name="counterTextColor" type="attr"/>
-  <public name="prefixText" format="string"/>
-  <public name="prefixTextAppearance" format="reference"/>
-  <public name="prefixTextColor" format="color"/>
-  <public name="suffixText" format="string"/>
-  <public name="suffixTextAppearance" format="reference"/>
-  <public name="suffixTextColor" format="color"/>
   <public name="errorEnabled" type="attr"/>
   <public name="errorTextAppearance" type="attr"/>
   <public name="errorTextColor" type="attr"/>

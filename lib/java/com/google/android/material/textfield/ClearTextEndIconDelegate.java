@@ -50,10 +50,15 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
 
         @Override
         public void afterTextChanged(@NonNull Editable s) {
-          if (textInputLayout.getSuffixText() != null) {
-            return;
+          if (hasText(s)) {
+            if (!textInputLayout.isEndIconVisible()) {
+              iconOutAnim.cancel();
+              iconInAnim.start();
+            }
+          } else {
+            iconInAnim.cancel();
+            iconOutAnim.start();
           }
-          animateIcon(hasText(s));
         }
       };
   private final OnEditTextAttachedListener clearTextOnEditTextAttachedListener =
@@ -91,31 +96,6 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
         });
     textInputLayout.addOnEditTextAttachedListener(clearTextOnEditTextAttachedListener);
     initAnimators();
-  }
-
-  @Override
-  void onSuffixVisibilityChanged(boolean visible) {
-    if (textInputLayout.getSuffixText() == null) {
-      return;
-    }
-    animateIcon(visible);
-  }
-
-  private void animateIcon(boolean show) {
-    boolean shouldSkipAnimation = textInputLayout.isEndIconVisible() == show;
-    if (show) {
-      iconOutAnim.cancel();
-      iconInAnim.start();
-      if (shouldSkipAnimation) {
-        iconInAnim.end();
-      }
-    } else {
-      iconInAnim.cancel();
-      iconOutAnim.start();
-      if (shouldSkipAnimation) {
-        iconOutAnim.end();
-      }
-    }
   }
 
   private void initAnimators() {

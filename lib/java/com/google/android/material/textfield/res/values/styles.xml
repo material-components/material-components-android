@@ -35,16 +35,12 @@
     <item name="errorTextAppearance">@style/TextAppearance.Design.Error</item>
     <item name="helperTextTextAppearance">@style/TextAppearance.Design.HelperText</item>
     <item name="hintTextAppearance">@style/TextAppearance.Design.Hint</item>
-    <item name="prefixTextAppearance">@style/TextAppearance.Design.Prefix</item>
-    <item name="suffixTextAppearance">@style/TextAppearance.Design.Suffix</item>
 
     <item name="counterTextColor">@null</item>
     <item name="counterOverflowTextColor">@null</item>
     <item name="errorTextColor">@null</item>
     <item name="helperTextTextColor">@null</item>
     <item name="hintTextColor">@null</item>
-    <item name="prefixTextColor">@null</item>
-    <item name="suffixTextColor">@null</item>
 
     <item name="shapeAppearance">@null</item>
     <item name="shapeAppearanceOverlay">@null</item>
@@ -71,8 +67,6 @@
     <item name="errorTextAppearance">?attr/textAppearanceCaption</item>
     <item name="helperTextTextAppearance">?attr/textAppearanceCaption</item>
     <item name="hintTextAppearance">?attr/textAppearanceCaption</item>
-    <item name="prefixTextAppearance">?attr/textAppearanceSubtitle1</item>
-    <item name="suffixTextAppearance">?attr/textAppearanceSubtitle1</item>
 
     <item name="counterTextColor">@color/mtrl_indicator_text_color</item>
     <item name="counterOverflowTextColor">@color/mtrl_error</item>
@@ -80,8 +74,6 @@
     <item name="helperTextTextColor">@color/mtrl_indicator_text_color</item>
     <!-- The color of the label when it is collapsed and the text field is active -->
     <item name="hintTextColor">?attr/colorPrimary</item>
-    <item name="prefixTextColor">@color/mtrl_indicator_text_color</item>
-    <item name="suffixTextColor">@color/mtrl_indicator_text_color</item>
     <!-- The color of the label in all other text field states (such as resting and disabled) -->
     <item name="android:textColorHint">@color/mtrl_indicator_text_color</item>
 
@@ -278,10 +270,6 @@
   <style name="TextAppearance.Design.Hint" parent="TextAppearance.AppCompat.Caption">
     <item name="android:textColor">?attr/colorControlActivated</item>
   </style>
-
-  <style name="TextAppearance.Design.Prefix" parent="TextAppearance.AppCompat.Body1"/>
-
-  <style name="TextAppearance.Design.Suffix" parent="TextAppearance.AppCompat.Body1"/>
 
   <style name="TextAppearance.Design.Error" parent="TextAppearance.AppCompat.Caption">
     <item name="android:textColor">@color/design_error</item>
