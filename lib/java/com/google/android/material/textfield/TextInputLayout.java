@@ -2073,9 +2073,15 @@ public class TextInputLayout extends LinearLayout {
     super.onRestoreInstanceState(ss.getSuperState());
     setError(ss.error);
     if (ss.isEndIconChecked) {
-      endIconView.performClick();
-      // Skip animation
-      endIconView.jumpDrawablesToCurrentState();
+      // Make sure the end icon is not clicked before the application is visible.
+      endIconView.post(new Runnable() {
+        @Override
+        public void run() {
+          endIconView.performClick();
+          // Skip animation
+          endIconView.jumpDrawablesToCurrentState();
+        }
+      });
     }
     requestLayout();
   }
