@@ -23,6 +23,8 @@
     <item name="activeTickColor">@color/material_slider_active_tick_marks_color</item>
     <item name="inactiveTickColor">@color/material_slider_inactive_tick_marks_color</item>
     <item name="labelColor">?attr/colorOnPrimary</item>
+    <item name="thumbRadius">@dimen/mtrl_slider_thumb_radius</item>
+    <item name="haloRadius">@dimen/mtrl_slider_halo_radius</item>
   </style>
 
 </resources>

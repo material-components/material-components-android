@@ -33,6 +33,9 @@ import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.ColorInt;
+import androidx.annotation.DimenRes;
+import androidx.annotation.Dimension;
+import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.util.AttributeSet;
@@ -162,8 +165,6 @@ public class Slider extends View {
   private int trackTopDiscrete;
   private int thumbPaddingDisabled;
   private int thumbRadius;
-  private int thumbRadiusPressed;
-  private int thumbRadiusDisabled;
   private int haloRadius;
   private int labelWidth;
   private int labelHeight;
@@ -299,11 +300,6 @@ public class Slider extends View {
 
     thumbPaddingDisabled =
         resources.getDimensionPixelOffset(R.dimen.mtrl_slider_thumb_padding_disabled);
-    thumbRadius = resources.getDimensionPixelSize(R.dimen.mtrl_slider_thumb_radius);
-    thumbRadiusPressed = resources.getDimensionPixelSize(R.dimen.mtrl_slider_thumb_radius_pressed);
-    thumbRadiusDisabled =
-        resources.getDimensionPixelSize(R.dimen.mtrl_slider_thumb_radius_disabled);
-    haloRadius = resources.getDimensionPixelSize(R.dimen.mtrl_slider_halo_radius);
 
     labelWidth = resources.getDimensionPixelSize(R.dimen.mtrl_slider_label_width);
     labelHeight = resources.getDimensionPixelSize(R.dimen.mtrl_slider_label_height);
@@ -334,6 +330,8 @@ public class Slider extends View {
     tickColor = MaterialResources.getColorStateList(context, a, R.styleable.Slider_activeTickColor);
     textColor = MaterialResources.getColorStateList(context, a, R.styleable.Slider_labelColor);
 
+    thumbRadius = a.getDimensionPixelSize(R.styleable.Slider_thumbRadius, 0);
+    haloRadius = a.getDimensionPixelSize(R.styleable.Slider_haloRadius, 0);
     a.recycle();
 
     validateValueFrom();
@@ -512,6 +510,40 @@ public class Slider extends View {
     this.formatter = formatter;
   }
 
+  /** Sets the radius of the thumb in pixels. */
+  public void setThumbRadius(@IntRange(from = 0) @Dimension int radius) {
+    thumbRadius = radius;
+    postInvalidate();
+  }
+
+  /** Sets the radius of the thumb from a dimension resource. */
+  public void setThumbRadiusResource(@DimenRes int radius) {
+    setThumbRadius(getResources().getDimensionPixelSize(radius));
+  }
+
+  /** Returns the radius of the thumb. */
+  @Dimension
+  public int getThumbRadius() {
+    return thumbRadius;
+  }
+
+  /** Sets the radius of the halo in pixels. */
+  public void setHaloRadius(@IntRange(from = 0) @Dimension int radius) {
+    haloRadius = radius;
+    postInvalidate();
+  }
+
+  /** Sets the radius of the halo from a dimension resource. */
+  public void setHaloRadiusResource(@DimenRes int radius) {
+    setHaloRadius(getResources().getDimensionPixelSize(radius));
+  }
+
+  /** Returns the radius of the halo. */
+  @Dimension()
+  public int getHaloRadius() {
+    return haloRadius;
+  }
+
   @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     super.onMeasure(
@@ -572,7 +604,7 @@ public class Slider extends View {
   private void drawTrack(@NonNull Canvas canvas, int width, int top) {
     float right = trackSidePadding + thumbPosition * width;
     if (!isEnabled()) {
-      right += thumbRadiusDisabled + thumbPaddingDisabled;
+      right += thumbRadius + thumbPaddingDisabled;
     }
     if (right < trackSidePadding + width) {
       canvas.drawLine(right, top, trackSidePadding + width, top, inactiveTrackPaint);
@@ -582,7 +614,7 @@ public class Slider extends View {
   private void drawMarker(@NonNull Canvas canvas, int width, int top) {
     float left = trackSidePadding + thumbPosition * width;
     if (!isEnabled()) {
-      left -= thumbPaddingDisabled + thumbRadiusDisabled;
+      left -= thumbPaddingDisabled + thumbRadius;
     }
     canvas.drawLine(trackSidePadding, top, left, top, activeTrackPaint);
   }
@@ -605,17 +637,14 @@ public class Slider extends View {
   }
 
   private void drawThumb(@NonNull Canvas canvas, int width, int top) {
-    float radius;
     if (isEnabled()) {
       thumbPaint.setStyle(Paint.Style.FILL);
-      radius = thumbIsPressed ? thumbRadiusPressed : thumbRadius;
     } else {
       thumbPaint.setStyle(Paint.Style.STROKE);
       thumbPaint.setStrokeWidth(lineHeight);
-      radius = thumbRadiusDisabled;
     }
 
-    canvas.drawCircle(trackSidePadding + thumbPosition * width, top, radius, thumbPaint);
+    canvas.drawCircle(trackSidePadding + thumbPosition * width, top, thumbRadius, thumbPaint);
   }
 
   private void drawHalo(@NonNull Canvas canvas, int width, int top) {

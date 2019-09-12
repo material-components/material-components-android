@@ -38,6 +38,10 @@
     <attr name="inactiveTickColor" format="color" />
     <!-- The color of the text displayed in the slider's bubble. -->
     <attr name="labelColor" format="color" />
+    <!-- The radius of the thumb. -->
+    <attr name="thumbRadius" format="dimension" />
+    <!-- The radius of the halo. -->
+    <attr name="haloRadius" format="dimension" />
   </declare-styleable>
 
   <!-- Style to use for Slider in this theme. -->
