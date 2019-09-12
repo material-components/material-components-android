@@ -26,9 +26,11 @@ import android.animation.ValueAnimator.AnimatorUpdateListener;
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.widget.EditText;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.textfield.TextInputLayout.OnEditTextAttachedListener;
@@ -64,6 +66,13 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
           textInputLayout.setEndIconVisible(hasText(editText.getText()));
           // Make sure there's always only one clear text text watcher added
           textInputLayout.setEndIconCheckable(false);
+          editText.setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+              boolean hasText = !TextUtils.isEmpty(((EditText) v).getText());
+              animateIcon(hasText && hasFocus);
+            }
+          });
           editText.removeTextChangedListener(clearTextEndIconTextWatcher);
           editText.addTextChangedListener(clearTextEndIconTextWatcher);
         }
