@@ -212,11 +212,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
     a.recycle();
 
     touchHelper = new ChipTouchHelper(this);
-    if (VERSION.SDK_INT >= VERSION_CODES.N) {
-      ViewCompat.setAccessibilityDelegate(this, touchHelper);
-    } else {
-      updateAccessibilityDelegate();
-    }
+    updateAccessibilityDelegate();
     if (!hasShapeAppearanceAttribute) {
       initOutlineProvider();
     }
@@ -275,14 +271,12 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
   }
 
   // TODO(b/80452017): Due to a11y bug, avoid setting custom ExploreByTouchHelper as delegate
-  // unless there's a close/trailing icon. Revert this once bug is fixed.
+  // unless there's a close/trailing icon. Re-evaulate this once bug is fixed.
   private void updateAccessibilityDelegate() {
-    if (VERSION.SDK_INT >= VERSION_CODES.N) {
-      return;
-    }
-    if ((hasCloseIcon() && isCloseIconVisible())) {
+    if (hasCloseIcon() && isCloseIconVisible() && onCloseIconClickListener != null) {
       ViewCompat.setAccessibilityDelegate(this, touchHelper);
     } else {
+      // Avoid setting custom ExploreByTouchHelper if the trailing icon is only decorative.
       ViewCompat.setAccessibilityDelegate(this, null);
     }
   }
@@ -709,6 +703,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
   /** Register a callback to be invoked when the close icon is clicked. */
   public void setOnCloseIconClickListener(OnClickListener listener) {
     this.onCloseIconClickListener = listener;
+    updateAccessibilityDelegate();
   }
 
   /**
@@ -987,7 +982,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
     @Override
     protected void getVisibleVirtualViews(@NonNull List<Integer> virtualViewIds) {
       virtualViewIds.add(CHIP_BODY_VIRTUAL_ID);
-      if (hasCloseIcon() && isCloseIconVisible()) {
+      if (hasCloseIcon() && isCloseIconVisible() && onCloseIconClickListener != null) {
         virtualViewIds.add(CLOSE_ICON_VIRTUAL_ID);
       }
     }

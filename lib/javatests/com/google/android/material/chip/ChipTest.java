@@ -21,11 +21,14 @@ import static com.google.android.material.internal.ViewUtils.dpToPx;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
+import androidx.core.view.AccessibilityDelegateCompat;
+import androidx.core.view.ViewCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.text.TextUtils.TruncateAt;
 import android.view.View;
 import android.view.View.MeasureSpec;
+import android.view.View.OnClickListener;
 import androidx.test.core.app.ApplicationProvider;
 import org.junit.Before;
 import org.junit.Rule;
@@ -162,6 +165,28 @@ public class ChipTest {
     resultChip.setChipDrawable(chipDrawable);
     resultChip.setText("foo");
     assertThat(TextUtils.equals(resultChip.getText(), "foo")).isTrue();
+  }
+
+  @Test
+  public void testHasCustomAccessibilityDelegate() {
+    chip.setCloseIconResource(R.drawable.ic_mtrl_chip_close_circle);
+    chip.setCloseIconVisible(true);
+    chip.setOnCloseIconClickListener(
+        new OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            /* Do something */
+          }
+        });
+    AccessibilityDelegateCompat accessibilityDelegate = ViewCompat.getAccessibilityDelegate(chip);
+    assertThat(accessibilityDelegate).isNotNull();
+  }
+
+  @Test
+  public void testNoCustomAccessibilityDelegate() {
+    chip.setCloseIconResource(R.drawable.ic_mtrl_chip_close_circle);
+    AccessibilityDelegateCompat accessibilityDelegate = ViewCompat.getAccessibilityDelegate(chip);
+    assertThat(accessibilityDelegate).isNull();
   }
 
   private static float getMinTouchTargetSize() {
