@@ -1347,7 +1347,6 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
    * @attr ref com.google.android.material.R.styleable#Chip_android_textappearance
    */
   public void setTextAppearance(@Nullable TextAppearance textAppearance) {
-    // TODO(b/138147619): Make sure this also updates parent TextView styles.
     if (chipDrawable != null) {
       chipDrawable.setTextAppearance(textAppearance);
     }
