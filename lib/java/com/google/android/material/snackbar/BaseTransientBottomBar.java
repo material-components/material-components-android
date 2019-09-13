@@ -246,9 +246,12 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   @NonNull private final ViewGroup targetParent;
   private final Context context;
   @NonNull protected final SnackbarBaseLayout view;
-  @NonNull private final com.google.android.material.snackbar.ContentViewCallback contentViewCallback;
+
+  @NonNull
+  private final com.google.android.material.snackbar.ContentViewCallback contentViewCallback;
+
   private int duration;
-  private boolean ignoreGestureInsetBottom;
+  private boolean gestureInsetBottomIgnored;
   @Nullable private View anchorView;
 
   @RequiresApi(VERSION_CODES.Q)
@@ -418,7 +421,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   }
 
   private boolean shouldUpdateGestureInset() {
-    return extraBottomMarginGestureInset > 0 && !ignoreGestureInsetBottom && isSwipeDismissable();
+    return extraBottomMarginGestureInset > 0 && !gestureInsetBottomIgnored && isSwipeDismissable();
   }
 
   private boolean isSwipeDismissable() {
@@ -473,18 +476,18 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
    *
    * <p>Note: the bottom bar will only adjust it's position if it is dismissable via swipe (because
    * that would cause a gesture conflict), gesture navigation is enabled, and this {@code
-   * ignoreGestureInsetBottom} flag is false.
+   * gestureInsetBottomIgnored} flag is false.
    */
-  public void setIgnoreGestureInsetBottom(boolean ignoreGestureInsetBottom) {
-    this.ignoreGestureInsetBottom = ignoreGestureInsetBottom;
+  public void setGestureInsetBottomIgnored(boolean gestureInsetBottomIgnored) {
+    this.gestureInsetBottomIgnored = gestureInsetBottomIgnored;
   }
 
   /**
    * Returns whether this bottom bar should adjust it's position based on the system gesture area on
-   * Android Q and above. See {@link #setIgnoreGestureInsetBottom(boolean)}.
+   * Android Q and above. See {@link #setGestureInsetBottomIgnored(boolean)}.
    */
-  public boolean isIgnoreGestureInsetBottom() {
-    return ignoreGestureInsetBottom;
+  public boolean isGestureInsetBottomIgnored() {
+    return gestureInsetBottomIgnored;
   }
 
   /** Returns the {@link AnimationMode}. */
