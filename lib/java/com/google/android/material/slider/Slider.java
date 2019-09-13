@@ -27,7 +27,9 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffColorFilter;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
@@ -163,7 +165,6 @@ public class Slider extends View {
   private int trackSidePadding;
   private int trackTop;
   private int trackTopDiscrete;
-  private int thumbPaddingDisabled;
   private int thumbRadius;
   private int haloRadius;
   private int labelWidth;
@@ -243,6 +244,11 @@ public class Slider extends View {
     // Ensure we are using the correctly themed context rather than the context that was passed in.
     context = getContext();
 
+    // In order to clear out the track behind the thumb (which is transparent in the disabled state)
+    // we set the layer type here. This allows us to use setXfermode on the paint which replaces the
+    // pixels of the thumb instead of overlaying them on top of the track.
+    setLayerType(LAYER_TYPE_HARDWARE, null);
+
     loadResources(context.getResources());
     processAttributes(context, attrs, defStyleAttr);
 
@@ -255,6 +261,8 @@ public class Slider extends View {
     activeTrackPaint.setStrokeWidth(lineHeight);
 
     thumbPaint = new Paint();
+    thumbPaint.setStyle(Paint.Style.FILL);
+    thumbPaint.setXfermode(new PorterDuffXfermode(Mode.SRC));
 
     haloPaint = new Paint();
     haloPaint.setStyle(Paint.Style.FILL);
@@ -297,9 +305,6 @@ public class Slider extends View {
     trackSidePadding = resources.getDimensionPixelOffset(R.dimen.mtrl_slider_track_side_padding);
     trackTop = resources.getDimensionPixelOffset(R.dimen.mtrl_slider_track_top);
     trackTopDiscrete = resources.getDimensionPixelOffset(R.dimen.mtrl_slider_track_top_discrete);
-
-    thumbPaddingDisabled =
-        resources.getDimensionPixelOffset(R.dimen.mtrl_slider_thumb_padding_disabled);
 
     labelWidth = resources.getDimensionPixelSize(R.dimen.mtrl_slider_label_width);
     labelHeight = resources.getDimensionPixelSize(R.dimen.mtrl_slider_label_height);
@@ -603,9 +608,6 @@ public class Slider extends View {
 
   private void drawTrack(@NonNull Canvas canvas, int width, int top) {
     float right = trackSidePadding + thumbPosition * width;
-    if (!isEnabled()) {
-      right += thumbRadius + thumbPaddingDisabled;
-    }
     if (right < trackSidePadding + width) {
       canvas.drawLine(right, top, trackSidePadding + width, top, inactiveTrackPaint);
     }
@@ -613,9 +615,6 @@ public class Slider extends View {
 
   private void drawMarker(@NonNull Canvas canvas, int width, int top) {
     float left = trackSidePadding + thumbPosition * width;
-    if (!isEnabled()) {
-      left -= thumbPaddingDisabled + thumbRadius;
-    }
     canvas.drawLine(trackSidePadding, top, left, top, activeTrackPaint);
   }
 
@@ -637,13 +636,6 @@ public class Slider extends View {
   }
 
   private void drawThumb(@NonNull Canvas canvas, int width, int top) {
-    if (isEnabled()) {
-      thumbPaint.setStyle(Paint.Style.FILL);
-    } else {
-      thumbPaint.setStyle(Paint.Style.STROKE);
-      thumbPaint.setStrokeWidth(lineHeight);
-    }
-
     canvas.drawCircle(trackSidePadding + thumbPosition * width, top, thumbRadius, thumbPaint);
   }
 
