@@ -47,6 +47,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.resources.MaterialResources;
+import com.google.android.material.shape.CornerFamily;
+import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.ShapeAppearanceModel;
 import java.util.Locale;
 
 /**
@@ -188,6 +191,8 @@ public class Slider extends View {
   @NonNull private ColorStateList tickColor;
   @NonNull private ColorStateList textColor;
 
+  @NonNull private final MaterialShapeDrawable thumbDrawable = new MaterialShapeDrawable();
+
   /** Interface definition for a callback invoked when a slider's value is changed. */
   public interface OnChangeListener {
     void onValueChange(Slider slider, float value);
@@ -244,11 +249,6 @@ public class Slider extends View {
     // Ensure we are using the correctly themed context rather than the context that was passed in.
     context = getContext();
 
-    // In order to clear out the track behind the thumb (which is transparent in the disabled state)
-    // we set the layer type here. This allows us to use setXfermode on the paint which replaces the
-    // pixels of the thumb instead of overlaying them on top of the track.
-    setLayerType(LAYER_TYPE_HARDWARE, null);
-
     loadResources(context.getResources());
     processAttributes(context, attrs, defStyleAttr);
 
@@ -260,11 +260,11 @@ public class Slider extends View {
     activeTrackPaint.setStyle(Paint.Style.STROKE);
     activeTrackPaint.setStrokeWidth(lineHeight);
 
-    thumbPaint = new Paint();
+    thumbPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     thumbPaint.setStyle(Paint.Style.FILL);
-    thumbPaint.setXfermode(new PorterDuffXfermode(Mode.SRC));
+    thumbPaint.setXfermode(new PorterDuffXfermode(Mode.CLEAR));
 
-    haloPaint = new Paint();
+    haloPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     haloPaint.setStyle(Paint.Style.FILL);
 
     ticksPaint = new Paint();
@@ -290,6 +290,15 @@ public class Slider extends View {
 
     setFocusable(true);
     setFocusableInTouchMode(true);
+  }
+
+  @Override
+  public void setEnabled(boolean enabled) {
+    super.setEnabled(enabled);
+    // When we're disabled, set the layer type to hardware so we can clear the track out from behind
+    // the thumb. When enabled set the layer type to none so that the halo can be drawn outside the
+    // bounds of the slider.
+    setLayerType(enabled ? LAYER_TYPE_NONE : LAYER_TYPE_HARDWARE, null);
   }
 
   @Override
@@ -332,10 +341,11 @@ public class Slider extends View {
     inactiveTrackColor = MaterialResources.getColorStateList(context, a, inactiveTrackColorRes);
     activeTrackColor = MaterialResources.getColorStateList(context, a, activeTrackColorRes);
     thumbColor = MaterialResources.getColorStateList(context, a, R.styleable.Slider_thumbColor);
+    thumbDrawable.setFillColor(thumbColor);
     tickColor = MaterialResources.getColorStateList(context, a, R.styleable.Slider_activeTickColor);
     textColor = MaterialResources.getColorStateList(context, a, R.styleable.Slider_labelColor);
 
-    thumbRadius = a.getDimensionPixelSize(R.styleable.Slider_thumbRadius, 0);
+    setThumbRadius(a.getDimensionPixelSize(R.styleable.Slider_thumbRadius, 0));
     haloRadius = a.getDimensionPixelSize(R.styleable.Slider_haloRadius, 0);
     a.recycle();
 
@@ -518,6 +528,11 @@ public class Slider extends View {
   /** Sets the radius of the thumb in pixels. */
   public void setThumbRadius(@IntRange(from = 0) @Dimension int radius) {
     thumbRadius = radius;
+
+    thumbDrawable.setShapeAppearanceModel(
+        ShapeAppearanceModel.builder().setAllCorners(CornerFamily.ROUNDED, thumbRadius).build());
+    thumbDrawable.setBounds(0, 0, thumbRadius * 2, thumbRadius * 2);
+
     postInvalidate();
   }
 
@@ -636,7 +651,17 @@ public class Slider extends View {
   }
 
   private void drawThumb(@NonNull Canvas canvas, int width, int top) {
-    canvas.drawCircle(trackSidePadding + thumbPosition * width, top, thumbRadius, thumbPaint);
+    // Clear out the track behind the thumb if we're in a disable state since the thumb is
+    // transparent.
+    if (!isEnabled()) {
+      canvas.drawCircle(trackSidePadding + thumbPosition * width, top, thumbRadius, thumbPaint);
+    }
+
+    canvas.save();
+    canvas.translate(
+        trackSidePadding + (int) (thumbPosition * width) - thumbRadius, top - thumbRadius);
+    thumbDrawable.draw(canvas);
+    canvas.restore();
   }
 
   private void drawHalo(@NonNull Canvas canvas, int width, int top) {
@@ -707,7 +732,7 @@ public class Slider extends View {
     activeTrackPaint.setColor(getColorForState(activeTrackColor));
     ticksPaint.setColor(getColorForState(tickColor));
     labelTextPaint.setColor(getColorForState(textColor));
-    thumbPaint.setColor(getColorForState(thumbColor));
+    thumbDrawable.setState(getDrawableState());
     haloPaint.setColor(getColorForState(thumbColor));
     haloPaint.setAlpha(HALO_ALPHA);
   }
