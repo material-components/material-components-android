@@ -153,7 +153,7 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
   @Override
   public void onInitializeAccessibilityNodeInfo(@NonNull AccessibilityNodeInfo info) {
     super.onInitializeAccessibilityNodeInfo(info);
-    info.setClassName(MaterialCardView.class.getName());
+    info.setClassName(CardView.class.getName());
     info.setCheckable(isCheckable());
     info.setClickable(isClickable());
     info.setChecked(isChecked());
@@ -162,7 +162,7 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
   @Override
   public void onInitializeAccessibilityEvent(@NonNull AccessibilityEvent accessibilityEvent) {
     super.onInitializeAccessibilityEvent(accessibilityEvent);
-    accessibilityEvent.setClassName(MaterialCardView.class.getName());
+    accessibilityEvent.setClassName(CardView.class.getName());
     accessibilityEvent.setChecked(isChecked());
   }
 
