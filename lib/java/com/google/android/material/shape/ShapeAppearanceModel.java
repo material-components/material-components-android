@@ -552,8 +552,8 @@ public class ShapeAppearanceModel {
   }
 
   /**
-   * Returns a builder with the edges and corners from this {@link ShapeAppearanceModel} with the
-   * corner radius for all corners updated.
+   * Returns a copy of this {@link ShapeAppearanceModel} with the same edges and corners, but with
+   * the corner radius for all corners updated.
    */
   @NonNull
   public ShapeAppearanceModel withCornerRadius(float cornerRadius) {
@@ -561,8 +561,8 @@ public class ShapeAppearanceModel {
   }
 
   /**
-   * Returns a builder with the edges and corners from this {@link ShapeAppearanceModel} with the
-   * corner radius for all corners offset by an adjustment.
+   * Returns a copy of this {@link ShapeAppearanceModel} with the same edges and corners, but with
+   * the corner radius for all corners offset by an adjustment.
    */
   @NonNull
   public ShapeAppearanceModel withAdjustedCorners(float offset) {
