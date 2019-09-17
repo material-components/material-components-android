@@ -30,6 +30,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
+import androidx.test.platform.app.InstrumentationRegistry;
 import junit.framework.Assert;
 
 public class TestUtils {
@@ -184,13 +185,7 @@ public class TestUtils {
         orientation == ORIENTATION_PORTRAIT
             ? ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
             : ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-    PollingCheck.waitFor(
-        new PollingCheck.PollingCheckCondition() {
-          @Override
-          public boolean canProceed() {
-            return activity.getResources().getConfiguration().orientation == orientation;
-          }
-        });
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
   }
 
   /**
@@ -215,12 +210,6 @@ public class TestUtils {
    */
   public static void resetScreenOrientation(final Activity activity, final int oldOrientation) {
     activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
-    PollingCheck.waitFor(
-        new PollingCheck.PollingCheckCondition() {
-          @Override
-          public boolean canProceed() {
-            return activity.getResources().getConfiguration().orientation == oldOrientation;
-          }
-        });
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
   }
 }
