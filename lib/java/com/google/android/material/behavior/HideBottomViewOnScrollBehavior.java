@@ -80,11 +80,12 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
 
   @Override
   public boolean onStartNestedScroll(
-      CoordinatorLayout coordinatorLayout,
-      V child,
-      View directTargetChild,
-      View target,
-      int nestedScrollAxes) {
+      @NonNull CoordinatorLayout coordinatorLayout,
+      @NonNull V child,
+      @NonNull View directTargetChild,
+      @NonNull View target,
+      int nestedScrollAxes,
+      int type) {
     return nestedScrollAxes == ViewCompat.SCROLL_AXIS_VERTICAL;
   }
 
@@ -92,11 +93,13 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
   public void onNestedScroll(
       CoordinatorLayout coordinatorLayout,
       @NonNull V child,
-      View target,
+      @NonNull View target,
       int dxConsumed,
       int dyConsumed,
       int dxUnconsumed,
-      int dyUnconsumed) {
+      int dyUnconsumed,
+      int type,
+      @NonNull int[] consumed) {
     if (dyConsumed > 0) {
       slideDown(child);
     } else if (dyConsumed < 0) {
