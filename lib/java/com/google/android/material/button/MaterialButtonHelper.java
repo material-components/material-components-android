@@ -71,12 +71,10 @@ class MaterialButtonHelper {
   private boolean cornerRadiusSet = false;
   private boolean checkable;
   private LayerDrawable rippleDrawable;
-  private boolean cornerAdjustmentEnabled;
 
   MaterialButtonHelper(MaterialButton button, @NonNull ShapeAppearanceModel shapeAppearanceModel) {
     materialButton = button;
     this.shapeAppearanceModel = shapeAppearanceModel;
-    cornerAdjustmentEnabled = CornerAdjustmentFlag.isEnabled(button.getContext());
   }
 
   void loadFromAttributes(@NonNull TypedArray attributes) {
@@ -214,15 +212,6 @@ class MaterialButtonHelper {
 
     if (IS_LOLLIPOP) {
       maskDrawable = new MaterialShapeDrawable(shapeAppearanceModel);
-      if (strokeWidth > 0 && cornerAdjustmentEnabled) {
-        ShapeAppearanceModel adjustedShapeAppearanceModel =
-            adjustShapeAppearanceModelCornerRadius(shapeAppearanceModel, strokeWidth / 2f);
-        backgroundDrawable.setShapeAppearanceModel(adjustedShapeAppearanceModel);
-        surfaceColorStrokeDrawable.setShapeAppearanceModel(adjustedShapeAppearanceModel);
-        ((MaterialShapeDrawable) maskDrawable)
-            .setShapeAppearanceModel(adjustedShapeAppearanceModel);
-      }
-
       DrawableCompat.setTint(maskDrawable, Color.WHITE);
       rippleDrawable =
           new RippleDrawable(
@@ -308,15 +297,6 @@ class MaterialButtonHelper {
                 ? MaterialColors.getColor(materialButton, R.attr.colorSurface)
                 : Color.TRANSPARENT);
       }
-      if (IS_LOLLIPOP && cornerAdjustmentEnabled) {
-        ShapeAppearanceModel shapeAppearance =
-            adjustShapeAppearanceModelCornerRadius(shapeAppearanceModel, strokeWidth / 2f);
-        updateButtonShape(shapeAppearance);
-        // Some APIs don't unwrap the drawable correctly.
-        if (maskDrawable != null) {
-          ((MaterialShapeDrawable) maskDrawable).setShapeAppearanceModel(shapeAppearance);
-        }
-      }
     }
   }
 
@@ -327,19 +307,12 @@ class MaterialButtonHelper {
       this.cornerRadius = cornerRadius;
       cornerRadiusSet = true;
 
-      setShapeAppearanceModel(
-          shapeAppearanceModel.withCornerRadius(
-              cornerAdjustmentEnabled ? cornerRadius + (strokeWidth / 2f) : cornerRadius));
+      setShapeAppearanceModel(shapeAppearanceModel.withCornerRadius(cornerRadius));
     }
   }
 
   int getCornerRadius() {
     return cornerRadius;
-  }
-
-  private ShapeAppearanceModel adjustShapeAppearanceModelCornerRadius(
-      @NonNull ShapeAppearanceModel shapeAppearanceModel, float cornerRadiusAdjustment) {
-    return shapeAppearanceModel.withAdjustedCorners(cornerRadiusAdjustment);
   }
 
   @Nullable
