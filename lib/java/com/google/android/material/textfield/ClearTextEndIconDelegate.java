@@ -52,6 +52,9 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
 
         @Override
         public void afterTextChanged(@NonNull Editable s) {
+          if (textInputLayout.getSuffixText() != null) {
+            return;
+          }
           animateIcon(hasText(s));
         }
       };
@@ -97,6 +100,14 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
         });
     textInputLayout.addOnEditTextAttachedListener(clearTextOnEditTextAttachedListener);
     initAnimators();
+  }
+
+  @Override
+  void onSuffixVisibilityChanged(boolean visible) {
+    if (textInputLayout.getSuffixText() == null) {
+      return;
+    }
+    animateIcon(visible);
   }
 
   private void animateIcon(boolean show) {

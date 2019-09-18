@@ -60,4 +60,12 @@ abstract class EndIconDelegate {
   boolean isBoxBackgroundModeSupported(@BoxBackgroundMode int boxBackgroundMode) {
     return true;
   }
+
+  /**
+   * This method should be implemented if the icon needs special handling of it's visibility
+   * behavior when there is a suffix being displayed.
+   *
+   * @param visible whether the icon should be set to visible
+   */
+  void onSuffixVisibilityChanged(boolean visible) {}
 }
