@@ -25,9 +25,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 
-/**
- * A class to convert a {@link ShapeAppearanceModel to a {@link android.graphics.Path}}.
- */
+/** A class to convert a {@link ShapeAppearanceModel} to a {@link android.graphics.Path}. */
 public class ShapeAppearancePathProvider {
 
   /**
