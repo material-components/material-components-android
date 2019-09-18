@@ -53,6 +53,10 @@ public class SingleDateSelector implements DateSelector<Long> {
     selectedItem = selection;
   }
 
+  private void clearSelection() {
+    selectedItem = null;
+  }
+
   @Override
   public void setSelection(@Nullable Long selection) {
     selectedItem = selection == null ? null : UtcDates.canonicalYearMonthDay(selection);
@@ -110,7 +114,11 @@ public class SingleDateSelector implements DateSelector<Long> {
 
           @Override
           void onValidDate(@Nullable Long day) {
-            select(day);
+            if (day == null) {
+              clearSelection();
+            } else {
+              select(day);
+            }
             listener.onSelectionChanged(getSelection());
           }
         });
