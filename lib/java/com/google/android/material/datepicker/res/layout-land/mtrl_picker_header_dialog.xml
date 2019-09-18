@@ -33,7 +33,7 @@
 
     <FrameLayout
       android:id="@+id/mtrl_picker_header_title_and_selection"
-      android:layout_width="168dp"
+      android:layout_width="@dimen/mtrl_calendar_landscape_header_width"
       android:layout_height="0dp"
       android:layout_weight="1"
       android:paddingStart="@dimen/mtrl_calendar_header_text_padding"

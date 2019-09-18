@@ -16,6 +16,7 @@
 -->
 
 <resources>
+  <dimen name="mtrl_calendar_landscape_header_width">104dp</dimen>
   <dimen name="mtrl_calendar_header_height_fullscreen">96dp</dimen>
   <dimen name="mtrl_calendar_title_baseline_to_top_fullscreen">32dp</dimen>
   <dimen name="mtrl_calendar_selection_baseline_to_top_fullscreen">68dp</dimen>
@@ -29,7 +30,7 @@
   <dimen name="mtrl_calendar_text_input_padding_top">32dp</dimen>
 
   <integer name="mtrl_calendar_header_orientation">0</integer>
-  <integer name="mtrl_calendar_selection_text_lines">2</integer>
+  <integer name="mtrl_calendar_selection_text_lines">6</integer>
 
   <dimen name="mtrl_calendar_days_of_week_height">20dp</dimen>
 </resources>
