@@ -135,7 +135,7 @@ Developers can override chip's minimum touch target size using
 ### Chip Attributes
 
 Feature       | Relevant attributes
---------------| -----------------------------
+------------- | -----------------------------
 Label         | `android:text` <br> `android:textAppearance`
 Shape         | `app:chipCornerRadius`
 Size          | `app:chipMinHeight`
