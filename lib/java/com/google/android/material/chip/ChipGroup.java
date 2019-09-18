@@ -63,10 +63,7 @@ public class ChipGroup extends FlowLayout {
     public void onCheckedChanged(ChipGroup group, @IdRes int checkedId);
   }
 
-
-  /**
-   * {@link ChipGroup.LayoutParams for {@link ChipGroup}.
-   */
+  /** A {@link ChipGroup.LayoutParams} implementation for {@link ChipGroup}. */
   public static class LayoutParams extends MarginLayoutParams {
     public LayoutParams(Context context, AttributeSet attrs) {
       super(context, attrs);
