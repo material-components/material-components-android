@@ -20,6 +20,7 @@
   <public name="activeTrackColor" type="attr" />
   <public name="inactiveTrackColor" type="attr" />
   <public name="thumbColor" type="attr" />
+  <public name="thumbElevation" type="attr" />
   <public name="tickColor" type="attr" />
   <public name="activeTickColor" type="attr" />
   <public name="inactiveTickColor" type="attr" />

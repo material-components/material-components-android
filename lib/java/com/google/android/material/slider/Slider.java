@@ -290,6 +290,9 @@ public class Slider extends View {
 
     setFocusable(true);
     setFocusableInTouchMode(true);
+
+    // Set up the thumb drawable to always show the compat shadow.
+    thumbDrawable.setShadowCompatibilityMode(MaterialShapeDrawable.SHADOW_COMPAT_MODE_ALWAYS);
   }
 
   @Override
@@ -347,6 +350,8 @@ public class Slider extends View {
 
     setThumbRadius(a.getDimensionPixelSize(R.styleable.Slider_thumbRadius, 0));
     haloRadius = a.getDimensionPixelSize(R.styleable.Slider_haloRadius, 0);
+
+    setThumbElevation(a.getDimension(R.styleable.Slider_thumbElevation, 0));
     a.recycle();
 
     validateValueFrom();
@@ -523,6 +528,22 @@ public class Slider extends View {
    */
   public void setLabelFormatter(@Nullable LabelFormatter formatter) {
     this.formatter = formatter;
+  }
+
+  /** Sets the elevation of the thumb. */
+  public void setThumbElevation(float elevation) {
+    thumbDrawable.setElevation(elevation);
+    postInvalidate();
+  }
+
+  /** Sets the elevation of the thumb from a dimension resource. */
+  public void setThumbElevationResource(@DimenRes int elevation) {
+    setThumbElevation(getResources().getDimension(elevation));
+  }
+
+  /** Returns the elevation of the thumb. */
+  public float getThumbElevation() {
+    return thumbDrawable.getElevation();
   }
 
   /** Sets the radius of the thumb in pixels. */

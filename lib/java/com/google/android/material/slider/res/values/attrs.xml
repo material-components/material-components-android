@@ -40,6 +40,8 @@
     <attr name="labelColor" format="color" />
     <!-- The radius of the thumb. -->
     <attr name="thumbRadius" format="dimension" />
+    <!-- The elevation of the thumb. -->
+    <attr name="thumbElevation" format="dimension" />
     <!-- The radius of the halo. -->
     <attr name="haloRadius" format="dimension" />
   </declare-styleable>

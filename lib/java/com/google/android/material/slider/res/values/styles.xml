@@ -25,6 +25,7 @@
     <item name="labelColor">?attr/colorOnPrimary</item>
     <item name="thumbRadius">@dimen/mtrl_slider_thumb_radius</item>
     <item name="haloRadius">@dimen/mtrl_slider_halo_radius</item>
+    <item name="thumbElevation">@dimen/mtrl_slider_thumb_elevation</item>
   </style>
 
 </resources>
