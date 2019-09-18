@@ -56,6 +56,16 @@ public final class MaterialDatePickerTestUtils {
   private static final ViewInteraction onMonthsGroup =
       onView(withTagValue(equalTo(MaterialCalendar.MONTHS_VIEW_GROUP_TAG)));
 
+  public static <S> MaterialDatePicker<S> buildAndShow(
+      AppCompatActivity activity, MaterialDatePicker.Builder<S> builder) {
+    FragmentManager fragmentManager = activity.getSupportFragmentManager();
+    String tag = "DialogFragment";
+    MaterialDatePicker<S> dialogFragment = builder.build();
+    dialogFragment.show(fragmentManager, tag);
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+    return dialogFragment;
+  }
+
   public static MaterialDatePicker<Long> showDatePicker(
       ActivityTestRule<? extends AppCompatActivity> activityTestRule) {
     return showDatePicker(activityTestRule, 0);
@@ -203,7 +213,7 @@ public final class MaterialDatePickerTestUtils {
 
   @VisibleForTesting
   public static void swipeEarlier(DialogFragment dialogFragment) {
-    int orientation = getOrientation(dialogFragment);
+    int orientation = getPagingOrientation(dialogFragment);
     if (orientation == LinearLayoutManager.HORIZONTAL) {
       onMonthsGroup.perform(swipeRight());
     } else {
@@ -213,7 +223,7 @@ public final class MaterialDatePickerTestUtils {
   }
 
   static void swipeLater(DialogFragment dialogFragment) {
-    int orientation = getOrientation(dialogFragment);
+    int orientation = getPagingOrientation(dialogFragment);
     if (orientation == LinearLayoutManager.HORIZONTAL) {
       onMonthsGroup.perform(swipeLeft());
     } else {
@@ -264,7 +274,7 @@ public final class MaterialDatePickerTestUtils {
         ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition());
   }
 
-  private static int getOrientation(DialogFragment dialogFragment) {
+  private static int getPagingOrientation(DialogFragment dialogFragment) {
     return ((LinearLayoutManager) getMonthsViewGroup(dialogFragment).getLayoutManager())
         .getOrientation();
   }

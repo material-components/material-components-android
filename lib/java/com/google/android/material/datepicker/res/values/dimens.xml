@@ -19,7 +19,7 @@
   <dimen name="mtrl_alert_dialog_picker_background_inset">24dp</dimen>
 
   <integer name="mtrl_calendar_year_selector_span">3</integer>
-  <dimen name="mtrl_calendar_maximum_default_fullscreen_width">480dp</dimen>
+  <dimen name="mtrl_calendar_maximum_default_fullscreen_minor_axis">480dp</dimen>
   <dimen name="mtrl_calendar_dialog_background_inset">16dp</dimen>
   <dimen name="mtrl_calendar_header_height">120dp</dimen>
   <dimen name="mtrl_calendar_header_text_padding">12dp</dimen>
@@ -63,6 +63,7 @@
   <integer name="mtrl_calendar_header_orientation">1</integer>
 
   <!-- screens with less than 360dp minimum dimension -->
+  <dimen name="mtrl_calendar_landscape_header_width">0dp</dimen>
   <dimen name="mtrl_calendar_bottom_padding">0dp</dimen>
   <dimen name="mtrl_calendar_month_horizontal_padding">2dp</dimen>
 

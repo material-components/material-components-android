@@ -28,6 +28,7 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.core.util.Pair;
 import androidx.core.util.Preconditions;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -120,10 +121,12 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
   @Override
   public int getDefaultThemeResId(@NonNull Context context) {
     Resources res = context.getResources();
-    int maximumDefaultFullscreenWidth =
-        res.getDimensionPixelSize(R.dimen.mtrl_calendar_maximum_default_fullscreen_width);
+    DisplayMetrics display = res.getDisplayMetrics();
+    int maximumDefaultFullscreenMinorAxis =
+        res.getDimensionPixelSize(R.dimen.mtrl_calendar_maximum_default_fullscreen_minor_axis);
+    int minorAxisPx = Math.min(display.widthPixels, display.heightPixels);
     int defaultThemeAttr =
-        res.getDisplayMetrics().widthPixels > maximumDefaultFullscreenWidth
+        minorAxisPx > maximumDefaultFullscreenMinorAxis
             ? R.attr.materialCalendarTheme
             : R.attr.materialCalendarFullscreenTheme;
     return MaterialAttributes.resolveOrThrow(
