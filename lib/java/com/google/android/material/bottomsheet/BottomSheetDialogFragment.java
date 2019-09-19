@@ -58,7 +58,7 @@ public class BottomSheetDialogFragment extends AppCompatDialogFragment {
     }
   }
 
-  @NonNull
+  @Nullable
   @Override
   public BottomSheetDialog getDialog() {
     return (BottomSheetDialog) super.getDialog();
