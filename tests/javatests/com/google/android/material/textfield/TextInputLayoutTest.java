@@ -32,6 +32,7 @@ import static com.google.android.material.testutils.TestUtilsMatchers.withTypefa
 import static com.google.android.material.testutils.TextInputLayoutActions.setBoxBackgroundColor;
 import static com.google.android.material.testutils.TextInputLayoutActions.setBoxCornerRadii;
 import static com.google.android.material.testutils.TextInputLayoutActions.setBoxStrokeColor;
+import static com.google.android.material.testutils.TextInputLayoutActions.setBoxStrokeErrorColor;
 import static com.google.android.material.testutils.TextInputLayoutActions.setCounterEnabled;
 import static com.google.android.material.testutils.TextInputLayoutActions.setCounterMaxLength;
 import static com.google.android.material.testutils.TextInputLayoutActions.setError;
@@ -50,6 +51,7 @@ import static org.junit.Assert.assertTrue;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -515,6 +517,22 @@ public class TextInputLayoutTest {
   }
 
   @Test
+  public void testOutlineBoxStrokeChangesErrorColor() {
+    ColorStateList cyan = new ColorStateList(new int[][] {new int[] {}}, new int[] {Color.CYAN});
+    ColorStateList green = new ColorStateList(new int[][] {new int[] {}}, new int[] {Color.GREEN});
+    onView(withId(R.id.textinput_box_outline)).perform(setError(ERROR_MESSAGE_1));
+
+    // Change the outline box's stroke error color to cyan.
+    onView(withId(R.id.textinput_box_outline)).perform(setBoxStrokeErrorColor(cyan));
+    // Check that the outline box's stroke error color is cyan.
+    onView(withId(R.id.textinput_box_outline)).check(isBoxStrokeErrorColor(cyan));
+    // Change the outline box's stroke error color to green.
+    onView(withId(R.id.textinput_box_outline)).perform(setBoxStrokeErrorColor(green));
+    // Check that the outline box's stroke error color is green.
+    onView(withId(R.id.textinput_box_outline)).check(isBoxStrokeErrorColor(green));
+  }
+
+  @Test
   public void testOutlineBoxBackgroundChangesColor() {
     @ColorInt int blue = Color.BLUE;
     @ColorInt int yellow = Color.YELLOW;
@@ -609,6 +627,13 @@ public class TextInputLayoutTest {
     return (view, noViewFoundException) -> {
       assertTrue(view instanceof TextInputLayout);
       assertEquals(boxStrokeColor, ((TextInputLayout) view).getBoxStrokeColor());
+    };
+  }
+
+  private static ViewAssertion isBoxStrokeErrorColor(final ColorStateList boxStrokeColor) {
+    return (view, noViewFoundException) -> {
+      assertTrue(view instanceof TextInputLayout);
+      assertEquals(boxStrokeColor, ((TextInputLayout) view).getBoxStrokeErrorColor());
     };
   }
 

@@ -425,6 +425,26 @@ public class TextInputLayoutActions {
     };
   }
 
+  public static ViewAction setBoxStrokeErrorColor(@ColorInt final ColorStateList strokeErrorColor) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Sets the box's stroke error color";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setBoxStrokeErrorColor(strokeErrorColor);
+      }
+    };
+  }
+
   public static ViewAction setBoxStrokeColor(@ColorInt final int strokeColor) {
     return new ViewAction() {
       @Override

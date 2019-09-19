@@ -380,6 +380,7 @@ public class TextInputLayout extends LinearLayout {
   @ColorInt private final int defaultStrokeColor;
   @ColorInt private final int hoveredStrokeColor;
   @ColorInt private int focusedStrokeColor;
+  private ColorStateList strokeErrorColor;
 
   @ColorInt private int defaultFilledBackgroundColor;
   @ColorInt private final int disabledFilledBackgroundColor;
@@ -563,6 +564,11 @@ public class TextInputLayout extends LinearLayout {
       disabledColor = ContextCompat.getColor(context, R.color.mtrl_textinput_disabled_color);
       hoveredStrokeColor =
           ContextCompat.getColor(context, R.color.mtrl_textinput_hovered_box_stroke_color);
+    }
+    if (a.hasValue(R.styleable.TextInputLayout_boxStrokeErrorColor)) {
+      setBoxStrokeErrorColor(
+          MaterialResources.getColorStateList(
+              context, a, R.styleable.TextInputLayout_boxStrokeErrorColor));
     }
 
     final int hintAppearance = a.getResourceId(R.styleable.TextInputLayout_hintTextAppearance, -1);
@@ -920,6 +926,32 @@ public class TextInputLayout extends LinearLayout {
    */
   public int getBoxStrokeColor() {
     return focusedStrokeColor;
+  }
+
+  /**
+   * Set the outline box's stroke color when an error is being displayed.
+   *
+   * <p>Calling this method when not in outline box mode will do nothing.
+   *
+   * @param strokeErrorColor the error color to use for the box's stroke
+   * @see #getBoxStrokeErrorColor()
+   */
+  public void setBoxStrokeErrorColor(@Nullable ColorStateList strokeErrorColor) {
+    if (this.strokeErrorColor != strokeErrorColor) {
+      this.strokeErrorColor = strokeErrorColor;
+      updateTextInputBoxState();
+    }
+  }
+
+  /**
+   * Returns the box's stroke color when an error is being displayed.
+   *
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_boxStrokeErrorColor
+   * @see #setBoxStrokeErrorColor(ColorStateList)
+   */
+  @Nullable
+  public ColorStateList getBoxStrokeErrorColor() {
+    return strokeErrorColor;
   }
 
   /**
@@ -3459,7 +3491,11 @@ public class TextInputLayout extends LinearLayout {
     if (!isEnabled()) {
       boxStrokeColor = disabledColor;
     } else if (indicatorViewController.errorShouldBeShown()) {
-      boxStrokeColor = indicatorViewController.getErrorViewCurrentTextColor();
+      if (strokeErrorColor != null) {
+        boxStrokeColor = strokeErrorColor.getDefaultColor();
+      } else {
+        boxStrokeColor = indicatorViewController.getErrorViewCurrentTextColor();
+      }
     } else if (counterOverflowed && counterView != null) {
       boxStrokeColor = counterView.getCurrentTextColor();
     } else if (hasFocus) {
