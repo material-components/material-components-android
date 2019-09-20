@@ -3575,7 +3575,7 @@ public class TextInputLayout extends LinearLayout {
   private void updateIconColorOnState(
       CheckableImageButton iconView, ColorStateList colorStateList) {
     Drawable icon = iconView.getDrawable();
-    if (iconView.getDrawable() == null || !colorStateList.isStateful()) {
+    if (iconView.getDrawable() == null || colorStateList == null || !colorStateList.isStateful()) {
       return;
     }
 
