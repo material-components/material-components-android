@@ -371,8 +371,9 @@ public class TextInputLayout extends LinearLayout {
   @Nullable private Drawable endDummyDrawable;
   private int endDummyDrawableWidth;
   private Drawable originalEditTextEndDrawable;
-  @NonNull private final CheckableImageButton errorIconView;
   private OnLongClickListener endIconOnLongClickListener;
+  @NonNull private final CheckableImageButton errorIconView;
+  private ColorStateList errorIconTintList;
 
   private ColorStateList defaultHintTextColor;
   private ColorStateList focusedTextColor;
@@ -1622,6 +1623,7 @@ public class TextInputLayout extends LinearLayout {
    * @attr ref com.google.android.material.R.styleable#TextInputLayout_errorIconTint
    */
   public void setErrorIconTintList(@Nullable ColorStateList errorIconTintList) {
+    this.errorIconTintList = errorIconTintList;
     Drawable icon = errorIconView.getDrawable();
     if (icon != null) {
       icon = DrawableCompat.wrap(icon).mutate();
@@ -3491,8 +3493,22 @@ public class TextInputLayout extends LinearLayout {
     if (!isEnabled()) {
       boxStrokeColor = disabledColor;
     } else if (indicatorViewController.errorShouldBeShown()) {
-      if (strokeErrorColor != null) {
-        boxStrokeColor = strokeErrorColor.getDefaultColor();
+      // TODO(b/124130133): remove check for boxBackgroundMode
+      if (boxBackgroundMode == BOX_BACKGROUND_OUTLINE && strokeErrorColor != null) {
+        int defaultStrokeErrorColor = strokeErrorColor.getDefaultColor();
+        int hoveredStrokeErrorColor =
+            strokeErrorColor.getColorForState(
+                new int[] {android.R.attr.state_hovered}, defaultStrokeErrorColor);
+        int focusedStrokeErrorColor =
+            strokeErrorColor.getColorForState(
+                new int[] {android.R.attr.state_activated}, defaultStrokeErrorColor);
+        if (hasFocus) {
+          boxStrokeColor = focusedStrokeErrorColor;
+        } else if (isHovered) {
+          boxStrokeColor = hoveredStrokeErrorColor;
+        } else {
+          boxStrokeColor = defaultStrokeErrorColor;
+        }
       } else {
         boxStrokeColor = indicatorViewController.getErrorViewCurrentTextColor();
       }
@@ -3506,14 +3522,24 @@ public class TextInputLayout extends LinearLayout {
       boxStrokeColor = defaultStrokeColor;
     }
 
-    tintEndIconOnError(
-        indicatorViewController.errorShouldBeShown()
-            && getEndIconDelegate().shouldTintIconOnError());
     setErrorIconVisible(
         getErrorIconDrawable() != null && indicatorViewController.errorShouldBeShown());
 
+    // Update icons tints
+    // TODO(b/124130133): remove check for boxBackgroundMode
+    if (boxBackgroundMode == BOX_BACKGROUND_OUTLINE) {
+      updateIconColorOnState(errorIconView, errorIconTintList);
+      updateIconColorOnState(startIconView, startIconTintList);
+      updateIconColorOnState(endIconView, endIconTintList);
+    }
+
+    if (getEndIconDelegate().shouldTintIconOnError()) {
+      tintEndIconOnError(indicatorViewController.errorShouldBeShown());
+    }
+
     // Update the text box's stroke width based on the current state.
-    if ((isHovered || hasFocus) && isEnabled()) {
+    // TODO(b/124130133): Update the if check to only (hasFocus && isEnabled)
+    if ((hasFocus || (boxBackgroundMode == BOX_BACKGROUND_FILLED && isHovered)) && isEnabled()) {
       boxStrokeWidthPx = boxStrokeWidthFocusedPx;
     } else {
       boxStrokeWidthPx = boxStrokeWidthDefaultPx;
@@ -3544,6 +3570,21 @@ public class TextInputLayout extends LinearLayout {
 
   private boolean isErrorIconVisible() {
     return errorIconView.getVisibility() == VISIBLE;
+  }
+
+  private void updateIconColorOnState(
+      CheckableImageButton iconView, ColorStateList colorStateList) {
+    Drawable icon = iconView.getDrawable();
+    if (iconView.getDrawable() == null || !colorStateList.isStateful()) {
+      return;
+    }
+
+    int color =
+        colorStateList.getColorForState(this.getDrawableState(), colorStateList.getDefaultColor());
+
+    icon = DrawableCompat.wrap(icon).mutate();
+    DrawableCompat.setTint(icon, color);
+    iconView.setImageDrawable(icon);
   }
 
   private void expandHint(boolean animate) {
