@@ -27,8 +27,6 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.annotation.ColorInt;
@@ -36,7 +34,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
-import androidx.core.graphics.drawable.DrawableCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -373,24 +370,19 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
   /** Sets the tint color of the background Drawable. */
   @NonNull
   public Snackbar setBackgroundTint(@ColorInt int color) {
-    Drawable background = view.getBackground();
-    if (background != null) {
-      background = background.mutate();
-      // Drawable doesn't implement setTint in API 21 and Snackbar does not yet use
-      // MaterialShapeDrawable as its background (i.e. TintAwareDrawable)
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-        DrawableCompat.setTint(background, color);
-      } else {
-        background.setColorFilter(color, PorterDuff.Mode.SRC_IN);
-      }
-    }
-    return this;
+    return setBackgroundTintList(ColorStateList.valueOf(color));
   }
 
   /** Sets the tint color state list of the background Drawable. */
   @NonNull
-  public Snackbar setBackgroundTintList(ColorStateList colorStateList) {
-    DrawableCompat.setTintList(view.getBackground().mutate(), colorStateList);
+  public Snackbar setBackgroundTintList(@Nullable ColorStateList colorStateList) {
+    view.setBackgroundTintList(colorStateList);
+    return this;
+  }
+
+  @NonNull
+  public Snackbar setBackgroundTintMode(@Nullable PorterDuff.Mode mode) {
+    view.setBackgroundTintMode(mode);
     return this;
   }
 

@@ -34,8 +34,14 @@
       <!-- Mode that corresponds to the fade in and out animations. -->
       <enum name="fade" value="1"/>
     </attr>
-    <!-- Alpha level for the color that is overlaid on top of the background color. -->
+    <!-- Alpha level for the color that is overlaid on top of the background color. Ignored if
+         backgroundTint is set. -->
     <attr name="backgroundOverlayColorAlpha" format="float"/>
+    <!-- Background tint used by the Snackbar background drawable. Accepts a ColorStateList or
+         ColorInt. -->
+    <attr name="backgroundTint"/>
+    <!-- Background tint mode used by the Snackbar background drawable. -->
+    <attr name="backgroundTintMode"/>
     <!-- Alpha level for the action button text, to allow for adjusting the lightness or darkness of
          the theme color used for Snackbar text buttons (e.g., colorPrimary). -->
     <attr name="actionTextColorAlpha" format="float"/>

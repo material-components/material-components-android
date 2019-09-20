@@ -32,7 +32,9 @@ import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
@@ -50,6 +52,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.OnApplyWindowInsetsListener;
 import androidx.core.view.ViewCompat;
@@ -73,6 +76,8 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.behavior.SwipeDismissBehavior;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.ThemeEnforcement;
+import com.google.android.material.internal.ViewUtils;
+import com.google.android.material.resources.MaterialResources;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
@@ -331,9 +336,6 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     // in the extending Snackbar class. This is to prevent breakage of apps that have custom
     // coordinator layout behaviors that depend on that layout.
     view = (SnackbarBaseLayout) inflater.inflate(getSnackbarBaseLayoutResId(), targetParent, false);
-    if (view.getBackground() == null) {
-      ViewCompat.setBackground(view, createThemedBackground());
-    }
     if (content instanceof SnackbarContentLayout) {
       ((SnackbarContentLayout) content)
           .updateActionTextColorAlphaIfNeeded(view.getActionTextColorAlpha());
@@ -386,24 +388,6 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
     accessibilityManager =
         (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
-  }
-
-  @NonNull
-  private Drawable createThemedBackground() {
-    int backgroundColor =
-        MaterialColors.layer(
-            view,
-            R.attr.colorSurface,
-            R.attr.colorOnSurface,
-            view.getBackgroundOverlayColorAlpha());
-    float cornerRadius =
-        view.getResources().getDimension(R.dimen.mtrl_snackbar_background_corner_radius);
-
-    GradientDrawable background = new GradientDrawable();
-    background.setShape(GradientDrawable.RECTANGLE);
-    background.setColor(backgroundColor);
-    background.setCornerRadius(cornerRadius);
-    return background;
   }
 
   private void updateBottomMargin() {
@@ -1044,6 +1028,8 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     @AnimationMode private int animationMode;
     private final float backgroundOverlayColorAlpha;
     private final float actionTextColorAlpha;
+    private ColorStateList backgroundTint;
+    private PorterDuff.Mode backgroundTintMode;
 
     protected SnackbarBaseLayout(@NonNull Context context) {
       this(context, null);
@@ -1062,11 +1048,61 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
       animationMode = a.getInt(R.styleable.SnackbarLayout_animationMode, ANIMATION_MODE_SLIDE);
       backgroundOverlayColorAlpha =
           a.getFloat(R.styleable.SnackbarLayout_backgroundOverlayColorAlpha, 1);
+      setBackgroundTintList(
+          MaterialResources.getColorStateList(
+              context, a, R.styleable.SnackbarLayout_backgroundTint));
+      setBackgroundTintMode(
+          ViewUtils.parseTintMode(
+              a.getInt(R.styleable.SnackbarLayout_backgroundTintMode, -1), PorterDuff.Mode.SRC_IN));
       actionTextColorAlpha = a.getFloat(R.styleable.SnackbarLayout_actionTextColorAlpha, 1);
       a.recycle();
 
       setOnTouchListener(consumeAllTouchListener);
       setFocusable(true);
+
+      if (getBackground() == null) {
+        ViewCompat.setBackground(this, createThemedBackground());
+      }
+    }
+
+    @Override
+    public void setBackground(@Nullable Drawable drawable) {
+      setBackgroundDrawable(drawable);
+    }
+
+    @Override
+    public void setBackgroundDrawable(@Nullable Drawable drawable) {
+      if (drawable != null && backgroundTint != null) {
+        drawable = DrawableCompat.wrap(drawable.mutate());
+        DrawableCompat.setTintList(drawable, backgroundTint);
+        DrawableCompat.setTintMode(drawable, backgroundTintMode);
+      }
+      super.setBackgroundDrawable(drawable);
+    }
+
+    @Override
+    public void setBackgroundTintList(@Nullable ColorStateList backgroundTint) {
+      this.backgroundTint = backgroundTint;
+      if (getBackground() != null) {
+        Drawable wrappedBackground = DrawableCompat.wrap(getBackground().mutate());
+        DrawableCompat.setTintList(wrappedBackground, backgroundTint);
+        DrawableCompat.setTintMode(wrappedBackground, backgroundTintMode);
+        if (wrappedBackground != getBackground()) {
+          super.setBackgroundDrawable(wrappedBackground);
+        }
+      }
+    }
+
+    @Override
+    public void setBackgroundTintMode(@Nullable PorterDuff.Mode backgroundTintMode) {
+      this.backgroundTintMode = backgroundTintMode;
+      if (getBackground() != null) {
+        Drawable wrappedBackground = DrawableCompat.wrap(getBackground().mutate());
+        DrawableCompat.setTintMode(wrappedBackground, backgroundTintMode);
+        if (wrappedBackground != getBackground()) {
+          super.setBackgroundDrawable(wrappedBackground);
+        }
+      }
     }
 
     @Override
@@ -1127,6 +1163,31 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
     float getActionTextColorAlpha() {
       return actionTextColorAlpha;
+    }
+
+    @NonNull
+    private Drawable createThemedBackground() {
+      float cornerRadius =
+          getResources().getDimension(R.dimen.mtrl_snackbar_background_corner_radius);
+
+      GradientDrawable background = new GradientDrawable();
+      background.setShape(GradientDrawable.RECTANGLE);
+      background.setCornerRadius(cornerRadius);
+
+      if (backgroundTint != null) {
+        Drawable wrappedDrawable = DrawableCompat.wrap(background);
+        DrawableCompat.setTintList(wrappedDrawable, backgroundTint);
+        return wrappedDrawable;
+      } else {
+        int backgroundColor =
+            MaterialColors.layer(
+                this,
+                R.attr.colorSurface,
+                R.attr.colorOnSurface,
+                getBackgroundOverlayColorAlpha());
+        background.setColor(backgroundColor);
+        return DrawableCompat.wrap(background);
+      }
     }
   }
 
