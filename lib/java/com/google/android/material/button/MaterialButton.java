@@ -222,7 +222,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     attributes.recycle();
 
     setCompoundDrawablePadding(iconPadding);
-    updateIcon();
+    updateIcon(/*needsIconUpdate=*/icon != null);
   }
 
   @NonNull
@@ -434,7 +434,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
     if (iconGravity == ICON_GRAVITY_START || iconGravity == ICON_GRAVITY_END) {
       iconLeft = 0;
-      updateIcon();
+      updateIcon(/* needsIconUpdate = */ false);
       return;
     }
 
@@ -466,7 +466,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
     if (iconLeft != newIconLeft) {
       iconLeft = newIconLeft;
-      updateIcon();
+      updateIcon(/* needsIconUpdate = */ false);
     }
   }
 
@@ -525,7 +525,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
     if (this.iconSize != iconSize) {
       this.iconSize = iconSize;
-      updateIcon();
+      updateIcon(/* needsIconUpdate = */ true);
     }
   }
 
@@ -553,7 +553,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   public void setIcon(@Nullable Drawable icon) {
     if (this.icon != icon) {
       this.icon = icon;
-      updateIcon();
+      updateIcon(/* needsIconUpdate = */ true);
     }
   }
   /**
@@ -596,7 +596,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   public void setIconTint(@Nullable ColorStateList iconTint) {
     if (this.iconTint != iconTint) {
       this.iconTint = iconTint;
-      updateIcon();
+      updateIcon(/* needsIconUpdate = */ false);
     }
   }
 
@@ -634,7 +634,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   public void setIconTintMode(Mode iconTintMode) {
     if (this.iconTintMode != iconTintMode) {
       this.iconTintMode = iconTintMode;
-      updateIcon();
+      updateIcon(/* needsIconUpdate = */ false);
     }
   }
 
@@ -649,8 +649,11 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     return iconTintMode;
   }
 
-  /** Updates the icon, icon tint, and icon tint mode for this button. */
-  private void updateIcon() {
+  /**
+   * Updates the icon, icon tint, and icon tint mode for this button.
+   * @param needsIconUpdate Whether to force the drawable to be set
+   */
+  private void updateIcon(boolean needsIconUpdate) {
     if (icon != null) {
       icon = DrawableCompat.wrap(icon).mutate();
       DrawableCompat.setTintList(icon, iconTint);
@@ -663,7 +666,29 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
       icon.setBounds(iconLeft, 0, iconLeft + width, height);
     }
 
-    if (iconGravity == ICON_GRAVITY_START || iconGravity == ICON_GRAVITY_TEXT_START) {
+    // Reset icon drawable if needed
+    boolean isIconStart =
+        iconGravity == ICON_GRAVITY_START || iconGravity == ICON_GRAVITY_TEXT_START;
+    // Forced icon update
+    if (needsIconUpdate) {
+      resetIconDrawable(isIconStart);
+      return;
+    }
+
+    // Otherwise only update if the icon or the position has changed
+    Drawable[] existingDrawables  = TextViewCompat.getCompoundDrawablesRelative(this);
+    Drawable drawableStart = existingDrawables[0];
+    Drawable drawableEnd = existingDrawables[2];
+    boolean hasIconChanged =
+        (isIconStart && drawableStart != icon) || (!isIconStart && drawableEnd != icon);
+
+    if (hasIconChanged) {
+      resetIconDrawable(isIconStart);
+    }
+  }
+
+  private void resetIconDrawable(boolean isIconStart) {
+    if (isIconStart) {
       TextViewCompat.setCompoundDrawablesRelative(this, icon, null, null, null);
     } else {
       TextViewCompat.setCompoundDrawablesRelative(this, null, null, icon, null);
