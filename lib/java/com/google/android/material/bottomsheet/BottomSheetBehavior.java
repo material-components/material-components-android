@@ -51,6 +51,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.WindowInsets;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams;
 import com.google.android.material.resources.MaterialResources;
@@ -213,6 +214,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   private MaterialShapeDrawable materialShapeDrawable;
 
+  private boolean gestureInsetBottomIgnored;
+
   /** Default Shape Appearance to be used in bottomsheet */
   private ShapeAppearanceModel shapeAppearanceModelDefault;
 
@@ -297,6 +300,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
               R.styleable.BottomSheetBehavior_Layout_behavior_peekHeight, PEEK_HEIGHT_AUTO));
     }
     setHideable(a.getBoolean(R.styleable.BottomSheetBehavior_Layout_behavior_hideable, false));
+    setGestureInsetBottomIgnored(a.getBoolean(R.styleable.BottomSheetBehavior_Layout_gestureInsetBottomIgnored, false));
     setFitToContents(
         a.getBoolean(R.styleable.BottomSheetBehavior_Layout_behavior_fitToContents, true));
     setSkipCollapsed(
@@ -358,6 +362,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       // First layout with this behavior.
       peekHeightMin =
           parent.getResources().getDimensionPixelSize(R.dimen.design_bottom_sheet_peek_height_min);
+      setSystemGestureInsets(parent);
       viewRef = new WeakReference<>(child);
       // Only set MaterialShapeDrawable as background if shapeTheming is enabled, otherwise will
       // default to android:background declared in styles or layout.
@@ -916,6 +921,26 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     settleToStatePendingLayout(state);
   }
 
+  /**
+   * Sets whether this bottom sheet should adjust it's position based on the system gesture area on
+   * Android Q and above.
+   *
+   * <p>Note: the bottom sheet will only adjust it's position if it would be unable to be scrolled
+   * upwards because the peekHeight is less than the gesture inset margins,(because that would cause
+   * a gesture conflict), gesture navigation is enabled, and this {@code ignoreGestureInsetBottom}
+   * flag is false.
+   */
+  public void setGestureInsetBottomIgnored(boolean gestureInsetBottomIgnored) {
+    this.gestureInsetBottomIgnored = gestureInsetBottomIgnored;
+  }
+
+  /**
+   * Returns whether this bottom sheet should adjust it's position based on the system gesture area.
+   */
+  public boolean isGestureInsetBottomIgnored() {
+    return gestureInsetBottomIgnored;
+  }
+
   private void settleToStatePendingLayout(@State int state) {
     final V child = viewRef.get();
     if (child == null) {
@@ -1117,6 +1142,14 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
             }
           }
         });
+  }
+
+  private void setSystemGestureInsets(CoordinatorLayout parent) {
+    if (VERSION.SDK_INT >= VERSION_CODES.Q && !isGestureInsetBottomIgnored()) {
+      WindowInsets windowInsets = parent.getRootWindowInsets();
+      int systemMandatoryInsetsBottom = windowInsets.getSystemGestureInsets().bottom;
+      peekHeight += systemMandatoryInsetsBottom;
+    }
   }
 
   private float getYVelocity() {
