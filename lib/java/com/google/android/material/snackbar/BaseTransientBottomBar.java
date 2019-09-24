@@ -1174,18 +1174,18 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
       background.setShape(GradientDrawable.RECTANGLE);
       background.setCornerRadius(cornerRadius);
 
+      int backgroundColor =
+          MaterialColors.layer(
+              this,
+              R.attr.colorSurface,
+              R.attr.colorOnSurface,
+              getBackgroundOverlayColorAlpha());
+      background.setColor(backgroundColor);
       if (backgroundTint != null) {
         Drawable wrappedDrawable = DrawableCompat.wrap(background);
         DrawableCompat.setTintList(wrappedDrawable, backgroundTint);
         return wrappedDrawable;
       } else {
-        int backgroundColor =
-            MaterialColors.layer(
-                this,
-                R.attr.colorSurface,
-                R.attr.colorOnSurface,
-                getBackgroundOverlayColorAlpha());
-        background.setColor(backgroundColor);
         return DrawableCompat.wrap(background);
       }
     }
