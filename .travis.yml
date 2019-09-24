@@ -1,6 +1,9 @@
 sudo: required
 language: generic
 
+dist: trusty
+jdk: openjdk8
+
 env:
   global:
   - ABI="google_apis;armeabi-v7a"
