@@ -75,6 +75,13 @@ android {
     targetSdkVersion 27
   }
 
+  buildTypes {
+    release {
+      multiDexKeepProguard file('multidex-config.pro')
+    }
+  }
+
+
   testOptions {
     unitTests.returnDefaultValues = true
   }
