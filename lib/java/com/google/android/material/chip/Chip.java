@@ -731,6 +731,8 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
     return result;
   }
 
+  @SuppressLint("ClickableViewAccessibility") // There's an accessibility delegate that will handle
+  // interactions with the trailing chip icon.
   @Override
   public boolean onTouchEvent(@NonNull MotionEvent event) {
     boolean handled = false;
