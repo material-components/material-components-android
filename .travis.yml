@@ -36,11 +36,11 @@ install:
 
 before_script:
   - echo no | avdmanager create avd --force -n test -k "system-images;android-$EMULATOR_API;$ABI"
-  - ./gradlew assembleDebugAndroidTest -PdisablePreDex --continue --stacktrace
+  - ./gradlew assembleDebugAndroidTest -PdisablePreDex --continue --debuge
   - $ANDROID_HOME/emulator/emulator -avd test -no-window &
   - bash android-wait-for-emulator
   - adb shell input keyevent 82
 
 script:
-  - ./gradlew test -PdisablePreDex --stacktrace
-  - ./gradlew connectedAndroidTest -PdisablePreDex --stacktrace
+  - ./gradlew test -PdisablePreDex --debug
+  - ./gradlew connectedAndroidTest -PdisablePreDex --debug
