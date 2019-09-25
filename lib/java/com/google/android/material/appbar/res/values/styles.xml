@@ -113,7 +113,7 @@
 
   <style name="Widget.MaterialComponents.ActionBar.PrimarySurface" parent="Widget.MaterialComponents.ActionBar.Primary"/>
 
-  <style name="ThemeOverlay.MaterialComponents.ActionBar.Primary" parent="">
+  <style name="ThemeOverlay.MaterialComponents.ActionBar.Primary" parent="ThemeOverlay.AppCompat.ActionBar">
     <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
     <item name="android:textColorSecondary">@color/material_on_primary_emphasis_medium</item>
     <item name="actionMenuTextColor">?attr/colorOnPrimary</item>
@@ -124,7 +124,7 @@
     <item name="android:colorBackground">?attr/colorPrimary</item>
   </style>
 
-  <style name="ThemeOverlay.MaterialComponents.ActionBar.Surface" parent="">
+  <style name="ThemeOverlay.MaterialComponents.ActionBar.Surface" parent="ThemeOverlay.AppCompat.ActionBar">
     <item name="android:textColorPrimary">@color/material_on_surface_emphasis_high_type</item>
     <item name="android:textColorSecondary">@color/material_on_surface_emphasis_medium</item>
     <item name="actionMenuTextColor">@color/material_on_surface_emphasis_medium</item>
