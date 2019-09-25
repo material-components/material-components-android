@@ -23,7 +23,7 @@ android {
 
   sourceSets {
     main.setRoot('./')
-    main.java.srcDir 'javatests'
+    main.java.srcDirs = ['javatests', getTransformedProjectPath('testing/java/com/google/android/material/testapp')]
     main.java.excludes = [
       '**/animation/**',
       '**/build/**',
