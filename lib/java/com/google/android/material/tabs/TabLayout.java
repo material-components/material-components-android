@@ -2631,7 +2631,7 @@ public class TabLayout extends HorizontalScrollView {
         // TODO(b/123406505): Support badging on custom tab views.
         tryRemoveBadgeFromAnchor();
       } else {
-        if (iconView != null && tab.getIcon() != null) {
+        if (iconView != null && tab != null && tab.getIcon() != null) {
           if (badgeAnchorView != iconView) {
             tryRemoveBadgeFromAnchor();
             // Anchor badge to icon.
@@ -2640,6 +2640,7 @@ public class TabLayout extends HorizontalScrollView {
             tryUpdateBadgeDrawableBounds(iconView);
           }
         } else if (textView != null
+            && tab != null
             && tab.getTabLabelVisibility() == TAB_LABEL_VISIBILITY_LABELED) {
           if (badgeAnchorView != textView) {
             tryRemoveBadgeFromAnchor();
