@@ -23,7 +23,7 @@ android {
 
   sourceSets {
     main.setRoot('./')
-    main.java.srcDirs = 'javatests'
+    main.java.srcDir = 'javatests'
     main.java.excludes = [
       '**/animation/**',
       '**/build/**',
