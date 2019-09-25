@@ -10,6 +10,7 @@ env:
   - BUILD_TOOLS_VERSION=28.0.3
   - ADB_INSTALL_TIMEOUT=25
   - QEMU_AUDIO_DRV=none
+  - TERM=dumb
   matrix:
     - EMULATOR_API=16
     - EMULATOR_API=19
