@@ -30,7 +30,6 @@ import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.filters.MediumTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
-import com.google.android.material.testutils.DisableAnimationsRule;
 import io.material.catalog.R;
 import io.material.catalog.main.MainActivity;
 import org.junit.Before;
@@ -48,9 +47,6 @@ public class CardSwipeDismissFragmentTest {
   @Rule
   public final ActivityTestRule<MainActivity> activityTestRule =
       new ActivityTestRule<>(MainActivity.class);
-
-  @Rule
-  public final DisableAnimationsRule disableAnimationsRule = new DisableAnimationsRule();
 
   @Before
   public void setUpAndLaunchFragment() {
