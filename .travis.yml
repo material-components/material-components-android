@@ -2,7 +2,7 @@ sudo: required
 language: generic
 
 dist: trusty
-jdk: openjdk9
+jdk: openjdk11
 
 env:
   global:

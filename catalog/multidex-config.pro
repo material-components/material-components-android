@@ -1,1 +1,0 @@
--keep class io.material.catalog.themeswitcher.ThemeSwitcherDialogFragment
