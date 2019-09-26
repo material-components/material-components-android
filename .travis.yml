@@ -14,7 +14,6 @@ env:
   matrix:
     - EMULATOR_API=16
     - EMULATOR_API=19
-    - EMULATOR_API=21
     - EMULATOR_API=24
 
 install:
