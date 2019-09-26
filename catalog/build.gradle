@@ -87,7 +87,9 @@ android {
     main {
       manifest.srcFile 'java/io/material/catalog/AndroidManifest.xml'
       java.srcDir 'java'
-      java.includes = srcDirs.collect { 'io/material/catalog/' + it + '/**/*.java' }
+      java.includes = srcDirs.collect {
+        'io/material/catalog/' + it + '/**/*.java'
+      }
       java.excludes = [
         '**/build/**',
       ]
@@ -96,7 +98,8 @@ android {
         res.srcDirs += 'java/io/material/catalog/' + it + '/res'
       }
     }
-    androidTest.java.srcDir 'javatests'
+    //TODO(b/141695010)
+    //androidTest.java.srcDir 'javatests'
   }
 
   compileOptions {

@@ -1,16 +1,19 @@
 sudo: required
 language: generic
 
+dist: trusty
+jdk: openjdk9
+
 env:
   global:
   - ABI="google_apis;armeabi-v7a"
   - BUILD_TOOLS_VERSION=28.0.3
   - ADB_INSTALL_TIMEOUT=25
   - QEMU_AUDIO_DRV=none
+  - TERM=dumb
   matrix:
     - EMULATOR_API=16
     - EMULATOR_API=19
-    - EMULATOR_API=21
     - EMULATOR_API=24
 
 install:
@@ -33,11 +36,10 @@ install:
 
 before_script:
   - echo no | avdmanager create avd --force -n test -k "system-images;android-$EMULATOR_API;$ABI"
-  - ./gradlew assembleDebugAndroidTest -PdisablePreDex --continue --stacktrace
   - $ANDROID_HOME/emulator/emulator -avd test -no-window &
   - bash android-wait-for-emulator
   - adb shell input keyevent 82
 
 script:
-  - ./gradlew test -PdisablePreDex --stacktrace
-  - ./gradlew connectedAndroidTest -PdisablePreDex --stacktrace
+  - ./gradlew test -PdisablePreDex
+  - ./gradlew connectedAndroidTest -PdisablePreDex
