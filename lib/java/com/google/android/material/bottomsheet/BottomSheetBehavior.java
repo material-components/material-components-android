@@ -66,14 +66,9 @@ import java.util.Map;
  * An interaction behavior plugin for a child view of {@link CoordinatorLayout} to make it work as a
  * bottom sheet.
  *
- * <p>For a persistent bottom sheet, to send useful accessibility events, use {@link
- * ViewCompat#setAccessibilityPaneTitle(View, CharSequence)} to set a title when in an expanded
- * state, and to remove the title when in a collapsed state. This can be tracked in {@link
- * BottomSheetCallback}.
- *
- * <p>For BottomSheetDialog use {@link BottomSheetDialog#setTitle(int)}, and for
+ * <p> To send useful accessibility events, set a title on bottom sheets that are windows or are
+ * window-like. For BottomSheetDialog use {@link BottomSheetDialog#setTitle(int)}, and for
  * BottomSheetDialogFragment use {@link ViewCompat#setAccessibilityPaneTitle(View, CharSequence)}.
- * The titles need to only be set once here as the views behave like windows in all states.
  */
 public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behavior<V> {
 
