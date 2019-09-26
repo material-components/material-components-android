@@ -64,6 +64,7 @@
   <public name="hintEnabled" type="attr"/>
   <public name="hintTextAppearance" type="attr"/>
   <public name="hintTextColor" type="attr"/>
+  <public name="hintTextErrorColor" format="color"/>
   <public name="startIconDrawable" type="attr"/>
   <public name="startIconContentDescription" type="attr"/>
   <public name="startIconCheckable" type="attr"/>
