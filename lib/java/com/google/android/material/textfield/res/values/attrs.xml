@@ -191,7 +191,8 @@
     <!-- The color to use for the box's stroke when in outline box mode. -->
     <attr name="boxStrokeColor" format="color"/>
     <!-- The color to use for the box's stroke in outline box mode when an error
-         is being displayed. Defaults to errorTextColor if not set. -->
+         is being displayed. If not set, it defaults to errorTextColor if on
+         error state, or to counterOverflowTextColor if on overflow state. -->
     <attr name="boxStrokeErrorColor" format="color"/>
     <!-- The color to use for the box's background color when in filled box mode. -->
     <attr name="boxBackgroundColor" format="color"/>

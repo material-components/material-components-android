@@ -3495,25 +3495,17 @@ public class TextInputLayout extends LinearLayout {
     } else if (indicatorViewController.errorShouldBeShown()) {
       // TODO(b/124130133): remove check for boxBackgroundMode
       if (boxBackgroundMode == BOX_BACKGROUND_OUTLINE && strokeErrorColor != null) {
-        int defaultStrokeErrorColor = strokeErrorColor.getDefaultColor();
-        int hoveredStrokeErrorColor =
-            strokeErrorColor.getColorForState(
-                new int[] {android.R.attr.state_hovered}, defaultStrokeErrorColor);
-        int focusedStrokeErrorColor =
-            strokeErrorColor.getColorForState(
-                new int[] {android.R.attr.state_activated}, defaultStrokeErrorColor);
-        if (hasFocus) {
-          boxStrokeColor = focusedStrokeErrorColor;
-        } else if (isHovered) {
-          boxStrokeColor = hoveredStrokeErrorColor;
-        } else {
-          boxStrokeColor = defaultStrokeErrorColor;
-        }
+        updateStrokeErrorColor(hasFocus, isHovered);
       } else {
         boxStrokeColor = indicatorViewController.getErrorViewCurrentTextColor();
       }
     } else if (counterOverflowed && counterView != null) {
-      boxStrokeColor = counterView.getCurrentTextColor();
+      // TODO(b/124130133): remove check for boxBackgroundMode
+      if (boxBackgroundMode == BOX_BACKGROUND_OUTLINE && strokeErrorColor != null) {
+        updateStrokeErrorColor(hasFocus, isHovered);
+      } else {
+        boxStrokeColor = counterView.getCurrentTextColor();
+      }
     } else if (hasFocus) {
       boxStrokeColor = focusedStrokeColor;
     } else if (isHovered) {
@@ -3557,6 +3549,23 @@ public class TextInputLayout extends LinearLayout {
     }
 
     applyBoxAttributes();
+  }
+
+  private void updateStrokeErrorColor(boolean hasFocus, boolean isHovered) {
+    int defaultStrokeErrorColor = strokeErrorColor.getDefaultColor();
+    int hoveredStrokeErrorColor =
+        strokeErrorColor.getColorForState(
+            new int[] {android.R.attr.state_hovered}, defaultStrokeErrorColor);
+    int focusedStrokeErrorColor =
+        strokeErrorColor.getColorForState(
+            new int[] {android.R.attr.state_activated}, defaultStrokeErrorColor);
+    if (hasFocus) {
+      boxStrokeColor = focusedStrokeErrorColor;
+    } else if (isHovered) {
+      boxStrokeColor = hoveredStrokeErrorColor;
+    } else {
+      boxStrokeColor = defaultStrokeErrorColor;
+    }
   }
 
   private void setErrorIconVisible(boolean errorIconVisible) {
