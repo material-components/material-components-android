@@ -18,7 +18,6 @@ package com.google.android.material.card;
 
 import com.google.android.material.R;
 
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static com.google.android.material.internal.ThemeEnforcement.createThemedContext;
 
 import android.content.Context;
@@ -38,11 +37,9 @@ import androidx.appcompat.content.res.AppCompatResources;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Checkable;
-import android.widget.FrameLayout;
 import androidx.cardview.widget.CardView;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.shape.MaterialShapeDrawable;
@@ -98,7 +95,6 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
   private static final String LOG_TAG = "MaterialCardView";
 
   @NonNull private final MaterialCardViewHelper cardViewHelper;
-  @NonNull private final FrameLayout contentLayout;
 
   /**
    * Keep track of when {@link CardView} is done initializing because we don't want to use the
@@ -128,13 +124,8 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
         ThemeEnforcement.obtainStyledAttributes(
             context, attrs, R.styleable.MaterialCardView, defStyleAttr, DEF_STYLE_RES);
 
-    // Add a content view to allow the border to be drawn outside the outline.
-    contentLayout = new FrameLayout(context);
-    super.addView(contentLayout, -1, new LayoutParams(MATCH_PARENT, MATCH_PARENT));
-
     // Loads and sets background drawable attributes.
     cardViewHelper = new MaterialCardViewHelper(this, attrs, defStyleAttr, DEF_STYLE_RES);
-    // Get the card background color and content padding that CardView read from the attributes.
     cardViewHelper.setCardBackgroundColor(super.getCardBackgroundColor());
     cardViewHelper.setUserContentPadding(
         super.getContentPaddingLeft(),
@@ -143,10 +134,7 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
         super.getContentPaddingBottom());
     // Zero out the AppCompat CardView's content padding, the padding will be added to the internal
     // contentLayout.
-    super.setContentPadding(0, 0, 0, 0);
     cardViewHelper.loadFromAttributes(attributes);
-    updateContentLayout();
-
     attributes.recycle();
   }
 
@@ -164,12 +152,6 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
     super.onInitializeAccessibilityEvent(accessibilityEvent);
     accessibilityEvent.setClassName(CardView.class.getName());
     accessibilityEvent.setChecked(isChecked());
-  }
-
-  private void updateContentLayout() {
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      cardViewHelper.createOutlineProvider(contentLayout);
-    }
   }
 
   @Override
@@ -216,7 +198,6 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
    */
   public void setStrokeWidth(@Dimension int strokeWidth) {
     cardViewHelper.setStrokeWidth(strokeWidth);
-    updateContentLayout();
   }
 
   /** Returns the stroke width of this card view. */
@@ -229,7 +210,6 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
   public void setRadius(float radius) {
     super.setRadius(radius);
     cardViewHelper.setCornerRadius(radius);
-    updateContentLayout();
   }
 
   @Override
@@ -267,6 +247,10 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
     cardViewHelper.setUserContentPadding(left, top, right, bottom);
   }
 
+  void setAncestorContentPadding(int left, int top, int right, int bottom) {
+    super.setContentPadding(left, top, right, bottom);
+  }
+
   @Override
   public int getContentPaddingLeft() {
     return cardViewHelper.getUserContentPadding().left;
@@ -301,16 +285,6 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
   @Override
   public ColorStateList getCardBackgroundColor() {
     return cardViewHelper.getCardBackgroundColor();
-  }
-
-  @Override
-  public void setLayoutParams(ViewGroup.LayoutParams params) {
-    super.setLayoutParams(params);
-    LayoutParams layoutParams = (LayoutParams) contentLayout.getLayoutParams();
-    if (params instanceof LayoutParams) {
-      layoutParams.gravity = ((LayoutParams) params).gravity;
-      contentLayout.requestLayout();
-    }
   }
 
   @Override
@@ -353,41 +327,6 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
   }
 
   @Override
-  public void addView(View child, int index, ViewGroup.LayoutParams params) {
-    contentLayout.addView(child, index, params);
-  }
-
-  @Override
-  public void removeAllViews() {
-    contentLayout.removeAllViews();
-  }
-
-  @Override
-  public void removeView(View view) {
-    contentLayout.removeView(view);
-  }
-
-  @Override
-  public void removeViewInLayout(View view) {
-    contentLayout.removeViewInLayout(view);
-  }
-
-  @Override
-  public void removeViewsInLayout(int start, int count) {
-    contentLayout.removeViewsInLayout(start, count);
-  }
-
-  @Override
-  public void removeViewAt(int index) {
-    contentLayout.removeViewAt(index);
-  }
-
-  @Override
-  public void removeViews(int start, int count) {
-    contentLayout.removeViews(start, count);
-  }
-
-  @Override
   public void setBackground(Drawable drawable) {
     setBackgroundDrawable(drawable);
   }
@@ -407,10 +346,6 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
   /** Allows {@link MaterialCardViewHelper} to set the background. */
   void setBackgroundInternal(Drawable drawable) {
     super.setBackgroundDrawable(drawable);
-  }
-
-  void setContentLayoutPadding(int left, int top, int right, int bottom) {
-    contentLayout.setPadding(left, top, right, bottom);
   }
 
   @Override
