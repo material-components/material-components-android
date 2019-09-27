@@ -26,7 +26,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
+import android.graphics.Paint.Style;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.PorterDuffXfermode;
@@ -253,27 +253,26 @@ public class Slider extends View {
     processAttributes(context, attrs, defStyleAttr);
 
     inactiveTrackPaint = new Paint();
-    inactiveTrackPaint.setStyle(Paint.Style.STROKE);
+    inactiveTrackPaint.setStyle(Style.STROKE);
     inactiveTrackPaint.setStrokeWidth(lineHeight);
 
     activeTrackPaint = new Paint();
-    activeTrackPaint.setStyle(Paint.Style.STROKE);
+    activeTrackPaint.setStyle(Style.STROKE);
     activeTrackPaint.setStrokeWidth(lineHeight);
 
     thumbPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    thumbPaint.setStyle(Paint.Style.FILL);
+    thumbPaint.setStyle(Style.FILL);
     thumbPaint.setXfermode(new PorterDuffXfermode(Mode.CLEAR));
 
     haloPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    haloPaint.setStyle(Paint.Style.FILL);
+    haloPaint.setStyle(Style.FILL);
 
     ticksPaint = new Paint();
-    ticksPaint.setStyle(Paint.Style.STROKE);
+    ticksPaint.setStyle(Style.STROKE);
     ticksPaint.setStrokeWidth(lineHeight);
 
     label = context.getResources().getDrawable(R.drawable.mtrl_slider_label);
-    label.setColorFilter(
-        new PorterDuffColorFilter(getColorForState(thumbColor), PorterDuff.Mode.MULTIPLY));
+    label.setColorFilter(new PorterDuffColorFilter(getColorForState(thumbColor), Mode.MULTIPLY));
 
     labelTextPaint = new Paint();
     labelTextPaint.setTextSize(labelTextSize);
