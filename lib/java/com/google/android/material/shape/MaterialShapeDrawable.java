@@ -458,8 +458,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
   @NonNull
   protected RectF getBoundsAsRectF() {
-    Rect bounds = getBounds();
-    rectF.set(bounds.left, bounds.top, bounds.right, bounds.bottom);
+    rectF.set(getBounds());
     return rectF;
   }
 
@@ -1260,10 +1259,9 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
   @NonNull
   private RectF getBoundsInsetByStroke() {
-    RectF rectF = getBoundsAsRectF();
+    insetRectF.set(getBoundsAsRectF());
     float inset = getStrokeInsetLength();
-    insetRectF.set(
-        rectF.left + inset, rectF.top + inset, rectF.right - inset, rectF.bottom - inset);
+    insetRectF.inset(inset, inset);
     return insetRectF;
   }
 
