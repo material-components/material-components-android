@@ -138,10 +138,10 @@ public class BottomSheetMainDemoFragment extends DemoFragment {
 
     TextView dialogText = bottomSheetInternal.findViewById(R.id.bottomsheet_state);
     BottomSheetBehavior.from(bottomSheetInternal)
-        .setBottomSheetCallback(createBottomSheetCallback(dialogText));
+        .addBottomSheetCallback(createBottomSheetCallback(dialogText));
     TextView bottomSheetText = view.findViewById(R.id.cat_persistent_bottomsheet_state);
     BottomSheetBehavior.from(bottomSheetPersistent)
-        .setBottomSheetCallback(createBottomSheetCallback(bottomSheetText));
+        .addBottomSheetCallback(createBottomSheetCallback(bottomSheetText));
 
     Button button1 = view.findViewById(R.id.cat_bottomsheet_button);
     button1.setOnClickListener(

@@ -140,15 +140,6 @@ public class BottomSheetDialog extends AppCompatDialog {
     if (!dismissWithAnimation || behavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
       super.cancel();
     } else {
-
-      // If the default callback was overridden, reset to the default callback behavior which will
-      // cancel then set the state is set to STATE_HIDDEN. This will prevent a custom callback from
-      // recieving the state change, however this is consistent with previous behavior where
-      // cancel() would just call through to super.
-      if (behavior.getBottomSheetCallback() != bottomSheetCallback) {
-        behavior.setBottomSheetCallback(bottomSheetCallback);
-      }
-
       behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
   }
@@ -198,7 +189,7 @@ public class BottomSheetDialog extends AppCompatDialog {
 
       FrameLayout bottomSheet = (FrameLayout) container.findViewById(R.id.design_bottom_sheet);
       behavior = BottomSheetBehavior.from(bottomSheet);
-      behavior.setBottomSheetCallback(bottomSheetCallback);
+      behavior.addBottomSheetCallback(bottomSheetCallback);
       behavior.setHideable(cancelable);
     }
     return container;
@@ -290,6 +281,10 @@ public class BottomSheetDialog extends AppCompatDialog {
       }
     }
     return themeId;
+  }
+
+  void removeDefaultCallback() {
+    behavior.removeBottomSheetCallback(bottomSheetCallback);
   }
 
   @NonNull

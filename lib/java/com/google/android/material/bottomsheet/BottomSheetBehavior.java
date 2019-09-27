@@ -46,6 +46,7 @@ import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.Accessibilit
 import androidx.core.view.accessibility.AccessibilityViewCommand;
 import androidx.customview.widget.ViewDragHelper;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -59,6 +60,7 @@ import com.google.android.material.resources.MaterialResources;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -182,6 +184,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   @Retention(RetentionPolicy.SOURCE)
   public @interface SaveFlags {}
 
+  private static final String TAG = "BottomSheetBehavior";
+
   @SaveFlags private int saveFlags = SAVE_NONE;
 
   private static final float HIDE_THRESHOLD = 0.5f;
@@ -250,7 +254,9 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   @Nullable WeakReference<View> nestedScrollingChildRef;
 
-  private BottomSheetCallback callback;
+  @NonNull private final ArrayList<BottomSheetCallback> callbacks = new ArrayList<>();
+
+  private BottomSheetCallback callback; // Maintained for backward compatibility
 
   @Nullable private VelocityTracker velocityTracker;
 
@@ -872,19 +878,57 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    * Sets a callback to be notified of bottom sheet events.
    *
    * @param callback The callback to notify when bottom sheet events occur.
+   * @deprecated use {@link #addBottomSheetCallback(BottomSheetCallback)} and {@link
+   *     #removeBottomSheetCallback(BottomSheetCallback)} instead
    */
+  @Deprecated
   public void setBottomSheetCallback(BottomSheetCallback callback) {
+    Log.w(
+        TAG,
+        "BottomSheetBehavior now supports multiple callbacks. `setBottomSheetCallback()` removes"
+            + " all existing callbacks, including ones set internally by library authors, which"
+            + " may result in unintended behavior. This may change in the future. Please use"
+            + " `addBottomSheetCallback()` and `removeBottomSheetCallback()` instead to set your"
+            + " own callbacks.");
+    callbacks.clear();
     this.callback = callback;
+    if (callback != null) {
+      callbacks.add(callback);
+    }
   }
 
   /**
-   * Gets the attached {@link BottomSheetCallback} that will be notified of bottom sheet events.
+   * Gets the {@link BottomSheetCallback} that was attached with {@link
+   * #setBottomSheetCallback(BottomSheetCallback)}.
    *
    * @return {@link BottomSheetCallback} The attached callback that will be notified when bottom
    *     sheet events occur.
+   * @deprecated use {@link #addBottomSheetCallback(BottomSheetCallback)} and {@link
+   *     #removeBottomSheetCallback(BottomSheetCallback)} instead
    */
+  @Deprecated
   public BottomSheetCallback getBottomSheetCallback() {
     return callback;
+  }
+
+  /**
+   * Adds a callback to be notified of bottom sheet events.
+   *
+   * @param callback The callback to notify when bottom sheet events occur.
+   */
+  public void addBottomSheetCallback(@NonNull BottomSheetCallback callback) {
+    if (!callbacks.contains(callback)) {
+      callbacks.add(callback);
+    }
+  }
+
+  /**
+   * Removes a previously added callback.
+   *
+   * @param callback The callback to remove.
+   */
+  public void removeBottomSheetCallback(@NonNull BottomSheetCallback callback) {
+    callbacks.remove(callback);
   }
 
   /**
@@ -965,8 +1009,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     }
 
     updateDrawableForTargetState(state);
-    if (callback != null) {
-      callback.onStateChanged(bottomSheet, state);
+    for (int i = 0; i < callbacks.size(); i++) {
+      callbacks.get(i).onStateChanged(bottomSheet, state);
     }
     updateAccessibilityActions();
   }
@@ -1296,13 +1340,13 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   void dispatchOnSlide(int top) {
     View bottomSheet = viewRef.get();
-    if (bottomSheet != null && callback != null) {
-      if (top > collapsedOffset) {
-        callback.onSlide(
-            bottomSheet, (float) (collapsedOffset - top) / (parentHeight - collapsedOffset));
-      } else {
-        callback.onSlide(
-            bottomSheet, (float) (collapsedOffset - top) / (collapsedOffset - getExpandedOffset()));
+    if (bottomSheet != null && !callbacks.isEmpty()) {
+      float slideOffset =
+          (top > collapsedOffset)
+              ? (float) (collapsedOffset - top) / (parentHeight - collapsedOffset)
+              : (float) (collapsedOffset - top) / (collapsedOffset - getExpandedOffset());
+      for (int i = 0; i < callbacks.size(); i++) {
+        callbacks.get(i).onSlide(bottomSheet, slideOffset);
       }
     }
   }

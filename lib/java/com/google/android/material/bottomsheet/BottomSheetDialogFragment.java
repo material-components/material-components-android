@@ -16,8 +16,6 @@
 
 package com.google.android.material.bottomsheet;
 
-import com.google.android.material.R;
-
 import android.app.Dialog;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -69,41 +67,27 @@ public class BottomSheetDialogFragment extends AppCompatDialogFragment {
    * false otherwise.
    */
   private boolean tryDismissWithAnimation(boolean allowingStateLoss) {
-    BottomSheetBehavior<View> behavior = getBottomSheetBehavior();
-    if (behavior != null && behavior.isHideable() && getDialog().getDismissWithAnimation()) {
-      dismissWithAnimation(behavior, allowingStateLoss);
-      return true;
+    BottomSheetDialog dialog = getDialog();
+    if (dialog != null) {
+      BottomSheetBehavior<?> behavior = dialog.getBehavior();
+      if (behavior != null && behavior.isHideable() && getDialog().getDismissWithAnimation()) {
+        dismissWithAnimation(behavior, allowingStateLoss);
+        return true;
+      }
     }
 
     return false;
   }
 
-  @Nullable
-  private BottomSheetBehavior<View> getBottomSheetBehavior() {
-    Dialog dialog = getDialog();
-    if (dialog != null) {
-      View bottomSheet = dialog.findViewById(R.id.design_bottom_sheet);
-      if (bottomSheet != null) {
-        return BottomSheetBehavior.from(bottomSheet);
-      }
-    }
-    return null;
-  }
-
   private void dismissWithAnimation(
-      @NonNull BottomSheetBehavior<View> behavior, boolean allowingStateLoss) {
+      @NonNull BottomSheetBehavior<?> behavior, boolean allowingStateLoss) {
     waitingForDismissAllowingStateLoss = allowingStateLoss;
 
     if (behavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
       dismissAfterAnimation();
     } else {
-      // Wrap the old callback in a BottomSheetDismissCallback to pass along the state change.
-      if (!(behavior.getBottomSheetCallback() instanceof BottomSheetDismissCallback)) {
-        BottomSheetDismissCallback dismissCallback =
-            new BottomSheetDismissCallback(behavior.getBottomSheetCallback());
-        behavior.setBottomSheetCallback(dismissCallback);
-      }
-
+      getDialog().removeDefaultCallback();
+      behavior.addBottomSheetCallback(new BottomSheetDismissCallback());
       behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
   }
@@ -118,24 +102,14 @@ public class BottomSheetDialogFragment extends AppCompatDialogFragment {
 
   private class BottomSheetDismissCallback extends BottomSheetBehavior.BottomSheetCallback {
 
-    private final BottomSheetBehavior.BottomSheetCallback originalCallback;
-
-    public BottomSheetDismissCallback(BottomSheetBehavior.BottomSheetCallback originalCallback) {
-      this.originalCallback = originalCallback;
-    }
-
     @Override
     public void onStateChanged(@NonNull View bottomSheet, int newState) {
       if (newState == BottomSheetBehavior.STATE_HIDDEN) {
         dismissAfterAnimation();
       }
-
-      originalCallback.onStateChanged(bottomSheet, newState);
     }
 
     @Override
-    public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-      originalCallback.onSlide(bottomSheet, slideOffset);
-    }
+    public void onSlide(@NonNull View bottomSheet, float slideOffset) {}
   }
 }
