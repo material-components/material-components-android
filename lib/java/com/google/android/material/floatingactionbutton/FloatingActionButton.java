@@ -77,6 +77,7 @@ import com.google.android.material.internal.VisibilityAwareImageButton;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shadow.ShadowViewDelegate;
 import com.google.android.material.shape.ShapeAppearanceModel;
+import com.google.android.material.shape.Shapeable;
 import com.google.android.material.stateful.ExtendableSavedState;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -99,7 +100,10 @@ import java.util.List;
  */
 @CoordinatorLayout.DefaultBehavior(FloatingActionButton.Behavior.class)
 public class FloatingActionButton extends VisibilityAwareImageButton
-    implements TintableBackgroundView, TintableImageSourceView, ExpandableTransformationWidget {
+    implements TintableBackgroundView,
+        TintableImageSourceView,
+        ExpandableTransformationWidget,
+        Shapeable {
 
   private static final String LOG_TAG = "FloatingActionButton";
   private static final String EXPANDABLE_WIDGET_HELPER_KEY = "expandableWidgetHelper";
@@ -513,12 +517,15 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   }
 
   /** Sets the {@link ShapeAppearanceModel} for this {@link FloatingActionButton}. */
-  public void setShapeAppearance(@NonNull ShapeAppearanceModel shapeAppearance) {
+  @Override
+  public void setShapeAppearanceModel(@NonNull ShapeAppearanceModel shapeAppearance) {
     getImpl().setShapeAppearance(shapeAppearance, isUsingDefaultCorner(shapeAppearance));
   }
 
   /** Returns the {@link ShapeAppearanceModel} for this {@link FloatingActionButton}. */
-  public ShapeAppearanceModel getShapeAppearance() {
+  @Override
+  @NonNull
+  public ShapeAppearanceModel getShapeAppearanceModel() {
     return checkNotNull(getImpl().getShapeAppearance());
   }
 
