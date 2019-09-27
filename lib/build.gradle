@@ -187,22 +187,21 @@ task generateJdiffReport(type: Javadoc) {
   }
 }
 
+def R_CLASS_PATH = "build/generated/not_namespaced_r_class_sources/releaseUnitTest/processReleaseUnitTestResources/r/com/google/android/material/R.java"
 afterEvaluate {
-  addResources([generateJavadocs, generateApiXml])
-}
-
-def addResources(tasks) {
-  tasks.each {
-    it.dependsOn(':lib:processReleaseUnitTestResources')
-    it.source += "build/generated/not_namespaced_r_class_sources/releaseUnitTest/processReleaseUnitTestResources/r/com/google/android/material/R.java"
+  [generateJavadocs, generateApiXml].forEach { task ->
+    task.dependsOn(':lib:processReleaseUnitTestResources')
+    task.source += R_CLASS_PATH
 
     def releaseVariant = android.libraryVariants.find { it.name == 'release' }
-    it.classpath += files(android.libraryVariants.collect { variant ->
-      variant.javaCompileProvider.get().classpath.files
-    })
-    it.classpath += releaseVariant.getCompileClasspath(null)
-    it.classpath += it.project.files(releaseVariant.javaCompileProvider.get().destinationDir)
-    it.source += releaseVariant.javaCompileProvider.get().source
+    if (releaseVariant == null) {
+      return
+    }
+    releaseVariant.javaCompileProvider.configure { javaCompileProvider ->
+      task.classpath += releaseVariant.getCompileClasspath(null)
+      task.classpath += task.project.files(javaCompileProvider.destinationDir)
+      task.source += javaCompileProvider.source
+    }
   }
 }
 
