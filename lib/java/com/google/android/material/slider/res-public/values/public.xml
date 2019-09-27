@@ -25,5 +25,8 @@
   <public name="activeTickColor" type="attr" />
   <public name="inactiveTickColor" type="attr" />
   <public name="labelColor" type="attr" />
+  <public name="thumbRadius" format="dimension" />
+  <public name="thumbElevation" format="dimension" />
+  <public name="haloRadius" format="dimension" />
   <public name="Widget.MaterialComponents.Slider" type="style"/>
 </resources>
