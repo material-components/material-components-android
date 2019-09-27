@@ -752,7 +752,9 @@ public class Slider extends View {
     activeTrackPaint.setColor(getColorForState(activeTrackColor));
     ticksPaint.setColor(getColorForState(tickColor));
     labelTextPaint.setColor(getColorForState(textColor));
-    thumbDrawable.setState(getDrawableState());
+    if (thumbDrawable.isStateful()) {
+      thumbDrawable.setState(getDrawableState());
+    }
     haloPaint.setColor(getColorForState(thumbColor));
     haloPaint.setAlpha(HALO_ALPHA);
   }
