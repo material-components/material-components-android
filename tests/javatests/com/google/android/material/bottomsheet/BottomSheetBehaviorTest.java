@@ -82,7 +82,7 @@ public class BottomSheetBehaviorTest {
     private IdlingResource.ResourceCallback resourceCallback;
 
     public Callback(BottomSheetBehavior behavior) {
-      behavior.setBottomSheetCallback(this);
+      behavior.addBottomSheetCallback(this);
       int state = behavior.getState();
       isIdle = isIdleState(state);
     }

@@ -196,7 +196,7 @@ public class BottomSheetDialogTest {
     final BottomSheetBehavior.BottomSheetCallback callback =
         mock(BottomSheetBehavior.BottomSheetCallback.class);
     BottomSheetBehavior.from(dialog.findViewById(R.id.design_bottom_sheet))
-        .setBottomSheetCallback(callback);
+        .addBottomSheetCallback(callback);
     // Show the same dialog again.
     activityTestRule.runOnUiThread(() -> dialog.show());
     verify(callback, timeout(3000))
