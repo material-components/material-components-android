@@ -143,7 +143,7 @@ public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBack
   }
 
   private void setUpBottomAppBarShapeAppearance() {
-    ShapeAppearanceModel fabShapeAppearanceModel = fab.getShapeAppearance();
+    ShapeAppearanceModel fabShapeAppearanceModel = fab.getShapeAppearanceModel();
     boolean cutCornersFab =
         fabShapeAppearanceModel.getBottomLeftCorner() instanceof CutCornerTreatment
             && fabShapeAppearanceModel.getBottomRightCorner() instanceof CutCornerTreatment;

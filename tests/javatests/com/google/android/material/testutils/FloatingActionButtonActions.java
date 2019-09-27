@@ -224,7 +224,7 @@ public class FloatingActionButtonActions {
       @Override
       public void perform(UiController uiController, View view) {
         FloatingActionButton fab = (FloatingActionButton) view;
-        fab.setShapeAppearance(new ShapeAppearanceModel());
+        fab.setShapeAppearanceModel(new ShapeAppearanceModel());
         fab.setShadowPaddingEnabled(false);
         fab.setEnsureMinTouchTargetSize(false);
       }
