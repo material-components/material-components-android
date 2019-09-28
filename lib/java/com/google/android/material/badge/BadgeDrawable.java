@@ -187,6 +187,9 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     @PluralsRes private int contentDescriptionQuantityStrings;
     @BadgeGravity private int badgeGravity;
 
+    private float badgeHorizontalOffset;
+    private float badgeVerticalOffset;
+
     public SavedState(@NonNull Context context) {
       // If the badge text color attribute was not explicitly set, use the text color specified in
       // the TextAppearance.
@@ -207,6 +210,8 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       contentDescriptionNumberless = in.readString();
       contentDescriptionQuantityStrings = in.readInt();
       badgeGravity = in.readInt();
+      badgeHorizontalOffset = in.readFloat();
+      badgeVerticalOffset = in.readFloat();
     }
 
     public static final Creator<SavedState> CREATOR =
@@ -239,6 +244,8 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       dest.writeString(contentDescriptionNumberless.toString());
       dest.writeInt(contentDescriptionQuantityStrings);
       dest.writeInt(badgeGravity);
+      dest.writeFloat(badgeHorizontalOffset);
+      dest.writeFloat(badgeVerticalOffset);
     }
   }
 
@@ -321,6 +328,9 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     setBadgeTextColor(savedState.badgeTextColor);
 
     setBadgeGravity(savedState.badgeGravity);
+
+    setBadgeHorizontalOffset(savedState.badgeHorizontalOffset);
+    setBadgeVerticalOffset(savedState.badgeVerticalOffset);
   }
 
   private void loadDefaultStateFromAttributes(
@@ -687,12 +697,12 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     switch (savedState.badgeGravity) {
       case BOTTOM_END:
       case BOTTOM_START:
-        badgeCenterY = anchorRect.bottom;
+        badgeCenterY = anchorRect.bottom - savedState.badgeVerticalOffset;
         break;
       case TOP_END:
       case TOP_START:
       default:
-        badgeCenterY = anchorRect.top;
+        badgeCenterY = anchorRect.top + savedState.badgeVerticalOffset;
         break;
     }
 
@@ -720,16 +730,16 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       case TOP_START:
         badgeCenterX =
             ViewCompat.getLayoutDirection(anchorView) == View.LAYOUT_DIRECTION_LTR
-                ? anchorRect.left - halfBadgeWidth + inset
-                : anchorRect.right + halfBadgeWidth - inset;
+                ? anchorRect.left - halfBadgeWidth + inset + savedState.badgeHorizontalOffset
+                : anchorRect.right + halfBadgeWidth - inset - savedState.badgeHorizontalOffset;
         break;
       case BOTTOM_END:
       case TOP_END:
       default:
         badgeCenterX =
             ViewCompat.getLayoutDirection(anchorView) == View.LAYOUT_DIRECTION_LTR
-                ? anchorRect.right + halfBadgeWidth - inset
-                : anchorRect.left - halfBadgeWidth + inset;
+                ? anchorRect.right + halfBadgeWidth - inset - savedState.badgeHorizontalOffset
+                : anchorRect.left - halfBadgeWidth + inset + savedState.badgeHorizontalOffset;
         break;
     }
   }
@@ -766,4 +776,31 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   private void updateMaxBadgeNumber() {
     maxBadgeNumber = (int) Math.pow(10.0d, (double) getMaxCharacterCount() - 1) - 1;
   }
+
+  /**
+   * Set this to move badge horizontal
+   * @param offset badge's offset at horizontal
+   */
+  public void setBadgeHorizontalOffset(float offset) {
+    savedState.badgeHorizontalOffset = offset;
+    updateCenterAndBounds();
+  }
+
+  public float getBadgeHorizontalOffset() {
+    return savedState.badgeHorizontalOffset;
+  }
+
+  /**
+   * Set this to move badge at vertical
+   * @param offset badge's offset at vertical
+   */
+  public void setBadgeVerticalOffset(float offset) {
+    savedState.badgeVerticalOffset = offset;
+    updateCenterAndBounds();
+  }
+
+  public float getBadgeVerticalOffset() {
+    return savedState.badgeVerticalOffset;
+  }
+
 }
