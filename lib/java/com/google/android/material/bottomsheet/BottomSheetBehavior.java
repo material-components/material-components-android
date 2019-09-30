@@ -774,6 +774,11 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       throw new IllegalArgumentException("ratio must be a float value between 0 and 1");
     }
     this.halfExpandedRatio = ratio;
+    // If sheet is already laid out, recalculate the half expanded offset based on new setting.
+    // Otherwise, let onLayoutChild handle this later.
+    if (viewRef != null) {
+      calculateHalfExpandedOffset();
+    }
   }
 
   /**
