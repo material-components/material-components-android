@@ -425,7 +425,7 @@ public class TextInputLayoutActions {
     };
   }
 
-  public static ViewAction setBoxStrokeErrorColor(final ColorStateList strokeErrorColor) {
+  public static ViewAction setBoxStrokeErrorColor(@ColorInt final ColorStateList strokeErrorColor) {
     return new ViewAction() {
       @Override
       public Matcher<View> getConstraints() {
@@ -577,26 +577,6 @@ public class TextInputLayoutActions {
       public void perform(UiController uiController, View view) {
         TextInputLayout layout = (TextInputLayout) view;
         layout.setHintTextAppearance(resId);
-      }
-    };
-  }
-
-  public static ViewAction setHintTextErrorColor(final ColorStateList hintTextErrorColor) {
-    return new ViewAction() {
-      @Override
-      public Matcher<View> getConstraints() {
-        return isAssignableFrom(TextInputLayout.class);
-      }
-
-      @Override
-      public String getDescription() {
-        return "Sets the hint/label error text color";
-      }
-
-      @Override
-      public void perform(UiController uiController, View view) {
-        TextInputLayout layout = (TextInputLayout) view;
-        layout.setHintTextErrorColor(hintTextErrorColor);
       }
     };
   }

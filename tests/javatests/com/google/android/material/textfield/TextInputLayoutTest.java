@@ -42,7 +42,6 @@ import static com.google.android.material.testutils.TextInputLayoutActions.setHe
 import static com.google.android.material.testutils.TextInputLayoutActions.setHelperTextEnabled;
 import static com.google.android.material.testutils.TextInputLayoutActions.setHint;
 import static com.google.android.material.testutils.TextInputLayoutActions.setHintTextAppearance;
-import static com.google.android.material.testutils.TextInputLayoutActions.setHintTextErrorColor;
 import static com.google.android.material.testutils.TextInputLayoutActions.setTypeface;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
@@ -467,27 +466,6 @@ public class TextInputLayoutTest {
     @ColorInt int errorColor = layout.getErrorTextCurrentColor();
 
     assertEquals(hintColor, errorColor);
-  }
-
-  @Test
-  public void testCollapsedHintChangesErrorColor() {
-    final Activity activity = activityTestRule.getActivity();
-    final TextInputLayout layout = activity.findViewById(R.id.textinput);
-    @ColorInt int hintColor;
-    ColorStateList cyan = new ColorStateList(new int[][] {new int[] {}}, new int[] {Color.CYAN});
-    ColorStateList green = new ColorStateList(new int[][] {new int[] {}}, new int[] {Color.GREEN});
-    onView(withId(R.id.textinput)).perform(setError(ERROR_MESSAGE_1));
-
-    // Change the error color to cyan.
-    onView(withId(R.id.textinput)).perform(setHintTextErrorColor(cyan));
-    // Check that the error color is cyan.
-    hintColor = layout.getHintCurrentCollapsedTextColor();
-    assertEquals(hintColor, cyan.getDefaultColor());
-    // Change the error color to green.
-    onView(withId(R.id.textinput)).perform(setHintTextErrorColor(green));
-    // Check that the error color is green.
-    hintColor = layout.getHintCurrentCollapsedTextColor();
-    assertEquals(hintColor, green.getDefaultColor());
   }
 
   @Test

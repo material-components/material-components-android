@@ -43,7 +43,6 @@
     <item name="errorTextColor">@null</item>
     <item name="helperTextTextColor">@null</item>
     <item name="hintTextColor">@null</item>
-    <item name="hintTextErrorColor">@null</item>
     <item name="prefixTextColor">@null</item>
     <item name="suffixTextColor">@null</item>
 
@@ -82,7 +81,6 @@
     <item name="helperTextTextColor">@color/mtrl_indicator_text_color</item>
     <!-- The color of the label when it is collapsed and the text field is active -->
     <item name="hintTextColor">?attr/colorPrimary</item>
-    <item name="hintTextErrorColor">@color/mtrl_error</item>
     <item name="prefixTextColor">@color/mtrl_indicator_text_color</item>
     <item name="suffixTextColor">@color/mtrl_indicator_text_color</item>
     <!-- The color of the label in all other text field states (such as resting and disabled) -->

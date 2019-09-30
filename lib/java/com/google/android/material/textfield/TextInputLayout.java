@@ -376,7 +376,6 @@ public class TextInputLayout extends LinearLayout {
   private ColorStateList errorIconTintList;
 
   private ColorStateList defaultHintTextColor;
-  @Nullable private ColorStateList hintTextErrorColor;
   private ColorStateList focusedTextColor;
 
   @ColorInt private final int defaultStrokeColor;
@@ -544,11 +543,6 @@ public class TextInputLayout extends LinearLayout {
     if (a.hasValue(R.styleable.TextInputLayout_android_textColorHint)) {
       defaultHintTextColor =
           focusedTextColor = a.getColorStateList(R.styleable.TextInputLayout_android_textColorHint);
-    }
-    if (a.hasValue(R.styleable.TextInputLayout_hintTextErrorColor)) {
-      setHintTextErrorColor(
-          MaterialResources.getColorStateList(
-              context, a, R.styleable.TextInputLayout_hintTextErrorColor));
     }
 
     ColorStateList boxStrokeColorStateList =
@@ -1269,18 +1263,9 @@ public class TextInputLayout extends LinearLayout {
       collapsingTextHelper.setCollapsedTextColor(ColorStateList.valueOf(disabledColor));
       collapsingTextHelper.setExpandedTextColor(ColorStateList.valueOf(disabledColor));
     } else if (errorShouldBeShown) {
-      if (hintTextErrorColor != null) {
-        collapsingTextHelper.setCollapsedTextColor(hintTextErrorColor);
-      } else {
-        collapsingTextHelper
-            .setCollapsedTextColor(indicatorViewController.getErrorViewTextColors());
-      }
+      collapsingTextHelper.setCollapsedTextColor(indicatorViewController.getErrorViewTextColors());
     } else if (counterOverflowed && counterView != null) {
-      if (hintTextErrorColor != null) {
-        collapsingTextHelper.setCollapsedTextColor(hintTextErrorColor);
-      } else {
-        collapsingTextHelper.setCollapsedTextColor(counterView.getTextColors());
-      }
+      collapsingTextHelper.setCollapsedTextColor(counterView.getTextColors());
     } else if (hasFocus && focusedTextColor != null) {
       collapsingTextHelper.setCollapsedTextColor(focusedTextColor);
     } // If none of these states apply, leave the expanded and collapsed colors as they are.
@@ -1462,33 +1447,6 @@ public class TextInputLayout extends LinearLayout {
   @Nullable
   public ColorStateList getDefaultHintTextColor() {
     return defaultHintTextColor;
-  }
-
-  /**
-   * Sets the collapsed hint's error text color.
-   *
-   * @param hintTextErrorColor the color to use for the collapsed hint when on error state
-   * @attr ref com.google.android.material.R.styleable#TextInputLayout_hintTextErrorColor
-   */
-  public void setHintTextErrorColor(@Nullable ColorStateList hintTextErrorColor) {
-    if (this.hintTextErrorColor != hintTextErrorColor) {
-      this.hintTextErrorColor = hintTextErrorColor;
-
-      if (editText != null) {
-        updateLabelState(false);
-      }
-    }
-  }
-
-  /**
-   * Returns the {@link ColorStateList} used for the collapsed hint's error text color.
-   *
-   * @attr ref com.google.android.material.R.styleable#TextInputLayout_hintTextErrorColor
-   * @see #setHintTextColor(ColorStateList)
-   */
-  @Nullable
-  public ColorStateList getHintTextErrorColor() {
-    return hintTextErrorColor;
   }
 
   /**
