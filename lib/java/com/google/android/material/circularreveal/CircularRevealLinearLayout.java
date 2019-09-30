@@ -19,6 +19,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
@@ -26,7 +27,7 @@ import android.widget.LinearLayout;
 /** A CircularRevealWidget wrapper for {@link LinearLayout}. */
 public class CircularRevealLinearLayout extends LinearLayout implements CircularRevealWidget {
 
-  private final CircularRevealHelper helper;
+  @NonNull private final CircularRevealHelper helper;
 
   public CircularRevealLinearLayout(Context context) {
     this(context, null);
@@ -80,7 +81,7 @@ public class CircularRevealLinearLayout extends LinearLayout implements Circular
   }
 
   @Override
-  public void draw(Canvas canvas) {
+  public void draw(@NonNull Canvas canvas) {
     if (helper != null) {
       helper.draw(canvas);
     } else {

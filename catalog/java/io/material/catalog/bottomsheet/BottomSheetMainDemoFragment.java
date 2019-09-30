@@ -24,10 +24,6 @@ import android.os.Bundle;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.switchmaterial.SwitchMaterial;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +33,10 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import io.material.catalog.feature.DemoFragment;
 
 /** A fragment that displays the main BottomSheet demo for the Catalog app. */
@@ -50,12 +50,15 @@ public class BottomSheetMainDemoFragment extends DemoFragment {
     // Set up BottomSheetDialog
     BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext());
     bottomSheetDialog.setContentView(R.layout.cat_bottomsheet_content);
+    // Opt in to perform swipe to dismiss animation when dismissing bottom sheet dialog.
+    bottomSheetDialog.setDismissWithAnimation(true);
     View bottomSheetInternal = bottomSheetDialog.findViewById(R.id.design_bottom_sheet);
     BottomSheetBehavior.from(bottomSheetInternal).setPeekHeight(400);
     View button = view.findViewById(R.id.bottomsheet_button);
     button.setOnClickListener(
         v -> {
           bottomSheetDialog.show();
+          bottomSheetDialog.setTitle(getText(R.string.cat_bottomsheet_title));
           Button button0 = bottomSheetInternal.findViewById(R.id.cat_bottomsheet_modal_button);
           button0.setOnClickListener(
               v0 ->

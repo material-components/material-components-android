@@ -47,8 +47,28 @@ public class TabLayoutActions {
 
         TabLayout tabLayout = (TabLayout) view;
         tabLayout.setupWithViewPager(viewPager);
-
         uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
+
+  /** Setup and show badge number for the specified tab of the <code>TabLayout</code>. */
+  public static ViewAction showBadgeOnTab(final int tabIndex, final int badgeNumber) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isDisplayingAtLeast(90);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Setup tab badge number";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TabLayout tabLayout = (TabLayout) view;
+        tabLayout.getTabAt(tabIndex).getOrCreateBadge().setNumber(badgeNumber);
       }
     };
   }

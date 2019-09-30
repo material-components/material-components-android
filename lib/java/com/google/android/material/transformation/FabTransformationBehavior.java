@@ -90,7 +90,8 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
 
   @Override
   @CallSuper
-  public boolean layoutDependsOn(CoordinatorLayout parent, View child, View dependency) {
+  public boolean layoutDependsOn(
+      @NonNull CoordinatorLayout parent, @NonNull View child, @NonNull View dependency) {
     if (child.getVisibility() == View.GONE) {
       throw new IllegalStateException(
           "This behavior cannot be attached to a GONE view. Set the view to INVISIBLE instead.");
@@ -117,7 +118,10 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
   @NonNull
   @Override
   protected AnimatorSet onCreateExpandedStateChangeAnimation(
-      final View dependency, final View child, final boolean expanded, boolean isAnimating) {
+      @NonNull final View dependency,
+      @NonNull final View child,
+      final boolean expanded,
+      boolean isAnimating) {
     FabTransformationSpec spec = onCreateMotionSpec(child.getContext(), expanded);
 
     if (expanded) {
@@ -190,11 +194,11 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
   @TargetApi(VERSION_CODES.LOLLIPOP)
   private void createElevationAnimation(
       View dependency,
-      View child,
+      @NonNull View child,
       boolean expanded,
       boolean currentlyAnimating,
-      FabTransformationSpec spec,
-      List<Animator> animations,
+      @NonNull FabTransformationSpec spec,
+      @NonNull List<Animator> animations,
       List<AnimatorListener> unusedListeners) {
     float translationZ = ViewCompat.getElevation(child) - ViewCompat.getElevation(dependency);
     Animator animator;
@@ -214,11 +218,11 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
   }
 
   private void createDependencyTranslationAnimation(
-      View dependency,
-      View child,
+      @NonNull View dependency,
+      @NonNull View child,
       boolean expanded,
-      FabTransformationSpec spec,
-      List<Animator> animations) {
+      @NonNull FabTransformationSpec spec,
+      @NonNull List<Animator> animations) {
     float translationX = calculateTranslationX(dependency, child, spec.positioning);
     float translationY = calculateTranslationY(dependency, child, spec.positioning);
 
@@ -248,14 +252,14 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
   }
 
   private void createTranslationAnimation(
-      View dependency,
-      View child,
+      @NonNull View dependency,
+      @NonNull View child,
       boolean expanded,
       boolean currentlyAnimating,
-      FabTransformationSpec spec,
-      List<Animator> animations,
+      @NonNull FabTransformationSpec spec,
+      @NonNull List<Animator> animations,
       List<AnimatorListener> unusedListeners,
-      RectF childBounds) {
+      @NonNull RectF childBounds) {
     float translationX = calculateTranslationX(dependency, child, spec.positioning);
     float translationY = calculateTranslationY(dependency, child, spec.positioning);
 
@@ -301,9 +305,9 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
       final View child,
       boolean expanded,
       boolean currentlyAnimating,
-      FabTransformationSpec spec,
-      List<Animator> animations,
-      List<AnimatorListener> listeners) {
+      @NonNull FabTransformationSpec spec,
+      @NonNull List<Animator> animations,
+      @NonNull List<AnimatorListener> listeners) {
     if (!(child instanceof CircularRevealWidget) || !(dependency instanceof ImageView)) {
       return;
     }
@@ -357,15 +361,15 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
   }
 
   private void createExpansionAnimation(
-      View dependency,
+      @NonNull View dependency,
       View child,
       boolean expanded,
       boolean currentlyAnimating,
-      FabTransformationSpec spec,
+      @NonNull FabTransformationSpec spec,
       float childWidth,
       float childHeight,
-      List<Animator> animations,
-      List<AnimatorListener> listeners) {
+      @NonNull List<Animator> animations,
+      @NonNull List<AnimatorListener> listeners) {
     if (!(child instanceof CircularRevealWidget)) {
       return;
     }
@@ -444,12 +448,12 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
   }
 
   private void createColorAnimation(
-      View dependency,
+      @NonNull View dependency,
       View child,
       boolean expanded,
       boolean currentlyAnimating,
-      FabTransformationSpec spec,
-      List<Animator> animations,
+      @NonNull FabTransformationSpec spec,
+      @NonNull List<Animator> animations,
       List<AnimatorListener> unusedListeners) {
     if (!(child instanceof CircularRevealWidget)) {
       return;
@@ -488,8 +492,8 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
       View child,
       boolean expanded,
       boolean currentlyAnimating,
-      FabTransformationSpec spec,
-      List<Animator> animations,
+      @NonNull FabTransformationSpec spec,
+      @NonNull List<Animator> animations,
       List<AnimatorListener> unusedListeners) {
     if (!(child instanceof ViewGroup)) {
       return;
@@ -523,8 +527,12 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
     animations.add(animator);
   }
 
+  @NonNull
   private Pair<MotionTiming, MotionTiming> calculateMotionTiming(
-      float translationX, float translationY, boolean expanded, FabTransformationSpec spec) {
+      float translationX,
+      float translationY,
+      boolean expanded,
+      @NonNull FabTransformationSpec spec) {
     MotionTiming translationXTiming;
     MotionTiming translationYTiming;
     if (translationX == 0 || translationY == 0) {
@@ -544,7 +552,8 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
     return new Pair<>(translationXTiming, translationYTiming);
   }
 
-  private float calculateTranslationX(View dependency, View child, Positioning positioning) {
+  private float calculateTranslationX(
+      @NonNull View dependency, @NonNull View child, @NonNull Positioning positioning) {
     RectF dependencyBounds = tmpRectF1;
     RectF childBounds = tmpRectF2;
 
@@ -569,7 +578,8 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
     return translationX;
   }
 
-  private float calculateTranslationY(View dependency, View child, Positioning positioning) {
+  private float calculateTranslationY(
+      @NonNull View dependency, @NonNull View child, @NonNull Positioning positioning) {
     RectF dependencyBounds = tmpRectF1;
     RectF childBounds = tmpRectF2;
 
@@ -594,7 +604,7 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
     return translationY;
   }
 
-  private void calculateWindowBounds(View view, RectF rect) {
+  private void calculateWindowBounds(@NonNull View view, RectF rect) {
     RectF windowBounds = rect;
     windowBounds.set(0, 0, view.getWidth(), view.getHeight());
 
@@ -608,12 +618,13 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
     windowBounds.offset((int) -view.getTranslationX(), (int) -view.getTranslationY());
   }
 
-  private void calculateDependencyWindowBounds(View view, RectF rect) {
+  private void calculateDependencyWindowBounds(@NonNull View view, @NonNull RectF rect) {
     calculateWindowBounds(view, rect);
     rect.offset(dependencyOriginalTranslationX, dependencyOriginalTranslationY);
   }
 
-  private float calculateRevealCenterX(View dependency, View child, Positioning positioning) {
+  private float calculateRevealCenterX(
+      @NonNull View dependency, @NonNull View child, @NonNull Positioning positioning) {
     RectF dependencyBounds = tmpRectF1;
     RectF childBounds = tmpRectF2;
 
@@ -626,7 +637,8 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
     return dependencyBounds.centerX() - childBounds.left;
   }
 
-  private float calculateRevealCenterY(View dependency, View child, Positioning positioning) {
+  private float calculateRevealCenterY(
+      @NonNull View dependency, @NonNull View child, @NonNull Positioning positioning) {
     RectF dependencyBounds = tmpRectF1;
     RectF childBounds = tmpRectF2;
 
@@ -640,15 +652,15 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
   }
 
   private void calculateChildVisibleBoundsAtEndOfExpansion(
-      View child,
-      FabTransformationSpec spec,
-      MotionTiming translationXTiming,
-      MotionTiming translationYTiming,
+      @NonNull View child,
+      @NonNull FabTransformationSpec spec,
+      @NonNull MotionTiming translationXTiming,
+      @NonNull MotionTiming translationYTiming,
       float fromX,
       float fromY,
       float toX,
       float toY,
-      RectF childBounds) {
+      @NonNull RectF childBounds) {
     float translationX =
         calculateValueOfAnimationAtEndOfExpansion(spec, translationXTiming, fromX, toX);
     float translationY =
@@ -670,7 +682,7 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
   }
 
   private float calculateValueOfAnimationAtEndOfExpansion(
-      FabTransformationSpec spec, MotionTiming timing, float from, float to) {
+      @NonNull FabTransformationSpec spec, @NonNull MotionTiming timing, float from, float to) {
     long delay = timing.getDelay();
     long duration = timing.getDuration();
 
@@ -689,7 +701,7 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
 
   /** Given the a child, return the ViewGroup whose children we want to fade. */
   @Nullable
-  private ViewGroup calculateChildContentContainer(View view) {
+  private ViewGroup calculateChildContentContainer(@NonNull View view) {
     // 1. If an explicitly tagged view exists, use that as the child content container.
     View childContentContainer = view.findViewById(R.id.mtrl_child_content_container);
     if (childContentContainer != null) {
@@ -715,7 +727,7 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
     }
   }
 
-  private int getBackgroundTint(View view) {
+  private int getBackgroundTint(@NonNull View view) {
     ColorStateList tintList = ViewCompat.getBackgroundTintList(view);
     if (tintList != null) {
       return tintList.getColorForState(view.getDrawableState(), tintList.getDefaultColor());
@@ -724,13 +736,14 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
     }
   }
 
+  /** Adds pre radial expansion animator. */
   private void createPreFillRadialExpansion(
       View child,
       long delay,
       int revealCenterX,
       int revealCenterY,
       float fromRadius,
-      List<Animator> animations) {
+      @NonNull List<Animator> animations) {
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
       // No setter for circular reveal in L+.
       if (delay > 0) {
@@ -744,6 +757,7 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
     }
   }
 
+  /** Adds post radial expansion animator. */
   private void createPostFillRadialExpansion(
       View child,
       long delay,
@@ -752,7 +766,7 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
       int revealCenterX,
       int revealCenterY,
       float toRadius,
-      List<Animator> animations) {
+      @NonNull List<Animator> animations) {
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
       // Circular reveal in L+ doesn't stick around.
       if (delay + duration < totalDuration) {
@@ -768,7 +782,7 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
 
   /** Motion spec for a FAB transformation. */
   protected static class FabTransformationSpec {
-    public MotionSpec timings;
+    @Nullable public MotionSpec timings;
     public Positioning positioning;
   }
 }

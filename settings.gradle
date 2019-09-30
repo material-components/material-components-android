@@ -6,10 +6,6 @@ include ':testing:java:com:google:android:material:testapp:base'
 include ':testing:java:com:google:android:material:testapp:custom'
 include ':testing:java:com:google:android:material:testapp:theme'
 
-include ':tests'
-include ':tests:javatests:com:google:android:material:animation'
-include ':tests:javatests:com:google:android:material:theme'
-
 include ':catalog'
 
 include ':material-theme-builder'

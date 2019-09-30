@@ -68,11 +68,11 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
   private final TextView largeLabel;
   private int itemPosition = INVALID_ITEM_POSITION;
 
-  private MenuItemImpl itemData;
+  @Nullable private MenuItemImpl itemData;
 
-  private ColorStateList iconTint;
-  private Drawable originalIconDrawable;
-  private Drawable wrappedIconDrawable;
+  @Nullable private ColorStateList iconTint;
+  @Nullable private Drawable originalIconDrawable;
+  @Nullable private Drawable wrappedIconDrawable;
 
   @Nullable private BadgeDrawable badgeDrawable;
 
@@ -80,11 +80,12 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     this(context, null);
   }
 
-  public BottomNavigationItemView(@NonNull Context context, AttributeSet attrs) {
+  public BottomNavigationItemView(@NonNull Context context, @Nullable AttributeSet attrs) {
     this(context, attrs, 0);
   }
 
-  public BottomNavigationItemView(Context context, AttributeSet attrs, int defStyleAttr) {
+  public BottomNavigationItemView(
+      @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
     final Resources res = getResources();
 
@@ -102,7 +103,7 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     setFocusable(true);
     calculateTextScaleFactors(smallLabel.getTextSize(), largeLabel.getTextSize());
 
-    // TODO: Support displaying a badge on label-only bottom navigation views.
+    // TODO(b/138148581): Support displaying a badge on label-only bottom navigation views.
     if (icon != null) {
       icon.addOnLayoutChangeListener(
           new OnLayoutChangeListener() {
@@ -127,7 +128,7 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
   }
 
   @Override
-  public void initialize(MenuItemImpl itemData, int menuType) {
+  public void initialize(@NonNull MenuItemImpl itemData, int menuType) {
     this.itemData = itemData;
     setCheckable(itemData.isCheckable());
     setChecked(itemData.isChecked());
@@ -274,7 +275,7 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
   }
 
   @Override
-  public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
+  public void onInitializeAccessibilityNodeInfo(@NonNull AccessibilityNodeInfo info) {
     super.onInitializeAccessibilityNodeInfo(info);
     if (badgeDrawable != null && badgeDrawable.isVisible()) {
       CharSequence customContentDescription = itemData.getTitle();
@@ -327,7 +328,7 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
   public void setShortcut(boolean showShortcut, char shortcutKey) {}
 
   @Override
-  public void setIcon(Drawable iconDrawable) {
+  public void setIcon(@Nullable Drawable iconDrawable) {
     if (iconDrawable == originalIconDrawable) {
       return;
     }
@@ -435,7 +436,7 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
         badgeDrawable, anchorView, getCustomParentForBadge(anchorView));
   }
 
-  private void tryAttachBadgeToAnchor(View anchorView) {
+  private void tryAttachBadgeToAnchor(@Nullable View anchorView) {
     if (!hasBadge()) {
       return;
     }
@@ -449,7 +450,7 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     }
   }
 
-  private void tryRemoveBadgeFromAnchor(View anchorView) {
+  private void tryRemoveBadgeFromAnchor(@Nullable View anchorView) {
     if (!hasBadge()) {
       return;
     }
@@ -469,7 +470,7 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     if (anchorView == icon) {
       return BadgeUtils.USE_COMPAT_PARENT ? ((FrameLayout) icon.getParent()) : null;
     }
-    // TODO: Support displaying a badge on label-only bottom navigation views.
+    // TODO(b/138148581): Support displaying a badge on label-only bottom navigation views.
     return null;
   }
 }

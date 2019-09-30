@@ -29,7 +29,6 @@ import android.os.Bundle;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.MenuRes;
 import androidx.annotation.Nullable;
-import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.ListPopupWindow;
 import androidx.appcompat.widget.PopupMenu;
@@ -47,6 +46,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import com.google.android.material.snackbar.Snackbar;
 import io.material.catalog.feature.DemoFragment;
 
 /** A fragment that displays the main menu demo for the Catalog app. */

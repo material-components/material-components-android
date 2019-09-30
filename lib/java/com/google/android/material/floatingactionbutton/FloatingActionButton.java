@@ -48,10 +48,6 @@ import androidx.annotation.Px;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.VisibleForTesting;
-import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.resources.MaterialResources;
-import com.google.android.material.shape.ShapeAppearanceModel;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.TintableBackgroundView;
 import androidx.core.view.ViewCompat;
@@ -67,16 +63,21 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.animation.MotionSpec;
-import com.google.android.material.animation.TransformationListener;
+import com.google.android.material.animation.TransformationCallback;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.expandable.ExpandableTransformationWidget;
 import com.google.android.material.expandable.ExpandableWidgetHelper;
-import com.google.android.material.floatingactionbutton.FloatingActionButtonImpl.InternalTransformationListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButtonImpl.InternalTransformationCallback;
 import com.google.android.material.floatingactionbutton.FloatingActionButtonImpl.InternalVisibilityChangedListener;
 import com.google.android.material.internal.DescendantOffsetUtils;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.internal.VisibilityAwareImageButton;
+import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shadow.ShadowViewDelegate;
+import com.google.android.material.shape.ShapeAppearanceModel;
+import com.google.android.material.shape.Shapeable;
 import com.google.android.material.stateful.ExtendableSavedState;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -97,9 +98,11 @@ import java.util.List;
  * wish to change this at runtime then you can do so via {@link
  * #setBackgroundTintList(ColorStateList)}.
  */
-@CoordinatorLayout.DefaultBehavior(FloatingActionButton.Behavior.class)
 public class FloatingActionButton extends VisibilityAwareImageButton
-    implements TintableBackgroundView, TintableImageSourceView, ExpandableTransformationWidget {
+    implements TintableBackgroundView,
+        TintableImageSourceView,
+        ExpandableTransformationWidget,
+        Shapeable, CoordinatorLayout.AttachedBehavior {
 
   private static final String LOG_TAG = "FloatingActionButton";
   private static final String EXPANDABLE_WIDGET_HELPER_KEY = "expandableWidgetHelper";
@@ -184,21 +187,22 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   final Rect shadowPadding = new Rect();
   private final Rect touchArea = new Rect();
 
-  private final AppCompatImageHelper imageHelper;
-  private final ExpandableWidgetHelper expandableWidgetHelper;
+  @NonNull private final AppCompatImageHelper imageHelper;
+  @NonNull private final ExpandableWidgetHelper expandableWidgetHelper;
 
   private FloatingActionButtonImpl impl;
 
-  public FloatingActionButton(Context context) {
+  public FloatingActionButton(@NonNull Context context) {
     this(context, null);
   }
 
-  public FloatingActionButton(Context context, @Nullable AttributeSet attrs) {
+  public FloatingActionButton(@NonNull Context context, @Nullable AttributeSet attrs) {
     this(context, attrs, R.attr.floatingActionButtonStyle);
   }
 
   @SuppressWarnings("initialization")
-  public FloatingActionButton(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+  public FloatingActionButton(
+      @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     super(createThemedContext(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
     // Ensure we are using the correctly themed context rather than the context that was passed in.
     context = getContext();
@@ -235,7 +239,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     MotionSpec hideMotionSpec =
         MotionSpec.createFromAttribute(context, a, R.styleable.FloatingActionButton_hideMotionSpec);
     ShapeAppearanceModel shapeAppearance =
-        new ShapeAppearanceModel(context, attrs, defStyleAttr, DEF_STYLE_RES, -1);
+        ShapeAppearanceModel.builder(context, attrs, defStyleAttr, DEF_STYLE_RES, -1).build();
 
     boolean usingDefaultCorner = isUsingDefaultCorner(shapeAppearance);
     boolean ensureMinTouchTargetSize = a
@@ -335,6 +339,12 @@ public class FloatingActionButton extends VisibilityAwareImageButton
       rippleColor = color;
       getImpl().setRippleColor(rippleColor);
     }
+  }
+
+  @Override
+  @NonNull
+  public CoordinatorLayout.Behavior<FloatingActionButton> getBehavior() {
+    return new FloatingActionButton.Behavior();
   }
 
   /**
@@ -512,12 +522,15 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   }
 
   /** Sets the {@link ShapeAppearanceModel} for this {@link FloatingActionButton}. */
-  public void setShapeAppearance(ShapeAppearanceModel shapeAppearance) {
+  @Override
+  public void setShapeAppearanceModel(@NonNull ShapeAppearanceModel shapeAppearance) {
     getImpl().setShapeAppearance(shapeAppearance, isUsingDefaultCorner(shapeAppearance));
   }
 
   /** Returns the {@link ShapeAppearanceModel} for this {@link FloatingActionButton}. */
-  public ShapeAppearanceModel getShapeAppearance() {
+  @Override
+  @NonNull
+  public ShapeAppearanceModel getShapeAppearanceModel() {
     return checkNotNull(getImpl().getShapeAppearance());
   }
 
@@ -914,7 +927,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   }
 
   @Override
-  public boolean onTouchEvent(MotionEvent ev) {
+  public boolean onTouchEvent(@NonNull MotionEvent ev) {
     if (ev.getAction() == MotionEvent.ACTION_DOWN) {
       // Skipping the gesture if it doesn't start in the FAB 'content' area
       if (getContentRect(touchArea) && !touchArea.contains((int) ev.getX(), (int) ev.getY())) {
@@ -929,7 +942,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
    * move {@link FloatingActionButton} views so that any displayed {@link
    * com.google.android.material.snackbar.Snackbar}s do not cover them.
    */
-  // TODO: remove this generic type after the widget migration is done
+  // TODO(b/76413401): remove this generic type after the widget migration is done
   public static class Behavior extends BaseBehavior<FloatingActionButton> {
 
     public Behavior() {
@@ -946,7 +959,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
    * move {@link FloatingActionButton} views so that any displayed {@link
    * com.google.android.material.snackbar.Snackbar}s do not cover them.
    */
-  // TODO: remove this generic type after the widget migration is done
+  // TODO(b/76413401): remove this generic type after the widget migration is done
   protected static class BaseBehavior<T extends FloatingActionButton>
       extends CoordinatorLayout.Behavior<T> {
     private static final boolean AUTO_HIDE_DEFAULT = true;
@@ -1006,7 +1019,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
 
     @Override
     public boolean onDependentViewChanged(
-        CoordinatorLayout parent, FloatingActionButton child, View dependency) {
+        CoordinatorLayout parent, @NonNull FloatingActionButton child, View dependency) {
       if (dependency instanceof AppBarLayout) {
         // If we're depending on an AppBarLayout we will show/hide it automatically
         // if the FAB is anchored to the AppBarLayout
@@ -1030,7 +1043,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
       internalAutoHideListener = listener;
     }
 
-    private boolean shouldUpdateVisibility(View dependency, FloatingActionButton child) {
+    private boolean shouldUpdateVisibility(
+        @NonNull View dependency, @NonNull FloatingActionButton child) {
       final CoordinatorLayout.LayoutParams lp =
           (CoordinatorLayout.LayoutParams) child.getLayoutParams();
       if (!autoHideEnabled) {
@@ -1053,7 +1067,9 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     }
 
     private boolean updateFabVisibilityForAppBarLayout(
-        CoordinatorLayout parent, AppBarLayout appBarLayout, FloatingActionButton child) {
+        CoordinatorLayout parent,
+        @NonNull AppBarLayout appBarLayout,
+        @NonNull FloatingActionButton child) {
       if (!shouldUpdateVisibility(appBarLayout, child)) {
         return false;
       }
@@ -1077,7 +1093,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     }
 
     private boolean updateFabVisibilityForBottomSheet(
-        View bottomSheet, FloatingActionButton child) {
+        @NonNull View bottomSheet, @NonNull FloatingActionButton child) {
       if (!shouldUpdateVisibility(bottomSheet, child)) {
         return false;
       }
@@ -1092,7 +1108,9 @@ public class FloatingActionButton extends VisibilityAwareImageButton
 
     @Override
     public boolean onLayoutChild(
-        CoordinatorLayout parent, FloatingActionButton child, int layoutDirection) {
+        @NonNull CoordinatorLayout parent,
+        @NonNull FloatingActionButton child,
+        int layoutDirection) {
       // First, let's make sure that the visibility of the FAB is consistent
       final List<View> dependencies = parent.getDependencies(child);
       for (int i = 0, count = dependencies.size(); i < count; i++) {
@@ -1135,7 +1153,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
      * offsets our layout position so that we're positioned correctly if we're on one of our
      * parent's edges.
      */
-    private void offsetIfNeeded(CoordinatorLayout parent, FloatingActionButton fab) {
+    private void offsetIfNeeded(
+        @NonNull CoordinatorLayout parent, @NonNull FloatingActionButton fab) {
       final Rect padding = fab.shadowPadding;
 
       if (padding != null && padding.centerX() > 0 && padding.centerY() > 0) {
@@ -1330,31 +1349,31 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     setHideMotionSpec(MotionSpec.createFromResource(getContext(), id));
   }
 
-  /** Add a {@link TransformationListener} which can watch for changes to this view. */
-  public void addTransformationListener(
-      @NonNull TransformationListener<? extends FloatingActionButton> listener) {
-    getImpl().addTransformationListener(new TransformationListenerWrapper(listener));
+  /** Add a {@link TransformationCallback} which can watch for changes to this view. */
+  public void addTransformationCallback(
+      @NonNull TransformationCallback<? extends FloatingActionButton> listener) {
+    getImpl().addTransformationCallback(new TransformationCallbackWrapper(listener));
   }
 
   /**
-   * Remove the {@link TransformationListener} from this view. It will no longer receive updates
+   * Remove the {@link TransformationCallback} from this view. It will no longer receive updates
    * when this view is transformed.
    */
-  public void removeTransformationListener(
-      @NonNull TransformationListener<? extends FloatingActionButton> listener) {
-    getImpl().removeTransformationListener(new TransformationListenerWrapper(listener));
+  public void removeTransformationCallback(
+      @NonNull TransformationCallback<? extends FloatingActionButton> listener) {
+    getImpl().removeTransformationCallback(new TransformationCallbackWrapper(listener));
   }
 
-  private boolean isUsingDefaultCorner(ShapeAppearanceModel shapeAppearance) {
+  private boolean isUsingDefaultCorner(@NonNull ShapeAppearanceModel shapeAppearance) {
     return shapeAppearance.getTopRightCorner().getCornerSize() == -1;
   }
 
-  class TransformationListenerWrapper<T extends FloatingActionButton>
-      implements InternalTransformationListener {
+  class TransformationCallbackWrapper<T extends FloatingActionButton>
+      implements InternalTransformationCallback {
 
-    @NonNull private final TransformationListener<T> listener;
+    @NonNull private final TransformationCallback<T> listener;
 
-    TransformationListenerWrapper(@NonNull TransformationListener<T> listener) {
+    TransformationCallbackWrapper(@NonNull TransformationCallback<T> listener) {
       this.listener = listener;
     }
 
@@ -1370,8 +1389,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
 
     @Override
     public boolean equals(@Nullable Object obj) {
-      return obj instanceof TransformationListenerWrapper
-          && ((TransformationListenerWrapper) obj).listener.equals(listener);
+      return obj instanceof TransformationCallbackWrapper
+          && ((TransformationCallbackWrapper) obj).listener.equals(listener);
     }
 
     @Override
@@ -1410,6 +1429,17 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     getImpl().onScaleChanged();
   }
 
+  /**
+   * Set whether padding to show compat shadows should be added.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  @VisibleForTesting
+  public void setShadowPaddingEnabled(boolean shadowPaddingEnabled) {
+    getImpl().setShadowPaddingEnabled(shadowPaddingEnabled);
+  }
+
   private FloatingActionButtonImpl getImpl() {
     if (impl == null) {
       impl = createImpl();
@@ -1417,6 +1447,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     return impl;
   }
 
+  @NonNull
   private FloatingActionButtonImpl createImpl() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
       return new FloatingActionButtonImplLollipop(this, new ShadowDelegateImpl());

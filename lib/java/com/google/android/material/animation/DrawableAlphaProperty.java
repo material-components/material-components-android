@@ -18,6 +18,8 @@ package com.google.android.material.animation;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.util.Property;
 import java.util.WeakHashMap;
 
@@ -40,8 +42,9 @@ public class DrawableAlphaProperty extends Property<Drawable, Integer> {
     super(Integer.class, "drawableAlphaCompat");
   }
 
+  @Nullable
   @Override
-  public Integer get(Drawable object) {
+  public Integer get(@NonNull Drawable object) {
     if (VERSION.SDK_INT >= VERSION_CODES.KITKAT) {
       return object.getAlpha();
     }
@@ -52,7 +55,7 @@ public class DrawableAlphaProperty extends Property<Drawable, Integer> {
   }
 
   @Override
-  public void set(Drawable object, Integer value) {
+  public void set(@NonNull Drawable object, @NonNull Integer value) {
     if (VERSION.SDK_INT < VERSION_CODES.KITKAT) {
       alphaCache.put(object, value);
     }

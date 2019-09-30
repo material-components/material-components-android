@@ -217,7 +217,7 @@ public class RippleUtils {
    * Whether a compat ripple should be drawn. Compat ripples should be drawn when enabled and at
    * least one of: focused, pressed, hovered.
    */
-  public static boolean shouldDrawRippleCompat(int[] stateSet) {
+  public static boolean shouldDrawRippleCompat(@NonNull int[] stateSet) {
     boolean enabled = false;
     boolean interactedState = false;
 

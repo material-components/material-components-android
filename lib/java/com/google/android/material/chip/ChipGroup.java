@@ -27,11 +27,11 @@ import androidx.annotation.BoolRes;
 import androidx.annotation.DimenRes;
 import androidx.annotation.Dimension;
 import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.CompoundButton;
 import com.google.android.material.internal.FlowLayout;
 import com.google.android.material.internal.ThemeEnforcement;
@@ -63,10 +63,7 @@ public class ChipGroup extends FlowLayout {
     public void onCheckedChanged(ChipGroup group, @IdRes int checkedId);
   }
 
-
-  /**
-   * {@link ChipGroup.LayoutParams for {@link ChipGroup}.
-   */
+  /** A {@link ChipGroup.LayoutParams} implementation for {@link ChipGroup}. */
   public static class LayoutParams extends MarginLayoutParams {
     public LayoutParams(Context context, AttributeSet attrs) {
       super(context, attrs);
@@ -92,6 +89,8 @@ public class ChipGroup extends FlowLayout {
   @Nullable private OnCheckedChangeListener onCheckedChangeListener;
 
   private final CheckedStateTracker checkedStateTracker = new CheckedStateTracker();
+
+  @NonNull
   private PassThroughHierarchyChangeListener passThroughListener =
       new PassThroughHierarchyChangeListener();
 
@@ -133,16 +132,19 @@ public class ChipGroup extends FlowLayout {
     super.setOnHierarchyChangeListener(passThroughListener);
   }
 
+  @NonNull
   @Override
   public ViewGroup.LayoutParams generateLayoutParams(AttributeSet attrs) {
     return new ChipGroup.LayoutParams(getContext(), attrs);
   }
 
+  @NonNull
   @Override
   protected ViewGroup.LayoutParams generateLayoutParams(ViewGroup.LayoutParams lp) {
     return new ChipGroup.LayoutParams(lp);
   }
 
+  @NonNull
   @Override
   protected ViewGroup.LayoutParams generateDefaultLayoutParams() {
     return new ChipGroup.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -408,7 +410,7 @@ public class ChipGroup extends FlowLayout {
 
   private class CheckedStateTracker implements CompoundButton.OnCheckedChangeListener {
     @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+    public void onCheckedChanged(@NonNull CompoundButton buttonView, boolean isChecked) {
       // prevents from infinite recursion
       if (protectFromCheckedChange) {
         return;

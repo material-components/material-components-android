@@ -26,12 +26,12 @@ import io.material.catalog.button.ButtonsFragment;
 import io.material.catalog.card.CardFragment;
 import io.material.catalog.checkbox.CheckBoxFragment;
 import io.material.catalog.chip.ChipFragment;
+import io.material.catalog.datepicker.DatePickerDemoLandingFragment;
 import io.material.catalog.dialog.DialogDemoLandingFragment;
 import io.material.catalog.elevation.ElevationFragment;
 import io.material.catalog.fab.FabFragment;
 import io.material.catalog.font.FontFragment;
 import io.material.catalog.menu.MenuFragment;
-import io.material.catalog.picker.PickerDemoLandingFragment;
 import io.material.catalog.radiobutton.RadioButtonFragment;
 import io.material.catalog.shapetheming.ShapeThemingFragment;
 import io.material.catalog.switchmaterial.SwitchFragment;
@@ -42,10 +42,7 @@ import io.material.catalog.themeswitcher.ThemeSwitcherResourceProvider;
 import io.material.catalog.topappbar.TopAppBarFragment;
 import io.material.catalog.transformation.TransformationFragment;
 
-/**
- * The Dagger module for {@link TocFragment} dependencies.
- *
- */
+/** The Dagger module for {@link TocFragment} dependencies. */
 @dagger.Module(
     includes = {
       BottomAppBarFragment.Module.class,
@@ -60,7 +57,7 @@ import io.material.catalog.transformation.TransformationFragment;
       FabFragment.Module.class,
       FontFragment.Module.class,
       MenuFragment.Module.class,
-      PickerDemoLandingFragment.Module.class,
+      DatePickerDemoLandingFragment.Module.class,
       RadioButtonFragment.Module.class,
       ShapeThemingFragment.Module.class,
       SwitchFragment.Module.class,

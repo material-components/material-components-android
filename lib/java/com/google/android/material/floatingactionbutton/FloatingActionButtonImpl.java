@@ -40,9 +40,6 @@ import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.google.android.material.shape.MaterialShapeDrawable;
-import com.google.android.material.shape.MaterialShapeUtils;
-import com.google.android.material.shape.ShapeAppearanceModel;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.util.Preconditions;
 import androidx.core.view.ViewCompat;
@@ -54,8 +51,13 @@ import com.google.android.material.animation.ImageMatrixProperty;
 import com.google.android.material.animation.MatrixEvaluator;
 import com.google.android.material.animation.MotionSpec;
 import com.google.android.material.internal.StateListAnimator;
+import com.google.android.material.ripple.RippleDrawableCompat;
 import com.google.android.material.ripple.RippleUtils;
 import com.google.android.material.shadow.ShadowViewDelegate;
+import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.MaterialShapeUtils;
+import com.google.android.material.shape.ShapeAppearanceModel;
+import com.google.android.material.shape.Shapeable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,12 +88,13 @@ class FloatingActionButtonImpl {
 
   boolean usingDefaultCorner;
   boolean ensureMinTouchTargetSize;
+  boolean shadowPaddingEnabled = true;
   float elevation;
   float hoveredFocusedTranslationZ;
   float pressedTranslationZ;
   int minTouchTargetSize;
 
-  private final StateListAnimator stateListAnimator;
+  @NonNull private final StateListAnimator stateListAnimator;
 
   @Nullable private MotionSpec defaultShowMotionSpec;
   @Nullable private MotionSpec defaultHideMotionSpec;
@@ -106,9 +109,9 @@ class FloatingActionButtonImpl {
 
   private ArrayList<AnimatorListener> showListeners;
   private ArrayList<AnimatorListener> hideListeners;
-  private ArrayList<InternalTransformationListener> transformationListeners;
+  private ArrayList<InternalTransformationCallback> transformationCallbacks;
 
-  interface InternalTransformationListener {
+  interface InternalTransformationCallback {
 
     void onTranslationChanged();
 
@@ -179,7 +182,7 @@ class FloatingActionButtonImpl {
 
   void initializeBackgroundDrawable(
       ColorStateList backgroundTint,
-      PorterDuff.Mode backgroundTintMode,
+      @Nullable PorterDuff.Mode backgroundTintMode,
       ColorStateList rippleColor,
       int borderWidth) {
     // Now we need to tint the original background with the tint, using
@@ -194,8 +197,9 @@ class FloatingActionButtonImpl {
     shapeDrawable.initializeElevationOverlay(view.getContext());
 
     // Now we created a mask Drawable which will be used for touch feedback.
-    MaterialShapeDrawable touchFeedbackShape = createShapeDrawable();
-    touchFeedbackShape.setTintList(RippleUtils.convertToRippleDrawableColor(rippleColor));
+    RippleDrawableCompat touchFeedbackShape =
+        new RippleDrawableCompat(shapeDrawable.getShapeAppearanceModel());
+    touchFeedbackShape.setTintList(RippleUtils.sanitizeRippleDrawableColor(rippleColor));
     rippleDrawable = touchFeedbackShape;
 
     final Drawable[] layers = new Drawable[]{
@@ -226,7 +230,7 @@ class FloatingActionButtonImpl {
   void setRippleColor(@Nullable ColorStateList rippleColor) {
     if (rippleDrawable != null) {
       DrawableCompat.setTintList(
-          rippleDrawable, RippleUtils.convertToRippleDrawableColor(rippleColor));
+          rippleDrawable, RippleUtils.sanitizeRippleDrawableColor(rippleColor));
     }
   }
 
@@ -284,7 +288,7 @@ class FloatingActionButtonImpl {
     view.setImageMatrix(matrix);
   }
 
-  private void calculateImageMatrixFromScale(float scale, Matrix matrix) {
+  private void calculateImageMatrixFromScale(float scale, @NonNull Matrix matrix) {
     matrix.reset();
 
     Drawable drawable = view.getDrawable();
@@ -301,9 +305,10 @@ class FloatingActionButtonImpl {
     }
   }
 
-  final void setShapeAppearance(ShapeAppearanceModel shapeAppearance, boolean usingDefaultCorner) {
+  final void setShapeAppearance(
+      @NonNull ShapeAppearanceModel shapeAppearance, boolean usingDefaultCorner) {
     if (usingDefaultCorner) {
-      shapeAppearance.setCornerRadius(view.getSizeDimension() / 2);
+      shapeAppearance = shapeAppearance.withCornerRadius(view.getSizeDimension() / 2);
     }
 
     this.shapeAppearance = shapeAppearance;
@@ -312,8 +317,8 @@ class FloatingActionButtonImpl {
       shapeDrawable.setShapeAppearanceModel(shapeAppearance);
     }
 
-    if (rippleDrawable instanceof MaterialShapeDrawable) {
-      ((MaterialShapeDrawable) rippleDrawable).setShapeAppearanceModel(shapeAppearance);
+    if (rippleDrawable instanceof Shapeable) {
+      ((Shapeable) rippleDrawable).setShapeAppearanceModel(shapeAppearance);
     }
 
     if (borderDrawable != null) {
@@ -354,6 +359,11 @@ class FloatingActionButtonImpl {
 
   void setEnsureMinTouchTargetSize(boolean flag) {
     ensureMinTouchTargetSize = flag;
+  }
+
+  void setShadowPaddingEnabled(boolean shadowPaddingEnabled) {
+    this.shadowPaddingEnabled = shadowPaddingEnabled;
+    updatePadding();
   }
 
   void onElevationsChanged(
@@ -577,7 +587,8 @@ class FloatingActionButtonImpl {
             new ImageMatrixProperty(),
             new MatrixEvaluator() {
               @Override
-              public Matrix evaluate(float fraction, Matrix startValue, Matrix endValue) {
+              public Matrix evaluate(
+                  float fraction, @NonNull Matrix startValue, @NonNull Matrix endValue) {
                 // Also set the current imageMatrixScale fraction so it can be used to correctly
                 // calculate the image matrix at any given point.
                 imageMatrixScale = fraction;
@@ -593,33 +604,33 @@ class FloatingActionButtonImpl {
     return set;
   }
 
-  void addTransformationListener(@NonNull InternalTransformationListener listener) {
-    if (transformationListeners == null) {
-      transformationListeners = new ArrayList<>();
+  void addTransformationCallback(@NonNull InternalTransformationCallback listener) {
+    if (transformationCallbacks == null) {
+      transformationCallbacks = new ArrayList<>();
     }
-    transformationListeners.add(listener);
+    transformationCallbacks.add(listener);
   }
 
-  void removeTransformationListener(@NonNull InternalTransformationListener listener) {
-    if (transformationListeners == null) {
+  void removeTransformationCallback(@NonNull InternalTransformationCallback listener) {
+    if (transformationCallbacks == null) {
       // This can happen if this method is called before the first call to
-      // addTransformationListener.
+      // addTransformationCallback.
       return;
     }
-    transformationListeners.remove(listener);
+    transformationCallbacks.remove(listener);
   }
 
   void onTranslationChanged() {
-    if (transformationListeners != null) {
-      for (InternalTransformationListener l : transformationListeners) {
+    if (transformationCallbacks != null) {
+      for (InternalTransformationCallback l : transformationCallbacks) {
         l.onTranslationChanged();
       }
     }
   }
 
   void onScaleChanged() {
-    if (transformationListeners != null) {
-      for (InternalTransformationListener l : transformationListeners) {
+    if (transformationCallbacks != null) {
+      for (InternalTransformationCallback l : transformationCallbacks) {
         l.onScaleChanged();
       }
     }
@@ -635,13 +646,13 @@ class FloatingActionButtonImpl {
   }
 
   void updateSize() {
-    if (!usingDefaultCorner || shapeDrawable == null) {
+    if (!usingDefaultCorner || shapeDrawable == null || shapeAppearance == null) {
       // Leave shape appearance as is.
       return;
     }
 
-    ShapeAppearanceModel shapeAppearanceModel = shapeDrawable.getShapeAppearanceModel();
-    shapeAppearanceModel.setCornerRadius(view.getSizeDimension() / 2f);
+    setShapeAppearance(
+        shapeAppearance.withCornerRadius(view.getSizeDimension() / 2f), usingDefaultCorner);
   }
 
   final void updatePadding() {
@@ -651,18 +662,18 @@ class FloatingActionButtonImpl {
     shadowViewDelegate.setShadowPadding(rect.left, rect.top, rect.right, rect.bottom);
   }
 
-  void getPadding(Rect rect) {
+  void getPadding(@NonNull Rect rect) {
     final int minPadding = ensureMinTouchTargetSize
         ? (minTouchTargetSize - view.getSizeDimension()) / 2
         : 0;
 
-    final float maxShadowSize = (getElevation() + pressedTranslationZ);
+    final float maxShadowSize = shadowPaddingEnabled ? (getElevation() + pressedTranslationZ) : 0;
     final int hPadding = Math.max(minPadding, (int) Math.ceil(maxShadowSize));
     final int vPadding = Math.max(minPadding, (int) Math.ceil(maxShadowSize * SHADOW_MULTIPLIER));
     rect.set(hPadding, vPadding, hPadding, vPadding);
   }
 
-  void onPaddingUpdated(Rect padding) {
+  void onPaddingUpdated(@NonNull Rect padding) {
     Preconditions.checkNotNull(contentBackground, "Didn't initialize content background");
     if (shouldAddPadding()) {
       InsetDrawable insetDrawable = new InsetDrawable(
@@ -707,6 +718,7 @@ class FloatingActionButtonImpl {
     }
   }
 
+  @NonNull
   private ViewTreeObserver.OnPreDrawListener getOrCreatePreDrawListener() {
     if (preDrawListener == null) {
       preDrawListener =
@@ -725,7 +737,7 @@ class FloatingActionButtonImpl {
   MaterialShapeDrawable createShapeDrawable() {
     ShapeAppearanceModel shapeAppearance = checkNotNull(this.shapeAppearance);
     if (usingDefaultCorner) {
-      shapeAppearance.setCornerRadius(view.getSizeDimension() / 2f);
+      shapeAppearance = shapeAppearance.withCornerRadius(view.getSizeDimension() / 2f);
     }
     return new MaterialShapeDrawable(shapeAppearance);
   }
@@ -750,6 +762,7 @@ class FloatingActionButtonImpl {
     }
   }
 
+  @NonNull
   private ValueAnimator createElevationAnimator(@NonNull ShadowAnimatorImpl impl) {
     final ValueAnimator animator = new ValueAnimator();
     animator.setInterpolator(ELEVATION_ANIM_INTERPOLATOR);
@@ -768,7 +781,7 @@ class FloatingActionButtonImpl {
     private float shadowSizeEnd;
 
     @Override
-    public void onAnimationUpdate(ValueAnimator animator) {
+    public void onAnimationUpdate(@NonNull ValueAnimator animator) {
       if (!validValues) {
         shadowSizeStart = shapeDrawable == null ? 0 : shapeDrawable.getElevation();
         shadowSizeEnd = getTargetShadowSize();

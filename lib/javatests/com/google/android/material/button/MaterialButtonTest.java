@@ -20,28 +20,34 @@ import com.google.android.material.R;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
+import android.view.View.MeasureSpec;
+import androidx.test.core.app.ApplicationProvider;
 import com.google.android.material.shape.CornerFamily;
 import com.google.android.material.shape.CornerTreatment;
 import com.google.android.material.shape.CutCornerTreatment;
 import com.google.android.material.shape.ShapeAppearanceModel;
-import androidx.test.core.app.ApplicationProvider;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.internal.DoNotInstrument;
+import org.robolectric.annotation.Config;
 
-/** Tests for {@link com.google.android.material.button.MaterialButton}. */
+/**
+ * Tests for {@link com.google.android.material.button.MaterialButton}.
+ */
 @RunWith(RobolectricTestRunner.class)
-@DoNotInstrument
 public class MaterialButtonTest {
 
   private static final float LARGE_CORNER_SIZE = 40f;
   private static final int CUT_CORNER_FAMILY = CornerFamily.CUT;
   private static final Class<CutCornerTreatment> CUT_CORNER_FAMILY_CLASS = CutCornerTreatment.class;
 
-  private final ShapeAppearanceModel shapeAppearanceModel = new ShapeAppearanceModel();
   private final Context context = ApplicationProvider.getApplicationContext();
+  private int callCount;
 
   @Before
   public void themeApplicationContext() {
@@ -51,7 +57,8 @@ public class MaterialButtonTest {
   @Test
   public void testSetShapeAppearanceModel_setCornerRadius() {
     MaterialButton materialButton = new MaterialButton(context);
-    shapeAppearanceModel.setCornerRadius(LARGE_CORNER_SIZE);
+    ShapeAppearanceModel shapeAppearanceModel =
+        ShapeAppearanceModel.builder().setCornerRadius(LARGE_CORNER_SIZE).build();
 
     materialButton.setShapeAppearanceModel(shapeAppearanceModel);
 
@@ -63,7 +70,10 @@ public class MaterialButtonTest {
   @Test
   public void testSetShapeAppearanceModel() {
     MaterialButton materialButton = new MaterialButton(context);
-    shapeAppearanceModel.setAllCorners(CUT_CORNER_FAMILY, materialButton.getCornerRadius());
+    ShapeAppearanceModel shapeAppearanceModel =
+        ShapeAppearanceModel.builder()
+            .setAllCorners(CUT_CORNER_FAMILY, materialButton.getCornerRadius())
+            .build();
 
     materialButton.setShapeAppearanceModel(shapeAppearanceModel);
 
@@ -76,9 +86,13 @@ public class MaterialButtonTest {
   @Test
   public void testGetShapeAppearanceModel() {
     MaterialButton materialButton = new MaterialButton(context);
-    materialButton
-        .getShapeAppearanceModel()
-        .setAllCorners(CUT_CORNER_FAMILY, materialButton.getCornerRadius());
+
+    ShapeAppearanceModel shapeAppearanceModel =
+        ShapeAppearanceModel.builder()
+            .setAllCorners(CUT_CORNER_FAMILY, materialButton.getCornerRadius())
+            .build();
+
+    materialButton.setShapeAppearanceModel(shapeAppearanceModel);
 
     assertThatCornerFamilyMatches(
         materialButton.getShapeAppearanceModel(), CUT_CORNER_FAMILY_CLASS);
@@ -103,5 +117,54 @@ public class MaterialButtonTest {
         .isEqualTo(newShapeAppearanceModel.getBottomRightCorner().getCornerSize());
     assertThat(shapeAppearanceModel.getBottomLeftCorner().getCornerSize())
         .isEqualTo(newShapeAppearanceModel.getBottomLeftCorner().getCornerSize());
+  }
+
+  @Test
+  public void setIcon_iconUpdated_whenCalledTwice() {
+    MaterialButton materialButton = new MaterialButton(context);
+    materialButton.setText("test");
+    Drawable drawable1 = ContextCompat.getDrawable(context, android.R.drawable.btn_plus);
+    setIcon(materialButton, makeMeasureSpec(200), drawable1);
+
+    Drawable unwrapDrawable = DrawableCompat.unwrap(materialButton.getIcon());
+    assertThat(unwrapDrawable).isEqualTo(drawable1);
+
+    Drawable drawable2 = ContextCompat.getDrawable(context, android.R.drawable.btn_minus);
+    setIcon(materialButton, makeMeasureSpec(200), drawable2);
+
+    unwrapDrawable = DrawableCompat.unwrap(materialButton.getIcon());
+    assertThat(unwrapDrawable).isEqualTo(drawable2);
+  }
+
+  @Test
+  @Config(minSdk = 23, maxSdk = 28)
+  public void setIcon_iconNotUpdated_whenPositionChanged() {
+    callCount = 0;
+    MaterialButton materialButton = new MaterialButton(context) {
+
+      @Override
+      public void setCompoundDrawablesRelative(@Nullable Drawable left,
+          @Nullable Drawable top, @Nullable Drawable right,
+          @Nullable Drawable bottom) {
+        super.setCompoundDrawablesRelative(left, top, right, bottom);
+        callCount++;
+      }
+    };
+
+    Drawable drawable = ContextCompat.getDrawable(context, android.R.drawable.btn_plus);
+    setIcon(materialButton, makeMeasureSpec(200), drawable);
+    setIcon(materialButton, makeMeasureSpec(300), drawable);
+
+    assertThat(callCount).isEqualTo(1);
+  }
+
+  private static int makeMeasureSpec(int size) {
+    return MeasureSpec.makeMeasureSpec(size, MeasureSpec.AT_MOST);
+  }
+
+  private static void setIcon(MaterialButton materialButton, int measureSpec, Drawable drawable) {
+    materialButton.setIcon(drawable);
+    materialButton.setIconGravity(MaterialButton.ICON_GRAVITY_START);
+    materialButton.measure(measureSpec, measureSpec);
   }
 }

@@ -15,10 +15,6 @@
  */
 package com.google.android.material.textfield;
 
-import static com.google.android.material.testutils.TestUtilsActions.waitFor;
-import static com.google.android.material.testutils.TextInputLayoutActions.clickIcon;
-import static com.google.android.material.testutils.TextInputLayoutActions.skipAnimations;
-import static com.google.android.material.testutils.TextInputLayoutMatchers.endIconHasContentDescription;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.clearText;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -28,18 +24,23 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.AccessibilityChecks.accessibilityAssertion;
 import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
+import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static com.google.android.material.testutils.TestUtilsActions.waitFor;
+import static com.google.android.material.testutils.TextInputLayoutActions.clickIcon;
+import static com.google.android.material.testutils.TextInputLayoutActions.skipAnimations;
+import static com.google.android.material.testutils.TextInputLayoutMatchers.endIconHasContentDescription;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.core.Is.is;
 
 import android.app.Activity;
-import com.google.android.material.testapp.ExposedDropdownMenuActivity;
-import com.google.android.material.testapp.R;
 import android.widget.AutoCompleteTextView;
 import androidx.test.filters.MediumTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
+import com.google.android.material.testapp.ExposedDropdownMenuActivity;
+import com.google.android.material.testapp.R;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -140,7 +141,9 @@ public class ExposedDropdownMenuTest {
 
   @Test
   public void testEndIconIsAccessible() {
-    onView(allOf(withId(R.id.text_input_end_icon), isDescendantOfA(withId(R.id.filled_dropdown))))
+    onView(allOf(withId(R.id.text_input_end_icon),
+        withContentDescription(R.string.exposed_dropdown_menu_content_description),
+        isDescendantOfA(withId(R.id.filled_dropdown))))
         .check(accessibilityAssertion());
   }
 }

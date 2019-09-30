@@ -16,6 +16,7 @@
 
 package com.google.android.material.shape;
 
+import androidx.annotation.NonNull;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnScrollChangedListener;
@@ -78,7 +79,7 @@ public class InterpolateOnScrollPositionChangeHelper {
    * @param viewTreeObserver {@link ViewTreeObserver belonging to the {@link View} being
    * interpolated.
    */
-  public void startListeningForScrollChanges(ViewTreeObserver viewTreeObserver) {
+  public void startListeningForScrollChanges(@NonNull ViewTreeObserver viewTreeObserver) {
     viewTreeObserver.addOnScrollChangedListener(scrollChangedListener);
   }
 
@@ -88,7 +89,7 @@ public class InterpolateOnScrollPositionChangeHelper {
    * @param viewTreeObserver {@link ViewTreeObserver belonging to the {@link View} being
    * interpolated.
    */
-  public void stopListeningForScrollChanges(ViewTreeObserver viewTreeObserver) {
+  public void stopListeningForScrollChanges(@NonNull ViewTreeObserver viewTreeObserver) {
     viewTreeObserver.removeOnScrollChangedListener(scrollChangedListener);
   }
 

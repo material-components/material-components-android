@@ -20,6 +20,8 @@
   android:versionCode="1"
   android:versionName="1.0">
 
+  <uses-sdk />
+
   <application
     android:name="io.material.catalog.application.${application_name}"
     android:allowBackup="true"

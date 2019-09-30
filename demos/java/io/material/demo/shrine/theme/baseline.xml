@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
   Copyright 2019 The Android Open Source Project
 
@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<issues format="4" by="lint 3.2.1" client="gradle" variant="all" version="3.2.1">
+<issues format="5" by="lint 3.3.2" client="gradle" variant="all" version="3.3.2">
 
     <issue
         id="OldTargetApi"
@@ -25,15 +25,6 @@
             file="build.gradle"
             line="21"
             column="5"/>
-    </issue>
-
-    <issue
-        id="IconDuplicates"
-        message="The following unrelated icon files have identical contents: product_logo_shrine_color_192.png, product_logo_shrine_color_144.png">
-        <location
-            file="res/drawable-xhdpi/product_logo_shrine_color_144.png"/>
-        <location
-            file="res/drawable-hdpi/product_logo_shrine_color_192.png"/>
     </issue>
 
 </issues>

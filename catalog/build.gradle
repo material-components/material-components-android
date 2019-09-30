@@ -15,6 +15,14 @@ dependencies {
   api project(':lib')
 
   api compatibility("recyclerViewSelection")
+
+  androidTestImplementation "androidx.test:core:${project.rootProject.ext.testRunnerVersion}"
+  androidTestImplementation "androidx.test:runner:${project.rootProject.ext.testRunnerVersion}"
+  androidTestImplementation "androidx.test:rules:${project.rootProject.ext.testRunnerVersion}"
+  androidTestImplementation "androidx.test.espresso:espresso-core:${project.rootProject.ext.espressoVersion}"
+  androidTestImplementation "androidx.test.espresso:espresso-contrib:${project.rootProject.ext.espressoVersion}"
+
+  testAnnotationProcessor "com.google.auto.service:auto-service:1.0-rc4"
 }
 
 def srcDirs = [
@@ -31,6 +39,7 @@ def srcDirs = [
   'card',
   'checkbox',
   'chip',
+  'datepicker',
   'dialog',
   'draggable',
   'elevation',
@@ -40,7 +49,6 @@ def srcDirs = [
   'internal',
   'main',
   'menu',
-  'picker',
   'radiobutton',
   'shapetheming',
   'switchmaterial',
@@ -49,7 +57,8 @@ def srcDirs = [
   'textfield',
   'themeswitcher',
   'topappbar',
-  'transformation'
+  'transformation',
+  'windowpreferences'
 ]
 
 android {
@@ -59,9 +68,15 @@ android {
       application_theme            : 'Catalog',
       catalog_application_component: 'io.material.catalog.application.DaggerCatalogApplicationComponent'
     ]
+
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
     minSdkVersion 14
     targetSdkVersion 27
+  }
+
+  testOptions {
+    unitTests.returnDefaultValues = true
   }
 
   aaptOptions {
@@ -72,7 +87,9 @@ android {
     main {
       manifest.srcFile 'java/io/material/catalog/AndroidManifest.xml'
       java.srcDir 'java'
-      java.includes = srcDirs.collect { 'io/material/catalog/' + it + '/**/*.java' }
+      java.includes = srcDirs.collect {
+        'io/material/catalog/' + it + '/**/*.java'
+      }
       java.excludes = [
         '**/build/**',
       ]
@@ -81,6 +98,8 @@ android {
         res.srcDirs += 'java/io/material/catalog/' + it + '/res'
       }
     }
+    //TODO(b/141695010)
+    //androidTest.java.srcDir 'javatests'
   }
 
   compileOptions {

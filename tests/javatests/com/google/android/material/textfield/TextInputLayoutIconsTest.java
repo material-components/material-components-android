@@ -15,24 +15,6 @@
  */
 package com.google.android.material.textfield;
 
-import static com.google.android.material.testutils.TestUtilsActions.setCompoundDrawablesRelative;
-import static com.google.android.material.testutils.TestUtilsActions.waitFor;
-import static com.google.android.material.testutils.TestUtilsMatchers.withCompoundDrawable;
-import static com.google.android.material.testutils.TextInputLayoutActions.clickIcon;
-import static com.google.android.material.testutils.TextInputLayoutActions.setCustomEndIconContent;
-import static com.google.android.material.testutils.TextInputLayoutActions.setEndIconMode;
-import static com.google.android.material.testutils.TextInputLayoutActions.setEndIconOnClickListener;
-import static com.google.android.material.testutils.TextInputLayoutActions.setStartIcon;
-import static com.google.android.material.testutils.TextInputLayoutActions.setStartIconContentDescription;
-import static com.google.android.material.testutils.TextInputLayoutActions.setStartIconOnClickListener;
-import static com.google.android.material.testutils.TextInputLayoutActions.setStartIconTintList;
-import static com.google.android.material.testutils.TextInputLayoutActions.setTransformationMethod;
-import static com.google.android.material.testutils.TextInputLayoutMatchers.doesNotShowEndIcon;
-import static com.google.android.material.testutils.TextInputLayoutMatchers.doesNotShowStartIcon;
-import static com.google.android.material.testutils.TextInputLayoutMatchers.endIconHasContentDescription;
-import static com.google.android.material.testutils.TextInputLayoutMatchers.endIconIsChecked;
-import static com.google.android.material.testutils.TextInputLayoutMatchers.endIconIsNotChecked;
-import static com.google.android.material.testutils.TextInputLayoutMatchers.showsEndIcon;
 import static androidx.test.InstrumentationRegistry.getInstrumentation;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.clearText;
@@ -43,7 +25,33 @@ import static androidx.test.espresso.contrib.AccessibilityChecks.accessibilityAs
 import static androidx.test.espresso.matcher.ViewMatchers.hasFocus;
 import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
+import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
+import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static com.google.android.material.testutils.TestUtilsActions.setCompoundDrawablesRelative;
+import static com.google.android.material.testutils.TestUtilsActions.waitFor;
+import static com.google.android.material.testutils.TestUtilsMatchers.withCompoundDrawable;
+import static com.google.android.material.testutils.TextInputLayoutActions.clickIcon;
+import static com.google.android.material.testutils.TextInputLayoutActions.longClickIcon;
+import static com.google.android.material.testutils.TextInputLayoutActions.setCustomEndIconContent;
+import static com.google.android.material.testutils.TextInputLayoutActions.setEndIconMode;
+import static com.google.android.material.testutils.TextInputLayoutActions.setEndIconOnClickListener;
+import static com.google.android.material.testutils.TextInputLayoutActions.setEndIconOnLongClickListener;
+import static com.google.android.material.testutils.TextInputLayoutActions.setError;
+import static com.google.android.material.testutils.TextInputLayoutActions.setPrefixText;
+import static com.google.android.material.testutils.TextInputLayoutActions.setStartIcon;
+import static com.google.android.material.testutils.TextInputLayoutActions.setStartIconContentDescription;
+import static com.google.android.material.testutils.TextInputLayoutActions.setStartIconOnClickListener;
+import static com.google.android.material.testutils.TextInputLayoutActions.setStartIconOnLongClickListener;
+import static com.google.android.material.testutils.TextInputLayoutActions.setStartIconTintList;
+import static com.google.android.material.testutils.TextInputLayoutActions.setSuffixText;
+import static com.google.android.material.testutils.TextInputLayoutActions.setTransformationMethod;
+import static com.google.android.material.testutils.TextInputLayoutMatchers.doesNotShowEndIcon;
+import static com.google.android.material.testutils.TextInputLayoutMatchers.doesNotShowStartIcon;
+import static com.google.android.material.testutils.TextInputLayoutMatchers.endIconHasContentDescription;
+import static com.google.android.material.testutils.TextInputLayoutMatchers.endIconIsChecked;
+import static com.google.android.material.testutils.TextInputLayoutMatchers.endIconIsNotChecked;
+import static com.google.android.material.testutils.TextInputLayoutMatchers.showsEndIcon;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
@@ -56,19 +64,20 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import com.google.android.material.testapp.R;
-import com.google.android.material.testapp.TextInputLayoutWithIconsActivity;
-import com.google.android.material.testapp.base.RecreatableAppCompatActivity;
-import com.google.android.material.testutils.ActivityUtils;
 import android.text.method.PasswordTransformationMethod;
 import android.text.method.TransformationMethod;
 import android.view.KeyEvent;
 import android.widget.EditText;
 import androidx.test.espresso.ViewAssertion;
+import androidx.test.espresso.matcher.ViewMatchers.Visibility;
 import androidx.test.filters.LargeTest;
 import androidx.test.filters.MediumTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
+import com.google.android.material.testapp.R;
+import com.google.android.material.testapp.TextInputLayoutWithIconsActivity;
+import com.google.android.material.testapp.base.RecreatableAppCompatActivity;
+import com.google.android.material.testutils.ActivityUtils;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -221,8 +230,10 @@ public class TextInputLayoutIconsTest {
   @Test
   public void testPasswordToggleIsAccessible() {
     onView(
-            allOf(
-                withId(R.id.text_input_end_icon), isDescendantOfA(withId(R.id.textinput_password))))
+        allOf(
+            withId(R.id.text_input_end_icon),
+            withContentDescription(R.string.password_toggle_content_description),
+            isDescendantOfA(withId(R.id.textinput_password))))
         .check(accessibilityAssertion());
   }
 
@@ -340,9 +351,10 @@ public class TextInputLayoutIconsTest {
   @Test
   public void testClearTextEndIconIsAccessible() {
     onView(
-            allOf(
-                withId(R.id.text_input_end_icon),
-                isDescendantOfA(withId(R.id.textinput_clear))))
+        allOf(
+            withId(R.id.text_input_end_icon),
+            withContentDescription(R.string.clear_text_end_icon_content_description),
+            isDescendantOfA(withId(R.id.textinput_clear))))
         .check(accessibilityAssertion());
   }
 
@@ -407,13 +419,35 @@ public class TextInputLayoutIconsTest {
     onView(withId(R.id.textinput_custom))
         .perform(
             setEndIconOnClickListener(
-                v -> textInputCustomEndIcon.getEditText().setText("Test custom icon.")));
+                v -> textInputCustomEndIcon.getEditText().setText("Custom icon on click.")));
 
     // Click custom end icon
     onView(withId(R.id.textinput_custom)).perform(clickIcon(true));
 
     // Assert onClickListener worked as expected
-    assertEquals("Test custom icon.", textInputCustomEndIcon.getEditText().getText().toString());
+    assertEquals(
+        "Custom icon on click.", textInputCustomEndIcon.getEditText().getText().toString());
+  }
+
+  @Test
+  public void testCustomEndIconOnLongClickListener() {
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout textInputCustomEndIcon = activity.findViewById(R.id.textinput_custom);
+    // Set custom on click listener
+    onView(withId(R.id.textinput_custom))
+        .perform(
+            setEndIconOnLongClickListener(
+                v -> {
+                  textInputCustomEndIcon.getEditText().setText("Custom icon on long click.");
+                  return true;
+                }));
+
+    // Click custom end icon
+    onView(withId(R.id.textinput_custom)).perform(longClickIcon(true));
+
+    // Assert onClickListener worked as expected
+    assertEquals(
+        "Custom icon on long click.", textInputCustomEndIcon.getEditText().getText().toString());
   }
 
   @Test
@@ -490,6 +524,26 @@ public class TextInputLayoutIconsTest {
     assertEquals("Start icon on click", textInputLayout.getEditText().getText().toString());
   }
 
+  @Test
+  public void testStartIconOnLongClickListener() {
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout textInputLayout = activity.findViewById(R.id.textinput_starticon);
+    // Set click listener on start icon
+    onView(withId(R.id.textinput_starticon))
+        .perform(
+            setStartIconOnLongClickListener(
+                v -> {
+                  textInputLayout.getEditText().setText("Start icon on long click");
+                  return true;
+                }));
+
+    // Click start icon
+    onView(withId(R.id.textinput_starticon)).perform(longClickIcon(false));
+
+    // Assert OnClickListener worked as expected
+    assertEquals("Start icon on long click", textInputLayout.getEditText().getText().toString());
+  }
+
   /**
    * Simple test that uses AccessibilityChecks to check that the start icon is 'accessible'.
    */
@@ -500,6 +554,287 @@ public class TextInputLayoutIconsTest {
             withId(R.id.text_input_start_icon),
             isDescendantOfA(withId(R.id.textinput_starticon))))
         .check(accessibilityAssertion());
+  }
+
+  @Test
+  public  void testErrorIconAppears() {
+    // Set error
+    onView(withId(R.id.textinput_no_icon)).perform(setError("Error"));
+
+    // Check the icon is visible
+    onView(
+        allOf(
+            withId(R.id.text_input_end_icon),
+            withContentDescription(R.string.error_icon_content_description),
+            isDescendantOfA(withId(R.id.textinput_no_icon))))
+        .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
+  }
+
+  @Test
+  public  void testErrorIconDisappears() {
+    // Set error
+    onView(withId(R.id.textinput_no_icon)).perform(setError("Error"));
+
+    // Unset error
+    onView(withId(R.id.textinput_no_icon)).perform(setError(null));
+
+    // Check there is no icon
+    onView(withId(R.id.textinput_no_icon)).check(matches(doesNotShowEndIcon()));
+  }
+
+  @Test
+  public void testErrorIconMaintainsCompoundDrawables() {
+    // Set a known set of test compound drawables on the EditText
+    final Drawable start = new ColorDrawable(Color.RED);
+    final Drawable top = new ColorDrawable(Color.GREEN);
+    final Drawable end = new ColorDrawable(Color.BLUE);
+    final Drawable bottom = new ColorDrawable(Color.BLACK);
+    onView(withId(R.id.textinput_edittext_no_icon))
+        .perform(setCompoundDrawablesRelative(start, top, end, bottom));
+
+    // Set error and check that the start, top and bottom drawables are maintained
+    onView(withId(R.id.textinput_no_icon)).perform(setError("Error"));
+    onView(withId(R.id.textinput_edittext_no_icon))
+        .check(matches(withCompoundDrawable(0, start)))
+        .check(matches(withCompoundDrawable(1, top)))
+        .check(matches(not(withCompoundDrawable(2, end))))
+        .check(matches(withCompoundDrawable(3, bottom)));
+
+    // Now remove error and check that all of the original compound drawables are set
+    onView(withId(R.id.textinput_no_icon)).perform(setError(null));
+    onView(withId(R.id.textinput_edittext_no_icon))
+        .check(matches(withCompoundDrawable(0, start)))
+        .check(matches(withCompoundDrawable(1, top)))
+        .check(matches(withCompoundDrawable(2, end)))
+        .check(matches(withCompoundDrawable(3, bottom)));
+  }
+
+  @Test
+  public void testErrorIconMaintainsEndIcon() {
+    // Set error on text field with password toggle icon
+    onView(withId(R.id.textinput_password)).perform(setError("Error"));
+    // Check icon showing is error icon only
+    onView(
+        allOf(
+            withId(R.id.text_input_end_icon),
+            withContentDescription(R.string.error_icon_content_description),
+            isDescendantOfA(withId(R.id.textinput_password))))
+        .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
+    onView(
+        allOf(
+            withId(R.id.text_input_end_icon),
+            withContentDescription(R.string.password_toggle_content_description),
+            isDescendantOfA(withId(R.id.textinput_password))))
+        .check(matches(withEffectiveVisibility(Visibility.GONE)));
+
+    // Unset error
+    onView(withId(R.id.textinput_password)).perform(setError(null));
+
+    // Check end icon is back
+    onView(
+        allOf(
+            withId(R.id.text_input_end_icon),
+            withContentDescription(R.string.error_icon_content_description),
+            isDescendantOfA(withId(R.id.textinput_password))))
+        .check(matches(withEffectiveVisibility(Visibility.GONE)));
+    onView(
+        allOf(
+            withId(R.id.text_input_end_icon),
+            withContentDescription(R.string.password_toggle_content_description),
+            isDescendantOfA(withId(R.id.textinput_password))))
+        .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
+  }
+
+  @Test
+  public void testErrorIconMaintainsDisguisedInputText() {
+    final Activity activity = activityTestRule.getActivity();
+    final EditText editText =
+        activity.findViewById(R.id.textinput_edittext_pwd);
+    // Set some text on the EditText
+    onView(withId(R.id.textinput_edittext_pwd)).perform(typeText(INPUT_TEXT));
+    // Assert that the password is disguised
+    assertNotEquals(INPUT_TEXT, editText.getLayout().getText().toString());
+
+    // Set error
+    onView(withId(R.id.textinput_password)).perform(setError("Error"));
+
+    // Check that the password is disguised still
+    assertNotEquals(INPUT_TEXT, editText.getLayout().getText().toString());
+  }
+
+  @Test
+  public void testSetPrefixProgrammatically() {
+    // Set prefix
+    onView(withId(R.id.textinput_no_icon)).perform(setPrefixText("$"));
+
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout textInputLayout =
+        activity.findViewById(R.id.textinput_no_icon);
+
+    // Assert the prefix is set
+    assertEquals("$", textInputLayout.getPrefixText().toString());
+  }
+
+  @Test
+  public void testClearPrefix() {
+    // Set prefix
+    onView(withId(R.id.textinput_prefix)).perform(setPrefixText(null));
+
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout textInputLayout =
+        activity.findViewById(R.id.textinput_prefix);
+
+    // Assert the prefix is null
+    assertNull(textInputLayout.getPrefixText());
+  }
+
+  @Test
+  public void testPrefixIsVisibleOnFocus() {
+    // Click on text field
+    onView(withId(R.id.textinput_prefix)).perform(click());
+
+    // Assert prefix is visible
+    onView(allOf(
+            withId(R.id.textinput_prefix_text),
+            isDescendantOfA(withId(R.id.textinput_prefix))))
+        .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
+  }
+
+  @Test
+  public void testPrefixDisappearsIfEditTextIsEmpty() {
+    // Click on text field
+    onView(withId(R.id.textinput_prefix)).perform(click());
+
+    // Assert prefix is visible
+    onView(allOf(
+        withId(R.id.textinput_prefix_text),
+        isDescendantOfA(withId(R.id.textinput_prefix))))
+        .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
+
+    // Click on another text field
+    onView(withId(R.id.textinput_no_icon)).perform(click());
+
+    // Assert prefix is not visible
+    onView(allOf(
+        withId(R.id.textinput_prefix_text),
+        isDescendantOfA(withId(R.id.textinput_prefix))))
+        .check(matches(withEffectiveVisibility(Visibility.GONE)));
+  }
+
+  @Test
+  public void testPrefixStaysVisibleWithInputText() {
+    // Type some text on the EditText
+    onView(withId(R.id.textinput_edittext_prefix)).perform(typeText(INPUT_TEXT));
+
+    // Click on another text field
+    onView(withId(R.id.textinput_no_icon)).perform(click());
+
+    // Assert suffix is still visible
+    onView(allOf(
+        withId(R.id.textinput_prefix_text),
+        isDescendantOfA(withId(R.id.textinput_prefix))))
+        .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
+  }
+
+  @Test
+  public void testSetSuffixProgrammatically() {
+    // Set prefix
+    onView(withId(R.id.textinput_no_icon)).perform(setSuffixText("/100"));
+
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout textInputLayout =
+        activity.findViewById(R.id.textinput_no_icon);
+
+    // Assert the prefix is set
+    assertEquals("/100", textInputLayout.getSuffixText().toString());
+  }
+
+  @Test
+  public void testClearSuffix() {
+    // Set prefix
+    onView(withId(R.id.textinput_suffix)).perform(setSuffixText(null));
+
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout textInputLayout =
+        activity.findViewById(R.id.textinput_suffix);
+
+    // Assert the suffix is null
+    assertNull(textInputLayout.getSuffixText());
+  }
+
+  @Test
+  public void testSuffixIsVisibleOnFocus() {
+    // Click on text field
+    onView(withId(R.id.textinput_suffix)).perform(click());
+
+    // Assert suffix is visible
+    onView(allOf(
+        withId(R.id.textinput_suffix_text),
+        isDescendantOfA(withId(R.id.textinput_suffix))))
+        .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
+  }
+
+  @Test
+  public void testSuffixDisappearsIfEditTextIsEmpty() {
+    // Click on text field
+    onView(withId(R.id.textinput_suffix)).perform(click());
+
+    // Assert prefix is visible
+    onView(allOf(
+        withId(R.id.textinput_suffix_text),
+        isDescendantOfA(withId(R.id.textinput_suffix))))
+        .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
+
+    // Click on another text field
+    onView(withId(R.id.textinput_no_icon)).perform(click());
+
+    // Assert suffix is not visible
+    onView(allOf(
+        withId(R.id.textinput_suffix_text),
+        isDescendantOfA(withId(R.id.textinput_suffix))))
+        .check(matches(withEffectiveVisibility(Visibility.GONE)));
+  }
+
+  @Test
+  public void testSuffixStaysVisibleWithInputText() {
+    // Type some text on the EditText
+    onView(withId(R.id.textinput_edittext_suffix)).perform(typeText(INPUT_TEXT));
+
+    // Click on another text field
+    onView(withId(R.id.textinput_no_icon)).perform(click());
+
+    // Assert suffix is still visible
+    onView(allOf(
+        withId(R.id.textinput_suffix_text),
+        isDescendantOfA(withId(R.id.textinput_suffix))))
+        .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
+  }
+
+  @Test
+  public void testSuffixMaintainsCompoundDrawables() {
+    // Set a known set of test compound drawables on the EditText
+    final Drawable start = new ColorDrawable(Color.RED);
+    final Drawable top = new ColorDrawable(Color.GREEN);
+    final Drawable end = new ColorDrawable(Color.BLUE);
+    final Drawable bottom = new ColorDrawable(Color.BLACK);
+    onView(withId(R.id.textinput_edittext_no_icon))
+        .perform(setCompoundDrawablesRelative(start, top, end, bottom));
+
+    // Set suffix and check that the start, top and bottom drawables are maintained
+    onView(withId(R.id.textinput_no_icon)).perform(setSuffixText("/100"));
+    onView(withId(R.id.textinput_edittext_no_icon))
+        .check(matches(withCompoundDrawable(0, start)))
+        .check(matches(withCompoundDrawable(1, top)))
+        .check(matches(not(withCompoundDrawable(2, end))))
+        .check(matches(withCompoundDrawable(3, bottom)));
+
+    // Now remove suffix and check that all of the original compound drawables are set
+    onView(withId(R.id.textinput_no_icon)).perform(setSuffixText(null));
+    onView(withId(R.id.textinput_edittext_no_icon))
+        .check(matches(withCompoundDrawable(0, start)))
+        .check(matches(withCompoundDrawable(1, top)))
+        .check(matches(withCompoundDrawable(2, end)))
+        .check(matches(withCompoundDrawable(3, bottom)));
   }
 
   private static ViewAssertion isPasswordToggledVisible(final boolean isToggledVisible) {

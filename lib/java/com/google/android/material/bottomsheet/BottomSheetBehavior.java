@@ -30,17 +30,18 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Parcel;
 import android.os.Parcelable;
+import androidx.annotation.FloatRange;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.VisibleForTesting;
-import com.google.android.material.resources.MaterialResources;
-import com.google.android.material.shape.MaterialShapeDrawable;
-import com.google.android.material.shape.ShapeAppearanceModel;
 import androidx.core.math.MathUtils;
 import androidx.customview.view.AbsSavedState;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
+import androidx.core.view.accessibility.AccessibilityViewCommand;
 import androidx.customview.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -50,9 +51,11 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.view.accessibility.AccessibilityEvent;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams;
+import com.google.android.material.resources.MaterialResources;
+import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.ShapeAppearanceModel;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
@@ -62,6 +65,10 @@ import java.util.Map;
 /**
  * An interaction behavior plugin for a child view of {@link CoordinatorLayout} to make it work as a
  * bottom sheet.
+ *
+ * <p> To send useful accessibility events, set a title on bottom sheets that are windows or are
+ * window-like. For BottomSheetDialog use {@link BottomSheetDialog#setTitle(int)}, and for
+ * BottomSheetDialogFragment use {@link ViewCompat#setAccessibilityPaneTitle(View, CharSequence)}.
  */
 public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behavior<V> {
 
@@ -136,17 +143,17 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   /**
    * This flag will preserve the fitToContents boolean value on configuration change.
    */
-  public static final int SAVE_FIT_TO_CONTENTS = 0x2;
+  public static final int SAVE_FIT_TO_CONTENTS = 1 << 1;
 
   /**
    * This flag will preserve the hideable boolean value on configuration change.
    */
-  public static final int SAVE_HIDEABLE = 0x4;
+  public static final int SAVE_HIDEABLE = 1 << 2;
 
   /**
    * This flag will preserve the skipCollapsed boolean value on configuration change.
    */
-  public static final int SAVE_SKIP_COLLAPSED = 0x8;
+  public static final int SAVE_SKIP_COLLAPSED = 1 << 3;
 
   /**
    * This flag will preserve all aforementioned values on configuration change.
@@ -160,7 +167,22 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    */
   public static final int SAVE_NONE = 0;
 
-  private int saveFlags = SAVE_NONE;
+  /** @hide */
+  @RestrictTo(LIBRARY_GROUP)
+  @IntDef(
+      flag = true,
+      value = {
+        SAVE_PEEK_HEIGHT,
+        SAVE_FIT_TO_CONTENTS,
+        SAVE_HIDEABLE,
+        SAVE_SKIP_COLLAPSED,
+        SAVE_ALL,
+        SAVE_NONE,
+      })
+  @Retention(RetentionPolicy.SOURCE)
+  public @interface SaveFlags {}
+
+  @SaveFlags private int saveFlags = SAVE_NONE;
 
   private static final float HIDE_THRESHOLD = 0.5f;
 
@@ -189,6 +211,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   /** Default Shape Appearance to be used in bottomsheet */
   private ShapeAppearanceModel shapeAppearanceModelDefault;
 
+  private boolean isShapeExpanded;
+
   @Nullable private ValueAnimator interpolatorAnimator;
 
   private static final int DEF_STYLE_RES = R.style.Widget_Design_BottomSheet_Modal;
@@ -211,7 +235,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   @State int state = STATE_COLLAPSED;
 
-  ViewDragHelper viewDragHelper;
+  @Nullable ViewDragHelper viewDragHelper;
 
   private boolean ignoreEvents;
 
@@ -222,13 +246,13 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   int parentWidth;
   int parentHeight;
 
-  WeakReference<V> viewRef;
+  @Nullable WeakReference<V> viewRef;
 
-  WeakReference<View> nestedScrollingChildRef;
+  @Nullable WeakReference<View> nestedScrollingChildRef;
 
   private BottomSheetCallback callback;
 
-  private VelocityTracker velocityTracker;
+  @Nullable private VelocityTracker velocityTracker;
 
   int activePointerId;
 
@@ -236,11 +260,11 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   boolean touchingScrollingChild;
 
-  private Map<View, Integer> importantForAccessibilityMap;
+  @Nullable private Map<View, Integer> importantForAccessibilityMap;
 
   public BottomSheetBehavior() {}
 
-  public BottomSheetBehavior(Context context, AttributeSet attrs) {
+  public BottomSheetBehavior(@NonNull Context context, @Nullable AttributeSet attrs) {
     super(context, attrs);
     TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BottomSheetBehavior_Layout);
     this.shapeThemingEnabled = a.hasValue(R.styleable.BottomSheetBehavior_Layout_shapeAppearance);
@@ -280,13 +304,15 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     maximumVelocity = configuration.getScaledMaximumFlingVelocity();
   }
 
+  @NonNull
   @Override
-  public Parcelable onSaveInstanceState(CoordinatorLayout parent, V child) {
+  public Parcelable onSaveInstanceState(@NonNull CoordinatorLayout parent, @NonNull V child) {
     return new SavedState(super.onSaveInstanceState(parent, child), this);
   }
 
   @Override
-  public void onRestoreInstanceState(CoordinatorLayout parent, V child, Parcelable state) {
+  public void onRestoreInstanceState(
+      @NonNull CoordinatorLayout parent, @NonNull V child, @NonNull Parcelable state) {
     SavedState ss = (SavedState) state;
     super.onRestoreInstanceState(parent, child, ss.getSuperState());
     // Restore Optional State values designated by saveFlags
@@ -317,20 +343,10 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   @Override
-  public boolean onLayoutChild(CoordinatorLayout parent, V child, int layoutDirection) {
+  public boolean onLayoutChild(
+      @NonNull CoordinatorLayout parent, @NonNull V child, int layoutDirection) {
     if (ViewCompat.getFitsSystemWindows(parent) && !ViewCompat.getFitsSystemWindows(child)) {
       child.setFitsSystemWindows(true);
-    }
-    // Only set MaterialShapeDrawable as background if shapeTheming is enabled, otherwise will
-    // default to android:background declared in styles or layout.
-    if (shapeThemingEnabled && materialShapeDrawable != null) {
-      ViewCompat.setBackground(child, materialShapeDrawable);
-    }
-    // Set elevation on MaterialShapeDrawable
-    if (materialShapeDrawable != null) {
-      // Use elevation attr if set on bottomsheet; otherwise, use elevation of child view.
-      materialShapeDrawable.setElevation(
-          elevation == -1 ? ViewCompat.getElevation(child) : elevation);
     }
 
     if (viewRef == null) {
@@ -338,6 +354,25 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       peekHeightMin =
           parent.getResources().getDimensionPixelSize(R.dimen.design_bottom_sheet_peek_height_min);
       viewRef = new WeakReference<>(child);
+      // Only set MaterialShapeDrawable as background if shapeTheming is enabled, otherwise will
+      // default to android:background declared in styles or layout.
+      if (shapeThemingEnabled && materialShapeDrawable != null) {
+        ViewCompat.setBackground(child, materialShapeDrawable);
+      }
+      // Set elevation on MaterialShapeDrawable
+      if (materialShapeDrawable != null) {
+        // Use elevation attr if set on bottomsheet; otherwise, use elevation of child view.
+        materialShapeDrawable.setElevation(
+            elevation == -1 ? ViewCompat.getElevation(child) : elevation);
+        // Update the material shape based on initial state.
+        isShapeExpanded = state == STATE_EXPANDED;
+        materialShapeDrawable.setInterpolation(isShapeExpanded ? 0f : 1f);
+      }
+      updateAccessibilityActions();
+      if (ViewCompat.getImportantForAccessibility(child)
+          == ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_AUTO) {
+        ViewCompat.setImportantForAccessibility(child, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
+      }
     }
     if (viewDragHelper == null) {
       viewDragHelper = ViewDragHelper.create(parent, dragCallback);
@@ -370,7 +405,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   @Override
-  public boolean onInterceptTouchEvent(CoordinatorLayout parent, V child, MotionEvent event) {
+  public boolean onInterceptTouchEvent(
+      @NonNull CoordinatorLayout parent, @NonNull V child, @NonNull MotionEvent event) {
     if (!child.isShown()) {
       ignoreEvents = true;
       return false;
@@ -432,7 +468,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   @Override
-  public boolean onTouchEvent(CoordinatorLayout parent, V child, MotionEvent event) {
+  public boolean onTouchEvent(
+      @NonNull CoordinatorLayout parent, @NonNull V child, @NonNull MotionEvent event) {
     if (!child.isShown()) {
       return false;
     }
@@ -589,12 +626,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         }
       }
     }
-    if (viewDragHelper.smoothSlideViewTo(child, child.getLeft(), top)) {
-      setStateInternal(STATE_SETTLING);
-      ViewCompat.postOnAnimation(child, new SettleRunnable(child, targetState));
-    } else {
-      setStateInternal(targetState);
-    }
+    startSettlingAnimation(child, targetState, top, false);
     nestedScrolled = false;
   }
 
@@ -657,6 +689,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     }
     // Fix incorrect expanded settings depending on whether or not we are fitting sheet to contents.
     setStateInternal((this.fitToContents && state == STATE_HALF_EXPANDED) ? STATE_EXPANDED : state);
+
+    updateAccessibilityActions();
   }
 
   /**
@@ -666,7 +700,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    *     #PEEK_HEIGHT_AUTO} to configure the sheet to peek automatically at 16:9 ratio keyline.
    * @attr ref com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_peekHeight
    */
-  public final void setPeekHeight(int peekHeight) {
+  public void setPeekHeight(int peekHeight) {
     setPeekHeight(peekHeight, false);
   }
 
@@ -699,7 +733,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         V view = viewRef.get();
         if (view != null) {
           if (animate) {
-            startSettlingAnimationPendingLayout(state);
+            settleToStatePendingLayout(state);
           } else {
             view.requestLayout();
           }
@@ -715,7 +749,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    *     sheet is configured to peek automatically at 16:9 ratio keyline
    * @attr ref com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_peekHeight
    */
-  public final int getPeekHeight() {
+  public int getPeekHeight() {
     return peekHeightAuto ? PEEK_HEIGHT_AUTO : peekHeight;
   }
 
@@ -728,7 +762,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    * @param ratio a float between 0 and 1, representing the {@link #STATE_HALF_EXPANDED} ratio.
    * @attr com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_halfExpandedRatio
    */
-  public void setHalfExpandedRatio(float ratio) {
+  public void setHalfExpandedRatio(@FloatRange(from = 0.0f, to = 1.0f) float ratio) {
 
     if ((ratio <= 0) || (ratio >= 1)) {
       throw new IllegalArgumentException("ratio must be a float value between 0 and 1");
@@ -757,6 +791,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    *
    * @attr com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_halfExpandedRatio
    */
+  @FloatRange(from = 0.0f, to = 1.0f)
   public float getHalfExpandedRatio() {
     return halfExpandedRatio;
   }
@@ -774,6 +809,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         // Lift up to collapsed state
         setState(STATE_COLLAPSED);
       }
+      updateAccessibilityActions();
     }
   }
 
@@ -818,7 +854,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    * @see #getSaveFlags()
    * @attr ref com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_saveFlags
    */
-  public void setSaveFlags(int flags) {
+  public void setSaveFlags(@SaveFlags int flags) {
     this.saveFlags = flags;
   }
   /**
@@ -827,6 +863,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    * @see #setSaveFlags(int)
    * @attr ref com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_saveFlags
    */
+  @SaveFlags
    public int getSaveFlags() {
     return this.saveFlags;
   }
@@ -841,14 +878,23 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   /**
+   * Gets the attached {@link BottomSheetCallback} that will be notified of bottom sheet events.
+   *
+   * @return {@link BottomSheetCallback} The attached callback that will be notified when bottom
+   *     sheet events occur.
+   */
+  public BottomSheetCallback getBottomSheetCallback() {
+    return callback;
+  }
+
+  /**
    * Sets the state of the bottom sheet. The bottom sheet will transition to that state with
    * animation.
    *
    * @param state One of {@link #STATE_COLLAPSED}, {@link #STATE_EXPANDED}, {@link #STATE_HIDDEN},
    *     or {@link #STATE_HALF_EXPANDED}.
    */
-  public final void setState(@State int state) {
-    @State int previousState = this.state;
+  public void setState(@State int state) {
     if (state == this.state) {
       return;
     }
@@ -862,11 +908,10 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       }
       return;
     }
-    startSettlingAnimationPendingLayout(state);
-    updateDrawableOnStateChange(state, previousState);
+    settleToStatePendingLayout(state);
   }
 
-  private void startSettlingAnimationPendingLayout(@State int state) {
+  private void settleToStatePendingLayout(@State int state) {
     final V child = viewRef.get();
     if (child == null) {
       return;
@@ -879,11 +924,11 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
           new Runnable() {
             @Override
             public void run() {
-              startSettlingAnimation(child, finalState);
+              settleToState(child, finalState);
             }
           });
     } else {
-      startSettlingAnimation(child, state);
+      settleToState(child, state);
     }
   }
 
@@ -894,13 +939,11 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    *     {@link #STATE_DRAGGING}, {@link #STATE_SETTLING}, or {@link #STATE_HALF_EXPANDED}.
    */
   @State
-  public final int getState() {
+  public int getState() {
     return state;
   }
 
   void setStateInternal(@State int state) {
-    int previousState = this.state;
-
     if (this.state == state) {
       return;
     }
@@ -921,30 +964,31 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       updateImportantForAccessibility(false);
     }
 
-    ViewCompat.setImportantForAccessibility(
-        bottomSheet, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
-    bottomSheet.sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED);
-
-    updateDrawableOnStateChange(state, previousState);
+    updateDrawableForTargetState(state);
     if (callback != null) {
       callback.onStateChanged(bottomSheet, state);
     }
+    updateAccessibilityActions();
   }
 
-  private void updateDrawableOnStateChange(@State int state, @State int previousState) {
-    if (materialShapeDrawable != null) {
-      // If the BottomSheetBehavior's state is set directly to STATE_EXPANDED from
-      // STATE_HIDDEN or STATE_COLLAPSED, bypassing  STATE_DRAGGING, the corner transition animation
-      // will not be triggered automatically, so we will trigger it here.
-      if (state == STATE_EXPANDED
-          && (previousState == STATE_HIDDEN || previousState == STATE_COLLAPSED)
-          && interpolatorAnimator != null
-          && interpolatorAnimator.getAnimatedFraction() == 1) {
-        interpolatorAnimator.reverse();
-      }
-      if (state == STATE_DRAGGING
-           && previousState == STATE_EXPANDED && interpolatorAnimator != null) {
-        interpolatorAnimator.start();
+  private void updateDrawableForTargetState(@State int state) {
+    if (state == STATE_SETTLING) {
+      // Special case: we want to know which state we're settling to, so wait for another call.
+      return;
+    }
+
+    boolean expand = state == STATE_EXPANDED;
+    if (isShapeExpanded != expand) {
+      isShapeExpanded = expand;
+      if (materialShapeDrawable != null && interpolatorAnimator != null) {
+        if (interpolatorAnimator.isRunning()) {
+          interpolatorAnimator.reverse();
+        } else {
+          float to = expand ? 0f : 1f;
+          float from = 1f - to;
+          interpolatorAnimator.setFloatValues(from, to);
+          interpolatorAnimator.start();
+        }
       }
     }
   }
@@ -976,7 +1020,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     }
   }
 
-  private void restoreOptionalState(SavedState ss) {
+  private void restoreOptionalState(@NonNull SavedState ss) {
     if (this.saveFlags == SAVE_NONE) {
       return;
     }
@@ -996,7 +1040,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     }
   }
 
-  boolean shouldHide(View child, float yvel) {
+  boolean shouldHide(@NonNull View child, float yvel) {
     if (skipCollapsed) {
       return true;
     }
@@ -1008,6 +1052,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     return Math.abs(newTop - collapsedOffset) / (float) peekHeight > HIDE_THRESHOLD;
   }
 
+  @Nullable
   @VisibleForTesting
   View findScrollingChild(View view) {
     if (ViewCompat.isNestedScrollingEnabled(view)) {
@@ -1026,18 +1071,19 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   private void createMaterialShapeDrawable(
-      Context context, AttributeSet attrs, boolean hasBackgroundTint) {
+      @NonNull Context context, AttributeSet attrs, boolean hasBackgroundTint) {
     this.createMaterialShapeDrawable(context, attrs, hasBackgroundTint, null);
   }
 
   private void createMaterialShapeDrawable(
-      Context context,
+      @NonNull Context context,
       AttributeSet attrs,
       boolean hasBackgroundTint,
       @Nullable ColorStateList bottomSheetColor) {
     if (this.shapeThemingEnabled) {
       this.shapeAppearanceModelDefault =
-          new ShapeAppearanceModel(context, attrs, R.attr.bottomSheetStyle, DEF_STYLE_RES);
+          ShapeAppearanceModel.builder(context, attrs, R.attr.bottomSheetStyle, DEF_STYLE_RES)
+              .build();
 
       this.materialShapeDrawable = new MaterialShapeDrawable(shapeAppearanceModelDefault);
       this.materialShapeDrawable.initializeElevationOverlay(context);
@@ -1059,7 +1105,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     interpolatorAnimator.addUpdateListener(
         new AnimatorUpdateListener() {
           @Override
-          public void onAnimationUpdate(ValueAnimator animation) {
+          public void onAnimationUpdate(@NonNull ValueAnimator animation) {
             float value = (float) animation.getAnimatedValue();
             if (materialShapeDrawable != null) {
               materialShapeDrawable.setInterpolation(value);
@@ -1080,7 +1126,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     return fitToContents ? fitToContentsOffset : expandedOffset;
   }
 
-  void startSettlingAnimation(View child, int state) {
+  void settleToState(@NonNull View child, int state) {
     int top;
     if (state == STATE_COLLAPSED) {
       top = collapsedOffset;
@@ -1098,8 +1144,17 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     } else {
       throw new IllegalArgumentException("Illegal state argument: " + state);
     }
-    if (viewDragHelper.smoothSlideViewTo(child, child.getLeft(), top)) {
+    startSettlingAnimation(child, state, top, false);
+  }
+
+  void startSettlingAnimation(View child, int state, int top, boolean settleFromViewDragHelper) {
+    boolean startedSettling = settleFromViewDragHelper
+        ? viewDragHelper.settleCapturedViewAt(child.getLeft(), top)
+        : viewDragHelper.smoothSlideViewTo(child, child.getLeft(), top);
+    if (startedSettling) {
       setStateInternal(STATE_SETTLING);
+      // STATE_SETTLING won't animate the material shape, so do that here with the target state.
+      updateDrawableForTargetState(state);
       ViewCompat.postOnAnimation(child, new SettleRunnable(child, state));
     } else {
       setStateInternal(state);
@@ -1215,19 +1270,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
               }
             }
           }
-          if (viewDragHelper.settleCapturedViewAt(releasedChild.getLeft(), top)) {
-            setStateInternal(STATE_SETTLING);
-            if (targetState == STATE_EXPANDED && interpolatorAnimator != null) {
-              interpolatorAnimator.reverse();
-            }
-            ViewCompat.postOnAnimation(
-                releasedChild, new SettleRunnable(releasedChild, targetState));
-          } else {
-            if (targetState == STATE_EXPANDED && interpolatorAnimator != null) {
-              interpolatorAnimator.reverse();
-            }
-            setStateInternal(targetState);
-          }
+          startSettlingAnimation(releasedChild, targetState, top, true);
         }
 
         @Override
@@ -1273,7 +1316,10 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    * Disables the shaped corner {@link ShapeAppearanceModel} interpolation transition animations.
    * Will have no effect unless the sheet utilizes a {@link MaterialShapeDrawable} with set shape
    * theming properties. Only For use in UI testing.
+   *
+   * @hide
    */
+  @RestrictTo(LIBRARY_GROUP)
   @VisibleForTesting
   public void disableShapeAnimations() {
     // Sets the shape value animator to null, prevents animations from occuring during testing.
@@ -1311,11 +1357,11 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     boolean hideable;
     boolean skipCollapsed;
 
-    public SavedState(Parcel source) {
+    public SavedState(@NonNull Parcel source) {
       this(source, null);
     }
 
-    public SavedState(Parcel source, ClassLoader loader) {
+    public SavedState(@NonNull Parcel source, ClassLoader loader) {
       super(source, loader);
       //noinspection ResourceType
       state = source.readInt();
@@ -1325,7 +1371,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       skipCollapsed = source.readInt() == 1;
     }
 
-    public SavedState(Parcelable superState, BottomSheetBehavior behavior) {
+    public SavedState(Parcelable superState, @NonNull BottomSheetBehavior behavior) {
       super(superState);
       this.state = behavior.state;
       this.peekHeight = behavior.peekHeight;
@@ -1335,7 +1381,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     }
 
     @Override
-    public void writeToParcel(Parcel out, int flags) {
+    public void writeToParcel(@NonNull Parcel out, int flags) {
       super.writeToParcel(out, flags);
       out.writeInt(state);
       out.writeInt(peekHeight);
@@ -1346,16 +1392,19 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
     public static final Creator<SavedState> CREATOR =
         new ClassLoaderCreator<SavedState>() {
+          @NonNull
           @Override
-          public SavedState createFromParcel(Parcel in, ClassLoader loader) {
+          public SavedState createFromParcel(@NonNull Parcel in, ClassLoader loader) {
             return new SavedState(in, loader);
           }
 
+          @Nullable
           @Override
-          public SavedState createFromParcel(Parcel in) {
+          public SavedState createFromParcel(@NonNull Parcel in) {
             return new SavedState(in, null);
           }
 
+          @NonNull
           @Override
           public SavedState[] newArray(int size) {
             return new SavedState[size];
@@ -1369,8 +1418,9 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    * @param view The {@link View} with {@link BottomSheetBehavior}.
    * @return The {@link BottomSheetBehavior} associated with the {@code view}.
    */
+  @NonNull
   @SuppressWarnings("unchecked")
-  public static <V extends View> BottomSheetBehavior<V> from(V view) {
+  public static <V extends View> BottomSheetBehavior<V> from(@NonNull V view) {
     ViewGroup.LayoutParams params = view.getLayoutParams();
     if (!(params instanceof CoordinatorLayout.LayoutParams)) {
       throw new IllegalArgumentException("The view is not a child of CoordinatorLayout");
@@ -1429,5 +1479,62 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     if (!expanded) {
       importantForAccessibilityMap = null;
     }
+  }
+
+  private void updateAccessibilityActions() {
+    if (viewRef == null) {
+      return;
+    }
+    V child = viewRef.get();
+    if (child == null) {
+      return;
+    }
+    ViewCompat.removeAccessibilityAction(child, AccessibilityNodeInfoCompat.ACTION_COLLAPSE);
+    ViewCompat.removeAccessibilityAction(child, AccessibilityNodeInfoCompat.ACTION_EXPAND);
+    ViewCompat.removeAccessibilityAction(child, AccessibilityNodeInfoCompat.ACTION_DISMISS);
+
+    if (hideable && state != STATE_HIDDEN) {
+      addAccessibilityActionForState(child, AccessibilityActionCompat.ACTION_DISMISS, STATE_HIDDEN);
+    }
+
+    switch (state) {
+      case STATE_EXPANDED:
+        {
+          int nextState = fitToContents ? STATE_COLLAPSED : STATE_HALF_EXPANDED;
+          addAccessibilityActionForState(
+              child, AccessibilityActionCompat.ACTION_COLLAPSE, nextState);
+          break;
+        }
+      case STATE_HALF_EXPANDED:
+        {
+          addAccessibilityActionForState(
+              child, AccessibilityActionCompat.ACTION_COLLAPSE, STATE_COLLAPSED);
+          addAccessibilityActionForState(
+              child, AccessibilityActionCompat.ACTION_EXPAND, STATE_EXPANDED);
+          break;
+        }
+      case STATE_COLLAPSED:
+        {
+          int nextState = fitToContents ? STATE_EXPANDED : STATE_HALF_EXPANDED;
+          addAccessibilityActionForState(child, AccessibilityActionCompat.ACTION_EXPAND, nextState);
+          break;
+        }
+      default: // fall out
+    }
+  }
+
+  private void addAccessibilityActionForState(
+      V child, AccessibilityActionCompat action, final int state) {
+    ViewCompat.replaceAccessibilityAction(
+        child,
+        action,
+        null,
+        new AccessibilityViewCommand() {
+          @Override
+          public boolean perform(@NonNull View view, @Nullable CommandArguments arguments) {
+            setState(state);
+            return true;
+          }
+        });
   }
 }

@@ -16,15 +16,11 @@
 
 package com.google.android.material.snackbar;
 
-import static com.google.android.material.testutils.TestUtilsActions.setLayoutDirection;
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.action.ViewActions.swipeLeft;
-import static androidx.test.espresso.action.ViewActions.swipeRight;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.core.AllOf.allOf;
 import static org.junit.Assert.assertFalse;
@@ -35,12 +31,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import androidx.annotation.Nullable;
-import com.google.android.material.testapp.R;
-import com.google.android.material.testapp.SnackbarActivity;
-import com.google.android.material.testapp.custom.CustomSnackbar;
-import com.google.android.material.testapp.custom.CustomSnackbarMainContent;
-import com.google.android.material.testutils.SnackbarUtils;
-import androidx.core.view.ViewCompat;
 import android.view.LayoutInflater;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.test.espresso.ViewAction;
@@ -49,6 +39,11 @@ import androidx.test.filters.LargeTest;
 import androidx.test.filters.MediumTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
+import com.google.android.material.testapp.R;
+import com.google.android.material.testapp.SnackbarActivity;
+import com.google.android.material.testapp.custom.CustomSnackbar;
+import com.google.android.material.testapp.custom.CustomSnackbarMainContent;
+import com.google.android.material.testutils.SnackbarUtils;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -181,33 +176,6 @@ public class CustomSnackbarTest {
     verifyNoMoreInteractions(mockCallback);
     // and that the snackbar is neither shown nor queued to be shown
     assertFalse(snackbar.isShownOrQueued());
-  }
-
-  @Test
-  @MediumTest
-  public void testDismissViaSwipe() throws Throwable {
-    verifyDismissCallback(
-        onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
-        swipeRight(),
-        null,
-        Snackbar.LENGTH_INDEFINITE,
-        Snackbar.Callback.DISMISS_EVENT_SWIPE);
-  }
-
-  @Test
-  @MediumTest
-  public void testDismissViaSwipeRtl() throws Throwable {
-    onView(withId(R.id.col)).perform(setLayoutDirection(ViewCompat.LAYOUT_DIRECTION_RTL));
-    if (ViewCompat.getLayoutDirection(coordinatorLayout) == ViewCompat.LAYOUT_DIRECTION_RTL) {
-      // On devices that support RTL layout, the start-to-end dismiss swipe is done
-      // with swipeLeft() action
-      verifyDismissCallback(
-          onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
-          swipeLeft(),
-          null,
-          Snackbar.LENGTH_INDEFINITE,
-          Snackbar.Callback.DISMISS_EVENT_SWIPE);
-    }
   }
 
   @Test

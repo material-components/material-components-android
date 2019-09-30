@@ -20,6 +20,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import android.view.MotionEvent;
@@ -36,12 +37,12 @@ import android.view.ViewConfiguration;
 @RestrictTo(Scope.LIBRARY_GROUP)
 public class InsetDialogOnTouchListener implements OnTouchListener {
 
-  private final Dialog dialog;
+  @NonNull private final Dialog dialog;
   private final int leftInset;
   private final int topInset;
   private final int prePieSlop;
 
-  public InsetDialogOnTouchListener(Dialog dialog, Rect insets) {
+  public InsetDialogOnTouchListener(@NonNull Dialog dialog, @NonNull Rect insets) {
     this.dialog = dialog;
     this.leftInset = insets.left;
     this.topInset = insets.top;
@@ -49,7 +50,7 @@ public class InsetDialogOnTouchListener implements OnTouchListener {
   }
 
   @Override
-  public boolean onTouch(View view, MotionEvent event) {
+  public boolean onTouch(@NonNull View view, @NonNull MotionEvent event) {
     View insetView = view.findViewById(android.R.id.content);
 
     int insetLeft = leftInset + insetView.getLeft();

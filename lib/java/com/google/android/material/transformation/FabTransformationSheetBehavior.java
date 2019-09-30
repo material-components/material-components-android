@@ -21,6 +21,8 @@ import android.content.Context;
 import android.os.Build;
 import androidx.annotation.AnimatorRes;
 import androidx.annotation.CallSuper;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -42,7 +44,7 @@ import java.util.Map;
  */
 public class FabTransformationSheetBehavior extends FabTransformationBehavior {
 
-  private Map<View, Integer> importantForAccessibilityMap;
+  @Nullable private Map<View, Integer> importantForAccessibilityMap;
 
   public FabTransformationSheetBehavior() {}
 
@@ -50,6 +52,7 @@ public class FabTransformationSheetBehavior extends FabTransformationBehavior {
     super(context, attrs);
   }
 
+  @NonNull
   @Override
   protected FabTransformationSpec onCreateMotionSpec(Context context, boolean expanded) {
     @AnimatorRes int specRes;
@@ -68,12 +71,12 @@ public class FabTransformationSheetBehavior extends FabTransformationBehavior {
   @CallSuper
   @Override
   protected boolean onExpandedStateChange(
-      View dependency, View child, boolean expanded, boolean animated) {
+      @NonNull View dependency, @NonNull View child, boolean expanded, boolean animated) {
     updateImportantForAccessibility(child, expanded);
     return super.onExpandedStateChange(dependency, child, expanded, animated);
   }
 
-  private void updateImportantForAccessibility(View sheet, boolean expanded) {
+  private void updateImportantForAccessibility(@NonNull View sheet, boolean expanded) {
     ViewParent viewParent = sheet.getParent();
     if (!(viewParent instanceof CoordinatorLayout)) {
       return;

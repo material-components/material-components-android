@@ -35,7 +35,6 @@ import org.robolectric.annotation.internal.DoNotInstrument;
 import org.robolectric.shadow.api.Shadow;
 import org.robolectric.shadows.ShadowAccessibilityManager;
 
-
 /**
  * Tests for {@link com.google.android.material.snackbar.Snackbar}.
  */

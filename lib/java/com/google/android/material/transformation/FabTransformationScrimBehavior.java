@@ -60,7 +60,8 @@ public class FabTransformationScrimBehavior extends ExpandableTransformationBeha
   }
 
   @Override
-  public boolean onTouchEvent(CoordinatorLayout parent, View child, MotionEvent ev) {
+  public boolean onTouchEvent(
+      @NonNull CoordinatorLayout parent, @NonNull View child, @NonNull MotionEvent ev) {
     // TODO: Implement click detection so clients don't have to manually set a listener.
     return super.onTouchEvent(parent, child, ev);
   }
@@ -68,7 +69,10 @@ public class FabTransformationScrimBehavior extends ExpandableTransformationBeha
   @NonNull
   @Override
   protected AnimatorSet onCreateExpandedStateChangeAnimation(
-      View dependency, final View child, final boolean expanded, boolean isAnimating) {
+      @NonNull View dependency,
+      @NonNull final View child,
+      final boolean expanded,
+      boolean isAnimating) {
     List<Animator> animations = new ArrayList<>();
     List<AnimatorListener> listeners = new ArrayList<>();
 
@@ -96,10 +100,10 @@ public class FabTransformationScrimBehavior extends ExpandableTransformationBeha
   }
 
   private void createScrimAnimation(
-      View child,
+      @NonNull View child,
       boolean expanded,
       boolean currentlyAnimating,
-      List<Animator> animations,
+      @NonNull List<Animator> animations,
       List<AnimatorListener> unusedListeners) {
     MotionTiming timing = expanded ? expandTiming : collapseTiming;
 

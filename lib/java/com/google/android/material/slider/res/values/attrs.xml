@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2019 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+  <declare-styleable name="Slider">
+    <attr name="android:value" />
+    <attr name="android:valueFrom" />
+    <attr name="android:valueTo" />
+    <attr name="android:stepSize" />
+    <!-- The color of the track. -->
+    <attr name="trackColor" format="color" />
+    <!-- The color of active portion of the track. -->
+    <attr name="activeTrackColor" format="color" />
+    <!-- The color of inactive portion of the track. -->
+    <attr name="inactiveTrackColor" format="color" />
+    <!-- The color of the slider's thumb. -->
+    <attr name="thumbColor" format="color" />
+    <!-- The color of the slider's tick marks. Only used when the slider is in discrete mode. -->
+    <attr name="tickColor" format="color" />
+    <!-- The color of the slider's tick marks for the active portion of the track. Only used when
+         the slider is in discrete mode. -->
+    <attr name="activeTickColor" format="color" />
+    <!-- The color of the slider's tick marks for the inactive portion of the track. Only used when
+         the slider is in discrete mode. -->
+    <attr name="inactiveTickColor" format="color" />
+    <!-- The color of the text displayed in the slider's bubble. -->
+    <attr name="labelColor" format="color" />
+    <!-- The radius of the thumb. -->
+    <attr name="thumbRadius" format="dimension" />
+    <!-- The elevation of the thumb. -->
+    <attr name="thumbElevation" format="dimension" />
+    <!-- The radius of the halo. -->
+    <attr name="haloRadius" format="dimension" />
+  </declare-styleable>
+
+  <!-- Style to use for Slider in this theme. -->
+  <attr name="sliderStyle" format="reference" />
+</resources>

@@ -16,6 +16,7 @@
 package com.google.android.material.animation;
 
 import android.animation.TypeEvaluator;
+import androidx.annotation.NonNull;
 
 /**
  * This evaluator can be used to perform type interpolation between integer values that represent
@@ -34,6 +35,7 @@ public class ArgbEvaluatorCompat implements TypeEvaluator<Integer> {
    *
    * @return An instance of <code>ArgbEvalutor</code>.
    */
+  @NonNull
   public static ArgbEvaluatorCompat getInstance() {
     return instance;
   }
@@ -50,6 +52,7 @@ public class ArgbEvaluatorCompat implements TypeEvaluator<Integer> {
    *     separating the start and end values into separate color channels and interpolating each one
    *     separately, recombining the resulting values in the same way.
    */
+  @NonNull
   @Override
   public Integer evaluate(float fraction, Integer startValue, Integer endValue) {
     int startInt = startValue;

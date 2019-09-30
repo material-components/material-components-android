@@ -26,12 +26,14 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION_CODES;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import com.google.android.material.shape.MaterialShapeDrawable;
-import com.google.android.material.shape.MaterialShapeUtils;
 import androidx.core.view.ViewCompat;
 import androidx.appcompat.widget.Toolbar;
 import android.util.AttributeSet;
+import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.MaterialShapeUtils;
 
 /**
  * {@code MaterialToolbar} is a {@link Toolbar} that implements certain Material features, such as
@@ -58,15 +60,15 @@ public class MaterialToolbar extends Toolbar {
 
   private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_Toolbar;
 
-  public MaterialToolbar(Context context) {
+  public MaterialToolbar(@NonNull Context context) {
     this(context, null);
   }
 
-  public MaterialToolbar(Context context, AttributeSet attrs) {
+  public MaterialToolbar(@NonNull Context context, @Nullable AttributeSet attrs) {
     this(context, attrs, R.attr.toolbarStyle);
   }
 
-  public MaterialToolbar(Context context, AttributeSet attrs, int defStyleAttr) {
+  public MaterialToolbar(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     super(createThemedContext(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
     // Ensure we are using the correctly themed context rather than the context that was passed in.
     context = getContext();

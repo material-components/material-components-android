@@ -18,8 +18,7 @@ package com.google.android.material.textfield;
 
 import com.google.android.material.R;
 
-import com.google.android.material.textfield.TextInputLayout.OnEditTextAttachedListener;
-import com.google.android.material.textfield.TextInputLayout.OnEndIconChangedListener;
+import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -27,6 +26,8 @@ import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
+import com.google.android.material.textfield.TextInputLayout.OnEditTextAttachedListener;
+import com.google.android.material.textfield.TextInputLayout.OnEndIconChangedListener;
 
 /** Default initialization of the password toggle end icon. */
 class PasswordToggleEndIconDelegate extends EndIconDelegate {
@@ -50,7 +51,8 @@ class PasswordToggleEndIconDelegate extends EndIconDelegate {
   private final OnEditTextAttachedListener onEditTextAttachedListener =
       new OnEditTextAttachedListener() {
         @Override
-        public void onEditTextAttached(EditText editText) {
+        public void onEditTextAttached(@NonNull TextInputLayout textInputLayout) {
+          EditText editText = textInputLayout.getEditText();
           textInputLayout.setEndIconVisible(true);
           endIconView.setChecked(!hasPasswordTransformation());
           // Make sure there's always only one password toggle text watcher added
@@ -61,7 +63,7 @@ class PasswordToggleEndIconDelegate extends EndIconDelegate {
   private final OnEndIconChangedListener onEndIconChangedListener =
       new OnEndIconChangedListener() {
         @Override
-        public void onEndIconChanged(int previousIcon) {
+        public void onEndIconChanged(@NonNull TextInputLayout textInputLayout, int previousIcon) {
           EditText editText = textInputLayout.getEditText();
           if (editText != null && previousIcon == TextInputLayout.END_ICON_PASSWORD_TOGGLE) {
             // If the end icon was the password toggle add it back the PasswordTransformation
@@ -71,7 +73,7 @@ class PasswordToggleEndIconDelegate extends EndIconDelegate {
         }
       };
 
-  PasswordToggleEndIconDelegate(TextInputLayout textInputLayout) {
+  PasswordToggleEndIconDelegate(@NonNull TextInputLayout textInputLayout) {
     super(textInputLayout);
   }
 

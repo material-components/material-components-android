@@ -39,9 +39,7 @@ public class MaterialShapeDrawableDrawTest {
 
   private static final int SHAPE_SIZE = 300;
 
-  private final ShapeAppearanceModel shapeAppearanceModel = new ShapeAppearanceModel();
-  private final MaterialShapeDrawable materialShapeDrawable =
-      new MaterialShapeDrawable(shapeAppearanceModel);
+  private final MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable();
 
   @Before
   public void setMaterialShapeDrawableBounds() {
@@ -50,7 +48,9 @@ public class MaterialShapeDrawableDrawTest {
 
   @Test
   public void createNewDrawable_notRoundRect_pathIsCalculated() {
-    shapeAppearanceModel.setTopLeftCorner(CornerFamily.CUT, 10);
+    ShapeAppearanceModel shapeAppearanceModel =
+        ShapeAppearanceModel.builder().setTopLeftCorner(CornerFamily.CUT, 10).build();
+    materialShapeDrawable.setShapeAppearanceModel(shapeAppearanceModel);
     Drawable copy = copyMaterialShapeDrawable();
 
     Canvas canvasMock = mock(Canvas.class);

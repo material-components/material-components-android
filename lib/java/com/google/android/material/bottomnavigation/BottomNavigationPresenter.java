@@ -22,6 +22,7 @@ import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuItemImpl;
@@ -104,6 +105,7 @@ public class BottomNavigationPresenter implements MenuPresenter {
     return id;
   }
 
+  @NonNull
   @Override
   public Parcelable onSaveInstanceState() {
     SavedState savedState = new SavedState();
@@ -130,11 +132,11 @@ public class BottomNavigationPresenter implements MenuPresenter {
 
   static class SavedState implements Parcelable {
     int selectedItemId;
-    ParcelableSparseArray badgeSavedStates;
+    @Nullable ParcelableSparseArray badgeSavedStates;
 
     SavedState() {}
 
-    SavedState(Parcel in) {
+    SavedState(@NonNull Parcel in) {
       selectedItemId = in.readInt();
       badgeSavedStates = in.readParcelable(getClass().getClassLoader());
     }
@@ -152,11 +154,13 @@ public class BottomNavigationPresenter implements MenuPresenter {
 
     public static final Creator<SavedState> CREATOR =
         new Creator<SavedState>() {
+          @NonNull
           @Override
-          public SavedState createFromParcel(Parcel in) {
+          public SavedState createFromParcel(@NonNull Parcel in) {
             return new SavedState(in);
           }
 
+          @NonNull
           @Override
           public SavedState[] newArray(int size) {
             return new SavedState[size];

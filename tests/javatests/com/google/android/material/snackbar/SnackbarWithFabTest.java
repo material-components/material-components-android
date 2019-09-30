@@ -18,14 +18,14 @@ package com.google.android.material.snackbar;
 
 import static org.junit.Assert.assertEquals;
 
-import com.google.android.material.testapp.R;
-import com.google.android.material.testapp.SnackbarWithFabActivity;
-import com.google.android.material.testutils.SnackbarUtils;
 import android.view.View;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
+import com.google.android.material.testapp.R;
+import com.google.android.material.testapp.SnackbarWithFabActivity;
+import com.google.android.material.testutils.SnackbarUtils;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

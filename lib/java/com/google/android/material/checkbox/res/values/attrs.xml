@@ -21,5 +21,7 @@
       be ignored. This value should be set to false when using custom drawables
       that should not be tinted. This value is ignored if a buttonTint is set. -->
     <attr name="useMaterialThemeColors"/>
+    <!-- Tint for the checkbox. -->
+    <attr name="buttonTint"/>
   </declare-styleable>
 </resources>

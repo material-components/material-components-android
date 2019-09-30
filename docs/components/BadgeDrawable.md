@@ -32,8 +32,7 @@ requests in a [`BottomNavigationView`](BottomNavigationView.md) or
     <!--{: .icon-list-item.icon-list-item--spec }-->
 -   [Class definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/badge/BadgeDrawable.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
-    <!-- TODO: Add class overview once the javadoc is published on developer.android.com -->
-    <!-- - [Class overview](https://developer.android.com/reference/com/google/android/material/badge/Badge) -->
+-   [Class overview](https://developer.android.com/reference/com/google/android/material/badge/BadgeDrawable)
     <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 ## Usage
@@ -72,13 +71,21 @@ Both of the above steps have been encapsulated in a util method:
   BadgeUtils.attachBadgeDrawable(badgeDrawable, anchor, anchorFrameLayoutParent);
 ```
 
+### `BadgeDrawable` Gravity Modes
+
+BadgeDrawable provides 4 pre-packaged gravity modes that control how the badge
+aligns with respect to its anchor view. By default (`TOP_END`), badge aligns to
+the top and end edges of the anchor (with some offsets). The other options are
+`TOP_START`, `BOTTOM_START` and `BOTTOM_END`.
+
 ### BadgeDrawable Attributes
 
-Feature      | Relevant attributes
------------- | -----------------------------------------------
-Color        | `app:backgroundColor` <br> `app:badgeTextColor`
-Label        | `app:number`
-Label Length | `app:maxCharacterCount`
+Feature       | Relevant attributes
+------------- | -----------------------------------------------
+Color         | `app:backgroundColor` <br> `app:badgeTextColor`
+Label         | `app:number`
+Label Length  | `app:maxCharacterCount`
+Badge Gravity | `app:badgeGravity`
 
 ### Talkback Support
 

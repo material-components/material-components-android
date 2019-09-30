@@ -35,6 +35,7 @@ import io.material.catalog.tableofcontents.TocFragment;
 import io.material.catalog.tableofcontents.TocModule;
 import io.material.catalog.themeswitcher.ThemeOverlayUtils;
 import io.material.catalog.themeswitcher.ThemeSwitcherHelper.ThemeSwitcherActivity;
+import io.material.catalog.windowpreferences.WindowPreferencesManager;
 import javax.inject.Inject;
 
 /**
@@ -49,8 +50,10 @@ public class MainActivity extends DaggerAppCompatActivity implements ThemeSwitch
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     ThemeOverlayUtils.applyThemeOverlays(this);
-
     super.onCreate(savedInstanceState);
+    WindowPreferencesManager windowPreferencesManager = new WindowPreferencesManager(this);
+    windowPreferencesManager.applyEdgeToEdgePreference(getWindow());
+
     setContentView(R.layout.cat_main_activity);
 
     if (savedInstanceState == null) {

@@ -48,12 +48,6 @@ import androidx.annotation.Px;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
-import com.google.android.material.resources.MaterialResources;
-import com.google.android.material.resources.TextAppearance;
-import com.google.android.material.resources.TextAppearanceFontCallback;
-import com.google.android.material.shape.MaterialShapeUtils;
-import com.google.android.material.shape.ShapeAppearanceModel;
-import com.google.android.material.shape.Shapeable;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
@@ -77,7 +71,13 @@ import com.google.android.material.animation.MotionSpec;
 import com.google.android.material.chip.ChipDrawable.Delegate;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
+import com.google.android.material.resources.MaterialResources;
+import com.google.android.material.resources.TextAppearance;
+import com.google.android.material.resources.TextAppearanceFontCallback;
 import com.google.android.material.ripple.RippleUtils;
+import com.google.android.material.shape.MaterialShapeUtils;
+import com.google.android.material.shape.ShapeAppearanceModel;
+import com.google.android.material.shape.Shapeable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -156,7 +156,12 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
   @Dimension(unit = Dimension.PX)
   private int minTouchTargetSize;
 
-  private final ChipTouchHelper touchHelper;
+  private static final String BUTTON_ACCESSIBILITY_CLASS_NAME = "android.widget.Button";
+  private static final String COMPOUND_BUTTON_ACCESSIBILITY_CLASS_NAME =
+      "android.widget.CompoundButton";
+  private static final String GENERIC_VIEW_ACCESSIBILITY_CLASS_NAME = "android.view.View";
+
+  @NonNull private final ChipTouchHelper touchHelper;
   private final Rect rect = new Rect();
   private final RectF rectF = new RectF();
   private final TextAppearanceFontCallback fontCallback =
@@ -207,11 +212,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
     a.recycle();
 
     touchHelper = new ChipTouchHelper(this);
-    if (VERSION.SDK_INT >= VERSION_CODES.N) {
-      ViewCompat.setAccessibilityDelegate(this, touchHelper);
-    } else {
-      updateAccessibilityDelegate();
-    }
+    updateAccessibilityDelegate();
     if (!hasShapeAppearanceAttribute) {
       initOutlineProvider();
     }
@@ -255,27 +256,32 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
   }
 
   @Override
-  public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
+  public void onInitializeAccessibilityNodeInfo(@NonNull AccessibilityNodeInfo info) {
     super.onInitializeAccessibilityNodeInfo(info);
-    info.setClassName(Chip.class.getName());
+    if (isCheckable() || isClickable()) {
+      info.setClassName(
+          isCheckable()
+              ? COMPOUND_BUTTON_ACCESSIBILITY_CLASS_NAME
+              : BUTTON_ACCESSIBILITY_CLASS_NAME);
+    } else {
+      info.setClassName(GENERIC_VIEW_ACCESSIBILITY_CLASS_NAME);
+    }
     info.setCheckable(isCheckable());
     info.setClickable(isClickable());
   }
 
-  // TODO: Due to a11y bug, avoid setting custom ExploreByTouchHelper as delegate
-  // unless there's a close/trailing icon. Revert this once bug is fixed.
+  // TODO(b/80452017): Due to a11y bug, avoid setting custom ExploreByTouchHelper as delegate
+  // unless there's a close/trailing icon. Re-evaulate this once bug is fixed.
   private void updateAccessibilityDelegate() {
-    if (VERSION.SDK_INT >= VERSION_CODES.N) {
-      return;
-    }
-    if ((hasCloseIcon() && isCloseIconVisible())) {
+    if (hasCloseIcon() && isCloseIconVisible() && onCloseIconClickListener != null) {
       ViewCompat.setAccessibilityDelegate(this, touchHelper);
     } else {
+      // Avoid setting custom ExploreByTouchHelper if the trailing icon is only decorative.
       ViewCompat.setAccessibilityDelegate(this, null);
     }
   }
 
-  private void initMinTouchTarget(Context context, AttributeSet attrs, int defStyleAttr) {
+  private void initMinTouchTarget(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     if (attrs == null) {
       return;
     }
@@ -374,7 +380,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
           new ViewOutlineProvider() {
             @Override
             @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-            public void getOutline(View view, Outline outline) {
+            public void getOutline(View view, @NonNull Outline outline) {
               if (chipDrawable != null) {
                 chipDrawable.getOutline(outline);
               } else {
@@ -422,6 +428,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
     }
   }
 
+  @Nullable
   public Drawable getBackgroundDrawable() {
     if (insetBackgroundDrawable == null) {
       return chipDrawable;
@@ -597,6 +604,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
     super.setCompoundDrawablesRelativeWithIntrinsicBounds(start, top, end, bottom);
   }
 
+  @Nullable
   @Override
   public TruncateAt getEllipsize() {
     return chipDrawable != null ? chipDrawable.getEllipsize() : null;
@@ -695,6 +703,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
   /** Register a callback to be invoked when the close icon is clicked. */
   public void setOnCloseIconClickListener(OnClickListener listener) {
     this.onCloseIconClickListener = listener;
+    updateAccessibilityDelegate();
   }
 
   /**
@@ -722,8 +731,10 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
     return result;
   }
 
+  @SuppressLint("ClickableViewAccessibility") // There's an accessibility delegate that will handle
+  // interactions with the trailing chip icon.
   @Override
-  public boolean onTouchEvent(MotionEvent event) {
+  public boolean onTouchEvent(@NonNull MotionEvent event) {
     boolean handled = false;
 
     int action = event.getActionMasked();
@@ -759,7 +770,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
   }
 
   @Override
-  public boolean onHoverEvent(MotionEvent event) {
+  public boolean onHoverEvent(@NonNull MotionEvent event) {
     int action = event.getActionMasked();
     switch (action) {
       case MotionEvent.ACTION_HOVER_MOVE:
@@ -779,7 +790,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
   // Until the accessibility focus bug is fixed in ExploreByTouchHelper, we simulate the correct
   // behavior here. Once that bug is fixed we can remove this.
   @SuppressLint("PrivateApi")
-  private boolean handleAccessibilityExit(MotionEvent event) {
+  private boolean handleAccessibilityExit(@NonNull MotionEvent event) {
     if (event.getAction() == MotionEvent.ACTION_HOVER_EXIT) {
       try {
         Field f = ExploreByTouchHelper.class.getDeclaredField("mHoveredVirtualViewId");
@@ -811,7 +822,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
   }
 
   @Override
-  protected boolean dispatchHoverEvent(MotionEvent event) {
+  protected boolean dispatchHoverEvent(@NonNull MotionEvent event) {
     return handleAccessibilityExit(event)
         || touchHelper.dispatchHoverEvent(event)
         || super.dispatchHoverEvent(event);
@@ -840,7 +851,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
   }
 
   @Override
-  public void getFocusedRect(Rect r) {
+  public void getFocusedRect(@NonNull Rect r) {
     if (touchHelper.getKeyboardFocusedVirtualViewId() == CLOSE_ICON_VIRTUAL_ID
         || touchHelper.getAccessibilityFocusedVirtualViewId() == CLOSE_ICON_VIRTUAL_ID) {
       r.set(getCloseIconTouchBoundsInt());
@@ -878,6 +889,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
     }
   }
 
+  @NonNull
   private int[] createCloseIconDrawableState() {
     int count = 0;
     if (isEnabled()) {
@@ -926,6 +938,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
     return chipDrawable != null && chipDrawable.getCloseIcon() != null;
   }
 
+  @NonNull
   private RectF getCloseIconTouchBounds() {
     rectF.setEmpty();
 
@@ -937,15 +950,17 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
     return rectF;
   }
 
+  @NonNull
   private Rect getCloseIconTouchBoundsInt() {
     RectF bounds = getCloseIconTouchBounds();
     rect.set((int) bounds.left, (int) bounds.top, (int) bounds.right, (int) bounds.bottom);
     return rect;
   }
 
+  @Nullable
   @Override
   @TargetApi(VERSION_CODES.N)
-  public PointerIcon onResolvePointerIcon(MotionEvent event, int pointerIndex) {
+  public PointerIcon onResolvePointerIcon(@NonNull MotionEvent event, int pointerIndex) {
     if (getCloseIconTouchBounds().contains(event.getX(), event.getY()) && isEnabled()) {
       return PointerIcon.getSystemIcon(getContext(), PointerIcon.TYPE_HAND);
     }
@@ -967,9 +982,9 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
     }
 
     @Override
-    protected void getVisibleVirtualViews(List<Integer> virtualViewIds) {
+    protected void getVisibleVirtualViews(@NonNull List<Integer> virtualViewIds) {
       virtualViewIds.add(CHIP_BODY_VIRTUAL_ID);
-      if (hasCloseIcon() && isCloseIconVisible()) {
+      if (hasCloseIcon() && isCloseIconVisible() && onCloseIconClickListener != null) {
         virtualViewIds.add(CLOSE_ICON_VIRTUAL_ID);
       }
     }
@@ -984,7 +999,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
 
     @Override
     protected void onPopulateNodeForVirtualView(
-        int virtualViewId, AccessibilityNodeInfoCompat node) {
+        int virtualViewId, @NonNull AccessibilityNodeInfoCompat node) {
       if (virtualViewId == CLOSE_ICON_VIRTUAL_ID) {
         CharSequence closeIconContentDescription = getCloseIconContentDescription();
         if (closeIconContentDescription != null) {
@@ -1008,10 +1023,17 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
     }
 
     @Override
-    protected void onPopulateNodeForHost(AccessibilityNodeInfoCompat node) {
+    protected void onPopulateNodeForHost(@NonNull AccessibilityNodeInfoCompat node) {
       node.setCheckable(isCheckable());
       node.setClickable(isClickable());
-      node.setClassName(Chip.class.getName());
+      if (isCheckable() || isClickable()) {
+        node.setClassName(
+            isCheckable()
+                ? COMPOUND_BUTTON_ACCESSIBILITY_CLASS_NAME
+                : BUTTON_ACCESSIBILITY_CLASS_NAME);
+      } else {
+        node.setClassName(GENERIC_VIEW_ACCESSIBILITY_CLASS_NAME);
+      }
       CharSequence chipText = getText();
       if (VERSION.SDK_INT >= VERSION_CODES.M) {
         node.setText(chipText);
@@ -1118,8 +1140,10 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
   }
 
   /**
-   * @deprecated Use {@link com.google.android.material.shape.ShapeAppearanceModel#setAllCorners(int,
-   *     int)} instead.
+   * @deprecated call {@link ShapeAppearanceModel#withCornerRadius()} or call {@link
+   *     ShapeAppearanceModel#toBuilder()} on the {@link #getShapeAppearanceModel()}, modify the
+   *     shape using the builder and then call {@link
+   *     #setShapeAppearanceModel(ShapeAppearanceModel)}.
    */
   @Deprecated
   public void setChipCornerRadiusResource(@DimenRes int id) {
@@ -1140,8 +1164,10 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
   }
 
   /**
-   * @deprecated Use {@link com.google.android.material.shape.ShapeAppearanceModel#setAllCorners(int,
-   *     int)} instead.
+   * @deprecated call {@link ShapeAppearanceModel#withCornerRadius()} or call {@link
+   *     ShapeAppearanceModel#toBuilder()} on the {@link #getShapeAppearanceModel()}, modify the
+   *     shape using the builder and then call {@link
+   *     #setShapeAppearanceModel(ShapeAppearanceModel)}.
    */
   @Deprecated
   public void setChipCornerRadius(float chipCornerRadius) {
@@ -1323,7 +1349,6 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
    * @attr ref com.google.android.material.R.styleable#Chip_android_textappearance
    */
   public void setTextAppearance(@Nullable TextAppearance textAppearance) {
-    // TODO: Make sure this also updates parent TextView styles.
     if (chipDrawable != null) {
       chipDrawable.setTextAppearance(textAppearance);
     }

@@ -17,6 +17,7 @@ package com.google.android.material.animation;
 
 import android.animation.TypeEvaluator;
 import android.graphics.Matrix;
+import androidx.annotation.NonNull;
 
 /**
  * Type evaluator for {@link Matrix} interpolation. Copied from
@@ -27,8 +28,9 @@ public class MatrixEvaluator implements TypeEvaluator<Matrix> {
   private final float[] tempEndValues = new float[9];
   private final Matrix tempMatrix = new Matrix();
 
+  @NonNull
   @Override
-  public Matrix evaluate(float fraction, Matrix startValue, Matrix endValue) {
+  public Matrix evaluate(float fraction, @NonNull Matrix startValue, @NonNull Matrix endValue) {
     startValue.getValues(tempStartValues);
     endValue.getValues(tempEndValues);
     for (int i = 0; i < 9; i++) {

@@ -27,4 +27,6 @@
   <string name="clear_text_end_icon_content_description">Clear text</string>
   <!-- Content description for the exposed dropdown menu button. [CHAR LIMIT=NONE] -->
   <string name="exposed_dropdown_menu_content_description">Show dropdown menu</string>
+  <!-- Content description for the error icon. [CHAR LIMIT=NONE] -->
+  <string name="error_icon_content_description">Error</string>
 </resources>

@@ -18,8 +18,8 @@ package com.google.android.material.testutils;
 import static org.junit.Assert.assertTrue;
 
 import android.os.Looper;
-import com.google.android.material.testapp.base.RecreatableAppCompatActivity;
 import androidx.test.rule.ActivityTestRule;
+import com.google.android.material.testapp.base.RecreatableAppCompatActivity;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 

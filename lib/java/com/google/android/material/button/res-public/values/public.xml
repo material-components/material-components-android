@@ -16,6 +16,8 @@
 -->
 <resources>
   <public name="materialButtonStyle" type="attr"/>
+  <public name="materialButtonOutlinedStyle" type="attr"/>
+  <public name="materialButtonToggleGroupStyle" type="attr"/>
   <public name="icon" type="attr"/>
   <public name="iconSize" type="attr"/>
   <public name="iconPadding" type="attr"/>

@@ -52,14 +52,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
-import com.google.android.material.elevation.ElevationOverlayProvider;
-import com.google.android.material.shape.ShapeAppearancePathProvider.PathListener;
-import com.google.android.material.shape.ShapePath.ShadowCompatOperation;
 import androidx.core.graphics.drawable.TintAwareDrawable;
 import androidx.core.util.ObjectsCompat;
 import android.util.AttributeSet;
 import com.google.android.material.color.MaterialColors;
+import com.google.android.material.elevation.ElevationOverlayProvider;
 import com.google.android.material.shadow.ShadowRenderer;
+import com.google.android.material.shape.ShapeAppearancePathProvider.PathListener;
+import com.google.android.material.shape.ShapePath.ShadowCompatOperation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -67,8 +67,7 @@ import java.lang.annotation.RetentionPolicy;
  * Base drawable class for Material Shapes that handles shadows, elevation, scale and color for a
  * generated path.
  */
-public class MaterialShapeDrawable extends Drawable
-    implements TintAwareDrawable, ShapeAppearanceModel.OnChangedListener, Shapeable {
+public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable, Shapeable {
 
   private static final float SHADOW_RADIUS_MULTIPLIER = .75f;
 
@@ -123,13 +122,14 @@ public class MaterialShapeDrawable extends Drawable
   private final Paint strokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
   private final ShadowRenderer shadowRenderer = new ShadowRenderer();
-  private final PathListener pathShadowListener;
+  @NonNull private final PathListener pathShadowListener;
   private final ShapeAppearancePathProvider pathProvider = new ShapeAppearancePathProvider();
 
   @Nullable private PorterDuffColorFilter tintFilter;
   @Nullable private PorterDuffColorFilter strokeTintFilter;
 
   @Nullable private Rect padding;
+  @NonNull private final RectF pathBounds = new RectF();
 
   /**
    * Returns a {@code MaterialShapeDrawable} with the elevation overlay functionality initialized, a
@@ -138,6 +138,7 @@ public class MaterialShapeDrawable extends Drawable
    * <p>See {@link ElevationOverlayProvider#compositeOverlayIfNeeded(int, float)} for information on
    * when the overlay will be active.
    */
+  @NonNull
   public static MaterialShapeDrawable createWithElevationOverlay(Context context) {
     return createWithElevationOverlay(context, 0);
   }
@@ -149,6 +150,7 @@ public class MaterialShapeDrawable extends Drawable
    * <p>See {@link ElevationOverlayProvider#compositeOverlayIfNeeded(int, float)} for information on
    * when the overlay will be active.
    */
+  @NonNull
   public static MaterialShapeDrawable createWithElevationOverlay(Context context, float elevation) {
     int colorSurface =
         MaterialColors.getColor(
@@ -165,8 +167,11 @@ public class MaterialShapeDrawable extends Drawable
   }
 
   public MaterialShapeDrawable(
-      Context context, AttributeSet attrs, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
-    this(new ShapeAppearanceModel(context, attrs, defStyleAttr, defStyleRes));
+      @NonNull Context context,
+      @Nullable AttributeSet attrs,
+      @AttrRes int defStyleAttr,
+      @StyleRes int defStyleRes) {
+    this(ShapeAppearanceModel.builder(context, attrs, defStyleAttr, defStyleRes).build());
   }
 
   /**
@@ -177,7 +182,7 @@ public class MaterialShapeDrawable extends Drawable
     this(new MaterialShapeDrawableState(shapeAppearanceModel, null));
   }
 
-  private MaterialShapeDrawable(MaterialShapeDrawableState drawableState) {
+  private MaterialShapeDrawable(@NonNull MaterialShapeDrawableState drawableState) {
     this.drawableState = drawableState;
     strokePaint.setStyle(Style.STROKE);
     fillPaint.setStyle(Style.FILL);
@@ -189,19 +194,16 @@ public class MaterialShapeDrawable extends Drawable
     pathShadowListener =
         new PathListener() {
           @Override
-          public void onCornerPathCreated(ShapePath cornerPath, Matrix transform, int count) {
+          public void onCornerPathCreated(
+              @NonNull ShapePath cornerPath, Matrix transform, int count) {
             cornerShadowOperation[count] = cornerPath.createShadowCompatOperation(transform);
           }
 
           @Override
-          public void onEdgePathCreated(ShapePath edgePath, Matrix transform, int count) {
+          public void onEdgePathCreated(@NonNull ShapePath edgePath, Matrix transform, int count) {
             edgeShadowOperation[count] = edgePath.createShadowCompatOperation(transform);
           }
         };
-
-    // Listens for modifications made in the ShapeAppearanceModel, and requests a redraw if the
-    // ShapeAppearanceModel has changed.
-    drawableState.shapeAppearanceModel.addOnChangedListener(this);
   }
 
   @Nullable
@@ -231,9 +233,7 @@ public class MaterialShapeDrawable extends Drawable
    */
   @Override
   public void setShapeAppearanceModel(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
-    drawableState.shapeAppearanceModel.removeOnChangedListener(this);
     drawableState.shapeAppearanceModel = shapeAppearanceModel;
-    shapeAppearanceModel.addOnChangedListener(this);
     invalidateSelf();
   }
 
@@ -256,7 +256,7 @@ public class MaterialShapeDrawable extends Drawable
    * @param shapedViewModel the desired model.
    */
   @Deprecated
-  public void setShapedViewModel(ShapePathModel shapedViewModel) {
+  public void setShapedViewModel(@NonNull ShapePathModel shapedViewModel) {
     setShapeAppearanceModel(shapedViewModel);
   }
 
@@ -332,6 +332,7 @@ public class MaterialShapeDrawable extends Drawable
   }
 
   /** Get the tint list used by the shape's paint. */
+  @Nullable
   public ColorStateList getTintList() {
     return drawableState.tintList;
   }
@@ -341,6 +342,7 @@ public class MaterialShapeDrawable extends Drawable
    *
    * @return the stroke's current {@link ColorStateList}.
    */
+  @Nullable
   public ColorStateList getStrokeTintList() {
     return drawableState.strokeTintList;
   }
@@ -454,15 +456,14 @@ public class MaterialShapeDrawable extends Drawable
     return transparentRegion;
   }
 
+  @NonNull
   protected RectF getBoundsAsRectF() {
-    Rect bounds = getBounds();
-    rectF.set(bounds.left, bounds.top, bounds.right, bounds.bottom);
+    rectF.set(getBounds());
     return rectF;
   }
 
   public void setCornerRadius(float cornerRadius) {
-    drawableState.shapeAppearanceModel.setCornerRadius(cornerRadius);
-    invalidateSelf();
+    setShapeAppearanceModel(drawableState.shapeAppearanceModel.withCornerRadius(cornerRadius));
   }
 
   /**
@@ -484,7 +485,7 @@ public class MaterialShapeDrawable extends Drawable
   }
 
   @Override
-  public boolean getPadding(Rect padding) {
+  public boolean getPadding(@NonNull Rect padding) {
     if (this.padding != null) {
       padding.set(this.padding);
       return true;
@@ -821,11 +822,6 @@ public class MaterialShapeDrawable extends Drawable
   }
 
   @Override
-  public void onShapeAppearanceModelChanged() {
-    invalidateSelf();
-  }
-
-  @Override
   public void invalidateSelf() {
     pathDirty = true;
     super.invalidateSelf();
@@ -914,7 +910,7 @@ public class MaterialShapeDrawable extends Drawable
   }
 
   @Override
-  public void draw(Canvas canvas) {
+  public void draw(@NonNull Canvas canvas) {
     fillPaint.setColorFilter(tintFilter);
     final int prevAlpha = fillPaint.getAlpha();
     fillPaint.setAlpha(modulateAlpha(prevAlpha, drawableState.alpha));
@@ -937,19 +933,24 @@ public class MaterialShapeDrawable extends Drawable
 
       prepareCanvasForShadow(canvas);
 
+      // The extra height is the amount that the path draws outside of the bounds of the shape. This
+      // happens for some shapes like TriangleEdgeTreament when it draws a triangle outside.
+      int pathExtraWidth = (int) (pathBounds.width() - getBounds().width());
+      int pathExtraHeight = (int) (pathBounds.height() - getBounds().height());
+
       // Drawing the shadow in a bitmap lets us use the clear paint rather than using clipPath to
       // prevent drawing shadow under the shape. clipPath has problems :-/
       Bitmap shadowLayer =
           Bitmap.createBitmap(
-              getBounds().width() + drawableState.shadowCompatRadius * 2,
-              getBounds().height() + drawableState.shadowCompatRadius * 2,
+              (int) pathBounds.width() + drawableState.shadowCompatRadius * 2 + pathExtraWidth,
+              (int) pathBounds.height() + drawableState.shadowCompatRadius * 2 + pathExtraHeight,
               Bitmap.Config.ARGB_8888);
       Canvas shadowCanvas = new Canvas(shadowLayer);
 
       // Top Left of shadow (left - shadowCompatRadius, top - shadowCompatRadius) should be drawn at
       // (0, 0) on shadowCanvas. Offset is handled by prepareCanvasForShadow and drawCompatShadow.
-      float shadowLeft = getBounds().left - drawableState.shadowCompatRadius;
-      float shadowTop = getBounds().top - drawableState.shadowCompatRadius;
+      float shadowLeft = getBounds().left - drawableState.shadowCompatRadius - pathExtraWidth;
+      float shadowTop = getBounds().top - drawableState.shadowCompatRadius - pathExtraHeight;
       shadowCanvas.translate(-shadowLeft, -shadowTop);
 
       drawCompatShadow(shadowCanvas);
@@ -984,17 +985,18 @@ public class MaterialShapeDrawable extends Drawable
    * @hide
    */
   @RestrictTo(LIBRARY_GROUP)
-  protected void drawShape(Canvas canvas, Paint paint, Path path, RectF bounds) {
+  protected void drawShape(
+      @NonNull Canvas canvas, @NonNull Paint paint, @NonNull Path path, @NonNull RectF bounds) {
     drawShape(canvas, paint, path, drawableState.shapeAppearanceModel, bounds);
   }
 
   /** Draw the path or try to draw a round rect if possible. */
   private void drawShape(
-      Canvas canvas,
-      Paint paint,
-      Path path,
-      ShapeAppearanceModel shapeAppearanceModel,
-      RectF bounds) {
+      @NonNull Canvas canvas,
+      @NonNull Paint paint,
+      @NonNull Path path,
+      @NonNull ShapeAppearanceModel shapeAppearanceModel,
+      @NonNull RectF bounds) {
     if (shapeAppearanceModel.isRoundRect()) {
       float cornerSize = shapeAppearanceModel.getTopRightCorner().getCornerSize();
       canvas.drawRoundRect(bounds, cornerSize, cornerSize, paint);
@@ -1003,16 +1005,16 @@ public class MaterialShapeDrawable extends Drawable
     }
   }
 
-  private void drawFillShape(Canvas canvas) {
+  private void drawFillShape(@NonNull Canvas canvas) {
     drawShape(canvas, fillPaint, path, drawableState.shapeAppearanceModel, getBoundsAsRectF());
   }
 
-  private void drawStrokeShape(Canvas canvas) {
+  private void drawStrokeShape(@NonNull Canvas canvas) {
     drawShape(
         canvas, strokePaint, pathInsetByStroke, strokeShapeAppearance, getBoundsInsetByStroke());
   }
 
-  private void prepareCanvasForShadow(Canvas canvas) {
+  private void prepareCanvasForShadow(@NonNull Canvas canvas) {
     // Calculate the translation to offset the canvas for the given offset and rotation.
     int shadowOffsetX = getShadowOffsetX();
     int shadowOffsetY = getShadowOffsetY();
@@ -1041,7 +1043,7 @@ public class MaterialShapeDrawable extends Drawable
    * no shadow offset, this will skip the drawing of the center filled shadow since that will be
    * completely covered by the shape.
    */
-  private void drawCompatShadow(Canvas canvas) {
+  private void drawCompatShadow(@NonNull Canvas canvas) {
     if (drawableState.shadowCompatOffset != 0) {
       canvas.drawPath(path, shadowRenderer.getShadowPaint());
     }
@@ -1076,17 +1078,17 @@ public class MaterialShapeDrawable extends Drawable
 
   /** @deprecated see {@link ShapeAppearancePathProvider} */
   @Deprecated
-  public void getPathForSize(int width, int height, Path path) {
+  public void getPathForSize(int width, int height, @NonNull Path path) {
     calculatePathForSize(new RectF(0, 0, width, height), path);
   }
 
   /** @deprecated see {@link ShapeAppearancePathProvider} */
   @Deprecated
-  public void getPathForSize(Rect bounds, Path path) {
+  public void getPathForSize(@NonNull Rect bounds, @NonNull Path path) {
     calculatePathForSize(new RectF(bounds), path);
   }
 
-  private void calculatePathForSize(RectF bounds, Path path) {
+  private void calculatePathForSize(RectF bounds, @NonNull Path path) {
     pathProvider.calculatePath(
         drawableState.shapeAppearanceModel,
         drawableState.interpolation,
@@ -1097,19 +1099,9 @@ public class MaterialShapeDrawable extends Drawable
 
   /** Calculates the path that can be used to draw the stroke entirely inside the shape */
   private void calculateStrokePath() {
-    strokeShapeAppearance = new ShapeAppearanceModel(getShapeAppearanceModel());
-    float cornerSizeTopLeft = strokeShapeAppearance.getTopLeftCorner().cornerSize;
-    float cornerSizeTopRight = strokeShapeAppearance.getTopRightCorner().cornerSize;
-    float cornerSizeBottomRight = strokeShapeAppearance.getBottomRightCorner().cornerSize;
-    float cornerSizeBottomLeft = strokeShapeAppearance.getBottomLeftCorner().cornerSize;
-
     // Adjust corner radius in order to draw the stroke so that the corners of the background are
     // drawn on top of the edges.
-    strokeShapeAppearance.setCornerRadii(
-        adjustCornerSizeForStrokeSize(cornerSizeTopLeft),
-        adjustCornerSizeForStrokeSize(cornerSizeTopRight),
-        adjustCornerSizeForStrokeSize(cornerSizeBottomRight),
-        adjustCornerSizeForStrokeSize(cornerSizeBottomLeft));
+    strokeShapeAppearance = getShapeAppearanceModel().withAdjustedCorners(-getStrokeInsetLength());
 
     pathProvider.calculatePath(
         strokeShapeAppearance,
@@ -1118,14 +1110,9 @@ public class MaterialShapeDrawable extends Drawable
         pathInsetByStroke);
   }
 
-  private float adjustCornerSizeForStrokeSize(float cornerSize) {
-    float adjustedCornerSize = cornerSize - getStrokeInsetLength();
-    return Math.max(adjustedCornerSize, 0);
-  }
-
   @TargetApi(VERSION_CODES.LOLLIPOP)
   @Override
-  public void getOutline(Outline outline) {
+  public void getOutline(@NonNull Outline outline) {
     if (drawableState.shadowCompatMode == SHADOW_COMPAT_MODE_ALWAYS) {
       // Don't draw the native shadow if we're always rendering with compat shadow.
       return;
@@ -1145,15 +1132,18 @@ public class MaterialShapeDrawable extends Drawable
     }
   }
 
-  private void calculatePath(RectF bounds, Path path) {
+  private void calculatePath(@NonNull RectF bounds, @NonNull Path path) {
     calculatePathForSize(bounds, path);
-    if (drawableState.scale == 1f) {
-      return;
+
+    if (drawableState.scale != 1f) {
+      matrix.reset();
+      matrix.setScale(
+          drawableState.scale, drawableState.scale, bounds.width() / 2.0f, bounds.height() / 2.0f);
+      path.transform(matrix);
     }
-    matrix.reset();
-    matrix.setScale(
-        drawableState.scale, drawableState.scale, bounds.width() / 2.0f, bounds.height() / 2.0f);
-    path.transform(matrix);
+
+    // Since the path has just been computed, we update the path bounds.
+    path.computeBounds(pathBounds, true);
   }
 
   private boolean updateTintFilter() {
@@ -1179,11 +1169,11 @@ public class MaterialShapeDrawable extends Drawable
         || !ObjectsCompat.equals(originalStrokeTintFilter, strokeTintFilter);
   }
 
-  @Nullable
+  @NonNull
   private PorterDuffColorFilter calculateTintFilter(
-      ColorStateList tintList,
-      PorterDuff.Mode tintMode,
-      Paint paint,
+      @Nullable ColorStateList tintList,
+      @Nullable PorterDuff.Mode tintMode,
+      @NonNull Paint paint,
       boolean requiresElevationOverlay) {
     return tintList == null || tintMode == null
         ? calculatePaintColorTintFilter(paint, requiresElevationOverlay)
@@ -1192,7 +1182,7 @@ public class MaterialShapeDrawable extends Drawable
 
   @Nullable
   private PorterDuffColorFilter calculatePaintColorTintFilter(
-      Paint paint, boolean requiresElevationOverlay) {
+      @NonNull Paint paint, boolean requiresElevationOverlay) {
     if (requiresElevationOverlay) {
       int paintColor = paint.getColor();
       int tintColor = compositeElevationOverlayIfNeeded(paintColor);
@@ -1203,8 +1193,11 @@ public class MaterialShapeDrawable extends Drawable
     return null;
   }
 
+  @NonNull
   private PorterDuffColorFilter calculateTintColorTintFilter(
-      ColorStateList tintList, PorterDuff.Mode tintMode, boolean requiresElevationOverlay) {
+      @NonNull ColorStateList tintList,
+      @NonNull PorterDuff.Mode tintMode,
+      boolean requiresElevationOverlay) {
     int tintColor = tintList.getColorForState(getState(), Color.TRANSPARENT);
     if (requiresElevationOverlay) {
       tintColor = compositeElevationOverlayIfNeeded(tintColor);
@@ -1264,11 +1257,11 @@ public class MaterialShapeDrawable extends Drawable
     return 0f;
   }
 
+  @NonNull
   private RectF getBoundsInsetByStroke() {
-    RectF rectF = getBoundsAsRectF();
+    insetRectF.set(getBoundsAsRectF());
     float inset = getStrokeInsetLength();
-    insetRectF.set(
-        rectF.left + inset, rectF.top + inset, rectF.right - inset, rectF.bottom - inset);
+    insetRectF.inset(inset, inset);
     return insetRectF;
   }
 
@@ -1309,7 +1302,7 @@ public class MaterialShapeDrawable extends Drawable
       this.elevationOverlayProvider = elevationOverlayProvider;
     }
 
-    public MaterialShapeDrawableState(MaterialShapeDrawableState orig) {
+    public MaterialShapeDrawableState(@NonNull MaterialShapeDrawableState orig) {
       shapeAppearanceModel = orig.shapeAppearanceModel;
       elevationOverlayProvider = orig.elevationOverlayProvider;
       strokeWidth = orig.strokeWidth;
@@ -1336,6 +1329,7 @@ public class MaterialShapeDrawable extends Drawable
       }
     }
 
+    @NonNull
     @Override
     public Drawable newDrawable() {
       MaterialShapeDrawable msd = new MaterialShapeDrawable(this);

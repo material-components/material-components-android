@@ -23,11 +23,12 @@ import static com.google.android.material.internal.ThemeEnforcement.createThemed
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.google.android.material.elevation.ElevationOverlayProvider;
 import androidx.appcompat.widget.SwitchCompat;
 import android.util.AttributeSet;
 import com.google.android.material.color.MaterialColors;
+import com.google.android.material.elevation.ElevationOverlayProvider;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
 
@@ -51,21 +52,21 @@ public class SwitchMaterial extends SwitchCompat {
         new int[] {-android.R.attr.state_enabled, -android.R.attr.state_checked} // [3]
       };
 
-  private final ElevationOverlayProvider elevationOverlayProvider;
+  @NonNull private final ElevationOverlayProvider elevationOverlayProvider;
 
   @Nullable private ColorStateList materialThemeColorsThumbTintList;
   @Nullable private ColorStateList materialThemeColorsTrackTintList;
   private boolean useMaterialThemeColors;
 
-  public SwitchMaterial(Context context) {
+  public SwitchMaterial(@NonNull Context context) {
     this(context, null);
   }
 
-  public SwitchMaterial(Context context, @Nullable AttributeSet attrs) {
+  public SwitchMaterial(@NonNull Context context, @Nullable AttributeSet attrs) {
     this(context, attrs, R.attr.switchStyle);
   }
 
-  public SwitchMaterial(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+  public SwitchMaterial(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     super(createThemedContext(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
     // Ensure we are using the correctly themed context rather than the context that was passed in.
     context = getContext();

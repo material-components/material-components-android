@@ -17,17 +17,6 @@
 <issues format="5" by="lint 3.3.2" client="gradle" variant="all" version="3.3.2">
 
     <issue
-        id="OldTargetApi"
-        message="Not targeting the latest versions of Android; compatibility modes apply. Consider testing and updating this version. Consult the android.os.Build.VERSION_CODES javadoc for details."
-        errorLine1="        targetSdkVersion 28"
-        errorLine2="        ~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="build.gradle"
-            line="10"
-            column="9"/>
-    </issue>
-
-    <issue
         id="UnusedAttribute"
         message="Attribute `firstBaselineToTopHeight` is only used in API level 28 and higher (current min is 23)"
         errorLine1="              android:firstBaselineToTopHeight=&quot;40dp&quot;"
@@ -69,17 +58,6 @@
             file="src/main/res/layout/fragment_bottom_sheet.xml"
             line="41"
             column="7"/>
-    </issue>
-
-    <issue
-        id="GradleDependency"
-        message="A newer version of androidx.appcompat:appcompat than 1.1.0-alpha04 is available: 1.1.0-beta01"
-        errorLine1="    implementation &apos;androidx.appcompat:appcompat:1.1.0-alpha04&apos;"
-        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="build.gradle"
-            line="31"
-            column="5"/>
     </issue>
 
     <issue
@@ -481,7 +459,7 @@
         errorLine2="                                      ~~~~">
         <location
             file="src/main/java/io/material/materialthemebuilder/ui/component/ComponentViewHolder.kt"
-            line="96"
+            line="86"
             column="39"/>
     </issue>
 

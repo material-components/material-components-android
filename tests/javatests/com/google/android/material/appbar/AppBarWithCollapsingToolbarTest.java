@@ -22,13 +22,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 import android.os.Build;
-import com.google.android.material.testapp.R;
-import com.google.android.material.testutils.PollingCheck;
 import android.widget.ImageView;
 import androidx.test.filters.LargeTest;
 import androidx.test.filters.SdkSuppress;
 import androidx.test.runner.AndroidJUnit4;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.testapp.R;
+import com.google.android.material.testutils.PollingCheck;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -501,7 +501,8 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
     final int appbarHeight = mAppBar.getHeight();
 
     // Perform a swipe-up gesture across the horizontal center of the screen.
-    int swipeAmount = appbarHeight - toolbarHeight - toolbarVerticalMargins;
+    int swipeAmount =
+        appbarHeight - toolbarHeight - toolbarVerticalMargins + getAdditionalScrollForTouchSlop();
     performVerticalSwipeUpGesture(
         R.id.coordinator_layout,
         centerX,

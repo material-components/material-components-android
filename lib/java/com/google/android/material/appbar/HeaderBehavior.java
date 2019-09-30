@@ -17,6 +17,8 @@
 package com.google.android.material.appbar;
 
 import android.content.Context;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.math.MathUtils;
 import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
@@ -36,14 +38,14 @@ abstract class HeaderBehavior<V extends View> extends ViewOffsetBehavior<V> {
 
   private static final int INVALID_POINTER = -1;
 
-  private Runnable flingRunnable;
+  @Nullable private Runnable flingRunnable;
   OverScroller scroller;
 
   private boolean isBeingDragged;
   private int activePointerId = INVALID_POINTER;
   private int lastMotionY;
   private int touchSlop = -1;
-  private VelocityTracker velocityTracker;
+  @Nullable private VelocityTracker velocityTracker;
 
   public HeaderBehavior() {}
 
@@ -52,7 +54,8 @@ abstract class HeaderBehavior<V extends View> extends ViewOffsetBehavior<V> {
   }
 
   @Override
-  public boolean onInterceptTouchEvent(CoordinatorLayout parent, V child, MotionEvent ev) {
+  public boolean onInterceptTouchEvent(
+      @NonNull CoordinatorLayout parent, @NonNull V child, @NonNull MotionEvent ev) {
     if (touchSlop < 0) {
       touchSlop = ViewConfiguration.get(parent.getContext()).getScaledTouchSlop();
     }
@@ -120,7 +123,8 @@ abstract class HeaderBehavior<V extends View> extends ViewOffsetBehavior<V> {
   }
 
   @Override
-  public boolean onTouchEvent(CoordinatorLayout parent, V child, MotionEvent ev) {
+  public boolean onTouchEvent(
+      @NonNull CoordinatorLayout parent, @NonNull V child, @NonNull MotionEvent ev) {
     if (touchSlop < 0) {
       touchSlop = ViewConfiguration.get(parent.getContext()).getScaledTouchSlop();
     }
@@ -236,7 +240,7 @@ abstract class HeaderBehavior<V extends View> extends ViewOffsetBehavior<V> {
 
   final boolean fling(
       CoordinatorLayout coordinatorLayout,
-      V layout,
+      @NonNull V layout,
       int minOffset,
       int maxOffset,
       float velocityY) {
@@ -283,11 +287,11 @@ abstract class HeaderBehavior<V extends View> extends ViewOffsetBehavior<V> {
   }
 
   /** Returns the maximum px offset when {@code view} is being dragged. */
-  int getMaxDragOffset(V view) {
+  int getMaxDragOffset(@NonNull V view) {
     return -view.getHeight();
   }
 
-  int getScrollRangeForDragFling(V view) {
+  int getScrollRangeForDragFling(@NonNull V view) {
     return view.getHeight();
   }
 

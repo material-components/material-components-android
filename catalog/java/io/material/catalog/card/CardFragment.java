@@ -86,6 +86,12 @@ public class CardFragment extends DemoLandingFragment {
           public Fragment createFragment() {
             return new CardListDemoFragment();
           }
+        },
+        new Demo(R.string.cat_card_swipe_dismiss) {
+          @Override
+          public Fragment createFragment() {
+            return new CardSwipeDismissFragment();
+          }
         });
   }
 

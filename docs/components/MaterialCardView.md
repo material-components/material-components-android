@@ -14,8 +14,8 @@ single subject. They may display content containing elements of varying size,
 such as photos with captions of variable length.
 
 `MaterialCardView` is a customizable component based on
-[`CardView`](https://developer.android.com/reference/android/support/v7/widget/CardView.html)
-from the Android Support Library. `MaterialCardView` provides all of the
+[`CardView`](https://developer.android.com/reference/androidx/cardview/widget/CardView)
+from the Androidx Library. `MaterialCardView` provides all of the
 features of `CardView`, but adds attributes for customizing the stroke and uses
 an updated Material style by default.
 
@@ -142,7 +142,7 @@ background color.
 
 `MaterialCardView` supports all of the standard attributes that can be changed
 for a
-[`CardView`](https://developer.android.com/reference/android/support/v7/widget/CardView.html).
+[`CardView`](https://developer.android.com/reference/androidx/cardview/widget/CardView).
 The following additional attributes can be changed for a `MaterialCardView`:
 
 Feature          | Relevant attributes

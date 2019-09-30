@@ -21,6 +21,7 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +45,8 @@ public class DescendantOffsetUtils {
    * @param descendant view defining the original coordinate system of rect
    * @param rect (in/out) the rect to offset from descendant to this view's coordinate system
    */
-  public static void offsetDescendantRect(ViewGroup parent, View descendant, Rect rect) {
+  public static void offsetDescendantRect(
+      @NonNull ViewGroup parent, @NonNull View descendant, @NonNull Rect rect) {
     Matrix m = matrix.get();
     if (m == null) {
       m = new Matrix();
@@ -76,12 +78,14 @@ public class DescendantOffsetUtils {
    * @param descendant descendant view to reference
    * @param out rect to set to the bounds of the descendant view
    */
-  public static void getDescendantRect(ViewGroup parent, View descendant, Rect out) {
+  public static void getDescendantRect(
+      @NonNull ViewGroup parent, @NonNull View descendant, @NonNull Rect out) {
     out.set(0, 0, descendant.getWidth(), descendant.getHeight());
     offsetDescendantRect(parent, descendant, out);
   }
 
-  private static void offsetDescendantMatrix(ViewParent target, View view, Matrix m) {
+  private static void offsetDescendantMatrix(
+      ViewParent target, @NonNull View view, @NonNull Matrix m) {
     final ViewParent parent = view.getParent();
     if (parent instanceof View && parent != target) {
       final View vp = (View) parent;

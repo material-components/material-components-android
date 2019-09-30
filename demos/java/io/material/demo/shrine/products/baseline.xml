@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
   Copyright 2019 The Android Open Source Project
 
@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<issues format="4" by="lint 3.2.1" client="gradle" variant="all" version="3.2.1">
+<issues format="5" by="lint 3.3.2" client="gradle" variant="all" version="3.3.2">
 
     <issue
         id="OldTargetApi"
@@ -52,177 +52,12 @@
     <issue
         id="VectorDrawableCompat"
         message="To use VectorDrawableCompat, you need to set `android.defaultConfig.vectorDrawables.useSupportLibrary = true`."
-        errorLine1="        app:srcCompat=&quot;@drawable/ic_add_shopping_cart_vd_theme_24&quot;/>"
-        errorLine2="        ~~~~~~~~~~~~~">
+        errorLine1="      app:srcCompat=&quot;@drawable/ic_add_shopping_cart_vd_theme_24&quot;/>"
+        errorLine2="      ~~~~~~~~~~~~~">
         <location
             file="res/layout/shrine_item_activity.xml"
-            line="110"
-            column="9"/>
-    </issue>
-
-    <issue
-        id="VectorRaster"
-        message="Resource references will not work correctly in images generated for this vector icon for API &lt; 21; check generated icon to make sure it looks acceptable"
-        errorLine1="    android:tint=&quot;?attr/colorControlNormal&quot;>"
-        errorLine2="                  ~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="res/drawable/ic_add_shopping_cart_vd_theme_24.xml"
-            line="21"
-            column="19"/>
-    </issue>
-
-    <issue
-        id="VectorRaster"
-        message="Resource references will not work correctly in images generated for this vector icon for API &lt; 21; check generated icon to make sure it looks acceptable"
-        errorLine1="      android:fillColor=&quot;@android:color/white&quot;"
-        errorLine2="                         ~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="res/drawable/ic_add_shopping_cart_vd_theme_24.xml"
-            line="23"
-            column="26"/>
-    </issue>
-
-    <issue
-        id="VectorRaster"
-        message="Resource references will not work correctly in images generated for this vector icon for API &lt; 21; check generated icon to make sure it looks acceptable"
-        errorLine1="        android:tint=&quot;?attr/colorControlNormal&quot;>"
-        errorLine2="                      ~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="res/drawable/ic_arrow_drop_down_vd_theme_24.xml"
-            line="21"
-            column="23"/>
-    </issue>
-
-    <issue
-        id="VectorRaster"
-        message="Resource references will not work correctly in images generated for this vector icon for API &lt; 21; check generated icon to make sure it looks acceptable"
-        errorLine1="        android:fillColor=&quot;@android:color/white&quot;"
-        errorLine2="                           ~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="res/drawable/ic_arrow_drop_down_vd_theme_24.xml"
-            line="23"
-            column="28"/>
-    </issue>
-
-    <issue
-        id="VectorRaster"
-        message="Resource references will not work correctly in images generated for this vector icon for API &lt; 21; check generated icon to make sure it looks acceptable"
-        errorLine1="        android:tint=&quot;?attr/colorControlNormal&quot;>"
-        errorLine2="                      ~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="res/drawable/ic_favorite_vd_theme_24.xml"
-            line="21"
-            column="23"/>
-    </issue>
-
-    <issue
-        id="VectorRaster"
-        message="Resource references will not work correctly in images generated for this vector icon for API &lt; 21; check generated icon to make sure it looks acceptable"
-        errorLine1="        android:fillColor=&quot;@android:color/white&quot;"
-        errorLine2="                           ~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="res/drawable/ic_favorite_vd_theme_24.xml"
-            line="23"
-            column="28"/>
-    </issue>
-
-    <issue
-        id="VectorRaster"
-        message="Resource references will not work correctly in images generated for this vector icon for API &lt; 21; check generated icon to make sure it looks acceptable"
-        errorLine1="        android:tint=&quot;?attr/colorControlNormal&quot;>"
-        errorLine2="                      ~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="res/drawable/ic_filter_list_vd_theme_24.xml"
-            line="21"
-            column="23"/>
-    </issue>
-
-    <issue
-        id="VectorRaster"
-        message="Resource references will not work correctly in images generated for this vector icon for API &lt; 21; check generated icon to make sure it looks acceptable"
-        errorLine1="        android:fillColor=&quot;@android:color/white&quot;"
-        errorLine2="                           ~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="res/drawable/ic_filter_list_vd_theme_24.xml"
-            line="23"
-            column="28"/>
-    </issue>
-
-    <issue
-        id="VectorRaster"
-        message="Resource references will not work correctly in images generated for this vector icon for API &lt; 21; check generated icon to make sure it looks acceptable"
-        errorLine1="        android:tint=&quot;?attr/colorControlNormal&quot;>"
-        errorLine2="                      ~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="res/drawable/ic_search_vd_theme_24.xml"
-            line="21"
-            column="23"/>
-    </issue>
-
-    <issue
-        id="VectorRaster"
-        message="Resource references will not work correctly in images generated for this vector icon for API &lt; 21; check generated icon to make sure it looks acceptable"
-        errorLine1="        android:fillColor=&quot;@android:color/white&quot;"
-        errorLine2="                           ~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="res/drawable/ic_search_vd_theme_24.xml"
-            line="23"
-            column="28"/>
-    </issue>
-
-    <issue
-        id="VectorRaster"
-        message="Resource references will not work correctly in images generated for this vector icon for API &lt; 21; check generated icon to make sure it looks acceptable"
-        errorLine1="        android:tint=&quot;?attr/colorControlNormal&quot;>"
-        errorLine2="                      ~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="res/drawable/ic_shopping_cart_vd_theme_24.xml"
-            line="21"
-            column="23"/>
-    </issue>
-
-    <issue
-        id="VectorRaster"
-        message="Resource references will not work correctly in images generated for this vector icon for API &lt; 21; check generated icon to make sure it looks acceptable"
-        errorLine1="        android:fillColor=&quot;@android:color/white&quot;"
-        errorLine2="                           ~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="res/drawable/ic_shopping_cart_vd_theme_24.xml"
-            line="23"
-            column="28"/>
-    </issue>
-
-    <issue
-        id="VectorRaster"
-        message="Resource references will not work correctly in images generated for this vector icon for API &lt; 21; check generated icon to make sure it looks acceptable"
-        errorLine1="        android:tint=&quot;?attr/colorControlNormal&quot;>"
-        errorLine2="                      ~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="res/drawable/ic_shrine_vd_theme_24.xml"
-            line="21"
-            column="23"/>
-    </issue>
-
-    <issue
-        id="VectorRaster"
-        message="Resource references will not work correctly in images generated for this vector icon for API &lt; 21; check generated icon to make sure it looks acceptable"
-        errorLine1="        android:fillColor=&quot;@android:color/white&quot;"
-        errorLine2="                           ~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="res/drawable/ic_shrine_vd_theme_24.xml"
-            line="23"
-            column="28"/>
-    </issue>
-
-    <issue
-        id="GradleDependency"
-        message="A newer version of com.google.code.gson:gson than 2.2.4 is available: 2.8.2"
-        errorLine1="  api &apos;com.google.code.gson:gson:2.2.4&apos;"
-        errorLine2="  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="build.gradle"
-            line="9"
-            column="3"/>
+            line="105"
+            column="7"/>
     </issue>
 
     <issue
@@ -259,28 +94,6 @@
     </issue>
 
     <issue
-        id="MergeRootFrame"
-        message="This `&lt;FrameLayout>` can be replaced with a `&lt;merge>` tag"
-        errorLine1="&lt;FrameLayout"
-        errorLine2="^">
-        <location
-            file="res/layout/shrine_item_activity.xml"
-            line="21"
-            column="1"/>
-    </issue>
-
-    <issue
-        id="MergeRootFrame"
-        message="This `&lt;FrameLayout>` can be replaced with a `&lt;merge>` tag"
-        errorLine1="&lt;FrameLayout"
-        errorLine2="^">
-        <location
-            file="res/layout/shrine_product_activity.xml"
-            line="21"
-            column="1"/>
-    </issue>
-
-    <issue
         id="AlwaysShowAction"
         message="Prefer &quot;`ifRoom`&quot; instead of &quot;`always`&quot;"
         errorLine1="    app:showAsAction=&quot;always&quot;/>"
@@ -298,12 +111,12 @@
     <issue
         id="RtlCompat"
         message="To support older versions than API 17 (project specifies 14) you should **also** add `android:layout_marginLeft=&quot;@dimen/shrine_large_margin_start&quot;`"
-        errorLine1="              android:layout_marginStart=&quot;@dimen/shrine_large_margin_start&quot;"
-        errorLine2="              ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        errorLine1="            android:layout_marginStart=&quot;@dimen/shrine_large_margin_start&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="res/layout/shrine_item_activity.xml"
-            line="66"
-            column="15"/>
+            line="58"
+            column="13"/>
     </issue>
 
     <issue
@@ -313,7 +126,7 @@
         errorLine2="          ~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="res/layout/shrine_product_activity.xml"
-            line="65"
+            line="57"
             column="11"/>
     </issue>
 
@@ -324,30 +137,30 @@
         errorLine2="          ~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="res/layout/shrine_product_activity.xml"
-            line="66"
+            line="58"
             column="11"/>
     </issue>
 
     <issue
         id="RtlSymmetry"
         message="When you define `paddingRight` you should probably also define `paddingLeft` for right-to-left symmetry"
-        errorLine1="                android:paddingRight=&quot;@dimen/shrine_small_spacing&quot;>"
-        errorLine2="                ~~~~~~~~~~~~~~~~~~~~">
+        errorLine1="              android:paddingRight=&quot;@dimen/shrine_small_spacing&quot;"
+        errorLine2="              ~~~~~~~~~~~~~~~~~~~~">
         <location
             file="res/layout/shrine_item_activity.xml"
-            line="82"
-            column="17"/>
+            line="73"
+            column="15"/>
     </issue>
 
     <issue
         id="RtlHardcoded"
         message="Consider adding `android:paddingEnd=&quot;@dimen/shrine_small_spacing&quot;` to better support right-to-left layouts"
-        errorLine1="                android:paddingRight=&quot;@dimen/shrine_small_spacing&quot;>"
-        errorLine2="                ~~~~~~~~~~~~~~~~~~~~">
+        errorLine1="              android:paddingRight=&quot;@dimen/shrine_small_spacing&quot;"
+        errorLine2="              ~~~~~~~~~~~~~~~~~~~~">
         <location
             file="res/layout/shrine_item_activity.xml"
-            line="82"
-            column="17"/>
+            line="73"
+            column="15"/>
     </issue>
 
     <issue

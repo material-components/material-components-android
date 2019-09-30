@@ -20,6 +20,7 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 import android.util.SparseIntArray;
 
@@ -39,7 +40,7 @@ public class ParcelableSparseIntArray extends SparseIntArray implements Parcelab
     super(initialCapacity);
   }
 
-  public ParcelableSparseIntArray(SparseIntArray sparseIntArray) {
+  public ParcelableSparseIntArray(@NonNull SparseIntArray sparseIntArray) {
     super();
     for (int i = 0; i < sparseIntArray.size(); i++) {
       put(sparseIntArray.keyAt(i), sparseIntArray.valueAt(i));
@@ -52,7 +53,7 @@ public class ParcelableSparseIntArray extends SparseIntArray implements Parcelab
   }
 
   @Override
-  public void writeToParcel(Parcel dest, int flags) {
+  public void writeToParcel(@NonNull Parcel dest, int flags) {
     int[] keys = new int[size()];
     int[] values = new int[size()];
 
@@ -68,8 +69,9 @@ public class ParcelableSparseIntArray extends SparseIntArray implements Parcelab
 
   public static final Creator<ParcelableSparseIntArray> CREATOR =
       new Creator<ParcelableSparseIntArray>() {
+        @NonNull
         @Override
-        public ParcelableSparseIntArray createFromParcel(Parcel source) {
+        public ParcelableSparseIntArray createFromParcel(@NonNull Parcel source) {
           int size = source.readInt();
           ParcelableSparseIntArray read = new ParcelableSparseIntArray(size);
 
@@ -86,6 +88,7 @@ public class ParcelableSparseIntArray extends SparseIntArray implements Parcelab
           return read;
         }
 
+        @NonNull
         @Override
         public ParcelableSparseIntArray[] newArray(int size) {
           return new ParcelableSparseIntArray[size];

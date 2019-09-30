@@ -22,7 +22,7 @@ dependencies {
   testImplementation "junit:junit:4.12"
   testImplementation "com.google.truth:truth:${project.rootProject.ext.truthVersion}"
   testImplementation "org.mockito:mockito-core:${project.rootProject.ext.mockitoCoreVersion}"
-  testImplementation "org.robolectric:robolectric:4.3-alpha-2"
+  testImplementation "org.robolectric:robolectric:4.3"
 
   testAnnotationProcessor "com.google.auto.service:auto-service:1.0-rc4"
 }
@@ -44,6 +44,7 @@ def srcDirs = [
   'com/google/android/material/circularreveal/cardview',
   'com/google/android/material/circularreveal/coordinatorlayout',
   'com/google/android/material/color',
+  'com/google/android/material/datepicker',
   'com/google/android/material/dialog',
   'com/google/android/material/drawable',
   'com/google/android/material/elevation',
@@ -53,12 +54,12 @@ def srcDirs = [
   'com/google/android/material/math',
   'com/google/android/material/menu',
   'com/google/android/material/navigation',
-  'com/google/android/material/picker',
   'com/google/android/material/radiobutton',
   'com/google/android/material/resources',
   'com/google/android/material/ripple',
   'com/google/android/material/shape',
   'com/google/android/material/shadow',
+  'com/google/android/material/slider',
   'com/google/android/material/snackbar',
   'com/google/android/material/stateful',
   'com/google/android/material/switchmaterial',
@@ -90,6 +91,10 @@ android {
 
   buildTypes.all {
     consumerProguardFiles 'proguard-behaviors.pro', 'proguard-inflater.pro', 'proguard-recyclerview.pro'
+  }
+
+  defaultConfig {
+    minSdkVersion 14
   }
 }
 
@@ -182,22 +187,21 @@ task generateJdiffReport(type: Javadoc) {
   }
 }
 
+def R_CLASS_PATH = "build/generated/not_namespaced_r_class_sources/releaseUnitTest/processReleaseUnitTestResources/r/com/google/android/material/R.java"
 afterEvaluate {
-  addResources([generateJavadocs, generateApiXml])
-}
-
-def addResources(tasks) {
-  tasks.each {
-    it.dependsOn(':lib:processReleaseUnitTestResources')
-    it.source += "build/generated/not_namespaced_r_class_sources/releaseUnitTest/processReleaseUnitTestResources/r/com/google/android/material/R.java"
+  [generateJavadocs, generateApiXml].forEach { task ->
+    task.dependsOn(':lib:processReleaseUnitTestResources')
+    task.source += R_CLASS_PATH
 
     def releaseVariant = android.libraryVariants.find { it.name == 'release' }
-    it.classpath += files(android.libraryVariants.collect { variant ->
-      variant.javaCompile.classpath.files
-    })
-    it.classpath += releaseVariant.getCompileClasspath(null)
-    it.classpath += it.project.files(releaseVariant.javaCompile.destinationDir)
-    it.source += releaseVariant.javaCompile.source
+    if (releaseVariant == null) {
+      return
+    }
+    releaseVariant.javaCompileProvider.configure { javaCompileProvider ->
+      task.classpath += releaseVariant.getCompileClasspath(null)
+      task.classpath += task.project.files(javaCompileProvider.destinationDir)
+      task.source += javaCompileProvider.source
+    }
   }
 }
 

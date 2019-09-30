@@ -29,8 +29,8 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="4dp"
         android:layout_marginEnd="4dp"
+        android:layout_marginRight="4dp"
         android:contentDescription="@null"
         android:importantForAccessibility="no"
         app:srcCompat="@drawable/ic_logo_components_48px"/>
@@ -43,5 +43,11 @@
   </LinearLayout>
 
   <ImageButton
-      style="@style/Widget.Catalog.ChooseThemeButton"/>
+      style="@style/Widget.Catalog.EdgeToEdgeButton"
+      android:contentDescription="@string/cat_choose_theme_description"/>
+
+  <ImageButton
+      style="@style/Widget.Catalog.ChooseThemeButton"
+      android:contentDescription="@string/cat_edge_to_edge_enable_description"/>
+
 </FrameLayout>

@@ -19,6 +19,7 @@ import android.animation.TypeEvaluator;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.util.Property;
 import android.view.View;
@@ -88,7 +89,6 @@ public interface CircularRevealWidget extends Delegate {
    * <p>Note that on L+, calling this method doesn't result in any visual changes. You must use this
    * with {@link ViewAnimationUtils}.
    *
-   *
    * <p>Implementations should call the corresponding method in {@link CircularRevealHelper}.
    */
   void setRevealInfo(@Nullable RevealInfo revealInfo);
@@ -149,7 +149,7 @@ public interface CircularRevealWidget extends Delegate {
       this.radius = radius;
     }
 
-    public RevealInfo(RevealInfo other) {
+    public RevealInfo(@NonNull RevealInfo other) {
       this(other.centerX, other.centerY, other.radius);
     }
 
@@ -159,7 +159,7 @@ public interface CircularRevealWidget extends Delegate {
       this.radius = radius;
     }
 
-    public void set(RevealInfo other) {
+    public void set(@NonNull RevealInfo other) {
       set(other.centerX, other.centerY, other.radius);
     }
 
@@ -185,13 +185,14 @@ public interface CircularRevealWidget extends Delegate {
       super(RevealInfo.class, name);
     }
 
+    @Nullable
     @Override
-    public RevealInfo get(CircularRevealWidget object) {
+    public RevealInfo get(@NonNull CircularRevealWidget object) {
       return object.getRevealInfo();
     }
 
     @Override
-    public void set(CircularRevealWidget object, RevealInfo value) {
+    public void set(@NonNull CircularRevealWidget object, @Nullable RevealInfo value) {
       object.setRevealInfo(value);
     }
   }
@@ -208,8 +209,10 @@ public interface CircularRevealWidget extends Delegate {
     public static final TypeEvaluator<RevealInfo> CIRCULAR_REVEAL = new CircularRevealEvaluator();
     private final RevealInfo revealInfo = new RevealInfo();
 
+    @NonNull
     @Override
-    public RevealInfo evaluate(float fraction, RevealInfo startValue, RevealInfo endValue) {
+    public RevealInfo evaluate(
+        float fraction, @NonNull RevealInfo startValue, @NonNull RevealInfo endValue) {
       revealInfo.set(
           MathUtils.lerp(startValue.centerX, endValue.centerX, fraction),
           MathUtils.lerp(startValue.centerY, endValue.centerY, fraction),
@@ -231,13 +234,14 @@ public interface CircularRevealWidget extends Delegate {
       super(Integer.class, name);
     }
 
+    @NonNull
     @Override
-    public Integer get(CircularRevealWidget object) {
+    public Integer get(@NonNull CircularRevealWidget object) {
       return object.getCircularRevealScrimColor();
     }
 
     @Override
-    public void set(CircularRevealWidget object, Integer value) {
+    public void set(@NonNull CircularRevealWidget object, @NonNull Integer value) {
       object.setCircularRevealScrimColor(value);
     }
   }

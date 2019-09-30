@@ -22,10 +22,10 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
-import com.google.android.material.appbar.AppBarLayout;
 import androidx.fragment.app.Fragment;
 import androidx.core.content.ContextCompat;
 import androidx.core.math.MathUtils;
+import androidx.core.view.ViewCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,11 +35,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import com.google.android.material.appbar.AppBarLayout;
 import dagger.android.support.DaggerFragment;
 import io.material.catalog.feature.FeatureDemo;
 import io.material.catalog.feature.FeatureDemoUtils;
 import io.material.catalog.themeswitcher.ThemePreferencesManager;
 import io.material.catalog.themeswitcher.ThemeSwitcherResourceProvider;
+import io.material.catalog.windowpreferences.WindowPreferencesManager;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,10 +60,12 @@ public class TocFragment extends DaggerFragment {
   @Inject ThemeSwitcherResourceProvider themeSwitcherResourceProvider;
 
   private ThemePreferencesManager themePreferencesManager;
+  private WindowPreferencesManager windowPreferencesManager;
   private AppBarLayout appBarLayout;
   private View gridTopDivider;
   private RecyclerView recyclerView;
   private ImageButton themeButton;
+  private ImageButton edgeToEdgeButton;
 
   @Override
   public void onCreate(@Nullable Bundle bundle) {
@@ -69,6 +73,7 @@ public class TocFragment extends DaggerFragment {
 
     themePreferencesManager =
         new ThemePreferencesManager(getContext(), themeSwitcherResourceProvider);
+    windowPreferencesManager = new WindowPreferencesManager(getContext());
 
     String defaultDemo = FeatureDemoUtils.getDefaultDemo(getContext());
     if (!defaultDemo.isEmpty() && bundle == null) {
@@ -102,6 +107,16 @@ public class TocFragment extends DaggerFragment {
     gridTopDivider = view.findViewById(R.id.cat_toc_grid_top_divider);
     recyclerView = view.findViewById(R.id.cat_toc_grid);
     themeButton = view.findViewById(R.id.cat_toc_theme_button);
+    edgeToEdgeButton = view.findViewById(R.id.cat_edge_to_edge_button);
+
+    ViewCompat.setOnApplyWindowInsetsListener(
+        view,
+        (v, insetsCompat) -> {
+          appBarLayout
+              .findViewById(R.id.cat_toc_collapsingtoolbarlayout)
+              .setPadding(0, insetsCompat.getSystemWindowInsetTop(), 0, 0);
+          return insetsCompat;
+        });
 
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
       addGridTopDividerVisibilityListener();
@@ -133,6 +148,7 @@ public class TocFragment extends DaggerFragment {
 
     initThemeButton();
 
+    initEdgeToEdgeButton();
     return view;
   }
 
@@ -167,5 +183,27 @@ public class TocFragment extends DaggerFragment {
   private void initThemeButton() {
     themePreferencesManager.applyTheme();
     themeButton.setOnClickListener(v -> themePreferencesManager.showChooseThemePopup(themeButton));
+  }
+
+  private void initEdgeToEdgeButton() {
+    if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
+      // Hide button because setting system ui flags is not supported pre-Lollipop.
+      edgeToEdgeButton.setVisibility(View.GONE);
+      return;
+    }
+    edgeToEdgeButton.setImageResource(
+        windowPreferencesManager.isEdgeToEdgeEnabled()
+            ? R.drawable.ic_edge_to_edge_disable_24dp
+            : R.drawable.ic_edge_to_edge_enable_24dp);
+    edgeToEdgeButton.setContentDescription(
+        getString(
+            windowPreferencesManager.isEdgeToEdgeEnabled()
+                ? R.string.cat_edge_to_edge_enable_description
+                : R.string.cat_edge_to_edge_disable_description));
+    edgeToEdgeButton.setOnClickListener(
+        v -> {
+          windowPreferencesManager.toggleEdgeToEdgeEnabled();
+          getActivity().recreate();
+        });
   }
 }

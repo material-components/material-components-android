@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2019 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+
+  <dimen name="mtrl_slider_widget_height">48dp</dimen>
+  <dimen name="mtrl_slider_widget_height_discrete">68dp</dimen>
+
+  <dimen name="mtrl_slider_line_height">2dp</dimen>
+
+  <dimen name="mtrl_slider_track_side_padding">16dp</dimen>
+  <dimen name="mtrl_slider_track_top">24dp</dimen>
+  <dimen name="mtrl_slider_track_top_discrete">44dp</dimen>
+
+  <dimen name="mtrl_slider_thumb_radius">10dp</dimen>
+  <dimen name="mtrl_slider_thumb_elevation">1dp</dimen>
+
+  <dimen name="mtrl_slider_halo_radius">24dp</dimen>
+
+  <dimen name="mtrl_slider_label_square_side">26dp</dimen>
+  <dimen name="mtrl_slider_label_width">26dp</dimen>
+  <dimen name="mtrl_slider_label_height">26dp</dimen>
+  <dimen name="mtrl_slider_label_radius">13dp</dimen>
+  <dimen name="mtrl_slider_label_top_offset">37dp</dimen>
+  <dimen name="mtrl_slider_label_text_size">10sp</dimen>
+  <dimen name="mtrl_slider_label_text_top_offset">20dp</dimen>
+</resources>

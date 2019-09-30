@@ -25,8 +25,7 @@ import androidx.annotation.ArrayRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
-import com.google.android.material.resources.TextAppearance;
-import com.google.android.material.snackbar.Snackbar;
+import androidx.core.view.ViewCompat;
 import androidx.core.widget.TextViewCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -39,6 +38,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.google.android.material.resources.TextAppearance;
+import com.google.android.material.snackbar.Snackbar;
 import io.material.catalog.feature.DemoFragment;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +59,16 @@ public class FontMainDemoFragment extends DemoFragment {
     recyclerView.addItemDecoration(
         new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
     recyclerView.setAdapter(new FontStyleAdapter(getContext()));
+    ViewCompat.setOnApplyWindowInsetsListener(recyclerView, (view1, windowInsetsCompat) -> {
+      recyclerView.setClipToPadding(windowInsetsCompat.getSystemWindowInsetBottom() == 0);
+      recyclerView.setPadding(
+          recyclerView.getPaddingLeft(),
+          recyclerView.getPaddingTop(),
+          recyclerView.getPaddingRight(),
+          windowInsetsCompat.getSystemWindowInsetBottom());
+
+      return windowInsetsCompat;
+    });
 
     return view;
   }

@@ -23,6 +23,7 @@ import static com.google.android.material.internal.ThemeEnforcement.createThemed
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.widget.CompoundButtonCompat;
 import androidx.appcompat.widget.AppCompatRadioButton;
@@ -52,15 +53,16 @@ public class MaterialRadioButton extends AppCompatRadioButton {
   @Nullable private ColorStateList materialThemeColorsTintList;
   private boolean useMaterialThemeColors;
 
-  public MaterialRadioButton(Context context) {
+  public MaterialRadioButton(@NonNull Context context) {
     this(context, null);
   }
 
-  public MaterialRadioButton(Context context, @Nullable AttributeSet attrs) {
+  public MaterialRadioButton(@NonNull Context context, @Nullable AttributeSet attrs) {
     this(context, attrs, R.attr.radioButtonStyle);
   }
 
-  public MaterialRadioButton(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+  public MaterialRadioButton(
+      @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     super(createThemedContext(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
     // Ensure we are using the correctly themed context rather than the context that was passed in.
     context = getContext();

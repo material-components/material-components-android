@@ -25,6 +25,16 @@
     <attr name="badgeTextColor" format="color"/>
     <attr name="maxCharacterCount" format="integer"/>
     <attr name="number" format="integer"/>
+    <attr name="badgeGravity">
+      <!-- Gravity.TOP | Gravity.END -->
+      <enum name="TOP_END" value ="8388661"/>
+      <!-- Gravity.TOP | Gravity.START -->
+      <enum name="TOP_START" value ="8388659"/>
+      <!-- Gravity.BOTTOM | Gravity.END -->
+      <enum name="BOTTOM_END" value ="8388693"/>
+      <!-- Gravity.BOTTOM | Gravity.START -->
+      <enum name="BOTTOM_START" value ="8388691"/>
+    </attr>
   </declare-styleable>
 
 </resources>

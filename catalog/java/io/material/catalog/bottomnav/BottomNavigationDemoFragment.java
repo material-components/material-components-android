@@ -21,13 +21,19 @@ import io.material.catalog.R;
 import android.os.Bundle;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
+import androidx.core.math.MathUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.badge.BadgeDrawable.BadgeGravity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener;
 import io.material.catalog.feature.DemoFragment;
@@ -38,6 +44,16 @@ import java.util.List;
 public abstract class BottomNavigationDemoFragment extends DemoFragment {
 
   private static final int MAX_BOTTOM_NAV_CHILDREN = 5;
+
+  @Nullable
+  private final int[] badgeGravityValues =
+      new int[] {
+        BadgeDrawable.TOP_END,
+        BadgeDrawable.TOP_START,
+        BadgeDrawable.BOTTOM_END,
+        BadgeDrawable.BOTTOM_START
+      };
+
   private int numVisibleChildren = 3;
   protected List<BottomNavigationView> bottomNavigationViews;
 
@@ -110,6 +126,20 @@ public abstract class BottomNavigationDemoFragment extends DemoFragment {
     }
   }
 
+  private void updateBadgeGravity(@BadgeGravity int badgeGravity) {
+    for (BottomNavigationView bn : bottomNavigationViews) {
+      for (int i = 0; i < MAX_BOTTOM_NAV_CHILDREN; i++) {
+        // Update the badge gravity on all the menu items.
+        MenuItem menuItem = bn.getMenu().getItem(i);
+        int menuItemId = menuItem.getItemId();
+        BadgeDrawable badgeDrawable = bn.getBadge(menuItemId);
+        if (badgeDrawable != null) {
+          badgeDrawable.setBadgeGravity(badgeGravity);
+        }
+      }
+    }
+  }
+
   private void clearAndHideBadge(int menuItemId) {
     for (BottomNavigationView bn : bottomNavigationViews) {
       MenuItem menuItem = bn.getMenu().getItem(0);
@@ -142,6 +172,27 @@ public abstract class BottomNavigationDemoFragment extends DemoFragment {
     initAddNavItemButton(view.findViewById(R.id.add_button));
     initRemoveNavItemButton(view.findViewById(R.id.remove_button));
     initAddIncreaseBadgeNumberButton(view.findViewById(R.id.increment_badge_number_button));
+
+    Spinner badgeGravitySpinner = view.findViewById(R.id.badge_gravity_spinner);
+    ArrayAdapter<CharSequence> adapter =
+        ArrayAdapter.createFromResource(
+            badgeGravitySpinner.getContext(),
+            R.array.cat_bottom_nav_badge_gravity_titles,
+            android.R.layout.simple_spinner_item);
+    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    badgeGravitySpinner.setAdapter(adapter);
+
+    badgeGravitySpinner.setOnItemSelectedListener(
+        new OnItemSelectedListener() {
+          @Override
+          public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            updateBadgeGravity(
+                badgeGravityValues[MathUtils.clamp(position, 0, badgeGravityValues.length - 1)]);
+          }
+
+          @Override
+          public void onNothingSelected(AdapterView<?> parent) {}
+        });
   }
 
   private void initAddIncreaseBadgeNumberButton(Button incrementBadgeNumberButton) {

@@ -92,6 +92,13 @@ public class TextFieldFragment extends DemoLandingFragment {
           }
         });
     additionalDemos.add(
+        new Demo(R.string.cat_textfield_prefix_suffix_demo_title) {
+          @Override
+          public Fragment createFragment() {
+            return new TextFieldPrefixSuffixDemoFragment();
+          }
+        });
+    additionalDemos.add(
         new Demo(R.string.cat_textfield_legacy_demo_title) {
           @Override
           public Fragment createFragment() {

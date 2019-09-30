@@ -18,6 +18,7 @@ package com.google.android.material.transformation;
 import android.content.Context;
 import androidx.annotation.CallSuper;
 import androidx.annotation.IntDef;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
@@ -84,7 +85,8 @@ public abstract class ExpandableBehavior extends Behavior<View> {
 
   @CallSuper
   @Override
-  public boolean onLayoutChild(CoordinatorLayout parent, final View child, int layoutDirection) {
+  public boolean onLayoutChild(
+      @NonNull CoordinatorLayout parent, @NonNull final View child, int layoutDirection) {
     if (!ViewCompat.isLaidOut(child)) {
       final ExpandableWidget dep = findExpandableWidget(parent, child);
       if (dep != null && didStateChange(dep.isExpanded())) {
@@ -124,7 +126,8 @@ public abstract class ExpandableBehavior extends Behavior<View> {
   }
 
   @Nullable
-  protected ExpandableWidget findExpandableWidget(CoordinatorLayout parent, View child) {
+  protected ExpandableWidget findExpandableWidget(
+      @NonNull CoordinatorLayout parent, @NonNull View child) {
     List<View> dependencies = parent.getDependencies(child);
     for (int i = 0, size = dependencies.size(); i < size; i++) {
       View dependency = dependencies.get(i);
@@ -152,7 +155,8 @@ public abstract class ExpandableBehavior extends Behavior<View> {
    * @param klass The expected {@link Class} of the attached {@link ExpandableBehavior}.
    * @return The {@link ExpandableBehavior} attached to the {@code view}.
    */
-  public static <T extends ExpandableBehavior> T from(View view, Class<T> klass) {
+  @Nullable
+  public static <T extends ExpandableBehavior> T from(@NonNull View view, @NonNull Class<T> klass) {
     ViewGroup.LayoutParams params = view.getLayoutParams();
     if (!(params instanceof CoordinatorLayout.LayoutParams)) {
       throw new IllegalArgumentException("The view is not a child of CoordinatorLayout");

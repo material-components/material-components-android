@@ -18,6 +18,8 @@ package com.google.android.material.appbar;
 
 import android.content.Context;
 import android.graphics.Rect;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.math.MathUtils;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
@@ -50,8 +52,8 @@ abstract class HeaderScrollingViewBehavior extends ViewOffsetBehavior<View> {
 
   @Override
   public boolean onMeasureChild(
-      CoordinatorLayout parent,
-      View child,
+      @NonNull CoordinatorLayout parent,
+      @NonNull View child,
       int parentWidthMeasureSpec,
       int widthUsed,
       int parentHeightMeasureSpec,
@@ -105,7 +107,9 @@ abstract class HeaderScrollingViewBehavior extends ViewOffsetBehavior<View> {
 
   @Override
   protected void layoutChild(
-      final CoordinatorLayout parent, final View child, final int layoutDirection) {
+      @NonNull final CoordinatorLayout parent,
+      @NonNull final View child,
+      final int layoutDirection) {
     final List<View> dependencies = parent.getDependencies(child);
     final View header = findFirstDependency(dependencies);
 
@@ -168,9 +172,10 @@ abstract class HeaderScrollingViewBehavior extends ViewOffsetBehavior<View> {
     return gravity == Gravity.NO_GRAVITY ? GravityCompat.START | Gravity.TOP : gravity;
   }
 
+  @Nullable
   abstract View findFirstDependency(List<View> views);
 
-  int getScrollRange(View v) {
+  int getScrollRange(@NonNull View v) {
     return v.getMeasuredHeight();
   }
 

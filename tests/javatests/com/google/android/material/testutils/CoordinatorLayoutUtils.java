@@ -16,8 +16,11 @@
 
 package com.google.android.material.testutils;
 
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
 import android.view.View;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import com.google.android.material.testapp.R;
+import java.util.ArrayList;
 
 public class CoordinatorLayoutUtils {
 
@@ -32,5 +35,25 @@ public class CoordinatorLayoutUtils {
     public boolean layoutDependsOn(CoordinatorLayout parent, View child, View dependency) {
       return this.dependency != null && dependency == this.dependency;
     }
+  }
+
+  public static boolean hasAction(View view, int actionId) {
+    ArrayList<AccessibilityActionCompat> actions = getActionList(view);
+    for (int i = 0; i < actions.size(); i++) {
+      if (actions.get(i).getId() == actionId) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private static ArrayList<AccessibilityActionCompat> getActionList(View view) {
+    @SuppressWarnings("unchecked")
+    ArrayList<AccessibilityActionCompat> actions =
+        (ArrayList<AccessibilityActionCompat>) view.getTag(R.id.tag_accessibility_actions);
+    if (actions == null) {
+      actions = new ArrayList<>();
+    }
+    return actions;
   }
 }

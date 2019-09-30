@@ -30,6 +30,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Typeface;
 import androidx.annotation.ColorInt;
 import androidx.annotation.IntDef;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import androidx.core.view.ViewCompat;
@@ -55,10 +56,6 @@ import java.util.List;
  * com.google.android.material.textfield.TextInputLayout}. This class controls helper and error views.
  */
 final class IndicatorViewController {
-  /*
-   * TODO: Update placeholder values for caption animation.
-   *
-   */
 
   /** Duration for the caption's vertical translation animation. */
   private static final int CAPTION_TRANSLATE_Y_ANIMATION_DURATION = 217;
@@ -91,7 +88,7 @@ final class IndicatorViewController {
   private static final int CAPTION_STATE_HELPER_TEXT = 2;
 
   private final Context context;
-  private final TextInputLayout textInputView;
+  @NonNull private final TextInputLayout textInputView;
 
   private LinearLayout indicatorArea;
   private int indicatorsAdded;
@@ -103,21 +100,21 @@ final class IndicatorViewController {
   private int captionDisplayed;
   private int captionToShow;
 
-  private CharSequence errorText;
+  @Nullable private CharSequence errorText;
   private boolean errorEnabled;
-  private TextView errorView;
+  @Nullable private TextView errorView;
   private int errorTextAppearance;
   @Nullable private ColorStateList errorViewTextColor;
 
   private CharSequence helperText;
   private boolean helperTextEnabled;
-  private TextView helperTextView;
+  @Nullable private TextView helperTextView;
   private int helperTextTextAppearance;
   @Nullable private ColorStateList helperTextViewTextColor;
 
   private Typeface typeface;
 
-  public IndicatorViewController(TextInputLayout textInputView) {
+  public IndicatorViewController(@NonNull TextInputLayout textInputView) {
     this.context = textInputView.getContext();
     this.textInputView = textInputView;
     this.captionTranslationYPx =
@@ -187,7 +184,7 @@ final class IndicatorViewController {
    * @return Whether the view should animate when setting the caption
    */
   private boolean shouldAnimateCaptionView(
-      TextView captionView, @Nullable final CharSequence captionText) {
+      @Nullable TextView captionView, @Nullable final CharSequence captionText) {
     return ViewCompat.isLaidOut(textInputView)
         && textInputView.isEnabled()
         && (captionToShow != captionDisplayed
@@ -236,11 +233,11 @@ final class IndicatorViewController {
                 if (captionToHide == CAPTION_STATE_ERROR && errorView != null) {
                   errorView.setText(null);
                 }
+              }
 
-                if (captionViewToShow != null) {
-                  captionViewToShow.setTranslationY(0f);
-                  captionViewToShow.setAlpha(1f);
-                }
+              if (captionViewToShow != null) {
+                captionViewToShow.setTranslationY(0f);
+                captionViewToShow.setAlpha(1f);
               }
             }
 
@@ -288,9 +285,9 @@ final class IndicatorViewController {
   }
 
   private void createCaptionAnimators(
-      List<Animator> captionAnimatorList,
+      @NonNull List<Animator> captionAnimatorList,
       boolean captionEnabled,
-      TextView captionView,
+      @Nullable TextView captionView,
       @CaptionDisplayState int captionState,
       @CaptionDisplayState int captionToHide,
       @CaptionDisplayState int captionToShow) {
@@ -410,7 +407,7 @@ final class IndicatorViewController {
     setViewGroupGoneIfEmpty(indicatorArea, indicatorsAdded);
   }
 
-  private void setViewGroupGoneIfEmpty(ViewGroup viewGroup, int indicatorsAdded) {
+  private void setViewGroupGoneIfEmpty(@NonNull ViewGroup viewGroup, int indicatorsAdded) {
     if (indicatorsAdded == 0) {
       viewGroup.setVisibility(View.GONE);
     }
@@ -513,6 +510,7 @@ final class IndicatorViewController {
         && !TextUtils.isEmpty(helperText);
   }
 
+  @Nullable
   CharSequence getErrorText() {
     return errorText;
   }
@@ -546,7 +544,7 @@ final class IndicatorViewController {
     return errorView != null ? errorView.getTextColors() : null;
   }
 
-  void setErrorViewTextColor(ColorStateList errorViewTextColor) {
+  void setErrorViewTextColor(@Nullable ColorStateList errorViewTextColor) {
     this.errorViewTextColor = errorViewTextColor;
     if (errorView != null && errorViewTextColor != null) {
       errorView.setTextColor(errorViewTextColor);
@@ -569,7 +567,7 @@ final class IndicatorViewController {
     return helperTextView != null ? helperTextView.getTextColors() : null;
   }
 
-  void setHelperTextViewTextColor(ColorStateList helperTextViewTextColor) {
+  void setHelperTextViewTextColor(@Nullable ColorStateList helperTextViewTextColor) {
     this.helperTextViewTextColor = helperTextViewTextColor;
     if (helperTextView != null && helperTextViewTextColor != null) {
       helperTextView.setTextColor(helperTextViewTextColor);

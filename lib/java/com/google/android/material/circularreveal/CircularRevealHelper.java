@@ -33,6 +33,7 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.annotation.ColorInt;
 import androidx.annotation.IntDef;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.view.View;
 import com.google.android.material.circularreveal.CircularRevealWidget.RevealInfo;
@@ -100,10 +101,10 @@ public class CircularRevealHelper {
   @Strategy public static final int STRATEGY;
 
   private final Delegate delegate;
-  private final View view;
-  private final Path revealPath;
-  private final Paint revealPaint;
-  private final Paint scrimPaint;
+  @NonNull private final View view;
+  @NonNull private final Path revealPath;
+  @NonNull private final Paint revealPaint;
+  @NonNull private final Paint scrimPaint;
   /**
    * The circular reveal representation which affects how the current frame will be drawn.
    *
@@ -249,12 +250,12 @@ public class CircularRevealHelper {
     view.invalidate();
   }
 
-  private float getDistanceToFurthestCorner(RevealInfo revealInfo) {
+  private float getDistanceToFurthestCorner(@NonNull RevealInfo revealInfo) {
     return MathUtils.distanceToFurthestCorner(
         revealInfo.centerX, revealInfo.centerY, 0, 0, view.getWidth(), view.getHeight());
   }
 
-  public void draw(Canvas canvas) {
+  public void draw(@NonNull Canvas canvas) {
     if (DEBUG) {
       drawDebugMode(canvas);
       return;
@@ -299,7 +300,7 @@ public class CircularRevealHelper {
     drawOverlayDrawable(canvas);
   }
 
-  private void drawOverlayDrawable(Canvas canvas) {
+  private void drawOverlayDrawable(@NonNull Canvas canvas) {
     if (shouldDrawOverlayDrawable()) {
       Rect bounds = overlayDrawable.getBounds();
       float translationX = revealInfo.centerX - bounds.width() / 2f;
@@ -332,7 +333,7 @@ public class CircularRevealHelper {
     return !buildingCircularRevealCache && overlayDrawable != null && revealInfo != null;
   }
 
-  private void drawDebugMode(Canvas canvas) {
+  private void drawDebugMode(@NonNull Canvas canvas) {
     delegate.actualDraw(canvas);
     if (shouldDrawScrim()) {
       canvas.drawCircle(revealInfo.centerX, revealInfo.centerY, revealInfo.radius, scrimPaint);
@@ -347,7 +348,7 @@ public class CircularRevealHelper {
     drawOverlayDrawable(canvas);
   }
 
-  private void drawDebugCircle(Canvas canvas, int color, float width) {
+  private void drawDebugCircle(@NonNull Canvas canvas, int color, float width) {
     debugPaint.setColor(color);
     debugPaint.setStrokeWidth(width);
     canvas.drawCircle(

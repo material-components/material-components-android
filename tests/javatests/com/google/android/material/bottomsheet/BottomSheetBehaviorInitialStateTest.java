@@ -21,11 +21,11 @@ import static org.hamcrest.core.Is.is;
 
 import android.content.Context;
 import android.content.Intent;
-import com.google.android.material.testapp.BottomSheetBehaviorActivity;
 import androidx.test.InstrumentationRegistry;
 import androidx.test.filters.SmallTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
+import com.google.android.material.testapp.BottomSheetBehaviorActivity;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -16,18 +16,21 @@
 
 package com.google.android.material.theme;
 
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+
 import android.content.Context;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
-import com.google.android.material.button.MaterialButton;
+import androidx.annotation.RestrictTo;
 import androidx.appcompat.app.AppCompatViewInflater;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import android.util.AttributeSet;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.radiobutton.MaterialRadioButton;
 import com.google.android.material.textview.MaterialTextView;
@@ -46,7 +49,7 @@ public class MaterialComponentsViewInflater extends AppCompatViewInflater {
 
   @NonNull
   @Override
-  protected AppCompatButton createButton(Context context, AttributeSet attrs) {
+  protected AppCompatButton createButton(@NonNull Context context, @NonNull AttributeSet attrs) {
     if (shouldInflateAppCompatButton(context, attrs)) {
       return new AppCompatButton(context, attrs);
     }
@@ -54,7 +57,10 @@ public class MaterialComponentsViewInflater extends AppCompatViewInflater {
     return new MaterialButton(context, attrs);
   }
 
-  protected boolean shouldInflateAppCompatButton(Context context, AttributeSet attrs) {
+  /** @hide */
+  @RestrictTo(LIBRARY_GROUP)
+  protected boolean shouldInflateAppCompatButton(
+      @NonNull Context context, @NonNull AttributeSet attrs) {
     // Workaround for FloatingToolbar inflating floating_popup_menu_button.xml on API 23-25, which
     // should not have MaterialButton styling.
 

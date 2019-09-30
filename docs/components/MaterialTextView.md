@@ -27,13 +27,17 @@ reference.
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
   android:layout_height="match_parent">
-    <MaterialTextView
+    <TextView
       android:id="@+id/text_view_id"
       android:layout_height="wrap_content"
       android:layout_width="wrap_content"
       android:text="@string/hello" />
 </LinearLayout>
 ```
+
+Note: If you use our full themes (which we recommend), `TextView` will
+auto-inflate to `MaterialTextView`, otherwise, you will need to specify
+`<com.google.android.material.textview` in your xml.
 
 ### Attributes
 

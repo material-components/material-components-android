@@ -23,7 +23,6 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import com.google.android.material.testapp.CoordinatorLayoutActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -33,6 +32,7 @@ import androidx.test.espresso.action.ViewActions;
 import androidx.test.filters.MediumTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
+import com.google.android.material.testapp.CoordinatorLayoutActivity;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

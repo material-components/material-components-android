@@ -17,16 +17,20 @@ package io.material.catalog.dialog;
 
 import io.material.catalog.R;
 
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
-import com.google.android.material.button.MaterialButton;
 import androidx.appcompat.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import io.material.catalog.feature.DemoFragment;
 
@@ -141,7 +145,15 @@ public class DialogMainDemoFragment extends DemoFragment {
         new MaterialAlertDialogBuilder(getContext())
             .setTitle(title)
             .setView(R.layout.edit_text)
-            .setPositiveButton(positiveText, null)
+            .setPositiveButton(
+                positiveText,
+                new OnClickListener() {
+                  @Override
+                  public void onClick(DialogInterface dialog, int which) {
+                    TextView input = ((AlertDialog) dialog).findViewById(android.R.id.text1);
+                    Toast.makeText(getContext(), input.getText(), Toast.LENGTH_LONG).show();
+                  }
+                })
             .setNegativeButton(negativeText, null));
 
     // title, auto-action choice dialog

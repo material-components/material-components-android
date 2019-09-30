@@ -193,4 +193,5 @@ not be used and the size will be calculated based on the value set using
 
 ## Related Concepts
 
+-   [ExtendedFloatingActionButton](ExtendedFloatingActionButton.md)
 -   [CoordinatorLayout](https://developer.android.com/reference/androidx/coordinatorlayout/widget/CoordinatorLayout)

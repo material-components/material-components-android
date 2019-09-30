@@ -29,30 +29,37 @@ import java.lang.ref.WeakReference;
 /**
  * A mediator to link a TabLayout with a ViewPager2. The mediator will synchronize the ViewPager2's
  * position with the selected tab when a tab is selected, and the TabLayout's scroll position when
- * the user drags the ViewPager2.
+ * the user drags the ViewPager2. TabLayoutMediator will listen to ViewPager2's OnPageChangeCallback
+ * to adjust tab when ViewPager2 moves. TabLayoutMediator listens to TabLayout's
+ * OnTabSelectedListener to adjust VP2 when tab moves. TLM listens to RecyclerView's
+ * AdapterDataObserver to recreate tab content when dataset changes.
  *
  * <p>Establish the link by creating an instance of this class, make sure the ViewPager2 has an
- * adapter and then call {@link #attach()} on it. When creating an instance of this class, you must
- * supply an implementation of {@link OnConfigureTabCallback} in which you set the text of the tab,
- * and/or perform any styling of the tabs that you require.
+ * adapter and then call {@link #attach()} on it. Instantiating a TabLayoutMediator will only create
+ * the mediator object, {@link #attach()} will link the TabLayout and the ViewPager2 together. When
+ * creating an instance of this class, you must supply an implementation of {@link
+ * TabConfigurationStrategy} in which you set the text of the tab, and/or perform any styling of the
+ * tabs that you require. Changing ViewPager2's adapter will require a {@link #detach()} followed by
+ * {@link #attach()} call. Changing the ViewPager2 or TabLayout will require a new instantiation of
+ * TabLayoutMediator.
  */
 public final class TabLayoutMediator {
   @NonNull private final TabLayout tabLayout;
   @NonNull private final ViewPager2 viewPager;
   private final boolean autoRefresh;
-  private final OnConfigureTabCallback onConfigureTabCallback;
-  private RecyclerView.Adapter<?> adapter;
+  private final TabConfigurationStrategy tabConfigurationStrategy;
+  @Nullable private RecyclerView.Adapter<?> adapter;
   private boolean attached;
 
-  private TabLayoutOnPageChangeCallback onPageChangeCallback;
-  private TabLayout.OnTabSelectedListener onTabSelectedListener;
-  private RecyclerView.AdapterDataObserver pagerAdapterObserver;
+  @Nullable private TabLayoutOnPageChangeCallback onPageChangeCallback;
+  @Nullable private TabLayout.OnTabSelectedListener onTabSelectedListener;
+  @Nullable private RecyclerView.AdapterDataObserver pagerAdapterObserver;
 
   /**
    * A callback interface that must be implemented to set the text and styling of newly created
    * tabs.
    */
-  public interface OnConfigureTabCallback {
+  public interface TabConfigurationStrategy {
     /**
      * Called to configure the tab for the page at the specified position. Typically calls {@link
      * TabLayout.Tab#setText(CharSequence)}, but any form of styling can be applied.
@@ -67,23 +74,25 @@ public final class TabLayoutMediator {
   public TabLayoutMediator(
       @NonNull TabLayout tabLayout,
       @NonNull ViewPager2 viewPager,
-      @NonNull OnConfigureTabCallback onConfigureTabCallback) {
-    this(tabLayout, viewPager, true, onConfigureTabCallback);
+      @NonNull TabConfigurationStrategy tabConfigurationStrategy) {
+    this(tabLayout, viewPager, true, tabConfigurationStrategy);
   }
 
   public TabLayoutMediator(
       @NonNull TabLayout tabLayout,
       @NonNull ViewPager2 viewPager,
       boolean autoRefresh,
-      @NonNull OnConfigureTabCallback onConfigureTabCallback) {
+      @NonNull TabConfigurationStrategy tabConfigurationStrategy) {
     this.tabLayout = tabLayout;
     this.viewPager = viewPager;
     this.autoRefresh = autoRefresh;
-    this.onConfigureTabCallback = onConfigureTabCallback;
+    this.tabConfigurationStrategy = tabConfigurationStrategy;
   }
 
   /**
-   * Link the TabLayout and the ViewPager2 together.
+   * Link the TabLayout and the ViewPager2 together. Must be called after ViewPager2 has an adapter
+   * set. To be called on a new instance of TabLayoutMediator or if the ViewPager2's adapter
+   * changes.
    *
    * @throws IllegalStateException If the mediator is already attached, or the ViewPager2 has no
    *     adapter.
@@ -121,7 +130,11 @@ public final class TabLayoutMediator {
     tabLayout.setScrollPosition(viewPager.getCurrentItem(), 0f, true);
   }
 
-  /** Unlink the TabLayout and the ViewPager */
+  /**
+   * Unlink the TabLayout and the ViewPager. To be called on a stale TabLayoutMediator if a new one
+   * is instantiated, to prevent holding on to a view that should be garbage collected. Also to be
+   * called before {@link #attach()} when a ViewPager2's adapter is changed.
+   */
   public void detach() {
     adapter.unregisterAdapterDataObserver(pagerAdapterObserver);
     tabLayout.removeOnTabSelectedListener(onTabSelectedListener);
@@ -129,6 +142,7 @@ public final class TabLayoutMediator {
     pagerAdapterObserver = null;
     onTabSelectedListener = null;
     onPageChangeCallback = null;
+    adapter = null;
     attached = false;
   }
 
@@ -140,7 +154,7 @@ public final class TabLayoutMediator {
       int adapterCount = adapter.getItemCount();
       for (int i = 0; i < adapterCount; i++) {
         TabLayout.Tab tab = tabLayout.newTab();
-        onConfigureTabCallback.onConfigureTab(tab, i);
+        tabConfigurationStrategy.onConfigureTab(tab, i);
         tabLayout.addTab(tab, false);
       }
 
@@ -163,7 +177,7 @@ public final class TabLayoutMediator {
    * callback and not cause a leak.
    */
   private static class TabLayoutOnPageChangeCallback extends ViewPager2.OnPageChangeCallback {
-    private final WeakReference<TabLayout> tabLayoutRef;
+    @NonNull private final WeakReference<TabLayout> tabLayoutRef;
     private int previousScrollState;
     private int scrollState;
 
@@ -228,7 +242,7 @@ public final class TabLayoutMediator {
     }
 
     @Override
-    public void onTabSelected(TabLayout.Tab tab) {
+    public void onTabSelected(@NonNull TabLayout.Tab tab) {
       viewPager.setCurrentItem(tab.getPosition(), true);
     }
 

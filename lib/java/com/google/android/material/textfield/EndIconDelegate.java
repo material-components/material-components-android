@@ -17,8 +17,9 @@
 package com.google.android.material.textfield;
 
 import android.content.Context;
-import com.google.android.material.textfield.TextInputLayout.BoxBackgroundMode;
+import androidx.annotation.NonNull;
 import com.google.android.material.internal.CheckableImageButton;
+import com.google.android.material.textfield.TextInputLayout.BoxBackgroundMode;
 
 /**
  * End icon delegate abstract class.
@@ -32,7 +33,7 @@ abstract class EndIconDelegate {
   Context context;
   CheckableImageButton endIconView;
 
-  EndIconDelegate(TextInputLayout textInputLayout) {
+  EndIconDelegate(@NonNull TextInputLayout textInputLayout) {
     this.textInputLayout = textInputLayout;
     context = textInputLayout.getContext();
     endIconView = textInputLayout.getEndIconView();
@@ -59,4 +60,12 @@ abstract class EndIconDelegate {
   boolean isBoxBackgroundModeSupported(@BoxBackgroundMode int boxBackgroundMode) {
     return true;
   }
+
+  /**
+   * This method should be implemented if the icon needs special handling of it's visibility
+   * behavior when there is a suffix being displayed.
+   *
+   * @param visible whether the icon should be set to visible
+   */
+  void onSuffixVisibilityChanged(boolean visible) {}
 }

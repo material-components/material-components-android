@@ -22,11 +22,13 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.Resources.Theme;
 import android.content.res.TypedArray;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StyleableRes;
-import com.google.android.material.resources.MaterialAttributes;
-import com.google.android.material.resources.MaterialResources;
 import androidx.appcompat.widget.AppCompatTextView;
 import android.util.AttributeSet;
+import com.google.android.material.resources.MaterialAttributes;
+import com.google.android.material.resources.MaterialResources;
 
 /**
  * A MaterialTextView is a derivative of {@link AppCompatTextView} that displays text to the user.
@@ -71,19 +73,21 @@ import android.util.AttributeSet;
  */
 public class MaterialTextView extends AppCompatTextView {
 
-  public MaterialTextView(Context context) {
+  public MaterialTextView(@NonNull Context context) {
     this(context, null /* attrs */);
   }
 
-  public MaterialTextView(Context context, AttributeSet attrs) {
+  public MaterialTextView(@NonNull Context context, @Nullable AttributeSet attrs) {
     this(context, attrs, android.R.attr.textViewStyle);
   }
 
-  public MaterialTextView(Context context, AttributeSet attrs, int defStyleAttr) {
+  public MaterialTextView(
+      @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     this(context, attrs, defStyleAttr, 0);
   }
 
-  public MaterialTextView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+  public MaterialTextView(
+      @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
     super(context, attrs, defStyleAttr);
 
     if (canApplyTextAppearanceLineHeight(context)) {
@@ -99,7 +103,7 @@ public class MaterialTextView extends AppCompatTextView {
   }
 
   @Override
-  public void setTextAppearance(Context context, int resId) {
+  public void setTextAppearance(@NonNull Context context, int resId) {
     super.setTextAppearance(context, resId);
 
     if (canApplyTextAppearanceLineHeight(context)) {
@@ -107,7 +111,7 @@ public class MaterialTextView extends AppCompatTextView {
     }
   }
 
-  private void applyLineHeightFromViewAppearance(Theme theme, int resId) {
+  private void applyLineHeightFromViewAppearance(@NonNull Theme theme, int resId) {
     TypedArray attributes = theme.obtainStyledAttributes(resId, R.styleable.MaterialTextAppearance);
     int lineHeight =
         readFirstAvailableDimension(
@@ -127,7 +131,9 @@ public class MaterialTextView extends AppCompatTextView {
   }
 
   private static int readFirstAvailableDimension(
-      Context context, TypedArray attributes, @StyleableRes int... indices) {
+      @NonNull Context context,
+      @NonNull TypedArray attributes,
+      @NonNull @StyleableRes int... indices) {
     int lineHeight = -1;
 
     for (int index = 0; index < indices.length && lineHeight < 0; ++index) {
@@ -138,7 +144,11 @@ public class MaterialTextView extends AppCompatTextView {
   }
 
   private static boolean viewAttrsHasLineHeight(
-      Context context, Theme theme, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+      @NonNull Context context,
+      @NonNull Theme theme,
+      @Nullable AttributeSet attrs,
+      int defStyleAttr,
+      int defStyleRes) {
     TypedArray attributes =
         theme.obtainStyledAttributes(
             attrs, R.styleable.MaterialTextView, defStyleAttr, defStyleRes);
@@ -154,7 +164,7 @@ public class MaterialTextView extends AppCompatTextView {
   }
 
   private static int findViewAppearanceResourceId(
-      Theme theme, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+      @NonNull Theme theme, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
     TypedArray attributes =
         theme.obtainStyledAttributes(
             attrs, R.styleable.MaterialTextView, defStyleAttr, defStyleRes);

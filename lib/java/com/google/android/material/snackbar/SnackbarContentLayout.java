@@ -21,6 +21,8 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
@@ -39,11 +41,11 @@ public class SnackbarContentLayout extends LinearLayout implements ContentViewCa
   private int maxWidth;
   private int maxInlineActionWidth;
 
-  public SnackbarContentLayout(Context context) {
+  public SnackbarContentLayout(@NonNull Context context) {
     this(context, null);
   }
 
-  public SnackbarContentLayout(Context context, AttributeSet attrs) {
+  public SnackbarContentLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
     super(context, attrs);
     TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SnackbarLayout);
     maxWidth = a.getDimensionPixelSize(R.styleable.SnackbarLayout_android_maxWidth, -1);
@@ -127,7 +129,8 @@ public class SnackbarContentLayout extends LinearLayout implements ContentViewCa
     return changed;
   }
 
-  private static void updateTopBottomPadding(View view, int topPadding, int bottomPadding) {
+  private static void updateTopBottomPadding(
+      @NonNull View view, int topPadding, int bottomPadding) {
     if (ViewCompat.isPaddingRelative(view)) {
       ViewCompat.setPaddingRelative(
           view,

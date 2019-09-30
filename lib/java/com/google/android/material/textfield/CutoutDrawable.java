@@ -27,17 +27,17 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import android.view.View;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
-import android.view.View;
 
 /**
  * A {@link MaterialShapeDrawable} that can draw a cutout for the label in {@link TextInputLayout}'s
  * outline mode.
  */
 class CutoutDrawable extends MaterialShapeDrawable {
-  private final Paint cutoutPaint;
-  private final RectF cutoutBounds;
+  @NonNull private final Paint cutoutPaint;
+  @NonNull private final RectF cutoutBounds;
   private int savedLayer;
 
   CutoutDrawable() {
@@ -73,7 +73,7 @@ class CutoutDrawable extends MaterialShapeDrawable {
     }
   }
 
-  void setCutout(RectF bounds) {
+  void setCutout(@NonNull RectF bounds) {
     setCutout(bounds.left, bounds.top, bounds.right, bounds.bottom);
   }
 

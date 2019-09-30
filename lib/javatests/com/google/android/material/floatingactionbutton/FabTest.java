@@ -35,11 +35,9 @@ import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
-import org.robolectric.annotation.internal.DoNotInstrument;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = LOLLIPOP)
-@DoNotInstrument
 public class FabTest {
 
   private static final double DELTA = 0.01;

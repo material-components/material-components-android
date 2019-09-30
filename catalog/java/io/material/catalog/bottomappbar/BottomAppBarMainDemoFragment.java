@@ -21,11 +21,6 @@ import io.material.catalog.R;
 import android.os.Bundle;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.shape.CutCornerTreatment;
-import com.google.android.material.shape.MaterialShapeDrawable;
-import com.google.android.material.shape.ShapeAppearanceModel;
-import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -39,8 +34,13 @@ import android.widget.ToggleButton;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomappbar.BottomAppBarTopEdgeTreatment;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.shape.CutCornerTreatment;
+import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.ShapeAppearanceModel;
+import com.google.android.material.snackbar.Snackbar;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.OnBackPressedHandler;
 import io.material.catalog.themeswitcher.ThemeSwitcherHelper;
@@ -143,7 +143,7 @@ public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBack
   }
 
   private void setUpBottomAppBarShapeAppearance() {
-    ShapeAppearanceModel fabShapeAppearanceModel = fab.getShapeAppearance();
+    ShapeAppearanceModel fabShapeAppearanceModel = fab.getShapeAppearanceModel();
     boolean cutCornersFab =
         fabShapeAppearanceModel.getBottomLeftCorner() instanceof CutCornerTreatment
             && fabShapeAppearanceModel.getBottomRightCorner() instanceof CutCornerTreatment;
@@ -160,8 +160,8 @@ public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBack
                 bar.getCradleVerticalOffset());
 
     MaterialShapeDrawable babBackground = (MaterialShapeDrawable) bar.getBackground();
-    babBackground.getShapeAppearanceModel().setTopEdge(topEdge);
-    babBackground.invalidateSelf();
+    babBackground.setShapeAppearanceModel(
+        babBackground.getShapeAppearanceModel().toBuilder().setTopEdge(topEdge).build());
   }
 
   protected void setUpBottomDrawer(View view) {

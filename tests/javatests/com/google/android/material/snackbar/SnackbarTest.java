@@ -16,7 +16,6 @@
 
 package com.google.android.material.snackbar;
 
-import static com.google.android.material.testutils.TestUtilsActions.setLayoutDirection;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.swipeLeft;
@@ -27,6 +26,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static com.google.android.material.testutils.TestUtilsActions.setLayoutDirection;
 import static org.hamcrest.core.AllOf.allOf;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -41,9 +41,6 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import android.content.res.Resources;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
-import com.google.android.material.testapp.R;
-import com.google.android.material.testapp.SnackbarActivity;
-import com.google.android.material.testutils.SnackbarUtils;
 import androidx.core.view.ViewCompat;
 import android.text.TextUtils;
 import android.view.View;
@@ -56,6 +53,9 @@ import androidx.test.espresso.action.Swipe;
 import androidx.test.filters.MediumTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
+import com.google.android.material.testapp.R;
+import com.google.android.material.testapp.SnackbarActivity;
+import com.google.android.material.testutils.SnackbarUtils;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

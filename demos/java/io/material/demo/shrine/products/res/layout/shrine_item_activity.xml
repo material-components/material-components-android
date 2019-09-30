@@ -14,103 +14,97 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<!--
-     Wrapping the entire layout in a FrameLayout and setting a bottom margin on the CoordinatorLayout
-     because the BottomNavigationView doesn't display correctly inside a CoordinatorLayout.
--->
-<FrameLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-  <androidx.coordinatorlayout.widget.CoordinatorLayout
+  <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_marginBottom="@dimen/shrine_bottom_nav_view_height">
-    <LinearLayout
+      android:background="@color/colorPrimary"
+      android:orientation="vertical">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/AppBar"
+        style="@style/Widget.Shrine.Toolbar.Logo.Product"
+        tools:ignore="UnusedAttribute"/>
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
-        android:orientation="vertical">
-      <androidx.appcompat.widget.Toolbar
-          android:id="@+id/AppBar"
-          style="@style/Widget.Shrine.Toolbar.Logo.Product"
-          tools:ignore="UnusedAttribute"/>
-      <ScrollView
+        android:layout_height="wrap_content">
+      <LinearLayout
           android:layout_width="match_parent"
-          android:layout_height="wrap_content">
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="@dimen/shrine_standard_spacing"
+          android:layout_marginRight="@dimen/shrine_standard_spacing"
+          android:orientation="vertical">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/shrine_item_image_height">
+          <com.android.volley.toolbox.NetworkImageView
+              android:id="@+id/ProductImage"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_marginTop="@dimen/shrine_standard_spacing"
+              android:layout_marginBottom="@dimen/shrine_standard_spacing"
+              android:layout_gravity="center"
+              android:adjustViewBounds="true"
+              android:scaleType="fitCenter"/>
+        </FrameLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/shrine_standard_spacing"
-            android:layout_marginRight="@dimen/shrine_standard_spacing"
+            android:layout_marginBottom="@dimen/shrine_large_spacing"
+            android:layout_marginStart="@dimen/shrine_large_margin_start"
             android:orientation="vertical">
-          <FrameLayout
-              android:layout_width="match_parent"
-              android:layout_height="@dimen/shrine_item_image_height">
-            <com.android.volley.toolbox.NetworkImageView
-                android:id="@+id/ProductImage"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/shrine_standard_spacing"
-                android:layout_marginBottom="@dimen/shrine_standard_spacing"
-                android:layout_gravity="center"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"/>
-          </FrameLayout>
-          <LinearLayout
-              android:layout_width="match_parent"
+          <TextView
+              android:id="@+id/ProductTitle"
+              android:layout_width="wrap_content"
               android:layout_height="wrap_content"
+              android:layout_marginTop="@dimen/shrine_standard_spacing"
+              android:layout_marginBottom="@dimen/shrine_standard_spacing"
+              android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+              android:textSize="@dimen/shrine_item_product_title_size"/>
+          <FrameLayout
+              android:layout_width="@dimen/shrine_spinner_width"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="@dimen/shrine_standard_spacing"
+              android:layout_marginBottom="@dimen/shrine_standard_spacing"
+              android:paddingRight="@dimen/shrine_small_spacing"
+              android:background="@drawable/shrine_spinner_border">
+            <Spinner
+                android:id="@+id/QuantitySpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:dropDownWidth="@dimen/shrine_spinner_width"
+                android:maxWidth="@dimen/shrine_spinner_width"/>
+          </FrameLayout>
+          <TextView
+              android:id="@+id/ProductDescription"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="@dimen/shrine_standard_spacing"
               android:layout_marginBottom="@dimen/shrine_large_spacing"
-              android:layout_marginStart="@dimen/shrine_large_margin_start"
-              android:orientation="vertical">
-            <TextView
-                android:id="@+id/ProductTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/shrine_standard_spacing"
-                android:layout_marginBottom="@dimen/shrine_standard_spacing"
-                android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-                android:textSize="@dimen/shrine_item_product_title_size"/>
-            <FrameLayout
-                android:layout_width="@dimen/shrine_spinner_width"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/shrine_standard_spacing"
-                android:layout_marginBottom="@dimen/shrine_standard_spacing"
-                android:background="@drawable/shrine_spinner_border"
-                android:paddingRight="@dimen/shrine_small_spacing">
-              <Spinner
-                  android:id="@+id/QuantitySpinner"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:maxWidth="@dimen/shrine_spinner_width"
-                  android:dropDownWidth="@dimen/shrine_spinner_width"/>
-            </FrameLayout>
-            <TextView
-                android:id="@+id/ProductDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/shrine_standard_spacing"
-                android:layout_marginBottom="@dimen/shrine_large_spacing"
-                android:lineSpacingMultiplier="1.5"
-                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
-          </LinearLayout>
+              android:lineSpacingMultiplier="1.5"
+              android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
         </LinearLayout>
-      </ScrollView>
-    </LinearLayout>
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/FloatingActionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/shrine_standard_spacing"
-        android:layout_gravity="bottom|end"
-        app:backgroundTint="@color/colorAccentSecondary"
-        app:fabSize="normal"
-        app:srcCompat="@drawable/ic_add_shopping_cart_vd_theme_24"/>
-  </androidx.coordinatorlayout.widget.CoordinatorLayout>
+      </LinearLayout>
+    </ScrollView>
+  </LinearLayout>
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+      android:id="@+id/FloatingActionButton"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/shrine_standard_spacing"
+      android:layout_marginBottom="@dimen/shrine_bottom_nav_view_height_with_standard_spacing"
+      android:layout_marginLeft="@dimen/shrine_standard_spacing"
+      android:layout_marginRight="@dimen/shrine_standard_spacing"
+      android:layout_gravity="bottom|end"
+      app:backgroundTint="@color/colorAccentSecondary"
+      app:fabSize="normal"
+      app:srcCompat="@drawable/ic_add_shopping_cart_vd_theme_24"/>
   <com.google.android.material.bottomnavigation.BottomNavigationView
       android:id="@+id/BottomNavView"
       style="@style/Shrine.BottomNavView"
       app:menu="@menu/shrine_bottom_nav_view_menu"/>
-</FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

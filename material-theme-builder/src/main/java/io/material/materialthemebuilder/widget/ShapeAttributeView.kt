@@ -19,13 +19,13 @@ package io.material.materialthemebuilder.widget
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
+import com.google.android.material.shape.MaterialShapeDrawable
+import com.google.android.material.shape.ShapeAppearanceModel
+import androidx.core.view.ViewCompat
+import androidx.appcompat.widget.AppCompatTextView
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
-import androidx.appcompat.widget.AppCompatTextView
-import androidx.core.view.ViewCompat
-import com.google.android.material.shape.MaterialShapeDrawable
-import com.google.android.material.shape.ShapeAppearanceModel
 import io.material.materialthemebuilder.R
 
 /**
@@ -57,12 +57,12 @@ class ShapeAttributeView @JvmOverloads constructor(
 
   var shapeAppearanceRes: Int = R.attr.shapeAppearanceSmallComponent
     set(value) {
-      shape.shapeAppearanceModel = ShapeAppearanceModel(
+      shape.shapeAppearanceModel = ShapeAppearanceModel.builder(
         context,
         attrs,
         defStyleAttr,
         getShapeAppearanceDefaultRes(value)
-      )
+      ).build()
 
       ViewCompat.setBackground(shapePreviewView, shape)
 

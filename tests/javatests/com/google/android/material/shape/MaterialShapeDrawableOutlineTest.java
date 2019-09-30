@@ -43,9 +43,7 @@ public class MaterialShapeDrawableOutlineTest {
   public final ActivityTestRule<AppCompatActivity> activityTestRule =
       new ActivityTestRule<>(AppCompatActivity.class);
 
-  private final ShapePathModel shapePathModel = new ShapePathModel();
-  private final MaterialShapeDrawable materialShapeDrawable =
-      new MaterialShapeDrawable(shapePathModel);
+  private final MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable();
   private final Outline outline = new Outline();
 
   @Before
@@ -55,7 +53,11 @@ public class MaterialShapeDrawableOutlineTest {
 
   @Test
   public void roundedCorners_isRoundRect() throws Exception {
-    shapePathModel.setAllCorners(new RoundedCornerTreatment(DEFAULT_ANGLE));
+    ShapeAppearanceModel shapeAppearanceModel =
+        ShapeAppearanceModel.builder()
+            .setAllCorners(new RoundedCornerTreatment(DEFAULT_ANGLE))
+            .build();
+    materialShapeDrawable.setShapeAppearanceModel(shapeAppearanceModel);
     materialShapeDrawable.draw(new Canvas());
 
     materialShapeDrawable.getOutline(outline);
@@ -67,7 +69,9 @@ public class MaterialShapeDrawableOutlineTest {
 
   @Test
   public void cutCorners_isConvex() throws Exception {
-    shapePathModel.setAllCorners(new CutCornerTreatment(DEFAULT_ANGLE));
+    ShapeAppearanceModel shapeAppearanceModel =
+        ShapeAppearanceModel.builder().setAllCorners(new CutCornerTreatment(DEFAULT_ANGLE)).build();
+    materialShapeDrawable.setShapeAppearanceModel(shapeAppearanceModel);
     materialShapeDrawable.draw(new Canvas());
 
     materialShapeDrawable.getOutline(outline);
@@ -77,10 +81,14 @@ public class MaterialShapeDrawableOutlineTest {
 
   @Test
   public void asymmetricalCorners_isConvex() throws Exception {
-    shapePathModel.setTopLeftCorner(new RoundedCornerTreatment(DEFAULT_ANGLE));
-    shapePathModel.setTopRightCorner(new CutCornerTreatment(DEFAULT_ANGLE));
-    shapePathModel.setBottomRightCorner(new RoundedCornerTreatment(DEFAULT_ANGLE));
-    shapePathModel.setBottomLeftCorner(new CutCornerTreatment(DEFAULT_ANGLE));
+    ShapeAppearanceModel shapeAppearanceModel =
+        ShapeAppearanceModel.builder()
+            .setTopLeftCorner(new RoundedCornerTreatment(DEFAULT_ANGLE))
+            .setTopRightCorner(new CutCornerTreatment(DEFAULT_ANGLE))
+            .setBottomRightCorner(new RoundedCornerTreatment(DEFAULT_ANGLE))
+            .setBottomLeftCorner(new CutCornerTreatment(DEFAULT_ANGLE))
+            .build();
+    materialShapeDrawable.setShapeAppearanceModel(shapeAppearanceModel);
     materialShapeDrawable.draw(new Canvas());
 
     materialShapeDrawable.getOutline(outline);
@@ -90,10 +98,14 @@ public class MaterialShapeDrawableOutlineTest {
 
   @Test
   public void asymmetricalCornersAlternate_isConvex() throws Exception {
-    shapePathModel.setTopLeftCorner(new CutCornerTreatment(DEFAULT_ANGLE));
-    shapePathModel.setTopRightCorner(new RoundedCornerTreatment(DEFAULT_ANGLE));
-    shapePathModel.setBottomRightCorner(new CutCornerTreatment(DEFAULT_ANGLE));
-    shapePathModel.setBottomLeftCorner(new RoundedCornerTreatment(DEFAULT_ANGLE));
+    ShapeAppearanceModel shapeAppearanceModel =
+        ShapeAppearanceModel.builder()
+            .setTopLeftCorner(new CutCornerTreatment(DEFAULT_ANGLE))
+            .setTopRightCorner(new RoundedCornerTreatment(DEFAULT_ANGLE))
+            .setBottomRightCorner(new CutCornerTreatment(DEFAULT_ANGLE))
+            .setBottomLeftCorner(new RoundedCornerTreatment(DEFAULT_ANGLE))
+            .build();
+    materialShapeDrawable.setShapeAppearanceModel(shapeAppearanceModel);
     materialShapeDrawable.draw(new Canvas());
 
     materialShapeDrawable.getOutline(outline);

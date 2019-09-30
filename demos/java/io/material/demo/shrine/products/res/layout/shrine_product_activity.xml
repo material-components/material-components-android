@@ -14,32 +14,24 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<!--
-     Wrapping the entire layout in a FrameLayout and setting a bottom margin on the CoordinatorLayout
-     because the BottomNavigationView doesn't display correctly inside a CoordinatorLayout.
--->
-<FrameLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent">
-  <androidx.coordinatorlayout.widget.CoordinatorLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/CoordinatorLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginBottom="@dimen/shrine_bottom_nav_view_height">
-    <androidx.recyclerview.widget.RecyclerView
+    android:layout_height="match_parent">
+  <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/ProductGrid"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:layout_marginStart="@dimen/shrine_grid_outer_margin"
       android:layout_marginEnd="@dimen/shrine_grid_outer_margin"
       app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-    <com.google.android.material.appbar.AppBarLayout
+  <com.google.android.material.appbar.AppBarLayout
       android:layout_width="match_parent"
       android:layout_height="@dimen/shrine_tall_toolbar_height">
-      <com.google.android.material.appbar.CollapsingToolbarLayout
+    <com.google.android.material.appbar.CollapsingToolbarLayout
         android:id="@+id/CollapsingToolbarLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -50,7 +42,7 @@
         app:expandedTitleMarginTop="@dimen/shrine_toolbar_offset_top"
         app:expandedTitleTextAppearance="@style/TextAppearance.Shrine.Logo"
         app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
-        <com.android.volley.toolbox.NetworkImageView
+      <com.android.volley.toolbox.NetworkImageView
           android:id="@+id/CollapsingToolbarImage"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -58,7 +50,7 @@
           android:adjustViewBounds="true"
           app:layout_collapseMode="parallax"
           app:layout_collapseParallaxMultiplier="0.7"/>
-        <LinearLayout
+      <LinearLayout
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginTop="@dimen/shrine_toolbar_subtitle_offset_top"
@@ -68,29 +60,28 @@
           android:orientation="vertical"
           app:layout_collapseMode="parallax"
           app:layout_collapseParallaxMultiplier="0.7">
-          <TextView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/shrine_product_category"
             android:textAppearance="@style/TextAppearance.AppCompat.Display2"/>
-          <TextView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/shrine_standard_spacing"
             android:text="@string/shrine_product_description"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
-        </LinearLayout>
-        <androidx.appcompat.widget.Toolbar
+      </LinearLayout>
+      <androidx.appcompat.widget.Toolbar
           android:id="@+id/AppBar"
           android:layout_width="match_parent"
           android:layout_height="@dimen/shrine_toolbar_collapsed_height"
-          tools:ignore="UnusedAttribute"
-          app:layout_collapseMode="pin"/>
-      </com.google.android.material.appbar.CollapsingToolbarLayout>
-    </com.google.android.material.appbar.AppBarLayout>
-  </androidx.coordinatorlayout.widget.CoordinatorLayout>
+          app:layout_collapseMode="pin"
+          tools:ignore="UnusedAttribute"/>
+    </com.google.android.material.appbar.CollapsingToolbarLayout>
+  </com.google.android.material.appbar.AppBarLayout>
   <com.google.android.material.bottomnavigation.BottomNavigationView
-    android:id="@+id/BottomNavView"
-    style="@style/Shrine.BottomNavView"
-    app:menu="@menu/shrine_bottom_nav_view_menu"/>
-</FrameLayout>
+      android:id="@+id/BottomNavView"
+      style="@style/Shrine.BottomNavView"
+      app:menu="@menu/shrine_bottom_nav_view_menu"/>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

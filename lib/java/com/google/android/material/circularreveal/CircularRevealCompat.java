@@ -22,6 +22,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import androidx.annotation.NonNull;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import com.google.android.material.circularreveal.CircularRevealWidget.CircularRevealEvaluator;
@@ -50,8 +51,9 @@ public final class CircularRevealCompat {
    * CircularRevealCompat#createCircularRevealListener(CircularRevealWidget)} and add the returned
    * AnimatorListener to this Animator or preferably to the overall AnimatorSet.
    */
+  @NonNull
   public static Animator createCircularReveal(
-      CircularRevealWidget view, float centerX, float centerY, float endRadius) {
+      @NonNull CircularRevealWidget view, float centerX, float centerY, float endRadius) {
     Animator revealInfoAnimator =
         ObjectAnimator.ofObject(
             view,
@@ -89,6 +91,7 @@ public final class CircularRevealCompat {
    * CircularRevealCompat#createCircularRevealListener(CircularRevealWidget)} and add the returned
    * AnimatorListener to this Animator or preferably to the overall AnimatorSet.
    */
+  @NonNull
   public static Animator createCircularReveal(
       CircularRevealWidget view, float centerX, float centerY, float startRadius, float endRadius) {
     Animator revealInfoAnimator =
@@ -114,7 +117,9 @@ public final class CircularRevealCompat {
    * Creates an AnimatorListener to be applied to either the Animator returned from {@link
    * #createCircularReveal} or preferably to the overall AnimatorSet.
    */
-  public static AnimatorListener createCircularRevealListener(final CircularRevealWidget view) {
+  @NonNull
+  public static AnimatorListener createCircularRevealListener(
+      @NonNull final CircularRevealWidget view) {
     return new AnimatorListenerAdapter() {
       @Override
       public void onAnimationStart(Animator animation) {

@@ -16,12 +16,12 @@
 
 package com.google.android.material.tabs;
 
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static com.google.android.material.testutils.TabLayoutActions.selectTab;
 import static com.google.android.material.testutils.TabLayoutActions.setScrollPosition;
 import static com.google.android.material.testutils.TabLayoutActions.setTabMode;
 import static com.google.android.material.testutils.TestUtilsActions.setLayoutDirection;
-import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -37,7 +37,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.os.Build;
-import com.google.android.material.testapp.R;
 import androidx.core.view.ViewCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.InflateException;
@@ -54,6 +53,7 @@ import androidx.test.filters.SmallTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
 import com.google.android.material.tabs.TabLayout.Tab;
+import com.google.android.material.testapp.R;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.Rule;
 import org.junit.Test;

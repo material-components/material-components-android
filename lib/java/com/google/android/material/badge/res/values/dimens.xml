@@ -18,10 +18,14 @@
 
   <dimen name="mtrl_badge_radius">4dp</dimen>
   <dimen name="mtrl_badge_with_text_radius">8dp</dimen>
-  <!-- Vertically center badge 4dp from top edge of anchor. -->
-  <dimen name="mtrl_badge_vertical_offset">4dp</dimen>
   <!-- Leading and trailing text padding when a badge is displaying text that is too long to fit in
-       a circular badge, i.e. if badge number is greater than 99. -->
+       a circular badge, i.e. if badge number is greater than 9. -->
   <dimen name="mtrl_badge_long_text_horizontal_padding">4dp</dimen>
+  <!-- Horizontally align start/end of text badge 6dp from the end/start edge of anchor-->
+  <dimen name="mtrl_badge_text_horizontal_edge_offset">6dp</dimen>
+  <!-- Horizontally align start/end of icon only badge 4dp from the end/start edge of anchor-->
+  <dimen name="mtrl_badge_horizontal_edge_offset">4dp</dimen>
+
   <dimen name="mtrl_badge_text_size">10sp</dimen>
+
 </resources>

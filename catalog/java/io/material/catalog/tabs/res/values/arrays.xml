@@ -63,4 +63,11 @@
     <!-- Bottom -->
     <item>0</item>
   </integer-array>
+
+  <string-array name="cat_tabs_badge_gravity_titles">
+    <item>@string/cat_tabs_badge_gravity_top_end</item>
+    <item>@string/cat_tabs_badge_gravity_top_start</item>
+    <item>@string/cat_tabs_badge_gravity_bottom_end</item>
+    <item>@string/cat_tabs_badge_gravity_bottom_start</item>
+  </string-array>
 </resources>

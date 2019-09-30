@@ -135,7 +135,7 @@ Developers can override chip's minimum touch target size using
 ### Chip Attributes
 
 Feature       | Relevant attributes
---------------| -----------------------------
+------------- | -----------------------------
 Label         | `android:text` <br> `android:textAppearance`
 Shape         | `app:chipCornerRadius`
 Size          | `app:chipMinHeight`
@@ -149,6 +149,7 @@ Checked Icon  | `app:checkedIconVisible` <br> `app:checkedIcon`
 Motion        | `app:showMotionSpec` <br> `app:hideMotionSpec`
 Paddings      | `app:chipStartPadding` <br> `app:iconStartPadding` <br> `app:iconEndPadding` <br> `app:textStartPadding` <br> `app:textEndPadding` <br> `app:closeIconStartPadding` <br> `app:closeIconEndPadding` <br> `app:chipEndPadding`
 TouchTarget   | `app:chipMinTouchTargetSize` <br> `app:ensureMinTouchTargetSize`
+
 ### Theme Attribute Mapping
 
 #### Entry Chip, Filter Chip, Choice Chip, Action Chip (Default)
@@ -308,6 +309,7 @@ Or, call `getCheckedChipId()` at any time to get the checked chip. The return
 value is only valid in single selection mode.
 
 ### ChipGroup Attributes
+
 Feature         | Relevant Attributes
 ----------------| -----------------------------
 Layout          |`app:singleLine`

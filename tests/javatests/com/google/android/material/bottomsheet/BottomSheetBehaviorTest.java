@@ -16,6 +16,7 @@
 
 package com.google.android.material.bottomsheet;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -24,13 +25,12 @@ import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import static org.junit.Assert.fail;
 
 import android.content.Context;
+import android.os.Build.VERSION;
 import android.os.SystemClock;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
-import com.google.android.material.testapp.BottomSheetBehaviorActivity;
-import com.google.android.material.testapp.R;
-import com.google.android.material.testutils.DesignViewActions;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.widget.NestedScrollView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -57,6 +57,10 @@ import androidx.test.filters.SmallTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.testapp.BottomSheetBehaviorActivity;
+import com.google.android.material.testapp.R;
+import com.google.android.material.testutils.CoordinatorLayoutUtils;
+import com.google.android.material.testutils.DesignViewActions;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.Rule;
@@ -283,6 +287,7 @@ public class BottomSheetBehaviorTest {
     CoordinatorLayout coordinatorLayout = getCoordinatorLayout();
     ViewGroup bottomSheet = getBottomSheet();
     assertThat(bottomSheet.getTop(), is(coordinatorLayout.getHeight() - behavior.getPeekHeight()));
+    assertAccessibilityActions(behavior, getBottomSheet());
   }
 
   @Test
@@ -377,7 +382,9 @@ public class BottomSheetBehaviorTest {
   @Test
   @MediumTest
   public void testSkipCollapsed() throws Throwable {
+    assertAccessibilityActions(getBehavior(), getBottomSheet());
     getBehavior().setSkipCollapsed(true);
+    assertAccessibilityActions(getBehavior(), getBottomSheet());
     checkSetState(BottomSheetBehavior.STATE_EXPANDED, ViewMatchers.isDisplayed());
     Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
         .perform(
@@ -779,6 +786,7 @@ public class BottomSheetBehaviorTest {
       Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
           .check(ViewAssertions.matches(matcher));
       assertThat(getBehavior().getState(), is(state));
+      assertAccessibilityActions(getBehavior(), getBottomSheet());
     } finally {
       unregisterIdlingResourceCallback();
     }
@@ -808,6 +816,30 @@ public class BottomSheetBehaviorTest {
       action.run();
     } finally {
       Espresso.unregisterIdlingResources(listener);
+    }
+  }
+
+  private static void assertAccessibilityActions(
+      BottomSheetBehavior<?> behavior, ViewGroup bottomSheet) {
+    if (VERSION.SDK_INT >= 21) {
+      int state = behavior.getState();
+      boolean hasExpandAction =
+          state == BottomSheetBehavior.STATE_COLLAPSED
+              || state == BottomSheetBehavior.STATE_HALF_EXPANDED;
+      boolean hasCollapseAction =
+          state == BottomSheetBehavior.STATE_EXPANDED
+              || state == BottomSheetBehavior.STATE_HALF_EXPANDED;
+      boolean hasDismissAction = state != BottomSheetBehavior.STATE_HIDDEN && behavior.isHideable();
+      assertThat(
+          CoordinatorLayoutUtils.hasAction(
+              bottomSheet, AccessibilityNodeInfoCompat.ACTION_COLLAPSE),
+          equalTo(hasCollapseAction));
+      assertThat(
+          CoordinatorLayoutUtils.hasAction(bottomSheet, AccessibilityNodeInfoCompat.ACTION_EXPAND),
+          equalTo(hasExpandAction));
+      assertThat(
+          CoordinatorLayoutUtils.hasAction(bottomSheet, AccessibilityNodeInfoCompat.ACTION_DISMISS),
+          equalTo(hasDismissAction));
     }
   }
 

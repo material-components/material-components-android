@@ -22,7 +22,8 @@
   <com.google.android.material.appbar.AppBarLayout
       android:id="@+id/app_bar"
       android:layout_width="match_parent"
-      android:layout_height="192dp">
+      android:layout_height="192dp"
+      android:fitsSystemWindows="true">
     <com.google.android.material.appbar.CollapsingToolbarLayout
         style="?attr/catalogToolbarStyle"
         android:layout_width="match_parent"
@@ -41,7 +42,7 @@
           android:layout_width="match_parent"
           android:layout_height="?attr/actionBarSize"
           app:layout_collapseMode="pin"
-          app:title="Collapsing Title"/>
+          app:title="Collapsing Title" />
     </com.google.android.material.appbar.CollapsingToolbarLayout>
   </com.google.android.material.appbar.AppBarLayout>
 
@@ -50,7 +51,7 @@
       android:layout_height="match_parent"
       app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <include layout="@layout/cat_topappbar_filler_text_view"/>
+    <include layout="@layout/cat_topappbar_filler_text_view" />
   </androidx.core.widget.NestedScrollView>
 
   <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -61,6 +62,6 @@
       android:text="@string/extended_fab_label"
       app:icon="@drawable/ic_add_24px"
       app:layout_anchor="@id/app_bar"
-      app:layout_anchorGravity="bottom|right|end"/>
+      app:layout_anchorGravity="bottom|right|end" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

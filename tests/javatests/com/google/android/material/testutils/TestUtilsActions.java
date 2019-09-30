@@ -23,10 +23,12 @@ import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static org.hamcrest.Matchers.any;
 
 import android.graphics.drawable.Drawable;
+import android.os.Build.VERSION_CODES;
 import android.os.Parcelable;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.MenuRes;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.TextViewCompat;
@@ -39,8 +41,12 @@ import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
 import com.google.android.material.expandable.ExpandableWidget;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.shape.ShapeAppearanceModel;
+import com.google.android.material.shape.Shapeable;
 import com.google.android.material.tabs.TabLayout;
+import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
 
 public class TestUtilsActions {
   /**
@@ -460,6 +466,72 @@ public class TestUtilsActions {
       @Override
       public void perform(UiController uiController, View view) {
         view.requestFocus();
+      }
+    };
+  }
+
+  /**
+   * Returns a {@link ViewAction} that resets a {@link Shapeable} component to have the default (no
+   * corner, straight edge) shape.
+   */
+  public static ViewAction resetShape() {
+    return new ViewAction() {
+
+      @Override
+      public Matcher<View> getConstraints() {
+        return new TypeSafeMatcher<View>() {
+          @Override
+          public void describeTo(Description description) {
+            description.appendText("is shapeable");
+          }
+
+          @Override
+          public boolean matchesSafely(View view) {
+            return view instanceof Shapeable;
+          }
+        };
+      }
+
+      @Override
+      public String getDescription() {
+        return "reset shape";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        Shapeable shapeable = (Shapeable) view;
+        shapeable.setShapeAppearanceModel(new ShapeAppearanceModel());
+      }
+    };
+  }
+
+  /** Sets system ui visibility to edge to edge config and waits for the change to complete. */
+  @RequiresApi(VERSION_CODES.LOLLIPOP)
+  public static ViewAction setSystemUiVisibilityEdgeToEdge() {
+    return setSystemUiVisibility(
+        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+  }
+
+  /** Sets system ui visibility and waits for the change to complete. */
+  public static ViewAction setSystemUiVisibility(final int sysUiVisibility) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isDisplayed();
+      }
+
+      @Override
+      public String getDescription() {
+        return "Sets system ui visibility";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
+
+        view.setSystemUiVisibility(sysUiVisibility);
+
+        uiController.loopMainThreadUntilIdle();
       }
     };
   }

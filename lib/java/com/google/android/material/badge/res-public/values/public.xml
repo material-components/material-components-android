@@ -20,5 +20,6 @@
   <public name="badgeTextColor" type="attr"/>
   <public name="maxCharacterCount" type="attr"/>
   <public name="number" type="attr"/>
+  <public name="badgeGravity" type="attr"/>
   <public name="Widget.MaterialComponents.Badge" type="style"/>
 </resources>

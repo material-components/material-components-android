@@ -15,93 +15,34 @@
  */
 package com.google.android.material.testutils;
 
-import static com.google.android.material.testutils.TestUtilsActions.waitUntilIdle;
-import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
-
+import android.os.SystemClock;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
-import androidx.test.espresso.Espresso;
-import androidx.test.espresso.IdlingResource;
 
 public class SnackbarUtils {
   public interface TransientBottomBarAction {
     void perform() throws Throwable;
   }
 
-  private static class TransientBottomBarShownCallback<B extends BaseTransientBottomBar<B>>
-      extends BaseTransientBottomBar.BaseCallback<B> implements IdlingResource {
-    private boolean isShown = false;
+  private static class TransientBottomBarCallback<B extends BaseTransientBottomBar<B>>
+      extends BaseTransientBottomBar.BaseCallback<B> {
 
-    @Nullable private IdlingResource.ResourceCallback callback;
-
-    private boolean needsIdle = false;
-
-    @Override
-    public void registerIdleTransitionCallback(ResourceCallback resourceCallback) {
-      callback = resourceCallback;
-    }
-
-    @Override
-    public String getName() {
-      return "Transient bottom bar shown callback";
-    }
-
-    @Override
-    public boolean isIdleNow() {
-      if (!needsIdle) {
-        return true;
-      } else {
-        return isShown;
-      }
-    }
+    private boolean shown = false;
+    private boolean dismissed = false;
 
     @Override
     public void onShown(B transientBottomBar) {
-      isShown = true;
-      if (callback != null) {
-        callback.onTransitionToIdle();
-      }
-    }
-  }
-
-  private static class TransientBottomBarDismissedCallback<B extends BaseTransientBottomBar<B>>
-      extends BaseTransientBottomBar.BaseCallback<B> implements IdlingResource {
-    private boolean isDismissed = false;
-
-    @Nullable private IdlingResource.ResourceCallback callback;
-
-    private boolean needsIdle = false;
-
-    @Override
-    public void registerIdleTransitionCallback(ResourceCallback resourceCallback) {
-      callback = resourceCallback;
-    }
-
-    @Override
-    public String getName() {
-      return "Transient bottom bar dismissed callback";
-    }
-
-    @Override
-    public boolean isIdleNow() {
-      if (!needsIdle) {
-        return true;
-      } else {
-        return isDismissed;
-      }
+      shown = true;
     }
 
     @Override
     public void onDismissed(B transientBottomBar, @DismissEvent int event) {
-      isDismissed = true;
-      if (callback != null) {
-        callback.onTransitionToIdle();
-      }
+      dismissed = true;
     }
   }
+
+  private static final int SLEEP_MILLIS = 250;
 
   /**
    * Helper method that shows that specified {@link Snackbar} and waits until it has been fully
@@ -109,26 +50,24 @@ public class SnackbarUtils {
    */
   public static <B extends BaseTransientBottomBar<B>>
       void showTransientBottomBarAndWaitUntilFullyShown(@NonNull B transientBottomBar) {
-    TransientBottomBarShownCallback callback = new TransientBottomBarShownCallback();
-    transientBottomBar.addCallback(callback);
-    try {
-      // Register our listener as idling resource so that Espresso waits until the
-      // the bar has been fully shown
-      Espresso.registerIdlingResources(callback);
-      // Show the bar
-      transientBottomBar.show();
-      // Mark the callback to require waiting for idle state
-      callback.needsIdle = true;
-      // Perform a dummy Espresso action that loops until the UI thread is idle. This
-      // effectively blocks us until the Snackbar has completed its sliding animation.
-      onView(isRoot()).perform(waitUntilIdle());
-      callback.needsIdle = false;
-    } finally {
-      // Unregister our idling resource
-      Espresso.unregisterIdlingResources(callback);
-      // And remove our tracker listener from Snackbar
-      transientBottomBar.removeCallback(callback);
+    if (transientBottomBar.isShown()) {
+      return;
     }
+    TransientBottomBarCallback<B> callback = new TransientBottomBarCallback<>();
+    transientBottomBar.addCallback(callback);
+    transientBottomBar.show();
+    waitForCallbackShown(callback);
+  }
+
+  /** Helper method that waits until the given bar has been fully shown. */
+  public static <B extends BaseTransientBottomBar<B>> void waitUntilFullyShown(
+      @NonNull B transientBottomBar) {
+    if (transientBottomBar.isShown()) {
+      return;
+    }
+    TransientBottomBarCallback<B> callback = new TransientBottomBarCallback<>();
+    transientBottomBar.addCallback(callback);
+    waitForCallbackShown(callback);
   }
 
   /**
@@ -147,48 +86,42 @@ public class SnackbarUtils {
    */
   public static <B extends BaseTransientBottomBar<B>> void performActionAndWaitUntilFullyDismissed(
       @NonNull B transientBottomBar, @NonNull TransientBottomBarAction action) throws Throwable {
-    TransientBottomBarDismissedCallback callback = new TransientBottomBarDismissedCallback();
-    transientBottomBar.addCallback(callback);
-    try {
-      // Register our listener as idling resource so that Espresso waits until the
-      // the bar has been fully dismissed
-      Espresso.registerIdlingResources(callback);
-      // Run the action
-      action.perform();
-      // Mark the callback to require waiting for idle state
-      callback.needsIdle = true;
-      // Perform a dummy Espresso action that loops until the UI thread is idle. This
-      // effectively blocks us until the Snackbar has completed its sliding animation.
-      onView(isRoot()).perform(waitUntilIdle());
-      callback.needsIdle = false;
-    } finally {
-      // Unregister our idling resource
-      Espresso.unregisterIdlingResources(callback);
-      // And remove our tracker listener from Snackbar
-      transientBottomBar.removeCallback(null);
+    if (!transientBottomBar.isShown()) {
+      return;
     }
+    TransientBottomBarCallback<B> callback = new TransientBottomBarCallback<>();
+    transientBottomBar.addCallback(callback);
+    action.perform();
+    waitForCallbackDismissed(callback);
   }
 
   /** Helper method that waits until the given bar has been fully dismissed. */
   public static <B extends BaseTransientBottomBar<B>> void waitUntilFullyDismissed(
       @NonNull B transientBottomBar) {
-    TransientBottomBarDismissedCallback callback = new TransientBottomBarDismissedCallback();
-    transientBottomBar.addCallback(callback);
-    try {
-      // Register our listener as idling resource so that Espresso waits until the
-      // the bar has been fully dismissed
-      Espresso.registerIdlingResources(callback);
-      // Mark the callback to require waiting for idle state
-      callback.needsIdle = true;
-      // Perform a dummy Espresso action that loops until the UI thread is idle. This
-      // effectively blocks us until the Snackbar has completed its sliding animation.
-      onView(isRoot()).perform(waitUntilIdle());
-      callback.needsIdle = false;
-    } finally {
-      // Unregister our idling resource
-      Espresso.unregisterIdlingResources(callback);
-      // And remove our tracker listener from Snackbar
-      transientBottomBar.removeCallback(null);
+    if (!transientBottomBar.isShown()) {
+      return;
     }
+    TransientBottomBarCallback<B> callback = new TransientBottomBarCallback<>();
+    transientBottomBar.addCallback(callback);
+    waitForCallbackDismissed(callback);
+  }
+
+  private static <B extends BaseTransientBottomBar<B>> void waitForCallbackShown(
+      TransientBottomBarCallback<B> transientBottomBarCallback) {
+    waitForCallback(transientBottomBarCallback, true);
+  }
+
+  private static <B extends BaseTransientBottomBar<B>> void waitForCallbackDismissed(
+      TransientBottomBarCallback<B> transientBottomBarCallback) {
+    waitForCallback(transientBottomBarCallback, false);
+  }
+
+  private static <B extends BaseTransientBottomBar<B>> void waitForCallback(
+      TransientBottomBarCallback<B> transientBottomBarCallback, boolean waitForShown) {
+    while ((waitForShown && !transientBottomBarCallback.shown)
+        || (!waitForShown && !transientBottomBarCallback.dismissed)) {
+      SystemClock.sleep(SLEEP_MILLIS);
+    }
+    SystemClock.sleep(SLEEP_MILLIS);
   }
 }

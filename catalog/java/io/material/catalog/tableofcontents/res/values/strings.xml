@@ -18,4 +18,7 @@
 <resources>
   <string name="cat_toc_title">Material Components</string>
   <string name="cat_toc_status_wip">WIP</string>
+  <string name="cat_edge_to_edge_enable_description">Enable edge to edge</string>
+  <string name="cat_edge_to_edge_disable_description">Disable edge to edge</string>
+  <string name="cat_choose_theme_description">Choose theme</string>
 </resources>

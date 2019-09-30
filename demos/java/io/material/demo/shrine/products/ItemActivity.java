@@ -19,7 +19,6 @@ package io.material.demo.shrine.products;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
@@ -29,6 +28,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import com.android.volley.toolbox.NetworkImageView;
+import com.google.android.material.snackbar.Snackbar;
 
 /**
  * Activity that displays an individual product, including an image, name, and a short description.

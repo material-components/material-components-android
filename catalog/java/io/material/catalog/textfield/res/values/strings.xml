@@ -22,6 +22,7 @@
   <string name="cat_textfield_exposed_dropdown_menu_demo_title" translatable="false">Exposed Dropdown Menu Demo</string>
   <string name="cat_textfield_outlined_demo_title" translatable="false">Outlined Text Field Demo</string>
   <string name="cat_textfield_outlined_icons_demo_title" translatable="false">Outlined Icons Text Field Demo</string>
+  <string name="cat_textfield_prefix_suffix_demo_title" translatable="false">Prefix and Suffix Text Field Demo</string>
   <string name="cat_textfield_legacy_demo_title" translatable="false">Legacy Text Field Demo</string>
   <string name="cat_textfield_description" translatable="false">
     Text fields allow users to input, edit, and select text. Text fields typically reside in forms
@@ -53,6 +54,17 @@
   <string name="cat_textfield_custom_start_icon_content_description" translatable="false">Custom start icon</string>
   <string name="cat_textfield_outlined_exposed_dropdown_helper_text" translatable="false">Outlined exposed dropdown menu</string>
   <string name="cat_textfield_outlined_editable_exposed_dropdown_helper_text" translatable="false">Outlined editable exposed dropdown menu</string>
+
+  <string name="cat_textfield_prefix" translatable="false">$</string>
+  <string name="cat_textfield_suffix" translatable="false">/100</string>
+  <string name="cat_textfield_outlined_prefix_helper_text" translatable="false">Outlined text field with prefix</string>
+  <string name="cat_textfield_outlined_prefix_icon_helper_text" translatable="false">Outlined text field with prefix and icon</string>
+  <string name="cat_textfield_outlined_suffix_helper_text" translatable="false">Outlined text field with suffix</string>
+  <string name="cat_textfield_outlined_suffix_icon_helper_text" translatable="false">Outlined text field with suffix and icon</string>
+  <string name="cat_textfield_filled_prefix_helper_text" translatable="false">Filled text field with prefix</string>
+  <string name="cat_textfield_filled_prefix_icon_helper_text" translatable="false">Filled text field with prefix and icon</string>
+  <string name="cat_textfield_filled_suffix_helper_text" translatable="false">Filled text field with suffix</string>
+  <string name="cat_textfield_filled_suffix_icon_helper_text" translatable="false">Filled text field with suffix and icon</string>
 
   <string name="cat_textfield_customize_section_title" translatable="false">Customize text fields</string>
   <string name="cat_textfield_customize_section_description" translatable="false">

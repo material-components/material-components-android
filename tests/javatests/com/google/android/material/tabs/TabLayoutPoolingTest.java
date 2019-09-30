@@ -19,12 +19,12 @@ package com.google.android.material.tabs;
 import static org.junit.Assert.assertTrue;
 
 import android.app.Activity;
-import com.google.android.material.testapp.R;
-import com.google.android.material.testapp.TabLayoutPoolingActivity;
 import androidx.test.annotation.UiThreadTest;
 import androidx.test.filters.SmallTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
+import com.google.android.material.testapp.R;
+import com.google.android.material.testapp.TabLayoutPoolingActivity;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;

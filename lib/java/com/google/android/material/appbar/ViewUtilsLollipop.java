@@ -23,6 +23,7 @@ import android.animation.ObjectAnimator;
 import android.animation.StateListAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.View;
@@ -34,12 +35,12 @@ class ViewUtilsLollipop {
 
   private static final int[] STATE_LIST_ANIM_ATTRS = new int[] {android.R.attr.stateListAnimator};
 
-  static void setBoundsViewOutlineProvider(View view) {
+  static void setBoundsViewOutlineProvider(@NonNull View view) {
     view.setOutlineProvider(ViewOutlineProvider.BOUNDS);
   }
 
   static void setStateListAnimatorFromAttrs(
-      View view, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+      @NonNull View view, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
     final Context context = view.getContext();
     final TypedArray a =
         ThemeEnforcement.obtainStyledAttributes(
@@ -56,7 +57,8 @@ class ViewUtilsLollipop {
   }
 
   /** Creates and sets a {@link StateListAnimator} with a custom elevation value */
-  static void setDefaultAppBarLayoutStateListAnimator(final View view, final float elevation) {
+  static void setDefaultAppBarLayoutStateListAnimator(
+      @NonNull final View view, final float elevation) {
     final int dur = view.getResources().getInteger(R.integer.app_bar_elevation_anim_duration);
 
     final StateListAnimator sla = new StateListAnimator();
