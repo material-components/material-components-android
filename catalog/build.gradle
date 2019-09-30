@@ -22,6 +22,13 @@ dependencies {
   androidTestImplementation "androidx.test.espresso:espresso-core:${project.rootProject.ext.espressoVersion}"
   androidTestImplementation "androidx.test.espresso:espresso-contrib:${project.rootProject.ext.espressoVersion}"
 
+  testImplementation "androidx.test:core:${project.rootProject.ext.testRunnerVersion}"
+  testImplementation "androidx.test:runner:${project.rootProject.ext.testRunnerVersion}"
+  testImplementation "junit:junit:4.12"
+  testImplementation "com.google.truth:truth:${project.rootProject.ext.truthVersion}"
+  testImplementation "org.mockito:mockito-core:${project.rootProject.ext.mockitoCoreVersion}"
+  testImplementation "org.robolectric:robolectric:4.3"
+
   testAnnotationProcessor "com.google.auto.service:auto-service:1.0-rc4"
 }
 
@@ -99,7 +106,8 @@ android {
       }
     }
     //TODO(b/141695010)
-    //androidTest.java.srcDir 'javatests'
+    // androidTest.java.srcDir 'androidTest/javatests'
+    // test.java.srcDir 'test/javatests'
   }
 
   compileOptions {

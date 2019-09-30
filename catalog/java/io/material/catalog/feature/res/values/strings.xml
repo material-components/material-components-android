@@ -15,10 +15,11 @@
   limitations under the License.
   -->
 
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string name="cat_demo_landing_description_header">Description</string>
   <string name="cat_demo_landing_links_header">Resources</string>
   <string name="cat_demo_landing_additional_demos_header">Additional Examples</string>
   <string name="cat_demo_landing_row_demo_header">Demo</string>
   <string name="cat_demo_landing_favorite">Favorite</string>
+  <string name="cat_demo_memory_usage" translatable="false">used: <xliff:g example="1MB" id="numerator">%1$s</xliff:g> / <xliff:g example="10MB" id="denominator">%2$s</xliff:g> (<xliff:g example="10" id="percentage">%3$d</xliff:g>%%)</string>
 </resources>

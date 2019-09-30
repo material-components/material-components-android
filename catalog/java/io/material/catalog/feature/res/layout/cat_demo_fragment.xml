@@ -16,9 +16,20 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:orientation="vertical">
+
+  <io.material.catalog.feature.MemoryView
+      android:id="@+id/memorymonitor_widget"
+      android:layout_height="wrap_content"
+      android:padding="16dp"
+      android:visibility="gone"
+      android:text="Loading..."
+      android:layout_width="match_parent"
+      tools:ignore="HardcodedText"/>
 
   <com.google.android.material.appbar.AppBarLayout
       android:layout_width="match_parent"
