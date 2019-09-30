@@ -158,6 +158,11 @@ task generateApiXml(type: Javadoc) {
       file(jdiff),
     ]
   }
+
+  doLast {
+    // Escape incorrect ampersands in API XML file
+    ["sed", "-i", "s/ & / \\&amp; /g", "lib/${apiName}.xml"].execute()
+  }
 }
 
 task generateJdiffReport(type: Javadoc) {
