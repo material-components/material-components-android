@@ -27,6 +27,7 @@ import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.radiobutton.MaterialRadioButton;
 import com.google.android.material.testapp.theme.MaterialComponentsViewInflaterActivity;
 import com.google.android.material.testapp.theme.R;
+import com.google.android.material.textview.MaterialAutoCompleteTextView;
 import com.google.android.material.textview.MaterialTextView;
 import org.junit.Before;
 import org.junit.Rule;
@@ -69,5 +70,11 @@ public class MaterialComponentsViewInflaterTest {
   public void ensureThatInflaterCreatesMaterialTextView() {
     View view = testActivity.findViewById(R.id.test_text_view);
     assertThat(view).isInstanceOf(MaterialTextView.class);
+  }
+
+  @Test
+  public void ensureThatInflaterCreatesMaterialAutoCompleteTextView() {
+    View view = testActivity.findViewById(R.id.test_autocomplete_text_view);
+    assertThat(view).isInstanceOf(MaterialAutoCompleteTextView.class);
   }
 }

@@ -45,4 +45,12 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:background="@android:color/white"/>
+
+    <AutoCompleteTextView
+        android:id="@+id/test_autocomplete_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:hint="@string/hint"
+        android:text="@string/text1"/>
 </LinearLayout>

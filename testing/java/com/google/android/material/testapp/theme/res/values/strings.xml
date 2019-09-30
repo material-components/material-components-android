@@ -15,5 +15,6 @@
 -->
 <resources>
   <string name="text1">Text</string>
+  <string name="hint">Hint</string>
 
 </resources>

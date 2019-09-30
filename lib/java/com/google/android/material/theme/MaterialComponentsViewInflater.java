@@ -23,8 +23,10 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.appcompat.app.AppCompatViewInflater;
+import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.AppCompatRadioButton;
@@ -33,6 +35,7 @@ import android.util.AttributeSet;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.radiobutton.MaterialRadioButton;
+import com.google.android.material.textview.MaterialAutoCompleteTextView;
 import com.google.android.material.textview.MaterialTextView;
 
 /**
@@ -107,5 +110,12 @@ public class MaterialComponentsViewInflater extends AppCompatViewInflater {
   @Override
   protected AppCompatTextView createTextView(Context context, AttributeSet attrs) {
     return new MaterialTextView(context, attrs);
+  }
+
+  @NonNull
+  @Override
+  protected AppCompatAutoCompleteTextView createAutoCompleteTextView(
+      @NonNull Context context, @Nullable AttributeSet attrs) {
+    return new MaterialAutoCompleteTextView(context, attrs);
   }
 }
