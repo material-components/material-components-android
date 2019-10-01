@@ -609,7 +609,13 @@ public final class CollapsingTextHelper {
     }
 
     calculateUsingTextSize(expandedTextSize);
-    width = textLayout != null ? textLayout.getLineWidth(0) : 0;
+    if (isRtl) {
+      // fallback for RTL
+      width = textToDrawCollapsed != null ? textPaint.measureText(textToDrawCollapsed, 0,
+          textToDrawCollapsed.length()) : 0;
+    } else {
+      width = textLayout != null ? textLayout.getLineWidth(0) : 0;
+    }
     expandedFirstLineDrawX = textLayout != null ? textLayout.getLineLeft(0) : 0;
     final int expandedAbsGravity =
         GravityCompat.getAbsoluteGravity(
@@ -693,38 +699,50 @@ public final class CollapsingTextHelper {
           currentDrawX + textLayout.getLineLeft(0) - expandedFirstLineDrawX * 2;
       if (drawTexture) {
         // If we should use a texture, draw it instead of text
-        // Expanded text
-        texturePaint.setAlpha((int) (expandedTextBlend * 255));
-        canvas.drawBitmap(expandedTitleTexture, currentExpandedX, y, texturePaint);
-        // Collapsed text
-        texturePaint.setAlpha((int) (collapsedTextBlend * 255));
-        canvas.drawBitmap(collapsedTitleTexture, x, y, texturePaint);
-        // Cross-section between both texts (should stay at alpha = 255)
-        texturePaint.setAlpha(255);
-        canvas.drawBitmap(crossSectionTitleTexture, x, y, texturePaint);
-      } else {
-        // positon expanded text appropriately
-        canvas.translate(currentExpandedX, y);
-        // Expanded text
-        textPaint.setAlpha((int) (expandedTextBlend * 255));
-        textLayout.draw(canvas);
-
-        // position the overlays
-        canvas.translate(x - currentExpandedX, 0);
-
-        // Collapsed text
-        textPaint.setAlpha((int) (collapsedTextBlend * 255));
-        canvas.drawText(textToDrawCollapsed, 0, textToDrawCollapsed.length(), 0,
-            -ascent / scale, textPaint);
-        // Remove ellipsis for Cross-section animation
-        String tmp = textToDrawCollapsed.toString().trim();
-        if (tmp.endsWith("\u2026")) {
-          tmp = tmp.substring(0, tmp.length() - 1);
+        if (isRtl) {
+          // fallback for RTL: draw only collapsed text
+          texturePaint.setAlpha(255);
+          canvas.drawBitmap(collapsedTitleTexture, x, y, texturePaint);
+        } else {
+          // Expanded text
+          texturePaint.setAlpha((int) (expandedTextBlend * 255));
+          canvas.drawBitmap(expandedTitleTexture, currentExpandedX, y, texturePaint);
+          // Collapsed text
+          texturePaint.setAlpha((int) (collapsedTextBlend * 255));
+          canvas.drawBitmap(collapsedTitleTexture, x, y, texturePaint);
+          // Cross-section between both texts (should stay at alpha = 255)
+          texturePaint.setAlpha(255);
+          canvas.drawBitmap(crossSectionTitleTexture, x, y, texturePaint);
         }
-        // Cross-section between both texts (should stay at alpha = 255)
-        textPaint.setAlpha(255);
-        canvas.drawText(tmp, 0, textLayout.getLineEnd(0) <= tmp.length() ?
-            textLayout.getLineEnd(0) : tmp.length(), 0, -ascent / scale, textPaint);
+      } else {
+        if (isRtl) {
+          // fallback for RTL: draw only collapsed text
+          canvas.drawText(textToDrawCollapsed, 0, textToDrawCollapsed.length(), x,
+              y - ascent / scale, textPaint);
+        } else {
+          // positon expanded text appropriately
+          canvas.translate(currentExpandedX, y);
+          // Expanded text
+          textPaint.setAlpha((int) (expandedTextBlend * 255));
+          textLayout.draw(canvas);
+
+          // position the overlays
+          canvas.translate(x - currentExpandedX, 0);
+
+          // Collapsed text
+          textPaint.setAlpha((int) (collapsedTextBlend * 255));
+          canvas.drawText(textToDrawCollapsed, 0, textToDrawCollapsed.length(), 0,
+              -ascent / scale, textPaint);
+          // Remove ellipsis for Cross-section animation
+          String tmp = textToDrawCollapsed.toString().trim();
+          if (tmp.endsWith("\u2026")) {
+            tmp = tmp.substring(0, tmp.length() - 1);
+          }
+          // Cross-section between both texts (should stay at alpha = 255)
+          textPaint.setAlpha(255);
+          canvas.drawText(tmp, 0, textLayout.getLineEnd(0) <= tmp.length() ?
+              textLayout.getLineEnd(0) : tmp.length(), 0, -ascent / scale, textPaint);
+        }
       }
     }
 
@@ -804,7 +822,8 @@ public final class CollapsingTextHelper {
       }
 
       availableWidth = expandedWidth;
-      maxLines = this.maxLines;
+      // fallback for RTL: draw only one line
+      maxLines = isRtl ? 1 : this.maxLines;
     }
 
     if (availableWidth > 0) {
