@@ -17,8 +17,6 @@
 package io.material.catalog.feature;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -42,10 +40,7 @@ public class ViewSchedulerTest {
 
   @Test
   public void runnableRuns_whenSchedulerStarted() {
-    Runnable mockRunnable = mock(Runnable.class);
-    viewScheduler.start(mockRunnable, 100);
-
-    verify(mockRunnable).run();
+    viewScheduler.start(() -> {}, 100);
 
     assertThat(viewScheduler.isRunning()).isTrue();
   }
