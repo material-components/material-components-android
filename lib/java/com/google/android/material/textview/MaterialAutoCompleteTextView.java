@@ -22,7 +22,7 @@ import android.content.Context;
 import android.os.Build.VERSION;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.support.v7.widget.AppCompatAutoCompleteTextView;
+import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.appcompat.widget.ListPopupWindow;
 import android.util.AttributeSet;
 import android.view.View;

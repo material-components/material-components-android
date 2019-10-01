@@ -66,6 +66,8 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
   private boolean hasAction;
 
   private static final int[] SNACKBAR_BUTTON_STYLE_ATTR = new int[] {R.attr.snackbarButtonStyle};
+  private static final int[] SNACKBAR_CONTENT_STYLE_ATTRS =
+      new int[] {R.attr.snackbarButtonStyle, R.attr.snackbarTextViewStyle};
 
   /**
    * Callback class for {@link Snackbar} instances.
@@ -160,7 +162,7 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
     final SnackbarContentLayout content =
         (SnackbarContentLayout)
             inflater.inflate(
-                hasSnackbarButtonStyleAttr(parent.getContext())
+                hasSnackbarContentStyleAttrs(parent.getContext())
                     ? R.layout.mtrl_layout_snackbar_include
                     : R.layout.design_layout_snackbar_include,
                 parent,
@@ -176,11 +178,20 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
    * snackbarButtonStyle}. This method helps to check if a valid {@code snackbarButtonStyle} is set
    * within the current context, so that we know whether we can use the attribute.
    */
+  @Deprecated
   protected static boolean hasSnackbarButtonStyleAttr(@NonNull Context context) {
     TypedArray a = context.obtainStyledAttributes(SNACKBAR_BUTTON_STYLE_ATTR);
     int snackbarButtonStyleResId = a.getResourceId(0, -1);
     a.recycle();
     return snackbarButtonStyleResId != -1;
+  }
+
+  private static boolean hasSnackbarContentStyleAttrs(@NonNull Context context) {
+    TypedArray a = context.obtainStyledAttributes(SNACKBAR_CONTENT_STYLE_ATTRS);
+    int snackbarButtonStyleResId = a.getResourceId(0, -1);
+    int snackbarTextViewStyleResId = a.getResourceId(1, -1);
+    a.recycle();
+    return snackbarButtonStyleResId != -1 && snackbarTextViewStyleResId != -1;
   }
 
   /**

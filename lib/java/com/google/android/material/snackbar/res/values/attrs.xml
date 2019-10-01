@@ -21,6 +21,8 @@
     <attr name="snackbarStyle" format="reference"/>
     <!-- Style to use for action button within a Snackbar in this theme. -->
     <attr name="snackbarButtonStyle" format="reference"/>
+    <!-- Style to use for message text within a Snackbar in this theme. -->
+    <attr name="snackbarTextViewStyle" format="reference"/>
   </declare-styleable>
 
   <declare-styleable name="SnackbarLayout">

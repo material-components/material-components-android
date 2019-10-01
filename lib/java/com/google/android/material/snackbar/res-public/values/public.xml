@@ -18,8 +18,10 @@
 <resources>
   <public name="snackbarStyle" type="attr"/>
   <public name="snackbarButtonStyle" type="attr"/>
+  <public name="snackbarTextViewStyle" type="attr"/>
   <public name="Widget.Design.Snackbar" type="style"/>
   <public name="Widget.MaterialComponents.Snackbar" type="style"/>
   <public name="Widget.MaterialComponents.Snackbar.FullWidth" type="style"/>
+  <public name="Widget.MaterialComponents.Snackbar.TextView" type="style"/>
   <public name="animationMode" type="attr"/>
 </resources>

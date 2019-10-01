@@ -14,7 +14,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
   <style name="TextAppearance.Design.Snackbar.Message" parent="android:TextAppearance">
     <item name="android:textSize">@dimen/design_snackbar_text_size</item>
@@ -46,6 +46,19 @@
   <style name="Widget.MaterialComponents.Snackbar.FullWidth" parent="Widget.Design.Snackbar">
     <item name="backgroundOverlayColorAlpha">@dimen/mtrl_snackbar_background_overlay_color_alpha</item>
     <item name="actionTextColorAlpha">@dimen/mtrl_snackbar_action_text_color_alpha</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.Snackbar.TextView" parent="Widget.AppCompat.TextView">
+    <item name="android:alpha">@dimen/material_emphasis_high_type</item>
+    <item name="android:ellipsize">end</item>
+    <item name="android:maxLines">@integer/design_snackbar_text_max_lines</item>
+    <item name="android:textAlignment" tools:ignore="NewApi">viewStart</item>
+    <item name="android:textAppearance">?attr/textAppearanceBody2</item>
+    <item name="android:textColor">?attr/colorSurface</item>
+    <item name="android:paddingTop">@dimen/design_snackbar_padding_vertical</item>
+    <item name="android:paddingBottom">@dimen/design_snackbar_padding_vertical</item>
+    <item name="android:paddingLeft">@dimen/design_snackbar_padding_horizontal</item>
+    <item name="android:paddingRight">@dimen/design_snackbar_padding_horizontal</item>
   </style>
 
 </resources>
