@@ -624,7 +624,7 @@ public final class CollapsingTextHelper {
     textHeight = textLayout != null ? textLayout.getHeight() : 0;
     switch (expandedAbsGravity & Gravity.VERTICAL_GRAVITY_MASK) {
       case Gravity.BOTTOM:
-        expandedDrawY = expandedBounds.bottom - textHeight;
+        expandedDrawY = expandedBounds.bottom - textHeight + textPaint.descent();
         break;
       case Gravity.TOP:
         expandedDrawY = expandedBounds.top;
