@@ -462,8 +462,10 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
    * that would cause a gesture conflict), gesture navigation is enabled, and this {@code
    * gestureInsetBottomIgnored} flag is false.
    */
-  public void setGestureInsetBottomIgnored(boolean gestureInsetBottomIgnored) {
+  @NonNull
+  public B setGestureInsetBottomIgnored(boolean gestureInsetBottomIgnored) {
     this.gestureInsetBottomIgnored = gestureInsetBottomIgnored;
+    return (B) this;
   }
 
   /**
