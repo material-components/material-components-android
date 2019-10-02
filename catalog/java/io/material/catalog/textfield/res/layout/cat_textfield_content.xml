@@ -32,6 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         android:hint="@string/cat_textfield_label"
+        android:enabled="false"
         app:helperText="@string/cat_textfield_outlined_helper_text"
         app:helperTextEnabled="true">
       <com.google.android.material.textfield.TextInputEditText
