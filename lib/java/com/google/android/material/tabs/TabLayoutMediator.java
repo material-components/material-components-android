@@ -157,12 +157,12 @@ public final class TabLayoutMediator {
         tabConfigurationStrategy.onConfigureTab(tab, i);
         tabLayout.addTab(tab, false);
       }
-
       // Make sure we reflect the currently set ViewPager item
       if (adapterCount > 0) {
-        int currItem = viewPager.getCurrentItem();
+        int lastItem = tabLayout.getTabCount() - 1;
+        int currItem = Math.min(viewPager.getCurrentItem(), lastItem);
         if (currItem != tabLayout.getSelectedTabPosition()) {
-          tabLayout.getTabAt(currItem).select();
+          tabLayout.selectTab(tabLayout.getTabAt(currItem));
         }
       }
     }
