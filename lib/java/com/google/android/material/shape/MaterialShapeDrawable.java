@@ -174,11 +174,16 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     this(ShapeAppearanceModel.builder(context, attrs, defStyleAttr, defStyleRes).build());
   }
 
+  @Deprecated
+  public MaterialShapeDrawable(@NonNull ShapePathModel shapePathModel) {
+    this((ShapeAppearanceModel) shapePathModel);
+  }
+
   /**
    * @param shapeAppearanceModel the {@link ShapeAppearanceModel} containing the path that will be
    *     rendered in this drawable.
    */
-  public MaterialShapeDrawable(ShapeAppearanceModel shapeAppearanceModel) {
+  public MaterialShapeDrawable(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
     this(new MaterialShapeDrawableState(shapeAppearanceModel, null));
   }
 
@@ -267,8 +272,10 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * @return the current model.
    */
   @Deprecated
-  public ShapeAppearanceModel getShapedViewModel() {
-    return getShapeAppearanceModel();
+  @Nullable
+  public ShapePathModel getShapedViewModel() {
+    ShapeAppearanceModel shapeAppearance = getShapeAppearanceModel();
+    return shapeAppearance instanceof ShapePathModel ? (ShapePathModel) shapeAppearance : null;
   }
 
   /**
