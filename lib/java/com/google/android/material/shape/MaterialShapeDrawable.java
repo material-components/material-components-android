@@ -354,18 +354,6 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     return drawableState.strokeTintList;
   }
 
-  /**
-   * Get the int representing the Color of the shape's stroke in the current state.
-   *
-   * @deprecated Use {@link #getStrokeTintList()} instead.
-   * @return the stroke's current color.
-   */
-  @Deprecated
-  @ColorInt
-  public int getStrokeTint() {
-    return drawableState.strokeTintList.getColorForState(getState(), Color.TRANSPARENT);
-  }
-
   @Override
   public void setTint(@ColorInt int tintColor) {
     setTintList(ColorStateList.valueOf(tintColor));
