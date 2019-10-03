@@ -68,7 +68,7 @@ import java.util.Map;
  * An interaction behavior plugin for a child view of {@link CoordinatorLayout} to make it work as a
  * bottom sheet.
  *
- * <p> To send useful accessibility events, set a title on bottom sheets that are windows or are
+ * <p>To send useful accessibility events, set a title on bottom sheets that are windows or are
  * window-like. For BottomSheetDialog use {@link BottomSheetDialog#setTitle(int)}, and for
  * BottomSheetDialogFragment use {@link ViewCompat#setAccessibilityPaneTitle(View, CharSequence)}.
  */
@@ -137,35 +137,25 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    */
   public static final int PEEK_HEIGHT_AUTO = -1;
 
-  /**
-   * This flag will preserve the peekHeight int value on configuration change.
-   */
+  /** This flag will preserve the peekHeight int value on configuration change. */
   public static final int SAVE_PEEK_HEIGHT = 0x1;
 
-  /**
-   * This flag will preserve the fitToContents boolean value on configuration change.
-   */
+  /** This flag will preserve the fitToContents boolean value on configuration change. */
   public static final int SAVE_FIT_TO_CONTENTS = 1 << 1;
 
-  /**
-   * This flag will preserve the hideable boolean value on configuration change.
-   */
+  /** This flag will preserve the hideable boolean value on configuration change. */
   public static final int SAVE_HIDEABLE = 1 << 2;
 
-  /**
-   * This flag will preserve the skipCollapsed boolean value on configuration change.
-   */
+  /** This flag will preserve the skipCollapsed boolean value on configuration change. */
   public static final int SAVE_SKIP_COLLAPSED = 1 << 3;
 
-  /**
-   * This flag will preserve all aforementioned values on configuration change.
-   */
+  /** This flag will preserve all aforementioned values on configuration change. */
   public static final int SAVE_ALL = -1;
 
   /**
-   * This flag will not preserve the aforementioned values set at runtime if the view is
-   * destroyed and recreated. The only value preserved will be the positional state,
-   * e.g. collapsed, hidden, expanded, etc. This is the default behavior.
+   * This flag will not preserve the aforementioned values set at runtime if the view is destroyed
+   * and recreated. The only value preserved will be the positional state, e.g. collapsed, hidden,
+   * expanded, etc. This is the default behavior.
    */
   public static final int SAVE_NONE = 0;
 
@@ -303,7 +293,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     setSkipCollapsed(
         a.getBoolean(R.styleable.BottomSheetBehavior_Layout_behavior_skipCollapsed, false));
     setSaveFlags(a.getInt(R.styleable.BottomSheetBehavior_Layout_behavior_saveFlags, SAVE_NONE));
-    setHalfExpandedRatio(a.getFloat(R.styleable.BottomSheetBehavior_Layout_behavior_halfExpandedRatio, 0.5f));
+    setHalfExpandedRatio(
+        a.getFloat(R.styleable.BottomSheetBehavior_Layout_behavior_halfExpandedRatio, 0.5f));
     setExpandedOffset(a.getInt(R.styleable.BottomSheetBehavior_Layout_behavior_expandedOffset, 0));
     a.recycle();
     ViewConfiguration configuration = ViewConfiguration.get(context);
@@ -647,7 +638,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       int dyUnconsumed,
       int type,
       @NonNull int[] consumed) {
-     // Overridden to prevent the default consumption of the entire scroll distance.
+    // Overridden to prevent the default consumption of the entire scroll distance.
   }
 
   @Override
@@ -704,7 +695,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    *
    * @param peekHeight The height of the collapsed bottom sheet in pixels, or {@link
    *     #PEEK_HEIGHT_AUTO} to configure the sheet to peek automatically at 16:9 ratio keyline.
-   * @attr ref com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_peekHeight
+   * @attr ref
+   *     com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_peekHeight
    */
   public void setPeekHeight(int peekHeight) {
     setPeekHeight(peekHeight, false);
@@ -717,7 +709,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    * @param peekHeight The height of the collapsed bottom sheet in pixels, or {@link
    *     #PEEK_HEIGHT_AUTO} to configure the sheet to peek automatically at 16:9 ratio keyline.
    * @param animate Whether to animate between the old height and the new height.
-   * @attr ref com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_peekHeight
+   * @attr ref
+   *     com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_peekHeight
    */
   public final void setPeekHeight(int peekHeight, boolean animate) {
     boolean layout = false;
@@ -753,7 +746,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    *
    * @return The height of the collapsed bottom sheet in pixels, or {@link #PEEK_HEIGHT_AUTO} if the
    *     sheet is configured to peek automatically at 16:9 ratio keyline
-   * @attr ref com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_peekHeight
+   * @attr ref
+   *     com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_peekHeight
    */
   public int getPeekHeight() {
     return peekHeightAuto ? PEEK_HEIGHT_AUTO : peekHeight;
@@ -766,7 +760,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    * it is increased. The default value is 0.5.
    *
    * @param ratio a float between 0 and 1, representing the {@link #STATE_HALF_EXPANDED} ratio.
-   * @attr com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_halfExpandedRatio
+   * @attr
+   *     com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_halfExpandedRatio
    */
   public void setHalfExpandedRatio(@FloatRange(from = 0.0f, to = 1.0f) float ratio) {
 
@@ -788,7 +783,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    *
    * @param offset an integer value greater than equal to 0, representing the {@link
    *     #STATE_EXPANDED} offset. Value must not exceed the offset in the half expanded state.
-   * @attr com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_expandedOffset
+   * @attr
+   *     com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_expandedOffset
    */
   public void setExpandedOffset(int offset) {
     if (offset < 0) {
@@ -800,7 +796,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   /**
    * Gets the ratio for the height of the BottomSheet in the {@link #STATE_HALF_EXPANDED} state.
    *
-   * @attr com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_halfExpandedRatio
+   * @attr
+   *     com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_halfExpandedRatio
    */
   @FloatRange(from = 0.0f, to = 1.0f)
   public float getHalfExpandedRatio() {
@@ -839,7 +836,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    * is expanded once. Setting this to true has no effect unless the sheet is hideable.
    *
    * @param skipCollapsed True if the bottom sheet should skip the collapsed state.
-   * @attr ref com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_skipCollapsed
+   * @attr ref
+   *     com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_skipCollapsed
    */
   public void setSkipCollapsed(boolean skipCollapsed) {
     this.skipCollapsed = skipCollapsed;
@@ -850,7 +848,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    * is expanded once.
    *
    * @return Whether the bottom sheet should skip the collapsed state.
-   * @attr ref com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_skipCollapsed
+   * @attr ref
+   *     com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_skipCollapsed
    */
   public boolean getSkipCollapsed() {
     return skipCollapsed;
@@ -859,9 +858,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   /**
    * Sets save flags to be preserved in bottomsheet on configuration change.
    *
-   * @param flags bitwise int of {@link #SAVE_PEEK_HEIGHT}, {@link #SAVE_FIT_TO_CONTENTS},
-   *     {@link #SAVE_HIDEABLE}, {@link #SAVE_SKIP_COLLAPSED}, {@link #SAVE_ALL} and
-   *     {@link #SAVE_NONE}.
+   * @param flags bitwise int of {@link #SAVE_PEEK_HEIGHT}, {@link #SAVE_FIT_TO_CONTENTS}, {@link
+   *     #SAVE_HIDEABLE}, {@link #SAVE_SKIP_COLLAPSED}, {@link #SAVE_ALL} and {@link #SAVE_NONE}.
    * @see #getSaveFlags()
    * @attr ref com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_saveFlags
    */
@@ -875,7 +873,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    * @attr ref com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_saveFlags
    */
   @SaveFlags
-   public int getSaveFlags() {
+  public int getSaveFlags() {
     return this.saveFlags;
   }
 
@@ -1197,9 +1195,10 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   void startSettlingAnimation(View child, int state, int top, boolean settleFromViewDragHelper) {
-    boolean startedSettling = settleFromViewDragHelper
-        ? viewDragHelper.settleCapturedViewAt(child.getLeft(), top)
-        : viewDragHelper.smoothSlideViewTo(child, child.getLeft(), top);
+    boolean startedSettling =
+        settleFromViewDragHelper
+            ? viewDragHelper.settleCapturedViewAt(child.getLeft(), top)
+            : viewDragHelper.smoothSlideViewTo(child, child.getLeft(), top);
     if (startedSettling) {
       setStateInternal(STATE_SETTLING);
       // STATE_SETTLING won't animate the material shape, so do that here with the target state.
@@ -1427,6 +1426,20 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       this.fitToContents = behavior.fitToContents;
       this.hideable = behavior.hideable;
       this.skipCollapsed = behavior.skipCollapsed;
+    }
+
+    /**
+     * This constructor does not respect flags: {@link BottomSheetBehavior#SAVE_PEEK_HEIGHT}, {@link
+     * BottomSheetBehavior#SAVE_FIT_TO_CONTENTS}, {@link BottomSheetBehavior#SAVE_HIDEABLE}, {@link
+     * BottomSheetBehavior#SAVE_SKIP_COLLAPSED}. It is as if {@link BottomSheetBehavior#SAVE_NONE}
+     * were set.
+     *
+     * @deprecated Use {@link SavedState(Parcelable, BottomSheetBehavior)} instead.
+     */
+    @Deprecated
+    public SavedState(Parcelable superstate, int state) {
+      super(superstate);
+      this.state = state;
     }
 
     @Override
