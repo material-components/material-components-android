@@ -56,21 +56,16 @@ public class BottomSheetDialogFragment extends AppCompatDialogFragment {
     }
   }
 
-  @Nullable
-  @Override
-  public BottomSheetDialog getDialog() {
-    return (BottomSheetDialog) super.getDialog();
-  }
-
   /**
    * Tries to dismiss the dialog fragment with the bottom sheet animation. Returns true if possible,
    * false otherwise.
    */
   private boolean tryDismissWithAnimation(boolean allowingStateLoss) {
-    BottomSheetDialog dialog = getDialog();
-    if (dialog != null) {
+    Dialog baseDialog = getDialog();
+    if (baseDialog instanceof BottomSheetDialog) {
+      BottomSheetDialog dialog = (BottomSheetDialog) baseDialog;
       BottomSheetBehavior<?> behavior = dialog.getBehavior();
-      if (behavior != null && behavior.isHideable() && getDialog().getDismissWithAnimation()) {
+      if (behavior.isHideable() && dialog.getDismissWithAnimation()) {
         dismissWithAnimation(behavior, allowingStateLoss);
         return true;
       }
@@ -86,7 +81,9 @@ public class BottomSheetDialogFragment extends AppCompatDialogFragment {
     if (behavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
       dismissAfterAnimation();
     } else {
-      getDialog().removeDefaultCallback();
+      if (getDialog() instanceof BottomSheetDialog) {
+        ((BottomSheetDialog) getDialog()).removeDefaultCallback();
+      }
       behavior.addBottomSheetCallback(new BottomSheetDismissCallback());
       behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
