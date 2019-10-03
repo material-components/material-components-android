@@ -17,7 +17,7 @@
 <resources>
 
   <!-- Style to use for AppBarLayouts in this theme. -->
-  <attr name="appBarLayoutStyle"/>
+  <attr name="appBarLayoutStyle" format="reference"/>
 
   <declare-styleable name="AppBarLayout">
     <!-- Deprecated. Elevation is now controlled via a state list animator. -->
