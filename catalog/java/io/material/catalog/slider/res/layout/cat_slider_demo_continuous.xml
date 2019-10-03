@@ -24,6 +24,8 @@
       android:layout_height="wrap_content"
       android:paddingLeft="16dp"
       android:paddingRight="16dp"
+      android:clipChildren="false"
+      android:clipToPadding="false"
       android:orientation="vertical">
 
     <TextView

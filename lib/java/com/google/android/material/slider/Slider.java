@@ -31,6 +31,7 @@ import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -63,13 +64,10 @@ import java.util.Locale;
  * discrete slider where the slider's thumb will snap to the closest tick mark. See {@link
  * #setStepSize(float)}.
  *
- * <p>In continuous mode the slider displays a line on which the thumb can be dragged to select a
- * value.
+ * <p>The slider displays a line on which the thumb can be dragged to select a value.
  *
- * <p>In discrete mode the slider displays a line on which the thumb can be dragged to select a
- * value. When clicked, discrete tick marks are displayed along the line, and the thumb
- * automatically snaps to the closest tick mark. When clicked or focused, a bubble displaying the
- * selected value is shown above the horizontal line.
+ * <p>On interaction in discrete mode, tick marks are displayed along the line and the thumb
+ * automatically snaps to the closest tick mark.
  *
  * <p>The {@link OnChangeListener} interface defines a callback to be invoked when the slider
  * changes.
@@ -163,15 +161,17 @@ public class Slider extends View {
   @NonNull private String labelText = "";
 
   private int widgetHeight;
-  private int widgetHeightDiscrete;
+  private int widgetHeightLabel;
+  private boolean floatingLabel;
   private int lineHeight;
   private int trackSidePadding;
   private int trackTop;
-  private int trackTopDiscrete;
+  private int trackTopLabel;
   private int thumbRadius;
   private int haloRadius;
   private int labelWidth;
   private int labelHeight;
+  private int labelPadding;
   private int labelTopOffset;
   private float labelTextSize;
   private int labelTextTopOffset;
@@ -275,6 +275,7 @@ public class Slider extends View {
     label.setColorFilter(new PorterDuffColorFilter(getColorForState(thumbColor), Mode.MULTIPLY));
 
     labelTextPaint = new Paint();
+    labelTextPaint.setTypeface(Typeface.DEFAULT);
     labelTextPaint.setTextSize(labelTextSize);
 
     labelTextBounds = new Rect();
@@ -288,7 +289,6 @@ public class Slider extends View {
         });
 
     setFocusable(true);
-    setFocusableInTouchMode(true);
 
     // Set up the thumb drawable to always show the compat shadow.
     thumbDrawable.setShadowCompatibilityMode(MaterialShapeDrawable.SHADOW_COMPAT_MODE_ALWAYS);
@@ -308,17 +308,17 @@ public class Slider extends View {
 
   private void loadResources(@NonNull Resources resources) {
     widgetHeight = resources.getDimensionPixelSize(R.dimen.mtrl_slider_widget_height);
-    widgetHeightDiscrete =
-        resources.getDimensionPixelSize(R.dimen.mtrl_slider_widget_height_discrete);
+    widgetHeightLabel = resources.getDimensionPixelSize(R.dimen.mtrl_slider_widget_height_label);
 
     lineHeight = resources.getDimensionPixelSize(R.dimen.mtrl_slider_line_height);
 
     trackSidePadding = resources.getDimensionPixelOffset(R.dimen.mtrl_slider_track_side_padding);
     trackTop = resources.getDimensionPixelOffset(R.dimen.mtrl_slider_track_top);
-    trackTopDiscrete = resources.getDimensionPixelOffset(R.dimen.mtrl_slider_track_top_discrete);
+    trackTopLabel = resources.getDimensionPixelOffset(R.dimen.mtrl_slider_track_top_label);
 
     labelWidth = resources.getDimensionPixelSize(R.dimen.mtrl_slider_label_width);
     labelHeight = resources.getDimensionPixelSize(R.dimen.mtrl_slider_label_height);
+    labelPadding = resources.getDimensionPixelSize(R.dimen.mtrl_slider_label_padding);
     labelTopOffset = resources.getDimensionPixelSize(R.dimen.mtrl_slider_label_top_offset);
     labelTextSize = resources.getDimension(R.dimen.mtrl_slider_label_text_size);
     labelTextTopOffset = resources.getDimensionPixelSize(R.dimen.mtrl_slider_label_text_top_offset);
@@ -351,6 +351,8 @@ public class Slider extends View {
     haloRadius = a.getDimensionPixelSize(R.styleable.Slider_haloRadius, 0);
 
     setThumbElevation(a.getDimension(R.styleable.Slider_thumbElevation, 0));
+
+    floatingLabel = a.getBoolean(R.styleable.Slider_floatingLabel, true);
     a.recycle();
 
     validateValueFrom();
@@ -578,6 +580,22 @@ public class Slider extends View {
     setHaloRadius(getResources().getDimensionPixelSize(radius));
   }
 
+  /**
+   * If true, height will be added to make space for the label, otherwise the label will be drawn on
+   * top of views above this one.
+   */
+  public void setFloatingLabel(boolean floatingLabel) {
+    if (this.floatingLabel != floatingLabel) {
+      this.floatingLabel = floatingLabel;
+      requestLayout();
+    }
+  }
+
+  /** If the height of this view is increased to make space for the label. */
+  public boolean isFloatingLabel() {
+    return floatingLabel;
+  }
+
   /** Returns the radius of the halo. */
   @Dimension()
   public int getHaloRadius() {
@@ -589,7 +607,7 @@ public class Slider extends View {
     super.onMeasure(
         widthMeasureSpec,
         MeasureSpec.makeMeasureSpec(
-            stepSize > 0.0f ? widgetHeightDiscrete : widgetHeight, MeasureSpec.EXACTLY));
+            floatingLabel ? widgetHeight : widgetHeightLabel, MeasureSpec.EXACTLY));
   }
 
   @Override
@@ -608,37 +626,36 @@ public class Slider extends View {
       float interval = trackWidth / (float) (tickCount - 1);
       for (int i = 0; i < tickCount * 2; i += 2) {
         ticksCoordinates[i] = trackSidePadding + i / 2 * interval;
-        ticksCoordinates[i + 1] = trackTopDiscrete;
+        ticksCoordinates[i + 1] = calculateTop();
       }
     }
+  }
+
+  private int calculateTop() {
+    return floatingLabel ? trackTop : trackTopLabel;
   }
 
   @Override
   protected void onDraw(@NonNull Canvas canvas) {
     super.onDraw(canvas);
 
-    int top = stepSize > 0.0f ? trackTopDiscrete : trackTop;
+    int top = calculateTop();
 
     drawTrack(canvas, trackWidth, top);
     if (thumbPosition > 0.0f) {
       drawMarker(canvas, trackWidth, top);
     }
-    if (stepSize > 0.0f) {
-      if (hasFocus() && isEnabled()) {
-        drawLabel(canvas, trackWidth, top);
-        drawLabelText(canvas, trackWidth, top);
-      } else {
-        drawThumb(canvas, trackWidth, top);
-      }
-      if (thumbIsPressed) {
+
+    if ((thumbIsPressed || isFocused()) && isEnabled()) {
+      if (stepSize > 0.0f) {
         drawTicks(canvas);
       }
-    } else {
-      if (!thumbIsPressed && hasFocus() && isEnabled()) {
-        drawHalo(canvas, trackWidth, top);
-      }
-      drawThumb(canvas, trackWidth, top);
+      drawHalo(canvas, trackWidth, top);
+      drawLabel(canvas, trackWidth, top);
+      drawLabelText(canvas, trackWidth, top);
     }
+
+    drawThumb(canvas, trackWidth, top);
   }
 
   private void drawTrack(@NonNull Canvas canvas, int width, int top) {
@@ -659,7 +676,7 @@ public class Slider extends View {
 
   private void drawLabel(@NonNull Canvas canvas, int width, int top) {
     int left = trackSidePadding + (int) (thumbPosition * width) - labelWidth / 2;
-    top -= labelTopOffset;
+    top -= labelTopOffset + labelPadding + thumbRadius;
     label.setBounds(left, top, left + labelWidth, top + labelHeight);
     label.draw(canvas);
   }
@@ -667,7 +684,7 @@ public class Slider extends View {
   private void drawLabelText(@NonNull Canvas canvas, int width, int top) {
     labelTextPaint.getTextBounds(labelText, 0, labelText.length(), labelTextBounds);
     int left = trackSidePadding + (int) (thumbPosition * width) - labelTextBounds.width() / 2;
-    canvas.drawText(labelText, left, top - labelTextTopOffset, labelTextPaint);
+    canvas.drawText(labelText, left, top - labelTextTopOffset - thumbRadius, labelTextPaint);
   }
 
   private void drawThumb(@NonNull Canvas canvas, int width, int top) {

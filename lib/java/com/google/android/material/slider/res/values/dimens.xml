@@ -17,13 +17,13 @@
 <resources>
 
   <dimen name="mtrl_slider_widget_height">48dp</dimen>
-  <dimen name="mtrl_slider_widget_height_discrete">68dp</dimen>
+  <dimen name="mtrl_slider_widget_height_label">68dp</dimen>
 
   <dimen name="mtrl_slider_line_height">2dp</dimen>
 
   <dimen name="mtrl_slider_track_side_padding">16dp</dimen>
   <dimen name="mtrl_slider_track_top">24dp</dimen>
-  <dimen name="mtrl_slider_track_top_discrete">44dp</dimen>
+  <dimen name="mtrl_slider_track_top_label">44dp</dimen>
 
   <dimen name="mtrl_slider_thumb_radius">10dp</dimen>
   <dimen name="mtrl_slider_thumb_elevation">1dp</dimen>
@@ -34,7 +34,8 @@
   <dimen name="mtrl_slider_label_width">26dp</dimen>
   <dimen name="mtrl_slider_label_height">26dp</dimen>
   <dimen name="mtrl_slider_label_radius">13dp</dimen>
-  <dimen name="mtrl_slider_label_top_offset">37dp</dimen>
+  <dimen name="mtrl_slider_label_top_offset">33dp</dimen>
+  <dimen name="mtrl_slider_label_padding">4dp</dimen>
   <dimen name="mtrl_slider_label_text_size">10sp</dimen>
   <dimen name="mtrl_slider_label_text_top_offset">20dp</dimen>
 </resources>
