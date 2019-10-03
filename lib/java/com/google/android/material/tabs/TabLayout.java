@@ -2212,7 +2212,8 @@ public class TabLayout extends HorizontalScrollView {
     }
   }
 
-  class TabView extends LinearLayout {
+  /** A {@link LinearLayout} containing {@link Tab} instances for use with {@link TabLayout}. */
+  public final class TabView extends LinearLayout {
     private Tab tab;
     private TextView textView;
     private ImageView iconView;
@@ -2226,7 +2227,7 @@ public class TabLayout extends HorizontalScrollView {
 
     private int defaultMaxLines = 2;
 
-    public TabView(Context context) {
+    public TabView(@NonNull Context context) {
       super(context);
       updateBackgroundDrawable(context);
       ViewCompat.setPaddingRelative(
@@ -2798,6 +2799,7 @@ public class TabLayout extends HorizontalScrollView {
       return right - left;
     }
 
+    @Nullable
     public Tab getTab() {
       return tab;
     }
