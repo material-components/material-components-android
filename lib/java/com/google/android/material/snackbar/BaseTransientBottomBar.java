@@ -33,6 +33,7 @@ import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
@@ -57,6 +58,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -222,6 +224,8 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
   private static final int[] SNACKBAR_STYLE_ATTR = new int[] {R.attr.snackbarStyle};
 
+  private static final String TAG = BaseTransientBottomBar.class.getSimpleName();
+
   static {
     handler =
         new Handler(
@@ -265,15 +269,25 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
             return;
           }
 
+          LayoutParams layoutParams = view.getLayoutParams();
+          if (!(layoutParams instanceof MarginLayoutParams)) {
+            Log.w(
+                TAG,
+                "Unable to apply gesture inset because layout params are not MarginLayoutParams");
+            return;
+          }
+
           // Move view outside of bottom gesture area
-          MarginLayoutParams layoutParams = (MarginLayoutParams) view.getLayoutParams();
-          layoutParams.bottomMargin += extraBottomMarginGestureInset - currentInsetBottom;
+          MarginLayoutParams marginParams = (MarginLayoutParams) layoutParams;
+          marginParams.bottomMargin += extraBottomMarginGestureInset - currentInsetBottom;
           view.requestLayout();
         }
       };
 
-  private final int originalBottomMargin;
+  @Nullable private Rect originalMargins;
   private int extraBottomMarginWindowInset;
+  private int extraLeftMarginWindowInset;
+  private int extraRightMarginWindowInset;
   private int extraBottomMarginGestureInset;
   private int extraBottomMarginAnchorView;
 
@@ -340,7 +354,16 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     }
     view.addView(content);
 
-    originalBottomMargin = ((MarginLayoutParams) view.getLayoutParams()).bottomMargin;
+    LayoutParams layoutParams = view.getLayoutParams();
+    if (layoutParams instanceof MarginLayoutParams) {
+      MarginLayoutParams marginParams = (MarginLayoutParams) layoutParams;
+      originalMargins =
+          new Rect(
+              marginParams.leftMargin,
+              marginParams.topMargin,
+              marginParams.rightMargin,
+              marginParams.bottomMargin);
+    }
 
     ViewCompat.setAccessibilityLiveRegion(view, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
     ViewCompat.setImportantForAccessibility(view, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
@@ -354,10 +377,11 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
           @Override
           public WindowInsetsCompat onApplyWindowInsets(
               View v, @NonNull WindowInsetsCompat insets) {
-            // Copy over the bottom inset as bottom margin so that we're displayed above the
-            // navigation bar.
+            // Save window insets for additional margins, e.g., to dodge the system navigation bar
             extraBottomMarginWindowInset = insets.getSystemWindowInsetBottom();
-            updateBottomMargin();
+            extraLeftMarginWindowInset = insets.getSystemWindowInsetLeft();
+            extraRightMarginWindowInset = insets.getSystemWindowInsetRight();
+            updateMargins();
             return insets;
           }
         });
@@ -406,11 +430,19 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     return background;
   }
 
-  private void updateBottomMargin() {
-    MarginLayoutParams layoutParams = (MarginLayoutParams) view.getLayoutParams();
-    layoutParams.bottomMargin =
-        originalBottomMargin
-            + (anchorView != null ? extraBottomMarginAnchorView : extraBottomMarginWindowInset);
+  private void updateMargins() {
+    LayoutParams layoutParams = view.getLayoutParams();
+    if (!(layoutParams instanceof MarginLayoutParams) || originalMargins == null) {
+      Log.w(TAG, "Unable to update margins because layout params are not MarginLayoutParams");
+      return;
+    }
+
+    int extraBottomMargin =
+        anchorView != null ? extraBottomMarginAnchorView : extraBottomMarginWindowInset;
+    MarginLayoutParams marginParams = (MarginLayoutParams) layoutParams;
+    marginParams.bottomMargin = originalMargins.bottom + extraBottomMargin;
+    marginParams.leftMargin = originalMargins.left + extraLeftMarginWindowInset;
+    marginParams.rightMargin = originalMargins.right + extraRightMarginWindowInset;
     view.requestLayout();
 
     if (VERSION.SDK_INT >= VERSION_CODES.Q && shouldUpdateGestureInset()) {
@@ -664,7 +696,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
               WindowInsets insets = view.getRootWindowInsets();
               if (insets != null) {
                 extraBottomMarginGestureInset = insets.getMandatorySystemGestureInsets().bottom;
-                updateBottomMargin();
+                updateMargins();
               }
             }
           }
@@ -695,7 +727,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
       }
 
       extraBottomMarginAnchorView = calculateBottomMarginForAnchorView();
-      updateBottomMargin();
+      updateMargins();
 
       // Set view to INVISIBLE so it doesn't flash on the screen before the inset adjustment is
       // handled and the enter animation is started
