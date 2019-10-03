@@ -81,7 +81,7 @@ public class BottomSheetBehaviorTest {
 
     private IdlingResource.ResourceCallback resourceCallback;
 
-    public Callback(BottomSheetBehavior behavior) {
+    public Callback(BottomSheetBehavior<?> behavior) {
       behavior.addBottomSheetCallback(this);
       int state = behavior.getState();
       isIdle = isIdleState(state);
@@ -281,7 +281,7 @@ public class BottomSheetBehaviorTest {
   @Test
   @SmallTest
   public void testInitialSetup() {
-    BottomSheetBehavior behavior = getBehavior();
+    BottomSheetBehavior<?> behavior = getBehavior();
     assertThat(behavior.getState(), is(BottomSheetBehavior.STATE_COLLAPSED));
     assertThat(behavior.isFitToContents(), is(true));
     CoordinatorLayout coordinatorLayout = getCoordinatorLayout();
@@ -329,7 +329,7 @@ public class BottomSheetBehaviorTest {
                     // Manually calculate the ending coordinates to make sure that the bottom
                     // sheet is collapsed, not hidden
                     view -> {
-                      BottomSheetBehavior behavior = getBehavior();
+                      BottomSheetBehavior<?> behavior = getBehavior();
                       return new float[] {
                         // x: center of the bottom sheet
                         view.getWidth() / 2,
@@ -401,7 +401,7 @@ public class BottomSheetBehaviorTest {
                     // Manually calculate the ending coordinates to make sure that the bottom
                     // sheet is collapsed, not hidden
                     view -> {
-                      BottomSheetBehavior behavior = getBehavior();
+                      BottomSheetBehavior<?> behavior = getBehavior();
                       return new float[] {
                         // x: center of the bottom sheet
                         view.getWidth() / 2,
@@ -568,7 +568,7 @@ public class BottomSheetBehaviorTest {
   @MediumTest
   public void testNestedScroll() throws Throwable {
     final ViewGroup bottomSheet = getBottomSheet();
-    final BottomSheetBehavior behavior = getBehavior();
+    final BottomSheetBehavior<?> behavior = getBehavior();
     final NestedScrollView scroll = new NestedScrollView(activityTestRule.getActivity());
     // Set up nested scrolling area
     activityTestRule.runOnUiThread(
@@ -652,7 +652,7 @@ public class BottomSheetBehaviorTest {
         .check(
             (view, e) -> {
               assertThat(view, is(ViewMatchers.isDisplayed()));
-              BottomSheetBehavior behavior = BottomSheetBehavior.from(view);
+              BottomSheetBehavior<?> behavior = BottomSheetBehavior.from(view);
               assertThat(behavior.getState(), is(BottomSheetBehavior.STATE_DRAGGING));
             })
         // Add a new view
@@ -847,7 +847,7 @@ public class BottomSheetBehaviorTest {
     return activityTestRule.getActivity().mBottomSheet;
   }
 
-  private BottomSheetBehavior getBehavior() {
+  private BottomSheetBehavior<?> getBehavior() {
     return activityTestRule.getActivity().mBehavior;
   }
 

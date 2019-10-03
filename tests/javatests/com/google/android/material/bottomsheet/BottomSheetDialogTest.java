@@ -233,7 +233,7 @@ public class BottomSheetDialogTest {
 
       @Override
       public void perform(UiController uiController, View view) {
-        BottomSheetBehavior behavior = BottomSheetBehavior.from(view);
+        BottomSheetBehavior<?> behavior = BottomSheetBehavior.from(view);
         behavior.setPeekHeight(view.getHeight() + 100);
       }
     };
