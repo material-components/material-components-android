@@ -63,6 +63,7 @@ class BorderDrawable extends Drawable {
   private final Path shapePath = new Path();
   private final Rect rect = new Rect();
   private final RectF rectF = new RectF();
+  private final RectF boundsRectF = new RectF();
   private final BorderState state = new BorderState();
   
   @Dimension float borderWidth;
@@ -131,9 +132,10 @@ class BorderDrawable extends Drawable {
 
     // We need to inset the oval bounds by half the border width. This is because stroke draws
     // the center of the border on the dimension. Whereas we want the stroke on the inside.
-    float cornerSize = shapeAppearanceModel.getTopLeftCorner().getCornerSize();
+    float cornerSize =
+        shapeAppearanceModel.getTopLeftCornerSize().getCornerSize(getBoundsAsRectF());
     float radius = Math.min(cornerSize, rectF.width() / 2f);
-    if (shapeAppearanceModel.isRoundRect()) {
+    if (shapeAppearanceModel.isRoundRect(getBoundsAsRectF())) {
       rectF.inset(halfBorderWidth, halfBorderWidth);
       canvas.drawRoundRect(rectF, radius, radius, paint);
     }
@@ -142,8 +144,8 @@ class BorderDrawable extends Drawable {
   @TargetApi(VERSION_CODES.LOLLIPOP)
   @Override
   public void getOutline(@NonNull Outline outline) {
-    if (shapeAppearanceModel.isRoundRect()) {
-      float radius = shapeAppearanceModel.getTopLeftCorner().getCornerSize();
+    if (shapeAppearanceModel.isRoundRect(getBoundsAsRectF())) {
+      float radius = shapeAppearanceModel.getTopLeftCornerSize().getCornerSize(getBoundsAsRectF());
       outline.setRoundRect(getBounds(), radius);
       return;
     }
@@ -158,11 +160,17 @@ class BorderDrawable extends Drawable {
 
   @Override
   public boolean getPadding(@NonNull Rect padding) {
-    if (shapeAppearanceModel.isRoundRect()) {
+    if (shapeAppearanceModel.isRoundRect(getBoundsAsRectF())) {
       final int borderWidth = Math.round(this.borderWidth);
       padding.set(borderWidth, borderWidth, borderWidth, borderWidth);
     }
     return true;
+  }
+
+  @NonNull
+  protected RectF getBoundsAsRectF() {
+    boundsRectF.set(getBounds());
+    return boundsRectF;
   }
 
   public ShapeAppearanceModel getShapeAppearanceModel() {

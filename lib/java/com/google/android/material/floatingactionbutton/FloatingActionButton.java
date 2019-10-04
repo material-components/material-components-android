@@ -76,6 +76,7 @@ import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.internal.VisibilityAwareImageButton;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shadow.ShadowViewDelegate;
+import com.google.android.material.shape.AbsoluteCornerSize;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.shape.Shapeable;
 import com.google.android.material.stateful.ExtendableSavedState;
@@ -240,7 +241,9 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     MotionSpec hideMotionSpec =
         MotionSpec.createFromAttribute(context, a, R.styleable.FloatingActionButton_hideMotionSpec);
     ShapeAppearanceModel shapeAppearance =
-        ShapeAppearanceModel.builder(context, attrs, defStyleAttr, DEF_STYLE_RES, -1).build();
+        ShapeAppearanceModel.builder(
+                context, attrs, defStyleAttr, DEF_STYLE_RES, ShapeAppearanceModel.PILL)
+            .build();
 
     boolean usingDefaultCorner = isUsingDefaultCorner(shapeAppearance);
     boolean ensureMinTouchTargetSize = a
@@ -1360,7 +1363,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   }
 
   private boolean isUsingDefaultCorner(@NonNull ShapeAppearanceModel shapeAppearance) {
-    return shapeAppearance.getTopRightCorner().getCornerSize() == -1;
+    return ((AbsoluteCornerSize) shapeAppearance.getTopRightCornerSize()).getCornerSize()
+        == ShapeAppearanceModel.PILL;
   }
 
   class TransformationCallbackWrapper<T extends FloatingActionButton>

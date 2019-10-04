@@ -1406,9 +1406,7 @@ public class ChipDrawable extends MaterialShapeDrawable
    * @attr ref com.google.android.material.R.styleable#Chip_chipCornerRadius
    */
   public float getChipCornerRadius() {
-    return isShapeThemingEnabled
-        ? getShapeAppearanceModel().getTopLeftCorner().getCornerSize()
-        : chipCornerRadius;
+    return isShapeThemingEnabled ? getTopLeftCornerResolvedSize() : chipCornerRadius;
   }
 
   /**

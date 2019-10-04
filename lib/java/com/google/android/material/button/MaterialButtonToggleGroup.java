@@ -36,6 +36,9 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
+import com.google.android.material.shape.AbsoluteCornerSize;
+import com.google.android.material.shape.CornerSize;
+import com.google.android.material.shape.ShapeAppearanceModel;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -203,10 +206,10 @@ public class MaterialButtonToggleGroup extends RelativeLayout {
     ShapeAppearanceModel shapeAppearanceModel = buttonChild.getShapeAppearanceModel();
     originalCornerData.add(
         new CornerData(
-            shapeAppearanceModel.getTopLeftCorner().getCornerSize(),
-            shapeAppearanceModel.getTopRightCorner().getCornerSize(),
-            shapeAppearanceModel.getBottomRightCorner().getCornerSize(),
-            shapeAppearanceModel.getBottomLeftCorner().getCornerSize()));
+            shapeAppearanceModel.getTopLeftCornerSize(),
+            shapeAppearanceModel.getTopRightCornerSize(),
+            shapeAppearanceModel.getBottomRightCornerSize(),
+            shapeAppearanceModel.getBottomLeftCornerSize()));
   }
 
   @Override
@@ -491,8 +494,8 @@ public class MaterialButtonToggleGroup extends RelativeLayout {
               // Keeps the left corners of the first child in LTR, or the last child in RTL
               shapeAppearanceModelBuilder
                   .setTopLeftCornerSize(cornerData.topLeft)
-                  .setTopRightCornerSize(0)
-                  .setBottomRightCornerSize(0)
+                  .setTopRightCornerSize(new AbsoluteCornerSize(0))
+                  .setBottomRightCornerSize(new AbsoluteCornerSize(0))
                   .setBottomLeftCornerSize(cornerData.bottomLeft);
             } else if (i != 0 && i < numChildren - 1) {
               // Sets corner radii of all middle children to 0
@@ -500,10 +503,10 @@ public class MaterialButtonToggleGroup extends RelativeLayout {
             } else if (i == (ViewUtils.isLayoutRtl(this) ? 0 : (numChildren - 1))) {
               // Keeps the right corners of the last child in LTR, or the first child in RTL
               shapeAppearanceModelBuilder
-                  .setTopLeftCornerSize(0)
+                  .setTopLeftCornerSize(new AbsoluteCornerSize(0))
                   .setTopRightCornerSize(cornerData.topRight)
                   .setBottomRightCornerSize(cornerData.bottomRight)
-                  .setBottomLeftCornerSize(0);
+                  .setBottomLeftCornerSize(new AbsoluteCornerSize(0));
             }
           }
           button.setShapeAppearanceModel(shapeAppearanceModelBuilder.build());
@@ -620,12 +623,13 @@ public class MaterialButtonToggleGroup extends RelativeLayout {
   }
 
   private static class CornerData {
-    final float topLeft;
-    final float topRight;
-    final float bottomRight;
-    final float bottomLeft;
+    final CornerSize topLeft;
+    final CornerSize topRight;
+    final CornerSize bottomRight;
+    final CornerSize bottomLeft;
 
-    CornerData(float topLeft, float topRight, float bottomRight, float bottomLeft) {
+    CornerData(
+        CornerSize topLeft, CornerSize topRight, CornerSize bottomRight, CornerSize bottomLeft) {
       this.topLeft = topLeft;
       this.topRight = topRight;
       this.bottomRight = bottomRight;
