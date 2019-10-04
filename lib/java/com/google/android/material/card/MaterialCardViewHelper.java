@@ -481,6 +481,18 @@ class MaterialCardViewHelper {
         // using it as the background will *not* change the padding of the view.
         return false;
       }
+
+      /** Don't force the card to be as big as this drawable */
+      @Override
+      public int getMinimumWidth() {
+        return -1;
+      }
+
+      /** Don't force the card to be as big as this drawable */
+      @Override
+      public int getMinimumHeight() {
+        return -1;
+      }
     };
   }
 
