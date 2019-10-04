@@ -1077,13 +1077,13 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     calculatePathForSize(new RectF(0, 0, width, height), path);
   }
 
-  /** @deprecated see {@link ShapeAppearancePathProvider} */
-  @Deprecated
-  public void getPathForSize(@NonNull Rect bounds, @NonNull Path path) {
-    calculatePathForSize(new RectF(bounds), path);
-  }
-
-  private void calculatePathForSize(RectF bounds, @NonNull Path path) {
+  /**
+   * Interim method to expose the pathProvider.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  protected final void calculatePathForSize(@NonNull RectF bounds, @NonNull Path path) {
     pathProvider.calculatePath(
         drawableState.shapeAppearanceModel,
         drawableState.interpolation,
