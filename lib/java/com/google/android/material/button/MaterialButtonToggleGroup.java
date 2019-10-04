@@ -498,7 +498,7 @@ public class MaterialButtonToggleGroup extends RelativeLayout {
                   .setBottomLeftCornerSize(cornerData.bottomLeft);
             } else if (i != 0 && i < numChildren - 1) {
               // Sets corner radii of all middle children to 0
-              shapeAppearanceModelBuilder.setCornerRadius(0);
+              shapeAppearanceModelBuilder.setAllCornerSizes(0);
             } else if (i == (ViewUtils.isLayoutRtl(this) ? 0 : (numChildren - 1))) {
               // Keeps the right corners of the last child in LTR, or the first child in RTL
               shapeAppearanceModelBuilder

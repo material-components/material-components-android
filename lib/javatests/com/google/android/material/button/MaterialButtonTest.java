@@ -58,7 +58,7 @@ public class MaterialButtonTest {
   public void testSetShapeAppearanceModel_setCornerRadius() {
     MaterialButton materialButton = new MaterialButton(context);
     ShapeAppearanceModel shapeAppearanceModel =
-        ShapeAppearanceModel.builder().setCornerRadius(LARGE_CORNER_SIZE).build();
+        ShapeAppearanceModel.builder().setAllCornerSizes(LARGE_CORNER_SIZE).build();
 
     materialButton.setShapeAppearanceModel(shapeAppearanceModel);
 

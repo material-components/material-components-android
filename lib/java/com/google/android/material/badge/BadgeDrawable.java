@@ -676,7 +676,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
 
     updateBadgeBounds(badgeBounds, badgeCenterX, badgeCenterY, halfBadgeWidth, halfBadgeHeight);
 
-    shapeDrawable.setCornerRadius(cornerRadius);
+    shapeDrawable.setCornerSize(cornerRadius);
     if (!tmpRect.equals(badgeBounds)) {
       shapeDrawable.setBounds(badgeBounds);
     }

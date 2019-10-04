@@ -130,7 +130,7 @@ public class MaterialAlertDialogBuilder extends AlertDialog.Builder {
       float dialogCornerRadius =
           dialogCornerRadiusValue.getDimension(getContext().getResources().getDisplayMetrics());
       if (dialogCornerRadiusValue.type == TypedValue.TYPE_DIMENSION && dialogCornerRadius >= 0) {
-        materialShapeDrawable.setCornerRadius(dialogCornerRadius);
+        materialShapeDrawable.setCornerSize(dialogCornerRadius);
       }
     }
     background = materialShapeDrawable;

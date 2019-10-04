@@ -1140,7 +1140,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
   }
 
   /**
-   * @deprecated call {@link ShapeAppearanceModel#withCornerRadius()} or call {@link
+   * @deprecated call {@link ShapeAppearanceModel#withCornerSize()} or call {@link
    *     ShapeAppearanceModel#toBuilder()} on the {@link #getShapeAppearanceModel()}, modify the
    *     shape using the builder and then call {@link
    *     #setShapeAppearanceModel(ShapeAppearanceModel)}.
@@ -1164,7 +1164,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
   }
 
   /**
-   * @deprecated call {@link ShapeAppearanceModel#withCornerRadius()} or call {@link
+   * @deprecated call {@link ShapeAppearanceModel#withCornerSize()} or call {@link
    *     ShapeAppearanceModel#toBuilder()} on the {@link #getShapeAppearanceModel()}, modify the
    *     shape using the builder and then call {@link
    *     #setShapeAppearanceModel(ShapeAppearanceModel)}.

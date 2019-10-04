@@ -88,7 +88,7 @@ class MaterialButtonHelper {
     // cornerRadius should override whatever corner radius is set in shapeAppearanceModel
     if (attributes.hasValue(R.styleable.MaterialButton_cornerRadius)) {
       cornerRadius = attributes.getDimensionPixelSize(R.styleable.MaterialButton_cornerRadius, -1);
-      setShapeAppearanceModel(shapeAppearanceModel.withCornerRadius(cornerRadius));
+      setShapeAppearanceModel(shapeAppearanceModel.withCornerSize(cornerRadius));
       cornerRadiusSet = true;
     }
 
@@ -307,7 +307,7 @@ class MaterialButtonHelper {
       this.cornerRadius = cornerRadius;
       cornerRadiusSet = true;
 
-      setShapeAppearanceModel(shapeAppearanceModel.withCornerRadius(cornerRadius));
+      setShapeAppearanceModel(shapeAppearanceModel.withCornerSize(cornerRadius));
     }
   }
 
