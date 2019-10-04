@@ -76,7 +76,6 @@ import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.internal.VisibilityAwareImageButton;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shadow.ShadowViewDelegate;
-import com.google.android.material.shape.AbsoluteCornerSize;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.shape.Shapeable;
 import com.google.android.material.stateful.ExtendableSavedState;
@@ -245,7 +244,6 @@ public class FloatingActionButton extends VisibilityAwareImageButton
                 context, attrs, defStyleAttr, DEF_STYLE_RES, ShapeAppearanceModel.PILL)
             .build();
 
-    boolean usingDefaultCorner = isUsingDefaultCorner(shapeAppearance);
     boolean ensureMinTouchTargetSize = a
         .getBoolean(R.styleable.FloatingActionButton_ensureMinTouchTargetSize, false);
 
@@ -256,7 +254,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
 
     expandableWidgetHelper = new ExpandableWidgetHelper(this);
 
-    getImpl().setShapeAppearance(shapeAppearance, usingDefaultCorner);
+    getImpl().setShapeAppearance(shapeAppearance);
     getImpl()
         .initializeBackgroundDrawable(backgroundTint, backgroundTintMode, rippleColor, borderWidth);
     getImpl().setMinTouchTargetSize(minTouchTargetSize);
@@ -522,7 +520,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   /** Sets the {@link ShapeAppearanceModel} for this {@link FloatingActionButton}. */
   @Override
   public void setShapeAppearanceModel(@NonNull ShapeAppearanceModel shapeAppearance) {
-    getImpl().setShapeAppearance(shapeAppearance, isUsingDefaultCorner(shapeAppearance));
+    getImpl().setShapeAppearance(shapeAppearance);
   }
 
   /** Returns the {@link ShapeAppearanceModel} for this {@link FloatingActionButton}. */
@@ -691,7 +689,6 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     customSize = NO_CUSTOM_SIZE;
     if (size != this.size) {
       this.size = size;
-      getImpl().updateSize();
       requestLayout();
     }
   }
@@ -752,7 +749,6 @@ public class FloatingActionButton extends VisibilityAwareImageButton
 
     if (size != customSize) {
       customSize = size;
-      getImpl().updateSize();
       requestLayout();
     }
   }
@@ -1360,11 +1356,6 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   public void removeTransformationCallback(
       @NonNull TransformationCallback<? extends FloatingActionButton> listener) {
     getImpl().removeTransformationCallback(new TransformationCallbackWrapper(listener));
-  }
-
-  private boolean isUsingDefaultCorner(@NonNull ShapeAppearanceModel shapeAppearance) {
-    return ((AbsoluteCornerSize) shapeAppearance.getTopRightCornerSize()).getCornerSize()
-        == ShapeAppearanceModel.PILL;
   }
 
   class TransformationCallbackWrapper<T extends FloatingActionButton>

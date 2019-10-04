@@ -60,6 +60,7 @@ import android.util.AttributeSet;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.elevation.ElevationOverlayProvider;
 import com.google.android.material.shadow.ShadowRenderer;
+import com.google.android.material.shape.ShapeAppearanceModel.CornerSizeUnaryOperator;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -1096,7 +1097,20 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   private void calculateStrokePath() {
     // Adjust corner radius in order to draw the stroke so that the corners of the background are
     // drawn on top of the edges.
-    strokeShapeAppearance = getShapeAppearanceModel().withAdjustedCorners(-getStrokeInsetLength());
+    strokeShapeAppearance =
+        getShapeAppearanceModel()
+            .withTransformedCornerSizes(
+                new CornerSizeUnaryOperator() {
+                  @NonNull
+                  @Override
+                  public CornerSize apply(@NonNull CornerSize cornerSize) {
+                    // Don't adjust for relative corners they will change by themselves when the
+                    // bounds change.
+                    return cornerSize instanceof RelativeCornerSize
+                        ? cornerSize
+                        : new AdjustedCornerSize(-getStrokeInsetLength(), cornerSize);
+                  }
+                });
 
     pathProvider.calculatePath(
         strokeShapeAppearance,

@@ -71,8 +71,7 @@
   </style>
 
   <style name="ShapeAppearanceOverlay.MaterialComponents.Chip" parent="">
-    <!-- Replace with 50% -->
-    <item name="cornerSize">16dp</item>
+    <item name="cornerSize">50%</item>
   </style>
 
   <!-- Style for Chips that appear in text fields as a span.

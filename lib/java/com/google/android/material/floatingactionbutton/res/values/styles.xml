@@ -51,8 +51,7 @@
   </style>
 
   <style name="ShapeAppearanceOverlay.MaterialComponents.FloatingActionButton" parent="">
-    <!-- use @null to change to 50% programmatically. -->
-    <item name="cornerSize">@null</item>
+    <item name="cornerSize">50%</item>
   </style>
 
   <style name="Widget.MaterialComponents.ExtendedFloatingActionButton" parent="Widget.MaterialComponents.Button">
@@ -82,8 +81,13 @@
     <item name="iconTint">@color/mtrl_extended_fab_text_color_selector</item>
     <item name="rippleColor">@color/mtrl_extended_fab_ripple_color</item>
     <item name="shapeAppearanceOverlay">
-      @style/ShapeAppearanceOverlay.MaterialComponents.FloatingActionButton
+      @style/ShapeAppearanceOverlay.MaterialComponents.ExtendedFloatingActionButton
     </item>
+  </style>
+
+  <style name="ShapeAppearanceOverlay.MaterialComponents.ExtendedFloatingActionButton" parent="">
+    <!-- TODO(b/121352029): ExtendedFloatingActionButton adds 1px to the height -->
+    <item name="cornerSize">@null</item>
   </style>
 
   <style name="Widget.MaterialComponents.ExtendedFloatingActionButton.Icon" parent="Widget.MaterialComponents.ExtendedFloatingActionButton">

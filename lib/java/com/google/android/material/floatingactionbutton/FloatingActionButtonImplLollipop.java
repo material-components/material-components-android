@@ -229,9 +229,6 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
   @Override
   MaterialShapeDrawable createShapeDrawable() {
     ShapeAppearanceModel shapeAppearance = checkNotNull(this.shapeAppearance);
-    if (usingDefaultCorner) {
-      shapeAppearance = shapeAppearance.withCornerRadius(view.getSizeDimension() / 2f);
-    }
     return new AlwaysStatefulMaterialShapeDrawable(shapeAppearance);
   }
 

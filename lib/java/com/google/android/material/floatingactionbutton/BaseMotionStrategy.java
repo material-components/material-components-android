@@ -134,11 +134,6 @@ abstract class BaseMotionStrategy implements MotionStrategy {
       animators.add(spec.getAnimator("height", fab, ExtendedFloatingActionButton.HEIGHT));
     }
 
-    if (spec.hasPropertyValues("cornerRadius") && fab.isUsingPillCorner()) {
-      animators
-          .add(spec.getAnimator("cornerRadius", fab, ExtendedFloatingActionButton.CORNER_RADIUS));
-    }
-
     AnimatorSet set = new AnimatorSet();
     AnimatorSetCompat.playTogether(set, animators);
     return set;
