@@ -720,17 +720,18 @@ public final class CollapsingTextHelper {
           canvas.drawText(textToDrawCollapsed, 0, textToDrawCollapsed.length(), x,
               y - ascent / scale, textPaint);
         } else {
+          int originalAlpha = textPaint.getAlpha();
           // positon expanded text appropriately
           canvas.translate(currentExpandedX, y);
           // Expanded text
-          textPaint.setAlpha((int) (expandedTextBlend * 255));
+          textPaint.setAlpha((int) (expandedTextBlend * originalAlpha));
           textLayout.draw(canvas);
 
           // position the overlays
           canvas.translate(x - currentExpandedX, 0);
 
           // Collapsed text
-          textPaint.setAlpha((int) (collapsedTextBlend * 255));
+          textPaint.setAlpha((int) (collapsedTextBlend * originalAlpha));
           canvas.drawText(textToDrawCollapsed, 0, textToDrawCollapsed.length(), 0,
               -ascent / scale, textPaint);
           // Remove ellipsis for Cross-section animation
@@ -738,8 +739,8 @@ public final class CollapsingTextHelper {
           if (tmp.endsWith("\u2026")) {
             tmp = tmp.substring(0, tmp.length() - 1);
           }
-          // Cross-section between both texts (should stay at alpha = 255)
-          textPaint.setAlpha(255);
+          // Cross-section between both texts (should stay at original alpha)
+          textPaint.setAlpha(originalAlpha);
           canvas.drawText(tmp, 0, textLayout.getLineEnd(0) <= tmp.length() ?
               textLayout.getLineEnd(0) : tmp.length(), 0, -ascent / scale, textPaint);
         }
