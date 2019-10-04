@@ -280,7 +280,7 @@ class MaterialCardViewHelper {
   }
 
   float getCornerRadius() {
-    return shapeAppearanceModel.getTopLeftCorner().getCornerSize();
+    return bgDrawable.getTopLeftCornerResolvedSize();
   }
 
   void setProgress(@FloatRange(from = 0f, to = 1f) float progress) {
@@ -505,7 +505,7 @@ class MaterialCardViewHelper {
   }
 
   private boolean canClipToOutline() {
-    return VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP && shapeAppearanceModel.isRoundRect();
+    return VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP && bgDrawable.isRoundRect();
   }
 
   private float getParentCardViewCalculatedCornerPadding() {
@@ -537,18 +537,25 @@ class MaterialCardViewHelper {
   private float calculateActualCornerPadding() {
     return Math.max(
         Math.max(
-            calculateCornerPaddingForCornerTreatment(shapeAppearanceModel.getTopLeftCorner()),
-            calculateCornerPaddingForCornerTreatment(shapeAppearanceModel.getTopRightCorner())),
+            calculateCornerPaddingForCornerTreatment(
+                shapeAppearanceModel.getTopLeftCorner(), bgDrawable.getTopLeftCornerResolvedSize()),
+            calculateCornerPaddingForCornerTreatment(
+                shapeAppearanceModel.getTopRightCorner(),
+                bgDrawable.getTopRightCornerResolvedSize())),
         Math.max(
-            calculateCornerPaddingForCornerTreatment(shapeAppearanceModel.getBottomRightCorner()),
-            calculateCornerPaddingForCornerTreatment(shapeAppearanceModel.getBottomLeftCorner())));
+            calculateCornerPaddingForCornerTreatment(
+                shapeAppearanceModel.getBottomRightCorner(),
+                bgDrawable.getBottomRightCornerResolvedSize()),
+            calculateCornerPaddingForCornerTreatment(
+                shapeAppearanceModel.getBottomLeftCorner(),
+                bgDrawable.getBottomLeftCornerResolvedSize())));
   }
 
-  private float calculateCornerPaddingForCornerTreatment(CornerTreatment treatment) {
+  private float calculateCornerPaddingForCornerTreatment(CornerTreatment treatment, float size) {
     if (treatment instanceof RoundedCornerTreatment) {
-      return (float) ((1 - COS_45) * treatment.getCornerSize());
+      return (float) ((1 - COS_45) * size);
     } else if (treatment instanceof CutCornerTreatment) {
-      return treatment.getCornerSize() / 2;
+      return size / 2;
     }
     return 0;
   }

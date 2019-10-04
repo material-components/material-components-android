@@ -791,8 +791,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * 21 or when the shape is concave.
    */
   private boolean requiresCompatShadow() {
-    return VERSION.SDK_INT < VERSION_CODES.LOLLIPOP
-        || (!drawableState.shapeAppearanceModel.isRoundRect() && !path.isConvex());
+    return VERSION.SDK_INT < VERSION_CODES.LOLLIPOP || (!isRoundRect() && !path.isConvex());
   }
 
   /**
@@ -992,8 +991,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
       @NonNull Path path,
       @NonNull ShapeAppearanceModel shapeAppearanceModel,
       @NonNull RectF bounds) {
-    if (shapeAppearanceModel.isRoundRect()) {
-      float cornerSize = shapeAppearanceModel.getTopRightCorner().getCornerSize();
+    if (shapeAppearanceModel.isRoundRect(bounds)) {
+      float cornerSize = shapeAppearanceModel.getTopRightCornerSize().getCornerSize(bounds);
       canvas.drawRoundRect(bounds, cornerSize, cornerSize, paint);
     } else {
       canvas.drawPath(path, paint);
@@ -1113,10 +1112,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
       return;
     }
 
-    boolean isRoundRect = drawableState.shapeAppearanceModel.isRoundRect();
-
-    if (isRoundRect) {
-      float radius = drawableState.shapeAppearanceModel.getTopLeftCorner().getCornerSize();
+    if (isRoundRect()) {
+      float radius = getTopLeftCornerResolvedSize();
       outline.setRoundRect(getBounds(), radius);
       return;
     }
@@ -1258,6 +1255,49 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     float inset = getStrokeInsetLength();
     insetRectF.inset(inset, inset);
     return insetRectF;
+  }
+
+  /** Returns the actual size of the top left corner for the current bounds. */
+  public float getTopLeftCornerResolvedSize() {
+    return drawableState
+        .shapeAppearanceModel
+        .getTopLeftCornerSize()
+        .getCornerSize(getBoundsAsRectF());
+  }
+
+  /** Returns the actual size of the top right corner for the current bounds. */
+  public float getTopRightCornerResolvedSize() {
+    return drawableState
+        .shapeAppearanceModel
+        .getTopRightCornerSize()
+        .getCornerSize(getBoundsAsRectF());
+  }
+
+  /** Returns the actual size of the bottom left corner for the current bounds. */
+  public float getBottomLeftCornerResolvedSize() {
+    return drawableState
+        .shapeAppearanceModel
+        .getBottomLeftCornerSize()
+        .getCornerSize(getBoundsAsRectF());
+  }
+
+  /** Returns the actual size of the bottom right corner for the current bounds. */
+  public float getBottomRightCornerResolvedSize() {
+    return drawableState
+        .shapeAppearanceModel
+        .getBottomRightCornerSize()
+        .getCornerSize(getBoundsAsRectF());
+  }
+
+  /**
+   * Checks Corner and Edge treatments to see if we can use {@link Canvas#drawRoundRect(RectF,float,
+   * float, Paint)} "} to draw this model.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  public boolean isRoundRect() {
+    return drawableState.shapeAppearanceModel.isRoundRect(getBoundsAsRectF());
   }
 
   static final class MaterialShapeDrawableState extends ConstantState {

@@ -94,9 +94,6 @@ public class CalendarStyleTest {
     }
     float cornerSize =
         context.getResources().getDimension(R.dimen.test_mtrl_calendar_day_cornerSize);
-    assertEquals(
-        cornerSize,
-        shapeDrawable.getShapeAppearanceModel().getTopLeftCorner().getCornerSize(),
-        0.1);
+    assertEquals(cornerSize, shapeDrawable.getTopLeftCornerResolvedSize(), 0.1);
   }
 }

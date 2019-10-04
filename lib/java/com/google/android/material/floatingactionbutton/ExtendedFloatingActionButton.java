@@ -47,6 +47,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.internal.DescendantOffsetUtils;
 import com.google.android.material.internal.ThemeEnforcement;
+import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import java.util.List;
 
@@ -680,10 +681,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
 
         @Override
         public Float get(@NonNull View object) {
-          return ((ExtendedFloatingActionButton) object)
-              .getShapeAppearanceModel()
-              .getTopRightCorner()
-              .getCornerSize();
+          return ((MaterialShapeDrawable) object.getBackground()).getTopRightCornerResolvedSize();
         }
       };
 

@@ -109,14 +109,14 @@ public class MaterialButtonTest {
 
   private void assertThatCornerSizesMatch(
       ShapeAppearanceModel shapeAppearanceModel, ShapeAppearanceModel newShapeAppearanceModel) {
-    assertThat(shapeAppearanceModel.getTopLeftCorner().getCornerSize())
-        .isEqualTo(newShapeAppearanceModel.getTopLeftCorner().getCornerSize());
-    assertThat(shapeAppearanceModel.getTopRightCorner().getCornerSize())
-        .isEqualTo(newShapeAppearanceModel.getTopRightCorner().getCornerSize());
-    assertThat(shapeAppearanceModel.getBottomRightCorner().getCornerSize())
-        .isEqualTo(newShapeAppearanceModel.getBottomRightCorner().getCornerSize());
-    assertThat(shapeAppearanceModel.getBottomLeftCorner().getCornerSize())
-        .isEqualTo(newShapeAppearanceModel.getBottomLeftCorner().getCornerSize());
+    assertThat(shapeAppearanceModel.getTopLeftCornerSize())
+        .isEqualTo(newShapeAppearanceModel.getTopLeftCornerSize());
+    assertThat(shapeAppearanceModel.getTopRightCornerSize())
+        .isEqualTo(newShapeAppearanceModel.getTopRightCornerSize());
+    assertThat(shapeAppearanceModel.getBottomRightCornerSize())
+        .isEqualTo(newShapeAppearanceModel.getBottomRightCornerSize());
+    assertThat(shapeAppearanceModel.getBottomLeftCornerSize())
+        .isEqualTo(newShapeAppearanceModel.getBottomLeftCornerSize());
   }
 
   @Test

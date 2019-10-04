@@ -1034,11 +1034,10 @@ public class TextInputLayout extends LinearLayout {
       float boxCornerRadiusTopEnd,
       float boxCornerRadiusBottomStart,
       float boxCornerRadiusBottomEnd) {
-    if (shapeAppearanceModel.getTopLeftCorner().getCornerSize() != boxCornerRadiusTopStart
-        || shapeAppearanceModel.getTopRightCorner().getCornerSize() != boxCornerRadiusTopEnd
-        || shapeAppearanceModel.getBottomRightCorner().getCornerSize() != boxCornerRadiusBottomEnd
-        || shapeAppearanceModel.getBottomLeftCorner().getCornerSize()
-            != boxCornerRadiusBottomStart) {
+    if (boxBackground.getTopLeftCornerResolvedSize() != boxCornerRadiusTopStart
+        || boxBackground.getTopRightCornerResolvedSize() != boxCornerRadiusTopEnd
+        || boxBackground.getBottomRightCornerResolvedSize() != boxCornerRadiusBottomEnd
+        || boxBackground.getBottomLeftCornerResolvedSize() != boxCornerRadiusBottomStart) {
       shapeAppearanceModel =
           shapeAppearanceModel.toBuilder()
               .setTopLeftCornerSize(boxCornerRadiusTopStart)
@@ -1057,7 +1056,7 @@ public class TextInputLayout extends LinearLayout {
    * @see #setBoxCornerRadii(float, float, float, float)
    */
   public float getBoxCornerRadiusTopStart() {
-    return shapeAppearanceModel.getTopLeftCorner().getCornerSize();
+    return boxBackground.getTopLeftCornerResolvedSize();
   }
 
   /**
@@ -1067,7 +1066,7 @@ public class TextInputLayout extends LinearLayout {
    * @see #setBoxCornerRadii(float, float, float, float)
    */
   public float getBoxCornerRadiusTopEnd() {
-    return shapeAppearanceModel.getTopRightCorner().getCornerSize();
+    return boxBackground.getTopRightCornerResolvedSize();
   }
 
   /**
@@ -1077,7 +1076,7 @@ public class TextInputLayout extends LinearLayout {
    * @see #setBoxCornerRadii(float, float, float, float)
    */
   public float getBoxCornerRadiusBottomEnd() {
-    return shapeAppearanceModel.getBottomLeftCorner().getCornerSize();
+    return boxBackground.getBottomLeftCornerResolvedSize();
   }
 
   /**
@@ -1087,7 +1086,7 @@ public class TextInputLayout extends LinearLayout {
    * @see #setBoxCornerRadii(float, float, float, float)
    */
   public float getBoxCornerRadiusBottomStart() {
-    return shapeAppearanceModel.getBottomRightCorner().getCornerSize();
+    return boxBackground.getBottomRightCornerResolvedSize();
   }
 
   /**

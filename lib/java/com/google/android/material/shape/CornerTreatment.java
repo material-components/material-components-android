@@ -16,16 +16,11 @@
 
 package com.google.android.material.shape;
 
+import android.graphics.RectF;
 import androidx.annotation.NonNull;
-import android.util.Log;
 
 /**
  * A basic corner treatment (a single point which does not affect the shape).
- *
- * <p>If you create your own custom corner treatment and want to use {@link
- * ShapeAppearanceModel.Builder#setCornerRadius(float)} which updates the size of the corner in the
- * builder, you will need to override {@link #withSize(float)} to return an instance of your custom
- * corner treatment for the given size.
  *
  * <p>Note: For corner treatments which result in a concave shape, the parent view must disable
  * clipping of children by calling {@link android.view.ViewGroup#setClipChildren(boolean)}, or by
@@ -33,21 +28,6 @@ import android.util.Log;
  * is any padding on the parent that could intersect the shadow.
  */
 public class CornerTreatment {
-
-  private static final String TAG = "CornerTreatment";
-
-  private final float cornerSize;
-
-  public CornerTreatment() {
-    // Default Constructor has no size. Using this treatment for all corners will draw a square
-    this.cornerSize = 0;
-  }
-
-  protected CornerTreatment(float cornerSize) {
-    // Most CornerTreatments have a concept of corner size. This constructor is exposed for
-    // extending classes.
-    this.cornerSize = cornerSize;
-  }
 
   /**
    * Generates a {@link ShapePath} for this corner treatment.
@@ -63,35 +43,58 @@ public class CornerTreatment {
    *     indicates that the treatment is fully rendered. Animation between these two values can
    *     "heal" or "reveal" a corner treatment.
    * @param shapePath the {@link ShapePath} that this treatment should write to.
+   * @deprecated implement {@link #getCornerPath(float, float, float, ShapePath)} or {@link
+   *     #getCornerPath(float, float, CornerSize, Rect, ShapePath)} instead.
    */
-  public void getCornerPath(float angle, float interpolation, ShapePath shapePath) {}
+  @Deprecated
+  public void getCornerPath(float angle, float interpolation, @NonNull ShapePath shapePath) {}
 
-  public float getCornerSize() {
-    return cornerSize;
+  /**
+   * Generates a {@link ShapePath} for this corner treatment.
+   *
+   * <p>CornerTreatments are assumed to have an origin of (0, 0) (i.e. they represent the top-left
+   * corner), and are automatically rotated and scaled as necessary when applied to other corners.
+   *
+   * @param shapePath the {@link ShapePath} that this treatment should write to.
+   * @param angle the angle of the corner, typically 90 degrees.
+   * @param interpolation the interpolation of the corner treatment. Ranges between 0 (none) and 1
+   *     (fully) interpolated. Custom corner treatments can implement interpolation to support shape
+   *     transition between two arbitrary states. Typically, a value of 0 indicates that the custom
+   *     corner treatment is not rendered (i.e. that it is a 90 degree angle), and a value of 1
+   *     indicates that the treatment is fully rendered. Animation between these two values can
+   *     "heal" or "reveal" a corner treatment.
+   * @param radius the radius or size of this corner.
+   */
+  public void getCornerPath(
+      @NonNull ShapePath shapePath, float angle, float interpolation, float radius) {
+    getCornerPath(angle, interpolation, shapePath);
   }
 
   /**
-   * Returns a new instance of this {@link CornerTreatment} for the given cornerSize. Extending
-   * classes should override this method to return an instance of their custom class. This is used
-   * by the builder when calling a method to set the size of the corner treatment such as {@link
-   * ShapeAppearanceModel.Builder#setCornerRadius(float)}.
+   * Generates a {@link ShapePath} for this corner treatment.
+   *
+   * <p>CornerTreatments are assumed to have an origin of (0, 0) (i.e. they represent the top-left
+   * corner), and are automatically rotated and scaled as necessary when applied to other corners.
+   *
+   * @param shapePath the {@link ShapePath} that this treatment should write to.
+   * @param angle the angle of the corner, typically 90 degrees.
+   * @param interpolation the interpolation of the corner treatment. Ranges between 0 (none) and 1
+   *     (fully) interpolated. Custom corner treatments can implement interpolation to support shape
+   *     transition between two arbitrary states. Typically, a value of 0 indicates that the custom
+   *     corner treatment is not rendered (i.e. that it is a 90 degree angle), and a value of 1
+   *     indicates that the treatment is fully rendered. Animation between these two values can
+   *     "heal" or "reveal" a corner treatment.
+   * @param bounds the bounds of the full shape that will be drawn. This could be used change the
+   *     behavior of the CornerTreatment depending on how much space is available for the full
+   *     shape.
+   * @param size the {@link CornerSize} used for this corner
    */
-  @NonNull
-  public CornerTreatment withSize(float cornerSize) {
-    return new CornerTreatment(cornerSize);
-  }
-
-  /**
-   * Checks that the {@link CornerTreatment} returned by calling withSize() is the class we expect.
-   */
-  @NonNull
-  public static CornerTreatment withSizeAndCornerClassCheck(
-      @NonNull CornerTreatment treatment, float cornerSize) {
-    CornerTreatment updatedTreatment = treatment.withSize(cornerSize);
-    if (!updatedTreatment.getClass().equals(treatment.getClass())) {
-      Log.w(
-          TAG, "CornerTreatments should override withSize() to return an instance of their class");
-    }
-    return updatedTreatment;
+  public void getCornerPath(
+      @NonNull ShapePath shapePath,
+      float angle,
+      float interpolation,
+      @NonNull RectF bounds,
+      @NonNull CornerSize size) {
+    getCornerPath(shapePath, angle, interpolation, size.getCornerSize(bounds));
   }
 }

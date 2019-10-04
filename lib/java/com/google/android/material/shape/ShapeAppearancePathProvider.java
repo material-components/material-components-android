@@ -114,8 +114,9 @@ public class ShapeAppearancePathProvider {
   }
 
   private void setCornerPathAndTransform(@NonNull ShapeAppearancePathSpec spec, int index) {
+    CornerSize size = getCornerSizeForIndex(index, spec.shapeAppearanceModel);
     getCornerTreatmentForIndex(index, spec.shapeAppearanceModel)
-        .getCornerPath(90, spec.interpolation, cornerPaths[index]);
+        .getCornerPath(cornerPaths[index], 90, spec.interpolation, spec.bounds, size);
 
     float edgeAngle = angleOfEdge(index);
     cornerTransforms[index].reset();
@@ -199,6 +200,21 @@ public class ShapeAppearancePathProvider {
       case 0:
       default:
         return shapeAppearanceModel.getTopRightCorner();
+    }
+  }
+
+  private CornerSize getCornerSizeForIndex(
+      int index, @NonNull ShapeAppearanceModel shapeAppearanceModel) {
+    switch (index) {
+      case 1:
+        return shapeAppearanceModel.getBottomRightCornerSize();
+      case 2:
+        return shapeAppearanceModel.getBottomLeftCornerSize();
+      case 3:
+        return shapeAppearanceModel.getTopLeftCornerSize();
+      case 0:
+      default:
+        return shapeAppearanceModel.getTopRightCornerSize();
     }
   }
 
