@@ -86,7 +86,6 @@ class FloatingActionButtonImpl {
   @Nullable BorderDrawable borderDrawable;
   @Nullable Drawable contentBackground;
 
-  boolean usingDefaultCorner;
   boolean ensureMinTouchTargetSize;
   boolean shadowPaddingEnabled = true;
   float elevation;
@@ -305,14 +304,8 @@ class FloatingActionButtonImpl {
     }
   }
 
-  final void setShapeAppearance(
-      @NonNull ShapeAppearanceModel shapeAppearance, boolean usingDefaultCorner) {
-    if (usingDefaultCorner) {
-      shapeAppearance = shapeAppearance.withCornerRadius(view.getSizeDimension() / 2);
-    }
-
+  final void setShapeAppearance(@NonNull ShapeAppearanceModel shapeAppearance) {
     this.shapeAppearance = shapeAppearance;
-    this.usingDefaultCorner = usingDefaultCorner;
     if (shapeDrawable != null) {
       shapeDrawable.setShapeAppearanceModel(shapeAppearance);
     }
@@ -645,16 +638,6 @@ class FloatingActionButtonImpl {
     // Ignore pre-v21
   }
 
-  void updateSize() {
-    if (!usingDefaultCorner || shapeDrawable == null || shapeAppearance == null) {
-      // Leave shape appearance as is.
-      return;
-    }
-
-    setShapeAppearance(
-        shapeAppearance.withCornerRadius(view.getSizeDimension() / 2f), usingDefaultCorner);
-  }
-
   final void updatePadding() {
     Rect rect = tmpRect;
     getPadding(rect);
@@ -736,9 +719,6 @@ class FloatingActionButtonImpl {
 
   MaterialShapeDrawable createShapeDrawable() {
     ShapeAppearanceModel shapeAppearance = checkNotNull(this.shapeAppearance);
-    if (usingDefaultCorner) {
-      shapeAppearance = shapeAppearance.withCornerRadius(view.getSizeDimension() / 2f);
-    }
     return new MaterialShapeDrawable(shapeAppearance);
   }
 

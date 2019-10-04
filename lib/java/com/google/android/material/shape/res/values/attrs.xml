@@ -26,15 +26,15 @@
 
   <declare-styleable name="ShapeAppearance">
     <!-- Corner size to be used in the ShapeAppearance. All corners default to this value -->
-    <attr name="cornerSize" format="dimension"/>
+    <attr name="cornerSize" format="dimension|fraction"/>
     <!-- Top left corner size to be used in the ShapeAppearance. -->
-    <attr name="cornerSizeTopLeft" format="dimension"/>
+    <attr name="cornerSizeTopLeft" format="dimension|fraction"/>
     <!-- Top right corner size to be used in the ShapeAppearance. -->
-    <attr name="cornerSizeTopRight" format="dimension"/>
+    <attr name="cornerSizeTopRight" format="dimension|fraction"/>
     <!-- Bottom right corner size to be used in the ShapeAppearance. -->
-    <attr name="cornerSizeBottomRight" format="dimension"/>
+    <attr name="cornerSizeBottomRight" format="dimension|fraction"/>
     <!-- Bottom left corner size to be used in the ShapeAppearance. -->
-    <attr name="cornerSizeBottomLeft" format="dimension"/>
+    <attr name="cornerSizeBottomLeft" format="dimension|fraction"/>
 
     <!-- Corner family to be used in the ShapeAppearance. All corners default to this value -->
     <attr name="cornerFamily" format="enum">

@@ -26,6 +26,7 @@ import android.animation.PropertyValuesHolder;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import androidx.annotation.AnimatorRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -47,7 +48,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.internal.DescendantOffsetUtils;
 import com.google.android.material.internal.ThemeEnforcement;
-import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.CornerSize;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import java.util.List;
 
@@ -87,7 +88,6 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
   @NonNull private final Behavior<ExtendedFloatingActionButton> behavior;
 
   private boolean isExtended = true;
-  private boolean isUsingPillCorner = true;
 
   /**
    * Callback to be invoked when the visibility or the state of an ExtendedFloatingActionButton
@@ -198,7 +198,17 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
 
     ShapeAppearanceModel shapeAppearanceModel =
         ShapeAppearanceModel.builder(
-                context, attrs, defStyleAttr, DEF_STYLE_RES, ShapeAppearanceModel.PILL)
+                context,
+                attrs,
+                defStyleAttr,
+                DEF_STYLE_RES,
+                // TODO(b/121352029): Use ShapeAppearanceModel.PILL once this bug is fixed.
+                new CornerSize() {
+                  @Override
+                  public float getCornerSize(@NonNull RectF bounds) {
+                    return getAdjustedRadius((int) bounds.height());
+                  }
+                })
             .build();
     setShapeAppearanceModel(shapeAppearanceModel);
   }
@@ -213,45 +223,12 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     }
   }
 
-  @Override
-  protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-    super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-    if (isUsingPillCorner) {
-      setShapeAppearanceModel(createPillCornerShapeAppearance());
-    }
-  }
-
   @NonNull
   @Override
   public Behavior<ExtendedFloatingActionButton> getBehavior() {
     return behavior;
   }
 
-  @Override
-  public void setShapeAppearanceModel(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
-    if (shapeAppearanceModel.isUsingPillCorner()) {
-      isUsingPillCorner = true;
-      shapeAppearanceModel = createPillCornerShapeAppearance();
-    }
-    super.setShapeAppearanceModel(shapeAppearanceModel);
-  }
-
-  @NonNull
-  private ShapeAppearanceModel createPillCornerShapeAppearance() {
-    return getShapeAppearanceModel().withCornerRadius(getAdjustedRadius(getMeasuredHeight()));
-  }
-
-  @Override
-  public void setCornerRadius(int cornerRadius) {
-    isUsingPillCorner = cornerRadius == ShapeAppearanceModel.PILL;
-    if (isUsingPillCorner) {
-      cornerRadius = getAdjustedRadius(getMeasuredHeight());
-    } else if (cornerRadius < 0) {
-      cornerRadius = 0;
-    }
-    super.setCornerRadius(cornerRadius);
-  }
 
   /**
    * Extends or shrinks the fab depending on the value of {@param extended}.
@@ -552,10 +529,6 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     setShrinkMotionSpec(MotionSpec.createFromResource(getContext(), id));
   }
 
-  boolean isUsingPillCorner() {
-    return isUsingPillCorner;
-  }
-
   private void performMotion(
       @NonNull final MotionStrategy strategy, @Nullable final OnChangedCallback callback) {
     if (strategy.shouldCancel()) {
@@ -662,26 +635,6 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
         @Override
         public Float get(@NonNull View object) {
           return (float) object.getLayoutParams().height;
-        }
-      };
-
-  /**
-   * A Property wrapper around the <code>cornerRadius</code> functionality handled by the {@link
-   * ExtendedFloatingActionButton#setCornerRadius(int)} and {@link
-   * ExtendedFloatingActionButton#getCornerRadius()} methods.
-   */
-  static final Property<View, Float> CORNER_RADIUS =
-      new Property<View, Float>(Float.class, "cornerRadius") {
-        @Override
-        public void set(@NonNull View object, @NonNull Float value) {
-          ExtendedFloatingActionButton efab = ((ExtendedFloatingActionButton) object);
-          efab.setShapeAppearanceModel(
-              efab.getShapeAppearanceModel().withCornerRadius(value.intValue()));
-        }
-
-        @Override
-        public Float get(@NonNull View object) {
-          return ((MaterialShapeDrawable) object.getBackground()).getTopRightCornerResolvedSize();
         }
       };
 

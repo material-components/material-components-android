@@ -413,15 +413,6 @@ public class ShapeAppearanceModel {
       return this;
     }
 
-    /** Adjusts all the corners by the offset. */
-    @NonNull
-    public Builder adjustCorners(@Dimension float offset) {
-      return setTopLeftCornerSize(new AdjustedCornerSize(offset, topLeftCornerSize))
-          .setTopRightCornerSize(new AdjustedCornerSize(offset, topRightCornerSize))
-          .setBottomRightCornerSize(new AdjustedCornerSize(offset, bottomRightCornerSize))
-          .setBottomLeftCornerSize(new AdjustedCornerSize(offset, bottomLeftCornerSize));
-    }
-
     /** Pulls the corner size from specific CornerTreatments for backwards compatibility */
     private static float compatCornerTreatmentSize(CornerTreatment treatment) {
       if (treatment instanceof RoundedCornerTreatment) {
@@ -563,13 +554,15 @@ public class ShapeAppearanceModel {
       // floats.
       return new AbsoluteCornerSize(
           TypedValue.complexToDimensionPixelSize(value.data, a.getResources().getDisplayMetrics()));
+    } else if (value.type == TypedValue.TYPE_FRACTION) {
+      return new RelativeCornerSize(value.getFraction(1.0f, 1.0f));
     } else {
       return defaultValue;
     }
   }
 
   // Constant corner radius value to indicate that shape should use 50% height corner radii
-  public static final Integer PILL = -1;
+  public static final CornerSize PILL = new RelativeCornerSize(0.5f);
 
   CornerTreatment topLeftCorner;
   CornerTreatment topRightCorner;
@@ -739,18 +732,6 @@ public class ShapeAppearanceModel {
     return bottomEdge;
   }
 
-  /** Checks if all four corners of this ShapeAppearanceModel are of size {@link #PILL}. */
-  public boolean isUsingPillCorner() {
-    return isCornerPill(getTopRightCornerSize())
-        && isCornerPill(getTopLeftCornerSize())
-        && isCornerPill(getBottomLeftCornerSize())
-        && isCornerPill(getBottomRightCornerSize());
-  }
-
-  private boolean isCornerPill(CornerSize cornerSize) {
-    return ((AbsoluteCornerSize) cornerSize).getCornerSize() == PILL;
-  }
-
   /** Returns a builder with the edges and corners from this {@link ShapeAppearanceModel} */
   @NonNull
   public Builder toBuilder() {
@@ -772,12 +753,31 @@ public class ShapeAppearanceModel {
   }
 
   /**
-   * Returns a copy of this {@link ShapeAppearanceModel} with the same edges and corners, but with
-   * the corner radius for all corners offset by an adjustment.
+   * A UnaryOperator that takes and returns a CornerSize.
+   *
+   * @hide
    */
+  @RestrictTo(LIBRARY_GROUP)
+  public interface CornerSizeUnaryOperator {
+    @NonNull
+    CornerSize apply(@NonNull CornerSize cornerSize);
+  }
+
+  /**
+   * Returns a copy of this {@link ShapeAppearanceModel} with the same edges and corners, but with
+   * the corner radius for all corners converted by a {@link CornerSizeUnaryOperator}.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
   @NonNull
-  public ShapeAppearanceModel withAdjustedCorners(float offset) {
-    return toBuilder().adjustCorners(offset).build();
+  public ShapeAppearanceModel withTransformedCornerSizes(@NonNull CornerSizeUnaryOperator op) {
+    return toBuilder()
+        .setTopLeftCornerSize(op.apply(getTopLeftCornerSize()))
+        .setTopRightCornerSize(op.apply(getTopLeftCornerSize()))
+        .setBottomLeftCornerSize(op.apply(getBottomLeftCornerSize()))
+        .setBottomRightCornerSize(op.apply(getBottomLeftCornerSize()))
+        .build();
   }
 
   /**
