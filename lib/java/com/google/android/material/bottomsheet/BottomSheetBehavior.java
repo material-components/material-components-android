@@ -246,8 +246,6 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   @NonNull private final ArrayList<BottomSheetCallback> callbacks = new ArrayList<>();
 
-  private BottomSheetCallback callback; // Maintained for backward compatibility
-
   @Nullable private VelocityTracker velocityTracker;
 
   int activePointerId;
@@ -889,24 +887,9 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
             + " `addBottomSheetCallback()` and `removeBottomSheetCallback()` instead to set your"
             + " own callbacks.");
     callbacks.clear();
-    this.callback = callback;
     if (callback != null) {
       callbacks.add(callback);
     }
-  }
-
-  /**
-   * Gets the {@link BottomSheetCallback} that was attached with {@link
-   * #setBottomSheetCallback(BottomSheetCallback)}.
-   *
-   * @return {@link BottomSheetCallback} The attached callback that will be notified when bottom
-   *     sheet events occur.
-   * @deprecated use {@link #addBottomSheetCallback(BottomSheetCallback)} and {@link
-   *     #removeBottomSheetCallback(BottomSheetCallback)} instead
-   */
-  @Deprecated
-  public BottomSheetCallback getBottomSheetCallback() {
-    return callback;
   }
 
   /**
@@ -1414,7 +1397,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       skipCollapsed = source.readInt() == 1;
     }
 
-    public SavedState(Parcelable superState, @NonNull BottomSheetBehavior behavior) {
+    public SavedState(Parcelable superState, @NonNull BottomSheetBehavior<?> behavior) {
       super(superState);
       this.state = behavior.state;
       this.peekHeight = behavior.peekHeight;
@@ -1482,7 +1465,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     if (!(params instanceof CoordinatorLayout.LayoutParams)) {
       throw new IllegalArgumentException("The view is not a child of CoordinatorLayout");
     }
-    CoordinatorLayout.Behavior behavior = ((CoordinatorLayout.LayoutParams) params).getBehavior();
+    CoordinatorLayout.Behavior<?> behavior =
+        ((CoordinatorLayout.LayoutParams) params).getBehavior();
     if (!(behavior instanceof BottomSheetBehavior)) {
       throw new IllegalArgumentException("The view is not associated with BottomSheetBehavior");
     }
