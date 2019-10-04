@@ -1103,6 +1103,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   private void calculateStrokePath() {
     // Adjust corner radius in order to draw the stroke so that the corners of the background are
     // drawn on top of the edges.
+    final float strokeInsetLength = -getStrokeInsetLength();
     strokeShapeAppearance =
         getShapeAppearanceModel()
             .withTransformedCornerSizes(
@@ -1114,7 +1115,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
                     // bounds change.
                     return cornerSize instanceof RelativeCornerSize
                         ? cornerSize
-                        : new AdjustedCornerSize(-getStrokeInsetLength(), cornerSize);
+                        : new AdjustedCornerSize(strokeInsetLength, cornerSize);
                   }
                 });
 

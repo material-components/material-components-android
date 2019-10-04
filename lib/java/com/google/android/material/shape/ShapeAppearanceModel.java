@@ -774,9 +774,9 @@ public class ShapeAppearanceModel {
   public ShapeAppearanceModel withTransformedCornerSizes(@NonNull CornerSizeUnaryOperator op) {
     return toBuilder()
         .setTopLeftCornerSize(op.apply(getTopLeftCornerSize()))
-        .setTopRightCornerSize(op.apply(getTopLeftCornerSize()))
+        .setTopRightCornerSize(op.apply(getTopRightCornerSize()))
         .setBottomLeftCornerSize(op.apply(getBottomLeftCornerSize()))
-        .setBottomRightCornerSize(op.apply(getBottomLeftCornerSize()))
+        .setBottomRightCornerSize(op.apply(getBottomRightCornerSize()))
         .build();
   }
 
