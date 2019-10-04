@@ -631,7 +631,7 @@ public class ChipDrawable extends MaterialShapeDrawable
     if (!isShapeThemingEnabled) {
       canvas.drawRoundRect(rectF, getChipCornerRadius(), getChipCornerRadius(), chipPaint);
     } else {
-      getPathForSize(bounds, shapePath);
+      calculatePathForSize(new RectF(bounds), shapePath);
       super.drawShape(canvas, chipPaint, shapePath, getBoundsAsRectF());
     }
   }
