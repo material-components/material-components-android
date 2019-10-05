@@ -96,7 +96,7 @@ public class ShapeAppearanceModel {
     @NonNull
     public Builder setAllCorners(@CornerFamily int cornerFamily, @Dimension float cornerSize) {
       return setAllCorners(MaterialShapeUtils.createCornerTreatment(cornerFamily))
-          .setCornerRadius(cornerSize);
+          .setAllCornerSizes(cornerSize);
     }
 
     /**
@@ -125,13 +125,13 @@ public class ShapeAppearanceModel {
           .setBottomLeftCornerSize(cornerSize);
     }
 
-    /** Sets the corner size of all four corner treatments to {@code cornerRadius}. */
+    /** Sets the corner size of all four corner treatments to {@code cornerSize}. */
     @NonNull
-    public Builder setCornerRadius(@Dimension float cornerRadius) {
-      return setTopLeftCornerSize(cornerRadius)
-          .setTopRightCornerSize(cornerRadius)
-          .setBottomRightCornerSize(cornerRadius)
-          .setBottomLeftCornerSize(cornerRadius);
+    public Builder setAllCornerSizes(@Dimension float cornerSize) {
+      return setTopLeftCornerSize(cornerSize)
+          .setTopRightCornerSize(cornerSize)
+          .setBottomRightCornerSize(cornerSize)
+          .setBottomLeftCornerSize(cornerSize);
     }
 
     /** Sets the top left corner size for the current corner. */
@@ -561,7 +561,7 @@ public class ShapeAppearanceModel {
     }
   }
 
-  // Constant corner radius value to indicate that shape should use 50% height corner radii
+  // Constant corner size value to indicate that shape should use 50% height corner radii
   public static final CornerSize PILL = new RelativeCornerSize(0.5f);
 
   CornerTreatment topLeftCorner;
@@ -740,11 +740,11 @@ public class ShapeAppearanceModel {
 
   /**
    * Returns a copy of this {@link ShapeAppearanceModel} with the same edges and corners, but with
-   * the corner radius for all corners updated.
+   * the corner size for all corners updated.
    */
   @NonNull
-  public ShapeAppearanceModel withCornerRadius(float cornerRadius) {
-    return toBuilder().setCornerRadius(cornerRadius).build();
+  public ShapeAppearanceModel withCornerSize(float cornerSize) {
+    return toBuilder().setAllCornerSizes(cornerSize).build();
   }
 
   @NonNull
@@ -765,7 +765,7 @@ public class ShapeAppearanceModel {
 
   /**
    * Returns a copy of this {@link ShapeAppearanceModel} with the same edges and corners, but with
-   * the corner radius for all corners converted by a {@link CornerSizeUnaryOperator}.
+   * the corner size for all corners converted by a {@link CornerSizeUnaryOperator}.
    *
    * @hide
    */

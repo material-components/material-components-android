@@ -133,7 +133,7 @@ class MaterialCardViewHelper {
             .obtainStyledAttributes(attrs, R.styleable.CardView, defStyleAttr, R.style.CardView);
     if (cardViewAttributes.hasValue(R.styleable.CardView_cardCornerRadius)) {
       // If cardCornerRadius is set, let it override the shape appearance.
-      shapeAppearanceModelBuilder.setCornerRadius(
+      shapeAppearanceModelBuilder.setAllCornerSizes(
           cardViewAttributes.getDimension(R.styleable.CardView_cardCornerRadius, 0));
     }
 
@@ -267,7 +267,7 @@ class MaterialCardViewHelper {
   }
 
   void setCornerRadius(float cornerRadius) {
-    setShapeAppearanceModel(shapeAppearanceModel.withCornerRadius(cornerRadius));
+    setShapeAppearanceModel(shapeAppearanceModel.withCornerSize(cornerRadius));
     fgDrawable.invalidateSelf();
     if (shouldAddCornerPaddingOutsideCardBackground()
         || shouldAddCornerPaddingInsideCardBackground()) {

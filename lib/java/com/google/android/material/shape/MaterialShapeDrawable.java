@@ -459,8 +459,14 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     return rectF;
   }
 
-  public void setCornerRadius(float cornerRadius) {
-    setShapeAppearanceModel(drawableState.shapeAppearanceModel.withCornerRadius(cornerRadius));
+  /** Updates the corners for the given {@link cornerSize}. */
+  public void setCornerSize(float cornerSize) {
+    setShapeAppearanceModel(drawableState.shapeAppearanceModel.withCornerSize(cornerSize));
+  }
+
+  /** Updates the corners for the given {@link cornerSize}. */
+  public void setCornerSize(@NonNull CornerSize cornerSize) {
+    setShapeAppearanceModel(drawableState.shapeAppearanceModel.withCornerSize(cornerSize));
   }
 
   /**

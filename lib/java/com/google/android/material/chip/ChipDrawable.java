@@ -1410,7 +1410,7 @@ public class ChipDrawable extends MaterialShapeDrawable
   }
 
   /**
-   * @deprecated call {@link ShapeAppearanceModel#withCornerRadius()} or call {@link
+   * @deprecated call {@link ShapeAppearanceModel#withCornerSize()} or call {@link
    *     ShapeAppearanceModel#toBuilder()} on the {@link #getShapeAppearanceModel()}, modify the
    *     shape using the builder and then call {@link
    *     #setShapeAppearanceModel(ShapeAppearanceModel)}.
@@ -1421,7 +1421,7 @@ public class ChipDrawable extends MaterialShapeDrawable
   }
 
   /**
-   * @deprecated call {@link ShapeAppearanceModel#withCornerRadius()} or call {@link
+   * @deprecated call {@link ShapeAppearanceModel#withCornerSize()} or call {@link
    *     ShapeAppearanceModel#toBuilder()} on the {@link #getShapeAppearanceModel()}, modify the
    *     shape using the builder and then call {@link
    *     #setShapeAppearanceModel(ShapeAppearanceModel)}.
@@ -1431,7 +1431,7 @@ public class ChipDrawable extends MaterialShapeDrawable
     if (this.chipCornerRadius != chipCornerRadius) {
       this.chipCornerRadius = chipCornerRadius;
 
-      setShapeAppearanceModel(getShapeAppearanceModel().withCornerRadius(chipCornerRadius));
+      setShapeAppearanceModel(getShapeAppearanceModel().withCornerSize(chipCornerRadius));
     }
   }
 
