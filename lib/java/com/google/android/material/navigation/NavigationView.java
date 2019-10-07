@@ -681,9 +681,10 @@ public class NavigationView extends ScrimInsetsFrameLayout {
           boolean isBehindSystemNav =
               ((Activity) context).findViewById(android.R.id.content).getHeight()
                   == getHeight();
-          boolean systemNavNotFullyTransparent =
-              ((Activity) context).getWindow().getNavigationBarColor() == Color.TRANSPARENT;
-          setDrawBottomInsetForeground(isBehindSystemNav && !systemNavNotFullyTransparent);
+          boolean hasNonZeroAlpha =
+              Color.alpha(((Activity) context).getWindow().getNavigationBarColor()) != 0;
+
+          setDrawBottomInsetForeground(isBehindSystemNav && hasNonZeroAlpha);
         }
       }
     };
