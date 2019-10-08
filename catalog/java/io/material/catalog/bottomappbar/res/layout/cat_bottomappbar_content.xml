@@ -40,6 +40,14 @@
         android:paddingTop="16dp"
         android:orientation="vertical">
 
+      <ToggleButton
+          android:id="@+id/bar_scroll_toggle"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_horizontal"
+          android:textOff="@string/cat_bottomappbar_scroll_hide"
+          android:textOn="@string/cat_bottomappbar_scroll_hide"/>
+
       <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"

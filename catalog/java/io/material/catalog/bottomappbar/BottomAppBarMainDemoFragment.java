@@ -123,6 +123,12 @@ public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBack
           }
         });
 
+    ToggleButton barScrollToggle = view.findViewById(R.id.bar_scroll_toggle);
+    barScrollToggle.setChecked(bar.getHideOnScroll());
+    barScrollToggle.setOnCheckedChangeListener(
+        (buttonView, isChecked) -> bar.setHideOnScroll(isChecked)
+    );
+
     setUpBottomAppBarShapeAppearance();
 
     return view;
