@@ -43,5 +43,5 @@ Bugs or feature requests should be submitted at our [GitHub Issues section](http
 
 ## Documentation
 
-*   [Directory structure](docs/directorystructure.md)
+*   [Main Library Structure](docs/main-library-structure.md)
 *   [Components](docs/components/)
