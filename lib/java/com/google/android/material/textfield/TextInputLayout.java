@@ -3591,7 +3591,7 @@ public class TextInputLayout extends LinearLayout {
         colorStateList.getColorForState(this.getDrawableState(), colorStateList.getDefaultColor());
 
     icon = DrawableCompat.wrap(icon).mutate();
-    DrawableCompat.setTint(icon, color);
+    DrawableCompat.setTintList(icon, ColorStateList.valueOf(color));
     iconView.setImageDrawable(icon);
   }
 
