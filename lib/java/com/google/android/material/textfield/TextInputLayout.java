@@ -378,8 +378,8 @@ public class TextInputLayout extends LinearLayout {
   private ColorStateList defaultHintTextColor;
   private ColorStateList focusedTextColor;
 
-  @ColorInt private final int defaultStrokeColor;
-  @ColorInt private final int hoveredStrokeColor;
+  @ColorInt private int defaultStrokeColor;
+  @ColorInt private int hoveredStrokeColor;
   @ColorInt private int focusedStrokeColor;
   private ColorStateList strokeErrorColor;
 
@@ -387,7 +387,7 @@ public class TextInputLayout extends LinearLayout {
   @ColorInt private final int disabledFilledBackgroundColor;
   @ColorInt private final int hoveredFilledBackgroundColor;
 
-  @ColorInt private final int disabledColor;
+  @ColorInt private int disabledColor;
 
   // Only used for testing
   private boolean hintExpanded;
@@ -547,24 +547,16 @@ public class TextInputLayout extends LinearLayout {
 
     ColorStateList boxStrokeColorStateList =
         MaterialResources.getColorStateList(context, a, R.styleable.TextInputLayout_boxStrokeColor);
-    if (boxStrokeColorStateList != null && boxStrokeColorStateList.isStateful()) {
-      defaultStrokeColor = boxStrokeColorStateList.getDefaultColor();
-      disabledColor =
-          boxStrokeColorStateList.getColorForState(new int[] {-android.R.attr.state_enabled}, -1);
-      hoveredStrokeColor =
-          boxStrokeColorStateList.getColorForState(new int[] {android.R.attr.state_hovered}, -1);
-      focusedStrokeColor =
-          boxStrokeColorStateList.getColorForState(new int[] {android.R.attr.state_focused}, -1);
-    } else {
-      // If attribute boxStrokeColor is not a color state list but only a single value, its value
-      // will be applied to the box's focus state.
-      focusedStrokeColor =
-          a.getColor(R.styleable.TextInputLayout_boxStrokeColor, Color.TRANSPARENT);
-      defaultStrokeColor =
-          ContextCompat.getColor(context, R.color.mtrl_textinput_default_box_stroke_color);
-      disabledColor = ContextCompat.getColor(context, R.color.mtrl_textinput_disabled_color);
-      hoveredStrokeColor =
-          ContextCompat.getColor(context, R.color.mtrl_textinput_hovered_box_stroke_color);
+    // Default values for stroke colors if boxStrokeColorStateList is not stateful
+    focusedStrokeColor = a.getColor(R.styleable.TextInputLayout_boxStrokeColor, Color.TRANSPARENT);
+    defaultStrokeColor =
+        ContextCompat.getColor(context, R.color.mtrl_textinput_default_box_stroke_color);
+    disabledColor = ContextCompat.getColor(context, R.color.mtrl_textinput_disabled_color);
+    hoveredStrokeColor =
+        ContextCompat.getColor(context, R.color.mtrl_textinput_hovered_box_stroke_color);
+    // Values from boxStrokeColorStateList
+    if (boxStrokeColorStateList != null) {
+      setBoxStrokeColorStateList(boxStrokeColorStateList);
     }
     if (a.hasValue(R.styleable.TextInputLayout_boxStrokeErrorColor)) {
       setBoxStrokeErrorColor(
@@ -905,11 +897,11 @@ public class TextInputLayout extends LinearLayout {
   }
 
   /**
-   * Set the outline box's stroke color.
+   * Set the outline box's stroke focused color.
    *
    * <p>Calling this method when not in outline box mode will do nothing.
    *
-   * @param boxStrokeColor the color to use for the box's stroke
+   * @param boxStrokeColor the color to use for the box's stroke when focused
    * @see #getBoxStrokeColor()
    */
   public void setBoxStrokeColor(@ColorInt int boxStrokeColor) {
@@ -920,13 +912,35 @@ public class TextInputLayout extends LinearLayout {
   }
 
   /**
-   * Returns the box's stroke color.
+   * Returns the box's stroke focused color.
    *
-   * @return the color used for the box's stroke
+   * @return the color used for the box's stroke when focused
    * @see #setBoxStrokeColor(int)
    */
   public int getBoxStrokeColor() {
     return focusedStrokeColor;
+  }
+
+  /**
+   * Set the box's stroke color state list.
+   *
+   * @param boxStrokeColorStateList the color state list to use for the box's stroke
+   */
+  public void setBoxStrokeColorStateList(@NonNull ColorStateList boxStrokeColorStateList) {
+    if (boxStrokeColorStateList.isStateful()) {
+      defaultStrokeColor = boxStrokeColorStateList.getDefaultColor();
+      disabledColor =
+          boxStrokeColorStateList.getColorForState(new int[] {-android.R.attr.state_enabled}, -1);
+      hoveredStrokeColor =
+          boxStrokeColorStateList.getColorForState(new int[] {android.R.attr.state_hovered}, -1);
+      focusedStrokeColor =
+          boxStrokeColorStateList.getColorForState(new int[] {android.R.attr.state_focused}, -1);
+    } else if (focusedStrokeColor != boxStrokeColorStateList.getDefaultColor()) {
+      // If attribute boxStrokeColor is not a color state list but only a single value, its value
+      // will be applied to the box's focus state.
+      focusedStrokeColor = boxStrokeColorStateList.getDefaultColor();
+    }
+    updateTextInputBoxState();
   }
 
   /**
