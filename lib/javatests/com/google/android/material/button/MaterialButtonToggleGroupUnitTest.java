@@ -23,6 +23,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
 import android.graphics.RectF;
+import android.widget.LinearLayout;
 import androidx.test.core.app.ApplicationProvider;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import org.junit.Before;
@@ -71,6 +72,19 @@ public class MaterialButtonToggleGroupUnitTest {
     assertShapeAppearance(firstChild.getShapeAppearanceModel(), CORNER_SIZE, CORNER_SIZE, 0, 0);
     assertShapeAppearance(middleChild.getShapeAppearanceModel(), 0, 0, 0, 0);
     assertShapeAppearance(lastChild.getShapeAppearanceModel(), 0, 0, CORNER_SIZE, CORNER_SIZE);
+  }
+
+  @Test
+  public void correctShapeAppearances_inToggle_afterAddingInVertical() {
+    toggleGroup.setOrientation(LinearLayout.VERTICAL);
+    MaterialButton firstChild = (MaterialButton) toggleGroup.getChildAt(0);
+    MaterialButton middleChild = (MaterialButton) toggleGroup.getChildAt(1);
+    MaterialButton lastChild = (MaterialButton) toggleGroup.getChildAt(2);
+
+    toggleGroup.updateChildShapes();
+    assertShapeAppearance(firstChild.getShapeAppearanceModel(), CORNER_SIZE, 0, CORNER_SIZE, 0);
+    assertShapeAppearance(middleChild.getShapeAppearanceModel(), 0, 0, 0, 0);
+    assertShapeAppearance(lastChild.getShapeAppearanceModel(), 0, CORNER_SIZE, 0, CORNER_SIZE);
   }
 
   private static void assertShapeAppearance(
