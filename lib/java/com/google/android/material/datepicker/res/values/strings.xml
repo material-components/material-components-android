@@ -17,34 +17,34 @@
 <resources>
   <string name="mtrl_picker_range_header_title" description="Indicates that the user must take the action of picking dates within the calendar to form a range [CHAR_LIMIT=60]">Select a Date Range</string>
   <string name="mtrl_picker_date_header_title" description="Indicates that the user must take the action of picking a date within the calendar [CHAR_LIMIT=60]">Select a Date</string>
-  <string name="mtrl_picker_range_header_unselected" description="Placeholders for two dates separated by a dash representing a range [CHAR_LIMIT=60]">Start Date – End Date</string>
-  <string name="mtrl_picker_range_header_only_start_selected" description="Placeholders for two dates separated by a dash representing a range where start date has been selected [CHAR_LIMIT=60]">%1$s – End Date</string>
-  <string name="mtrl_picker_range_header_only_end_selected" description="Placeholders for two dates separated by a dash representing a range where end date has been selected [CHAR_LIMIT=60]">Start Date – %1$s</string>
+  <string name="mtrl_picker_range_header_unselected" description="Placeholders for two dates separated by a dash representing a range [CHAR_LIMIT=60]">Start date – End date</string>
+  <string name="mtrl_picker_range_header_only_start_selected" description="Placeholders for two dates separated by a dash representing a range where start date has been selected [CHAR_LIMIT=60]">%1$s – End date</string>
+  <string name="mtrl_picker_range_header_only_end_selected" description="Placeholders for two dates separated by a dash representing a range where end date has been selected [CHAR_LIMIT=60]">Start date – %1$s</string>
   <string name="mtrl_picker_range_header_selected" description="Two dates separated by a dash representing a range [CHAR_LIMIT=60]">%1$s – %2$s</string>
-  <string name="mtrl_picker_date_header_unselected" description="Placeholder for a single date [CHAR_LIMIT=60]">Selected Date</string>
+  <string name="mtrl_picker_date_header_unselected" description="Placeholder for a single date [CHAR_LIMIT=60]">Selected date</string>
   <string name="mtrl_picker_date_header_selected" description="A single date [CHAR_LIMIT=60]">%1$s</string>
   <string name="mtrl_picker_confirm" description="Button text to indicate that the widget will save the user's selection [CHAR_LIMIT=16]">@android:string/ok</string>
   <string name="mtrl_picker_cancel" description="Button text to indicate that the widget will ignore the user's selection [CHAR_LIMIT=16]" translatable="false">@android:string/cancel</string>
   <string name="mtrl_picker_text_input_date_hint" description="Label for a single date selected by the user [CHAR_LIMIT=60]">Date</string>
-  <string name="mtrl_picker_text_input_date_range_start_hint" description="Label for the start date in a range selected by the user [CHAR_LIMIT=60]">Start Date</string>
-  <string name="mtrl_picker_text_input_date_range_end_hint" description="Label for the end date in a range selected by the user [CHAR_LIMIT=60]">End Date</string>
+  <string name="mtrl_picker_text_input_date_range_start_hint" description="Label for the start date in a range selected by the user [CHAR_LIMIT=60]">Start date</string>
+  <string name="mtrl_picker_text_input_date_range_end_hint" description="Label for the end date in a range selected by the user [CHAR_LIMIT=60]">End date</string>
   <!-- TODO(b/134174653): internationalize date format strings -->
   <string name="mtrl_picker_date_format" description="The format for how a date will be shown to the user, with the year included [CHAR_LIMIT=16]">MMM dd, yyyy</string>
   <string name="mtrl_picker_date_format_without_year" description="The format for how a date will be shown to the user, without the year included [CHAR_LIMIT=16]">MMM dd</string>
   <string name="mtrl_picker_text_input_date_format" description="The format for how the user should enter a date via text input [CHAR_LIMIT=16]">MM/dd/yyyy</string>
   <string name="mtrl_picker_save" description="Confirms the selection [CHAR_LIMIT=12]">Save</string>
-  <string name="mtrl_picker_invalid_range" description="Notifies the user that the two entered dates do not represent a valid range of dates [CHAR_LIMIT=36]">Invalid Range.</string>
-  <string name="mtrl_picker_out_of_range" description="Notifies the user that the entered date is outside the allowed range [CHAR_LIMIT=36]">Out of Range: %1$s</string>
-  <string name="mtrl_picker_invalid_format" description="Indicates that the user entered date cannot be parsed because its format is wrong. The user should instead use the format after the colon. Includes a line break [CHAR_LIMIT=54]">Invalid Format.\nUse: %1$s</string>
+  <string name="mtrl_picker_invalid_range" description="Notifies the user that the two entered dates do not represent a valid range of dates [CHAR_LIMIT=36]">Invalid range.</string>
+  <string name="mtrl_picker_out_of_range" description="Notifies the user that the entered date is outside the allowed range [CHAR_LIMIT=36]">Out of range: %1$s</string>
+  <string name="mtrl_picker_invalid_format" description="Indicates that the user entered date cannot be parsed because its format is wrong. The user should instead use the format after the colon. Includes a line break [CHAR_LIMIT=54]">Invalid format.\nUse: %1$s</string>
 
-  <string name="mtrl_picker_toggle_to_calendar_input_mode" description="a11y string to indicate this button changes the input mode to a calendar [CHAR_LIMIT=NONE]">Switch to Calendar Input mode</string>
-  <string name="mtrl_picker_toggle_to_text_input_mode" description="a11y string to indicate this button changes the input mode to a text field [CHAR_LIMIT=NONE]">Switch to Text Input mode</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode" description="a11y string to indicate this button changes the input mode to a calendar [CHAR_LIMIT=NONE]">Switch to calendar input mode</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode" description="a11y string to indicate this button changes the input mode to a text field [CHAR_LIMIT=NONE]">Switch to text input mode</string>
   <string name="mtrl_picker_a11y_prev_month" description="a11y string to indicate this button moves the calendar to the previous month [CHAR_LIMIT=NONE]">Change to previous month</string>
   <string name="mtrl_picker_a11y_next_month" description="a11y string to indicate this button moves the calendar to the next month [CHAR_LIMIT=NONE]">Change to next month</string>
   <string name="mtrl_picker_toggle_to_year_selection" description="a11y string to indicate this button switches the user to choosing a year [CHAR_LIMIT=NONE]">Tap to switch to selecting a year</string>
   <string name="mtrl_picker_toggle_to_day_selection" description="a11y string to indicate this button switches the user to choosing a day [CHAR_LIMIT=NONE]">Tap to switch to selecting a day</string>
   <string name="mtrl_picker_day_of_week_column_header" description="a11y string to indicate this is a header for a column of days for one day of the week (e.g., Monday) [CHAR_LIMIT=NONE]">Column of days: %1$s</string>
-  <string name="mtrl_picker_announce_current_selection" description="a11y string read on selection change to indicate the new selection [CHAR_LIMIT=NONE]">Current Selection: %1$s</string>
+  <string name="mtrl_picker_announce_current_selection" description="a11y string read on selection change to indicate the new selection [CHAR_LIMIT=NONE]">Current selection: %1$s</string>
   <string name="mtrl_picker_navigate_to_year_description" description="a11y string that informs the user that tapping this button will switch the year [CHAR_LIMIT=NONE]">Navigate to year %1$s</string>
 
 </resources>
