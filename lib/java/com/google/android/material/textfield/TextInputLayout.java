@@ -3568,10 +3568,12 @@ public class TextInputLayout extends LinearLayout {
     int defaultStrokeErrorColor = strokeErrorColor.getDefaultColor();
     int hoveredStrokeErrorColor =
         strokeErrorColor.getColorForState(
-            new int[] {android.R.attr.state_hovered}, defaultStrokeErrorColor);
+            new int[] {android.R.attr.state_hovered, android.R.attr.state_enabled},
+            defaultStrokeErrorColor);
     int focusedStrokeErrorColor =
         strokeErrorColor.getColorForState(
-            new int[] {android.R.attr.state_activated}, defaultStrokeErrorColor);
+            new int[] {android.R.attr.state_activated, android.R.attr.state_enabled},
+            defaultStrokeErrorColor);
     if (hasFocus) {
       boxStrokeColor = focusedStrokeErrorColor;
     } else if (isHovered) {
