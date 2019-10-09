@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2018 The Android Open Source Project
  *
@@ -91,6 +90,7 @@ public class BottomSheetMainDemoFragment extends DemoFragment {
           ViewGroup.LayoutParams params = bottomSheetChildView.getLayoutParams();
           BottomSheetBehavior<View> bottomSheetBehavior =
               BottomSheetBehavior.from(bottomSheetChildView);
+          bottomSheetBehavior.setUpdateImportantForAccessibilityOnSiblings(isChecked);
           View modalBottomSheetChildView = bottomSheetDialog.findViewById(R.id.bottom_drawer_2);
           ViewGroup.LayoutParams layoutParams = modalBottomSheetChildView.getLayoutParams();
           BottomSheetBehavior<FrameLayout> modalBottomSheetBehavior =

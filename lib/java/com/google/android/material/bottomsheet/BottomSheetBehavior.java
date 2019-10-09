@@ -186,6 +186,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   private boolean fitToContents = true;
 
+  private boolean updateImportantForAccessibilityOnSiblings = false;
+
   private float maximumVelocity;
 
   /** Peek height set by the user. */
@@ -988,9 +990,9 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       return;
     }
 
-    if (state == STATE_HALF_EXPANDED || state == STATE_EXPANDED) {
+    if (state == STATE_EXPANDED) {
       updateImportantForAccessibility(true);
-    } else if (state == STATE_HIDDEN || state == STATE_COLLAPSED) {
+    } else if (state == STATE_HALF_EXPANDED || state == STATE_HIDDEN || state == STATE_COLLAPSED) {
       updateImportantForAccessibility(false);
     }
 
@@ -1478,6 +1480,18 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     return (BottomSheetBehavior<V>) behavior;
   }
 
+  /**
+   * Sets whether the BottomSheet should update the accessibility status of its {@link *
+   * CoordinatorLayout} siblings when expanded.
+   *
+   * <p>Set this to true if the expanded state of the sheet blocks access to siblings (e.g., when
+   * the sheet expands over the full screen).
+   */
+  public void setUpdateImportantForAccessibilityOnSiblings(
+      boolean updateImportantForAccessibilityOnSiblings) {
+    this.updateImportantForAccessibilityOnSiblings = updateImportantForAccessibilityOnSiblings;
+  }
+
   private void updateImportantForAccessibility(boolean expanded) {
     if (viewRef == null) {
       return;
@@ -1505,20 +1519,22 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         continue;
       }
 
-      if (!expanded) {
-        if (importantForAccessibilityMap != null
-            && importantForAccessibilityMap.containsKey(child)) {
-          // Restores the original important for accessibility value of the child view.
-          ViewCompat.setImportantForAccessibility(child, importantForAccessibilityMap.get(child));
-        }
-      } else {
+      if (expanded) {
         // Saves the important for accessibility value of the child view.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
           importantForAccessibilityMap.put(child, child.getImportantForAccessibility());
         }
-
-        ViewCompat.setImportantForAccessibility(
-            child, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+        if (updateImportantForAccessibilityOnSiblings) {
+          ViewCompat.setImportantForAccessibility(
+              child, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+        }
+      } else {
+        if (updateImportantForAccessibilityOnSiblings
+            && importantForAccessibilityMap != null
+            && importantForAccessibilityMap.containsKey(child)) {
+          // Restores the original important for accessibility value of the child view.
+          ViewCompat.setImportantForAccessibility(child, importantForAccessibilityMap.get(child));
+        }
       }
     }
 
