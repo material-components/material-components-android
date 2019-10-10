@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2019 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+  <public name="materialCalendarStyle" type="attr"/>
+  <public name="materialCalendarFullscreenTheme" type="attr"/>
+  <public name="materialCalendarTheme" type="attr"/>
+
+  <public name="dayStyle" type="attr"/>
+  <public name="dayInvalidStyle" type="attr"/>
+  <public name="daySelectedStyle" type="attr"/>
+  <public name="dayTodayStyle" type="attr"/>
+  <public name="yearStyle" type="attr"/>
+  <public name="yearSelectedStyle" type="attr"/>
+  <public name="yearTodayStyle" type="attr"/>
+  <public name="rangeFillColor" type="attr"/>
+
+  <public name="itemFillColor" type="attr"/>
+  <public name="itemStrokeColor" type="attr"/>
+  <public name="itemStrokeWidth" type="attr"/>
+
+  <public name="ThemeOverlay.MaterialComponents.MaterialCalendar" type="style"/>
+  <public name="ThemeOverlay.MaterialComponents.MaterialCalendar.Fullscreen" type="style"/>
+
+  <public name="Widget.MaterialComponents.MaterialCalendar" type="style"/>
+  <public name="Widget.MaterialComponents.MaterialCalendar.Fullscreen" type="style"/>
+
+  <public name="Widget.MaterialComponents.MaterialCalendar.Item" type="style"/>
+  <public name="Widget.MaterialComponents.MaterialCalendar.Day" type="style"/>
+  <public name="Widget.MaterialComponents.MaterialCalendar.Day.Invalid" type="style"/>
+  <public name="Widget.MaterialComponents.MaterialCalendar.Day.Selected" type="style"/>
+  <public name="Widget.MaterialComponents.MaterialCalendar.Day.Today" type="style"/>
+  <public name="Widget.MaterialComponents.MaterialCalendar.Year" type="style"/>
+  <public name="Widget.MaterialComponents.MaterialCalendar.Year.Selected" type="style"/>
+  <public name="Widget.MaterialComponents.MaterialCalendar.Year.Today" type="style"/>
+
+  <public name="ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar.Day" type="style"/>
+  <public name="ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar.Year" type="style"/>
+  <public name="ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar.Window.Fullscreen" type="style"/>
+
+</resources>
