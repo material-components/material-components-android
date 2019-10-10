@@ -65,4 +65,25 @@ public class ChipGroupTest {
     chipgroup.clearCheck();
     assertThat(chipgroup.getCheckedChipId()).isEqualTo(View.NO_ID);
   }
+
+  @Test
+  public void testMultipleCheckedChip() {
+    int chip1Id = chipgroup.getChildAt(0).getId();
+    chipgroup.check(chip1Id);
+    int chip2Id = chipgroup.getChildAt(1).getId();
+    chipgroup.check(chip2Id);
+    assertThat(chipgroup.getCheckedChipIds()).hasSize(2);
+  }
+
+  @Test
+  public void testSingleCheckedChip() {
+    chipgroup.setSingleSelection(true);
+    int chipId = chipgroup.getChildAt(2).getId();
+    chipgroup.check(chipId);
+    assertThat(chipgroup.getCheckedChipIds()).hasSize(1);
+    //check that for a single checked chip methods should be equivalent
+    Integer checkedId1 = chipgroup.getCheckedChipIds().get(0);
+    int checkedId2 = chipgroup.getCheckedChipId();
+    assertThat(checkedId1).isEqualTo(checkedId2);
+  }
 }
