@@ -287,6 +287,7 @@ public class ChipGroup extends FlowLayout {
       if (child instanceof Chip) {
         if (((Chip) child).isChecked()) {
           checkedIds.add(child.getId());
+          if (singleSelection) return  checkedIds;
         }
       }
     }
