@@ -35,6 +35,9 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import com.google.android.material.internal.FlowLayout;
 import com.google.android.material.internal.ThemeEnforcement;
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * A ChipGroup is used to hold multiple {@link Chip}s. By default, the chips are reflowed across
@@ -257,6 +260,7 @@ public class ChipGroup extends FlowLayout {
    * @return the unique id of the selected chip in this group in single selection mode
    * @see #check(int)
    * @see #clearCheck()
+   * @see #getCheckedChipIds()
    * @attr ref R.styleable#ChipGroup_checkedChip
    */
   @IdRes
@@ -265,11 +269,38 @@ public class ChipGroup extends FlowLayout {
   }
 
   /**
+   * Returns the identifiers of the selected {@link Chip}s in this group. Upon empty
+   * selection, the returned value is an empty list.
+   *
+   * @return The unique IDs of the selected {@link Chip}s in this group. When in {@link
+   *     #isSingleSelection() single selection mode}, returns a list with a single ID. When no
+   *     {@link Chip}s are selected, returns an empty list.
+   * @see #check(int)
+   * @see #clearCheck()
+   * @see #getCheckedChipId()
+   */
+  @NonNull
+  public List<Integer> getCheckedChipIds() {
+    ArrayList<Integer> checkedIds = new ArrayList<>();
+    for (int i = 0; i < getChildCount(); i++) {
+      View child = getChildAt(i);
+      if (child instanceof Chip) {
+        if (((Chip) child).isChecked()) {
+          checkedIds.add(child.getId());
+        }
+      }
+    }
+
+    return checkedIds;
+  }
+  
+  /**
    * Clears the selection. When the selection is cleared, no chip in this group is selected and
    * {@link #getCheckedChipId()} returns {@link View#NO_ID}.
    *
    * @see #check(int)
    * @see #getCheckedChipId()
+   * @see #getCheckedChipIds()
    */
   public void clearCheck() {
     protectFromCheckedChange = true;
