@@ -58,6 +58,7 @@ def srcDirs = [
   'menu',
   'radiobutton',
   'shapetheming',
+  'slider',
   'switchmaterial',
   'tableofcontents',
   'tabs',
