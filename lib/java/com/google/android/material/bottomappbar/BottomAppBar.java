@@ -870,6 +870,8 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
 
     private WeakReference<BottomAppBar> viewRef;
 
+    private int originalBottomMargin;
+
     private final OnLayoutChangeListener fabLayoutListener =
         new OnLayoutChangeListener() {
           @Override
@@ -897,28 +899,24 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
             int height = fabContentRect.height();
 
             // Set the cutout diameter based on the height of the fab.
-            if (!child.setFabDiameter(height)) {
-              // The size of the fab didn't change so return early.
-              return;
-            }
+            child.setFabDiameter(height);
 
             CoordinatorLayout.LayoutParams fabLayoutParams =
                 (CoordinatorLayout.LayoutParams) v.getLayoutParams();
 
-            // Set the bottomMargin of the fab if it is 0dp. This adds space below the fab if the
-            // BottomAppBar is hidden.
-            if (fabLayoutParams.bottomMargin == 0) {
+            // Manage the bottomMargin of the fab if it wasn't explicitly set to something. This
+            // adds space below the fab if the BottomAppBar is hidden.
+            if (originalBottomMargin == 0) {
               // Extra padding is added for the fake shadow on API < 21. Ensure we don't add too
               // much space by removing that extra padding.
-              int bottomShadowPadding = (fab.getMeasuredHeight() - fabContentRect.height()) / 2;
+              int bottomShadowPadding = (fab.getMeasuredHeight() - height) / 2;
               int bottomMargin =
                   child
                       .getResources()
                       .getDimensionPixelOffset(R.dimen.mtrl_bottomappbar_fab_bottom_margin);
-              // At least be tall enough to be above the bottom insets, otherwise set some space
-              // ignoring any shadow padding.
-              fabLayoutParams.bottomMargin =
-                  Math.max(child.getBottomInset(), bottomMargin - bottomShadowPadding);
+              // Should be moved above the bottom insets with space ignoring any shadow padding.
+              int minBottomMargin = bottomMargin - bottomShadowPadding;
+              fabLayoutParams.bottomMargin = child.getBottomInset() + minBottomMargin;
             }
           }
         };
@@ -944,6 +942,10 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
         CoordinatorLayout.LayoutParams fabLayoutParams =
             (CoordinatorLayout.LayoutParams) dependentView.getLayoutParams();
         fabLayoutParams.anchorGravity = Gravity.CENTER | Gravity.TOP;
+
+        // Keep track of the original bottom margin for the fab. We will manage the margin if
+        // nothing was set.
+        originalBottomMargin = fabLayoutParams.bottomMargin;
 
         if (dependentView instanceof FloatingActionButton) {
           FloatingActionButton fab = ((FloatingActionButton) dependentView);
