@@ -32,7 +32,7 @@ the
 [Slider Demo](https://github.com/material-components/material-components-android/tree/master/catalog/java/io/material/catalog/slider/)
 in the Material Android Catalog.
 
-##Code
+## Code
 
 The
 [Slider Package](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/slider)
