@@ -178,6 +178,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   @SaveFlags private int saveFlags = SAVE_NONE;
 
+  private static final int SIGNIFICANT_VEL_THRESHOLD = 500;
+
   private static final float HIDE_THRESHOLD = 0.5f;
 
   private static final float HIDE_FRICTION = 0.1f;
@@ -1025,13 +1027,15 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     }
   }
 
-  private void calculateCollapsedOffset() {
-    int peek;
+  private int calculatePeekHeight() {
     if (peekHeightAuto) {
-      peek = Math.max(peekHeightMin, parentHeight - parentWidth * 9 / 16);
-    } else {
-      peek = peekHeight;
+      return Math.max(peekHeightMin, parentHeight - parentWidth * 9 / 16);
     }
+    return peekHeight;
+  }
+
+  private void calculateCollapsedOffset() {
+    int peek = calculatePeekHeight();
 
     if (fitToContents) {
       collapsedOffset = Math.max(parentHeight - peek, fitToContentsOffset);
@@ -1080,8 +1084,9 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       // It should not hide, but collapse.
       return false;
     }
+    int peek = calculatePeekHeight();
     final float newTop = child.getTop() + yvel * HIDE_FRICTION;
-    return Math.abs(newTop - collapsedOffset) / (float) peekHeight > HIDE_THRESHOLD;
+    return Math.abs(newTop - collapsedOffset) / (float) peek > HIDE_THRESHOLD;
   }
 
   @Nullable
@@ -1228,6 +1233,11 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
           }
         }
 
+        private boolean releasedLow(@NonNull View child) {
+          // Needs to be at least half way to the bottom.
+          return child.getTop() > (parentHeight + getExpandedOffset()) / 2;
+        }
+
         @Override
         public void onViewReleased(@NonNull View releasedChild, float xvel, float yvel) {
           int top;
@@ -1246,13 +1256,24 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
                 targetState = STATE_EXPANDED;
               }
             }
-          } else if (hideable
-              && shouldHide(releasedChild, yvel)
-              && (releasedChild.getTop() > collapsedOffset || Math.abs(xvel) < Math.abs(yvel))) {
-            // Hide if we shouldn't collapse and the view was either released low or it was a
-            // vertical swipe.
-            top = parentHeight;
-            targetState = STATE_HIDDEN;
+          } else if (hideable && shouldHide(releasedChild, yvel)) {
+            // Hide if the view was either released low or it was a significant vertical swipe
+            // otherwise settle to closest expanded state.
+            if ((Math.abs(xvel) < Math.abs(yvel) && yvel > SIGNIFICANT_VEL_THRESHOLD)
+                || releasedLow(releasedChild)) {
+              top = parentHeight;
+              targetState = STATE_HIDDEN;
+            } else if (fitToContents) {
+              top = fitToContentsOffset;
+              targetState = STATE_EXPANDED;
+            } else if (Math.abs(releasedChild.getTop() - expandedOffset)
+                < Math.abs(releasedChild.getTop() - halfExpandedOffset)) {
+              top = expandedOffset;
+              targetState = STATE_EXPANDED;
+            } else {
+              top = halfExpandedOffset;
+              targetState = STATE_HALF_EXPANDED;
+            }
           } else if (yvel == 0.f || Math.abs(xvel) > Math.abs(yvel)) {
             // If the Y velocity is 0 or the swipe was mostly horizontal indicated by the X velocity
             // being greater than the Y velocity, settle to the nearest correct height.
@@ -1331,7 +1352,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     View bottomSheet = viewRef.get();
     if (bottomSheet != null && !callbacks.isEmpty()) {
       float slideOffset =
-          (top > collapsedOffset)
+          (top > collapsedOffset || collapsedOffset == getExpandedOffset())
               ? (float) (collapsedOffset - top) / (parentHeight - collapsedOffset)
               : (float) (collapsedOffset - top) / (collapsedOffset - getExpandedOffset());
       for (int i = 0; i < callbacks.size(); i++) {

@@ -428,6 +428,79 @@ public class BottomSheetBehaviorTest {
     testSkipCollapsed();
   }
 
+  private void testSkipCollapsed_smallSwipe(int expectedState, float swipeViewHeightPercentage)
+      throws Throwable {
+    getBehavior().setSkipCollapsed(true);
+    checkSetState(BottomSheetBehavior.STATE_EXPANDED, ViewMatchers.isDisplayed());
+    Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
+        .perform(
+            DesignViewActions.withCustomConstraints(
+                new GeneralSwipeAction(
+                    Swipe.SLOW,
+                    // Manually calculate the starting coordinates to make sure that the touch
+                    // actually falls onto the view on Gingerbread
+                    view -> {
+                      int[] location = new int[2];
+                      view.getLocationInWindow(location);
+                      return new float[] {view.getWidth() / 2, location[1] + 1};
+                    },
+                    // Manually calculate the ending coordinates to make sure that the bottom
+                    // sheet is collapsed, not hidden
+                    view -> {
+                      return new float[] {
+                        // x: center of the bottom sheet
+                        view.getWidth() / 2,
+                        // y: some percentage down the view
+                        view.getHeight() * swipeViewHeightPercentage,
+                      };
+                    },
+                    Press.FINGER),
+                ViewMatchers.isDisplayingAtLeast(5)));
+    registerIdlingResourceCallback();
+    try {
+      if (expectedState == BottomSheetBehavior.STATE_HIDDEN) {
+        Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
+            .check(ViewAssertions.matches(not(ViewMatchers.isDisplayed())));
+      } else {
+        Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
+      }
+      assertThat(getBehavior().getState(), is(expectedState));
+    } finally {
+      unregisterIdlingResourceCallback();
+    }
+  }
+
+  @Test
+  @MediumTest
+  public void testSkipCollapsed_smallSwipe_remainsExpanded() throws Throwable {
+    testSkipCollapsed_smallSwipe(
+        BottomSheetBehavior.STATE_EXPANDED, /* swipeViewHeightPercentage = */ 0.5f);
+  }
+
+  @Test
+  @MediumTest
+  public void testSkipCollapsedFullyExpanded_smallSwipe_remainsExpanded() throws Throwable {
+    getBehavior().setFitToContents(false);
+    testSkipCollapsed_smallSwipe(
+        BottomSheetBehavior.STATE_HALF_EXPANDED, /* swipeViewHeightPercentage = */ 0.5f);
+  }
+
+  @Test
+  @MediumTest
+  public void testSkipCollapsed_smallSwipePastThreshold_getsHidden() throws Throwable {
+    testSkipCollapsed_smallSwipe(
+        BottomSheetBehavior.STATE_HIDDEN, /* swipeViewHeightPercentage = */ 0.75f);
+  }
+
+  @Test
+  @MediumTest
+  public void testSkipCollapsedFullyExpanded_smallSwipePastThreshold_getsHidden() throws Throwable {
+    getBehavior().setFitToContents(false);
+    testSkipCollapsed_smallSwipe(
+        BottomSheetBehavior.STATE_HIDDEN, /* swipeViewHeightPercentage = */ 0.75f);
+  }
+
   @Test
   @MediumTest
   public void testSwipeUpToExpand() {
