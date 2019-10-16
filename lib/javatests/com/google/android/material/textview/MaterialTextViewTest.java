@@ -63,6 +63,7 @@ public class MaterialTextViewTest {
 
   @Test
   public void ensureThatCreatedViewUsesLineHeightFromTextAppearance() {
+    context.setTheme(R.style.Theme_AppCompat);
     MaterialTextView textView =
         (MaterialTextView)
             inflater.inflate(R.layout.text_view_with_line_height_from_appearance, null, false);
@@ -71,6 +72,7 @@ public class MaterialTextViewTest {
 
   @Test
   public void ensureThatCreatedViewUsesLineHeightFromStyleWithTextAppearance() {
+    context.setTheme(R.style.Theme_AppCompat);
     MaterialTextView textView =
         (MaterialTextView)
             inflater.inflate(R.layout.text_view_with_line_height_from_style, null, false);
@@ -79,6 +81,7 @@ public class MaterialTextViewTest {
 
   @Test
   public void ensureThatLineHeightFromLayoutOverridesThatFromTextAppearance() {
+    context.setTheme(R.style.Theme_AppCompat);
     MaterialTextView textView =
         (MaterialTextView)
             inflater.inflate(R.layout.text_view_with_line_height_from_layout, null, false);
@@ -87,6 +90,7 @@ public class MaterialTextViewTest {
 
   @Test
   public void ensureThatViewAppliesLineHeightWhenSettingTextAppearance() {
+    context.setTheme(R.style.Theme_AppCompat);
     MaterialTextView textView = new MaterialTextView(context);
     textView.setTextAppearance(context, R.style.TestStyleWithLineHeight);
     assertThat(textView.getLineHeight()).isEqualTo(testLineHeight);
