@@ -358,6 +358,10 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     }
 
     setBadgeGravity(a.getInt(R.styleable.Badge_badgeGravity, TOP_END));
+
+    setBadgeHorizontalOffset(a.getDimension(R.styleable.Badge_badgeHorizontalOffset, 0f));
+    setBadgeVerticalOffset(a.getDimension(R.styleable.Badge_badgeVerticalOffset, 0f));
+
     a.recycle();
   }
 
