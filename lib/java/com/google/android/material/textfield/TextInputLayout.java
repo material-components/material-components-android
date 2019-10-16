@@ -3506,15 +3506,13 @@ public class TextInputLayout extends LinearLayout {
     if (!isEnabled()) {
       boxStrokeColor = disabledColor;
     } else if (indicatorViewController.errorShouldBeShown()) {
-      // TODO(b/124130133): remove check for boxBackgroundMode
-      if (boxBackgroundMode == BOX_BACKGROUND_OUTLINE && strokeErrorColor != null) {
+      if (strokeErrorColor != null) {
         updateStrokeErrorColor(hasFocus, isHovered);
       } else {
         boxStrokeColor = indicatorViewController.getErrorViewCurrentTextColor();
       }
     } else if (counterOverflowed && counterView != null) {
-      // TODO(b/124130133): remove check for boxBackgroundMode
-      if (boxBackgroundMode == BOX_BACKGROUND_OUTLINE && strokeErrorColor != null) {
+      if (strokeErrorColor != null) {
         updateStrokeErrorColor(hasFocus, isHovered);
       } else {
         boxStrokeColor = counterView.getCurrentTextColor();
@@ -3531,20 +3529,16 @@ public class TextInputLayout extends LinearLayout {
         getErrorIconDrawable() != null && indicatorViewController.errorShouldBeShown());
 
     // Update icons tints
-    // TODO(b/124130133): remove check for boxBackgroundMode
-    if (boxBackgroundMode == BOX_BACKGROUND_OUTLINE) {
-      updateIconColorOnState(errorIconView, errorIconTintList);
-      updateIconColorOnState(startIconView, startIconTintList);
-      updateIconColorOnState(endIconView, endIconTintList);
-    }
+    updateIconColorOnState(errorIconView, errorIconTintList);
+    updateIconColorOnState(startIconView, startIconTintList);
+    updateIconColorOnState(endIconView, endIconTintList);
 
     if (getEndIconDelegate().shouldTintIconOnError()) {
       tintEndIconOnError(indicatorViewController.errorShouldBeShown());
     }
 
     // Update the text box's stroke width based on the current state.
-    // TODO(b/124130133): Update the if check to only (hasFocus && isEnabled)
-    if ((hasFocus || (boxBackgroundMode == BOX_BACKGROUND_FILLED && isHovered)) && isEnabled()) {
+    if (hasFocus && isEnabled()) {
       boxStrokeWidthPx = boxStrokeWidthFocusedPx;
     } else {
       boxStrokeWidthPx = boxStrokeWidthDefaultPx;
@@ -3554,7 +3548,7 @@ public class TextInputLayout extends LinearLayout {
     if (boxBackgroundMode == BOX_BACKGROUND_FILLED) {
       if (!isEnabled()) {
         boxBackgroundColor = disabledFilledBackgroundColor;
-      } else if (isHovered) {
+      } else if (isHovered && !hasFocus) {
         boxBackgroundColor = hoveredFilledBackgroundColor;
       } else {
         boxBackgroundColor = defaultFilledBackgroundColor;
