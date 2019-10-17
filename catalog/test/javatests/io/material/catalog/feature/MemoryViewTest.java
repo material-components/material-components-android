@@ -52,6 +52,7 @@ public class MemoryViewTest {
   @Before
   public void createAndMeasureMemoryView() {
     Context context = ApplicationProvider.getApplicationContext();
+    context.setTheme(R.style.Theme_AppCompat);
     memoryView = new MemoryView(context);
     int spec = MeasureSpec.makeMeasureSpec(500, MeasureSpec.EXACTLY);
     memoryView.setLayoutParams(new LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
