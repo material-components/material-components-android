@@ -50,6 +50,7 @@ public class MaterialTextViewTest {
 
   @Test
   public void ensureThatViewCanBeCreatedWithoutSettingLineHeightAttribute() {
+    context.setTheme(R.style.Theme_AppCompat);
     inflater.inflate(R.layout.text_view_without_line_height, null, false);
   }
 
