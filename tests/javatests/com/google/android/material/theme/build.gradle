@@ -39,7 +39,7 @@ android {
     testApplicationId "com.google.android.material.tests"
     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     minSdkVersion 14
-    targetSdkVersion 27
+    targetSdkVersion 28
   }
 
   targetProjectPath getTransformedProjectPath('testing/java/com/google/android/material/testapp/theme')
