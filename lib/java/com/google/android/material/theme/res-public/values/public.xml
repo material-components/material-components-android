@@ -50,4 +50,6 @@
   <public name="Theme.Design.Light" type="style"/>
   <public name="Theme.Design.NoActionBar" type="style"/>
   <public name="Theme.Design.Light.NoActionBar" type="style"/>
+
+  <public name="materialThemeOverlay" type="attr"/>
 </resources>

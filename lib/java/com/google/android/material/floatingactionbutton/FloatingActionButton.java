@@ -20,7 +20,7 @@ import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static androidx.core.util.Preconditions.checkNotNull;
-import static com.google.android.material.internal.ThemeEnforcement.createThemedContext;
+import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 
 import android.animation.Animator.AnimatorListener;
 import android.content.Context;
@@ -203,7 +203,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   @SuppressWarnings("initialization")
   public FloatingActionButton(
       @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-    super(createThemedContext(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
+    super(wrap(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
     // Ensure we are using the correctly themed context rather than the context that was passed in.
     context = getContext();
 

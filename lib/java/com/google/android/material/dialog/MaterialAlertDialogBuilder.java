@@ -18,7 +18,7 @@ package com.google.android.material.dialog;
 
 import com.google.android.material.R;
 
-import static com.google.android.material.internal.ThemeEnforcement.createThemedContext;
+import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 
 import android.content.Context;
 import android.content.DialogInterface.OnCancelListener;
@@ -86,7 +86,7 @@ public class MaterialAlertDialogBuilder extends AlertDialog.Builder {
 
   private static Context createMaterialAlertDialogThemedContext(@NonNull Context context) {
     int themeOverlayId = getMaterialAlertDialogThemeOverlay(context);
-    Context themedContext = createThemedContext(context, null, DEF_STYLE_ATTR, DEF_STYLE_RES);
+    Context themedContext = wrap(context, null, DEF_STYLE_ATTR, DEF_STYLE_RES);
     if (themeOverlayId == 0) {
       return themedContext;
     }

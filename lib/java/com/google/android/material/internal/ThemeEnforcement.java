@@ -28,7 +28,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
 import androidx.annotation.StyleableRes;
-import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.TintTypedArray;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -46,10 +45,6 @@ public final class ThemeEnforcement {
 
   private static final int[] MATERIAL_CHECK_ATTRS = {R.attr.colorPrimaryVariant};
   private static final String MATERIAL_THEME_NAME = "Theme.MaterialComponents";
-
-  private static final int[] ANDROID_THEME_OVERLAY_ATTRS =
-      new int[] {android.R.attr.theme, R.attr.theme};
-  private static final int[] MATERIAL_THEME_OVERLAY_ATTR = new int[] {R.attr.materialThemeOverlay};
 
   private ThemeEnforcement() {}
 
@@ -250,73 +245,5 @@ public final class ThemeEnforcement {
               + themeName
               + " (or a descendant).");
     }
-  }
-
-  /**
-   * Uses the materialThemeOverlay attribute to create a themed context. This allows us to use
-   * ThemeOverlays with a default style, and gives us some protection against losing our
-   * ThemeOverlay by clients who set android:theme or app:theme. If android:theme or app:theme is
-   * specified by the client, any attributes defined there will take precedence over attributes
-   * defined in materialThemeOverlay.
-   */
-  @NonNull
-  public static Context createThemedContext(
-      @NonNull Context context,
-      @Nullable AttributeSet attrs,
-      @AttrRes int defStyleAttr,
-      @StyleRes int defStyleRes) {
-    int materialThemeOverlayId =
-        obtainMaterialThemeOverlayId(context, attrs, defStyleAttr, defStyleRes);
-    if (materialThemeOverlayId != 0
-        && (!(context instanceof ContextThemeWrapper)
-            || ((ContextThemeWrapper) context).getThemeResId() != materialThemeOverlayId)) {
-      // If the context isn't a ContextThemeWrapper, or it is but does not have the same theme as we
-      // need, wrap it in a new wrapper.
-      context = new ContextThemeWrapper(context, materialThemeOverlayId);
-
-      // We want values set in android:theme or app:theme to always override values supplied by
-      // materialThemeOverlay, so we'll wrap the context again if either of those are set.
-      int androidThemeOverlayId = obtainAndroidThemeOverlayId(context, attrs);
-      if (androidThemeOverlayId != 0) {
-        context = new ContextThemeWrapper(context, androidThemeOverlayId);
-      }
-    }
-    return context;
-  }
-
-  /**
-   * Retrieves the value of {@code android:theme} or {@code app:theme}, not taking into account
-   * {@code defStyleAttr} and {@code defStyleRes} because the Android theme overlays shouldn't work
-   * from default styles.
-   */
-  @StyleRes
-  private static int obtainAndroidThemeOverlayId(@NonNull Context context, AttributeSet attrs) {
-    TypedArray a = context.obtainStyledAttributes(attrs, ANDROID_THEME_OVERLAY_ATTRS);
-    int androidThemeId = a.getResourceId(0 /* index */, 0 /* defaultVal */);
-    int appThemeId = a.getResourceId(1 /* index */, 0 /* defaultVal */);
-    a.recycle();
-    if (androidThemeId != 0) {
-      return androidThemeId;
-    } else {
-      return appThemeId;
-    }
-  }
-
-  /**
-   * Retrieves the value of {@code materialThemeOverlay}, taking into account {@code defStyleAttr}
-   * and {@code defStyleRes} because the Material theme overlay should work from default styles.
-   */
-  @StyleRes
-  private static int obtainMaterialThemeOverlayId(
-      @NonNull Context context,
-      @Nullable AttributeSet attrs,
-      @AttrRes int defStyleAttr,
-      @StyleRes int defStyleRes) {
-    TypedArray a =
-        context.obtainStyledAttributes(
-            attrs, MATERIAL_THEME_OVERLAY_ATTR, defStyleAttr, defStyleRes);
-    int materialThemeOverlayId = a.getResourceId(0 /* index */, 0 /* defaultVal */);
-    a.recycle();
-    return materialThemeOverlayId;
   }
 }
