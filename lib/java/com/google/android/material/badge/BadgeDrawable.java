@@ -35,6 +35,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
+import androidx.annotation.Dimension;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -187,6 +188,12 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     @PluralsRes private int contentDescriptionQuantityStrings;
     @BadgeGravity private int badgeGravity;
 
+    @Dimension(unit = Dimension.PX)
+    private int horizontalOffset;
+
+    @Dimension(unit = Dimension.PX)
+    private int verticalOffset;
+
     public SavedState(@NonNull Context context) {
       // If the badge text color attribute was not explicitly set, use the text color specified in
       // the TextAppearance.
@@ -207,6 +214,8 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       contentDescriptionNumberless = in.readString();
       contentDescriptionQuantityStrings = in.readInt();
       badgeGravity = in.readInt();
+      horizontalOffset = in.readInt();
+      verticalOffset = in.readInt();
     }
 
     public static final Creator<SavedState> CREATOR =
@@ -239,6 +248,8 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       dest.writeString(contentDescriptionNumberless.toString());
       dest.writeInt(contentDescriptionQuantityStrings);
       dest.writeInt(badgeGravity);
+      dest.writeInt(horizontalOffset);
+      dest.writeInt(verticalOffset);
     }
   }
 
@@ -321,6 +332,9 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     setBadgeTextColor(savedState.badgeTextColor);
 
     setBadgeGravity(savedState.badgeGravity);
+
+    setHorizontalOffset(savedState.horizontalOffset);
+    setVerticalOffset(savedState.verticalOffset);
   }
 
   private void loadDefaultStateFromAttributes(
@@ -348,6 +362,10 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     }
 
     setBadgeGravity(a.getInt(R.styleable.Badge_badgeGravity, TOP_END));
+
+    setHorizontalOffset(a.getDimensionPixelOffset(R.styleable.Badge_horizontalOffset, 0));
+    setVerticalOffset(a.getDimensionPixelOffset(R.styleable.Badge_verticalOffset, 0));
+
     a.recycle();
   }
 
@@ -631,6 +649,42 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     }
   }
 
+  /**
+   * Sets how much (in pixels) to horizontally move this badge towards the center of its anchor.
+   *
+   * @param px badge's horizontal offset
+   */
+  public void setHorizontalOffset(int px) {
+    savedState.horizontalOffset = px;
+    updateCenterAndBounds();
+  }
+
+  /**
+   * Returns how much (in pixels) this badge is being horizontally offset towards the center of its
+   * anchor.
+   */
+  public int getHorizontalOffset() {
+    return savedState.horizontalOffset;
+  }
+
+  /**
+   * Sets how much (in pixels) to vertically move this badge towards the center of its anchor.
+   *
+   * @param px badge's vertical offset
+   */
+  public void setVerticalOffset(int px) {
+    savedState.verticalOffset = px;
+    updateCenterAndBounds();
+  }
+
+  /**
+   * Returns how much (in pixels) this badge is being vertically moved towards the center of its
+   * anchor.
+   */
+  public int getVerticalOffset() {
+    return savedState.verticalOffset;
+  }
+
   private void setTextAppearanceResource(@StyleRes int id) {
     Context context = contextRef.get();
     if (context == null) {
@@ -687,12 +741,12 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     switch (savedState.badgeGravity) {
       case BOTTOM_END:
       case BOTTOM_START:
-        badgeCenterY = anchorRect.bottom;
+        badgeCenterY = anchorRect.bottom - savedState.verticalOffset;
         break;
       case TOP_END:
       case TOP_START:
       default:
-        badgeCenterY = anchorRect.top;
+        badgeCenterY = anchorRect.top + savedState.verticalOffset;
         break;
     }
 
@@ -720,16 +774,16 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       case TOP_START:
         badgeCenterX =
             ViewCompat.getLayoutDirection(anchorView) == View.LAYOUT_DIRECTION_LTR
-                ? anchorRect.left - halfBadgeWidth + inset
-                : anchorRect.right + halfBadgeWidth - inset;
+                ? anchorRect.left - halfBadgeWidth + inset + savedState.horizontalOffset
+                : anchorRect.right + halfBadgeWidth - inset - savedState.horizontalOffset;
         break;
       case BOTTOM_END:
       case TOP_END:
       default:
         badgeCenterX =
             ViewCompat.getLayoutDirection(anchorView) == View.LAYOUT_DIRECTION_LTR
-                ? anchorRect.right + halfBadgeWidth - inset
-                : anchorRect.left - halfBadgeWidth + inset;
+                ? anchorRect.right + halfBadgeWidth - inset - savedState.horizontalOffset
+                : anchorRect.left - halfBadgeWidth + inset + savedState.horizontalOffset;
         break;
     }
   }
