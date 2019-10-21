@@ -198,7 +198,6 @@ public class RangeDateSelectorTest {
     Calendar setToStart = UtcDates.getCalendar();
     setToStart.set(2005, Calendar.FEBRUARY, 1);
     Calendar setToEnd = UtcDates.getCalendar();
-    ;
     setToEnd.set(2004, Calendar.MARCH, 5);
 
     // ThrowingRunnable used by assertThrows is not available until gradle 4.13
