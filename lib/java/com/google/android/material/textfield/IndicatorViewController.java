@@ -493,7 +493,7 @@ final class IndicatorViewController {
   private boolean isCaptionStateError(@CaptionDisplayState int captionState) {
     return captionState == CAPTION_STATE_ERROR
         && errorView != null
-        && !TextUtils.isEmpty(errorText);
+        && errorText != null;
   }
 
   boolean helperTextIsDisplayed() {
