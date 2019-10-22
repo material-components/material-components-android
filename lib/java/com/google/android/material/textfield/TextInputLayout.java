@@ -1615,7 +1615,7 @@ public class TextInputLayout extends LinearLayout {
    */
   public void setErrorIconDrawable(@Nullable Drawable errorIconDrawable) {
     errorIconView.setImageDrawable(errorIconDrawable);
-    setErrorIconVisible(errorIconDrawable != null);
+    setErrorIconVisible(errorIconDrawable != null && indicatorViewController.isErrorEnabled());
   }
 
   /**
@@ -3526,7 +3526,9 @@ public class TextInputLayout extends LinearLayout {
     }
 
     setErrorIconVisible(
-        getErrorIconDrawable() != null && indicatorViewController.errorShouldBeShown());
+        getErrorIconDrawable() != null
+            && indicatorViewController.isErrorEnabled()
+            && indicatorViewController.errorShouldBeShown());
 
     // Update icons tints
     updateIconColorOnState(errorIconView, errorIconTintList);
