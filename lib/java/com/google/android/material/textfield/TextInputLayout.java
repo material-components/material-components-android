@@ -1498,7 +1498,7 @@ public class TextInputLayout extends LinearLayout {
    */
   public void setErrorIconDrawable(@Nullable Drawable errorIconDrawable) {
     errorIconView.setImageDrawable(errorIconDrawable);
-    setErrorIconVisible(errorIconDrawable != null);
+    setErrorIconVisible(errorIconDrawable != null && indicatorViewController.isErrorEnabled());
   }
 
   /**
@@ -3188,7 +3188,9 @@ public class TextInputLayout extends LinearLayout {
         indicatorViewController.errorShouldBeShown()
             && getEndIconDelegate().shouldTintIconOnError());
     setErrorIconVisible(
-        getErrorIconDrawable() != null && indicatorViewController.errorShouldBeShown());
+        getErrorIconDrawable() != null
+            && indicatorViewController.isErrorEnabled()
+            && indicatorViewController.errorShouldBeShown());
 
     // Update the text box's stroke width based on the current state.
     if ((isHovered || hasFocus) && isEnabled()) {
