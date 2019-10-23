@@ -752,6 +752,17 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     }
 
     @Override
+    @SuppressWarnings({"unchecked"})
+    // TODO: remove this stub method. Adding now to mantain compatibility since the override is
+    // not correct.
+    public boolean getInsetDodgeRect(
+        @NonNull CoordinatorLayout parent,
+        @NonNull ExtendedFloatingActionButton child,
+        @NonNull Rect rect) {
+      return super.getInsetDodgeRect(parent, (T) child, rect);
+    }
+
+    @Override
     public void onAttachedToLayoutParams(@NonNull CoordinatorLayout.LayoutParams lp) {
       if (lp.dodgeInsetEdges == Gravity.NO_GRAVITY) {
         // If the developer hasn't set dodgeInsetEdges, lets set it to BOTTOM so that
