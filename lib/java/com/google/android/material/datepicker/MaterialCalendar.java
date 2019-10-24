@@ -15,13 +15,19 @@
  */
 package com.google.android.material.datepicker;
 
-import com.google.android.material.R;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
+import android.view.ContextThemeWrapper;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityEvent;
+import android.widget.GridView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
@@ -39,14 +45,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration;
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener;
 import androidx.recyclerview.widget.RecyclerView.State;
-import android.view.ContextThemeWrapper;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.view.accessibility.AccessibilityEvent;
-import android.widget.GridView;
+
+import com.google.android.material.R;
 import com.google.android.material.button.MaterialButton;
+
 import java.util.Calendar;
 
 /**
@@ -164,10 +166,12 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
 
     recyclerView = root.findViewById(R.id.mtrl_calendar_months);
 
-    LinearLayoutManager layoutManager =
-        new LinearLayoutManager(getContext(), orientation, false) {
+    SmoothCalendarLayoutManager layoutManager =
+        new SmoothCalendarLayoutManager(getContext(), orientation, false) {
           @Override
-          protected void calculateExtraLayoutSpace(@NonNull State state, @NonNull int[] ints) {
+          protected void calculateExtraLayoutSpace(
+              @NonNull State state,
+              @NonNull int[] ints) {
             if (orientation == LinearLayoutManager.HORIZONTAL) {
               ints[0] = recyclerView.getWidth();
               ints[1] = recyclerView.getWidth();
@@ -304,12 +308,12 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
     current = moveTo;
     if (jump && isForward) {
       recyclerView.scrollToPosition(moveToPosition - SMOOTH_SCROLL_MAX);
-      recyclerView.smoothScrollToPosition(moveToPosition);
+      postSmoothRecyclerViewScroll(moveToPosition);
     } else if (jump) {
       recyclerView.scrollToPosition(moveToPosition + SMOOTH_SCROLL_MAX);
-      recyclerView.smoothScrollToPosition(moveToPosition);
+      postSmoothRecyclerViewScroll(moveToPosition);
     } else {
-      recyclerView.smoothScrollToPosition(moveToPosition);
+      postSmoothRecyclerViewScroll(moveToPosition);
     }
   }
 
@@ -443,6 +447,15 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
             }
           }
         });
+  }
+
+  private void postSmoothRecyclerViewScroll(final int position) {
+    recyclerView.post(new Runnable() {
+      @Override
+      public void run() {
+        recyclerView.smoothScrollToPosition(position);
+      }
+    });
   }
 
   @NonNull
