@@ -16,6 +16,8 @@
 
 package com.google.android.material.drawable;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources.NotFoundException;
@@ -23,6 +25,9 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.RippleDrawable;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
@@ -32,6 +37,8 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Xml;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -85,6 +92,26 @@ public final class DrawableUtils {
           new NotFoundException("Can't load badge resource ID #0x" + Integer.toHexString(id));
       exception.initCause(e);
       throw exception;
+    }
+  }
+
+  @TargetApi(VERSION_CODES.LOLLIPOP)
+  public static void setRippleDrawableRadius(@Nullable Drawable drawable, int radius) {
+    if (!(drawable instanceof RippleDrawable)) {
+      return;
+    }
+
+    if (VERSION.SDK_INT >= VERSION_CODES.M) {
+      ((RippleDrawable) drawable).setRadius(radius);
+    } else {
+      try {
+        @SuppressLint("PrivateApi")
+        Method setMaxRadiusMethod =
+            RippleDrawable.class.getDeclaredMethod("setMaxRadius", int.class);
+        setMaxRadiusMethod.invoke(drawable, radius);
+      } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+        throw new IllegalStateException("Couldn't set RippleDrawable radius", e);
+      }
     }
   }
 }

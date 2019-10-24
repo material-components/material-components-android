@@ -28,6 +28,8 @@
     <attr name="inactiveTrackColor" format="color" />
     <!-- The color of the slider's thumb. -->
     <attr name="thumbColor" format="color" />
+    <!-- The color of the slider's halo. -->
+    <attr name="haloColor" format="color" />
     <!-- The color of the slider's tick marks. Only used when the slider is in discrete mode. -->
     <attr name="tickColor" format="color" />
     <!-- The color of the slider's tick marks for the active portion of the track. Only used when
