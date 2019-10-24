@@ -33,6 +33,9 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.RippleDrawable;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.ColorInt;
@@ -41,11 +44,14 @@ import androidx.annotation.Dimension;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
+import androidx.core.graphics.drawable.DrawableCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.InflateException;
 import android.view.MotionEvent;
 import android.view.View;
+import com.google.android.material.drawable.DrawableUtils;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.CornerFamily;
@@ -184,10 +190,12 @@ public class Slider extends View {
   private float stepSize = 0.0f;
   private float[] ticksCoordinates;
   private int trackWidth;
+  private boolean forceDrawCompatShadow;
 
   @NonNull private ColorStateList inactiveTrackColor;
   @NonNull private ColorStateList activeTrackColor;
   @NonNull private ColorStateList thumbColor;
+  @NonNull private ColorStateList haloColor;
   @NonNull private ColorStateList tickColor;
   @NonNull private ColorStateList textColor;
 
@@ -271,6 +279,14 @@ public class Slider extends View {
     ticksPaint.setStyle(Style.STROKE);
     ticksPaint.setStrokeWidth(lineHeight);
 
+    Drawable background = getBackground();
+    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+      if (background instanceof RippleDrawable) {
+        ((RippleDrawable) background).setColor(haloColor);
+        DrawableUtils.setRippleDrawableRadius(background, haloRadius);
+      }
+    }
+
     label = context.getResources().getDrawable(R.drawable.mtrl_slider_label);
     label.setColorFilter(new PorterDuffColorFilter(getColorForState(thumbColor), Mode.MULTIPLY));
 
@@ -344,6 +360,7 @@ public class Slider extends View {
     activeTrackColor = MaterialResources.getColorStateList(context, a, activeTrackColorRes);
     thumbColor = MaterialResources.getColorStateList(context, a, R.styleable.Slider_thumbColor);
     thumbDrawable.setFillColor(thumbColor);
+    haloColor = MaterialResources.getColorStateList(context, a, R.styleable.Slider_haloColor);
     tickColor = MaterialResources.getColorStateList(context, a, R.styleable.Slider_activeTickColor);
     textColor = MaterialResources.getColorStateList(context, a, R.styleable.Slider_labelColor);
 
@@ -614,6 +631,7 @@ public class Slider extends View {
   protected void onSizeChanged(int w, int h, int oldw, int oldh) {
     super.onSizeChanged(w, h, oldw, oldh);
     updateTrackWidthAndTicksCoordinates(w);
+    updateHaloHotSpot();
   }
 
   private void updateTrackWidthAndTicksCoordinates(int viewWidth) {
@@ -627,6 +645,19 @@ public class Slider extends View {
       for (int i = 0; i < tickCount * 2; i += 2) {
         ticksCoordinates[i] = trackSidePadding + i / 2 * interval;
         ticksCoordinates[i + 1] = calculateTop();
+      }
+    }
+  }
+
+  private void updateHaloHotSpot() {
+    // Set the hotspot as the halo above lollipop.
+    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP && getMeasuredWidth() > 0) {
+      final Drawable background = getBackground();
+      if (background instanceof RippleDrawable) {
+        int x = (int) (thumbPosition * trackWidth + trackSidePadding);
+        int y = calculateTop();
+        DrawableCompat.setHotspotBounds(
+            background, x - haloRadius, y - haloRadius, x + haloRadius, y + haloRadius);
       }
     }
   }
@@ -650,7 +681,8 @@ public class Slider extends View {
       if (stepSize > 0.0f) {
         drawTicks(canvas);
       }
-      drawHalo(canvas, trackWidth, top);
+
+      maybeDrawHalo(canvas, trackWidth, top);
       drawLabel(canvas, trackWidth, top);
       drawLabelText(canvas, trackWidth, top);
     }
@@ -701,8 +733,11 @@ public class Slider extends View {
     canvas.restore();
   }
 
-  private void drawHalo(@NonNull Canvas canvas, int width, int top) {
-    canvas.drawCircle(trackSidePadding + thumbPosition * width, top, haloRadius, haloPaint);
+  private void maybeDrawHalo(@NonNull Canvas canvas, int width, int top) {
+    // Only draw the halo for devices which don't support the ripple.
+    if (forceDrawCompatShadow || VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
+      canvas.drawCircle(trackSidePadding + thumbPosition * width, top, haloRadius, haloPaint);
+    }
   }
 
   @Override
@@ -722,6 +757,7 @@ public class Slider extends View {
         thumbIsPressed = true;
         thumbPosition = position;
         snapThumbPosition();
+        updateHaloHotSpot();
         invalidate();
         if (hasOnChangeListener()) {
           listener.onValueChange(this, getValue());
@@ -730,6 +766,7 @@ public class Slider extends View {
       case MotionEvent.ACTION_MOVE:
         thumbPosition = position;
         snapThumbPosition();
+        updateHaloHotSpot();
         invalidate();
         if (hasOnChangeListener()) {
           listener.onValueChange(this, getValue());
@@ -751,6 +788,9 @@ public class Slider extends View {
     } else {
       labelText = String.format((int) value == value ? "%.0f" : "%.2f", value);
     }
+
+    // Set if the thumb is pressed. This will cause the ripple to be drawn.
+    setPressed(thumbIsPressed);
     return true;
   }
 
@@ -779,6 +819,11 @@ public class Slider extends View {
   @ColorInt
   private int getColorForState(@NonNull ColorStateList colorStateList) {
     return colorStateList.getColorForState(getDrawableState(), colorStateList.getDefaultColor());
+  }
+
+  @VisibleForTesting
+  void forceDrawCompatShadow(boolean force) {
+    forceDrawCompatShadow = force;
   }
 
   @Override
