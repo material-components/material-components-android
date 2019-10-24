@@ -18,6 +18,7 @@ package com.google.android.material.button;
 
 import com.google.android.material.R;
 
+import static android.view.View.GONE;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static com.google.common.truth.Truth.assertThat;
 
@@ -84,6 +85,21 @@ public class MaterialButtonToggleGroupUnitTest {
     toggleGroup.updateChildShapes();
     assertShapeAppearance(firstChild.getShapeAppearanceModel(), CORNER_SIZE, 0, CORNER_SIZE, 0);
     assertShapeAppearance(middleChild.getShapeAppearanceModel(), 0, 0, 0, 0);
+    assertShapeAppearance(lastChild.getShapeAppearanceModel(), 0, CORNER_SIZE, 0, CORNER_SIZE);
+  }
+
+  @Test
+  public void correctShapeAppearances_inToggle_afterSettingViewToGone() {
+    toggleGroup.setOrientation(LinearLayout.VERTICAL);
+    MaterialButton firstChild = (MaterialButton) toggleGroup.getChildAt(0);
+    MaterialButton middleChild = (MaterialButton) toggleGroup.getChildAt(1);
+    MaterialButton lastChild = (MaterialButton) toggleGroup.getChildAt(2);
+
+    firstChild.setVisibility(GONE);
+    toggleGroup.updateChildShapes();
+
+    // Now middle and end child has rounded corners.
+    assertShapeAppearance(middleChild.getShapeAppearanceModel(), CORNER_SIZE, 0, CORNER_SIZE, 0);
     assertShapeAppearance(lastChild.getShapeAppearanceModel(), 0, CORNER_SIZE, 0, CORNER_SIZE);
   }
 

@@ -464,7 +464,12 @@ public class MaterialButtonToggleGroup extends LinearLayout {
    * <p>Also rearranges children such that they are shown in the correct visual order.
    */
   private void adjustChildMarginsAndUpdateLayout() {
-    for (int i = 1; i < getChildCount(); i++) {
+    int firstVisibleChildIndex = getFirstVisibleChildIndex();
+    if (firstVisibleChildIndex == -1) {
+      return;
+    }
+
+    for (int i = firstVisibleChildIndex + 1; i < getChildCount(); i++) {
       // Only adjusts margins if both adjacent children are MaterialButtons
       MaterialButton currentButton = getChildButton(i);
       MaterialButton previousButton = getChildButton(i - 1);
@@ -485,41 +490,86 @@ public class MaterialButtonToggleGroup extends LinearLayout {
       currentButton.setLayoutParams(params);
     }
 
-    resetFirstChildMargin();
+    resetChildMargins(firstVisibleChildIndex);
   }
 
   private MaterialButton getChildButton(int index) {
     return (MaterialButton) getChildAt(index);
   }
 
-  private void resetFirstChildMargin() {
-    if (getChildCount() == 0) {
+  private void resetChildMargins(int childIndex) {
+    if (getChildCount() == 0 || childIndex == -1) {
       return;
     }
 
-    MaterialButton currentButton = getChildButton(0);
+    MaterialButton currentButton = getChildButton(childIndex);
     LayoutParams params = (LayoutParams) currentButton.getLayoutParams();
+    if (getOrientation() == VERTICAL) {
+      params.topMargin = 0;
+      params.bottomMargin = 0;
+      return;
+    }
+
     MarginLayoutParamsCompat.setMarginEnd(params, 0);
     MarginLayoutParamsCompat.setMarginStart(params, 0);
+    params.leftMargin = 0;
+    params.rightMargin = 0;
   }
 
   /** Sets all corner radii to 0 except for leftmost and rightmost corners. */
   @VisibleForTesting
   void updateChildShapes() {
-    int childcount = getChildCount();
-    for (int i = 0; i < childcount; i++) {
+    int childCount = getChildCount();
+    int firstVisibleChildIndex = getFirstVisibleChildIndex();
+    int lastVisibleChildIndex = getLastVisibleChildIndex();
+    for (int i = 0; i < childCount; i++) {
       MaterialButton button = getChildButton(i);
+      if (button.getVisibility() == GONE) {
+        continue;
+      }
+
       ShapeAppearanceModel.Builder builder =
           button.getShapeAppearanceModel().toBuilder();
-      CornerData newCornerData = getNewCornerData(i);
+      CornerData newCornerData = getNewCornerData(i, firstVisibleChildIndex, lastVisibleChildIndex);
       updateBuilderWithCornerData(builder, newCornerData);
 
       button.setShapeAppearanceModel(builder.build());
     }
   }
 
+  private int getFirstVisibleChildIndex() {
+    int childCount = getChildCount();
+    for (int i = 0; i < childCount; i++) {
+      if (isChildVisible(i)) {
+        return i;
+      }
+    }
+
+    return -1;
+  }
+
+  private int getLastVisibleChildIndex() {
+    int childCount = getChildCount();
+    for (int i = childCount - 1; i >= 0; i--) {
+      if (isChildVisible(i)) {
+        return i;
+      }
+    }
+
+    return -1;
+  }
+
+  private boolean isChildVisible(int i) {
+    View child = getChildAt(i);
+    return child.getVisibility() != View.GONE;
+  }
+
+
   @Nullable
-  private CornerData getNewCornerData(int index) {
+  private CornerData getNewCornerData(
+      int index,
+      int firstVisibleChildIndex,
+      int lastVisibleChildIndex) {
     int childCount = getChildCount();
     CornerData cornerData = originalCornerData.get(index);
     if (childCount == 1) {
@@ -527,11 +577,11 @@ public class MaterialButtonToggleGroup extends LinearLayout {
     }
 
     boolean isHorizontal = getOrientation() == HORIZONTAL;
-    if (index == 0) {
+    if (index == firstVisibleChildIndex) {
       return isHorizontal ? CornerData.start(cornerData, this) : CornerData.top(cornerData);
     }
 
-    if (index == childCount - 1) {
+    if (index == lastVisibleChildIndex) {
       return isHorizontal ? CornerData.end(cornerData, this) : CornerData.bottom(cornerData);
     }
 
@@ -544,6 +594,7 @@ public class MaterialButtonToggleGroup extends LinearLayout {
       shapeAppearanceModelBuilder.setAllCornerSizes(0);
       return;
     }
+
     shapeAppearanceModelBuilder
         .setTopLeftCornerSize(cornerData.topLeft)
         .setBottomLeftCornerSize(cornerData.bottomLeft)
