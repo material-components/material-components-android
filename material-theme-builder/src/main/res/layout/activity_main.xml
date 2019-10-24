@@ -57,7 +57,7 @@
                       android:layout_gravity="center_vertical"
                       app:srcCompat="@drawable/ic_material_icon_24dp" />
 
-                    <androidx.appcompat.widget.AppCompatTextView
+                    <com.google.android.material.textview.MaterialTextView
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:layout_gravity="center_vertical"

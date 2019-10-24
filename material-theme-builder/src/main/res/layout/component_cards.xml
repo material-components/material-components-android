@@ -59,7 +59,7 @@
               app:layout_constraintStart_toStartOf="parent"
               app:layout_constraintEnd_toEndOf="parent" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.google.android.material.textview.MaterialTextView
               android:id="@+id/card_overline"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
               app:layout_constraintTop_toBottomOf="@+id/card_header"
               app:layout_constraintStart_toStartOf="parent" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.google.android.material.textview.MaterialTextView
               android:id="@+id/card_title"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
@@ -83,7 +83,7 @@
               app:layout_constraintTop_toBottomOf="@+id/card_overline"
               app:layout_constraintStart_toStartOf="parent" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.google.android.material.textview.MaterialTextView
               android:id="@+id/card_body"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"

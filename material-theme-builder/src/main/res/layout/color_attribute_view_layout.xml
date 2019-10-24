@@ -17,7 +17,7 @@
 
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <com.google.android.material.textview.MaterialTextView
       android:id="@+id/color_attribute"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"

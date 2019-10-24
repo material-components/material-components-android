@@ -54,7 +54,7 @@
             android:layout_height="@dimen/abc_dialog_padding_top_material"
             android:visibility="gone"/>
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@android:id/message"
             style="?attr/materialAlertDialogBodyTextStyle"
             android:layout_width="match_parent"
