@@ -774,6 +774,8 @@ public class TextInputLayout extends LinearLayout {
     }
     setCounterEnabled(counterEnabled);
 
+    setEnabled(a.getBoolean(R.styleable.TextInputLayout_android_enabled, true));
+
     a.recycle();
 
     // For accessibility, consider TextInputLayout itself to be a simple container for an EditText,
@@ -1227,6 +1229,12 @@ public class TextInputLayout extends LinearLayout {
     dispatchOnEditTextAttached();
     updatePrefixTextViewPadding();
     updateSuffixTextViewPadding();
+
+    // Only call setEnabled on the edit text if the layout is disabled, to prevent reenabling an
+    // already disabled edit text.
+    if (!isEnabled()) {
+      editText.setEnabled(false);
+    }
 
     // Update the label visibility with no animation, but force a state change
     updateLabelState(false, true);
