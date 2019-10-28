@@ -42,6 +42,8 @@
     <attr name="fabCradleVerticalOffset" format="dimension"/>
     <!-- Whether the BottomAppBar should hide when a NestedScrollView is scrolled. -->
     <attr name="hideOnScroll" format="boolean"/>
+    <!-- Whether the BottomAppBar should apply padding to be above the bottom window insets. -->
+    <attr name="paddingBottomSystemWindowInsets"/>
   </declare-styleable>
 
   <!-- Style to use for BottomAppBar in this theme. -->

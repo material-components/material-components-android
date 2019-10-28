@@ -144,6 +144,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   @FabAlignmentMode private int fabAlignmentMode;
   @FabAnimationMode private int fabAnimationMode;
   private boolean hideOnScroll;
+  private final boolean paddingBottomSystemWindowInsets;
 
   /** Keeps track of the number of currently running animations. */
   private int animatingModeChangeCounter = 0;
@@ -238,6 +239,9 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     fabAnimationMode =
         a.getInt(R.styleable.BottomAppBar_fabAnimationMode, FAB_ANIMATION_MODE_SCALE);
     hideOnScroll = a.getBoolean(R.styleable.BottomAppBar_hideOnScroll, false);
+    // Reading out if we are handling bottom padding, so we can apply it to the FAB.
+    paddingBottomSystemWindowInsets =
+        a.getBoolean(R.styleable.BottomAppBar_paddingBottomSystemWindowInsets, false);
 
     a.recycle();
 
@@ -258,6 +262,9 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
 
     ViewUtils.doOnApplyWindowInsets(
         this,
+        attrs,
+        defStyleAttr,
+        DEF_STYLE_RES,
         new ViewUtils.OnApplyWindowInsetsListener() {
           @NonNull
           @Override
@@ -265,9 +272,11 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
               View view,
               @NonNull WindowInsetsCompat insets,
               @NonNull RelativePadding initialPadding) {
-            bottomInset = insets.getSystemWindowInsetBottom();
-            initialPadding.bottom += insets.getSystemWindowInsetBottom();
-            initialPadding.applyToView(view);
+            if (paddingBottomSystemWindowInsets) {
+              // Just read the insets here. doOnApplyWindowInsets will apply the bottom padding
+              // under the hood.
+              bottomInset = insets.getSystemWindowInsetBottom();
+            }
             return insets;
           }
         });

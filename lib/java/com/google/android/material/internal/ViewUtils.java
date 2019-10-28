@@ -16,16 +16,21 @@
 
 package com.google.android.material.internal;
 
+import com.google.android.material.R;
+
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnAttachStateChangeListener;
@@ -128,6 +133,54 @@ public class ViewUtils {
     public void applyToView(View view) {
       ViewCompat.setPaddingRelative(view, start, top, end, bottom);
     }
+  }
+
+  /**
+   * Wrapper around {@link androidx.core.view.OnApplyWindowInsetsListener} that can
+   * automatically apply inset padding based on view attributes.
+   */
+  public static void doOnApplyWindowInsets(
+      @NonNull View view, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    doOnApplyWindowInsets(view, attrs, defStyleAttr, defStyleRes, null);
+  }
+
+  /**
+   * Wrapper around {@link androidx.core.view.OnApplyWindowInsetsListener} that can
+   * automatically apply inset padding based on view attributes.
+   */
+  public static void doOnApplyWindowInsets(
+      @NonNull View view,
+      @Nullable AttributeSet attrs,
+      int defStyleAttr,
+      int defStyleRes,
+      @Nullable final OnApplyWindowInsetsListener listener) {
+    TypedArray a =
+        view.getContext()
+            .obtainStyledAttributes(attrs, R.styleable.Insets, defStyleAttr, defStyleRes);
+
+    final boolean paddingBottomSystemWindowInsets =
+        a.getBoolean(R.styleable.Insets_paddingBottomSystemWindowInsets, false);
+
+    a.recycle();
+
+    doOnApplyWindowInsets(
+        view,
+        new ViewUtils.OnApplyWindowInsetsListener() {
+          @NonNull
+          @Override
+          public WindowInsetsCompat onApplyWindowInsets(
+              View view,
+              @NonNull WindowInsetsCompat insets,
+              @NonNull RelativePadding initialPadding) {
+            if (paddingBottomSystemWindowInsets) {
+              initialPadding.bottom += insets.getSystemWindowInsetBottom();
+            }
+            initialPadding.applyToView(view);
+            return listener != null
+                ? listener.onApplyWindowInsets(view, insets, initialPadding)
+                : insets;
+          }
+        });
   }
 
   /**
