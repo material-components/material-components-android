@@ -9,10 +9,7 @@ path: /catalog/badging/
 
 # BadgeDrawable
 
-<!--*
-# Document freshness: For more information, see go/fresh-source.
-freshness: { owner: 'connieshi' reviewed: '2019-05-01' }
-*-->
+
 
 Badge                                   | Badge with number                              | Badge with a maximum character count
 --------------------------------------- | ---------------------------------------------- | ------------------------------------
