@@ -31,7 +31,7 @@ import java.lang.ref.WeakReference;
  * position with the selected tab when a tab is selected, and the TabLayout's scroll position when
  * the user drags the ViewPager2. TabLayoutMediator will listen to ViewPager2's OnPageChangeCallback
  * to adjust tab when ViewPager2 moves. TabLayoutMediator listens to TabLayout's
- * OnTabSelectedListener to adjust VP2 when tab moves. TLM listens to RecyclerView's
+ * OnTabSelectedListener to adjust VP2 when tab moves. TabLayoutMediator listens to RecyclerView's
  * AdapterDataObserver to recreate tab content when dataset changes.
  *
  * <p>Establish the link by creating an instance of this class, make sure the ViewPager2 has an
