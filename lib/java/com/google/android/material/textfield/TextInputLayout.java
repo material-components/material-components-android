@@ -1583,22 +1583,23 @@ public class TextInputLayout extends LinearLayout {
    * is {@code null}, the error message will be cleared.
    *
    * <p>If the error functionality has not been enabled via {@link #setErrorEnabled(boolean)}, then
-   * it will be automatically enabled if {@code error} is not empty.
+   * it will be automatically enabled if {@code error} is not null.
    *
    * @param errorText Error message to display, or null to clear
    * @see #getError()
+   * @see EditText#setError(CharSequence)
    */
   public void setError(@Nullable final CharSequence errorText) {
     if (!indicatorViewController.isErrorEnabled()) {
-      if (TextUtils.isEmpty(errorText)) {
-        // If error isn't enabled, and the error is empty, just return
+      if (errorText == null) {
+        // If error isn't enabled, and the error is null, just return
         return;
       }
       // Else, we'll assume that they want to enable the error functionality
       setErrorEnabled(true);
     }
 
-    if (!TextUtils.isEmpty(errorText)) {
+    if (errorText != null) {
       indicatorViewController.showError(errorText);
     } else {
       indicatorViewController.hideError();

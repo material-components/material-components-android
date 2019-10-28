@@ -49,9 +49,8 @@ import java.util.Collection;
 @RestrictTo(Scope.LIBRARY_GROUP)
 public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
 
+  private static final String INVALID_RANGE_END_ERROR = "";
   private String invalidRangeStartError;
-  // TODO(b/137381488): "" is not considered an error
-  private final String invalidRangeEndError = " ";
   @Nullable private Long selectedStartItem = null;
   @Nullable private Long selectedEndItem = null;
   @Nullable private Long proposedTextStart = null;
@@ -253,14 +252,14 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
     if (start.getError() != null && invalidRangeStartError.contentEquals(start.getError())) {
       start.setError(null);
     }
-    if (end.getError() != null && invalidRangeEndError.contentEquals(end.getError())) {
+    if (end.getError() != null && INVALID_RANGE_END_ERROR.contentEquals(end.getError())) {
       end.setError(null);
     }
   }
 
   private void setInvalidRange(@NonNull TextInputLayout start, @NonNull TextInputLayout end) {
     start.setError(invalidRangeStartError);
-    end.setError(invalidRangeEndError);
+    end.setError(INVALID_RANGE_END_ERROR);
   }
 
   /* Parcelable interface */
