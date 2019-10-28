@@ -27,6 +27,7 @@
     <item name="android:minHeight">@dimen/mtrl_bottomappbar_height</item>
     <item name="maxButtonHeight">@dimen/mtrl_bottomappbar_height</item>
     <item name="elevation">8dp</item>
+    <item name="paddingBottomSystemWindowInsets">true</item>
   </style>
 
   <style name="Widget.MaterialComponents.BottomAppBar.Colored" parent="Widget.MaterialComponents.BottomAppBar">

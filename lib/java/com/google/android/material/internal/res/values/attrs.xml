@@ -50,4 +50,10 @@
     <attr name="lineSpacing" format="dimension"/>
   </declare-styleable>
 
+  <declare-styleable name="Insets">
+    <!-- Just adding the parameter that we need for now. We can add others if we need them, but
+         ideally we'll be able to use https://github.com/chrisbanes/insetter once it's ready. -->
+    <attr name="paddingBottomSystemWindowInsets" format="boolean"/>
+  </declare-styleable>
+
 </resources>
