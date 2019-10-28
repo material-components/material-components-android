@@ -385,6 +385,7 @@ public class TextInputLayout extends LinearLayout {
 
   @ColorInt private int defaultFilledBackgroundColor;
   @ColorInt private final int disabledFilledBackgroundColor;
+  @ColorInt private final int focusedFilledBackgroundColor;
   @ColorInt private final int hoveredFilledBackgroundColor;
 
   @ColorInt private int disabledColor;
@@ -520,6 +521,9 @@ public class TextInputLayout extends LinearLayout {
         disabledFilledBackgroundColor =
             filledBackgroundColorStateList.getColorForState(
                 new int[] {-android.R.attr.state_enabled}, -1);
+        focusedFilledBackgroundColor =
+            filledBackgroundColorStateList.getColorForState(
+                new int[] {android.R.attr.state_focused}, -1);
         hoveredFilledBackgroundColor =
             filledBackgroundColorStateList.getColorForState(
                 new int[] {android.R.attr.state_hovered}, -1);
@@ -529,6 +533,9 @@ public class TextInputLayout extends LinearLayout {
         disabledFilledBackgroundColor =
             mtrlFilledBackgroundColorStateList.getColorForState(
                 new int[] {-android.R.attr.state_enabled}, -1);
+        focusedFilledBackgroundColor =
+            mtrlFilledBackgroundColorStateList.getColorForState(
+                new int[] {android.R.attr.state_focused}, -1);
         hoveredFilledBackgroundColor =
             mtrlFilledBackgroundColorStateList.getColorForState(
                 new int[] {android.R.attr.state_hovered}, -1);
@@ -537,6 +544,7 @@ public class TextInputLayout extends LinearLayout {
       boxBackgroundColor = Color.TRANSPARENT;
       defaultFilledBackgroundColor = Color.TRANSPARENT;
       disabledFilledBackgroundColor = Color.TRANSPARENT;
+      focusedFilledBackgroundColor = Color.TRANSPARENT;
       hoveredFilledBackgroundColor = Color.TRANSPARENT;
     }
 
@@ -3552,6 +3560,8 @@ public class TextInputLayout extends LinearLayout {
         boxBackgroundColor = disabledFilledBackgroundColor;
       } else if (isHovered && !hasFocus) {
         boxBackgroundColor = hoveredFilledBackgroundColor;
+      } else if (hasFocus) {
+        boxBackgroundColor = focusedFilledBackgroundColor;
       } else {
         boxBackgroundColor = defaultFilledBackgroundColor;
       }
