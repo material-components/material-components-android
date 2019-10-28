@@ -27,6 +27,7 @@
     Discrete sliders allow users to select a specific value from a range.
   </string>
 
+  <string name="cat_slider_set" description="The label for a set button">Set</string>
   <string name="cat_slider_title_1" description="The title for the first demonstration slider">This one goes to eleven</string>
   <string name="cat_slider_title_2" description="The title for a demonstration slider">From 100 to 1000</string>
   <string name="cat_slider_title_3" description="The title for a demonstration slider">Negative numbers!</string>

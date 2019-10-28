@@ -16,6 +16,8 @@
 
 package io.material.catalog.slider;
 
+import android.widget.Button;
+import com.google.android.material.slider.Slider;
 import io.material.catalog.R;
 
 import android.os.Bundle;
@@ -31,7 +33,14 @@ public class SliderMainDemoFragment extends DemoFragment {
   @Override
   public View onCreateDemoView(
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
-    return layoutInflater.inflate(
-        R.layout.cat_slider_fragment, viewGroup, false /* attachToRoot */);
+    View view =
+        layoutInflater.inflate(R.layout.cat_slider_fragment, viewGroup, false /* attachToRoot */);
+
+    Slider slider = view.findViewById(R.id.slider);
+    Button button = view.findViewById(R.id.button);
+
+    button.setOnClickListener(v -> slider.setValue(slider.getValueTo()));
+
+    return view;
   }
 }
