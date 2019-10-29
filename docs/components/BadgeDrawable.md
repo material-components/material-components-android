@@ -9,8 +9,6 @@ path: /catalog/badging/
 
 # BadgeDrawable
 
-
-
 Badge                                   | Badge with number                              | Badge with a maximum character count
 --------------------------------------- | ---------------------------------------------- | ------------------------------------
 ![badge_icon](assets/IconOnlyBadge.png) | ![badge_with_number_8](assets/BadgeNumber.png) | ![badge_with_999+](assets/BadgeNumberLongerThanMaxCharCount.png)
