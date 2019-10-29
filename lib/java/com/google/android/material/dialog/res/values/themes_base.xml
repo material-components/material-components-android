@@ -34,16 +34,16 @@
 
     <!-- Widget styles -->
     <item name="android:contextPopupMenuStyle" tools:targetApi="n">
-      @style/Widget.MaterialComponents.PopupMenu.ContextMenu.Dark
+      @style/Widget.MaterialComponents.PopupMenu.ContextMenu
     </item>
     <item name="actionBarStyle">@style/Widget.MaterialComponents.ActionBar.Surface</item>
     <item name="actionBarTheme">@style/ThemeOverlay.MaterialComponents.ActionBar.Surface</item>
-    <item name="actionOverflowMenuStyle">@style/Widget.MaterialComponents.PopupMenu.Overflow.Dark</item>
+    <item name="actionOverflowMenuStyle">@style/Widget.MaterialComponents.PopupMenu.Overflow</item>
     <item name="borderlessButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>
     <item name="buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush</item>
     <item name="checkboxStyle">@style/Widget.MaterialComponents.CompoundButton.CheckBox</item>
-    <item name="listPopupWindowStyle">@style/Widget.MaterialComponents.PopupMenu.ListPopupWindow.Dark</item>
-    <item name="popupMenuStyle">@style/Widget.MaterialComponents.PopupMenu.Dark</item>
+    <item name="listPopupWindowStyle">@style/Widget.MaterialComponents.PopupMenu.ListPopupWindow</item>
+    <item name="popupMenuStyle">@style/Widget.MaterialComponents.PopupMenu</item>
     <item name="radioButtonStyle">@style/Widget.MaterialComponents.CompoundButton.RadioButton</item>
     <item name="switchStyle">@style/Widget.MaterialComponents.CompoundButton.Switch</item>
     <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar</item>

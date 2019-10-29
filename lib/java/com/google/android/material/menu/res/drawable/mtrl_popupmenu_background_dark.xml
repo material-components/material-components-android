@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
   Copyright 2019 The Android Open Source Project
 
@@ -14,17 +14,17 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+  <solid android:color="?attr/colorSurface"/>
 
-<resources>
+  <corners
+      android:bottomLeftRadius="4dp"
+      android:bottomRightRadius="4dp"
+      android:topLeftRadius="4dp"
+      android:topRightRadius="4dp"/>
 
-  <style name="Widget.MaterialComponents.PopupMenu.ListPopupWindow" parent="Base.Widget.MaterialComponents.PopupMenu.ListPopupWindow">
-    <item name="android:popupBackground">?attr/popupMenuBackground</item>
-    <item name="android:popupElevation">8dp</item>
-  </style>
+  <padding
+      android:bottom="8dp"
+      android:top="8dp"/>
 
-  <style name="Widget.MaterialComponents.PopupMenu.ContextMenu" parent="Base.Widget.MaterialComponents.PopupMenu.ContextMenu">
-    <item name="android:popupBackground">?attr/popupMenuBackground</item>
-    <item name="android:popupElevation">8dp</item>
-  </style>
-
-</resources>
+</shape>
