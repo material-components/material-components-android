@@ -46,6 +46,7 @@
     <item name="colorOnPrimarySurface">?attr/colorOnSurface</item>
 
     <item name="scrimBackground">@color/mtrl_scrim_color</item>
+    <item name="popupMenuBackground">@drawable/mtrl_popupmenu_background_dark</item>
 
     <!-- Type styles -->
     <item name="textAppearanceHeadline1">@style/TextAppearance.MaterialComponents.Headline1</item>
@@ -94,6 +95,7 @@
     <item name="colorOnPrimarySurface">?attr/colorOnPrimary</item>
 
     <item name="scrimBackground">@color/mtrl_scrim_color</item>
+    <item name="popupMenuBackground">@drawable/mtrl_popupmenu_background</item>
 
     <!-- Type styles -->
     <item name="textAppearanceHeadline1">@style/TextAppearance.MaterialComponents.Headline1</item>

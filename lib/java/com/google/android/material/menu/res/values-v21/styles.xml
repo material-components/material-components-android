@@ -18,17 +18,17 @@
 <resources>
 
   <style name="Widget.MaterialComponents.PopupMenu.Overflow" parent="Base.Widget.MaterialComponents.PopupMenu.Overflow">
-    <item name="android:popupBackground">@drawable/mtrl_popupmenu_background</item>
+    <item name="android:popupBackground">?attr/popupMenuBackground</item>
     <item name="android:popupElevation">8dp</item>
   </style>
 
   <style name="Widget.MaterialComponents.PopupMenu" parent="Base.Widget.MaterialComponents.PopupMenu">
-    <item name="android:popupBackground">@drawable/mtrl_popupmenu_background</item>
+    <item name="android:popupBackground">?attr/popupMenuBackground</item>
     <item name="android:popupElevation">8dp</item>
   </style>
 
   <style name="Base.Widget.MaterialComponents.PopupMenu.ListPopupWindow" parent="Widget.AppCompat.ListPopupWindow">
-      <item name="android:popupBackground">@drawable/mtrl_popupmenu_background</item>
+      <item name="android:popupBackground">?attr/popupMenuBackground</item>
       <item name="android:popupElevation">8dp</item>
       <item name="android:dropDownVerticalOffset">1dp</item>
     </style>
