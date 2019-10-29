@@ -33,4 +33,11 @@
       android:value="8.09"
       android:valueFrom="0.0"
       android:valueTo="11.0" />
+
+  <Button
+      android:id="@+id/button"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      android:text="@string/cat_slider_set"/>
 </LinearLayout>

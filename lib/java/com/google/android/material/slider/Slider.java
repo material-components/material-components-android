@@ -465,6 +465,7 @@ public class Slider extends View {
       if (hasOnChangeListener()) {
         listener.onValueChange(this, getValue());
       }
+      invalidate();
     }
   }
 

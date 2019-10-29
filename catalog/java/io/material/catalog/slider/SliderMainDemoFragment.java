@@ -23,6 +23,8 @@ import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import com.google.android.material.slider.Slider;
 import io.material.catalog.feature.DemoFragment;
 
 /** A fragment that displays the main Slider demo for the Catalog app. */
@@ -31,7 +33,14 @@ public class SliderMainDemoFragment extends DemoFragment {
   @Override
   public View onCreateDemoView(
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
-    return layoutInflater.inflate(
-        R.layout.cat_slider_fragment, viewGroup, false /* attachToRoot */);
+    View view =
+        layoutInflater.inflate(R.layout.cat_slider_fragment, viewGroup, false /* attachToRoot */);
+
+    Slider slider = view.findViewById(R.id.slider);
+    Button button = view.findViewById(R.id.button);
+
+    button.setOnClickListener(v -> slider.setValue(slider.getValueTo()));
+
+    return view;
   }
 }
