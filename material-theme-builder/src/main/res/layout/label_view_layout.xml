@@ -28,7 +28,7 @@
       app:srcCompat="@drawable/ic_format_size_24dp"
       android:visibility="gone" />
 
-    <com.google.android.material.textview.MaterialTextView
+    <androidx.appcompat.widget.AppCompatTextView
       android:id="@+id/label_text_view"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"

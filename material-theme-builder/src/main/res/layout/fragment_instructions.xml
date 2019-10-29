@@ -29,7 +29,7 @@
       android:paddingStart="@dimen/keyline_4"
       android:paddingEnd="@dimen/keyline_4">
 
-        <com.google.android.material.textview.MaterialTextView
+        <androidx.appcompat.widget.AppCompatTextView
           android:id="@+id/usage_title_text_view"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
           android:textAppearance="?textAppearanceOverline"
           android:alpha="?alphaEmphasisMedium" />
 
-        <com.google.android.material.textview.MaterialTextView
+        <androidx.appcompat.widget.AppCompatTextView
           android:id="@+id/usage_body_text_view"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
           android:textAppearance="?textAppearanceBody1"
           android:alpha="?alphaEmphasisMedium" />
 
-        <com.google.android.material.textview.MaterialTextView
+        <androidx.appcompat.widget.AppCompatTextView
           android:id="@+id/options_title_text_view"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
           android:layout_height="wrap_content"
           android:layout_marginTop="@dimen/keyline_5">
 
-            <com.google.android.material.textview.MaterialTextView
+            <androidx.appcompat.widget.AppCompatTextView
               android:id="@+id/dark_theme_title_text_view"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"

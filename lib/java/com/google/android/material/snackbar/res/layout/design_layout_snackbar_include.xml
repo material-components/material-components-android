@@ -23,7 +23,7 @@
     android:layout_gravity="bottom"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-  <com.google.android.material.textview.MaterialTextView
+  <TextView
       android:id="@+id/snackbar_text"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
       android:textAlignment="viewStart"
       android:textAppearance="@style/TextAppearance.Design.Snackbar.Message"/>
 
-  <com.google.android.material.button.MaterialButton
+  <Button
       android:id="@+id/snackbar_action"
       style="?attr/borderlessButtonStyle"
       android:layout_width="wrap_content"

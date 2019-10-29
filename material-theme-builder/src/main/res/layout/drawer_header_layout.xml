@@ -21,7 +21,7 @@
   android:layout_height="match_parent"
   android:padding="@dimen/keyline_4">
 
-    <com.google.android.material.textview.MaterialTextView
+    <androidx.appcompat.widget.AppCompatTextView
       android:id="@+id/header_title"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
       android:textAppearance="?textAppearanceHeadline6"
       android:alpha="?alphaEmphasisHigh" />
 
-    <com.google.android.material.textview.MaterialTextView
+    <androidx.appcompat.widget.AppCompatTextView
       android:id="@+id/header_subtitle"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"

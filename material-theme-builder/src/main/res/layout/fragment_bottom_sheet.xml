@@ -24,7 +24,7 @@
   android:paddingEnd="@dimen/keyline_5"
   android:paddingBottom="@dimen/keyline_5" >
 
-    <com.google.android.material.textview.MaterialTextView
+    <androidx.appcompat.widget.AppCompatTextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:gravity="center_vertical"
@@ -33,7 +33,7 @@
       android:firstBaselineToTopHeight="40dp"
       android:text="@string/text_headline_6" />
 
-    <com.google.android.material.textview.MaterialTextView
+    <androidx.appcompat.widget.AppCompatTextView
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:textAppearance="?textAppearanceBody1"

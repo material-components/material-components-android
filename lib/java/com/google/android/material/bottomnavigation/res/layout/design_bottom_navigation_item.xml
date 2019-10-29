@@ -32,7 +32,7 @@
       android:clipChildren="false"
       android:clipToPadding="false"
       android:duplicateParentState="true">
-    <com.google.android.material.textview.MaterialTextView
+    <TextView
         android:id="@+id/smallLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:textSize="@dimen/design_bottom_navigation_text_size"/>
-    <com.google.android.material.textview.MaterialTextView
+    <TextView
         android:id="@+id/largeLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

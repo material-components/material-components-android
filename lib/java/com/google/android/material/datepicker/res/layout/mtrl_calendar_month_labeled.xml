@@ -20,7 +20,7 @@
   android:layout_height="wrap_content"
   android:orientation="vertical">
 
-  <com.google.android.material.textview.MaterialTextView
+  <TextView
     android:id="@+id/month_title"
     style="@style/TextAppearance.MaterialComponents.Subtitle2"
     android:layout_width="match_parent"
