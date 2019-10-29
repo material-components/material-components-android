@@ -17,7 +17,7 @@
 
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <TextView
       android:id="@+id/type_attribute"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
       android:textAppearance="?textAppearanceBody1"
       android:alpha="?alphaEmphasisMedium" />
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <TextView
       android:id="@+id/type_attribute_preview"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
