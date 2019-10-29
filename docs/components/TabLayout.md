@@ -97,7 +97,7 @@ Alternatively, you can add a `TabLayout` to a ViewPager in XML:
 // Creates and initializes an instance of BadgeDrawable associated with a tab.
 // Subsequent calls to this method will reuse the existing BadgeDrawable.
 // This method does not guarantee that the badge is visible.
-BadgeDrawable badge = tablayout.getTab(0).getOrCreateBadge();
+BadgeDrawable badge = tablayout.getTabAt(0).getOrCreateBadge();
 badge.setVisible(true);
 // Optionally show a number.
 badge.setNumber(99);
@@ -106,7 +106,7 @@ badge.setNumber(99);
 NOTE: Don't forget to remove any BadgeDrawables that are no longer needed.
 
 ```java
-tablayout.getTab(0).removeBadge();
+tablayout.getTabAt(0).removeBadge();
 ```
 
 Best Practice: If you only need to temporarily hide the badge(e.g. until the
