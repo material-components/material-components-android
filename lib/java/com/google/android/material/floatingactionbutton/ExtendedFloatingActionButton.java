@@ -26,7 +26,6 @@ import android.animation.PropertyValuesHolder;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
-import android.graphics.RectF;
 import androidx.annotation.AnimatorRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -48,7 +47,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.internal.DescendantOffsetUtils;
 import com.google.android.material.internal.ThemeEnforcement;
-import com.google.android.material.shape.CornerSize;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import java.util.List;
 
@@ -198,18 +196,8 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
 
     ShapeAppearanceModel shapeAppearanceModel =
         ShapeAppearanceModel.builder(
-                context,
-                attrs,
-                defStyleAttr,
-                DEF_STYLE_RES,
-                // TODO(b/121352029): Use ShapeAppearanceModel.PILL once this bug is fixed.
-                new CornerSize() {
-                  @Override
-                  public float getCornerSize(@NonNull RectF bounds) {
-                    return getAdjustedRadius((int) bounds.height());
-                  }
-                })
-            .build();
+            context, attrs, defStyleAttr, DEF_STYLE_RES, ShapeAppearanceModel.PILL
+        ).build();
     setShapeAppearanceModel(shapeAppearanceModel);
   }
 
@@ -637,15 +625,6 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
           return (float) object.getLayoutParams().height;
         }
       };
-
-  /**
-   * Returns an adjusted radius value that corrects any rounding errors.
-   *
-   * <p>TODO(b/121352029): Remove this method once this bug is fixed.
-   */
-  private int getAdjustedRadius(int value) {
-    return (value - 1) / 2;
-  }
 
   /**
    * Shrink to the smaller value between paddingStart and paddingEnd, such that when shrunk the icon
