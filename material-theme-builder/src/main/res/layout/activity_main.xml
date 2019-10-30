@@ -19,7 +19,8 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_height="match_parent"
   android:layout_width="match_parent"
-  xmlns:app="http://schemas.android.com/apk/res-auto">
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.viewpager.widget.ViewPager
       android:id="@+id/view_pager"
@@ -57,7 +58,7 @@
                       android:layout_gravity="center_vertical"
                       app:srcCompat="@drawable/ic_material_icon_24dp" />
 
-                    <androidx.appcompat.widget.AppCompatTextView
+                    <TextView
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:layout_gravity="center_vertical"
@@ -73,7 +74,7 @@
 
                 </LinearLayout>
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <TextView
                   android:id="@+id/theme_name_edit_text"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
@@ -87,7 +88,8 @@
                   android:maxLines="1"
                   android:scrollHorizontally="true"
                   android:inputType="textCapWords"
-                  android:imeOptions="actionDone" />
+                  android:imeOptions="actionDone"
+                  tools:ignore="TextViewEdits"/>
 
             </LinearLayout>
 
