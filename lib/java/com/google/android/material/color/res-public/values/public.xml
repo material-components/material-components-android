@@ -41,6 +41,9 @@
   <public name="material_on_primary_disabled" type="color"/>
   <public name="material_on_primary_emphasis_high_type" type="color"/>
   <public name="material_on_primary_emphasis_medium" type="color"/>
+  <public name="material_on_background_disabled" type="color"/>
+  <public name="material_on_background_emphasis_high_type" type="color"/>
+  <public name="material_on_background_emphasis_medium" type="color"/>
   <public name="material_on_surface_disabled" type="color"/>
   <public name="material_on_surface_emphasis_high_type" type="color"/>
   <public name="material_on_surface_emphasis_medium" type="color"/>
