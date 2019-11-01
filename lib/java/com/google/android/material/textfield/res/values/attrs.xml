@@ -197,7 +197,9 @@
          is being displayed. If not set, it defaults to errorTextColor if on
          error state, or to counterOverflowTextColor if on overflow state. -->
     <attr name="boxStrokeErrorColor" format="color"/>
-    <!-- The color to use for the box's background color when in filled box mode. -->
+    <!-- The color to use for the box's background color when in filled box mode.
+         If a non-stateful color resource is specified, default colors will be used for the hover
+         and disabled states.  -->
     <attr name="boxBackgroundColor" format="color"/>
     <!-- The value to use for the box's stroke when in outline box mode, or for the underline stroke
          in filled mode. -->
