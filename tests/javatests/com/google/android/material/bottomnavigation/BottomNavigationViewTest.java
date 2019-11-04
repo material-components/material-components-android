@@ -49,6 +49,7 @@ import android.os.Build;
 import android.os.Parcelable;
 import androidx.annotation.ColorInt;
 import androidx.core.content.res.ResourcesCompat;
+import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -635,16 +636,22 @@ public class BottomNavigationViewTest {
     onView(withId(R.id.bottom_navigation))
         .perform(showBadgeNumberForMenuItem(R.id.destination_home, 75));
     assertTrue(bottomNavigation.getMenu().findItem(R.id.destination_profile).isChecked());
-    // Save the state
-    final Parcelable state = bottomNavigation.onSaveInstanceState();
+
+    // Save the current state
+    SparseArray<Parcelable> container = new SparseArray<>();
+    bottomNavigation.saveHierarchyState(container);
 
     // Restore the state into a fresh BottomNavigationView
     activityTestRule.runOnUiThread(
         () -> {
           BottomNavigationView testView = new BottomNavigationView(activityTestRule.getActivity());
+          testView.setId(R.id.bottom_navigation);
           testView.inflateMenu(R.menu.bottom_navigation_view_content);
-          testView.onRestoreInstanceState(state);
+          testView.restoreHierarchyState(container);
           assertTrue(testView.getMenu().findItem(R.id.destination_profile).isChecked());
+
+          assertTrue(testView.menuView.findItemView(R.id.destination_home).getBadge().isVisible());
+
           assertTrue(testView.getBadge(R.id.destination_home).isVisible());
           assertEquals(75, testView.getBadge(R.id.destination_home).getNumber());
           assertEquals(4, testView.getBadge(R.id.destination_home).getMaxCharacterCount());

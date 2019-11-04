@@ -87,8 +87,9 @@ public abstract class BottomNavigationDemoFragment extends DemoFragment {
           return false;
         };
     setBottomNavListeners(navigationItemListener);
-
-    setupBadging();
+    if (bundle == null) {
+      setupBadging();
+    }
     return view;
   }
 

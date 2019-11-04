@@ -29,6 +29,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
+import androidx.annotation.VisibleForTesting;
 import androidx.core.util.Pools;
 import androidx.core.view.ViewCompat;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -619,6 +620,11 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
 
   void setBadgeDrawables(SparseArray<BadgeDrawable> badgeDrawables) {
     this.badgeDrawables = badgeDrawables;
+    if (buttons != null) {
+      for (BottomNavigationItemView itemView : buttons) {
+        itemView.setBadge(badgeDrawables.get(itemView.getId()));
+      }
+    }
   }
 
   @Nullable
@@ -689,7 +695,8 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   }
 
   @Nullable
-  private BottomNavigationItemView findItemView(int menuItemId) {
+  @VisibleForTesting
+  BottomNavigationItemView findItemView(int menuItemId) {
     validateMenuItemId(menuItemId);
     if (buttons != null) {
       for (BottomNavigationItemView itemView : buttons) {
