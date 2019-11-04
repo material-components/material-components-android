@@ -118,8 +118,6 @@
     <item name="android:textColorSecondary">@color/material_on_primary_emphasis_medium</item>
     <item name="actionMenuTextColor">?attr/colorOnPrimary</item>
     <item name="colorControlNormal">?attr/colorOnPrimary</item>
-    <!-- Counteracts the effect of setting textColorPrimary for popup menus. -->
-    <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
     <!-- Used to tint the ActionMode background and preserve the underline. -->
     <item name="android:colorBackground">?attr/colorPrimary</item>
   </style>
@@ -129,8 +127,6 @@
     <item name="android:textColorSecondary">@color/material_on_surface_emphasis_medium</item>
     <item name="actionMenuTextColor">@color/material_on_surface_emphasis_medium</item>
     <item name="colorControlNormal">@color/material_on_surface_emphasis_medium</item>
-    <!-- Counteracts the effect of setting textColorPrimary for popup menus. -->
-    <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
     <!-- Used to tint the ActionMode background and preserve the underline. -->
     <item name="android:colorBackground">?attr/colorSurface</item>
   </style>
