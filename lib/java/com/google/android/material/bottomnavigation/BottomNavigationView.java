@@ -42,6 +42,7 @@ import androidx.annotation.RequiresApi;
 import androidx.annotation.StyleRes;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.MaterialShapeUtils;
+import androidx.annotation.VisibleForTesting;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.customview.view.AbsSavedState;
@@ -116,7 +117,7 @@ public class BottomNavigationView extends FrameLayout {
   private static final int MENU_PRESENTER_ID = 1;
 
   @NonNull private final MenuBuilder menu;
-  @NonNull private final BottomNavigationMenuView menuView;
+  @NonNull @VisibleForTesting final BottomNavigationMenuView menuView;
   private final BottomNavigationPresenter presenter = new BottomNavigationPresenter();
   @Nullable private ColorStateList itemRippleColor;
   private MenuInflater menuInflater;
