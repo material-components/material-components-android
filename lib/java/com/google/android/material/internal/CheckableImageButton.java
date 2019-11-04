@@ -42,6 +42,7 @@ public class CheckableImageButton extends AppCompatImageButton implements Checka
 
   private boolean checked;
   private boolean checkable = true;
+  private boolean pressable = true;
 
   public CheckableImageButton(Context context) {
     this(context, null);
@@ -93,6 +94,13 @@ public class CheckableImageButton extends AppCompatImageButton implements Checka
   }
 
   @Override
+  public void setPressed(boolean pressed) {
+    if (pressable) {
+      super.setPressed(pressed);
+    }
+  }
+
+  @Override
   public int[] onCreateDrawableState(int extraSpace) {
     if (checked) {
       return mergeDrawableStates(
@@ -134,6 +142,16 @@ public class CheckableImageButton extends AppCompatImageButton implements Checka
   /** Returns whether the image button is checkable. */
   public boolean isCheckable() {
     return checkable;
+  }
+
+  /** Sets image button to be pressable or not. */
+  public void setPressable(boolean pressable) {
+    this.pressable = pressable;
+  }
+
+  /** Returns whether the image button is pressable. */
+  public boolean isPressable() {
+    return pressable;
   }
 
   static class SavedState extends AbsSavedState {

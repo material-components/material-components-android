@@ -602,6 +602,7 @@ public class TextInputLayout extends LinearLayout {
     ViewCompat.setImportantForAccessibility(
         errorIconView, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO);
     errorIconView.setClickable(false);
+    errorIconView.setPressable(false);
     errorIconView.setFocusable(false);
 
     final int helperTextTextAppearance =
@@ -3342,7 +3343,7 @@ public class TextInputLayout extends LinearLayout {
   }
 
   private static void setIconOnClickListener(
-      @NonNull View iconView,
+      @NonNull CheckableImageButton iconView,
       @Nullable OnClickListener onClickListener,
       @Nullable OnLongClickListener onLongClickListener) {
     iconView.setOnClickListener(onClickListener);
@@ -3350,18 +3351,19 @@ public class TextInputLayout extends LinearLayout {
   }
 
   private static void setIconOnLongClickListener(
-      @NonNull View iconView, @Nullable OnLongClickListener onLongClickListener) {
+      @NonNull CheckableImageButton iconView, @Nullable OnLongClickListener onLongClickListener) {
     iconView.setOnLongClickListener(onLongClickListener);
     setIconClickable(iconView, onLongClickListener);
   }
 
   private static void setIconClickable(
-      @NonNull View iconView, @Nullable OnLongClickListener onLongClickListener) {
+      @NonNull CheckableImageButton iconView, @Nullable OnLongClickListener onLongClickListener) {
     boolean iconClickable = ViewCompat.hasOnClickListeners(iconView);
     boolean iconLongClickable = onLongClickListener != null;
     boolean iconFocusable = iconClickable || iconLongClickable;
     iconView.setFocusable(iconFocusable);
     iconView.setClickable(iconClickable);
+    iconView.setPressable(iconClickable);
     iconView.setLongClickable(iconLongClickable);
     ViewCompat.setImportantForAccessibility(
         iconView,
