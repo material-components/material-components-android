@@ -416,6 +416,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
     } else {
       chipDrawable.setUseCompatRipple(true);
       ViewCompat.setBackground(this, getBackgroundDrawable());
+      updatePaddingInternal();
       ensureChipDrawableHasCallback();
     }
   }
@@ -446,6 +447,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
     chipDrawable.setUseCompatRipple(false);
     //noinspection NewApi
     ViewCompat.setBackground(this, ripple);
+    updatePaddingInternal();
   }
 
   private void unapplyChipDrawable(@Nullable ChipDrawable chipDrawable) {
@@ -668,7 +670,6 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
   public void onChipDrawableSizeChange() {
     ensureAccessibleTouchTarget(minTouchTargetSize);
     updateBackgroundDrawable();
-    updatePaddingInternal();
     requestLayout();
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
       invalidateOutline();
