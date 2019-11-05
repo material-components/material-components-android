@@ -23,6 +23,7 @@ import static com.google.common.truth.Truth.assertThat;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build.VERSION_CODES;
+import androidx.core.graphics.ColorUtils;
 import androidx.core.view.ViewCompat;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +45,8 @@ public class ElevationOverlayProviderTest {
   private static final float ELEVATION_ZERO = 0;
   private static final float ELEVATION_NON_ZERO = 4;
   private static final float ELEVATION_OVERLAY_VIEW_PARENT = 8;
+  private static final int ALPHA_TRANSLUCENT = 75;
+  private static final int ALPHA_TRANSPARENT = 0;
   private static final String EXPECTED_ELEVATION_NON_ZERO_COLOR_WITH_OVERLAY = "ff181818";
   private static final String EXPECTED_ELEVATION_NON_ZERO_COLOR_WITH_OVERLAY_AND_VIEW = "ff232323";
   private static final float EXPECTED_ELEVATION_NON_ZERO_ALPHA_FRACTION = 0.09f;
@@ -75,6 +78,32 @@ public class ElevationOverlayProviderTest {
     int backgroundColor = provider.getThemeSurfaceColor();
     assertThat(provider.compositeOverlayIfNeeded(backgroundColor, ELEVATION_NON_ZERO))
         .isEqualTo(provider.compositeOverlay(backgroundColor, ELEVATION_NON_ZERO));
+  }
+
+  @Test
+  public void
+      givenOverlayEnabledAndTranslucentSurfaceColorAndElevation_whenCompositeOverlayIfNeeded_returnsColorWithOverlay() {
+    provider = new ElevationOverlayProvider(context);
+
+    int backgroundColor =
+        ColorUtils.setAlphaComponent(provider.getThemeSurfaceColor(), ALPHA_TRANSLUCENT);
+    int actualOverlayColor = provider.compositeOverlayIfNeeded(backgroundColor, ELEVATION_NON_ZERO);
+    assertThat(actualOverlayColor)
+        .isEqualTo(provider.compositeOverlay(backgroundColor, ELEVATION_NON_ZERO));
+    assertThat(Color.alpha(actualOverlayColor)).isEqualTo(ALPHA_TRANSLUCENT);
+  }
+
+  @Test
+  public void
+      givenOverlayEnabledAndTransparentSurfaceColorAndElevation_whenCompositeOverlayIfNeeded_returnsColorWithOverlay() {
+    provider = new ElevationOverlayProvider(context);
+
+    int backgroundColor =
+        ColorUtils.setAlphaComponent(provider.getThemeSurfaceColor(), ALPHA_TRANSPARENT);
+    int actualOverlayColor = provider.compositeOverlayIfNeeded(backgroundColor, ELEVATION_NON_ZERO);
+    assertThat(actualOverlayColor)
+        .isEqualTo(provider.compositeOverlay(backgroundColor, ELEVATION_NON_ZERO));
+    assertThat(Color.alpha(actualOverlayColor)).isEqualTo(ALPHA_TRANSPARENT);
   }
 
   @Test
