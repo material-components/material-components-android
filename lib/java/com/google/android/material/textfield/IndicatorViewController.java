@@ -141,6 +141,10 @@ final class IndicatorViewController {
     if (captionDisplayed == CAPTION_STATE_HELPER_TEXT) {
       captionToShow = CAPTION_STATE_NONE;
     }
+    if (captionToShow == captionDisplayed) {
+      // Do not proceed switching caption texts because there is no need
+      return;
+    }
     updateCaptionViewsVisibility(
         captionDisplayed, captionToShow, shouldAnimateCaptionView(helperTextView, null));
   }
@@ -170,6 +174,10 @@ final class IndicatorViewController {
         // Otherwise, just hide the error.
         captionToShow = CAPTION_STATE_NONE;
       }
+    }
+    if (captionToShow == captionDisplayed) {
+      // Do not proceed switching caption texts because there is no need
+      return;
     }
     updateCaptionViewsVisibility(
         captionDisplayed, captionToShow, shouldAnimateCaptionView(errorView, null));
