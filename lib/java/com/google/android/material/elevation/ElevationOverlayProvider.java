@@ -114,8 +114,12 @@ public class ElevationOverlayProvider {
    */
   @ColorInt
   public int compositeOverlay(@ColorInt int backgroundColor, float elevation) {
-    float overlayAlpha = calculateOverlayAlphaFraction(elevation);
-    return MaterialColors.layer(backgroundColor, elevationOverlayColor, overlayAlpha);
+    float overlayAlphaFraction = calculateOverlayAlphaFraction(elevation);
+    int backgroundAlpha = Color.alpha(backgroundColor);
+    int backgroundColorOpaque = ColorUtils.setAlphaComponent(backgroundColor, 255);
+    int overlayColorOpaque =
+        MaterialColors.layer(backgroundColorOpaque, elevationOverlayColor, overlayAlphaFraction);
+    return ColorUtils.setAlphaComponent(overlayColorOpaque, backgroundAlpha);
   }
 
   /**
