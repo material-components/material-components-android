@@ -22,6 +22,7 @@ import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
+import androidx.annotation.VisibleForTesting;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
@@ -112,8 +113,14 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
    *
    * @param listener the listener to use.
    */
-  public void setListener(OnDismissListener listener) {
+  public void setListener(@Nullable OnDismissListener listener) {
     this.listener = listener;
+  }
+
+  @VisibleForTesting
+  @Nullable
+  public OnDismissListener getListener() {
+    return listener;
   }
 
   /**
