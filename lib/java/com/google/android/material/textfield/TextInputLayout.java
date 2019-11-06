@@ -941,9 +941,11 @@ public class TextInputLayout extends LinearLayout {
       disabledColor =
           boxStrokeColorStateList.getColorForState(new int[] {-android.R.attr.state_enabled}, -1);
       hoveredStrokeColor =
-          boxStrokeColorStateList.getColorForState(new int[] {android.R.attr.state_hovered}, -1);
+          boxStrokeColorStateList.getColorForState(
+              new int[] {android.R.attr.state_hovered, android.R.attr.state_enabled}, -1);
       focusedStrokeColor =
-          boxStrokeColorStateList.getColorForState(new int[] {android.R.attr.state_focused}, -1);
+          boxStrokeColorStateList.getColorForState(
+              new int[] {android.R.attr.state_focused, android.R.attr.state_enabled}, -1);
     } else if (focusedStrokeColor != boxStrokeColorStateList.getDefaultColor()) {
       // If attribute boxStrokeColor is not a color state list but only a single value, its value
       // will be applied to the box's focus state.
