@@ -257,6 +257,18 @@ public class TextInputLayoutTest {
   }
 
   @Test
+  public void testSetErrorNullDoesNotHideHelperText() {
+    // Show helper text in layout with error enabled
+    onView(withId(R.id.textinput)).perform(setHelperText(HELPER_MESSAGE_1));
+
+    // Set error to null
+    onView(withId(R.id.textinput)).perform(setError(null));
+
+    // Check helper text is still visible
+    onView(withText(HELPER_MESSAGE_1)).check(matches(isDisplayed()));
+  }
+
+  @Test
   public void testSetEnabledFalse() {
     // First click on the EditText, so that it is focused and the hint collapses...
     onView(withId(R.id.textinput_edittext)).perform(click());

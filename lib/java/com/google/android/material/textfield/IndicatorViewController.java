@@ -197,6 +197,10 @@ final class IndicatorViewController {
       final @CaptionDisplayState int captionToShow,
       boolean animate) {
 
+    if (captionToHide == captionToShow) {
+      return;
+    }
+
     if (animate) {
       final AnimatorSet captionAnimator = new AnimatorSet();
       this.captionAnimator = captionAnimator;
