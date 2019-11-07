@@ -43,12 +43,15 @@ public class AppBarWithCollapsingToolbarStateRestoreTest {
     AppBarLayoutCollapsePinActivity activity = activityTestRule.getActivity();
     AppBarLayout appBar = activity.findViewById(R.id.app_bar);
 
+    int[] appBarLocation = new int[2];
+    appBar.getLocationOnScreen(appBarLocation);
+
     // Swipe up and collapse the AppBarLayout
     onView(withId(R.id.coordinator_layout))
         .perform(
             swipeUp(
-                appBar.getLeft() + (appBar.getWidth() / 2),
-                appBar.getBottom() + 20,
+                appBarLocation[0] + (appBar.getWidth() / 2),
+                appBarLocation[1] + appBar.getHeight() + 20,
                 appBar.getHeight()));
     onView(withId(R.id.app_bar)).check(matches(hasZ())).check(matches(isCollapsed()));
 
