@@ -100,17 +100,15 @@ public class SingleDateSelector implements DateSelector<Long> {
 
     TextInputLayout dateTextInput = root.findViewById(R.id.mtrl_picker_text_input_date);
     EditText dateEditText = dateTextInput.getEditText();
-
-    String pattern = root.getResources().getString(R.string.mtrl_picker_text_input_date_format);
-    SimpleDateFormat format = UtcDates.getSimpleFormat(pattern);
-    format.setLenient(false);
+    SimpleDateFormat format = UtcDates.getTextInputFormat();
+    String formatHint = UtcDates.getTextInputHint(root.getResources(), format);
 
     if (selectedItem != null) {
       dateEditText.setText(format.format(selectedItem));
     }
 
     dateEditText.addTextChangedListener(
-        new DateFormatTextWatcher(pattern, format, dateTextInput, constraints) {
+        new DateFormatTextWatcher(formatHint, format, dateTextInput, constraints) {
 
           @Override
           void onValidDate(@Nullable Long day) {
