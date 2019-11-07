@@ -179,11 +179,9 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
     EditText startEditText = startTextInput.getEditText();
     EditText endEditText = endTextInput.getEditText();
 
-    String pattern = root.getResources().getString(R.string.mtrl_picker_text_input_date_format);
     invalidRangeStartError = root.getResources().getString(R.string.mtrl_picker_invalid_range);
 
-    SimpleDateFormat format = UtcDates.getSimpleFormat(pattern);
-    format.setLenient(false);
+    SimpleDateFormat format = UtcDates.getTextInputFormat();
 
     if (selectedStartItem != null) {
       startEditText.setText(format.format(selectedStartItem));
@@ -194,8 +192,10 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
       proposedTextEnd = selectedEndItem;
     }
 
+    String formatHint = UtcDates.getTextInputHint(root.getResources(), format);
+
     startEditText.addTextChangedListener(
-        new DateFormatTextWatcher(pattern, format, startTextInput, constraints) {
+        new DateFormatTextWatcher(formatHint, format, startTextInput, constraints) {
 
           @Override
           void onValidDate(@Nullable Long day) {
@@ -211,7 +211,7 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
         });
 
     endEditText.addTextChangedListener(
-        new DateFormatTextWatcher(pattern, format, endTextInput, constraints) {
+        new DateFormatTextWatcher(formatHint, format, endTextInput, constraints) {
           void onValidDate(@Nullable Long day) {
             proposedTextEnd = day;
             updateIfValidTextProposal(startTextInput, endTextInput, listener);

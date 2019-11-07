@@ -15,7 +15,10 @@
  */
 package com.google.android.material.datepicker;
 
+import com.google.android.material.R;
+
 import android.annotation.TargetApi;
+import android.content.res.Resources;
 import android.os.Build.VERSION_CODES;
 import androidx.annotation.NonNull;
 import java.text.DateFormat;
@@ -88,6 +91,26 @@ class UtcDates {
     DateFormat format = DateFormat.getDateInstance(style, locale);
     format.setTimeZone(getTimeZone());
     return format;
+  }
+
+  static SimpleDateFormat getTextInputFormat() {
+    String pattern =
+        ((SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault()))
+            .toLocalizedPattern()
+            .replaceAll("\\s+", "");
+    SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.getDefault());
+    format.setTimeZone(UtcDates.getTimeZone());
+    format.setLenient(false);
+    return format;
+  }
+
+  static String getTextInputHint(Resources res, SimpleDateFormat format) {
+    String formatHint = format.toLocalizedPattern();
+    String yearChar = res.getString(R.string.mtrl_picker_text_input_year_abbr);
+    String monthChar = res.getString(R.string.mtrl_picker_text_input_month_abbr);
+    String dayChar = res.getString(R.string.mtrl_picker_text_input_day_abbr);
+
+    return formatHint.replaceAll("d", dayChar).replaceAll("M", monthChar).replaceAll("y", yearChar);
   }
 
   static SimpleDateFormat getSimpleFormat(String pattern) {

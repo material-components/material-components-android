@@ -29,24 +29,21 @@ import java.util.Date;
 
 abstract class DateFormatTextWatcher implements TextWatcher {
 
-  private final String pattern;
+  private final String formatHint;
   private final DateFormat dateFormat;
   @NonNull private final TextInputLayout textInputLayout;
   private final CalendarConstraints constraints;
-  private final String invalidFormat;
   private final String outOfRange;
 
   DateFormatTextWatcher(
-      String pattern,
+      String formatHint,
       DateFormat dateFormat,
       @NonNull TextInputLayout textInputLayout,
       CalendarConstraints constraints) {
-    this.pattern = pattern;
+    this.formatHint = formatHint;
     this.dateFormat = dateFormat;
     this.textInputLayout = textInputLayout;
     this.constraints = constraints;
-    this.invalidFormat =
-        textInputLayout.getContext().getString(R.string.mtrl_picker_invalid_format);
     this.outOfRange = textInputLayout.getContext().getString(R.string.mtrl_picker_out_of_range);
   }
 
@@ -79,7 +76,17 @@ abstract class DateFormatTextWatcher implements TextWatcher {
         onInvalidDate();
       }
     } catch (ParseException e) {
-      textInputLayout.setError(String.format(invalidFormat, pattern));
+      String invalidFormat =
+          textInputLayout.getContext().getString(R.string.mtrl_picker_invalid_format);
+      String useLine =
+          String.format(
+              textInputLayout.getContext().getString(R.string.mtrl_picker_invalid_format_use),
+              formatHint);
+      String exampleLine =
+          String.format(
+              textInputLayout.getContext().getString(R.string.mtrl_picker_invalid_format_example),
+              dateFormat.format(new Date(UtcDates.getTodayCalendar().getTimeInMillis())));
+      textInputLayout.setError(invalidFormat + "\n" + useLine + "\n" + exampleLine);
       onInvalidDate();
     }
   }
