@@ -526,7 +526,7 @@ public class TextInputLayout extends LinearLayout {
                 new int[] {android.R.attr.state_focused, android.R.attr.state_enabled}, -1);
         hoveredFilledBackgroundColor =
             filledBackgroundColorStateList.getColorForState(
-                new int[] {android.R.attr.state_hovered}, -1);
+                new int[] {android.R.attr.state_hovered, android.R.attr.state_enabled}, -1);
       } else {
         focusedFilledBackgroundColor = defaultFilledBackgroundColor;
         ColorStateList mtrlFilledBackgroundColorStateList =
