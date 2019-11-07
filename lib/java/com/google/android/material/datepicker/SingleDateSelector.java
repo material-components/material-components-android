@@ -27,10 +27,12 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.core.util.Pair;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import com.google.android.material.internal.ManufacturerUtils;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.textfield.TextInputLayout;
@@ -100,6 +102,11 @@ public class SingleDateSelector implements DateSelector<Long> {
 
     TextInputLayout dateTextInput = root.findViewById(R.id.mtrl_picker_text_input_date);
     EditText dateEditText = dateTextInput.getEditText();
+    // The date inputType for Samsung does not include any separator characters
+    if (ManufacturerUtils.isSamsungDevice()) {
+      // Using the URI variation places the '/' and '.' in more prominent positions
+      dateEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_URI);
+    }
     SimpleDateFormat format = UtcDates.getTextInputFormat();
     String formatHint = UtcDates.getTextInputHint(root.getResources(), format);
 
