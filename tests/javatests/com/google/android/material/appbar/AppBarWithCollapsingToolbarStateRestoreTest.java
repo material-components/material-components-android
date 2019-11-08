@@ -39,16 +39,42 @@ public class AppBarWithCollapsingToolbarStateRestoreTest {
       new ActivityTestRule<>(AppBarLayoutCollapsePinActivity.class);
 
   @Test
-  public void testRecreateAndRestore() throws Throwable {
+  public void testRecreateAndRestoreWithSwipeInHeader() throws Throwable {
     AppBarLayoutCollapsePinActivity activity = activityTestRule.getActivity();
     AppBarLayout appBar = activity.findViewById(R.id.app_bar);
 
-    // Swipe up and collapse the AppBarLayout
+    int[] appBarLocationOnScreenXY = new int[2];
+    appBar.getLocationOnScreen(appBarLocationOnScreenXY);
+
+    // Swipe up from AppBarLayout and collapse the AppBarLayout
     onView(withId(R.id.coordinator_layout))
         .perform(
             swipeUp(
-                appBar.getLeft() + (appBar.getWidth() / 2),
-                appBar.getBottom() + 20,
+                appBarLocationOnScreenXY[0] + (appBar.getWidth() / 2),
+                appBarLocationOnScreenXY[1] + (appBar.getHeight() / 2),
+                appBar.getHeight()));
+    onView(withId(R.id.app_bar)).check(matches(hasZ())).check(matches(isCollapsed()));
+
+    ActivityUtils.recreateActivity(activityTestRule, activity);
+    ActivityUtils.waitForExecution(activityTestRule);
+
+    onView(withId(R.id.app_bar)).check(matches(hasZ())).check(matches(isCollapsed()));
+  }
+
+  @Test
+  public void testRecreateAndRestoreWithSwipeInContent() throws Throwable {
+    AppBarLayoutCollapsePinActivity activity = activityTestRule.getActivity();
+    AppBarLayout appBar = activity.findViewById(R.id.app_bar);
+
+    int[] appBarLocationOnScreenXY = new int[2];
+    appBar.getLocationOnScreen(appBarLocationOnScreenXY);
+
+    // Swipe up from scrollView and collapse the AppBarLayout
+    onView(withId(R.id.coordinator_layout))
+        .perform(
+            swipeUp(
+                appBarLocationOnScreenXY[0] + (appBar.getWidth() / 2),
+                appBarLocationOnScreenXY[1] + (3 * appBar.getHeight() / 2),
                 appBar.getHeight()));
     onView(withId(R.id.app_bar)).check(matches(hasZ())).check(matches(isCollapsed()));
 
