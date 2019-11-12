@@ -201,14 +201,32 @@ public final class CollapsingTextHelper {
     setCollapsedBounds(bounds.left, bounds.top, bounds.right, bounds.bottom);
   }
 
-  public void getCollapsedTextActualBounds(@NonNull RectF bounds) {
-    boolean isRtl = calculateIsRtl(text);
-
-    bounds.left =
-        !isRtl ? collapsedBounds.left : collapsedBounds.right - calculateCollapsedTextWidth();
+  public void getCollapsedTextActualBounds(@NonNull RectF bounds, int labelWidth, int textGravity) {
+    isRtl = calculateIsRtl(text);
+    bounds.left = getCollapsedTextLeftBound(labelWidth, textGravity);
     bounds.top = collapsedBounds.top;
-    bounds.right = !isRtl ? bounds.left + calculateCollapsedTextWidth() : collapsedBounds.right;
+    bounds.right = getCollapsedTextRightBound(bounds, labelWidth, textGravity);
     bounds.bottom = collapsedBounds.top + getCollapsedTextHeight();
+  }
+
+  private float getCollapsedTextLeftBound(int width, int gravity) {
+    if ((gravity & Gravity.END) == Gravity.END || (gravity & Gravity.RIGHT) == Gravity.RIGHT) {
+      return isRtl ? collapsedBounds.left : (collapsedBounds.right - calculateCollapsedTextWidth());
+    } else if (gravity == Gravity.CENTER) {
+      return width / 2f - calculateCollapsedTextWidth() / 2;
+    } else {
+      return isRtl ? (collapsedBounds.right - calculateCollapsedTextWidth()) : collapsedBounds.left;
+    }
+  }
+
+  private float getCollapsedTextRightBound(@NonNull RectF bounds, int width, int gravity) {
+    if ((gravity & Gravity.END) == Gravity.END || (gravity & Gravity.RIGHT) == Gravity.RIGHT) {
+      return isRtl ? (bounds.left + calculateCollapsedTextWidth()) : collapsedBounds.right;
+    } else if (gravity == Gravity.CENTER) {
+      return width / 2f + calculateCollapsedTextWidth() / 2;
+    } else {
+      return isRtl ? collapsedBounds.right : (bounds.left + calculateCollapsedTextWidth());
+    }
   }
 
   public float calculateCollapsedTextWidth() {
