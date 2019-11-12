@@ -99,12 +99,12 @@
     <!-- Text color of the prefix text displayed in the text input area.
          If set, this takes precedence over prefixTextAppearance. -->
     <attr name="prefixTextColor" format="color"/>
-    <!-- The text to display as prefix text in the text input area. -->
+    <!-- The text to display as suffix text in the text input area. -->
     <attr name="suffixText" format="string"/>
-    <!-- TextAppearance of the prefix text displayed in the text input area. -->
+    <!-- TextAppearance of the suffix text displayed in the text input area. -->
     <attr name="suffixTextAppearance" format="reference"/>
-    <!-- Text color of the prefix text displayed in the text input area.
-         If set, this takes precedence over prefixTextAppearance. -->
+    <!-- Text color of the suffix text displayed in the text input area.
+         If set, this takes precedence over suffixTextAppearance. -->
     <attr name="suffixTextColor" format="color"/>
 
     <!-- Drawable to use for the start icon. -->
