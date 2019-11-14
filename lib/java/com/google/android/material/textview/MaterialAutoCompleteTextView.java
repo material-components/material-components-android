@@ -26,12 +26,14 @@ import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.appcompat.widget.ListPopupWindow;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewParent;
 import android.view.accessibility.AccessibilityManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Filterable;
 import android.widget.ListAdapter;
+import com.google.android.material.textfield.TextInputLayout;
 
 /**
  * A special sub-class of {@link android.widget.AutoCompleteTextView} that is auto-inflated so that
@@ -110,6 +112,30 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
   public <T extends ListAdapter & Filterable> void setAdapter(@Nullable T adapter) {
     super.setAdapter(adapter);
     modalListPopup.setAdapter(getAdapter());
+  }
+
+  @Nullable
+  @Override
+  public CharSequence getHint() {
+    // Certain test frameworks expect the actionable element to expose its hint as a label. Retrieve
+    // the hint from the TextInputLayout when it's providing it.
+    TextInputLayout textInputLayout = findTextInputLayoutAncestor();
+    if (textInputLayout != null && textInputLayout.isProvidingHint()) {
+      return textInputLayout.getHint();
+    }
+    return super.getHint();
+  }
+
+  @Nullable
+  private TextInputLayout findTextInputLayoutAncestor() {
+    ViewParent parent = getParent();
+    while (parent != null) {
+      if (parent instanceof TextInputLayout) {
+        return (TextInputLayout) parent;
+      }
+      parent = parent.getParent();
+    }
+    return null;
   }
 
   @SuppressWarnings("unchecked")

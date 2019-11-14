@@ -1414,8 +1414,11 @@ public class TextInputLayout extends LinearLayout {
    * Returns whether or not this layout is actively managing a child {@link EditText}'s hint. If the
    * child is an instance of {@link TextInputEditText}, this value defines the behavior of {@link
    * TextInputEditText#getHint()}.
+   *
+   * @hide
    */
-  boolean isProvidingHint() {
+  @RestrictTo(LIBRARY_GROUP)
+  public boolean isProvidingHint() {
     return isProvidingHint;
   }
 
