@@ -132,6 +132,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   @Nullable private Rect padding;
   @NonNull private final RectF pathBounds = new RectF();
 
+  private boolean shadowBitmapDrawingEnable = true;
+
   /**
    * Returns a {@code MaterialShapeDrawable} with the elevation overlay functionality initialized, a
    * fill color of {@code colorSurface}, and an elevation of 0.
@@ -733,6 +735,11 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     return drawableState.shadowCompatOffset;
   }
 
+  @RestrictTo(LIBRARY_GROUP)
+  public void setShadowBitmapDrawingEnable(boolean enable) {
+    shadowBitmapDrawingEnable = enable;
+  }
+
   /**
    * Sets the shadow offset rendered by the fake shadow when {@link #requiresCompatShadow()} is
    * true. This can make the shadow appear more on the bottom or top of the view to make a more
@@ -928,44 +935,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
       pathDirty = false;
     }
 
-    if (hasCompatShadow()) {
-      // Save the canvas before changing the clip bounds.
-      canvas.save();
-
-      prepareCanvasForShadow(canvas);
-
-      // The extra height is the amount that the path draws outside of the bounds of the shape. This
-      // happens for some shapes like TriangleEdgeTreament when it draws a triangle outside.
-      int pathExtraWidth = (int) (pathBounds.width() - getBounds().width());
-      int pathExtraHeight = (int) (pathBounds.height() - getBounds().height());
-
-      // Drawing the shadow in a bitmap lets us use the clear paint rather than using clipPath to
-      // prevent drawing shadow under the shape. clipPath has problems :-/
-      Bitmap shadowLayer =
-          Bitmap.createBitmap(
-              (int) pathBounds.width() + drawableState.shadowCompatRadius * 2 + pathExtraWidth,
-              (int) pathBounds.height() + drawableState.shadowCompatRadius * 2 + pathExtraHeight,
-              Bitmap.Config.ARGB_8888);
-      Canvas shadowCanvas = new Canvas(shadowLayer);
-
-      // Top Left of shadow (left - shadowCompatRadius, top - shadowCompatRadius) should be drawn at
-      // (0, 0) on shadowCanvas. Offset is handled by prepareCanvasForShadow and drawCompatShadow.
-      float shadowLeft = getBounds().left - drawableState.shadowCompatRadius - pathExtraWidth;
-      float shadowTop = getBounds().top - drawableState.shadowCompatRadius - pathExtraHeight;
-      shadowCanvas.translate(-shadowLeft, -shadowTop);
-
-      drawCompatShadow(shadowCanvas);
-
-      canvas.drawBitmap(shadowLayer, shadowLeft, shadowTop, null);
-
-      // Because we create the bitmap every time, we can recycle it. We may need to stop doing this
-      // if we end up keeping the bitmap in memory for performance.
-      shadowLayer.recycle();
-
-      // Restore the canvas to the same size it was before drawing any shadows.
-      canvas.restore();
-    }
-
+    maybeDrawCompatShadow(canvas);
     if (hasFill()) {
       drawFillShape(canvas);
     }
@@ -975,6 +945,48 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
     fillPaint.setAlpha(prevAlpha);
     strokePaint.setAlpha(prevStrokeAlpha);
+  }
+
+  private void maybeDrawCompatShadow(@NonNull Canvas canvas) {
+    if (!hasCompatShadow()) {
+      return;
+    }
+    // Save the canvas before changing the clip bounds.
+    canvas.save();
+    prepareCanvasForShadow(canvas);
+    if (!shadowBitmapDrawingEnable) {
+      drawCompatShadow(canvas);
+      canvas.restore();
+      return;
+    }
+
+    // The extra height is the amount that the path draws outside of the bounds of the shape. This
+    // happens for some shapes like TriangleEdgeTreament when it draws a triangle outside.
+    int pathExtraWidth = (int) (pathBounds.width() - getBounds().width());
+    int pathExtraHeight = (int) (pathBounds.height() - getBounds().height());
+
+    // Drawing the shadow in a bitmap lets us use the clear paint rather than using clipPath to
+    // prevent drawing shadow under the shape. clipPath has problems :-/
+    Bitmap shadowLayer =
+        Bitmap.createBitmap(
+            (int) pathBounds.width() + drawableState.shadowCompatRadius * 2 + pathExtraWidth,
+            (int) pathBounds.height() + drawableState.shadowCompatRadius * 2 + pathExtraHeight,
+            Bitmap.Config.ARGB_8888);
+    Canvas shadowCanvas = new Canvas(shadowLayer);
+
+    // Top Left of shadow (left - shadowCompatRadius, top - shadowCompatRadius) should be drawn at
+    // (0, 0) on shadowCanvas. Offset is handled by prepareCanvasForShadow and drawCompatShadow.
+    float shadowLeft = getBounds().left - drawableState.shadowCompatRadius - pathExtraWidth;
+    float shadowTop = getBounds().top - drawableState.shadowCompatRadius - pathExtraHeight;
+    shadowCanvas.translate(-shadowLeft, -shadowTop);
+    drawCompatShadow(shadowCanvas);
+    canvas.drawBitmap(shadowLayer, shadowLeft, shadowTop, null);
+    // Because we create the bitmap every time, we can recycle it. We may need to stop doing this
+    // if we end up keeping the bitmap in memory for performance.
+    shadowLayer.recycle();
+
+    // Restore the canvas to the same size it was before drawing any shadows.
+    canvas.restore();
   }
 
   /**
@@ -1023,7 +1035,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     // We only handle clipping as a convenience for older apis where we are trying to seamlessly
     // provide fake shadows. On newer versions of android, we require that the parent is set so that
     // clipChildren is false.
-    if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
+    if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP && shadowBitmapDrawingEnable) {
       // Add space and offset the canvas for the shadows. Otherwise any shadows drawn outside would
       // be clipped and not visible.
       Rect canvasClipBounds = canvas.getClipBounds();
@@ -1048,19 +1060,21 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     if (drawableState.shadowCompatOffset != 0) {
       canvas.drawPath(path, shadowRenderer.getShadowPaint());
     }
-
+    
     // Draw the fake shadow for each of the corners and edges.
     for (int index = 0; index < 4; index++) {
       cornerShadowOperation[index].draw(shadowRenderer, drawableState.shadowCompatRadius, canvas);
       edgeShadowOperation[index].draw(shadowRenderer, drawableState.shadowCompatRadius, canvas);
     }
 
-    int shadowOffsetX = getShadowOffsetX();
-    int shadowOffsetY = getShadowOffsetY();
+    if (shadowBitmapDrawingEnable) {
+      int shadowOffsetX = getShadowOffsetX();
+      int shadowOffsetY = getShadowOffsetY();
 
-    canvas.translate(-shadowOffsetX, -shadowOffsetY);
-    canvas.drawPath(path, clearPaint);
-    canvas.translate(shadowOffsetX, shadowOffsetY);
+      canvas.translate(-shadowOffsetX, -shadowOffsetY);
+      canvas.drawPath(path, clearPaint);
+      canvas.translate(shadowOffsetX, shadowOffsetY);
+    }
   }
 
   /** Returns the X offset of the shadow from the bounds of the shape. */
