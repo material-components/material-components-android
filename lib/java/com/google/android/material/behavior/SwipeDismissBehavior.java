@@ -188,15 +188,12 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
   public boolean onInterceptTouchEvent(
       @NonNull CoordinatorLayout parent, @NonNull V child, @NonNull MotionEvent event) {
     boolean dispatchEventToHelper = interceptingEvents;
-    boolean interceptForTap = false;
-    ensureViewDragHelper(parent);
 
     switch (event.getActionMasked()) {
       case MotionEvent.ACTION_DOWN:
         interceptingEvents =
             parent.isPointInChildBounds(child, (int) event.getX(), (int) event.getY());
         dispatchEventToHelper = interceptingEvents;
-        interceptForTap = interceptingEvents && !child.dispatchTouchEvent(event);
         break;
       case MotionEvent.ACTION_UP:
       case MotionEvent.ACTION_CANCEL:
@@ -206,9 +203,9 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
     }
 
     if (dispatchEventToHelper) {
-      return interceptForTap || viewDragHelper.shouldInterceptTouchEvent(event);
+      ensureViewDragHelper(parent);
+      return viewDragHelper.shouldInterceptTouchEvent(event);
     }
-
     return false;
   }
 
@@ -241,7 +238,8 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
         @Override
         public boolean tryCaptureView(View child, int pointerId) {
           // Only capture if we don't already have an active pointer id
-          return activePointerId == INVALID_POINTER_ID && canSwipeDismissView(child);
+          return (activePointerId == INVALID_POINTER_ID || activePointerId == pointerId)
+              && canSwipeDismissView(child);
         }
 
         @Override
@@ -251,14 +249,9 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
 
           // The view has been captured, and thus a drag is about to start so stop any parents
           // intercepting
-          ViewParent parent = capturedChild.getParent();
-          if (parent == null) {
-            return;
-          }
-
-          ViewParent grandParent = parent.getParent();
-          if (grandParent != null) {
-            grandParent.requestDisallowInterceptTouchEvent(true);
+          final ViewParent parent = capturedChild.getParent();
+          if (parent != null) {
+            parent.requestDisallowInterceptTouchEvent(true);
           }
         }
 
