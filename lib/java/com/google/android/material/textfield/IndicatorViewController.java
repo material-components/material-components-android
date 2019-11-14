@@ -103,6 +103,7 @@ final class IndicatorViewController {
   @Nullable private CharSequence errorText;
   private boolean errorEnabled;
   @Nullable private TextView errorView;
+  @Nullable private CharSequence errorViewContentDescription;
   private int errorTextAppearance;
   @Nullable private ColorStateList errorViewTextColor;
 
@@ -434,6 +435,7 @@ final class IndicatorViewController {
       }
       setErrorTextAppearance(errorTextAppearance);
       setErrorViewTextColor(errorViewTextColor);
+      setErrorContentDescription(errorViewContentDescription);
       errorView.setVisibility(View.INVISIBLE);
       ViewCompat.setAccessibilityLiveRegion(errorView, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
       addIndicator(errorView, ERROR_INDEX);
@@ -561,6 +563,19 @@ final class IndicatorViewController {
       textInputView.setTextAppearanceCompatWithErrorFallback(errorView, resId);
     }
   }
+
+  void setErrorContentDescription(@Nullable final CharSequence errorContentDescription) {
+    this.errorViewContentDescription = errorContentDescription;
+    if (errorView != null) {
+      errorView.setContentDescription(errorContentDescription);
+    }
+  }
+
+  @Nullable
+  CharSequence getErrorContentDescription() {
+    return errorViewContentDescription;
+  }
+
   @ColorInt
   int getHelperTextViewCurrentTextColor() {
     return helperTextView != null ? helperTextView.getCurrentTextColor() : -1;

@@ -53,6 +53,7 @@
   <public name="errorEnabled" type="attr"/>
   <public name="errorTextAppearance" type="attr"/>
   <public name="errorTextColor" type="attr"/>
+  <public name="errorContentDescription" type="attr"/>
   <public name="errorIconDrawable" type="attr"/>
   <public name="errorIconTint" type="attr"/>
   <public name="errorIconTintMode" type="attr"/>

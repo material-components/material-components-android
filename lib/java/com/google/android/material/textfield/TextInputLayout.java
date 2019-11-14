@@ -577,6 +577,8 @@ public class TextInputLayout extends LinearLayout {
 
     final int errorTextAppearance =
         a.getResourceId(R.styleable.TextInputLayout_errorTextAppearance, 0);
+    final CharSequence errorContentDescription =
+        a.getText(R.styleable.TextInputLayout_errorContentDescription);
     final boolean errorEnabled = a.getBoolean(R.styleable.TextInputLayout_errorEnabled, false);
     // Initialize error icon view.
     errorIconView =
@@ -750,6 +752,7 @@ public class TextInputLayout extends LinearLayout {
     setHelperTextTextAppearance(helperTextTextAppearance);
     setErrorEnabled(errorEnabled);
     setErrorTextAppearance(errorTextAppearance);
+    setErrorContentDescription(errorContentDescription);
     setCounterTextAppearance(counterTextAppearance);
     setCounterOverflowTextAppearance(counterOverflowTextAppearance);
     setPrefixText(prefixText);
@@ -1585,6 +1588,30 @@ public class TextInputLayout extends LinearLayout {
   @ColorInt
   public int getHelperTextCurrentTextColor() {
     return indicatorViewController.getHelperTextViewCurrentTextColor();
+  }
+
+  /**
+   * Sets a content description for the error message.
+   *
+   * <p> A content description should be set when the error message contains special characters that
+   * screen readers or other accessibility systems are not able to read, so that they announce the
+   * content description instead.
+   *
+   * @param errorContentDecription Content description to set, or null to clear it
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_errorContentDescription
+   */
+  public void setErrorContentDescription(@Nullable final CharSequence errorContentDecription) {
+    indicatorViewController.setErrorContentDescription(errorContentDecription);
+  }
+
+  /**
+   * Returns the content description of the error message, or null if not set.
+   *
+   * @see #setErrorContentDescription(CharSequence)
+   */
+  @Nullable
+  public CharSequence getErrorContentDescription() {
+    return indicatorViewController.getErrorContentDescription();
   }
 
   /**

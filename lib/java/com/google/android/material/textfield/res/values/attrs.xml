@@ -55,6 +55,10 @@
     <!-- Text color for any error message displayed.
          If set, this takes precedence over errorTextAppearance. -->
     <attr name="errorTextColor" format="color"/>
+    <!-- Text to set as the content description for the error view.
+         Should be set when the error message has special characters that a
+         screen reader is not able to announce properly. -->
+    <attr name="errorContentDescription" format="string"/>
     <!-- End icon to be shown when an error is displayed. -->
     <attr name="errorIconDrawable" format="reference"/>
     <!-- Tint color to use for the error icon. -->

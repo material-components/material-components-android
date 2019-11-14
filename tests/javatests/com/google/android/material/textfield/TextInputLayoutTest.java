@@ -36,6 +36,7 @@ import static com.google.android.material.testutils.TextInputLayoutActions.setBo
 import static com.google.android.material.testutils.TextInputLayoutActions.setCounterEnabled;
 import static com.google.android.material.testutils.TextInputLayoutActions.setCounterMaxLength;
 import static com.google.android.material.testutils.TextInputLayoutActions.setError;
+import static com.google.android.material.testutils.TextInputLayoutActions.setErrorContentDescription;
 import static com.google.android.material.testutils.TextInputLayoutActions.setErrorEnabled;
 import static com.google.android.material.testutils.TextInputLayoutActions.setErrorTextAppearance;
 import static com.google.android.material.testutils.TextInputLayoutActions.setHelperText;
@@ -428,6 +429,23 @@ public class TextInputLayoutTest {
     assertSame(top, compoundDrawables[1]);
     assertSame(end, compoundDrawables[2]);
     assertSame(bottom, compoundDrawables[3]);
+  }
+
+  @Test
+  public void testSetErrorContentDescription() {
+    String errorContentDesc = "Error content description";
+    // Set error and error content description.
+    onView(withId(R.id.textinput))
+        .perform(setErrorEnabled(true))
+        .perform(setError(ERROR_MESSAGE_1))
+        .perform(setErrorContentDescription(errorContentDesc));
+
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout textInputLayout =
+        activity.findViewById(R.id.textinput);
+
+    // Assert the error content description is as expected.
+    assertEquals(errorContentDesc, textInputLayout.getErrorContentDescription().toString());
   }
 
   @Test
