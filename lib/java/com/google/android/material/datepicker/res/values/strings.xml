@@ -29,9 +29,9 @@
   <string name="mtrl_picker_text_input_date_range_start_hint" description="Label for the start date in a range selected by the user [CHAR_LIMIT=60]">Start date</string>
   <string name="mtrl_picker_text_input_date_range_end_hint" description="Label for the end date in a range selected by the user [CHAR_LIMIT=60]">End date</string>
   <!-- TODO(b/134174653): internationalize date format strings -->
-  <string name="mtrl_picker_text_input_year_abbr" description="A 1 character abbreviation for year. It will be part of a string such as dd/mm/yyyy or mm/dd/yyyy or y.mm.dd. [CHAR_LIMIT=1]">y</string>
-  <string name="mtrl_picker_text_input_month_abbr" description="A 1 character abbreviation for month. It will be part of a string such as dd/mm/yyyy or mm/dd/yyyy or y.mm.dd. [CHAR_LIMIT=1]">m</string>
-  <string name="mtrl_picker_text_input_day_abbr" description="A 1 character abbreviation for day. It will be part of a string such as dd/mm/yyyy or mm/dd/yyyy or y.mm.dd. [CHAR_LIMIT=1]">d</string>
+  <string name="mtrl_picker_text_input_year_abbr" description="A 1 character abbreviation for year. It will be part of a string such as dd/mm/yyyy or mm/dd/yyyy or y.mm.dd. [CHAR_LIMIT=2]">y</string>
+  <string name="mtrl_picker_text_input_month_abbr" description="A 1 character abbreviation for month. It will be part of a string such as dd/mm/yyyy or mm/dd/yyyy or y.mm.dd. [CHAR_LIMIT=2]">m</string>
+  <string name="mtrl_picker_text_input_day_abbr" description="A 1 character abbreviation for day. It will be part of a string such as dd/mm/yyyy or mm/dd/yyyy or y.mm.dd. [CHAR_LIMIT=2]">d</string>
   <string name="mtrl_picker_save" description="Confirms the selection [CHAR_LIMIT=12]">Save</string>
   <string name="mtrl_picker_invalid_range" description="Notifies the user that the two entered dates do not represent a valid range of dates [CHAR_LIMIT=36]">Invalid range.</string>
   <string name="mtrl_picker_out_of_range" description="Notifies the user that the entered date is outside the allowed range [CHAR_LIMIT=36]">Out of range: %1$s</string>
