@@ -15,6 +15,6 @@
   limitations under the License.
   -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:title="Action 1"/>
-  <item android:title="Action 2"/>
+  <item android:title="@string/cat_topappbar_action_bar_action_mode_menu_item1"/>
+  <item android:title="@string/cat_topappbar_action_bar_action_mode_menu_item2"/>
 </menu>

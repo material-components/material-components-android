@@ -51,4 +51,6 @@
   <string name="cat_topappbar_action_bar_toggle_action_mode_button">Toggle Action Mode</string>
   <string name="cat_topappbar_action_bar_action_mode_title">Action Mode Title</string>
   <string name="cat_topappbar_action_bar_action_mode_subtitle">Action Mode Subtitle</string>
+  <string name="cat_topappbar_action_bar_action_mode_menu_item1">Action 1</string>
+  <string name="cat_topappbar_action_bar_action_mode_menu_item2">Action 2</string>
 </resources>
