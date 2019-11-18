@@ -64,7 +64,6 @@ import androidx.core.view.MarginLayoutParamsCompat;
 import androidx.core.view.PointerIconCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.TextViewCompat;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.TooltipCompat;
 import android.text.Layout;
@@ -197,6 +196,8 @@ public class TabLayout extends HorizontalScrollView {
   private static final int ANIMATION_DURATION = 300;
 
   private static final Pools.Pool<Tab> tabPool = new Pools.SynchronizedPool<>(16);
+
+  private static final String ACCESSIBILITY_CLASS_NAME = "androidx.appcompat.app.ActionBar.Tab";
 
   /**
    * Scrollable tabs display a subset of tabs at any given moment, and can contain longer tab labels
@@ -2341,7 +2342,7 @@ public class TabLayout extends HorizontalScrollView {
     public void onInitializeAccessibilityEvent(@NonNull AccessibilityEvent event) {
       super.onInitializeAccessibilityEvent(event);
       // This view masquerades as an action bar tab.
-      event.setClassName(ActionBar.Tab.class.getName());
+      event.setClassName(ACCESSIBILITY_CLASS_NAME);
     }
 
     @TargetApi(14)
@@ -2349,7 +2350,7 @@ public class TabLayout extends HorizontalScrollView {
     public void onInitializeAccessibilityNodeInfo(@NonNull AccessibilityNodeInfo info) {
       super.onInitializeAccessibilityNodeInfo(info);
       // This view masquerades as an action bar tab.
-      info.setClassName(ActionBar.Tab.class.getName());
+      info.setClassName(ACCESSIBILITY_CLASS_NAME);
       if (badgeDrawable != null && badgeDrawable.isVisible()) {
         CharSequence customContentDescription = getContentDescription();
         info.setContentDescription(
