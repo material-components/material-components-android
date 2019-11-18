@@ -72,14 +72,16 @@ style="@style/Widget.MaterialComponents.BottomAppBar"
 
 ### Bottom App Bar Attributes
 
-Feature                  | Relevant attributes
-:----------------------- | :---------------------------------
-Background Tint          | `app:backgroundTint`
-FAB Alignment Mode       | `app:fabAlignmentMode`
-FAB Cradle Margin        | `app:fabCradleMargin`
-FAB Cradle Corner Radius | `app:fabCradleRoundedCornerRadius`
-FAB Vertical Offset      | `app:fabCradleVerticalOffset`
-Hide on scroll           | `app:hideOnScroll`
+Feature                       | Relevant attributes
+:---------------------------- | :------------------------------------
+Background Tint               | `app:backgroundTint`
+FAB Alignment Mode            | `app:fabAlignmentMode`
+FAB Animation Mode            | `app:fabAnimationMode`
+FAB Cradle Margin             | `app:fabCradleMargin`
+FAB Cradle Corner Radius      | `app:fabCradleRoundedCornerRadius`
+FAB Vertical Offset           | `app:fabCradleVerticalOffset`
+Hide on scroll                | `app:hideOnScroll`
+Add Padding for Bottom Insets | `app:paddingBottomSystemWindowInsets`
 
 #### Background Tint
 
@@ -89,13 +91,14 @@ means that you shouldn't call `setBackground()` or use the `android:background`
 attribute in xml. Instead, the `app:backgroundTint` attribute will allow you to
 set a tint.
 
-#### `FloatingActionButton` Alignment Modes
+#### `FloatingActionButton` Alignment/Animation Modes
 
 The `FloatingActionButton` can be aligned either to the center
 (`FAB_ALIGNMENT_MODE_CENTER`) or to the end (`FAB_ALIGNMENT_MODE_END`) by
-calling `setFabAlignmentMode(int)`. The default animation will automatically be
-run. This can be coordinated with a `Fragment` transition to allow for a smooth
-animation from a primary screen to a secondary screen.
+calling `setFabAlignmentMode(int)`. The animation specified by
+`fabAnimationMode` will automatically be run. The fab animation can be set to
+`scale` or `slide`. This can be coordinated with a `Fragment` transition to
+allow for a smooth animation from a primary screen to a secondary screen.
 
 #### `FloatingActionButton` Attributes
 
@@ -117,6 +120,11 @@ attribute. To enable this behavior, you should ensure that the scrolling content
 is in a `NestedScrollView`. There's no need to wrap the `BottomAppBar` in an
 `AppBarLayout` or use any of the scroll flags associated with `AppBarLayout`
 such as `app:layout_scrollFlags`.
+
+#### Add Padding for Bottom insets
+
+The `BottomAppBar` can be set to automatically add insets for system navigation
+that appears on the bottom of the screen. By default, padding will be added.
 
 ### Handling Menu Options
 

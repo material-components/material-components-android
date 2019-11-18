@@ -105,6 +105,7 @@ import java.util.List;
  * @attr ref
  *     com.google.android.material.R.styleable#BottomAppBar_fabCradleVerticalOffset
  * @attr ref com.google.android.material.R.styleable#BottomAppBar_hideOnScroll
+ * @attr ref com.google.android.material.R.styleable#BottomAppBar_paddingBottomSystemWindowInsets
  */
 public class BottomAppBar extends Toolbar implements AttachedBehavior {
 

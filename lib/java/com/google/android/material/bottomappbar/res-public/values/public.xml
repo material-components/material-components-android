@@ -22,6 +22,7 @@
   <public name="fabCradleRoundedCornerRadius" type="attr"/>
   <public name="fabCradleVerticalOffset" type="attr"/>
   <public name="hideOnScroll" type="attr"/>
+  <public name="paddingBottomSystemWindowInsets" type="attr"/>
   <public name="Widget.MaterialComponents.BottomAppBar" type="style"/>
   <public name="Widget.MaterialComponents.BottomAppBar.Colored" type="style"/>
   <public name="Widget.MaterialComponents.BottomAppBar.PrimarySurface" type="style"/>
