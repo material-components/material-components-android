@@ -14,9 +14,21 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<TextView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/action_bar_demo_description"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp"/>
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+  <TextView
+      android:id="@+id/action_bar_demo_description"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:padding="16dp"/>
+    <Button
+        android:id="@+id/action_bar_demo_action_mode_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/cat_topappbar_action_bar_toggle_action_mode_button"/>
+</LinearLayout>
