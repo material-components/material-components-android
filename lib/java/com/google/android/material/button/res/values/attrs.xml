@@ -86,6 +86,10 @@
          default, this is false and multiple buttons in this group are allowed to be checked at
          once. -->
     <attr name="singleSelection"/>
+
+    <!-- Whether we prevent all child buttons from being deselected.
+         It's false by default. -->
+    <attr name="selectionRequired"/>
     <!-- The id of the child button that should be checked by default within this button group. -->
     <attr name="checkedButton" format="reference"/>
   </declare-styleable>

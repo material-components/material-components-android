@@ -159,6 +159,8 @@ public class MaterialButtonToggleGroup extends LinearLayout {
   private Integer[] childOrder;
   private boolean skipCheckedStateTracker = false;
   private boolean singleSelection;
+  private boolean selectionRequired;
+
   @IdRes private int checkedId;
 
   public MaterialButtonToggleGroup(@NonNull Context context) {
@@ -184,6 +186,8 @@ public class MaterialButtonToggleGroup extends LinearLayout {
         attributes.getBoolean(R.styleable.MaterialButtonToggleGroup_singleSelection, false));
     checkedId =
         attributes.getResourceId(R.styleable.MaterialButtonToggleGroup_checkedButton, View.NO_ID);
+    selectionRequired =
+        attributes.getBoolean(R.styleable.MaterialButtonToggleGroup_selectionRequired, false);
     setChildrenDrawingOrderEnabled(true);
     attributes.recycle();
   }
@@ -420,9 +424,26 @@ public class MaterialButtonToggleGroup extends LinearLayout {
   public void setSingleSelection(boolean singleSelection) {
     if (this.singleSelection != singleSelection) {
       this.singleSelection = singleSelection;
-
       clearChecked();
     }
+  }
+
+  /**
+   * Sets whether we prevent all child buttons from being deselected.
+   *
+   * @attr ref R.styleable#MaterialButtonToggleGroup_selectionRequired
+   */
+  public void setSelectionRequired(boolean selectionRequired) {
+    this.selectionRequired = selectionRequired;
+  }
+
+  /**
+   * Returns whether we prevent all child buttons from being deselected.
+   *
+   * @attr ref R.styleable#MaterialButtonToggleGroup_selectionRequired
+   */
+  public boolean isSelectionRequired() {
+    return selectionRequired;
   }
 
   /**
@@ -607,18 +628,25 @@ public class MaterialButtonToggleGroup extends LinearLayout {
    * children to draw all checked children on top of all unchecked children.
    *
    * <p>If {@code singleSelection} is true, this will unselect any other children as well.
+   * <p> If {@code selectionRequired} is true, and the last child is unchecked.
    *
    * @param childId ID of child whose checked state may have changed
    * @param childIsChecked Whether the child is checked
    */
   private void updateCheckedStates(int childId, boolean childIsChecked) {
-    for (int i = 0; i < getChildCount(); i++) {
-      MaterialButton button = getChildButton(i);
-      if (button.isChecked()) {
-        if (singleSelection && childIsChecked && button.getId() != childId) {
-          setCheckedStateForView(button.getId(), false);
-          dispatchOnButtonChecked(button.getId(), false);
-        }
+    List<Integer> checkedButtonIds = getCheckedButtonIds();
+    if (selectionRequired && checkedButtonIds.isEmpty()) {
+      // undo deselection
+      setCheckedStateForView(childId, true);
+      return;
+    }
+
+    // un select previous selection
+    if (childIsChecked && singleSelection) {
+      checkedButtonIds.remove((Object) childId);
+      for (int buttonId : checkedButtonIds) {
+        setCheckedStateForView(buttonId, false);
+        dispatchOnButtonChecked(buttonId, false);
       }
     }
   }
@@ -667,7 +695,7 @@ public class MaterialButtonToggleGroup extends LinearLayout {
     if (layoutParams instanceof LinearLayout.LayoutParams) {
       return (LayoutParams) layoutParams;
     }
-    
+
     LinearLayout.LayoutParams newParams =
         new LinearLayout.LayoutParams(layoutParams.width, layoutParams.height);
 

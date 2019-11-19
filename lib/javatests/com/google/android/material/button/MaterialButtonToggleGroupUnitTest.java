@@ -24,6 +24,8 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
 import android.graphics.RectF;
+import android.view.View;
+import android.widget.Checkable;
 import android.widget.LinearLayout;
 import androidx.test.core.app.ApplicationProvider;
 import com.google.android.material.shape.ShapeAppearanceModel;
@@ -114,5 +116,45 @@ public class MaterialButtonToggleGroupUnitTest {
             shapeAppearanceModel.getBottomRightCornerSize().getCornerSize(ignore)
         })
         .isEqualTo(corners);
+  }
+
+  @Test
+  public void singleSelection_withSelectionRequired_doesNotUnSelect() {
+    toggleGroup.setSelectionRequired(true);
+    toggleGroup.setSingleSelection(true);
+
+    View button = toggleGroup.getChildAt(0);
+    button.performClick();
+    button.performClick();
+
+    assertThat(((Checkable) button).isChecked()).isTrue();
+  }
+
+  @Test
+  public void singleSelection_withoutSelectionRequired_unSelects() {
+    toggleGroup.setSingleSelection(true);
+    toggleGroup.setSelectionRequired(false);
+
+    View button = toggleGroup.getChildAt(0);
+    button.performClick();
+    button.performClick();
+
+    assertThat(((Checkable) button).isChecked()).isFalse();
+  }
+
+  @Test
+  public void multiSelection_withSelectionRequired_unSelectsIfTwo() {
+    toggleGroup.setSingleSelection(false);
+    toggleGroup.setSelectionRequired(true);
+
+    View first = toggleGroup.getChildAt(0);
+    View second = toggleGroup.getChildAt(1);
+    first.performClick();
+    second.performClick();
+    second.performClick();
+
+    // first button is selected
+    assertThat(((Checkable) first).isChecked()).isTrue();
+    assertThat(((Checkable) second).isChecked()).isFalse();
   }
 }
