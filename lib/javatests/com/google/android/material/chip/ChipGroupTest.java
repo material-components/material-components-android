@@ -27,11 +27,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.internal.DoNotInstrument;
 
 /** Tests for {@link com.google.android.material.chip.ChipGroup}. */
 @RunWith(RobolectricTestRunner.class)
-@DoNotInstrument
 public class ChipGroupTest {
 
   private static final int CHIP_GROUP_SPACING = 4;
@@ -85,5 +83,46 @@ public class ChipGroupTest {
     Integer checkedId1 = chipgroup.getCheckedChipIds().get(0);
     int checkedId2 = chipgroup.getCheckedChipId();
     assertThat(checkedId1).isEqualTo(checkedId2);
+  }
+
+  @Test
+  public void singleSelection_withSelectionRequired_doesNotUnSelect() {
+    chipgroup.setSelectionRequired(true);
+    chipgroup.setSingleSelection(true);
+
+    View chip = chipgroup.getChildAt(0);
+    chip.performClick();
+    chip.performClick();
+
+    assertThat(((Chip) chip).isChecked()).isTrue();
+  }
+
+  @Test
+  public void singleSelection_withoutSelectionRequired_unSelects() {
+    chipgroup.setSingleSelection(true);
+    chipgroup.setSelectionRequired(false);
+
+    View chip = chipgroup.getChildAt(0);
+    chip.performClick();
+    chip.performClick();
+
+    assertThat(((Chip) chip).isChecked()).isFalse();
+  }
+
+  @Test
+  public void multiSelection_withSelectionRequired_unSelectsIfTwo() {
+    chipgroup.setSingleSelection(false);
+    chipgroup.setSelectionRequired(true);
+
+    View first = chipgroup.getChildAt(0);
+    View second = chipgroup.getChildAt(1);
+    first.performClick();
+
+    second.performClick();
+    second.performClick();
+
+    // first button is selected
+    assertThat(((Chip) first).isChecked()).isTrue();
+    assertThat(((Chip) second).isChecked()).isFalse();
   }
 }

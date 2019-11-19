@@ -38,7 +38,6 @@ import com.google.android.material.internal.ThemeEnforcement;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * A ChipGroup is used to hold multiple {@link Chip}s. By default, the chips are reflowed across
  * multiple lines. Set the {@link R.attr#singleLine app:singleLine} attribute to constrain the chips
@@ -88,6 +87,7 @@ public class ChipGroup extends FlowLayout {
   @Dimension private int chipSpacingHorizontal;
   @Dimension private int chipSpacingVertical;
   private boolean singleSelection;
+  private boolean selectionRequired;
 
   @Nullable private OnCheckedChangeListener onCheckedChangeListener;
 
@@ -126,6 +126,7 @@ public class ChipGroup extends FlowLayout {
         a.getDimensionPixelOffset(R.styleable.ChipGroup_chipSpacingVertical, chipSpacing));
     setSingleLine(a.getBoolean(R.styleable.ChipGroup_singleLine, false));
     setSingleSelection(a.getBoolean(R.styleable.ChipGroup_singleSelection, false));
+    setSelectionRequired(a.getBoolean(R.styleable.ChipGroup_selectionRequired, false));
     int checkedChip = a.getResourceId(R.styleable.ChipGroup_checkedChip, View.NO_ID);
     if (checkedChip != View.NO_ID) {
       checkedId = checkedChip;
@@ -442,11 +443,39 @@ public class ChipGroup extends FlowLayout {
     setSingleSelection(getResources().getBoolean(id));
   }
 
+  /**
+   * Sets whether we prevent all child chips from being deselected.
+   *
+   * @attr ref R.styleable#ChipGroup_selectionRequired
+   * @see #setSingleSelection(boolean)
+   */
+  public void setSelectionRequired(boolean selectionRequired) {
+    this.selectionRequired = selectionRequired;
+  }
+
+  /**
+   * Returns whether we prevent all child chips from being deselected.
+   *
+   * @attr ref R.styleable#ChipGroup_selectionRequired
+   * @see #setSingleSelection(boolean)
+   * @see #setSelectionRequired(boolean)
+   */
+  public boolean isSelectionRequired() {
+    return selectionRequired;
+  }
+
   private class CheckedStateTracker implements CompoundButton.OnCheckedChangeListener {
     @Override
     public void onCheckedChanged(@NonNull CompoundButton buttonView, boolean isChecked) {
       // prevents from infinite recursion
       if (protectFromCheckedChange) {
+        return;
+      }
+
+      List<Integer> checkedChipIds = getCheckedChipIds();
+      if (checkedChipIds.isEmpty() && selectionRequired) {
+        setCheckedStateForView(buttonView.getId(), true);
+        setCheckedId(buttonView.getId());
         return;
       }
 
@@ -457,10 +486,8 @@ public class ChipGroup extends FlowLayout {
           setCheckedStateForView(checkedId, false);
         }
         setCheckedId(id);
-      } else {
-        if (checkedId == id) {
-          setCheckedId(View.NO_ID);
-        }
+      } else if (checkedId == id) {
+        setCheckedId(View.NO_ID);
       }
     }
   }
