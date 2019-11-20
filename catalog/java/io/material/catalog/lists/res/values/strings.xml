@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2019 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+
+  <string name="cat_lists_title">Lists</string>
+  <string name="cat_lists_description">
+    Lists are continuous, vertical indexes of text or images.
+  </string>
+  <string name="mtrl_list_item_clicked">List item clicked</string>
+  <string name="mtrl_list_item_one_line">One Line Item</string>
+  <string name="mtrl_list_item_two_line">Two Line Item</string>
+  <string name="mtrl_list_item_three_line">Three Line Item</string>
+  <string name="mtrl_list_item_secondary_text">Secondary Text</string>
+  <string name="mtrl_list_item_tertiary_text">Tertiary Text</string>
+
+</resources>
+
