@@ -16,6 +16,8 @@
 -->
 <resources>
   <declare-styleable name="FloatingActionButton">
+    <!-- Whether the FloatingActionButton is enabled -->
+    <attr name="android:enabled"/>
     <!-- Background for the FloatingActionButton -->
     <attr name="backgroundTint"/>
     <attr name="backgroundTintMode"/>

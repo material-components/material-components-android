@@ -37,8 +37,8 @@
     <item name="enforceMaterialTheme">true</item>
     <item name="ensureMinTouchTargetSize">true</item>
     <item name="elevation">@dimen/mtrl_fab_elevation</item>
-    <item name="backgroundTint">?attr/colorSecondary</item>
-    <item name="tint">?attr/colorOnSecondary</item>
+    <item name="backgroundTint">@color/mtrl_fab_bg_color_selector</item>
+    <item name="tint">@color/mtrl_fab_icon_color_selector</item>
     <item name="hoveredFocusedTranslationZ">@dimen/mtrl_fab_translation_z_hovered_focused</item>
     <item name="pressedTranslationZ">@dimen/mtrl_fab_translation_z_pressed</item>
     <item name="rippleColor">@color/mtrl_fab_ripple_color</item>
