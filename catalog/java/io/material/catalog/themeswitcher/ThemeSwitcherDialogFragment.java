@@ -37,7 +37,6 @@ import androidx.appcompat.widget.AppCompatRadioButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -146,19 +145,11 @@ public class ThemeSwitcherDialogFragment extends BottomSheetDialogFragment
     MaterialButtonToggleGroup themeToggleGroup = view.findViewById(R.id.theme_toggle_group);
     themeToggleGroup.check(themePreferencesManager.getCurrentThemeId());
 
-    for (int themeId : themePreferencesManager.getThemeIds()) {
-      Button themeButton = view.findViewById(themeId);
-      themeButton.setOnClickListener(
-          v -> {
-            int checkedButtonId = themeToggleGroup.getCheckedButtonId();
-            if (checkedButtonId == 0 || checkedButtonId == View.NO_ID) {
-              // Make sure one theme is always checked.
-              themeToggleGroup.check(themeId);
-            } else {
-              themePreferencesManager.saveAndApplyTheme(themeId);
-            }
-          });
-    }
+    themeToggleGroup.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
+      if (isChecked) {
+        themePreferencesManager.saveAndApplyTheme(checkedId);
+      }
+    });
   }
 
   private void applyThemeOverlays() {
