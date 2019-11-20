@@ -282,9 +282,6 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
   }
 
   private void initMinTouchTarget(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-    if (attrs == null) {
-      return;
-    }
     // Checks if the Chip should meet Android's minimum touch target size.
     TypedArray a =
         ThemeEnforcement.obtainStyledAttributes(
