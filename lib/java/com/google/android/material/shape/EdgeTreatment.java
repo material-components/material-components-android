@@ -63,4 +63,13 @@ public class EdgeTreatment {
       float length, float center, float interpolation, @NonNull ShapePath shapePath) {
     shapePath.lineTo(length, 0);
   }
+
+  /**
+   * Causes this edge to be intersected with the line between the start of the previous corner, and
+   * the end of the next corner. This allows for simpler definition of edge treatments since they
+   * can be less exact about how they calculate the start and ending point of the edge.
+   */
+  boolean forceIntersection() {
+    return false;
+  }
 }

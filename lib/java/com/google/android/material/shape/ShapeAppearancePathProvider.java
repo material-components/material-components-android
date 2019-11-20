@@ -18,10 +18,15 @@ package com.google.android.material.shape;
 
 import android.graphics.Matrix;
 import android.graphics.Path;
+import android.graphics.Path.Direction;
+import android.graphics.Path.Op;
 import android.graphics.PointF;
 import android.graphics.RectF;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 
@@ -33,6 +38,7 @@ public class ShapeAppearancePathProvider {
    */
   @RestrictTo(Scope.LIBRARY_GROUP)
   public interface PathListener {
+
     void onCornerPathCreated(ShapePath cornerPath, Matrix transform, int count);
 
     void onEdgePathCreated(ShapePath edgePath, Matrix transform, int count);
@@ -45,9 +51,13 @@ public class ShapeAppearancePathProvider {
 
   // Pre-allocated objects that are re-used several times during path computation and rendering.
   private final PointF pointF = new PointF();
+  private final Path overlappedEdgePath = new Path();
+  private final Path boundsPath = new Path();
   private final ShapePath shapePath = new ShapePath();
   private final float[] scratch = new float[2];
   private final float[] scratch2 = new float[2];
+
+  private boolean edgeIntersectionCheckEnabled = true;
 
   public ShapeAppearancePathProvider() {
     for (int i = 0; i < 4; i++) {
@@ -90,6 +100,9 @@ public class ShapeAppearancePathProvider {
       PathListener pathListener,
       @NonNull Path path) {
     path.rewind();
+    overlappedEdgePath.rewind();
+    boundsPath.rewind();
+    boundsPath.addRect(bounds, Direction.CW);
     ShapeAppearancePathSpec spec =
         new ShapeAppearancePathSpec(
             shapeAppearanceModel, interpolation, bounds, pathListener, path);
@@ -101,16 +114,18 @@ public class ShapeAppearancePathProvider {
       setEdgePathAndTransform(index);
     }
 
-    // Apply corners and edges to the path in clockwise interleaving sequence: top-right corner,
-    // right edge, bottom-right corner, bottom edge, bottom-left corner etc. We start from the top
-    // right corner rather than the top left to work around a bug in API level 21 and 22 in which
-    // rounding error causes the path to incorrectly be marked as concave.
     for (int index = 0; index < 4; index++) {
       appendCornerPath(spec, index);
       appendEdgePath(spec, index);
     }
 
     path.close();
+    overlappedEdgePath.close();
+
+    // Union with the edge paths that had an intersection to handle overlaps.
+    if (VERSION.SDK_INT >= VERSION_CODES.KITKAT && !overlappedEdgePath.isEmpty()) {
+      path.op(overlappedEdgePath, Op.UNION);
+    }
   }
 
   private void setCornerPathAndTransform(@NonNull ShapeAppearancePathSpec spec, int index) {
@@ -165,12 +180,51 @@ public class ShapeAppearancePathProvider {
     edgeLength = Math.max(edgeLength - .001f, 0);
     float center = getEdgeCenterForIndex(spec.bounds, index);
     shapePath.reset(0, 0);
-    getEdgeTreatmentForIndex(index, spec.shapeAppearanceModel)
-        .getEdgePath(edgeLength, center, spec.interpolation, shapePath);
-    shapePath.applyToPath(edgeTransforms[index], spec.path);
+    EdgeTreatment edgeTreatment = getEdgeTreatmentForIndex(index, spec.shapeAppearanceModel);
+    edgeTreatment.getEdgePath(edgeLength, center, spec.interpolation, shapePath);
+    Path edgePath = new Path();
+    shapePath.applyToPath(edgeTransforms[index], edgePath);
+
+    if (edgeIntersectionCheckEnabled
+        && VERSION.SDK_INT >= VERSION_CODES.KITKAT
+        && (edgeTreatment.forceIntersection()
+            || pathOverlapsCorner(edgePath, index)
+            || pathOverlapsCorner(edgePath, nextIndex))) {
+
+      // Calculate the difference between the edge and the bounds to calculate the part of the edge
+      // outside of the bounds of the shape.
+      edgePath.op(edgePath, boundsPath, Op.DIFFERENCE);
+
+      // Add a line to the path between the previous corner and this edge.
+      // TODO(b/144784590): handle the shadow as well.
+      scratch[0] = shapePath.getStartX();
+      scratch[1] = shapePath.getStartY();
+      edgeTransforms[index].mapPoints(scratch);
+      overlappedEdgePath.moveTo(scratch[0], scratch[1]);
+
+      // Add this to the overlappedEdgePath which will be unioned later.
+      shapePath.applyToPath(edgeTransforms[index], overlappedEdgePath);
+    } else {
+      shapePath.applyToPath(edgeTransforms[index], spec.path);
+    }
+
     if (spec.pathListener != null) {
       spec.pathListener.onEdgePathCreated(shapePath, edgeTransforms[index], index);
     }
+  }
+
+  @RequiresApi(VERSION_CODES.KITKAT)
+  private boolean pathOverlapsCorner(Path edgePath, int index) {
+    Path cornerPath = new Path();
+    cornerPaths[index].applyToPath(cornerTransforms[index], cornerPath);
+
+    RectF bounds = new RectF();
+    edgePath.computeBounds(bounds, /* exact = */ true);
+    cornerPath.computeBounds(bounds, /* exact = */ true);
+    edgePath.op(cornerPath, Op.INTERSECT);
+    edgePath.computeBounds(bounds, /* exact = */ true);
+
+    return !bounds.isEmpty() || (bounds.width() > 1 && bounds.height() > 1);
   }
 
   private float getEdgeCenterForIndex(@NonNull RectF bounds, int index) {
@@ -253,6 +307,10 @@ public class ShapeAppearancePathProvider {
 
   private float angleOfEdge(int index) {
     return 90 * (index + 1 % 4);
+  }
+
+  void setEdgeIntersectionCheckEnable(boolean enable) {
+    edgeIntersectionCheckEnabled = enable;
   }
 
   /** Necessary information to map a {@link ShapeAppearanceModel} into a Path. */

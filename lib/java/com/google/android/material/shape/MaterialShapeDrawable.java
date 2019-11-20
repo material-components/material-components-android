@@ -740,6 +740,11 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     shadowBitmapDrawingEnable = enable;
   }
 
+  @RestrictTo(LIBRARY_GROUP)
+  public void setEdgeIntersectionCheckEnable(boolean enable) {
+    pathProvider.setEdgeIntersectionCheckEnable(enable);
+  }
+
   /**
    * Sets the shadow offset rendered by the fake shadow when {@link #requiresCompatShadow()} is
    * true. This can make the shadow appear more on the bottom or top of the view to make a more
@@ -1060,7 +1065,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     if (drawableState.shadowCompatOffset != 0) {
       canvas.drawPath(path, shadowRenderer.getShadowPaint());
     }
-    
+
     // Draw the fake shadow for each of the corners and edges.
     for (int index = 0; index < 4; index++) {
       cornerShadowOperation[index].draw(shadowRenderer, drawableState.shadowCompatRadius, canvas);
