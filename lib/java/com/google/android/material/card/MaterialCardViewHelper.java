@@ -422,6 +422,7 @@ class MaterialCardViewHelper {
   void setShapeAppearanceModel(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
     this.shapeAppearanceModel = shapeAppearanceModel;
     bgDrawable.setShapeAppearanceModel(shapeAppearanceModel);
+    bgDrawable.setShadowBitmapDrawingEnable(!bgDrawable.isRoundRect());
     if (foregroundContentDrawable != null) {
       foregroundContentDrawable.setShapeAppearanceModel(shapeAppearanceModel);
     }

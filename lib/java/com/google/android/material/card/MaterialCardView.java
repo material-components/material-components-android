@@ -65,9 +65,6 @@ import com.google.android.material.shape.Shapeable;
  * app:dragged_state}. It's used by calling {@link #setDragged(boolean)}. This changes the overlay
  * color and elevates the card to convey motion.
  *
- * <p><strong>Note:</strong> Avoid setting {@link View#setClipToOutline} to true. There is an
- * intermediate view to clip the content, setting this will have negative performance consequences.
- *
  * <p><strong>Note:</strong> The actual view hierarchy present under MaterialCardView is
  * <strong>NOT</strong> guaranteed to match the view hierarchy as written in XML. As a result, calls
  * to getParent() on children of the MaterialCardView, will not return the MaterialCardView itself,
@@ -135,6 +132,7 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
     // Zero out the AppCompat CardView's content padding, the padding will be added to the internal
     // contentLayout.
     cardViewHelper.loadFromAttributes(attributes);
+
     attributes.recycle();
   }
 
