@@ -38,7 +38,7 @@
     <item name="ensureMinTouchTargetSize">true</item>
     <item name="elevation">@dimen/mtrl_fab_elevation</item>
     <item name="backgroundTint">@color/mtrl_fab_bg_color_selector</item>
-    <item name="tint">@color/mtrl_fab_icon_color_selector</item>
+    <item name="tint">@color/mtrl_fab_icon_text_color_selector</item>
     <item name="hoveredFocusedTranslationZ">@dimen/mtrl_fab_translation_z_hovered_focused</item>
     <item name="pressedTranslationZ">@dimen/mtrl_fab_translation_z_pressed</item>
     <item name="rippleColor">@color/mtrl_fab_ripple_color</item>
@@ -73,13 +73,13 @@
     <item name="android:stateListAnimator" tools:ignore="NewApi">
       @animator/mtrl_extended_fab_state_list_animator
     </item>
-    <item name="android:textColor">@color/mtrl_extended_fab_text_color_selector</item>
-    <item name="backgroundTint">@color/mtrl_extended_fab_bg_color_selector</item>
+    <item name="android:textColor">@color/mtrl_fab_icon_text_color_selector</item>
+    <item name="backgroundTint">@color/mtrl_fab_bg_color_selector</item>
     <item name="elevation">@dimen/mtrl_extended_fab_elevation</item>
     <item name="iconPadding">@dimen/mtrl_extended_fab_icon_text_spacing</item>
     <item name="iconSize">@dimen/mtrl_extended_fab_icon_size</item>
-    <item name="iconTint">@color/mtrl_extended_fab_text_color_selector</item>
-    <item name="rippleColor">@color/mtrl_extended_fab_ripple_color</item>
+    <item name="iconTint">@color/mtrl_fab_icon_text_color_selector</item>
+    <item name="rippleColor">@color/mtrl_fab_ripple_color</item>
     <item name="shapeAppearanceOverlay">
       @style/ShapeAppearanceOverlay.MaterialComponents.ExtendedFloatingActionButton
     </item>
