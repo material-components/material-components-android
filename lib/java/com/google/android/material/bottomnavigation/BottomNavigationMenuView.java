@@ -31,7 +31,10 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.util.Pools;
+import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuItemImpl;
@@ -127,6 +130,24 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
           }
         };
     tempChildWidths = new int[BottomNavigationMenu.MAX_ITEM_COUNT];
+
+    ViewCompat.setAccessibilityDelegate(
+        this,
+        new AccessibilityDelegateCompat() {
+          @Override
+          public void onInitializeAccessibilityNodeInfo(
+              View host, @NonNull AccessibilityNodeInfoCompat info) {
+            super.onInitializeAccessibilityNodeInfo(host, info);
+            info.setCollectionInfo(
+                CollectionInfoCompat.obtain(
+                    1,
+                    menu.getVisibleItems().size(),
+                    false,
+                    CollectionInfoCompat.SELECTION_MODE_SINGLE));
+          }
+        });
+
+    ViewCompat.setImportantForAccessibility(this, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
   }
 
   @Override
