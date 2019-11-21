@@ -42,6 +42,7 @@ import android.graphics.RectF;
 import android.graphics.Region;
 import android.graphics.Region.Op;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.annotation.AttrRes;
@@ -810,7 +811,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * 21 or when the shape is concave.
    */
   private boolean requiresCompatShadow() {
-    return VERSION.SDK_INT < VERSION_CODES.LOLLIPOP || (!isRoundRect() && !path.isConvex());
+    return VERSION.SDK_INT < VERSION_CODES.LOLLIPOP
+        || (!isRoundRect() && !path.isConvex() && Build.VERSION.SDK_INT < Build.VERSION_CODES.Q);
   }
 
   /**
@@ -1159,7 +1161,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     }
 
     calculatePath(getBoundsAsRectF(), path);
-    if (path.isConvex()) {
+    if (path.isConvex() || Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
       outline.setConvexPath(path);
     }
   }
