@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2019 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+
+  <style name="Widget.MaterialComponents.Tooltip" parent="android:Widget">
+    <item name="android:layout_margin">8dp</item>
+    <item name="android:minWidth">@dimen/mtrl_tooltip_minWidth</item>
+    <item name="android:minHeight">@dimen/mtrl_tooltip_minHeight</item>
+    <item name="android:padding">@dimen/mtrl_tooltip_padding</item>
+    <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Tooltip</item>
+    <item name="shapeAppearance">@style/ShapeAppearance.MaterialComponents.Tooltip</item>
+  </style>
+
+  <style name="TextAppearance.MaterialComponents.Tooltip" parent="TextAppearance.MaterialComponents.Body2">
+    <item name="android:textColor">?attr/colorOnPrimary</item>
+  </style>
+
+  <style name="ShapeAppearance.MaterialComponents.Tooltip" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">4dp</item>
+  </style>
+
+</resources>
