@@ -3744,24 +3744,37 @@ public class TextInputLayout extends LinearLayout {
         @NonNull View host, @NonNull AccessibilityNodeInfoCompat info) {
       super.onInitializeAccessibilityNodeInfo(host, info);
       EditText editText = layout.getEditText();
-      CharSequence text = (editText != null) ? editText.getText() : null;
+      CharSequence inputText = (editText != null) ? editText.getText() : null;
       CharSequence hintText = layout.getHint();
+      CharSequence helperText = layout.getHelperText();
       CharSequence errorText = layout.getError();
       CharSequence counterDesc = layout.getCounterOverflowDescription();
-      boolean showingText = !TextUtils.isEmpty(text);
+      boolean showingText = !TextUtils.isEmpty(inputText);
       boolean hasHint = !TextUtils.isEmpty(hintText);
+      boolean hasHelperText = !TextUtils.isEmpty(helperText);
       boolean showingError = !TextUtils.isEmpty(errorText);
       boolean contentInvalid = showingError || !TextUtils.isEmpty(counterDesc);
 
+      String hint = hasHint ? hintText.toString() : "";
+      hint += (hasHelperText && !TextUtils.isEmpty(hint)) ? ", " : "";
+      hint += hasHelperText ? helperText : "";
+
       if (showingText) {
-        info.setText(text);
-      } else if (hasHint) {
-        info.setText(hintText);
+        info.setText(inputText);
+      } else if (!TextUtils.isEmpty(hint)) {
+        info.setText(hint);
       }
 
-      if (hasHint) {
-        info.setHintText(hintText);
-        info.setShowingHintText(!showingText && hasHint);
+      if (!TextUtils.isEmpty(hint)) {
+       if (VERSION.SDK_INT >= 26) {
+          info.setHintText(hint);
+       } else {
+         // Due to a TalkBack bug, setHintText has no effect in APIs < 26 so we append the hint to
+         // the text announcement. The resulting announcement is the same as in APIs >= 26.
+         String text = showingText ? (inputText + ", " + hint) : hint;
+         info.setText(text);
+       }
+        info.setShowingHintText(!showingText);
       }
 
       if (contentInvalid) {
