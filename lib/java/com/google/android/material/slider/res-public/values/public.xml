@@ -25,7 +25,7 @@
   <public name="tickColor" type="attr" />
   <public name="activeTickColor" type="attr" />
   <public name="inactiveTickColor" type="attr" />
-  <public name="labelColor" type="attr" />
+  <public name="labelStyle" type="attr" />
   <public name="floatingLabel" type="attr" />
   <public name="thumbRadius" format="attr" />
   <public name="thumbElevation" format="attr" />

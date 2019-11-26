@@ -65,7 +65,7 @@ public class TooltipDrawable extends MaterialShapeDrawable implements TextDrawab
   @StyleRes private static final int DEFAULT_STYLE = R.style.Widget_MaterialComponents_Tooltip;
   @AttrRes private static final int DEFAULT_THEME_ATTR = R.attr.tooltipStyle;
 
-  @NonNull private CharSequence text = "";
+  @Nullable private CharSequence text;
   @NonNull private final Context context;
   @Nullable private final FontMetrics fontMetrics = new FontMetrics();
 
@@ -179,7 +179,7 @@ public class TooltipDrawable extends MaterialShapeDrawable implements TextDrawab
    *
    * @attr ref com.google.android.material.R.styleable#Tooltip_android_text
    */
-  @NonNull
+  @Nullable
   public CharSequence getText() {
     return text;
   }
@@ -202,7 +202,7 @@ public class TooltipDrawable extends MaterialShapeDrawable implements TextDrawab
    * @see #setTextResource(int)
    * @attr ref com.google.android.material.R.styleable#Tooltip_android_text
    */
-  public void setText(@NonNull CharSequence text) {
+  public void setText(@Nullable CharSequence text) {
     if (!TextUtils.equals(this.text, text)) {
       this.text = text;
       textDrawableHelper.setTextWidthDirty(true);
@@ -419,6 +419,11 @@ public class TooltipDrawable extends MaterialShapeDrawable implements TextDrawab
   }
 
   private void drawText(@NonNull Canvas canvas) {
+    if (text == null) {
+      // If text is null there's nothing to draw.
+      return;
+    }
+
     Rect bounds = getBounds();
     int y = (int) calculateTextOriginAndAlignment(bounds);
 
@@ -431,7 +436,10 @@ public class TooltipDrawable extends MaterialShapeDrawable implements TextDrawab
   }
 
   private float getTextWidth() {
-    return textDrawableHelper.getTextWidth(getText().toString());
+    if (text == null) {
+      return 0;
+    }
+    return textDrawableHelper.getTextWidth(text.toString());
   }
 
   /** Calculates the text origin and alignment based on the bounds. */

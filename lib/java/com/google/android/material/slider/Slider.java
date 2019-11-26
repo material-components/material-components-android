@@ -28,10 +28,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.PorterDuff.Mode;
-import android.graphics.PorterDuffColorFilter;
 import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build.VERSION;
@@ -57,6 +54,7 @@ import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.CornerFamily;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
+import com.google.android.material.tooltip.TooltipDrawable;
 import java.util.Locale;
 
 /**
@@ -102,8 +100,7 @@ import java.util.Locale;
  *       track. Only used when the slider is in discrete mode.
  *   <li>{@code inactiveTickColor}: the color of the slider's tick marks for the inactive part of
  *       the track. Only used when the slider is in discrete mode.
- *   <li>{@code labelColor}: the color of the text displayed in the slider's bubble. Only used when
- *       the slider is in discrete mode.
+ *   <li>{@code labelStyle}: the style to apply to the value indicator {@link TooltipDrawable}.
  * </ul>
  *
  * <p>The following XML attributes are used to set the slider's various parameters of operation:
@@ -133,10 +130,15 @@ import java.util.Locale;
  * @attr ref com.google.android.material.R.styleable#Slider_activeTrackColor
  * @attr ref com.google.android.material.R.styleable#Slider_inactiveTrackColor
  * @attr ref com.google.android.material.R.styleable#Slider_thumbColor
+ * @attr ref com.google.android.material.R.styleable#Slider_haloColor
  * @attr ref com.google.android.material.R.styleable#Slider_tickColor
  * @attr ref com.google.android.material.R.styleable#Slider_activeTickColor
  * @attr ref com.google.android.material.R.styleable#Slider_inactiveTickColor
- * @attr ref com.google.android.material.R.styleable#Slider_labelColor
+ * @attr ref com.google.android.material.R.styleable#Slider_labelStyle
+ * @attr ref com.google.android.material.R.styleable#Slider_floatingLabel
+ * @attr ref com.google.android.material.R.styleable#Slider_thumbRadius
+ * @attr ref com.google.android.material.R.styleable#Slider_thumbElevation
+ * @attr ref com.google.android.material.R.styleable#Slider_haloRadius
  */
 public class Slider extends View {
 
@@ -160,11 +162,8 @@ public class Slider extends View {
   @NonNull private final Paint thumbPaint;
   @NonNull private final Paint haloPaint;
   @NonNull private final Paint ticksPaint;
-  @NonNull private final Drawable label;
-  @NonNull private final Paint labelTextPaint;
-  @NonNull private final Rect labelTextBounds;
 
-  @NonNull private String labelText = "";
+  @NonNull private TooltipDrawable label;
 
   private int widgetHeight;
   private int widgetHeightLabel;
@@ -175,12 +174,7 @@ public class Slider extends View {
   private int trackTopLabel;
   private int thumbRadius;
   private int haloRadius;
-  private int labelWidth;
-  private int labelHeight;
   private int labelPadding;
-  private int labelTopOffset;
-  private float labelTextSize;
-  private int labelTextTopOffset;
   private OnChangeListener listener;
   private LabelFormatter formatter;
   private boolean thumbIsPressed = false;
@@ -197,7 +191,6 @@ public class Slider extends View {
   @NonNull private ColorStateList thumbColor;
   @NonNull private ColorStateList haloColor;
   @NonNull private ColorStateList tickColor;
-  @NonNull private ColorStateList textColor;
 
   @NonNull private final MaterialShapeDrawable thumbDrawable = new MaterialShapeDrawable();
 
@@ -287,15 +280,6 @@ public class Slider extends View {
       }
     }
 
-    label = context.getResources().getDrawable(R.drawable.mtrl_slider_label);
-    label.setColorFilter(new PorterDuffColorFilter(getColorForState(thumbColor), Mode.MULTIPLY));
-
-    labelTextPaint = new Paint();
-    labelTextPaint.setTypeface(Typeface.DEFAULT);
-    labelTextPaint.setTextSize(labelTextSize);
-
-    labelTextBounds = new Rect();
-
     super.setOnFocusChangeListener(
         new OnFocusChangeListener() {
           @Override
@@ -332,12 +316,7 @@ public class Slider extends View {
     trackTop = resources.getDimensionPixelOffset(R.dimen.mtrl_slider_track_top);
     trackTopLabel = resources.getDimensionPixelOffset(R.dimen.mtrl_slider_track_top_label);
 
-    labelWidth = resources.getDimensionPixelSize(R.dimen.mtrl_slider_label_width);
-    labelHeight = resources.getDimensionPixelSize(R.dimen.mtrl_slider_label_height);
     labelPadding = resources.getDimensionPixelSize(R.dimen.mtrl_slider_label_padding);
-    labelTopOffset = resources.getDimensionPixelSize(R.dimen.mtrl_slider_label_top_offset);
-    labelTextSize = resources.getDimension(R.dimen.mtrl_slider_label_text_size);
-    labelTextTopOffset = resources.getDimensionPixelSize(R.dimen.mtrl_slider_label_text_top_offset);
   }
 
   private void processAttributes(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -362,7 +341,8 @@ public class Slider extends View {
     thumbDrawable.setFillColor(thumbColor);
     haloColor = MaterialResources.getColorStateList(context, a, R.styleable.Slider_haloColor);
     tickColor = MaterialResources.getColorStateList(context, a, R.styleable.Slider_activeTickColor);
-    textColor = MaterialResources.getColorStateList(context, a, R.styleable.Slider_labelColor);
+
+    label = parseLabelDrawable(context, a);
 
     setThumbRadius(a.getDimensionPixelSize(R.styleable.Slider_thumbRadius, 0));
     haloRadius = a.getDimensionPixelSize(R.styleable.Slider_haloRadius, 0);
@@ -375,6 +355,20 @@ public class Slider extends View {
     validateValueFrom();
     validateValueTo();
     validateStepSize();
+  }
+
+  @NonNull
+  private TooltipDrawable parseLabelDrawable(@NonNull Context context, @NonNull TypedArray a) {
+    TooltipDrawable label =
+        TooltipDrawable.createFromAttributes(
+            context,
+            null,
+            0,
+            a.getResourceId(
+                R.styleable.Slider_labelStyle, R.style.Widget_MaterialComponents_Tooltip));
+    label.setRelativeToView(this);
+
+    return label;
   }
 
   private void validateValueFrom() {
@@ -685,7 +679,6 @@ public class Slider extends View {
 
       maybeDrawHalo(canvas, trackWidth, top);
       drawLabel(canvas, trackWidth, top);
-      drawLabelText(canvas, trackWidth, top);
     }
 
     drawThumb(canvas, trackWidth, top);
@@ -708,16 +701,10 @@ public class Slider extends View {
   }
 
   private void drawLabel(@NonNull Canvas canvas, int width, int top) {
-    int left = trackSidePadding + (int) (thumbPosition * width) - labelWidth / 2;
-    top -= labelTopOffset + labelPadding + thumbRadius;
-    label.setBounds(left, top, left + labelWidth, top + labelHeight);
+    int left = trackSidePadding + (int) (thumbPosition * width) - label.getIntrinsicWidth() / 2;
+    top -= labelPadding + thumbRadius;
+    label.setBounds(left, top - label.getIntrinsicHeight(), left + label.getIntrinsicWidth(), top);
     label.draw(canvas);
-  }
-
-  private void drawLabelText(@NonNull Canvas canvas, int width, int top) {
-    labelTextPaint.getTextBounds(labelText, 0, labelText.length(), labelTextBounds);
-    int left = trackSidePadding + (int) (thumbPosition * width) - labelTextBounds.width() / 2;
-    canvas.drawText(labelText, left, top - labelTextTopOffset - thumbRadius, labelTextPaint);
   }
 
   private void drawThumb(@NonNull Canvas canvas, int width, int top) {
@@ -785,9 +772,9 @@ public class Slider extends View {
     }
     float value = getValue();
     if (hasLabelFormatter()) {
-      labelText = formatter.getFormattedValue(value);
+      label.setText(formatter.getFormattedValue(value));
     } else {
-      labelText = String.format((int) value == value ? "%.0f" : "%.2f", value);
+      label.setText(String.format((int) value == value ? "%.0f" : "%.2f", value));
     }
 
     // Set if the thumb is pressed. This will cause the ripple to be drawn.
@@ -809,7 +796,9 @@ public class Slider extends View {
     inactiveTrackPaint.setColor(getColorForState(inactiveTrackColor));
     activeTrackPaint.setColor(getColorForState(activeTrackColor));
     ticksPaint.setColor(getColorForState(tickColor));
-    labelTextPaint.setColor(getColorForState(textColor));
+    if (label.isStateful()) {
+      label.setState(getDrawableState());
+    }
     if (thumbDrawable.isStateful()) {
       thumbDrawable.setState(getDrawableState());
     }

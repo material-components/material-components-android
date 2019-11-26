@@ -23,13 +23,12 @@
     <item name="haloColor">@color/material_slider_halo_color</item>
     <item name="activeTickColor">@color/material_slider_active_tick_marks_color</item>
     <item name="inactiveTickColor">@color/material_slider_inactive_tick_marks_color</item>
-    <item name="labelColor">?attr/colorOnPrimary</item>
+    <item name="labelStyle">@style/Widget.MaterialComponents.Tooltip</item>
     <item name="thumbRadius">@dimen/mtrl_slider_thumb_radius</item>
     <item name="haloRadius">@dimen/mtrl_slider_halo_radius</item>
     <item name="thumbElevation">@dimen/mtrl_slider_thumb_elevation</item>
   </style>
 
   <style name="Widget.MaterialComponents.Slider" parent="Base.Widget.MaterialComponents.Slider"/>
-
 
 </resources>

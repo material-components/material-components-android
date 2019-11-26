@@ -38,8 +38,8 @@
     <!-- The color of the slider's tick marks for the inactive portion of the track. Only used when
          the slider is in discrete mode. -->
     <attr name="inactiveTickColor" format="color" />
-    <!-- The color of the text displayed in the slider's bubble. -->
-    <attr name="labelColor" format="color" />
+    <!-- The style used for the label TooltipDrawable. -->
+    <attr name="labelStyle" format="reference" />
     <!-- Determines if Slider should increase its default height to include space for the label. -->
     <attr name="floatingLabel" format="boolean" />
     <!-- The radius of the thumb. -->
