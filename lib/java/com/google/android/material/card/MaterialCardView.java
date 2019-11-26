@@ -90,6 +90,7 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
 
   private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_CardView;
   private static final String LOG_TAG = "MaterialCardView";
+  private static final String ACCESSIBILITY_CLASS_NAME = "androidx.cardview.widget.CardView";
 
   @NonNull private final MaterialCardViewHelper cardViewHelper;
 
@@ -139,7 +140,7 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
   @Override
   public void onInitializeAccessibilityNodeInfo(@NonNull AccessibilityNodeInfo info) {
     super.onInitializeAccessibilityNodeInfo(info);
-    info.setClassName(CardView.class.getName());
+    info.setClassName(ACCESSIBILITY_CLASS_NAME);
     info.setCheckable(isCheckable());
     info.setClickable(isClickable());
     info.setChecked(isChecked());
@@ -148,7 +149,7 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
   @Override
   public void onInitializeAccessibilityEvent(@NonNull AccessibilityEvent accessibilityEvent) {
     super.onInitializeAccessibilityEvent(accessibilityEvent);
-    accessibilityEvent.setClassName(CardView.class.getName());
+    accessibilityEvent.setClassName(ACCESSIBILITY_CLASS_NAME);
     accessibilityEvent.setChecked(isChecked());
   }
 
