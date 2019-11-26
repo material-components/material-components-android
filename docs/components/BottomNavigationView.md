@@ -107,7 +107,7 @@ that contains:
       android:color="@color/colorPrimary" />
   <item
       android:state_checked="false"
-      android:color="@color/grey" />
+      android:color="@color/colorOnSurface" />
  </selector>
 ```
 
@@ -118,9 +118,7 @@ And you would use it like this on your `BottomNavigationView`:
     android:id="@+id/bottom_navigation"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
-    app:itemIconTint="@drawable/bottom_navigation_colors"
-    app:itemTextColor="@drawable/bottom_navigation_colors"
+    style="@style/Widget.MaterialComponents.BottomNavigationView"
     app:menu="@menu/bottom_navigation_menu" />
 ```
 
@@ -171,17 +169,15 @@ style="@style/Widget.Design.BottomNavigationView"
 style="@style/Widget.MaterialComponents.BottomNavigationView"
 ```
 
-Component Attribute                | Default Theme Attribute Value
----------------------------------- | -------------------------------
-`itemTextAppearanceActive`         | `textAppearanceCaption`
-`itemTextAppearanceInactive`       | `textAppearanceCaption`
-`android:background`               | `colorSurface`
-`itemIconTint` (checked, enabled)  | `colorPrimary`
-`itemIconTint` (enabled)           | `colorOnSurface` at 54% opacity
-`itemIconTint` (disabled)          | `colorOnSurface` at 21% opacity
-`itemTextColor` (checked, enabled) | `colorPrimary`
-`itemTextColor` (enabled)          | `colorOnSurface` at 54% opacity
-`itemTextColor` (disabled)         | `colorOnSurface` at 21% opacity
+Component Attribute           | Default Theme Attribute Value
+----------------------------- | -------------------------------
+`itemTextAppearanceActive`    | `textAppearanceCaption`
+`itemTextAppearanceInactive`  | `textAppearanceCaption`
+`android:background`          | `colorSurface`
+`itemIconTint` (checked)      | `colorPrimary`
+`itemIconTint` (not checked)  | `colorOnSurface` at 60% opacity
+`itemTextColor` (checked)     | `colorPrimary`
+`itemTextColor` (not checked) | `colorOnSurface` at 60% opacity
 
 ##### Colored Material Style
 
@@ -189,17 +185,15 @@ Component Attribute                | Default Theme Attribute Value
 style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
 ```
 
-Component Attribute                | Default Theme Attribute Value
----------------------------------- | -------------------------------
-`itemTextAppearanceActive`         | `textAppearanceCaption`
-`itemTextAppearanceInactive`       | `textAppearanceCaption`
-`android:background`               | `colorPrimary`
-`itemIconTint` (checked, enabled)  | `colorOnPrimary`
-`itemIconTint` (enabled)           | `colorOnPrimary` at 54% opacity
-`itemIconTint` (disabled)          | `colorOnPrimary` at 21% opacity
-`itemTextColor` (checked, enabled) | `colorOnPrimary`
-`itemTextColor` (enabled)          | `colorOnPrimary` at 54% opacity
-`itemTextColor` (disabled)         | `colorOnPrimary` at 21% opacity
+Component Attribute           | Default Theme Attribute Value
+----------------------------- | -------------------------------
+`itemTextAppearanceActive`    | `textAppearanceCaption`
+`itemTextAppearanceInactive`  | `textAppearanceCaption`
+`android:background`          | `colorPrimary`
+`itemIconTint` (checked)      | `colorOnPrimary`
+`itemIconTint` (not checked)  | `colorOnPrimary` at 60% opacity
+`itemTextColor` (checked)     | `colorOnPrimary`
+`itemTextColor` (not checked) | `colorOnPrimary` at 60% opacity
 
 ##### Legacy Style
 
