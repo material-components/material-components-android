@@ -154,6 +154,7 @@ public class Slider extends View {
       "The stepSize must be 0, or a factor of the valueFrom-valueTo range";
 
   private static final int HALO_ALPHA = 63;
+  private static final double THRESHOLD = .0001;
 
   private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_Slider;
 
@@ -389,7 +390,7 @@ public class Slider extends View {
     if (stepSize < 0.0f) {
       Log.e(TAG, EXCEPTION_ILLEGAL_STEP_SIZE);
       throw new IllegalArgumentException(EXCEPTION_ILLEGAL_STEP_SIZE);
-    } else if (stepSize > 0.0f && (valueTo - valueFrom) % stepSize != 0.0f) {
+    } else if (stepSize > 0.0f && ((valueTo - valueFrom) / stepSize) % 1 > THRESHOLD) {
       Log.e(TAG, EXCEPTION_ILLEGAL_STEP_SIZE);
       throw new IllegalArgumentException(EXCEPTION_ILLEGAL_STEP_SIZE);
     }
@@ -468,7 +469,7 @@ public class Slider extends View {
       Log.e(TAG, EXCEPTION_ILLEGAL_VALUE);
       return false;
     }
-    if (stepSize > 0.0f && ((valueFrom - value) % stepSize) != 0.0f) {
+    if (stepSize > 0.0f && ((valueFrom - value) / stepSize) % 1 > THRESHOLD) {
       Log.e(TAG, EXCEPTION_ILLEGAL_DISCRETE_VALUE);
       return false;
     }
