@@ -1596,7 +1596,7 @@ public class TextInputLayout extends LinearLayout {
   /**
    * Sets a content description for the error message.
    *
-   * <p> A content description should be set when the error message contains special characters that
+   * <p>A content description should be set when the error message contains special characters that
    * screen readers or other accessibility systems are not able to read, so that they announce the
    * content description instead.
    *
@@ -1865,25 +1865,12 @@ public class TextInputLayout extends LinearLayout {
       counterView.setContentDescription(null);
       counterOverflowed = false;
     } else {
-      // Make sure the counter view region is not live to prevent spamming the user with the counter
-      // overflow message on every key press.
-      if (ViewCompat.getAccessibilityLiveRegion(counterView)
-          == ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE) {
-        ViewCompat.setAccessibilityLiveRegion(
-            counterView, ViewCompat.ACCESSIBILITY_LIVE_REGION_NONE);
-      }
       counterOverflowed = length > counterMaxLength;
       updateCounterContentDescription(
           getContext(), counterView, length, counterMaxLength, counterOverflowed);
 
       if (wasCounterOverflowed != counterOverflowed) {
         updateCounterTextAppearanceAndColor();
-
-        // Announce when the character limit is exceeded.
-        if (counterOverflowed) {
-          ViewCompat.setAccessibilityLiveRegion(
-              counterView, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
-        }
       }
       counterView.setText(
           getContext().getString(R.string.character_counter_pattern, length, counterMaxLength));
@@ -3748,12 +3735,13 @@ public class TextInputLayout extends LinearLayout {
       CharSequence hintText = layout.getHint();
       CharSequence helperText = layout.getHelperText();
       CharSequence errorText = layout.getError();
-      CharSequence counterDesc = layout.getCounterOverflowDescription();
+      int maxCharLimit = layout.getCounterMaxLength();
+      CharSequence counterOverflowDesc = layout.getCounterOverflowDescription();
       boolean showingText = !TextUtils.isEmpty(inputText);
       boolean hasHint = !TextUtils.isEmpty(hintText);
       boolean hasHelperText = !TextUtils.isEmpty(helperText);
       boolean showingError = !TextUtils.isEmpty(errorText);
-      boolean contentInvalid = showingError || !TextUtils.isEmpty(counterDesc);
+      boolean contentInvalid = showingError || !TextUtils.isEmpty(counterOverflowDesc);
 
       String hint = hasHint ? hintText.toString() : "";
       hint += (hasHelperText && !TextUtils.isEmpty(hint)) ? ", " : "";
@@ -3766,19 +3754,23 @@ public class TextInputLayout extends LinearLayout {
       }
 
       if (!TextUtils.isEmpty(hint)) {
-       if (VERSION.SDK_INT >= 26) {
+        if (VERSION.SDK_INT >= 26) {
           info.setHintText(hint);
-       } else {
-         // Due to a TalkBack bug, setHintText has no effect in APIs < 26 so we append the hint to
-         // the text announcement. The resulting announcement is the same as in APIs >= 26.
-         String text = showingText ? (inputText + ", " + hint) : hint;
-         info.setText(text);
-       }
+        } else {
+          // Due to a TalkBack bug, setHintText has no effect in APIs < 26 so we append the hint to
+          // the text announcement. The resulting announcement is the same as in APIs >= 26.
+          String text = showingText ? (inputText + ", " + hint) : hint;
+          info.setText(text);
+        }
         info.setShowingHintText(!showingText);
       }
 
+      // Announce when the character limit is reached.
+      info.setMaxTextLength(
+          (inputText != null && inputText.length() == maxCharLimit) ? maxCharLimit : -1);
+
       if (contentInvalid) {
-        info.setError(showingError ? errorText : counterDesc);
+        info.setError(showingError ? errorText : counterOverflowDesc);
         info.setContentInvalid(true);
       }
     }
