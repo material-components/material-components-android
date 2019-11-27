@@ -3744,8 +3744,8 @@ public class TextInputLayout extends LinearLayout {
       boolean contentInvalid = showingError || !TextUtils.isEmpty(counterOverflowDesc);
 
       String hint = hasHint ? hintText.toString() : "";
-      hint += (hasHelperText && !TextUtils.isEmpty(hint)) ? ", " : "";
-      hint += hasHelperText ? helperText : "";
+      hint += ((showingError || hasHelperText) && !TextUtils.isEmpty(hint)) ? ", " : "";
+      hint += showingError ? errorText : (hasHelperText ? helperText : "");
 
       if (showingText) {
         info.setText(inputText);
