@@ -100,7 +100,7 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
    * Keep track of when {@link CardView} is done initializing because we don't want to use the
    * {@link Drawable} that it passes to {@link #setBackground(Drawable)}.
    */
-  private final boolean isParentCardViewDoneInitializing;
+  private boolean isParentCardViewDoneInitializing;
 
   private boolean checked = false;
   private boolean dragged = false;
