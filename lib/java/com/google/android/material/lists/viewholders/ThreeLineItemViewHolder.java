@@ -14,33 +14,38 @@
  * limitations under the License.
  */
 
-package com.google.android.material.lists;
+package com.google.android.material.lists.viewholders;
 
 import com.google.android.material.R;
+import com.google.android.material.lists.MaterialViewHolder;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView.ViewHolder;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-/** A simple single line list item. */
-public class SingleLineItemViewHolder extends ViewHolder {
+/** A simple three line list item. */
+public class ThreeLineItemViewHolder extends MaterialViewHolder {
 
-  public final ImageView icon;
-  public final TextView text;
+  public ImageView icon;
+  public TextView primaryText;
+  public TextView secondaryText;
+  public TextView tertiaryText;
 
-  public SingleLineItemViewHolder(@NonNull View view) {
+  public ThreeLineItemViewHolder(@NonNull View view) {
     super(view);
     this.icon = itemView.findViewById(R.id.mtrl_list_item_icon);
-    this.text = itemView.findViewById(R.id.mtrl_list_item_text);
+    this.primaryText = itemView.findViewById(R.id.mtrl_list_item_text);
+    this.secondaryText = itemView.findViewById(R.id.mtrl_list_item_secondary_text);
+    this.tertiaryText = itemView.findViewById(R.id.mtrl_list_item_tertiary_text);
   }
 
-  @NonNull
-  public static SingleLineItemViewHolder create(@NonNull ViewGroup parent) {
-    return new SingleLineItemViewHolder(LayoutInflater.from(parent.getContext())
-        .inflate(R.layout.material_list_item_single_line, parent, false));
+  public ThreeLineItemViewHolder(@NonNull ViewGroup parent) {
+    this(LayoutInflater.from(parent.getContext())
+            .inflate(R.layout.material_list_item_three_line, parent, false));
   }
 }

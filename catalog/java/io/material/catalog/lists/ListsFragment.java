@@ -16,12 +16,15 @@
 
 package io.material.catalog.lists;
 
-import io.material.catalog.R;
-
 import androidx.fragment.app.Fragment;
+
+import java.util.Arrays;
+import java.util.List;
+
 import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
 import dagger.multibindings.IntoSet;
+import io.material.catalog.R;
 import io.material.catalog.application.scope.ActivityScope;
 import io.material.catalog.application.scope.FragmentScope;
 import io.material.catalog.feature.Demo;
@@ -50,6 +53,16 @@ public class ListsFragment extends DemoLandingFragment {
       }
     };
   }
+  @Override
+  public List<Demo> getAdditionalDemos() {
+    return Arrays.asList(
+        new Demo(R.string.cat_lists_material_list_adapter_title) {
+          @Override
+          public Fragment createFragment() {
+            return new MaterialListAdapterDemoFragment();
+          }
+        });
+  }
 
   /** The Dagger module for {@link ListsFragment} dependencies. */
   @dagger.Module
@@ -63,7 +76,7 @@ public class ListsFragment extends DemoLandingFragment {
     @Provides
     @ActivityScope
     static FeatureDemo provideFeatureDemo() {
-      return new FeatureDemo(R.string.cat_lists_title, R.drawable.ic_lists_24px) {
+      return new FeatureDemo(R.string.cat_lists_title, R.drawable.ic_lists) {
         @Override
         public Fragment createFragment() {
           return new ListsFragment();

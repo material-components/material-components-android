@@ -25,13 +25,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-import com.google.android.material.lists.SingleLineItemViewHolder;
-import com.google.android.material.lists.ThreeLineItemViewHolder;
-import com.google.android.material.lists.TwoLineItemViewHolder;
+import com.google.android.material.lists.viewholders.SingleLineItemViewHolder;
+import com.google.android.material.lists.viewholders.ThreeLineItemViewHolder;
+import com.google.android.material.lists.viewholders.TwoLineItemViewHolder;
 import io.material.catalog.feature.DemoFragment;
 
 /** A fragment that displays the main List demos for the Catalog app. */
@@ -62,11 +63,11 @@ public class ListsMainDemoFragment extends DemoFragment {
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int position) {
       switch (getItemViewType(position)) {
         case ITEM_SINGLE_LINE:
-          return SingleLineItemViewHolder.create(parent);
+          return new SingleLineItemViewHolder(parent);
         case ITEM_TWO_LINE:
-          return TwoLineItemViewHolder.create(parent);
+          return new TwoLineItemViewHolder(parent);
         case ITEM_THREE_LINE:
-          return ThreeLineItemViewHolder.create(parent);
+          return new ThreeLineItemViewHolder(parent);
         default: // fall out
       }
       throw new RuntimeException();
@@ -99,15 +100,15 @@ public class ListsMainDemoFragment extends DemoFragment {
     }
 
     private void bind(TwoLineItemViewHolder vh) {
-      vh.text.setText(R.string.mtrl_list_item_two_line);
-      vh.secondary.setText(R.string.mtrl_list_item_secondary_text);
+      vh.primaryText.setText(R.string.mtrl_list_item_two_line);
+      vh.secondaryText.setText(R.string.mtrl_list_item_secondary_text);
       vh.icon.setImageResource(R.drawable.logo_avatar_anonymous_40dp);
     }
 
     private void bind(ThreeLineItemViewHolder vh) {
-      vh.text.setText(R.string.mtrl_list_item_three_line);
-      vh.secondary.setText(R.string.mtrl_list_item_secondary_text);
-      vh.tertiary.setText(R.string.mtrl_list_item_tertiary_text);
+      vh.primaryText.setText(R.string.mtrl_list_item_three_line);
+      vh.secondaryText.setText(R.string.mtrl_list_item_secondary_text);
+      vh.tertiaryText.setText(R.string.mtrl_list_item_tertiary_text);
       vh.icon.setImageResource(R.drawable.logo_avatar_anonymous_40dp);
     }
 

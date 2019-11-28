@@ -66,7 +66,7 @@ import io.material.catalog.transformation.TransformationFragment;
       TabsFragment.Module.class,
       TextFieldFragment.Module.class,
       TopAppBarFragment.Module.class,
-      TransformationFragment.Module.class,
+      TransformationFragment.Module.class
     })
 public abstract class TocModule {
   @FragmentScope

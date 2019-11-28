@@ -14,29 +14,34 @@
  * limitations under the License.
  */
 
-package com.google.android.material.lists;
+package com.google.android.material.lists.viewholders;
 
 import com.google.android.material.R;
+import com.google.android.material.lists.MaterialViewHolder;
 
 import androidx.annotation.NonNull;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /** A simple two line list item. */
-public class TwoLineItemViewHolder extends SingleLineItemViewHolder {
+public class TwoLineItemViewHolder extends MaterialViewHolder {
 
-  public final TextView secondary;
+  public ImageView icon;
+  public TextView primaryText;
+  public TextView secondaryText;
 
   public TwoLineItemViewHolder(@NonNull View view) {
     super(view);
-    this.secondary = itemView.findViewById(R.id.mtrl_list_item_secondary_text);
+    this.icon = itemView.findViewById(R.id.mtrl_list_item_icon);
+    this.primaryText = itemView.findViewById(R.id.mtrl_list_item_text);
+    this.secondaryText = itemView.findViewById(R.id.mtrl_list_item_secondary_text);
   }
-
-  @NonNull
-  public static TwoLineItemViewHolder create(@NonNull ViewGroup parent) {
-    return new TwoLineItemViewHolder(
+  public TwoLineItemViewHolder(@NonNull ViewGroup parent) {
+    this(
         LayoutInflater.from(parent.getContext())
             .inflate(R.layout.material_list_item_two_line, parent, false));
   }

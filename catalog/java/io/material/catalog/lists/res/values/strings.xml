@@ -21,6 +21,13 @@
   <string name="cat_lists_description">
     Lists are continuous, vertical indexes of text or images.
   </string>
+
+  <string name="cat_lists_material_list_adapter_title">Material List Adapter Demo</string>
+  <string name="cat_list_item_dropdown_hint">List Item</string>
+  <string name="cat_single_line_item_title">Single Line Item</string>
+  <string name="cat_two_line_item_title">Two Line Item</string>
+  <string name="cat_three_line_item_title">Three Line Item</string>
+
   <string name="mtrl_list_item_clicked">List item clicked</string>
   <string name="mtrl_list_item_one_line">One Line Item</string>
   <string name="mtrl_list_item_two_line">Two Line Item</string>
