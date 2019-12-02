@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
+import android.os.Build;
 import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,6 +35,7 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnAttachStateChangeListener;
+import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.WindowInsets;
 import android.view.inputmethod.InputMethodManager;
@@ -243,5 +245,40 @@ public class ViewUtils {
       viewParent = viewParent.getParent();
     }
     return absoluteElevation;
+  }
+
+  /**
+   * Backward-compatible {@link View#getOverlay()}. TODO(b/144937975): Remove and use the official
+   * version from androidx when it's available.
+   */
+  @Nullable
+  public static ViewOverlayImpl getOverlay(@NonNull View view) {
+    if (Build.VERSION.SDK_INT >= 18) {
+      return new ViewOverlayApi18(view);
+    }
+    return ViewOverlayApi14.createFrom(view);
+  }
+
+  /** Returns the content view that is the parent of the provided view. */
+  @Nullable
+  public static ViewGroup getContentView(@Nullable View view) {
+    View parent = view;
+    while (parent != null) {
+      if (parent.getId() == android.R.id.content && parent instanceof ViewGroup) {
+        return (ViewGroup) parent;
+      }
+      if (parent.getParent() instanceof ViewGroup) {
+        parent = (ViewGroup) parent.getParent();
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Returns the content view overlay that can be used to add drawables on top of all other views.
+   */
+  @Nullable
+  public static ViewOverlayImpl getContentViewOverlay(@NonNull View view) {
+    return getOverlay(getContentView(view));
   }
 }
