@@ -141,7 +141,7 @@ class MaterialCardViewHelper {
     setShapeAppearanceModel(shapeAppearanceModelBuilder.build());
 
     Resources resources = card.getResources();
-    // TODO: support custom sizing
+    // TODO(b/145298914): support custom sizing
     checkedIconMargin = resources.getDimensionPixelSize(R.dimen.mtrl_card_checked_icon_margin);
     checkedIconSize = resources.getDimensionPixelSize(R.dimen.mtrl_card_checked_icon_size);
 
