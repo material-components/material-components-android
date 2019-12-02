@@ -182,6 +182,7 @@ public class ChipDrawable extends MaterialShapeDrawable
   @Nullable private Drawable chipIcon;
   @Nullable private ColorStateList chipIconTint;
   private float chipIconSize;
+  private boolean hasChipIconTint;
 
   // Close icon
   private boolean closeIconVisible;
@@ -378,7 +379,10 @@ public class ChipDrawable extends MaterialShapeDrawable
       setChipIconVisible(a.getBoolean(R.styleable.Chip_chipIconEnabled, false));
     }
     setChipIcon(MaterialResources.getDrawable(context, a, R.styleable.Chip_chipIcon));
-    setChipIconTint(MaterialResources.getColorStateList(context, a, R.styleable.Chip_chipIconTint));
+    if (a.hasValue(R.styleable.Chip_chipIconTint)) {
+      setChipIconTint(
+          MaterialResources.getColorStateList(context, a, R.styleable.Chip_chipIconTint));
+    }
     setChipIconSize(a.getDimension(R.styleable.Chip_chipIconSize, 0f));
 
     setCloseIconVisible(a.getBoolean(R.styleable.Chip_closeIconVisible, false));
@@ -1265,25 +1269,26 @@ public class ChipDrawable extends MaterialShapeDrawable
 
   /** Note: This should not change the size of the drawable. */
   private void applyChildDrawable(@Nullable Drawable drawable) {
-    if (drawable != null) {
-      drawable.setCallback(this);
-      DrawableCompat.setLayoutDirection(drawable, DrawableCompat.getLayoutDirection(this));
-      drawable.setLevel(getLevel());
-      drawable.setVisible(isVisible(), false);
+    if (drawable == null) {
+      return;
+    }
+    drawable.setCallback(this);
+    DrawableCompat.setLayoutDirection(drawable, DrawableCompat.getLayoutDirection(this));
+    drawable.setLevel(getLevel());
+    drawable.setVisible(isVisible(), false);
 
-      if (drawable == closeIcon) {
-        if (drawable.isStateful()) {
-          drawable.setState(getCloseIconState());
-        }
-        DrawableCompat.setTintList(drawable, closeIconTint);
-      } else {
-        if (drawable.isStateful()) {
-          drawable.setState(getState());
-        }
-        if (drawable == chipIcon) {
-          DrawableCompat.setTintList(chipIcon, chipIconTint);
-        }
+    if (drawable == closeIcon) {
+      if (drawable.isStateful()) {
+        drawable.setState(getCloseIconState());
       }
+      DrawableCompat.setTintList(drawable, closeIconTint);
+      return;
+    }
+    if (drawable.isStateful()) {
+      drawable.setState(getState());
+    }
+    if (drawable == chipIcon && hasChipIconTint) {
+      DrawableCompat.setTintList(chipIcon, chipIconTint);
     }
   }
 
@@ -1684,9 +1689,9 @@ public class ChipDrawable extends MaterialShapeDrawable
    * @attr ref com.google.android.material.R.styleable#Chip_chipIconTint
    */
   public void setChipIconTint(@Nullable ColorStateList chipIconTint) {
+    hasChipIconTint = true;
     if (this.chipIconTint != chipIconTint) {
       this.chipIconTint = chipIconTint;
-
       if (showsChipIcon()) {
         DrawableCompat.setTintList(chipIcon, chipIconTint);
       }
