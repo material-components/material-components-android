@@ -337,6 +337,46 @@ public class TabLayoutTest {
     Espresso.unregisterIdlingResources(idler);
   }
 
+  /**
+   * Tests that the indicator animation still functions as intended when modifying the animator's
+   * update listener, instead of removing/recreating the animator itself.
+   */
+  @Test
+  public void testIndicatorAnimator_worksAfterReplacingUpdateListener() throws Throwable {
+    activityTestRule.runOnUiThread(
+        () -> activityTestRule.getActivity().setContentView(R.layout.design_tabs_items));
+    final TabLayout tabs = activityTestRule.getActivity().findViewById(R.id.tabs);
+
+    onView(withId(R.id.tabs)).perform(setTabMode(TabLayout.MODE_FIXED));
+
+    final TabLayoutScrollIdlingResource idler = new TabLayoutScrollIdlingResource(tabs);
+    IdlingRegistry.getInstance().register(idler);
+
+    // We need to click a tab once to set up the indicator animation (so that it's not still null).
+    onView(withId(R.id.tabs)).perform(selectTab(1));
+
+    // Select new tab. This action should modify the listener on the animator.
+    onView(withId(R.id.tabs)).perform(selectTab(2));
+
+    onView(withId(R.id.tabs))
+        .check(
+            (view, notFoundException) -> {
+              if (view == null) {
+                throw notFoundException;
+              }
+
+              TabLayout tabs1 = (TabLayout) view;
+
+              int tabTwoLeft = tabs1.getTabAt(/* index= */ 2).view.getLeft();
+              int tabTwoRight = tabs1.getTabAt(/* index= */ 2).view.getRight();
+
+              assertEquals(tabs1.slidingTabIndicator.indicatorLeft, tabTwoLeft);
+              assertEquals(tabs1.slidingTabIndicator.indicatorRight, tabTwoRight);
+            });
+
+    IdlingRegistry.getInstance().unregister(idler);
+  }
+
   static class TabLayoutScrollIdlingResource implements IdlingResource {
 
     private boolean isIdle = true;
