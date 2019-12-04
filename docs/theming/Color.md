@@ -71,7 +71,7 @@ Attribute Name           |Description                                           
 `colorOnBackground`      |A color that passes accessibility guidelines for text/iconography when drawn on top of the background color.|#000000
 `colorSurface`           |Surface colors affect surfaces of components, such as cards, sheets, and menus.                             |#FFFFFF
 `colorOnSurface`         |A color that passes accessibility guidelines for text/iconography when drawn on top of the surface color.   |#000000
-`colorError`             |Error color indicates errors states, for components such as text fields                                     |#C51162
+`colorError`             |Error color indicates errors states, for components such as text fields                                     |#B00020
 `colorOnError`           |A color that passes accessibility guidelines for text/iconography when drawn on top of the error color.     |#FFFFFF
 
 Note: We are reusing several existing attributes -- `colorPrimary`,
