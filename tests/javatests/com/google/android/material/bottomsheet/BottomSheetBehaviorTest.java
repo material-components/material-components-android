@@ -78,6 +78,7 @@ public class BottomSheetBehaviorTest {
       implements IdlingResource {
 
     private boolean isIdle;
+    private boolean idleWhileSettling;
 
     private IdlingResource.ResourceCallback resourceCallback;
 
@@ -117,9 +118,13 @@ public class BottomSheetBehaviorTest {
       resourceCallback = callback;
     }
 
+    public void setIdleWhileSettling(boolean idleWhileSettling) {
+      this.idleWhileSettling = idleWhileSettling;
+    }
+
     private boolean isIdleState(int state) {
       return state != BottomSheetBehavior.STATE_DRAGGING
-          && state != BottomSheetBehavior.STATE_SETTLING;
+          && (idleWhileSettling || state != BottomSheetBehavior.STATE_SETTLING);
     }
   }
 
