@@ -32,11 +32,8 @@
         android:id="@+id/collapsingtoolbarlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:collapsedTitleTextAppearance="?attr/textAppearanceHeadline6"
-        app:expandedTitleGravity="bottom"
-        app:expandedTitleMarginBottom="24dp"
-        app:expandedTitleMarginStart="16dp"
-        app:expandedTitleTextAppearance="?attr/textAppearanceHeadline5"
+      app:collapsedTitleTextAppearance="@style/TextAppearance.Test.CollapsingToolbar.Collapsed"
+      app:expandedTitleTextAppearance="@style/TextAppearance.Test.CollapsingToolbar.Expanded"
         app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
       <androidx.appcompat.widget.Toolbar
@@ -46,7 +43,7 @@
           android:layout_height="?attr/actionBarSize"
           android:elevation="0dp"
           app:layout_collapseMode="pin"
-          app:title="@string/cat_topappbar_collapsing_demo_toolbar_title"/>
+          app:title="Lorem Ipsum"/>
     </com.google.android.material.appbar.CollapsingToolbarLayout>
   </com.google.android.material.appbar.AppBarLayout>
 

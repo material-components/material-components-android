@@ -56,6 +56,7 @@ import android.widget.FrameLayout;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.internal.CollapsingTextHelper;
 import com.google.android.material.internal.DescendantOffsetUtils;
+import com.google.android.material.internal.MultilineCollapsingTextHelper;
 import com.google.android.material.internal.ThemeEnforcement;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -126,8 +127,10 @@ public class CollapsingToolbarLayout extends FrameLayout {
 
   private final Rect tmpRect = new Rect();
   @NonNull final CollapsingTextHelper collapsingTextHelper;
+  @NonNull final MultilineCollapsingTextHelper multilineCollapsingTextHelper;
   private boolean collapsingTitleEnabled;
   private boolean drawCollapsingTitle;
+  private boolean multiline;
 
   @Nullable private Drawable contentScrim;
   @Nullable Drawable statusBarScrim;
@@ -155,7 +158,9 @@ public class CollapsingToolbarLayout extends FrameLayout {
     super(context, attrs, defStyleAttr);
 
     collapsingTextHelper = new CollapsingTextHelper(this);
+    multilineCollapsingTextHelper = new MultilineCollapsingTextHelper(this);
     collapsingTextHelper.setTextSizeInterpolator(AnimationUtils.DECELERATE_INTERPOLATOR);
+    multilineCollapsingTextHelper.setTextSizeInterpolator(AnimationUtils.DECELERATE_INTERPOLATOR);
 
     TypedArray a =
         ThemeEnforcement.obtainStyledAttributes(
@@ -170,6 +175,14 @@ public class CollapsingToolbarLayout extends FrameLayout {
             R.styleable.CollapsingToolbarLayout_expandedTitleGravity,
             GravityCompat.START | Gravity.BOTTOM));
     collapsingTextHelper.setCollapsedTextGravity(
+        a.getInt(
+            R.styleable.CollapsingToolbarLayout_collapsedTitleGravity,
+            GravityCompat.START | Gravity.CENTER_VERTICAL));
+    multilineCollapsingTextHelper.setExpandedTextGravity(
+        a.getInt(
+            R.styleable.CollapsingToolbarLayout_expandedTitleGravity,
+            GravityCompat.START | Gravity.BOTTOM));
+    multilineCollapsingTextHelper.setCollapsedTextGravity(
         a.getInt(
             R.styleable.CollapsingToolbarLayout_collapsedTitleGravity,
             GravityCompat.START | Gravity.CENTER_VERTICAL));
@@ -200,34 +213,43 @@ public class CollapsingToolbarLayout extends FrameLayout {
 
     collapsingTitleEnabled = a.getBoolean(R.styleable.CollapsingToolbarLayout_titleEnabled, true);
     setTitle(a.getText(R.styleable.CollapsingToolbarLayout_title));
+    setMultiline(a.getBoolean(R.styleable.CollapsingToolbarLayout_multiline, false));
 
     // First load the default text appearances
     collapsingTextHelper.setExpandedTextAppearance(
         R.style.TextAppearance_Design_CollapsingToolbar_Expanded);
     collapsingTextHelper.setCollapsedTextAppearance(
         androidx.appcompat.R.style.TextAppearance_AppCompat_Widget_ActionBar_Title);
+    multilineCollapsingTextHelper.setExpandedTextAppearance(
+        R.style.TextAppearance_Design_CollapsingToolbar_Expanded);
+    multilineCollapsingTextHelper.setCollapsedTextAppearance(
+        androidx.appcompat.R.style.TextAppearance_AppCompat_Widget_ActionBar_Title);
 
     // Now overlay any custom text appearances
     if (a.hasValue(R.styleable.CollapsingToolbarLayout_expandedTitleTextAppearance)) {
       collapsingTextHelper.setExpandedTextAppearance(
           a.getResourceId(R.styleable.CollapsingToolbarLayout_expandedTitleTextAppearance, 0));
+      multilineCollapsingTextHelper.setExpandedTextAppearance(
+          a.getResourceId(R.styleable.CollapsingToolbarLayout_expandedTitleTextAppearance, 0));
     }
     if (a.hasValue(R.styleable.CollapsingToolbarLayout_collapsedTitleTextAppearance)) {
       collapsingTextHelper.setCollapsedTextAppearance(
           a.getResourceId(R.styleable.CollapsingToolbarLayout_collapsedTitleTextAppearance, 0));
+      multilineCollapsingTextHelper.setCollapsedTextAppearance(
+          a.getResourceId(R.styleable.CollapsingToolbarLayout_collapsedTitleTextAppearance, 0));
     }
 
     if (a.hasValue(R.styleable.CollapsingToolbarLayout_maxLines)) {
-      collapsingTextHelper.setMaxLines(a.getInt(R.styleable.CollapsingToolbarLayout_maxLines, 1));
+      multilineCollapsingTextHelper.setMaxLines(a.getInt(R.styleable.CollapsingToolbarLayout_maxLines, 1));
     }
 
     if (a.hasValue(R.styleable.CollapsingToolbarLayout_lineSpacingExtra)) {
-      collapsingTextHelper.setLineSpacingExtra(
+      multilineCollapsingTextHelper.setLineSpacingExtra(
           a.getDimensionPixelSize(R.styleable.CollapsingToolbarLayout_lineSpacingExtra, 0));
     }
 
     if (a.hasValue(R.styleable.CollapsingToolbarLayout_lineSpacingMultiplier)) {
-      collapsingTextHelper.setLineSpacingMultiplier(
+      multilineCollapsingTextHelper.setLineSpacingMultiplier(
           a.getDimensionPixelSize(R.styleable.CollapsingToolbarLayout_lineSpacingMultiplier, 1));
     }
 
@@ -323,7 +345,11 @@ public class CollapsingToolbarLayout extends FrameLayout {
 
     // Let the collapsing text helper draw its text
     if (collapsingTitleEnabled && drawCollapsingTitle) {
-      collapsingTextHelper.draw(canvas);
+      if (multiline) {
+        multilineCollapsingTextHelper.draw(canvas);
+      } else {
+        collapsingTextHelper.draw(canvas);
+      }
     }
 
     // Now draw the status bar scrim
@@ -490,6 +516,11 @@ public class CollapsingToolbarLayout extends FrameLayout {
             tmpRect.top + maxOffset + toolbar.getTitleMarginTop(),
             tmpRect.right + (isRtl ? toolbar.getTitleMarginStart() : toolbar.getTitleMarginEnd()),
             tmpRect.bottom + maxOffset - toolbar.getTitleMarginBottom());
+        multilineCollapsingTextHelper.setCollapsedBounds(
+            tmpRect.left + (isRtl ? toolbar.getTitleMarginEnd() : toolbar.getTitleMarginStart()),
+            tmpRect.top + maxOffset + toolbar.getTitleMarginTop(),
+            tmpRect.right + (isRtl ? toolbar.getTitleMarginStart() : toolbar.getTitleMarginEnd()),
+            tmpRect.bottom + maxOffset - toolbar.getTitleMarginBottom());
 
         // Update the expanded bounds
         collapsingTextHelper.setExpandedBounds(
@@ -497,8 +528,14 @@ public class CollapsingToolbarLayout extends FrameLayout {
             tmpRect.top + expandedMarginTop,
             right - left - (isRtl ? expandedMarginStart : expandedMarginEnd),
             bottom - top - expandedMarginBottom);
+        multilineCollapsingTextHelper.setExpandedBounds(
+            isRtl ? expandedMarginEnd : expandedMarginStart,
+            tmpRect.top + expandedMarginTop,
+            right - left - (isRtl ? expandedMarginStart : expandedMarginEnd),
+            bottom - top - expandedMarginBottom);
         // Now recalculate using the new bounds
         collapsingTextHelper.recalculate();
+        multilineCollapsingTextHelper.recalculate();
       }
     }
 
@@ -551,6 +588,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
    */
   public void setTitle(@Nullable CharSequence title) {
     collapsingTextHelper.setText(title);
+    multilineCollapsingTextHelper.setText(title);
     updateContentDescriptionFromTitle();
   }
 
@@ -768,6 +806,9 @@ public class CollapsingToolbarLayout extends FrameLayout {
     if (collapsingTextHelper != null) {
       changed |= collapsingTextHelper.setState(state);
     }
+    if (multilineCollapsingTextHelper != null) {
+      changed |= multilineCollapsingTextHelper.setState(state);
+    }
 
     if (changed) {
       invalidate();
@@ -836,6 +877,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
    */
   public void setCollapsedTitleTextAppearance(@StyleRes int resId) {
     collapsingTextHelper.setCollapsedTextAppearance(resId);
+    multilineCollapsingTextHelper.setCollapsedTextAppearance(resId);
   }
 
   /**
@@ -854,6 +896,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
    */
   public void setCollapsedTitleTextColor(@NonNull ColorStateList colors) {
     collapsingTextHelper.setCollapsedTextColor(colors);
+    multilineCollapsingTextHelper.setCollapsedTextColor(colors);
   }
 
   /**
@@ -864,6 +907,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
    */
   public void setCollapsedTitleGravity(int gravity) {
     collapsingTextHelper.setCollapsedTextGravity(gravity);
+    multilineCollapsingTextHelper.setCollapsedTextGravity(gravity);
   }
 
   /**
@@ -883,6 +927,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
    */
   public void setExpandedTitleTextAppearance(@StyleRes int resId) {
     collapsingTextHelper.setExpandedTextAppearance(resId);
+    multilineCollapsingTextHelper.setExpandedTextAppearance(resId);
   }
 
   /**
@@ -901,6 +946,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
    */
   public void setExpandedTitleTextColor(@NonNull ColorStateList colors) {
     collapsingTextHelper.setExpandedTextColor(colors);
+    multilineCollapsingTextHelper.setExpandedTextColor(colors);
   }
 
   /**
@@ -911,6 +957,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
    */
   public void setExpandedTitleGravity(int gravity) {
     collapsingTextHelper.setExpandedTextGravity(gravity);
+    multilineCollapsingTextHelper.setExpandedTextGravity(gravity);
   }
 
   /**
@@ -929,6 +976,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
    */
   public void setCollapsedTitleTypeface(@Nullable Typeface typeface) {
     collapsingTextHelper.setCollapsedTypeface(typeface);
+    multilineCollapsingTextHelper.setCollapsedTypeface(typeface);
   }
 
   /** Returns the typeface used for the collapsed title. */
@@ -944,6 +992,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
    */
   public void setExpandedTitleTypeface(@Nullable Typeface typeface) {
     collapsingTextHelper.setExpandedTypeface(typeface);
+    multilineCollapsingTextHelper.setExpandedTypeface(typeface);
   }
 
   /** Returns the typeface used for the expanded title. */
@@ -1058,45 +1107,62 @@ public class CollapsingToolbarLayout extends FrameLayout {
   }
 
   /**
+   * Enables support for multiple lines in the expanded state
+   */
+  public void setMultiline(boolean multiline) {
+    this.multiline = multiline;
+  }
+
+  /**
+   * Gets whether support for multiple lines in the expanded state is enabled
+   */
+  public boolean isMultiline() {
+    return multiline;
+  }
+
+  /**
    * Sets the maximum number of lines to display in the expanded state.
+   * Requires {@link .setMultiline}(true) to take effect.
    */
   public void setMaxLines(int maxLines) {
-    collapsingTextHelper.setMaxLines(maxLines);
+    multilineCollapsingTextHelper.setMaxLines(maxLines);
   }
 
   /**
    * Gets the maximum number of lines to display in the expanded state.
    */
   public int getMaxLines() {
-    return collapsingTextHelper.getMaxLines();
+    return multilineCollapsingTextHelper.getMaxLines();
   }
 
   /**
    * Set line spacing extra applied to each line in the expanded state.
+   * Requires {@link .setMultiline}(true) to take effect.
    */
   void setLineSpacingExtra(float lineSpacingExtra) {
-    collapsingTextHelper.setLineSpacingExtra(lineSpacingExtra);
+    multilineCollapsingTextHelper.setLineSpacingExtra(lineSpacingExtra);
   }
 
   /**
    * Gets the line spacing extra applied to each line in the expanded state.
    */
   float getLineSpacingExtra() {
-    return collapsingTextHelper.getLineSpacingExtra();
+    return multilineCollapsingTextHelper.getLineSpacingExtra();
   }
 
   /**
    * Sets the line spacing multiplier applied to each line in the expanded state.
+   * Requires {@link .setMultiline}(true) to take effect.
    */
   void setLineSpacingMultiplier(float lineSpacingMultiplier) {
-    collapsingTextHelper.setLineSpacingMultiplier(lineSpacingMultiplier);
+    multilineCollapsingTextHelper.setLineSpacingMultiplier(lineSpacingMultiplier);
   }
 
   /**
    * Gets the line spacing multiplier applied to each line in the expanded state.
    */
   float getLineSpacingMultiplier() {
-    return collapsingTextHelper.getLineSpacingMultiplier();
+    return multilineCollapsingTextHelper.getLineSpacingMultiplier();
   }
 
   /**
@@ -1341,7 +1407,9 @@ public class CollapsingToolbarLayout extends FrameLayout {
       // Update the collapsing text's fraction
       final int expandRange =
           getHeight() - ViewCompat.getMinimumHeight(CollapsingToolbarLayout.this) - insetTop;
-      collapsingTextHelper.setExpansionFraction(Math.abs(verticalOffset) / (float) expandRange);
+      float fraction = Math.abs(verticalOffset) / (float) expandRange;
+      collapsingTextHelper.setExpansionFraction(fraction);
+      multilineCollapsingTextHelper.setExpansionFraction(fraction);
     }
   }
 }

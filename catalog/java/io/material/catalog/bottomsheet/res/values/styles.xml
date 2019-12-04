@@ -23,4 +23,19 @@
     <item name="android:drawablePadding">8dp</item>
     <item name="android:background">?attr/selectableItemBackground</item>
   </style>
+
+  <style name="TextAppearance.Test.CollapsingToolbar.Expanded" parent="">
+    <item name="fontFamily">serif</item>
+    <item name="android:fontFamily">serif</item>
+    <item name="android:textColor">@android:color/white</item>
+    <item name="android:textSize">28sp</item>
+    <item name="android:textStyle">italic</item>
+  </style>
+
+  <style name="TextAppearance.Test.CollapsingToolbar.Collapsed" parent="">
+    <item name="fontFamily">monospace</item>
+    <item name="android:fontFamily">monospace</item>
+    <item name="android:textSize">20sp</item>
+    <item name="android:textColor">@android:color/holo_blue_bright</item>
+  </style>
 </resources>

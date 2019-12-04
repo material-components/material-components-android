@@ -39,6 +39,7 @@
         app:expandedTitleMarginBottom="24dp"
         app:expandedTitleMarginStart="16dp"
         app:expandedTitleTextAppearance="?attr/textAppearanceHeadline5"
+        app:multiline="true"
         app:maxLines="3"
         app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 

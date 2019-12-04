@@ -194,6 +194,8 @@
     <attr name="titleEnabled" format="boolean"/>
     <!-- The title to show when titleEnabled is set to true. -->
     <attr name="title"/>
+    <!-- Enables support for multiple lines in the expanded state -->
+    <attr name="multiline" format="boolean" />
     <!-- The maximum number of lines of text to show in the expanded state -->
     <attr name="maxLines" format="integer" />
     <!-- Extra spacing between lines of text. -->
