@@ -226,7 +226,8 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
 
     // Chip text should not extend to more than 1 line.
     if (!chipDrawable.shouldDrawText()) {
-      setSingleLine();
+      setLines(1);
+      setHorizontallyScrolling(true);
     }
     // Chip text should be vertically center aligned and start aligned.
     // Final horizontal text origin is set during the onDraw call via canvas translation.
