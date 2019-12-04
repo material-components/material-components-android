@@ -15,17 +15,31 @@
      limitations under the License.
 -->
 
+<!--
+    This layout file is used by the AlertDialog when displaying a single select list of items.
+
+    A left android:gravity will handle text alignemnt on API 16 and below while
+    android:textAlignemnt will be used on 17+. A start android:gravity is not added
+    to avoid text being aligned right while a drawable is aligned left in RTL configurations
+    on API 16 and below.
+
+    app:drawableLeftCompat (and app:drawableStartCompat) used instead of android:drawableLeft
+    (and android:drawableStart) because of bug on api 17 that aligned drawable both left and
+    right when in RTL configurations
+-->
 <CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@android:id/text1"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="?attr/listPreferredItemHeightSmall"
-    android:gravity="center_vertical"
+    android:gravity="left|center_vertical"
+    android:textAlignment="viewStart"
     android:paddingLeft="@dimen/abc_select_dialog_padding_start_material"
     android:paddingRight="?attr/dialogPreferredPadding"
     android:paddingStart="@dimen/abc_select_dialog_padding_start_material"
     android:paddingEnd="?attr/dialogPreferredPadding"
-    android:drawableLeft="?android:attr/listChoiceIndicatorSingle"
-    android:drawableStart="?android:attr/listChoiceIndicatorSingle"
+    app:drawableLeftCompat="?android:attr/listChoiceIndicatorSingle"
+    app:drawableStartCompat="?android:attr/listChoiceIndicatorSingle"
     android:drawablePadding="20dp"
     android:ellipsize="marquee" />
