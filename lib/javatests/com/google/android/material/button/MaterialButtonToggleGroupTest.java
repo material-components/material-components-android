@@ -35,12 +35,10 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
-/**
- * Tests for {@link com.google.android.material.button.MaterialButtonToggleGroup}.
- */
+/** Tests for {@link com.google.android.material.button.MaterialButtonToggleGroup}. */
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = 21)
-public class MaterialButtonToggleGroupUnitTest {
+public class MaterialButtonToggleGroupTest {
 
   private static final float CORNER_SIZE = 10f;
   private final Context context = ApplicationProvider.getApplicationContext();
@@ -55,11 +53,9 @@ public class MaterialButtonToggleGroupUnitTest {
   @Before
   public void createToggleGroupWithButtons() {
     toggleGroup = new MaterialButtonToggleGroup(context);
-    float cornerSize = CORNER_SIZE;
-
     for (int i = 0; i < 3; ++i) {
       MaterialButton child = new MaterialButton(context);
-      child.setShapeAppearanceModel(child.getShapeAppearanceModel().withCornerSize(cornerSize));
+      child.setShapeAppearanceModel(child.getShapeAppearanceModel().withCornerSize(CORNER_SIZE));
       toggleGroup.addView(child, i);
       getInstrumentation().waitForIdleSync();
     }
