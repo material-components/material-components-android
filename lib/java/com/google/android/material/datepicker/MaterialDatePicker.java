@@ -65,8 +65,15 @@ public final class MaterialDatePicker<S> extends DialogFragment {
   static final Object CANCEL_BUTTON_TAG = "CANCEL_BUTTON_TAG";
   static final Object TOGGLE_BUTTON_TAG = "TOGGLE_BUTTON_TAG";
 
-  /** Returns a value of UTC milliseconds representing today for the device's current timezone. */
+  /** Returns the UTC milliseconds representing the first moment of today in local timezone. */
   public static long todayInUtcMilliseconds() {
+    return UtcDates.getTodayCalendar().getTimeInMillis();
+  }
+
+  /**
+   * Returns the UTC milliseconds representing the first moment in current month in local timezone.
+   */
+  public static long thisMonthInUtcMilliseconds() {
     return Month.today().timeInMillis;
   }
 
