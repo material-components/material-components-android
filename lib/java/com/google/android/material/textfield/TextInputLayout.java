@@ -3771,7 +3771,6 @@ public class TextInputLayout extends LinearLayout {
 
       if (contentInvalid) {
         info.setError(showingError ? errorText : counterOverflowDesc);
-        info.setContentInvalid(true);
       }
     }
   }
