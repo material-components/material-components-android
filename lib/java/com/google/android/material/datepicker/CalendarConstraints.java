@@ -294,7 +294,7 @@ public final class CalendarConstraints implements Parcelable {
     @NonNull
     public CalendarConstraints build() {
       if (openAt == null) {
-        long today = MaterialDatePicker.todayInUtcMilliseconds();
+        long today = MaterialDatePicker.thisMonthInUtcMilliseconds();
         openAt = start <= today && today <= end ? today : start;
       }
       Bundle deepCopyBundle = new Bundle();

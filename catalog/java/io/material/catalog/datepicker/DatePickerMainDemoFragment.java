@@ -56,7 +56,7 @@ public class DatePickerMainDemoFragment extends DemoFragment {
   }
 
   private void initSettings() {
-    today = MaterialDatePicker.todayInUtcMilliseconds();
+    today = MaterialDatePicker.thisMonthInUtcMilliseconds();
     Calendar calendar = getClearedUtc();
     calendar.setTimeInMillis(today);
     calendar.roll(Calendar.MONTH, 1);
