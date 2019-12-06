@@ -45,13 +45,13 @@ public class MaterialButtonToggleGroupTest {
 
   private MaterialButtonToggleGroup toggleGroup;
 
-  @Before
-  public void themeApplicationContext() {
+  private void themeApplicationContext() {
     context.setTheme(R.style.Theme_MaterialComponents_Light_NoActionBar_Bridge);
   }
 
   @Before
   public void createToggleGroupWithButtons() {
+    themeApplicationContext();
     toggleGroup = new MaterialButtonToggleGroup(context);
     for (int i = 0; i < 3; ++i) {
       MaterialButton child = new MaterialButton(context);
