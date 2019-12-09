@@ -24,8 +24,6 @@
       android:layout_height="wrap_content"
       android:paddingLeft="16dp"
       android:paddingRight="16dp"
-      android:clipChildren="false"
-      android:clipToPadding="false"
       android:orientation="vertical">
 
     <TextView
@@ -37,8 +35,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clipChildren="false"
-        android:clipToPadding="false"
         android:gravity="center_vertical">
 
       <com.google.android.material.switchmaterial.SwitchMaterial
@@ -73,9 +69,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:clipChildren="false"
-        android:clipToPadding="false">
+        android:gravity="center_vertical">
 
       <com.google.android.material.switchmaterial.SwitchMaterial
           android:id="@+id/switch_button_2"
@@ -109,9 +103,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:clipChildren="false"
-        android:clipToPadding="false">
+        android:gravity="center_vertical">
 
       <com.google.android.material.switchmaterial.SwitchMaterial
           android:id="@+id/switch_button_3"

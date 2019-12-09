@@ -29,6 +29,8 @@ import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.Region.Op;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build.VERSION;
@@ -49,7 +51,9 @@ import android.view.InflateException;
 import android.view.MotionEvent;
 import android.view.View;
 import com.google.android.material.drawable.DrawableUtils;
+import com.google.android.material.internal.DescendantOffsetUtils;
 import com.google.android.material.internal.ThemeEnforcement;
+import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.CornerFamily;
 import com.google.android.material.shape.MaterialShapeDrawable;
@@ -279,6 +283,9 @@ public class Slider extends View {
         ((RippleDrawable) background).setColor(haloColor);
         DrawableUtils.setRippleDrawableRadius(background, haloRadius);
       }
+      // Because the RippleDrawable can draw outside the bounds of the view, we can set the layer
+      // type to hardware so we can use PorterDuffXfermode when drawing.
+      setLayerType(LAYER_TYPE_HARDWARE, null);
     }
 
     super.setOnFocusChangeListener(
@@ -300,8 +307,11 @@ public class Slider extends View {
     super.setEnabled(enabled);
     // When we're disabled, set the layer type to hardware so we can clear the track out from behind
     // the thumb. When enabled set the layer type to none so that the halo can be drawn outside the
-    // bounds of the slider.
-    setLayerType(enabled ? LAYER_TYPE_NONE : LAYER_TYPE_HARDWARE, null);
+    // bounds of the slider. After Lollipop we use Ripple for the halo, and an Overlay for the
+    // marker so we don't need to worry about drawing outside the bounds.
+    if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
+      setLayerType(enabled ? LAYER_TYPE_NONE : LAYER_TYPE_HARDWARE, null);
+    }
   }
 
   @Override
@@ -360,16 +370,25 @@ public class Slider extends View {
 
   @NonNull
   private TooltipDrawable parseLabelDrawable(@NonNull Context context, @NonNull TypedArray a) {
-    TooltipDrawable label =
-        TooltipDrawable.createFromAttributes(
-            context,
-            null,
-            0,
-            a.getResourceId(
-                R.styleable.Slider_labelStyle, R.style.Widget_MaterialComponents_Tooltip));
-    label.setRelativeToView(this);
+    return TooltipDrawable.createFromAttributes(
+        context,
+        null,
+        0,
+        a.getResourceId(R.styleable.Slider_labelStyle, R.style.Widget_MaterialComponents_Tooltip));
+  }
 
-    return label;
+  @Override
+  protected void onAttachedToWindow() {
+    super.onAttachedToWindow();
+    // The label is attached on the Overlay relative to the content.
+    label.setRelativeToView(ViewUtils.getContentView(this));
+  }
+
+  @Override
+  protected void onDetachedFromWindow() {
+    super.onDetachedFromWindow();
+    ViewUtils.getContentViewOverlay(this).remove(label);
+    label.detachView(ViewUtils.getContentView(this));
   }
 
   private void validateValueFrom() {
@@ -679,7 +698,6 @@ public class Slider extends View {
       }
 
       maybeDrawHalo(canvas, trackWidth, top);
-      drawLabel(canvas, trackWidth, top);
     }
 
     drawThumb(canvas, trackWidth, top);
@@ -701,13 +719,6 @@ public class Slider extends View {
     canvas.drawPoints(ticksCoordinates, ticksPaint);
   }
 
-  private void drawLabel(@NonNull Canvas canvas, int width, int top) {
-    int left = trackSidePadding + (int) (thumbPosition * width) - label.getIntrinsicWidth() / 2;
-    top -= labelPadding + thumbRadius;
-    label.setBounds(left, top - label.getIntrinsicHeight(), left + label.getIntrinsicWidth(), top);
-    label.draw(canvas);
-  }
-
   private void drawThumb(@NonNull Canvas canvas, int width, int top) {
     // Clear out the track behind the thumb if we're in a disable state since the thumb is
     // transparent.
@@ -725,7 +736,17 @@ public class Slider extends View {
   private void maybeDrawHalo(@NonNull Canvas canvas, int width, int top) {
     // Only draw the halo for devices which don't support the ripple.
     if (forceDrawCompatShadow || VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
-      canvas.drawCircle(trackSidePadding + thumbPosition * width, top, haloRadius, haloPaint);
+      int centerX = (int) (trackSidePadding + thumbPosition * width);
+      if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
+        // In this case we can clip the rect to allow drawing outside the bounds.
+        canvas.clipRect(
+            centerX - haloRadius,
+            top - haloRadius,
+            centerX + haloRadius,
+            top + haloRadius,
+            Op.UNION);
+      }
+      canvas.drawCircle(centerX, top, haloRadius, haloPaint);
     }
   }
 
@@ -747,6 +768,8 @@ public class Slider extends View {
         thumbPosition = position;
         snapThumbPosition();
         updateHaloHotSpot();
+        ensureLabel();
+        updateLabelPosition();
         invalidate();
         if (hasOnChangeListener()) {
           listener.onValueChange(this, getValue());
@@ -756,6 +779,8 @@ public class Slider extends View {
         thumbPosition = position;
         snapThumbPosition();
         updateHaloHotSpot();
+        ensureLabel();
+        updateLabelPosition();
         invalidate();
         if (hasOnChangeListener()) {
           listener.onValueChange(this, getValue());
@@ -766,16 +791,11 @@ public class Slider extends View {
         thumbIsPressed = false;
         thumbPosition = position;
         snapThumbPosition();
+        ViewUtils.getContentViewOverlay(this).remove(label);
         invalidate();
         break;
       default:
         // Nothing to do in this case.
-    }
-    float value = getValue();
-    if (hasLabelFormatter()) {
-      label.setText(formatter.getFormattedValue(value));
-    } else {
-      label.setText(String.format((int) value == value ? "%.0f" : "%.2f", value));
     }
 
     // Set if the thumb is pressed. This will cause the ripple to be drawn.
@@ -783,11 +803,35 @@ public class Slider extends View {
     return true;
   }
 
+  private void ensureLabel() {
+    float value = getValue();
+    if (hasLabelFormatter()) {
+      label.setText(formatter.getFormattedValue(value));
+    } else {
+      label.setText(String.format((int) value == value ? "%.0f" : "%.2f", value));
+    }
+  }
+
   private void snapThumbPosition() {
     if (stepSize > 0.0f) {
       int intervalsCovered = Math.round(thumbPosition * (ticksCoordinates.length / 2 - 1));
       thumbPosition = (float) intervalsCovered / (ticksCoordinates.length / 2 - 1);
     }
+  }
+
+  private void updateLabelPosition() {
+    int left =
+        trackSidePadding + (int) (thumbPosition * trackWidth) - label.getIntrinsicWidth() / 2;
+    int top = calculateTop() - (labelPadding + thumbRadius);
+    label.setBounds(left, top - label.getIntrinsicHeight(), left + label.getIntrinsicWidth(), top);
+
+    // Calculate the difference between the bounds of this view and the bounds of the root view to
+    // correctly position this view in the overlay layer.
+    Rect rect = new Rect(label.getBounds());
+    DescendantOffsetUtils.offsetDescendantRect(ViewUtils.getContentView(this), this, rect);
+    label.setBounds(rect);
+
+    ViewUtils.getContentViewOverlay(this).add(label);
   }
 
   @Override

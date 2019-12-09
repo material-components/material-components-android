@@ -24,8 +24,6 @@
       android:layout_height="wrap_content"
       android:paddingLeft="16dp"
       android:paddingRight="16dp"
-      android:clipChildren="false"
-      android:clipToPadding="false"
       android:orientation="vertical">
 
     <TextView
@@ -37,9 +35,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:clipChildren="false"
-        android:clipToPadding="false">
+        android:gravity="center_vertical">
 
       <androidx.appcompat.widget.SwitchCompat
           android:id="@+id/switch_button_1"
@@ -69,9 +65,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:clipChildren="false"
-        android:clipToPadding="false">
+        android:gravity="center_vertical">
 
       <androidx.appcompat.widget.SwitchCompat
           android:id="@+id/switch_button_2"
@@ -101,9 +95,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:clipChildren="false"
-        android:clipToPadding="false">
+        android:gravity="center_vertical">
 
       <androidx.appcompat.widget.SwitchCompat
           android:id="@+id/switch_button_3"
@@ -133,9 +125,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:clipChildren="false"
-        android:clipToPadding="false">
+        android:gravity="center_vertical">
 
       <androidx.appcompat.widget.SwitchCompat
           android:id="@+id/switch_button_4"
@@ -165,9 +155,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:clipChildren="false"
-        android:clipToPadding="false">
+        android:gravity="center_vertical">
 
       <androidx.appcompat.widget.SwitchCompat
           android:id="@+id/switch_button_5"

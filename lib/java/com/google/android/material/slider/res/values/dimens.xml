@@ -31,8 +31,6 @@
   <dimen name="mtrl_slider_halo_radius">24dp</dimen>
 
   <dimen name="mtrl_slider_label_square_side">26dp</dimen>
-  <dimen name="mtrl_slider_label_width">26dp</dimen>
-  <dimen name="mtrl_slider_label_height">26dp</dimen>
   <dimen name="mtrl_slider_label_radius">13dp</dimen>
   <dimen name="mtrl_slider_label_padding">4dp</dimen>
 </resources>

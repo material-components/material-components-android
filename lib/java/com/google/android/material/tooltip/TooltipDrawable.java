@@ -74,7 +74,7 @@ public class TooltipDrawable extends MaterialShapeDrawable implements TextDrawab
       new TextDrawableHelper(/* delegate= */ this);
 
   @NonNull
-  private final OnLayoutChangeListener attachedViewLayoutChaneListener =
+  private final OnLayoutChangeListener attachedViewLayoutChangeListener =
       new OnLayoutChangeListener() {
         @Override
         public void onLayoutChange(
@@ -331,11 +331,22 @@ public class TooltipDrawable extends MaterialShapeDrawable implements TextDrawab
   /**
    * Should be called to allow this drawable to calculate its position within the current display
    * frame. This allows it to apply to specified window padding.
+   *
+   * @see #detachView(View)
    */
   public void setRelativeToView(@NonNull View view) {
     updateLocationOnScreen(view);
     // Listen for changes that indicate the view has moved so the location can be updated
-    view.addOnLayoutChangeListener(attachedViewLayoutChaneListener);
+    view.addOnLayoutChangeListener(attachedViewLayoutChangeListener);
+  }
+
+  /**
+   * Should be called when the view is detached from the screen.
+   *
+   * @see #setRelativeToView(View)
+   */
+  public void detachView(@NonNull View view) {
+    view.removeOnLayoutChangeListener(attachedViewLayoutChangeListener);
   }
 
   @Override
