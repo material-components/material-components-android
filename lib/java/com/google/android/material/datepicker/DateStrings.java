@@ -111,7 +111,7 @@ class DateStrings {
    */
   static String getDateString(long timeInMillis, @Nullable SimpleDateFormat userDefinedDateFormat) {
     Calendar currentCalendar = UtcDates.getTodayCalendar();
-    Calendar calendarDate = UtcDates.getCalendar();
+    Calendar calendarDate = UtcDates.getUtcCalendar();
     calendarDate.setTimeInMillis(timeInMillis);
 
     if (userDefinedDateFormat != null) {
@@ -154,9 +154,9 @@ class DateStrings {
     }
 
     Calendar currentCalendar = UtcDates.getTodayCalendar();
-    Calendar startCalendar = UtcDates.getCalendar();
+    Calendar startCalendar = UtcDates.getUtcCalendar();
     startCalendar.setTimeInMillis(start);
-    Calendar endCalendar = UtcDates.getCalendar();
+    Calendar endCalendar = UtcDates.getUtcCalendar();
     endCalendar.setTimeInMillis(end);
 
     if (userDefinedDateFormat != null) {

@@ -76,10 +76,10 @@ public class SingleDateSelectorTest {
 
   @Test
   public void setSelectionDirectly() {
-    Calendar setTo = UtcDates.getCalendar();
+    Calendar setTo = UtcDates.getUtcCalendar();
     setTo.set(2004, Calendar.MARCH, 5);
     singleDateSelector.setSelection(setTo.getTimeInMillis());
-    Calendar resultCalendar = UtcDates.getCalendar();
+    Calendar resultCalendar = UtcDates.getUtcCalendar();
 
     resultCalendar.setTimeInMillis(singleDateSelector.getSelection());
 

@@ -35,7 +35,7 @@ import java.util.Calendar;
 
 final class MaterialCalendarGridView extends GridView {
 
-  private final Calendar dayCompute = UtcDates.getCalendar();
+  private final Calendar dayCompute = UtcDates.getUtcCalendar();
 
   public MaterialCalendarGridView(Context context) {
     this(context, null);
