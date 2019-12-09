@@ -18,6 +18,8 @@
 
   <dimen name="design_textinput_caption_translate_y">5dp</dimen>
 
+  <dimen name="mtrl_textinput_counter_margin_start">16dp</dimen>
+
   <dimen name="mtrl_textinput_outline_box_expanded_padding">16dp</dimen>
 
   <dimen name="mtrl_textinput_box_corner_radius_small">0dp</dimen>

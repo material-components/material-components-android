@@ -1729,6 +1729,9 @@ public class TextInputLayout extends LinearLayout {
         }
         counterView.setMaxLines(1);
         indicatorViewController.addIndicator(counterView, COUNTER_INDEX);
+        MarginLayoutParamsCompat.setMarginStart(
+            (MarginLayoutParams) counterView.getLayoutParams(),
+            getResources().getDimensionPixelOffset(R.dimen.mtrl_textinput_counter_margin_start));
         updateCounterTextAppearanceAndColor();
         updateCounter();
       } else {
