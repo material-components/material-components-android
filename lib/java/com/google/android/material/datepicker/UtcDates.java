@@ -21,6 +21,7 @@ import android.annotation.TargetApi;
 import android.content.res.Resources;
 import android.os.Build.VERSION_CODES;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -37,12 +38,12 @@ class UtcDates {
 
   private UtcDates() {}
 
-  static TimeZone getTimeZone() {
+  private static TimeZone getTimeZone() {
     return TimeZone.getTimeZone(UTC);
   }
 
   @TargetApi(VERSION_CODES.N)
-  private static android.icu.util.TimeZone getAndroidTimeZone() {
+  private static android.icu.util.TimeZone getUtcAndroidTimeZone() {
     return android.icu.util.TimeZone.getTimeZone(UTC);
   }
 
@@ -50,19 +51,51 @@ class UtcDates {
     return getDayCopy(Calendar.getInstance());
   }
 
-  static Calendar getCalendar() {
+  /**
+   * Returns an empty Calendar in UTC time zone.
+   *
+   * @return An empty Calendar in UTC time zone.
+   * @see {@link #getUtcCalendarOf(Calendar)}
+   * @see Calendar#clear()
+   */
+  static Calendar getUtcCalendar() {
+    return getUtcCalendarOf(null);
+  }
+
+  /**
+   * Returns a Calendar object in UTC time zone representing the moment in input Calendar object. An
+   * empty Calendar object in UTC will be return if input is null.
+   *
+   * @param rawCalendar the Calendar object representing the moment to process.
+   * @return A Calendar object in UTC time zone.
+   * @see @see Calendar#clear()
+   */
+  static Calendar getUtcCalendarOf(@Nullable Calendar rawCalendar) {
     Calendar utc = Calendar.getInstance(getTimeZone());
-    utc.clear();
+    if (rawCalendar == null) {
+      utc.clear();
+    } else {
+      utc.setTimeInMillis(rawCalendar.getTimeInMillis());
+    }
     return utc;
   }
 
+  /**
+   * Returns a Calendar object in UTC time zone representing the start of day in UTC represented in
+   * the input Calendar object, i.e., the time (fields smaller than a day) is stripped based on the
+   * UTC time zone.
+   *
+   * @param rawCalendar the Calendar object representing the moment to process.
+   * @return A Calendar object representing the start of day in UTC time zone.
+   */
   static Calendar getDayCopy(Calendar rawCalendar) {
-    Calendar safe = getCalendar();
-    safe.set(
-        rawCalendar.get(Calendar.YEAR),
-        rawCalendar.get(Calendar.MONTH),
-        rawCalendar.get(Calendar.DAY_OF_MONTH));
-    return safe;
+    Calendar rawCalendarInUtc = getUtcCalendarOf(rawCalendar);
+    Calendar utcCalendar = getUtcCalendar();
+    utcCalendar.set(
+        rawCalendarInUtc.get(Calendar.YEAR),
+        rawCalendarInUtc.get(Calendar.MONTH),
+        rawCalendarInUtc.get(Calendar.DAY_OF_MONTH));
+    return utcCalendar;
   }
 
   /**
@@ -73,7 +106,7 @@ class UtcDates {
    * @return A canonical long representing the time as UTC milliseconds for the represented day.
    */
   static long canonicalYearMonthDay(long rawDate) {
-    Calendar rawCalendar = getCalendar();
+    Calendar rawCalendar = getUtcCalendar();
     rawCalendar.setTimeInMillis(rawDate);
     Calendar sanitizedStartItem = getDayCopy(rawCalendar);
     return sanitizedStartItem.getTimeInMillis();
@@ -83,7 +116,7 @@ class UtcDates {
   private static android.icu.text.DateFormat getAndroidFormat(String pattern, Locale locale) {
     android.icu.text.DateFormat format =
         android.icu.text.DateFormat.getInstanceForSkeleton(pattern, locale);
-    format.setTimeZone(getAndroidTimeZone());
+    format.setTimeZone(getUtcAndroidTimeZone());
     return format;
   }
 

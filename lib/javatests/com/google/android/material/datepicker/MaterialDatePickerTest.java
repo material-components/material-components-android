@@ -20,6 +20,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import java.time.Duration;
 import java.util.Calendar;
+import java.util.TimeZone;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -33,9 +34,9 @@ public class MaterialDatePickerTest {
   @Test
   public void testTodayInUtcMilliseconds() {
     long todayUtcMS = MaterialDatePicker.todayInUtcMilliseconds();
-    Calendar outputUtcTodayInCalendar = Calendar.getInstance(UtcDates.getTimeZone());
+    Calendar outputUtcTodayInCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
     outputUtcTodayInCalendar.setTimeInMillis(todayUtcMS);
-    Calendar expectedUtcTodayInCalendar = Calendar.getInstance(UtcDates.getTimeZone());
+    Calendar expectedUtcTodayInCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 
     // Assert fields finer than a day are stripped.
     assertThat(todayUtcMS % ONE_DAY_MILLIS).isEqualTo(0);
@@ -51,9 +52,9 @@ public class MaterialDatePickerTest {
   @Test
   public void testThisMonthInUtcMilliseconds() {
     long thisMonthUtcMS = MaterialDatePicker.thisMonthInUtcMilliseconds();
-    Calendar outputUtcThisMonthInCalendar = Calendar.getInstance(UtcDates.getTimeZone());
+    Calendar outputUtcThisMonthInCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
     outputUtcThisMonthInCalendar.setTimeInMillis(thisMonthUtcMS);
-    Calendar expectedUtcThisMonthInCalendar = Calendar.getInstance(UtcDates.getTimeZone());
+    Calendar expectedUtcThisMonthInCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 
     // Assert fields finer than a day are stripped.
     assertThat(thisMonthUtcMS % ONE_DAY_MILLIS).isEqualTo(0);

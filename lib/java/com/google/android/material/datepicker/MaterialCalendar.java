@@ -230,8 +230,8 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
   private ItemDecoration createItemDecoration() {
     return new ItemDecoration() {
 
-      private final Calendar startItem = UtcDates.getCalendar();
-      private final Calendar endItem = UtcDates.getCalendar();
+      private final Calendar startItem = UtcDates.getUtcCalendar();
+      private final Calendar endItem = UtcDates.getUtcCalendar();
 
       @Override
       public void onDraw(

@@ -161,15 +161,15 @@ public class RangeDateSelectorTest {
 
   @Test
   public void setSelectionDirectly() {
-    Calendar setToStart = UtcDates.getCalendar();
+    Calendar setToStart = UtcDates.getUtcCalendar();
     setToStart.set(2004, Calendar.MARCH, 5);
-    Calendar setToEnd = UtcDates.getCalendar();
+    Calendar setToEnd = UtcDates.getUtcCalendar();
     setToEnd.set(2005, Calendar.FEBRUARY, 1);
 
     rangeDateSelector.setSelection(
         new Pair<>(setToStart.getTimeInMillis(), setToEnd.getTimeInMillis()));
-    Calendar resultCalendarStart = UtcDates.getCalendar();
-    Calendar resultCalendarEnd = UtcDates.getCalendar();
+    Calendar resultCalendarStart = UtcDates.getUtcCalendar();
+    Calendar resultCalendarEnd = UtcDates.getUtcCalendar();
     resultCalendarStart.setTimeInMillis(rangeDateSelector.getSelection().first);
     resultCalendarEnd.setTimeInMillis(rangeDateSelector.getSelection().second);
 
@@ -195,9 +195,9 @@ public class RangeDateSelectorTest {
 
   @Test
   public void invalidSetThrowsException() {
-    Calendar setToStart = UtcDates.getCalendar();
+    Calendar setToStart = UtcDates.getUtcCalendar();
     setToStart.set(2005, Calendar.FEBRUARY, 1);
-    Calendar setToEnd = UtcDates.getCalendar();
+    Calendar setToEnd = UtcDates.getUtcCalendar();
     ;
     setToEnd.set(2004, Calendar.MARCH, 5);
 

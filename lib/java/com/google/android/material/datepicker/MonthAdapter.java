@@ -38,7 +38,7 @@ class MonthAdapter extends BaseAdapter {
   /**
    * The maximum number of weeks possible in any month. 6 for {@link java.util.GregorianCalendar}.
    */
-  static final int MAXIMUM_WEEKS = UtcDates.getCalendar().getMaximum(Calendar.WEEK_OF_MONTH);
+  static final int MAXIMUM_WEEKS = UtcDates.getUtcCalendar().getMaximum(Calendar.WEEK_OF_MONTH);
 
   final Month month;
   /**

@@ -71,7 +71,7 @@ final class Month implements Comparable<Month>, Parcelable {
    */
   @NonNull
   static Month create(long timeInMillis) {
-    Calendar calendar = UtcDates.getCalendar();
+    Calendar calendar = UtcDates.getUtcCalendar();
     calendar.setTimeInMillis(timeInMillis);
     return new Month(calendar);
   }
@@ -86,7 +86,7 @@ final class Month implements Comparable<Month>, Parcelable {
    */
   @NonNull
   static Month create(int year, @Months int month) {
-    Calendar calendar = UtcDates.getCalendar();
+    Calendar calendar = UtcDates.getUtcCalendar();
     calendar.set(Calendar.YEAR, year);
     calendar.set(Calendar.MONTH, month);
     return new Month(calendar);
