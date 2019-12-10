@@ -48,6 +48,8 @@
     <attr name="thumbElevation" format="dimension" />
     <!-- The radius of the halo. -->
     <attr name="haloRadius" format="dimension" />
+    <!-- The height of the track. -->
+    <attr name="trackHeight" format="dimension" />
   </declare-styleable>
 
   <!-- Style to use for Slider in this theme. -->

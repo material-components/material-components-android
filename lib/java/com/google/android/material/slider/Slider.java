@@ -26,6 +26,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Paint.Cap;
 import android.graphics.Paint.Style;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
@@ -45,6 +46,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.InflateException;
@@ -166,14 +168,15 @@ public class Slider extends View {
   @NonNull private final Paint activeTrackPaint;
   @NonNull private final Paint thumbPaint;
   @NonNull private final Paint haloPaint;
-  @NonNull private final Paint ticksPaint;
+  @NonNull private final Paint inactiveTicksPaint;
+  @NonNull private final Paint activeTicksPaint;
 
   @NonNull private TooltipDrawable label;
 
   private int widgetHeight;
   private int widgetHeightLabel;
   private boolean floatingLabel;
-  private int lineHeight;
+  private int trackHeight;
   private int trackSidePadding;
   private int trackTop;
   private int trackTopLabel;
@@ -188,6 +191,7 @@ public class Slider extends View {
   private float thumbPosition = 0.0f; // The position of the thumb normalised to a [0.0, 1.0] range.
   private float stepSize = 0.0f;
   private float[] ticksCoordinates;
+  private float[] visibleTicksCoordinates;
   private int trackWidth;
   private boolean forceDrawCompatShadow;
 
@@ -195,7 +199,8 @@ public class Slider extends View {
   @NonNull private ColorStateList activeTrackColor;
   @NonNull private ColorStateList thumbColor;
   @NonNull private ColorStateList haloColor;
-  @NonNull private ColorStateList tickColor;
+  @NonNull private ColorStateList inactiveTickColor;
+  @NonNull private ColorStateList activeTickColor;
 
   @NonNull private final MaterialShapeDrawable thumbDrawable = new MaterialShapeDrawable();
 
@@ -260,11 +265,13 @@ public class Slider extends View {
 
     inactiveTrackPaint = new Paint();
     inactiveTrackPaint.setStyle(Style.STROKE);
-    inactiveTrackPaint.setStrokeWidth(lineHeight);
+    inactiveTrackPaint.setStrokeWidth(trackHeight);
+    inactiveTrackPaint.setStrokeCap(Cap.ROUND);
 
     activeTrackPaint = new Paint();
     activeTrackPaint.setStyle(Style.STROKE);
-    activeTrackPaint.setStrokeWidth(lineHeight);
+    activeTrackPaint.setStrokeWidth(trackHeight);
+    activeTrackPaint.setStrokeCap(Cap.ROUND);
 
     thumbPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     thumbPaint.setStyle(Style.FILL);
@@ -273,9 +280,15 @@ public class Slider extends View {
     haloPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     haloPaint.setStyle(Style.FILL);
 
-    ticksPaint = new Paint();
-    ticksPaint.setStyle(Style.STROKE);
-    ticksPaint.setStrokeWidth(lineHeight);
+    inactiveTicksPaint = new Paint();
+    inactiveTicksPaint.setStyle(Style.STROKE);
+    inactiveTicksPaint.setStrokeWidth(trackHeight / 2.0f);
+    inactiveTicksPaint.setStrokeCap(Cap.ROUND);
+
+    activeTicksPaint = new Paint();
+    activeTicksPaint.setStyle(Style.STROKE);
+    activeTicksPaint.setStrokeWidth(trackHeight / 2.0f);
+    activeTicksPaint.setStrokeCap(Cap.ROUND);
 
     Drawable background = getBackground();
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
@@ -321,8 +334,6 @@ public class Slider extends View {
     widgetHeight = resources.getDimensionPixelSize(R.dimen.mtrl_slider_widget_height);
     widgetHeightLabel = resources.getDimensionPixelSize(R.dimen.mtrl_slider_widget_height_label);
 
-    lineHeight = resources.getDimensionPixelSize(R.dimen.mtrl_slider_line_height);
-
     trackSidePadding = resources.getDimensionPixelOffset(R.dimen.mtrl_slider_track_side_padding);
     trackTop = resources.getDimensionPixelOffset(R.dimen.mtrl_slider_track_top);
     trackTopLabel = resources.getDimensionPixelOffset(R.dimen.mtrl_slider_track_top_label);
@@ -351,7 +362,14 @@ public class Slider extends View {
     thumbColor = MaterialResources.getColorStateList(context, a, R.styleable.Slider_thumbColor);
     thumbDrawable.setFillColor(thumbColor);
     haloColor = MaterialResources.getColorStateList(context, a, R.styleable.Slider_haloColor);
-    tickColor = MaterialResources.getColorStateList(context, a, R.styleable.Slider_activeTickColor);
+
+    boolean hasTickColor = a.hasValue(R.styleable.Slider_tickColor);
+    int inactiveTickColorRes =
+        hasTickColor ? R.styleable.Slider_tickColor : R.styleable.Slider_inactiveTickColor;
+    int activeTickColorRes =
+        hasTickColor ? R.styleable.Slider_tickColor : R.styleable.Slider_activeTickColor;
+    inactiveTickColor = MaterialResources.getColorStateList(context, a, inactiveTickColorRes);
+    activeTickColor = MaterialResources.getColorStateList(context, a, activeTickColorRes);
 
     label = parseLabelDrawable(context, a);
 
@@ -359,6 +377,8 @@ public class Slider extends View {
     haloRadius = a.getDimensionPixelSize(R.styleable.Slider_haloRadius, 0);
 
     setThumbElevation(a.getDimension(R.styleable.Slider_thumbElevation, 0));
+
+    trackHeight = a.getDimensionPixelSize(R.styleable.Slider_trackHeight, 0);
 
     floatingLabel = a.getBoolean(R.styleable.Slider_floatingLabel, true);
     a.recycle();
@@ -634,6 +654,21 @@ public class Slider extends View {
     return haloRadius;
   }
 
+  /** Set the height of the track in pixels. */
+  public void setTrackHeight(@IntRange(from = 0) @Dimension int trackHeight) {
+    if (this.trackHeight != trackHeight) {
+      this.trackHeight = trackHeight;
+      onTrackHeightChange();
+      requestLayout();
+    }
+  }
+
+  /** Returns the height of the track in pixels. */
+  @Dimension()
+  public int getTrackHeight() {
+    return trackHeight;
+  }
+
   @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     super.onMeasure(
@@ -653,14 +688,27 @@ public class Slider extends View {
     trackWidth = viewWidth - trackSidePadding * 2;
     if (stepSize > 0.0f) {
       int tickCount = (int) ((valueTo - valueFrom) / stepSize + 1);
+
       if (ticksCoordinates == null || ticksCoordinates.length != tickCount * 2) {
         ticksCoordinates = new float[tickCount * 2];
       }
-      float interval = trackWidth / (float) (tickCount - 1);
-      for (int i = 0; i < tickCount * 2; i += 2) {
-        ticksCoordinates[i] = trackSidePadding + i / 2 * interval;
-        ticksCoordinates[i + 1] = calculateTop();
+      setTicksCoordinates(ticksCoordinates);
+
+      // Limit the tickCount if they will be too dense.
+      tickCount = Math.min(tickCount, trackWidth / (trackHeight * 2) + 1);
+      if (visibleTicksCoordinates == null || visibleTicksCoordinates.length != tickCount * 2) {
+        visibleTicksCoordinates = new float[tickCount * 2];
       }
+      setTicksCoordinates(visibleTicksCoordinates);
+    }
+  }
+
+  private void setTicksCoordinates(float[] coordinates) {
+    int tickCount = coordinates.length / 2;
+    float interval = trackWidth / (float) (tickCount - 1);
+    for (int i = 0; i < tickCount * 2; i += 2) {
+      coordinates[i] = trackSidePadding + i / 2 * interval;
+      coordinates[i + 1] = calculateTop();
     }
   }
 
@@ -687,36 +735,42 @@ public class Slider extends View {
 
     int top = calculateTop();
 
-    drawTrack(canvas, trackWidth, top);
+    drawInactiveTrack(canvas, trackWidth, top);
     if (thumbPosition > 0.0f) {
-      drawMarker(canvas, trackWidth, top);
+      drawActiveTrack(canvas, trackWidth, top);
+    }
+
+    if (stepSize > 0.0f) {
+      drawTicks(canvas);
     }
 
     if ((thumbIsPressed || isFocused()) && isEnabled()) {
-      if (stepSize > 0.0f) {
-        drawTicks(canvas);
-      }
-
       maybeDrawHalo(canvas, trackWidth, top);
     }
 
     drawThumb(canvas, trackWidth, top);
   }
 
-  private void drawTrack(@NonNull Canvas canvas, int width, int top) {
+  private void drawInactiveTrack(@NonNull Canvas canvas, int width, int top) {
     float right = trackSidePadding + thumbPosition * width;
     if (right < trackSidePadding + width) {
       canvas.drawLine(right, top, trackSidePadding + width, top, inactiveTrackPaint);
     }
   }
 
-  private void drawMarker(@NonNull Canvas canvas, int width, int top) {
+  private void drawActiveTrack(@NonNull Canvas canvas, int width, int top) {
     float left = trackSidePadding + thumbPosition * width;
     canvas.drawLine(trackSidePadding, top, left, top, activeTrackPaint);
   }
 
   private void drawTicks(@NonNull Canvas canvas) {
-    canvas.drawPoints(ticksCoordinates, ticksPaint);
+    int pivotIndex = pivotIndex(visibleTicksCoordinates);
+    canvas.drawPoints(visibleTicksCoordinates, 0, pivotIndex * 2, activeTicksPaint);
+    canvas.drawPoints(
+        visibleTicksCoordinates,
+        pivotIndex * 2,
+        visibleTicksCoordinates.length - pivotIndex * 2,
+        inactiveTicksPaint);
   }
 
   private void drawThumb(@NonNull Canvas canvas, int width, int top) {
@@ -812,9 +866,14 @@ public class Slider extends View {
     }
   }
 
+  /** Calculates the index of the thumb for the given tick coordinates */
+  private int pivotIndex(float[] coordinates) {
+    return Math.round(thumbPosition * (coordinates.length / 2 - 1));
+  }
+
   private void snapThumbPosition() {
     if (stepSize > 0.0f) {
-      int intervalsCovered = Math.round(thumbPosition * (ticksCoordinates.length / 2 - 1));
+      int intervalsCovered = pivotIndex(ticksCoordinates);
       thumbPosition = (float) intervalsCovered / (ticksCoordinates.length / 2 - 1);
     }
   }
@@ -834,13 +893,24 @@ public class Slider extends View {
     ViewUtils.getContentViewOverlay(this).add(label);
   }
 
+  private void onTrackHeightChange() {
+    if (ViewCompat.isLaidOut(this)) {
+      updateTrackWidthAndTicksCoordinates(getWidth());
+    }
+    inactiveTrackPaint.setStrokeWidth(trackHeight);
+    activeTrackPaint.setStrokeWidth(trackHeight);
+    inactiveTicksPaint.setStrokeWidth(trackHeight / 2.0f);
+    activeTicksPaint.setStrokeWidth(trackHeight / 2.0f);
+  }
+
   @Override
   protected void drawableStateChanged() {
     super.drawableStateChanged();
 
     inactiveTrackPaint.setColor(getColorForState(inactiveTrackColor));
     activeTrackPaint.setColor(getColorForState(activeTrackColor));
-    ticksPaint.setColor(getColorForState(tickColor));
+    inactiveTicksPaint.setColor(getColorForState(inactiveTickColor));
+    activeTicksPaint.setColor(getColorForState(activeTickColor));
     if (label.isStateful()) {
       label.setState(getDrawableState());
     }

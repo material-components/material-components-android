@@ -30,5 +30,6 @@
   <public name="thumbRadius" format="attr" />
   <public name="thumbElevation" format="attr" />
   <public name="haloRadius" format="attr" />
+  <public name="trackHeight" format="attr" />
   <public name="Widget.MaterialComponents.Slider" type="style"/>
 </resources>

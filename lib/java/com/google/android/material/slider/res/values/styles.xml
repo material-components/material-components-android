@@ -27,6 +27,7 @@
     <item name="thumbRadius">@dimen/mtrl_slider_thumb_radius</item>
     <item name="haloRadius">@dimen/mtrl_slider_halo_radius</item>
     <item name="thumbElevation">@dimen/mtrl_slider_thumb_elevation</item>
+    <item name="trackHeight">@dimen/mtrl_slider_track_height</item>
   </style>
 
   <style name="Widget.MaterialComponents.Slider" parent="Base.Widget.MaterialComponents.Slider"/>
