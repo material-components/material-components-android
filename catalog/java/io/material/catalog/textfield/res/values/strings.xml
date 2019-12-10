@@ -73,15 +73,21 @@
   <string name="cat_textfield_label" translatable="false">Label</string>
   <string name="cat_textfield_password" translatable="false">Password</string>
   <string name="cat_textfield_error" translatable="false">Error</string>
+  <string name="cat_textfield_placeholder_text" translatable="false">Placeholder text</string>
+
+  <string name="cat_textfield_customize_color" translatable="false">Change color</string>
+  <string name="cat_textfield_customize_counter_text" translatable="false">Character counter max</string>
   <string name="cat_textfield_customize_label_text" translatable="false">Label text</string>
   <string name="cat_textfield_customize_error_text" translatable="false">Error text</string>
   <string name="cat_textfield_customize_helper_text" translatable="false">Helper text</string>
-  <string name="cat_textfield_customize_color" translatable="false">Change color</string>
-  <string name="cat_textfield_customize_counter_text" translatable="false">Character counter max</string>
+  <string name="cat_textfield_customize_placeholder_text" translatable="false">Placeholder text</string>
+
   <string name="cat_textfield_update_label_text" translatable="false">Update label</string>
   <string name="cat_textfield_update_error_text" translatable="false">Update error</string>
   <string name="cat_textfield_update_helper_text" translatable="false">Update helper</string>
   <string name="cat_textfield_update_counter_text" translatable="false">Update character counter</string>
+  <string name="cat_textfield_update_placeholder_text" translatable="false">Update placeholder</string>
+
   <string name="cat_textfield_null_input_error_text" translatable="false">Enter a value</string>
   <string name="cat_textfield_show_error_text" translatable="false">Show error</string>
   <string name="cat_textfield_hide_error_text" translatable="false">Hide error</string>

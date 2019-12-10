@@ -78,7 +78,8 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       app:helperText="@string/textinput_helper"
-      app:helperTextEnabled="true">
+      app:helperTextEnabled="true"
+      app:placeholderText="@string/textinput_placeholder">
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/textinput_edittext_outline"

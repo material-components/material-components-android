@@ -48,6 +48,7 @@
   <string name="textinput_hint">Hint to the user</string>
   <string name="textinput_helper">Helper text to the user</string>
   <string name="textinput_helper_not_enabled">Helper text to the user, helper not enabled</string>
+  <string name="textinput_placeholder">Placeholder text</string>
   <string name="textinput_custom_end_icon">Custom end icon</string>
   <string name="textinput_prefix_text">$</string>
   <string name="textinput_suffix_text">/100</string>

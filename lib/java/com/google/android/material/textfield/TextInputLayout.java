@@ -103,6 +103,7 @@ import java.util.LinkedHashSet;
  *       along with showing an error icon via {@link #setErrorIconDrawable}
  *   <li>Showing helper text via {@link #setHelperTextEnabled(boolean)} and {@link
  *       #setHelperText(CharSequence)}
+ *   <li>Showing placeholder text via {@link #setPlaceholderText(CharSequence)}
  *   <li>Showing prefix text via {@link #setPrefixText(CharSequence)}
  *   <li>Showing suffix text via {@link #setSuffixText(CharSequence)}
  *   <li>Showing a character counter via {@link #setCounterEnabled(boolean)} and {@link
@@ -197,6 +198,12 @@ public class TextInputLayout extends LinearLayout {
   @Nullable private TextView counterView;
   private int counterOverflowTextAppearance;
   private int counterTextAppearance;
+
+  private CharSequence placeholderText;
+  private boolean placeholderEnabled;
+  private TextView placeholderTextView;
+  @Nullable private ColorStateList placeholderTextColor;
+  private int placeholderTextAppearance;
 
   @Nullable private ColorStateList counterTextColor;
   @Nullable private ColorStateList counterOverflowTextColor;
@@ -613,6 +620,10 @@ public class TextInputLayout extends LinearLayout {
         a.getBoolean(R.styleable.TextInputLayout_helperTextEnabled, false);
     final CharSequence helperText = a.getText(R.styleable.TextInputLayout_helperText);
 
+    final int placeholderTextAppearance =
+        a.getResourceId(R.styleable.TextInputLayout_placeholderTextAppearance, 0);
+    final CharSequence placeholderText = a.getText(R.styleable.TextInputLayout_placeholderText);
+
     final int prefixTextAppearance =
         a.getResourceId(R.styleable.TextInputLayout_prefixTextAppearance, 0);
     final CharSequence prefixText = a.getText(R.styleable.TextInputLayout_prefixText);
@@ -755,6 +766,8 @@ public class TextInputLayout extends LinearLayout {
     setErrorContentDescription(errorContentDescription);
     setCounterTextAppearance(counterTextAppearance);
     setCounterOverflowTextAppearance(counterOverflowTextAppearance);
+    setPlaceholderText(placeholderText);
+    setPlaceholderTextAppearance(placeholderTextAppearance);
     setPrefixText(prefixText);
     setPrefixTextAppearance(prefixTextAppearance);
     setSuffixText(suffixText);
@@ -775,6 +788,10 @@ public class TextInputLayout extends LinearLayout {
     if (a.hasValue(R.styleable.TextInputLayout_counterOverflowTextColor)) {
       setCounterOverflowTextColor(
           a.getColorStateList(R.styleable.TextInputLayout_counterOverflowTextColor));
+    }
+    if (a.hasValue(R.styleable.TextInputLayout_placeholderTextColor)) {
+      setPlaceholderTextColor(
+          a.getColorStateList(R.styleable.TextInputLayout_placeholderTextColor));
     }
     if (a.hasValue(R.styleable.TextInputLayout_prefixTextColor)) {
       setPrefixTextColor(a.getColorStateList(R.styleable.TextInputLayout_prefixTextColor));
@@ -1200,6 +1217,9 @@ public class TextInputLayout extends LinearLayout {
             updateLabelState(!restoringSavedState);
             if (counterEnabled) {
               updateCounter(s.length());
+            }
+            if (placeholderEnabled) {
+              updatePlaceholderText(s.length());
             }
           }
 
@@ -1901,6 +1921,150 @@ public class TextInputLayout extends LinearLayout {
   }
 
   /**
+   * Sets placeholder text that will be displayed in the input area when the hint is collapsed
+   * before text is entered. If the {@code placeholder} is {@code null}, any previous placeholder
+   * text will be hidden and no placeholder text will be shown.
+   *
+   * @param placeholderText Placeholder text to display
+   * @see #getPlaceholderText()
+   */
+  public void setPlaceholderText(@Nullable final CharSequence placeholderText) {
+    // If placeholder text is null, disable placeholder if it's enabled.
+    if (placeholderEnabled && TextUtils.isEmpty(placeholderText)) {
+      setPlaceholderTextEnabled(false);
+    } else {
+      if (!placeholderEnabled) {
+        // Enable the placeholder if it isn't already.
+        setPlaceholderTextEnabled(true);
+      }
+      this.placeholderText = placeholderText;
+    }
+    updatePlaceholderText();
+  }
+
+  /**
+   * Returns the placeholder text that was set to be displayed with {@link
+   * #setPlaceholderText(CharSequence)}, or <code>null</code> if there is no placeholder text.
+   *
+   * @see #setPlaceholderText(CharSequence)
+   */
+  @Nullable
+  public CharSequence getPlaceholderText() {
+    return placeholderEnabled ? placeholderText : null;
+  }
+
+  private void setPlaceholderTextEnabled(boolean placeholderEnabled) {
+    // If the enabled state is the same as before, do nothing.
+    if (this.placeholderEnabled == placeholderEnabled) {
+      return;
+    }
+
+    // Otherwise, adjust enabled state.
+    if (placeholderEnabled) {
+      placeholderTextView = new AppCompatTextView(getContext());
+      placeholderTextView.setId(R.id.textinput_placeholder);
+
+      ViewCompat.setAccessibilityLiveRegion(
+          placeholderTextView, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
+
+      setPlaceholderTextAppearance(placeholderTextAppearance);
+      setPlaceholderTextColor(placeholderTextColor);
+      addPlaceholderTextView();
+    } else {
+      removePlaceholderTextView();
+      placeholderTextView = null;
+    }
+    this.placeholderEnabled = placeholderEnabled;
+  }
+
+  private void updatePlaceholderText() {
+    updatePlaceholderText(editText == null ? 0 : editText.getText().length());
+  }
+
+  private void updatePlaceholderText(int inputTextLength) {
+    if (inputTextLength == 0 && !hintExpanded) {
+      showPlaceholderText();
+    } else {
+      hidePlaceholderText();
+    }
+  }
+
+  private void showPlaceholderText() {
+    if (placeholderTextView != null && placeholderEnabled) {
+      placeholderTextView.setText(placeholderText);
+      placeholderTextView.setVisibility(VISIBLE);
+      placeholderTextView.bringToFront();
+    }
+  }
+
+  private void hidePlaceholderText() {
+    if (placeholderTextView != null && placeholderEnabled) {
+      placeholderTextView.setText(null);
+      placeholderTextView.setVisibility(INVISIBLE);
+    }
+  }
+
+  private void addPlaceholderTextView() {
+    if (placeholderTextView != null) {
+      inputFrame.addView(placeholderTextView);
+      placeholderTextView.setVisibility(VISIBLE);
+    }
+  }
+
+  private void removePlaceholderTextView() {
+    if (placeholderTextView != null) {
+      placeholderTextView.setVisibility(GONE);
+    }
+  }
+
+  /**
+   * Sets the text color used by the placeholder text in all states.
+   *
+   * @attr ref android.support.design.R.styleable#TextInputLayout_placeholderTextColor
+   */
+  public void setPlaceholderTextColor(@Nullable ColorStateList placeholderTextColor) {
+    if (this.placeholderTextColor != placeholderTextColor) {
+      this.placeholderTextColor = placeholderTextColor;
+      if (placeholderTextView != null && placeholderTextColor != null) {
+        placeholderTextView.setTextColor(placeholderTextColor);
+      }
+    }
+  }
+
+  /**
+   * Returns the ColorStateList used for the placeholder text.
+   *
+   * @attr ref android.support.design.R.styleable#TextInputLayout_placeholderTextColor
+   */
+  @Nullable
+  public ColorStateList getPlaceholderTextColor() {
+    return placeholderTextColor;
+  }
+
+  /**
+   * Sets the text color and size for the placeholder text from the specified TextAppearance
+   * resource.
+   *
+   * @attr ref android.support.design.R.styleable#TextInputLayout_placeholderTextAppearance
+   */
+  public void setPlaceholderTextAppearance(@StyleRes int placeholderTextAppearance) {
+    this.placeholderTextAppearance = placeholderTextAppearance;
+    if (placeholderTextView != null) {
+      TextViewCompat.setTextAppearance(placeholderTextView, placeholderTextAppearance);
+    }
+  }
+
+  /**
+   * Returns the TextAppearance resource used for the placeholder text color.
+   *
+   * @attr ref android.support.design.R.styleable#TextInputLayout_placeholderTextAppearance
+   */
+  @StyleRes
+  public int getPlaceholderTextAppearance() {
+    return placeholderTextAppearance;
+  }
+
+  /**
    * Sets prefix text that will be displayed in the input area when the hint is collapsed before
    * text is entered. If the {@code prefix} is {@code null}, any previous prefix text will be hidden
    * and no prefix text will be shown.
@@ -2496,6 +2660,7 @@ public class TextInputLayout extends LinearLayout {
             }
           });
     }
+    updatePlaceholderMeasurementsBasedOnEditText();
   }
 
   private boolean updateEditTextHeightBasedOnIcon() {
@@ -2513,6 +2678,21 @@ public class TextInputLayout extends LinearLayout {
     }
 
     return false;
+  }
+
+  private void updatePlaceholderMeasurementsBasedOnEditText() {
+    if (placeholderTextView != null && editText != null) {
+      // Use the EditText's positioning for the placeholder.
+      final int editTextGravity = this.editText.getGravity();
+      placeholderTextView.setGravity(
+          Gravity.TOP | (editTextGravity & ~Gravity.VERTICAL_GRAVITY_MASK));
+
+      placeholderTextView.setPadding(
+          editText.getCompoundPaddingLeft(),
+          editText.getCompoundPaddingTop(),
+          editText.getCompoundPaddingRight(),
+          editText.getCompoundPaddingBottom());
+    }
   }
 
   /**
@@ -3464,6 +3644,8 @@ public class TextInputLayout extends LinearLayout {
     if (cutoutEnabled()) {
       openCutout();
     }
+    showPlaceholderText();
+
     updatePrefixTextVisibility();
     updateSuffixTextVisibility();
   }
@@ -3666,6 +3848,8 @@ public class TextInputLayout extends LinearLayout {
       closeCutout();
     }
     hintExpanded = true;
+    hidePlaceholderText();
+
     updatePrefixTextVisibility();
     updateSuffixTextVisibility();
   }

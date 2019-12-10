@@ -84,6 +84,16 @@ public abstract class TextFieldControllableDemoFragment extends TextFieldDemoFra
                     String.valueOf(helperTextTextField.getEditText().getText()));
               }
             });
+    // Initialize button for updating the placeholder text.
+    TextInputLayout placeholderTextField = view.findViewById(R.id.text_input_placeholder);
+    view.findViewById(R.id.button_update_placeholder)
+        .setOnClickListener(
+            v -> {
+              if (!checkTextInputIsNull(placeholderTextField)) {
+                setAllTextFieldsPlaceholder(
+                    String.valueOf(placeholderTextField.getEditText().getText()));
+              }
+            });
 
     // Initialize button for updating the counter max.
     TextInputLayout counterMaxTextField = view.findViewById(R.id.text_input_counter_max);
@@ -128,6 +138,12 @@ public abstract class TextFieldControllableDemoFragment extends TextFieldDemoFra
   private void setAllTextFieldsHelperText(String helperText) {
     for (TextInputLayout textfield : textfields) {
       textfield.setHelperText(helperText);
+    }
+  }
+
+  private void setAllTextFieldsPlaceholder(String placeholder) {
+    for (TextInputLayout textfield : textfields) {
+      textfield.setPlaceholderText(placeholder);
     }
   }
 
