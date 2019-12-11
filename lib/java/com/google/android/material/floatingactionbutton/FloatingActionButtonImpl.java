@@ -24,8 +24,10 @@ import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
+import android.animation.FloatEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.TimeInterpolator;
+import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -559,22 +561,23 @@ class FloatingActionButtonImpl {
   private AnimatorSet createAnimator(
       @NonNull MotionSpec spec, float opacity, float scale, float iconScale) {
     List<Animator> animators = new ArrayList<>();
-    Animator animator;
 
-    animator = ObjectAnimator.ofFloat(view, View.ALPHA, opacity);
-    spec.getTiming("opacity").apply(animator);
-    animators.add(animator);
+    ObjectAnimator animatorOpacity = ObjectAnimator.ofFloat(view, View.ALPHA, opacity);
+    spec.getTiming("opacity").apply(animatorOpacity);
+    animators.add(animatorOpacity);
 
-    animator = ObjectAnimator.ofFloat(view, View.SCALE_X, scale);
-    spec.getTiming("scale").apply(animator);
-    animators.add(animator);
+    ObjectAnimator animatorScaleX = ObjectAnimator.ofFloat(view, View.SCALE_X, scale);
+    spec.getTiming("scale").apply(animatorScaleX);
+    workAroundOreoBug(animatorScaleX);
+    animators.add(animatorScaleX);
 
-    animator = ObjectAnimator.ofFloat(view, View.SCALE_Y, scale);
-    spec.getTiming("scale").apply(animator);
-    animators.add(animator);
+    ObjectAnimator animatorScaleY = ObjectAnimator.ofFloat(view, View.SCALE_Y, scale);
+    spec.getTiming("scale").apply(animatorScaleY);
+    workAroundOreoBug(animatorScaleY);
+    animators.add(animatorScaleY);
 
     calculateImageMatrixFromScale(iconScale, tmpMatrix);
-    animator =
+    ObjectAnimator animatorIconScale =
         ObjectAnimator.ofObject(
             view,
             new ImageMatrixProperty(),
@@ -589,12 +592,31 @@ class FloatingActionButtonImpl {
               }
             },
             new Matrix(tmpMatrix));
-    spec.getTiming("iconScale").apply(animator);
-    animators.add(animator);
+    spec.getTiming("iconScale").apply(animatorIconScale);
+    animators.add(animatorIconScale);
 
     AnimatorSet set = new AnimatorSet();
     AnimatorSetCompat.playTogether(set, animators);
     return set;
+  }
+
+  /**
+   * There appears to be a bug in the OpenGL shadow rendering code on API 26. We can work around it
+   * by preventing any scaling close to 0.
+   */
+  private void workAroundOreoBug(final ObjectAnimator animator) {
+    if (Build.VERSION.SDK_INT != Build.VERSION_CODES.O) {
+      return;
+    }
+
+    animator.setEvaluator(new TypeEvaluator<Float>() {
+      FloatEvaluator floatEvaluator = new FloatEvaluator();
+      @Override
+      public Float evaluate(float fraction, Float startValue, Float endValue) {
+        float evaluated = floatEvaluator.evaluate(fraction, startValue, endValue);
+        return evaluated < 0.1f ? 0.0f : evaluated;
+      }
+    });
   }
 
   void addTransformationCallback(@NonNull InternalTransformationCallback listener) {
