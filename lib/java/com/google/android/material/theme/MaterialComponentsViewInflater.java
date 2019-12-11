@@ -21,7 +21,6 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import android.content.Context;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
@@ -42,7 +41,6 @@ import com.google.android.material.textview.MaterialTextView;
  * An extension of {@link AppCompatViewInflater} that replaces some framework widgets with Material
  * Components ones at inflation time, provided a Material Components theme is in use.
  */
-@Keep // Make proguard keep this class as it's accessed reflectively by AppCompat
 public class MaterialComponentsViewInflater extends AppCompatViewInflater {
 
   // Cached background resource ID used for workaround to not inflate MaterialButton in
