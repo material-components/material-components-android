@@ -19,6 +19,7 @@
   package="io.material.catalog.card.tests">
 
   <uses-sdk
+    android:minSdkVersion="14"
     tools:overrideLibrary="androidx.test, android.app, androidx.test.rule,
         androidx.test.espresso, androidx.test.espresso.idling"/>
 
