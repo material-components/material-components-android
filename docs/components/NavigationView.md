@@ -61,10 +61,10 @@ implement your navigation logic.
 
 ### Header views
 
-You can add one header in the XML layout, but you can add multiple header views
-programmatically with `addHeaderView(View)` (even if you already added one in the
-XML layout). You can use `getHeaderView(int)` to get any of the header views at
-runtime.
+You can only add one header in the XML layout, but you can add multiple header
+views programmatically with `addHeaderView(View)` (even if you already added one
+in the XML layout). You can use `getHeaderView(int)` to get any of the header
+views at runtime.
 
 If you need to access the header view you added in the XML layout, that will
 always be the first header view, so you can get it with `getHeaderView(0)`.
@@ -75,13 +75,13 @@ Implementing navigation drawers is the most common use for `NavigationView`,
 this section guides you on how to use `NavigationView` in that context.
 
 1.  Wrap your activity's content in a `DrawerLayout`. *In the example below, the
-activity's content is the CoordinatorLayout*
+    activity's content is the CoordinatorLayout.*
 2.  Keep your main content as the first child of that `DrawerLayout`.
 3.  Add your `NavigationView` with `android:layout_gravity="start|left"` and
-    `android:height="match_parent"`
+    `android:height="match_parent"`.
 
-Assuming your Activity's content is in a CoordinatorLayout you may have something like
-this:
+Assuming your Activity's content is in a CoordinatorLayout you may have
+something like this:
 
 ```xml
 <androidx.drawerlayout.widget.DrawerLayout>
@@ -112,5 +112,4 @@ There are other navigation patterns you should be aware of
     5 very well defined navigation categories
 
 You should familiarize yourself with the most common use for `NavigationView`,
-[Creating a Navigation Drawer -
-Guide](https://developer.android.com/training/implementing-navigation/nav-drawer.html)
+[Creating a Navigation Drawer - Guide](https://developer.android.com/training/implementing-navigation/nav-drawer.html).
