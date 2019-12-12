@@ -31,6 +31,7 @@ import io.material.catalog.dialog.DialogDemoLandingFragment;
 import io.material.catalog.elevation.ElevationFragment;
 import io.material.catalog.fab.FabFragment;
 import io.material.catalog.font.FontFragment;
+import io.material.catalog.imageview.ShapeableImageViewFragment;
 import io.material.catalog.menu.MenuFragment;
 import io.material.catalog.radiobutton.RadioButtonFragment;
 import io.material.catalog.shapetheming.ShapeThemingFragment;
@@ -60,6 +61,7 @@ import io.material.catalog.transformation.TransformationFragment;
       MenuFragment.Module.class,
       DatePickerDemoLandingFragment.Module.class,
       RadioButtonFragment.Module.class,
+      ShapeableImageViewFragment.Module.class,
       ShapeThemingFragment.Module.class,
       SliderFragment.Module.class,
       SwitchFragment.Module.class,

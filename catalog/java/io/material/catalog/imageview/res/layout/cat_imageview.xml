@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ Copyright (C) 2019 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~       http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing, software
+  ~  distributed under the License is distributed on an "AS IS" BASIS,
+  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~   See the License for the specific language governing permissions and
+  ~  limitations under the License.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/main_viewGroup"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:padding="@dimen/cat_imageview_padding"
+  android:orientation="vertical">
+
+  <com.google.android.material.button.MaterialButtonToggleGroup
+    android:id="@+id/togglegroup"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    app:checkedButton="@id/button_square"
+    app:selectionRequired="true"
+    app:singleSelection="true">
+    <Button
+      android:id="@+id/button_square"
+      style="?attr/materialButtonOutlinedStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/cat_imageview_square" />
+
+    <Button
+      android:id="@+id/button_diamond"
+      style="?attr/materialButtonOutlinedStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/cat_imageview_diamond" />
+    <Button
+      android:id="@+id/button_circle"
+      style="?attr/materialButtonOutlinedStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/cat_imageview_circle" />
+
+  </com.google.android.material.button.MaterialButtonToggleGroup>
+
+  <com.google.android.material.imageview.ShapeableImageView
+    android:id="@+id/image_view"
+    android:layout_margin="10dp"
+    android:layout_gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:scaleType="centerInside"
+    android:adjustViewBounds="true"
+    app:strokeColor="?attr/colorSecondary"
+    app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
+    app:strokeWidth="1dp"
+    app:elevation="5dp"
+    app:srcCompat="@drawable/dog_image" />
+
+</LinearLayout>

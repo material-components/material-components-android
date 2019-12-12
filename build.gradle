@@ -31,6 +31,7 @@ ext {
     constraintlayout      : '1.1.3',
     coordinatorlayout     : '1.1.0',
     core                  : '1.1.0',
+    experimental          : '1.0.0',
     fragment              : '1.0.0',
     lifecycle             : '2.0.0',
     recyclerView          : '1.0.0',
@@ -117,6 +118,8 @@ def compatibility(name) {
       return "androidx.recyclerview:recyclerview-selection:${androidXVersions.recyclerViewSelection}"
     case "viewpager2":
       return "androidx.viewpager2:viewpager2:${androidXVersions.viewpager2}"
+    case "experimental":
+      return "androidx.annotation:annotation-experimental:${androidXVersions.experimental}"
     default:
       throw new IllegalArgumentException("No mapping exists for name: $name.")
   }

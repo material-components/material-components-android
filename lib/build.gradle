@@ -10,6 +10,7 @@ dependencies {
   api compatibility("cardview")
   api compatibility("coordinatorlayout")
   api compatibility("core")
+  api compatibility("experimental")
   api compatibility("fragment")
   api compatibility("lifecycleRuntime")
   api compatibility("recyclerview")
@@ -50,6 +51,7 @@ def srcDirs = [
   'com/google/android/material/elevation',
   'com/google/android/material/expandable',
   'com/google/android/material/floatingactionbutton',
+  'com/google/android/material/imageview',
   'com/google/android/material/internal',
   'com/google/android/material/math',
   'com/google/android/material/menu',
