@@ -21,10 +21,10 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.graphics.Color;
 import android.os.Build.VERSION_CODES;
+import android.os.Bundle;
 import androidx.annotation.LayoutRes;
 import androidx.core.view.ViewCompat;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.test.core.app.ApplicationProvider;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import org.junit.Before;
@@ -47,9 +47,7 @@ public class MaterialToolbarTest {
 
   @Before
   public void setUpActivityAndResources() {
-    ApplicationProvider.getApplicationContext()
-        .setTheme(R.style.Theme_MaterialComponents_Light_NoActionBar_Bridge);
-    activity = Robolectric.buildActivity(AppCompatActivity.class).get();
+    activity = Robolectric.buildActivity(TestActivity.class).setup().get();
     colorSurface =
         MaterialColors.getColor(
             activity, R.attr.colorSurface, MaterialToolbarTest.class.getSimpleName());
@@ -106,5 +104,13 @@ public class MaterialToolbarTest {
 
   private MaterialShapeDrawable getMaterialShapeDrawable(MaterialToolbar materialToolbar) {
     return (MaterialShapeDrawable) materialToolbar.getBackground();
+  }
+
+  private static class TestActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle bundle) {
+      super.onCreate(bundle);
+      setTheme(R.style.Theme_MaterialComponents_Light_NoActionBar_Bridge);
+    }
   }
 }

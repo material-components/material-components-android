@@ -23,11 +23,11 @@ import static com.google.common.truth.Truth.assertThat;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Build.VERSION_CODES;
+import android.os.Bundle;
 import androidx.core.widget.CompoundButtonCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.CheckBox;
-import androidx.test.core.app.ApplicationProvider;
 import com.google.android.material.color.MaterialColors;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,8 +48,7 @@ public class MaterialCheckBoxTest {
 
   @Before
   public void createAndThemeApplicationContext() {
-    ApplicationProvider.getApplicationContext().setTheme(R.style.Theme_MaterialComponents_Light);
-    activity = Robolectric.buildActivity(AppCompatActivity.class).setup().get();
+    activity = Robolectric.buildActivity(TestActivity.class).setup().get();
     checkboxes = activity.getLayoutInflater().inflate(R.layout.test_design_checkbox, null);
   }
 
@@ -80,5 +79,13 @@ public class MaterialCheckBoxTest {
         .isEqualTo(MaterialColors.getColor(checkBox, R.attr.colorControlActivated));
     assertThat(buttonTintList.getColorForState(STATE_UNCHECKED, Color.BLACK))
         .isEqualTo(MaterialColors.getColor(checkBox, R.attr.colorOnSurface));
+  }
+
+  private static class TestActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle bundle) {
+      super.onCreate(bundle);
+      setTheme(R.style.Theme_MaterialComponents_Light);
+    }
   }
 }

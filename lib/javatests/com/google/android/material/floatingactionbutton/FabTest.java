@@ -26,9 +26,9 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import android.content.Context;
+import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View.MeasureSpec;
-import androidx.test.core.app.ApplicationProvider;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,9 +46,7 @@ public class FabTest {
 
   @Before
   public void createAndThemeApplicationContext() {
-    ApplicationProvider.getApplicationContext().setTheme(
-        R.style.Theme_MaterialComponents_Light_NoActionBar_Bridge);
-    activity = Robolectric.buildActivity(AppCompatActivity.class).setup().get();
+    activity = Robolectric.buildActivity(TestActivity.class).setup().get();
   }
 
   @Test
@@ -91,5 +89,13 @@ public class FabTest {
     int measureSpec = MeasureSpec.makeMeasureSpec((int) (dimen * 2), MeasureSpec.AT_MOST);
     fab.measure(measureSpec, measureSpec);
     return fab;
+  }
+
+  private static class TestActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle bundle) {
+      super.onCreate(bundle);
+      setTheme(R.style.Theme_MaterialComponents_Light_NoActionBar_Bridge);
+    }
   }
 }

@@ -25,12 +25,12 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.robolectric.Shadows.shadowOf;
 
+import android.os.Bundle;
 import android.os.Looper;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.MeasureSpec;
 import android.view.ViewGroup.LayoutParams;
-import androidx.test.core.app.ApplicationProvider;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton.OnChangedCallback;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,9 +51,7 @@ public class ExtendedFloatingActionButtonTest {
 
   @Before
   public void createAndThemeApplicationContext() {
-    ApplicationProvider.getApplicationContext().setTheme(
-        R.style.Theme_MaterialComponents_Light_NoActionBar_Bridge);
-    activity = Robolectric.buildActivity(AppCompatActivity.class).setup().get();
+    activity = Robolectric.buildActivity(TestActivity.class).setup().get();
     fabForTest = createFabForTest();
   }
 
@@ -124,5 +122,13 @@ public class ExtendedFloatingActionButtonTest {
     fab.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
 
     return fab;
+  }
+
+  private static class TestActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle bundle) {
+      super.onCreate(bundle);
+      setTheme(R.style.Theme_MaterialComponents_Light_NoActionBar_Bridge);
+    }
   }
 }
