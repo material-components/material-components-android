@@ -268,7 +268,10 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
       new Runnable() {
         @Override
         public void run() {
-          int currentInsetBottom = getScreenHeight() - getViewAbsoluteBottom();
+          // Calculate current bottom inset, factoring in translationY to account for where the
+          // view will likely be animating to.
+          int currentInsetBottom =
+              getScreenHeight() - getViewAbsoluteBottom() + (int) view.getTranslationY();
           if (currentInsetBottom >= extraBottomMarginGestureInset) {
             // No need to add extra offset if view is already outside of bottom gesture area
             return;
