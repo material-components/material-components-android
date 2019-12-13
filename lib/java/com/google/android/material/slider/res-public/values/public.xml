@@ -27,9 +27,9 @@
   <public name="inactiveTickColor" type="attr" />
   <public name="labelStyle" type="attr" />
   <public name="floatingLabel" type="attr" />
-  <public name="thumbRadius" format="attr" />
-  <public name="thumbElevation" format="attr" />
-  <public name="haloRadius" format="attr" />
-  <public name="trackHeight" format="attr" />
+  <public name="thumbRadius" type="attr" />
+  <public name="haloRadius" type="attr" />
+  <public name="trackHeight" type="attr" />
+
   <public name="Widget.MaterialComponents.Slider" type="style"/>
 </resources>
