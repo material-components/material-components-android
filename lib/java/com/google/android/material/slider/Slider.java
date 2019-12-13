@@ -197,7 +197,6 @@ public class Slider extends View {
 
   @NonNull private ColorStateList inactiveTrackColor;
   @NonNull private ColorStateList activeTrackColor;
-  @NonNull private ColorStateList thumbColor;
   @NonNull private ColorStateList haloColor;
   @NonNull private ColorStateList inactiveTickColor;
   @NonNull private ColorStateList activeTickColor;
@@ -359,7 +358,8 @@ public class Slider extends View {
 
     inactiveTrackColor = MaterialResources.getColorStateList(context, a, inactiveTrackColorRes);
     activeTrackColor = MaterialResources.getColorStateList(context, a, activeTrackColorRes);
-    thumbColor = MaterialResources.getColorStateList(context, a, R.styleable.Slider_thumbColor);
+    ColorStateList thumbColor =
+        MaterialResources.getColorStateList(context, a, R.styleable.Slider_thumbColor);
     thumbDrawable.setFillColor(thumbColor);
     haloColor = MaterialResources.getColorStateList(context, a, R.styleable.Slider_haloColor);
 
@@ -917,7 +917,7 @@ public class Slider extends View {
     if (thumbDrawable.isStateful()) {
       thumbDrawable.setState(getDrawableState());
     }
-    haloPaint.setColor(getColorForState(thumbColor));
+    haloPaint.setColor(getColorForState(haloColor));
     haloPaint.setAlpha(HALO_ALPHA);
   }
 
