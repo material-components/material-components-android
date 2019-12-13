@@ -193,7 +193,7 @@ public class Slider extends View {
   private float[] ticksCoordinates;
   private float[] visibleTicksCoordinates;
   private int trackWidth;
-  private boolean forceDrawCompatShadow;
+  private boolean forceDrawCompatHalo;
 
   @NonNull private ColorStateList inactiveTrackColor;
   @NonNull private ColorStateList activeTrackColor;
@@ -789,7 +789,7 @@ public class Slider extends View {
 
   private void maybeDrawHalo(@NonNull Canvas canvas, int width, int top) {
     // Only draw the halo for devices which don't support the ripple.
-    if (forceDrawCompatShadow || VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
+    if (forceDrawCompatHalo || VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
       int centerX = (int) (trackSidePadding + thumbPosition * width);
       if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
         // In this case we can clip the rect to allow drawing outside the bounds.
@@ -927,8 +927,8 @@ public class Slider extends View {
   }
 
   @VisibleForTesting
-  void forceDrawCompatShadow(boolean force) {
-    forceDrawCompatShadow = force;
+  void forceDrawCompatHalo(boolean force) {
+    forceDrawCompatHalo = force;
   }
 
   @Override
