@@ -46,6 +46,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.GridView;
+import android.widget.LinearLayout;
+
 import com.google.android.material.button.MaterialButton;
 import java.util.Calendar;
 
@@ -163,6 +165,11 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
     daysHeader.setEnabled(false);
 
     recyclerView = root.findViewById(R.id.mtrl_calendar_months);
+    if (MaterialDatePicker.isFullscreen(themedContext)) {
+      daysHeader.setLayoutParams(new LinearLayout.LayoutParams(
+          MaterialDatePicker.getPaddedPickerWidth(themedContext),
+          LinearLayout.LayoutParams.MATCH_PARENT));
+    }
 
     SmoothCalendarLayoutManager layoutManager =
         new SmoothCalendarLayoutManager(getContext(), orientation, false) {

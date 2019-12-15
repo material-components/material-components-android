@@ -187,11 +187,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     View root = layoutInflater.inflate(layout, viewGroup);
     Context context = root.getContext();
 
-    if (fullscreen) {
-      View frame = root.findViewById(R.id.mtrl_calendar_frame);
-      frame.setLayoutParams(
-          new LayoutParams(getPaddedPickerWidth(context), LayoutParams.WRAP_CONTENT));
-    } else {
+    if (!fullscreen) {
       View pane = root.findViewById(R.id.mtrl_calendar_main_pane);
       View frame = root.findViewById(R.id.mtrl_calendar_frame);
       pane.setLayoutParams(
@@ -402,7 +398,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     return navigationHeight + daysOfWeekHeight + calendarHeight + calendarPadding;
   }
 
-  private static int getPaddedPickerWidth(@NonNull Context context) {
+  static int getPaddedPickerWidth(@NonNull Context context) {
     Resources resources = context.getResources();
     int padding = resources.getDimensionPixelOffset(R.dimen.mtrl_calendar_content_padding);
     int daysInWeek = Month.today().daysInWeek;

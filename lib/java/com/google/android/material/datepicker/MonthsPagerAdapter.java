@@ -15,20 +15,22 @@
  */
 package com.google.android.material.datepicker;
 
-import com.google.android.material.R;
-
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.core.view.ViewCompat;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.RecyclerView.LayoutParams;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView.LayoutParams;
+
+import com.google.android.material.R;
 import com.google.android.material.datepicker.MaterialCalendar.OnDayClickListener;
 
 /**
@@ -69,7 +71,20 @@ class MonthsPagerAdapter extends RecyclerView.Adapter<MonthsPagerAdapter.ViewHol
     setHasStableIds(true);
   }
 
-  public static class ViewHolder extends RecyclerView.ViewHolder {
+  @Override
+  public void onViewAttachedToWindow(@NonNull ViewHolder holder) {
+    super.onViewAttachedToWindow(holder);
+    holder.onAttachedToWindow();
+  }
+
+  @Override
+  public void onViewDetachedFromWindow(@NonNull ViewHolder holder) {
+    super.onViewDetachedFromWindow(holder);
+    holder.onDetachedFromWindow();
+  }
+
+  public static class ViewHolder extends RecyclerView.ViewHolder
+      implements ViewTreeObserver.OnPreDrawListener {
 
     final TextView monthTitle;
     final MaterialCalendarGridView monthGrid;
@@ -83,6 +98,29 @@ class MonthsPagerAdapter extends RecyclerView.Adapter<MonthsPagerAdapter.ViewHol
         monthTitle.setVisibility(View.GONE);
       }
     }
+
+    void onAttachedToWindow() {
+      if (MaterialDatePicker.isFullscreen(itemView.getContext()) && itemView.getWidth() == 0) {
+        itemView.getViewTreeObserver().addOnPreDrawListener(this);
+      }
+    }
+
+    void onDetachedFromWindow() {
+      itemView.getViewTreeObserver().removeOnPreDrawListener(this);
+    }
+
+    @Override
+    public boolean onPreDraw() {
+      if (itemView.getWidth() != 0) {
+        final int paddedWidth = MaterialDatePicker.getPaddedPickerWidth(itemView.getContext());
+        final int padding = (itemView.getWidth() - paddedWidth) / 2;
+        monthTitle.setPadding(padding, 0, 0, 0);
+        monthGrid.setPadding(padding, 0, padding, 0);
+        itemView.getViewTreeObserver().removeOnPreDrawListener(this);
+      }
+      return false;
+    }
+
   }
 
   @NonNull

@@ -27,10 +27,6 @@
   <FrameLayout
       android:id="@+id/mtrl_calendar_frame"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:paddingStart="@dimen/mtrl_calendar_content_padding"
-      android:paddingEnd="@dimen/mtrl_calendar_content_padding"
-      android:paddingLeft="@dimen/mtrl_calendar_content_padding"
-      android:paddingRight="@dimen/mtrl_calendar_content_padding"/>
+      android:layout_height="wrap_content"/>
 
 </LinearLayout>
