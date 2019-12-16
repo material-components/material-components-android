@@ -56,7 +56,7 @@ public class SliderContinuousDemoFragment extends DemoFragment {
     final TextView sliderValue = view.findViewById(valueId);
     final Slider slider = view.findViewById(sliderId);
     slider.setOnChangeListener(
-        (slider1, value) -> sliderValue.setText(String.format(valueFormat, value)));
+        (slider1, value, fromUser) -> sliderValue.setText(String.format(valueFormat, value)));
     slider.setValue(slider.getValueFrom());
     SwitchCompat switchButton = view.findViewById(switchId);
     switchButton.setOnCheckedChangeListener(

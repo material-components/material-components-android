@@ -206,7 +206,7 @@ public class Slider extends View {
 
   /** Interface definition for a callback invoked when a slider's value is changed. */
   public interface OnChangeListener {
-    void onValueChange(Slider slider, float value);
+    void onValueChange(Slider slider, float value, boolean fromUser);
   }
 
   /**
@@ -497,7 +497,7 @@ public class Slider extends View {
     if (isValueValid(value)) {
       thumbPosition = (value - valueFrom) / (valueTo - valueFrom);
       if (hasOnChangeListener()) {
-        listener.onValueChange(this, getValue());
+        listener.onValueChange(this, getValue(), false);
       }
       invalidate();
     }
@@ -826,7 +826,7 @@ public class Slider extends View {
         updateLabelPosition();
         invalidate();
         if (hasOnChangeListener()) {
-          listener.onValueChange(this, getValue());
+          listener.onValueChange(this, getValue(), true);
         }
         break;
       case MotionEvent.ACTION_MOVE:
@@ -837,7 +837,7 @@ public class Slider extends View {
         updateLabelPosition();
         invalidate();
         if (hasOnChangeListener()) {
-          listener.onValueChange(this, getValue());
+          listener.onValueChange(this, getValue(), true);
         }
         break;
       case MotionEvent.ACTION_UP:
@@ -956,7 +956,7 @@ public class Slider extends View {
       requestFocus();
     }
     if (hasOnChangeListener()) {
-      listener.onValueChange(this, getValue());
+      listener.onValueChange(this, getValue(), false);
     }
   }
 
