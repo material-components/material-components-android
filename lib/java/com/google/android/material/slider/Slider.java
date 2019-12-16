@@ -845,10 +845,10 @@ public class Slider extends View {
         ensureLabel();
         updateLabelPosition();
         invalidate();
+        onStartTrackingTouch();
         if (hasOnChangeListener()) {
           listener.onValueChange(this, getValue(), true);
         }
-        onStartTrackingTouch();
         break;
       case MotionEvent.ACTION_MOVE:
         thumbPosition = position;
