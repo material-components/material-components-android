@@ -184,6 +184,7 @@ public class Slider extends View {
   private int haloRadius;
   private int labelPadding;
   private OnChangeListener listener;
+  private OnSliderTouchListener touchListener;
   private LabelFormatter formatter;
   private boolean thumbIsPressed = false;
   private float valueFrom;
@@ -207,6 +208,16 @@ public class Slider extends View {
   /** Interface definition for a callback invoked when a slider's value is changed. */
   public interface OnChangeListener {
     void onValueChange(Slider slider, float value, boolean fromUser);
+  }
+
+  /**
+   * Interface definition for callbacks invoked when a slider's touch event
+   * is being started/stopped.
+   */
+  public interface OnSliderTouchListener {
+    void onStartTrackingTouch(Slider slider);
+
+    void onStopTrackingTouch(Slider slider);
   }
 
   /**
@@ -566,6 +577,15 @@ public class Slider extends View {
   }
 
   /**
+   * Registers a callback to be invoked when the slider touch event is being started or stopped
+   *
+   * @param listener The callback to run when the slider starts or stops being touched
+   */
+  public void setOnSliderTouchListener(@Nullable OnSliderTouchListener listener) {
+    this.touchListener = listener;
+  }
+
+  /**
    * Returns {@code true} if the slider has a {@link LabelFormatter} attached, {@code false}
    * otherwise.
    */
@@ -828,6 +848,7 @@ public class Slider extends View {
         if (hasOnChangeListener()) {
           listener.onValueChange(this, getValue(), true);
         }
+        onStartTrackingTouch();
         break;
       case MotionEvent.ACTION_MOVE:
         thumbPosition = position;
@@ -846,8 +867,11 @@ public class Slider extends View {
         thumbPosition = position;
         snapThumbPosition();
         ViewUtils.getContentViewOverlay(this).remove(label);
+        onStopTrackingTouch();
         invalidate();
         break;
+      case MotionEvent.ACTION_CANCEL:
+        onStopTrackingTouch();
       default:
         // Nothing to do in this case.
     }
@@ -901,6 +925,18 @@ public class Slider extends View {
     activeTrackPaint.setStrokeWidth(trackHeight);
     inactiveTicksPaint.setStrokeWidth(trackHeight / 2.0f);
     activeTicksPaint.setStrokeWidth(trackHeight / 2.0f);
+  }
+
+  private void onStartTrackingTouch(){
+    if(touchListener != null){
+      touchListener.onStartTrackingTouch(this);
+    }
+  }
+
+  private void onStopTrackingTouch(){
+    if(touchListener != null){
+      touchListener.onStopTrackingTouch(this);
+    }
   }
 
   @Override

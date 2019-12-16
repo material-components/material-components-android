@@ -25,6 +25,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import com.google.android.material.slider.Slider;
+import com.google.android.material.snackbar.Snackbar;
+
 import io.material.catalog.feature.DemoFragment;
 
 /** A fragment that displays the main Slider demo for the Catalog app. */
@@ -37,6 +39,19 @@ public class SliderMainDemoFragment extends DemoFragment {
         layoutInflater.inflate(R.layout.cat_slider_fragment, viewGroup, false /* attachToRoot */);
 
     Slider slider = view.findViewById(R.id.slider);
+    slider.setOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+      @Override
+      public void onStartTrackingTouch(Slider slider) {
+        Snackbar.make(slider, getText(R.string.cat_slider_start_touch_description),
+            Snackbar.LENGTH_SHORT).show();
+      }
+
+      @Override
+      public void onStopTrackingTouch(Slider slider) {
+        Snackbar.make(slider, getText(R.string.cat_slider_stop_touch_description),
+            Snackbar.LENGTH_SHORT).show();
+      }
+    });
     Button button = view.findViewById(R.id.button);
 
     button.setOnClickListener(v -> slider.setValue(slider.getValueTo()));
