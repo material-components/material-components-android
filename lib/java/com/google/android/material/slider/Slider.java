@@ -545,7 +545,8 @@ public class Slider extends View {
   public void setStepSize(float stepSize) {
     this.stepSize = stepSize;
     validateStepSize();
-    requestLayout();
+    maybeUpdateTrackWidthAndTicksCoordinates();
+    postInvalidate();
   }
 
   /**
@@ -658,8 +659,9 @@ public class Slider extends View {
   public void setTrackHeight(@IntRange(from = 0) @Dimension int trackHeight) {
     if (this.trackHeight != trackHeight) {
       this.trackHeight = trackHeight;
-      onTrackHeightChange();
-      requestLayout();
+      invalidateTrack();
+      maybeUpdateTrackWidthAndTicksCoordinates();
+      postInvalidate();
     }
   }
 
@@ -682,6 +684,13 @@ public class Slider extends View {
     super.onSizeChanged(w, h, oldw, oldh);
     updateTrackWidthAndTicksCoordinates(w);
     updateHaloHotSpot();
+  }
+
+  private void maybeUpdateTrackWidthAndTicksCoordinates() {
+    if (ViewCompat.isLaidOut(this)) {
+      // If we're already laid out we need to update the ticks.
+      updateTrackWidthAndTicksCoordinates(getWidth());
+    }
   }
 
   private void updateTrackWidthAndTicksCoordinates(int viewWidth) {
@@ -893,10 +902,7 @@ public class Slider extends View {
     ViewUtils.getContentViewOverlay(this).add(label);
   }
 
-  private void onTrackHeightChange() {
-    if (ViewCompat.isLaidOut(this)) {
-      updateTrackWidthAndTicksCoordinates(getWidth());
-    }
+  private void invalidateTrack() {
     inactiveTrackPaint.setStrokeWidth(trackHeight);
     activeTrackPaint.setStrokeWidth(trackHeight);
     inactiveTicksPaint.setStrokeWidth(trackHeight / 2.0f);
