@@ -333,6 +333,7 @@ public class AppBarLayout extends LinearLayout {
         statusBarForeground.setVisible(getVisibility() == VISIBLE, false);
         statusBarForeground.setCallback(this);
       }
+      updateWillNotDraw();
       ViewCompat.postInvalidateOnAnimation(this);
     }
   }
@@ -379,7 +380,7 @@ public class AppBarLayout extends LinearLayout {
     super.draw(canvas);
 
     // Draw the status bar foreground drawable if we have a top inset
-    if (statusBarForeground != null && getTopInset() > 0) {
+    if (shouldDrawStatusBarForeground()) {
       int saveCount = canvas.save();
       canvas.translate(0f, -currentOffset);
       statusBarForeground.draw(canvas);
@@ -478,6 +479,14 @@ public class AppBarLayout extends LinearLayout {
     if (!liftableOverride) {
       setLiftableState(liftOnScroll || hasCollapsibleChild());
     }
+  }
+
+  private void updateWillNotDraw() {
+    setWillNotDraw(!shouldDrawStatusBarForeground());
+  }
+
+  private boolean shouldDrawStatusBarForeground() {
+    return statusBarForeground != null && getTopInset() > 0;
   }
 
   private boolean hasCollapsibleChild() {
@@ -981,6 +990,7 @@ public class AppBarLayout extends LinearLayout {
     // If our insets have changed, keep them and trigger a layout...
     if (!ObjectsCompat.equals(lastInsets, newInsets)) {
       lastInsets = newInsets;
+      updateWillNotDraw();
       requestLayout();
     }
 
