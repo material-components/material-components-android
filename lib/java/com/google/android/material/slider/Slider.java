@@ -95,17 +95,19 @@ import java.util.Locale;
  *
  * <ul>
  *   <li>{@code trackColor}: The color of the whole track. This is a short hand for setting both the
- *       {@code activeTrackColor} and {@code inactiveTrackColor} to the same thing. This takes
- *       precedence over {@code activeTrackColor} and {@code inactiveTrackColor}.
- *   <li>{@code activeTrackColor}: The color of the active part of the track.
- *   <li>{@code inactiveTrackColor}: The color of the inactive part of the track.
+ *       {@code trackColorActive} and {@code trackColorInactive} to the same thing. This takes
+ *       precedence over {@code trackColorActive} and {@code trackColorInactive}.
+ *   <li>{@code trackColorActive}: The color of the active part of the track.
+ *   <li>{@code trackColorInactive}: The color of the inactive part of the track.
  *   <li>{@code thumbColor}: the color of the slider's thumb.
  *   <li>{@code tickColor}: the color of the slider's tick marks. Only used when the slider is in
- *       discrete mode.
- *   <li>{@code activeTickColor}: the color of the slider's tick marks for the active part of the
+ *       discrete mode. This is a short hand for setting both the {@code tickColorActive} and {@code
+ *       tickColorInactive} to the same thing. This takes precedence over {@code tickColorActive}
+ *       and {@code tickColorInactive}.
+ *   <li>{@code tickColorActive}: the color of the slider's tick marks for the active part of the
  *       track. Only used when the slider is in discrete mode.
- *   <li>{@code inactiveTickColor}: the color of the slider's tick marks for the inactive part of
- *       the track. Only used when the slider is in discrete mode.
+ *   <li>{@code tickColorInactive}: the color of the slider's tick marks for the inactive part ofthe
+ *       track. Only used when the slider is in discrete mode.
  *   <li>{@code labelStyle}: the style to apply to the value indicator {@link TooltipDrawable}.
  * </ul>
  *
@@ -133,13 +135,13 @@ import java.util.Locale;
  * @attr ref com.google.android.material.R.styleable#Slider_android_valueTo
  * @attr ref com.google.android.material.R.styleable#Slider_android_stepSize
  * @attr ref com.google.android.material.R.styleable#Slider_trackColor
- * @attr ref com.google.android.material.R.styleable#Slider_activeTrackColor
- * @attr ref com.google.android.material.R.styleable#Slider_inactiveTrackColor
+ * @attr ref com.google.android.material.R.styleable#Slider_trackColorActive
+ * @attr ref com.google.android.material.R.styleable#Slider_trackColorInactive
  * @attr ref com.google.android.material.R.styleable#Slider_thumbColor
  * @attr ref com.google.android.material.R.styleable#Slider_haloColor
  * @attr ref com.google.android.material.R.styleable#Slider_tickColor
- * @attr ref com.google.android.material.R.styleable#Slider_activeTickColor
- * @attr ref com.google.android.material.R.styleable#Slider_inactiveTickColor
+ * @attr ref com.google.android.material.R.styleable#Slider_tickColorActive
+ * @attr ref com.google.android.material.R.styleable#Slider_tickColorInactive
  * @attr ref com.google.android.material.R.styleable#Slider_labelStyle
  * @attr ref com.google.android.material.R.styleable#Slider_floatingLabel
  * @attr ref com.google.android.material.R.styleable#Slider_thumbRadius
@@ -195,11 +197,11 @@ public class Slider extends View {
   private int trackWidth;
   private boolean forceDrawCompatHalo;
 
-  @NonNull private ColorStateList inactiveTrackColor;
-  @NonNull private ColorStateList activeTrackColor;
   @NonNull private ColorStateList haloColor;
-  @NonNull private ColorStateList inactiveTickColor;
-  @NonNull private ColorStateList activeTickColor;
+  @NonNull private ColorStateList tickColorActive;
+  @NonNull private ColorStateList tickColorInactive;
+  @NonNull private ColorStateList trackColorActive;
+  @NonNull private ColorStateList trackColorInactive;
 
   @NonNull private final MaterialShapeDrawable thumbDrawable = new MaterialShapeDrawable();
 
@@ -351,25 +353,25 @@ public class Slider extends View {
 
     boolean hasTrackColor = a.hasValue(R.styleable.Slider_trackColor);
 
-    int inactiveTrackColorRes =
-        hasTrackColor ? R.styleable.Slider_trackColor : R.styleable.Slider_inactiveTrackColor;
-    int activeTrackColorRes =
-        hasTrackColor ? R.styleable.Slider_trackColor : R.styleable.Slider_activeTrackColor;
+    int trackColorInactiveRes =
+        hasTrackColor ? R.styleable.Slider_trackColor : R.styleable.Slider_trackColorInactive;
+    int trackColorActiveRes =
+        hasTrackColor ? R.styleable.Slider_trackColor : R.styleable.Slider_trackColorActive;
 
-    inactiveTrackColor = MaterialResources.getColorStateList(context, a, inactiveTrackColorRes);
-    activeTrackColor = MaterialResources.getColorStateList(context, a, activeTrackColorRes);
+    trackColorInactive = MaterialResources.getColorStateList(context, a, trackColorInactiveRes);
+    trackColorActive = MaterialResources.getColorStateList(context, a, trackColorActiveRes);
     ColorStateList thumbColor =
         MaterialResources.getColorStateList(context, a, R.styleable.Slider_thumbColor);
     thumbDrawable.setFillColor(thumbColor);
     haloColor = MaterialResources.getColorStateList(context, a, R.styleable.Slider_haloColor);
 
     boolean hasTickColor = a.hasValue(R.styleable.Slider_tickColor);
-    int inactiveTickColorRes =
-        hasTickColor ? R.styleable.Slider_tickColor : R.styleable.Slider_inactiveTickColor;
-    int activeTickColorRes =
-        hasTickColor ? R.styleable.Slider_tickColor : R.styleable.Slider_activeTickColor;
-    inactiveTickColor = MaterialResources.getColorStateList(context, a, inactiveTickColorRes);
-    activeTickColor = MaterialResources.getColorStateList(context, a, activeTickColorRes);
+    int tickColorInactiveRes =
+        hasTickColor ? R.styleable.Slider_tickColor : R.styleable.Slider_tickColorInactive;
+    int tickColorActiveRes =
+        hasTickColor ? R.styleable.Slider_tickColor : R.styleable.Slider_tickColorActive;
+    tickColorInactive = MaterialResources.getColorStateList(context, a, tickColorInactiveRes);
+    tickColorActive = MaterialResources.getColorStateList(context, a, tickColorActiveRes);
 
     label = parseLabelDrawable(context, a);
 
@@ -913,10 +915,10 @@ public class Slider extends View {
   protected void drawableStateChanged() {
     super.drawableStateChanged();
 
-    inactiveTrackPaint.setColor(getColorForState(inactiveTrackColor));
-    activeTrackPaint.setColor(getColorForState(activeTrackColor));
-    inactiveTicksPaint.setColor(getColorForState(inactiveTickColor));
-    activeTicksPaint.setColor(getColorForState(activeTickColor));
+    inactiveTrackPaint.setColor(getColorForState(trackColorInactive));
+    activeTrackPaint.setColor(getColorForState(trackColorActive));
+    inactiveTicksPaint.setColor(getColorForState(tickColorInactive));
+    activeTicksPaint.setColor(getColorForState(tickColorActive));
     if (label.isStateful()) {
       label.setState(getDrawableState());
     }

@@ -17,12 +17,12 @@
 <resources>
 
   <style name="Base.Widget.MaterialComponents.Slider" parent="android:Widget">
-    <item name="activeTrackColor">@color/material_slider_active_track_color</item>
-    <item name="inactiveTrackColor">@color/material_slider_inactive_track_color</item>
+    <item name="trackColorActive">@color/material_slider_active_track_color</item>
+    <item name="trackColorInactive">@color/material_slider_inactive_track_color</item>
     <item name="thumbColor">@color/material_slider_thumb_color</item>
     <item name="haloColor">@color/material_slider_halo_color</item>
-    <item name="activeTickColor">@color/material_slider_active_tick_marks_color</item>
-    <item name="inactiveTickColor">@color/material_slider_inactive_tick_marks_color</item>
+    <item name="tickColorActive">@color/material_slider_active_tick_marks_color</item>
+    <item name="tickColorInactive">@color/material_slider_inactive_tick_marks_color</item>
     <item name="labelStyle">@style/Widget.MaterialComponents.Tooltip</item>
     <item name="thumbRadius">@dimen/mtrl_slider_thumb_radius</item>
     <item name="haloRadius">@dimen/mtrl_slider_halo_radius</item>

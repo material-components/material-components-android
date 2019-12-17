@@ -23,9 +23,9 @@
     <!-- The color of the track. -->
     <attr name="trackColor" format="color" />
     <!-- The color of active portion of the track. -->
-    <attr name="activeTrackColor" format="color" />
+    <attr name="trackColorActive" format="color" />
     <!-- The color of inactive portion of the track. -->
-    <attr name="inactiveTrackColor" format="color" />
+    <attr name="trackColorInactive" format="color" />
     <!-- The color of the slider's thumb. -->
     <attr name="thumbColor" format="color" />
     <!-- The color of the slider's halo. -->
@@ -34,10 +34,10 @@
     <attr name="tickColor" format="color" />
     <!-- The color of the slider's tick marks for the active portion of the track. Only used when
          the slider is in discrete mode. -->
-    <attr name="activeTickColor" format="color" />
+    <attr name="tickColorActive" format="color" />
     <!-- The color of the slider's tick marks for the inactive portion of the track. Only used when
          the slider is in discrete mode. -->
-    <attr name="inactiveTickColor" format="color" />
+    <attr name="tickColorInactive" format="color" />
     <!-- The style used for the label TooltipDrawable. -->
     <attr name="labelStyle" format="reference" />
     <!-- Determines if Slider should increase its default height to include space for the label. -->
