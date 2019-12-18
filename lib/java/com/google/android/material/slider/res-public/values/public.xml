@@ -16,19 +16,20 @@
 -->
 <resources>
   <public name="sliderStyle" type="attr"/>
-  <public name="trackColor" type="attr" />
-  <public name="trackColorActive" type="attr" />
-  <public name="trackColorInactive" type="attr" />
-  <public name="thumbColor" type="attr" />
+
+  <public name="floatingLabel" type="attr" />
   <public name="haloColor" type="attr" />
+  <public name="haloRadius" type="attr" />
+  <public name="labelStyle" type="attr" />
+  <public name="thumbColor" type="attr" />
   <public name="thumbElevation" type="attr" />
+  <public name="thumbRadius" type="attr" />
   <public name="tickColor" type="attr" />
   <public name="tickColorActive" type="attr" />
   <public name="tickColorInactive" type="attr" />
-  <public name="labelStyle" type="attr" />
-  <public name="floatingLabel" type="attr" />
-  <public name="thumbRadius" type="attr" />
-  <public name="haloRadius" type="attr" />
+  <public name="trackColor" type="attr" />
+  <public name="trackColorActive" type="attr" />
+  <public name="trackColorInactive" type="attr" />
   <public name="trackHeight" type="attr" />
 
   <public name="Widget.MaterialComponents.Slider" type="style"/>
