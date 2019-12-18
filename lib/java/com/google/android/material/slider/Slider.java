@@ -180,12 +180,10 @@ public class Slider extends View {
   @NonNull private TooltipDrawable label;
 
   private int widgetHeight;
-  private int widgetHeightLabel;
   private boolean floatingLabel;
   private int trackHeight;
   private int trackSidePadding;
   private int trackTop;
-  private int trackTopLabel;
   private int thumbRadius;
   private int haloRadius;
   private int labelPadding;
@@ -322,11 +320,9 @@ public class Slider extends View {
 
   private void loadResources(@NonNull Resources resources) {
     widgetHeight = resources.getDimensionPixelSize(R.dimen.mtrl_slider_widget_height);
-    widgetHeightLabel = resources.getDimensionPixelSize(R.dimen.mtrl_slider_widget_height_label);
 
     trackSidePadding = resources.getDimensionPixelOffset(R.dimen.mtrl_slider_track_side_padding);
     trackTop = resources.getDimensionPixelOffset(R.dimen.mtrl_slider_track_top);
-    trackTopLabel = resources.getDimensionPixelOffset(R.dimen.mtrl_slider_track_top_label);
 
     labelPadding = resources.getDimensionPixelSize(R.dimen.mtrl_slider_label_padding);
   }
@@ -774,7 +770,7 @@ public class Slider extends View {
     super.onMeasure(
         widthMeasureSpec,
         MeasureSpec.makeMeasureSpec(
-            floatingLabel ? widgetHeight : widgetHeightLabel, MeasureSpec.EXACTLY));
+            widgetHeight + (floatingLabel ? 0 : label.getIntrinsicHeight()), MeasureSpec.EXACTLY));
   }
 
   @Override
@@ -833,7 +829,7 @@ public class Slider extends View {
   }
 
   private int calculateTop() {
-    return floatingLabel ? trackTop : trackTopLabel;
+    return trackTop + (floatingLabel ? 0 : label.getIntrinsicHeight());
   }
 
   @Override
