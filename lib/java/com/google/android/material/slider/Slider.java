@@ -293,11 +293,10 @@ public class Slider extends View {
     activeTicksPaint.setStrokeWidth(trackHeight / 2.0f);
     activeTicksPaint.setStrokeCap(Cap.ROUND);
 
-    Drawable background = getBackground();
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+      Drawable background = getBackground();
       if (background instanceof RippleDrawable) {
         ((RippleDrawable) background).setColor(haloColor);
-        DrawableUtils.setRippleDrawableRadius(background, haloRadius);
       }
       // Because the RippleDrawable can draw outside the bounds of the view, we can set the layer
       // type to hardware so we can use PorterDuffXfermode when drawing.
@@ -361,7 +360,7 @@ public class Slider extends View {
     label = parseLabelDrawable(context, a);
 
     setThumbRadius(a.getDimensionPixelSize(R.styleable.Slider_thumbRadius, 0));
-    haloRadius = a.getDimensionPixelSize(R.styleable.Slider_haloRadius, 0);
+    setHaloRadius(a.getDimensionPixelSize(R.styleable.Slider_haloRadius, 0));
 
     setThumbElevation(a.getDimension(R.styleable.Slider_thumbElevation, 0));
 
@@ -673,6 +672,12 @@ public class Slider extends View {
    */
   public void setHaloRadius(@IntRange(from = 0) @Dimension int radius) {
     haloRadius = radius;
+    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+      Drawable background = getBackground();
+      if (background instanceof RippleDrawable) {
+        DrawableUtils.setRippleDrawableRadius((RippleDrawable) background, haloRadius);
+      }
+    }
     postInvalidate();
   }
 

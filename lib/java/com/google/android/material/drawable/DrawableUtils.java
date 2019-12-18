@@ -96,13 +96,9 @@ public final class DrawableUtils {
   }
 
   @TargetApi(VERSION_CODES.LOLLIPOP)
-  public static void setRippleDrawableRadius(@Nullable Drawable drawable, int radius) {
-    if (!(drawable instanceof RippleDrawable)) {
-      return;
-    }
-
+  public static void setRippleDrawableRadius(@Nullable RippleDrawable drawable, int radius) {
     if (VERSION.SDK_INT >= VERSION_CODES.M) {
-      ((RippleDrawable) drawable).setRadius(radius);
+      drawable.setRadius(radius);
     } else {
       try {
         @SuppressLint("PrivateApi")
