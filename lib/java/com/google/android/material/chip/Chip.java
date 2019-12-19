@@ -321,6 +321,16 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
             (chipDrawable.getChipStartPadding()
                 + chipDrawable.getTextStartPadding()
                 + chipDrawable.calculateChipIconWidth());
+    if (insetBackgroundDrawable != null) {
+      Rect padding = new Rect();
+      Log.w("mdc-chip", "padding: " + padding.left + " " + padding.right);
+      insetBackgroundDrawable.getPadding(padding);
+      if (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL) {
+        paddingEnd += padding.right;
+      } else {
+        paddingStart += padding.left;
+      }
+    }
 
     ViewCompat.setPaddingRelative(
         this, paddingStart, getPaddingTop(), paddingEnd, getPaddingBottom());
@@ -404,7 +414,6 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
       chipDrawable.setShouldDrawText(false);
       applyChipDrawable(chipDrawable);
       ensureAccessibleTouchTarget(minTouchTargetSize);
-      updateBackgroundDrawable();
     }
   }
 
@@ -667,7 +676,6 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
   @Override
   public void onChipDrawableSizeChange() {
     ensureAccessibleTouchTarget(minTouchTargetSize);
-    updateBackgroundDrawable();
     requestLayout();
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
       invalidateOutline();
@@ -2219,7 +2227,11 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
   public boolean ensureAccessibleTouchTarget(@Dimension int minTargetPx) {
     minTouchTargetSize = minTargetPx;
     if (!shouldEnsureMinTouchTargetSize()) {
-      removeBackgroundInset();
+      if (insetBackgroundDrawable != null) {
+        removeBackgroundInset();
+      } else {
+        updateBackgroundDrawable();
+      }
       return false;
     }
 
@@ -2227,7 +2239,11 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
     int deltaWidth = Math.max(0, minTargetPx - chipDrawable.getIntrinsicWidth());
 
     if (deltaWidth <= 0 && deltaHeight <= 0) {
-      removeBackgroundInset();
+      if (insetBackgroundDrawable != null) {
+        removeBackgroundInset();
+      } else {
+        updateBackgroundDrawable();
+      }
       return false;
     }
 
@@ -2241,6 +2257,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
           && padding.bottom == deltaY
           && padding.left == deltaX
           && padding.right == deltaX) {
+        updateBackgroundDrawable();
         return true;
       }
     }
@@ -2256,6 +2273,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
       setMinWidth(minTargetPx);
     }
     insetChipBackgroundDrawable(deltaX, deltaY, deltaX, deltaY);
+    updateBackgroundDrawable();
     return true;
   }
 
