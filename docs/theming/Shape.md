@@ -248,10 +248,14 @@ Components that support shape theming have a `shapeAppearance` attribute, a
 `shapeAppearanceOverlay` attribute, and are backed by a `MaterialShapeDrawable`.
 
 *   [Bottom Sheet](../components/BottomSheetBehavior.md)
-*   [Button](../components/MaterialButton.md)
-*   [Floating Action Button](../components/FloatingActionButton.md)
 *   [Card](../components/MaterialCardView.md)
 *   [Chip](../components/Chip.md)
+*   [Date Picker](../components/Picker.md)
 *   [Dialog](../components/Dialog.md)
-*   [Menu](../components/Menu.md)
+*   [Extended Floating Action Button](../components/ExtendedFloatingActionButton.md)
+*   [Floating Action Button](../components/FloatingActionButton.md)
+*   [Material Button](../components/MaterialButton.md)
+*   [Material Button Toggle Group](../components/MaterialButtonToggleGroup.md)
+*   [Navigation View](../components/NavigationView.md)
+*   [Slider](../components/Slider.md)
 *   [Text Field](../components/TextInputLayout.md)

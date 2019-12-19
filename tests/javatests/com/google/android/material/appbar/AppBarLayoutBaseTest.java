@@ -39,6 +39,7 @@ import androidx.core.view.ViewCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.TextView;
 import com.google.android.material.internal.BaseDynamicCoordinatorLayoutTest;
 import com.google.android.material.resources.TextAppearanceConfig;
@@ -113,16 +114,16 @@ public abstract class AppBarLayoutBaseTest extends BaseDynamicCoordinatorLayoutT
     onView(withId(R.id.collapsing_app_bar)).check(matches(withScrimAlpha(alpha)));
   }
 
-  static Matcher withScrimAlpha(final int alpha) {
-    return new TypeSafeMatcher<CollapsingToolbarLayout>() {
+  static Matcher<View> withScrimAlpha(final int alpha) {
+    return new TypeSafeMatcher<View>(CollapsingToolbarLayout.class) {
       @Override
       public void describeTo(Description description) {
         description.appendText("CollapsingToolbarLayout has content scrim with alpha: " + alpha);
       }
 
       @Override
-      protected boolean matchesSafely(CollapsingToolbarLayout view) {
-        return alpha == view.getScrimAlpha();
+      protected boolean matchesSafely(View view) {
+        return alpha == ((CollapsingToolbarLayout) view).getScrimAlpha();
       }
     };
   }

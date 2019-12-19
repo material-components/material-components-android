@@ -20,34 +20,34 @@
     <attr name="android:valueFrom" />
     <attr name="android:valueTo" />
     <attr name="android:stepSize" />
-    <!-- The color of the track. -->
-    <attr name="trackColor" format="color" />
-    <!-- The color of active portion of the track. -->
-    <attr name="activeTrackColor" format="color" />
-    <!-- The color of inactive portion of the track. -->
-    <attr name="inactiveTrackColor" format="color" />
-    <!-- The color of the slider's thumb. -->
-    <attr name="thumbColor" format="color" />
+    <!-- Determines if Slider should increase its default height to include space for the label. -->
+    <attr name="floatingLabel" format="boolean" />
     <!-- The color of the slider's halo. -->
     <attr name="haloColor" format="color" />
+    <!-- The radius of the halo. -->
+    <attr name="haloRadius" format="dimension" />
+    <!-- The style used for the label TooltipDrawable. -->
+    <attr name="labelStyle" format="reference" />
+    <!-- The color of the slider's thumb. -->
+    <attr name="thumbColor" format="color" />
+    <!-- The elevation of the thumb. -->
+    <attr name="thumbElevation" format="dimension" />
+    <!-- The radius of the thumb. -->
+    <attr name="thumbRadius" format="dimension" />
     <!-- The color of the slider's tick marks. Only used when the slider is in discrete mode. -->
     <attr name="tickColor" format="color" />
     <!-- The color of the slider's tick marks for the active portion of the track. Only used when
          the slider is in discrete mode. -->
-    <attr name="activeTickColor" format="color" />
+    <attr name="tickColorActive" format="color" />
     <!-- The color of the slider's tick marks for the inactive portion of the track. Only used when
          the slider is in discrete mode. -->
-    <attr name="inactiveTickColor" format="color" />
-    <!-- The style used for the label TooltipDrawable. -->
-    <attr name="labelStyle" format="reference" />
-    <!-- Determines if Slider should increase its default height to include space for the label. -->
-    <attr name="floatingLabel" format="boolean" />
-    <!-- The radius of the thumb. -->
-    <attr name="thumbRadius" format="dimension" />
-    <!-- The elevation of the thumb. -->
-    <attr name="thumbElevation" format="dimension" />
-    <!-- The radius of the halo. -->
-    <attr name="haloRadius" format="dimension" />
+    <attr name="tickColorInactive" format="color" />
+    <!-- The color of the track. -->
+    <attr name="trackColor" format="color" />
+    <!-- The color of active portion of the track. -->
+    <attr name="trackColorActive" format="color" />
+    <!-- The color of inactive portion of the track. -->
+    <attr name="trackColorInactive" format="color" />
     <!-- The height of the track. -->
     <attr name="trackHeight" format="dimension" />
   </declare-styleable>

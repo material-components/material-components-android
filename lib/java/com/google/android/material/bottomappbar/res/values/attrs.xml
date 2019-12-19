@@ -44,6 +44,10 @@
     <attr name="hideOnScroll" format="boolean"/>
     <!-- Whether the BottomAppBar should apply padding to be above the bottom window insets. -->
     <attr name="paddingBottomSystemWindowInsets"/>
+    <!-- Whether the BottomAppBar should apply padding to be to the right of the left window insets. -->
+    <attr name="paddingLeftSystemWindowInsets"/>
+    <!-- Whether the BottomAppBar should apply padding to be to the left of the right window insets. -->
+    <attr name="paddingRightSystemWindowInsets"/>
   </declare-styleable>
 
   <!-- Style to use for BottomAppBar in this theme. -->

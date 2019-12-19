@@ -70,6 +70,13 @@ public class SliderFragment extends DemoLandingFragment {
             return new SliderDiscreteDemoFragment();
           }
         });
+    additionalDemos.add(
+        new Demo(R.string.cat_slider_demo_scroll_container_title) {
+          @Override
+          public Fragment createFragment() {
+            return new SliderScrollContainerDemoFragment();
+          }
+        });
     return additionalDemos;
   }
 

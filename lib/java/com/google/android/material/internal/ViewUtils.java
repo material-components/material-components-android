@@ -162,6 +162,10 @@ public class ViewUtils {
 
     final boolean paddingBottomSystemWindowInsets =
         a.getBoolean(R.styleable.Insets_paddingBottomSystemWindowInsets, false);
+    final boolean paddingLeftSystemWindowInsets =
+        a.getBoolean(R.styleable.Insets_paddingLeftSystemWindowInsets, false);
+    final boolean paddingRightSystemWindowInsets =
+        a.getBoolean(R.styleable.Insets_paddingRightSystemWindowInsets, false);
 
     a.recycle();
 
@@ -176,6 +180,21 @@ public class ViewUtils {
               @NonNull RelativePadding initialPadding) {
             if (paddingBottomSystemWindowInsets) {
               initialPadding.bottom += insets.getSystemWindowInsetBottom();
+            }
+            boolean isRtl = isLayoutRtl(view);
+            if (paddingLeftSystemWindowInsets) {
+              if (isRtl) {
+                initialPadding.end += insets.getSystemWindowInsetLeft();
+              } else {
+                initialPadding.start += insets.getSystemWindowInsetLeft();
+              }
+            }
+            if (paddingRightSystemWindowInsets) {
+              if (isRtl) {
+                initialPadding.start += insets.getSystemWindowInsetRight();
+              } else {
+                initialPadding.end += insets.getSystemWindowInsetRight();
+              }
             }
             initialPadding.applyToView(view);
             return listener != null

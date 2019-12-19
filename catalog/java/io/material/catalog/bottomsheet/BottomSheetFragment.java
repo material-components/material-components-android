@@ -57,8 +57,6 @@ public class BottomSheetFragment extends DemoLandingFragment {
   @Override
   public List<Demo> getAdditionalDemos() {
     List<Demo> additionalDemos = new ArrayList<>();
-    // TODO(b/135699723): Enable below once this bug is fixed.
-    if (false) {
     additionalDemos.add(
         new Demo(R.string.cat_bottomsheet_scrollable_content_demo_title) {
           @Override
@@ -66,7 +64,6 @@ public class BottomSheetFragment extends DemoLandingFragment {
             return new BottomSheetScrollableContentDemoFragment();
           }
         });
-    }
     return additionalDemos;
   }
 

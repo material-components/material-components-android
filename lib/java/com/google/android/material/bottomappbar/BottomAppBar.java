@@ -146,6 +146,8 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   @FabAnimationMode private int fabAnimationMode;
   private boolean hideOnScroll;
   private final boolean paddingBottomSystemWindowInsets;
+  private final boolean paddingLeftSystemWindowInsets;
+  private final boolean paddingRightSystemWindowInsets;
 
   /** Keeps track of the number of currently running animations. */
   private int animatingModeChangeCounter = 0;
@@ -168,6 +170,8 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   private Behavior behavior;
 
   private int bottomInset;
+  private int rightInset;
+  private int leftInset;
 
   /**
    * Listens to the FABs hide or show animation to kick off an animation on BottomAppBar that reacts
@@ -243,6 +247,10 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     // Reading out if we are handling bottom padding, so we can apply it to the FAB.
     paddingBottomSystemWindowInsets =
         a.getBoolean(R.styleable.BottomAppBar_paddingBottomSystemWindowInsets, false);
+    paddingLeftSystemWindowInsets =
+        a.getBoolean(R.styleable.BottomAppBar_paddingLeftSystemWindowInsets, false);
+    paddingRightSystemWindowInsets =
+        a.getBoolean(R.styleable.BottomAppBar_paddingRightSystemWindowInsets, false);
 
     a.recycle();
 
@@ -273,11 +281,31 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
               View view,
               @NonNull WindowInsetsCompat insets,
               @NonNull RelativePadding initialPadding) {
+            // Just read the insets here. doOnApplyWindowInsets will apply the padding under the
+            // hood.
+            boolean leftInsetsChanged = false;
+            boolean rightInsetsChanged = false;
             if (paddingBottomSystemWindowInsets) {
-              // Just read the insets here. doOnApplyWindowInsets will apply the bottom padding
-              // under the hood.
               bottomInset = insets.getSystemWindowInsetBottom();
             }
+            if (paddingLeftSystemWindowInsets) {
+              leftInsetsChanged = leftInset != insets.getSystemWindowInsetLeft();
+              leftInset = insets.getSystemWindowInsetLeft();
+            }
+            if (paddingRightSystemWindowInsets) {
+              rightInsetsChanged = rightInset != insets.getSystemWindowInsetRight();
+              rightInset = insets.getSystemWindowInsetRight();
+            }
+
+            // We may need to change the position of the cutout or the action menu if the side
+            // insets have changed.
+            if (leftInsetsChanged || rightInsetsChanged) {
+              cancelAnimations();
+
+              setCutoutState();
+              setActionMenuViewPosition();
+            }
+
             return insets;
           }
         });
@@ -679,10 +707,14 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   }
 
   private float getFabTranslationX(@FabAlignmentMode int fabAlignmentMode) {
-    boolean isRtl = ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL;
-    return fabAlignmentMode == FAB_ALIGNMENT_MODE_END
-        ? (getMeasuredWidth() / 2 - fabOffsetEndMode) * (isRtl ? -1 : 1)
-        : 0;
+    boolean isRtl = ViewUtils.isLayoutRtl(this);
+    if (fabAlignmentMode == FAB_ALIGNMENT_MODE_END) {
+      int systemEndInset = isRtl ? leftInset : rightInset;
+      int totalEndInset = fabOffsetEndMode + systemEndInset;
+      return (getMeasuredWidth() / 2 - totalEndInset) * (isRtl ? -1 : 1);
+    } else {
+      return 0;
+    }
   }
 
   private float getFabTranslationX() {
@@ -729,7 +761,11 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
       @NonNull ActionMenuView actionMenuView,
       @FabAlignmentMode int fabAlignmentMode,
       boolean fabAttached) {
-    boolean isRtl = ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL;
+    if (fabAlignmentMode != FAB_ALIGNMENT_MODE_END || !fabAttached) {
+      return 0;
+    }
+
+    boolean isRtl = ViewUtils.isLayoutRtl(this);
     int toolbarLeftContentEnd = isRtl ? getMeasuredWidth() : 0;
 
     // Calculate the inner side of the Toolbar's Gravity.START contents.
@@ -748,10 +784,11 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
       }
     }
 
-    int end = isRtl ? actionMenuView.getRight() : actionMenuView.getLeft();
-    int offset = toolbarLeftContentEnd - end;
+    int actionMenuViewStart = isRtl ? actionMenuView.getRight() : actionMenuView.getLeft();
+    int systemStartInset = isRtl ? rightInset : -leftInset;
+    int end = actionMenuViewStart + systemStartInset;
 
-    return fabAlignmentMode == FAB_ALIGNMENT_MODE_END && fabAttached ? offset : 0;
+    return toolbarLeftContentEnd - end;
   }
 
   private void cancelAnimations() {
@@ -836,6 +873,14 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
 
   private int getBottomInset() {
     return bottomInset;
+  }
+
+  private int getRightInset() {
+    return rightInset;
+  }
+
+  private int getLeftInset() {
+    return leftInset;
   }
 
   @Override
@@ -927,6 +972,14 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
               // Should be moved above the bottom insets with space ignoring any shadow padding.
               int minBottomMargin = bottomMargin - bottomShadowPadding;
               fabLayoutParams.bottomMargin = child.getBottomInset() + minBottomMargin;
+              fabLayoutParams.leftMargin = child.getLeftInset();
+              fabLayoutParams.rightMargin = child.getRightInset();
+              boolean isRtl =  ViewUtils.isLayoutRtl(fab);
+              if (isRtl) {
+                fabLayoutParams.leftMargin += child.fabOffsetEndMode;
+              } else {
+                fabLayoutParams.rightMargin += child.fabOffsetEndMode;
+              }
             }
           }
         };

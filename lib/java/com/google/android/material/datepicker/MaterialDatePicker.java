@@ -164,7 +164,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     fullscreen = isFullscreen(context);
     int surfaceColor =
         MaterialAttributes.resolveOrThrow(
-            getContext(), R.attr.colorSurface, MaterialDatePicker.class.getCanonicalName());
+            context, R.attr.colorSurface, MaterialDatePicker.class.getCanonicalName());
     background =
         new MaterialShapeDrawable(
             context,
