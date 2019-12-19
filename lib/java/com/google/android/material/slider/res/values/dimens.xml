@@ -17,11 +17,9 @@
 <resources>
 
   <dimen name="mtrl_slider_widget_height">48dp</dimen>
-  <dimen name="mtrl_slider_widget_height_label">68dp</dimen>
 
   <dimen name="mtrl_slider_track_side_padding">16dp</dimen>
   <dimen name="mtrl_slider_track_top">24dp</dimen>
-  <dimen name="mtrl_slider_track_top_label">44dp</dimen>
   <dimen name="mtrl_slider_track_height">4dp</dimen>
 
   <dimen name="mtrl_slider_thumb_radius">10dp</dimen>

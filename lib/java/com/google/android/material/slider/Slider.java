@@ -52,6 +52,9 @@ import android.util.Log;
 import android.view.InflateException;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import com.google.android.material.drawable.DrawableUtils;
 import com.google.android.material.internal.DescendantOffsetUtils;
 import com.google.android.material.internal.ThemeEnforcement;
@@ -71,42 +74,47 @@ import java.util.Locale;
  * operation is controlled by the value of the step size. If the step size is set to 0, the slider
  * operates as a continuous slider where the slider's thumb can be moved to any position along the
  * horizontal line. If the step size is set to a number greater than 0, the slider operates as a
- * discrete slider where the slider's thumb will snap to the closest tick mark. See {@link
+ * discrete slider where the slider's thumb will snap to the closest valid value. See {@link
  * #setStepSize(float)}.
- *
- * <p>The slider displays a line on which the thumb can be dragged to select a value.
- *
- * <p>On interaction in discrete mode, tick marks are displayed along the line and the thumb
- * automatically snaps to the closest tick mark.
  *
  * <p>The {@link OnChangeListener} interface defines a callback to be invoked when the slider
  * changes.
  *
  * <p>The {@link LabelFormatter} interface defines a formatter to be used to render text within the
- * bubble shown while in discrete mode.
+ * value indicator label on interaction.
  *
  * <p>{@link BasicLabelFormatter} is a simple implementation of the {@link LabelFormatter} that
  * displays the selected value using letters to indicate magnitude (e.g.: 1.5K, 3M, 12B, etc..).
  *
  * <p>With the default style {@link
- * com.google.android.material.R.style.Widget_MaterialComponents_Slider}, colorPrimary is used to
- * customize the color of the slider. The following attributes are used to customize the slider's
- * appearance further:
+ * com.google.android.material.R.style.Widget_MaterialComponents_Slider}, colorPrimary and
+ * colorOnPrimary are used to customize the color of the slider when enabled, and colorOnSurface is
+ * used when disabled. The following attributes are used to customize the slider's appearance
+ * further:
  *
  * <ul>
- *   <li>{@code trackColor}: The color of the whole track. This is a short hand for setting both the
- *       {@code activeTrackColor} and {@code inactiveTrackColor} to the same thing. This takes
- *       precedence over {@code activeTrackColor} and {@code inactiveTrackColor}.
- *   <li>{@code activeTrackColor}: The color of the active part of the track.
- *   <li>{@code inactiveTrackColor}: The color of the inactive part of the track.
- *   <li>{@code thumbColor}: the color of the slider's thumb.
- *   <li>{@code tickColor}: the color of the slider's tick marks. Only used when the slider is in
- *       discrete mode.
- *   <li>{@code activeTickColor}: the color of the slider's tick marks for the active part of the
- *       track. Only used when the slider is in discrete mode.
- *   <li>{@code inactiveTickColor}: the color of the slider's tick marks for the inactive part of
- *       the track. Only used when the slider is in discrete mode.
+ *   <li>{@code floatingLabel}: If the label should be drawn floating above other views, or if space
+ *       should be added to this view.
+ *   <li>{@code haloColor}: the color of the halo around the thumb.
+ *   <li>{@code haloRadius}: The radius of the halo around the thumb.
  *   <li>{@code labelStyle}: the style to apply to the value indicator {@link TooltipDrawable}.
+ *   <li>{@code thumbColor}: the color of the slider's thumb.
+ *   <li>{@code thumbElevation}: the elevation of the slider's thumb.
+ *   <li>{@code thumbRadius}: The radius of the slider's thumb.
+ *   <li>{@code tickColorActive}: the color of the slider's tick marks for the active part of the
+ *       track. Only used when the slider is in discrete mode.
+ *   <li>{@code tickColorInactive}: the color of the slider's tick marks for the inactive part of
+ *       the track. Only used when the slider is in discrete mode.
+ *   <li>{@code tickColor}: the color of the slider's tick marks. Only used when the slider is in
+ *       discrete mode. This is a short hand for setting both the {@code tickColorActive} and {@code
+ *       tickColorInactive} to the same thing. This takes precedence over {@code tickColorActive}
+ *       and {@code tickColorInactive}.
+ *   <li>{@code trackColorActive}: The color of the active part of the track.
+ *   <li>{@code trackColorInactive}: The color of the inactive part of the track.
+ *   <li>{@code trackColor}: The color of the whole track. This is a short hand for setting both the
+ *       {@code trackColorActive} and {@code trackColorInactive} to the same thing. This takes
+ *       precedence over {@code trackColorActive} and {@code trackColorInactive}.
+ *   <li>{@code trackHeight}: The height of the track.
  * </ul>
  *
  * <p>The following XML attributes are used to set the slider's various parameters of operation:
@@ -128,23 +136,24 @@ import java.util.Locale;
  *
  * <p>Note: the slider does not accept {@link View.OnFocusChangeListener}s.
  *
+ * @attr ref com.google.android.material.R.styleable#Slider_android_stepSize
  * @attr ref com.google.android.material.R.styleable#Slider_android_value
  * @attr ref com.google.android.material.R.styleable#Slider_android_valueFrom
  * @attr ref com.google.android.material.R.styleable#Slider_android_valueTo
- * @attr ref com.google.android.material.R.styleable#Slider_android_stepSize
- * @attr ref com.google.android.material.R.styleable#Slider_trackColor
- * @attr ref com.google.android.material.R.styleable#Slider_activeTrackColor
- * @attr ref com.google.android.material.R.styleable#Slider_inactiveTrackColor
- * @attr ref com.google.android.material.R.styleable#Slider_thumbColor
- * @attr ref com.google.android.material.R.styleable#Slider_haloColor
- * @attr ref com.google.android.material.R.styleable#Slider_tickColor
- * @attr ref com.google.android.material.R.styleable#Slider_activeTickColor
- * @attr ref com.google.android.material.R.styleable#Slider_inactiveTickColor
- * @attr ref com.google.android.material.R.styleable#Slider_labelStyle
  * @attr ref com.google.android.material.R.styleable#Slider_floatingLabel
- * @attr ref com.google.android.material.R.styleable#Slider_thumbRadius
- * @attr ref com.google.android.material.R.styleable#Slider_thumbElevation
+ * @attr ref com.google.android.material.R.styleable#Slider_haloColor
  * @attr ref com.google.android.material.R.styleable#Slider_haloRadius
+ * @attr ref com.google.android.material.R.styleable#Slider_labelStyle
+ * @attr ref com.google.android.material.R.styleable#Slider_thumbColor
+ * @attr ref com.google.android.material.R.styleable#Slider_thumbElevation
+ * @attr ref com.google.android.material.R.styleable#Slider_thumbRadius
+ * @attr ref com.google.android.material.R.styleable#Slider_tickColor
+ * @attr ref com.google.android.material.R.styleable#Slider_tickColorActive
+ * @attr ref com.google.android.material.R.styleable#Slider_tickColorInactive
+ * @attr ref com.google.android.material.R.styleable#Slider_trackColor
+ * @attr ref com.google.android.material.R.styleable#Slider_trackColorActive
+ * @attr ref com.google.android.material.R.styleable#Slider_trackColorInactive
+ * @attr ref com.google.android.material.R.styleable#Slider_trackHeight
  */
 public class Slider extends View {
 
@@ -173,16 +182,17 @@ public class Slider extends View {
 
   @NonNull private TooltipDrawable label;
 
+  private final int scaledTouchSlop;
+
   private int widgetHeight;
-  private int widgetHeightLabel;
   private boolean floatingLabel;
   private int trackHeight;
   private int trackSidePadding;
   private int trackTop;
-  private int trackTopLabel;
   private int thumbRadius;
   private int haloRadius;
   private int labelPadding;
+  private float touchDownX;
   private OnChangeListener listener;
   private OnSliderTouchListener touchListener;
   private LabelFormatter formatter;
@@ -194,14 +204,13 @@ public class Slider extends View {
   private float[] ticksCoordinates;
   private float[] visibleTicksCoordinates;
   private int trackWidth;
-  private boolean forceDrawCompatShadow;
+  private boolean forceDrawCompatHalo;
 
-  @NonNull private ColorStateList inactiveTrackColor;
-  @NonNull private ColorStateList activeTrackColor;
-  @NonNull private ColorStateList thumbColor;
   @NonNull private ColorStateList haloColor;
-  @NonNull private ColorStateList inactiveTickColor;
-  @NonNull private ColorStateList activeTickColor;
+  @NonNull private ColorStateList tickColorActive;
+  @NonNull private ColorStateList tickColorInactive;
+  @NonNull private ColorStateList trackColorActive;
+  @NonNull private ColorStateList trackColorInactive;
 
   @NonNull private final MaterialShapeDrawable thumbDrawable = new MaterialShapeDrawable();
 
@@ -301,11 +310,10 @@ public class Slider extends View {
     activeTicksPaint.setStrokeWidth(trackHeight / 2.0f);
     activeTicksPaint.setStrokeCap(Cap.ROUND);
 
-    Drawable background = getBackground();
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+      Drawable background = getBackground();
       if (background instanceof RippleDrawable) {
         ((RippleDrawable) background).setColor(haloColor);
-        DrawableUtils.setRippleDrawableRadius(background, haloRadius);
       }
       // Because the RippleDrawable can draw outside the bounds of the view, we can set the layer
       // type to hardware so we can use PorterDuffXfermode when drawing.
@@ -324,30 +332,15 @@ public class Slider extends View {
 
     // Set up the thumb drawable to always show the compat shadow.
     thumbDrawable.setShadowCompatibilityMode(MaterialShapeDrawable.SHADOW_COMPAT_MODE_ALWAYS);
-  }
 
-  @Override
-  public void setEnabled(boolean enabled) {
-    super.setEnabled(enabled);
-    // When we're disabled, set the layer type to hardware so we can clear the track out from behind
-    // the thumb. When enabled set the layer type to none so that the halo can be drawn outside the
-    // bounds of the slider. After Lollipop we use Ripple for the halo, and an Overlay for the
-    // marker so we don't need to worry about drawing outside the bounds.
-    if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
-      setLayerType(enabled ? LAYER_TYPE_NONE : LAYER_TYPE_HARDWARE, null);
-    }
+    scaledTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
   }
-
-  @Override
-  public void setOnFocusChangeListener(View.OnFocusChangeListener listener) {}
 
   private void loadResources(@NonNull Resources resources) {
     widgetHeight = resources.getDimensionPixelSize(R.dimen.mtrl_slider_widget_height);
-    widgetHeightLabel = resources.getDimensionPixelSize(R.dimen.mtrl_slider_widget_height_label);
 
     trackSidePadding = resources.getDimensionPixelOffset(R.dimen.mtrl_slider_track_side_padding);
     trackTop = resources.getDimensionPixelOffset(R.dimen.mtrl_slider_track_top);
-    trackTopLabel = resources.getDimensionPixelOffset(R.dimen.mtrl_slider_track_top_label);
 
     labelPadding = resources.getDimensionPixelSize(R.dimen.mtrl_slider_label_padding);
   }
@@ -363,29 +356,30 @@ public class Slider extends View {
 
     boolean hasTrackColor = a.hasValue(R.styleable.Slider_trackColor);
 
-    int inactiveTrackColorRes =
-        hasTrackColor ? R.styleable.Slider_trackColor : R.styleable.Slider_inactiveTrackColor;
-    int activeTrackColorRes =
-        hasTrackColor ? R.styleable.Slider_trackColor : R.styleable.Slider_activeTrackColor;
+    int trackColorInactiveRes =
+        hasTrackColor ? R.styleable.Slider_trackColor : R.styleable.Slider_trackColorInactive;
+    int trackColorActiveRes =
+        hasTrackColor ? R.styleable.Slider_trackColor : R.styleable.Slider_trackColorActive;
 
-    inactiveTrackColor = MaterialResources.getColorStateList(context, a, inactiveTrackColorRes);
-    activeTrackColor = MaterialResources.getColorStateList(context, a, activeTrackColorRes);
-    thumbColor = MaterialResources.getColorStateList(context, a, R.styleable.Slider_thumbColor);
+    trackColorInactive = MaterialResources.getColorStateList(context, a, trackColorInactiveRes);
+    trackColorActive = MaterialResources.getColorStateList(context, a, trackColorActiveRes);
+    ColorStateList thumbColor =
+        MaterialResources.getColorStateList(context, a, R.styleable.Slider_thumbColor);
     thumbDrawable.setFillColor(thumbColor);
     haloColor = MaterialResources.getColorStateList(context, a, R.styleable.Slider_haloColor);
 
     boolean hasTickColor = a.hasValue(R.styleable.Slider_tickColor);
-    int inactiveTickColorRes =
-        hasTickColor ? R.styleable.Slider_tickColor : R.styleable.Slider_inactiveTickColor;
-    int activeTickColorRes =
-        hasTickColor ? R.styleable.Slider_tickColor : R.styleable.Slider_activeTickColor;
-    inactiveTickColor = MaterialResources.getColorStateList(context, a, inactiveTickColorRes);
-    activeTickColor = MaterialResources.getColorStateList(context, a, activeTickColorRes);
+    int tickColorInactiveRes =
+        hasTickColor ? R.styleable.Slider_tickColor : R.styleable.Slider_tickColorInactive;
+    int tickColorActiveRes =
+        hasTickColor ? R.styleable.Slider_tickColor : R.styleable.Slider_tickColorActive;
+    tickColorInactive = MaterialResources.getColorStateList(context, a, tickColorInactiveRes);
+    tickColorActive = MaterialResources.getColorStateList(context, a, tickColorActiveRes);
 
     label = parseLabelDrawable(context, a);
 
     setThumbRadius(a.getDimensionPixelSize(R.styleable.Slider_thumbRadius, 0));
-    haloRadius = a.getDimensionPixelSize(R.styleable.Slider_haloRadius, 0);
+    setHaloRadius(a.getDimensionPixelSize(R.styleable.Slider_haloRadius, 0));
 
     setThumbElevation(a.getDimension(R.styleable.Slider_thumbElevation, 0));
 
@@ -406,20 +400,6 @@ public class Slider extends View {
         null,
         0,
         a.getResourceId(R.styleable.Slider_labelStyle, R.style.Widget_MaterialComponents_Tooltip));
-  }
-
-  @Override
-  protected void onAttachedToWindow() {
-    super.onAttachedToWindow();
-    // The label is attached on the Overlay relative to the content.
-    label.setRelativeToView(ViewUtils.getContentView(this));
-  }
-
-  @Override
-  protected void onDetachedFromWindow() {
-    super.onDetachedFromWindow();
-    ViewUtils.getContentViewOverlay(this).remove(label);
-    label.detachView(ViewUtils.getContentView(this));
   }
 
   private void validateValueFrom() {
@@ -446,7 +426,12 @@ public class Slider extends View {
     }
   }
 
-  /** Returns the slider's {@code valueFrom} value. */
+  /**
+   * Returns the slider's {@code valueFrom} value.
+   *
+   * @see #setValueFrom(float)
+   * @attr ref com.google.android.material.R.styleable#Slider_android_valueFrom
+   */
   public float getValueFrom() {
     return valueFrom;
   }
@@ -459,13 +444,20 @@ public class Slider extends View {
    *
    * @param valueFrom The minimum value for the slider's range of values
    * @throws IllegalArgumentException If {@code valueFrom} is greater or equal to {@code valueTo}
+   * @see #getValueFrom()
+   * @attr ref com.google.android.material.R.styleable#Slider_android_valueFrom
    */
   public void setValueFrom(float valueFrom) {
     this.valueFrom = valueFrom;
     validateValueFrom();
   }
 
-  /** Returns the slider's {@code valueTo} value. */
+  /**
+   * Returns the slider's {@code valueTo} value.
+   *
+   * @see #setValueTo(float)
+   * @attr ref com.google.android.material.R.styleable#Slider_android_valueTo
+   */
   public float getValueTo() {
     return valueTo;
   }
@@ -478,13 +470,20 @@ public class Slider extends View {
    *
    * @param valueTo The maximum value for the slider's range of values
    * @throws IllegalArgumentException If {@code valueTo} is lesser or equal to {@code valueFrom}
+   * @see #getValueTo()
+   * @attr ref com.google.android.material.R.styleable#Slider_android_valueTo
    */
   public void setValueTo(float valueTo) {
     this.valueTo = valueTo;
     validateValueTo();
   }
 
-  /** Returns the value of the slider. */
+  /**
+   * Returns the value of the slider.
+   *
+   * @see #setValue(float)
+   * @attr ref com.google.android.material.R.styleable#Slider_android_value
+   */
   public float getValue() {
     return thumbPosition * (valueTo - valueFrom) + valueFrom;
   }
@@ -503,6 +502,8 @@ public class Slider extends View {
    * @param value The value to which to set the slider
    * @throws IllegalArgumentException If the value is not within {@code valueFrom} and {@code
    *     valueTo}. If stepSize is greater than 0 and value does not fall on a tick
+   * @see #getValue()
+   * @attr ref com.google.android.material.R.styleable#Slider_android_value
    */
   public void setValue(float value) {
     if (isValueValid(value)) {
@@ -531,6 +532,9 @@ public class Slider extends View {
    *
    * <p>A step size of 0 means that the slider is operating in continuous mode. A step size greater
    * than 0 means that the slider is operating in discrete mode.
+   *
+   * @see #setStepSize(float)
+   * @attr ref com.google.android.material.R.styleable#Slider_android_stepSize
    */
   public float getStepSize() {
     return stepSize;
@@ -552,11 +556,14 @@ public class Slider extends View {
    *     in continuous mode and not have any ticks.
    * @throws IllegalArgumentException If the step size is not a factor of the {@code
    *     valueFrom}-{@code valueTo} range. If the step size is less than 0
+   * @see #getStepSize()
+   * @attr ref com.google.android.material.R.styleable#Slider_android_stepSize
    */
   public void setStepSize(float stepSize) {
     this.stepSize = stepSize;
     validateStepSize();
-    requestLayout();
+    maybeUpdateTrackWidthAndTicksCoordinates();
+    postInvalidate();
   }
 
   /**
@@ -603,23 +610,56 @@ public class Slider extends View {
     this.formatter = formatter;
   }
 
-  /** Sets the elevation of the thumb. */
+  /**
+   * Returns the elevation of the thumb.
+   *
+   * @see #setThumbElevation(float)
+   * @see #setThumbElevationResource(int)
+   * @attr ref com.google.android.material.R.styleable#Slider_thumbElevation
+   */
+  public float getThumbElevation() {
+    return thumbDrawable.getElevation();
+  }
+
+  /**
+   * Sets the elevation of the thumb.
+   *
+   * @see #getThumbElevation()
+   * @attr ref com.google.android.material.R.styleable#Slider_thumbElevation
+   */
   public void setThumbElevation(float elevation) {
     thumbDrawable.setElevation(elevation);
     postInvalidate();
   }
 
-  /** Sets the elevation of the thumb from a dimension resource. */
+  /**
+   * Sets the elevation of the thumb from a dimension resource.
+   *
+   * @see #getThumbElevation()
+   * @attr ref com.google.android.material.R.styleable#Slider_thumbElevation
+   */
   public void setThumbElevationResource(@DimenRes int elevation) {
     setThumbElevation(getResources().getDimension(elevation));
   }
 
-  /** Returns the elevation of the thumb. */
-  public float getThumbElevation() {
-    return thumbDrawable.getElevation();
+  /**
+   * Returns the radius of the thumb.
+   *
+   * @see #setThumbRadius(int)
+   * @see #setThumbRadiusResource(int)
+   * @attr ref com.google.android.material.R.styleable#Slider_thumbRadius
+   */
+  @Dimension
+  public int getThumbRadius() {
+    return thumbRadius;
   }
 
-  /** Sets the radius of the thumb in pixels. */
+  /**
+   * Sets the radius of the thumb in pixels.
+   *
+   * @see #getThumbRadius()
+   * @attr ref com.google.android.material.R.styleable#Slider_thumbRadius
+   */
   public void setThumbRadius(@IntRange(from = 0) @Dimension int radius) {
     thumbRadius = radius;
 
@@ -630,31 +670,71 @@ public class Slider extends View {
     postInvalidate();
   }
 
-  /** Sets the radius of the thumb from a dimension resource. */
+  /**
+   * Sets the radius of the thumb from a dimension resource.
+   *
+   * @see #getThumbRadius()
+   * @attr ref com.google.android.material.R.styleable#Slider_thumbRadius
+   */
   public void setThumbRadiusResource(@DimenRes int radius) {
     setThumbRadius(getResources().getDimensionPixelSize(radius));
   }
 
-  /** Returns the radius of the thumb. */
-  @Dimension
-  public int getThumbRadius() {
-    return thumbRadius;
+  /**
+   * Returns the radius of the halo.
+   *
+   * @see #setHaloRadius(int)
+   * @see #setHaloRadiusResource(int)
+   * @attr ref com.google.android.material.R.styleable#Slider_haloRadius
+   */
+  @Dimension()
+  public int getHaloRadius() {
+    return haloRadius;
   }
 
-  /** Sets the radius of the halo in pixels. */
+  /**
+   * Sets the radius of the halo in pixels.
+   *
+   * @see #getHaloRadius()
+   * @attr ref com.google.android.material.R.styleable#Slider_haloRadius
+   */
   public void setHaloRadius(@IntRange(from = 0) @Dimension int radius) {
     haloRadius = radius;
+    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+      Drawable background = getBackground();
+      if (background instanceof RippleDrawable) {
+        DrawableUtils.setRippleDrawableRadius((RippleDrawable) background, haloRadius);
+      }
+    }
     postInvalidate();
   }
 
-  /** Sets the radius of the halo from a dimension resource. */
+  /**
+   * Sets the radius of the halo from a dimension resource.
+   *
+   * @see #getHaloRadius()
+   * @attr ref com.google.android.material.R.styleable#Slider_haloRadius
+   */
   public void setHaloRadiusResource(@DimenRes int radius) {
     setHaloRadius(getResources().getDimensionPixelSize(radius));
   }
 
   /**
-   * If true, height will be added to make space for the label, otherwise the label will be drawn on
-   * top of views above this one.
+   * If the height of this view is increased to make space for the label.
+   *
+   * @see #setFloatingLabel(boolean)
+   * @attr ref com.google.android.material.R.styleable#Slider_floatingLabel
+   */
+  public boolean isFloatingLabel() {
+    return floatingLabel;
+  }
+
+  /**
+   * If true, the label will be drawn on top of views above this one, otherwise height will be added
+   * to make space for the label.
+   *
+   * @see #isFloatingLabel()
+   * @attr ref com.google.android.material.R.styleable#Slider_floatingLabel
    */
   public void setFloatingLabel(boolean floatingLabel) {
     if (this.floatingLabel != floatingLabel) {
@@ -663,30 +743,59 @@ public class Slider extends View {
     }
   }
 
-  /** If the height of this view is increased to make space for the label. */
-  public boolean isFloatingLabel() {
-    return floatingLabel;
-  }
-
-  /** Returns the radius of the halo. */
-  @Dimension()
-  public int getHaloRadius() {
-    return haloRadius;
-  }
-
-  /** Set the height of the track in pixels. */
-  public void setTrackHeight(@IntRange(from = 0) @Dimension int trackHeight) {
-    if (this.trackHeight != trackHeight) {
-      this.trackHeight = trackHeight;
-      onTrackHeightChange();
-      requestLayout();
-    }
-  }
-
-  /** Returns the height of the track in pixels. */
+  /**
+   * Returns the height of the track in pixels.
+   *
+   * @see #setTrackHeight(int)
+   * @attr ref com.google.android.material.R.styleable#Slider_trackHeight
+   */
   @Dimension()
   public int getTrackHeight() {
     return trackHeight;
+  }
+
+  /**
+   * Set the height of the track in pixels.
+   *
+   * @see #getTrackHeight()
+   * @attr ref com.google.android.material.R.styleable#Slider_trackHeight
+   */
+  public void setTrackHeight(@IntRange(from = 0) @Dimension int trackHeight) {
+    if (this.trackHeight != trackHeight) {
+      this.trackHeight = trackHeight;
+      invalidateTrack();
+      maybeUpdateTrackWidthAndTicksCoordinates();
+      postInvalidate();
+    }
+  }
+
+  @Override
+  public void setEnabled(boolean enabled) {
+    super.setEnabled(enabled);
+    // When we're disabled, set the layer type to hardware so we can clear the track out from behind
+    // the thumb. When enabled set the layer type to none so that the halo can be drawn outside the
+    // bounds of the slider. After Lollipop we use Ripple for the halo, and an Overlay for the
+    // marker so we don't need to worry about drawing outside the bounds.
+    if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
+      setLayerType(enabled ? LAYER_TYPE_NONE : LAYER_TYPE_HARDWARE, null);
+    }
+  }
+
+  @Override
+  public void setOnFocusChangeListener(View.OnFocusChangeListener listener) {}
+
+  @Override
+  protected void onAttachedToWindow() {
+    super.onAttachedToWindow();
+    // The label is attached on the Overlay relative to the content.
+    label.setRelativeToView(ViewUtils.getContentView(this));
+  }
+
+  @Override
+  protected void onDetachedFromWindow() {
+    super.onDetachedFromWindow();
+    ViewUtils.getContentViewOverlay(this).remove(label);
+    label.detachView(ViewUtils.getContentView(this));
   }
 
   @Override
@@ -694,7 +803,7 @@ public class Slider extends View {
     super.onMeasure(
         widthMeasureSpec,
         MeasureSpec.makeMeasureSpec(
-            floatingLabel ? widgetHeight : widgetHeightLabel, MeasureSpec.EXACTLY));
+            widgetHeight + (floatingLabel ? 0 : label.getIntrinsicHeight()), MeasureSpec.EXACTLY));
   }
 
   @Override
@@ -702,6 +811,13 @@ public class Slider extends View {
     super.onSizeChanged(w, h, oldw, oldh);
     updateTrackWidthAndTicksCoordinates(w);
     updateHaloHotSpot();
+  }
+
+  private void maybeUpdateTrackWidthAndTicksCoordinates() {
+    if (ViewCompat.isLaidOut(this)) {
+      // If we're already laid out we need to update the ticks.
+      updateTrackWidthAndTicksCoordinates(getWidth());
+    }
   }
 
   private void updateTrackWidthAndTicksCoordinates(int viewWidth) {
@@ -746,7 +862,7 @@ public class Slider extends View {
   }
 
   private int calculateTop() {
-    return floatingLabel ? trackTop : trackTopLabel;
+    return trackTop + (floatingLabel ? 0 : label.getIntrinsicHeight());
   }
 
   @Override
@@ -809,7 +925,7 @@ public class Slider extends View {
 
   private void maybeDrawHalo(@NonNull Canvas canvas, int width, int top) {
     // Only draw the halo for devices which don't support the ripple.
-    if (forceDrawCompatShadow || VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
+    if (forceDrawCompatHalo || VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
       int centerX = (int) (trackSidePadding + thumbPosition * width);
       if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
         // In this case we can clip the rect to allow drawing outside the bounds.
@@ -836,6 +952,12 @@ public class Slider extends View {
 
     switch (event.getActionMasked()) {
       case MotionEvent.ACTION_DOWN:
+        // If we're inside a scrolling container,
+        // we should start dragging in ACTION_MOVE
+        if (isInScrollingContainer()) {
+          touchDownX = event.getX();
+          break;
+        }
         getParent().requestDisallowInterceptTouchEvent(true);
         requestFocus();
         thumbIsPressed = true;
@@ -851,6 +973,15 @@ public class Slider extends View {
         }
         break;
       case MotionEvent.ACTION_MOVE:
+        if (!thumbIsPressed) {
+          // Check if we're trying to scroll instead of dragging this Slider
+          if (Math.abs(x - touchDownX) < scaledTouchSlop) {
+            return false;
+          }
+          getParent().requestDisallowInterceptTouchEvent(true);
+          onStartTrackingTouch();
+        }
+        thumbIsPressed = true;
         thumbPosition = position;
         snapThumbPosition();
         updateHaloHotSpot();
@@ -917,14 +1048,29 @@ public class Slider extends View {
     ViewUtils.getContentViewOverlay(this).add(label);
   }
 
-  private void onTrackHeightChange() {
-    if (ViewCompat.isLaidOut(this)) {
-      updateTrackWidthAndTicksCoordinates(getWidth());
-    }
+  private void invalidateTrack() {
     inactiveTrackPaint.setStrokeWidth(trackHeight);
     activeTrackPaint.setStrokeWidth(trackHeight);
     inactiveTicksPaint.setStrokeWidth(trackHeight / 2.0f);
     activeTicksPaint.setStrokeWidth(trackHeight / 2.0f);
+  }
+
+  /**
+   * If this returns true, we can't start dragging the Slider immediately when we receive a {@link
+   * MotionEvent#ACTION_DOWN}. Instead, we must wait for a {@link MotionEvent#ACTION_MOVE}. Copied
+   * from hidden method of {@link View} isInScrollingContainer.
+   *
+   * @return true if any of this View's parents is a scrolling View.
+   */
+  private boolean isInScrollingContainer() {
+    ViewParent p = getParent();
+    while (p instanceof ViewGroup) {
+      if (((ViewGroup) p).shouldDelayChildPressedState()) {
+        return true;
+      }
+      p = p.getParent();
+    }
+    return false;
   }
 
   private void onStartTrackingTouch(){
@@ -943,17 +1089,17 @@ public class Slider extends View {
   protected void drawableStateChanged() {
     super.drawableStateChanged();
 
-    inactiveTrackPaint.setColor(getColorForState(inactiveTrackColor));
-    activeTrackPaint.setColor(getColorForState(activeTrackColor));
-    inactiveTicksPaint.setColor(getColorForState(inactiveTickColor));
-    activeTicksPaint.setColor(getColorForState(activeTickColor));
+    inactiveTrackPaint.setColor(getColorForState(trackColorInactive));
+    activeTrackPaint.setColor(getColorForState(trackColorActive));
+    inactiveTicksPaint.setColor(getColorForState(tickColorInactive));
+    activeTicksPaint.setColor(getColorForState(tickColorActive));
     if (label.isStateful()) {
       label.setState(getDrawableState());
     }
     if (thumbDrawable.isStateful()) {
       thumbDrawable.setState(getDrawableState());
     }
-    haloPaint.setColor(getColorForState(thumbColor));
+    haloPaint.setColor(getColorForState(haloColor));
     haloPaint.setAlpha(HALO_ALPHA);
   }
 
@@ -963,8 +1109,8 @@ public class Slider extends View {
   }
 
   @VisibleForTesting
-  void forceDrawCompatShadow(boolean force) {
-    forceDrawCompatShadow = force;
+  void forceDrawCompatHalo(boolean force) {
+    forceDrawCompatHalo = force;
   }
 
   @Override

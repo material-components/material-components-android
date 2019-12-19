@@ -82,6 +82,8 @@ FAB Cradle Corner Radius      | `app:fabCradleRoundedCornerRadius`
 FAB Vertical Offset           | `app:fabCradleVerticalOffset`
 Hide on scroll                | `app:hideOnScroll`
 Add Padding for Bottom Insets | `app:paddingBottomSystemWindowInsets`
+Add Padding for Left Insets   | `app:paddingLeftSystemWindowInsets`
+Add Padding for Right Insets  | `app:paddingRightSystemWindowInsets`
 
 #### Background Tint
 
