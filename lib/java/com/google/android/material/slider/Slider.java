@@ -52,6 +52,9 @@ import android.util.Log;
 import android.view.InflateException;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import com.google.android.material.drawable.DrawableUtils;
 import com.google.android.material.internal.DescendantOffsetUtils;
 import com.google.android.material.internal.ThemeEnforcement;
@@ -179,6 +182,8 @@ public class Slider extends View {
 
   @NonNull private TooltipDrawable label;
 
+  private final int scaledTouchSlop;
+
   private int widgetHeight;
   private boolean floatingLabel;
   private int trackHeight;
@@ -187,6 +192,7 @@ public class Slider extends View {
   private int thumbRadius;
   private int haloRadius;
   private int labelPadding;
+  private float touchDownX;
   private OnChangeListener listener;
   private LabelFormatter formatter;
   private boolean thumbIsPressed = false;
@@ -315,6 +321,8 @@ public class Slider extends View {
 
     // Set up the thumb drawable to always show the compat shadow.
     thumbDrawable.setShadowCompatibilityMode(MaterialShapeDrawable.SHADOW_COMPAT_MODE_ALWAYS);
+
+    scaledTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
   }
 
   private void loadResources(@NonNull Resources resources) {
@@ -924,6 +932,12 @@ public class Slider extends View {
 
     switch (event.getActionMasked()) {
       case MotionEvent.ACTION_DOWN:
+        // If we're inside a scrolling container,
+        // we should start dragging in ACTION_MOVE
+        if (isInScrollingContainer()) {
+          touchDownX = event.getX();
+          break;
+        }
         getParent().requestDisallowInterceptTouchEvent(true);
         requestFocus();
         thumbIsPressed = true;
@@ -938,6 +952,14 @@ public class Slider extends View {
         }
         break;
       case MotionEvent.ACTION_MOVE:
+        if (!thumbIsPressed) {
+          // Check if we're trying to scroll instead of dragging this Slider
+          if (Math.abs(x - touchDownX) < scaledTouchSlop) {
+            return false;
+          }
+          getParent().requestDisallowInterceptTouchEvent(true);
+        }
+        thumbIsPressed = true;
         thumbPosition = position;
         snapThumbPosition();
         updateHaloHotSpot();
@@ -1006,6 +1028,24 @@ public class Slider extends View {
     activeTrackPaint.setStrokeWidth(trackHeight);
     inactiveTicksPaint.setStrokeWidth(trackHeight / 2.0f);
     activeTicksPaint.setStrokeWidth(trackHeight / 2.0f);
+  }
+
+  /**
+   * If this returns true, we can't start dragging the Slider immediately when we receive a {@link
+   * MotionEvent#ACTION_DOWN}. Instead, we must wait for a {@link MotionEvent#ACTION_MOVE}. Copied
+   * from hidden method of {@link View} isInScrollingContainer.
+   *
+   * @return true if any of this View's parents is a scrolling View.
+   */
+  private boolean isInScrollingContainer() {
+    ViewParent p = getParent();
+    while (p instanceof ViewGroup) {
+      if (((ViewGroup) p).shouldDelayChildPressedState()) {
+        return true;
+      }
+      p = p.getParent();
+    }
+    return false;
   }
 
   @Override
