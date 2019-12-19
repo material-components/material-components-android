@@ -249,7 +249,7 @@ public class NavigationViewTest {
       // direct child of RecyclerView which is expected to have the background set
       // on it. If the internal implementation of NavigationView changes, the second
       // Matcher below will need to be tweaked.
-      Matcher menuItemMatcher =
+      Matcher<View> menuItemMatcher =
           allOf(
               hasDescendant(withText(menuStringContent.get(MENU_CONTENT_ITEM_IDS[i]))),
               isChildOfA(isAssignableFrom(RecyclerView.class)),
@@ -265,7 +265,7 @@ public class NavigationViewTest {
     // And check that all the menu items have the new fill
     final @ColorInt int newFillColorBlue = ResourcesCompat.getColor(res, R.color.test_blue, null);
     for (int i = 0; i < MENU_CONTENT_ITEM_IDS.length; i++) {
-      Matcher menuItemMatcher =
+      Matcher<View> menuItemMatcher =
           allOf(
               hasDescendant(withText(menuStringContent.get(MENU_CONTENT_ITEM_IDS[i]))),
               isChildOfA(isAssignableFrom(RecyclerView.class)),
@@ -283,7 +283,7 @@ public class NavigationViewTest {
     // And check that all the menu items have the new fill
     final @ColorInt int newFillColorGreen = ResourcesCompat.getColor(res, R.color.test_green, null);
     for (int i = 0; i < MENU_CONTENT_ITEM_IDS.length; i++) {
-      Matcher menuItemMatcher =
+      Matcher<View> menuItemMatcher =
           allOf(
               hasDescendant(withText(menuStringContent.get(MENU_CONTENT_ITEM_IDS[i]))),
               isChildOfA(isAssignableFrom(RecyclerView.class)),
@@ -575,7 +575,7 @@ public class NavigationViewTest {
 
       // For the background fill check we need to select a view that has its background
       // set by the current implementation (see disclaimer in testBackground)
-      Matcher menuItemMatcher =
+      Matcher<View> menuItemMatcher =
           allOf(
               hasDescendant(withText(menuStringContent.get(MENU_CONTENT_ITEM_IDS[i]))),
               isChildOfA(isAssignableFrom(RecyclerView.class)),
@@ -583,7 +583,7 @@ public class NavigationViewTest {
       onView(menuItemMatcher).check(matches(withBackgroundFill(expectedItemBackground)));
 
       // And for the foreground color check we need to select a view with the text content
-      Matcher menuItemTextMatcher =
+      Matcher<View> menuItemTextMatcher =
           allOf(
               withText(menuStringContent.get(MENU_CONTENT_ITEM_IDS[i])),
               isDescendantOfA(withId(R.id.start_drawer)));
@@ -684,7 +684,7 @@ public class NavigationViewTest {
     // details of the NavigationMenu, while conditions 3 and 4 aim to be as generic as
     // possible and to not rely on the internal details of the current layout implementation
     // of an individual menu item in NavigationMenu.
-    Matcher menuItemMatcher =
+    Matcher<View> menuItemMatcher =
         allOf(
             isDescendantOfA(withId(R.id.start_drawer)),
             isChildOfA(isAssignableFrom(RecyclerView.class)),
@@ -698,7 +698,7 @@ public class NavigationViewTest {
 
     // Check that the full custom view is displayed without title and icon.
     final Resources res = activityTestRule.getActivity().getResources();
-    Matcher customItemMatcher =
+    Matcher<View> customItemMatcher =
         allOf(
             isDescendantOfA(withId(R.id.start_drawer)),
             isChildOfA(isAssignableFrom(RecyclerView.class)),
