@@ -1234,7 +1234,6 @@ public class Slider extends View {
         }
         break;
       case MotionEvent.ACTION_UP:
-        getParent().requestDisallowInterceptTouchEvent(false);
         thumbIsPressed = false;
         thumbPosition = position;
         snapThumbPosition();
