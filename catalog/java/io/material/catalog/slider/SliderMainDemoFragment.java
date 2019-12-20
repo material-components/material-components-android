@@ -42,13 +42,13 @@ public class SliderMainDemoFragment extends DemoFragment {
     slider.setOnSliderTouchListener(new Slider.OnSliderTouchListener() {
       @Override
       public void onStartTrackingTouch(Slider slider) {
-        Snackbar.make(slider, getText(R.string.cat_slider_start_touch_description),
+        Snackbar.make(slider, R.string.cat_slider_start_touch_description,
             Snackbar.LENGTH_SHORT).show();
       }
 
       @Override
       public void onStopTrackingTouch(Slider slider) {
-        Snackbar.make(slider, getText(R.string.cat_slider_stop_touch_description),
+        Snackbar.make(slider, R.string.cat_slider_stop_touch_description,
             Snackbar.LENGTH_SHORT).show();
       }
     });

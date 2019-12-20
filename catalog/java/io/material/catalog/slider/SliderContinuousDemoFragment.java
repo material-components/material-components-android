@@ -27,7 +27,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
 
 import com.google.android.material.slider.Slider;
-import com.google.android.material.snackbar.Snackbar;
 
 import io.material.catalog.R;
 import io.material.catalog.feature.DemoFragment;
@@ -60,19 +59,6 @@ public class SliderContinuousDemoFragment extends DemoFragment {
     final Slider slider = view.findViewById(sliderId);
     slider.setOnChangeListener(
         (slider1, value, fromUser) -> sliderValue.setText(String.format(valueFormat, value)));
-    slider.setOnSliderTouchListener(new Slider.OnSliderTouchListener() {
-      @Override
-      public void onStartTrackingTouch(Slider slider) {
-        Snackbar.make(slider, getText(R.string.cat_slider_start_touch_description),
-            Snackbar.LENGTH_SHORT).show();
-      }
-
-      @Override
-      public void onStopTrackingTouch(Slider slider) {
-        Snackbar.make(slider, getText(R.string.cat_slider_stop_touch_description),
-            Snackbar.LENGTH_SHORT).show();
-      }
-    });
     slider.setValue(slider.getValueFrom());
     SwitchCompat switchButton = view.findViewById(switchId);
     switchButton.setOnCheckedChangeListener(

@@ -26,7 +26,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.google.android.material.slider.Slider;
-import com.google.android.material.snackbar.Snackbar;
 
 import io.material.catalog.feature.DemoFragment;
 
@@ -56,19 +55,6 @@ public class SliderDiscreteDemoFragment extends DemoFragment {
       View view, @IdRes int switchId, @IdRes int sliderId, Slider.LabelFormatter labelFormatter) {
     final Slider slider = view.findViewById(sliderId);
     slider.setLabelFormatter(labelFormatter);
-    slider.setOnSliderTouchListener(new Slider.OnSliderTouchListener() {
-      @Override
-      public void onStartTrackingTouch(Slider slider) {
-        Snackbar.make(slider, getText(R.string.cat_slider_start_touch_description),
-            Snackbar.LENGTH_SHORT).show();
-      }
-
-      @Override
-      public void onStopTrackingTouch(Slider slider) {
-        Snackbar.make(slider, getText(R.string.cat_slider_stop_touch_description),
-            Snackbar.LENGTH_SHORT).show();
-      }
-    });
     SwitchCompat switchButton = view.findViewById(switchId);
     switchButton.setOnCheckedChangeListener(
         (buttonView, isChecked) -> slider.setEnabled(isChecked));
