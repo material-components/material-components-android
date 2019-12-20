@@ -577,8 +577,19 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     int top;
     int targetState;
     if (lastNestedScrollDy > 0) {
-      top = getExpandedOffset();
-      targetState = STATE_EXPANDED;
+      if (fitToContents) {
+        top = fitToContentsOffset;
+        targetState = STATE_EXPANDED;
+      } else {
+        int currentTop = child.getTop();
+        if (currentTop > halfExpandedOffset) {
+          top = halfExpandedOffset;
+          targetState = STATE_HALF_EXPANDED;
+        } else {
+          top = expandedOffset;
+          targetState = STATE_EXPANDED;
+        }
+      }
     } else if (hideable && shouldHide(child, getYVelocity())) {
       top = parentHeight;
       targetState = STATE_HIDDEN;
