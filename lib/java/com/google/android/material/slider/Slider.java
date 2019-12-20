@@ -64,6 +64,9 @@ import com.google.android.material.shape.CornerFamily;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.tooltip.TooltipDrawable;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -193,8 +196,8 @@ public class Slider extends View {
   private int haloRadius;
   private int labelPadding;
   private float touchDownX;
-  private OnChangeListener listener;
-  private OnSliderTouchListener touchListener;
+  private List<OnChangeListener> changeListeners = new ArrayList<>();
+  private List<OnSliderTouchListener> touchListeners = new ArrayList<>();
   private LabelFormatter formatter;
   private boolean thumbIsPressed = false;
   private float valueFrom;
@@ -508,9 +511,7 @@ public class Slider extends View {
   public void setValue(float value) {
     if (isValueValid(value)) {
       thumbPosition = (value - valueFrom) / (valueTo - valueFrom);
-      if (hasOnChangeListener()) {
-        listener.onValueChange(this, getValue(), false);
-      }
+      onChanged(false);
       invalidate();
     }
   }
@@ -567,11 +568,24 @@ public class Slider extends View {
   }
 
   /**
-   * Returns {@code true} if the slider has an {@link OnChangeListener} attached, {@code false}
-   * otherwise.
+   * Returns {@code true} if the slider has at least one {@link OnChangeListener} attached,
+   * {@code false} otherwise.
    */
   public boolean hasOnChangeListener() {
-    return listener != null;
+    return !changeListeners.isEmpty();
+  }
+
+  /**
+   * Registers a callback to be invoked when the slider changes.
+   *
+   * @param listener The callback to run when the slider changes
+   * @deprecated use {@link Slider#addOnChangeListener(OnChangeListener)} instead
+   */
+  @Deprecated
+  public void setOnChangeListener(@Nullable OnChangeListener listener) {
+    if(listener != null){
+      addOnChangeListener(listener);
+    }
   }
 
   /**
@@ -579,8 +593,30 @@ public class Slider extends View {
    *
    * @param listener The callback to run when the slider changes
    */
-  public void setOnChangeListener(@Nullable OnChangeListener listener) {
-    this.listener = listener;
+  public void addOnChangeListener(@Nullable OnChangeListener listener) {
+    changeListeners.add(listener);
+  }
+
+  /**
+   * Removes a callback for value changes from this {@link Slider}
+   *
+   * @param listener The callback that'll stop receive slider changes
+   */
+  public void removeOnChangeListener(@NonNull OnChangeListener listener) {
+    changeListeners.remove(listener);
+  }
+
+  /** Removes all instances of {@link Slider.OnChangeListener} attached to this slider */
+  public void clearOnChangeListeners(){
+    changeListeners.clear();
+  }
+
+  /**
+   * Returns {@code true} if the slider has at least one {@link OnSliderTouchListener} attached,
+   * {@code false} otherwise.
+   */
+  public boolean hasOnTouchListener() {
+    return !touchListeners.isEmpty();
   }
 
   /**
@@ -588,8 +624,22 @@ public class Slider extends View {
    *
    * @param listener The callback to run when the slider starts or stops being touched
    */
-  public void setOnSliderTouchListener(@Nullable OnSliderTouchListener listener) {
-    this.touchListener = listener;
+  public void addOnSlideTouchListener(@NonNull OnSliderTouchListener listener) {
+    touchListeners.add(listener);
+  }
+
+  /**
+   * Removes a callback to be invoked when the slider touch event is being started or stopped
+   *
+   * @param listener The callback that'll stop be notified when the slider is being touched
+   */
+  public void removeOnSlideTouchListener(@NonNull OnSliderTouchListener listener) {
+    touchListeners.remove(listener);
+  }
+
+  /** Removes all instances of {@link Slider.OnSliderTouchListener} attached to this slider */
+  public void clearOnTouchListeners(){
+    touchListeners.clear();
   }
 
   /**
@@ -968,9 +1018,7 @@ public class Slider extends View {
         updateLabelPosition();
         invalidate();
         onStartTrackingTouch();
-        if (hasOnChangeListener()) {
-          listener.onValueChange(this, getValue(), true);
-        }
+        onChanged(true);
         break;
       case MotionEvent.ACTION_MOVE:
         if (!thumbIsPressed) {
@@ -988,9 +1036,7 @@ public class Slider extends View {
         ensureLabel();
         updateLabelPosition();
         invalidate();
-        if (hasOnChangeListener()) {
-          listener.onValueChange(this, getValue(), true);
-        }
+        onChanged(true);
         break;
       case MotionEvent.ACTION_UP:
         getParent().requestDisallowInterceptTouchEvent(false);
@@ -1001,8 +1047,6 @@ public class Slider extends View {
         onStopTrackingTouch();
         invalidate();
         break;
-      case MotionEvent.ACTION_CANCEL:
-        onStopTrackingTouch();
       default:
         // Nothing to do in this case.
     }
@@ -1073,15 +1117,22 @@ public class Slider extends View {
     return false;
   }
 
+  private void onChanged(boolean fromUser){
+    final float value = getValue();
+    for (OnChangeListener listener : changeListeners){
+      listener.onValueChange(this, value, fromUser);
+    }
+  }
+
   private void onStartTrackingTouch(){
-    if(touchListener != null){
-      touchListener.onStartTrackingTouch(this);
+    for (OnSliderTouchListener listener : touchListeners){
+      listener.onStartTrackingTouch(this);
     }
   }
 
   private void onStopTrackingTouch(){
-    if(touchListener != null){
-      touchListener.onStopTrackingTouch(this);
+    for (OnSliderTouchListener listener : touchListeners){
+      listener.onStopTrackingTouch(this);
     }
   }
 
@@ -1137,9 +1188,7 @@ public class Slider extends View {
     if (sliderState.hasFocus) {
       requestFocus();
     }
-    if (hasOnChangeListener()) {
-      listener.onValueChange(this, getValue(), false);
-    }
+    onChanged(false);
   }
 
   static class SliderState extends BaseSavedState {

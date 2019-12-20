@@ -39,7 +39,7 @@ public class SliderMainDemoFragment extends DemoFragment {
         layoutInflater.inflate(R.layout.cat_slider_fragment, viewGroup, false /* attachToRoot */);
 
     Slider slider = view.findViewById(R.id.slider);
-    slider.setOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+    slider.addOnSlideTouchListener(new Slider.OnSliderTouchListener() {
       @Override
       public void onStartTrackingTouch(Slider slider) {
         Snackbar.make(slider, R.string.cat_slider_start_touch_description,
