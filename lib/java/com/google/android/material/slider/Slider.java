@@ -702,13 +702,14 @@ public class Slider extends View {
    */
   public void setHaloRadius(@IntRange(from = 0) @Dimension int radius) {
     haloRadius = radius;
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+    if (!shouldDrawCompatHalo()) {
       Drawable background = getBackground();
       if (background instanceof RippleDrawable) {
         DrawableUtils.setRippleDrawableRadius((RippleDrawable) background, haloRadius);
       }
+    } else {
+      postInvalidate();
     }
-    postInvalidate();
   }
 
   /**
@@ -794,15 +795,16 @@ public class Slider extends View {
     }
 
     this.haloColor = haloColor;
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+    if (!shouldDrawCompatHalo()) {
       Drawable background = getBackground();
       if (background instanceof RippleDrawable) {
         ((RippleDrawable) background).setColor(haloColor);
       }
+    } else {
+      haloPaint.setColor(getColorForState(haloColor));
+      haloPaint.setAlpha(HALO_ALPHA);
+      invalidate();
     }
-    haloPaint.setColor(getColorForState(haloColor));
-    haloPaint.setAlpha(HALO_ALPHA);
-    invalidate();
   }
 
   /**
@@ -1092,8 +1094,8 @@ public class Slider extends View {
   }
 
   private void updateHaloHotSpot() {
-    // Set the hotspot as the halo above lollipop.
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP && getMeasuredWidth() > 0) {
+    // Set the hotspot as the halo if RippleDrawable is being used.
+    if (!shouldDrawCompatHalo() && getMeasuredWidth() > 0) {
       final Drawable background = getBackground();
       if (background instanceof RippleDrawable) {
         int x = (int) (thumbPosition * trackWidth + trackSidePadding);
@@ -1167,10 +1169,10 @@ public class Slider extends View {
   }
 
   private void maybeDrawHalo(@NonNull Canvas canvas, int width, int top) {
-    // Only draw the halo for devices which don't support the ripple.
-    if (forceDrawCompatHalo || VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
+    // Only draw the halo for devices that aren't using the ripple.
+    if (shouldDrawCompatHalo()) {
       int centerX = (int) (trackSidePadding + thumbPosition * width);
-      if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
+      if (VERSION.SDK_INT < VERSION_CODES.P) {
         // In this case we can clip the rect to allow drawing outside the bounds.
         canvas.clipRect(
             centerX - haloRadius,
@@ -1181,6 +1183,12 @@ public class Slider extends View {
       }
       canvas.drawCircle(centerX, top, haloRadius, haloPaint);
     }
+  }
+
+  private boolean shouldDrawCompatHalo() {
+    return forceDrawCompatHalo
+        || VERSION.SDK_INT < VERSION_CODES.LOLLIPOP
+        || !(getBackground() instanceof RippleDrawable);
   }
 
   @Override
