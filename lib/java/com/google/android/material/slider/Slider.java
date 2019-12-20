@@ -296,12 +296,6 @@ public class Slider extends View {
     loadResources(context.getResources());
     processAttributes(context, attrs, defStyleAttr);
 
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      // Because the RippleDrawable can draw outside the bounds of the view, we can set the layer
-      // type to hardware so we can use PorterDuffXfermode when drawing.
-      setLayerType(LAYER_TYPE_HARDWARE, null);
-    }
-
     super.setOnFocusChangeListener(
         new OnFocusChangeListener() {
           @Override
@@ -1025,12 +1019,8 @@ public class Slider extends View {
   public void setEnabled(boolean enabled) {
     super.setEnabled(enabled);
     // When we're disabled, set the layer type to hardware so we can clear the track out from behind
-    // the thumb. When enabled set the layer type to none so that the halo can be drawn outside the
-    // bounds of the slider. After Lollipop we use Ripple for the halo, and an Overlay for the
-    // marker so we don't need to worry about drawing outside the bounds.
-    if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
-      setLayerType(enabled ? LAYER_TYPE_NONE : LAYER_TYPE_HARDWARE, null);
-    }
+    // the thumb.
+    setLayerType(enabled ? LAYER_TYPE_NONE : LAYER_TYPE_HARDWARE, null);
   }
 
   @Override
