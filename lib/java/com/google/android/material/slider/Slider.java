@@ -631,7 +631,6 @@ public class Slider extends View {
    */
   public void setThumbElevation(float elevation) {
     thumbDrawable.setElevation(elevation);
-    postInvalidate();
   }
 
   /**
@@ -663,6 +662,10 @@ public class Slider extends View {
    * @attr ref com.google.android.material.R.styleable#Slider_thumbRadius
    */
   public void setThumbRadius(@IntRange(from = 0) @Dimension int radius) {
+    if (radius == thumbRadius) {
+      return;
+    }
+
     thumbRadius = radius;
 
     thumbDrawable.setShapeAppearanceModel(
@@ -701,6 +704,10 @@ public class Slider extends View {
    * @attr ref com.google.android.material.R.styleable#Slider_haloRadius
    */
   public void setHaloRadius(@IntRange(from = 0) @Dimension int radius) {
+    if (radius == haloRadius) {
+      return;
+    }
+
     haloRadius = radius;
     if (!shouldDrawCompatHalo()) {
       Drawable background = getBackground();
