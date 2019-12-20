@@ -323,7 +323,6 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
                 + chipDrawable.calculateChipIconWidth());
     if (insetBackgroundDrawable != null) {
       Rect padding = new Rect();
-      Log.w("mdc-chip", "padding: " + padding.left + " " + padding.right);
       insetBackgroundDrawable.getPadding(padding);
       if (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL) {
         paddingEnd += padding.right;
