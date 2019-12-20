@@ -99,7 +99,9 @@ class PasswordToggleEndIconDelegate extends EndIconDelegate {
               editText.setTransformationMethod(PasswordTransformationMethod.getInstance());
             }
             // And restore the cursor position
-            editText.setSelection(selection);
+            if (selection >= 0) {
+              editText.setSelection(selection);
+            }
           }
         });
     textInputLayout.addOnEditTextAttachedListener(onEditTextAttachedListener);
