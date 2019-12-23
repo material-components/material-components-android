@@ -3662,9 +3662,9 @@ public class TextInputLayout extends LinearLayout {
     collapsingTextHelper.getCollapsedTextActualBounds(
         cutoutBounds, editText.getWidth(), editText.getGravity());
     applyCutoutPadding(cutoutBounds);
-    // Offset the cutout bounds by the TextInputLayout's left padding to ensure that the cutout is
-    // inset relative to the TextInputLayout's bounds.
-    cutoutBounds.offset(-getPaddingLeft(), 0);
+    // Offset the cutout bounds by the TextInputLayout's left and top paddings to ensure that the
+    // cutout is inset relative to the TextInputLayout's bounds.
+    cutoutBounds.offset(-getPaddingLeft(), -getPaddingTop());
     ((CutoutDrawable) boxBackground).setCutout(cutoutBounds);
   }
 
