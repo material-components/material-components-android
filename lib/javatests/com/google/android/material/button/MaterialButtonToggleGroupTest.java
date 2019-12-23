@@ -21,9 +21,15 @@ import com.google.android.material.R;
 import static android.view.View.GONE;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import android.content.Context;
 import android.graphics.RectF;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionItemInfoCompat;
 import android.view.View;
 import android.widget.Checkable;
 import android.widget.LinearLayout;
@@ -112,6 +118,27 @@ public class MaterialButtonToggleGroupTest {
             shapeAppearanceModel.getBottomRightCornerSize().getCornerSize(ignore)
         })
         .isEqualTo(corners);
+  }
+
+  @Test
+  @Config(sdk = 23)
+  public void onInitializeAccessibilityNodeInfo() {
+    AccessibilityNodeInfoCompat groupInfoCompat = AccessibilityNodeInfoCompat.obtain();
+    ViewCompat.onInitializeAccessibilityNodeInfo(toggleGroup, groupInfoCompat);
+
+    CollectionInfoCompat collectionInfo = groupInfoCompat.getCollectionInfo();
+    assertEquals(3, collectionInfo.getColumnCount());
+    assertEquals(1, collectionInfo.getRowCount());
+
+    MaterialButton secondChild = (MaterialButton) toggleGroup.getChildAt(1);
+    secondChild.setChecked(true);
+    AccessibilityNodeInfoCompat buttonInfoCompat = AccessibilityNodeInfoCompat.obtain();
+    ViewCompat.onInitializeAccessibilityNodeInfo(secondChild, buttonInfoCompat);
+
+    CollectionItemInfoCompat itemInfo = buttonInfoCompat.getCollectionItemInfo();
+    assertEquals(1, itemInfo.getColumnIndex());
+    assertEquals(0, itemInfo.getRowIndex());
+    assertTrue(itemInfo.isSelected());
   }
 
   @Test

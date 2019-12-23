@@ -26,13 +26,18 @@ import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
+import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.MarginLayoutParamsCompat;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionItemInfoCompat;
 import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.LinearLayout;
 import com.google.android.material.button.MaterialButton.OnPressedChangeListener;
 import com.google.android.material.internal.ThemeEnforcement;
@@ -190,6 +195,8 @@ public class MaterialButtonToggleGroup extends LinearLayout {
         attributes.getBoolean(R.styleable.MaterialButtonToggleGroup_selectionRequired, false);
     setChildrenDrawingOrderEnabled(true);
     attributes.recycle();
+
+    ViewCompat.setImportantForAccessibility(this, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
   }
 
   @Override
@@ -239,6 +246,24 @@ public class MaterialButtonToggleGroup extends LinearLayout {
             shapeAppearanceModel.getBottomLeftCornerSize(),
             shapeAppearanceModel.getTopRightCornerSize(),
             shapeAppearanceModel.getBottomRightCornerSize()));
+
+    ViewCompat.setAccessibilityDelegate(
+        buttonChild,
+        new AccessibilityDelegateCompat() {
+          @Override
+          public void onInitializeAccessibilityNodeInfo(
+              View host, @NonNull AccessibilityNodeInfoCompat info) {
+            super.onInitializeAccessibilityNodeInfo(host, info);
+            info.setCollectionItemInfo(
+                CollectionItemInfoCompat.obtain(
+                    /* rowIndex= */ 0,
+                    /* rowSpan= */ 1,
+                    /* columnIndex= */ getIndexWithinVisibleButtons(host),
+                    /* columnSpan= */ 1,
+                    /* heading= */ false,
+                    /* selected= */ ((MaterialButton) host).isChecked()));
+          }
+        });
   }
 
   @Override
@@ -271,6 +296,20 @@ public class MaterialButtonToggleGroup extends LinearLayout {
   @Override
   public CharSequence getAccessibilityClassName() {
     return MaterialButtonToggleGroup.class.getName();
+  }
+
+  @Override
+  public void onInitializeAccessibilityNodeInfo(@NonNull AccessibilityNodeInfo info) {
+    super.onInitializeAccessibilityNodeInfo(info);
+    AccessibilityNodeInfoCompat infoCompat = AccessibilityNodeInfoCompat.wrap(info);
+    infoCompat.setCollectionInfo(
+        CollectionInfoCompat.obtain(
+            /* rowCount= */ 1,
+            /* columnCount= */ getVisibleButtonCount(),
+            /* hierarchical= */ false,
+            /* selectionMode = */ isSingleSelection()
+                ? CollectionInfoCompat.SELECTION_MODE_SINGLE
+                : CollectionInfoCompat.SELECTION_MODE_MULTIPLE));
   }
 
   /**
@@ -585,6 +624,31 @@ public class MaterialButtonToggleGroup extends LinearLayout {
     return child.getVisibility() != View.GONE;
   }
 
+  private int getVisibleButtonCount() {
+    int count = 0;
+    for (int i = 0; i < getChildCount(); i++) {
+      if (this.getChildAt(i) instanceof MaterialButton && isChildVisible(i)) {
+        count++;
+      }
+    }
+    return count;
+  }
+
+  private int getIndexWithinVisibleButtons(@Nullable View child) {
+    if (!(child instanceof MaterialButton)) {
+      return -1;
+    }
+    int index = 0;
+    for (int i = 0; i < getChildCount(); i++) {
+      if (this.getChildAt(i) == child) {
+        return index;
+      }
+      if (this.getChildAt(i) instanceof MaterialButton && isChildVisible(i)) {
+        index++;
+      }
+    }
+    return -1;
+  }
 
   @Nullable
   private CornerData getNewCornerData(
