@@ -1052,7 +1052,7 @@ public class Slider extends View {
   protected void onSizeChanged(int w, int h, int oldw, int oldh) {
     super.onSizeChanged(w, h, oldw, oldh);
     updateTrackWidthAndTicksCoordinates(w);
-    updateHaloHotSpot();
+    updateHaloHotspot();
   }
 
   private void maybeUpdateTrackWidthAndTicksCoordinates() {
@@ -1090,7 +1090,7 @@ public class Slider extends View {
     }
   }
 
-  private void updateHaloHotSpot() {
+  private void updateHaloHotspot() {
     // Set the hotspot as the halo if RippleDrawable is being used.
     if (!shouldDrawCompatHalo() && getMeasuredWidth() > 0) {
       final Drawable background = getBackground();
@@ -1211,7 +1211,7 @@ public class Slider extends View {
         thumbIsPressed = true;
         thumbPosition = position;
         snapThumbPosition();
-        updateHaloHotSpot();
+        updateHaloHotspot();
         ensureLabel();
         updateLabelPosition();
         invalidate();
@@ -1230,7 +1230,7 @@ public class Slider extends View {
         thumbIsPressed = true;
         thumbPosition = position;
         snapThumbPosition();
-        updateHaloHotSpot();
+        updateHaloHotspot();
         ensureLabel();
         updateLabelPosition();
         invalidate();
