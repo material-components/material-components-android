@@ -31,7 +31,6 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.util.Pools;
-import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
@@ -46,6 +45,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityNodeInfo;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import androidx.transition.AutoTransition;
 import androidx.transition.TransitionManager;
@@ -130,22 +130,6 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
           }
         };
     tempChildWidths = new int[BottomNavigationMenu.MAX_ITEM_COUNT];
-
-    ViewCompat.setAccessibilityDelegate(
-        this,
-        new AccessibilityDelegateCompat() {
-          @Override
-          public void onInitializeAccessibilityNodeInfo(
-              View host, @NonNull AccessibilityNodeInfoCompat info) {
-            super.onInitializeAccessibilityNodeInfo(host, info);
-            info.setCollectionInfo(
-                CollectionInfoCompat.obtain(
-                    1,
-                    menu.getVisibleItems().size(),
-                    false,
-                    CollectionInfoCompat.SELECTION_MODE_SINGLE));
-          }
-        });
 
     ViewCompat.setImportantForAccessibility(this, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
   }
@@ -256,6 +240,18 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   @Override
   public int getWindowAnimations() {
     return 0;
+  }
+
+  @Override
+  public void onInitializeAccessibilityNodeInfo(@NonNull AccessibilityNodeInfo info) {
+    super.onInitializeAccessibilityNodeInfo(info);
+    AccessibilityNodeInfoCompat infoCompat = AccessibilityNodeInfoCompat.wrap(info);
+    infoCompat.setCollectionInfo(
+        CollectionInfoCompat.obtain(
+            /* rowCount= */ 1,
+            /* columnCount= */ menu.getVisibleItems().size(),
+            /* hierarchical= */ false,
+            /* selectionMode = */ CollectionInfoCompat.SELECTION_MODE_SINGLE));
   }
 
   /**

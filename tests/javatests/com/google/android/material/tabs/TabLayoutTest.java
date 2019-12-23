@@ -23,6 +23,7 @@ import static com.google.android.material.testutils.TabLayoutActions.setScrollPo
 import static com.google.android.material.testutils.TabLayoutActions.setTabMode;
 import static com.google.android.material.testutils.TestUtilsActions.setLayoutDirection;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -38,6 +39,10 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.os.Build;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionItemInfoCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.InflateException;
 import android.view.LayoutInflater;
@@ -53,7 +58,9 @@ import androidx.test.filters.SmallTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
 import com.google.android.material.tabs.TabLayout.Tab;
+import com.google.android.material.tabs.TabLayout.TabView;
 import com.google.android.material.testapp.R;
+import com.google.android.material.testutils.AccessibilityUtils;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.Rule;
 import org.junit.Test;
@@ -291,6 +298,43 @@ public class TabLayoutTest {
             });
 
     IdlingRegistry.getInstance().unregister(idler);
+  }
+
+  @Test
+  @SdkSuppress(minSdkVersion = Build.VERSION_CODES.M)
+  public void initializesAccessibilityNodeInfo() {
+    final LayoutInflater inflater = LayoutInflater.from(activityTestRule.getActivity());
+    final TabLayout tabs = (TabLayout) inflater.inflate(R.layout.design_tabs, null);
+
+    final TabLayout.Tab tab1 = tabs.newTab();
+    tabs.addTab(tab1);
+    final TabLayout.Tab tab2 = tabs.newTab();
+    tabs.addTab(tab2, true);
+
+    tabs.getTabAt(0).setCustomView(R.layout.design_tab_item_custom);
+    tabs.getTabAt(1).setCustomView(R.layout.design_tab_item_custom);
+
+    AccessibilityNodeInfoCompat groupInfoCompat = AccessibilityNodeInfoCompat.obtain();
+    ViewCompat.onInitializeAccessibilityNodeInfo(tabs, groupInfoCompat);
+
+    CollectionInfoCompat collectionInfo = groupInfoCompat.getCollectionInfo();
+    assertEquals(2, collectionInfo.getColumnCount());
+    assertEquals(1, collectionInfo.getRowCount());
+
+    TabView secondChild = tabs.getTabAt(1).view;
+    secondChild.setSelected(true);
+    AccessibilityNodeInfoCompat tabInfoCompat = AccessibilityNodeInfoCompat.obtain();
+    ViewCompat.onInitializeAccessibilityNodeInfo(secondChild, tabInfoCompat);
+
+    // A tab that is currently selected won't be clickable
+    assertFalse(tabInfoCompat.isClickable());
+    assertFalse(
+        AccessibilityUtils.hasAction(tabInfoCompat, AccessibilityActionCompat.ACTION_CLICK));
+
+    CollectionItemInfoCompat itemInfo = tabInfoCompat.getCollectionItemInfo();
+    assertEquals(1, itemInfo.getColumnIndex());
+    assertEquals(0, itemInfo.getRowIndex());
+    assertTrue(itemInfo.isSelected());
   }
 
   private void testSetScrollPosition(final boolean isLtr) throws Throwable {

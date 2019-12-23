@@ -30,7 +30,6 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.PointerIconCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
@@ -45,6 +44,7 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -127,29 +127,6 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
             }
           });
     }
-    ViewCompat.setAccessibilityDelegate(
-        this,
-        new AccessibilityDelegateCompat() {
-          @Override
-          public void onInitializeAccessibilityNodeInfo(
-              View host, @NonNull AccessibilityNodeInfoCompat info) {
-            super.onInitializeAccessibilityNodeInfo(host, info);
-            if (badgeDrawable != null && badgeDrawable.isVisible()) {
-              CharSequence customContentDescription = itemData.getTitle();
-              if (!TextUtils.isEmpty(itemData.getContentDescription())) {
-                customContentDescription = itemData.getContentDescription();
-              }
-              info.setContentDescription(
-                  customContentDescription + ", " + badgeDrawable.getContentDescription());
-            }
-            info.setCollectionItemInfo(
-                CollectionItemInfoCompat.obtain(0, 1, getItemPosition(), 1, false, isSelected()));
-            if (isSelected()) {
-              info.setClickable(false);
-              info.removeAction(AccessibilityActionCompat.ACTION_CLICK);
-            }
-          }
-        });
   }
 
   @Override
@@ -297,6 +274,32 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     // Set the item as selected to send an AccessibilityEvent.TYPE_VIEW_SELECTED from View, so that
     // the item is read out as selected.
     setSelected(checked);
+  }
+
+  @Override
+  public void onInitializeAccessibilityNodeInfo(@NonNull AccessibilityNodeInfo info) {
+    super.onInitializeAccessibilityNodeInfo(info);
+    if (badgeDrawable != null && badgeDrawable.isVisible()) {
+      CharSequence customContentDescription = itemData.getTitle();
+      if (!TextUtils.isEmpty(itemData.getContentDescription())) {
+        customContentDescription = itemData.getContentDescription();
+      }
+      info.setContentDescription(
+          customContentDescription + ", " + badgeDrawable.getContentDescription());
+    }
+    AccessibilityNodeInfoCompat infoCompat = AccessibilityNodeInfoCompat.wrap(info);
+    infoCompat.setCollectionItemInfo(
+        CollectionItemInfoCompat.obtain(
+            /* rowIndex= */ 0,
+            /* rowSpan= */ 1,
+            /* columnIndex= */ getItemPosition(),
+            /* columnSpan= */ 1,
+            /* heading= */ false,
+            /* selected= */ isSelected()));
+    if (isSelected()) {
+      infoCompat.setClickable(false);
+      infoCompat.removeAction(AccessibilityActionCompat.ACTION_CLICK);
+    }
   }
 
   private void setViewLayoutParams(@NonNull View view, int topMargin, int gravity) {

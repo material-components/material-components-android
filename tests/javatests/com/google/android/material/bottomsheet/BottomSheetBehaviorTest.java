@@ -59,7 +59,7 @@ import androidx.test.runner.AndroidJUnit4;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.testapp.BottomSheetBehaviorActivity;
 import com.google.android.material.testapp.R;
-import com.google.android.material.testutils.CoordinatorLayoutUtils;
+import com.google.android.material.testutils.AccessibilityUtils;
 import com.google.android.material.testutils.DesignViewActions;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
@@ -909,14 +909,13 @@ public class BottomSheetBehaviorTest {
               || state == BottomSheetBehavior.STATE_HALF_EXPANDED;
       boolean hasDismissAction = state != BottomSheetBehavior.STATE_HIDDEN && behavior.isHideable();
       assertThat(
-          CoordinatorLayoutUtils.hasAction(
-              bottomSheet, AccessibilityNodeInfoCompat.ACTION_COLLAPSE),
+          AccessibilityUtils.hasAction(bottomSheet, AccessibilityNodeInfoCompat.ACTION_COLLAPSE),
           equalTo(hasCollapseAction));
       assertThat(
-          CoordinatorLayoutUtils.hasAction(bottomSheet, AccessibilityNodeInfoCompat.ACTION_EXPAND),
+          AccessibilityUtils.hasAction(bottomSheet, AccessibilityNodeInfoCompat.ACTION_EXPAND),
           equalTo(hasExpandAction));
       assertThat(
-          CoordinatorLayoutUtils.hasAction(bottomSheet, AccessibilityNodeInfoCompat.ACTION_DISMISS),
+          AccessibilityUtils.hasAction(bottomSheet, AccessibilityNodeInfoCompat.ACTION_DISMISS),
           equalTo(hasDismissAction));
     }
   }
