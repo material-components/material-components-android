@@ -18,9 +18,9 @@
 <resources>
 
   <string name="cat_imageview_title" description="A fragment showing the image view component [CHAR LIMIT=20]">Image View</string>
-  <string name="cat_imageview_square" description="Label for a button that changes the image shape to a square [CHAR LIMIT=20]">Diamond</string>
+  <string name="cat_imageview_square" description="Label for a button that changes the image shape to a square [CHAR LIMIT=20]">Square</string>
   <string name="cat_imageview_diamond" description="Label for a button that changes the image shape to a diamond [CHAR LIMIT=20]">Diamond</string>
-  <string name="cat_imageview_circle" description="Label for a button that changes the image shape to a circle [CHAR LIMIT=20]">Diamond</string>
+  <string name="cat_imageview_circle" description="Label for a button that changes the image shape to a circle [CHAR LIMIT=20]">Circle</string>
   <string name="cat_imageview_description" description="Brief explanation of the ImageView component.[CHAR LIMIT=NONE]">
     The ShapeableImageViewComponent provides the ability to set a Shape on your images.</string>
 
