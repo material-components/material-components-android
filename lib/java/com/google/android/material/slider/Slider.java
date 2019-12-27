@@ -41,6 +41,7 @@ import android.os.Parcelable;
 import androidx.annotation.ColorInt;
 import androidx.annotation.DimenRes;
 import androidx.annotation.Dimension;
+import androidx.annotation.IntDef;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -65,6 +66,8 @@ import com.google.android.material.shape.CornerFamily;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.tooltip.TooltipDrawable;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.Locale;
 
 /**
@@ -94,10 +97,11 @@ import java.util.Locale;
  * further:
  *
  * <ul>
- *   <li>{@code floatingLabel}: If the label should be drawn floating above other views, or if space
- *       should be added to this view.
  *   <li>{@code haloColor}: the color of the halo around the thumb.
  *   <li>{@code haloRadius}: The radius of the halo around the thumb.
+ *   <li>{@code labelBehavior}: The behavior of the label which can be {@code LABEL_FLOATING},
+ *       {@code LABEL_WITHIN_BOUNDS}, or {@code LABEL_GONE}. See {@link LabelBehavior} for more
+ *       information.
  *   <li>{@code labelStyle}: the style to apply to the value indicator {@link TooltipDrawable}.
  *   <li>{@code thumbColor}: the color of the slider's thumb.
  *   <li>{@code thumbElevation}: the elevation of the slider's thumb.
@@ -141,9 +145,9 @@ import java.util.Locale;
  * @attr ref com.google.android.material.R.styleable#Slider_android_value
  * @attr ref com.google.android.material.R.styleable#Slider_android_valueFrom
  * @attr ref com.google.android.material.R.styleable#Slider_android_valueTo
- * @attr ref com.google.android.material.R.styleable#Slider_floatingLabel
  * @attr ref com.google.android.material.R.styleable#Slider_haloColor
  * @attr ref com.google.android.material.R.styleable#Slider_haloRadius
+ * @attr ref com.google.android.material.R.styleable#Slider_labelBehavior
  * @attr ref com.google.android.material.R.styleable#Slider_labelStyle
  * @attr ref com.google.android.material.R.styleable#Slider_thumbColor
  * @attr ref com.google.android.material.R.styleable#Slider_thumbElevation
@@ -186,7 +190,7 @@ public class Slider extends View {
   private final int scaledTouchSlop;
 
   private int widgetHeight;
-  private boolean floatingLabel;
+  private int labelBehavior;
   private int trackHeight;
   private int trackSidePadding;
   private int trackTop;
@@ -213,6 +217,27 @@ public class Slider extends View {
   @NonNull private ColorStateList trackColorInactive;
 
   @NonNull private final MaterialShapeDrawable thumbDrawable = new MaterialShapeDrawable();
+
+  public static final int LABEL_FLOATING = 0;
+  public static final int LABEL_WITHIN_BOUNDS = 1;
+  public static final int LABEL_GONE = 2;
+
+  /**
+   * Determines the behavior of the label which can be any of the following.
+   *
+   * <ul>
+   *   <li>{@code LABEL_FLOATING}: The label will only be visible on interaction. It will float
+   *       above the slider and may cover views above this one. This is the default and recommended
+   *       behavior.
+   *   <li>{@code LABEL_WITHIN_BOUNDS}: The label will only be visible on interaction. The label
+   *       will always be drawn within the bounds of this view. This means extra space will be
+   *       visible above the slider when the label is not visible.
+   *   <li>{@code LABEL_GONE}: The label will never be drawn.
+   * </ul>
+   */
+  @IntDef({LABEL_FLOATING, LABEL_WITHIN_BOUNDS, LABEL_GONE})
+  @Retention(RetentionPolicy.SOURCE)
+  public @interface LabelBehavior {}
 
   /** Interface definition for a callback invoked when a slider's value is changed. */
   public interface OnChangeListener {
@@ -390,7 +415,7 @@ public class Slider extends View {
 
     setTrackHeight(a.getDimensionPixelSize(R.styleable.Slider_trackHeight, 0));
 
-    floatingLabel = a.getBoolean(R.styleable.Slider_floatingLabel, true);
+    labelBehavior = a.getInt(R.styleable.Slider_labelBehavior, LABEL_FLOATING);
     a.recycle();
 
     validateValueFrom();
@@ -724,25 +749,26 @@ public class Slider extends View {
   }
 
   /**
-   * If the height of this view is increased to make space for the label.
+   * Returns the {@link LabelBehavior} used.
    *
-   * @see #setFloatingLabel(boolean)
-   * @attr ref com.google.android.material.R.styleable#Slider_floatingLabel
+   * @see #setLabelBehavior(int)
+   * @attr ref com.google.android.material.R.styleable#Slider_labelBehavior
    */
-  public boolean isFloatingLabel() {
-    return floatingLabel;
+  @LabelBehavior
+  public int getLabelBehavior() {
+    return labelBehavior;
   }
 
   /**
-   * If true, the label will be drawn on top of views above this one, otherwise height will be added
-   * to make space for the label.
+   * Determines the {@link LabelBehavior} used.
    *
-   * @see #isFloatingLabel()
-   * @attr ref com.google.android.material.R.styleable#Slider_floatingLabel
+   * @see LabelBehavior
+   * @see #getLabelBehavior()
+   * @attr ref com.google.android.material.R.styleable#Slider_labelBehavior
    */
-  public void setFloatingLabel(boolean floatingLabel) {
-    if (this.floatingLabel != floatingLabel) {
-      this.floatingLabel = floatingLabel;
+  public void setLabelBehavior(@LabelBehavior int labelBehavior) {
+    if (this.labelBehavior != labelBehavior) {
+      this.labelBehavior = labelBehavior;
       requestLayout();
     }
   }
@@ -1045,7 +1071,8 @@ public class Slider extends View {
     super.onMeasure(
         widthMeasureSpec,
         MeasureSpec.makeMeasureSpec(
-            widgetHeight + (floatingLabel ? 0 : label.getIntrinsicHeight()), MeasureSpec.EXACTLY));
+            widgetHeight + (labelBehavior == LABEL_WITHIN_BOUNDS ? label.getIntrinsicHeight() : 0),
+            MeasureSpec.EXACTLY));
   }
 
   @Override
@@ -1104,7 +1131,7 @@ public class Slider extends View {
   }
 
   private int calculateTop() {
-    return trackTop + (floatingLabel ? 0 : label.getIntrinsicHeight());
+    return trackTop + (labelBehavior == LABEL_WITHIN_BOUNDS ? label.getIntrinsicHeight() : 0);
   }
 
   @Override
@@ -1276,6 +1303,11 @@ public class Slider extends View {
   }
 
   private void updateLabelPosition() {
+    if (labelBehavior == LABEL_GONE) {
+      // If the label shouldn't be drawn we can skip this.
+      return;
+    }
+
     int left =
         trackSidePadding + (int) (thumbPosition * trackWidth) - label.getIntrinsicWidth() / 2;
     int top = calculateTop() - (labelPadding + thumbRadius);

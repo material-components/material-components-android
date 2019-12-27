@@ -17,9 +17,9 @@
 <resources>
   <public name="sliderStyle" type="attr"/>
 
-  <public name="floatingLabel" type="attr" />
   <public name="haloColor" type="attr" />
   <public name="haloRadius" type="attr" />
+  <public name="labelBehavior" type="attr" />
   <public name="labelStyle" type="attr" />
   <public name="thumbColor" type="attr" />
   <public name="thumbElevation" type="attr" />

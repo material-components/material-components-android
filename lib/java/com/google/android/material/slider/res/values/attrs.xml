@@ -20,12 +20,19 @@
     <attr name="android:valueFrom" />
     <attr name="android:valueTo" />
     <attr name="android:stepSize" />
-    <!-- Determines if Slider should increase its default height to include space for the label. -->
-    <attr name="floatingLabel" format="boolean" />
     <!-- The color of the slider's halo. -->
     <attr name="haloColor" format="color" />
     <!-- The radius of the halo. -->
     <attr name="haloRadius" format="dimension" />
+    <!-- Determines if Slider should increase its default height to include space for the label. -->
+    <attr name="labelBehavior">
+      <!-- Mode that draws the label floating above the bounds of this view. -->
+      <enum name="floating" value="0"/>
+      <!-- Mode that draws the label within the bounds of the view. -->
+      <enum name="withinBounds" value="1"/>
+      <!-- Mode that prevents the label from being drawn -->
+      <enum name="gone" value="2"/>
+    </attr>
     <!-- The style used for the label TooltipDrawable. -->
     <attr name="labelStyle" format="reference" />
     <!-- The color of the slider's thumb. -->
