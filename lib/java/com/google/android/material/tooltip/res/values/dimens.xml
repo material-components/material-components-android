@@ -15,9 +15,9 @@
   ~ limitations under the License.
 -->
 <resources>
-  <dimen name="mtrl_tooltip_minWidth">36dp</dimen>
-  <dimen name="mtrl_tooltip_minHeight">36dp</dimen>
-  <dimen name="mtrl_tooltip_padding">8dp</dimen>
+  <dimen name="mtrl_tooltip_minWidth">32dp</dimen>
+  <dimen name="mtrl_tooltip_minHeight">32dp</dimen>
+  <dimen name="mtrl_tooltip_padding">12dp</dimen>
   <dimen name="mtrl_tooltip_cornerSize">4dp</dimen>
-  <dimen name="mtrl_tooltip_arrowSize">18dp</dimen>
+  <dimen name="mtrl_tooltip_arrowSize">14dp</dimen>
 </resources>
