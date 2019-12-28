@@ -1410,7 +1410,6 @@ public class Slider extends View {
     float valueTo;
     float thumbPosition;
     float stepSize;
-    float[] ticksCoordinates;
     boolean hasFocus;
 
     public static final Parcelable.Creator<SliderState> CREATOR =
@@ -1439,7 +1438,6 @@ public class Slider extends View {
       valueTo = source.readFloat();
       thumbPosition = source.readFloat();
       stepSize = source.readFloat();
-      source.readFloatArray(ticksCoordinates);
       hasFocus = source.createBooleanArray()[0];
     }
 
@@ -1450,7 +1448,6 @@ public class Slider extends View {
       dest.writeFloat(valueTo);
       dest.writeFloat(thumbPosition);
       dest.writeFloat(stepSize);
-      dest.writeFloatArray(ticksCoordinates);
       boolean[] booleans = new boolean[1];
       booleans[0] = hasFocus;
       dest.writeBooleanArray(booleans);
