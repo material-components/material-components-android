@@ -128,6 +128,11 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
         child, 0, ENTER_ANIMATION_DURATION, AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR);
   }
 
+  @Deprecated
+  public void slideUp(@NonNull V child) {
+    slideStart(child);
+  }
+
   /**
    * Perform an animation that will slide the child from it's current position to be totally off the
    * screen.
@@ -147,6 +152,11 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
         height + additionalHiddenOffsetY,
         EXIT_ANIMATION_DURATION,
         AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR);
+  }
+
+  @Deprecated
+  public void slideDown(@NonNull V child) {
+    slideOff(child);
   }
 
   private void animateChildTo(
