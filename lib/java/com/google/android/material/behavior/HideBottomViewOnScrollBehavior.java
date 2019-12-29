@@ -41,11 +41,11 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
   protected static final int ENTER_ANIMATION_DURATION = 225;
   protected static final int EXIT_ANIMATION_DURATION = 175;
 
-  private static final int STATE_SCROLLED_DOWN = 1;
-  private static final int STATE_SCROLLED_UP = 2;
+  private static final int STATE_SCROLLED_OFF = 1;
+  private static final int STATE_SCROLLED_START = 2;
 
   private int height = 0;
-  private int currentState = STATE_SCROLLED_UP;
+  private int currentState = STATE_SCROLLED_START;
   private int additionalHiddenOffsetY = 0;
   @Nullable private ViewPropertyAnimator currentAnimator;
 
@@ -73,7 +73,7 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
   public void setAdditionalHiddenOffsetY(@NonNull V child, @Dimension int offset) {
     additionalHiddenOffsetY = offset;
 
-    if (currentState == STATE_SCROLLED_DOWN) {
+    if (currentState == STATE_SCROLLED_OFF) {
       child.setTranslationY(height + additionalHiddenOffsetY);
     }
   }
@@ -100,10 +100,13 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
       int dyUnconsumed,
       int type,
       @NonNull int[] consumed) {
-    if (dyConsumed > 0) {
-      slideDown(child);
-    } else if (dyConsumed < 0) {
-      slideUp(child);
+    if (dyConsumed != 0) {
+      boolean isTargetReversed = isTargetReverced(target);
+      if (isTargetReversed ^ dyConsumed > 0) {
+        slideOff(child);
+      } else {
+        slideStart(child);
+      }
     }
   }
 
@@ -111,8 +114,8 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
    * Perform an animation that will slide the child from it's current position to be totally on the
    * screen.
    */
-  public void slideUp(@NonNull V child) {
-    if (currentState == STATE_SCROLLED_UP) {
+  public void slideStart(@NonNull V child) {
+    if (currentState == STATE_SCROLLED_START) {
       return;
     }
 
@@ -120,7 +123,7 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
       currentAnimator.cancel();
       child.clearAnimation();
     }
-    currentState = STATE_SCROLLED_UP;
+    currentState = STATE_SCROLLED_START;
     animateChildTo(
         child, 0, ENTER_ANIMATION_DURATION, AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR);
   }
@@ -129,8 +132,8 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
    * Perform an animation that will slide the child from it's current position to be totally off the
    * screen.
    */
-  public void slideDown(@NonNull V child) {
-    if (currentState == STATE_SCROLLED_DOWN) {
+  public void slideOff(@NonNull V child) {
+    if (currentState == STATE_SCROLLED_OFF) {
       return;
     }
 
@@ -138,7 +141,7 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
       currentAnimator.cancel();
       child.clearAnimation();
     }
-    currentState = STATE_SCROLLED_DOWN;
+    currentState = STATE_SCROLLED_OFF;
     animateChildTo(
         child,
         height + additionalHiddenOffsetY,
@@ -161,5 +164,16 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
                     currentAnimator = null;
                   }
                 });
+  }
+
+  private boolean isTargetReverced(View target) {
+    if (target instanceof RecyclerView) {
+      RecyclerView.LayoutManager layoutManager = ((RecyclerView) target).getLayoutManager();
+      if (layoutManager instanceof LinearLayoutManager) {
+        LinearLayoutManager linearLayoutManager = (LinearLayoutManager) layoutManager;
+        return linearLayoutManager.getReverseLayout();
+      }
+    }
+    return false;
   }
 }
