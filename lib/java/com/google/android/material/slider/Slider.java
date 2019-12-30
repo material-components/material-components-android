@@ -68,6 +68,8 @@ import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.tooltip.TooltipDrawable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -186,6 +188,8 @@ public class Slider extends View {
   @NonNull private final Paint activeTicksPaint;
 
   @NonNull private TooltipDrawable label;
+  @NonNull private List<OnChangeListener> changeListeners = new ArrayList<>();
+  @NonNull private List<OnSliderTouchListener> touchListeners = new ArrayList<>();
 
   private final int scaledTouchSlop;
 
@@ -198,7 +202,6 @@ public class Slider extends View {
   private int haloRadius;
   private int labelPadding;
   private float touchDownX;
-  private OnChangeListener listener;
   private LabelFormatter formatter;
   private boolean thumbIsPressed = false;
   private float valueFrom;
@@ -241,7 +244,17 @@ public class Slider extends View {
 
   /** Interface definition for a callback invoked when a slider's value is changed. */
   public interface OnChangeListener {
-    void onValueChange(Slider slider, float value);
+    void onValueChange(@NonNull Slider slider, float value, boolean fromUser);
+  }
+
+  /**
+   * Interface definition for callbacks invoked when a slider's touch event is being
+   * started/stopped.
+   */
+  public interface OnSliderTouchListener {
+    void onStartTrackingTouch(@NonNull Slider slider);
+
+    void onStopTrackingTouch(@NonNull Slider slider);
   }
 
   /**
@@ -538,9 +551,7 @@ public class Slider extends View {
   public void setValue(float value) {
     if (isValueValid(value)) {
       thumbPosition = (value - valueFrom) / (valueTo - valueFrom);
-      if (hasOnChangeListener()) {
-        listener.onValueChange(this, getValue());
-      }
+      dispatchOnChanged(false);
       invalidate();
     }
   }
@@ -597,20 +608,49 @@ public class Slider extends View {
   }
 
   /**
-   * Returns {@code true} if the slider has an {@link OnChangeListener} attached, {@code false}
-   * otherwise.
-   */
-  public boolean hasOnChangeListener() {
-    return listener != null;
-  }
-
-  /**
    * Registers a callback to be invoked when the slider changes.
    *
    * @param listener The callback to run when the slider changes
    */
-  public void setOnChangeListener(@Nullable OnChangeListener listener) {
-    this.listener = listener;
+  public void addOnChangeListener(@Nullable OnChangeListener listener) {
+    changeListeners.add(listener);
+  }
+
+  /**
+   * Removes a callback for value changes from this {@link Slider}
+   *
+   * @param listener The callback that'll stop receive slider changes
+   */
+  public void removeOnChangeListener(@NonNull OnChangeListener listener) {
+    changeListeners.remove(listener);
+  }
+
+  /** Removes all instances of {@link Slider.OnChangeListener} attached to this slider */
+  public void clearOnChangeListeners() {
+    changeListeners.clear();
+  }
+
+  /**
+   * Registers a callback to be invoked when the slider touch event is being started or stopped
+   *
+   * @param listener The callback to run when the slider starts or stops being touched
+   */
+  public void addOnSliderTouchListener(@NonNull OnSliderTouchListener listener) {
+    touchListeners.add(listener);
+  }
+
+  /**
+   * Removes a callback to be invoked when the slider touch event is being started or stopped
+   *
+   * @param listener The callback that'll stop be notified when the slider is being touched
+   */
+  public void removeOnSliderTouchListener(@NonNull OnSliderTouchListener listener) {
+    touchListeners.remove(listener);
+  }
+
+  /** Removes all instances of {@link Slider.OnSliderTouchListener} attached to this slider */
+  public void clearOnSliderTouchListeners() {
+    touchListeners.clear();
   }
 
   /**
@@ -1242,9 +1282,8 @@ public class Slider extends View {
         ensureLabel();
         updateLabelPosition();
         invalidate();
-        if (hasOnChangeListener()) {
-          listener.onValueChange(this, getValue());
-        }
+        onStartTrackingTouch();
+        dispatchOnChanged(true);
         break;
       case MotionEvent.ACTION_MOVE:
         if (!thumbIsPressed) {
@@ -1253,6 +1292,7 @@ public class Slider extends View {
             return false;
           }
           getParent().requestDisallowInterceptTouchEvent(true);
+          onStartTrackingTouch();
         }
         thumbIsPressed = true;
         thumbPosition = position;
@@ -1261,15 +1301,14 @@ public class Slider extends View {
         ensureLabel();
         updateLabelPosition();
         invalidate();
-        if (hasOnChangeListener()) {
-          listener.onValueChange(this, getValue());
-        }
+        dispatchOnChanged(true);
         break;
       case MotionEvent.ACTION_UP:
         thumbIsPressed = false;
         thumbPosition = position;
         snapThumbPosition();
         ViewUtils.getContentViewOverlay(this).remove(label);
+        onStopTrackingTouch();
         invalidate();
         break;
       default:
@@ -1347,6 +1386,25 @@ public class Slider extends View {
     return false;
   }
 
+  private void dispatchOnChanged(boolean fromUser) {
+    final float value = getValue();
+    for (OnChangeListener listener : changeListeners) {
+      listener.onValueChange(this, value, fromUser);
+    }
+  }
+
+  private void onStartTrackingTouch() {
+    for (OnSliderTouchListener listener : touchListeners) {
+      listener.onStartTrackingTouch(this);
+    }
+  }
+
+  private void onStopTrackingTouch() {
+    for (OnSliderTouchListener listener : touchListeners) {
+      listener.onStopTrackingTouch(this);
+    }
+  }
+
   @Override
   protected void drawableStateChanged() {
     super.drawableStateChanged();
@@ -1399,9 +1457,7 @@ public class Slider extends View {
     if (sliderState.hasFocus) {
       requestFocus();
     }
-    if (hasOnChangeListener()) {
-      listener.onValueChange(this, getValue());
-    }
+    dispatchOnChanged(false);
   }
 
   static class SliderState extends BaseSavedState {
