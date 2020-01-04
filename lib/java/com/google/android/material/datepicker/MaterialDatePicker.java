@@ -60,6 +60,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
   private static final String CALENDAR_CONSTRAINTS_KEY = "CALENDAR_CONSTRAINTS_KEY";
   private static final String TITLE_TEXT_RES_ID_KEY = "TITLE_TEXT_RES_ID_KEY";
   private static final String TITLE_TEXT_KEY = "TITLE_TEXT_KEY";
+  private static final String TOGGLE_STATE_KEY = "TOGGLE_STATE_KEY";
 
   static final Object CONFIRM_BUTTON_TAG = "CONFIRM_BUTTON_TAG";
   static final Object CANCEL_BUTTON_TAG = "CANCEL_BUTTON_TAG";
@@ -103,6 +104,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
   @StringRes private int titleTextResId;
   private CharSequence titleText;
   private boolean fullscreen;
+  private boolean toggleState;
 
   private TextView headerSelectionText;
   private CheckableImageButton headerToggleButton;
@@ -118,6 +120,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     args.putParcelable(CALENDAR_CONSTRAINTS_KEY, options.calendarConstraints);
     args.putInt(TITLE_TEXT_RES_ID_KEY, options.titleTextResId);
     args.putCharSequence(TITLE_TEXT_KEY, options.titleText);
+    args.putBoolean(TOGGLE_STATE_KEY, options.toggleState);
     materialDatePickerDialogFragment.setArguments(args);
     return materialDatePickerDialogFragment;
   }
@@ -147,6 +150,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     calendarConstraints = activeBundle.getParcelable(CALENDAR_CONSTRAINTS_KEY);
     titleTextResId = activeBundle.getInt(TITLE_TEXT_RES_ID_KEY);
     titleText = activeBundle.getCharSequence(TITLE_TEXT_KEY);
+    toggleState = activeBundle.getBoolean(TOGGLE_STATE_KEY);
   }
 
   private int getThemeResId(Context context) {
@@ -339,6 +343,8 @@ public final class MaterialDatePicker<S> extends DialogFragment {
   private void initHeaderToggle(Context context) {
     headerToggleButton.setTag(TOGGLE_BUTTON_TAG);
     headerToggleButton.setImageDrawable(createHeaderToggleDrawable(context));
+    headerToggleButton.setChecked(toggleState);
+
     // By default, CheckableImageButton adds a delegate that reads checked state.
     // This information is not useful; we remove the delegate and use custom content descriptions.
     ViewCompat.setAccessibilityDelegate(headerToggleButton, null);
@@ -504,6 +510,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     int titleTextResId = 0;
     CharSequence titleText = null;
     @Nullable S selection = null;
+    boolean toggleState;
 
     private Builder(DateSelector<S> dateSelector) {
       this.dateSelector = dateSelector;
@@ -572,6 +579,16 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     public Builder<S> setTitleText(@Nullable CharSequence charSequence) {
       this.titleText = charSequence;
       this.titleTextResId = 0;
+      return this;
+    }
+
+    /**
+     * Sets the initial state of the header toggle button. Setting to true will initialize to the
+     * {@link MaterialTextInputPicker} view.
+     */
+    @NonNull
+    public Builder<S> setHeaderToggleState(boolean isToggled) {
+      toggleState = isToggled;
       return this;
     }
 
