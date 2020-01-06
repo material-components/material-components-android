@@ -25,6 +25,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.util.Preconditions;
 import android.view.View;
+import android.view.ViewGroup;
+
 import com.google.android.material.animation.AnimatorSetCompat;
 import com.google.android.material.animation.MotionSpec;
 import java.util.ArrayList;
@@ -99,6 +101,9 @@ abstract class BaseMotionStrategy implements MotionStrategy {
   @Override
   @CallSuper
   public void onAnimationEnd() {
+    ViewGroup.LayoutParams newLayoutParams =  fab.getLayoutParams();
+    newLayoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+    fab.setLayoutParams(newLayoutParams);
     tracker.clear();
   }
 
