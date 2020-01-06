@@ -204,6 +204,7 @@ public class BottomSheetDialog extends AppCompatDialog {
     }
 
     FrameLayout bottomSheet = (FrameLayout) container.findViewById(R.id.design_bottom_sheet);
+    bottomSheet.removeAllViews();
     if (params == null) {
       bottomSheet.addView(view);
     } else {
