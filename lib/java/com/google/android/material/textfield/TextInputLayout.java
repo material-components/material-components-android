@@ -3584,6 +3584,7 @@ public class TextInputLayout extends LinearLayout {
       updateBoxUnderlineBounds(rect);
 
       if (hintEnabled) {
+        collapsingTextHelper.setExpandedTextSize(editText.getTextSize());
         final int editTextGravity = this.editText.getGravity();
         collapsingTextHelper.setCollapsedTextGravity(
             Gravity.TOP | (editTextGravity & ~Gravity.VERTICAL_GRAVITY_MASK));
