@@ -63,7 +63,7 @@ public class ListsFragment extends DemoLandingFragment {
     @Provides
     @ActivityScope
     static FeatureDemo provideFeatureDemo() {
-      return new FeatureDemo(R.string.cat_lists_title, R.drawable.ic_lists_24px) {
+      return new FeatureDemo(R.string.cat_lists_title, R.drawable.ic_lists) {
         @Override
         public Fragment createFragment() {
           return new ListsFragment();
