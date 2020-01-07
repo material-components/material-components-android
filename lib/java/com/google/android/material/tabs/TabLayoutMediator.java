@@ -136,12 +136,12 @@ public final class TabLayoutMediator {
    * called before {@link #attach()} when a ViewPager2's adapter is changed.
    */
   public void detach() {
-    if (adapter != null) {
+    if (autoRefresh && adapter != null) {
       adapter.unregisterAdapterDataObserver(pagerAdapterObserver);
+      pagerAdapterObserver = null;
     }
     tabLayout.removeOnTabSelectedListener(onTabSelectedListener);
     viewPager.unregisterOnPageChangeCallback(onPageChangeCallback);
-    pagerAdapterObserver = null;
     onTabSelectedListener = null;
     onPageChangeCallback = null;
     adapter = null;
