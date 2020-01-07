@@ -141,8 +141,6 @@ import java.util.Locale;
  *       valueTo}, an {@link IllegalArgumentException} is thrown.
  * </ul>
  *
- * <p>Note: the slider does not accept {@link View.OnFocusChangeListener}s.
- *
  * @attr ref com.google.android.material.R.styleable#Slider_android_stepSize
  * @attr ref com.google.android.material.R.styleable#Slider_android_value
  * @attr ref com.google.android.material.R.styleable#Slider_android_valueFrom
@@ -333,14 +331,6 @@ public class Slider extends View {
 
     loadResources(context.getResources());
     processAttributes(context, attrs, defStyleAttr);
-
-    super.setOnFocusChangeListener(
-        new OnFocusChangeListener() {
-          @Override
-          public void onFocusChange(View v, boolean hasFocus) {
-            invalidate();
-          }
-        });
 
     setFocusable(true);
 
@@ -1088,9 +1078,6 @@ public class Slider extends View {
     // the thumb.
     setLayerType(enabled ? LAYER_TYPE_NONE : LAYER_TYPE_HARDWARE, null);
   }
-
-  @Override
-  public void setOnFocusChangeListener(View.OnFocusChangeListener listener) {}
 
   @Override
   protected void onAttachedToWindow() {
