@@ -124,7 +124,7 @@ public class BottomSheetMainDemoFragment extends DemoFragment {
     expansionSwitch.setOnCheckedChangeListener(
         (buttonView, isChecked) -> {
           LayoutParams lp = bottomSheetInternal.getLayoutParams();
-          lp.height = isChecked ? 400 : getBottomSheetDialogDefaultHeight();
+          lp.height = isChecked ? 400 : LayoutParams.WRAP_CONTENT;
           bottomSheetInternal.setLayoutParams(lp);
 
           lp = bottomSheetPersistent.getLayoutParams();
