@@ -530,6 +530,79 @@ public class BottomSheetBehaviorTest {
 
   @Test
   @MediumTest
+  public void testNoSwipeUpToExpand() {
+    getBehavior().setDraggable(false);
+    Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
+        .perform(
+            DesignViewActions.withCustomConstraints(
+                new GeneralSwipeAction(
+                    Swipe.FAST,
+                    GeneralLocation.VISIBLE_CENTER,
+                    view -> new float[] {view.getWidth() / 2, 0},
+                    Press.FINGER),
+                ViewMatchers.isDisplayingAtLeast(5)));
+
+    Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
+        .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
+    assertThat(getBehavior().getState(), is(BottomSheetBehavior.STATE_COLLAPSED));
+  }
+
+  @Test
+  @MediumTest
+  public void testNoSwipeDownToCollapse() throws Throwable {
+    checkSetState(BottomSheetBehavior.STATE_EXPANDED, ViewMatchers.isDisplayed());
+    getBehavior().setDraggable(false);
+    Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
+        .perform(
+            DesignViewActions.withCustomConstraints(
+                new GeneralSwipeAction(
+                    Swipe.FAST,
+                    // Manually calculate the starting coordinates to make sure that the touch
+                    // actually falls onto the view on Gingerbread
+                    view -> {
+                      int[] location = new int[2];
+                      view.getLocationInWindow(location);
+                      return new float[] {view.getWidth() / 2, location[1] + 1};
+                    },
+                    // Manually calculate the ending coordinates to make sure that the bottom
+                    // sheet is collapsed, not hidden
+                    view -> {
+                      BottomSheetBehavior<?> behavior = getBehavior();
+                      return new float[] {
+                        // x: center of the bottom sheet
+                        view.getWidth() / 2,
+                        // y: just above the peek height
+                        view.getHeight() - behavior.getPeekHeight()
+                      };
+                    },
+                    Press.FINGER),
+                ViewMatchers.isDisplayingAtLeast(5)));
+
+    Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
+        .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
+    assertThat(getBehavior().getState(), is(BottomSheetBehavior.STATE_EXPANDED));
+  }
+
+  @Test
+  @MediumTest
+  public void testNoDragging() {
+    getBehavior().setDraggable(false);
+    Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
+        // Drag (and not release)
+        .perform(
+            new DragAction(
+                GeneralLocation.VISIBLE_CENTER, GeneralLocation.TOP_CENTER, Press.FINGER))
+        // Check that the bottom sheet is NOT in STATE_DRAGGING
+        .check(
+            (view, e) -> {
+              assertThat(view, is(ViewMatchers.isDisplayed()));
+              BottomSheetBehavior<?> behavior = BottomSheetBehavior.from(view);
+              assertThat(behavior.getState(), not(is(BottomSheetBehavior.STATE_DRAGGING)));
+            });
+  }
+
+  @Test
+  @MediumTest
   public void testHalfExpandedToExpanded() throws Throwable {
     getBehavior().setFitToContents(false);
     checkSetState(BottomSheetBehavior.STATE_HALF_EXPANDED, ViewMatchers.isDisplayed());

@@ -26,5 +26,6 @@
   <public name="behavior_fitToContents" type="attr"/>
   <public name="Animation.Design.BottomSheetDialog" type="style"/>
   <public name="Widget.Design.BottomSheet.Modal" type="style"/>
+  <public name="behavior_draggable" type="attr"/>
 </resources>
 

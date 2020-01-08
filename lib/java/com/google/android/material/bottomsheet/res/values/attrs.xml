@@ -33,6 +33,9 @@
     <attr name="behavior_skipCollapsed" format="boolean"/>
     <!-- Whether height of expanded sheet wraps content or not -->
     <attr name="behavior_fitToContents" format="boolean"/>
+    <!-- Whether this bottom sheet is draggable. If not, the app will have to supply different
+         means to expand and collapse the sheet -->
+    <attr name="behavior_draggable" format="boolean"/>
     <!-- The ratio to be used to set the height of half-expanded state in proportion to parent, when
          fitToContents is false. Defaults to true half, 0.5, if not explicitly set. Ratio must be a
          float value between 0 and 1 and produce a half-expanded state height larger than the

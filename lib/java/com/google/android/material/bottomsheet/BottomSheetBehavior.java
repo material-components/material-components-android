@@ -233,6 +233,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   private boolean skipCollapsed;
 
+  private boolean draggable;
+
   @State int state = STATE_COLLAPSED;
 
   @Nullable ViewDragHelper viewDragHelper;
@@ -296,6 +298,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         a.getBoolean(R.styleable.BottomSheetBehavior_Layout_behavior_fitToContents, true));
     setSkipCollapsed(
         a.getBoolean(R.styleable.BottomSheetBehavior_Layout_behavior_skipCollapsed, false));
+    setDraggable(a.getBoolean(R.styleable.BottomSheetBehavior_Layout_behavior_draggable, true));
     setSaveFlags(a.getInt(R.styleable.BottomSheetBehavior_Layout_behavior_saveFlags, SAVE_NONE));
     setHalfExpandedRatio(
         a.getFloat(R.styleable.BottomSheetBehavior_Layout_behavior_halfExpandedRatio, 0.5f));
@@ -408,7 +411,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   @Override
   public boolean onInterceptTouchEvent(
       @NonNull CoordinatorLayout parent, @NonNull V child, @NonNull MotionEvent event) {
-    if (!child.isShown()) {
+    if (!child.isShown() || !draggable) {
       ignoreEvents = true;
       return false;
     }
@@ -537,6 +540,11 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         ViewCompat.offsetTopAndBottom(child, -consumed[1]);
         setStateInternal(STATE_EXPANDED);
       } else {
+        if (!draggable) {
+          // Prevent dragging
+          return;
+        }
+
         consumed[1] = dy;
         ViewCompat.offsetTopAndBottom(child, -dy);
         setStateInternal(STATE_DRAGGING);
@@ -544,6 +552,11 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     } else if (dy < 0) { // Downward
       if (!target.canScrollVertically(-1)) {
         if (newTop <= collapsedOffset || hideable) {
+          if (!draggable) {
+            // Prevent dragging
+            return;
+          }
+
           consumed[1] = dy;
           ViewCompat.offsetTopAndBottom(child, -dy);
           setStateInternal(STATE_DRAGGING);
@@ -868,6 +881,21 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    */
   public boolean getSkipCollapsed() {
     return skipCollapsed;
+  }
+
+  /**
+   * Sets whether this bottom sheet is can be collapsed/expanded by dragging. Note: When disabling
+   * dragging, an app will require to implement a custom way to expand/collapse the bottom sheet
+   *
+   * @param draggable {@code false} to prevent dragging the sheet to collapse and expand
+   * @attr ref com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_draggable
+   */
+  public void setDraggable(boolean draggable) {
+    this.draggable = draggable;
+  }
+
+  public boolean isDraggable() {
+    return draggable;
   }
 
   /**
@@ -1253,7 +1281,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
         @Override
         public void onViewDragStateChanged(int state) {
-          if (state == ViewDragHelper.STATE_DRAGGING) {
+          if (state == ViewDragHelper.STATE_DRAGGING && draggable) {
             setStateInternal(STATE_DRAGGING);
           }
         }
