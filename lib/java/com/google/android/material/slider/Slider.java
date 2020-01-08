@@ -427,7 +427,8 @@ public class Slider extends View {
   }
 
   @NonNull
-  private TooltipDrawable parseLabelDrawable(@NonNull Context context, @NonNull TypedArray a) {
+  private static TooltipDrawable parseLabelDrawable(
+      @NonNull Context context, @NonNull TypedArray a) {
     return TooltipDrawable.createFromAttributes(
         context,
         null,
@@ -540,9 +541,11 @@ public class Slider extends View {
    */
   public void setValue(float value) {
     if (isValueValid(value)) {
-      thumbPosition = (value - valueFrom) / (valueTo - valueFrom);
-      dispatchOnChanged(false);
-      invalidate();
+      float newThumbPosition = (value - valueFrom) / (valueTo - valueFrom);
+      if (snapThumbPosition(newThumbPosition)) {
+        dispatchOnChanged(false);
+        invalidate();
+      }
     }
   }
 
@@ -801,6 +804,18 @@ public class Slider extends View {
       this.labelBehavior = labelBehavior;
       requestLayout();
     }
+  }
+
+  /** Returns the side padding of the track. */
+  @Dimension()
+  public int getTrackSidePadding() {
+    return trackSidePadding;
+  }
+
+  /** Returns the width of the track in pixels. */
+  @Dimension()
+  public int getTrackWidth() {
+    return trackWidth;
   }
 
   /**
@@ -1196,7 +1211,7 @@ public class Slider extends View {
   }
 
   private void drawTicks(@NonNull Canvas canvas) {
-    int pivotIndex = pivotIndex(visibleTicksCoordinates);
+    int pivotIndex = pivotIndex(visibleTicksCoordinates, thumbPosition);
     canvas.drawPoints(visibleTicksCoordinates, 0, pivotIndex * 2, activeTicksPaint);
     canvas.drawPoints(
         visibleTicksCoordinates,
@@ -1263,14 +1278,14 @@ public class Slider extends View {
         getParent().requestDisallowInterceptTouchEvent(true);
         requestFocus();
         thumbIsPressed = true;
-        thumbPosition = position;
-        snapThumbPosition();
+        if (snapThumbPosition(position)) {
+          dispatchOnChanged(true);
+        }
         updateHaloHotspot();
         ensureLabel();
         updateLabelPosition();
         invalidate();
         onStartTrackingTouch();
-        dispatchOnChanged(true);
         break;
       case MotionEvent.ACTION_MOVE:
         if (!thumbIsPressed) {
@@ -1282,18 +1297,19 @@ public class Slider extends View {
           onStartTrackingTouch();
         }
         thumbIsPressed = true;
-        thumbPosition = position;
-        snapThumbPosition();
+        if (snapThumbPosition(position)) {
+          dispatchOnChanged(true);
+        }
         updateHaloHotspot();
         ensureLabel();
         updateLabelPosition();
         invalidate();
-        dispatchOnChanged(true);
         break;
       case MotionEvent.ACTION_UP:
         thumbIsPressed = false;
-        thumbPosition = position;
-        snapThumbPosition();
+        if (snapThumbPosition(position)) {
+          dispatchOnChanged(true);
+        }
         ViewUtils.getContentViewOverlay(this).remove(label);
         onStopTrackingTouch();
         invalidate();
@@ -1316,16 +1332,34 @@ public class Slider extends View {
     }
   }
 
-  /** Calculates the index of the thumb for the given tick coordinates */
-  private int pivotIndex(float[] coordinates) {
-    return Math.round(thumbPosition * (coordinates.length / 2 - 1));
+  /**
+   * Calculates the index the closest tick coordinates that the thumb should snap to.
+   *
+   * @param coordinates Tick coordinates defined in {@code #setTicksCoordinates()}.
+   * @param position Actual thumb position.
+   * @return Index of the closest tick coordinate.
+   */
+  private static int pivotIndex(float[] coordinates, float position) {
+    return Math.round(position * (coordinates.length / 2 - 1));
   }
 
-  private void snapThumbPosition() {
+  /**
+   * Snaps the thumb position to the closest tick coordinates in discrete mode, and the input
+   * position in continuous mode.
+   *
+   * @param eventPosition Position of the user's event.
+   * @return true, if {@code #thumbPosition is updated}; false, otherwise.
+   */
+  private boolean snapThumbPosition(float eventPosition) {
     if (stepSize > 0.0f) {
-      int intervalsCovered = pivotIndex(ticksCoordinates);
-      thumbPosition = (float) intervalsCovered / (ticksCoordinates.length / 2 - 1);
+      int intervalsCovered = pivotIndex(ticksCoordinates, eventPosition);
+      eventPosition = (float) intervalsCovered / (ticksCoordinates.length / 2 - 1);
     }
+    if (eventPosition == thumbPosition) {
+      return false;
+    }
+    thumbPosition = eventPosition;
+    return true;
   }
 
   private void updateLabelPosition() {
