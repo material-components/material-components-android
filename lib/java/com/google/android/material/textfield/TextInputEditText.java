@@ -17,6 +17,7 @@
 package com.google.android.material.textfield;
 
 import com.google.android.material.R;
+import com.google.android.material.internal.ManufacturerUtils;
 
 import android.content.Context;
 import android.graphics.Point;
@@ -68,7 +69,7 @@ public class TextInputEditText extends AppCompatEditText {
     if (layout != null
         && layout.isProvidingHint()
         && super.getHint() == null
-        && Build.MANUFACTURER.equalsIgnoreCase("Meizu")) {
+        && ManufacturerUtils.isMeizuDevice()) {
       setHint("");
     }
   }

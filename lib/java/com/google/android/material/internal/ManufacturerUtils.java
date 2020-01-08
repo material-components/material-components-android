@@ -15,8 +15,6 @@
  */
 package com.google.android.material.internal;
 
-import com.google.android.material.R;
-
 import android.os.Build;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
@@ -30,5 +28,10 @@ public class ManufacturerUtils {
   /** Returns true if the device manufacturer is Samsung. */
   public static boolean isSamsungDevice() {
     return Build.MANUFACTURER.equalsIgnoreCase("samsung");
+  }
+
+  /** Returns true if the device manufacturer is Meizu. */
+  public static boolean isMeizuDevice() {
+    return Build.MANUFACTURER.equalsIgnoreCase("meizu");
   }
 }
