@@ -21,7 +21,6 @@ import com.google.android.material.R;
 import android.content.Context;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.os.Build;
 import android.os.Build.VERSION;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,6 +32,7 @@ import android.view.ViewParent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
+import com.google.android.material.internal.ManufacturerUtils;
 
 /**
  * A special sub-class of {@link android.widget.EditText} designed for use as a child of {@link
@@ -68,7 +68,7 @@ public class TextInputEditText extends AppCompatEditText {
     if (layout != null
         && layout.isProvidingHint()
         && super.getHint() == null
-        && Build.MANUFACTURER.equalsIgnoreCase("Meizu")) {
+        && ManufacturerUtils.isMeizuDevice()) {
       setHint("");
     }
   }

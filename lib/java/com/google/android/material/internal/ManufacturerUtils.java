@@ -31,4 +31,9 @@ public class ManufacturerUtils {
   public static boolean isSamsungDevice() {
     return Build.MANUFACTURER.equalsIgnoreCase("samsung");
   }
+
+  /** Returns true if the device manufacturer is Meizu. */
+  public static boolean isMeizuDevice() {
+    return Build.MANUFACTURER.equalsIgnoreCase("meizu");
+  }
 }
