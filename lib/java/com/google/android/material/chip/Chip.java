@@ -324,11 +324,8 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
     if (insetBackgroundDrawable != null) {
       Rect padding = new Rect();
       insetBackgroundDrawable.getPadding(padding);
-      if (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL) {
-        paddingEnd += padding.right;
-      } else {
-        paddingStart += padding.left;
-      }
+      paddingStart += padding.left;
+      paddingEnd += padding.right;
     }
 
     ViewCompat.setPaddingRelative(
