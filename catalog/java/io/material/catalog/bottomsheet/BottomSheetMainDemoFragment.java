@@ -37,6 +37,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCa
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import io.material.catalog.feature.DemoFragment;
+import io.material.catalog.windowpreferences.WindowPreferencesManager;
 
 /** A fragment that displays the main BottomSheet demo for the Catalog app. */
 public class BottomSheetMainDemoFragment extends DemoFragment {
@@ -46,8 +47,11 @@ public class BottomSheetMainDemoFragment extends DemoFragment {
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
     View view = layoutInflater.inflate(getDemoContent(), viewGroup, false /* attachToRoot */);
 
+    WindowPreferencesManager windowPreferencesManager = new WindowPreferencesManager(requireContext());
+
     // Set up BottomSheetDialog
     BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext());
+    windowPreferencesManager.applyEdgeToEdgePreference(bottomSheetDialog.getWindow());
     bottomSheetDialog.setContentView(R.layout.cat_bottomsheet_content);
     // Opt in to perform swipe to dismiss animation when dismissing bottom sheet dialog.
     bottomSheetDialog.setDismissWithAnimation(true);
