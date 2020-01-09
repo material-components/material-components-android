@@ -1313,8 +1313,13 @@ public class TextInputLayout extends LinearLayout {
 
     // Set the collapsed and expanded label text colors based on the current state.
     if (!isEnabled) {
-      collapsingTextHelper.setCollapsedTextColor(ColorStateList.valueOf(disabledColor));
-      collapsingTextHelper.setExpandedTextColor(ColorStateList.valueOf(disabledColor));
+      int disabledHintColor =
+          defaultHintTextColor != null
+              ? defaultHintTextColor.getColorForState(
+                  new int[] {-android.R.attr.state_enabled}, disabledColor)
+              : disabledColor;
+      collapsingTextHelper.setCollapsedTextColor(ColorStateList.valueOf(disabledHintColor));
+      collapsingTextHelper.setExpandedTextColor(ColorStateList.valueOf(disabledHintColor));
     } else if (errorShouldBeShown) {
       collapsingTextHelper.setCollapsedTextColor(indicatorViewController.getErrorViewTextColors());
     } else if (counterOverflowed && counterView != null) {
