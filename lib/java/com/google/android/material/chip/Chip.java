@@ -51,6 +51,7 @@ import androidx.annotation.StyleRes;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionItemInfoCompat;
 import androidx.customview.widget.ExploreByTouchHelper;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import android.text.TextPaint;
@@ -269,6 +270,21 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
     }
     info.setCheckable(isCheckable());
     info.setClickable(isClickable());
+
+    if (getParent() instanceof ChipGroup) {
+      ChipGroup chipGroup = ((ChipGroup) getParent());
+      AccessibilityNodeInfoCompat infoCompat = AccessibilityNodeInfoCompat.wrap(info);
+      // -1 for unknown column indices in a reflowing layout
+      int columnIndex = chipGroup.isSingleLine() ? chipGroup.getIndexOfChip(this) : -1;
+      infoCompat.setCollectionItemInfo(
+          CollectionItemInfoCompat.obtain(
+              /* rowIndex= */ chipGroup.getRowIndex(this),
+              /* rowSpan= */ 1,
+              /* columnIndex= */ columnIndex,
+              /* columnSpan= */ 1,
+              /* heading= */ false,
+              /* selected= */ isChecked()));
+    }
   }
 
   // TODO(b/80452017): Due to a11y bug, avoid setting custom ExploreByTouchHelper as delegate

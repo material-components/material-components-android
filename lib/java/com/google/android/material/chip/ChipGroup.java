@@ -29,9 +29,13 @@ import androidx.annotation.Dimension;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.CompoundButton;
 import com.google.android.material.internal.FlowLayout;
 import com.google.android.material.internal.ThemeEnforcement;
@@ -134,6 +138,24 @@ public class ChipGroup extends FlowLayout {
 
     a.recycle();
     super.setOnHierarchyChangeListener(passThroughListener);
+
+    ViewCompat.setImportantForAccessibility(this, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
+  }
+
+  @Override
+  public void onInitializeAccessibilityNodeInfo(@NonNull AccessibilityNodeInfo info) {
+    super.onInitializeAccessibilityNodeInfo(info);
+    AccessibilityNodeInfoCompat infoCompat = AccessibilityNodeInfoCompat.wrap(info);
+    // -1 for an unknown number of columns in a reflowing layout
+    int columnCount = isSingleLine() ? getChipCount() : -1;
+    infoCompat.setCollectionInfo(
+        CollectionInfoCompat.obtain(
+            /* rowCount= */ getRowCount(),
+            /* columnCount= */ columnCount,
+            /* hierarchical= */ false,
+            /* selectionMode = */ isSingleSelection()
+                ? CollectionInfoCompat.SELECTION_MODE_SINGLE
+                : CollectionInfoCompat.SELECTION_MODE_MULTIPLE));
   }
 
   @NonNull
@@ -344,6 +366,38 @@ public class ChipGroup extends FlowLayout {
       ((Chip) checkedView).setChecked(checked);
       protectFromCheckedChange = false;
     }
+  }
+
+  private int getChipCount() {
+    int count = 0;
+    for (int i = 0; i < getChildCount(); i++) {
+      if (this.getChildAt(i) instanceof Chip) {
+        count++;
+      }
+    }
+    return count;
+  }
+
+  /**
+   * Returns the index of the Chip within the Chip children.
+   *
+   * <p>Non-Chip children are ignored when computing the index.
+   */
+  int getIndexOfChip(@Nullable View child) {
+    if (!(child instanceof Chip)) {
+      return -1;
+    }
+    int index = 0;
+    for (int i = 0; i < getChildCount(); i++) {
+      if (this.getChildAt(i) instanceof Chip) {
+        Chip chip = (Chip) getChildAt(i);
+        if (chip == child) {
+          return index;
+        }
+        index++;
+      }
+    }
+    return -1;
   }
 
   /** Sets the horizontal and vertical spacing between visible chips in this group. */

@@ -18,7 +18,13 @@ package com.google.android.material.chip;
 import com.google.android.material.R;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionItemInfoCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import androidx.test.core.app.ApplicationProvider;
@@ -27,6 +33,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 /** Tests for {@link com.google.android.material.chip.ChipGroup}. */
 @RunWith(RobolectricTestRunner.class)
@@ -124,5 +131,53 @@ public class ChipGroupTest {
     // first button is selected
     assertThat(((Chip) first).isChecked()).isTrue();
     assertThat(((Chip) second).isChecked()).isFalse();
+  }
+
+  @Test
+  @Config(minSdk = 23, maxSdk = 28)
+  public void isSingleLine_initializesAccessibilityNodeInfo() {
+    chipgroup.setSingleLine(true);
+    AccessibilityNodeInfoCompat groupInfoCompat = AccessibilityNodeInfoCompat.obtain();
+    // onLayout must be triggered for rowCount
+    chipgroup.layout(0, 0, 100, 100);
+
+    ViewCompat.onInitializeAccessibilityNodeInfo(chipgroup, groupInfoCompat);
+
+    CollectionInfoCompat collectionInfo = groupInfoCompat.getCollectionInfo();
+    assertEquals(chipgroup.getChildCount(), collectionInfo.getColumnCount());
+    assertEquals(1, collectionInfo.getRowCount());
+
+    Chip secondChild = (Chip) chipgroup.getChildAt(1);
+    secondChild.setChecked(true);
+    AccessibilityNodeInfoCompat chipInfoCompat = AccessibilityNodeInfoCompat.obtain();
+    ViewCompat.onInitializeAccessibilityNodeInfo(secondChild, chipInfoCompat);
+
+    CollectionItemInfoCompat itemInfo = chipInfoCompat.getCollectionItemInfo();
+    assertEquals(1, itemInfo.getColumnIndex());
+    assertEquals(0, itemInfo.getRowIndex());
+    assertTrue(itemInfo.isSelected());
+  }
+
+  @Test
+  @Config(minSdk = 23, maxSdk = 28)
+  public void isNotSingleLine_initializesAccessibilityNodeInfo() {
+    AccessibilityNodeInfoCompat groupInfoCompat = AccessibilityNodeInfoCompat.obtain();
+    // onLayout must be triggered for rowCount
+    chipgroup.layout(0, 0, 10, 100);
+    ViewCompat.onInitializeAccessibilityNodeInfo(chipgroup, groupInfoCompat);
+
+    CollectionInfoCompat collectionInfo = groupInfoCompat.getCollectionInfo();
+    assertEquals(-1, collectionInfo.getColumnCount());
+    assertEquals(2, collectionInfo.getRowCount());
+
+    Chip secondChild = (Chip) chipgroup.getChildAt(2);
+    secondChild.setChecked(true);
+    AccessibilityNodeInfoCompat chipInfoCompat = AccessibilityNodeInfoCompat.obtain();
+    ViewCompat.onInitializeAccessibilityNodeInfo(secondChild, chipInfoCompat);
+
+    CollectionItemInfoCompat itemInfo = chipInfoCompat.getCollectionItemInfo();
+    assertEquals(-1, itemInfo.getColumnIndex());
+    assertEquals(1, itemInfo.getRowIndex());
+    assertTrue(itemInfo.isSelected());
   }
 }
