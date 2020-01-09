@@ -51,38 +51,40 @@ public class SliderEventTest {
   private static final float SLIDER_VALUE_RANGE = SLIDER_VALUE_TO - SLIDER_VALUE_FROM;
   private static final float SLIDER_STEP_VALUE = 1f;
 
+  private AppCompatActivity activity;
+  private LinearLayout container;
   private Slider slider;
   private OnChangeListener mockOnChangeListener;
 
   @Before
   public void createSlider() {
     ApplicationProvider.getApplicationContext().setTheme(R.style.Theme_MaterialComponents_Bridge);
-    AppCompatActivity activity = Robolectric.buildActivity(AppCompatActivity.class).setup().get();
+    activity = Robolectric.buildActivity(AppCompatActivity.class).setup().get();
 
     // Creates slider and adds the listener.
     slider = new Slider(activity);
     slider.setValueFrom(SLIDER_VALUE_FROM);
     slider.setValueTo(SLIDER_VALUE_TO);
+    slider.setStepSize(SLIDER_STEP_VALUE);
 
     mockOnChangeListener = mock(OnChangeListener.class);
     slider.addOnChangeListener(mockOnChangeListener);
 
     // Makes sure getParent() won't return null.
-    LinearLayout container = new LinearLayout(activity);
+    container = new LinearLayout(activity);
     container.setPadding(50, 50, 50, 50);
     container.setOrientation(LinearLayout.VERTICAL);
     // Prevents getContentView() dead loop.
     container.setId(android.R.id.content);
     // Adds slider to layout, and adds layout to activity.
     container.addView(slider, new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
-    activity.addContentView(container, new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
-
-    // Changes the step size.
-    slider.setStepSize(SLIDER_STEP_VALUE);
   }
 
   @Test
   public void testSliderSingleClickCurrentPosition_ListenerShouldNotBeCalled() {
+    // Lays out slider.
+    activity.addContentView(container, new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
+
     float currentValue = slider.getValue();
     // Click pressed.
     touchSliderAtValue(slider, currentValue, MotionEvent.ACTION_DOWN);
@@ -95,6 +97,9 @@ public class SliderEventTest {
 
   @Test
   public void testSliderSingleClickDifferentPosition_ListenerShouldBeCalled() {
+    // Lays out slider.
+    activity.addContentView(container, new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
+
     // Click pressed.
     touchSliderAtValue(slider, SLIDER_VALUE_FROM + SLIDER_VALUE_RANGE / 2, MotionEvent.ACTION_DOWN);
     // Click released.
@@ -109,6 +114,9 @@ public class SliderEventTest {
 
   @Test
   public void testSliderDrag_ListenerShouldBeCalled() {
+    // Lays out slider.
+    activity.addContentView(container, new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
+
     // Drag starts from one quarter to the left end.
     touchSliderAtValue(slider, SLIDER_VALUE_FROM + SLIDER_VALUE_RANGE / 4, MotionEvent.ACTION_DOWN);
     // Drags to the center.
@@ -128,12 +136,31 @@ public class SliderEventTest {
   }
 
   @Test
-  public void testSliderSetValue_OnlySetOnce() {
+  public void testSliderSetValue_ListenerShouldBeCalledOnce() {
+    // Lays out slider.
+    activity.addContentView(container, new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
+
     // Sets value twice.
     slider.setValue(SLIDER_VALUE_FROM + SLIDER_VALUE_RANGE / 2);
     slider.setValue(SLIDER_VALUE_FROM + SLIDER_VALUE_RANGE / 2);
 
     // Verifies listener calls.
+    verify(mockOnChangeListener, times(1))
+        .onValueChange(eq(slider), eq(SLIDER_VALUE_FROM + SLIDER_VALUE_RANGE / 2), eq(false));
+  }
+
+  @Test
+  public void testSliderSetValueBeforeLaidOut_ListenerShouldBeCalledAfterLaidOut() {
+    // Sets value before laid out.
+    slider.setValue(SLIDER_VALUE_FROM + SLIDER_VALUE_RANGE / 2);
+    // Verifies listener is not called.
+    verify(mockOnChangeListener, never())
+        .onValueChange(eq(slider), eq(SLIDER_VALUE_FROM + SLIDER_VALUE_RANGE / 2), eq(false));
+
+    // Lays out slider.
+    activity.addContentView(container, new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
+
+    // Verifies listener is not called.
     verify(mockOnChangeListener, times(1))
         .onValueChange(eq(slider), eq(SLIDER_VALUE_FROM + SLIDER_VALUE_RANGE / 2), eq(false));
   }

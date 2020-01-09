@@ -205,6 +205,12 @@ public class Slider extends View {
   private float valueFrom;
   private float valueTo;
   private float thumbPosition = 0.0f; // The position of the thumb normalised to a [0.0, 1.0] range.
+  /**
+   * The position of thumb when the slider is not laid out. Then it will be set to {@link
+   * #thumbPosition} once laid out.
+   */
+  private float desiredThumbPosition = 0.0f;
+
   private float stepSize = 0.0f;
   private float[] ticksCoordinates;
   private float[] visibleTicksCoordinates;
@@ -543,6 +549,7 @@ public class Slider extends View {
     if (isValueValid(value)) {
       float newThumbPosition = (value - valueFrom) / (valueTo - valueFrom);
       if (snapThumbPosition(newThumbPosition)) {
+        desiredThumbPosition = thumbPosition;
         dispatchOnChanged(false);
         invalidate();
       }
@@ -1121,6 +1128,11 @@ public class Slider extends View {
   protected void onSizeChanged(int w, int h, int oldw, int oldh) {
     super.onSizeChanged(w, h, oldw, oldh);
     updateTrackWidthAndTicksCoordinates(w);
+    if (snapThumbPosition(desiredThumbPosition)) {
+      desiredThumbPosition = thumbPosition;
+      dispatchOnChanged(false);
+      invalidate();
+    }
     updateHaloHotspot();
   }
 
@@ -1345,13 +1357,20 @@ public class Slider extends View {
 
   /**
    * Snaps the thumb position to the closest tick coordinates in discrete mode, and the input
-   * position in continuous mode.
+   * position in continuous mode. If the slider currently not laid out, the desired value will be
+   * held in {@link #desiredThumbPosition} until the {@link #onSizeChanged(int, int, int, int)} is
+   * called.
    *
    * @param eventPosition Position of the user's event.
    * @return true, if {@code #thumbPosition is updated}; false, otherwise.
    */
   private boolean snapThumbPosition(float eventPosition) {
     if (stepSize > 0.0f) {
+      // If ticks coordinates are not determined, discrete thumb position cannot be determined.
+      if (ticksCoordinates == null) {
+        desiredThumbPosition = eventPosition;
+        return false;
+      }
       int intervalsCovered = pivotIndex(ticksCoordinates, eventPosition);
       eventPosition = (float) intervalsCovered / (ticksCoordinates.length / 2 - 1);
     }
