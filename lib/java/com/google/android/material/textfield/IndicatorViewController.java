@@ -344,6 +344,7 @@ final class IndicatorViewController {
         return errorView;
       case CAPTION_STATE_HELPER_TEXT:
         return helperTextView;
+      case CAPTION_STATE_NONE:
       default: // No caption displayed, fall out and return null.
     }
     return null;

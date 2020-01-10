@@ -45,15 +45,16 @@ public class TextInputEditText extends AppCompatEditText {
 
   private final Rect parentRect = new Rect();
 
-  public TextInputEditText(Context context) {
+  public TextInputEditText(@NonNull Context context) {
     this(context, null);
   }
 
-  public TextInputEditText(Context context, AttributeSet attrs) {
+  public TextInputEditText(@NonNull Context context, @Nullable AttributeSet attrs) {
     this(context, attrs, R.attr.editTextStyle);
   }
 
-  public TextInputEditText(Context context, AttributeSet attrs, int defStyleAttr) {
+  public TextInputEditText(
+      @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
   }
 

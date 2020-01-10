@@ -25,6 +25,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -335,6 +336,8 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
     }
   }
 
+  @SuppressLint("ClickableViewAccessibility") // There's an accessibility delegate that handles
+  // interactions with the dropdown menu.
   private void setUpDropdownShowHideBehavior(@NonNull final AutoCompleteTextView editText) {
     // Set whole layout clickable.
     editText.setOnTouchListener(

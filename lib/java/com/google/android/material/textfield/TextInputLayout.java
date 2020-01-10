@@ -344,7 +344,7 @@ public class TextInputLayout extends LinearLayout {
      *
      * @param textInputLayout the {@link TextInputLayout}
      */
-    void onEditTextAttached(TextInputLayout textInputLayout);
+    void onEditTextAttached(@NonNull TextInputLayout textInputLayout);
   }
 
   /**
@@ -360,7 +360,7 @@ public class TextInputLayout extends LinearLayout {
      * @param textInputLayout the {@link TextInputLayout}
      * @param previousIcon the {@link EndIconMode} the view previously had set
      */
-    void onEndIconChanged(TextInputLayout textInputLayout, @EndIconMode int previousIcon);
+    void onEndIconChanged(@NonNull TextInputLayout textInputLayout, @EndIconMode int previousIcon);
   }
 
   private final LinkedHashSet<OnEditTextAttachedListener> editTextAttachedListeners =
@@ -1162,7 +1162,7 @@ public class TextInputLayout extends LinearLayout {
   }
 
   @Override
-  public void dispatchProvideAutofillStructure(ViewStructure structure, int flags) {
+  public void dispatchProvideAutofillStructure(@NonNull ViewStructure structure, int flags) {
     if (originalHint == null || editText == null) {
       super.dispatchProvideAutofillStructure(structure, flags);
       return;
@@ -2353,6 +2353,7 @@ public class TextInputLayout extends LinearLayout {
         bounds.top = rect.top + boxCollapsedPaddingTopPx;
         bounds.right = getLabelRightBoundAlignedWithSuffix(rect.right, isRtl);
         return bounds;
+      case BOX_BACKGROUND_NONE:
       default:
         bounds.left = getLabelLeftBoundAlightWithPrefix(rect.left, isRtl);
         bounds.top = getPaddingTop();
@@ -2563,6 +2564,7 @@ public class TextInputLayout extends LinearLayout {
         };
   }
 
+  @Nullable
   @Override
   public Parcelable onSaveInstanceState() {
     Parcelable superState = super.onSaveInstanceState();
@@ -2575,7 +2577,7 @@ public class TextInputLayout extends LinearLayout {
   }
 
   @Override
-  protected void onRestoreInstanceState(Parcelable state) {
+  protected void onRestoreInstanceState(@Nullable Parcelable state) {
     if (!(state instanceof SavedState)) {
       super.onRestoreInstanceState(state);
       return;
@@ -2599,7 +2601,7 @@ public class TextInputLayout extends LinearLayout {
   }
 
   @Override
-  protected void dispatchRestoreInstanceState(SparseArray<Parcelable> container) {
+  protected void dispatchRestoreInstanceState(@NonNull SparseArray<Parcelable> container) {
     restoringSavedState = true;
     super.dispatchRestoreInstanceState(container);
     restoringSavedState = false;
@@ -3127,7 +3129,7 @@ public class TextInputLayout extends LinearLayout {
    *
    * @param listener listener to add
    */
-  public void addOnEndIconChangedListener(OnEndIconChangedListener listener) {
+  public void addOnEndIconChangedListener(@NonNull OnEndIconChangedListener listener) {
     endIconChangedListeners.add(listener);
   }
 
@@ -3137,7 +3139,7 @@ public class TextInputLayout extends LinearLayout {
    *
    * @param listener listener to remove
    */
-  public void removeOnEndIconChangedListener(OnEndIconChangedListener listener) {
+  public void removeOnEndIconChangedListener(@NonNull OnEndIconChangedListener listener) {
     endIconChangedListeners.remove(listener);
   }
 
@@ -3168,7 +3170,7 @@ public class TextInputLayout extends LinearLayout {
    *
    * @param listener listener to remove
    */
-  public void removeOnEditTextAttachedListener(OnEditTextAttachedListener listener) {
+  public void removeOnEditTextAttachedListener(@NonNull OnEditTextAttachedListener listener) {
     editTextAttachedListeners.remove(listener);
   }
 
@@ -3363,7 +3365,8 @@ public class TextInputLayout extends LinearLayout {
    * <p>Note: This method should be used in place of providing an {@link AccessibilityDelegate}
    * directly on the {@link EditText}.
    */
-  public void setTextInputAccessibilityDelegate(TextInputLayout.AccessibilityDelegate delegate) {
+  public void setTextInputAccessibilityDelegate(
+      @Nullable TextInputLayout.AccessibilityDelegate delegate) {
     if (editText != null) {
       ViewCompat.setAccessibilityDelegate(editText, delegate);
     }
@@ -3915,7 +3918,7 @@ public class TextInputLayout extends LinearLayout {
   public static class AccessibilityDelegate extends AccessibilityDelegateCompat {
     private final TextInputLayout layout;
 
-    public AccessibilityDelegate(TextInputLayout layout) {
+    public AccessibilityDelegate(@NonNull TextInputLayout layout) {
       this.layout = layout;
     }
 
