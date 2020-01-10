@@ -20,24 +20,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-  <com.google.android.material.appbar.AppBarLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content">
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        style="?attr/catalogToolbarWithCloseButtonStyle"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:title="@string/cat_transformation_title"/>
-  </com.google.android.material.appbar.AppBarLayout>
-
   <!-- This is where the app's content would be. -->
   <FrameLayout
       android:id="@+id/content"
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:layout_marginTop="?attr/actionBarSize">
+      android:layout_height="match_parent">
   </FrameLayout>
 
   <View

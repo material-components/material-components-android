@@ -21,8 +21,6 @@ import io.material.catalog.R;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,13 +42,10 @@ public class TransformationMainDemoFragment extends DemoFragment implements OnBa
         layoutInflater.inflate(
             R.layout.cat_transformation_fragment, viewGroup, false /* attachToRoot */);
 
-    Toolbar toolbar = view.findViewById(R.id.toolbar);
     fab = view.findViewById(R.id.fab);
     View closeButton = view.findViewById(R.id.close_button);
     TransformationChildCard sheet = view.findViewById(R.id.sheet);
     View scrim = view.findViewById(R.id.scrim);
-
-    ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
     fab.setOnClickListener(v -> fab.setExpanded(!fab.isExpanded()));
     closeButton.setOnClickListener(v -> fab.setExpanded(false));
@@ -73,11 +68,6 @@ public class TransformationMainDemoFragment extends DemoFragment implements OnBa
     container.addDraggableChild(sheet);
 
     return view;
-  }
-
-  @Override
-  public boolean shouldShowDefaultDemoActionBar() {
-    return false;
   }
 
   @Override
