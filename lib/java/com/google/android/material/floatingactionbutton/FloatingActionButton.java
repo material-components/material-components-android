@@ -246,6 +246,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     boolean ensureMinTouchTargetSize = a
         .getBoolean(R.styleable.FloatingActionButton_ensureMinTouchTargetSize, false);
 
+    setEnabled(a.getBoolean(R.styleable.FloatingActionButton_android_enabled, true));
+
     a.recycle();
 
     imageHelper = new AppCompatImageHelper(this);
