@@ -202,7 +202,7 @@ subprojects {
 
         lintOptions {
           baseline file("baseline.xml")
-          disable 'IconLauncherShape', 'IconDuplicates', 'SwitchIntDef', 'PxUsage', 'PrivateResource', 'GradleDependency', 'GradleOverrides', 'VectorRaster'
+          disable 'IconLauncherShape', 'IconDuplicates', 'SwitchIntDef', 'PxUsage', 'PrivateResource', 'GradleDependency', 'GradleOverrides', 'VectorRaster', 'GifUsage'
           warningsAsErrors true
         }
 

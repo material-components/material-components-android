@@ -18,6 +18,7 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/main_viewGroup"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
@@ -67,5 +68,42 @@
     app:strokeWidth="1dp"
     app:elevation="5dp"
     app:srcCompat="@drawable/dog_image" />
+
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:layoutDirection="ltr"
+    android:orientation="horizontal"
+    tools:ignore="UnusedAttribute">
+
+    <com.google.android.material.imageview.ShapeableImageView
+      android:id="@+id/image_view_jpeg"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:adjustViewBounds="true"
+      android:scaleType="centerInside"
+      app:elevation="5dp"
+      app:shapeAppearance="@style/ShapeAppearanceImageLeft"
+      app:srcCompat="@drawable/cat_image"
+      app:strokeColor="?attr/colorSecondary"
+      app:strokeWidth="1dp" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+      android:id="@+id/image_view_gif"
+      tools:ignore="InefficientWeight"
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"
+      android:layout_weight="1"
+      android:adjustViewBounds="true"
+      android:scaleType="centerInside"
+      app:elevation="5dp"
+      app:shapeAppearance="@style/ShapeAppearanceImageRight"
+      app:srcCompat="@drawable/cateyes_image"
+      app:strokeColor="?attr/colorSecondary"
+      app:strokeWidth="1dp" />
+
+  </LinearLayout>
 
 </LinearLayout>

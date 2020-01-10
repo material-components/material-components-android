@@ -43,7 +43,8 @@ public class ShapeableImageViewMainDemoFragment extends DemoFragment {
   @ExperimentalImageView
   public View onCreateDemoView(
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
-    View view = layoutInflater.inflate(R.layout.cat_imageview, viewGroup, false /* attachToRoot */);
+    View view =
+        layoutInflater.inflate(R.layout.catalog_imageview, viewGroup, false /* attachToRoot */);
     MaterialButtonToggleGroup toggleGroup = view.findViewById(R.id.togglegroup);
     ShapeableImageView imageView = view.findViewById(R.id.image_view);
 
