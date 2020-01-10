@@ -2349,19 +2349,19 @@ public class TextInputLayout extends LinearLayout {
         bounds.right = rect.right - editText.getPaddingRight();
         return bounds;
       case BOX_BACKGROUND_FILLED:
-        bounds.left = getFilledLabelLeftBound(rect.left, isRtl);
+        bounds.left = getLabelLeftBoundAlightWithPrefix(rect.left, isRtl);
         bounds.top = rect.top + boxCollapsedPaddingTopPx;
-        bounds.right = getFilledLabelRightBound(rect.right, isRtl);
+        bounds.right = getLabelRightBoundAlignedWithSuffix(rect.right, isRtl);
         return bounds;
       default:
-        bounds.left = rect.left + editText.getCompoundPaddingLeft();
+        bounds.left = getLabelLeftBoundAlightWithPrefix(rect.left, isRtl);
         bounds.top = getPaddingTop();
-        bounds.right = rect.right - editText.getCompoundPaddingRight();
+        bounds.right = getLabelRightBoundAlignedWithSuffix(rect.right, isRtl);
         return bounds;
     }
   }
 
-  private int getFilledLabelLeftBound(int rectLeft, boolean isRtl) {
+  private int getLabelLeftBoundAlightWithPrefix(int rectLeft, boolean isRtl) {
     int left = rectLeft + editText.getCompoundPaddingLeft();
     if (prefixText != null && !isRtl) {
       // Label should be vertically aligned with prefix
@@ -2370,7 +2370,7 @@ public class TextInputLayout extends LinearLayout {
     return left;
   }
 
-  private int getFilledLabelRightBound(int rectRight, boolean isRtl) {
+  private int getLabelRightBoundAlignedWithSuffix(int rectRight, boolean isRtl) {
     int right = rectRight - editText.getCompoundPaddingRight();
     if (prefixText != null && isRtl) {
       // Label should be vertically aligned with prefix if in RTL
