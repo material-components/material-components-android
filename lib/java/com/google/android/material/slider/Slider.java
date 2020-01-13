@@ -47,7 +47,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.view.ViewCompat;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -204,16 +203,9 @@ public class Slider extends View {
   private boolean thumbIsPressed = false;
   private float valueFrom;
   private float valueTo;
-  private float thumbPosition = 0.0f; // The position of the thumb normalised to a [0.0, 1.0] range.
-  /**
-   * The position of thumb when the slider is not laid out. Then it will be set to {@link
-   * #thumbPosition} once laid out.
-   */
-  private float desiredThumbPosition = 0.0f;
-
+  private float value;
   private float stepSize = 0.0f;
   private float[] ticksCoordinates;
-  private float[] visibleTicksCoordinates;
   private int trackWidth;
   private boolean forceDrawCompatHalo;
 
@@ -525,7 +517,7 @@ public class Slider extends View {
    * @attr ref com.google.android.material.R.styleable#Slider_android_value
    */
   public float getValue() {
-    return thumbPosition * (valueTo - valueFrom) + valueFrom;
+    return value;
   }
 
   /**
@@ -546,14 +538,17 @@ public class Slider extends View {
    * @attr ref com.google.android.material.R.styleable#Slider_android_value
    */
   public void setValue(float value) {
-    if (isValueValid(value)) {
-      float newThumbPosition = (value - valueFrom) / (valueTo - valueFrom);
-      if (snapThumbPosition(newThumbPosition)) {
-        desiredThumbPosition = thumbPosition;
-        dispatchOnChanged(false);
-        invalidate();
-      }
+    if (!isValueValid(value)) {
+      return;
     }
+
+    if (Math.abs(this.value - value) < THRESHOLD) {
+      return;
+    }
+
+    this.value = value;
+    dispatchOnChanged(false);
+    invalidate();
   }
 
   private boolean isValueValid(float value) {
@@ -601,10 +596,14 @@ public class Slider extends View {
    * @attr ref com.google.android.material.R.styleable#Slider_android_stepSize
    */
   public void setStepSize(float stepSize) {
-    this.stepSize = stepSize;
-    validateStepSize();
-    maybeUpdateTrackWidthAndTicksCoordinates();
-    postInvalidate();
+    if (this.stepSize != stepSize) {
+      this.stepSize = stepSize;
+      validateStepSize();
+      if (trackWidth > 0) {
+        calculateTicksCoordinates();
+      }
+      postInvalidate();
+    }
   }
 
   /**
@@ -846,7 +845,6 @@ public class Slider extends View {
     if (this.trackHeight != trackHeight) {
       this.trackHeight = trackHeight;
       invalidateTrack();
-      maybeUpdateTrackWidthAndTicksCoordinates();
       postInvalidate();
     }
   }
@@ -1127,47 +1125,30 @@ public class Slider extends View {
   @Override
   protected void onSizeChanged(int w, int h, int oldw, int oldh) {
     super.onSizeChanged(w, h, oldw, oldh);
-    updateTrackWidthAndTicksCoordinates(w);
-    if (snapThumbPosition(desiredThumbPosition)) {
-      desiredThumbPosition = thumbPosition;
-      dispatchOnChanged(false);
-      invalidate();
+
+    // Update the visible track width.
+    trackWidth = w - trackSidePadding * 2;
+
+    // Update the visible tick coordinates.
+    if (stepSize > 0.0f) {
+      calculateTicksCoordinates();
     }
+
     updateHaloHotspot();
   }
 
-  private void maybeUpdateTrackWidthAndTicksCoordinates() {
-    if (ViewCompat.isLaidOut(this)) {
-      // If we're already laid out we need to update the ticks.
-      updateTrackWidthAndTicksCoordinates(getWidth());
+  private void calculateTicksCoordinates() {
+    int tickCount = (int) ((valueTo - valueFrom) / stepSize + 1);
+    // Limit the tickCount if they will be too dense.
+    tickCount = Math.min(tickCount, trackWidth / (trackHeight * 2) + 1);
+    if (ticksCoordinates == null || ticksCoordinates.length != tickCount * 2) {
+      ticksCoordinates = new float[tickCount * 2];
     }
-  }
 
-  private void updateTrackWidthAndTicksCoordinates(int viewWidth) {
-    trackWidth = viewWidth - trackSidePadding * 2;
-    if (stepSize > 0.0f) {
-      int tickCount = (int) ((valueTo - valueFrom) / stepSize + 1);
-
-      if (ticksCoordinates == null || ticksCoordinates.length != tickCount * 2) {
-        ticksCoordinates = new float[tickCount * 2];
-      }
-      setTicksCoordinates(ticksCoordinates);
-
-      // Limit the tickCount if they will be too dense.
-      tickCount = Math.min(tickCount, trackWidth / (trackHeight * 2) + 1);
-      if (visibleTicksCoordinates == null || visibleTicksCoordinates.length != tickCount * 2) {
-        visibleTicksCoordinates = new float[tickCount * 2];
-      }
-      setTicksCoordinates(visibleTicksCoordinates);
-    }
-  }
-
-  private void setTicksCoordinates(float[] coordinates) {
-    int tickCount = coordinates.length / 2;
     float interval = trackWidth / (float) (tickCount - 1);
     for (int i = 0; i < tickCount * 2; i += 2) {
-      coordinates[i] = trackSidePadding + i / 2 * interval;
-      coordinates[i + 1] = calculateTop();
+      ticksCoordinates[i] = trackSidePadding + i / 2 * interval;
+      ticksCoordinates[i + 1] = calculateTop();
     }
   }
 
@@ -1176,7 +1157,7 @@ public class Slider extends View {
     if (!shouldDrawCompatHalo() && getMeasuredWidth() > 0) {
       final Drawable background = getBackground();
       if (background instanceof RippleDrawable) {
-        int x = (int) (thumbPosition * trackWidth + trackSidePadding);
+        int x = (int) (getThumbPosition() * trackWidth + trackSidePadding);
         int y = calculateTop();
         DrawableCompat.setHotspotBounds(
             background, x - haloRadius, y - haloRadius, x + haloRadius, y + haloRadius);
@@ -1195,7 +1176,7 @@ public class Slider extends View {
     int top = calculateTop();
 
     drawInactiveTrack(canvas, trackWidth, top);
-    if (thumbPosition > 0.0f) {
+    if (getThumbPosition() > 0.0f) {
       drawActiveTrack(canvas, trackWidth, top);
     }
 
@@ -1211,24 +1192,24 @@ public class Slider extends View {
   }
 
   private void drawInactiveTrack(@NonNull Canvas canvas, int width, int top) {
-    float right = trackSidePadding + thumbPosition * width;
+    float right = trackSidePadding + getThumbPosition() * width;
     if (right < trackSidePadding + width) {
       canvas.drawLine(right, top, trackSidePadding + width, top, inactiveTrackPaint);
     }
   }
 
   private void drawActiveTrack(@NonNull Canvas canvas, int width, int top) {
-    float left = trackSidePadding + thumbPosition * width;
+    float left = trackSidePadding + getThumbPosition() * width;
     canvas.drawLine(trackSidePadding, top, left, top, activeTrackPaint);
   }
 
   private void drawTicks(@NonNull Canvas canvas) {
-    int pivotIndex = pivotIndex(visibleTicksCoordinates, thumbPosition);
-    canvas.drawPoints(visibleTicksCoordinates, 0, pivotIndex * 2, activeTicksPaint);
+    int pivotIndex = pivotIndex(ticksCoordinates, getThumbPosition());
+    canvas.drawPoints(ticksCoordinates, 0, pivotIndex * 2, activeTicksPaint);
     canvas.drawPoints(
-        visibleTicksCoordinates,
+        ticksCoordinates,
         pivotIndex * 2,
-        visibleTicksCoordinates.length - pivotIndex * 2,
+        ticksCoordinates.length - pivotIndex * 2,
         inactiveTicksPaint);
   }
 
@@ -1236,12 +1217,13 @@ public class Slider extends View {
     // Clear out the track behind the thumb if we're in a disable state since the thumb is
     // transparent.
     if (!isEnabled()) {
-      canvas.drawCircle(trackSidePadding + thumbPosition * width, top, thumbRadius, thumbPaint);
+      canvas.drawCircle(
+          trackSidePadding + getThumbPosition() * width, top, thumbRadius, thumbPaint);
     }
 
     canvas.save();
     canvas.translate(
-        trackSidePadding + (int) (thumbPosition * width) - thumbRadius, top - thumbRadius);
+        trackSidePadding + (int) (getThumbPosition() * width) - thumbRadius, top - thumbRadius);
     thumbDrawable.draw(canvas);
     canvas.restore();
   }
@@ -1249,7 +1231,7 @@ public class Slider extends View {
   private void maybeDrawHalo(@NonNull Canvas canvas, int width, int top) {
     // Only draw the halo for devices that aren't using the ripple.
     if (shouldDrawCompatHalo()) {
-      int centerX = (int) (trackSidePadding + thumbPosition * width);
+      int centerX = (int) (trackSidePadding + getThumbPosition() * width);
       if (VERSION.SDK_INT < VERSION_CODES.P) {
         // In this case we can clip the rect to allow drawing outside the bounds.
         canvas.clipRect(
@@ -1355,29 +1337,26 @@ public class Slider extends View {
     return Math.round(position * (coordinates.length / 2 - 1));
   }
 
+  private float getThumbPosition() {
+    return (value - valueFrom) / (valueTo - valueFrom);
+  }
+
   /**
    * Snaps the thumb position to the closest tick coordinates in discrete mode, and the input
-   * position in continuous mode. If the slider currently not laid out, the desired value will be
-   * held in {@link #desiredThumbPosition} until the {@link #onSizeChanged(int, int, int, int)} is
-   * called.
+   * position in continuous mode.
    *
    * @param eventPosition Position of the user's event.
    * @return true, if {@code #thumbPosition is updated}; false, otherwise.
    */
   private boolean snapThumbPosition(float eventPosition) {
     if (stepSize > 0.0f) {
-      // If ticks coordinates are not determined, discrete thumb position cannot be determined.
-      if (ticksCoordinates == null) {
-        desiredThumbPosition = eventPosition;
-        return false;
-      }
-      int intervalsCovered = pivotIndex(ticksCoordinates, eventPosition);
-      eventPosition = (float) intervalsCovered / (ticksCoordinates.length / 2 - 1);
+      int stepCount = (int) ((valueTo - valueFrom) / stepSize);
+      eventPosition = (float) Math.round(eventPosition * stepCount) / stepCount;
     }
-    if (eventPosition == thumbPosition) {
+    if (eventPosition == getThumbPosition()) {
       return false;
     }
-    thumbPosition = eventPosition;
+    value = eventPosition * (valueTo - valueFrom) + valueFrom;
     return true;
   }
 
@@ -1388,7 +1367,7 @@ public class Slider extends View {
     }
 
     int left =
-        trackSidePadding + (int) (thumbPosition * trackWidth) - label.getIntrinsicWidth() / 2;
+        trackSidePadding + (int) (getThumbPosition() * trackWidth) - label.getIntrinsicWidth() / 2;
     int top = calculateTop() - (labelPadding + thumbRadius);
     label.setBounds(left, top - label.getIntrinsicHeight(), left + label.getIntrinsicWidth(), top);
 
@@ -1479,7 +1458,7 @@ public class Slider extends View {
     SliderState sliderState = new SliderState(superState);
     sliderState.valueFrom = valueFrom;
     sliderState.valueTo = valueTo;
-    sliderState.thumbPosition = thumbPosition;
+    sliderState.value = value;
     sliderState.stepSize = stepSize;
     sliderState.hasFocus = hasFocus();
     return sliderState;
@@ -1492,7 +1471,7 @@ public class Slider extends View {
 
     valueFrom = sliderState.valueFrom;
     valueTo = sliderState.valueTo;
-    thumbPosition = sliderState.thumbPosition;
+    value = sliderState.value;
     stepSize = sliderState.stepSize;
     if (sliderState.hasFocus) {
       requestFocus();
@@ -1504,7 +1483,7 @@ public class Slider extends View {
 
     float valueFrom;
     float valueTo;
-    float thumbPosition;
+    float value;
     float stepSize;
     boolean hasFocus;
 
@@ -1532,7 +1511,7 @@ public class Slider extends View {
       super(source);
       valueFrom = source.readFloat();
       valueTo = source.readFloat();
-      thumbPosition = source.readFloat();
+      value = source.readFloat();
       stepSize = source.readFloat();
       hasFocus = source.createBooleanArray()[0];
     }
@@ -1542,7 +1521,7 @@ public class Slider extends View {
       super.writeToParcel(dest, flags);
       dest.writeFloat(valueFrom);
       dest.writeFloat(valueTo);
-      dest.writeFloat(thumbPosition);
+      dest.writeFloat(value);
       dest.writeFloat(stepSize);
       boolean[] booleans = new boolean[1];
       booleans[0] = hasFocus;

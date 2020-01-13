@@ -150,17 +150,17 @@ public class SliderEventTest {
   }
 
   @Test
-  public void testSliderSetValueBeforeLaidOut_ListenerShouldBeCalledAfterLaidOut() {
+  public void testSliderSetValueBeforeLaidOut_ListenerShouldBeCalledOnce() {
     // Sets value before laid out.
     slider.setValue(SLIDER_VALUE_FROM + SLIDER_VALUE_RANGE / 2);
-    // Verifies listener is not called.
-    verify(mockOnChangeListener, never())
+    // Verifies listener is called once.
+    verify(mockOnChangeListener, times(1))
         .onValueChange(eq(slider), eq(SLIDER_VALUE_FROM + SLIDER_VALUE_RANGE / 2), eq(false));
 
     // Lays out slider.
     activity.addContentView(container, new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
 
-    // Verifies listener is not called.
+    // Verifies listener is not called again.
     verify(mockOnChangeListener, times(1))
         .onValueChange(eq(slider), eq(SLIDER_VALUE_FROM + SLIDER_VALUE_RANGE / 2), eq(false));
   }
