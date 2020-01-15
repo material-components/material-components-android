@@ -62,6 +62,7 @@
     <attr name="tabGravity">
       <enum name="fill" value="0"/>
       <enum name="center" value="1"/>
+      <enum name="start" value="2"/>
     </attr>
     <!-- Whether to display tab labels horizontally inline with icons, or underneath icons. -->
     <attr name="tabInlineLabel" format="boolean"/>
