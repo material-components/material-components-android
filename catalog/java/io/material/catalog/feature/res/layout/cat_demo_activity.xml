@@ -21,6 +21,7 @@
     android:orientation="vertical">
 
   <com.google.android.material.appbar.AppBarLayout
+      android:id="@+id/cat_demo_activity_appbar"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:fitsSystemWindows="true">
