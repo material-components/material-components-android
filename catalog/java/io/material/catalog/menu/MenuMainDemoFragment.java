@@ -25,6 +25,8 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.graphics.drawable.InsetDrawable;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.MenuRes;
@@ -100,7 +102,17 @@ public class MenuMainDemoFragment extends DemoFragment {
                     TypedValue.COMPLEX_UNIT_DIP, ICON_MARGIN, getResources().getDisplayMetrics());
 
         if (item.getIcon() != null) {
-          item.setIcon(new InsetDrawable(item.getIcon(), iconMarginPx, 0, iconMarginPx, 0));
+          if (VERSION.SDK_INT > VERSION_CODES.LOLLIPOP) {
+            item.setIcon(new InsetDrawable(item.getIcon(), iconMarginPx, 0, iconMarginPx, 0));
+          } else {
+            item.setIcon(
+                new InsetDrawable(item.getIcon(), iconMarginPx, 0, iconMarginPx, 0) {
+                  @Override
+                  public int getIntrinsicWidth() {
+                    return getIntrinsicHeight() + iconMarginPx + iconMarginPx;
+                  }
+                });
+          }
         }
       }
     }
