@@ -436,6 +436,8 @@ public class TabLayout extends HorizontalScrollView {
   boolean tabIndicatorFullWidth;
   boolean unboundedRipple;
 
+  @Nullable private OnTabSelectedListener selectedListener;
+
   private final ArrayList<OnTabSelectedListener> selectedListeners = new ArrayList<>();
   @Nullable private OnTabSelectedListener currentVpSelectedListener;
   private final HashMap<BaseOnTabSelectedListener<? extends Tab>, OnTabSelectedListener>
@@ -723,6 +725,25 @@ public class TabLayout extends HorizontalScrollView {
       tab.setContentDescription(item.getContentDescription());
     }
     addTab(tab);
+  }
+
+  /**
+   * @deprecated Use {@link #addOnTabSelectedListener(OnTabSelectedListener)} and {@link
+   *    #removeOnTabSelectedListener(OnTabSelectedListener)}.
+   */
+  @Deprecated
+  public void setOnTabSelectedListener(@Nullable OnTabSelectedListener listener) {
+    // The logic in this method emulates what we had before support for multiple
+    // registered listeners.
+    if (selectedListener != null) {
+      removeOnTabSelectedListener(selectedListener);
+    }
+    // Update the deprecated field so that we can remove the passed listener the next
+    // time we're called
+    selectedListener = listener;
+    if (listener != null) {
+      addOnTabSelectedListener(listener);
+    }
   }
 
   /**
@@ -3090,7 +3111,7 @@ public class TabLayout extends HorizontalScrollView {
               public void onAnimationStart(Animator animator) {
                 selectedPosition = position;
               }
-              
+
               @Override
               public void onAnimationEnd(Animator animator) {
                 selectedPosition = position;
