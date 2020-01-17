@@ -268,6 +268,9 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
       new Runnable() {
         @Override
         public void run() {
+          if (view == null || context == null) {
+            return;
+          }
           // Calculate current bottom inset, factoring in translationY to account for where the
           // view will likely be animating to.
           int currentInsetBottom =
@@ -829,6 +832,9 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
         new Runnable() {
           @Override
           public void run() {
+            if (view == null) {
+              return;
+            }
             // Make view VISIBLE now that we are about to start the enter animation
             view.setVisibility(View.VISIBLE);
             if (view.getAnimationMode() == ANIMATION_MODE_FADE) {
