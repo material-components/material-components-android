@@ -72,14 +72,12 @@ public class ShadowRenderer {
   }
 
   public ShadowRenderer(int color) {
+    shadowPaint = new Paint();
     setShadowColor(color);
 
     transparentPaint.setColor(Color.TRANSPARENT);
     cornerShadowPaint = new Paint(Paint.DITHER_FLAG);
     cornerShadowPaint.setStyle(Paint.Style.FILL);
-
-    shadowPaint = new Paint();
-    shadowPaint.setColor(shadowStartColor);
 
     edgeShadowPaint = new Paint(cornerShadowPaint);
   }
@@ -88,6 +86,7 @@ public class ShadowRenderer {
     shadowStartColor = ColorUtils.setAlphaComponent(color, COLOR_ALPHA_START);
     shadowMiddleColor = ColorUtils.setAlphaComponent(color, COLOR_ALPHA_MIDDLE);
     shadowEndColor = ColorUtils.setAlphaComponent(color, COLOR_ALPHA_END);
+    shadowPaint.setColor(shadowStartColor);
   }
 
   /** Draws an edge shadow on the canvas in the current bounds with the matrix transform applied. */
