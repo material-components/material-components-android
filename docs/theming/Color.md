@@ -35,28 +35,28 @@ are:
 | Attribute Name          | Description                        | Default Value |
 | ----------------------- | ---------------------------------- | ------------- |
 | `colorPrimary`          | The color displayed most           | #6200EE       |
-:                         : frequently across your app’s       :               :
-:                         : screens and components. This color :               :
-:                         : should pass accessibilty           :               :
-:                         : guidelines for text / iconography  :               :
-:                         : when drawn on top of the surface   :               :
-:                         : or background color.               :               :
+|                         | frequently across your app’s       |               |
+|                         | screens and components. This color |               |
+|                         | should pass accessibilty           |               |
+|                         | guidelines for text / iconography  |               |
+|                         | when drawn on top of the surface   |               |
+|                         | or background color.               |               |
 | `colorPrimaryVariant`   | A tonal variation of the primary   | #3700B3       |
-:                         : color.                             :               :
+|                         | color.                             |               |
 | `colorOnPrimary`        | A color that passes accessibility  | #FFFFFF       |
-:                         : guidelines for text/iconography    :               :
-:                         : when drawn on top of the primary   :               :
-:                         : color.                             :               :
+|                         | guidelines for text/iconography    |               |
+|                         | when drawn on top of the primary   |               |
+|                         | color.                             |               |
 | `colorSecondary`        | The secondary branding color for   | #03DAC6       |
-:                         : the app, usually an accented       :               :
-:                         : complement to the primary branding :               :
-:                         : color.                             :               :
+|                         | the app, usually an accented       |               |
+|                         | complement to the primary branding |               |
+|                         | color.                             |               |
 | `colorSecondaryVariant` | A tonal variation of the secondary | #018786       |
-:                         : color.                             :               :
+|                         | color.                             |               |
 | `colorOnSecondary`      | A color that passes accessibility  | #000000       |
-:                         : guidelines for text/iconography    :               :
-:                         : when drawn on top of the secondary :               :
-:                         : color.                             :               :
+|                         | guidelines for text/iconography    |               |
+|                         | when drawn on top of the secondary |               |
+|                         | color.                             |               |
 
 By changing these six color attributes, you can easily change the style of all
 the Material components to which your theme is applied.
