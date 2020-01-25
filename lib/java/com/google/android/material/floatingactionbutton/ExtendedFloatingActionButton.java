@@ -50,6 +50,8 @@ import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import java.util.List;
 
+import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
+
 /**
  * Extended floating action buttons are used for a special type of promoted action. They are
  * distinguished by an icon and a text floating above the UI and have special motion behaviors
@@ -138,7 +140,9 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
   @SuppressWarnings("initialization")
   public ExtendedFloatingActionButton(
       @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-    super(context, attrs, defStyleAttr);
+    super(wrap(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
+    // Ensure we are using the correctly themed context rather than the context that was passed in.
+    context = getContext();
     behavior = new ExtendedFloatingActionButtonBehavior<>(context, attrs);
     TypedArray a =
         ThemeEnforcement.obtainStyledAttributes(
