@@ -52,6 +52,8 @@ import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
+
 /**
  * A common container for a set of related, toggleable {@link MaterialButton}s. The {@link
  * MaterialButton}s in this group will be shown on a single line.
@@ -178,7 +180,9 @@ public class MaterialButtonToggleGroup extends LinearLayout {
 
   public MaterialButtonToggleGroup(
       @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-    super(context, attrs, defStyleAttr);
+    super(wrap(context, attrs, defStyleAttr, 0), attrs, defStyleAttr);
+    // Ensure we are using the correctly themed context rather than the context that was passed in.
+    context = getContext();
     TypedArray attributes =
         ThemeEnforcement.obtainStyledAttributes(
             context,
