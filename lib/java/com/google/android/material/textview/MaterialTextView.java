@@ -30,6 +30,8 @@ import android.util.AttributeSet;
 import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.resources.MaterialResources;
 
+import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
+
 /**
  * A MaterialTextView is a derivative of {@link AppCompatTextView} that displays text to the user.
  * To provide user-editable text, see {@link android.widget.EditText}.
@@ -88,7 +90,9 @@ public class MaterialTextView extends AppCompatTextView {
 
   public MaterialTextView(
       @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-    super(context, attrs, defStyleAttr);
+    super(wrap(context, attrs, defStyleAttr, 0), attrs, defStyleAttr);
+    // Ensure we are using the correctly themed context rather than the context that was passed in.
+    context = getContext();
 
     if (canApplyTextAppearanceLineHeight(context)) {
       final Resources.Theme theme = context.getTheme();
