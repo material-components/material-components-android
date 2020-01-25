@@ -19,7 +19,6 @@ package com.google.android.material.bottomnavigation;
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
-import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -90,9 +89,7 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
 
   public BottomNavigationItemView(
       @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-    super(wrap(context, attrs, defStyleAttr, 0), attrs, defStyleAttr);
-    // Ensure we are using the correctly themed context rather than the context that was passed in.
-    context = getContext();
+    super(context, attrs, defStyleAttr);
     final Resources res = getResources();
 
     LayoutInflater.from(context).inflate(R.layout.design_bottom_navigation_item, this, true);
