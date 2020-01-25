@@ -19,6 +19,7 @@ package com.google.android.material.navigation;
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 
 import android.app.Activity;
 import android.content.Context;
@@ -98,6 +99,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
   private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
   private static final int[] DISABLED_STATE_SET = {-android.R.attr.state_enabled};
 
+  private static final int DEF_STYLE_RES = R.style.Widget_Design_NavigationView;
   private static final int PRESENTER_NAVIGATION_VIEW_ID = 1;
 
   @NonNull private final NavigationMenu menu;
@@ -120,7 +122,9 @@ public class NavigationView extends ScrimInsetsFrameLayout {
   }
 
   public NavigationView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-    super(context, attrs, defStyleAttr);
+    super(wrap(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
+    // Ensure we are using the correctly themed context rather than the context that was passed in.
+    context = getContext();
 
     // Create the menu
     this.menu = new NavigationMenu(context);
@@ -132,7 +136,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
             attrs,
             R.styleable.NavigationView,
             defStyleAttr,
-            R.style.Widget_Design_NavigationView);
+            DEF_STYLE_RES);
 
     if (a.hasValue(R.styleable.NavigationView_android_background)) {
       ViewCompat.setBackground(this, a.getDrawable(R.styleable.NavigationView_android_background));
