@@ -34,6 +34,8 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import com.google.android.material.internal.ManufacturerUtils;
 
+import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
+
 /**
  * A special sub-class of {@link android.widget.EditText} designed for use as a child of {@link
  * com.google.android.material.textfield.TextInputLayout}.
@@ -55,7 +57,7 @@ public class TextInputEditText extends AppCompatEditText {
 
   public TextInputEditText(
       @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-    super(context, attrs, defStyleAttr);
+    super(wrap(context, attrs, defStyleAttr, 0), attrs, defStyleAttr);
   }
 
   @Override
