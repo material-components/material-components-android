@@ -159,6 +159,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset);
   }
 
+  private static final int DEF_STYLE_RES = R.style.Widget_Design_AppBarLayout;
   private static final int INVALID_SCROLL_RANGE = -1;
 
   private int currentOffset;
@@ -196,7 +197,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
   }
 
   public AppBarLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-    super(wrap(context, attrs, defStyleAttr, 0), attrs, defStyleAttr);
+    super(wrap(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
     // Ensure we are using the correctly themed context rather than the context that was passed in.
     context = getContext();
     setOrientation(VERTICAL);
@@ -209,7 +210,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
       // If we're running on API 21+, we should reset any state list animator from our
       // default style
       ViewUtilsLollipop.setStateListAnimatorFromAttrs(
-          this, attrs, defStyleAttr, R.style.Widget_Design_AppBarLayout);
+          this, attrs, defStyleAttr, DEF_STYLE_RES);
     }
 
     final TypedArray a =
@@ -218,7 +219,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
             attrs,
             R.styleable.AppBarLayout,
             defStyleAttr,
-            R.style.Widget_Design_AppBarLayout);
+            DEF_STYLE_RES);
 
     ViewCompat.setBackground(this, a.getDrawable(R.styleable.AppBarLayout_android_background));
 
