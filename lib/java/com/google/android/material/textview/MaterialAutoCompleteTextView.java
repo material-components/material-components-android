@@ -35,6 +35,8 @@ import android.widget.Filterable;
 import android.widget.ListAdapter;
 import com.google.android.material.textfield.TextInputLayout;
 
+import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
+
 /**
  * A special sub-class of {@link android.widget.AutoCompleteTextView} that is auto-inflated so that
  * non-editable auto-complete text fields (e.g., for an Exposed Dropdown Menu) are accessible when
@@ -62,12 +64,14 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
 
   public MaterialAutoCompleteTextView(
       @NonNull Context context, @Nullable AttributeSet attributeSet, int defStyleAttr) {
-    super(context, attributeSet, defStyleAttr);
+    super(wrap(context, attributeSet, defStyleAttr, 0), attributeSet, defStyleAttr);
+    // Ensure we are using the correctly themed context rather than the context that was passed in.
+    context = getContext();
 
     accessibilityManager =
         (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
 
-    modalListPopup = new ListPopupWindow(getContext());
+    modalListPopup = new ListPopupWindow(context);
     modalListPopup.setModal(true);
     modalListPopup.setAnchorView(this);
     modalListPopup.setInputMethodMode(ListPopupWindow.INPUT_METHOD_NOT_NEEDED);
