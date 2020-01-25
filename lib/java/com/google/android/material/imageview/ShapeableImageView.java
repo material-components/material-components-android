@@ -56,6 +56,8 @@ import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.shape.ShapeAppearancePathProvider;
 import com.google.android.material.shape.Shapeable;
 
+import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
+
 /** An ImageView that draws the bitmap with the provided Shape. */
 @ExperimentalImageView
 public class ShapeableImageView extends AppCompatImageView implements Shapeable {
@@ -88,7 +90,9 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
   }
 
   public ShapeableImageView(Context context, @Nullable AttributeSet attrs, int defStyle) {
-    super(context, attrs, defStyle);
+    super(wrap(context, attrs, defStyle, DEF_STYLE_RES), attrs, defStyle);
+    // Ensure we are using the correctly themed context rather than the context that was passed in.
+    context = getContext();
     matrix = new Matrix();
     source = new RectF();
     destination = new RectF();
