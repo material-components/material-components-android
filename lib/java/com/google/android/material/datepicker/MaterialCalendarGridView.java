@@ -33,6 +33,8 @@ import android.widget.GridView;
 import android.widget.ListAdapter;
 import java.util.Calendar;
 
+import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
+
 final class MaterialCalendarGridView extends GridView {
 
   private final Calendar dayCompute = UtcDates.getUtcCalendar();
@@ -46,8 +48,10 @@ final class MaterialCalendarGridView extends GridView {
   }
 
   public MaterialCalendarGridView(Context context, AttributeSet attrs, int defStyleAttr) {
-    super(context, attrs, defStyleAttr);
-    if (MaterialDatePicker.isFullscreen(getContext())) {
+    super(wrap(context, attrs, defStyleAttr, 0), attrs, defStyleAttr);
+    // Ensure we are using the correctly themed context rather than the context that was passed in.
+    context = getContext();
+    if (MaterialDatePicker.isFullscreen(context)) {
       setNextFocusLeftId(R.id.cancel_button);
       setNextFocusRightId(R.id.confirm_button);
     }
