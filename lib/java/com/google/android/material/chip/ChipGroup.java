@@ -42,6 +42,8 @@ import com.google.android.material.internal.ThemeEnforcement;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
+
 /**
  * A ChipGroup is used to hold multiple {@link Chip}s. By default, the chips are reflowed across
  * multiple lines. Set the {@link R.attr#singleLine app:singleLine} attribute to constrain the chips
@@ -88,6 +90,8 @@ public class ChipGroup extends FlowLayout {
     }
   }
 
+  private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_ChipGroup;
+
   @Dimension private int chipSpacingHorizontal;
   @Dimension private int chipSpacingVertical;
   private boolean singleSelection;
@@ -113,7 +117,9 @@ public class ChipGroup extends FlowLayout {
   }
 
   public ChipGroup(Context context, AttributeSet attrs, int defStyleAttr) {
-    super(context, attrs, defStyleAttr);
+    super(wrap(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
+    // Ensure we are using the correctly themed context rather than the context that was passed in.
+    context = getContext();
 
     TypedArray a =
         ThemeEnforcement.obtainStyledAttributes(
@@ -121,7 +127,7 @@ public class ChipGroup extends FlowLayout {
             attrs,
             R.styleable.ChipGroup,
             defStyleAttr,
-            R.style.Widget_MaterialComponents_ChipGroup);
+            DEF_STYLE_RES);
 
     int chipSpacing = a.getDimensionPixelOffset(R.styleable.ChipGroup_chipSpacing, 0);
     setChipSpacingHorizontal(
