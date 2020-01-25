@@ -95,6 +95,7 @@ public class DatePickerMainDemoFragment extends DemoFragment {
     final RadioGroup title = root.findViewById(R.id.cat_picker_title_group);
     final RadioGroup opening = root.findViewById(R.id.cat_picker_opening_month_group);
     final RadioGroup selection = root.findViewById(R.id.cat_picker_selection_group);
+    final RadioGroup inputMode = root.findViewById(R.id.cat_picker_input_mode_group);
 
     launcher.setOnClickListener(
         v -> {
@@ -106,9 +107,10 @@ public class DatePickerMainDemoFragment extends DemoFragment {
           int titleChoice = title.getCheckedRadioButtonId();
           int openingChoice = opening.getCheckedRadioButtonId();
           int selectionChoice = selection.getCheckedRadioButtonId();
+          int inputModeChoices = inputMode.getCheckedRadioButtonId();
 
           MaterialDatePicker.Builder<?> builder =
-              setupDateSelectorBuilder(selectionModeChoice, selectionChoice);
+              setupDateSelectorBuilder(selectionModeChoice, selectionChoice, inputModeChoices);
           CalendarConstraints.Builder constraintsBuilder =
               setupConstraintsBuilder(boundsChoice, openingChoice, validationChoice);
 
@@ -137,7 +139,7 @@ public class DatePickerMainDemoFragment extends DemoFragment {
   }
 
   private MaterialDatePicker.Builder<?> setupDateSelectorBuilder(
-      int selectionModeChoice, int selectionChoice) {
+      int selectionModeChoice, int selectionChoice, int inputModeChoice) {
     if (selectionModeChoice == R.id.cat_picker_date_selector_single) {
       MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
       if (selectionChoice == R.id.cat_picker_selection_today) {
@@ -145,6 +147,11 @@ public class DatePickerMainDemoFragment extends DemoFragment {
       } else if (selectionChoice == R.id.cat_picker_selection_next_month) {
         builder.setSelection(nextMonth);
       }
+
+      builder.setInputMode(
+          inputModeChoice == R.id.cat_picker_input_mode_calendar
+              ? MaterialDatePicker.INPUT_MODE_CALENDAR
+              : MaterialDatePicker.INPUT_MODE_TEXT);
       return builder;
     } else {
       MaterialDatePicker.Builder<Pair<Long, Long>> builder =
@@ -154,6 +161,10 @@ public class DatePickerMainDemoFragment extends DemoFragment {
       } else if (selectionChoice == R.id.cat_picker_selection_next_month) {
         builder.setSelection(nextMonthPair);
       }
+      builder.setInputMode(
+          inputModeChoice == R.id.cat_picker_input_mode_text
+              ? MaterialDatePicker.INPUT_MODE_CALENDAR
+              : MaterialDatePicker.INPUT_MODE_TEXT);
       return builder;
     }
   }

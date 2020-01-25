@@ -35,6 +35,7 @@ import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
+import android.graphics.drawable.Animatable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -80,6 +81,7 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
 
   private Bitmap bitmap;
   private BitmapShader bitmapShader;
+  private boolean isAnimatable = false;
 
   public ShapeableImageView(Context context) {
     this(context, null, 0);
@@ -120,17 +122,33 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
       setOutlineProvider(new OutlineProvider());
     }
 
-    updateShader();
+    onDrawableChange();
   }
 
   @Override
   protected void onDraw(Canvas canvas) {
+    if (isAnimatable) {
+      canvas.clipPath(path);
+      super.onDraw(canvas);
+      drawStroke(canvas);
+      return;
+    }
+
     if (bitmap == null) {
       return;
     }
 
     source.set(0, 0, bitmap.getWidth(), bitmap.getHeight());
-    drawBitmap(canvas, source, destination);
+    // Draw bitmap through shader first.
+    matrix.reset();
+
+    // Fit bitmap to bounds.
+    matrix.setRectToRect(source, destination, ScaleToFit.FILL);
+    bitmapShader.setLocalMatrix(matrix);
+    bitmapPaint.setShader(bitmapShader);
+
+    canvas.drawPath(path, bitmapPaint);
+    drawStroke(canvas);
   }
 
   @Override
@@ -144,17 +162,8 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
     pathProvider.calculatePath(shapeAppearanceModel, 1f /*interpolation*/, destination, path);
   }
 
-  private void drawBitmap(Canvas canvas, RectF source, RectF dest) {
-    // Draw bitmap through shader first.
-    matrix.reset();
 
-    // Fit bitmap to bounds.
-    matrix.setRectToRect(source, dest, ScaleToFit.FILL);
-
-    bitmapShader.setLocalMatrix(matrix);
-    bitmapPaint.setShader(bitmapShader);
-
-    canvas.drawPath(path, bitmapPaint);
+  private void drawStroke(Canvas canvas) {
     borderPaint.setStrokeWidth(strokeWidth);
     int colorForState =
         strokeColor.getColorForState(getDrawableState(), strokeColor.getDefaultColor());
@@ -268,28 +277,45 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
   @Override
   public void setImageBitmap(Bitmap bitmap) {
     super.setImageBitmap(bitmap);
-    updateShader();
+    onDrawableChange();
   }
 
   @Override
   public void setImageDrawable(Drawable drawable) {
     super.setImageDrawable(drawable);
-    updateShader();
+    onDrawableChange();
   }
 
   @Override
   public void setImageResource(@DrawableRes int resId) {
     super.setImageResource(resId);
-    updateShader();
+    onDrawableChange();
   }
 
   @Override
   public void setImageURI(Uri uri) {
     super.setImageURI(uri);
-    updateShader();
+    onDrawableChange();
   }
 
-  private void updateShader() {
+  private void onDrawableChange() {
+    Drawable drawable = getDrawable();
+    if (drawable == null) {
+      return;
+    }
+
+    isAnimatable = drawable instanceof Animatable;
+    if (isAnimatable) {
+      // We draw with a bitmap only if it's not animatable otherwise call clipPath in onDraw,
+      // to avoid having to draw each frame on the bitmap.
+      bitmap = null;
+      bitmapShader = null;
+      if (bitmapPaint != null) {
+        bitmapPaint.setShader(null);
+      }
+      return;
+    }
+
     bitmap = createBitmap();
     if (bitmap != null) {
       bitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
@@ -299,10 +325,6 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
   @Nullable
   private Bitmap createBitmap() {
     Drawable drawable = getDrawable();
-    if (drawable == null) {
-      return null;
-    }
-
     if (drawable instanceof BitmapDrawable) {
       return ((BitmapDrawable) drawable).getBitmap();
     }

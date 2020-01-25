@@ -233,7 +233,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   private boolean skipCollapsed;
 
-  private boolean draggable;
+  private boolean draggable = true;
 
   @State int state = STATE_COLLAPSED;
 

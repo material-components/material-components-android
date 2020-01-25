@@ -91,4 +91,11 @@
   <!-- Indicates that the picker will open to next month [CHAR LIMIT=25] -->
   <string name="cat_picker_opening_month_next">Next Month</string>
 
+  <!-- Grouping label for a set of radio buttons that choose the input mode [CHAR LIMIT=50] -->
+  <string name="cat_picker_input_mode">Input Mode</string>
+  <!-- Indicates that the picker will start with calendar mode [CHAR LIMIT=25] -->
+  <string name="cat_picker_input_mode_calendar">Calendar</string>
+  <!-- Indicates that the picker will start with text input mode [CHAR LIMIT=25] -->
+  <string name="cat_picker_input_mode_text">Text Input</string>
+
 </resources>

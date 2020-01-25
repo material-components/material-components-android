@@ -20,6 +20,7 @@ import io.material.catalog.R;
 
 import android.os.Bundle;
 import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,8 +33,11 @@ import io.material.catalog.feature.DemoFragment;
 /** A fragment that displays a scrollable tabs demo for the Catalog app. */
 public class TabsAutoDemoFragment extends DemoFragment {
 
+  private static final String KEY_TABS = "TABS";
+
   private int numTabs = 0;
   private String[] tabTitles;
+  private TabLayout autoScrollableTabLayout;
 
   @Nullable
   @Override
@@ -47,8 +51,18 @@ public class TabsAutoDemoFragment extends DemoFragment {
     View tabsContent = layoutInflater.inflate(getTabsContent(), content, false /* attachToRoot */);
     content.addView(tabsContent, 0);
 
-    TabLayout autoScrollableTabLayout = tabsContent.findViewById(R.id.auto_tab_layout);
-    numTabs = autoScrollableTabLayout.getChildCount();
+    autoScrollableTabLayout = tabsContent.findViewById(R.id.auto_tab_layout);
+
+    if (bundle != null) {
+      autoScrollableTabLayout.removeAllTabs();
+      // Restore saved tabs
+      String[] tabLabels = bundle.getStringArray(KEY_TABS);
+      for (int i = 0; i < tabLabels.length; i++) {
+        autoScrollableTabLayout.addTab(autoScrollableTabLayout.newTab().setText(tabLabels[i]), i);
+      }
+    }
+
+    numTabs = autoScrollableTabLayout.getTabCount();
 
     tabTitles = getContext().getResources().getStringArray(R.array.cat_tabs_titles);
 
@@ -76,5 +90,15 @@ public class TabsAutoDemoFragment extends DemoFragment {
   @LayoutRes
   protected int getTabsContent() {
     return R.layout.cat_tabs_auto_content;
+  }
+
+  @Override
+  public void onSaveInstanceState(@NonNull Bundle bundle) {
+    super.onSaveInstanceState(bundle);
+    String[] tabLabels = new String[autoScrollableTabLayout.getTabCount()];
+    for (int i = 0; i < autoScrollableTabLayout.getTabCount(); i++) {
+      tabLabels[i] = autoScrollableTabLayout.getTabAt(i).getText().toString();
+    }
+    bundle.putStringArray(KEY_TABS, tabLabels);
   }
 }

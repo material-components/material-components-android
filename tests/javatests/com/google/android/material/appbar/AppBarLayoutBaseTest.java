@@ -25,10 +25,13 @@ import static com.google.android.material.testutils.SwipeUtils.swipeDown;
 import static com.google.android.material.testutils.SwipeUtils.swipeUp;
 import static com.google.android.material.testutils.TestUtilsActions.setText;
 import static com.google.android.material.testutils.TestUtilsActions.setTitle;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Build.VERSION;
 import android.os.SystemClock;
 import androidx.annotation.CallSuper;
 import androidx.annotation.IdRes;
@@ -36,6 +39,7 @@ import androidx.annotation.IntRange;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.StringRes;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.text.TextUtils;
@@ -44,6 +48,7 @@ import android.widget.TextView;
 import com.google.android.material.internal.BaseDynamicCoordinatorLayoutTest;
 import com.google.android.material.resources.TextAppearanceConfig;
 import com.google.android.material.testapp.R;
+import com.google.android.material.testutils.AccessibilityUtils;
 import com.google.android.material.testutils.Shakespeare;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -126,5 +131,23 @@ public abstract class AppBarLayoutBaseTest extends BaseDynamicCoordinatorLayoutT
         return alpha == ((CollapsingToolbarLayout) view).getScrimAlpha();
       }
     };
+  }
+
+  protected void assertAccessibilityHasScrollForwardAction(boolean hasScrollForward) {
+    if (VERSION.SDK_INT >= 21) {
+      assertThat(
+          AccessibilityUtils.hasAction(
+              mCoordinatorLayout, AccessibilityNodeInfoCompat.ACTION_SCROLL_FORWARD),
+          equalTo(hasScrollForward));
+    }
+  }
+
+  protected void assertAccessibilityHasScrollBackwardAction(boolean hasScrollBackward) {
+    if (VERSION.SDK_INT >= 21) {
+      assertThat(
+          AccessibilityUtils.hasAction(
+              mCoordinatorLayout, AccessibilityNodeInfoCompat.ACTION_SCROLL_BACKWARD),
+          equalTo(hasScrollBackward));
+    }
   }
 }

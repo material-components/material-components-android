@@ -73,6 +73,7 @@ import androidx.appcompat.widget.TooltipCompat;
 import android.text.Layout;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -102,7 +103,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 
 /**
@@ -205,6 +205,8 @@ public class TabLayout extends HorizontalScrollView {
 
   private static final String ACCESSIBILITY_CLASS_NAME = "androidx.appcompat.app.ActionBar.Tab";
 
+  private static final String LOG_TAG = "TabLayout";
+
   /**
    * Scrollable tabs display a subset of tabs at any given moment, and can contain longer tab labels
    * and a larger number of tabs. They are best used for browsing contexts in touch interfaces when
@@ -279,11 +281,19 @@ public class TabLayout extends HorizontalScrollView {
    */
   public static final int GRAVITY_CENTER = 1;
 
+  /**
+   * Gravity used to lay out the tabs aligned to the start of the {@link TabLayout}.
+   *
+   * @see #setTabGravity(int)
+   * @see #getTabGravity()
+   */
+  public static final int GRAVITY_START = 1 << 1;
+
   /** @hide */
   @RestrictTo(LIBRARY_GROUP)
   @IntDef(
       flag = true,
-      value = {GRAVITY_FILL, GRAVITY_CENTER})
+      value = {GRAVITY_FILL, GRAVITY_CENTER, GRAVITY_START})
   @Retention(RetentionPolicy.SOURCE)
   public @interface TabGravity {}
 
@@ -350,28 +360,7 @@ public class TabLayout extends HorizontalScrollView {
   public @interface TabIndicatorGravity {}
 
   /** Callback interface invoked when a tab's selection state changes. */
-  public interface OnTabSelectedListener {
-    /**
-     * Called when a tab enters the selected state.
-     *
-     * @param tab The tab that was selected
-     */
-    public void onTabSelected(Tab tab);
-
-    /**
-     * Called when a tab exits the selected state.
-     *
-     * @param tab The tab that was unselected
-     */
-    public void onTabUnselected(Tab tab);
-
-    /**
-     * Called when a tab that is already selected is chosen again by the user. Some applications may
-     * use this action to return to the top level of a category.
-     *
-     * @param tab The tab that was reselected.
-     */
-    public void onTabReselected(Tab tab);
+  public interface OnTabSelectedListener extends BaseOnTabSelectedListener<Tab> {
   }
 
   /** Callback interface invoked when a tab's selection state changes. */
@@ -431,7 +420,7 @@ public class TabLayout extends HorizontalScrollView {
 
   private int contentInsetStart;
 
-  int tabGravity;
+  @TabGravity int tabGravity;
   int tabIndicatorAnimationDuration;
   @TabIndicatorGravity int tabIndicatorGravity;
   @Mode int mode;
@@ -439,10 +428,10 @@ public class TabLayout extends HorizontalScrollView {
   boolean tabIndicatorFullWidth;
   boolean unboundedRipple;
 
-  private final ArrayList<OnTabSelectedListener> selectedListeners = new ArrayList<>();
-  @Nullable private OnTabSelectedListener currentVpSelectedListener;
-  private final HashMap<BaseOnTabSelectedListener<? extends Tab>, OnTabSelectedListener>
-      selectedListenerMap = new HashMap<>();
+  @Nullable private BaseOnTabSelectedListener selectedListener;
+
+  private final ArrayList<BaseOnTabSelectedListener> selectedListeners = new ArrayList<>();
+  @Nullable private BaseOnTabSelectedListener currentVpSelectedListener;
 
   private ValueAnimator scrollAnimator;
 
@@ -732,12 +721,30 @@ public class TabLayout extends HorizontalScrollView {
 
   /**
    * @deprecated Use {@link #addOnTabSelectedListener(OnTabSelectedListener)} and {@link
+   *    #removeOnTabSelectedListener(OnTabSelectedListener)}.
+   */
+  @Deprecated
+  public void setOnTabSelectedListener(@Nullable OnTabSelectedListener listener) {
+    setOnTabSelectedListener((BaseOnTabSelectedListener) listener);
+  }
+
+  /**
+   * @deprecated Use {@link #addOnTabSelectedListener(OnTabSelectedListener)} and {@link
    *     #removeOnTabSelectedListener(OnTabSelectedListener)}.
    */
   @Deprecated
   public void setOnTabSelectedListener(@Nullable BaseOnTabSelectedListener listener) {
-    clearOnTabSelectedListeners();
-    addOnTabSelectedListener(wrapOnTabSelectedListener(listener));
+    // The logic in this method emulates what we had before support for multiple
+    // registered listeners.
+    if (selectedListener != null) {
+      removeOnTabSelectedListener(selectedListener);
+    }
+    // Update the deprecated field so that we can remove the passed listener the next
+    // time we're called
+    selectedListener = listener;
+    if (listener != null) {
+      addOnTabSelectedListener(listener);
+    }
   }
 
   /**
@@ -749,9 +756,7 @@ public class TabLayout extends HorizontalScrollView {
    * @param listener listener to add
    */
   public void addOnTabSelectedListener(@NonNull OnTabSelectedListener listener) {
-    if (!selectedListeners.contains(listener)) {
-      selectedListeners.add(listener);
-    }
+    addOnTabSelectedListener((BaseOnTabSelectedListener) listener);
   }
 
   /**
@@ -766,7 +771,9 @@ public class TabLayout extends HorizontalScrollView {
    */
   @Deprecated
   public void addOnTabSelectedListener(@Nullable BaseOnTabSelectedListener listener) {
-    addOnTabSelectedListener(wrapOnTabSelectedListener(listener));
+    if (!selectedListeners.contains(listener)) {
+      selectedListeners.add(listener);
+    }
   }
 
   /**
@@ -776,7 +783,7 @@ public class TabLayout extends HorizontalScrollView {
    * @param listener listener to remove
    */
   public void removeOnTabSelectedListener(@NonNull OnTabSelectedListener listener) {
-    selectedListeners.remove(listener);
+    removeOnTabSelectedListener((BaseOnTabSelectedListener) listener);
   }
 
   /**
@@ -788,48 +795,12 @@ public class TabLayout extends HorizontalScrollView {
    */
   @Deprecated
   public void removeOnTabSelectedListener(@Nullable BaseOnTabSelectedListener listener) {
-    removeOnTabSelectedListener(wrapOnTabSelectedListener(listener));
-  }
-
-  /** @hide */
-  @Nullable
-  @RestrictTo(LIBRARY_GROUP)
-  protected OnTabSelectedListener wrapOnTabSelectedListener(
-      @Nullable final BaseOnTabSelectedListener baseListener) {
-    if (baseListener == null) {
-      return null;
-    }
-
-    if (selectedListenerMap.containsKey(baseListener)) {
-      return selectedListenerMap.get(baseListener);
-    }
-
-    OnTabSelectedListener listener =
-        new OnTabSelectedListener() {
-          @Override
-          public void onTabSelected(Tab tab) {
-            baseListener.onTabSelected(tab);
-          }
-
-          @Override
-          public void onTabUnselected(Tab tab) {
-            baseListener.onTabUnselected(tab);
-          }
-
-          @Override
-          public void onTabReselected(Tab tab) {
-            baseListener.onTabReselected(tab);
-          }
-        };
-
-    selectedListenerMap.put(baseListener, listener);
-    return listener;
+    selectedListeners.remove(listener);
   }
 
   /** Remove all previously added {@link TabLayout.OnTabSelectedListener}s. */
   public void clearOnTabSelectedListeners() {
     selectedListeners.clear();
-    selectedListenerMap.clear();
   }
 
   /**
@@ -1601,7 +1572,7 @@ public class TabLayout extends HorizontalScrollView {
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     // If we have a MeasureSpec which allows us to decide our height, try and use the default
     // height
-    final int idealHeight = (int) ViewUtils.dpToPx(getContext(), getDefaultHeight());
+    final int idealHeight = Math.round(ViewUtils.dpToPx(getContext(), getDefaultHeight()));
     switch (MeasureSpec.getMode(heightMeasureSpec)) {
       case MeasureSpec.AT_MOST:
         if (getChildCount() == 1 && MeasureSpec.getSize(heightMeasureSpec) >= idealHeight) {
@@ -1631,7 +1602,7 @@ public class TabLayout extends HorizontalScrollView {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
     if (getChildCount() == 1) {
-      // If we're in fixed mode then we need to make the tab strip is the same width as us
+      // If we're in fixed mode then we need to make sure the tab strip is the same width as us
       // so we don't scroll
       final View child = getChildAt(0);
       boolean remeasure = false;
@@ -1841,14 +1812,39 @@ public class TabLayout extends HorizontalScrollView {
     switch (mode) {
       case MODE_AUTO:
       case MODE_FIXED:
+        if (tabGravity == GRAVITY_START) {
+          Log.w(
+              LOG_TAG,
+              "GRAVITY_START is not supported with the current tab mode, GRAVITY_CENTER will be"
+                  + " used instead");
+        }
         slidingTabIndicator.setGravity(Gravity.CENTER_HORIZONTAL);
         break;
       case MODE_SCROLLABLE:
-        slidingTabIndicator.setGravity(GravityCompat.START);
+        applyGravityForModeScrollable(tabGravity);
         break;
     }
 
     updateTabViews(true);
+  }
+
+  private void applyGravityForModeScrollable(int tabGravity) {
+    switch (tabGravity) {
+      case GRAVITY_CENTER:
+        slidingTabIndicator.setGravity(Gravity.CENTER_HORIZONTAL);
+        break;
+      case GRAVITY_FILL:
+        Log.w(
+            LOG_TAG,
+            "MODE_SCROLLABLE + GRAVITY_FILL is not supported, GRAVITY_START will be used"
+                + " instead");
+        // Fall through
+      case GRAVITY_START:
+        slidingTabIndicator.setGravity(GravityCompat.START);
+        break;
+      default:
+        break;
+    }
   }
 
   void updateTabViews(final boolean requestLayout) {

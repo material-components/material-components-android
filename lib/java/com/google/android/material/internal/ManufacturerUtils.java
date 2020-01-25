@@ -27,13 +27,13 @@ public class ManufacturerUtils {
 
   private ManufacturerUtils() {}
 
-  /** Returns true if the device manufacturer is Samsung. */
-  public static boolean isSamsungDevice() {
-    return Build.MANUFACTURER.equalsIgnoreCase("samsung");
-  }
-
   /** Returns true if the device manufacturer is Meizu. */
   public static boolean isMeizuDevice() {
     return Build.MANUFACTURER.equalsIgnoreCase("meizu");
+  }
+
+  /** Returns true if the device manufacturer is LG. */
+  public static boolean isLGDevice() {
+    return Build.MANUFACTURER.equalsIgnoreCase("lg");
   }
 }
