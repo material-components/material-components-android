@@ -90,7 +90,7 @@ public class MaterialTextView extends AppCompatTextView {
 
   public MaterialTextView(
       @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-    super(wrap(context, attrs, defStyleAttr, 0), attrs, defStyleAttr);
+    super(wrap(context, attrs, defStyleAttr, defStyleRes), attrs, defStyleAttr);
     // Ensure we are using the correctly themed context rather than the context that was passed in.
     context = getContext();
 
