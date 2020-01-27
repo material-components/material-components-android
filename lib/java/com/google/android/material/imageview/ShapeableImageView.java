@@ -22,28 +22,21 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
-import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
-import android.graphics.Matrix.ScaleToFit;
 import android.graphics.Outline;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
+import android.graphics.Path.Direction;
+import android.graphics.PorterDuff.Mode;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.Shader;
-import android.graphics.drawable.Animatable;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DimenRes;
-import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
@@ -65,23 +58,16 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
 
   private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_ShapeableImageView;
 
-  private static final String TAG = "ShapeableImageView";
-
   private final ShapeAppearancePathProvider pathProvider = new ShapeAppearancePathProvider();
-  private final Matrix matrix;
-  private final RectF source;
   private final RectF destination;
-  private final Paint bitmapPaint;
   private final Paint borderPaint;
+  private final Paint clearPaint;
   private final Path path = new Path();
 
   private ColorStateList strokeColor;
   private ShapeAppearanceModel shapeAppearanceModel;
   @Px private int strokeWidth;
-
-  private Bitmap bitmap;
-  private BitmapShader bitmapShader;
-  private boolean isAnimatable = false;
+  private Path maskPath;
 
   public ShapeableImageView(Context context) {
     this(context, null, 0);
@@ -95,14 +81,13 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
     super(wrap(context, attrs, defStyle, DEF_STYLE_RES), attrs, defStyle);
     // Ensure we are using the correctly themed context rather than the context that was passed in.
     context = getContext();
-    matrix = new Matrix();
-    source = new RectF();
-    destination = new RectF();
-    bitmapPaint = new Paint();
-    bitmapPaint.setAntiAlias(true);
-    bitmapPaint.setFilterBitmap(true);
-    bitmapPaint.setDither(true);
 
+    clearPaint = new Paint();
+    clearPaint.setAntiAlias(true);
+    clearPaint.setColor(Color.WHITE);
+    clearPaint.setXfermode(new PorterDuffXfermode(Mode.DST_OUT));
+    destination = new RectF();
+    maskPath = new Path();
     TypedArray attributes =
         context.obtainStyledAttributes(
             attrs, R.styleable.ShapeableImageView, defStyle, DEF_STYLE_RES);
@@ -121,33 +106,24 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
       setOutlineProvider(new OutlineProvider());
     }
+  }
 
-    onDrawableChange();
+  @Override
+  protected void onDetachedFromWindow() {
+    setLayerType(LAYER_TYPE_NONE, null);
+    super.onDetachedFromWindow();
+  }
+
+  @Override
+  protected void onAttachedToWindow() {
+    super.onAttachedToWindow();
+    setLayerType(LAYER_TYPE_HARDWARE, null);
   }
 
   @Override
   protected void onDraw(Canvas canvas) {
-    if (isAnimatable) {
-      canvas.clipPath(path);
-      super.onDraw(canvas);
-      drawStroke(canvas);
-      return;
-    }
-
-    if (bitmap == null) {
-      return;
-    }
-
-    source.set(0, 0, bitmap.getWidth(), bitmap.getHeight());
-    // Draw bitmap through shader first.
-    matrix.reset();
-
-    // Fit bitmap to bounds.
-    matrix.setRectToRect(source, destination, ScaleToFit.FILL);
-    bitmapShader.setLocalMatrix(matrix);
-    bitmapPaint.setShader(bitmapShader);
-
-    canvas.drawPath(path, bitmapPaint);
+    super.onDraw(canvas);
+    canvas.drawPath(maskPath, clearPaint);
     drawStroke(canvas);
   }
 
@@ -160,8 +136,11 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
         getMeasuredWidth() - getPaddingRight(),
         getMeasuredHeight() - getPaddingBottom());
     pathProvider.calculatePath(shapeAppearanceModel, 1f /*interpolation*/, destination, path);
+    // Remove path from rect to draw with clear paint.
+    maskPath.rewind();
+    maskPath.addPath(path);
+    maskPath.addRect(destination, Direction.CCW);
   }
-
 
   private void drawStroke(Canvas canvas) {
     borderPaint.setStrokeWidth(strokeWidth);
@@ -272,70 +251,5 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
         outline.setRoundRect(rect, cornerSize);
       }
     }
-  }
-
-  @Override
-  public void setImageBitmap(Bitmap bitmap) {
-    super.setImageBitmap(bitmap);
-    onDrawableChange();
-  }
-
-  @Override
-  public void setImageDrawable(Drawable drawable) {
-    super.setImageDrawable(drawable);
-    onDrawableChange();
-  }
-
-  @Override
-  public void setImageResource(@DrawableRes int resId) {
-    super.setImageResource(resId);
-    onDrawableChange();
-  }
-
-  @Override
-  public void setImageURI(Uri uri) {
-    super.setImageURI(uri);
-    onDrawableChange();
-  }
-
-  private void onDrawableChange() {
-    Drawable drawable = getDrawable();
-    if (drawable == null) {
-      return;
-    }
-
-    isAnimatable = drawable instanceof Animatable;
-    if (isAnimatable) {
-      // We draw with a bitmap only if it's not animatable otherwise call clipPath in onDraw,
-      // to avoid having to draw each frame on the bitmap.
-      bitmap = null;
-      bitmapShader = null;
-      if (bitmapPaint != null) {
-        bitmapPaint.setShader(null);
-      }
-      return;
-    }
-
-    bitmap = createBitmap();
-    if (bitmap != null) {
-      bitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
-    }
-  }
-
-  @Nullable
-  private Bitmap createBitmap() {
-    Drawable drawable = getDrawable();
-    if (drawable instanceof BitmapDrawable) {
-      return ((BitmapDrawable) drawable).getBitmap();
-    }
-
-    Bitmap bitmap =
-        Bitmap.createBitmap(
-            drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-
-    Canvas canvas = new Canvas(bitmap);
-    drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-    drawable.draw(canvas);
-    return bitmap;
   }
 }
