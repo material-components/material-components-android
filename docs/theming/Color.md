@@ -32,31 +32,14 @@ these styles reference color attributes from the Material Design theme
 app by simply modifying the color attributes in your theme. These attributes
 are:
 
-| Attribute Name          | Description                        | Default Value |
-| ----------------------- | ---------------------------------- | ------------- |
-| `colorPrimary`          | The color displayed most           | #6200EE       |
-:                         : frequently across your app’s       :               :
-:                         : screens and components. This color :               :
-:                         : should pass accessibilty           :               :
-:                         : guidelines for text / iconography  :               :
-:                         : when drawn on top of the surface   :               :
-:                         : or background color.               :               :
-| `colorPrimaryVariant`   | A tonal variation of the primary   | #3700B3       |
-:                         : color.                             :               :
-| `colorOnPrimary`        | A color that passes accessibility  | #FFFFFF       |
-:                         : guidelines for text/iconography    :               :
-:                         : when drawn on top of the primary   :               :
-:                         : color.                             :               :
-| `colorSecondary`        | The secondary branding color for   | #03DAC6       |
-:                         : the app, usually an accented       :               :
-:                         : complement to the primary branding :               :
-:                         : color.                             :               :
-| `colorSecondaryVariant` | A tonal variation of the secondary | #018786       |
-:                         : color.                             :               :
-| `colorOnSecondary`      | A color that passes accessibility  | #000000       |
-:                         : guidelines for text/iconography    :               :
-:                         : when drawn on top of the secondary :               :
-:                         : color.                             :               :
+Attribute Name          | Description                        | Default Value
+----------------------- | ---------------------------------- | -------------
+`colorPrimary`          | The color displayed most frequently across your app’s screens and components. This color should pass accessibilty guidelines for text / iconography when drawn on top of the surface or background color. | #6200EE
+`colorPrimaryVariant`   | A tonal variation of the primary color. | #3700B3
+`colorOnPrimary`        | A color that passes accessibility guidelines for text/iconography when drawn on top of the primary color. | #FFFFFF
+`colorSecondary`        | The secondary branding color for the app, usually an accented complement to the primary branding color. | #03DAC6
+`colorSecondaryVariant` | A tonal variation of the secondary color. | #018786
+`colorOnSecondary`      | A color that passes accessibility guidelines for text/iconography when drawn on top of the secondary  color. | #000000
 
 By changing these six color attributes, you can easily change the style of all
 the Material components to which your theme is applied.
