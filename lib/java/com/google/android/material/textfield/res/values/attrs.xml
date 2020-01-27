@@ -260,4 +260,10 @@
     </attr>
   </declare-styleable>
 
+  <declare-styleable name="TextInputEditText">
+    <!-- Whether the TextInputEditText should use the TextInputLayout's focused
+         rectangle instead of its own. -->
+    <attr name="textInputLayoutFocusedRectEnabled" format="boolean"/>
+  </declare-styleable>
+
 </resources>

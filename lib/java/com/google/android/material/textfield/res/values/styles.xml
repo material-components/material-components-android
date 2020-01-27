@@ -158,8 +158,15 @@
     <item name="endIconMode">dropdown_menu</item>
   </style>
 
+  <style name="Widget.Design.TextInputEditText" parent="Widget.AppCompat.EditText">
+    <item name="enforceMaterialTheme">false</item>
+    <item name="enforceTextAppearance">false</item>
+  </style>
+
   <!-- Base style for TextInputEditText. You should use one of the sub-styles instead. -->
-  <style name="Base.Widget.MaterialComponents.TextInputEditText" parent="Widget.AppCompat.EditText">
+  <style name="Base.Widget.MaterialComponents.TextInputEditText" parent="Widget.Design.TextInputEditText">
+    <item name="enforceMaterialTheme">true</item>
+    <item name="enforceTextAppearance">true</item>
     <item name="android:background">@null</item>
     <item name="android:paddingStart" tools:ignore="NewApi">12dp</item>
     <item name="android:paddingEnd" tools:ignore="NewApi">12dp</item>
@@ -168,6 +175,7 @@
     <item name="android:paddingTop">16dp</item>
     <item name="android:paddingBottom">16dp</item>
     <item name="android:textAppearance">?attr/textAppearanceSubtitle1</item>
+    <item name="textInputLayoutFocusedRectEnabled">true</item>
   </style>
 
   <style name="Widget.MaterialComponents.TextInputEditText.FilledBox" parent="Base.Widget.MaterialComponents.TextInputEditText">
