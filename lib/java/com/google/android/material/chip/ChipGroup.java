@@ -352,9 +352,13 @@ public class ChipGroup extends FlowLayout {
   }
 
   private void setCheckedId(int checkedId) {
+    setCheckedId(checkedId, true);
+  }
+
+  private void setCheckedId(int checkedId, boolean fromUser) {
     this.checkedId = checkedId;
 
-    if (onCheckedChangeListener != null && singleSelection) {
+    if (onCheckedChangeListener != null && singleSelection && fromUser) {
       onCheckedChangeListener.onCheckedChanged(this, checkedId);
     }
   }
@@ -529,7 +533,7 @@ public class ChipGroup extends FlowLayout {
       List<Integer> checkedChipIds = getCheckedChipIds();
       if (checkedChipIds.isEmpty() && selectionRequired) {
         setCheckedStateForView(buttonView.getId(), true);
-        setCheckedId(buttonView.getId());
+        setCheckedId(buttonView.getId(), false);
         return;
       }
 

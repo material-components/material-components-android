@@ -28,6 +28,7 @@ import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionIt
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import androidx.test.core.app.ApplicationProvider;
+import com.google.android.material.chip.ChipGroup.OnCheckedChangeListener;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,6 +42,7 @@ public class ChipGroupTest {
 
   private static final int CHIP_GROUP_SPACING = 4;
   private ChipGroup chipgroup;
+  private int checkedChangeCallCount;
 
   @Before
   public void themeApplicationContext() {
@@ -102,6 +104,26 @@ public class ChipGroupTest {
     chip.performClick();
 
     assertThat(((Chip) chip).isChecked()).isTrue();
+  }
+
+  @Test
+  public void singleSelection_withSelectionRequired_callsListenerOnce() {
+    chipgroup.setSelectionRequired(true);
+    chipgroup.setSingleSelection(true);
+    checkedChangeCallCount = 0;
+
+    chipgroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+      @Override
+      public void onCheckedChanged(ChipGroup group, int checkedId) {
+        checkedChangeCallCount++;
+      }
+    });
+
+    View chip = chipgroup.getChildAt(0);
+    chip.performClick();
+    chip.performClick();
+
+    assertThat(checkedChangeCallCount).isEqualTo(1);
   }
 
   @Test
