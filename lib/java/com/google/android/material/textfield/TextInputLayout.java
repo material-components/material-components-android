@@ -2407,7 +2407,7 @@ public class TextInputLayout extends LinearLayout {
 
   private int calculateExpandedLabelBottom(
       @NonNull Rect rect, @NonNull Rect bounds, float labelHeight) {
-    if (boxBackgroundMode == BOX_BACKGROUND_FILLED) {
+    if (isSingleLineFilledTextField()) {
       // Add the label's height to the top of the bounds rather than calculating from the vertical
       // center for both the top and bottom of the label. This prevents a potential fractional loss
       // of label height caused by the float to int conversion.
@@ -3593,11 +3593,10 @@ public class TextInputLayout extends LinearLayout {
 
       if (hintEnabled) {
         collapsingTextHelper.setExpandedTextSize(editText.getTextSize());
-        final int editTextGravity = this.editText.getGravity();
+        final int editTextGravity = editText.getGravity();
         collapsingTextHelper.setCollapsedTextGravity(
             Gravity.TOP | (editTextGravity & ~Gravity.VERTICAL_GRAVITY_MASK));
-        collapsingTextHelper.setExpandedTextGravity(
-            editTextGravity & ~Gravity.VERTICAL_GRAVITY_MASK);
+        collapsingTextHelper.setExpandedTextGravity(editTextGravity);
         collapsingTextHelper.setCollapsedBounds(calculateCollapsedTextBounds(rect));
         collapsingTextHelper.setExpandedBounds(calculateExpandedTextBounds(rect));
         collapsingTextHelper.recalculate();
