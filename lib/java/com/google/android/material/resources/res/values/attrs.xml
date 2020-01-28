@@ -17,16 +17,17 @@
 <resources>
   <!-- Type definitions for common attributes used across component packages. -->
   <attr name="checkedIcon" format="reference" />
-  <attr name="minTouchTargetSize" format="dimension"/>
-  <attr name="selectionRequired" format="boolean"/>
-  <attr name="singleSelection" format="boolean"/>
+  <attr name="minTouchTargetSize" format="dimension" />
+  <attr name="selectionRequired" format="boolean" />
+  <attr name="singleSelection" format="boolean" />
   <attr name="strokeColor" format="color"/>
-  <attr name="strokeWidth" format="dimension"/>
-  <attr name="ensureMinTouchTargetSize" format="boolean"/>
+  <attr name="strokeWidth" format="dimension" />
+  <attr name="ensureMinTouchTargetSize" format="boolean" />
+  <attr name="trackColor" format="color" />
 
   <!-- Navigation and Pickers -->
-  <attr name="itemTextColor" format="color"/>
-  <attr name="itemShapeAppearance" format="reference"/>
-  <attr name="itemShapeAppearanceOverlay" format="reference"/>
+  <attr name="itemTextColor" format="color" />
+  <attr name="itemShapeAppearance" format="reference" />
+  <attr name="itemShapeAppearanceOverlay" format="reference" />
 
 </resources>
