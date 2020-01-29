@@ -26,10 +26,13 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import androidx.test.filters.SmallTest;
 import androidx.test.runner.AndroidJUnit4;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 
@@ -38,6 +41,8 @@ import org.mockito.ArgumentCaptor;
 public class MaterialShapeDrawableDrawTest {
 
   private static final int SHAPE_SIZE = 300;
+
+  @Rule public final ExpectedException thrown = ExpectedException.none();
 
   private final MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable();
 
@@ -90,6 +95,25 @@ public class MaterialShapeDrawableDrawTest {
     Drawable copy = copyMaterialShapeDrawable();
 
     copy.draw(new Canvas());
+  }
+
+  @Test
+  public void testInfinitelyLargeEdge_throwsExceptionWhileDrawingShadow() {
+    if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
+      // This test crashes the emulator, so lets skip it.
+      return;
+    }
+
+    materialShapeDrawable.setElevation(5.0f);
+    materialShapeDrawable.setShadowCompatibilityMode(
+        MaterialShapeDrawable.SHADOW_COMPAT_MODE_ALWAYS);
+    materialShapeDrawable.setShapeAppearanceModel(
+        ShapeAppearanceModel.builder()
+            .setTopEdge(new TriangleEdgeTreatment(Float.POSITIVE_INFINITY, true))
+            .build());
+
+    thrown.expect(RuntimeException.class);
+    materialShapeDrawable.draw(new Canvas());
   }
 
   private Drawable copyMaterialShapeDrawable() {

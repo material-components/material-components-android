@@ -972,6 +972,11 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     int pathExtraWidth = (int) (pathBounds.width() - getBounds().width());
     int pathExtraHeight = (int) (pathBounds.height() - getBounds().height());
 
+    if (pathExtraWidth < 0 || pathExtraHeight < 0) {
+      throw new IllegalStateException(
+          "Invalid shadow bounds. Check that the treatments result in a valid path.");
+    }
+
     // Drawing the shadow in a bitmap lets us use the clear paint rather than using clipPath to
     // prevent drawing shadow under the shape. clipPath has problems :-/
     Bitmap shadowLayer =
