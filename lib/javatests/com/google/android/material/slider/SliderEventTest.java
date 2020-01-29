@@ -113,6 +113,12 @@ public class SliderEventTest {
   }
 
   @Test
+  public void testSliderDrag_multipleThumbs_ListenerShouldBeCalled() {
+    slider.setValues(SLIDER_VALUE_FROM, SLIDER_VALUE_FROM + 10);
+    testSliderDrag_ListenerShouldBeCalled();
+  }
+
+  @Test
   public void testSliderDrag_ListenerShouldBeCalled() {
     // Lays out slider.
     activity.addContentView(container, new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
@@ -163,6 +169,16 @@ public class SliderEventTest {
     // Verifies listener is not called again.
     verify(mockOnChangeListener, times(1))
         .onValueChange(eq(slider), eq(SLIDER_VALUE_FROM + SLIDER_VALUE_RANGE / 2), eq(false));
+  }
+
+  @Test
+  public void testSliderSetMultipleValues_ListenerShouldBeCalledOncePerValue() {
+    float[] values = new float[] {SLIDER_VALUE_FROM, SLIDER_VALUE_FROM + SLIDER_VALUE_RANGE / 2};
+    slider.setValues(values[0], values[1]);
+    slider.setValues(values[0], values[1]);
+    // Verifies listener is called once for each value.
+    verify(mockOnChangeListener, times(1)).onValueChange(eq(slider), eq(values[0]), eq(false));
+    verify(mockOnChangeListener, times(1)).onValueChange(eq(slider), eq(values[1]), eq(false));
   }
 
   private static void touchSliderAtValue(Slider s, float value, int motionEventType) {
