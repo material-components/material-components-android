@@ -1443,13 +1443,20 @@ public class Slider extends View {
 
     switch (event.getActionMasked()) {
       case MotionEvent.ACTION_DOWN:
+        touchDownX = x;
+
         // If we're inside a scrolling container,
         // we should start dragging in ACTION_MOVE
         if (isInScrollingContainer()) {
-          touchDownX = event.getX();
           break;
         }
         getParent().requestDisallowInterceptTouchEvent(true);
+
+        if (!pickActiveThumb()) {
+          // Couldn't determine the active thumb yet.
+          break;
+        }
+
         requestFocus();
         thumbIsPressed = true;
         if (snapTouchPosition()) {
@@ -1470,6 +1477,12 @@ public class Slider extends View {
           getParent().requestDisallowInterceptTouchEvent(true);
           onStartTrackingTouch();
         }
+
+        if (!pickActiveThumb()) {
+          // Couldn't determine the active thumb yet.
+          break;
+        }
+
         thumbIsPressed = true;
         if (snapTouchPosition()) {
           dispatchOnChanged(true);
@@ -1481,7 +1494,7 @@ public class Slider extends View {
         break;
       case MotionEvent.ACTION_UP:
         thumbIsPressed = false;
-        if (snapTouchPosition()) {
+        if (activeThumbIdx != -1 && snapTouchPosition()) {
           dispatchOnChanged(true);
         }
         activeThumbIdx = -1;
@@ -1521,6 +1534,56 @@ public class Slider extends View {
   }
 
   /**
+   * Tries to pick the active thumb if one hasn't already been set. This will pick the closest thumb
+   * if there is only one thumb under the touch position. If there is more than one thumb under the
+   * touch position, it will wait for enough drag left or right to determine which thumb to pick.
+   */
+  private boolean pickActiveThumb() {
+    if (activeThumbIdx != -1) {
+      return true;
+    }
+
+    float touchValue = getValueOfTouchPosition();
+    float touchX = valueToX(touchValue);
+
+    float leftXBound = Math.min(touchX, touchDownX);
+    float rightXBound = Math.max(touchX, touchDownX);
+
+    activeThumbIdx = 0;
+    float activeThumbDiff = Math.abs(values.get(activeThumbIdx) - touchValue);
+    for (int i = 0; i < values.size(); i++) {
+      float valueDiff = Math.abs(values.get(i) - touchValue);
+
+      float valueX = valueToX(values.get(i));
+      float valueDiffX = Math.abs(valueX - touchX);
+      float activeValueDiffX = Math.abs(valueToX(values.get(activeThumbIdx)) - touchX);
+
+      // Check if we've received touch events that's passing over a thumb.
+      if (leftXBound < valueX && rightXBound > valueX) {
+        activeThumbIdx = i;
+        return true;
+      }
+
+      // If the new point and the active point are both within scaled touch slop of the touch and
+      // the value is not the same, we have to wait for the touch to move.
+      if (valueDiffX < scaledTouchSlop
+          && activeValueDiffX < scaledTouchSlop
+          && Math.abs(valueDiffX - activeValueDiffX) > THRESHOLD) {
+        activeThumbIdx = -1;
+        return false;
+      }
+
+      if (valueDiff < activeThumbDiff) {
+        // This value is closer to the thumb so update the active thumb index.
+        activeThumbDiff = valueDiff;
+        activeThumbIdx = i;
+      }
+    }
+
+    return true;
+  }
+
+  /**
    * Snaps the thumb position to the closest tick coordinates in discrete mode, and the input
    * position in continuous mode.
    *
@@ -1528,17 +1591,6 @@ public class Slider extends View {
    */
   private boolean snapTouchPosition() {
     float thumbValue = getValueOfTouchPosition();
-
-    // Try to find the thumb to move if we aren't already tracking one.
-    if (activeThumbIdx == -1) {
-      activeThumbIdx = 0;
-      for (int i = 1; i < values.size(); i++) {
-        if (Math.abs(values.get(i) - thumbValue)
-            < Math.abs(values.get(activeThumbIdx) - thumbValue)) {
-          activeThumbIdx = i;
-        }
-      }
-    }
 
     // Check if the new value equals a value that was already set.
     if (thumbValue == values.get(activeThumbIdx)) {
@@ -1555,6 +1607,10 @@ public class Slider extends View {
 
   private float getValueOfTouchPosition() {
     return snapPosition(touchPosition) * (valueTo - valueFrom) + valueFrom;
+  }
+
+  private float valueToX(float value) {
+    return normalizeValue(value) * trackWidth + trackSidePadding;
   }
 
   private void ensureLabels() {
