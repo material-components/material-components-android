@@ -15,27 +15,30 @@
  */
 package io.material.catalog.datepicker;
 
-import io.material.catalog.R;
-
 import android.content.Context;
 import android.os.Bundle;
-import androidx.annotation.AttrRes;
-import androidx.annotation.Nullable;
-import androidx.core.util.Pair;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+
+import androidx.annotation.AttrRes;
+import androidx.annotation.Nullable;
+import androidx.core.util.Pair;
+
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.DateValidatorPointForward;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.snackbar.Snackbar;
-import io.material.catalog.feature.DemoFragment;
+
 import java.util.Calendar;
 import java.util.TimeZone;
+
+import io.material.catalog.R;
+import io.material.catalog.feature.DemoFragment;
 
 /** A fragment that displays the main Picker demos for the Catalog app. */
 public class DatePickerMainDemoFragment extends DemoFragment {

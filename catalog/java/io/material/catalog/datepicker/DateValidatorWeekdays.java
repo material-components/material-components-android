@@ -16,15 +16,20 @@
 package io.material.catalog.datepicker;
 
 import android.os.Parcel;
+
 import com.google.android.material.datepicker.CalendarConstraints.DateValidator;
+
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-/** A {@link DateValidator} that only allows dates from a given point onward to be clicked. */
+/**
+ * A {@link DateValidator} that only allows dates from a given point onward to be clicked.
+ */
 public class DateValidatorWeekdays implements DateValidator {
 
-  DateValidatorWeekdays() {}
+  DateValidatorWeekdays() {
+  }
 
   private Calendar utc = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 
