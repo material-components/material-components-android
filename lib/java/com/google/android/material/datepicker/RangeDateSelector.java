@@ -52,7 +52,7 @@ import java.util.Collection;
 public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
 
   private String invalidRangeStartError;
-  // TODO(b/137381488): "" is not considered an error
+  // "" is not considered an error
   private final String invalidRangeEndError = " ";
   @Nullable private Long selectedStartItem = null;
   @Nullable private Long selectedEndItem = null;
