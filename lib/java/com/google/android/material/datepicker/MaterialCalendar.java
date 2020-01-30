@@ -290,7 +290,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
   }
 
   /**
-   * Changes the currently displayed {@link Month} to {@code moveTo}.
+   * Changes the currently displayed month to {@code moveTo}.
    *
    * @throws IllegalArgumentException If {@code moveTo} is not within the allowed {@link
    *     CalendarConstraints}.
