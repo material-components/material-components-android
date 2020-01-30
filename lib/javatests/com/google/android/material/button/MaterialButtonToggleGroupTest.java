@@ -180,4 +180,21 @@ public class MaterialButtonToggleGroupTest {
     assertThat(((Checkable) first).isChecked()).isTrue();
     assertThat(((Checkable) second).isChecked()).isFalse();
   }
+
+
+  @Test
+  public void singleSelection_withSelectionRequired_correctCheckedIdWithTwoTaps() {
+    toggleGroup.setSingleSelection(true);
+    toggleGroup.setSelectionRequired(true);
+
+    View child = toggleGroup.getChildAt(1);
+    int id = ViewCompat.generateViewId();
+    child.setId(id);
+    
+    child.performClick();
+    child.performClick();
+
+    // child button is selected
+    assertThat(toggleGroup.getCheckedButtonId()).isEqualTo(id);
+  }
 }

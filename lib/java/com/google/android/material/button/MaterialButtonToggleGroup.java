@@ -702,6 +702,7 @@ public class MaterialButtonToggleGroup extends LinearLayout {
     if (selectionRequired && checkedButtonIds.isEmpty()) {
       // undo deselection
       setCheckedStateForView(childId, true);
+      checkedId = childId;
       return;
     }
 
