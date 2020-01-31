@@ -200,8 +200,6 @@ public class TabLayout extends HorizontalScrollView {
 
   private static final Pools.Pool<Tab> tabPool = new Pools.SynchronizedPool<>(16);
 
-  private static final String ACCESSIBILITY_CLASS_NAME = "androidx.appcompat.app.ActionBar.Tab";
-
   private static final String LOG_TAG = "TabLayout";
 
   /**
@@ -2351,8 +2349,6 @@ public class TabLayout extends HorizontalScrollView {
     @Override
     public void onInitializeAccessibilityNodeInfo(@NonNull AccessibilityNodeInfo info) {
       super.onInitializeAccessibilityNodeInfo(info);
-      // This view masquerades as an action bar tab.
-      info.setClassName(ACCESSIBILITY_CLASS_NAME);
       if (badgeDrawable != null && badgeDrawable.isVisible()) {
         CharSequence customContentDescription = getContentDescription();
         info.setContentDescription(
@@ -2371,13 +2367,7 @@ public class TabLayout extends HorizontalScrollView {
         infoCompat.setClickable(false);
         infoCompat.removeAction(AccessibilityActionCompat.ACTION_CLICK);
       }
-    }
-
-    @Override
-    public void onInitializeAccessibilityEvent(@NonNull AccessibilityEvent event) {
-      super.onInitializeAccessibilityEvent(event);
-      // This view masquerades as an action bar tab.
-      event.setClassName(ACCESSIBILITY_CLASS_NAME);
+      infoCompat.setRoleDescription(getResources().getString(R.string.role_tab_layout));
     }
 
     @Override
