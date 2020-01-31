@@ -300,7 +300,6 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
       infoCompat.setClickable(false);
       infoCompat.removeAction(AccessibilityActionCompat.ACTION_CLICK);
     }
-    infoCompat.setRoleDescription(getResources().getString(R.string.role_bottom_navigation));
   }
 
   private void setViewLayoutParams(@NonNull View view, int topMargin, int gravity) {

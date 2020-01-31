@@ -17,6 +17,4 @@
 <resources>
   <!-- The class name for the HideBottomViewOnScrollBehavior -->
   <string name="hide_bottom_view_on_scroll_behavior" translatable="false">com.google.android.material.behavior.HideBottomViewOnScrollBehavior</string>
-  <!-- The role description for accessibility [CHAR_LIMIT=NONE] -->
-  <string name="role_bottom_navigation">Tab</string>
 </resources>
