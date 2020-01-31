@@ -115,7 +115,7 @@ A text button has a text label, a transparent container and an optional icon.
 <summary><b>Text label</b> attributes</summary>
 <br>
 
-               | Attribute                | Related method(s)                 | Default value
+&nbsp;         | Attribute                | Related method(s)                 | Default value
 -------------- | ------------------------ | --------------------------------- | -------------
 **Text label** | `android:text`           | `setText`<br/>`getText`           | `null`
 **Color**      | `android:textColor`      | `setTextColor`<br/>`getTextColor` | `?attr/colorPrimary`
@@ -127,7 +127,7 @@ A text button has a text label, a transparent container and an optional icon.
 <summary><b>Container</b> attributes</summary>
 <br>
 
-                 | Attribute             | Related method(s)                                                            | Default value
+&nbsp;           | Attribute             | Related method(s)                                                            | Default value
 ---------------- | --------------------- | ---------------------------------------------------------------------------- | -------------
 **Color**        | `app:backgroundTint`  | `setBackgroundColor`<br/>`setBackgroundTintList`<br/>`getBackgroundTintList` | `@android:color/transparent`
 **Stroke color** | `app:strokeColor`     | `setStrokeColor`<br/>`setStrokeColorResource`<br/>`getStrokeColor`           | `null`
@@ -142,7 +142,7 @@ A text button has a text label, a transparent container and an optional icon.
 <summary><b>Icon</b> attributes</summary>
 <br>
 
-                                                | Attribute         | Related method(s)                                         | Default value
+&nbsp;                                          | Attribute         | Related method(s)                                         | Default value
 ----------------------------------------------- | ----------------- | --------------------------------------------------------- | -------------
 **Icon**                                        | `app:icon`        | `setIcon`<br/>`setIconResource`<br/>`getIcon`             | `null`
 **Color**                                       | `app:iconTint`    | `setIconTint`<br/>`setIconTintResource`<br/>`getIconTint` | `?attr/colorPrimary`
@@ -156,7 +156,7 @@ A text button has a text label, a transparent container and an optional icon.
 <summary><b>Styles</b></summary>
 <br>
 
-                  | Style
+&nbsp;            | Style
 ----------------- | --------------------------------------------------
 **Default style** | `Widget.MaterialComponents.Button.TextButton`
 **Icon style**    | `Widget.MaterialComponents.Button.TextButton.Icon`
@@ -245,7 +245,7 @@ An outlined button has a text label, a stroked container and an optional icon.
 <summary><b>Text label</b> attributes</summary>
 <br>
 
-               | Attribute                | Related method(s)                 | Default value
+&nbsp;         | Attribute                | Related method(s)                 | Default value
 -------------- | ------------------------ | --------------------------------- | -------------
 **Text label** | `android:text`           | `setText`<br/>`getText`           | `null`
 **Color**      | `android:textColor`      | `setTextColor`<br/>`getTextColor` | `?attr/colorPrimary`
@@ -257,7 +257,7 @@ An outlined button has a text label, a stroked container and an optional icon.
 <summary><b>Container</b> attributes</summary>
 <br>
 
-                 | Attribute             | Related method(s)                                                            | Default value
+&nbsp;           | Attribute             | Related method(s)                                                            | Default value
 ---------------- | --------------------- | ---------------------------------------------------------------------------- | -------------
 **Color**        | `app:backgroundTint`  | `setBackgroundColor`<br/>`setBackgroundTintList`<br/>`getBackgroundTintList` | `@android:color/transparent`
 **Stroke color** | `app:strokeColor`     | `setStrokeColor`<br/>`setStrokeColorResource`<br/>`getStrokeColor`           | `?attr/colorOnSurface` at 12% opacity
@@ -272,7 +272,7 @@ An outlined button has a text label, a stroked container and an optional icon.
 <summary><b>Icon</b> attributes</summary>
 <br>
 
-                                                | Attribute         | Related method(s)                                         | Default value
+&nbsp;                                          | Attribute         | Related method(s)                                         | Default value
 ----------------------------------------------- | ----------------- | --------------------------------------------------------- | -------------
 **Icon**                                        | `app:icon`        | `setIcon`<br/>`setIconResource`<br/>`getIcon`             | `null`
 **Color**                                       | `app:iconTint`    | `setIconTint`<br/>`setIconTintResource`<br/>`getIconTint` | `?attr/colorPrimary`
@@ -286,7 +286,7 @@ An outlined button has a text label, a stroked container and an optional icon.
 <summary><b>Styles</b></summary>
 <br>
 
-                  | Style
+&nbsp;            | Style
 ----------------- | ------------------------------------------------------
 **Default style** | `Widget.MaterialComponents.Button.OutlinedButton`
 **Icon style**    | `Widget.MaterialComponents.Button.OutlinedButton.Icon`
@@ -380,7 +380,7 @@ A contained button has a text label, a filled container and an optional icon.
 <summary><b>Text label</b> attributes</summary>
 <br>
 
-               | Attribute                | Related method(s)                 | Default value
+&nbsp;         | Attribute                | Related method(s)                 | Default value
 -------------- | ------------------------ | --------------------------------- | -------------
 **Text label** | `android:text`           | `setText`<br/>`getText`           | `null`
 **Color**      | `android:textColor`      | `setTextColor`<br/>`getTextColor` | `?attr/colorOnPrimary`
@@ -392,7 +392,7 @@ A contained button has a text label, a filled container and an optional icon.
 <summary><b>Container</b> attributes</summary>
 <br>
 
-                 | Attribute             | Related method(s)                                                            | Default value
+&nbsp;           | Attribute             | Related method(s)                                                            | Default value
 ---------------- | --------------------- | ---------------------------------------------------------------------------- | -------------
 **Color**        | `app:backgroundTint`  | `setBackgroundColor`<br/>`setBackgroundTintList`<br/>`getBackgroundTintList` | `?attr/colorPrimary`
 **Stroke color** | `app:strokeColor`     | `setStrokeColor`<br/>`setStrokeColorResource`<br/>`getStrokeColor`           | `null`
@@ -407,7 +407,7 @@ A contained button has a text label, a filled container and an optional icon.
 <summary><b>Icon</b> attributes</summary>
 <br>
 
-                                                | Attribute         | Related method(s)                                         | Default value
+&nbsp;                                          | Attribute         | Related method(s)                                         | Default value
 ----------------------------------------------- | ----------------- | --------------------------------------------------------- | -------------
 **Icon**                                        | `app:icon`        | `setIcon`<br/>`setIconResource`<br/>`getIcon`             | `null`
 **Color**                                       | `app:iconTint`    | `setIconTint`<br/>`setIconTintResource`<br/>`getIconTint` | `?attr/colorOnPrimary`
@@ -421,14 +421,12 @@ A contained button has a text label, a filled container and an optional icon.
 <summary><b>Styles</b></summary>
 <br>
 
-|                   | Style                                                    |
-| ----------------- | -------------------------------------------------------- |
-| **Default style** | `Widget.MaterialComponents.Button`                       |
-| **Icon style**    | `Widget.MaterialComponents.Button.Icon`                  |
-| **Unelevated      | `Widget.MaterialComponents.Button.UnelevatedButton`      |
-: style**           :                                                          :
-| **Unelevated icon | `Widget.MaterialComponents.Button.UnelevatedButton.Icon` |
-: style**           :                                                          :
+&nbsp;                    | Style
+------------------------- | -------------------------------------------------------
+**Default style**         | `Widget.MaterialComponents.Button`
+**Icon style**            | `Widget.MaterialComponents.Button.Icon`
+**Unelevated style**      | `Widget.MaterialComponents.Button.UnelevatedButton`
+**Unelevated icon style** | `Widget.MaterialComponents.Button.UnelevatedButton.Icon`
 
 Default style theme attribute: `?attr/materialButtonStyle`
 
@@ -572,7 +570,7 @@ A toggle button has a shared stroked container, icons and/or text labels.
 <summary><b>Selection</b> attributes</summary>
 <br>
 
-                       | Attribute               | Related method(s)                                | Default value
+&nbsp;                 | Attribute               | Related method(s)                                | Default value
 ---------------------- | ----------------------- | ------------------------------------------------ | -------------
 **Single selection**   | `app:singleSelection`   | `setSingleSelection`<br/>`isSingleSelection`     | `false`
 **Selection required** | `app:selectionRequired` | `setSelectionRequired`<br/>`isSelectionRequired` | `false`
@@ -583,7 +581,7 @@ A toggle button has a shared stroked container, icons and/or text labels.
 <summary><b>Styles</b></summary>
 <br>
 
-                  | Style
+&nbsp;            | Style
 ----------------- | -----------------------------------------------------
 **Default style** | `Widget.MaterialComponents.MaterialButtonToggleGroup`
 
