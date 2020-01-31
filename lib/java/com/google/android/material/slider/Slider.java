@@ -69,6 +69,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -673,6 +674,12 @@ public class Slider extends View {
     // If there's not enough labels, add more.
     while (labels.size() < values.size()) {
       labels.add(labelMaker.createTooltipDrawable());
+    }
+
+    // Add a stroke if there is more than one label for when they overlap.
+    int strokeWidth = labels.size() == 1 ?  0 : 1;
+    for (TooltipDrawable label : labels) {
+      label.setStrokeWidth(strokeWidth);
     }
   }
 
@@ -1464,7 +1471,6 @@ public class Slider extends View {
         }
         updateHaloHotspot();
         ensureLabels();
-        updateLabelPosition();
         invalidate();
         onStartTrackingTouch();
         break;
@@ -1489,7 +1495,6 @@ public class Slider extends View {
         }
         updateHaloHotspot();
         ensureLabels();
-        updateLabelPosition();
         invalidate();
         break;
       case MotionEvent.ACTION_UP:
@@ -1619,41 +1624,46 @@ public class Slider extends View {
       return;
     }
 
-    for (int i = 0; i < values.size(); i++) {
-      float value = values.get(i);
-      if (hasLabelFormatter()) {
-        labels.get(i).setText(formatter.getFormattedValue(value));
-      } else {
-        labels.get(i).setText(String.format((int) value == value ? "%.0f" : "%.2f", value));
+    Iterator<TooltipDrawable> labelItr = labels.iterator();
+
+    for (int i = 0; i < values.size() && labelItr.hasNext(); i++) {
+      if (i == focusedThumbIdx) {
+        // We position the focused thumb last so it's displayed on top, so skip it for now.
+        continue;
       }
+
+      setValueForLabel(labelItr.next(), values.get(i));
     }
+
+    if (!labelItr.hasNext()) {
+      throw new IllegalStateException("Not enough labels to display all the values");
+    }
+
+    // Now set the label for the focused thumb so it's on top.
+    setValueForLabel(labelItr.next(), values.get(focusedThumbIdx));
   }
 
-  private void updateLabelPosition() {
-    if (labelBehavior == LABEL_GONE) {
-      // If the label shouldn't be drawn we can skip this.
-      return;
+  private void setValueForLabel(TooltipDrawable label, float value) {
+    if (hasLabelFormatter()) {
+      label.setText(formatter.getFormattedValue(value));
+    } else {
+      label.setText(String.format((int) value == value ? "%.0f" : "%.2f", value));
     }
 
-    for (int i = 0; i < values.size(); i++) {
-      TooltipDrawable label = labels.get(i);
+    int left =
+        trackSidePadding
+            + (int) (normalizeValue(value) * trackWidth)
+            - label.getIntrinsicWidth() / 2;
+    int top = calculateTop() - (labelPadding + thumbRadius);
+    label.setBounds(left, top - label.getIntrinsicHeight(), left + label.getIntrinsicWidth(), top);
 
-      int left =
-          trackSidePadding
-              + (int) (normalizeValue(values.get(i)) * trackWidth)
-              - label.getIntrinsicWidth() / 2;
-      int top = calculateTop() - (labelPadding + thumbRadius);
-      label.setBounds(
-          left, top - label.getIntrinsicHeight(), left + label.getIntrinsicWidth(), top);
+    // Calculate the difference between the bounds of this view and the bounds of the root view to
+    // correctly position this view in the overlay layer.
+    Rect rect = new Rect(label.getBounds());
+    DescendantOffsetUtils.offsetDescendantRect(ViewUtils.getContentView(this), this, rect);
+    label.setBounds(rect);
 
-      // Calculate the difference between the bounds of this view and the bounds of the root view to
-      // correctly position this view in the overlay layer.
-      Rect rect = new Rect(label.getBounds());
-      DescendantOffsetUtils.offsetDescendantRect(ViewUtils.getContentView(this), this, rect);
-      label.setBounds(rect);
-
-      ViewUtils.getContentViewOverlay(this).add(label);
-    }
+    ViewUtils.getContentViewOverlay(this).add(label);
   }
 
   private void invalidateTrack() {
