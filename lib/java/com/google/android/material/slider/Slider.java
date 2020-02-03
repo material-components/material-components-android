@@ -47,10 +47,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.math.MathUtils;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.InflateException;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -221,6 +223,7 @@ public class Slider extends View {
   private float[] ticksCoordinates;
   private int trackWidth;
   private boolean forceDrawCompatHalo;
+  private boolean isLongPress = false;
 
   @NonNull private ColorStateList haloColor;
   @NonNull private ColorStateList tickColorActive;
@@ -746,6 +749,25 @@ public class Slider extends View {
   /** Returns the smallest value of the Slider. */
   public float getMinimumValue() {
     return values.get(0);
+  }
+
+  /** Returns the index of the currently focused thumb */
+  public int getFocusedThumbIndex() {
+    return focusedThumbIdx;
+  }
+
+  /** Sets the index of the currently focused thumb */
+  public void setFocusedThumbIndex(int index) {
+    if (index < 0 || index >= values.size()) {
+      throw new IllegalArgumentException("index out of range");
+    }
+    focusedThumbIdx = index;
+    postInvalidate();
+  }
+
+  /** Returns the index of the currently active thumb, or -1 if no thumb is active */
+  public int getActiveThumbIndex() {
+    return activeThumbIdx;
   }
 
   /**
@@ -1334,6 +1356,11 @@ public class Slider extends View {
 
     if ((thumbIsPressed || isFocused()) && isEnabled()) {
       maybeDrawHalo(canvas, trackWidth, top);
+
+      // Draw labels if there is an active thumb.
+      if (activeThumbIdx != -1) {
+        ensureLabels();
+      }
     }
 
     drawThumbs(canvas, trackWidth, top);
@@ -1466,11 +1493,8 @@ public class Slider extends View {
 
         requestFocus();
         thumbIsPressed = true;
-        if (snapTouchPosition()) {
-          dispatchOnChanged(true);
-        }
+        snapTouchPosition();
         updateHaloHotspot();
-        ensureLabels();
         invalidate();
         onStartTrackingTouch();
         break;
@@ -1490,19 +1514,16 @@ public class Slider extends View {
         }
 
         thumbIsPressed = true;
-        if (snapTouchPosition()) {
-          dispatchOnChanged(true);
-        }
+        snapTouchPosition();
         updateHaloHotspot();
-        ensureLabels();
         invalidate();
         break;
       case MotionEvent.ACTION_UP:
         thumbIsPressed = false;
-        if (activeThumbIdx != -1 && snapTouchPosition()) {
-          dispatchOnChanged(true);
+        if (activeThumbIdx != -1) {
+          snapTouchPosition();
+          activeThumbIdx = -1;
         }
-        activeThumbIdx = -1;
         for (TooltipDrawable label : labels) {
           ViewUtils.getContentViewOverlay(this).remove(label);
         }
@@ -1595,18 +1616,22 @@ public class Slider extends View {
    * @return true, if {@code #thumbPosition is updated}; false, otherwise.
    */
   private boolean snapTouchPosition() {
-    float thumbValue = getValueOfTouchPosition();
+    return snapActiveThumbToValue(getValueOfTouchPosition());
+  }
 
+  private boolean snapActiveThumbToValue(float value) {
     // Check if the new value equals a value that was already set.
-    if (thumbValue == values.get(activeThumbIdx)) {
+    if (value == values.get(activeThumbIdx)) {
       return false;
     }
 
     // Replace the old value with the new value of the touch position.
-    values.set(activeThumbIdx, thumbValue);
+    values.set(activeThumbIdx, value);
     Collections.sort(values);
-    activeThumbIdx = values.indexOf(thumbValue);
+    activeThumbIdx = values.indexOf(value);
     focusedThumbIdx = activeThumbIdx;
+
+    dispatchOnChanged(true);
     return true;
   }
 
@@ -1695,7 +1720,7 @@ public class Slider extends View {
     for (OnChangeListener listener : changeListeners) {
       if (fromUser) {
         // If the change is from the user we can send the value of the current touch position.
-        listener.onValueChange(this, getValueOfTouchPosition(), true);
+        listener.onValueChange(this, values.get(activeThumbIdx), true);
       } else {
         for (Float value : values) {
           listener.onValueChange(this, value, false);
@@ -1744,6 +1769,138 @@ public class Slider extends View {
   @VisibleForTesting
   void forceDrawCompatHalo(boolean force) {
     forceDrawCompatHalo = force;
+  }
+
+  @Override
+  public boolean onKeyDown(int keyCode, @NonNull KeyEvent event) {
+    if (isEnabled()) {
+      // If there's only one thumb, we can select it right away.
+      if (values.size() == 1) {
+        activeThumbIdx = 0;
+      }
+
+      // If there is no active thumb, key events will be used to pick the thumb to change.
+      if (activeThumbIdx == -1) {
+        switch (keyCode) {
+          case KeyEvent.KEYCODE_TAB:
+            if (event.hasNoModifiers()) {
+              moveFocus(1);
+              return true;
+            } else if (event.isShiftPressed()) {
+              moveFocus(-1);
+              return true;
+            }
+            return false;
+          case KeyEvent.KEYCODE_DPAD_LEFT:
+          case KeyEvent.KEYCODE_MINUS:
+            moveFocus(-1);
+            return true;
+          case KeyEvent.KEYCODE_DPAD_RIGHT:
+          case KeyEvent.KEYCODE_PLUS:
+            moveFocus(1);
+            return true;
+          case KeyEvent.KEYCODE_DPAD_CENTER:
+          case KeyEvent.KEYCODE_ENTER:
+            activeThumbIdx = focusedThumbIdx;
+            postInvalidate();
+            return true;
+          default:
+            // Nothing to do in this case.
+        }
+      } else {
+        isLongPress |= event.isLongPress();
+
+        // Deselect the thumb by pressing back.
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+          activeThumbIdx = -1;
+          return true;
+        }
+
+        Float increment = calculateIncrementForKey(event, keyCode);
+        if (increment != null) {
+          float clamped =
+              MathUtils.clamp(values.get(activeThumbIdx) + increment, valueFrom, valueTo);
+          if (snapActiveThumbToValue(clamped)) {
+            updateHaloHotspot();
+            postInvalidate();
+          }
+          return true;
+        }
+      }
+    }
+
+    return super.onKeyDown(keyCode, event);
+  }
+
+  @Override
+  public boolean onKeyUp(int keyCode, @NonNull KeyEvent event) {
+    isLongPress = false;
+    return super.onKeyUp(keyCode, event);
+  }
+
+  private void moveFocus(int direction) {
+    focusedThumbIdx += direction;
+    focusedThumbIdx = MathUtils.clamp(focusedThumbIdx, 0, values.size() - 1);
+    if (activeThumbIdx != -1) {
+      activeThumbIdx = focusedThumbIdx;
+    }
+    updateHaloHotspot();
+    postInvalidate();
+  }
+
+  private Float calculateIncrementForKey(KeyEvent event, int keyCode) {
+    // If this is a long press, increase the increment so it will only take around 20 steps.
+    // Otherwise choose the smallest valid increment.
+    float increment = isLongPress ? calculateStepIncrement(20) : calculateStepIncrement();
+    switch (keyCode) {
+      case KeyEvent.KEYCODE_TAB:
+        if (event.isShiftPressed()) {
+          return -increment;
+        } else {
+          return increment;
+        }
+      case KeyEvent.KEYCODE_DPAD_LEFT:
+      case KeyEvent.KEYCODE_MINUS:
+        increment = -increment;
+        // fallthrough
+      case KeyEvent.KEYCODE_DPAD_RIGHT:
+      case KeyEvent.KEYCODE_PLUS:
+      case KeyEvent.KEYCODE_EQUALS:
+        return increment;
+      default:
+        return null;
+    }
+  }
+
+  /** Returns a small valid step increment to use when adding an offset to an existing value */
+  private float calculateStepIncrement() {
+    return stepSize == 0 ? 1 : stepSize;
+  }
+
+  /**
+   * Returns a valid increment based on the {@code stepSize} (if it's set) that will allow
+   * approximately {@code stepFactor} steps to cover the whole range.
+   */
+  private float calculateStepIncrement(int stepFactor) {
+    float increment = calculateStepIncrement();
+    float numSteps = (valueTo - valueFrom) / increment;
+    if (numSteps <= stepFactor) {
+      return increment;
+    }
+
+    return Math.round((numSteps / stepFactor)) * increment;
+  }
+
+  @Override
+  protected void onFocusChanged(
+      boolean gainFocus, int direction, @Nullable Rect previouslyFocusedRect) {
+    super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
+    if (!gainFocus) {
+      activeThumbIdx = -1;
+      for (TooltipDrawable label : labels) {
+        ViewUtils.getContentViewOverlay(this).remove(label);
+      }
+    }
   }
 
   @Override

@@ -22,8 +22,10 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.os.SystemClock;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.widget.LinearLayout;
+import com.google.android.material.slider.KeyUtils.KeyEventBuilder;
 
 public class SliderHelper {
   private final LinearLayout container;
@@ -87,5 +89,9 @@ public class SliderHelper {
   static float calculateXPositionFromValue(Slider s, float value) {
     return s.getTrackSidePadding()
         + (value - s.getValueFrom()) * s.getTrackWidth() / (s.getValueTo() - s.getValueFrom());
+  }
+
+  static void activateFocusedThumb(Slider s) {
+    new KeyEventBuilder(KeyEvent.KEYCODE_DPAD_CENTER).dispatchEvent(s);
   }
 }
