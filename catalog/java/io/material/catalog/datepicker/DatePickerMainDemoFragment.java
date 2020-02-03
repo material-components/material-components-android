@@ -30,6 +30,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.CalendarConstraints;
+import com.google.android.material.datepicker.DateRangeValidator;
 import com.google.android.material.datepicker.DateValidatorPointForward;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.snackbar.Snackbar;
@@ -190,6 +191,14 @@ public class DatePickerMainDemoFragment extends DemoFragment {
       constraintsBuilder.setValidator(DateValidatorPointForward.now());
     } else if (validationChoice == R.id.cat_picker_validation_weekdays) {
       constraintsBuilder.setValidator(new DateValidatorWeekdays());
+    } else if ((validationChoice == R.id.cat_picker_validation_last_two_weeks)) {
+      Calendar lowerBoundCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+      lowerBoundCalendar.add(Calendar.DAY_OF_MONTH, -14);
+      long lowerBound = lowerBoundCalendar.getTimeInMillis();
+
+      long upperBound = Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTimeInMillis();
+
+      constraintsBuilder.setValidator(DateRangeValidator.between(lowerBound, upperBound));
     }
     return constraintsBuilder;
   }

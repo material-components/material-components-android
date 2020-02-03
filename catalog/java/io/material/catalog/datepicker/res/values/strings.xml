@@ -65,6 +65,8 @@
   <string name="cat_picker_validation_today_onward">Today onward</string>
   <!-- Indicates that only weekdays will be valid [CHAR LIMIT=25] -->
   <string name="cat_picker_validation_weekdays">Weekdays</string>
+  <!-- Indicates that only the last 2 weeks will be valid [CHAR LIMIT=25] -->
+  <string name="cat_picker_validation_last_two_weeks">Last 2 weeks</string>
 
   <!-- Grouping label for a set of radio buttons that choose the title [CHAR LIMIT=50] -->
   <string name="cat_picker_title">Picker Title</string>
