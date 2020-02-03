@@ -132,23 +132,23 @@
   <style name="Base.Theme.MaterialComponents.Light.Dialog" parent="Base.V14.Theme.MaterialComponents.Light.Dialog"/>
 
   <style name="Base.Theme.MaterialComponents.Dialog.Alert">
-    <item name="windowMinWidthMajor">@dimen/abc_dialog_min_width_major</item>
-    <item name="windowMinWidthMinor">@dimen/abc_dialog_min_width_minor</item>
+    <item name="android:windowMinWidthMajor">@dimen/abc_dialog_min_width_major</item>
+    <item name="android:windowMinWidthMinor">@dimen/abc_dialog_min_width_minor</item>
   </style>
 
   <style name="Base.Theme.MaterialComponents.Light.Dialog.Alert">
-    <item name="windowMinWidthMajor">@dimen/abc_dialog_min_width_major</item>
-    <item name="windowMinWidthMinor">@dimen/abc_dialog_min_width_minor</item>
+    <item name="android:windowMinWidthMajor">@dimen/abc_dialog_min_width_major</item>
+    <item name="android:windowMinWidthMinor">@dimen/abc_dialog_min_width_minor</item>
   </style>
 
   <style name="Base.Theme.MaterialComponents.Dialog.MinWidth">
-    <item name="windowMinWidthMajor">@dimen/abc_dialog_min_width_major</item>
-    <item name="windowMinWidthMinor">@dimen/abc_dialog_min_width_minor</item>
+    <item name="android:windowMinWidthMajor">@dimen/abc_dialog_min_width_major</item>
+    <item name="android:windowMinWidthMinor">@dimen/abc_dialog_min_width_minor</item>
   </style>
 
   <style name="Base.Theme.MaterialComponents.Light.Dialog.MinWidth">
-    <item name="windowMinWidthMajor">@dimen/abc_dialog_min_width_major</item>
-    <item name="windowMinWidthMinor">@dimen/abc_dialog_min_width_minor</item>
+    <item name="android:windowMinWidthMajor">@dimen/abc_dialog_min_width_major</item>
+    <item name="android:windowMinWidthMinor">@dimen/abc_dialog_min_width_minor</item>
   </style>
 
   <style name="Base.Theme.MaterialComponents.Dialog.FixedSize">
