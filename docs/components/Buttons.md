@@ -161,7 +161,7 @@ A text button has a text label, a transparent container and an optional icon.
 **Default style** | `Widget.MaterialComponents.Button.TextButton`
 **Icon style**    | `Widget.MaterialComponents.Button.TextButton.Icon`
 
-Default style theme attribute: N/A
+Default style theme attribute: `?attr/borderlessButtonStyle`
 
 See the full list of
 [styles](https://github.com/material-components/material-components-android/blob/master/lib/java/com/google/android/material/button/res/values/styles.xml)
