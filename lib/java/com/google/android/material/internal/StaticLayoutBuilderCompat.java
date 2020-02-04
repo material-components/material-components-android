@@ -54,14 +54,15 @@ final class StaticLayoutBuilderCompat {
 
   private static final String TEXT_DIR_CLASS = "android.text.TextDirectionHeuristic";
   private static final String TEXT_DIRS_CLASS = "android.text.TextDirectionHeuristics";
-  private static final String TEXT_DIR_FIRSTSTRONG_LTR = "FIRSTSTRONG_LTR";
+  private static final String TEXT_DIR_CLASS_LTR = "LTR";
+  private static final String TEXT_DIR_CLASS_RTL = "RTL";
 
   private static boolean initialized;
 
   @Nullable private static Constructor<StaticLayout> constructor;
   @Nullable private static Object textDirection;
 
-  private final CharSequence source;
+  private CharSequence source;
   private final TextPaint paint;
   private final int width;
   private int start;
@@ -70,6 +71,7 @@ final class StaticLayoutBuilderCompat {
   private Alignment alignment;
   private int maxLines;
   private boolean includePad;
+  private boolean isRtl;
   @Nullable private TextUtils.TruncateAt ellipsize;
 
   private StaticLayoutBuilderCompat(CharSequence source, TextPaint paint, int width) {
@@ -177,12 +179,29 @@ final class StaticLayoutBuilderCompat {
 
   /** A method that allows to create a StaticLayout with maxLines on all supported API levels. */
   public StaticLayout build() throws StaticLayoutBuilderCompatException {
+    if (source == null) {
+      source = "";
+    }
+
+    if (Build.VERSION.SDK_INT > VERSION_CODES.KITKAT && isRtl) {
+      alignment = Alignment.ALIGN_OPPOSITE;
+    }
+
+    int availableWidth = Math.max(0, width);
+    CharSequence textToDraw = TextUtils.ellipsize(source, paint, availableWidth, ellipsize);
+    end = Math.min(textToDraw.length(), end);
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
       // Marshmallow introduced StaticLayout.Builder which allows us not to use
       // the hidden constructor.
-      StaticLayout.Builder builder = StaticLayout.Builder.obtain(source, start, end, paint, width);
+      StaticLayout.Builder builder =
+          StaticLayout.Builder.obtain(
+              textToDraw, start, end, paint, availableWidth);
       builder.setAlignment(alignment);
       builder.setIncludePad(includePad);
+      TextDirectionHeuristic textDirectionHeuristic = isRtl
+          ? TextDirectionHeuristics.RTL
+          : TextDirectionHeuristics.LTR;
+      builder.setTextDirection(textDirectionHeuristic);
       if (ellipsize != null) {
         builder.setEllipsize(ellipsize);
       }
@@ -191,23 +210,22 @@ final class StaticLayoutBuilderCompat {
     }
 
     createConstructorWithReflection();
-
     // Use the hidden constructor on older API levels.
     try {
       return checkNotNull(constructor)
           .newInstance(
-              source,
+              textToDraw,
               start,
               end,
               paint,
-              width,
+              availableWidth,
               alignment,
               checkNotNull(textDirection),
               1.0f,
               0.0f,
               includePad,
-              ellipsize,
-              width,
+              null,
+              availableWidth,
               maxLines);
     } catch (Exception cause) {
       throw new StaticLayoutBuilderCompatException(cause);
@@ -234,21 +252,23 @@ final class StaticLayoutBuilderCompat {
    *   int maxLines)
    * }</pre>
    */
-  private static void createConstructorWithReflection() throws StaticLayoutBuilderCompatException {
+  private void createConstructorWithReflection() throws StaticLayoutBuilderCompatException {
     if (initialized) {
       return;
     }
 
     try {
       final Class<?> textDirClass;
+      boolean useRtl = isRtl && Build.VERSION.SDK_INT > VERSION_CODES.KITKAT;
       if (Build.VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR2) {
         textDirClass = TextDirectionHeuristic.class;
-        textDirection = TextDirectionHeuristics.FIRSTSTRONG_LTR;
+        textDirection = useRtl ? TextDirectionHeuristics.RTL : TextDirectionHeuristics.LTR;
       } else {
         ClassLoader loader = StaticLayoutBuilderCompat.class.getClassLoader();
+        String textDirClassName = isRtl ? TEXT_DIR_CLASS_RTL : TEXT_DIR_CLASS_LTR;
         textDirClass = loader.loadClass(TEXT_DIR_CLASS);
         Class<?> textDirsClass = loader.loadClass(TEXT_DIRS_CLASS);
-        textDirection = textDirsClass.getField(TEXT_DIR_FIRSTSTRONG_LTR).get(textDirsClass);
+        textDirection = textDirsClass.getField(textDirClassName).get(textDirsClass);
       }
 
       final Class<?>[] signature =
@@ -276,10 +296,15 @@ final class StaticLayoutBuilderCompat {
     }
   }
 
+  public StaticLayoutBuilderCompat setIsRtl(boolean isRtl) {
+    this.isRtl = isRtl;
+    return this;
+  }
+
   static class StaticLayoutBuilderCompatException extends Exception {
 
     StaticLayoutBuilderCompatException(Throwable cause) {
-      super("Error thrown initializing StaticLayout", cause);
+      super("Error thrown initializing StaticLayout " + cause.getMessage(), cause);
     }
   }
 }
