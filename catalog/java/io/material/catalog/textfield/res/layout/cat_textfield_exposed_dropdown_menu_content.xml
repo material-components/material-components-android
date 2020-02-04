@@ -31,7 +31,8 @@
       android:hint="@string/cat_textfield_label"
       app:errorEnabled="true"
       app:helperText="@string/cat_textfield_filled_exposed_dropdown_helper_text"
-      app:helperTextEnabled="true">
+      app:helperTextEnabled="true"
+      app:startIconDrawable="@drawable/ic_edit_24dp">
     <AutoCompleteTextView
         android:id="@+id/filled_exposed_dropdown"
         android:layout_width="match_parent"
@@ -48,7 +49,8 @@
       android:hint="@string/cat_textfield_label"
       app:errorEnabled="true"
       app:helperText="@string/cat_textfield_filled_editable_exposed_dropdown_helper_text"
-      app:helperTextEnabled="true">
+      app:helperTextEnabled="true"
+      app:startIconDrawable="@drawable/ic_edit_24dp">
     <AutoCompleteTextView
         android:id="@+id/filled_exposed_dropdown_editable"
         android:layout_width="match_parent"
@@ -63,7 +65,8 @@
       android:hint="@string/cat_textfield_label"
       app:errorEnabled="true"
       app:helperText="@string/cat_textfield_outlined_exposed_dropdown_helper_text"
-      app:helperTextEnabled="true">
+      app:helperTextEnabled="true"
+      app:startIconDrawable="@drawable/ic_edit_24dp">
     <AutoCompleteTextView
         android:id="@+id/outlined_exposed_dropdown"
         android:layout_width="match_parent"
@@ -80,7 +83,8 @@
       android:hint="@string/cat_textfield_label"
       app:errorEnabled="true"
       app:helperText="@string/cat_textfield_outlined_editable_exposed_dropdown_helper_text"
-      app:helperTextEnabled="true">
+      app:helperTextEnabled="true"
+      app:startIconDrawable="@drawable/ic_edit_24dp">
     <AutoCompleteTextView
         android:id="@+id/outlined_exposed_dropdown_editable"
         android:layout_width="match_parent"
