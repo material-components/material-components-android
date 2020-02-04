@@ -135,6 +135,7 @@
       @style/ThemeOverlay.MaterialComponents.AutoCompleteTextView.FilledBox
     </item>
     <item name="endIconMode">dropdown_menu</item>
+    <item name="startIconTint">@color/mtrl_filled_exposed_dropdown_icon_tint</item>
   </style>
 
   <style name="Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu">
@@ -142,6 +143,7 @@
       @style/ThemeOverlay.MaterialComponents.AutoCompleteTextView.FilledBox.Dense
     </item>
     <item name="endIconMode">dropdown_menu</item>
+    <item name="startIconTint">@color/mtrl_filled_exposed_dropdown_icon_tint</item>
   </style>
 
   <style name="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
@@ -149,6 +151,7 @@
       @style/ThemeOverlay.MaterialComponents.AutoCompleteTextView.OutlinedBox
     </item>
     <item name="endIconMode">dropdown_menu</item>
+    <item name="startIconTint">@color/mtrl_outlined_exposed_dropdown_icon_tint</item>
   </style>
 
   <style name="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu">
@@ -156,6 +159,7 @@
       @style/ThemeOverlay.MaterialComponents.AutoCompleteTextView.OutlinedBox.Dense
     </item>
     <item name="endIconMode">dropdown_menu</item>
+    <item name="startIconTint">@color/mtrl_outlined_exposed_dropdown_icon_tint</item>
   </style>
 
   <style name="Widget.Design.TextInputEditText" parent="Widget.AppCompat.EditText">
