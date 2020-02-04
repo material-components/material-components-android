@@ -83,6 +83,14 @@ public final class TabLayoutMediator {
       @NonNull TabLayout tabLayout,
       @NonNull ViewPager2 viewPager,
       boolean autoRefresh,
+      @NonNull TabConfigurationStrategy tabConfigurationStrategy) {
+    this(tabLayout, viewPager, autoRefresh, true, tabConfigurationStrategy);
+  }
+
+  public TabLayoutMediator(
+      @NonNull TabLayout tabLayout,
+      @NonNull ViewPager2 viewPager,
+      boolean autoRefresh,
       boolean smoothScroll,
       @NonNull TabConfigurationStrategy tabConfigurationStrategy) {
     this.tabLayout = tabLayout;
@@ -241,9 +249,9 @@ public final class TabLayoutMediator {
    */
   private static class ViewPagerOnTabSelectedListener implements TabLayout.OnTabSelectedListener {
     private final ViewPager2 viewPager;
-    private final Boolean smoothScroll;
+    private final boolean smoothScroll;
 
-    ViewPagerOnTabSelectedListener(ViewPager2 viewPager, Boolean smoothScroll) {
+    ViewPagerOnTabSelectedListener(ViewPager2 viewPager, boolean smoothScroll) {
       this.viewPager = viewPager;
       this.smoothScroll = smoothScroll;
     }
