@@ -166,6 +166,11 @@ public class TooltipDrawable extends MaterialShapeDrawable implements TextDrawab
         ColorStateList.valueOf(
             a.getColor(R.styleable.Tooltip_backgroundTint, backgroundTintDefault)));
 
+    setStrokeColor(
+        ColorStateList.valueOf(
+            MaterialColors.getColor(
+                context, R.attr.colorSurface, TooltipDrawable.class.getCanonicalName())));
+
     padding = a.getDimensionPixelSize(R.styleable.Tooltip_android_padding, 0);
     minWidth = a.getDimensionPixelSize(R.styleable.Tooltip_android_minWidth, 0);
     minHeight = a.getDimensionPixelSize(R.styleable.Tooltip_android_minHeight, 0);

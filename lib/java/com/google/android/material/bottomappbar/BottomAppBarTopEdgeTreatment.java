@@ -18,6 +18,7 @@ package com.google.android.material.bottomappbar;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
+import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -60,10 +61,7 @@ public class BottomAppBarTopEdgeTreatment extends EdgeTreatment implements Clone
       float fabMargin, float roundedCornerRadius, float cradleVerticalOffset) {
     this.fabMargin = fabMargin;
     this.roundedCornerRadius = roundedCornerRadius;
-    this.cradleVerticalOffset = cradleVerticalOffset;
-    if (cradleVerticalOffset < 0) {
-      throw new IllegalArgumentException("cradleVerticalOffset must be positive.");
-    }
+    setCradleVerticalOffset(cradleVerticalOffset);
     this.horizontalOffset = 0f;
   }
 
@@ -197,7 +195,10 @@ public class BottomAppBarTopEdgeTreatment extends EdgeTreatment implements Clone
    * offset of 0 indicates the vertical center of the {@link FloatingActionButton} is positioned on
    * the top edge.
    */
-  void setCradleVerticalOffset(float cradleVerticalOffset) {
+  void setCradleVerticalOffset(@FloatRange(from = 0f) float cradleVerticalOffset) {
+    if (cradleVerticalOffset < 0) {
+      throw new IllegalArgumentException("cradleVerticalOffset must be positive.");
+    }
     this.cradleVerticalOffset = cradleVerticalOffset;
   }
 

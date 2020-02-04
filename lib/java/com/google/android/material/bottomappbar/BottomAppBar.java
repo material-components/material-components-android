@@ -203,7 +203,10 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
             getTopEdgeTreatment().setHorizontalOffset(horizontalOffset);
             materialShapeDrawable.invalidateSelf();
           }
-          float verticalOffset = -fab.getTranslationY();
+
+          // After the translation of the fab is changed, the new vertical offset is calculated as
+          // the difference between the position of the FAB and BottomAppBar.
+          float verticalOffset = Math.max(0, -fab.getTranslationY() + getTranslationY());
           if (getTopEdgeTreatment().getCradleVerticalOffset() != verticalOffset) {
             getTopEdgeTreatment().setCradleVerticalOffset(verticalOffset);
             materialShapeDrawable.invalidateSelf();

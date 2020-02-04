@@ -115,7 +115,7 @@ a look at our [Theming](theming.md) guide, as well as our
 Note: Using a Material Components theme enables a custom view inflater which
 replaces default components with their Material counterparts. Currently, this
 only replaces `<Button>` XML components with
-[`<MaterialButton>`](components/MaterialButton.md).
+[`<MaterialButton>`](components/Buttons.md).
 
 #### **Bridge Themes** {#bridge-themes}
 

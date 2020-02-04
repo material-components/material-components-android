@@ -19,6 +19,7 @@ package com.google.android.material.textfield;
 import com.google.android.material.R;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Build.VERSION;
@@ -33,6 +34,7 @@ import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import com.google.android.material.internal.ManufacturerUtils;
+import com.google.android.material.internal.ThemeEnforcement;
 
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 
@@ -46,6 +48,7 @@ import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wra
 public class TextInputEditText extends AppCompatEditText {
 
   private final Rect parentRect = new Rect();
+  private boolean textInputLayoutFocusedRectEnabled;
 
   public TextInputEditText(@NonNull Context context) {
     this(context, null);
@@ -58,6 +61,18 @@ public class TextInputEditText extends AppCompatEditText {
   public TextInputEditText(
       @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     super(wrap(context, attrs, defStyleAttr, 0), attrs, defStyleAttr);
+    TypedArray attributes =
+        ThemeEnforcement.obtainStyledAttributes(
+            context,
+            attrs,
+            R.styleable.TextInputEditText,
+            defStyleAttr,
+            R.style.Widget_Design_TextInputEditText);
+
+    setTextInputLayoutFocusedRectEnabled(
+        attributes.getBoolean(R.styleable.TextInputEditText_textInputLayoutFocusedRectEnabled, false));
+
+    attributes.recycle();
   }
 
   @Override
@@ -118,11 +133,27 @@ public class TextInputEditText extends AppCompatEditText {
     return (layout != null) ? layout.getHint() : null;
   }
 
+  /**
+   * Whether the edit text should use the TextInputLayout's focused rectangle.
+   */
+  public void setTextInputLayoutFocusedRectEnabled(boolean textInputLayoutFocusedRectEnabled) {
+    this.textInputLayoutFocusedRectEnabled = textInputLayoutFocusedRectEnabled;
+  }
+
+  /**
+   * Whether the edit text is using the TextInputLayout's focused rectangle.
+   */
+  public boolean isTextInputLayoutFocusedRectEnabled() {
+    return textInputLayoutFocusedRectEnabled;
+  }
+
   @Override
   public void getFocusedRect(@Nullable Rect r) {
     super.getFocusedRect(r);
     TextInputLayout textInputLayout = getTextInputLayout();
-    if (textInputLayout != null && r != null) {
+    if (textInputLayout != null
+        && textInputLayoutFocusedRectEnabled
+        && r != null) {
       textInputLayout.getFocusedRect(parentRect);
       r.bottom = parentRect.bottom;
     }
@@ -130,9 +161,11 @@ public class TextInputEditText extends AppCompatEditText {
 
   @Override
   public boolean getGlobalVisibleRect(@Nullable Rect r, @Nullable Point globalOffset) {
-    boolean result =  super.getGlobalVisibleRect(r, globalOffset);
+    boolean result = super.getGlobalVisibleRect(r, globalOffset);
     TextInputLayout textInputLayout = getTextInputLayout();
-    if (textInputLayout != null && r != null) {
+    if (textInputLayout != null
+        && textInputLayoutFocusedRectEnabled
+        && r != null) {
       textInputLayout.getGlobalVisibleRect(parentRect, globalOffset);
       r.bottom = parentRect.bottom;
     }
@@ -143,7 +176,7 @@ public class TextInputEditText extends AppCompatEditText {
   public boolean requestRectangleOnScreen(@Nullable Rect rectangle) {
     boolean result = super.requestRectangleOnScreen(rectangle);
     TextInputLayout textInputLayout = getTextInputLayout();
-    if (textInputLayout != null) {
+    if (textInputLayout != null && textInputLayoutFocusedRectEnabled) {
       parentRect.set(
           0,
           textInputLayout.getHeight()

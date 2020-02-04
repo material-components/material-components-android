@@ -50,7 +50,7 @@
          the slider is in discrete mode. -->
     <attr name="tickColorInactive" format="color" />
     <!-- The color of the track. -->
-    <attr name="trackColor" format="color" />
+    <attr name="trackColor" />
     <!-- The color of active portion of the track. -->
     <attr name="trackColorActive" format="color" />
     <!-- The color of inactive portion of the track. -->

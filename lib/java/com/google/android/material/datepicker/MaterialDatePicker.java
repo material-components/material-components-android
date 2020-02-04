@@ -571,7 +571,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
       return this;
     }
 
-    /** Sets the first, last, and starting {@link Month}. */
+    /** Sets the first, last, and starting month. */
     @NonNull
     public Builder<S> setCalendarConstraints(CalendarConstraints bounds) {
       this.calendarConstraints = bounds;

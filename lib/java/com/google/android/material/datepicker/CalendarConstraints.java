@@ -77,19 +77,19 @@ public final class CalendarConstraints implements Parcelable {
     return validator;
   }
 
-  /** Returns the earliest {@link Month} allowed by this set of bounds. */
+  /** Returns the earliest month allowed by this set of bounds. */
   @NonNull
   Month getStart() {
     return start;
   }
 
-  /** Returns the latest {@link Month} allowed by this set of bounds. */
+  /** Returns the latest month allowed by this set of bounds. */
   @NonNull
   Month getEnd() {
     return end;
   }
 
-  /** Returns the openAt {@link Month} within this set of bounds. */
+  /** Returns the openAt month within this set of bounds. */
   @NonNull
   Month getOpenAt() {
     return openAt;

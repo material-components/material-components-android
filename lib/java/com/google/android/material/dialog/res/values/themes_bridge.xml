@@ -22,23 +22,23 @@
   <style name="Theme.MaterialComponents.Light.Dialog.Bridge" parent="Base.Theme.MaterialComponents.Light.Dialog.Bridge"/>
 
   <style name="Theme.MaterialComponents.Dialog.Alert.Bridge" parent="Base.Theme.MaterialComponents.Dialog.Bridge">
-    <item name="windowMinWidthMajor">@dimen/abc_dialog_min_width_major</item>
-    <item name="windowMinWidthMinor">@dimen/abc_dialog_min_width_minor</item>
+    <item name="android:windowMinWidthMajor">@dimen/abc_dialog_min_width_major</item>
+    <item name="android:windowMinWidthMinor">@dimen/abc_dialog_min_width_minor</item>
   </style>
 
   <style name="Theme.MaterialComponents.Light.Dialog.Alert.Bridge" parent="Base.Theme.MaterialComponents.Light.Dialog.Bridge">
-    <item name="windowMinWidthMajor">@dimen/abc_dialog_min_width_major</item>
-    <item name="windowMinWidthMinor">@dimen/abc_dialog_min_width_minor</item>
+    <item name="android:windowMinWidthMajor">@dimen/abc_dialog_min_width_major</item>
+    <item name="android:windowMinWidthMinor">@dimen/abc_dialog_min_width_minor</item>
   </style>
 
   <style name="Theme.MaterialComponents.Dialog.MinWidth.Bridge" parent="Base.Theme.MaterialComponents.Dialog.Bridge">
-    <item name="windowMinWidthMajor">@dimen/abc_dialog_min_width_major</item>
-    <item name="windowMinWidthMinor">@dimen/abc_dialog_min_width_minor</item>
+    <item name="android:windowMinWidthMajor">@dimen/abc_dialog_min_width_major</item>
+    <item name="android:windowMinWidthMinor">@dimen/abc_dialog_min_width_minor</item>
   </style>
 
   <style name="Theme.MaterialComponents.Light.Dialog.MinWidth.Bridge" parent="Base.Theme.MaterialComponents.Light.Dialog.Bridge">
-    <item name="windowMinWidthMajor">@dimen/abc_dialog_min_width_major</item>
-    <item name="windowMinWidthMinor">@dimen/abc_dialog_min_width_minor</item>
+    <item name="android:windowMinWidthMajor">@dimen/abc_dialog_min_width_major</item>
+    <item name="android:windowMinWidthMinor">@dimen/abc_dialog_min_width_minor</item>
   </style>
 
   <style name="Theme.MaterialComponents.Dialog.FixedSize.Bridge" parent="Base.Theme.MaterialComponents.Dialog.Bridge">

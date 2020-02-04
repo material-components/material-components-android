@@ -68,12 +68,14 @@ import com.google.android.material.tooltip.TooltipDrawable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
 /**
- * A widget that allows picking a value within a given range by sliding a thumb along a horizontal
- * line.
+ * A widget that allows picking a value (or a set of values) within a given range by sliding a thumb
+ * along a horizontal line.
  *
  * <p>The slider can function either as a continuous slider, or as a discrete slider. The mode of
  * operation is controlled by the value of the step size. If the step size is set to 0, the slider
@@ -184,9 +186,14 @@ public class Slider extends View {
   @NonNull private final Paint inactiveTicksPaint;
   @NonNull private final Paint activeTicksPaint;
 
-  @NonNull private TooltipDrawable label;
-  @NonNull private List<OnChangeListener> changeListeners = new ArrayList<>();
-  @NonNull private List<OnSliderTouchListener> touchListeners = new ArrayList<>();
+  private interface TooltipDrawableFactory {
+    TooltipDrawable createTooltipDrawable();
+  }
+
+  @NonNull private final TooltipDrawableFactory labelMaker;
+  @NonNull private final List<TooltipDrawable> labels = new ArrayList<>();
+  @NonNull private final List<OnChangeListener> changeListeners = new ArrayList<>();
+  @NonNull private final List<OnSliderTouchListener> touchListeners = new ArrayList<>();
 
   private final int scaledTouchSlop;
 
@@ -203,7 +210,13 @@ public class Slider extends View {
   private boolean thumbIsPressed = false;
   private float valueFrom;
   private float valueTo;
-  private float value;
+  // Holds the values set to this slider. We keep this array sorted in order to check if the value
+  // has been changed when a new value is set and to find the minimum and maximum values.
+  private ArrayList<Float> values = new ArrayList<>();
+  // The index of the currently touched thumb.
+  private int activeThumbIdx = -1;
+  // The index of the currently focused thumb.
+  private int focusedThumbIdx = -1;
   private float stepSize = 0.0f;
   private float[] ticksCoordinates;
   private int trackWidth;
@@ -220,6 +233,7 @@ public class Slider extends View {
   public static final int LABEL_FLOATING = 0;
   public static final int LABEL_WITHIN_BOUNDS = 1;
   public static final int LABEL_GONE = 2;
+  private float touchPosition;
 
   /**
    * Determines the behavior of the label which can be any of the following.
@@ -240,6 +254,15 @@ public class Slider extends View {
 
   /** Interface definition for a callback invoked when a slider's value is changed. */
   public interface OnChangeListener {
+
+    /**
+     * Called when the value of the slider changes. If multiple values are set at the same time
+     * (i.e. from calling {@link #setValues(List)}) this method will be called once for each value.
+     *
+     * @see #getValues()
+     * @see #getMinimumValue()
+     * @see #getMaximumValue()
+     */
     void onValueChange(@NonNull Slider slider, float value, boolean fromUser);
   }
 
@@ -299,7 +322,8 @@ public class Slider extends View {
     this(context, attrs, R.attr.sliderStyle);
   }
 
-  public Slider(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+  public Slider(
+      @NonNull Context context, @Nullable final AttributeSet attrs, final int defStyleAttr) {
     super(wrap(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
     // Ensure we are using the correctly themed context rather than the context that was passed in.
     context = getContext();
@@ -328,6 +352,22 @@ public class Slider extends View {
     activeTicksPaint.setStrokeCap(Cap.ROUND);
 
     loadResources(context.getResources());
+
+    // Because there's currently no way to copy the TooltipDrawable we use this to make more if more
+    // thumbs are added.
+    labelMaker =
+        new TooltipDrawableFactory() {
+          @Override
+          public TooltipDrawable createTooltipDrawable() {
+            final TypedArray a =
+                ThemeEnforcement.obtainStyledAttributes(
+                    getContext(), attrs, R.styleable.Slider, defStyleAttr, DEF_STYLE_RES);
+            TooltipDrawable d = parseLabelDrawable(getContext(), a);
+            a.recycle();
+            return d;
+          }
+        };
+
     processAttributes(context, attrs, defStyleAttr);
 
     setFocusable(true);
@@ -406,8 +446,6 @@ public class Slider extends View {
             ? tickColorActive
             : AppCompatResources.getColorStateList(
                 context, R.color.material_slider_active_tick_marks_color));
-
-    label = parseLabelDrawable(context, a);
 
     setThumbRadius(a.getDimensionPixelSize(R.styleable.Slider_thumbRadius, 0));
     setHaloRadius(a.getDimensionPixelSize(R.styleable.Slider_haloRadius, 0));
@@ -513,11 +551,22 @@ public class Slider extends View {
   /**
    * Returns the value of the slider.
    *
+   * @throws IllegalStateException If more than one value is set on the Slider
    * @see #setValue(float)
+   * @see #setValues(List<Float>)
    * @attr ref com.google.android.material.R.styleable#Slider_android_value
    */
   public float getValue() {
-    return value;
+    if (values.size() > 1) {
+      throw new IllegalStateException(
+          "More than one value is set on the Slider. Use getValues() instead.");
+    }
+    return values.get(0);
+  }
+
+  @NonNull
+  public List<Float> getValues() {
+    return new ArrayList<>(values);
   }
 
   /**
@@ -538,17 +587,100 @@ public class Slider extends View {
    * @attr ref com.google.android.material.R.styleable#Slider_android_value
    */
   public void setValue(float value) {
-    if (!isValueValid(value)) {
-      return;
+    setValues(value);
+  }
+
+  /**
+   * Sets multiple values for the slider. Each value will represent a different thumb.
+   *
+   * <p>Each value must be greater or equal to {@code valueFrom}, and lesser or equal to {@code
+   * valueTo}. If that is not the case, an {@link IllegalArgumentException} will be thrown.
+   *
+   * <p>If the slider is in discrete mode (i.e. the tick increment value is greater than 0), the
+   * values must be set to a value falls on a tick (i.e.: {@code value == valueFrom + x * stepSize},
+   * where {@code x} is an integer equal to or greater than 0). If that is not the case, an {@link
+   * IllegalArgumentException} will be thrown.
+   *
+   * @param values An array of values to set.
+   * @throws IllegalArgumentException If the value is not within {@code valueFrom} and {@code
+   *     valueTo}. If stepSize is greater than 0 and value does not fall on a tick
+   * @see #getValues()
+   */
+  public void setValues(@NonNull Float... values) {
+    ArrayList<Float> list = new ArrayList<>();
+    Collections.addAll(list, values);
+    setValuesInternal(list);
+  }
+
+  /**
+   * Sets multiple values for the slider. Each value will represent a different thumb.
+   *
+   * <p>Each value must be greater or equal to {@code valueFrom}, and lesser or equal to {@code
+   * valueTo}. If that is not the case, an {@link IllegalArgumentException} will be thrown.
+   *
+   * <p>If the slider is in discrete mode (i.e. the tick increment value is greater than 0), the
+   * values must be set to a value falls on a tick (i.e.: {@code value == valueFrom + x * stepSize},
+   * where {@code x} is an integer equal to or greater than 0). If that is not the case, an {@link
+   * IllegalArgumentException} will be thrown.
+   *
+   * @param values An array of values to set.
+   * @throws IllegalArgumentException If the value is not within {@code valueFrom} and {@code
+   *     valueTo}. If stepSize is greater than 0 and value does not fall on a tick
+   * @throws IllegalArgumentException If {@values} is empty.
+   * @see #getValues()
+   */
+  public void setValues(@NonNull List<Float> values) {
+    setValuesInternal(new ArrayList<>(values));
+  }
+
+  /**
+   * This method assumes the list passed in is a copy. It is split out so we can call it from {@link
+   * #setValues(Float...)} and {@link #setValues(List)}
+   */
+  private void setValuesInternal(@NonNull ArrayList<Float> values) {
+    if (values.isEmpty()) {
+      throw new IllegalArgumentException("At least one value must be set");
     }
 
-    if (Math.abs(this.value - value) < THRESHOLD) {
-      return;
+    Collections.sort(values);
+
+    if (this.values.size() == values.size()) {
+      if (this.values.equals(values)) {
+        return;
+      }
     }
 
-    this.value = value;
+    for (float value : values) {
+      if (!isValueValid(value)) {
+        return;
+      }
+    }
+
+    this.values = values;
+    // Only update the focused thumb index. The active thumb index will be updated on touch.
+    focusedThumbIdx = 0;
+    updateHaloHotspot();
+    createLabelPool();
     dispatchOnChanged(false);
     invalidate();
+  }
+
+  private void createLabelPool() {
+    // If there are too many labels, remove the extra ones from the end.
+    if (labels.size() > values.size()) {
+      labels.subList(values.size(), labels.size()).clear();
+    }
+
+    // If there's not enough labels, add more.
+    while (labels.size() < values.size()) {
+      labels.add(labelMaker.createTooltipDrawable());
+    }
+
+    // Add a stroke if there is more than one label for when they overlap.
+    int strokeWidth = labels.size() == 1 ?  0 : 1;
+    for (TooltipDrawable label : labels) {
+      label.setStrokeWidth(strokeWidth);
+    }
   }
 
   private boolean isValueValid(float value) {
@@ -604,6 +736,16 @@ public class Slider extends View {
       }
       postInvalidate();
     }
+  }
+
+  /** Returns the largest value of the Slider. */
+  public float getMaximumValue() {
+    return values.get(values.size() - 1);
+  }
+
+  /** Returns the smallest value of the Slider. */
+  public float getMinimumValue() {
+    return values.get(0);
   }
 
   /**
@@ -1103,14 +1245,18 @@ public class Slider extends View {
   protected void onAttachedToWindow() {
     super.onAttachedToWindow();
     // The label is attached on the Overlay relative to the content.
-    label.setRelativeToView(ViewUtils.getContentView(this));
+    for (TooltipDrawable label : labels) {
+      label.setRelativeToView(ViewUtils.getContentView(this));
+    }
   }
 
   @Override
   protected void onDetachedFromWindow() {
     super.onDetachedFromWindow();
-    ViewUtils.getContentViewOverlay(this).remove(label);
-    label.detachView(ViewUtils.getContentView(this));
+    for (TooltipDrawable label : labels) {
+      ViewUtils.getContentViewOverlay(this).remove(label);
+      label.detachView(ViewUtils.getContentView(this));
+    }
   }
 
   @Override
@@ -1118,7 +1264,8 @@ public class Slider extends View {
     super.onMeasure(
         widthMeasureSpec,
         MeasureSpec.makeMeasureSpec(
-            widgetHeight + (labelBehavior == LABEL_WITHIN_BOUNDS ? label.getIntrinsicHeight() : 0),
+            widgetHeight
+                + (labelBehavior == LABEL_WITHIN_BOUNDS ? labels.get(0).getIntrinsicHeight() : 0),
             MeasureSpec.EXACTLY));
   }
 
@@ -1157,7 +1304,7 @@ public class Slider extends View {
     if (!shouldDrawCompatHalo() && getMeasuredWidth() > 0) {
       final Drawable background = getBackground();
       if (background instanceof RippleDrawable) {
-        int x = (int) (getThumbPosition() * trackWidth + trackSidePadding);
+        int x = (int) (normalizeValue(values.get(focusedThumbIdx)) * trackWidth + trackSidePadding);
         int y = calculateTop();
         DrawableCompat.setHotspotBounds(
             background, x - haloRadius, y - haloRadius, x + haloRadius, y + haloRadius);
@@ -1166,7 +1313,8 @@ public class Slider extends View {
   }
 
   private int calculateTop() {
-    return trackTop + (labelBehavior == LABEL_WITHIN_BOUNDS ? label.getIntrinsicHeight() : 0);
+    return trackTop
+        + (labelBehavior == LABEL_WITHIN_BOUNDS ? labels.get(0).getIntrinsicHeight() : 0);
   }
 
   @Override
@@ -1176,7 +1324,7 @@ public class Slider extends View {
     int top = calculateTop();
 
     drawInactiveTrack(canvas, trackWidth, top);
-    if (getThumbPosition() > 0.0f) {
+    if (getMaximumValue() > valueFrom) {
       drawActiveTrack(canvas, trackWidth, top);
     }
 
@@ -1188,50 +1336,89 @@ public class Slider extends View {
       maybeDrawHalo(canvas, trackWidth, top);
     }
 
-    drawThumb(canvas, trackWidth, top);
+    drawThumbs(canvas, trackWidth, top);
+  }
+
+  private float[] getActiveRange() {
+    return new float[] {
+      values.size() == 1 ? 0 : normalizeValue(getMinimumValue()), normalizeValue(getMaximumValue())
+    };
   }
 
   private void drawInactiveTrack(@NonNull Canvas canvas, int width, int top) {
-    float right = trackSidePadding + getThumbPosition() * width;
+    float[] activeRange = getActiveRange();
+    float right = trackSidePadding + activeRange[1] * width;
     if (right < trackSidePadding + width) {
       canvas.drawLine(right, top, trackSidePadding + width, top, inactiveTrackPaint);
     }
+
+    // If there's more than one thumb, also draw disabled track to the left.
+    if (values.size() > 1) {
+      float left = trackSidePadding + activeRange[0] * width;
+      if (left > trackSidePadding) {
+        canvas.drawLine(trackSidePadding, top, left, top, inactiveTrackPaint);
+      }
+    }
+  }
+
+  private float normalizeValue(float value) {
+    return (value - valueFrom) / (valueTo - valueFrom);
   }
 
   private void drawActiveTrack(@NonNull Canvas canvas, int width, int top) {
-    float left = trackSidePadding + getThumbPosition() * width;
-    canvas.drawLine(trackSidePadding, top, left, top, activeTrackPaint);
+    float[] activeRange = getActiveRange();
+    float right = trackSidePadding + activeRange[1] * width;
+    float left = trackSidePadding + activeRange[0] * width;
+    canvas.drawLine(left, top, right, top, activeTrackPaint);
   }
 
   private void drawTicks(@NonNull Canvas canvas) {
-    int pivotIndex = pivotIndex(ticksCoordinates, getThumbPosition());
-    canvas.drawPoints(ticksCoordinates, 0, pivotIndex * 2, activeTicksPaint);
+    float[] activeRange = getActiveRange();
+    int leftPivotIndex = pivotIndex(ticksCoordinates, activeRange[0]);
+    int rightPivotIndex = pivotIndex(ticksCoordinates, activeRange[1]);
+
+    // Draw inactive ticks to the left of the smallest thumb.
+    canvas.drawPoints(ticksCoordinates, 0, leftPivotIndex * 2, inactiveTicksPaint);
+
+    // Draw active ticks between the thumbs.
     canvas.drawPoints(
         ticksCoordinates,
-        pivotIndex * 2,
-        ticksCoordinates.length - pivotIndex * 2,
+        leftPivotIndex * 2,
+        rightPivotIndex * 2 - leftPivotIndex * 2,
+        activeTicksPaint);
+
+    // Draw inactive ticks to the right of the largest thumb.
+    canvas.drawPoints(
+        ticksCoordinates,
+        rightPivotIndex * 2,
+        ticksCoordinates.length - rightPivotIndex * 2,
         inactiveTicksPaint);
   }
 
-  private void drawThumb(@NonNull Canvas canvas, int width, int top) {
+  private void drawThumbs(@NonNull Canvas canvas, int width, int top) {
     // Clear out the track behind the thumb if we're in a disable state since the thumb is
     // transparent.
     if (!isEnabled()) {
-      canvas.drawCircle(
-          trackSidePadding + getThumbPosition() * width, top, thumbRadius, thumbPaint);
+      for (Float value : values) {
+        canvas.drawCircle(
+            trackSidePadding + normalizeValue(value) * width, top, thumbRadius, thumbPaint);
+      }
     }
 
-    canvas.save();
-    canvas.translate(
-        trackSidePadding + (int) (getThumbPosition() * width) - thumbRadius, top - thumbRadius);
-    thumbDrawable.draw(canvas);
-    canvas.restore();
+    for (Float value : values) {
+      canvas.save();
+      canvas.translate(
+          trackSidePadding + (int) (normalizeValue(value) * width) - thumbRadius,
+          top - thumbRadius);
+      thumbDrawable.draw(canvas);
+      canvas.restore();
+    }
   }
 
   private void maybeDrawHalo(@NonNull Canvas canvas, int width, int top) {
     // Only draw the halo for devices that aren't using the ripple.
     if (shouldDrawCompatHalo()) {
-      int centerX = (int) (trackSidePadding + getThumbPosition() * width);
+      int centerX = (int) (trackSidePadding + normalizeValue(values.get(focusedThumbIdx)) * width);
       if (VERSION.SDK_INT < VERSION_CODES.P) {
         // In this case we can clip the rect to allow drawing outside the bounds.
         canvas.clipRect(
@@ -1257,27 +1444,33 @@ public class Slider extends View {
       return false;
     }
     float x = event.getX();
-    float position = (x - trackSidePadding) / trackWidth;
-    position = Math.max(0, position);
-    position = Math.min(1, position);
+    touchPosition = (x - trackSidePadding) / trackWidth;
+    touchPosition = Math.max(0, touchPosition);
+    touchPosition = Math.min(1, touchPosition);
 
     switch (event.getActionMasked()) {
       case MotionEvent.ACTION_DOWN:
+        touchDownX = x;
+
         // If we're inside a scrolling container,
         // we should start dragging in ACTION_MOVE
         if (isInScrollingContainer()) {
-          touchDownX = event.getX();
           break;
         }
         getParent().requestDisallowInterceptTouchEvent(true);
+
+        if (!pickActiveThumb()) {
+          // Couldn't determine the active thumb yet.
+          break;
+        }
+
         requestFocus();
         thumbIsPressed = true;
-        if (snapThumbPosition(position)) {
+        if (snapTouchPosition()) {
           dispatchOnChanged(true);
         }
         updateHaloHotspot();
-        ensureLabel();
-        updateLabelPosition();
+        ensureLabels();
         invalidate();
         onStartTrackingTouch();
         break;
@@ -1290,21 +1483,29 @@ public class Slider extends View {
           getParent().requestDisallowInterceptTouchEvent(true);
           onStartTrackingTouch();
         }
+
+        if (!pickActiveThumb()) {
+          // Couldn't determine the active thumb yet.
+          break;
+        }
+
         thumbIsPressed = true;
-        if (snapThumbPosition(position)) {
+        if (snapTouchPosition()) {
           dispatchOnChanged(true);
         }
         updateHaloHotspot();
-        ensureLabel();
-        updateLabelPosition();
+        ensureLabels();
         invalidate();
         break;
       case MotionEvent.ACTION_UP:
         thumbIsPressed = false;
-        if (snapThumbPosition(position)) {
+        if (activeThumbIdx != -1 && snapTouchPosition()) {
           dispatchOnChanged(true);
         }
-        ViewUtils.getContentViewOverlay(this).remove(label);
+        activeThumbIdx = -1;
+        for (TooltipDrawable label : labels) {
+          ViewUtils.getContentViewOverlay(this).remove(label);
+        }
         onStopTrackingTouch();
         invalidate();
         break;
@@ -1315,15 +1516,6 @@ public class Slider extends View {
     // Set if the thumb is pressed. This will cause the ripple to be drawn.
     setPressed(thumbIsPressed);
     return true;
-  }
-
-  private void ensureLabel() {
-    float value = getValue();
-    if (hasLabelFormatter()) {
-      label.setText(formatter.getFormattedValue(value));
-    } else {
-      label.setText(String.format((int) value == value ? "%.0f" : "%.2f", value));
-    }
   }
 
   /**
@@ -1337,37 +1529,131 @@ public class Slider extends View {
     return Math.round(position * (coordinates.length / 2 - 1));
   }
 
-  private float getThumbPosition() {
-    return (value - valueFrom) / (valueTo - valueFrom);
+  private float snapPosition(float position) {
+    if (stepSize > 0.0f) {
+      float stepCount = (int) ((valueTo - valueFrom) / stepSize);
+      return Math.round(position * stepCount) / stepCount;
+    }
+
+    return position;
+  }
+
+  /**
+   * Tries to pick the active thumb if one hasn't already been set. This will pick the closest thumb
+   * if there is only one thumb under the touch position. If there is more than one thumb under the
+   * touch position, it will wait for enough drag left or right to determine which thumb to pick.
+   */
+  private boolean pickActiveThumb() {
+    if (activeThumbIdx != -1) {
+      return true;
+    }
+
+    float touchValue = getValueOfTouchPosition();
+    float touchX = valueToX(touchValue);
+
+    float leftXBound = Math.min(touchX, touchDownX);
+    float rightXBound = Math.max(touchX, touchDownX);
+
+    activeThumbIdx = 0;
+    float activeThumbDiff = Math.abs(values.get(activeThumbIdx) - touchValue);
+    for (int i = 0; i < values.size(); i++) {
+      float valueDiff = Math.abs(values.get(i) - touchValue);
+
+      float valueX = valueToX(values.get(i));
+      float valueDiffX = Math.abs(valueX - touchX);
+      float activeValueDiffX = Math.abs(valueToX(values.get(activeThumbIdx)) - touchX);
+
+      // Check if we've received touch events that's passing over a thumb.
+      if (leftXBound < valueX && rightXBound > valueX) {
+        activeThumbIdx = i;
+        return true;
+      }
+
+      // If the new point and the active point are both within scaled touch slop of the touch and
+      // the value is not the same, we have to wait for the touch to move.
+      if (valueDiffX < scaledTouchSlop
+          && activeValueDiffX < scaledTouchSlop
+          && Math.abs(valueDiffX - activeValueDiffX) > THRESHOLD) {
+        activeThumbIdx = -1;
+        return false;
+      }
+
+      if (valueDiff < activeThumbDiff) {
+        // This value is closer to the thumb so update the active thumb index.
+        activeThumbDiff = valueDiff;
+        activeThumbIdx = i;
+      }
+    }
+
+    return true;
   }
 
   /**
    * Snaps the thumb position to the closest tick coordinates in discrete mode, and the input
    * position in continuous mode.
    *
-   * @param eventPosition Position of the user's event.
    * @return true, if {@code #thumbPosition is updated}; false, otherwise.
    */
-  private boolean snapThumbPosition(float eventPosition) {
-    if (stepSize > 0.0f) {
-      int stepCount = (int) ((valueTo - valueFrom) / stepSize);
-      eventPosition = (float) Math.round(eventPosition * stepCount) / stepCount;
-    }
-    if (eventPosition == getThumbPosition()) {
+  private boolean snapTouchPosition() {
+    float thumbValue = getValueOfTouchPosition();
+
+    // Check if the new value equals a value that was already set.
+    if (thumbValue == values.get(activeThumbIdx)) {
       return false;
     }
-    value = eventPosition * (valueTo - valueFrom) + valueFrom;
+
+    // Replace the old value with the new value of the touch position.
+    values.set(activeThumbIdx, thumbValue);
+    Collections.sort(values);
+    activeThumbIdx = values.indexOf(thumbValue);
+    focusedThumbIdx = activeThumbIdx;
     return true;
   }
 
-  private void updateLabelPosition() {
+  private float getValueOfTouchPosition() {
+    return snapPosition(touchPosition) * (valueTo - valueFrom) + valueFrom;
+  }
+
+  private float valueToX(float value) {
+    return normalizeValue(value) * trackWidth + trackSidePadding;
+  }
+
+  private void ensureLabels() {
     if (labelBehavior == LABEL_GONE) {
       // If the label shouldn't be drawn we can skip this.
       return;
     }
 
+    Iterator<TooltipDrawable> labelItr = labels.iterator();
+
+    for (int i = 0; i < values.size() && labelItr.hasNext(); i++) {
+      if (i == focusedThumbIdx) {
+        // We position the focused thumb last so it's displayed on top, so skip it for now.
+        continue;
+      }
+
+      setValueForLabel(labelItr.next(), values.get(i));
+    }
+
+    if (!labelItr.hasNext()) {
+      throw new IllegalStateException("Not enough labels to display all the values");
+    }
+
+    // Now set the label for the focused thumb so it's on top.
+    setValueForLabel(labelItr.next(), values.get(focusedThumbIdx));
+  }
+
+  private void setValueForLabel(TooltipDrawable label, float value) {
+    if (hasLabelFormatter()) {
+      label.setText(formatter.getFormattedValue(value));
+    } else {
+      label.setText(String.format((int) value == value ? "%.0f" : "%.2f", value));
+    }
+
     int left =
-        trackSidePadding + (int) (getThumbPosition() * trackWidth) - label.getIntrinsicWidth() / 2;
+        trackSidePadding
+            + (int) (normalizeValue(value) * trackWidth)
+            - label.getIntrinsicWidth() / 2;
     int top = calculateTop() - (labelPadding + thumbRadius);
     label.setBounds(left, top - label.getIntrinsicHeight(), left + label.getIntrinsicWidth(), top);
 
@@ -1406,9 +1692,15 @@ public class Slider extends View {
   }
 
   private void dispatchOnChanged(boolean fromUser) {
-    final float value = getValue();
     for (OnChangeListener listener : changeListeners) {
-      listener.onValueChange(this, value, fromUser);
+      if (fromUser) {
+        // If the change is from the user we can send the value of the current touch position.
+        listener.onValueChange(this, getValueOfTouchPosition(), true);
+      } else {
+        for (Float value : values) {
+          listener.onValueChange(this, value, false);
+        }
+      }
     }
   }
 
@@ -1432,8 +1724,10 @@ public class Slider extends View {
     activeTrackPaint.setColor(getColorForState(trackColorActive));
     inactiveTicksPaint.setColor(getColorForState(tickColorInactive));
     activeTicksPaint.setColor(getColorForState(tickColorActive));
-    if (label.isStateful()) {
-      label.setState(getDrawableState());
+    for (TooltipDrawable label : labels) {
+      if (label.isStateful()) {
+        label.setState(getDrawableState());
+      }
     }
     if (thumbDrawable.isStateful()) {
       thumbDrawable.setState(getDrawableState());
@@ -1458,7 +1752,7 @@ public class Slider extends View {
     SliderState sliderState = new SliderState(superState);
     sliderState.valueFrom = valueFrom;
     sliderState.valueTo = valueTo;
-    sliderState.value = value;
+    sliderState.values = new ArrayList<>(values);
     sliderState.stepSize = stepSize;
     sliderState.hasFocus = hasFocus();
     return sliderState;
@@ -1471,7 +1765,7 @@ public class Slider extends View {
 
     valueFrom = sliderState.valueFrom;
     valueTo = sliderState.valueTo;
-    value = sliderState.value;
+    values = sliderState.values;
     stepSize = sliderState.stepSize;
     if (sliderState.hasFocus) {
       requestFocus();
@@ -1483,7 +1777,7 @@ public class Slider extends View {
 
     float valueFrom;
     float valueTo;
-    float value;
+    ArrayList<Float> values;
     float stepSize;
     boolean hasFocus;
 
@@ -1511,7 +1805,7 @@ public class Slider extends View {
       super(source);
       valueFrom = source.readFloat();
       valueTo = source.readFloat();
-      value = source.readFloat();
+      source.readList(values, Float.class.getClassLoader());
       stepSize = source.readFloat();
       hasFocus = source.createBooleanArray()[0];
     }
@@ -1521,7 +1815,7 @@ public class Slider extends View {
       super.writeToParcel(dest, flags);
       dest.writeFloat(valueFrom);
       dest.writeFloat(valueTo);
-      dest.writeFloat(value);
+      dest.writeList(values);
       dest.writeFloat(stepSize);
       boolean[] booleans = new boolean[1];
       booleans[0] = hasFocus;
