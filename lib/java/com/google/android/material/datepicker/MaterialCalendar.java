@@ -298,6 +298,19 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
   void setCurrentMonth(Month moveTo) {
     MonthsPagerAdapter adapter = (MonthsPagerAdapter) recyclerView.getAdapter();
     int moveToPosition = adapter.getPosition(moveTo);
+
+    // If target position is outside of the constraint bounds, adjust target to outer bounds
+    if (calendarConstraints != null) {
+      if (moveToPosition >= calendarConstraints.getMonthSpan()) {
+        int offset = moveToPosition - calendarConstraints.getMonthSpan() + 1;
+        moveTo = Month.create(moveTo.year, moveTo.month - offset);
+        moveToPosition -= offset;
+      } else if (moveToPosition < 0) {
+        moveTo = Month.create(moveTo.year, moveTo.month - moveToPosition);
+        moveToPosition = 0;
+      }
+    }
+
     int distance = moveToPosition - adapter.getPosition(current);
     boolean jump = Math.abs(distance) > SMOOTH_SCROLL_MAX;
     boolean isForward = distance > 0;
