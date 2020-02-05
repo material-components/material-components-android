@@ -17,6 +17,8 @@
 package com.google.android.material.internal;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static androidx.core.util.Preconditions.checkNotNull;
+import static android.text.Layout.Alignment.ALIGN_NORMAL;
 
 import android.animation.TimeInterpolator;
 import android.content.res.ColorStateList;
@@ -36,11 +38,15 @@ import androidx.core.math.MathUtils;
 import androidx.core.text.TextDirectionHeuristicsCompat;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
+import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.text.TextUtils;
+import android.text.TextUtils.TruncateAt;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import com.google.android.material.animation.AnimationUtils;
+import com.google.android.material.internal.StaticLayoutBuilderCompat.StaticLayoutBuilderCompatException;
 import com.google.android.material.resources.CancelableFontCallback;
 import com.google.android.material.resources.CancelableFontCallback.ApplyFont;
 import com.google.android.material.resources.TextAppearance;
@@ -56,6 +62,7 @@ public final class CollapsingTextHelper {
   // Pre-JB-MR2 doesn't support HW accelerated canvas scaled text so we will workaround it
   // by using our own texture
   private static final boolean USE_SCALING_TEXTURE = Build.VERSION.SDK_INT < 18;
+  private static final String TAG = "CollapsingTextHelper";
 
   private static final boolean DEBUG_DRAW = false;
   @NonNull private static final Paint DEBUG_DRAW_PAINT;
@@ -102,8 +109,6 @@ public final class CollapsingTextHelper {
   private boolean useTexture;
   @Nullable private Bitmap expandedTitleTexture;
   private Paint texturePaint;
-  private float textureAscent;
-  private float textureDescent;
 
   private float scale;
   private float currentTextSize;
@@ -127,6 +132,7 @@ public final class CollapsingTextHelper {
   private float expandedShadowDx;
   private float expandedShadowDy;
   private ColorStateList expandedShadowColor;
+  private StaticLayout textLayout;
 
   public CollapsingTextHelper(View view) {
     this.view = view;
@@ -614,24 +620,16 @@ public final class CollapsingTextHelper {
 
       final boolean drawTexture = useTexture && expandedTitleTexture != null;
 
-      final float ascent;
-      final float descent;
-      if (drawTexture) {
-        ascent = textureAscent * scale;
-        descent = textureDescent * scale;
-      } else {
-        ascent = textPaint.ascent() * scale;
-        descent = textPaint.descent() * scale;
-      }
+      final float ascent = textLayout.getLineAscent(0);
 
       if (DEBUG_DRAW) {
         // Just a debug tool, which drawn a magenta rect in the text bounds
         canvas.drawRect(
-            currentBounds.left, y + ascent, currentBounds.right, y + descent, DEBUG_DRAW_PAINT);
-      }
-
-      if (drawTexture) {
-        y += ascent;
+            currentBounds.left,
+            y + ascent,
+            currentBounds.right,
+            y + textLayout.getHeight() * scale,
+            DEBUG_DRAW_PAINT);
       }
 
       if (scale != 1f) {
@@ -640,9 +638,10 @@ public final class CollapsingTextHelper {
 
       if (drawTexture) {
         // If we should use a texture, draw it instead of text
-        canvas.drawBitmap(expandedTitleTexture, x, y, texturePaint);
+        canvas.drawBitmap(expandedTitleTexture, x, y + ascent, texturePaint);
       } else {
-        canvas.drawText(textToDraw, 0, textToDraw.length(), x, y, textPaint);
+        canvas.translate(x, y + ascent);
+        textLayout.draw(canvas);
       }
     }
 
@@ -650,12 +649,15 @@ public final class CollapsingTextHelper {
   }
 
   private boolean calculateIsRtl(@NonNull CharSequence text) {
-    final boolean defaultIsRtl =
-        ViewCompat.getLayoutDirection(view) == ViewCompat.LAYOUT_DIRECTION_RTL;
+    final boolean defaultIsRtl = isDefaultIsRtl();
     return (defaultIsRtl
-            ? TextDirectionHeuristicsCompat.FIRSTSTRONG_RTL
-            : TextDirectionHeuristicsCompat.FIRSTSTRONG_LTR)
+        ? TextDirectionHeuristicsCompat.FIRSTSTRONG_RTL
+        : TextDirectionHeuristicsCompat.FIRSTSTRONG_LTR)
         .isRtl(text, 0, text.length());
+  }
+
+  private boolean isDefaultIsRtl() {
+    return ViewCompat.getLayoutDirection(view) == ViewCompat.LAYOUT_DIRECTION_RTL;
   }
 
   private void setInterpolatedTextSize(float textSize) {
@@ -678,12 +680,13 @@ public final class CollapsingTextHelper {
       return;
     }
 
-    final float collapsedWidth = collapsedBounds.width();
-    final float expandedWidth = expandedBounds.width();
+    float collapsedWidth = collapsedBounds.width();
+    float expandedWidth = expandedBounds.width();
 
-    final float availableWidth;
-    final float newTextSize;
+    float availableWidth;
+    float newTextSize;
     boolean updateDrawText = false;
+    int maxLines = 1;
 
     if (isClose(textSize, collapsedTextSize)) {
       newTextSize = collapsedTextSize;
@@ -707,20 +710,19 @@ public final class CollapsingTextHelper {
         scale = textSize / expandedTextSize;
       }
 
-      final float textSizeRatio = collapsedTextSize / expandedTextSize;
+      float textSizeRatio = collapsedTextSize / expandedTextSize;
       // This is the size of the expanded bounds when it is scaled to match the
       // collapsed text size
-      final float scaledDownWidth = expandedWidth * textSizeRatio;
+      float scaledDownWidth = expandedWidth * textSizeRatio;
 
-      if (scaledDownWidth > collapsedWidth) {
-        // If the scaled down size is larger than the actual collapsed width, we need to
-        // cap the available width so that when the expanded text scales down, it matches
-        // the collapsed width
-        availableWidth = Math.min(collapsedWidth / textSizeRatio, expandedWidth);
-      } else {
-        // Otherwise we'll just use the expanded width
-        availableWidth = expandedWidth;
-      }
+      // If the scaled down size is larger than the actual collapsed width, we need to
+      // cap the available width so that when the expanded text scales down, it matches
+      // the collapsed width
+      // Otherwise we'll just use the expanded width
+
+      availableWidth = scaledDownWidth > collapsedWidth
+          ? Math.min(collapsedWidth / textSizeRatio, expandedWidth)
+          : expandedWidth;
     }
 
     if (availableWidth > 0) {
@@ -735,14 +737,28 @@ public final class CollapsingTextHelper {
       // Use linear text scaling if we're scaling the canvas
       textPaint.setLinearText(scale != 1f);
 
-      // If we don't currently have text to draw, or the text size has changed, ellipsize...
-      final CharSequence title =
-          TextUtils.ellipsize(text, textPaint, availableWidth, TextUtils.TruncateAt.END);
-      if (!TextUtils.equals(title, textToDraw)) {
-        textToDraw = title;
-        isRtl = calculateIsRtl(textToDraw);
-      }
+      isRtl = calculateIsRtl(text);
+      textLayout = createStaticLayout(maxLines, availableWidth, isRtl);
+      textToDraw = textLayout.getText();
     }
+  }
+
+  private StaticLayout createStaticLayout(int maxLines, float availableWidth, boolean isRtl) {
+    StaticLayout textLayout = null;
+    try {
+      textLayout =
+          StaticLayoutBuilderCompat.obtain(text, textPaint, (int) availableWidth)
+              .setEllipsize(TruncateAt.END)
+              .setIsRtl(isRtl)
+              .setAlignment(ALIGN_NORMAL)
+              .setIncludePad(false)
+              .setMaxLines(maxLines)
+              .build();
+    } catch (StaticLayoutBuilderCompatException e) {
+      Log.e(TAG, e.getCause().getMessage(), e);
+    }
+
+    return checkNotNull(textLayout);
   }
 
   private void ensureExpandedTexture() {
@@ -751,20 +767,16 @@ public final class CollapsingTextHelper {
     }
 
     calculateOffsets(0f);
-    textureAscent = textPaint.ascent();
-    textureDescent = textPaint.descent();
+    int width = textLayout.getWidth();
+    int height = textLayout.getHeight();
 
-    final int w = Math.round(textPaint.measureText(textToDraw, 0, textToDraw.length()));
-    final int h = Math.round(textureDescent - textureAscent);
-
-    if (w <= 0 || h <= 0) {
-      return; // If the width or height are 0, return
+    if (width <= 0 || height <= 0) {
+      return;
     }
 
-    expandedTitleTexture = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-
+    expandedTitleTexture = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
     Canvas c = new Canvas(expandedTitleTexture);
-    c.drawText(textToDraw, 0, textToDraw.length(), 0, h - textPaint.descent(), textPaint);
+    textLayout.draw(c);
 
     if (texturePaint == null) {
       // Make sure we have a paint
