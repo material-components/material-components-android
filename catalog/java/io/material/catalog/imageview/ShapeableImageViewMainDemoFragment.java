@@ -25,7 +25,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.google.android.material.button.MaterialButtonToggleGroup;
-import com.google.android.material.imageview.ExperimentalImageView;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
 import com.google.android.material.shape.ShapeAppearanceModel;
@@ -40,7 +39,6 @@ public class ShapeableImageViewMainDemoFragment extends DemoFragment {
    * wink.
    */
   @Override
-  @ExperimentalImageView
   public View onCreateDemoView(
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
     View view =

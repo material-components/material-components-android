@@ -51,7 +51,6 @@ import com.google.android.material.shape.ShapeAppearancePathProvider;
 import com.google.android.material.shape.Shapeable;
 
 /** An ImageView that draws the bitmap with the provided Shape. */
-@ExperimentalImageView
 public class ShapeableImageView extends AppCompatImageView implements Shapeable {
 
   private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_ShapeableImageView;
