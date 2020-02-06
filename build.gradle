@@ -254,7 +254,7 @@ subprojects {
               project {
                 name 'Material Components for Android'
                 description 'Material Components for Android is a static library that you can add to your Android application in order to use APIs that provide implementations of the Material Design specification. Compatible on devices running API 14 or later.'
-                url 'http://developer.android.com/tools/extras/support-library.html'
+                url 'https://github.com/material-components/material-components-android'
                 inceptionYear '2015'
                 licenses {
                   license {
