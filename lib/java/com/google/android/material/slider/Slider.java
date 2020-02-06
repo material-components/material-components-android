@@ -1809,13 +1809,6 @@ public class Slider extends View {
         }
       } else {
         isLongPress |= event.isLongPress();
-
-        // Deselect the thumb by pressing back.
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-          activeThumbIdx = -1;
-          return true;
-        }
-
         Float increment = calculateIncrementForKey(event, keyCode);
         if (increment != null) {
           float clamped =
