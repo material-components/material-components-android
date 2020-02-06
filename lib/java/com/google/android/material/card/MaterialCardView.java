@@ -286,6 +286,28 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
     return cardViewHelper.getCardBackgroundColor();
   }
 
+  /**
+   * Sets the foreground color for this card.
+   *
+   * @param foregroundColor Color to use for the foreground.
+   * @attr ref com.google.android.material.R.styleable#MaterialCardView_cardForegroundColor
+   * @see #getCardForegroundColor()
+   */
+  public void setCardForegroundColor(@Nullable ColorStateList foregroundColor) {
+    cardViewHelper.setCardForegroundColor(foregroundColor);
+  }
+
+  /**
+   * Sets the ripple color for this card.
+   *
+   * @attr ref com.google.android.material.R.styleable#MaterialCardView_cardForegroundColor
+   * @see #setCardForegroundColor(ColorStateList)
+   */
+  @NonNull
+  public ColorStateList getCardForegroundColor() {
+    return cardViewHelper.getCardForegroundColor();
+  }
+
   @Override
   public void setClickable(boolean clickable) {
     super.setClickable(clickable);

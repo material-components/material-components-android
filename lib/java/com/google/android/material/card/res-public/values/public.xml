@@ -15,7 +15,10 @@
   ~ limitations under the License.
 -->
 <resources>
+  <public name="cardForegroundColor" type="attr"/>
+  <public name="checkedIconTint" type="attr"/>
   <public name="materialCardViewStyle" type="attr"/>
+  <public name="state_dragged" type="attr" />
   <public name="Widget.MaterialComponents.CardView" type="style"/>
 </resources>
 

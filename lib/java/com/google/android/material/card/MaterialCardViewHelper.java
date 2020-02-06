@@ -181,8 +181,7 @@ class MaterialCardViewHelper {
             attributes,
             R.styleable.MaterialCardView_cardForegroundColor);
 
-    foregroundContentDrawable.setFillColor(
-        foregroundColor == null ? ColorStateList.valueOf(Color.TRANSPARENT) : foregroundColor);
+    setCardForegroundColor(foregroundColor);
 
     updateRippleColor();
     updateElevation();
@@ -245,6 +244,15 @@ class MaterialCardViewHelper {
 
   ColorStateList getCardBackgroundColor() {
     return bgDrawable.getFillColor();
+  }
+
+  void setCardForegroundColor(@Nullable ColorStateList foregroundColor) {
+    foregroundContentDrawable.setFillColor(
+        foregroundColor == null ? ColorStateList.valueOf(Color.TRANSPARENT) : foregroundColor);
+  }
+
+  ColorStateList getCardForegroundColor() {
+    return foregroundContentDrawable.getFillColor();
   }
 
   void setUserContentPadding(int left, int top, int right, int bottom) {
