@@ -302,7 +302,15 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     setSaveFlags(a.getInt(R.styleable.BottomSheetBehavior_Layout_behavior_saveFlags, SAVE_NONE));
     setHalfExpandedRatio(
         a.getFloat(R.styleable.BottomSheetBehavior_Layout_behavior_halfExpandedRatio, 0.5f));
-    setExpandedOffset(a.getInt(R.styleable.BottomSheetBehavior_Layout_behavior_expandedOffset, 0));
+
+    value = a.peekValue(R.styleable.BottomSheetBehavior_Layout_behavior_expandedOffset);
+    if (value != null && value.type == TypedValue.TYPE_FIRST_INT) {
+      setExpandedOffset(value.data);
+    } else {
+      setExpandedOffset(
+          a.getDimensionPixelOffset(
+              R.styleable.BottomSheetBehavior_Layout_behavior_expandedOffset, 0));
+    }
     a.recycle();
     ViewConfiguration configuration = ViewConfiguration.get(context);
     maximumVelocity = configuration.getScaledMaximumFlingVelocity();
@@ -805,6 +813,17 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   /**
+   * Gets the ratio for the height of the BottomSheet in the {@link #STATE_HALF_EXPANDED} state.
+   *
+   * @attr
+   *     com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_halfExpandedRatio
+   */
+  @FloatRange(from = 0.0f, to = 1.0f)
+  public float getHalfExpandedRatio() {
+    return halfExpandedRatio;
+  }
+
+  /**
    * Determines the top offset of the BottomSheet in the {@link #STATE_EXPANDED} state when
    * fitsToContent is false. The default value is 0, which results in the sheet matching the
    * parent's top.
@@ -822,14 +841,14 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   /**
-   * Gets the ratio for the height of the BottomSheet in the {@link #STATE_HALF_EXPANDED} state.
+   * Returns the current expanded offset. If {@code fitToContents} is true, it will automatically
+   * pick the offset depending on the height of the content.
    *
    * @attr
-   *     com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_halfExpandedRatio
+   *     com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_expandedOffset
    */
-  @FloatRange(from = 0.0f, to = 1.0f)
-  public float getHalfExpandedRatio() {
-    return halfExpandedRatio;
+  public int getExpandedOffset() {
+    return fitToContents ? fitToContentsOffset : expandedOffset;
   }
 
   /**
@@ -1198,10 +1217,6 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     }
     velocityTracker.computeCurrentVelocity(1000, maximumVelocity);
     return velocityTracker.getYVelocity(activePointerId);
-  }
-
-  private int getExpandedOffset() {
-    return fitToContents ? fitToContentsOffset : expandedOffset;
   }
 
   void settleToState(@NonNull View child, int state) {

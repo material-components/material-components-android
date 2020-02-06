@@ -43,7 +43,7 @@
     <attr name="behavior_halfExpandedRatio" format="reference|float"/>
     <!-- The top offset of the BottomSheet in the expanded-state when fitsToContent is false.
          The default value is 0, which results in the sheet matching the parent's top. -->
-    <attr name="behavior_expandedOffset" format="reference|integer"/>
+    <attr name="behavior_expandedOffset" format="reference|dimension"/>
     <!-- Shape appearance style reference for BottomSheet. Attribute declaration is in the shape
          package. -->
      <attr name="shapeAppearance"/>
