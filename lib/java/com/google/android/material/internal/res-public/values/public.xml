@@ -16,6 +16,7 @@
 -->
 <resources>
   <public name="enforceMaterialTheme" type="attr"/>
+  <public name="enforceTextAppearance" type="attr"/>
   <public name="insetForeground" type="attr"/>
   <public name="paddingBottomSystemWindowInsets" type="attr"/>
   <public name="paddingLeftSystemWindowInsets" type="attr"/>
