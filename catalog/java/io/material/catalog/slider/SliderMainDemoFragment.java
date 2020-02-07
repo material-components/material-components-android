@@ -25,11 +25,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import com.google.android.material.slider.Slider;
+import com.google.android.material.slider.Slider.OnSliderTouchListener;
 import com.google.android.material.snackbar.Snackbar;
 import io.material.catalog.feature.DemoFragment;
 
 /** A fragment that displays the main Slider demo for the Catalog app. */
 public class SliderMainDemoFragment extends DemoFragment {
+
+  private final OnSliderTouchListener touchListener =
+      new OnSliderTouchListener() {
+        @Override
+        public void onStartTrackingTouch(Slider slider) {
+          Snackbar.make(slider, R.string.cat_slider_start_touch_description, Snackbar.LENGTH_SHORT)
+              .show();
+        }
+
+        @Override
+        public void onStopTrackingTouch(Slider slider) {
+          Snackbar.make(slider, R.string.cat_slider_stop_touch_description, Snackbar.LENGTH_SHORT)
+              .show();
+        }
+      };
 
   @Override
   public View onCreateDemoView(
@@ -38,23 +54,13 @@ public class SliderMainDemoFragment extends DemoFragment {
         layoutInflater.inflate(R.layout.cat_slider_fragment, viewGroup, false /* attachToRoot */);
 
     Slider slider = view.findViewById(R.id.slider);
-    slider.addOnSliderTouchListener(
-        new Slider.OnSliderTouchListener() {
-          @Override
-          public void onStartTrackingTouch(Slider slider) {
-            Snackbar.make(
-                    slider, R.string.cat_slider_start_touch_description, Snackbar.LENGTH_SHORT)
-                .show();
-          }
+    slider.addOnSliderTouchListener(touchListener);
 
-          @Override
-          public void onStopTrackingTouch(Slider slider) {
-            Snackbar.make(slider, R.string.cat_slider_stop_touch_description, Snackbar.LENGTH_SHORT)
-                .show();
-          }
-        });
+    Slider rangeSlider = view.findViewById(R.id.range_slider);
+    rangeSlider.setValues(2f, 7f);
+    rangeSlider.addOnSliderTouchListener(touchListener);
+
     Button button = view.findViewById(R.id.button);
-
     button.setOnClickListener(v -> slider.setValue(slider.getValueTo()));
 
     return view;
