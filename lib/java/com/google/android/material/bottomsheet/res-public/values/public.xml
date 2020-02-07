@@ -27,5 +27,10 @@
   <public name="Animation.Design.BottomSheetDialog" type="style"/>
   <public name="Widget.Design.BottomSheet.Modal" type="style"/>
   <public name="behavior_draggable" type="attr"/>
+  <public name="behavior_expandedOffset" type="attr"/>
+  <public name="behavior_halfExpandedRatio" type="attr"/>
+  <public name="behavior_hideable" type="attr"/>
+  <public name="behavior_saveFlags" type="attr"/>
+  <public name="behavior_skipCollapsed" type="attr"/>
 </resources>
 
