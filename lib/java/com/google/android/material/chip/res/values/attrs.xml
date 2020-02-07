@@ -25,6 +25,8 @@
 
   <declare-styleable name="Chip">
     <!-- Surface layer color to apply to the chip. -->
+    <!-- Do not expose publicly because there is no public getter/setter and the user doesn't need
+         to configure this.-->
     <attr name="chipSurfaceColor" format="color"/>
     <!-- Background color to apply to the chip. -->
     <attr name="chipBackgroundColor" format="color"/>
