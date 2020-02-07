@@ -18,6 +18,8 @@ package com.google.android.material.button;
 
 import com.google.android.material.R;
 
+import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -135,6 +137,8 @@ public class MaterialButtonToggleGroup extends LinearLayout {
   }
 
   private static final String LOG_TAG = MaterialButtonToggleGroup.class.getSimpleName();
+  private static final int DEF_STYLE_RES =
+      R.style.Widget_MaterialComponents_MaterialButtonToggleGroup;
 
   private final List<CornerData> originalCornerData = new ArrayList<>();
 
@@ -178,14 +182,16 @@ public class MaterialButtonToggleGroup extends LinearLayout {
 
   public MaterialButtonToggleGroup(
       @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-    super(context, attrs, defStyleAttr);
+    super(wrap(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
+    // Ensure we are using the correctly themed context rather than the context that was passed in.
+    context = getContext();
     TypedArray attributes =
         ThemeEnforcement.obtainStyledAttributes(
             context,
             attrs,
             R.styleable.MaterialButtonToggleGroup,
             defStyleAttr,
-            R.style.Widget_MaterialComponents_MaterialButtonToggleGroup);
+            DEF_STYLE_RES);
 
     setSingleSelection(
         attributes.getBoolean(R.styleable.MaterialButtonToggleGroup_singleSelection, false));

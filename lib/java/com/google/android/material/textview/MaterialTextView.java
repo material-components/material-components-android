@@ -18,6 +18,8 @@ package com.google.android.material.textview;
 
 import com.google.android.material.R;
 
+import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.Resources.Theme;
@@ -88,7 +90,9 @@ public class MaterialTextView extends AppCompatTextView {
 
   public MaterialTextView(
       @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-    super(context, attrs, defStyleAttr);
+    super(wrap(context, attrs, defStyleAttr, defStyleRes), attrs, defStyleAttr);
+    // Ensure we are using the correctly themed context rather than the context that was passed in.
+    context = getContext();
 
     if (canApplyTextAppearanceLineHeight(context)) {
       final Resources.Theme theme = context.getTheme();

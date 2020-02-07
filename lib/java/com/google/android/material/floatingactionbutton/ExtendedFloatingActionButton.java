@@ -18,6 +18,8 @@ package com.google.android.material.floatingactionbutton;
 
 import com.google.android.material.R;
 
+import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
+
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorListenerAdapter;
@@ -138,7 +140,9 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
   @SuppressWarnings("initialization")
   public ExtendedFloatingActionButton(
       @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-    super(context, attrs, defStyleAttr);
+    super(wrap(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
+    // Ensure we are using the correctly themed context rather than the context that was passed in.
+    context = getContext();
     behavior = new ExtendedFloatingActionButtonBehavior<>(context, attrs);
     TypedArray a =
         ThemeEnforcement.obtainStyledAttributes(

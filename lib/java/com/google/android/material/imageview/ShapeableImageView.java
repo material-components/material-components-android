@@ -18,6 +18,8 @@ package com.google.android.material.imageview;
 
 import com.google.android.material.R;
 
+import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
+
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -75,7 +77,10 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
   }
 
   public ShapeableImageView(Context context, @Nullable AttributeSet attrs, int defStyle) {
-    super(context, attrs, defStyle);
+    super(wrap(context, attrs, defStyle, DEF_STYLE_RES), attrs, defStyle);
+    // Ensure we are using the correctly themed context rather than the context that was passed in.
+    context = getContext();
+
     clearPaint = new Paint();
     clearPaint.setAntiAlias(true);
     clearPaint.setColor(Color.WHITE);

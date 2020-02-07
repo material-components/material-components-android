@@ -19,6 +19,7 @@ package com.google.android.material.appbar;
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -111,6 +112,7 @@ import java.lang.annotation.RetentionPolicy;
  */
 public class CollapsingToolbarLayout extends FrameLayout {
 
+  private static final int DEF_STYLE_RES = R.style.Widget_Design_CollapsingToolbar;
   private static final int DEFAULT_SCRIM_ANIMATION_DURATION = 600;
 
   private boolean refreshToolbar = true;
@@ -152,7 +154,9 @@ public class CollapsingToolbarLayout extends FrameLayout {
   }
 
   public CollapsingToolbarLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-    super(context, attrs, defStyleAttr);
+    super(wrap(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
+    // Ensure we are using the correctly themed context rather than the context that was passed in.
+    context = getContext();
 
     collapsingTextHelper = new CollapsingTextHelper(this);
     collapsingTextHelper.setTextSizeInterpolator(AnimationUtils.DECELERATE_INTERPOLATOR);
@@ -163,7 +167,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
             attrs,
             R.styleable.CollapsingToolbarLayout,
             defStyleAttr,
-            R.style.Widget_Design_CollapsingToolbar);
+            DEF_STYLE_RES);
 
     collapsingTextHelper.setExpandedTextGravity(
         a.getInt(

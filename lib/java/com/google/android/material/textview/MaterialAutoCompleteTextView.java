@@ -18,6 +18,8 @@ package com.google.android.material.textview;
 
 import com.google.android.material.R;
 
+import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
+
 import android.content.Context;
 import android.os.Build.VERSION;
 import androidx.annotation.NonNull;
@@ -62,12 +64,14 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
 
   public MaterialAutoCompleteTextView(
       @NonNull Context context, @Nullable AttributeSet attributeSet, int defStyleAttr) {
-    super(context, attributeSet, defStyleAttr);
+    super(wrap(context, attributeSet, defStyleAttr, 0), attributeSet, defStyleAttr);
+    // Ensure we are using the correctly themed context rather than the context that was passed in.
+    context = getContext();
 
     accessibilityManager =
         (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
 
-    modalListPopup = new ListPopupWindow(getContext());
+    modalListPopup = new ListPopupWindow(context);
     modalListPopup.setModal(true);
     modalListPopup.setAnchorView(this);
     modalListPopup.setInputMethodMode(ListPopupWindow.INPUT_METHOD_NOT_NEEDED);

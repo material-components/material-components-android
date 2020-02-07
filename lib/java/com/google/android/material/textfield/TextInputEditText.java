@@ -18,6 +18,8 @@ package com.google.android.material.textfield;
 
 import com.google.android.material.R;
 
+import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Point;
@@ -58,7 +60,7 @@ public class TextInputEditText extends AppCompatEditText {
 
   public TextInputEditText(
       @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-    super(context, attrs, defStyleAttr);
+    super(wrap(context, attrs, defStyleAttr, 0), attrs, defStyleAttr);
     TypedArray attributes =
         ThemeEnforcement.obtainStyledAttributes(
             context,

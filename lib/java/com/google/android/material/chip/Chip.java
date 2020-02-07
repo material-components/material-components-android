@@ -18,6 +18,8 @@ package com.google.android.material.chip;
 
 import com.google.android.material.R;
 
+import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
+
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -128,6 +130,8 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
 
   private static final String TAG = "Chip";
 
+  private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_Chip_Action;
+
   private static final int CHIP_BODY_VIRTUAL_ID = 0;
   private static final int CLOSE_ICON_VIRTUAL_ID = 1;
   private static final Rect EMPTY_BOUNDS = new Rect();
@@ -188,11 +192,14 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
   }
 
   public Chip(Context context, AttributeSet attrs, int defStyleAttr) {
-    super(context, attrs, defStyleAttr);
+    super(wrap(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
+    // Ensure we are using the correctly themed context rather than the context that was passed in.
+    context = getContext();
+
     validateAttributes(attrs);
     ChipDrawable drawable =
         ChipDrawable.createFromAttributes(
-            context, attrs, defStyleAttr, R.style.Widget_MaterialComponents_Chip_Action);
+            context, attrs, defStyleAttr, DEF_STYLE_RES);
     initMinTouchTarget(context, attrs, defStyleAttr);
     setChipDrawable(drawable);
     drawable.setElevation(ViewCompat.getElevation(this));
@@ -202,7 +209,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
             attrs,
             R.styleable.Chip,
             defStyleAttr,
-            R.style.Widget_MaterialComponents_Chip_Action);
+            DEF_STYLE_RES);
     if (VERSION.SDK_INT < VERSION_CODES.M) {
       // This is necessary to work around a bug that doesn't support themed color referenced in
       // ColorStateList for API level < 23.
@@ -306,7 +313,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
             attrs,
             R.styleable.Chip,
             defStyleAttr,
-            R.style.Widget_MaterialComponents_Chip_Action);
+            DEF_STYLE_RES);
     ensureMinTouchTargetSize = a.getBoolean(R.styleable.Chip_ensureMinTouchTargetSize, false);
 
     float defaultMinTouchTargetSize =
