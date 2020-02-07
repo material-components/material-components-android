@@ -130,7 +130,6 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   @Nullable private PorterDuffColorFilter tintFilter;
   @Nullable private PorterDuffColorFilter strokeTintFilter;
 
-  @Nullable private Rect padding;
   @NonNull private final RectF pathBounds = new RectF();
 
   private boolean shadowBitmapDrawingEnable = true;
@@ -491,8 +490,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
   @Override
   public boolean getPadding(@NonNull Rect padding) {
-    if (this.padding != null) {
-      padding.set(this.padding);
+    if (drawableState.padding != null) {
+      padding.set(drawableState.padding);
       return true;
     } else {
       return super.getPadding(padding);
@@ -513,7 +512,6 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     }
 
     drawableState.padding.set(left, top, right, bottom);
-    padding = drawableState.padding;
     invalidateSelf();
   }
 
