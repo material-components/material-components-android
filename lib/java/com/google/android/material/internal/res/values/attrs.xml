@@ -36,6 +36,7 @@
   <declare-styleable name="ForegroundLinearLayout">
     <attr name="android:foreground"/>
     <attr name="android:foregroundGravity"/>
+    <!-- Do not expose publicly, used by ForegroundLinearLayout but never set by any style.  -->
     <attr name="foregroundInsidePadding" format="boolean"/>
   </declare-styleable>
 
@@ -43,6 +44,7 @@
     <attr name="insetForeground" format="color|reference"/>
   </declare-styleable>
 
+    <!-- Do not expose publicly, FlowLayout (private class) that is the parent for ChipGroup (public), which has its own public spacing attributes.  -->
   <declare-styleable name="FlowLayout">
     <!-- Horizontal spacing between two items being laid out. -->
     <attr name="itemSpacing" format="dimension"/>
