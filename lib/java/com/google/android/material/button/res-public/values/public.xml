@@ -15,17 +15,19 @@
   ~ limitations under the License.
 -->
 <resources>
+  <public name="additionalPaddingStartForIcon" type="attr"/>
+  <public name="additionalPaddingEndForIcon" type="attr"/>
+  <public name="checkedButton" type="attr"/>
+  <public name="cornerRadius" type="attr"/>
+  <public name="icon" type="attr"/>
+  <public name="iconGravity" type="attr"/>
+  <public name="iconPadding" type="attr"/>
+  <public name="iconSize" type="attr"/>
+  <public name="iconTint" type="attr"/>
+  <public name="iconTintMode" type="attr"/>
   <public name="materialButtonStyle" type="attr"/>
   <public name="materialButtonOutlinedStyle" type="attr"/>
   <public name="materialButtonToggleGroupStyle" type="attr"/>
-  <public name="icon" type="attr"/>
-  <public name="iconSize" type="attr"/>
-  <public name="iconPadding" type="attr"/>
-  <public name="iconTint" type="attr"/>
-  <public name="iconTintMode" type="attr"/>
-  <public name="additionalPaddingStartForIcon" type="attr"/>
-  <public name="additionalPaddingEndForIcon" type="attr"/>
-  <public name="cornerRadius" type="attr"/>
   <public name="Widget.MaterialComponents.Button" type="style"/>
   <public name="Widget.MaterialComponents.Button.UnelevatedButton" type="style"/>
   <public name="Widget.MaterialComponents.Button.TextButton" type="style"/>
