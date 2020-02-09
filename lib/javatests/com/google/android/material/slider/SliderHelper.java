@@ -22,6 +22,8 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.os.SystemClock;
+import androidx.annotation.FloatRange;
+import androidx.core.view.ViewCompat;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.widget.LinearLayout;
@@ -53,8 +55,21 @@ public class SliderHelper {
   }
 
   static void touchSliderAtValue(Slider s, float value, int motionEventType) {
-    float x = calculateXPositionFromValue(s, value);
-    float y = s.getY() + s.getHeight() / 2;
+    touchSliderAtX(s, calculateXPositionFromValue(s, value), motionEventType);
+  }
+
+  /**
+   * Performs a touch on the Slider at the specific {@code fraction} along the track with 0 being
+   * the far left and 1 being the
+   */
+  static void touchSliderAtFraction(
+      Slider s, @FloatRange(from = 0, to = 1) float fraction, int motionEventType) {
+    float x = s.getTrackSidePadding() + fraction * s.getTrackWidth();
+    touchSliderAtX(s, x, motionEventType);
+  }
+
+  static void touchSliderAtX(Slider s, float x, int motionEventType) {
+    float y = s.getHeight() / 2f;
 
     s.dispatchTouchEvent(
         MotionEvent.obtain(
@@ -87,8 +102,11 @@ public class SliderHelper {
   }
 
   static float calculateXPositionFromValue(Slider s, float value) {
-    return s.getTrackSidePadding()
-        + (value - s.getValueFrom()) * s.getTrackWidth() / (s.getValueTo() - s.getValueFrom());
+    float x = (value - s.getValueFrom()) * s.getTrackWidth() / (s.getValueTo() - s.getValueFrom());
+    if (ViewCompat.getLayoutDirection(s) == ViewCompat.LAYOUT_DIRECTION_RTL) {
+      x = s.getTrackWidth() - x;
+    }
+    return s.getTrackSidePadding() + x;
   }
 
   static void activateFocusedThumb(Slider s) {

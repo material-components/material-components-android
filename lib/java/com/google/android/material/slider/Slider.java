@@ -48,6 +48,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.math.MathUtils;
+import androidx.core.view.ViewCompat;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -1366,10 +1367,20 @@ public class Slider extends View {
     drawThumbs(canvas, trackWidth, top);
   }
 
+  /**
+   * Returns a float array where {@code float[0]} is the normalized left position and {@code
+   * float[1]} is the normalized right position of the range.
+   */
   private float[] getActiveRange() {
-    return new float[] {
-      values.size() == 1 ? 0 : normalizeValue(getMinimumValue()), normalizeValue(getMaximumValue())
-    };
+    float left = normalizeValue(values.size() == 1 ? valueFrom : getMinimumValue());
+    float right = normalizeValue(getMaximumValue());
+
+    // In RTL we draw things in reverse, so swap the left and right range values
+    if (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL) {
+      return new float[] {right, left};
+    } else {
+      return new float[] {left, right};
+    }
   }
 
   private void drawInactiveTrack(@NonNull Canvas canvas, int width, int top) {
@@ -1379,17 +1390,23 @@ public class Slider extends View {
       canvas.drawLine(right, top, trackSidePadding + width, top, inactiveTrackPaint);
     }
 
-    // If there's more than one thumb, also draw disabled track to the left.
-    if (values.size() > 1) {
-      float left = trackSidePadding + activeRange[0] * width;
-      if (left > trackSidePadding) {
-        canvas.drawLine(trackSidePadding, top, left, top, inactiveTrackPaint);
-      }
+    // Also draw inactive track to the left if there is any
+    float left = trackSidePadding + activeRange[0] * width;
+    if (left > trackSidePadding) {
+      canvas.drawLine(trackSidePadding, top, left, top, inactiveTrackPaint);
     }
   }
 
+  /**
+   * Returns a number between 0 and 1 indicating where on the track this value should sit with 0
+   * being on the far left, and 1 on the far right.
+   */
   private float normalizeValue(float value) {
-    return (value - valueFrom) / (valueTo - valueFrom);
+    float normalized = (value - valueFrom) / (valueTo - valueFrom);
+    if (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL) {
+      return 1 - normalized;
+    }
+    return normalized;
   }
 
   private void drawActiveTrack(@NonNull Canvas canvas, int width, int top) {
@@ -1636,7 +1653,13 @@ public class Slider extends View {
   }
 
   private float getValueOfTouchPosition() {
-    return snapPosition(touchPosition) * (valueTo - valueFrom) + valueFrom;
+    float position = snapPosition(touchPosition);
+
+    // We might need to invert the touch position to get the correct value.
+    if (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL) {
+      position = 1 - position;
+    }
+    return position * (valueTo - valueFrom) + valueFrom;
   }
 
   private float valueToX(float value) {
@@ -1811,6 +1834,9 @@ public class Slider extends View {
         isLongPress |= event.isLongPress();
         Float increment = calculateIncrementForKey(event, keyCode);
         if (increment != null) {
+          if (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL) {
+            increment = -increment;
+          }
           float clamped =
               MathUtils.clamp(values.get(activeThumbIdx) + increment, valueFrom, valueTo);
           if (snapActiveThumbToValue(clamped)) {
