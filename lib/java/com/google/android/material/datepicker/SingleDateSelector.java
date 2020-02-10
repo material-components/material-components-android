@@ -102,8 +102,8 @@ public class SingleDateSelector implements DateSelector<Long> {
 
     TextInputLayout dateTextInput = root.findViewById(R.id.mtrl_picker_text_input_date);
     EditText dateEditText = dateTextInput.getEditText();
-    // The date inputType for LG does not include any separator characters
-    if (ManufacturerUtils.isLGDevice()) {
+    // The date inputType for Samsung and LG does not include any separator characters
+    if (ManufacturerUtils.isLGEDevice() && ManufacturerUtils.isSamsungDevice()) {
       // Using the URI variation places the '/' and '.' in more prominent positions
       dateEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_URI);
     }

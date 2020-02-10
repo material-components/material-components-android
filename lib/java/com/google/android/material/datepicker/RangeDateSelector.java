@@ -180,8 +180,8 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
     final TextInputLayout endTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_end);
     EditText startEditText = startTextInput.getEditText();
     EditText endEditText = endTextInput.getEditText();
-    // The date inputType for LG does not include any separator characters
-    if (ManufacturerUtils.isLGDevice()) {
+    // The date inputType for Samsung and LG does not include any separator characters
+    if (ManufacturerUtils.isLGEDevice() || ManufacturerUtils.isSamsungDevice()) {
       // Using the URI variation places the '/' and '.' in more prominent positions
       startEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_URI);
       endEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_URI);

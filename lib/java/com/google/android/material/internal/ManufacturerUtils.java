@@ -20,20 +20,29 @@ import com.google.android.material.R;
 import android.os.Build;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
+import java.util.Locale;
 
 /** Utils to determine device manufacturers for special handling. */
 @RestrictTo(Scope.LIBRARY_GROUP)
 public class ManufacturerUtils {
+  private static final String LGE = "lge";
+  private static final String SAMSUNG = "samsung";
+  private static final String MEIZU = "meizu";
 
   private ManufacturerUtils() {}
 
   /** Returns true if the device manufacturer is Meizu. */
   public static boolean isMeizuDevice() {
-    return Build.MANUFACTURER.equalsIgnoreCase("meizu");
+    return Build.MANUFACTURER.toLowerCase(Locale.ENGLISH).equals(MEIZU);
   }
 
   /** Returns true if the device manufacturer is LG. */
-  public static boolean isLGDevice() {
-    return Build.MANUFACTURER.equalsIgnoreCase("lg");
+  public static boolean isLGEDevice() {
+    return Build.MANUFACTURER.toLowerCase(Locale.ENGLISH).equals(LGE);
+  }
+
+  /** Returns true if the device manufacturer is Samsung. */
+  public static boolean isSamsungDevice() {
+    return Build.MANUFACTURER.toLowerCase(Locale.ENGLISH).equals(SAMSUNG);
   }
 }
