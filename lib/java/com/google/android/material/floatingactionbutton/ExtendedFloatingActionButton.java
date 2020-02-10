@@ -18,6 +18,7 @@ package com.google.android.material.floatingactionbutton;
 
 import com.google.android.material.R;
 
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 
 import android.animation.Animator;
@@ -174,6 +175,11 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
           public int getHeight() {
             return getMeasuredHeight();
           }
+
+          @Override
+          public LayoutParams getLayoutParams() {
+            return new LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+          }
         },
         /* extending= */ true);
 
@@ -188,6 +194,11 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
           @Override
           public int getHeight() {
             return getCollapsedSize();
+          }
+
+          @Override
+          public LayoutParams getLayoutParams() {
+            return new LayoutParams(getWidth(), getHeight());
           }
         },
         /* extending= */ false);
@@ -916,6 +927,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
   interface Size {
     int getWidth();
     int getHeight();
+    LayoutParams getLayoutParams();
   }
 
   class ChangeSizeStrategy extends BaseMotionStrategy {
@@ -937,12 +949,8 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
         return;
       }
 
-      if (extending) {
-        measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
-      }
-
-      layoutParams.width = size.getWidth();
-      layoutParams.height = size.getHeight();
+      layoutParams.width = size.getLayoutParams().width;
+      layoutParams.height = size.getLayoutParams().height;
       requestLayout();
     }
 
@@ -994,6 +1002,13 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     public void onAnimationEnd() {
       super.onAnimationEnd();
       setHorizontallyScrolling(false);
+
+      LayoutParams layoutParams = getLayoutParams();
+      if (layoutParams == null) {
+        return;
+      }
+      layoutParams.width = size.getLayoutParams().width;
+      layoutParams.height = size.getLayoutParams().height;
     }
 
     @Override

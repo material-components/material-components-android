@@ -66,7 +66,7 @@ public class ExtendedFloatingActionButtonTest {
     shadowOf(Looper.getMainLooper()).idle();
 
     verify(onChangedCallback, times(1)).onExtended(fabForTest);
-    assertThat(fabForTest.getLayoutParams().width).isEqualTo(originalWidth);
+    assertThat(fabForTest.getMeasuredWidth()).isEqualTo(originalWidth);
   }
 
   @Test
@@ -111,7 +111,7 @@ public class ExtendedFloatingActionButtonTest {
     fabForTest.setExtended(false);
     fabForTest.setExtended(true);
 
-    assertThat(fabForTest.getLayoutParams().width).isEqualTo(originalWidth);
+    assertThat(fabForTest.getMeasuredWidth()).isEqualTo(originalWidth);
   }
 
   private ExtendedFloatingActionButton createFabForTest() {
