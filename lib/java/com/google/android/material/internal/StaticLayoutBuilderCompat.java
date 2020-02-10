@@ -185,7 +185,11 @@ final class StaticLayoutBuilderCompat {
 
 
     int availableWidth = Math.max(0, width);
-    CharSequence textToDraw = TextUtils.ellipsize(source, paint, availableWidth, ellipsize);
+    CharSequence textToDraw = source;
+    if (maxLines == 1) {
+      textToDraw = TextUtils.ellipsize(source, paint, availableWidth, ellipsize);
+    }
+
     end = Math.min(textToDraw.length(), end);
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
       if (isRtl) {

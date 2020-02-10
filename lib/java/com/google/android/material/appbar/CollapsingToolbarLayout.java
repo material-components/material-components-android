@@ -19,7 +19,6 @@ package com.google.android.material.appbar;
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
-import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -112,7 +111,6 @@ import java.lang.annotation.RetentionPolicy;
  */
 public class CollapsingToolbarLayout extends FrameLayout {
 
-  private static final int DEF_STYLE_RES = R.style.Widget_Design_CollapsingToolbar;
   private static final int DEFAULT_SCRIM_ANIMATION_DURATION = 600;
 
   private boolean refreshToolbar = true;
@@ -154,9 +152,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
   }
 
   public CollapsingToolbarLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-    super(wrap(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
-    // Ensure we are using the correctly themed context rather than the context that was passed in.
-    context = getContext();
+    super(context, attrs, defStyleAttr);
 
     collapsingTextHelper = new CollapsingTextHelper(this);
     collapsingTextHelper.setTextSizeInterpolator(AnimationUtils.DECELERATE_INTERPOLATOR);
@@ -167,7 +163,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
             attrs,
             R.styleable.CollapsingToolbarLayout,
             defStyleAttr,
-            DEF_STYLE_RES);
+            R.style.Widget_Design_CollapsingToolbar);
 
     collapsingTextHelper.setExpandedTextGravity(
         a.getInt(
@@ -1048,6 +1044,24 @@ public class CollapsingToolbarLayout extends FrameLayout {
   }
 
   /**
+   * Sets the maximum number of lines to display in the expanded state.
+   * Experimental Feature.
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  public void setMaxLines(int maxLines) {
+    collapsingTextHelper.setMaxLines(maxLines);
+  }
+
+  /**
+   * Gets the maximum number of lines to display in the expanded state.
+   * Experimental Feature.
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  public int getMaxLines() {
+    return collapsingTextHelper.getMaxLines();
+  }
+
+  /**
    * Set the amount of visible height in pixels used to define when to trigger a scrim visibility
    * change.
    *
@@ -1055,7 +1069,8 @@ public class CollapsingToolbarLayout extends FrameLayout {
    * visible, otherwise they are hidden.
    *
    * @param height value in pixels used to define when to trigger a scrim visibility change
-   * @attr ref com.google.android.material.R.styleable#CollapsingToolbarLayout_scrimVisibleHeightTrigger
+   * @attr ref
+   *     com.google.android.material.R.styleable#CollapsingToolbarLayout_scrimVisibleHeightTrigger
    */
   public void setScrimVisibleHeightTrigger(@IntRange(from = 0) final int height) {
     if (scrimVisibleHeightTrigger != height) {
