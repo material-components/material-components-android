@@ -207,7 +207,7 @@ class UtcDates {
   }
 
   private static SimpleDateFormat getYearMonthFormat(Locale locale) {
-    return getSimpleFormat("MMMM, yyyy", locale);
+    return getSimpleFormat("LLLL, yyyy", locale);
   }
 
   @NonNull
