@@ -220,6 +220,10 @@ public class CollapsingToolbarLayout extends FrameLayout {
     scrimVisibleHeightTrigger =
         a.getDimensionPixelSize(R.styleable.CollapsingToolbarLayout_scrimVisibleHeightTrigger, -1);
 
+    if (a.hasValue(R.styleable.CollapsingToolbarLayout_maxLines)) {
+      collapsingTextHelper.setMaxLines(a.getInt(R.styleable.CollapsingToolbarLayout_maxLines, 1));
+    }
+
     scrimAnimationDuration =
         a.getInt(
             R.styleable.CollapsingToolbarLayout_scrimAnimationDuration,

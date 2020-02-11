@@ -194,6 +194,8 @@
     <attr name="titleEnabled" format="boolean"/>
     <!-- The title to show when titleEnabled is set to true. -->
     <attr name="title"/>
+    <!-- The maximum number of lines to display in the expanded state. Experimental Feature. -->
+    <attr name="maxLines" format="integer" />
   </declare-styleable>
 
   <declare-styleable name="CollapsingToolbarLayout_Layout">

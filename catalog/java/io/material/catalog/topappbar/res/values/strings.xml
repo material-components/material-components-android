@@ -22,6 +22,7 @@
   <string name="cat_topappbar_scrolling_transparent_title">Scrolling Demo (transparent status bar)</string>
   <string name="cat_topappbar_collapsing_title">Collapsing Demo</string>
   <string name="cat_topappbar_toolbar_title" translatable="false">Toolbar Demo</string>
+  <string name="cat_topappbar_collapsing_multiline_title" description="Title for a demo containing a multiline Toolbar [CHAR_LIMIT=NONE]">Collapsing Demo (Multiline title)</string>
   <string name="cat_topappbar_action_bar_title">Action Bar Demo</string>
   <string name="cat_topappbar_dark_action_bar_title">Dark Action Bar Demo</string>
 
@@ -53,4 +54,6 @@
   <string name="cat_topappbar_action_bar_action_mode_subtitle">Action Mode Subtitle</string>
   <string name="cat_topappbar_action_bar_action_mode_menu_item1">Action 1</string>
   <string name="cat_topappbar_action_bar_action_mode_menu_item2">Action 2</string>
+  <string name="cat_topappbar_collapsing_multiline_demo_toolbar_title" description="Long title [CHAR_LIMIT=NONE]">This Collapsing Title is
+    extremely long and thus will be displayed in multiple lines.</string>
 </resources>
