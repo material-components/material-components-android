@@ -14,6 +14,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/coordinator"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
@@ -46,7 +47,8 @@
         android:layout_height="?attr/actionBarSize"
         android:elevation="0dp"
         app:layout_collapseMode="pin"
-        app:title="@string/cat_topappbar_collapsing_multiline_demo_toolbar_title"/>
+        app:title="@string/cat_topappbar_collapsing_multiline_demo_toolbar_title"
+        tools:ignore="UnusedAttribute" />
     </com.google.android.material.appbar.CollapsingToolbarLayout>
   </com.google.android.material.appbar.AppBarLayout>
 
