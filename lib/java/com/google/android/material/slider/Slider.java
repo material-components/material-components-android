@@ -1590,10 +1590,10 @@ public class Slider extends View {
     return Math.round(position * (coordinates.length / 2 - 1));
   }
 
-  private float snapPosition(float position) {
+  private double snapPosition(float position) {
     if (stepSize > 0.0f) {
-      float stepCount = (int) ((valueTo - valueFrom) / stepSize);
-      return Math.round(position * stepCount) / stepCount;
+      int stepCount = (int) ((valueTo - valueFrom) / stepSize);
+      return Math.round(position * stepCount) / (double) stepCount;
     }
 
     return position;
@@ -1665,7 +1665,7 @@ public class Slider extends View {
 
   private boolean snapThumbToValue(int idx, float value) {
     // Check if the new value equals a value that was already set.
-    if (value == values.get(idx)) {
+    if (Math.abs(value - values.get(idx)) < THRESHOLD) {
       return false;
     }
 
@@ -1684,13 +1684,13 @@ public class Slider extends View {
   }
 
   private float getValueOfTouchPosition() {
-    float position = snapPosition(touchPosition);
+    double position = snapPosition(touchPosition);
 
     // We might need to invert the touch position to get the correct value.
     if (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL) {
       position = 1 - position;
     }
-    return position * (valueTo - valueFrom) + valueFrom;
+    return (float) (position * (valueTo - valueFrom) + valueFrom);
   }
 
   private float valueToX(float value) {
