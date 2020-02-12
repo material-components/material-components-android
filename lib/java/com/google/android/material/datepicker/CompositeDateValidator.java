@@ -70,13 +70,15 @@ public final class CompositeDateValidator implements DateValidator {
    */
   @Override
   public boolean isValid(long date) {
-    boolean valid = true;
     for (DateValidator validator: validators) {
-      if (validator != null) {
-        valid = valid && validator.isValid(date);
+      if (validator == null) {
+        continue;
+      }
+      if (!validator.isValid(date)) {
+        return false;
       }
     }
-    return valid;
+    return true;
   }
 
   @Override
