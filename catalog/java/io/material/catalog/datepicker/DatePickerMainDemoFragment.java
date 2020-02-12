@@ -30,12 +30,15 @@ import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.CalendarConstraints;
-import com.google.android.material.datepicker.DateRangeValidator;
+import com.google.android.material.datepicker.CompositeDateValidator;
 import com.google.android.material.datepicker.DateValidatorPointForward;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.snackbar.Snackbar;
 import io.material.catalog.feature.DemoFragment;
+
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.TimeZone;
 
 /** A fragment that displays the main Picker demos for the Catalog app. */
@@ -196,9 +199,11 @@ public class DatePickerMainDemoFragment extends DemoFragment {
       lowerBoundCalendar.add(Calendar.DAY_OF_MONTH, -14);
       long lowerBound = lowerBoundCalendar.getTimeInMillis();
 
-      long upperBound = Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTimeInMillis();
+      List<CalendarConstraints.DateValidator> validators = new ArrayList<>();
+      validators.add(DateValidatorPointForward.from(lowerBound));
+      validators.add(new DateValidatorWeekdays());
 
-      constraintsBuilder.setValidator(DateRangeValidator.between(lowerBound, upperBound));
+      constraintsBuilder.setValidator(CompositeDateValidator.with(validators));
     }
     return constraintsBuilder;
   }
