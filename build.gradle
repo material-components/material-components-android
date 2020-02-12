@@ -30,7 +30,7 @@ ext {
     cardView              : '1.0.0',
     constraintlayout      : '1.1.3',
     coordinatorlayout     : '1.1.0',
-    core                  : '1.1.0',
+    core                  : '1.2.0',
     experimental          : '1.0.0',
     fragment              : '1.0.0',
     lifecycle             : '2.0.0',
