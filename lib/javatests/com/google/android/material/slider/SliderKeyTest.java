@@ -49,12 +49,13 @@ public class SliderKeyTest {
     // Creates slider and adds the listener.
     SliderHelper helper = new SliderHelper(activity);
     slider = helper.getSlider();
+
+    helper.addContentView(activity);
+
     slider.setValueFrom(SLIDER_VALUE_FROM);
     slider.setValueTo(SLIDER_VALUE_TO);
     slider.setValues(values);
     slider.requestFocus();
-
-    helper.addContentView(activity);
   }
 
   @Test

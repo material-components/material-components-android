@@ -36,6 +36,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.ColorInt;
@@ -49,6 +50,9 @@ import androidx.annotation.VisibleForTesting;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.math.MathUtils;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.RangeInfoCompat;
+import androidx.customview.widget.ExploreByTouchHelper;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -59,6 +63,9 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityManager;
+import android.widget.SeekBar;
 import com.google.android.material.drawable.DrawableUtils;
 import com.google.android.material.internal.DescendantOffsetUtils;
 import com.google.android.material.internal.ThemeEnforcement;
@@ -177,6 +184,7 @@ public class Slider extends View {
   private static final String EXCEPTION_ILLEGAL_STEP_SIZE =
       "The stepSize must be 0, or a factor of the valueFrom-valueTo range";
 
+  private static final int TIMEOUT_SEND_ACCESSIBILITY_EVENT = 200;
   private static final int HALO_ALPHA = 63;
   private static final double THRESHOLD = .0001;
 
@@ -188,6 +196,9 @@ public class Slider extends View {
   @NonNull private final Paint haloPaint;
   @NonNull private final Paint inactiveTicksPaint;
   @NonNull private final Paint activeTicksPaint;
+  @NonNull private final AccessibilityHelper accessibilityHelper;
+  private final AccessibilityManager accessibilityManager;
+  private AccessibilityEventSender accessibilityEventSender;
 
   private interface TooltipDrawableFactory {
     TooltipDrawable createTooltipDrawable();
@@ -380,6 +391,12 @@ public class Slider extends View {
     thumbDrawable.setShadowCompatibilityMode(MaterialShapeDrawable.SHADOW_COMPAT_MODE_ALWAYS);
 
     scaledTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
+
+    accessibilityHelper = new AccessibilityHelper();
+    ViewCompat.setAccessibilityDelegate(this, accessibilityHelper);
+
+    accessibilityManager =
+        (AccessibilityManager) getContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
   }
 
   private void loadResources(@NonNull Resources resources) {
@@ -665,7 +682,7 @@ public class Slider extends View {
     focusedThumbIdx = 0;
     updateHaloHotspot();
     createLabelPool();
-    dispatchOnChanged(false);
+    dispatchOnChangedProgramatically();
     invalidate();
   }
 
@@ -763,6 +780,7 @@ public class Slider extends View {
       throw new IllegalArgumentException("index out of range");
     }
     focusedThumbIdx = index;
+    accessibilityHelper.requestKeyboardFocusForVirtualView(focusedThumbIdx);
     postInvalidate();
   }
 
@@ -1275,11 +1293,16 @@ public class Slider extends View {
 
   @Override
   protected void onDetachedFromWindow() {
-    super.onDetachedFromWindow();
+    if (accessibilityEventSender != null) {
+      removeCallbacks(accessibilityEventSender);
+    }
+
     for (TooltipDrawable label : labels) {
       ViewUtils.getContentViewOverlay(this).remove(label);
       label.detachView(ViewUtils.getContentView(this));
     }
+
+    super.onDetachedFromWindow();
   }
 
   @Override
@@ -1637,18 +1660,26 @@ public class Slider extends View {
   }
 
   private boolean snapActiveThumbToValue(float value) {
+    return snapThumbToValue(activeThumbIdx, value);
+  }
+
+  private boolean snapThumbToValue(int idx, float value) {
     // Check if the new value equals a value that was already set.
-    if (value == values.get(activeThumbIdx)) {
+    if (value == values.get(idx)) {
       return false;
     }
 
     // Replace the old value with the new value of the touch position.
-    values.set(activeThumbIdx, value);
+    values.set(idx, value);
     Collections.sort(values);
-    activeThumbIdx = values.indexOf(value);
-    focusedThumbIdx = activeThumbIdx;
+    if (idx == activeThumbIdx) {
+      // Hold on to the active thumb if that's what we're tracking.
+      idx = values.indexOf(value);
+    }
+    activeThumbIdx = idx;
+    focusedThumbIdx = idx;
 
-    dispatchOnChanged(true);
+    dispatchOnChangedFromUser(idx);
     return true;
   }
 
@@ -1691,12 +1722,16 @@ public class Slider extends View {
     setValueForLabel(labelItr.next(), values.get(focusedThumbIdx));
   }
 
-  private void setValueForLabel(TooltipDrawable label, float value) {
+  private String formatValue(float value) {
     if (hasLabelFormatter()) {
-      label.setText(formatter.getFormattedValue(value));
+      return formatter.getFormattedValue(value);
     } else {
-      label.setText(String.format((int) value == value ? "%.0f" : "%.2f", value));
+      return String.format((int) value == value ? "%.0f" : "%.2f", value);
     }
+  }
+
+  private void setValueForLabel(TooltipDrawable label, float value) {
+    label.setText(formatValue(value));
 
     int left =
         trackSidePadding
@@ -1739,16 +1774,20 @@ public class Slider extends View {
     return false;
   }
 
-  private void dispatchOnChanged(boolean fromUser) {
+  private void dispatchOnChangedProgramatically() {
     for (OnChangeListener listener : changeListeners) {
-      if (fromUser) {
-        // If the change is from the user we can send the value of the current touch position.
-        listener.onValueChange(this, values.get(activeThumbIdx), true);
-      } else {
-        for (Float value : values) {
-          listener.onValueChange(this, value, false);
-        }
+      for (Float value : values) {
+        listener.onValueChange(this, value, false);
       }
+    }
+  }
+
+  private void dispatchOnChangedFromUser(int idx) {
+    for (OnChangeListener listener : changeListeners) {
+      listener.onValueChange(this, values.get(idx), true);
+    }
+    if (accessibilityManager != null && accessibilityManager.isEnabled()) {
+      scheduleAccessibilityEventSender(idx);
     }
   }
 
@@ -1919,6 +1958,57 @@ public class Slider extends View {
       for (TooltipDrawable label : labels) {
         ViewUtils.getContentViewOverlay(this).remove(label);
       }
+      accessibilityHelper.requestKeyboardFocusForVirtualView(ExploreByTouchHelper.INVALID_ID);
+    } else {
+      accessibilityHelper.requestKeyboardFocusForVirtualView(focusedThumbIdx);
+    }
+  }
+
+  @NonNull
+  @Override
+  public CharSequence getAccessibilityClassName() {
+    return SeekBar.class.getName();
+  }
+
+  @Override
+  public boolean dispatchHoverEvent(@NonNull MotionEvent event) {
+    return accessibilityHelper.dispatchHoverEvent(event) || super.dispatchHoverEvent(event);
+  }
+
+  @Override
+  public boolean dispatchKeyEvent(@NonNull KeyEvent event) {
+    // We explicitly don't pass the key event to the accessibilityHelper because it doesn't handle
+    // focus correctly in some cases (Such as moving left after moving right a few times).
+    return super.dispatchKeyEvent(event);
+  }
+
+  /**
+   * Schedule a command for sending an accessibility event. </br> Note: A command is used to ensure
+   * that accessibility events are sent at most one in a given time frame to save system resources
+   * while the value changes quickly.
+   */
+  private void scheduleAccessibilityEventSender(int idx) {
+    if (accessibilityEventSender == null) {
+      accessibilityEventSender = new AccessibilityEventSender();
+    } else {
+      removeCallbacks(accessibilityEventSender);
+    }
+    accessibilityEventSender.setVirtualViewId(idx);
+    postDelayed(accessibilityEventSender, TIMEOUT_SEND_ACCESSIBILITY_EVENT);
+  }
+
+  /** Command for sending an accessibility event. */
+  private class AccessibilityEventSender implements Runnable {
+    int virtualViewId = -1;
+
+    void setVirtualViewId(int virtualViewId) {
+      this.virtualViewId = virtualViewId;
+    }
+
+    @Override
+    public void run() {
+      accessibilityHelper.sendEventForVirtualView(
+          virtualViewId, AccessibilityEvent.TYPE_VIEW_SELECTED);
     }
   }
 
@@ -1946,7 +2036,7 @@ public class Slider extends View {
     if (sliderState.hasFocus) {
       requestFocus();
     }
-    dispatchOnChanged(false);
+    dispatchOnChangedProgramatically();
   }
 
   static class SliderState extends BaseSavedState {
@@ -1996,6 +2086,143 @@ public class Slider extends View {
       boolean[] booleans = new boolean[1];
       booleans[0] = hasFocus;
       dest.writeBooleanArray(booleans);
+    }
+  }
+
+  private class AccessibilityHelper extends ExploreByTouchHelper {
+
+    Rect bounds = new Rect();
+
+    AccessibilityHelper() {
+      super(Slider.this);
+    }
+
+    @Override
+    protected int getVirtualViewAt(float x, float y) {
+      for (int i = 0; i < getValues().size(); i++) {
+        updateBoundsForVirturalViewId(i);
+        if (bounds.contains((int) x, (int) y)) {
+          return i;
+        }
+      }
+      return HOST_ID;
+    }
+
+    @Override
+    protected void getVisibleVirtualViews(List<Integer> virtualViewIds) {
+      for (int i = 0; i < getValues().size(); i++) {
+        virtualViewIds.add(i);
+      }
+    }
+
+    @Override
+    protected void onPopulateNodeForVirtualView(
+        int virtualViewId, AccessibilityNodeInfoCompat info) {
+
+      info.addAction(AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_SET_PROGRESS);
+
+      final float value = getValues().get(virtualViewId);
+
+      if (isEnabled()) {
+        if (value > valueFrom) {
+          info.addAction(AccessibilityNodeInfoCompat.ACTION_SCROLL_BACKWARD);
+        }
+        if (value < valueTo) {
+          info.addAction(AccessibilityNodeInfoCompat.ACTION_SCROLL_FORWARD);
+        }
+      }
+
+      info.setRangeInfo(
+          AccessibilityNodeInfoCompat.RangeInfoCompat.obtain(
+              RangeInfoCompat.RANGE_TYPE_FLOAT, valueFrom, valueTo, value));
+
+      info.setClassName(SeekBar.class.getName());
+      StringBuilder contentDescription = new StringBuilder();
+      // Add the content description of the slider.
+      contentDescription.append(getContentDescription());
+      if (contentDescription.length() != 0) {
+        contentDescription.append(",");
+      }
+      // Add the range to the content description.
+      contentDescription.append(
+          getContext()
+              .getString(
+                  R.string.mtrl_slider_range_content_description,
+                  formatValue(getMinimumValue()),
+                  formatValue(getMaximumValue())));
+      info.setContentDescription(contentDescription.toString());
+
+      updateBoundsForVirturalViewId(virtualViewId);
+      info.setBoundsInParent(bounds);
+    }
+
+    private void updateBoundsForVirturalViewId(int virtualViewId) {
+      int x =
+          trackSidePadding + (int) (normalizeValue(getValues().get(virtualViewId)) * trackWidth);
+      int y = calculateTop();
+
+      bounds.set(x - thumbRadius, y - thumbRadius, x + thumbRadius, y + thumbRadius);
+    }
+
+    @Override
+    protected boolean onPerformActionForVirtualView(
+        int virtualViewId, int action, Bundle arguments) {
+      if (!isEnabled()) {
+        return false;
+      }
+
+      switch (action) {
+        case android.R.id.accessibilityActionSetProgress:
+          {
+            if (arguments == null
+                || !arguments.containsKey(
+                    AccessibilityNodeInfoCompat.ACTION_ARGUMENT_PROGRESS_VALUE)) {
+              return false;
+            }
+            float value =
+                arguments.getFloat(AccessibilityNodeInfoCompat.ACTION_ARGUMENT_PROGRESS_VALUE);
+            if (snapThumbToValue(virtualViewId, value)) {
+              updateHaloHotspot();
+              postInvalidate();
+              invalidateVirtualView(virtualViewId);
+              return true;
+            }
+            return false;
+          }
+        case AccessibilityNodeInfoCompat.ACTION_SCROLL_FORWARD:
+        case AccessibilityNodeInfoCompat.ACTION_SCROLL_BACKWARD:
+          {
+            float increment = calculateStepIncrement(20);
+            if (action == AccessibilityNodeInfoCompat.ACTION_SCROLL_BACKWARD) {
+              increment = -increment;
+            }
+
+            // Swap the increment if we're in RTL.
+            if (ViewCompat.getLayoutDirection(Slider.this) == ViewCompat.LAYOUT_DIRECTION_RTL) {
+              increment = -increment;
+            }
+
+            float clamped =
+                MathUtils.clamp(values.get(virtualViewId) + increment, valueFrom, valueTo);
+            if (snapThumbToValue(virtualViewId, clamped)) {
+              updateHaloHotspot();
+              postInvalidate();
+
+              // If the index of the new value has changed, refocus on the correct virtual view.
+              if (values.indexOf(clamped) != virtualViewId) {
+                virtualViewId = values.indexOf(clamped);
+                sendEventForVirtualView(virtualViewId, AccessibilityEvent.TYPE_VIEW_FOCUSED);
+              } else {
+                invalidateVirtualView(virtualViewId);
+              }
+
+              return true;
+            }
+            return false;
+          }
+        default:
+          return false;
+      }
     }
   }
 }
