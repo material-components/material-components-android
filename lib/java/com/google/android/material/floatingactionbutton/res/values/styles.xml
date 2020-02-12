@@ -86,7 +86,6 @@
   </style>
 
   <style name="ShapeAppearanceOverlay.MaterialComponents.ExtendedFloatingActionButton" parent="">
-    <!-- TODO(b/121352029): ExtendedFloatingActionButton adds 1px to the height -->
     <item name="cornerSize">@null</item>
   </style>
 
