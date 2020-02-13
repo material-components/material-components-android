@@ -71,6 +71,7 @@ def srcDirs = [
   'com/google/android/material/theme',
   'com/google/android/material/theme/overlay',
   'com/google/android/material/tooltip',
+  'com/google/android/material/transition',
   'com/google/android/material/transformation',
   'com/google/android/material/typography',
 ]
