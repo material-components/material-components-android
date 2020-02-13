@@ -16,11 +16,14 @@
   -->
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/end_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorSurface"
-    android:transitionName="shared_element_end_root">
+    android:transitionName="shared_element_end_root"
+    tools:targetApi="lollipop"
+    tools:ignore="Overdraw">
 
   <include layout="@layout/cat_transition_list_detail_fragment" />
 </FrameLayout>

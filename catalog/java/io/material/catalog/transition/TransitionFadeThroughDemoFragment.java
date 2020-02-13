@@ -35,7 +35,7 @@ import com.google.android.material.transition.MaterialFadeThrough;
 import io.material.catalog.feature.DemoFragment;
 
 /** A fragment that displays the Fade Through Transition demo for the Catalog app. */
-@TargetApi(VERSION_CODES.KITKAT)
+@TargetApi(VERSION_CODES.LOLLIPOP)
 public class TransitionFadeThroughDemoFragment extends DemoFragment {
 
   private static final SparseIntArray LAYOUT_RES_MAP = new SparseIntArray();

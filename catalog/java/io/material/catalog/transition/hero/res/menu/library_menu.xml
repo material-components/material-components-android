@@ -19,13 +19,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
   <item
       android:id="@+id/item_sort"
-      android:title="Sort"
+      android:title="@string/cat_lib_menu_sort_title"
       android:icon="@drawable/ic_sort_by_alpha_black_24dp"
       app:showAsAction="ifRoom"/>
 
   <item
       android:id="@+id/item_list_type"
-      android:title="Show as list"
+      android:title="@string/cat_lib_menu_list_type_title"
       android:icon="@drawable/ic_view_list_black_24dp"
       app:showAsAction="ifRoom"/>
 </menu>

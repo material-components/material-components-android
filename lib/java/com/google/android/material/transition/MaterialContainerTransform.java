@@ -701,9 +701,9 @@ public class MaterialContainerTransform extends Transition {
       return null;
     }
 
-    View startView = startValues.view;
-    View endView = endValues.view;
-    View drawingView;
+    final View startView = startValues.view;
+    final View endView = endValues.view;
+    final View drawingView;
     View boundingView;
     View drawingBaseView = endView.getParent() != null ? endView : startView;
     if (drawingViewId == drawingBaseView.getId()) {
@@ -731,7 +731,7 @@ public class MaterialContainerTransform extends Transition {
 
     boolean entering = isEntering(startBounds, endBounds);
 
-    TransitionDrawable transitionDrawable =
+    final TransitionDrawable transitionDrawable =
         new TransitionDrawable(
             getPathMotion(),
             startView,

@@ -71,11 +71,11 @@ public class FadeThrough extends Visibility {
   }
 
   private static Animator createFadeThroughAnimator(
-      View view,
-      float startValue,
-      float endValue,
-      @FloatRange(from = 0.0, to = 1.0) float startFraction,
-      @FloatRange(from = 0.0, to = 1.0) float endFraction) {
+      final View view,
+      final float startValue,
+      final float endValue,
+      final @FloatRange(from = 0.0, to = 1.0) float startFraction,
+      final @FloatRange(from = 0.0, to = 1.0) float endFraction) {
     ValueAnimator animator = ValueAnimator.ofFloat(0f, 1f);
     animator.addUpdateListener(
         new AnimatorUpdateListener() {

@@ -16,7 +16,7 @@
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-  <style name="Theme.Catalog.Music" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+  <style name="Theme.Catalog.Music" parent="Theme.MaterialComponents.DayNight.NoActionBar" tools:ignore="UnusedResources">
     <item name="colorSecondary">@color/music_secondary</item>
     <item name="colorOnSecondary">@color/music_on_secondary</item>
 

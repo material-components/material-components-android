@@ -94,7 +94,8 @@ public class TransitionMusicLibraryDemoFragment extends Fragment
   public void onAlbumClicked(View view, Album album) {
     TransitionMusicAlbumDemoFragment fragment =
         TransitionMusicAlbumDemoFragment.newInstance(album.id);
-    getParentFragmentManager()
+
+    getFragmentManager()
         .beginTransaction()
         .addSharedElement(view, ViewCompat.getTransitionName(view))
         // Use add to retain TransitionMusicLibraryDemoFragment and have return transitions run

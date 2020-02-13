@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2019 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,77 +13,77 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/photos_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:clipToPadding="false"
+    android:columnCount="2"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="4dp"
+    android:rowCount="3"
+    tools:targetApi="lollipop">
 
-  <GridLayout
-      android:layout_width="match_parent"
+  <ImageView
+      android:layout_width="0dp"
       android:layout_height="0dp"
-      android:layout_weight="1"
-      android:padding="4dp"
-      android:clipToPadding="false"
-      android:columnCount="2"
-      android:gravity="center_horizontal"
-      android:orientation="vertical"
-      android:rowCount="3">
+      android:layout_rowWeight="1"
+      android:layout_columnWeight="1"
+      android:layout_margin="2dp"
+      android:background="?attr/colorError"
+      android:contentDescription="@string/cat_transition_image_content_desc"
+      app:srcCompat="@drawable/ic_components_24px" />
 
-    <ImageView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_margin="2dp"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
-        android:background="?attr/colorError"
-        app:srcCompat="@drawable/ic_components_24px"/>
+  <ImageView
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:layout_rowWeight="1"
+      android:layout_columnWeight="1"
+      android:layout_margin="2dp"
+      android:background="?attr/colorError"
+      android:contentDescription="@string/cat_transition_image_content_desc"
+      app:srcCompat="@drawable/ic_components_24px" />
 
-    <ImageView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_margin="2dp"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
-        android:background="?attr/colorError"
-        app:srcCompat="@drawable/ic_components_24px"/>
+  <ImageView
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:layout_rowWeight="1"
+      android:layout_columnWeight="1"
+      android:layout_margin="2dp"
+      android:background="?attr/colorError"
+      android:contentDescription="@string/cat_transition_image_content_desc"
+      app:srcCompat="@drawable/ic_components_24px" />
 
-    <ImageView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_margin="2dp"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
-        android:background="?attr/colorError"
-        app:srcCompat="@drawable/ic_components_24px"/>
+  <ImageView
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:layout_rowWeight="1"
+      android:layout_columnWeight="1"
+      android:layout_margin="2dp"
+      android:background="?attr/colorError"
+      android:contentDescription="@string/cat_transition_image_content_desc"
+      app:srcCompat="@drawable/ic_components_24px" />
 
-    <ImageView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_margin="2dp"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
-        android:background="?attr/colorError"
-        app:srcCompat="@drawable/ic_components_24px"/>
+  <ImageView
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:layout_rowWeight="1"
+      android:layout_columnWeight="1"
+      android:layout_margin="2dp"
+      android:background="?attr/colorError"
+      android:contentDescription="@string/cat_transition_image_content_desc"
+      app:srcCompat="@drawable/ic_components_24px" />
 
-    <ImageView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_margin="2dp"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
-        android:background="?attr/colorError"
-        app:srcCompat="@drawable/ic_components_24px"/>
-
-    <ImageView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_margin="2dp"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
-        android:background="?attr/colorError"
-        app:srcCompat="@drawable/ic_components_24px"/>
-  </GridLayout>
-</LinearLayout>
+  <ImageView
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:layout_rowWeight="1"
+      android:layout_columnWeight="1"
+      android:layout_margin="2dp"
+      android:background="?attr/colorError"
+      android:contentDescription="@string/cat_transition_image_content_desc"
+      app:srcCompat="@drawable/ic_components_24px" />
+</GridLayout>

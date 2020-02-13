@@ -14,24 +14,20 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/albums_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
-  <GridLayout
-      android:layout_width="match_parent"
-      android:layout_height="0dp"
-      android:layout_weight="1"
-      android:padding="4dp"
-      android:clipToPadding="false"
-      android:columnCount="2"
-      android:gravity="center_horizontal"
-      android:orientation="vertical"
-      android:rowCount="3">
+    android:padding="4dp"
+    android:clipToPadding="false"
+    android:columnCount="2"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:rowCount="3"
+    tools:targetApi="lollipop">
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="0dp"
@@ -51,6 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="118dp"
             android:background="?attr/colorPrimary"
+            android:contentDescription="@string/cat_transition_image_content_desc"
             app:srcCompat="@drawable/ic_components_24px"/>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -89,6 +86,7 @@
             android:layout_width="match_parent"
             android:layout_height="118dp"
             android:background="?attr/colorPrimary"
+            android:contentDescription="@string/cat_transition_image_content_desc"
             app:srcCompat="@drawable/ic_components_24px"/>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -126,81 +124,7 @@
             android:layout_width="match_parent"
             android:layout_height="118dp"
             android:background="?attr/colorPrimary"
-            app:srcCompat="@drawable/ic_components_24px"/>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="54dp"
-            android:padding="8dp"
-            android:orientation="vertical">
-          <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="@string/cat_transition_fade_through_photo_count"
-              android:textAppearance="?attr/textAppearanceSubtitle2"/>
-          <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="@string/cat_transition_fade_through_photo_count"
-              android:textAppearance="?attr/textAppearanceCaption"/>
-        </LinearLayout>
-      </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_margin="4dp"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
-        android:clickable="true"
-        android:focusable="true"
-        android:minHeight="200dp"
-        android:minWidth="200dp">
-      <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:orientation="vertical">
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="118dp"
-            android:background="?attr/colorPrimary"
-            app:srcCompat="@drawable/ic_components_24px"/>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="54dp"
-            android:padding="8dp"
-            android:orientation="vertical">
-          <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="@string/cat_transition_fade_through_photo_count"
-              android:textAppearance="?attr/textAppearanceSubtitle2"/>
-          <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="@string/cat_transition_fade_through_photo_count"
-              android:textAppearance="?attr/textAppearanceCaption"/>
-        </LinearLayout>
-      </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_margin="4dp"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
-        android:clickable="true"
-        android:focusable="true"
-        android:minHeight="200dp"
-        android:minWidth="200dp">
-      <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:orientation="vertical">
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="118dp"
-            android:background="?attr/colorPrimary"
+            android:contentDescription="@string/cat_transition_image_content_desc"
             app:srcCompat="@drawable/ic_components_24px"/>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -239,6 +163,84 @@
             android:layout_width="match_parent"
             android:layout_height="118dp"
             android:background="?attr/colorPrimary"
+            android:contentDescription="@string/cat_transition_image_content_desc"
+            app:srcCompat="@drawable/ic_components_24px"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="54dp"
+            android:padding="8dp"
+            android:orientation="vertical">
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/cat_transition_fade_through_photo_count"
+              android:textAppearance="?attr/textAppearanceSubtitle2"/>
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/cat_transition_fade_through_photo_count"
+              android:textAppearance="?attr/textAppearanceCaption"/>
+        </LinearLayout>
+      </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="4dp"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"
+        android:clickable="true"
+        android:focusable="true"
+        android:minHeight="200dp"
+        android:minWidth="200dp">
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="118dp"
+            android:background="?attr/colorPrimary"
+            android:contentDescription="@string/cat_transition_image_content_desc"
+            app:srcCompat="@drawable/ic_components_24px"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="54dp"
+            android:padding="8dp"
+            android:orientation="vertical">
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/cat_transition_fade_through_photo_count"
+              android:textAppearance="?attr/textAppearanceSubtitle2"/>
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/cat_transition_fade_through_photo_count"
+              android:textAppearance="?attr/textAppearanceCaption"/>
+        </LinearLayout>
+      </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="4dp"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"
+        android:clickable="true"
+        android:focusable="true"
+        android:minHeight="200dp"
+        android:minWidth="200dp">
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="118dp"
+            android:background="?attr/colorPrimary"
+            android:contentDescription="@string/cat_transition_image_content_desc"
             app:srcCompat="@drawable/ic_components_24px"/>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -260,4 +262,3 @@
     </com.google.android.material.card.MaterialCardView>
 
   </GridLayout>
-</LinearLayout>

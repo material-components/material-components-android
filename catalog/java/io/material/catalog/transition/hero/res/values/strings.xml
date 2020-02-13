@@ -15,16 +15,14 @@
   ~ limitations under the License.
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-  <item
-      android:id="@+id/item_favorite"
-      android:title="@string/cat_album_menu_favorite_title"
-      android:icon="@drawable/ic_favorite_vd_theme_24px"
-      app:showAsAction="ifRoom"/>
+<resources>
+  <string name="cat_album_cover_content_description">Album cover</string>
 
-  <item
-      android:id="@+id/item_share"
-      android:title="@string/cat_album_menu_share_title"
-      app:showAsAction="never"/>
-</menu>
+  <string name="cat_album_menu_favorite_title">Favorite</string>
+  <string name="cat_album_menu_share_title">Share</string>
+
+  <string name="cat_lib_menu_sort_title">Sort</string>
+  <string name="cat_lib_menu_list_type_title">Toggle list type</string>
+
+  <string name="cat_album_duration">52 mins</string>
+</resources>

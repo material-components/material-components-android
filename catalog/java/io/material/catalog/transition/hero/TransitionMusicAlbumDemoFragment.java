@@ -123,7 +123,7 @@ public class TransitionMusicAlbumDemoFragment extends Fragment {
   }
 
   /** An adapter to hold an albums list of tracks. */
-  class TrackAdapter extends ListAdapter<Track, TrackViewHolder> {
+  class TrackAdapter extends ListAdapter<Track, TrackAdapter.TrackViewHolder> {
 
     TrackAdapter() {
       super(Track.DIFF_CALLBACK);

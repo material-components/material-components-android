@@ -45,7 +45,7 @@ class TransitionUtils {
   private TransitionUtils() {}
 
   static ShapeAppearanceModel convertToRelativeCornerSizes(
-      ShapeAppearanceModel shapeAppearanceModel, RectF bounds) {
+      ShapeAppearanceModel shapeAppearanceModel, final RectF bounds) {
     return shapeAppearanceModel.withTransformedCornerSizes(
         new CornerSizeUnaryOperator() {
           @NonNull
@@ -146,11 +146,11 @@ class TransitionUtils {
   static ShapeAppearanceModel lerp(
       ShapeAppearanceModel startValue,
       ShapeAppearanceModel endValue,
-      RectF startBounds,
-      RectF endBounds,
-      @FloatRange(from = 0.0, to = 1.0) float startFraction,
-      @FloatRange(from = 0.0, to = 1.0) float endFraction,
-      @FloatRange(from = 0.0, to = 1.0) float fraction) {
+      final RectF startBounds,
+      final RectF endBounds,
+      final @FloatRange(from = 0.0, to = 1.0) float startFraction,
+      final @FloatRange(from = 0.0, to = 1.0) float endFraction,
+      final @FloatRange(from = 0.0, to = 1.0) float fraction) {
     if (fraction < startFraction) {
       return startValue;
     }

@@ -160,7 +160,7 @@ public class MaterialContainerTransformSharedElementCallback extends SharedEleme
     this.transparentWindowBackgroundEnabled = transparentWindowBackgroundEnabled;
   }
 
-  private void setUpEnterTransform(Window window) {
+  private void setUpEnterTransform(final Window window) {
     Transition transition = window.getSharedElementEnterTransition();
     if (transition instanceof MaterialContainerTransform) {
       MaterialContainerTransform transform = (MaterialContainerTransform) transition;
@@ -185,7 +185,7 @@ public class MaterialContainerTransformSharedElementCallback extends SharedEleme
     }
   }
 
-  private void setUpReturnTransform(Activity activity, Window window) {
+  private void setUpReturnTransform(final Activity activity, final Window window) {
     Transition transition = window.getSharedElementReturnTransition();
     if (transition instanceof MaterialContainerTransform) {
       MaterialContainerTransform transform = (MaterialContainerTransform) transition;

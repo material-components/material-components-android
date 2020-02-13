@@ -15,9 +15,9 @@
   limitations under the License.
   -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-  <string name="cat_toc_transition">Transition</string>
+  <string name="cat_toc_transition" tools:ignore="UnusedResources">Transition</string>
   <string name="cat_transition_title">Transition</string>
   <string name="cat_transition_description">
     Transition choreography is a coordinated sequence of motion that maintains user focus as the interface adapts.
@@ -60,7 +60,6 @@ Phasellus in aliquet mi. Pellentesque habitant morbi tristique senectus et netus
   <string name="cat_transition_config_fade_mode_through">Through</string>
   <string name="cat_transition_config_debug_title">Debug</string>
   <string name="cat_transition_config_draw_debug_checkbox_desc">Draw debugging lines</string>
-  <string name="cat_transition_config_cubic_bezier_curve_value_error">Invalid cubic bezier values</string>
   <string name="cat_transition_config_apply_button_text">Apply</string>
   <string name="cat_transition_config_clear_button_text">Clear</string>
 

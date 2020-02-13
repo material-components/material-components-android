@@ -30,6 +30,7 @@
       android:layout_marginTop="48dp"
       android:alpha="@dimen/material_emphasis_medium"
       android:tint="?attr/colorOnSurface"
+      android:contentDescription="@string/cat_transition_image_content_desc"
       app:srcCompat="@drawable/ic_account_circle_24dp" />
 
   <TextView

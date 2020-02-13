@@ -25,6 +25,9 @@
     android:paddingTop="12dp"
     android:paddingBottom="12dp"
     android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
     android:minHeight="?attr/listPreferredItemHeight"
     android:foreground="?attr/selectableItemBackground"
     android:background="?android:attr/colorBackground">
@@ -44,6 +47,7 @@
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginStart="16dp"
+      android:layout_marginLeft="16dp"
       android:maxLines="1"
       android:ellipsize="end"
       android:textAppearance="?attr/textAppearanceHeadline6"
@@ -59,6 +63,7 @@
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginStart="16dp"
+      android:layout_marginLeft="16dp"
       android:maxLines="1"
       android:ellipsize="end"
       android:textAppearance="?attr/textAppearanceBody2"
@@ -72,8 +77,7 @@
       android:id="@+id/album_duration"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginEnd="16dp"
-      android:text="52 min"
+      android:text="@string/cat_album_duration"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintBaseline_toBaselineOf="@id/album_title"/>
 
