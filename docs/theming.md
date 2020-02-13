@@ -22,6 +22,7 @@ following guides:
 *   [Color Theming](theming/Color.md)
 *   [Typography Theming](theming/Typography.md)
 *   [Shape Theming](theming/Shape.md)
+*   [Motion Theming](theming/Motion.md)
 
 Additionally, take a look at our [Dark Theme](theming/Dark.md) guide for
 information on how to apply the
