@@ -43,6 +43,7 @@ import io.material.catalog.themeswitcher.ThemeSwitcherDialogFragment;
 import io.material.catalog.themeswitcher.ThemeSwitcherResourceProvider;
 import io.material.catalog.topappbar.TopAppBarFragment;
 import io.material.catalog.transformation.TransformationFragment;
+import io.material.catalog.transition.TransitionFragment;
 
 /** The Dagger module for {@link TocFragment} dependencies. */
 @dagger.Module(
@@ -69,6 +70,7 @@ import io.material.catalog.transformation.TransformationFragment;
       TextFieldFragment.Module.class,
       TopAppBarFragment.Module.class,
       TransformationFragment.Module.class,
+      TransitionFragment.Module.class
     })
 public abstract class TocModule {
   @FragmentScope
