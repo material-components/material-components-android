@@ -165,7 +165,7 @@ task generateApiXml(type: Javadoc) {
 
   doLast {
     // Escape incorrect ampersands in API XML file
-    ["sed", "-i", "s/ & / \\&amp; /g", "lib/${apiName}.xml"].execute()
+    ["sed", "-i", "''", "s/ & / \\&amp; /g", "lib/${apiName}.xml"].execute()
   }
 }
 
