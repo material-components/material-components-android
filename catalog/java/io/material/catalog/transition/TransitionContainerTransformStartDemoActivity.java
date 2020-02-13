@@ -52,7 +52,7 @@ public class TransitionContainerTransformStartDemoActivity extends DemoActivity 
 
     super.onCreate(bundle);
 
-    configurationHelper = new ContainerTransformConfigurationHelper();
+    configurationHelper = getContainerTransformConfigurationHelper();
 
     addTransitionableTarget(R.id.start_fab);
     addTransitionableTarget(R.id.single_line_list_item);
@@ -110,5 +110,9 @@ public class TransitionContainerTransformStartDemoActivity extends DemoActivity 
         ActivityOptions.makeSceneTransitionAnimation(
             this, sharedElement, "shared_element_end_root");
     startActivity(intent, options.toBundle());
+  }
+
+  protected ContainerTransformConfigurationHelper getContainerTransformConfigurationHelper() {
+    return new ContainerTransformConfigurationHelper();
   }
 }

@@ -21,6 +21,7 @@ import io.material.catalog.R;
 import android.content.Intent;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
@@ -73,13 +74,13 @@ public class TransitionFragment extends DemoLandingFragment {
         new Demo(R.string.cat_transition_container_transform_activity_title) {
           @Override
           public Intent createActivityIntent() {
-            return new Intent(getContext(), TransitionContainerTransformStartDemoActivity.class);
+            return getTransitionContainerTransformStartDemoActivity();
           }
         },
         new Demo(R.string.cat_transition_container_transform_fragment_title) {
           @Override
           public Fragment createFragment() {
-            return new TransitionContainerTransformDemoFragment();
+            return getTransitionContainerTransformDemoFragment();
           }
         },
         new Demo(R.string.cat_transition_shared_axis_title) {
@@ -100,6 +101,15 @@ public class TransitionFragment extends DemoLandingFragment {
             return new TransitionFadeDemoFragment();
           }
         });
+  }
+
+  @NonNull
+  protected Intent getTransitionContainerTransformStartDemoActivity() {
+    return new Intent(getContext(), TransitionContainerTransformStartDemoActivity.class);
+  }
+
+  protected Fragment getTransitionContainerTransformDemoFragment() {
+    return new TransitionContainerTransformDemoFragment();
   }
 
   /** The Dagger module for {@link TransitionFragment} dependencies. */

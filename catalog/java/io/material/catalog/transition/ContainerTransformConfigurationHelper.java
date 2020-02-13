@@ -51,12 +51,12 @@ import com.google.android.material.transition.MaterialContainerTransform;
  * TransitionContainerTransformDemoFragment}.
  */
 @RequiresApi(VERSION_CODES.LOLLIPOP)
-class ContainerTransformConfigurationHelper {
+public class ContainerTransformConfigurationHelper {
 
   private static final String CUBIC_CONTROL_FORMAT = "%.3f";
   private static final String DURATION_FORMAT = "%.0f";
 
-  private boolean isArcMotionEnabled;
+  protected boolean isArcMotionEnabled;
   private long enterDuration;
   private long returnDuration;
   private Interpolator interpolator;
@@ -72,7 +72,7 @@ class ContainerTransformConfigurationHelper {
     FADE_MODE_MAP.append(R.id.fade_through_button, MaterialContainerTransform.FADE_MODE_THROUGH);
   }
 
-  ContainerTransformConfigurationHelper() {
+  protected ContainerTransformConfigurationHelper() {
     setUpDefaultValues();
   }
 
@@ -133,12 +133,16 @@ class ContainerTransformConfigurationHelper {
   }
 
   private void setUpDefaultValues() {
-    isArcMotionEnabled = false;
+    setDefaultMotionPath();
     enterDuration = 300;
     returnDuration = 275;
     interpolator = new FastOutSlowInInterpolator();
     fadeModeButtonId = R.id.fade_in_button;
     drawDebugEnabled = false;
+  }
+
+  protected void setDefaultMotionPath() {
+    isArcMotionEnabled = false;
   }
 
   /** Create a bottom sheet dialog that displays controls to configure a container transform. */

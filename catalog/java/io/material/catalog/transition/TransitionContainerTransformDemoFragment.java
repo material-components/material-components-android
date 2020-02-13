@@ -46,7 +46,8 @@ public class TransitionContainerTransformDemoFragment extends DemoFragment
   private static final String END_FRAGMENT_TAG = "END_FRAGMENT_TAG";
 
   private final ContainerTransformConfigurationHelper configurationHelper =
-      new ContainerTransformConfigurationHelper();
+      getContainerTransformConfigurationHelper();
+
   private final Hold holdTransition = new Hold();
 
   @Override
@@ -158,5 +159,9 @@ public class TransitionContainerTransformDemoFragment extends DemoFragment
       return true;
     }
     return false;
+  }
+
+  protected ContainerTransformConfigurationHelper getContainerTransformConfigurationHelper() {
+    return new ContainerTransformConfigurationHelper();
   }
 }
