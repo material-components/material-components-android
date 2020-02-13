@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2019 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/photos_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+  <GridLayout
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1"
+      android:padding="4dp"
+      android:clipToPadding="false"
+      android:columnCount="2"
+      android:gravity="center_horizontal"
+      android:orientation="vertical"
+      android:rowCount="3">
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="2dp"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"
+        android:background="?attr/colorError"
+        app:srcCompat="@drawable/ic_components_24px"/>
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="2dp"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"
+        android:background="?attr/colorError"
+        app:srcCompat="@drawable/ic_components_24px"/>
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="2dp"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"
+        android:background="?attr/colorError"
+        app:srcCompat="@drawable/ic_components_24px"/>
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="2dp"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"
+        android:background="?attr/colorError"
+        app:srcCompat="@drawable/ic_components_24px"/>
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="2dp"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"
+        android:background="?attr/colorError"
+        app:srcCompat="@drawable/ic_components_24px"/>
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="2dp"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"
+        android:background="?attr/colorError"
+        app:srcCompat="@drawable/ic_components_24px"/>
+  </GridLayout>
+</LinearLayout>

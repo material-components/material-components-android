@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2020 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:colorBackground">
+
+  <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/song_recycler_view"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="vertical"
+      android:paddingTop="8dp"
+      android:overScrollMode="never"
+      app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+  <com.google.android.material.appbar.AppBarLayout
+      android:id="@+id/app_bar_layout"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+
+    <com.google.android.material.appbar.CollapsingToolbarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+
+      <androidx.constraintlayout.widget.ConstraintLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/album_image"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintDimensionRatio="H,1:1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_play_arrow_black_24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/album_info_container"
+            app:layout_constraintBottom_toTopOf="@id/album_info_container"/>
+
+          <!--Use an Card to have it's background given an elevation overlay -->
+          <!--in dark theme -->
+          <com.google.android.material.card.MaterialCardView
+              android:id="@+id/album_info_container"
+              android:layout_width="match_parent"
+              android:layout_height="196dp"
+              android:visibility="visible"
+              app:cardBackgroundColor="?attr/colorPrimarySurface"
+              app:layout_constraintTop_toBottomOf="@id/album_image"
+              app:layout_constraintStart_toStartOf="parent"
+              app:layout_constraintEnd_toEndOf="parent">
+
+            <LinearLayout
+                android:id="@+id/album_details"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:paddingStart="56dp"
+                android:paddingEnd="16dp"
+                android:gravity="center_vertical">
+
+              <TextView
+                  android:id="@+id/album_title"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:maxLines="1"
+                  android:ellipsize="end"
+                  android:textAppearance="?attr/textAppearanceHeadline3"
+                  android:textColor="?attr/colorOnPrimarySurface"
+                  tools:text="Metamorphosis" />
+              <TextView
+                  android:id="@+id/album_artist"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:maxLines="1"
+                  android:ellipsize="end"
+                  android:textAppearance="?attr/textAppearanceSubtitle1"
+                  android:textColor="?attr/colorOnPrimarySurface"
+                  tools:text="Sandra Adams" />
+
+            </LinearLayout>
+
+          </com.google.android.material.card.MaterialCardView>
+
+      </androidx.constraintlayout.widget.ConstraintLayout>
+
+      <com.google.android.material.appbar.MaterialToolbar
+          style="@style/Widget.MaterialComponents.Toolbar.PrimarySurface"
+          android:id="@+id/toolbar"
+          android:layout_width="match_parent"
+          android:layout_height="?attr/actionBarSize"
+          android:background="@android:color/transparent"
+          app:navigationIcon="@drawable/ic_arrow_back_black_24dp"
+          app:menu="@menu/album_menu"
+          app:layout_collapseMode="pin" />
+
+    </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+  </com.google.android.material.appbar.AppBarLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
