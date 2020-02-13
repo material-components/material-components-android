@@ -38,13 +38,10 @@ public class CatalogApplication extends Application implements HasAndroidInjecto
 
   @Inject DispatchingAndroidInjector<Object> androidInjector;
 
-  static {
-    AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-  }
-
   @Override
   public void onCreate() {
     super.onCreate();
+    AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     if (!overrideApplicationComponent(this)) {
       DaggerCatalogApplicationComponent.builder().application(this).build().inject(this);
     }
