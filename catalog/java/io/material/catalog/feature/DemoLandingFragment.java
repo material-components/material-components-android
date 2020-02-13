@@ -91,8 +91,19 @@ public abstract class DemoLandingFragment extends DaggerFragment {
     ViewGroup additionalDemosContainer =
         view.findViewById(R.id.cat_demo_landing_additional_demos_container);
 
-    descriptionTextView.setText(getDescriptionResId());
+    // Links should be added whether or not the feature is restricted.
     addLinks(layoutInflater, view);
+
+    // If this fragments demos is restricted, due to conditions set by the subclass, exit early
+    // without showing any demos and just show the restricted message.
+    if (isRestricted()) {
+      descriptionTextView.setText(getRestrictedMessageId());
+      mainDemoContainer.setVisibility(View.GONE);
+      additionalDemosSection.setVisibility(View.GONE);
+      return view;
+    }
+
+    descriptionTextView.setText(getDescriptionResId());
     addDemoView(layoutInflater, mainDemoContainer, getMainDemo(), false);
     List<Demo> additionalDemos = getAdditionalDemos();
     for (Demo additionalDemo : additionalDemos) {
@@ -213,6 +224,30 @@ public abstract class DemoLandingFragment extends DaggerFragment {
     }
 
     return super.onOptionsItemSelected(menuItem);
+  }
+
+  /**
+   * Whether or not the feature shown by this fragment should be flagged as restricted.
+   *
+   * Examples of restricted feature could be features which depends on an API level that is
+   * greater than MDCs min sdk version. If overriding this method, you should also override
+   * {@link #getRestrictedMessageId()} and provide information about why the feature is restricted.
+   */
+  public boolean isRestricted() {
+    return false;
+  }
+
+  /**
+   * The message to display if a feature {@link #isRestricted()}.
+   *
+   * This message should provide insight into why the feature is restricted for the device it
+   * is running on. This message will be displayed in the description area of the demo fragment
+   * instead of the the provided {@link #getDescriptionResId()}. Additionally, all demos, both the
+   * main demo and any additional demos will not be shown.
+   */
+  @StringRes
+  public int getRestrictedMessageId() {
+    return 0;
   }
 
   @StringRes
