@@ -604,7 +604,7 @@ not have a strong relationship to each other.
 _Examples of the fade through pattern:_
 
 1.  _Tapping destinations in a bottom navigation bar_
-2.  _Tapping an icon button_
+2.  _Tapping a refresh icon_
 3.  _Tapping an account switcher_
 
 ### Using the fade through pattern
