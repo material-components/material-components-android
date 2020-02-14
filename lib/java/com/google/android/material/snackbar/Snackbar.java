@@ -30,6 +30,7 @@ import android.graphics.PorterDuff;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.annotation.ColorInt;
+import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
@@ -363,6 +364,17 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
     final SnackbarContentLayout contentLayout = (SnackbarContentLayout) view.getChildAt(0);
     final TextView tv = contentLayout.getActionView();
     tv.setTextColor(colors);
+    return this;
+  }
+
+  /**
+   * Sets the max width of the action to be in the same line as the message.
+   * If the width is exceeded the action would go to the next line.
+   */
+  @NonNull
+  public Snackbar setMaxInlineActionWidth(@Dimension int width) {
+    final SnackbarContentLayout contentLayout = (SnackbarContentLayout) view.getChildAt(0);
+    contentLayout.setMaxInlineActionWidth(width);
     return this;
   }
 

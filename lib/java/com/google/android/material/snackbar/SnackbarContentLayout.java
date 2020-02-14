@@ -164,4 +164,8 @@ public class SnackbarContentLayout extends LinearLayout implements ContentViewCa
       actionView.animate().alpha(0f).setDuration(duration).setStartDelay(delay).start();
     }
   }
+
+  public void setMaxInlineActionWidth(int width) {
+    maxInlineActionWidth = width;
+  }
 }
