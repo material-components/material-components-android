@@ -182,12 +182,14 @@ public class MotionSpecTest {
         }
       };
 
+  @Test
   public void inflateInvalidSetOfSetMotionSpec() {
     assertNull(
         MotionSpec.createFromResource(
             activityTestRule.getActivity(), R.animator.invalid_set_of_set_motion_spec));
   }
 
+  @Test
   public void inflateInvalidSetOfValueAnimatorMotionSpec() {
     assertNull(
         MotionSpec.createFromResource(
