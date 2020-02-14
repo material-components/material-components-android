@@ -220,6 +220,7 @@ public class Slider extends View {
   private int haloRadius;
   private int labelPadding;
   private float touchDownX;
+  private MotionEvent lastEvent;
   private LabelFormatter formatter;
   private boolean thumbIsPressed = false;
   private float valueFrom;
@@ -1560,6 +1561,14 @@ public class Slider extends View {
         break;
       case MotionEvent.ACTION_UP:
         thumbIsPressed = false;
+        // We need to handle a tap if the last event was down at the same point.
+        if (lastEvent != null
+            && lastEvent.getActionMasked() == MotionEvent.ACTION_DOWN
+            && lastEvent.getX() == event.getX()
+            && lastEvent.getY() == event.getY()) {
+          pickActiveThumb();
+        }
+
         if (activeThumbIdx != -1) {
           snapTouchPosition();
           activeThumbIdx = -1;
@@ -1576,6 +1585,8 @@ public class Slider extends View {
 
     // Set if the thumb is pressed. This will cause the ripple to be drawn.
     setPressed(thumbIsPressed);
+
+    lastEvent = MotionEvent.obtain(event);
     return true;
   }
 

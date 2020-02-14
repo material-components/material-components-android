@@ -32,12 +32,19 @@ import com.google.android.material.slider.KeyUtils.KeyEventBuilder;
 public class SliderHelper {
   private final LinearLayout container;
   private final Slider slider;
+  private boolean simulateScrollableContainer;
 
   public SliderHelper(Activity activity) {
     slider = new Slider(activity);
 
     // Makes sure getParent() won't return null.
-    container = new LinearLayout(activity);
+    container =
+        new LinearLayout(activity) {
+          @Override
+          public boolean shouldDelayChildPressedState() {
+            return simulateScrollableContainer;
+          }
+        };
     container.setPadding(50, 50, 50, 50);
     container.setOrientation(LinearLayout.VERTICAL);
     // Prevents getContentView() dead loop.
@@ -111,5 +118,9 @@ public class SliderHelper {
 
   static void activateFocusedThumb(Slider s) {
     new KeyEventBuilder(KeyEvent.KEYCODE_DPAD_CENTER).dispatchEvent(s);
+  }
+
+  public void simulateScrollableContainer(boolean isScrollable) {
+    simulateScrollableContainer = isScrollable;
   }
 }

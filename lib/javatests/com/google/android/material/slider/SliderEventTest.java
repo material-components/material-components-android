@@ -20,12 +20,15 @@ import com.google.android.material.R;
 
 import static com.google.android.material.slider.SliderHelper.dragSliderBetweenValues;
 import static com.google.android.material.slider.SliderHelper.touchSliderAtValue;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyFloat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import android.os.SystemClock;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.MotionEvent;
 import androidx.test.core.app.ApplicationProvider;
@@ -161,5 +164,60 @@ public class SliderEventTest {
     // Verifies listener is called once for each value.
     verify(mockOnChangeListener, times(1)).onValueChange(eq(slider), eq(values[0]), eq(false));
     verify(mockOnChangeListener, times(1)).onValueChange(eq(slider), eq(values[1]), eq(false));
+  }
+
+  @Test
+  public void testSliderInScrollingContainer_userPerformsScroll_sliderIsNotUpdated() {
+    helper.addContentView(activity);
+    helper.simulateScrollableContainer(true);
+
+    slider.dispatchTouchEvent(
+        MotionEvent.obtain(
+            SystemClock.uptimeMillis(),
+            SystemClock.uptimeMillis(),
+            MotionEvent.ACTION_DOWN,
+            slider.getWidth() / 2f,
+            0,
+            0));
+    // Swipe halfway down the view.
+    slider.dispatchTouchEvent(
+        MotionEvent.obtain(
+            SystemClock.uptimeMillis(),
+            SystemClock.uptimeMillis(),
+            MotionEvent.ACTION_MOVE,
+            slider.getWidth() / 2f,
+            slider.getHeight() / 4f,
+            0));
+    slider.dispatchTouchEvent(
+        MotionEvent.obtain(
+            SystemClock.uptimeMillis(),
+            SystemClock.uptimeMillis(),
+            MotionEvent.ACTION_MOVE,
+            slider.getWidth() / 2f,
+            slider.getHeight() / 2f,
+            0));
+    slider.dispatchTouchEvent(
+        MotionEvent.obtain(
+            SystemClock.uptimeMillis(),
+            SystemClock.uptimeMillis(),
+            MotionEvent.ACTION_UP,
+            slider.getWidth() / 2f,
+            slider.getHeight() / 2f,
+            0));
+
+    verify(mockOnChangeListener, never()).onValueChange(eq(slider), anyFloat(), anyBoolean());
+  }
+
+  @Test
+  public void testSliderInScrollingContainer_userPerformsTap_sliderIsUpdated() {
+    helper.addContentView(activity);
+    helper.simulateScrollableContainer(true);
+    float value = 40f;
+
+    // Perform tap (UP and DOWN) at the same spot without MOVE.
+    touchSliderAtValue(slider, value, MotionEvent.ACTION_DOWN);
+    touchSliderAtValue(slider, value, MotionEvent.ACTION_UP);
+
+    verify(mockOnChangeListener, times(1)).onValueChange(eq(slider), eq(value), eq(true));
   }
 }
