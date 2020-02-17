@@ -30,6 +30,8 @@
 
     <!-- Whether the layout's floating label functionality is enabled. -->
     <attr name="hintEnabled" format="boolean"/>
+    <!-- Whether the layout's floating label will always float. -->
+    <attr name="hintAlwaysFloat" format="boolean"/>
     <!-- Whether to animate hint state changes. -->
     <attr name="hintAnimationEnabled" format="boolean"/>
     <!-- TextAppearance of the hint in the collapsed floating label. -->
