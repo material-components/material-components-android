@@ -1330,9 +1330,9 @@ public class TextInputLayout extends LinearLayout {
       collapsingTextHelper.setCollapsedTextColor(focusedTextColor);
     } // If none of these states apply, leave the expanded and collapsed colors as they are.
 
-    if (hasText || (isEnabled() && (hasFocus || errorShouldBeShown || hintAlwaysFloat))) {
+    if (hasText || hintAlwaysFloat || (isEnabled() && (hasFocus || errorShouldBeShown))) {
       // We should be showing the label so do so if it isn't already
-      if (force || hintAlwaysFloat || hintExpanded) {
+      if (force || hintExpanded) {
         collapseHint(animate);
       }
     } else {
