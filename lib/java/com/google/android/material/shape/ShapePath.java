@@ -20,7 +20,9 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Path;
 import android.graphics.RectF;
+import android.os.Build.VERSION_CODES;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import com.google.android.material.shadow.ShadowRenderer;
 import java.util.ArrayList;
 import java.util.List;
@@ -143,11 +145,15 @@ public class ShapePath {
   /**
    * Add a quad to the ShapePath.
    *
+   * <p>Note: This operation will not draw compatibility shadows. This means no shadow will be drawn
+   * on API < 21 and a shadow will only be drawn on API < 29 if the final path is convex.
+   *
    * @param controlX the control point x of the arc.
    * @param controlY the control point y of the arc.
    * @param toX the end x of the arc.
    * @param toY the end y of the arc.
    */
+  @RequiresApi(VERSION_CODES.LOLLIPOP)
   public void quadToPoint(float controlX, float controlY, float toX, float toY) {
     PathQuadOperation operation = new PathQuadOperation();
     operation.setControlX(controlX);
