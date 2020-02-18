@@ -64,7 +64,16 @@
     <activity
       android:name=".card.CardSelectionModeActivity"
       android:exported="true"/>
-
+    <activity
+      android:name=".transition.hero.TransitionMusicDemoActivity"
+      android:exported="false"
+      android:theme="@style/Theme.Catalog.Music"/>
+    <activity
+      android:name=".transition.TransitionContainerTransformStartDemoActivity"
+      android:exported="false"/>
+    <activity
+      android:name=".transition.TransitionContainerTransformEndDemoActivity"
+      android:exported="false"/>
   </application>
 
 </manifest>

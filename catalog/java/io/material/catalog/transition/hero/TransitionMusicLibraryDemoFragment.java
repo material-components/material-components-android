@@ -98,14 +98,8 @@ public class TransitionMusicLibraryDemoFragment extends Fragment
     getFragmentManager()
         .beginTransaction()
         .addSharedElement(view, ViewCompat.getTransitionName(view))
-        // Use add to retain TransitionMusicLibraryDemoFragment and have return transitions run
-        // with proper scroll position.
-        .add(R.id.fragment_container, fragment, TransitionMusicAlbumDemoFragment.TAG)
+        .replace(R.id.fragment_container, fragment, TransitionMusicAlbumDemoFragment.TAG)
         .addToBackStack(TransitionMusicAlbumDemoFragment.TAG)
-        .setReorderingAllowed(true)
-        // Hiding the current Fragment causes the SharedElementTransition to be triggered even
-        // though nothing is being replaced/removed.
-        .hide(this)
         .commit();
   }
 
