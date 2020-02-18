@@ -30,11 +30,14 @@ import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.CalendarConstraints;
+import com.google.android.material.datepicker.CompositeDateValidator;
 import com.google.android.material.datepicker.DateValidatorPointForward;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.snackbar.Snackbar;
 import io.material.catalog.feature.DemoFragment;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.TimeZone;
 
 /** A fragment that displays the main Picker demos for the Catalog app. */
@@ -190,6 +193,16 @@ public class DatePickerMainDemoFragment extends DemoFragment {
       constraintsBuilder.setValidator(DateValidatorPointForward.now());
     } else if (validationChoice == R.id.cat_picker_validation_weekdays) {
       constraintsBuilder.setValidator(new DateValidatorWeekdays());
+    } else if ((validationChoice == R.id.cat_picker_validation_last_two_weeks)) {
+      Calendar lowerBoundCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+      lowerBoundCalendar.add(Calendar.DAY_OF_MONTH, -14);
+      long lowerBound = lowerBoundCalendar.getTimeInMillis();
+
+      List<CalendarConstraints.DateValidator> validators = new ArrayList<>();
+      validators.add(DateValidatorPointForward.from(lowerBound));
+      validators.add(new DateValidatorWeekdays());
+
+      constraintsBuilder.setValidator(CompositeDateValidator.allOf(validators));
     }
     return constraintsBuilder;
   }
