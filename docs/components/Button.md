@@ -611,7 +611,6 @@ and affects other components):
     ...
     <item name="colorPrimary">@color/shrine_pink_100</item>
     <item name="colorOnPrimary">@color/shrine_pink_900</item>
-    <item name="colorOnSurface">@color/shrine_pink_900</item>
     <item name="textAppearanceButton">@style/TextAppearance.App.Button</item>
     <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.App.SmallComponent</item>
 </style>
@@ -627,13 +626,27 @@ and affects other components):
 </style>
 ```
 
-or using default style theme attributes, styles and a theme overlay (themes all
+or using default style theme attributes, styles and theme overlays (themes all
 buttons but does not affect other components):
 
 ```xml
 <style name="Theme.App" parent="Theme.MaterialComponents.*">
     ...
+    <item name="borderlessButtonStyle">@style/Widget.App.Button.TextButton</item>
+    <item name="materialButtonOutlinedStyle">@style/Widget.App.Button.OutlinedButton</item>
     <item name="materialButtonStyle">@style/Widget.App.Button</item>
+</style>
+
+<style name="Widget.App.Button.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
+    <item name="materialThemeOverlay">@style/ThemeOverlay.App.Button.TextButton</item>
+    <item name="android:textAppearance">@style/TextAppearance.App.Button</item>
+    <item name="shapeAppearance">@style/ShapeAppearance.App.SmallComponent</item>
+</style>
+
+<style name="Widget.App.Button.OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+    <item name="materialThemeOverlay">@style/ThemeOverlay.App.Button.TextButton</item>
+    <item name="android:textAppearance">@style/TextAppearance.App.Button</item>
+    <item name="shapeAppearance">@style/ShapeAppearance.App.SmallComponent</item>
 </style>
 
 <style name="Widget.App.Button" parent="Widget.MaterialComponents.Button">
@@ -642,10 +655,13 @@ buttons but does not affect other components):
     <item name="shapeAppearance">@style/ShapeAppearance.App.SmallComponent</item>
 </style>
 
+<style name="ThemeOverlay.App.Button.TextButton" parent="">
+    <item name="colorPrimary">@color/shrine_pink_900</item>
+</style>
+
 <style name="ThemeOverlay.App.Button" parent="">
     <item name="colorPrimary">@color/shrine_pink_100</item>
     <item name="colorOnPrimary">@color/shrine_pink_900</item>
-    <item name="colorOnSurface">@color/shrine_pink_900</item>
 </style>
 ```
 
