@@ -4,7 +4,7 @@ layout: detail
 section: theming
 excerpt: "Transition between UI elements to help users understand and navigate an app."
 latest_update: "February 11, 2020"
-path: /theming/motion
+path: /theming/motion/
 -->
 
 # Motion
