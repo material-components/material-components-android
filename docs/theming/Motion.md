@@ -64,9 +64,8 @@ Android structures including Fragments, Activities and Views.
 
 ### Container transform examples
 
-<details>
-<summary><b>Transition between Fragments</b></summary>
-<br>
+#### Transition between Fragments
+
 In Fragment A and Fragment B's layouts, identify the start and end Views (as described in the [container transform overview](#material-container-transform)) which will be shared. Add a matching `transitionName` to each of these Views.
 
 ```xml
@@ -143,11 +142,8 @@ fun onCreate(savedInstanceState:  Bundle?) {
   exitTransition =  Hold()
 }
 ```
-</details>
 
-<details>
-<summary><b>Transition between Activities</b></summary>
-<br>
+#### Transition between Activities
 
 In Activity A’s layout, identify the start View to be used as the “shared element” as described in the [container transform overview](#material-container-transform). Give the start view a `transitionName`.
 
@@ -220,11 +216,7 @@ val options =  ActivityOptions.makeSceneTransitionAnimation(
 startActivity(intent, options.toBundle());
 ```
 
-</details>
-
-<details>
-<summary><b>Transition between Views</b></summary>
-<br>
+#### Transition between Views
 
 In the Activity or Fragment where you are transitioning between two views, trigger a `MaterialContainerTransform` by manually setting the transition’s start and end `View`s.
 
@@ -250,27 +242,20 @@ bottomToolbar.visibility =  View.VISIBLE
 ```
 
 This will perform a container transform from the start view transitioning to the end view. To return, set up the same transform, switching the start and end Views and undoing any property changes (setting the FAB back to `View.VISIBLE` and the `bottomToolbar` back to `View.GONE`) done by the first transform.
-</details>
 
 ### Customization
 
 While the out-of-the-box container transform should work in most cases, you can manually set the following properties on `MaterialContainerTransform` to customize the look and feel of the animation:
 
-<details>
-<summary><b>Container transform</b> attributes</summary>
-<!--  Todo: Update this table with links to source where listing defaults is too lengthy (thresholds) -->
+#### Container transform attributes<
 
-<br>
+<!--  Todo: Update this table with links to source where listing defaults is too lengthy (thresholds) -->
 
 &nbsp;         | Attribute                | Related method(s)                 | Default value
 -------------- | ------------------------ | --------------------------------- | -------------
 **Shape** | `transitionShapeAppearance`           | `getStartShapeAppearanceModel`<br/>`setStartShapeAppearanceModel`<br/>`getEndShapeAppearanceModel`<br/>`setEndShapeAppearanceModel`          | `null`
 
-</details>
-
-<details>
-<summary><b>Container transform</b> properties</summary>
-<br>
+#### Container transform properties
 
 &nbsp;         | Related method(s)                 | Default value
 -------------- |  --------------------------------- | -------------
@@ -294,7 +279,6 @@ has a different default value depending on whether or not the transition is
 entering or returning._
 
 _When you manually set any of the above properties, the value set will be used when the transition is both entering and returning (including when an enter transition is being re-used due to no return being set). If you need to manually set properties which differ depending on whether or not the transition is entering or returning, create two `MaterialContainerTransforms` and set both the `sharedElementEnterTransition` and `sharedElementReturnTransition`._
-</details>
 
 <br><br>
 
@@ -325,7 +309,7 @@ be changing in visibility or to be added or removed to trigger its animation.
 direction. Below are the directions in which a `MaterialSharedAxis` will move
 for both the forward and backward directions along each axis.
 
-<summary><b>Shared axis</b> direction</summary>
+#### Shared axis direction
 
 Axis  | Forward           | Backward
 ----- | ----------------- | ------------------
@@ -338,9 +322,7 @@ Android structures including Fragments, Activities and Views.
 
 ### Shared axis examples
 
-<details>
-<summary><b>Transition between Fragments</b></summary>
-<br>
+#### Transition between Fragments
 
 In the following example, we’re creating a shared axis Z transition between
 FragmentA and FragmentB. Moving from FragmentA to FragmentB should be a
@@ -404,11 +386,8 @@ and Fragment B. Changing the axis to `MaterialSharedAxis.X` or
 respective axis. Alternatively, try replacing `MaterialSharedAxis` with a
 `MaterialFadeThrough` for a transition between destinations or layouts that are
 _not_ spatially related.
-</details>
 
-<details>
-<summary><b>Transition between Activities</b></summary>
-<br>
+#### Transition between Activities
 
 Enable Activity transitions by either setting
 `android:windowActivityTransitions` to true in your theme or enabling them on an
@@ -507,11 +486,7 @@ like your normally would.
 startActivity(Intent(this,  ActivityB::class.java));
 ```
 
-</details>
-
-<details>
-<summary><b>Transition between Views</b></summary>
-<br>
+#### Transition between Views
 
 In your Activity or Fragment’s layout, identify the two views which will be
 “swapped”. The outgoing View should be added to the layout and visible. The
@@ -535,7 +510,6 @@ This will transition between your outgoing and incoming Views with a shared axis
 transition. To reverse the animation, set up a new shared axis in the opposite
 direction and set your outgoing View back to `View.VISIBLE` and your incoming
 View back to `View.GONE`.
-</details>
 
 ### Customization
 
@@ -545,10 +519,7 @@ any `MaterialTransitionSet`, the secondary transition can either be modified or
 replaced using `MaterialTransitionSet.getSecondaryTransition` and
 `MaterialTransitionSet.setSecondaryTransition`.
 
-<details>
-<summary><b>Shared axis</b> composition</summary>
-
-<br>
+#### Shared axis composition
 
 | &nbsp;                 | Primary transition         | Secondary transition |
 | ---------------------- | -------------------------- | -------------------- |
@@ -557,14 +528,12 @@ replaced using `MaterialTransitionSet.getSecondaryTransition` and
 :                        : `SlideDistance`<br>**Z** - :                      :
 :                        : `Scale`                    :                      :
 
-</details>
 
 This allows the tweaking of shared axis to create “variants” as mentioned in the
 Material Motion spec. <!-- Todo: Add Link to spec article -->
 
-<details>
-<summary><b>Shared axis</b> fade variant</summary>
-<br>
+#### Shared axis fade variant
+
 The following is a `MaterialSharedAxis` Z transition between Activities which fades
 Activity B in and over Activity A while leaving Activity A’s alpha unchanged can
 be accomplished by removing the secondary `FadeThrough` transition from Activity
@@ -591,7 +560,6 @@ override fun onCreate(savedInstanceState:  Bundle?) {
 }
 ```
 
-</details>
 
 <br><br>
 
@@ -620,9 +588,7 @@ structures including Fragments, Activities and Views.
 
 ### Fade through examples
 
-<details>
-<summary><b>Transition between Fragments</b></summary>
-<br>
+#### Transition between Fragments
 
 In Fragment A, configure an exit `MaterialFadeThrough` transition and in
 Fragment B configure an enter `MaterialFadeThrough` transition. Both of these
@@ -664,11 +630,7 @@ supportFragmentManager
   .commit();
 ```
 
-</details>
-
-<details>
-<summary><b>Transition between Activities</b></summary>
-<br>
+#### Transition between Activities
 
 Enable Activity transitions by either setting
 `android:windowActivityTransitions` to true in your theme or enabling them on an
@@ -765,11 +727,7 @@ your normally would.
 startActivity(Intent(this,  ActivityB::class.java));
 ```
 
-</details>
-
-<details>
-<summary><b>Transition between Views</b></summary>
-<br>
+#### Transition between Views
 
 In your Activity or Fragment’s layout, identify the two Views which will be
 “swapped”. The outgoing View should be added to the layout and visible. The
@@ -792,7 +750,6 @@ This will transition between your outgoing and incoming Views with a fade
 through transition. To reverse the animation, follow the same steps, setting
 your outgoing View back to `View.VISIBLE` and your incoming View back to
 `View.GONE`.
-</details>
 
 ### Customization
 
@@ -802,23 +759,18 @@ any `MaterialTransitionSet`, the secondary transition can either be modified or
 replaced using `MaterialTransitionSet.getSecondaryTransition` and
 `MaterialTransitionSet.setSecondaryTransition`.
 
-<details>
-<summary><b>Fade through</b> composition</summary>
-
-<br>
+#### Fade through composition
 
 &nbsp;                  | Primary transition | Secondary transition
 ----------------------- | ------------------ | --------------------
 **MaterialFadeThrough** | `FadeThrough`      | `Scale`
 
-</details>
 
 This allows the tweaking of fade through to create “variants” as mentioned in
 the Material Motion design spec. <!-- Todo: Add Link to spec article -->
 
-<details>
-<summary><b>Fade through</b> slide variant</summary>
-<br>
+#### Fade through slide variant
+
 The below will create a fade through between Fragments which fades
 Fragment A out (without a scale) and fades Fragment B in with a _slide_ instead
 of a scale.
@@ -848,8 +800,6 @@ override fun onCreate(savedInstanceState: Bundle?) {
 }
 ```
 
-</details>
-
 <br><br>
 
 ## Fade
@@ -875,9 +825,7 @@ visibility or to be added or removed to trigger its animation.
 
 ### Fade examples
 
-<details>
-<summary><b>Transition a View</b></summary>
-<br>
+#### Transition a View
 
 In your Activity or Fragment, toggle the visibility of your target View, in this
 case a Floating Action Button, using a `MaterialFade` to animate the change.
@@ -909,7 +857,6 @@ hideButton.setOnClickListener {
 }
 ```
 
-</details>
 
 ### Customization
 
@@ -919,16 +866,12 @@ any `MaterialTransitionSet`, the secondary transition can either be modified or
 replaced using `MaterialTransitionSet.getSecondaryTransition` and
 `MaterialTransitionSet.setSecondaryTransition`.
 
-<details>
-<summary><b>Fade</b> composition</summary>
-
-<br>
+#### Fade composition
 
 &nbsp;           | Primary transition | Secondary transition
 ---------------- | ------------------ | --------------------
 **MaterialFade** | `Fade`             | `Scale`
 
-</details>
 
 This allows the tweaking of fade to create “variants” as mentioned in the
 Material Motion design spec. <!-- Todo: Add Link to spec article -->
