@@ -56,6 +56,7 @@ import androidx.annotation.StyleRes;
 import androidx.core.graphics.drawable.TintAwareDrawable;
 import androidx.core.util.ObjectsCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.elevation.ElevationOverlayProvider;
 import com.google.android.material.shadow.ShadowRenderer;
@@ -64,12 +65,15 @@ import com.google.android.material.shape.ShapeAppearancePathProvider.PathListene
 import com.google.android.material.shape.ShapePath.ShadowCompatOperation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.BitSet;
 
 /**
  * Base drawable class for Material Shapes that handles shadows, elevation, scale and color for a
  * generated path.
  */
 public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable, Shapeable {
+
+  private static final String TAG = MaterialShapeDrawable.class.getSimpleName();
 
   private static final float SHADOW_RADIUS_MULTIPLIER = .75f;
 
@@ -108,6 +112,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   // Inter-method state.
   private final ShadowCompatOperation[] cornerShadowOperation = new ShadowCompatOperation[4];
   private final ShadowCompatOperation[] edgeShadowOperation = new ShadowCompatOperation[4];
+  private final BitSet containsIncompatibleShadowOp = new BitSet(8);
   private boolean pathDirty;
 
   // Pre-allocated objects that are re-used several times during path computation and rendering.
@@ -204,11 +209,13 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
           @Override
           public void onCornerPathCreated(
               @NonNull ShapePath cornerPath, Matrix transform, int count) {
+            containsIncompatibleShadowOp.set(count, cornerPath.containsIncompatibleShadowOp());
             cornerShadowOperation[count] = cornerPath.createShadowCompatOperation(transform);
           }
 
           @Override
           public void onEdgePathCreated(@NonNull ShapePath edgePath, Matrix transform, int count) {
+            containsIncompatibleShadowOp.set(count + 4, edgePath.containsIncompatibleShadowOp());
             edgeShadowOperation[count] = edgePath.createShadowCompatOperation(transform);
           }
         };
@@ -1067,6 +1074,12 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * completely covered by the shape.
    */
   private void drawCompatShadow(@NonNull Canvas canvas) {
+    if (containsIncompatibleShadowOp.cardinality() > 0) {
+      Log.w(
+          TAG,
+          "Compatibility shadow requested but can't be drawn for all operations in this shape.");
+    }
+
     if (drawableState.shadowCompatOffset != 0) {
       canvas.drawPath(path, shadowRenderer.getShadowPaint());
     }

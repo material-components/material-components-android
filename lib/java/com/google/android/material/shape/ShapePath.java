@@ -89,6 +89,7 @@ public class ShapePath {
 
   private final List<PathOperation> operations = new ArrayList<>();
   private final List<ShadowCompatOperation> shadowCompatOperations = new ArrayList<>();
+  private boolean containsIncompatibleShadowOp;
 
   public ShapePath() {
     reset(0, 0);
@@ -116,6 +117,7 @@ public class ShapePath {
     setEndShadowAngle((shadowStartAngle + shadowSweepAngle) % 360);
     this.operations.clear();
     this.shadowCompatOperations.clear();
+    this.containsIncompatibleShadowOp = false;
   }
 
   /**
@@ -162,6 +164,8 @@ public class ShapePath {
     operation.setEndY(toY);
     operations.add(operation);
 
+    containsIncompatibleShadowOp = true;
+
     setEndX(toX);
     setEndY(toY);
   }
@@ -185,6 +189,8 @@ public class ShapePath {
     PathCubicOperation operation =
         new PathCubicOperation(controlX1, controlY1, controlX2, controlY2, toX, toY);
     operations.add(operation);
+
+    containsIncompatibleShadowOp = true;
 
     setEndX(toX);
     setEndY(toY);
@@ -268,6 +274,14 @@ public class ShapePath {
     addConnectingShadowIfNecessary(startShadowAngle);
     shadowCompatOperations.add(shadowOperation);
     setCurrentShadowAngle(endShadowAngle);
+  }
+
+  /**
+   * Hint to let {@link MaterialShapeDrawable} know that it won't be rendering the shadow correctly
+   * if it's drawing the compat shadow.
+   */
+  boolean containsIncompatibleShadowOp() {
+    return containsIncompatibleShadowOp;
   }
 
   /**
