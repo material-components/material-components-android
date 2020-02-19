@@ -4,7 +4,7 @@ layout: detail
 section: components
 excerpt: "A customizable button component with updated visual styles."
 iconId: materialbutton
-path: /catalog/material-button/
+path: /catalog/buttons/
 -->
 
 # Buttons
