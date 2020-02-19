@@ -26,6 +26,8 @@
     <b>Transitions are only supported on API level 21 and up.</b>\n\nTransition choreography is a coordinated sequence of motion that maintains user focus as the interface adapts.
   </string>
 
+  <string name="cat_transition_container_transform_activity_title">Container Transform (Activity)</string>
+
   <string name="cat_transition_container_transform_fragment_title">Container Transform (Fragment)</string>
   <string name="cat_transition_card_title">Title</string>
   <string name="cat_transition_lorem_ipsum" translatable="false">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris volutpat, dolor id interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus dui nec risus. Maecenas non sodales nisi, vel dictum dolor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse blandit eleifend diam, vel rutrum tellus vulputate quis. Aliquam eget libero aliquet, imperdiet nisl a, ornare ex. Sed rhoncus est ut libero porta lobortis. Fusce in dictum tellus.\n\n
@@ -37,7 +39,7 @@ Phasellus in aliquet mi. Pellentesque habitant morbi tristique senectus et netus
   <string name="cat_transition_body_content_desc">Sample body text</string>
   <string name="cat_transition_image_content_desc">Sample header image</string>
 
-  <string name="cat_transition_container_transform_activity_title">Container Transform (Activity)</string>
+  <string name="cat_transition_container_transform_view_title">Container Transform (View)</string>
 
   <string name="cat_transition_config_menu_item_title">Configure transition</string>
   <string name="cat_transition_config_path_motion_title">Path motion</string>

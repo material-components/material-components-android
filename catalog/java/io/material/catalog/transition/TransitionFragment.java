@@ -83,6 +83,12 @@ public class TransitionFragment extends DemoLandingFragment {
             return getTransitionContainerTransformDemoFragment();
           }
         },
+        new Demo(R.string.cat_transition_container_transform_view_title) {
+          @Override
+          public Fragment createFragment() {
+            return new TransitionContainerTransformViewDemoFragment();
+          }
+        },
         new Demo(R.string.cat_transition_shared_axis_title) {
           @Override
           public Fragment createFragment() {
