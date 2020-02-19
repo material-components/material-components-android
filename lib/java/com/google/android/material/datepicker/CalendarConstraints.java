@@ -167,6 +167,21 @@ public final class CalendarConstraints implements Parcelable {
     dest.writeParcelable(validator, /* parcelableFlags = */ 0);
   }
 
+  /**
+   * Returns the given month if it's within the constraints or the closest bound if it's outside.
+   */
+  Month clamp(Month month) {
+    if (month.compareTo(start) < 0) {
+      return start;
+    }
+
+    if (month.compareTo(end) > 0) {
+      return end;
+    }
+
+    return month;
+  }
+
   /** Builder for {@link com.google.android.material.datepicker.CalendarConstraints}. */
   public static final class Builder {
 
