@@ -467,12 +467,12 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     return rectF;
   }
 
-  /** Updates the corners for the given {@link cornerSize}. */
+  /** Updates the corners for the given {@link CornerSize}. */
   public void setCornerSize(float cornerSize) {
     setShapeAppearanceModel(drawableState.shapeAppearanceModel.withCornerSize(cornerSize));
   }
 
-  /** Updates the corners for the given {@link cornerSize}. */
+  /** Updates the corners for the given {@link CornerSize}. */
   public void setCornerSize(@NonNull CornerSize cornerSize) {
     setShapeAppearanceModel(drawableState.shapeAppearanceModel.withCornerSize(cornerSize));
   }
@@ -1028,7 +1028,9 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
       @NonNull ShapeAppearanceModel shapeAppearanceModel,
       @NonNull RectF bounds) {
     if (shapeAppearanceModel.isRoundRect(bounds)) {
-      float cornerSize = shapeAppearanceModel.getTopRightCornerSize().getCornerSize(bounds);
+      float cornerSize =
+          shapeAppearanceModel.getTopRightCornerSize().getCornerSize(bounds)
+              * drawableState.interpolation;
       canvas.drawRoundRect(bounds, cornerSize, cornerSize, paint);
     } else {
       canvas.drawPath(path, paint);
@@ -1171,7 +1173,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     }
 
     if (isRoundRect()) {
-      float radius = getTopLeftCornerResolvedSize();
+      float radius = getTopLeftCornerResolvedSize() * drawableState.interpolation;
       outline.setRoundRect(getBounds(), radius);
       return;
     }
