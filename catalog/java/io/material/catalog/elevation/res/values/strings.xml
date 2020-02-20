@@ -23,14 +23,14 @@
     depicted (by default) using shadows. This demo illustrates the proper rendering of shadows at
     different elevations.
     </string>
-  <string name="cat_elevation_overlay_title" translatable="false">Elevation Overlay Demo</string>
-  <string name="cat_elevation_animation_title" translatable="false">Elevation Animation Demo</string>
-  <string name="cat_increase_elevation">Increase Elevation</string>
-  <string name="cat_decrease_elevation">Decrease Elevation</string>
-  <string name="cat_elevation_fragment_level" translatable="false">"Elevation Spec: %1$ddp."</string>
+  <string name="cat_elevation_overlay_title">Elevation Overlay Demo</string>
+  <string name="cat_elevation_animation_title">Elevation Animation Demo</string>
+  <string name="cat_elevation_increase_elevation">Increase Elevation</string>
+  <string name="cat_elevation_decrease_elevation">Decrease Elevation</string>
+  <string name="cat_elevation_fragment_level">"Elevation: %1$ddp."</string>
   <string name="cat_elevation_explanation">On Android, the rendering of elevation and shadows
     changes visually depending on a component\'s position on the screen. Note components toward the
     top of the visual field have more defined anterior shadows, while latter elements have more
     pronounced shadows at the base.</string>
-  <string name="cat_elevation_animation_label" translatable="false">Animating translationZ from 0 to %ddp.</string>
+  <string name="cat_elevation_animation_label">Animating translationZ from 0 to %ddp.</string>
 </resources>
