@@ -523,10 +523,8 @@ replaced using `MaterialTransitionSet.getSecondaryTransition` and
 
 | &nbsp;                 | Primary transition         | Secondary transition |
 | ---------------------- | -------------------------- | -------------------- |
-| **MaterialSharedAxis** | **X** -                    | `FadeThrough`        |
-:                        : `SlideDistance`<br>**Y** - :                      :
-:                        : `SlideDistance`<br>**Z** - :                      :
-:                        : `Scale`                    :                      :
+| **MaterialSharedAxis** |  **X** -`SlideDistance`<br> **Y** -`SlideDistance`<br> **Z** -`Scale` | `FadeThrough`        |
+
 
 
 This allows the tweaking of shared axis to create “variants” as mentioned in the
