@@ -130,7 +130,7 @@ public class TransitionFragment extends DemoLandingFragment {
     @Provides
     @ActivityScope
     static FeatureDemo provideFeatureDemo() {
-      return new FeatureDemo(R.string.cat_transition_title, R.drawable.ic_shape) {
+      return new FeatureDemo(R.string.cat_transition_title, R.drawable.ic_transition) {
         @Override
         public Fragment createFragment() {
           return new TransitionFragment();

@@ -63,9 +63,7 @@ public class TransformationFragment extends DemoLandingFragment {
     @Provides
     @ActivityScope
     static FeatureDemo provideFeatureDemo() {
-      return new FeatureDemo(
-          R.string.cat_transformation_title,
-          R.drawable.ic_transformation) {
+      return new FeatureDemo(R.string.cat_transformation_title, R.drawable.ic_transition) {
         @Override
         public Fragment createFragment() {
           return new TransformationFragment();
