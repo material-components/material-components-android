@@ -77,8 +77,7 @@ public boolean showMenu(View anchor) {
 The Exposed Dropdown Menu is implemented via the use of the `TextInputLayout`.
 For detailed information on how
 [Material text fields](https://material.io/design/components/text-fields.html)
-work, see the
-[TextInputLayout documentation](TextInputLayout.md).
+work, see the [TextInputLayout documentation](TextField.md).
 
 ### Usage
 

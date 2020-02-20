@@ -195,7 +195,7 @@ Take a look at our [documentation](https://www.material.io/components/android)
 for the full list of available Material components. Each component's page has
 specific instructions on how to implement it in your app.
 
-Let's use [text fields](components/TextInputLayout.md) as an example.
+Let's use [text fields](components/TextField.md) as an example.
 
 #### **Implementing a text field via XML**
 
