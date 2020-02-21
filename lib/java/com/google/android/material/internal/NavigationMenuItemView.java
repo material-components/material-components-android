@@ -105,6 +105,7 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
   @Override
   public void initialize(@NonNull MenuItemImpl itemData, int menuType) {
     this.itemData = itemData;
+    setId(itemData.getItemId());
 
     setVisibility(itemData.isVisible() ? VISIBLE : GONE);
 
