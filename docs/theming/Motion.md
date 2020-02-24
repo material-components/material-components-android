@@ -190,11 +190,17 @@ override  fun onCreate(bundle: Bundle) {
 
   // Attach a callback used to receive the shared elements from Activity A to be
   // used by the container transform transition.
-  enterSharedElementCallback = MaterialContainerTransformSharedElementCallback()
+  setEnterSharedElementCallback(MaterialContainerTransformSharedElementCallback())
 
   // Set this Activity’s enter and return transition to a MaterialContainerTransform
-  window.sharedElementEnterTransition = MaterialContainerTransform(this)
-  window.sharedElementReturnTransition = MaterialContainerTransform(this)
+  window.sharedElementEnterTransition = MaterialContainerTransform(this).apply {
+    addTarget(android.R.id.content)
+    duration = 300L
+  }
+  window.sharedElementReturnTransition = MaterialContainerTransform(this).apply {
+    addTarget(android.R.id.content)
+    duration = 300L
+  }
 
   super.onCreate(bundle);
   setContentView(R.layout.activity_b);
@@ -210,6 +216,7 @@ From Activity A, start the container transform by constructing an Intent with th
 val intent = Intent(this,  ActivityB::class.java);
 
 val options =  ActivityOptions.makeSceneTransitionAnimation(
+  this,
   startView,
   "shared_element_container"  // The transition name to be matched in Activity B.
 );
