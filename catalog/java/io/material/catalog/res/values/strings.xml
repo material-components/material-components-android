@@ -17,4 +17,8 @@
 
 <resources>
   <string name="cat_app_name">Material Components Catalog</string>
+  <plurals name="cat_app_plural">
+    <item formatted="true" quantity="one">%d more city</item>
+    <item formatted="true" quantity="other">%d more cities</item>
+  </plurals>
 </resources>

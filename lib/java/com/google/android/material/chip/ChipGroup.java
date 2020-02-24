@@ -23,6 +23,16 @@ import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wra
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
+import androidx.annotation.BoolRes;
+import androidx.annotation.DimenRes;
+import androidx.annotation.Dimension;
+import androidx.annotation.IdRes;
+import androidx.annotation.IntegerRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.PluralsRes;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
@@ -129,6 +139,9 @@ public class ChipGroup extends FlowLayout {
     setChipSpacingVertical(
         a.getDimensionPixelOffset(R.styleable.ChipGroup_chipSpacingVertical, chipSpacing));
     setSingleLine(a.getBoolean(R.styleable.ChipGroup_singleLine, false));
+    setMaxRowCount(a.getInt(R.styleable.ChipGroup_maxRowCount, 0));
+    setOverflowChipEnabled(a.getBoolean(R.styleable.ChipGroup_overflowChipEnabled, false));
+    setOverflowChipPluralResource(a.getResourceId(R.styleable.ChipGroup_overflowChipPluralResource, 0));
     setSingleSelection(a.getBoolean(R.styleable.ChipGroup_singleSelection, false));
     setSelectionRequired(a.getBoolean(R.styleable.ChipGroup_selectionRequired, false));
     int checkedChip = a.getResourceId(R.styleable.ChipGroup_checkedChip, View.NO_ID);
@@ -472,6 +485,18 @@ public class ChipGroup extends FlowLayout {
   /** Sets whether this chip group is single line, or reflowed multiline. */
   public void setSingleLine(@BoolRes int id) {
     setSingleLine(getResources().getBoolean(id));
+  }
+
+  public void setMaxRowCount(int maxRowCount) {
+    super.setMaxRowCount(maxRowCount);
+  }
+
+  public void setOverflowChipEnabled(boolean overflowChipEnabled) {
+    super.setOverflowChildEnabled(overflowChipEnabled);
+  }
+
+  public void setOverflowChipPluralResource(@PluralsRes int overflowChipPluralResource) {
+    super.setOverflowChildPluralResource(overflowChipPluralResource);
   }
 
   /** Returns whether this chip group only allows a single chip to be checked. */

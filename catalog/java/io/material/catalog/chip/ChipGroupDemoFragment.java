@@ -45,15 +45,18 @@ public class ChipGroupDemoFragment extends DemoFragment {
     singleSelectionSwitch = view.findViewById(R.id.single_selection);
     selectionRequiredSwitch = view.findViewById(R.id.selection_required);
 
+    ChipGroup maxRowflowGroup = view.findViewById(R.id.maxrow_reflow_group);
     ChipGroup reflowGroup = view.findViewById(R.id.reflow_group);
     ChipGroup scrollGroup = view.findViewById(R.id.scroll_group);
 
     singleSelectionSwitch.setOnCheckedChangeListener(
         (buttonView, isChecked) -> {
           reflowGroup.setSingleSelection(isChecked);
+          maxRowflowGroup.setSingleSelection(isChecked);
           scrollGroup.setSingleSelection(isChecked);
 
           initChipGroup(reflowGroup);
+          initChipGroup(maxRowflowGroup);
           initChipGroup(scrollGroup);
         });
 
@@ -67,6 +70,7 @@ public class ChipGroupDemoFragment extends DemoFragment {
         });
 
     initChipGroup(reflowGroup);
+    initChipGroup(maxRowflowGroup);
     initChipGroup(scrollGroup);
 
     FloatingActionButton fab = view.findViewById(R.id.cat_chip_group_refresh);
@@ -74,6 +78,7 @@ public class ChipGroupDemoFragment extends DemoFragment {
         v -> {
           // Reload the chip group UI.
           initChipGroup(reflowGroup);
+          initChipGroup(maxRowflowGroup);
           initChipGroup(scrollGroup);
         });
     return view;

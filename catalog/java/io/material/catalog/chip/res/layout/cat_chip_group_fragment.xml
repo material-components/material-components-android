@@ -70,6 +70,20 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"/>
 
+        <!-- Maxrow reflow chip group. -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cat_chip_maxrow_reflow_group"/>
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/maxrow_reflow_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:maxRowCount="2"
+            app:overflowChipEnabled="false"
+              app:overflowChipPluralResource="@plurals/cat_app_plural"/>
+
         <!-- Scrolling chip group. -->
         <TextView
             android:layout_width="wrap_content"

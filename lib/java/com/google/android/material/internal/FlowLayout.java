@@ -17,6 +17,7 @@
 package com.google.android.material.internal;
 
 import com.google.android.material.R;
+import com.google.android.material.chip.Chip;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
@@ -24,6 +25,10 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.PluralsRes;
+import androidx.annotation.RestrictTo;
 import androidx.core.view.MarginLayoutParamsCompat;
 import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
@@ -45,6 +50,11 @@ public class FlowLayout extends ViewGroup {
   private int itemSpacing;
   private boolean singleLine;
   private int rowCount;
+  private int maxRowCount;
+  private boolean overflowChildEnabled;
+  private int remainingItems;
+  @PluralsRes
+  private int overflowChildPluralResource;
 
   public FlowLayout(@NonNull Context context) {
     this(context, null);
@@ -102,6 +112,18 @@ public class FlowLayout extends ViewGroup {
     this.singleLine = singleLine;
   }
 
+  /** Sets the maximum rows rendered for children **/
+  public void setMaxRowCount(int maxRowCount) { this.maxRowCount = maxRowCount; }
+
+  /** Sets whether there is a child view rendered when there is maxRowCount > 0 with remaining child views to render **/
+  public void setOverflowChildEnabled(boolean overflowChildEnabled) {
+    this.overflowChildEnabled = overflowChildEnabled;
+  }
+
+  public void setOverflowChildPluralResource(@PluralsRes int overflowChildPluralResource) {
+    this.overflowChildPluralResource = overflowChildPluralResource;
+  }
+
   @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     final int width = MeasureSpec.getSize(widthMeasureSpec);
@@ -120,8 +142,18 @@ public class FlowLayout extends ViewGroup {
     int childBottom = childTop;
     int childRight = childLeft;
     int maxChildRight = 0;
+
     final int maxRight = maxWidth - getPaddingRight();
-    for (int i = 0; i < getChildCount(); i++) {
+
+    rowCount = 0;
+
+    // if maxRowCount > 0 then can assume that there is an extra chip which is used to display the
+    // `X more chips` Chip
+    int children = (this.maxRowCount == 0 || !this.overflowChildEnabled) ? this.getChildCount() : this.getChildCount() - 1;
+
+    remainingItems = children;
+
+    for (int i = 0; i < children; i++) {
       View child = getChildAt(i);
 
       if (child.getVisibility() == View.GONE) {
@@ -144,6 +176,12 @@ public class FlowLayout extends ViewGroup {
       // not confined to a single line, move this child to the next line and reset its left bound to
       // flowlayout's left bound.
       if (childRight > maxRight && !isSingleLine()) {
+        rowCount++;
+
+        if (this.maxRowCount > 1 && this.maxRowCount <= rowCount) {
+          break;
+        }
+
         childLeft = getPaddingLeft();
         childTop = childBottom + lineSpacing;
       }
@@ -164,10 +202,57 @@ public class FlowLayout extends ViewGroup {
       if (i == (getChildCount() - 1)) {
         maxChildRight += rightMargin;
       }
+
+      remainingItems--;
     }
 
     maxChildRight += getPaddingRight();
     childBottom += getPaddingBottom();
+
+    // if we have remaining chips, adjust height to enable showing the `X more chips` Chip on next line
+    if (this.overflowChildEnabled && remainingItems > 0) {
+      View child = this.getChildAt(this.getChildCount() - 1);
+
+      if (child.getVisibility() != View.GONE) {
+
+        // need to assign chip text here, otherwise measurement of chip width will be wrong
+        ((Chip)child).setText(
+                getContext().getResources().getQuantityString(
+                  this.overflowChildPluralResource, remainingItems, remainingItems
+                )
+        );
+
+        this.measureChild(child, widthMeasureSpec, heightMeasureSpec);
+
+        LayoutParams lp = child.getLayoutParams();
+        int leftMargin = 0;
+
+        if (lp instanceof MarginLayoutParams) {
+          leftMargin += ((MarginLayoutParams) lp).leftMargin;
+        }
+
+        childLeft = this.getPaddingLeft();
+        childTop = childBottom + lineSpacing;
+
+        childRight = childLeft + leftMargin + child.getMeasuredWidth();
+        childBottom = childTop + child.getMeasuredHeight();
+
+        if (childRight > maxChildRight) {
+          maxChildRight = childRight;
+        }
+      }
+    }
+
+    // hide any remaining Chips
+    for (int i = 1; i <= remainingItems; i++) {
+      // get child view, ignoring the last child item as we
+      // assume that if we have remaining items, we are showing the last chip
+      // which is the `X more chips` Chip
+      View child = this.getChildAt((this.getChildCount() - i - 1));
+      if (child != null) {
+        child.setVisibility(View.GONE);
+      }
+    }
 
     int finalWidth = getMeasuredDimension(width, widthMode, maxChildRight);
     int finalHeight = getMeasuredDimension(height, heightMode, childBottom);
