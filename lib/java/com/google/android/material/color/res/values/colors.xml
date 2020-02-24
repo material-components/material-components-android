@@ -34,7 +34,7 @@
   <color name="design_default_color_on_error">#FFFFFF</color>
 
   <!-- Dark theme brand colors. -->
-  <color name="design_dark_default_color_primary">#BB86FC</color>
+  <color name="design_dark_default_color_primary">#BA86FC</color>
   <color name="design_dark_default_color_primary_dark">#000000</color>
   <color name="design_dark_default_color_primary_variant">#3700B3</color>
   <color name="design_dark_default_color_on_primary">#000000</color>
