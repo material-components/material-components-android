@@ -19,6 +19,7 @@ package io.material.catalog.transition;
 import io.material.catalog.R;
 
 import android.annotation.TargetApi;
+import android.graphics.Color;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.annotation.IdRes;
@@ -121,6 +122,7 @@ public class TransitionContainerTransformViewDemoFragment extends DemoFragment
   @NonNull
   private MaterialContainerTransform buildContainerTransform(boolean entering) {
     MaterialContainerTransform transform = new MaterialContainerTransform(requireContext());
+    transform.setScrimColor(Color.TRANSPARENT);
     configurationHelper.configure(transform, entering);
     return transform;
   }
