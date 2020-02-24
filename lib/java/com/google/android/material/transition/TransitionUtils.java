@@ -190,6 +190,7 @@ class TransitionUtils {
   }
 
   static View findAncestorById(View view, @IdRes int ancestorId) {
+    String resourceName = view.getResources().getResourceName(ancestorId);
     while (view != null) {
       if (view.getId() == ancestorId) {
         return view;
@@ -201,7 +202,7 @@ class TransitionUtils {
         break;
       }
     }
-    throw new IllegalArgumentException(ancestorId + " not a valid ancestor");
+    throw new IllegalArgumentException(resourceName + " is not a valid ancestor");
   }
 
   static RectF getRelativeBounds(View view) {
