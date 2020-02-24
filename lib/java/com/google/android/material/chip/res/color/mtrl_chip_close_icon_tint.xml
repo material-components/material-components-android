@@ -19,9 +19,9 @@
 
   <item android:alpha="1.0" android:color="?attr/colorOnSurface" android:state_pressed="true"/>
   <item android:alpha="1.0" android:color="?attr/colorOnSurface" android:state_focused="true" android:state_hovered="true"/>
-  <item android:alpha="0.87" android:color="?attr/colorOnSurface" android:state_focused="true"/>
-  <item android:alpha="0.72" android:color="?attr/colorOnSurface" android:state_hovered="true"/>
-  <item android:alpha="0.54" android:color="?attr/colorOnSurface" android:state_enabled="true"/>
+  <item android:alpha="1.0" android:color="?attr/colorOnSurface" android:state_focused="true"/>
+  <item android:alpha="1.0" android:color="?attr/colorOnSurface" android:state_hovered="true"/>
+  <item android:alpha="0.87" android:color="?attr/colorOnSurface" android:state_enabled="true"/>
   <!-- 38% of 54% opacity. -->
   <item android:alpha="0.21" android:color="?attr/colorOnSurface"/>
 
