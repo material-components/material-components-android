@@ -64,6 +64,13 @@ public class ChipFragment extends DemoLandingFragment {
           }
         });
     additionalDemos.add(
+            new Demo(R.string.cat_chip_group_max_rows_demo_title) {
+              @Override
+              public Fragment createFragment() {
+                return new ChipGroupMaxRowsDemoFragment();
+              }
+            });
+    additionalDemos.add(
         new Demo(R.string.cat_chip_recyclerview_demo_title) {
           @Override
           public Fragment createFragment() {

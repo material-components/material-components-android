@@ -52,11 +52,9 @@ public class ChipGroupDemoFragment extends DemoFragment {
     singleSelectionSwitch.setOnCheckedChangeListener(
         (buttonView, isChecked) -> {
           reflowGroup.setSingleSelection(isChecked);
-          maxRowflowGroup.setSingleSelection(isChecked);
           scrollGroup.setSingleSelection(isChecked);
 
           initChipGroup(reflowGroup);
-          initChipGroup(maxRowflowGroup);
           initChipGroup(scrollGroup);
         });
 
@@ -70,7 +68,6 @@ public class ChipGroupDemoFragment extends DemoFragment {
         });
 
     initChipGroup(reflowGroup);
-    initChipGroup(maxRowflowGroup);
     initChipGroup(scrollGroup);
 
     FloatingActionButton fab = view.findViewById(R.id.cat_chip_group_refresh);
@@ -78,7 +75,6 @@ public class ChipGroupDemoFragment extends DemoFragment {
         v -> {
           // Reload the chip group UI.
           initChipGroup(reflowGroup);
-          initChipGroup(maxRowflowGroup);
           initChipGroup(scrollGroup);
         });
     return view;
@@ -108,6 +104,21 @@ public class ChipGroupDemoFragment extends DemoFragment {
       chip.setCloseIconVisible(true);
       chip.setOnCloseIconClickListener(v -> chipGroup.removeView(chip));
       chipGroup.addView(chip);
+    }
+  }
+
+  private void initMaxRowChipGroup(ChipGroup chipGroup) {
+    chipGroup.removeAllViews();
+
+    boolean singleSelection = singleSelectionSwitch.isChecked();
+    String[] textArray = getResources().getStringArray(R.array.cat_chip_group_text_array);
+    for (String text : textArray) {
+        Chip chip =
+                (Chip) getLayoutInflater().inflate(getChipGroupItem(singleSelection), chipGroup, false);
+        chip.setText(text);
+        chip.setCloseIconVisible(false);
+        chip.setClickable(false);
+        chipGroup.addView(chip);
     }
   }
 }
