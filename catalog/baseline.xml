@@ -1400,39 +1400,6 @@
 
     <issue
         id="HardcodedText"
-        message="Hardcoded string &quot;Expanded&quot;, should use `@string` resource"
-        errorLine1="          android:text=&quot;Expanded&quot;/>"
-        errorLine2="          ~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="java/io/material/catalog/transformation/res/layout/cat_transformation_fragment.xml"
-            line="92"
-            column="11"/>
-    </issue>
-
-    <issue
-        id="HardcodedText"
-        message="Hardcoded string &quot;floating&quot;, should use `@string` resource"
-        errorLine1="          android:text=&quot;floating&quot;/>"
-        errorLine2="          ~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="java/io/material/catalog/transformation/res/layout/cat_transformation_fragment.xml"
-            line="97"
-            column="11"/>
-    </issue>
-
-    <issue
-        id="HardcodedText"
-        message="Hardcoded string &quot;sheet&quot;, should use `@string` resource"
-        errorLine1="          android:text=&quot;sheet&quot;/>"
-        errorLine2="          ~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="java/io/material/catalog/transformation/res/layout/cat_transformation_fragment.xml"
-            line="102"
-            column="11"/>
-    </issue>
-
-    <issue
-        id="HardcodedText"
         message="Hardcoded string &quot;One&quot;, should use `@string` resource"
         errorLine1="      android:title=&quot;One&quot;/>"
         errorLine2="      ~~~~~~~~~~~~~~~~~~~">
@@ -1803,39 +1770,6 @@
             file="java/io/material/catalog/switchmaterial/res/layout/cat_switch_toggled.xml"
             line="24"
             column="5"/>
-    </issue>
-
-    <issue
-        id="RtlHardcoded"
-        message="Use &quot;`end`&quot; instead of &quot;`right`&quot; to ensure correct behavior in right-to-left locales"
-        errorLine1="      android:layout_gravity=&quot;bottom|right&quot;"
-        errorLine2="                              ~~~~~~~~~~~~">
-        <location
-            file="java/io/material/catalog/transformation/res/layout/cat_transformation_fragment.xml"
-            line="57"
-            column="31"/>
-    </issue>
-
-    <issue
-        id="RtlHardcoded"
-        message="Use &quot;`end`&quot; instead of &quot;`right`&quot; to ensure correct behavior in right-to-left locales"
-        errorLine1="      android:layout_gravity=&quot;bottom|right&quot;"
-        errorLine2="                              ~~~~~~~~~~~~">
-        <location
-            file="java/io/material/catalog/transformation/res/layout/cat_transformation_fragment.xml"
-            line="66"
-            column="31"/>
-    </issue>
-
-    <issue
-        id="RtlHardcoded"
-        message="Use &quot;`end`&quot; instead of &quot;`right`&quot; to ensure correct behavior in right-to-left locales"
-        errorLine1="          android:layout_gravity=&quot;bottom|right&quot;"
-        errorLine2="                                  ~~~~~~~~~~~~">
-        <location
-            file="java/io/material/catalog/transformation/res/layout/cat_transformation_fragment.xml"
-            line="101"
-            column="35"/>
     </issue>
 
     <issue

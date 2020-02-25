@@ -28,7 +28,11 @@ import com.google.android.material.expandable.ExpandableWidget;
  * <p>This ViewGroup should contain exactly one child.
  *
  * <p>This class should be used if you need to support shadows on pre-L devices.
+ *
+ * @deprecated Use {@link com.google.android.material.transition.MaterialContainerTransform}
+ *     instead.
  */
+@Deprecated
 public class TransformationChildCard extends CircularRevealCardView {
 
   public TransformationChildCard(Context context) {

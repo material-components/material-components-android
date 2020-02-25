@@ -34,7 +34,11 @@ import com.google.android.material.expandable.ExpandableWidget;
  *
  * <p>Behaviors should override {@link #onCreateExpandedStateChangeAnimation(View, View, boolean,
  * boolean)} to return an animation
+ *
+ * @deprecated Use {@link com.google.android.material.transition.MaterialContainerTransform}
+ *     instead.
  */
+@Deprecated
 public abstract class ExpandableTransformationBehavior extends ExpandableBehavior {
 
   @Nullable private AnimatorSet currentAnimation;

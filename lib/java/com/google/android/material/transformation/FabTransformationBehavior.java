@@ -69,7 +69,11 @@ import java.util.List;
 /**
  * Abstract base behavior for any non-scrim view that should appear when a {@link
  * FloatingActionButton} is {@link FloatingActionButton#setExpanded(boolean)} expanded}.
+ *
+ * @deprecated Use {@link com.google.android.material.transition.MaterialContainerTransform}
+ *     instead.
  */
+@Deprecated
 public abstract class FabTransformationBehavior extends ExpandableTransformationBehavior {
 
   private final Rect tmpRect = new Rect();

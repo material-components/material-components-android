@@ -41,7 +41,11 @@ import java.util.Map;
  *
  * <p>A sheet usually has some width and height that's smaller than the screen, has an elevation,
  * and may have a scrim underneath.
+ *
+ * @deprecated Use {@link com.google.android.material.transition.MaterialContainerTransform}
+ *     instead.
  */
+@Deprecated
 public class FabTransformationSheetBehavior extends FabTransformationBehavior {
 
   @Nullable private Map<View, Integer> importantForAccessibilityMap;

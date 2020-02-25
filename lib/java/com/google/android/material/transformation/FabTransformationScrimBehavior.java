@@ -36,7 +36,11 @@ import java.util.List;
 /**
  * Behavior that should be attached to a scrim that should appear when a {@link
  * FloatingActionButton} is {@link FloatingActionButton#setExpanded(boolean)} expanded}.
+ *
+ * @deprecated Use {@link com.google.android.material.transition.MaterialContainerTransform}
+ *     instead.
  */
+@Deprecated
 public class FabTransformationScrimBehavior extends ExpandableTransformationBehavior {
 
   public static final long EXPAND_DELAY = 75;

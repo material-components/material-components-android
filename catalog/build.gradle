@@ -67,7 +67,6 @@ def srcDirs = [
   'textfield',
   'themeswitcher',
   'topappbar',
-  'transformation',
   'transition',
   'transition/hero',
   'windowpreferences'

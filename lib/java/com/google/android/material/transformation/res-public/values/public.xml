@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2018 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +14,8 @@
   ~ limitations under the License.
 -->
 <resources>
-  <public name="fab_transformation_sheet_behavior" type="string"/>
-  <public name="fab_transformation_scrim_behavior" type="string"/>
+  <!-- Deprecated. Use com.google.android.material.transition.MaterialContainerTransform instead. -->
+  <public name="fab_transformation_sheet_behavior" type="string" />
+  <!-- Deprecated. Use com.google.android.material.transition.MaterialContainerTransform instead. -->
+  <public name="fab_transformation_scrim_behavior" type="string" />
 </resources>
-

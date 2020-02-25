@@ -35,7 +35,11 @@ import java.util.List;
 /**
  * Base Behavior for views that can react to an {@link ExpandableWidget}'s {@link
  * ExpandableWidget#setExpanded(boolean)} state changes.
+ *
+ * @deprecated Use {@link com.google.android.material.transition.MaterialContainerTransform}
+ *     instead.
  */
+@Deprecated
 public abstract class ExpandableBehavior extends Behavior<View> {
 
   /** Uninitialized expanded state. */
