@@ -121,7 +121,7 @@ If using the Navigation Architecture Component, use the following.
 
 ```kt
 // Map the start View in FragmentA and the transitionName of the end View in FragmentB
-val extras =  FragmentNavigatorExtras(view to “container”)
+val extras =  FragmentNavigatorExtras(view to “shared_element_container”)
 findNavController().navigate(R.id.action_fragmentA_to_fragmentB, null, null, extras)
 ```
 
