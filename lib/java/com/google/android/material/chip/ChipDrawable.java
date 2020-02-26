@@ -169,7 +169,7 @@ public class ChipDrawable extends MaterialShapeDrawable
   @Nullable private ColorStateList chipSurfaceColor;
   @Nullable private ColorStateList chipBackgroundColor;
   private float chipMinHeight;
-  private float chipCornerRadius;
+  private float chipCornerRadius = -1;
   @Nullable private ColorStateList chipStrokeColor;
   private float chipStrokeWidth;
   @Nullable private ColorStateList rippleColor;

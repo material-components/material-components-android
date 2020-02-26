@@ -1162,7 +1162,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
    * @attr ref com.google.android.material.R.styleable#Chip_chipCornerRadius
    */
   public float getChipCornerRadius() {
-    return chipDrawable != null ? chipDrawable.getChipCornerRadius() : 0;
+    return chipDrawable != null ? Math.max(0, chipDrawable.getChipCornerRadius()) : 0;
   }
 
   /**

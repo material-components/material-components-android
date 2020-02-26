@@ -21,6 +21,7 @@ import static com.google.android.material.internal.ViewUtils.dpToPx;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
+import android.graphics.RectF;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.ViewCompat;
 import androidx.appcompat.app.AppCompatActivity;
@@ -53,12 +54,13 @@ public class ChipTest {
   private static final int MIN_SIZE_FOR_ALLY_DP = 48;
 
   private Chip chip;
+  private AppCompatActivity activity;
 
   @Before
   public void themeApplicationContext() {
     ApplicationProvider.getApplicationContext()
         .setTheme(R.style.Theme_MaterialComponents_Light_NoActionBar_Bridge);
-    AppCompatActivity activity = Robolectric.buildActivity(AppCompatActivity.class).setup().get();
+    activity = Robolectric.buildActivity(AppCompatActivity.class).setup().get();
     View inflated = activity.getLayoutInflater().inflate(R.layout.test_action_chip, null);
     chip = inflated.findViewById(R.id.chip);
   }
@@ -198,5 +200,29 @@ public class ChipTest {
     int measureSpec =
         MeasureSpec.makeMeasureSpec((int) (getMinTouchTargetSize() * 2), MeasureSpec.AT_MOST);
     chip.measure(measureSpec, measureSpec);
+  }
+
+  @Test
+  public void testZeroChipCornerRadius() {
+    View inflated =
+        activity.getLayoutInflater().inflate(R.layout.test_chip_zero_corner_radius, null);
+    chip = inflated.findViewById(R.id.zero_corner_chip);
+    RectF bounds = new RectF();
+    bounds.bottom = 0;
+    bounds.top = 100;
+    bounds.left = 0;
+    bounds.right = 100;
+    assertThat(chip.getShapeAppearanceModel().getTopLeftCornerSize().getCornerSize(bounds))
+        .isWithin(DELTA)
+        .of(0);
+    assertThat(chip.getShapeAppearanceModel().getTopRightCornerSize().getCornerSize(bounds))
+        .isWithin(DELTA)
+        .of(0);
+    assertThat(chip.getShapeAppearanceModel().getBottomLeftCornerSize().getCornerSize(bounds))
+        .isWithin(DELTA)
+        .of(0);
+    assertThat(chip.getShapeAppearanceModel().getBottomRightCornerSize().getCornerSize(bounds))
+        .isWithin(DELTA)
+        .of(0);
   }
 }
