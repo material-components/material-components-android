@@ -1042,17 +1042,6 @@
 
     <issue
         id="UnusedResources"
-        message="The resource `R.string.cat_card_rich_media_subtitle_view_description` appears to be unused"
-        errorLine1="  &lt;string name=&quot;cat_card_rich_media_subtitle_view_description&quot;>Card Subtitle&lt;/string>"
-        errorLine2="          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="java/io/material/catalog/card/res/values/strings.xml"
-            line="71"
-            column="11"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
         message="The resource `R.string.cat_textfield_disable` appears to be unused"
         errorLine1="  &lt;string name=&quot;cat_textfield_disable&quot; translatable=&quot;false&quot;>Disable&lt;/string>"
         errorLine2="          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">

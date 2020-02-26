@@ -66,9 +66,7 @@
   <string name="cat_card_rich_media_sample_3">Sample #3</string>
   <string name="cat_card_rich_media_view_overline">Title goes here</string>
   <string name="cat_card_rich_media_view_title">Title goes here</string>
-  <string name="cat_card_rich_media_title_view_description">Card Title</string>
   <string name="cat_card_rich_media_view_subtitle">Subtitle goes here</string>
-  <string name="cat_card_rich_media_subtitle_view_description">Card Subtitle</string>
   <string name="cat_card_rich_media_view_secondary_line_text">Secondary line text Lorem ipsum dolor sit amet, nec no nominavi scaevola. Per et sint sapientem, nobis perpetua salutandi mei te.</string>
   <string name="cat_card_rich_media_logo_view_description">Card Logo</string>
   <string name="cat_card_rich_media_image_view_description">Card Image</string>

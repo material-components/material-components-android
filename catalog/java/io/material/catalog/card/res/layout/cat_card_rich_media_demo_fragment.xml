@@ -63,7 +63,6 @@
                 style="?attr/textAppearanceHeadline5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/cat_card_rich_media_title_view_description"
                 android:text="@string/cat_card_rich_media_view_title"/>
 
             <TextView
@@ -160,7 +159,6 @@
                 style="?attr/textAppearanceHeadline6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/cat_card_rich_media_title_view_description"
                 android:text="@string/cat_card_rich_media_view_title"/>
 
             <TextView
@@ -259,7 +257,6 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_marginBottom="@dimen/cat_card_single_spacing"
-              android:contentDescription="@string/cat_card_rich_media_title_view_description"
               android:text="@string/cat_card_rich_media_view_title"/>
 
           <LinearLayout
@@ -309,7 +306,6 @@
               android:layout_height="wrap_content"
               android:layout_marginTop="@dimen/cat_card_double_spacing"
               android:layout_marginBottom="@dimen/cat_card_single_spacing"
-              android:contentDescription="@string/cat_card_rich_media_title_view_description"
               android:text="@string/cat_card_rich_media_view_subtitle"/>
           <com.google.android.material.chip.ChipGroup
               android:layout_width="match_parent"
