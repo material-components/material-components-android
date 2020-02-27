@@ -27,6 +27,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.robolectric.annotation.LooperMode.Mode.LEGACY;
 
 import android.os.SystemClock;
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,8 +40,10 @@ import org.junit.runner.RunWith;
 import org.mockito.AdditionalMatchers;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.LooperMode;
 
 /** Tests for events of {@link com.google.android.material.slider.Slider} */
+@LooperMode(LEGACY)
 @RunWith(RobolectricTestRunner.class)
 public class SliderEventTest {
 

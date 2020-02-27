@@ -25,6 +25,7 @@ import static com.google.android.material.slider.SliderHelper.startSliderDragBet
 import static com.google.android.material.slider.SliderHelper.touchSliderAtValue;
 import static com.google.common.truth.Truth.assertThat;
 import static junit.framework.TestCase.assertTrue;
+import static org.robolectric.annotation.LooperMode.Mode.LEGACY;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.MotionEvent;
@@ -35,8 +36,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.LooperMode;
 
 /** Tests for touch handling of {@link Slider} */
+@LooperMode(LEGACY)
 @RunWith(RobolectricTestRunner.class)
 public class SliderTouchTest {
   private static final float SLIDER_VALUE_FROM = 0f;
