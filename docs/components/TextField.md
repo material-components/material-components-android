@@ -375,6 +375,7 @@ A filled text field has a filled container, input text, a label, an activation i
 5.  Trailing icon
 6.  Activation indicator
 7.  Helper/error text
+8.  Prefix/suffix (not shown)
 
 #### Container attributes
 
@@ -411,12 +412,6 @@ A filled text field has a filled container, input text, a label, an activation i
 **Placeholder** | `placeholderText` | `setPlaceholderText`<br/>`getPlaceholderText` | `null`
 **Placeholder color** | `placeholderTextColor` | `setPlaceholderTextColor`<br/>`getPlaceholderTextColor` | `?attr/colorOnSurface` at 60% opacity (see all [states](https://github.com/material-components/material-components-android/blob/master/lib/java/com/google/android/material/textfield/res/color/mtrl_indicator_text_color.xml))
 **Placeholder typography** | `placeholderTextAppearance` | `setPlaceholderTextAppearance`<br/>`getPlaceholderTextAppearance` | `?attr/textAppearanceSubtitle1`
-**Prefix** | `prefixText` | `setPrefixText`<br/>`getPrefixText` | `null`
-**Prefix color** | `prefixTextColor` | `setPrefixTextColor`<br/>`getPrefixTextColor` | `?attr/colorOnSurface` at 60% opacity (see all [states](https://github.com/material-components/material-components-android/blob/master/lib/java/com/google/android/material/textfield/res/color/mtrl_indicator_text_color.xml))
-**Prefix typography** | `prefixTextAppearance` | `setPrefixTextAppearance` | `?attr/textAppearanceSubtitle1`
-**Suffix** | `suffixText` | `setSuffixText`<br/>`getSuffixText` | `null`
-**Suffix color** | `suffixTextColor` | `setSuffixTextColor`<br/>`getSuffixTextColor` | `?attr/colorOnSurface` at 60% opacity (see all [states](https://github.com/material-components/material-components-android/blob/master/lib/java/com/google/android/material/textfield/res/color/mtrl_indicator_text_color.xml))
-**Suffix typography** | `suffixTextAppearance` | `setSuffixTextAppearance` | `?attr/textAppearanceSubtitle1`
 
 _**Note:** Text and typography attributes should be set on the `TextInputEditText`._
 
@@ -453,6 +448,15 @@ _**Note:** Text and typography attributes should be set on the `TextInputEditTex
 **Error text** | `app:error` | `setError`<br/>`getError` | `null`
 **Error text color** | `app:errorTextColor` | `setErrorTextColor`<br/>`getErrorCurrentTextColors` | `?attr/colorError` (see all [states](https://github.com/material-components/material-components-android/blob/master/lib/java/com/google/android/material/textfield/res/color/mtrl_error.xml)
 **Error text typography** | `app:errorTextAppearance` | `setErrorTextAppearance` | `?attr/textAppearanceCaption`
+
+#### Prefix/suffix attributes
+
+**Prefix** | `prefixText` | `setPrefixText`<br/>`getPrefixText` | `null`
+**Prefix color** | `prefixTextColor` | `setPrefixTextColor`<br/>`getPrefixTextColor` | `?attr/colorOnSurface` at 60% opacity (see all [states](https://github.com/material-components/material-components-android/blob/master/lib/java/com/google/android/material/textfield/res/color/mtrl_indicator_text_color.xml))
+**Prefix typography** | `prefixTextAppearance` | `setPrefixTextAppearance` | `?attr/textAppearanceSubtitle1`
+**Suffix** | `suffixText` | `setSuffixText`<br/>`getSuffixText` | `null`
+**Suffix color** | `suffixTextColor` | `setSuffixTextColor`<br/>`getSuffixTextColor` | `?attr/colorOnSurface` at 60% opacity (see all [states](https://github.com/material-components/material-components-android/blob/master/lib/java/com/google/android/material/textfield/res/color/mtrl_indicator_text_color.xml))
+**Suffix typography** | `suffixTextAppearance` | `setSuffixTextAppearance` | `?attr/textAppearanceSubtitle1`
 
 #### Styles
 
@@ -535,6 +539,7 @@ An outlined text field has a stroked container, input text, a label, optional he
 4.  Input text
 5.  Trailing icon
 6.  Helper/error text
+7.  Prefix/suffix (not shown)
 
 #### Container attributes
 
@@ -573,12 +578,6 @@ An outlined text field has a stroked container, input text, a label, optional he
 **Placeholder** | `placeholderText` | `setPlaceholderText`<br/>`getPlaceholderText` | `null`
 **Placeholder color** | `placeholderTextColor` | `setPlaceholderTextColor`<br/>`getPlaceholderTextColor` | `?attr/colorOnSurface` at 60% opacity (see all [states](https://github.com/material-components/material-components-android/blob/master/lib/java/com/google/android/material/textfield/res/color/mtrl_indicator_text_color.xml))
 **Placeholder typography** | `placeholderTextAppearance` | `setPlaceholderTextAppearance`<br/>`getPlaceholderTextAppearance` | `?attr/textAppearanceSubtitle1`
-**Prefix** | `prefixText` | `setPrefixText`<br/>`getPrefixText` | `null`
-**Prefix color** | `prefixTextColor` | `setPrefixTextColor`<br/>`getPrefixTextColor` | `?attr/colorOnSurface` at 60% opacity (see all [states](https://github.com/material-components/material-components-android/blob/master/lib/java/com/google/android/material/textfield/res/color/mtrl_indicator_text_color.xml))
-**Prefix typography** | `prefixTextAppearance` | `setPrefixTextAppearance` | `?attr/textAppearanceSubtitle1`
-**Suffix** | `suffixText` | `setSuffixText`<br/>`getSuffixText` | `null`
-**Suffix color** | `suffixTextColor` | `setSuffixTextColor`<br/>`getSuffixTextColor` | `?attr/colorOnSurface` at 60% opacity (see all [states](https://github.com/material-components/material-components-android/blob/master/lib/java/com/google/android/material/textfield/res/color/mtrl_indicator_text_color.xml))
-**Suffix typography** | `suffixTextAppearance` | `setSuffixTextAppearance` | `?attr/textAppearanceSubtitle1`
 
 _**Note:** Text and typography attributes should be set on the `TextInputEditText`._
 
@@ -606,6 +605,15 @@ _**Note:** Text and typography attributes should be set on the `TextInputEditTex
 **Error text** | `app:error` | `setError`<br/>`getError` | `null`
 **Error text color** | `app:errorTextColor` | `setErrorTextColor`<br/>`getErrorCurrentTextColors` | `?attr/colorError` (see all [states](https://github.com/material-components/material-components-android/blob/master/lib/java/com/google/android/material/textfield/res/color/mtrl_error.xml)
 **Error text typography** | `app:errorTextAppearance` | `setErrorTextAppearance` | `?attr/textAppearanceCaption`
+
+#### Prefix/suffix attributes
+
+**Prefix** | `prefixText` | `setPrefixText`<br/>`getPrefixText` | `null`
+**Prefix color** | `prefixTextColor` | `setPrefixTextColor`<br/>`getPrefixTextColor` | `?attr/colorOnSurface` at 60% opacity (see all [states](https://github.com/material-components/material-components-android/blob/master/lib/java/com/google/android/material/textfield/res/color/mtrl_indicator_text_color.xml))
+**Prefix typography** | `prefixTextAppearance` | `setPrefixTextAppearance` | `?attr/textAppearanceSubtitle1`
+**Suffix** | `suffixText` | `setSuffixText`<br/>`getSuffixText` | `null`
+**Suffix color** | `suffixTextColor` | `setSuffixTextColor`<br/>`getSuffixTextColor` | `?attr/colorOnSurface` at 60% opacity (see all [states](https://github.com/material-components/material-components-android/blob/master/lib/java/com/google/android/material/textfield/res/color/mtrl_indicator_text_color.xml))
+**Suffix typography** | `suffixTextAppearance` | `setSuffixTextAppearance` | `?attr/textAppearanceSubtitle1`
 
 #### Styles
 
