@@ -55,8 +55,6 @@ import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.RangeInfoCom
 import androidx.customview.widget.ExploreByTouchHelper;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.InflateException;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -138,18 +136,21 @@ import java.util.Locale;
  * <p>The following XML attributes are used to set the slider's various parameters of operation:
  *
  * <ul>
- *   <li>{@code android:valueFrom}: <b>Required.</b> The slider's minimum value. This attribute is
- *       required, if missing, an {@link InflateException} is thrown.
- *   <li>{@code android:valueTo}: <b>Required.</b> The slider's maximum value. This attribute is
- *       required, if missing, an {@link InflateException} is thrown.
+ *   <li>{@code android:valueFrom}: <b>Required.</b> The slider's minimum value. This attribute must
+ *       be less than {@code valueTo} or an {@link IllegalStateException} will be thrown when the
+ *       view is laid out.
+ *   <li>{@code android:valueTo}: <b>Required.</b> The slider's maximum value. This attribute must
+ *       be greater than {@code valueFrom} or an {@link IllegalStateException} will be thrown when
+ *       the view is laid out.
  *   <li>{@code android:value}: <b>Optional.</b> The initial value of the slider. If not specified,
  *       the slider's minimum value {@code android:valueFrom} is used.
  *   <li>{@code android:stepSize}: <b>Optional.</b> This value dictates whether the slider operates
  *       in continuous mode, or in discrete mode. If missing or equal to 0, the slider operates in
  *       continuous mode. If greater than 0 and evenly divides the range described by {@code
- *       valueFrom} and {@code valueTo}, the slider operates in discrete mode. If negative, or
- *       greater than 0 but not a factor of the range described by {@code valueFrom} and {@code
- *       valueTo}, an {@link IllegalArgumentException} is thrown.
+ *       valueFrom} and {@code valueTo}, the slider operates in discrete mode. If negative an {@link
+ *       IllegalArgumentException} is thrown, or if greater than 0 but not a factor of the range
+ *       described by {@code valueFrom} and {@code valueTo}, an {@link IllegalStateException} will
+ *       be thrown when the view is laid out.
  * </ul>
  *
  * @attr ref com.google.android.material.R.styleable#Slider_android_stepSize
@@ -237,6 +238,7 @@ public class Slider extends View {
   private int trackWidth;
   private boolean forceDrawCompatHalo;
   private boolean isLongPress = false;
+  private boolean dirtyConfig;
 
   @NonNull private ColorStateList haloColor;
   @NonNull private ColorStateList tickColorActive;
@@ -478,10 +480,6 @@ public class Slider extends View {
 
     labelBehavior = a.getInt(R.styleable.Slider_labelBehavior, LABEL_FLOATING);
     a.recycle();
-
-    validateValueFrom();
-    validateValueTo();
-    validateStepSize();
   }
 
   @NonNull
@@ -496,25 +494,40 @@ public class Slider extends View {
 
   private void validateValueFrom() {
     if (valueFrom >= valueTo) {
-      Log.e(TAG, EXCEPTION_ILLEGAL_VALUE_FROM);
-      throw new IllegalArgumentException(EXCEPTION_ILLEGAL_VALUE_FROM);
+      throw new IllegalStateException(EXCEPTION_ILLEGAL_VALUE_FROM);
     }
   }
 
   private void validateValueTo() {
     if (valueTo <= valueFrom) {
-      Log.e(TAG, EXCEPTION_ILLEGAL_VALUE_TO);
-      throw new IllegalArgumentException(EXCEPTION_ILLEGAL_VALUE_TO);
+      throw new IllegalStateException(EXCEPTION_ILLEGAL_VALUE_TO);
     }
   }
 
   private void validateStepSize() {
-    if (stepSize < 0.0f) {
-      Log.e(TAG, EXCEPTION_ILLEGAL_STEP_SIZE);
-      throw new IllegalArgumentException(EXCEPTION_ILLEGAL_STEP_SIZE);
-    } else if (stepSize > 0.0f && ((valueTo - valueFrom) / stepSize) % 1 > THRESHOLD) {
-      Log.e(TAG, EXCEPTION_ILLEGAL_STEP_SIZE);
-      throw new IllegalArgumentException(EXCEPTION_ILLEGAL_STEP_SIZE);
+    if (stepSize > 0.0f && ((valueTo - valueFrom) / stepSize) % 1 > THRESHOLD) {
+      throw new IllegalStateException(EXCEPTION_ILLEGAL_STEP_SIZE);
+    }
+  }
+
+  private void validateValues() {
+    for (Float value : values) {
+      if (value < valueFrom || value > valueTo) {
+        throw new IllegalStateException(EXCEPTION_ILLEGAL_VALUE);
+      }
+      if (stepSize > 0.0f && ((valueFrom - value) / stepSize) % 1 > THRESHOLD) {
+        throw new IllegalStateException(EXCEPTION_ILLEGAL_DISCRETE_VALUE);
+      }
+    }
+  }
+
+  private void validateConfigurationIfDirty() {
+    if (dirtyConfig) {
+      validateValueFrom();
+      validateValueTo();
+      validateStepSize();
+      validateValues();
+      dirtyConfig = false;
     }
   }
 
@@ -532,16 +545,16 @@ public class Slider extends View {
    * Sets the slider's {@code valueFrom} value.
    *
    * <p>The {@code valueFrom} value must be strictly lower than the {@code valueTo} value. If that
-   * is not the case, an {@link IllegalArgumentException} will be thrown.
+   * is not the case, an {@link IllegalStateException} will be thrown when the view is laid out.
    *
    * @param valueFrom The minimum value for the slider's range of values
-   * @throws IllegalArgumentException If {@code valueFrom} is greater or equal to {@code valueTo}
    * @see #getValueFrom()
    * @attr ref com.google.android.material.R.styleable#Slider_android_valueFrom
    */
   public void setValueFrom(float valueFrom) {
     this.valueFrom = valueFrom;
-    validateValueFrom();
+    dirtyConfig = true;
+    postInvalidate();
   }
 
   /**
@@ -558,16 +571,16 @@ public class Slider extends View {
    * Sets the slider's {@code valueTo} value.
    *
    * <p>The {@code valueTo} value must be strictly greater than the {@code valueFrom} value. If that
-   * is not the case, an {@link IllegalArgumentException} will be thrown.
+   * is not the case, an {@link IllegalStateException} will be thrown when the view is laid out.
    *
    * @param valueTo The maximum value for the slider's range of values
-   * @throws IllegalArgumentException If {@code valueTo} is lesser or equal to {@code valueFrom}
    * @see #getValueTo()
    * @attr ref com.google.android.material.R.styleable#Slider_android_valueTo
    */
   public void setValueTo(float valueTo) {
     this.valueTo = valueTo;
-    validateValueTo();
+    dirtyConfig = true;
+    postInvalidate();
   }
 
   /**
@@ -595,16 +608,15 @@ public class Slider extends View {
    * Sets the value of the slider.
    *
    * <p>The thumb value must be greater or equal to {@code valueFrom}, and lesser or equal to {@code
-   * valueTo}. If that is not the case, an {@link IllegalArgumentException} will be thrown.
+   * valueTo}. If that is not the case, an {@link IllegalStateException} will be thrown when the
+   * view is laid out.
    *
    * <p>If the slider is in discrete mode (i.e. the tick increment value is greater than 0), the
    * thumb's value must be set to a value falls on a tick (i.e.: {@code value == valueFrom + x *
    * stepSize}, where {@code x} is an integer equal to or greater than 0). If that is not the case,
-   * an {@link IllegalArgumentException} will be thrown.
+   * an {@link IllegalStateException} will be thrown when the view is laid out.
    *
    * @param value The value to which to set the slider
-   * @throws IllegalArgumentException If the value is not within {@code valueFrom} and {@code
-   *     valueTo}. If stepSize is greater than 0 and value does not fall on a tick
    * @see #getValue()
    * @attr ref com.google.android.material.R.styleable#Slider_android_value
    */
@@ -616,16 +628,15 @@ public class Slider extends View {
    * Sets multiple values for the slider. Each value will represent a different thumb.
    *
    * <p>Each value must be greater or equal to {@code valueFrom}, and lesser or equal to {@code
-   * valueTo}. If that is not the case, an {@link IllegalArgumentException} will be thrown.
+   * valueTo}. If that is not the case, an {@link IllegalStateException} will be thrown when the
+   * view is laid out.
    *
    * <p>If the slider is in discrete mode (i.e. the tick increment value is greater than 0), the
    * values must be set to a value falls on a tick (i.e.: {@code value == valueFrom + x * stepSize},
    * where {@code x} is an integer equal to or greater than 0). If that is not the case, an {@link
-   * IllegalArgumentException} will be thrown.
+   * IllegalStateException} will be thrown when the view is laid out.
    *
    * @param values An array of values to set.
-   * @throws IllegalArgumentException If the value is not within {@code valueFrom} and {@code
-   *     valueTo}. If stepSize is greater than 0 and value does not fall on a tick
    * @see #getValues()
    */
   public void setValues(@NonNull Float... values) {
@@ -638,17 +649,16 @@ public class Slider extends View {
    * Sets multiple values for the slider. Each value will represent a different thumb.
    *
    * <p>Each value must be greater or equal to {@code valueFrom}, and lesser or equal to {@code
-   * valueTo}. If that is not the case, an {@link IllegalArgumentException} will be thrown.
+   * valueTo}. If that is not the case, an {@link IllegalStateException} will be thrown when the
+   * view is laid out.
    *
    * <p>If the slider is in discrete mode (i.e. the tick increment value is greater than 0), the
    * values must be set to a value falls on a tick (i.e.: {@code value == valueFrom + x * stepSize},
    * where {@code x} is an integer equal to or greater than 0). If that is not the case, an {@link
-   * IllegalArgumentException} will be thrown.
+   * IllegalStateException} will be thrown when the view is laid out.
    *
    * @param values An array of values to set.
-   * @throws IllegalArgumentException If the value is not within {@code valueFrom} and {@code
-   *     valueTo}. If stepSize is greater than 0 and value does not fall on a tick
-   * @throws IllegalArgumentException If {@values} is empty.
+   * @throws IllegalArgumentException If {@code values} is empty.
    * @see #getValues()
    */
   public void setValues(@NonNull List<Float> values) {
@@ -672,19 +682,14 @@ public class Slider extends View {
       }
     }
 
-    for (float value : values) {
-      if (!isValueValid(value)) {
-        return;
-      }
-    }
-
     this.values = values;
+    dirtyConfig = true;
     // Only update the focused thumb index. The active thumb index will be updated on touch.
     focusedThumbIdx = 0;
     updateHaloHotspot();
     createLabelPool();
     dispatchOnChangedProgramatically();
-    invalidate();
+    postInvalidate();
   }
 
   private void createLabelPool() {
@@ -703,18 +708,6 @@ public class Slider extends View {
     for (TooltipDrawable label : labels) {
       label.setStrokeWidth(strokeWidth);
     }
-  }
-
-  private boolean isValueValid(float value) {
-    if (value < valueFrom || value > valueTo) {
-      Log.e(TAG, EXCEPTION_ILLEGAL_VALUE);
-      return false;
-    }
-    if (stepSize > 0.0f && ((valueFrom - value) / stepSize) % 1 > THRESHOLD) {
-      Log.e(TAG, EXCEPTION_ILLEGAL_DISCRETE_VALUE);
-      return false;
-    }
-    return true;
   }
 
   /**
@@ -738,24 +731,23 @@ public class Slider extends View {
    *
    * <p>The step size must evenly divide the range described by the {@code valueFrom} and {@code
    * valueTo}, it must be a factor of the range. If the step size is not a factor of the range, an
-   * {@link IllegalArgumentException} will be thrown.
+   * {@link IllegalStateException} will be thrown when this view is laid out.
    *
    * <p>Setting this value to a negative value will result in an {@link IllegalArgumentException}.
    *
    * @param stepSize The interval value at which ticks must be drawn. Set to 0 to operate the slider
    *     in continuous mode and not have any ticks.
-   * @throws IllegalArgumentException If the step size is not a factor of the {@code
-   *     valueFrom}-{@code valueTo} range. If the step size is less than 0
+   * @throws IllegalArgumentException If the step size is less than 0
    * @see #getStepSize()
    * @attr ref com.google.android.material.R.styleable#Slider_android_stepSize
    */
   public void setStepSize(float stepSize) {
+    if (stepSize < 0.0f) {
+      throw new IllegalArgumentException(EXCEPTION_ILLEGAL_STEP_SIZE);
+    }
     if (this.stepSize != stepSize) {
       this.stepSize = stepSize;
-      validateStepSize();
-      if (trackWidth > 0) {
-        calculateTicksCoordinates();
-      }
+      dirtyConfig = true;
       postInvalidate();
     }
   }
@@ -1318,8 +1310,6 @@ public class Slider extends View {
 
   @Override
   protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-    super.onSizeChanged(w, h, oldw, oldh);
-
     // Update the visible track width.
     trackWidth = w - trackSidePadding * 2;
 
@@ -1332,6 +1322,8 @@ public class Slider extends View {
   }
 
   private void calculateTicksCoordinates() {
+    validateConfigurationIfDirty();
+
     int tickCount = (int) ((valueTo - valueFrom) / stepSize + 1);
     // Limit the tickCount if they will be too dense.
     tickCount = Math.min(tickCount, trackWidth / (trackHeight * 2) + 1);
@@ -1366,6 +1358,15 @@ public class Slider extends View {
 
   @Override
   protected void onDraw(@NonNull Canvas canvas) {
+    if (dirtyConfig) {
+      validateConfigurationIfDirty();
+
+      // Update the visible tick coordinates.
+      if (stepSize > 0.0f) {
+        calculateTicksCoordinates();
+      }
+    }
+
     super.onDraw(canvas);
 
     int top = calculateTop();
