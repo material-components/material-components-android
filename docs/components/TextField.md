@@ -451,6 +451,8 @@ _**Note:** Text and typography attributes should be set on the `TextInputEditTex
 
 #### Prefix/suffix attributes
 
+&nbsp; | Attribute | Related method(s) | Default value
+------ | --------- | ----------------- | -------------
 **Prefix** | `prefixText` | `setPrefixText`<br/>`getPrefixText` | `null`
 **Prefix color** | `prefixTextColor` | `setPrefixTextColor`<br/>`getPrefixTextColor` | `?attr/colorOnSurface` at 60% opacity (see all [states](https://github.com/material-components/material-components-android/blob/master/lib/java/com/google/android/material/textfield/res/color/mtrl_indicator_text_color.xml))
 **Prefix typography** | `prefixTextAppearance` | `setPrefixTextAppearance` | `?attr/textAppearanceSubtitle1`
@@ -608,6 +610,8 @@ _**Note:** Text and typography attributes should be set on the `TextInputEditTex
 
 #### Prefix/suffix attributes
 
+&nbsp; | Attribute | Related method(s) | Default value
+------ | --------- | ----------------- | -------------
 **Prefix** | `prefixText` | `setPrefixText`<br/>`getPrefixText` | `null`
 **Prefix color** | `prefixTextColor` | `setPrefixTextColor`<br/>`getPrefixTextColor` | `?attr/colorOnSurface` at 60% opacity (see all [states](https://github.com/material-components/material-components-android/blob/master/lib/java/com/google/android/material/textfield/res/color/mtrl_indicator_text_color.xml))
 **Prefix typography** | `prefixTextAppearance` | `setPrefixTextAppearance` | `?attr/textAppearanceSubtitle1`
