@@ -645,6 +645,8 @@ Material Theming.
 
 !["Filled and outlined text field theming with pink and brown colors and cut corners"](assets/textfields/textfields_theming.png)
 
+#### Implementing text field theming
+
 Using theme attributes and styles in `res/values/styles.xml` (themes all text fields
 and affects other components):
 
