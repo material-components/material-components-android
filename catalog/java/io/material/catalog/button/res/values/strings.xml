@@ -50,5 +50,15 @@
   <string name="cat_button_label_cheese">Cheese</string>
   <string name="cat_button_label_tomatoes">Tomatoes</string>
   <string name="cat_button_label_mushrooms">Mushrooms</string>
+  <string description="A label for an icon-only button [CHAR LIMIT=NONE]"
+      name="cat_icon_button_label_paint_bucket">Paint bucket icon</string>
+  <string description="A label for an icon-only button [CHAR LIMIT=NONE]"
+      name="cat_icon_button_label_plus">Plus icon</string>
+  <string description="A label for an icon-only button [CHAR LIMIT=NONE]"
+      name="cat_icon_button_label_components">Components icon</string>
+  <string description="A label for an icon-only button [CHAR LIMIT=NONE]"
+      name="cat_icon_button_label_accelerator">Accelerator icon</string>
+  <string description="A label for an icon-only button [CHAR LIMIT=NONE]"
+      name="cat_icon_button_label_dialog">Dialog icon</string>
   <string name="cat_button_require_selection" translatable="false">Require Selection</string>
 </resources>
