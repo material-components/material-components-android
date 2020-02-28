@@ -17,7 +17,6 @@
 package com.google.android.material.internal;
 
 import com.google.android.material.R;
-import com.google.android.material.chip.Chip;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
@@ -34,9 +33,7 @@ import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RestrictTo;
+import android.widget.TextView;
 
 /**
  * Horizontally lay out children until the row is filled and then moved to the next line. Call
@@ -148,8 +145,8 @@ public class FlowLayout extends ViewGroup {
 
     rowCount = 0;
 
-    // if maxRowCount > 0 then can assume that there is an extra chip which is used to display the
-    // `X more chips` Chip
+    // if maxRowCount > 0 then can assume that there is an extra child view which is used to display the
+    // `x more childs` view
     int children = (this.maxRowCount == 0 || !this.overflowChildEnabled) ? this.getChildCount() : this.getChildCount() - 1;
 
     remainingItems = children;
@@ -217,8 +214,8 @@ public class FlowLayout extends ViewGroup {
 
       if (child.getVisibility() != View.GONE) {
 
-        // need to assign chip text here, otherwise measurement of chip width will be wrong
-        ((Chip)child).setText(
+        // need to assign TextView text here, otherwise measurement of view width will be wrong
+        ((TextView)child).setText(
                 getContext().getResources().getQuantityString(
                   this.overflowChildPluralResource, remainingItems + 1, remainingItems + 1
                 )
@@ -245,12 +242,12 @@ public class FlowLayout extends ViewGroup {
       }
     }
 
-    // hide any remaining Chips
+    // hide any remaining child views
     if (this.overflowChildEnabled) {
       for (int i = 1; i <= remainingItems; i++) {
         // get child view, ignoring the last child item as we
-        // assume that if we have remaining items, we are showing the last chip
-        // which is the `X more chips` Chip
+        // assume that if we have remaining items, we are showing the last child view
+        // which is the `X more childs` view
         View child = this.getChildAt((this.getChildCount() - i - 1));
         if (child != null) {
           child.setVisibility(View.GONE);
@@ -293,8 +290,8 @@ public class FlowLayout extends ViewGroup {
     final int maxChildEnd = right - left - paddingEnd;
 
 
-    // if maxRowCount > 0 then can assume that there is an extra chip which is used to display the
-    // `X more chips` Chip
+    // if maxRowCount > 0 then can assume that the last child view is used to display the
+    // `X more childs` view
     int children = (this.maxRowCount == 0 || !this.overflowChildEnabled) ? this.getChildCount() : this.getChildCount() - 1;
 
     for (int i = 0; i < children; i++) {
