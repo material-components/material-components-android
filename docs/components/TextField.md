@@ -411,12 +411,12 @@ instead of on the `EditText` in order to avoid unintended behaviors.
 
 #### Input text attributes
 
-&nbsp;           | Attribute                                                           | Related method(s)                                            | Default value
----------------- | ------------------------------------------------------------------- | ------------------------------------------------------------ | -------------
-**Input text**   | `android:text`                                                      | `setText`<br/>`getText`                                      | `@null`
-**Typography**   | `android:textAppearance`                                            | `setTextAppearance`                                          | `?attr/textAppearanceSubtitle1`
-**Color**        | `android:textColor`                                                 | `setTextColor`<br/>`getTextColors`<br/>`getCurrentTextColor` | `?android:textColorPrimary`
-**Cursor Color** | N/A (color comes from the theme attr `?attr/colorControlActivated`) | N/A                                                          | `?attr/colorPrimary`
+&nbsp;               | Attribute                                                           | Related method(s)                                            | Default value
+-------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------ | -------------
+**Input text**       | `android:text`                                                      | `setText`<br/>`getText`                                      | `@null`
+**Typography**       | `android:textAppearance`                                            | `setTextAppearance`                                          | `?attr/textAppearanceSubtitle1`
+**Input text color** | `android:textColor`                                                 | `setTextColor`<br/>`getTextColors`<br/>`getCurrentTextColor` | `?android:textColorPrimary`
+**Cursor color**     | N/A (color comes from the theme attr `?attr/colorControlActivated`) | N/A                                                          | `?attr/colorPrimary`
 
 _**Note:** The input text attributes should be set on the `TextInputEditText`._
 
@@ -586,12 +586,12 @@ instead of on the `EditText` in order to avoid unintended behaviors.
 
 #### Input text attributes
 
-&nbsp;           | Attribute                                                           | Related method(s)                                            | Default value
----------------- | ------------------------------------------------------------------- | ------------------------------------------------------------ | -------------
-**Input text**   | `android:text`                                                      | `setText`<br/>`getText`                                      | `@null`
-**Typography**   | `android:textAppearance`                                            | `setTextAppearance`                                          | `?attr/textAppearanceSubtitle1`
-**Text Color**   | `android:textColor`                                                 | `setTextColor`<br/>`getTextColors`<br/>`getCurrentTextColor` | `?android:textColorPrimary`
-**Cursor Color** | N/A (color comes from the theme attr `?attr/colorControlActivated`) | N/A                                                          | `?attr/colorPrimary`
+&nbsp;               | Attribute                                                           | Related method(s)                                            | Default value
+-------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------ | -------------
+**Input text**       | `android:text`                                                      | `setText`<br/>`getText`                                      | `@null`
+**Typography**       | `android:textAppearance`                                            | `setTextAppearance`                                          | `?attr/textAppearanceSubtitle1`
+**Input text color** | `android:textColor`                                                 | `setTextColor`<br/>`getTextColors`<br/>`getCurrentTextColor` | `?android:textColorPrimary`
+**Cursor color**     | N/A (color comes from the theme attr `?attr/colorControlActivated`) | N/A                                                          | `?attr/colorPrimary`
 
 _**Note:** The input text attributes should be set on the `TextInputEditText`._
 
