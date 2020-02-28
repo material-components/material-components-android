@@ -536,7 +536,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
 
     /** Sets the Builder's selection manager to the provided {@link DateSelector}. */
     @NonNull
-    static <S> Builder<S> customDatePicker(DateSelector<S> dateSelector) {
+    public static <S> Builder<S> customDatePicker(@NonNull DateSelector<S> dateSelector) {
       return new Builder<>(dateSelector);
     }
 
