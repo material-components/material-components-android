@@ -411,11 +411,12 @@ instead of on the `EditText` in order to avoid unintended behaviors.
 
 #### Input text attributes
 
-&nbsp;         | Attribute                | Related method(s)                                            | Default value
--------------- | ------------------------ | ------------------------------------------------------------ | -------------
-**Input text** | `android:text`           | `setText`<br/>`getText`                                      | `@null`
-**Typography** | `android:textAppearance` | `setTextAppearance`                                          | `?attr/textAppearanceSubtitle1`
-**Color**      | `android:textColor`      | `setTextColor`<br/>`getTextColors`<br/>`getCurrentTextColor` | `?android:textColorPrimary`
+&nbsp;           | Attribute                                                           | Related method(s)                                            | Default value
+---------------- | ------------------------------------------------------------------- | ------------------------------------------------------------ | -------------
+**Input text**   | `android:text`                                                      | `setText`<br/>`getText`                                      | `@null`
+**Typography**   | `android:textAppearance`                                            | `setTextAppearance`                                          | `?attr/textAppearanceSubtitle1`
+**Color**        | `android:textColor`                                                 | `setTextColor`<br/>`getTextColors`<br/>`getCurrentTextColor` | `?android:textColorPrimary`
+**Cursor Color** | N/A (color comes from the theme attr `?attr/colorControlActivated`) | N/A                                                          | `?attr/colorPrimary`
 
 _**Note:** The input text attributes should be set on the `TextInputEditText`._
 
@@ -459,8 +460,8 @@ _**Note:** The input text attributes should be set on the `TextInputEditText`._
 
 #### Prefix/suffix attributes
 
-&nbsp;                | Attribute              | Related method(s)                             | Default value
---------------------- | ---------------------- | --------------------------------------------- | -------------
+&nbsp;                | Attribute                  | Related method(s)                             | Default value
+--------------------- | -------------------------- | --------------------------------------------- | -------------
 **Prefix**            | `app:prefixText`           | `setPrefixText`<br/>`getPrefixText`           | `null`
 **Prefix color**      | `app:prefixTextColor`      | `setPrefixTextColor`<br/>`getPrefixTextColor` | `?attr/colorOnSurface` at 60% opacity (see all [states](https://github.com/material-components/material-components-android/blob/master/lib/java/com/google/android/material/textfield/res/color/mtrl_indicator_text_color.xml))
 **Prefix typography** | `app:prefixTextAppearance` | `setPrefixTextAppearance`                     | `?attr/textAppearanceSubtitle1`
@@ -585,11 +586,12 @@ instead of on the `EditText` in order to avoid unintended behaviors.
 
 #### Input text attributes
 
-&nbsp;         | Attribute                | Related method(s)                                            | Default value
--------------- | ------------------------ | ------------------------------------------------------------ | -------------
-**Input text** | `android:text`           | `setText`<br/>`getText`                                      | `@null`
-**Typography** | `android:textAppearance` | `setTextAppearance`                                          | `?attr/textAppearanceSubtitle1`
-**Color**      | `android:textColor`      | `setTextColor`<br/>`getTextColors`<br/>`getCurrentTextColor` | `?android:textColorPrimary`
+&nbsp;           | Attribute                                                           | Related method(s)                                            | Default value
+---------------- | ------------------------------------------------------------------- | ------------------------------------------------------------ | -------------
+**Input text**   | `android:text`                                                      | `setText`<br/>`getText`                                      | `@null`
+**Typography**   | `android:textAppearance`                                            | `setTextAppearance`                                          | `?attr/textAppearanceSubtitle1`
+**Text Color**   | `android:textColor`                                                 | `setTextColor`<br/>`getTextColors`<br/>`getCurrentTextColor` | `?android:textColorPrimary`
+**Cursor Color** | N/A (color comes from the theme attr `?attr/colorControlActivated`) | N/A                                                          | `?attr/colorPrimary`
 
 _**Note:** The input text attributes should be set on the `TextInputEditText`._
 
@@ -624,8 +626,8 @@ _**Note:** The input text attributes should be set on the `TextInputEditText`._
 
 #### Prefix/suffix attributes
 
-&nbsp;                | Attribute              | Related method(s)                             | Default value
---------------------- | ---------------------- | --------------------------------------------- | -------------
+&nbsp;                | Attribute                  | Related method(s)                             | Default value
+--------------------- | -------------------------- | --------------------------------------------- | -------------
 **Prefix**            | `app:prefixText`           | `setPrefixText`<br/>`getPrefixText`           | `null`
 **Prefix color**      | `app:prefixTextColor`      | `setPrefixTextColor`<br/>`getPrefixTextColor` | `?attr/colorOnSurface` at 60% opacity (see all [states](https://github.com/material-components/material-components-android/blob/master/lib/java/com/google/android/material/textfield/res/color/mtrl_indicator_text_color.xml))
 **Prefix typography** | `app:prefixTextAppearance` | `setPrefixTextAppearance`                     | `?attr/textAppearanceSubtitle1`
