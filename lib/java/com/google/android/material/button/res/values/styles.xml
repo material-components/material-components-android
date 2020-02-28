@@ -24,6 +24,7 @@
   <!-- Defines the base Material button style. -->
   <style name="Widget.MaterialComponents.Button" parent="Widget.AppCompat.Button">
     <item name="enforceMaterialTheme">true</item>
+    <item name="android:background">@empty</item>
     <item name="enforceTextAppearance">true</item>
     <item name="android:textAppearance">?attr/textAppearanceButton</item>
     <item name="android:textColor">@color/mtrl_btn_text_color_selector</item>
