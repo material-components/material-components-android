@@ -47,10 +47,6 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical">
       <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
@@ -72,7 +68,7 @@
             android:clickable="false"
             app:maxRowCount="2"
             app:overflowChipPluralResource="@plurals/cat_app_plural"/>
+
       </LinearLayout>
-    </ScrollView>
   </FrameLayout>
 </LinearLayout>

@@ -115,11 +115,12 @@ public class FlowLayout extends ViewGroup {
   /** Sets the maximum rows rendered for children **/
   public void setMaxRowCount(int maxRowCount) { this.maxRowCount = maxRowCount; }
 
-  /** Sets whether there is a child view rendered when there is maxRowCount > 0 with remaining child views to render **/
+  /** Sets whether to render a overflow child view that displays number of remaining items **/
   public void setOverflowChildEnabled(boolean overflowChildEnabled) {
     this.overflowChildEnabled = overflowChildEnabled;
   }
 
+  /** Sets the plural resource string to use as the text for overflow child ivew */
   public void setOverflowChildPluralResource(@PluralsRes int overflowChildPluralResource) {
     this.overflowChildPluralResource = overflowChildPluralResource;
   }
@@ -209,7 +210,8 @@ public class FlowLayout extends ViewGroup {
     maxChildRight += getPaddingRight();
     childBottom += getPaddingBottom();
 
-    // if we have remaining chips, adjust height to enable showing the `X more chips` Chip on next line
+    // if we have remaining child views, adjust height to enable showing the `X more child` view on
+    // next line
     if (this.overflowChildEnabled && remainingItems > 0) {
       View child = this.getChildAt(this.getChildCount() - 1);
 
@@ -218,7 +220,7 @@ public class FlowLayout extends ViewGroup {
         // need to assign chip text here, otherwise measurement of chip width will be wrong
         ((Chip)child).setText(
                 getContext().getResources().getQuantityString(
-                  this.overflowChildPluralResource, remainingItems, remainingItems
+                  this.overflowChildPluralResource, remainingItems + 1, remainingItems + 1
                 )
         );
 
@@ -244,13 +246,15 @@ public class FlowLayout extends ViewGroup {
     }
 
     // hide any remaining Chips
-    for (int i = 1; i <= remainingItems; i++) {
-      // get child view, ignoring the last child item as we
-      // assume that if we have remaining items, we are showing the last chip
-      // which is the `X more chips` Chip
-      View child = this.getChildAt((this.getChildCount() - i - 1));
-      if (child != null) {
-        child.setVisibility(View.GONE);
+    if (this.overflowChildEnabled) {
+      for (int i = 1; i <= remainingItems; i++) {
+        // get child view, ignoring the last child item as we
+        // assume that if we have remaining items, we are showing the last chip
+        // which is the `X more chips` Chip
+        View child = this.getChildAt((this.getChildCount() - i - 1));
+        if (child != null) {
+          child.setVisibility(View.GONE);
+        }
       }
     }
 
@@ -285,11 +289,15 @@ public class FlowLayout extends ViewGroup {
     int childStart = paddingStart;
     int childTop = getPaddingTop();
     int childBottom = childTop;
-    int childEnd;
 
     final int maxChildEnd = right - left - paddingEnd;
 
-    for (int i = 0; i < getChildCount(); i++) {
+
+    // if maxRowCount > 0 then can assume that there is an extra chip which is used to display the
+    // `X more chips` Chip
+    int children = (this.maxRowCount == 0 || !this.overflowChildEnabled) ? this.getChildCount() : this.getChildCount() - 1;
+
+    for (int i = 0; i < children; i++) {
       View child = getChildAt(i);
 
       if (child.getVisibility() == View.GONE) {
@@ -306,7 +314,7 @@ public class FlowLayout extends ViewGroup {
         endMargin = MarginLayoutParamsCompat.getMarginEnd(marginLp);
       }
 
-      childEnd = childStart + startMargin + child.getMeasuredWidth();
+      int childEnd = childStart + startMargin + child.getMeasuredWidth();
 
       if (!singleLine && (childEnd > maxChildEnd)) {
         childStart = paddingStart;
@@ -326,6 +334,41 @@ public class FlowLayout extends ViewGroup {
       }
 
       childStart += (startMargin + endMargin + child.getMeasuredWidth()) + itemSpacing;
+    }
+
+    // if we have remaining child views and overflow is enabled
+    // display the `x more childs` view on the next line
+    if (this.overflowChildEnabled && remainingItems > 0) {
+      View child = getChildAt(this.getChildCount() - 1);
+
+      if (child.getVisibility() == View.GONE) {
+        child.setTag(R.id.row_index_key, -1);
+        return;
+      }
+
+      LayoutParams lp = child.getLayoutParams();
+      int startMargin = 0;
+      if (lp instanceof MarginLayoutParams) {
+        MarginLayoutParams marginLp = (MarginLayoutParams) lp;
+        startMargin = MarginLayoutParamsCompat.getMarginStart(marginLp);
+      }
+
+      if (!singleLine) {
+        childStart = paddingStart;
+        childTop = childBottom + lineSpacing;
+      }
+
+      child.setTag(R.id.row_index_key, rowCount - 1);
+
+      int childEnd = childStart + startMargin + child.getMeasuredWidth();
+      childBottom = childTop + child.getMeasuredHeight();
+
+      if (isRtl) {
+        child.layout(
+                maxChildEnd - childEnd, childTop, maxChildEnd - childStart - startMargin, childBottom);
+      } else {
+        child.layout(childStart + startMargin, childTop, childEnd, childBottom);
+      }
     }
   }
 
