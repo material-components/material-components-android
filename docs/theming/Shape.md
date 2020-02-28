@@ -248,7 +248,7 @@ Components that support shape theming have a `shapeAppearance` attribute, a
 `shapeAppearanceOverlay` attribute, and are backed by a `MaterialShapeDrawable`.
 
 *   [Bottom Sheet](../components/BottomSheetBehavior.md)
-*   [Card](../components/MaterialCardView.md)
+*   [Card](../components/Card.md)
 *   [Chip](../components/Chip.md)
 *   [Date Picker](../components/Picker.md)
 *   [Dialog](../components/Dialog.md)
