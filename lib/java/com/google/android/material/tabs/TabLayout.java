@@ -3163,7 +3163,8 @@ public class TabLayout extends HorizontalScrollView {
         Drawable selectedIndicator;
         selectedIndicator =
             DrawableCompat.wrap(
-                tabSelectedIndicator != null ? tabSelectedIndicator : defaultSelectionIndicator);
+                tabSelectedIndicator != null ? tabSelectedIndicator : defaultSelectionIndicator)
+                .mutate();
         selectedIndicator.setBounds(indicatorLeft, indicatorTop, indicatorRight, indicatorBottom);
         if (selectedIndicatorPaint != null) {
           if (VERSION.SDK_INT == VERSION_CODES.LOLLIPOP) {
