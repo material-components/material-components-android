@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright 2017 The Android Open Source Project
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,45 +14,37 @@
   limitations under the License.
   -->
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
-  <com.google.android.material.switchmaterial.SwitchMaterial
-      android:id="@+id/overflow_enabled"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/cat_chip_group_overflow_enabled_text"/>
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/overflow_enabled"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cat_chip_group_overflow_enabled_text" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/cat_chip_group_refresh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/cat_chip_group_refresh_content_description"
-        app:srcCompat="@drawable/ic_refresh_black_24px"
-        app:fabSize="mini"/>
+        app:fabSize="mini"
+        app:srcCompat="@drawable/ic_refresh_black_24px" />
 
-  <FrameLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content">
-
-      <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:paddingTop="8dp"
-          android:paddingBottom="8dp"
-          android:gravity="center_horizontal"
-          android:orientation="vertical">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <!-- Maxrow reflow chip group. -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/cat_chip_maxrow_reflow_group"/>
+            android:text="@string/cat_chip_maxrow_reflow_group" />
+
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/maxrow_group"
             android:layout_width="match_parent"
@@ -61,8 +52,7 @@
             android:layout_margin="16dp"
             android:clickable="false"
             app:maxRowCount="2"
-            app:overflowChipPluralResource="@plurals/cat_app_plural"/>
+            app:overflowChipPluralResource="@plurals/cat_app_plural" />
 
-      </LinearLayout>
-  </FrameLayout>
+    </FrameLayout>
 </LinearLayout>
