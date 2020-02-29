@@ -23,12 +23,6 @@
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/single_selection"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/cat_chip_group_single_selection_text"/>
-
   <com.google.android.material.switchmaterial.SwitchMaterial
       android:id="@+id/overflow_enabled"
       android:layout_width="wrap_content"
