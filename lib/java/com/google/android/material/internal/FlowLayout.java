@@ -145,9 +145,7 @@ public class FlowLayout extends ViewGroup {
 
     rowCount = 0;
 
-    // if maxRowCount > 0 then can assume that there is an extra child view which is used to display the
-    // `x more childs` view
-    int children = (this.maxRowCount == 0 || !this.overflowChildEnabled) ? this.getChildCount() : this.getChildCount() - 1;
+    int children = this.getChildCount();
 
     remainingItems = children;
 
@@ -217,7 +215,7 @@ public class FlowLayout extends ViewGroup {
         // need to assign TextView text here, otherwise measurement of view width will be wrong
         ((TextView)child).setText(
                 getContext().getResources().getQuantityString(
-                  this.overflowChildPluralResource, remainingItems + 1, remainingItems + 1
+                  this.overflowChildPluralResource, remainingItems, remainingItems
                 )
         );
 
@@ -244,7 +242,7 @@ public class FlowLayout extends ViewGroup {
 
     // hide any remaining child views
     if (this.overflowChildEnabled) {
-      for (int i = 1; i <= remainingItems; i++) {
+      for (int i = 1; i < remainingItems; i++) {
         // get child view, ignoring the last child item as we
         // assume that if we have remaining items, we are showing the last child view
         // which is the `X more childs` view
