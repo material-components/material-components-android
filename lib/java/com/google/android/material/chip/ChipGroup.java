@@ -487,8 +487,16 @@ public class ChipGroup extends FlowLayout {
     setSingleLine(getResources().getBoolean(id));
   }
 
+  public int getMaxRowCount() {
+    return super.getMaxRowCount();
+  }
+
   public void setMaxRowCount(int maxRowCount) {
     super.setMaxRowCount(maxRowCount);
+  }
+
+  public boolean isOverflowChipEnabled() {
+    return super.isOverflowChildEnabled();
   }
 
   public void setOverflowChipEnabled(boolean overflowChipEnabled) {

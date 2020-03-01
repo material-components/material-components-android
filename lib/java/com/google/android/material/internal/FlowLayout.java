@@ -109,8 +109,16 @@ public class FlowLayout extends ViewGroup {
     this.singleLine = singleLine;
   }
 
+  public int getMaxRowCount() {
+    return maxRowCount;
+  }
+
   /** Sets the maximum rows rendered for children **/
   public void setMaxRowCount(int maxRowCount) { this.maxRowCount = maxRowCount; }
+
+  public boolean isOverflowChildEnabled() {
+    return overflowChildEnabled;
+  }
 
   /** Sets whether to render a overflow child view that displays number of remaining items **/
   public void setOverflowChildEnabled(boolean overflowChildEnabled) {
