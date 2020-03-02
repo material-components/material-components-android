@@ -19,11 +19,11 @@ purple](assets/cards/cards_basic.png)
 
 Before you can use a Material card, you need to add a dependency to the Material
 Components for Android library. For more information, go to the
-[Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
+[Getting started](/material-components/material-components-android/blob/master/docs/getting-started.md)
 page.
 
-Cards support [checking](#making-the-card-checkable) and
-[dragging](#making-the-card-draggable), but those behaviors are not implemented
+Cards support [checking](#making-a-card-checkable) and
+[dragging](#making-a-card-draggable), but those behaviors are not implemented
 by default.
 
 ### Making cards accessible
@@ -34,7 +34,7 @@ such as images having content descriptions set on them.
 If you have a draggable card, you should set an
 [`AccessibilityDelegate`](https://developer.android.com/reference/android/view/View.AccessibilityDelegate)
 on it, so that the behavior can be accessible via screen readers such as
-TalkBack. See the [draggable card section](#making-the-card-draggable) section
+TalkBack. See the [draggable card section](#making-a-card-draggable) section
 below for more info.
 
 ## Card
