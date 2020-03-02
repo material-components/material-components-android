@@ -2152,17 +2152,18 @@ public class Slider extends View {
       info.setClassName(SeekBar.class.getName());
       StringBuilder contentDescription = new StringBuilder();
       // Add the content description of the slider.
-      contentDescription.append(getContentDescription());
-      if (contentDescription.length() != 0) {
-        contentDescription.append(",");
+      if (getContentDescription() != null) {
+        contentDescription.append(getContentDescription()).append(",");
       }
       // Add the range to the content description.
-      contentDescription.append(
-          getContext()
-              .getString(
-                  R.string.mtrl_slider_range_content_description,
-                  formatValue(getMinimumValue()),
-                  formatValue(getMaximumValue())));
+      if (values.size() > 1) {
+        contentDescription.append(
+            getContext()
+                .getString(
+                    R.string.mtrl_slider_range_content_description,
+                    formatValue(getMinimumValue()),
+                    formatValue(getMaximumValue())));
+      }
       info.setContentDescription(contentDescription.toString());
 
       updateBoundsForVirturalViewId(virtualViewId);
