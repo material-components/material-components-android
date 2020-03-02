@@ -2083,6 +2083,7 @@ public class Slider extends View {
       super(source);
       valueFrom = source.readFloat();
       valueTo = source.readFloat();
+      values = new ArrayList<>();
       source.readList(values, Float.class.getClassLoader());
       stepSize = source.readFloat();
       hasFocus = source.createBooleanArray()[0];
