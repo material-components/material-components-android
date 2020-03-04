@@ -25,13 +25,13 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION_CODES;
 import android.os.Parcelable;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.graphics.BlendModeColorFilterCompat;
+import androidx.core.graphics.BlendModeCompat;
 import android.transition.Transition;
 import android.view.View;
 import android.view.View.MeasureSpec;
@@ -53,7 +53,6 @@ public class MaterialContainerTransformSharedElementCallback extends SharedEleme
   private boolean entering = true;
   private boolean transparentWindowBackgroundEnabled = true;
   @Nullable private Rect returnEndBounds;
-  @Nullable private Drawable originalWindowBackground;
 
   @NonNull
   @Override
@@ -170,15 +169,12 @@ public class MaterialContainerTransformSharedElementCallback extends SharedEleme
             new TransitionListenerAdapter() {
               @Override
               public void onTransitionStart(Transition transition) {
-                originalWindowBackground = window.getDecorView().getBackground();
-                window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                removeWindowBackground(window);
               }
 
               @Override
               public void onTransitionEnd(Transition transition) {
-                if (originalWindowBackground != null) {
-                  window.setBackgroundDrawable(originalWindowBackground);
-                }
+                restoreWindowBackground(window);
               }
             });
       }
@@ -211,11 +207,39 @@ public class MaterialContainerTransformSharedElementCallback extends SharedEleme
             new TransitionListenerAdapter() {
               @Override
               public void onTransitionStart(Transition transition) {
-                window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                removeWindowBackground(window);
               }
             });
       }
     }
+  }
+
+  /**
+   * Make the window background transparent during the container transform.
+   *
+   * This applies a color filter to the window background which clears the background's source
+   * pixels. If the client has set a color filter on the window background manually, this will
+   * be overridden and will not be restored after the transition. If you need to manipulate
+   * the color of the window background and have that manipulation restored after the transition,
+   * use {@link android.graphics.drawable.Drawable#setTint(int)} instead.
+   */
+  private static void removeWindowBackground(Window window) {
+    window
+        .getDecorView()
+        .getBackground()
+        .mutate()
+        .setColorFilter(
+            BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
+                Color.TRANSPARENT, BlendModeCompat.CLEAR));
+  }
+
+  /**
+   * Restores the window background to its state before running the container transform.
+   *
+   * @see #removeWindowBackground(Window)
+   */
+  private static void restoreWindowBackground(Window window) {
+    window.getDecorView().getBackground().mutate().clearColorFilter();
   }
 
   /**
