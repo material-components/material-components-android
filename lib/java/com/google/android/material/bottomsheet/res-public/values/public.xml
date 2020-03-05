@@ -26,6 +26,8 @@
   <public name="behavior_fitToContents" type="attr"/>
   <public name="Animation.Design.BottomSheetDialog" type="style"/>
   <public name="Widget.Design.BottomSheet.Modal" type="style"/>
+  <public name="Widget.MaterialComponents.BottomSheet" type="style"/>
+  <public name="Widget.MaterialComponents.BottomSheet.Modal" type="style"/>
   <public name="behavior_draggable" type="attr"/>
   <public name="behavior_expandedOffset" type="attr"/>
   <public name="behavior_halfExpandedRatio" type="attr"/>
