@@ -21,46 +21,46 @@
     android:minHeight="88dp">
 
   <ImageView
-      android:id="@+id/mtrl_list_item_icon"
+      android:id="@+id/material_list_item_icon"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_alignParentStart="true"
       android:padding="16dp"/>
 
   <TextView
-      android:id="@+id/mtrl_list_item_text"
+      android:id="@+id/material_list_item_text"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_gravity="center_vertical"
-      android:layout_toEndOf="@id/mtrl_list_item_icon"
+      android:layout_toEndOf="@id/material_list_item_icon"
       android:paddingTop="16dp"
       android:paddingEnd="16dp"
       android:maxLines="1"
       android:textAppearance="?attr/textAppearanceSubtitle1"
-      android:textColor="@color/mtrl_list_item_tint"/>
+      android:textColor="@color/material_list_item_primary"/>
 
   <TextView
-      android:id="@+id/mtrl_list_item_secondary_text"
+      android:id="@+id/material_list_item_secondary_text"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_below="@id/mtrl_list_item_text"
+      android:layout_below="@id/material_list_item_text"
       android:layout_gravity="center_vertical"
-      android:layout_toEndOf="@id/mtrl_list_item_icon"
+      android:layout_toEndOf="@id/material_list_item_icon"
       android:paddingEnd="16dp"
       android:maxLines="1"
       android:textAppearance="?attr/textAppearanceBody2"
-      android:textColor="@color/mtrl_list_item_tint"/>
+      android:textColor="@color/material_list_item_secondary"/>
 
   <TextView
-      android:id="@+id/mtrl_list_item_tertiary_text"
+      android:id="@+id/material_list_item_tertiary_text"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_below="@id/mtrl_list_item_secondary_text"
+      android:layout_below="@id/material_list_item_secondary_text"
       android:layout_gravity="center_vertical"
-      android:layout_toEndOf="@id/mtrl_list_item_icon"
+      android:layout_toEndOf="@id/material_list_item_icon"
       android:paddingEnd="16dp"
       android:maxLines="1"
       android:textAppearance="?attr/textAppearanceBody2"
-      android:textColor="@color/mtrl_list_item_tint"/>
+      android:textColor="@color/material_list_item_secondary"/>
 
 </RelativeLayout>

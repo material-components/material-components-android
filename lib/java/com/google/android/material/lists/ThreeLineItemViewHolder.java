@@ -31,7 +31,7 @@ public class ThreeLineItemViewHolder extends TwoLineItemViewHolder {
 
   public ThreeLineItemViewHolder(@NonNull View view) {
     super(view);
-    this.tertiary = itemView.findViewById(R.id.mtrl_list_item_tertiary_text);
+    this.tertiary = itemView.findViewById(R.id.material_list_item_tertiary_text);
   }
 
   @NonNull

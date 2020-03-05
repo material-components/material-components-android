@@ -1,0 +1,10 @@
+<resources>
+
+  <!-- Style allowing circular visuals to be round. Sets the corner size to 20dp (half of the viusal's
+  layout size of 40x40 dp, which is large enough to will meet other corners and form a circle -->
+  <style name="ShapeAppearanceOverlay.Circular" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">20dp</item>
+  </style>
+
+</resources>

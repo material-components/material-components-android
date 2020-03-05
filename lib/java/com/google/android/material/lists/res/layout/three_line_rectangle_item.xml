@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2020 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/material_list_item_three_line_height"
+    android:background="?attr/selectableItemBackground"
+    android:gravity="center_vertical"
+    android:paddingEnd="@dimen/material_list_item_side_padding">
+<include layout="@layout/line_item_rectangle_visual"
+            android:layout_height="@dimen/material_list_item_rectangle_height"
+            android:layout_width="@dimen/material_list_item_rectangle_width"
+            android:layout_marginEnd="@dimen/material_list_item_three_line_rectangle_end_margin"/>
+
+    <include layout="@layout/three_line_text" />
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_marginTop="@dimen/material_list_item_item_padding">
+
+        <include layout="@layout/line_item_secondary_action" />
+    </FrameLayout>
+
+</LinearLayout>
