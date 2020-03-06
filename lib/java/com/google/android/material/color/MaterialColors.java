@@ -15,8 +15,6 @@
  */
 package com.google.android.material.color;
 
-import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
-
 import android.content.Context;
 import android.graphics.Color;
 import androidx.annotation.AttrRes;
@@ -24,7 +22,6 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
-import androidx.annotation.RestrictTo;
 import androidx.core.graphics.ColorUtils;
 import android.util.TypedValue;
 import android.view.View;
@@ -32,10 +29,7 @@ import com.google.android.material.resources.MaterialAttributes;
 
 /**
  * A utility class for common color variants used in Material themes.
- *
- * @hide
  */
-@RestrictTo(LIBRARY_GROUP)
 public class MaterialColors {
 
   public static final float ALPHA_FULL = 1.00F;
@@ -43,6 +37,10 @@ public class MaterialColors {
   public static final float ALPHA_DISABLED = 0.38F;
   public static final float ALPHA_LOW = 0.32F;
   public static final float ALPHA_DISABLED_LOW = 0.12F;
+
+  private MaterialColors() {
+    // Private constructor to prevent unwanted construction.
+  }
 
   /**
    * Returns the color int for the provided theme color attribute, using the {@link Context} of the
