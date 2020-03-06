@@ -381,12 +381,17 @@ indicator, optional helper/error text and optional leading/trailing icons.
 7.  Helper/error/counter text
 8.  Prefix/suffix/placeholder (not shown)
 
+_**Note:** All the attributes on the tables below should be set on the
+`TextInputLayout`, with the exception of the input text attributes (which should
+be set on the `TextInputEditText`)._
+
 #### Container attributes
 
-&nbsp;    | Attribute                | Related method(s)                                                                       | Default value
---------- | ------------------------ | --------------------------------------------------------------------------------------- | -------------
-**Color** | `app:boxBackgroundColor` | `setBoxBackgroundColor`<br/>`setBoxBackgroundColorResource`<br/>`getBoxBackgroundColor` | `?attr/colorOnSurface` at 12% opacity (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/textfield/res/color/mtrl_filled_background_color.xml))
-**Shape** | `app:shapeAppearance`    | N/A                                                                                     | `?attr/shapeAppearanceSmallComponent`
+&nbsp;                 | Attribute                | Related method(s)                                                                       | Default value
+---------------------- | ------------------------ | --------------------------------------------------------------------------------------- | -------------
+**Color**              | `app:boxBackgroundColor` | `setBoxBackgroundColor`<br/>`setBoxBackgroundColorResource`<br/>`getBoxBackgroundColor` | `?attr/colorOnSurface` at 12% opacity (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/textfield/res/color/mtrl_filled_background_color.xml))
+**Shape**              | `app:shapeAppearance`    | N/A                                                                                     | `?attr/shapeAppearanceSmallComponent`
+**Text field enabled** | `android:enabled`        | `setEnabled`                                                                            | `true`
 
 #### Leading icon attributes
 
@@ -553,6 +558,10 @@ helper/error text and optional leading/trailing icons.
 6.  Helper/error/counter text
 7.  Prefix/suffix/placeholder (not shown)
 
+_**Note:** All the attributes on the tables below should be set on the
+`TextInputLayout`, with the exception of the input text attributes (which should
+be set on the `TextInputEditText`)._
+
 #### Container attributes
 
 &nbsp;                   | Attribute                   | Related method(s)                                                            | Default value
@@ -562,6 +571,7 @@ helper/error text and optional leading/trailing icons.
 **Stroke width**         | `app:boxStrokeWidth`        | N/A                                                                          | `1dp`
 **Stroke focused width** | `app:boxStrokeWidthFocused` | N/A                                                                          | `2dp`
 **Shape**                | `app:shapeAppearance`       | N/A                                                                          | `?attr/shapeAppearanceSmallComponent`
+**Text field enabled**   | `android:enabled`           | `setEnabled`                                                                 | `true`
 
 #### Leading icon attributes
 
