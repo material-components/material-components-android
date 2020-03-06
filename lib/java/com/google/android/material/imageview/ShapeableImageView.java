@@ -59,6 +59,7 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
 
   private final ShapeAppearancePathProvider pathProvider = new ShapeAppearancePathProvider();
   private final RectF destination;
+  private final RectF maskRect;
   private final Paint borderPaint;
   private final Paint clearPaint;
   private final Path path = new Path();
@@ -86,6 +87,7 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
     clearPaint.setColor(Color.WHITE);
     clearPaint.setXfermode(new PorterDuffXfermode(Mode.DST_OUT));
     destination = new RectF();
+    maskRect = new RectF();
     maskPath = new Path();
     TypedArray attributes =
         context.obtainStyledAttributes(
@@ -138,7 +140,9 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
     // Remove path from rect to draw with clear paint.
     maskPath.rewind();
     maskPath.addPath(path);
-    maskPath.addRect(destination, Direction.CCW);
+    // Do not include padding to clip the background too.
+    maskRect.set(0, 0, getMeasuredWidth(), getMeasuredHeight());
+    maskPath.addRect(maskRect, Direction.CCW);
   }
 
   private void drawStroke(Canvas canvas) {
