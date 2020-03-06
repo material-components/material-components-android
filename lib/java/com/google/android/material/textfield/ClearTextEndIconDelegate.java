@@ -95,7 +95,10 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
         new OnClickListener() {
           @Override
           public void onClick(View v) {
-            textInputLayout.getEditText().setText(null);
+            Editable text = textInputLayout.getEditText().getText();
+            if (text != null) {
+              text.clear();
+            }
           }
         });
     textInputLayout.addOnEditTextAttachedListener(clearTextOnEditTextAttachedListener);
