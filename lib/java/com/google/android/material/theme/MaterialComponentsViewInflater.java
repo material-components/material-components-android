@@ -34,7 +34,7 @@ import android.util.AttributeSet;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.radiobutton.MaterialRadioButton;
-import com.google.android.material.textview.MaterialAutoCompleteTextView;
+import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textview.MaterialTextView;
 
 /**

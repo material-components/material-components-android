@@ -14,18 +14,20 @@
  * limitations under the License.
  */
 
-package com.google.android.material.textview;
+package com.google.android.material.textfield;
 
 import com.google.android.material.R;
 
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.os.Build.VERSION;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.appcompat.widget.ListPopupWindow;
+import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewParent;
@@ -35,7 +37,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Filterable;
 import android.widget.ListAdapter;
-import com.google.android.material.textfield.TextInputLayout;
+import com.google.android.material.internal.ThemeEnforcement;
 
 /**
  * A special sub-class of {@link android.widget.AutoCompleteTextView} that is auto-inflated so that
@@ -68,6 +70,25 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
     // Ensure we are using the correctly themed context rather than the context that was passed in.
     context = getContext();
 
+    TypedArray attributes =
+        ThemeEnforcement.obtainStyledAttributes(
+            context,
+            attributeSet,
+            R.styleable.MaterialAutoCompleteTextView,
+            defStyleAttr,
+            R.style.Widget_AppCompat_AutoCompleteTextView);
+
+    // Due to a framework bug, setting android:inputType="none" on xml has no effect. Therefore,
+    // we check it here in case the autoCompleteTextView should be non-editable.
+    if (attributes.hasValue(R.styleable.MaterialAutoCompleteTextView_android_inputType)) {
+      int inputType =
+          attributes.getResourceId(
+              R.styleable.MaterialAutoCompleteTextView_android_inputType, InputType.TYPE_NULL);
+      if (inputType == InputType.TYPE_NULL) {
+        setKeyListener(null);
+      }
+    }
+
     accessibilityManager =
         (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
 
@@ -99,6 +120,8 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
             modalListPopup.dismiss();
           }
         });
+
+    attributes.recycle();
   }
 
   @Override

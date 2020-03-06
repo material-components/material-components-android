@@ -33,6 +33,7 @@ import static com.google.android.material.testutils.TextInputLayoutMatchers.endI
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertNull;
 
 import android.app.Activity;
 import android.widget.AutoCompleteTextView;
@@ -53,6 +54,14 @@ public class ExposedDropdownMenuTest {
       new ActivityTestRule<>(ExposedDropdownMenuActivity.class);
 
   private static final String INPUT_TEXT = "I";
+
+  @Test
+  public void testMenuIsNonEditableWithInputTypeNone() {
+    final Activity activity = activityTestRule.getActivity();
+    final AutoCompleteTextView editText = activity.findViewById(R.id.edittext_filled);
+
+    assertNull(editText.getKeyListener());
+  }
 
   @Test
   public void testEndIconClickShowsDropdownPopup() {

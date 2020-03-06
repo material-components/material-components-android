@@ -179,7 +179,7 @@ In the layout:
     <AutoCompleteTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:editable="false"
+        android:inputType="none"
     />
 
 </com.google.android.material.textfield.TextInputLayout>

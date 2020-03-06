@@ -266,4 +266,8 @@
     <attr name="textInputLayoutFocusedRectEnabled" format="boolean"/>
   </declare-styleable>
 
+  <declare-styleable name="MaterialAutoCompleteTextView" parent="AppCompatAutoCompleteTextView">
+    <attr name="android:inputType"/>
+  </declare-styleable>
+
 </resources>

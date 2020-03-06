@@ -27,7 +27,7 @@ import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.radiobutton.MaterialRadioButton;
 import com.google.android.material.testapp.theme.MaterialComponentsViewInflaterActivity;
 import com.google.android.material.testapp.theme.R;
-import com.google.android.material.textview.MaterialAutoCompleteTextView;
+import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textview.MaterialTextView;
 import org.junit.Before;
 import org.junit.Rule;

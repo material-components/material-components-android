@@ -141,7 +141,7 @@ The example above will provide an editable filled Exposed Dropdown Menu.
 
 Note: In order to have a non editable variation of the menu, you should disable
 user input in the `AutoCompleteTextView`. That can be achieved by setting
-`android:editable="false"` on the `AutoCompleteTextView`.
+`android:inputType="none"` on the `AutoCompleteTextView`.
 
 ### Variations
 

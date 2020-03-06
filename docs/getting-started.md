@@ -116,7 +116,7 @@ Note: Using a Material Components theme enables a custom view inflater which
 replaces default components with their Material counterparts. Currently, this
 only replaces `<Button>` and `<AutoCompleteTextView>` XML components with
 [`<MaterialButton>`](components/Button.md) and
-[`<MaterialAutoCompleteTextView>`](https://github.com/material-components/material-components-android/blob/master/lib/java/com/google/android/material/textview/MaterialAutoCompleteTextView.java),
+[`<MaterialAutoCompleteTextView>`](https://github.com/material-components/material-components-android/blob/master/lib/java/com/google/android/material/textfield/MaterialAutoCompleteTextView.java),
 respectively.
 
 #### **Bridge Themes** {#bridge-themes}
