@@ -29,10 +29,10 @@ import androidx.annotation.BoolRes;
 import androidx.annotation.DimenRes;
 import androidx.annotation.Dimension;
 import androidx.annotation.IdRes;
-import androidx.annotation.IntegerRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.PluralsRes;
+import androidx.annotation.StringRes;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
@@ -141,7 +141,7 @@ public class ChipGroup extends FlowLayout {
     setSingleLine(a.getBoolean(R.styleable.ChipGroup_singleLine, false));
     setMaxRowCount(a.getInt(R.styleable.ChipGroup_maxRowCount, 0));
     setOverflowChipEnabled(a.getBoolean(R.styleable.ChipGroup_overflowChipEnabled, false));
-    setOverflowChipPluralResource(a.getResourceId(R.styleable.ChipGroup_overflowChipPluralResource, 0));
+    setOverflowChipTextResource(a.getResourceId(R.styleable.ChipGroup_overflowChipTextResource, 0));
     setSingleSelection(a.getBoolean(R.styleable.ChipGroup_singleSelection, false));
     setSelectionRequired(a.getBoolean(R.styleable.ChipGroup_selectionRequired, false));
     int checkedChip = a.getResourceId(R.styleable.ChipGroup_checkedChip, View.NO_ID);
@@ -503,8 +503,8 @@ public class ChipGroup extends FlowLayout {
     super.setOverflowChildEnabled(overflowChipEnabled);
   }
 
-  public void setOverflowChipPluralResource(@PluralsRes int overflowChipPluralResource) {
-    super.setOverflowChildPluralResource(overflowChipPluralResource);
+  public void setOverflowChipTextResource(int overflowChipTextResource) {
+    super.setOverflowChildTextResource(overflowChipTextResource);
   }
 
   /** Returns whether this chip group only allows a single chip to be checked. */

@@ -52,7 +52,7 @@
             android:layout_margin="16dp"
             android:clickable="false"
             app:maxRowCount="2"
-            app:overflowChipPluralResource="@plurals/cat_app_plural" />
+            app:overflowChipTextResource="@plurals/cat_app_plural" />
 
     </FrameLayout>
 </LinearLayout>
