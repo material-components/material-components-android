@@ -87,6 +87,8 @@
     <attr name="checkedIconEnabled" format="boolean"/>
     <!-- Check icon drawable to overlay the chip's icon. -->
     <attr name="checkedIcon"/>
+    <!-- Tint to apply to the chip's checked icon. -->
+    <attr name="checkedIconTint"/>
 
     <!-- Motion spec for show animation. This should be a MotionSpec resource. -->
     <attr name="showMotionSpec"/>

@@ -1872,6 +1872,42 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
   }
 
   /**
+   * Returns the {@link android.content.res.ColorStateList} used to tint the checked icon.
+   *
+   * @see #setCheckedIconTint(ColorStateList)
+   * @attr ref com.google.android.material.R.styleable#Chip_checkedIconTint
+   */
+  @Nullable
+  public ColorStateList getCheckedIconTint() {
+    return chipDrawable != null ? chipDrawable.getCheckedIconTint() : null;
+  }
+
+  /**
+   * Sets this chip's checked icon's color tint using a resource id.
+   *
+   * @param id The resource id for tinting the checked icon.
+   * @attr ref com.google.android.material.R.styleable#Chip_checkedIconTint
+   */
+  public void setCheckedIconTintResource(@ColorRes int id) {
+    if (chipDrawable != null) {
+      chipDrawable.setCheckedIconTintResource(id);
+    }
+  }
+
+  /**
+   * Sets this chip's checked icon's color tint using the specified {@link
+   * android.content.res.ColorStateList}.
+   *
+   * @param checkedIconTint The tint color of this chip's checked icon.
+   * @attr ref com.google.android.material.R.styleable#Chip_checkedIconTint
+   */
+  public void setCheckedIconTint(@Nullable ColorStateList checkedIconTint) {
+    if (chipDrawable != null) {
+      chipDrawable.setCheckedIconTint(checkedIconTint);
+    }
+  }
+
+  /**
    * Returns this chip's show motion spec.
    *
    * @see #setShowMotionSpec(Drawable)

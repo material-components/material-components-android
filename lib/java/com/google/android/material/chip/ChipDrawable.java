@@ -196,6 +196,7 @@ public class ChipDrawable extends MaterialShapeDrawable
   private boolean checkable;
   private boolean checkedIconVisible;
   @Nullable private Drawable checkedIcon;
+  @Nullable private ColorStateList checkedIconTint;
 
   // Animations
   @Nullable private MotionSpec showMotionSpec;
@@ -410,6 +411,10 @@ public class ChipDrawable extends MaterialShapeDrawable
       setCheckedIconVisible(a.getBoolean(R.styleable.Chip_checkedIconEnabled, false));
     }
     setCheckedIcon(MaterialResources.getDrawable(context, a, R.styleable.Chip_checkedIcon));
+    if (a.hasValue(R.styleable.Chip_checkedIconTint)) {
+      setCheckedIconTint(
+          MaterialResources.getColorStateList(context, a, R.styleable.Chip_checkedIconTint));
+    }
 
     setShowMotionSpec(MotionSpec.createFromAttribute(context, a, R.styleable.Chip_showMotionSpec));
     setHideMotionSpec(MotionSpec.createFromAttribute(context, a, R.styleable.Chip_hideMotionSpec));
@@ -1974,6 +1979,41 @@ public class ChipDrawable extends MaterialShapeDrawable
       if (oldChipIconWidth != newChipIconWidth) {
         onSizeChange();
       }
+    }
+  }
+
+  /** Returns the {@link android.content.res.ColorStateList} used to tint the checked icon. */
+  @Nullable
+  public ColorStateList getCheckedIconTint() {
+    return checkedIconTint;
+  }
+
+  /**
+   * Sets the checked icon's color tint using a resource ID.
+   *
+   * @param id Resource id of a {@link android.content.res.ColorStateList} to tint the checked icon.
+   * @attr ref com.google.android.material.R.styleable#Chip_checkedIconTint
+   */
+  public void setCheckedIconTintResource(@ColorRes int id) {
+    setCheckedIconTint(AppCompatResources.getColorStateList(context, id));
+  }
+
+  /**
+   * Sets the checked icon's color tint using the specified {@link
+   * android.content.res.ColorStateList}.
+   *
+   * @param checkedIconTint ColorStateList to tint the checked icon.
+   * @attr ref com.google.android.material.R.styleable#Chip_checkedIconTint
+   */
+  public void setCheckedIconTint(@Nullable ColorStateList checkedIconTint) {
+    if (this.checkedIconTint != checkedIconTint) {
+      this.checkedIconTint = checkedIconTint;
+
+      if (canShowCheckedIcon()) {
+        DrawableCompat.setTintList(checkedIcon, checkedIconTint);
+      }
+
+      onStateChange(getState());
     }
   }
 

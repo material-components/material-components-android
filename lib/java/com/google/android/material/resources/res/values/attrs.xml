@@ -17,6 +17,7 @@
 <resources>
   <!-- Type definitions for common attributes used across component packages. -->
   <attr name="checkedIcon" format="reference" />
+  <attr name="checkedIconTint" format="color" />
   <attr name="minTouchTargetSize" format="dimension" />
   <attr name="selectionRequired" format="boolean" />
   <attr name="singleSelection" format="boolean" />

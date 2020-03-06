@@ -31,7 +31,7 @@
     <!-- Check icon drawable. -->
     <attr name="checkedIcon"/>
     <!-- Tint color for the checked icon. -->
-    <attr name="checkedIconTint" format="color"/>
+    <attr name="checkedIconTint"/>
     <!-- Ripple color for the Card. -->
     <attr name="rippleColor"/>
     <!-- State when a Card is being dragged. -->
