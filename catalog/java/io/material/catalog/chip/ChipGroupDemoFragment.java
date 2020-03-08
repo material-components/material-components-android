@@ -106,19 +106,4 @@ public class ChipGroupDemoFragment extends DemoFragment {
       chipGroup.addView(chip);
     }
   }
-
-  private void initMaxRowChipGroup(ChipGroup chipGroup) {
-    chipGroup.removeAllViews();
-
-    boolean singleSelection = singleSelectionSwitch.isChecked();
-    String[] textArray = getResources().getStringArray(R.array.cat_chip_group_text_array);
-    for (String text : textArray) {
-        Chip chip =
-                (Chip) getLayoutInflater().inflate(getChipGroupItem(singleSelection), chipGroup, false);
-        chip.setText(text);
-        chip.setCloseIconVisible(false);
-        chip.setClickable(false);
-        chipGroup.addView(chip);
-    }
-  }
 }

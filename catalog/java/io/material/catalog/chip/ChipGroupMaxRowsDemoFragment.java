@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 The Android Open Source Project
+ * Copyright 2020 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,8 +34,6 @@ import io.material.catalog.feature.DemoFragment;
 
 /** A fragment that displays the ChipGroup Max row demos for the Catalog app. */
 public class ChipGroupMaxRowsDemoFragment extends DemoFragment {
-
-  private SwitchMaterial singleSelectionSwitch;
   private SwitchMaterial overflowEnabledSwitch;
 
   @Nullable

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  Copyright 2017 The Android Open Source Project
+  Copyright 2020 The Android Open Source Project
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -32,17 +32,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/cat_chip_group_refresh_content_description"
-        app:fabSize="mini"
         app:srcCompat="@drawable/ic_refresh_black_24px" />
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
         <!-- Maxrow reflow chip group. -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:text="@string/cat_chip_maxrow_reflow_group" />
 
         <com.google.android.material.chip.ChipGroup
@@ -53,6 +56,5 @@
             android:clickable="false"
             app:maxRowCount="2"
             app:overflowChipPluralResource="@plurals/cat_app_plural" />
-
-    </FrameLayout>
+    </LinearLayout>
 </LinearLayout>
