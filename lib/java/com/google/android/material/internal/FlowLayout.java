@@ -22,22 +22,18 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.os.Build;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.PluralsRes;
 import androidx.annotation.RestrictTo;
-import androidx.annotation.StringRes;
 import androidx.core.view.MarginLayoutParamsCompat;
 import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import java.security.InvalidParameterException;
 
 /**
  * Horizontally lay out children until the row is filled and then moved to the next line. Call
@@ -54,7 +50,8 @@ public class FlowLayout extends ViewGroup {
   private int maxRowCount;
   private boolean overflowChildEnabled;
   private int remainingItems;
-  private int overflowChildTextResource;
+  @PluralsRes
+  private int overflowChildPluralResource;
 
   public FlowLayout(@NonNull Context context) {
     this(context, null);
@@ -128,9 +125,9 @@ public class FlowLayout extends ViewGroup {
     this.overflowChildEnabled = overflowChildEnabled;
   }
 
-  /** Sets the plural or string resource to use as the text for overflow child ivew */
-  public void setOverflowChildTextResource(int overflowChildTextResource) {
-    this.overflowChildTextResource = overflowChildTextResource;
+  /** Sets the plural resource string to use as the text for overflow child ivew */
+  public void setOverflowChildPluralResource(@PluralsRes int overflowChildPluralResource) {
+    this.overflowChildPluralResource = overflowChildPluralResource;
   }
 
   @Override
@@ -222,19 +219,13 @@ public class FlowLayout extends ViewGroup {
       View child = this.getChildAt(this.getChildCount() - 1);
 
       if (child.getVisibility() != View.GONE) {
-        // need to assign TextView text here, otherwise measurement of view width will be wrong
-        if (getResourceNameTypeName(this.overflowChildTextResource).equals("plurals")) {
 
-          ((TextView) child).setText(
-                  getContext().getResources().getQuantityString(
-                          this.overflowChildTextResource, remainingItems, remainingItems
-                  )
-          );
-        } else if (getResourceNameTypeName(this.overflowChildTextResource).equals("string")) {
-          ((TextView) child).setText(getContext().getResources().getString(this.overflowChildTextResource));
-        } else {
-          throw new InvalidParameterException("overflowChildTextResource can only be a plural or string resource");
-        }
+        // need to assign TextView text here, otherwise measurement of view width will be wrong
+        ((TextView)child).setText(
+                getContext().getResources().getQuantityString(
+                  this.overflowChildPluralResource, remainingItems, remainingItems
+                )
+        );
 
         this.measureChild(child, widthMeasureSpec, heightMeasureSpec);
 
@@ -273,11 +264,6 @@ public class FlowLayout extends ViewGroup {
     int finalWidth = getMeasuredDimension(width, widthMode, maxChildRight);
     int finalHeight = getMeasuredDimension(height, heightMode, childBottom);
     setMeasuredDimension(finalWidth, finalHeight);
-  }
-
-  private String getResourceNameTypeName(int resourceId) {
-    Resources resources = getContext().getResources();
-    return resources.getResourceTypeName(resourceId);
   }
 
   private static int getMeasuredDimension(int size, int mode, int childrenEdge) {
