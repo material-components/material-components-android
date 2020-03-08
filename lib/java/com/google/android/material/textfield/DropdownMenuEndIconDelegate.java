@@ -349,7 +349,6 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
                 dropdownPopupDirty = false;
               }
               showHideDropdown(editText);
-              v.performClick();
             }
             return false;
           }
