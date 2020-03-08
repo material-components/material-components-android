@@ -151,7 +151,7 @@ public class FlowLayout extends ViewGroup {
 
     final int maxRight = maxWidth - getPaddingRight();
 
-    rowCount = 0;
+    rowCount = 1;
 
     int children = this.getChildCount();
 
@@ -182,7 +182,7 @@ public class FlowLayout extends ViewGroup {
       if (childRight > maxRight && !isSingleLine()) {
         rowCount++;
 
-        if (this.maxRowCount > 1 && this.maxRowCount <= rowCount) {
+        if (this.maxRowCount > 0 && this.maxRowCount < rowCount) {
           break;
         }
 
