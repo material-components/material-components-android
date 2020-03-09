@@ -143,6 +143,12 @@ Note: In order to have a non editable variation of the menu, you should disable
 user input in the `AutoCompleteTextView`. That can be achieved by setting
 `android:inputType="none"` on the `AutoCompleteTextView`.
 
+#### Setting a default value
+
+In order to have a pre-selected value displayed, you can call
+`setText(CharSequence text, boolean filter)` on the `AutoCompleteTextView` with
+the filter set to `false`.
+
 ### Variations
 
 #### Filled
