@@ -358,7 +358,7 @@ public class TextInputLayout extends LinearLayout {
      * Called when the end icon changes.
      *
      * @param textInputLayout the {@link TextInputLayout}
-     * @param previousIcon the {@link EndIconMode} the view previously had set
+     * @param previousIcon the end icon mode the view previously had set
      */
     void onEndIconChanged(@NonNull TextInputLayout textInputLayout, @EndIconMode int previousIcon);
   }
@@ -2025,7 +2025,7 @@ public class TextInputLayout extends LinearLayout {
   /**
    * Sets the text color used by the placeholder text in all states.
    *
-   * @attr ref android.support.design.R.styleable#TextInputLayout_placeholderTextColor
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_placeholderTextColor
    */
   public void setPlaceholderTextColor(@Nullable ColorStateList placeholderTextColor) {
     if (this.placeholderTextColor != placeholderTextColor) {
@@ -2039,7 +2039,7 @@ public class TextInputLayout extends LinearLayout {
   /**
    * Returns the ColorStateList used for the placeholder text.
    *
-   * @attr ref android.support.design.R.styleable#TextInputLayout_placeholderTextColor
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_placeholderTextColor
    */
   @Nullable
   public ColorStateList getPlaceholderTextColor() {
@@ -2050,7 +2050,7 @@ public class TextInputLayout extends LinearLayout {
    * Sets the text color and size for the placeholder text from the specified TextAppearance
    * resource.
    *
-   * @attr ref android.support.design.R.styleable#TextInputLayout_placeholderTextAppearance
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_placeholderTextAppearance
    */
   public void setPlaceholderTextAppearance(@StyleRes int placeholderTextAppearance) {
     this.placeholderTextAppearance = placeholderTextAppearance;
@@ -2062,7 +2062,7 @@ public class TextInputLayout extends LinearLayout {
   /**
    * Returns the TextAppearance resource used for the placeholder text color.
    *
-   * @attr ref android.support.design.R.styleable#TextInputLayout_placeholderTextAppearance
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_placeholderTextAppearance
    */
   @StyleRes
   public int getPlaceholderTextAppearance() {
@@ -2803,7 +2803,7 @@ public class TextInputLayout extends LinearLayout {
    * readers will not announce the icon's checked state.
    *
    * @param startIconCheckable whether the icon should be checkable
-   * @attr com.google.android.material.R.styleable#TextInputLayout_startIconCheckable
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_startIconCheckable
    */
   public void setStartIconCheckable(boolean startIconCheckable) {
     startIconView.setCheckable(startIconCheckable);
@@ -2894,12 +2894,13 @@ public class TextInputLayout extends LinearLayout {
   }
 
   /**
-   * Set up the {@link EndIconMode}. When set, a button is placed at the end of the EditText which
-   * enables the user to perform the specific icon's functionality.
+   * Set up the end icon mode. When set, a button is placed at the end of the EditText which enables
+   * the user to perform the specific icon's functionality.
    *
-   * @param endIconMode the {@link EndIconMode} to be set, or END_ICON_NONE to clear the current
-   *     icon if any
-   * @attr com.google.android.material.R.styleable#TextInputLayout_endIconMode
+   * @param endIconMode the end icon mode to be set: {@link #END_ICON_PASSWORD_TOGGLE}, {@link
+   *     #END_ICON_CLEAR_TEXT}, or {@link #END_ICON_CUSTOM}; or {@link #END_ICON_NONE} to clear the
+   *     current icon if any
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_endIconMode
    */
   public void setEndIconMode(@EndIconMode int endIconMode) {
     int previousEndIconMode = this.endIconMode;
@@ -2919,11 +2920,11 @@ public class TextInputLayout extends LinearLayout {
   }
 
   /**
-   * Returns the current {@link EndIconMode}.
+   * Returns the current end icon mode.
    *
    * @return the end icon mode enum
    * @see #setEndIconMode(int)
-   * @attr com.google.android.material.R.styleable#TextInputLayout_endIconMode
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_endIconMode
    */
   @EndIconMode
   public int getEndIconMode() {
@@ -2993,7 +2994,7 @@ public class TextInputLayout extends LinearLayout {
    * readers will not announce the icon's checked state.
    *
    * @param endIconCheckable whether the icon should be checkable
-   * @attr com.google.android.material.R.styleable#TextInputLayout_endIconCheckable
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_endIconCheckable
    */
   public void setEndIconCheckable(boolean endIconCheckable) {
     endIconView.setCheckable(endIconCheckable);
