@@ -218,7 +218,7 @@ public class TooltipDrawable extends MaterialShapeDrawable implements TextDrawab
   /**
    * Returns the TextAppearance used by this tooltip.
    *
-   * @attr ref com.google.android.material.R.styleable#Tooltip_android_textappearance
+   * @attr ref com.google.android.material.R.styleable#Tooltip_android_textAppearance
    */
   @Nullable
   public TextAppearance getTextAppearance() {
@@ -229,7 +229,7 @@ public class TooltipDrawable extends MaterialShapeDrawable implements TextDrawab
    * Sets this tooltip's text appearance using a resource id.
    *
    * @param id The resource id of this tooltip's text appearance.
-   * @attr ref com.google.android.material.R.styleable#Tooltip_android_textappearance
+   * @attr ref com.google.android.material.R.styleable#Tooltip_android_textAppearance
    */
   public void setTextAppearanceResource(@StyleRes int id) {
     setTextAppearance(new TextAppearance(context, id));
@@ -239,7 +239,7 @@ public class TooltipDrawable extends MaterialShapeDrawable implements TextDrawab
    * Sets this tooltip's text appearance.
    *
    * @param textAppearance This tooltip's text appearance.
-   * @attr ref com.google.android.material.R.styleable#Tooltip_android_textappearance
+   * @attr ref com.google.android.material.R.styleable#Tooltip_android_textAppearance
    */
   public void setTextAppearance(@Nullable TextAppearance textAppearance) {
     textDrawableHelper.setTextAppearance(textAppearance, context);
