@@ -514,13 +514,22 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     return gestureInsetBottomIgnored;
   }
 
-  /** Returns the {@link AnimationMode}. */
+  /**
+   * Returns the animation mode.
+   *
+   * @see #setAnimationMode(int)
+   */
   @AnimationMode
   public int getAnimationMode() {
     return view.getAnimationMode();
   }
 
-  /** Sets the {@link AnimationMode}. */
+  /**
+   * Sets the animation mode.
+   *
+   * @param animationMode of {@link #ANIMATION_MODE_SLIDE} or {@link #ANIMATION_MODE_FADE}.
+   * @see #getAnimationMode()
+   */
   @NonNull
   public B setAnimationMode(@AnimationMode int animationMode) {
     view.setAnimationMode(animationMode);

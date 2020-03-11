@@ -178,6 +178,8 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
    * {@link Snackbar}s should still work with AppCompat themes, which don't specify a {@code
    * snackbarButtonStyle}. This method helps to check if a valid {@code snackbarButtonStyle} is set
    * within the current context, so that we know whether we can use the attribute.
+   *
+   * @deprecated This is for backward compatibility with AppCompat themes.
    */
   @Deprecated
   protected static boolean hasSnackbarButtonStyleAttr(@NonNull Context context) {
