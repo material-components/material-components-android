@@ -50,7 +50,6 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import com.google.android.material.drawable.DrawableUtils;
 import com.google.android.material.internal.TextDrawableHelper;
 import com.google.android.material.internal.TextDrawableHelper.TextDrawableDelegate;
@@ -68,14 +67,15 @@ import java.lang.ref.WeakReference;
  * <p>You can use {@code BadgeDrawable} to display dynamic information such as a number of pending
  * requests in a {@link com.google.android.material.bottomnavigation.BottomNavigationView}. To
  * create an instance of {@code BadgeDrawable}, use {@link #create(Context)} or {@link
- * #createFromAttributes(Context, AttributeSet, int, int)}. How to add and display a {@code
- * BadgeDrawable} on top of its anchor view depends on the API level:
+ * #createFromResources(Context, int)}. How to add and display a {@code BadgeDrawable} on top of its
+ * anchor view depends on the API level:
  *
  * <p>For API 18+ (APIs supported by {@link android.view.ViewOverlay})
  *
  * <ul>
  *   <li>Add {@code BadgeDrawable} as a {@link android.view.ViewOverlay} to the desired anchor view
- *       using {@link BadgeUtils#attachBadgeDrawable(BadgeDrawable, View, FrameLayout)}.
+ *       using BadgeUtils#attachBadgeDrawable(BadgeDrawable, View, FrameLayout) (This helper class
+ *       is currently package private).
  *   <li>Update the {@code BadgeDrawable BadgeDrawable's} coordinates (center and bounds) based on
  *       its anchor view using {@link #updateBadgeCoordinates(View, ViewGroup)}.
  * </ul>
@@ -89,7 +89,8 @@ import java.lang.ref.WeakReference;
  *
  * <ul>
  *   <li>Set {@code BadgeDrawable} as the foreground of the anchor view's FrameLayout ancestor using
- *       {@link BadgeUtils#attachBadgeDrawable(BadgeDrawable, View, FrameLayout)}.
+ *       BadgeUtils#attachBadgeDrawable(BadgeDrawable, View, FrameLayout) (This helper class is
+ *       currently package private).
  *   <li>Update the {@code BadgeDrawable BadgeDrawable's} coordinates (center and bounds) based on
  *       its anchor view (relative to its FrameLayout ancestor's coordinate space), using {@link
  *       #updateBadgeCoordinates(View, ViewGroup)}.
