@@ -80,13 +80,13 @@ import java.lang.annotation.RetentionPolicy;
  * <p>MaterialContainerTransform can be used to morph between two Activities, Fragments, Views or a
  * View to a Fragment.
  *
- * <p>This transition captures a start and end View which are used to create a {@link
- * TransitionDrawable}. The drawable will be added to the view hierarchy as an overlay and handles
- * drawing a mask that morphs between the shape of the start View to the shape of the end View.
- * During the animation, the start and end View's are drawn inside the masking container and faded
- * in and/or out over a duration of the transition. Additionally, the masking container will be
- * translated and scaled from the position and size of the start View to the position and size of
- * the end View.
+ * <p>This transition captures a start and end View which are used to create a {@link Drawable}
+ * which will be added to the view hierarchy. The drawable will be added to the view hierarchy as an
+ * overlay and handles drawing a mask that morphs between the shape of the start View to the shape
+ * of the end View. During the animation, the start and end View's are drawn inside the masking
+ * container and faded in and/or out over a duration of the transition. Additionally, the masking
+ * container will be translated and scaled from the position and size of the start View to the
+ * position and size of the end View.
  *
  * <p>The composition of MaterialContainerTransform's animation can be customized in a number of
  * ways. The two most prominent customizations are the way in which content inside the container is
@@ -359,18 +359,17 @@ public class MaterialContainerTransform extends Transition {
     this.endShapeAppearanceModel = endShapeAppearanceModel;
   }
 
-  /** Get the id of the View whose overlay {@link TransitionDrawable} will be added to. */
+  /** Get the id of the View whose overlay this transitions will be added to. */
   @IdRes
   public int getDrawingViewId() {
     return drawingViewId;
   }
 
   /**
-   * Set the id of the View whose overlay {@link TransitionDrawable} will be added to.
+   * Set the id of the View whose overlay this transition will be added to.
    *
-   * <p>Note that {@link TransitionDrawable} cannot be added to the overlay of this transition's end
-   * View. If {@param drawingViewId} is the same as the end View's id, MaterialContainerTransform
-   * will add {@link TransitionDrawable} to the {@param drawingViewId}'s parent.
+   * <p>If {@param drawingViewId} is the same as the end View's id, MaterialContainerTransform
+   * will add the transition's drawable to the {@param drawingViewId}'s parent instead.
    */
   public void setDrawingViewId(@IdRes int drawingViewId) {
     this.drawingViewId = drawingViewId;
@@ -411,7 +410,7 @@ public class MaterialContainerTransform extends Transition {
    * Set the color to be drawn under the morphing container but within the bounds of the {@link
    * #getDrawingViewId()}.
    *
-   * <p>By default this is set to your theme's {@attr ref R.attr.scrimBackground}. Drawing a scrim
+   * <p>By default this is set to your theme's {@link R.attr#scrimBackground}. Drawing a scrim
    * is primarily useful for transforming from a partial-screen View (eg. Card in a grid) to a full
    * screen. The scrim will gradually fade in and cover the content being transformed over by the
    * morphing container.
@@ -425,7 +424,7 @@ public class MaterialContainerTransform extends Transition {
   }
 
   /**
-   * The {@link TransitionDirection} to be used by this transform.
+   * The direction to be used by this transform.
    *
    * @see #TRANSITION_DIRECTION_AUTO
    * @see #TRANSITION_DIRECTION_ENTER
@@ -437,7 +436,7 @@ public class MaterialContainerTransform extends Transition {
   }
 
   /**
-   * Set the {@link TransitionDirection} to be used by this transform.
+   * Set the transition direction to be used by this transform.
    *
    * <p>By default, the transition direction is determined by the change in size between the start
    * and end Views.
@@ -449,7 +448,7 @@ public class MaterialContainerTransform extends Transition {
   }
 
   /**
-   * The {@link FadeMode} to be used to swap the content of the start View with that of the end
+   * The fade mode to be used to swap the content of the start View with that of the end
    * View.
    */
   @FadeMode
@@ -458,7 +457,7 @@ public class MaterialContainerTransform extends Transition {
   }
 
   /**
-   * Set the {@link FadeMode} to be used to swap the content of the start View with that of the end
+   * Set the fade mode to be used to swap the content of the start View with that of the end
    * View.
    *
    * <p>By default, the fade mode is set to {@link #FADE_MODE_IN}.
@@ -472,14 +471,14 @@ public class MaterialContainerTransform extends Transition {
     this.fadeMode = fadeMode;
   }
 
-  /** The {@link FitMode} to be used when scaling the incoming content of the end View. */
+  /** The fit mode to be used when scaling the incoming content of the end View. */
   @FitMode
   public int getFitMode() {
     return fitMode;
   }
 
   /**
-   * Set the {@link FitMode} to be used when scaling the incoming content of the end View.
+   * Set the fit mode to be used when scaling the incoming content of the end View.
    *
    * <p>By default, the fit mode is set to {@link #FIT_MODE_AUTO}.
    */

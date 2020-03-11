@@ -87,7 +87,7 @@ public class MaterialSharedAxis extends MaterialTransitionSet<Transition> {
   private final boolean forward;
 
   /**
-   * Construct a new instance of MaterialSharedAxis with a given {@link Axis} and direction.
+   * Construct a new instance of MaterialSharedAxis with a given axis and direction.
    *
    * @param axis The axis in which this transition will animate.
    * @param forward True if the animation should move in the forward direction, false if it should
