@@ -793,8 +793,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
   /**
    * Get the shadow radius rendered by the path in pixels. This method should be used only when the
-   * actual size of the shadow is required. Usually {@link getElevation()} should be used instead to
-   * get the actual elevation of this view as it might be different.
+   * actual size of the shadow is required. Usually {@link #getElevation()} should be used instead
+   * to get the actual elevation of this view as it might be different.
    */
   public int getShadowRadius() {
     return drawableState.shadowCompatRadius;
@@ -815,7 +815,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * Returns true if fake shadows should be drawn. Native elevation shadows can't be drawn on API <
    * 21 or when the shape is concave.
    */
-  private boolean requiresCompatShadow() {
+  public boolean requiresCompatShadow() {
     return VERSION.SDK_INT < VERSION_CODES.LOLLIPOP
         || (!isRoundRect() && !path.isConvex() && Build.VERSION.SDK_INT < Build.VERSION_CODES.Q);
   }

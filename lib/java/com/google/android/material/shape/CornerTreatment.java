@@ -43,8 +43,8 @@ public class CornerTreatment {
    *     indicates that the treatment is fully rendered. Animation between these two values can
    *     "heal" or "reveal" a corner treatment.
    * @param shapePath the {@link ShapePath} that this treatment should write to.
-   * @deprecated implement {@link #getCornerPath(float, float, float, ShapePath)} or {@link
-   *     #getCornerPath(float, float, CornerSize, Rect, ShapePath)} instead.
+   * @deprecated implement {@link #getCornerPath(ShapePath, float, float, float)} or {@link
+   *     #getCornerPath(ShapePath, float, float, RectF, CornerSize)} instead.
    */
   @Deprecated
   public void getCornerPath(float angle, float interpolation, @NonNull ShapePath shapePath) {}
