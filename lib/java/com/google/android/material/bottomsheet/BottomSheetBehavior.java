@@ -796,7 +796,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    * it is increased. The default value is 0.5.
    *
    * @param ratio a float between 0 and 1, representing the {@link #STATE_HALF_EXPANDED} ratio.
-   * @attr
+   * @attr ref
    *     com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_halfExpandedRatio
    */
   public void setHalfExpandedRatio(@FloatRange(from = 0.0f, to = 1.0f) float ratio) {
@@ -815,7 +815,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   /**
    * Gets the ratio for the height of the BottomSheet in the {@link #STATE_HALF_EXPANDED} state.
    *
-   * @attr
+   * @attr ref
    *     com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_halfExpandedRatio
    */
   @FloatRange(from = 0.0f, to = 1.0f)
@@ -830,7 +830,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    *
    * @param offset an integer value greater than equal to 0, representing the {@link
    *     #STATE_EXPANDED} offset. Value must not exceed the offset in the half expanded state.
-   * @attr
+   * @attr ref
    *     com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_expandedOffset
    */
   public void setExpandedOffset(int offset) {
@@ -844,7 +844,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    * Returns the current expanded offset. If {@code fitToContents} is true, it will automatically
    * pick the offset depending on the height of the content.
    *
-   * @attr
+   * @attr ref
    *     com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_expandedOffset
    */
   public int getExpandedOffset() {
@@ -1509,7 +1509,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
      * BottomSheetBehavior#SAVE_SKIP_COLLAPSED}. It is as if {@link BottomSheetBehavior#SAVE_NONE}
      * were set.
      *
-     * @deprecated Use {@link SavedState(Parcelable, BottomSheetBehavior)} instead.
+     * @deprecated Use {@link #SavedState(Parcelable, BottomSheetBehavior)} instead.
      */
     @Deprecated
     public SavedState(Parcelable superstate, int state) {
@@ -1571,7 +1571,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   /**
-   * Sets whether the BottomSheet should update the accessibility status of its {@link *
+   * Sets whether the BottomSheet should update the accessibility status of its {@link
    * CoordinatorLayout} siblings when expanded.
    *
    * <p>Set this to true if the expanded state of the sheet blocks access to siblings (e.g., when
