@@ -102,7 +102,7 @@ import java.util.Locale;
  * displays the selected value using letters to indicate magnitude (e.g.: 1.5K, 3M, 12B, etc..).
  *
  * <p>With the default style {@link
- * com.google.android.material.R.style.Widget_MaterialComponents_Slider}, colorPrimary and
+ * com.google.android.material.R.style#Widget_MaterialComponents_Slider}, colorPrimary and
  * colorOnPrimary are used to customize the color of the slider when enabled, and colorOnSurface is
  * used when disabled. The following attributes are used to customize the slider's appearance
  * further:
