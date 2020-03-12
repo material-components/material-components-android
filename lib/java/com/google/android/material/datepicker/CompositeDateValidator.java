@@ -33,8 +33,7 @@ public final class CompositeDateValidator implements DateValidator {
   }
 
   /**
-   * Returns a {@link DateValidator} that can perform validation for every given {@link
-   * #validators}.
+   * Returns a {@link DateValidator} that can perform validation for every given validator.
    */
   @NonNull
   public static DateValidator allOf(@NonNull List<DateValidator> validators) {
@@ -61,8 +60,8 @@ public final class CompositeDateValidator implements DateValidator {
       };
 
   /**
-   * Performs the {@link DateValidator#isValid(long)} check as an AND of all validators in {@link
-   * #validators}. e.g. If every validator in this class returns `true` for each {@link
+   * Performs the {@link DateValidator#isValid(long)} check as an AND of all validators.
+   * e.g. If every validator in this class returns `true` for each {@link
    * DateValidator#isValid(long)}, this this method will return true.
    *
    * @param date milliseconds date to validate against.

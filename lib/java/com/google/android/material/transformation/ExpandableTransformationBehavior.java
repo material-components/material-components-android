@@ -58,7 +58,8 @@ public abstract class ExpandableTransformationBehavior extends ExpandableBehavio
    * <p>If the new {@code expanded} state is false, the {@code dependency} should be shown and the
    * {@code child} should be hidden.
    *
-   * @param dependency the {@link ExpandableWidget} dependency containing the new expanded state.
+   * @param dependency the {@link com.google.android.material.expandable.ExpandableWidget}
+   * dependency containing the new expanded state.
    * @param child the view that should react to the change in expanded state.
    * @param expanded the new expanded state.
    * @param isAnimating whether this state change occurred while a previous state change was still

@@ -23,7 +23,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 
 /**
- * Used to limit the display range of {@link MaterialCalendar} and set an openAt month.
+ * Used to limit the display range of the calendar and set an openAt month.
  *
  * <p>Implements {@link Parcelable} in order to maintain the {@code CalendarConstraints} across
  * device configuration changes. Parcelable breaks when passed between processes.
@@ -39,7 +39,7 @@ public final class CalendarConstraints implements Parcelable {
   private final int monthSpan;
 
   /**
-   * Used to determine whether {@link MaterialCalendar} days are enabled.
+   * Used to determine whether calendar days are enabled.
    *
    * <p>Extends {@link Parcelable} in order to maintain the {@code DateValidator} across device
    * configuration changes. Parcelable breaks when passed between processes.

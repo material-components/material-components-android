@@ -747,7 +747,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
    * calculated based on the value set using {@link #setSize(int)} or the {@code fabSize} attribute.
    *
    * @param size preferred size in pixels, or {@link #NO_CUSTOM_SIZE}
-   * @attr ref com.google.android.material.R.styleable.FloatingActionButton_fabCustomSize
+   * @attr ref com.google.android.material.R.styleable#FloatingActionButton_fabCustomSize
    */
   public void setCustomSize(@Px int size) {
     if (size < 0) {
