@@ -219,7 +219,7 @@ public class ChipGroup extends FlowLayout {
     super.addView(child, index, params);
   }
 
-  /** Deprecated. Use {@link ChipGroup#setChipSpacingHorizontal(int)} instead. */
+  /** @deprecated Use {@link ChipGroup#setChipSpacingHorizontal(int)} instead. */
   @Deprecated
   public void setDividerDrawableHorizontal(Drawable divider) {
     throw new UnsupportedOperationException(
@@ -227,7 +227,7 @@ public class ChipGroup extends FlowLayout {
             + "spacing.");
   }
 
-  /** Deprecated. Use {@link ChipGroup#setChipSpacingVertical(int)} instead. */
+  /** @deprecated Use {@link ChipGroup#setChipSpacingVertical(int)} instead. */
   @Deprecated
   public void setDividerDrawableVertical(@Nullable Drawable divider) {
     throw new UnsupportedOperationException(
@@ -235,21 +235,21 @@ public class ChipGroup extends FlowLayout {
             + "spacing.");
   }
 
-  /** Deprecated. Use {@link ChipGroup#setChipSpacingHorizontal(int)} instead. */
+  /** @deprecated Use {@link ChipGroup#setChipSpacingHorizontal(int)} instead. */
   @Deprecated
   public void setShowDividerHorizontal(int dividerMode) {
     throw new UnsupportedOperationException(
         "Changing divider modes has no effect. ChipGroup do not use divider drawables as spacing.");
   }
 
-  /** Deprecated. Use {@link ChipGroup#setChipSpacingVertical(int)} instead. */
+  /** @deprecated Use {@link ChipGroup#setChipSpacingVertical(int)} instead. */
   @Deprecated
   public void setShowDividerVertical(int dividerMode) {
     throw new UnsupportedOperationException(
         "Changing divider modes has no effect. ChipGroup do not use divider drawables as spacing.");
   }
 
-  /** Deprecated Use {@link ChipGroup#setSingleLine(int)} instead. */
+  /** @deprecated Use {@link ChipGroup#setSingleLine(int)} instead. */
   @Deprecated
   public void setFlexWrap(int flexWrap) {
     throw new UnsupportedOperationException(
