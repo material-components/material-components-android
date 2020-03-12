@@ -289,7 +289,7 @@ public class BottomNavigationView extends FrameLayout {
   /**
    * Sets the base elevation of this view, in pixels.
    *
-   * @attr ref android.R.styleable#View_elevation
+   * @attr ref R.styleable#BottomNavigationView_elevation
    */
   @RequiresApi(VERSION_CODES.LOLLIPOP)
   @Override
@@ -445,7 +445,8 @@ public class BottomNavigationView extends FrameLayout {
   /**
    * Set the background of our menu items to the given resource.
    *
-   * <p>This will remove any ripple backgrounds created by {@link setItemRippleColor()}.
+   * <p>This will remove any ripple backgrounds created by {@link
+   * setItemRippleColor(ColorStateList)}.
    *
    * @param resId The identifier of the resource.
    * @attr ref R.styleable#BottomNavigationView_itemBackground
@@ -469,7 +470,8 @@ public class BottomNavigationView extends FrameLayout {
   /**
    * Set the background of our menu items to the given drawable.
    *
-   * <p>This will remove any ripple backgrounds created by {@link setItemRippleColor()}.
+   * <p>This will remove any ripple backgrounds created by {@link
+   * setItemRippleColor(ColorStateList)}.
    *
    * @param background The drawable for the background.
    * @attr ref R.styleable#BottomNavigationView_itemBackground
@@ -481,7 +483,7 @@ public class BottomNavigationView extends FrameLayout {
 
   /**
    * Returns the color used to create a ripple as the background drawable of the menu items. If a
-   * background is set using {@link #setItemBackground()}, this will return null.
+   * background is set using {@link #setItemBackground(Drawable)}, this will return null.
    *
    * @see #setItemBackground(Drawable)
    * @attr ref R.styleable#BottomNavigationView_itemRippleColor
@@ -496,7 +498,7 @@ public class BottomNavigationView extends FrameLayout {
    *
    * @param itemRippleColor The {@link ColorStateList} for the ripple. This will create a ripple
    *     background for menu items, replacing any background previously set by {@link
-   *     #setItemBackground()}.
+   *     #setItemBackground(Drawable)}.
    * @attr ref R.styleable#BottomNavigationView_itemRippleColor
    */
   public void setItemRippleColor(@Nullable ColorStateList itemRippleColor) {
