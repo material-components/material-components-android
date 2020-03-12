@@ -150,9 +150,9 @@ import java.util.Arrays;
  *             chipIconSize                  *dynamic*              closeIconSize
  * </pre>
  *
- * <p>ChipDrawable contains three child drawables: {@link #chipIcon}, {@link #checkedIcon}, and
- * {@link #closeIcon}. chipIcon and checkedIcon inherit the state of this drawable, but closeIcon
- * contains its own state that you can set with {@link #setCloseIconState(int[])}.
+ * <p>ChipDrawable contains three child drawables: {@code chipIcon}, {@code checkedIcon}, and {@code
+ * closeIcon}. chipIcon and checkedIcon inherit the state of this drawable, but closeIcon contains
+ * its own state that you can set with {@link #setCloseIconState(int[])}.
  *
  * @see Chip
  */
@@ -1420,7 +1420,7 @@ public class ChipDrawable extends MaterialShapeDrawable
   }
 
   /**
-   * @deprecated call {@link ShapeAppearanceModel#withCornerSize()} or call {@link
+   * @deprecated call {@link ShapeAppearanceModel#withCornerSize(float)} or call {@link
    *     ShapeAppearanceModel#toBuilder()} on the {@link #getShapeAppearanceModel()}, modify the
    *     shape using the builder and then call {@link
    *     #setShapeAppearanceModel(ShapeAppearanceModel)}.
@@ -1431,7 +1431,7 @@ public class ChipDrawable extends MaterialShapeDrawable
   }
 
   /**
-   * @deprecated call {@link ShapeAppearanceModel#withCornerSize()} or call {@link
+   * @deprecated call {@link ShapeAppearanceModel#withCornerSize(float)} or call {@link
    *     ShapeAppearanceModel#toBuilder()} on the {@link #getShapeAppearanceModel()}, modify the
    *     shape using the builder and then call {@link
    *     #setShapeAppearanceModel(ShapeAppearanceModel)}.

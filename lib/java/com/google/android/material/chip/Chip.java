@@ -1166,7 +1166,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
   }
 
   /**
-   * @deprecated call {@link ShapeAppearanceModel#withCornerSize()} or call {@link
+   * @deprecated call {@link ShapeAppearanceModel#withCornerSize(float)} or call {@link
    *     ShapeAppearanceModel#toBuilder()} on the {@link #getShapeAppearanceModel()}, modify the
    *     shape using the builder and then call {@link
    *     #setShapeAppearanceModel(ShapeAppearanceModel)}.
@@ -1190,7 +1190,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
   }
 
   /**
-   * @deprecated call {@link ShapeAppearanceModel#withCornerSize()} or call {@link
+   * @deprecated call {@link ShapeAppearanceModel#withCornerSize(float)} or call {@link
    *     ShapeAppearanceModel#toBuilder()} on the {@link #getShapeAppearanceModel()}, modify the
    *     shape using the builder and then call {@link
    *     #setShapeAppearanceModel(ShapeAppearanceModel)}.
@@ -1362,7 +1362,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
    * Sets this chip's text appearance using a resource id.
    *
    * @param id The resource id of this chip's text appearance.
-   * @attr ref com.google.android.material.R.styleable#Chip_android_textappearance
+   * @attr ref com.google.android.material.R.styleable#Chip_android_textAppearance
    */
   public void setTextAppearanceResource(@StyleRes int id) {
     this.setTextAppearance(getContext(), id);
@@ -1372,7 +1372,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
    * Sets this chip's text appearance.
    *
    * @param textAppearance This chip's text appearance.
-   * @attr ref com.google.android.material.R.styleable#Chip_android_textappearance
+   * @attr ref com.google.android.material.R.styleable#Chip_android_textAppearance
    */
   public void setTextAppearance(@Nullable TextAppearance textAppearance) {
     if (chipDrawable != null) {
@@ -1418,8 +1418,8 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
   /**
    * Returns whether this chip's icon is visible.
    *
-   * @see #setChipIsVisible(boolean)
-   * @attr ref com.google.android.material.R.styleable#Chip_chipIconIsVisible
+   * @see #setChipIconVisible(boolean)
+   * @attr ref com.google.android.material.R.styleable#Chip_chipIconVisible
    */
   public boolean isChipIconVisible() {
     return chipDrawable != null && chipDrawable.isChipIconVisible();
@@ -1435,7 +1435,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
    * Sets the visibility of this chip's icon using a resource id.
    *
    * @param id The resource id for the visibility of this chip's icon.
-   * @attr ref com.google.android.material.R.styleable#Chip_chipIconIsVisible
+   * @attr ref com.google.android.material.R.styleable#Chip_chipIconVisible
    */
   public void setChipIconVisible(@BoolRes int id) {
     if (chipDrawable != null) {
