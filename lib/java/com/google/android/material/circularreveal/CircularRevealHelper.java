@@ -46,7 +46,7 @@ import java.lang.annotation.RetentionPolicy;
  *
  * <p>A {@link CircularRevealWidget} subclass will call the corresponding method in this helper,
  * which contains the actual implementations for circular reveal. This helper communicates back to
- * the widget via the {@link #delegate}.
+ * the widget via the {@link Delegate}.
  */
 public class CircularRevealHelper {
 
