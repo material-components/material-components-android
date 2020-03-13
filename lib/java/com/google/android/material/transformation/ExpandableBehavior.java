@@ -55,8 +55,9 @@ public abstract class ExpandableBehavior extends Behavior<View> {
 
   /**
    * The current expanded state of this behavior. This state follows the expanded state of the
-   * {@link ExpandableWidget} dependency, and is updated in {@link #onLayoutChild(CoordinatorLayout,
-   * View, int)} and {@link #onDependentViewChanged(CoordinatorLayout, View, View)}.
+   * {@link com.google.android.material.expandable.ExpandableWidget} dependency, and is updated in
+   * {@link #onLayoutChild(CoordinatorLayout, View, int)} and {@link
+   * #onDependentViewChanged(CoordinatorLayout, View, View)}.
    *
    * <p>This state may be {@link #STATE_UNINITIALIZED} before either of those callbacks have been
    * invoked.
@@ -74,14 +75,17 @@ public abstract class ExpandableBehavior extends Behavior<View> {
 
   /**
    * Reacts to a change in expanded state. This callback is guaranteed to be called only once even
-   * if {@link ExpandableWidget#setExpanded(boolean)} is called multiple times with the same value.
-   * Upon configuration change, this callback is called with {@code animated} set to false.
+   * if {@link com.google.android.material.expandable.ExpandableWidget#setExpanded(boolean)} is
+   * called multiple times with the same value. Upon configuration change, this callback is called
+   * with {@code animated} set to false.
    *
-   * @param dependency the {@link ExpandableWidget} dependency containing the new expanded state.
+   * @param dependency the {@link com.google.android.material.expandable.ExpandableWidget}
+   *     dependency containing the new expanded state.
    * @param child the view that should react to the change in expanded state.
    * @param expanded the new expanded state.
-   * @param animated true if {@link ExpandableWidget#setExpanded(boolean)} was called, false if
-   *     restoring from a configuration change.
+   * @param animated true if {@link
+   *     com.google.android.material.expandable.ExpandableWidget#setExpanded(boolean)} was called,
+   *     false if restoring from a configuration change.
    * @return true if the Behavior changed the child view's size or position, false otherwise.
    */
   protected abstract boolean onExpandedStateChange(
