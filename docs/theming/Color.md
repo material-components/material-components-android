@@ -61,8 +61,7 @@ Note: We are reusing several existing attributes -- `colorPrimary`,
 `colorSecondary`, `android:colorBackground`, and `colorError`.
 
 To select primary and secondary colors, and generate variations of each, use the
-[Material palette generator](https://material.io/go/tools-color),
-[Material Plugin for Sketch](https://material.io/go/tools-theme-editor), or 2014
+[Material palette generator](https://material.io/go/tools-color) or 2014
 Material Design palettes.
 
 ## Theming an Individual Component
