@@ -446,7 +446,7 @@ public class BottomNavigationView extends FrameLayout {
    * Set the background of our menu items to the given resource.
    *
    * <p>This will remove any ripple backgrounds created by {@link
-   * setItemRippleColor(ColorStateList)}.
+   * #setItemRippleColor(ColorStateList)}.
    *
    * @param resId The identifier of the resource.
    * @attr ref R.styleable#BottomNavigationView_itemBackground
@@ -471,7 +471,7 @@ public class BottomNavigationView extends FrameLayout {
    * Set the background of our menu items to the given drawable.
    *
    * <p>This will remove any ripple backgrounds created by {@link
-   * setItemRippleColor(ColorStateList)}.
+   * #setItemRippleColor(ColorStateList)}.
    *
    * @param background The drawable for the background.
    * @attr ref R.styleable#BottomNavigationView_itemBackground
