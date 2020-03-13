@@ -4,7 +4,7 @@ layout: detail
 section: components
 excerpt: "Pickers are modals that request a user choose a date or time."
 iconId: picker
-path: /catalog/picker
+path: /catalog/picker/
 -->
 
 ## Date Pickers
