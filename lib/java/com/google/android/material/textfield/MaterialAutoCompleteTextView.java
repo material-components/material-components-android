@@ -22,6 +22,8 @@ import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wra
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,6 +32,7 @@ import androidx.appcompat.widget.ListPopupWindow;
 import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.view.ViewParent;
 import android.view.accessibility.AccessibilityManager;
 import android.view.inputmethod.EditorInfo;
@@ -52,8 +55,11 @@ import com.google.android.material.internal.ThemeEnforcement;
  */
 public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView {
 
+  private static final int MAX_ITEMS_MEASURED = 15;
+
   @NonNull private final ListPopupWindow modalListPopup;
   @Nullable private final AccessibilityManager accessibilityManager;
+  @NonNull private final Rect tempRect = new Rect();
 
   public MaterialAutoCompleteTextView(@NonNull Context context) {
     this(context, null);
@@ -151,6 +157,69 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
       return textInputLayout.getHint();
     }
     return super.getHint();
+  }
+
+  @Override
+  protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+    // Similar to a Spinner, make sure the view's width is at minimum the width of the largest
+    // dropdown item.
+    if (MeasureSpec.getMode(widthMeasureSpec) == MeasureSpec.AT_MOST) {
+      final int measuredWidth = getMeasuredWidth();
+      setMeasuredDimension(
+          Math.min(
+              Math.max(measuredWidth, measureContentWidth()),
+              MeasureSpec.getSize(widthMeasureSpec)),
+          getMeasuredHeight());
+    }
+  }
+
+  private int measureContentWidth() {
+    ListAdapter adapter = getAdapter();
+    TextInputLayout textInputLayout = findTextInputLayoutAncestor();
+    if (adapter == null || textInputLayout == null) {
+      return 0;
+    }
+
+    int width = 0;
+    View itemView = null;
+    int itemType = 0;
+    final int widthMeasureSpec =
+        MeasureSpec.makeMeasureSpec(getMeasuredWidth(), MeasureSpec.UNSPECIFIED);
+    final int heightMeasureSpec =
+        MeasureSpec.makeMeasureSpec(getMeasuredHeight(), MeasureSpec.UNSPECIFIED);
+
+    // Cap the number of items that will be measured.
+    int start = Math.max(0, modalListPopup.getSelectedItemPosition());
+    final int end = Math.min(adapter.getCount(), start + MAX_ITEMS_MEASURED);
+    start = Math.max(0, end - MAX_ITEMS_MEASURED);
+    for (int i = start; i < end; i++) {
+      final int positionType = adapter.getItemViewType(i);
+      if (positionType != itemType) {
+        itemType = positionType;
+        itemView = null;
+      }
+      itemView = adapter.getView(i, itemView, textInputLayout);
+      if (itemView.getLayoutParams() == null) {
+        itemView.setLayoutParams(new LayoutParams(
+            LayoutParams.WRAP_CONTENT,
+            LayoutParams.WRAP_CONTENT));
+      }
+      itemView.measure(widthMeasureSpec, heightMeasureSpec);
+      width = Math.max(width, itemView.getMeasuredWidth());
+    }
+    // Add background padding to measured width.
+    Drawable background = modalListPopup.getBackground();
+    if (background != null) {
+      background.getPadding(tempRect);
+      width += tempRect.left + tempRect.right;
+    }
+    // Add icon width to measured width.
+    int iconWidth = textInputLayout.getEndIconView().getMeasuredWidth();
+    width += iconWidth;
+
+    return width;
   }
 
   @Nullable
