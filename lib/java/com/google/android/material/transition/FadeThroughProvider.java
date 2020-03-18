@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 The Android Open Source Project
+ * Copyright 2020 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,22 +27,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import android.transition.TransitionValues;
-import android.transition.Visibility;
 import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * A {@link Visibility} {@link android.transition.Transition} that provides a fade out or in
- * depending on whether or not the target view is appearing or disappearing.
+ * A class that configures and is able to provide an {@link Animator} that fades out or in a view.
  */
 @RequiresApi(VERSION_CODES.LOLLIPOP)
-public class FadeThrough extends Visibility {
+public class FadeThroughProvider implements VisibilityAnimatorProvider {
 
   static final float PROGRESS_THRESHOLD = 0.35f;
 
-  @NonNull
+  @Nullable
   @Override
-  public Animator onAppear(
+  public Animator createAppear(
       @NonNull ViewGroup sceneRoot,
       @NonNull View view,
       @Nullable TransitionValues startValues,
@@ -55,9 +53,9 @@ public class FadeThrough extends Visibility {
         /* endFraction= */ 1f);
   }
 
-  @NonNull
+  @Nullable
   @Override
-  public Animator onDisappear(
+  public Animator createDisappear(
       @NonNull ViewGroup sceneRoot,
       @NonNull View view,
       @Nullable TransitionValues startValues,

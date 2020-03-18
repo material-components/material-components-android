@@ -31,7 +31,7 @@ import android.transition.TransitionSet;
  * A base {@link TransitionSet} that provides primary and secondary {@link Transition} references
  * that can be further configured.
  */
-@RequiresApi(VERSION_CODES.KITKAT)
+@RequiresApi(VERSION_CODES.LOLLIPOP)
 abstract class MaterialTransitionSet<T extends Transition> extends TransitionSet {
 
   @NonNull protected Context context;

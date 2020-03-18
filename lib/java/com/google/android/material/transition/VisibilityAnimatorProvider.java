@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 The Android Open Source Project
+ * Copyright 2020 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,40 +17,29 @@
 package com.google.android.material.transition;
 
 import android.animation.Animator;
-import android.animation.ValueAnimator;
-import android.os.Build.VERSION_CODES;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import android.transition.TransitionValues;
-import android.transition.Visibility;
 import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * A {@link Visibility} {@link android.transition.Transition} that does nothing to the target views,
- * which can be useful for preserving a scene on screen during a Fragment transition.
+ * An interface which is able to provide an Animator to be supplied to a {@link
+ * android.transition.Visibility} transition when a target view is appearing or disappearing.
  */
-@RequiresApi(VERSION_CODES.LOLLIPOP)
-public class Hold extends Visibility {
+public interface VisibilityAnimatorProvider {
 
-  @NonNull
-  @Override
-  public Animator onAppear(
-      @NonNull ViewGroup sceneRoot,
+  @Nullable
+  Animator createAppear(
+      @NonNull  ViewGroup sceneRoot,
       @NonNull View view,
       @Nullable TransitionValues startValues,
-      @Nullable TransitionValues endValues) {
-    return ValueAnimator.ofFloat(0);
-  }
+      @Nullable TransitionValues endValues);
 
-  @NonNull
-  @Override
-  public Animator onDisappear(
-      @NonNull ViewGroup sceneRoot,
+  @Nullable
+  Animator createDisappear(
+      @NonNull  ViewGroup sceneRoot,
       @NonNull View view,
       @Nullable TransitionValues startValues,
-      @Nullable TransitionValues endValues) {
-    return ValueAnimator.ofFloat(0);
-  }
+      @Nullable TransitionValues endValues);
 }

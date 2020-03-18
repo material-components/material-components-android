@@ -20,7 +20,7 @@ import android.os.Build.VERSION_CODES;
 import androidx.annotation.RequiresApi;
 import android.transition.Transition;
 
-@RequiresApi(VERSION_CODES.KITKAT)
+@RequiresApi(VERSION_CODES.LOLLIPOP)
 abstract class TransitionListenerAdapter implements Transition.TransitionListener {
 
   @Override

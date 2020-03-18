@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 The Android Open Source Project
+ * Copyright 2020 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,15 +25,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
-import android.transition.Transition;
-import android.transition.TransitionSet;
 import android.view.Gravity;
 import com.google.android.material.animation.AnimationUtils;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * A {@link TransitionSet} that provides shared motion along an axis.
+ * A {@link android.transition.Visibility} transition that provides shared motion along an axis.
  *
  * <p>When configured along the {@link #X} axis, this transition slides and fades in the target when
  * appearing and slides and fades out the target when disappearing.
@@ -51,13 +49,14 @@ import java.lang.annotation.RetentionPolicy;
  * the target is appearing or disappearing.
  */
 @RequiresApi(VERSION_CODES.LOLLIPOP)
-public class MaterialSharedAxis extends MaterialTransitionSet<Transition> {
+public class MaterialSharedAxis extends
+    MaterialVisibility<VisibilityAnimatorProvider> {
 
   /**
    * Indicates that the x-axis should be shared for the transition, meaning a horizontal slide and
    * fade should be used.
    *
-   * In the forward direction, targets of this transition will slide left.
+   * <p>In the forward direction, targets of this transition will slide left.
    */
   public static final int X = 0;
 
@@ -65,7 +64,7 @@ public class MaterialSharedAxis extends MaterialTransitionSet<Transition> {
    * Indicates that the y-axis should be shared for the transition, meaning a vertical slide and
    * fade should be used.
    *
-   * In the forward direction, targets of this transition will slide up.
+   * <p>In the forward direction, targets of this transition will slide up.
    */
   public static final int Y = 1;
 
@@ -73,7 +72,7 @@ public class MaterialSharedAxis extends MaterialTransitionSet<Transition> {
    * Indicates that the z-axis should be shared for the transition, meaning a scale and fade should
    * be used.
    *
-   * In the forward direction, targets of this transition will scale out.
+   * <p>In the forward direction, targets of this transition will scale out.
    */
   public static final int Z = 2;
 
@@ -83,6 +82,7 @@ public class MaterialSharedAxis extends MaterialTransitionSet<Transition> {
   @Retention(RetentionPolicy.SOURCE)
   public @interface Axis {}
 
+  private final Context context;
   @Axis private final int axis;
   private final boolean forward;
 
@@ -96,36 +96,15 @@ public class MaterialSharedAxis extends MaterialTransitionSet<Transition> {
   @NonNull
   public static MaterialSharedAxis create(
       @NonNull Context context, @Axis int axis, boolean forward) {
-    MaterialSharedAxis materialSharedAxis = new MaterialSharedAxis(axis, forward);
-    materialSharedAxis.initialize(context);
-    return materialSharedAxis;
+    return new MaterialSharedAxis(context, axis, forward);
   }
 
-  private MaterialSharedAxis(@Axis int axis, boolean forward) {
+  private MaterialSharedAxis(Context context, @Axis int axis, boolean forward) {
+    this.context = context;
     this.axis = axis;
     this.forward = forward;
     setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-  }
-
-  @NonNull
-  @Override
-  Transition getDefaultPrimaryTransition() {
-    switch (axis) {
-      case X:
-        return new SlideDistance(context, forward ? Gravity.END : Gravity.START);
-      case Y:
-        return new SlideDistance(context, forward ? Gravity.BOTTOM : Gravity.TOP);
-      case Z:
-        return new Scale(forward);
-      default:
-        throw new IllegalArgumentException("Invalid axis: " + axis);
-    }
-  }
-
-  @Nullable
-  @Override
-  Transition getDefaultSecondaryTransition() {
-    return new FadeThrough();
+    initialize();
   }
 
   @Axis
@@ -135,5 +114,26 @@ public class MaterialSharedAxis extends MaterialTransitionSet<Transition> {
 
   public boolean isEntering() {
     return forward;
+  }
+
+  @NonNull
+  @Override
+  VisibilityAnimatorProvider getDefaultPrimaryAnimatorProvider() {
+    switch (axis) {
+      case X:
+        return new SlideDistanceProvider(context, forward ? Gravity.END : Gravity.START);
+      case Y:
+        return new SlideDistanceProvider(context, forward ? Gravity.BOTTOM : Gravity.TOP);
+      case Z:
+        return new ScaleProvider(forward);
+      default:
+        throw new IllegalArgumentException("Invalid axis: " + axis);
+    }
+  }
+
+  @Nullable
+  @Override
+  public VisibilityAnimatorProvider getDefaultSecondaryAnimatorProvider() {
+    return new FadeThroughProvider();
   }
 }

@@ -39,7 +39,7 @@ import com.google.android.material.shape.RelativeCornerSize;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.shape.ShapeAppearanceModel.CornerSizeUnaryOperator;
 
-@RequiresApi(VERSION_CODES.KITKAT)
+@RequiresApi(VERSION_CODES.LOLLIPOP)
 class TransitionUtils {
 
   private TransitionUtils() {}

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 The Android Open Source Project
+ * Copyright 2020 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,6 @@ import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.core.view.ViewCompat;
 import android.transition.TransitionValues;
-import android.transition.Visibility;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,13 +40,17 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * A {@link Visibility} {@link android.transition.Transition} that provides a horizontal or vertical
- * slide over a specific distance.
+ * A class that can configure and create an {@link Animator} that slides a view vertically or
+ * horizontally slide over a specific distance.
  */
 @RequiresApi(VERSION_CODES.LOLLIPOP)
-public class SlideDistance extends Visibility {
+public class SlideDistanceProvider implements VisibilityAnimatorProvider {
 
-  /** @hide */
+  /**
+   * GravityFlag definitions.
+   *
+   * @hide
+   */
   @RestrictTo(LIBRARY_GROUP)
   @IntDef({Gravity.LEFT, Gravity.TOP, Gravity.RIGHT, Gravity.BOTTOM, Gravity.START, Gravity.END})
   @Retention(RetentionPolicy.SOURCE)
@@ -56,7 +59,7 @@ public class SlideDistance extends Visibility {
   @GravityFlag private int slideEdge;
   @Px private int slideDistance;
 
-  public SlideDistance(@NonNull Context context, @GravityFlag int slideEdge) {
+  public SlideDistanceProvider(@NonNull Context context, @GravityFlag int slideEdge) {
     this.slideEdge = slideEdge;
     this.slideDistance =
         context
@@ -82,9 +85,9 @@ public class SlideDistance extends Visibility {
     this.slideDistance = slideDistance;
   }
 
-  @NonNull
+  @Nullable
   @Override
-  public Animator onAppear(
+  public Animator createAppear(
       @NonNull ViewGroup sceneRoot,
       @NonNull View view,
       @Nullable TransitionValues startValues,
@@ -92,9 +95,9 @@ public class SlideDistance extends Visibility {
     return createTranslationAppearAnimator(sceneRoot, view);
   }
 
-  @NonNull
+  @Nullable
   @Override
-  public Animator onDisappear(
+  public Animator createDisappear(
       @NonNull ViewGroup sceneRoot,
       @NonNull View view,
       @Nullable TransitionValues startValues,

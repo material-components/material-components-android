@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 The Android Open Source Project
+ * Copyright 2020 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,13 +24,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import android.transition.TransitionValues;
-import android.transition.Visibility;
 import android.view.View;
 import android.view.ViewGroup;
 
-/** A {@link Visibility} {@link android.transition.Transition} that provides a scale. */
+/** A class that configures and is able to provide an {@link Animator} that scales a view. */
 @RequiresApi(VERSION_CODES.LOLLIPOP)
-public class Scale extends Visibility {
+public class ScaleProvider implements VisibilityAnimatorProvider {
 
   private float outgoingStartScale = 1f;
   private float outgoingEndScale = 1.1f;
@@ -39,11 +38,11 @@ public class Scale extends Visibility {
 
   private boolean entering;
 
-  public Scale() {
+  public ScaleProvider() {
     this(true);
   }
 
-  public Scale(boolean entering) {
+  public ScaleProvider(boolean entering) {
     this.entering = entering;
   }
 
@@ -87,9 +86,9 @@ public class Scale extends Visibility {
     this.incomingEndScale = incomingEndScale;
   }
 
-  @NonNull
+  @Nullable
   @Override
-  public Animator onAppear(
+  public Animator createAppear(
       @NonNull ViewGroup sceneRoot,
       @NonNull View view,
       @Nullable TransitionValues startValues,
@@ -101,9 +100,9 @@ public class Scale extends Visibility {
     }
   }
 
-  @NonNull
+  @Nullable
   @Override
-  public Animator onDisappear(
+  public Animator createDisappear(
       @NonNull ViewGroup sceneRoot,
       @NonNull View view,
       @Nullable TransitionValues startValues,
