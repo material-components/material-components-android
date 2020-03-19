@@ -16,6 +16,9 @@
 
 package com.google.android.material.button;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import androidx.customview.view.AbsSavedState;
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
@@ -245,6 +248,26 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     super.onInitializeAccessibilityEvent(accessibilityEvent);
     accessibilityEvent.setClassName(getA11yClassName());
     accessibilityEvent.setChecked(isChecked());
+  }
+
+  @NonNull
+  @Override
+  public Parcelable onSaveInstanceState() {
+    Parcelable superState = super.onSaveInstanceState();
+    SavedState savedState = new SavedState(superState);
+    savedState.checked = checked;
+    return savedState;
+  }
+
+  @Override
+  public void onRestoreInstanceState(Parcelable state) {
+    if (!(state instanceof SavedState)) {
+      super.onRestoreInstanceState(state);
+      return;
+    }
+    SavedState savedState = (SavedState) state;
+    super.onRestoreInstanceState(savedState.getSuperState());
+    setChecked(savedState.checked);
   }
 
   /**
@@ -1048,5 +1071,50 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     if (isUsingOriginalBackground()) {
       materialButtonHelper.setShouldDrawSurfaceColorStroke(shouldDrawSurfaceColorStroke);
     }
+  }
+
+  static class SavedState extends AbsSavedState {
+
+    boolean checked;
+
+    public SavedState(Parcelable superState) {
+      super(superState);
+    }
+
+    public SavedState(@NonNull Parcel source, ClassLoader loader) {
+      super(source, loader);
+      readFromParcel(source);
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel out, int flags) {
+      super.writeToParcel(out, flags);
+      out.writeInt(checked ? 1 : 0);
+    }
+
+    private void readFromParcel(@NonNull Parcel in) {
+      checked = in.readInt() == 1;
+    }
+
+    public static final Creator<SavedState> CREATOR =
+        new ClassLoaderCreator<SavedState>() {
+          @NonNull
+          @Override
+          public SavedState createFromParcel(@NonNull Parcel in, ClassLoader loader) {
+            return new SavedState(in, loader);
+          }
+
+          @NonNull
+          @Override
+          public SavedState createFromParcel(@NonNull Parcel in) {
+            return new SavedState(in, null);
+          }
+
+          @NonNull
+          @Override
+          public SavedState[] newArray(int size) {
+            return new SavedState[size];
+          }
+        };
   }
 }
