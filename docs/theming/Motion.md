@@ -71,14 +71,14 @@ In Fragment A and Fragment B's layouts, identify the start and end Views (as des
 ```xml
 <!--fragment_a.xml-->
 <View
-  android:id=”@+id/start_view”
-  android:transitionName=”shared_element_container”  />
+  android:id="@+id/start_view"
+  android:transitionName="shared_element_container" />
 ```
 ```xml
 <!--fragment_b.xml-->
 <View
-  android:id=”@+id/end_view”
-  android:transitionName=”shared_element_container” />
+  android:id="@+id/end_view"
+  android:transitionName="shared_element_container" />
 ```
 
 _**Note:** There cannot be more than a 1:1 mapping of `transitionNames` between
@@ -91,7 +91,7 @@ Set Fragment B's `sharedElementEnterTransition` to a new `MaterialContainerTrans
 
 ```kt
 // FragmentA.kt
-val fragmentB =  FragmentB()
+val fragmentB = FragmentB()
 fragmentB.sharedElementEnterTransition = MaterialContainerTransform(requireContext())
 
 
@@ -99,7 +99,7 @@ fragmentB.sharedElementEnterTransition = MaterialContainerTransform(requireConte
 
 
 // FragmentB.kt
-override fun onCreate(savedInstanceState:  Bundle?)  {
+override fun onCreate(savedInstanceState: Bundle?)  {
   super.onCreate(savedInstanceState)
   sharedElementEnterTransition = MaterialContainerTransform(requireContext())
 }
@@ -111,7 +111,7 @@ Add or replace Fragment B, adding the shared element from your start scene to yo
 childFragmentManager
   .beginTransaction()
   // Map the start View in FragmentA and the transitionName of the end View in FragmentB
-  .addSharedElement(view,  “shared_element_container”)
+  .addSharedElement(view, "shared_element_container")
   .replace(R.id.fragment_container, fragmentB, FragmentB.TAG)
   .addToBackStack(FragmentB.TAG)
   .commit()
@@ -121,7 +121,7 @@ If using the Navigation Architecture Component, use the following.
 
 ```kt
 // Map the start View in FragmentA and the transitionName of the end View in FragmentB
-val extras =  FragmentNavigatorExtras(view to “shared_element_container”)
+val extras = FragmentNavigatorExtras(view to "shared_element_container")
 findNavController().navigate(R.id.action_fragmentA_to_fragmentB, null, null, extras)
 ```
 
@@ -133,13 +133,13 @@ When running this new transition, you might notice that Fragment A (everything b
 
 ```kt
 // FragmentA.kt
-fun onCreate(savedInstanceState:  Bundle?) {
+fun onCreate(savedInstanceState: Bundle?) {
   super.onCreate(savedInstanceState)
 
   // Fragment A’s exitTransition can be set any time before Fragment A is
   // replaced withFragment B. Ensure Hold's duration is set to the same
   // duration as your MaterialContainerTransform.
-  exitTransition =  Hold()
+  exitTransition = Hold()
 }
 ```
 
@@ -150,14 +150,14 @@ In Activity A’s layout, identify the start View to be used as the “shared el
 ```xml
 <!--activity_a.xml-->
 <View
-  android:id=”@+id/start_view”
-  android:transitionName=”shared_element_container” />
+  android:id="@+id/start_view"
+  android:transitionName="shared_element_container" />
 ```
 
 Configure Activity A for an exit shared element transition as follows:
 
 ```kt
-override  fun onCreate(bundle: Bundle) {
+override fun onCreate(savedInstanceState: Bundle?) {
 
   // Enable Activity Transitions. Optionally enable Activity transitions in your
   // theme with <item name=”android:windowActivityTransitions”>true</item>.
@@ -169,7 +169,7 @@ override  fun onCreate(bundle: Bundle) {
 
   // Keep system bars (status bar, navigation bar) persistent throughout the transition.
   window.sharedElementsUseOverlay = false
-  super.onCreate(bundle);
+  super.onCreate(bundle)
   setContentView(R.layout.activity_a)
   ...
 }
@@ -178,7 +178,7 @@ override  fun onCreate(bundle: Bundle) {
 In Activity B, configure the Activity for transitions in a similar fashion.
 
 ```kt
-override  fun onCreate(bundle: Bundle) {
+override fun onCreate(savedInstanceState: Bundle?) {
 
   // Enable Activity Transitions. Optionally enable Activity transitions in your
   // theme with <item name=”android:windowActivityTransitions”>true</item>.
@@ -186,7 +186,7 @@ override  fun onCreate(bundle: Bundle) {
 
   // Set the transition name, which matches Activity A’s start view transition name, on
   // the root view.
-  findViewById(android.R.id.content).transitionName = "shared_element_container"
+  findViewById<View>(android.R.id.content).transitionName = "shared_element_container"
 
   // Attach a callback used to receive the shared elements from Activity A to be
   // used by the container transform transition.
@@ -202,8 +202,8 @@ override  fun onCreate(bundle: Bundle) {
     duration = 300L
   }
 
-  super.onCreate(bundle);
-  setContentView(R.layout.activity_b);
+  super.onCreate(bundle)
+  setContentView(R.layout.activity_b)
   ...
 }
 ```
@@ -213,14 +213,14 @@ _**Note:** We are using `android.R.id.content` (the window’s root) as the shar
 From Activity A, start the container transform by constructing an Intent with the following options.
 
 ```kt
-val intent = Intent(this,  ActivityB::class.java);
+val intent = Intent(this, ActivityB::class.java)
 
-val options =  ActivityOptions.makeSceneTransitionAnimation(
+val options = ActivityOptions.makeSceneTransitionAnimation(
   this,
   startView,
-  "shared_element_container"  // The transition name to be matched in Activity B.
-);
-startActivity(intent, options.toBundle());
+  "shared_element_container" // The transition name to be matched in Activity B.
+)
+startActivity(intent, options.toBundle())
 ```
 
 #### Transition between Views
@@ -228,24 +228,24 @@ startActivity(intent, options.toBundle());
 In the Activity or Fragment where you are transitioning between two views, trigger a `MaterialContainerTransform` by manually setting the transition’s start and end `View`s.
 
 ```kt
-val transform =  MaterialContainerTransform(this).apply {
+val transform = MaterialContainerTransform(this).apply {
   // Manually tell the container transform which Views to transform between.
   startView = fab
   endView = bottomToolbar
 
   // Optionally add a curved path to the transform
-  pathMotion =  MaterialArcMotion()
+  pathMotion = MaterialArcMotion()
 
   // Since View to View transforms often are not transforming into full screens,
   // remove the transition's scrim.
-  scrimColor =  Color.TRANSPARENT
+  scrimColor = Color.TRANSPARENT
 }
 
 // Begin the transition by changing properties on the start and end views or
 // removing/adding them from the hierarchy.
 TransitionManager.beginDelayedTransition(container, transform)
-fab.visibility =  View.GONE
-bottomToolbar.visibility =  View.VISIBLE
+fab.visibility = View.GONE
+bottomToolbar.visibility = View.VISIBLE
 ```
 
 This will perform a container transform from the start view transitioning to the end view. To return, set up the same transform, switching the start and end Views and undoing any property changes (setting the FAB back to `View.VISIBLE` and the `bottomToolbar` back to `View.GONE`) done by the first transform.
@@ -341,13 +341,13 @@ In Fragment A, configure an enter and exit transition.
 ```kt
 // FragmentA.kt
 
-override fun onCreate(savedInstanceState:  Bundle?) {
+override fun onCreate(savedInstanceState: Bundle?) {
   super.onCreate(savedInstanceState)
 
-  val backward =  MaterialSharedAxis.create(requireContext(),  MaterialSharedAxis.Z,  forward = false)
+  val backward = MaterialSharedAxis.create(requireContext(), MaterialSharedAxis.Z, forward = false)
   enterTransition = backward
 
-  val forward =  MaterialSharedAxis.create(requireContext(),  MaterialSharedAxis.Z,  forward = true)
+  val forward = MaterialSharedAxis.create(requireContext(), MaterialSharedAxis.Z, forward = true)
   exitTransition = forward
 }
 ```
@@ -357,13 +357,13 @@ In Fragment B, again configure an enter and exit transition.
 ```kt
 // FragmentB.kt
 
-override fun onCreate(savedInstanceState:  Bundle?) {
+override fun onCreate(savedInstanceState: Bundle?) {
   super.onCreate(savedInstanceState)
 
-  val forward =  MaterialSharedAxis.create(requireContext(),  MaterialSharedAxis.Z,  forward = true)
+  val forward = MaterialSharedAxis.create(requireContext(), MaterialSharedAxis.Z, forward = true)
   enterTransition = forward
 
-  val backward =  MaterialSharedAxis.create(requireContext(),  MaterialSharedAxis.Z,  forward = false)
+  val backward = MaterialSharedAxis.create(requireContext(), MaterialSharedAxis.Z, forward = false)
   exitTransition = backward
 }
 ```
@@ -384,7 +384,7 @@ B.
 supportFragmentManager
   .beginTransaction()
   .replace(R.id.fragment_container, FragmentB())
-  .commit();
+  .commit()
 ```
 
 The above should give you a working shared axis transition between Fragment A
@@ -411,7 +411,7 @@ flag.
 Or in your Activities:
 
 ```kt
-override fun onCreate(savedInstanceState:  Bundle?) {
+override fun onCreate(savedInstanceState: Bundle?) {
   window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
   ...
 }
@@ -423,15 +423,14 @@ as the Activity's `exitTransition`.
 ```kt
 // ActivityA.kt
 
-override fun onCreate(savedInstanceState:  Bundle?) {
-
-  val exit  =  MaterialSharedAxis.create(this, MaterialSharedAxis.X, forward = true).apply {
+override fun onCreate(savedInstanceState: Bundle?) {
+  val exit = MaterialSharedAxis.create(this, MaterialSharedAxis.X, forward = true).apply {
 
     // Only run the transition on the contents of this activity, excluding
     // system bars or app bars if provided by the app’s theme.
     addTarget(R.id.a_container)
   }
-  window.exitTransition =  exit
+  window.exitTransition = exit
 
   // TODO: Add a reenter transition in the backwards direction to animate
   // ActivityB out and ActivityA back in in the opposite direction.
@@ -446,7 +445,7 @@ ignore Views. Use the combination you need to have the transition applied where
 desired. For example:
 
 ```kt
-val exit  =  MaterialSharedAxis.create(this, MaterialSharedAxis.X, forward = true).apply {
+val exit = MaterialSharedAxis.create(this, MaterialSharedAxis.X, forward = true).apply {
 
   // Only run the transition on the root ViewGroup of this activity. This will exclude
   // other views except what is specified by this method.
@@ -466,11 +465,11 @@ Next, configure a new `MaterialSharedAxis` enter transition in Activity B.
 ```kt
 // ActivityB.kt
 
-override fun onCreate(savedInstanceState:  Bundle?) {
+override fun onCreate(savedInstanceState: Bundle?) {
 
   window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
 
-  val enter =  MaterialSharedAxis.create(this, MaterialSharedAxis.X, forward = true).apply {
+  val enter = MaterialSharedAxis.create(this, MaterialSharedAxis.X, forward = true).apply {
     addTarget(R.id.b_container)
   }
   window.enterTransition = enter
@@ -478,7 +477,7 @@ override fun onCreate(savedInstanceState:  Bundle?) {
 
   // Allow Activity A’s exit transition to play at the same time as this Activity’s
   // enter transition instead of playing them sequentially.
-  window.allowEnterTransitionOverlap =  true
+  window.allowEnterTransitionOverlap = true
 
   super.onCreate(savedInstanceState)
   setContentView(R.layout.activity_b)
@@ -490,7 +489,7 @@ When you're ready to navigate from Activity A to Activity B, start Activity B
 like your normally would.
 
 ```kt
-startActivity(Intent(this,  ActivityB::class.java));
+startActivity(Intent(this, ActivityB::class.java))
 ```
 
 #### Transition between Views
@@ -503,14 +502,14 @@ view with the incoming View, do so with a shared axis transition as follows.
 
 ```kt
 // Set up a new MaterialSharedAxis in the specified ais and direction.
-val sharedAxis =  MaterialSharedAxis.create(requireContext(),  MaterialSharedAxis.Y,  forward = true)
+val sharedAxis = MaterialSharedAxis.create(requireContext(), MaterialSharedAxis.Y, forward = true)
 
 // Begin watching for changes in the View hierarchy.
 TransitionManager.beginDelayedTransition(container, sharedAxis)
 
 // Make any changes to the hierarchy to be animated by the shared axis transition.
-outgoingView.visibility =  View.GONE
-incomingView.visibility =  View.VISIBLE
+outgoingView.visibility = View.GONE
+incomingView.visibility = View.VISIBLE
 ```
 
 This will transition between your outgoing and incoming Views with a shared axis
@@ -547,17 +546,17 @@ A's exit transition.
 ```kt
 // ActivityA.kt
 
-override fun onCreate(savedInstanceState:  Bundle?) {
-  val exit  =  MaterialSharedAxis.create(this,  MaterialSharedAxis.Z,  forward = true).apply {
+override fun onCreate(savedInstanceState: Bundle?) {
+  val exit = MaterialSharedAxis.create(this, MaterialSharedAxis.Z, forward = true).apply {
     // Remove the exit transitions secondary transition completely so this Activity
     // only scales instead of scaling and fading out. Alternatively, this could be
     // set to a modified FadeThrough transition or any other custom transition.
-    secondaryTransition =  null
+    secondaryTransition = null
 
     addTarget(R.id.main_container)
   }
 
-  window.exitTransition =  exit
+  window.exitTransition = exit
 
   super.onCreate(savedInstanceState)
   setContentView(R.layout.activity_main)
@@ -603,20 +602,20 @@ Fragment B to Fragment A.
 ```kt
 // FragmentA.kt
 
-override fun onCreate(savedInstanceState:  Bundle?) {
+override fun onCreate(savedInstanceState: Bundle?) {
   super.onCreate(savedInstanceState)
 
-  exitTransition =  MaterialFadeThrough.create(requireContext())
+  exitTransition = MaterialFadeThrough.create(requireContext())
 }
 ```
 
 ```kt
 // FragmentB.kt
 
-override fun onCreate(savedInstanceState:  Bundle?) {
+override fun onCreate(savedInstanceState: Bundle?) {
   super.onCreate(savedInstanceState)
 
-  enterTransition =  MaterialFadeThrough.create(requireContext())
+  enterTransition = MaterialFadeThrough.create(requireContext())
 }
 ```
 
@@ -632,7 +631,7 @@ Fragment transaction or use the
 supportFragmentManager
   .beginTransaction()
   .replace(R.id.fragment_container, FragmentB())
-  .commit();
+  .commit()
 ```
 
 #### Transition between Activities
@@ -643,16 +642,16 @@ Activity-by-Activity basis by setting the `Window.FEATURE_ACTIVITY_TRANSITIONS`
 flag.
 
 ```xml
-<style  name="MyTheme" parent="Theme.MaterialComponents.DayNight">
+<style name="MyTheme" parent="Theme.MaterialComponents.DayNight">
   ...
-  <item  name="android:windowActivityTransitions">true</item>
+  <item name="android:windowActivityTransitions">true</item>
 </style>
 ```
 
 Or in your Activities:
 
 ```kt
-override fun onCreate(savedInstanceState:  Bundle?) {
+override fun onCreate(savedInstanceState: Bundle?) {
   window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
   ...
 }
@@ -664,9 +663,9 @@ as the Activity's exitTransition.
 ```kt
 // ActivityA.kt
 
-override fun onCreate(savedInstanceState:  Bundle?) {
+override fun onCreate(savedInstanceState: Bundle?) {
 
-  val exit  =  MaterialFadeThrough.create(this).apply {
+  val exit = MaterialFadeThrough.create(this).apply {
 
     // Only run the transition on the contents of this activity, excluding
     // system bars or app bars if provided by the app’s theme.
@@ -684,7 +683,7 @@ ignore Views. Use the combination you need to have the transition applied where
 you’d like. For example:
 
 ```kt
-val exit  =  MaterialFadeThrough.create(this).apply {
+val exit = MaterialFadeThrough.create(this).apply {
 
   window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
 
@@ -706,18 +705,18 @@ Next, configure a new `MaterialFadeThrough` enter transition in Activity B.
 ```kt
 // ActivityB.kt
 
-override fun onCreate(savedInstanceState:  Bundle?) {
+override fun onCreate(savedInstanceState: Bundle?) {
 
   window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
 
-  val enter =  MaterialFadeThrough.create(this).apply {
+  val enter = MaterialFadeThrough.create(this).apply {
     addTarget(R.id.b_container)
   }
   window.enterTransition = enter
 
   // Allow Activity A’s exit transition to play at the same time as this Activity’s
   // enter transition instead of playing them sequentially.
-  window.allowEnterTransitionOverlap =  true
+  window.allowEnterTransitionOverlap = true
 
   super.onCreate(savedInstanceState)
   setContentView(R.layout.activity_b)
@@ -729,7 +728,7 @@ When you're ready to navigate from Activity A to Activity B, start Activity B as
 your normally would.
 
 ```kt
-startActivity(Intent(this,  ActivityB::class.java));
+startActivity(Intent(this, ActivityB::class.java))
 ```
 
 #### Transition between Views
@@ -741,14 +740,14 @@ layout. When you’re ready to replace the outgoing View with the incoming View,
 do so with a fade through transition as follows.
 
 ```kt
-val fadeThrough =  MaterialFadeThrough.create(requireContext())
+val fadeThrough = MaterialFadeThrough.create(requireContext())
 
 // Begin watching for changes in the View hierarchy.
 TransitionManager.beginDelayedTransition(container, fadeThrough)
 
 // Make any changes to the hierarchy to be animated by the fade through transition.
-outgoingView.visibility =  View.GONE
-incomingView.visibility =  View.VISIBLE
+outgoingView.visibility = View.GONE
+incomingView.visibility = View.VISIBLE
 ```
 
 This will transition between your outgoing and incoming Views with a fade
@@ -839,7 +838,7 @@ case a Floating Action Button, using a `MaterialFade` to animate the change.
 // FragmentA.kt
 
 showButton.setOnClickListener {
-   val materialFade =  MaterialFade.create(this)
+   val materialFade = MaterialFade.create(this)
    TransitionManager.beginDelayedTransition(container, materialFade)
    fab.visibility = View.VISIBLE
 }
@@ -856,7 +855,7 @@ entering parameter to `false`._
 // FragmentA.kt
 
 hideButton.setOnClickListener {
-   val materialFade =  MaterialFade.create(this, false)
+   val materialFade = MaterialFade.create(this, false)
    TransitionManager.beginDelayedTransition(container, materialFade)
    fab.visibility = View.GONE
 }
