@@ -157,8 +157,22 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
    */
   public static final int ICON_GRAVITY_TEXT_END = 0x4;
 
+  /**
+   * Gravity used to position the icon in the center of the view on top of the text
+   *
+   * @see #setIconGravity(int)
+   * @see #getIconGravity()
+   */
+  public static final int ICON_GRAVITY_TOP = 0x5;
+
   /** Positions the icon can be set to. */
-  @IntDef({ICON_GRAVITY_START, ICON_GRAVITY_TEXT_START, ICON_GRAVITY_END, ICON_GRAVITY_TEXT_END})
+  @IntDef({
+      ICON_GRAVITY_START,
+      ICON_GRAVITY_TEXT_START,
+      ICON_GRAVITY_END,
+      ICON_GRAVITY_TEXT_END,
+      ICON_GRAVITY_TOP
+  })
   @Retention(RetentionPolicy.SOURCE)
   public @interface IconGravity {}
 
@@ -432,41 +446,43 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
       return;
     }
 
-    if (iconGravity == ICON_GRAVITY_START || iconGravity == ICON_GRAVITY_END) {
-      iconLeft = 0;
-      updateIcon(/* needsIconUpdate = */ false);
-      return;
-    }
+    if (isIconStart() || isIconEnd()) {
+      if (iconGravity == ICON_GRAVITY_START || iconGravity == ICON_GRAVITY_END) {
+        iconLeft = 0;
+        updateIcon(/* needsIconUpdate = */ false);
+        return;
+      }
 
-    Paint textPaint = getPaint();
-    String buttonText = getText().toString();
-    if (getTransformationMethod() != null) {
-      // if text is transformed, add that transformation to to ensure correct calculation
-      // of icon padding.
-      buttonText = getTransformationMethod().getTransformation(buttonText, this).toString();
-    }
+      Paint textPaint = getPaint();
+      String buttonText = getText().toString();
+      if (getTransformationMethod() != null) {
+        // if text is transformed, add that transformation to to ensure correct calculation
+        // of icon padding.
+        buttonText = getTransformationMethod().getTransformation(buttonText, this).toString();
+      }
 
-    int textWidth =
-        Math.min((int) textPaint.measureText(buttonText), getLayout().getEllipsizedWidth());
+      int textWidth =
+          Math.min((int) textPaint.measureText(buttonText), getLayout().getEllipsizedWidth());
 
-    int localIconSize = iconSize == 0 ? icon.getIntrinsicWidth() : iconSize;
-    int newIconLeft =
-        (getMeasuredWidth()
-                - textWidth
-                - ViewCompat.getPaddingEnd(this)
-                - localIconSize
-                - iconPadding
-                - ViewCompat.getPaddingStart(this))
-            / 2;
+      int localIconSize = iconSize == 0 ? icon.getIntrinsicWidth() : iconSize;
+      int newIconLeft =
+          (getMeasuredWidth()
+              - textWidth
+              - ViewCompat.getPaddingEnd(this)
+              - localIconSize
+              - iconPadding
+              - ViewCompat.getPaddingStart(this))
+              / 2;
 
-    // Only flip the bound value if either isLayoutRTL() or iconGravity is textEnd, but not both
-    if (isLayoutRTL() != (iconGravity == ICON_GRAVITY_TEXT_END)) {
-      newIconLeft = -newIconLeft;
-    }
+      // Only flip the bound value if either isLayoutRTL() or iconGravity is textEnd, but not both
+      if (isLayoutRTL() != (iconGravity == ICON_GRAVITY_TEXT_END)) {
+        newIconLeft = -newIconLeft;
+      }
 
-    if (iconLeft != newIconLeft) {
-      iconLeft = newIconLeft;
-      updateIcon(/* needsIconUpdate = */ false);
+      if (iconLeft != newIconLeft) {
+        iconLeft = newIconLeft;
+        updateIcon(/* needsIconUpdate = */ false);
+      }
     }
   }
 
@@ -666,33 +682,47 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
       icon.setBounds(iconLeft, 0, iconLeft + width, height);
     }
 
-    // Reset icon drawable if needed
-    boolean isIconStart =
-        iconGravity == ICON_GRAVITY_START || iconGravity == ICON_GRAVITY_TEXT_START;
     // Forced icon update
     if (needsIconUpdate) {
-      resetIconDrawable(isIconStart);
+      resetIconDrawable();
       return;
     }
 
     // Otherwise only update if the icon or the position has changed
     Drawable[] existingDrawables  = TextViewCompat.getCompoundDrawablesRelative(this);
     Drawable drawableStart = existingDrawables[0];
+    Drawable drawableTop = existingDrawables[0];
     Drawable drawableEnd = existingDrawables[2];
     boolean hasIconChanged =
-        (isIconStart && drawableStart != icon) || (!isIconStart && drawableEnd != icon);
+        (isIconStart() && drawableStart != icon) ||
+            (isIconEnd() && drawableEnd != icon) ||
+            (isIconTop() && drawableTop != icon);
 
     if (hasIconChanged) {
-      resetIconDrawable(isIconStart);
+      resetIconDrawable();
     }
   }
 
-  private void resetIconDrawable(boolean isIconStart) {
-    if (isIconStart) {
+  private void resetIconDrawable() {
+    if (isIconStart()) {
       TextViewCompat.setCompoundDrawablesRelative(this, icon, null, null, null);
-    } else {
+    } else if (isIconEnd()) {
       TextViewCompat.setCompoundDrawablesRelative(this, null, null, icon, null);
+    } else if (isIconTop()) {
+      TextViewCompat.setCompoundDrawablesRelative(this, null, icon, null, null);
     }
+  }
+
+  private boolean isIconStart() {
+    return iconGravity == ICON_GRAVITY_START || iconGravity == ICON_GRAVITY_TEXT_START;
+  }
+
+  private boolean isIconEnd() {
+    return iconGravity == ICON_GRAVITY_END || iconGravity == ICON_GRAVITY_TEXT_END;
+  }
+
+  private boolean isIconTop() {
+    return iconGravity == ICON_GRAVITY_TOP;
   }
 
   /**
