@@ -174,9 +174,9 @@ You can change a component's shape across the entire app by overriding the
 component and defining a custom `shapeAppearanceOverlay`.
 
 Let's say you wanted to modify `MaterialCardView` so that it uses 16dp rounded
-corners acrss the entire app. All you'd have to do is define your own card style
-that extends from the widget's style, and set the relevant attributes to the
-desired theme attributes:
+corners across the entire app. All you'd have to do is define your own card
+style that extends from the widget's style, and set the relevant attributes to
+the desired theme attributes:
 
 ```xml
 <style name="Widget.MyApp.MaterialCardView" parent="Widget.MaterialComponents.MaterialCardView">
