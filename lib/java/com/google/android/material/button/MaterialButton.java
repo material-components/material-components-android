@@ -158,7 +158,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   public static final int ICON_GRAVITY_TEXT_END = 0x4;
 
   /**
-   * Gravity used to position the icon in the center of the view on top of the text
+   * Gravity used to position the icon at the top of the view.
    *
    * @see #setIconGravity(int)
    * @see #getIconGravity()
