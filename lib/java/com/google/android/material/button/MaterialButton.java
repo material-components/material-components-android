@@ -27,6 +27,7 @@ import android.content.res.TypedArray;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuff.Mode;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
@@ -165,13 +166,22 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
    */
   public static final int ICON_GRAVITY_TOP = 0x5;
 
+  /**
+   * Gravity used to position the icon in the center of the view at the top of the text
+   *
+   * @see #setIconGravity(int)
+   * @see #getIconGravity()
+   */
+  public static final int ICON_GRAVITY_TEXT_TOP = 0x6;
+
   /** Positions the icon can be set to. */
   @IntDef({
       ICON_GRAVITY_START,
       ICON_GRAVITY_TEXT_START,
       ICON_GRAVITY_END,
       ICON_GRAVITY_TEXT_END,
-      ICON_GRAVITY_TOP
+      ICON_GRAVITY_TOP,
+      ICON_GRAVITY_TEXT_TOP
   })
   @Retention(RetentionPolicy.SOURCE)
   public @interface IconGravity {}
@@ -191,6 +201,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
   @Px private int iconSize;
   @Px private int iconLeft;
+  @Px private int iconTop;
   @Px private int iconPadding;
 
   private boolean checked = false;
@@ -447,27 +458,17 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     }
 
     if (isIconStart() || isIconEnd()) {
+      iconTop = 0;
       if (iconGravity == ICON_GRAVITY_START || iconGravity == ICON_GRAVITY_END) {
         iconLeft = 0;
         updateIcon(/* needsIconUpdate = */ false);
         return;
       }
 
-      Paint textPaint = getPaint();
-      String buttonText = getText().toString();
-      if (getTransformationMethod() != null) {
-        // if text is transformed, add that transformation to to ensure correct calculation
-        // of icon padding.
-        buttonText = getTransformationMethod().getTransformation(buttonText, this).toString();
-      }
-
-      int textWidth =
-          Math.min((int) textPaint.measureText(buttonText), getLayout().getEllipsizedWidth());
-
       int localIconSize = iconSize == 0 ? icon.getIntrinsicWidth() : iconSize;
       int newIconLeft =
           (getMeasuredWidth()
-              - textWidth
+              - getTextWidth()
               - ViewCompat.getPaddingEnd(this)
               - localIconSize
               - iconPadding
@@ -483,7 +484,56 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
         iconLeft = newIconLeft;
         updateIcon(/* needsIconUpdate = */ false);
       }
+    } else if (isIconTop()) {
+      iconLeft = 0;
+      if (iconGravity == ICON_GRAVITY_TOP) {
+        iconTop = 0;
+        updateIcon(/* needsIconUpdate = */ false);
+        return;
+      }
+
+      int localIconSize = iconSize == 0 ? icon.getIntrinsicHeight() : iconSize;
+      int newIconTop =
+          (getMeasuredHeight()
+              - getTextHeight()
+              - getPaddingTop()
+              - localIconSize
+              - iconPadding
+              - getPaddingBottom())
+              / 2;
+
+      if (iconTop != newIconTop) {
+        iconTop = newIconTop;
+        updateIcon(/* needsIconUpdate = */ false);
+      }
     }
+  }
+
+  private int getTextWidth() {
+    Paint textPaint = getPaint();
+    String buttonText = getText().toString();
+    if (getTransformationMethod() != null) {
+      // if text is transformed, add that transformation to to ensure correct calculation
+      // of icon padding.
+      buttonText = getTransformationMethod().getTransformation(buttonText, this).toString();
+    }
+
+    return Math.min((int) textPaint.measureText(buttonText), getLayout().getEllipsizedWidth());
+  }
+
+  private int getTextHeight() {
+    Paint textPaint = getPaint();
+    String buttonText = getText().toString();
+    if (getTransformationMethod() != null) {
+      // if text is transformed, add that transformation to to ensure correct calculation
+      // of icon padding.
+      buttonText = getTransformationMethod().getTransformation(buttonText, this).toString();
+    }
+
+    Rect bounds = new Rect();
+    textPaint.getTextBounds(buttonText, 0, buttonText.length(), bounds);
+
+    return Math.min(bounds.height(), getLayout().getHeight());
   }
 
   private boolean isLayoutRTL() {
@@ -679,7 +729,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
       int width = iconSize != 0 ? iconSize : icon.getIntrinsicWidth();
       int height = iconSize != 0 ? iconSize : icon.getIntrinsicHeight();
-      icon.setBounds(iconLeft, 0, iconLeft + width, height);
+      icon.setBounds(iconLeft, iconTop, iconLeft + width, iconTop + height);
     }
 
     // Forced icon update
@@ -722,7 +772,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   }
 
   private boolean isIconTop() {
-    return iconGravity == ICON_GRAVITY_TOP;
+    return iconGravity == ICON_GRAVITY_TOP || iconGravity == ICON_GRAVITY_TEXT_TOP;
   }
 
   /**

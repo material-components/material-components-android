@@ -154,11 +154,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/cat_button_top_icon_btn_text"
-        android:paddingTop="10dp"
         android:text="@string/cat_button_label_enabled"
         app:icon="@drawable/ic_dialogs_24px"
-        app:iconGravity="top"
-        app:iconPadding="10dp" />
+        app:iconGravity="textTop" />
 
       <com.google.android.material.switchmaterial.SwitchMaterial
           android:id="@+id/cat_button_enabled_switch"
