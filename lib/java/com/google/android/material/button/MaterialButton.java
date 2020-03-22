@@ -691,7 +691,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     // Otherwise only update if the icon or the position has changed
     Drawable[] existingDrawables  = TextViewCompat.getCompoundDrawablesRelative(this);
     Drawable drawableStart = existingDrawables[0];
-    Drawable drawableTop = existingDrawables[0];
+    Drawable drawableTop = existingDrawables[1];
     Drawable drawableEnd = existingDrawables[2];
     boolean hasIconChanged =
         (isIconStart() && drawableStart != icon) ||
