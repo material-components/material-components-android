@@ -64,7 +64,7 @@ your layout:
 Note: If the `FloatingActionButton` is a child of a `CoordinatorLayout`, you get
 certain behaviors for free. It will automatically shift so that any displayed
 [Snackbars](Snackbar.md) do not cover it, and will automatially hide when
-covered by an [AppBarLayout](AppBarLayout.md) or
+covered by an [AppBarLayout](TopAppBar.md) or
 [BottomSheetBehavior](BottomSheetBehavior.md).
 
 ### Material Styles
