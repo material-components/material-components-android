@@ -88,7 +88,7 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
     // we check it here in case the autoCompleteTextView should be non-editable.
     if (attributes.hasValue(R.styleable.MaterialAutoCompleteTextView_android_inputType)) {
       int inputType =
-          attributes.getResourceId(
+          attributes.getInt(
               R.styleable.MaterialAutoCompleteTextView_android_inputType, InputType.TYPE_NULL);
       if (inputType == InputType.TYPE_NULL) {
         setKeyListener(null);
