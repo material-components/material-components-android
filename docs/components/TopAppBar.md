@@ -4,7 +4,7 @@ layout: detail
 section: components
 excerpt: "Android top app bar."
 iconId: top_app_bar
-path: /catalog/top-app-bar/
+path: /catalog/top-app-bars/
 -->
 
 # Top app bars
