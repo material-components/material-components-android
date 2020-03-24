@@ -466,35 +466,22 @@ In the layout:
 
 #### `AppBarLayout` styles
 
-| &nbsp;            | Style                                                   |
-| ----------------- | ------------------------------------------------------- |
-| **Primary         | `Widget.MaterialComponents.AppBarLayout.Primary`        |
-: background color  :                                                         :
-: style**           :                                                         :
-| **Surface         | `Widget.MaterialComponents.AppBarLayout.Surface`        |
-: background color  :                                                         :
-: style**           :                                                         :
-| **Primary (light  | `Widget.MaterialComponents.AppBarLayout.PrimarySurface` |
-: theme) or surface :                                                         :
-: (dark theme)      :                                                         :
-: background color  :                                                         :
-: style**           :                                                         :
+&nbsp;                                                                   | Style
+------------------------------------------------------------------------ | -----
+**Primary background color style**                                       | `Widget.MaterialComponents.AppBarLayout.Primary`
+**Surface background color style**                                       | `Widget.MaterialComponents.AppBarLayout.Surface`
+**Primary (light theme) or surface (dark theme) background color style** | `Widget.MaterialComponents.AppBarLayout.PrimarySurface`
 
 Default style theme attribute: `?attr/appBarLayoutStyle`
 
 #### `MaterialToolbar` styles
 
-| &nbsp;                  | Style                                              |
-| ----------------------- | -------------------------------------------------- |
-| **Default style**       | `Widget.MaterialComponents.Toolbar`                |
-| **Primary background    | `Widget.MaterialComponents.Toolbar.Primary`        |
-: color style**           :                                                    :
-| **Surface background    | `Widget.MaterialComponents.Toolbar.Surface`        |
-: color style**           :                                                    :
-| **Primary (light theme) | `Widget.MaterialComponents.Toolbar.PrimarySurface` |
-: or surface (dark theme) :                                                    :
-: background color        :                                                    :
-: style**                 :                                                    :
+&nbsp;                                                                   | Style
+------------------------------------------------------------------------ | -----
+**Default style**                                                        | `Widget.MaterialComponents.Toolbar`
+**Primary background color style**                                       | `Widget.MaterialComponents.Toolbar.Primary`
+**Surface background color style**                                       | `Widget.MaterialComponents.Toolbar.Surface`
+**Primary (light theme) or surface (dark theme) background color style** | `Widget.MaterialComponents.Toolbar.PrimarySurface`
 
 Default style theme attribute: `?attr/toolbarStyle`
 
@@ -659,13 +646,10 @@ In menu/navigation icons:
 
 #### Contextual actions attributes
 
-| &nbsp;   | Attribute | Related method(s)      | Default value              |
-| -------- | --------- | ---------------------- | -------------------------- |
-| **Menu** | N/A       | `menuInflater.inflate` | `null`                     |
-:          :           : in                     :                            :
-:          :           : `ActionMode.Callback`  :                            :
-| **Icon   | N/A       | N/A                    | `?attr/colorControlNormal` |
-: color**  :           :                        : (as `Drawable` tint)       :
+&nbsp;         | Attribute | Related method(s)                               | Default value
+-------------- | --------- | ----------------------------------------------- | -------------
+**Menu**       | N/A       | `menuInflater.inflate` in `ActionMode.Callback` | `null`
+**Icon color** | N/A       | N/A                                             | `?attr/colorControlNormal` (as `Drawable` tint)
 
 #### Overflow menu attributes
 
