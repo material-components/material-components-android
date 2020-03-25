@@ -345,7 +345,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
   super.onCreate(savedInstanceState)
 
   val backward = MaterialSharedAxis.create(requireContext(), MaterialSharedAxis.Z, false)
-  enterTransition = backward
+  reenterTransition = backward
 
   val forward = MaterialSharedAxis.create(requireContext(), MaterialSharedAxis.Z, true)
   exitTransition = forward
@@ -364,7 +364,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
   enterTransition = forward
 
   val backward = MaterialSharedAxis.create(requireContext(), MaterialSharedAxis.Z, false)
-  exitTransition = backward
+  returnTransition = backward
 }
 ```
 
