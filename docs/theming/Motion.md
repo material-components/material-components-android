@@ -344,10 +344,10 @@ In Fragment A, configure an enter and exit transition.
 override fun onCreate(savedInstanceState: Bundle?) {
   super.onCreate(savedInstanceState)
 
-  val backward = MaterialSharedAxis.create(requireContext(), MaterialSharedAxis.Z, forward = false)
+  val backward = MaterialSharedAxis.create(requireContext(), MaterialSharedAxis.Z, false)
   enterTransition = backward
 
-  val forward = MaterialSharedAxis.create(requireContext(), MaterialSharedAxis.Z, forward = true)
+  val forward = MaterialSharedAxis.create(requireContext(), MaterialSharedAxis.Z, true)
   exitTransition = forward
 }
 ```
@@ -360,10 +360,10 @@ In Fragment B, again configure an enter and exit transition.
 override fun onCreate(savedInstanceState: Bundle?) {
   super.onCreate(savedInstanceState)
 
-  val forward = MaterialSharedAxis.create(requireContext(), MaterialSharedAxis.Z, forward = true)
+  val forward = MaterialSharedAxis.create(requireContext(), MaterialSharedAxis.Z, true)
   enterTransition = forward
 
-  val backward = MaterialSharedAxis.create(requireContext(), MaterialSharedAxis.Z, forward = false)
+  val backward = MaterialSharedAxis.create(requireContext(), MaterialSharedAxis.Z, false)
   exitTransition = backward
 }
 ```
@@ -424,7 +424,7 @@ as the Activity's `exitTransition`.
 // ActivityA.kt
 
 override fun onCreate(savedInstanceState: Bundle?) {
-  val exit = MaterialSharedAxis.create(this, MaterialSharedAxis.X, forward = true).apply {
+  val exit = MaterialSharedAxis.create(this, MaterialSharedAxis.X, true).apply {
 
     // Only run the transition on the contents of this activity, excluding
     // system bars or app bars if provided by the app’s theme.
@@ -445,7 +445,7 @@ ignore Views. Use the combination you need to have the transition applied where
 desired. For example:
 
 ```kt
-val exit = MaterialSharedAxis.create(this, MaterialSharedAxis.X, forward = true).apply {
+val exit = MaterialSharedAxis.create(this, MaterialSharedAxis.X, true).apply {
 
   // Only run the transition on the root ViewGroup of this activity. This will exclude
   // other views except what is specified by this method.
@@ -469,7 +469,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
 
   window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
 
-  val enter = MaterialSharedAxis.create(this, MaterialSharedAxis.X, forward = true).apply {
+  val enter = MaterialSharedAxis.create(this, MaterialSharedAxis.X, true).apply {
     addTarget(R.id.b_container)
   }
   window.enterTransition = enter
@@ -502,7 +502,7 @@ view with the incoming View, do so with a shared axis transition as follows.
 
 ```kt
 // Set up a new MaterialSharedAxis in the specified ais and direction.
-val sharedAxis = MaterialSharedAxis.create(requireContext(), MaterialSharedAxis.Y, forward = true)
+val sharedAxis = MaterialSharedAxis.create(requireContext(), MaterialSharedAxis.Y, true)
 
 // Begin watching for changes in the View hierarchy.
 TransitionManager.beginDelayedTransition(container, sharedAxis)
@@ -547,7 +547,7 @@ A's exit transition.
 // ActivityA.kt
 
 override fun onCreate(savedInstanceState: Bundle?) {
-  val exit = MaterialSharedAxis.create(this, MaterialSharedAxis.Z, forward = true).apply {
+  val exit = MaterialSharedAxis.create(this, MaterialSharedAxis.Z, true).apply {
     // Remove the exit transitions secondary transition completely so this Activity
     // only scales instead of scaling and fading out. Alternatively, this could be
     // set to a modified FadeThrough transition or any other custom transition.
@@ -671,7 +671,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
     // system bars or app bars if provided by the app’s theme.
     addTarget(R.id.a_container)
   }
-  window.exitTransition =  exit
+  window.exitTransition = exit
 
   super.onCreate(savedInstanceState)
   setContentView(R.layout.activity_a)
