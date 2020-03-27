@@ -49,8 +49,7 @@ import java.lang.annotation.RetentionPolicy;
  * the target is appearing or disappearing.
  */
 @RequiresApi(VERSION_CODES.LOLLIPOP)
-public class MaterialSharedAxis extends
-    MaterialVisibility<VisibilityAnimatorProvider> {
+public class MaterialSharedAxis extends MaterialVisibility<VisibilityAnimatorProvider> {
 
   /**
    * Indicates that the x-axis should be shared for the transition, meaning a horizontal slide and
@@ -82,7 +81,6 @@ public class MaterialSharedAxis extends
   @Retention(RetentionPolicy.SOURCE)
   public @interface Axis {}
 
-  private final Context context;
   @Axis private final int axis;
   private final boolean forward;
 
@@ -94,13 +92,11 @@ public class MaterialSharedAxis extends
    *     move in the backward direction. Forward on the X axis is to the left, Y is up and Z is out.
    */
   @NonNull
-  public static MaterialSharedAxis create(
-      @NonNull Context context, @Axis int axis, boolean forward) {
-    return new MaterialSharedAxis(context, axis, forward);
+  public static MaterialSharedAxis create(@Axis int axis, boolean forward) {
+    return new MaterialSharedAxis(axis, forward);
   }
 
-  private MaterialSharedAxis(Context context, @Axis int axis, boolean forward) {
-    this.context = context;
+  private MaterialSharedAxis(@Axis int axis, boolean forward) {
     this.axis = axis;
     this.forward = forward;
     setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
@@ -121,9 +117,9 @@ public class MaterialSharedAxis extends
   VisibilityAnimatorProvider getDefaultPrimaryAnimatorProvider() {
     switch (axis) {
       case X:
-        return new SlideDistanceProvider(context, forward ? Gravity.END : Gravity.START);
+        return new SlideDistanceProvider(forward ? Gravity.END : Gravity.START);
       case Y:
-        return new SlideDistanceProvider(context, forward ? Gravity.BOTTOM : Gravity.TOP);
+        return new SlideDistanceProvider(forward ? Gravity.BOTTOM : Gravity.TOP);
       case Z:
         return new ScaleProvider(forward);
       default:

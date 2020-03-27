@@ -46,6 +46,8 @@ import java.lang.annotation.RetentionPolicy;
 @RequiresApi(VERSION_CODES.LOLLIPOP)
 public class SlideDistanceProvider implements VisibilityAnimatorProvider {
 
+  private static final int DEFAULT_DISTANCE = -1;
+
   /**
    * GravityFlag definitions.
    *
@@ -57,14 +59,10 @@ public class SlideDistanceProvider implements VisibilityAnimatorProvider {
   public @interface GravityFlag {}
 
   @GravityFlag private int slideEdge;
-  @Px private int slideDistance;
+  @Px private int slideDistance = DEFAULT_DISTANCE;
 
-  public SlideDistanceProvider(@NonNull Context context, @GravityFlag int slideEdge) {
+  public SlideDistanceProvider(@GravityFlag int slideEdge) {
     this.slideEdge = slideEdge;
-    this.slideDistance =
-        context
-            .getResources()
-            .getDimensionPixelSize(R.dimen.mtrl_transition_shared_axis_slide_distance);
   }
 
   @GravityFlag
@@ -76,12 +74,32 @@ public class SlideDistanceProvider implements VisibilityAnimatorProvider {
     this.slideEdge = slideEdge;
   }
 
+  /**
+   * Get the distance this animator will translate its target. If set to -1, the default slide
+   * distance will be used.
+   *
+   * @see #setSlideDistance(int)
+   */
   @Px
   public int getSlideDistance() {
     return slideDistance;
   }
 
+  /**
+   * Set the distance this animator will translate its target.
+   *
+   * <p>By default, this value is set to -1 which indicates that the default slide distance,
+   * R.dimen.mtrl_transition_shared_axis_slide_distance will be used. Setting the slide distance to
+   * any other value will override this default.
+   *
+   * @throws IllegalArgumentException If {@code slideDistance} is negative.
+   */
   public void setSlideDistance(@Px int slideDistance) {
+    if (slideDistance < 0) {
+      throw new IllegalArgumentException(
+          "Slide distance must be positive. If attempting to reverse the direction of the slide,"
+              + " use setSlideEdge(int) instead.");
+    }
     this.slideDistance = slideDistance;
   }
 
@@ -92,7 +110,8 @@ public class SlideDistanceProvider implements VisibilityAnimatorProvider {
       @NonNull View view,
       @Nullable TransitionValues startValues,
       @Nullable TransitionValues endValues) {
-    return createTranslationAppearAnimator(sceneRoot, view);
+    return createTranslationAppearAnimator(
+        sceneRoot, view, slideEdge, getSlideDistanceOrDefault(view.getContext()));
   }
 
   @Nullable
@@ -102,10 +121,22 @@ public class SlideDistanceProvider implements VisibilityAnimatorProvider {
       @NonNull View view,
       @Nullable TransitionValues startValues,
       @Nullable TransitionValues endValues) {
-    return createTranslationDisappearAnimator(sceneRoot, view);
+    return createTranslationDisappearAnimator(
+        sceneRoot, view, slideEdge, getSlideDistanceOrDefault(view.getContext()));
   }
 
-  private Animator createTranslationAppearAnimator(View sceneRoot, View view) {
+  private int getSlideDistanceOrDefault(Context context) {
+    if (slideDistance != DEFAULT_DISTANCE) {
+      return slideDistance;
+    }
+
+    return context
+        .getResources()
+        .getDimensionPixelSize(R.dimen.mtrl_transition_shared_axis_slide_distance);
+  }
+
+  private static Animator createTranslationAppearAnimator(
+      View sceneRoot, View view, @GravityFlag int slideEdge, @Px int slideDistance) {
     switch (slideEdge) {
       case Gravity.LEFT:
         return createTranslationXAnimator(view, slideDistance, 0);
@@ -126,7 +157,8 @@ public class SlideDistanceProvider implements VisibilityAnimatorProvider {
     }
   }
 
-  private Animator createTranslationDisappearAnimator(View sceneRoot, View view) {
+  private static Animator createTranslationDisappearAnimator(
+      View sceneRoot, View view, @GravityFlag int slideEdge, @Px int slideDistance) {
     switch (slideEdge) {
       case Gravity.LEFT:
         return createTranslationXAnimator(view, 0, -slideDistance);

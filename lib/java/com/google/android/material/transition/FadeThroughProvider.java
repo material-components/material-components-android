@@ -32,6 +32,8 @@ import android.view.ViewGroup;
 
 /**
  * A class that configures and is able to provide an {@link Animator} that fades out or in a view.
+ *
+ * FadeThroughProvider differs from FadeProvider in that it fades out and in views sequentially.
  */
 @RequiresApi(VERSION_CODES.LOLLIPOP)
 public class FadeThroughProvider implements VisibilityAnimatorProvider {

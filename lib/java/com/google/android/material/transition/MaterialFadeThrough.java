@@ -16,48 +16,43 @@
 
 package com.google.android.material.transition;
 
-import android.content.Context;
 import android.os.Build.VERSION_CODES;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import android.transition.Transition;
-import android.transition.TransitionSet;
-import android.transition.Visibility;
 import com.google.android.material.animation.AnimationUtils;
 
 /**
- * A {@link TransitionSet} that, by default, provides a fade in and scale out when appearing and a
- * fade out and scale out when disappearing.
+ * A {@link android.transition.Visibility} transition that, by default, provides a fade in and scale
+ * out when appearing and a fade out and scale out when disappearing.
  */
 @RequiresApi(VERSION_CODES.LOLLIPOP)
-public class MaterialFadeThrough extends MaterialTransitionSet<FadeThrough> {
+public class MaterialFadeThrough extends MaterialVisibility<FadeThroughProvider> {
 
   private static final float DEFAULT_START_SCALE = 0.92f;
 
   @NonNull
-  public static MaterialFadeThrough create(@NonNull Context context) {
-    MaterialFadeThrough materialFadeThrough = new MaterialFadeThrough();
-    materialFadeThrough.initialize(context);
-    return materialFadeThrough;
+  public static MaterialFadeThrough create() {
+    return new MaterialFadeThrough();
   }
 
   private MaterialFadeThrough() {
     setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
+    initialize();
   }
 
   @NonNull
   @Override
-  FadeThrough getDefaultPrimaryTransition() {
-    return new FadeThrough();
+  FadeThroughProvider getDefaultPrimaryAnimatorProvider() {
+    return new FadeThroughProvider();
   }
 
   @Nullable
   @Override
-  Transition getDefaultSecondaryTransition() {
-    Scale scale = new Scale();
-    scale.setMode(Visibility.MODE_IN);
-    scale.setIncomingStartScale(DEFAULT_START_SCALE);
-    return scale;
+  VisibilityAnimatorProvider getDefaultSecondaryAnimatorProvider() {
+    ScaleProvider scaleProvider = new ScaleProvider();
+    scaleProvider.setScaleOnDisappear(false);
+    scaleProvider.setIncomingStartScale(DEFAULT_START_SCALE);
+    return scaleProvider;
   }
 }

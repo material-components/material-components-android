@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 The Android Open Source Project
+ * Copyright 2020 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,50 +27,67 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import android.transition.TransitionValues;
-import android.transition.Visibility;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * A {@link Visibility} {@link android.transition.Transition} that provides a fade out or in
- * depending on whether or not the target view is appearing or disappearing.
- */
+/** A class that configures and is able to provide an {@link Animator} that fades a view. */
 @RequiresApi(VERSION_CODES.LOLLIPOP)
-public class FadeThrough extends Visibility {
+public class FadeProvider implements VisibilityAnimatorProvider {
 
-  static final float PROGRESS_THRESHOLD = 0.35f;
+  private float incomingEndThreshold = 1f;
 
-  @NonNull
+  /**
+   * Get the fraction at which the appearing fade animation will end between 0 and 1.
+   *
+   * @see #setIncomingEndThreshold(float)
+   */
+  public float getIncomingEndThreshold() {
+    return incomingEndThreshold;
+  }
+
+  /**
+   * Set the fraction by which an appearing fade animation should end between 0 and 1.
+   *
+   * <p>This can be used to stagger animations when this class' resulting animator is used inside an
+   * AnimatorSet. If the containing AnimatorSet has a total duration of 100 milliseconds and
+   * incomingEndThreshold is set to .75f, this class' animator will run and complete (the view will
+   * be completely faded in) after the AnimatorSet has run for 75 milliseconds.
+   */
+  public void setIncomingEndThreshold(float incomingEndThreshold) {
+    this.incomingEndThreshold = incomingEndThreshold;
+  }
+
+  @Nullable
   @Override
-  public Animator onAppear(
+  public Animator createAppear(
       @NonNull ViewGroup sceneRoot,
       @NonNull View view,
       @Nullable TransitionValues startValues,
       @Nullable TransitionValues endValues) {
-    return createFadeThroughAnimator(
+    return createFadeAnimator(
         view,
         /* startValue= */ 0f,
         /* endValue= */ 1f,
-        /* startFraction= */ PROGRESS_THRESHOLD,
-        /* endFraction= */ 1f);
+        /* startFraction= */ 0F,
+        /* endFraction=*/ incomingEndThreshold);
   }
 
-  @NonNull
+  @Nullable
   @Override
-  public Animator onDisappear(
+  public Animator createDisappear(
       @NonNull ViewGroup sceneRoot,
       @NonNull View view,
       @Nullable TransitionValues startValues,
       @Nullable TransitionValues endValues) {
-    return createFadeThroughAnimator(
+    return createFadeAnimator(
         view,
         /* startValue= */ 1f,
         /* endValue= */ 0f,
-        /* startFraction= */ 0f,
-        /* endFraction= */ PROGRESS_THRESHOLD);
+        /* startFraction= */ 0F,
+        /* endFraction=*/ 1F);
   }
 
-  private static Animator createFadeThroughAnimator(
+  private static Animator createFadeAnimator(
       final View view,
       final float startValue,
       final float endValue,

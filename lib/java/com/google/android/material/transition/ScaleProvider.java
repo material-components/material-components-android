@@ -37,6 +37,7 @@ public class ScaleProvider implements VisibilityAnimatorProvider {
   private float incomingEndScale = 1f;
 
   private boolean entering;
+  private boolean scaleOnDisappear = true;
 
   public ScaleProvider() {
     this(true);
@@ -52,6 +53,14 @@ public class ScaleProvider implements VisibilityAnimatorProvider {
 
   public void setEntering(boolean entering) {
     this.entering = entering;
+  }
+
+  public boolean isScaleOnDisappear() {
+    return scaleOnDisappear;
+  }
+
+  public void setScaleOnDisappear(boolean scaleOnDisappear) {
+    this.scaleOnDisappear = scaleOnDisappear;
   }
 
   public float getOutgoingStartScale() {
@@ -107,6 +116,10 @@ public class ScaleProvider implements VisibilityAnimatorProvider {
       @NonNull View view,
       @Nullable TransitionValues startValues,
       @Nullable TransitionValues endValues) {
+    if (!scaleOnDisappear) {
+      return null;
+    }
+
     if (entering) {
       return createScaleAnimator(view, outgoingStartScale, outgoingEndScale);
     } else {

@@ -69,7 +69,7 @@ class FadeModeEvaluators {
             float progress, float fadeStartFraction, float fadeEndFraction) {
           float fadeFractionDiff = fadeEndFraction - fadeStartFraction;
           float fadeFractionThreshold =
-              fadeStartFraction + fadeFractionDiff * FadeThrough.PROGRESS_THRESHOLD;
+              fadeStartFraction + fadeFractionDiff * FadeThroughProvider.PROGRESS_THRESHOLD;
           int startAlpha = lerp(255, 0, fadeStartFraction, fadeFractionThreshold, progress);
           int endAlpha = lerp(0, 255, fadeFractionThreshold, fadeEndFraction, progress);
           return FadeModeResult.startOnTop(startAlpha, endAlpha);

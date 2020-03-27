@@ -19,7 +19,6 @@ package io.material.catalog.transition;
 import io.material.catalog.R;
 
 import android.annotation.TargetApi;
-import android.content.Context;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -55,11 +54,10 @@ public class TransitionFadeDemoFragment extends DemoFragment {
   }
 
   private void toggleFabVisibilityWithTransition() {
-    Context context = requireContext();
     ViewGroup sceneRoot = (ViewGroup) requireView();
 
     boolean entering = fadeFab.getVisibility() == View.GONE;
-    MaterialFade materialFade = MaterialFade.create(context, entering);
+    MaterialFade materialFade = MaterialFade.create(entering);
     TransitionManager.beginDelayedTransition(sceneRoot, materialFade);
     fadeFab.setVisibility(entering ? View.VISIBLE : View.GONE);
     fadeButton.setText(

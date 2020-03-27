@@ -16,62 +16,59 @@
 
 package com.google.android.material.transition;
 
-import android.content.Context;
 import android.os.Build.VERSION_CODES;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import android.transition.Fade;
-import android.transition.Transition;
-import android.transition.TransitionSet;
-import android.transition.Visibility;
 import com.google.android.material.animation.AnimationUtils;
 
 /**
- * A {@link TransitionSet} that provides a fade with a scale of incoming content and a simple fade
- * of outgoing content.
+ * A {@link android.transition.Visibility} transition that is composed of a fade and scale of
+ * incoming content and a simple fade of outgoing content.
  */
 @RequiresApi(VERSION_CODES.LOLLIPOP)
-public class MaterialFade extends MaterialTransitionSet<Fade> {
+public class MaterialFade extends MaterialVisibility<FadeProvider> {
 
   private static final long DEFAULT_DURATION_ENTER = 150;
-  private static final long DEFAULT_DURATION_ENTER_FADE = 45;
   private static final long DEFAULT_DURATION_RETURN = 75;
   private static final float DEFAULT_START_SCALE = 0.8f;
+  private static final float DEFAULT_FADE_END_THRESHOLD_ENTER = 0.3f;
+
+  private boolean entering;
 
   @NonNull
-  public static MaterialFade create(@NonNull Context context) {
-    return create(context, true);
+  public static MaterialFade create() {
+    return create(true);
   }
 
   @NonNull
-  public static MaterialFade create(@NonNull Context context, boolean entering) {
-    MaterialFade materialFade = new MaterialFade(entering);
-    materialFade.initialize(context);
-    if (entering) {
-      // Must be done after adding the transition to the set to avoid the duration overwrite.
-      materialFade.getPrimaryTransition().setDuration(DEFAULT_DURATION_ENTER_FADE);
-    }
-    return materialFade;
+  public static MaterialFade create(boolean entering) {
+    return new MaterialFade(entering);
   }
 
   private MaterialFade(boolean entering) {
+    this.entering = entering;
     setDuration(entering ? DEFAULT_DURATION_ENTER : DEFAULT_DURATION_RETURN);
     setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
+    initialize();
   }
 
   @NonNull
   @Override
-  Fade getDefaultPrimaryTransition() {
-    return new Fade();
+  FadeProvider getDefaultPrimaryAnimatorProvider() {
+    FadeProvider fadeProvider = new FadeProvider();
+    if (entering) {
+      fadeProvider.setIncomingEndThreshold(DEFAULT_FADE_END_THRESHOLD_ENTER);
+    }
+    return fadeProvider;
   }
 
   @Nullable
   @Override
-  Transition getDefaultSecondaryTransition() {
-    Scale scale = new Scale();
-    scale.setMode(Visibility.MODE_IN);
-    scale.setIncomingStartScale(DEFAULT_START_SCALE);
-    return scale;
+  VisibilityAnimatorProvider getDefaultSecondaryAnimatorProvider() {
+    ScaleProvider scaleProvider = new ScaleProvider();
+    scaleProvider.setScaleOnDisappear(false);
+    scaleProvider.setIncomingStartScale(DEFAULT_START_SCALE);
+    return scaleProvider;
   }
 }

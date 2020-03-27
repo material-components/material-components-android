@@ -101,7 +101,7 @@ public class TransitionSharedAxisDemoFragment extends DemoFragment implements On
   private MaterialSharedAxis createTransition(boolean entering) {
     int axis = BUTTON_AXIS_MAP.get(directionRadioGroup.getCheckedRadioButtonId());
 
-    MaterialSharedAxis transition = MaterialSharedAxis.create(requireContext(), axis, entering);
+    MaterialSharedAxis transition = MaterialSharedAxis.create(axis, entering);
 
     // Add targets for this transition to explicitly run transitions only on these views. Without
     // targeting, a MaterialSharedAxis transition would be run for every view in the
