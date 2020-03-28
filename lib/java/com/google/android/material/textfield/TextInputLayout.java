@@ -1301,7 +1301,7 @@ public class TextInputLayout extends LinearLayout {
 
   private void updateLabelState(boolean animate, boolean force) {
     final boolean isEnabled = isEnabled();
-    final boolean hasText = editText != null && !TextUtils.isEmpty(editText.getText());
+    final boolean hasText = editText != null && (!TextUtils.isEmpty(editText.getText()) || !TextUtils.isEmpty(editText.getHint()));
     final boolean hasFocus = editText != null && editText.hasFocus();
     final boolean errorShouldBeShown = indicatorViewController.errorShouldBeShown();
 
