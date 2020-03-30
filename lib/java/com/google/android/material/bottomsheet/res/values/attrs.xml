@@ -72,6 +72,9 @@
            This is the default behavior. -->
       <flag name="none" value="0"/>
     </attr>
+    <!-- Sets whether this bottom sheet should adjust it's position based on the system gesture area
+    on Android Q and above. Value is false (insets respected) by default. -->
+    <attr name="gestureInsetBottomIgnored" format="boolean"/>
     <attr name="android:elevation"/>
 
   </declare-styleable>
