@@ -31,7 +31,12 @@
     <attr name="android:insetRight"/>
     <attr name="android:insetTop"/>
     <attr name="android:insetBottom"/>
-    <!-- Background for the MaterialButton -->
+    <!-- Background for the MaterialButton. If this is set to a drawable or color, MaterialButton
+         will respect this background and not create its own MaterialShapeDrawable for the
+         background. This means that the insets, shape appearance, and stroke will be ignored.
+         If this attribute is not set or is @empty or @null, a MaterialShapeDrawable will be used
+         for the background based on the insets, shape appearance, and stroke. -->
+    <attr name="android:background"/>
     <attr name="backgroundTint"/>
     <attr name="backgroundTintMode"/>
     <!-- Elevation for the MaterialButton. -->

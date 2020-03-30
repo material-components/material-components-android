@@ -117,13 +117,15 @@ class MaterialButtonHelper {
     int paddingBottom = materialButton.getPaddingBottom();
 
     // Update materialButton's background without triggering setBackgroundOverwritten()
-    materialButton.setInternalBackground(createBackground());
-
-    MaterialShapeDrawable materialShapeDrawable = getMaterialShapeDrawable();
-    if (materialShapeDrawable != null) {
-      materialShapeDrawable.setElevation(elevation);
+    if (attributes.hasValue(R.styleable.MaterialButton_android_background)) {
+      setBackgroundOverwritten();
+    } else {
+      materialButton.setInternalBackground(createBackground());
+      MaterialShapeDrawable materialShapeDrawable = getMaterialShapeDrawable();
+      if (materialShapeDrawable != null) {
+        materialShapeDrawable.setElevation(elevation);
+      }
     }
-
     // Set the stored padding values
     ViewCompat.setPaddingRelative(
         materialButton,

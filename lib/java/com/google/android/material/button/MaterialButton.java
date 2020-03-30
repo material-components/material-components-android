@@ -414,8 +414,10 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   protected void onAttachedToWindow() {
     super.onAttachedToWindow();
 
-    MaterialShapeUtils.setParentAbsoluteElevation(
-        this, materialButtonHelper.getMaterialShapeDrawable());
+    if (isUsingOriginalBackground()) {
+      MaterialShapeUtils.setParentAbsoluteElevation(
+          this, materialButtonHelper.getMaterialShapeDrawable());
+    }
   }
 
   @RequiresApi(VERSION_CODES.LOLLIPOP)
