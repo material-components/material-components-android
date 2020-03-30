@@ -97,4 +97,8 @@
   <public name="Widget.MaterialComponents.TextInputLayout.FilledBox.Dense" type="style"/>
   <public name="Widget.MaterialComponents.TextInputLayout.OutlinedBox" type="style"/>
   <public name="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense" type="style"/>
+  <public name="Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu" type="style"/>
+  <public name="Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu" type="style"/>
+  <public name="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu" type="style"/>
+  <public name="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu" type="style"/>
 </resources>
