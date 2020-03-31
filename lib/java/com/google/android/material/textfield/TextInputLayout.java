@@ -2691,8 +2691,7 @@ public class TextInputLayout extends LinearLayout {
     if (placeholderTextView != null && editText != null) {
       // Use the EditText's positioning for the placeholder.
       final int editTextGravity = this.editText.getGravity();
-      placeholderTextView.setGravity(
-          Gravity.TOP | (editTextGravity & ~Gravity.VERTICAL_GRAVITY_MASK));
+      placeholderTextView.setGravity(editTextGravity);
 
       placeholderTextView.setPadding(
           editText.getCompoundPaddingLeft(),
