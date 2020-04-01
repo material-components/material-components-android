@@ -151,7 +151,7 @@ class FloatingActionButtonImpl {
   @Nullable
   private ViewTreeObserver.OnPreDrawListener preDrawListener;
 
-  @SuppressWarnings("initialization")
+  @SuppressWarnings("nullness")
   FloatingActionButtonImpl(FloatingActionButton view, ShadowViewDelegate shadowViewDelegate) {
     this.view = view;
     this.shadowViewDelegate = shadowViewDelegate;

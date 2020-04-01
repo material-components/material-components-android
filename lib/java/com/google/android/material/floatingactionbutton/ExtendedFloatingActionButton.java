@@ -138,7 +138,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     this(context, attrs, R.attr.extendedFloatingActionButtonStyle);
   }
 
-  @SuppressWarnings("initialization")
+  @SuppressWarnings("nullness")
   public ExtendedFloatingActionButton(
       @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     super(wrap(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
