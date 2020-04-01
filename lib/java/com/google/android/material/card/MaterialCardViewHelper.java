@@ -401,6 +401,12 @@ class MaterialCardViewHelper {
     if (clickableForegroundDrawable != null) {
       int left = measuredWidth - checkedIconMargin - checkedIconSize;
       int bottom = measuredHeight - checkedIconMargin - checkedIconSize;
+      boolean isPreLollipop = VERSION.SDK_INT < VERSION_CODES.LOLLIPOP;
+      if (isPreLollipop || materialCardView.getUseCompatPadding()) {
+        bottom -= (int) Math.ceil(2f * calculateVerticalBackgroundPadding());
+        left -= (int) Math.ceil(2f * calculateHorizontalBackgroundPadding());
+      }
+
       int right = checkedIconMargin;
       if (ViewCompat.getLayoutDirection(materialCardView) == ViewCompat.LAYOUT_DIRECTION_RTL) {
         // swap left and right
