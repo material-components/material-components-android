@@ -13,7 +13,8 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.gridlayout.widget.GridLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/search_fragment"
@@ -21,18 +22,18 @@
     android:layout_height="match_parent"
     android:layout_weight="1"
     android:clipToPadding="false"
-    android:columnCount="2"
+    app:columnCount="2"
+    app:rowCount="3"
     android:gravity="center_horizontal"
-    android:orientation="vertical"
+    app:orientation="vertical"
     android:padding="4dp"
-    android:rowCount="3"
     tools:targetApi="lollipop">
 
   <com.google.android.material.card.MaterialCardView
       android:layout_width="0dp"
       android:layout_height="0dp"
-      android:layout_rowWeight="1"
-      android:layout_columnWeight="1"
+      app:layout_rowWeight="1"
+      app:layout_columnWeight="1"
       android:layout_margin="4dp"
       android:clickable="true"
       android:focusable="true"
@@ -49,8 +50,8 @@
   <com.google.android.material.card.MaterialCardView
       android:layout_width="0dp"
       android:layout_height="0dp"
-      android:layout_rowWeight="1"
-      android:layout_columnWeight="1"
+      app:layout_rowWeight="1"
+      app:layout_columnWeight="1"
       android:layout_margin="4dp"
       android:clickable="true"
       android:focusable="true"
@@ -67,8 +68,8 @@
   <com.google.android.material.card.MaterialCardView
       android:layout_width="0dp"
       android:layout_height="0dp"
-      android:layout_rowWeight="1"
-      android:layout_columnWeight="1"
+      app:layout_rowWeight="1"
+      app:layout_columnWeight="1"
       android:layout_margin="4dp"
       android:clickable="true"
       android:focusable="true"
@@ -85,8 +86,8 @@
   <com.google.android.material.card.MaterialCardView
       android:layout_width="0dp"
       android:layout_height="0dp"
-      android:layout_rowWeight="1"
-      android:layout_columnWeight="1"
+      app:layout_rowWeight="1"
+      app:layout_columnWeight="1"
       android:layout_margin="4dp"
       android:clickable="true"
       android:focusable="true"
@@ -103,8 +104,8 @@
   <com.google.android.material.card.MaterialCardView
       android:layout_width="0dp"
       android:layout_height="0dp"
-      android:layout_rowWeight="1"
-      android:layout_columnWeight="1"
+      app:layout_rowWeight="1"
+      app:layout_columnWeight="1"
       android:layout_margin="4dp"
       android:clickable="true"
       android:focusable="true"
@@ -121,8 +122,8 @@
   <com.google.android.material.card.MaterialCardView
       android:layout_width="0dp"
       android:layout_height="0dp"
-      android:layout_rowWeight="1"
-      android:layout_columnWeight="1"
+      app:layout_rowWeight="1"
+      app:layout_columnWeight="1"
       android:layout_margin="4dp"
       android:clickable="true"
       android:focusable="true"
@@ -136,4 +137,4 @@
         app:srcCompat="@drawable/ic_search_24px" />
   </com.google.android.material.card.MaterialCardView>
 
-</GridLayout>
+</androidx.gridlayout.widget.GridLayout>

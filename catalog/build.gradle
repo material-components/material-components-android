@@ -10,6 +10,7 @@ dependencies {
 
   api 'androidx.multidex:multidex:2.0.0'
   api 'androidx.constraintlayout:constraintlayout:1.1.3'
+  api 'androidx.gridlayout:gridlayout:1.0.0'
 
   api 'com.google.guava:guava:27.0.1-android'
 

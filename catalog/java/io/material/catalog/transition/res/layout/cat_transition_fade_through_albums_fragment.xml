@@ -14,8 +14,8 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.gridlayout.widget.GridLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/albums_fragment"
@@ -23,29 +23,27 @@
     android:layout_height="match_parent"
     android:padding="4dp"
     android:clipToPadding="false"
-    android:columnCount="2"
+    app:columnCount="2"
+    app:rowCount="3"
     android:gravity="center_horizontal"
-    android:orientation="vertical"
-    android:rowCount="3"
+    app:orientation="vertical"
     tools:targetApi="lollipop">
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="4dp"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
+        app:layout_rowWeight="1"
+        app:layout_columnWeight="1"
         android:clickable="true"
-        android:focusable="true"
-        android:minHeight="200dp"
-        android:minWidth="200dp">
+        android:focusable="true">
       <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:orientation="vertical">
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="118dp"
+            android:layout_height="180dp"
             android:background="?attr/colorPrimary"
             android:contentDescription="@string/cat_transition_image_content_desc"
             app:srcCompat="@drawable/ic_components_24px"/>
@@ -72,19 +70,17 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="4dp"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
+        app:layout_rowWeight="1"
+        app:layout_columnWeight="1"
         android:clickable="true"
-        android:focusable="true"
-        android:minHeight="200dp"
-        android:minWidth="200dp">
+        android:focusable="true">
       <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:orientation="vertical">
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="118dp"
+            android:layout_height="180dp"
             android:background="?attr/colorPrimary"
             android:contentDescription="@string/cat_transition_image_content_desc"
             app:srcCompat="@drawable/ic_components_24px"/>
@@ -110,19 +106,17 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="4dp"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
+        app:layout_rowWeight="1"
+        app:layout_columnWeight="1"
         android:clickable="true"
-        android:focusable="true"
-        android:minHeight="200dp"
-        android:minWidth="200dp">
+        android:focusable="true">
       <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:orientation="vertical">
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="118dp"
+            android:layout_height="180dp"
             android:background="?attr/colorPrimary"
             android:contentDescription="@string/cat_transition_image_content_desc"
             app:srcCompat="@drawable/ic_components_24px"/>
@@ -149,19 +143,17 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="4dp"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
+        app:layout_rowWeight="1"
+        app:layout_columnWeight="1"
         android:clickable="true"
-        android:focusable="true"
-        android:minHeight="200dp"
-        android:minWidth="200dp">
+        android:focusable="true">
       <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:orientation="vertical">
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="118dp"
+            android:layout_height="180dp"
             android:background="?attr/colorPrimary"
             android:contentDescription="@string/cat_transition_image_content_desc"
             app:srcCompat="@drawable/ic_components_24px"/>
@@ -187,19 +179,17 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="4dp"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
+        app:layout_rowWeight="1"
+        app:layout_columnWeight="1"
         android:clickable="true"
-        android:focusable="true"
-        android:minHeight="200dp"
-        android:minWidth="200dp">
+        android:focusable="true">
       <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:orientation="vertical">
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="118dp"
+            android:layout_height="180dp"
             android:background="?attr/colorPrimary"
             android:contentDescription="@string/cat_transition_image_content_desc"
             app:srcCompat="@drawable/ic_components_24px"/>
@@ -226,19 +216,17 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="4dp"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
+        app:layout_rowWeight="1"
+        app:layout_columnWeight="1"
         android:clickable="true"
-        android:focusable="true"
-        android:minHeight="200dp"
-        android:minWidth="200dp">
+        android:focusable="true">
       <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:orientation="vertical">
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="118dp"
+            android:layout_height="180dp"
             android:background="?attr/colorPrimary"
             android:contentDescription="@string/cat_transition_image_content_desc"
             app:srcCompat="@drawable/ic_components_24px"/>
@@ -261,4 +249,4 @@
       </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
-  </GridLayout>
+</androidx.gridlayout.widget.GridLayout>
