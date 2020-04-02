@@ -223,7 +223,7 @@ public class MaterialContainerTransform extends Transition {
   @IdRes private int startViewId = View.NO_ID;
   @IdRes private int endViewId = View.NO_ID;
   @ColorInt private int containerColor = Color.TRANSPARENT;
-  @ColorInt private int scrimColor;
+  @ColorInt private int scrimColor = -1;
   @TransitionDirection private int transitionDirection = TRANSITION_DIRECTION_AUTO;
   @FadeMode private int fadeMode = FADE_MODE_IN;
   @FitMode private int fitMode = FIT_MODE_AUTO;
@@ -236,9 +236,8 @@ public class MaterialContainerTransform extends Transition {
   @Nullable private ProgressThresholds scaleMaskProgressThresholds;
   @Nullable private ProgressThresholds shapeMaskProgressThresholds;
 
-  public MaterialContainerTransform(@NonNull Context context) {
+  public MaterialContainerTransform() {
     setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-    scrimColor = getDefaultScrimColor(context);
   }
 
   /** Get the id of the View which will be used as the start shared element container. */
@@ -368,8 +367,8 @@ public class MaterialContainerTransform extends Transition {
   /**
    * Set the id of the View whose overlay this transition will be added to.
    *
-   * <p>If {@param drawingViewId} is the same as the end View's id, MaterialContainerTransform
-   * will add the transition's drawable to the {@param drawingViewId}'s parent instead.
+   * <p>If {@param drawingViewId} is the same as the end View's id, MaterialContainerTransform will
+   * add the transition's drawable to the {@param drawingViewId}'s parent instead.
    */
   public void setDrawingViewId(@IdRes int drawingViewId) {
     this.drawingViewId = drawingViewId;
@@ -400,6 +399,9 @@ public class MaterialContainerTransform extends Transition {
   /**
    * Get the color to be drawn under the morphing container but within the bounds of the {@link
    * #getDrawingViewId()}.
+   *
+   * <p>If this is not set, -1 will be returned, meaning the default, R.attr.scrimBackground, will
+   * be as the scrim color.
    */
   @ColorInt
   public int getScrimColor() {
@@ -410,14 +412,14 @@ public class MaterialContainerTransform extends Transition {
    * Set the color to be drawn under the morphing container but within the bounds of the {@link
    * #getDrawingViewId()}.
    *
-   * <p>By default this is set to your theme's {@link R.attr#scrimBackground}. Drawing a scrim
-   * is primarily useful for transforming from a partial-screen View (eg. Card in a grid) to a full
+   * <p>By default this is set to your theme's {@link R.attr#scrimBackground}. Drawing a scrim is
+   * primarily useful for transforming from a partial-screen View (eg. Card in a grid) to a full
    * screen. The scrim will gradually fade in and cover the content being transformed over by the
    * morphing container.
    *
    * <p>Manually setting a scrim color can be useful when transitioning between two Views in a
    * layout, where the ending View does not cover any outgoing content (eg. a FAB to a bottom
-   * toolbar). For scenarios such as these, set the scrim color to transparent.
+   * toolbar). For scenarios such as these, set the scrim color to transparent (0).
    */
   public void setScrimColor(@ColorInt int scrimColor) {
     this.scrimColor = scrimColor;
@@ -447,18 +449,14 @@ public class MaterialContainerTransform extends Transition {
     this.transitionDirection = transitionDirection;
   }
 
-  /**
-   * The fade mode to be used to swap the content of the start View with that of the end
-   * View.
-   */
+  /** The fade mode to be used to swap the content of the start View with that of the end View. */
   @FadeMode
   public int getFadeMode() {
     return fadeMode;
   }
 
   /**
-   * Set the fade mode to be used to swap the content of the start View with that of the end
-   * View.
+   * Set the fade mode to be used to swap the content of the start View with that of the end View.
    *
    * <p>By default, the fade mode is set to {@link #FADE_MODE_IN}.
    *
@@ -740,7 +738,7 @@ public class MaterialContainerTransform extends Transition {
             endBounds,
             endShapeAppearanceModel,
             containerColor,
-            scrimColor,
+            getScrimColorOrDefault(startView.getContext()),
             entering,
             FadeModeEvaluators.get(fadeMode, entering),
             FitModeEvaluators.get(fitMode, entering, startBounds, endBounds),
@@ -793,9 +791,15 @@ public class MaterialContainerTransform extends Transition {
   }
 
   @ColorInt
-  private static int getDefaultScrimColor(Context context) {
-    return MaterialColors.getColor(
-        context, R.attr.scrimBackground, ContextCompat.getColor(context, R.color.mtrl_scrim_color));
+  private int getScrimColorOrDefault(Context context) {
+    if (scrimColor == -1) {
+      return MaterialColors.getColor(
+          context,
+          R.attr.scrimBackground,
+          ContextCompat.getColor(context, R.color.mtrl_scrim_color));
+    }
+
+    return scrimColor;
   }
 
   private static RectF calculateDrawableBounds(
@@ -1075,8 +1079,7 @@ public class MaterialContainerTransform extends Transition {
           currentStartBounds,
           currentStartBoundsMasked,
           currentEndBoundsMasked,
-          progressThresholds.shapeMask
-      );
+          progressThresholds.shapeMask);
 
       // Cross-fade images of the start/end states over range of `progress`
       float fadeStartFraction = checkNotNull(progressThresholds.fade.start);

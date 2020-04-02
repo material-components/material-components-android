@@ -118,7 +118,7 @@ public class TransitionMusicAlbumDemoFragment extends Fragment {
   }
 
   private void setUpTransitions() {
-    MaterialContainerTransform transform = new MaterialContainerTransform(requireContext());
+    MaterialContainerTransform transform = new MaterialContainerTransform();
     setSharedElementEnterTransition(transform);
   }
 

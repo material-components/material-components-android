@@ -121,7 +121,7 @@ public class TransitionContainerTransformViewDemoFragment extends DemoFragment
 
   @NonNull
   private MaterialContainerTransform buildContainerTransform(boolean entering) {
-    MaterialContainerTransform transform = new MaterialContainerTransform(requireContext());
+    MaterialContainerTransform transform = new MaterialContainerTransform();
     transform.setScrimColor(Color.TRANSPARENT);
     configurationHelper.configure(transform, entering);
     return transform;

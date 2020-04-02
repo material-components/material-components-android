@@ -66,7 +66,7 @@ public class TransitionContainerTransformEndDemoActivity extends DemoActivity {
   }
 
   private MaterialContainerTransform buildContainerTransform(boolean entering) {
-    MaterialContainerTransform transform = new MaterialContainerTransform(this);
+    MaterialContainerTransform transform = new MaterialContainerTransform();
     transform.addTarget(android.R.id.content);
     configurationHelper.configure(transform, entering);
     return transform;

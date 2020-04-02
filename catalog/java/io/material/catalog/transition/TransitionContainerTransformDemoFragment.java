@@ -146,7 +146,7 @@ public class TransitionContainerTransformDemoFragment extends DemoFragment
   }
 
   private MaterialContainerTransform buildContainerTransform(boolean entering) {
-    MaterialContainerTransform transform = new MaterialContainerTransform(requireContext());
+    MaterialContainerTransform transform = new MaterialContainerTransform();
     transform.setDrawingViewId(entering ? R.id.end_root : R.id.start_root);
     configurationHelper.configure(transform, entering);
     return transform;
