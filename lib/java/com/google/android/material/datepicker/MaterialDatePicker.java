@@ -392,9 +392,10 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     StateListDrawable toggleDrawable = new StateListDrawable();
     toggleDrawable.addState(
         new int[] {android.R.attr.state_checked},
-        AppCompatResources.getDrawable(context, R.drawable.ic_calendar_black_24dp));
+        AppCompatResources.getDrawable(context, R.drawable.material_ic_calendar_black_24dp));
     toggleDrawable.addState(
-        new int[] {}, AppCompatResources.getDrawable(context, R.drawable.ic_edit_black_24dp));
+        new int[] {},
+        AppCompatResources.getDrawable(context, R.drawable.material_ic_edit_black_24dp));
     return toggleDrawable;
   }
 

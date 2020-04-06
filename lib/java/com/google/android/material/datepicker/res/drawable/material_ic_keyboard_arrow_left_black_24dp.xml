@@ -14,17 +14,16 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-
-<vector
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:name="vector"
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:width="24dp"
     android:height="24dp"
     android:viewportWidth="24"
-    android:viewportHeight="24">
+    android:viewportHeight="24"
+    tools:ignore="NewApi">
   <path
-      android:name="path"
-      android:pathData="M 7 10 L 12 15 L 17 10 Z"
+      android:name="path_1"
+      android:pathData="M 15.41 16.59 L 10.83 12 L 15.41 7.41 L 14 6 L 8 12 L 14 18 L 15.41 16.59 Z"
       android:fillColor="#000"
       android:strokeWidth="1"/>
 </vector>
