@@ -38,6 +38,8 @@ import androidx.core.math.MathUtils;
 import androidx.core.text.TextDirectionHeuristicsCompat;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
+
+import android.text.Layout.Alignment;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.text.TextUtils;
@@ -134,6 +136,7 @@ public final class CollapsingTextHelper {
   private float expandedShadowDy;
   private ColorStateList expandedShadowColor;
   private StaticLayout textLayout;
+  private Alignment textAlignment;
   private float collapsedTextBlend;
   private float expandedTextBlend;
   private float expandedFirstLineDrawX;
@@ -149,6 +152,8 @@ public final class CollapsingTextHelper {
     collapsedBounds = new Rect();
     expandedBounds = new Rect();
     currentBounds = new RectF();
+
+    textAlignment = ALIGN_NORMAL;
   }
 
   public void setTextSizeInterpolator(TimeInterpolator interpolator) {
@@ -826,7 +831,7 @@ public final class CollapsingTextHelper {
           StaticLayoutBuilderCompat.obtain(text, textPaint, (int) availableWidth)
               .setEllipsize(TruncateAt.END)
               .setIsRtl(isRtl)
-              .setAlignment(ALIGN_NORMAL)
+              .setAlignment(textAlignment)
               .setIncludePad(false)
               .setMaxLines(maxLines)
               .build();
@@ -886,6 +891,14 @@ public final class CollapsingTextHelper {
   @Nullable
   public CharSequence getText() {
     return text;
+  }
+
+  public void setTextAlignment(Alignment alignment) {
+    textAlignment = alignment;
+  }
+
+  public Alignment getTextAlignment() {
+    return textAlignment;
   }
 
   private void clearTexture() {

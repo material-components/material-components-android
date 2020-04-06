@@ -190,6 +190,16 @@
       <flag name="end" value="0x00800005"/>
     </attr>
 
+    <!-- The alignment of the title text. -->
+    <attr name="titleTextAlignment" format="enum">
+      <!-- Align to the start of the paragraph, e.g. ALIGN_NORMAL. -->
+      <enum name="textStart" value="0" />
+      <!-- Align to the end of the paragraph, e.g. ALIGN_OPPOSITE. -->
+      <enum name="textEnd" value="1" />
+      <!-- Center the paragraph, e.g. ALIGN_CENTER. -->
+      <enum name="center" value="2" />
+    </attr>
+
     <!-- Whether the CollapsingToolbarLayout should draw its own shrinking/growing title. -->
     <attr name="titleEnabled" format="boolean"/>
     <!-- The title to show when titleEnabled is set to true. -->

@@ -47,6 +47,8 @@ import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.appcompat.widget.Toolbar;
+
+import android.text.Layout.Alignment;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -177,6 +179,13 @@ public class CollapsingToolbarLayout extends FrameLayout {
         a.getInt(
             R.styleable.CollapsingToolbarLayout_collapsedTitleGravity,
             GravityCompat.START | Gravity.CENTER_VERTICAL));
+
+    if (a.hasValue(R.styleable.CollapsingToolbarLayout_titleTextAlignment)) {
+      int id = a.getInt(
+          R.styleable.CollapsingToolbarLayout_titleTextAlignment, 0);
+      Alignment alignment = Alignment.values()[id];
+      collapsingTextHelper.setTextAlignment(alignment);
+    }
 
     expandedMarginStart =
         expandedMarginTop =
@@ -914,6 +923,24 @@ public class CollapsingToolbarLayout extends FrameLayout {
    */
   public int getExpandedTitleGravity() {
     return collapsingTextHelper.getExpandedTextGravity();
+  }
+
+  /**
+   * Sets the text alignment of the expanded title.
+   *
+   * @attr ref com.google.android.material.R.styleable#CollapsingToolbarLayout_titleTextAlignment
+   */
+  public void setExpandedTitleTextAlignment(@Nullable Alignment alignment) {
+    collapsingTextHelper.setTextAlignment(alignment);
+  }
+
+  /**
+   * Returns the text alignment for title when expanded.
+   *
+   * @attr ref com.google.android.material.R.styleable#CollapsingToolbarLayout_titleTextAlignment
+   */
+  public Alignment getExpandedTitleTextAlignment() {
+    return collapsingTextHelper.getTextAlignment();
   }
 
   /**
