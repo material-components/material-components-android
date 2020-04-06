@@ -37,7 +37,7 @@
       android:gravity="center_vertical|start"
       android:insetBottom="0dp"
       android:insetTop="0dp"
-      app:icon="@drawable/ic_menu_arrow_down_black_24dp"
+      app:icon="@drawable/mtrl_ic_menu_arrow_down_black_24dp"
       app:iconGravity="textEnd"
       app:iconPadding="4dp"/>
 
@@ -51,7 +51,7 @@
     android:gravity="center"
     android:insetBottom="0dp"
     android:insetTop="0dp"
-    app:icon="@drawable/ic_keyboard_arrow_left_black_24dp"/>
+    app:icon="@drawable/mtrl_ic_keyboard_arrow_left_black_24dp"/>
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/month_navigation_next"
@@ -61,6 +61,6 @@
     android:gravity="center"
     android:insetBottom="0dp"
     android:insetTop="0dp"
-    app:icon="@drawable/ic_keyboard_arrow_right_black_24dp"/>
+    app:icon="@drawable/mtrl_ic_keyboard_arrow_right_black_24dp"/>
 
 </LinearLayout>
