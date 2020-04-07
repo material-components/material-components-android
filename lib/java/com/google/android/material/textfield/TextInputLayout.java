@@ -50,6 +50,7 @@ import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.text.BidiFormatter;
 import androidx.customview.view.AbsSavedState;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.GravityCompat;
@@ -1900,8 +1901,11 @@ public class TextInputLayout extends LinearLayout {
       if (wasCounterOverflowed != counterOverflowed) {
         updateCounterTextAppearanceAndColor();
       }
+      BidiFormatter bidiFormatter = BidiFormatter.getInstance();
       counterView.setText(
-          getContext().getString(R.string.character_counter_pattern, length, counterMaxLength));
+          bidiFormatter.unicodeWrap(
+              getContext()
+                  .getString(R.string.character_counter_pattern, length, counterMaxLength)));
     }
     if (editText != null && wasCounterOverflowed != counterOverflowed) {
       updateLabelState(false);
