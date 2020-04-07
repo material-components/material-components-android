@@ -68,6 +68,13 @@ public class ChipMainDemoFragment extends DemoFragment {
           }
         });
 
+    SwitchMaterial enabledSwitch = view.findViewById(R.id.cat_chip_enabled_switch);
+    enabledSwitch.setOnCheckedChangeListener(
+        (buttonView, isChecked) -> {
+          for (Chip chip : chips) {
+            chip.setEnabled(isChecked);
+          }
+        });
     return view;
   }
 

@@ -27,6 +27,7 @@
   <string name="cat_chip_text">Hello, World!</string>
   <string name="cat_chip_text_to_truncate">Hello, very very very very very very very very big World!</string>
   <string name="cat_chip_long_text_switch_label">Long text</string>
+  <string name="cat_chip_enabled_switch_label">Enabled</string>
 
   <string name="cat_chip_group_demo_title">Chip Group Demo</string>
   <string name="cat_chip_group_single_selection_text">Single selection</string>
