@@ -63,7 +63,9 @@ public class InsetDialogOnTouchListener implements OnTouchListener {
       return false;
     }
     MotionEvent outsideEvent = MotionEvent.obtain(event);
-    outsideEvent.setAction(MotionEvent.ACTION_OUTSIDE);
+    if (event.getAction() == MotionEvent.ACTION_UP) {
+      outsideEvent.setAction(MotionEvent.ACTION_OUTSIDE);
+    }
     // Window.shouldCloseOnTouch does not respect MotionEvent.ACTION_OUTSIDE until Pie, so we fix
     // the coordinates outside the view and use MotionEvent.ACTION_DOWN
     if (VERSION.SDK_INT < VERSION_CODES.P) {
