@@ -65,12 +65,12 @@ class ViewUtilsLollipop {
 
     // Enabled and liftable, but not lifted means not elevated
     sla.addState(
-        new int[] {android.R.attr.enabled, R.attr.state_liftable, -R.attr.state_lifted},
+        new int[] {android.R.attr.state_enabled, R.attr.state_liftable, -R.attr.state_lifted},
         ObjectAnimator.ofFloat(view, "elevation", 0f).setDuration(dur));
 
     // Default enabled state
     sla.addState(
-        new int[] {android.R.attr.enabled},
+        new int[] {android.R.attr.state_enabled},
         ObjectAnimator.ofFloat(view, "elevation", elevation).setDuration(dur));
 
     // Disabled state
