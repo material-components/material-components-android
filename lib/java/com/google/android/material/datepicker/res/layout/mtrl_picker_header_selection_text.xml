@@ -21,7 +21,7 @@
   style="?attr/materialCalendarHeaderSelection"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  android:layout_gravity="top|start"
+  android:layout_gravity="bottom|start"
   android:gravity="start|bottom"
   app:firstBaselineToTopHeight="@dimen/mtrl_calendar_selection_text_baseline_to_top"
   app:lineHeight="@dimen/mtrl_calendar_header_selection_line_height"
