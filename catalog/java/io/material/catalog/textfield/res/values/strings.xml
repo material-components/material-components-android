@@ -91,8 +91,6 @@
   <string name="cat_textfield_null_input_error_text" translatable="false">Enter a value</string>
   <string name="cat_textfield_show_error_text" translatable="false">Show error</string>
   <string name="cat_textfield_hide_error_text" translatable="false">Hide error</string>
-  <string name="cat_textfield_disable" translatable="false">Disable</string>
-  <string name="cat_textfield_enable" translatable="false">Enable</string>
 
   <string-array name="cat_textfield_exposed_dropdown_content" translatable="false">
     <item>Item 1</item>
@@ -100,4 +98,10 @@
     <item>Item 3</item>
     <item>Item 4</item>
   </string-array>
+
+  <string name="cat_textfield_show_leading_icon" translatable="false">Show leading icon</string>
+  <string name="cat_textfield_hide_leading_icon" translatable="false">Hide leading icon</string>
+
+  <string name="cat_textfield_label_enabled" description="Label on a switch to enable text fields.[CHAR_LIMIT=10]">Text fields enabled</string>
+
 </resources>

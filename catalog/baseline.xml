@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright 2019 The Android Open Source Project
+  Copyright 2020 The Android Open Source Project
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -67,7 +67,7 @@
         errorLine2="    ~~~~~~~~~~~~~~~~~~~">
         <location
             file="build.gradle"
-            line="75"
+            line="87"
             column="5"/>
     </issue>
 
@@ -89,19 +89,19 @@
         errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="java/io/material/catalog/card/res/layout/cat_card_rich_media_demo_fragment.xml"
-            line="94"
+            line="93"
             column="13"/>
     </issue>
 
     <issue
         id="UnusedAttribute"
         message="Attribute `layout_marginVertical` is only used in API level 26 and higher (current min is 14)"
-        errorLine1="      android:layout_marginVertical=&quot;8dp&quot;"
-        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        errorLine1="        android:layout_marginVertical=&quot;8dp&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="java/io/material/catalog/tabs/res/layout/cat_tabs_main_content.xml"
-            line="103"
-            column="7"/>
+            line="106"
+            column="9"/>
     </issue>
 
     <issue
@@ -243,7 +243,7 @@
         errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="java/io/material/catalog/themeswitcher/res/layout/mtrl_theme_switcher_dialog.xml"
-            line="81"
+            line="82"
             column="7"/>
     </issue>
 
@@ -254,7 +254,7 @@
         errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="java/io/material/catalog/themeswitcher/res/layout/mtrl_theme_switcher_dialog.xml"
-            line="120"
+            line="121"
             column="7"/>
     </issue>
 
@@ -271,28 +271,6 @@
             file="java/io/material/catalog/checkbox/res/layout/cat_checkbox.xml"
             line="82"
             column="7"/>
-    </issue>
-
-    <issue
-        id="Deprecated"
-        message="`android:editable` is deprecated: Use an `&lt;EditText>` to make it editable"
-        errorLine1="        android:editable=&quot;false&quot;/>"
-        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="java/io/material/catalog/textfield/res/layout/cat_textfield_exposed_dropdown_menu_content.xml"
-            line="39"
-            column="9"/>
-    </issue>
-
-    <issue
-        id="Deprecated"
-        message="`android:editable` is deprecated: Use an `&lt;EditText>` to make it editable"
-        errorLine1="        android:editable=&quot;false&quot;/>"
-        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="java/io/material/catalog/textfield/res/layout/cat_textfield_exposed_dropdown_menu_content.xml"
-            line="71"
-            column="9"/>
     </issue>
 
     <issue
@@ -528,17 +506,6 @@
 
     <issue
         id="UnusedResources"
-        message="The resource `R.dimen.cat_elevation_demo_card_bottom_padding` appears to be unused"
-        errorLine1="  &lt;dimen name=&quot;cat_elevation_demo_card_bottom_padding&quot;>6dp&lt;/dimen>"
-        errorLine2="         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="java/io/material/catalog/elevation/res/values/dimens.xml"
-            line="21"
-            column="10"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
         message="The resource `R.dimen.cat_toc_toolbar_image_offset` appears to be unused"
         errorLine1="  &lt;dimen name=&quot;cat_toc_toolbar_image_offset&quot;>16dp&lt;/dimen>"
         errorLine2="         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
@@ -623,32 +590,6 @@
             file="java/io/material/catalog/assets/res/drawable/ic_github_24px.xml"
             line="16"
             column="1"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.drawable.ic_lists_24px` appears to be unused"
-        errorLine1="&lt;vector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
-        errorLine2="^">
-        <location
-            file="java/io/material/catalog/assets/res/drawable/ic_lists_24px.xml"
-            line="16"
-            column="1"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.drawable.ic_placeholder` appears to be unused">
-        <location
-            file="java/io/material/catalog/assets/res/drawable-hdpi/ic_placeholder.png"/>
-        <location
-            file="java/io/material/catalog/assets/res/drawable-mdpi/ic_placeholder.png"/>
-        <location
-            file="java/io/material/catalog/assets/res/drawable-xhdpi/ic_placeholder.png"/>
-        <location
-            file="java/io/material/catalog/assets/res/drawable-xxhdpi/ic_placeholder.png"/>
-        <location
-            file="java/io/material/catalog/assets/res/drawable-xxxhdpi/ic_placeholder.png"/>
     </issue>
 
     <issue
@@ -800,17 +741,6 @@
 
     <issue
         id="UnusedResources"
-        message="The resource `R.drawable.logo_avatar_anonymous_40dp` appears to be unused"
-        errorLine1="&lt;vector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
-        errorLine2="^">
-        <location
-            file="java/io/material/catalog/assets/res/drawable/logo_avatar_anonymous_40dp.xml"
-            line="16"
-            column="1"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
         message="The resource `R.xml.standalone_chip` appears to be unused"
         errorLine1="&lt;chip"
         errorLine2="^">
@@ -910,17 +840,6 @@
 
     <issue
         id="UnusedResources"
-        message="The resource `R.string.cat_bottomappbar_fab_circle` appears to be unused"
-        errorLine1="  &lt;string name=&quot;cat_bottomappbar_fab_circle&quot;>Circle&lt;/string>"
-        errorLine2="          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="java/io/material/catalog/bottomappbar/res/values/strings.xml"
-            line="35"
-            column="11"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
         message="The resource `R.string.cat_shape_theming_placeholder` appears to be unused"
         errorLine1="  &lt;string name=&quot;cat_shape_theming_placeholder&quot;>Shape theming demo coming soon...&lt;/string>"
         errorLine2="          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
@@ -932,12 +851,23 @@
 
     <issue
         id="UnusedResources"
+        message="The resource `R.string.cat_bottomappbar_fab_circle` appears to be unused"
+        errorLine1="  &lt;string name=&quot;cat_bottomappbar_fab_circle&quot;>Circle&lt;/string>"
+        errorLine2="          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="java/io/material/catalog/bottomappbar/res/values/strings.xml"
+            line="36"
+            column="11"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
         message="The resource `R.string.cat_bottomappbar_fab_diamond` appears to be unused"
         errorLine1="  &lt;string name=&quot;cat_bottomappbar_fab_diamond&quot;>Diamond&lt;/string>"
         errorLine2="          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="java/io/material/catalog/bottomappbar/res/values/strings.xml"
-            line="36"
+            line="37"
             column="11"/>
     </issue>
 
@@ -1041,28 +971,6 @@
     </issue>
 
     <issue
-        id="UnusedResources"
-        message="The resource `R.string.cat_textfield_disable` appears to be unused"
-        errorLine1="  &lt;string name=&quot;cat_textfield_disable&quot; translatable=&quot;false&quot;>Disable&lt;/string>"
-        errorLine2="          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="java/io/material/catalog/textfield/res/values/strings.xml"
-            line="76"
-            column="11"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.cat_textfield_enable` appears to be unused"
-        errorLine1="  &lt;string name=&quot;cat_textfield_enable&quot; translatable=&quot;false&quot;>Enable&lt;/string>"
-        errorLine2="          ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="java/io/material/catalog/textfield/res/values/strings.xml"
-            line="77"
-            column="11"/>
-    </issue>
-
-    <issue
         id="UselessParent"
         message="This `ScrollView` layout or its `FrameLayout` parent is useless"
         errorLine1="    &lt;ScrollView"
@@ -1121,28 +1029,6 @@
         message="Missing the following drawables in `drawable-xxhdpi`: ic_placeholder_circle_24.png (found in drawable-xxxhdpi)">
         <location
             file="java/io/material/catalog/assets/res/drawable-xxhdpi"/>
-    </issue>
-
-    <issue
-        id="ButtonStyle"
-        message="Buttons in button bars should be borderless; use `style=&quot;?android:attr/buttonBarButtonStyle&quot;` (and `?android:attr/buttonBarStyle` on the parent)"
-        errorLine1="      &lt;Button"
-        errorLine2="       ~~~~~~">
-        <location
-            file="java/io/material/catalog/elevation/res/layout/cat_elevation_shadows_fragment.xml"
-            line="35"
-            column="8"/>
-    </issue>
-
-    <issue
-        id="ButtonStyle"
-        message="Buttons in button bars should be borderless; use `style=&quot;?android:attr/buttonBarButtonStyle&quot;` (and `?android:attr/buttonBarStyle` on the parent)"
-        errorLine1="      &lt;Button"
-        errorLine2="       ~~~~~~">
-        <location
-            file="java/io/material/catalog/elevation/res/layout/cat_elevation_shadows_fragment.xml"
-            line="42"
-            column="8"/>
     </issue>
 
     <issue
@@ -1427,7 +1313,7 @@
         errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="java/io/material/catalog/themeswitcher/res/layout/mtrl_theme_switcher_dialog.xml"
-            line="86"
+            line="87"
             column="7"/>
     </issue>
 
@@ -1438,7 +1324,7 @@
         errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="java/io/material/catalog/themeswitcher/res/layout/mtrl_theme_switcher_dialog.xml"
-            line="102"
+            line="103"
             column="7"/>
     </issue>
 
@@ -1702,7 +1588,7 @@
         errorLine2="              ~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="java/io/material/catalog/card/res/layout/cat_card_rich_media_demo_fragment.xml"
-            line="81"
+            line="80"
             column="15"/>
     </issue>
 
@@ -1715,28 +1601,6 @@
             file="java/io/material/catalog/checkbox/res/layout/cat_checkbox_toggled.xml"
             line="24"
             column="5"/>
-    </issue>
-
-    <issue
-        id="RtlHardcoded"
-        message="Consider adding `android:layout_marginEnd=&quot;@dimen/cat_elevation_demo_text_padding&quot;` to better support right-to-left layouts"
-        errorLine1="        android:layout_marginRight=&quot;@dimen/cat_elevation_demo_text_padding&quot;"
-        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="java/io/material/catalog/elevation/res/layout/cat_elevation_shadows_fragment.xml"
-            line="40"
-            column="9"/>
-    </issue>
-
-    <issue
-        id="RtlHardcoded"
-        message="Consider adding `android:layout_marginStart=&quot;@dimen/cat_elevation_demo_text_padding&quot;` to better support right-to-left layouts"
-        errorLine1="        android:layout_marginLeft=&quot;@dimen/cat_elevation_demo_text_padding&quot;"
-        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="java/io/material/catalog/elevation/res/layout/cat_elevation_shadows_fragment.xml"
-            line="47"
-            column="9"/>
     </issue>
 
     <issue
@@ -1823,7 +1687,7 @@
         errorLine2="        ~~~~~~~~~~~~~~~~~~~">
         <location
             file="java/io/material/catalog/themeswitcher/res/layout/mtrl_theme_switcher_dialog.xml"
-            line="43"
+            line="44"
             column="9"/>
     </issue>
 
@@ -1834,7 +1698,7 @@
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~">
         <location
             file="java/io/material/catalog/themeswitcher/res/layout/mtrl_theme_switcher_dialog.xml"
-            line="44"
+            line="45"
             column="9"/>
     </issue>
 
@@ -1843,17 +1707,6 @@
         message="Consider adding `android:paddingStart=&quot;8dp&quot;` to better support right-to-left layouts"
         errorLine1="        android:paddingLeft=&quot;8dp&quot;"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="java/io/material/catalog/themeswitcher/res/layout/mtrl_theme_switcher_dialog.xml"
-            line="55"
-            column="9"/>
-    </issue>
-
-    <issue
-        id="RtlHardcoded"
-        message="Consider adding `android:paddingEnd=&quot;12dp&quot;` to better support right-to-left layouts"
-        errorLine1="        android:paddingRight=&quot;12dp&quot;"
-        errorLine2="        ~~~~~~~~~~~~~~~~~~~~">
         <location
             file="java/io/material/catalog/themeswitcher/res/layout/mtrl_theme_switcher_dialog.xml"
             line="56"
@@ -1862,12 +1715,23 @@
 
     <issue
         id="RtlHardcoded"
+        message="Consider adding `android:paddingEnd=&quot;12dp&quot;` to better support right-to-left layouts"
+        errorLine1="        android:paddingRight=&quot;12dp&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="java/io/material/catalog/themeswitcher/res/layout/mtrl_theme_switcher_dialog.xml"
+            line="57"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
         message="Consider adding `android:paddingStart=&quot;8dp&quot;` to better support right-to-left layouts"
         errorLine1="        android:paddingLeft=&quot;8dp&quot;"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~">
         <location
             file="java/io/material/catalog/themeswitcher/res/layout/mtrl_theme_switcher_dialog.xml"
-            line="67"
+            line="68"
             column="9"/>
     </issue>
 
@@ -1878,7 +1742,7 @@
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~">
         <location
             file="java/io/material/catalog/themeswitcher/res/layout/mtrl_theme_switcher_dialog.xml"
-            line="68"
+            line="69"
             column="9"/>
     </issue>
 

@@ -25,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -106,6 +107,15 @@ public abstract class TextFieldControllableDemoFragment extends TextFieldDemoFra
                 setAllTextFieldsCounterMax(length);
               }
             });
+
+    // Initializing switch to toggle between disabling or enabling text fields.
+    SwitchMaterial enabledSwitch = view.findViewById(R.id.cat_textfield_enabled_switch);
+    enabledSwitch.setOnCheckedChangeListener(
+        (buttonView, isChecked) -> {
+          for (TextInputLayout textfield : textfields) {
+            textfield.setEnabled(isChecked);
+          }
+        });
   }
 
   private void changeTextFieldColors(int color) {
