@@ -745,7 +745,7 @@ top app bars but does not affect other components):
 </style>
 ```
 
-or using one the style in the layout (affects only this text field):
+or using one the style in the layout (affects only this top app bar):
 
 ```xml
 <com.google.android.material.appbar.MaterialToolbar
