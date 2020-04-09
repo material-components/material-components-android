@@ -358,8 +358,7 @@ public class TabLayout extends HorizontalScrollView {
   public @interface TabIndicatorGravity {}
 
   /** Callback interface invoked when a tab's selection state changes. */
-  public interface OnTabSelectedListener extends BaseOnTabSelectedListener<Tab> {
-  }
+  public interface OnTabSelectedListener extends BaseOnTabSelectedListener<Tab> {}
 
   /**
    * Callback interface invoked when a tab's selection state changes.
@@ -2664,9 +2663,7 @@ public class TabLayout extends HorizontalScrollView {
         return;
       }
       if (anchorView != null) {
-        // Avoid clipping a badge if it's displayed.
-        setClipChildren(false);
-        setClipToPadding(false);
+        clipViewToPaddingForBadge(false);
         BadgeUtils.attachBadgeDrawable(
             badgeDrawable, anchorView, getCustomParentForBadge(anchorView));
         badgeAnchorView = anchorView;
@@ -2677,13 +2674,23 @@ public class TabLayout extends HorizontalScrollView {
       if (!hasBadgeDrawable()) {
         return;
       }
+      clipViewToPaddingForBadge(true);
       if (badgeAnchorView != null) {
-        // Clip children / view to padding when no badge is displayed.
-        setClipChildren(true);
-        setClipToPadding(true);
         BadgeUtils.detachBadgeDrawable(
             badgeDrawable, badgeAnchorView, getCustomParentForBadge(badgeAnchorView));
         badgeAnchorView = null;
+      }
+    }
+
+    private void clipViewToPaddingForBadge(boolean flag) {
+      // Avoid clipping a badge if it's displayed.
+      // Clip children / view to padding when no badge is displayed.
+      setClipChildren(flag);
+      setClipToPadding(flag);
+      ViewGroup parent = (ViewGroup) getParent();
+      if (parent != null) {
+        parent.setClipChildren(flag);
+        parent.setClipToPadding(flag);
       }
     }
 
