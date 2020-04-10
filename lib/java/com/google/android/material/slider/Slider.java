@@ -67,6 +67,7 @@ import android.widget.SeekBar;
 import com.google.android.material.drawable.DrawableUtils;
 import com.google.android.material.internal.DescendantOffsetUtils;
 import com.google.android.material.internal.ThemeEnforcement;
+import com.google.android.material.internal.ViewOverlayImpl;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.CornerFamily;
@@ -1291,8 +1292,11 @@ public class Slider extends View {
     }
 
     for (TooltipDrawable label : labels) {
-      ViewUtils.getContentViewOverlay(this).remove(label);
-      label.detachView(ViewUtils.getContentView(this));
+      ViewOverlayImpl contentViewOverlay = ViewUtils.getContentViewOverlay(this);
+      if (contentViewOverlay != null) {
+        contentViewOverlay.remove(label);
+        label.detachView(ViewUtils.getContentView(this));
+      }
     }
 
     super.onDetachedFromWindow();

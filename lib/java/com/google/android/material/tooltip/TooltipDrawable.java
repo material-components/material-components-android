@@ -339,7 +339,10 @@ public class TooltipDrawable extends MaterialShapeDrawable implements TextDrawab
    *
    * @see #detachView(View)
    */
-  public void setRelativeToView(@NonNull View view) {
+  public void setRelativeToView(@Nullable View view) {
+    if (view == null) {
+      return;
+    }
     updateLocationOnScreen(view);
     // Listen for changes that indicate the view has moved so the location can be updated
     view.addOnLayoutChangeListener(attachedViewLayoutChangeListener);
@@ -350,7 +353,10 @@ public class TooltipDrawable extends MaterialShapeDrawable implements TextDrawab
    *
    * @see #setRelativeToView(View)
    */
-  public void detachView(@NonNull View view) {
+  public void detachView(@Nullable View view) {
+    if (view == null) {
+      return;
+    }
     view.removeOnLayoutChangeListener(attachedViewLayoutChangeListener);
   }
 

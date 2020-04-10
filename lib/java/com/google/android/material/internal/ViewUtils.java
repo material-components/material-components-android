@@ -271,7 +271,10 @@ public class ViewUtils {
    * version from androidx when it's available.
    */
   @Nullable
-  public static ViewOverlayImpl getOverlay(@NonNull View view) {
+  public static ViewOverlayImpl getOverlay(@Nullable View view) {
+    if (view == null) {
+      return null;
+    }
     if (Build.VERSION.SDK_INT >= 18) {
       return new ViewOverlayApi18(view);
     }
@@ -288,6 +291,10 @@ public class ViewUtils {
       }
       if (parent.getParent() instanceof ViewGroup) {
         parent = (ViewGroup) parent.getParent();
+      } else if (parent.getParent() == null) {
+        // If android.R.id.content has not been found and parent has no more parents to search,
+        // exit.
+        return null;
       }
     }
     return null;
