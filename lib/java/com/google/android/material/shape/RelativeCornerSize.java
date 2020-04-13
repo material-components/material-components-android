@@ -17,6 +17,7 @@
 package com.google.android.material.shape;
 
 import android.graphics.RectF;
+import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import java.util.Arrays;
 
@@ -28,11 +29,16 @@ public final class RelativeCornerSize implements CornerSize {
 
   private final float percent;
 
-  public RelativeCornerSize(float percent) {
+  /**
+   * @param percent The relative size of the corner in range [0,1] where 0 is no size and 1 is the
+   *     full bounds height.
+   */
+  public RelativeCornerSize(@FloatRange(from = 0.0f, to = 1.0f) float percent) {
     this.percent = percent;
   }
 
-  /** Returns the relative percent used for this {@link CornerSize} */
+  /** Returns the relative percent used for this {@link CornerSize} in range [0,1]. */
+  @FloatRange(from = 0.0f, to = 1.0f)
   public float getRelativePercent() {
     return percent;
   }
