@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2020 The Android Open Source Project
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+      http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:showDividers="middle"
+    android:divider="@drawable/layout_divider">
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/cat_progress_indicator_linear_no_grow_single_color"/>
+  <com.google.android.material.progressindicator.ProgressIndicator
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      style="@style/Widget.MaterialComponents.ProgressIndicator.Linear.Indeterminate"
+      app:indicatorColor="?attr/colorPrimary"/>
+
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/cat_progress_indicator_inverse_linear_bidirectional_grow_single_color"/>
+  <com.google.android.material.progressindicator.ProgressIndicator
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      style="@style/Widget.MaterialComponents.ProgressIndicator.Linear.Indeterminate"
+      app:indicatorColor="?attr/colorPrimary"
+      app:inverse="true"
+      app:growMode="bidirectional"/>
+
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/cat_progress_indicator_linear_incoming_grow_multiple_colors"/>
+  <com.google.android.material.progressindicator.ProgressIndicator
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      style="@style/Widget.MaterialComponents.ProgressIndicator.Linear.Indeterminate"
+      app:indicatorColors="@array/cat_custom_progress_colors"
+      app:linearSeamless="false"
+      app:growMode="incoming"/>
+
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/cat_progress_indicator_linear_outgoing_grow_multiple_seamless_colors"/>
+  <com.google.android.material.progressindicator.ProgressIndicator
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      style="@style/Widget.MaterialComponents.ProgressIndicator.Linear.Indeterminate"
+      app:indicatorColors="@array/cat_custom_progress_colors"
+      app:growMode="outgoing"/>
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:showDividers="middle"
+      android:divider="@drawable/layout_divider">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+      <TextView
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:text="@string/cat_progress_indicator_circular_no_grow_single_color"/>
+      <com.google.android.material.progressindicator.ProgressIndicator
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          style="@style/Widget.MaterialComponents.ProgressIndicator.Circular.Indeterminate"
+          app:indicatorColor="?attr/colorPrimary"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+      <TextView
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:text="@string/cat_progress_indicator_inverse_circular_bidirectional_grow_single_color"/>
+      <com.google.android.material.progressindicator.ProgressIndicator
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          style="@style/Widget.MaterialComponents.ProgressIndicator.Circular.Indeterminate"
+          app:indicatorColor="?attr/colorPrimary"
+          app:inverse="true"
+          app:growMode="bidirectional"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+      <TextView
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:text="@string/cat_progress_indicator_circular_incoming_grow_multiple_colors"/>
+      <com.google.android.material.progressindicator.ProgressIndicator
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          style="@style/Widget.MaterialComponents.ProgressIndicator.Circular.Indeterminate"
+          app:indicatorColors="@array/cat_custom_progress_colors"
+          app:growMode="incoming"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+      <TextView
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:text="@string/cat_progress_indicator_circular_outgoing_grow_multiple_colors"/>
+      <com.google.android.material.progressindicator.ProgressIndicator
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          style="@style/Widget.MaterialComponents.ProgressIndicator.Circular.Indeterminate"
+          app:indicatorColors="@array/cat_custom_progress_colors"
+          app:growMode="outgoing"/>
+    </LinearLayout>
+  </LinearLayout>
+</LinearLayout>

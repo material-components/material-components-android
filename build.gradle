@@ -39,6 +39,7 @@ ext {
     transition            : '1.2.0',
     vectorDrawable        : '1.1.0',
     viewpager2            : '1.0.0',
+    dynamicanimation      : '1.0.0',
   ]
 
   testRunnerVersion = '1.1.0'
@@ -104,6 +105,8 @@ def compatibility(name) {
       return "androidx.coordinatorlayout:coordinatorlayout:${androidXVersions.coordinatorlayout}"
     case "core":
       return "androidx.core:core:${androidXVersions.core}"
+    case "dynamicanimation":
+      return "androidx.dynamicanimation:dynamicanimation:${androidXVersions.dynamicanimation}"
     case "fragment":
       return "androidx.fragment:fragment:${androidXVersions.fragment}"
     case "lifecycleRuntime":

@@ -27,7 +27,6 @@
   <public name="tickColor" type="attr" />
   <public name="tickColorActive" type="attr" />
   <public name="tickColorInactive" type="attr" />
-  <public name="trackColor" type="attr" />
   <public name="trackColorActive" type="attr" />
   <public name="trackColorInactive" type="attr" />
   <public name="trackHeight" type="attr" />
