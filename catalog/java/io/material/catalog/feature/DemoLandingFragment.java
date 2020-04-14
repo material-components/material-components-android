@@ -207,9 +207,7 @@ public abstract class DemoLandingFragment extends DaggerFragment {
   public void onPrepareOptionsMenu(Menu menu) {
     MenuItem item = menu.findItem(R.id.favorite_toggle);
     boolean isChecked = FeatureDemoUtils.getDefaultDemo(getContext()).equals(getClass().getName());
-    item.setChecked(isChecked);
-    MenuItemCompat.setIconTintList(
-        item, ColorStateList.valueOf(isChecked ? colorAccent : colorControlNormal));
+    setMenuItemChecked(item, isChecked);
   }
 
   @Override
@@ -217,13 +215,17 @@ public abstract class DemoLandingFragment extends DaggerFragment {
     if (menuItem.getItemId() == R.id.favorite_toggle) {
       boolean isChecked = !menuItem.isChecked();
       FeatureDemoUtils.saveDefaultDemo(getContext(), isChecked ? getClass().getName() : "");
-      if (getActivity() != null) {
-        getActivity().invalidateOptionsMenu();
-      }
+      setMenuItemChecked(menuItem, isChecked);
       return true;
     }
 
     return super.onOptionsItemSelected(menuItem);
+  }
+
+  private void setMenuItemChecked(MenuItem menuItem, boolean isChecked) {
+    menuItem.setChecked(isChecked);
+    MenuItemCompat.setIconTintList(
+        menuItem, ColorStateList.valueOf(isChecked ? colorAccent : colorControlNormal));
   }
 
   /**
