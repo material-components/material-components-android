@@ -18,7 +18,6 @@ package com.google.android.material.transition;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
-import android.content.Context;
 import android.os.Build.VERSION_CODES;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
@@ -42,8 +41,8 @@ import java.lang.annotation.RetentionPolicy;
  * <p>When configured along the {@link #Z} axis, this transition scales and fades in when the target
  * is appearing and scales and fades out when the target is disappearing.
  *
- * <p>The direction of the slide or scale is determined by the {@link #create(Context, int,
- * boolean)} method's forward property. When true, the target will slide to the left on the X axis,
+ * <p>The direction of the slide or scale is determined by the {@link #create(int, boolean)}
+ * method's forward property. When true, the target will slide to the left on the X axis,
  * up on the Y axis and out in on the Z axis. When false, the target will slide to the right on the
  * X axis, down on the Y axis and in on the Z axis. Note that this is independent of whether or not
  * the target is appearing or disappearing.
