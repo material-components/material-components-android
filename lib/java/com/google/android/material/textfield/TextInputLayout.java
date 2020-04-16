@@ -380,6 +380,7 @@ public class TextInputLayout extends LinearLayout {
   private int endDummyDrawableWidth;
   private Drawable originalEditTextEndDrawable;
   private OnLongClickListener endIconOnLongClickListener;
+  private OnLongClickListener errorIconOnLongClickListener;
   @NonNull private final CheckableImageButton errorIconView;
   private ColorStateList errorIconTintList;
 
@@ -2946,6 +2947,17 @@ public class TextInputLayout extends LinearLayout {
   }
 
   /**
+   * Sets the error icon's functionality that is performed when the icon is clicked. The icon will not
+   * be clickable if its click and long click listeners are null.
+   *
+   * @param errorIconOnClickListener the {@link android.view.View.OnClickListener} the end icon view
+   *     will have
+   */
+  public void setErrorIconOnClickListener(@Nullable OnClickListener errorIconOnClickListener) {
+    setIconOnClickListener(errorIconView, errorIconOnClickListener, errorIconOnLongClickListener);
+  }
+
+  /**
    * Sets the end icon's functionality that is performed when the end icon is long clicked. The icon
    * will not be clickable if its click and long click listeners are null.
    *
@@ -2956,6 +2968,19 @@ public class TextInputLayout extends LinearLayout {
       @Nullable OnLongClickListener endIconOnLongClickListener) {
     this.endIconOnLongClickListener = endIconOnLongClickListener;
     setIconOnLongClickListener(endIconView, endIconOnLongClickListener);
+  }
+
+  /**
+   * Sets the error icon's functionality that is performed when the end icon is long clicked. The icon
+   * will not be clickable if its click and long click listeners are null.
+   *
+   * @param errorIconOnLongClickListener the {@link android.view.View.OnLongClickListener} the start
+   *     icon view will have, or null to clear it.
+   */
+  public void setErrorIconOnLongClickListener(
+      @Nullable OnLongClickListener errorIconOnLongClickListener) {
+    this.errorIconOnLongClickListener = errorIconOnLongClickListener;
+    setIconOnLongClickListener(errorIconView, errorIconOnLongClickListener);
   }
 
   /**
