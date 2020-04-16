@@ -1180,7 +1180,13 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
     calculatePath(getBoundsAsRectF(), path);
     if (path.isConvex() || Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-      outline.setConvexPath(path);
+      try {
+        outline.setConvexPath(path);
+      } catch (IllegalArgumentException ignored) {
+        // The change to support concave paths was done late in the release cycle. People
+        // using pre-releases of Q would experience a crash here.
+      }
+
     }
   }
 
