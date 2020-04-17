@@ -26,6 +26,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.core.view.ViewCompat;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -85,6 +86,12 @@ public abstract class DemoFragment extends Fragment
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
     View view =
         layoutInflater.inflate(R.layout.cat_demo_fragment, viewGroup, false /* attachToRoot */);
+
+    Bundle arguments = getArguments();
+    if (arguments != null) {
+      String transitionName = arguments.getString(FeatureDemoUtils.ARG_TRANSITION_NAME);
+      ViewCompat.setTransitionName(view, transitionName);
+    }
 
     toolbar = view.findViewById(R.id.toolbar);
     // show a memory widget on Kitkat
@@ -180,9 +187,12 @@ public abstract class DemoFragment extends Fragment
 
     private final FragmentActivity activity = getActivity();
 
-    private final Runnable listener = () -> activity.runOnUiThread(() -> {
-      memoryWidget.refreshMemStats(Runtime.getRuntime());
-    });
+    private final Runnable listener =
+        () ->
+            activity.runOnUiThread(
+                () -> {
+                  memoryWidget.refreshMemStats(Runtime.getRuntime());
+                });
 
     private boolean memoryWidgetShown;
 

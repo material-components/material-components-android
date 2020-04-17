@@ -19,6 +19,7 @@ package io.material.catalog.tableofcontents;
 import io.material.catalog.R;
 
 import androidx.fragment.app.FragmentActivity;
+import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +41,7 @@ class TocViewHolder extends ViewHolder {
 
   private FragmentActivity activity;
   private FeatureDemo featureDemo;
+  private String transitionName;
 
   TocViewHolder(FragmentActivity activity, ViewGroup viewGroup) {
     super(
@@ -54,7 +56,9 @@ class TocViewHolder extends ViewHolder {
   void bind(FragmentActivity activity, FeatureDemo featureDemo) {
     this.activity = activity;
     this.featureDemo = featureDemo;
+    this.transitionName = activity.getString(featureDemo.getTitleResId());
 
+    ViewCompat.setTransitionName(itemView, transitionName);
     titleView.setText(featureDemo.getTitleResId());
     imageView.setImageResource(featureDemo.getDrawableResId());
     itemView.setOnClickListener(clickListener);
@@ -63,5 +67,7 @@ class TocViewHolder extends ViewHolder {
   }
 
   private final OnClickListener clickListener =
-      v -> FeatureDemoUtils.startFragment(activity, featureDemo.createFragment(), FRAGMENT_CONTENT);
+      v ->
+          FeatureDemoUtils.startFragment(
+              activity, featureDemo.createFragment(), FRAGMENT_CONTENT, v, transitionName);
 }
