@@ -217,11 +217,11 @@ public class MaterialContainerTransformSharedElementCallback extends SharedEleme
   /**
    * Make the window background transparent during the container transform.
    *
-   * This applies a color filter to the window background which clears the background's source
-   * pixels. If the client has set a color filter on the window background manually, this will
-   * be overridden and will not be restored after the transition. If you need to manipulate
-   * the color of the window background and have that manipulation restored after the transition,
-   * use {@link android.graphics.drawable.Drawable#setTint(int)} instead.
+   * <p>This applies a color filter to the window background which clears the background's source
+   * pixels. If the client has set a color filter on the window background manually, this will be
+   * overridden and will not be restored after the transition. If you need to manipulate the color
+   * of the window background and have that manipulation restored after the transition, use {@link
+   * android.graphics.drawable.Drawable#setTint(int)} instead.
    */
   private static void removeWindowBackground(Window window) {
     window
@@ -243,12 +243,11 @@ public class MaterialContainerTransformSharedElementCallback extends SharedEleme
   }
 
   /**
-   * When using a transparent window background, make sure that the background fade duration is at
-   * least as long as the transform's duration. This will help to avoid a black background visual
-   * artifact.
+   * When using a transparent window background, make sure that the background fade duration is as
+   * long as the transform's duration. This will help to avoid a black background visual artifact.
    */
   private static void updateBackgroundFadeDuration(
       Window window, MaterialContainerTransform transform) {
-    window.setTransitionBackgroundFadeDuration(transform.getDuration() * 2);
+    window.setTransitionBackgroundFadeDuration(transform.getDuration());
   }
 }
