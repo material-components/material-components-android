@@ -7,6 +7,11 @@ path: /docs/getting-started/
 
 # Getting started with Material Components for Android
 
+Take a look at our
+[guide](https://medium.com/androiddevelopers/migrating-to-material-components-for-android-ec6757795351)
+that helps you migrate your codebase from the Design Support Library to Material
+Components for Android.
+
 ### 1. Depend on our library
 
 Material Components for Android is available through Google's Maven Repository.
@@ -59,9 +64,9 @@ Note: You should not use the `com.android.support` and
 
 In order to use Material Components for Android, and the latest versions of the
 Support Libraries, you will have to update your app's `compileSdkVersion` to
-`28` and download the Android 9 using the SDK manager. For more
-information on Android 9 and its timeline, take a look at the [Program
-Overview](https://developer.android.com/preview/overview) page.
+`28` and download the Android 9 using the SDK manager. For more information on
+Android 9 and its timeline, take a look at the
+[Program Overview](https://developer.android.com/preview/overview) page.
 
 ### 3. Ensure you are using `AppCompatActivity`
 
@@ -73,9 +78,9 @@ be inflated among other important things.
 ### 4. Change your app theme to inherit from a Material Components theme
 
 Doing an app-wide migration by changing your app theme to inherit from a
-Material Components theme is the recommended approach. However, be sure to
-test thoroughly afterwards, as components in existing layouts may change
-their looks and behavior.
+Material Components theme is the recommended approach. However, be sure to test
+thoroughly afterwards, as components in existing layouts may change their looks
+and behavior.
 
 Note: If you **can't** change your theme, you can do one of the following:
 
@@ -145,10 +150,9 @@ using Material Design components without changing your app theme.
 
 #### **AppCompat Themes** {#app-compat-themes}
 
-You can also incrementally test new Material components without changing
-your app theme. This allows you to keep your existing layouts looking and
-behaving the same, while introducing new components to your layout one at a
-time.
+You can also incrementally test new Material components without changing your
+app theme. This allows you to keep your existing layouts looking and behaving
+the same, while introducing new components to your layout one at a time.
 
 However, you must add the following new theme attributes to your existing app
 theme, or you will encounter `ThemeEnforcement` errors:
@@ -199,9 +203,9 @@ Let's use [text fields](components/TextField.md) as an example.
 
 #### **Implementing a text field via XML**
 
-The default [filled
-text field](https://material.io/go/design-text-fields#filled-text-field) XML
-is defined as:
+The default
+[filled text field](https://material.io/go/design-text-fields#filled-text-field)
+XML is defined as:
 
 ```xml
 <com.google.android.material.textfield.TextInputLayout
@@ -220,8 +224,7 @@ theme, you will have to specify the text field style as well, via
 `style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"`
 
 Other text field styles are also provided. For example, if you want an
-[outlined
-text field](https://material.io/go/design-text-fields#outlined-text-field)
+[outlined text field](https://material.io/go/design-text-fields#outlined-text-field)
 in your layout, you can apply the Material Components `outlined` style to the
 text field in XML:
 
@@ -241,19 +244,17 @@ text field in XML:
 ## Contributors
 
 Material Components for Android welcomes contributions from the community. Check
-out our [contributing guidelines](contributing.md) as well as an overview of
-the [directory structure](directorystructure.md) before getting started.
+out our [contributing guidelines](contributing.md) as well as an overview of the
+[directory structure](directorystructure.md) before getting started.
 
 ## Useful Links
-- [Theming Guide](theming.md)
-- [Contributing](contributing.md)
-- [Building From Source](building-from-source.md)
-- [Catalog App](catalog-app.md)
-- [Class
-  documentation](https://developer.android.com/reference/com/google/android/material/classes)
-- [MDC-Android on Stack
-  Overflow](https://www.stackoverflow.com/questions/tagged/material-components+android)
-- [Android Developer’s
-  Guide](https://developer.android.com/training/material/index.html)
-- [Material.io](https://www.material.io)
-- [Material Design Guidelines](https://material.google.com)
+
+-   [Theming Guide](theming.md)
+-   [Contributing](contributing.md)
+-   [Building From Source](building-from-source.md)
+-   [Catalog App](catalog-app.md)
+-   [Class documentation](https://developer.android.com/reference/com/google/android/material/classes)
+-   [MDC-Android on Stack Overflow](https://www.stackoverflow.com/questions/tagged/material-components+android)
+-   [Android Developer’s Guide](https://developer.android.com/training/material/index.html)
+-   [Material.io](https://www.material.io)
+-   [Material Design Guidelines](https://material.google.com)
