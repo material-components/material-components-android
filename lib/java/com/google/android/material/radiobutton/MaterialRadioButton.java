@@ -30,6 +30,7 @@ import androidx.appcompat.widget.AppCompatRadioButton;
 import android.util.AttributeSet;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.ThemeEnforcement;
+import com.google.android.material.resources.MaterialResources;
 
 /**
  * A class that creates a Material Themed RadioButton.
@@ -70,6 +71,15 @@ public class MaterialRadioButton extends AppCompatRadioButton {
     TypedArray attributes =
         ThemeEnforcement.obtainStyledAttributes(
             context, attrs, R.styleable.MaterialRadioButton, defStyleAttr, DEF_STYLE_RES);
+
+    // If buttonTint is specified, read it using MaterialResources to allow themeable attributes in
+    // all API levels.
+    if (attributes.hasValue(R.styleable.MaterialRadioButton_buttonTint)) {
+      CompoundButtonCompat.setButtonTintList(
+          this,
+          MaterialResources.getColorStateList(
+              context, attributes, R.styleable.MaterialRadioButton_buttonTint));
+    }
 
     useMaterialThemeColors =
         attributes.getBoolean(R.styleable.MaterialRadioButton_useMaterialThemeColors, false);
