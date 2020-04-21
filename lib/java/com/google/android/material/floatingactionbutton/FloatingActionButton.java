@@ -94,7 +94,7 @@ import java.util.List;
  * <p>As this class descends from {@link ImageView}, you can control the icon which is displayed via
  * {@link #setImageDrawable(Drawable)}.
  *
- * <p>The background color of this view defaults to the your theme's {@code colorAccent}. If you
+ * <p>The background color of this view defaults to the your theme's {@code colorSecondary}. If you
  * wish to change this at runtime then you can do so via {@link
  * #setBackgroundTintList(ColorStateList)}.
  */
@@ -102,7 +102,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     implements TintableBackgroundView,
         TintableImageSourceView,
         ExpandableTransformationWidget,
-        Shapeable, CoordinatorLayout.AttachedBehavior {
+        Shapeable,
+        CoordinatorLayout.AttachedBehavior {
 
   private static final String LOG_TAG = "FloatingActionButton";
   private static final String EXPANDABLE_WIDGET_HELPER_KEY = "expandableWidgetHelper";
@@ -243,8 +244,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
                 context, attrs, defStyleAttr, DEF_STYLE_RES, ShapeAppearanceModel.PILL)
             .build();
 
-    boolean ensureMinTouchTargetSize = a
-        .getBoolean(R.styleable.FloatingActionButton_ensureMinTouchTargetSize, false);
+    boolean ensureMinTouchTargetSize =
+        a.getBoolean(R.styleable.FloatingActionButton_ensureMinTouchTargetSize, false);
 
     setEnabled(a.getBoolean(R.styleable.FloatingActionButton_android_enabled, true));
 
@@ -560,7 +561,6 @@ public class FloatingActionButton extends VisibilityAwareImageButton
       requestLayout();
     }
   }
-
 
   @Override
   public void setVisibility(int visibility) {
@@ -1236,7 +1236,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
    * Returns the backward compatible hovered/focused translationZ of the FloatingActionButton.
    *
    * @return the backward compatible hovered/focused translationZ in pixels.
-   * @attr ref com.google.android.material.R.styleable#FloatingActionButton_hoveredFocusedTranslationZ
+   * @attr ref
+   *     com.google.android.material.R.styleable#FloatingActionButton_hoveredFocusedTranslationZ
    * @see #setCompatHoveredFocusedTranslationZ(float)
    */
   public float getCompatHoveredFocusedTranslationZ() {
@@ -1247,7 +1248,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
    * Updates the backward compatible hovered/focused translationZ of the FloatingActionButton.
    *
    * @param translationZ The backward compatible hovered/focused translationZ in pixels.
-   * @attr ref com.google.android.material.R.styleable#FloatingActionButton_hoveredFocusedTranslationZ
+   * @attr ref
+   *     com.google.android.material.R.styleable#FloatingActionButton_hoveredFocusedTranslationZ
    * @see #getCompatHoveredFocusedTranslationZ()
    * @see #setUseCompatPadding(boolean)
    */
@@ -1259,7 +1261,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
    * Updates the backward compatible hovered/focused translationZ of the FloatingActionButton.
    *
    * @param id The resource id of the backward compatible hovered/focused translationZ.
-   * @attr ref com.google.android.material.R.styleable#FloatingActionButton_hoveredFocusedTranslationZ
+   * @attr ref
+   *     com.google.android.material.R.styleable#FloatingActionButton_hoveredFocusedTranslationZ
    * @see #getCompatHoveredFocusedTranslationZ()
    * @see #setUseCompatPadding(boolean)
    */
