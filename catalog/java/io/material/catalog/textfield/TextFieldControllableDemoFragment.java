@@ -25,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -136,6 +137,13 @@ public abstract class TextFieldControllableDemoFragment extends TextFieldDemoFra
     ViewGroup parent = (ViewGroup) textfields.get(0).getParent();
     boolean textfieldWithErrorHasFocus = false;
     for (TextInputLayout textfield : textfields) {
+      textfield.setErrorIconOnClickListener(
+          v -> Toast.makeText(getContext(), "Error icon clicked.", Toast.LENGTH_LONG).show());
+      textfield.setErrorIconOnLongClickListener(
+          v -> {
+            Toast.makeText(getContext(), "Error icon long clicked.", Toast.LENGTH_LONG).show();
+            return true;
+          });
       textfield.setError(error);
       textfieldWithErrorHasFocus |= textfield.hasFocus();
     }
