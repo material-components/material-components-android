@@ -303,6 +303,26 @@ public class TextInputLayoutActions {
     };
   }
 
+  public static ViewAction setErrorIconOnClickListener(final OnClickListener onClickListener) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Set error icon OnClickListener";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setErrorIconOnClickListener(onClickListener);
+      }
+    };
+  }
+
   public static ViewAction setEndIconMode(final int endIconMode) {
     return new ViewAction() {
       @Override

@@ -38,6 +38,7 @@ import static com.google.android.material.testutils.TextInputLayoutActions.setEn
 import static com.google.android.material.testutils.TextInputLayoutActions.setEndIconOnClickListener;
 import static com.google.android.material.testutils.TextInputLayoutActions.setEndIconOnLongClickListener;
 import static com.google.android.material.testutils.TextInputLayoutActions.setError;
+import static com.google.android.material.testutils.TextInputLayoutActions.setErrorIconOnClickListener;
 import static com.google.android.material.testutils.TextInputLayoutActions.setPrefixText;
 import static com.google.android.material.testutils.TextInputLayoutActions.setStartIcon;
 import static com.google.android.material.testutils.TextInputLayoutActions.setStartIconContentDescription;
@@ -448,6 +449,32 @@ public class TextInputLayoutIconsTest {
     // Assert onClickListener worked as expected
     assertEquals(
         "Custom icon on long click.", textInputCustomEndIcon.getEditText().getText().toString());
+  }
+
+  @Test
+  public void testErrorIconOnClickListener() {
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout textInputErrorEndIcon = activity.findViewById(R.id.textinput_no_icon);
+
+    // Set error on click listener
+    onView(withId(R.id.textinput_no_icon))
+        .perform(
+            setErrorIconOnClickListener(
+                v -> textInputErrorEndIcon.getEditText().setText("Error icon on click.")));
+
+    // Show error
+    onView(withId(R.id.textinput_no_icon)).perform(setError("Error"));
+
+    // Click error icon
+    onView(
+            allOf(
+                withId(R.id.text_input_end_icon),
+                withContentDescription(R.string.error_icon_content_description),
+                isDescendantOfA(withId(R.id.textinput_no_icon))))
+        .perform(click());
+
+    // Assert onClickListener worked as expected
+    assertEquals("Error icon on click.", textInputErrorEndIcon.getEditText().getText().toString());
   }
 
   @Test
