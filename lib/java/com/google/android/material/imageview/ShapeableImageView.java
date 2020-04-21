@@ -129,19 +129,19 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
   }
 
   @Override
-  protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-    super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+  protected void onSizeChanged(int width, int height, int oldWidth, int oldHeight) {
+    super.onSizeChanged(width, height, oldWidth, oldHeight);
     destination.set(
         getPaddingLeft(),
         getPaddingTop(),
-        getMeasuredWidth() - getPaddingRight(),
-        getMeasuredHeight() - getPaddingBottom());
+        width - getPaddingRight(),
+        height - getPaddingBottom());
     pathProvider.calculatePath(shapeAppearanceModel, 1f /*interpolation*/, destination, path);
     // Remove path from rect to draw with clear paint.
     maskPath.rewind();
     maskPath.addPath(path);
     // Do not include padding to clip the background too.
-    maskRect.set(0, 0, getMeasuredWidth(), getMeasuredHeight());
+    maskRect.set(0, 0, width, height);
     maskPath.addRect(maskRect, Direction.CCW);
   }
 
