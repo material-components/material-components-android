@@ -122,9 +122,9 @@ public class MaterialContainerTransformSharedElementCallback extends SharedEleme
       @NonNull List<String> sharedElementNames,
       @NonNull List<View> sharedElements,
       @NonNull List<View> sharedElementSnapshots) {
-    if (!sharedElements.isEmpty() && sharedElements.get(0).getTag() instanceof View) {
+    if (!sharedElements.isEmpty() && sharedElements.get(0).getTag(R.id.mtrl_motion_snapshot_view) instanceof View) {
       // Reset tag so we only use it for the start or end view depending on enter vs return.
-      sharedElements.get(0).setTag(null);
+      sharedElements.get(0).setTag(R.id.mtrl_motion_snapshot_view, null);
     }
 
     if (!entering && !sharedElements.isEmpty()) {
