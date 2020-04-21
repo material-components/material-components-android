@@ -54,7 +54,7 @@ public class MaterialContainerTransformSharedElementCallback extends SharedEleme
   private boolean transparentWindowBackgroundEnabled = true;
   @Nullable private Rect returnEndBounds;
 
-  @NonNull
+  @Nullable
   @Override
   public Parcelable onCaptureSharedElementSnapshot(
       @NonNull View sharedElement,
@@ -64,11 +64,13 @@ public class MaterialContainerTransformSharedElementCallback extends SharedEleme
     return super.onCaptureSharedElementSnapshot(sharedElement, viewToGlobalMatrix, screenBounds);
   }
 
-  @NonNull
+  @Nullable
   @Override
-  public View onCreateSnapshotView(@NonNull Context context, @NonNull Parcelable snapshot) {
+  public View onCreateSnapshotView(@NonNull Context context, @Nullable Parcelable snapshot) {
     View snapshotView = super.onCreateSnapshotView(context, snapshot);
-    if (capturedSharedElement != null && capturedSharedElement.get() instanceof Shapeable) {
+    if (snapshotView != null
+        && capturedSharedElement != null
+        && capturedSharedElement.get() instanceof Shapeable) {
       // Set shape appearance as snapshot view tag, which will be used by the transform.
       snapshotView.setTag(((Shapeable) capturedSharedElement.get()).getShapeAppearanceModel());
     }
