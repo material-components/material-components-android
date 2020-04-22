@@ -3840,11 +3840,24 @@ public class TextInputLayout extends LinearLayout {
     }
 
     int color =
-        colorStateList.getColorForState(this.getDrawableState(), colorStateList.getDefaultColor());
+        colorStateList.getColorForState(mergeIconState(iconView), colorStateList.getDefaultColor());
 
     icon = DrawableCompat.wrap(icon).mutate();
     DrawableCompat.setTintList(icon, ColorStateList.valueOf(color));
     iconView.setImageDrawable(icon);
+  }
+
+  private int[] mergeIconState(CheckableImageButton iconView) {
+    int[] textInputStates = this.getDrawableState();
+    int[] iconStates = iconView.getDrawableState();
+
+    int[] states = new int[textInputStates.length + iconStates.length];
+    int index = textInputStates.length;
+
+    System.arraycopy(textInputStates, 0, states, 0, textInputStates.length);
+    System.arraycopy(iconStates, 0, states, index, iconStates.length);
+
+    return states;
   }
 
   private void expandHint(boolean animate) {
