@@ -624,11 +624,11 @@ public class MaterialContainerTransform extends Transition {
       transitionValues.view = findDescendantOrAncestorById(transitionValues.view, viewIdOverride);
     } else if (viewOverride != null) {
       transitionValues.view = viewOverride;
-    } else if (transitionValues.view.getTag() instanceof View) {
-      View snapshotView = (View) transitionValues.view.getTag();
+    } else if (transitionValues.view.getTag(R.id.mtrl_motion_snapshot_view) instanceof View) {
+      View snapshotView = (View) transitionValues.view.getTag(R.id.mtrl_motion_snapshot_view);
 
       // Clear snapshot so that we don't accidentally use it for another transform transition.
-      transitionValues.view.setTag(null);
+      transitionValues.view.setTag(R.id.mtrl_motion_snapshot_view, null);
 
       // Use snapshot if entering and capturing start values or returning and capturing end values.
       transitionValues.view = snapshotView;
@@ -663,8 +663,8 @@ public class MaterialContainerTransform extends Transition {
       return shapeAppearanceModelOverride;
     }
 
-    if (view.getTag() instanceof ShapeAppearanceModel) {
-      return (ShapeAppearanceModel) view.getTag();
+    if (view.getTag(R.id.mtrl_motion_snapshot_view) instanceof ShapeAppearanceModel) {
+      return (ShapeAppearanceModel) view.getTag(R.id.mtrl_motion_snapshot_view);
     }
 
     Context context = view.getContext();
