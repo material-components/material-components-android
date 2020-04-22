@@ -16,6 +16,8 @@
 
 package com.google.android.material.transition;
 
+import com.google.android.material.R;
+
 import static com.google.android.material.transition.TransitionUtils.getRelativeBoundsRect;
 
 import android.app.Activity;
@@ -72,7 +74,9 @@ public class MaterialContainerTransformSharedElementCallback extends SharedEleme
         && capturedSharedElement != null
         && capturedSharedElement.get() instanceof Shapeable) {
       // Set shape appearance as snapshot view tag, which will be used by the transform.
-      snapshotView.setTag(((Shapeable) capturedSharedElement.get()).getShapeAppearanceModel());
+      snapshotView.setTag(
+          R.id.mtrl_motion_snapshot_view,
+          ((Shapeable) capturedSharedElement.get()).getShapeAppearanceModel());
     }
     return snapshotView;
   }
@@ -104,7 +108,7 @@ public class MaterialContainerTransformSharedElementCallback extends SharedEleme
     if (!sharedElements.isEmpty() && !sharedElementSnapshots.isEmpty()) {
       // Set up the snapshot view tag so that the transform knows when to use the snapshot view
       // instead of the view provided by TransitionValues.
-      sharedElements.get(0).setTag(sharedElementSnapshots.get(0));
+      sharedElements.get(0).setTag(R.id.mtrl_motion_snapshot_view, sharedElementSnapshots.get(0));
     }
 
     if (!entering && !sharedElements.isEmpty() && returnEndBounds != null) {
@@ -124,9 +128,10 @@ public class MaterialContainerTransformSharedElementCallback extends SharedEleme
       @NonNull List<String> sharedElementNames,
       @NonNull List<View> sharedElements,
       @NonNull List<View> sharedElementSnapshots) {
-    if (!sharedElements.isEmpty() && sharedElements.get(0).getTag() instanceof View) {
+    if (!sharedElements.isEmpty()
+        && sharedElements.get(0).getTag(R.id.mtrl_motion_snapshot_view) instanceof View) {
       // Reset tag so we only use it for the start or end view depending on enter vs return.
-      sharedElements.get(0).setTag(null);
+      sharedElements.get(0).setTag(R.id.mtrl_motion_snapshot_view, null);
     }
 
     if (!entering && !sharedElements.isEmpty()) {
