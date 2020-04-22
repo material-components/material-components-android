@@ -430,14 +430,14 @@ public class Slider extends View {
 
     ColorStateList trackColorInactive =
         MaterialResources.getColorStateList(context, a, trackColorInactiveRes);
-    setTrackColorInactiveTintList(
+    setTrackInactiveTintList(
         trackColorInactive != null
             ? trackColorInactive
             : AppCompatResources.getColorStateList(
                 context, R.color.material_slider_inactive_track_color));
     ColorStateList trackColorActive =
         MaterialResources.getColorStateList(context, a, trackColorActiveRes);
-    setTrackColorActiveTintList(
+    setTrackActiveTintList(
         trackColorActive != null
             ? trackColorActive
             : AppCompatResources.getColorStateList(
@@ -447,7 +447,7 @@ public class Slider extends View {
     thumbDrawable.setFillColor(thumbColor);
     ColorStateList haloColor =
         MaterialResources.getColorStateList(context, a, R.styleable.Slider_haloColor);
-    setHaloColorTintList(
+    setHaloTintList(
         haloColor != null
             ? haloColor
             : AppCompatResources.getColorStateList(context, R.color.material_slider_halo_color));
@@ -459,14 +459,14 @@ public class Slider extends View {
         hasTickColor ? R.styleable.Slider_tickColor : R.styleable.Slider_tickColorActive;
     ColorStateList tickColorInactive =
         MaterialResources.getColorStateList(context, a, tickColorInactiveRes);
-    setTickColorInactiveTintList(
+    setTickInactiveTintList(
         tickColorInactive != null
             ? tickColorInactive
             : AppCompatResources.getColorStateList(
                 context, R.color.material_slider_inactive_tick_marks_color));
     ColorStateList tickColorActive =
         MaterialResources.getColorStateList(context, a, tickColorActiveRes);
-    setTickColorActiveTintList(
+    setTickActiveTintList(
         tickColorActive != null
             ? tickColorActive
             : AppCompatResources.getColorStateList(
@@ -1029,21 +1029,21 @@ public class Slider extends View {
   /**
    * Returns the color of the halo.
    *
-   * @see #setHaloColorTintList(ColorStateList)
+   * @see #setHaloTintList(ColorStateList)
    * @attr ref com.google.android.material.R.styleable#Slider_haloColor
    */
   @NonNull
-  public ColorStateList getHaloColorTintList() {
+  public ColorStateList getHaloTintList() {
     return haloColor;
   }
 
   /**
    * Sets the color of the halo.
    *
-   * @see #getHaloColorTintList()
+   * @see #getHaloTintList()
    * @attr ref com.google.android.material.R.styleable#Slider_haloColor
    */
-  public void setHaloColorTintList(@NonNull ColorStateList haloColor) {
+  public void setHaloTintList(@NonNull ColorStateList haloColor) {
     if (haloColor.equals(this.haloColor)) {
       return;
     }
@@ -1064,21 +1064,21 @@ public class Slider extends View {
   /**
    * Returns the color of the thumb.
    *
-   * @see #setThumbColorTintList(ColorStateList)
+   * @see #setThumbTintList(ColorStateList)
    * @attr ref com.google.android.material.R.styleable#Slider_thumbColor
    */
   @NonNull
-  public ColorStateList getThumbColorTintList() {
+  public ColorStateList getThumbTintList() {
     return thumbDrawable.getFillColor();
   }
 
   /**
    * Sets the color of the thumb.
    *
-   * @see #getThumbColorTintList()
+   * @see #getThumbTintList()
    * @attr ref com.google.android.material.R.styleable#Slider_thumbColor
    */
-  public void setThumbColorTintList(@NonNull ColorStateList thumbColor) {
+  public void setThumbTintList(@NonNull ColorStateList thumbColor) {
     thumbDrawable.setFillColor(thumbColor);
   }
 
@@ -1087,15 +1087,15 @@ public class Slider extends View {
    *
    * @throws IllegalStateException If {@code tickColorActive} and {@code tickColorInactive} have
    *     been set to different values.
-   * @see #setTickColorTintList(ColorStateList)
-   * @see #setTickColorInactiveTintList(ColorStateList)
-   * @see #setTickColorActiveTintList(ColorStateList)
-   * @see #getTickColorInactiveTintList()
-   * @see #getTickColorActiveTintList()
+   * @see #setTickTintList(ColorStateList)
+   * @see #setTickInactiveTintList(ColorStateList)
+   * @see #setTickActiveTintList(ColorStateList)
+   * @see #getTickInactiveTintList()
+   * @see #getTickActiveTintList()
    * @attr ref com.google.android.material.R.styleable#Slider_tickColor
    */
   @NonNull
-  public ColorStateList getTickColorTintList() {
+  public ColorStateList getTickTintList() {
     if (!tickColorInactive.equals(tickColorActive)) {
       throw new IllegalStateException(
           "The inactive and active ticks are different colors. Use the getTickColorInactive() and"
@@ -1107,37 +1107,37 @@ public class Slider extends View {
   /**
    * Sets the color of the tick marks.
    *
-   * @see #setTickColorInactiveTintList(ColorStateList)
-   * @see #setTickColorActiveTintList(ColorStateList)
-   * @see #getTickColorTintList()
+   * @see #setTickInactiveTintList(ColorStateList)
+   * @see #setTickActiveTintList(ColorStateList)
+   * @see #getTickTintList()
    * @attr ref com.google.android.material.R.styleable#Slider_tickColor
    */
-  public void setTickColorTintList(@NonNull ColorStateList tickColor) {
-    setTickColorInactiveTintList(tickColor);
-    setTickColorActiveTintList(tickColor);
+  public void setTickTintList(@NonNull ColorStateList tickColor) {
+    setTickInactiveTintList(tickColor);
+    setTickActiveTintList(tickColor);
   }
 
   /**
    * Returns the color of the ticks on the active portion of the track.
    *
-   * @see #setTickColorActiveTintList(ColorStateList)
-   * @see #setTickColorTintList(ColorStateList)
-   * @see #getTickColorTintList()
+   * @see #setTickActiveTintList(ColorStateList)
+   * @see #setTickTintList(ColorStateList)
+   * @see #getTickTintList()
    * @attr ref com.google.android.material.R.styleable#Slider_tickColorActive
    */
   @NonNull
-  public ColorStateList getTickColorActiveTintList() {
+  public ColorStateList getTickActiveTintList() {
     return tickColorActive;
   }
 
   /**
    * Sets the color of the ticks on the active portion of the track.
    *
-   * @see #getTickColorActiveTintList()
-   * @see #setTickColorTintList(ColorStateList)
+   * @see #getTickActiveTintList()
+   * @see #setTickTintList(ColorStateList)
    * @attr ref com.google.android.material.R.styleable#Slider_tickColorActive
    */
-  public void setTickColorActiveTintList(@NonNull ColorStateList tickColor) {
+  public void setTickActiveTintList(@NonNull ColorStateList tickColor) {
     if (tickColor.equals(tickColorActive)) {
       return;
     }
@@ -1149,24 +1149,24 @@ public class Slider extends View {
   /**
    * Returns the color of the ticks on the inactive portion of the track.
    *
-   * @see #setTickColorInactiveTintList(ColorStateList)
-   * @see #setTickColorTintList(ColorStateList)
-   * @see #getTickColorTintList()
+   * @see #setTickInactiveTintList(ColorStateList)
+   * @see #setTickTintList(ColorStateList)
+   * @see #getTickTintList()
    * @attr ref com.google.android.material.R.styleable#Slider_tickColorInactive
    */
   @NonNull
-  public ColorStateList getTickColorInactiveTintList() {
+  public ColorStateList getTickInactiveTintList() {
     return tickColorInactive;
   }
 
   /**
    * Sets the color of the ticks on the inactive portion of the track.
    *
-   * @see #getTickColorInactiveTintList()
-   * @see #setTickColorTintList(ColorStateList)
+   * @see #getTickInactiveTintList()
+   * @see #setTickTintList(ColorStateList)
    * @attr ref com.google.android.material.R.styleable#Slider_tickColorInactive
    */
-  public void setTickColorInactiveTintList(@NonNull ColorStateList tickColor) {
+  public void setTickInactiveTintList(@NonNull ColorStateList tickColor) {
     if (tickColor.equals(tickColorInactive)) {
       return;
     }
@@ -1180,15 +1180,15 @@ public class Slider extends View {
    *
    * @throws IllegalStateException If {@code trackColorActive} and {@code trackColorInactive} have
    *     been set to different values.
-   * @see #setTrackColorTintList(ColorStateList)
-   * @see #setTrackColorInactiveTintList(ColorStateList)
-   * @see #setTrackColorActiveTintList(ColorStateList)
-   * @see #getTrackColorInactiveTintList()
-   * @see #getTrackColorActiveTintList()
+   * @see #setTrackTintList(ColorStateList)
+   * @see #setTrackInactiveTintList(ColorStateList)
+   * @see #setTrackActiveTintList(ColorStateList)
+   * @see #getTrackInactiveTintList()
+   * @see #getTrackActiveTintList()
    * @attr ref com.google.android.material.R.styleable#Slider_trackColor
    */
   @NonNull
-  public ColorStateList getTrackColorTintList() {
+  public ColorStateList getTrackTintList() {
     if (!trackColorInactive.equals(trackColorActive)) {
       throw new IllegalStateException(
           "The inactive and active parts of the track are different colors. Use the"
@@ -1200,37 +1200,37 @@ public class Slider extends View {
   /**
    * Sets the color of the track.
    *
-   * @see #setTrackColorInactiveTintList(ColorStateList)
-   * @see #setTrackColorActiveTintList(ColorStateList)
-   * @see #getTrackColorTintList()
+   * @see #setTrackInactiveTintList(ColorStateList)
+   * @see #setTrackActiveTintList(ColorStateList)
+   * @see #getTrackTintList()
    * @attr ref com.google.android.material.R.styleable#Slider_trackColor
    */
-  public void setTrackColorTintList(@NonNull ColorStateList trackColor) {
-    setTrackColorInactiveTintList(trackColor);
-    setTrackColorActiveTintList(trackColor);
+  public void setTrackTintList(@NonNull ColorStateList trackColor) {
+    setTrackInactiveTintList(trackColor);
+    setTrackActiveTintList(trackColor);
   }
 
   /**
    * Returns the color of the active portion of the track.
    *
-   * @see #setTrackColorActiveTintList(ColorStateList)
-   * @see #setTrackColorTintList(ColorStateList)
-   * @see #getTrackColorTintList()
+   * @see #setTrackActiveTintList(ColorStateList)
+   * @see #setTrackTintList(ColorStateList)
+   * @see #getTrackTintList()
    * @attr ref com.google.android.material.R.styleable#Slider_trackColorActive
    */
   @NonNull
-  public ColorStateList getTrackColorActiveTintList() {
+  public ColorStateList getTrackActiveTintList() {
     return trackColorActive;
   }
 
   /**
    * Sets the color of the active portion of the track.
    *
-   * @see #getTrackColorActiveTintList()
-   * @see #setTrackColorTintList(ColorStateList)
+   * @see #getTrackActiveTintList()
+   * @see #setTrackTintList(ColorStateList)
    * @attr ref com.google.android.material.R.styleable#Slider_trackColorActive
    */
-  public void setTrackColorActiveTintList(@NonNull ColorStateList trackColor) {
+  public void setTrackActiveTintList(@NonNull ColorStateList trackColor) {
     if (trackColor.equals(trackColorActive)) {
       return;
     }
@@ -1242,24 +1242,24 @@ public class Slider extends View {
   /**
    * Returns the color of the inactive portion of the track.
    *
-   * @see #setTrackColorInactiveTintList(ColorStateList)
-   * @see #setTrackColorTintList(ColorStateList)
-   * @see #getTrackColorTintList()
+   * @see #setTrackInactiveTintList(ColorStateList)
+   * @see #setTrackTintList(ColorStateList)
+   * @see #getTrackTintList()
    * @attr ref com.google.android.material.R.styleable#Slider_trackColorInactive
    */
   @NonNull
-  public ColorStateList getTrackColorInactiveTintList() {
+  public ColorStateList getTrackInactiveTintList() {
     return trackColorInactive;
   }
 
   /**
    * Sets the color of the inactive portion of the track.
    *
-   * @see #getTrackColorInactiveTintList()
-   * @see #setTrackColorTintList(ColorStateList)
+   * @see #getTrackInactiveTintList()
+   * @see #setTrackTintList(ColorStateList)
    * @attr ref com.google.android.material.R.styleable#Slider_trackColorInactive
    */
-  public void setTrackColorInactiveTintList(@NonNull ColorStateList trackColor) {
+  public void setTrackInactiveTintList(@NonNull ColorStateList trackColor) {
     if (trackColor.equals(trackColorInactive)) {
       return;
     }
