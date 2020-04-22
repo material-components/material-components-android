@@ -223,4 +223,13 @@ public class TextInputEditText extends AppCompatEditText {
       return "";
     }
   }
+
+  @Override
+  protected void onFocusChanged(boolean focused, int direction, Rect previouslyFocusedRect) {
+    super.onFocusChanged(focused, direction, previouslyFocusedRect);
+    TextInputLayout textInputLayout = getTextInputLayout();
+    if (textInputLayout != null) {
+      textInputLayout.setEndIconActivated(focused);
+    }
+  }
 }
