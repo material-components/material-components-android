@@ -525,6 +525,58 @@ public class TextInputLayoutActions {
     };
   }
 
+  /**
+   * Sets the text field's stroke width.
+   *
+   * @param strokeWidth the value to use for the text field box's stroke
+   * @return the action of setting the box stroke width on a {@link TextInputLayout}
+   */
+  public static ViewAction setBoxStrokeWidth(final int strokeWidth) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Sets the box's stroke width.";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setBoxStrokeWidth(strokeWidth);
+      }
+    };
+  }
+
+  /**
+   * Sets the text field's focused stroke width.
+   *
+   * @param strokeWidthFocused the value to use for the text field box's stroke when focused
+   * @return the action of setting the box's focused stroke width on a {@link TextInputLayout}
+   */
+  public static ViewAction setBoxStrokeWidthFocused(final int strokeWidthFocused) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Sets the box's stroke width when focused.";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setBoxStrokeWidthFocused(strokeWidthFocused);
+      }
+    };
+  }
+
   public static ViewAction setBoxStrokeColor(@ColorInt final int strokeColor) {
     return new ViewAction() {
       @Override
