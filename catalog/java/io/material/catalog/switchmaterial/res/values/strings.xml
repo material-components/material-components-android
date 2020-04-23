@@ -33,6 +33,10 @@
     description="The description of how switches look like when disabled. [CHAR LIMIT=NONE]">
     Switch elements that are disabled cannot be interacted with and will appear faded.
   </string>
+  <string name="cat_switch_gravity_guide"
+    description="The description of how switches look when setting switch gravity to start. [CHAR LIMIT=NONE]">
+    Switch elements that have gravity set to start.
+  </string>
   <string name="cat_switch_enabled"
     description="The label of enabled switches. [CHAR LIMIT=NONE]">
     Enabled
@@ -40,6 +44,10 @@
   <string name="cat_switch_disabled"
     description="The label of disabled switches. [CHAR LIMIT=NONE]">
     Disabled
+  </string>
+  <string name="cat_switch_gravity"
+    description="The label explaining the gravity of a switch. [CHAR LIMIT=NONE]">
+    Gravity
   </string>
   <string name="cat_switch_toggleable_description"
     description="The label explaining the function of a switch which toggles the state of enabling of the example switches. [CHAR LIMIT=NONE]">

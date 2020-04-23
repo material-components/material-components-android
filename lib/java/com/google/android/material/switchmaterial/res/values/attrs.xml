@@ -21,5 +21,12 @@
       be ignored. This value should be set to false when using custom drawables
       that should not be tinted. This value is ignored if a buttonTint is set. -->
     <attr name="useMaterialThemeColors"/>
+    <!-- Specifies how the switch should be positioned on the X axis. -->
+    <attr name="switchGravity">
+      <!-- Push the switch to the start of the view. -->
+      <flag name="start" value="0x1"/>
+      <!-- Push the switch to the end of the view. This is the default value. -->
+      <flag name="end" value="0x2"/>
+    </attr>
   </declare-styleable>
 </resources>
