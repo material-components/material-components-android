@@ -520,9 +520,33 @@ public class ChipDrawable extends MaterialShapeDrawable
   /** Returns the width of the chip icon plus padding, which only apply if the chip icon exists. */
   float calculateChipIconWidth() {
     if (showsChipIcon() || (showsCheckedIcon())) {
-      return iconStartPadding + chipIconSize + iconEndPadding;
+      return iconStartPadding + currentChipIconWidth() + iconEndPadding;
     }
     return 0f;
+  }
+
+  /**
+   * Returns the width of the chip using, chipIconSize, checkedIcon or chipIcon.
+   * If chipIconSize is set - not 0 - return it, otherwise, current icon drawable width.
+   */
+  private float currentChipIconWidth() {
+    Drawable iconDrawable = currentChecked ? checkedIcon : chipIcon;
+    if (chipIconSize == 0 && iconDrawable != null) {
+      return iconDrawable.getIntrinsicWidth();
+    }
+    return chipIconSize;
+  }
+
+  /**
+   * Returns the height of the chip using, chipIconSize, checkedIcon or chipIcon.
+   * If chipIconSize is set - not 0 - return it, otherwise, current icon drawable height.
+   */
+  private float currentChipIconHeight() {
+    Drawable iconDrawable = currentChecked ? checkedIcon : chipIcon;
+    if (chipIconSize == 0 && iconDrawable != null) {
+      return iconDrawable.getIntrinsicHeight();
+    }
+    return chipIconSize;
   }
 
   /**
@@ -779,17 +803,19 @@ public class ChipDrawable extends MaterialShapeDrawable
 
     if (showsChipIcon() || showsCheckedIcon()) {
       float offsetFromStart = chipStartPadding + iconStartPadding;
+      float chipWidth = currentChipIconWidth();
 
       if (DrawableCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_LTR) {
         outBounds.left = bounds.left + offsetFromStart;
-        outBounds.right = outBounds.left + chipIconSize;
+        outBounds.right = outBounds.left + chipWidth;
       } else {
         outBounds.right = bounds.right - offsetFromStart;
-        outBounds.left = outBounds.right - chipIconSize;
+        outBounds.left = outBounds.right - chipWidth;
       }
 
-      outBounds.top = bounds.exactCenterY() - chipIconSize / 2f;
-      outBounds.bottom = outBounds.top + chipIconSize;
+      float chipHeight = currentChipIconHeight();
+      outBounds.top = bounds.exactCenterY() - chipHeight / 2f;
+      outBounds.bottom = outBounds.top + chipHeight;
     }
   }
 
