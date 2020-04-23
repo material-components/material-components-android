@@ -183,6 +183,7 @@ public class ChipDrawable extends MaterialShapeDrawable
   @Nullable private ColorStateList chipIconTint;
   private float chipIconSize;
   private boolean hasChipIconTint;
+  private boolean chipIconUseDrawableSize;
 
   // Close icon
   private boolean closeIconVisible;
@@ -379,6 +380,7 @@ public class ChipDrawable extends MaterialShapeDrawable
         && attrs.getAttributeValue(NAMESPACE_APP, "chipIconVisible") == null) {
       setChipIconVisible(a.getBoolean(R.styleable.Chip_chipIconEnabled, false));
     }
+    setChipIconUseDrawableSize(a.getBoolean(R.styleable.Chip_chipIconUseDrawableSize, false));
     setChipIcon(MaterialResources.getDrawable(context, a, R.styleable.Chip_chipIcon));
     if (a.hasValue(R.styleable.Chip_chipIconTint)) {
       setChipIconTint(
@@ -527,11 +529,11 @@ public class ChipDrawable extends MaterialShapeDrawable
 
   /**
    * Returns the width of the chip using, chipIconSize, checkedIcon or chipIcon.
-   * If chipIconSize is set - not 0 - return it, otherwise, current icon drawable width.
+   * If chipIconUseDrawableSize is true return chipIconSize, otherwise, current icon drawable width.
    */
   private float currentChipIconWidth() {
     Drawable iconDrawable = currentChecked ? checkedIcon : chipIcon;
-    if (chipIconSize == 0 && iconDrawable != null) {
+    if (chipIconUseDrawableSize && iconDrawable != null) {
       return iconDrawable.getIntrinsicWidth();
     }
     return chipIconSize;
@@ -539,11 +541,11 @@ public class ChipDrawable extends MaterialShapeDrawable
 
   /**
    * Returns the height of the chip using, chipIconSize, checkedIcon or chipIcon.
-   * If chipIconSize is set - not 0 - return it, otherwise, current icon drawable height.
+   * If chipIconUseDrawableSize is true return chipIconSize, otherwise, current icon drawable height.
    */
   private float currentChipIconHeight() {
     Drawable iconDrawable = currentChecked ? checkedIcon : chipIcon;
-    if (chipIconSize == 0 && iconDrawable != null) {
+    if (chipIconUseDrawableSize && iconDrawable != null) {
       return iconDrawable.getIntrinsicHeight();
     }
     return chipIconSize;
@@ -1676,6 +1678,10 @@ public class ChipDrawable extends MaterialShapeDrawable
 
   public void setChipIconResource(@DrawableRes int id) {
     setChipIcon(AppCompatResources.getDrawable(context, id));
+  }
+
+  public void setChipIconUseDrawableSize(boolean useDrawableSize) {
+    chipIconUseDrawableSize = useDrawableSize;
   }
 
   public void setChipIcon(@Nullable Drawable chipIcon) {
