@@ -232,8 +232,8 @@ public class TextInputLayout extends LinearLayout {
   @BoxBackgroundMode private int boxBackgroundMode;
   private final int boxCollapsedPaddingTopPx;
   private int boxStrokeWidthPx;
-  private final int boxStrokeWidthDefaultPx;
-  private final int boxStrokeWidthFocusedPx;
+  private int boxStrokeWidthDefaultPx;
+  private int boxStrokeWidthFocusedPx;
   @ColorInt private int boxStrokeColor;
   @ColorInt private int boxBackgroundColor;
 
@@ -925,6 +925,79 @@ public class TextInputLayout extends LinearLayout {
         && boxBackground != null
         && editText.getBackground() == null
         && boxBackgroundMode != BOX_BACKGROUND_NONE;
+  }
+
+  /**
+   * Set the resource dimension to use for the box's stroke when in outline box mode, or for the
+   * underline stroke in filled mode.
+   *
+   * @param boxStrokeWidthResId the resource dimension to use for the box's stroke width
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_boxStrokeWidth
+   * @see #setBoxStrokeWidth(int)
+   * @see #getBoxStrokeWidth()
+   */
+  public void setBoxStrokeWidthResource(@DimenRes int boxStrokeWidthResId) {
+    setBoxStrokeWidth(getResources().getDimensionPixelSize(boxStrokeWidthResId));
+  }
+
+  /**
+   * Set the value to use for the box's stroke when in outline box mode, or for the underline stroke
+   * in filled mode.
+   *
+   * @param boxStrokeWidth the value to use for the box's stroke
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_boxStrokeWidth
+   * @see #getBoxStrokeWidth()
+   */
+  public void setBoxStrokeWidth(int boxStrokeWidth) {
+    boxStrokeWidthDefaultPx = boxStrokeWidth;
+    updateTextInputBoxState();
+  }
+
+  /**
+   * Returns the box's stroke width.
+   *
+   * @return the value used for the box's stroke width
+   * @see #setBoxStrokeWidth(int)
+   */
+  public int getBoxStrokeWidth() {
+    return boxStrokeWidthDefaultPx;
+  }
+
+  /**
+   * Set the resource dimension to use for the focused box's stroke when in outline box mode, or for
+   * the focused underline stroke in filled mode.
+   *
+   * @param boxStrokeWidthFocusedResId the resource dimension to use for the box's stroke width
+   *     when focused
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_boxStrokeWidthFocused
+   * @see #setBoxStrokeWidthFocused(int)
+   * @see #getBoxStrokeWidthFocused()
+   */
+  public void setBoxStrokeWidthFocusedResource(@DimenRes int boxStrokeWidthFocusedResId) {
+    setBoxStrokeWidthFocused(getResources().getDimensionPixelSize(boxStrokeWidthFocusedResId));
+  }
+
+  /**
+   * Set the value to use for the focused box's stroke when in outline box mode, or for the focused
+   * underline stroke in filled mode.
+   *
+   * @param boxStrokeWidthFocused the value to use for the box's stroke when focused
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_boxStrokeWidthFocused
+   * @see #getBoxStrokeWidthFocused()
+   */
+  public void setBoxStrokeWidthFocused(int boxStrokeWidthFocused) {
+    boxStrokeWidthFocusedPx = boxStrokeWidthFocused;
+    updateTextInputBoxState();
+  }
+
+  /**
+   * Returns the box's stroke focused width.
+   *
+   * @return the value used for the box's stroke width when focused
+   * @see #setBoxStrokeWidthFocused(int)
+   */
+  public int getBoxStrokeWidthFocused() {
+    return boxStrokeWidthFocusedPx;
   }
 
   /**

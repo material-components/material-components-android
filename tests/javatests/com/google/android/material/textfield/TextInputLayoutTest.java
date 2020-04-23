@@ -33,6 +33,8 @@ import static com.google.android.material.testutils.TextInputLayoutActions.setBo
 import static com.google.android.material.testutils.TextInputLayoutActions.setBoxCornerRadii;
 import static com.google.android.material.testutils.TextInputLayoutActions.setBoxStrokeColor;
 import static com.google.android.material.testutils.TextInputLayoutActions.setBoxStrokeErrorColor;
+import static com.google.android.material.testutils.TextInputLayoutActions.setBoxStrokeWidth;
+import static com.google.android.material.testutils.TextInputLayoutActions.setBoxStrokeWidthFocused;
 import static com.google.android.material.testutils.TextInputLayoutActions.setCounterEnabled;
 import static com.google.android.material.testutils.TextInputLayoutActions.setCounterMaxLength;
 import static com.google.android.material.testutils.TextInputLayoutActions.setError;
@@ -557,6 +559,30 @@ public class TextInputLayoutTest {
     // Check that the hint's collapsed height is the same as the TextPaint's height, measured from
     // the baseline (-ascent).
     assertEquals(layout.getHintCollapsedTextHeight(), -textPaint.ascent(), 0.01);
+  }
+
+  @Test
+  public void testSetBoxStrokeWidth() {
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout layout = activity.findViewById(R.id.textinput_box_outline);
+
+    // Set stroke width
+    onView(withId(R.id.textinput_box_outline)).perform(setBoxStrokeWidth(10));
+
+    // Assert stroke width is correct
+    assertEquals(10, layout.getBoxStrokeWidth());
+  }
+
+  @Test
+  public void testSetBoxStrokeFocusedWidth() {
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout layout = activity.findViewById(R.id.textinput_box_outline);
+
+    // Set stroke width
+    onView(withId(R.id.textinput_box_outline)).perform(setBoxStrokeWidthFocused(10));
+
+    // Assert stroke width is correct
+    assertEquals(10, layout.getBoxStrokeWidthFocused());
   }
 
   @Test
