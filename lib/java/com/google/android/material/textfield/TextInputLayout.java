@@ -393,9 +393,9 @@ public class TextInputLayout extends LinearLayout {
   private ColorStateList strokeErrorColor;
 
   @ColorInt private int defaultFilledBackgroundColor;
-  @ColorInt private final int disabledFilledBackgroundColor;
-  @ColorInt private final int focusedFilledBackgroundColor;
-  @ColorInt private final int hoveredFilledBackgroundColor;
+  @ColorInt private int disabledFilledBackgroundColor;
+  @ColorInt private int focusedFilledBackgroundColor;
+  @ColorInt private int hoveredFilledBackgroundColor;
 
   @ColorInt private int disabledColor;
 
@@ -1089,7 +1089,8 @@ public class TextInputLayout extends LinearLayout {
   }
 
   /**
-   * Set the filled box's background color.
+   * Sets the filled box's default background color. Calling this method will make the background
+   * color not be stateful, if it was before.
    *
    * <p>Note: The background color is only supported for filled boxes. When used with box variants
    * other than {@link BoxBackgroundMode#BOX_BACKGROUND_FILLED}, the box background color may not
@@ -1102,12 +1103,38 @@ public class TextInputLayout extends LinearLayout {
     if (this.boxBackgroundColor != boxBackgroundColor) {
       this.boxBackgroundColor = boxBackgroundColor;
       defaultFilledBackgroundColor = boxBackgroundColor;
+      focusedFilledBackgroundColor = boxBackgroundColor;
+      hoveredFilledBackgroundColor = boxBackgroundColor;
       applyBoxAttributes();
     }
   }
 
   /**
-   * Returns the filled box's background color.
+   * Sets the box's background color state list.
+   *
+   * <p>Note: The background color is only supported for filled boxes. When used with box variants
+   * other than {@link BoxBackgroundMode#BOX_BACKGROUND_FILLED}, the box background color may not
+   * work as intended.
+   *
+   * @param boxBackgroundColorStateList the color state list to use for the box's background color
+   */
+  public void setBoxBackgroundColorStateList(@NonNull ColorStateList boxBackgroundColorStateList) {
+    defaultFilledBackgroundColor = boxBackgroundColorStateList.getDefaultColor();
+    boxBackgroundColor = defaultFilledBackgroundColor;
+    disabledFilledBackgroundColor =
+        boxBackgroundColorStateList.getColorForState(
+            new int[]{-android.R.attr.state_enabled}, -1);
+    focusedFilledBackgroundColor =
+        boxBackgroundColorStateList.getColorForState(
+            new int[]{android.R.attr.state_focused, android.R.attr.state_enabled}, -1);
+    hoveredFilledBackgroundColor =
+        boxBackgroundColorStateList.getColorForState(
+              new int[]{android.R.attr.state_hovered, android.R.attr.state_enabled}, -1);
+    applyBoxAttributes();
+  }
+
+  /**
+   * Returns the filled box's default background color.
    *
    * @return the color used for the filled box's background
    * @see #setBoxBackgroundColor(int)
