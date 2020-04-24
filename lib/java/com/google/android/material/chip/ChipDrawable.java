@@ -542,11 +542,13 @@ public class ChipDrawable extends MaterialShapeDrawable
   /**
    * Returns the height of the chip using, chipIconSize, checkedIcon or chipIcon.
    * If chipIconUseDrawableSize is true return chipIconSize, otherwise, current icon drawable height.
+   *
+   * The drawable height should be smaller or equal than chipIconSize
    */
   private float currentChipIconHeight() {
-    Drawable iconDrawable = currentChecked ? checkedIcon : chipIcon;
-    if (chipIconUseDrawableSize && iconDrawable != null) {
-      return iconDrawable.getIntrinsicHeight();
+    Drawable icon = currentChecked ? checkedIcon : chipIcon;
+    if (chipIconUseDrawableSize && icon != null && icon.getIntrinsicHeight() <= chipIconSize) {
+      return icon.getIntrinsicHeight();
     }
     return chipIconSize;
   }
