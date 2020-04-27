@@ -528,7 +528,7 @@ public class ChipDrawable extends MaterialShapeDrawable
   }
 
   /**
-   * Returns the width of the chip using, chipIconSize, checkedIcon or chipIcon.
+   * Returns the chip's leading icon width.
    * If chipIconUseDrawableSize is true return chipIconSize, otherwise, current icon drawable width.
    */
   private float currentChipIconWidth() {
@@ -540,7 +540,7 @@ public class ChipDrawable extends MaterialShapeDrawable
   }
 
   /**
-   * Returns the height of the chip using, chipIconSize, checkedIcon or chipIcon.
+   * Returns the chip's leading icon height.
    * If chipIconUseDrawableSize is true return chipIconSize, otherwise, current icon drawable height.
    *
    * The drawable height should be smaller or equal than chipIconSize
