@@ -12,9 +12,13 @@ path: /catalog/bottom-navigation/
 [Bottom navigation](https://material.io/components/bottom-navigation/#) bars
 allow movement between primary destinations in an app.
 
-![Example bottom navigation bar with four icons along the bottom: favorites,
-music, places, and news. The music icon is
-selected](assets/bottomnav/bottom-nav-generic.png)
+!["Bottom navigation bar on a screen"](assets/bottomnav/bottomnav_hero.png)
+
+## Contents
+
+*   [Using bottom navigation](#using-bottom-navigation)
+*   [Bottom navigation bar](#bottom-navigation-bar)
+*   [Theming](#theming-a-bottom-navigation-bar)
 
 ## Using bottom navigation
 
@@ -159,7 +163,13 @@ bottomNavigation.removeBadge(menuItemId)
 See the [`BadgeDrawable`](BadgeDrawable.md) documentation for more information
 about it.
 
-## Bottom navigation example
+## Bottom navigation bar
+
+![Example bottom navigation bar with four icons along the bottom: favorites,
+music, places, and news. The music icon is
+selected](assets/bottomnav/bottom-nav-generic.png)
+
+### Bottom navigation bar example
 
 API and source code:
 

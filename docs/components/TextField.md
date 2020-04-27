@@ -12,16 +12,14 @@ path: /catalog/text-fields/
 [Text fields](https://material.io/components/text-fields) let users enter and
 edit text.
 
-There are two types of text fields:
+!["Text fields on a screen"](assets/textfields/textfields_hero.png)
 
-1.  [Filled text field](#filled-text-field)
-2.  [Outlined text field](#outlined-text-field)
+## Contents
 
-!["Text field examples of both filled and outlined types, and each type showing
-both inactive and focused states. The filled text fields show a gray background
-and a darker gray activation indicator that is purple when focused. The outlined
-text fields show a clear background and an outline that is purple when
-focused"](assets/textfields/text-field-generic.png)
+*   [Using text fields](#using-text-fields)
+*   [Filled text field](#filled-text-field)
+*   [Outlined text field](#outlined-text-field)
+*   [Theming](#theming-text-fields)
 
 ## Using text fields
 
@@ -311,6 +309,17 @@ field requires different accessibility support than the one offered by
 `TextInputLayout`, you can set a `TextInputLayout.AccessibilityDelegate` via the
 `setTextInputAccessibilityDelegate` method. This method should be used in place
 of providing an `AccessibilityDelegate` directly on the `EditText`.
+
+## Types
+
+There are two types of text fields: 1. [Filled text field](#filled-text-field),
+2. [Outlined text field](#outlined-text-field)
+
+!["Text field examples of both filled and outlined types, and each type showing
+both inactive and focused states. The filled text fields show a gray background
+and a darker gray activation indicator that is purple when focused. The outlined
+text fields show a clear background and an outline that is purple when
+focused"](assets/textfields/text-field-generic.png)
 
 ## Filled text field
 
