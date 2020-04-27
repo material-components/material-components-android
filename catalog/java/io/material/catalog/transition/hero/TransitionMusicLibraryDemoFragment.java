@@ -18,9 +18,7 @@ package io.material.catalog.transition.hero;
 
 import io.material.catalog.R;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,14 +30,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.widget.Toolbar.OnMenuItemClickListener;
-import android.transition.Transition;
-import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
+import androidx.transition.Transition;
+import androidx.transition.TransitionManager;
 import com.google.android.material.transition.Hold;
 import com.google.android.material.transition.MaterialFadeThrough;
 import com.google.android.material.transition.MaterialSharedAxis;
@@ -50,7 +48,6 @@ import java.util.Collections;
 import java.util.List;
 
 /** A Fragment that hosts a toolbar and a child fragment with a list of music data. */
-@TargetApi(VERSION_CODES.LOLLIPOP)
 public class TransitionMusicLibraryDemoFragment extends Fragment
     implements AlbumAdapterListener, OnMenuItemClickListener {
 

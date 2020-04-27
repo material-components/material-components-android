@@ -14,9 +14,13 @@
  * limitations under the License.
  */
 
-package com.google.android.material.transition;
+/*
+ * NOTE: THIS CLASS IS AUTO-GENERATED FROM THE EQUIVALENT CLASS IN THE PARENT TRANSITION PACKAGE.
+ * IT SHOULD NOT BE EDITED DIRECTLY.
+ */
+package com.google.android.material.transition.platform;
 
-import static com.google.android.material.transition.TransitionUtils.lerp;
+import static com.google.android.material.transition.platform.TransitionUtils.lerp;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
@@ -26,13 +30,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
-import androidx.transition.TransitionValues;
+import android.transition.TransitionValues;
 
 /**
  * A class that configures and is able to provide an {@link Animator} that fades out or in a view.
  *
  * FadeThroughProvider differs from FadeProvider in that it fades out and in views sequentially.
  */
+@androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.LOLLIPOP)
 public class FadeThroughProvider implements VisibilityAnimatorProvider {
 
   static final float PROGRESS_THRESHOLD = 0.35f;

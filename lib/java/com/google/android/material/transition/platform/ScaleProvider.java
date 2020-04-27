@@ -14,7 +14,11 @@
  * limitations under the License.
  */
 
-package com.google.android.material.transition;
+/*
+ * NOTE: THIS CLASS IS AUTO-GENERATED FROM THE EQUIVALENT CLASS IN THE PARENT TRANSITION PACKAGE.
+ * IT SHOULD NOT BE EDITED DIRECTLY.
+ */
+package com.google.android.material.transition.platform;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
@@ -23,9 +27,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
-import androidx.transition.TransitionValues;
+import android.transition.TransitionValues;
 
 /** A class that configures and is able to provide an {@link Animator} that scales a view. */
+@androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.LOLLIPOP)
 public class ScaleProvider implements VisibilityAnimatorProvider {
 
   private float outgoingStartScale = 1f;

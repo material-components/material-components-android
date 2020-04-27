@@ -45,8 +45,7 @@
         android:paddingBottom="8dp"
         android:orientation="horizontal"
         android:gravity="center_vertical|start"
-        android:background="?attr/selectableItemBackground"
-        android:transitionName="shared_element_single_item">
+        android:background="?attr/selectableItemBackground">
 
       <ImageView
           android:layout_width="56dp"
@@ -77,8 +76,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:paddingBottom="8dp"
-        android:transitionName="shared_element_vertical_card">
+        android:paddingBottom="8dp">
 
       <LinearLayout
           android:layout_width="match_parent"
@@ -124,8 +122,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:transitionName="shared_element_horizontal_card">
+        android:layout_marginEnd="16dp">
 
       <androidx.constraintlayout.widget.ConstraintLayout
           android:layout_width="match_parent"
@@ -181,8 +178,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:paddingBottom="8dp"
-        android:transitionName="shared_element_grid_card">
+        android:paddingBottom="8dp">
 
       <LinearLayout
           android:layout_width="match_parent"
@@ -227,8 +223,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:paddingBottom="8dp"
-        android:transitionName="shared_element_grid_tall_card">
+        android:paddingBottom="8dp">
 
       <LinearLayout
           android:layout_width="match_parent"

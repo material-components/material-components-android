@@ -14,7 +14,11 @@
  * limitations under the License.
  */
 
-package com.google.android.material.transition;
+/*
+ * NOTE: THIS CLASS IS AUTO-GENERATED FROM THE EQUIVALENT CLASS IN THE PARENT TRANSITION PACKAGE.
+ * IT SHOULD NOT BE EDITED DIRECTLY.
+ */
+package com.google.android.material.transition.platform;
 
 import android.animation.Animator;
 import android.animation.AnimatorSet;
@@ -22,13 +26,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
-import androidx.transition.TransitionValues;
-import androidx.transition.Visibility;
+import android.transition.TransitionValues;
+import android.transition.Visibility;
 import com.google.android.material.animation.AnimatorSetCompat;
 import java.util.ArrayList;
 import java.util.List;
 
 /** A {@link Visibility} transition that is composed of a primary and secondary animator. */
+@androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.LOLLIPOP)
 abstract class MaterialVisibility<P extends VisibilityAnimatorProvider>
     extends Visibility {
 

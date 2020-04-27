@@ -16,17 +16,14 @@
 
 package com.google.android.material.transition;
 
-import android.os.Build.VERSION_CODES;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import com.google.android.material.animation.AnimationUtils;
 
 /**
- * A {@link android.transition.Visibility} transition that, by default, provides a fade in and scale
- * out when appearing and a fade out and scale out when disappearing.
+ * A {@link androidx.transition.Visibility} transition that, by default, provides a fade in and
+ * scale out when appearing and a fade out and scale out when disappearing.
  */
-@RequiresApi(VERSION_CODES.LOLLIPOP)
 public class MaterialFadeThrough extends MaterialVisibility<FadeThroughProvider> {
 
   private static final float DEFAULT_START_SCALE = 0.92f;

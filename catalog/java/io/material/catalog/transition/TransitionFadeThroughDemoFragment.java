@@ -18,8 +18,6 @@ package io.material.catalog.transition;
 
 import io.material.catalog.R;
 
-import android.annotation.TargetApi;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
@@ -35,7 +33,6 @@ import com.google.android.material.transition.MaterialFadeThrough;
 import io.material.catalog.feature.DemoFragment;
 
 /** A fragment that displays the Fade Through Transition demo for the Catalog app. */
-@TargetApi(VERSION_CODES.LOLLIPOP)
 public class TransitionFadeThroughDemoFragment extends DemoFragment {
 
   private static final SparseIntArray LAYOUT_RES_MAP = new SparseIntArray();

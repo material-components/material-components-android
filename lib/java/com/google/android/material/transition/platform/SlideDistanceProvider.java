@@ -14,7 +14,11 @@
  * limitations under the License.
  */
 
-package com.google.android.material.transition;
+/*
+ * NOTE: THIS CLASS IS AUTO-GENERATED FROM THE EQUIVALENT CLASS IN THE PARENT TRANSITION PACKAGE.
+ * IT SHOULD NOT BE EDITED DIRECTLY.
+ */
+package com.google.android.material.transition.platform;
 
 import com.google.android.material.R;
 
@@ -33,7 +37,7 @@ import androidx.core.view.ViewCompat;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import androidx.transition.TransitionValues;
+import android.transition.TransitionValues;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -41,6 +45,7 @@ import java.lang.annotation.RetentionPolicy;
  * A class that can configure and create an {@link Animator} that slides a view vertically or
  * horizontally slide over a specific distance.
  */
+@androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.LOLLIPOP)
 public class SlideDistanceProvider implements VisibilityAnimatorProvider {
 
   private static final int DEFAULT_DISTANCE = -1;

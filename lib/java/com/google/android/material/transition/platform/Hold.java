@@ -14,7 +14,11 @@
  * limitations under the License.
  */
 
-package com.google.android.material.transition;
+/*
+ * NOTE: THIS CLASS IS AUTO-GENERATED FROM THE EQUIVALENT CLASS IN THE PARENT TRANSITION PACKAGE.
+ * IT SHOULD NOT BE EDITED DIRECTLY.
+ */
+package com.google.android.material.transition.platform;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
@@ -22,13 +26,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
-import androidx.transition.TransitionValues;
-import androidx.transition.Visibility;
+import android.transition.TransitionValues;
+import android.transition.Visibility;
 
 /**
- * A {@link Visibility} {@link androidx.transition.Transition} that does nothing to the target
+ * A {@link Visibility} {@link android.transition.Transition} that does nothing to the target
  * views, which can be useful for preserving a scene on screen during a Fragment transition.
  */
+@androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.LOLLIPOP)
 public class Hold extends Visibility {
 
   @NonNull

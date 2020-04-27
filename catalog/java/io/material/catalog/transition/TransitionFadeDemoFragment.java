@@ -18,22 +18,19 @@ package io.material.catalog.transition;
 
 import io.material.catalog.R;
 
-import android.annotation.TargetApi;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import androidx.transition.TransitionManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.transition.MaterialFade;
 import io.material.catalog.feature.DemoFragment;
 
 /** A fragment that displays the Fade Transition demo for the Catalog app. */
-@TargetApi(VERSION_CODES.LOLLIPOP)
 public class TransitionFadeDemoFragment extends DemoFragment {
 
   private Button fadeButton;

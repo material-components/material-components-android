@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.google.android.material.transition;
+package com.google.android.material.transition.platform;
 
 import com.google.android.material.R;
 
-import static com.google.android.material.transition.TransitionUtils.getRelativeBoundsRect;
+import static com.google.android.material.transition.platform.TransitionUtils.getRelativeBoundsRect;
 
 import android.app.Activity;
 import android.app.SharedElementCallback;

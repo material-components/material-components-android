@@ -22,9 +22,6 @@
   <string name="cat_transition_description">
     Transition choreography is a coordinated sequence of motion that maintains user focus as the interface adapts.
   </string>
-  <string name="cat_transition_restricted_message">
-    <b>Transitions are only supported on API level 21 and up.</b>\n\nTransition choreography is a coordinated sequence of motion that maintains user focus as the interface adapts.
-  </string>
 
   <string name="cat_transition_container_transform_activity_title">Container Transform (Activity)</string>
 

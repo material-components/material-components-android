@@ -21,17 +21,14 @@ import static com.google.android.material.transition.TransitionUtils.lerp;
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
-import android.os.Build.VERSION_CODES;
 import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import android.transition.TransitionValues;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.transition.TransitionValues;
 
 /** A class that configures and is able to provide an {@link Animator} that fades a view. */
-@RequiresApi(VERSION_CODES.LOLLIPOP)
 public class FadeProvider implements VisibilityAnimatorProvider {
 
   private float incomingEndThreshold = 1f;

@@ -14,7 +14,11 @@
  * limitations under the License.
  */
 
-package com.google.android.material.transition;
+/*
+ * NOTE: THIS CLASS IS AUTO-GENERATED FROM THE EQUIVALENT CLASS IN THE PARENT TRANSITION PACKAGE.
+ * IT SHOULD NOT BE EDITED DIRECTLY.
+ */
+package com.google.android.material.transition.platform;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
@@ -28,7 +32,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * A {@link androidx.transition.Visibility} transition that provides shared motion along an axis.
+ * A {@link android.transition.Visibility} transition that provides shared motion along an axis.
  *
  * <p>When configured along the {@link #X} axis, this transition slides and fades in the target when
  * appearing and slides and fades out the target when disappearing.
@@ -45,6 +49,7 @@ import java.lang.annotation.RetentionPolicy;
  * down on the Y axis and in on the Z axis. Note that this is independent of whether or not the
  * target is appearing or disappearing.
  */
+@androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.LOLLIPOP)
 public class MaterialSharedAxis extends MaterialVisibility<VisibilityAnimatorProvider> {
 
   /**

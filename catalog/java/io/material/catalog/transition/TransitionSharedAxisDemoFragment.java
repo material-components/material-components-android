@@ -18,8 +18,6 @@ package io.material.catalog.transition;
 
 import io.material.catalog.R;
 
-import android.annotation.TargetApi;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
@@ -36,7 +34,6 @@ import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.OnBackPressedHandler;
 
 /** A fragment that displays the Shared Axis Transition demo for the Catalog app. */
-@TargetApi(VERSION_CODES.LOLLIPOP)
 public class TransitionSharedAxisDemoFragment extends DemoFragment implements OnBackPressedHandler {
 
   private static final int LAYOUT_RES_ID_START = R.layout.cat_transition_shared_axis_start_fragment;

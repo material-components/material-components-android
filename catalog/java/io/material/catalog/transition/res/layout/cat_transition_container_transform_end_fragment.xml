@@ -21,8 +21,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorSurface"
-    android:transitionName="shared_element_end_root"
-    tools:targetApi="lollipop"
     tools:ignore="Overdraw">
 
   <include layout="@layout/cat_transition_list_detail_fragment" />

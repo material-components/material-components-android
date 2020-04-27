@@ -33,7 +33,7 @@
       android:layout_gravity="bottom|center_horizontal"
       android:padding="16dp"
       android:layout_margin="16dp"
-      android:visibility="gone"/>
+      android:visibility="gone" />
 
   <com.google.android.material.floatingactionbutton.FloatingActionButton
       android:id="@+id/start_fab"
@@ -41,6 +41,5 @@
       android:layout_height="wrap_content"
       android:layout_margin="16dp"
       android:layout_gravity="bottom|end"
-      android:transitionName="shared_element_fab"
       app:srcCompat="@drawable/ic_add_24px" />
 </FrameLayout>
