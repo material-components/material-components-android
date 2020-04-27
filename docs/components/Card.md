@@ -12,8 +12,13 @@ path: /catalog/cards/
 [Cards](https://material.io/components/cards/) contain content and actions about
 a single subject.
 
-![Elevated card with a secondary title and Action 1 and Action 2 buttons in
-purple](assets/cards/cards_basic.png)
+!["Cards on a screen"](assets/cards/cards_hero.png)
+
+## Contents
+
+*   [Using cards](#using-cards)
+*   [Card](#card)
+*   [Theming](#theming-cards)
 
 ## Using cards
 
@@ -37,10 +42,161 @@ on it, so that the behavior can be accessible via screen readers such as
 TalkBack. See the [draggable card section](#making-a-card-draggable) section
 below for more info.
 
+### Making a card checkable
+
+![Elevated card with a checked button and a light purple overlay; secondary
+title and Action 1 and Action 2 buttons](assets/cards/cards_checked.png)
+
+When a card is checked, it will show a checked icon and change its foreground
+color. There is no default behavior for enabling/disabling the checked state. An
+example of how to do it in response to a long click is shown below.
+
+In the layout:
+
+```xml
+<com.google.android.material.card.MaterialCardView
+    ...
+    android:clickable="true"
+    android:focusable="true"
+    android:checkable="true">
+
+    ...
+
+</com.google.android.material.card.MaterialCardView>
+```
+
+In code:
+
+```kt
+card.setOnLongClickListener {
+    card.setChecked(!card.isChecked)
+    true
+}
+```
+
+### Making a card draggable
+
+![Elevated card with a light grey overlay; secondary title and Action 1 and
+Action 2 buttons](assets/cards/cards_dragged.png)
+
+Cards have an `app:state_dragged` that has foreground and elevation changes to
+convey motion. We recommend using
+[`ViewDragHelper`](https://developer.android.com/reference/androidx/customview/widget/ViewDragHelper)
+to set the dragged state:
+
+```kt
+private inner class ViewDragHelperCallback : ViewDragHelper.Callback() {
+
+    override fun onViewCaptured(capturedChild: View, activePointerId: Int) {
+        if (capturedChild is MaterialCardView) {
+            (view as MaterialCardView).setDragged(true)
+        }
+    }
+
+    override fun onViewReleased(releaseChild: View, xVel: Float, yVel: Float) {
+        if (releaseChild is MaterialCardView) {
+            (view as MaterialCardView).setDragged(false)
+        }
+    }
+}
+```
+
+Alternatively, the
+[Material Catalog](https://github.com/material-components/material-components-android/tree/master/catalog/java/io/material/catalog/card)
+has an implementation example that uses a custom class called
+[`DraggableCoordinatorLayout`](https://github.com/material-components/material-components-android/tree/master/catalog/java/io/material/catalog/draggable/DraggableCoordinatorLayout.java)
+that you can copy, which is used as the parent container in the layout:
+
+In the layout:
+
+```xml
+<io.material.catalog.draggable.DraggableCoordinatorLayout
+    android:id="@+id/parentContainer"
+    ...>
+
+    <com.google.android.material.card.MaterialCardView
+        ...>
+
+        ...
+
+    </com.google.android.material.card.MaterialCardView>
+
+</io.material.catalog.draggable.DraggableCoordinatorLayout>
+```
+
+In code:
+
+```kt
+parentContainer.addDraggableChild(card)
+
+parentContainer.setViewDragListener(object : DraggableCoordinatorLayout.ViewDragListener {
+
+    override fun onViewCaptured(view: View, pointerId: Int) {
+        card.isDragged = true
+    }
+
+    override fun onViewReleased(view: View, vX: Float, vY: Float) {
+        card.isDragged = false
+    }
+})
+```
+
+Finally, make sure to make the behavior is accessible by setting an
+[`AccessibilityDelegate`](https://developer.android.com/reference/android/view/View.AccessibilityDelegate)
+on the card. The following shows an example of allowing the user to move the
+card to two different positions on the screen.
+
+```kt
+private val cardDelegate = object : AccessibilityDelegate() {
+    override fun onInitializeAccessibilityNodeInfo(host: View, info: AccessibilityNodeInfo) {
+        super.onInitializeAccessibilityNodeInfo(host, info)
+
+        val layoutParams = card!!.layoutParams as CoordinatorLayout.LayoutParams
+        val gravity = layoutParams.gravity
+        val isOnTop = gravity and Gravity.TOP == Gravity.TOP
+        val isOnBottom = gravity and Gravity.BOTTOM == Gravity.BOTTOM
+
+        if (!isOnTop) {
+            info.addAction(AccessibilityAction(R.id.move_card_top_action, getString(R.string.card_action_move_top)))
+        }
+        if (!isOnBottom) {
+            info.addAction(AccessibilityAction(R.id.move_card_bottom_action, getString(R.string.card_action_move_bottom)))
+        }
+    }
+
+    override fun performAccessibilityAction(host: View, action: Int, arguments: Bundle): Boolean {
+        val gravity: Int
+        if (action == R.id.move_card_top_action) {
+            gravity = Gravity.TOP
+        } else if (action == R.id.move_card_bottom_action) {
+            gravity = Gravity.BOTTOM
+        } else {
+            return super.performAccessibilityAction(host, action, arguments)
+        }
+
+        val layoutParams = card!!.layoutParams as CoordinatorLayout.LayoutParams
+        if (layoutParams.gravity != gravity) {
+            layoutParams.gravity = gravity
+            card!!.requestLayout()
+        }
+
+        return true
+    }
+}
+```
+
+_**Note:** Cards also support a swipe-to-dismiss behavior through the use of
+['SwipeDismissBehavior'](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/behavior/SwipeDismissBehavior.java).
+You can see an example
+[here](https://github.com/material-components/material-components-android/tree/master/catalog/java/io/material/catalog/card/CardSwipeDismissFragment.java)._
+
 ## Card
 
 On mobile, a [card’s](https://material.io/components/cards/#specs) default
 elevation is `1dp`, with a raised dragged elevation of `8dp`.
+
+![Elevated card with a secondary title and Action 1 and Action 2 buttons in
+purple](assets/cards/cards_basic.png)
 
 ### Card examples
 
@@ -169,154 +325,6 @@ In the stroke color (`stroke_color.xml`):
     <item android:alpha="0.12" android:color="?attr/colorOnSurface" android:state_checked="false"/>
 </selector>
 ```
-
-#### Making a card checkable
-
-![Elevated card with a checked button and a light purple overlay; secondary
-title and Action 1 and Action 2 buttons](assets/cards/cards_checked.png)
-
-When a card is checked, it will show a checked icon and change its foreground
-color. There is no default behavior for enabling/disabling the checked state. An
-example of how to do it in response to a long click is shown below.
-
-In the layout:
-
-```xml
-<com.google.android.material.card.MaterialCardView
-    ...
-    android:clickable="true"
-    android:focusable="true"
-    android:checkable="true">
-
-    ...
-
-</com.google.android.material.card.MaterialCardView>
-```
-
-In code:
-
-```kt
-card.setOnLongClickListener {
-    card.setChecked(!card.isChecked)
-    true
-}
-```
-
-#### Making a card draggable
-
-![Elevated card with a light grey overlay; secondary title and Action 1 and
-Action 2 buttons](assets/cards/cards_dragged.png)
-
-Cards have an `app:state_dragged` that has foreground and elevation changes to
-convey motion. We recommend using
-[`ViewDragHelper`](https://developer.android.com/reference/androidx/customview/widget/ViewDragHelper)
-to set the dragged state:
-
-```kt
-private inner class ViewDragHelperCallback : ViewDragHelper.Callback() {
-
-    override fun onViewCaptured(capturedChild: View, activePointerId: Int) {
-        if (capturedChild is MaterialCardView) {
-            (view as MaterialCardView).setDragged(true)
-        }
-    }
-
-    override fun onViewReleased(releaseChild: View, xVel: Float, yVel: Float) {
-        if (releaseChild is MaterialCardView) {
-            (view as MaterialCardView).setDragged(false)
-        }
-    }
-}
-```
-
-Alternatively, the
-[Material Catalog](https://github.com/material-components/material-components-android/tree/master/catalog/java/io/material/catalog/card)
-has an implementation example that uses a custom class called
-[`DraggableCoordinatorLayout`](https://github.com/material-components/material-components-android/tree/master/catalog/java/io/material/catalog/draggable/DraggableCoordinatorLayout.java)
-that you can copy, which is used as the parent container in the layout:
-
-In the layout:
-
-```xml
-<io.material.catalog.draggable.DraggableCoordinatorLayout
-    android:id="@+id/parentContainer"
-    ...>
-
-    <com.google.android.material.card.MaterialCardView
-        ...>
-
-        ...
-
-    </com.google.android.material.card.MaterialCardView>
-
-</io.material.catalog.draggable.DraggableCoordinatorLayout>
-```
-
-In code:
-
-```kt
-parentContainer.addDraggableChild(card)
-
-parentContainer.setViewDragListener(object : DraggableCoordinatorLayout.ViewDragListener {
-
-    override fun onViewCaptured(view: View, pointerId: Int) {
-        card.isDragged = true
-    }
-
-    override fun onViewReleased(view: View, vX: Float, vY: Float) {
-        card.isDragged = false
-    }
-})
-```
-
-Finally, make sure to make the behavior is accessible by setting an
-[`AccessibilityDelegate`](https://developer.android.com/reference/android/view/View.AccessibilityDelegate)
-on the card. The following shows an example of allowing the user to move the
-card to two different positions on the screen.
-
-```kt
-private val cardDelegate = object : AccessibilityDelegate() {
-    override fun onInitializeAccessibilityNodeInfo(host: View, info: AccessibilityNodeInfo) {
-        super.onInitializeAccessibilityNodeInfo(host, info)
-
-        val layoutParams = card!!.layoutParams as CoordinatorLayout.LayoutParams
-        val gravity = layoutParams.gravity
-        val isOnTop = gravity and Gravity.TOP == Gravity.TOP
-        val isOnBottom = gravity and Gravity.BOTTOM == Gravity.BOTTOM
-
-        if (!isOnTop) {
-            info.addAction(AccessibilityAction(R.id.move_card_top_action, getString(R.string.card_action_move_top)))
-        }
-        if (!isOnBottom) {
-            info.addAction(AccessibilityAction(R.id.move_card_bottom_action, getString(R.string.card_action_move_bottom)))
-        }
-    }
-
-    override fun performAccessibilityAction(host: View, action: Int, arguments: Bundle): Boolean {
-        val gravity: Int
-        if (action == R.id.move_card_top_action) {
-            gravity = Gravity.TOP
-        } else if (action == R.id.move_card_bottom_action) {
-            gravity = Gravity.BOTTOM
-        } else {
-            return super.performAccessibilityAction(host, action, arguments)
-        }
-
-        val layoutParams = card!!.layoutParams as CoordinatorLayout.LayoutParams
-        if (layoutParams.gravity != gravity) {
-            layoutParams.gravity = gravity
-            card!!.requestLayout()
-        }
-
-        return true
-    }
-}
-```
-
-_**Note:** Cards also support a swipe-to-dismiss behavior through the use of
-['SwipeDismissBehavior'](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/behavior/SwipeDismissBehavior.java).
-You can see an example
-[here](https://github.com/material-components/material-components-android/tree/master/catalog/java/io/material/catalog/card/CardSwipeDismissFragment.java)._
 
 ### Anatomy and key properties
 

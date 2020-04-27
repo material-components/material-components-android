@@ -12,16 +12,16 @@ path: /catalog/dialogs/
 [Dialogs](https://material.io/components/dialogs/) inform users about a task and
 can contain critical information, require decisions, or involve multiple tasks.
 
-There are four types of dialogs:
+!["Dialog on a screen"](assets/dialogs/dialogs_hero.png)
 
-1.  [Alert dialog](#alert-dialog)
-2.  [Simple dialog](#simple-dialog)
-3.  [Confirmation dialog](#confirmation-dialog)
-4.  [Full-screen dialog](#full-screen-dialog)
+## Contents
 
-<br>
-
-![Examples of the four types of dialogs.](assets/dialogs/dialogs_types.png)
+*   [Using dialogs](#using-dialogs)
+*   [Alert dialog](#alert-dialog)
+*   [Simple dialog](#simple-dialog)
+*   [Confirmation dialog](#confirmation-dialog)
+*   [Full-screen dialog](#full-screen-dialog)
+*   [Theming](#theming-dialogs)
 
 ## Using dialogs
 
@@ -42,6 +42,14 @@ The contents within a dialog should follow their own accessibility guidelines,
 such as an icon on a title having a content description via the
 `android:contentDescription` attribute set in the
 `MaterialAlertDialog.MaterialComponents.Title.Icon` style or descendant.
+
+## Types
+
+There are four types of dialogs: 1. [Alert dialog](#alert-dialog), 2.
+[Simple dialog](#simple-dialog), 3. [Confirmation dialog](#confirmation-dialog),
+4. [Full-screen dialog](#full-screen-dialog)
+
+![Examples of the four types of dialogs.](assets/dialogs/dialogs_types.png)
 
 ## Dialogs
 
@@ -273,7 +281,7 @@ See full list of
 and
 [theme overlays](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/dialog/res/values/themes.xml).
 
-## Dialog theming
+## Theming dialogs
 
 A dialog supports
 [Material Theming](https://material.io/components/dialogs/#theming) and can be

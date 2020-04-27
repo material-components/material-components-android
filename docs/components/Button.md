@@ -12,14 +12,16 @@ path: /catalog/buttons/
 [Buttons](https://material.io/components/buttons/) allow users to take actions,
 and make choices, with a single tap.
 
-There are four types of buttons:
+!["Button on a screen"](assets/buttons/buttons_hero.png)
 
-1.  [Text button](#text-button)
-2.  [Outlined button](#outlined-button)
-3.  [Contained button](#contained-button)
-4.  [Toggle button](#toggle-button)
+## Contents
 
-!["Button types - text, outlined, contained and toggle."](assets/buttons/buttons_types.png)
+*   [Using buttons](#using-buttons)
+*   [Text button](#text-button)
+*   [Outlined button](#outlined-button)
+*   [Contained button](#contained-button)
+*   [Toggle button](#toggle-button)
+*   [Theming](#theming-buttons)
 
 ## Using buttons
 
@@ -42,6 +44,14 @@ unnecessary.
 
 For more information on content labels, go to the
 [Android accessibility help guide](https://support.google.com/accessibility/android/answer/7158690).
+
+## Types
+
+There are four types of buttons: 1. [Text button](#text-button), 2.
+[Outlined button](#outlined-button), 3. [Contained button](#contained-button),
+4. [Toggle button](#toggle-button)
+
+!["Button types - text, outlined, contained and toggle."](assets/buttons/buttons_types.png)
 
 ## Text button
 

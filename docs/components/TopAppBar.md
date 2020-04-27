@@ -12,15 +12,14 @@ path: /catalog/top-app-bars/
 [Top app bars](https://material.io/components/app-bars-top/#) display
 information and actions relating to the current screen.
 
-There are two types of top app bar:
+!["Top app bar on a screen"](assets/topappbar/topappbar_hero.png)
 
-1.  [Regular top app bar](#regular-top-app-bar)
-2.  [Contextual action bar](#contextual-action-bar)
+## Contents
 
-![Top app bar examples of both regular and contextual action bar types. The
-regular top app bar shows a purple background with white icons and text. The
-contextual action bar shows a dark grey background with white icons and
-text.](assets/topappbar/topappbars_types.png)
+*   [Using top app bars](#using-top-app-bars)
+*   [Regular top app bar](#regular-top-app-bar)
+*   [Contextual action bar](#contextual-action-bar)
+*   [Theming](#theming-the-top-app-bar)
 
 ## Using top app bars
 
@@ -66,6 +65,17 @@ needs to be set in the menu:
 
 For images within promininent top app bars, set an `android:contentDescription`
 or use the `setContentDescription` method on the `ImageView`.
+
+## Types
+
+There are two types of top app bar: 1.
+[Regular top app bar](#regular-top-app-bar), 2.
+[Contextual action bar](#contextual-action-bar)
+
+![Top app bar examples of both regular and contextual action bar types. The
+regular top app bar shows a purple background with white icons and text. The
+contextual action bar shows a dark grey background with white icons and
+text.](assets/topappbar/topappbars_types.png)
 
 ## Regular top app bar
 
