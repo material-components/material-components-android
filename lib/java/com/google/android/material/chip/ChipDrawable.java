@@ -183,7 +183,7 @@ public class ChipDrawable extends MaterialShapeDrawable
   @Nullable private ColorStateList chipIconTint;
   private float chipIconSize;
   private boolean hasChipIconTint;
-  private boolean chipIconUseDrawableSize;
+  private boolean useChipIconDrawableSize;
 
   // Close icon
   private boolean closeIconVisible;
@@ -380,7 +380,7 @@ public class ChipDrawable extends MaterialShapeDrawable
         && attrs.getAttributeValue(NAMESPACE_APP, "chipIconVisible") == null) {
       setChipIconVisible(a.getBoolean(R.styleable.Chip_chipIconEnabled, false));
     }
-    setChipIconUseDrawableSize(a.getBoolean(R.styleable.Chip_chipIconUseDrawableSize, false));
+    setUseChipIconDrawableSize(a.getBoolean(R.styleable.Chip_useChipIconDrawableSize, false));
     setChipIcon(MaterialResources.getDrawable(context, a, R.styleable.Chip_chipIcon));
     if (a.hasValue(R.styleable.Chip_chipIconTint)) {
       setChipIconTint(
@@ -533,7 +533,7 @@ public class ChipDrawable extends MaterialShapeDrawable
    */
   private float currentChipIconWidth() {
     Drawable iconDrawable = currentChecked ? checkedIcon : chipIcon;
-    if (chipIconUseDrawableSize && iconDrawable != null) {
+    if (useChipIconDrawableSize && iconDrawable != null) {
       return iconDrawable.getIntrinsicWidth();
     }
     return chipIconSize;
@@ -547,7 +547,7 @@ public class ChipDrawable extends MaterialShapeDrawable
    */
   private float currentChipIconHeight() {
     Drawable icon = currentChecked ? checkedIcon : chipIcon;
-    if (chipIconUseDrawableSize && icon != null && icon.getIntrinsicHeight() <= chipIconSize) {
+    if (useChipIconDrawableSize && icon != null && icon.getIntrinsicHeight() <= chipIconSize) {
       return icon.getIntrinsicHeight();
     }
     return chipIconSize;
@@ -1682,8 +1682,8 @@ public class ChipDrawable extends MaterialShapeDrawable
     setChipIcon(AppCompatResources.getDrawable(context, id));
   }
 
-  public void setChipIconUseDrawableSize(boolean useDrawableSize) {
-    chipIconUseDrawableSize = useDrawableSize;
+  public void setUseChipIconDrawableSize(boolean useDrawableSize) {
+    useChipIconDrawableSize = useDrawableSize;
   }
 
   public void setChipIcon(@Nullable Drawable chipIcon) {
