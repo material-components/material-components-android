@@ -112,7 +112,7 @@ import java.lang.annotation.RetentionPolicy;
  * @see #setShapeMaskProgressThresholds(ProgressThresholds)
  */
 @androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.LOLLIPOP)
-public class MaterialContainerTransform extends Transition {
+public final class MaterialContainerTransform extends Transition {
 
   /**
    * Indicates that this transition should use automatic detection to determine whether it is an

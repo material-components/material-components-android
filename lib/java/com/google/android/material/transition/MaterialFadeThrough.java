@@ -24,7 +24,7 @@ import com.google.android.material.animation.AnimationUtils;
  * A {@link androidx.transition.Visibility} transition that, by default, provides a fade in and
  * scale out when appearing and a fade out and scale out when disappearing.
  */
-public class MaterialFadeThrough extends MaterialVisibility<FadeThroughProvider> {
+public final class MaterialFadeThrough extends MaterialVisibility<FadeThroughProvider> {
 
   private static final float DEFAULT_START_SCALE = 0.92f;
 

@@ -29,7 +29,7 @@ import androidx.transition.PathMotion;
  * MaterialContainerTransform#setPathMotion(PathMotion)} to have the container move along a curved
  * path from its start position to its end position.
  */
-public class MaterialArcMotion extends PathMotion {
+public final class MaterialArcMotion extends PathMotion {
 
   @NonNull
   @Override

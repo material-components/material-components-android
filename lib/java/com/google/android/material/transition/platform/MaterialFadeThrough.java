@@ -29,7 +29,7 @@ import com.google.android.material.animation.AnimationUtils;
  * scale out when appearing and a fade out and scale out when disappearing.
  */
 @androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.LOLLIPOP)
-public class MaterialFadeThrough extends MaterialVisibility<FadeThroughProvider> {
+public final class MaterialFadeThrough extends MaterialVisibility<FadeThroughProvider> {
 
   private static final float DEFAULT_START_SCALE = 0.92f;
 

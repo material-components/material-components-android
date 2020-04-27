@@ -34,7 +34,7 @@ import android.transition.TransitionValues;
 
 /** A class that configures and is able to provide an {@link Animator} that fades a view. */
 @androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.LOLLIPOP)
-public class FadeProvider implements VisibilityAnimatorProvider {
+public final class FadeProvider implements VisibilityAnimatorProvider {
 
   private float incomingEndThreshold = 1f;
 

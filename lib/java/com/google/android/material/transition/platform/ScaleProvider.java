@@ -31,7 +31,7 @@ import android.transition.TransitionValues;
 
 /** A class that configures and is able to provide an {@link Animator} that scales a view. */
 @androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.LOLLIPOP)
-public class ScaleProvider implements VisibilityAnimatorProvider {
+public final class ScaleProvider implements VisibilityAnimatorProvider {
 
   private float outgoingStartScale = 1f;
   private float outgoingEndScale = 1.1f;

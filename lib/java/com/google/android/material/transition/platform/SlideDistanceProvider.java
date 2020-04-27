@@ -46,7 +46,7 @@ import java.lang.annotation.RetentionPolicy;
  * horizontally slide over a specific distance.
  */
 @androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.LOLLIPOP)
-public class SlideDistanceProvider implements VisibilityAnimatorProvider {
+public final class SlideDistanceProvider implements VisibilityAnimatorProvider {
 
   private static final int DEFAULT_DISTANCE = -1;
 
