@@ -45,7 +45,7 @@ import java.lang.annotation.RetentionPolicy;
  * down on the Y axis and in on the Z axis. Note that this is independent of whether or not the
  * target is appearing or disappearing.
  */
-public class MaterialSharedAxis extends MaterialVisibility<VisibilityAnimatorProvider> {
+public final class MaterialSharedAxis extends MaterialVisibility<VisibilityAnimatorProvider> {
 
   /**
    * Indicates that the x-axis should be shared for the transition, meaning a horizontal slide and

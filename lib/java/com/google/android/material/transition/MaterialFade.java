@@ -24,7 +24,7 @@ import com.google.android.material.animation.AnimationUtils;
  * A {@link androidx.transition.Visibility} transition that is composed of a fade and scale of
  * incoming content and a simple fade of outgoing content.
  */
-public class MaterialFade extends MaterialVisibility<FadeProvider> {
+public final class MaterialFade extends MaterialVisibility<FadeProvider> {
 
   private static final long DEFAULT_DURATION_ENTER = 150;
   private static final long DEFAULT_DURATION_RETURN = 75;

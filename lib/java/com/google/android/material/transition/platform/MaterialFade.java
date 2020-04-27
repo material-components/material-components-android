@@ -29,7 +29,7 @@ import com.google.android.material.animation.AnimationUtils;
  * incoming content and a simple fade of outgoing content.
  */
 @androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.LOLLIPOP)
-public class MaterialFade extends MaterialVisibility<FadeProvider> {
+public final class MaterialFade extends MaterialVisibility<FadeProvider> {
 
   private static final long DEFAULT_DURATION_ENTER = 150;
   private static final long DEFAULT_DURATION_RETURN = 75;

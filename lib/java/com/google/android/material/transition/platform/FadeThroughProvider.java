@@ -38,7 +38,7 @@ import android.transition.TransitionValues;
  * FadeThroughProvider differs from FadeProvider in that it fades out and in views sequentially.
  */
 @androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.LOLLIPOP)
-public class FadeThroughProvider implements VisibilityAnimatorProvider {
+public final class FadeThroughProvider implements VisibilityAnimatorProvider {
 
   static final float PROGRESS_THRESHOLD = 0.35f;
 

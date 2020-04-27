@@ -34,7 +34,7 @@ import android.transition.PathMotion;
  * path from its start position to its end position.
  */
 @androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.LOLLIPOP)
-public class MaterialArcMotion extends PathMotion {
+public final class MaterialArcMotion extends PathMotion {
 
   @NonNull
   @Override

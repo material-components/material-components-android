@@ -29,7 +29,7 @@ import android.view.ViewGroup;
 import androidx.transition.TransitionValues;
 
 /** A class that configures and is able to provide an {@link Animator} that fades a view. */
-public class FadeProvider implements VisibilityAnimatorProvider {
+public final class FadeProvider implements VisibilityAnimatorProvider {
 
   private float incomingEndThreshold = 1f;
 

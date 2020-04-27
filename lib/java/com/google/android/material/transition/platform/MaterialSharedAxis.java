@@ -50,7 +50,7 @@ import java.lang.annotation.RetentionPolicy;
  * target is appearing or disappearing.
  */
 @androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.LOLLIPOP)
-public class MaterialSharedAxis extends MaterialVisibility<VisibilityAnimatorProvider> {
+public final class MaterialSharedAxis extends MaterialVisibility<VisibilityAnimatorProvider> {
 
   /**
    * Indicates that the x-axis should be shared for the transition, meaning a horizontal slide and
