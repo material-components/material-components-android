@@ -16,7 +16,6 @@
 
 package com.google.android.material.transition;
 
-import static androidx.core.util.Preconditions.checkNotNull;
 import static com.google.android.material.transition.TransitionUtils.lerp;
 
 import android.graphics.Canvas;
@@ -54,8 +53,8 @@ class MaskEvaluator {
 
     // Animate shape appearance corner changes over range of `progress` & use this when
     // drawing the container background & images
-    float shapeStartFraction = checkNotNull(shapeMaskThresholds.start);
-    float shapeEndFraction = checkNotNull(shapeMaskThresholds.end);
+    float shapeStartFraction = shapeMaskThresholds.getStart();
+    float shapeEndFraction = shapeMaskThresholds.getEnd();
     ShapeAppearanceModel currentShapeAppearanceModel =
         lerp(
             startShapeAppearanceModel,
