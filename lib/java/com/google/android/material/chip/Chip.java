@@ -2250,6 +2250,28 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
   }
 
   /**
+   * Sets if the chip's leading icon should use drawable size instead of chipIconSize.
+   *
+   * @param useDrawableSize whether to use chip's leading icon drawable size.
+   * @attr ref com.google.android.material.R.styleable#Chip_useChipIconDrawableSize
+   */
+  public void setUseChipIconDrawableSize(boolean useDrawableSize) {
+    if (chipDrawable != null) {
+      chipDrawable.setUseChipIconDrawableSize(useDrawableSize);
+    }
+  }
+
+  /**
+   * Returns if chip's leading icon should use it's drawable size when measuring chip icon bounds.
+   *
+   * @see #setUseChipIconDrawableSize(boolean)
+   * @attr ref com.google.android.material.R.styleable#Chip_useChipIconDrawableSize
+   */
+  public boolean isUseChipIconDrawableSize() {
+    return chipDrawable != null && chipDrawable.isUseChipIconDrawableSize();
+  }
+
+  /**
    * Returns whether this chip will expand its bounds (if needed) to meet the minimum touch target
    * size.
    *

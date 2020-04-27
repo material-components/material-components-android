@@ -1690,6 +1690,8 @@ public class ChipDrawable extends MaterialShapeDrawable
    */
   public void setUseChipIconDrawableSize(boolean useDrawableSize) {
     useChipIconDrawableSize = useDrawableSize;
+    invalidateSelf();
+    onSizeChange();
   }
 
   /**
