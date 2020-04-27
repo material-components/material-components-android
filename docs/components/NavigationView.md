@@ -108,7 +108,7 @@ There are other navigation patterns you should be aware of
     Up](https://developer.android.com/design/patterns/navigation.html)*
 -   Swipeable tabs using [TabLayout](TabLayout.md) and
     [ViewPager](https://developer.android.com/reference/android/support/v4/view/ViewPager.html)
--   [BottomNavigationView](BottomNavigationView.md) for when you have only 3 to
+-   [BottomNavigationView](BottomNavigation.md) for when you have only 3 to
     5 very well defined navigation categories
 
 You should familiarize yourself with the most common use for `NavigationView`,

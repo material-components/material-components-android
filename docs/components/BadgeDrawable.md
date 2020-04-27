@@ -18,7 +18,7 @@ range of customization Material Android components generally support (e.g.
 themed attributes).
 
 A `BadgeDrawable` represents dynamic information such as a number of pending
-requests in a [`BottomNavigationView`](BottomNavigationView.md) or
+requests in a [`BottomNavigationView`](BottomNavigation.md) or
 [`TabLayout`](TabLayout.md).
 
 ## Design & API Documentation
