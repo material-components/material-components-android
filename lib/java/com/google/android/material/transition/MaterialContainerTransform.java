@@ -1118,16 +1118,26 @@ public class MaterialContainerTransform extends Transition {
    */
   public static class ProgressThresholds {
     @FloatRange(from = 0.0, to = 1.0)
-    final float start;
+    private final float start;
 
     @FloatRange(from = 0.0, to = 1.0)
-    final float end;
+    private final float end;
 
     public ProgressThresholds(
         @FloatRange(from = 0.0, to = 1.0) float start,
         @FloatRange(from = 0.0, to = 1.0) float end) {
       this.start = start;
       this.end = end;
+    }
+
+    @FloatRange(from = 0.0, to = 1.0)
+    public float getStart() {
+      return start;
+    }
+
+    @FloatRange(from = 0.0, to = 1.0)
+    public float getEnd() {
+      return end;
     }
   }
 
