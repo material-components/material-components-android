@@ -14,21 +14,26 @@
  * limitations under the License.
  */
 
-package com.google.android.material.transition;
+/*
+ * NOTE: THIS CLASS IS AUTO-GENERATED FROM THE EQUIVALENT CLASS IN THE PARENT TRANSITION PACKAGE.
+ * IT SHOULD NOT BE EDITED DIRECTLY.
+ */
+package com.google.android.material.transition.platform;
 
 import android.graphics.Path;
 import android.graphics.PointF;
 import androidx.annotation.NonNull;
-import androidx.transition.PathMotion;
+import android.transition.PathMotion;
 
 /**
  * A Material {@link PathMotion} that results in a more dramatic curve than {@link
- * androidx.transition.ArcMotion}.
+ * android.transition.ArcMotion}.
  *
  * <p>Use MaterialArcMotion in conjunction with {@link MaterialContainerTransform} via {@link
  * MaterialContainerTransform#setPathMotion(PathMotion)} to have the container move along a curved
  * path from its start position to its end position.
  */
+@androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.LOLLIPOP)
 public class MaterialArcMotion extends PathMotion {
 
   @NonNull

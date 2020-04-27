@@ -50,7 +50,6 @@ import com.google.android.material.transition.MaterialContainerTransform;
  * A helper class which manages all configuration UI presented in {@link
  * TransitionContainerTransformDemoFragment}.
  */
-@RequiresApi(VERSION_CODES.LOLLIPOP)
 public class ContainerTransformConfigurationHelper {
 
   private static final String CUBIC_CONTROL_FORMAT = "%.3f";
@@ -88,12 +87,27 @@ public class ContainerTransformConfigurationHelper {
     bottomSheetDialog.show();
   }
 
-  /** Set up the transition according to the config helper's parameters. */
+  /** Set up the androidx transition according to the config helper's parameters. */
   void configure(MaterialContainerTransform transform, boolean entering) {
     transform.setDuration(entering ? getEnterDuration() : getReturnDuration());
     transform.setInterpolator(getInterpolator());
     if (isArcMotionEnabled()) {
       transform.setPathMotion(new MaterialArcMotion());
+    }
+    transform.setFadeMode(getFadeMode());
+    transform.setDrawDebugEnabled(isDrawDebugEnabled());
+  }
+
+  /** Set up the platform transition according to the config helper's parameters. */
+  @RequiresApi(VERSION_CODES.LOLLIPOP)
+  void configure(
+      com.google.android.material.transition.platform.MaterialContainerTransform transform,
+      boolean entering) {
+    transform.setDuration(entering ? getEnterDuration() : getReturnDuration());
+    transform.setInterpolator(getInterpolator());
+    if (isArcMotionEnabled()) {
+      transform.setPathMotion(
+          new com.google.android.material.transition.platform.MaterialArcMotion());
     }
     transform.setFadeMode(getFadeMode());
     transform.setDrawDebugEnabled(isDrawDebugEnabled());

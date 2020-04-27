@@ -20,22 +20,22 @@ import io.material.catalog.R;
 
 import static io.material.catalog.transition.TransitionContainerTransformStartDemoActivity.configurationHelper;
 
-import android.annotation.TargetApi;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import com.google.android.material.transition.MaterialContainerTransform;
-import com.google.android.material.transition.MaterialContainerTransformSharedElementCallback;
+import com.google.android.material.transition.platform.MaterialContainerTransform;
+import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
 import io.material.catalog.feature.DemoActivity;
 
 /**
  * An activity that displays the Container Transform activity transition demo for the Catalog app.
  */
-@TargetApi(VERSION_CODES.LOLLIPOP)
+@RequiresApi(VERSION_CODES.LOLLIPOP)
 public class TransitionContainerTransformEndDemoActivity extends DemoActivity {
 
   @Override

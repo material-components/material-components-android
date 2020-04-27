@@ -14,19 +14,24 @@
  * limitations under the License.
  */
 
-package com.google.android.material.transition;
+/*
+ * NOTE: THIS CLASS IS AUTO-GENERATED FROM THE EQUIVALENT CLASS IN THE PARENT TRANSITION PACKAGE.
+ * IT SHOULD NOT BE EDITED DIRECTLY.
+ */
+package com.google.android.material.transition.platform;
 
 import android.animation.Animator;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
-import androidx.transition.TransitionValues;
+import android.transition.TransitionValues;
 
 /**
  * An interface which is able to provide an Animator to be supplied to a {@link
- * androidx.transition.Visibility} transition when a target view is appearing or disappearing.
+ * android.transition.Visibility} transition when a target view is appearing or disappearing.
  */
+@androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.LOLLIPOP)
 public interface VisibilityAnimatorProvider {
 
   @Nullable

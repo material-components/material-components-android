@@ -14,10 +14,14 @@
  * limitations under the License.
  */
 
-package com.google.android.material.transition;
+/*
+ * NOTE: THIS CLASS IS AUTO-GENERATED FROM THE EQUIVALENT CLASS IN THE PARENT TRANSITION PACKAGE.
+ * IT SHOULD NOT BE EDITED DIRECTLY.
+ */
+package com.google.android.material.transition.platform;
 
 import static androidx.core.util.Preconditions.checkNotNull;
-import static com.google.android.material.transition.TransitionUtils.lerp;
+import static com.google.android.material.transition.platform.TransitionUtils.lerp;
 
 import android.graphics.Canvas;
 import android.graphics.Path;
@@ -28,13 +32,14 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.shape.ShapeAppearancePathProvider;
-import com.google.android.material.transition.MaterialContainerTransform.ProgressThresholds;
+import com.google.android.material.transition.platform.MaterialContainerTransform.ProgressThresholds;
 
 /**
  * A class which is responsible calculating the path which represents a container transform's
  * transforming container based on a progress between 0 and 1 as well as clipping a canvas to that
  * given path.
  */
+@androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.LOLLIPOP)
 class MaskEvaluator {
 
   private final Path path = new Path();

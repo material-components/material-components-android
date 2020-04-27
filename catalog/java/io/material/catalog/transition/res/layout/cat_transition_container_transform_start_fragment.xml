@@ -17,11 +17,9 @@
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/start_root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:targetApi="lollipop">
+    android:layout_height="match_parent">
 
   <include layout="@layout/cat_transition_list_fragment" />
 
@@ -31,6 +29,5 @@
       android:layout_height="wrap_content"
       android:layout_margin="16dp"
       android:layout_gravity="bottom|end"
-      android:transitionName="shared_element_fab"
       app:srcCompat="@drawable/ic_add_24px" />
 </FrameLayout>

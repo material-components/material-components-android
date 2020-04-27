@@ -14,50 +14,39 @@
  * limitations under the License.
  */
 
-package com.google.android.material.transition;
+/*
+ * NOTE: THIS CLASS IS AUTO-GENERATED FROM THE EQUIVALENT CLASS IN THE PARENT TRANSITION PACKAGE.
+ * IT SHOULD NOT BE EDITED DIRECTLY.
+ */
+package com.google.android.material.transition.platform;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.animation.AnimationUtils;
 
 /**
- * A {@link androidx.transition.Visibility} transition that is composed of a fade and scale of
- * incoming content and a simple fade of outgoing content.
+ * A {@link android.transition.Visibility} transition that, by default, provides a fade in and
+ * scale out when appearing and a fade out and scale out when disappearing.
  */
-public class MaterialFade extends MaterialVisibility<FadeProvider> {
+@androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.LOLLIPOP)
+public class MaterialFadeThrough extends MaterialVisibility<FadeThroughProvider> {
 
-  private static final long DEFAULT_DURATION_ENTER = 150;
-  private static final long DEFAULT_DURATION_RETURN = 75;
-  private static final float DEFAULT_START_SCALE = 0.8f;
-  private static final float DEFAULT_FADE_END_THRESHOLD_ENTER = 0.3f;
-
-  private boolean entering;
+  private static final float DEFAULT_START_SCALE = 0.92f;
 
   @NonNull
-  public static MaterialFade create() {
-    return create(true);
+  public static MaterialFadeThrough create() {
+    return new MaterialFadeThrough();
   }
 
-  @NonNull
-  public static MaterialFade create(boolean entering) {
-    return new MaterialFade(entering);
-  }
-
-  private MaterialFade(boolean entering) {
-    this.entering = entering;
-    setDuration(entering ? DEFAULT_DURATION_ENTER : DEFAULT_DURATION_RETURN);
+  private MaterialFadeThrough() {
     setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
     initialize();
   }
 
   @NonNull
   @Override
-  FadeProvider getDefaultPrimaryAnimatorProvider() {
-    FadeProvider fadeProvider = new FadeProvider();
-    if (entering) {
-      fadeProvider.setIncomingEndThreshold(DEFAULT_FADE_END_THRESHOLD_ENTER);
-    }
-    return fadeProvider;
+  FadeThroughProvider getDefaultPrimaryAnimatorProvider() {
+    return new FadeThroughProvider();
   }
 
   @Nullable

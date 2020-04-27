@@ -18,8 +18,6 @@ package io.material.catalog.transition;
 
 import io.material.catalog.R;
 
-import android.annotation.TargetApi;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
@@ -27,6 +25,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentManager.FragmentLifecycleCallbacks;
+import androidx.core.view.ViewCompat;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -39,7 +38,6 @@ import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.OnBackPressedHandler;
 
 /** A fragment that displays the main Transition demo for the Catalog app. */
-@TargetApi(VERSION_CODES.LOLLIPOP)
 public class TransitionContainerTransformDemoFragment extends DemoFragment
     implements OnBackPressedHandler {
 
@@ -106,6 +104,7 @@ public class TransitionContainerTransformDemoFragment extends DemoFragment
   private void addTransitionableTarget(View view, @IdRes int id) {
     View target = view.findViewById(id);
     if (target != null) {
+      ViewCompat.setTransitionName(target, String.valueOf(id));
       target.setOnClickListener(this::showEndFragment);
     }
   }
@@ -113,7 +112,9 @@ public class TransitionContainerTransformDemoFragment extends DemoFragment
   private void showStartFragment() {
     TransitionSimpleLayoutFragment fragment =
         TransitionSimpleLayoutFragment.newInstance(
-            R.layout.cat_transition_container_transform_start_fragment);
+            R.layout.cat_transition_container_transform_start_fragment,
+            "shared_element_fab",
+            R.id.start_fab);
     fragment.setExitTransition(holdTransition);
     getChildFragmentManager()
         .beginTransaction()
@@ -123,14 +124,16 @@ public class TransitionContainerTransformDemoFragment extends DemoFragment
   }
 
   private void showEndFragment(View sharedElement) {
+    String transitionName = "shared_element_end_root";
+
     Fragment fragment =
         TransitionSimpleLayoutFragment.newInstance(
-            R.layout.cat_transition_container_transform_end_fragment);
+            R.layout.cat_transition_container_transform_end_fragment, transitionName);
     configureTransitions(fragment);
 
     getChildFragmentManager()
         .beginTransaction()
-        .addSharedElement(sharedElement, "shared_element_end_root")
+        .addSharedElement(sharedElement, transitionName)
         .replace(R.id.fragment_container, fragment, END_FRAGMENT_TAG)
         .addToBackStack("ContainerTransformFragment::end")
         .commit();

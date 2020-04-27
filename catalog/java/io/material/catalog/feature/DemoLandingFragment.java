@@ -47,7 +47,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.TextView;
 import com.google.android.material.resources.MaterialResources;
-import com.google.android.material.transition.MaterialContainerTransformSharedElementCallback;
+import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
 import dagger.android.support.DaggerFragment;
 import java.util.Collections;
 import java.util.List;

@@ -14,9 +14,13 @@
  * limitations under the License.
  */
 
-package com.google.android.material.transition;
+/*
+ * NOTE: THIS CLASS IS AUTO-GENERATED FROM THE EQUIVALENT CLASS IN THE PARENT TRANSITION PACKAGE.
+ * IT SHOULD NOT BE EDITED DIRECTLY.
+ */
+package com.google.android.material.transition.platform;
 
-import static com.google.android.material.transition.TransitionUtils.lerp;
+import static com.google.android.material.transition.platform.TransitionUtils.lerp;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
@@ -26,16 +30,34 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
-import androidx.transition.TransitionValues;
+import android.transition.TransitionValues;
 
-/**
- * A class that configures and is able to provide an {@link Animator} that fades out or in a view.
- *
- * FadeThroughProvider differs from FadeProvider in that it fades out and in views sequentially.
- */
-public class FadeThroughProvider implements VisibilityAnimatorProvider {
+/** A class that configures and is able to provide an {@link Animator} that fades a view. */
+@androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.LOLLIPOP)
+public class FadeProvider implements VisibilityAnimatorProvider {
 
-  static final float PROGRESS_THRESHOLD = 0.35f;
+  private float incomingEndThreshold = 1f;
+
+  /**
+   * Get the fraction at which the appearing fade animation will end between 0 and 1.
+   *
+   * @see #setIncomingEndThreshold(float)
+   */
+  public float getIncomingEndThreshold() {
+    return incomingEndThreshold;
+  }
+
+  /**
+   * Set the fraction by which an appearing fade animation should end between 0 and 1.
+   *
+   * <p>This can be used to stagger animations when this class' resulting animator is used inside an
+   * AnimatorSet. If the containing AnimatorSet has a total duration of 100 milliseconds and
+   * incomingEndThreshold is set to .75f, this class' animator will run and complete (the view will
+   * be completely faded in) after the AnimatorSet has run for 75 milliseconds.
+   */
+  public void setIncomingEndThreshold(float incomingEndThreshold) {
+    this.incomingEndThreshold = incomingEndThreshold;
+  }
 
   @Nullable
   @Override
@@ -44,12 +66,12 @@ public class FadeThroughProvider implements VisibilityAnimatorProvider {
       @NonNull View view,
       @Nullable TransitionValues startValues,
       @Nullable TransitionValues endValues) {
-    return createFadeThroughAnimator(
+    return createFadeAnimator(
         view,
         /* startValue= */ 0f,
         /* endValue= */ 1f,
-        /* startFraction= */ PROGRESS_THRESHOLD,
-        /* endFraction= */ 1f);
+        /* startFraction= */ 0F,
+        /* endFraction=*/ incomingEndThreshold);
   }
 
   @Nullable
@@ -59,15 +81,15 @@ public class FadeThroughProvider implements VisibilityAnimatorProvider {
       @NonNull View view,
       @Nullable TransitionValues startValues,
       @Nullable TransitionValues endValues) {
-    return createFadeThroughAnimator(
+    return createFadeAnimator(
         view,
         /* startValue= */ 1f,
         /* endValue= */ 0f,
-        /* startFraction= */ 0f,
-        /* endFraction= */ PROGRESS_THRESHOLD);
+        /* startFraction= */ 0F,
+        /* endFraction=*/ 1F);
   }
 
-  private static Animator createFadeThroughAnimator(
+  private static Animator createFadeAnimator(
       final View view,
       final float startValue,
       final float endValue,

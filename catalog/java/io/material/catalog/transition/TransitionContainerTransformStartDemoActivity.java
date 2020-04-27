@@ -18,26 +18,26 @@ package io.material.catalog.transition;
 
 import io.material.catalog.R;
 
-import android.annotation.TargetApi;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import com.google.android.material.transition.MaterialContainerTransformSharedElementCallback;
+import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
 import io.material.catalog.feature.DemoActivity;
 
 /**
  * An activity that displays the Container Transform activity transition demo for the Catalog app.
  */
-@TargetApi(VERSION_CODES.LOLLIPOP)
+@RequiresApi(VERSION_CODES.LOLLIPOP)
 public class TransitionContainerTransformStartDemoActivity extends DemoActivity {
 
   static ContainerTransformConfigurationHelper configurationHelper;

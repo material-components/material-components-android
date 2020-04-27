@@ -14,22 +14,26 @@
  * limitations under the License.
  */
 
-package com.google.android.material.transition;
+/*
+ * NOTE: THIS CLASS IS AUTO-GENERATED FROM THE EQUIVALENT CLASS IN THE PARENT TRANSITION PACKAGE.
+ * IT SHOULD NOT BE EDITED DIRECTLY.
+ */
+package com.google.android.material.transition.platform;
 
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static androidx.core.util.Preconditions.checkNotNull;
-import static com.google.android.material.transition.TransitionUtils.calculateArea;
-import static com.google.android.material.transition.TransitionUtils.convertToRelativeCornerSizes;
-import static com.google.android.material.transition.TransitionUtils.createColorShader;
-import static com.google.android.material.transition.TransitionUtils.defaultIfNull;
-import static com.google.android.material.transition.TransitionUtils.findAncestorById;
-import static com.google.android.material.transition.TransitionUtils.findDescendantOrAncestorById;
-import static com.google.android.material.transition.TransitionUtils.getLocationOnScreen;
-import static com.google.android.material.transition.TransitionUtils.getRelativeBounds;
-import static com.google.android.material.transition.TransitionUtils.lerp;
-import static com.google.android.material.transition.TransitionUtils.transform;
+import static com.google.android.material.transition.platform.TransitionUtils.calculateArea;
+import static com.google.android.material.transition.platform.TransitionUtils.convertToRelativeCornerSizes;
+import static com.google.android.material.transition.platform.TransitionUtils.createColorShader;
+import static com.google.android.material.transition.platform.TransitionUtils.defaultIfNull;
+import static com.google.android.material.transition.platform.TransitionUtils.findAncestorById;
+import static com.google.android.material.transition.platform.TransitionUtils.findDescendantOrAncestorById;
+import static com.google.android.material.transition.platform.TransitionUtils.getLocationOnScreen;
+import static com.google.android.material.transition.platform.TransitionUtils.getRelativeBounds;
+import static com.google.android.material.transition.platform.TransitionUtils.lerp;
+import static com.google.android.material.transition.platform.TransitionUtils.transform;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -60,16 +64,16 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
 import android.view.View;
 import android.view.ViewGroup;
-import androidx.transition.ArcMotion;
-import androidx.transition.PathMotion;
-import androidx.transition.Transition;
-import androidx.transition.TransitionValues;
+import android.transition.ArcMotion;
+import android.transition.PathMotion;
+import android.transition.Transition;
+import android.transition.TransitionValues;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.shape.Shapeable;
-import com.google.android.material.transition.TransitionUtils.CanvasOperation;
+import com.google.android.material.transition.platform.TransitionUtils.CanvasOperation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -107,6 +111,7 @@ import java.lang.annotation.RetentionPolicy;
  * @see #setScaleMaskProgressThresholds(ProgressThresholds)
  * @see #setShapeMaskProgressThresholds(ProgressThresholds)
  */
+@androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.LOLLIPOP)
 public class MaterialContainerTransform extends Transition {
 
   /**

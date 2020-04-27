@@ -14,16 +14,21 @@
  * limitations under the License.
  */
 
-package com.google.android.material.transition;
+/*
+ * NOTE: THIS CLASS IS AUTO-GENERATED FROM THE EQUIVALENT CLASS IN THE PARENT TRANSITION PACKAGE.
+ * IT SHOULD NOT BE EDITED DIRECTLY.
+ */
+package com.google.android.material.transition.platform;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.animation.AnimationUtils;
 
 /**
- * A {@link androidx.transition.Visibility} transition that is composed of a fade and scale of
+ * A {@link android.transition.Visibility} transition that is composed of a fade and scale of
  * incoming content and a simple fade of outgoing content.
  */
+@androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.LOLLIPOP)
 public class MaterialFade extends MaterialVisibility<FadeProvider> {
 
   private static final long DEFAULT_DURATION_ENTER = 150;

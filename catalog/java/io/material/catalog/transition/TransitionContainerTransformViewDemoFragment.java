@@ -18,14 +18,12 @@ package io.material.catalog.transition;
 
 import io.material.catalog.R;
 
-import android.annotation.TargetApi;
 import android.graphics.Color;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.transition.TransitionManager;
+import androidx.core.view.ViewCompat;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,12 +31,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import androidx.transition.TransitionManager;
 import com.google.android.material.transition.MaterialContainerTransform;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.OnBackPressedHandler;
 
 /** A fragment that displays the main Transition demo for the Catalog app. */
-@TargetApi(VERSION_CODES.LOLLIPOP)
 public class TransitionContainerTransformViewDemoFragment extends DemoFragment
     implements OnBackPressedHandler {
 
@@ -75,6 +73,7 @@ public class TransitionContainerTransformViewDemoFragment extends DemoFragment
   private void addTransitionableTarget(@NonNull View view, @IdRes int id) {
     View target = view.findViewById(id);
     if (target != null) {
+      ViewCompat.setTransitionName(target, String.valueOf(id));
       if (id == R.id.end_card) {
         target.setOnClickListener(v -> showStartView());
       } else {

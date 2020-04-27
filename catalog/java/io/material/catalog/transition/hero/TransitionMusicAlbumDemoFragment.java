@@ -18,8 +18,6 @@ package io.material.catalog.transition.hero;
 
 import io.material.catalog.R;
 
-import android.annotation.TargetApi;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,10 +37,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.transition.MaterialContainerTransform;
 import io.material.catalog.transition.hero.MusicData.Album;
 import io.material.catalog.transition.hero.MusicData.Track;
-import io.material.catalog.transition.hero.TransitionMusicAlbumDemoFragment.TrackAdapter.TrackViewHolder;
 
 /** A Fragment that displays an album's details. */
-@TargetApi(VERSION_CODES.LOLLIPOP)
 public class TransitionMusicAlbumDemoFragment extends Fragment {
 
   public static final String TAG = "TransitionMusicAlbumDemoFragment";

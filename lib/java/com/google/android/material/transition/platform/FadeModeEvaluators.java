@@ -14,16 +14,21 @@
  * limitations under the License.
  */
 
-package com.google.android.material.transition;
+/*
+ * NOTE: THIS CLASS IS AUTO-GENERATED FROM THE EQUIVALENT CLASS IN THE PARENT TRANSITION PACKAGE.
+ * IT SHOULD NOT BE EDITED DIRECTLY.
+ */
+package com.google.android.material.transition.platform;
 
-import static com.google.android.material.transition.MaterialContainerTransform.FADE_MODE_CROSS;
-import static com.google.android.material.transition.MaterialContainerTransform.FADE_MODE_IN;
-import static com.google.android.material.transition.MaterialContainerTransform.FADE_MODE_OUT;
-import static com.google.android.material.transition.MaterialContainerTransform.FADE_MODE_THROUGH;
-import static com.google.android.material.transition.TransitionUtils.lerp;
+import static com.google.android.material.transition.platform.MaterialContainerTransform.FADE_MODE_CROSS;
+import static com.google.android.material.transition.platform.MaterialContainerTransform.FADE_MODE_IN;
+import static com.google.android.material.transition.platform.MaterialContainerTransform.FADE_MODE_OUT;
+import static com.google.android.material.transition.platform.MaterialContainerTransform.FADE_MODE_THROUGH;
+import static com.google.android.material.transition.platform.TransitionUtils.lerp;
 
-import com.google.android.material.transition.MaterialContainerTransform.FadeMode;
+import com.google.android.material.transition.platform.MaterialContainerTransform.FadeMode;
 
+@androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.LOLLIPOP)
 class FadeModeEvaluators {
 
   private static final FadeModeEvaluator IN =
