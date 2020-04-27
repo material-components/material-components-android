@@ -542,8 +542,7 @@ public class ChipDrawable extends MaterialShapeDrawable
   /**
    * Returns the chip's leading icon height.
    * If chipIconUseDrawableSize is true return chipIconSize, otherwise, current icon drawable height.
-   *
-   * The drawable height should be smaller or equal than chipIconSize
+   * The drawable height should be smaller or equal than chipIconSize so it will keep aspect ratio
    */
   private float currentChipIconHeight() {
     Drawable icon = currentChecked ? checkedIcon : chipIcon;
