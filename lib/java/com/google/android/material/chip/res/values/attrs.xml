@@ -67,7 +67,7 @@
     <attr name="chipIconTint" format="color"/>
     <!-- Size of the chip's icon and checked icon. -->
     <attr name="chipIconSize" format="dimension"/>
-    <!-- Whether to use chip's icon/checkedIcon drawable size or chipIconSize. -->
+    <!-- Whether to use chip's leading icon drawable size or chipIconSize. -->
     <attr name="useChipIconDrawableSize" format="boolean"/>
 
     <!-- Whether to show the close icon. -->
