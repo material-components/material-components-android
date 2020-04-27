@@ -96,7 +96,6 @@ public class MaterialSharedAxis extends MaterialVisibility<VisibilityAnimatorPro
     this.axis = axis;
     this.forward = forward;
     setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-    initialize();
   }
 
   @Axis
@@ -125,7 +124,7 @@ public class MaterialSharedAxis extends MaterialVisibility<VisibilityAnimatorPro
 
   @Nullable
   @Override
-  public VisibilityAnimatorProvider getDefaultSecondaryAnimatorProvider() {
+  VisibilityAnimatorProvider getDefaultSecondaryAnimatorProvider() {
     return new FadeThroughProvider();
   }
 }
