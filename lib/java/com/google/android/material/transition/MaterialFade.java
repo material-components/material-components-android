@@ -31,8 +31,6 @@ public class MaterialFade extends MaterialVisibility<FadeProvider> {
   private static final float DEFAULT_START_SCALE = 0.8f;
   private static final float DEFAULT_FADE_END_THRESHOLD_ENTER = 0.3f;
 
-  private boolean entering;
-
   @NonNull
   public static MaterialFade create() {
     return create(true);
@@ -44,19 +42,15 @@ public class MaterialFade extends MaterialVisibility<FadeProvider> {
   }
 
   private MaterialFade(boolean entering) {
-    this.entering = entering;
     setDuration(entering ? DEFAULT_DURATION_ENTER : DEFAULT_DURATION_RETURN);
     setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-    initialize();
   }
 
   @NonNull
   @Override
   FadeProvider getDefaultPrimaryAnimatorProvider() {
     FadeProvider fadeProvider = new FadeProvider();
-    if (entering) {
-      fadeProvider.setIncomingEndThreshold(DEFAULT_FADE_END_THRESHOLD_ENTER);
-    }
+    fadeProvider.setIncomingEndThreshold(DEFAULT_FADE_END_THRESHOLD_ENTER);
     return fadeProvider;
   }
 

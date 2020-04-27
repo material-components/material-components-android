@@ -40,7 +40,6 @@ public class MaterialFadeThrough extends MaterialVisibility<FadeThroughProvider>
 
   private MaterialFadeThrough() {
     setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-    initialize();
   }
 
   @NonNull

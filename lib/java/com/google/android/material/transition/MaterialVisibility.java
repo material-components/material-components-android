@@ -34,12 +34,9 @@ abstract class MaterialVisibility<P extends VisibilityAnimatorProvider>
 
   private P primaryAnimatorProvider;
 
-  @Nullable private VisibilityAnimatorProvider secondaryAnimatorProvider;
+  private boolean secondaryInitialized = false;
 
-  void initialize() {
-    primaryAnimatorProvider = getDefaultPrimaryAnimatorProvider();
-    secondaryAnimatorProvider = getDefaultSecondaryAnimatorProvider();
-  }
+  @Nullable private VisibilityAnimatorProvider secondaryAnimatorProvider;
 
   @NonNull
   abstract P getDefaultPrimaryAnimatorProvider();
@@ -57,11 +54,16 @@ abstract class MaterialVisibility<P extends VisibilityAnimatorProvider>
 
   @Nullable
   public VisibilityAnimatorProvider getSecondaryAnimatorProvider() {
+    if (!secondaryInitialized) {
+      secondaryInitialized = true;
+      secondaryAnimatorProvider = getDefaultSecondaryAnimatorProvider();
+    }
     return secondaryAnimatorProvider;
   }
 
   public void setSecondaryAnimatorProvider(
       @Nullable VisibilityAnimatorProvider secondaryAnimatorProvider) {
+    secondaryInitialized = true;
     this.secondaryAnimatorProvider = secondaryAnimatorProvider;
   }
 
