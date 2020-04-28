@@ -22,7 +22,6 @@ package com.google.android.material.transition.platform;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.google.android.material.animation.AnimationUtils;
 
 /**
  * A {@link android.transition.Visibility} transition that, by default, provides a fade in and
@@ -32,15 +31,6 @@ import com.google.android.material.animation.AnimationUtils;
 public final class MaterialFadeThrough extends MaterialVisibility<FadeThroughProvider> {
 
   private static final float DEFAULT_START_SCALE = 0.92f;
-
-  @NonNull
-  public static MaterialFadeThrough create() {
-    return new MaterialFadeThrough();
-  }
-
-  private MaterialFadeThrough() {
-    setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-  }
 
   @NonNull
   @Override

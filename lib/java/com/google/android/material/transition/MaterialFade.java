@@ -18,7 +18,6 @@ package com.google.android.material.transition;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.google.android.material.animation.AnimationUtils;
 
 /**
  * A {@link androidx.transition.Visibility} transition that is composed of a fade and scale of
@@ -31,19 +30,12 @@ public final class MaterialFade extends MaterialVisibility<FadeProvider> {
   private static final float DEFAULT_START_SCALE = 0.8f;
   private static final float DEFAULT_FADE_END_THRESHOLD_ENTER = 0.3f;
 
-  @NonNull
-  public static MaterialFade create() {
-    return create(true);
+  public MaterialFade() {
+    this(true);
   }
 
-  @NonNull
-  public static MaterialFade create(boolean entering) {
-    return new MaterialFade(entering);
-  }
-
-  private MaterialFade(boolean entering) {
+  public MaterialFade(boolean entering) {
     setDuration(entering ? DEFAULT_DURATION_ENTER : DEFAULT_DURATION_RETURN);
-    setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
   }
 
   @NonNull

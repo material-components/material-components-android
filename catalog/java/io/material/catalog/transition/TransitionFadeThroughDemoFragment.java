@@ -80,7 +80,7 @@ public class TransitionFadeThroughDemoFragment extends DemoFragment {
   }
 
   private MaterialFadeThrough createTransition(){
-    MaterialFadeThrough fadeThrough = MaterialFadeThrough.create();
+    MaterialFadeThrough fadeThrough = new MaterialFadeThrough();
 
     // Add targets for this transition to explicitly run transitions only on these views. Without
     // targeting, a MaterialFadeThrough would be run for every view in the Fragment's layout.

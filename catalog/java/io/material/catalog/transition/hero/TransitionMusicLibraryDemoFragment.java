@@ -82,8 +82,7 @@ public class TransitionMusicLibraryDemoFragment extends Fragment
     Toolbar toolbar = view.findViewById(R.id.toolbar);
     listContainer = view.findViewById(R.id.list_container);
     toolbar.setOnMenuItemClickListener(this);
-    MaterialSharedAxis sharedAxis =
-        MaterialSharedAxis.create(MaterialSharedAxis.Z, true);
+    MaterialSharedAxis sharedAxis = new MaterialSharedAxis(MaterialSharedAxis.Z, true);
     setList(listTypeGrid, listSorted, sharedAxis);
   }
 
@@ -105,15 +104,14 @@ public class TransitionMusicLibraryDemoFragment extends Fragment
     int itemId = menuItem.getItemId();
     if (itemId == R.id.item_list_type) {
       // Use a fade through transition to swap between list item view types.
-      MaterialFadeThrough fadeThrough = MaterialFadeThrough.create();
+      MaterialFadeThrough fadeThrough = new MaterialFadeThrough();
       setList(!listTypeGrid, listSorted, fadeThrough);
       return true;
     }
 
     // Use a shared axis Y transition to sort the list, showing a spacial relationship between
     // the outgoing and incoming view.
-    MaterialSharedAxis sharedAxis =
-        MaterialSharedAxis.create(MaterialSharedAxis.Y, true);
+    MaterialSharedAxis sharedAxis = new MaterialSharedAxis(MaterialSharedAxis.Y, true);
     setList(listTypeGrid, !listSorted, sharedAxis);
     return true;
   }
