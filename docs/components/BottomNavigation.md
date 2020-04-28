@@ -244,20 +244,19 @@ The following is an anatomy diagram for the bottom navigation bar:
 
 ![Bottom navigation anatomy diagram](assets/bottomnav/bottom-nav-anatomy.png)
 
-*   1. Container
+*   (1) Container
 *   Navigation items:
-    *   2. Inactive icon
-    *   3. Inactive text label
-    *   4. Active icon
-    *   5. Active text label
+    *   (2) Inactive icon
+    *   (3) Inactive text label
+    *   (4) Active icon
+    *   (5) Active text label
 
 #### Container attributes
 
-| &nbsp;        | **Attribute**        | **Related      | **Default value**    |
-:               :                      : methods**      :                      :
-| ------------- | -------------------- | -------------- | -------------------- |
-| **Color**     | `app:backgroundTint` | N/A            | `?attr/colorSurface` |
-| **Elevation** | `app:elevation`      | `setElevation` | `8dp`                |
+&nbsp;        | **Attribute**        | **Related methods**      | **Default value**
+------------- | -------------------- | ------------------------ | -----------------
+**Color**     | `app:backgroundTint` | N/A                      | `?attr/colorSurface`
+**Elevation** | `app:elevation`      | `setElevation`           | `8dp`
 
 #### Navigation item attributes
 
