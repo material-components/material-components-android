@@ -23,7 +23,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import android.view.Gravity;
-import com.google.android.material.animation.AnimationUtils;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -39,11 +38,10 @@ import java.lang.annotation.RetentionPolicy;
  * <p>When configured along the {@link #Z} axis, this transition scales and fades in when the target
  * is appearing and scales and fades out when the target is disappearing.
  *
- * <p>The direction of the slide or scale is determined by the {@link #create(int, boolean)}
- * method's forward property. When true, the target will slide to the left on the X axis, up on the
- * Y axis and out in on the Z axis. When false, the target will slide to the right on the X axis,
- * down on the Y axis and in on the Z axis. Note that this is independent of whether or not the
- * target is appearing or disappearing.
+ * <p>The direction of the slide or scale is determined by the constructors's forward property. When
+ * true, the target will slide to the left on the X axis, up on the Y axis and out in on the Z axis.
+ * When false, the target will slide to the right on the X axis, down on the Y axis and in on the Z
+ * axis. Note that this is independent of whether or not the target is appearing or disappearing.
  */
 public final class MaterialSharedAxis extends MaterialVisibility<VisibilityAnimatorProvider> {
 
@@ -80,22 +78,9 @@ public final class MaterialSharedAxis extends MaterialVisibility<VisibilityAnima
   @Axis private final int axis;
   private final boolean forward;
 
-  /**
-   * Construct a new instance of MaterialSharedAxis with a given axis and direction.
-   *
-   * @param axis The axis in which this transition will animate.
-   * @param forward True if the animation should move in the forward direction, false if it should
-   *     move in the backward direction. Forward on the X axis is to the left, Y is up and Z is out.
-   */
-  @NonNull
-  public static MaterialSharedAxis create(@Axis int axis, boolean forward) {
-    return new MaterialSharedAxis(axis, forward);
-  }
-
-  private MaterialSharedAxis(@Axis int axis, boolean forward) {
+  public MaterialSharedAxis(@Axis int axis, boolean forward) {
     this.axis = axis;
     this.forward = forward;
-    setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
   }
 
   @Axis

@@ -24,19 +24,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.transition.TransitionValues;
 import androidx.transition.Visibility;
+import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.animation.AnimatorSetCompat;
 import java.util.ArrayList;
 import java.util.List;
 
 /** A {@link Visibility} transition that is composed of a primary and secondary animator. */
-abstract class MaterialVisibility<P extends VisibilityAnimatorProvider>
-    extends Visibility {
+abstract class MaterialVisibility<P extends VisibilityAnimatorProvider> extends Visibility {
 
   private P primaryAnimatorProvider;
 
   private boolean secondaryInitialized = false;
 
   @Nullable private VisibilityAnimatorProvider secondaryAnimatorProvider;
+
+  MaterialVisibility() {
+    setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
+  }
 
   @NonNull
   abstract P getDefaultPrimaryAnimatorProvider();

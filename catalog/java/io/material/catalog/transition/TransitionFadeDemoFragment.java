@@ -54,7 +54,7 @@ public class TransitionFadeDemoFragment extends DemoFragment {
     ViewGroup sceneRoot = (ViewGroup) requireView();
 
     boolean entering = fadeFab.getVisibility() == View.GONE;
-    MaterialFade materialFade = MaterialFade.create(entering);
+    MaterialFade materialFade = new MaterialFade(entering);
     TransitionManager.beginDelayedTransition(sceneRoot, materialFade);
     fadeFab.setVisibility(entering ? View.VISIBLE : View.GONE);
     fadeButton.setText(
