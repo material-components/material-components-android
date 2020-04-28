@@ -221,7 +221,7 @@ public final class MaterialContainerTransform extends Transition {
   @IdRes private int startViewId = View.NO_ID;
   @IdRes private int endViewId = View.NO_ID;
   @ColorInt private int containerColor = Color.TRANSPARENT;
-  @ColorInt private int scrimColor = -1;
+  @Nullable @ColorInt private Integer scrimColor;
   @TransitionDirection private int transitionDirection = TRANSITION_DIRECTION_AUTO;
   @FadeMode private int fadeMode = FADE_MODE_IN;
   @FitMode private int fitMode = FIT_MODE_AUTO;
@@ -398,11 +398,12 @@ public final class MaterialContainerTransform extends Transition {
    * Get the color to be drawn under the morphing container but within the bounds of the {@link
    * #getDrawingViewId()}.
    *
-   * <p>If this is not set, -1 will be returned, meaning the default, R.attr.scrimBackground, will
+   * <p>If this is not set, null will be returned, meaning the default, R.attr.scrimBackground, will
    * be as the scrim color.
    */
+  @Nullable
   @ColorInt
-  public int getScrimColor() {
+  public Integer getScrimColor() {
     return scrimColor;
   }
 
@@ -415,11 +416,11 @@ public final class MaterialContainerTransform extends Transition {
    * screen. The scrim will gradually fade in and cover the content being transformed over by the
    * morphing container.
    *
-   * <p>Manually setting a scrim color can be useful when transitioning between two Views in a
+   * <p>Changing the default scrim color can be useful when transitioning between two Views in a
    * layout, where the ending View does not cover any outgoing content (eg. a FAB to a bottom
-   * toolbar). For scenarios such as these, set the scrim color to transparent (0).
+   * toolbar). For scenarios such as these, set the scrim color to transparent.
    */
-  public void setScrimColor(@ColorInt int scrimColor) {
+  public void setScrimColor(@Nullable @ColorInt Integer scrimColor) {
     this.scrimColor = scrimColor;
   }
 
@@ -790,7 +791,7 @@ public final class MaterialContainerTransform extends Transition {
 
   @ColorInt
   private int getScrimColorOrDefault(Context context) {
-    if (scrimColor == -1) {
+    if (scrimColor == null) {
       return MaterialColors.getColor(
           context,
           R.attr.scrimBackground,
