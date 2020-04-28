@@ -15,6 +15,7 @@
   limitations under the License.
   -->
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
   <LinearLayout
@@ -27,32 +28,32 @@
         style="@style/selectableTextView"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:drawableLeft="@drawable/ic_person_add_24dp"
-        android:drawableStart="@drawable/ic_person_add_24dp"
+        app:drawableLeftCompat="@drawable/ic_person_add_24dp"
+        app:drawableStartCompat="@drawable/ic_person_add_24dp"
         android:text="@string/cat_bottomsheet_label_add_people"/>
 
     <TextView
         style="@style/selectableTextView"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:drawableLeft="@drawable/ic_link_24dp"
-        android:drawableStart="@drawable/ic_link_24dp"
+        app:drawableLeftCompat="@drawable/ic_link_24dp"
+        app:drawableStartCompat="@drawable/ic_link_24dp"
         android:text="@string/cat_bottomsheet_label_copy_link"/>
 
     <TextView
         style="@style/selectableTextView"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:drawableLeft="@drawable/ic_open_in_browser_24dp"
-        android:drawableStart="@drawable/ic_open_in_browser_24dp"
+        app:drawableLeftCompat="@drawable/ic_open_in_browser_24dp"
+        app:drawableStartCompat="@drawable/ic_open_in_browser_24dp"
         android:text="@string/cat_bottomsheet_label_open_in"/>
 
     <TextView
         style="@style/selectableTextView"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:drawableLeft="@drawable/ic_folder_24dp"
-        android:drawableStart="@drawable/ic_folder_24dp"
+        app:drawableLeftCompat="@drawable/ic_folder_24dp"
+        app:drawableStartCompat="@drawable/ic_folder_24dp"
         android:gravity="center_vertical"
         android:text="@string/cat_bottomsheet_label_move"/>
 
@@ -60,32 +61,32 @@
         style="@style/selectableTextView"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:drawableLeft="@drawable/ic_offline_pin_24dp"
-        android:drawableStart="@drawable/ic_offline_pin_24dp"
+        app:drawableLeftCompat="@drawable/ic_offline_pin_24dp"
+        app:drawableStartCompat="@drawable/ic_offline_pin_24dp"
         android:text="@string/cat_bottomsheet_label_available_offline"/>
 
     <TextView
         style="@style/selectableTextView"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:drawableLeft="@drawable/ic_star_24dp"
-        android:drawableStart="@drawable/ic_star_24dp"
+        app:drawableLeftCompat="@drawable/ic_star_24dp"
+        app:drawableStartCompat="@drawable/ic_star_24dp"
         android:text="@string/cat_bottomsheet_label_star"/>
 
     <TextView
         style="@style/selectableTextView"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:drawableLeft="@drawable/ic_edit_24dp"
-        android:drawableStart="@drawable/ic_edit_24dp"
+        app:drawableLeftCompat="@drawable/ic_edit_24dp"
+        app:drawableStartCompat="@drawable/ic_edit_24dp"
         android:text="@string/cat_bottomsheet_label_rename"/>
 
     <TextView
         style="@style/selectableTextView"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:drawableLeft="@drawable/ic_delete_24dp"
-        android:drawableStart="@drawable/ic_delete_24dp"
+        app:drawableLeftCompat="@drawable/ic_delete_24dp"
+        app:drawableStartCompat="@drawable/ic_delete_24dp"
         android:text="@string/cat_bottomsheet_label_remove"/>
 
   </LinearLayout>
