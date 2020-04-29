@@ -663,7 +663,7 @@ public class MaterialButtonToggleGroup extends LinearLayout {
       int lastVisibleChildIndex) {
     int childCount = getChildCount();
     CornerData cornerData = originalCornerData.get(index);
-    if (childCount == 1) {
+    if (childCount == 1 || firstVisibleChildIndex == lastVisibleChildIndex) {
       return cornerData;
     }
 
