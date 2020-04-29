@@ -68,8 +68,8 @@ or use the `setContentDescription` method on the `ImageView`.
 
 ## Types
 
-There are two types of top app bar: 1.
-[Regular top app bar](#regular-top-app-bar), 2.
+There are two types of top app bar: 1\.
+[Regular top app bar](#regular-top-app-bar), 2\.
 [Contextual action bar](#contextual-action-bar)
 
 ![Top app bar examples of both regular and contextual action bar types. The

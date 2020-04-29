@@ -47,9 +47,9 @@ For more information on content labels, go to the
 
 ## Types
 
-There are four types of buttons: 1. [Text button](#text-button), 2.
-[Outlined button](#outlined-button), 3. [Contained button](#contained-button),
-4. [Toggle button](#toggle-button)
+There are four types of buttons: 1\. [Text button](#text-button), 2\.
+[Outlined button](#outlined-button), 3\. [Contained button](#contained-button),
+4\. [Toggle button](#toggle-button)
 
 !["Button types - text, outlined, contained and toggle."](assets/buttons/buttons_types.png)
 
