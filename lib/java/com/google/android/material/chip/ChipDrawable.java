@@ -528,8 +528,8 @@ public class ChipDrawable extends MaterialShapeDrawable
   }
 
   /**
-   * Returns the chip's leading icon width.
-   * If chipIconUseDrawableSize is true return chipIconSize, otherwise, current icon drawable width.
+   * Return the chip's leading icon width.
+   * If useChipIconDrawableSize is false return chipIconSize, otherwise, current icon drawable width.
    */
   private float currentChipIconWidth() {
     Drawable iconDrawable = currentChecked ? checkedIcon : chipIcon;
@@ -540,8 +540,8 @@ public class ChipDrawable extends MaterialShapeDrawable
   }
 
   /**
-   * Returns the chip's leading icon height.
-   * If chipIconUseDrawableSize is true return chipIconSize, otherwise, current icon drawable height.
+   * Return the chip's leading icon height.
+   * If useChipIconDrawableSize is false return chipIconSize, otherwise, current icon drawable height.
    *
    * The drawable height should be smaller or equal than chipIconSize
    */
@@ -1695,7 +1695,7 @@ public class ChipDrawable extends MaterialShapeDrawable
   }
 
   /**
-   * Returns if chip's leading icon should use it's drawable size when measuring chip icon bounds.
+   * Return if chip's leading icon should use its drawable size when measuring chip icon bounds.
    *
    * @see #setUseChipIconDrawableSize(boolean)
    * @attr ref com.google.android.material.R.styleable#Chip_useChipIconDrawableSize
