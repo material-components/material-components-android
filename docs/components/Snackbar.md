@@ -93,7 +93,7 @@ Snackbar.make(contextView, R.string.item_removed_message, Snackbar.LENGTH_LONG)
 ```
 
 Action text color can be customized through the `setActionTextColor` methods
-(defaulting to your theme's accent color).
+(defaulting to your theme's primary color).
 
 ### Anchoring a Snackbar
 
