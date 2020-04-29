@@ -45,9 +45,9 @@ such as an icon on a title having a content description via the
 
 ## Types
 
-There are four types of dialogs: 1. [Alert dialog](#alert-dialog), 2.
-[Simple dialog](#simple-dialog), 3. [Confirmation dialog](#confirmation-dialog),
-4. [Full-screen dialog](#full-screen-dialog)
+There are four types of dialogs: 1\. [Alert dialog](#alert-dialog), 2\.
+[Simple dialog](#simple-dialog), 3\. [Confirmation dialog](#confirmation-dialog),
+4\. [Full-screen dialog](#full-screen-dialog)
 
 ![Examples of the four types of dialogs.](assets/dialogs/dialogs_types.png)
 

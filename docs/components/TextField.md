@@ -312,8 +312,8 @@ of providing an `AccessibilityDelegate` directly on the `EditText`.
 
 ## Types
 
-There are two types of text fields: 1. [Filled text field](#filled-text-field),
-2. [Outlined text field](#outlined-text-field)
+There are two types of text fields: 1\. [Filled text field](#filled-text-field),
+2\. [Outlined text field](#outlined-text-field)
 
 !["Text field examples of both filled and outlined types, and each type showing
 both inactive and focused states. The filled text fields show a gray background
