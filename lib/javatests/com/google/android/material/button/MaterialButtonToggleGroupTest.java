@@ -107,6 +107,20 @@ public class MaterialButtonToggleGroupTest {
     assertShapeAppearance(lastChild.getShapeAppearanceModel(), 0, CORNER_SIZE, 0, CORNER_SIZE);
   }
 
+  @Test
+  public void correctShapeAppearances_inToggle_whenOneVisibleButton() {
+    MaterialButton firstChild = (MaterialButton) toggleGroup.getChildAt(0);
+    MaterialButton middleChild = (MaterialButton) toggleGroup.getChildAt(1);
+    MaterialButton lastChild = (MaterialButton) toggleGroup.getChildAt(2);
+
+    firstChild.setVisibility(GONE);
+    middleChild.setVisibility(GONE);
+    toggleGroup.updateChildShapes();
+    // Last child has default shape appearance.
+    assertShapeAppearance(
+        lastChild.getShapeAppearanceModel(), CORNER_SIZE, CORNER_SIZE, CORNER_SIZE, CORNER_SIZE);
+  }
+
   private static void assertShapeAppearance(
       ShapeAppearanceModel shapeAppearanceModel, float... corners) {
     RectF ignore = new RectF();
@@ -190,7 +204,7 @@ public class MaterialButtonToggleGroupTest {
     View child = toggleGroup.getChildAt(1);
     int id = ViewCompat.generateViewId();
     child.setId(id);
-    
+
     child.performClick();
     child.performClick();
 
