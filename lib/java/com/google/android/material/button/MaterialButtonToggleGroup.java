@@ -187,11 +187,7 @@ public class MaterialButtonToggleGroup extends LinearLayout {
     context = getContext();
     TypedArray attributes =
         ThemeEnforcement.obtainStyledAttributes(
-            context,
-            attrs,
-            R.styleable.MaterialButtonToggleGroup,
-            defStyleAttr,
-            DEF_STYLE_RES);
+            context, attrs, R.styleable.MaterialButtonToggleGroup, defStyleAttr, DEF_STYLE_RES);
 
     setSingleSelection(
         attributes.getBoolean(R.styleable.MaterialButtonToggleGroup_singleSelection, false));
@@ -594,8 +590,7 @@ public class MaterialButtonToggleGroup extends LinearLayout {
         continue;
       }
 
-      ShapeAppearanceModel.Builder builder =
-          button.getShapeAppearanceModel().toBuilder();
+      ShapeAppearanceModel.Builder builder = button.getShapeAppearanceModel().toBuilder();
       CornerData newCornerData = getNewCornerData(i, firstVisibleChildIndex, lastVisibleChildIndex);
       updateBuilderWithCornerData(builder, newCornerData);
 
@@ -658,12 +653,11 @@ public class MaterialButtonToggleGroup extends LinearLayout {
 
   @Nullable
   private CornerData getNewCornerData(
-      int index,
-      int firstVisibleChildIndex,
-      int lastVisibleChildIndex) {
-    int childCount = getChildCount();
+      int index, int firstVisibleChildIndex, int lastVisibleChildIndex) {
     CornerData cornerData = originalCornerData.get(index);
-    if (childCount == 1) {
+
+    // If only one (visible) child exists, use its original corners
+    if (firstVisibleChildIndex == lastVisibleChildIndex) {
       return cornerData;
     }
 
@@ -698,7 +692,8 @@ public class MaterialButtonToggleGroup extends LinearLayout {
    * children to draw all checked children on top of all unchecked children.
    *
    * <p>If {@code singleSelection} is true, this will unselect any other children as well.
-   * <p> If {@code selectionRequired} is true, and the last child is unchecked.
+   *
+   * <p>If {@code selectionRequired} is true, and the last child is unchecked.
    *
    * @param childId ID of child whose checked state may have changed
    * @param childIsChecked Whether the child is checked
