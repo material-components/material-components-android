@@ -21,7 +21,6 @@ import io.material.catalog.R;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -34,15 +33,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.transition.MaterialArcMotion;
 import com.google.android.material.transition.MaterialContainerTransform;
+import dagger.android.support.DaggerFragment;
+import io.material.catalog.feature.ContainerTransformConfiguration;
 import io.material.catalog.transition.hero.MusicData.Album;
 import io.material.catalog.transition.hero.MusicData.Track;
+import javax.inject.Inject;
 
 /** A Fragment that displays an album's details. */
-public class TransitionMusicAlbumDemoFragment extends Fragment {
+public class TransitionMusicAlbumDemoFragment extends DaggerFragment {
 
   public static final String TAG = "TransitionMusicAlbumDemoFragment";
   private static final String ALBUM_ID_KEY = "album_id_key";
+
+  @Inject ContainerTransformConfiguration containerTransformConfiguration;
 
   public static TransitionMusicAlbumDemoFragment newInstance(long albumId) {
     TransitionMusicAlbumDemoFragment fragment = new TransitionMusicAlbumDemoFragment();
@@ -98,8 +103,7 @@ public class TransitionMusicAlbumDemoFragment extends Fragment {
 
     // Set up toolbar
     ViewCompat.setElevation(toolbar, 0F);
-    toolbar.setNavigationOnClickListener(
-        v -> getActivity().onBackPressed());
+    toolbar.setNavigationOnClickListener(v -> getActivity().onBackPressed());
 
     // Set up album info area
     albumImage.setImageResource(album.cover);
@@ -115,6 +119,9 @@ public class TransitionMusicAlbumDemoFragment extends Fragment {
 
   private void setUpTransitions() {
     MaterialContainerTransform transform = new MaterialContainerTransform();
+    if (containerTransformConfiguration.isArcMotionEnabled()) {
+      transform.setPathMotion(new MaterialArcMotion());
+    }
     setSharedElementEnterTransition(transform);
   }
 

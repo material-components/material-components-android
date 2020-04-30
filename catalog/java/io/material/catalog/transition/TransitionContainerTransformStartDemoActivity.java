@@ -32,7 +32,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
+import io.material.catalog.feature.ContainerTransformConfiguration;
 import io.material.catalog.feature.DemoActivity;
+import javax.inject.Inject;
 
 /**
  * An activity that displays the Container Transform activity transition demo for the Catalog app.
@@ -41,6 +43,8 @@ import io.material.catalog.feature.DemoActivity;
 public class TransitionContainerTransformStartDemoActivity extends DemoActivity {
 
   static ContainerTransformConfigurationHelper configurationHelper;
+
+  @Inject ContainerTransformConfiguration containerTransformConfiguration;
 
   @Override
   protected void onCreate(@Nullable Bundle bundle) {
@@ -52,7 +56,8 @@ public class TransitionContainerTransformStartDemoActivity extends DemoActivity 
 
     super.onCreate(bundle);
 
-    configurationHelper = getContainerTransformConfigurationHelper();
+    configurationHelper =
+        new ContainerTransformConfigurationHelper(containerTransformConfiguration);
 
     addTransitionableTarget(R.id.start_fab);
     addTransitionableTarget(R.id.single_line_list_item);
@@ -110,9 +115,5 @@ public class TransitionContainerTransformStartDemoActivity extends DemoActivity 
         ActivityOptions.makeSceneTransitionAnimation(
             this, sharedElement, "shared_element_end_root");
     startActivity(intent, options.toBundle());
-  }
-
-  protected ContainerTransformConfigurationHelper getContainerTransformConfigurationHelper() {
-    return new ContainerTransformConfigurationHelper();
   }
 }

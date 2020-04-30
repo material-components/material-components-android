@@ -18,6 +18,7 @@ package io.material.catalog.transition;
 
 import io.material.catalog.R;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import androidx.annotation.IdRes;
@@ -33,8 +34,10 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import androidx.transition.TransitionManager;
 import com.google.android.material.transition.MaterialContainerTransform;
+import io.material.catalog.feature.ContainerTransformConfiguration;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.OnBackPressedHandler;
+import javax.inject.Inject;
 
 /** A fragment that displays the main Transition demo for the Catalog app. */
 public class TransitionContainerTransformViewDemoFragment extends DemoFragment
@@ -44,9 +47,17 @@ public class TransitionContainerTransformViewDemoFragment extends DemoFragment
   @Nullable private View endCard;
   @Nullable private FrameLayout root;
 
-  @NonNull
-  private final ContainerTransformConfigurationHelper configurationHelper =
-      getContainerTransformConfigurationHelper();
+  private ContainerTransformConfigurationHelper configurationHelper;
+
+  @Inject ContainerTransformConfiguration containerTransformConfiguration;
+
+  @Override
+  public void onAttach(Context context) {
+    super.onAttach(context);
+
+    configurationHelper =
+        new ContainerTransformConfigurationHelper(containerTransformConfiguration);
+  }
 
   @Override
   public View onCreateDemoView(
@@ -124,11 +135,6 @@ public class TransitionContainerTransformViewDemoFragment extends DemoFragment
     transform.setScrimColor(Color.TRANSPARENT);
     configurationHelper.configure(transform, entering);
     return transform;
-  }
-
-  @NonNull
-  protected ContainerTransformConfigurationHelper getContainerTransformConfigurationHelper() {
-    return new ContainerTransformConfigurationHelper();
   }
 
   @Override

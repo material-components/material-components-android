@@ -19,6 +19,7 @@ package io.material.catalog.tableofcontents;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
 import android.view.ViewGroup;
+import io.material.catalog.feature.ContainerTransformConfiguration;
 import io.material.catalog.feature.FeatureDemo;
 import java.util.List;
 
@@ -27,15 +28,20 @@ class TocAdapter extends Adapter<TocViewHolder> {
 
   private final FragmentActivity activity;
   private final List<FeatureDemo> featureDemos;
+  private final ContainerTransformConfiguration containerTransformConfiguration;
 
-  TocAdapter(FragmentActivity activity, List<FeatureDemo> featureDemos) {
+  TocAdapter(
+      FragmentActivity activity,
+      List<FeatureDemo> featureDemos,
+      ContainerTransformConfiguration containerTransformConfiguration) {
     this.activity = activity;
     this.featureDemos = featureDemos;
+    this.containerTransformConfiguration = containerTransformConfiguration;
   }
 
   @Override
   public TocViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-    return new TocViewHolder(activity, viewGroup);
+    return new TocViewHolder(activity, viewGroup, containerTransformConfiguration);
   }
 
   @Override

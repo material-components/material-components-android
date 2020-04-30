@@ -21,6 +21,7 @@ import dagger.BindsInstance;
 import dagger.android.AndroidInjectionModule;
 import io.material.catalog.application.scope.ApplicationScope;
 import io.material.catalog.main.MainActivity;
+import io.material.catalog.transition.TransitionDemoModule;
 import javax.inject.Singleton;
 
 /** The Application's root component. */
@@ -30,6 +31,8 @@ import javax.inject.Singleton;
     modules = {
       AndroidInjectionModule.class,
       MainActivity.Module.class,
+      CatalogDemoModule.class,
+      TransitionDemoModule.class,
     })
 public interface CatalogApplicationComponent {
   void inject(CatalogApplication app);
