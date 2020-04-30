@@ -187,6 +187,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     private int maxCharacterCount;
     @Nullable private CharSequence contentDescriptionNumberless;
     @PluralsRes private int contentDescriptionQuantityStrings;
+    @StringRes private int contentDescriptionExceedsMaxBadgeNumberRes;
     @BadgeGravity private int badgeGravity;
 
     @Dimension(unit = Dimension.PX)
@@ -204,6 +205,8 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       contentDescriptionNumberless =
           context.getString(R.string.mtrl_badge_numberless_content_description);
       contentDescriptionQuantityStrings = R.plurals.mtrl_badge_content_description;
+      contentDescriptionExceedsMaxBadgeNumberRes =
+          R.string.mtrl_exceed_max_badge_number_content_description;
     }
 
     protected SavedState(@NonNull Parcel in) {
@@ -627,6 +630,11 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     savedState.contentDescriptionQuantityStrings = stringsResource;
   }
 
+  public void setContentDescriptionExceedsMaxBadgeNumberStringResource(
+      @StringRes int stringsResource) {
+    savedState.contentDescriptionExceedsMaxBadgeNumberRes = stringsResource;
+  }
+
   @Nullable
   public CharSequence getContentDescription() {
     if (!isVisible()) {
@@ -638,10 +646,15 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
         if (context == null) {
           return null;
         }
-        return context
-            .getResources()
-            .getQuantityString(
-                savedState.contentDescriptionQuantityStrings, getNumber(), getNumber());
+        if (getNumber() <= maxBadgeNumber) {
+          return context
+              .getResources()
+              .getQuantityString(
+                  savedState.contentDescriptionQuantityStrings, getNumber(), getNumber());
+        } else {
+          return context.getString(
+              savedState.contentDescriptionExceedsMaxBadgeNumberRes, maxBadgeNumber);
+        }
       } else {
         return null;
       }
