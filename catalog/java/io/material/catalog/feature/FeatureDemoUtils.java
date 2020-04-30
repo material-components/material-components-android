@@ -66,7 +66,9 @@ public abstract class FeatureDemoUtils {
         && sharedElement != null
         && sharedElementName != null) {
       Fragment currentFragment = getCurrentFragment(activity);
-      currentFragment.setExitTransition(new Hold());
+      Hold hold = new Hold();
+      hold.addTarget(currentFragment.getView());
+      currentFragment.setExitTransition(hold);
 
       MaterialContainerTransform transform = new MaterialContainerTransform();
       transform.setContainerColor(MaterialColors.getColor(sharedElement, R.attr.colorSurface));
