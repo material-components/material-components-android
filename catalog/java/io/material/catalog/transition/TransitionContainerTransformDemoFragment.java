@@ -18,6 +18,7 @@ package io.material.catalog.transition;
 
 import io.material.catalog.R;
 
+import android.content.Context;
 import android.os.Bundle;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
@@ -34,8 +35,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.google.android.material.transition.Hold;
 import com.google.android.material.transition.MaterialContainerTransform;
+import io.material.catalog.feature.ContainerTransformConfiguration;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.OnBackPressedHandler;
+import javax.inject.Inject;
 
 /** A fragment that displays the main Transition demo for the Catalog app. */
 public class TransitionContainerTransformDemoFragment extends DemoFragment
@@ -43,10 +46,19 @@ public class TransitionContainerTransformDemoFragment extends DemoFragment
 
   private static final String END_FRAGMENT_TAG = "END_FRAGMENT_TAG";
 
-  private final ContainerTransformConfigurationHelper configurationHelper =
-      getContainerTransformConfigurationHelper();
+  private ContainerTransformConfigurationHelper configurationHelper;
 
   private final Hold holdTransition = new Hold();
+
+  @Inject ContainerTransformConfiguration containerTransformConfiguration;
+
+  @Override
+  public void onAttach(Context context) {
+    super.onAttach(context);
+
+    configurationHelper =
+        new ContainerTransformConfigurationHelper(containerTransformConfiguration);
+  }
 
   @Override
   public View onCreateDemoView(
@@ -162,9 +174,5 @@ public class TransitionContainerTransformDemoFragment extends DemoFragment
       return true;
     }
     return false;
-  }
-
-  protected ContainerTransformConfigurationHelper getContainerTransformConfigurationHelper() {
-    return new ContainerTransformConfigurationHelper();
   }
 }

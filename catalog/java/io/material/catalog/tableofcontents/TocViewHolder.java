@@ -23,10 +23,10 @@ import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import io.material.catalog.feature.ContainerTransformConfiguration;
 import io.material.catalog.feature.FeatureDemo;
 import io.material.catalog.feature.FeatureDemoUtils;
 
@@ -35,18 +35,20 @@ class TocViewHolder extends ViewHolder {
 
   private static final String FRAGMENT_CONTENT = "fragment_content";
 
+  private final ContainerTransformConfiguration containerTransformConfiguration;
   private final TextView titleView;
   private final ImageView imageView;
   private final TextView statusWipLabelView;
 
-  private FragmentActivity activity;
-  private FeatureDemo featureDemo;
-  private String transitionName;
-
-  TocViewHolder(FragmentActivity activity, ViewGroup viewGroup) {
+  TocViewHolder(
+      FragmentActivity activity,
+      ViewGroup viewGroup,
+      ContainerTransformConfiguration containerTransformConfiguration) {
     super(
         LayoutInflater.from(activity)
             .inflate(R.layout.cat_toc_item, viewGroup, false /* attachToRoot */));
+
+    this.containerTransformConfiguration = containerTransformConfiguration;
 
     titleView = itemView.findViewById(R.id.cat_toc_title);
     imageView = itemView.findViewById(R.id.cat_toc_image);
@@ -54,20 +56,20 @@ class TocViewHolder extends ViewHolder {
   }
 
   void bind(FragmentActivity activity, FeatureDemo featureDemo) {
-    this.activity = activity;
-    this.featureDemo = featureDemo;
-    this.transitionName = activity.getString(featureDemo.getTitleResId());
-
+    String transitionName = activity.getString(featureDemo.getTitleResId());
     ViewCompat.setTransitionName(itemView, transitionName);
     titleView.setText(featureDemo.getTitleResId());
     imageView.setImageResource(featureDemo.getDrawableResId());
-    itemView.setOnClickListener(clickListener);
+    itemView.setOnClickListener(
+        v ->
+            FeatureDemoUtils.startFragment(
+                activity,
+                featureDemo.createFragment(),
+                FRAGMENT_CONTENT,
+                v,
+                transitionName,
+                containerTransformConfiguration));
     statusWipLabelView.setVisibility(
         featureDemo.getStatus() == FeatureDemo.STATUS_WIP ? View.VISIBLE : View.GONE);
   }
-
-  private final OnClickListener clickListener =
-      v ->
-          FeatureDemoUtils.startFragment(
-              activity, featureDemo.createFragment(), FRAGMENT_CONTENT, v, transitionName);
 }

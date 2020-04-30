@@ -31,6 +31,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.View;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.transition.Hold;
+import com.google.android.material.transition.MaterialArcMotion;
 import com.google.android.material.transition.MaterialContainerTransform;
 
 /** Utils for feature demos. */
@@ -42,7 +43,7 @@ public abstract class FeatureDemoUtils {
   private static final String DEFAULT_CATALOG_DEMO = "default_catalog_demo";
 
   public static void startFragment(FragmentActivity activity, Fragment fragment, String tag) {
-    startFragmentInternal(activity, fragment, tag, null, null);
+    startFragmentInternal(activity, fragment, tag, null, null, null);
   }
 
   public static void startFragment(
@@ -51,7 +52,18 @@ public abstract class FeatureDemoUtils {
       String tag,
       View sharedElement,
       String sharedElementName) {
-    startFragmentInternal(activity, fragment, tag, sharedElement, sharedElementName);
+    startFragmentInternal(activity, fragment, tag, sharedElement, sharedElementName, null);
+  }
+
+  public static void startFragment(
+      FragmentActivity activity,
+      Fragment fragment,
+      String tag,
+      View sharedElement,
+      String sharedElementName,
+      ContainerTransformConfiguration containerTransformConfiguration) {
+    startFragmentInternal(
+        activity, fragment, tag, sharedElement, sharedElementName, containerTransformConfiguration);
   }
 
   public static void startFragmentInternal(
@@ -59,7 +71,8 @@ public abstract class FeatureDemoUtils {
       Fragment fragment,
       String tag,
       @Nullable View sharedElement,
-      @Nullable String sharedElementName) {
+      @Nullable String sharedElementName,
+      @Nullable ContainerTransformConfiguration containerTransformConfiguration) {
     FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
 
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP
@@ -71,6 +84,10 @@ public abstract class FeatureDemoUtils {
       currentFragment.setExitTransition(hold);
 
       MaterialContainerTransform transform = new MaterialContainerTransform();
+      if (containerTransformConfiguration != null
+          && containerTransformConfiguration.isArcMotionEnabled()) {
+        transform.setPathMotion(new MaterialArcMotion());
+      }
       transform.setContainerColor(MaterialColors.getColor(sharedElement, R.attr.colorSurface));
       transform.setFadeMode(MaterialContainerTransform.FADE_MODE_THROUGH);
       fragment.setSharedElementEnterTransition(transform);

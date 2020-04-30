@@ -45,6 +45,7 @@ import com.google.android.material.slider.Slider.OnChangeListener;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.transition.MaterialArcMotion;
 import com.google.android.material.transition.MaterialContainerTransform;
+import io.material.catalog.feature.ContainerTransformConfiguration;
 
 /**
  * A helper class which manages all configuration UI presented in {@link
@@ -55,12 +56,14 @@ public class ContainerTransformConfigurationHelper {
   private static final String CUBIC_CONTROL_FORMAT = "%.3f";
   private static final String DURATION_FORMAT = "%.0f";
 
-  protected boolean isArcMotionEnabled;
+  private boolean arcMotionEnabled;
   private long enterDuration;
   private long returnDuration;
   private Interpolator interpolator;
   private int fadeModeButtonId;
   private boolean drawDebugEnabled;
+
+  private ContainerTransformConfiguration containerTransformConfiguration;
 
   private static final SparseIntArray FADE_MODE_MAP = new SparseIntArray();
 
@@ -71,7 +74,9 @@ public class ContainerTransformConfigurationHelper {
     FADE_MODE_MAP.append(R.id.fade_through_button, MaterialContainerTransform.FADE_MODE_THROUGH);
   }
 
-  protected ContainerTransformConfigurationHelper() {
+  public ContainerTransformConfigurationHelper(
+      ContainerTransformConfiguration containerTransformConfiguration) {
+    this.containerTransformConfiguration = containerTransformConfiguration;
     setUpDefaultValues();
   }
 
@@ -118,7 +123,7 @@ public class ContainerTransformConfigurationHelper {
    * com.google.android.material.transition.MaterialArcMotion}.
    */
   boolean isArcMotionEnabled() {
-    return isArcMotionEnabled;
+    return arcMotionEnabled;
   }
 
   /** The enter duration to be used by a custom container transform. */
@@ -147,16 +152,12 @@ public class ContainerTransformConfigurationHelper {
   }
 
   private void setUpDefaultValues() {
-    setDefaultMotionPath();
-    enterDuration = 300;
-    returnDuration = 275;
-    interpolator = new FastOutSlowInInterpolator();
+    arcMotionEnabled = containerTransformConfiguration.isArcMotionEnabled();
+    enterDuration = containerTransformConfiguration.getEnterDuration();
+    returnDuration = containerTransformConfiguration.getReturnDuration();
+    interpolator = containerTransformConfiguration.getInterpolator();
     fadeModeButtonId = R.id.fade_in_button;
     drawDebugEnabled = false;
-  }
-
-  protected void setDefaultMotionPath() {
-    isArcMotionEnabled = false;
   }
 
   /** Create a bottom sheet dialog that displays controls to configure a container transform. */
@@ -178,11 +179,11 @@ public class ContainerTransformConfigurationHelper {
     MaterialButtonToggleGroup toggleGroup = view.findViewById(R.id.path_motion_button_group);
     if (toggleGroup != null) {
       // Set initial value.
-      toggleGroup.check(isArcMotionEnabled ? R.id.arc_motion_button : R.id.linear_motion_button);
+      toggleGroup.check(arcMotionEnabled ? R.id.arc_motion_button : R.id.linear_motion_button);
       toggleGroup.addOnButtonCheckedListener(
           (group, checkedId, isChecked) -> {
             if (checkedId == R.id.arc_motion_button) {
-              isArcMotionEnabled = isChecked;
+              arcMotionEnabled = isChecked;
             }
           });
     }
