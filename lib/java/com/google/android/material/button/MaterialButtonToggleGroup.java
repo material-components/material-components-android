@@ -662,6 +662,8 @@ public class MaterialButtonToggleGroup extends LinearLayout {
       int firstVisibleChildIndex,
       int lastVisibleChildIndex) {
     CornerData cornerData = originalCornerData.get(index);
+	
+	// If only one (visible) child exists, use its original corners
     if (firstVisibleChildIndex == lastVisibleChildIndex) {
       return cornerData;
     }
