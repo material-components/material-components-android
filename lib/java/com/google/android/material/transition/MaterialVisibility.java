@@ -32,42 +32,29 @@ import java.util.List;
 /** A {@link Visibility} transition that is composed of a primary and secondary animator. */
 abstract class MaterialVisibility<P extends VisibilityAnimatorProvider> extends Visibility {
 
-  private P primaryAnimatorProvider;
-
-  private boolean secondaryInitialized = false;
+  private final P primaryAnimatorProvider;
 
   @Nullable private VisibilityAnimatorProvider secondaryAnimatorProvider;
 
-  MaterialVisibility() {
+  protected MaterialVisibility(
+      P primaryAnimatorProvider, @Nullable VisibilityAnimatorProvider secondaryAnimatorProvider) {
+    this.primaryAnimatorProvider = primaryAnimatorProvider;
+    this.secondaryAnimatorProvider = secondaryAnimatorProvider;
     setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
   }
 
   @NonNull
-  abstract P getDefaultPrimaryAnimatorProvider();
-
-  @Nullable
-  abstract VisibilityAnimatorProvider getDefaultSecondaryAnimatorProvider();
-
-  @NonNull
   public P getPrimaryAnimatorProvider() {
-    if (primaryAnimatorProvider == null) {
-      primaryAnimatorProvider = getDefaultPrimaryAnimatorProvider();
-    }
     return primaryAnimatorProvider;
   }
 
   @Nullable
   public VisibilityAnimatorProvider getSecondaryAnimatorProvider() {
-    if (!secondaryInitialized) {
-      secondaryInitialized = true;
-      secondaryAnimatorProvider = getDefaultSecondaryAnimatorProvider();
-    }
     return secondaryAnimatorProvider;
   }
 
   public void setSecondaryAnimatorProvider(
       @Nullable VisibilityAnimatorProvider secondaryAnimatorProvider) {
-    secondaryInitialized = true;
     this.secondaryAnimatorProvider = secondaryAnimatorProvider;
   }
 
@@ -88,30 +75,23 @@ abstract class MaterialVisibility<P extends VisibilityAnimatorProvider> extends 
       View view,
       TransitionValues startValues,
       TransitionValues endValues,
-      boolean isAppearing) {
+      boolean appearing) {
     AnimatorSet set = new AnimatorSet();
     List<Animator> animators = new ArrayList<>();
 
-    Animator primaryAnimator;
-    if (isAppearing) {
-      primaryAnimator =
-          getPrimaryAnimatorProvider().createAppear(sceneRoot, view, startValues, endValues);
-    } else {
-      primaryAnimator =
-          getPrimaryAnimatorProvider().createDisappear(sceneRoot, view, startValues, endValues);
-    }
+    Animator primaryAnimator =
+        appearing
+            ? primaryAnimatorProvider.createAppear(sceneRoot, view, startValues, endValues)
+            : primaryAnimatorProvider.createDisappear(sceneRoot, view, startValues, endValues);
     if (primaryAnimator != null) {
       animators.add(primaryAnimator);
     }
 
-    VisibilityAnimatorProvider secondary = getSecondaryAnimatorProvider();
-    if (secondary != null) {
-      Animator secondaryAnimator;
-      if (isAppearing) {
-        secondaryAnimator = secondary.createAppear(sceneRoot, view, startValues, endValues);
-      } else {
-        secondaryAnimator = secondary.createDisappear(sceneRoot, view, startValues, endValues);
-      }
+    if (secondaryAnimatorProvider != null) {
+      Animator secondaryAnimator =
+          appearing
+              ? secondaryAnimatorProvider.createAppear(sceneRoot, view, startValues, endValues)
+              : secondaryAnimatorProvider.createDisappear(sceneRoot, view, startValues, endValues);
       if (secondaryAnimator != null) {
         animators.add(secondaryAnimator);
       }

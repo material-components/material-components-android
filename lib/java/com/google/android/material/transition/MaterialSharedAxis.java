@@ -19,8 +19,6 @@ package com.google.android.material.transition;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import androidx.annotation.IntDef;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import android.view.Gravity;
 import java.lang.annotation.Retention;
@@ -79,6 +77,7 @@ public final class MaterialSharedAxis extends MaterialVisibility<VisibilityAnima
   private final boolean forward;
 
   public MaterialSharedAxis(@Axis int axis, boolean forward) {
+    super(createPrimaryAnimatorProvider(axis, forward), createtSecondaryAnimatorProvider());
     this.axis = axis;
     this.forward = forward;
   }
@@ -92,9 +91,8 @@ public final class MaterialSharedAxis extends MaterialVisibility<VisibilityAnima
     return forward;
   }
 
-  @NonNull
-  @Override
-  VisibilityAnimatorProvider getDefaultPrimaryAnimatorProvider() {
+  private static VisibilityAnimatorProvider createPrimaryAnimatorProvider(
+      @Axis int axis, boolean forward) {
     switch (axis) {
       case X:
         return new SlideDistanceProvider(forward ? Gravity.END : Gravity.START);
@@ -107,9 +105,7 @@ public final class MaterialSharedAxis extends MaterialVisibility<VisibilityAnima
     }
   }
 
-  @Nullable
-  @Override
-  VisibilityAnimatorProvider getDefaultSecondaryAnimatorProvider() {
+  private static VisibilityAnimatorProvider createtSecondaryAnimatorProvider() {
     return new FadeThroughProvider();
   }
 }
