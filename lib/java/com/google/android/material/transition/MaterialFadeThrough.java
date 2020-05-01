@@ -16,9 +16,6 @@
 
 package com.google.android.material.transition;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 /**
  * A {@link androidx.transition.Visibility} transition that, by default, provides a fade in and
  * scale out when appearing and a fade out and scale out when disappearing.
@@ -27,15 +24,15 @@ public final class MaterialFadeThrough extends MaterialVisibility<FadeThroughPro
 
   private static final float DEFAULT_START_SCALE = 0.92f;
 
-  @NonNull
-  @Override
-  FadeThroughProvider getDefaultPrimaryAnimatorProvider() {
+  public MaterialFadeThrough() {
+    super(createPrimaryAnimatorProvider(), createSecondaryAnimatorProvider());
+  }
+
+  private static FadeThroughProvider createPrimaryAnimatorProvider() {
     return new FadeThroughProvider();
   }
 
-  @Nullable
-  @Override
-  VisibilityAnimatorProvider getDefaultSecondaryAnimatorProvider() {
+  private static VisibilityAnimatorProvider createSecondaryAnimatorProvider() {
     ScaleProvider scaleProvider = new ScaleProvider();
     scaleProvider.setScaleOnDisappear(false);
     scaleProvider.setIncomingStartScale(DEFAULT_START_SCALE);
