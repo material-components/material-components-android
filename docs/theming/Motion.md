@@ -269,7 +269,7 @@ While the out-of-the-box container transform should work in most cases, you can 
 **Duration** | `getDuration`<br/>`setDuration`           | `300`
 **Interpolation** | `getInterpolation`<br/>`setInterpolation`           | `R.interpolator.fast_out_slow_in`
 **Path Motion** | `getPathMotion`<br/>`setPathMotion`           | `null` (Linear)
-**Z Order** | `getDrawInViewId`<br/>`setDrawInViewId`           | `android.R.id.content`
+**Z Order** | `getDrawingViewId`<br/>`setDrawingViewId`           | `android.R.id.content`
 **Container Background Color** | `getContainerColor`<br/>`setContainerColor`           | `Color.TRANSPARENT`
 **Scrim Color** | `getScrimColor`<br/>`setScrimColor`           | `R.attr.scrimBackground`
 **Direction** | `getTransitionDirection`<br/>`setTransitionDirection`           | `TransitionDirection.TRANSITION_DIRECTION_AUTO`
