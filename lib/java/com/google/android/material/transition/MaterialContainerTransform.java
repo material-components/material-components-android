@@ -98,7 +98,7 @@ import java.lang.annotation.RetentionPolicy;
  * @see #setStartShapeAppearanceModel(ShapeAppearanceModel)
  * @see #setEndShapeAppearanceModel(ShapeAppearanceModel)
  * @see #setDrawingViewId(int)
- * @see #setScrimColor(int)
+ * @see #setScrimColor(Integer)
  * @see #setFadeMode(int)
  * @see #setFitMode(int)
  * @see #setPathMotion(PathMotion)
