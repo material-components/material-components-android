@@ -126,6 +126,12 @@ public class SingleDateSelector implements DateSelector<Long> {
             }
             listener.onSelectionChanged(getSelection());
           }
+
+          @Override
+          void onInvalidDate() {
+            clearSelection();
+            listener.onSelectionChanged(getSelection());
+          }
         });
 
     ViewUtils.requestFocusAndShowKeyboard(dateEditText);
