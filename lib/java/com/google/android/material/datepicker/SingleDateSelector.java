@@ -42,10 +42,7 @@ import java.util.Collection;
 
 /**
  * A {@link DateSelector} that uses a {@link Long} for its selection state.
- *
- * @hide
  */
-@RestrictTo(Scope.LIBRARY_GROUP)
 public class SingleDateSelector implements DateSelector<Long> {
 
   @Nullable private Long selectedItem;

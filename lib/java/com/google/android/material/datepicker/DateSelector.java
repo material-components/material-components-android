@@ -43,9 +43,7 @@ import java.util.Collection;
  * <p>Dates are represented as times in UTC milliseconds.
  *
  * @param <S> The type of item available when cells are selected in the {@link AdapterView}
- * @hide
  */
-@RestrictTo(Scope.LIBRARY_GROUP)
 public interface DateSelector<S> extends Parcelable {
 
   /** Returns the current selection. */

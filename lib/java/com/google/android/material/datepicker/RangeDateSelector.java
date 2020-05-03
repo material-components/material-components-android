@@ -45,10 +45,7 @@ import java.util.Collection;
 /**
  * A {@link DateSelector} that uses a {@link Pair} of {@link Long} objects to represent a selected
  * range.
- *
- * @hide
  */
-@RestrictTo(Scope.LIBRARY_GROUP)
 public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
 
   private String invalidRangeStartError;
