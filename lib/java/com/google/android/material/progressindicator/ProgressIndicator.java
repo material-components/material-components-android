@@ -24,7 +24,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import androidx.annotation.ColorInt;
 import androidx.annotation.IntDef;
@@ -84,6 +83,9 @@ public class ProgressIndicator extends ProgressBar {
   public static final int GROW_MODE_OUTGOING = 2;
   /** The progress indicator will expand from and shrink to the central line of the indicator. */
   public static final int GROW_MODE_BIDIRECTIONAL = 3;
+
+  private static final float DEFAULT_OPACITY = 0.2f;
+  private static final int MAX_ALPHA = 255;
 
   // Default dimensions.
   private int defaultIndicatorWidth;
@@ -245,10 +247,10 @@ public class ProgressIndicator extends ProgressBar {
 
       TypedArray disabledAlphaArray =
           getContext().getTheme().obtainStyledAttributes(new int[] {android.R.attr.disabledAlpha});
-      float defaultAlpha = disabledAlphaArray.getFloat(0, 0.2f);
+      float defaultOpacity = disabledAlphaArray.getFloat(0, DEFAULT_OPACITY);
       disabledAlphaArray.recycle();
 
-      int trackAlpha = (int) (Color.alpha(trackColor) * defaultAlpha);
+      int trackAlpha = (int) (MAX_ALPHA * defaultOpacity);
       trackColor = MaterialColors.compositeARGBWithAlpha(trackColor, trackAlpha);
     }
     // Gets linearSeamless or overrides it if necessary.
