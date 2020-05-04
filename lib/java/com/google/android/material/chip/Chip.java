@@ -1540,6 +1540,8 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
 
   /**
    * Returns this chip's icon size.
+   * If a non-positive value is set, the icon drawable's width and height (up to 24dp) will be used
+   * instead.
    *
    * @see #setChipIconSize(float)
    * @attr ref com.google.android.material.R.styleable#Chip_chipIconTint
@@ -1550,6 +1552,8 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
 
   /**
    * Sets this chip icon's size using a resource id.
+   * If the value is zero or negative, the icon drawable's width and height (up to 24dp) will be
+   * used instead.
    *
    * @param id The resource id of this chip's icon size.
    * @attr ref com.google.android.material.R.styleable#Chip_chipIconSize
@@ -1562,6 +1566,8 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
 
   /**
    * Sets this chip icon's size.
+   * If the value is zero or negative, the icon drawable's width and height (up to 24dp) will be
+   * used instead.
    *
    * @param chipIconSize This chip's icon size.
    * @attr ref com.google.android.material.R.styleable#Chip_chipIconSize

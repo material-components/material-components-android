@@ -73,6 +73,7 @@ import com.google.android.material.drawable.DrawableUtils;
 import com.google.android.material.internal.TextDrawableHelper;
 import com.google.android.material.internal.TextDrawableHelper.TextDrawableDelegate;
 import com.google.android.material.internal.ThemeEnforcement;
+import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.resources.TextAppearance;
 import com.google.android.material.ripple.RippleUtils;
@@ -162,6 +163,7 @@ public class ChipDrawable extends MaterialShapeDrawable
   private static final boolean DEBUG = false;
   private static final int[] DEFAULT_STATE = new int[] {android.R.attr.state_enabled};
   private static final String NAMESPACE_APP = "http://schemas.android.com/apk/res-auto";
+  private static final int MAX_CHIP_ICON_HEIGHT = 24; // dp
 
   private static final ShapeDrawable closeIconRippleMask = new ShapeDrawable(new OvalShape());
 
@@ -384,7 +386,7 @@ public class ChipDrawable extends MaterialShapeDrawable
       setChipIconTint(
           MaterialResources.getColorStateList(context, a, R.styleable.Chip_chipIconTint));
     }
-    setChipIconSize(a.getDimension(R.styleable.Chip_chipIconSize, 0f));
+    setChipIconSize(a.getDimension(R.styleable.Chip_chipIconSize, -1f));
 
     setCloseIconVisible(a.getBoolean(R.styleable.Chip_closeIconVisible, false));
     // If the user explicitly sets the deprecated attribute (closeIconEnabled) but NOT the
@@ -520,9 +522,38 @@ public class ChipDrawable extends MaterialShapeDrawable
   /** Returns the width of the chip icon plus padding, which only apply if the chip icon exists. */
   float calculateChipIconWidth() {
     if (showsChipIcon() || (showsCheckedIcon())) {
-      return iconStartPadding + chipIconSize + iconEndPadding;
+      return iconStartPadding + getCurrentChipIconWidth() + iconEndPadding;
     }
     return 0f;
+  }
+
+  /**
+   * Return the chip's leading icon width. If chipIconSize > 0, return chipIconSize, else, return
+   * the current icon drawable width.
+   */
+  private float getCurrentChipIconWidth() {
+    Drawable iconDrawable = currentChecked ? checkedIcon : chipIcon;
+    if (chipIconSize <= 0 && iconDrawable != null) {
+      return iconDrawable.getIntrinsicWidth();
+    }
+    return chipIconSize;
+  }
+
+  /**
+   * Return the chip's leading icon height. If chipIconSize > 0, return chipIconSize, else, return
+   * the current icon drawable height up to MAX_CHIP_ICON_HEIGHT
+   */
+  private float getCurrentChipIconHeight() {
+    Drawable icon = currentChecked ? checkedIcon : chipIcon;
+    if (chipIconSize <= 0 && icon != null) {
+      float maxChipIconHeight = (float) Math.ceil(ViewUtils.dpToPx(context, MAX_CHIP_ICON_HEIGHT));
+      if (icon.getIntrinsicHeight() <= maxChipIconHeight) {
+        return icon.getIntrinsicHeight();
+      } else {
+        return maxChipIconHeight;
+      }
+    }
+    return chipIconSize;
   }
 
   /**
@@ -779,17 +810,19 @@ public class ChipDrawable extends MaterialShapeDrawable
 
     if (showsChipIcon() || showsCheckedIcon()) {
       float offsetFromStart = chipStartPadding + iconStartPadding;
+      float chipWidth = getCurrentChipIconWidth();
 
       if (DrawableCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_LTR) {
         outBounds.left = bounds.left + offsetFromStart;
-        outBounds.right = outBounds.left + chipIconSize;
+        outBounds.right = outBounds.left + chipWidth;
       } else {
         outBounds.right = bounds.right - offsetFromStart;
-        outBounds.left = outBounds.right - chipIconSize;
+        outBounds.left = outBounds.right - chipWidth;
       }
 
-      outBounds.top = bounds.exactCenterY() - chipIconSize / 2f;
-      outBounds.bottom = outBounds.top + chipIconSize;
+      float chipHeight = getCurrentChipIconHeight();
+      outBounds.top = bounds.exactCenterY() - chipHeight / 2f;
+      outBounds.bottom = outBounds.top + chipHeight;
     }
   }
 
@@ -1705,14 +1738,35 @@ public class ChipDrawable extends MaterialShapeDrawable
     }
   }
 
+  /**
+   * Returns this chip's icon size. If a non-positive value is returned, the icon drawable's width
+   * and height (up to 24dp) will be used to measure its bounds intead.
+   *
+   * @see #setChipIconSize(float)
+   * @attr ref com.google.android.material.R.styleable#Chip_chipIconTint
+   */
   public float getChipIconSize() {
     return chipIconSize;
   }
 
+  /**
+   * Sets this chip icon's size using a resource id. If the value is zero (@null) or negative, the
+   * icon drawable's width and height (up to 24dp) will be used instead.
+   *
+   * @param id The resource id of this chip's icon size.
+   * @attr ref com.google.android.material.R.styleable#Chip_chipIconSize
+   */
   public void setChipIconSizeResource(@DimenRes int id) {
     setChipIconSize(context.getResources().getDimension(id));
   }
 
+  /**
+   * Sets this chip icon's size. If the value is zero or negative, the icon drawable's width and
+   * height (up to 24dp) will be used instead.
+   *
+   * @param chipIconSize This chip's icon size.
+   * @attr ref com.google.android.material.R.styleable#Chip_chipIconSize
+   */
   public void setChipIconSize(float chipIconSize) {
     if (this.chipIconSize != chipIconSize) {
       float oldChipIconWidth = calculateChipIconWidth();
