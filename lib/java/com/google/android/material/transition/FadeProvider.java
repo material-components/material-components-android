@@ -26,7 +26,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
-import androidx.transition.TransitionValues;
 
 /** A class that configures and is able to provide an {@link Animator} that fades a view. */
 public final class FadeProvider implements VisibilityAnimatorProvider {
@@ -56,11 +55,7 @@ public final class FadeProvider implements VisibilityAnimatorProvider {
 
   @Nullable
   @Override
-  public Animator createAppear(
-      @NonNull ViewGroup sceneRoot,
-      @NonNull View view,
-      @Nullable TransitionValues startValues,
-      @Nullable TransitionValues endValues) {
+  public Animator createAppear(@NonNull ViewGroup sceneRoot, @NonNull View view) {
     return createFadeAnimator(
         view,
         /* startValue= */ 0f,
@@ -71,11 +66,7 @@ public final class FadeProvider implements VisibilityAnimatorProvider {
 
   @Nullable
   @Override
-  public Animator createDisappear(
-      @NonNull ViewGroup sceneRoot,
-      @NonNull View view,
-      @Nullable TransitionValues startValues,
-      @Nullable TransitionValues endValues) {
+  public Animator createDisappear(@NonNull ViewGroup sceneRoot, @NonNull View view) {
     return createFadeAnimator(
         view,
         /* startValue= */ 1f,

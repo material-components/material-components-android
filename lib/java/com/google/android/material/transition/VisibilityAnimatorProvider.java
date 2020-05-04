@@ -21,7 +21,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
-import androidx.transition.TransitionValues;
 
 /**
  * An interface which is able to provide an Animator to be supplied to a {@link
@@ -29,17 +28,23 @@ import androidx.transition.TransitionValues;
  */
 public interface VisibilityAnimatorProvider {
 
+  /**
+   * Should return an Animator that animates in the appearing target {@code view}.
+   *
+   * @param sceneRoot The root of the transition hierarchy, which can be useful for checking
+   *     configurations such as RTL
+   * @param view The view that is appearing
+   */
   @Nullable
-  Animator createAppear(
-      @NonNull  ViewGroup sceneRoot,
-      @NonNull View view,
-      @Nullable TransitionValues startValues,
-      @Nullable TransitionValues endValues);
+  Animator createAppear(@NonNull ViewGroup sceneRoot, @NonNull View view);
 
+  /**
+   * Should return an Animator that animates out the disappearing target {@code view}.
+   *
+   * @param sceneRoot The root of the transition hierarchy, which can be useful for checking
+   *     configurations such as RTL
+   * @param view The view that is disappearing
+   */
   @Nullable
-  Animator createDisappear(
-      @NonNull  ViewGroup sceneRoot,
-      @NonNull View view,
-      @Nullable TransitionValues startValues,
-      @Nullable TransitionValues endValues);
+  Animator createDisappear(@NonNull ViewGroup sceneRoot, @NonNull View view);
 }

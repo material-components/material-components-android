@@ -66,28 +66,23 @@ abstract class MaterialVisibility<P extends VisibilityAnimatorProvider> extends 
   @Override
   public Animator onAppear(
       ViewGroup sceneRoot, View view, TransitionValues startValues, TransitionValues endValues) {
-    return createAnimator(sceneRoot, view, startValues, endValues, true);
+    return createAnimator(sceneRoot, view, true);
   }
 
   @Override
   public Animator onDisappear(
       ViewGroup sceneRoot, View view, TransitionValues startValues, TransitionValues endValues) {
-    return createAnimator(sceneRoot, view, startValues, endValues, false);
+    return createAnimator(sceneRoot, view, false);
   }
 
-  private Animator createAnimator(
-      ViewGroup sceneRoot,
-      View view,
-      TransitionValues startValues,
-      TransitionValues endValues,
-      boolean appearing) {
+  private Animator createAnimator(ViewGroup sceneRoot, View view, boolean appearing) {
     AnimatorSet set = new AnimatorSet();
     List<Animator> animators = new ArrayList<>();
 
     Animator primaryAnimator =
         appearing
-            ? primaryAnimatorProvider.createAppear(sceneRoot, view, startValues, endValues)
-            : primaryAnimatorProvider.createDisappear(sceneRoot, view, startValues, endValues);
+            ? primaryAnimatorProvider.createAppear(sceneRoot, view)
+            : primaryAnimatorProvider.createDisappear(sceneRoot, view);
     if (primaryAnimator != null) {
       animators.add(primaryAnimator);
     }
@@ -95,8 +90,8 @@ abstract class MaterialVisibility<P extends VisibilityAnimatorProvider> extends 
     if (secondaryAnimatorProvider != null) {
       Animator secondaryAnimator =
           appearing
-              ? secondaryAnimatorProvider.createAppear(sceneRoot, view, startValues, endValues)
-              : secondaryAnimatorProvider.createDisappear(sceneRoot, view, startValues, endValues);
+              ? secondaryAnimatorProvider.createAppear(sceneRoot, view)
+              : secondaryAnimatorProvider.createDisappear(sceneRoot, view);
       if (secondaryAnimator != null) {
         animators.add(secondaryAnimator);
       }

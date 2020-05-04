@@ -23,7 +23,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
-import androidx.transition.TransitionValues;
 
 /** A class that configures and is able to provide an {@link Animator} that scales a view. */
 public final class ScaleProvider implements VisibilityAnimatorProvider {
@@ -94,11 +93,7 @@ public final class ScaleProvider implements VisibilityAnimatorProvider {
 
   @Nullable
   @Override
-  public Animator createAppear(
-      @NonNull ViewGroup sceneRoot,
-      @NonNull View view,
-      @Nullable TransitionValues startValues,
-      @Nullable TransitionValues endValues) {
+  public Animator createAppear(@NonNull ViewGroup sceneRoot, @NonNull View view) {
     if (entering) {
       return createScaleAnimator(view, incomingStartScale, incomingEndScale);
     } else {
@@ -108,11 +103,7 @@ public final class ScaleProvider implements VisibilityAnimatorProvider {
 
   @Nullable
   @Override
-  public Animator createDisappear(
-      @NonNull ViewGroup sceneRoot,
-      @NonNull View view,
-      @Nullable TransitionValues startValues,
-      @Nullable TransitionValues endValues) {
+  public Animator createDisappear(@NonNull ViewGroup sceneRoot, @NonNull View view) {
     if (!scaleOnDisappear) {
       return null;
     }

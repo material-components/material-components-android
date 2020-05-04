@@ -33,7 +33,6 @@ import androidx.core.view.ViewCompat;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import androidx.transition.TransitionValues;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -102,22 +101,14 @@ public final class SlideDistanceProvider implements VisibilityAnimatorProvider {
 
   @Nullable
   @Override
-  public Animator createAppear(
-      @NonNull ViewGroup sceneRoot,
-      @NonNull View view,
-      @Nullable TransitionValues startValues,
-      @Nullable TransitionValues endValues) {
+  public Animator createAppear(@NonNull ViewGroup sceneRoot, @NonNull View view) {
     return createTranslationAppearAnimator(
         sceneRoot, view, slideEdge, getSlideDistanceOrDefault(view.getContext()));
   }
 
   @Nullable
   @Override
-  public Animator createDisappear(
-      @NonNull ViewGroup sceneRoot,
-      @NonNull View view,
-      @Nullable TransitionValues startValues,
-      @Nullable TransitionValues endValues) {
+  public Animator createDisappear(@NonNull ViewGroup sceneRoot, @NonNull View view) {
     return createTranslationDisappearAnimator(
         sceneRoot, view, slideEdge, getSlideDistanceOrDefault(view.getContext()));
   }
