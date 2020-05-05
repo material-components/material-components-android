@@ -103,6 +103,10 @@ public class TransitionContainerTransformViewDemoFragment extends DemoFragment
     transition.setStartView(startView);
     transition.setEndView(endCard);
 
+    // Add a single target to avoid the container transform from running on both the start
+    // and end view
+    transition.addTarget(startView);
+
     // Trigger the container transform transition.
     TransitionManager.beginDelayedTransition(root, transition);
     if (startView != null) {
@@ -118,6 +122,10 @@ public class TransitionContainerTransformViewDemoFragment extends DemoFragment
     MaterialContainerTransform transition = buildContainerTransform(false);
     transition.setStartView(endCard);
     transition.setEndView(startView);
+
+    // Add a single target to avoid the container transform from running on both the start
+    // and end view
+    transition.addTarget(startView);
 
     // Trigger the container transform transition.
     TransitionManager.beginDelayedTransition(root, transition);

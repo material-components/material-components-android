@@ -36,7 +36,6 @@ import static com.google.android.material.transition.platform.TransitionUtils.le
 import static com.google.android.material.transition.platform.TransitionUtils.transform;
 
 import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
@@ -764,33 +763,33 @@ public final class MaterialContainerTransform extends Transition {
             transitionDrawable.setProgress(animation.getAnimatedFraction());
           }
         });
-    animator.addListener(
-        new AnimatorListenerAdapter() {
-          @Override
-          public void onAnimationStart(Animator animation) {
-            // Add the transition drawable to the root ViewOverlay
-            ViewUtils.getOverlay(drawingView).add(transitionDrawable);
 
-            // Hide the actual views at the beginning of the transition
-            startView.setAlpha(0);
-            endView.setAlpha(0);
-          }
+    addListener(new TransitionListenerAdapter() {
+      @Override
+      public void onTransitionStart(@NonNull Transition transition) {
+        // Add the transition drawable to the root ViewOverlay
+        ViewUtils.getOverlay(drawingView).add(transitionDrawable);
 
-          @Override
-          public void onAnimationEnd(Animator animation) {
-            if (holdAtEndEnabled) {
-              // Keep drawable showing and views hidden (useful for Activity return transitions)
-              return;
-            }
+        // Hide the actual views at the beginning of the transition
+        startView.setAlpha(0);
+        endView.setAlpha(0);
+      }
 
-            // Show the actual views at the end of the transition
-            startView.setAlpha(1);
-            endView.setAlpha(1);
+      @Override
+      public void onTransitionEnd(@NonNull Transition transition) {
+        if (holdAtEndEnabled) {
+          // Keep drawable showing and views hidden (useful for Activity return transitions)
+          return;
+        }
+        // Show the actual views at the end of the transition
+        startView.setAlpha(1);
+        endView.setAlpha(1);
 
-            // Remove the transition drawable from the root ViewOverlay
-            ViewUtils.getOverlay(drawingView).remove(transitionDrawable);
-          }
-        });
+        // Remove the transition drawable from the root ViewOverlay
+        ViewUtils.getOverlay(drawingView).remove(transitionDrawable);
+      }
+    });
+
     return animator;
   }
 
