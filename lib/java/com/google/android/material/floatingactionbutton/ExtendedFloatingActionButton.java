@@ -65,7 +65,7 @@ import java.util.List;
  * displayed via {@link #setIcon(android.graphics.drawable.Drawable)}, and the text via {@link
  * #setText(CharSequence)}.
  *
- * <p>The background color of this view defaults to the your theme's {@code colorPrimary}. If you
+ * <p>The background color of this view defaults to the your theme's {@code colorSecondary}. If you
  * wish to change this at runtime then you can do so via
  * {@link #setBackgroundTintList(android.content.res.ColorStateList)}.
  */
