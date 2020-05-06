@@ -83,7 +83,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * A widget that allows picking a value (or a set of values) within a given range by sliding a thumb
+ * A widget that allows picking a value within a given range by sliding a thumb
  * along a horizontal line.
  *
  * <p>The slider can function either as a continuous slider, or as a discrete slider. The mode of
@@ -396,7 +396,7 @@ public class Slider extends View {
 
     scaledTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
 
-    accessibilityHelper = new AccessibilityHelper();
+    accessibilityHelper = new AccessibilityHelper(this);
     ViewCompat.setAccessibilityDelegate(this, accessibilityHelper);
 
     accessibilityManager =
@@ -2106,28 +2106,38 @@ public class Slider extends View {
     }
   }
 
-  private class AccessibilityHelper extends ExploreByTouchHelper {
+  void updateBoundsForVirturalViewId(int virtualViewId, Rect virtualViewBounds) {
+    int x = trackSidePadding + (int) (normalizeValue(getValues().get(virtualViewId)) * trackWidth);
+    int y = calculateTop();
 
-    Rect bounds = new Rect();
+    virtualViewBounds.set(x - thumbRadius, y - thumbRadius, x + thumbRadius, y + thumbRadius);
+  }
 
-    AccessibilityHelper() {
-      super(Slider.this);
+  private static class AccessibilityHelper extends ExploreByTouchHelper {
+
+    private final Slider slider;
+    Rect virtualViewBounds = new Rect();
+
+    AccessibilityHelper(Slider slider) {
+      super(slider);
+      this.slider = slider;
     }
 
     @Override
     protected int getVirtualViewAt(float x, float y) {
-      for (int i = 0; i < getValues().size(); i++) {
-        updateBoundsForVirturalViewId(i);
-        if (bounds.contains((int) x, (int) y)) {
+      for (int i = 0; i < slider.getValues().size(); i++) {
+        slider.updateBoundsForVirturalViewId(i, virtualViewBounds);
+        if (virtualViewBounds.contains((int) x, (int) y)) {
           return i;
         }
       }
-      return HOST_ID;
+
+      return ExploreByTouchHelper.HOST_ID;
     }
 
     @Override
     protected void getVisibleVirtualViews(List<Integer> virtualViewIds) {
-      for (int i = 0; i < getValues().size(); i++) {
+      for (int i = 0; i < slider.getValues().size(); i++) {
         virtualViewIds.add(i);
       }
     }
@@ -2138,9 +2148,12 @@ public class Slider extends View {
 
       info.addAction(AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_SET_PROGRESS);
 
-      final float value = getValues().get(virtualViewId);
+      final float value = slider.getValues().get(virtualViewId);
+      float valueFrom = slider.getValueFrom();
+      float valueTo = slider.getValueTo();
 
-      if (isEnabled()) {
+
+      if (slider.isEnabled()) {
         if (value > valueFrom) {
           info.addAction(AccessibilityNodeInfoCompat.ACTION_SCROLL_BACKWARD);
         }
@@ -2156,36 +2169,29 @@ public class Slider extends View {
       info.setClassName(SeekBar.class.getName());
       StringBuilder contentDescription = new StringBuilder();
       // Add the content description of the slider.
-      if (getContentDescription() != null) {
-        contentDescription.append(getContentDescription()).append(",");
+      if (slider.getContentDescription() != null) {
+        contentDescription.append(slider.getContentDescription()).append(",");
       }
       // Add the range to the content description.
-      if (values.size() > 1) {
+      if (slider.getValues().size() > 1) {
         contentDescription.append(
-            getContext()
+            slider.getContext()
                 .getString(
                     R.string.mtrl_slider_range_content_description,
-                    formatValue(getMinimumValue()),
-                    formatValue(getMaximumValue())));
+                    slider.formatValue(slider.getValueFrom()),
+                    slider.formatValue(slider.getValueTo())));
       }
       info.setContentDescription(contentDescription.toString());
 
-      updateBoundsForVirturalViewId(virtualViewId);
-      info.setBoundsInParent(bounds);
+      slider.updateBoundsForVirturalViewId(virtualViewId, virtualViewBounds);
+      info.setBoundsInParent(virtualViewBounds);
     }
 
-    private void updateBoundsForVirturalViewId(int virtualViewId) {
-      int x =
-          trackSidePadding + (int) (normalizeValue(getValues().get(virtualViewId)) * trackWidth);
-      int y = calculateTop();
-
-      bounds.set(x - thumbRadius, y - thumbRadius, x + thumbRadius, y + thumbRadius);
-    }
 
     @Override
     protected boolean onPerformActionForVirtualView(
         int virtualViewId, int action, Bundle arguments) {
-      if (!isEnabled()) {
+      if (!slider.isEnabled()) {
         return false;
       }
 
@@ -2199,9 +2205,9 @@ public class Slider extends View {
             }
             float value =
                 arguments.getFloat(AccessibilityNodeInfoCompat.ACTION_ARGUMENT_PROGRESS_VALUE);
-            if (snapThumbToValue(virtualViewId, value)) {
-              updateHaloHotspot();
-              postInvalidate();
+            if (slider.snapThumbToValue(virtualViewId, value)) {
+              slider.updateHaloHotspot();
+              slider.postInvalidate();
               invalidateVirtualView(virtualViewId);
               return true;
             }
@@ -2210,25 +2216,27 @@ public class Slider extends View {
         case AccessibilityNodeInfoCompat.ACTION_SCROLL_FORWARD:
         case AccessibilityNodeInfoCompat.ACTION_SCROLL_BACKWARD:
           {
-            float increment = calculateStepIncrement(20);
+            float increment = slider.calculateStepIncrement(20);
             if (action == AccessibilityNodeInfoCompat.ACTION_SCROLL_BACKWARD) {
               increment = -increment;
             }
 
             // Swap the increment if we're in RTL.
-            if (ViewCompat.getLayoutDirection(Slider.this) == ViewCompat.LAYOUT_DIRECTION_RTL) {
+            if (ViewCompat.getLayoutDirection(slider) == ViewCompat.LAYOUT_DIRECTION_RTL) {
               increment = -increment;
             }
 
-            float clamped =
-                MathUtils.clamp(values.get(virtualViewId) + increment, valueFrom, valueTo);
-            if (snapThumbToValue(virtualViewId, clamped)) {
-              updateHaloHotspot();
-              postInvalidate();
+            float clamped = MathUtils.clamp(
+              slider.getValues().get(virtualViewId) + increment,
+              slider.getValueFrom(),
+              slider.getValueTo());
+            if (slider.snapThumbToValue(virtualViewId, clamped)) {
+              slider.updateHaloHotspot();
+              slider.postInvalidate();
 
               // If the index of the new value has changed, refocus on the correct virtual view.
-              if (values.indexOf(clamped) != virtualViewId) {
-                virtualViewId = values.indexOf(clamped);
+              if (slider.getValues().indexOf(clamped) != virtualViewId) {
+                virtualViewId = slider.getValues().indexOf(clamped);
                 sendEventForVirtualView(virtualViewId, AccessibilityEvent.TYPE_VIEW_FOCUSED);
               } else {
                 invalidateVirtualView(virtualViewId);
