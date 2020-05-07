@@ -93,11 +93,11 @@ final class Month implements Comparable<Month>, Parcelable {
   }
 
   /**
-   * Returns the {@link Month} that contains today in the default timezone (as per {@link
-   * Calendar#getInstance()}.
+   * Returns the {@link Month} that contains the first moment in current month in the default
+   * timezone (as per {@link Calendar#getInstance()}.
    */
   @NonNull
-  static Month today() {
+  static Month current() {
     return new Month(UtcDates.getTodayCalendar());
   }
 

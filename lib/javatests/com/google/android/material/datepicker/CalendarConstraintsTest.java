@@ -47,7 +47,7 @@ public class CalendarConstraintsTest {
 
   @Test
   public void clampMonth_when_InsideBounds() {
-    Month today = Month.today();
+    Month today = Month.current();
     Month yearBefore = today.monthsLater(-12);
     Month yearAfter = today.monthsLater(12);
 
@@ -63,7 +63,7 @@ public class CalendarConstraintsTest {
 
   @Test
   public void clampMonth_when_beforeLowerBound() {
-    Month today = Month.today();
+    Month today = Month.current();
     Month yearBefore = today.monthsLater(-12);
     Month yearAfter = today.monthsLater(12);
 
@@ -78,7 +78,7 @@ public class CalendarConstraintsTest {
 
   @Test
   public void clampMonth_when_AfterUpperBound() {
-    Month today = Month.today();
+    Month today = Month.current();
     Month yearBefore = today.monthsLater(-12);
     Month yearAfter = today.monthsLater(12);
 
@@ -93,7 +93,7 @@ public class CalendarConstraintsTest {
 
   @Test
   public void currentDefaultsToTodayIfWithinBounds() {
-    Month today = Month.today();
+    Month today = Month.current();
     long start = today.monthsLater(-1).timeInMillis;
     long end = today.monthsLater(1).timeInMillis;
     CalendarConstraints calendarConstraints =

@@ -93,7 +93,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
    * Returns the UTC milliseconds representing the first moment in current month in local timezone.
    */
   public static long thisMonthInUtcMilliseconds() {
-    return Month.today().timeInMillis;
+    return Month.current().timeInMillis;
   }
 
   /**
@@ -430,7 +430,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
   private static int getPaddedPickerWidth(@NonNull Context context) {
     Resources resources = context.getResources();
     int padding = resources.getDimensionPixelOffset(R.dimen.mtrl_calendar_content_padding);
-    int daysInWeek = Month.today().daysInWeek;
+    int daysInWeek = Month.current().daysInWeek;
     int dayWidth = resources.getDimensionPixelSize(R.dimen.mtrl_calendar_day_width);
     int horizontalSpace =
         resources.getDimensionPixelOffset(R.dimen.mtrl_calendar_month_horizontal_padding);

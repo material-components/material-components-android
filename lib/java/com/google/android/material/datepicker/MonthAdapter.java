@@ -114,7 +114,7 @@ class MonthAdapter extends BaseAdapter {
       day.setTag(month);
       day.setText(String.valueOf(dayNumber));
       long dayInMillis = month.getDay(dayNumber);
-      if (month.year == Month.today().year) {
+      if (month.year == Month.current().year) {
         day.setContentDescription(DateStrings.getMonthDayOfWeekDay(dayInMillis));
       } else {
         day.setContentDescription(DateStrings.getYearMonthDayOfWeekDay(dayInMillis));
