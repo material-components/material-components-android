@@ -99,6 +99,8 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
             if (text != null) {
               text.clear();
             }
+
+            textInputLayout.refreshEndIconDrawableState();
           }
         });
     textInputLayout.addOnEditTextAttachedListener(clearTextOnEditTextAttachedListener);

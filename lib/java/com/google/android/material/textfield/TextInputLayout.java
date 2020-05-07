@@ -91,6 +91,7 @@ import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 
 /**
@@ -2900,6 +2901,14 @@ public class TextInputLayout extends LinearLayout {
   }
 
   /**
+   * This method should be called from within your icon's click listener if your icon's tint list
+   * has a color for a state that depends on a click (such as checked state).
+   */
+  public void refreshStartIconDrawableState() {
+    refreshIconDrawableState(startIconView, startIconTintList);
+  }
+
+  /**
    * Sets the current start icon to be checkable or not.
    *
    * <p>If the icon works just as a button and the fact that it's checked or not doesn't affect its
@@ -3084,6 +3093,14 @@ public class TextInputLayout extends LinearLayout {
   }
 
   /**
+   * This method should be called from within your icon's click listener if your icon's tint list
+   * has a color for a state that depends on a click (such as checked state).
+   */
+  public void refreshErrorIconDrawableState() {
+    refreshIconDrawableState(errorIconView, errorIconTintList);
+  }
+
+  /**
    * Sets the current end icon to be VISIBLE or GONE.
    *
    * @param visible whether the icon should be set to visible
@@ -3112,6 +3129,14 @@ public class TextInputLayout extends LinearLayout {
    */
   public void setEndIconActivated(boolean endIconActivated) {
     endIconView.setActivated(endIconActivated);
+  }
+
+  /**
+   * This method should be called from within your icon's click listener if your icon's tint list
+   * has a color for a state that depends on a click (such as checked state).
+   */
+  public void refreshEndIconDrawableState() {
+    refreshIconDrawableState(endIconView, endIconTintList);
   }
 
   /**
@@ -3894,9 +3919,9 @@ public class TextInputLayout extends LinearLayout {
             && indicatorViewController.errorShouldBeShown());
 
     // Update icons tints
-    updateIconColorOnState(errorIconView, errorIconTintList);
-    updateIconColorOnState(startIconView, startIconTintList);
-    updateIconColorOnState(endIconView, endIconTintList);
+    refreshErrorIconDrawableState();
+    refreshStartIconDrawableState();
+    refreshEndIconDrawableState();
 
     if (getEndIconDelegate().shouldTintIconOnError()) {
       tintEndIconOnError(indicatorViewController.errorShouldBeShown());
@@ -3957,7 +3982,7 @@ public class TextInputLayout extends LinearLayout {
     return errorIconView.getVisibility() == VISIBLE;
   }
 
-  private void updateIconColorOnState(
+  private void refreshIconDrawableState(
       CheckableImageButton iconView, ColorStateList colorStateList) {
     Drawable icon = iconView.getDrawable();
     if (iconView.getDrawable() == null || colorStateList == null || !colorStateList.isStateful()) {
@@ -3965,11 +3990,23 @@ public class TextInputLayout extends LinearLayout {
     }
 
     int color =
-        colorStateList.getColorForState(this.getDrawableState(), colorStateList.getDefaultColor());
+        colorStateList.getColorForState(mergeIconState(iconView), colorStateList.getDefaultColor());
 
     icon = DrawableCompat.wrap(icon).mutate();
     DrawableCompat.setTintList(icon, ColorStateList.valueOf(color));
     iconView.setImageDrawable(icon);
+  }
+
+  private int[] mergeIconState(CheckableImageButton iconView) {
+    int[] textInputStates = this.getDrawableState();
+    int[] iconStates = iconView.getDrawableState();
+
+    int index = textInputStates.length;
+    int[] states = Arrays.copyOf(textInputStates, textInputStates.length + iconStates.length);
+
+    System.arraycopy(iconStates, 0, states, index, iconStates.length);
+
+    return states;
   }
 
   private void expandHint(boolean animate) {

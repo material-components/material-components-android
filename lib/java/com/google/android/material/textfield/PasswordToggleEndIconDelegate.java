@@ -103,6 +103,8 @@ class PasswordToggleEndIconDelegate extends EndIconDelegate {
             if (selection >= 0) {
               editText.setSelection(selection);
             }
+
+            textInputLayout.refreshEndIconDrawableState();
           }
         });
     textInputLayout.addOnEditTextAttachedListener(onEditTextAttachedListener);
