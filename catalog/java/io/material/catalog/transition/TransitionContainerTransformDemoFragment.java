@@ -127,7 +127,12 @@ public class TransitionContainerTransformDemoFragment extends DemoFragment
             R.layout.cat_transition_container_transform_start_fragment,
             "shared_element_fab",
             R.id.start_fab);
+
+    // Add root view as target for the Hold so that the entire view hierarchy is held in place as
+    // one instead of each child view individually. Helps keep shadows during the transition.
+    holdTransition.addTarget(R.id.start_root);
     fragment.setExitTransition(holdTransition);
+
     getChildFragmentManager()
         .beginTransaction()
         .replace(R.id.fragment_container, fragment)

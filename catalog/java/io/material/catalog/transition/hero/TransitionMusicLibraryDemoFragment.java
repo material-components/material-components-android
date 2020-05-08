@@ -64,7 +64,11 @@ public class TransitionMusicLibraryDemoFragment extends Fragment
     // Use a Hold transition to keep this fragment visible beneath the MaterialContainerTransform
     // that transitions to the album details screen. Without a Hold, this fragment would disappear
     // as soon its container is replaced with a new Fragment.
-    setExitTransition(new Hold());
+    Hold hold = new Hold();
+    // Add root view as target for the Hold so that the entire view hierarchy is held in place as
+    // one instead of each child view individually. Helps keep shadows during the transition.
+    hold.addTarget(R.id.container);
+    setExitTransition(hold);
   }
 
   @Nullable

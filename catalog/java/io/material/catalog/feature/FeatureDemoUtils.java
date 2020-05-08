@@ -80,6 +80,8 @@ public abstract class FeatureDemoUtils {
         && sharedElementName != null) {
       Fragment currentFragment = getCurrentFragment(activity);
       Hold hold = new Hold();
+      // Add root view as target for the Hold so that the entire view hierarchy is held in place as
+      // one instead of each child view individually. Helps keep shadows during the transition.
       hold.addTarget(currentFragment.getView());
       currentFragment.setExitTransition(hold);
 
