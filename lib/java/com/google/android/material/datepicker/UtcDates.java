@@ -47,8 +47,16 @@ class UtcDates {
     return android.icu.util.TimeZone.getTimeZone(UTC);
   }
 
+  /**
+   * Returns a Calendar object in UTC time zone representing the first moment of current date.
+   */
   static Calendar getTodayCalendar() {
-    return getDayCopy(Calendar.getInstance());
+    Calendar today = Calendar.getInstance();
+    today.set(Calendar.HOUR_OF_DAY, 0);
+    today.set(Calendar.MINUTE, 0);
+    today.set(Calendar.SECOND, 0);
+    today.set(Calendar.MILLISECOND, 0);
+    return getDayCopy(today);
   }
 
   /**
