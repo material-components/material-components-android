@@ -36,6 +36,7 @@ import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -46,7 +47,10 @@ import android.graphics.PathMeasure;
 import android.graphics.PixelFormat;
 import android.graphics.PointF;
 import android.graphics.RectF;
+import android.graphics.Region.Op;
 import android.graphics.drawable.Drawable;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
 import androidx.annotation.IdRes;
@@ -66,6 +70,7 @@ import androidx.transition.TransitionValues;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.ViewUtils;
+import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.shape.Shapeable;
 import com.google.android.material.transition.TransitionUtils.CanvasOperation;
@@ -214,6 +219,8 @@ public final class MaterialContainerTransform extends Transition {
           /* scaleMask= */ new ProgressThresholds(0f, 0.90f),
           /* shapeMask= */ new ProgressThresholds(0.20f, 0.90f));
 
+  private static final float ELEVATION_NOT_SET = -1f;
+
   private boolean drawDebugEnabled = false;
   private boolean holdAtEndEnabled = false;
   @IdRes private int drawingViewId = android.R.id.content;
@@ -232,6 +239,9 @@ public final class MaterialContainerTransform extends Transition {
   @Nullable private ProgressThresholds scaleProgressThresholds;
   @Nullable private ProgressThresholds scaleMaskProgressThresholds;
   @Nullable private ProgressThresholds shapeMaskProgressThresholds;
+  private boolean elevationShadowEnabled = VERSION.SDK_INT >= VERSION_CODES.P;
+  private float startElevation = ELEVATION_NOT_SET;
+  private float endElevation = ELEVATION_NOT_SET;
 
   public MaterialContainerTransform() {
     setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
@@ -353,6 +363,70 @@ public final class MaterialContainerTransform extends Transition {
    */
   public void setEndShapeAppearanceModel(@Nullable ShapeAppearanceModel endShapeAppearanceModel) {
     this.endShapeAppearanceModel = endShapeAppearanceModel;
+  }
+
+  /**
+   * Get whether shadows should be drawn around the container to approximate native elevation
+   * shadows on the start and end views.
+   */
+  public boolean isElevationShadowEnabled() {
+    return elevationShadowEnabled;
+  }
+
+  /**
+   * Set whether shadows should be drawn around the container to approximate native elevation
+   * shadows on the start and end views.
+   *
+   * <p>By default, the elevation shadows are only enabled for API level 28 and above, because
+   * {@link Paint} shadows are not supported with hardware acceleration below API level 28. If
+   * enabled for below API level 28, then the shadows will be drawn using {@link
+   * MaterialShapeDrawable}, however this may cause performance issues.
+   *
+   * <p>Additionally, the rendering of elevation shadows may cause performance issues if the
+   * container's shape is not a round rect or a regular rect, e.g., a rect with cut corners.
+   */
+  public void setElevationShadowEnabled(boolean elevationShadowEnabled) {
+    this.elevationShadowEnabled = elevationShadowEnabled;
+  }
+
+  /**
+   * Get the elevation that will be used to render a shadow around the container at the start of the
+   * transition.
+   *
+   * <p>Default is -1, which means the elevation of the start view will be used.
+   */
+  public float getStartElevation() {
+    return startElevation;
+  }
+
+  /**
+   * Set the elevation that will be used to render a shadow around the container at the start of the
+   * transition.
+   *
+   * <p>By default the elevation of the start view will be used.
+   */
+  public void setStartElevation(float startElevation) {
+    this.startElevation = startElevation;
+  }
+
+  /**
+   * Get the elevation that will be used to render a shadow around the container at the end of the
+   * transition.
+   *
+   * <p>Default is -1, which means the elevation of the end view will be used.
+   */
+  public float getEndElevation() {
+    return endElevation;
+  }
+
+  /**
+   * Set the elevation that will be used to render a shadow around the container at the end of the
+   * transition.
+   *
+   * <p>By default the elevation of the end view will be used.
+   */
+  public void setEndElevation(float endElevation) {
+    this.endElevation = endElevation;
   }
 
   /** Get the id of the View whose overlay this transitions will be added to. */
@@ -732,12 +806,15 @@ public final class MaterialContainerTransform extends Transition {
             startView,
             startBounds,
             startShapeAppearanceModel,
+            getElevationOrDefault(startElevation, startView),
             endView,
             endBounds,
             endShapeAppearanceModel,
+            getElevationOrDefault(endElevation, endView),
             containerColor,
             getScrimColorOrDefault(startView.getContext()),
             entering,
+            elevationShadowEnabled,
             FadeModeEvaluators.get(fadeMode, entering),
             FitModeEvaluators.get(fitMode, entering, startBounds, endBounds),
             buildThresholdsGroup(entering),
@@ -759,33 +836,38 @@ public final class MaterialContainerTransform extends Transition {
           }
         });
 
-    addListener(new TransitionListenerAdapter() {
-      @Override
-      public void onTransitionStart(@NonNull Transition transition) {
-        // Add the transition drawable to the root ViewOverlay
-        ViewUtils.getOverlay(drawingView).add(transitionDrawable);
+    addListener(
+        new TransitionListenerAdapter() {
+          @Override
+          public void onTransitionStart(@NonNull Transition transition) {
+            // Add the transition drawable to the root ViewOverlay
+            ViewUtils.getOverlay(drawingView).add(transitionDrawable);
 
-        // Hide the actual views at the beginning of the transition
-        startView.setAlpha(0);
-        endView.setAlpha(0);
-      }
+            // Hide the actual views at the beginning of the transition
+            startView.setAlpha(0);
+            endView.setAlpha(0);
+          }
 
-      @Override
-      public void onTransitionEnd(@NonNull Transition transition) {
-        if (holdAtEndEnabled) {
-          // Keep drawable showing and views hidden (useful for Activity return transitions)
-          return;
-        }
-        // Show the actual views at the end of the transition
-        startView.setAlpha(1);
-        endView.setAlpha(1);
+          @Override
+          public void onTransitionEnd(@NonNull Transition transition) {
+            if (holdAtEndEnabled) {
+              // Keep drawable showing and views hidden (useful for Activity return transitions)
+              return;
+            }
+            // Show the actual views at the end of the transition
+            startView.setAlpha(1);
+            endView.setAlpha(1);
 
-        // Remove the transition drawable from the root ViewOverlay
-        ViewUtils.getOverlay(drawingView).remove(transitionDrawable);
-      }
-    });
+            // Remove the transition drawable from the root ViewOverlay
+            ViewUtils.getOverlay(drawingView).remove(transitionDrawable);
+          }
+        });
 
     return animator;
+  }
+
+  private static float getElevationOrDefault(float elevation, View view) {
+    return elevation != ELEVATION_NOT_SET ? elevation : ViewCompat.getElevation(view);
   }
 
   @ColorInt
@@ -853,48 +935,72 @@ public final class MaterialContainerTransform extends Transition {
    */
   private static final class TransitionDrawable extends Drawable {
 
+    // Elevation shadow
+    private static final int SHADOW_COLOR = 0x2D000000;
+    private static final int COMPAT_SHADOW_COLOR = 0xFF888888;
+    private static final float COMPAT_SHADOW_OFFSET_MULTIPLIER = 0.75f;
+
+    // Start container
+    private final View startView;
+    private final RectF startBounds;
+    private final ShapeAppearanceModel startShapeAppearanceModel;
+    private final float startElevation;
+
+    // End container
+    private final View endView;
+    private final RectF endBounds;
+    private final ShapeAppearanceModel endShapeAppearanceModel;
+    private final float endElevation;
+
+    // Paint
+    private final Paint containerPaint = new Paint();
+    private final Paint shadowPaint = new Paint();
+    private final Paint scrimPaint = new Paint();
+
+    // Motion path
     private final MaskEvaluator maskEvaluator = new MaskEvaluator();
     private final PathMeasure motionPathMeasure;
     private final float motionPathLength;
     private final float[] motionPathPosition = new float[2];
-    private final View startView;
-    private final RectF startBounds;
-    private final ShapeAppearanceModel startShapeAppearanceModel;
-    private final View endView;
-    private final RectF endBounds;
-    private final ShapeAppearanceModel endShapeAppearanceModel;
-    private final Paint containerPaint = new Paint();
-    private final ProgressThresholdsGroup progressThresholds;
 
-    private final Paint scrimPaint = new Paint();
+    // Drawing
+    private final boolean entering;
+    private final boolean elevationShadowEnabled;
+    private final MaterialShapeDrawable compatShadowDrawable = new MaterialShapeDrawable();
     private final RectF currentStartBounds;
     private final RectF currentStartBoundsMasked;
     private final RectF currentEndBounds;
     private final RectF currentEndBoundsMasked;
-    private final boolean entering;
+    private final ProgressThresholdsGroup progressThresholds;
     private final FadeModeEvaluator fadeModeEvaluator;
     private final FitModeEvaluator fitModeEvaluator;
 
+    // Debug drawing
     private final boolean drawDebugEnabled;
     private final Paint debugPaint = new Paint();
     private final Path debugPath = new Path();
 
+    // Current progress calculations
     private FadeModeResult fadeModeResult;
     private FitModeResult fitModeResult;
-
-    private float progress = 0f;
+    private RectF currentMaskBounds;
+    private float currentElevation;
+    private float progress;
 
     private TransitionDrawable(
         PathMotion pathMotion,
         View startView,
         RectF startBounds,
         ShapeAppearanceModel startShapeAppearanceModel,
+        float startElevation,
         View endView,
         RectF endBounds,
         ShapeAppearanceModel endShapeAppearanceModel,
+        float endElevation,
         int containerColor,
         int scrimColor,
         boolean entering,
+        boolean elevationShadowEnabled,
         FadeModeEvaluator fadeModeEvaluator,
         FitModeEvaluator fitModeEvaluator,
         ProgressThresholdsGroup progressThresholds,
@@ -902,16 +1008,25 @@ public final class MaterialContainerTransform extends Transition {
       this.startView = startView;
       this.startBounds = startBounds;
       this.startShapeAppearanceModel = startShapeAppearanceModel;
+      this.startElevation = startElevation;
       this.endView = endView;
       this.endBounds = endBounds;
       this.endShapeAppearanceModel = endShapeAppearanceModel;
+      this.endElevation = endElevation;
       this.entering = entering;
+      this.elevationShadowEnabled = elevationShadowEnabled;
       this.fadeModeEvaluator = fadeModeEvaluator;
       this.fitModeEvaluator = fitModeEvaluator;
       this.progressThresholds = progressThresholds;
       this.drawDebugEnabled = drawDebugEnabled;
 
       containerPaint.setColor(containerColor);
+
+      compatShadowDrawable.setFillColor(ColorStateList.valueOf(Color.TRANSPARENT));
+      compatShadowDrawable.setShadowCompatibilityMode(
+          MaterialShapeDrawable.SHADOW_COMPAT_MODE_ALWAYS);
+      compatShadowDrawable.setShadowBitmapDrawingEnable(false);
+      compatShadowDrawable.setShadowColor(COMPAT_SHADOW_COLOR);
 
       currentStartBounds = new RectF(startBounds);
       currentStartBoundsMasked = new RectF(currentStartBounds);
@@ -943,6 +1058,10 @@ public final class MaterialContainerTransform extends Transition {
 
       int debugCanvasSave = drawDebugEnabled ? canvas.save() : -1;
 
+      if (elevationShadowEnabled && currentElevation > 0) {
+        drawElevationShadow(canvas);
+      }
+
       // Clip the canvas to container's path. Anything drawn to the canvas after this clipping will
       // be masked inside the clipped area.
       maskEvaluator.clip(canvas);
@@ -969,6 +1088,47 @@ public final class MaterialContainerTransform extends Transition {
         drawDebugRect(canvas, currentEndBoundsMasked, Color.CYAN);
         drawDebugRect(canvas, currentEndBounds, Color.BLUE);
       }
+    }
+
+    // Draw shadow based on current path and clip shape path itself to leave only shadow.
+    private void drawElevationShadow(Canvas canvas) {
+      canvas.save();
+      canvas.clipPath(maskEvaluator.getPath(), Op.DIFFERENCE);
+
+      if (VERSION.SDK_INT > VERSION_CODES.P) {
+        drawElevationShadowWithPaintShadowLayer(canvas);
+      } else {
+        drawElevationShadowWithMaterialShapeDrawable(canvas);
+      }
+
+      canvas.restore();
+    }
+
+    private void drawElevationShadowWithPaintShadowLayer(Canvas canvas) {
+      ShapeAppearanceModel currentShapeAppearanceModel =
+          maskEvaluator.getCurrentShapeAppearanceModel();
+      if (currentShapeAppearanceModel.isRoundRect(currentMaskBounds)) {
+        // Optimize for the common round rect case, should also account for regular rect
+        float radius =
+            currentShapeAppearanceModel.getTopLeftCornerSize().getCornerSize(currentMaskBounds);
+        canvas.drawRoundRect(currentMaskBounds, radius, radius, shadowPaint);
+      } else {
+        // This will be less performant but should be a minority of cases
+        canvas.drawPath(maskEvaluator.getPath(), shadowPaint);
+      }
+    }
+
+    private void drawElevationShadowWithMaterialShapeDrawable(Canvas canvas) {
+      compatShadowDrawable.setBounds(
+          (int) currentMaskBounds.left,
+          (int) currentMaskBounds.top,
+          (int) currentMaskBounds.right,
+          (int) currentMaskBounds.bottom);
+      compatShadowDrawable.setElevation(currentElevation);
+      compatShadowDrawable.setShadowVerticalOffset(
+          (int) (currentElevation * COMPAT_SHADOW_OFFSET_MULTIPLIER));
+      compatShadowDrawable.setShapeAppearanceModel(maskEvaluator.getCurrentShapeAppearanceModel());
+      compatShadowDrawable.draw(canvas);
     }
 
     // Transform the canvas to the current bounds, scale and alpha before drawing the start view.
@@ -1031,6 +1191,10 @@ public final class MaterialContainerTransform extends Transition {
       // Fade in/out scrim over non-shared elements
       scrimPaint.setAlpha((int) (entering ? lerp(0, 255, progress) : lerp(255, 0, progress)));
 
+      // Calculate current elevation and set up shadow layer
+      currentElevation = lerp(startElevation, endElevation, progress);
+      shadowPaint.setShadowLayer(currentElevation, 0, currentElevation, SHADOW_COLOR);
+
       // Calculate position based on motion path
       motionPathMeasure.getPosTan(motionPathLength * progress, motionPathPosition, null);
       float motionPathX = motionPathPosition[0];
@@ -1069,6 +1233,14 @@ public final class MaterialContainerTransform extends Transition {
       float maskProgress = lerp(0f, 1f, maskStartFraction, maskEndFraction, progress);
       float maskMultiplier = shouldMaskStartBounds ? maskProgress : 1 - maskProgress;
       fitModeEvaluator.applyMask(maskBounds, maskMultiplier, fitModeResult);
+
+      // Union start and end mask bounds
+      currentMaskBounds =
+          new RectF(
+              Math.min(currentStartBoundsMasked.left, currentEndBoundsMasked.left),
+              Math.min(currentStartBoundsMasked.top, currentEndBoundsMasked.top),
+              Math.max(currentStartBoundsMasked.right, currentEndBoundsMasked.right),
+              Math.max(currentStartBoundsMasked.bottom, currentEndBoundsMasked.bottom));
 
       maskEvaluator.evaluate(
           progress,
