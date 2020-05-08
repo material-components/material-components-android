@@ -359,11 +359,13 @@ shown in the [card examples](#card-examples) section._
 **Elevation**        | `app:cardElevation`       | `setCardElevation`<br/>`setCardMaxElevation`                        | `1dp`
 **Ripple color**     | `app:rippleColor`         | `setRippleColor`<br/>`setRippleColorResource`<br/>`getRippleColor`  | `?attr/colorOnSurface` at 20% opacity (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/card/res/color/mtrl_card_view_ripple.xml))
 
-_**Note** We recommend that cards on mobile have `8dp` margins.
-`android:layout_margin` needs to be set directly on a `MaterialCardView` in its
-layout and not included as part of a style._
+_**Note:** We recommend that cards on mobile have `8dp` margins.
+`android:layout_margin` will [**NOT**](https://stackoverflow.com/a/13365288)
+work in default styles (eg. `materialCardViewStyle`) so either set this attr
+directly on a `MaterialCardView` in the layout or add it to a style that is
+applied in the layout with `style="@style/...`._
 
-_**Note** Without an `app:strokeColor`, the card will not render a stroked
+_**Note:** Without an `app:strokeColor`, the card will not render a stroked
 border, regardless of the `app:strokeWidth` value._
 
 #### Checked icon attributes
