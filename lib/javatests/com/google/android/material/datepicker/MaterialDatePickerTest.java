@@ -21,6 +21,7 @@ import static com.google.common.truth.Truth.assertThat;
 import java.time.Duration;
 import java.util.Calendar;
 import java.util.TimeZone;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -31,22 +32,28 @@ public class MaterialDatePickerTest {
 
   private static final long ONE_DAY_MILLIS = Duration.ofDays(1).toMillis();
 
+  private Calendar firstMomentOfTodayInUtc;
+
+  @Before
+  public void getFirstMomentOfTodayFromCalendar() {
+    firstMomentOfTodayInUtc = Calendar.getInstance();
+    firstMomentOfTodayInUtc.set(Calendar.HOUR_OF_DAY, 0);
+    firstMomentOfTodayInUtc.set(Calendar.MINUTE, 0);
+    firstMomentOfTodayInUtc.set(Calendar.SECOND, 0);
+    firstMomentOfTodayInUtc.set(Calendar.MILLISECOND, 0);
+    firstMomentOfTodayInUtc.setTimeZone(TimeZone.getTimeZone("UTC"));
+  }
+
   @Test
   public void testTodayInUtcMilliseconds() {
     long todayUtcMS = MaterialDatePicker.todayInUtcMilliseconds();
     Calendar outputUtcTodayInCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
     outputUtcTodayInCalendar.setTimeInMillis(todayUtcMS);
-    Calendar expectedUtcTodayInCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 
     // Assert fields finer than a day are stripped.
     assertThat(todayUtcMS % ONE_DAY_MILLIS).isEqualTo(0);
-    // Assert this is the same date as today in UTC.
-    assertThat(outputUtcTodayInCalendar.get(Calendar.YEAR))
-        .isEqualTo(expectedUtcTodayInCalendar.get(Calendar.YEAR));
-    assertThat(outputUtcTodayInCalendar.get(Calendar.MONTH))
-        .isEqualTo(expectedUtcTodayInCalendar.get(Calendar.MONTH));
-    assertThat(outputUtcTodayInCalendar.get(Calendar.DATE))
-        .isEqualTo(expectedUtcTodayInCalendar.get(Calendar.DATE));
+    // Assert date returned by datepicker is same as first moment of today from UTC calender.
+    assertThat(outputUtcTodayInCalendar).isEqualTo(firstMomentOfTodayInUtc);
   }
 
   @Test
@@ -54,15 +61,14 @@ public class MaterialDatePickerTest {
     long thisMonthUtcMS = MaterialDatePicker.thisMonthInUtcMilliseconds();
     Calendar outputUtcThisMonthInCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
     outputUtcThisMonthInCalendar.setTimeInMillis(thisMonthUtcMS);
-    Calendar expectedUtcThisMonthInCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 
     // Assert fields finer than a day are stripped.
     assertThat(thisMonthUtcMS % ONE_DAY_MILLIS).isEqualTo(0);
     // Assert this is the first day of this month in UTC.
     assertThat(outputUtcThisMonthInCalendar.get(Calendar.YEAR))
-        .isEqualTo(expectedUtcThisMonthInCalendar.get(Calendar.YEAR));
+        .isEqualTo(firstMomentOfTodayInUtc.get(Calendar.YEAR));
     assertThat(outputUtcThisMonthInCalendar.get(Calendar.MONTH))
-        .isEqualTo(expectedUtcThisMonthInCalendar.get(Calendar.MONTH));
+        .isEqualTo(firstMomentOfTodayInUtc.get(Calendar.MONTH));
     assertThat(outputUtcThisMonthInCalendar.get(Calendar.DATE)).isEqualTo(1);
   }
 }
