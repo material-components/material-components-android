@@ -284,19 +284,24 @@ public class ViewUtils {
   /** Returns the content view that is the parent of the provided view. */
   @Nullable
   public static ViewGroup getContentView(@Nullable View view) {
-    View parent = view;
-    while (parent != null) {
-      if (parent.getId() == android.R.id.content && parent instanceof ViewGroup) {
-        return (ViewGroup) parent;
-      }
-      if (parent.getParent() instanceof ViewGroup) {
-        parent = (ViewGroup) parent.getParent();
-      } else if (parent.getParent() == null) {
-        // If android.R.id.content has not been found and parent has no more parents to search,
-        // exit.
-        return null;
-      }
+    if (view == null) {
+      return null;
     }
+
+    View rootView = view.getRootView();
+    ViewGroup contentView = rootView.findViewById(android.R.id.content);
+    if (contentView != null) {
+      return contentView;
+    }
+
+    // Account for edge cases: Parent's parent can be null without ever having found
+    // android.R.id.content (e.g. if view is in an overlay during a transition).
+    // Additionally, sometimes parent's parent is neither a ViewGroup nor a View (e.g. if view
+    // is in a PopupWindow).
+    if (rootView != view && rootView instanceof ViewGroup) {
+      return (ViewGroup) rootView;
+    }
+
     return null;
   }
 
