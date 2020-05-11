@@ -693,18 +693,20 @@ public class MaterialButtonToggleGroup extends LinearLayout {
    *
    * <p>If {@code singleSelection} is true, this will unselect any other children as well.
    *
-   * <p>If {@code selectionRequired} is true, and the last child is unchecked.
+   * <p>If {@code selectionRequired} is true, and the last child is unchecked it will undo the
+   * deselection.
    *
    * @param childId ID of child whose checked state may have changed
    * @param childIsChecked Whether the child is checked
+   * @return Whether the checked state for childId has changed.
    */
-  private void updateCheckedStates(int childId, boolean childIsChecked) {
+  private boolean updateCheckedStates(int childId, boolean childIsChecked) {
     List<Integer> checkedButtonIds = getCheckedButtonIds();
     if (selectionRequired && checkedButtonIds.isEmpty()) {
       // undo deselection
       setCheckedStateForView(childId, true);
       checkedId = childId;
-      return;
+      return false;
     }
 
     // un select previous selection
@@ -715,6 +717,7 @@ public class MaterialButtonToggleGroup extends LinearLayout {
         dispatchOnButtonChecked(buttonId, false);
       }
     }
+    return true;
   }
 
   private void dispatchOnButtonChecked(@IdRes int buttonId, boolean checked) {
@@ -801,8 +804,12 @@ public class MaterialButtonToggleGroup extends LinearLayout {
         checkedId = isChecked ? button.getId() : View.NO_ID;
       }
 
-      dispatchOnButtonChecked(button.getId(), isChecked);
-      updateCheckedStates(button.getId(), isChecked);
+      boolean buttonCheckedStateChanged = updateCheckedStates(button.getId(), isChecked);
+      if (buttonCheckedStateChanged) {
+        // Dispatch button.isChecked instead of isChecked in case its checked state was updated
+        // internally.
+        dispatchOnButtonChecked(button.getId(), button.isChecked());
+      }
       invalidate();
     }
   }
