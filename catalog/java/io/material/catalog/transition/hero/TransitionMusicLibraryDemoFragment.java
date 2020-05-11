@@ -130,7 +130,11 @@ public class TransitionMusicLibraryDemoFragment extends Fragment
 
     // Use a Transition to animate the removal and addition of the RecyclerViews.
     RecyclerView recyclerView = createRecyclerView(listTypeGrid);
-    transition.addTarget(RecyclerView.class);
+    transition.addTarget(recyclerView);
+    View currentRecyclerView = listContainer.getChildAt(0);
+    if (currentRecyclerView != null) {
+      transition.addTarget(currentRecyclerView);
+    }
     TransitionManager.beginDelayedTransition(listContainer, transition);
 
     AlbumsAdapter adapter = new AlbumsAdapter(this, listTypeGrid);
