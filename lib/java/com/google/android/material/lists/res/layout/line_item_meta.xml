@@ -15,12 +15,12 @@
   ~ limitations under the License.
 -->
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/material_list_item_meta"
-    android:layout_width="wrap_content"
-    android:layout_height="@dimen/material_list_item_large_item_padding"
-    android:layout_gravity="top"
-    android:layout_marginStart="@dimen/material_list_item_meta_border"
-    android:gravity="bottom"
-    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-    tools:text="meta" />
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/material_list_item_meta"
+  android:layout_width="wrap_content"
+  android:layout_height="@dimen/material_list_item_large_item_padding"
+  android:layout_gravity="top"
+  android:layout_marginStart="@dimen/material_list_item_meta_border"
+  android:gravity="bottom"
+  android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+  tools:text="meta" />

@@ -15,11 +15,11 @@
   ~ limitations under the License.
 -->
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/material_list_item_overline"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:gravity="bottom"
-    android:maxLines="1"
-    android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
-    tools:text="OVERLINE" />
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/material_list_item_overline"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:gravity="bottom"
+  android:maxLines="1"
+  android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+  tools:text="OVERLINE" />

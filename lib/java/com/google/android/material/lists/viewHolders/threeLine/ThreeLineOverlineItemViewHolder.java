@@ -29,17 +29,17 @@ import com.google.android.material.lists.viewHolders.MaterialViewHolder;
  */
 public class ThreeLineOverlineItemViewHolder extends MaterialViewHolder {
 
-    public TextView overline;
-    public TextView primaryText;
-    public TextView secondaryText;
+  public TextView overline;
+  public TextView primaryText;
+  public TextView secondaryText;
 
-    public ThreeLineOverlineItemViewHolder(@NonNull ViewGroup parent) {
+  public ThreeLineOverlineItemViewHolder(@NonNull ViewGroup parent) {
 
-        super(R.layout.three_line_overline_item, parent);
-        this.overline = itemView.findViewById(R.id.material_list_item_overline);
-        this.primaryText = itemView.findViewById(R.id.material_list_item_primary_text);
-        this.secondaryText = itemView.findViewById(R.id.material_list_item_secondary_text);
+    super(R.layout.three_line_overline_item, parent, R.dimen.material_list_item_inset_position_small);
+    this.overline = itemView.findViewById(R.id.material_list_item_overline);
+    this.primaryText = itemView.findViewById(R.id.material_list_item_primary_text);
+    this.secondaryText = itemView.findViewById(R.id.material_list_item_secondary_text);
 
-    }
+  }
 
 }

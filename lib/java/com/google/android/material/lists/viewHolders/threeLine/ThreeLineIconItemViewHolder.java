@@ -29,17 +29,16 @@ import com.google.android.material.lists.viewHolders.MaterialViewHolder;
  */
 public class ThreeLineIconItemViewHolder extends MaterialViewHolder {
 
-    public FrameLayout primaryAction;
-    public TextView primaryText;
-    public TextView secondaryText;
+  public FrameLayout primaryAction;
+  public TextView primaryText;
+  public TextView secondaryText;
 
-    public ThreeLineIconItemViewHolder(@NonNull ViewGroup parent) {
+  public ThreeLineIconItemViewHolder(@NonNull ViewGroup parent) {
 
-        super(R.layout.three_line_icon_item, parent);
-        this.primaryAction = itemView.findViewById(R.id.material_list_item_primary_action);
-        this.primaryText = itemView.findViewById(R.id.material_list_item_primary_text);
-        this.secondaryText = itemView.findViewById(R.id.material_list_item_secondary_text);
-
-    }
+    super(R.layout.three_line_icon_item, parent, R.dimen.material_list_item_inset_position_icon);
+    this.primaryAction = itemView.findViewById(R.id.material_list_item_primary_action);
+    this.primaryText = itemView.findViewById(R.id.material_list_item_primary_text);
+    this.secondaryText = itemView.findViewById(R.id.material_list_item_secondary_text);
+  }
 
 }

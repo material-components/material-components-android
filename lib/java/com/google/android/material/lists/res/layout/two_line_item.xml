@@ -14,10 +14,16 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:background="?attr/selectableItemBackground"
+  android:orientation="vertical">
+
+  <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="@dimen/material_list_item_two_line_small_height"
-    android:background="?attr/selectableItemBackground"
     android:gravity="center_vertical"
     android:paddingStart="@dimen/material_list_item_side_padding"
     android:paddingEnd="@dimen/material_list_item_side_padding">
@@ -25,4 +31,9 @@
     <include layout="@layout/two_line_text" />
 
     <include layout="@layout/line_item_meta" />
+
+  </LinearLayout>
+
+  <include layout="@layout/line_item_divider"/>
+
 </LinearLayout>

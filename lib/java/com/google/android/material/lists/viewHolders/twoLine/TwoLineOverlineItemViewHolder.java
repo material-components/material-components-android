@@ -28,15 +28,15 @@ import com.google.android.material.lists.viewHolders.MaterialViewHolder;
  */
 public class TwoLineOverlineItemViewHolder extends MaterialViewHolder {
 
-    public TextView overline;
-    public TextView primaryText;
+  public TextView overline;
+  public TextView primaryText;
 
-    public TwoLineOverlineItemViewHolder(@NonNull ViewGroup parent) {
+  public TwoLineOverlineItemViewHolder(@NonNull ViewGroup parent) {
 
-        super(R.layout.two_line_overline_item, parent);
-        this.overline = itemView.findViewById(R.id.material_list_item_overline);
-        this.primaryText = itemView.findViewById(R.id.material_list_item_primary_text);
+    super(R.layout.two_line_overline_item, parent, R.dimen.material_list_item_inset_position_small);
+    this.overline = itemView.findViewById(R.id.material_list_item_overline);
+    this.primaryText = itemView.findViewById(R.id.material_list_item_primary_text);
 
-    }
+  }
 
 }

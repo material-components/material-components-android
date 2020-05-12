@@ -18,21 +18,21 @@
 Because the parent layout uses layout_weight, it requires its parent to be a LinearLayout
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="0dp"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="0dp"
+  android:layout_height="wrap_content"
+  android:layout_weight="1"
+  android:orientation="vertical"
+  tools:layout_width="wrap_content">
+
+  <include layout="@layout/line_item_primary_text" />
+
+  <TextView
+    android:id="@id/material_list_item_secondary_text"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:orientation="vertical"
-    tools:layout_width="wrap_content">
-
-    <include layout="@layout/line_item_primary_text" />
-
-    <TextView
-        android:id="@id/material_list_item_secondary_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:maxLines="1"
-        android:textAppearance="?attr/textAppearanceBody2"
-        android:textColor="@color/material_list_item_secondary"
-        tools:text="Secondary text" />
+    android:maxLines="1"
+    android:textAppearance="?attr/textAppearanceBody2"
+    android:textColor="@color/material_list_item_secondary"
+    tools:text="Secondary text" />
 </LinearLayout>

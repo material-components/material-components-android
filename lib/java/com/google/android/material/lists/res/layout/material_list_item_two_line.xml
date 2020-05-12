@@ -15,38 +15,38 @@
   ~ limitations under the License.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="?attr/selectableItemBackground"
-    android:minHeight="64dp">
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:background="?attr/selectableItemBackground"
+  android:minHeight="64dp">
 
   <ImageView
-      android:id="@+id/material_list_item_icon"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:padding="16dp"/>
+    android:id="@+id/material_list_item_icon"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="16dp"/>
 
   <TextView
-      android:id="@+id/material_list_item_text"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_toEndOf="@id/material_list_item_icon"
-      android:paddingTop="16dp"
-      android:paddingEnd="16dp"
-      android:maxLines="1"
-      android:textAppearance="?attr/textAppearanceSubtitle1"
-      android:textColor="@color/material_list_item_primary"/>
+    android:id="@+id/material_list_item_text"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_toEndOf="@id/material_list_item_icon"
+    android:paddingTop="16dp"
+    android:paddingEnd="16dp"
+    android:maxLines="1"
+    android:textAppearance="?attr/textAppearanceSubtitle1"
+    android:textColor="@color/material_list_item_primary"/>
 
   <TextView
-      android:id="@+id/material_list_item_secondary_text"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_below="@id/material_list_item_text"
-      android:layout_gravity="center_vertical"
-      android:layout_toEndOf="@id/material_list_item_icon"
-      android:paddingEnd="16dp"
-      android:maxLines="2"
-      android:textAppearance="?attr/textAppearanceBody2"
-      android:textColor="@color/material_list_item_secondary"/>
+    android:id="@+id/material_list_item_secondary_text"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/material_list_item_text"
+    android:layout_gravity="center_vertical"
+    android:layout_toEndOf="@id/material_list_item_icon"
+    android:paddingEnd="16dp"
+    android:maxLines="2"
+    android:textAppearance="?attr/textAppearanceBody2"
+    android:textColor="@color/material_list_item_secondary"/>
 
 </RelativeLayout>

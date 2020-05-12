@@ -15,8 +15,8 @@
   ~ limitations under the License.
 -->
 <com.google.android.material.imageview.ShapeableImageView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="@dimen/material_list_item_square_size"
-    android:layout_height="@dimen/material_list_item_square_size"
-    android:layout_marginEnd="@dimen/material_list_item_item_padding"
-    tools:background="@color/placeholder_content" />
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="@dimen/material_list_item_square_size"
+  android:layout_height="@dimen/material_list_item_square_size"
+  android:layout_marginEnd="@dimen/material_list_item_item_padding"
+  tools:background="@color/placeholder_content" />

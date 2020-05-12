@@ -28,17 +28,17 @@ import com.google.android.material.lists.viewHolders.MaterialViewHolder;
  */
 public class TwoLineItemViewHolder extends MaterialViewHolder {
 
-    public TextView primaryText;
-    public TextView secondaryText;
-    public TextView meta;
+  public TextView primaryText;
+  public TextView secondaryText;
+  public TextView meta;
 
-    public TwoLineItemViewHolder(@NonNull ViewGroup parent) {
+  public TwoLineItemViewHolder(@NonNull ViewGroup parent) {
 
-        super(R.layout.two_line_item, parent);
-        this.primaryText = itemView.findViewById(R.id.material_list_item_primary_text);
-        this.secondaryText = itemView.findViewById(R.id.material_list_item_secondary_text);
-        this.meta = itemView.findViewById(R.id.material_list_item_meta);
+    super(R.layout.two_line_item, parent, R.dimen.material_list_item_inset_position_small);
+    this.primaryText = itemView.findViewById(R.id.material_list_item_primary_text);
+    this.secondaryText = itemView.findViewById(R.id.material_list_item_secondary_text);
+    this.meta = itemView.findViewById(R.id.material_list_item_meta);
 
-    }
+  }
 
 }

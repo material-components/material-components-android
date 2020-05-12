@@ -14,9 +14,17 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-<com.google.android.material.imageview.ShapeableImageView xmlns:android="http://schemas.android.com/apk/res/android"
+<!--When viewing the circular visual in a layout preview, it sometimes appears incorrectly,
+however it correctly cuts off the corners when rendered in a real app.
+-->
+<View xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/material_list_item_divider"
+  android:layout_width="0dp"
+  android:layout_height="1dp"
+  android:background="?attr/colorOnSurface"
+  android:alpha="0.2"
   xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="@dimen/material_list_item_rectangle_width"
-  android:layout_height="@dimen/material_list_item_rectangle_height"
-  android:layout_marginEnd="@dimen/material_list_item_item_padding"
-  tools:background="@color/placeholder_content" />
+  tools:background="@android:color/holo_red_light"
+  tools:layout_width="match_parent"
+  tools:layout_height="10dp">
+</View>

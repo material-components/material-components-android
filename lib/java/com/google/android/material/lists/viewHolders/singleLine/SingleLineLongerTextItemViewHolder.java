@@ -28,12 +28,12 @@ import com.google.android.material.lists.viewHolders.MaterialViewHolder;
  */
 public class SingleLineLongerTextItemViewHolder extends MaterialViewHolder {
 
-    public TextView primaryText;
+  public TextView primaryText;
 
-    public SingleLineLongerTextItemViewHolder(@NonNull ViewGroup parent) {
+  public SingleLineLongerTextItemViewHolder(@NonNull ViewGroup parent) {
 
-        super(R.layout.single_line_longer_text_item, parent);
-        this.primaryText = itemView.findViewById(R.id.material_list_item_primary_text);
-    }
+    super(R.layout.single_line_longer_text_item, parent, R.dimen.material_list_item_inset_position_small);
+    this.primaryText = itemView.findViewById(R.id.material_list_item_primary_text);
+  }
 
 }

@@ -29,14 +29,14 @@ import com.google.android.material.lists.viewHolders.MaterialViewHolder;
  */
 public class SingleLineIconItemViewHolder extends MaterialViewHolder {
 
-    public FrameLayout primaryAction;
-    public TextView primaryText;
+  public FrameLayout primaryAction;
+  public TextView primaryText;
 
-    public SingleLineIconItemViewHolder(@NonNull ViewGroup parent) {
+  public SingleLineIconItemViewHolder(@NonNull ViewGroup parent) {
 
-        super(R.layout.single_line_icon_item, parent);
-        this.primaryAction = itemView.findViewById(R.id.material_list_item_primary_action);
-        this.primaryText = itemView.findViewById(R.id.material_list_item_primary_text);
-    }
+    super(R.layout.single_line_icon_item, parent, R.dimen.material_list_item_inset_position_icon);
+    this.primaryAction = itemView.findViewById(R.id.material_list_item_primary_action);
+    this.primaryText = itemView.findViewById(R.id.material_list_item_primary_text);
+  }
 
 }

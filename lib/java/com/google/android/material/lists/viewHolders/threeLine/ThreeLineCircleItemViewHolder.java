@@ -30,19 +30,19 @@ import com.google.android.material.lists.viewHolders.MaterialViewHolder;
  */
 public class ThreeLineCircleItemViewHolder extends MaterialViewHolder {
 
-    public ShapeableImageView visual;
-    public TextView primaryText;
-    public TextView secondaryText;
-    public FrameLayout secondaryAction;
+  public ShapeableImageView visual;
+  public TextView primaryText;
+  public TextView secondaryText;
+  public FrameLayout secondaryAction;
 
-    public ThreeLineCircleItemViewHolder(@NonNull ViewGroup parent) {
+  public ThreeLineCircleItemViewHolder(@NonNull ViewGroup parent) {
 
-        super(R.layout.three_line_circle_item, parent);
-        this.visual = itemView.findViewById(R.id.material_list_item_visual);
-        this.primaryText = itemView.findViewById(R.id.material_list_item_primary_text);
-        this.secondaryText = itemView.findViewById(R.id.material_list_item_secondary_text);
-        this.secondaryAction = itemView.findViewById(R.id.material_list_item_secondary_action);
+    super(R.layout.three_line_circle_item, parent, R.dimen.material_list_item_inset_position_icon);
+    this.visual = itemView.findViewById(R.id.material_list_item_visual);
+    this.primaryText = itemView.findViewById(R.id.material_list_item_primary_text);
+    this.secondaryText = itemView.findViewById(R.id.material_list_item_secondary_text);
+    this.secondaryAction = itemView.findViewById(R.id.material_list_item_secondary_action);
 
-    }
+  }
 
 }

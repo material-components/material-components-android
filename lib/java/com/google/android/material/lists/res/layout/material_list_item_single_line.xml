@@ -15,28 +15,28 @@
   ~ limitations under the License.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="?attr/selectableItemBackground"
-    android:minHeight="?attr/minTouchTargetSize">
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:background="?attr/selectableItemBackground"
+  android:minHeight="?attr/minTouchTargetSize">
 
   <ImageView
-      android:id="@+id/material_list_item_icon"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:paddingTop="8dp"
-      android:paddingBottom="8dp"
-      android:paddingStart="16dp"
-      android:paddingEnd="16dp"/>
+    android:id="@+id/material_list_item_icon"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"/>
 
   <TextView
-      android:id="@+id/material_list_item_text"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center_vertical"
-      android:paddingEnd="16dp"
-      android:maxLines="1"
-      android:textAppearance="?attr/textAppearanceSubtitle1"
-      android:textColor="@color/material_list_item_primary"/>
+    android:id="@+id/material_list_item_text"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:paddingEnd="16dp"
+    android:maxLines="1"
+    android:textAppearance="?attr/textAppearanceSubtitle1"
+    android:textColor="@color/material_list_item_primary"/>
 
 </LinearLayout>

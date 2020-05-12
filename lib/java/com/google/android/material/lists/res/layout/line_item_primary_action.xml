@@ -15,9 +15,9 @@
   ~ limitations under the License.
 -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/material_list_item_primary_action"
-    android:layout_width="@dimen/material_list_item_action_size"
-    android:layout_height="@dimen/material_list_item_action_size"
-    android:layout_marginEnd="@dimen/material_list_item_meta_border"
-    tools:background="@color/placeholder_content" />
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/material_list_item_primary_action"
+  android:layout_width="@dimen/material_list_item_action_size"
+  android:layout_height="@dimen/material_list_item_action_size"
+  android:layout_marginEnd="@dimen/material_list_item_meta_border"
+  tools:background="@color/placeholder_content" />

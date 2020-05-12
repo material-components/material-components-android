@@ -1,37 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--General dimensions-->
-    <eat-comment />
-    <dimen name="material_list_item_side_padding">16dp</dimen>
-    <dimen name="material_list_item_item_padding">16dp</dimen>
-    <dimen name="material_list_item_medium_visual_size">40dp</dimen>
-    <dimen name="material_list_item_meta_border">28dp</dimen>
-    <dimen name="material_list_item_large_item_padding">32dp</dimen>
-    <dimen name="material_list_item_action_size">24dp</dimen>
-    <dimen name="material_list_item_rectangle_width">100dp</dimen>
-    <dimen name="material_list_item_rectangle_height">56dp</dimen>
-    <dimen name="material_list_item_square_size">40dp</dimen>
-    <dimen name="material_list_item_meta_height">32dp</dimen>
-    <!-- The meta text uses large padding instead of the recommended 28dp to have the meta text better line
-   up with the primary texts in the "two_line_item" and "three_line_item" xml layouts. -->
+  <!--General dimensions-->
+  <eat-comment />
+  <dimen name="material_list_item_side_padding">16dp</dimen>
+  <dimen name="material_list_item_item_padding">16dp</dimen>
+  <dimen name="material_list_item_medium_visual_size">40dp</dimen>
+  <dimen name="material_list_item_meta_border">28dp</dimen>
+  <dimen name="material_list_item_large_item_padding">32dp</dimen>
+  <dimen name="material_list_item_action_size">24dp</dimen>
+  <dimen name="material_list_item_rectangle_width">100dp</dimen>
+  <dimen name="material_list_item_rectangle_height">56dp</dimen>
+  <dimen name="material_list_item_square_size">40dp</dimen>
+  <dimen name="material_list_item_meta_height">32dp</dimen>
+  <!-- The meta text uses large padding instead of the recommended 28dp to have the meta text better line
+  up with the primary texts in the "two_line_item" and "three_line_item" xml layouts. -->
+  <dimen name="material_list_item_inset_position_none">0dp</dimen>
+  <dimen name="material_list_item_inset_position_small">@dimen/material_list_item_side_padding</dimen>
+  <dimen name="material_list_item_inset_position_icon">72dp</dimen>
+  <dimen name="material_list_item_inset_position_rectangle">120dp</dimen>
 
-    <!-- Single-line specific dimensions -->
-    <eat-comment />
-    <dimen name="material_list_item_single_line_medium_height">56dp</dimen>
-    <dimen name="material_list_item_single_line_small_height">48dp</dimen>
-    <dimen name="material_list_item_single_line_large_height">72dp</dimen>
+  <!-- Single-line specific dimensions -->
+  <eat-comment />
+  <dimen name="material_list_item_single_line_medium_height">56dp</dimen>
+  <dimen name="material_list_item_single_line_small_height">48dp</dimen>
+  <dimen name="material_list_item_single_line_large_height">72dp</dimen>
 
-    <!-- Two-line specific dimensions -->
-    <eat-comment />
-    <dimen name="material_list_item_two_line_large_height">72dp</dimen>
-    <dimen name="material_list_item_two_line_small_height">64dp</dimen>
-    <dimen name="material_list_item_two_line_overline_height">24dp</dimen>
-    <dimen name="material_list_item_two_line_primary_text_height">20dp</dimen>
+  <dimen name="material_list_item_single_line_inset_position">16dp</dimen>
 
-    <!-- Three-line specific dimensions -->
-    <eat-comment />
-    <dimen name="material_list_item_three_line_height">88dp</dimen>
-    <dimen name="material_list_item_large_square_size">56dp</dimen>
-    <dimen name="material_list_item_three_line_overline_height">28dp</dimen>
-    <dimen name="material_list_item_three_line_rectangle_end_margin">20dp</dimen>
+  <!-- Two-line specific dimensions -->
+  <eat-comment />
+  <dimen name="material_list_item_two_line_large_height">72dp</dimen>
+  <dimen name="material_list_item_two_line_small_height">64dp</dimen>
+  <dimen name="material_list_item_two_line_overline_height">24dp</dimen>
+  <dimen name="material_list_item_two_line_primary_text_height">20dp</dimen>
+
+
+  <!-- Three-line specific dimensions -->
+  <eat-comment />
+  <dimen name="material_list_item_three_line_height">88dp</dimen>
+  <dimen name="material_list_item_large_square_size">56dp</dimen>
+  <dimen name="material_list_item_three_line_overline_height">28dp</dimen>
+  <dimen name="material_list_item_three_line_rectangle_end_margin">20dp</dimen>
 </resources>

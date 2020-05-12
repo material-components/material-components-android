@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="material_list_item_visual" type="id">@+id/material_list_item_visual</item>
-    <item name="material_list_item_secondary_text" type="id">@+id/material_list_item_secondary_text</item>
+  <item name="material_list_item_visual" type="id">@+id/material_list_item_visual</item>
+  <item name="material_list_item_secondary_text" type="id">@+id/material_list_item_secondary_text</item>
 </resources>
