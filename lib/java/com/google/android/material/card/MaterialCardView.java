@@ -23,6 +23,7 @@ import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wra
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
@@ -548,8 +549,18 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
     cardViewHelper.setCheckedIconTint(checkedIconTint);
   }
 
+  @NonNull
+  private RectF getBoundsAsRectF() {
+    RectF boundsRectF = new RectF();
+    boundsRectF.set(cardViewHelper.getBackground().getBounds());
+    return boundsRectF;
+  }
+
   @Override
   public void setShapeAppearanceModel(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
+    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+      setClipToOutline(shapeAppearanceModel.isRoundRect(getBoundsAsRectF()));
+    }
     cardViewHelper.setShapeAppearanceModel(shapeAppearanceModel);
   }
 
