@@ -39,6 +39,7 @@ import android.view.View;
 import android.view.View.MeasureSpec;
 import android.view.Window;
 import com.google.android.material.internal.ContextUtils;
+import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.shape.Shapeable;
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -55,6 +56,27 @@ public class MaterialContainerTransformSharedElementCallback extends SharedEleme
   private boolean entering = true;
   private boolean transparentWindowBackgroundEnabled = true;
   @Nullable private Rect returnEndBounds;
+  @Nullable private ShapeProvider shapeProvider = new ShapeableViewShapeProvider();
+
+  /** Allows providing a {@link ShapeAppearanceModel} for the shared element view. */
+  public interface ShapeProvider {
+    @Nullable
+    ShapeAppearanceModel provideShape(@NonNull View sharedElement);
+  }
+
+  /**
+   * A {@link ShapeProvider} that provides the view's {@link ShapeAppearanceModel} if the view
+   * implements the {@link Shapeable} interface.
+   */
+  public static class ShapeableViewShapeProvider implements ShapeProvider {
+    @Nullable
+    @Override
+    public ShapeAppearanceModel provideShape(@NonNull View sharedElement) {
+      return sharedElement instanceof Shapeable
+          ? ((Shapeable) sharedElement).getShapeAppearanceModel()
+          : null;
+    }
+  }
 
   @Nullable
   @Override
@@ -70,13 +92,15 @@ public class MaterialContainerTransformSharedElementCallback extends SharedEleme
   @Override
   public View onCreateSnapshotView(@NonNull Context context, @Nullable Parcelable snapshot) {
     View snapshotView = super.onCreateSnapshotView(context, snapshot);
-    if (snapshotView != null
-        && capturedSharedElement != null
-        && capturedSharedElement.get() instanceof Shapeable) {
-      // Set shape appearance as snapshot view tag, which will be used by the transform.
-      snapshotView.setTag(
-          R.id.mtrl_motion_snapshot_view,
-          ((Shapeable) capturedSharedElement.get()).getShapeAppearanceModel());
+    if (snapshotView != null && capturedSharedElement != null && shapeProvider != null) {
+      View sharedElement = capturedSharedElement.get();
+      if (sharedElement != null) {
+        ShapeAppearanceModel shapeAppearanceModel = shapeProvider.provideShape(sharedElement);
+        if (shapeAppearanceModel != null) {
+          // Set shape appearance as snapshot view tag, which will be used by the transform.
+          snapshotView.setTag(R.id.mtrl_motion_snapshot_view, shapeAppearanceModel);
+        }
+      }
     }
     return snapshotView;
   }
@@ -141,6 +165,23 @@ public class MaterialContainerTransformSharedElementCallback extends SharedEleme
     entering = false;
   }
 
+  /** Get the {@link ShapeProvider} for this callback, or null if it is not set. */
+  @Nullable
+  public ShapeProvider getShapeProvider() {
+    return shapeProvider;
+  }
+
+  /**
+   * Set the {@link ShapeProvider} for this callback, which allows providing a {@link
+   * ShapeAppearanceModel} for the shared element view.
+   *
+   * <p>The default is a {@link ShapeableViewShapeProvider}, which will use the view's {@link
+   * ShapeAppearanceModel} if the view implements the {@link Shapeable} interface.
+   */
+  public void setShapeProvider(@Nullable ShapeProvider shapeProvider) {
+    this.shapeProvider = shapeProvider;
+  }
+
   /**
    * Returns whether the incoming window's background should be made transparent during the
    * transition.
@@ -198,9 +239,12 @@ public class MaterialContainerTransformSharedElementCallback extends SharedEleme
             @Override
             public void onTransitionEnd(Transition transition) {
               // Make sure initial shared element view is visible to avoid blinking effect.
-              if (capturedSharedElement != null && capturedSharedElement.get() != null) {
-                capturedSharedElement.get().setAlpha(1);
-                capturedSharedElement = null;
+              if (capturedSharedElement != null) {
+                View sharedElement = capturedSharedElement.get();
+                if (sharedElement != null) {
+                  sharedElement.setAlpha(1);
+                  capturedSharedElement = null;
+                }
               }
 
               // Prevent extra transform from happening after the return transform is finished.
