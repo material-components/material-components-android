@@ -14,7 +14,7 @@ env:
   matrix:
     - EMULATOR_API=16
     - EMULATOR_API=19
-    - EMULATOR_API=24
+    - EMULATOR_API=23
 
 install:
   - export ANDROID_HOME=~/android-sdk-linux
