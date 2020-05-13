@@ -272,7 +272,7 @@ Default theme overlay attribute: `?attr/materialAlertDialogTheme`
 &nbsp;                    | **Theme attribute**                       | **Default value**
 ------------------------- | ----------------------------------------- | -----------------
 **Default style**         | `?attr/alertDialogStyle`                  | `@style/MaterialAlertDialog.MaterialComponents`
-**Title text style**      | `?attr/materialAlertDialogTitleTextStyle` | `@style/MaterialAlertDialog.MaterialComponents.Title.Icon`
+**Title text style**      | `?attr/materialAlertDialogTitleTextStyle` | `@style/MaterialAlertDialog.MaterialComponents.Title.Text`
 **Supporting text style** | `?attr/materialAlertDialogBodyTextStyle`  | `@style/MaterialAlertDialog.MaterialComponents.Body.Text`
 
 See full list of
