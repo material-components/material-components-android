@@ -59,6 +59,11 @@
     <attr name="trackHeight" format="dimension" />
   </declare-styleable>
 
+  <declare-styleable name="RangeSlider">
+    <attr name="values" format="reference" />
+  </declare-styleable>
+
   <!-- Style to use for Slider in this theme. -->
   <attr name="sliderStyle" format="reference" />
+
 </resources>
