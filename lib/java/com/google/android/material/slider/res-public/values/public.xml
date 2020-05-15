@@ -30,6 +30,7 @@
   <public name="trackColorActive" type="attr" />
   <public name="trackColorInactive" type="attr" />
   <public name="trackHeight" type="attr" />
+  <public name="values" type="reference" />
 
   <public name="Widget.MaterialComponents.Slider" type="style"/>
 </resources>
