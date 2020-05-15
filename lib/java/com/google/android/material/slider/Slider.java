@@ -390,6 +390,7 @@ public class Slider extends View {
     processAttributes(context, attrs, defStyleAttr);
 
     setFocusable(true);
+    setClickable(true);
 
     // Set up the thumb drawable to always show the compat shadow.
     thumbDrawable.setShadowCompatibilityMode(MaterialShapeDrawable.SHADOW_COMPAT_MODE_ALWAYS);
