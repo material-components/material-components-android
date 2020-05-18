@@ -60,6 +60,7 @@ import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.textfield.TextInputLayout.AccessibilityDelegate;
 import com.google.android.material.textfield.TextInputLayout.BoxBackgroundMode;
 import com.google.android.material.textfield.TextInputLayout.OnEditTextAttachedListener;
+import com.google.android.material.textfield.TextInputLayout.OnEndIconChangedListener;
 
 /** Default initialization of the exposed dropdown menu {@link TextInputLayout.EndIconMode}. */
 class DropdownMenuEndIconDelegate extends EndIconDelegate {
@@ -89,6 +90,17 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
                   dropdownPopupDirty = isPopupShowing;
                 }
               });
+        }
+      };
+  private final OnFocusChangeListener onFocusChangeListener =
+      new OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+          textInputLayout.setEndIconActivated(hasFocus);
+          if (!hasFocus) {
+            setEndIconChecked(false);
+            dropdownPopupDirty = false;
+          }
         }
       };
   private final TextInputLayout.AccessibilityDelegate accessibilityDelegate =
@@ -131,10 +143,31 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
           autoCompleteTextView.setThreshold(0);
           autoCompleteTextView.removeTextChangedListener(exposedDropdownEndIconTextWatcher);
           autoCompleteTextView.addTextChangedListener(exposedDropdownEndIconTextWatcher);
+          textInputLayout.setEndIconCheckable(true);
           textInputLayout.setErrorIconDrawable(null);
           textInputLayout.setTextInputAccessibilityDelegate(accessibilityDelegate);
 
           textInputLayout.setEndIconVisible(true);
+        }
+      };
+  @SuppressLint("ClickableViewAccessibility") // There's an accessibility delegate that handles
+  // interactions with the dropdown menu.
+  private final OnEndIconChangedListener endIconChangedListener =
+      new OnEndIconChangedListener() {
+        @Override
+        public void onEndIconChanged(@NonNull TextInputLayout textInputLayout, int previousIcon) {
+          AutoCompleteTextView editText = (AutoCompleteTextView) textInputLayout.getEditText();
+          if (editText != null && previousIcon == TextInputLayout.END_ICON_DROPDOWN_MENU) {
+            // Remove any listeners set on the edit text.
+            editText.removeTextChangedListener(exposedDropdownEndIconTextWatcher);
+            if (editText.getOnFocusChangeListener() == onFocusChangeListener) {
+              editText.setOnFocusChangeListener(null);
+            }
+            editText.setOnTouchListener(null);
+            if (IS_LOLLIPOP) {
+              editText.setOnDismissListener(null);
+            }
+          }
         }
       };
 
@@ -203,6 +236,7 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
           }
         });
     textInputLayout.addOnEditTextAttachedListener(dropdownMenuOnEditTextAttachedListener);
+    textInputLayout.addOnEndIconChangedListener(endIconChangedListener);
     initAnimators();
     ViewCompat.setImportantForAccessibility(endIconView, IMPORTANT_FOR_ACCESSIBILITY_NO);
     accessibilityManager =
@@ -353,19 +387,7 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
             return false;
           }
         });
-
-    editText.setOnFocusChangeListener(
-        new OnFocusChangeListener() {
-          @Override
-          public void onFocusChange(View view, boolean hasFocus) {
-            textInputLayout.setEndIconActivated(hasFocus);
-            if (!hasFocus) {
-              setEndIconChecked(false);
-              dropdownPopupDirty = false;
-            }
-          }
-        });
-
+    editText.setOnFocusChangeListener(onFocusChangeListener);
     if (IS_LOLLIPOP) {
       editText.setOnDismissListener(
           new OnDismissListener() {
