@@ -55,6 +55,7 @@ class PasswordToggleEndIconDelegate extends EndIconDelegate {
         public void onEditTextAttached(@NonNull TextInputLayout textInputLayout) {
           EditText editText = textInputLayout.getEditText();
           textInputLayout.setEndIconVisible(true);
+          textInputLayout.setEndIconCheckable(true);
           endIconView.setChecked(!hasPasswordTransformation());
           // Make sure there's always only one password toggle text watcher added
           editText.removeTextChangedListener(textWatcher);
@@ -68,8 +69,10 @@ class PasswordToggleEndIconDelegate extends EndIconDelegate {
           EditText editText = textInputLayout.getEditText();
           if (editText != null && previousIcon == TextInputLayout.END_ICON_PASSWORD_TOGGLE) {
             // If the end icon was the password toggle add it back the PasswordTransformation
-            // in case it might have been removed to make the password visible,
+            // in case it might have been removed to make the password visible.
             editText.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            // Remove any listeners set on the edit text.
+            editText.removeTextChangedListener(textWatcher);
           }
         }
       };

@@ -3018,6 +3018,7 @@ public class TextInputLayout extends LinearLayout {
   public void setEndIconMode(@EndIconMode int endIconMode) {
     int previousEndIconMode = this.endIconMode;
     this.endIconMode = endIconMode;
+    dispatchOnEndIconChanged(previousEndIconMode);
     setEndIconVisible(endIconMode != END_ICON_NONE);
     if (getEndIconDelegate().isBoxBackgroundModeSupported(boxBackgroundMode)) {
       getEndIconDelegate().initialize();
@@ -3029,7 +3030,6 @@ public class TextInputLayout extends LinearLayout {
               + endIconMode);
     }
     applyEndIconTint();
-    dispatchOnEndIconChanged(previousEndIconMode);
   }
 
   /**
