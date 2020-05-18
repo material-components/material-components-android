@@ -33,6 +33,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.transition.Hold;
 import com.google.android.material.transition.MaterialContainerTransform;
 import io.material.catalog.feature.ContainerTransformConfiguration;
@@ -157,11 +158,18 @@ public class TransitionContainerTransformDemoFragment extends DemoFragment
   }
 
   private void configureTransitions(Fragment fragment) {
+    // For all 3 container layer colors, use colorSurface since this transform can be configured
+    // using any fade mode and some of the start views don't have a background and the end view
+    // doesn't have a background.
+    int colorSurface = MaterialColors.getColor(requireView(), R.attr.colorSurface);
+
     MaterialContainerTransform enterContainerTransform = buildContainerTransform(true);
+    enterContainerTransform.setAllContainerColors(colorSurface);
     fragment.setSharedElementEnterTransition(enterContainerTransform);
     holdTransition.setDuration(enterContainerTransform.getDuration());
 
     MaterialContainerTransform returnContainerTransform = buildContainerTransform(false);
+    returnContainerTransform.setAllContainerColors(colorSurface);
     fragment.setSharedElementReturnTransition(returnContainerTransform);
   }
 

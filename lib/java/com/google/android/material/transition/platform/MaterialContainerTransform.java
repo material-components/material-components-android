@@ -232,6 +232,8 @@ public final class MaterialContainerTransform extends Transition {
   @IdRes private int startViewId = View.NO_ID;
   @IdRes private int endViewId = View.NO_ID;
   @ColorInt private int containerColor = Color.TRANSPARENT;
+  @ColorInt private int startContainerColor = Color.TRANSPARENT;
+  @ColorInt private int endContainerColor = Color.TRANSPARENT;
   @Nullable @ColorInt private Integer scrimColor;
   @TransitionDirection private int transitionDirection = TRANSITION_DIRECTION_AUTO;
   @FadeMode private int fadeMode = FADE_MODE_IN;
@@ -451,8 +453,9 @@ public final class MaterialContainerTransform extends Transition {
   }
 
   /**
-   * Get the container color to be used as the background of the morphing container, drawn below
-   * both the start and end views.
+   * Get the color to be drawn beneath both the start view and end view.
+   *
+   * @see #setContainerColor(int)
    */
   @ColorInt
   public int getContainerColor() {
@@ -460,16 +463,94 @@ public final class MaterialContainerTransform extends Transition {
   }
 
   /**
-   * Set the container color to be used as the background of the morphing container. This color is
-   * drawn below both the start and end Views and fills the containers shape.
+   * Set a color to be drawn beneath both the start and end view.
    *
-   * <p>Setting this color can be useful when one or both of the start or end View's does not have a
-   * solid background. Additionally, if both the start and end view's share the same background
-   * color, manually setting this color can create a more seamless morph animation between the two
-   * View's contents.
+   * <p>This color is the background color of the transforming container inside of which the start
+   * and end views are drawn. Unlike the start view, start container color, end view and end
+   * container color, this color will always be drawn as fully opaque, beneath all other content in
+   * the container. By default, this color is set to transparent (0), meaning a container color will
+   * not be drawn.
+   *
+   * <p>If a default container transform results in the start view being visible beneath the end
+   * view, or vica versa, this is due to one or both views not having a background. The most common
+   * way to solve this issue is by sequentially fading the contents with {@link #FADE_MODE_THROUGH}
+   * and setting this color to the start and end view's desired background color.
+   *
+   * <p>If the start and end views have different background colors, or you would like to use a fade
+   * mode other than {@link #FADE_MODE_THROUGH}, handle this by using {@link
+   * #setStartContainerColor(int)} and {@link #setEndContainerColor(int)}.
    */
   public void setContainerColor(@ColorInt int containerColor) {
     this.containerColor = containerColor;
+  }
+
+  /**
+   * Get the color to be drawn beneath the start view.
+   *
+   * @see #setStartContainerColor(int)
+   */
+  @ColorInt
+  public int getStartContainerColor() {
+    return startContainerColor;
+  }
+
+  /**
+   * Set a color to be drawn beneath the start view.
+   *
+   * <p>This color will be drawn directly beneath the start view, will fill the entire transforming
+   * container, and will animate its opacity to match the start view's. By default, this color is
+   * set to transparent (0), meaning no color will be drawn.
+   *
+   * <p>This method can be useful when the color of the start and end view differ and the start view
+   * does not handle drawing its own background. This can also be used if an expanding container is
+   * larger than the start view. Setting this color to match that of the start view's background
+   * will cause the start view to look like its background is expanding to fill the transforming
+   * container.
+   */
+  public void setStartContainerColor(@ColorInt int containerColor) {
+    this.startContainerColor = containerColor;
+  }
+
+  /**
+   * Get the color to be drawn beneath the end view.
+   *
+   * @see #setEndContainerColor(int)
+   */
+  @ColorInt
+  public int getEndContainerColor() {
+    return endContainerColor;
+  }
+
+  /**
+   * Set a color to be drawn beneath the end view.
+   *
+   * <p>This color will be drawn directly beneath the end view, will fill the entire transforming
+   * container, and the will animate its opacity to match the end view's. By default, this color is
+   * set to transparent (0), meaning no color will be drawn.
+   *
+   * <p>This method can be useful when the color of the start and end view differ and the end view
+   * does not handle drawing its own background. Setting this color will prevent the start view from
+   * being visible beneath the end view while transforming.
+   */
+  public void setEndContainerColor(@ColorInt int containerColor) {
+    this.endContainerColor = containerColor;
+  }
+
+  /**
+   * Set the container color, the start container color and the end container color.
+   *
+   * <p>This is a helper for the common case of transitioning between a start and end view when
+   * neither draws its own background but a common color is shared. This prevents the start or end
+   * view from being visible below one another.
+   *
+   * @see #setContainerColor(int)
+   * @see #setStartContainerColor(int)
+   * @see #setEndContainerColor(int)
+   */
+  public void setAllContainerColors(@ColorInt int containerColor) {
+    this.containerColor = containerColor;
+    this.startContainerColor = containerColor;
+    this.endContainerColor = containerColor;
   }
 
   /**
@@ -817,6 +898,8 @@ public final class MaterialContainerTransform extends Transition {
             endShapeAppearanceModel,
             getElevationOrDefault(endElevation, endView),
             containerColor,
+            startContainerColor,
+            endContainerColor,
             getScrimColorOrDefault(startView.getContext()),
             entering,
             elevationShadowEnabled,
@@ -959,6 +1042,8 @@ public final class MaterialContainerTransform extends Transition {
 
     // Paint
     private final Paint containerPaint = new Paint();
+    private final Paint startContainerPaint = new Paint();
+    private final Paint endContainerPaint = new Paint();
     private final Paint shadowPaint = new Paint();
     private final Paint scrimPaint = new Paint();
 
@@ -1002,7 +1087,9 @@ public final class MaterialContainerTransform extends Transition {
         RectF endBounds,
         ShapeAppearanceModel endShapeAppearanceModel,
         float endElevation,
-        int containerColor,
+        @ColorInt int containerColor,
+        @ColorInt int startContainerColor,
+        @ColorInt int endContainerColor,
         int scrimColor,
         boolean entering,
         boolean elevationShadowEnabled,
@@ -1026,6 +1113,8 @@ public final class MaterialContainerTransform extends Transition {
       this.drawDebugEnabled = drawDebugEnabled;
 
       containerPaint.setColor(containerColor);
+      startContainerPaint.setColor(startContainerColor);
+      endContainerPaint.setColor(endContainerColor);
 
       compatShadowDrawable.setFillColor(ColorStateList.valueOf(Color.TRANSPARENT));
       compatShadowDrawable.setShadowCompatibilityMode(
@@ -1071,11 +1160,7 @@ public final class MaterialContainerTransform extends Transition {
       // be masked inside the clipped area.
       maskEvaluator.clip(canvas);
 
-      // Draw a background for the container, useful when the container size exceeds the image
-      // size which it can in large start/end size changes.
-      if (containerPaint.getColor() != Color.TRANSPARENT) {
-        canvas.drawRect(getBounds(), containerPaint);
-      }
+      maybeDrawContainerColor(canvas, containerPaint);
 
       if (fadeModeResult.endOnTop) {
         drawStartView(canvas);
@@ -1138,6 +1223,7 @@ public final class MaterialContainerTransform extends Transition {
 
     // Transform the canvas to the current bounds, scale and alpha before drawing the start view.
     private void drawStartView(Canvas canvas) {
+      maybeDrawContainerColor(canvas, startContainerPaint);
       transform(
           canvas,
           getBounds(),
@@ -1155,6 +1241,7 @@ public final class MaterialContainerTransform extends Transition {
 
     // Transform the canvas to the current bounds, scale and alpha before drawing the end view.
     private void drawEndView(Canvas canvas) {
+      maybeDrawContainerColor(canvas, endContainerPaint);
       transform(
           canvas,
           getBounds(),
@@ -1168,6 +1255,15 @@ public final class MaterialContainerTransform extends Transition {
               endView.draw(canvas);
             }
           });
+    }
+
+    private void maybeDrawContainerColor(Canvas canvas, Paint containerPaint) {
+      // Fill the container at the current layer with a color. Useful when the start or end view
+      // does not have a background or when the container size exceeds the image size which it can
+      // in large start/end size changes.
+      if (containerPaint.getColor() != Color.TRANSPARENT && containerPaint.getAlpha() > 0) {
+        canvas.drawRect(getBounds(), containerPaint);
+      }
     }
 
     @Override
@@ -1260,6 +1356,15 @@ public final class MaterialContainerTransform extends Transition {
       float fadeStartFraction = checkNotNull(progressThresholds.fade.start);
       float fadeEndFraction = checkNotNull(progressThresholds.fade.end);
       fadeModeResult = fadeModeEvaluator.evaluate(progress, fadeStartFraction, fadeEndFraction);
+
+      // Update the start and end container paints to share the same opacity as their respective
+      // view.
+      if (startContainerPaint.getColor() != Color.TRANSPARENT) {
+        startContainerPaint.setAlpha(fadeModeResult.startAlpha);
+      }
+      if (endContainerPaint.getColor() != Color.TRANSPARENT) {
+        endContainerPaint.setAlpha(fadeModeResult.endAlpha);
+      }
 
       invalidateSelf();
     }
