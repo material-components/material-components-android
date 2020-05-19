@@ -60,13 +60,11 @@ the `com.android.support:design:28.0.0` dependency.
 Note: You should not use the `com.android.support` and
 `com.google.android.material` dependencies in your app at the same time.
 
-### 2. Compile your app with Android 9
+### 2. Compile your app with Android 10
 
 In order to use Material Components for Android, and the latest versions of the
-Support Libraries, you will have to update your app's `compileSdkVersion` to
-`28` and download the Android 9 using the SDK manager. For more information on
-Android 9 and its timeline, take a look at the
-[Program Overview](https://developer.android.com/preview/overview) page.
+Support Libraries, you will have to install Android Studio 3.5 or higher to
+build with Android 10, and update your app's `compileSdkVersion` to `29`.
 
 ### 3. Ensure you are using `AppCompatActivity`
 
