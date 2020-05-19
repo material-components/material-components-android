@@ -869,8 +869,16 @@ public final class MaterialContainerTransform extends Transition {
       boundingView = null;
     }
 
-    RectF startBounds = (RectF) checkNotNull(startValues.values.get(PROP_BOUNDS));
-    RectF endBounds = (RectF) checkNotNull(endValues.values.get(PROP_BOUNDS));
+    RectF startBounds = (RectF) startValues.values.get(PROP_BOUNDS);
+    if (startBounds == null) {
+      throw new IllegalStateException(
+          "Start view bounds must not be null, make sure the start view is laid out and measured.");
+    }
+    RectF endBounds = (RectF) endValues.values.get(PROP_BOUNDS);
+    if (endBounds == null) {
+      throw new IllegalStateException(
+          "End view bounds must not be null, make sure the end view is laid out and measured");
+    }
     ShapeAppearanceModel startShapeAppearanceModel =
         (ShapeAppearanceModel) startValues.values.get(PROP_SHAPE_APPEARANCE);
     ShapeAppearanceModel endShapeAppearanceModel =
