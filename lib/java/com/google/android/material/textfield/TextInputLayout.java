@@ -1182,7 +1182,8 @@ public class TextInputLayout extends LinearLayout {
       float boxCornerRadiusTopEnd,
       float boxCornerRadiusBottomStart,
       float boxCornerRadiusBottomEnd) {
-    if (boxBackground.getTopLeftCornerResolvedSize() != boxCornerRadiusTopStart
+    if (boxBackground == null
+        || boxBackground.getTopLeftCornerResolvedSize() != boxCornerRadiusTopStart
         || boxBackground.getTopRightCornerResolvedSize() != boxCornerRadiusTopEnd
         || boxBackground.getBottomRightCornerResolvedSize() != boxCornerRadiusBottomEnd
         || boxBackground.getBottomLeftCornerResolvedSize() != boxCornerRadiusBottomStart) {
