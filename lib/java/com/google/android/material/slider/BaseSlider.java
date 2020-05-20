@@ -174,14 +174,17 @@ abstract class BaseSlider<
 
   private static final String TAG = BaseSlider.class.getSimpleName();
   private static final String EXCEPTION_ILLEGAL_VALUE =
-      "Slider value must be greater or equal to valueFrom, and lower or equal to valueTo";
+      "Slider value(%s) must be greater or equal to valueFrom(%s), and lower or equal to"
+          + " valueTo(%s)";
   private static final String EXCEPTION_ILLEGAL_DISCRETE_VALUE =
-      "Value must be equal to valueFrom plus a multiple of stepSize when using stepSize";
+      "Value(%s) must be equal to valueFrom(%s) plus a multiple of stepSize(%s) when using"
+          + " stepSize(%s)";
   private static final String EXCEPTION_ILLEGAL_VALUE_FROM =
-      "valueFrom must be smaller than valueTo";
-  private static final String EXCEPTION_ILLEGAL_VALUE_TO = "valueTo must be greater than valueFrom";
+      "valueFrom(%s) must be smaller than valueTo(%s)";
+  private static final String EXCEPTION_ILLEGAL_VALUE_TO =
+      "valueTo(%s) must be greater than valueFrom(%s)";
   private static final String EXCEPTION_ILLEGAL_STEP_SIZE =
-      "The stepSize must be 0, or a factor of the valueFrom-valueTo range";
+      "The stepSize(%s) must be 0, or a factor of the valueFrom(%s)-valueTo(%s) range";
 
   private static final int TIMEOUT_SEND_ACCESSIBILITY_EVENT = 200;
   private static final int HALO_ALPHA = 63;
@@ -398,9 +401,7 @@ abstract class BaseSlider<
     boolean hasTrackColor = a.hasValue(R.styleable.Slider_trackColor);
 
     int trackColorInactiveRes =
-        hasTrackColor
-            ? R.styleable.Slider_trackColor
-            : R.styleable.Slider_trackColorInactive;
+        hasTrackColor ? R.styleable.Slider_trackColor : R.styleable.Slider_trackColorInactive;
     int trackColorActiveRes =
         hasTrackColor ? R.styleable.Slider_trackColor : R.styleable.Slider_trackColorActive;
 
@@ -466,35 +467,54 @@ abstract class BaseSlider<
         context,
         null,
         0,
-        a.getResourceId(
-            R.styleable.Slider_labelStyle, R.style.Widget_MaterialComponents_Tooltip));
+        a.getResourceId(R.styleable.Slider_labelStyle, R.style.Widget_MaterialComponents_Tooltip));
   }
 
   private void validateValueFrom() {
     if (valueFrom >= valueTo) {
-      throw new IllegalStateException(EXCEPTION_ILLEGAL_VALUE_FROM);
+      throw new IllegalStateException(
+          String.format(
+              EXCEPTION_ILLEGAL_VALUE_FROM, Float.toString(valueFrom), Float.toString(valueTo)));
     }
   }
 
   private void validateValueTo() {
     if (valueTo <= valueFrom) {
-      throw new IllegalStateException(EXCEPTION_ILLEGAL_VALUE_TO);
+      throw new IllegalStateException(
+          String.format(
+              EXCEPTION_ILLEGAL_VALUE_TO, Float.toString(valueTo), Float.toString(valueFrom)));
     }
   }
 
   private void validateStepSize() {
     if (stepSize > 0.0f && ((valueTo - valueFrom) / stepSize) % 1 > THRESHOLD) {
-      throw new IllegalStateException(EXCEPTION_ILLEGAL_STEP_SIZE);
+      throw new IllegalStateException(
+          String.format(
+              EXCEPTION_ILLEGAL_STEP_SIZE,
+              Float.toString(stepSize),
+              Float.toString(valueFrom),
+              Float.toString(valueTo)));
     }
   }
 
   private void validateValues() {
     for (Float value : values) {
       if (value < valueFrom || value > valueTo) {
-        throw new IllegalStateException(EXCEPTION_ILLEGAL_VALUE);
+        throw new IllegalStateException(
+            String.format(
+                EXCEPTION_ILLEGAL_VALUE,
+                Float.toString(value),
+                Float.toString(valueFrom),
+                Float.toString(valueTo)));
       }
       if (stepSize > 0.0f && ((valueFrom - value) / stepSize) % 1 > THRESHOLD) {
-        throw new IllegalStateException(EXCEPTION_ILLEGAL_DISCRETE_VALUE);
+        throw new IllegalStateException(
+            String.format(
+                EXCEPTION_ILLEGAL_DISCRETE_VALUE,
+                Float.toString(value),
+                Float.toString(valueFrom),
+                Float.toString(stepSize),
+                Float.toString(stepSize)));
       }
     }
   }
@@ -684,7 +704,12 @@ abstract class BaseSlider<
    */
   public void setStepSize(float stepSize) {
     if (stepSize < 0.0f) {
-      throw new IllegalArgumentException(EXCEPTION_ILLEGAL_STEP_SIZE);
+      throw new IllegalArgumentException(
+          String.format(
+              EXCEPTION_ILLEGAL_STEP_SIZE,
+              Float.toString(stepSize),
+              Float.toString(valueFrom),
+              Float.toString(valueTo)));
     }
     if (this.stepSize != stepSize) {
       this.stepSize = stepSize;
@@ -1663,7 +1688,9 @@ abstract class BaseSlider<
     }
 
     if (!labelItr.hasNext()) {
-      throw new IllegalStateException("Not enough labels to display all the values");
+      throw new IllegalStateException(
+          String.format(
+              "Not enough labels(%d) to display all the values(%d)", labels.size(), values.size()));
     }
 
     // Now set the label for the focused thumb so it's on top.
