@@ -63,7 +63,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
-import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,7 +71,6 @@ import android.transition.PathMotion;
 import android.transition.Transition;
 import android.transition.TransitionValues;
 import com.google.android.material.animation.AnimationUtils;
-import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
@@ -106,7 +104,7 @@ import java.lang.annotation.RetentionPolicy;
  * @see #setStartShapeAppearanceModel(ShapeAppearanceModel)
  * @see #setEndShapeAppearanceModel(ShapeAppearanceModel)
  * @see #setDrawingViewId(int)
- * @see #setScrimColor(Integer)
+ * @see #setScrimColor(int)
  * @see #setFadeMode(int)
  * @see #setFitMode(int)
  * @see #setPathMotion(PathMotion)
@@ -234,7 +232,7 @@ public final class MaterialContainerTransform extends Transition {
   @ColorInt private int containerColor = Color.TRANSPARENT;
   @ColorInt private int startContainerColor = Color.TRANSPARENT;
   @ColorInt private int endContainerColor = Color.TRANSPARENT;
-  @Nullable @ColorInt private Integer scrimColor;
+  @ColorInt private int scrimColor = 0x52000000;
   @TransitionDirection private int transitionDirection = TRANSITION_DIRECTION_AUTO;
   @FadeMode private int fadeMode = FADE_MODE_IN;
   @FitMode private int fitMode = FIT_MODE_AUTO;
@@ -556,13 +554,9 @@ public final class MaterialContainerTransform extends Transition {
   /**
    * Get the color to be drawn under the morphing container but within the bounds of the {@link
    * #getDrawingViewId()}.
-   *
-   * <p>If this is not set, null will be returned, meaning the default, R.attr.scrimBackground, will
-   * be as the scrim color.
    */
-  @Nullable
   @ColorInt
-  public Integer getScrimColor() {
+  public int getScrimColor() {
     return scrimColor;
   }
 
@@ -570,16 +564,15 @@ public final class MaterialContainerTransform extends Transition {
    * Set the color to be drawn under the morphing container but within the bounds of the {@link
    * #getDrawingViewId()}.
    *
-   * <p>By default this is set to your theme's {@link R.attr#scrimBackground}. Drawing a scrim is
-   * primarily useful for transforming from a partial-screen View (eg. Card in a grid) to a full
-   * screen. The scrim will gradually fade in and cover the content being transformed over by the
-   * morphing container.
+   * <p>By default this is set to black with 32% opacity. Drawing a scrim is primarily useful for
+   * transforming from a partial-screen View (eg. Card in a grid) to a full screen. The scrim will
+   * gradually fade in and cover the content being transformed over by the morphing container.
    *
    * <p>Changing the default scrim color can be useful when transitioning between two Views in a
    * layout, where the ending View does not cover any outgoing content (eg. a FAB to a bottom
    * toolbar). For scenarios such as these, set the scrim color to transparent.
    */
-  public void setScrimColor(@Nullable @ColorInt Integer scrimColor) {
+  public void setScrimColor(@ColorInt int scrimColor) {
     this.scrimColor = scrimColor;
   }
 
@@ -908,7 +901,7 @@ public final class MaterialContainerTransform extends Transition {
             containerColor,
             startContainerColor,
             endContainerColor,
-            getScrimColorOrDefault(startView.getContext()),
+            scrimColor,
             entering,
             elevationShadowEnabled,
             FadeModeEvaluators.get(fadeMode, entering),
@@ -964,18 +957,6 @@ public final class MaterialContainerTransform extends Transition {
 
   private static float getElevationOrDefault(float elevation, View view) {
     return elevation != ELEVATION_NOT_SET ? elevation : ViewCompat.getElevation(view);
-  }
-
-  @ColorInt
-  private int getScrimColorOrDefault(Context context) {
-    if (scrimColor == null) {
-      return MaterialColors.getColor(
-          context,
-          R.attr.scrimBackground,
-          ContextCompat.getColor(context, R.color.mtrl_scrim_color));
-    }
-
-    return scrimColor;
   }
 
   private static RectF calculateDrawableBounds(
