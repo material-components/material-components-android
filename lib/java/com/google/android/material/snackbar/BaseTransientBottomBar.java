@@ -873,6 +873,11 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     animatorSet.addListener(
         new AnimatorListenerAdapter() {
           @Override
+          public void onAnimationStart(Animator animator) {
+            contentViewCallback.animateContentIn(
+                0, ANIMATION_FADE_IN_DURATION);
+          }
+          @Override
           public void onAnimationEnd(Animator animator) {
             onViewShown();
           }
@@ -885,6 +890,10 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     animator.setDuration(ANIMATION_FADE_OUT_DURATION);
     animator.addListener(
         new AnimatorListenerAdapter() {
+          @Override
+          public void onAnimationStart(Animator animator) {
+            contentViewCallback.animateContentOut(0, ANIMATION_FADE_OUT_DURATION);
+          }
           @Override
           public void onAnimationEnd(Animator animator) {
             onViewHidden(event);
