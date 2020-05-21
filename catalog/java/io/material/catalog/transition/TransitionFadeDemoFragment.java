@@ -33,6 +33,9 @@ import io.material.catalog.feature.DemoFragment;
 /** A fragment that displays the Fade Transition demo for the Catalog app. */
 public class TransitionFadeDemoFragment extends DemoFragment {
 
+  private static final long DURATION_ENTER = 150;
+  private static final long DURATION_RETURN = 84;
+
   private Button fadeButton;
   private FloatingActionButton fadeFab;
 
@@ -54,7 +57,8 @@ public class TransitionFadeDemoFragment extends DemoFragment {
     ViewGroup sceneRoot = (ViewGroup) requireView();
 
     boolean entering = fadeFab.getVisibility() == View.GONE;
-    MaterialFade materialFade = new MaterialFade(entering);
+    MaterialFade materialFade = new MaterialFade();
+    materialFade.setDuration(entering ? DURATION_ENTER : DURATION_RETURN);
     TransitionManager.beginDelayedTransition(sceneRoot, materialFade);
     fadeFab.setVisibility(entering ? View.VISIBLE : View.GONE);
     fadeButton.setText(
