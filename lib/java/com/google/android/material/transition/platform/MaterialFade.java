@@ -27,18 +27,11 @@ package com.google.android.material.transition.platform;
 @androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.LOLLIPOP)
 public final class MaterialFade extends MaterialVisibility<FadeProvider> {
 
-  private static final long DEFAULT_DURATION_ENTER = 150;
-  private static final long DEFAULT_DURATION_RETURN = 75;
   private static final float DEFAULT_START_SCALE = 0.8f;
   private static final float DEFAULT_FADE_END_THRESHOLD_ENTER = 0.3f;
 
   public MaterialFade() {
-    this(true);
-  }
-
-  public MaterialFade(boolean entering) {
     super(createPrimaryAnimatorProvider(), createSecondaryAnimatorProvider());
-    setDuration(entering ? DEFAULT_DURATION_ENTER : DEFAULT_DURATION_RETURN);
   }
 
   private static FadeProvider createPrimaryAnimatorProvider() {
