@@ -27,6 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Utility class for common operations on timezones, calendars, dateformats, and longs representing
@@ -35,6 +36,17 @@ import java.util.TimeZone;
 class UtcDates {
 
   static final String UTC = "UTC";
+
+  static AtomicReference<TimeSource> timeSourceRef = new AtomicReference<>();
+
+  static void setTimeSource(@Nullable TimeSource timeSource) {
+    timeSourceRef.set(timeSource);
+  }
+
+  static TimeSource getTimeSource() {
+    TimeSource timeSource = timeSourceRef.get();
+    return timeSource == null ? TimeSource.system() : timeSource;
+  }
 
   private UtcDates() {}
 
@@ -51,7 +63,7 @@ class UtcDates {
    * Returns a Calendar object in UTC time zone representing the first moment of current date.
    */
   static Calendar getTodayCalendar() {
-    Calendar today = Calendar.getInstance();
+    Calendar today = getTimeSource().now();
     today.set(Calendar.HOUR_OF_DAY, 0);
     today.set(Calendar.MINUTE, 0);
     today.set(Calendar.SECOND, 0);
