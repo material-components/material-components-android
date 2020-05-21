@@ -213,7 +213,6 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
 
           @Override
           void onInvalidDate() {
-            proposedTextStart = null;
             updateIfValidTextProposal(startTextInput, endTextInput, listener);
 
             selectedStartItem = null;
@@ -229,7 +228,6 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
           }
 
           void onInvalidDate() {
-            proposedTextEnd = null;
             updateIfValidTextProposal(startTextInput, endTextInput, listener);
 
             selectedEndItem = null;
