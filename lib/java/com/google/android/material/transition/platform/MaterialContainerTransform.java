@@ -268,6 +268,9 @@ public final class MaterialContainerTransform extends Transition {
    * <p>Manually setting the start View id will override any View explicitly set via {@link
    * #setStartView(View)} or any View picked up by the Transition system marked with a
    * transitionName.
+   *
+   * <p>If the start view cannot be found during the initialization of the {@code
+   * MaterialContainerTransform}, then an {@link IllegalArgumentException} will be thrown.
    */
   public void setStartViewId(@IdRes int startViewId) {
     this.startViewId = startViewId;
@@ -279,6 +282,9 @@ public final class MaterialContainerTransform extends Transition {
    * <p>Setting an end View id can be used to manually configure MaterialContainerTransform when
    * transitioning between two Views in a single layout when the Transition system will not
    * automatically capture shared element start or end Views for you.
+   *
+   * <p>If the end view cannot be found during the initialization of the {@code
+   * MaterialContainerTransform}, then an {@link IllegalArgumentException} will be thrown.
    */
   @IdRes
   public int getEndViewId() {
@@ -443,8 +449,16 @@ public final class MaterialContainerTransform extends Transition {
   /**
    * Set the id of the View whose overlay this transition will be added to.
    *
-   * <p>If {@param drawingViewId} is the same as the end View's id, MaterialContainerTransform will
-   * add the transition's drawable to the {@param drawingViewId}'s parent instead.
+   * <p>This can be used to limit the bounds of the animation (including the background scrim) to
+   * the bounds of the provided drawing view, and also have the animation drawn at the relative
+   * z-order of the drawing view.
+   *
+   * <p>By default, the {@code drawingViewId} will be {@code android.R.id.content}. Additionally, if
+   * {@code drawingViewId} is the same as the end View's id, {@code MaterialContainerTransform} will
+   * add the transition's drawable to the {@code drawingViewId}'s parent instead.
+   *
+   * <p>If the drawing view cannot be found during the initialization of the {@code
+   * MaterialContainerTransform}, then an {@link IllegalArgumentException} will be thrown.
    */
   public void setDrawingViewId(@IdRes int drawingViewId) {
     this.drawingViewId = drawingViewId;
@@ -649,6 +663,8 @@ public final class MaterialContainerTransform extends Transition {
    * Set the {@link ProgressThresholds} which define the sub-range (any range inside the full
    * progress range of 0.0 - 1.0) between which the fade animation, determined by {@link
    * #getFadeMode()} will complete.
+   *
+   * <p>See {@link ProgressThresholds} for an example of how the threshold ranges work.
    */
   public void setFadeProgressThresholds(@Nullable ProgressThresholds fadeProgressThresholds) {
     this.fadeProgressThresholds = fadeProgressThresholds;
@@ -668,6 +684,8 @@ public final class MaterialContainerTransform extends Transition {
    * Set the {@link ProgressThresholds} which define the sub-range (any range inside the full
    * progress range of 0.0 - 1.0) between which the outgoing and incoming content will scale to the
    * full dimensions of the end container.
+   *
+   * <p>See {@link ProgressThresholds} for an example of how the threshold ranges work.
    */
   public void setScaleProgressThresholds(@Nullable ProgressThresholds scaleProgressThresholds) {
     this.scaleProgressThresholds = scaleProgressThresholds;
@@ -687,6 +705,8 @@ public final class MaterialContainerTransform extends Transition {
    * Set the {@link ProgressThresholds} which define the sub-range (any range inside the full
    * progress range of 0.0 and 1.0) between which the container will morph between the start and end
    * View's dimensions.
+   *
+   * <p>See {@link ProgressThresholds} for an example of how the threshold ranges work.
    */
   public void setScaleMaskProgressThresholds(
       @Nullable ProgressThresholds scaleMaskProgressThresholds) {
@@ -707,6 +727,8 @@ public final class MaterialContainerTransform extends Transition {
    * Set the {@link ProgressThresholds} which define the sub-range (any range inside the full
    * progress range of 0.0 and 1.0) between which the container will morph between the starting
    * {@link ShapeAppearanceModel} and ending {@link ShapeAppearanceModel}.
+   *
+   * <p>See {@link ProgressThresholds} for an example of how the threshold ranges work.
    */
   public void setShapeMaskProgressThresholds(
       @Nullable ProgressThresholds shapeMaskProgressThresholds) {
@@ -1386,6 +1408,12 @@ public final class MaterialContainerTransform extends Transition {
    *
    * <p>This class is used to define the period, or sub-range, over which a child animation is run
    * inside a parent animation's overall 0.0 - 1.0 progress.
+   *
+   * <p>For example, setting the fade thresholds to a range of 0.3 - 0.6 would mean that for the
+   * first 30% of the animation, the start view would be fully opaque and the end view would be
+   * fully transparent. Then, the fade would begin at the 30% point of the animation and complete at
+   * the 60% point. For the remainder of the animation after the 60% point, the start view would be
+   * fully transparent and the end view would be fully opaque.
    */
   public static class ProgressThresholds {
     @FloatRange(from = 0.0, to = 1.0)
