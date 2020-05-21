@@ -207,31 +207,27 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
 
           @Override
           void onValidDate(@Nullable Long day) {
-            proposedTextStart = day;
+            selectedStartItem = day;
             updateIfValidTextProposal(startTextInput, endTextInput, listener);
           }
 
           @Override
           void onInvalidDate() {
-            updateIfValidTextProposal(startTextInput, endTextInput, listener);
-
             selectedStartItem = null;
-            listener.onSelectionChanged(getSelection());
+            updateIfValidTextProposal(startTextInput, endTextInput, listener);
           }
         });
 
     endEditText.addTextChangedListener(
         new DateFormatTextWatcher(formatHint, format, endTextInput, constraints) {
           void onValidDate(@Nullable Long day) {
-            proposedTextEnd = day;
+            selectedEndItem = day;
             updateIfValidTextProposal(startTextInput, endTextInput, listener);
           }
 
           void onInvalidDate() {
-            updateIfValidTextProposal(startTextInput, endTextInput, listener);
-
             selectedEndItem = null;
-            listener.onSelectionChanged(getSelection());
+            updateIfValidTextProposal(startTextInput, endTextInput, listener);
           }
         });
 
@@ -248,17 +244,13 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
       @NonNull TextInputLayout startTextInput,
       @NonNull TextInputLayout endTextInput,
       @NonNull OnSelectionChangedListener<Pair<Long, Long>> listener) {
-    if (proposedTextStart == null || proposedTextEnd == null) {
+    if (selectedStartItem == null || selectedEndItem == null) {
       clearInvalidRange(startTextInput, endTextInput);
-      return;
-    }
-    if (isValidRange(proposedTextStart, proposedTextEnd)) {
-      selectedStartItem = proposedTextStart;
-      selectedEndItem = proposedTextEnd;
-      listener.onSelectionChanged(getSelection());
-    } else {
+    } else if (!isValidRange(selectedStartItem, selectedEndItem)) {
       setInvalidRange(startTextInput, endTextInput);
     }
+
+    listener.onSelectionChanged(getSelection());
   }
 
   private void clearInvalidRange(@NonNull TextInputLayout start, @NonNull TextInputLayout end) {
