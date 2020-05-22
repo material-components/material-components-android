@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) 2020 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+  <!-- Style for dividers that adjust a view to become a standard divider
+     Use dividers to group and separate items. -->
+  <declare-styleable name="MaterialDivider">
+    <attr name="inset" format="dimension"/>
+  </declare-styleable>
+
+  <style name="Widget.MaterialComponents.Divider" parent="">
+
+    <item name="enforceMaterialTheme">true</item>
+
+    <item name="dividerAlpha">@dimen/mtrl_divider_transparency</item>
+    <item name="dividerColor">?attr/colorOnSurface</item>
+    <item name="dividerInset">@dimen/mtrl_divider_inset</item>
+    <item name="dividerSize">@dimen/material_divider_default</item>
+
+  </style>
+</resources>
