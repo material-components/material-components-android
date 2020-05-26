@@ -28,7 +28,14 @@ import androidx.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 
-/** A class that configures and is able to provide an {@link Animator} that scales a view. */
+/**
+ * A class that configures and is able to provide an {@link Animator} that scales a view.
+ *
+ * <p>{@code ScaleProvider}'s constructor optionally takes a {@code growing} parameter. By default,
+ * this is set to true and will increase the size of the target both when appearing and
+ * disappearing. This is useful when pairing two animating targets, one appearing and one
+ * disappearing, that should both be either growing or shrinking to create a visual relationship.
+ */
 @androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.LOLLIPOP)
 public final class ScaleProvider implements VisibilityAnimatorProvider {
 
@@ -37,61 +44,106 @@ public final class ScaleProvider implements VisibilityAnimatorProvider {
   private float incomingStartScale = 0.8f;
   private float incomingEndScale = 1f;
 
-  private boolean entering;
+  private boolean growing;
   private boolean scaleOnDisappear = true;
 
   public ScaleProvider() {
     this(true);
   }
 
-  public ScaleProvider(boolean entering) {
-    this.entering = entering;
+  public ScaleProvider(boolean growing) {
+    this.growing = growing;
   }
 
-  public boolean isEntering() {
-    return entering;
+  /** Whether or not this animation's target will grow or shrink in size. */
+  public boolean isGrowing() {
+    return growing;
   }
 
-  public void setEntering(boolean entering) {
-    this.entering = entering;
+  /** Set whether or not this animation's target will grow or shrink in size. */
+  public void setGrowing(boolean growing) {
+    this.growing = growing;
   }
 
+  /**
+   * Whether or not a scale animation will be run on this animation's target when disappearing.
+   *
+   * @see #setScaleOnDisappear(boolean)
+   */
   public boolean isScaleOnDisappear() {
     return scaleOnDisappear;
   }
 
+  /**
+   * Set whether or not a scale animation will be run on this animation's target when disappearing.
+   *
+   * <p>This is useful when using a single {@code ScaleProvider} that runs on multiple targets and
+   * only appearing targets should be animated.
+   */
   public void setScaleOnDisappear(boolean scaleOnDisappear) {
     this.scaleOnDisappear = scaleOnDisappear;
   }
 
+  /**
+   * The scale x and scale y value which an appearing and shrinking target will scale to and a
+   * disappearing and growing target will scale from.
+   */
   public float getOutgoingStartScale() {
     return outgoingStartScale;
   }
 
+  /**
+   * Set the scale x and scale y value which an appearing and shrinking target should scale to and a
+   * disappearing and growing target should scale from.
+   */
   public void setOutgoingStartScale(float outgoingStartScale) {
     this.outgoingStartScale = outgoingStartScale;
   }
 
+  /**
+   * The scale x and scale y value which an appearing and shrinking target will scale from and a
+   * disappearing and growing target will scale to.
+   */
   public float getOutgoingEndScale() {
     return outgoingEndScale;
   }
 
+  /**
+   * Set the scale x and scale y value which an appearing and shrinking target should scale from and
+   * a disappearing and growing target should scale to.
+   */
   public void setOutgoingEndScale(float outgoingEndScale) {
     this.outgoingEndScale = outgoingEndScale;
   }
 
+  /**
+   * The scale x and scale y value which an appearing and growing target will scale from and a
+   * disappearing and shrinking target will scale to.
+   */
   public float getIncomingStartScale() {
     return incomingStartScale;
   }
 
+  /**
+   * Set the scale x and scale y value which an appearing and growing target should scale from and a
+   * disappearing and shrinking target should scale to.
+   */
   public void setIncomingStartScale(float incomingStartScale) {
     this.incomingStartScale = incomingStartScale;
   }
 
+  /**
+   * The scale x and scale y value which an appearing and growing target will scale to and a
+   * disappearing and shrinking target will scale from.
+   */
   public float getIncomingEndScale() {
     return incomingEndScale;
   }
 
+  /**
+   * Set the scale x and scale y value which an appearing and growing target should scale to and a
+   * disappearing and shrinking target should scale from.
+   */
   public void setIncomingEndScale(float incomingEndScale) {
     this.incomingEndScale = incomingEndScale;
   }
@@ -99,7 +151,7 @@ public final class ScaleProvider implements VisibilityAnimatorProvider {
   @Nullable
   @Override
   public Animator createAppear(@NonNull ViewGroup sceneRoot, @NonNull View view) {
-    if (entering) {
+    if (growing) {
       return createScaleAnimator(view, incomingStartScale, incomingEndScale);
     } else {
       return createScaleAnimator(view, outgoingEndScale, outgoingStartScale);
@@ -113,7 +165,7 @@ public final class ScaleProvider implements VisibilityAnimatorProvider {
       return null;
     }
 
-    if (entering) {
+    if (growing) {
       return createScaleAnimator(view, outgoingStartScale, outgoingEndScale);
     } else {
       return createScaleAnimator(view, incomingEndScale, incomingStartScale);
