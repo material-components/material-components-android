@@ -159,7 +159,12 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
   @Override
   public void setShapeAppearanceModel(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
     this.shapeAppearanceModel = shapeAppearanceModel;
-    requestLayout();
+    updateShapeAppearanceModel();
+  }
+
+  private void updateShapeAppearanceModel(){
+    this.onSizeChanged(getWidth(), getHeight(), getWidth(), getHeight());
+    invalidate();
   }
 
   @NonNull
