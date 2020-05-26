@@ -143,6 +143,12 @@ public class DatePickerMainDemoFragment extends DemoFragment {
 
   private MaterialDatePicker.Builder<?> setupDateSelectorBuilder(
       int selectionModeChoice, int selectionChoice, int inputModeChoice) {
+
+    int inputMode =
+        inputModeChoice == R.id.cat_picker_input_mode_calendar
+            ? MaterialDatePicker.INPUT_MODE_CALENDAR
+            : MaterialDatePicker.INPUT_MODE_TEXT;
+
     if (selectionModeChoice == R.id.cat_picker_date_selector_single) {
       MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
       if (selectionChoice == R.id.cat_picker_selection_today) {
@@ -150,11 +156,7 @@ public class DatePickerMainDemoFragment extends DemoFragment {
       } else if (selectionChoice == R.id.cat_picker_selection_next_month) {
         builder.setSelection(nextMonth);
       }
-
-      builder.setInputMode(
-          inputModeChoice == R.id.cat_picker_input_mode_calendar
-              ? MaterialDatePicker.INPUT_MODE_CALENDAR
-              : MaterialDatePicker.INPUT_MODE_TEXT);
+      builder.setInputMode(inputMode);
       return builder;
     } else {
       MaterialDatePicker.Builder<Pair<Long, Long>> builder =
@@ -164,10 +166,7 @@ public class DatePickerMainDemoFragment extends DemoFragment {
       } else if (selectionChoice == R.id.cat_picker_selection_next_month) {
         builder.setSelection(nextMonthPair);
       }
-      builder.setInputMode(
-          inputModeChoice == R.id.cat_picker_input_mode_text
-              ? MaterialDatePicker.INPUT_MODE_CALENDAR
-              : MaterialDatePicker.INPUT_MODE_TEXT);
+      builder.setInputMode(inputMode);
       return builder;
     }
   }
