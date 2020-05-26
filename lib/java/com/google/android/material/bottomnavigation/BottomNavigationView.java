@@ -260,7 +260,14 @@ public class BottomNavigationView extends FrameLayout {
               View view,
               @NonNull androidx.core.view.WindowInsetsCompat insets,
               @NonNull RelativePadding initialPadding) {
+            // Window insets may add additional padding, e.g., to dodge the system navigation bar
             initialPadding.bottom += insets.getSystemWindowInsetBottom();
+
+            boolean isRtl = ViewCompat.getLayoutDirection(view) == ViewCompat.LAYOUT_DIRECTION_RTL;
+            int systemWindowInsetLeft = insets.getSystemWindowInsetLeft();
+            int systemWindowInsetRight = insets.getSystemWindowInsetRight();
+            initialPadding.start += isRtl ? systemWindowInsetRight : systemWindowInsetLeft;
+            initialPadding.end += isRtl ? systemWindowInsetLeft : systemWindowInsetRight;
             initialPadding.applyToView(view);
             return insets;
           }
