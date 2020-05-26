@@ -82,7 +82,7 @@ public final class MaterialSharedAxis extends MaterialVisibility<VisibilityAnima
   private final boolean forward;
 
   public MaterialSharedAxis(@Axis int axis, boolean forward) {
-    super(createPrimaryAnimatorProvider(axis, forward), createtSecondaryAnimatorProvider());
+    super(createPrimaryAnimatorProvider(axis, forward), createSecondaryAnimatorProvider());
     this.axis = axis;
     this.forward = forward;
   }
@@ -92,7 +92,7 @@ public final class MaterialSharedAxis extends MaterialVisibility<VisibilityAnima
     return axis;
   }
 
-  public boolean isEntering() {
+  public boolean isForward() {
     return forward;
   }
 
@@ -110,7 +110,7 @@ public final class MaterialSharedAxis extends MaterialVisibility<VisibilityAnima
     }
   }
 
-  private static VisibilityAnimatorProvider createtSecondaryAnimatorProvider() {
+  private static VisibilityAnimatorProvider createSecondaryAnimatorProvider() {
     return new FadeThroughProvider();
   }
 }
