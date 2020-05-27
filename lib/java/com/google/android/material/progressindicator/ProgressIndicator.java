@@ -392,7 +392,9 @@ public class ProgressIndicator extends ProgressBar {
   protected void onAttachedToWindow() {
     super.onAttachedToWindow();
     // Shows with animation.
-    show();
+    if (visibleToUser()) {
+      show();
+    }
   }
 
   @Override
