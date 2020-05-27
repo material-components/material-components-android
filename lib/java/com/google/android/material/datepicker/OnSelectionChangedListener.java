@@ -15,7 +15,9 @@
  */
 package com.google.android.material.datepicker;
 
-interface OnSelectionChangedListener<S> {
+abstract class OnSelectionChangedListener<S> {
 
-  void onSelectionChanged(S selection);
+  abstract void onSelectionChanged(S selection);
+
+  void onIncompleteSelectionChanged() {}
 }

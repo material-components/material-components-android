@@ -349,11 +349,12 @@ public final class MaterialDatePicker<S> extends DialogFragment {
           @Override
           public void onSelectionChanged(S selection) {
             updateHeader();
-            if (dateSelector.isSelectionComplete()) {
-              confirmButton.setEnabled(true);
-            } else {
-              confirmButton.setEnabled(false);
-            }
+            confirmButton.setEnabled(dateSelector.isSelectionComplete());
+          }
+
+          @Override
+          void onIncompleteSelectionChanged() {
+            confirmButton.setEnabled(false);
           }
         });
   }
@@ -371,6 +372,9 @@ public final class MaterialDatePicker<S> extends DialogFragment {
         new OnClickListener() {
           @Override
           public void onClick(View v) {
+            // Update confirm button in case in progress selection has been reset
+            confirmButton.setEnabled(dateSelector.isSelectionComplete());
+
             headerToggleButton.toggle();
             updateToggleContentDescription(headerToggleButton);
             startPickerFragment();
