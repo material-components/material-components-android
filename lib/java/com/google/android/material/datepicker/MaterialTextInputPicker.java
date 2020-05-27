@@ -82,6 +82,13 @@ public final class MaterialTextInputPicker<S> extends PickerFragment<S> {
               listener.onSelectionChanged(selection);
             }
           }
+
+          @Override
+          void onIncompleteSelectionChanged() {
+            for (OnSelectionChangedListener<S> listener : onSelectionChangedListeners) {
+              listener.onIncompleteSelectionChanged();
+            }
+          }
         });
   }
 

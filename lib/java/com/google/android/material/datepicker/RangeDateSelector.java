@@ -245,6 +245,7 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
       @NonNull OnSelectionChangedListener<Pair<Long, Long>> listener) {
     if (proposedTextStart == null || proposedTextEnd == null) {
       clearInvalidRange(startTextInput, endTextInput);
+      listener.onIncompleteSelectionChanged();
       return;
     }
     if (isValidRange(proposedTextStart, proposedTextEnd)) {
@@ -253,6 +254,7 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
       listener.onSelectionChanged(getSelection());
     } else {
       setInvalidRange(startTextInput, endTextInput);
+      listener.onIncompleteSelectionChanged();
     }
   }
 
