@@ -131,6 +131,23 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
   @Override
   protected void onSizeChanged(int width, int height, int oldWidth, int oldHeight) {
     super.onSizeChanged(width, height, oldWidth, oldHeight);
+    updateShapeMask(width, height);
+  }
+
+  @Override
+  public void setShapeAppearanceModel(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
+    this.shapeAppearanceModel = shapeAppearanceModel;
+    updateShapeMask(getWidth(), getHeight());
+    invalidate();
+  }
+
+  @NonNull
+  @Override
+  public ShapeAppearanceModel getShapeAppearanceModel() {
+    return shapeAppearanceModel;
+  }
+
+  private void updateShapeMask(int width, int height) {
     destination.set(
         getPaddingLeft(),
         getPaddingTop(),
@@ -158,18 +175,6 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
       borderPaint.setColor(colorForState);
       canvas.drawPath(path, borderPaint);
     }
-  }
-
-  @Override
-  public void setShapeAppearanceModel(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
-    this.shapeAppearanceModel = shapeAppearanceModel;
-    requestLayout();
-  }
-
-  @NonNull
-  @Override
-  public ShapeAppearanceModel getShapeAppearanceModel() {
-    return shapeAppearanceModel;
   }
 
   /**
