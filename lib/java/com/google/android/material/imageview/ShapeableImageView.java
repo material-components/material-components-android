@@ -39,9 +39,9 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DimenRes;
+import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.Px;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatImageView;
 import android.util.AttributeSet;
@@ -66,7 +66,7 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
 
   private ColorStateList strokeColor;
   private ShapeAppearanceModel shapeAppearanceModel;
-  @Px private int strokeWidth;
+  @Dimension private float strokeWidth;
   private Path maskPath;
 
   public ShapeableImageView(Context context) {
@@ -146,6 +146,10 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
   }
 
   private void drawStroke(Canvas canvas) {
+    if (strokeColor == null) {
+      return;
+    }
+
     borderPaint.setStrokeWidth(strokeWidth);
     int colorForState =
         strokeColor.getColorForState(getDrawableState(), strokeColor.getDefaultColor());
@@ -202,7 +206,7 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
    * @see #setStrokeWidthResource(int)
    * @see #getStrokeWidth()
    */
-  public void setStrokeWidth(@Px int strokeWidth) {
+  public void setStrokeWidth(@Dimension float strokeWidth) {
     if (this.strokeWidth != strokeWidth) {
       this.strokeWidth = strokeWidth;
       invalidate();
@@ -215,7 +219,7 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
    *
    * @param strokeWidthResourceId Stroke width dimension resource for this ImageView.
    * @attr ref com.google.android.material.R.styleable#ShapeableImageView_strokeWidth
-   * @see #setStrokeWidth(int)
+   * @see #setStrokeWidth(float)
    * @see #getStrokeWidth()
    */
   public void setStrokeWidthResource(@DimenRes int strokeWidthResourceId) {
@@ -227,11 +231,11 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
    *
    * @return Stroke width for this ImageView.
    * @attr ref com.google.android.material.R.styleable#ShapeableImageView_strokeWidth
-   * @see #setStrokeWidth(int)
+   * @see #setStrokeWidth(float)
    * @see #setStrokeWidthResource(int)
    */
-  @Px
-  public int getStrokeWidth() {
+  @Dimension
+  public float getStrokeWidth() {
     return strokeWidth;
   }
 
