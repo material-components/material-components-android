@@ -41,6 +41,9 @@
     <item name="android:contextPopupMenuStyle" tools:targetApi="n">
       @style/Widget.MaterialComponents.PopupMenu.ContextMenu
     </item>
+    <item name="buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>
+    <item name="android:buttonBarButtonStyle">?attr/buttonBarButtonStyle</item>
+
     <item name="borderlessButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>
     <item name="checkboxStyle">@style/Widget.MaterialComponents.CompoundButton.CheckBox</item>
     <item name="listPopupWindowStyle">@style/Widget.MaterialComponents.PopupMenu.ListPopupWindow</item>
@@ -87,6 +90,9 @@
     <item name="android:contextPopupMenuStyle" tools:targetApi="n">
       @style/Widget.MaterialComponents.PopupMenu.ContextMenu
     </item>
+    <item name="buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>
+    <item name="android:buttonBarButtonStyle">?attr/buttonBarButtonStyle</item>
+
     <item name="borderlessButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>
     <item name="checkboxStyle">@style/Widget.MaterialComponents.CompoundButton.CheckBox</item>
     <item name="listPopupWindowStyle">@style/Widget.MaterialComponents.PopupMenu.ListPopupWindow</item>
