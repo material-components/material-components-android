@@ -1085,6 +1085,9 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
     public SavedState(@NonNull Parcel source, ClassLoader loader) {
       super(source, loader);
+      if (loader == null) {
+        loader = getClass().getClassLoader();
+      }
       readFromParcel(source);
     }
 
