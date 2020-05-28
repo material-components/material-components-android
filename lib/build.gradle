@@ -1,5 +1,3 @@
-import org.gradle.internal.os.OperatingSystem
-
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 
@@ -170,11 +168,7 @@ task generateApiXml(type: Javadoc) {
 
   doLast {
     // Escape incorrect ampersands in API XML file
-    if (OperatingSystem.current().isLinux()) {
-      ["sed", "-i", "s/ & / \\&amp; /g", "lib/${apiName}.xml"].execute()
-    } else {
-      ["sed", "-i", "''", "s/ & / \\&amp; /g", "lib/${apiName}.xml"].execute()
-    }
+    ["sed", "-i", "''", "s/ & / \\&amp; /g", "lib/${apiName}.xml"].execute()
   }
 }
 
