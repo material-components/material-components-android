@@ -143,6 +143,8 @@ public class ProgressIndicator extends ProgressBar {
    * indeterminate to determinate mode.
    */
   private boolean storedProgressAnimated;
+  // Don't make final even though it's assigned in the constructor so the compiler doesn't inline it
+  private boolean isParentDoneInitializing;
 
   // ******************** Interfaces **********************
 
@@ -174,6 +176,7 @@ public class ProgressIndicator extends ProgressBar {
   public ProgressIndicator(
       @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
     super(wrap(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
+    isParentDoneInitializing = true;
     // Ensure we are using the correctly themed context rather than the context was passed in.
     context = getContext();
 
@@ -181,6 +184,7 @@ public class ProgressIndicator extends ProgressBar {
     loadAttributes(context, attrs, defStyleAttr, defStyleRes);
 
     initializeDrawables();
+    applyNewVisibility();
   }
 
   // ******************** Initialization **********************
@@ -378,8 +382,11 @@ public class ProgressIndicator extends ProgressBar {
    * any. If it changes to invisible, hides the drawable immediately.
    */
   private void applyNewVisibility() {
-    Drawable currentDrawable = getCurrentDrawable();
+    if (!isParentDoneInitializing) {
+      return;
+    }
 
+    Drawable currentDrawable = getCurrentDrawable();
     boolean visibleToUser = visibleToUser();
 
     // Sets the drawable to visible/invisible if the component is currently visible/invisible. Only
