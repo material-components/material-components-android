@@ -54,6 +54,7 @@ def srcDirs = [
   'com/google/android/material/floatingactionbutton',
   'com/google/android/material/imageview',
   'com/google/android/material/internal',
+  'com/google/android/material/lists',
   'com/google/android/material/math',
   'com/google/android/material/menu',
   'com/google/android/material/navigation',
