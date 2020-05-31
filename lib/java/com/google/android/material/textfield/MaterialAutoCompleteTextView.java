@@ -40,6 +40,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Filterable;
 import android.widget.ListAdapter;
+
+import com.google.android.material.internal.ManufacturerUtils;
 import com.google.android.material.internal.ThemeEnforcement;
 
 /**
@@ -145,6 +147,22 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
   public <T extends ListAdapter & Filterable> void setAdapter(@Nullable T adapter) {
     super.setAdapter(adapter);
     modalListPopup.setAdapter(getAdapter());
+  }
+
+  @Override
+  protected void onAttachedToWindow() {
+    super.onAttachedToWindow();
+
+    // Meizu devices expect TextView#mHintLayout to be non-null if TextView#getHint() is non-null.
+    // In order to avoid crashing, we force the creation of the layout by setting an empty non-null
+    // hint.
+    TextInputLayout layout = findTextInputLayoutAncestor();
+    if (layout != null
+        && layout.isProvidingHint()
+        && super.getHint() == null
+        && ManufacturerUtils.isMeizuDevice()) {
+      setHint("");
+    }
   }
 
   @Nullable
