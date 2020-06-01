@@ -626,7 +626,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     savedState.contentDescriptionNumberless = charSequence;
   }
 
-  public void setContentDescriptionQuantityStringsResource(@StringRes int stringsResource) {
+  public void setContentDescriptionQuantityStringsResource(@PluralsRes int stringsResource) {
     savedState.contentDescriptionQuantityStrings = stringsResource;
   }
 
