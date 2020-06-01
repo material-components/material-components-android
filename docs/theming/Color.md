@@ -89,6 +89,27 @@ style and set the mapping yourself:
 You would then apply the `Widget.MyApp.MyButton` style to any buttons you want
 to have this alternate style.
 
+## Defining your app colors
+
+When creating your app colors, that will be used in the theme, do not use the
+same name as the color slot:
+
+```xml
+<resources>
+  <color name="color_primary">...</color>
+  <color name="color_surface">...</color>
+</resources>
+```
+
+Instead use literal names relevant to the RGB value. Eg:
+
+```xml
+<resources>
+  <color name="brand_blue">...</color>
+  <color name="brand_gray">...</color>
+</resources>
+```
+
 ## Theming All Instances of One Component
 
 If, however, you want to change the default styles for **all** instances of a
