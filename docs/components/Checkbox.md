@@ -131,8 +131,8 @@ tinted, set `app:useMaterialThemeColors` to `false`:
 &nbsp;         | Attribute                | Related method(s)                  | Default value
 -------------- | ------------------------ | ---------------------------------- | -------------
 **Text label** | `android:text`           | `setText`<br/>`getText`            | `null`
-**Color**      | `android:textColor`      | `setTextColor`<br/>`getTextColors` | inherits from `AppCompatRadioButton`
-**Typography** | `android:textAppearance` | `setTextAppearance`                | inherits from `AppCompatRadioButton`
+**Color**      | `android:textColor`      | `setTextColor`<br/>`getTextColors` | inherits from `AppCompatCheckBox`
+**Typography** | `android:textAppearance` | `setTextAppearance`                | inherits from `AppCompatCheckBox`
 
 ### Checkbox states
 
