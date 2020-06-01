@@ -260,17 +260,11 @@ for more attributes.
 
 ### Styles
 
-| &nbsp;            | Style                                                   |
-| ----------------- | ------------------------------------------------------- |
-| **Default style** | `Widget.MaterialComponents.BottomAppBar`                |
-| **Primary         | `Widget.MaterialComponents.BottomAppBar.Colored`        |
-: background color  :                                                         :
-: style**           :                                                         :
-| **Primary (light  | `Widget.MaterialComponents.BottomAppBar.PrimarySurface` |
-: theme) or surface :                                                         :
-: (dark theme)      :                                                         :
-: background color  :                                                         :
-: style**           :                                                         :
+&nbsp;                                                                    | Style
+------------------------------------------------------------------------- | -----
+**Default style**                                                         | `Widget.MaterialComponents.BottomAppBar`
+**Primary background color style**                                        | `Widget.MaterialComponents.BottomAppBar.Colored`
+**Primary (light theme) or surface (dark theme) background color style**  | `Widget.MaterialComponents.BottomAppBar.PrimarySurface`
 
 Default style theme attribute: `bottomAppBarStyle`
 
@@ -282,7 +276,7 @@ and
 ## Theming bottom app bars
 
 Bottom app bars support
-[Material Theming](https://material.io/components/app-bars-bottom/#theming) and
+[Material Theming](https://material.io/components/app-bars-bottom#theming) and
 can be customized in terms of color, typography and shape.
 
 ### Bottom app bar theming example
