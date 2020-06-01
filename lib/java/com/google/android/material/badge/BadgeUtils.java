@@ -72,9 +72,12 @@ public class BadgeUtils {
   public static void attachBadgeDrawable(
       @NonNull BadgeDrawable badgeDrawable,
       @NonNull View anchor,
-      @NonNull FrameLayout compatBadgeParent) {
+      @Nullable FrameLayout compatBadgeParent) {
     setBadgeDrawableBounds(badgeDrawable, anchor, compatBadgeParent);
     if (USE_COMPAT_PARENT) {
+      if (compatBadgeParent == null) {
+        throw new IllegalArgumentException("Trying to reference null compatBadgeParent");
+      }
       compatBadgeParent.setForeground(badgeDrawable);
     } else {
       anchor.getOverlay().add(badgeDrawable);
@@ -108,9 +111,12 @@ public class BadgeUtils {
   public static void setBadgeDrawableBounds(
       @NonNull BadgeDrawable badgeDrawable,
       @NonNull View anchor,
-      @NonNull FrameLayout compatBadgeParent) {
+      @Nullable FrameLayout compatBadgeParent) {
     Rect badgeBounds = new Rect();
     View badgeParent = USE_COMPAT_PARENT ? compatBadgeParent : anchor;
+    if (badgeParent == null) {
+      throw new IllegalArgumentException("Trying to reference null badgeParent");
+    }
     badgeParent.getDrawingRect(badgeBounds);
     badgeDrawable.setBounds(badgeBounds);
     badgeDrawable.updateBadgeCoordinates(anchor, compatBadgeParent);
