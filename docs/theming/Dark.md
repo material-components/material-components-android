@@ -34,9 +34,10 @@ Android system UI and apps running on the device.
 ### Setup
 
 In order to support the dark theme functionality in Android Q, make sure you are
-depending on the [latest][maven-repo-mdc] `1.1.0` alpha version of the Material
-Android library, and update your app theme to inherit from
-`Theme.MaterialComponents.DayNight` (or one of its descendants). E.g.:
+depending on the `1.1.0` stable version of the
+[Material Android library][maven-repo-mdc] or later, and update your app theme
+to inherit from `Theme.MaterialComponents.DayNight` (or one of its descendants).
+E.g.:
 
 ##### res/values/themes.xml
 
