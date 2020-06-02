@@ -32,11 +32,18 @@ public class MaterialDatePickerTest {
 
   private static final long ONE_DAY_MILLIS = Duration.ofDays(1).toMillis();
 
+  // Tuesday, December 31, 2019 11:59:00 PM GMT-05:00
+  private static final long CURRENT_MOMENT_OF_TODAY_EPOCH_MS = 1577854740000L;
   private Calendar firstMomentOfTodayInUtc;
+  private TimeZone utcTimeZone;
 
   @Before
-  public void getFirstMomentOfTodayFromCalendar() {
-    firstMomentOfTodayInUtc = Calendar.getInstance();
+  public void setup() {
+    utcTimeZone = TimeZone.getTimeZone("UTC");
+    TimeSource fixedTimeSource = TimeSource.fixed(
+            CURRENT_MOMENT_OF_TODAY_EPOCH_MS, TimeZone.getTimeZone("America/New_York"));
+    UtcDates.setTimeSource(fixedTimeSource);
+    firstMomentOfTodayInUtc = fixedTimeSource.now();
     firstMomentOfTodayInUtc.set(Calendar.HOUR_OF_DAY, 0);
     firstMomentOfTodayInUtc.set(Calendar.MINUTE, 0);
     firstMomentOfTodayInUtc.set(Calendar.SECOND, 0);
@@ -47,7 +54,7 @@ public class MaterialDatePickerTest {
   @Test
   public void testTodayInUtcMilliseconds() {
     long todayUtcMS = MaterialDatePicker.todayInUtcMilliseconds();
-    Calendar outputUtcTodayInCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+    Calendar outputUtcTodayInCalendar = Calendar.getInstance(utcTimeZone);
     outputUtcTodayInCalendar.setTimeInMillis(todayUtcMS);
 
     // Assert fields finer than a day are stripped.
@@ -59,7 +66,7 @@ public class MaterialDatePickerTest {
   @Test
   public void testThisMonthInUtcMilliseconds() {
     long thisMonthUtcMS = MaterialDatePicker.thisMonthInUtcMilliseconds();
-    Calendar outputUtcThisMonthInCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+    Calendar outputUtcThisMonthInCalendar = Calendar.getInstance(utcTimeZone);
     outputUtcThisMonthInCalendar.setTimeInMillis(thisMonthUtcMS);
 
     // Assert fields finer than a day are stripped.
