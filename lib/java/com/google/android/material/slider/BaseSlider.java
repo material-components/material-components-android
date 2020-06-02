@@ -1362,7 +1362,7 @@ abstract class BaseSlider<
     float right = normalizeValue(max);
 
     // In RTL we draw things in reverse, so swap the left and right range values
-    if (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL) {
+    if (isRtl()) {
       return new float[] {right, left};
     } else {
       return new float[] {left, right};
@@ -1389,7 +1389,7 @@ abstract class BaseSlider<
    */
   private float normalizeValue(float value) {
     float normalized = (value - valueFrom) / (valueTo - valueFrom);
-    if (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL) {
+    if (isRtl()) {
       return 1 - normalized;
     }
     return normalized;
@@ -1660,7 +1660,7 @@ abstract class BaseSlider<
     double position = snapPosition(touchPosition);
 
     // We might need to invert the touch position to get the correct value.
-    if (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL) {
+    if (isRtl()) {
       position = 1 - position;
     }
     return (float) (position * (valueTo - valueFrom) + valueFrom);
@@ -1829,12 +1829,18 @@ abstract class BaseSlider<
             } else if (event.isShiftPressed()) {
               return moveFocus(-1);
             }
-            // fall through
+            return false;
           case KeyEvent.KEYCODE_DPAD_LEFT:
+            moveFocusInAbsoluteDirection(-1);
+            return true;
           case KeyEvent.KEYCODE_MINUS:
             moveFocus(-1);
             return true;
           case KeyEvent.KEYCODE_DPAD_RIGHT:
+            moveFocusInAbsoluteDirection(1);
+            return true;
+          case KeyEvent.KEYCODE_EQUALS:
+            // Numpad Plus == Shift + Equals, at least in AVD, so fall through.
           case KeyEvent.KEYCODE_PLUS:
             moveFocus(1);
             return true;
@@ -1850,9 +1856,6 @@ abstract class BaseSlider<
         isLongPress |= event.isLongPress();
         Float increment = calculateIncrementForKey(keyCode);
         if (increment != null) {
-          if (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL) {
-            increment = -increment;
-          }
           float clamped =
               MathUtils.clamp(values.get(activeThumbIdx) + increment, valueFrom, valueTo);
           if (snapActiveThumbToValue(clamped)) {
@@ -1868,7 +1871,7 @@ abstract class BaseSlider<
             } else if (event.isShiftPressed()) {
               return moveFocus(-1);
             }
-            // fall through
+            return false;
           case KeyEvent.KEYCODE_DPAD_CENTER:
           case KeyEvent.KEYCODE_ENTER:
             activeThumbIdx = -1;
@@ -1892,15 +1895,22 @@ abstract class BaseSlider<
     return super.onKeyUp(keyCode, event);
   }
 
+  final boolean isRtl() {
+    return ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL;
+  }
+
   /**
-   * Attempts to move focus to next or previous thumb and returns whether the focused thumb changed.
-   * If focused thumb didn't change, we're at the view boundary for specified {@code direction} and
-   * focus should be moved to next or previous view instead.
+   * Attempts to move focus to next or previous thumb <i>independent of layout direction</i>
+   * and returns whether the focused thumb changed.
+   * If focused thumb didn't change, we're at the view boundary for specified {@code direction}
+   * and focus may be moved to next or previous view instead.
+   * @see #moveFocusInAbsoluteDirection(int)
    */
   private boolean moveFocus(int direction) {
-    int oldFocusedThumbIdx = focusedThumbIdx;
-    focusedThumbIdx += direction;
-    focusedThumbIdx = MathUtils.clamp(focusedThumbIdx, 0, values.size() - 1);
+    final int oldFocusedThumbIdx = focusedThumbIdx;
+    // Prevent integer overflow.
+    final long newFocusedThumbIdx = oldFocusedThumbIdx + direction;
+    focusedThumbIdx = (int) MathUtils.clamp(newFocusedThumbIdx, 0, values.size() - 1);
     if (focusedThumbIdx == oldFocusedThumbIdx) {
       // Move focus to next or previous view.
       return false;
@@ -1914,17 +1924,47 @@ abstract class BaseSlider<
     }
   }
 
+  /**
+   * Attempts to move focus to the <i>left or right</i> of currently focused thumb
+   * and returns whether the focused thumb changed.
+   * If focused thumb didn't change, we're at the view boundary for specified {@code direction}
+   * and focus may be moved to next or previous view instead.
+   * @see #moveFocus(int)
+   */
+  private boolean moveFocusInAbsoluteDirection(int direction) {
+    if (isRtl()) {
+      if (direction == Integer.MIN_VALUE) {
+        // Prevent integer overflow.
+        direction = Integer.MAX_VALUE;
+      } else {
+        direction = -direction;
+      }
+    }
+    return moveFocus(direction);
+  }
+
   private Float calculateIncrementForKey(int keyCode) {
     // If this is a long press, increase the increment so it will only take around 20 steps.
     // Otherwise choose the smallest valid increment.
     float increment = isLongPress ? calculateStepIncrement(20) : calculateStepIncrement();
     switch (keyCode) {
       case KeyEvent.KEYCODE_DPAD_LEFT:
+        if (isRtl()) {
+          return increment;
+        } else {
+          return -increment;
+        }
+      case KeyEvent.KEYCODE_DPAD_RIGHT:
+        if (isRtl()) {
+          return -increment;
+        } else {
+          return increment;
+        }
       case KeyEvent.KEYCODE_MINUS:
         return -increment;
-      case KeyEvent.KEYCODE_DPAD_RIGHT:
-      case KeyEvent.KEYCODE_PLUS:
       case KeyEvent.KEYCODE_EQUALS:
+        // Numpad Plus == Shift + Equals, at least in AVD, so fall through.
+      case KeyEvent.KEYCODE_PLUS:
         return increment;
       default:
         return null;
@@ -1969,12 +2009,16 @@ abstract class BaseSlider<
   private void focusThumbOnFocusGained(int direction) {
     switch (direction) {
       case FOCUS_BACKWARD:
-      case FOCUS_LEFT:
         moveFocus(Integer.MAX_VALUE);
         break;
+      case FOCUS_LEFT:
+        moveFocusInAbsoluteDirection(Integer.MAX_VALUE);
+        break;
       case FOCUS_FORWARD:
-      case FOCUS_RIGHT:
         moveFocus(Integer.MIN_VALUE);
+        break;
+      case FOCUS_RIGHT:
+        moveFocusInAbsoluteDirection(Integer.MIN_VALUE);
         break;
       case FOCUS_UP:
       case FOCUS_DOWN:
@@ -2229,7 +2273,7 @@ abstract class BaseSlider<
             }
 
             // Swap the increment if we're in RTL.
-            if (ViewCompat.getLayoutDirection(slider) == ViewCompat.LAYOUT_DIRECTION_RTL) {
+            if (slider.isRtl()) {
               increment = -increment;
             }
 
