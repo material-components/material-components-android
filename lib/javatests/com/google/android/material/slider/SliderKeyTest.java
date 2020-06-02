@@ -16,15 +16,16 @@
 
 package com.google.android.material.slider;
 
-import com.google.android.material.R;
-
-import static com.google.android.material.slider.SliderHelper.activateFocusedThumb;
+import static com.google.android.material.slider.SliderHelper.clickDpadCenter;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.KeyEvent;
+import android.view.View;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.customview.widget.ExploreByTouchHelper;
 import androidx.test.core.app.ApplicationProvider;
+import com.google.android.material.R;
 import com.google.android.material.slider.KeyUtils.KeyEventBuilder;
 import org.junit.Before;
 import org.junit.Test;
@@ -55,16 +56,79 @@ public class SliderKeyTest {
     slider.setValueFrom(SLIDER_VALUE_FROM);
     slider.setValueTo(SLIDER_VALUE_TO);
     slider.setValues(values);
-    slider.requestFocus();
   }
 
   @Test
   public void testThumbFocus_initialFocus_isFirstThumb() {
+    slider.requestFocus();
+
     assertThat(slider.getFocusedThumbIndex()).isEqualTo(0);
   }
 
   @Test
+  public void testThumbFocus_focusForward_focusesFirstThumb() {
+    slider.requestFocus(View.FOCUS_FORWARD);
+
+    assertThat(slider.getFocusedThumbIndex()).isEqualTo(0);
+  }
+
+  @Test
+  public void testThumbFocus_focusBackward_focusesLastThumb() {
+    slider.requestFocus(View.FOCUS_BACKWARD);
+
+    assertThat(slider.getFocusedThumbIndex()).isEqualTo(values.length - 1);
+  }
+
+  @Test
+  public void testThumbFocus_focusLeft_focusesLastThumb() {
+    slider.requestFocus(View.FOCUS_LEFT);
+
+    assertThat(slider.getFocusedThumbIndex()).isEqualTo(values.length - 1);
+  }
+
+  @Test
+  public void testThumbFocus_focusRight_focusesFirstThumb() {
+    slider.requestFocus(View.FOCUS_RIGHT);
+
+    assertThat(slider.getFocusedThumbIndex()).isEqualTo(0);
+  }
+
+  @Test
+  public void testThumbFocus_reacquiredFocusDown_focusesPreviouslyFocusedThumb() {
+    slider.requestFocus();
+    slider.setFocusedThumbIndex(2);
+    slider.clearFocus();
+
+    slider.requestFocus(View.FOCUS_DOWN);
+
+    assertThat(slider.getFocusedThumbIndex()).isEqualTo(2);
+  }
+
+  @Test
+  public void testThumbFocus_reacquiredFocusUp_focusesPreviouslyFocusedThumb() {
+    slider.requestFocus();
+    slider.setFocusedThumbIndex(2);
+    slider.clearFocus();
+
+    slider.requestFocus(View.FOCUS_UP);
+
+    assertThat(slider.getFocusedThumbIndex()).isEqualTo(2);
+  }
+
+  @Test
+  public void testThumbFocus_clearFocus_clearsVirtualViewFocus() {
+    slider.requestFocus();
+
+    slider.clearFocus();
+
+    assertThat(slider.getAccessibilityFocusedVirtualViewId())
+        .isEqualTo(ExploreByTouchHelper.INVALID_ID);
+  }
+
+  @Test
   public void testMoveThumbFocus_tab_correctThumbHasFocus() {
+    slider.requestFocus();
+
     KeyEventBuilder tab = new KeyEventBuilder(KeyEvent.KEYCODE_TAB);
     KeyEventBuilder shiftTab = new KeyEventBuilder(KeyEvent.KEYCODE_TAB, KeyEvent.META_SHIFT_ON);
 
@@ -73,6 +137,8 @@ public class SliderKeyTest {
 
   @Test
   public void testMoveThumbFocus_dPad_correctThumbHasFocus() {
+    slider.requestFocus();
+
     KeyEventBuilder right = new KeyEventBuilder(KeyEvent.KEYCODE_DPAD_RIGHT);
     KeyEventBuilder left = new KeyEventBuilder(KeyEvent.KEYCODE_DPAD_LEFT);
 
@@ -81,6 +147,8 @@ public class SliderKeyTest {
 
   @Test
   public void testMoveThumbFocus_plusMinus_correctThumbHasFocus() {
+    slider.requestFocus();
+
     KeyEventBuilder plus = new KeyEventBuilder(KeyEvent.KEYCODE_PLUS);
     KeyEventBuilder minus = new KeyEventBuilder(KeyEvent.KEYCODE_MINUS);
 
@@ -88,16 +156,43 @@ public class SliderKeyTest {
   }
 
   @Test
-  public void testSelectThirdThumb_clickCenterDPad_activatesThirdThumb() {
+  public void testFocusThirdThumb_clickCenterDPad_activatesThirdThumb() {
+    slider.requestFocus();
+
     slider.setFocusedThumbIndex(2);
 
-    activateFocusedThumb(slider);
+    clickDpadCenter(slider);
 
     assertThat(slider.getActiveThumbIndex()).isEqualTo(2);
   }
 
+  private void activateFocusedThumb(Slider s) {
+    int focusedThumbIndex = s.getFocusedThumbIndex();
+    if (focusedThumbIndex != -1) {
+      // Clicking D-Pad in Slider isn't idempotent. Only do it here if we're changing focused thumb.
+      if (focusedThumbIndex != s.getActiveThumbIndex()) {
+        clickDpadCenter(s);
+      }
+    }
+  }
+
   @Test
-  public void testSelectThirdThumb_moveRight_movesThirdThumbRight() {
+  public void testActivateThirdThumb_clickCenterDPad_deactivatesThirdThumb() {
+    slider.requestFocus();
+
+    slider.setFocusedThumbIndex(2);
+
+    activateFocusedThumb(slider);
+
+    clickDpadCenter(slider);
+
+    assertThat(slider.getActiveThumbIndex()).isEqualTo(-1);
+  }
+
+  @Test
+  public void testActivateThirdThumb_moveRight_movesThirdThumbRight() {
+    slider.requestFocus();
+
     slider.setFocusedThumbIndex(2);
 
     activateFocusedThumb(slider);
@@ -112,7 +207,9 @@ public class SliderKeyTest {
   }
 
   @Test
-  public void testSelectThirdThumb_moveLeft_movesThirdThumbLeft() {
+  public void testActivateThirdThumb_moveLeft_movesThirdThumbLeft() {
+    slider.requestFocus();
+
     slider.setFocusedThumbIndex(2);
 
     activateFocusedThumb(slider);
@@ -124,6 +221,120 @@ public class SliderKeyTest {
 
     assertThat(slider.getValues()).contains(0.0f);
     assertThat(slider.getValues()).doesNotContain(3.0f);
+  }
+
+  @Test
+  public void testFocusDefaultThumb_clickUpDPad_unhandled() {
+    slider.requestFocus();
+
+    KeyEventBuilder tab = new KeyEventBuilder(KeyEvent.KEYCODE_DPAD_UP);
+    boolean handledDown = slider.dispatchKeyEvent(tab.buildDown());
+    boolean handledUp = slider.dispatchKeyEvent(tab.buildUp());
+
+    assertThat(handledDown).isFalse();
+    assertThat(handledUp).isFalse();
+  }
+
+  @Test
+  public void testActivateDefaultThumb_clickUpDPad_unhandled() {
+    slider.requestFocus();
+
+    activateFocusedThumb(slider);
+
+    KeyEventBuilder tab = new KeyEventBuilder(KeyEvent.KEYCODE_DPAD_UP);
+    boolean handledDown = slider.dispatchKeyEvent(tab.buildDown());
+    boolean handledUp = slider.dispatchKeyEvent(tab.buildUp());
+
+    assertThat(handledDown).isFalse();
+    assertThat(handledUp).isFalse();
+  }
+
+  @Test
+  public void testFocusDefaultThumb_clickDownDPad_unhandled() {
+    slider.requestFocus();
+
+    KeyEventBuilder tab = new KeyEventBuilder(KeyEvent.KEYCODE_DPAD_DOWN);
+    boolean handledDown = slider.dispatchKeyEvent(tab.buildDown());
+    boolean handledUp = slider.dispatchKeyEvent(tab.buildUp());
+
+    assertThat(handledDown).isFalse();
+    assertThat(handledUp).isFalse();
+  }
+
+  @Test
+  public void testActivateDefaultThumb_clickDownDPad_unhandled() {
+    slider.requestFocus();
+
+    activateFocusedThumb(slider);
+
+    KeyEventBuilder tab = new KeyEventBuilder(KeyEvent.KEYCODE_DPAD_DOWN);
+    boolean handledDown = slider.dispatchKeyEvent(tab.buildDown());
+    boolean handledUp = slider.dispatchKeyEvent(tab.buildUp());
+
+    assertThat(handledDown).isFalse();
+    assertThat(handledUp).isFalse();
+  }
+
+  @Test
+  public void testFocusFirstThumb_shiftTab_unhandled() {
+    slider.requestFocus();
+
+    slider.setFocusedThumbIndex(0);
+
+    KeyEventBuilder tab = new KeyEventBuilder(KeyEvent.KEYCODE_TAB);
+    tab.meta = KeyEvent.META_SHIFT_ON;
+    boolean handledDown = slider.dispatchKeyEvent(tab.buildDown());
+    boolean handledUp = slider.dispatchKeyEvent(tab.buildUp());
+
+    assertThat(handledDown).isFalse();
+    assertThat(handledUp).isFalse();
+  }
+
+  @Test
+  public void testActivateFirstThumb_shiftTab_unhandled() {
+    slider.requestFocus();
+
+    slider.setFocusedThumbIndex(0);
+
+    activateFocusedThumb(slider);
+
+    KeyEventBuilder tab = new KeyEventBuilder(KeyEvent.KEYCODE_TAB);
+    tab.meta = KeyEvent.META_SHIFT_ON;
+    boolean handledDown = slider.dispatchKeyEvent(tab.buildDown());
+    boolean handledUp = slider.dispatchKeyEvent(tab.buildUp());
+
+    assertThat(handledDown).isFalse();
+    assertThat(handledUp).isFalse();
+  }
+
+  @Test
+  public void testFocusLastThumb_tab_unhandled() {
+    slider.requestFocus();
+
+    slider.setFocusedThumbIndex(values.length - 1);
+
+    KeyEventBuilder tab = new KeyEventBuilder(KeyEvent.KEYCODE_TAB);
+    boolean handledDown = slider.dispatchKeyEvent(tab.buildDown());
+    boolean handledUp = slider.dispatchKeyEvent(tab.buildUp());
+
+    assertThat(handledDown).isFalse();
+    assertThat(handledUp).isFalse();
+  }
+
+  @Test
+  public void testActivateLastThumb_tab_unhandled() {
+    slider.requestFocus();
+
+    slider.setFocusedThumbIndex(values.length - 1);
+
+    activateFocusedThumb(slider);
+
+    KeyEventBuilder tab = new KeyEventBuilder(KeyEvent.KEYCODE_TAB);
+    boolean handledDown = slider.dispatchKeyEvent(tab.buildDown());
+    boolean handledUp = slider.dispatchKeyEvent(tab.buildUp());
+
+    assertThat(handledDown).isFalse();
+    assertThat(handledUp).isFalse();
   }
 
   private void sendKeyEventLeftAndRight(KeyEventBuilder right, KeyEventBuilder left) {
