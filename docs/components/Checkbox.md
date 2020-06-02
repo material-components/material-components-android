@@ -47,10 +47,13 @@ unnecessary.
 
 ## Checkbox
 
-A checkbox is a rounded square button with a check to denote its current state.
+A checkbox is a square button with a check to denote its current state.
 Checkboxes allow the user to select one or more items from a set. Checkboxes can
 be used to turn an option on or off. Unlike radio buttons, changes in the states
 of one checkbox do not usually affect other checkboxes.
+
+_**Note:** Checkboxes do not support shape theming and are only rounded square
+checkboxes._
 
 ### Checkboxes example
 
