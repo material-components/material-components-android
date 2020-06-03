@@ -64,7 +64,7 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
   private final Paint clearPaint;
   private final Path path = new Path();
 
-  private ColorStateList strokeColor;
+  @Nullable private ColorStateList strokeColor;
   private ShapeAppearanceModel shapeAppearanceModel;
   @Dimension private float strokeWidth;
   private Path maskPath;
