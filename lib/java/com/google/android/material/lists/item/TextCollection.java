@@ -31,12 +31,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.material.R;
+import com.google.android.material.lists.item.adaptive.AdaptableLinearLayout;
+import com.google.android.material.lists.item.adaptive.AdaptableTextView;
 
-class TextCollection extends LinearLayout implements TotalLinesListener {
+class TextCollection extends AdaptableLinearLayout implements TotalLinesListener {
 
-  private TextView overlineText;
-  private TextView primaryText;
-  private TextView secondaryText;
+  private AdaptableTextView overlineText;
+  private AdaptableTextView primaryText;
+  private AdaptableTextView secondaryText;
 
   @NonNull
   public TextView getOverlineText() {
@@ -68,9 +70,9 @@ class TextCollection extends LinearLayout implements TotalLinesListener {
 
     LayoutInflater layoutInflater = LayoutInflater.from(getContext());
 
-    overlineText = (TextView) layoutInflater.inflate(R.layout.material_list_item_overline_text, this, false);
-    primaryText = (TextView) layoutInflater.inflate(R.layout.material_list_item_primary_text, this, false);
-    secondaryText = (TextView) layoutInflater.inflate(R.layout.material_list_item_secondary_text, this, false);
+    overlineText = (AdaptableTextView) layoutInflater.inflate(R.layout.material_list_item_overline_text, this, false);
+    primaryText = (AdaptableTextView) layoutInflater.inflate(R.layout.material_list_item_primary_text, this, false);
+    secondaryText = (AdaptableTextView) layoutInflater.inflate(R.layout.material_list_item_secondary_text, this, false);
 
     addView(overlineText);
     addView(primaryText);
@@ -130,8 +132,8 @@ class TextCollection extends LinearLayout implements TotalLinesListener {
 
   private void updateTotalLines() {
 
-    int overlineLines = overlineText.getVisibility() == GONE ? 0 : 1;
-    int primaryLines = primaryText.getVisibility() == GONE ? 0 : 1;
+    int overlineLines = overlineText.getText().length() > 0 ? 1 : 0;
+    int primaryLines = primaryText.getText().length() > 0 ? 1 : 0;
     int secondaryLines = secondaryText.getVisibility() == GONE ? 0 : this.secondaryLines;
     int totalLines = overlineLines + primaryLines + secondaryLines;
 
@@ -148,9 +150,6 @@ class TextCollection extends LinearLayout implements TotalLinesListener {
 
   @Override
   public void onTotalLinesChange(int totalLines) {
-
-    int visibility = totalLines == 0 ? View.GONE : View.VISIBLE;
-    setVisibility(visibility);
 
     LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) getLayoutParams();
     int[] layoutMargins = calculateLayoutMargins(totalLines);

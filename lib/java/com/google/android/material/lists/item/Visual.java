@@ -26,12 +26,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.material.R;
-import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.internal.ViewUtils;
+import com.google.android.material.lists.item.adaptive.AdaptableShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
 import com.google.android.material.shape.ShapeAppearanceModel;
 
-public class Visual extends ShapeableImageView implements TotalLinesListener {
+public class Visual extends AdaptableShapeableImageView implements TotalLinesListener {
 
   protected Visual(Context context) {
     super(context);

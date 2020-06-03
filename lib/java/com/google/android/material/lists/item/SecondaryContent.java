@@ -29,11 +29,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.material.R;
+import com.google.android.material.lists.item.adaptive.AdaptableFrameLayout;
+import com.google.android.material.lists.item.adaptive.AdaptableTextView;
 
-public class SecondaryContent extends FrameLayout implements TotalLinesListener {
+public class SecondaryContent extends AdaptableFrameLayout implements TotalLinesListener {
 
-  private TextView metadata;
-  private FrameLayout action;
+  private AdaptableTextView metadata;
+  private AdaptableFrameLayout action;
 
   @NonNull
   public TextView getMetadata() {
@@ -57,8 +59,8 @@ public class SecondaryContent extends FrameLayout implements TotalLinesListener 
     super(context, attrs, defStyleAttr);
 
     LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-    metadata = (TextView) layoutInflater.inflate(R.layout.material_list_item_metadata, this, false);
-    action = (FrameLayout) layoutInflater.inflate(R.layout.material_list_item_action, this, false);
+    metadata = (AdaptableTextView) layoutInflater.inflate(R.layout.material_list_item_metadata, this, false);
+    action = (AdaptableFrameLayout) layoutInflater.inflate(R.layout.material_list_item_action, this, false);
     addView(metadata);
     addView(action);
   }

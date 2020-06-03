@@ -23,20 +23,17 @@
   <com.google.android.material.lists.item.Visual
     android:id="@+id/material_list_item_visual"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:visibility="gone"/>
+    android:layout_height="wrap_content"/>
 
   <com.google.android.material.lists.item.TextCollection
     android:id="@+id/material_list_item_text_collection"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:visibility="gone"/>
+    android:layout_weight="1"/>
 
   <com.google.android.material.lists.item.SecondaryContent
     android:id="@+id/material_list_item_secondary_content"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:visibility="gone"/>
+    android:layout_height="wrap_content"/>
 
 </LinearLayout>

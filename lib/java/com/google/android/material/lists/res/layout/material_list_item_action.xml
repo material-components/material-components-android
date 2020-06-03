@@ -13,7 +13,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.lists.item.adaptive.AdaptableFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:id="@+id/mtrl_list_item_action"
   android:layout_width="24dp"
   android:layout_height="24dp"
