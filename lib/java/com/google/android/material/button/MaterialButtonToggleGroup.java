@@ -818,7 +818,6 @@ public class MaterialButtonToggleGroup extends LinearLayout {
 
     @Override
     public void onPressedChanged(@NonNull MaterialButton button, boolean isPressed) {
-      updateCheckedStates(button.getId(), button.isChecked());
       invalidate();
     }
   }

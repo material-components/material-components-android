@@ -25,6 +25,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.google.android.material.button.MaterialButtonToggleGroup;
+import com.google.android.material.button.MaterialButtonToggleGroup.OnButtonCheckedListener;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.DemoUtils;
@@ -42,7 +44,7 @@ public class ButtonToggleGroupDemoFragment extends DemoFragment {
   public View onCreateDemoView(
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
     View view =
-        layoutInflater.inflate(getButtonToggleGroupContent(), viewGroup, /* attachToRoot= */false);
+        layoutInflater.inflate(getButtonToggleGroupContent(), viewGroup, /* attachToRoot= */ false);
     SwitchMaterial requireSelectionToggle = view.findViewById(R.id.switch_toggle);
 
     requireSelectionToggle.setOnCheckedChangeListener(
@@ -54,6 +56,20 @@ public class ButtonToggleGroupDemoFragment extends DemoFragment {
           }
         });
 
+    List<MaterialButtonToggleGroup> toggleGroups =
+        DemoUtils.findViewsWithType(view, MaterialButtonToggleGroup.class);
+    for (MaterialButtonToggleGroup toggleGroup : toggleGroups) {
+      toggleGroup.addOnButtonCheckedListener(
+          new OnButtonCheckedListener() {
+            @Override
+            public void onButtonChecked(
+                MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
+              String message = "button" + (isChecked ? " checked" : " unchecked");
+              Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show();
+            }
+          });
+    }
+    ;
     return view;
   }
 
