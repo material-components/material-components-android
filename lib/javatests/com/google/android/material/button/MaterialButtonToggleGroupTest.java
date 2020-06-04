@@ -238,4 +238,24 @@ public class MaterialButtonToggleGroupTest {
     child.performClick();
     assertThat(checkedChangeCallCount).isEqualTo(1);
   }
+
+  @Test
+  public void singleSelection_withSelectionRequired_callsListenerOnFirstPressAndClick() {
+    int id = singleSelection_withSelectedRequired_setup();
+    View child = toggleGroup.findViewById(id);
+    checkedChangeCallCount = 0;
+
+    OnButtonCheckedListener listener =
+        new OnButtonCheckedListener() {
+          @Override
+          public void onButtonChecked(
+              MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
+            checkedChangeCallCount++;
+          }
+        };
+    toggleGroup.addOnButtonCheckedListener(listener);
+    child.setPressed(true);
+    child.performClick();
+    assertThat(checkedChangeCallCount).isEqualTo(1);
+  }
 }
