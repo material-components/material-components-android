@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright (C) 2017 The Android Open Source Project
   ~
@@ -73,7 +73,7 @@
       <flag name="none" value="0"/>
     </attr>
     <!-- Sets whether this bottom sheet should adjust it's position based on the system gesture area
-    on Android Q and above. Value is false (insets respected) by default. -->
+    on Android Q and above. Value is true (insets respected) by default. -->
     <attr name="gestureInsetBottomIgnored" format="boolean"/>
     <attr name="android:elevation"/>
 

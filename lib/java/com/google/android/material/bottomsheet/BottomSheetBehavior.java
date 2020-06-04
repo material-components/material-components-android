@@ -298,7 +298,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     }
     setHideable(a.getBoolean(R.styleable.BottomSheetBehavior_Layout_behavior_hideable, false));
     setGestureInsetBottomIgnored(
-        a.getBoolean(R.styleable.BottomSheetBehavior_Layout_gestureInsetBottomIgnored, false));
+        a.getBoolean(R.styleable.BottomSheetBehavior_Layout_gestureInsetBottomIgnored, true));
     setFitToContents(
         a.getBoolean(R.styleable.BottomSheetBehavior_Layout_behavior_fitToContents, true));
     setSkipCollapsed(
