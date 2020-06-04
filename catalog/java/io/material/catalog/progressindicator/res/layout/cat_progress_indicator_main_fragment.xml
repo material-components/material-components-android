@@ -13,6 +13,7 @@
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipChildren="false"
@@ -80,8 +81,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:hint="@string/cat_progress_indicator_deteriminate_progress_hint"
-        android:importantForAutofill="no"
-        android:inputType="number"/>
+        android:inputType="number"
+        tools:ignore="Autofill"/>
     <Button
         android:id="@+id/update_button"
         android:layout_width="wrap_content"

@@ -54,7 +54,7 @@ public class ProgressIndicatorDeterminateDemoFragment extends DemoFragment {
     List<ProgressIndicator> indicatorList =
         DemoUtils.findViewsWithType(view, ProgressIndicator.class);
 
-    Slider slider = view.findViewById(io.material.catalog.progressindicator.R.id.slider);
+    Slider slider = view.findViewById(R.id.slider);
     Button showButton = view.findViewById(R.id.show_button);
     Button hideButton = view.findViewById(R.id.hide_button);
 

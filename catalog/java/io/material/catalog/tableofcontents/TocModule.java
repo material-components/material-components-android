@@ -33,6 +33,7 @@ import io.material.catalog.fab.FabFragment;
 import io.material.catalog.font.FontFragment;
 import io.material.catalog.imageview.ShapeableImageViewFragment;
 import io.material.catalog.menu.MenuFragment;
+import io.material.catalog.progressindicator.ProgressIndicatorFragment;
 import io.material.catalog.radiobutton.RadioButtonFragment;
 import io.material.catalog.shapetheming.ShapeThemingFragment;
 import io.material.catalog.slider.SliderFragment;
@@ -60,6 +61,7 @@ import io.material.catalog.transition.TransitionFragment;
       FontFragment.Module.class,
       MenuFragment.Module.class,
       DatePickerDemoLandingFragment.Module.class,
+      ProgressIndicatorFragment.Module.class,
       RadioButtonFragment.Module.class,
       ShapeableImageViewFragment.Module.class,
       ShapeThemingFragment.Module.class,
