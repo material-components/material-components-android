@@ -4,7 +4,7 @@ layout: detail
 section: components
 excerpt: "Selection controls allow the user to select options."
 iconId: radiobutton
-path: /catalog/radiobutton/
+path: /catalog/radiobuttons/
 -->
 
 # Selection controls: radio buttons

@@ -4,7 +4,7 @@ layout: detail
 section: components
 excerpt: "Selection controls allow the user to select options."
 iconId: switch
-path: /catalog/switch/
+path: /catalog/switches/
 -->
 
 # Selection controls: switches

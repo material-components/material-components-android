@@ -4,7 +4,7 @@ layout: detail
 section: components
 excerpt: "Selection controls allow the user to select options."
 iconId: checkbox
-path: /catalog/checkbox/
+path: /catalog/checkboxes/
 -->
 
 # Selection controls: checkboxes
