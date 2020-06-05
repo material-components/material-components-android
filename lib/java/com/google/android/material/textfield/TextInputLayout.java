@@ -1781,6 +1781,7 @@ public class TextInputLayout extends LinearLayout {
    */
   public void setErrorIconDrawable(@DrawableRes int resId) {
     setErrorIconDrawable(resId != 0 ? AppCompatResources.getDrawable(getContext(), resId) : null);
+    refreshErrorIconDrawableState();
   }
 
   /**
@@ -2834,7 +2835,7 @@ public class TextInputLayout extends LinearLayout {
     startIconView.setImageDrawable(startIconDrawable);
     if (startIconDrawable != null) {
       setStartIconVisible(true);
-      applyStartIconTint();
+      refreshStartIconDrawableState();
     } else {
       setStartIconVisible(false);
       setStartIconOnClickListener(null);
@@ -3187,6 +3188,7 @@ public class TextInputLayout extends LinearLayout {
    */
   public void setEndIconDrawable(@Nullable Drawable endIconDrawable) {
     endIconView.setImageDrawable(endIconDrawable);
+    refreshEndIconDrawableState();
   }
 
   /**
