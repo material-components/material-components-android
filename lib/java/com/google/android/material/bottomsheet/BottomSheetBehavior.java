@@ -506,11 +506,13 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       velocityTracker = VelocityTracker.obtain();
     }
     velocityTracker.addMovement(event);
-    // The ViewDragHelper tries to capture only the top-most View. We have to explicitly tell it
-    // to capture the bottom sheet in case it is not captured and the touch slop is passed.
-    if (action == MotionEvent.ACTION_MOVE && !ignoreEvents) {
-      if (Math.abs(initialY - event.getY()) > viewDragHelper.getTouchSlop()) {
-        viewDragHelper.captureChildView(child, event.getPointerId(event.getActionIndex()));
+    if (viewDragHelper != null) {
+      // The ViewDragHelper tries to capture only the top-most View. We have to explicitly tell it
+      // to capture the bottom sheet in case it is not captured and the touch slop is passed.
+      if (action == MotionEvent.ACTION_MOVE && !ignoreEvents) {
+        if (Math.abs(initialY - event.getY()) > viewDragHelper.getTouchSlop()) {
+          viewDragHelper.captureChildView(child, event.getPointerId(event.getActionIndex()));
+        }
       }
     }
     return !ignoreEvents;
@@ -1277,10 +1279,12 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   void startSettlingAnimation(View child, int state, int top, boolean settleFromViewDragHelper) {
-    boolean startedSettling =
-        settleFromViewDragHelper
-            ? viewDragHelper.settleCapturedViewAt(child.getLeft(), top)
-            : viewDragHelper.smoothSlideViewTo(child, child.getLeft(), top);
+    boolean startedSettling = false;
+    if (viewDragHelper != null) {
+      startedSettling = settleFromViewDragHelper
+          ? viewDragHelper.settleCapturedViewAt(child.getLeft(), top)
+          : viewDragHelper.smoothSlideViewTo(child, child.getLeft(), top);
+    }
     if (startedSettling) {
       setStateInternal(STATE_SETTLING);
       // STATE_SETTLING won't animate the material shape, so do that here with the target state.
