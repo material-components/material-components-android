@@ -1825,13 +1825,11 @@ abstract class BaseSlider<
         switch (keyCode) {
           case KeyEvent.KEYCODE_TAB:
             if (event.hasNoModifiers()) {
-              moveFocus(1);
-              return true;
+              return moveFocus(1);
             } else if (event.isShiftPressed()) {
-              moveFocus(-1);
-              return true;
+              return moveFocus(-1);
             }
-            return false;
+            // fall through
           case KeyEvent.KEYCODE_DPAD_LEFT:
           case KeyEvent.KEYCODE_MINUS:
             moveFocus(-1);
@@ -1850,7 +1848,7 @@ abstract class BaseSlider<
         }
       } else {
         isLongPress |= event.isLongPress();
-        Float increment = calculateIncrementForKey(event, keyCode);
+        Float increment = calculateIncrementForKey(keyCode);
         if (increment != null) {
           if (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL) {
             increment = -increment;
@@ -1862,6 +1860,25 @@ abstract class BaseSlider<
             postInvalidate();
           }
           return true;
+        }
+        switch (keyCode) {
+          case KeyEvent.KEYCODE_TAB:
+            if (event.hasNoModifiers()) {
+              return moveFocus(1);
+            } else if (event.isShiftPressed()) {
+              return moveFocus(-1);
+            }
+            // fall through
+          case KeyEvent.KEYCODE_DPAD_CENTER:
+          case KeyEvent.KEYCODE_ENTER:
+            activeThumbIdx = -1;
+            for (TooltipDrawable label : labels) {
+              ViewUtils.getContentViewOverlay(this).remove(label);
+            }
+            postInvalidate();
+            return true;
+          default:
+            // Nothing to do in this case.
         }
       }
     }
@@ -1875,31 +1892,36 @@ abstract class BaseSlider<
     return super.onKeyUp(keyCode, event);
   }
 
-  private void moveFocus(int direction) {
+  /**
+   * Attempts to move focus to next or previous thumb and returns whether the focused thumb changed.
+   * If focused thumb didn't change, we're at the view boundary for specified {@code direction} and
+   * focus should be moved to next or previous view instead.
+   */
+  private boolean moveFocus(int direction) {
+    int oldFocusedThumbIdx = focusedThumbIdx;
     focusedThumbIdx += direction;
     focusedThumbIdx = MathUtils.clamp(focusedThumbIdx, 0, values.size() - 1);
-    if (activeThumbIdx != -1) {
-      activeThumbIdx = focusedThumbIdx;
+    if (focusedThumbIdx == oldFocusedThumbIdx) {
+      // Move focus to next or previous view.
+      return false;
+    } else {
+      if (activeThumbIdx != -1) {
+        activeThumbIdx = focusedThumbIdx;
+      }
+      updateHaloHotspot();
+      postInvalidate();
+      return true;
     }
-    updateHaloHotspot();
-    postInvalidate();
   }
 
-  private Float calculateIncrementForKey(KeyEvent event, int keyCode) {
+  private Float calculateIncrementForKey(int keyCode) {
     // If this is a long press, increase the increment so it will only take around 20 steps.
     // Otherwise choose the smallest valid increment.
     float increment = isLongPress ? calculateStepIncrement(20) : calculateStepIncrement();
     switch (keyCode) {
-      case KeyEvent.KEYCODE_TAB:
-        if (event.isShiftPressed()) {
-          return -increment;
-        } else {
-          return increment;
-        }
       case KeyEvent.KEYCODE_DPAD_LEFT:
       case KeyEvent.KEYCODE_MINUS:
-        increment = -increment;
-        // fallthrough
+        return -increment;
       case KeyEvent.KEYCODE_DPAD_RIGHT:
       case KeyEvent.KEYCODE_PLUS:
       case KeyEvent.KEYCODE_EQUALS:
@@ -1937,10 +1959,33 @@ abstract class BaseSlider<
       for (TooltipDrawable label : labels) {
         ViewUtils.getContentViewOverlay(this).remove(label);
       }
-      accessibilityHelper.requestKeyboardFocusForVirtualView(ExploreByTouchHelper.INVALID_ID);
+      accessibilityHelper.clearKeyboardFocusForVirtualView(focusedThumbIdx);
     } else {
+      focusThumbOnFocusGained(direction);
       accessibilityHelper.requestKeyboardFocusForVirtualView(focusedThumbIdx);
     }
+  }
+
+  private void focusThumbOnFocusGained(int direction) {
+    switch (direction) {
+      case FOCUS_BACKWARD:
+      case FOCUS_LEFT:
+        moveFocus(Integer.MAX_VALUE);
+        break;
+      case FOCUS_FORWARD:
+      case FOCUS_RIGHT:
+        moveFocus(Integer.MIN_VALUE);
+        break;
+      case FOCUS_UP:
+      case FOCUS_DOWN:
+      default:
+        // Don't make assumptions about where exactly focus came from. Use previously focused thumb.
+    }
+  }
+
+  @VisibleForTesting
+  final int getAccessibilityFocusedVirtualViewId() {
+    return accessibilityHelper.getAccessibilityFocusedVirtualViewId();
   }
 
   @NonNull

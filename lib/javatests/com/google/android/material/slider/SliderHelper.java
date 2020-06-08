@@ -116,7 +116,7 @@ public class SliderHelper {
     return s.getTrackSidePadding() + x;
   }
 
-  static void activateFocusedThumb(Slider s) {
+  static void clickDpadCenter(Slider s) {
     new KeyEventBuilder(KeyEvent.KEYCODE_DPAD_CENTER).dispatchEvent(s);
   }
 
