@@ -3782,7 +3782,7 @@ public class TextInputLayout extends LinearLayout {
     if (cutoutEnabled()) {
       openCutout();
     }
-    showPlaceholderText();
+    updatePlaceholderText();
 
     updatePrefixTextVisibility();
     updateSuffixTextVisibility();
