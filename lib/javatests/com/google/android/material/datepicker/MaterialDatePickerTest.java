@@ -21,7 +21,6 @@ import static com.google.common.truth.Truth.assertThat;
 import java.time.Duration;
 import java.util.Calendar;
 import java.util.TimeZone;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -33,28 +32,30 @@ public class MaterialDatePickerTest {
   private static final long ONE_DAY_MILLIS = Duration.ofDays(1).toMillis();
 
   // Tuesday, December 31, 2019 11:59:00 PM GMT-05:00
-  private static final long CURRENT_MOMENT_OF_TODAY_EPOCH_MS = 1577854740000L;
-  private Calendar firstMomentOfTodayInUtc;
-  private TimeZone utcTimeZone;
+  private static final long NEW_YORK_TIME_2019_12_31_11_59_00_PM = 1577854740000L;
+  // Tuesday, January 1, 2020 09:00:00 AM UTC+13:00
+  private static final long NEW_ZEALAND_TIME_2020_01_11_09_00_00_AM = 1577822400000L;
+  private static final TimeZone UTC_TIME_ZONE = TimeZone.getTimeZone("UTC");
 
-  @Before
-  public void setup() {
-    utcTimeZone = TimeZone.getTimeZone("UTC");
-    TimeSource fixedTimeSource = TimeSource.fixed(
-            CURRENT_MOMENT_OF_TODAY_EPOCH_MS, TimeZone.getTimeZone("America/New_York"));
+  private static Calendar setTestLocalTime(long testTimeAsEpochMs, TimeZone timeZone) {
+    TimeSource fixedTimeSource = TimeSource.fixed(testTimeAsEpochMs, timeZone);
     UtcDates.setTimeSource(fixedTimeSource);
-    firstMomentOfTodayInUtc = fixedTimeSource.now();
-    firstMomentOfTodayInUtc.set(Calendar.HOUR_OF_DAY, 0);
-    firstMomentOfTodayInUtc.set(Calendar.MINUTE, 0);
-    firstMomentOfTodayInUtc.set(Calendar.SECOND, 0);
-    firstMomentOfTodayInUtc.set(Calendar.MILLISECOND, 0);
-    firstMomentOfTodayInUtc.setTimeZone(TimeZone.getTimeZone("UTC"));
+    Calendar testTimeInUtc = fixedTimeSource.now();
+    testTimeInUtc.set(Calendar.HOUR_OF_DAY, 0);
+    testTimeInUtc.set(Calendar.MINUTE, 0);
+    testTimeInUtc.set(Calendar.SECOND, 0);
+    testTimeInUtc.set(Calendar.MILLISECOND, 0);
+    testTimeInUtc.setTimeZone(UTC_TIME_ZONE);
+
+    return testTimeInUtc;
   }
 
-  @Test
-  public void testTodayInUtcMilliseconds() {
+  private static void testTodayInUtcMillisecondsForLocalTime(
+      long testTimeAsEpochMs, TimeZone timeZone) {
+    Calendar firstMomentOfTodayInUtc = setTestLocalTime(testTimeAsEpochMs, timeZone);
+
     long todayUtcMS = MaterialDatePicker.todayInUtcMilliseconds();
-    Calendar outputUtcTodayInCalendar = Calendar.getInstance(utcTimeZone);
+    Calendar outputUtcTodayInCalendar = Calendar.getInstance(UTC_TIME_ZONE);
     outputUtcTodayInCalendar.setTimeInMillis(todayUtcMS);
 
     // Assert fields finer than a day are stripped.
@@ -63,10 +64,12 @@ public class MaterialDatePickerTest {
     assertThat(outputUtcTodayInCalendar).isEqualTo(firstMomentOfTodayInUtc);
   }
 
-  @Test
-  public void testThisMonthInUtcMilliseconds() {
+  private static void testThisMonthInUtcMillisecondsForLocalTime(
+      long testTimeAsEpochMs, TimeZone timeZone) {
+    Calendar firstMomentOfTodayInUtc = setTestLocalTime(testTimeAsEpochMs, timeZone);
+
     long thisMonthUtcMS = MaterialDatePicker.thisMonthInUtcMilliseconds();
-    Calendar outputUtcThisMonthInCalendar = Calendar.getInstance(utcTimeZone);
+    Calendar outputUtcThisMonthInCalendar = Calendar.getInstance(UTC_TIME_ZONE);
     outputUtcThisMonthInCalendar.setTimeInMillis(thisMonthUtcMS);
 
     // Assert fields finer than a day are stripped.
@@ -77,5 +80,21 @@ public class MaterialDatePickerTest {
     assertThat(outputUtcThisMonthInCalendar.get(Calendar.MONTH))
         .isEqualTo(firstMomentOfTodayInUtc.get(Calendar.MONTH));
     assertThat(outputUtcThisMonthInCalendar.get(Calendar.DATE)).isEqualTo(1);
+  }
+
+  @Test
+  public void testTodayInUtcMilliseconds() {
+    testTodayInUtcMillisecondsForLocalTime(
+        NEW_YORK_TIME_2019_12_31_11_59_00_PM, TimeZone.getTimeZone("America/New_York"));
+    testTodayInUtcMillisecondsForLocalTime(
+        NEW_ZEALAND_TIME_2020_01_11_09_00_00_AM, TimeZone.getTimeZone("NZ"));
+  }
+
+  @Test
+  public void testThisMonthInUtcMilliseconds() {
+    testThisMonthInUtcMillisecondsForLocalTime(
+        NEW_YORK_TIME_2019_12_31_11_59_00_PM, TimeZone.getTimeZone("America/New_York"));
+    testThisMonthInUtcMillisecondsForLocalTime(
+        NEW_ZEALAND_TIME_2020_01_11_09_00_00_AM, TimeZone.getTimeZone("NZ"));
   }
 }
