@@ -72,7 +72,7 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
         @Override
         public void onEditTextAttached(@NonNull TextInputLayout textInputLayout) {
           EditText editText = textInputLayout.getEditText();
-          textInputLayout.setEndIconVisible(hasText(editText.getText()));
+          textInputLayout.setEndIconVisible(editText.hasFocus() && hasText(editText.getText()));
           // Make sure there's always only one clear text text watcher added
           textInputLayout.setEndIconCheckable(false);
           editText.setOnFocusChangeListener(onFocusChangeListener);
