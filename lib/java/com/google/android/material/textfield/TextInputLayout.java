@@ -48,7 +48,6 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
-import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.text.BidiFormatter;
 import androidx.core.view.AccessibilityDelegateCompat;
@@ -78,6 +77,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import androidx.core.content.ContextCompat;
 import androidx.customview.view.AbsSavedState;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.color.MaterialColors;
@@ -968,8 +968,8 @@ public class TextInputLayout extends LinearLayout {
    * Set the resource dimension to use for the focused box's stroke when in outline box mode, or for
    * the focused underline stroke in filled mode.
    *
-   * @param boxStrokeWidthFocusedResId the resource dimension to use for the box's stroke width
-   *     when focused
+   * @param boxStrokeWidthFocusedResId the resource dimension to use for the box's stroke width when
+   *     focused
    * @attr ref com.google.android.material.R.styleable#TextInputLayout_boxStrokeWidthFocused
    * @see #setBoxStrokeWidthFocused(int)
    * @see #getBoxStrokeWidthFocused()
@@ -1123,14 +1123,13 @@ public class TextInputLayout extends LinearLayout {
     defaultFilledBackgroundColor = boxBackgroundColorStateList.getDefaultColor();
     boxBackgroundColor = defaultFilledBackgroundColor;
     disabledFilledBackgroundColor =
-        boxBackgroundColorStateList.getColorForState(
-            new int[]{-android.R.attr.state_enabled}, -1);
+        boxBackgroundColorStateList.getColorForState(new int[] {-android.R.attr.state_enabled}, -1);
     focusedFilledBackgroundColor =
         boxBackgroundColorStateList.getColorForState(
-            new int[]{android.R.attr.state_focused, android.R.attr.state_enabled}, -1);
+            new int[] {android.R.attr.state_focused, android.R.attr.state_enabled}, -1);
     hoveredFilledBackgroundColor =
         boxBackgroundColorStateList.getColorForState(
-              new int[]{android.R.attr.state_hovered, android.R.attr.state_enabled}, -1);
+            new int[] {android.R.attr.state_hovered, android.R.attr.state_enabled}, -1);
     applyBoxAttributes();
   }
 

@@ -28,7 +28,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
-import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.PointerIconCompat;
 import androidx.core.view.ViewCompat;
@@ -48,6 +47,7 @@ import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.core.content.ContextCompat;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.badge.BadgeUtils;
 

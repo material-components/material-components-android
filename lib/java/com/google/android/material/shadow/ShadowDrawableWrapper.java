@@ -30,8 +30,8 @@ import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.appcompat.graphics.drawable.DrawableWrapper;
+import androidx.core.content.ContextCompat;
 
 /**
  * A {@link android.graphics.drawable.Drawable} which wraps another drawable and draws a shadow
