@@ -68,25 +68,18 @@
 
   <string name="cat_textfield_customize_section_title" translatable="false">Customize text fields</string>
   <string name="cat_textfield_customize_section_description" translatable="false">
-    Enter values below to customize the text fields.
+    Enter values below to customize the text fields above. Press \"done\" to update each field.
   </string>
   <string name="cat_textfield_label" translatable="false">Label</string>
   <string name="cat_textfield_password" translatable="false">Password</string>
   <string name="cat_textfield_error" translatable="false">Error</string>
   <string name="cat_textfield_placeholder_text" translatable="false">Placeholder text</string>
 
-  <string name="cat_textfield_customize_color" translatable="false">Change color</string>
-  <string name="cat_textfield_customize_counter_text" translatable="false">Character counter max</string>
-  <string name="cat_textfield_customize_label_text" translatable="false">Label text</string>
-  <string name="cat_textfield_customize_error_text" translatable="false">Error text</string>
-  <string name="cat_textfield_customize_helper_text" translatable="false">Helper text</string>
-  <string name="cat_textfield_customize_placeholder_text" translatable="false">Placeholder text</string>
-
-  <string name="cat_textfield_update_label_text" translatable="false">Update label</string>
-  <string name="cat_textfield_update_error_text" translatable="false">Update error</string>
-  <string name="cat_textfield_update_helper_text" translatable="false">Update helper</string>
-  <string name="cat_textfield_update_counter_text" translatable="false">Update character counter</string>
-  <string name="cat_textfield_update_placeholder_text" translatable="false">Update placeholder</string>
+  <string name="cat_textfield_customize_counter_text" translatable="false">Update character counter max</string>
+  <string name="cat_textfield_customize_label_text" translatable="false">Update label text</string>
+  <string name="cat_textfield_customize_error_text" translatable="false">Update error text</string>
+  <string name="cat_textfield_customize_helper_text" translatable="false">Update helper text</string>
+  <string name="cat_textfield_customize_placeholder_text" translatable="false">Update placeholder text</string>
 
   <string name="cat_textfield_null_input_error_text" translatable="false">Enter a value</string>
   <string name="cat_textfield_show_error_text" translatable="false">Show error</string>
@@ -103,5 +96,13 @@
   <string name="cat_textfield_hide_leading_icon" translatable="false">Hide leading icon</string>
 
   <string name="cat_textfield_label_enabled" description="Label on a switch to enable text fields.[CHAR_LIMIT=10]">Text fields enabled</string>
+
+  <string name="cat_textfield_toast_label_text" description="Announcement for when label is updated.[CHAR_LIMIT=NONE]">Labels updated.</string>
+  <string name="cat_textfield_toast_error_text" description="Announcement for when error text is updated.[CHAR_LIMIT=NONE]">Error messages updated.</string>
+  <string name="cat_textfield_toast_helper_text" description="Announcement for when helper text is updated.[CHAR_LIMIT=NONE]">Helper texts updated.</string>
+  <string name="cat_textfield_toast_counter_text" description="Announcement for when counter max is updated.[CHAR_LIMIT=NONE]">Max counters updated.</string>
+  <string name="cat_textfield_toast_placeholder_text" description="Announcement for when placeholder text is updated.[CHAR_LIMIT=NONE]">Placeholders updated.</string>
+  <string name="cat_textfield_toast_error_icon_click" description="Announcement for when error icon is clicked.[CHAR_LIMIT=NONE]">Error icon clicked.</string>
+  <string name="cat_textfield_toast_error_icon_long_click" description="Announcement for when error icon is long clicked.[CHAR_LIMIT=NONE]">Error icon long clicked.</string>
 
 </resources>

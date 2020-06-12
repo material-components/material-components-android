@@ -19,15 +19,9 @@ package io.material.catalog.textfield;
 import io.material.catalog.R;
 
 import androidx.annotation.LayoutRes;
-import com.google.android.material.textfield.TextInputLayout;
 
 /** A fragment that displays the filled text field demos with controls for the Catalog app. */
 public class TextFieldFilledDemoFragment extends TextFieldControllableDemoFragment {
-
-  @Override
-  public void onChangeTextFieldColors(TextInputLayout textfield, int color) {
-    textfield.setBoxBackgroundColor(color);
-  }
 
   @Override
   @LayoutRes

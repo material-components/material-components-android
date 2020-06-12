@@ -36,15 +36,6 @@ import com.google.android.material.textfield.TextInputLayout;
 public class TextFieldExposedDropdownMenuDemoFragment extends TextFieldControllableDemoFragment {
 
   @Override
-  public void onChangeTextFieldColors(TextInputLayout textfield, int color) {
-    if (textfield.getBoxBackgroundMode() == TextInputLayout.BOX_BACKGROUND_FILLED) {
-      textfield.setBoxBackgroundColor(color);
-    } else {
-      textfield.setBoxStrokeColor(color);
-    }
-  }
-
-  @Override
   @LayoutRes
   public int getTextFieldContent() {
     return R.layout.cat_textfield_exposed_dropdown_menu_content;
