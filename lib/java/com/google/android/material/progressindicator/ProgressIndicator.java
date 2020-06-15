@@ -838,12 +838,7 @@ public class ProgressIndicator extends ProgressBar {
    */
   public void setIndicatorCornerRadius(@Px int indicatorCornerRadius) {
     if (this.indicatorCornerRadius != indicatorCornerRadius) {
-      this.indicatorCornerRadius = indicatorCornerRadius;
-      if (indicatorCornerRadius > indicatorWidth / 2) {
-        throw new IllegalArgumentException(
-            "Corner radius for linear progress indicator cannot be greater than the half of the"
-                + " indicator width");
-      }
+      this.indicatorCornerRadius = Math.min(indicatorCornerRadius, indicatorWidth / 2);
       if (linearSeamless && indicatorCornerRadius > 0) {
         throw new IllegalArgumentException(
             "Rounded corners are not supported in linear seamless mode.");
