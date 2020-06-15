@@ -267,6 +267,8 @@ class LinearIndeterminateDrawable extends DrawableWithAnimatedVisibilityChange
     drawingDelegate.adjustCanvas(canvas, progressIndicator, getGrowFraction());
 
     float displayedIndicatorWidth = progressIndicator.getIndicatorWidth() * getGrowFraction();
+    float displayedRoundedCornerRadius =
+        progressIndicator.getIndicatorCornerRadius() * getGrowFraction();
 
     if (progressIndicator.isLinearSeamless()) {
       float lineConnectPointLeftFraction =
@@ -284,7 +286,8 @@ class LinearIndeterminateDrawable extends DrawableWithAnimatedVisibilityChange
           combinedIndicatorColorArray[indicatorLeftColorIndex],
           0f,
           lineConnectPointLeftFraction,
-          displayedIndicatorWidth);
+          displayedIndicatorWidth,
+          displayedRoundedCornerRadius);
       // Draws the central line.
       drawingDelegate.fillTrackWithColor(
           canvas,
@@ -292,7 +295,8 @@ class LinearIndeterminateDrawable extends DrawableWithAnimatedVisibilityChange
           combinedIndicatorColorArray[indicatorCentralColorIndex],
           lineConnectPointLeftFraction,
           lineConnectPointRightFraction,
-          displayedIndicatorWidth);
+          displayedIndicatorWidth,
+          displayedRoundedCornerRadius);
       // Draws the right line.
       drawingDelegate.fillTrackWithColor(
           canvas,
@@ -300,11 +304,18 @@ class LinearIndeterminateDrawable extends DrawableWithAnimatedVisibilityChange
           combinedIndicatorColorArray[indicatorColorIndex],
           lineConnectPointRightFraction,
           1f,
-          displayedIndicatorWidth);
+          displayedIndicatorWidth,
+          displayedRoundedCornerRadius);
     } else {
       // Draws the track.
       drawingDelegate.fillTrackWithColor(
-          canvas, paint, combinedTrackColor, 0f, 1f, displayedIndicatorWidth);
+          canvas,
+          paint,
+          combinedTrackColor,
+          0f,
+          1f,
+          displayedIndicatorWidth,
+          displayedRoundedCornerRadius);
       // Draws line 1.
       drawingDelegate.fillTrackWithColor(
           canvas,
@@ -312,7 +323,8 @@ class LinearIndeterminateDrawable extends DrawableWithAnimatedVisibilityChange
           combinedIndicatorColorArray[indicatorColorIndex],
           getLine1TailFraction(),
           getLine1HeadFraction(),
-          displayedIndicatorWidth);
+          displayedIndicatorWidth,
+          displayedRoundedCornerRadius);
       // Draws line 2.
       drawingDelegate.fillTrackWithColor(
           canvas,
@@ -320,7 +332,8 @@ class LinearIndeterminateDrawable extends DrawableWithAnimatedVisibilityChange
           combinedIndicatorColorArray[indicatorColorIndex],
           getLine2TailFraction(),
           getLine2HeadFraction(),
-          displayedIndicatorWidth);
+          displayedIndicatorWidth,
+          displayedRoundedCornerRadius);
     }
   }
 

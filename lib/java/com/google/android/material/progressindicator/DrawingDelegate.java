@@ -40,14 +40,16 @@ interface DrawingDelegate {
       @FloatRange(from = 0.0, to = 1.0) float widthFraction);
 
   /**
-   * Fills a portion of the track with color.
+   * Fills a part of the track with input color. The filling part is defined with two fractions
+   * normalized to [0, 1] representing the start and the end of the track.
    *
    * @param canvas Canvas to draw.
    * @param paint Paint used to draw.
    * @param color The filled color.
    * @param startFraction A fraction representing where to start the drawing along the track.
    * @param endFraction A fraction representing where to end the drawing along the track.
-   * @param trackWidth The actual width of the track to fill in.
+   * @param trackWidth The width of the track in px.
+   * @param cornerRadius The radius of corners in px, if rounded corners are applied.
    */
   void fillTrackWithColor(
       @NonNull Canvas canvas,
@@ -55,5 +57,6 @@ interface DrawingDelegate {
       @ColorInt int color,
       @FloatRange(from = 0.0, to = 1.0) float startFraction,
       @FloatRange(from = 0.0, to = 1.0) float endFraction,
-      float trackWidth);
+      float trackWidth,
+      float cornerRadius);
 }

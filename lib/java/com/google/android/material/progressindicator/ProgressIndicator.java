@@ -91,12 +91,20 @@ public class ProgressIndicator extends ProgressBar {
   private int defaultIndicatorWidth;
   private int defaultCircularInset;
   private int defaultCircularRadius;
+  private int defaultCornerRadius;
 
   /** The type of the progress indicator, either {@code #LINEAR} or {@code #CIRCULAR}. */
   private int indicatorType;
 
   /** The width of the progress track and indicator. */
   private int indicatorWidth;
+
+  /**
+   * When this is greater than 0, the corners of both the track and the indicator will be rounded
+   * with this radius. If the radius is greater than half of the track width, an {@code
+   * IllegalArgumentException} will be thrown during initialization.
+   */
+  private int indicatorCornerRadius;
 
   /**
    * The color array of the progress stroke. In determinate mode and single color indeterminate
@@ -194,6 +202,8 @@ public class ProgressIndicator extends ProgressBar {
     defaultIndicatorWidth = resources.getDimensionPixelSize(R.dimen.mtrl_progress_indicator_width);
     defaultCircularInset = resources.getDimensionPixelSize(R.dimen.mtrl_progress_circular_inset);
     defaultCircularRadius = resources.getDimensionPixelSize(R.dimen.mtrl_progress_circular_radius);
+    // By default, rounded corners are not applied.
+    defaultCornerRadius = 0;
   }
 
   /** Loads attributes defined in layout or style files. */
@@ -263,6 +273,10 @@ public class ProgressIndicator extends ProgressBar {
     } else {
       linearSeamless = false;
     }
+    // Gets the radius of rounded corners if defined, otherwise, use 0 (sharp corner).
+    setIndicatorCornerRadius(
+        a.getDimensionPixelSize(
+            R.styleable.ProgressIndicator_indicatorCornerRadius, defaultCornerRadius));
     // Sets if is indeterminate.
     setIndeterminate(a.getBoolean(R.styleable.ProgressIndicator_android_indeterminate, false));
 
@@ -794,10 +808,47 @@ public class ProgressIndicator extends ProgressBar {
     }
     if (isEligibleToSeamless()) {
       this.linearSeamless = linearSeamless;
+      if (linearSeamless) {
+        indicatorCornerRadius = defaultCornerRadius;
+      }
     } else {
       this.linearSeamless = false;
     }
     invalidate();
+  }
+
+  /**
+   * Returns the corner radius for progress indicator with rounded corners in pixels.
+   *
+   * @see #setIndicatorCornerRadius(int)
+   * @attr ref
+   *     com.google.android.material.progressindicator.R.stylable#ProgressIndicator_indicatorCornerRadius
+   */
+  public int getIndicatorCornerRadius() {
+    return indicatorCornerRadius;
+  }
+
+  /**
+   * Sets the corner radius for progress indicator with rounded corners in pixels.
+   *
+   * @param indicatorCornerRadius The new corner radius in pixels.
+   * @see #getIndicatorCornerRadius()
+   * @attr ref
+   *     com.google.android.material.progressindicator.R.stylable#ProgressIndicator_indicatorCornerRadius
+   */
+  public void setIndicatorCornerRadius(@Px int indicatorCornerRadius) {
+    if (this.indicatorCornerRadius != indicatorCornerRadius) {
+      this.indicatorCornerRadius = indicatorCornerRadius;
+      if (indicatorCornerRadius > indicatorWidth / 2) {
+        throw new IllegalArgumentException(
+            "Corner radius for linear progress indicator cannot be greater than the half of the"
+                + " indicator width");
+      }
+      if (linearSeamless && indicatorCornerRadius > 0) {
+        throw new IllegalArgumentException(
+            "Rounded corners are not supported in linear seamless mode.");
+      }
+    }
   }
 
   /**

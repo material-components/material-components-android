@@ -82,9 +82,9 @@
       description="A linear progress indicator with no grow and a single color [CHAR LIMIT=NONE]">
     Single color linear with no grow
   </string>
-  <string name="cat_progress_indicator_inverse_linear_bidirectional_grow_single_color"
-      description="An inverse linear progress indicator with bidirectional grow and a single color [CHAR LIMIT=NONE]">
-    Single color inverse linear with bidirectional grow
+  <string name="cat_progress_indicator_rounded_inverse_linear_bidirectional_grow_single_color"
+      description="An inverse linear progress indicator with bidirectional grow, rounded corners and a single color [CHAR LIMIT=NONE]">
+    Single color inverse linear with bidirectional grow and rounded corners
   </string>
   <string name="cat_progress_indicator_linear_incoming_grow_multiple_colors"
       description="A linear progress indicator with incoming grow and multiple colors [CHAR LIMIT=NONE]">
@@ -92,7 +92,7 @@
   </string>
   <string name="cat_progress_indicator_linear_outgoing_grow_multiple_colors"
       description="A linear progress indicator with outgoing grow and multiple colors [CHAR LIMIT=NONE]">
-    Linear with outgoing grow, when multiple colors are defined.
+    Linear with outgoing grow, when multiple colors are defined
   </string>
   <string name="cat_progress_indicator_linear_outgoing_grow_multiple_seamless_colors"
       description="A linear progress indicator with outgoing grow and multiple seeamless colors [CHAR LIMIT=NONE]">
@@ -103,9 +103,9 @@
       description="A circular progress indicator with no grow and a single color [CHAR LIMIT=NONE]">
     Single color circular with no grow
   </string>
-  <string name="cat_progress_indicator_inverse_circular_bidirectional_grow_single_color"
-      description="An inverse circular progress indicator with bidirectional grow and a single color [CHAR LIMIT=NONE]">
-    Single color inverse circular with bidirectional grow
+  <string name="cat_progress_indicator_rounded_inverse_circular_bidirectional_grow_single_color"
+      description="An inverse circular progress indicator with bidirectional grow, rounded corners and a single color [CHAR LIMIT=NONE]">
+    Single color inverse circular with bidirectional grow and rounded corners
   </string>
   <string name="cat_progress_indicator_circular_incoming_grow_multiple_colors"
       description="A circular progress indicator with incoming grow and multiple colors [CHAR LIMIT=NONE]">

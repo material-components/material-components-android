@@ -33,7 +33,7 @@
   <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="@string/cat_progress_indicator_inverse_linear_bidirectional_grow_single_color"/>
+      android:text="@string/cat_progress_indicator_rounded_inverse_linear_bidirectional_grow_single_color"/>
   <com.google.android.material.progressindicator.ProgressIndicator
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -41,7 +41,8 @@
       style="@style/Widget.MaterialComponents.ProgressIndicator.Linear.Indeterminate"
       app:indicatorColor="?attr/colorPrimary"
       app:inverse="true"
-      app:growMode="bidirectional"/>
+      app:growMode="bidirectional"
+      app:cornerRadius="@dimen/mtrl_progress_indicator_full_rounded_corner_radius"/>
 
   <TextView
       android:layout_width="wrap_content"
@@ -98,14 +99,15 @@
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_weight="1"
-          android:text="@string/cat_progress_indicator_inverse_circular_bidirectional_grow_single_color"/>
+          android:text="@string/cat_progress_indicator_rounded_inverse_circular_bidirectional_grow_single_color"/>
       <com.google.android.material.progressindicator.ProgressIndicator
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           style="@style/Widget.MaterialComponents.ProgressIndicator.Circular.Indeterminate"
           app:indicatorColor="?attr/colorPrimary"
           app:inverse="true"
-          app:growMode="bidirectional"/>
+          app:growMode="bidirectional"
+          app:cornerRadius="@dimen/mtrl_progress_indicator_full_rounded_corner_radius"/>
     </LinearLayout>
 
     <LinearLayout

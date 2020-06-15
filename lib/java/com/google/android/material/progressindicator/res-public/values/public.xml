@@ -20,6 +20,7 @@
   <public name="indicatorType" type="attr" />
   <public name="progressMode" type="attr" />
   <public name="indicatorWidth" type="attr" />
+  <public name="indicatorCornerRadius" type="attr" />
   <public name="indicatorColor" type="attr" />
   <public name="indicatorColors" type="attr" />
   <public name="inverse" type="attr" />

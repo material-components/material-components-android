@@ -20,6 +20,7 @@ import android.graphics.Paint;
 import android.graphics.Paint.Cap;
 import android.graphics.Paint.Style;
 import android.graphics.RectF;
+import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 
@@ -31,10 +32,10 @@ final class CircularDrawingDelegate implements DrawingDelegate {
   private int arcInverseFactor = 1;
 
   /**
-   * Adjusts the canvas for drawing circular progress indicator. It flips the canvas along x axis if
-   * inverse, and rotates the canvas -90 degrees to keep the 0 at the top. The canvas is clipped to
-   * a square with the size just includes the inset. It will also pre-calculate the bound for
-   * drawing the arc based on the indicate radius and current indicator width.
+   * Adjusts the canvas for drawing circular progress indicator. It rotates the canvas -90 degrees
+   * to keep the 0 at the top. The canvas is clipped to a square with the size just includes the
+   * inset. It will also pre-calculate the bound for drawing the arc based on the indicate radius
+   * and current indicator width.
    *
    * @param canvas Canvas to draw.
    * @param progressIndicator The component currently serving.
@@ -86,27 +87,79 @@ final class CircularDrawingDelegate implements DrawingDelegate {
    * @param color The filled color.
    * @param startFraction A fraction representing where to start the drawing along the track.
    * @param endFraction A fraction representing where to end the drawing along the track.
-   * @param trackWidth The actual width of the track to fill in.
+   * @param trackWidth The width of the track in px.
+   * @param cornerRadius The radius of corners in px, if rounded corners are applied.
    */
   @Override
   public void fillTrackWithColor(
       @NonNull Canvas canvas,
       @NonNull Paint paint,
-      int color,
+      @ColorInt int color,
       @FloatRange(from = 0.0, to = 1.0) float startFraction,
       @FloatRange(from = 0.0, to = 1.0) float endFraction,
-      float trackWidth) {
+      float trackWidth,
+      float cornerRadius) {
+    // No need to draw if startFraction and endFraction are same.
+    if (startFraction == endFraction) {
+      return;
+    }
+
     // Initializes Paint object.
     paint.setStyle(Style.STROKE);
     paint.setStrokeCap(Cap.BUTT);
     paint.setAntiAlias(true);
     paint.setColor(color);
     paint.setStrokeWidth(trackWidth);
+
+    // Draws the stroke arc without rounded corners.
     float startDegree = startFraction * 360 * arcInverseFactor;
     float arcDegree =
         endFraction >= startFraction
             ? (endFraction - startFraction) * 360 * arcInverseFactor
             : (1 + endFraction - startFraction) * 360 * arcInverseFactor;
     canvas.drawArc(arcBound, startDegree, arcDegree, false, paint);
+
+    // Draws rounded corners if needed.
+    if (cornerRadius > 0 && Math.abs(arcDegree) < 360) {
+      paint.setStyle(Style.FILL);
+      RectF cornerPatternRectBound =
+          new RectF(-cornerRadius, -cornerRadius, cornerRadius, cornerRadius);
+      drawRoundedEnd(
+          canvas, paint, trackWidth, cornerRadius, startDegree, true, cornerPatternRectBound);
+      drawRoundedEnd(
+          canvas,
+          paint,
+          trackWidth,
+          cornerRadius,
+          startDegree + arcDegree,
+          false,
+          cornerPatternRectBound);
+    }
+  }
+
+  private void drawRoundedEnd(
+      Canvas canvas,
+      Paint paint,
+      float trackWidth,
+      float cornerRadius,
+      float positionInDeg,
+      boolean isStartPosition,
+      RectF cornerPatternRectBound) {
+    float startOrEndFactor = isStartPosition ? -1 : 1;
+    canvas.save();
+    canvas.rotate(positionInDeg);
+    canvas.drawRect(
+        arcBound.right - trackWidth / 2 + cornerRadius,
+        Math.min(0, startOrEndFactor * cornerRadius * arcInverseFactor),
+        arcBound.right + trackWidth / 2 - cornerRadius,
+        Math.max(0, startOrEndFactor * cornerRadius * arcInverseFactor),
+        paint);
+    canvas.translate(arcBound.right - trackWidth / 2 + cornerRadius, 0);
+    canvas.drawArc(
+        cornerPatternRectBound, 180, -startOrEndFactor * 90 * arcInverseFactor, true, paint);
+    canvas.translate(trackWidth - 2 * cornerRadius, 0);
+    canvas.drawArc(
+        cornerPatternRectBound, 0, startOrEndFactor * 90 * arcInverseFactor, true, paint);
+    canvas.restore();
   }
 }

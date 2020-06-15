@@ -126,10 +126,18 @@ class DeterminateDrawable extends DrawableWithAnimatedVisibilityChange {
     drawingDelegate.adjustCanvas(canvas, progressIndicator, getGrowFraction());
 
     float displayedIndicatorWidth = progressIndicator.getIndicatorWidth() * getGrowFraction();
+    float displayedRoundedCornerRadius =
+        progressIndicator.getIndicatorCornerRadius() * getGrowFraction();
 
     // Draws the track.
     drawingDelegate.fillTrackWithColor(
-        canvas, paint, progressIndicator.getTrackColor(), 0f, 1f, displayedIndicatorWidth);
+        canvas,
+        paint,
+        progressIndicator.getTrackColor(),
+        0f,
+        1f,
+        displayedIndicatorWidth,
+        displayedRoundedCornerRadius);
     // Draws the indicator.
     drawingDelegate.fillTrackWithColor(
         canvas,
@@ -137,7 +145,8 @@ class DeterminateDrawable extends DrawableWithAnimatedVisibilityChange {
         combinedIndicatorColorArray[0],
         0f,
         getIndicatorFraction(),
-        displayedIndicatorWidth);
+        displayedIndicatorWidth,
+        displayedRoundedCornerRadius);
     canvas.restore();
   }
 

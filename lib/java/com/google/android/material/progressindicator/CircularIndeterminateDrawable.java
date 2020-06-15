@@ -212,10 +212,18 @@ class CircularIndeterminateDrawable extends DrawableWithAnimatedVisibilityChange
     drawingDelegate.adjustCanvas(canvas, progressIndicator, getGrowFraction());
 
     float displayedIndicatorWidth = progressIndicator.getIndicatorWidth() * getGrowFraction();
+    float displayedRoundedCornerRadius =
+        progressIndicator.getIndicatorCornerRadius() * getGrowFraction();
 
     // Draws the track.
     drawingDelegate.fillTrackWithColor(
-        canvas, paint, combinedTrackColor, 0f, 1f, displayedIndicatorWidth);
+        canvas,
+        paint,
+        combinedTrackColor,
+        0f,
+        1f,
+        displayedIndicatorWidth,
+        displayedRoundedCornerRadius);
     // Draws the indicator.
     drawingDelegate.fillTrackWithColor(
         canvas,
@@ -230,7 +238,8 @@ class CircularIndeterminateDrawable extends DrawableWithAnimatedVisibilityChange
                 + getIndicatorInCycleOffset()
                 + getIndicatorHeadChangeFraction() * INDICATOR_DELTA_DEGREES)
             / 360,
-        displayedIndicatorWidth);
+        displayedIndicatorWidth,
+        displayedRoundedCornerRadius);
     canvas.restore();
   }
 
