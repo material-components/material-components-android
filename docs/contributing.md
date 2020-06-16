@@ -85,6 +85,7 @@ We follow the
 ## Useful Links
 
 -   [Getting Started](getting-started.md)
+-   [Using Snapshot Version](using-snapshot-version.md)
 -   [Building From Source](building-from-source.md)
 -   [Catalog App](catalog-app.md)
 -   [Class documentation](https://developer.android.com/reference/com/google/android/material/classes)

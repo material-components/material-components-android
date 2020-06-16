@@ -38,14 +38,13 @@ Note: Do not update Gradle beyond 4.10 as the
 dependency cannot be used for Gradle 5.x.
 
 ## Useful Links
-- [Getting Started](getting-started.md)
-- [Contributing](contributing.md)
-- [Catalog App](catalog-app.md)
-- [Class
-  documentation](https://developer.android.com/reference/com/google/android/material/classes)
-- [MDC-Android on Stack
-  Overflow](https://www.stackoverflow.com/questions/tagged/material-components+android)
-- [Android Developer’s
-  Guide](https://developer.android.com/training/material/index.html)
-- [Material.io](https://www.material.io)
-- [Material Design Guidelines](https://material.google.com)
+
+-   [Getting Started](getting-started.md)
+-   [Contributing](contributing.md)
+-   [Catalog App](catalog-app.md)
+-   [Using Snapshot Version](using-snapshot-version.md)
+-   [Class documentation](https://developer.android.com/reference/com/google/android/material/classes)
+-   [MDC-Android on Stack Overflow](https://www.stackoverflow.com/questions/tagged/material-components+android)
+-   [Android Developer’s Guide](https://developer.android.com/training/material/index.html)
+-   [Material.io](https://www.material.io)
+-   [Material Design Guidelines](https://material.google.com)

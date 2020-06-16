@@ -249,6 +249,7 @@ out our [contributing guidelines](contributing.md) as well as an overview of the
 
 -   [Theming Guide](theming.md)
 -   [Contributing](contributing.md)
+-   [Using Snapshot Version](using-snapshot-version.md)
 -   [Building From Source](building-from-source.md)
 -   [Catalog App](catalog-app.md)
 -   [Class documentation](https://developer.android.com/reference/com/google/android/material/classes)
