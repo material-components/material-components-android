@@ -121,6 +121,7 @@ public class ProgressIndicatorIndeterminateDemoFragment extends DemoFragment {
           for (ProgressIndicator progressIndicator : indicatorList) {
             resetProgressIndicator(progressIndicator);
             progressIndicator.show();
+            progressIndicator.hide();
           }
         });
     hideButton.setOnClickListener(

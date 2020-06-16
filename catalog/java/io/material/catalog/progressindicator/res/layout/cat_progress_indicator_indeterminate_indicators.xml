@@ -27,6 +27,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_gravity="center"
+      app:minHideDelay="1000"
       style="@style/Widget.MaterialComponents.ProgressIndicator.Linear.Indeterminate"
       app:indicatorColor="?attr/colorPrimary"/>
 
@@ -38,6 +39,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_gravity="center"
+      app:minHideDelay="7000"
       style="@style/Widget.MaterialComponents.ProgressIndicator.Linear.Indeterminate"
       app:indicatorColor="?attr/colorPrimary"
       app:inverse="true"
@@ -52,6 +54,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_gravity="center"
+      app:minHideDelay="0"
       style="@style/Widget.MaterialComponents.ProgressIndicator.Linear.Indeterminate"
       app:indicatorColors="@array/cat_custom_progress_colors"
       app:linearSeamless="false"
@@ -65,6 +68,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_gravity="center"
+      app:minHideDelay="-1"
       style="@style/Widget.MaterialComponents.ProgressIndicator.Linear.Indeterminate"
       app:indicatorColors="@array/cat_custom_progress_colors"
       app:growMode="outgoing"/>
@@ -103,6 +107,7 @@
       <com.google.android.material.progressindicator.ProgressIndicator
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
+          app:minHideDelay="200"
           style="@style/Widget.MaterialComponents.ProgressIndicator.Circular.Indeterminate"
           app:indicatorColor="?attr/colorPrimary"
           app:inverse="true"
