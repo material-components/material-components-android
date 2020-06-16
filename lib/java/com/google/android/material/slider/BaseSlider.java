@@ -1270,7 +1270,7 @@ abstract class BaseSlider<
   @Override
   protected void onSizeChanged(int w, int h, int oldw, int oldh) {
     // Update the visible track width.
-    trackWidth = w - trackSidePadding * 2;
+    trackWidth = Math.max(w - trackSidePadding * 2, 0);
 
     // Update the visible tick coordinates.
     if (stepSize > 0.0f) {
