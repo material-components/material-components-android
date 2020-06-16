@@ -32,6 +32,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.view.ViewCompat;
+
+import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewParent;
@@ -86,6 +88,9 @@ public class ProgressIndicator extends ProgressBar {
 
   private static final float DEFAULT_OPACITY = 0.2f;
   private static final int MAX_ALPHA = 255;
+
+  /** The max delay the user is allowed to postpone the hide callback */
+  private static final int MAX_HIDE_DELAY = 1000;
 
   // Default dimensions.
   private int defaultIndicatorWidth;
@@ -153,6 +158,15 @@ public class ProgressIndicator extends ProgressBar {
   private boolean storedProgressAnimated;
   // Don't make final even though it's assigned in the constructor so the compiler doesn't inline it
   private boolean isParentDoneInitializing;
+
+  /**
+   * The minimum delay the progress will wait before hiding after
+   * {@link ProgressIndicator#show()} is called, in milliseconds.
+   * If not set, the progress will dismiss as soon as {@link ProgressIndicator#hide()} is called.
+   * Capped at 1 seconds.
+   */
+  private int minHideDelay;
+  private long showStartTime = -1L;
 
   // ******************** Interfaces **********************
 
@@ -280,6 +294,12 @@ public class ProgressIndicator extends ProgressBar {
     // Sets if is indeterminate.
     setIndeterminate(a.getBoolean(R.styleable.ProgressIndicator_android_indeterminate, false));
 
+    if (a.hasValue(R.styleable.ProgressIndicator_minHideDelay)) {
+      int minHideDelayUncapped = a.getInt(R.styleable.ProgressIndicator_minHideDelay, -1);
+      // Cap the value at 1 seconds (1000 ms)
+      minHideDelay = Math.min(minHideDelayUncapped, MAX_HIDE_DELAY);
+    }
+
     a.recycle();
   }
 
@@ -357,15 +377,46 @@ public class ProgressIndicator extends ProgressBar {
    * @see #onVisibilityChanged(View, int)
    */
   public void show() {
+    if (minHideDelay != -1) {
+      // The hide delay is set, save the initial time before showing
+      showStartTime = SystemClock.uptimeMillis();
+    }
     setVisibility(VISIBLE);
+  }
+
+  /**
+   * Hide the progress indicator.
+   * If {@code minHideDelay} has been set wait until the delay ends before dismissing the
+   * progress. Otherwise start hiding as soon as possible.
+   */
+  public void hide() {
+    if (minHideDelay != -1) {
+      // Remove delay callback if already scheduled
+      removeCallbacks(delayedHide);
+      long diff = SystemClock.uptimeMillis() - showStartTime;
+      if (diff >= minHideDelay) {
+        // The progress was showing for at least minHideDelay millis.
+        // We can hide it and reset the show timer
+        internalHide();
+        showStartTime = -1L;
+      } else {
+        // The progress can't be hidden because minHideDelay has not passed yet.
+        // Schedule the delay to execute in the future
+        postDelayed(delayedHide, minHideDelay - diff);
+      }
+    } else {
+      internalHide();
+    }
   }
 
   /**
    * If the component uses {@link DrawableWithAnimatedVisibilityChange} and needs to be hidden with
    * animation, it will trigger the drawable to start the hide animation. Otherwise, it will
    * directly set the visibility to {@code INVISIBLE}.
+   *
+   * @see #hide()
    */
-  public void hide() {
+  private void internalHide() {
     DrawableWithAnimatedVisibilityChange currentDrawable = getCurrentDrawable();
 
     // Hide animation should be used if it's visible to user and potentially can be hidden with
@@ -378,6 +429,19 @@ public class ProgressIndicator extends ProgressBar {
       setVisibility(INVISIBLE);
     }
   }
+
+  /**
+   * Runnable which executes an hide operations on the progress.
+   *
+   * @see #hide()
+   */
+  private final Runnable delayedHide = new Runnable() {
+    @Override
+    public void run() {
+      internalHide();
+      showStartTime = -1L;
+    }
+  };
 
   @Override
   protected void onVisibilityChanged(View changeView, int visibility) {
@@ -420,6 +484,8 @@ public class ProgressIndicator extends ProgressBar {
 
   @Override
   protected void onDetachedFromWindow() {
+    // Remove the delayedHide runnable from the queue if has been scheduled
+    removeCallbacks(delayedHide);
     getCurrentDrawable().setVisible(false, false);
     super.onDetachedFromWindow();
   }
@@ -941,4 +1007,5 @@ public class ProgressIndicator extends ProgressBar {
       getProgressDrawable().jumpToCurrentState();
     }
   }
+
 }

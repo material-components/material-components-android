@@ -102,6 +102,15 @@
       indicator.
     -->
     <attr name="linearSeamless" format="boolean"/>
+
+    <!--
+      The delay the progress indicator will wait before hiding once show() is
+      called in milliseconds. Max value capped at 1 second (1000 ms).
+      If not set the progress indicator will dismiss as soon as possible once
+      hide() is called.
+    -->
+    <attr name="minHideDelay" format="integer" />
+
   </declare-styleable>
 
   <!-- Style to use for ProgressIndicators in this theme. -->
