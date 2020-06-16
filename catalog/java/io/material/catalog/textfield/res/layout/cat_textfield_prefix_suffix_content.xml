@@ -34,7 +34,8 @@
       app:prefixText="@string/cat_textfield_prefix">
     <com.google.android.material.textfield.TextInputEditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"/>
   </com.google.android.material.textfield.TextInputLayout>
 
   <com.google.android.material.textfield.TextInputLayout
@@ -51,7 +52,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:textAlignment="textEnd"/>
+        android:textAlignment="textEnd"
+        android:inputType="numberDecimal"/>
   </com.google.android.material.textfield.TextInputLayout>
 
   <com.google.android.material.textfield.TextInputLayout
@@ -67,7 +69,8 @@
       app:prefixText="@string/cat_textfield_prefix">
     <com.google.android.material.textfield.TextInputEditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"/>
   </com.google.android.material.textfield.TextInputLayout>
 
   <com.google.android.material.textfield.TextInputLayout
@@ -85,7 +88,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:textAlignment="textEnd"/>
+        android:textAlignment="textEnd"
+        android:inputType="numberDecimal"/>
   </com.google.android.material.textfield.TextInputLayout>
 
   <com.google.android.material.textfield.TextInputLayout
@@ -100,7 +104,8 @@
       app:prefixText="@string/cat_textfield_prefix">
     <com.google.android.material.textfield.TextInputEditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"/>
   </com.google.android.material.textfield.TextInputLayout>
 
   <com.google.android.material.textfield.TextInputLayout
@@ -117,7 +122,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:textAlignment="textEnd"/>
+        android:textAlignment="textEnd"
+        android:inputType="numberDecimal"/>
   </com.google.android.material.textfield.TextInputLayout>
 
   <com.google.android.material.textfield.TextInputLayout
@@ -133,7 +139,8 @@
       app:prefixText="@string/cat_textfield_prefix">
     <com.google.android.material.textfield.TextInputEditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"/>
   </com.google.android.material.textfield.TextInputLayout>
 
   <com.google.android.material.textfield.TextInputLayout
@@ -151,7 +158,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:textAlignment="textEnd"/>
+        android:textAlignment="textEnd"
+        android:inputType="numberDecimal"/>
   </com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>
