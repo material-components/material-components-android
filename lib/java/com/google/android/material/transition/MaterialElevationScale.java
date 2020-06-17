@@ -25,7 +25,7 @@ package com.google.android.material.transition;
  */
 public final class MaterialElevationScale extends MaterialVisibility<ScaleProvider> {
 
-  private static final float DEFAULT_SCALE = 0.92f;
+  private static final float DEFAULT_SCALE = 0.85f;
 
   private final boolean growing;
 
