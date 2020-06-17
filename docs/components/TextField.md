@@ -51,6 +51,38 @@ input text. If an `EditText` is being used, make sure to set its
 `android:background` to `@null` so that `TextInputLayout` can set the proper
 background on it._
 
+### Making text fields accessible
+
+Android's text field component APIs support both label text and helper text for
+informing the user as to what information is requested for a text field. While
+optional, their use is strongly encouraged.
+
+#### Content description
+
+When using **custom icons**, you should set a content description on them so
+that screen readers like TalkBack are able to announce their purpose or action,
+if any.
+
+For the leading icon, that can be achieved via the
+`app:startIconContentDescription` attribute or `setStartIconContentDescription`
+method. For the trailing icon, that can be achieved via the
+`app:endIconContentDescription` attribute or `setEndIconContentDescription`
+method.
+
+When setting an **error message** that contains special characters that screen
+readers or other accessibility systems are not able to read, you should set a
+content description via the `app:errorContentDescription` attribute or
+`setErrorContentDescription` method. That way, when the error needs to be
+announced, it will announce the content description instead.
+
+#### Custom `EditText`
+
+If you are using a custom `EditText` as `TextInputLayout`'s child and your text
+field requires different accessibility support than the one offered by
+`TextInputLayout`, you can set a `TextInputLayout.AccessibilityDelegate` via the
+`setTextInputAccessibilityDelegate` method. This method should be used in place
+of providing an `AccessibilityDelegate` directly on the `EditText`.
+
 ### Adding a leading icon to a text field
 
 !["Text field with a leading icon."](assets/textfields/textfields_leading_icon.png)
@@ -278,37 +310,17 @@ _**Note:** Non-null error text will replace any existing helper text._
 </com.google.android.material.textfield.TextInputLayout>
 ```
 
-### Making text fields accessible
+### Using text fields programmatically
 
-Android's text field component APIs support both label text and helper text for
-informing the user as to what information is requested for a text field. While
-optional, their use is strongly encouraged.
+If you construct the `TextInputEditText` child of a `TextInputLayout`
+programmatically, you should use `TextInputLayout`'s context to create the view.
+This will allow `TextInputLayout` to pass along the appropriate styling to the
+edit text.
 
-#### Content description
-
-When using **custom icons**, you should set a content description on them so
-that screen readers like TalkBack are able to announce their purpose or action,
-if any.
-
-For the leading icon, that can be achieved via the
-`app:startIconContentDescription` attribute or `setStartIconContentDescription`
-method. For the trailing icon, that can be achieved via the
-`app:endIconContentDescription` attribute or `setEndIconContentDescription`
-method.
-
-When setting an **error message** that contains special characters that screen
-readers or other accessibility systems are not able to read, you should set a
-content description via the `app:errorContentDescription` attribute or
-`setErrorContentDescription` method. That way, when the error needs to be
-announced, it will announce the content description instead.
-
-#### Custom `EditText`
-
-If you are using a custom `EditText` as `TextInputLayout`'s child and your text
-field requires different accessibility support than the one offered by
-`TextInputLayout`, you can set a `TextInputLayout.AccessibilityDelegate` via the
-`setTextInputAccessibilityDelegate` method. This method should be used in place
-of providing an `AccessibilityDelegate` directly on the `EditText`.
+```kt
+val textInputLayout = TextInputLayout(context)
+val editText = TextInputEditText(textInputLayout.context)
+```
 
 ## Types
 
