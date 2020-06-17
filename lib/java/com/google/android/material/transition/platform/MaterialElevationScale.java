@@ -30,7 +30,7 @@ package com.google.android.material.transition.platform;
 @androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.LOLLIPOP)
 public final class MaterialElevationScale extends MaterialVisibility<ScaleProvider> {
 
-  private static final float DEFAULT_SCALE = 0.92f;
+  private static final float DEFAULT_SCALE = 0.85f;
 
   private final boolean growing;
 
