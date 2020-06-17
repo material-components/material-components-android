@@ -141,6 +141,23 @@
           app:iconGravity="textStart"
           app:iconPadding="0dp"/>
 
+      <TextView
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:text="@string/cat_top_icon_btn_text"
+        android:textSize="16sp"/>
+
+      <Button
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/cat_button_top_icon_btn_text"
+        android:text="@string/cat_button_label_enabled"
+        app:icon="@drawable/ic_dialogs_24px"
+        app:iconGravity="textTop" />
+
       <com.google.android.material.switchmaterial.SwitchMaterial
           android:id="@+id/cat_button_enabled_switch"
           android:layout_width="wrap_content"
