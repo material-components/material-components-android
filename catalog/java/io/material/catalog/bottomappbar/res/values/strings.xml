@@ -33,6 +33,8 @@ Phasellus in aliquet mi. Pellentesque habitant morbi tristique senectus et netus
   <string name="cat_bottomappbar_fab_hide">Hide Fab</string>
   <string name="cat_bottomappbar_fab_show">Show Fab</string>
   <string name="cat_bottomappbar_scroll_hide">Hide on scroll</string>
+  <string name="cat_bottomappbar_fab_anim_scale">Scale fab</string>
+  <string name="cat_bottomappbar_fab_anim_slide">Slide fab</string>
   <string name="cat_bottomappbar_fab_circle">Circle</string>
   <string name="cat_bottomappbar_fab_diamond">Diamond</string>
   <string name="cat_bottomappbar_end">End</string>

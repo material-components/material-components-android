@@ -112,8 +112,15 @@ public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBack
     ToggleButton attachToggle = view.findViewById(R.id.attach_toggle);
     attachToggle.setChecked(fab.getVisibility() == View.VISIBLE);
     centerButton.setOnClickListener(
-        v -> bar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER));
-    endButton.setOnClickListener(v -> bar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END));
+        v -> {
+          bar.setFabAlignmentModeAndReplaceMenu(
+              BottomAppBar.FAB_ALIGNMENT_MODE_CENTER, R.menu.demo_primary);
+        });
+    endButton.setOnClickListener(
+        v -> {
+          bar.setFabAlignmentModeAndReplaceMenu(
+              BottomAppBar.FAB_ALIGNMENT_MODE_END, R.menu.demo_primary_alternate);
+        });
     attachToggle.setOnCheckedChangeListener(
         (buttonView, isChecked) -> {
           if (isChecked) {
@@ -126,8 +133,15 @@ public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBack
     ToggleButton barScrollToggle = view.findViewById(R.id.bar_scroll_toggle);
     barScrollToggle.setChecked(bar.getHideOnScroll());
     barScrollToggle.setOnCheckedChangeListener(
-        (buttonView, isChecked) -> bar.setHideOnScroll(isChecked)
-    );
+        (buttonView, isChecked) -> bar.setHideOnScroll(isChecked));
+
+    ToggleButton fabAnimToggle = view.findViewById(R.id.fab_animation_mode_toggle);
+    fabAnimToggle.setOnCheckedChangeListener(
+        (buttonView, isChecked) ->
+            bar.setFabAnimationMode(
+                isChecked
+                    ? BottomAppBar.FAB_ANIMATION_MODE_SLIDE
+                    : BottomAppBar.FAB_ANIMATION_MODE_SCALE));
 
     setUpBottomAppBarShapeAppearance();
 

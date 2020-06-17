@@ -100,10 +100,8 @@ import java.util.List;
  * @attr ref com.google.android.material.R.styleable#BottomAppBar_fabAlignmentMode
  * @attr ref com.google.android.material.R.styleable#BottomAppBar_fabAnimationMode
  * @attr ref com.google.android.material.R.styleable#BottomAppBar_fabCradleMargin
- * @attr ref
- *     com.google.android.material.R.styleable#BottomAppBar_fabCradleRoundedCornerRadius
- * @attr ref
- *     com.google.android.material.R.styleable#BottomAppBar_fabCradleVerticalOffset
+ * @attr ref com.google.android.material.R.styleable#BottomAppBar_fabCradleRoundedCornerRadius
+ * @attr ref com.google.android.material.R.styleable#BottomAppBar_fabCradleVerticalOffset
  * @attr ref com.google.android.material.R.styleable#BottomAppBar_hideOnScroll
  * @attr ref com.google.android.material.R.styleable#BottomAppBar_paddingBottomSystemWindowInsets
  */
@@ -151,11 +149,23 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
 
   /** Keeps track of the number of currently running animations. */
   private int animatingModeChangeCounter = 0;
+
   private ArrayList<AnimationListener> animationListeners;
+
+  /**
+   * Track whether or not a new menu will be inflated along with a FAB alignment change. The
+   * inflation of the resource is deferred until an appropriate time during the FAB alignment/menu
+   * animation before being set and clearing this pending resource.
+   */
+  private static final int NO_MENU_RES_ID = 0;
+
+  @MenuRes private int pendingMenuResId = NO_MENU_RES_ID;
+  private boolean menuAnimatingWithFabAlignmentMode = false;
 
   /** Callback to be invoked when the BottomAppBar is animating. */
   interface AnimationListener {
     void onAnimationStart(BottomAppBar bar);
+
     void onAnimationEnd(BottomAppBar bar);
   }
 
@@ -182,7 +192,13 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
       new AnimatorListenerAdapter() {
         @Override
         public void onAnimationStart(Animator animation) {
-          maybeAnimateMenuView(fabAlignmentMode, fabAttached);
+          // If the FAB has begun to animate as a result of the FAB alignment mode changing, the FAB
+          // alignment animation will handle coordination of menu animation and this should be
+          // skipped. If the FAB has begun to animate as a result of hiding/showing the FAB, the
+          // menu animation should be cancelled and restarted.
+          if (!menuAnimatingWithFabAlignmentMode) {
+            maybeAnimateMenuView(fabAlignmentMode, fabAttached);
+          }
         }
       };
 
@@ -323,15 +339,34 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   }
 
   /**
-   * Sets the current fabAlignmentMode. An animated transition between current and desired modes
-   * will be played.
+   * Sets the current {@code fabAlignmentMode}. An animated transition between current and desired
+   * modes will be played.
    *
    * @param fabAlignmentMode the desired fabAlignmentMode, either {@link #FAB_ALIGNMENT_MODE_CENTER}
    *     or {@link #FAB_ALIGNMENT_MODE_END}.
    */
   public void setFabAlignmentMode(@FabAlignmentMode int fabAlignmentMode) {
-    maybeAnimateModeChange(fabAlignmentMode);
+    setFabAlignmentModeAndReplaceMenu(fabAlignmentMode, NO_MENU_RES_ID);
+  }
+
+  /**
+   * Sets the current {@code fabAlignmentMode} and replaces the {@code BottomAppBar}'s menu
+   * resource. An animated transition between the current and desired mode will be played in
+   * coordination with a menu resource swap animation.
+   *
+   * @param fabAlignmentMode the desired fabAlignmentMode, either {@link #FAB_ALIGNMENT_MODE_CENTER}
+   *     or {@link #FAB_ALIGNMENT_MODE_END}.
+   * @param newMenu the menu resource of a new menu to be inflated and swapped during the animation.
+   *     Passing 0 for newMenu will not clear the menu but will skip all menu manipulation. If you'd
+   *     like to animate the FAB's alignment and clear the menu at the same time, use {@code
+   *     getMenu().clear()} and {@link #setFabAlignmentMode(int)}.
+   */
+  public void setFabAlignmentModeAndReplaceMenu(
+      @FabAlignmentMode int fabAlignmentMode, @MenuRes int newMenu) {
+    this.pendingMenuResId = newMenu;
+    this.menuAnimatingWithFabAlignmentMode = true;
     maybeAnimateMenuView(fabAlignmentMode, fabAttached);
+    maybeAnimateModeChange(fabAlignmentMode);
     this.fabAlignmentMode = fabAlignmentMode;
   }
 
@@ -541,6 +576,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
           @Override
           public void onAnimationEnd(Animator animation) {
             dispatchAnimationEnd();
+            modeAnimator = null;
           }
         });
     modeAnimator.start();
@@ -617,6 +653,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
 
   private void maybeAnimateMenuView(@FabAlignmentMode int targetMode, boolean newFabAttached) {
     if (!ViewCompat.isLaidOut(this)) {
+      menuAnimatingWithFabAlignmentMode = false;
       return;
     }
 
@@ -647,6 +684,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
           @Override
           public void onAnimationEnd(Animator animation) {
             dispatchAnimationEnd();
+            menuAnimatingWithFabAlignmentMode = false;
             menuAnimator = null;
           }
         });
@@ -689,6 +727,10 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
             public void onAnimationEnd(Animator animation) {
               if (!cancelled) {
                 translateActionMenuView(actionMenuView, targetMode, targetAttached);
+                if (pendingMenuResId != NO_MENU_RES_ID) {
+                  replaceMenu(pendingMenuResId);
+                  pendingMenuResId = NO_MENU_RES_ID;
+                }
               }
             }
           });
@@ -839,7 +881,9 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
 
   private void setActionMenuViewPosition() {
     ActionMenuView actionMenuView = getActionMenuView();
-    if (actionMenuView != null) {
+    // If the menu is null there is no need to translate it. If the menu is currently being
+    // animated, the menuAnimator will take care of re-positioning the menu if necessary.
+    if (actionMenuView != null && menuAnimator == null) {
       actionMenuView.setAlpha(1.0f);
       if (!isFabVisibleOrWillBeShown()) {
         translateActionMenuView(actionMenuView, FAB_ALIGNMENT_MODE_CENTER, false);
@@ -976,7 +1020,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
               fabLayoutParams.bottomMargin = child.getBottomInset() + minBottomMargin;
               fabLayoutParams.leftMargin = child.getLeftInset();
               fabLayoutParams.rightMargin = child.getRightInset();
-              boolean isRtl =  ViewUtils.isLayoutRtl(fab);
+              boolean isRtl = ViewUtils.isLayoutRtl(fab);
               if (isRtl) {
                 fabLayoutParams.leftMargin += child.fabOffsetEndMode;
               } else {
