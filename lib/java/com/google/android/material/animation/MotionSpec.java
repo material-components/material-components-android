@@ -26,9 +26,9 @@ import androidx.annotation.AnimatorRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleableRes;
-import androidx.collection.SimpleArrayMap;
 import android.util.Log;
 import android.util.Property;
+import androidx.collection.SimpleArrayMap;
 import java.util.ArrayList;
 import java.util.List;
 
