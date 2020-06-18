@@ -227,8 +227,6 @@ abstract class BaseSlider<
   private boolean thumbIsPressed = false;
   private float valueFrom;
   private float valueTo;
-  // Holds the values set to this slider. We keep this array sorted in order to check if the value
-  // has been changed when a new value is set and to find the minimum and maximum values.
   private ArrayList<Float> values = new ArrayList<>();
   // The index of the currently touched thumb.
   private int activeThumbIdx = -1;
@@ -581,9 +579,21 @@ abstract class BaseSlider<
     postInvalidate();
   }
 
+  /**
+   * Returns the values of the slider sorted sorted in ascending order.
+   *
+   * @see #getValuesRaw() for the unsorted list of values.
+   */
   @NonNull
   List<Float> getValues() {
-    return new ArrayList<>(values);
+    ArrayList<Float> floats = new ArrayList<>(values);
+    Collections.sort(values);
+    return floats;
+  }
+
+  @NonNull
+  List<Float> getValuesRaw() {
+    return values;
   }
 
   /**
@@ -635,12 +645,11 @@ abstract class BaseSlider<
       throw new IllegalArgumentException("At least one value must be set");
     }
 
-    Collections.sort(values);
-
-    if (this.values.size() == values.size()) {
-      if (this.values.equals(values)) {
-        return;
-      }
+    boolean valuesUnchanged = this.values.size() == values.size()
+        && this.values.containsAll(values)
+        && values.containsAll(this.values);
+    if (valuesUnchanged) {
+      return;
     }
 
     this.values = values;
@@ -651,6 +660,9 @@ abstract class BaseSlider<
     createLabelPool();
     dispatchOnChangedProgramatically();
     postInvalidate();
+    if (accessibilityHelper != null) {
+      accessibilityHelper.invalidateRoot();
+    }
   }
 
   private void createLabelPool() {
@@ -1331,7 +1343,7 @@ abstract class BaseSlider<
     int top = calculateTop();
 
     drawInactiveTrack(canvas, trackWidth, top);
-    if (Collections.max(getValues()) > valueFrom) {
+    if (Collections.max(values) > valueFrom) {
       drawActiveTrack(canvas, trackWidth, top);
     }
 
@@ -1356,8 +1368,8 @@ abstract class BaseSlider<
    * float[1]} is the normalized right position of the range.
    */
   private float[] getActiveRange() {
-    float max = Collections.max(getValues());
-    float min = Collections.min(getValues());
+    float max = Collections.max(values);
+    float min = Collections.min(values);
     float left = normalizeValue(values.size() == 1 ? valueFrom : min);
     float right = normalizeValue(max);
 
@@ -1644,7 +1656,6 @@ abstract class BaseSlider<
 
     // Replace the old value with the new value of the touch position.
     values.set(idx, value);
-    Collections.sort(values);
     if (idx == activeThumbIdx) {
       // Hold on to the active thumb if that's what we're tracking.
       idx = values.indexOf(value);
@@ -1909,7 +1920,7 @@ abstract class BaseSlider<
   private boolean moveFocus(int direction) {
     final int oldFocusedThumbIdx = focusedThumbIdx;
     // Prevent integer overflow.
-    final long newFocusedThumbIdx = oldFocusedThumbIdx + direction;
+    final long newFocusedThumbIdx = (long) oldFocusedThumbIdx + direction;
     focusedThumbIdx = (int) MathUtils.clamp(newFocusedThumbIdx, 0, values.size() - 1);
     if (focusedThumbIdx == oldFocusedThumbIdx) {
       // Move focus to next or previous view.
@@ -2155,7 +2166,7 @@ abstract class BaseSlider<
   }
 
   void updateBoundsForVirturalViewId(int virtualViewId, Rect virtualViewBounds) {
-    int x = trackSidePadding + (int) (normalizeValue(getValues().get(virtualViewId)) * trackWidth);
+    int x = trackSidePadding + (int) (normalizeValue(values.get(virtualViewId)) * trackWidth);
     int y = calculateTop();
 
     virtualViewBounds.set(x - thumbRadius, y - thumbRadius, x + thumbRadius, y + thumbRadius);
@@ -2173,7 +2184,7 @@ abstract class BaseSlider<
 
     @Override
     protected int getVirtualViewAt(float x, float y) {
-      for (int i = 0; i < slider.getValues().size(); i++) {
+      for (int i = 0; i < slider.getValuesRaw().size(); i++) {
         slider.updateBoundsForVirturalViewId(i, virtualViewBounds);
         if (virtualViewBounds.contains((int) x, (int) y)) {
           return i;
@@ -2185,7 +2196,7 @@ abstract class BaseSlider<
 
     @Override
     protected void getVisibleVirtualViews(List<Integer> virtualViewIds) {
-      for (int i = 0; i < slider.getValues().size(); i++) {
+      for (int i = 0; i < slider.getValuesRaw().size(); i++) {
         virtualViewIds.add(i);
       }
     }
@@ -2196,7 +2207,7 @@ abstract class BaseSlider<
 
       info.addAction(AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_SET_PROGRESS);
 
-      List<Float> values = slider.getValues();
+      List<Float> values = slider.getValuesRaw();
       final float value = values.get(virtualViewId);
       float valueFrom = slider.getValueFrom();
       float valueTo = slider.getValueTo();
@@ -2221,18 +2232,21 @@ abstract class BaseSlider<
       }
       // Add the range to the content description.
       if (values.size() > 1) {
-        contentDescription.append(
-            slider
-                .getContext()
-                .getString(
-                    R.string.mtrl_slider_range_content_description,
-                    slider.formatValue(slider.getValueFrom()),
-                    slider.formatValue(slider.getValueTo())));
+        contentDescription.append(getRangeDescription());
       }
+
       info.setContentDescription(contentDescription.toString());
 
       slider.updateBoundsForVirturalViewId(virtualViewId, virtualViewBounds);
       info.setBoundsInParent(virtualViewBounds);
+    }
+
+    private String getRangeDescription() {
+      String max = slider.formatValue(Collections.max(slider.getValuesRaw()));
+      String min = slider.formatValue(Collections.min(slider.getValuesRaw()));
+      return slider
+          .getContext()
+          .getString(R.string.mtrl_slider_range_content_description, min, max);
     }
 
     @Override
@@ -2273,7 +2287,7 @@ abstract class BaseSlider<
               increment = -increment;
             }
 
-            List<Float> values = slider.getValues();
+            List<Float> values = slider.getValuesRaw();
             float clamped =
                 MathUtils.clamp(
                     values.get(virtualViewId) + increment,
@@ -2282,15 +2296,7 @@ abstract class BaseSlider<
             if (slider.snapThumbToValue(virtualViewId, clamped)) {
               slider.updateHaloHotspot();
               slider.postInvalidate();
-
-              // If the index of the new value has changed, refocus on the correct virtual view.
-              if (values.indexOf(clamped) != virtualViewId) {
-                virtualViewId = values.indexOf(clamped);
-                sendEventForVirtualView(virtualViewId, AccessibilityEvent.TYPE_VIEW_FOCUSED);
-              } else {
-                invalidateVirtualView(virtualViewId);
-              }
-
+              invalidateVirtualView(virtualViewId);
               return true;
             }
             return false;
