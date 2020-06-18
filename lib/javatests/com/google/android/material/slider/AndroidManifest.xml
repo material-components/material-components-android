@@ -21,5 +21,7 @@
   <uses-sdk
     tools:overrideLibrary="androidx.test.core"/>
 
-  <application/>
+  <application
+    android:supportsRtl="true"
+    />
 </manifest>
