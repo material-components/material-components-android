@@ -33,9 +33,9 @@ import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.content.res.ResourcesCompat.FontCallback;
-import androidx.core.provider.FontsContractCompat.FontRequestCallback;
 import android.text.TextPaint;
 import android.util.Log;
+import androidx.core.provider.FontsContractCompat.FontRequestCallback;
 
 /**
  * Utility class that contains the data from parsing a TextAppearance style resource.

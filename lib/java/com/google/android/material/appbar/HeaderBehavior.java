@@ -19,7 +19,6 @@ package com.google.android.material.appbar;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.math.MathUtils;
 import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -29,6 +28,7 @@ import android.view.ViewConfiguration;
 import android.widget.OverScroller;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior;
+import androidx.core.math.MathUtils;
 
 /**
  * The {@link Behavior} for a view that sits vertically above scrolling a view. See {@link
