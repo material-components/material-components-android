@@ -206,6 +206,12 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
     boolean shouldAnimate =
         animationDesired && progressIndicator.getGrowMode() != ProgressIndicator.GROW_MODE_NONE;
 
+    // We don't want to change visibility while show/hide animation is running. This also prevents
+    // multiple invokes to cancel the grow animators for some Android versions.
+    if ((showAnimator.isRunning() && visible) || hideAnimator.isRunning()) {
+      return false;
+    }
+
     // Cancels any running animations.
     showAnimator.cancel();
     hideAnimator.cancel();

@@ -19,12 +19,14 @@ package com.google.android.material.progressindicator;
 import com.google.android.material.R;
 
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
+import static java.lang.Math.min;
 
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.os.SystemClock;
 import androidx.annotation.ColorInt;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
@@ -86,6 +88,12 @@ public class ProgressIndicator extends ProgressBar {
 
   private static final float DEFAULT_OPACITY = 0.2f;
   private static final int MAX_ALPHA = 255;
+
+  /**
+   * The maximum time, in milliseconds, that the requested hide action is allowed to wait once
+   * {@link #show()} is called.
+   */
+  private static final int MAX_HIDE_DELAY = 1000;
 
   // Default dimensions.
   private int defaultIndicatorWidth;
@@ -153,6 +161,16 @@ public class ProgressIndicator extends ProgressBar {
   private boolean storedProgressAnimated;
   // Don't make final even though it's assigned in the constructor so the compiler doesn't inline it
   private boolean isParentDoneInitializing;
+
+  /**
+   * The minimum time, in milliseconds, that the requested hide action will wait to start once
+   * {@link ProgressIndicator#show()} is called. If set to zero or negative values, the requested
+   * hide action will start as soon as {@link ProgressIndicator#hide()} is called. This value is
+   * capped to {@link #MAX_HIDE_DELAY}.
+   */
+  private int minHideDelay;
+
+  private long lastShowStartTime = -1L;
 
   // ******************** Interfaces **********************
 
@@ -280,6 +298,11 @@ public class ProgressIndicator extends ProgressBar {
     // Sets if is indeterminate.
     setIndeterminate(a.getBoolean(R.styleable.ProgressIndicator_android_indeterminate, false));
 
+    if (a.hasValue(R.styleable.ProgressIndicator_minHideDelay)) {
+      int minHideDelayUncapped = a.getInt(R.styleable.ProgressIndicator_minHideDelay, -1);
+      minHideDelay = min(minHideDelayUncapped, MAX_HIDE_DELAY);
+    }
+
     a.recycle();
   }
 
@@ -357,18 +380,39 @@ public class ProgressIndicator extends ProgressBar {
    * @see #onVisibilityChanged(View, int)
    */
   public void show() {
+    if (minHideDelay > 0) {
+      // The hide delay is positive, saves the time of starting show action.
+      lastShowStartTime = SystemClock.uptimeMillis();
+    }
     setVisibility(VISIBLE);
+  }
+
+  /**
+   * Hide the progress indicator. If {@code minHideDelay} has been set to positive value, wait until
+   * the delay elapsed before starting hide action. Otherwise start hiding immediately.
+   */
+  public void hide() {
+    removeCallbacks(delayedHide);
+    long timeElapsedSinceShowStart = SystemClock.uptimeMillis() - lastShowStartTime;
+    boolean enoughTimeElapsed = timeElapsedSinceShowStart >= minHideDelay;
+    if (enoughTimeElapsed) {
+      delayedHide.run();
+      return;
+    }
+    postDelayed(delayedHide, minHideDelay - timeElapsedSinceShowStart);
   }
 
   /**
    * If the component uses {@link DrawableWithAnimatedVisibilityChange} and needs to be hidden with
    * animation, it will trigger the drawable to start the hide animation. Otherwise, it will
    * directly set the visibility to {@code INVISIBLE}.
+   *
+   * @see #hide()
    */
-  public void hide() {
+  private void internalHide() {
     DrawableWithAnimatedVisibilityChange currentDrawable = getCurrentDrawable();
 
-    // Hide animation should be used if it's visible to user and potentially can be hidden with
+    // Hides animation should be used if it's visible to user and potentially can be hidden with
     // animation.
     boolean shouldHideAnimated = visibleToUser() && growMode != GROW_MODE_NONE;
 
@@ -420,6 +464,8 @@ public class ProgressIndicator extends ProgressBar {
 
   @Override
   protected void onDetachedFromWindow() {
+    // Removes the delayedHide runnable from the queue if it has been scheduled.
+    removeCallbacks(delayedHide);
     getCurrentDrawable().setVisible(false, false);
     super.onDetachedFromWindow();
   }
@@ -838,7 +884,7 @@ public class ProgressIndicator extends ProgressBar {
    */
   public void setIndicatorCornerRadius(@Px int indicatorCornerRadius) {
     if (this.indicatorCornerRadius != indicatorCornerRadius) {
-      this.indicatorCornerRadius = Math.min(indicatorCornerRadius, indicatorWidth / 2);
+      this.indicatorCornerRadius = min(indicatorCornerRadius, indicatorWidth / 2);
       if (linearSeamless && indicatorCornerRadius > 0) {
         throw new IllegalArgumentException(
             "Rounded corners are not supported in linear seamless mode.");
@@ -941,4 +987,20 @@ public class ProgressIndicator extends ProgressBar {
       getProgressDrawable().jumpToCurrentState();
     }
   }
+
+  // ************************ In-place defined parameters ****************************
+
+  /**
+   * The runnable, which executes the hide action. This is used to schedule delayed hide actions.
+   *
+   * @see #hide()
+   */
+  private final Runnable delayedHide =
+      new Runnable() {
+        @Override
+        public void run() {
+          internalHide();
+          lastShowStartTime = -1L;
+        }
+      };
 }

@@ -28,6 +28,7 @@
   <public name="circularRadius" type="attr" />
   <public name="circularInset" type="attr" />
   <public name="linearSeamless" type="attr" />
+  <public name="minHideDelay" type="attr" />
 
   <public name="Widget.MaterialComponents.ProgressIndicator.Linear.Determinate" type="style" />
   <public name="Widget.MaterialComponents.ProgressIndicator.Linear.Indeterminate" type="style" />
