@@ -645,9 +645,10 @@ abstract class BaseSlider<
       throw new IllegalArgumentException("At least one value must be set");
     }
 
-    boolean valuesUnchanged = this.values.size() == values.size()
-        && this.values.containsAll(values)
-        && values.containsAll(this.values);
+    boolean valuesUnchanged =
+        this.values.size() == values.size()
+            && this.values.containsAll(values)
+            && values.containsAll(this.values);
     if (valuesUnchanged) {
       return;
     }
@@ -1911,10 +1912,11 @@ abstract class BaseSlider<
   }
 
   /**
-   * Attempts to move focus to next or previous thumb <i>independent of layout direction</i>
-   * and returns whether the focused thumb changed.
-   * If focused thumb didn't change, we're at the view boundary for specified {@code direction}
-   * and focus may be moved to next or previous view instead.
+   * Attempts to move focus to next or previous thumb <i>independent of layout direction</i> and
+   * returns whether the focused thumb changed. If focused thumb didn't change, we're at the view
+   * boundary for specified {@code direction} and focus may be moved to next or previous view
+   * instead.
+   *
    * @see #moveFocusInAbsoluteDirection(int)
    */
   private boolean moveFocus(int direction) {
@@ -1936,10 +1938,10 @@ abstract class BaseSlider<
   }
 
   /**
-   * Attempts to move focus to the <i>left or right</i> of currently focused thumb
-   * and returns whether the focused thumb changed.
-   * If focused thumb didn't change, we're at the view boundary for specified {@code direction}
-   * and focus may be moved to next or previous view instead.
+   * Attempts to move focus to the <i>left or right</i> of currently focused thumb and returns
+   * whether the focused thumb changed. If focused thumb didn't change, we're at the view boundary
+   * for specified {@code direction} and focus may be moved to next or previous view instead.
+   *
    * @see #moveFocus(int)
    */
   private boolean moveFocusInAbsoluteDirection(int direction) {
@@ -2232,6 +2234,7 @@ abstract class BaseSlider<
       }
       // Add the range to the content description.
       if (values.size() > 1) {
+        contentDescription.append(startOrEndDescription(virtualViewId));
         contentDescription.append(getRangeDescription());
       }
 
@@ -2241,12 +2244,39 @@ abstract class BaseSlider<
       info.setBoundsInParent(virtualViewBounds);
     }
 
+    @NonNull
+    private String startOrEndDescription(int virtualViewId) {
+      float maxFromValues = getMaxFromValues();
+      float minFromValues = getMinFromValues();
+      List<Float> valuesRaw = slider.getValuesRaw();
+      float focusedValue = valuesRaw.get(virtualViewId);
+      if (focusedValue == maxFromValues) {
+        return slider.getContext().getString(R.string.material_slider_range_end);
+      }
+
+      if (focusedValue == minFromValues) {
+        return slider.getContext().getString(R.string.material_slider_range_start);
+      }
+
+      return "";
+    }
+
     private String getRangeDescription() {
-      String max = slider.formatValue(Collections.max(slider.getValuesRaw()));
-      String min = slider.formatValue(Collections.min(slider.getValuesRaw()));
+      String max = slider.formatValue(getMaxFromValues());
+      String min = slider.formatValue(getMinFromValues());
       return slider
           .getContext()
-          .getString(R.string.mtrl_slider_range_content_description, min, max);
+          .getString(R.string.material_slider_range_content_description, min, max);
+    }
+
+    @NonNull
+    private Float getMinFromValues() {
+      return Collections.min(slider.getValuesRaw());
+    }
+
+    @NonNull
+    private Float getMaxFromValues() {
+      return Collections.max(slider.getValuesRaw());
     }
 
     @Override
