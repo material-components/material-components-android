@@ -37,17 +37,24 @@
     <item name="actionBarTheme">@style/ThemeOverlay.MaterialComponents.ActionBar.Surface</item>
     <item name="actionOverflowMenuStyle">@style/Widget.MaterialComponents.PopupMenu.Overflow</item>
 
-    <!-- Widget styles -->
-    <item name="android:contextPopupMenuStyle" tools:targetApi="n">
-      @style/Widget.MaterialComponents.PopupMenu.ContextMenu
-    </item>
+    <!-- Framework, AppCompat, or Design Widget styles -->
+    <item name="appBarLayoutStyle">@style/Widget.MaterialComponents.AppBarLayout.Surface</item>
     <item name="borderlessButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>
+    <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView</item>
     <item name="buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush</item>
     <item name="checkboxStyle">@style/Widget.MaterialComponents.CompoundButton.CheckBox</item>
+    <item name="android:contextPopupMenuStyle" tools:targetApi="n">@style/Widget.MaterialComponents.PopupMenu.ContextMenu</item>
+    <item name="floatingActionButtonStyle">@style/Widget.MaterialComponents.FloatingActionButton</item>
     <item name="listPopupWindowStyle">@style/Widget.MaterialComponents.PopupMenu.ListPopupWindow</item>
+    <item name="navigationViewStyle">@style/Widget.MaterialComponents.NavigationView</item>
     <item name="popupMenuStyle">@style/Widget.MaterialComponents.PopupMenu</item>
     <item name="radioButtonStyle">@style/Widget.MaterialComponents.CompoundButton.RadioButton</item>
+    <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
+    <item name="snackbarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Snackbar</item>
+    <item name="snackbarTextViewStyle">@style/Widget.MaterialComponents.Snackbar.TextView</item>
     <item name="switchStyle">@style/Widget.MaterialComponents.CompoundButton.Switch</item>
+    <item name="tabStyle">@style/Widget.MaterialComponents.TabLayout</item>
+    <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.FilledBox</item>
     <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar</item>
 
     <item name="alertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert</item>
@@ -76,17 +83,24 @@
     <item name="actionBarStyle">@style/Widget.MaterialComponents.Light.ActionBar.Solid</item>
     <item name="actionOverflowMenuStyle">@style/Widget.MaterialComponents.PopupMenu.Overflow</item>
 
-    <!-- Widget styles -->
-    <item name="android:contextPopupMenuStyle" tools:targetApi="n">
-      @style/Widget.MaterialComponents.PopupMenu.ContextMenu
-    </item>
+    <!-- Framework, AppCompat, or Design Widget styles -->
+    <item name="appBarLayoutStyle">@style/Widget.MaterialComponents.AppBarLayout.Primary</item>
     <item name="borderlessButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>
+    <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView</item>
     <item name="buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush</item>
     <item name="checkboxStyle">@style/Widget.MaterialComponents.CompoundButton.CheckBox</item>
+    <item name="android:contextPopupMenuStyle" tools:targetApi="n">@style/Widget.MaterialComponents.PopupMenu.ContextMenu</item>
+    <item name="floatingActionButtonStyle">@style/Widget.MaterialComponents.FloatingActionButton</item>
     <item name="listPopupWindowStyle">@style/Widget.MaterialComponents.PopupMenu.ListPopupWindow</item>
+    <item name="navigationViewStyle">@style/Widget.MaterialComponents.NavigationView</item>
     <item name="popupMenuStyle">@style/Widget.MaterialComponents.PopupMenu</item>
     <item name="radioButtonStyle">@style/Widget.MaterialComponents.CompoundButton.RadioButton</item>
+    <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
+    <item name="snackbarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Snackbar</item>
+    <item name="snackbarTextViewStyle">@style/Widget.MaterialComponents.Snackbar.TextView</item>
     <item name="switchStyle">@style/Widget.MaterialComponents.CompoundButton.Switch</item>
+    <item name="tabStyle">@style/Widget.MaterialComponents.TabLayout</item>
+    <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.FilledBox</item>
     <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar</item>
 
     <item name="alertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert</item>
