@@ -42,7 +42,7 @@
       app:indicatorColor="?attr/colorPrimary"
       app:inverse="true"
       app:growMode="bidirectional"
-      app:cornerRadius="@dimen/mtrl_progress_indicator_full_rounded_corner_radius"/>
+      app:indicatorCornerRadius="@dimen/mtrl_progress_indicator_full_rounded_corner_radius"/>
 
   <TextView
       android:layout_width="wrap_content"
@@ -107,7 +107,7 @@
           app:indicatorColor="?attr/colorPrimary"
           app:inverse="true"
           app:growMode="bidirectional"
-          app:cornerRadius="@dimen/mtrl_progress_indicator_full_rounded_corner_radius"/>
+          app:indicatorCornerRadius="@dimen/mtrl_progress_indicator_full_rounded_corner_radius"/>
     </LinearLayout>
 
     <LinearLayout
