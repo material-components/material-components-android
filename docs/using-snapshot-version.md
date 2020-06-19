@@ -29,13 +29,17 @@ maven {
 ```
 
 Then you can use a snapshot version by adding a
-`com.google.android.material:material:1.3.0-dev-<date>` dependency as per usual,
-replacing `<date>` with the date of the version you are interested in (see all
-versions
-[here](https://github.com/material-components/material-components-android/packages/81484/versions)).
+`com.google.android.material:material:1.3.0-SNAPSHOT` dependency as per usual,
+this will fetch the latest snapshot, your gradle build won't cache it. If you
+build after a new version has been published, that version will be used.
+
 See the offical doc on
 [Configuring Gradle for use with GitHub Packages](https://help.github.com/en/github/managing-packages-with-github-packages/configuring-gradle-for-use-with-github-packages)
 for additional information.
+
+Alternatively add `com.google.android.material:material:1.3.0-<date>` replacing
+`<date>` with the date of the version you are interested in (see all versions
+[here](https://github.com/material-components/material-components-android/packages/81484/versions)).
 
 Alternatively, you could use
 [JitPack](https://jitpack.io/#material-components/material-components-android)
