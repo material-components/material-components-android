@@ -713,7 +713,7 @@ public final class CollapsingTextHelper {
     // Collapsed text
     textPaint.setAlpha((int) (collapsedTextBlend * originalAlpha));
     canvas.drawText(
-        textToDrawCollapsed, 0, textToDrawCollapsed.length(), 0, -ascent / scale, textPaint);
+        textToDrawCollapsed, 0, textToDrawCollapsed.length(), 0, -ascent, textPaint);
     // Remove ellipsis for Cross-section animation
     String tmp = textToDrawCollapsed.toString().trim();
     if (tmp.endsWith(ELLIPSIS_NORMAL)) {
@@ -722,7 +722,7 @@ public final class CollapsingTextHelper {
     // Cross-section between both texts (should stay at original alpha)
     textPaint.setAlpha(originalAlpha);
     canvas.drawText(
-        tmp, 0, Math.min(textLayout.getLineEnd(0), tmp.length()), 0, -ascent / scale, textPaint);
+        tmp, 0, Math.min(textLayout.getLineEnd(0), tmp.length()), 0, -ascent, textPaint);
   }
 
   private boolean calculateIsRtl(@NonNull CharSequence text) {
