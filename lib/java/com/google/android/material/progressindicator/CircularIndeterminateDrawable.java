@@ -256,6 +256,8 @@ class CircularIndeterminateDrawable extends DrawableWithAnimatedVisibilityChange
     setIndicatorTailChangeFraction(0f);
     setIndicatorStartOffset(0f);
     indicatorColorIndex = 0;
+    collapseAnimator.setFloatValues(0f, 1f);
+    indicatorWillFullyCollapsed = false;
     colorFadingAnimator.setIntValues(
         combinedIndicatorColorArray[indicatorColorIndex],
         combinedIndicatorColorArray[getNextIndicatorColorIndex()]);
