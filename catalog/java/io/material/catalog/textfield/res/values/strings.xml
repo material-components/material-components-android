@@ -66,6 +66,22 @@
   <string name="cat_textfield_filled_suffix_helper_text" translatable="false">Filled text field with suffix</string>
   <string name="cat_textfield_filled_suffix_icon_helper_text" translatable="false">Filled text field with suffix and icon</string>
 
+  <string name="cat_textfield_enclosed_helper_text">Enclosed text field</string>
+  <string name="cat_textfield_enclosed_dense_helper_text">Dense enclosed text field</string>
+  <string name="cat_textfield_enclosed_demo_title">Enclosed Text Field Demo</string>
+  <string name="cat_textfield_enclosed_icons_demo_title">Enclosed Icons Text Field Demo</string>
+  <string name="cat_textfield_enclosed_exposed_dropdown_helper_text">Enclosed exposed dropdown menu</string>
+  <string name="cat_textfield_enclosed_editable_exposed_dropdown_helper_text">Enclosed editable exposed dropdown menu</string>
+  <string name="cat_textfield_enclosed_dense_password_helper_text">Dense enclosed password text field</string>
+  <string name="cat_textfield_enclosed_clear_button_helper_text">Enclosed clear button text field</string>
+  <string name="cat_textfield_enclosed_custom_end_icon_helper_text">Enclosed custom end icon text field</string>
+  <string name="cat_textfield_enclosed_start_icon_helper_text">Enclosed start icon text field</string>
+  <string name="cat_textfield_enclosed_start_end_icons_helper_text">Enclosed start and end icons text field</string>
+  <string name="cat_textfield_enclosed_prefix_icon_helper_text">Enclosed text field with prefix and icon</string>
+  <string name="cat_textfield_enclosed_suffix_icon_helper_text">Enclosed text field with suffix and icon</string>
+  <string name="cat_textfield_enclosed_suffix_helper_text">Enclosed text field with suffix</string>
+  <string name="cat_textfield_enclosed_prefix_helper_text">Enclosed text field with prefix</string>
+
   <string name="cat_textfield_customize_section_title" translatable="false">Customize text fields</string>
   <string name="cat_textfield_customize_section_description" translatable="false">
     Enter values below to customize the text fields above. Press \"done\" to update each field.

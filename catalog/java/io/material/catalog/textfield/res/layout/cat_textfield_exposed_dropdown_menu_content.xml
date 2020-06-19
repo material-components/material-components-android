@@ -87,4 +87,36 @@
         android:layout_height="wrap_content"/>
   </com.google.android.material.textfield.TextInputLayout>
 
+  <com.google.android.material.textfield.TextInputLayout
+    style="@style/Widget.MaterialComponents.TextInputLayout.EnclosedBox.ExposedDropdownMenu"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:hint="@string/cat_textfield_label"
+    app:errorEnabled="true"
+    app:helperText="@string/cat_textfield_enclosed_exposed_dropdown_helper_text"
+    app:helperTextEnabled="true">
+    <AutoCompleteTextView
+      android:id="@+id/enclosed_exposed_dropdown"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:inputType="none"/>
+  </com.google.android.material.textfield.TextInputLayout>
+
+
+  <com.google.android.material.textfield.TextInputLayout
+    style="@style/Widget.MaterialComponents.TextInputLayout.EnclosedBox.ExposedDropdownMenu"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:hint="@string/cat_textfield_label"
+    app:errorEnabled="true"
+    app:helperText="@string/cat_textfield_enclosed_editable_exposed_dropdown_helper_text"
+    app:helperTextEnabled="true">
+    <AutoCompleteTextView
+      android:id="@+id/enclosed_exposed_dropdown_editable"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"/>
+  </com.google.android.material.textfield.TextInputLayout>
+
 </LinearLayout>

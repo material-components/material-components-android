@@ -71,6 +71,13 @@ public class TextFieldFragment extends DemoLandingFragment {
           }
         });
     additionalDemos.add(
+        new Demo(R.string.cat_textfield_enclosed_demo_title) {
+          @Override
+          public Fragment createFragment() {
+            return new TextFieldEnclosedDemoFragment();
+          }
+        });
+    additionalDemos.add(
         new Demo(R.string.cat_textfield_exposed_dropdown_menu_demo_title) {
           @Override
           public Fragment createFragment() {
@@ -89,6 +96,13 @@ public class TextFieldFragment extends DemoLandingFragment {
           @Override
           public Fragment createFragment() {
             return new TextFieldOutlinedIconsDemoFragment();
+          }
+        });
+    additionalDemos.add(
+        new Demo(R.string.cat_textfield_enclosed_icons_demo_title) {
+          @Override
+          public Fragment createFragment() {
+            return new TextFieldEnclosedIconsDemoFragment();
           }
         });
     additionalDemos.add(

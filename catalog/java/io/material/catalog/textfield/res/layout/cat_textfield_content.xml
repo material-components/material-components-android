@@ -78,4 +78,33 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"/>
     </com.google.android.material.textfield.TextInputLayout>
+
+  <com.google.android.material.textfield.TextInputLayout
+    style="@style/Widget.MaterialComponents.TextInputLayout.EnclosedBox"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:hint="@string/cat_textfield_label"
+    app:helperText="@string/cat_textfield_enclosed_helper_text"
+    app:helperTextEnabled="true"
+    app:placeholderText="@string/cat_textfield_placeholder_text">
+    <com.google.android.material.textfield.TextInputEditText
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"/>
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <com.google.android.material.textfield.TextInputLayout
+    style="@style/Widget.MaterialComponents.TextInputLayout.EnclosedBox.Dense"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:hint="@string/cat_textfield_label"
+    app:helperText="@string/cat_textfield_enclosed_dense_helper_text"
+    app:helperTextEnabled="true"
+    app:placeholderText="@string/cat_textfield_placeholder_text">
+    <com.google.android.material.textfield.TextInputEditText
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"/>
+  </com.google.android.material.textfield.TextInputLayout>
+
   </LinearLayout>

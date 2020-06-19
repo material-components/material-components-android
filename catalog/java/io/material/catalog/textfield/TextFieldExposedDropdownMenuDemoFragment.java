@@ -73,6 +73,14 @@ public class TextFieldExposedDropdownMenuDemoFragment extends TextFieldControlla
         view.findViewById(R.id.outlined_exposed_dropdown_editable);
     editTextOutlinedEditableExposedDropdown.setAdapter(adapter);
 
+    AutoCompleteTextView editTextEnclosedExposedDropdown =
+        view.findViewById(R.id.enclosed_exposed_dropdown);
+    editTextEnclosedExposedDropdown.setAdapter(adapter);
+
+    AutoCompleteTextView editTextEnclosedEditableExposedDropdown =
+        view.findViewById(R.id.enclosed_exposed_dropdown_editable);
+    editTextEnclosedEditableExposedDropdown.setAdapter(adapter);
+
     // Initialize button for toggling the leading icon's visibility.
     Button toggleLeadingIconButton = view.findViewById(R.id.button_toggle_leading_icon);
     toggleLeadingIconButton.setVisibility(View.VISIBLE);

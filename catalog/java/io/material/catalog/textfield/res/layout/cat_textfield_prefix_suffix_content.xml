@@ -162,4 +162,74 @@
         android:inputType="numberDecimal"/>
   </com.google.android.material.textfield.TextInputLayout>
 
+  <com.google.android.material.textfield.TextInputLayout
+    style="@style/Widget.MaterialComponents.TextInputLayout.EnclosedBox"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:hint="@string/cat_textfield_label"
+    app:errorEnabled="true"
+    app:helperText="@string/cat_textfield_enclosed_prefix_helper_text"
+    app:helperTextEnabled="true"
+    app:prefixText="@string/cat_textfield_prefix">
+    <com.google.android.material.textfield.TextInputEditText
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:inputType="numberDecimal"/>
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <com.google.android.material.textfield.TextInputLayout
+    style="@style/Widget.MaterialComponents.TextInputLayout.EnclosedBox"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:hint="@string/cat_textfield_label"
+    app:errorEnabled="true"
+    app:helperText="@string/cat_textfield_enclosed_suffix_helper_text"
+    app:helperTextEnabled="true"
+    app:suffixText="@string/cat_textfield_suffix">
+    <com.google.android.material.textfield.TextInputEditText
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="end"
+      android:textAlignment="textEnd"
+      android:inputType="numberDecimal"/>
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <com.google.android.material.textfield.TextInputLayout
+    style="@style/Widget.MaterialComponents.TextInputLayout.EnclosedBox"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:hint="@string/cat_textfield_label"
+    app:errorEnabled="true"
+    app:helperText="@string/cat_textfield_enclosed_prefix_icon_helper_text"
+    app:helperTextEnabled="true"
+    app:startIconDrawable="@drawable/ic_search_24px"
+    app:prefixText="@string/cat_textfield_prefix">
+    <com.google.android.material.textfield.TextInputEditText
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:inputType="numberDecimal"/>
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <com.google.android.material.textfield.TextInputLayout
+    style="@style/Widget.MaterialComponents.TextInputLayout.EnclosedBox"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:hint="@string/cat_textfield_label"
+    app:errorEnabled="true"
+    app:helperText="@string/cat_textfield_enclosed_suffix_icon_helper_text"
+    app:helperTextEnabled="true"
+    app:endIconMode="clear_text"
+    app:suffixText="@string/cat_textfield_suffix">
+    <com.google.android.material.textfield.TextInputEditText
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="end"
+      android:textAlignment="textEnd"
+      android:inputType="numberDecimal"/>
+  </com.google.android.material.textfield.TextInputLayout>
+
 </LinearLayout>
