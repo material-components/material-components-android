@@ -55,6 +55,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.color.MaterialColors;
+import com.google.android.material.internal.TextWatcherAdapter;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.textfield.TextInputLayout.AccessibilityDelegate;
@@ -70,12 +71,7 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
   private static final int ANIMATION_FADE_IN_DURATION = 67;
 
   private final TextWatcher exposedDropdownEndIconTextWatcher =
-      new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {}
+      new TextWatcherAdapter() {
 
         @Override
         public void afterTextChanged(Editable s) {

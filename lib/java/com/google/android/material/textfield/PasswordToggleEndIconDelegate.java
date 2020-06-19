@@ -20,13 +20,13 @@ import com.google.android.material.R;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
-import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
+import com.google.android.material.internal.TextWatcherAdapter;
 import com.google.android.material.textfield.TextInputLayout.OnEditTextAttachedListener;
 import com.google.android.material.textfield.TextInputLayout.OnEndIconChangedListener;
 
@@ -34,19 +34,13 @@ import com.google.android.material.textfield.TextInputLayout.OnEndIconChangedLis
 class PasswordToggleEndIconDelegate extends EndIconDelegate {
 
   private final TextWatcher textWatcher =
-      new TextWatcher() {
+      new TextWatcherAdapter() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
           // Make sure the password toggle state always matches the EditText's transformation
           // method.
           endIconView.setChecked(!hasPasswordTransformation());
         }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {}
-
-        @Override
-        public void afterTextChanged(Editable s) {}
       };
 
   private final OnEditTextAttachedListener onEditTextAttachedListener =

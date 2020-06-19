@@ -19,15 +19,14 @@ import com.google.android.material.R;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
+import com.google.android.material.internal.TextWatcherAdapter;
 import com.google.android.material.textfield.TextInputLayout;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
 
-abstract class DateFormatTextWatcher implements TextWatcher {
+abstract class DateFormatTextWatcher extends TextWatcherAdapter {
 
   private final String formatHint;
   private final DateFormat dateFormat;
@@ -50,9 +49,6 @@ abstract class DateFormatTextWatcher implements TextWatcher {
   abstract void onValidDate(@Nullable Long day);
 
   void onInvalidDate() {}
-
-  @Override
-  public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
   @Override
   public void onTextChanged(@NonNull CharSequence s, int start, int before, int count) {
@@ -90,7 +86,4 @@ abstract class DateFormatTextWatcher implements TextWatcher {
       onInvalidDate();
     }
   }
-
-  @Override
-  public void afterTextChanged(Editable s) {}
 }
