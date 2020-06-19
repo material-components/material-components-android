@@ -192,6 +192,8 @@
       <enum name="filled" value="1"/>
       <!-- Outline box mode for the text input box. -->
       <enum name="outline" value="2"/>
+      <!-- Enclosed box mode for the text input box. -->
+      <enum name="enclosed" value="3"/>
     </attr>
     <!-- Value to use for the EditText's collapsed top padding in box mode. -->
     <attr name="boxCollapsedPaddingTop" format="dimension"/>
