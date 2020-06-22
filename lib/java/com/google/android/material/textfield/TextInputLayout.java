@@ -4096,19 +4096,15 @@ public class TextInputLayout extends LinearLayout {
       EditText editText = layout.getEditText();
       CharSequence inputText = (editText != null) ? editText.getText() : null;
       CharSequence hintText = layout.getHint();
-      CharSequence helperText = layout.getHelperText();
       CharSequence errorText = layout.getError();
       int maxCharLimit = layout.getCounterMaxLength();
       CharSequence counterOverflowDesc = layout.getCounterOverflowDescription();
       boolean showingText = !TextUtils.isEmpty(inputText);
       boolean hasHint = !TextUtils.isEmpty(hintText);
-      boolean hasHelperText = !TextUtils.isEmpty(helperText);
       boolean showingError = !TextUtils.isEmpty(errorText);
       boolean contentInvalid = showingError || !TextUtils.isEmpty(counterOverflowDesc);
 
       String hint = hasHint ? hintText.toString() : "";
-      hint += ((showingError || hasHelperText) && !TextUtils.isEmpty(hint)) ? ", " : "";
-      hint += showingError ? errorText : (hasHelperText ? helperText : "");
 
       if (showingText) {
         info.setText(inputText);
@@ -4134,6 +4130,10 @@ public class TextInputLayout extends LinearLayout {
 
       if (contentInvalid) {
         info.setError(showingError ? errorText : counterOverflowDesc);
+      }
+
+      if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1 && editText != null) {
+        editText.setLabelFor(R.id.textinput_helper_text);
       }
     }
   }

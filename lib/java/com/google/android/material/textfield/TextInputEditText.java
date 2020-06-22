@@ -25,6 +25,7 @@ import android.content.res.TypedArray;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
@@ -204,16 +205,14 @@ public class TextInputEditText extends AppCompatEditText {
   private String getAccessibilityNodeInfoText(@NonNull TextInputLayout layout) {
     CharSequence inputText = getText();
     CharSequence hintText = layout.getHint();
-    CharSequence helperText = layout.getHelperText();
-    CharSequence errorText = layout.getError();
     boolean showingText = !TextUtils.isEmpty(inputText);
     boolean hasHint = !TextUtils.isEmpty(hintText);
-    boolean hasHelperText = !TextUtils.isEmpty(helperText);
-    boolean showingError = !TextUtils.isEmpty(errorText);
+
+    if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1) {
+      setLabelFor(R.id.textinput_helper_text);
+    }
 
     String hint = hasHint ? hintText.toString() : "";
-    hint += ((showingError || hasHelperText) && !TextUtils.isEmpty(hint)) ? ", " : "";
-    hint += showingError ? errorText : (hasHelperText ? helperText : "");
 
     if (showingText) {
       return inputText + (!TextUtils.isEmpty(hint) ? (", " + hint) : "");
