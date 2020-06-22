@@ -109,8 +109,10 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
         public void onInitializeAccessibilityNodeInfo(
             View host, @NonNull AccessibilityNodeInfoCompat info) {
           super.onInitializeAccessibilityNodeInfo(host, info);
-          // The exposed dropdown menu behaves like a Spinner.
-          info.setClassName(Spinner.class.getName());
+          // The non-editable exposed dropdown menu behaves like a Spinner.
+          if (textInputLayout.getEditText().getKeyListener() == null) {
+            info.setClassName(Spinner.class.getName());
+          }
           if (info.isShowingHintText()) {
             // Set hint text to null so TalkBack doesn't announce the label twice when there is no
             // item selected.
