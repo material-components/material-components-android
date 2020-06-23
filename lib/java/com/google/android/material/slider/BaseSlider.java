@@ -53,6 +53,7 @@ import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.RangeInfoCompat;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.util.AttributeSet;
+import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -78,9 +79,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.TreeSet;
 
 /**
  * The slider can function either as a continuous slider, or as a discrete slider. The mode of
@@ -228,6 +231,11 @@ abstract class BaseSlider<
   private float valueFrom;
   private float valueTo;
   private ArrayList<Float> values = new ArrayList<>();
+  // We need stable ids for the virtual views. For focus handling keep track of the order
+  // of the virtual view in the slider.
+  private final TreeSet<Pair<Float, Integer>> sortOrder;
+  private final Comparator<Pair<Float, Integer>> pairComparator;
+
   // The index of the currently touched thumb.
   private int activeThumbIdx = -1;
   // The index of the currently focused thumb.
@@ -360,9 +368,15 @@ abstract class BaseSlider<
             return d;
           }
         };
+    pairComparator = new Comparator<Pair<Float, Integer>>() {
+      @Override
+      public int compare(Pair<Float, Integer> o1, Pair<Float, Integer> o2) {
+        return o1.first.compareTo(o2.first);
+      }
+    };
+    sortOrder = new TreeSet<>(pairComparator);
 
     processAttributes(context, attrs, defStyleAttr);
-
     setFocusable(true);
     setClickable(true);
 
@@ -652,11 +666,15 @@ abstract class BaseSlider<
     if (valuesUnchanged) {
       return;
     }
-
     this.values = values;
+    int idx = 0;
+    sortOrder.clear();
+    for (Float val : values) {
+      sortOrder.add(new Pair<>(val, idx++));
+    }
     dirtyConfig = true;
     // Only update the focused thumb index. The active thumb index will be updated on touch.
-    focusedThumbIdx = 0;
+    focusedThumbIdx = sortOrder.first().second;
     updateHaloHotspot();
     createLabelPool();
     dispatchOnChangedProgramatically();
@@ -1651,15 +1669,19 @@ abstract class BaseSlider<
 
   private boolean snapThumbToValue(int idx, float value) {
     // Check if the new value equals a value that was already set.
-    if (Math.abs(value - values.get(idx)) < THRESHOLD) {
+    Float oldVal = values.get(idx);
+    if (Math.abs(value - oldVal) < THRESHOLD) {
       return false;
     }
 
     // Replace the old value with the new value of the touch position.
     values.set(idx, value);
-    if (idx == activeThumbIdx) {
-      // Hold on to the active thumb if that's what we're tracking.
-      idx = values.indexOf(value);
+    for (Pair<Float, Integer> order : sortOrder) {
+      if (order.second == idx) {
+        sortOrder.remove(order);
+        sortOrder.add(new Pair<>(value, idx));
+        break;
+      }
     }
     activeThumbIdx = idx;
     focusedThumbIdx = idx;
@@ -1920,21 +1942,47 @@ abstract class BaseSlider<
    * @see #moveFocusInAbsoluteDirection(int)
    */
   private boolean moveFocus(int direction) {
-    final int oldFocusedThumbIdx = focusedThumbIdx;
+    int oldFocusedThumbIdx = focusedThumbIdx;
+    int focusedThumbOrder = getThumbOrderInSlider(oldFocusedThumbIdx);
     // Prevent integer overflow.
-    final long newFocusedThumbIdx = (long) oldFocusedThumbIdx + direction;
-    focusedThumbIdx = (int) MathUtils.clamp(newFocusedThumbIdx, 0, values.size() - 1);
+    int newPositionOfFocusedThumb = (int) ((long) focusedThumbOrder + direction);
+    newPositionOfFocusedThumb = MathUtils.clamp(newPositionOfFocusedThumb, 0, values.size() - 1);
+
+    focusedThumbIdx = getThumbIdxAtPosition(newPositionOfFocusedThumb);
     if (focusedThumbIdx == oldFocusedThumbIdx) {
       // Move focus to next or previous view.
       return false;
-    } else {
-      if (activeThumbIdx != -1) {
-        activeThumbIdx = focusedThumbIdx;
-      }
-      updateHaloHotspot();
-      postInvalidate();
-      return true;
     }
+
+    if (activeThumbIdx != -1) {
+      activeThumbIdx = focusedThumbIdx;
+    }
+    updateHaloHotspot();
+    postInvalidate();
+    return true;
+  }
+
+  private int getThumbIdxAtPosition(int position) {
+    int i = 0;
+    for (Pair<Float, Integer> order : sortOrder) {
+      if (i == position) {
+        return order.second;
+      }
+      i++;
+    }
+
+    return 0;
+  }
+
+  private int getThumbOrderInSlider(int thumbIdx) {
+    int position = 0;
+    for (Pair<Float, Integer> order : sortOrder) {
+      if (order.second == thumbIdx) {
+        return position;
+      }
+      position++;
+    }
+    return position;
   }
 
   /**
@@ -2198,8 +2246,8 @@ abstract class BaseSlider<
 
     @Override
     protected void getVisibleVirtualViews(List<Integer> virtualViewIds) {
-      for (int i = 0; i < slider.getValuesRaw().size(); i++) {
-        virtualViewIds.add(i);
+      for (Pair<Float, Integer> order : slider.sortOrder) {
+        virtualViewIds.add(order.second);
       }
     }
 

@@ -88,4 +88,20 @@ public final class SliderKeyTestLtr extends SliderKeyTestCommon {
     assertThat(slider.getValues()).contains(0.0f);
     assertThat(slider.getValues()).doesNotContain(3.0f);
   }
+
+  @Test
+  public void testActivateSecondThumb_dPadAfterCrossingThird_focusesFourthThumb() {
+    Float[] values = new Float[] {1f, 2f, 3f, 5f};
+    slider.setValues(values);
+    slider.requestFocus();
+    slider.setFocusedThumbIndex(1);
+
+    KeyEventBuilder right = new KeyEventBuilder(KeyEvent.KEYCODE_DPAD_RIGHT);
+    right.dispatchEvent(slider);
+    right.dispatchEvent(slider);
+
+    // value should be 4 now and it passed thumb 2 (value 3)
+    slider.requestFocus(View.FOCUS_RIGHT);
+    assertThat(slider.getFocusedThumbIndex()).isEqualTo(3);
+  }
 }
