@@ -29,7 +29,7 @@ import androidx.dynamicanimation.animation.SpringForce;
  * This class draws the graphics for determinate modes by applying different {@link DrawingDelegate}
  * for different indicator types.
  */
-class DeterminateDrawable extends DrawableWithAnimatedVisibilityChange {
+public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityChange {
 
   // Constants for drawing progress.
   private static final int MAX_DRAWABLE_LEVEL = 10000;
@@ -40,7 +40,7 @@ class DeterminateDrawable extends DrawableWithAnimatedVisibilityChange {
   // Fraction of displayed indicator in the total width.
   private float indicatorFraction;
 
-  DeterminateDrawable(
+  public DeterminateDrawable(
       @NonNull ProgressIndicator progressIndicator, @NonNull DrawingDelegate drawingDelegate) {
     super(progressIndicator);
 
@@ -159,6 +159,10 @@ class DeterminateDrawable extends DrawableWithAnimatedVisibilityChange {
   private void setIndicatorFraction(float indicatorFraction) {
     this.indicatorFraction = indicatorFraction;
     invalidateSelf();
+  }
+
+  public DrawingDelegate getDrawingDelegate() {
+    return drawingDelegate;
   }
 
   // ******************* Properties *******************

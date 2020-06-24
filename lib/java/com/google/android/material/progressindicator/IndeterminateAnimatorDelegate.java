@@ -28,7 +28,7 @@ import androidx.vectordrawable.graphics.drawable.Animatable2Compat.AnimationCall
 public abstract class IndeterminateAnimatorDelegate<T extends Animator> {
 
   // The drawable associated with this delegate.
-  protected Drawable drawable;
+  protected IndeterminateDrawable drawable;
   // A float array of numbers in [0, 1] representing the positions of ends of each segment on the
   // track.
   protected final float[] segmentPositions;
@@ -46,7 +46,7 @@ public abstract class IndeterminateAnimatorDelegate<T extends Animator> {
   }
 
   /** Registers the drawable associated to this delegate. */
-  protected void registerDrawable(@NonNull Drawable drawable) {
+  protected void registerDrawable(@NonNull IndeterminateDrawable drawable) {
     this.drawable = drawable;
   }
 
