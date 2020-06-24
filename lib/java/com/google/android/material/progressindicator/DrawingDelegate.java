@@ -25,7 +25,7 @@ import androidx.annotation.NonNull;
  * A delegate interface for drawing the graphics in different drawable classes used in {@link
  * ProgressIndicator}.
  */
-interface DrawingDelegate {
+public interface DrawingDelegate {
 
   /**
    * Prepares the bound of the canvas for the actual drawing. Should be called before any drawing.
