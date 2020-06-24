@@ -90,7 +90,7 @@ public class RangeSlider extends BaseSlider<RangeSlider, OnChangeListener, OnSli
     super.setValues(values);
   }
 
-  /** Returns current values of the slider thumbs, sorted in ascending order. */
+  /** Returns current values of the slider thumbs. */
   @NonNull
   @Override
   public List<Float> getValues() {

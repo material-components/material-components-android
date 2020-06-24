@@ -45,7 +45,6 @@ import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.RangeInfoCompat;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.util.AttributeSet;
-import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -79,11 +78,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.TreeSet;
 
 /**
  * The slider can function either as a continuous slider, or as a discrete slider. The mode of
@@ -230,12 +227,9 @@ abstract class BaseSlider<
   private boolean thumbIsPressed = false;
   private float valueFrom;
   private float valueTo;
+  // Holds the values set to this slider. We keep this array sorted in order to check if the value
+  // has been changed when a new value is set and to find the minimum and maximum values.
   private ArrayList<Float> values = new ArrayList<>();
-  // We need stable ids for the virtual views. For focus handling keep track of the order
-  // of the virtual view in the slider.
-  private final TreeSet<Pair<Float, Integer>> sortOrder;
-  private final Comparator<Pair<Float, Integer>> pairComparator;
-
   // The index of the currently touched thumb.
   private int activeThumbIdx = -1;
   // The index of the currently focused thumb.
@@ -368,15 +362,9 @@ abstract class BaseSlider<
             return d;
           }
         };
-    pairComparator = new Comparator<Pair<Float, Integer>>() {
-      @Override
-      public int compare(Pair<Float, Integer> o1, Pair<Float, Integer> o2) {
-        return o1.first.compareTo(o2.first);
-      }
-    };
-    sortOrder = new TreeSet<>(pairComparator);
 
     processAttributes(context, attrs, defStyleAttr);
+
     setFocusable(true);
     setClickable(true);
 
@@ -593,21 +581,9 @@ abstract class BaseSlider<
     postInvalidate();
   }
 
-  /**
-   * Returns the values of the slider sorted sorted in ascending order.
-   *
-   * @see #getValuesRaw() for the unsorted list of values.
-   */
   @NonNull
   List<Float> getValues() {
-    ArrayList<Float> floats = new ArrayList<>(values);
-    Collections.sort(values);
-    return floats;
-  }
-
-  @NonNull
-  List<Float> getValuesRaw() {
-    return values;
+    return new ArrayList<>(values);
   }
 
   /**
@@ -659,29 +635,22 @@ abstract class BaseSlider<
       throw new IllegalArgumentException("At least one value must be set");
     }
 
-    boolean valuesUnchanged =
-        this.values.size() == values.size()
-            && this.values.containsAll(values)
-            && values.containsAll(this.values);
-    if (valuesUnchanged) {
-      return;
+    Collections.sort(values);
+
+    if (this.values.size() == values.size()) {
+      if (this.values.equals(values)) {
+        return;
+      }
     }
+
     this.values = values;
-    int idx = 0;
-    sortOrder.clear();
-    for (Float val : values) {
-      sortOrder.add(new Pair<>(val, idx++));
-    }
     dirtyConfig = true;
     // Only update the focused thumb index. The active thumb index will be updated on touch.
-    focusedThumbIdx = sortOrder.first().second;
+    focusedThumbIdx = 0;
     updateHaloHotspot();
     createLabelPool();
     dispatchOnChangedProgramatically();
     postInvalidate();
-    if (accessibilityHelper != null) {
-      accessibilityHelper.invalidateRoot();
-    }
   }
 
   private void createLabelPool() {
@@ -1362,7 +1331,7 @@ abstract class BaseSlider<
     int top = calculateTop();
 
     drawInactiveTrack(canvas, trackWidth, top);
-    if (Collections.max(values) > valueFrom) {
+    if (Collections.max(getValues()) > valueFrom) {
       drawActiveTrack(canvas, trackWidth, top);
     }
 
@@ -1387,8 +1356,8 @@ abstract class BaseSlider<
    * float[1]} is the normalized right position of the range.
    */
   private float[] getActiveRange() {
-    float max = Collections.max(values);
-    float min = Collections.min(values);
+    float max = Collections.max(getValues());
+    float min = Collections.min(getValues());
     float left = normalizeValue(values.size() == 1 ? valueFrom : min);
     float right = normalizeValue(max);
 
@@ -1669,19 +1638,16 @@ abstract class BaseSlider<
 
   private boolean snapThumbToValue(int idx, float value) {
     // Check if the new value equals a value that was already set.
-    Float oldVal = values.get(idx);
-    if (Math.abs(value - oldVal) < THRESHOLD) {
+    if (Math.abs(value - values.get(idx)) < THRESHOLD) {
       return false;
     }
 
     // Replace the old value with the new value of the touch position.
     values.set(idx, value);
-    for (Pair<Float, Integer> order : sortOrder) {
-      if (order.second == idx) {
-        sortOrder.remove(order);
-        sortOrder.add(new Pair<>(value, idx));
-        break;
-      }
+    Collections.sort(values);
+    if (idx == activeThumbIdx) {
+      // Hold on to the active thumb if that's what we're tracking.
+      idx = values.indexOf(value);
     }
     activeThumbIdx = idx;
     focusedThumbIdx = idx;
@@ -1934,62 +1900,35 @@ abstract class BaseSlider<
   }
 
   /**
-   * Attempts to move focus to next or previous thumb <i>independent of layout direction</i> and
-   * returns whether the focused thumb changed. If focused thumb didn't change, we're at the view
-   * boundary for specified {@code direction} and focus may be moved to next or previous view
-   * instead.
-   *
+   * Attempts to move focus to next or previous thumb <i>independent of layout direction</i>
+   * and returns whether the focused thumb changed.
+   * If focused thumb didn't change, we're at the view boundary for specified {@code direction}
+   * and focus may be moved to next or previous view instead.
    * @see #moveFocusInAbsoluteDirection(int)
    */
   private boolean moveFocus(int direction) {
-    int oldFocusedThumbIdx = focusedThumbIdx;
-    int focusedThumbOrder = getThumbOrderInSlider(oldFocusedThumbIdx);
+    final int oldFocusedThumbIdx = focusedThumbIdx;
     // Prevent integer overflow.
-    int newPositionOfFocusedThumb = (int) ((long) focusedThumbOrder + direction);
-    newPositionOfFocusedThumb = MathUtils.clamp(newPositionOfFocusedThumb, 0, values.size() - 1);
-
-    focusedThumbIdx = getThumbIdxAtPosition(newPositionOfFocusedThumb);
+    final long newFocusedThumbIdx = oldFocusedThumbIdx + direction;
+    focusedThumbIdx = (int) MathUtils.clamp(newFocusedThumbIdx, 0, values.size() - 1);
     if (focusedThumbIdx == oldFocusedThumbIdx) {
       // Move focus to next or previous view.
       return false;
-    }
-
-    if (activeThumbIdx != -1) {
-      activeThumbIdx = focusedThumbIdx;
-    }
-    updateHaloHotspot();
-    postInvalidate();
-    return true;
-  }
-
-  private int getThumbIdxAtPosition(int position) {
-    int i = 0;
-    for (Pair<Float, Integer> order : sortOrder) {
-      if (i == position) {
-        return order.second;
+    } else {
+      if (activeThumbIdx != -1) {
+        activeThumbIdx = focusedThumbIdx;
       }
-      i++;
+      updateHaloHotspot();
+      postInvalidate();
+      return true;
     }
-
-    return 0;
-  }
-
-  private int getThumbOrderInSlider(int thumbIdx) {
-    int position = 0;
-    for (Pair<Float, Integer> order : sortOrder) {
-      if (order.second == thumbIdx) {
-        return position;
-      }
-      position++;
-    }
-    return position;
   }
 
   /**
-   * Attempts to move focus to the <i>left or right</i> of currently focused thumb and returns
-   * whether the focused thumb changed. If focused thumb didn't change, we're at the view boundary
-   * for specified {@code direction} and focus may be moved to next or previous view instead.
-   *
+   * Attempts to move focus to the <i>left or right</i> of currently focused thumb
+   * and returns whether the focused thumb changed.
+   * If focused thumb didn't change, we're at the view boundary for specified {@code direction}
+   * and focus may be moved to next or previous view instead.
    * @see #moveFocus(int)
    */
   private boolean moveFocusInAbsoluteDirection(int direction) {
@@ -2216,7 +2155,7 @@ abstract class BaseSlider<
   }
 
   void updateBoundsForVirturalViewId(int virtualViewId, Rect virtualViewBounds) {
-    int x = trackSidePadding + (int) (normalizeValue(values.get(virtualViewId)) * trackWidth);
+    int x = trackSidePadding + (int) (normalizeValue(getValues().get(virtualViewId)) * trackWidth);
     int y = calculateTop();
 
     virtualViewBounds.set(x - thumbRadius, y - thumbRadius, x + thumbRadius, y + thumbRadius);
@@ -2234,7 +2173,7 @@ abstract class BaseSlider<
 
     @Override
     protected int getVirtualViewAt(float x, float y) {
-      for (int i = 0; i < slider.getValuesRaw().size(); i++) {
+      for (int i = 0; i < slider.getValues().size(); i++) {
         slider.updateBoundsForVirturalViewId(i, virtualViewBounds);
         if (virtualViewBounds.contains((int) x, (int) y)) {
           return i;
@@ -2246,8 +2185,8 @@ abstract class BaseSlider<
 
     @Override
     protected void getVisibleVirtualViews(List<Integer> virtualViewIds) {
-      for (Pair<Float, Integer> order : slider.sortOrder) {
-        virtualViewIds.add(order.second);
+      for (int i = 0; i < slider.getValues().size(); i++) {
+        virtualViewIds.add(i);
       }
     }
 
@@ -2257,7 +2196,7 @@ abstract class BaseSlider<
 
       info.addAction(AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_SET_PROGRESS);
 
-      List<Float> values = slider.getValuesRaw();
+      List<Float> values = slider.getValues();
       final float value = values.get(virtualViewId);
       float valueFrom = slider.getValueFrom();
       float valueTo = slider.getValueTo();
@@ -2282,49 +2221,18 @@ abstract class BaseSlider<
       }
       // Add the range to the content description.
       if (values.size() > 1) {
-        contentDescription.append(startOrEndDescription(virtualViewId));
-        contentDescription.append(getRangeDescription());
+        contentDescription.append(
+            slider
+                .getContext()
+                .getString(
+                    R.string.mtrl_slider_range_content_description,
+                    slider.formatValue(slider.getValueFrom()),
+                    slider.formatValue(slider.getValueTo())));
       }
-
       info.setContentDescription(contentDescription.toString());
 
       slider.updateBoundsForVirturalViewId(virtualViewId, virtualViewBounds);
       info.setBoundsInParent(virtualViewBounds);
-    }
-
-    @NonNull
-    private String startOrEndDescription(int virtualViewId) {
-      float maxFromValues = getMaxFromValues();
-      float minFromValues = getMinFromValues();
-      List<Float> valuesRaw = slider.getValuesRaw();
-      float focusedValue = valuesRaw.get(virtualViewId);
-      if (focusedValue == maxFromValues) {
-        return slider.getContext().getString(R.string.material_slider_range_end);
-      }
-
-      if (focusedValue == minFromValues) {
-        return slider.getContext().getString(R.string.material_slider_range_start);
-      }
-
-      return "";
-    }
-
-    private String getRangeDescription() {
-      String max = slider.formatValue(getMaxFromValues());
-      String min = slider.formatValue(getMinFromValues());
-      return slider
-          .getContext()
-          .getString(R.string.material_slider_range_content_description, min, max);
-    }
-
-    @NonNull
-    private Float getMinFromValues() {
-      return Collections.min(slider.getValuesRaw());
-    }
-
-    @NonNull
-    private Float getMaxFromValues() {
-      return Collections.max(slider.getValuesRaw());
     }
 
     @Override
@@ -2365,7 +2273,7 @@ abstract class BaseSlider<
               increment = -increment;
             }
 
-            List<Float> values = slider.getValuesRaw();
+            List<Float> values = slider.getValues();
             float clamped =
                 MathUtils.clamp(
                     values.get(virtualViewId) + increment,
@@ -2374,7 +2282,15 @@ abstract class BaseSlider<
             if (slider.snapThumbToValue(virtualViewId, clamped)) {
               slider.updateHaloHotspot();
               slider.postInvalidate();
-              invalidateVirtualView(virtualViewId);
+
+              // If the index of the new value has changed, refocus on the correct virtual view.
+              if (values.indexOf(clamped) != virtualViewId) {
+                virtualViewId = values.indexOf(clamped);
+                sendEventForVirtualView(virtualViewId, AccessibilityEvent.TYPE_VIEW_FOCUSED);
+              } else {
+                invalidateVirtualView(virtualViewId);
+              }
+
               return true;
             }
             return false;
