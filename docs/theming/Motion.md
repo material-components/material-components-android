@@ -9,11 +9,13 @@ path: /theming/motion/
 
 # Motion
 
-Material motion is a set of transition patterns that help users understand and navigate
-an app.
+Material motion is a set of transition patterns that help users understand and
+navigate an app. For more information on the patterns and how to choose between
+them, check out the
+[Material motion system spec](https://material.io/design/motion/the-motion-system.html).
 
 Before you can use the motion library, you need to add a dependency on the
-Material Components for Android library (version 1.2.0-beta01 or later). For
+Material Components for Android library (version `1.2.0-beta01` or later). For
 more information, go to the
 [Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
 page.
@@ -429,7 +431,7 @@ transition is `forward` and in Fragment B the enter transition is also
 when these transition pairs are running. The opposite is true in the backwards
 direction. When Fragment B is exiting, Fragment A will be entering. For this
 reason, Fragment B is configured to exit in the backward direction and Fragment
-A is configured to enter in the backward direction.
+A is configured to reenter in the backward direction.
 
 When you're ready to move from Fragment A to B, replace Fragment A with Fragment
 B.
