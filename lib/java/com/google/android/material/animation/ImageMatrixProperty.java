@@ -16,9 +16,9 @@
 package com.google.android.material.animation;
 
 import android.graphics.Matrix;
-import androidx.annotation.NonNull;
 import android.util.Property;
 import android.widget.ImageView;
+import androidx.annotation.NonNull;
 
 /**
  * Property wrapper for {@link ImageView#getImageMatrix()} and {@link

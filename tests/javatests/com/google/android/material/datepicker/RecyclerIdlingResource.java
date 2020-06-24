@@ -15,9 +15,9 @@
  */
 package com.google.android.material.datepicker;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener;
+import androidx.annotation.NonNull;
 import androidx.test.espresso.IdlingResource;
 
 public class RecyclerIdlingResource implements IdlingResource {

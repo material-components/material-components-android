@@ -22,10 +22,10 @@ package com.google.android.material.transition.platform;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.transition.TransitionValues;
 import android.transition.Visibility;
 

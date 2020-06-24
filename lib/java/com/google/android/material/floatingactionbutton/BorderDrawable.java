@@ -32,13 +32,13 @@ import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION_CODES;
+import androidx.core.graphics.ColorUtils;
 import androidx.annotation.ColorInt;
 import androidx.annotation.Dimension;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
-import androidx.core.graphics.ColorUtils;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.shape.ShapeAppearancePathProvider;
 
@@ -65,7 +65,7 @@ class BorderDrawable extends Drawable {
   private final RectF rectF = new RectF();
   private final RectF boundsRectF = new RectF();
   private final BorderState state = new BorderState();
-  
+
   @Dimension float borderWidth;
   @ColorInt private int topOuterStrokeColor;
   @ColorInt private int topInnerStrokeColor;

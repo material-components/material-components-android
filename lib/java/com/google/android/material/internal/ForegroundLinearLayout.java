@@ -26,13 +26,13 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import androidx.appcompat.widget.LinearLayoutCompat;
+import android.util.AttributeSet;
+import android.view.Gravity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
-import androidx.appcompat.widget.LinearLayoutCompat;
-import android.util.AttributeSet;
-import android.view.Gravity;
 
 /** @hide */
 @RestrictTo(LIBRARY_GROUP)

@@ -19,8 +19,6 @@ package io.material.catalog.topappbar;
 import io.material.catalog.R;
 
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import androidx.appcompat.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,6 +27,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import io.material.catalog.feature.DemoActivity;
 import io.material.catalog.feature.DemoUtils;
 

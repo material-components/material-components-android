@@ -23,11 +23,11 @@ import static com.google.android.material.testutils.SwipeUtils.swipeUp;
 import static com.google.android.material.testutils.TestUtilsActions.setText;
 import static org.junit.Assert.assertEquals;
 
+import android.text.TextUtils;
+import android.widget.TextView;
 import androidx.annotation.CallSuper;
 import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
-import android.text.TextUtils;
-import android.widget.TextView;
 import androidx.test.filters.MediumTest;
 import androidx.test.runner.AndroidJUnit4;
 import com.google.android.material.internal.BaseDynamicCoordinatorLayoutTest;

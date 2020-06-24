@@ -20,13 +20,13 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
-import androidx.annotation.ColorInt;
-import androidx.annotation.Px;
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration;
 import android.view.View;
+import androidx.annotation.ColorInt;
+import androidx.annotation.Px;
 
 /**
  * An {@link ItemDecoration} that adds Material-style dividers between grid items. This is meant to

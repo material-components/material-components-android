@@ -20,9 +20,9 @@ import com.google.android.material.R;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.util.AttributeSet;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.util.AttributeSet;
 import com.google.android.material.slider.Slider.OnChangeListener;
 import com.google.android.material.slider.Slider.OnSliderTouchListener;
 

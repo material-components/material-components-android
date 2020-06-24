@@ -20,13 +20,13 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import android.util.SparseArray;
+import android.view.View;
+import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
-import android.util.SparseArray;
-import android.view.View;
-import android.widget.FrameLayout;
 import com.google.android.material.badge.BadgeDrawable.SavedState;
 import com.google.android.material.internal.ParcelableSparseArray;
 

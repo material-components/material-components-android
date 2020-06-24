@@ -23,10 +23,10 @@ import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wra
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
-import androidx.annotation.Nullable;
 import androidx.core.widget.CompoundButtonCompat;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import android.util.AttributeSet;
+import androidx.annotation.Nullable;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.resources.MaterialResources;

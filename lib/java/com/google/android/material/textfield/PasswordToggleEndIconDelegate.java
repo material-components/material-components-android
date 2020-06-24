@@ -18,7 +18,6 @@ package com.google.android.material.textfield;
 
 import com.google.android.material.R;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -26,6 +25,7 @@ import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
+import androidx.annotation.NonNull;
 import com.google.android.material.internal.TextWatcherAdapter;
 import com.google.android.material.textfield.TextInputLayout.OnEditTextAttachedListener;
 import com.google.android.material.textfield.TextInputLayout.OnEndIconChangedListener;

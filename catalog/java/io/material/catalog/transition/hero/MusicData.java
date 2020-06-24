@@ -18,10 +18,10 @@ package io.material.catalog.transition.hero;
 
 import io.material.catalog.R;
 
-import androidx.annotation.DrawableRes;
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.DiffUtil.ItemCallback;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;

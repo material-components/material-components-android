@@ -17,8 +17,8 @@
 package com.google.android.material.shape;
 
 import android.graphics.drawable.Drawable;
-import androidx.annotation.NonNull;
 import android.view.View;
+import androidx.annotation.NonNull;
 import com.google.android.material.internal.ViewUtils;
 
 /** Utility methods for {@link MaterialShapeDrawable} and related classes. */

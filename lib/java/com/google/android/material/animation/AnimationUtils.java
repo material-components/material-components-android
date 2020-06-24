@@ -17,10 +17,10 @@
 package com.google.android.material.animation;
 
 import android.animation.TimeInterpolator;
-import androidx.annotation.RestrictTo;
-import androidx.annotation.RestrictTo.Scope;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.RestrictTo.Scope;
 import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import androidx.interpolator.view.animation.LinearOutSlowInInterpolator;

@@ -18,10 +18,10 @@ package com.google.android.material.internal;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RestrictTo;
 import android.text.Editable;
 import android.text.TextWatcher;
+import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
 
 /**
  * Base class for scenarios where user wants to implement only one method of

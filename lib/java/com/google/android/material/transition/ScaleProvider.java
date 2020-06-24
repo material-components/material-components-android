@@ -19,10 +19,10 @@ package com.google.android.material.transition;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * A class that configures and is able to provide an {@link Animator} that scales a view.

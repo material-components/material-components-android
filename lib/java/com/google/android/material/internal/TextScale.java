@@ -20,11 +20,11 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
+import android.view.ViewGroup;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
-import android.view.ViewGroup;
-import android.widget.TextView;
 import androidx.transition.Transition;
 import androidx.transition.TransitionValues;
 import java.util.Map;

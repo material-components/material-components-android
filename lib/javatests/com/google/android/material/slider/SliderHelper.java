@@ -22,11 +22,11 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.os.SystemClock;
-import androidx.annotation.FloatRange;
 import androidx.core.view.ViewCompat;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.widget.LinearLayout;
+import androidx.annotation.FloatRange;
 import com.google.android.material.slider.KeyUtils.KeyEventBuilder;
 
 public class SliderHelper {

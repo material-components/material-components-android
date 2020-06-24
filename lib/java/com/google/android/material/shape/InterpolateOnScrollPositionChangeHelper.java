@@ -16,11 +16,11 @@
 
 package com.google.android.material.shape;
 
-import androidx.annotation.NonNull;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnScrollChangedListener;
 import android.widget.ScrollView;
+import androidx.annotation.NonNull;
 
 /** Helper class to handle shape interpolation when shaped views enter or exit the window. */
 public class InterpolateOnScrollPositionChangeHelper {

@@ -19,8 +19,6 @@ package io.material.catalog.bottomnav;
 import io.material.catalog.R;
 
 import android.os.Bundle;
-import androidx.annotation.LayoutRes;
-import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +29,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.Nullable;
 import androidx.core.math.MathUtils;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.badge.BadgeDrawable.BadgeGravity;

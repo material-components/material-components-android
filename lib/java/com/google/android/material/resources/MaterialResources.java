@@ -24,13 +24,13 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.widget.TintTypedArray;
+import android.util.TypedValue;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleableRes;
-import androidx.appcompat.content.res.AppCompatResources;
-import androidx.appcompat.widget.TintTypedArray;
-import android.util.TypedValue;
 
 /**
  * Utility methods to resolve resources for components.

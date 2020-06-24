@@ -17,10 +17,10 @@ package com.google.android.material.animation;
 
 import com.google.android.material.R;
 
-import androidx.annotation.NonNull;
 import android.util.Property;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.NonNull;
 
 /**
  * A Property for the alpha of a ViewGroup's children.

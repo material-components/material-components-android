@@ -22,12 +22,12 @@ import static io.material.catalog.transition.TransitionContainerTransformStartDe
 
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.transition.platform.MaterialContainerTransform;
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;

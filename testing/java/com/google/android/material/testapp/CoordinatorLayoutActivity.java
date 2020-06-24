@@ -16,8 +16,8 @@
 
 package com.google.android.material.testapp;
 
-import androidx.annotation.VisibleForTesting;
 import android.widget.FrameLayout;
+import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.testapp.base.BaseTestActivity;
 

@@ -21,15 +21,15 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import androidx.core.graphics.ColorUtils;
+import android.util.Log;
+import android.util.StateSet;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.VisibleForTesting;
-import androidx.core.graphics.ColorUtils;
-import android.util.Log;
-import android.util.StateSet;
 
 /**
  * Utils class for ripples.

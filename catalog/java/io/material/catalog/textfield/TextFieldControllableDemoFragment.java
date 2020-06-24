@@ -18,8 +18,6 @@ package io.material.catalog.textfield;
 
 import io.material.catalog.R;
 
-import androidx.annotation.LayoutRes;
-import androidx.annotation.StringRes;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +25,8 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.StringRes;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputLayout;
 

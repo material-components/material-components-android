@@ -27,11 +27,11 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import androidx.annotation.ColorInt;
-import androidx.annotation.RequiresApi;
 import androidx.core.graphics.ColorUtils;
 import android.view.View;
 import android.view.Window;
+import androidx.annotation.ColorInt;
+import androidx.annotation.RequiresApi;
 import com.google.android.material.color.MaterialColors;
 
 /** Helper that saves the current window preferences for the Catalog. */

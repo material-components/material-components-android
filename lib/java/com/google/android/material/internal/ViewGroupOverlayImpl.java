@@ -16,8 +16,8 @@
 
 package com.google.android.material.internal;
 
-import androidx.annotation.NonNull;
 import android.view.View;
+import androidx.annotation.NonNull;
 
 interface ViewGroupOverlayImpl extends ViewOverlayImpl {
 

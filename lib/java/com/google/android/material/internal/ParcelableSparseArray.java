@@ -20,10 +20,10 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.SparseArray;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
-import android.util.SparseArray;
 
 /** @hide */
 @RestrictTo(LIBRARY_GROUP)

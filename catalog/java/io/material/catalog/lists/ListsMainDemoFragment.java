@@ -19,8 +19,6 @@ package io.material.catalog.lists;
 import io.material.catalog.R;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
@@ -29,6 +27,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.google.android.material.lists.SingleLineItemViewHolder;
 import com.google.android.material.lists.ThreeLineItemViewHolder;
 import com.google.android.material.lists.TwoLineItemViewHolder;

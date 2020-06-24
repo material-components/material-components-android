@@ -25,14 +25,14 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.util.AttributeSet;
+import android.util.TypedValue;
+import android.view.ContextThemeWrapper;
 import androidx.annotation.AttrRes;
 import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
-import android.util.AttributeSet;
-import android.util.TypedValue;
-import android.view.ContextThemeWrapper;
 
 /**
  * This class models the edges and corners of a shape, which are used by {@link

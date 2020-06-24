@@ -17,9 +17,9 @@ package com.google.android.material.datepicker;
 
 import com.google.android.material.R;
 
+import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.text.TextUtils;
 import com.google.android.material.internal.TextWatcherAdapter;
 import com.google.android.material.textfield.TextInputLayout;
 import java.text.DateFormat;

@@ -21,11 +21,11 @@ import static com.google.android.material.transition.TransitionUtils.lerp;
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
+import android.view.View;
+import android.view.ViewGroup;
 import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.view.View;
-import android.view.ViewGroup;
 
 /** A class that configures and is able to provide an {@link Animator} that fades a view. */
 public final class FadeProvider implements VisibilityAnimatorProvider {

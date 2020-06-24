@@ -18,11 +18,11 @@ package com.google.android.material.bottomsheet;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import android.view.View;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Modal bottom sheet. This is a version of {@link DialogFragment} that shows a bottom sheet using

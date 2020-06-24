@@ -19,8 +19,6 @@ package io.material.catalog.elevation;
 import io.material.catalog.R;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,6 +26,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.google.android.material.elevation.ElevationOverlayProvider;
 import com.google.android.material.internal.ViewUtils;
 import io.material.catalog.feature.DemoActivity;

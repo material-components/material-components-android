@@ -18,8 +18,6 @@ package io.material.catalog.transition.hero;
 
 import io.material.catalog.R;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,6 +26,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import io.material.catalog.transition.hero.AlbumsAdapter.AlbumViewHolder;
 import io.material.catalog.transition.hero.MusicData.Album;
 

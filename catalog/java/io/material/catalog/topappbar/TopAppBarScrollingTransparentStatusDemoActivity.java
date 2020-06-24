@@ -19,11 +19,11 @@ package io.material.catalog.topappbar;
 import io.material.catalog.R;
 
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.Nullable;
 
 /**
  * An Activity that displays a scrolling Top App Bar demo for the Catalog app, with a transparent

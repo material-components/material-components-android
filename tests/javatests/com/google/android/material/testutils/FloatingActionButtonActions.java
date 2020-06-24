@@ -19,9 +19,9 @@ package com.google.android.material.testutils;
 import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 
 import android.content.res.ColorStateList;
+import android.view.View;
 import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
-import android.view.View;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;

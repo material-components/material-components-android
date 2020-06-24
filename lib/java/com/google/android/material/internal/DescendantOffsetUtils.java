@@ -21,11 +21,11 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import androidx.annotation.NonNull;
-import androidx.annotation.RestrictTo;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
 
 /**
  * Utility class for descendant {@link Rect} calculations.

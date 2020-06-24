@@ -17,9 +17,9 @@
 package com.google.android.material.resources;
 
 import android.graphics.Typeface;
+import androidx.core.content.res.ResourcesCompat.FontCallback;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
-import androidx.core.content.res.ResourcesCompat.FontCallback;
 
 /**
  * {@link FontCallback} allowing cancelling of pending async font fetch, in case a different font is

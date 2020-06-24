@@ -17,8 +17,8 @@ package io.material.catalog.progressindicator;
 
 import io.material.catalog.R;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.annotation.NonNull;
 import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
 import dagger.multibindings.IntoSet;

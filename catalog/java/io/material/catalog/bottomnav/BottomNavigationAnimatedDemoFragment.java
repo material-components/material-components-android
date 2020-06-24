@@ -19,12 +19,12 @@ package io.material.catalog.bottomnav;
 import io.material.catalog.R;
 
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams;
 import io.material.catalog.feature.DemoFragment;

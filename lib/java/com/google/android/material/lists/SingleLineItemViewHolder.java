@@ -18,13 +18,13 @@ package com.google.android.material.lists;
 
 import com.google.android.material.R;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
 
 /** A simple single line list item. */
 public class SingleLineItemViewHolder extends ViewHolder {

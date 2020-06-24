@@ -19,9 +19,9 @@ package io.material.catalog.feature;
 import io.material.catalog.R;
 
 import android.content.Intent;
+import androidx.fragment.app.Fragment;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
-import androidx.fragment.app.Fragment;
 
 /** Represents a single demo. */
 public abstract class Demo {

@@ -18,9 +18,9 @@ package io.material.catalog.menu;
 
 import io.material.catalog.R;
 
+import androidx.fragment.app.Fragment;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
 import dagger.multibindings.IntoSet;

@@ -18,11 +18,11 @@ package com.google.android.material.animation;
 import android.animation.Animator;
 import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /** A representation of timing for an animation. */
 public class MotionTiming {

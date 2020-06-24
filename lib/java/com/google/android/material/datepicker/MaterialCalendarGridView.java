@@ -20,8 +20,6 @@ import com.google.android.material.R;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.ViewCompat;
@@ -31,6 +29,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.ListAdapter;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import java.util.Calendar;
 
 final class MaterialCalendarGridView extends GridView {

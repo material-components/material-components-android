@@ -18,8 +18,8 @@ package com.google.android.material.testapp.base;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.Nullable;
 import java.util.concurrent.CountDownLatch;
 
 /**

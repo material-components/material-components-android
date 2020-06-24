@@ -20,12 +20,12 @@ import com.google.android.material.R;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import androidx.appcompat.view.ContextThemeWrapper;
+import android.util.AttributeSet;
 import androidx.annotation.AttrRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
-import androidx.appcompat.view.ContextThemeWrapper;
-import android.util.AttributeSet;
 
 /**
  * Utility to apply a theme overlay to any {@link android.content.Context}. The theme overlay is

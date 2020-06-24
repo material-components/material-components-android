@@ -21,10 +21,10 @@
 package com.google.android.material.transition.platform;
 
 import android.animation.Animator;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * An interface which is able to provide an Animator to be supplied to a {@link

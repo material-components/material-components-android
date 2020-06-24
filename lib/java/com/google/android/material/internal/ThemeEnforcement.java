@@ -22,15 +22,15 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import androidx.appcompat.widget.TintTypedArray;
+import android.util.AttributeSet;
+import android.util.TypedValue;
 import androidx.annotation.AttrRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
 import androidx.annotation.StyleableRes;
-import androidx.appcompat.widget.TintTypedArray;
-import android.util.AttributeSet;
-import android.util.TypedValue;
 
 /**
  * Utility methods to check Theme compatibility with components.

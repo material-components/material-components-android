@@ -17,11 +17,11 @@
 package com.google.android.material.internal;
 
 import android.graphics.drawable.Drawable;
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroupOverlay;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 @RequiresApi(18)
 class ViewGroupOverlayApi18 implements ViewGroupOverlayImpl {

@@ -18,8 +18,8 @@ package com.google.android.material.testutils;
 
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast;
 
-import androidx.annotation.Nullable;
 import android.view.View;
+import androidx.annotation.Nullable;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.matcher.ViewMatchers;

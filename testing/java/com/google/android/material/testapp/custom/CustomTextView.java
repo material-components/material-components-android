@@ -16,10 +16,10 @@
 package com.google.android.material.testapp.custom;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 /**

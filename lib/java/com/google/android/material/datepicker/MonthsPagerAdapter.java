@@ -18,7 +18,6 @@ package com.google.android.material.datepicker;
 import com.google.android.material.R;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.LayoutParams;
@@ -29,6 +28,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
 import com.google.android.material.datepicker.MaterialCalendar.OnDayClickListener;
 
 /**

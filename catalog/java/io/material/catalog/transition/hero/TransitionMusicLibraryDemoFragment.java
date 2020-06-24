@@ -20,8 +20,6 @@ import io.material.catalog.R;
 
 import android.content.Context;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -36,6 +34,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.transition.Transition;
 import androidx.transition.TransitionManager;
 import com.google.android.material.transition.Hold;

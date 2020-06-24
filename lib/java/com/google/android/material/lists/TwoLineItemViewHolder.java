@@ -18,11 +18,11 @@ package com.google.android.material.lists;
 
 import com.google.android.material.R;
 
-import androidx.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
 
 /** A simple two line list item. */
 public class TwoLineItemViewHolder extends SingleLineItemViewHolder {
