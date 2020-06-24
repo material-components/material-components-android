@@ -8,11 +8,6 @@ include ':testing:java:com:google:android:material:testapp:theme'
 
 include ':catalog'
 
-include ':demos:java:io:material:demo:shrine'
-include ':demos:java:io:material:demo:shrine:filters'
-include ':demos:java:io:material:demo:shrine:products'
-include ':demos:java:io:material:demo:shrine:theme'
-
 rootProject.children.each { p ->
 
   def allChildren = []
@@ -27,8 +22,8 @@ rootProject.children.each { p ->
 
   allChildren.each { project ->
     // Give each project a repository-wide unique name based on their path from
-    // the top-level dir (e.g. the project at demos/java/io/material/shrine will
-    // be named :demos-java-io-material-shrine). Doing so avoids the need to
+    // the top-level dir (e.g. the project at java/io/material/catalog will
+    // be named :java-io-material-catalog). Doing so avoids the need to
     // have unique directory names throughout our subprojects.
     project.name = project.path.substring(1).replace(':', '-')
   }
