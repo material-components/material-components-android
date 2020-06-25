@@ -52,9 +52,9 @@ public class ProgressIndicatorConfigTest {
   @Parameters(name = "indicatorType={0},isIndeterminate={1},drawableType={2}")
   public static ImmutableList<Object[]> data() {
     return ImmutableList.of(
-        new Object[] {ProgressIndicator.LINEAR, true, LinearIndeterminateDrawable.class},
+        new Object[] {ProgressIndicator.LINEAR, true, IndeterminateDrawable.class},
         new Object[] {ProgressIndicator.LINEAR, false, DeterminateDrawable.class},
-        new Object[] {ProgressIndicator.CIRCULAR, true, CircularIndeterminateDrawable.class},
+        new Object[] {ProgressIndicator.CIRCULAR, true, IndeterminateDrawable.class},
         new Object[] {ProgressIndicator.CIRCULAR, false, DeterminateDrawable.class});
   }
 

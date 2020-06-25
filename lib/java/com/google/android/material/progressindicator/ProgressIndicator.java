@@ -21,6 +21,7 @@ import com.google.android.material.R;
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 import static java.lang.Math.min;
 
+import android.animation.AnimatorSet;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -38,7 +39,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.annotation.VisibleForTesting;
-import androidx.vectordrawable.graphics.drawable.Animatable2Compat;
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat.AnimationCallback;
 import com.google.android.material.color.MaterialColors;
 import java.lang.annotation.Retention;
@@ -64,6 +64,11 @@ public class ProgressIndicator extends ProgressBar {
   public static final int LINEAR = 0;
   /** The indicator appears as a circular spinner. */
   public static final int CIRCULAR = 1;
+  /**
+   * The indicator uses a custom drawable. This prevents to initialize pre-defined drawables for
+   * linear/circular type. Drawables have to be manually initialized.
+   */
+  public static final int CUSTOM = 2;
 
   // Constants for show/hide animation.
 
@@ -175,7 +180,7 @@ public class ProgressIndicator extends ProgressBar {
   // ******************** Interfaces **********************
 
   /** The type of the progress indicator. */
-  @IntDef({LINEAR, CIRCULAR})
+  @IntDef({LINEAR, CIRCULAR, CUSTOM})
   @Retention(RetentionPolicy.SOURCE)
   public @interface IndicatorType {}
 
@@ -209,8 +214,9 @@ public class ProgressIndicator extends ProgressBar {
     loadResources(context.getResources());
     loadAttributes(context, attrs, defStyleAttr, defStyleRes);
 
-    initializeDrawables();
-    applyNewVisibility();
+    if (indicatorType != CUSTOM) {
+      initializeDrawables();
+    }
   }
 
   // ******************** Initialization **********************
@@ -309,34 +315,58 @@ public class ProgressIndicator extends ProgressBar {
   private void initializeDrawables() {
     // Creates and sets the determinate and indeterminate drawables based on track shape.
     if (indicatorType == LINEAR) {
-      setIndeterminateDrawable(new LinearIndeterminateDrawable(getContext(), this));
+      DrawingDelegate drawingDelegate = new LinearDrawingDelegate();
+      IndeterminateAnimatorDelegate<AnimatorSet> animatorDelegate =
+          isLinearSeamless()
+              ? new LinearIndeterminateSeamlessAnimatorDelegate()
+              : new LinearIndeterminateNonSeamlessAnimatorDelegate(getContext());
+      setIndeterminateDrawable(new IndeterminateDrawable(this, drawingDelegate, animatorDelegate));
       setProgressDrawable(new DeterminateDrawable(this, new LinearDrawingDelegate()));
     } else {
-      setIndeterminateDrawable(new CircularIndeterminateDrawable(this));
-      setProgressDrawable(new DeterminateDrawable(this, new CircularDrawingDelegate()));
+      DrawingDelegate drawingDelegate = new CircularDrawingDelegate();
+      setIndeterminateDrawable(
+          new IndeterminateDrawable(
+              this, drawingDelegate, new CircularIndeterminateAnimatorDelegate()));
+      setProgressDrawable(new DeterminateDrawable(this, drawingDelegate));
     }
 
-    // Creates and register an animation callback to switch indeterminate mode at the end of
-    // indeterminate animation.
-    ((IndeterminateAnimatorControl) getIndeterminateDrawable())
-        .registerMainAnimatorCompleteEndCallback(
-            new AnimationCallback() {
-              @Override
-              public void onAnimationEnd(Drawable drawable) {
-                post(
-                    new Runnable() {
-                      @Override
-                      public void run() {
-                        setIndeterminate(false);
+    registerAnimationCallbacks();
+    applyNewVisibility();
+  }
 
-                        // Resets progress bar to minimum value then updates to new progress.
-                        setProgressCompat(0, /*animated=*/ false);
-                        setProgressCompat(storedProgress, storedProgressAnimated);
-                      }
-                    });
-              }
-            });
+  /**
+   * Manually initializes drawables and applies visibility. This intends to be used for applying
+   * custom drawable.
+   *
+   * @param indeterminateDrawable Custom indeterminate drawable. Switches to determinate mode if
+   *     null.
+   * @param determinateDrawable Custom determinate drawable. Switches to indeterminate mode if null.
+   * @throws IllegalArgumentException If {@code indicatorType} is not {@code CUSTOM}.
+   * @throws IllegalArgumentException If the arguments are both null.
+   */
+  public void initializeDrawables(
+      IndeterminateDrawable indeterminateDrawable, DeterminateDrawable determinateDrawable) {
+    if (indicatorType != CUSTOM) {
+      throw new IllegalStateException(
+          "Manually setting drawables can only be done while indicator type is custom. Current"
+              + " indicator type is "
+              + (indicatorType == LINEAR ? "linear" : "circular"));
+    }
+    if (indeterminateDrawable == null && determinateDrawable == null) {
+      throw new IllegalArgumentException(
+          "Indeterminate and determinate drawables cannot be null at the same time.");
+    }
+    setIndeterminateDrawable(indeterminateDrawable);
+    setProgressDrawable(determinateDrawable);
 
+    setIndeterminate(
+        indeterminateDrawable != null && (determinateDrawable == null || isIndeterminate()));
+
+    registerAnimationCallbacks();
+    applyNewVisibility();
+  }
+
+  private void registerAnimationCallbacks() {
     // Creates an animation callback to set the component invisible at the end of hide animation.
     AnimationCallback hideAnimationCallback =
         new AnimationCallback() {
@@ -355,10 +385,38 @@ public class ProgressIndicator extends ProgressBar {
           }
         };
 
-    // Registers the hide animation callback to both drawables.
-    ((Animatable2Compat) getProgressDrawable()).registerAnimationCallback(hideAnimationCallback);
-    ((Animatable2Compat) getIndeterminateDrawable())
-        .registerAnimationCallback(hideAnimationCallback);
+    if (getProgressDrawable() != null && getIndeterminateDrawable() != null) {
+      // Creates and register an animation callback to switch indeterminate mode at the end of
+      // indeterminate animation.
+      getIndeterminateDrawable()
+          .getAnimatorDelegate()
+          .registerAnimatorsCompleteCallback(
+              new AnimationCallback() {
+                @Override
+                public void onAnimationEnd(Drawable drawable) {
+                  post(
+                      new Runnable() {
+                        @Override
+                        public void run() {
+                          setIndeterminate(false);
+
+                          // Resets progress bar to minimum value then updates to new progress.
+                          setProgressCompat(0, /*animated=*/ false);
+                          setProgressCompat(storedProgress, storedProgressAnimated);
+                        }
+                      });
+                }
+              });
+    }
+
+    // Registers the hide animation callback to determinate drawable.
+    if (getProgressDrawable() != null) {
+      getProgressDrawable().registerAnimationCallback(hideAnimationCallback);
+    }
+    // Registers the hide animation callback to indeterminate drawable.
+    if (getIndeterminateDrawable() != null) {
+      getIndeterminateDrawable().registerAnimationCallback(hideAnimationCallback);
+    }
   }
 
   // ******************** Visibility control **********************
@@ -493,22 +551,9 @@ public class ProgressIndicator extends ProgressBar {
   @Override
   protected synchronized void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    if (indicatorType == CIRCULAR) {
-      setMeasuredDimension(
-          circularRadius * 2
-              + indicatorWidth
-              + circularInset * 2
-              + getPaddingLeft()
-              + getPaddingRight(),
-          circularRadius * 2
-              + indicatorWidth
-              + circularInset * 2
-              + getPaddingTop()
-              + getPaddingBottom());
-    } else {
-      setMeasuredDimension(
-          getMeasuredWidth(), indicatorWidth + getPaddingTop() + getPaddingBottom());
-    }
+    DrawingDelegate drawingDelegate = getCurrentDrawingDelegate();
+    setMeasuredDimension(
+        drawingDelegate.getPreferredWidth(this), drawingDelegate.getPreferredHeight(this));
   }
 
   @Override
@@ -556,15 +601,25 @@ public class ProgressIndicator extends ProgressBar {
     return isIndeterminate() ? getIndeterminateDrawable() : getProgressDrawable();
   }
 
+  /** Returns the drawing delegate associated with the current drawable. */
+  @NonNull
+  public DrawingDelegate getCurrentDrawingDelegate() {
+    return isIndeterminate()
+        ? getIndeterminateDrawable().getDrawingDelegate()
+        : getProgressDrawable().getDrawingDelegate();
+  }
+
   /** Blocks any attempts to set the progress drawable for this progress indicator. */
   @Override
   public void setProgressDrawable(@NonNull Drawable drawable) {
-    if (drawable instanceof DeterminateDrawable) {
+    if (drawable == null || drawable instanceof DeterminateDrawable) {
       super.setProgressDrawable(drawable);
       // Every time ProgressBar sets progress drawable, it refreshes the drawable's level with
       // progress then secondary progress. Since secondary progress is not used here. We need to set
       // the level actively to overcome the affects from secondary progress.
-      ((DeterminateDrawable) drawable).setLevelByFraction((float) getProgress() / getMax());
+      if (drawable != null) {
+        ((DeterminateDrawable) drawable).setLevelByFraction((float) getProgress() / getMax());
+      }
     } else {
       throw new IllegalArgumentException("Cannot set framework drawable as progress drawable.");
     }
@@ -573,7 +628,7 @@ public class ProgressIndicator extends ProgressBar {
   /** Blocks any attempts to set the indeterminate drawable for this progress indicator. */
   @Override
   public void setIndeterminateDrawable(@NonNull Drawable drawable) {
-    if (drawable instanceof DrawableWithAnimatedVisibilityChange) {
+    if (drawable == null || drawable instanceof IndeterminateDrawable) {
       super.setIndeterminateDrawable(drawable);
     } else {
       throw new IllegalArgumentException(
@@ -587,8 +642,8 @@ public class ProgressIndicator extends ProgressBar {
   }
 
   @Override
-  public DrawableWithAnimatedVisibilityChange getIndeterminateDrawable() {
-    return (DrawableWithAnimatedVisibilityChange) super.getIndeterminateDrawable();
+  public IndeterminateDrawable getIndeterminateDrawable() {
+    return (IndeterminateDrawable) super.getIndeterminateDrawable();
   }
 
   /**
@@ -847,7 +902,10 @@ public class ProgressIndicator extends ProgressBar {
    *     com.google.android.material.progressindicator.R.stylable#ProgressIndicator_linearSeamless
    */
   public void setLinearSeamless(boolean linearSeamless) {
-    if (visibleToUser() && isIndeterminate() && this.linearSeamless != linearSeamless) {
+    if (this.linearSeamless == linearSeamless) {
+      return;
+    }
+    if (visibleToUser() && isIndeterminate()) {
       throw new IllegalStateException(
           "Cannot change linearSeamless while the progress indicator is shown in indeterminate"
               + " mode.");
@@ -856,6 +914,13 @@ public class ProgressIndicator extends ProgressBar {
       this.linearSeamless = linearSeamless;
       if (linearSeamless) {
         indicatorCornerRadius = defaultCornerRadius;
+      }
+      if (linearSeamless) {
+        getIndeterminateDrawable()
+            .setAnimatorDelegate(new LinearIndeterminateSeamlessAnimatorDelegate());
+      } else {
+        getIndeterminateDrawable()
+            .setAnimatorDelegate(new LinearIndeterminateNonSeamlessAnimatorDelegate(getContext()));
       }
     } else {
       this.linearSeamless = false;
@@ -967,9 +1032,8 @@ public class ProgressIndicator extends ProgressBar {
    * @see #setProgress(int)
    */
   public void setProgressCompat(int progress, boolean animated) {
-    if (isIndeterminate()) {
-      ((IndeterminateAnimatorControl) getIndeterminateDrawable())
-          .requestCancelMainAnimatorAfterCurrentCycle();
+    if (isIndeterminate() && getProgressDrawable() != null) {
+      getIndeterminateDrawable().getAnimatorDelegate().requestCancelAnimatorAfterCurrentCycle();
       // Holds new progress to a temp field, since setting progress is ignored in indeterminate
       // mode.
       storedProgress = progress;

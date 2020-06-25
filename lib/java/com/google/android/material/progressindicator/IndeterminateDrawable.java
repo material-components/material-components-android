@@ -151,3 +151,4 @@ public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityC
     return drawingDelegate;
   }
 }
+

@@ -26,6 +26,19 @@ import androidx.annotation.NonNull;
  * ProgressIndicator}.
  */
 public interface DrawingDelegate {
+  /**
+   * Returns the preferred width, in pixels, of the drawable based on the drawing type.
+   *
+   * @param progressIndicator The component where to draw.
+   */
+  int getPreferredWidth(@NonNull ProgressIndicator progressIndicator);
+
+  /**
+   * Returns the preferred height, in pixels, of the drawable based on the drawing type.
+   *
+   * @param progressIndicator The component where to draw.
+   */
+  int getPreferredHeight(@NonNull ProgressIndicator progressIndicator);
 
   /**
    * Prepares the bound of the canvas for the actual drawing. Should be called before any drawing.

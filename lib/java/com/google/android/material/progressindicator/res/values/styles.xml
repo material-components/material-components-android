@@ -31,6 +31,9 @@
     <item name="circularRadius">@dimen/mtrl_progress_circular_radius</item>
     <item name="circularInset">@dimen/mtrl_progress_circular_inset</item>
   </style>
+  <style name="Base.Widget.MaterialComponents.ProgressIndicator.Custom">
+    <item name="indicatorType">custom</item>
+  </style>
 
   <style name="Widget.MaterialComponents.ProgressIndicator.Linear.Determinate"
       parent="Base.Widget.MaterialComponents.ProgressIndicator.Linear">

@@ -31,6 +31,18 @@ final class LinearDrawingDelegate implements DrawingDelegate {
   // The length (horizontal) of the track in px.
   private float trackLength = 300f;
 
+  @Override
+  public int getPreferredWidth(@NonNull ProgressIndicator progressIndicator) {
+    return progressIndicator.getMeasuredWidth();
+  }
+
+  @Override
+  public int getPreferredHeight(@NonNull ProgressIndicator progressIndicator) {
+    return progressIndicator.getIndicatorWidth()
+        + progressIndicator.getPaddingTop()
+        + progressIndicator.getPaddingBottom();
+  }
+
   /**
    * Adjusts the canvas for linear progress indicator drawables. It flips the canvas horizontally if
    * it's inverted. It flips the canvas vertically if outgoing grow mode is applied.

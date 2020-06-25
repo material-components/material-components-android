@@ -145,15 +145,19 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
 
   /** Invokes all {@code onAnimationStart()} functions in the animation callbacks. */
   private void dispatchAnimationStart() {
-    for (AnimationCallback callback : animationCallbacks) {
-      callback.onAnimationStart(this);
+    if (animationCallbacks != null) {
+      for (AnimationCallback callback : animationCallbacks) {
+        callback.onAnimationStart(this);
+      }
     }
   }
 
   /** Invokes all {@code onAnimationEnd()} functions in the animation callbacks. */
   private void dispatchAnimationEnd() {
-    for (AnimationCallback callback : animationCallbacks) {
-      callback.onAnimationEnd(this);
+    if (animationCallbacks != null) {
+      for (AnimationCallback callback : animationCallbacks) {
+        callback.onAnimationEnd(this);
+      }
     }
   }
 

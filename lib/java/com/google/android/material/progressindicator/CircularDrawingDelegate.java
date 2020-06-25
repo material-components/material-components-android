@@ -31,6 +31,26 @@ final class CircularDrawingDelegate implements DrawingDelegate {
   // This is a factor effecting the positive direction to draw the arc. -1 if inverse; +1 otherwise.
   private int arcInverseFactor = 1;
 
+  @Override
+  public int getPreferredWidth(@NonNull ProgressIndicator progressIndicator) {
+    return getSizeWithoutPadding(progressIndicator)
+        + progressIndicator.getPaddingLeft()
+        + progressIndicator.getPaddingRight();
+  }
+
+  @Override
+  public int getPreferredHeight(@NonNull ProgressIndicator progressIndicator) {
+    return getSizeWithoutPadding(progressIndicator)
+        + progressIndicator.getPaddingTop()
+        + progressIndicator.getPaddingBottom();
+  }
+
+  private static int getSizeWithoutPadding(@NonNull ProgressIndicator progressIndicator) {
+    return progressIndicator.getCircularRadius() * 2
+        + progressIndicator.getIndicatorWidth()
+        + progressIndicator.getCircularInset() * 2;
+  }
+
   /**
    * Adjusts the canvas for drawing circular progress indicator. It rotates the canvas -90 degrees
    * to keep the 0 at the top. The canvas is clipped to a square with the size just includes the
