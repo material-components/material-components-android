@@ -71,6 +71,13 @@ public class ProgressIndicatorFragment extends DemoLandingFragment {
             return new ProgressIndicatorDeterminateDemoFragment();
           }
         });
+    additionalDemos.add(
+        new Demo(R.string.cat_progress_indicator_demo_custom_title) {
+          @Override
+          public Fragment createFragment() {
+            return new ProgressIndicatorCustomDemoFragment();
+          }
+        });
     return additionalDemos;
   }
   /** The Dagger module for {@link ProgressIndicatorFragment} dependencies. */

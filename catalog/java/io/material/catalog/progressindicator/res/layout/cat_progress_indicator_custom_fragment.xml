@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2020 The Android Open Source Project
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+      http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:paddingTop="16dp"
+  android:paddingLeft="16dp"
+  android:paddingRight="16dp"
+  android:clipChildren="false"
+  android:clipToPadding="false"
+  android:orientation="vertical"
+  android:showDividers="middle"
+  android:divider="@drawable/layout_divider">
+
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/cat_progress_indicator_custom_indeterminate"/>
+  <com.google.android.material.progressindicator.ProgressIndicator
+    android:id="@+id/custom_indeterminate_indicator"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    style="@style/Base.Widget.MaterialComponents.ProgressIndicator.Custom"
+    android:indeterminate="true"
+    app:growMode="bidirectional"
+    app:indicatorColor="?attr/colorPrimary"/>
+
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/cat_progress_indicator_custom_determinate"/>
+  <com.google.android.material.progressindicator.ProgressIndicator
+    android:id="@+id/custom_determinate_indicator"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    style="@style/Base.Widget.MaterialComponents.ProgressIndicator.Custom"
+    android:indeterminate="false"
+    app:growMode="bidirectional"
+    app:indicatorColor="?attr/colorPrimary"/>
+
+  <com.google.android.material.slider.Slider
+    android:id="@+id/slider"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="5dp"
+    android:layout_marginStart="5dp"
+    android:valueFrom="0"
+    android:valueTo="100"
+    android:stepSize="1"/>
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="?android/buttonBarStyle"
+    android:orientation="horizontal">
+    <Button
+      android:id="@+id/show_button"
+      style="?android/buttonBarButtonStyle"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:layout_margin="1dp"
+      android:text="@string/cat_progress_indicator_show"/>
+    <Button
+      android:id="@+id/hide_button"
+      style="?android/buttonBarButtonStyle"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:layout_margin="1dp"
+      android:text="@string/cat_progress_indicator_hide"/>
+  </LinearLayout>
+</LinearLayout>
