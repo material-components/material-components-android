@@ -68,7 +68,6 @@ public final class SliderKeyTestLtr extends SliderKeyTestCommon {
       right.dispatchEvent(slider);
     }
 
-    assertThat(slider.getValues()).contains(23.0f);
     assertThat(slider.getValues()).doesNotContain(3.0f);
   }
 
@@ -85,7 +84,6 @@ public final class SliderKeyTestLtr extends SliderKeyTestCommon {
       left.dispatchEvent(slider);
     }
 
-    assertThat(slider.getValues()).contains(0.0f);
     assertThat(slider.getValues()).doesNotContain(3.0f);
   }
 }

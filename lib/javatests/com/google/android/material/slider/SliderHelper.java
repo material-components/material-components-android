@@ -32,10 +32,12 @@ import com.google.android.material.slider.KeyUtils.KeyEventBuilder;
 public class SliderHelper {
   private final LinearLayout container;
   private final Slider slider;
+  private final RangeSlider rangeSlider;
   private boolean simulateScrollableContainer;
 
   public SliderHelper(Activity activity) {
     slider = new Slider(activity);
+    rangeSlider = new RangeSlider(activity);
 
     // Makes sure getParent() won't return null.
     container =
@@ -51,17 +53,23 @@ public class SliderHelper {
     container.setId(android.R.id.content);
     // Adds slider to layout, and adds layout to activity.
     container.addView(slider, new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
+
+    container.addView(rangeSlider, new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
   }
 
   Slider getSlider() {
     return slider;
   }
 
+  RangeSlider getRangeSlider() {
+    return rangeSlider;
+  }
+
   void addContentView(Activity activity) {
     activity.addContentView(container, new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
   }
 
-  static void touchSliderAtValue(Slider s, float value, int motionEventType) {
+  static void touchSliderAtValue(BaseSlider<?, ?, ?> s, float value, int motionEventType) {
     touchSliderAtX(s, calculateXPositionFromValue(s, value), motionEventType);
   }
 
@@ -75,7 +83,7 @@ public class SliderHelper {
     touchSliderAtX(s, x, motionEventType);
   }
 
-  static void touchSliderAtX(Slider s, float x, int motionEventType) {
+  static void touchSliderAtX(BaseSlider<?, ?, ?> s, float x, int motionEventType) {
     float y = s.getHeight() / 2f;
 
     s.dispatchTouchEvent(
@@ -83,32 +91,38 @@ public class SliderHelper {
             SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), motionEventType, x, y, 0));
   }
 
-  static void dragSliderBetweenValues(Slider s, float start, float end, int eventCount) {
+  static void dragSliderBetweenValues(
+      BaseSlider<?, ?, ?> s, float start, float end, int eventCount) {
     touchSliderAtValue(s, start, MotionEvent.ACTION_DOWN);
     touchSliderBetweenValues(s, start, end, eventCount);
     touchSliderAtValue(s, end, MotionEvent.ACTION_UP);
   }
 
-  static void startSliderDragBetweenValues(Slider s, float start, float end, int eventCount) {
+  static void startSliderDragBetweenValues(RangeSlider s, float start, float end, int eventCount) {
     touchSliderAtValue(s, start, MotionEvent.ACTION_DOWN);
     touchSliderBetweenValues(s, start, end, eventCount);
   }
 
-  static void endSliderDragBetweenValues(Slider s, float start, float end, int eventCount) {
+  static void endSliderDragBetweenValues(
+      BaseSlider<?, ?, ?> s, float start, float end, int eventCount) {
     touchSliderBetweenValues(s, start, end, eventCount);
     touchSliderAtValue(s, end, MotionEvent.ACTION_UP);
   }
 
-  static void touchSliderBetweenValues(Slider s, float start, float end, int eventCount) {
+  static void touchSliderBetweenValues(
+      BaseSlider<?, ?, ?> s, float start, float end, int eventCount) {
+    float increment = (end - start) / eventCount;
+    float currentIncrement = 0;
     for (int incremental = 0; incremental < eventCount; incremental++) {
+      currentIncrement += increment;
+      // make sure we reach end, without precision loss
+      boolean lastIncrement = incremental == (eventCount - 1);
       touchSliderAtValue(
-          s,
-          (start * (eventCount - incremental) + end * incremental) / eventCount,
-          MotionEvent.ACTION_MOVE);
+          s, lastIncrement ? end : start + currentIncrement, MotionEvent.ACTION_MOVE);
     }
   }
 
-  static float calculateXPositionFromValue(Slider s, float value) {
+  static float calculateXPositionFromValue(BaseSlider<?, ?, ?> s, float value) {
     float x = (value - s.getValueFrom()) * s.getTrackWidth() / (s.getValueTo() - s.getValueFrom());
     if (ViewCompat.getLayoutDirection(s) == ViewCompat.LAYOUT_DIRECTION_RTL) {
       x = s.getTrackWidth() - x;
@@ -116,7 +130,7 @@ public class SliderHelper {
     return s.getTrackSidePadding() + x;
   }
 
-  static void clickDpadCenter(Slider s) {
+  static void clickDpadCenter(BaseSlider<?, ?, ?> s) {
     new KeyEventBuilder(KeyEvent.KEYCODE_DPAD_CENTER).dispatchEvent(s);
   }
 

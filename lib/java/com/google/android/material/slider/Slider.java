@@ -94,4 +94,14 @@ public class Slider extends BaseSlider<Slider, OnChangeListener, OnSliderTouchLi
   public void setValue(float value) {
     setValues(value);
   }
+
+  @Override
+  protected boolean pickActiveThumb() {
+    if (getActiveThumbIndex() != -1) {
+      return true;
+    }
+    // Only one thumb to focus
+    setActiveThumbIndex(0);
+    return true;
+  }
 }

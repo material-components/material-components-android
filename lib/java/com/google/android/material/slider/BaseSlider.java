@@ -18,7 +18,11 @@ package com.google.android.material.slider;
 
 import com.google.android.material.R;
 
+import static androidx.core.view.accessibility.AccessibilityNodeInfoCompat.RangeInfoCompat.RANGE_TYPE_FLOAT;
+import static androidx.core.math.MathUtils.clamp;
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
+import static java.lang.Float.compare;
+import static java.lang.Math.abs;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -39,20 +43,10 @@ import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import androidx.annotation.ColorInt;
-import androidx.annotation.DimenRes;
-import androidx.annotation.Dimension;
-import androidx.annotation.IntDef;
-import androidx.annotation.IntRange;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.VisibleForTesting;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.math.MathUtils;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.RangeInfoCompat;
-import androidx.customview.widget.ExploreByTouchHelper;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
@@ -64,6 +58,15 @@ import android.view.ViewParent;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.SeekBar;
+import androidx.annotation.ColorInt;
+import androidx.annotation.DimenRes;
+import androidx.annotation.Dimension;
+import androidx.annotation.IntDef;
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
+import androidx.customview.widget.ExploreByTouchHelper;
 import com.google.android.material.drawable.DrawableUtils;
 import com.google.android.material.internal.DescendantOffsetUtils;
 import com.google.android.material.internal.ThemeEnforcement;
@@ -303,9 +306,9 @@ abstract class BaseSlider<
         return String.format(Locale.US, "%.1fM", value / MILLION);
       } else if (value >= THOUSAND) {
         return String.format(Locale.US, "%.1fK", value / THOUSAND);
-      } else {
-        return String.format(Locale.US, "%.0f", value);
       }
+
+      return String.format(Locale.US, "%.0f", value);
     }
   }
 
@@ -733,6 +736,10 @@ abstract class BaseSlider<
     postInvalidate();
   }
 
+  protected void setActiveThumbIndex(int index) {
+    activeThumbIdx = index;
+  }
+
   /** Returns the index of the currently active thumb, or -1 if no thumb is active */
   public int getActiveThumbIndex() {
     return activeThumbIdx;
@@ -899,14 +906,13 @@ abstract class BaseSlider<
     }
 
     haloRadius = radius;
-    if (!shouldDrawCompatHalo()) {
-      Drawable background = getBackground();
-      if (background instanceof RippleDrawable) {
-        DrawableUtils.setRippleDrawableRadius((RippleDrawable) background, haloRadius);
-      }
-    } else {
-      postInvalidate();
+    Drawable background = getBackground();
+    if (!shouldDrawCompatHalo() && background instanceof RippleDrawable) {
+      DrawableUtils.setRippleDrawableRadius((RippleDrawable) background, haloRadius);
+      return;
     }
+
+    postInvalidate();
   }
 
   /**
@@ -1004,16 +1010,15 @@ abstract class BaseSlider<
     }
 
     this.haloColor = haloColor;
-    if (!shouldDrawCompatHalo()) {
-      Drawable background = getBackground();
-      if (background instanceof RippleDrawable) {
-        ((RippleDrawable) background).setColor(haloColor);
-      }
-    } else {
-      haloPaint.setColor(getColorForState(haloColor));
-      haloPaint.setAlpha(HALO_ALPHA);
-      invalidate();
+    Drawable background = getBackground();
+    if (!shouldDrawCompatHalo() && background instanceof RippleDrawable) {
+      ((RippleDrawable) background).setColor(haloColor);
+      return;
     }
+
+    haloPaint.setColor(getColorForState(haloColor));
+    haloPaint.setAlpha(HALO_ALPHA);
+    invalidate();
   }
 
   /**
@@ -1362,11 +1367,7 @@ abstract class BaseSlider<
     float right = normalizeValue(max);
 
     // In RTL we draw things in reverse, so swap the left and right range values
-    if (isRtl()) {
-      return new float[] {right, left};
-    } else {
-      return new float[] {left, right};
-    }
+    return isRtl() ? new float[] {right, left} : new float[] {left, right};
   }
 
   private void drawInactiveTrack(@NonNull Canvas canvas, int width, int top) {
@@ -1487,6 +1488,7 @@ abstract class BaseSlider<
         if (isInScrollingContainer()) {
           break;
         }
+
         getParent().requestDisallowInterceptTouchEvent(true);
 
         if (!pickActiveThumb()) {
@@ -1504,7 +1506,7 @@ abstract class BaseSlider<
       case MotionEvent.ACTION_MOVE:
         if (!thumbIsPressed) {
           // Check if we're trying to scroll instead of dragging this Slider
-          if (Math.abs(x - touchDownX) < scaledTouchSlop) {
+          if (abs(x - touchDownX) < scaledTouchSlop) {
             return false;
           }
           getParent().requestDisallowInterceptTouchEvent(true);
@@ -1526,8 +1528,8 @@ abstract class BaseSlider<
         // We need to handle a tap if the last event was down at the same point.
         if (lastEvent != null
             && lastEvent.getActionMasked() == MotionEvent.ACTION_DOWN
-            && lastEvent.getX() == event.getX()
-            && lastEvent.getY() == event.getY()) {
+            && abs(lastEvent.getX() - event.getX()) <= scaledTouchSlop
+            && abs(lastEvent.getY() - event.getY()) <= scaledTouchSlop) {
           pickActiveThumb();
         }
 
@@ -1577,49 +1579,54 @@ abstract class BaseSlider<
    * if there is only one thumb under the touch position. If there is more than one thumb under the
    * touch position, it will wait for enough drag left or right to determine which thumb to pick.
    */
-  private boolean pickActiveThumb() {
+  protected boolean pickActiveThumb() {
     if (activeThumbIdx != -1) {
       return true;
     }
 
-    float touchValue = getValueOfTouchPosition();
+    float touchValue = getValueOfTouchPositionAbsolute();
     float touchX = valueToX(touchValue);
-
-    float leftXBound = Math.min(touchX, touchDownX);
-    float rightXBound = Math.max(touchX, touchDownX);
-
     activeThumbIdx = 0;
-    float activeThumbDiff = Math.abs(values.get(activeThumbIdx) - touchValue);
-    for (int i = 0; i < values.size(); i++) {
-      float valueDiff = Math.abs(values.get(i) - touchValue);
-
+    float activeThumbDiff = abs(values.get(activeThumbIdx) - touchValue);
+    for (int i = 1; i < values.size(); i++) {
+      float valueDiff = abs(values.get(i) - touchValue);
       float valueX = valueToX(values.get(i));
-      float valueDiffX = Math.abs(valueX - touchX);
-      float activeValueDiffX = Math.abs(valueToX(values.get(activeThumbIdx)) - touchX);
-
-      // Check if we've received touch events that's passing over a thumb.
-      if (leftXBound < valueX && rightXBound > valueX) {
-        activeThumbIdx = i;
-        return true;
+      if (compare(valueDiff, activeThumbDiff) > 1) {
+        break;
       }
 
-      // If the new point and the active point are both within scaled touch slop of the touch and
-      // the value is not the same, we have to wait for the touch to move.
-      if (valueDiffX < scaledTouchSlop
-          && activeValueDiffX < scaledTouchSlop
-          && Math.abs(valueDiffX - activeValueDiffX) > THRESHOLD) {
-        activeThumbIdx = -1;
-        return false;
-      }
-
-      if (valueDiff < activeThumbDiff) {
-        // This value is closer to the thumb so update the active thumb index.
+      boolean movingForward = isRtl() ? (valueX - touchX) > 0 : (valueX - touchX) < 0;
+      // Keep replacing the activeThumbIdx, while the diff decreases.
+      // If the diffs are equal we'll pick the thumb based on which direction we are dragging.
+      if (compare(valueDiff, activeThumbDiff) < 0) {
         activeThumbDiff = valueDiff;
         activeThumbIdx = i;
+        continue;
+      }
+
+      if (compare(valueDiff, activeThumbDiff) == 0) {
+        // Two thumbs on the same value and we don't have enough movement to use direction yet.
+        if (abs(valueX - touchX) < scaledTouchSlop) {
+          activeThumbIdx = -1;
+          return false;
+        }
+
+        if (movingForward) {
+          activeThumbDiff = valueDiff;
+          activeThumbIdx = i;
+        }
       }
     }
 
-    return true;
+    return activeThumbIdx != -1;
+  }
+
+  private float getValueOfTouchPositionAbsolute() {
+    float position = touchPosition;
+    if (isRtl()) {
+      position = 1 - position;
+    }
+    return (position * (valueTo - valueFrom) + valueFrom);
   }
 
   /**
@@ -1638,22 +1645,24 @@ abstract class BaseSlider<
 
   private boolean snapThumbToValue(int idx, float value) {
     // Check if the new value equals a value that was already set.
-    if (Math.abs(value - values.get(idx)) < THRESHOLD) {
+    if (abs(value - values.get(idx)) < THRESHOLD) {
       return false;
     }
 
+    float newValue = getClampedValue(idx, value);
     // Replace the old value with the new value of the touch position.
-    values.set(idx, value);
-    Collections.sort(values);
-    if (idx == activeThumbIdx) {
-      // Hold on to the active thumb if that's what we're tracking.
-      idx = values.indexOf(value);
-    }
-    activeThumbIdx = idx;
+    values.set(idx, newValue);
     focusedThumbIdx = idx;
 
     dispatchOnChangedFromUser(idx);
     return true;
+  }
+
+  /** Thumbs cannot cross each other, clamp the value to a bound or the value next to it. */
+  private float getClampedValue(int idx, float value) {
+    float upperBound = idx + 1 >= values.size() ? valueTo : values.get(idx + 1);
+    float lowerBound = idx - 1 < 0 ? valueFrom : values.get(idx - 1);
+    return clamp(value, lowerBound, upperBound);
   }
 
   private float getValueOfTouchPosition() {
@@ -1700,9 +1709,9 @@ abstract class BaseSlider<
   private String formatValue(float value) {
     if (hasLabelFormatter()) {
       return formatter.getFormattedValue(value);
-    } else {
-      return String.format((int) value == value ? "%.0f" : "%.2f", value);
     }
+
+    return String.format((int) value == value ? "%.0f" : "%.2f", value);
   }
 
   private void setValueForLabel(TooltipDrawable label, float value) {
@@ -1814,79 +1823,90 @@ abstract class BaseSlider<
 
   @Override
   public boolean onKeyDown(int keyCode, @NonNull KeyEvent event) {
-    if (isEnabled()) {
-      // If there's only one thumb, we can select it right away.
-      if (values.size() == 1) {
-        activeThumbIdx = 0;
-      }
+    if (!isEnabled()) {
+      return super.onKeyDown(keyCode, event);
+    }
 
-      // If there is no active thumb, key events will be used to pick the thumb to change.
-      if (activeThumbIdx == -1) {
-        switch (keyCode) {
-          case KeyEvent.KEYCODE_TAB:
-            if (event.hasNoModifiers()) {
-              return moveFocus(1);
-            } else if (event.isShiftPressed()) {
-              return moveFocus(-1);
-            }
-            return false;
-          case KeyEvent.KEYCODE_DPAD_LEFT:
-            moveFocusInAbsoluteDirection(-1);
-            return true;
-          case KeyEvent.KEYCODE_MINUS:
-            moveFocus(-1);
-            return true;
-          case KeyEvent.KEYCODE_DPAD_RIGHT:
-            moveFocusInAbsoluteDirection(1);
-            return true;
-          case KeyEvent.KEYCODE_EQUALS:
-            // Numpad Plus == Shift + Equals, at least in AVD, so fall through.
-          case KeyEvent.KEYCODE_PLUS:
-            moveFocus(1);
-            return true;
-          case KeyEvent.KEYCODE_DPAD_CENTER:
-          case KeyEvent.KEYCODE_ENTER:
-            activeThumbIdx = focusedThumbIdx;
-            postInvalidate();
-            return true;
-          default:
-            // Nothing to do in this case.
-        }
-      } else {
-        isLongPress |= event.isLongPress();
-        Float increment = calculateIncrementForKey(keyCode);
-        if (increment != null) {
-          float clamped =
-              MathUtils.clamp(values.get(activeThumbIdx) + increment, valueFrom, valueTo);
-          if (snapActiveThumbToValue(clamped)) {
-            updateHaloHotspot();
-            postInvalidate();
-          }
-          return true;
-        }
-        switch (keyCode) {
-          case KeyEvent.KEYCODE_TAB:
-            if (event.hasNoModifiers()) {
-              return moveFocus(1);
-            } else if (event.isShiftPressed()) {
-              return moveFocus(-1);
-            }
-            return false;
-          case KeyEvent.KEYCODE_DPAD_CENTER:
-          case KeyEvent.KEYCODE_ENTER:
-            activeThumbIdx = -1;
-            for (TooltipDrawable label : labels) {
-              ViewUtils.getContentViewOverlay(this).remove(label);
-            }
-            postInvalidate();
-            return true;
-          default:
-            // Nothing to do in this case.
-        }
+    // If there's only one thumb, we can select it right away.
+    if (values.size() == 1) {
+      activeThumbIdx = 0;
+    }
+
+    // If there is no active thumb, key events will be used to pick the thumb to change.
+    if (activeThumbIdx == -1) {
+      Boolean handled = onKeyDownNoActiveThumb(keyCode, event);
+      return handled != null ? handled : super.onKeyDown(keyCode, event);
+    }
+
+    isLongPress |= event.isLongPress();
+    Float increment = calculateIncrementForKey(keyCode);
+    if (increment != null) {
+      if (snapActiveThumbToValue(values.get(activeThumbIdx) + increment)) {
+        updateHaloHotspot();
+        postInvalidate();
       }
+      return true;
+    }
+    switch (keyCode) {
+      case KeyEvent.KEYCODE_TAB:
+        if (event.hasNoModifiers()) {
+          return moveFocus(1);
+        }
+
+        if (event.isShiftPressed()) {
+          return moveFocus(-1);
+        }
+        return false;
+      case KeyEvent.KEYCODE_DPAD_CENTER:
+      case KeyEvent.KEYCODE_ENTER:
+        activeThumbIdx = -1;
+        for (TooltipDrawable label : labels) {
+          ViewUtils.getContentViewOverlay(this).remove(label);
+        }
+        postInvalidate();
+        return true;
+      default:
+        // Nothing to do in this case.
     }
 
     return super.onKeyDown(keyCode, event);
+  }
+
+  private Boolean onKeyDownNoActiveThumb(int keyCode, @NonNull KeyEvent event) {
+    switch (keyCode) {
+      case KeyEvent.KEYCODE_TAB:
+        if (event.hasNoModifiers()) {
+          return moveFocus(1);
+        }
+
+        if (event.isShiftPressed()) {
+          return moveFocus(-1);
+        }
+        return false;
+      case KeyEvent.KEYCODE_DPAD_LEFT:
+        moveFocusInAbsoluteDirection(-1);
+        return true;
+      case KeyEvent.KEYCODE_MINUS:
+        moveFocus(-1);
+        return true;
+      case KeyEvent.KEYCODE_DPAD_RIGHT:
+        moveFocusInAbsoluteDirection(1);
+        return true;
+      case KeyEvent.KEYCODE_EQUALS:
+        // Numpad Plus == Shift + Equals, at least in AVD, so fall through.
+      case KeyEvent.KEYCODE_PLUS:
+        moveFocus(1);
+        return true;
+      case KeyEvent.KEYCODE_DPAD_CENTER:
+      case KeyEvent.KEYCODE_ENTER:
+        activeThumbIdx = focusedThumbIdx;
+        postInvalidate();
+        return true;
+      default:
+        // Nothing to do in this case.
+    }
+
+    return null;
   }
 
   @Override
@@ -1907,21 +1927,20 @@ abstract class BaseSlider<
    * @see #moveFocusInAbsoluteDirection(int)
    */
   private boolean moveFocus(int direction) {
-    final int oldFocusedThumbIdx = focusedThumbIdx;
+    int oldFocusedThumbIdx = focusedThumbIdx;
     // Prevent integer overflow.
-    final long newFocusedThumbIdx = oldFocusedThumbIdx + direction;
-    focusedThumbIdx = (int) MathUtils.clamp(newFocusedThumbIdx, 0, values.size() - 1);
+    final long newFocusedThumbIdx = (long) oldFocusedThumbIdx + direction;
+    focusedThumbIdx = (int) clamp(newFocusedThumbIdx, 0, values.size() - 1);
     if (focusedThumbIdx == oldFocusedThumbIdx) {
       // Move focus to next or previous view.
       return false;
-    } else {
-      if (activeThumbIdx != -1) {
-        activeThumbIdx = focusedThumbIdx;
-      }
-      updateHaloHotspot();
-      postInvalidate();
-      return true;
     }
+    if (activeThumbIdx != -1) {
+      activeThumbIdx = focusedThumbIdx;
+    }
+    updateHaloHotspot();
+    postInvalidate();
+    return true;
   }
 
   /**
@@ -1945,17 +1964,9 @@ abstract class BaseSlider<
     float increment = isLongPress ? calculateStepIncrement(20) : calculateStepIncrement();
     switch (keyCode) {
       case KeyEvent.KEYCODE_DPAD_LEFT:
-        if (isRtl()) {
-          return increment;
-        } else {
-          return -increment;
-        }
+        return isRtl() ? increment : -increment;
       case KeyEvent.KEYCODE_DPAD_RIGHT:
-        if (isRtl()) {
-          return -increment;
-        } else {
-          return increment;
-        }
+        return isRtl() ? -increment : increment;
       case KeyEvent.KEYCODE_MINUS:
         return -increment;
       case KeyEvent.KEYCODE_EQUALS:
@@ -2210,9 +2221,7 @@ abstract class BaseSlider<
         }
       }
 
-      info.setRangeInfo(
-          RangeInfoCompat.obtain(RangeInfoCompat.RANGE_TYPE_FLOAT, valueFrom, valueTo, value));
-
+      info.setRangeInfo(RangeInfoCompat.obtain(RANGE_TYPE_FLOAT, valueFrom, valueTo, value));
       info.setClassName(SeekBar.class.getName());
       StringBuilder contentDescription = new StringBuilder();
       // Add the content description of the slider.
@@ -2221,18 +2230,27 @@ abstract class BaseSlider<
       }
       // Add the range to the content description.
       if (values.size() > 1) {
-        contentDescription.append(
-            slider
-                .getContext()
-                .getString(
-                    R.string.mtrl_slider_range_content_description,
-                    slider.formatValue(slider.getValueFrom()),
-                    slider.formatValue(slider.getValueTo())));
+        contentDescription.append(startOrEndDescription(virtualViewId));
+        contentDescription.append(slider.formatValue(value));
       }
       info.setContentDescription(contentDescription.toString());
 
       slider.updateBoundsForVirturalViewId(virtualViewId, virtualViewBounds);
       info.setBoundsInParent(virtualViewBounds);
+    }
+
+    @NonNull
+    private String startOrEndDescription(int virtualViewId) {
+      List<Float> values = slider.getValues();
+      if (virtualViewId == values.size() - 1) {
+        return slider.getContext().getString(R.string.material_slider_range_end);
+      }
+
+      if (virtualViewId == 0) {
+        return slider.getContext().getString(R.string.material_slider_range_start);
+      }
+
+      return "";
     }
 
     @Override
@@ -2275,22 +2293,14 @@ abstract class BaseSlider<
 
             List<Float> values = slider.getValues();
             float clamped =
-                MathUtils.clamp(
+                clamp(
                     values.get(virtualViewId) + increment,
                     slider.getValueFrom(),
                     slider.getValueTo());
             if (slider.snapThumbToValue(virtualViewId, clamped)) {
               slider.updateHaloHotspot();
               slider.postInvalidate();
-
-              // If the index of the new value has changed, refocus on the correct virtual view.
-              if (values.indexOf(clamped) != virtualViewId) {
-                virtualViewId = values.indexOf(clamped);
-                sendEventForVirtualView(virtualViewId, AccessibilityEvent.TYPE_VIEW_FOCUSED);
-              } else {
-                invalidateVirtualView(virtualViewId);
-              }
-
+              invalidateVirtualView(virtualViewId);
               return true;
             }
             return false;
