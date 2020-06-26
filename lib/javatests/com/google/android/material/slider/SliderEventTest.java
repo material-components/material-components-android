@@ -58,6 +58,8 @@ public class SliderEventTest {
   private SliderHelper helper;
   private Slider slider;
   private OnChangeListener mockOnChangeListener;
+  private RangeSlider rangeSlider;
+  private RangeSlider.OnChangeListener mockRangeOnChangeListener;
 
   @Before
   public void createSlider() {
@@ -71,8 +73,16 @@ public class SliderEventTest {
     slider.setValueTo(SLIDER_VALUE_TO);
     slider.setStepSize(SLIDER_STEP_VALUE);
 
+    rangeSlider = helper.getRangeSlider();
+    rangeSlider.setValueFrom(SLIDER_VALUE_FROM);
+    rangeSlider.setValueTo(SLIDER_VALUE_TO);
+    rangeSlider.setStepSize(SLIDER_STEP_VALUE);
+
+    Class<RangeSlider.OnChangeListener> onChangeListenerClass = RangeSlider.OnChangeListener.class;
+    mockRangeOnChangeListener = mock(onChangeListenerClass);
     mockOnChangeListener = mock(OnChangeListener.class);
     slider.addOnChangeListener(mockOnChangeListener);
+    rangeSlider.addOnChangeListener(mockRangeOnChangeListener);
   }
 
   @Test
@@ -109,7 +119,7 @@ public class SliderEventTest {
 
   @Test
   public void testSliderDrag_multipleThumbs_ListenerShouldBeCalled() {
-    slider.setValues(SLIDER_VALUE_FROM, SLIDER_VALUE_FROM + 10);
+    rangeSlider.setValues(SLIDER_VALUE_FROM, SLIDER_VALUE_FROM + 10);
     testSliderDrag_ListenerShouldBeCalled();
   }
 
@@ -162,11 +172,13 @@ public class SliderEventTest {
   @Test
   public void testSliderSetMultipleValues_ListenerShouldBeCalledOncePerValue() {
     float[] values = new float[] {SLIDER_VALUE_FROM, SLIDER_VALUE_FROM + SLIDER_VALUE_RANGE / 2};
-    slider.setValues(values[0], values[1]);
-    slider.setValues(values[0], values[1]);
+    rangeSlider.setValues(values[0], values[1]);
+    rangeSlider.setValues(values[0], values[1]);
     // Verifies listener is called once for each value.
-    verify(mockOnChangeListener, times(1)).onValueChange(eq(slider), eq(values[0]), eq(false));
-    verify(mockOnChangeListener, times(1)).onValueChange(eq(slider), eq(values[1]), eq(false));
+    verify(mockRangeOnChangeListener, times(1))
+        .onValueChange(eq(rangeSlider), eq(values[0]), eq(false));
+    verify(mockRangeOnChangeListener, times(1))
+        .onValueChange(eq(rangeSlider), eq(values[1]), eq(false));
   }
 
   @Test

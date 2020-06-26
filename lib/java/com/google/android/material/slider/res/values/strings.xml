@@ -16,5 +16,6 @@
   -->
 
 <resources>
-  <string name="mtrl_slider_range_content_description" description="Content description for the range of a slider, minimum to maximum. [CHAR_LIMIT=NONE]">%1$s to %2$s</string>
+  <string name="material_slider_range_start" description="Content description for the thumb with the minimum value in a Range slider. [CHAR_LIMIT=NONE]">Range start, </string>
+  <string name="material_slider_range_end" description="Content description for the thumb with the maximum value in a Range slider. [CHAR_LIMIT=NONE]">Range end, </string>
 </resources>
