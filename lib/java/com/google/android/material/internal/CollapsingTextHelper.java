@@ -546,8 +546,6 @@ public final class CollapsingTextHelper {
             collapsedTextGravity,
             isRtl ? ViewCompat.LAYOUT_DIRECTION_RTL : ViewCompat.LAYOUT_DIRECTION_LTR);
 
-    float textLayoutHeight = textLayout != null ? textLayout.getHeight() : 0;
-
     switch (collapsedAbsGravity & Gravity.VERTICAL_GRAVITY_MASK) {
       case Gravity.BOTTOM:
         collapsedDrawY = collapsedBounds.bottom;
@@ -579,6 +577,8 @@ public final class CollapsingTextHelper {
     }
 
     calculateUsingTextSize(expandedTextSize);
+
+    float textLayoutHeight = textLayout != null ? textLayout.getHeight() : 0;
 
     float measuredWidth = textToDraw != null
         ? textPaint.measureText(textToDraw, 0, textToDraw.length()) : 0;
