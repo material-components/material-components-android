@@ -9,6 +9,7 @@ dependencies {
   api compatibility("appcompat")
   api compatibility("cardview")
   api compatibility("coordinatorlayout")
+  api compatibility("constraintlayout")
   api compatibility("core")
   api compatibility("dynamicanimation")
   api compatibility("experimental")
@@ -72,6 +73,7 @@ def srcDirs = [
   'com/google/android/material/textview',
   'com/google/android/material/theme',
   'com/google/android/material/theme/overlay',
+  'com/google/android/material/timepicker',
   'com/google/android/material/tooltip',
   'com/google/android/material/transition',
   'com/google/android/material/transformation',

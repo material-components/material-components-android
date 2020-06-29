@@ -28,7 +28,7 @@ ext {
     annotation            : '1.0.1',
     appCompat             : '1.1.0',
     cardView              : '1.0.0',
-    constraintlayout      : '1.1.3',
+    constraintlayout      : '2.0.0-beta7', // Need Beta for TimePicker.
     coordinatorlayout     : '1.1.0',
     core                  : '1.2.0',
     experimental          : '1.0.0',

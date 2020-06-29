@@ -42,6 +42,7 @@ import io.material.catalog.tabs.TabsFragment;
 import io.material.catalog.textfield.TextFieldFragment;
 import io.material.catalog.themeswitcher.ThemeSwitcherDialogFragment;
 import io.material.catalog.themeswitcher.ThemeSwitcherResourceProvider;
+import io.material.catalog.timepicker.TimePickerDemoLandingFragment;
 import io.material.catalog.topappbar.TopAppBarFragment;
 import io.material.catalog.transition.TransitionFragment;
 
@@ -69,6 +70,7 @@ import io.material.catalog.transition.TransitionFragment;
       SwitchFragment.Module.class,
       TabsFragment.Module.class,
       TextFieldFragment.Module.class,
+      TimePickerDemoLandingFragment.Module.class,
       TopAppBarFragment.Module.class,
       TransitionFragment.Module.class
     })
