@@ -369,7 +369,6 @@ public class ProgressIndicator extends ProgressBar {
   }
 
   private void registerAnimationCallbacks() {
-
     if (getProgressDrawable() != null && getIndeterminateDrawable() != null) {
       // Registers the animation callback to switch indeterminate mode at the end of indeterminate
       // animation.
@@ -1053,7 +1052,11 @@ public class ProgressIndicator extends ProgressBar {
               new Runnable() {
                 @Override
                 public void run() {
+                  // Needs to explicitly set visibility of two drawables.
+                  // ProgressBar.setIndeterminate cannot handle it properly for pre-lollipop.
+                  getIndeterminateDrawable().setVisible(false, false);
                   setIndeterminate(false);
+                  getProgressDrawable().setVisible(true, false);
 
                   // Resets progress bar to minimum value then updates to new progress.
                   setProgressCompat(0, /*animated=*/ false);
