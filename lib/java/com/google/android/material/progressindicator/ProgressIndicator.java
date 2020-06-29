@@ -177,6 +177,8 @@ public class ProgressIndicator extends ProgressBar {
 
   private long lastShowStartTime = -1L;
 
+  private boolean animatorDisabled = false;
+
   // ******************** Interfaces **********************
 
   /** The type of the progress indicator. */
@@ -367,46 +369,13 @@ public class ProgressIndicator extends ProgressBar {
   }
 
   private void registerAnimationCallbacks() {
-    // Creates an animation callback to set the component invisible at the end of hide animation.
-    AnimationCallback hideAnimationCallback =
-        new AnimationCallback() {
-          @Override
-          public void onAnimationEnd(Drawable drawable) {
-            super.onAnimationEnd(drawable);
-            post(
-                new Runnable() {
-                  @Override
-                  public void run() {
-                    if (getVisibility() == VISIBLE) {
-                      setVisibility(INVISIBLE);
-                    }
-                  }
-                });
-          }
-        };
 
     if (getProgressDrawable() != null && getIndeterminateDrawable() != null) {
-      // Creates and register an animation callback to switch indeterminate mode at the end of
-      // indeterminate animation.
+      // Registers the animation callback to switch indeterminate mode at the end of indeterminate
+      // animation.
       getIndeterminateDrawable()
           .getAnimatorDelegate()
-          .registerAnimatorsCompleteCallback(
-              new AnimationCallback() {
-                @Override
-                public void onAnimationEnd(Drawable drawable) {
-                  post(
-                      new Runnable() {
-                        @Override
-                        public void run() {
-                          setIndeterminate(false);
-
-                          // Resets progress bar to minimum value then updates to new progress.
-                          setProgressCompat(0, /*animated=*/ false);
-                          setProgressCompat(storedProgress, storedProgressAnimated);
-                        }
-                      });
-                }
-              });
+          .registerAnimatorsCompleteCallback(switchIndeterminateModeCallback);
     }
 
     // Registers the hide animation callback to determinate drawable.
@@ -427,8 +396,7 @@ public class ProgressIndicator extends ProgressBar {
    */
   @VisibleForTesting
   public void disableAnimatorsForTesting() {
-    getProgressDrawable().disableAnimatorsForTesting();
-    getIndeterminateDrawable().disableAnimatorsForTesting();
+    animatorDisabled = true;
   }
 
   /**
@@ -468,13 +436,11 @@ public class ProgressIndicator extends ProgressBar {
    * @see #hide()
    */
   private void internalHide() {
-    DrawableWithAnimatedVisibilityChange currentDrawable = getCurrentDrawable();
-
     // Hides animation should be used if it's visible to user and potentially can be hidden with
-    // animation.
-    boolean shouldHideAnimated = visibleToUser() && growMode != GROW_MODE_NONE;
+    // animation, unless animators are disabled actively.
+    boolean shouldHideAnimated = visibleToUser() && growMode != GROW_MODE_NONE && !animatorDisabled;
 
-    currentDrawable.setVisible(false, shouldHideAnimated);
+    getCurrentDrawable().setVisible(false, shouldHideAnimated);
 
     if (!shouldHideAnimated) {
       setVisibility(INVISIBLE);
@@ -502,13 +468,12 @@ public class ProgressIndicator extends ProgressBar {
       return;
     }
 
-    Drawable currentDrawable = getCurrentDrawable();
     boolean visibleToUser = visibleToUser();
 
     // Sets the drawable to visible/invisible if the component is currently visible/invisible. Only
     // show animation should be started (when the component is currently visible). Hide animation
     // should have already ended or is not necessary at this point.
-    currentDrawable.setVisible(visibleToUser, visibleToUser);
+    getCurrentDrawable().setVisible(visibleToUser, visibleToUser && !animatorDisabled);
   }
 
   @Override
@@ -1033,23 +998,29 @@ public class ProgressIndicator extends ProgressBar {
    */
   public void setProgressCompat(int progress, boolean animated) {
     if (isIndeterminate() && getProgressDrawable() != null) {
-      getIndeterminateDrawable().getAnimatorDelegate().requestCancelAnimatorAfterCurrentCycle();
       // Holds new progress to a temp field, since setting progress is ignored in indeterminate
       // mode.
       storedProgress = progress;
       storedProgressAnimated = animated;
+      if (animatorDisabled) {
+        switchIndeterminateModeCallback.onAnimationEnd(getIndeterminateDrawable());
+      } else {
+        getIndeterminateDrawable().getAnimatorDelegate().requestCancelAnimatorAfterCurrentCycle();
+      }
       return;
+    }
+
+    // When no progress animation is needed, it will notify the drawable to skip animation on the
+    // next level change.
+    if (getProgressDrawable() != null
+        && getProgress() != progress
+        && (!animated || animatorDisabled)) {
+      getProgressDrawable().skipNextLevelChange();
     }
 
     // Calls ProgressBar setProgress(int) to update the progress value and level. We don't rely on
     // it to draw or animate the indicator.
     super.setProgress(progress);
-
-    // The animation will start to update the indicator by default. If no animation is desired, we
-    // need to call jumpToCurrentState() to skip/fast-forward the animation.
-    if (!animated && getProgressDrawable() != null) {
-      getProgressDrawable().jumpToCurrentState();
-    }
   }
 
   // ************************ In-place defined parameters ****************************
@@ -1065,6 +1036,50 @@ public class ProgressIndicator extends ProgressBar {
         public void run() {
           internalHide();
           lastShowStartTime = -1L;
+        }
+      };
+
+  /**
+   * The {@code AnimationCallback} to switch indeterminate mode at the end of indeterminate
+   * animation.
+   *
+   * @see #registerAnimationCallbacks()
+   */
+  private final AnimationCallback switchIndeterminateModeCallback =
+      new AnimationCallback() {
+        @Override
+        public void onAnimationEnd(Drawable drawable) {
+          post(
+              new Runnable() {
+                @Override
+                public void run() {
+                  setIndeterminate(false);
+
+                  // Resets progress bar to minimum value then updates to new progress.
+                  setProgressCompat(0, /*animated=*/ false);
+                  setProgressCompat(storedProgress, storedProgressAnimated);
+                }
+              });
+        }
+      };
+
+  /**
+   * The {@code AnimationCallback} to set the component invisible at the end of hide animation.
+   *
+   * @see #registerAnimationCallbacks()
+   */
+  private final AnimationCallback hideAnimationCallback =
+      new AnimationCallback() {
+        @Override
+        public void onAnimationEnd(Drawable drawable) {
+          super.onAnimationEnd(drawable);
+          post(
+              new Runnable() {
+                @Override
+                public void run() {
+                  setVisibility(INVISIBLE);
+                }
+              });
         }
       };
 }

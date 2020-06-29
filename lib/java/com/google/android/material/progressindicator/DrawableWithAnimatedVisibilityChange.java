@@ -26,7 +26,6 @@ import android.graphics.drawable.Drawable;
 import android.util.Property;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.VisibleForTesting;
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.color.MaterialColors;
@@ -65,9 +64,6 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
 
   final Paint paint = new Paint();
   private int totalAlpha;
-
-  // Whether to disable all animators for screenshot tests.
-  boolean animatorsDisabledForTesting;
 
   // ******************* Constructor *******************
 
@@ -162,11 +158,6 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
   }
 
   // ******************* Visibility control *******************
-
-  @VisibleForTesting
-  void disableAnimatorsForTesting() {
-    animatorsDisabledForTesting = true;
-  }
 
   /** The drawable will start with show animator as default. */
   @Override

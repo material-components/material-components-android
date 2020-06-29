@@ -57,11 +57,6 @@ public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityC
    */
   @Override
   public boolean setVisible(boolean visible, boolean animationDesired) {
-    // Animations are not desired if tests request to disable them.
-    if (animatorsDisabledForTesting) {
-      animationDesired = false;
-    }
-
     boolean changed = super.setVisible(visible, animationDesired);
 
     // Unless it's showing or hiding, cancels and resets main animator.

@@ -39,6 +39,8 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
   private SpringAnimation springAnimator;
   // Fraction of displayed indicator in the total width.
   private float indicatorFraction;
+  // Whether to skip the next level change event.
+  private boolean skipNextLevelChange = false;
 
   public DeterminateDrawable(
       @NonNull ProgressIndicator progressIndicator, @NonNull DrawingDelegate drawingDelegate) {
@@ -81,6 +83,11 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
     setLevel((int) (MAX_DRAWABLE_LEVEL * fraction));
   }
 
+  /** Sets the flag so that when the level is changed next time, it will skip the animation. */
+  void skipNextLevelChange() {
+    skipNextLevelChange = true;
+  }
+
   // ******************* Overridden methods *******************
 
   /** Skips the animation of changing indicator length, directly displays the target progress. */
@@ -100,13 +107,14 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
    */
   @Override
   protected boolean onLevelChange(int level) {
-    // Jumps to the level directly if tests request to disable animations, otherwise, updates and
-    // starts the spring animation.
-    if (!animatorsDisabledForTesting) {
+    if (skipNextLevelChange) {
+      springAnimator.cancel();
+      setIndicatorFraction((float) level / MAX_DRAWABLE_LEVEL);
+      // One time usage.
+      skipNextLevelChange = false;
+    } else {
       springAnimator.setStartValue(getIndicatorFraction() * MAX_DRAWABLE_LEVEL);
       springAnimator.animateToFinalPosition(level);
-    } else {
-      jumpToCurrentState();
     }
     return true;
   }
