@@ -229,7 +229,6 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
     setText(drawable.getText());
     setEllipsize(drawable.getEllipsize());
 
-    setIncludeFontPadding(false);
     updateTextPaintDrawState();
 
     // Chip text should not extend to more than 1 line.

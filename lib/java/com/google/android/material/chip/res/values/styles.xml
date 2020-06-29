@@ -39,6 +39,7 @@
     <item name="closeIcon">@drawable/ic_mtrl_chip_close_circle</item>
 
     <item name="android:text">@null</item>
+    <item name="android:includeFontPadding">false</item>
     <item name="enforceMaterialTheme">true</item>
     <item name="enforceTextAppearance">true</item>
     <item name="android:textAppearance">?attr/textAppearanceBody2</item>
