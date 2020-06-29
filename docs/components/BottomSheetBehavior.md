@@ -9,9 +9,6 @@ path: /catalog/bottom-sheet-behavior/
 
 # Bottom Sheets
 
-![Bottom Sheets](assets/bottom-sheets.svg)
-<!--{: .article__asset.article__asset--screenshot }-->
-
 `BottomSheetBehavior` is applied to a child of
 [CoordinatorLayout](https://developer.android.com/reference/androidx/coordinatorlayout/widget/CoordinatorLayout)
 to make that child a **persistent bottom sheet**.

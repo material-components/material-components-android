@@ -69,7 +69,7 @@ API and source code:
 
 The following example shows a text button with a text label.
 
-!["Text button with purple text 'Text button' over a white background."](assets/buttons/text-button.svg)
+!["Text button with purple text 'Text button' over a white background."](assets/buttons/text-button.png)
 
 In the layout:
 
@@ -96,7 +96,7 @@ textButton.setOnClickListener {
 The following example shows a text button with an icon.
 
 !["Text button with purple text 'Text button' and '+' icon over a white
-background."](assets/buttons/text-button-icon.svg)
+background."](assets/buttons/text-button-icon.png)
 
 In the layout:
 
@@ -178,7 +178,7 @@ The following example shows an outlined button with a text label and stroked
 container.
 
 !["Outlined button with purple text 'Outlined button' and grey border over a
-white background."](assets/buttons/outlined-button.svg)
+white background."](assets/buttons/outlined-button.png)
 
 In the layout:
 
@@ -205,7 +205,7 @@ outlinedButton.setOnClickListener {
 The following example shows an outlined button with an icon.
 
 !["Outlined button with purple text 'Outlined button', grey border and '+' icon
-over a white background."](assets/buttons/outlined-button-icon.svg)
+over a white background."](assets/buttons/outlined-button-icon.png)
 
 In the layout:
 
@@ -290,7 +290,7 @@ The following example shows a contained button with a text label and a filled
 container.
 
 !["Contained button with white text 'Contained button' and purple container over
-a white background."](assets/buttons/contained-button.svg)
+a white background."](assets/buttons/contained-button.png)
 
 In the layout:
 
@@ -320,7 +320,7 @@ containedButton.setOnClickListener {
 The following example shows a contained button with an icon.
 
 !["Contained button with white text 'Contained button', purple container and '+'
-icon over a white background."](assets/buttons/contained-button-icon.svg)
+icon over a white background."](assets/buttons/contained-button-icon.png)
 
 In the layout:
 
@@ -418,7 +418,7 @@ labels.
 
 !["Toggle button example for Android with text labels - 'Button 1', 'Button 2'
 and 'Button 3' - and grey/purple borders over a white
-background."](assets/buttons/toggle-button-text.svg)
+background."](assets/buttons/toggle-button-text.png)
 
 In the layout:
 
@@ -464,7 +464,7 @@ toggleButton.addOnButtonCheckedListener { toggleButton, checkedId, isChecked ->
 The following example shows a toggle button with three buttons that have icons.
 
 !["Toggle buttons with icons - heart, eye and bell - and grey/purple borders
-over a white background."](assets/buttons/toggle-button.svg)
+over a white background."](assets/buttons/toggle-button.png)
 
 In `res/values/styles.xml`:
 
@@ -609,7 +609,7 @@ The following example shows text, outlined and contained button types with
 Material Theming.
 
 !["Button theming with three buttons - text, outlined and contained - with pink
-color theming and cut corners."](assets/buttons/button-theming.svg)
+color theming and cut corners."](assets/buttons/button-theming.png)
 
 #### Implementing button theming
 
