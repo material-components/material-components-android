@@ -12,7 +12,6 @@ path: /catalog/menu/
 ## Design & API Documentation
 
 *   [Material Design guidelines: Menus](https://material.io/design/components/menus.html)
-    <!--{: .icon-list-item.icon-list-item--spec }-->
 
 ## Material Styles
 

@@ -22,7 +22,6 @@ backgrounds, text, and more.
 
 -   [Material Design guidelines:
     Color](https://material.io/go/design-color-theming/)
-    <!--{: .icon-list-item.icon-list-item--spec }-->
 
 ## Using The Color Theming System
 

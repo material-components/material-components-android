@@ -18,7 +18,6 @@ individual text appearance.
 
 -   [Material Design guidelines:
     Typography](https://material.io/go/design-typography/)
-    <!--{: .icon-list-item.icon-list-item--spec }-->
 
 ## Usage
 

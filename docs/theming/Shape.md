@@ -23,7 +23,6 @@ feel of your app.
 
 -   [Material Design guidelines:
     Shape](https://material.io/go/design-shape)
-    <!--{: .icon-list-item.icon-list-item--spec }-->
 
 ## How it works
 

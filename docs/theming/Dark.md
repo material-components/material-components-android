@@ -25,11 +25,8 @@ Android system UI and apps running on the device.
 ## Design & API Documentation
 
 -   [Material Design guidelines: Dark Theme][dark-theme-mdc-spec]
-    <!--{: .icon-list-item.icon-list-item--spec }-->
 -   [Android Q Dark Theme Documentation][dark-theme-dac-docs]
-    <!--{: .icon-list-item.icon-list-item--spec }-->
 -   [AppCompat DayNight Documentation][daynight-appcompat-docs]
-    <!--{: .icon-list-item.icon-list-item--spec }-->
 
 ### Setup
 
