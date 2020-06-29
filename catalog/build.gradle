@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 dependencies {
-  api 'com.google.dagger:dagger:2.23.1'
-  annotationProcessor 'com.google.dagger:dagger-compiler:2.23.1'
+  api 'com.google.dagger:dagger:2.28.1'
+  annotationProcessor 'com.google.dagger:dagger-compiler:2.28.1'
 
-  api 'com.google.dagger:dagger-android:2.23.1'
-  api 'com.google.dagger:dagger-android-support:2.23.1'
-  annotationProcessor 'com.google.dagger:dagger-android-processor:2.23.1'
+  api 'com.google.dagger:dagger-android:2.28.1'
+  api 'com.google.dagger:dagger-android-support:2.28.1'
+  annotationProcessor 'com.google.dagger:dagger-android-processor:2.28.1'
 
   api 'androidx.multidex:multidex:2.0.0'
   api 'androidx.constraintlayout:constraintlayout:1.1.3'
