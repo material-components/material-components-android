@@ -58,7 +58,7 @@ public final class LinearIndeterminateSeamlessAnimatorDelegate
     ObjectAnimator connectPoint1Animator =
         ObjectAnimator.ofFloat(this, LINE_CONNECT_POINT_1_FRACTION, 0f, 1f);
     connectPoint1Animator.setDuration(DURATION_PER_COLOR);
-    connectPoint1Animator.setInterpolator(AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR);
+    connectPoint1Animator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
     connectPoint1Animator.setRepeatCount(ValueAnimator.INFINITE);
     connectPoint1Animator.setRepeatMode(ValueAnimator.RESTART);
     connectPoint1Animator.addListener(
@@ -77,7 +77,7 @@ public final class LinearIndeterminateSeamlessAnimatorDelegate
     ObjectAnimator connectPoint2Animator =
         ObjectAnimator.ofFloat(this, LINE_CONNECT_POINT_2_FRACTION, 0f, 1f);
     connectPoint2Animator.setDuration(DURATION_PER_COLOR);
-    connectPoint2Animator.setInterpolator(AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR);
+    connectPoint2Animator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
     connectPoint2Animator.setRepeatCount(ValueAnimator.INFINITE);
     connectPoint2Animator.setRepeatMode(ValueAnimator.RESTART);
     connectPoint2Animator.addListener(
