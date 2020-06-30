@@ -27,7 +27,11 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.os.Build.VERSION;
+import android.os.Parcelable;
 import android.os.SystemClock;
+import android.provider.Settings.Global;
+import android.provider.Settings.System;
 import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
@@ -175,6 +179,9 @@ public class ProgressIndicator extends ProgressBar {
   private long lastShowStartTime = -1L;
 
   private boolean animatorDisabled = false;
+
+  /** The scale of the animation speed combining system setting and debug parameters. */
+  private float systemAnimationScale = 1f;
 
   // ******************** Interfaces **********************
 
@@ -330,6 +337,7 @@ public class ProgressIndicator extends ProgressBar {
     }
 
     registerAnimationCallbacks();
+    updateProgressDrawableAnimationScale();
     applyNewVisibility();
   }
 
@@ -362,6 +370,7 @@ public class ProgressIndicator extends ProgressBar {
         indeterminateDrawable != null && (determinateDrawable == null || isIndeterminate()));
 
     registerAnimationCallbacks();
+    updateProgressDrawableAnimationScale();
     applyNewVisibility();
   }
 
@@ -381,6 +390,15 @@ public class ProgressIndicator extends ProgressBar {
     // Registers the hide animation callback to indeterminate drawable.
     if (getIndeterminateDrawable() != null) {
       getIndeterminateDrawable().registerAnimationCallback(hideAnimationCallback);
+    }
+  }
+
+  private void updateProgressDrawableAnimationScale() {
+    systemAnimationScale = getSystemAnimatorDurationScale();
+    if (systemAnimationScale > 0) {
+      if (getProgressDrawable() != null) {
+        getProgressDrawable().invalidateAnimationScale(systemAnimationScale);
+      }
     }
   }
 
@@ -487,6 +505,13 @@ public class ProgressIndicator extends ProgressBar {
     removeCallbacks(delayedHide);
     getCurrentDrawable().setVisible(false, false);
     super.onDetachedFromWindow();
+  }
+
+  @Override
+  public void onRestoreInstanceState(Parcelable state) {
+    super.onRestoreInstanceState(state);
+
+    updateProgressDrawableAnimationScale();
   }
 
   // ******************** Draw methods **********************
@@ -660,6 +685,25 @@ public class ProgressIndicator extends ProgressBar {
   private void updateColorsInDrawables() {
     getProgressDrawable().recalculateColors();
     getIndeterminateDrawable().recalculateColors();
+  }
+
+  /** Returns the animator duration scale from developer options setting. */
+  private float getSystemAnimatorDurationScale() {
+    if (VERSION.SDK_INT >= 17) {
+      return Global.getFloat(getContext().getContentResolver(), Global.ANIMATOR_DURATION_SCALE, 1f);
+    }
+    if (VERSION.SDK_INT == 16) {
+      return System.getFloat(getContext().getContentResolver(), System.ANIMATOR_DURATION_SCALE, 1f);
+    }
+    return 1f;
+  }
+
+  /**
+   * Returns whether the animators are disabled passively (by system settings) or actively (for
+   * testings).
+   */
+  private boolean isAnimatorDisabled() {
+    return animatorDisabled || systemAnimationScale == 0;
   }
 
   // ******************** Getters and setters **********************
@@ -998,7 +1042,7 @@ public class ProgressIndicator extends ProgressBar {
       // mode.
       storedProgress = progress;
       storedProgressAnimated = animated;
-      if (animatorDisabled) {
+      if (isAnimatorDisabled()) {
         switchIndeterminateModeCallback.onAnimationEnd(getIndeterminateDrawable());
       } else {
         getIndeterminateDrawable().getAnimatorDelegate().requestCancelAnimatorAfterCurrentCycle();
@@ -1010,7 +1054,7 @@ public class ProgressIndicator extends ProgressBar {
     // next level change.
     if (getProgressDrawable() != null
         && getProgress() != progress
-        && (!animated || animatorDisabled)) {
+        && (!animated || isAnimatorDisabled())) {
       getProgressDrawable().skipNextLevelChange();
     }
 

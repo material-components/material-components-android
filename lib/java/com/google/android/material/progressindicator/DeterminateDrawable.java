@@ -33,10 +33,13 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
 
   // Constants for drawing progress.
   private static final int MAX_DRAWABLE_LEVEL = 10000;
+  // The constant for spring force stiffness.
+  private static final float SPRING_FORCE_STIFFNESS = SpringForce.STIFFNESS_VERY_LOW;
   // Drawing delegate object.
   private final DrawingDelegate drawingDelegate;
   // Animation.
-  private SpringAnimation springAnimator;
+  private final SpringForce springForce;
+  private final SpringAnimation springAnimator;
   // Fraction of displayed indicator in the total width.
   private float indicatorFraction;
   // Whether to skip the next level change event.
@@ -48,15 +51,9 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
 
     this.drawingDelegate = drawingDelegate;
 
-    initializeAnimator();
-  }
-
-  // ******************* Initialization *******************
-
-  private void initializeAnimator() {
-    SpringForce springForce = new SpringForce();
+    springForce = new SpringForce();
     springForce.setDampingRatio(SpringForce.DAMPING_RATIO_NO_BOUNCY);
-    springForce.setStiffness(50f);
+    springForce.setStiffness(SPRING_FORCE_STIFFNESS);
 
     springAnimator = new SpringAnimation(this, INDICATOR_LENGTH_FRACTION);
     springAnimator.setSpring(springForce);
@@ -70,6 +67,21 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
         });
 
     setGrowFraction(1f);
+  }
+
+  /**
+   * Invalidates the spring animation's duration by changing the stiffness of {@link SpringForce}.
+   * Negative scale is invalid. 0 is handled as a special case in {@link ProgressIndicator}, which
+   * will skip the animation when the level changes.
+   *
+   * @param scale New scale of the animator's duration.
+   * @throws IllegalArgumentException if scale is negative or zero.
+   */
+  void invalidateAnimationScale(float scale) {
+    if (scale <= 0) {
+      throw new IllegalArgumentException("Animation duration scale must be positive.");
+    }
+    springForce.setStiffness(SPRING_FORCE_STIFFNESS / scale);
   }
 
   /**
