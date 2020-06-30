@@ -17,9 +17,9 @@
 
 <resources>
   <!-- Title of the demo displaying pop-up pickers. [CHAR LIMIT=40] -->
-  <string name="cat_picker_demo_title">Pickers</string>
+  <string name="cat_picker_demo_title">Date Picker</string>
   <!-- Description of what pickers are used for in applications. [CHAR LIMIT=NONE] -->
-  <string name="cat_picker_description">Pickers allow users to choose dates and times.</string>
+  <string name="cat_picker_description">Date pickers allow users to choose dates.</string>
   <!-- Button label that indicates clicking the button
   will launch a Material Date Picker [CHAR LIMIT=120] -->
   <string name="cat_picker_launch">Launch Material Date Picker</string>

@@ -19,7 +19,7 @@
   <!-- Title of the demo displaying pop-up pickers. [CHAR LIMIT=40] -->
   <string name="cat_time_picker_demo_title">Time Picker</string>
   <!-- Description of the catalog demo containing time picker. [CHAR LIMIT=128] -->
-  <string name="cat_time_picker_description">Pickers allow users to choose times.</string>
+  <string name="cat_time_picker_description">Time pickers allow users to choose times.</string>
   <!-- Label for a switch that allows the user to use the framework version of the time picker [CHAR LIMIT=128] -->
   <string name="use_framework_dialog">Use Framework Time Picker</string>
   <!-- Label for a button to choose the time [CHAR LIMIT=64] -->
