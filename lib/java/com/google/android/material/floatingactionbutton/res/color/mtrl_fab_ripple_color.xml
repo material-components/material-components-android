@@ -17,10 +17,10 @@
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-  <item android:alpha="0.32" android:color="?attr/colorOnSecondary" android:state_pressed="true"/>
-  <item android:alpha="0.24" android:color="?attr/colorOnSecondary" android:state_focused="true" android:state_hovered="true"/>
-  <item android:alpha="0.24" android:color="?attr/colorOnSecondary" android:state_focused="true"/>
-  <item android:alpha="0.08" android:color="?attr/colorOnSecondary" android:state_hovered="true"/>
-  <item android:alpha="0.00" android:color="?attr/colorOnSecondary"/>
+  <item android:alpha="@dimen/mtrl_high_ripple_pressed_alpha" android:color="?attr/colorOnSecondary" android:state_pressed="true"/>
+  <item android:alpha="@dimen/mtrl_high_ripple_focused_alpha" android:color="?attr/colorOnSecondary" android:state_focused="true" android:state_hovered="true"/>
+  <item android:alpha="@dimen/mtrl_high_ripple_focused_alpha" android:color="?attr/colorOnSecondary" android:state_focused="true"/>
+  <item android:alpha="@dimen/mtrl_high_ripple_hovered_alpha" android:color="?attr/colorOnSecondary" android:state_hovered="true"/>
+  <item android:alpha="@dimen/mtrl_high_ripple_default_alpha" android:color="?attr/colorOnSecondary"/>
 
 </selector>
