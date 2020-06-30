@@ -18,8 +18,6 @@ package com.google.android.material.progressindicator;
 
 import com.google.android.material.R;
 
-import static com.google.android.material.progressindicator.ProgressIndicator.ANIMATION_SPEED_FACTOR;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -40,13 +38,13 @@ public final class LinearIndeterminateNonSeamlessAnimatorDelegate
     extends IndeterminateAnimatorDelegate<AnimatorSet> {
 
   // Constants for animation timing.
-  private static final long MAIN_LINE_1_HEAD_DURATION = (long) (750 * ANIMATION_SPEED_FACTOR);
-  private static final long MAIN_LINE_1_TAIL_DELAY = (long) (333 * ANIMATION_SPEED_FACTOR);
-  private static final long MAIN_LINE_1_TAIL_DURATION = (long) (850 * ANIMATION_SPEED_FACTOR);
-  private static final long MAIN_LINE_2_HEAD_DELAY = (long) (1000 * ANIMATION_SPEED_FACTOR);
-  private static final long MAIN_LINE_2_HEAD_DURATION = (long) (567 * ANIMATION_SPEED_FACTOR);
-  private static final long MAIN_LINE_2_TAIL_DELAY = (long) (1267 * ANIMATION_SPEED_FACTOR);
-  private static final long MAIN_LINE_2_TAIL_DURATION = (long) (533 * ANIMATION_SPEED_FACTOR);
+  private static final int MAIN_LINE_1_HEAD_DURATION = 750;
+  private static final int MAIN_LINE_1_TAIL_DELAY = 333;
+  private static final int MAIN_LINE_1_TAIL_DURATION = 850;
+  private static final int MAIN_LINE_2_HEAD_DELAY = 1000;
+  private static final int MAIN_LINE_2_HEAD_DURATION = 567;
+  private static final int MAIN_LINE_2_TAIL_DELAY = 1267;
+  private static final int MAIN_LINE_2_TAIL_DURATION = 533;
 
   // The animator controls non-seamless linear indeterminate animation.
   private final AnimatorSet animatorSet;

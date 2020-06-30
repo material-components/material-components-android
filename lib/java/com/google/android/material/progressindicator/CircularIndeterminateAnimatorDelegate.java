@@ -15,8 +15,6 @@
  */
 package com.google.android.material.progressindicator;
 
-import static com.google.android.material.progressindicator.ProgressIndicator.ANIMATION_SPEED_FACTOR;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -44,9 +42,9 @@ public final class CircularIndeterminateAnimatorDelegate
   private static final float INDICATOR_OFFSET_PER_COLOR_DEGREES = 360f;
 
   // Constants for animation timing.
-  private static final long DURATION_PER_COLOR_IN_MS = (long) (1333 * ANIMATION_SPEED_FACTOR);
-  private static final long COLOR_FADING_DURATION = (long) (333 * ANIMATION_SPEED_FACTOR);
-  private static final long COLOR_FADING_DELAY = (long) (1000 * ANIMATION_SPEED_FACTOR);
+  private static final int DURATION_PER_COLOR_IN_MS = 1333;
+  private static final int COLOR_FADING_DURATION = 333;
+  private static final int COLOR_FADING_DELAY = 1000;
 
   // The animators control circular indeterminate animation.
   private final AnimatorSet animatorSet;
@@ -185,6 +183,11 @@ public final class CircularIndeterminateAnimatorDelegate
 
   @Override
   void resetPropertiesForNextCycle() {
+    // Don't reset animator controlled properties if at the end of the current cycle, the head of
+    // the arc is not animated to its start position for the next cycle.
+    if (!isArcHeadFullyAnimated()) {
+      return;
+    }
     setIndicatorHeadChangeFraction(0f);
     setIndicatorTailChangeFraction(0f);
     setIndicatorStartOffset(
@@ -225,6 +228,15 @@ public final class CircularIndeterminateAnimatorDelegate
                 + getIndicatorInCycleOffset()
                 + getIndicatorHeadChangeFraction() * INDICATOR_DELTA_DEGREES)
             / 360;
+  }
+
+  /**
+   * Returns whether the head of the arc is fully animated. If yes, it means the current head
+   * position can be directly used as the start offset for the next cycle.
+   */
+  private boolean isArcHeadFullyAnimated() {
+    return segmentPositions[1]
+        == getIndicatorStartOffset() + INDICATOR_OFFSET_PER_COLOR_DEGREES + INDICATOR_DELTA_DEGREES;
   }
 
   // ******************* Getters and setters *******************

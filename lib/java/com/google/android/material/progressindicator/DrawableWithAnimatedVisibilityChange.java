@@ -42,7 +42,7 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
   private static final boolean DEFAULT_DRAWABLE_RESTART = false;
 
   // Animation duration for both show and hide animators.
-  private static final long GROW_DURATION = (long) (500 * ProgressIndicator.ANIMATION_SPEED_FACTOR);
+  private static final int GROW_DURATION = 500;
 
   // The component this drawable is serving.
   final ProgressIndicator progressIndicator;

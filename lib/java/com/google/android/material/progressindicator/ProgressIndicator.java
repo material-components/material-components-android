@@ -55,9 +55,6 @@ public class ProgressIndicator extends ProgressBar {
   private static final int DEF_STYLE_RES =
       R.style.Widget_MaterialComponents_ProgressIndicator_Linear_Determinate;
 
-  // Used for debug purpose to slow down the animations.
-  protected static final float ANIMATION_SPEED_FACTOR = 1f;
-
   // Constants for track shape.
 
   /** The indicator appears as a horizontal bar. */

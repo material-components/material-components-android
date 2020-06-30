@@ -16,8 +16,6 @@
 
 package com.google.android.material.progressindicator;
 
-import static com.google.android.material.progressindicator.ProgressIndicator.ANIMATION_SPEED_FACTOR;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -37,8 +35,8 @@ public final class LinearIndeterminateSeamlessAnimatorDelegate
     extends IndeterminateAnimatorDelegate<AnimatorSet> {
 
   // Constants for animation timing.
-  private static final long NEXT_COLOR_DELAY = (long) (333 * ANIMATION_SPEED_FACTOR);
-  private static final long DURATION_PER_COLOR = (long) (667 * ANIMATION_SPEED_FACTOR);
+  private static final int NEXT_COLOR_DELAY = 333;
+  private static final int DURATION_PER_COLOR = 667;
 
   // The animator controls seamless linear indeterminate animation.
   private final AnimatorSet animatorSet;
@@ -66,7 +64,9 @@ public final class LinearIndeterminateSeamlessAnimatorDelegate
           @Override
           public void onAnimationRepeat(Animator animation) {
             super.onAnimationRepeat(animation);
-            rotateIndicatorColors();
+            if (getLineConnectPoint2Fraction() > 0 && getLineConnectPoint2Fraction() < 1) {
+              rotateIndicatorColors();
+            }
           }
         });
 
@@ -85,7 +85,9 @@ public final class LinearIndeterminateSeamlessAnimatorDelegate
           @Override
           public void onAnimationRepeat(Animator animation) {
             super.onAnimationRepeat(animation);
-            rotateIndicatorColors();
+            if (getLineConnectPoint1Fraction() > 0 && getLineConnectPoint1Fraction() < 1) {
+              rotateIndicatorColors();
+            }
           }
         });
 
