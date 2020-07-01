@@ -1139,6 +1139,12 @@ public final class MaterialContainerTransform extends Transition {
       Path motionPath = pathMotion.getPath(startPoint.x, startPoint.y, endPoint.x, endPoint.y);
       motionPathMeasure = new PathMeasure(motionPath, false);
       motionPathLength = motionPathMeasure.getLength();
+      // Fill the motion path with default positions in case a zero-length path is specified which
+      // causes motionPathMeasure.getPosTan to skip filling this int array.
+      // A zero-length path happens when the startBounds are top aligned and horizontally centered
+      // on the endBounds.
+      motionPathPosition[0] = startBounds.centerX();
+      motionPathPosition[1] = startBounds.top;
 
       scrimPaint.setStyle(Paint.Style.FILL);
       scrimPaint.setShader(createColorShader(scrimColor));
