@@ -16,11 +16,15 @@
 
 package com.google.android.material.timepicker;
 
+import static android.view.HapticFeedbackConstants.CLOCK_TICK;
+import static android.view.HapticFeedbackConstants.VIRTUAL_KEY;
 import static android.view.View.GONE;
 import static com.google.android.material.timepicker.TimeFormat.CLOCK_12H;
 import static com.google.android.material.timepicker.TimeFormat.CLOCK_24H;
 import static java.util.Calendar.MINUTE;
 
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.view.View;
 import com.google.android.material.timepicker.ClockHandView.OnActionUpListener;
 import com.google.android.material.timepicker.ClockHandView.OnRotateListener;
@@ -108,6 +112,8 @@ class TimePickerClockPresenter
       return;
     }
 
+    int prevHour = time.hour;
+    int prevMinute = time.minute;
     int rotationInt = Math.round(rotation);
     if (time.selection == MINUTE) {
       int minuteOffset = DEGREES_PER_MINUTE / 2;
@@ -122,6 +128,14 @@ class TimePickerClockPresenter
     // Do not update the display during an animation
     if (!animating) {
       updateTime();
+      performHapticFeedback(prevHour, prevMinute);
+    }
+  }
+
+  private void performHapticFeedback(int prevHour, int prevMinute) {
+    if (time.minute != prevMinute || time.hour != prevHour) {
+      int feedbackKey = VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP ? CLOCK_TICK : VIRTUAL_KEY;
+      timePickerView.performHapticFeedback(feedbackKey);
     }
   }
 
@@ -148,6 +162,8 @@ class TimePickerClockPresenter
   @Override
   public void onActionUp(float rotation, boolean moveInEventStream) {
     broadcasting = true;
+    int prevMinute = time.minute;
+    int prevHour = time.hour;
     if (time.selection == Calendar.HOUR) {
       // Current rotation might be half way to an exact hour position.
       // Snap to the closest hour before animating to the position the minute selection is on.
@@ -166,6 +182,7 @@ class TimePickerClockPresenter
     }
     broadcasting = false;
     updateTime();
+    performHapticFeedback(prevHour, prevMinute);
   }
 
   private void updateTime() {
