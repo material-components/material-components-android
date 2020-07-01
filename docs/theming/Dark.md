@@ -155,7 +155,7 @@ in dark theme, because they use `colorSurface` and can be elevated:
 *   [Top App Bar](../components/TopAppBar.md)
 *   [Bottom App Bar](../components/BottomAppBar.md)
 *   [Bottom Navigation](../components/BottomNavigation.md)
-*   [Tabs](../components/TabLayout.md)
+*   [Tabs](../components/Tabs.md)
 *   [Card](../components/Card.md)
 *   [Dialog](../components/Dialog.md)
 *   [Menu](../components/Menu.md)

@@ -99,12 +99,12 @@ something like this:
 There are other navigation patterns you should be aware of
 
 -   [Hierarchical navigation](https://developer.android.com/training/implementing-navigation/index.html).
-    *See also [Navigation with Back and
-    Up](https://developer.android.com/design/patterns/navigation.html)*
--   Swipeable tabs using [TabLayout](TabLayout.md) and
+    *See also
+    [Navigation with Back and Up](https://developer.android.com/design/patterns/navigation.html)*
+-   Swipeable tabs using [TabLayout](Tabs.md) and
     [ViewPager](https://developer.android.com/reference/android/support/v4/view/ViewPager.html)
--   [BottomNavigationView](BottomNavigation.md) for when you have only 3 to
-    5 very well defined navigation categories
+-   [BottomNavigationView](BottomNavigation.md) for when you have only 3 to 5
+    very well defined navigation categories
 
 You should familiarize yourself with the most common use for `NavigationView`,
 [Creating a Navigation Drawer - Guide](https://developer.android.com/training/implementing-navigation/nav-drawer.html).
