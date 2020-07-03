@@ -548,18 +548,15 @@ public final class CollapsingTextHelper {
 
     switch (collapsedAbsGravity & Gravity.VERTICAL_GRAVITY_MASK) {
       case Gravity.BOTTOM:
-        collapsedDrawY = collapsedBounds.bottom;
+        collapsedDrawY = collapsedBounds.bottom + textPaint.ascent();
         break;
       case Gravity.TOP:
-        collapsedDrawY = collapsedBounds.top - textPaint.ascent();
+        collapsedDrawY = collapsedBounds.top;
         break;
       case Gravity.CENTER_VERTICAL:
       default:
-        float textHeight = textPaint.descent() - textPaint.ascent();
-        float textOffset = (textHeight / 2) - textPaint.descent();
-        collapsedDrawY = shouldDrawMultiline()
-            ? collapsedBounds.centerY() - (textHeight / 2)
-            : collapsedBounds.centerY() + textOffset;
+        float textOffset = (textPaint.descent() - textPaint.ascent()) / 2;
+        collapsedDrawY = collapsedBounds.centerY() - textOffset;
         break;
     }
 
@@ -577,13 +574,12 @@ public final class CollapsingTextHelper {
     }
 
     calculateUsingTextSize(expandedTextSize);
-
-    float textLayoutHeight = textLayout != null ? textLayout.getHeight() : 0;
+    float expandedTextHeight = textLayout != null ? textLayout.getHeight() : 0;
 
     float measuredWidth = textToDraw != null
         ? textPaint.measureText(textToDraw, 0, textToDraw.length()) : 0;
     width = textLayout != null && maxLines > 1 && !isRtl
-        ? textLayout.getLineWidth(0)
+        ? textLayout.getWidth()
         : measuredWidth;
     expandedFirstLineDrawX = textLayout != null ? textLayout.getLineLeft(0) : 0;
 
@@ -593,19 +589,15 @@ public final class CollapsingTextHelper {
             isRtl ? ViewCompat.LAYOUT_DIRECTION_RTL : ViewCompat.LAYOUT_DIRECTION_LTR);
     switch (expandedAbsGravity & Gravity.VERTICAL_GRAVITY_MASK) {
       case Gravity.BOTTOM:
-        float offset = shouldDrawMultiline() ? textLayoutHeight - textPaint.descent() : 0;
-        expandedDrawY = expandedBounds.bottom - offset;
+        expandedDrawY = expandedBounds.bottom - expandedTextHeight + textPaint.descent();
         break;
       case Gravity.TOP:
-        expandedDrawY = expandedBounds.top - textPaint.ascent();
+        expandedDrawY = expandedBounds.top;
         break;
       case Gravity.CENTER_VERTICAL:
       default:
-        float textHeight = textPaint.descent() - textPaint.ascent();
-        float textOffset = (textHeight / 2) - textPaint.descent();
-        expandedDrawY = shouldDrawMultiline()
-            ? expandedBounds.centerY() - (textLayoutHeight / 2)
-            : expandedBounds.centerY() + textOffset;
+        float textOffset = expandedTextHeight / 2;
+        expandedDrawY = expandedBounds.centerY() - textOffset;
         break;
     }
 
@@ -660,13 +652,11 @@ public final class CollapsingTextHelper {
       float y = currentDrawY;
       final boolean drawTexture = useTexture && expandedTitleTexture != null;
 
-      final float ascent = textLayout.getLineAscent(0);
-
       if (DEBUG_DRAW) {
         // Just a debug tool, which drawn a magenta rect in the text bounds
         canvas.drawRect(
             currentBounds.left,
-            y + ascent,
+            y,
             currentBounds.right,
             y + textLayout.getHeight() * scale,
             DEBUG_DRAW_PAINT);
@@ -678,15 +668,15 @@ public final class CollapsingTextHelper {
 
       if (drawTexture) {
         // If we should use a texture, draw it instead of text
-        canvas.drawBitmap(expandedTitleTexture, x, y + ascent, texturePaint);
+        canvas.drawBitmap(expandedTitleTexture, x, y, texturePaint);
         canvas.restoreToCount(saveCount);
         return;
       }
 
       if (shouldDrawMultiline()) {
-        drawMultinlineTransition(canvas, currentExpandedX, x, y, ascent);
+        drawMultinlineTransition(canvas, currentExpandedX, y);
       } else {
-        canvas.translate(x, y + ascent);
+        canvas.translate(x, y);
         textLayout.draw(canvas);
       }
 
@@ -699,7 +689,7 @@ public final class CollapsingTextHelper {
   }
 
   private void drawMultinlineTransition(
-      @NonNull Canvas canvas, float currentExpandedX, float x, float y, float ascent) {
+      @NonNull Canvas canvas, float currentExpandedX, float y) {
     int originalAlpha = textPaint.getAlpha();
     // positon expanded text appropriately
     canvas.translate(currentExpandedX, y);
@@ -707,13 +697,10 @@ public final class CollapsingTextHelper {
     textPaint.setAlpha((int) (expandedTextBlend * originalAlpha));
     textLayout.draw(canvas);
 
-    // position the overlays
-    canvas.translate(x - currentExpandedX, 0);
-
     // Collapsed text
     textPaint.setAlpha((int) (collapsedTextBlend * originalAlpha));
-    canvas.drawText(
-        textToDrawCollapsed, 0, textToDrawCollapsed.length(), 0, -ascent, textPaint);
+    canvas.drawText(textToDrawCollapsed, 0, textToDrawCollapsed.length(), 0,
+        textLayout.getLineBaseline(0), textPaint);
     // Remove ellipsis for Cross-section animation
     String tmp = textToDrawCollapsed.toString().trim();
     if (tmp.endsWith(ELLIPSIS_NORMAL)) {
@@ -721,8 +708,8 @@ public final class CollapsingTextHelper {
     }
     // Cross-section between both texts (should stay at original alpha)
     textPaint.setAlpha(originalAlpha);
-    canvas.drawText(
-        tmp, 0, Math.min(textLayout.getLineEnd(0), tmp.length()), 0, -ascent, textPaint);
+    canvas.drawText(tmp, 0, Math.min(textLayout.getLineEnd(0), tmp.length()), 0,
+        textLayout.getLineBaseline(0), textPaint);
   }
 
   private boolean calculateIsRtl(@NonNull CharSequence text) {

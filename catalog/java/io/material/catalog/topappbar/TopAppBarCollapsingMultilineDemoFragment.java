@@ -19,16 +19,30 @@ package io.material.catalog.topappbar;
 import io.material.catalog.R;
 
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import androidx.annotation.Nullable;
+
+import com.google.android.material.appbar.CollapsingToolbarLayout;
+
 import io.material.catalog.feature.DemoFragment;
 
 /** A fragment that displays a collapsing Top App Bar demo for the Catalog app. */
 public class TopAppBarCollapsingMultilineDemoFragment extends DemoFragment {
+
+  @Override
+  public void onCreate(@Nullable Bundle bundle) {
+    super.onCreate(bundle);
+    setHasOptionsMenu(true);
+  }
 
   @Override
   public View onCreateDemoView(
@@ -42,6 +56,48 @@ public class TopAppBarCollapsingMultilineDemoFragment extends DemoFragment {
     activity.setSupportActionBar(toolbar);
 
     return view;
+  }
+
+  @Override
+  public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+    menuInflater.inflate(R.menu.cat_topappbar_menu_maxlines, menu);
+
+    super.onCreateOptionsMenu(menu, menuInflater);
+  }
+
+  @Override
+  public void onPrepareOptionsMenu(@NonNull Menu menu) {
+    super.onPrepareOptionsMenu(menu);
+
+    CollapsingToolbarLayout collapsingToolbarLayout = requireView().findViewById(R.id.collapsingtoolbarlayout);
+    switch (collapsingToolbarLayout.getMaxLines()) {
+      case 1:
+        menu.findItem(R.id.maxLines1).setChecked(true);
+        break;
+      case 2:
+        menu.findItem(R.id.maxLines2).setChecked(true);
+        break;
+      case 3:
+        menu.findItem(R.id.maxLines3).setChecked(true);
+        break;
+    }
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    CollapsingToolbarLayout collapsingToolbarLayout = requireView().findViewById(R.id.collapsingtoolbarlayout);
+    switch (item.getItemId()) {
+      case R.id.maxLines1:
+        collapsingToolbarLayout.setMaxLines(1);
+        return true;
+      case R.id.maxLines2:
+        collapsingToolbarLayout.setMaxLines(2);
+        return true;
+      case R.id.maxLines3:
+        collapsingToolbarLayout.setMaxLines(3);
+        return true;
+    }
+    return super.onOptionsItemSelected(item);
   }
 
   @Override

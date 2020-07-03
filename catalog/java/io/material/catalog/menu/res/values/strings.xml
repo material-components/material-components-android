@@ -42,4 +42,8 @@
     <item>Item 3</item>
     <item>Item 4</item>
   </string-array>
+
+  <string name="menu_multiline_1">Max lines 1</string>
+  <string name="menu_multiline_2">Max lines 2</string>
+  <string name="menu_multiline_3">Max lines 3</string>
 </resources>

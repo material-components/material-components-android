@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+  <group android:checkableBehavior="single">
+    <item
+      android:id="@+id/maxLines1"
+      android:title="@string/menu_multiline_1" />
+    <item
+      android:id="@+id/maxLines2"
+      android:title="@string/menu_multiline_2" />
+    <item
+      android:id="@+id/maxLines3"
+      android:title="@string/menu_multiline_3" />
+  </group>
+</menu>
