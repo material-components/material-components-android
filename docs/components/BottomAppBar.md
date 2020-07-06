@@ -260,11 +260,11 @@ for more attributes.
 
 ### Styles
 
-&nbsp;                                                                    | Style
-------------------------------------------------------------------------- | -----
-**Default style**                                                         | `Widget.MaterialComponents.BottomAppBar`
-**Primary background color style**                                        | `Widget.MaterialComponents.BottomAppBar.Colored`
-**Primary (light theme) or surface (dark theme) background color style**  | `Widget.MaterialComponents.BottomAppBar.PrimarySurface`
+&nbsp;                                                                           | Style
+-------------------------------------------------------------------------------- | -----
+**Default style**                                                                | `Widget.MaterialComponents.BottomAppBar`
+**Primary background color style**                                               | `Widget.MaterialComponents.BottomAppBar.Colored`
+**Primary (light theme) or surface (dark theme)**<br/>**background color style** | `Widget.MaterialComponents.BottomAppBar.PrimarySurface`
 
 Default style theme attribute: `bottomAppBarStyle`
 

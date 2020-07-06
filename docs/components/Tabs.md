@@ -385,16 +385,11 @@ the active tab item.
 
 ### Styles
 
-| &nbsp;               | Style                                                |
-| -------------------- | ---------------------------------------------------- |
-| **Default style**    | `Widget.MaterialComponents.TabLayout`                |
-| **Primary background | `Widget.MaterialComponents.TabLayout.Colored`        |
-: color style**        :                                                      :
-| **Primary (light     | `Widget.MaterialComponents.TabLayout.PrimarySurface` |
-: theme) or surface    :                                                      :
-: (dark theme)         :                                                      :
-: background color     :                                                      :
-: style**              :                                                      :
+&nbsp;                                                                           | Style
+-------------------------------------------------------------------------------- | -----
+**Default style**                                                                | `Widget.MaterialComponents.TabLayout`
+**Primary background color style**                                               | `Widget.MaterialComponents.TabLayout.Colored`
+**Primary (light theme) or surface (dark theme)**<br/>**background color style** | `Widget.MaterialComponents.TabLayout.PrimarySurface`
 
 Default style theme attribute: `?attr/tabStyle`
 
