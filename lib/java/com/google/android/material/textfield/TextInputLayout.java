@@ -2251,11 +2251,13 @@ public class TextInputLayout extends LinearLayout {
     if (editText == null) {
       return;
     }
-    prefixTextView.setPadding(
-        isStartIconVisible() ? 0 : editText.getPaddingLeft(),
-        this.editText.getCompoundPaddingTop(),
-        prefixTextView.getCompoundPaddingRight(),
-        this.editText.getCompoundPaddingBottom());
+    int startPadding = isStartIconVisible() ? 0 : ViewCompat.getPaddingStart(editText);
+    ViewCompat.setPaddingRelative(
+        prefixTextView,
+        startPadding,
+        editText.getCompoundPaddingTop(),
+        0,
+        editText.getCompoundPaddingBottom());
   }
 
   /**
@@ -2338,11 +2340,10 @@ public class TextInputLayout extends LinearLayout {
     if (editText == null) {
       return;
     }
-    suffixTextView.setPadding(
-        suffixTextView.getPaddingLeft(),
-        editText.getPaddingTop(),
-        (isEndIconVisible() || isErrorIconVisible()) ? 0 : editText.getPaddingRight(),
-        editText.getPaddingBottom());
+    int endPadding =
+        (isEndIconVisible() || isErrorIconVisible()) ? 0 : ViewCompat.getPaddingEnd(editText);
+    ViewCompat.setPaddingRelative(
+        suffixTextView, 0, editText.getPaddingTop(), endPadding, editText.getPaddingBottom());
   }
 
   @Override
@@ -2482,7 +2483,7 @@ public class TextInputLayout extends LinearLayout {
     int right = rectRight - editText.getCompoundPaddingRight();
     if (prefixText != null && isRtl) {
       // Label should be vertically aligned with prefix if in RTL
-      right = right + prefixTextView.getMeasuredWidth() + prefixTextView.getPaddingRight();
+      right += prefixTextView.getMeasuredWidth() - prefixTextView.getPaddingRight();
     }
     return right;
   }
@@ -2775,6 +2776,8 @@ public class TextInputLayout extends LinearLayout {
           });
     }
     updatePlaceholderMeasurementsBasedOnEditText();
+    updatePrefixTextViewPadding();
+    updateSuffixTextViewPadding();
   }
 
   private boolean updateEditTextHeightBasedOnIcon() {
