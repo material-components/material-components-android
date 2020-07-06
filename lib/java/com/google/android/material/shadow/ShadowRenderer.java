@@ -149,16 +149,21 @@ public class ShadowRenderer {
       cornerColors[3] = shadowEndColor;
     }
 
-    float startRatio = 1f - (elevation / (bounds.width() / 2f));
+    float radius = bounds.width() / 2f;
+    // The shadow is not big enough to draw.
+    if (radius <= 0) {
+      return;
+    }
+
+    float startRatio = 1f - (elevation / radius);
     float midRatio = startRatio + ((1f - startRatio) / 2f);
     cornerPositions[1] = startRatio;
     cornerPositions[2] = midRatio;
-
     cornerShadowPaint.setShader(
         new RadialGradient(
             bounds.centerX(),
             bounds.centerY(),
-            bounds.width() / 2,
+            radius,
             cornerColors,
             cornerPositions,
             Shader.TileMode.CLAMP));
