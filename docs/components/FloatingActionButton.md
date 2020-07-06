@@ -338,14 +338,10 @@ An extended FAB has a text label, a transparent container and an optional icon.
 
 #### Styles
 
-| &nbsp;      | Style                                                         |
-| ----------- | ------------------------------------------------------------- |
-| **Default   | `Widget.MaterialComponents.ExtendedFloatingActionButton.Icon` |
-: style**     :                                                               :
-| **Text-only | `Widget.MaterialComponents.ExtendedFloatingActionButton`      |
-: when        :                                                               :
-: extended    :                                                               :
-: style**     :                                                               :
+&nbsp;                                    | Style
+----------------------------------------- | -----
+**Default style**                         | `Widget.MaterialComponents.ExtendedFloatingActionButton.Icon`
+**Text-only when**<br/>**extended style** | `Widget.MaterialComponents.ExtendedFloatingActionButton`
 
 Default style theme attribute: `?attr/extendedFloatingActionButtonStyle`
 
