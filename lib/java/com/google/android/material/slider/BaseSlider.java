@@ -659,12 +659,22 @@ abstract class BaseSlider<
   private void createLabelPool() {
     // If there are too many labels, remove the extra ones from the end.
     if (labels.size() > values.size()) {
-      labels.subList(values.size(), labels.size()).clear();
+      List<TooltipDrawable> tooltipDrawables = labels.subList(values.size(), labels.size());
+      for (TooltipDrawable label : tooltipDrawables) {
+        if (ViewCompat.isAttachedToWindow(this)) {
+          detachLabelFromContentView(label);
+        }
+      }
+      tooltipDrawables.clear();
     }
 
     // If there's not enough labels, add more.
     while (labels.size() < values.size()) {
-      labels.add(labelMaker.createTooltipDrawable());
+      TooltipDrawable tooltipDrawable = labelMaker.createTooltipDrawable();
+      labels.add(tooltipDrawable);
+      if (ViewCompat.isAttachedToWindow(this)) {
+        attachLabelToContentView(tooltipDrawable);
+      }
     }
 
     // Add a stroke if there is more than one label for when they overlap.
@@ -1241,8 +1251,12 @@ abstract class BaseSlider<
     super.onAttachedToWindow();
     // The label is attached on the Overlay relative to the content.
     for (TooltipDrawable label : labels) {
-      label.setRelativeToView(ViewUtils.getContentView(this));
+      attachLabelToContentView(label);
     }
+  }
+
+  private void attachLabelToContentView(TooltipDrawable label) {
+    label.setRelativeToView(ViewUtils.getContentView(this));
   }
 
   @Override
@@ -1252,14 +1266,18 @@ abstract class BaseSlider<
     }
 
     for (TooltipDrawable label : labels) {
-      ViewOverlayImpl contentViewOverlay = ViewUtils.getContentViewOverlay(this);
-      if (contentViewOverlay != null) {
-        contentViewOverlay.remove(label);
-        label.detachView(ViewUtils.getContentView(this));
-      }
+      detachLabelFromContentView(label);
     }
 
     super.onDetachedFromWindow();
+  }
+
+  private void detachLabelFromContentView(TooltipDrawable label) {
+    ViewOverlayImpl contentViewOverlay = ViewUtils.getContentViewOverlay(this);
+    if (contentViewOverlay != null) {
+      contentViewOverlay.remove(label);
+      label.detachView(ViewUtils.getContentView(this));
+    }
   }
 
   @Override
