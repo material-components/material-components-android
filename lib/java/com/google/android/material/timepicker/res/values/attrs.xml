@@ -17,20 +17,20 @@
 
 <resources>
 
-  <attr format="dimension" name="radius"/>
+  <attr format="dimension" name="materialCircleRadius"/>
   <attr name="materialTimePickerTheme" format="reference"/>
 
   <declare-styleable name="RadialViewGroup">
 
     <!-- Radius indicating how far away from the center of the group the
          children are positioned -->
-    <attr name="radius"/>
+    <attr name="materialCircleRadius"/>
   </declare-styleable>
 
 
   <declare-styleable name="ClockHandView">
 
-    <attr name="radius"/>
+    <attr name="materialCircleRadius"/>
 
     <attr format="dimension" name="selectorSize"/>
   </declare-styleable>

@@ -96,7 +96,7 @@ public class ClockHandView extends View {
     TypedArray a =
         context.obtainStyledAttributes(attrs, R.styleable.ClockHandView, defStyleAttr, 0);
 
-    circleRadius = a.getDimensionPixelSize(R.styleable.ClockHandView_radius, 0);
+    circleRadius = a.getDimensionPixelSize(R.styleable.ClockHandView_materialCircleRadius, 0);
     selectorRadius = a.getDimensionPixelSize(R.styleable.ClockHandView_selectorSize, 0);
     Resources res = getResources();
     selectorStrokeWidth = res.getDimensionPixelSize(R.dimen.material_clock_hand_stroke_width);

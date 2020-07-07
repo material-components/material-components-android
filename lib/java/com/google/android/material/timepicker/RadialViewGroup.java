@@ -66,7 +66,7 @@ public class RadialViewGroup extends ConstraintLayout {
 
     TypedArray a =
         context.obtainStyledAttributes(attrs, R.styleable.RadialViewGroup, defStyleAttr, 0);
-    radius = a.getDimensionPixelSize(R.styleable.RadialViewGroup_radius, 0);
+    radius = a.getDimensionPixelSize(R.styleable.RadialViewGroup_materialCircleRadius, 0);
     updateLayoutParametersRunnable = new Runnable() {
       @Override
       public void run() {
