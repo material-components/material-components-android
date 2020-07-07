@@ -51,6 +51,8 @@
     <attr name="android:textColor"/>
     <!-- Default appearance of text: color, typeface, size, and style. -->
     <attr name="android:textAppearance"/>
+    <!-- Text size. Overrides the size set in the textAppearance -->
+    <attr name="android:textSize"/>
     <!-- If set, causes words that are longer than the view is wide to be ellipsized instead of
          truncated at the end. -->
     <attr name="android:ellipsize"/>

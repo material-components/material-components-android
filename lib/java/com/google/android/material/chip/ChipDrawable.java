@@ -58,6 +58,7 @@ import androidx.annotation.BoolRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DimenRes;
+import androidx.annotation.Dimension;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -352,8 +353,11 @@ public class ChipDrawable extends MaterialShapeDrawable
     setRippleColor(MaterialResources.getColorStateList(context, a, R.styleable.Chip_rippleColor));
 
     setText(a.getText(R.styleable.Chip_android_text));
-    setTextAppearance(
-        MaterialResources.getTextAppearance(context, a, R.styleable.Chip_android_textAppearance));
+    TextAppearance textAppearance =
+        MaterialResources.getTextAppearance(context, a, R.styleable.Chip_android_textAppearance);
+    float textSize = a.getDimension(R.styleable.Chip_android_textSize, textAppearance.textSize);
+    textAppearance.textSize = textSize;
+    setTextAppearance(textAppearance);
 
     int ellipsize = a.getInt(R.styleable.Chip_android_ellipsize, 0);
     // Convert to supported TextUtils.TruncateAt values
@@ -1363,6 +1367,15 @@ public class ChipDrawable extends MaterialShapeDrawable
       }
     }
     return false;
+  }
+
+  public void setTextSize(@Dimension float size) {
+    TextAppearance textAppearance = getTextAppearance();
+    if (textAppearance != null) {
+      textAppearance.textSize = size;
+      textDrawableHelper.getTextPaint().setTextSize(size);
+      onTextSizeChange();
+    }
   }
 
   /** Delegate interface to be implemented by Views that own a ChipDrawable. */

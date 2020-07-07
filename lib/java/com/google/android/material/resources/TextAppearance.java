@@ -52,18 +52,20 @@ public class TextAppearance {
   private static final int TYPEFACE_SERIF = 2;
   private static final int TYPEFACE_MONOSPACE = 3;
 
-  public final float textSize;
   @Nullable public final ColorStateList textColor;
   @Nullable public final ColorStateList textColorHint;
   @Nullable public final ColorStateList textColorLink;
+  @Nullable public final ColorStateList shadowColor;
+  @Nullable public final String fontFamily;
+
   public final int textStyle;
   public final int typeface;
-  @Nullable public final String fontFamily;
   public final boolean textAllCaps;
-  @Nullable public final ColorStateList shadowColor;
   public final float shadowDx;
   public final float shadowDy;
   public final float shadowRadius;
+
+  public float textSize;
 
   @FontRes private final int fontFamilyResourceId;
 
