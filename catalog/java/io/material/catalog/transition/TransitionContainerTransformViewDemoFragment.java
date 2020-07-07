@@ -44,8 +44,8 @@ public class TransitionContainerTransformViewDemoFragment extends DemoFragment
     implements OnBackPressedHandler {
 
   @Nullable private View startView;
-  @Nullable private View endCard;
-  @Nullable private FrameLayout root;
+  private View endCard;
+  private FrameLayout root;
 
   private ContainerTransformConfigurationHelper configurationHelper;
 
@@ -93,7 +93,7 @@ public class TransitionContainerTransformViewDemoFragment extends DemoFragment
     }
   }
 
-  private void showEndView(@Nullable View startView) {
+  private void showEndView(View startView) {
     // Save a reference to the start view that triggered the transition in order to know which view
     // to transition into during the return transition.
     this.startView = startView;
@@ -109,15 +109,15 @@ public class TransitionContainerTransformViewDemoFragment extends DemoFragment
 
     // Trigger the container transform transition.
     TransitionManager.beginDelayedTransition(root, transition);
-    if (startView != null) {
-      startView.setVisibility(View.INVISIBLE);
-    }
-    if (endCard != null) {
-      endCard.setVisibility(View.VISIBLE);
-    }
+    startView.setVisibility(View.INVISIBLE);
+    endCard.setVisibility(View.VISIBLE);
   }
 
   private void showStartView() {
+    if (startView == null) {
+      throw new IllegalStateException("startView must not be null");
+    }
+
     // Construct a container transform transition between two views.
     MaterialContainerTransform transition = buildContainerTransform(false);
     transition.setStartView(endCard);
@@ -129,12 +129,8 @@ public class TransitionContainerTransformViewDemoFragment extends DemoFragment
 
     // Trigger the container transform transition.
     TransitionManager.beginDelayedTransition(root, transition);
-    if (startView != null) {
-      startView.setVisibility(View.VISIBLE);
-    }
-    if (endCard != null) {
-      endCard.setVisibility(View.INVISIBLE);
-    }
+    startView.setVisibility(View.VISIBLE);
+    endCard.setVisibility(View.INVISIBLE);
   }
 
   @NonNull
@@ -147,7 +143,7 @@ public class TransitionContainerTransformViewDemoFragment extends DemoFragment
 
   @Override
   public boolean onBackPressed() {
-    if (endCard != null && endCard.getVisibility() == View.VISIBLE) {
+    if (endCard.getVisibility() == View.VISIBLE) {
       showStartView();
       return true;
     }
