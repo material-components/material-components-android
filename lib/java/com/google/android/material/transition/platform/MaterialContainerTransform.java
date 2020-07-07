@@ -55,6 +55,10 @@ import android.graphics.Region.Op;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import androidx.core.view.ViewCompat;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
 import androidx.annotation.IdRes;
@@ -63,9 +67,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
-import androidx.core.view.ViewCompat;
-import android.view.View;
-import android.view.ViewGroup;
 import android.transition.ArcMotion;
 import android.transition.PathMotion;
 import android.transition.Transition;
@@ -186,6 +187,7 @@ public final class MaterialContainerTransform extends Transition {
   @Retention(RetentionPolicy.SOURCE)
   public @interface FitMode {}
 
+  private static final String TAG = MaterialContainerTransform.class.getSimpleName();
   private static final String PROP_BOUNDS = "materialContainerTransition:bounds";
   private static final String PROP_SHAPE_APPEARANCE = "materialContainerTransition:shapeAppearance";
   private static final String[] TRANSITION_PROPS =
@@ -871,6 +873,22 @@ public final class MaterialContainerTransform extends Transition {
       return null;
     }
 
+    RectF startBounds = (RectF) startValues.values.get(PROP_BOUNDS);
+    ShapeAppearanceModel startShapeAppearanceModel =
+        (ShapeAppearanceModel) startValues.values.get(PROP_SHAPE_APPEARANCE);
+    if (startBounds == null || startShapeAppearanceModel == null) {
+      Log.w(TAG, "Skipping due to null start bounds. Ensure start view is laid out and measured.");
+      return null;
+    }
+
+    RectF endBounds = (RectF) endValues.values.get(PROP_BOUNDS);
+    ShapeAppearanceModel endShapeAppearanceModel =
+        (ShapeAppearanceModel) endValues.values.get(PROP_SHAPE_APPEARANCE);
+    if (endBounds == null || endShapeAppearanceModel == null) {
+      Log.w(TAG, "Skipping due to null end bounds. Ensure end view is laid out and measured.");
+      return null;
+    }
+
     final View startView = startValues.view;
     final View endView = endValues.view;
     final View drawingView;
@@ -883,21 +901,6 @@ public final class MaterialContainerTransform extends Transition {
       drawingView = findAncestorById(drawingBaseView, drawingViewId);
       boundingView = null;
     }
-
-    RectF startBounds = (RectF) startValues.values.get(PROP_BOUNDS);
-    if (startBounds == null) {
-      throw new IllegalStateException(
-          "Start view bounds must not be null, make sure the start view is laid out and measured.");
-    }
-    RectF endBounds = (RectF) endValues.values.get(PROP_BOUNDS);
-    if (endBounds == null) {
-      throw new IllegalStateException(
-          "End view bounds must not be null, make sure the end view is laid out and measured");
-    }
-    ShapeAppearanceModel startShapeAppearanceModel =
-        (ShapeAppearanceModel) startValues.values.get(PROP_SHAPE_APPEARANCE);
-    ShapeAppearanceModel endShapeAppearanceModel =
-        (ShapeAppearanceModel) endValues.values.get(PROP_SHAPE_APPEARANCE);
 
     // Calculate drawable bounds and offset start/end bounds as needed
     RectF drawingViewBounds = getLocationOnScreen(drawingView);
