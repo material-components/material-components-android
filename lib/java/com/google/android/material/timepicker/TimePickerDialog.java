@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import androidx.fragment.app.DialogFragment;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -121,7 +122,8 @@ public final class TimePickerDialog extends DialogFragment {
   @NonNull
   @Override
   public final Dialog onCreateDialog(@Nullable Bundle bundle) {
-    Dialog dialog = super.onCreateDialog(bundle);
+    TypedValue value = MaterialAttributes.resolve(requireContext(), R.attr.materialTimePickerTheme);
+    Dialog dialog = new Dialog(requireContext(), value == null ? 0 : value.data);
     Context context = dialog.getContext();
     int surfaceColor =
         MaterialAttributes.resolveOrThrow(
@@ -143,6 +145,7 @@ public final class TimePickerDialog extends DialogFragment {
     window.setLayout(
         ViewGroup.LayoutParams.WRAP_CONTENT,
         ViewGroup.LayoutParams.WRAP_CONTENT);
+
     return dialog;
   }
 

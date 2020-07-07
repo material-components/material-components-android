@@ -18,6 +18,7 @@
 <resources>
 
   <attr format="dimension" name="radius"/>
+  <attr name="materialTimePickerTheme" format="reference"/>
 
   <declare-styleable name="RadialViewGroup">
 
