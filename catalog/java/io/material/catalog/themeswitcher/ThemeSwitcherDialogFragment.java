@@ -84,7 +84,7 @@ public class ThemeSwitcherDialogFragment extends BottomSheetDialogFragment
       @NonNull LayoutInflater layoutInflater,
       @Nullable ViewGroup viewGroup,
       @Nullable Bundle bundle) {
-    View view = layoutInflater.inflate(R.layout.mtrl_theme_switcher_dialog, null);
+    View view = layoutInflater.inflate(R.layout.mtrl_theme_switcher_dialog, viewGroup, false);
     initializeChooseThemeButtons(view);
     primaryColorGroup = view.findViewById(R.id.primary_colors);
     initializeThemingValues(

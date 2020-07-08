@@ -1,8 +1,7 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'maven-publish'
 
-archivesBaseName = getArchivesBaseName(project.name)
-version = rootProject.ext.mdcLibraryVersion
+version = mdcLibraryVersion
 
 dependencies {
   api compatibility("annotation")
@@ -18,11 +17,11 @@ dependencies {
   api compatibility("vectordrawable")
   api compatibility("viewpager2")
 
-  testImplementation "androidx.test:core:${project.rootProject.ext.testRunnerVersion}"
-  testImplementation "androidx.test:runner:${project.rootProject.ext.testRunnerVersion}"
+  testImplementation "androidx.test:core:${testRunnerVersion}"
+  testImplementation "androidx.test:runner:${testRunnerVersion}"
   testImplementation "junit:junit:4.12"
-  testImplementation "com.google.truth:truth:${project.rootProject.ext.truthVersion}"
-  testImplementation "org.mockito:mockito-core:${project.rootProject.ext.mockitoCoreVersion}"
+  testImplementation "com.google.truth:truth:${truthVersion}"
+  testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
   testImplementation "org.robolectric:robolectric:4.3"
 
   testAnnotationProcessor "com.google.auto.service:auto-service:1.0-rc4"
@@ -162,6 +161,9 @@ task generateApiXml(type: Javadoc) {
     options.docletpath = [
       file(jdiff),
     ]
+
+    // Doclava does not understand -notimestamp option that is default since Gradle 6.0
+    options.setNoTimestamp(false)
   }
 
   doLast {
@@ -171,25 +173,27 @@ task generateApiXml(type: Javadoc) {
 }
 
 task generateJdiffReport(type: Javadoc) {
-  if (project.hasProperty("oldApi")) {
-    def outputPath = project.hasProperty("outputPath") ? project.property("outputPath") : "diffs-out"
-    def jdiff = project.property("jdiffjar")
-    def xerces = project.property("xercesjar")
-    def oldApi = project.property("oldApi")
-    def newApi = project.property("newApi")
-    def newApiDir = project.property("newApiDir")
-    def oldApiDir = project.property("oldApiDir")
+  if (project.hasProperty('oldApi')) {
+    def outputPath = project.hasProperty('outputPath') ? project.property('outputPath') : 'diffs-out'
+    def jdiff = project.property('jdiffjar')
+    def xerces = project.property('xercesjar')
+    def oldApi = project.property('oldApi')
+    def newApi = project.property('newApi')
+    def newApiDir = project.property('newApiDir')
+    def oldApiDir = project.property('oldApiDir')
     destinationDir = new File(outputPath)
     source = android.sourceSets.main.java.source
-    source = source.findAll { it.name.endsWith(".java") }
-    classpath = files("${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar")
-    options.doclet = "jdiff.JDiff"
-    options.addStringOption("subpackages", ".")
-    options.addStringOption("newapidir", newApiDir)
-    options.addStringOption("oldapidir", oldApiDir)
-    options.addStringOption("oldapi", oldApi)
-    options.addBooleanOption("verbose", true)
-    options.addStringOption("newapi", newApi)
+    source = source.findAll { it.name.endsWith('.java') }
+    classpath = files('${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar')
+    options.doclet = 'jdiff.JDiff'
+    options.addStringOption('subpackages', '.')
+    options.addStringOption('newapidir', newApiDir)
+    options.addStringOption('oldapidir', oldApiDir)
+    options.addStringOption('oldapi', oldApi)
+    options.addBooleanOption('verbose', true)
+    options.addStringOption('newapi', newApi)
+    // Doclava does not understand -notimestamp option that is default since Gradle 6.0
+    options.setNoTimestamp(false)
     options.docletpath = [
       file(jdiff),
       file(xerces),
@@ -212,13 +216,64 @@ afterEvaluate {
       task.classpath += task.project.files(javaCompileProvider.destinationDir)
       task.source += javaCompileProvider.source
     }
+
+    // Doclava does not understand -notimestamp option that is default since Gradle 6.0
+    task.options.setNoTimestamp(false)
   }
 }
 
-uploadArchives {
-  repositories {
-    mavenDeployer {
-      repository(url: rootProject.ext.mavenRepoUrl)
+task androidSourcesJar(type: Jar) {
+  classifier = 'sources'
+  from(android.sourceSets.main.java.srcDirs) {
+    // Needed because we have Java sources and resources in same directory
+    include '**/*.java'
+    includeEmptyDirs = false
+  }
+}
+
+afterEvaluate {
+  publishing {
+    repositories {
+      maven {
+        url = "$mavenRepoUrl"
+      }
+    }
+
+    publications {
+      release(MavenPublication) {
+        from components.release
+
+        artifact androidSourcesJar
+
+        groupId = 'com.google.android.material'
+        artifactId = 'material'
+        version project.version
+        pom {
+          name = 'Material Components for Android'
+          description = 'Material Components for Android is a static library ' +
+            'that you can add to your Android application in order to use ' +
+            'APIs that provide implementations of the Material Design specification. ' +
+            'Compatible on devices running API 14 or later.'
+          url = 'https://github.com/material-components/material-components-android'
+          inceptionYear = '2015'
+          licenses {
+            license {
+              name = 'The Apache Software License, Version 2.0'
+              url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+              distribution = 'repo'
+            }
+          }
+          developers {
+            developer {
+              name = 'The Android Open Source Project'
+            }
+          }
+          scm {
+            connection = 'scm:git:https://github.com/material-components/material-components-android.git'
+            url = 'https://github.com/material-components/material-components-android'
+          }
+        }
+      }
     }
   }
 }
