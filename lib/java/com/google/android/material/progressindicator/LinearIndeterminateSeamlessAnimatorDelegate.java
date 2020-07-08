@@ -103,7 +103,6 @@ public final class LinearIndeterminateSeamlessAnimatorDelegate
 
   @Override
   public void startAnimator() {
-    resetPropertiesForNewStart();
     animatorSet.start();
   }
 

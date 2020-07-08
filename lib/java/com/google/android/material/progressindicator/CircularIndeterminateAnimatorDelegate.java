@@ -183,11 +183,6 @@ public final class CircularIndeterminateAnimatorDelegate
 
   @Override
   void resetPropertiesForNextCycle() {
-    // Don't reset animator controlled properties if at the end of the current cycle, the head of
-    // the arc is not animated to its start position for the next cycle.
-    if (!isArcHeadFullyAnimated()) {
-      return;
-    }
     setIndicatorHeadChangeFraction(0f);
     setIndicatorTailChangeFraction(0f);
     setIndicatorStartOffset(
@@ -228,15 +223,6 @@ public final class CircularIndeterminateAnimatorDelegate
                 + getIndicatorInCycleOffset()
                 + getIndicatorHeadChangeFraction() * INDICATOR_DELTA_DEGREES)
             / 360;
-  }
-
-  /**
-   * Returns whether the head of the arc is fully animated. If yes, it means the current head
-   * position can be directly used as the start offset for the next cycle.
-   */
-  private boolean isArcHeadFullyAnimated() {
-    return segmentPositions[1]
-        == getIndicatorStartOffset() + INDICATOR_OFFSET_PER_COLOR_DEGREES + INDICATOR_DELTA_DEGREES;
   }
 
   // ******************* Getters and setters *******************

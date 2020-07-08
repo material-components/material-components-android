@@ -327,7 +327,7 @@ public class ProgressIndicator extends ProgressBar {
               ? new LinearIndeterminateSeamlessAnimatorDelegate()
               : new LinearIndeterminateNonSeamlessAnimatorDelegate(getContext());
       setIndeterminateDrawable(new IndeterminateDrawable(this, drawingDelegate, animatorDelegate));
-      setProgressDrawable(new DeterminateDrawable(this, new LinearDrawingDelegate()));
+      setProgressDrawable(new DeterminateDrawable(this, drawingDelegate));
     } else {
       DrawingDelegate drawingDelegate = new CircularDrawingDelegate();
       setIndeterminateDrawable(
@@ -452,7 +452,8 @@ public class ProgressIndicator extends ProgressBar {
   private void internalHide() {
     // Hides animation should be used if it's visible to user and potentially can be hidden with
     // animation, unless animators are disabled actively.
-    boolean shouldHideAnimated = visibleToUser() && growMode != GROW_MODE_NONE && !animatorDisabled;
+    boolean shouldHideAnimated =
+        visibleToUser() && growMode != GROW_MODE_NONE && !isAnimatorDisabled();
 
     getCurrentDrawable().setVisible(false, shouldHideAnimated);
 
@@ -487,7 +488,7 @@ public class ProgressIndicator extends ProgressBar {
     // Sets the drawable to visible/invisible if the component is currently visible/invisible. Only
     // show animation should be started (when the component is currently visible). Hide animation
     // should have already ended or is not necessary at this point.
-    getCurrentDrawable().setVisible(visibleToUser, visibleToUser && !animatorDisabled);
+    getCurrentDrawable().setVisible(visibleToUser, visibleToUser && !isAnimatorDisabled());
   }
 
   @Override

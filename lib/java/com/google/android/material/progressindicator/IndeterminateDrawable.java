@@ -138,7 +138,6 @@ public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityC
               }
             });
     setGrowFraction(1f);
-    animatorDelegate.startAnimator();
   }
 
   @NonNull
