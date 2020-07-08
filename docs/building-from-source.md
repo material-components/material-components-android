@@ -20,7 +20,7 @@ git clone https://github.com/material-components/material-components-android.git
 Then, build the library's AARs using Gradle:
 
 ```sh
-./gradlew uploadArchives -PmavenRepoUrl="file://localhost/<path_to_aars>"
+./gradlew publish -PmavenRepoUrl="file://localhost/<path_to_aars>"
 ```
 
 This will output AARs and Maven artifacts for each of the library's modules

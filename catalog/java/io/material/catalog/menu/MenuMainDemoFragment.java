@@ -95,6 +95,7 @@ public class MenuMainDemoFragment extends DemoFragment {
       MenuBuilder menuBuilder = (MenuBuilder) popup.getMenu();
       //noinspection RestrictedApi
       menuBuilder.setOptionalIconsVisible(true);
+      //noinspection RestrictedApi
       for (MenuItem item : menuBuilder.getVisibleItems()) {
         int iconMarginPx =
             (int)
