@@ -21,7 +21,7 @@ allprojects {
 ext {
   compileSdkVersion = 29
   minSdkVersion = 14
-  targetSdkVersion = 28
+  targetSdkVersion = 29
 
   androidXVersions = [
     annotation            : '1.0.1',

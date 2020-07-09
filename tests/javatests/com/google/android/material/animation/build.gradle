@@ -31,7 +31,7 @@ android {
     testApplicationId "com.google.android.material.tests"
     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     minSdkVersion 14
-    targetSdkVersion 28
+    targetSdkVersion 29
   }
 
   targetProjectPath getTransformedProjectPath('testing/java/com/google/android/material/testapp/animation')

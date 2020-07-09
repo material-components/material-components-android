@@ -63,7 +63,7 @@
     <issue
         id="OldTargetApi"
         message="Not targeting the latest versions of Android; compatibility modes apply. Consider testing and updating this version. Consult the android.os.Build.VERSION_CODES javadoc for details."
-        errorLine1="    targetSdkVersion 28"
+        errorLine1="    targetSdkVersion 29"
         errorLine2="    ~~~~~~~~~~~~~~~~~~~">
         <location
             file="build.gradle"
