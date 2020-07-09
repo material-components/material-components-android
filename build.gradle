@@ -179,6 +179,12 @@ def getArchivesBaseName(name) {
 }
 
 subprojects {
+    tasks.withType(Test) {
+        maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
+    }
+}
+
+subprojects {
   version = rootProject.ext.mdcLibraryVersion
   group = 'com.google.android.material'
 
