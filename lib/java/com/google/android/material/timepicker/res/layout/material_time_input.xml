@@ -23,9 +23,11 @@
   android:layout_height="wrap_content"
   android:paddingTop="0dp"
   app:errorIconDrawable="@null"
-  app:hintEnabled="false">
+  app:hintEnabled="false"
+  app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
+  app:shapeAppearanceOverlay="@null">
 
-  <com.google.android.material.textfield.TextInputEditText
+<com.google.android.material.textfield.TextInputEditText
     style="@style/Widget.MaterialComponents.TimePicker.Display.TextInputEditText"
     android:paddingStart="16dp"
     android:layout_width="96dp"

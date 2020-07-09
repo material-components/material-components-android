@@ -17,17 +17,6 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="NewApi">
 
-  <style name="TextAppearance.MaterialComponents.TimePicker.Display" parent="TextAppearance.AppCompat.Display2">
-    <item name="fontFamily">sans-serif</item>
-    <item name="android:fontFamily">sans-serif</item>
-    <item name="android:textStyle">normal</item>
-    <item name="android:textAllCaps">false</item>
-    <!-- No need to scale here since the text is already readable -->
-    <item name="android:textSize" tools:ignore="SpUsage">56dp</item>
-    <item name="android:letterSpacing">0</item>
-    <item name="android:includeFontPadding">false</item>
-  </style>
-
   <style name="Widget.MaterialComponents.TimePicker" parent="" >
     <item name="shapeAppearance">?shapeAppearanceMediumComponent</item>
   </style>
@@ -37,16 +26,14 @@
     <item name="android:layout_height">80dp</item>
     <item name="ensureMinTouchTargetSize">false</item>
     <item name="android:textAlignment">center</item>
-    <item name="android:textAppearance">
-      @style/TextAppearance.MaterialComponents.TimePicker.Display
-    </item>
+    <item name="android:textAppearance">?attr/textAppearanceHeadline3</item>
+    <!-- No need to scale here since the text is already readable -->
+    <item name="android:textSize" tools:ignore="SpUsage">56dp</item>
     <item name="shapeAppearanceOverlay">?shapeAppearanceMediumComponent</item>
   </style>
 
   <style name="Widget.MaterialComponents.TimePicker.Display.TextInputEditText" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
-    <item name="android:textAppearance">
-      @style/TextAppearance.MaterialComponents.TimePicker.Display
-    </item>
+    <item name="android:textAppearance">?attr/textAppearanceHeadline3</item>
     <!-- If we use the same text size it won't fit since TextInputLayout
          requires additional space -->
     <item name="android:textSize" tools:ignore="SpUsage">52dp</item>
@@ -65,8 +52,8 @@
     <item name="android:padding">0dp</item>
     <item name="android:insetTop">0dp</item>
     <item name="android:insetBottom">0dp</item>
-    <item name="android:textAppearance">?attr/textAppearanceSubtitle1</item>
-    <item name="android:textStyle">bold</item>
+    <item name="android:textAppearance">?attr/textAppearanceSubtitle2</item>
+    <item name="android:textSize">16sp</item>
     <item name="android:textAlignment">center</item>
     <item name="strokeColor">@color/material_timepicker_button_stroke</item>
     <item name="strokeWidth">@dimen/mtrl_btn_stroke_size</item>

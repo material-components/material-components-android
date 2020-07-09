@@ -24,6 +24,8 @@
   android:lineSpacingExtra="0dp"
   android:maxEms="1"
   android:text="@string/material_clock_display_divider"
-  android:textAppearance="@style/TextAppearance.MaterialComponents.TimePicker.Display"
+  android:textAppearance="?attr/textAppearanceHeadline3"
+  android:textSize="56dp"
   android:textColor="?attr/colorOnSurface"
+  tools:ignore="SpUsage"
   tools:showIn="@layout/material_timepicker_textinput_display" />

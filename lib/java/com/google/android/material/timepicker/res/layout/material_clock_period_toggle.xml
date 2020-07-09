@@ -31,15 +31,17 @@
   app:selectionRequired="true"
   app:singleSelection="true">
 
-  <Button
+  <com.google.android.material.button.MaterialButton
     style="@style/Widget.MaterialComponents.TimePicker.Button"
     android:id="@+id/material_clock_period_am_button"
     android:layout_width="wrap_content"
+    app:shapeAppearanceOverlay="?attr/shapeAppearanceMediumComponent"
     android:text="@string/material_timepicker_am"/>
-  <Button
+  <com.google.android.material.button.MaterialButton
     style="@style/Widget.MaterialComponents.TimePicker.Button"
     android:id="@+id/material_clock_period_pm_button"
     android:layout_width="wrap_content"
+    app:shapeAppearanceOverlay="?attr/shapeAppearanceMediumComponent"
     android:text="@string/material_timepicker_pm"/>
 
 </com.google.android.material.button.MaterialButtonToggleGroup>
