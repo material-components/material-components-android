@@ -23,6 +23,7 @@ import android.graphics.RectF;
 import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
+import androidx.annotation.Px;
 
 /** A delegate class to help draw the graphics for {@link ProgressIndicator} in circular types. */
 final class CircularDrawingDelegate implements DrawingDelegate {
@@ -32,23 +33,19 @@ final class CircularDrawingDelegate implements DrawingDelegate {
   private int arcInverseFactor = 1;
 
   @Override
-  public int getPreferredWidth(@NonNull ProgressIndicator progressIndicator) {
-    return getSizeWithoutPadding(progressIndicator)
-        + progressIndicator.getPaddingLeft()
-        + progressIndicator.getPaddingRight();
+  public int getPreferredWidth(
+      @NonNull ProgressIndicatorSpec spec, @Px int paddingLeft, @Px int paddingRight) {
+    return getSizeWithoutPadding(spec) + paddingLeft + paddingRight;
   }
 
   @Override
-  public int getPreferredHeight(@NonNull ProgressIndicator progressIndicator) {
-    return getSizeWithoutPadding(progressIndicator)
-        + progressIndicator.getPaddingTop()
-        + progressIndicator.getPaddingBottom();
+  public int getPreferredHeight(
+      @NonNull ProgressIndicatorSpec spec, @Px int paddingTop, @Px int paddingBottom) {
+    return getSizeWithoutPadding(spec) + paddingTop + paddingBottom;
   }
 
-  private static int getSizeWithoutPadding(@NonNull ProgressIndicator progressIndicator) {
-    return progressIndicator.getCircularRadius() * 2
-        + progressIndicator.getIndicatorWidth()
-        + progressIndicator.getCircularInset() * 2;
+  private static int getSizeWithoutPadding(@NonNull ProgressIndicatorSpec spec) {
+    return spec.circularRadius * 2 + spec.indicatorWidth + spec.circularInset * 2;
   }
 
   /**
@@ -58,18 +55,15 @@ final class CircularDrawingDelegate implements DrawingDelegate {
    * and current indicator width.
    *
    * @param canvas Canvas to draw.
-   * @param progressIndicator The component currently serving.
+   * @param spec The spec of the component currently being served.
    * @param widthFraction A fraction representing how wide the arc stroke should be.
    */
   @Override
   public void adjustCanvas(
       @NonNull Canvas canvas,
-      @NonNull ProgressIndicator progressIndicator,
+      @NonNull ProgressIndicatorSpec spec,
       @FloatRange(from = 0.0, to = 1.0) float widthFraction) {
-    int outerRadiusWithInset =
-        progressIndicator.getCircularRadius()
-            + progressIndicator.getIndicatorWidth() / 2
-            + progressIndicator.getCircularInset();
+    int outerRadiusWithInset = spec.circularRadius + spec.indicatorWidth / 2 + spec.circularInset;
     canvas.translate(outerRadiusWithInset, outerRadiusWithInset);
     // Rotates canvas so that arc starts at top.
     canvas.rotate(-90f);
@@ -80,20 +74,20 @@ final class CircularDrawingDelegate implements DrawingDelegate {
         -outerRadiusWithInset, -outerRadiusWithInset, outerRadiusWithInset, outerRadiusWithInset);
 
     // Adjusts the bounds of the arc.
-    float adjustedRadius = progressIndicator.getCircularRadius();
-    if (progressIndicator.getGrowMode() == ProgressIndicator.GROW_MODE_INCOMING) {
+    float adjustedRadius = spec.circularRadius;
+    if (spec.growMode == ProgressIndicator.GROW_MODE_INCOMING) {
       // Increases the radius by half of the full width, then reduces it half way of the displayed
       // width to match the outer edges of the displayed indicator and the full indicator.
-      adjustedRadius += (1 - widthFraction) * progressIndicator.getIndicatorWidth() / 2;
-    } else if (progressIndicator.getGrowMode() == ProgressIndicator.GROW_MODE_OUTGOING) {
+      adjustedRadius += (1 - widthFraction) * spec.indicatorWidth / 2;
+    } else if (spec.growMode == ProgressIndicator.GROW_MODE_OUTGOING) {
       // Decreases the radius by half of the full width, then raises it half way of the displayed
       // width to match the inner edges of the displayed indicator and the full indicator.
-      adjustedRadius -= (1 - widthFraction) * progressIndicator.getIndicatorWidth() / 2;
+      adjustedRadius -= (1 - widthFraction) * spec.indicatorWidth / 2;
     }
 
     // These are set for the drawing the indicator and track in fillTrackWithColor().
     arcBound = new RectF(-adjustedRadius, -adjustedRadius, adjustedRadius, adjustedRadius);
-    arcInverseFactor = progressIndicator.isInverse() ? -1 : 1;
+    arcInverseFactor = spec.inverse ? -1 : 1;
   }
 
   /**

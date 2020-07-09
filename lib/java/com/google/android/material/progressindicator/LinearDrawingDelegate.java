@@ -15,6 +15,8 @@
  */
 package com.google.android.material.progressindicator;
 
+import static java.lang.Math.max;
+
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
@@ -24,6 +26,7 @@ import android.graphics.RectF;
 import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
+import androidx.annotation.Px;
 
 /** A delegate class to help draw the graphics for {@link ProgressIndicator} in linear types. */
 final class LinearDrawingDelegate implements DrawingDelegate {
@@ -32,15 +35,15 @@ final class LinearDrawingDelegate implements DrawingDelegate {
   private float trackLength = 300f;
 
   @Override
-  public int getPreferredWidth(@NonNull ProgressIndicator progressIndicator) {
-    return progressIndicator.getMeasuredWidth();
+  public int getPreferredWidth(
+      @NonNull ProgressIndicatorSpec spec, @Px int paddingLeft, @Px int paddingRight) {
+    return -1;
   }
 
   @Override
-  public int getPreferredHeight(@NonNull ProgressIndicator progressIndicator) {
-    return progressIndicator.getIndicatorWidth()
-        + progressIndicator.getPaddingTop()
-        + progressIndicator.getPaddingBottom();
+  public int getPreferredHeight(
+      @NonNull ProgressIndicatorSpec spec, @Px int paddingTop, @Px int paddingBottom) {
+    return spec.indicatorWidth + paddingTop + paddingBottom;
   }
 
   /**
@@ -48,37 +51,36 @@ final class LinearDrawingDelegate implements DrawingDelegate {
    * it's inverted. It flips the canvas vertically if outgoing grow mode is applied.
    *
    * @param canvas Canvas to draw.
-   * @param progressIndicator The component currently serving.
+   * @param spec The spec of the component currently being served.
    * @param widthFraction A fraction representing how wide the drawing should be.
    */
   @Override
   public void adjustCanvas(
       @NonNull Canvas canvas,
-      @NonNull ProgressIndicator progressIndicator,
+      @NonNull ProgressIndicatorSpec spec,
       @FloatRange(from = 0.0, to = 1.0) float widthFraction) {
     // Gets clip bounds from canvas.
     Rect clipBounds = canvas.getClipBounds();
     trackLength = clipBounds.width();
-    float trackWidth = progressIndicator.getIndicatorWidth();
+    float trackWidth = spec.indicatorWidth;
 
     // Positions canvas to center of the clip bounds.
     canvas.translate(
         clipBounds.width() / 2f,
-        clipBounds.height() / 2f
-            + Math.max(0f, (clipBounds.height() - progressIndicator.getIndicatorWidth()) / 2f));
+        clipBounds.height() / 2f + max(0f, (clipBounds.height() - spec.indicatorWidth) / 2f));
 
     // Flips canvas horizontally if inverse.
-    if (progressIndicator.isInverse()) {
+    if (spec.inverse) {
       canvas.scale(-1f, 1f);
     }
     // Flips canvas vertically if grow upward.
-    if (progressIndicator.getGrowMode() == ProgressIndicator.GROW_MODE_OUTGOING) {
+    if (spec.growMode == ProgressIndicator.GROW_MODE_OUTGOING) {
       canvas.scale(1f, -1f);
     }
     // Offsets canvas vertically if grow from top/bottom.
-    if (progressIndicator.getGrowMode() == ProgressIndicator.GROW_MODE_INCOMING
-        || progressIndicator.getGrowMode() == ProgressIndicator.GROW_MODE_OUTGOING) {
-      canvas.translate(0f, progressIndicator.getIndicatorWidth() * (widthFraction - 1) / 2f);
+    if (spec.growMode == ProgressIndicator.GROW_MODE_INCOMING
+        || spec.growMode == ProgressIndicator.GROW_MODE_OUTGOING) {
+      canvas.translate(0f, spec.indicatorWidth * (widthFraction - 1) / 2f);
     }
 
     // Clips all drawing to the track area, so it doesn't draw outside of its bounds (which can

@@ -44,8 +44,8 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
   // Animation duration for both show and hide animators.
   private static final int GROW_DURATION = 500;
 
-  // The component this drawable is serving.
-  final ProgressIndicator progressIndicator;
+  // The spec of the component being served.
+  final ProgressIndicatorSpec spec;
 
   // ValueAnimator used for show animation.
   private ValueAnimator showAnimator;
@@ -67,8 +67,8 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
 
   // ******************* Constructor *******************
 
-  DrawableWithAnimatedVisibilityChange(@NonNull ProgressIndicator progressIndicator) {
-    this.progressIndicator = progressIndicator;
+  DrawableWithAnimatedVisibilityChange(@NonNull ProgressIndicatorSpec spec) {
+    this.spec = spec;
 
     setAlpha(255);
 
@@ -198,8 +198,7 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
 
     boolean changed =
         (!visible && animationDesired) || super.setVisible(visible, DEFAULT_DRAWABLE_RESTART);
-    boolean shouldAnimate =
-        animationDesired && progressIndicator.getGrowMode() != ProgressIndicator.GROW_MODE_NONE;
+    boolean shouldAnimate = animationDesired && spec.growMode != ProgressIndicator.GROW_MODE_NONE;
 
     // We don't want to change visibility while show/hide animation is running. This also prevents
     // multiple invokes to cancel the grow animators for some Android versions.
@@ -247,9 +246,8 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
   // ******************* Helper methods *******************
 
   void recalculateColors() {
-    combinedTrackColor =
-        MaterialColors.compositeARGBWithAlpha(progressIndicator.getTrackColor(), getAlpha());
-    combinedIndicatorColorArray = progressIndicator.getIndicatorColors().clone();
+    combinedTrackColor = MaterialColors.compositeARGBWithAlpha(spec.trackColor, getAlpha());
+    combinedIndicatorColorArray = spec.indicatorColors.clone();
     for (int i = 0; i < combinedIndicatorColorArray.length; i++) {
       combinedIndicatorColorArray[i] =
           MaterialColors.compositeARGBWithAlpha(combinedIndicatorColorArray[i], getAlpha());
@@ -346,7 +344,7 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
 
   void setGrowFraction(float growFraction) {
     // If no show/hide animation is needed, the growFraction is always 1.
-    if (progressIndicator.getGrowMode() == ProgressIndicator.GROW_MODE_NONE) {
+    if (spec.growMode == ProgressIndicator.GROW_MODE_NONE) {
       growFraction = 1f;
     }
     if (this.growFraction != growFraction) {

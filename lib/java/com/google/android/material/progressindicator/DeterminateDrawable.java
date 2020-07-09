@@ -46,8 +46,8 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
   private boolean skipNextLevelChange = false;
 
   public DeterminateDrawable(
-      @NonNull ProgressIndicator progressIndicator, @NonNull DrawingDelegate drawingDelegate) {
-    super(progressIndicator);
+      @NonNull ProgressIndicatorSpec spec, @NonNull DrawingDelegate drawingDelegate) {
+    super(spec);
 
     this.drawingDelegate = drawingDelegate;
 
@@ -143,17 +143,16 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
     }
 
     canvas.save();
-    drawingDelegate.adjustCanvas(canvas, progressIndicator, getGrowFraction());
+    drawingDelegate.adjustCanvas(canvas, spec, getGrowFraction());
 
-    float displayedIndicatorWidth = progressIndicator.getIndicatorWidth() * getGrowFraction();
-    float displayedRoundedCornerRadius =
-        progressIndicator.getIndicatorCornerRadius() * getGrowFraction();
+    float displayedIndicatorWidth = spec.indicatorWidth * getGrowFraction();
+    float displayedRoundedCornerRadius = spec.indicatorCornerRadius * getGrowFraction();
 
     // Draws the track.
     drawingDelegate.fillTrackWithColor(
         canvas,
         paint,
-        progressIndicator.getTrackColor(),
+        spec.trackColor,
         0f,
         1f,
         displayedIndicatorWidth,

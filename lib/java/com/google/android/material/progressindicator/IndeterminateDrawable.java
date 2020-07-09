@@ -34,10 +34,10 @@ public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityC
   private IndeterminateAnimatorDelegate<AnimatorSet> animatorDelegate;
 
   public IndeterminateDrawable(
-      @NonNull ProgressIndicator progressIndicator,
+      @NonNull ProgressIndicatorSpec spec,
       @NonNull DrawingDelegate drawingDelegate,
       @NonNull IndeterminateAnimatorDelegate<AnimatorSet> animatorDelegate) {
-    super(progressIndicator);
+    super(spec);
 
     this.drawingDelegate = drawingDelegate;
     setAnimatorDelegate(animatorDelegate);
@@ -85,11 +85,10 @@ public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityC
     }
 
     canvas.save();
-    drawingDelegate.adjustCanvas(canvas, progressIndicator, getGrowFraction());
+    drawingDelegate.adjustCanvas(canvas, spec, getGrowFraction());
 
-    float displayedIndicatorWidth = progressIndicator.getIndicatorWidth() * getGrowFraction();
-    float displayedRoundedCornerRadius =
-        progressIndicator.getIndicatorCornerRadius() * getGrowFraction();
+    float displayedIndicatorWidth = spec.indicatorWidth * getGrowFraction();
+    float displayedRoundedCornerRadius = spec.indicatorCornerRadius * getGrowFraction();
 
     // Draws the track first as the bottom layer.
     drawingDelegate.fillTrackWithColor(

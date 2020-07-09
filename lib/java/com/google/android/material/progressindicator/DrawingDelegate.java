@@ -20,6 +20,7 @@ import android.graphics.Paint;
 import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
+import androidx.annotation.Px;
 
 /**
  * A delegate interface for drawing the graphics in different drawable classes used in {@link
@@ -27,29 +28,33 @@ import androidx.annotation.NonNull;
  */
 public interface DrawingDelegate {
   /**
-   * Returns the preferred width, in pixels, of the drawable based on the drawing type.
+   * Returns the preferred width, in pixels, of the drawable based on the drawing type. Returns a
+   * negative value if it depends on the {@link android.view.View}.
    *
-   * @param progressIndicator The component where to draw.
+   * @param spec The spec of the component where to draw.
    */
-  int getPreferredWidth(@NonNull ProgressIndicator progressIndicator);
+  int getPreferredWidth(
+      @NonNull ProgressIndicatorSpec spec, @Px int paddingLeft, @Px int paddingRight);
 
   /**
-   * Returns the preferred height, in pixels, of the drawable based on the drawing type.
+   * Returns the preferred height, in pixels, of the drawable based on the drawing type. Returns a
+   * negative value if it depends on the {@link android.view.View}.
    *
-   * @param progressIndicator The component where to draw.
+   * @param spec The spec of the component where to draw.
    */
-  int getPreferredHeight(@NonNull ProgressIndicator progressIndicator);
+  int getPreferredHeight(
+      @NonNull ProgressIndicatorSpec spec, @Px int paddingTop, @Px int paddingBottom);
 
   /**
    * Prepares the bound of the canvas for the actual drawing. Should be called before any drawing.
    *
    * @param canvas Canvas to draw.
-   * @param progressIndicator The component currently serving.
+   * @param spec The spec of the component currently being served.
    * @param widthFraction A fraction representing how wide the drawing should be.
    */
   void adjustCanvas(
       @NonNull Canvas canvas,
-      @NonNull ProgressIndicator progressIndicator,
+      @NonNull ProgressIndicatorSpec spec,
       @FloatRange(from = 0.0, to = 1.0) float widthFraction);
 
   /**

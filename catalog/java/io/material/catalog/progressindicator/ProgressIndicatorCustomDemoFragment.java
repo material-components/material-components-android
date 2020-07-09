@@ -34,11 +34,13 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.Px;
 import com.google.android.material.progressindicator.DeterminateDrawable;
 import com.google.android.material.progressindicator.DrawingDelegate;
 import com.google.android.material.progressindicator.IndeterminateDrawable;
 import com.google.android.material.progressindicator.LinearIndeterminateNonSeamlessAnimatorDelegate;
 import com.google.android.material.progressindicator.ProgressIndicator;
+import com.google.android.material.progressindicator.ProgressIndicatorSpec;
 import com.google.android.material.slider.Slider;
 import io.material.catalog.feature.DemoFragment;
 
@@ -67,12 +69,12 @@ public class ProgressIndicatorCustomDemoFragment extends DemoFragment {
 
     indeterminateIndicator.initializeDrawables(
         new IndeterminateDrawable(
-            indeterminateIndicator,
+            indeterminateIndicator.getSpec(),
             new WavyDrawingDelegate(),
             new LinearIndeterminateNonSeamlessAnimatorDelegate(getContext())),
         null);
     determinateIndicator.initializeDrawables(
-        null, new DeterminateDrawable(determinateIndicator, new WavyDrawingDelegate()));
+        null, new DeterminateDrawable(determinateIndicator.getSpec(), new WavyDrawingDelegate()));
 
     Slider slider = view.findViewById(R.id.slider);
     Button showButton = view.findViewById(R.id.show_button);
@@ -103,29 +105,31 @@ public class ProgressIndicatorCustomDemoFragment extends DemoFragment {
     RectF arcPatternBound;
 
     @Override
-    public int getPreferredWidth(@NonNull ProgressIndicator progressIndicator) {
-      return progressIndicator.getMeasuredWidth();
+    public int getPreferredWidth(
+        @NonNull ProgressIndicatorSpec spec, @Px int paddingLeft, @Px int paddingRight) {
+      return -1;
     }
 
     @Override
-    public int getPreferredHeight(@NonNull ProgressIndicator progressIndicator) {
+    public int getPreferredHeight(
+        @NonNull ProgressIndicatorSpec spec, @Px int paddingTop, @Px int paddingBottom) {
       // The radius of the outer edge of each arc is 10 times of the indicator's width, so that the
       // arc has a radius of 5 times (large enough) of indicator's width.
-      return progressIndicator.getIndicatorWidth()
+      return spec.indicatorWidth
               * (WAVE_ARC_RADIUS_MULTIPLIER * 2 + 1 /*Half width on the top and the bottom.*/)
-          + progressIndicator.getPaddingTop()
-          + progressIndicator.getPaddingBottom();
+          + paddingTop
+          + paddingBottom;
     }
 
     @Override
     public void adjustCanvas(
-        @NonNull Canvas canvas, @NonNull ProgressIndicator progressIndicator, float widthFraction) {
+        @NonNull Canvas canvas, @NonNull ProgressIndicatorSpec spec, float widthFraction) {
       // Calculates how many semi-circles are needed.
       Rect clipBounds = canvas.getClipBounds();
       int arcCount =
-          (clipBounds.width() - progressIndicator.getIndicatorWidth())
-              / (2 * WAVE_ARC_RADIUS_MULTIPLIER * progressIndicator.getIndicatorWidth());
-      arcRadius = progressIndicator.getIndicatorWidth() * WAVE_ARC_RADIUS_MULTIPLIER;
+          (clipBounds.width() - spec.indicatorWidth)
+              / (2 * WAVE_ARC_RADIUS_MULTIPLIER * spec.indicatorWidth);
+      arcRadius = spec.indicatorWidth * WAVE_ARC_RADIUS_MULTIPLIER;
       // Calculates the x coordinate of the centers of circles.
       arcCentersX = new int[arcCount];
       for (int arcIndex = 0; arcIndex < arcCount; arcIndex++) {
@@ -137,7 +141,7 @@ public class ProgressIndicatorCustomDemoFragment extends DemoFragment {
       // Positions the canvas to the center of the clip bounds.
       canvas.translate(clipBounds.width() / 2f, clipBounds.height() / 2f);
       // Flips the canvas horizontally if inverse.
-      if (progressIndicator.isInverse()) {
+      if (spec.inverse) {
         canvas.scale(-1f, 1f);
       }
     }
