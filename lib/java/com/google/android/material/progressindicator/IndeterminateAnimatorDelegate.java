@@ -79,5 +79,11 @@ public abstract class IndeterminateAnimatorDelegate<T extends Animator> {
    *     only {@link AnimationCallback#onAnimationEnd(Drawable)} should be overridden. Overriding
    *     other events may cause undesired result.
    */
-  abstract void registerAnimatorsCompleteCallback(AnimationCallback callback);
+  public abstract void registerAnimatorsCompleteCallback(@NonNull AnimationCallback callback);
+
+  /**
+   * Unregisters the {@link AnimationCallback} for the process to be done after the current
+   * animation cycle.
+   */
+  public abstract void unregisterAnimatorsCompleteCallback();
 }

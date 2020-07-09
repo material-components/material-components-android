@@ -130,7 +130,12 @@ public final class LinearIndeterminateSeamlessAnimatorDelegate
 
   @Override
   public void registerAnimatorsCompleteCallback(AnimationCallback callback) {
-    animatorCompleteCallback = callback;
+    // In seamless mode, indeterminate mode cannot be switched. This is left as blank in purpose.
+  }
+
+  @Override
+  public void unregisterAnimatorsCompleteCallback() {
+    // In seamless mode, indeterminate mode cannot be switched. This is left as blank in purpose.
   }
 
   // ******************* Helper methods *******************

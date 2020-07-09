@@ -283,8 +283,6 @@ public class ProgressIndicator extends ProgressBar {
       setProgressDrawable(new DeterminateDrawable(spec, drawingDelegate));
     }
 
-    registerAnimationCallbacks();
-    updateProgressDrawableAnimationScale();
     applyNewVisibility();
   }
 
@@ -316,8 +314,6 @@ public class ProgressIndicator extends ProgressBar {
     setIndeterminate(
         indeterminateDrawable != null && (determinateDrawable == null || isIndeterminate()));
 
-    registerAnimationCallbacks();
-    updateProgressDrawableAnimationScale();
     applyNewVisibility();
   }
 
@@ -337,6 +333,16 @@ public class ProgressIndicator extends ProgressBar {
     // Registers the hide animation callback to indeterminate drawable.
     if (getIndeterminateDrawable() != null) {
       getIndeterminateDrawable().registerAnimationCallback(hideAnimationCallback);
+    }
+  }
+
+  private void unregisterAnimationCallbacks() {
+    if (getIndeterminateDrawable() != null) {
+      getIndeterminateDrawable().unregisterAnimationCallback(hideAnimationCallback);
+      getIndeterminateDrawable().getAnimatorDelegate().unregisterAnimatorsCompleteCallback();
+    }
+    if (getProgressDrawable() != null) {
+      getProgressDrawable().unregisterAnimationCallback(hideAnimationCallback);
     }
   }
 
@@ -441,6 +447,7 @@ public class ProgressIndicator extends ProgressBar {
   @Override
   protected void onAttachedToWindow() {
     super.onAttachedToWindow();
+    registerAnimationCallbacks();
     // Shows with animation.
     if (visibleToUser()) {
       show();
@@ -452,6 +459,7 @@ public class ProgressIndicator extends ProgressBar {
     // Removes the delayedHide runnable from the queue if it has been scheduled.
     removeCallbacks(delayedHide);
     getCurrentDrawable().setVisible(false, false);
+    unregisterAnimationCallbacks();
     super.onDetachedFromWindow();
   }
 

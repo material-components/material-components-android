@@ -160,8 +160,13 @@ public final class LinearIndeterminateNonSeamlessAnimatorDelegate
   }
 
   @Override
-  public void registerAnimatorsCompleteCallback(AnimationCallback callback) {
+  public void registerAnimatorsCompleteCallback(@NonNull AnimationCallback callback) {
     animatorCompleteCallback = callback;
+  }
+
+  @Override
+  public void unregisterAnimatorsCompleteCallback() {
+    animatorCompleteCallback = null;
   }
 
   // ******************* Helper methods *******************
