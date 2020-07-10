@@ -31,6 +31,7 @@ import android.os.Build.VERSION_CODES;
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
 import androidx.core.view.accessibility.AccessibilityViewCommand;
@@ -43,7 +44,6 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.view.WindowInsets;
 import androidx.annotation.FloatRange;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
@@ -55,6 +55,8 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams;
 import androidx.core.math.MathUtils;
 import androidx.customview.view.AbsSavedState;
 import androidx.customview.widget.ViewDragHelper;
+import com.google.android.material.internal.ViewUtils;
+import com.google.android.material.internal.ViewUtils.RelativePadding;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
@@ -370,7 +372,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       // First layout with this behavior.
       peekHeightMin =
           parent.getResources().getDimensionPixelSize(R.dimen.design_bottom_sheet_peek_height_min);
-      setSystemGestureInsets(parent);
+      setSystemGestureInsets(child);
       viewRef = new WeakReference<>(child);
       // Only set MaterialShapeDrawable as background if shapeTheming is enabled, otherwise will
       // default to android:background declared in styles or layout.
@@ -1237,13 +1239,22 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         });
   }
 
-  private void setSystemGestureInsets(@NonNull CoordinatorLayout parent) {
-    if (VERSION.SDK_INT >= VERSION_CODES.Q && !isGestureInsetBottomIgnored()) {
-      WindowInsets windowInsets = parent.getRootWindowInsets();
-      if (windowInsets != null) {
-        int systemMandatoryInsetsBottom = windowInsets.getSystemGestureInsets().bottom;
-        peekHeight += systemMandatoryInsetsBottom;
-      }
+  /**
+   * Ensure the peek height is at least as large as the bottom gesture inset size so that the sheet
+   * can always be dragged, but only when the inset is required by the system.
+   */
+  private void setSystemGestureInsets(@NonNull View child) {
+    if (VERSION.SDK_INT >= VERSION_CODES.Q && !isGestureInsetBottomIgnored() && !peekHeightAuto) {
+      ViewUtils.doOnApplyWindowInsets(
+          child,
+          new ViewUtils.OnApplyWindowInsetsListener() {
+            @Override
+            public WindowInsetsCompat onApplyWindowInsets(
+                View view, WindowInsetsCompat insets, RelativePadding initialPadding) {
+              setPeekHeight(peekHeight + insets.getMandatorySystemGestureInsets().bottom);
+              return insets;
+            }
+          });
     }
   }
 
