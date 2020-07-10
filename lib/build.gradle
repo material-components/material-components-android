@@ -96,7 +96,7 @@ android {
   testOptions.unitTests.includeAndroidResources = true
 
   buildTypes.all {
-    consumerProguardFiles 'proguard-behaviors.pro', 'proguard-inflater.pro', 'proguard-recyclerview.pro'
+    consumerProguardFiles 'proguard-behaviors.pro', 'proguard-inflater.pro'
   }
 
   defaultConfig {
