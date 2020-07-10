@@ -16,16 +16,17 @@
 
 package io.material.catalog.slider;
 
-import io.material.catalog.R;
-
 import android.os.Bundle;
-import androidx.annotation.IdRes;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.IdRes;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SwitchCompat;
+import com.google.android.material.slider.BasicLabelFormatter;
+import com.google.android.material.slider.LabelFormatter;
 import com.google.android.material.slider.Slider;
+import io.material.catalog.R;
 import io.material.catalog.feature.DemoFragment;
 
 /**
@@ -44,14 +45,14 @@ public class SliderDiscreteDemoFragment extends DemoFragment {
     setUpSlider(view, R.id.switch_button_1, R.id.slider_1, null);
     setUpSlider(view, R.id.switch_button_2, R.id.slider_2, null);
     setUpSlider(view, R.id.switch_button_3, R.id.slider_3, null);
-    setUpSlider(view, R.id.switch_button_4, R.id.slider_4, new Slider.BasicLabelFormatter());
+    setUpSlider(view, R.id.switch_button_4, R.id.slider_4, new BasicLabelFormatter());
     setUpSlider(view, R.id.switch_button_5, R.id.slider_5, null);
 
     return view;
   }
 
   private void setUpSlider(
-      View view, @IdRes int switchId, @IdRes int sliderId, Slider.LabelFormatter labelFormatter) {
+      View view, @IdRes int switchId, @IdRes int sliderId, LabelFormatter labelFormatter) {
     final Slider slider = view.findViewById(sliderId);
     slider.setLabelFormatter(labelFormatter);
     SwitchCompat switchButton = view.findViewById(switchId);
