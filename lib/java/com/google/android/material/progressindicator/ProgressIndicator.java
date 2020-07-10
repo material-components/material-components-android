@@ -646,6 +646,7 @@ public class ProgressIndicator extends ProgressBar {
   private void updateColorsInDrawables() {
     getProgressDrawable().recalculateColors();
     getIndeterminateDrawable().recalculateColors();
+    getIndeterminateDrawable().getAnimatorDelegate().invalidateSpecValues();
   }
 
   /** Returns the animator duration scale from developer options setting. */

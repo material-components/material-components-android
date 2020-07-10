@@ -72,6 +72,13 @@ public abstract class IndeterminateAnimatorDelegate<T extends Animator> {
   abstract void resetPropertiesForNextCycle();
 
   /**
+   * Invalidates the spec values used by the animator delegate. When the spec values are changed in
+   * {@link ProgressIndicator}, values assigned to animators or segments don't get updated until
+   * they are explicitly reset. Call this to apply the changes immediately.
+   */
+  public abstract void invalidateSpecValues();
+
+  /**
    * Registers an {@link AnimationCallback} to the animator for the process what needs to be done
    * after the current animation cycle.
    *

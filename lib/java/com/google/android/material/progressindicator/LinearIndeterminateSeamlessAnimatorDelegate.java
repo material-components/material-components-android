@@ -65,7 +65,7 @@ public final class LinearIndeterminateSeamlessAnimatorDelegate
           public void onAnimationRepeat(Animator animation) {
             super.onAnimationRepeat(animation);
             if (getLineConnectPoint2Fraction() > 0 && getLineConnectPoint2Fraction() < 1) {
-              rotateIndicatorColors();
+              shiftSegmentColors();
             }
           }
         });
@@ -86,7 +86,7 @@ public final class LinearIndeterminateSeamlessAnimatorDelegate
           public void onAnimationRepeat(Animator animation) {
             super.onAnimationRepeat(animation);
             if (getLineConnectPoint1Fraction() > 0 && getLineConnectPoint1Fraction() < 1) {
-              rotateIndicatorColors();
+              shiftSegmentColors();
             }
           }
         });
@@ -110,7 +110,7 @@ public final class LinearIndeterminateSeamlessAnimatorDelegate
   public void resetPropertiesForNewStart() {
     setLineConnectPoint1Fraction(0f);
     setLineConnectPoint2Fraction(0f);
-    resetIndicatorColors();
+    resetSegmentColors();
   }
 
   @Override
@@ -129,6 +129,11 @@ public final class LinearIndeterminateSeamlessAnimatorDelegate
   }
 
   @Override
+  public void invalidateSpecValues() {
+    resetSegmentColors();
+  }
+
+  @Override
   public void registerAnimatorsCompleteCallback(AnimationCallback callback) {
     // In seamless mode, indeterminate mode cannot be switched. This is left as blank in purpose.
   }
@@ -140,15 +145,15 @@ public final class LinearIndeterminateSeamlessAnimatorDelegate
 
   // ******************* Helper methods *******************
 
-  /** Rotates the color used in segment colors. */
-  private void rotateIndicatorColors() {
+  /** Shifts the color used in the segment colors to the next available one. */
+  private void shiftSegmentColors() {
     referenceSegmentColorIndex =
         (referenceSegmentColorIndex + 1) % drawable.combinedIndicatorColorArray.length;
     updateSegmentColors();
   }
 
-  /** Resets segment colors to the first indicator color. */
-  private void resetIndicatorColors() {
+  /** Resets the segment colors to the first indicator color. */
+  private void resetSegmentColors() {
     referenceSegmentColorIndex = 0;
     updateSegmentColors();
   }

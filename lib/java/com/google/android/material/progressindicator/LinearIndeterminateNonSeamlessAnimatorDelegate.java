@@ -127,7 +127,7 @@ public final class LinearIndeterminateNonSeamlessAnimatorDelegate
   @Override
   public void resetPropertiesForNewStart() {
     resetPropertiesForNextCycle();
-    resetIndicatorColors();
+    resetSegmentColors();
   }
 
   @Override
@@ -136,7 +136,7 @@ public final class LinearIndeterminateNonSeamlessAnimatorDelegate
     setLine1TailFraction(0f);
     setLine2HeadFraction(0f);
     setLine2TailFraction(0f);
-    rotateIndicatorColors();
+    rotateSegmentColors();
   }
 
   @Override
@@ -160,6 +160,11 @@ public final class LinearIndeterminateNonSeamlessAnimatorDelegate
   }
 
   @Override
+  public void invalidateSpecValues() {
+    resetSegmentColors();
+  }
+
+  @Override
   public void registerAnimatorsCompleteCallback(@NonNull AnimationCallback callback) {
     animatorCompleteCallback = callback;
   }
@@ -171,15 +176,15 @@ public final class LinearIndeterminateNonSeamlessAnimatorDelegate
 
   // ******************* Helper methods *******************
 
-  /** Rotates the color used in segment colors. */
-  private void rotateIndicatorColors() {
+  /** Shifts the color used in the segment colors to the next available one. */
+  private void rotateSegmentColors() {
     displayedSegmentColorIndex =
         (displayedSegmentColorIndex + 1) % drawable.combinedIndicatorColorArray.length;
     Arrays.fill(segmentColors, drawable.combinedIndicatorColorArray[displayedSegmentColorIndex]);
   }
 
-  /** Resets segment colors to the first indicator color. */
-  private void resetIndicatorColors() {
+  /** Resets the segment colors to the first indicator color. */
+  private void resetSegmentColors() {
     displayedSegmentColorIndex = 0;
     Arrays.fill(segmentColors, drawable.combinedIndicatorColorArray[displayedSegmentColorIndex]);
   }

@@ -173,12 +173,8 @@ public final class CircularIndeterminateAnimatorDelegate
     setIndicatorHeadChangeFraction(0f);
     setIndicatorTailChangeFraction(0f);
     setIndicatorStartOffset(0f);
-    indicatorColorIndex = 0;
     indicatorCollapsingAnimator.setFloatValues(0f, 1f);
-    colorFadingAnimator.setIntValues(
-        drawable.combinedIndicatorColorArray[indicatorColorIndex],
-        drawable.combinedIndicatorColorArray[getNextIndicatorColorIndex()]);
-    setDisplayedIndicatorColor(drawable.combinedIndicatorColorArray[indicatorColorIndex]);
+    resetSegmentColors();
   }
 
   @Override
@@ -191,11 +187,12 @@ public final class CircularIndeterminateAnimatorDelegate
                 + INDICATOR_OFFSET_PER_COLOR_DEGREES
                 + INDICATOR_DELTA_DEGREES,
             360));
-    indicatorColorIndex = getNextIndicatorColorIndex();
-    colorFadingAnimator.setIntValues(
-        drawable.combinedIndicatorColorArray[indicatorColorIndex],
-        drawable.combinedIndicatorColorArray[getNextIndicatorColorIndex()]);
-    setDisplayedIndicatorColor(drawable.combinedIndicatorColorArray[indicatorColorIndex]);
+    shiftSegmentColors();
+  }
+
+  @Override
+  public void invalidateSpecValues() {
+    resetSegmentColors();
   }
 
   @Override
@@ -228,6 +225,24 @@ public final class CircularIndeterminateAnimatorDelegate
                 + getIndicatorInCycleOffset()
                 + getIndicatorHeadChangeFraction() * INDICATOR_DELTA_DEGREES)
             / 360;
+  }
+
+  /** Shifts the color used in the segment colors to the next available one. */
+  private void shiftSegmentColors() {
+    indicatorColorIndex = getNextIndicatorColorIndex();
+    colorFadingAnimator.setIntValues(
+        drawable.combinedIndicatorColorArray[indicatorColorIndex],
+        drawable.combinedIndicatorColorArray[getNextIndicatorColorIndex()]);
+    setDisplayedIndicatorColor(drawable.combinedIndicatorColorArray[indicatorColorIndex]);
+  }
+
+  /** Resets the segment colors to the first indicator color. */
+  private void resetSegmentColors() {
+    indicatorColorIndex = 0;
+    colorFadingAnimator.setIntValues(
+        drawable.combinedIndicatorColorArray[indicatorColorIndex],
+        drawable.combinedIndicatorColorArray[getNextIndicatorColorIndex()]);
+    setDisplayedIndicatorColor(drawable.combinedIndicatorColorArray[indicatorColorIndex]);
   }
 
   // ******************* Getters and setters *******************
