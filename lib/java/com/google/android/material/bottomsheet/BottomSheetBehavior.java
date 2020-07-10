@@ -44,6 +44,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.accessibility.AccessibilityEvent;
 import androidx.annotation.FloatRange;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
@@ -1677,6 +1678,10 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
     if (!expanded) {
       importantForAccessibilityMap = null;
+    } else if (updateImportantForAccessibilityOnSiblings) {
+      // If the siblings of the bottom sheet have been set to not important for a11y, move the focus
+      // to the bottom sheet when expanded.
+      viewRef.get().sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
     }
   }
 
