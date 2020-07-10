@@ -20,6 +20,9 @@ import com.google.android.material.R;
 
 import static androidx.core.view.accessibility.AccessibilityNodeInfoCompat.RangeInfoCompat.RANGE_TYPE_FLOAT;
 import static androidx.core.math.MathUtils.clamp;
+import static com.google.android.material.slider.LabelFormatter.LABEL_FLOATING;
+import static com.google.android.material.slider.LabelFormatter.LABEL_GONE;
+import static com.google.android.material.slider.LabelFormatter.LABEL_WITHIN_BOUNDS;
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 import static java.lang.Float.compare;
 import static java.lang.Math.abs;
@@ -83,7 +86,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * The slider can function either as a continuous slider, or as a discrete slider. The mode of
@@ -252,9 +254,6 @@ abstract class BaseSlider<
 
   @NonNull private final MaterialShapeDrawable thumbDrawable = new MaterialShapeDrawable();
 
-  public static final int LABEL_FLOATING = 0;
-  public static final int LABEL_WITHIN_BOUNDS = 1;
-  public static final int LABEL_GONE = 2;
   private float touchPosition;
 
   /**
@@ -272,45 +271,7 @@ abstract class BaseSlider<
    */
   @IntDef({LABEL_FLOATING, LABEL_WITHIN_BOUNDS, LABEL_GONE})
   @Retention(RetentionPolicy.SOURCE)
-  public @interface LabelBehavior {}
-
-  /**
-   * Interface definition for applying custom formatting to the text displayed inside the bubble
-   * shown when a slider is used in discrete mode.
-   */
-  public interface LabelFormatter {
-    @NonNull
-    String getFormattedValue(float value);
-  }
-
-  /**
-   * A simple implementation of the {@link LabelFormatter} interface, that limits the number
-   * displayed inside a discrete slider's bubble to three digits, and a single-character suffix that
-   * denotes magnitude (e.g.: 1.5K, 2.2M, 1.3B, 2T).
-   */
-  public static final class BasicLabelFormatter implements LabelFormatter {
-
-    private static final long TRILLION = 1000000000000L;
-    private static final int BILLION = 1000000000;
-    private static final int MILLION = 1000000;
-    private static final int THOUSAND = 1000;
-
-    @NonNull
-    @Override
-    public String getFormattedValue(float value) {
-      if (value >= TRILLION) {
-        return String.format(Locale.US, "%.1fT", value / TRILLION);
-      } else if (value >= BILLION) {
-        return String.format(Locale.US, "%.1fB", value / BILLION);
-      } else if (value >= MILLION) {
-        return String.format(Locale.US, "%.1fM", value / MILLION);
-      } else if (value >= THOUSAND) {
-        return String.format(Locale.US, "%.1fK", value / THOUSAND);
-      }
-
-      return String.format(Locale.US, "%.0f", value);
-    }
-  }
+  @interface LabelBehavior {}
 
   public BaseSlider(@NonNull Context context) {
     this(context, null);
