@@ -27,8 +27,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
 import com.google.android.material.button.MaterialButtonToggleGroup;
+import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
-import com.google.android.material.timepicker.TimePickerDialog;
 import io.material.catalog.feature.DemoFragment;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -73,13 +73,13 @@ public class TimePickerMainDemoFragment extends DemoFragment {
         showFrameworkTimepicker();
         return;
       }
-      TimePickerDialog timePickerDialog = TimePickerDialog.newInstance();
-      timePickerDialog.show(requireFragmentManager(), "fragment_tag");
-      timePickerDialog.setTimeFormat(clockFormat);
-      timePickerDialog.setHour(hour);
-      timePickerDialog.setMinute(minute);
+      MaterialTimePicker materialTimePicker = MaterialTimePicker.newInstance();
+      materialTimePicker.show(requireFragmentManager(), "fragment_tag");
+      materialTimePicker.setTimeFormat(clockFormat);
+      materialTimePicker.setHour(hour);
+      materialTimePicker.setMinute(minute);
 
-      timePickerDialog.setListener(dialog -> {
+      materialTimePicker.setListener(dialog -> {
         int newHour = dialog.getHour();
         int newMinute = dialog.getMinute();
         TimePickerMainDemoFragment.this.onTimeSet(newHour, newMinute);

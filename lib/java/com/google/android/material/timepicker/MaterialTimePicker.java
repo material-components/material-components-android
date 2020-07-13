@@ -42,7 +42,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /** A {@link Dialog} with a clock display and a clock face to choose the time. */
-public final class TimePickerDialog extends DialogFragment {
+public final class MaterialTimePicker extends DialogFragment {
 
   private static final int CLOCK_ICON = R.drawable.ic_clock_black_24dp;
   private static final int KEYBOARD_ICON = R.drawable.ic_keyboard_black_24dp;
@@ -55,19 +55,19 @@ public final class TimePickerDialog extends DialogFragment {
   @Nullable private TimePickerPresenter activePresenter;
 
   /** Values supported for the input type of the dialog. */
-  @IntDef({KEYBOARD, CLOCK})
+  @IntDef({INPUT_MODE_CLOCK, INPUT_MODE_KEYBOARD})
   @Retention(RetentionPolicy.SOURCE)
-  public @interface InputMode {}
+  @interface InputMode {}
 
-  public static final int KEYBOARD = 0;
-  public static final int CLOCK = 1;
+  public static final int INPUT_MODE_CLOCK = 0;
+  public static final int INPUT_MODE_KEYBOARD = 1;
 
   static final String TIME_MODEL_EXTRA = "TIME_PICKER_TIME_MODEL";
-  static final String MODE_EXTRA = "TIME_PICKER_INPUT_MODE";
+  static final String INPUT_MODE_EXTRA = "TIME_PICKER_INPUT_MODE";
 
   private MaterialButton modeButton;
 
-  @InputMode private int mode = CLOCK;
+  @InputMode private int inputMode = INPUT_MODE_CLOCK;
 
   /**
    * The callback interface used to indicate the user is done filling in
@@ -83,7 +83,7 @@ public final class TimePickerDialog extends DialogFragment {
      *
      * @param dialog the dialog associated with this listener
      */
-    void onTimeSet(TimePickerDialog dialog);
+    void onTimeSet(MaterialTimePicker dialog);
   }
 
   private TimeModel time = new TimeModel();
@@ -91,8 +91,8 @@ public final class TimePickerDialog extends DialogFragment {
   private OnTimeSetListener listener;
 
   @NonNull
-  public static TimePickerDialog newInstance() {
-    return new TimePickerDialog();
+  public static MaterialTimePicker newInstance() {
+    return new MaterialTimePicker();
   }
 
   public void setHour(int hour) {
@@ -115,8 +115,13 @@ public final class TimePickerDialog extends DialogFragment {
     time = new TimeModel(format);
   }
 
-  public void setMode(@InputMode int mode) {
-    this.mode = mode;
+  public void setInputMode(@InputMode int inputMode) {
+    this.inputMode = inputMode;
+  }
+
+  @InputMode
+  public int getInputMode() {
+    return inputMode;
   }
 
   @NonNull
@@ -127,7 +132,7 @@ public final class TimePickerDialog extends DialogFragment {
     Context context = dialog.getContext();
     int surfaceColor =
         MaterialAttributes.resolveOrThrow(
-            context, R.attr.colorSurface, TimePickerDialog.class.getCanonicalName());
+            context, R.attr.colorSurface, MaterialTimePicker.class.getCanonicalName());
 
     MaterialShapeDrawable background =
         new MaterialShapeDrawable(
@@ -159,7 +164,7 @@ public final class TimePickerDialog extends DialogFragment {
   public void onSaveInstanceState(@NonNull Bundle bundle) {
     super.onSaveInstanceState(bundle);
     bundle.putParcelable(TIME_MODEL_EXTRA, time);
-    bundle.putInt(MODE_EXTRA, mode);
+    bundle.putInt(INPUT_MODE_EXTRA, inputMode);
   }
 
   private void restoreState(@Nullable Bundle bundle) {
@@ -171,7 +176,7 @@ public final class TimePickerDialog extends DialogFragment {
     if (time == null) {
       time = new TimeModel();
     }
-    mode = bundle.getInt(MODE_EXTRA, CLOCK);
+    inputMode = bundle.getInt(INPUT_MODE_EXTRA, INPUT_MODE_CLOCK);
   }
 
   @NonNull
@@ -191,7 +196,7 @@ public final class TimePickerDialog extends DialogFragment {
       @Override
       public void onClick(View v) {
         if (listener != null) {
-          listener.onTimeSet(TimePickerDialog.this);
+          listener.onTimeSet(MaterialTimePicker.this);
         }
         dismiss();
       }
@@ -209,7 +214,7 @@ public final class TimePickerDialog extends DialogFragment {
         new OnClickListener() {
           @Override
           public void onClick(View v) {
-            mode = (mode == CLOCK) ? KEYBOARD : CLOCK;
+            inputMode = (inputMode == INPUT_MODE_CLOCK) ? INPUT_MODE_KEYBOARD : INPUT_MODE_CLOCK;
             updateInputMode(modeButton);
           }
         });
@@ -223,14 +228,14 @@ public final class TimePickerDialog extends DialogFragment {
       activePresenter.hide();
     }
 
-    activePresenter = initializeOrRetrieveActivePresenterForMode(mode);
+    activePresenter = initializeOrRetrieveActivePresenterForMode(inputMode);
     activePresenter.show();
     activePresenter.invalidate();
-    modeButton.setIconResource(iconForMode(mode));
+    modeButton.setIconResource(iconForMode(inputMode));
   }
 
   private TimePickerPresenter initializeOrRetrieveActivePresenterForMode(int mode) {
-    if (mode == CLOCK) {
+    if (mode == INPUT_MODE_CLOCK) {
       timePickerClockPresenter =
           timePickerClockPresenter == null
               ? new TimePickerClockPresenter(timePickerView, time)
@@ -249,9 +254,9 @@ public final class TimePickerDialog extends DialogFragment {
   @DrawableRes
   private static int iconForMode(@InputMode int mode) {
     switch (mode) {
-      case KEYBOARD:
+      case INPUT_MODE_KEYBOARD:
         return CLOCK_ICON;
-      case CLOCK:
+      case INPUT_MODE_CLOCK:
         return KEYBOARD_ICON;
       default:
         throw new IllegalArgumentException("no icon for mode: " + mode);
