@@ -24,7 +24,7 @@ allow movement between primary destinations in an app.
 
 Before you can use the Material bottom navigation, you need to add a dependency
 to the Material Components for Android library. For more information, go to the
-[Getting started](/material-components/material-components-android/blob/master/docs/getting-started.md)
+[Getting started](https://github.com/material-components/material-components-android/tree/master/g3doc/getting-started.md)
 page.
 
 A typical layout will look similar to this:
@@ -300,7 +300,7 @@ Default style theme attribute: `?attr/bottomNavigationStyle`
 style will automatically switch between between the component's primary colored
 style in light theme and surface colored style in dark theme. More information
 in the
-[Dark theme documentation](/material-components/material-components-android/blob/master/docs/theming/Dark.md#primary-vs-surface-coloring-for-large-surfaces).
+[Dark theme documentation](https://github.com/material-components/material-components-android/tree/master/g3doc/theming/Dark.md#primary-vs-surface-coloring-for-large-surfaces).
 
 See the full list of
 [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/bottomnavigation/res/values/styles.xml)

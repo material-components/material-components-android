@@ -27,7 +27,7 @@ can contain critical information, require decisions, or involve multiple tasks.
 
 Before you can use Material dialogs, you need to add a dependency to the
 Material Components for Android library. For more information, go to the
-[Getting started](/material-components/material-components-android/blob/master/docs/getting-started.md)
+[Getting started](https://github.com/material-components/material-components-android/tree/master/g3doc/getting-started.md)
 page.
 
 ```kt
@@ -46,8 +46,9 @@ such as an icon on a title having a content description via the
 ## Types
 
 There are four types of dialogs: 1\. [Alert dialog](#alert-dialog), 2\.
-[Simple dialog](#simple-dialog), 3\. [Confirmation dialog](#confirmation-dialog),
-4\. [Full-screen dialog](#full-screen-dialog)
+[Simple dialog](#simple-dialog), 3\.
+[Confirmation dialog](#confirmation-dialog), 4\.
+[Full-screen dialog](#full-screen-dialog)
 
 ![Examples of the four types of dialogs.](assets/dialogs/dialogs_types.png)
 

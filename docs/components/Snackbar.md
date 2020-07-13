@@ -24,7 +24,7 @@ about app processes at the bottom of the screen.
 
 Before you can use Material snackbars, you need to add a dependency to the
 Material Components for Android library. For more information, go to the
-[Getting started](/material-components/material-components-android/blob/master/docs/getting-started.md)
+[Getting started](https://github.com/material-components/material-components-android/tree/master/g3doc/getting-started.md)
 page.
 
 The `Snackbar` class provides static `make` methods to produce a snackbar
