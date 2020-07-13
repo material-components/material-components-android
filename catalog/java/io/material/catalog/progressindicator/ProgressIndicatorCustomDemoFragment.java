@@ -34,7 +34,6 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.Px;
 import com.google.android.material.progressindicator.DeterminateDrawable;
 import com.google.android.material.progressindicator.DrawingDelegate;
 import com.google.android.material.progressindicator.IndeterminateDrawable;
@@ -105,20 +104,16 @@ public class ProgressIndicatorCustomDemoFragment extends DemoFragment {
     RectF arcPatternBound;
 
     @Override
-    public int getPreferredWidth(
-        @NonNull ProgressIndicatorSpec spec, @Px int paddingLeft, @Px int paddingRight) {
+    public int getPreferredWidth(@NonNull ProgressIndicatorSpec spec) {
       return -1;
     }
 
     @Override
-    public int getPreferredHeight(
-        @NonNull ProgressIndicatorSpec spec, @Px int paddingTop, @Px int paddingBottom) {
+    public int getPreferredHeight(@NonNull ProgressIndicatorSpec spec) {
       // The radius of the outer edge of each arc is 10 times of the indicator's width, so that the
       // arc has a radius of 5 times (large enough) of indicator's width.
       return spec.indicatorWidth
-              * (WAVE_ARC_RADIUS_MULTIPLIER * 2 + 1 /*Half width on the top and the bottom.*/)
-          + paddingTop
-          + paddingBottom;
+          * (WAVE_ARC_RADIUS_MULTIPLIER * 2 + 1 /*Half width on the top and the bottom.*/);
     }
 
     @Override

@@ -23,7 +23,6 @@ import android.graphics.RectF;
 import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
-import androidx.annotation.Px;
 
 /** A delegate class to help draw the graphics for {@link ProgressIndicator} in circular types. */
 final class CircularDrawingDelegate implements DrawingDelegate {
@@ -33,18 +32,16 @@ final class CircularDrawingDelegate implements DrawingDelegate {
   private int arcInverseFactor = 1;
 
   @Override
-  public int getPreferredWidth(
-      @NonNull ProgressIndicatorSpec spec, @Px int paddingLeft, @Px int paddingRight) {
-    return getSizeWithoutPadding(spec) + paddingLeft + paddingRight;
+  public int getPreferredWidth(@NonNull ProgressIndicatorSpec spec) {
+    return getSize(spec);
   }
 
   @Override
-  public int getPreferredHeight(
-      @NonNull ProgressIndicatorSpec spec, @Px int paddingTop, @Px int paddingBottom) {
-    return getSizeWithoutPadding(spec) + paddingTop + paddingBottom;
+  public int getPreferredHeight(@NonNull ProgressIndicatorSpec spec) {
+    return getSize(spec);
   }
 
-  private static int getSizeWithoutPadding(@NonNull ProgressIndicatorSpec spec) {
+  private static int getSize(@NonNull ProgressIndicatorSpec spec) {
     return spec.circularRadius * 2 + spec.indicatorWidth + spec.circularInset * 2;
   }
 

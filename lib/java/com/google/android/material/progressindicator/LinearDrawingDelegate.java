@@ -26,7 +26,6 @@ import android.graphics.RectF;
 import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
-import androidx.annotation.Px;
 
 /** A delegate class to help draw the graphics for {@link ProgressIndicator} in linear types. */
 final class LinearDrawingDelegate implements DrawingDelegate {
@@ -35,15 +34,13 @@ final class LinearDrawingDelegate implements DrawingDelegate {
   private float trackLength = 300f;
 
   @Override
-  public int getPreferredWidth(
-      @NonNull ProgressIndicatorSpec spec, @Px int paddingLeft, @Px int paddingRight) {
+  public int getPreferredWidth(@NonNull ProgressIndicatorSpec spec) {
     return -1;
   }
 
   @Override
-  public int getPreferredHeight(
-      @NonNull ProgressIndicatorSpec spec, @Px int paddingTop, @Px int paddingBottom) {
-    return spec.indicatorWidth + paddingTop + paddingBottom;
+  public int getPreferredHeight(@NonNull ProgressIndicatorSpec spec) {
+    return spec.indicatorWidth;
   }
 
   /**

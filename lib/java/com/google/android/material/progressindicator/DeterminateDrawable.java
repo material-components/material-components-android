@@ -131,6 +131,16 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
     return true;
   }
 
+  @Override
+  public int getIntrinsicWidth() {
+    return drawingDelegate.getPreferredWidth(spec);
+  }
+
+  @Override
+  public int getIntrinsicHeight() {
+    return drawingDelegate.getPreferredHeight(spec);
+  }
+
   // ******************* Drawing methods *******************
 
   @Override

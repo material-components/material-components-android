@@ -494,13 +494,15 @@ public class ProgressIndicator extends ProgressBar {
   protected synchronized void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     DrawingDelegate drawingDelegate = getCurrentDrawingDelegate();
-    int drawableMeasuredWidth =
-        drawingDelegate.getPreferredWidth(spec, getPaddingLeft(), getPaddingRight());
-    int drawableMeasuredHeight =
-        drawingDelegate.getPreferredHeight(spec, getPaddingTop(), getPaddingBottom());
+    int drawableMeasuredWidth = drawingDelegate.getPreferredWidth(spec);
+    int drawableMeasuredHeight = drawingDelegate.getPreferredHeight(spec);
     setMeasuredDimension(
-        (drawableMeasuredWidth < 0 ? getMeasuredWidth() : drawableMeasuredWidth),
-        (drawableMeasuredHeight < 0 ? getMeasuredHeight() : drawableMeasuredHeight));
+        (drawableMeasuredWidth < 0
+            ? getMeasuredWidth()
+            : drawableMeasuredWidth + getPaddingLeft() + getPaddingRight()),
+        (drawableMeasuredHeight < 0
+            ? getMeasuredHeight()
+            : drawableMeasuredHeight + getPaddingTop() + getPaddingBottom()));
   }
 
   @Override

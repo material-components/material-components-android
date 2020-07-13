@@ -20,7 +20,6 @@ import android.graphics.Paint;
 import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
-import androidx.annotation.Px;
 
 /**
  * A delegate interface for drawing the graphics in different drawable classes used in {@link
@@ -33,8 +32,7 @@ public interface DrawingDelegate {
    *
    * @param spec The spec of the component where to draw.
    */
-  int getPreferredWidth(
-      @NonNull ProgressIndicatorSpec spec, @Px int paddingLeft, @Px int paddingRight);
+  int getPreferredWidth(@NonNull ProgressIndicatorSpec spec);
 
   /**
    * Returns the preferred height, in pixels, of the drawable based on the drawing type. Returns a
@@ -42,8 +40,7 @@ public interface DrawingDelegate {
    *
    * @param spec The spec of the component where to draw.
    */
-  int getPreferredHeight(
-      @NonNull ProgressIndicatorSpec spec, @Px int paddingTop, @Px int paddingBottom);
+  int getPreferredHeight(@NonNull ProgressIndicatorSpec spec);
 
   /**
    * Prepares the bound of the canvas for the actual drawing. Should be called before any drawing.
