@@ -31,6 +31,7 @@
   <dimen name="mtrl_calendar_month_vertical_padding">0dp</dimen>
   <dimen name="mtrl_calendar_action_height">52dp</dimen>
   <dimen name="mtrl_calendar_action_padding">8dp</dimen>
+  <dimen name="mtrl_calendar_action_confirm_button_min_width">64dp</dimen>
   <dimen name="mtrl_calendar_header_content_padding_fullscreen">4dp</dimen>
   <dimen name="mtrl_calendar_header_selection_line_height">32dp</dimen>
   <dimen name="mtrl_calendar_header_divider_thickness">1dp</dimen>

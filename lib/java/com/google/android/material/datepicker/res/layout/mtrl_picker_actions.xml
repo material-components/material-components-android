@@ -38,6 +38,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center_vertical"
+    android:minWidth="@dimen/mtrl_calendar_action_confirm_button_min_width"
     android:text="@string/mtrl_picker_confirm"/>
 
 </LinearLayout>
