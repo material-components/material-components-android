@@ -558,9 +558,13 @@ public class ProgressIndicator extends ProgressBar {
         : getProgressDrawable().getDrawingDelegate();
   }
 
-  /** Blocks any attempts to set the progress drawable for this progress indicator. */
+  /** Sets a new progress drawable. It has to inherit from {@link DeterminateDrawable}.
+   *
+   * @param drawable The new progress drawable.
+   * @throws IllegalArgumentException if a framework drawable is passed in.
+   */
   @Override
-  public void setProgressDrawable(@NonNull Drawable drawable) {
+  public void setProgressDrawable(Drawable drawable) {
     if (drawable == null || drawable instanceof DeterminateDrawable) {
       super.setProgressDrawable(drawable);
       // Every time ProgressBar sets progress drawable, it refreshes the drawable's level with
@@ -574,9 +578,13 @@ public class ProgressIndicator extends ProgressBar {
     }
   }
 
-  /** Blocks any attempts to set the indeterminate drawable for this progress indicator. */
+  /** Sets a new indeterminate drawable. It has to inherit from {@link IndeterminateDrawable}.
+   *
+   * @param drawable The new indeterminate drawable.
+   * @throws IllegalArgumentException if a framework drawable is passed in.
+   */
   @Override
-  public void setIndeterminateDrawable(@NonNull Drawable drawable) {
+  public void setIndeterminateDrawable(Drawable drawable) {
     if (drawable == null || drawable instanceof IndeterminateDrawable) {
       super.setIndeterminateDrawable(drawable);
     } else {
