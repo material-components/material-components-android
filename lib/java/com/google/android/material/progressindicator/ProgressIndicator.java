@@ -28,7 +28,6 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
-import android.os.Parcelable;
 import android.os.SystemClock;
 import android.provider.Settings.Global;
 import android.provider.Settings.System;
@@ -346,7 +345,7 @@ public class ProgressIndicator extends ProgressBar {
     }
   }
 
-  private void updateProgressDrawableAnimationScale() {
+  private void updateAnimationScale() {
     systemAnimationScale = getSystemAnimatorDurationScale();
     if (systemAnimationScale > 0) {
       if (getProgressDrawable() != null) {
@@ -436,6 +435,8 @@ public class ProgressIndicator extends ProgressBar {
       return;
     }
 
+    updateAnimationScale();
+
     boolean visibleToUser = visibleToUser();
 
     // Sets the drawable to visible/invisible if the component is currently visible/invisible. Only
@@ -461,13 +462,6 @@ public class ProgressIndicator extends ProgressBar {
     getCurrentDrawable().setVisible(false, false);
     unregisterAnimationCallbacks();
     super.onDetachedFromWindow();
-  }
-
-  @Override
-  public void onRestoreInstanceState(Parcelable state) {
-    super.onRestoreInstanceState(state);
-
-    updateProgressDrawableAnimationScale();
   }
 
   // ******************** Draw methods **********************
@@ -1019,6 +1013,9 @@ public class ProgressIndicator extends ProgressBar {
       // mode.
       storedProgress = progress;
       storedProgressAnimated = animated;
+
+      updateAnimationScale();
+
       if (isAnimatorDisabled()) {
         switchIndeterminateModeCallback.onAnimationEnd(getIndeterminateDrawable());
       } else {
