@@ -2822,7 +2822,7 @@ public class TabLayout extends HorizontalScrollView {
 
   class SlidingTabIndicator extends LinearLayout {
     private int selectedIndicatorHeight;
-    @NonNull private final Paint selectedIndicatorPaint;
+    private Paint selectedIndicatorPaint;
     @NonNull private final GradientDrawable defaultSelectionIndicator;
 
     int selectedPosition = -1;
@@ -2840,11 +2840,19 @@ public class TabLayout extends HorizontalScrollView {
     SlidingTabIndicator(Context context) {
       super(context);
       setWillNotDraw(false);
-      selectedIndicatorPaint = new Paint();
       defaultSelectionIndicator = new GradientDrawable();
     }
 
     void setSelectedIndicatorColor(int color) {
+      if (color == 0) {
+        selectedIndicatorPaint = null;
+        return;
+      }
+
+      if (selectedIndicatorPaint == null) {
+        selectedIndicatorPaint = new Paint();
+      }
+
       if (selectedIndicatorPaint.getColor() != color) {
         selectedIndicatorPaint.setColor(color);
         ViewCompat.postInvalidateOnAnimation(this);
