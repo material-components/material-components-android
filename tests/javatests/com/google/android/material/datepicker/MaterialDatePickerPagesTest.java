@@ -22,6 +22,7 @@ import static org.junit.Assert.assertThat;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.test.espresso.IdlingRegistry;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
@@ -40,6 +41,9 @@ public class MaterialDatePickerPagesTest {
   private static final Month OPEN_AT = Month.create(2000, Calendar.FEBRUARY);
 
   private ListenerIdlingResource listenerIdlingResource;
+
+  @Rule
+  public final InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
   @Rule
   public final ActivityTestRule<AppCompatActivity> activityTestRule =
