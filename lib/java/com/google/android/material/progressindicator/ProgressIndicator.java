@@ -558,64 +558,30 @@ public class ProgressIndicator extends ProgressBar {
         : getProgressDrawable().getDrawingDelegate();
   }
 
-  /**
-   * Sets a new {@link DeterminateDrawable} to this progress indicator.
-   *
-   * @param drawable The new determinate drawable for determinate mode.
-   */
-  public void setProgressDrawable(@Nullable DeterminateDrawable drawable) {
-    super.setProgressDrawable(drawable);
-    if (drawable != null) {
+  /** Blocks any attempts to set the progress drawable for this progress indicator. */
+  @Override
+  public void setProgressDrawable(@NonNull Drawable drawable) {
+    if (drawable == null || drawable instanceof DeterminateDrawable) {
+      super.setProgressDrawable(drawable);
       // Every time ProgressBar sets progress drawable, it refreshes the drawable's level with
       // progress then secondary progress. Since secondary progress is not used here. We need to set
       // the level actively to overcome the affects from secondary progress.
-      drawable.setLevelByFraction((float) getProgress() / getMax());
+      if (drawable != null) {
+        ((DeterminateDrawable) drawable).setLevelByFraction((float) getProgress() / getMax());
+      }
+    } else {
+      throw new IllegalArgumentException("Cannot set framework drawable as progress drawable.");
     }
   }
 
-  /**
-   * Blocks the setter in {@link ProgressBar} by throwing an {@link UnsupportedOperationException}
-   * if trying to set a non-null {@link Drawable}, as the drawable object has to inherit from {@link
-   * DeterminateDrawable}.
-   *
-   * @throws UnsupportedOperationException when the argument drawable is not null.
-   * @see #setProgressDrawable(DeterminateDrawable)
-   */
+  /** Blocks any attempts to set the indeterminate drawable for this progress indicator. */
   @Override
-  public void setProgressDrawable(Drawable drawable) {
-    if (drawable == null) {
-      super.setProgressDrawable(null);
+  public void setIndeterminateDrawable(@NonNull Drawable drawable) {
+    if (drawable == null || drawable instanceof IndeterminateDrawable) {
+      super.setIndeterminateDrawable(drawable);
     } else {
-      throw new UnsupportedOperationException(
-          "Progress indicator doesn't support using framework drawable for the determinate types.");
-    }
-  }
-
-  /**
-   * Sets a new {@link IndeterminateDrawable} to this progress indicator.
-   *
-   * @param drawable The new indeterminate drawable for indeterminate mode.
-   */
-  public void setIndeterminateDrawable(IndeterminateDrawable drawable) {
-    super.setIndeterminateDrawable(drawable);
-  }
-
-  /**
-   * Blocks the setter in {@link ProgressBar} by throwing an {@link UnsupportedOperationException}
-   * if trying to set a non-null {@link Drawable}, as the drawable object has to inherit from {@link
-   * IndeterminateDrawable}.
-   *
-   * @throws UnsupportedOperationException when the argument drawable is not null.
-   * @see #setIndeterminateDrawable(IndeterminateDrawable)
-   */
-  @Override
-  public void setIndeterminateDrawable(Drawable drawable) {
-    if (drawable == null) {
-      super.setIndeterminateDrawable(null);
-    } else {
-      throw new UnsupportedOperationException(
-          "Progress indicator doesn't support using framework drawable for the indeterminate"
-              + " types.");
+      throw new IllegalArgumentException(
+          "Cannot set framework drawable as indeterminate drawable.");
     }
   }
 
