@@ -2085,7 +2085,7 @@ abstract class BaseSlider<
 
     valueFrom = sliderState.valueFrom;
     valueTo = sliderState.valueTo;
-    values = sliderState.values;
+    setValuesInternal(sliderState.values);
     stepSize = sliderState.stepSize;
     if (sliderState.hasFocus) {
       requestFocus();
