@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
   <style name="Widget.Catalog.Toolbar" parent="Widget.MaterialComponents.Toolbar.PrimarySurface">
     <!-- Toolbar should always be within an AppBarLayout which provides the background. -->
@@ -47,6 +47,13 @@
   <style name="ThemeOverlay.Catalog.AppBarLayout" parent="">
     <item name="android:textColorPrimary">?attr/colorOnPrimarySurface</item>
     <item name="colorControlNormal">?attr/colorOnPrimarySurface</item>
+    <item name="android:popupTheme" tools:targetApi="lollipop">@style/Theme.Catalog.PopupMenu</item>
+    <item name="popupTheme">@style/Theme.Catalog.PopupMenu</item>
   </style>
-  
+
+  <style name="Theme.Catalog.PopupMenu" parent="">
+    <item name="android:textColorPrimary">?attr/colorOnSurface</item>
+    <item name="colorControlNormal">?attr/colorOnSurface</item>
+  </style>
+
 </resources>
