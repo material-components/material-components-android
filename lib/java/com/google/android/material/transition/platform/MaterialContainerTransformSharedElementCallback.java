@@ -51,6 +51,8 @@ import java.util.Map;
 @RequiresApi(VERSION_CODES.LOLLIPOP)
 public class MaterialContainerTransformSharedElementCallback extends SharedElementCallback {
 
+  private static final int BACKGROUND_FADE_EXTRA_DURATION = 60;
+
   @Nullable private static WeakReference<View> capturedSharedElement;
 
   private boolean entering = true;
@@ -294,11 +296,14 @@ public class MaterialContainerTransformSharedElementCallback extends SharedEleme
   }
 
   /**
-   * When using a transparent window background, make sure that the background fade duration is as
-   * long as the transform's duration. This will help to avoid a black background visual artifact.
+   * When using a transparent window background, make sure that the background fade duration is at
+   * least as long as the transform's duration. This will help to avoid a black background visual
+   * artifact and an extra transition from happening after the container transform on certain API
+   * levels.
    */
   private static void updateBackgroundFadeDuration(
       Window window, MaterialContainerTransform transform) {
-    window.setTransitionBackgroundFadeDuration(transform.getDuration());
+    window.setTransitionBackgroundFadeDuration(
+        transform.getDuration() + BACKGROUND_FADE_EXTRA_DURATION);
   }
 }
