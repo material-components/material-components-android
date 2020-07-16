@@ -25,7 +25,7 @@ screens, data sets, and other interactions.
 
 Before you can use Material tabs, you need to add a dependency to the Material
 Components for Android library. For more information, go to the
-[Getting started](https://github.com/material-components/material-components-android/tree/master/g3doc/getting-started.md)
+[Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
 page.
 
 ### Basic usage

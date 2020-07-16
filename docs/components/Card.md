@@ -24,7 +24,7 @@ a single subject.
 
 Before you can use a Material card, you need to add a dependency to the Material
 Components for Android library. For more information, go to the
-[Getting started](https://github.com/material-components/material-components-android/tree/master/g3doc/getting-started.md)
+[Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
 page.
 
 Cards support [checking](#making-a-card-checkable) and

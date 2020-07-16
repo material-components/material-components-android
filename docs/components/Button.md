@@ -27,7 +27,7 @@ and make choices, with a single tap.
 
 Before you can use Material buttons, you need to add a dependency to the
 Material Components for Android library. For more information, go to the
-[Getting started](https://github.com/material-components/material-components-android/tree/master/g3doc/getting-started.md)
+[Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
 page.
 
 _**Note:** `<Button>` is auto-inflated as

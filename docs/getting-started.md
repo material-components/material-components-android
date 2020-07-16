@@ -40,7 +40,9 @@ To use it:
       }
     ```
 
-Visit [Google's Maven Repository](http://maven.google.com) or
+Visit
+[Google's Maven Repository](https://maven.google.com/web/index.html#com.google.android.material:material)
+or
 [MVN Repository](https://mvnrepository.com/artifact/com.google.android.material/material)
 to find the latest version of the library.
 
