@@ -61,7 +61,6 @@ public final class CircularIndeterminateAnimatorDelegate
 
   // For animator control.
   boolean animatorCompleteEndRequested = false;
-  boolean indicatorWillFullyCollapsed = false;
   AnimationCallback animatorCompleteCallback = null;
 
   public CircularIndeterminateAnimatorDelegate() {
@@ -88,7 +87,6 @@ public final class CircularIndeterminateAnimatorDelegate
             if (animatorCompleteEndRequested) {
               indicatorCollapsingAnimator.setFloatValues(
                   0f, 1f + INDICATOR_MIN_DEGREES / INDICATOR_DELTA_DEGREES);
-              indicatorWillFullyCollapsed = true;
             }
           }
         });
@@ -107,17 +105,14 @@ public final class CircularIndeterminateAnimatorDelegate
           public void onAnimationEnd(Animator animation) {
             super.onAnimationEnd(animation);
 
-            if (animatorCompleteEndRequested && indicatorWillFullyCollapsed) {
+            if (animatorCompleteEndRequested && segmentPositions[0] == segmentPositions[1]) {
               animatorCompleteCallback.onAnimationEnd(drawable);
               animatorCompleteEndRequested = false;
-              resetPropertiesForNewStart();
             } else {
               // If the drawable is still visible, continues the main animator by restarting.
               if (drawable.isVisible()) {
                 resetPropertiesForNextCycle();
                 startAnimator();
-              } else {
-                resetPropertiesForNewStart();
               }
             }
           }
