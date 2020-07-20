@@ -19,6 +19,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.content.Context;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
@@ -44,8 +45,12 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
   // Animation duration for both show and hide animators.
   private static final int GROW_DURATION = 500;
 
+  // The current context this drawable is running in.
+  final Context context;
   // The spec of the component being served.
   final ProgressIndicatorSpec spec;
+  // Utils class.
+  AnimatorDurationScaleProvider animatorDurationScaleProvider;
 
   // ValueAnimator used for show animation.
   private ValueAnimator showAnimator;
@@ -67,8 +72,11 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
 
   // ******************* Constructor *******************
 
-  DrawableWithAnimatedVisibilityChange(@NonNull ProgressIndicatorSpec spec) {
+  DrawableWithAnimatedVisibilityChange(
+      @NonNull Context context, @NonNull ProgressIndicatorSpec spec) {
+    this.context = context;
     this.spec = spec;
+    animatorDurationScaleProvider = new AnimatorDurationScaleProvider();
 
     setAlpha(255);
 
@@ -187,6 +195,10 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
    */
   @Override
   public boolean setVisible(boolean visible, boolean animationDesired) {
+    float systemAnimatorDurationScale =
+        animatorDurationScaleProvider.getSystemAnimatorDurationScale(context.getContentResolver());
+    animationDesired &= systemAnimatorDurationScale > 0;
+
     // If the drawable is visible and not being hidden, prevents to start the show animation.
     if (visible && animationDesired && isVisible() && !hideAnimator.isRunning()) {
       return false;

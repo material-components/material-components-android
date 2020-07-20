@@ -68,12 +68,15 @@ public class ProgressIndicatorCustomDemoFragment extends DemoFragment {
 
     indeterminateIndicator.initializeDrawables(
         new IndeterminateDrawable(
+            getContext(),
             indeterminateIndicator.getSpec(),
             new WavyDrawingDelegate(),
             new LinearIndeterminateNonSeamlessAnimatorDelegate(getContext())),
         null);
     determinateIndicator.initializeDrawables(
-        null, new DeterminateDrawable(determinateIndicator.getSpec(), new WavyDrawingDelegate()));
+        null,
+        new DeterminateDrawable(
+            getContext(), determinateIndicator.getSpec(), new WavyDrawingDelegate()));
 
     Slider slider = view.findViewById(R.id.slider);
     Button showButton = view.findViewById(R.id.show_button);

@@ -121,9 +121,6 @@ public class ProgressIndicator extends ProgressBar {
 
   private long lastShowStartTime = -1L;
 
-  /** The scale of the animation speed combining system setting and debug parameters. */
-  private float systemAnimationScale = 1f;
-
   private AnimatorDurationScaleProvider animatorDurationScaleProvider;
 
   // ******************** Interfaces **********************
@@ -270,14 +267,15 @@ public class ProgressIndicator extends ProgressBar {
           isLinearSeamless()
               ? new LinearIndeterminateSeamlessAnimatorDelegate()
               : new LinearIndeterminateNonSeamlessAnimatorDelegate(getContext());
-      setIndeterminateDrawable(new IndeterminateDrawable(spec, drawingDelegate, animatorDelegate));
-      setProgressDrawable(new DeterminateDrawable(spec, drawingDelegate));
+      setIndeterminateDrawable(
+          new IndeterminateDrawable(getContext(), spec, drawingDelegate, animatorDelegate));
+      setProgressDrawable(new DeterminateDrawable(getContext(), spec, drawingDelegate));
     } else {
       DrawingDelegate drawingDelegate = new CircularDrawingDelegate();
       setIndeterminateDrawable(
           new IndeterminateDrawable(
-              spec, drawingDelegate, new CircularIndeterminateAnimatorDelegate()));
-      setProgressDrawable(new DeterminateDrawable(spec, drawingDelegate));
+              getContext(), spec, drawingDelegate, new CircularIndeterminateAnimatorDelegate()));
+      setProgressDrawable(new DeterminateDrawable(getContext(), spec, drawingDelegate));
     }
 
     applyNewVisibility();
@@ -343,17 +341,6 @@ public class ProgressIndicator extends ProgressBar {
     }
   }
 
-  private void updateAnimationScale() {
-    systemAnimationScale =
-        animatorDurationScaleProvider.getSystemAnimatorDurationScale(
-            getContext().getContentResolver());
-    if (systemAnimationScale > 0) {
-      if (getProgressDrawable() != null) {
-        getProgressDrawable().invalidateAnimationScale(systemAnimationScale);
-      }
-    }
-  }
-
   // ******************** Visibility control **********************
 
   /**
@@ -394,13 +381,12 @@ public class ProgressIndicator extends ProgressBar {
    */
   private void internalHide() {
     // Hides animation should be used if it's visible to user and potentially can be hidden with
-    // animation, unless animators are disabled actively.
-    boolean shouldHideAnimated =
-        visibleToUser() && spec.growMode != GROW_MODE_NONE && !isAnimatorDisabled();
+    // animation.
+    boolean shouldHideAnimated = visibleToUser() && spec.growMode != GROW_MODE_NONE;
 
     getCurrentDrawable().setVisible(false, shouldHideAnimated);
 
-    if (!shouldHideAnimated) {
+    if (isNoLongerNeedToBeVisible()) {
       setVisibility(INVISIBLE);
     }
   }
@@ -426,14 +412,12 @@ public class ProgressIndicator extends ProgressBar {
       return;
     }
 
-    updateAnimationScale();
-
     boolean visibleToUser = visibleToUser();
 
     // Sets the drawable to visible/invisible if the component is currently visible/invisible. Only
     // show animation should be started (when the component is currently visible). Hide animation
     // should have already ended or is not necessary at this point.
-    getCurrentDrawable().setVisible(visibleToUser, visibleToUser && !isAnimatorDisabled());
+    getCurrentDrawable().setVisible(visibleToUser, visibleToUser);
   }
 
   @Override
@@ -550,14 +534,17 @@ public class ProgressIndicator extends ProgressBar {
    */
   @Override
   public void setProgressDrawable(Drawable drawable) {
-    if (drawable == null || drawable instanceof DeterminateDrawable) {
+    if (drawable == null) {
+      super.setProgressDrawable(null);
+      return;
+    }
+    if (drawable instanceof DeterminateDrawable) {
+      drawable.setVisible(false, false);
       super.setProgressDrawable(drawable);
       // Every time ProgressBar sets progress drawable, it refreshes the drawable's level with
       // progress then secondary progress. Since secondary progress is not used here. We need to set
       // the level actively to overcome the affects from secondary progress.
-      if (drawable != null) {
-        ((DeterminateDrawable) drawable).setLevelByFraction((float) getProgress() / getMax());
-      }
+      ((DeterminateDrawable) drawable).setLevelByFraction((float) getProgress() / getMax());
     } else {
       throw new IllegalArgumentException("Cannot set framework drawable as progress drawable.");
     }
@@ -570,7 +557,12 @@ public class ProgressIndicator extends ProgressBar {
    */
   @Override
   public void setIndeterminateDrawable(Drawable drawable) {
-    if (drawable == null || drawable instanceof IndeterminateDrawable) {
+    if (drawable == null) {
+      super.setIndeterminateDrawable(null);
+      return;
+    }
+    if (drawable instanceof IndeterminateDrawable) {
+      drawable.setVisible(false, false);
       super.setIndeterminateDrawable(drawable);
     } else {
       throw new IllegalArgumentException(
@@ -644,9 +636,13 @@ public class ProgressIndicator extends ProgressBar {
     getIndeterminateDrawable().getAnimatorDelegate().invalidateSpecValues();
   }
 
-  /** Returns whether the animators are disabled passively (by system settings). */
-  private boolean isAnimatorDisabled() {
-    return systemAnimationScale == 0;
+  /**
+   * Returns {@code true} if both drawables are either null or not visible; {@code false},
+   * otherwise.
+   */
+  private boolean isNoLongerNeedToBeVisible() {
+    return (getProgressDrawable() == null || !getProgressDrawable().isVisible())
+        && (getIndeterminateDrawable() == null || !getIndeterminateDrawable().isVisible());
   }
 
   // ******************** Getters and setters **********************
@@ -991,9 +987,9 @@ public class ProgressIndicator extends ProgressBar {
       storedProgress = progress;
       storedProgressAnimated = animated;
 
-      updateAnimationScale();
-
-      if (isAnimatorDisabled()) {
+      if (animatorDurationScaleProvider.getSystemAnimatorDurationScale(
+              getContext().getContentResolver())
+          == 0) {
         switchIndeterminateModeCallback.onAnimationEnd(getIndeterminateDrawable());
       } else {
         getIndeterminateDrawable().getAnimatorDelegate().requestCancelAnimatorAfterCurrentCycle();
@@ -1001,23 +997,25 @@ public class ProgressIndicator extends ProgressBar {
       return;
     }
 
-    // When no progress animation is needed, it will notify the drawable to skip animation on the
-    // next level change.
-    if (getProgressDrawable() != null
-        && getProgress() != progress
-        && (!animated || isAnimatorDisabled())) {
-      getProgressDrawable().skipNextLevelChange();
-    }
-
     // Calls ProgressBar setProgress(int) to update the progress value and level. We don't rely on
     // it to draw or animate the indicator.
     super.setProgress(progress);
+    // Fast forward to the final state of the determinate animation.
+    if (getProgressDrawable() != null && !animated) {
+      getProgressDrawable().jumpToCurrentState();
+    }
   }
 
   @VisibleForTesting
   public void setAnimatorDurationScaleProvider(
       @NonNull AnimatorDurationScaleProvider animatorDurationScaleProvider) {
     this.animatorDurationScaleProvider = animatorDurationScaleProvider;
+    if (getProgressDrawable() != null) {
+      getProgressDrawable().animatorDurationScaleProvider = animatorDurationScaleProvider;
+    }
+    if (getIndeterminateDrawable() != null) {
+      getIndeterminateDrawable().animatorDurationScaleProvider = animatorDurationScaleProvider;
+    }
   }
 
   // ************************ In-place defined parameters ****************************

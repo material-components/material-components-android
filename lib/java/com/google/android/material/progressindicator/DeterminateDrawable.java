@@ -16,6 +16,7 @@
 
 package com.google.android.material.progressindicator;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import androidx.annotation.NonNull;
@@ -42,12 +43,14 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
   private final SpringAnimation springAnimator;
   // Fraction of displayed indicator in the total width.
   private float indicatorFraction;
-  // Whether to skip the next level change event.
-  private boolean skipNextLevelChange = false;
+  // Whether to skip the spring animation on level change event.
+  private boolean skipAnimationOnLevelChange = false;
 
   public DeterminateDrawable(
-      @NonNull ProgressIndicatorSpec spec, @NonNull DrawingDelegate drawingDelegate) {
-    super(spec);
+      @NonNull Context context,
+      @NonNull ProgressIndicatorSpec spec,
+      @NonNull DrawingDelegate drawingDelegate) {
+    super(context, spec);
 
     this.drawingDelegate = drawingDelegate;
 
@@ -70,21 +73,6 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
   }
 
   /**
-   * Invalidates the spring animation's duration by changing the stiffness of {@link SpringForce}.
-   * Negative scale is invalid. 0 is handled as a special case in {@link ProgressIndicator}, which
-   * will skip the animation when the level changes.
-   *
-   * @param scale New scale of the animator's duration.
-   * @throws IllegalArgumentException if scale is negative or zero.
-   */
-  void invalidateAnimationScale(float scale) {
-    if (scale <= 0) {
-      throw new IllegalArgumentException("Animation duration scale must be positive.");
-    }
-    springForce.setStiffness(SPRING_FORCE_STIFFNESS / scale);
-  }
-
-  /**
    * Sets the drawable level with a fraction [0,1] of the progress. Note: this function is not used
    * to force updating the level in opposite to the automatic level updates by framework {@link
    * ProgressBar}.
@@ -95,12 +83,34 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
     setLevel((int) (MAX_DRAWABLE_LEVEL * fraction));
   }
 
-  /** Sets the flag so that when the level is changed next time, it will skip the animation. */
-  void skipNextLevelChange() {
-    skipNextLevelChange = true;
-  }
-
   // ******************* Overridden methods *******************
+
+  /**
+   * Sets the visibility of this drawable. It calls the {@link
+   * DrawableWithAnimatedVisibilityChange#setVisible(boolean, boolean)} to start the show/hide
+   * animation properly. The spring animation will be skipped when the level changes, if animation
+   * is not requested.
+   *
+   * @param visible Whether to make the drawable visible.
+   * @param animationDesired Whether to change the visibility with animation.
+   * @return {@code true}, if the visibility changes or will change after the animation; {@code
+   *     false}, otherwise.
+   */
+  @Override
+  public boolean setVisible(boolean visible, boolean animationDesired) {
+    boolean changed = super.setVisible(visible, animationDesired);
+
+    float systemAnimatorDurationScale =
+        animatorDurationScaleProvider.getSystemAnimatorDurationScale(context.getContentResolver());
+    if (systemAnimatorDurationScale == 0) {
+      skipAnimationOnLevelChange = true;
+    } else {
+      skipAnimationOnLevelChange = false;
+      springForce.setStiffness(SPRING_FORCE_STIFFNESS / systemAnimatorDurationScale);
+    }
+
+    return changed;
+  }
 
   /** Skips the animation of changing indicator length, directly displays the target progress. */
   @Override
@@ -119,11 +129,9 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
    */
   @Override
   protected boolean onLevelChange(int level) {
-    if (skipNextLevelChange) {
+    if (skipAnimationOnLevelChange) {
       springAnimator.cancel();
       setIndicatorFraction((float) level / MAX_DRAWABLE_LEVEL);
-      // One time usage.
-      skipNextLevelChange = false;
     } else {
       springAnimator.setStartValue(getIndicatorFraction() * MAX_DRAWABLE_LEVEL);
       springAnimator.animateToFinalPosition(level);

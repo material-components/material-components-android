@@ -18,6 +18,7 @@ package com.google.android.material.progressindicator;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import androidx.annotation.NonNull;
@@ -34,10 +35,11 @@ public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityC
   private IndeterminateAnimatorDelegate<AnimatorSet> animatorDelegate;
 
   public IndeterminateDrawable(
+      @NonNull Context context,
       @NonNull ProgressIndicatorSpec spec,
       @NonNull DrawingDelegate drawingDelegate,
       @NonNull IndeterminateAnimatorDelegate<AnimatorSet> animatorDelegate) {
-    super(spec);
+    super(context, spec);
 
     this.drawingDelegate = drawingDelegate;
     setAnimatorDelegate(animatorDelegate);
@@ -48,12 +50,12 @@ public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityC
   /**
    * Sets the visibility of this drawable. It calls the {@link
    * DrawableWithAnimatedVisibilityChange#setVisible(boolean, boolean)} to start the show/hide
-   * animation properly. If it's requested to be visible, the main animator will be started. If it's
-   * required to be invisible, the main animator will be canceled unless the hide animation is
-   * required.
+   * animation properly. The indeterminate animation will be started if animation is requested.
    *
    * @param visible Whether to make the drawable visible.
    * @param animationDesired Whether to change the visibility with animation.
+   * @return {@code true}, if the visibility changes or will change after the animation; {@code
+   *     false}, otherwise.
    */
   @Override
   public boolean setVisible(boolean visible, boolean animationDesired) {
@@ -65,7 +67,11 @@ public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityC
       animatorDelegate.resetPropertiesForNewStart();
     }
     // Restarts the main animator if it's visible and needs to be animated.
-    if (visible && animationDesired) {
+    if (visible
+        && animationDesired
+        && animatorDurationScaleProvider.getSystemAnimatorDurationScale(
+                context.getContentResolver())
+            != 0) {
       animatorDelegate.startAnimator();
     }
 
