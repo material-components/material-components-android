@@ -156,7 +156,7 @@ transition to the the provided `Hold` transition.
 
 ```kt
 // FragmentA.kt
-fun onCreate(savedInstanceState: Bundle?) {
+override fun onCreate(savedInstanceState: Bundle?) {
   super.onCreate(savedInstanceState)
 
   // Fragment A’s exitTransition can be set any time before Fragment A is
