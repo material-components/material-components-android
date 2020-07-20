@@ -15,7 +15,7 @@ them, check out the
 [Material motion system spec](https://material.io/design/motion/the-motion-system.html).
 
 Before you can use the motion library, you need to add a dependency on the
-Material Components for Android library (version `1.2.0-rc01` or later). For
+Material Components for Android library (version `1.2.0-beta01` or later). For
 more information, go to the
 [Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
 page.
@@ -156,45 +156,15 @@ transition to the the provided `Hold` transition.
 
 ```kt
 // FragmentA.kt
-fun onCreate(savedInstanceState: Bundle?) {
+override fun onCreate(savedInstanceState: Bundle?) {
   super.onCreate(savedInstanceState)
 
   // Fragment A’s exitTransition can be set any time before Fragment A is
-  // replaced with Fragment B. Ensure Hold's duration is set to the same
+  // replaced withFragment B. Ensure Hold's duration is set to the same
   // duration as your MaterialContainerTransform.
   exitTransition = Hold()
 }
 ```
-
-Alternatively, to subtly scale and fade Fragment A while the container transform
-is playing, set FragmentA's exit and reenter transitions to a
-`MaterialElevationScale` transition. This will help to reinforce the spatial
-relationship and navigational hierarchy of the two screens along the z-axis.
-
-```kt
-// FragmentA.kt
-fun onCreate(savedInstanceState: Bundle?) {
-  super.onCreate(savedInstanceState)
-
-  exitTransition = MaterialElevationScale(/* growing= */ false)
-  reenterTransition = MaterialElevationScale(/* growing= */ true)
-}
-```
-
-We pass in `false` for the exit `MaterialElevationScale` `growing` constructor
-param, to scale down or shrink Fragment A when it is exiting during the enter
-container transform. Whereas we pass in `true` for the reenter
-`MaterialElevationScale` to scale up or expand Fragment A when it is reentering
-during the return container transform.
-
-_**Note:** When using `MaterialElevationScale`, make sure to mark the root view
-of your Fragment as a
-[transition group](https://developer.android.com/reference/android/view/ViewGroup#setTransitionGroup\(boolean\)),
-either with `android:transitionGroup="true"` for API level 21+ or
-`ViewGroupCompat#setTransitionGroup` for all API levels. This will ensure that
-the animation is applied to the Fragment view as a whole, as opposed to each
-child view individually, which is the default behavior of the Android
-Transitions system._
 
 #### Transition between Activities
 
