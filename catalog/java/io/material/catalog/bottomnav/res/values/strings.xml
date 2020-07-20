@@ -44,6 +44,7 @@
 
   <string name="cat_bottom_nav_label_visibility_mode_auto">Auto</string>
   <string name="cat_bottom_nav_label_visibility_mode_selected">Selected</string>
+  <string name="cat_bottom_nav_label_visibility_mode_unselected">Unselected</string>
   <string name="cat_bottom_nav_label_visibility_mode_labeled">Labeled</string>
   <string name="cat_bottom_nav_label_visibility_mode_unlabeled">Unlabeled</string>
 

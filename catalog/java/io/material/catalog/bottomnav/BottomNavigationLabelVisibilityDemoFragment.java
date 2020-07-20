@@ -66,6 +66,9 @@ public class BottomNavigationLabelVisibilityDemoFragment extends BottomNavigatio
         view.findViewById(R.id.label_mode_selected_button),
         LabelVisibilityMode.LABEL_VISIBILITY_SELECTED);
     initLabelVisibilityModeButton(
+        view.findViewById(R.id.label_mode_unselected_button),
+        LabelVisibilityMode.LABEL_VISIBILITY_UNSELECTED);
+    initLabelVisibilityModeButton(
         view.findViewById(R.id.label_mode_labeled_button),
         LabelVisibilityMode.LABEL_VISIBILITY_LABELED);
     initLabelVisibilityModeButton(
