@@ -24,6 +24,7 @@ import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
+import android.os.Build.VERSION;
 import android.util.Property;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -185,74 +186,64 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
         || (hideAnimator != null && hideAnimator.isRunning());
   }
 
+  /** Hides the drawable immediately */
+  public boolean hideNow(){
+    return setVisible(/*visible=*/ false, /*restart=*/ false, /*animationDesired=*/ false);
+  }
+
+  /**
+   * Sets the visibility with/without animation based on system animator duration scale.
+   *
+   * @see #setVisible(boolean, boolean, boolean)
+   */
+  @Override
+  public boolean setVisible(boolean visible, boolean restart) {
+    float systemAnimatorDurationScale =
+        animatorDurationScaleProvider.getSystemAnimatorDurationScale(context.getContentResolver());
+    // Only show/hide the drawable with animations if system animator duration scale is not off and
+    // some grow mode is used.
+    return setVisible(visible, restart, systemAnimatorDurationScale > 0);
+  }
+
   /**
    * Show or hide the drawable with/without animation effects.
    *
    * @param visible Whether to make the drawable visible.
+   * @param restart Whether to force starting the animation from the beginning.
    * @param animationDesired Whether to change the visibility with animation.
    * @return {@code true}, if the visibility changes or will change after the animation; {@code
    *     false}, otherwise.
    */
-  @Override
-  public boolean setVisible(boolean visible, boolean animationDesired) {
-    float systemAnimatorDurationScale =
-        animatorDurationScaleProvider.getSystemAnimatorDurationScale(context.getContentResolver());
-    animationDesired &= systemAnimatorDurationScale > 0;
-
-    // If the drawable is visible and not being hidden, prevents to start the show animation.
-    if (visible && animationDesired && isVisible() && !hideAnimator.isRunning()) {
+  public boolean setVisible(boolean visible, boolean restart, boolean animationDesired) {
+    if (!isVisible() && !visible) {
+      // Early return if trying to hide a hidden drawable.
       return false;
     }
-    // If the drawable is invisible, prevents to start the hide animation.
-    if (!visible && animationDesired && !isVisible()) {
+    if (animationDesired && (visible ? showAnimator : hideAnimator).isRunning()) {
+      // Show/hide animation should not be reset while being played.
       return false;
     }
 
-    boolean changed =
-        (!visible && animationDesired) || super.setVisible(visible, DEFAULT_DRAWABLE_RESTART);
-    boolean shouldAnimate = animationDesired && spec.growMode != ProgressIndicator.GROW_MODE_NONE;
+    ValueAnimator animationInAction = visible ? showAnimator : hideAnimator;
 
-    // We don't want to change visibility while show/hide animation is running. This also prevents
-    // multiple invokes to cancel the grow animators for some Android versions.
-    if ((showAnimator.isRunning() && visible) || hideAnimator.isRunning()) {
-      return false;
+    // If requests to show, sets the drawable visible. If requests to hide, the visibility is
+    // controlled by the animation listener attached to hide animation.
+    boolean changed = !visible || super.setVisible(visible, DEFAULT_DRAWABLE_RESTART);
+    animationDesired &= spec.growMode != ProgressIndicator.GROW_MODE_NONE;
+    if (!animationDesired) {
+      // This triggers onAnimationStart() callbacks for showing and onAnimationEnd() callbacks for
+      // hiding. It also fast-forwards the animator properties to the end state.
+      animationInAction.end();
+      return changed;
     }
 
-    // Cancels any running animations.
-    showAnimator.cancel();
-    hideAnimator.cancel();
-
-    if (visible) {
-      if (shouldAnimate) {
-        // Resets properties as it's fully hidden at the beginning of show animation.
-        resetToShow();
-        showAnimator.start();
-        return true;
-      } else {
-        // Resets properties as it's fully shown at the beginning of hide animation.
-        resetToHide();
-      }
+    if (restart || VERSION.SDK_INT < 19 || !animationInAction.isPaused()) {
+      // Starts/restarts the animator if requested or not eligible to resume.
+      animationInAction.start();
     } else {
-      if (shouldAnimate) {
-        // Resets properties as it's fully shown at the beginning of hide animation.
-        resetToHide();
-        hideAnimator.start();
-        return true;
-      } else {
-        // Resets properties as it's fully hidden at the beginning of show animation.
-        resetToShow();
-      }
+      animationInAction.resume();
     }
-
     return changed;
-  }
-
-  private void resetToShow() {
-    growFraction = 0f;
-  }
-
-  private void resetToHide() {
-    growFraction = 1f;
   }
 
   // ******************* Helper methods *******************

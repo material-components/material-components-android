@@ -92,13 +92,17 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
    * is not requested.
    *
    * @param visible Whether to make the drawable visible.
-   * @param animationDesired Whether to change the visibility with animation.
+   * @param restart Whether to force starting the animation from the beginning. Doesn't apply to the
+   *     spring animation for changing progress.
+   * @param animationDesired Whether to change the visibility with animation. The spring animation
+   *     for changing progress only depends on system animator duration scale. Use {@link
+   *     ProgressIndicator#setProgress(int, boolean)} to change the progress without animation.
    * @return {@code true}, if the visibility changes or will change after the animation; {@code
    *     false}, otherwise.
    */
   @Override
-  public boolean setVisible(boolean visible, boolean animationDesired) {
-    boolean changed = super.setVisible(visible, animationDesired);
+  public boolean setVisible(boolean visible, boolean restart, boolean animationDesired) {
+    boolean changed = super.setVisible(visible, restart, animationDesired);
 
     float systemAnimatorDurationScale =
         animatorDurationScaleProvider.getSystemAnimatorDurationScale(context.getContentResolver());

@@ -101,8 +101,8 @@ public final class LinearIndeterminateNonSeamlessAnimatorDelegate
             super.onAnimationEnd(animation);
 
             if (animatorCompleteEndRequested) {
-              animatorCompleteCallback.onAnimationEnd(drawable);
               animatorCompleteEndRequested = false;
+              animatorCompleteCallback.onAnimationEnd(drawable);
               resetPropertiesForNewStart();
             } else {
               // If the drawable is still visible, continues the main animator by restarting.

@@ -123,6 +123,9 @@ public class ProgressIndicator extends ProgressBar {
 
   private AnimatorDurationScaleProvider animatorDurationScaleProvider;
 
+  // The flag to mark if an indeterminate mode switching is requested.
+  private boolean isIndeterminateModeChangeRequested = false;
+
   // ******************** Interfaces **********************
 
   /** The type of the progress indicator. */
@@ -369,7 +372,7 @@ public class ProgressIndicator extends ProgressBar {
       delayedHide.run();
       return;
     }
-    postDelayed(delayedHide, minHideDelay - timeElapsedSinceShowStart);
+    postDelayed(delayedHide, /*delayMillis=*/ minHideDelay - timeElapsedSinceShowStart);
   }
 
   /**
@@ -380,11 +383,7 @@ public class ProgressIndicator extends ProgressBar {
    * @see #hide()
    */
   private void internalHide() {
-    // Hides animation should be used if it's visible to user and potentially can be hidden with
-    // animation.
-    boolean shouldHideAnimated = visibleToUser() && spec.growMode != GROW_MODE_NONE;
-
-    getCurrentDrawable().setVisible(false, shouldHideAnimated);
+    getCurrentDrawable().setVisible(/*visible=*/ false, /*restart=*/ false);
 
     if (isNoLongerNeedToBeVisible()) {
       setVisibility(INVISIBLE);
@@ -412,12 +411,7 @@ public class ProgressIndicator extends ProgressBar {
       return;
     }
 
-    boolean visibleToUser = visibleToUser();
-
-    // Sets the drawable to visible/invisible if the component is currently visible/invisible. Only
-    // show animation should be started (when the component is currently visible). Hide animation
-    // should have already ended or is not necessary at this point.
-    getCurrentDrawable().setVisible(visibleToUser, visibleToUser);
+    getCurrentDrawable().setVisible(visibleToUser(), /*restart=*/ false);
   }
 
   @Override
@@ -434,7 +428,7 @@ public class ProgressIndicator extends ProgressBar {
   protected void onDetachedFromWindow() {
     // Removes the delayedHide runnable from the queue if it has been scheduled.
     removeCallbacks(delayedHide);
-    getCurrentDrawable().setVisible(false, false);
+    getCurrentDrawable().setVisible(/*visible=*/ false, /*restart=*/ false);
     unregisterAnimationCallbacks();
     super.onDetachedFromWindow();
   }
@@ -483,11 +477,11 @@ public class ProgressIndicator extends ProgressBar {
       int contentHeight = h - (getPaddingTop() + getPaddingBottom());
       Drawable drawable = getIndeterminateDrawable();
       if (drawable != null) {
-        drawable.setBounds(0, 0, contentWidth, contentHeight);
+        drawable.setBounds(/*left=*/ 0, /*top=*/ 0, contentWidth, contentHeight);
       }
       drawable = getProgressDrawable();
       if (drawable != null) {
-        drawable.setBounds(0, 0, contentWidth, contentHeight);
+        drawable.setBounds(/*left=*/ 0, /*top=*/ 0, contentWidth, contentHeight);
       }
     } else {
       super.onSizeChanged(w, h, oldw, oldh);
@@ -514,7 +508,7 @@ public class ProgressIndicator extends ProgressBar {
 
   /** Returns the corresponding drawable based on current indeterminate state. */
   @Override
-  @NonNull
+  @Nullable
   public DrawableWithAnimatedVisibilityChange getCurrentDrawable() {
     return isIndeterminate() ? getIndeterminateDrawable() : getProgressDrawable();
   }
@@ -539,12 +533,13 @@ public class ProgressIndicator extends ProgressBar {
       return;
     }
     if (drawable instanceof DeterminateDrawable) {
-      drawable.setVisible(false, false);
-      super.setProgressDrawable(drawable);
+      DeterminateDrawable determinateDrawable = (DeterminateDrawable) drawable;
+      determinateDrawable.hideNow();
+      super.setProgressDrawable(determinateDrawable);
       // Every time ProgressBar sets progress drawable, it refreshes the drawable's level with
       // progress then secondary progress. Since secondary progress is not used here. We need to set
       // the level actively to overcome the affects from secondary progress.
-      ((DeterminateDrawable) drawable).setLevelByFraction((float) getProgress() / getMax());
+      determinateDrawable.setLevelByFraction((float) getProgress() / getMax());
     } else {
       throw new IllegalArgumentException("Cannot set framework drawable as progress drawable.");
     }
@@ -562,7 +557,7 @@ public class ProgressIndicator extends ProgressBar {
       return;
     }
     if (drawable instanceof IndeterminateDrawable) {
-      drawable.setVisible(false, false);
+      ((IndeterminateDrawable) drawable).hideNow();
       super.setIndeterminateDrawable(drawable);
     } else {
       throw new IllegalArgumentException(
@@ -689,11 +684,34 @@ public class ProgressIndicator extends ProgressBar {
    */
   @Override
   public synchronized void setIndeterminate(boolean indeterminate) {
-    if (visibleToUser() && isIndeterminate() != indeterminate && indeterminate) {
+    if (indeterminate == isIndeterminate()) {
+      // Early return if no change.
+      return;
+    }
+    if (!indeterminate && isLinearSeamless()) {
+      // Early return if trying to set to determinate mode while in linear seamless mode, as it's
+      // not supported in spec.
+      return;
+    }
+    if (visibleToUser() && indeterminate) {
       throw new IllegalStateException(
           "Cannot switch to indeterminate mode while the progress indicator is visible.");
     }
+
+    // Needs to explicitly set visibility of two drawables. ProgressBar.setIndeterminate doesn't
+    // handle it properly for pre-lollipop.
+    DrawableWithAnimatedVisibilityChange oldDrawable = getCurrentDrawable();
+    if (oldDrawable != null) {
+      oldDrawable.hideNow();
+    }
     super.setIndeterminate(indeterminate);
+    DrawableWithAnimatedVisibilityChange newDrawable = getCurrentDrawable();
+    if (newDrawable != null) {
+      newDrawable.setVisible(visibleToUser(), /*restart=*/ false, /*animationDesired=*/ false);
+    }
+
+    // Indeterminate mode change finished.
+    isIndeterminateModeChangeRequested = false;
   }
 
   /**
@@ -981,28 +999,30 @@ public class ProgressIndicator extends ProgressBar {
    * @see #setProgress(int)
    */
   public void setProgressCompat(int progress, boolean animated) {
-    if (isIndeterminate() && getProgressDrawable() != null) {
-      // Holds new progress to a temp field, since setting progress is ignored in indeterminate
-      // mode.
-      storedProgress = progress;
-      storedProgressAnimated = animated;
+    if (isIndeterminate()) {
+      if (getProgressDrawable() != null && !isLinearSeamless()) {
+        // Holds new progress to a temp field, since setting progress is ignored in indeterminate
+        // mode.
+        storedProgress = progress;
+        storedProgressAnimated = animated;
+        isIndeterminateModeChangeRequested = true;
 
-      if (animatorDurationScaleProvider.getSystemAnimatorDurationScale(
-              getContext().getContentResolver())
-          == 0) {
-        switchIndeterminateModeCallback.onAnimationEnd(getIndeterminateDrawable());
-      } else {
-        getIndeterminateDrawable().getAnimatorDelegate().requestCancelAnimatorAfterCurrentCycle();
+        if (animatorDurationScaleProvider.getSystemAnimatorDurationScale(
+                getContext().getContentResolver())
+            == 0) {
+          switchIndeterminateModeCallback.onAnimationEnd(getIndeterminateDrawable());
+        } else {
+          getIndeterminateDrawable().getAnimatorDelegate().requestCancelAnimatorAfterCurrentCycle();
+        }
       }
-      return;
-    }
-
-    // Calls ProgressBar setProgress(int) to update the progress value and level. We don't rely on
-    // it to draw or animate the indicator.
-    super.setProgress(progress);
-    // Fast forward to the final state of the determinate animation.
-    if (getProgressDrawable() != null && !animated) {
-      getProgressDrawable().jumpToCurrentState();
+    } else {
+      // Calls ProgressBar setProgress(int) to update the progress value and level. We don't rely on
+      // it to draw or animate the indicator.
+      super.setProgress(progress);
+      // Fast forward to the final state of the determinate animation.
+      if (getProgressDrawable() != null && !animated) {
+        getProgressDrawable().jumpToCurrentState();
+      }
     }
   }
 
@@ -1044,21 +1064,12 @@ public class ProgressIndicator extends ProgressBar {
       new AnimationCallback() {
         @Override
         public void onAnimationEnd(Drawable drawable) {
-          post(
-              new Runnable() {
-                @Override
-                public void run() {
-                  // Needs to explicitly set visibility of two drawables.
-                  // ProgressBar.setIndeterminate cannot handle it properly for pre-lollipop.
-                  getIndeterminateDrawable().setVisible(false, false);
-                  setIndeterminate(false);
-                  getProgressDrawable().setVisible(true, false);
 
-                  // Resets progress bar to minimum value then updates to new progress.
-                  setProgressCompat(0, /*animated=*/ false);
-                  setProgressCompat(storedProgress, storedProgressAnimated);
-                }
-              });
+          setIndeterminate(false);
+
+          // Resets progress bar to minimum value then updates to new progress.
+          setProgressCompat(/*progress=*/ 0, /*animated=*/ false);
+          setProgressCompat(storedProgress, storedProgressAnimated);
         }
       };
 
@@ -1072,13 +1083,11 @@ public class ProgressIndicator extends ProgressBar {
         @Override
         public void onAnimationEnd(Drawable drawable) {
           super.onAnimationEnd(drawable);
-          post(
-              new Runnable() {
-                @Override
-                public void run() {
-                  setVisibility(INVISIBLE);
-                }
-              });
+          if (!isIndeterminateModeChangeRequested) {
+            // Don't hide the component if under transition from indeterminate mode to
+            // determinate mode.
+            setVisibility(INVISIBLE);
+          }
         }
       };
 }
