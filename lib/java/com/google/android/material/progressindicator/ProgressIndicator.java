@@ -27,10 +27,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
-import android.os.Build.VERSION;
 import android.os.SystemClock;
-import android.provider.Settings.Global;
-import android.provider.Settings.System;
 import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
@@ -124,10 +121,10 @@ public class ProgressIndicator extends ProgressBar {
 
   private long lastShowStartTime = -1L;
 
-  private boolean animatorDisabled = false;
-
   /** The scale of the animation speed combining system setting and debug parameters. */
   private float systemAnimationScale = 1f;
+
+  private AnimatorDurationScaleProvider animatorDurationScaleProvider;
 
   // ******************** Interfaces **********************
 
@@ -159,6 +156,7 @@ public class ProgressIndicator extends ProgressBar {
   public ProgressIndicator(
       @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
     super(wrap(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
+    animatorDurationScaleProvider = new AnimatorDurationScaleProvider();
     isParentDoneInitializing = true;
     // Ensure we are using the correctly themed context rather than the context was passed in.
     context = getContext();
@@ -346,7 +344,9 @@ public class ProgressIndicator extends ProgressBar {
   }
 
   private void updateAnimationScale() {
-    systemAnimationScale = getSystemAnimatorDurationScale();
+    systemAnimationScale =
+        animatorDurationScaleProvider.getSystemAnimatorDurationScale(
+            getContext().getContentResolver());
     if (systemAnimationScale > 0) {
       if (getProgressDrawable() != null) {
         getProgressDrawable().invalidateAnimationScale(systemAnimationScale);
@@ -355,15 +355,6 @@ public class ProgressIndicator extends ProgressBar {
   }
 
   // ******************** Visibility control **********************
-
-  /**
-   * This method sets a flag to prevent using any animators. It should be called before being
-   * visible.
-   */
-  @VisibleForTesting
-  public void disableAnimatorsForTesting() {
-    animatorDisabled = true;
-  }
 
   /**
    * Sets the visibility to {@code VISIBLE}. If this changes the visibility it will invoke {@code
@@ -653,23 +644,9 @@ public class ProgressIndicator extends ProgressBar {
     getIndeterminateDrawable().getAnimatorDelegate().invalidateSpecValues();
   }
 
-  /** Returns the animator duration scale from developer options setting. */
-  private float getSystemAnimatorDurationScale() {
-    if (VERSION.SDK_INT >= 17) {
-      return Global.getFloat(getContext().getContentResolver(), Global.ANIMATOR_DURATION_SCALE, 1f);
-    }
-    if (VERSION.SDK_INT == 16) {
-      return System.getFloat(getContext().getContentResolver(), System.ANIMATOR_DURATION_SCALE, 1f);
-    }
-    return 1f;
-  }
-
-  /**
-   * Returns whether the animators are disabled passively (by system settings) or actively (for
-   * testings).
-   */
+  /** Returns whether the animators are disabled passively (by system settings). */
   private boolean isAnimatorDisabled() {
-    return animatorDisabled || systemAnimationScale == 0;
+    return systemAnimationScale == 0;
   }
 
   // ******************** Getters and setters **********************
@@ -1035,6 +1012,12 @@ public class ProgressIndicator extends ProgressBar {
     // Calls ProgressBar setProgress(int) to update the progress value and level. We don't rely on
     // it to draw or animate the indicator.
     super.setProgress(progress);
+  }
+
+  @VisibleForTesting
+  public void setAnimatorDurationScaleProvider(
+      @NonNull AnimatorDurationScaleProvider animatorDurationScaleProvider) {
+    this.animatorDurationScaleProvider = animatorDurationScaleProvider;
   }
 
   // ************************ In-place defined parameters ****************************
