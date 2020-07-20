@@ -61,6 +61,10 @@
 
   <declare-styleable name="RangeSlider">
     <attr name="values" format="reference" />
+
+    <!-- If there is more than one thumb, and the slider is
+         not discrete the thumbs will be separated by this dimen -->
+    <attr name="minSeparation" format="dimension"/>
   </declare-styleable>
 
   <!-- Style to use for Slider in this theme. -->

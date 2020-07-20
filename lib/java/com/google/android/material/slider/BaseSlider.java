@@ -195,7 +195,9 @@ abstract class BaseSlider<
   private static final int HALO_ALPHA = 63;
   private static final double THRESHOLD = .0001;
 
-  private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_Slider;
+  static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_Slider;
+  static final int UNIT_VALUE = 1;
+  static final int UNIT_PX = 0;
 
   @NonNull private final Paint inactiveTrackPaint;
   @NonNull private final Paint activeTrackPaint;
@@ -255,6 +257,7 @@ abstract class BaseSlider<
   @NonNull private final MaterialShapeDrawable thumbDrawable = new MaterialShapeDrawable();
 
   private float touchPosition;
+  @SeparationUnit private int separationUnit = UNIT_PX;
 
   /**
    * Determines the behavior of the label which can be any of the following.
@@ -272,6 +275,10 @@ abstract class BaseSlider<
   @IntDef({LABEL_FLOATING, LABEL_WITHIN_BOUNDS, LABEL_GONE})
   @Retention(RetentionPolicy.SOURCE)
   @interface LabelBehavior {}
+
+  @IntDef({UNIT_PX, UNIT_VALUE})
+  @Retention(RetentionPolicy.SOURCE)
+  @interface SeparationUnit {}
 
   public BaseSlider(@NonNull Context context) {
     this(context, null);
@@ -1639,9 +1646,30 @@ abstract class BaseSlider<
 
   /** Thumbs cannot cross each other, clamp the value to a bound or the value next to it. */
   private float getClampedValue(int idx, float value) {
-    float upperBound = idx + 1 >= values.size() ? valueTo : values.get(idx + 1);
-    float lowerBound = idx - 1 < 0 ? valueFrom : values.get(idx - 1);
+    float minSeparation = stepSize == 0 ? getMinSeparation() : 0;
+    minSeparation = separationUnit == UNIT_PX ? dimenToValue(minSeparation) : minSeparation;
+    if (isRtl()) {
+      minSeparation = -minSeparation;
+    }
+
+    float upperBound = idx + 1 >= values.size() ? valueTo : values.get(idx + 1) - minSeparation;
+    float lowerBound = idx - 1 < 0 ? valueFrom : values.get(idx - 1) + minSeparation;
     return clamp(value, lowerBound, upperBound);
+  }
+
+  private float dimenToValue(float dimen) {
+    if (dimen == 0) {
+      return 0;
+    }
+    return ((dimen - trackSidePadding) / trackWidth) * (valueFrom - valueTo) + valueFrom;
+  }
+
+  protected void setSeparationUnit(int separationUnit) {
+    this.separationUnit = separationUnit;
+  }
+
+  protected float getMinSeparation() {
+    return 0;
   }
 
   private float getValueOfTouchPosition() {

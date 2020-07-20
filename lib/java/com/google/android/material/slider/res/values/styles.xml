@@ -28,6 +28,7 @@
     <item name="trackColorActive">@color/material_slider_active_track_color</item>
     <item name="trackColorInactive">@color/material_slider_inactive_track_color</item>
     <item name="trackHeight">@dimen/mtrl_slider_track_height</item>
+    <item name="minSeparation">0dp</item>
   </style>
 
   <style name="Widget.MaterialComponents.Slider" parent="Base.Widget.MaterialComponents.Slider"/>
