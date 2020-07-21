@@ -36,6 +36,7 @@ import java.lang.annotation.RetentionPolicy;
 @IntDef({
   LabelVisibilityMode.LABEL_VISIBILITY_AUTO,
   LabelVisibilityMode.LABEL_VISIBILITY_SELECTED,
+    LabelVisibilityMode.LABEL_VISIBILITY_UNSELECTED,
   LabelVisibilityMode.LABEL_VISIBILITY_LABELED,
   LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED
 })
@@ -55,4 +56,7 @@ public @interface LabelVisibilityMode {
 
   /** Label is not shown on any navigation items. */
   int LABEL_VISIBILITY_UNLABELED = 2;
+
+  /** Label is not shown on the selected navigation item. */
+  int LABEL_VISIBILITY_UNSELECTED = 3;
 }

@@ -34,6 +34,8 @@
       <enum name="auto" value="-1"/>
       <!-- Label is shown on the selected navigation item. -->
       <enum name="selected" value="0"/>
+      <!-- label is not shown on the selected navigation item -->
+      <enum name="unselected" value="3"/>
       <!-- Label is shown on all navigation items. -->
       <enum name="labeled" value="1"/>
       <!-- Label is not shown on any navigation items. -->
