@@ -236,14 +236,10 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
         break;
 
       case LabelVisibilityMode.LABEL_VISIBILITY_SELECTED:
-        if (checked) {
-          setViewLayoutParams(icon, defaultMargin, Gravity.CENTER_HORIZONTAL | Gravity.TOP);
-          setViewValues(largeLabel, 1f, 1f, VISIBLE);
-        } else {
-          setViewLayoutParams(icon, defaultMargin, Gravity.CENTER);
-          setViewValues(largeLabel, 0.5f, 0.5f, INVISIBLE);
-        }
-        smallLabel.setVisibility(INVISIBLE);
+        setCheckedVisibilityMode(checked);
+        break;
+      case LabelVisibilityMode.LABEL_VISIBILITY_UNSELECTED:
+        setCheckedVisibilityMode(!checked);
         break;
 
       case LabelVisibilityMode.LABEL_VISIBILITY_LABELED:
@@ -488,5 +484,16 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     }
     // TODO(b/138148581): Support displaying a badge on label-only bottom navigation views.
     return null;
+  }
+
+  private void setCheckedVisibilityMode(boolean checked) {
+    if (checked) {
+      setViewLayoutParams(icon, defaultMargin, Gravity.CENTER_HORIZONTAL | Gravity.TOP);
+      setViewValues(largeLabel, 1f, 1f, VISIBLE);
+    } else {
+      setViewLayoutParams(icon, defaultMargin, Gravity.CENTER);
+      setViewValues(largeLabel, 0.5f, 0.5f, INVISIBLE);
+    }
+    smallLabel.setVisibility(INVISIBLE);
   }
 }
