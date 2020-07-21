@@ -92,6 +92,11 @@
         android:layout_height="wrap_content"
         android:text="@string/cat_bottom_nav_label_visibility_mode_selected"/>
     <RadioButton
+      android:id="@+id/label_mode_unselected_button"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/cat_bottom_nav_label_visibility_mode_selected"/>
+    <RadioButton
         android:id="@+id/label_mode_labeled_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
