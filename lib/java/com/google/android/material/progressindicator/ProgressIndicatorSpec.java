@@ -15,6 +15,19 @@
  */
 package com.google.android.material.progressindicator;
 
+import com.google.android.material.R;
+
+import static java.lang.Math.min;
+
+import android.content.Context;
+import android.content.res.TypedArray;
+import android.util.AttributeSet;
+import androidx.annotation.DimenRes;
+import androidx.annotation.Dimension;
+import androidx.annotation.NonNull;
+import androidx.annotation.StyleableRes;
+import com.google.android.material.color.MaterialColors;
+
 /** A spec class managing all attributes of {@link ProgressIndicator}. */
 public final class ProgressIndicatorSpec {
 
@@ -67,4 +80,151 @@ public final class ProgressIndicatorSpec {
    * connected. Ignored for determinate mode and indeterminate mode with less than 3 colors.
    */
   public boolean linearSeamless;
+
+  public void loadFromAttributes(@NonNull Context context, AttributeSet attrs, int defStyleAttr) {
+    loadFromAttributes(context, attrs, defStyleAttr, ProgressIndicator.DEF_STYLE_RES);
+  }
+
+  public void loadFromAttributes(
+      @NonNull Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    TypedArray a =
+        context.obtainStyledAttributes(
+            attrs, R.styleable.ProgressIndicator, defStyleAttr, defStyleRes);
+    indicatorType = a.getInt(R.styleable.ProgressIndicator_indicatorType, ProgressIndicator.LINEAR);
+    indicatorWidth =
+        getDimensionPixelSize(
+            context,
+            a,
+            R.styleable.ProgressIndicator_indicatorWidth,
+            R.dimen.mtrl_progress_indicator_width);
+    circularInset =
+        getDimensionPixelSize(
+            context,
+            a,
+            R.styleable.ProgressIndicator_circularInset,
+            R.dimen.mtrl_progress_circular_inset);
+    circularRadius =
+        getDimensionPixelSize(
+            context,
+            a,
+            R.styleable.ProgressIndicator_circularRadius,
+            R.dimen.mtrl_progress_circular_radius);
+    inverse = a.getBoolean(R.styleable.ProgressIndicator_inverse, false);
+    growMode = a.getInt(R.styleable.ProgressIndicator_growMode, ProgressIndicator.GROW_MODE_NONE);
+
+    // Loads the indicator colors.
+    loadIndicatorColors(context, a);
+
+    // Loads the track color.
+    loadTrackColor(context, a);
+
+    linearSeamless =
+        a.getBoolean(R.styleable.ProgressIndicator_linearSeamless, true)
+            && indicatorType == ProgressIndicator.LINEAR
+            && indicatorColors.length >= 3;
+    indicatorCornerRadius =
+        min(
+            a.getDimensionPixelSize(R.styleable.ProgressIndicator_indicatorCornerRadius, 0),
+            indicatorWidth / 2);
+
+    a.recycle();
+
+    validate();
+  }
+
+  public void validate() {
+    if (indicatorType == ProgressIndicator.CIRCULAR && circularRadius < indicatorWidth / 2) {
+      // Throws an exception if circularRadius is less than half of the indicatorWidth, which will
+      // result in a part of the inner side of the indicator overshoots the center, and the visual
+      // becomes undefined.
+      throw new IllegalArgumentException(
+          "The circularRadius cannot be less than half of the indicatorWidth.");
+    }
+    if (linearSeamless && indicatorCornerRadius > 0) {
+      // Throws an exception if trying to use cornered indicator for linear seamless mode.
+      throw new IllegalArgumentException(
+          "Rounded corners are not supported in linear seamless mode.");
+    }
+  }
+
+  /**
+   * Returns a dimension in pixels from attributes if available; otherwise, the default resource
+   * value. This method doesn't recycle the {@link TypedArray} argument.
+   *
+   * @param context The current active context.
+   * @param typedArray The TypedArray object of the attributes.
+   * @param resId The styleable id of the attribute.
+   * @param defaultResId The resource id of the default value.
+   */
+  @Dimension
+  private static int getDimensionPixelSize(
+      @NonNull Context context,
+      @NonNull TypedArray typedArray,
+      @StyleableRes int resId,
+      @DimenRes int defaultResId) {
+    return typedArray.getDimensionPixelSize(
+        resId, context.getResources().getDimensionPixelSize(defaultResId));
+  }
+
+  /**
+   * Loads the indicatorColors from attributes if existing; otherwise, uses indicatorColor attribute
+   * or theme primary color for the indicator. This method doesn't recycle the {@link TypedArray}
+   * argument.
+   *
+   * @param context The current active context.
+   * @param typedArray The TypedArray object of the attributes.
+   * @throws IllegalArgumentException if both indicatorColors and indicatorColor exist in attribute
+   *     set.
+   * @throws IllegalArgumentException if indicatorColor doesn't exist and indicatorColors is empty.
+   */
+  private void loadIndicatorColors(@NonNull Context context, @NonNull TypedArray typedArray) {
+    if (typedArray.hasValue(R.styleable.ProgressIndicator_indicatorColors)) {
+      indicatorColors =
+          context
+              .getResources()
+              .getIntArray(
+                  typedArray.getResourceId(R.styleable.ProgressIndicator_indicatorColors, -1));
+      if (typedArray.hasValue(R.styleable.ProgressIndicator_indicatorColor)) {
+        throw new IllegalArgumentException(
+            "Attributes indicatorColors and indicatorColor cannot be used at the same time.");
+      }
+      if (indicatorColors.length == 0) {
+        throw new IllegalArgumentException(
+            "indicatorColors cannot be empty when indicatorColor is not used.");
+      }
+    } else {
+      // Uses theme primary color for indicator if neither indicatorColor nor indicatorColors exists
+      // in attribute set.
+      indicatorColors =
+          new int[] {
+            typedArray.hasValue(R.styleable.ProgressIndicator_indicatorColor)
+                ? typedArray.getColor(R.styleable.ProgressIndicator_indicatorColor, -1)
+                : MaterialColors.getColor(context, R.attr.colorPrimary, -1)
+          };
+    }
+  }
+
+  /**
+   * Loads the trackColor from attributes if existing; otherwise, uses the first value in {@link
+   * #indicatorColors} applying the alpha value for disable items from theme. This method doesn't
+   * recycle the {@link TypedArray} argument.
+   *
+   * @param context The current active context.
+   * @param typedArray The TypedArray object of the attributes.
+   */
+  private void loadTrackColor(@NonNull Context context, @NonNull TypedArray typedArray) {
+    if (typedArray.hasValue(R.styleable.ProgressIndicator_trackColor)) {
+      trackColor = typedArray.getColor(R.styleable.ProgressIndicator_trackColor, -1);
+    } else {
+      trackColor = indicatorColors[0];
+
+      TypedArray disabledAlphaArray =
+          context.getTheme().obtainStyledAttributes(new int[] {android.R.attr.disabledAlpha});
+      float defaultOpacity = disabledAlphaArray.getFloat(0, ProgressIndicator.DEFAULT_OPACITY);
+      disabledAlphaArray.recycle();
+
+      int trackAlpha = (int) (ProgressIndicator.MAX_ALPHA * defaultOpacity);
+      trackColor = MaterialColors.compositeARGBWithAlpha(trackColor, trackAlpha);
+    }
+  }
 }
