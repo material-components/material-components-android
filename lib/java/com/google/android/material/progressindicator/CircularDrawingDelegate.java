@@ -25,7 +25,7 @@ import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 
 /** A delegate class to help draw the graphics for {@link ProgressIndicator} in circular types. */
-final class CircularDrawingDelegate implements DrawingDelegate {
+public final class CircularDrawingDelegate implements DrawingDelegate {
 
   private RectF arcBound = new RectF();
   // This is a factor effecting the positive direction to draw the arc. -1 if inverse; +1 otherwise.
