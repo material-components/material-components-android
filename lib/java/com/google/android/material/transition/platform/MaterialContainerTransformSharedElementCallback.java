@@ -51,12 +51,11 @@ import java.util.Map;
 @RequiresApi(VERSION_CODES.LOLLIPOP)
 public class MaterialContainerTransformSharedElementCallback extends SharedElementCallback {
 
-  private static final int BACKGROUND_FADE_EXTRA_DURATION = 60;
-
   @Nullable private static WeakReference<View> capturedSharedElement;
 
   private boolean entering = true;
   private boolean transparentWindowBackgroundEnabled = true;
+  private boolean sharedElementReenterTransitionEnabled = false;
   @Nullable private Rect returnEndBounds;
   @Nullable private ShapeProvider shapeProvider = new ShapeableViewShapeProvider();
 
@@ -209,10 +208,32 @@ public class MaterialContainerTransformSharedElementCallback extends SharedEleme
     this.transparentWindowBackgroundEnabled = transparentWindowBackgroundEnabled;
   }
 
+  /**
+   * Returns whether incoming Activity's sharedElementReenterTransition will be respected.
+   *
+   * @see #setSharedElementReenterTransitionEnabled(boolean)
+   */
+  public boolean isSharedElementReenterTransitionEnabled() {
+    return sharedElementReenterTransitionEnabled;
+  }
+
+  /**
+   * If enabled, the Activity's sharedElementReenterTransition will be respected; otherwise it will
+   * be set to null. Default is false, meaning the sharedElementReenterTransition will be set to
+   * null.
+   */
+  public void setSharedElementReenterTransitionEnabled(
+      boolean sharedElementReenterTransitionEnabled) {
+    this.sharedElementReenterTransitionEnabled = sharedElementReenterTransitionEnabled;
+  }
+
   private void setUpEnterTransform(final Window window) {
     Transition transition = window.getSharedElementEnterTransition();
     if (transition instanceof MaterialContainerTransform) {
       MaterialContainerTransform transform = (MaterialContainerTransform) transition;
+      if (!sharedElementReenterTransitionEnabled) {
+        window.setSharedElementReenterTransition(null);
+      }
       if (transparentWindowBackgroundEnabled) {
         updateBackgroundFadeDuration(window, transform);
         transform.addListener(
@@ -296,14 +317,11 @@ public class MaterialContainerTransformSharedElementCallback extends SharedEleme
   }
 
   /**
-   * When using a transparent window background, make sure that the background fade duration is at
-   * least as long as the transform's duration. This will help to avoid a black background visual
-   * artifact and an extra transition from happening after the container transform on certain API
-   * levels.
+   * When using a transparent window background, make sure that the background fade duration is as
+   * long as the transform's duration. This will help to avoid a black background visual artifact.
    */
   private static void updateBackgroundFadeDuration(
       Window window, MaterialContainerTransform transform) {
-    window.setTransitionBackgroundFadeDuration(
-        transform.getDuration() + BACKGROUND_FADE_EXTRA_DURATION);
+    window.setTransitionBackgroundFadeDuration(transform.getDuration());
   }
 }
