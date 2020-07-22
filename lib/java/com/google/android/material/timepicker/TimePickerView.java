@@ -25,12 +25,14 @@ import static java.util.Calendar.PM;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import com.google.android.material.button.MaterialButtonToggleGroup;
@@ -108,6 +110,14 @@ class TimePickerView extends ConstraintLayout implements TimePickerControls {
     setUpDisplay();
   }
 
+  public void setMinuteHourDelegate(AccessibilityDelegateCompat clickActionDelegate) {
+    ViewCompat.setAccessibilityDelegate(hourView, clickActionDelegate);
+  }
+
+  public void setHourClickDelegate(AccessibilityDelegateCompat clickActionDelegate) {
+    ViewCompat.setAccessibilityDelegate(minuteView, clickActionDelegate);
+  }
+
   private void setUpDisplay() {
     minuteView.setTag(R.id.selection_type, MINUTE);
     hourView.setTag(R.id.selection_type, HOUR);
@@ -117,8 +127,8 @@ class TimePickerView extends ConstraintLayout implements TimePickerControls {
   }
 
   @Override
-  public void setValues(String[] values) {
-    clockFace.setValues(values);
+  public void setValues(String[] values, @StringRes int contentDescription) {
+    clockFace.setValues(values, contentDescription);
   }
 
   @Override

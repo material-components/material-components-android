@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
      Copyright 2020 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,11 +14,18 @@
      limitations under the License.
  -->
 
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string name="material_timepicker_pm" description="Suffix for time in 12-hour standard, after noon. [CHAR_LIMIT=2]">PM</string>
   <string name="material_timepicker_am" description="Suffix for time in 12-hour standard, before noon. [CHAR_LIMIT=2]">AM</string>
   <string name="material_timepicker_select_time" description="Title for the dialog with a time picker. [CHAR_LIMIT=32]">SELECT TIME</string>
   <string name="material_timepicker_minute" description="The label for a text field to select the minute on the hour [CHAR_LIMIT=24]">Minute</string>
   <string name="material_timepicker_hour" description="The label for a text field to select the hour on the time [CHAR_LIMIT=24]">Hour</string>
   <string name="material_clock_display_divider" translatable="false">:</string>
+
+  <string name="material_hour_suffix" description="spoken suffix for an hour in the clock [CHAR_LIMIT=10]"><xliff:g id="number">%1$s</xliff:g> o\'clock</string>
+  <string name="material_minute_suffix" description="spoken suffix for an amount of minutes in the clock [CHAR_LIMIT=16]"><xliff:g id="number">%1$s</xliff:g> minutes</string>
+
+  <string name="material_hour_selection" description="Description for button to switch to select the hour [CHAR_LIMIT=NONE]">Select hour</string>
+  <string name="material_minute_selection" description="Description for button to switch to select the minute [CHAR_LIMIT=NONE]">Select minutes</string>
+  <string name="material_clock_toggle_content_description" description="Description for the toggle to choose between AM and PM [CHAR_LIMIT=NONE] ">Select AM or PM</string>
 </resources>

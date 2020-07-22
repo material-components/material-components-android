@@ -30,6 +30,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Pair;
 import android.view.MotionEvent;
@@ -107,6 +108,7 @@ public class ClockHandView extends View {
     setHandRotation(0);
 
     scaledTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
+    ViewCompat.setImportantForAccessibility(this, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO);
     a.recycle();
   }
 
@@ -265,8 +267,8 @@ public class ClockHandView extends View {
     invalidate();
   }
 
-  @SuppressLint("ClickableViewAccessibility")
   @Override
+  @SuppressLint("ClickableViewAccessibility")
   public boolean onTouchEvent(MotionEvent event) {
     int action = event.getActionMasked();
     boolean forceSelection = false;

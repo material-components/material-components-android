@@ -16,9 +16,12 @@
 
 package com.google.android.material.timepicker;
 
+import com.google.android.material.R;
+
 import static android.view.HapticFeedbackConstants.CLOCK_TICK;
 import static android.view.HapticFeedbackConstants.VIRTUAL_KEY;
 import static android.view.View.GONE;
+import static androidx.core.content.ContextCompat.getSystemService;
 import static com.google.android.material.timepicker.TimeFormat.CLOCK_12H;
 import static com.google.android.material.timepicker.TimeFormat.CLOCK_24H;
 import static java.util.Calendar.MINUTE;
@@ -26,6 +29,7 @@ import static java.util.Calendar.MINUTE;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.view.View;
+import android.view.accessibility.AccessibilityManager;
 import com.google.android.material.timepicker.ClockHandView.OnActionUpListener;
 import com.google.android.material.timepicker.ClockHandView.OnRotateListener;
 import com.google.android.material.timepicker.TimePickerControls.ActiveSelection;
@@ -154,9 +158,15 @@ class TimePickerClockPresenter
     // Don't animate hours since we are going to auto switch to the minute selection.
     timePickerView.setAnimateOnTouchUp(isMinute);
     time.selection = selection;
-    timePickerView.setValues(isMinute ? MINUTE_CLOCK_VALUES : getHourClockValues());
+    timePickerView.setValues(
+        isMinute ? MINUTE_CLOCK_VALUES : getHourClockValues(),
+        isMinute ? R.string.material_minute_suffix : R.string.material_hour_suffix);
     timePickerView.setHandRotation(isMinute ? minuteRotation : hourRotation, animate);
     timePickerView.setActiveSelection(selection);
+    timePickerView.setMinuteHourDelegate(
+        new ClickActionDelegate(timePickerView.getContext(), R.string.material_hour_selection));
+    timePickerView.setHourClickDelegate(
+        new ClickActionDelegate(timePickerView.getContext(), R.string.material_minute_selection));
   }
 
   @Override
@@ -169,7 +179,13 @@ class TimePickerClockPresenter
       // Snap to the closest hour before animating to the position the minute selection is on.
       timePickerView.setHandRotation(hourRotation, /* animate= */ false);
       // Automatically move to minutes once the user finishes choosing the hour.
-      setSelection(MINUTE, /* animate= */ true);
+
+      AccessibilityManager am =
+          getSystemService(timePickerView.getContext(), AccessibilityManager.class);
+      boolean isExploreByTouchEnabled = am.isTouchExplorationEnabled();
+      if (!isExploreByTouchEnabled) {
+        setSelection(MINUTE, /* animate= */ true);
+      }
     } else {
       int rotationInt = Math.round(rotation);
       if (!moveInEventStream) {

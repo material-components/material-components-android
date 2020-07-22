@@ -19,5 +19,6 @@
   android:layout_width="wrap_content"
   android:layout_height="wrap_content"
   android:textColor="?attr/colorOnSurface"
+  android:padding="16dp"
   android:textSize="@dimen/material_clock_number_text_size"
   tools:ignore="SpUsage" />

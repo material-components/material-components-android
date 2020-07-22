@@ -18,6 +18,7 @@ package com.google.android.material.timepicker;
 
 import com.google.android.material.R;
 
+import static androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat.SELECTION_MODE_SINGLE;
 import static java.lang.Math.abs;
 import static java.lang.Math.max;
 
@@ -30,16 +31,24 @@ import android.graphics.RadialGradient;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader.TileMode;
+import androidx.core.view.AccessibilityDelegateCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionItemInfoCompat;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.util.AttributeSet;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewTreeObserver.OnPreDrawListener;
+import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.TextView;
 import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.timepicker.ClockHandView.OnRotateListener;
 
@@ -58,6 +67,8 @@ public class ClockFaceView extends RadialViewGroup implements OnRotateListener {
   private final RectF scratch = new RectF();
 
   private final SparseArray<TextView> textViewPool = new SparseArray<>();
+  private final AccessibilityDelegateCompat valueAccessibilityDelegate;
+
   private final int[] gradientColors;
   private final float[] gradientPositions = new float[] {0f, 0.9f, 1f};
   private final int clockHandPadding;
@@ -112,19 +123,42 @@ public class ClockFaceView extends RadialViewGroup implements OnRotateListener {
                 return true;
               }
             });
+
+    setFocusable(true);
     a.recycle();
+    valueAccessibilityDelegate =
+        new AccessibilityDelegateCompat() {
+          @Override
+          public void onInitializeAccessibilityNodeInfo(
+              View host, @NonNull AccessibilityNodeInfoCompat info) {
+            super.onInitializeAccessibilityNodeInfo(host, info);
+            int index = (int) host.getTag(R.id.material_value_index);
+            if (index > 0) {
+              info.setTraversalAfter(textViewPool.get(index - 1));
+            }
+
+            info.setCollectionItemInfo(
+                CollectionItemInfoCompat.obtain(
+                    /* rowIndex= */ 0,
+                    /* rowSpan= */ 1,
+                    /* columnIndex =*/ index,
+                    /* columnSpan= */ 1,
+                    /* heading= */ false,
+                    /* selected= */ host.isSelected()));
+          }
+        };
   }
 
   /**
    * Sets the list of values that will be shown in the clock face. The first value will be shown in
    * the 12 O'Clock position, subsequent values will be evenly distributed after.
    */
-  public void setValues(String[] values) {
+  public void setValues(String[] values, @StringRes int contentDescription) {
     this.values = values;
-    updateTextViews();
+    updateTextViews(contentDescription);
   }
 
-  private void updateTextViews() {
+  private void updateTextViews(@StringRes int contentDescription) {
     LayoutInflater inflater = LayoutInflater.from(getContext());
     for (int i = 0; i < max(values.length, textViewPool.size()); ++i) {
       TextView textView = textViewPool.get(i);
@@ -140,9 +174,26 @@ public class ClockFaceView extends RadialViewGroup implements OnRotateListener {
         textViewPool.put(i, textView);
       }
 
-      textView.setTextColor(textColor);
       textView.setText(values[i]);
+      textView.setTag(R.id.material_value_index, i);
+      ViewCompat.setAccessibilityDelegate(textView, valueAccessibilityDelegate);
+
+      textView.setTextColor(textColor);
+      Resources res = getResources();
+      textView.setContentDescription(res.getString(contentDescription, values[i]));
     }
+  }
+
+  @Override
+  public void onInitializeAccessibilityNodeInfo(@NonNull AccessibilityNodeInfo info) {
+    super.onInitializeAccessibilityNodeInfo(info);
+    AccessibilityNodeInfoCompat infoCompat = AccessibilityNodeInfoCompat.wrap(info);
+    infoCompat.setCollectionInfo(
+        CollectionInfoCompat.obtain(
+            /* rowCount= */ 1,
+            /* columnCount= */ values.length,
+            /* hierarchical= */ false,
+            SELECTION_MODE_SINGLE));
   }
 
   @Override
@@ -169,7 +220,9 @@ public class ClockFaceView extends RadialViewGroup implements OnRotateListener {
     for (int i = 0; i < textViewPool.size(); ++i) {
       TextView tv = textViewPool.get(i);
       tv.getDrawingRect(textViewRect);
+      textViewRect.offset(tv.getPaddingLeft(), getPaddingTop());
       offsetDescendantRectToMyCoords(tv, textViewRect);
+
       scratch.set(textViewRect);
       RadialGradient radialGradient = getGradientForTextView(selectorBox, scratch);
       tv.getPaint().setShader(radialGradient);

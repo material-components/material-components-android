@@ -18,6 +18,7 @@ package com.google.android.material.timepicker;
 
 import androidx.annotation.IntDef;
 import androidx.annotation.IntRange;
+import androidx.annotation.StringRes;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.Calendar;
@@ -46,7 +47,7 @@ interface TimePickerControls {
   void setActiveSelection(@ActiveSelection int selection);
 
   /** Set the values in the clock face. */
-  void setValues(String[] clockValues);
+  void setValues(String[] clockValues, @StringRes int contentDescription);
 
   void setHandRotation(float rotation);
 }

@@ -19,6 +19,8 @@ package com.google.android.material.timepicker;
 import com.google.android.material.R;
 
 import android.content.Context;
+import androidx.core.view.AccessibilityDelegateCompat;
+import androidx.core.view.ViewCompat;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextUtils;
@@ -28,6 +30,7 @@ import android.view.LayoutInflater;
 import android.widget.Checkable;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.chip.Chip;
@@ -45,6 +48,7 @@ class ChipTextInputComboView extends FrameLayout implements Checkable {
   private final TextInputLayout textInputLayout;
   private final EditText editText;
   private TextWatcher watcher;
+  private TextView label;
 
   public ChipTextInputComboView(@NonNull Context context) {
     this(context, null);
@@ -66,6 +70,7 @@ class ChipTextInputComboView extends FrameLayout implements Checkable {
     editText.addTextChangedListener(watcher);
     addView(chip);
     addView(textInputLayout);
+    label = findViewById(R.id.material_label);
   }
 
   @Override
@@ -111,11 +116,7 @@ class ChipTextInputComboView extends FrameLayout implements Checkable {
   }
 
   public void setHelperText(CharSequence helperText) {
-    textInputLayout.setHelperText(helperText);
-  }
-
-  public void setError(String error) {
-    textInputLayout.setError(error);
+    label.setText(helperText);
   }
 
   public void setCursorVisible(boolean visible) {
@@ -133,6 +134,10 @@ class ChipTextInputComboView extends FrameLayout implements Checkable {
     return textInputLayout;
   }
 
+  public void setChipDelegate(AccessibilityDelegateCompat clickActionDelegate) {
+    ViewCompat.setAccessibilityDelegate(chip, clickActionDelegate);
+  }
+
   private class HintSetterTextWatcher extends TextWatcherAdapter {
 
     private static final String DEFAULT_HINT = "00";
@@ -141,6 +146,8 @@ class ChipTextInputComboView extends FrameLayout implements Checkable {
       if (TextUtils.isEmpty(editable)) {
         setText(DEFAULT_HINT);
         return;
+      } else {
+        textInputLayout.getEditText().setHint(null);
       }
 
       chip.setText(editable.toString());

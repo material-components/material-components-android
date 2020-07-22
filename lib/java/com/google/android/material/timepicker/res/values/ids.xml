@@ -21,4 +21,5 @@
 
   <item name="selection_type" type="id"/>
 
+  <item name="material_value_index" type="id"/>
 </resources>
