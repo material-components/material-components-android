@@ -350,7 +350,7 @@ public class ProgressIndicator extends ProgressBar {
   protected void onDetachedFromWindow() {
     // Removes the delayedHide runnable from the queue if it has been scheduled.
     removeCallbacks(delayedHide);
-    getCurrentDrawable().setVisible(/*visible=*/ false, /*restart=*/ false);
+    getCurrentDrawable().hideNow();
     unregisterAnimationCallbacks();
     super.onDetachedFromWindow();
   }
@@ -1005,9 +1005,9 @@ public class ProgressIndicator extends ProgressBar {
         @Override
         public void onAnimationEnd(Drawable drawable) {
           super.onAnimationEnd(drawable);
-          if (!isIndeterminateModeChangeRequested) {
+          if (!isIndeterminateModeChangeRequested && visibleToUser()) {
             // Don't hide the component if under transition from indeterminate mode to
-            // determinate mode.
+            // determinate mode or the component is current not visible to users.
             setVisibility(INVISIBLE);
           }
         }
