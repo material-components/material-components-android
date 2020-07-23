@@ -17,6 +17,7 @@
 
 <com.google.android.material.textfield.TextInputLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
   style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
   android:layout_width="wrap_content"
   android:layout_height="wrap_content"
@@ -26,18 +27,21 @@
   app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
   app:shapeAppearanceOverlay="@null">
 
-<EditText
+  <EditText
     android:id="@+id/material_timepicker_edit_text"
     style="@style/Widget.MaterialComponents.TimePicker.Display.TextInputEditText"
     android:paddingStart="16dp"
     android:layout_width="96dp"
-    android:layout_height="80dp" />
+    android:layout_height="80dp"
+    tools:ignore="LabelFor" />
 
   <TextView
+    android:labelFor="@+id/material_timepicker_edit_text"
     android:id="@+id/material_label"
     android:textAppearance="?attr/textAppearanceCaption"
     android:focusable="false"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content" />
+    android:layout_height="wrap_content"
+    tools:ignore="LabelFor" />
 
 </com.google.android.material.textfield.TextInputLayout>

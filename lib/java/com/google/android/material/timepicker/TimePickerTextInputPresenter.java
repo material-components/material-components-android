@@ -28,8 +28,6 @@ import static java.util.Calendar.PM;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -123,12 +121,6 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
 
     hourEditText = hourTextInput.getTextInput().getEditText();
     minuteEditText = minuteTextInput.getTextInput().getEditText();
-
-    if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1) {
-      minuteLabel.setLabelFor(minuteEditText.getId());
-      hourLabel.setLabelFor(hourEditText.getId());
-    }
-
     controller = new TimePickerTextInputKeyController(hourTextInput, minuteTextInput, time);
     hourTextInput.setChipDelegate(
         new ClickActionDelegate(timePickerView.getContext(), R.string.material_hour_selection));
