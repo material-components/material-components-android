@@ -28,6 +28,10 @@
     description="Title of demo for the progress indicators using custom drawables [CHAR LIMIT=NONE]">
     Custom Drawable Progress Indicator Demo
   </string>
+  <string name="cat_progress_indicator_demo_standalone_title"
+    description="Title of demo for other components using progress indicator standalone drawables [CHAR LIMIT=NONE]">
+    Standalone Drawable Progress Indicator Demo
+  </string>
   <string name="cat_progress_indicator_description"
       description="Body text describing the MaterialProgressIndicator widget within the design system [CHAR LIMIT=NONE]">
     ProgressIndicator shows the progress of an undergoing process.
@@ -127,5 +131,13 @@
   <string name="cat_progress_indicator_custom_determinate"
     description="An example of the progress indicator in determinate mode using a custom drawable [CHAR LIMIT=NONE]">
     Custom (wavy) determinate progress indicator
+  </string>
+  <string name="cat_progress_indicator_standalone_indeterminate_chip"
+    description="An example of using progress indicator drawable as chip icon [CHAR LIMIT=NONE]">
+    Indeterminate Chip
+  </string>
+  <string name="cat_progress_indicator_standalone_switch_label"
+    description="A material switch to toggle progress indicator drawable on chip [CHAR LIMIT=NONE]">
+    Show Icon
   </string>
 </resources>
