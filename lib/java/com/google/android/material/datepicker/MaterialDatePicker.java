@@ -331,12 +331,11 @@ public final class MaterialDatePicker<S> extends DialogFragment {
   }
 
   private void startPickerFragment() {
-    calendar =
-        MaterialCalendar.newInstance(
-            dateSelector, getThemeResId(requireContext()), calendarConstraints);
+    int themeResId = getThemeResId(requireContext());
+    calendar = MaterialCalendar.newInstance(dateSelector, themeResId, calendarConstraints);
     pickerFragment =
         headerToggleButton.isChecked()
-            ? MaterialTextInputPicker.newInstance(dateSelector, calendarConstraints)
+            ? MaterialTextInputPicker.newInstance(dateSelector, themeResId, calendarConstraints)
             : calendar;
     updateHeader();
 

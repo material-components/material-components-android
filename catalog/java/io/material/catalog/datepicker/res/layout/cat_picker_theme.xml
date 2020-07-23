@@ -33,7 +33,7 @@
       android:id="@+id/cat_picker_theme_group"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:orientation="horizontal">
+      android:orientation="vertical">
     <RadioButton
         android:id="@+id/cat_picker_theme_default"
         android:layout_width="wrap_content"
@@ -45,18 +45,21 @@
         android:id="@+id/cat_picker_theme_dialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/cat_picker_demo_padding"
-        android:layout_marginLeft="@dimen/cat_picker_demo_padding"
         android:text="@string/cat_picker_theme_dialog"
         android:textAppearance="?attr/textAppearanceBody1"/>
     <RadioButton
         android:id="@+id/cat_picker_theme_fullscreen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/cat_picker_demo_padding"
-        android:layout_marginLeft="@dimen/cat_picker_demo_padding"
         android:text="@string/cat_picker_theme_fullscreen"
         android:textAppearance="?attr/textAppearanceBody1"/>
+
+    <RadioButton
+      android:id="@+id/cat_picker_theme_custom"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/cat_picker_theme_custom"
+      android:textAppearance="?attr/textAppearanceBody1"/>
 
   </RadioGroup>
 </LinearLayout>

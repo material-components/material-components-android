@@ -45,6 +45,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
+import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
 import com.google.android.material.button.MaterialButton;
 import java.util.Calendar;
@@ -78,7 +79,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
 
   @VisibleForTesting static final Object SELECTOR_TOGGLE_TAG = "SELECTOR_TOGGLE_TAG";
 
-  private int themeResId;
+  @StyleRes private int themeResId;
   @Nullable private DateSelector<S> dateSelector;
   @Nullable private CalendarConstraints calendarConstraints;
   @Nullable private Month current;
@@ -92,7 +93,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
   @NonNull
   static <T> MaterialCalendar<T> newInstance(
       DateSelector<T> dateSelector,
-      int themeResId,
+      @StyleRes int themeResId,
       @NonNull CalendarConstraints calendarConstraints) {
     MaterialCalendar<T> materialCalendar = new MaterialCalendar<>();
     Bundle args = new Bundle();

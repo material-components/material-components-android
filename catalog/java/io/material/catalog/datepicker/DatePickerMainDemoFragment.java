@@ -121,6 +121,8 @@ public class DatePickerMainDemoFragment extends DemoFragment {
             builder.setTheme(dialogTheme);
           } else if (themeChoice == R.id.cat_picker_theme_fullscreen) {
             builder.setTheme(fullscreenTheme);
+          } else if (themeChoice == R.id.cat_picker_theme_custom) {
+            builder.setTheme(R.style.ThemeOverlay_Catalog_MaterialCalendar_Custom);
           }
 
           if (titleChoice == R.id.cat_picker_title_custom) {
