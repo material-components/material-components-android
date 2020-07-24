@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <drawable name="mtrl_ic_previous_month">@drawable/material_ic_keyboard_arrow_right_black_24dp</drawable>
+  <drawable name="mtrl_ic_next_month">@drawable/material_ic_keyboard_arrow_left_black_24dp</drawable>
+</resources>
