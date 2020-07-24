@@ -95,11 +95,11 @@ class ViewOverlayApi14 implements ViewOverlayImpl {
 
     static {
       try {
+        //noinspection JavaReflectionMemberAccess
         invalidateChildInParentFastMethod =
             ViewGroup.class.getDeclaredMethod(
                 "invalidateChildInParentFast", int.class, int.class, Rect.class);
-      } catch (NoSuchMethodException e) {
-        throw new RuntimeException(e);
+      } catch (NoSuchMethodException ignored) {
       }
     }
 
