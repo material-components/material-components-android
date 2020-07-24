@@ -208,6 +208,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   private MaterialShapeDrawable materialShapeDrawable;
 
+  private int gestureInsetBottom;
   private boolean gestureInsetBottomIgnored;
 
   /** Default Shape Appearance to be used in bottomsheet */
@@ -770,15 +771,19 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     // If sheet is already laid out, recalculate the collapsed offset based on new setting.
     // Otherwise, let onLayoutChild handle this later.
     if (layout && viewRef != null) {
-      calculateCollapsedOffset();
-      if (state == STATE_COLLAPSED) {
-        V view = viewRef.get();
-        if (view != null) {
-          if (animate) {
-            settleToStatePendingLayout(state);
-          } else {
-            view.requestLayout();
-          }
+      updatePeekHeight(animate);
+    }
+  }
+
+  private void updatePeekHeight(boolean animate) {
+    calculateCollapsedOffset();
+    if (state == STATE_COLLAPSED) {
+      V view = viewRef.get();
+      if (view != null) {
+        if (animate) {
+          settleToStatePendingLayout(state);
+        } else {
+          view.requestLayout();
         }
       }
     }
@@ -1118,7 +1123,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     if (peekHeightAuto) {
       return Math.max(peekHeightMin, parentHeight - parentWidth * 9 / 16);
     }
-    return peekHeight;
+    return peekHeight + (gestureInsetBottomIgnored ? 0 : gestureInsetBottom);
   }
 
   private void calculateCollapsedOffset() {
@@ -1250,7 +1255,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
             @Override
             public WindowInsetsCompat onApplyWindowInsets(
                 View view, WindowInsetsCompat insets, RelativePadding initialPadding) {
-              setPeekHeight(peekHeight + insets.getMandatorySystemGestureInsets().bottom);
+              gestureInsetBottom = insets.getMandatorySystemGestureInsets().bottom;
+              updatePeekHeight(/* animate= */ false);
               return insets;
             }
           });
