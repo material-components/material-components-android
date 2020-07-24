@@ -23,8 +23,6 @@ import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wra
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
@@ -570,11 +568,7 @@ public class ChipGroup extends FlowLayout {
         int id = child.getId();
         // generates an id if it's missing
         if (id == View.NO_ID) {
-          if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1) {
-            id = View.generateViewId();
-          } else {
-            id = child.hashCode();
-          }
+          id = ViewCompat.generateViewId();
           child.setId(id);
         }
         ((Chip) child).setOnCheckedChangeListenerInternal(checkedStateTracker);
