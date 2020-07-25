@@ -770,20 +770,22 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     }
     // If sheet is already laid out, recalculate the collapsed offset based on new setting.
     // Otherwise, let onLayoutChild handle this later.
-    if (layout && viewRef != null) {
+    if (layout) {
       updatePeekHeight(animate);
     }
   }
 
   private void updatePeekHeight(boolean animate) {
-    calculateCollapsedOffset();
-    if (state == STATE_COLLAPSED) {
-      V view = viewRef.get();
-      if (view != null) {
-        if (animate) {
-          settleToStatePendingLayout(state);
-        } else {
-          view.requestLayout();
+    if (viewRef != null) {
+      calculateCollapsedOffset();
+      if (state == STATE_COLLAPSED) {
+        V view = viewRef.get();
+        if (view != null) {
+          if (animate) {
+            settleToStatePendingLayout(state);
+          } else {
+            view.requestLayout();
+          }
         }
       }
     }
