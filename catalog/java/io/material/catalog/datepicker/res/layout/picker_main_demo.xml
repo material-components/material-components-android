@@ -42,6 +42,7 @@
     <include layout="@layout/cat_picker_opening_month"/>
     <include layout="@layout/cat_picker_selection"/>
     <include layout="@layout/cat_picker_input_mode"/>
+    <include layout="@layout/cat_picker_show_toggle_input_mode"/>
 
   </LinearLayout>
 

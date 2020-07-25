@@ -99,6 +99,7 @@ public class DatePickerMainDemoFragment extends DemoFragment {
     final RadioGroup opening = root.findViewById(R.id.cat_picker_opening_month_group);
     final RadioGroup selection = root.findViewById(R.id.cat_picker_selection_group);
     final RadioGroup inputMode = root.findViewById(R.id.cat_picker_input_mode_group);
+    final RadioGroup toggleInputMode = root.findViewById(R.id.cat_picker_toggle_input_mode_group);
 
     launcher.setOnClickListener(
         v -> {
@@ -111,6 +112,7 @@ public class DatePickerMainDemoFragment extends DemoFragment {
           int openingChoice = opening.getCheckedRadioButtonId();
           int selectionChoice = selection.getCheckedRadioButtonId();
           int inputModeChoices = inputMode.getCheckedRadioButtonId();
+          int toggleInputModeChoices = toggleInputMode.getCheckedRadioButtonId();
 
           MaterialDatePicker.Builder<?> builder =
               setupDateSelectorBuilder(selectionModeChoice, selectionChoice, inputModeChoices);
@@ -125,6 +127,10 @@ public class DatePickerMainDemoFragment extends DemoFragment {
 
           if (titleChoice == R.id.cat_picker_title_custom) {
             builder.setTitleText(R.string.cat_picker_title_custom);
+          }
+
+          if (toggleInputModeChoices == R.id.cat_picker_toggle_input_mode_hidden){
+            builder.showToggleInputMode(false);
           }
 
           try {
