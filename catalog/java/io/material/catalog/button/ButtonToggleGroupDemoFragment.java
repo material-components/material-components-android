@@ -22,6 +22,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.LinearLayout;
+
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import com.google.android.material.button.MaterialButtonToggleGroup;
@@ -47,17 +51,26 @@ public class ButtonToggleGroupDemoFragment extends DemoFragment {
         layoutInflater.inflate(getButtonToggleGroupContent(), viewGroup, /* attachToRoot= */ false);
     SwitchMaterial requireSelectionToggle = view.findViewById(R.id.switch_toggle);
 
-    requireSelectionToggle.setOnCheckedChangeListener(
-        (buttonView, isChecked) -> {
-          List<MaterialButtonToggleGroup> toggleGroups =
+      List<MaterialButtonToggleGroup> toggleGroups =
               DemoUtils.findViewsWithType(view, MaterialButtonToggleGroup.class);
-          for (MaterialButtonToggleGroup toggleGroup : toggleGroups) {
-            toggleGroup.setSelectionRequired(isChecked);
-          }
-        });
+      requireSelectionToggle.setOnCheckedChangeListener(
+              (buttonView, isChecked) -> {
+                  for (MaterialButtonToggleGroup toggleGroup : toggleGroups) {
+                      toggleGroup.setSelectionRequired(isChecked);
+                  }
+              });
 
-    List<MaterialButtonToggleGroup> toggleGroups =
-        DemoUtils.findViewsWithType(view, MaterialButtonToggleGroup.class);
+      SwitchMaterial verticalOrientationToggle = view.findViewById(R.id.orientation_switch_toggle);
+      verticalOrientationToggle.setOnCheckedChangeListener((buttonView, isChecked) -> {
+          for (MaterialButtonToggleGroup toggleGroup : toggleGroups) {
+              if (isChecked) {
+                  toggleGroup.setOrientation(LinearLayout.VERTICAL);
+              } else {
+                  toggleGroup.setOrientation(LinearLayout.HORIZONTAL);
+              }
+          }
+      });
+
     for (MaterialButtonToggleGroup toggleGroup : toggleGroups) {
       toggleGroup.addOnButtonCheckedListener(
           new OnButtonCheckedListener() {
@@ -69,8 +82,7 @@ public class ButtonToggleGroupDemoFragment extends DemoFragment {
             }
           });
     }
-    ;
-    return view;
+      return view;
   }
 
   @LayoutRes

@@ -153,5 +153,15 @@
       android:enabled="true"
       android:text="@string/cat_button_require_selection" />
 
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/orientation_switch_toggle"
+        android:paddingTop="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:checked="false"
+        android:enabled="true"
+        android:text="@string/cat_button_vertical_orientation" />
+
   </LinearLayout>
 </ScrollView>
