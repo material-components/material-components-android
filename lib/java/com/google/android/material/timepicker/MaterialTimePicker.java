@@ -21,6 +21,7 @@ import com.google.android.material.R;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import androidx.fragment.app.DialogFragment;
@@ -40,6 +41,7 @@ import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.LinkedHashSet;
 
 /** A {@link Dialog} with a clock display and a clock face to choose the time. */
 public final class MaterialTimePicker extends DialogFragment {
@@ -88,8 +90,6 @@ public final class MaterialTimePicker extends DialogFragment {
 
   private TimeModel time = new TimeModel();
 
-  private OnTimeSetListener listener;
-
   @NonNull
   public static MaterialTimePicker newInstance() {
     return new MaterialTimePicker();
@@ -123,6 +123,15 @@ public final class MaterialTimePicker extends DialogFragment {
   public int getInputMode() {
     return inputMode;
   }
+  
+  private final LinkedHashSet<OnTimeSetListener>
+      onPositiveButtonClickListeners = new LinkedHashSet<>();
+  private final LinkedHashSet<View.OnClickListener> onNegativeButtonClickListeners =
+      new LinkedHashSet<>();
+  private final LinkedHashSet<DialogInterface.OnCancelListener> onCancelListeners =
+      new LinkedHashSet<>();
+  private final LinkedHashSet<DialogInterface.OnDismissListener> onDismissListeners =
+      new LinkedHashSet<>();
 
   @NonNull
   @Override
@@ -195,8 +204,11 @@ public final class MaterialTimePicker extends DialogFragment {
     okButton.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
-        if (listener != null) {
-          listener.onTimeSet(MaterialTimePicker.this);
+         for (OnTimeSetListener listener :
+            onPositiveButtonClickListeners) {
+          if (listener != null) {
+            listener.onTimeSet(MaterialTimePicker.this);
+          }
         }
         dismiss();
       }
@@ -206,6 +218,11 @@ public final class MaterialTimePicker extends DialogFragment {
     cancelButton.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
+        for (View.OnClickListener listener : onNegativeButtonClickListeners) {
+          if (listener != null) {
+            listener.onClick(v);
+          }
+        }
         dismiss();
       }
     });
@@ -220,6 +237,31 @@ public final class MaterialTimePicker extends DialogFragment {
         });
 
     return root;
+  }
+
+  
+  @Override
+  public final void onCancel(@NonNull DialogInterface dialogInterface) {
+    for (DialogInterface.OnCancelListener listener : onCancelListeners) {
+      if (listener != null) {
+        listener.onCancel(dialogInterface);
+      }
+    }
+    super.onCancel(dialogInterface);
+  }
+
+  @Override
+  public final void onDismiss(@NonNull DialogInterface dialogInterface) {
+    for (DialogInterface.OnDismissListener listener : onDismissListeners) {
+      if (listener != null) {
+        listener.onDismiss(dialogInterface);
+      }
+    }
+    ViewGroup viewGroup = ((ViewGroup) getView());
+    if (viewGroup != null) {
+      viewGroup.removeAllViews();
+    }
+    super.onDismiss(dialogInterface);
   }
 
   private void updateInputMode(MaterialButton modeButton) {
@@ -262,13 +304,99 @@ public final class MaterialTimePicker extends DialogFragment {
         throw new IllegalArgumentException("no icon for mode: " + mode);
     }
   }
-
+  
+  /**
+   * @deprecated use {@link  MaterialTimePicker#addOnPositiveButtonClickListener}
+   */
+  @Deprecated
   public void setListener(@Nullable OnTimeSetListener listener) {
-    this.listener = listener;
+    addOnPositiveButtonClickListener(listener);
   }
 
   @Nullable
   TimePickerClockPresenter getTimePickerClockPresenter() {
     return timePickerClockPresenter;
+  }
+  
+  /** The supplied listener is called when the user confirms a valid selection. */
+  public boolean addOnPositiveButtonClickListener(
+      OnTimeSetListener onPositiveButtonClickListener) {
+    return onPositiveButtonClickListeners.add(onPositiveButtonClickListener);
+  }
+
+  /**
+   * Removes a listener previously added via {@link
+   * MaterialTimePicker#addOnPositiveButtonClickListener}.
+   */
+  public boolean removeOnPositiveButtonClickListener(
+      OnTimeSetListener onPositiveButtonClickListener) {
+    return onPositiveButtonClickListeners.remove(onPositiveButtonClickListener);
+  }
+
+  /**
+   * Removes all listeners added via {@link MaterialTimePicker#addOnPositiveButtonClickListener}.
+   */
+  public void clearOnPositiveButtonClickListeners() {
+    onPositiveButtonClickListeners.clear();
+  }
+
+  /** The supplied listener is called when the user clicks the cancel button. */
+  public boolean addOnNegativeButtonClickListener(
+      View.OnClickListener onNegativeButtonClickListener) {
+    return onNegativeButtonClickListeners.add(onNegativeButtonClickListener);
+  }
+
+  /**
+   * Removes a listener previously added via {@link
+   * MaterialTimePicker#addOnNegativeButtonClickListener}.
+   */
+  public boolean removeOnNegativeButtonClickListener(
+      View.OnClickListener onNegativeButtonClickListener) {
+    return onNegativeButtonClickListeners.remove(onNegativeButtonClickListener);
+  }
+
+  /**
+   * Removes all listeners added via {@link MaterialTimePicker#addOnNegativeButtonClickListener}.
+   */
+  public void clearOnNegativeButtonClickListeners() {
+    onNegativeButtonClickListeners.clear();
+  }
+
+  /**
+   * The supplied listener is called when the user cancels the picker via back button or a touch
+   * outside the view. It is not called when the user clicks the cancel button. To add a listener
+   * for use when the user clicks the cancel button, use {@link
+   * MaterialTimePicker#addOnNegativeButtonClickListener}.
+   */
+  public boolean addOnCancelListener(DialogInterface.OnCancelListener onCancelListener) {
+    return onCancelListeners.add(onCancelListener);
+  }
+
+  /** Removes a listener previously added via {@link MaterialTimePicker#addOnCancelListener}. */
+  public boolean removeOnCancelListener(DialogInterface.OnCancelListener onCancelListener) {
+    return onCancelListeners.remove(onCancelListener);
+  }
+
+  /** Removes all listeners added via {@link MaterialTimePicker#addOnCancelListener}. */
+  public void clearOnCancelListeners() {
+    onCancelListeners.clear();
+  }
+
+  /**
+   * The supplied listener is called whenever the DialogFragment is dismissed, no matter how it is
+   * dismissed.
+   */
+  public boolean addOnDismissListener(DialogInterface.OnDismissListener onDismissListener) {
+    return onDismissListeners.add(onDismissListener);
+  }
+
+  /** Removes a listener previously added via {@link MaterialTimePicker#addOnDismissListener}. */
+  public boolean removeOnDismissListener(DialogInterface.OnDismissListener onDismissListener) {
+    return onDismissListeners.remove(onDismissListener);
+  }
+
+  /** Removes all listeners added via {@link MaterialTimePicker#addOnDismissListener}. */
+  public void clearOnDismissListeners() {
+    onDismissListeners.clear();
   }
 }
