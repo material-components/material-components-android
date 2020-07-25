@@ -67,6 +67,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
   private static final String TITLE_TEXT_RES_ID_KEY = "TITLE_TEXT_RES_ID_KEY";
   private static final String TITLE_TEXT_KEY = "TITLE_TEXT_KEY";
   private static final String INPUT_MODE_KEY = "INPUT_MODE_KEY";
+  private static final String SHOW_TOGGLE_INPUT_MODE_KEY = "SHOW_TOGGLE_INPUT_MODE_KEY";
 
   static final Object CONFIRM_BUTTON_TAG = "CONFIRM_BUTTON_TAG";
   static final Object CANCEL_BUTTON_TAG = "CANCEL_BUTTON_TAG";
@@ -123,6 +124,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
   private CharSequence titleText;
   private boolean fullscreen;
   @InputMode private int inputMode;
+  private boolean showToggleInputMode;
 
   private TextView headerSelectionText;
   private CheckableImageButton headerToggleButton;
@@ -139,6 +141,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     args.putInt(TITLE_TEXT_RES_ID_KEY, options.titleTextResId);
     args.putCharSequence(TITLE_TEXT_KEY, options.titleText);
     args.putInt(INPUT_MODE_KEY, options.inputMode);
+    args.putBoolean(SHOW_TOGGLE_INPUT_MODE_KEY,options.showToggleInputMode);
     materialDatePickerDialogFragment.setArguments(args);
     return materialDatePickerDialogFragment;
   }
@@ -157,6 +160,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     bundle.putParcelable(CALENDAR_CONSTRAINTS_KEY, constraintsBuilder.build());
     bundle.putInt(TITLE_TEXT_RES_ID_KEY, titleTextResId);
     bundle.putCharSequence(TITLE_TEXT_KEY, titleText);
+    bundle.putBoolean(SHOW_TOGGLE_INPUT_MODE_KEY, showToggleInputMode);
   }
 
   @Override
@@ -169,6 +173,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     titleTextResId = activeBundle.getInt(TITLE_TEXT_RES_ID_KEY);
     titleText = activeBundle.getCharSequence(TITLE_TEXT_KEY);
     inputMode = activeBundle.getInt(INPUT_MODE_KEY);
+    showToggleInputMode = activeBundle.getBoolean(SHOW_TOGGLE_INPUT_MODE_KEY);
   }
 
   private int getThemeResId(Context context) {
@@ -232,6 +237,11 @@ public final class MaterialDatePicker<S> extends DialogFragment {
       titleTextView.setText(titleTextResId);
     }
     initHeaderToggle(context);
+    if (showToggleInputMode){
+      headerToggleButton.setVisibility(View.VISIBLE);
+    } else {
+      headerToggleButton.setVisibility(View.GONE);
+    }
 
     confirmButton = root.findViewById(R.id.confirm_button);
     if (dateSelector.isSelectionComplete()) {
@@ -534,6 +544,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     CharSequence titleText = null;
     @Nullable S selection = null;
     @InputMode int inputMode = INPUT_MODE_CALENDAR;
+    boolean showToggleInputMode = true;
 
     private Builder(DateSelector<S> dateSelector) {
       this.dateSelector = dateSelector;
@@ -614,6 +625,12 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     @NonNull
     public Builder<S> setInputMode(@InputMode int inputMode) {
       this.inputMode = inputMode;
+      return this;
+    }
+
+    /** Used to enable the button to change the input mode */
+    public  Builder<S> showToggleInputMode(boolean showToggleInputMode) {
+      this.showToggleInputMode = showToggleInputMode;
       return this;
     }
 
