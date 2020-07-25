@@ -100,4 +100,11 @@
   <!-- Indicates that the picker will start with text input mode [CHAR LIMIT=25] -->
   <string name="cat_picker_input_mode_text">Text Input</string>
 
+  <!-- Grouping label for a set of radio buttons that enable the toggle for the input mode [CHAR LIMIT=50] -->
+  <string name="cat_picker_toggle_input_mode">Toggle Input Mode</string>
+  <!-- Indicates that the toggle for the input mode is enabled [CHAR LIMIT=25] -->
+  <string name="cat_picker_toggle_input_mode_enabled">Enabled</string>
+  <!-- Indicates that the toggle for the input mode is disabled [CHAR LIMIT=25] -->
+  <string name="cat_picker_toggle_input_mode_disabled">Disabled</string>
+
 </resources>
