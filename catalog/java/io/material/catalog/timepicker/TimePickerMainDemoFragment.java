@@ -79,7 +79,7 @@ public class TimePickerMainDemoFragment extends DemoFragment {
       materialTimePicker.setHour(hour);
       materialTimePicker.setMinute(minute);
 
-      materialTimePicker.setListener(dialog -> {
+      materialTimePicker.addOnPositiveButtonClickListener(dialog -> {
         int newHour = dialog.getHour();
         int newMinute = dialog.getMinute();
         TimePickerMainDemoFragment.this.onTimeSet(newHour, newMinute);
