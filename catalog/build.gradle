@@ -18,6 +18,8 @@ dependencies {
 
   api compatibility("recyclerViewSelection")
 
+  lintChecks project(':lint-checks')
+
   androidTestImplementation "androidx.test:core:${project.rootProject.ext.testRunnerVersion}"
   androidTestImplementation "androidx.test:runner:${project.rootProject.ext.testRunnerVersion}"
   androidTestImplementation "androidx.test:rules:${project.rootProject.ext.testRunnerVersion}"
