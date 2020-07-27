@@ -109,6 +109,7 @@ public class SingleDateSelector implements DateSelector<Long> {
     SimpleDateFormat format = UtcDates.getTextInputFormat();
     String formatHint = UtcDates.getTextInputHint(root.getResources(), format);
 
+    dateTextInput.setPlaceholderText(formatHint);
     if (selectedItem != null) {
       dateEditText.setText(format.format(selectedItem));
     }

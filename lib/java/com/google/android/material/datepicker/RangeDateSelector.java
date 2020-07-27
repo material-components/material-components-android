@@ -200,6 +200,8 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
     }
 
     String formatHint = UtcDates.getTextInputHint(root.getResources(), format);
+    startTextInput.setPlaceholderText(formatHint);
+    endTextInput.setPlaceholderText(formatHint);
 
     startEditText.addTextChangedListener(
         new DateFormatTextWatcher(formatHint, format, startTextInput, constraints) {
