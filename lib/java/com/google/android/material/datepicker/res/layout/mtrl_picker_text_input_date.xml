@@ -15,18 +15,20 @@
     limitations under the License.
 -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/mtrl_calendar_text_input_frame"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingTop="@dimen/mtrl_calendar_text_input_padding_top"
-    android:paddingBottom="16dp"
-    android:paddingLeft="@dimen/mtrl_calendar_content_padding"
-    android:paddingRight="@dimen/mtrl_calendar_content_padding">
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/mtrl_calendar_text_input_frame"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:paddingTop="@dimen/mtrl_calendar_text_input_padding_top"
+  android:paddingBottom="16dp"
+  android:paddingLeft="@dimen/mtrl_calendar_content_padding"
+  android:paddingRight="@dimen/mtrl_calendar_content_padding">
 
   <com.google.android.material.textfield.TextInputLayout
       android:id="@+id/mtrl_picker_text_input_date"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content">
+      android:layout_height="wrap_content"
+      app:endIconMode="clear_text">
 
     <com.google.android.material.textfield.TextInputEditText
         android:layout_width="match_parent"
