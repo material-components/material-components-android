@@ -302,6 +302,9 @@ val transform = MaterialContainerTransform().apply {
   startView = fab
   endView = bottomToolbar
 
+  // Ensure the container transform only runs on a single target
+  addTarget(endView)
+
   // Optionally add a curved path to the transform
   pathMotion = MaterialArcMotion()
 
