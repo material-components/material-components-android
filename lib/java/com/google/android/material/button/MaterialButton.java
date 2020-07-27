@@ -48,6 +48,7 @@ import android.widget.CompoundButton;
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DimenRes;
+import androidx.annotation.Dimension;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
@@ -992,6 +993,47 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
       this.iconGravity = iconGravity;
       updateIconPosition(getMeasuredWidth(), getMeasuredHeight());
     }
+  }
+
+  /**
+   * Sets the button bottom inset
+   *
+   * @attr ref com.google.android.material.R.styleable#MaterialButton_android_insetBottom
+   * @see #getInsetBottom()
+   */
+  public void setInsetBottom(@Dimension int insetBottom) {
+    materialButtonHelper.setInsetBottom(insetBottom);
+  }
+
+  /**
+   * Gets the bottom inset for this button
+   *
+   * @attr ref com.google.android.material.R.styleable#MaterialButton_android_insetBottom
+   * @see #setInsetTop(int)
+   */
+  @Dimension
+  public int getInsetBottom() {
+    return materialButtonHelper.getInsetBottom();
+  }
+  /**
+   * Sets the button top inset
+   *
+   * @attr ref com.google.android.material.R.styleable#MaterialButton_android_insetTop
+   * @see #getInsetBottom()
+   */
+  public void setInsetTop(@Dimension int insetTop) {
+    materialButtonHelper.setInsetTop(insetTop);
+  }
+
+  /**
+   * Gets the top inset for this button
+   *
+   * @attr ref com.google.android.material.R.styleable#MaterialButton_android_insetTop
+   * @see #setInsetTop(int)
+   */
+  @Dimension
+  public int getInsetTop() {
+    return materialButtonHelper.getInsetTop();
   }
 
   @Override
