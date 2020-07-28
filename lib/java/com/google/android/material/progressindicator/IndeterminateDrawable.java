@@ -126,6 +126,7 @@ public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityC
           displayedIndicatorWidth,
           displayedRoundedCornerRadius);
     }
+    canvas.restore();
   }
 
   // ******************* Setter and getter *******************
