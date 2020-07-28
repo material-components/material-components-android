@@ -109,10 +109,19 @@ public class ProgressIndicator extends ProgressBar {
   private boolean isParentDoneInitializing;
 
   /**
+   * The time, in milliseconds, that the progress indicator will wait to show once the component
+   * becomes visible. If set to zero (as default) or negative values, the show action will start
+   * immediately.
+   */
+  private int showDelay;
+
+  /**
    * The minimum time, in milliseconds, that the requested hide action will wait to start once
    * {@link ProgressIndicator#show()} is called. If set to zero or negative values, the requested
    * hide action will start as soon as {@link ProgressIndicator#hide()} is called. This value is
    * capped to {@link #MAX_HIDE_DELAY}.
+   *
+   * @see #showDelay
    */
   private int minHideDelay;
 
@@ -176,10 +185,10 @@ public class ProgressIndicator extends ProgressBar {
         context.obtainStyledAttributes(
             attrs, R.styleable.ProgressIndicator, defStyleAttr, defStyleRes);
 
-    if (a.hasValue(R.styleable.ProgressIndicator_minHideDelay)) {
-      int minHideDelayUncapped = a.getInt(R.styleable.ProgressIndicator_minHideDelay, -1);
-      minHideDelay = min(minHideDelayUncapped, MAX_HIDE_DELAY);
-    }
+    showDelay = a.getInt(R.styleable.ProgressIndicator_showDelay, -1);
+
+    int minHideDelayUncapped = a.getInt(R.styleable.ProgressIndicator_minHideDelay, -1);
+    minHideDelay = min(minHideDelayUncapped, MAX_HIDE_DELAY);
 
     a.recycle();
   }
@@ -276,12 +285,25 @@ public class ProgressIndicator extends ProgressBar {
   // ******************** Visibility control **********************
 
   /**
+   * Shows the progress indicator. If {@code showDelay} has been set to a positive value, wait until
+   * the delay elapsed before starting the show action. Otherwise start showing immediately.
+   */
+  public void show() {
+    if (showDelay > 0) {
+      removeCallbacks(delayedShow);
+      postDelayed(delayedShow, showDelay);
+    } else {
+      delayedShow.run();
+    }
+  }
+
+  /**
    * Sets the visibility to {@code VISIBLE}. If this changes the visibility it will invoke {@code
    * onVisibilityChanged} and handle the visibility with animation of the drawables.
    *
    * @see #onVisibilityChanged(View, int)
    */
-  public void show() {
+  private void internalShow() {
     if (minHideDelay > 0) {
       // The hide delay is positive, saves the time of starting show action.
       lastShowStartTime = SystemClock.uptimeMillis();
@@ -290,10 +312,16 @@ public class ProgressIndicator extends ProgressBar {
   }
 
   /**
-   * Hide the progress indicator. If {@code minHideDelay} has been set to positive value, wait until
-   * the delay elapsed before starting hide action. Otherwise start hiding immediately.
+   * Hides the progress indicator. If {@code minHideDelay} has been set to a positive value, wait
+   * until the delay elapsed before starting the hide action. Otherwise start hiding immediately.
    */
   public void hide() {
+    if (getVisibility() != VISIBLE) {
+      // No need to hide, as the component is still invisible.
+      removeCallbacks(delayedShow);
+      return;
+    }
+
     removeCallbacks(delayedHide);
     long timeElapsedSinceShowStart = SystemClock.uptimeMillis() - lastShowStartTime;
     boolean enoughTimeElapsed = timeElapsedSinceShowStart >= minHideDelay;
@@ -349,14 +377,15 @@ public class ProgressIndicator extends ProgressBar {
     registerAnimationCallbacks();
     // Shows with animation.
     if (visibleToUser()) {
-      show();
+      internalShow();
     }
   }
 
   @Override
   protected void onDetachedFromWindow() {
-    // Removes the delayedHide runnable from the queue if it has been scheduled.
+    // Removes the delayedHide and delatedShow runnables from the queue if it has been scheduled.
     removeCallbacks(delayedHide);
+    removeCallbacks(delayedShow);
     getCurrentDrawable().hideNow();
     unregisterAnimationCallbacks();
     super.onDetachedFromWindow();
@@ -968,6 +997,19 @@ public class ProgressIndicator extends ProgressBar {
   }
 
   // ************************ In-place defined parameters ****************************
+
+  /**
+   * The runnable, which executes the start action. This is used to schedule delayed show actions.
+   *
+   * @see #show()
+   */
+  private final Runnable delayedShow =
+      new Runnable() {
+        @Override
+        public void run() {
+          internalShow();
+        }
+      };
 
   /**
    * The runnable, which executes the hide action. This is used to schedule delayed hide actions.

@@ -109,10 +109,17 @@
     <attr name="linearSeamless" format="boolean"/>
 
     <!--
+      The time, in milliseconds, that the progress indicator will wait to show
+      once show() is called. If set to zero or negative values (-1 as default),
+      the show action will start immediately.
+    -->
+    <attr name="showDelay" format="integer"/>
+
+    <!--
       The minimum time, in milliseconds, that the requested hide action will
       wait to start once show action is started. If set to zero or negative
-      values, the requested hide action will start immediately. This value is
-      capped to a limit defined in ProgressIndicator class.
+      values (-1 as default), the requested hide action will start immediately.
+      This value is capped to a limit defined in ProgressIndicator class.
     -->
     <attr name="minHideDelay" format="integer" />
 
