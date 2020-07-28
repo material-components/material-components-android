@@ -51,7 +51,7 @@
     android:gravity="center"
     android:insetBottom="0dp"
     android:insetTop="0dp"
-    app:icon="@drawable/material_ic_keyboard_arrow_left_black_24dp"/>
+    app:icon="@drawable/material_ic_keyboard_arrow_previous_black_24dp"/>
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/month_navigation_next"
@@ -61,6 +61,6 @@
     android:gravity="center"
     android:insetBottom="0dp"
     android:insetTop="0dp"
-    app:icon="@drawable/material_ic_keyboard_arrow_right_black_24dp"/>
+    app:icon="@drawable/material_ic_keyboard_arrow_next_black_24dp"/>
 
 </LinearLayout>
