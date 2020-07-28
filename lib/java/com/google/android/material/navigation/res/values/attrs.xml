@@ -64,5 +64,12 @@
     <!-- Fill color for the item background shape. Used if itemBackground isn't set and there is an
          itemShapeAppearance or itemShapeAppearanceOverlay. -->
     <attr name="itemShapeFillColor" format="color"/>
+    <!-- Shape appearance style reference for NavigationView. Attribute declaration is in the Shape
+         package. -->
+    <attr name="shapeAppearance"/>
+    <!-- Shape appearance overlay style reference for NavigationView. To be used to augment
+         attributes declared in the shapeAppearance. Attribute declaration is in the Shape package.
+    -->
+    <attr name="shapeAppearanceOverlay"/>
   </declare-styleable>
 </resources>
