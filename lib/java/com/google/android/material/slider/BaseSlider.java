@@ -102,7 +102,7 @@ import java.util.List;
  * displays the selected value using letters to indicate magnitude (e.g.: 1.5K, 3M, 12B, etc..).
  *
  * <p>With the default style {@link
- * com.google.android.material.R.style#Widget_MaterialComponents_Slider}, colorPrimary and
+ * com.google.android.material.R.style#Widget.MaterialComponents.Slider}, colorPrimary and
  * colorOnPrimary are used to customize the color of the slider when enabled, and colorOnSurface is
  * used when disabled. The following attributes are used to customize the slider's appearance
  * further:
@@ -156,6 +156,7 @@ import java.util.List;
  * @attr ref com.google.android.material.R.styleable#Slider_android_stepSize
  * @attr ref com.google.android.material.R.styleable#Slider_android_valueFrom
  * @attr ref com.google.android.material.R.styleable#Slider_android_valueTo
+ * @attr ref com.google.android.material.R.styleable#Slider_android_enabled
  * @attr ref com.google.android.material.R.styleable#Slider_haloColor
  * @attr ref com.google.android.material.R.styleable#Slider_haloRadius
  * @attr ref com.google.android.material.R.styleable#Slider_labelBehavior
@@ -349,6 +350,8 @@ abstract class BaseSlider<
 
     accessibilityManager =
         (AccessibilityManager) getContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
+
+
   }
 
   private void loadResources(@NonNull Resources resources) {
@@ -428,6 +431,9 @@ abstract class BaseSlider<
     setTrackHeight(a.getDimensionPixelSize(R.styleable.Slider_trackHeight, 0));
 
     labelBehavior = a.getInt(R.styleable.Slider_labelBehavior, LABEL_FLOATING);
+
+    setEnabled(a.getBoolean(R.styleable.Slider_android_enabled, true));
+
     a.recycle();
   }
 
@@ -1206,6 +1212,11 @@ abstract class BaseSlider<
     invalidate();
   }
 
+  /**
+   * Enable or disable the Slider
+   * @see #isEnabled()
+   * @attr ref com.google.android.material.R.styleable#Slider_android_enabled
+   */
   @Override
   public void setEnabled(boolean enabled) {
     super.setEnabled(enabled);
