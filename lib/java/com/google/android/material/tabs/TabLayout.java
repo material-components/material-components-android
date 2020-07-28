@@ -816,6 +816,10 @@ public class TabLayout extends HorizontalScrollView {
     Tab tab = createTabFromPool();
     tab.parent = this;
     tab.view = createTabView(tab);
+    if (tab.id != NO_ID) {
+      tab.view.setId(tab.id);
+    }
+
     return tab;
   }
 
@@ -1885,6 +1889,7 @@ public class TabLayout extends HorizontalScrollView {
     @Nullable public TabLayout parent;
     // TODO(b/76413401): make package private after the widget migration is finished
     @NonNull public TabView view;
+    private int id = NO_ID;
 
     // TODO(b/76413401): make package private constructor after the widget migration is finished
     public Tab() {
@@ -1907,6 +1912,29 @@ public class TabLayout extends HorizontalScrollView {
     public Tab setTag(@Nullable Object tag) {
       this.tag = tag;
       return this;
+    }
+
+    /**
+     * Give this tab an id, useful for testing.
+     *
+     * <p> Do not rely on this if using {@link TabLayout#setupWithViewPager(ViewPager)}
+     *
+     * @param id, unique id for this tab
+     */
+    @NonNull
+    public Tab setId(int id) {
+      this.id = id;
+      if (view != null) {
+        view.setId(id);
+      }
+      return this;
+    }
+
+    /**
+     * Returns the id for this tab, {@code View.NO_ID} if not set.
+     */
+    public int getId() {
+      return id;
     }
 
     /**
@@ -2204,6 +2232,7 @@ public class TabLayout extends HorizontalScrollView {
       view = null;
       tag = null;
       icon = null;
+      id = NO_ID;
       text = null;
       contentDesc = null;
       position = INVALID_POSITION;
