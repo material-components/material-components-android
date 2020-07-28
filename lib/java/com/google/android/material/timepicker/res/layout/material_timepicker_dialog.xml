@@ -99,7 +99,6 @@
     android:layout_marginStart="8dp"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:checkable="true"
     android:minWidth="48dp"
     app:iconTint="@color/material_timepicker_modebutton_tint"
     app:iconPadding="0dp"

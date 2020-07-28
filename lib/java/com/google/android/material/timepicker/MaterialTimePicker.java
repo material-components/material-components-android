@@ -223,7 +223,6 @@ public final class MaterialTimePicker extends DialogFragment {
   }
 
   private void updateInputMode(MaterialButton modeButton) {
-    modeButton.setChecked(false);
     if (activePresenter != null) {
       activePresenter.hide();
     }
