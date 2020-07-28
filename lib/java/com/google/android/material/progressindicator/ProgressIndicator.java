@@ -184,24 +184,31 @@ public class ProgressIndicator extends ProgressBar {
     a.recycle();
   }
 
+  /**
+   * Initializes the builtin drawables for LINEAR and CIRCULAR types.
+   *
+   * @throws IllegalStateException If it gets called for the CUSTOM type.
+   */
   private void initializeDrawables() {
-    // Creates and sets the determinate and indeterminate drawables based on track shape.
-    if (spec.indicatorType == LINEAR) {
-      DrawingDelegate drawingDelegate = new LinearDrawingDelegate();
-      IndeterminateAnimatorDelegate<AnimatorSet> animatorDelegate =
-          isLinearSeamless()
-              ? new LinearIndeterminateSeamlessAnimatorDelegate()
-              : new LinearIndeterminateNonSeamlessAnimatorDelegate(getContext());
-      setIndeterminateDrawable(
-          new IndeterminateDrawable(getContext(), spec, drawingDelegate, animatorDelegate));
-      setProgressDrawable(new DeterminateDrawable(getContext(), spec, drawingDelegate));
-    } else {
-      DrawingDelegate drawingDelegate = new CircularDrawingDelegate();
-      setIndeterminateDrawable(
-          new IndeterminateDrawable(
-              getContext(), spec, drawingDelegate, new CircularIndeterminateAnimatorDelegate()));
-      setProgressDrawable(new DeterminateDrawable(getContext(), spec, drawingDelegate));
+    if (spec.indicatorType == CUSTOM) {
+      throw new IllegalStateException(
+          "Cannot initialize builtin drawables for CUSTOM type. Please use"
+              + " initializeDrawables(IndeterminateDrawable, DeterminateDrawable) instead.");
     }
+    // Creates and sets the determinate and indeterminate drawables based on track shape.
+    DrawingDelegate drawingDelegate =
+        spec.indicatorType == LINEAR ? new LinearDrawingDelegate() : new CircularDrawingDelegate();
+    IndeterminateAnimatorDelegate<AnimatorSet> indeterminateAnimatorDelegate =
+        spec.indicatorType == LINEAR
+            ? isLinearSeamless()
+                ? new LinearIndeterminateSeamlessAnimatorDelegate()
+                : new LinearIndeterminateNonSeamlessAnimatorDelegate(getContext())
+            : new CircularIndeterminateAnimatorDelegate();
+
+    setIndeterminateDrawable(
+        new IndeterminateDrawable(
+            getContext(), spec, drawingDelegate, indeterminateAnimatorDelegate));
+    setProgressDrawable(new DeterminateDrawable(getContext(), spec, drawingDelegate));
 
     applyNewVisibility();
   }
