@@ -145,8 +145,10 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     // Set the background to a MaterialShapeDrawable if it hasn't been set or if it can be converted
     // to a MaterialShapeDrawable.
     if (getBackground() == null || getBackground() instanceof ColorDrawable) {
+      ShapeAppearanceModel shapeAppearanceModel =
+          ShapeAppearanceModel.builder(context, attrs, defStyleAttr, DEF_STYLE_RES).build();
       Drawable orig = getBackground();
-      MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable();
+      MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable(shapeAppearanceModel);
       if (orig instanceof ColorDrawable) {
         materialShapeDrawable.setFillColor(
             ColorStateList.valueOf(((ColorDrawable) orig).getColor()));
