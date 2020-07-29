@@ -220,7 +220,7 @@ public class ClockFaceView extends RadialViewGroup implements OnRotateListener {
     for (int i = 0; i < textViewPool.size(); ++i) {
       TextView tv = textViewPool.get(i);
       tv.getDrawingRect(textViewRect);
-      textViewRect.offset(tv.getPaddingLeft(), getPaddingTop());
+      textViewRect.offset(tv.getPaddingLeft(), tv.getPaddingTop());
       offsetDescendantRectToMyCoords(tv, textViewRect);
 
       scratch.set(textViewRect);
