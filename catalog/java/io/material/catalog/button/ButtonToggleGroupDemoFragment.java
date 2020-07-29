@@ -18,12 +18,17 @@ package io.material.catalog.button;
 
 import io.material.catalog.R;
 
+import static android.widget.LinearLayout.HORIZONTAL;
+import static android.widget.LinearLayout.VERTICAL;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.button.MaterialButtonToggleGroup.OnButtonCheckedListener;
 import com.google.android.material.snackbar.Snackbar;
@@ -34,6 +39,8 @@ import java.util.List;
 
 /** A fragment that displays a button toggle group demo for the Catalog app. */
 public class ButtonToggleGroupDemoFragment extends DemoFragment {
+
+  private int defaultInset;
 
   /**
    * Create a Demo View with different types of {@link MaterialButtonToggleGroup} and a switch to
@@ -46,18 +53,34 @@ public class ButtonToggleGroupDemoFragment extends DemoFragment {
     View view =
         layoutInflater.inflate(getButtonToggleGroupContent(), viewGroup, /* attachToRoot= */ false);
     SwitchMaterial requireSelectionToggle = view.findViewById(R.id.switch_toggle);
-
+    defaultInset = getResources().getDimensionPixelSize(R.dimen.mtrl_btn_inset);
+    List<MaterialButtonToggleGroup> toggleGroups =
+        DemoUtils.findViewsWithType(view, MaterialButtonToggleGroup.class);
     requireSelectionToggle.setOnCheckedChangeListener(
         (buttonView, isChecked) -> {
-          List<MaterialButtonToggleGroup> toggleGroups =
-              DemoUtils.findViewsWithType(view, MaterialButtonToggleGroup.class);
           for (MaterialButtonToggleGroup toggleGroup : toggleGroups) {
             toggleGroup.setSelectionRequired(isChecked);
           }
         });
 
-    List<MaterialButtonToggleGroup> toggleGroups =
-        DemoUtils.findViewsWithType(view, MaterialButtonToggleGroup.class);
+    SwitchMaterial verticalOrientationToggle = view.findViewById(R.id.orientation_switch_toggle);
+    verticalOrientationToggle.setOnCheckedChangeListener(
+        (buttonView, isChecked) -> {
+          for (MaterialButtonToggleGroup toggleGroup : toggleGroups) {
+            int orientation = isChecked ? VERTICAL : HORIZONTAL;
+            toggleGroup.setOrientation(orientation);
+            for (int i = 0; i < toggleGroup.getChildCount(); ++i) {
+              int inset = getInsetForOrientation(orientation);
+              MaterialButton button = (MaterialButton) toggleGroup.getChildAt(i);
+              button.setInsetBottom(inset);
+              button.setInsetTop(inset);
+              adjustParams(button.getLayoutParams(), orientation);
+            }
+
+            toggleGroup.requestLayout();
+          }
+        });
+
     for (MaterialButtonToggleGroup toggleGroup : toggleGroups) {
       toggleGroup.addOnButtonCheckedListener(
           new OnButtonCheckedListener() {
@@ -69,8 +92,17 @@ public class ButtonToggleGroupDemoFragment extends DemoFragment {
             }
           });
     }
-    ;
     return view;
+  }
+
+  private int getInsetForOrientation(int orientation) {
+    return orientation == VERTICAL ? 0 : defaultInset;
+  }
+
+  private static void adjustParams(LayoutParams layoutParams, int orientation) {
+    layoutParams.width = orientation == VERTICAL
+        ? LayoutParams.MATCH_PARENT
+        : LayoutParams.WRAP_CONTENT;
   }
 
   @LayoutRes

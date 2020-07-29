@@ -63,4 +63,5 @@
   <string description="A label for an icon-only button [CHAR LIMIT=NONE]"
       name="cat_icon_button_label_dialog">Dialog icon</string>
   <string name="cat_button_require_selection" translatable="false">Require Selection</string>
+  <string name="cat_button_vertical_orientation" translatable="false">Vertical Orientation</string>
 </resources>
