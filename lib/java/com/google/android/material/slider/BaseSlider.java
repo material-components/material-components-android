@@ -153,6 +153,7 @@ import java.util.List;
  *       be thrown when the view is laid out.
  * </ul>
  *
+ * @attr ref com.google.android.material.R.styleable#Slider_android_enabled
  * @attr ref com.google.android.material.R.styleable#Slider_android_stepSize
  * @attr ref com.google.android.material.R.styleable#Slider_android_valueFrom
  * @attr ref com.google.android.material.R.styleable#Slider_android_valueTo
@@ -428,6 +429,11 @@ abstract class BaseSlider<
     setTrackHeight(a.getDimensionPixelSize(R.styleable.Slider_trackHeight, 0));
 
     labelBehavior = a.getInt(R.styleable.Slider_labelBehavior, LABEL_FLOATING);
+
+    if (!a.getBoolean(R.styleable.Slider_android_enabled, true)) {
+      setEnabled(false);
+    }
+
     a.recycle();
   }
 
