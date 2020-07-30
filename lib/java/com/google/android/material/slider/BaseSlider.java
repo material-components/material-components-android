@@ -117,6 +117,7 @@ import java.util.List;
  *   <li>{@code thumbColor}: the color of the slider's thumb.
  *   <li>{@code thumbElevation}: the elevation of the slider's thumb.
  *   <li>{@code thumbRadius}: The radius of the slider's thumb.
+ *   <li>{@code tickVisible}: Whether to show the tick marks. Only used when the slider is in discrete mode.
  *   <li>{@code tickColorActive}: the color of the slider's tick marks for the active part of the
  *       track. Only used when the slider is in discrete mode.
  *   <li>{@code tickColorInactive}: the color of the slider's tick marks for the inactive part of
@@ -164,6 +165,7 @@ import java.util.List;
  * @attr ref com.google.android.material.R.styleable#Slider_thumbColor
  * @attr ref com.google.android.material.R.styleable#Slider_thumbElevation
  * @attr ref com.google.android.material.R.styleable#Slider_thumbRadius
+ * @attr ref com.google.android.material.R.styleable#Slider_tickVisible
  * @attr ref com.google.android.material.R.styleable#Slider_tickColor
  * @attr ref com.google.android.material.R.styleable#Slider_tickColorActive
  * @attr ref com.google.android.material.R.styleable#Slider_tickColorInactive
@@ -248,6 +250,7 @@ abstract class BaseSlider<
   private boolean forceDrawCompatHalo;
   private boolean isLongPress = false;
   private boolean dirtyConfig;
+  private boolean tickVisible = true;
 
   @NonNull private ColorStateList haloColor;
   @NonNull private ColorStateList tickColorActive;
@@ -401,6 +404,7 @@ abstract class BaseSlider<
             ? haloColor
             : AppCompatResources.getColorStateList(context, R.color.material_slider_halo_color));
 
+    tickVisible = a.getBoolean(R.styleable.Slider_tickVisible, true);
     boolean hasTickColor = a.hasValue(R.styleable.Slider_tickColor);
     int tickColorInactiveRes =
         hasTickColor ? R.styleable.Slider_tickColor : R.styleable.Slider_tickColorInactive;
@@ -1120,6 +1124,29 @@ abstract class BaseSlider<
   }
 
   /**
+   * Returns whether the tick marks are visible. Only used when the slider is in discrete mode
+   *
+   * @see #setTickVisible(boolean)
+   * @attr ref com.google.android.material.R.styleable#Slider_tickVisible
+   */
+  public boolean isTickVisible() {
+    return tickVisible;
+  }
+
+  /**
+   * Sets whether these tick marks are visible. Only used when the slider is in discrete mode
+   *
+   * @param tickVisible The visibility of tick marks.
+   * @attr ref com.google.android.material.R.styleable#Slider_tickVisible
+   */
+  public void setTickVisible(boolean tickVisible) {
+    if (this.tickVisible != tickVisible){
+      this.tickVisible = tickVisible;
+      postInvalidate();
+    }
+  }
+
+  /**
    * Returns the color of the track if the active and inactive parts aren't different.
    *
    * @throws IllegalStateException If {@code trackColorActive} and {@code trackColorInactive} have
@@ -1396,26 +1423,28 @@ abstract class BaseSlider<
   }
 
   private void drawTicks(@NonNull Canvas canvas) {
-    float[] activeRange = getActiveRange();
-    int leftPivotIndex = pivotIndex(ticksCoordinates, activeRange[0]);
-    int rightPivotIndex = pivotIndex(ticksCoordinates, activeRange[1]);
+    if (tickVisible) {
+      float[] activeRange = getActiveRange();
+      int leftPivotIndex = pivotIndex(ticksCoordinates, activeRange[0]);
+      int rightPivotIndex = pivotIndex(ticksCoordinates, activeRange[1]);
 
-    // Draw inactive ticks to the left of the smallest thumb.
-    canvas.drawPoints(ticksCoordinates, 0, leftPivotIndex * 2, inactiveTicksPaint);
+      // Draw inactive ticks to the left of the smallest thumb.
+      canvas.drawPoints(ticksCoordinates, 0, leftPivotIndex * 2, inactiveTicksPaint);
 
-    // Draw active ticks between the thumbs.
-    canvas.drawPoints(
-        ticksCoordinates,
-        leftPivotIndex * 2,
-        rightPivotIndex * 2 - leftPivotIndex * 2,
-        activeTicksPaint);
+      // Draw active ticks between the thumbs.
+      canvas.drawPoints(
+          ticksCoordinates,
+          leftPivotIndex * 2,
+          rightPivotIndex * 2 - leftPivotIndex * 2,
+          activeTicksPaint);
 
-    // Draw inactive ticks to the right of the largest thumb.
-    canvas.drawPoints(
-        ticksCoordinates,
-        rightPivotIndex * 2,
-        ticksCoordinates.length - rightPivotIndex * 2,
-        inactiveTicksPaint);
+      // Draw inactive ticks to the right of the largest thumb.
+      canvas.drawPoints(
+          ticksCoordinates,
+          rightPivotIndex * 2,
+          ticksCoordinates.length - rightPivotIndex * 2,
+          inactiveTicksPaint);
+    }
   }
 
   private void drawThumbs(@NonNull Canvas canvas, int width, int top) {
