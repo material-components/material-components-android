@@ -2851,7 +2851,7 @@ public class TabLayout extends HorizontalScrollView {
 
   class SlidingTabIndicator extends LinearLayout {
     private int selectedIndicatorHeight;
-    @NonNull private final Paint selectedIndicatorPaint;
+    @Nullable private Paint selectedIndicatorPaint;
     @NonNull private final GradientDrawable defaultSelectionIndicator;
 
     int selectedPosition = -1;
@@ -2869,11 +2869,21 @@ public class TabLayout extends HorizontalScrollView {
     SlidingTabIndicator(Context context) {
       super(context);
       setWillNotDraw(false);
-      selectedIndicatorPaint = new Paint();
       defaultSelectionIndicator = new GradientDrawable();
     }
 
     void setSelectedIndicatorColor(int color) {
+      // This allows for preservation of the drawable's intrinsic color. No need to support a
+      // transparent indicator color since the indicator drawable itself can be cleared.
+      if (color == Color.TRANSPARENT) {
+        selectedIndicatorPaint = null;
+        return;
+      }
+
+      if (selectedIndicatorPaint == null) {
+        selectedIndicatorPaint = new Paint();
+      }
+
       if (selectedIndicatorPaint.getColor() != color) {
         selectedIndicatorPaint.setColor(color);
         ViewCompat.postInvalidateOnAnimation(this);
