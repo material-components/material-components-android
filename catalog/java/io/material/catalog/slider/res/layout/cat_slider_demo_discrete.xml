@@ -16,6 +16,7 @@
   -->
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -174,6 +175,37 @@
           android:valueFrom="0"
           android:valueTo="5.75"
           android:stepSize="0.25" />
+    </LinearLayout>
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:paddingTop="@dimen/cat_slider_title_top_padding"
+      android:text="@string/cat_slider_title_6"/>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center_vertical">
+
+      <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switch_button_6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.SecondaryPalette.Green" />
+
+      <com.google.android.material.slider.Slider
+        android:id="@+id/slider_6"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginLeft="@dimen/cat_slider_left_margin"
+        android:layout_marginStart="@dimen/cat_slider_left_margin"
+        android:theme="@style/ThemeOverlay.PrimaryPalette.Green"
+        android:valueFrom="0"
+        android:valueTo="10"
+        android:stepSize="1"
+        app:tickVisible="false"/>
     </LinearLayout>
   </LinearLayout>
 </ScrollView>
