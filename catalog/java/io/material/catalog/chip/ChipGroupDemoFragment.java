@@ -34,6 +34,7 @@ import io.material.catalog.feature.DemoFragment;
 public class ChipGroupDemoFragment extends DemoFragment {
 
   private SwitchMaterial singleSelectionSwitch;
+  private SwitchMaterial selectionRequiredSwitch;
 
   @Nullable
   @Override
@@ -42,6 +43,8 @@ public class ChipGroupDemoFragment extends DemoFragment {
     View view = layoutInflater.inflate(getChipGroupContent(), viewGroup, false /* attachToRoot */);
 
     singleSelectionSwitch = view.findViewById(R.id.single_selection);
+    selectionRequiredSwitch = view.findViewById(R.id.selection_required);
+
     ChipGroup reflowGroup = view.findViewById(R.id.reflow_group);
     ChipGroup scrollGroup = view.findViewById(R.id.scroll_group);
 
@@ -53,6 +56,16 @@ public class ChipGroupDemoFragment extends DemoFragment {
           initChipGroup(reflowGroup);
           initChipGroup(scrollGroup);
         });
+
+    selectionRequiredSwitch.setOnCheckedChangeListener(
+        (buttonView, isChecked) -> {
+          reflowGroup.setSelectionRequired(isChecked);
+          scrollGroup.setSelectionRequired(isChecked);
+
+          initChipGroup(reflowGroup);
+          initChipGroup(scrollGroup);
+        });
+
     initChipGroup(reflowGroup);
     initChipGroup(scrollGroup);
 

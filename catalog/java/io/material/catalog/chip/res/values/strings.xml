@@ -31,6 +31,8 @@
 
   <string name="cat_chip_group_demo_title">Chip Group Demo</string>
   <string name="cat_chip_group_single_selection_text">Single selection</string>
+  <string name="cat_chip_group_selection_required_text">Selection required</string>
+
   <string name="cat_chip_reflow_group">Reflowing chip group</string>
   <string name="cat_chip_scroll_group">Scrolling chip group</string>
 

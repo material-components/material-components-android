@@ -29,7 +29,13 @@
         android:layout_height="wrap_content"
         android:text="@string/cat_chip_group_single_selection_text"/>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+  <com.google.android.material.switchmaterial.SwitchMaterial
+    android:id="@+id/selection_required"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/cat_chip_group_selection_required_text"/>
+
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/cat_chip_group_refresh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
