@@ -94,19 +94,16 @@ public final class MaterialTimePicker extends DialogFragment {
     void onClick(MaterialTimePicker dialog);
   }
 
-  private TimeModel time = new TimeModel();
+  private TimeModel time;
 
   @NonNull
-  public static MaterialTimePicker newInstance() {
-    return new MaterialTimePicker();
-  }
-
-  public void setHour(int hour) {
-    time.setHourOfDay(hour);
-  }
-
-  public void setMinute(int minute) {
-    time.setMinute(minute);
+  private static MaterialTimePicker newInstance(@NonNull Builder options) {
+    MaterialTimePicker fragment = new MaterialTimePicker();
+    Bundle args = new Bundle();
+    args.putParcelable(TIME_MODEL_EXTRA, options.time);
+    args.putInt(INPUT_MODE_EXTRA, options.inputMode);
+    fragment.setArguments(args);
+    return fragment;
   }
 
   public int getMinute() {
@@ -115,14 +112,6 @@ public final class MaterialTimePicker extends DialogFragment {
 
   public int getHour() {
     return time.hour % 24;
-  }
-
-  public void setTimeFormat(@TimeFormat int format) {
-    time = new TimeModel(format);
-  }
-
-  public void setInputMode(@InputMode int inputMode) {
-    this.inputMode = inputMode;
   }
 
   @InputMode
@@ -157,7 +146,7 @@ public final class MaterialTimePicker extends DialogFragment {
   @Override
   public void onCreate(@Nullable Bundle bundle) {
     super.onCreate(bundle);
-    restoreState(bundle);
+    restoreState(bundle == null ? getArguments() : bundle);
   }
 
   @Override
@@ -294,7 +283,7 @@ public final class MaterialTimePicker extends DialogFragment {
 
   /** The supplied listener is called when the user confirms a valid selection. */
   public boolean addOnPositiveButtonClickListener(
-      OnPositiveButtonClickListener onPositiveButtonClickListener) {
+      @NonNull OnPositiveButtonClickListener onPositiveButtonClickListener) {
     return positiveButtonListeners.add(onPositiveButtonClickListener);
   }
 
@@ -386,5 +375,50 @@ public final class MaterialTimePicker extends DialogFragment {
    */
   public void clearOnDismissListeners() {
     dismissListeners.clear();
+  }
+
+   /** Used to create MaterialTimePicker instances */
+  public static final class Builder {
+
+    private TimeModel time = new TimeModel();
+
+    private int inputMode;
+
+    /** Sets the input mode to start with. */
+    @NonNull
+    public Builder setInputMode(@InputMode int inputMode) {
+      this.inputMode = inputMode;
+      return this;
+    }
+
+    /** Sets the hour to start the Time picker. */
+    @NonNull
+    public Builder setHour(int hour) {
+      time.setHourOfDay(hour);
+      return this;
+    }
+
+    /** Sets the minute to start the Time picker. */
+    @NonNull
+    public Builder setMinute(int minute) {
+      time.setMinute(minute);
+      return this;
+    }
+
+    @NonNull
+    public Builder setTimeFormat(@TimeFormat int format) {
+      int hour = time.hour;
+      int minute = time.minute;
+      time = new TimeModel(format);
+      time.setMinute(minute);
+      time.setHourOfDay(hour);
+      return this;
+    }
+
+    /** Creates a {@link MaterialTimePicker} with the provided options. */
+    @NonNull
+    public MaterialTimePicker build() {
+      return MaterialTimePicker.newInstance(this);
+    }
   }
 }
