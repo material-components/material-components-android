@@ -125,6 +125,8 @@ import java.util.List;
  *       discrete mode. This is a short hand for setting both the {@code tickColorActive} and {@code
  *       tickColorInactive} to the same thing. This takes precedence over {@code tickColorActive}
  *       and {@code tickColorInactive}.
+ *   <li>{@code tickVisible}: Whether to show the tick marks. Only used when the slider is in
+ *       discrete mode.
  *   <li>{@code trackColorActive}: The color of the active part of the track.
  *   <li>{@code trackColorInactive}: The color of the inactive part of the track.
  *   <li>{@code trackColor}: The color of the whole track. This is a short hand for setting both the
@@ -167,6 +169,7 @@ import java.util.List;
  * @attr ref com.google.android.material.R.styleable#Slider_tickColor
  * @attr ref com.google.android.material.R.styleable#Slider_tickColorActive
  * @attr ref com.google.android.material.R.styleable#Slider_tickColorInactive
+ * @attr ref com.google.android.material.R.styleable#Slider_tickVisible
  * @attr ref com.google.android.material.R.styleable#Slider_trackColor
  * @attr ref com.google.android.material.R.styleable#Slider_trackColorActive
  * @attr ref com.google.android.material.R.styleable#Slider_trackColorInactive
@@ -244,6 +247,7 @@ abstract class BaseSlider<
   private int focusedThumbIdx = -1;
   private float stepSize = 0.0f;
   private float[] ticksCoordinates;
+  private boolean tickVisible = true;
   private int trackWidth;
   private boolean forceDrawCompatHalo;
   private boolean isLongPress = false;
@@ -401,6 +405,7 @@ abstract class BaseSlider<
             ? haloColor
             : AppCompatResources.getColorStateList(context, R.color.material_slider_halo_color));
 
+    tickVisible = a.getBoolean(R.styleable.Slider_tickVisible, true);
     boolean hasTickColor = a.hasValue(R.styleable.Slider_tickColor);
     int tickColorInactiveRes =
         hasTickColor ? R.styleable.Slider_tickColor : R.styleable.Slider_tickColorInactive;
@@ -1120,6 +1125,29 @@ abstract class BaseSlider<
   }
 
   /**
+   * Returns whether the tick marks are visible. Only used when the slider is in discrete mode.
+   *
+   * @see #setTickVisible(boolean)
+   * @attr ref com.google.android.material.R.styleable#Slider_tickVisible
+   */
+  public boolean isTickVisible() {
+    return tickVisible;
+  }
+
+  /**
+   * Sets whether the tick marks are visible. Only used when the slider is in discrete mode.
+   *
+   * @param tickVisible The visibility of tick marks.
+   * @attr ref com.google.android.material.R.styleable#Slider_tickVisible
+   */
+  public void setTickVisible(boolean tickVisible) {
+    if (this.tickVisible != tickVisible){
+      this.tickVisible = tickVisible;
+      postInvalidate();
+    }
+  }
+
+  /**
    * Returns the color of the track if the active and inactive parts aren't different.
    *
    * @throws IllegalStateException If {@code trackColorActive} and {@code trackColorInactive} have
@@ -1270,14 +1298,16 @@ abstract class BaseSlider<
     trackWidth = Math.max(w - trackSidePadding * 2, 0);
 
     // Update the visible tick coordinates.
-    if (stepSize > 0.0f) {
-      calculateTicksCoordinates();
-    }
+    maybeCalculateTicksCoordinates();
 
     updateHaloHotspot();
   }
 
-  private void calculateTicksCoordinates() {
+  private void maybeCalculateTicksCoordinates() {
+    if (stepSize <= 0.0f) {
+      return;
+    }
+
     validateConfigurationIfDirty();
 
     int tickCount = (int) ((valueTo - valueFrom) / stepSize + 1);
@@ -1318,9 +1348,7 @@ abstract class BaseSlider<
       validateConfigurationIfDirty();
 
       // Update the visible tick coordinates.
-      if (stepSize > 0.0f) {
-        calculateTicksCoordinates();
-      }
+      maybeCalculateTicksCoordinates();
     }
 
     super.onDraw(canvas);
@@ -1332,9 +1360,7 @@ abstract class BaseSlider<
       drawActiveTrack(canvas, trackWidth, top);
     }
 
-    if (stepSize > 0.0f) {
-      drawTicks(canvas);
-    }
+    maybeDrawTicks(canvas);
 
     if ((thumbIsPressed || isFocused()) && isEnabled()) {
       maybeDrawHalo(canvas, trackWidth, top);
@@ -1395,7 +1421,11 @@ abstract class BaseSlider<
     canvas.drawLine(left, top, right, top, activeTrackPaint);
   }
 
-  private void drawTicks(@NonNull Canvas canvas) {
+  private void maybeDrawTicks(@NonNull Canvas canvas) {
+    if (!tickVisible || stepSize <= 0.0f) {
+      return;
+    }
+
     float[] activeRange = getActiveRange();
     int leftPivotIndex = pivotIndex(ticksCoordinates, activeRange[0]);
     int rightPivotIndex = pivotIndex(ticksCoordinates, activeRange[1]);

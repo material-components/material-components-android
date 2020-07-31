@@ -34,6 +34,7 @@
   <string name="cat_slider_title_3" description="The title for a demonstration slider">Negative numbers!</string>
   <string name="cat_slider_title_4" description="The title for a demonstration slider">With a label formatter</string>
   <string name="cat_slider_title_5" description="The title for a demonstration slider">I can have decimal numbers?</string>
+  <string name="cat_slider_title_6" description="The title for a demonstration slider">Without tick marks</string>
   <string name="cat_slider_start_touch_description" description="Indicates the slider is now being touched">Slider started being touched</string>
   <string name="cat_slider_stop_touch_description" description="Indicates the slider stopped being touched">Slider stopped being touched</string>
 
