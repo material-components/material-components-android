@@ -34,9 +34,7 @@
 
   <style name="Widget.MaterialComponents.TimePicker.Display.TextInputEditText" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
     <item name="android:textAppearance">?attr/textAppearanceHeadline3</item>
-    <!-- If we use the same text size it won't fit since TextInputLayout
-         requires additional space -->
-    <item name="android:textSize" tools:ignore="SpUsage">52dp</item>
+    <item name="android:textSize" tools:ignore="SpUsage">56dp</item>
     <item name="android:paddingTop">0dp</item>
     <item name="android:paddingBottom">0dp</item>
     <item name="android:inputType">number</item>

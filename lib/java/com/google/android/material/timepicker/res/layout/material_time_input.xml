@@ -21,7 +21,6 @@
   style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
   android:layout_width="wrap_content"
   android:layout_height="wrap_content"
-  android:paddingTop="0dp"
   app:errorIconDrawable="@null"
   app:hintEnabled="false"
   app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
@@ -30,9 +29,11 @@
   <EditText
     android:id="@+id/material_timepicker_edit_text"
     style="@style/Widget.MaterialComponents.TimePicker.Display.TextInputEditText"
-    android:paddingStart="16dp"
     android:layout_width="96dp"
+    android:textCursorDrawable="@drawable/material_cursor_drawable"
     android:layout_height="80dp"
+    android:paddingStart="16dp"
+    android:paddingBottom="6dp"
     tools:ignore="LabelFor" />
 
   <TextView

@@ -28,6 +28,11 @@ import static java.util.Calendar.PM;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
+import androidx.appcompat.content.res.AppCompatResources;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -37,10 +42,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import androidx.annotation.ColorInt;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.button.MaterialButtonToggleGroup.OnButtonCheckedListener;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.TextWatcherAdapter;
 import com.google.android.material.timepicker.TimePickerView.OnSelectionChange;
+import java.lang.reflect.Field;
 import java.util.Locale;
 
 class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPresenter {
@@ -93,7 +101,6 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
     Resources res = timePickerView.getResources();
     minuteTextInput = timePickerView.findViewById(R.id.material_minute_text_input);
     hourTextInput = timePickerView.findViewById(R.id.material_hour_text_input);
-
     TextView minuteLabel = minuteTextInput.findViewById(R.id.material_label);
     TextView hourLabel = hourTextInput.findViewById(R.id.material_label);
 
@@ -121,6 +128,13 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
 
     hourEditText = hourTextInput.getTextInput().getEditText();
     minuteEditText = minuteTextInput.getTextInput().getEditText();
+    if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
+      // Our XML drawable is not colored for pre-lollipop, set color programmatically.
+      int primaryColor = MaterialColors.getColor(timePickerView, R.attr.colorPrimary);
+      setCursorDrawableColor(hourEditText, primaryColor);
+      setCursorDrawableColor(minuteEditText, primaryColor);
+    }
+
     controller = new TimePickerTextInputKeyController(hourTextInput, minuteTextInput, time);
     hourTextInput.setChipDelegate(
         new ClickActionDelegate(timePickerView.getContext(), R.string.material_hour_selection));
@@ -219,5 +233,31 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
   @Override
   public void invalidate() {
     setTime(time);
+  }
+
+  /*
+   * android:textColorDrawable doesn't have an app compat version to be able to use theme attributes
+   * for colors. We have to apply a color filter manually. This method is only meant to be used
+   * before API 21.
+   */
+  private static void setCursorDrawableColor(EditText view, @ColorInt int color) {
+    try {
+      Context context = view.getContext();
+      Field cursorDrawableResField = TextView.class.getDeclaredField("mCursorDrawableRes");
+      cursorDrawableResField.setAccessible(true);
+      int cursorDrawableResId = cursorDrawableResField.getInt(view);
+      Field editorField = TextView.class.getDeclaredField("mEditor");
+      editorField.setAccessible(true);
+      Object editor = editorField.get(view);
+      Class<?> clazz = editor.getClass();
+      Field cursorDrawableField = clazz.getDeclaredField("mCursorDrawable");
+      cursorDrawableField.setAccessible(true);
+      Drawable drawable = AppCompatResources.getDrawable(context, cursorDrawableResId);
+      drawable.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+      Drawable[] drawables = {drawable, drawable};
+      cursorDrawableField.set(editor, drawables);
+    } catch (Throwable ignored) {
+      // ignore use the drawable default color (black).
+    }
   }
 }
