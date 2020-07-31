@@ -44,4 +44,9 @@
 
   <style name="Base.Theme.MaterialComponents.Light.Dialog" parent="Base.V21.Theme.MaterialComponents.Light.Dialog"/>
 
+  <style name="Base.ThemeOverlay.MaterialComponents.MaterialAlertDialog" parent="Base.V21.ThemeOverlay.MaterialComponents.MaterialAlertDialog"/>
+
+  <style name="Base.V21.ThemeOverlay.MaterialComponents.MaterialAlertDialog" parent="Base.V14.ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+    <item name="android:windowElevation">@dimen/mtrl_alert_dialog_elevation</item>
+  </style>
 </resources>
