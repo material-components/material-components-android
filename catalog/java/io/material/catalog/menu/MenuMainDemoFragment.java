@@ -47,6 +47,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.MenuRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.snackbar.Snackbar;
 import io.material.catalog.feature.DemoFragment;
@@ -56,7 +57,22 @@ public class MenuMainDemoFragment extends DemoFragment {
 
   private static final int ICON_MARGIN = 8;
   private static final String CLIP_DATA_LABEL = "Sample text to copy";
+  private static final String KEY_POPUP_ITEM_LAYOUT = "popup_item_layout";
   @LayoutRes private int popupItemLayout;
+
+  @Override
+  public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    if (savedInstanceState != null) {
+      popupItemLayout = savedInstanceState.getInt(KEY_POPUP_ITEM_LAYOUT);
+    }
+  }
+
+  @Override
+  public void onSaveInstanceState(@NonNull Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putInt(KEY_POPUP_ITEM_LAYOUT, popupItemLayout);
+  }
 
   @Override
   public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
