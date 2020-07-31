@@ -18,9 +18,11 @@ package com.google.android.material.timepicker;
 
 import com.google.android.material.R;
 
-
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
+import android.content.DialogInterface.OnDismissListener;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import androidx.fragment.app.DialogFragment;
@@ -40,12 +42,19 @@ import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /** A {@link Dialog} with a clock display and a clock face to choose the time. */
 public final class MaterialTimePicker extends DialogFragment {
 
   private static final int CLOCK_ICON = R.drawable.ic_clock_black_24dp;
   private static final int KEYBOARD_ICON = R.drawable.ic_keyboard_black_24dp;
+
+  private final Set<OnPositiveButtonClickListener> positiveButtonListeners = new LinkedHashSet<>();
+  private final Set<OnClickListener> negativeButtonListeners = new LinkedHashSet<>();
+  private final Set<OnCancelListener> cancelListeners = new LinkedHashSet<>();
+  private final Set<OnDismissListener> dismissListeners = new LinkedHashSet<>();
 
   private TimePickerView timePickerView;
   private LinearLayout textInputView;
@@ -70,25 +79,22 @@ public final class MaterialTimePicker extends DialogFragment {
   @InputMode private int inputMode = INPUT_MODE_CLOCK;
 
   /**
-   * The callback interface used to indicate the user is done filling in
-   * the time (e.g. they clicked on the 'OK' button).
+   * The callback interface used to indicate the user is done filling in the time (e.g. they clicked
+   * on the 'OK' button).
    */
-  public interface OnTimeSetListener {
+  public interface OnPositiveButtonClickListener {
 
-    /** **
-     * Called when the user is done setting a new time and the dialog has
-     * closed.
+    /**
+     * Called when the user is done setting a new time and the dialog has closed.
      *
-     * <p> use {@link #getHour()}, {@link #getMinute()} to get the selection.
+     * <p>use {@link #getHour()}, {@link #getMinute()} to get the selection.
      *
      * @param dialog the dialog associated with this listener
      */
-    void onTimeSet(MaterialTimePicker dialog);
+    void onClick(MaterialTimePicker dialog);
   }
 
   private TimeModel time = new TimeModel();
-
-  private OnTimeSetListener listener;
 
   @NonNull
   public static MaterialTimePicker newInstance() {
@@ -135,11 +141,7 @@ public final class MaterialTimePicker extends DialogFragment {
             context, R.attr.colorSurface, MaterialTimePicker.class.getCanonicalName());
 
     MaterialShapeDrawable background =
-        new MaterialShapeDrawable(
-            context,
-            null,
-            0,
-            R.style.Widget_MaterialComponents_TimePicker);
+        new MaterialShapeDrawable(context, null, 0, R.style.Widget_MaterialComponents_TimePicker);
 
     background.initializeElevationOverlay(context);
     background.setFillColor(ColorStateList.valueOf(surfaceColor));
@@ -147,9 +149,7 @@ public final class MaterialTimePicker extends DialogFragment {
     window.setBackgroundDrawable(background);
     window.requestFeature(Window.FEATURE_NO_TITLE);
     // On some Android APIs the dialog won't wrap content by default. Explicitly update here.
-    window.setLayout(
-        ViewGroup.LayoutParams.WRAP_CONTENT,
-        ViewGroup.LayoutParams.WRAP_CONTENT);
+    window.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
     return dialog;
   }
@@ -192,23 +192,28 @@ public final class MaterialTimePicker extends DialogFragment {
     modeButton = root.findViewById(R.id.material_timepicker_mode_button);
     updateInputMode(modeButton);
     MaterialButton okButton = root.findViewById(R.id.material_timepicker_ok_button);
-    okButton.setOnClickListener(new OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        if (listener != null) {
-          listener.onTimeSet(MaterialTimePicker.this);
-        }
-        dismiss();
-      }
-    });
+    okButton.setOnClickListener(
+        new OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            for (OnPositiveButtonClickListener listener : positiveButtonListeners) {
+              listener.onClick(MaterialTimePicker.this);
+            }
+            dismiss();
+          }
+        });
 
     MaterialButton cancelButton = root.findViewById(R.id.material_timepicker_cancel_button);
-    cancelButton.setOnClickListener(new OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        dismiss();
-      }
-    });
+    cancelButton.setOnClickListener(
+        new OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            for (OnClickListener listener : negativeButtonListeners) {
+              listener.onClick(v);
+            }
+            dismiss();
+          }
+        });
 
     modeButton.setOnClickListener(
         new OnClickListener() {
@@ -220,6 +225,26 @@ public final class MaterialTimePicker extends DialogFragment {
         });
 
     return root;
+  }
+
+  @Override
+  public final void onCancel(@NonNull DialogInterface dialogInterface) {
+    for (OnCancelListener listener : cancelListeners) {
+      listener.onCancel(dialogInterface);
+    }
+    super.onCancel(dialogInterface);
+  }
+
+  @Override
+  public final void onDismiss(@NonNull DialogInterface dialogInterface) {
+    for (OnDismissListener listener : dismissListeners) {
+      listener.onDismiss(dialogInterface);
+    }
+    ViewGroup viewGroup = ((ViewGroup) getView());
+    if (viewGroup != null) {
+      viewGroup.removeAllViews();
+    }
+    super.onDismiss(dialogInterface);
   }
 
   private void updateInputMode(MaterialButton modeButton) {
@@ -262,12 +287,104 @@ public final class MaterialTimePicker extends DialogFragment {
     }
   }
 
-  public void setListener(@Nullable OnTimeSetListener listener) {
-    this.listener = listener;
-  }
-
   @Nullable
   TimePickerClockPresenter getTimePickerClockPresenter() {
     return timePickerClockPresenter;
+  }
+
+  /** The supplied listener is called when the user confirms a valid selection. */
+  public boolean addOnPositiveButtonClickListener(
+      OnPositiveButtonClickListener onPositiveButtonClickListener) {
+    return positiveButtonListeners.add(onPositiveButtonClickListener);
+  }
+
+  /**
+   * Removes a listener previously added via {@link
+   * MaterialTimePicker#addOnPositiveButtonClickListener(OnPositiveButtonClickListener)}.
+   */
+  public boolean removeOnPositiveButtonClickListener(
+      @NonNull OnPositiveButtonClickListener listener) {
+    return positiveButtonListeners.remove(listener);
+  }
+
+  /**
+   * Removes all listeners added via {@link
+   * MaterialTimePicker#addOnPositiveButtonClickListener(OnPositiveButtonClickListener)}.
+   */
+  public void clearOnPositiveButtonClickListeners() {
+    positiveButtonListeners.clear();
+  }
+
+  /** The supplied listener is called when the user clicks the cancel button. */
+  public boolean addOnNegativeButtonClickListener(@NonNull OnClickListener listener) {
+    return negativeButtonListeners.add(listener);
+  }
+
+  /**
+   * Removes a listener previously added via {@link
+   * MaterialTimePicker#addOnNegativeButtonClickListener(OnClickListener)}.
+   */
+  public boolean removeOnNegativeButtonClickListener(@NonNull OnClickListener listener) {
+    return negativeButtonListeners.remove(listener);
+  }
+
+  /**
+   * Removes all listeners added via {@link
+   * MaterialTimePicker#addOnNegativeButtonClickListener(OnClickListener)}.
+   */
+  public void clearOnNegativeButtonClickListeners() {
+    negativeButtonListeners.clear();
+  }
+
+  /**
+   * The supplied listener is called when the user cancels the picker via back button or a touch
+   * outside the view.
+   *
+   * <p>It is not called when the user clicks the cancel button. To add a listener for use when the
+   * user clicks the cancel button, use {@link
+   * MaterialTimePicker#addOnNegativeButtonClickListener(OnClickListener)}.
+   */
+  public boolean addOnCancelListener(@NonNull OnCancelListener listener) {
+    return cancelListeners.add(listener);
+  }
+
+  /**
+   * Removes a listener previously added via {@link
+   * MaterialTimePicker#addOnCancelListener(OnCancelListener)}.
+   */
+  public boolean removeOnCancelListener(@NonNull OnCancelListener listener) {
+    return cancelListeners.remove(listener);
+  }
+
+  /**
+   * Removes all listeners added via {@link
+   * MaterialTimePicker#addOnCancelListener(OnCancelListener)}.
+   */
+  public void clearOnCancelListeners() {
+    cancelListeners.clear();
+  }
+
+  /**
+   * The supplied listener is called whenever the DialogFragment is dismissed, no matter how it is
+   * dismissed.
+   */
+  public boolean addOnDismissListener(@NonNull OnDismissListener listener) {
+    return dismissListeners.add(listener);
+  }
+
+  /**
+   * Removes a listener previously added via {@link
+   * MaterialTimePicker#addOnDismissListener(OnDismissListener)}.
+   */
+  public boolean removeOnDismissListener(@NonNull OnDismissListener listener) {
+    return dismissListeners.remove(listener);
+  }
+
+  /**
+   * Removes all listeners added via {@link
+   * MaterialTimePicker#addOnDismissListener(OnDismissListener)}.
+   */
+  public void clearOnDismissListeners() {
+    dismissListeners.clear();
   }
 }
