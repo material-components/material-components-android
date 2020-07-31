@@ -173,7 +173,7 @@ selected](assets/bottomnav/bottom-nav-generic.png)
 
 API and source code:
 
-*   `BottonNavigationView`
+*   `BottomNavigationView`
     *   [Class description](https://developer.android.com/reference/com/google/android/material/bottomnavigation/BottomNavigationView)
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/bottomnavigation/BottomNavigationView.java)
 
@@ -317,7 +317,7 @@ can be customized in terms of color and typography.
 
 API and source code:
 
-*   `BottonNavigationView`
+*   `BottomNavigationView`
     *   [Class description](https://developer.android.com/reference/com/google/android/material/bottomnavigation/BottomNavigationView)
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/bottomnavigation/BottomNavigationView.java)
 
