@@ -281,7 +281,7 @@ The following is an anatomy diagram for the bottom navigation bar:
 &nbsp;                    | **Attribute**                          | **Related methods**                                                 | **Default value**
 ------------------------- | -------------------------------------- | ------------------------------------------------------------------- | -----------------
 **Text label**            | `android:title` in the `menu` resource | N/A                                                                 | N/A
-**Color (inactive)**      | `app:itemIconTint`                     | `setItemTextColor`<br/>`getItemTextColor`                           | `?attr/colorOnSurface` at 60%
+**Color (inactive)**      | `app:itemTextColor`                     | `setItemTextColor`<br/>`getItemTextColor`                           | `?attr/colorOnSurface` at 60%
 **Color (active)**        | "                                      | "                                                                   | `?attr/colorPrimary`
 **Typography (inactive)** | `app:itemTextAppearanceInactive`       | `setItemTextAppearanceInactive`<br/>`getItemTextAppearanceInactive` | `?attr/textAppearanceCaption`
 **Typography (active)**   | `app:itemTextAppearanceActive`         | `setItemTextAppearanceActive`<br/>`getItemTextAppearanceActive`     | `?attr/textAppearanceCaption`
