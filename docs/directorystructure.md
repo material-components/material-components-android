@@ -1,6 +1,7 @@
 # Material component directory structure
 
-All of the Material Components are located under **[lib/](https://github.com/material-components/material-components-android/tree/master/lib)**.
+All of the Material Components are located under
+**[lib/](https://github.com/material-components/material-components-android/tree/master/lib)**.
 
 Classes in the library are separated into directories that are specific to each component, e.g.:
 
