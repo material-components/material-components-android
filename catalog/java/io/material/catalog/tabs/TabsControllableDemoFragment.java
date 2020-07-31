@@ -170,7 +170,7 @@ public class TabsControllableDemoFragment extends DemoFragment {
   }
 
   private void setupViewPager() {
-    pager.setAdapter(new TabsPagerAdapter(getFragmentManager(), getContext(), TAB_COUNT));
+    pager.setAdapter(new TabsPagerAdapter(getChildFragmentManager(), getContext(), TAB_COUNT));
     for (TabLayout tabLayout : tabLayouts) {
       tabLayout.setupWithViewPager(pager);
     }
