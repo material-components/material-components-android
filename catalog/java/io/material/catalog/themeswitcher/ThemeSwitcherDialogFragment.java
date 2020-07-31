@@ -117,7 +117,7 @@ public class ThemeSwitcherDialogFragment extends BottomSheetDialogFragment
         shapeCornerSizeGroup,
         resourceProvider.getShapeSizes(),
         resourceProvider.getShapeSizesContentDescription(),
-        R.id.theme_feature_corner_family,
+        R.id.theme_feature_corner_size,
         ThemingType.SHAPE_CORNER_SIZE);
 
     View applyButton = view.findViewById(R.id.apply_button);
