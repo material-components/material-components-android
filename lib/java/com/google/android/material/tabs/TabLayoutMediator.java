@@ -159,6 +159,13 @@ public final class TabLayoutMediator {
     attached = false;
   }
 
+  /**
+   * Returns whether the {@link TabLayout} and the {@link ViewPager2} are linked together.
+   */
+  public boolean isAttached() {
+    return attached;
+  }
+
   @SuppressWarnings("WeakerAccess")
   void populateTabsFromPagerAdapter() {
     tabLayout.removeAllTabs();
