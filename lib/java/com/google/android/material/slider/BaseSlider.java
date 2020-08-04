@@ -414,6 +414,7 @@ abstract class BaseSlider<
       int valuesId = a.getResourceId(R.styleable.Slider_tickValues, 0);
       TypedArray tickValues = a.getResources().obtainTypedArray(valuesId);
       setTickValues(convertToFloat(tickValues));
+      tickValues.recycle();
     }
     boolean hasTickColor = a.hasValue(R.styleable.Slider_tickColor);
     int tickColorInactiveRes =
@@ -532,7 +533,7 @@ abstract class BaseSlider<
                 Float.toString(stepSize),
                 Float.toString(stepSize)));
       }
-      if (tickValues.size() > 0){
+      if (!tickValues.isEmpty()){
         if (!tickValues.contains(value)){
           throw new IllegalStateException(
               String.format(
@@ -807,7 +808,7 @@ abstract class BaseSlider<
    */
   private void setTickValuesInternal(@NonNull ArrayList<Float> tickValues) {
     if (tickValues.isEmpty()) {
-      return;
+      throw new IllegalArgumentException("At least one value must be set");
     }
 
     Collections.sort(tickValues);
@@ -828,7 +829,7 @@ abstract class BaseSlider<
    */
   @NonNull
   public List<Float> getTickValues() {
-    return this.tickValues;
+    return tickValues;
   }
 
   /** Returns the index of the currently focused thumb */
@@ -1436,7 +1437,7 @@ abstract class BaseSlider<
     tickCount = Math.min(tickCount, trackWidth / (trackHeight * 2) + 1);
     float interval = trackWidth / (float) (tickCount - 1);
 
-    if (tickValues.size() > 0){
+    if (!tickValues.isEmpty()){
       tickCount = tickValues.size();
       maybeCalculateInternalTickValuesPosition();
     }
@@ -1445,7 +1446,7 @@ abstract class BaseSlider<
     }
 
     for (int i = 0; i < tickCount * 2; i += 2) {
-      if (tickValues.size() == 0) {
+      if (tickValues.isEmpty()) {
         ticksCoordinates[i] = trackSidePadding + i / 2 * interval;
       }else{
         ticksCoordinates[i] = trackSidePadding + (tickValues.get(i/2)-valueFrom)/ stepSize * interval;
@@ -1730,7 +1731,7 @@ abstract class BaseSlider<
 
   private double snapPosition(float position) {
     if (stepSize > 0.0f) {
-      if (tickValues.size() == 0) {
+      if (tickValues.isEmpty()) {
         int stepCount = (int) ((valueTo - valueFrom) / stepSize);
         return Math.round(position * stepCount) / (double) stepCount;
       } else {
