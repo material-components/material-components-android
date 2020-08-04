@@ -62,7 +62,7 @@ public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBack
 
     // The theme switcher helper is used in an adhoc way with the toolbar since the BottomAppBar is
     // set as the action bar.
-    themeSwitcherHelper = new ThemeSwitcherHelper(getFragmentManager());
+    themeSwitcherHelper = new ThemeSwitcherHelper(getParentFragmentManager());
   }
 
   @Override

@@ -133,7 +133,7 @@ public class DatePickerMainDemoFragment extends DemoFragment {
             builder.setCalendarConstraints(constraintsBuilder.build());
             MaterialDatePicker<?> picker = builder.build();
             addSnackBarListeners(picker);
-            picker.show(getFragmentManager(), picker.toString());
+            picker.show(getChildFragmentManager(), picker.toString());
           } catch (IllegalArgumentException e) {
             snackbar.setText(e.getMessage());
             snackbar.show();
