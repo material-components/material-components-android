@@ -56,9 +56,11 @@ import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.core.view.ViewCompat;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
 import androidx.annotation.IdRes;
@@ -1037,10 +1039,13 @@ public final class MaterialContainerTransform extends Transition {
    */
   private static final class TransitionDrawable extends Drawable {
 
-    // Elevation shadow
+    // Elevation shadow colors
     private static final int SHADOW_COLOR = 0x2D000000;
     private static final int COMPAT_SHADOW_COLOR = 0xFF888888;
-    private static final float COMPAT_SHADOW_OFFSET_MULTIPLIER = 0.75f;
+
+    // Elevation shadow offset multiplier adjustments which help approximate native shadows
+    private static final float SHADOW_DX_MULTIPLIER_ADJUSTMENT = 0.3f;
+    private static final float SHADOW_DY_MULTIPLIER_ADJUSTMENT = 1.5f;
 
     // Start container
     private final View startView;
@@ -1069,6 +1074,8 @@ public final class MaterialContainerTransform extends Transition {
 
     // Drawing
     private final boolean entering;
+    private final float displayWidth;
+    private final float displayHeight;
     private final boolean elevationShadowEnabled;
     private final MaterialShapeDrawable compatShadowDrawable = new MaterialShapeDrawable();
     private final RectF currentStartBounds;
@@ -1089,6 +1096,7 @@ public final class MaterialContainerTransform extends Transition {
     private FitModeResult fitModeResult;
     private RectF currentMaskBounds;
     private float currentElevation;
+    private float currentElevationDy;
     private float progress;
 
     private TransitionDrawable(
@@ -1125,6 +1133,13 @@ public final class MaterialContainerTransform extends Transition {
       this.fitModeEvaluator = fitModeEvaluator;
       this.progressThresholds = progressThresholds;
       this.drawDebugEnabled = drawDebugEnabled;
+
+      WindowManager windowManager =
+          (WindowManager) startView.getContext().getSystemService(Context.WINDOW_SERVICE);
+      DisplayMetrics displayMetrics = new DisplayMetrics();
+      windowManager.getDefaultDisplay().getMetrics(displayMetrics);
+      displayWidth = displayMetrics.widthPixels;
+      displayHeight = displayMetrics.heightPixels;
 
       containerPaint.setColor(containerColor);
       startContainerPaint.setColor(startContainerColor);
@@ -1235,8 +1250,7 @@ public final class MaterialContainerTransform extends Transition {
           (int) currentMaskBounds.right,
           (int) currentMaskBounds.bottom);
       compatShadowDrawable.setElevation(currentElevation);
-      compatShadowDrawable.setShadowVerticalOffset(
-          (int) (currentElevation * COMPAT_SHADOW_OFFSET_MULTIPLIER));
+      compatShadowDrawable.setShadowVerticalOffset((int) currentElevationDy);
       compatShadowDrawable.setShapeAppearanceModel(maskEvaluator.getCurrentShapeAppearanceModel());
       compatShadowDrawable.draw(canvas);
     }
@@ -1312,10 +1326,6 @@ public final class MaterialContainerTransform extends Transition {
       // Fade in/out scrim over non-shared elements
       scrimPaint.setAlpha((int) (entering ? lerp(0, 255, progress) : lerp(255, 0, progress)));
 
-      // Calculate current elevation and set up shadow layer
-      currentElevation = lerp(startElevation, endElevation, progress);
-      shadowPaint.setShadowLayer(currentElevation, 0, currentElevation, SHADOW_COLOR);
-
       // Calculate position based on motion path
       motionPathMeasure.getPosTan(motionPathLength * progress, motionPathPosition, null);
       float motionPathX = motionPathPosition[0];
@@ -1372,6 +1382,15 @@ public final class MaterialContainerTransform extends Transition {
           currentEndBoundsMasked,
           progressThresholds.shapeMask);
 
+      // Calculate current elevation and set up shadow layer
+      currentElevation = lerp(startElevation, endElevation, progress);
+      float dxMultiplier = calculateElevationDxMultiplier(currentMaskBounds, displayWidth);
+      float dyMultiplier = calculateElevationDyMultiplier(currentMaskBounds, displayHeight);
+      float currentElevationDx = (int) (currentElevation * dxMultiplier);
+      currentElevationDy = (int) (currentElevation * dyMultiplier);
+      shadowPaint.setShadowLayer(
+          currentElevation, currentElevationDx, currentElevationDy, SHADOW_COLOR);
+
       // Cross-fade images of the start/end states over range of `progress`
       float fadeStartFraction = checkNotNull(progressThresholds.fade.start);
       float fadeEndFraction = checkNotNull(progressThresholds.fade.end);
@@ -1391,6 +1410,36 @@ public final class MaterialContainerTransform extends Transition {
 
     private static PointF getMotionPathPoint(RectF bounds) {
       return new PointF(bounds.centerX(), bounds.top);
+    }
+
+    /**
+     * The dx value for the elevation shadow's horizontal offset should be based on where the
+     * current bounds are located in relation to the horizontal mid-point of the screen, since
+     * that's where the native light source is located.
+     *
+     * <p>If the bounds are at the mid-point, the offset should be 0, which results in even shadows
+     * to the left and right of the view.
+     *
+     * <p>If the bounds are to the left of the mid-point, the offset should be negative, which
+     * results in more shadow to the left of the view.
+     *
+     * <p>If the bounds are to the right of the mid-point, the offset should be positive, which
+     * results in more shadow to the right of the view.
+     */
+    private static float calculateElevationDxMultiplier(RectF bounds, float displayWidth) {
+      return (bounds.centerX() / (displayWidth / 2) - 1) * SHADOW_DX_MULTIPLIER_ADJUSTMENT;
+    }
+
+    /**
+     * The dy value for the elevation shadow's vertical offset should be based on where the current
+     * bounds are located in relation to the top of the screen, since that's where the native light
+     * source is located.
+     *
+     * <p>The offset should be 0 at the top of the screen and increase as the bounds get further
+     * away from the top of the screen.
+     */
+    private static float calculateElevationDyMultiplier(RectF bounds, float displayHeight) {
+      return bounds.centerY() / displayHeight * SHADOW_DY_MULTIPLIER_ADJUSTMENT;
     }
 
     private void drawDebugCumulativePath(
