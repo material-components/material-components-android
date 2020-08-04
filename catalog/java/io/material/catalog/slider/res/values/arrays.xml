@@ -18,4 +18,12 @@
     <item>2.0</item>
     <item>7.0</item>
   </array>
+  <array name="subset_tick_values">
+    <item>0.0</item>
+    <item>100</item>
+    <item>250</item>
+    <item>500</item>
+    <item>750</item>
+    <item>1000</item>
+  </array>
 </resources>
