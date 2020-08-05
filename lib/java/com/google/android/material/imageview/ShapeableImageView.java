@@ -48,6 +48,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewOutlineProvider;
 import com.google.android.material.resources.MaterialResources;
+import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.shape.ShapeAppearancePathProvider;
 import com.google.android.material.shape.Shapeable;
@@ -68,6 +69,7 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
   private ShapeAppearanceModel shapeAppearanceModel;
   @Dimension private float strokeWidth;
   private Path maskPath;
+  private final MaterialShapeDrawable shadowDrawable;
 
   public ShapeableImageView(Context context) {
     this(context, null, 0);
@@ -104,6 +106,7 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
     borderPaint.setAntiAlias(true);
     shapeAppearanceModel =
         ShapeAppearanceModel.builder(context, attrs, defStyle, DEF_STYLE_RES).build();
+    shadowDrawable = new MaterialShapeDrawable(shapeAppearanceModel);
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
       setOutlineProvider(new OutlineProvider());
     }
@@ -137,6 +140,7 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
   @Override
   public void setShapeAppearanceModel(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
     this.shapeAppearanceModel = shapeAppearanceModel;
+    shadowDrawable.setShapeAppearanceModel(shapeAppearanceModel);
     updateShapeMask(getWidth(), getHeight());
     invalidate();
   }
@@ -149,10 +153,7 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
 
   private void updateShapeMask(int width, int height) {
     destination.set(
-        getPaddingLeft(),
-        getPaddingTop(),
-        width - getPaddingRight(),
-        height - getPaddingBottom());
+        getPaddingLeft(), getPaddingTop(), width - getPaddingRight(), height - getPaddingBottom());
     pathProvider.calculatePath(shapeAppearanceModel, 1f /*interpolation*/, destination, path);
     // Remove path from rect to draw with clear paint.
     maskPath.rewind();
@@ -252,16 +253,17 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
   @TargetApi(VERSION_CODES.LOLLIPOP)
   class OutlineProvider extends ViewOutlineProvider {
 
-    private Rect rect = new Rect();
+    private final Rect rect = new Rect();
 
     @Override
     public void getOutline(View view, Outline outline) {
-      if (shapeAppearanceModel != null && shapeAppearanceModel.isRoundRect(destination)) {
-        destination.round(rect);
-        float cornerSize =
-            shapeAppearanceModel.getBottomLeftCornerSize().getCornerSize(destination);
-        outline.setRoundRect(rect, cornerSize);
+      if (shapeAppearanceModel == null) {
+        return;
       }
+
+      destination.round(rect);
+      shadowDrawable.setBounds(rect);
+      shadowDrawable.getOutline(outline);
     }
   }
 }
