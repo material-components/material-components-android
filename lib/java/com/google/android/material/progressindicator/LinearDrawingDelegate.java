@@ -40,7 +40,7 @@ final class LinearDrawingDelegate implements DrawingDelegate {
 
   @Override
   public int getPreferredHeight(@NonNull ProgressIndicatorSpec spec) {
-    return spec.indicatorWidth;
+    return spec.indicatorSize;
   }
 
   /**
@@ -59,12 +59,12 @@ final class LinearDrawingDelegate implements DrawingDelegate {
     // Gets clip bounds from canvas.
     Rect clipBounds = canvas.getClipBounds();
     trackLength = clipBounds.width();
-    float trackWidth = spec.indicatorWidth;
+    float trackWidth = spec.indicatorSize;
 
     // Positions canvas to center of the clip bounds.
     canvas.translate(
         clipBounds.width() / 2f,
-        clipBounds.height() / 2f + max(0f, (clipBounds.height() - spec.indicatorWidth) / 2f));
+        clipBounds.height() / 2f + max(0f, (clipBounds.height() - spec.indicatorSize) / 2f));
 
     // Flips canvas horizontally if inverse.
     if (spec.inverse) {
@@ -77,7 +77,7 @@ final class LinearDrawingDelegate implements DrawingDelegate {
     // Offsets canvas vertically if grow from top/bottom.
     if (spec.growMode == ProgressIndicator.GROW_MODE_INCOMING
         || spec.growMode == ProgressIndicator.GROW_MODE_OUTGOING) {
-      canvas.translate(0f, spec.indicatorWidth * (widthFraction - 1) / 2f);
+      canvas.translate(0f, spec.indicatorSize * (widthFraction - 1) / 2f);
     }
 
     // Clips all drawing to the track area, so it doesn't draw outside of its bounds (which can

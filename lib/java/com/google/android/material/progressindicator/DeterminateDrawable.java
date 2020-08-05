@@ -167,7 +167,7 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
     canvas.save();
     drawingDelegate.adjustCanvas(canvas, spec, getGrowFraction());
 
-    float displayedIndicatorWidth = spec.indicatorWidth * getGrowFraction();
+    float displayedIndicatorSize = spec.indicatorSize * getGrowFraction();
     float displayedRoundedCornerRadius = spec.indicatorCornerRadius * getGrowFraction();
 
     // Draws the track.
@@ -177,7 +177,7 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
         spec.trackColor,
         0f,
         1f,
-        displayedIndicatorWidth,
+        displayedIndicatorSize,
         displayedRoundedCornerRadius);
     // Draws the indicator.
     drawingDelegate.fillTrackWithColor(
@@ -186,7 +186,7 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
         combinedIndicatorColorArray[0],
         0f,
         getIndicatorFraction(),
-        displayedIndicatorWidth,
+        displayedIndicatorSize,
         displayedRoundedCornerRadius);
     canvas.restore();
   }

@@ -673,27 +673,27 @@ public class ProgressIndicator extends ProgressBar {
   }
 
   /**
-   * Returns the indicator width of this progress indicator in pixels.
+   * Returns the indicator size of this progress indicator in pixels.
    *
-   * @see #setIndicatorWidth(int)
+   * @see #setIndicatorSize(int)
    * @attr ref
-   *     com.google.android.material.progressindicator.R.stylable#ProgressIndicator_indicatorWidth
+   *     com.google.android.material.progressindicator.R.stylable#ProgressIndicator_indicatorSize
    */
-  public int getIndicatorWidth() {
-    return spec.indicatorWidth;
+  public int getIndicatorSize() {
+    return spec.indicatorSize;
   }
 
   /**
-   * Sets the indicator width of this progress indicator.
+   * Sets the indicator size of this progress indicator.
    *
-   * @param indicatorWidth The new indicator width in pixel.
-   * @see #getIndicatorWidth()
+   * @param indicatorSize The new indicator size in pixel.
+   * @see #getIndicatorSize()
    * @attr ref
-   *     com.google.android.material.progressindicator.R.stylable#ProgressIndicator_indicatorWidth
+   *     com.google.android.material.progressindicator.R.stylable#ProgressIndicator_indicatorSize
    */
-  public void setIndicatorWidth(@Px int indicatorWidth) {
-    if (spec.indicatorWidth != indicatorWidth) {
-      spec.indicatorWidth = indicatorWidth;
+  public void setIndicatorSize(@Px int indicatorSize) {
+    if (spec.indicatorSize != indicatorSize) {
+      spec.indicatorSize = indicatorSize;
       requestLayout();
     }
   }
@@ -874,7 +874,7 @@ public class ProgressIndicator extends ProgressBar {
    */
   public void setIndicatorCornerRadius(@Px int indicatorCornerRadius) {
     if (spec.indicatorCornerRadius != indicatorCornerRadius) {
-      spec.indicatorCornerRadius = min(indicatorCornerRadius, spec.indicatorWidth / 2);
+      spec.indicatorCornerRadius = min(indicatorCornerRadius, spec.indicatorSize / 2);
       if (spec.linearSeamless && indicatorCornerRadius > 0) {
         throw new IllegalArgumentException(
             "Rounded corners are not supported in linear seamless mode.");

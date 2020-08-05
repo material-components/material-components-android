@@ -32,8 +32,8 @@
     <!-- Whether the progress indicator should be indeteminate mode. -->
     <attr name="android:indeterminate"/>
 
-    <!-- The width of the progress track and indicator. -->
-    <attr name="indicatorWidth" format="dimension"/>
+    <!-- The size of the progress track and indicator. -->
+    <attr name="indicatorSize" format="dimension"/>
     <!--
       The radius of each corner of both the indicator and the track. A radius
       larger than half of the track width will throw exceptions during

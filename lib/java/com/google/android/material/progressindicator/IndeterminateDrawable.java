@@ -101,7 +101,7 @@ public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityC
     canvas.save();
     drawingDelegate.adjustCanvas(canvas, spec, getGrowFraction());
 
-    float displayedIndicatorWidth = spec.indicatorWidth * getGrowFraction();
+    float displayedIndicatorSize = spec.indicatorSize * getGrowFraction();
     float displayedRoundedCornerRadius = spec.indicatorCornerRadius * getGrowFraction();
 
     // Draws the track first as the bottom layer.
@@ -111,7 +111,7 @@ public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityC
         combinedTrackColor,
         0f,
         1f,
-        displayedIndicatorWidth,
+        displayedIndicatorSize,
         displayedRoundedCornerRadius);
     // Draws the indicators.
     for (int segmentIndex = 0;
@@ -123,10 +123,9 @@ public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityC
           animatorDelegate.segmentColors[segmentIndex],
           animatorDelegate.segmentPositions[2 * segmentIndex],
           animatorDelegate.segmentPositions[2 * segmentIndex + 1],
-          displayedIndicatorWidth,
+          displayedIndicatorSize,
           displayedRoundedCornerRadius);
     }
-    canvas.restore();
   }
 
   // ******************* Setter and getter *******************

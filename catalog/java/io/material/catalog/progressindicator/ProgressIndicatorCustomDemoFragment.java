@@ -115,7 +115,7 @@ public class ProgressIndicatorCustomDemoFragment extends DemoFragment {
     public int getPreferredHeight(@NonNull ProgressIndicatorSpec spec) {
       // The radius of the outer edge of each arc is 10 times of the indicator's width, so that the
       // arc has a radius of 5 times (large enough) of indicator's width.
-      return spec.indicatorWidth
+      return spec.indicatorSize
           * (WAVE_ARC_RADIUS_MULTIPLIER * 2 + 1 /*Half width on the top and the bottom.*/);
     }
 
@@ -125,9 +125,9 @@ public class ProgressIndicatorCustomDemoFragment extends DemoFragment {
       // Calculates how many semi-circles are needed.
       Rect clipBounds = canvas.getClipBounds();
       int arcCount =
-          (clipBounds.width() - spec.indicatorWidth)
-              / (2 * WAVE_ARC_RADIUS_MULTIPLIER * spec.indicatorWidth);
-      arcRadius = spec.indicatorWidth * WAVE_ARC_RADIUS_MULTIPLIER;
+          (clipBounds.width() - spec.indicatorSize)
+              / (2 * WAVE_ARC_RADIUS_MULTIPLIER * spec.indicatorSize);
+      arcRadius = spec.indicatorSize * WAVE_ARC_RADIUS_MULTIPLIER;
       // Calculates the x coordinate of the centers of circles.
       arcCentersX = new int[arcCount];
       for (int arcIndex = 0; arcIndex < arcCount; arcIndex++) {

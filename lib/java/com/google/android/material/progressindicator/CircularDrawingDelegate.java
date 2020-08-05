@@ -42,14 +42,14 @@ public final class CircularDrawingDelegate implements DrawingDelegate {
   }
 
   private static int getSize(@NonNull ProgressIndicatorSpec spec) {
-    return spec.circularRadius * 2 + spec.indicatorWidth + spec.circularInset * 2;
+    return spec.circularRadius * 2 + spec.indicatorSize + spec.circularInset * 2;
   }
 
   /**
    * Adjusts the canvas for drawing circular progress indicator. It rotates the canvas -90 degrees
    * to keep the 0 at the top. The canvas is clipped to a square with the size just includes the
    * inset. It will also pre-calculate the bound for drawing the arc based on the indicate radius
-   * and current indicator width.
+   * and current indicator size.
    *
    * @param canvas Canvas to draw.
    * @param spec The spec of the component currently being served.
@@ -60,7 +60,7 @@ public final class CircularDrawingDelegate implements DrawingDelegate {
       @NonNull Canvas canvas,
       @NonNull ProgressIndicatorSpec spec,
       @FloatRange(from = 0.0, to = 1.0) float widthFraction) {
-    int outerRadiusWithInset = spec.circularRadius + spec.indicatorWidth / 2 + spec.circularInset;
+    int outerRadiusWithInset = spec.circularRadius + spec.indicatorSize / 2 + spec.circularInset;
     canvas.translate(outerRadiusWithInset, outerRadiusWithInset);
     // Rotates canvas so that arc starts at top.
     canvas.rotate(-90f);
@@ -75,11 +75,11 @@ public final class CircularDrawingDelegate implements DrawingDelegate {
     if (spec.growMode == ProgressIndicator.GROW_MODE_INCOMING) {
       // Increases the radius by half of the full width, then reduces it half way of the displayed
       // width to match the outer edges of the displayed indicator and the full indicator.
-      adjustedRadius += (1 - widthFraction) * spec.indicatorWidth / 2;
+      adjustedRadius += (1 - widthFraction) * spec.indicatorSize / 2;
     } else if (spec.growMode == ProgressIndicator.GROW_MODE_OUTGOING) {
       // Decreases the radius by half of the full width, then raises it half way of the displayed
       // width to match the inner edges of the displayed indicator and the full indicator.
-      adjustedRadius -= (1 - widthFraction) * spec.indicatorWidth / 2;
+      adjustedRadius -= (1 - widthFraction) * spec.indicatorSize / 2;
     }
 
     // These are set for the drawing the indicator and track in fillTrackWithColor().

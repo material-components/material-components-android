@@ -34,8 +34,8 @@ public final class ProgressIndicatorSpec {
   /** The type of the progress indicator, either {@code #LINEAR} or {@code #CIRCULAR}. */
   public int indicatorType;
 
-  /** The width of the progress track and indicator. */
-  public int indicatorWidth;
+  /** The size of the progress track and indicator. */
+  public int indicatorSize;
 
   /**
    * When this is greater than 0, the corners of both the track and the indicator will be rounded
@@ -91,12 +91,12 @@ public final class ProgressIndicatorSpec {
         context.obtainStyledAttributes(
             attrs, R.styleable.ProgressIndicator, defStyleAttr, defStyleRes);
     indicatorType = a.getInt(R.styleable.ProgressIndicator_indicatorType, ProgressIndicator.LINEAR);
-    indicatorWidth =
+    indicatorSize =
         getDimensionPixelSize(
             context,
             a,
-            R.styleable.ProgressIndicator_indicatorWidth,
-            R.dimen.mtrl_progress_indicator_width);
+            R.styleable.ProgressIndicator_indicatorSize,
+            R.dimen.mtrl_progress_indicator_size);
     circularInset =
         getDimensionPixelSize(
             context,
@@ -125,7 +125,7 @@ public final class ProgressIndicatorSpec {
     indicatorCornerRadius =
         min(
             a.getDimensionPixelSize(R.styleable.ProgressIndicator_indicatorCornerRadius, 0),
-            indicatorWidth / 2);
+            indicatorSize / 2);
 
     a.recycle();
 
@@ -133,12 +133,12 @@ public final class ProgressIndicatorSpec {
   }
 
   public void validate() {
-    if (indicatorType == ProgressIndicator.CIRCULAR && circularRadius < indicatorWidth / 2) {
-      // Throws an exception if circularRadius is less than half of the indicatorWidth, which will
+    if (indicatorType == ProgressIndicator.CIRCULAR && circularRadius < indicatorSize / 2) {
+      // Throws an exception if circularRadius is less than half of the indicatorSize, which will
       // result in a part of the inner side of the indicator overshoots the center, and the visual
       // becomes undefined.
       throw new IllegalArgumentException(
-          "The circularRadius cannot be less than half of the indicatorWidth.");
+          "The circularRadius cannot be less than half of the indicatorSize.");
     }
     if (linearSeamless && indicatorCornerRadius > 0) {
       // Throws an exception if trying to use cornered indicator for linear seamless mode.

@@ -137,20 +137,20 @@ will be used as the indicator color.
 
 #### Size
 
-Use `indicatorWidth` to customize the size of linear types. It can adjust the
+Use `indicatorSize` to customize the size of linear types. It can adjust the
 height of the progress bar (as the width of the indicator/track). To add inset
 for linear types, please use padding of the layout.
 
 Note: For both linear and circular types, indicator and track always have the
 same width.
 
-The size of circular types can be set with a combination of `indicatorWidth`,
-`circularRadius`, and `circularInset`. `indicatorWidth` defines the width of the
+The size of circular types can be set with a combination of `indicatorSize`,
+`circularRadius`, and `circularInset`. `indicatorSize` defines the width of the
 ring (circular spinner). `circularRadius` defines the radius of the central line
 of the ring. `circularInset` gives extra space between the outer boundary to the
 bounds of the component.
 
-Note: If half of the `indicatorWidth` is greater than the `circularRadius`,
+Note: If half of the `indicatorSize` is greater than the `circularRadius`,
 `IllegalArgumentException` will be thrown during initialization.
 
 ### Caveats

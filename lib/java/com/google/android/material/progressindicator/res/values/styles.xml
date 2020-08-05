@@ -16,7 +16,7 @@
 -->
 <resources>
   <style name="Base.Widget.MaterialComponents.ProgressIndicator" parent="android:Widget">
-    <item name="indicatorWidth">@dimen/mtrl_progress_indicator_width</item>
+    <item name="indicatorSize">@dimen/mtrl_progress_indicator_size</item>
     <item name="inverse">false</item>
     <item name="growMode">none</item>
   </style>
