@@ -18,15 +18,15 @@
 <!-- Definitions of attributes to be exposed as public -->
 <resources>
   <!-- Type definitions for common attributes used across component packages. -->
-  <public name="checkedIcon" format="attr" />
-  <public name="checkedIconTint" format="attr" />
-  <public name="minTouchTargetSize" format="attr" />
-  <public name="selectionRequired" format="attr" />
-  <public name="singleSelection" format="attr" />
-  <public name="strokeColor" format="attr"/>
-  <public name="strokeWidth" format="attr" />
-  <public name="ensureMinTouchTargetSize" format="attr" />
-  <public name="trackColor" format="attr" />
+  <public name="checkedIcon" type="attr" />
+  <public name="checkedIconTint" type="attr" />
+  <public name="minTouchTargetSize" type="attr" />
+  <public name="selectionRequired" type="attr" />
+  <public name="singleSelection" type="attr" />
+  <public name="strokeColor" type="attr"/>
+  <public name="strokeWidth" type="attr" />
+  <public name="ensureMinTouchTargetSize" type="attr" />
+  <public name="trackColor" type="attr" />
 
   <!-- Navigation and datepicker -->
   <public name="itemTextColor" type="attr"/>

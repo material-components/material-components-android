@@ -17,5 +17,5 @@
 
 <!-- Definitions of attributes to be exposed as public -->
 <resources>
-  <public name="popupMenuBackground" type="reference" />
+  <public name="popupMenuBackground" type="attr" />
 </resources>

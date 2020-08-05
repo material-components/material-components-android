@@ -39,7 +39,6 @@
   <public name="checkedIconVisible" type="attr"/>
   <!-- Deprecated. Use checkedIconVisible instead. -->
   <public name="checkedIconEnabled" type="attr"/>
-  <public name="checkedIcon" type="attr"/>
   <public name="chipEndPadding" type="attr"/>
   <public name="chipStartPadding" type="attr"/>
   <public name="iconStartPadding" type="attr"/>
@@ -50,9 +49,7 @@
   <public name="chipSpacing" type="attr"/>
   <public name="chipSpacingHorizontal" type="attr"/>
   <public name="chipSpacingVertical" type="attr"/>
-  <public name="ensureMinTouchTargetSize" type="attr"/>
   <public name="singleLine" type="attr"/>
-  <public name="singleSelection" type="attr"/>
   <public name="checkedChip" type="attr"/>
   <public name="chipMinTouchTargetSize" type="attr"/>
   <public name="Widget.MaterialComponents.ChipGroup" type="style"/>

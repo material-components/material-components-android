@@ -48,9 +48,9 @@
   <public name="material_on_surface_emphasis_high_type" type="color"/>
   <public name="material_on_surface_emphasis_medium" type="color"/>
   <public name="material_on_surface_stroke" type="color"/>
-  <public name="material_emphasis_high_type" format="float" type="dimen" />
-  <public name="material_emphasis_medium" format="float" type="dimen"/>
-  <public name="material_emphasis_disabled" format="float" type="dimen"/>
+  <public name="material_emphasis_high_type" type="dimen" />
+  <public name="material_emphasis_medium" type="dimen"/>
+  <public name="material_emphasis_disabled" type="dimen"/>
 
   <public name="useMaterialThemeColors" type="attr"/>
 </resources>

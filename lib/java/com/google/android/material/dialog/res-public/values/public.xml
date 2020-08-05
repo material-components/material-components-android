@@ -49,12 +49,12 @@
   <public name="materialAlertDialogTitlePanelStyle" type="attr"/>
   <public name="materialAlertDialogTitleIconStyle" type="attr"/>
   <public name="materialAlertDialogTitleTextStyle" type="attr"/>
-  <public name="materialAlertDialogBodyTextStyle" format="attr"/>
+  <public name="materialAlertDialogBodyTextStyle" type="attr"/>
 
-  <public name="backgroundInsetStart" format="attr"/>
-  <public name="backgroundInsetTop" format="attr"/>
-  <public name="backgroundInsetEnd" format="attr"/>
-  <public name="backgroundInsetBottom" format="attr"/>
+  <public name="backgroundInsetStart" type="attr"/>
+  <public name="backgroundInsetTop" type="attr"/>
+  <public name="backgroundInsetEnd" type="attr"/>
+  <public name="backgroundInsetBottom" type="attr"/>
 
   <public name="MaterialAlertDialog.MaterialComponents.Title.Panel" type="style"/>
   <public name="MaterialAlertDialog.MaterialComponents.Title.Icon" type="style"/>
