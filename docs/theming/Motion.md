@@ -15,8 +15,8 @@ them, check out the
 [Material motion system spec](https://material.io/design/motion/the-motion-system.html).
 
 Before you can use the motion library, you need to add a dependency on the
-Material Components for Android library (version `1.2.0-rc01` or later). For
-more information, go to the
+Material Components for Android library (version `1.2.0` or later). For more
+information, go to the
 [Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
 page.
 
