@@ -258,6 +258,8 @@
       <!-- [Sa + Da - Sa * Da, Sc + Dc - Sc * Dc] -->
       <enum name="screen" value="15"/>
     </attr>
+    <!-- The style used for the exposed dropDownMenu. -->
+    <attr name="exposedDropDownMenuStyle" format="reference" />
   </declare-styleable>
 
   <declare-styleable name="TextInputEditText">
@@ -268,6 +270,22 @@
 
   <declare-styleable name="MaterialAutoCompleteTextView" parent="AppCompatAutoCompleteTextView">
     <attr name="android:inputType"/>
+  </declare-styleable>
+
+  <declare-styleable name="TextInputLayout.ExposedDropDownMenu">
+    <!-- Whether the flat top corners should be used in DropDownMenu -->
+    <attr name="enforceFlatTopCorners" format="boolean"/>
+    <!-- popupVerticalPadding for DropDownMenu in TextInputLayout. -->
+    <attr name="popupVerticalPadding" format="dimension"/>
+    <!-- popupElevation for DropDownMenu in TextInputLayout. -->
+    <attr name="popupElevation" format="dimension"/>
+    <!-- Shape appearance style reference for DropDownMenu in TextInputLayout.
+    Attribute declaration is in the Shape package. -->
+    <attr name="shapeAppearance"/>
+    <!-- Shape appearance overlay style reference for DropDownMenu in  TextInputLayout.
+         To be used to augment attributes declared in the shapeAppearance. Attribute
+         declaration is in the Shape package. -->
+    <attr name="shapeAppearanceOverlay"/>
   </declare-styleable>
 
 </resources>

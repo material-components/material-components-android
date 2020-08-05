@@ -28,6 +28,7 @@ import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
@@ -56,6 +57,7 @@ import androidx.annotation.Nullable;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.TextWatcherAdapter;
+import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.textfield.TextInputLayout.AccessibilityDelegate;
@@ -184,8 +186,8 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
   private boolean dropdownPopupDirty = false;
   private boolean isEndIconChecked = false;
   private long dropdownPopupActivatedAt = Long.MAX_VALUE;
-  private StateListDrawable filledPopupBackground;
-  private MaterialShapeDrawable outlinedPopupBackground;
+  private ShapeAppearanceModel shapeAppearanceModel;
+  private StateListDrawable popupBackground;
   @Nullable private AccessibilityManager accessibilityManager;
   private ValueAnimator fadeOutAnim;
   private ValueAnimator fadeInAnim;
@@ -196,44 +198,62 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
 
   @Override
   void initialize() {
-    float popupCornerRadius =
-        context
-            .getResources()
-            .getDimensionPixelOffset(R.dimen.mtrl_shape_corner_size_small_component);
+    TypedArray a =
+        ThemeEnforcement.obtainStyledAttributes(
+            context, null, R.styleable.TextInputLayout_ExposedDropDownMenu, 0, textInputLayout.exposedDropDownMenuStyle);
+    shapeAppearanceModel =
+        ShapeAppearanceModel.builder(context, null, 0, textInputLayout.exposedDropDownMenuStyle).build();
     float exposedDropdownPopupElevation =
-        context
-            .getResources()
-            .getDimensionPixelOffset(R.dimen.mtrl_exposed_dropdown_menu_popup_elevation);
+        a.getDimension(R.styleable.TextInputLayout_ExposedDropDownMenu_popupElevation,
+            context
+                .getResources()
+                .getDimensionPixelOffset(R.dimen.mtrl_shape_corner_size_small_component));
     int exposedDropdownPopupVerticalPadding =
-        context
-            .getResources()
-            .getDimensionPixelOffset(R.dimen.mtrl_exposed_dropdown_menu_popup_vertical_padding);
+        a.getDimensionPixelOffset(R.styleable.TextInputLayout_ExposedDropDownMenu_popupVerticalPadding,
+            context
+                .getResources()
+                .getDimensionPixelOffset(R.dimen.mtrl_exposed_dropdown_menu_popup_vertical_padding));
     // Background for the popups of the outlined variation and for the filled variation when it is
     // being displayed above the layout.
-    MaterialShapeDrawable roundedCornersPopupBackground =
+    MaterialShapeDrawable defaultRoundedCornersPopupBackground =
         getPopUpMaterialShapeDrawable(
-            popupCornerRadius,
-            popupCornerRadius,
+            shapeAppearanceModel,
             exposedDropdownPopupElevation,
             exposedDropdownPopupVerticalPadding);
     // Background for the popup of the filled variation when it is being displayed below the layout.
-    MaterialShapeDrawable roundedBottomCornersPopupBackground =
-        getPopUpMaterialShapeDrawable(
-            0,
-            popupCornerRadius,
-            exposedDropdownPopupElevation,
-            exposedDropdownPopupVerticalPadding);
+    MaterialShapeDrawable flatTopCornersPopupBackground = null;
 
-    outlinedPopupBackground = roundedCornersPopupBackground;
-    filledPopupBackground = new StateListDrawable();
-    filledPopupBackground.addState(
-        new int[] {android.R.attr.state_above_anchor}, roundedCornersPopupBackground);
-    filledPopupBackground.addState(new int[] {}, roundedBottomCornersPopupBackground);
+    boolean enforceFlatTopCorners = a.getBoolean(R.styleable.TextInputLayout_ExposedDropDownMenu_enforceFlatTopCorners,false);
+    popupBackground = new StateListDrawable();
+    if (enforceFlatTopCorners) {
+      ShapeAppearanceModel flatTopCornersShapeAppearanceModel =
+          ShapeAppearanceModel.builder(context, null, 0, textInputLayout.exposedDropDownMenuStyle)
+              .setTopLeftCornerSize(0)
+              .setTopRightCornerSize(0)
+              .build();
+
+      flatTopCornersPopupBackground =
+          getPopUpMaterialShapeDrawable(
+              flatTopCornersShapeAppearanceModel,
+              exposedDropdownPopupElevation,
+              exposedDropdownPopupVerticalPadding);
+
+      popupBackground.addState(
+          new int[] {android.R.attr.state_above_anchor}, defaultRoundedCornersPopupBackground);
+      popupBackground.addState(new int[] {}, flatTopCornersPopupBackground);
+    } else {
+      popupBackground.addState(new int[] {}, defaultRoundedCornersPopupBackground);
+    }
 
     // For lollipop+, the arrow icon changes orientation based on dropdown popup, otherwise it
     // always points down.
     int drawableResId =
-        IS_LOLLIPOP ? R.drawable.mtrl_dropdown_arrow : R.drawable.mtrl_ic_arrow_drop_down;
+        a.getResourceId(R.styleable.TextInputLayout_endIconDrawable,  -1);
+    if (drawableResId == -1) {
+      drawableResId = IS_LOLLIPOP
+          ? R.drawable.mtrl_dropdown_arrow
+          : R.drawable.mtrl_ic_arrow_drop_down;
+    }
     textInputLayout.setEndIconDrawable(AppCompatResources.getDrawable(context, drawableResId));
     textInputLayout.setEndIconContentDescription(
         textInputLayout.getResources().getText(R.string.exposed_dropdown_menu_content_description));
@@ -250,6 +270,8 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
     initAnimators();
     accessibilityManager =
         (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
+
+    a.recycle();
   }
 
   @Override
@@ -289,12 +311,7 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
 
   private void setPopupBackground(@NonNull AutoCompleteTextView editText) {
     if (IS_LOLLIPOP) {
-      int boxBackgroundMode = textInputLayout.getBoxBackgroundMode();
-      if (boxBackgroundMode == TextInputLayout.BOX_BACKGROUND_OUTLINE) {
-        editText.setDropDownBackgroundDrawable(outlinedPopupBackground);
-      } else if (boxBackgroundMode == TextInputLayout.BOX_BACKGROUND_FILLED) {
-        editText.setDropDownBackgroundDrawable(filledPopupBackground);
-      }
+      editText.setDropDownBackgroundDrawable(popupBackground);
     }
   }
 
@@ -411,14 +428,7 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
   }
 
   private MaterialShapeDrawable getPopUpMaterialShapeDrawable(
-      float topCornerRadius, float bottomCornerRadius, float elevation, int verticalPadding) {
-    ShapeAppearanceModel shapeAppearanceModel =
-        ShapeAppearanceModel.builder()
-            .setTopLeftCornerSize(topCornerRadius)
-            .setTopRightCornerSize(topCornerRadius)
-            .setBottomLeftCornerSize(bottomCornerRadius)
-            .setBottomRightCornerSize(bottomCornerRadius)
-            .build();
+      ShapeAppearanceModel shapeAppearanceModel, float elevation, int verticalPadding) {
     MaterialShapeDrawable popupDrawable =
         MaterialShapeDrawable.createWithElevationOverlay(context, elevation);
     popupDrawable.setShapeAppearanceModel(shapeAppearanceModel);
