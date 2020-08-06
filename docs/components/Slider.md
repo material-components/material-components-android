@@ -332,7 +332,7 @@ _**Note:** The value label is a
 **Color**                           | `app:tickColor`         | `setTickTintList`<br/>`getTickTintList`                 | `null`
 **Color for track's active part**   | `app:tickColorActive`   | `setTickActiveTintList`<br/>`getTickActiveTintList`     | `?attr/colorOnPrimary` at 54%
 **Color for track's inactive part** | `app:tickColorInactive` | `setTickInactiveTintList`<br/>`getTickInactiveTintList` | `?attr/colorPrimary` at 54%
-**Tick visible **                   | `app:tickVisible`       | `setTickVisible`<br/>`isTickVisible()`                  | `true`
+**Tick visible**                    | `app:tickVisible`       | `setTickVisible`<br/>`isTickVisible()`                  | `true`
 
 _**Note:** `app:tickColor` takes precedence over `app:tickColorActive` and
 `app:tickColorInative`. It's a shorthand for setting both values to the same
