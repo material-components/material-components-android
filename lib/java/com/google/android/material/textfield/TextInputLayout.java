@@ -380,6 +380,7 @@ public class TextInputLayout extends LinearLayout {
   @Nullable private Drawable endDummyDrawable;
   private int endDummyDrawableWidth;
   private Drawable originalEditTextEndDrawable;
+  protected OnClickListener endIconOnClickListener;
   private OnLongClickListener endIconOnLongClickListener;
   private OnLongClickListener errorIconOnLongClickListener;
   @NonNull private final CheckableImageButton errorIconView;
@@ -3056,6 +3057,13 @@ public class TextInputLayout extends LinearLayout {
    *     will have
    */
   public void setEndIconOnClickListener(@Nullable OnClickListener endIconOnClickListener) {
+    this.endIconOnClickListener = endIconOnClickListener;
+    if (getEndIconMode() == END_ICON_NONE || getEndIconMode() == END_ICON_CUSTOM) {
+      internalSetEndIconOnClickListener(endIconOnClickListener);
+    }
+  }
+
+  void internalSetEndIconOnClickListener(@Nullable OnClickListener endIconOnClickListener) {
     setIconOnClickListener(endIconView, endIconOnClickListener, endIconOnLongClickListener);
   }
 

@@ -81,7 +81,7 @@ class PasswordToggleEndIconDelegate extends EndIconDelegate {
         AppCompatResources.getDrawable(context, R.drawable.design_password_eye));
     textInputLayout.setEndIconContentDescription(
         textInputLayout.getResources().getText(R.string.password_toggle_content_description));
-    textInputLayout.setEndIconOnClickListener(
+    textInputLayout.internalSetEndIconOnClickListener(
         new OnClickListener() {
           @Override
           public void onClick(View v) {
@@ -102,6 +102,7 @@ class PasswordToggleEndIconDelegate extends EndIconDelegate {
             }
 
             textInputLayout.refreshEndIconDrawableState();
+            callOriginalEndIconOnClickListener(v);
           }
         });
     textInputLayout.addOnEditTextAttachedListener(onEditTextAttachedListener);

@@ -108,7 +108,7 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
         AppCompatResources.getDrawable(context, R.drawable.mtrl_ic_cancel));
     textInputLayout.setEndIconContentDescription(
         textInputLayout.getResources().getText(R.string.clear_text_end_icon_content_description));
-    textInputLayout.setEndIconOnClickListener(
+    textInputLayout.internalSetEndIconOnClickListener(
         new OnClickListener() {
           @Override
           public void onClick(View v) {
@@ -118,6 +118,7 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
             }
 
             textInputLayout.refreshEndIconDrawableState();
+            callOriginalEndIconOnClickListener(v);
           }
         });
     textInputLayout.addOnEditTextAttachedListener(clearTextOnEditTextAttachedListener);
