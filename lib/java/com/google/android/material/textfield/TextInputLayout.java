@@ -806,6 +806,10 @@ public class TextInputLayout extends LinearLayout {
 
     setEnabled(a.getBoolean(R.styleable.TextInputLayout_android_enabled, true));
 
+    if (a.hasValue(R.styleable.TextInputLayout_indicatorAreaBackgroundColorOnError)) {
+      setIndicatorAreaBackgroundColorOnError(a.getColorStateList(R.styleable.TextInputLayout_indicatorAreaBackgroundColorOnError));
+    }
+
     a.recycle();
 
     // For accessibility, consider TextInputLayout itself to be a simple container for an EditText,
@@ -1642,6 +1646,11 @@ public class TextInputLayout extends LinearLayout {
   @ColorInt
   public int getErrorCurrentTextColors() {
     return indicatorViewController.getErrorViewCurrentTextColor();
+  }
+
+  /** Sets the background color used by the error message in all states. */
+  public void setIndicatorAreaBackgroundColorOnError(@Nullable ColorStateList indicatorAreaBackgroundColorOnError) {
+    indicatorViewController.setIndicatorAreaBackgroundColorOnError(indicatorAreaBackgroundColorOnError);
   }
 
   /**

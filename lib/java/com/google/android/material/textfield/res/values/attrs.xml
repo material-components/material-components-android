@@ -80,6 +80,7 @@
       <!-- [Sa + Da - Sa * Da, Sc + Dc - Sc * Dc] -->
       <enum name="screen" value="15"/>
     </attr>
+    <attr name="indicatorAreaBackgroundColorOnError" format="reference"/>
 
     <!-- Whether the layout is laid out as if the character counter will be displayed. -->
     <attr name="counterEnabled" format="boolean"/>

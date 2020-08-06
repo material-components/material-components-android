@@ -28,7 +28,9 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.TextViewCompat;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -46,6 +48,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.animation.AnimatorSetCompat;
+import com.google.android.material.shape.MaterialShapeDrawable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
@@ -107,6 +110,7 @@ final class IndicatorViewController {
   @Nullable private CharSequence errorViewContentDescription;
   private int errorTextAppearance;
   @Nullable private ColorStateList errorViewTextColor;
+  @Nullable private ColorStateList indicatorAreaBackgroundColorOnError;
 
   private CharSequence helperText;
   private boolean helperTextEnabled;
@@ -158,6 +162,7 @@ final class IndicatorViewController {
     }
     updateCaptionViewsVisibility(
         captionDisplayed, captionToShow, shouldAnimateCaptionView(errorView, errorText));
+    tintIndicatorAreaBackground();
   }
 
   void hideError() {
@@ -175,6 +180,25 @@ final class IndicatorViewController {
     }
     updateCaptionViewsVisibility(
         captionDisplayed, captionToShow, shouldAnimateCaptionView(errorView, null));
+    removeIndicatorAreaBackground();
+  }
+
+  void tintIndicatorAreaBackground(){
+    if (indicatorAreaBackgroundColorOnError == null){
+      return;
+    }
+    Drawable indicatorAreaBackground = indicatorArea.getBackground();
+    if (indicatorAreaBackground == null){
+      indicatorAreaBackground = new MaterialShapeDrawable();
+    }
+    DrawableCompat.setTintList(indicatorAreaBackground, indicatorAreaBackgroundColorOnError);
+    ViewCompat.setBackground(indicatorArea,indicatorAreaBackground);
+  }
+
+  void removeIndicatorAreaBackground(){
+    if (indicatorArea.getBackground()!=null){
+      ViewCompat.setBackground(indicatorArea,null);
+    }
   }
 
   /**
@@ -559,6 +583,17 @@ final class IndicatorViewController {
     this.errorViewTextColor = errorViewTextColor;
     if (errorView != null && errorViewTextColor != null) {
       errorView.setTextColor(errorViewTextColor);
+    }
+  }
+
+  void setIndicatorAreaBackgroundColorOnError(ColorStateList indicatorAreaBackgroundColorOnError){
+    this.indicatorAreaBackgroundColorOnError = indicatorAreaBackgroundColorOnError;
+    if (errorView != null && (errorIsDisplayed() || !TextUtils.isEmpty(errorText))) {
+      if (indicatorAreaBackgroundColorOnError !=null) {
+        tintIndicatorAreaBackground();
+      } else {
+        removeIndicatorAreaBackground();
+      }
     }
   }
 

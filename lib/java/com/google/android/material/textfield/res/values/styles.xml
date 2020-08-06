@@ -82,6 +82,7 @@
     <item name="counterOverflowTextColor">@color/mtrl_error</item>
     <item name="errorTextColor">@color/mtrl_error</item>
     <item name="helperTextTextColor">@color/mtrl_indicator_text_color</item>
+    <item name="indicatorAreaBackgroundColorOnError">@color/mtrl_bg_indicatorarea_error</item>
     <!-- The color of the label when it is collapsed and the text field is active -->
     <item name="hintTextColor">?attr/colorPrimary</item>
     <item name="placeholderTextColor">@color/mtrl_indicator_text_color</item>
