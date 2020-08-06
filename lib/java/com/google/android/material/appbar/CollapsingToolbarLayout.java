@@ -639,7 +639,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
     } else if (scrimAnimator.isRunning()) {
       scrimAnimator.cancel();
     }
-
+    scrimAnimator.setDuration(scrimAnimationDuration);
     scrimAnimator.setIntValues(scrimAlpha, targetAlpha);
     scrimAnimator.start();
   }
