@@ -57,7 +57,8 @@ class BorderDrawable extends Drawable {
    */
   private static final float DRAW_STROKE_WIDTH_MULTIPLE = 1.3333f;
 
-  private final ShapeAppearancePathProvider pathProvider = new ShapeAppearancePathProvider();
+  private final ShapeAppearancePathProvider pathProvider =
+      ShapeAppearancePathProvider.getInstance();
 
   @NonNull private final Paint paint;
   private final Path shapePath = new Path();

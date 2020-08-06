@@ -16,6 +16,8 @@
 
 package com.google.android.material.shape;
 
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+
 import android.graphics.Matrix;
 import android.graphics.Path;
 import android.graphics.Path.Direction;
@@ -28,15 +30,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
-import androidx.annotation.RestrictTo.Scope;
+import androidx.annotation.UiThread;
 
 /** A class to convert a {@link ShapeAppearanceModel} to a {@link android.graphics.Path}. */
 public class ShapeAppearancePathProvider {
 
+  private static class Lazy {
+    static final ShapeAppearancePathProvider INSTANCE = new ShapeAppearancePathProvider();
+  }
+
   /**
    * Listener called every time a {@link ShapePath} is created for a corner or an edge treatment.
    */
-  @RestrictTo(Scope.LIBRARY_GROUP)
+  @RestrictTo(LIBRARY_GROUP)
   public interface PathListener {
 
     void onCornerPathCreated(ShapePath cornerPath, Matrix transform, int count);
@@ -44,7 +50,8 @@ public class ShapeAppearancePathProvider {
     void onEdgePathCreated(ShapePath edgePath, Matrix transform, int count);
   }
 
-  // Inter-method state.
+  // Inter-method state. This class works under the assumption that there is only one exposed
+  // method, the method is responsible for correctly reset state.
   private final ShapePath[] cornerPaths = new ShapePath[4];
   private final Matrix[] cornerTransforms = new Matrix[4];
   private final Matrix[] edgeTransforms = new Matrix[4];
@@ -56,6 +63,8 @@ public class ShapeAppearancePathProvider {
   private final ShapePath shapePath = new ShapePath();
   private final float[] scratch = new float[2];
   private final float[] scratch2 = new float[2];
+  private final Path edgePath = new Path();
+  private final Path cornerPath = new Path();
 
   private boolean edgeIntersectionCheckEnabled = true;
 
@@ -65,6 +74,13 @@ public class ShapeAppearancePathProvider {
       cornerTransforms[i] = new Matrix();
       edgeTransforms[i] = new Matrix();
     }
+  }
+
+  @UiThread
+  @RestrictTo(LIBRARY_GROUP)
+  @NonNull
+  public static ShapeAppearancePathProvider getInstance() {
+    return Lazy.INSTANCE;
   }
 
   /**
@@ -92,7 +108,7 @@ public class ShapeAppearancePathProvider {
    * @param pathListener the path
    * @param path the returned path out-var.
    */
-  @RestrictTo(Scope.LIBRARY_GROUP)
+  @RestrictTo(LIBRARY_GROUP)
   public void calculatePath(
       ShapeAppearanceModel shapeAppearanceModel,
       float interpolation,
@@ -182,7 +198,7 @@ public class ShapeAppearancePathProvider {
     shapePath.reset(0, 0);
     EdgeTreatment edgeTreatment = getEdgeTreatmentForIndex(index, spec.shapeAppearanceModel);
     edgeTreatment.getEdgePath(edgeLength, center, spec.interpolation, shapePath);
-    Path edgePath = new Path();
+    edgePath.reset();
     shapePath.applyToPath(edgeTransforms[index], edgePath);
 
     if (edgeIntersectionCheckEnabled
@@ -215,7 +231,7 @@ public class ShapeAppearancePathProvider {
 
   @RequiresApi(VERSION_CODES.KITKAT)
   private boolean pathOverlapsCorner(Path edgePath, int index) {
-    Path cornerPath = new Path();
+    cornerPath.reset();
     cornerPaths[index].applyToPath(cornerTransforms[index], cornerPath);
 
     RectF bounds = new RectF();

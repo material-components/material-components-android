@@ -39,7 +39,8 @@ class MaskEvaluator {
   private final Path path = new Path();
   private final Path startPath = new Path();
   private final Path endPath = new Path();
-  private final ShapeAppearancePathProvider pathProvider = new ShapeAppearancePathProvider();
+  private final ShapeAppearancePathProvider pathProvider =
+      ShapeAppearancePathProvider.getInstance();
 
   private ShapeAppearanceModel currentShapeAppearanceModel;
 

@@ -45,6 +45,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import android.os.Looper;
 import androidx.core.graphics.drawable.TintAwareDrawable;
 import androidx.core.util.ObjectsCompat;
 import android.util.AttributeSet;
@@ -130,7 +131,13 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
   private final ShadowRenderer shadowRenderer = new ShadowRenderer();
   @NonNull private final PathListener pathShadowListener;
-  private final ShapeAppearancePathProvider pathProvider = new ShapeAppearancePathProvider();
+  // Most drawables in the lib will be used by Views in the UI thread. Since the
+  // ShapeAppearancePathProvider instance is not ThreadSafe, due to internal state,
+  // account for the case when using a MaterialShapeDrawable outside the main thread.
+  private final ShapeAppearancePathProvider pathProvider =
+      Looper.getMainLooper().getThread() == Thread.currentThread()
+          ? ShapeAppearancePathProvider.getInstance()
+          : new ShapeAppearancePathProvider();
 
   @Nullable private PorterDuffColorFilter tintFilter;
   @Nullable private PorterDuffColorFilter strokeTintFilter;

@@ -58,7 +58,8 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
 
   private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_ShapeableImageView;
 
-  private final ShapeAppearancePathProvider pathProvider = new ShapeAppearancePathProvider();
+  private final ShapeAppearancePathProvider pathProvider =
+      ShapeAppearancePathProvider.getInstance();
   private final RectF destination;
   private final RectF maskRect;
   private final Paint borderPaint;
