@@ -95,7 +95,7 @@ public class TransitionMusicLibraryDemoFragment extends Fragment
     TransitionMusicAlbumDemoFragment fragment =
         TransitionMusicAlbumDemoFragment.newInstance(album.id);
 
-    getFragmentManager()
+    getParentFragmentManager()
         .beginTransaction()
         .addSharedElement(view, ViewCompat.getTransitionName(view))
         .replace(R.id.fragment_container, fragment, TransitionMusicAlbumDemoFragment.TAG)

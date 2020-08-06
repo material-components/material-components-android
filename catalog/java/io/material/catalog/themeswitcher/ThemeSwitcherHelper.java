@@ -30,7 +30,7 @@ public class ThemeSwitcherHelper {
   private final boolean enabled;
 
   public <F extends Fragment & ThemeSwitcherFragment> ThemeSwitcherHelper(F fragment) {
-    fragmentManager = fragment.getFragmentManager();
+    fragmentManager = fragment.getParentFragmentManager();
     enabled =
         fragment.shouldShowDefaultDemoActionBar()
             && fragment.getActivity() instanceof ThemeSwitcherActivity;
