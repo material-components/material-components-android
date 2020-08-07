@@ -46,8 +46,10 @@ public final class LinearIndeterminateNonSeamlessAnimatorDelegate
   private static final int MAIN_LINE_2_TAIL_DELAY = 1267;
   private static final int MAIN_LINE_2_TAIL_DURATION = 533;
 
+  // The current context which the animation is running on.
+  private final Context context;
   // The animator controls non-seamless linear indeterminate animation.
-  private final AnimatorSet animatorSet;
+  private AnimatorSet animatorSet;
 
   // Internal parameters controlled by the animator.
   private int displayedSegmentColorIndex;
@@ -63,65 +65,73 @@ public final class LinearIndeterminateNonSeamlessAnimatorDelegate
   public LinearIndeterminateNonSeamlessAnimatorDelegate(@NonNull Context context) {
     super(/*segmentCount=*/ 2);
 
-    // Instantiates the animator.
-    ObjectAnimator line1HeadAnimator = ObjectAnimator.ofFloat(this, LINE_1_HEAD_FRACTION, 0f, 1f);
-    line1HeadAnimator.setDuration(MAIN_LINE_1_HEAD_DURATION);
-    line1HeadAnimator.setInterpolator(
-        AnimationUtilsCompat.loadInterpolator(
-            context, R.animator.linear_indeterminate_line1_head_interpolator));
-
-    ObjectAnimator line1TailAnimator = ObjectAnimator.ofFloat(this, LINE_1_TAIL_FRACTION, 0f, 1f);
-    line1TailAnimator.setStartDelay(MAIN_LINE_1_TAIL_DELAY);
-    line1TailAnimator.setDuration(MAIN_LINE_1_TAIL_DURATION);
-    line1TailAnimator.setInterpolator(
-        AnimationUtilsCompat.loadInterpolator(
-            context, R.animator.linear_indeterminate_line1_tail_interpolator));
-
-    ObjectAnimator line2HeadAnimator = ObjectAnimator.ofFloat(this, LINE_2_HEAD_FRACTION, 0f, 1f);
-    line2HeadAnimator.setStartDelay(MAIN_LINE_2_HEAD_DELAY);
-    line2HeadAnimator.setDuration(MAIN_LINE_2_HEAD_DURATION);
-    line2HeadAnimator.setInterpolator(
-        AnimationUtilsCompat.loadInterpolator(
-            context, R.animator.linear_indeterminate_line2_head_interpolator));
-
-    ObjectAnimator line2TailAnimator = ObjectAnimator.ofFloat(this, LINE_2_TAIL_FRACTION, 0f, 1f);
-    line2TailAnimator.setStartDelay(MAIN_LINE_2_TAIL_DELAY);
-    line2TailAnimator.setDuration(MAIN_LINE_2_TAIL_DURATION);
-    line2TailAnimator.setInterpolator(
-        AnimationUtilsCompat.loadInterpolator(
-            context, R.animator.linear_indeterminate_line2_tail_interpolator));
-
-    animatorSet = new AnimatorSet();
-    animatorSet.playTogether(
-        line1HeadAnimator, line1TailAnimator, line2HeadAnimator, line2TailAnimator);
-    animatorSet.addListener(
-        new AnimatorListenerAdapter() {
-          @Override
-          public void onAnimationEnd(Animator animation) {
-            super.onAnimationEnd(animation);
-
-            if (animatorCompleteEndRequested) {
-              animatorCompleteEndRequested = false;
-              animatorCompleteCallback.onAnimationEnd(drawable);
-              resetPropertiesForNewStart();
-            } else {
-              // If the drawable is still visible, continues the main animator by restarting.
-              if (drawable.isVisible()) {
-                resetPropertiesForNextCycle();
-                startAnimator();
-              } else {
-                resetPropertiesForNewStart();
-              }
-            }
-          }
-        });
+    this.context = context;
   }
 
   // ******************* Animation control *******************
 
   @Override
   public void startAnimator() {
+    maybeInitializeAnimators();
+
     animatorSet.start();
+  }
+
+  private void maybeInitializeAnimators() {
+    if (animatorSet == null) {
+      // Instantiates the animator.
+      ObjectAnimator line1HeadAnimator = ObjectAnimator.ofFloat(this, LINE_1_HEAD_FRACTION, 0f, 1f);
+      line1HeadAnimator.setDuration(MAIN_LINE_1_HEAD_DURATION);
+      line1HeadAnimator.setInterpolator(
+          AnimationUtilsCompat.loadInterpolator(
+              context, R.animator.linear_indeterminate_line1_head_interpolator));
+
+      ObjectAnimator line1TailAnimator = ObjectAnimator.ofFloat(this, LINE_1_TAIL_FRACTION, 0f, 1f);
+      line1TailAnimator.setStartDelay(MAIN_LINE_1_TAIL_DELAY);
+      line1TailAnimator.setDuration(MAIN_LINE_1_TAIL_DURATION);
+      line1TailAnimator.setInterpolator(
+          AnimationUtilsCompat.loadInterpolator(
+              context, R.animator.linear_indeterminate_line1_tail_interpolator));
+
+      ObjectAnimator line2HeadAnimator = ObjectAnimator.ofFloat(this, LINE_2_HEAD_FRACTION, 0f, 1f);
+      line2HeadAnimator.setStartDelay(MAIN_LINE_2_HEAD_DELAY);
+      line2HeadAnimator.setDuration(MAIN_LINE_2_HEAD_DURATION);
+      line2HeadAnimator.setInterpolator(
+          AnimationUtilsCompat.loadInterpolator(
+              context, R.animator.linear_indeterminate_line2_head_interpolator));
+
+      ObjectAnimator line2TailAnimator = ObjectAnimator.ofFloat(this, LINE_2_TAIL_FRACTION, 0f, 1f);
+      line2TailAnimator.setStartDelay(MAIN_LINE_2_TAIL_DELAY);
+      line2TailAnimator.setDuration(MAIN_LINE_2_TAIL_DURATION);
+      line2TailAnimator.setInterpolator(
+          AnimationUtilsCompat.loadInterpolator(
+              context, R.animator.linear_indeterminate_line2_tail_interpolator));
+
+      animatorSet = new AnimatorSet();
+      animatorSet.playTogether(
+          line1HeadAnimator, line1TailAnimator, line2HeadAnimator, line2TailAnimator);
+      animatorSet.addListener(
+          new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+              super.onAnimationEnd(animation);
+
+              if (animatorCompleteEndRequested) {
+                animatorCompleteEndRequested = false;
+                animatorCompleteCallback.onAnimationEnd(drawable);
+                resetPropertiesForNewStart();
+              } else {
+                // If the drawable is still visible, continues the main animator by restarting.
+                if (drawable.isVisible()) {
+                  resetPropertiesForNextCycle();
+                  startAnimator();
+                } else {
+                  resetPropertiesForNewStart();
+                }
+              }
+            }
+          });
+    }
   }
 
   @Override
@@ -141,7 +151,9 @@ public final class LinearIndeterminateNonSeamlessAnimatorDelegate
 
   @Override
   public void cancelAnimatorImmediately() {
-    animatorSet.cancel();
+    if (animatorSet != null) {
+      animatorSet.cancel();
+    }
   }
 
   @Override

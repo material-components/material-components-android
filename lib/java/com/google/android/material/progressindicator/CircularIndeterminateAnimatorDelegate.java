@@ -47,8 +47,8 @@ public final class CircularIndeterminateAnimatorDelegate
   private static final int COLOR_FADING_DELAY = 1000;
 
   // The animators control circular indeterminate animation.
-  private final AnimatorSet animatorSet;
-  private final ObjectAnimator indicatorCollapsingAnimator;
+  private AnimatorSet animatorSet;
+  private ObjectAnimator indicatorCollapsingAnimator;
   private ObjectAnimator colorFadingAnimator;
 
   // Internal parameters controlled by the animator.
@@ -65,58 +65,6 @@ public final class CircularIndeterminateAnimatorDelegate
 
   public CircularIndeterminateAnimatorDelegate() {
     super(/*segmentCount=*/ 1);
-
-    // Instantiates the animator.
-    ObjectAnimator constantlyRotateAnimator =
-        ObjectAnimator.ofFloat(
-            this, INDICATOR_IN_CYCLE_OFFSET, 0f, INDICATOR_OFFSET_PER_COLOR_DEGREES);
-    constantlyRotateAnimator.setDuration(DURATION_PER_COLOR_IN_MS);
-    // Sets null to get a linear interpolator.
-    constantlyRotateAnimator.setInterpolator(null);
-
-    ObjectAnimator expandAnimator =
-        ObjectAnimator.ofFloat(this, INDICATOR_HEAD_CHANGE_FRACTION, 0f, 1f);
-    expandAnimator.setDuration(DURATION_PER_COLOR_IN_MS / 2);
-    expandAnimator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-    expandAnimator.addListener(
-        new AnimatorListenerAdapter() {
-          @Override
-          public void onAnimationEnd(Animator animation) {
-            super.onAnimationEnd(animation);
-            // Manipulates collapse animator to make the indicator span ends with 0 degree.
-            if (animatorCompleteEndRequested) {
-              indicatorCollapsingAnimator.setFloatValues(
-                  0f, 1f + INDICATOR_MIN_DEGREES / INDICATOR_DELTA_DEGREES);
-            }
-          }
-        });
-
-    indicatorCollapsingAnimator =
-        ObjectAnimator.ofFloat(this, INDICATOR_TAIL_CHANGE_FRACTION, 0f, 1f);
-    indicatorCollapsingAnimator.setDuration(DURATION_PER_COLOR_IN_MS / 2);
-    indicatorCollapsingAnimator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-
-    animatorSet = new AnimatorSet();
-    animatorSet.playSequentially(expandAnimator, indicatorCollapsingAnimator);
-    animatorSet.playTogether(constantlyRotateAnimator);
-    animatorSet.addListener(
-        new AnimatorListenerAdapter() {
-          @Override
-          public void onAnimationEnd(Animator animation) {
-            super.onAnimationEnd(animation);
-
-            if (animatorCompleteEndRequested && segmentPositions[0] == segmentPositions[1]) {
-              animatorCompleteCallback.onAnimationEnd(drawable);
-              animatorCompleteEndRequested = false;
-            } else {
-              // If the drawable is still visible, continues the main animator by restarting.
-              if (drawable.isVisible()) {
-                resetPropertiesForNextCycle();
-                startAnimator();
-              }
-            }
-          }
-        });
   }
 
   @Override
@@ -134,19 +82,84 @@ public final class CircularIndeterminateAnimatorDelegate
     colorFadingAnimator.setStartDelay(COLOR_FADING_DELAY);
     colorFadingAnimator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
 
-    animatorSet.playTogether(colorFadingAnimator);
+    if (animatorSet != null) {
+      animatorSet.playTogether(colorFadingAnimator);
+    }
   }
 
   // ******************* Animation control *******************
 
   @Override
   void startAnimator() {
+    maybeInitializeAnimators();
+
     animatorSet.start();
+  }
+
+  private void maybeInitializeAnimators() {
+    if (animatorSet == null) {
+      // Instantiates the animator.
+      ObjectAnimator constantlyRotateAnimator =
+          ObjectAnimator.ofFloat(
+              this, INDICATOR_IN_CYCLE_OFFSET, 0f, INDICATOR_OFFSET_PER_COLOR_DEGREES);
+      constantlyRotateAnimator.setDuration(DURATION_PER_COLOR_IN_MS);
+      // Sets null to get a linear interpolator.
+      constantlyRotateAnimator.setInterpolator(null);
+
+      ObjectAnimator expandAnimator =
+          ObjectAnimator.ofFloat(this, INDICATOR_HEAD_CHANGE_FRACTION, 0f, 1f);
+      expandAnimator.setDuration(DURATION_PER_COLOR_IN_MS / 2);
+      expandAnimator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
+      expandAnimator.addListener(
+          new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+              super.onAnimationEnd(animation);
+              // Manipulates collapse animator to make the indicator span ends with 0 degree.
+              if (animatorCompleteEndRequested) {
+                indicatorCollapsingAnimator.setFloatValues(
+                    0f, 1f + INDICATOR_MIN_DEGREES / INDICATOR_DELTA_DEGREES);
+              }
+            }
+          });
+
+      indicatorCollapsingAnimator =
+          ObjectAnimator.ofFloat(this, INDICATOR_TAIL_CHANGE_FRACTION, 0f, 1f);
+      indicatorCollapsingAnimator.setDuration(DURATION_PER_COLOR_IN_MS / 2);
+      indicatorCollapsingAnimator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
+
+      animatorSet = new AnimatorSet();
+      animatorSet.playSequentially(expandAnimator, indicatorCollapsingAnimator);
+      animatorSet.playTogether(constantlyRotateAnimator);
+      if (colorFadingAnimator != null) {
+        animatorSet.playTogether(colorFadingAnimator);
+      }
+      animatorSet.addListener(
+          new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+              super.onAnimationEnd(animation);
+
+              if (animatorCompleteEndRequested && segmentPositions[0] == segmentPositions[1]) {
+                animatorCompleteCallback.onAnimationEnd(drawable);
+                animatorCompleteEndRequested = false;
+              } else {
+                // If the drawable is still visible, continues the main animator by restarting.
+                if (drawable.isVisible()) {
+                  resetPropertiesForNextCycle();
+                  startAnimator();
+                }
+              }
+            }
+          });
+    }
   }
 
   @Override
   void cancelAnimatorImmediately() {
-    animatorSet.cancel();
+    if (animatorSet != null) {
+      animatorSet.cancel();
+    }
   }
 
   @Override
@@ -168,7 +181,9 @@ public final class CircularIndeterminateAnimatorDelegate
     setIndicatorHeadChangeFraction(0f);
     setIndicatorTailChangeFraction(0f);
     setIndicatorStartOffset(0f);
-    indicatorCollapsingAnimator.setFloatValues(0f, 1f);
+    if (indicatorCollapsingAnimator != null) {
+      indicatorCollapsingAnimator.setFloatValues(0f, 1f);
+    }
     resetSegmentColors();
   }
 

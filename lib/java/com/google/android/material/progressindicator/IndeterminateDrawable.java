@@ -15,12 +15,11 @@
  */
 package com.google.android.material.progressindicator;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import androidx.annotation.NonNull;
 
 /**
@@ -126,6 +125,7 @@ public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityC
           displayedIndicatorSize,
           displayedRoundedCornerRadius);
     }
+    canvas.restore();
   }
 
   // ******************* Setter and getter *******************
@@ -139,17 +139,17 @@ public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityC
     this.animatorDelegate = animatorDelegate;
     animatorDelegate.registerDrawable(this);
 
-    // Adds a listener to cancel indeterminate animator after hidden.
-    getHideAnimator()
-        .addListener(
-            new AnimatorListenerAdapter() {
-              @Override
-              public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                IndeterminateDrawable.this.animatorDelegate.cancelAnimatorImmediately();
-                IndeterminateDrawable.this.animatorDelegate.resetPropertiesForNewStart();
-              }
-            });
+    // Sets the end action of the internal callback to cancel indeterminate animator after hidden.
+    setInternalAnimationCallback(
+        new AnimationCallback() {
+          @Override
+          public void onAnimationEnd(Drawable drawable) {
+            super.onAnimationEnd(drawable);
+            IndeterminateDrawable.this.animatorDelegate.cancelAnimatorImmediately();
+            IndeterminateDrawable.this.animatorDelegate.resetPropertiesForNewStart();
+          }
+        });
+
     setGrowFraction(1f);
   }
 

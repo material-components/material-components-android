@@ -39,71 +39,74 @@ public final class LinearIndeterminateSeamlessAnimatorDelegate
   private static final int DURATION_PER_COLOR = 667;
 
   // The animator controls seamless linear indeterminate animation.
-  private final AnimatorSet animatorSet;
+  private AnimatorSet animatorSet;
 
   // Internal parameters controlled by the animator.
   private int referenceSegmentColorIndex;
   private float lineConnectPoint1Fraction;
   private float lineConnectPoint2Fraction;
 
-  // For animator control.
-  AnimationCallback animatorCompleteCallback = null;
-
   public LinearIndeterminateSeamlessAnimatorDelegate() {
     super(/*segmentCount=*/ 3);
-
-    // Instantiates the animator.
-    ObjectAnimator connectPoint1Animator =
-        ObjectAnimator.ofFloat(this, LINE_CONNECT_POINT_1_FRACTION, 0f, 1f);
-    connectPoint1Animator.setDuration(DURATION_PER_COLOR);
-    connectPoint1Animator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-    connectPoint1Animator.setRepeatCount(ValueAnimator.INFINITE);
-    connectPoint1Animator.setRepeatMode(ValueAnimator.RESTART);
-    connectPoint1Animator.addListener(
-        new AnimatorListenerAdapter() {
-          @Override
-          public void onAnimationRepeat(Animator animation) {
-            super.onAnimationRepeat(animation);
-            if (getLineConnectPoint2Fraction() > 0 && getLineConnectPoint2Fraction() < 1) {
-              shiftSegmentColors();
-            }
-          }
-        });
-
-    ObjectAnimator connectPoint2StayAtZeroAnimator =
-        ObjectAnimator.ofFloat(this, LINE_CONNECT_POINT_2_FRACTION, 0f, 0f);
-    connectPoint2StayAtZeroAnimator.setDuration(NEXT_COLOR_DELAY);
-
-    ObjectAnimator connectPoint2Animator =
-        ObjectAnimator.ofFloat(this, LINE_CONNECT_POINT_2_FRACTION, 0f, 1f);
-    connectPoint2Animator.setDuration(DURATION_PER_COLOR);
-    connectPoint2Animator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-    connectPoint2Animator.setRepeatCount(ValueAnimator.INFINITE);
-    connectPoint2Animator.setRepeatMode(ValueAnimator.RESTART);
-    connectPoint2Animator.addListener(
-        new AnimatorListenerAdapter() {
-          @Override
-          public void onAnimationRepeat(Animator animation) {
-            super.onAnimationRepeat(animation);
-            if (getLineConnectPoint1Fraction() > 0 && getLineConnectPoint1Fraction() < 1) {
-              shiftSegmentColors();
-            }
-          }
-        });
-
-    AnimatorSet connectPoint2AnimatorSet = new AnimatorSet();
-    connectPoint2AnimatorSet.playSequentially(
-        connectPoint2StayAtZeroAnimator, connectPoint2Animator);
-
-    animatorSet = new AnimatorSet();
-    animatorSet.playTogether(connectPoint1Animator, connectPoint2AnimatorSet);
   }
 
   // ******************* Animation control *******************
 
   @Override
   public void startAnimator() {
+    maybeInitializeAnimators();
+
     animatorSet.start();
+  }
+
+  private void maybeInitializeAnimators() {
+    if (animatorSet == null) {
+      // Instantiates the animator.
+      ObjectAnimator connectPoint1Animator =
+          ObjectAnimator.ofFloat(this, LINE_CONNECT_POINT_1_FRACTION, 0f, 1f);
+      connectPoint1Animator.setDuration(DURATION_PER_COLOR);
+      connectPoint1Animator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
+      connectPoint1Animator.setRepeatCount(ValueAnimator.INFINITE);
+      connectPoint1Animator.setRepeatMode(ValueAnimator.RESTART);
+      connectPoint1Animator.addListener(
+          new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+              super.onAnimationRepeat(animation);
+              if (getLineConnectPoint2Fraction() > 0 && getLineConnectPoint2Fraction() < 1) {
+                shiftSegmentColors();
+              }
+            }
+          });
+
+      ObjectAnimator connectPoint2StayAtZeroAnimator =
+          ObjectAnimator.ofFloat(this, LINE_CONNECT_POINT_2_FRACTION, 0f, 0f);
+      connectPoint2StayAtZeroAnimator.setDuration(NEXT_COLOR_DELAY);
+
+      ObjectAnimator connectPoint2Animator =
+          ObjectAnimator.ofFloat(this, LINE_CONNECT_POINT_2_FRACTION, 0f, 1f);
+      connectPoint2Animator.setDuration(DURATION_PER_COLOR);
+      connectPoint2Animator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
+      connectPoint2Animator.setRepeatCount(ValueAnimator.INFINITE);
+      connectPoint2Animator.setRepeatMode(ValueAnimator.RESTART);
+      connectPoint2Animator.addListener(
+          new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+              super.onAnimationRepeat(animation);
+              if (getLineConnectPoint1Fraction() > 0 && getLineConnectPoint1Fraction() < 1) {
+                shiftSegmentColors();
+              }
+            }
+          });
+
+      AnimatorSet connectPoint2AnimatorSet = new AnimatorSet();
+      connectPoint2AnimatorSet.playSequentially(
+          connectPoint2StayAtZeroAnimator, connectPoint2Animator);
+
+      animatorSet = new AnimatorSet();
+      animatorSet.playTogether(connectPoint1Animator, connectPoint2AnimatorSet);
+    }
   }
 
   @Override
@@ -120,7 +123,9 @@ public final class LinearIndeterminateSeamlessAnimatorDelegate
 
   @Override
   public void cancelAnimatorImmediately() {
-    animatorSet.cancel();
+    if (animatorSet != null) {
+      animatorSet.cancel();
+    }
   }
 
   @Override

@@ -60,6 +60,8 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
 
   // List of AnimationCallback to be called at the end of show/hide animation.
   private List<AnimationCallback> animationCallbacks;
+  // An internal AnimationCallback which is executed before the user's animation callbacks.
+  private AnimationCallback internalAnimationCallback;
 
   // A fraction from 0 to 1 indicating the ratio used in drawing, controlled by show/hide animator.
   private float growFraction;
@@ -80,25 +82,23 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
     animatorDurationScaleProvider = new AnimatorDurationScaleProvider();
 
     setAlpha(255);
-
-    initializeShowAnimator();
-    initializeHideAnimator();
   }
 
   // ******************* Animator initialization *******************
 
-  private void initializeShowAnimator() {
-    showAnimator = ObjectAnimator.ofFloat(this, GROW_FRACTION, 0f, 1f);
-    showAnimator.setDuration(GROW_DURATION);
-    showAnimator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-    setShowAnimator(showAnimator);
-  }
-
-  private void initializeHideAnimator() {
-    hideAnimator = ObjectAnimator.ofFloat(this, GROW_FRACTION, 1f, 0f);
-    hideAnimator.setDuration(GROW_DURATION);
-    hideAnimator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-    setHideAnimator(hideAnimator);
+  private void maybeInitializeAnimators() {
+    if (showAnimator == null) {
+      showAnimator = ObjectAnimator.ofFloat(this, GROW_FRACTION, 0f, 1f);
+      showAnimator.setDuration(GROW_DURATION);
+      showAnimator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
+      setShowAnimator(showAnimator);
+    }
+    if (hideAnimator == null) {
+      hideAnimator = ObjectAnimator.ofFloat(this, GROW_FRACTION, 1f, 0f);
+      hideAnimator.setDuration(GROW_DURATION);
+      hideAnimator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
+      setHideAnimator(hideAnimator);
+    }
   }
 
   // ******************* Callbacks *******************
@@ -148,8 +148,20 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
     animationCallbacks = null;
   }
 
+  /**
+   * Sets the internal {@code AnimationCallback}, which will be executed before other callbacks.
+   *
+   * @param callback New internal animation callback.
+   */
+  public void setInternalAnimationCallback(@NonNull AnimationCallback callback) {
+    internalAnimationCallback = callback;
+  }
+
   /** Invokes all {@code onAnimationStart()} functions in the animation callbacks. */
   private void dispatchAnimationStart() {
+    if (internalAnimationCallback != null) {
+      internalAnimationCallback.onAnimationStart(this);
+    }
     if (animationCallbacks != null) {
       for (AnimationCallback callback : animationCallbacks) {
         callback.onAnimationStart(this);
@@ -159,6 +171,9 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
 
   /** Invokes all {@code onAnimationEnd()} functions in the animation callbacks. */
   private void dispatchAnimationEnd() {
+    if (internalAnimationCallback != null) {
+      internalAnimationCallback.onAnimationEnd(this);
+    }
     if (animationCallbacks != null) {
       for (AnimationCallback callback : animationCallbacks) {
         callback.onAnimationEnd(this);
@@ -219,6 +234,9 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
       // Early return if trying to hide a hidden drawable.
       return false;
     }
+
+    maybeInitializeAnimators();
+
     if (animationDesired && (visible ? showAnimator : hideAnimator).isRunning()) {
       // Show/hide animation should not be reset while being played.
       return false;

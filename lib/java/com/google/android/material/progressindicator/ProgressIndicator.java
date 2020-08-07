@@ -213,7 +213,7 @@ public class ProgressIndicator extends ProgressBar {
                 ? new LinearIndeterminateSeamlessAnimatorDelegate()
                 : new LinearIndeterminateNonSeamlessAnimatorDelegate(getContext())
             : new CircularIndeterminateAnimatorDelegate();
-
+    
     setIndeterminateDrawable(
         new IndeterminateDrawable(
             getContext(), spec, drawingDelegate, indeterminateAnimatorDelegate));
