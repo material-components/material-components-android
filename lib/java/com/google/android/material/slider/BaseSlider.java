@@ -439,6 +439,10 @@ abstract class BaseSlider<
       setEnabled(false);
     }
 
+    if (thumbRadius >= trackSidePadding) {
+      trackSidePadding = thumbRadius + 1;
+    }
+
     a.recycle();
   }
 
