@@ -36,16 +36,19 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.ColorInt;
+import androidx.annotation.DimenRes;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.animation.AnimatorSetCompat;
+import com.google.android.material.resources.MaterialResources;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
@@ -352,18 +355,32 @@ final class IndicatorViewController {
 
   void adjustIndicatorPadding() {
     if (canAdjustIndicatorPadding()) {
-      // Add padding to the indicators so that they match the EditText
+      EditText editText = textInputView.getEditText();
+      boolean isFontScaleLarge = MaterialResources.isFontScaleAtLeastLarge(context);
       ViewCompat.setPaddingRelative(
           indicatorArea,
-          ViewCompat.getPaddingStart(textInputView.getEditText()),
-          0,
-          ViewCompat.getPaddingEnd(textInputView.getEditText()),
+          getIndicatorPadding(
+              isFontScaleLarge,
+              R.dimen.material_helper_text_large_padding_horizontal,
+              ViewCompat.getPaddingStart(editText)),
+          getIndicatorPadding(isFontScaleLarge, R.dimen.material_helper_text_large_padding_top, 0),
+          getIndicatorPadding(
+              isFontScaleLarge,
+              R.dimen.material_helper_text_large_padding_horizontal,
+              ViewCompat.getPaddingEnd(editText)),
           0);
     }
   }
 
   private boolean canAdjustIndicatorPadding() {
     return indicatorArea != null && textInputView.getEditText() != null;
+  }
+
+  private int getIndicatorPadding(
+      boolean isFontScaleLarge, @DimenRes int largeFontPaddingRes, int defaultPadding) {
+    return isFontScaleLarge
+        ? context.getResources().getDimensionPixelSize(largeFontPaddingRes)
+        : defaultPadding;
   }
 
   void addIndicator(TextView indicator, @IndicatorIndex int index) {

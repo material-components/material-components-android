@@ -40,6 +40,9 @@ import androidx.annotation.StyleableRes;
 @RestrictTo(LIBRARY_GROUP)
 public class MaterialResources {
 
+  private static final float FONT_SCALE_LARGE = 1.3f;
+  private static final float FONT_SCALE_LARGEST = 2f;
+
   private MaterialResources() {}
 
   /**
@@ -169,6 +172,20 @@ public class MaterialResources {
     int dimension = styledAttrs.getDimensionPixelSize(0, defaultValue);
     styledAttrs.recycle();
     return dimension;
+  }
+
+  /**
+   * Returns whether the font scale size is at least {@link #FONT_SCALE_LARGE}.
+   */
+  public static boolean isFontScaleAtLeastLarge(@NonNull Context context) {
+    return context.getResources().getConfiguration().fontScale >= FONT_SCALE_LARGE;
+  }
+
+  /**
+   * Returns whether the font scale size is at least {@link #FONT_SCALE_LARGEST}.
+   */
+  public static boolean isFontScaleAtLeastLargest(@NonNull Context context) {
+    return context.getResources().getConfiguration().fontScale >= FONT_SCALE_LARGEST;
   }
 
   /**

@@ -30,6 +30,12 @@
 
   <dimen name="mtrl_edittext_rectangle_top_offset">12dp</dimen>
 
+  <!-- For large text, distance from text field to helper text's baseline should
+       be 24dp when font size is 16 (16 + 8dp = 24dp) and 32dp when font size is
+        24 (24 + 8dp = 32dp). -->
+  <dimen name="material_helper_text_large_padding_top">8dp</dimen>
+  <dimen name="material_helper_text_large_padding_horizontal">12dp</dimen>
+
   <!-- The icon views' minimum width is 48dp and since each icon is 24dp wide we need a 4dp margin
        to have the appropriate spacing before and after each icon. -->
   <dimen name="mtrl_textinput_end_icon_margin_start">4dp</dimen>
