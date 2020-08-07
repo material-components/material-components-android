@@ -469,7 +469,8 @@ abstract class BaseSlider<
   }
 
   private void validateStepSize() {
-    if (stepSize > 0.0f && ((valueTo - valueFrom) / stepSize) % 1 > THRESHOLD) {
+    float remainder = ((valueTo - valueFrom) / stepSize) % 1;
+    if (stepSize > 0.0f && remainder > THRESHOLD && remainder < 1 - THRESHOLD) {
       throw new IllegalStateException(
           String.format(
               EXCEPTION_ILLEGAL_STEP_SIZE,
@@ -489,7 +490,8 @@ abstract class BaseSlider<
                 Float.toString(valueFrom),
                 Float.toString(valueTo)));
       }
-      if (stepSize > 0.0f && ((valueFrom - value) / stepSize) % 1 > THRESHOLD) {
+      float remainder = ((value - valueFrom) / stepSize) % 1;
+      if (stepSize > 0.0f && remainder > THRESHOLD && remainder < 1 - THRESHOLD) {
         throw new IllegalStateException(
             String.format(
                 EXCEPTION_ILLEGAL_DISCRETE_VALUE,

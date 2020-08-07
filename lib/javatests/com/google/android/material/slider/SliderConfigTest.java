@@ -119,6 +119,29 @@ public class SliderConfigTest {
           /* stepValue = */ 10f,
           /* value = */ 21f,
           IllegalStateException.class,
+        },
+        new Object[] {
+          /* valueFrom = */ 0.1f,
+          /* valueTo = */ 10f,
+          /* stepValue = */ 0.1f,
+          /* value = */ 0.1f,
+          null,
+        },
+        new Object[] {
+          /* valueFrom = */ 0.1f,
+          /* valueTo = */ 10f,
+          /* stepValue = */ 0.1f,
+          /* value = */ 0.1999999f, // This emulates a rounding error from 0.2
+          null,
+        },
+        new Object[][] {
+          {
+            /* valueFrom = */ 0.1f,
+            /* valueTo = */ 10f,
+            /* stepValue = */ 0.1f,
+            /* value = */ 0.15f,
+            IllegalStateException.class,
+          }
         });
   }
 
