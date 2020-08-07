@@ -430,9 +430,9 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     int extraBottomMargin =
         anchorView != null ? extraBottomMarginAnchorView : extraBottomMarginWindowInset;
     MarginLayoutParams marginParams = (MarginLayoutParams) layoutParams;
-    marginParams.bottomMargin = originalMargins.bottom + extraBottomMargin;
-    marginParams.leftMargin = originalMargins.left + extraLeftMarginWindowInset;
-    marginParams.rightMargin = originalMargins.right + extraRightMarginWindowInset;
+    marginParams.bottomMargin += originalMargins.bottom + extraBottomMargin;
+    marginParams.leftMargin += originalMargins.left + extraLeftMarginWindowInset;
+    marginParams.rightMargin += originalMargins.right + extraRightMarginWindowInset;
     view.requestLayout();
 
     if (VERSION.SDK_INT >= VERSION_CODES.Q && shouldUpdateGestureInset()) {
