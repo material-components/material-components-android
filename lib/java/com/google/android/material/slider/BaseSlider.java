@@ -439,10 +439,6 @@ abstract class BaseSlider<
       setEnabled(false);
     }
 
-    if (thumbRadius >= trackSidePadding) {
-      trackSidePadding = thumbRadius + 1;
-    }
-
     a.recycle();
   }
 
@@ -454,6 +450,12 @@ abstract class BaseSlider<
         null,
         0,
         a.getResourceId(R.styleable.Slider_labelStyle, R.style.Widget_MaterialComponents_Tooltip));
+  }
+
+  private void validateTrackSidePadding () {
+    if (thumbRadius >= trackSidePadding) {
+      trackSidePadding = thumbRadius + 1;
+    };
   }
 
   private void validateValueFrom() {
@@ -857,6 +859,7 @@ abstract class BaseSlider<
     }
 
     thumbRadius = radius;
+    validateTrackSidePadding();
 
     thumbDrawable.setShapeAppearanceModel(
         ShapeAppearanceModel.builder().setAllCorners(CornerFamily.ROUNDED, thumbRadius).build());
