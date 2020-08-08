@@ -57,6 +57,7 @@
   <public name="errorIconDrawable" type="attr"/>
   <public name="errorIconTint" type="attr"/>
   <public name="errorIconTintMode" type="attr"/>
+  <public name="indicatorAreaBackgroundColorOnError" type="attr"/>
   <public name="helperText" type="attr"/>
   <public name="helperTextEnabled" type="attr"/>
   <public name="helperTextTextAppearance" type="attr"/>
