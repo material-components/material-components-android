@@ -2076,6 +2076,9 @@ public class TextInputLayout extends LinearLayout {
       placeholderTextView = new AppCompatTextView(getContext());
       placeholderTextView.setId(R.id.textinput_placeholder);
 
+      LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+      placeholderTextView.setLayoutParams(params);
+
       ViewCompat.setAccessibilityLiveRegion(
           placeholderTextView, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
 
