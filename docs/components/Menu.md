@@ -155,7 +155,7 @@ the filter set to `false`.
 As seen above, apply this style to your `TextInputLayout`:
 
 ```xml
-style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"`
+style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
 ```
 
 #### Outlined
@@ -163,7 +163,7 @@ style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdow
 Apply this style to your `TextInputLayout`:
 
 ```xml
-style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"`
+style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
 ```
 
 #### Dense Filled
@@ -171,7 +171,7 @@ style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropd
 Apply this style to your `TextInputLayout`:
 
 ```xml
-style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu"`
+style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu"
 ```
 
 #### Dense Outlined
@@ -179,5 +179,5 @@ style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedD
 Apply this style to your `TextInputLayout`:
 
 ```xml
-style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"`
+style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
 ```
