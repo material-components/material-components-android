@@ -1,4 +1,4 @@
-<!--doc:
+<!--docs:
 title: "Menus"
 layout: detail
 section: components
@@ -8,7 +8,6 @@ path: /catalog/menu/
 -->
 
 # Menu
-
 
 ## Design & API Documentation
 
