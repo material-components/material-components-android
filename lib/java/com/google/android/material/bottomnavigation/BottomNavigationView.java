@@ -659,6 +659,14 @@ public class BottomNavigationView extends FrameLayout {
   }
 
   /**
+   * Sets an {@link android.view.View.OnTouchListener} for the item view associated with the
+   * provided {@code menuItemId}.
+   */
+  public void setItemOnTouchListener(int menuItemId, @Nullable OnTouchListener onTouchListener) {
+    menuView.setItemOnTouchListener(menuItemId, onTouchListener);
+  }
+
+  /**
    * Returns an instance of {@link BadgeDrawable} associated with {@code menuItemId}, null if none
    * was initialized.
    *

@@ -20,6 +20,7 @@ import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
@@ -72,6 +73,9 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   @NonNull private final OnClickListener onClickListener;
   private final Pools.Pool<BottomNavigationItemView> itemPool =
       new Pools.SynchronizedPool<>(ITEM_POOL_SIZE);
+
+  @NonNull
+  private final SparseArray<OnTouchListener> onTouchListeners = new SparseArray<>(ITEM_POOL_SIZE);
 
   private boolean itemHorizontalTranslationEnabled;
   @LabelVisibilityMode private int labelVisibilityMode;
@@ -485,6 +489,26 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
     return itemHorizontalTranslationEnabled;
   }
 
+  /**
+   * Sets an {@link android.view.View.OnTouchListener} for the item view associated with the
+   * provided {@code menuItemId}.
+   */
+  @SuppressLint("ClickableViewAccessibility")
+  public void setItemOnTouchListener(int menuItemId, @Nullable OnTouchListener onTouchListener) {
+    if (onTouchListener == null) {
+      onTouchListeners.remove(menuItemId);
+    } else {
+      onTouchListeners.put(menuItemId, onTouchListener);
+    }
+    if (buttons != null) {
+      for (BottomNavigationItemView item : buttons) {
+        if (item.getItemData().getItemId() == menuItemId) {
+          item.setOnTouchListener(onTouchListener);
+        }
+      }
+    }
+  }
+
   @Nullable
   public ColorStateList createDefaultColorStateList(int baseColorThemeAttr) {
     final TypedValue value = new TypedValue();
@@ -510,6 +534,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
     this.presenter = presenter;
   }
 
+  @SuppressLint("ClickableViewAccessibility")
   public void buildMenuView() {
     removeAllViews();
     if (buttons != null) {
@@ -551,10 +576,13 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
       }
       child.setShifting(shifting);
       child.setLabelVisibilityMode(labelVisibilityMode);
-      child.initialize((MenuItemImpl) menu.getItem(i), 0);
+      MenuItemImpl item = (MenuItemImpl) menu.getItem(i);
+      child.initialize(item, 0);
       child.setItemPosition(i);
+      int itemId = item.getItemId();
+      child.setOnTouchListener(onTouchListeners.get(itemId));
       child.setOnClickListener(onClickListener);
-      if (selectedItemId != Menu.NONE && menu.getItem(i).getItemId() == selectedItemId) {
+      if (selectedItemId != Menu.NONE && itemId == selectedItemId) {
         selectedItemPosition = i;
       }
       setBadgeIfNeeded(child);
