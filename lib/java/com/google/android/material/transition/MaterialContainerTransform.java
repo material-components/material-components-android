@@ -961,6 +961,7 @@ public final class MaterialContainerTransform extends Transition {
 
           @Override
           public void onTransitionEnd(@NonNull Transition transition) {
+            removeListener(this);
             if (holdAtEndEnabled) {
               // Keep drawable showing and views hidden (useful for Activity return transitions)
               return;
