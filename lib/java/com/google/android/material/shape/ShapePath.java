@@ -253,13 +253,14 @@ public class ShapePath {
   ShadowCompatOperation createShadowCompatOperation(final Matrix transform) {
     // If the shadowCompatOperations don't end on the desired endShadowAngle, add an arc to do so.
     addConnectingShadowIfNecessary(getEndShadowAngle());
+    final Matrix transformCopy = new Matrix(transform);
     final List<ShadowCompatOperation> operations = new ArrayList<>(shadowCompatOperations);
     return new ShadowCompatOperation() {
       @Override
       public void draw(
           Matrix matrix, ShadowRenderer shadowRenderer, int shadowElevation, Canvas canvas) {
         for (ShadowCompatOperation op : operations) {
-          op.draw(transform, shadowRenderer, shadowElevation, canvas);
+          op.draw(transformCopy, shadowRenderer, shadowElevation, canvas);
         }
       }
     };
