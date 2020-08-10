@@ -205,6 +205,9 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   /** Minimum peek height permitted. */
   private int peekHeightMin;
 
+  /** Peek height gesture inset buffer to ensure enough swipeable space. */
+  private int peekHeightGestureInsetBuffer;
+
   /** True if Behavior has a non-null value for the @shapeAppearance attribute */
   private boolean shapeThemingEnabled;
 
@@ -275,6 +278,10 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   public BottomSheetBehavior(@NonNull Context context, @Nullable AttributeSet attrs) {
     super(context, attrs);
+
+    peekHeightGestureInsetBuffer =
+        context.getResources().getDimensionPixelSize(R.dimen.mtrl_min_touch_target_size);
+
     TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BottomSheetBehavior_Layout);
     this.shapeThemingEnabled = a.hasValue(R.styleable.BottomSheetBehavior_Layout_shapeAppearance);
     boolean hasBackgroundTint = a.hasValue(R.styleable.BottomSheetBehavior_Layout_backgroundTint);
@@ -1127,7 +1134,10 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     if (peekHeightAuto) {
       return Math.max(peekHeightMin, parentHeight - parentWidth * 9 / 16);
     }
-    return peekHeight + (gestureInsetBottomIgnored ? 0 : gestureInsetBottom);
+    if (!gestureInsetBottomIgnored && gestureInsetBottom > 0) {
+      return Math.max(peekHeight, gestureInsetBottom + peekHeightGestureInsetBuffer);
+    }
+    return peekHeight;
   }
 
   private void calculateCollapsedOffset() {
