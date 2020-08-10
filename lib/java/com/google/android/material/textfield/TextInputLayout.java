@@ -1471,7 +1471,7 @@ public class TextInputLayout extends LinearLayout {
    * @param textHintId The resource id of the text to display in the floating label
    */
   public void setHint(@StringRes int textHintId) {
-    setHint(getContext().getText(textHintId));
+    setHint(textHintId != 0 ? getResources().getText(textHintId) : null);
   }
 
   private void setHintInternal(CharSequence hint) {
