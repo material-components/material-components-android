@@ -153,8 +153,12 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
   }
 
   private void updateShapeMask(int width, int height) {
+    final float strokeOffset = getStrokeWidth() / 2f;
     destination.set(
-        getPaddingLeft(), getPaddingTop(), width - getPaddingRight(), height - getPaddingBottom());
+        getPaddingLeft() + strokeOffset,
+        getPaddingTop() + strokeOffset,
+        width - getPaddingRight() - strokeOffset,
+        height - getPaddingBottom() - strokeOffset);
     pathProvider.calculatePath(shapeAppearanceModel, 1f /*interpolation*/, destination, path);
     // Remove path from rect to draw with clear paint.
     maskPath.rewind();
