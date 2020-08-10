@@ -108,7 +108,8 @@ class MonthsPagerAdapter extends RecyclerView.Adapter<MonthsPagerAdapter.ViewHol
     final MaterialCalendarGridView monthGrid = viewHolder.monthGrid.findViewById(R.id.month_grid);
 
     if (monthGrid.getAdapter() != null && month.equals(monthGrid.getAdapter().month)) {
-      monthGrid.getAdapter().notifyDataSetChanged();
+      monthGrid.invalidate();
+      monthGrid.getAdapter().updateSelectedStates(monthGrid);
     } else {
       MonthAdapter monthAdapter = new MonthAdapter(month, dateSelector, calendarConstraints);
       monthGrid.setNumColumns(month.daysInWeek);

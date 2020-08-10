@@ -168,6 +168,12 @@ final class Month implements Comparable<Month>, Parcelable {
     return dayCalendar.getTimeInMillis();
   }
 
+  int getDayOfMonth(long date) {
+    Calendar dayCalendar = UtcDates.getDayCopy(firstOfMonth);
+    dayCalendar.setTimeInMillis(date);
+    return dayCalendar.get(Calendar.DAY_OF_MONTH);
+  }
+
   /**
    * Returns a {@link com.google.android.material.datepicker.Month} {@code months} months after this
    * instance.

@@ -26,6 +26,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import java.util.Calendar;
+import java.util.Collection;
 
 /**
  * Represents the days of a month with {@link TextView} instances for each day.
@@ -45,6 +46,8 @@ class MonthAdapter extends BaseAdapter {
    * The {@link DateSelector} dictating the draw behavior of {@link #getView(int, View, ViewGroup)}.
    */
   final DateSelector<?> dateSelector;
+
+  private Collection<Long> previouslySelectedDates;
 
   CalendarStyle calendarStyle;
   final CalendarConstraints calendarConstraints;
@@ -127,6 +130,37 @@ class MonthAdapter extends BaseAdapter {
     if (date == null) {
       return day;
     }
+    return updateSelectedState(day, date);
+  }
+
+  public void updateSelectedStates(MaterialCalendarGridView monthGrid) {
+    // Update previously selected dates
+    if (previouslySelectedDates != null) {
+      for (Long date : previouslySelectedDates) {
+        updateSelectedStateForDate(monthGrid, date);
+      }
+    }
+
+    // Update currently selected dates.
+    if (dateSelector != null) {
+      for (Long date : dateSelector.getSelectedDays()) {
+        updateSelectedStateForDate(monthGrid, date);
+      }
+      // Update the list of previously selected dates.
+      previouslySelectedDates = dateSelector.getSelectedDays();
+    }
+  }
+
+  private void updateSelectedStateForDate(MaterialCalendarGridView monthGrid, long date) {
+    if (Month.create(date).equals(month)) {
+      // Validate that the day is in the right month.
+      int day = month.getDayOfMonth(date);
+      updateSelectedState(
+          (TextView) monthGrid.getChildAt(monthGrid.getAdapter().dayToPosition(day)), date);
+    }
+  }
+
+  private TextView updateSelectedState(TextView day, long date) {
     if (calendarConstraints.getDateValidator().isValid(date)) {
       day.setEnabled(true);
       for (long selectedDay : dateSelector.getSelectedDays()) {
