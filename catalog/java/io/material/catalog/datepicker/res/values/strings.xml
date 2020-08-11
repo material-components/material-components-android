@@ -102,4 +102,22 @@
   <!-- Indicates that the picker will start with text input mode [CHAR LIMIT=25] -->
   <string name="cat_picker_input_mode_text">Text Input</string>
 
+  <!-- Grouping label for a set of radio buttons that choose the positive button [CHAR LIMIT=50] -->
+  <string name="cat_picker_positive_button">Picker Positive Button</string>
+  <!-- Indicates that the default title will be used [CHAR LIMIT=25] -->
+  <string name="cat_picker_positive_button_default">Default</string>
+  <!-- Indicates that a custom title will be used [CHAR LIMIT=25] -->
+  <string name="cat_picker_positive_button_custom">Custom</string>
+
+  <!-- Grouping label for a set of radio buttons that choose the negative button [CHAR LIMIT=50] -->
+  <string name="cat_picker_negative_button">Picker Negative Button</string>
+  <!-- Indicates that the default title will be used [CHAR LIMIT=25] -->
+  <string name="cat_picker_negative_button_default">Default</string>
+  <!-- Indicates that a custom title will be used [CHAR LIMIT=25] -->
+  <string name="cat_picker_negative_button_custom">Custom</string>
+
+  <!-- The custom positive button text -->
+  <string name="cat_picker_positive_button_text">DONE</string>
+  <!-- The custom negative button text -->
+  <string name="cat_picker_negative_button_text">Negative</string>
 </resources>

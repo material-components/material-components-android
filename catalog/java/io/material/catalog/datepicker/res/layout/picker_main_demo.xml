@@ -39,6 +39,8 @@
     <include layout="@layout/cat_picker_bounds"/>
     <include layout="@layout/cat_picker_validation"/>
     <include layout="@layout/cat_picker_title"/>
+    <include layout="@layout/cat_picker_positive_button"/>
+    <include layout="@layout/cat_picker_negative_button"/>
     <include layout="@layout/cat_picker_opening_month"/>
     <include layout="@layout/cat_picker_selection"/>
     <include layout="@layout/cat_picker_input_mode"/>
