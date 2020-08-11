@@ -49,17 +49,18 @@ final class LinearDrawingDelegate implements DrawingDelegate {
    *
    * @param canvas Canvas to draw.
    * @param spec The spec of the component currently being served.
-   * @param widthFraction A fraction representing how wide the drawing should be.
+   * @param indicatorSizeFraction A fraction representing how much portion of the indicator size
+   * should be used in the drawing.
    */
   @Override
   public void adjustCanvas(
       @NonNull Canvas canvas,
       @NonNull ProgressIndicatorSpec spec,
-      @FloatRange(from = 0.0, to = 1.0) float widthFraction) {
+      @FloatRange(from = 0.0, to = 1.0) float indicatorSizeFraction) {
     // Gets clip bounds from canvas.
     Rect clipBounds = canvas.getClipBounds();
     trackLength = clipBounds.width();
-    float trackWidth = spec.indicatorSize;
+    float trackSize = spec.indicatorSize;
 
     // Positions canvas to center of the clip bounds.
     canvas.translate(
@@ -77,12 +78,12 @@ final class LinearDrawingDelegate implements DrawingDelegate {
     // Offsets canvas vertically if grow from top/bottom.
     if (spec.growMode == ProgressIndicator.GROW_MODE_INCOMING
         || spec.growMode == ProgressIndicator.GROW_MODE_OUTGOING) {
-      canvas.translate(0f, spec.indicatorSize * (widthFraction - 1) / 2f);
+      canvas.translate(0f, spec.indicatorSize * (indicatorSizeFraction - 1) / 2f);
     }
 
     // Clips all drawing to the track area, so it doesn't draw outside of its bounds (which can
     // happen in certain configurations of clipToPadding and clipChildren)
-    canvas.clipRect(-trackLength / 2, -trackWidth / 2, trackLength / 2, trackWidth / 2);
+    canvas.clipRect(-trackLength / 2, -trackSize / 2, trackLength / 2, trackSize / 2);
   }
 
   /**
@@ -95,7 +96,7 @@ final class LinearDrawingDelegate implements DrawingDelegate {
    * @param color The filled color.
    * @param startFraction A fraction representing where to start the drawing along the track.
    * @param endFraction A fraction representing where to end the drawing along the track.
-   * @param trackWidth The width of the track in px.
+   * @param trackSize The size of the track in px.
    * @param cornerRadius The radius of corners in px, if rounded corners are applied.
    */
   @Override
@@ -105,7 +106,7 @@ final class LinearDrawingDelegate implements DrawingDelegate {
       @ColorInt int color,
       @FloatRange(from = 0.0, to = 1.0) float startFraction,
       @FloatRange(from = 0.0, to = 1.0) float endFraction,
-      float trackWidth,
+      float trackSize,
       float cornerRadius) {
     // No need to draw if startFraction and endFraction are same.
     if (startFraction == endFraction) {
@@ -120,11 +121,11 @@ final class LinearDrawingDelegate implements DrawingDelegate {
     PointF leftTopCornerCenter =
         new PointF(
             -trackLength / 2 + cornerRadius + startFraction * (trackLength - 2 * cornerRadius),
-            -trackWidth / 2 + cornerRadius);
+            -trackSize / 2 + cornerRadius);
     PointF rightBottomCornerCenter =
         new PointF(
             -trackLength / 2 + cornerRadius + endFraction * (trackLength - 2 * cornerRadius),
-            trackWidth / 2 - cornerRadius);
+            trackSize / 2 - cornerRadius);
 
     if (cornerRadius > 0) {
       RectF cornerPatternRectBound =
@@ -166,7 +167,7 @@ final class LinearDrawingDelegate implements DrawingDelegate {
           90,
           cornerPatternRectBound);
       // Fills the gaps between two vertically aligned corners, if any.
-      if (trackWidth > 2 * cornerRadius) {
+      if (trackSize > 2 * cornerRadius) {
         canvas.drawRect(
             leftTopCornerCenter.x - cornerRadius,
             leftTopCornerCenter.y,
@@ -183,7 +184,7 @@ final class LinearDrawingDelegate implements DrawingDelegate {
     }
     // Fills gaps between two horizontally aligned corners.
     canvas.drawRect(
-        leftTopCornerCenter.x, -trackWidth / 2, rightBottomCornerCenter.x, trackWidth / 2, paint);
+        leftTopCornerCenter.x, -trackSize / 2, rightBottomCornerCenter.x, trackSize / 2, paint);
   }
 
   private static void drawRoundedCorner(

@@ -53,13 +53,14 @@ public final class CircularDrawingDelegate implements DrawingDelegate {
    *
    * @param canvas Canvas to draw.
    * @param spec The spec of the component currently being served.
-   * @param widthFraction A fraction representing how wide the arc stroke should be.
+   * @param indicatorSizeFraction A fraction representing how much portion of the indicator size
+   * should be used in the drawing.
    */
   @Override
   public void adjustCanvas(
       @NonNull Canvas canvas,
       @NonNull ProgressIndicatorSpec spec,
-      @FloatRange(from = 0.0, to = 1.0) float widthFraction) {
+      @FloatRange(from = 0.0, to = 1.0) float indicatorSizeFraction) {
     int outerRadiusWithInset = spec.circularRadius + spec.indicatorSize / 2 + spec.circularInset;
     canvas.translate(outerRadiusWithInset, outerRadiusWithInset);
     // Rotates canvas so that arc starts at top.
@@ -73,13 +74,13 @@ public final class CircularDrawingDelegate implements DrawingDelegate {
     // Adjusts the bounds of the arc.
     float adjustedRadius = spec.circularRadius;
     if (spec.growMode == ProgressIndicator.GROW_MODE_INCOMING) {
-      // Increases the radius by half of the full width, then reduces it half way of the displayed
-      // width to match the outer edges of the displayed indicator and the full indicator.
-      adjustedRadius += (1 - widthFraction) * spec.indicatorSize / 2;
+      // Increases the radius by half of the full size, then reduces it half way of the displayed
+      // size to match the outer edges of the displayed indicator and the full indicator.
+      adjustedRadius += (1 - indicatorSizeFraction) * spec.indicatorSize / 2;
     } else if (spec.growMode == ProgressIndicator.GROW_MODE_OUTGOING) {
-      // Decreases the radius by half of the full width, then raises it half way of the displayed
-      // width to match the inner edges of the displayed indicator and the full indicator.
-      adjustedRadius -= (1 - widthFraction) * spec.indicatorSize / 2;
+      // Decreases the radius by half of the full size, then raises it half way of the displayed
+      // size to match the inner edges of the displayed indicator and the full indicator.
+      adjustedRadius -= (1 - indicatorSizeFraction) * spec.indicatorSize / 2;
     }
 
     // These are set for the drawing the indicator and track in fillTrackWithColor().
@@ -98,7 +99,7 @@ public final class CircularDrawingDelegate implements DrawingDelegate {
    * @param color The filled color.
    * @param startFraction A fraction representing where to start the drawing along the track.
    * @param endFraction A fraction representing where to end the drawing along the track.
-   * @param trackWidth The width of the track in px.
+   * @param trackSize The size of the track in px.
    * @param cornerRadius The radius of corners in px, if rounded corners are applied.
    */
   @Override
@@ -108,7 +109,7 @@ public final class CircularDrawingDelegate implements DrawingDelegate {
       @ColorInt int color,
       @FloatRange(from = 0.0, to = 1.0) float startFraction,
       @FloatRange(from = 0.0, to = 1.0) float endFraction,
-      float trackWidth,
+      float trackSize,
       float cornerRadius) {
     // No need to draw if startFraction and endFraction are same.
     if (startFraction == endFraction) {
@@ -120,7 +121,7 @@ public final class CircularDrawingDelegate implements DrawingDelegate {
     paint.setStrokeCap(Cap.BUTT);
     paint.setAntiAlias(true);
     paint.setColor(color);
-    paint.setStrokeWidth(trackWidth);
+    paint.setStrokeWidth(trackSize);
 
     // Draws the stroke arc without rounded corners.
     float startDegree = startFraction * 360 * arcInverseFactor;
@@ -136,11 +137,11 @@ public final class CircularDrawingDelegate implements DrawingDelegate {
       RectF cornerPatternRectBound =
           new RectF(-cornerRadius, -cornerRadius, cornerRadius, cornerRadius);
       drawRoundedEnd(
-          canvas, paint, trackWidth, cornerRadius, startDegree, true, cornerPatternRectBound);
+          canvas, paint, trackSize, cornerRadius, startDegree, true, cornerPatternRectBound);
       drawRoundedEnd(
           canvas,
           paint,
-          trackWidth,
+          trackSize,
           cornerRadius,
           startDegree + arcDegree,
           false,
@@ -151,7 +152,7 @@ public final class CircularDrawingDelegate implements DrawingDelegate {
   private void drawRoundedEnd(
       Canvas canvas,
       Paint paint,
-      float trackWidth,
+      float trackSize,
       float cornerRadius,
       float positionInDeg,
       boolean isStartPosition,
@@ -160,15 +161,15 @@ public final class CircularDrawingDelegate implements DrawingDelegate {
     canvas.save();
     canvas.rotate(positionInDeg);
     canvas.drawRect(
-        arcBound.right - trackWidth / 2 + cornerRadius,
+        arcBound.right - trackSize / 2 + cornerRadius,
         Math.min(0, startOrEndFactor * cornerRadius * arcInverseFactor),
-        arcBound.right + trackWidth / 2 - cornerRadius,
+        arcBound.right + trackSize / 2 - cornerRadius,
         Math.max(0, startOrEndFactor * cornerRadius * arcInverseFactor),
         paint);
-    canvas.translate(arcBound.right - trackWidth / 2 + cornerRadius, 0);
+    canvas.translate(arcBound.right - trackSize / 2 + cornerRadius, 0);
     canvas.drawArc(
         cornerPatternRectBound, 180, -startOrEndFactor * 90 * arcInverseFactor, true, paint);
-    canvas.translate(trackWidth - 2 * cornerRadius, 0);
+    canvas.translate(trackSize - 2 * cornerRadius, 0);
     canvas.drawArc(
         cornerPatternRectBound, 0, startOrEndFactor * 90 * arcInverseFactor, true, paint);
     canvas.restore();

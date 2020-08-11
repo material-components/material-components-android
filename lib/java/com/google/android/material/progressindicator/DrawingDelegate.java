@@ -47,12 +47,13 @@ public interface DrawingDelegate {
    *
    * @param canvas Canvas to draw.
    * @param spec The spec of the component currently being served.
-   * @param widthFraction A fraction representing how wide the drawing should be.
+   * @param indicatorSizeFraction A fraction representing how much portion of the indicator size
+   * should be used in the drawing.
    */
   void adjustCanvas(
       @NonNull Canvas canvas,
       @NonNull ProgressIndicatorSpec spec,
-      @FloatRange(from = 0.0, to = 1.0) float widthFraction);
+      @FloatRange(from = 0.0, to = 1.0) float indicatorSizeFraction);
 
   /**
    * Fills a part of the track with input color. The filling part is defined with two fractions
@@ -63,7 +64,7 @@ public interface DrawingDelegate {
    * @param color The filled color.
    * @param startFraction A fraction representing where to start the drawing along the track.
    * @param endFraction A fraction representing where to end the drawing along the track.
-   * @param trackWidth The width of the track in px.
+   * @param trackSize The size of the track in px.
    * @param cornerRadius The radius of corners in px, if rounded corners are applied.
    */
   void fillTrackWithColor(
@@ -72,6 +73,6 @@ public interface DrawingDelegate {
       @ColorInt int color,
       @FloatRange(from = 0.0, to = 1.0) float startFraction,
       @FloatRange(from = 0.0, to = 1.0) float endFraction,
-      float trackWidth,
+      float trackSize,
       float cornerRadius);
 }
