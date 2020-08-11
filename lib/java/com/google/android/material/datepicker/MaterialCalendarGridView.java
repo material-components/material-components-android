@@ -133,7 +133,7 @@ final class MaterialCalendarGridView extends GridView {
       long endItem = range.second;
 
       if (skipMonth(firstOfMonth, lastOfMonth, startItem, endItem)) {
-        return;
+        continue;
       }
 
       int firstHighlightPosition;
