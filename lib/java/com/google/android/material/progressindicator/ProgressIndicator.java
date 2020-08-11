@@ -213,7 +213,7 @@ public class ProgressIndicator extends ProgressBar {
                 ? new LinearIndeterminateSeamlessAnimatorDelegate()
                 : new LinearIndeterminateNonSeamlessAnimatorDelegate(getContext())
             : new CircularIndeterminateAnimatorDelegate();
-    
+
     setIndeterminateDrawable(
         new IndeterminateDrawable(
             getContext(), spec, drawingDelegate, indeterminateAnimatorDelegate));
@@ -945,12 +945,17 @@ public class ProgressIndicator extends ProgressBar {
    */
   @Override
   public synchronized void setProgress(int progress) {
+    if (isIndeterminate()) {
+      return;
+    }
     setProgressCompat(progress, false);
   }
 
   /**
    * Sets the current progress to the specified value with/without animation based on the input.
-   * Does not do anything if the progress bar is in indeterminate mode.
+   *
+   * <p>If it's in the indeterminate mode, it will smoothly transition to determinate mode by
+   * finishing the current indeterminate animation cycle.
    *
    * @param progress The new progress value.
    * @param animated Whether to update the progress with the animation.
