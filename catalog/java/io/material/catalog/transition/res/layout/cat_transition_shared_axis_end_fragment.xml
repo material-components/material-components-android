@@ -14,23 +14,27 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
+  <LinearLayout
     android:id="@+id/end_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
     android:orientation="vertical">
 
-  <TextView
+    <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_gravity="center_horizontal"
       android:text="@string/cat_transition_shared_axis_courses_title"
-      android:textAppearance="?attr/textAppearanceHeadline6"/>
+      android:textAppearance="?attr/textAppearanceHeadline6" />
 
-  <TextView
+    <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="8dp"
@@ -38,40 +42,41 @@
       android:layout_gravity="center_horizontal"
       android:gravity="center"
       android:text="@string/cat_transition_shared_axis_courses_caption"
-      android:textAppearance="?attr/textAppearanceCaption"/>
+      android:textAppearance="?attr/textAppearanceCaption" />
 
-  <io.material.catalog.transition.SwitchRowView
+    <io.material.catalog.transition.SwitchRowView
       style="@style/Widget.Catalog.CategorySwitchRowView"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginTop="32dp"
-      app:title="@string/cat_transition_shared_axis_courses_one"/>
+      app:title="@string/cat_transition_shared_axis_courses_one" />
 
-  <io.material.catalog.transition.SwitchRowView
+    <io.material.catalog.transition.SwitchRowView
       style="@style/Widget.Catalog.CategorySwitchRowView"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginTop="32dp"
-      app:title="@string/cat_transition_shared_axis_courses_two"/>
+      app:title="@string/cat_transition_shared_axis_courses_two" />
 
-  <io.material.catalog.transition.SwitchRowView
+    <io.material.catalog.transition.SwitchRowView
       style="@style/Widget.Catalog.CategorySwitchRowView"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginTop="32dp"
-      app:title="@string/cat_transition_shared_axis_courses_three"/>
+      app:title="@string/cat_transition_shared_axis_courses_three" />
 
-  <io.material.catalog.transition.SwitchRowView
+    <io.material.catalog.transition.SwitchRowView
       style="@style/Widget.Catalog.CategorySwitchRowView"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginTop="32dp"
-      app:title="@string/cat_transition_shared_axis_courses_four"/>
+      app:title="@string/cat_transition_shared_axis_courses_four" />
 
-  <io.material.catalog.transition.SwitchRowView
+    <io.material.catalog.transition.SwitchRowView
       style="@style/Widget.Catalog.CategorySwitchRowView"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginTop="32dp"
-      app:title="@string/cat_transition_shared_axis_courses_five"/>
-</LinearLayout>
+      app:title="@string/cat_transition_shared_axis_courses_five" />
+  </LinearLayout>
+</ScrollView>
