@@ -50,6 +50,7 @@ import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
+import androidx.annotation.StringRes;
 import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams;
@@ -273,6 +274,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   boolean touchingScrollingChild;
 
   @Nullable private Map<View, Integer> importantForAccessibilityMap;
+
+  private int expandHalfwayActionId = View.NO_ID;
 
   public BottomSheetBehavior() {}
 
@@ -1716,48 +1719,67 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     ViewCompat.removeAccessibilityAction(child, AccessibilityNodeInfoCompat.ACTION_EXPAND);
     ViewCompat.removeAccessibilityAction(child, AccessibilityNodeInfoCompat.ACTION_DISMISS);
 
+    if (expandHalfwayActionId != View.NO_ID) {
+      ViewCompat.removeAccessibilityAction(child, expandHalfwayActionId);
+    }
+    if (state != STATE_HALF_EXPANDED) {
+      expandHalfwayActionId =
+          addAccessibilityActionForState(
+              child, R.string.bottomsheet_action_expand_halfway, STATE_HALF_EXPANDED);
+    }
+
     if (hideable && state != STATE_HIDDEN) {
-      addAccessibilityActionForState(child, AccessibilityActionCompat.ACTION_DISMISS, STATE_HIDDEN);
+      replaceAccessibilityActionForState(
+          child, AccessibilityActionCompat.ACTION_DISMISS, STATE_HIDDEN);
     }
 
     switch (state) {
       case STATE_EXPANDED:
         {
           int nextState = fitToContents ? STATE_COLLAPSED : STATE_HALF_EXPANDED;
-          addAccessibilityActionForState(
+          replaceAccessibilityActionForState(
               child, AccessibilityActionCompat.ACTION_COLLAPSE, nextState);
           break;
         }
       case STATE_HALF_EXPANDED:
         {
-          addAccessibilityActionForState(
+          replaceAccessibilityActionForState(
               child, AccessibilityActionCompat.ACTION_COLLAPSE, STATE_COLLAPSED);
-          addAccessibilityActionForState(
+          replaceAccessibilityActionForState(
               child, AccessibilityActionCompat.ACTION_EXPAND, STATE_EXPANDED);
           break;
         }
       case STATE_COLLAPSED:
         {
           int nextState = fitToContents ? STATE_EXPANDED : STATE_HALF_EXPANDED;
-          addAccessibilityActionForState(child, AccessibilityActionCompat.ACTION_EXPAND, nextState);
+          replaceAccessibilityActionForState(
+              child, AccessibilityActionCompat.ACTION_EXPAND, nextState);
           break;
         }
       default: // fall out
     }
   }
 
-  private void addAccessibilityActionForState(
-      V child, AccessibilityActionCompat action, final int state) {
+  private void replaceAccessibilityActionForState(
+      V child, AccessibilityActionCompat action, int state) {
     ViewCompat.replaceAccessibilityAction(
+        child, action, null, createAccessibilityViewCommandForState(state));
+  }
+
+  private int addAccessibilityActionForState(V child, @StringRes int stringResId, int state) {
+    return ViewCompat.addAccessibilityAction(
         child,
-        action,
-        null,
-        new AccessibilityViewCommand() {
-          @Override
-          public boolean perform(@NonNull View view, @Nullable CommandArguments arguments) {
-            setState(state);
-            return true;
-          }
-        });
+        child.getResources().getString(stringResId),
+        createAccessibilityViewCommandForState(state));
+  }
+
+  private AccessibilityViewCommand createAccessibilityViewCommandForState(final int state) {
+    return new AccessibilityViewCommand() {
+      @Override
+      public boolean perform(@NonNull View view, @Nullable CommandArguments arguments) {
+        setState(state);
+        return true;
+      }
+    };
   }
 }

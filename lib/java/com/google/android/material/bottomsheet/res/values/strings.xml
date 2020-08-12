@@ -17,4 +17,6 @@
 <resources>
   <!-- The class name for the BottomSheetBehavior -->
   <string name="bottom_sheet_behavior" translatable="false">com.google.android.material.bottomsheet.BottomSheetBehavior</string>
+  <string description="A description of an action that a user of an accessibility service can perform to expand a bottomsheet halfway to its full height. [CHAR LIMIT=25]"
+    name="bottomsheet_action_expand_halfway">Expand halfway</string>
 </resources>
