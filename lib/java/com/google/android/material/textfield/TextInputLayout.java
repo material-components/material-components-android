@@ -1463,6 +1463,17 @@ public class TextInputLayout extends LinearLayout {
     }
   }
 
+  /**
+   * Set the hint to be displayed in the floating label, if enabled, using the given resource id.
+   *
+   * @see #setHintEnabled(boolean)
+   * @see #setHint(CharSequence)
+   * @param textHintId The resource id of the text to display in the floating label
+   */
+  public void setHint(@StringRes int textHintId) {
+    setHint(textHintId != 0 ? getResources().getText(textHintId) : null);
+  }
+
   private void setHintInternal(CharSequence hint) {
     if (!TextUtils.equals(hint, this.hint)) {
       this.hint = hint;
