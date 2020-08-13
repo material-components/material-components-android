@@ -352,7 +352,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
           }
 
           @Override
-          void onIncompleteSelectionChanged() {
+          public void onIncompleteSelectionChanged() {
             confirmButton.setEnabled(false);
           }
         });

@@ -91,8 +91,8 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
   private View dayFrame;
 
   @NonNull
-  static <T> MaterialCalendar<T> newInstance(
-      DateSelector<T> dateSelector,
+  public static <T> MaterialCalendar<T> newInstance(
+      @NonNull DateSelector<T> dateSelector,
       @StyleRes int themeResId,
       @NonNull CalendarConstraints calendarConstraints) {
     MaterialCalendar<T> materialCalendar = new MaterialCalendar<>();
@@ -459,5 +459,10 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
   @NonNull
   LinearLayoutManager getLayoutManager() {
     return (LinearLayoutManager) recyclerView.getLayoutManager();
+  }
+
+  @Override
+  public boolean addOnSelectionChangedListener(@NonNull OnSelectionChangedListener<S> listener) {
+    return super.addOnSelectionChangedListener(listener);
   }
 }
