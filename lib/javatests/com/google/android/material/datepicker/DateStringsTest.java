@@ -42,6 +42,7 @@ public class DateStringsTest {
   private static Calendar setupLocalizedCalendar(Locale locale, int year, int month, int day) {
     Locale.setDefault(locale);
     Calendar calendar = Calendar.getInstance();
+    calendar.clear();
     calendar.set(Calendar.YEAR, year);
     calendar.set(Calendar.MONTH, month);
     calendar.set(Calendar.DAY_OF_MONTH, day);
