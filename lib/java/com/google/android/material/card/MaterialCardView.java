@@ -312,7 +312,9 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
   @Override
   public void setClickable(boolean clickable) {
     super.setClickable(clickable);
-    cardViewHelper.updateClickable();
+    if (cardViewHelper != null){
+      cardViewHelper.updateClickable();
+    }
   }
 
   @Override
