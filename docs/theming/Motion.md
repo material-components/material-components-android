@@ -20,16 +20,6 @@ information, go to the
 [Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
 page.
 
-_**Note:** Motion for Android includes two packages -
-`com.google.android.material.transition` and
-`com.google.android.material.transition.platform`. The `transition` package is
-built using the AndroidX Transition library (`androidx.transition`), is
-available down to API level 14, and is the prefered way of implementing motion.
-The `transition.platform` package contains the same set of transitions, built
-with the Android Framework Transition library (`android.transition`). The
-`transition.platform` package is available down to API level 21 (Android 5.0
-Lollipop) and should only be used for Activity or Window transitions._
-
 Material Components for Android provides support for all four motion patterns
 defined in the Material spec.
 
@@ -37,6 +27,27 @@ defined in the Material spec.
 2.  [Shared axis](#shared-axis)
 3.  [Fade through](#fade-through)
 4.  [Fade](#fade)
+
+The library offers transition classes for these patterns, built on top of both
+the
+[AndroidX Transition library](https://developer.android.com/reference/androidx/transition/package-summary)
+(`androidx.transition`) and the
+[Android Transition Framework](https://developer.android.com/training/transitions)
+(`android.transition`):
+
+#### AndroidX (preferred)
+
+*   Available in the `com.google.android.material.transition` package
+*   Supports API Level 14+
+*   Supports Fragments and Views, but not Activities or Windows
+*   Contains backported bug fixes and consistent behavior across API Levels
+
+#### Platform
+
+*   Available in the `com.google.android.material.transition.platform` package
+*   Supports API Level 21+
+*   Supports Fragments, Views, Activities, and Windows
+*   Bug fixes not backported and may have different behavior across API Levels
 
 <br><br>
 
