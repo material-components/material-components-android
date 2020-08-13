@@ -4,7 +4,7 @@ layout: detail
 section: components
 excerpt: "Time Pickers are modals that allow the user to choose a time."
 iconId: picker
-path: /catalog/picker/
+path: /catalog/time-pickers/
 -->
 
 ## Time Pickers
