@@ -356,17 +356,18 @@ final class IndicatorViewController {
   void adjustIndicatorPadding() {
     if (canAdjustIndicatorPadding()) {
       EditText editText = textInputView.getEditText();
-      boolean isFontScaleLarge = MaterialResources.isFontScaleAtLeastLarge(context);
+      boolean isFontScaleLarge = MaterialResources.isFontScaleAtLeast1_3(context);
       ViewCompat.setPaddingRelative(
           indicatorArea,
           getIndicatorPadding(
               isFontScaleLarge,
-              R.dimen.material_helper_text_large_padding_horizontal,
+              R.dimen.material_helper_text_font_1_3_padding_horizontal,
               ViewCompat.getPaddingStart(editText)),
-          getIndicatorPadding(isFontScaleLarge, R.dimen.material_helper_text_large_padding_top, 0),
+          getIndicatorPadding(
+              isFontScaleLarge, R.dimen.material_helper_text_font_1_3_padding_top, 0),
           getIndicatorPadding(
               isFontScaleLarge,
-              R.dimen.material_helper_text_large_padding_horizontal,
+              R.dimen.material_helper_text_font_1_3_padding_horizontal,
               ViewCompat.getPaddingEnd(editText)),
           0);
     }

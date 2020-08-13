@@ -231,7 +231,7 @@ public class TextInputLayout extends LinearLayout {
 
   private final int boxLabelCutoutPaddingPx;
   @BoxBackgroundMode private int boxBackgroundMode;
-  private final int boxCollapsedPaddingTopPx;
+  private int boxCollapsedPaddingTopPx;
   private int boxStrokeWidthPx;
   private int boxStrokeWidthDefaultPx;
   private int boxStrokeWidthFocusedPx;
@@ -596,6 +596,11 @@ public class TextInputLayout extends LinearLayout {
             LayoutInflater.from(getContext())
                 .inflate(R.layout.design_text_input_end_icon, endLayout, false);
     errorIconView.setVisibility(GONE);
+    if (MaterialResources.isFontScaleAtLeast1_3(context)) {
+      ViewGroup.MarginLayoutParams lp =
+          (ViewGroup.MarginLayoutParams) errorIconView.getLayoutParams();
+      MarginLayoutParamsCompat.setMarginStart(lp, 0);
+    }
     if (a.hasValue(R.styleable.TextInputLayout_errorIconDrawable)) {
       setErrorIconDrawable(a.getDrawable(R.styleable.TextInputLayout_errorIconDrawable));
     }
@@ -647,6 +652,11 @@ public class TextInputLayout extends LinearLayout {
             LayoutInflater.from(getContext())
                 .inflate(R.layout.design_text_input_start_icon, startLayout, false);
     startIconView.setVisibility(GONE);
+    if (MaterialResources.isFontScaleAtLeast1_3(context)) {
+      ViewGroup.MarginLayoutParams lp =
+          (ViewGroup.MarginLayoutParams) startIconView.getLayoutParams();
+      MarginLayoutParamsCompat.setMarginEnd(lp, 0);
+    }
     setStartIconOnClickListener(null);
     setStartIconOnLongClickListener(null);
     // Set up start icon if any.
@@ -681,6 +691,11 @@ public class TextInputLayout extends LinearLayout {
                 .inflate(R.layout.design_text_input_end_icon, endIconFrame, false);
     endIconFrame.addView(endIconView);
     endIconView.setVisibility(GONE);
+    if (MaterialResources.isFontScaleAtLeast1_3(context)) {
+      ViewGroup.MarginLayoutParams lp =
+          (ViewGroup.MarginLayoutParams) endIconView.getLayoutParams();
+      MarginLayoutParamsCompat.setMarginStart(lp, 0);
+    }
     endIconDelegates.append(END_ICON_CUSTOM, new CustomEndIconDelegate(this));
     endIconDelegates.append(END_ICON_NONE, new NoEndIconDelegate(this));
     endIconDelegates.append(END_ICON_PASSWORD_TOGGLE, new PasswordToggleEndIconDelegate(this));
@@ -883,6 +898,8 @@ public class TextInputLayout extends LinearLayout {
     assignBoxBackgroundByMode();
     setEditTextBoxBackground();
     updateTextInputBoxState();
+    updateBoxCollapsedPaddingTop();
+    adjustFilledEditTextPaddingForLargeFont();
     if (boxBackgroundMode != BOX_BACKGROUND_NONE) {
       updateInputLayoutMargins();
     }
@@ -926,6 +943,47 @@ public class TextInputLayout extends LinearLayout {
         && boxBackground != null
         && editText.getBackground() == null
         && boxBackgroundMode != BOX_BACKGROUND_NONE;
+  }
+
+  private void updateBoxCollapsedPaddingTop() {
+    if (boxBackgroundMode == BOX_BACKGROUND_FILLED) {
+      if (MaterialResources.isFontScaleAtLeast2_0(getContext())) {
+        boxCollapsedPaddingTopPx =
+            getResources()
+                .getDimensionPixelSize(R.dimen.material_font_2_0_box_collapsed_padding_top);
+      } else if (MaterialResources.isFontScaleAtLeast1_3(getContext())) {
+        boxCollapsedPaddingTopPx =
+            getResources()
+                .getDimensionPixelSize(R.dimen.material_font_1_3_box_collapsed_padding_top);
+      }
+    }
+  }
+
+  private void adjustFilledEditTextPaddingForLargeFont() {
+    if (editText == null || boxBackgroundMode != BOX_BACKGROUND_FILLED) {
+      return;
+    }
+    // Both dense and default styles end up with the same vertical padding.
+    if (MaterialResources.isFontScaleAtLeast2_0(getContext())) {
+      ViewCompat.setPaddingRelative(
+          editText,
+          ViewCompat.getPaddingStart(editText),
+          getResources()
+              .getDimensionPixelSize(R.dimen.material_filled_edittext_font_2_0_padding_top),
+          ViewCompat.getPaddingEnd(editText),
+          getResources()
+              .getDimensionPixelSize(
+                  R.dimen.material_filled_edittext_font_2_0_padding_bottom));
+    } else if (MaterialResources.isFontScaleAtLeast1_3(getContext())) {
+      ViewCompat.setPaddingRelative(
+          editText,
+          ViewCompat.getPaddingStart(editText),
+          getResources()
+              .getDimensionPixelSize(R.dimen.material_filled_edittext_font_1_3_padding_top),
+          ViewCompat.getPaddingEnd(editText),
+          getResources()
+              .getDimensionPixelSize(R.dimen.material_filled_edittext_font_1_3_padding_bottom));
+    }
   }
 
   /**

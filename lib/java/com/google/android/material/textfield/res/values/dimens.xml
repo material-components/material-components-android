@@ -30,11 +30,22 @@
 
   <dimen name="mtrl_edittext_rectangle_top_offset">12dp</dimen>
 
-  <!-- For large text, distance from text field to helper text's baseline should
-       be 24dp when font size is 16 (16 + 8dp = 24dp) and 32dp when font size is
-        24 (24 + 8dp = 32dp). -->
-  <dimen name="material_helper_text_large_padding_top">8dp</dimen>
-  <dimen name="material_helper_text_large_padding_horizontal">12dp</dimen>
+  <!-- Dimens for edit text's top and bottom padding adjustments for large font scale settings. -->
+  <dimen name="material_filled_edittext_font_1_3_padding_top">23dp</dimen>
+  <dimen name="material_filled_edittext_font_1_3_padding_bottom">12dp</dimen>
+  <dimen name="material_filled_edittext_font_2_0_padding_top">32dp</dimen>
+  <dimen name="material_filled_edittext_font_2_0_padding_bottom">8dp</dimen>
+
+  <!--  For 1.3 font scale settings, the edit text's collapsed top padding in box mode. -->
+  <dimen name="material_font_1_3_box_collapsed_padding_top">4dp</dimen>
+  <!--  For 2.0 font scale settings, the edit text's collapsed top padding in box mode. -->
+  <dimen name="material_font_2_0_box_collapsed_padding_top">8dp</dimen>
+
+  <!-- For large font scale settings, distance from text field to helper text's
+       baseline should be 24dp when font size is 16 (16 + 8dp = 24dp) and 32dp
+       when font size is 24 (24 + 8dp = 32dp). -->
+  <dimen name="material_helper_text_font_1_3_padding_top">8dp</dimen>
+  <dimen name="material_helper_text_font_1_3_padding_horizontal">12dp</dimen>
 
   <!-- The icon views' minimum width is 48dp and since each icon is 24dp wide we need a 4dp margin
        to have the appropriate spacing before and after each icon. -->

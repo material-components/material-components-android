@@ -40,8 +40,10 @@ import androidx.annotation.StyleableRes;
 @RestrictTo(LIBRARY_GROUP)
 public class MaterialResources {
 
-  private static final float FONT_SCALE_LARGE = 1.3f;
-  private static final float FONT_SCALE_LARGEST = 2f;
+  /** Value of the system's x1.3 font scale size. */
+  private static final float FONT_SCALE_1_3 = 1.3f;
+  /** Value of the system's x2 font scale size. */
+  private static final float FONT_SCALE_2_0 = 2f;
 
   private MaterialResources() {}
 
@@ -175,17 +177,17 @@ public class MaterialResources {
   }
 
   /**
-   * Returns whether the font scale size is at least {@link #FONT_SCALE_LARGE}.
+   * Returns whether the font scale size is at least {@link #FONT_SCALE_1_3}.
    */
-  public static boolean isFontScaleAtLeastLarge(@NonNull Context context) {
-    return context.getResources().getConfiguration().fontScale >= FONT_SCALE_LARGE;
+  public static boolean isFontScaleAtLeast1_3(@NonNull Context context) {
+    return context.getResources().getConfiguration().fontScale >= FONT_SCALE_1_3;
   }
 
   /**
-   * Returns whether the font scale size is at least {@link #FONT_SCALE_LARGEST}.
+   * Returns whether the font scale size is at least {@link #FONT_SCALE_2_0}.
    */
-  public static boolean isFontScaleAtLeastLargest(@NonNull Context context) {
-    return context.getResources().getConfiguration().fontScale >= FONT_SCALE_LARGEST;
+  public static boolean isFontScaleAtLeast2_0(@NonNull Context context) {
+    return context.getResources().getConfiguration().fontScale >= FONT_SCALE_2_0;
   }
 
   /**
