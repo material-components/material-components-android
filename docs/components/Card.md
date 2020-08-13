@@ -370,11 +370,13 @@ border, regardless of the `app:strokeWidth` value._
 
 #### Checked icon attributes
 
-&nbsp;        | Attribute           | Related method(s)                                                  | Default value
-------------- | ------------------- | ------------------------------------------------------------------ | -------------
-**Icon**      | `checkedIcon`       | `setCheckedIcon`<br/>`setCheckedIconResource`<br/>`getCheckedIcon` | [`@drawable/ic_mtrl_checked_circle.xml`](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/resources/res/drawable/ic_mtrl_checked_circle.xml)
-**Color**     | `checkedIconTint`   | `setCheckedIconTint`<br/>`getCheckedIconTint`                      | `?attr/colorPrimary`
-**Checkable** | `android:checkable` | `setCheckable`<br/>`isCheckable`                                   | `false`
+&nbsp;        | Attribute            | Related method(s)                                                  | Default value
+------------- | -------------------- | ------------------------------------------------------------------ | -------------
+**Icon**      | `checkedIcon`        | `setCheckedIcon`<br/>`setCheckedIconResource`<br/>`getCheckedIcon` | [`@drawable/ic_mtrl_checked_circle.xml`](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/resources/res/drawable/ic_mtrl_checked_circle.xml)
+**Color**     | `checkedIconTint`    | `setCheckedIconTint`<br/>`getCheckedIconTint`                      | `?attr/colorPrimary`
+**Checkable** | `android:checkable`  | `setCheckable`<br/>`isCheckable`                                   | `false`
+**Size**      | `checkedIconSize`    | `setCheckedIconSize`<br/>`setCheckedIconSizeResource`<br/>`getCheckedIconSize` | `24dp`
+**Margin**    | `checkedIconMargin`  | `setCheckedIconMargin`<br/>`setCheckedIconMarginResource`<br/>`getCheckedIconMargin` | `8dp`
 
 #### States
 
