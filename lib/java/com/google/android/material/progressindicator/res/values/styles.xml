@@ -25,30 +25,32 @@
     <item name="indicatorType">linear</item>
     <item name="linearSeamless">true</item>
   </style>
+
   <style name="Base.Widget.MaterialComponents.ProgressIndicator.Circular">
     <item name="indicatorType">circular</item>
     <item name="trackColor">@android:color/transparent</item>
     <item name="circularRadius">@dimen/mtrl_progress_circular_radius</item>
     <item name="circularInset">@dimen/mtrl_progress_circular_inset</item>
   </style>
-  <style name="Base.Widget.MaterialComponents.ProgressIndicator.Custom">
+
+  <!-- Styles used by clients -->
+  <style name="Widget.MaterialComponents.ProgressIndicator.Custom" parent="Base.Widget.MaterialComponents.ProgressIndicator">
     <item name="indicatorType">custom</item>
   </style>
 
-  <style name="Widget.MaterialComponents.ProgressIndicator.Linear.Determinate"
-      parent="Base.Widget.MaterialComponents.ProgressIndicator.Linear">
+  <style name="Widget.MaterialComponents.ProgressIndicator.Linear.Determinate" parent="Base.Widget.MaterialComponents.ProgressIndicator.Linear">
     <item name="android:indeterminate">false</item>
   </style>
-  <style name="Widget.MaterialComponents.ProgressIndicator.Linear.Indeterminate"
-      parent="Base.Widget.MaterialComponents.ProgressIndicator.Linear">
+
+  <style name="Widget.MaterialComponents.ProgressIndicator.Linear.Indeterminate" parent="Base.Widget.MaterialComponents.ProgressIndicator.Linear">
     <item name="android:indeterminate">true</item>
   </style>
-  <style name="Widget.MaterialComponents.ProgressIndicator.Circular.Determinate"
-      parent="Base.Widget.MaterialComponents.ProgressIndicator.Circular">
+
+  <style name="Widget.MaterialComponents.ProgressIndicator.Circular.Determinate" parent="Base.Widget.MaterialComponents.ProgressIndicator.Circular">
     <item name="android:indeterminate">false</item>
   </style>
-  <style name="Widget.MaterialComponents.ProgressIndicator.Circular.Indeterminate"
-      parent="Base.Widget.MaterialComponents.ProgressIndicator.Circular">
+
+  <style name="Widget.MaterialComponents.ProgressIndicator.Circular.Indeterminate" parent="Base.Widget.MaterialComponents.ProgressIndicator.Circular">
     <item name="android:indeterminate">true</item>
   </style>
 </resources>

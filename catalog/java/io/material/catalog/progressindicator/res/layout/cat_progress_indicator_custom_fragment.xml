@@ -33,7 +33,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    style="@style/Base.Widget.MaterialComponents.ProgressIndicator.Custom"
+    style="@style/Widget.MaterialComponents.ProgressIndicator.Custom"
     android:indeterminate="true"
     app:growMode="bidirectional"
     app:indicatorColor="?attr/colorPrimary"/>
@@ -47,7 +47,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    style="@style/Base.Widget.MaterialComponents.ProgressIndicator.Custom"
+    style="@style/Widget.MaterialComponents.ProgressIndicator.Custom"
     android:indeterminate="false"
     app:growMode="bidirectional"
     app:indicatorColor="?attr/colorPrimary"/>
