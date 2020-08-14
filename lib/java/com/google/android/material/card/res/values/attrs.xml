@@ -32,9 +32,9 @@
     <attr name="checkedIcon"/>
     <!-- Tint color for the checked icon. -->
     <attr name="checkedIconTint"/>
-    <!-- Check icon size -->
+    <!-- Check icon size for Checkable Cards-->
     <attr name="checkedIconSize" format="dimension"/>
-    <!-- Check icon margin -->
+    <!-- Check icon margin for Checkable Cards-->
     <attr name="checkedIconMargin" format="dimension"/>
     <!-- Ripple color for the Card. -->
     <attr name="rippleColor"/>
