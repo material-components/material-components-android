@@ -160,13 +160,10 @@ class MaterialCardViewHelper {
     setCheckedIcon(
         MaterialResources.getDrawable(
             materialCardView.getContext(), attributes, R.styleable.MaterialCardView_checkedIcon));
-    Resources resources = materialCardView.getResources();
     setCheckedIconSize(
-        attributes.getDimensionPixelSize(R.styleable.MaterialCardView_checkedIconSize,
-            resources.getDimensionPixelSize(R.dimen.mtrl_card_checked_icon_size)));
+        attributes.getDimensionPixelSize(R.styleable.MaterialCardView_checkedIconSize,0));
     setCheckedIconMargin(
-        attributes.getDimensionPixelSize(R.styleable.MaterialCardView_checkedIconMargin,
-            resources.getDimensionPixelSize(R.dimen.mtrl_card_checked_icon_margin)));
+        attributes.getDimensionPixelSize(R.styleable.MaterialCardView_checkedIconMargin,0));
 
     rippleColor =
         MaterialResources.getColorStateList(
@@ -400,20 +397,20 @@ class MaterialCardViewHelper {
   }
 
   @Dimension
-  public int getCheckedIconSize() {
+  int getCheckedIconSize() {
     return checkedIconSize;
   }
 
-  public void setCheckedIconSize(@Dimension int checkedIconSize) {
+  void setCheckedIconSize(@Dimension int checkedIconSize) {
     this.checkedIconSize = checkedIconSize;
   }
 
   @Dimension
-  public int getCheckedIconMargin() {
+  int getCheckedIconMargin() {
     return checkedIconMargin;
   }
 
-  public void setCheckedIconMargin(@Dimension int checkedIconMargin) {
+  void setCheckedIconMargin(@Dimension int checkedIconMargin) {
     this.checkedIconMargin = checkedIconMargin;
   }
 
