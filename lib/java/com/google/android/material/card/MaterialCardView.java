@@ -550,11 +550,6 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
     cardViewHelper.setCheckedIconTint(checkedIconTint);
   }
 
-  /**
-   * Returns the checked icon size
-   *
-   * @return the checked icon size
-   */
   @Dimension
   public int getCheckedIconSize() {
     return cardViewHelper.getCheckedIconSize();
@@ -582,22 +577,11 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
     }
   }
 
-  /**
-   * Returns the checked icon margin
-   *
-   * @return the checked icon margin
-   */
   @Dimension
   public int getCheckedIconMargin() {
     return cardViewHelper.getCheckedIconMargin();
   }
 
-  /**
-   * Sets the size of the checked margin
-   *
-   * @param checkedIconMargin checked icon margin
-   * @attr ref com.google.android.material.R.styleable#MaterialCardView_checkedIconMargin
-   */
   public void setCheckedIconMargin(@Dimension int checkedIconMargin) {
     cardViewHelper.setCheckedIconMargin(checkedIconMargin);
   }
@@ -609,7 +593,7 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
    * @attr ref com.google.android.material.R.styleable#MaterialCardView_checkedIconMargin
    */
   public void setCheckedIconMarginResource(@DimenRes int checkedIconMarginResId) {
-    if (checkedIconMarginResId != 0) {
+    if (checkedIconMarginResId != NO_ID) {
       cardViewHelper.setCheckedIconMargin(getResources().getDimensionPixelSize(checkedIconMarginResId));
     }
   }
