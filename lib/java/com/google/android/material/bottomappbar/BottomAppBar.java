@@ -495,8 +495,12 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
    * @param newMenu the desired new menu.
    */
   public void replaceMenu(@MenuRes int newMenu) {
-    getMenu().clear();
-    inflateMenu(newMenu);
+    if (newMenu != NO_MENU_RES_ID) {
+      // Clear any pending menu changes if the menu being passed in happens to be pendingMenuResID.
+      pendingMenuResId = NO_MENU_RES_ID;
+      getMenu().clear();
+      inflateMenu(newMenu);
+    }
   }
 
   /** Add a listener to watch for animation changes to the BottomAppBar and FAB */
@@ -654,6 +658,9 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   private void maybeAnimateMenuView(@FabAlignmentMode int targetMode, boolean newFabAttached) {
     if (!ViewCompat.isLaidOut(this)) {
       menuAnimatingWithFabAlignmentMode = false;
+      // If this method is called before the BottomAppBar is laid out and able to animate, make sure
+      // the desired menu is still set even if the animation is skipped.
+      replaceMenu(pendingMenuResId);
       return;
     }
 
@@ -726,11 +733,9 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
             @Override
             public void onAnimationEnd(Animator animation) {
               if (!cancelled) {
-                translateActionMenuView(actionMenuView, targetMode, targetAttached);
-                if (pendingMenuResId != NO_MENU_RES_ID) {
-                  replaceMenu(pendingMenuResId);
-                  pendingMenuResId = NO_MENU_RES_ID;
-                }
+                boolean replaced = pendingMenuResId != NO_MENU_RES_ID;
+                replaceMenu(pendingMenuResId);
+                translateActionMenuView(actionMenuView, targetMode, targetAttached, replaced);
               }
             }
           });
@@ -777,6 +782,13 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     return null;
   }
 
+  private void translateActionMenuView(
+      @NonNull final ActionMenuView actionMenuView,
+      @FabAlignmentMode final int fabAlignmentMode,
+      final boolean fabAttached) {
+    translateActionMenuView(actionMenuView, fabAlignmentMode, fabAttached, false);
+  }
+
   /**
    * Translates the ActionMenuView so that it is aligned correctly depending on the fabAlignmentMode
    * and if the fab is attached. The view will be translated to the left when the fab is attached
@@ -788,11 +800,24 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
    * @param fabAttached whether the ActionMenuView should be moved
    */
   private void translateActionMenuView(
-      @NonNull ActionMenuView actionMenuView,
-      @FabAlignmentMode int fabAlignmentMode,
-      boolean fabAttached) {
-    actionMenuView.setTranslationX(
-        getActionMenuViewTranslationX(actionMenuView, fabAlignmentMode, fabAttached));
+      @NonNull final ActionMenuView actionMenuView,
+      @FabAlignmentMode final int fabAlignmentMode,
+      final boolean fabAttached,
+      boolean shouldWaitForMenuReplacement) {
+    Runnable runnable = new Runnable() {
+      @Override
+      public void run() {
+        actionMenuView.setTranslationX(
+            getActionMenuViewTranslationX(actionMenuView, fabAlignmentMode, fabAttached));
+      }
+    };
+    if (shouldWaitForMenuReplacement) {
+      // Wait to ensure the actionMenuView has had it's menu inflated and is able to correctly
+      // measure it's width before calculating and translating X.
+      actionMenuView.post(runnable);
+    } else {
+      runnable.run();
+    }
   }
 
   /**

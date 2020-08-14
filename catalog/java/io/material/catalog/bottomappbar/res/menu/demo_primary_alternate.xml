@@ -28,5 +28,5 @@
   <item
     android:icon="@drawable/ic_dashboard_24px"
     android:title="@string/cat_bottomappbar_dashboard"
-    app:showAsAction="ifRoom"/>
+    app:showAsAction="never"/>
 </menu>
