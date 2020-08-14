@@ -27,6 +27,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
 import com.google.android.material.button.MaterialButtonToggleGroup;
+import com.google.android.material.datepicker.MaterialDatePicker.InputMode;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
 import io.material.catalog.feature.DemoFragment;
@@ -42,6 +43,7 @@ public class TimePickerMainDemoFragment extends DemoFragment {
 
   private final SimpleDateFormat formatter = new SimpleDateFormat("hh:mm a", Locale.getDefault());
   @TimeFormat private int clockFormat;
+  @InputMode private int timeInputMode;
   private TextView textView;
 
   @Override
@@ -56,6 +58,9 @@ public class TimePickerMainDemoFragment extends DemoFragment {
     MaterialButtonToggleGroup timeFormatToggle = view.findViewById(R.id.time_format_toggle);
     clockFormat = TimeFormat.CLOCK_12H;
     timeFormatToggle.check(R.id.time_format_12h);
+    MaterialButtonToggleGroup timeInputModeToggle = view.findViewById(R.id.time_inputmode_toggle);
+    timeInputModeToggle.check(R.id.time_inputmode_timepicker);
+    timeInputMode = MaterialTimePicker.INPUT_MODE_CLOCK;
 
     timeFormatToggle.addOnButtonCheckedListener(
         (group, checkedId, isChecked) -> {
@@ -65,6 +70,20 @@ public class TimePickerMainDemoFragment extends DemoFragment {
                   || (checkedId == R.id.time_format_system && isSystem24Hour);
 
           clockFormat = is24Hour ? TimeFormat.CLOCK_24H : TimeFormat.CLOCK_12H;
+        });
+
+    timeInputModeToggle.addOnButtonCheckedListener(
+        (group, checkedId, isChecked) -> {
+          if (isChecked) {
+            switch (checkedId) {
+              case R.id.time_inputmode_timepicker:
+                timeInputMode = MaterialTimePicker.INPUT_MODE_CLOCK;
+                break;
+              case R.id.time_inputmode_inputtext:
+                timeInputMode = MaterialTimePicker.INPUT_MODE_KEYBOARD;
+                break;
+            }
+          }
         });
 
     SwitchCompat frameworkSwitch = view.findViewById(R.id.framework_switch);
@@ -78,6 +97,7 @@ public class TimePickerMainDemoFragment extends DemoFragment {
           .setTimeFormat(clockFormat)
           .setHour(hour)
           .setMinute(minute)
+          .setInputMode(timeInputMode)
           .build();
 
       materialTimePicker.show(requireFragmentManager(), "fragment_tag");
