@@ -59,6 +59,11 @@
       android:layout_height="wrap_content"
       android:text="@string/cat_picker_validation_last_two_weeks"
       android:textAppearance="?attr/textAppearanceBody1"/>
-
+    <RadioButton
+      android:id="@+id/cat_picker_validation_multiple_range"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/cat_picker_validation_multiple_range"
+      android:textAppearance="?attr/textAppearanceBody1"/>
   </RadioGroup>
 </LinearLayout>
