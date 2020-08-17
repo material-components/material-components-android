@@ -2691,6 +2691,9 @@ public class TextInputLayout extends LinearLayout {
   static class SavedState extends AbsSavedState {
     @Nullable CharSequence error;
     boolean isEndIconChecked;
+    CharSequence hintText;
+    CharSequence helperText;
+    CharSequence placeholderText;
 
     SavedState(Parcelable superState) {
       super(superState);
@@ -2700,6 +2703,9 @@ public class TextInputLayout extends LinearLayout {
       super(source, loader);
       error = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(source);
       isEndIconChecked = (source.readInt() == 1);
+      hintText =  TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(source);
+      helperText = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(source);
+      placeholderText = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(source);
     }
 
     @Override
@@ -2707,6 +2713,9 @@ public class TextInputLayout extends LinearLayout {
       super.writeToParcel(dest, flags);
       TextUtils.writeToParcel(error, dest, flags);
       dest.writeInt(isEndIconChecked ? 1 : 0);
+      TextUtils.writeToParcel(hintText, dest, flags);
+      TextUtils.writeToParcel(helperText, dest, flags);
+      TextUtils.writeToParcel(placeholderText, dest, flags);
     }
 
     @NonNull
@@ -2716,6 +2725,12 @@ public class TextInputLayout extends LinearLayout {
           + Integer.toHexString(System.identityHashCode(this))
           + " error="
           + error
+          + " hint="
+          + hintText
+          + " helperText="
+          + helperText
+          + " placeholderText="
+          + placeholderText
           + "}";
     }
 
@@ -2750,6 +2765,9 @@ public class TextInputLayout extends LinearLayout {
       ss.error = getError();
     }
     ss.isEndIconChecked = hasEndIcon() && endIconView.isChecked();
+    ss.hintText = getHint();
+    ss.helperText = getHelperText();
+    ss.placeholderText = getPlaceholderText();
     return ss;
   }
 
@@ -2774,6 +2792,9 @@ public class TextInputLayout extends LinearLayout {
             }
           });
     }
+    setHint(ss.hintText);
+    setHelperText(ss.helperText);
+    setPlaceholderText(ss.placeholderText);
     requestLayout();
   }
 
