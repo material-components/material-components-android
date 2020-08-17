@@ -595,6 +595,7 @@ public class TextInputLayout extends LinearLayout {
         (CheckableImageButton)
             LayoutInflater.from(getContext())
                 .inflate(R.layout.design_text_input_end_icon, endLayout, false);
+    errorIconView.setId(R.id.textinput_error_icon);
     errorIconView.setVisibility(GONE);
     if (MaterialResources.isFontScaleAtLeast1_3(context)) {
       ViewGroup.MarginLayoutParams lp =
