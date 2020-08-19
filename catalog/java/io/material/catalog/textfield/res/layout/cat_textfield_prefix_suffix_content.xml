@@ -162,4 +162,19 @@
         android:inputType="numberDecimal"/>
   </com.google.android.material.textfield.TextInputLayout>
 
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/cat_textfield_standard_spacing"
+    android:orientation="vertical">
+
+    <Button
+      android:id="@+id/button_toggle_prefixsuffix"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_horizontal"
+      android:text="@string/cat_textfield_always_visible_true_text"/>
+
+  </LinearLayout>
+
 </LinearLayout>

@@ -84,6 +84,8 @@
   <string name="cat_textfield_null_input_error_text" translatable="false">Enter a value</string>
   <string name="cat_textfield_show_error_text" translatable="false">Show error</string>
   <string name="cat_textfield_hide_error_text" translatable="false">Hide error</string>
+  <string name="cat_textfield_always_visible_true_text" translatable="false">Prefix/suffix always visible</string>
+  <string name="cat_textfield_always_visible_false_text" translatable="false">Prefix/suffix default visibility</string>
 
   <string-array name="cat_textfield_exposed_dropdown_content" translatable="false">
     <item>Item 1</item>
