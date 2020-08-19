@@ -211,7 +211,7 @@ A mini FAB has a container and an icon.
 
 &nbsp;                        | Attribute                                      | Related method(s)                                                                     | Default value
 ----------------------------- | ---------------------------------------------- | ------------------------------------------------------------------------------------- | -------------
-**Color**                     | `app:backgroundTint`                           | `setBackgroundTintList`<br/>`getBackgroundTintList`                                   | `?attr/colorSecondary`
+**Color**                     | `app:backgroundTint`                           | `setBackgroundTintList`<br/>`getBackgroundTintList`                                   | `?attr/colorSecondary` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingactionbutton/res/color/mtrl_fab_bg_color_selector.xml))
 **Stroke**                    | `app:borderWidth`                              | N/A                                                                                   | `0.5dp`
 **Size**                      | `app:fabSize`<br>`app:fabCustomSize`           | `setSize`<br/>`setCustomSize`<br/>`clearCustomSize`<br/>`getSize`<br/>`getCustomSize` | `auto`
 **Shape**                     | `shapeAppearance`<br/>`shapeAppearanceOverlay` | `setShapeAppearanceModel`<br/>`getShapeAppearanceModel`                               | `?attr/shapeAppearanceSmallComponent`<br/>
@@ -226,7 +226,7 @@ A mini FAB has a container and an icon.
 &nbsp;    | Attribute       | Related method(s)                                           | Default value
 --------- | --------------- | ----------------------------------------------------------- | -------------
 **Icon**  | `app:srcCompat` | `setImageDrawable`<br/>`setImageResource`<br/>`getDrawable` | `null`
-**Color** | `app:tint`      | `setImageTintList`<br/>`getImageTintList`                   | `?attr/colorOnSecondary`
+**Color** | `app:tint`      | `setImageTintList`<br/>`getImageTintList`                   | `?attr/colorOnSecondary` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingactionbutton/res/color/mtrl_fab_icon_text_color_selector.xml))
 
 #### Styles
 
@@ -309,7 +309,7 @@ An extended FAB has a text label, a transparent container and an optional icon.
 
 &nbsp;                        | Attribute                                                                                  | Related method(s)                                                  | Default value
 ----------------------------- | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------ | -------------
-**Color**                     | `app:backgroundTint`                                                                       | `setBackgroundTintList`<br/>`getBackgroundTintList`                | `?attr/colorSecondary`
+**Color**                     | `app:backgroundTint`                                                                       | `setBackgroundTintList`<br/>`getBackgroundTintList`                | `?attr/colorSecondary` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingactionbutton/res/color/mtrl_fab_bg_color_selector.xml))
 **Stroke color**              | `app:strokeColor`                                                                          | `setStrokeColor`<br/>`getStrokeColor`                              | `null`
 **Stroke width**              | `app:strokeWidth`                                                                          | `setStrokeWidth`<br/>`getStrokeWidth`                              | `0dp`
 **Shape**                     | `app:shapeAppearance`<br/>`app:shapeAppearanceOverlay`                                     | `setShapeAppearanceModel`<br/>`getShapeAppearanceModel`            | `?attr/shapeAppearanceSmallComponent`
@@ -324,7 +324,7 @@ An extended FAB has a text label, a transparent container and an optional icon.
 &nbsp;                            | Attribute         | Related method(s)                                         | Default value
 --------------------------------- | ----------------- | --------------------------------------------------------- | -------------
 **Icon**                          | `app:icon`        | `setIcon`<br/>`setIconResource`<br/>`getIcon`             | `?attr/colorOnSecondary`
-**Color**                         | `app:iconTint`    | `setIconTint`<br/>`setIconTintResource`<br/>`getIconTint` | `?attr/colorOnSecondary`
+**Color**                         | `app:iconTint`    | `setIconTint`<br/>`setIconTintResource`<br/>`getIconTint` | `?attr/colorOnSecondary` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingactionbutton/res/color/mtrl_fab_icon_text_color_selector.xml))
 **Size**                          | `app:iconSize`    | `setIconSize`<br/>`getIconSize`                           | `24dp`
 **Padding between icon and text** | `app:iconPadding` | `setIconPadding`<br/>`getIconPadding`                     | `16dp`
 
@@ -333,7 +333,7 @@ An extended FAB has a text label, a transparent container and an optional icon.
 &nbsp;         | Attribute                | Related method(s)                 | Default value
 -------------- | ------------------------ | --------------------------------- | -------------
 **Text label** | `android:text`           | `setText`<br/>`getText`           | `null`
-**Color**      | `android:textColor`      | `setTextColor`<br/>`getTextColor` | `?attr/colorOnSecondary`
+**Color**      | `android:textColor`      | `setTextColor`<br/>`getTextColor` | `?attr/colorOnSecondary` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingactionbutton/res/color/mtrl_fab_icon_text_color_selector.xml))
 **Typography** | `android:textAppearance` | `setTextAppearance`               | `?attr/textAppearanceButton`
 
 #### Styles
