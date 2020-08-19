@@ -82,6 +82,8 @@ import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.tooltip.TooltipDrawable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -456,8 +458,21 @@ abstract class BaseSlider<
     }
   }
 
+  private boolean valueLandsOnTick(float value) {
+    // Check that the value is a multiple of stepSize given the offset of valueFrom
+    // We're using BigDecimal here to avoid floating point rounding errors.
+    double potentialTickValue =
+        new BigDecimal(Float.toString(value))
+            .subtract(new BigDecimal(Float.toString(valueFrom)))
+            .divide(new BigDecimal(Float.toString(stepSize)), MathContext.DECIMAL64)
+            .doubleValue();
+
+    // If the potentialTickValue is a whole number, it means the value lands on a tick.
+    return Math.abs(Math.round(potentialTickValue) - potentialTickValue) < THRESHOLD;
+  }
+
   private void validateStepSize() {
-    if (stepSize > 0.0f && ((valueTo - valueFrom) / stepSize) % 1 > THRESHOLD) {
+    if (stepSize > 0.0f && !valueLandsOnTick(valueTo)) {
       throw new IllegalStateException(
           String.format(
               EXCEPTION_ILLEGAL_STEP_SIZE,
@@ -477,7 +492,7 @@ abstract class BaseSlider<
                 Float.toString(valueFrom),
                 Float.toString(valueTo)));
       }
-      if (stepSize > 0.0f && ((valueFrom - value) / stepSize) % 1 > THRESHOLD) {
+      if (stepSize > 0.0f && !valueLandsOnTick(value)) {
         throw new IllegalStateException(
             String.format(
                 EXCEPTION_ILLEGAL_DISCRETE_VALUE,

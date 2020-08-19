@@ -119,6 +119,48 @@ public class SliderConfigTest {
           /* stepValue = */ 10f,
           /* value = */ 21f,
           IllegalStateException.class,
+        },
+        new Object[] {
+          /* valueFrom = */ 0.1f,
+          /* valueTo = */ 10f,
+          /* stepValue = */ 0.1f,
+          /* value = */ 0.1f,
+          null,
+        },
+        new Object[] {
+          /* valueFrom = */ 0.1f,
+          /* valueTo = */ 10f,
+          /* stepValue = */ 0.1f,
+          /* value = */ 0.1999999f, // We don't support this level of precision.
+          null,
+        },
+        new Object[] {
+          /* valueFrom = */ 0f,
+          /* valueTo = */ 10f,
+          /* stepValue = */ 0.001f,
+          /* value = */ 7f,
+          null,
+        },
+        new Object[] {
+          /* valueFrom = */ 0.1f,
+          /* valueTo = */ 10f,
+          /* stepValue = */ 0.1f,
+          /* value = */ 0.15f,
+          IllegalStateException.class,
+        },
+        new Object[] {
+          /* valueFrom = */ 0f,
+          /* valueTo = */ 100000f,
+          /* stepValue = */ 0.01f,
+          /* value = */ 65536.02f,
+          null,
+        },
+        new Object[] {
+          /* valueFrom = */ 0f,
+          /* valueTo = */ 1f,
+          /* stepValue = */ 1 / 3f,
+          /* value = */ 0f,
+          null,
         });
   }
 
