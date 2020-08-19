@@ -499,6 +499,38 @@ public class NavigationView extends ScrimInsetsFrameLayout {
   }
 
   /**
+   * Set the foreground of our menu items to the given resource. This overrides the default
+   * foreground set to items and it's styling.
+   *
+   * @param resId The identifier of the resource.
+   *
+   */
+  public void setItemForegroundResource(@DrawableRes int resId) {
+    setItemForeground(ContextCompat.getDrawable(getContext(), resId));
+  }
+
+  /**
+   * Set the foreground of our menu items to a given resource. The resource should refer to a
+   * Drawable object or null to use the default foreground set on this navigation menu.
+   *
+   *
+   */
+  public void setItemForeground(@Nullable Drawable itemForeground) {
+    presenter.setItemForeground(itemForeground);
+  }
+
+  /**
+   * Returns the foreground drawable for our menu items.
+   *
+   * @see #setItemForegroundResource(int)
+   *
+   */
+  @Nullable
+  public Drawable getItemForeground() {
+    return presenter.getItemForeground();
+  }
+
+  /**
    * Returns the horizontal (left and right) padding in pixels applied to menu items.
    *
    * @see #setItemHorizontalPadding(int)

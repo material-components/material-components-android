@@ -75,6 +75,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
   ColorStateList textColor;
   ColorStateList iconTintList;
   Drawable itemBackground;
+  Drawable itemForeground;
   int itemHorizontalPadding;
   int itemIconPadding;
   int itemIconSize;
@@ -278,6 +279,16 @@ public class NavigationMenuPresenter implements MenuPresenter {
 
   public void setItemBackground(@Nullable Drawable itemBackground) {
     this.itemBackground = itemBackground;
+    updateMenuView(false);
+  }
+
+  @Nullable
+  public Drawable getItemForeground() {
+    return itemForeground;
+  }
+
+  public void setItemForeground(@Nullable Drawable itemForeground) {
+    this.itemForeground = itemForeground;
     updateMenuView(false);
   }
 
@@ -504,6 +515,9 @@ public class NavigationMenuPresenter implements MenuPresenter {
             ViewCompat.setBackground(
                 itemView,
                 itemBackground != null ? itemBackground.getConstantState().newDrawable() : null);
+            if(itemForeground!=null){
+              itemView.setForeground(itemForeground);
+            }
             NavigationMenuTextItem item = (NavigationMenuTextItem) items.get(position);
             itemView.setNeedsEmptyIcon(item.needsEmptyIcon);
             itemView.setHorizontalPadding(itemHorizontalPadding);
