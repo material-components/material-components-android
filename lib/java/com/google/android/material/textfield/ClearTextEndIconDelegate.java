@@ -64,7 +64,8 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
           boolean hasText = !TextUtils.isEmpty(((EditText) v).getText());
-          animateIcon(hasText && hasFocus);
+          animateIcon(hasFocus && (hasText ||
+              (textInputLayout.isSuffixAlwaysVisible() && textInputLayout.getSuffixText()!= null)));
         }
       };
   private final OnEditTextAttachedListener clearTextOnEditTextAttachedListener =
@@ -127,7 +128,7 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
 
   @Override
   void onSuffixVisibilityChanged(boolean visible) {
-    if (textInputLayout.getSuffixText() == null) {
+    if (textInputLayout.getSuffixText() == null || !textInputLayout.getEditText().isFocused()) {
       return;
     }
     animateIcon(visible);

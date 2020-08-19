@@ -111,6 +111,8 @@
     <!-- Text color of the prefix text displayed in the text input area.
          If set, this takes precedence over prefixTextAppearance. -->
     <attr name="prefixTextColor" format="color"/>
+    <!-- Whether to always show the prefix text -->
+    <attr name="prefixAlwaysVisible" format="boolean"/>
     <!-- The text to display as suffix text in the text input area. -->
     <attr name="suffixText" format="string"/>
     <!-- TextAppearance of the suffix text displayed in the text input area. -->
@@ -118,6 +120,8 @@
     <!-- Text color of the suffix text displayed in the text input area.
          If set, this takes precedence over suffixTextAppearance. -->
     <attr name="suffixTextColor" format="color"/>
+    <!-- Whether to always show the suffix text -->
+    <attr name="suffixAlwaysVisible" format="boolean"/>
 
     <!-- Drawable to use for the start icon. -->
     <attr name="startIconDrawable" format="reference"/>

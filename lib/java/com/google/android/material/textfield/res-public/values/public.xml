@@ -47,9 +47,11 @@
   <public name="prefixText" type="attr"/>
   <public name="prefixTextAppearance" type="attr"/>
   <public name="prefixTextColor" type="attr"/>
+  <public name="prefixAlwaysVisible" type="attr" />
   <public name="suffixText" type="attr"/>
   <public name="suffixTextAppearance" type="attr"/>
   <public name="suffixTextColor" type="attr"/>
+  <public name="suffixAlwaysVisible" type="attr" />
   <public name="errorEnabled" type="attr"/>
   <public name="errorTextAppearance" type="attr"/>
   <public name="errorTextColor" type="attr"/>

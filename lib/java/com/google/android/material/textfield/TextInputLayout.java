@@ -212,8 +212,10 @@ public class TextInputLayout extends LinearLayout {
 
   @Nullable private CharSequence prefixText;
   @NonNull private final TextView prefixTextView;
+  private boolean prefixAlwaysVisible;
   @Nullable private CharSequence suffixText;
   @NonNull private final TextView suffixTextView;
+  private boolean suffixAlwaysVisible;
 
   private boolean hintEnabled;
   private CharSequence hint;
@@ -757,6 +759,7 @@ public class TextInputLayout extends LinearLayout {
             ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
     ViewCompat.setAccessibilityLiveRegion(
         prefixTextView, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
+    prefixAlwaysVisible = a.getBoolean(R.styleable.TextInputLayout_prefixAlwaysVisible, false);
 
     startLayout.addView(startIconView);
     startLayout.addView(prefixTextView);
@@ -771,6 +774,7 @@ public class TextInputLayout extends LinearLayout {
             Gravity.BOTTOM));
     ViewCompat.setAccessibilityLiveRegion(
         suffixTextView, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
+    suffixAlwaysVisible = a.getBoolean(R.styleable.TextInputLayout_suffixAlwaysVisible, false);
 
     endLayout.addView(suffixTextView);
     endLayout.addView(errorIconView);
@@ -1465,6 +1469,8 @@ public class TextInputLayout extends LinearLayout {
     final boolean hasText = editText != null && !TextUtils.isEmpty(editText.getText());
     final boolean hasFocus = editText != null && editText.hasFocus();
     final boolean errorShouldBeShown = indicatorViewController.errorShouldBeShown();
+    final boolean prefixSuffixShouldBeShown = ((prefixAlwaysVisible && prefixText != null) ||
+        (suffixAlwaysVisible && suffixText != null));
 
     // Set the expanded and collapsed labels to the default text color.
     if (defaultHintTextColor != null) {
@@ -1489,10 +1495,13 @@ public class TextInputLayout extends LinearLayout {
       collapsingTextHelper.setCollapsedTextColor(focusedTextColor);
     } // If none of these states apply, leave the expanded and collapsed colors as they are.
 
-    if (hasText || (isEnabled() && (hasFocus || errorShouldBeShown))) {
+    if (hasText || (isEnabled() && (hasFocus || errorShouldBeShown)) || prefixSuffixShouldBeShown) {
       // We should be showing the label so do so if it isn't already
       if (force || hintExpanded) {
         collapseHint(animate);
+      } else if (prefixSuffixShouldBeShown){
+        updatePrefixTextVisibility();
+        updateSuffixTextVisibility();
       }
     } else {
       // We should not be showing the label so hide it
@@ -2284,7 +2293,8 @@ public class TextInputLayout extends LinearLayout {
   }
 
   private void updatePrefixTextVisibility() {
-    prefixTextView.setVisibility((prefixText != null && !isHintExpanded()) ? VISIBLE : GONE);
+    prefixTextView.setVisibility((prefixText != null &&
+        (prefixAlwaysVisible || !isHintExpanded())) ? VISIBLE : GONE);
     updateDummyDrawables();
   }
 
@@ -2330,6 +2340,27 @@ public class TextInputLayout extends LinearLayout {
   }
 
   /**
+   * Returns whether the prefix text is always visible.
+   *
+   * @see #setPrefixAlwaysVisible(boolean)
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_prefixAlwaysVisible
+   */
+  public boolean isPrefixAlwaysVisible(){
+    return prefixAlwaysVisible;
+  }
+
+  /**
+   * Sets whether the prefix text is always visible.
+   *
+   * @param prefixAlwaysVisible
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_prefixAlwaysVisible
+   */
+  public void setPrefixAlwaysVisible(boolean prefixAlwaysVisible){
+    this.prefixAlwaysVisible = prefixAlwaysVisible;
+    updateLabelState(true);
+  }
+
+  /**
    * Sets suffix text that will be displayed in the input area when the hint is collapsed before
    * text is entered. If the {@code suffix} is {@code null}, any previous suffix text will be hidden
    * and no suffix text will be shown.
@@ -2369,10 +2400,10 @@ public class TextInputLayout extends LinearLayout {
 
   private void updateSuffixTextVisibility() {
     int oldSuffixVisibility = suffixTextView.getVisibility();
-    boolean visible = suffixText != null && !isHintExpanded();
+    boolean visible = ((suffixText != null &&  !isHintExpanded()) || suffixAlwaysVisible);
     suffixTextView.setVisibility(visible ? VISIBLE : GONE);
-    if (oldSuffixVisibility != suffixTextView.getVisibility()) {
-      getEndIconDelegate().onSuffixVisibilityChanged(visible);
+    if ((oldSuffixVisibility != suffixTextView.getVisibility())) {
+        getEndIconDelegate().onSuffixVisibilityChanged(visible);
     }
     updateDummyDrawables();
   }
@@ -2403,6 +2434,28 @@ public class TextInputLayout extends LinearLayout {
    */
   public void setSuffixTextAppearance(@StyleRes int suffixTextAppearance) {
     TextViewCompat.setTextAppearance(suffixTextView, suffixTextAppearance);
+  }
+
+  /**
+   * Returns whether the suffix text is always visible.
+   *
+   * @see #setSuffixAlwaysVisible(boolean)
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_suffixAlwaysVisible
+   */
+  public boolean isSuffixAlwaysVisible(){
+    return suffixAlwaysVisible;
+  }
+
+  /**
+   * Sets whether the suffix text is always visible.
+   *
+   * @param suffixAlwaysVisible
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_suffixAlwaysVisible
+   */
+  public void setSuffixAlwaysVisible(boolean suffixAlwaysVisible){
+    this.suffixAlwaysVisible = suffixAlwaysVisible;
+    //updateSuffixTextVisibility();
+    updateLabelState(true);
   }
 
   private void updateSuffixTextViewPadding() {
