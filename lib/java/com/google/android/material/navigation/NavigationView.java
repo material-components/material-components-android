@@ -59,6 +59,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import com.google.android.material.internal.ContextUtils;
 import com.google.android.material.internal.NavigationMenu;
 import com.google.android.material.internal.NavigationMenuPresenter;
 import com.google.android.material.internal.ScrimInsetsFrameLayout;
@@ -680,13 +681,12 @@ public class NavigationView extends ScrimInsetsFrameLayout {
         presenter.setBehindStatusBar(isBehindStatusBar);
         setDrawTopInsetForeground(isBehindStatusBar);
 
-        Context context = getContext();
-        if (context instanceof Activity && VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+        Activity activity = ContextUtils.getActivity(getContext());
+        if (activity != null && VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
           boolean isBehindSystemNav =
-              ((Activity) context).findViewById(android.R.id.content).getHeight()
-                  == getHeight();
+              activity.findViewById(android.R.id.content).getHeight() == getHeight();
           boolean hasNonZeroAlpha =
-              Color.alpha(((Activity) context).getWindow().getNavigationBarColor()) != 0;
+              Color.alpha(activity.getWindow().getNavigationBarColor()) != 0;
 
           setDrawBottomInsetForeground(isBehindSystemNav && hasNonZeroAlpha);
         }
