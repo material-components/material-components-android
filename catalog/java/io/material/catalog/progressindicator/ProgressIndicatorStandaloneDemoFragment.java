@@ -52,8 +52,9 @@ public class ProgressIndicatorStandaloneDemoFragment extends DemoFragment {
     ProgressIndicatorSpec progressIndicatorSpec = new ProgressIndicatorSpec();
     progressIndicatorSpec.loadFromAttributes(
         getContext(),
-        null,
-        R.style.Widget_MaterialComponents_ProgressIndicator_Circular_Indeterminate);
+        /*attrs=*/null,
+        /*defStyleAttr=*/0,
+        /*defStyleRes=*/R.style.Widget_MaterialComponents_ProgressIndicator_Circular_Indeterminate);
     progressIndicatorSpec.circularInset = 0; // No inset.
     progressIndicatorSpec.circularRadius =
         (int) ViewUtils.dpToPx(getContext(), 10); // Circular radius is 10 dp.

@@ -22,9 +22,11 @@ import static java.lang.Math.min;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import androidx.annotation.AttrRes;
 import androidx.annotation.DimenRes;
 import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
+import androidx.annotation.StyleRes;
 import androidx.annotation.StyleableRes;
 import com.google.android.material.color.MaterialColors;
 
@@ -81,12 +83,14 @@ public final class ProgressIndicatorSpec {
    */
   public boolean linearSeamless;
 
-  public void loadFromAttributes(@NonNull Context context, AttributeSet attrs, int defStyleAttr) {
+  public void loadFromAttributes(@NonNull Context context, AttributeSet attrs,
+      @AttrRes int defStyleAttr) {
     loadFromAttributes(context, attrs, defStyleAttr, ProgressIndicator.DEF_STYLE_RES);
   }
 
   public void loadFromAttributes(
-      @NonNull Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+      @NonNull Context context, AttributeSet attrs, @AttrRes int defStyleAttr,
+      @StyleRes int defStyleRes) {
     TypedArray a =
         context.obtainStyledAttributes(
             attrs, R.styleable.ProgressIndicator, defStyleAttr, defStyleRes);
