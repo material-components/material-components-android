@@ -44,7 +44,7 @@ public class TransitionContainerTransformViewDemoFragment extends DemoFragment
     implements OnBackPressedHandler {
 
   @Nullable private View startView;
-  private View endCard;
+  private View endView;
   private FrameLayout root;
 
   private ContainerTransformConfigurationHelper configurationHelper;
@@ -66,7 +66,7 @@ public class TransitionContainerTransformViewDemoFragment extends DemoFragment
         layoutInflater.inflate(
             R.layout.cat_transition_container_transform_view_fragment, viewGroup, false);
     root = view.findViewById(R.id.root);
-    endCard = view.findViewById(R.id.end_card);
+    endView = view.findViewById(R.id.end_card);
     return view;
   }
 
@@ -101,16 +101,16 @@ public class TransitionContainerTransformViewDemoFragment extends DemoFragment
     // Construct a container transform transition between two views.
     MaterialContainerTransform transition = buildContainerTransform(true);
     transition.setStartView(startView);
-    transition.setEndView(endCard);
+    transition.setEndView(endView);
 
-    // Add a single target to avoid the container transform from running on both the start
-    // and end view
-    transition.addTarget(startView);
+    // Add a single target to stop the container transform from running on both the start
+    // and end view.
+    transition.addTarget(endView);
 
     // Trigger the container transform transition.
     TransitionManager.beginDelayedTransition(root, transition);
     startView.setVisibility(View.INVISIBLE);
-    endCard.setVisibility(View.VISIBLE);
+    endView.setVisibility(View.VISIBLE);
   }
 
   private void showStartView() {
@@ -120,7 +120,7 @@ public class TransitionContainerTransformViewDemoFragment extends DemoFragment
 
     // Construct a container transform transition between two views.
     MaterialContainerTransform transition = buildContainerTransform(false);
-    transition.setStartView(endCard);
+    transition.setStartView(endView);
     transition.setEndView(startView);
 
     // Add a single target to avoid the container transform from running on both the start
@@ -130,20 +130,21 @@ public class TransitionContainerTransformViewDemoFragment extends DemoFragment
     // Trigger the container transform transition.
     TransitionManager.beginDelayedTransition(root, transition);
     startView.setVisibility(View.VISIBLE);
-    endCard.setVisibility(View.INVISIBLE);
+    endView.setVisibility(View.INVISIBLE);
   }
 
   @NonNull
   private MaterialContainerTransform buildContainerTransform(boolean entering) {
     MaterialContainerTransform transform = new MaterialContainerTransform();
     transform.setScrimColor(Color.TRANSPARENT);
+    transform.setDrawingViewId(root.getId());
     configurationHelper.configure(transform, entering);
     return transform;
   }
 
   @Override
   public boolean onBackPressed() {
-    if (endCard.getVisibility() == View.VISIBLE) {
+    if (endView.getVisibility() == View.VISIBLE) {
       showStartView();
       return true;
     }
