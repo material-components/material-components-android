@@ -79,7 +79,7 @@ class TimePickerClockPresenter
     timePickerView.setOnSelectionChangeListener(this);
     timePickerView.setOnPeriodChangeListener(this);
     timePickerView.setOnActionUpListener(this);
-
+    updateValues();
     invalidate();
   }
 
@@ -203,5 +203,18 @@ class TimePickerClockPresenter
 
   private void updateTime() {
     timePickerView.updateTime(time.period, time.getHourForDisplay(), time.minute);
+  }
+
+  /** Update values with the correct number format */
+  private void updateValues() {
+    updateValues(HOUR_CLOCK_VALUES, TimeModel.NUMBER_FORMAT);
+    updateValues(HOUR_CLOCK_24_VALUES, TimeModel.NUMBER_FORMAT);
+    updateValues(MINUTE_CLOCK_VALUES, TimeModel.ZERO_LEADING_NUMBER_FORMAT);
+  }
+
+  private void updateValues(String[] values, String format) {
+    for (int i = 0; i < values.length; ++i) {
+      values[i] = TimeModel.formatText(timePickerView.getResources(), values[i], format);
+    }
   }
 }

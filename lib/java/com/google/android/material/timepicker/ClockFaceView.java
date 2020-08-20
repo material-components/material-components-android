@@ -58,7 +58,7 @@ import com.google.android.material.timepicker.ClockHandView.OnRotateListener;
  * <p>It consists of a {@link ClockHandView} a list of the possible values evenly distributed across
  * a circle.
  */
-public class ClockFaceView extends RadialViewGroup implements OnRotateListener {
+class ClockFaceView extends RadialViewGroup implements OnRotateListener {
 
   private static final float EPSILON = .001f;
 

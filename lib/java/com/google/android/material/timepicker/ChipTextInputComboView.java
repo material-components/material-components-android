@@ -19,6 +19,10 @@ package com.google.android.material.timepicker;
 import com.google.android.material.R;
 
 import android.content.Context;
+import android.content.res.Configuration;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
+import android.os.LocaleList;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.ViewCompat;
 import android.text.Editable;
@@ -68,9 +72,18 @@ class ChipTextInputComboView extends FrameLayout implements Checkable {
     editText.setVisibility(INVISIBLE);
     watcher = new HintSetterTextWatcher();
     editText.addTextChangedListener(watcher);
+    updateHintLocales();
     addView(chip);
     addView(textInputLayout);
     label = findViewById(R.id.material_label);
+  }
+
+  private void updateHintLocales() {
+    if (VERSION.SDK_INT >= VERSION_CODES.N) {
+      Configuration configuration = getContext().getResources().getConfiguration();
+      final LocaleList locales = configuration.getLocales();
+      editText.setImeHintLocales(locales);
+    }
   }
 
   @Override
@@ -94,15 +107,19 @@ class ChipTextInputComboView extends FrameLayout implements Checkable {
   }
 
   public void setText(CharSequence text) {
-    chip.setText(text);
+    chip.setText(formatText(text));
     EditText editText = textInputLayout.getEditText();
     if (!TextUtils.isEmpty(editText.getText())) {
       editText.removeTextChangedListener(watcher);
       editText.setText(null);
-      editText.setHint(HintSetterTextWatcher.DEFAULT_HINT);
+      editText.setHint(formatText(HintSetterTextWatcher.DEFAULT_HINT));
       editText.addTextChangedListener(watcher);
     }
-    editText.setHint(text);
+    editText.setHint(formatText(text));
+  }
+
+  private String formatText(CharSequence text) {
+    return TimeModel.formatText(getResources(), text);
   }
 
   @Override
@@ -144,13 +161,19 @@ class ChipTextInputComboView extends FrameLayout implements Checkable {
     @Override
     public void afterTextChanged(Editable editable) {
       if (TextUtils.isEmpty(editable)) {
-        setText(DEFAULT_HINT);
+        setText(formatText(DEFAULT_HINT));
         return;
       } else {
         textInputLayout.getEditText().setHint(null);
       }
 
-      chip.setText(editable.toString());
+      chip.setText(formatText(editable));
     }
+  }
+
+  @Override
+  protected void onConfigurationChanged(Configuration newConfig) {
+    super.onConfigurationChanged(newConfig);
+    updateHintLocales();
   }
 }

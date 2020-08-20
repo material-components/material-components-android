@@ -43,7 +43,7 @@ import com.google.android.material.shape.RelativeCornerSize;
  *
  * <P> Children that set {@code android:tag="skip"} can be positioned anywhere in the container.
  */
-public class RadialViewGroup extends ConstraintLayout {
+class RadialViewGroup extends ConstraintLayout {
 
   private static final String SKIP_TAG = "skip";
   private final Runnable updateLayoutParametersRunnable;

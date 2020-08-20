@@ -152,8 +152,8 @@ class TimePickerView extends ConstraintLayout implements TimePickerControls {
         : R.id.material_clock_period_am_button;
     toggle.check(checkedId);
     Locale current = getResources().getConfiguration().locale;
-    String minuteFormatted = String.format(current, "%02d", minute);
-    String hourFormatted = String.format(current, "%02d", hourOfDay);
+    String minuteFormatted = String.format(current, TimeModel.ZERO_LEADING_NUMBER_FORMAT, minute);
+    String hourFormatted = String.format(current, TimeModel.ZERO_LEADING_NUMBER_FORMAT, hourOfDay);
     minuteView.setText(minuteFormatted);
     hourView.setText(hourFormatted);
   }

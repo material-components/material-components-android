@@ -22,6 +22,7 @@ import static java.util.Calendar.AM;
 import static java.util.Calendar.HOUR;
 import static java.util.Calendar.PM;
 
+import android.content.res.Resources;
 import android.os.Parcel;
 import android.os.Parcelable;
 import com.google.android.material.timepicker.TimePickerControls.ActiveSelection;
@@ -29,7 +30,10 @@ import com.google.android.material.timepicker.TimePickerControls.ClockPeriod;
 import java.util.Arrays;
 
 /** The representation of the TimeModel used by TimePicker views. */
-public class TimeModel implements Parcelable {
+class TimeModel implements Parcelable {
+
+  public static final String ZERO_LEADING_NUMBER_FORMAT = "%02d";
+  public static final String NUMBER_FORMAT = "%d";
 
   private final MaxInputValidator minuteInputValidator;
   private final MaxInputValidator hourInputValidator;
@@ -172,5 +176,16 @@ public class TimeModel implements Parcelable {
         hour -= 12;
       }
     }
+  }
+
+  public static String formatText(Resources resources, CharSequence text) {
+    return formatText(resources, text, ZERO_LEADING_NUMBER_FORMAT);
+  }
+
+  public static String formatText(Resources resources, CharSequence text, String format) {
+    return String.format(
+        resources.getConfiguration().locale,
+        format,
+        Integer.parseInt(String.valueOf(text)));
   }
 }
