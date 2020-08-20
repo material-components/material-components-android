@@ -67,10 +67,11 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
   private final Path path = new Path();
 
   @Nullable private ColorStateList strokeColor;
+  @Nullable private MaterialShapeDrawable shadowDrawable;
+
   private ShapeAppearanceModel shapeAppearanceModel;
   @Dimension private float strokeWidth;
   private Path maskPath;
-  private final MaterialShapeDrawable shadowDrawable;
 
   public ShapeableImageView(Context context) {
     this(context, null, 0);
@@ -107,7 +108,6 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
     borderPaint.setAntiAlias(true);
     shapeAppearanceModel =
         ShapeAppearanceModel.builder(context, attrs, defStyle, DEF_STYLE_RES).build();
-    shadowDrawable = new MaterialShapeDrawable(shapeAppearanceModel);
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
       setOutlineProvider(new OutlineProvider());
     }
@@ -141,7 +141,9 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
   @Override
   public void setShapeAppearanceModel(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
     this.shapeAppearanceModel = shapeAppearanceModel;
-    shadowDrawable.setShapeAppearanceModel(shapeAppearanceModel);
+    if (shadowDrawable != null) {
+      shadowDrawable.setShapeAppearanceModel(shapeAppearanceModel);
+    }
     updateShapeMask(getWidth(), getHeight());
     invalidate();
   }
@@ -260,6 +262,10 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
     public void getOutline(View view, Outline outline) {
       if (shapeAppearanceModel == null) {
         return;
+      }
+
+      if (shadowDrawable == null) {
+        shadowDrawable = new MaterialShapeDrawable(shapeAppearanceModel);
       }
 
       destination.round(rect);
