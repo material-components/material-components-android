@@ -52,6 +52,7 @@ import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.RangeInfoCompat;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -193,6 +194,10 @@ abstract class BaseSlider<
       "valueTo(%s) must be greater than valueFrom(%s)";
   private static final String EXCEPTION_ILLEGAL_STEP_SIZE =
       "The stepSize(%s) must be 0, or a factor of the valueFrom(%s)-valueTo(%s) range";
+  private static final String WARNING_FLOATING_POINT_ERRROR =
+      "Floating point value used for %s(%s). Using floats can have rounding errors which may"
+          + " result in incorrect values. Instead, consider using integers with a custom"
+          + " LabelFormatter to display the  value correctly.";
 
   private static final int TIMEOUT_SEND_ACCESSIBILITY_EVENT = 200;
   private static final int HALO_ALPHA = 63;
@@ -504,12 +509,32 @@ abstract class BaseSlider<
     }
   }
 
+  private void warnAboutFloatingPointError() {
+    if (stepSize == 0) {
+      // Only warn if slider uses a step value.
+      return;
+    }
+
+    if ((int) stepSize != stepSize) {
+      Log.w(TAG, String.format(WARNING_FLOATING_POINT_ERRROR, "stepSize", stepSize));
+    }
+
+    if ((int) valueFrom != valueFrom) {
+      Log.w(TAG, String.format(WARNING_FLOATING_POINT_ERRROR, "valueFrom", valueFrom));
+    }
+
+    if ((int) valueTo != valueTo) {
+      Log.w(TAG, String.format(WARNING_FLOATING_POINT_ERRROR, "valueTo", valueTo));
+    }
+  }
+
   private void validateConfigurationIfDirty() {
     if (dirtyConfig) {
       validateValueFrom();
       validateValueTo();
       validateStepSize();
       validateValues();
+      warnAboutFloatingPointError();
       dirtyConfig = false;
     }
   }
