@@ -119,6 +119,15 @@
          If set, this takes precedence over suffixTextAppearance. -->
     <attr name="suffixTextColor" format="color"/>
 
+    <!-- Padding at the start of the prefix text, after the startIcon. -->
+    <attr name="prefixTextStartPadding" format="dimension"/>
+    <!-- Padding at the end of the prefix text, before the EditText. -->
+    <attr name="prefixTextEndPadding" format="dimension"/>
+    <!-- Padding at the start of the suffix text, after the EditText. -->
+    <attr name="suffixTextStartPadding" format="dimension"/>
+    <!-- Padding at the end of the suffix text, before the endIcon. -->
+    <attr name="suffixTextEndPadding" format="dimension"/>
+
     <!-- Drawable to use for the start icon. -->
     <attr name="startIconDrawable" format="reference"/>
     <!-- Text to set as the content description for the start icon. -->
