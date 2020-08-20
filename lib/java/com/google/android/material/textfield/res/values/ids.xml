@@ -22,5 +22,5 @@
   <item name="textinput_placeholder" type="id"/>
   <item name="textinput_prefix_text" type="id"/>
   <item name="textinput_suffix_text" type="id"/>
-
+  <item name="text_input_error_icon" type="id"/>
 </resources>

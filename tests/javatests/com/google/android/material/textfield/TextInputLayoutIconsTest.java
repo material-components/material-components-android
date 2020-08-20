@@ -468,7 +468,7 @@ public class TextInputLayoutIconsTest {
     // Click error icon
     onView(
             allOf(
-                withId(R.id.text_input_end_icon),
+                withId(R.id.text_input_error_icon),
                 withContentDescription(R.string.error_icon_content_description),
                 isDescendantOfA(withId(R.id.textinput_no_icon))))
         .perform(click());
@@ -591,7 +591,7 @@ public class TextInputLayoutIconsTest {
     // Check the icon is visible
     onView(
         allOf(
-            withId(R.id.text_input_end_icon),
+            withId(R.id.text_input_error_icon),
             withContentDescription(R.string.error_icon_content_description),
             isDescendantOfA(withId(R.id.textinput_no_icon))))
         .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
@@ -643,7 +643,7 @@ public class TextInputLayoutIconsTest {
     // Check icon showing is error icon only
     onView(
         allOf(
-            withId(R.id.text_input_end_icon),
+            withId(R.id.text_input_error_icon),
             withContentDescription(R.string.error_icon_content_description),
             isDescendantOfA(withId(R.id.textinput_password))))
         .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
@@ -660,7 +660,7 @@ public class TextInputLayoutIconsTest {
     // Check end icon is back
     onView(
         allOf(
-            withId(R.id.text_input_end_icon),
+            withId(R.id.text_input_error_icon),
             withContentDescription(R.string.error_icon_content_description),
             isDescendantOfA(withId(R.id.textinput_password))))
         .check(matches(withEffectiveVisibility(Visibility.GONE)));
