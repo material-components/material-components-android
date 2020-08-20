@@ -33,6 +33,10 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
+import androidx.annotation.ColorRes;
+import androidx.annotation.DimenRes;
+import androidx.annotation.Px;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -56,7 +60,9 @@ import com.google.android.material.internal.TextDrawableHelper.TextDrawableDeleg
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.resources.TextAppearance;
+import com.google.android.material.shape.CutCornerTreatment;
 import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.ShapeAppearanceModel;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
@@ -156,15 +162,15 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   @NonNull private final MaterialShapeDrawable shapeDrawable;
   @NonNull private final TextDrawableHelper textDrawableHelper;
   @NonNull private final Rect badgeBounds;
-  private final float badgeRadius;
-  private final float badgeWithTextRadius;
-  private final float badgeWidePadding;
+  private final float minBadgeRadius;
+  private final float minBadgeWithTextRadius;
+  private float badgeWidePadding;
+  private float badgeWideCutPadding;
   @NonNull private final SavedState savedState;
 
   private float badgeCenterX;
   private float badgeCenterY;
   private int maxBadgeNumber;
-  private float cornerRadius;
   private float halfBadgeWidth;
   private float halfBadgeHeight;
 
@@ -196,6 +202,13 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     @Dimension(unit = Dimension.PX)
     private int verticalOffset;
 
+    @StyleRes private int shapeAppearanceResId;
+    @StyleRes private int shapeAppearanceOverlayResId;
+    @Dimension private float badgeRadius;
+    @Dimension private float badgeWithTextRadius;
+    @ColorInt private int badgeStrokeColor;
+    @Px private int badgeStrokeWidth;
+
     public SavedState(@NonNull Context context) {
       // If the badge text color attribute was not explicitly set, use the text color specified in
       // the TextAppearance.
@@ -220,6 +233,12 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       badgeGravity = in.readInt();
       horizontalOffset = in.readInt();
       verticalOffset = in.readInt();
+      badgeRadius = in.readFloat();
+      badgeWithTextRadius = in.readFloat();
+      badgeStrokeColor = in.readInt();
+      badgeStrokeWidth = in.readInt();
+      shapeAppearanceResId = in.readInt();
+      shapeAppearanceOverlayResId = in.readInt();
     }
 
     public static final Creator<SavedState> CREATOR =
@@ -254,6 +273,12 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       dest.writeInt(badgeGravity);
       dest.writeInt(horizontalOffset);
       dest.writeInt(verticalOffset);
+      dest.writeFloat(badgeRadius);
+      dest.writeFloat(badgeWithTextRadius);
+      dest.writeInt(badgeStrokeColor);
+      dest.writeInt(badgeStrokeWidth);
+      dest.writeInt(shapeAppearanceResId);
+      dest.writeInt(shapeAppearanceOverlayResId);
     }
   }
 
@@ -329,6 +354,9 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       setNumber(savedState.number);
     }
 
+    initShapeAppearanceModel(contextRef.get(),
+        savedState.shapeAppearanceResId, savedState.shapeAppearanceOverlayResId);
+
     setBackgroundColor(savedState.backgroundColor);
 
     // Only set the badge text color if this attribute has explicitly been set, otherwise use the
@@ -339,6 +367,10 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
 
     setHorizontalOffset(savedState.horizontalOffset);
     setVerticalOffset(savedState.verticalOffset);
+    setBadgeRadius(savedState.badgeRadius);
+    setBadgeWithTextRadius(savedState.badgeWithTextRadius);
+    setBadgeStrokeColor(savedState.badgeStrokeColor);
+    setBadgeStrokeWidth(savedState.badgeStrokeWidth);
   }
 
   private void loadDefaultStateFromAttributes(
@@ -357,6 +389,8 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       setNumber(a.getInt(R.styleable.Badge_number, 0));
     }
 
+    initShapeAppearanceModel(context, attrs, defStyleAttr, defStyleRes);
+
     setBackgroundColor(readColorFromAttributes(context, a, R.styleable.Badge_backgroundColor));
 
     // Only set the badge text color if this attribute has explicitly been set, otherwise use the
@@ -370,8 +404,42 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     setHorizontalOffset(a.getDimensionPixelOffset(R.styleable.Badge_horizontalOffset, 0));
     setVerticalOffset(a.getDimensionPixelOffset(R.styleable.Badge_verticalOffset, 0));
 
+    setBadgeRadius(a.getDimension(R.styleable.Badge_badgeRadius,0));
+    setBadgeWithTextRadius(a.getDimension(R.styleable.Badge_badgeWithTextRadius,0));
+
+    if (a.hasValue(R.styleable.Badge_badgeStrokeColor)){
+      setBadgeStrokeColor(readColorFromAttributes(context, a, R.styleable.Badge_badgeStrokeColor));
+    }
+    setBadgeStrokeWidth(a.getDimensionPixelSize(R.styleable.Badge_badgeStrokeWidth,0));
+
     a.recycle();
   }
+
+  private void initShapeAppearanceModel(Context context,AttributeSet attrs,
+       @AttrRes int defStyleAttr, @StyleRes int defStyleRes){
+
+    TypedArray a =
+        context.obtainStyledAttributes(attrs, R.styleable.MaterialShape, defStyleAttr, defStyleRes);
+
+    int shapeAppearanceResId = a.getResourceId(R.styleable.MaterialShape_shapeAppearance, 0);
+    int shapeAppearanceOverlayResId =
+        a.getResourceId(R.styleable.MaterialShape_shapeAppearanceOverlay, 0);
+
+    savedState.shapeAppearanceResId = shapeAppearanceResId;
+    savedState.shapeAppearanceOverlayResId = shapeAppearanceOverlayResId;
+    initShapeAppearanceModel(context, shapeAppearanceResId, shapeAppearanceOverlayResId);
+  }
+
+  private void initShapeAppearanceModel(Context context, int shapeAppearanceResId,
+               int shapeAppearanceOverlayResId) {
+    ShapeAppearanceModel shapeAppearanceModel =
+        ShapeAppearanceModel
+            .builder(context, shapeAppearanceResId, shapeAppearanceOverlayResId)
+            .build();
+
+    setShapeAppearanceModel(shapeAppearanceModel);
+  }
+
 
   private static int readColorFromAttributes(
       Context context, @NonNull TypedArray a, @StyleableRes int index) {
@@ -385,9 +453,10 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     badgeBounds = new Rect();
     shapeDrawable = new MaterialShapeDrawable();
 
-    badgeRadius = res.getDimensionPixelSize(R.dimen.mtrl_badge_radius);
+    minBadgeRadius = res.getDimensionPixelSize(R.dimen.mtrl_badge_radius);
+    minBadgeWithTextRadius = res.getDimensionPixelSize(R.dimen.mtrl_badge_with_text_radius);
     badgeWidePadding = res.getDimensionPixelSize(R.dimen.mtrl_badge_long_text_horizontal_padding);
-    badgeWithTextRadius = res.getDimensionPixelSize(R.dimen.mtrl_badge_with_text_radius);
+    badgeWideCutPadding = badgeWidePadding + 12f;
 
     textDrawableHelper = new TextDrawableHelper(/* delegate= */ this);
     textDrawableHelper.getTextPaint().setTextAlign(Paint.Align.CENTER);
@@ -437,6 +506,15 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       shapeDrawable.setFillColor(backgroundColorStateList);
       invalidateSelf();
     }
+  }
+
+  void setShapeAppearanceModel(ShapeAppearanceModel shapeAppearanceModel){
+    shapeDrawable.setShapeAppearanceModel(shapeAppearanceModel);
+    invalidateSelf();
+  }
+
+  ShapeAppearanceModel getShapeAppearanceModel(){
+    return shapeDrawable.getShapeAppearanceModel();
   }
 
   /**
@@ -699,6 +777,176 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     return savedState.verticalOffset;
   }
 
+  /**
+   * Sets the badge's radius
+   *
+   * @param badgeRadius badge's radius
+   * @attr ref com.google.android.material.R.styleable#Badge_badgeRadius
+   * @see #setBadgeRadiusResource(int)
+   * @see #getBadgeRadius()
+   */
+  public void setBadgeRadius(float badgeRadius) {
+    savedState.badgeRadius = badgeRadius;
+    updateCenterAndBounds();
+  }
+
+  /**
+   * Sets the badge's radius using a dimension resource
+   *
+   * @param badgeRadiusResourceId Badge's radius dimension resource.
+   * @attr ref com.google.android.material.R.styleable#Badge_badgeRadius
+   * @see #setBadgeRadius(float)
+   * @see #getBadgeRadius()
+   */
+  public void setBadgeRadiusResource(@DimenRes int badgeRadiusResourceId) {
+    if (badgeRadiusResourceId != 0) {
+      setBadgeRadius(contextRef.get().getResources().getDimension(badgeRadiusResourceId));
+    }
+  }
+
+  /**
+   * Returns the badge radius
+   *
+   * @return badge's radius
+   * @attr ref com.google.android.material.R.styleable#Badge_badgeRadius
+   * @see #setBadgeRadius(float)
+   * @see #setBadgeRadiusResource(int)
+   */
+  public float getBadgeRadius() {
+    return savedState.badgeRadius;
+  }
+
+  /**
+   * Sets the badge with text radius using a dimension resource
+   *
+   * @param badgeWithTextRadius badge's with text radius dimension resource.
+   * @attr ref com.google.android.material.R.styleable#Badge_badgeWithTextRadius
+   * @see #setBadgeWithTextRadiusResource(int)
+   * @see #getBadgeWithTextRadius()
+   */
+  public void setBadgeWithTextRadius(float badgeWithTextRadius) {
+    savedState.badgeWithTextRadius = badgeWithTextRadius;
+    updateCenterAndBounds();
+  }
+
+  /**
+   * Sets the badge radius with text
+   *
+   * @param badgeWithTextRadiusResourceId badge's radius with text
+   * @attr ref com.google.android.material.R.styleable#Badge_badgeWithTextRadius
+   * @see #setBadgeWithTextRadius(float)
+   * @see #getBadgeWithTextRadius()
+   */
+  public void setBadgeWithTextRadiusResource(@DimenRes int badgeWithTextRadiusResourceId) {
+    if (badgeWithTextRadiusResourceId != 0) {
+      setBadgeWithTextRadius(contextRef.get().getResources().getDimension(badgeWithTextRadiusResourceId));
+    }
+  }
+
+  /**
+   * Returns the badge with text radius
+   *
+   * @return badge with text radius
+   * @attr ref com.google.android.material.R.styleable#Badge_badgeWithTextRadius
+   * @see #setBadgeWithTextRadius(float)
+   * @see #setBadgeWithTextRadiusResource(int)
+   */
+  public float getBadgeWithTextRadius() {
+    return savedState.badgeWithTextRadius;
+  }
+
+  /**
+   * Sets the badge stroke color
+   *
+   * @param badgeStrokeColor badge's radius
+   * @attr ref com.google.android.material.R.styleable#Badge_badgeStrokeColor
+   * @see #setBadgeStrokeColor(int)
+   * @see #getBadgeStrokeColor()
+   */
+  public void setBadgeStrokeColor(@ColorInt int badgeStrokeColor) {
+    savedState.badgeStrokeColor = badgeStrokeColor;
+    ColorStateList colorStateList = ColorStateList.valueOf(badgeStrokeColor);
+    if (shapeDrawable.getStrokeColor() != colorStateList) {
+      shapeDrawable.setStrokeColor(colorStateList);
+      invalidateSelf();
+    }
+  }
+
+  /**
+   * Sets the badge stroke color
+   *
+   * @param badgeStrokeColorResourceId Color resource to use for the stroke.
+   * @attr ref com.google.android.material.R.styleable#MaterialButton_strokeColor
+   * @see #setBadgeStrokeColor(int)
+   * @see #getBadgeStrokeColor()
+   */
+  public void setBadgeStrokeColorrResource(@ColorRes int badgeStrokeColorResourceId) {
+    if (badgeStrokeColorResourceId != 0) {
+      ColorStateList colorStateList = ContextCompat.getColorStateList(contextRef.get(), badgeStrokeColorResourceId);
+      savedState.badgeStrokeColor = colorStateList.getDefaultColor();
+      if (shapeDrawable.getStrokeColor() != colorStateList) {
+        shapeDrawable.setStrokeColor(colorStateList);
+        invalidateSelf();
+      }
+    }
+  }
+
+  /**
+   * Returns this badge's stroke color.
+   *
+   * @see #setBadgeStrokeColor(int)
+   * @attr ref com.google.android.material.R.styleable#Badge_badgeStrokeColor
+   * @see #setBadgeStrokeColor(int)
+   * @see #setBadgeStrokeColorrResource(int)
+   */
+  @ColorInt
+  public int getBadgeStrokeColor() {
+    return shapeDrawable.getStrokeColor().getDefaultColor();
+  }
+
+  /**
+   * Sets the badge stroke width
+   *
+   * @param badgeStrokeWidth badge's stroke width
+   * @attr ref com.google.android.material.R.styleable#Badge_badgeStrokeWidth
+   * @see #getBadgeStrokeWidth()
+   * @see #settBadgeStrokeWidthResource(int)
+   */
+  public void setBadgeStrokeWidth(@Px int badgeStrokeWidth) {
+    savedState.badgeStrokeWidth = badgeStrokeWidth;
+    if (shapeDrawable.getStrokeWidth() != badgeStrokeWidth) {
+      shapeDrawable.setStrokeWidth(badgeStrokeWidth);
+      invalidateSelf();
+    }
+  }
+
+  /**
+   * Sets the badge stroke width
+   *
+   * @param badgeStrokeWidthResourceId badge's stroke width dimension resource
+   * @attr ref com.google.android.material.R.styleable#Badge_badgeStrokeWidth
+   * @see #setBadgeStrokeWidth(int)
+   * @see #getBadgeStrokeWidth()
+   */
+  public void settBadgeStrokeWidthResource(@DimenRes int badgeStrokeWidthResourceId) {
+    if (badgeStrokeWidthResourceId != 0) {
+      setBadgeStrokeWidth(contextRef.get().getResources().getDimensionPixelSize(badgeStrokeWidthResourceId));
+    }
+  }
+
+  /**
+   * Returns this badge's stroke width.
+   *
+   * @see #setBadgeStrokeWidth(int)
+   * @attr ref com.google.android.material.R.styleable#Badge_badgeStrokeWidth
+   * @see #setBadgeStrokeWidth(int)
+   * @see #settBadgeStrokeWidthResource(int)
+   */
+  @Dimension
+  public float getBadgeStrokeWidth() {
+    return shapeDrawable.getStrokeWidth();
+  }
+
   private void setTextAppearanceResource(@StyleRes int id) {
     Context context = contextRef.get();
     if (context == null) {
@@ -744,7 +992,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
 
     updateBadgeBounds(badgeBounds, badgeCenterX, badgeCenterY, halfBadgeWidth, halfBadgeHeight);
 
-    shapeDrawable.setCornerSize(cornerRadius);
+    //shapeDrawable.setCornerSize(cornerRadius);
     if (!tmpRect.equals(badgeBounds)) {
       shapeDrawable.setBounds(badgeBounds);
     }
@@ -765,15 +1013,14 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     }
 
     if (getNumber() <= MAX_CIRCULAR_BADGE_NUMBER_COUNT) {
-      cornerRadius = !hasNumber() ? badgeRadius : badgeWithTextRadius;
-      halfBadgeHeight = cornerRadius;
-      halfBadgeWidth = cornerRadius;
+      halfBadgeHeight = !hasNumber() ? getHalfBadgeHeight(minBadgeRadius, getBadgeRadius()) :
+          getHalfBadgeHeight(minBadgeWithTextRadius, getBadgeWithTextRadius());
     } else {
-      cornerRadius = badgeWithTextRadius;
-      halfBadgeHeight = cornerRadius;
-      String badgeText = getBadgeText();
-      halfBadgeWidth = textDrawableHelper.getTextWidth(badgeText) / 2f + badgeWidePadding;
+      halfBadgeHeight = getHalfBadgeHeight(minBadgeWithTextRadius, getBadgeWithTextRadius());
     }
+    String badgeText = getBadgeText();
+    halfBadgeWidth = !hasNumber() ? getHalfBadgeWidth(minBadgeRadius, getBadgeRadius()) :
+          Math.max( halfBadgeHeight, textDrawableHelper.getTextWidth(badgeText) / 2f + getPaddingWidth(getNumber()));
 
     int inset =
         context
@@ -800,6 +1047,24 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
                 : anchorRect.left - halfBadgeWidth + inset + savedState.horizontalOffset;
         break;
     }
+  }
+
+  private float getPaddingWidth(int number) {
+    if (getShapeAppearanceModel().getTopLeftCorner() instanceof CutCornerTreatment
+      || getShapeAppearanceModel().getTopRightCorner() instanceof CutCornerTreatment
+      || getShapeAppearanceModel().getBottomLeftCorner() instanceof CutCornerTreatment
+      || getShapeAppearanceModel().getBottomRightCorner() instanceof CutCornerTreatment){
+      return badgeWideCutPadding;
+    }
+    return  badgeWidePadding;
+  }
+
+  private float getHalfBadgeHeight(float minBadgeRadius, float badgeRadius){
+    return  (badgeRadius >= minBadgeRadius) ? badgeRadius : minBadgeRadius;
+  }
+
+  private float getHalfBadgeWidth(float minBadgeRadius, float badgeRadius){
+    return  (badgeRadius >= minBadgeRadius) ? badgeRadius : minBadgeRadius;
   }
 
   private void drawText(Canvas canvas) {
@@ -834,4 +1099,5 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   private void updateMaxBadgeNumber() {
     maxBadgeNumber = (int) Math.pow(10.0d, (double) getMaxCharacterCount() - 1) - 1;
   }
+
 }

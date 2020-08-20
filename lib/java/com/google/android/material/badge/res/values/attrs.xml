@@ -39,6 +39,14 @@
     <!-- Offset moves the badge towards the center of its anchor. -->
     <attr name="horizontalOffset" format="dimension"/>
     <attr name="verticalOffset" format="dimension"/>
+    <!-- Radius of the Badge -->
+    <attr name="badgeRadius" format="dimension"/>
+    <!-- Radius of the Badge with numbers -->
+    <attr name="badgeWithTextRadius" format="dimension"/>
+    <!-- Stroke color of badge -->
+    <attr name="badgeStrokeColor" format="reference"/>
+    <!-- Stroke width of badge -->
+    <attr name="badgeStrokeWidth" format="dimension"/>
   </declare-styleable>
 
 </resources>
