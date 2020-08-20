@@ -207,5 +207,37 @@
         android:stepSize="1"
         app:tickVisible="false"/>
     </LinearLayout>
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:paddingTop="@dimen/cat_slider_title_top_padding"
+      android:text="@string/cat_slider_title_7"/>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center_vertical">
+
+      <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switch_button_7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.SecondaryPalette.Indigo" />
+
+      <com.google.android.material.slider.Slider
+        android:id="@+id/slider_7"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginLeft="@dimen/cat_slider_left_margin"
+        android:layout_marginStart="@dimen/cat_slider_left_margin"
+        android:theme="@style/ThemeOverlay.PrimaryPalette.Indigo"
+        android:valueFrom="0"
+        android:valueTo="1000"
+        android:stepSize="50"
+        app:trackHeight="6dp"
+        app:tickValues="@array/subset_tick_values" />
+    </LinearLayout>
   </LinearLayout>
 </ScrollView>

@@ -196,6 +196,8 @@ abstract class BaseSlider<
       "valueTo(%s) must be greater than valueFrom(%s)";
   private static final String EXCEPTION_ILLEGAL_STEP_SIZE =
       "The stepSize(%s) must be 0, or a factor of the valueFrom(%s)-valueTo(%s) range";
+  private static final String EXCEPTION_ILLEGAL_TICK_VALUE =
+      "Value(%s) must be a valid tickValue(%s)";
 
   private static final int TIMEOUT_SEND_ACCESSIBILITY_EVENT = 200;
   private static final int HALO_ALPHA = 63;
@@ -243,6 +245,8 @@ abstract class BaseSlider<
   // Holds the values set to this slider. We keep this array sorted in order to check if the value
   // has been changed when a new value is set and to find the minimum and maximum values.
   private ArrayList<Float> values = new ArrayList<>();
+  private ArrayList<Float> tickValues = new ArrayList<>();
+  private ArrayList<Double> internalTickValuesPosition = new ArrayList();
   // The index of the currently touched thumb.
   private int activeThumbIdx = -1;
   // The index of the currently focused thumb.
@@ -408,6 +412,12 @@ abstract class BaseSlider<
             : AppCompatResources.getColorStateList(context, R.color.material_slider_halo_color));
 
     tickVisible = a.getBoolean(R.styleable.Slider_tickVisible, true);
+    if (a.hasValue(R.styleable.Slider_tickValues)) {
+      int valuesId = a.getResourceId(R.styleable.Slider_tickValues, 0);
+      TypedArray tickValues = a.getResources().obtainTypedArray(valuesId);
+      setTickValues(convertToFloat(tickValues));
+      tickValues.recycle();
+    }
     boolean hasTickColor = a.hasValue(R.styleable.Slider_tickColor);
     int tickColorInactiveRes =
         hasTickColor ? R.styleable.Slider_tickColor : R.styleable.Slider_tickColorInactive;
@@ -494,6 +504,31 @@ abstract class BaseSlider<
     }
   }
 
+  private void validateTickValues() {
+    if (stepSize == 0.0) {
+      return;
+    }
+    for (Float tickValue : tickValues){
+      if (tickValue < valueFrom || tickValue > valueTo) {
+        throw new IllegalStateException(
+            String.format(
+                EXCEPTION_ILLEGAL_VALUE,
+                Float.toString(tickValue),
+                Float.toString(valueFrom),
+                Float.toString(valueTo)));
+      }
+      if (((tickValue - valueFrom) / stepSize) % 1 > THRESHOLD) {
+        throw new IllegalStateException(
+            String.format(
+                EXCEPTION_ILLEGAL_DISCRETE_VALUE,
+                Float.toString(tickValue),
+                Float.toString(valueFrom),
+                Float.toString(stepSize),
+                Float.toString(stepSize)));
+      }
+    }
+  }
+
   private void validateValues() {
     for (Float value : values) {
       if (value < valueFrom || value > valueTo) {
@@ -513,6 +548,15 @@ abstract class BaseSlider<
                 Float.toString(stepSize),
                 Float.toString(stepSize)));
       }
+      if (!tickValues.isEmpty()){
+        if (!tickValues.contains(value)){
+          throw new IllegalStateException(
+              String.format(
+                  EXCEPTION_ILLEGAL_TICK_VALUE,
+                  Float.toString(value),
+                  tickValues.toString()));
+        }
+      }
     }
   }
 
@@ -522,8 +566,17 @@ abstract class BaseSlider<
       validateValueTo();
       validateStepSize();
       validateValues();
+      validateTickValues();
       dirtyConfig = false;
     }
+  }
+
+  private static List<Float> convertToFloat(TypedArray values) {
+    List<Float> ret = new ArrayList<>();
+    for (int i = 0; i < values.length(); ++i) {
+      ret.add(values.getFloat(i, -1));
+    }
+    return ret;
   }
 
   /**
@@ -723,6 +776,75 @@ abstract class BaseSlider<
       dirtyConfig = true;
       postInvalidate();
     }
+  }
+
+  /**
+   * Sets the allowed values for the tick marks. Each value will represent a different tick.
+   *
+   * <p>Each value must be greater or equal to {@code valueFrom}, and lesser or equal
+   * valueTo}. If that is not the case, an {@link IllegalStateException} will be throw
+   * view is laid out.
+   *
+   * <p>The tick value must be set to a value falls on an existing tick based on the {@code stepSize}
+   * If that is not the case an {IllegalStateException} will be thrown when the view is laid out.
+   *
+   * @param tickValues An array of allowed tick values to set.
+   * @throws IllegalArgumentException If {@code tickValues} is invalid.
+   *
+   * @see #getTickValues()
+   */
+  public void setTickValues(@NonNull Float... tickValues) {
+    ArrayList<Float> list = new ArrayList<>();
+    Collections.addAll(list, tickValues);
+    setValuesInternal(list);
+  }
+
+  /**
+   * Sets the allowed values for the tick marks. Each value will represent a different tick.
+   *
+   * <p>Each value must be greater or equal to {@code valueFrom}, and lesser or equal
+   * valueTo}. If that is not the case, an {@link IllegalStateException} will be throw
+   * view is laid out.
+   *
+   * <p>The tick value must be set to a value falls on an existing tick based on the {@code stepSize}
+   * If that is not the case an {IllegalStateException} will be thrown when the view is laid out.
+   *
+   * @param tickValues A List of allowed tick values to set.
+   * @throws IllegalArgumentException If {@code tickValues} is invalid.
+   *
+   * @see #getTickValues()
+   */
+  public void setTickValues(@NonNull List<Float> tickValues) {
+    setTickValuesInternal(new ArrayList<>(tickValues));
+  }
+
+  /**
+   *
+   */
+  private void setTickValuesInternal(@NonNull ArrayList<Float> tickValues) {
+    if (tickValues.isEmpty()) {
+      throw new IllegalArgumentException("At least one value must be set");
+    }
+
+    Collections.sort(tickValues);
+
+    if (this.tickValues.size() == tickValues.size()) {
+      if (this.tickValues.equals(tickValues)) {
+        return;
+      }
+    }
+
+    this.tickValues = tickValues;
+    dirtyConfig = true;
+    postInvalidate();
+  }
+
+  /**
+   * Returns the tick values
+   */
+  @NonNull
+  public List<Float> getTickValues() {
+    return tickValues;
   }
 
   /** Returns the index of the currently focused thumb */
@@ -1328,14 +1450,34 @@ abstract class BaseSlider<
     int tickCount = (int) ((valueTo - valueFrom) / stepSize + 1);
     // Limit the tickCount if they will be too dense.
     tickCount = Math.min(tickCount, trackWidth / (trackHeight * 2) + 1);
+    float interval = trackWidth / (float) (tickCount - 1);
+
+    if (!tickValues.isEmpty()){
+      tickCount = tickValues.size();
+      maybeCalculateInternalTickValuesPosition();
+    }
     if (ticksCoordinates == null || ticksCoordinates.length != tickCount * 2) {
       ticksCoordinates = new float[tickCount * 2];
     }
 
-    float interval = trackWidth / (float) (tickCount - 1);
     for (int i = 0; i < tickCount * 2; i += 2) {
-      ticksCoordinates[i] = trackSidePadding + i / 2 * interval;
+      if (tickValues.isEmpty()) {
+        ticksCoordinates[i] = trackSidePadding + i / 2 * interval;
+      }else{
+        ticksCoordinates[i] = trackSidePadding + (tickValues.get(i/2)-valueFrom)/ stepSize * interval;
+      }
       ticksCoordinates[i + 1] = calculateTop();
+    }
+  }
+
+  private void maybeCalculateInternalTickValuesPosition(){
+
+    int stepCount = (int) ((valueTo - valueFrom) / stepSize);
+    double interval = (double) 1 / stepCount;
+    internalTickValuesPosition.clear();
+
+    for (double tickValue:this.tickValues){
+      internalTickValuesPosition.add((tickValue - valueFrom)/ stepSize * interval);
     }
   }
 
@@ -1604,10 +1746,19 @@ abstract class BaseSlider<
 
   private double snapPosition(float position) {
     if (stepSize > 0.0f) {
-      int stepCount = (int) ((valueTo - valueFrom) / stepSize);
-      return Math.round(position * stepCount) / (double) stepCount;
+      if (tickValues.isEmpty()) {
+        int stepCount = (int) ((valueTo - valueFrom) / stepSize);
+        return Math.round(position * stepCount) / (double) stepCount;
+      } else {
+        Double closestTickValue = null;
+        for (double tickValuePosition:internalTickValuesPosition) {
+          if (closestTickValue == null || Math.abs(position - closestTickValue) > Math.abs(tickValuePosition - position)) {
+            closestTickValue = tickValuePosition;
+          }
+        }
+        return closestTickValue;
+      }
     }
-
     return position;
   }
 

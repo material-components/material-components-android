@@ -49,6 +49,7 @@ public class SliderDiscreteDemoFragment extends DemoFragment {
     setUpSlider(view, R.id.switch_button_4, R.id.slider_4, new BasicLabelFormatter());
     setUpSlider(view, R.id.switch_button_5, R.id.slider_5, null);
     setUpSlider(view, R.id.switch_button_6, R.id.slider_6, null);
+    setUpSlider(view, R.id.switch_button_7, R.id.slider_7, null);
 
     return view;
   }
