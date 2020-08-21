@@ -132,6 +132,9 @@ public class ProgressIndicator extends ProgressBar {
   // The flag to mark if an indeterminate mode switching is requested.
   private boolean isIndeterminateModeChangeRequested = false;
 
+  // The visibility state that the component will be in after hide animation finishes.
+  private int visibilityAfterHide = View.INVISIBLE;
+
   // ******************** Interfaces **********************
 
   /** The type of the progress indicator. */
@@ -989,6 +992,20 @@ public class ProgressIndicator extends ProgressBar {
     }
   }
 
+  /**
+   * Sets the visibility which the component will be after hide animation finishes.
+   *
+   * @param visibility New component's visibility after the hide animation finishes.
+   */
+  public void setVisibilityAfterHide(int visibility) {
+    if (visibility != View.VISIBLE && visibility != View.INVISIBLE && visibility != View.GONE) {
+      throw new IllegalArgumentException(
+          "The component's visibility must be one of VISIBLE, INVISIBLE, and GONE defined in"
+              + " View.");
+    }
+    visibilityAfterHide = visibility;
+  }
+
   @VisibleForTesting
   public void setAnimatorDurationScaleProvider(
       @NonNull AnimatorDurationScaleProvider animatorDurationScaleProvider) {
@@ -1062,7 +1079,7 @@ public class ProgressIndicator extends ProgressBar {
           if (!isIndeterminateModeChangeRequested && visibleToUser()) {
             // Don't hide the component if under transition from indeterminate mode to
             // determinate mode or the component is current not visible to users.
-            setVisibility(INVISIBLE);
+            setVisibility(visibilityAfterHide);
           }
         }
       };
