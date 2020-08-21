@@ -65,7 +65,7 @@ public class ThemeSwitcherHelper {
     new ThemeSwitcherDialogFragment().show(fragmentManager, "theme-switcher");
   }
 
-  /** Implement this interface to whitelist an Activity for theme switcher support. */
+  /** Implement this interface to include an Activity for theme switcher support. */
   public interface ThemeSwitcherActivity {}
 
   /** Implement this interface to allow a Fragment to be used with {@link ThemeSwitcherHelper}. */
