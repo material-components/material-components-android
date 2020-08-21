@@ -100,7 +100,7 @@
             android:layout_marginEnd="8dp"
             android:valueFrom="0"
             android:valueTo="10000"
-            android:stepSize="100"
+            android:stepSize="25"
             android:value="300" />
 
         <TextView
@@ -143,7 +143,7 @@
             android:layout_marginEnd="8dp"
             android:valueFrom="0"
             android:valueTo="10000"
-            android:stepSize="100"
+            android:stepSize="25"
             android:value="275" />
 
         <TextView
