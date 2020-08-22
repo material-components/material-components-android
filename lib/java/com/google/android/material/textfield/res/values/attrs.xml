@@ -37,6 +37,8 @@
     <!-- Text color of the hint in the collapsed floating label.
          If set, this takes precedence over hintTextAppearance. -->
     <attr name="hintTextColor" format="color"/>
+    <!-- Hint always in collapsed state -->
+    <attr name="hintAlwaysCollapsed" format="boolean"/>
 
     <!-- The text to display as helper text underneath the text input area. -->
     <attr name="helperText" format="string"/>

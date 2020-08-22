@@ -216,6 +216,7 @@ public class TextInputLayout extends LinearLayout {
   @NonNull private final TextView suffixTextView;
 
   private boolean hintEnabled;
+  private boolean hintAlwaysCollapsed;
   private CharSequence hint;
 
   /**
@@ -473,6 +474,7 @@ public class TextInputLayout extends LinearLayout {
     hintEnabled = a.getBoolean(R.styleable.TextInputLayout_hintEnabled, true);
     setHint(a.getText(R.styleable.TextInputLayout_android_hint));
     hintAnimationEnabled = a.getBoolean(R.styleable.TextInputLayout_hintAnimationEnabled, true);
+    hintAlwaysCollapsed = a.getBoolean(R.styleable.TextInputLayout_hintAlwaysCollapsed, false);
 
     shapeAppearanceModel =
         ShapeAppearanceModel.builder(context, attrs, defStyleAttr, DEF_STYLE_RES).build();
@@ -1490,7 +1492,7 @@ public class TextInputLayout extends LinearLayout {
       collapsingTextHelper.setCollapsedTextColor(focusedTextColor);
     } // If none of these states apply, leave the expanded and collapsed colors as they are.
 
-    if (hasText || (isEnabled() && (hasFocus || errorShouldBeShown))) {
+    if (hasText || (isEnabled() && (hasFocus || errorShouldBeShown)) || hintAlwaysCollapsed) {
       // We should be showing the label so do so if it isn't already
       if (force || hintExpanded) {
         collapseHint(animate);
