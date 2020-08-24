@@ -32,8 +32,9 @@ public final class CalendarConstraints implements Parcelable {
 
   @NonNull private final Month start;
   @NonNull private final Month end;
-  @NonNull private final Month openAt;
+  @NonNull private Month openAt;
   private final DateValidator validator;
+  private boolean defaultOpenAt;
 
   private final int yearSpan;
   private final int monthSpan;
@@ -95,6 +96,11 @@ public final class CalendarConstraints implements Parcelable {
     return openAt;
   }
 
+  /** Sets the openAt month. */
+  void setOpenAt(@NonNull Month openAt) {
+    this.openAt = openAt;
+  }
+
   /**
    * Returns the total number of {@link java.util.Calendar#MONTH} included in {@code start} to
    * {@code end}.
@@ -109,6 +115,16 @@ public final class CalendarConstraints implements Parcelable {
    */
   int getYearSpan() {
     return yearSpan;
+  }
+
+  /** Sets whether the openAt value is configured as the default value  */
+  void setDefaultOpenAt(boolean defaultOpenAt) {
+    this.defaultOpenAt = defaultOpenAt;
+  }
+
+  /** Returns whether the openAt value is configured as the default value. */
+  boolean isDefaultOpenAt() {
+    return defaultOpenAt;
   }
 
   @Override
@@ -308,17 +324,21 @@ public final class CalendarConstraints implements Parcelable {
     /** Builds the {@link CalendarConstraints} object using the set parameters or defaults. */
     @NonNull
     public CalendarConstraints build() {
+      boolean defaultOpenAt = false;
       if (openAt == null) {
         long today = MaterialDatePicker.thisMonthInUtcMilliseconds();
         openAt = start <= today && today <= end ? today : start;
+        defaultOpenAt = true;
       }
       Bundle deepCopyBundle = new Bundle();
       deepCopyBundle.putParcelable(DEEP_COPY_VALIDATOR_KEY, validator);
-      return new CalendarConstraints(
+      CalendarConstraints calendarConstraints = new CalendarConstraints(
           Month.create(start),
           Month.create(end),
           Month.create(openAt),
           (DateValidator) deepCopyBundle.getParcelable(DEEP_COPY_VALIDATOR_KEY));
+      calendarConstraints.setDefaultOpenAt(defaultOpenAt);
+      return calendarConstraints;
     }
   }
 }

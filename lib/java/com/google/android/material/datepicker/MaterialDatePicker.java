@@ -627,6 +627,12 @@ public final class MaterialDatePicker<S> extends DialogFragment {
       }
       if (selection != null) {
         dateSelector.setSelection(selection);
+        if (calendarConstraints.isDefaultOpenAt()){
+          if (dateSelector.getSelectedDays().iterator().hasNext()) {
+            Long firstSelectedDay = dateSelector.getSelectedDays().iterator().next();
+            calendarConstraints.setOpenAt(Month.create(firstSelectedDay));
+          }
+        }
       }
       return MaterialDatePicker.newInstance(this);
     }
