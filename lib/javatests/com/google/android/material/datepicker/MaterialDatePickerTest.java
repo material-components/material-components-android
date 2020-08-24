@@ -17,6 +17,7 @@
 package com.google.android.material.datepicker;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.Assert.assertEquals;
 
 import java.time.Duration;
 import java.util.Calendar;
@@ -36,6 +37,10 @@ public class MaterialDatePickerTest {
   // Tuesday, January 1, 2020 09:00:00 AM UTC+13:00
   private static final long NEW_ZEALAND_TIME_2020_01_11_09_00_00_AM = 1577822400000L;
   private static final TimeZone UTC_TIME_ZONE = TimeZone.getTimeZone("UTC");
+
+  private static final long FEB_2016 = Month.create(2016, Calendar.FEBRUARY).timeInMillis;
+  private static final long MARCH_2016 = Month.create(2016, Calendar.MARCH).timeInMillis;
+  private static final long APRIL_2016 = Month.create(2016, Calendar.APRIL).timeInMillis;
 
   private static Calendar setTestLocalTime(long testTimeAsEpochMs, TimeZone timeZone) {
     TimeSource fixedTimeSource = TimeSource.fixed(testTimeAsEpochMs, timeZone);
@@ -81,6 +86,35 @@ public class MaterialDatePickerTest {
         .isEqualTo(firstMomentOfTodayInUtc.get(Calendar.MONTH));
     assertThat(outputUtcThisMonthInCalendar.get(Calendar.DATE)).isEqualTo(1);
   }
+
+  @Test
+  public void testSelectionAsOpenAt() {
+
+    MaterialDatePicker.Builder<Long> datePickerBuilder = MaterialDatePicker.Builder.datePicker();
+    CalendarConstraints calendarConstraints =
+        new CalendarConstraints.Builder().setStart(FEB_2016).setEnd(APRIL_2016).build();
+    datePickerBuilder.setCalendarConstraints(calendarConstraints);
+    datePickerBuilder.setSelection(APRIL_2016);
+    datePickerBuilder.build();
+    assertEquals(APRIL_2016, calendarConstraints.getOpenAt().timeInMillis);
+
+    MaterialDatePicker.Builder<Long> datePickerBuilder2 = MaterialDatePicker.Builder.datePicker();
+    CalendarConstraints calendarConstraints2 =
+        new CalendarConstraints.Builder().setStart(FEB_2016).setEnd(APRIL_2016).build();
+    datePickerBuilder2.setCalendarConstraints(calendarConstraints2);
+    datePickerBuilder2.build();
+    assertEquals(FEB_2016, calendarConstraints2.getOpenAt().timeInMillis);
+
+    MaterialDatePicker.Builder<Long> datePickerBuilder3 = MaterialDatePicker.Builder.datePicker();
+    CalendarConstraints calendarConstraints3 =
+        new CalendarConstraints.Builder().setStart(FEB_2016).setEnd(APRIL_2016)
+            .setOpenAt(MARCH_2016).build();
+    datePickerBuilder3.setCalendarConstraints(calendarConstraints3);
+    datePickerBuilder3.setSelection(APRIL_2016);
+    datePickerBuilder3.build();
+    assertEquals(MARCH_2016, calendarConstraints3.getOpenAt().timeInMillis);
+  }
+
 
   @Test
   public void testTodayInUtcMilliseconds() {
