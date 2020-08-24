@@ -571,7 +571,11 @@ public class ChipGroup extends FlowLayout {
           id = ViewCompat.generateViewId();
           child.setId(id);
         }
-        ((Chip) child).setOnCheckedChangeListenerInternal(checkedStateTracker);
+        Chip chip = ((Chip) child);
+        if (chip.isChecked()){
+          ((ChipGroup) parent).check(chip.getId());
+        }
+        chip.setOnCheckedChangeListenerInternal(checkedStateTracker);
       }
 
       if (onHierarchyChangeListener != null) {
