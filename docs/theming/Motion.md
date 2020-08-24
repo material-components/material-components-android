@@ -444,11 +444,8 @@ In Fragment A, configure an enter and exit transition.
 override fun onCreate(savedInstanceState: Bundle?) {
   super.onCreate(savedInstanceState)
 
-  val backward = MaterialSharedAxis(MaterialSharedAxis.Z, false)
-  reenterTransition = backward
-
-  val forward = MaterialSharedAxis(MaterialSharedAxis.Z, true)
-  exitTransition = forward
+  exitTransition = MaterialSharedAxis(MaterialSharedAxis.Z, /* forward= */ true)
+  reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, /* forward= */ false)
 }
 ```
 
@@ -460,20 +457,17 @@ In Fragment B, again configure an enter and exit transition.
 override fun onCreate(savedInstanceState: Bundle?) {
   super.onCreate(savedInstanceState)
 
-  val forward = MaterialSharedAxis(MaterialSharedAxis.Z, true)
-  enterTransition = forward
-
-  val backward = MaterialSharedAxis(MaterialSharedAxis.Z, false)
-  returnTransition = backward
+  enterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, /* forward= */ true)
+  returnTransition = MaterialSharedAxis(MaterialSharedAxis.Z, /* forward= */ false)
 }
 ```
 
 It’s important to note here how these two fragments move together. When Fragment
 A is exiting, Fragment B will be entering. This is why, in Fragment A, the exit
-transition is `forward` and in Fragment B the enter transition is also
-`forward`. This will ensure that both Fragments are moving in the same direction
+transition is `forward = true` and in Fragment B the enter transition is also
+`forward = true`. This will ensure that both Fragments are moving in the same direction
 when these transition pairs are running. The opposite is true in the backwards
-direction. When Fragment B is exiting, Fragment A will be entering. For this
+direction. When Fragment B is exiting, Fragment A will be reentering. For this
 reason, Fragment B is configured to exit in the backward direction and Fragment
 A is configured to reenter in the backward direction.
 
