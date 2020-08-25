@@ -46,6 +46,7 @@ import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import androidx.annotation.ColorRes;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
@@ -118,6 +119,8 @@ import java.util.List;
  *       information.
  *   <li>{@code labelStyle}: the style to apply to the value indicator {@link TooltipDrawable}.
  *   <li>{@code thumbColor}: the color of the slider's thumb.
+ *   <li>{@code thumbStrokeColor}: the color of the thumb's stroke.
+ *   <li>{@code thumbStrokeWidth}: the width of the thumb's stroke.
  *   <li>{@code thumbElevation}: the elevation of the slider's thumb.
  *   <li>{@code thumbRadius}: The radius of the slider's thumb.
  *   <li>{@code tickColorActive}: the color of the slider's tick marks for the active part of the
@@ -405,6 +408,13 @@ abstract class BaseSlider<
     ColorStateList thumbColor =
         MaterialResources.getColorStateList(context, a, R.styleable.Slider_thumbColor);
     thumbDrawable.setFillColor(thumbColor);
+
+    if (a.hasValue(R.styleable.Slider_thumbStrokeColor)) {
+      setThumbStrokeColor(MaterialResources.getColorStateList(context, a,
+          R.styleable.Slider_thumbStrokeColor ));
+    }
+    setThumbStrokeWidth(a.getDimension(R.styleable.Slider_thumbStrokeWidth, 0));
+
     ColorStateList haloColor =
         MaterialResources.getColorStateList(context, a, R.styleable.Slider_haloColor);
     setHaloTintList(
@@ -909,6 +919,88 @@ abstract class BaseSlider<
    */
   public void setThumbRadiusResource(@DimenRes int radius) {
     setThumbRadius(getResources().getDimensionPixelSize(radius));
+  }
+
+  /**
+   * Sets the stroke color for the thumbs. Both thumbStroke color and thumbStroke width must be set
+   * for a stroke to be drawn.
+   *
+   * @param thumbStrokeColor Color to use for the stroke in the thumbs.
+   * @attr ref com.google.android.material.R.styleable#Slider_thumbStrokeColor
+   * @see #setThumbStrokeColorResource(int)
+   * @see #getThumbStrokeColor()
+   */
+  public void setThumbStrokeColor(@Nullable ColorStateList thumbStrokeColor) {
+    thumbDrawable.setStrokeColor(thumbStrokeColor);
+    postInvalidate();
+  }
+
+  /**
+   * Sets the stroke color resource for the thumbs. Both thumbStroke color and thumbStroke width
+   * must be set for a stroke to be drawn.
+   *
+   * @param thumbStrokeColorResourceId Color resource to use for the stroke.
+   * @attr ref com.google.android.material.R.styleable#Slider_thumbStrokeColor
+   * @see #setThumbStrokeColor(ColorStateList)
+   * @see #getThumbStrokeColor()
+   */
+  public void setThumbStrokeColorResource(@ColorRes int thumbStrokeColorResourceId) {
+    if (thumbStrokeColorResourceId != 0){
+      setThumbStrokeColor(AppCompatResources.getColorStateList(getContext(),thumbStrokeColorResourceId));
+    }
+  }
+
+  /**
+   * Gets the stroke color for the thumb.
+   *
+   * @return The color used for the stroke in the thumb.
+   * @attr ref com.google.android.material.R.styleable#Slider_thumbStrokeColor
+   * @see #setThumbStrokeColor(ColorStateList)
+   * @see #setThumbStrokeColorResource(int)
+   */
+  public ColorStateList getThumbStrokeColor() {
+    return thumbDrawable.getStrokeColor();
+  }
+
+  /**
+   * Sets the stroke width for the thumb. Both thumbStroke color and thumbStroke width
+   * must be set for a stroke to be drawn.
+   *
+   * @param thumbStrokeWidth Stroke width for the thumb
+   * @attr ref com.google.android.material.R.styleable#Slider_thumbStrokeWidth
+   * @see #setThumbStrokeWidthResource(int)
+   * @see #getThumbStrokeWidth()
+   */
+  public void setThumbStrokeWidth(float thumbStrokeWidth) {
+    thumbDrawable.setStrokeWidth(thumbStrokeWidth);
+    postInvalidate();
+  }
+
+  /**
+   * Sets the stroke width dimension resource for the thumb.Both thumbStroke color
+   * and thumbStroke width must be set for a stroke to be drawn.
+   *
+   * @param thumbStrokeWidthResourceId Stroke width dimension resource for the thumb
+   * @attr ref com.google.android.material.R.styleable#Slider_thumbStrokeWidth
+   * @see #setThumbStrokeWidth(float)
+   * @see #getThumbStrokeWidth()
+   */
+  public void setThumbStrokeWidthResource(@DimenRes int thumbStrokeWidthResourceId) {
+    if ( thumbStrokeWidthResourceId != 0) {
+      setThumbStrokeWidth(getResources().getDimension(thumbStrokeWidthResourceId));
+    }
+  }
+
+  /**
+   * Gets the stroke width for the thumb
+   *
+   * @return Stroke width for the thumb.
+   * @attr ref com.google.android.material.R.styleable#Slider_thumbStrokeWidth
+   * @see #setThumbStrokeWidth(float)
+   * @see #setThumbStrokeWidthResource(int)
+   */
+  public float getThumbStrokeWidth() {
+    return thumbDrawable.getStrokeWidth();
   }
 
   /**

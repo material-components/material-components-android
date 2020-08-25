@@ -24,6 +24,8 @@
   <public name="thumbColor" type="attr" />
   <public name="thumbElevation" type="attr" />
   <public name="thumbRadius" type="attr" />
+  <public name="thumbStrokeColor" type="attr" />
+  <public name="thumbStrokeWidth" type="attr" />
   <public name="tickColor" type="attr" />
   <public name="tickColorActive" type="attr" />
   <public name="tickColorInactive" type="attr" />

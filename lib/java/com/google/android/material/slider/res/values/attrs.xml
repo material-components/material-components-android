@@ -43,6 +43,10 @@
     <attr name="thumbElevation" format="dimension" />
     <!-- The radius of the thumb. -->
     <attr name="thumbRadius" format="dimension" />
+    <!-- The stroke color for the thumb. -->
+    <attr name="thumbStrokeColor" format="reference" />
+    <!-- The stroke width for the thumb. -->
+    <attr name="thumbStrokeWidth" format="dimension" />
     <!-- The color of the slider's tick marks. Only used when the slider is in discrete mode. -->
     <attr name="tickColor" format="color" />
     <!-- The color of the slider's tick marks for the active portion of the track. Only used when
