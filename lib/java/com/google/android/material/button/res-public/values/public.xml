@@ -34,5 +34,9 @@
   <public name="Widget.MaterialComponents.Button.OutlinedButton" type="style"/>
   <public name="Widget.MaterialComponents.Button.TextButton.Dialog" type="style"/>
   <public name="Widget.MaterialComponents.Button.TextButton.Dialog.Flush" type="style"/>
+  <public name="Widget.MaterialComponents.Button.IconOnly" type="style"/>
+  <public name="Widget.MaterialComponents.Button.UnelevatedButton.IconOnly" type="style"/>
+  <public name="Widget.MaterialComponents.Button.TextButton.IconOnly" type="style"/>
+  <public name="Widget.MaterialComponents.Button.OutlinedButton.IconOnly" type="style"/>
 </resources>
 
