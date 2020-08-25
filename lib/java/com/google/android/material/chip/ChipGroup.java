@@ -121,11 +121,7 @@ public class ChipGroup extends FlowLayout {
 
     TypedArray a =
         ThemeEnforcement.obtainStyledAttributes(
-            context,
-            attrs,
-            R.styleable.ChipGroup,
-            defStyleAttr,
-            DEF_STYLE_RES);
+            context, attrs, R.styleable.ChipGroup, defStyleAttr, DEF_STYLE_RES);
 
     int chipSpacing = a.getDimensionPixelOffset(R.styleable.ChipGroup_chipSpacing, 0);
     setChipSpacingHorizontal(
@@ -296,8 +292,8 @@ public class ChipGroup extends FlowLayout {
   }
 
   /**
-   * Returns the identifiers of the selected {@link Chip}s in this group. Upon empty
-   * selection, the returned value is an empty list.
+   * Returns the identifiers of the selected {@link Chip}s in this group. Upon empty selection, the
+   * returned value is an empty list.
    *
    * @return The unique IDs of the selected {@link Chip}s in this group. When in {@link
    *     #isSingleSelection() single selection mode}, returns a list with a single ID. When no
@@ -571,7 +567,11 @@ public class ChipGroup extends FlowLayout {
           id = ViewCompat.generateViewId();
           child.setId(id);
         }
-        ((Chip) child).setOnCheckedChangeListenerInternal(checkedStateTracker);
+        Chip chip = ((Chip) child);
+        if (chip.isChecked()) {
+          ((ChipGroup) parent).check(chip.getId());
+        }
+        chip.setOnCheckedChangeListenerInternal(checkedStateTracker);
       }
 
       if (onHierarchyChangeListener != null) {

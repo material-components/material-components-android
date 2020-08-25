@@ -21,6 +21,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import android.content.Context;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
@@ -43,11 +44,11 @@ public class ChipGroupTest {
   private static final int CHIP_GROUP_SPACING = 4;
   private ChipGroup chipgroup;
   private int checkedChangeCallCount;
+  private final Context context = ApplicationProvider.getApplicationContext();
 
   @Before
   public void themeApplicationContext() {
-    ApplicationProvider.getApplicationContext().setTheme(
-        R.style.Theme_MaterialComponents_Light_NoActionBar_Bridge);
+    context.setTheme(R.style.Theme_MaterialComponents_Light_NoActionBar_Bridge);
     AppCompatActivity activity = Robolectric.buildActivity(AppCompatActivity.class).setup().get();
     View inflated = activity.getLayoutInflater().inflate(R.layout.test_reflow_chipgroup, null);
     chipgroup = inflated.findViewById(R.id.chip_group);
@@ -92,6 +93,30 @@ public class ChipGroupTest {
     Integer checkedId1 = chipgroup.getCheckedChipIds().get(0);
     int checkedId2 = chipgroup.getCheckedChipId();
     assertThat(checkedId1).isEqualTo(checkedId2);
+  }
+
+  @Test
+  public void testSingleSelection_addingCheckedChipWithoutId() {
+    chipgroup.setSingleSelection(true);
+    int chipId = chipgroup.getChildAt(2).getId();
+    chipgroup.check(chipId);
+
+    Chip chipNotChecked = new Chip(context);
+    chipgroup.addView(chipNotChecked);
+    assertThat(chipgroup.getCheckedChipIds()).hasSize(1);
+    int checkedId = chipgroup.getCheckedChipId();
+    assertThat(checkedId).isEqualTo(chipId);
+
+    // Add a checked Chip
+    Chip chipChecked = new Chip(context);
+    chipChecked.setCheckable(true);
+    chipChecked.setChecked(true);
+    chipgroup.addView(chipChecked);
+
+    int newChipId = chipChecked.getId();
+    assertThat(chipgroup.getCheckedChipIds()).hasSize(1);
+    int checkedId2 = chipgroup.getCheckedChipId();
+    assertThat(checkedId2).isEqualTo(newChipId);
   }
 
   @Test
