@@ -25,7 +25,10 @@
   <dimen name="mtrl_btn_text_btn_padding_left">8dp</dimen>
   <dimen name="mtrl_btn_text_btn_padding_right">8dp</dimen>
   <dimen name="mtrl_btn_icon_btn_padding_left">12dp</dimen>
+  <dimen name="mtrl_btn_icon_only_padding_left">12dp</dimen>
 
+  <dimen name="mtrl_btn_icon_only_min_width">48dp</dimen>
+  <dimen name="mtrl_btn_icon_only_min_height">48dp</dimen>
   <dimen name="mtrl_btn_corner_radius">4dp</dimen>
 
   <dimen name="mtrl_btn_pressed_z">6dp</dimen>
