@@ -31,12 +31,12 @@
 
   <dimen name="mtrl_extended_fab_top_padding">12dp</dimen>
   <dimen name="mtrl_extended_fab_bottom_padding">12dp</dimen>
-  <dimen name="mtrl_extended_fab_start_padding_icon">16dp</dimen>
-  <dimen name="mtrl_extended_fab_end_padding_icon">24dp</dimen>
+  <dimen name="mtrl_extended_fab_start_padding_icon">12dp</dimen>
+  <dimen name="mtrl_extended_fab_end_padding_icon">20dp</dimen>
   <dimen name="mtrl_extended_fab_start_padding">20dp</dimen>
   <dimen name="mtrl_extended_fab_end_padding">20dp</dimen>
   <dimen name="mtrl_extended_fab_icon_size">24dp</dimen>
-  <dimen name="mtrl_extended_fab_icon_text_spacing">16dp</dimen>
+  <dimen name="mtrl_extended_fab_icon_text_spacing">12dp</dimen>
   <dimen name="mtrl_extended_fab_corner_radius">24dp</dimen>
   <dimen name="mtrl_extended_fab_min_width">120dp</dimen>
   <dimen name="mtrl_extended_fab_min_height">48dp</dimen>
