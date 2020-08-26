@@ -83,8 +83,8 @@ public class TimePickerMainDemoFragment extends DemoFragment {
       materialTimePicker.show(requireFragmentManager(), "fragment_tag");
 
       materialTimePicker.addOnPositiveButtonClickListener(dialog -> {
-        int newHour = dialog.getHour();
-        int newMinute = dialog.getMinute();
+        int newHour = materialTimePicker.getHour();
+        int newMinute = materialTimePicker.getMinute();
         TimePickerMainDemoFragment.this.onTimeSet(newHour, newMinute);
       });
     });

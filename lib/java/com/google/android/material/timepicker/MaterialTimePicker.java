@@ -51,7 +51,7 @@ public final class MaterialTimePicker extends DialogFragment {
   private static final int CLOCK_ICON = R.drawable.ic_clock_black_24dp;
   private static final int KEYBOARD_ICON = R.drawable.ic_keyboard_black_24dp;
 
-  private final Set<OnPositiveButtonClickListener> positiveButtonListeners = new LinkedHashSet<>();
+  private final Set<OnClickListener> positiveButtonListeners = new LinkedHashSet<>();
   private final Set<OnClickListener> negativeButtonListeners = new LinkedHashSet<>();
   private final Set<OnCancelListener> cancelListeners = new LinkedHashSet<>();
   private final Set<OnDismissListener> dismissListeners = new LinkedHashSet<>();
@@ -77,22 +77,6 @@ public final class MaterialTimePicker extends DialogFragment {
   private MaterialButton modeButton;
 
   @InputMode private int inputMode = INPUT_MODE_CLOCK;
-
-  /**
-   * The callback interface used to indicate the user is done filling in the time (e.g. they clicked
-   * on the 'OK' button).
-   */
-  public interface OnPositiveButtonClickListener {
-
-    /**
-     * Called when the user is done setting a new time and the dialog has closed.
-     *
-     * <p>use {@link #getHour()}, {@link #getMinute()} to get the selection.
-     *
-     * @param dialog the dialog associated with this listener
-     */
-    void onClick(MaterialTimePicker dialog);
-  }
 
   private TimeModel time;
 
@@ -185,8 +169,8 @@ public final class MaterialTimePicker extends DialogFragment {
         new OnClickListener() {
           @Override
           public void onClick(View v) {
-            for (OnPositiveButtonClickListener listener : positiveButtonListeners) {
-              listener.onClick(MaterialTimePicker.this);
+            for (OnClickListener listener : positiveButtonListeners) {
+              listener.onClick(v);
             }
             dismiss();
           }
@@ -282,23 +266,21 @@ public final class MaterialTimePicker extends DialogFragment {
   }
 
   /** The supplied listener is called when the user confirms a valid selection. */
-  public boolean addOnPositiveButtonClickListener(
-      @NonNull OnPositiveButtonClickListener onPositiveButtonClickListener) {
-    return positiveButtonListeners.add(onPositiveButtonClickListener);
+  public boolean addOnPositiveButtonClickListener(@NonNull OnClickListener listener) {
+    return positiveButtonListeners.add(listener);
   }
 
   /**
    * Removes a listener previously added via {@link
-   * MaterialTimePicker#addOnPositiveButtonClickListener(OnPositiveButtonClickListener)}.
+   * MaterialTimePicker#addOnPositiveButtonClickListener(OnClickListener)}.
    */
-  public boolean removeOnPositiveButtonClickListener(
-      @NonNull OnPositiveButtonClickListener listener) {
+  public boolean removeOnPositiveButtonClickListener(@NonNull OnClickListener listener) {
     return positiveButtonListeners.remove(listener);
   }
 
   /**
    * Removes all listeners added via {@link
-   * MaterialTimePicker#addOnPositiveButtonClickListener(OnPositiveButtonClickListener)}.
+   * MaterialTimePicker#addOnPositiveButtonClickListener(OnClickListener)}.
    */
   public void clearOnPositiveButtonClickListeners() {
     positiveButtonListeners.clear();

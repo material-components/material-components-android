@@ -45,7 +45,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** A Class to draw the hand on a Clock face. */
-public class ClockHandView extends View {
+class ClockHandView extends View {
 
   private static final int ANIMATION_DURATION = 200;
   private ValueAnimator rotationAnimator;
