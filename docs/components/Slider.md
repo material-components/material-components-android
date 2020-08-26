@@ -306,13 +306,15 @@ thing._
 
 #### Thumb attributes
 
-&nbsp;          | Attribute            | Related method(s)                                                           | Default value
---------------- | -------------------- | --------------------------------------------------------------------------- | -------------
-**Color**       | `app:thumbColor`     | `setThumbTintList`<br/>`getThumbTintList`                                   | `?attr/colorPrimary`
-**Radius**      | `app:thumbRadius`    | `setThumbRadiusResource`<br/>`setThumbRadius`<br/>`getThumbRadius`          | `10dp`
-**Elevation**   | `app:thumbElevation` | `setThumbElevationResource`<br/>`setThumbElevation`<br/>`getThumbElevation` | `1dp`
-**Halo color**  | `app:haloColor`      | `setHaloTintList`<br/>`getHaloTintList`                                     | `?attr/colorPrimary` at 24%
-**Halo radius** | `app:haloRadius`     | `setHaloRadiusResource`<br/>`setHaloRadius`<br/>`getHaloRadius`             | `24dp`
+&nbsp;           | Attribute              | Related method(s)                                                                 | Default value
+---------------- | ---------------------- | --------------------------------------------------------------------------------- | -------------
+**Color**        | `app:thumbColor`       | `setThumbTintList`<br/>`getThumbTintList`                                         | `?attr/colorPrimary`
+**Radius**       | `app:thumbRadius`      | `setThumbRadiusResource`<br/>`setThumbRadius`<br/>`getThumbRadius`                | `10dp`
+**Elevation**    | `app:thumbElevation`   | `setThumbElevationResource`<br/>`setThumbElevation`<br/>`getThumbElevation`       | `1dp`
+**Halo color**   | `app:haloColor`        | `setHaloTintList`<br/>`getHaloTintList`                                           | `?attr/colorPrimary` at 24%
+**Halo radius**  | `app:haloRadius`       | `setHaloRadiusResource`<br/>`setHaloRadius`<br/>`getHaloRadius`                   | `24dp`
+**Stroke color** | `app:thumbStrokeColor` | `setThumbStrokeColor`<br/>`setThumbStrokeColorResource`<br/>`getThumbStrokeColor` | `null`
+**Stroke width** | `app:thumbStrokeWidth` | `setThumbStrokeWidth`<br/>`setThumbStrokeWidthResource`<br/>`getThumbStrokeWidth` | `0dp`
 
 #### Value label attributes
 

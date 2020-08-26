@@ -63,6 +63,7 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.SeekBar;
 import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
 import androidx.annotation.DimenRes;
 import androidx.annotation.Dimension;
 import androidx.annotation.IntDef;
@@ -118,6 +119,8 @@ import java.util.List;
  *       information.
  *   <li>{@code labelStyle}: the style to apply to the value indicator {@link TooltipDrawable}.
  *   <li>{@code thumbColor}: the color of the slider's thumb.
+ *   <li>{@code thumbStrokeColor}: the color of the thumb's stroke.
+ *   <li>{@code thumbStrokeWidth}: the width of the thumb's stroke.
  *   <li>{@code thumbElevation}: the elevation of the slider's thumb.
  *   <li>{@code thumbRadius}: The radius of the slider's thumb.
  *   <li>{@code tickColorActive}: the color of the slider's tick marks for the active part of the
@@ -405,6 +408,13 @@ abstract class BaseSlider<
     ColorStateList thumbColor =
         MaterialResources.getColorStateList(context, a, R.styleable.Slider_thumbColor);
     thumbDrawable.setFillColor(thumbColor);
+
+    if (a.hasValue(R.styleable.Slider_thumbStrokeColor)) {
+      setThumbStrokeColor(
+          MaterialResources.getColorStateList(context, a, R.styleable.Slider_thumbStrokeColor));
+    }
+    setThumbStrokeWidth(a.getDimension(R.styleable.Slider_thumbStrokeWidth, 0));
+
     ColorStateList haloColor =
         MaterialResources.getColorStateList(context, a, R.styleable.Slider_haloColor);
     setHaloTintList(
@@ -912,6 +922,89 @@ abstract class BaseSlider<
   }
 
   /**
+   * Sets the stroke color for the thumbs. Both thumbStroke color and thumbStroke width must be set
+   * for a stroke to be drawn.
+   *
+   * @param thumbStrokeColor Color to use for the stroke in the thumbs.
+   * @attr ref com.google.android.material.R.styleable#Slider_thumbStrokeColor
+   * @see #setThumbStrokeColorResource(int)
+   * @see #getThumbStrokeColor()
+   */
+  public void setThumbStrokeColor(@Nullable ColorStateList thumbStrokeColor) {
+    thumbDrawable.setStrokeColor(thumbStrokeColor);
+    postInvalidate();
+  }
+
+  /**
+   * Sets the stroke color resource for the thumbs. Both thumbStroke color and thumbStroke width
+   * must be set for a stroke to be drawn.
+   *
+   * @param thumbStrokeColorResourceId Color resource to use for the stroke.
+   * @attr ref com.google.android.material.R.styleable#Slider_thumbStrokeColor
+   * @see #setThumbStrokeColor(ColorStateList)
+   * @see #getThumbStrokeColor()
+   */
+  public void setThumbStrokeColorResource(@ColorRes int thumbStrokeColorResourceId) {
+    if (thumbStrokeColorResourceId != 0) {
+      setThumbStrokeColor(
+          AppCompatResources.getColorStateList(getContext(), thumbStrokeColorResourceId));
+    }
+  }
+
+  /**
+   * Gets the stroke color for the thumb.
+   *
+   * @return The color used for the stroke in the thumb.
+   * @attr ref com.google.android.material.R.styleable#Slider_thumbStrokeColor
+   * @see #setThumbStrokeColor(ColorStateList)
+   * @see #setThumbStrokeColorResource(int)
+   */
+  public ColorStateList getThumbStrokeColor() {
+    return thumbDrawable.getStrokeColor();
+  }
+
+  /**
+   * Sets the stroke width for the thumb. Both thumbStroke color and thumbStroke width must be set
+   * for a stroke to be drawn.
+   *
+   * @param thumbStrokeWidth Stroke width for the thumb
+   * @attr ref com.google.android.material.R.styleable#Slider_thumbStrokeWidth
+   * @see #setThumbStrokeWidthResource(int)
+   * @see #getThumbStrokeWidth()
+   */
+  public void setThumbStrokeWidth(float thumbStrokeWidth) {
+    thumbDrawable.setStrokeWidth(thumbStrokeWidth);
+    postInvalidate();
+  }
+
+  /**
+   * Sets the stroke width dimension resource for the thumb.Both thumbStroke color and thumbStroke
+   * width must be set for a stroke to be drawn.
+   *
+   * @param thumbStrokeWidthResourceId Stroke width dimension resource for the thumb
+   * @attr ref com.google.android.material.R.styleable#Slider_thumbStrokeWidth
+   * @see #setThumbStrokeWidth(float)
+   * @see #getThumbStrokeWidth()
+   */
+  public void setThumbStrokeWidthResource(@DimenRes int thumbStrokeWidthResourceId) {
+    if (thumbStrokeWidthResourceId != 0) {
+      setThumbStrokeWidth(getResources().getDimension(thumbStrokeWidthResourceId));
+    }
+  }
+
+  /**
+   * Gets the stroke width for the thumb
+   *
+   * @return Stroke width for the thumb.
+   * @attr ref com.google.android.material.R.styleable#Slider_thumbStrokeWidth
+   * @see #setThumbStrokeWidth(float)
+   * @see #setThumbStrokeWidthResource(int)
+   */
+  public float getThumbStrokeWidth() {
+    return thumbDrawable.getStrokeWidth();
+  }
+
+  /**
    * Returns the radius of the halo.
    *
    * @see #setHaloRadius(int)
@@ -1181,7 +1274,7 @@ abstract class BaseSlider<
    * @attr ref com.google.android.material.R.styleable#Slider_tickVisible
    */
   public void setTickVisible(boolean tickVisible) {
-    if (this.tickVisible != tickVisible){
+    if (this.tickVisible != tickVisible) {
       this.tickVisible = tickVisible;
       postInvalidate();
     }
@@ -2003,10 +2096,11 @@ abstract class BaseSlider<
   }
 
   /**
-   * Attempts to move focus to next or previous thumb <i>independent of layout direction</i>
-   * and returns whether the focused thumb changed.
-   * If focused thumb didn't change, we're at the view boundary for specified {@code direction}
-   * and focus may be moved to next or previous view instead.
+   * Attempts to move focus to next or previous thumb <i>independent of layout direction</i> and
+   * returns whether the focused thumb changed. If focused thumb didn't change, we're at the view
+   * boundary for specified {@code direction} and focus may be moved to next or previous view
+   * instead.
+   *
    * @see #moveFocusInAbsoluteDirection(int)
    */
   private boolean moveFocus(int direction) {
@@ -2027,10 +2121,10 @@ abstract class BaseSlider<
   }
 
   /**
-   * Attempts to move focus to the <i>left or right</i> of currently focused thumb
-   * and returns whether the focused thumb changed.
-   * If focused thumb didn't change, we're at the view boundary for specified {@code direction}
-   * and focus may be moved to next or previous view instead.
+   * Attempts to move focus to the <i>left or right</i> of currently focused thumb and returns
+   * whether the focused thumb changed. If focused thumb didn't change, we're at the view boundary
+   * for specified {@code direction} and focus may be moved to next or previous view instead.
+   *
    * @see #moveFocus(int)
    */
   private boolean moveFocusInAbsoluteDirection(int direction) {
