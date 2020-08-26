@@ -411,6 +411,7 @@ public class TextInputLayout extends LinearLayout {
   private boolean inDrawableStateChanged;
 
   private boolean restoringSavedState;
+  private boolean emptyCollapsedHintBackground;
 
   public TextInputLayout(@NonNull Context context) {
     this(context, null);
@@ -821,6 +822,8 @@ public class TextInputLayout extends LinearLayout {
     setCounterEnabled(counterEnabled);
 
     setEnabled(a.getBoolean(R.styleable.TextInputLayout_android_enabled, true));
+    emptyCollapsedHintBackground =
+        a.getBoolean(R.styleable.TextInputLayout_emptyCollapsedHintBackground, false);
 
     a.recycle();
 
@@ -2425,6 +2428,29 @@ public class TextInputLayout extends LinearLayout {
     super.setEnabled(enabled);
   }
 
+  /**
+   * Sets whether the collapsed hint text will be displayed with an empty background with an outline box
+   *
+   * @see #isEmptyCollapsedHintBackground()
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_emptyCollapsedHintBackground
+   */
+  public void setEmptyCollapsedHintBackground(boolean emptyCollapsedHintBackground) {
+    if (this.emptyCollapsedHintBackground != emptyCollapsedHintBackground) {
+      this.emptyCollapsedHintBackground = emptyCollapsedHintBackground;
+      requestLayout();
+    }
+  }
+
+  /**
+   * Returns Whether the collapsed hint text will be displayed with an empty background with an an outline box
+   *
+   * @see #setEmptyCollapsedHintBackground(boolean)
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_emptyCollapsedHintBackground
+   */
+  public boolean isEmptyCollapsedHintBackground() {
+    return emptyCollapsedHintBackground;
+  }
+
   private static void recursiveSetEnabled(@NonNull final ViewGroup vg, final boolean enabled) {
     for (int i = 0, count = vg.getChildCount(); i < count; i++) {
       final View child = vg.getChildAt(i);
@@ -3898,6 +3924,10 @@ public class TextInputLayout extends LinearLayout {
     final RectF cutoutBounds = tmpRectF;
     collapsingTextHelper.getCollapsedTextActualBounds(
         cutoutBounds, editText.getWidth(), editText.getGravity());
+
+    if (isEmptyCollapsedHintBackground()) {
+      cutoutBounds.bottom = cutoutBounds.top + boxStrokeWidthPx;
+    }
     applyCutoutPadding(cutoutBounds);
     // Offset the cutout bounds by the TextInputLayout's left and top paddings to ensure that the
     // cutout is inset relative to the TextInputLayout's bounds.
@@ -3913,9 +3943,11 @@ public class TextInputLayout extends LinearLayout {
 
   private void applyCutoutPadding(@NonNull RectF cutoutBounds) {
     cutoutBounds.left -= boxLabelCutoutPaddingPx;
-    cutoutBounds.top -= boxLabelCutoutPaddingPx;
     cutoutBounds.right += boxLabelCutoutPaddingPx;
-    cutoutBounds.bottom += boxLabelCutoutPaddingPx;
+    if (!isEmptyCollapsedHintBackground()){
+      cutoutBounds.top -= boxLabelCutoutPaddingPx;
+      cutoutBounds.bottom += boxLabelCutoutPaddingPx;
+    }
   }
 
   @VisibleForTesting

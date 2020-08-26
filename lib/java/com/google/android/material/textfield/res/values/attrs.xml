@@ -258,6 +258,9 @@
       <!-- [Sa + Da - Sa * Da, Sc + Dc - Sc * Dc] -->
       <enum name="screen" value="15"/>
     </attr>
+    <!-- Whether the collapsed hint text will be displayed with an empty background,
+         with an outline box.-->
+    <attr name="emptyCollapsedHintBackground" format="boolean"/>
   </declare-styleable>
 
   <declare-styleable name="TextInputEditText">
