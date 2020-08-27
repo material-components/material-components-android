@@ -20,6 +20,7 @@ import io.material.catalog.R;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Parcelable;
 import androidx.fragment.app.Fragment;
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -55,6 +56,9 @@ public class TransitionMusicLibraryDemoFragment extends Fragment
 
   private FrameLayout listContainer;
 
+  private static final int ALBUM_RECYCLER_VIEW_ID = ViewCompat.generateViewId();
+  private Parcelable listState = null;
+
   private boolean listTypeGrid = true;
   private boolean listSorted = true;
 
@@ -88,6 +92,15 @@ public class TransitionMusicLibraryDemoFragment extends Fragment
     toolbar.setOnMenuItemClickListener(this);
     MaterialSharedAxis sharedAxis = new MaterialSharedAxis(MaterialSharedAxis.Z, true);
     setList(listTypeGrid, listSorted, sharedAxis);
+  }
+
+  @Override
+  public void onDestroyView() {
+    RecyclerView rv = requireView().findViewById(ALBUM_RECYCLER_VIEW_ID);
+    if (rv != null) {
+      listState = rv.getLayoutManager().onSaveInstanceState();
+    }
+    super.onDestroyView();
   }
 
   @Override
@@ -130,6 +143,11 @@ public class TransitionMusicLibraryDemoFragment extends Fragment
 
     // Use a Transition to animate the removal and addition of the RecyclerViews.
     RecyclerView recyclerView = createRecyclerView(listTypeGrid);
+    // Restore the RecyclerView's scroll position if available
+    if (listState != null) {
+      recyclerView.getLayoutManager().onRestoreInstanceState(listState);
+      listState = null;
+    }
     transition.addTarget(recyclerView);
     View currentRecyclerView = listContainer.getChildAt(0);
     if (currentRecyclerView != null) {
@@ -152,6 +170,7 @@ public class TransitionMusicLibraryDemoFragment extends Fragment
   private RecyclerView createRecyclerView(boolean listTypeGrid) {
     Context context = requireContext();
     RecyclerView recyclerView = new RecyclerView(context);
+    recyclerView.setId(ALBUM_RECYCLER_VIEW_ID);
     recyclerView.setLayoutParams(
         new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
     int verticalPadding =
