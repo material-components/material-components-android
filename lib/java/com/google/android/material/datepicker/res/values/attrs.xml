@@ -27,6 +27,10 @@
   <attr name="materialCalendarHeaderConfirmButton" format="reference"/>
   <attr name="materialCalendarHeaderToggleButton" format="reference"/>
 
+  <!-- Navigation Styles -->
+  <attr name="materialCalendarYearNavigationButton" format="reference"/>
+  <attr name="materialCalendarMonthNavigationButton" format="reference"/>
+
   <!-- Grid Styles -->
   <attr name="materialCalendarDay" format="reference"/>
 
