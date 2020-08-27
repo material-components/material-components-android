@@ -49,7 +49,18 @@ the
 *   Supports Fragments, Views, Activities, and Windows
 *   Bug fixes not backported and may have different behavior across API Levels
 
-<br><br>
+## Motion Resources
+
+*   [Design Guidelines](https://material.io/design/motion/the-motion-system.html)
+*   [Codelab](https://codelabs.developers.google.com/codelabs/material-motion-android)
+*   [Blog Post](https://medium.com/androiddevelopers/material-motion-with-mdc-c1f09bb90bf9)
+*   [Reply (example email app)](https://github.com/material-components/material-components-android-examples/tree/develop/Reply)
+*   [Javadocs (AndroidX)](https://developer.android.com/reference/com/google/android/material/transition/package-summary)
+*   [Javadocs (Platform)](https://developer.android.com/reference/com/google/android/material/transition/platform/package-summary)
+*   [Catalog Demos](https://github.com/material-components/material-components-android/tree/master/catalog/java/io/material/catalog/transition)
+*   [Library Source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/transition)
+*   [Android Platform Transition Guide](https://developer.android.com/training/transitions)
+*   [AndroidX Transition Library](https://developer.android.com/reference/androidx/transition/package-summary)
 
 ## Container transform
 
@@ -382,8 +393,6 @@ set properties which differ depending on whether or not the transition is
 entering or returning, create two `MaterialContainerTransforms` and set both the
 `sharedElementEnterTransition` and `sharedElementReturnTransition`._
 
-<br><br>
-
 ## Shared axis
 
 The **shared axis** pattern is used for transitions between UI elements that
@@ -663,8 +672,6 @@ override fun onCreate(savedInstanceState: Bundle?) {
 ```
 
 
-<br><br>
-
 ## Fade Through
 
 The **fade through** pattern is used for transitions between UI elements that do
@@ -904,8 +911,6 @@ override fun onCreate(savedInstanceState: Bundle?) {
   }
 }
 ```
-
-<br><br>
 
 ## Fade
 
