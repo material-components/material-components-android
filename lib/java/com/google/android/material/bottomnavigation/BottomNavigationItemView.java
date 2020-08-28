@@ -39,6 +39,7 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -292,7 +293,7 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
         CollectionItemInfoCompat.obtain(
             /* rowIndex= */ 0,
             /* rowSpan= */ 1,
-            /* columnIndex= */ getItemPosition(),
+            /* columnIndex= */ getItemVisiblePosition(),
             /* columnSpan= */ 1,
             /* heading= */ false,
             /* selected= */ isSelected()));
@@ -301,6 +302,24 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
       infoCompat.removeAction(AccessibilityActionCompat.ACTION_CLICK);
     }
     infoCompat.setRoleDescription(getResources().getString(R.string.item_view_role_description));
+  }
+
+  /**
+   * Iterate through all the preceding bottom navigating items to determine this item's visible
+   * position.
+   * @return This item's visible position in a bottom navigation.
+   */
+  private int getItemVisiblePosition() {
+    ViewGroup parent = (ViewGroup) getParent();
+    int index = parent.indexOfChild(this);
+    int visiblePosition = 0;
+    for (int i = 0; i < index; i++) {
+      View child = parent.getChildAt(i);
+      if (child instanceof BottomNavigationItemView && child.getVisibility() == View.VISIBLE) {
+        visiblePosition++;
+      }
+    }
+    return visiblePosition;
   }
 
   private void setViewLayoutParams(@NonNull View view, int topMargin, int gravity) {
