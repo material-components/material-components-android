@@ -24,10 +24,6 @@
       description="Title of demo for the progress indicators in determinate mode [CHAR LIMIT=NONE]">
     Determinate Progress Indicator Demo
   </string>
-  <string name="cat_progress_indicator_demo_custom_title"
-    description="Title of demo for the progress indicators using custom drawables [CHAR LIMIT=NONE]">
-    Custom Drawable Progress Indicator Demo
-  </string>
   <string name="cat_progress_indicator_demo_standalone_title"
     description="Title of demo for other components using progress indicator standalone drawables [CHAR LIMIT=NONE]">
     Standalone Drawable Progress Indicator Demo
@@ -124,14 +120,6 @@
     Multiple color circular with outgoing
   </string>
 
-  <string name="cat_progress_indicator_custom_indeterminate"
-    description="An example of the progress indicator in indeterminate mode using a custom drawable [CHAR LIMIT=NONE]">
-    Custom (wavy) indeterminate progress indicator
-  </string>
-  <string name="cat_progress_indicator_custom_determinate"
-    description="An example of the progress indicator in determinate mode using a custom drawable [CHAR LIMIT=NONE]">
-    Custom (wavy) determinate progress indicator
-  </string>
   <string name="cat_progress_indicator_standalone_indeterminate_chip"
     description="An example of using progress indicator drawable as chip icon [CHAR LIMIT=NONE]">
     Indeterminate Chip

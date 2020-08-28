@@ -34,7 +34,7 @@ import java.util.Arrays;
  * This is the implementation class for drawing progress indicator in the linear non-seamless
  * indeterminate mode.
  */
-public final class LinearIndeterminateNonSeamlessAnimatorDelegate
+final class LinearIndeterminateNonSeamlessAnimatorDelegate
     extends IndeterminateAnimatorDelegate<AnimatorSet> {
 
   // Constants for animation timing.

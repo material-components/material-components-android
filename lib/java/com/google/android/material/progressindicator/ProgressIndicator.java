@@ -18,10 +18,10 @@ package com.google.android.material.progressindicator;
 
 import com.google.android.material.R;
 
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 import static java.lang.Math.min;
 
-import android.animation.AnimatorSet;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -37,6 +37,7 @@ import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
+import androidx.annotation.RestrictTo;
 import androidx.annotation.VisibleForTesting;
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat.AnimationCallback;
 import java.lang.annotation.Retention;
@@ -48,7 +49,7 @@ import java.lang.annotation.RetentionPolicy;
  * <p>The progress indicator widget can represent determinate or indeterminate progress in a linear
  * or circular form.
  */
-public class ProgressIndicator extends ProgressBar {
+public final class ProgressIndicator extends ProgressBar {
 
   protected static final int DEF_STYLE_RES =
       R.style.Widget_MaterialComponents_ProgressIndicator_Linear_Determinate;
@@ -61,11 +62,6 @@ public class ProgressIndicator extends ProgressBar {
   public static final int LINEAR = 0;
   /** The indicator appears as a circular spinner. */
   public static final int CIRCULAR = 1;
-  /**
-   * The indicator uses a custom drawable. This prevents to initialize pre-defined drawables for
-   * linear/circular type. Drawables have to be manually initialized.
-   */
-  public static final int CUSTOM = 2;
 
   // Constants for show/hide animation.
 
@@ -137,12 +133,14 @@ public class ProgressIndicator extends ProgressBar {
 
   // ******************** Interfaces **********************
 
-  /** The type of the progress indicator. */
-  @IntDef({LINEAR, CIRCULAR, CUSTOM})
+  /** @hide */
+  @RestrictTo(LIBRARY_GROUP)
+  @IntDef({LINEAR, CIRCULAR})
   @Retention(RetentionPolicy.SOURCE)
   public @interface IndicatorType {}
 
-  /** How the indicator appears and disappears. */
+  /** @hide */
+  @RestrictTo(LIBRARY_GROUP)
   @IntDef({GROW_MODE_NONE, GROW_MODE_INCOMING, GROW_MODE_OUTGOING, GROW_MODE_BIDIRECTIONAL})
   @Retention(RetentionPolicy.SOURCE)
   public @interface GrowMode {}
@@ -174,9 +172,7 @@ public class ProgressIndicator extends ProgressBar {
     spec.loadFromAttributes(context, attrs, defStyleAttr, defStyleRes);
     loadExtraAttributes(context, attrs, defStyleAttr, defStyleRes);
 
-    if (spec.indicatorType != CUSTOM) {
-      initializeDrawables();
-    }
+    initializeDrawables();
   }
 
   // ******************** Initialization **********************
@@ -198,61 +194,10 @@ public class ProgressIndicator extends ProgressBar {
 
   /**
    * Initializes the builtin drawables for LINEAR and CIRCULAR types.
-   *
-   * @throws IllegalStateException If it gets called for the CUSTOM type.
    */
   private void initializeDrawables() {
-    if (spec.indicatorType == CUSTOM) {
-      throw new IllegalStateException(
-          "Cannot initialize builtin drawables for CUSTOM type. Please use"
-              + " initializeDrawables(IndeterminateDrawable, DeterminateDrawable) instead.");
-    }
-    // Creates and sets the determinate and indeterminate drawables based on track shape.
-    DrawingDelegate drawingDelegate =
-        spec.indicatorType == LINEAR ? new LinearDrawingDelegate() : new CircularDrawingDelegate();
-    IndeterminateAnimatorDelegate<AnimatorSet> indeterminateAnimatorDelegate =
-        spec.indicatorType == LINEAR
-            ? isLinearSeamless()
-                ? new LinearIndeterminateSeamlessAnimatorDelegate()
-                : new LinearIndeterminateNonSeamlessAnimatorDelegate(getContext())
-            : new CircularIndeterminateAnimatorDelegate();
-
-    setIndeterminateDrawable(
-        new IndeterminateDrawable(
-            getContext(), spec, drawingDelegate, indeterminateAnimatorDelegate));
-    setProgressDrawable(new DeterminateDrawable(getContext(), spec, drawingDelegate));
-
-    applyNewVisibility();
-  }
-
-  /**
-   * Manually initializes drawables and applies visibility. This intends to be used for applying
-   * custom drawable.
-   *
-   * @param indeterminateDrawable Custom indeterminate drawable. Switches to determinate mode if
-   *     null.
-   * @param determinateDrawable Custom determinate drawable. Switches to indeterminate mode if null.
-   * @throws IllegalArgumentException If {@code indicatorType} is not {@code CUSTOM}.
-   * @throws IllegalArgumentException If the arguments are both null.
-   */
-  public void initializeDrawables(
-      IndeterminateDrawable indeterminateDrawable, DeterminateDrawable determinateDrawable) {
-    if (spec.indicatorType != CUSTOM) {
-      throw new IllegalStateException(
-          "Manually setting drawables can only be done while indicator type is custom. Current"
-              + " indicator type is "
-              + (spec.indicatorType == LINEAR ? "linear" : "circular"));
-    }
-    if (indeterminateDrawable == null && determinateDrawable == null) {
-      throw new IllegalArgumentException(
-          "Indeterminate and determinate drawables cannot be null at the same time.");
-    }
-    setIndeterminateDrawable(indeterminateDrawable);
-    setProgressDrawable(determinateDrawable);
-
-    setIndeterminate(
-        indeterminateDrawable != null && (determinateDrawable == null || isIndeterminate()));
-
+    setIndeterminateDrawable(new IndeterminateDrawable(getContext(), spec));
+    setProgressDrawable(new DeterminateDrawable(getContext(), spec));
     applyNewVisibility();
   }
 

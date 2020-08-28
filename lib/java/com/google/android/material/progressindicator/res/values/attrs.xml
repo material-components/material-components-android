@@ -22,11 +22,6 @@
       <enum name="linear" value="0"/>
       <!-- The indicator appears as a circular spinner. -->
       <enum name="circular" value="1"/>
-      <!--
-        The indicator uses a custom drawable. This prevents to initialize
-        pre-defined drawables for linear/circular type.
-      -->
-      <enum name="custom" value="2"/>
     </attr>
 
     <!-- Whether the progress indicator should be indeteminate mode. -->

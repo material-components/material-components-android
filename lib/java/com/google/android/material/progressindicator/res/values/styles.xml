@@ -34,10 +34,6 @@
   </style>
 
   <!-- Styles used by clients -->
-  <style name="Widget.MaterialComponents.ProgressIndicator.Custom" parent="Base.Widget.MaterialComponents.ProgressIndicator">
-    <item name="indicatorType">custom</item>
-  </style>
-
   <style name="Widget.MaterialComponents.ProgressIndicator.Linear.Determinate" parent="Base.Widget.MaterialComponents.ProgressIndicator.Linear">
     <item name="android:indeterminate">false</item>
   </style>

@@ -72,13 +72,6 @@ public class ProgressIndicatorFragment extends DemoLandingFragment {
           }
         });
     additionalDemos.add(
-        new Demo(R.string.cat_progress_indicator_demo_custom_title) {
-          @Override
-          public Fragment createFragment() {
-            return new ProgressIndicatorCustomDemoFragment();
-          }
-        });
-    additionalDemos.add(
         new Demo(R.string.cat_progress_indicator_demo_standalone_title) {
           @Override
           public Fragment createFragment() {

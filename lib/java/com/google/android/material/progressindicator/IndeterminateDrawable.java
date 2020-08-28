@@ -20,7 +20,9 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.util.Pair;
 import androidx.annotation.NonNull;
+import com.google.android.material.progressindicator.ProgressIndicator.IndicatorType;
 
 /**
  * This class draws the graphics for indeterminate modes by applying different {@link
@@ -33,15 +35,14 @@ public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityC
   // Animator delegate object.
   private IndeterminateAnimatorDelegate<AnimatorSet> animatorDelegate;
 
-  public IndeterminateDrawable(
-      @NonNull Context context,
-      @NonNull ProgressIndicatorSpec spec,
-      @NonNull DrawingDelegate drawingDelegate,
-      @NonNull IndeterminateAnimatorDelegate<AnimatorSet> animatorDelegate) {
+  public IndeterminateDrawable(@NonNull Context context, @NonNull ProgressIndicatorSpec spec) {
     super(context, spec);
 
-    this.drawingDelegate = drawingDelegate;
-    setAnimatorDelegate(animatorDelegate);
+    Pair<DrawingDelegate, IndeterminateAnimatorDelegate<AnimatorSet>> delegatePair =
+        initializeDelegates(spec.indicatorType, spec.linearSeamless);
+
+    this.drawingDelegate = delegatePair.first;
+    setAnimatorDelegate(delegatePair.second);
   }
 
   // ******************* Overridden methods *******************
@@ -129,6 +130,20 @@ public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityC
   }
 
   // ******************* Helper methods *******************
+
+  private Pair<DrawingDelegate, IndeterminateAnimatorDelegate<AnimatorSet>> initializeDelegates(
+      @IndicatorType int type, boolean linearSeamless) {
+    if (type == ProgressIndicator.CIRCULAR) {
+      return new Pair<DrawingDelegate, IndeterminateAnimatorDelegate<AnimatorSet>>(
+          new CircularDrawingDelegate(), new CircularIndeterminateAnimatorDelegate());
+    }
+
+    return new Pair<DrawingDelegate, IndeterminateAnimatorDelegate<AnimatorSet>>(
+        new LinearDrawingDelegate(),
+        linearSeamless
+            ? new LinearIndeterminateSeamlessAnimatorDelegate()
+            : new LinearIndeterminateNonSeamlessAnimatorDelegate(context));
+  }
 
   @Override
   protected void recalculateColors() {

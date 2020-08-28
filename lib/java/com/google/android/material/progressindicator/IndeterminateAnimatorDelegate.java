@@ -25,7 +25,7 @@ import androidx.vectordrawable.graphics.drawable.Animatable2Compat.AnimationCall
  * A delegate abstract class for animating properties used in drawing the graphics in different
  * drawable classes for {@link ProgressIndicator}.
  */
-public abstract class IndeterminateAnimatorDelegate<T extends Animator> {
+abstract class IndeterminateAnimatorDelegate<T extends Animator> {
 
   // The drawable associated with this delegate.
   protected IndeterminateDrawable drawable;

@@ -46,15 +46,17 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
   // Whether to skip the spring animation on level change event.
   private boolean skipAnimationOnLevelChange = false;
 
-  public DeterminateDrawable(
-      @NonNull Context context,
-      @NonNull ProgressIndicatorSpec spec,
-      @NonNull DrawingDelegate drawingDelegate) {
+  public DeterminateDrawable(@NonNull Context context, @NonNull ProgressIndicatorSpec spec) {
     super(context, spec);
 
-    this.drawingDelegate = drawingDelegate;
+    if (spec.indicatorType == ProgressIndicator.LINEAR) {
+      this.drawingDelegate = new LinearDrawingDelegate();
+    } else {
+      this.drawingDelegate = new CircularDrawingDelegate();
+    }
 
     springForce = new SpringForce();
+
     springForce.setDampingRatio(SpringForce.DAMPING_RATIO_NO_BOUNCY);
     springForce.setStiffness(SPRING_FORCE_STIFFNESS);
 

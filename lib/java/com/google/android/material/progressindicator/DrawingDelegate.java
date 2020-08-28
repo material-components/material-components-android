@@ -25,7 +25,7 @@ import androidx.annotation.NonNull;
  * A delegate interface for drawing the graphics in different drawable classes used in {@link
  * ProgressIndicator}.
  */
-public interface DrawingDelegate {
+interface DrawingDelegate {
   /**
    * Returns the preferred width, in pixels, of the drawable based on the drawing type. Returns a
    * negative value if it depends on the {@link android.view.View}.

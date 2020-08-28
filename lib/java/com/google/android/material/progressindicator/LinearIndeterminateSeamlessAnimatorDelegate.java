@@ -31,7 +31,7 @@ import com.google.android.material.math.MathUtils;
  * This is the implementation class for drawing progress indicator in the linear seamless
  * indeterminate mode.
  */
-public final class LinearIndeterminateSeamlessAnimatorDelegate
+final class LinearIndeterminateSeamlessAnimatorDelegate
     extends IndeterminateAnimatorDelegate<AnimatorSet> {
 
   // Constants for animation timing.

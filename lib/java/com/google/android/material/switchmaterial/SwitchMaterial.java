@@ -33,8 +33,6 @@ import com.google.android.material.color.MaterialColors;
 import com.google.android.material.elevation.ElevationOverlayProvider;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
-import com.google.android.material.progressindicator.CircularDrawingDelegate;
-import com.google.android.material.progressindicator.CircularIndeterminateAnimatorDelegate;
 import com.google.android.material.progressindicator.IndeterminateDrawable;
 import com.google.android.material.progressindicator.ProgressIndicatorSpec;
 
@@ -150,9 +148,7 @@ public class SwitchMaterial extends SwitchCompat {
       pendingDrawable =
           new IndeterminateDrawable(
               getContext(),
-              progressIndicatorSpec,
-              new CircularDrawingDelegate(),
-              new CircularIndeterminateAnimatorDelegate());
+              progressIndicatorSpec);
       pendingDrawable.setVisible(pending, false);
     }
   }
