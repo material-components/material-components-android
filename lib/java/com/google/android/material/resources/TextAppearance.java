@@ -24,6 +24,8 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.content.res.ResourcesCompat.FontCallback;
 import android.text.TextPaint;
@@ -64,6 +66,8 @@ public class TextAppearance {
   public final float shadowDx;
   public final float shadowDy;
   public final float shadowRadius;
+  public final boolean hasLetterSpacing;
+  public final float letterSpacing;
 
   public float textSize;
 
@@ -103,6 +107,11 @@ public class TextAppearance {
     shadowDy = a.getFloat(R.styleable.TextAppearance_android_shadowDy, 0);
     shadowRadius = a.getFloat(R.styleable.TextAppearance_android_shadowRadius, 0);
 
+    a.recycle();
+
+    a = context.obtainStyledAttributes(id, R.styleable.MaterialTextAppearance);
+    hasLetterSpacing = a.hasValue(R.styleable.MaterialTextAppearance_android_letterSpacing);
+    letterSpacing = a.getFloat(R.styleable.MaterialTextAppearance_android_letterSpacing, 0);
     a.recycle();
   }
 
@@ -331,5 +340,11 @@ public class TextAppearance {
     textPaint.setTextSkewX((fake & Typeface.ITALIC) != 0 ? -0.25f : 0f);
 
     textPaint.setTextSize(textSize);
+
+    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+      if (hasLetterSpacing) {
+        textPaint.setLetterSpacing(letterSpacing);
+      }
+    }
   }
 }

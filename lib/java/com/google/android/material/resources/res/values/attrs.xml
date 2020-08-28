@@ -31,4 +31,10 @@
   <attr name="itemShapeAppearance" format="reference" />
   <attr name="itemShapeAppearanceOverlay" format="reference" />
 
+  <declare-styleable name="MaterialTextAppearance" parent="TextAppearance">
+    <attr name="android:lineHeight"/>
+    <attr name="lineHeight" format="dimension"/>
+    <attr name="android:letterSpacing"/>
+  </declare-styleable>
+
 </resources>
