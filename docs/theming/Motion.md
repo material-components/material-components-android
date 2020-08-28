@@ -373,9 +373,9 @@ customize the look and feel of the animation:
 **Container Start View Background Color** | `getStartContainerColor`<br/>`setStartContainerColor`                 | `Color.TRANSPARENT`
 **Container End View Background Color**   | `getEndContainerColor`<br/>`setEndContainerColor`                     | `Color.TRANSPARENT`
 **Scrim Color**                           | `getScrimColor`<br/>`setScrimColor`                                   | `#52000000` (32% opacity, black)
-**Direction**                             | `getTransitionDirection`<br/>`setTransitionDirection`                 | `TransitionDirection.TRANSITION_DIRECTION_AUTO`
-**Fade Mode**                             | `getFadeMode`<br/>`setFadeMode`                                       | `FadeMode.FADE_MODE_IN`
-**Fit Mode**                              | `getFitMode`<br/>`setFitMode`                                         | `FitMode.FIT_MODE_AUTO`
+**Direction**                             | `getTransitionDirection`<br/>`setTransitionDirection`                 | `MaterialContainerTransform.TRANSITION_DIRECTION_AUTO`
+**Fade Mode**                             | `getFadeMode`<br/>`setFadeMode`                                       | `MaterialContainerTransform.FADE_MODE_IN`
+**Fit Mode**                              | `getFitMode`<br/>`setFitMode`                                         | `MaterialContainerTransform.FIT_MODE_AUTO`
 **Fade Thresholds**                       | `getFadeProgressThresholds`<br/>`setFadeProgressThresholds`           | `[0.0 - 0.25] enter`<br/>`[0.6 - 0.9] return`<br/>`[0.1 - 0.4] enter w. arc`<br/>`[0.6 - 0.9] return w. arc`
 **Scale Thresholds**                      | `getScaleProgressThresholds`<br/>`setScaleProgressThresholds`         | `[0.0 - 1.0] enter`<br/>`[0.0 - 1.0] return`<br/>`[0.1 - 1.0] enter w. arc`<br/>`[0.0 - 0.9] return w. arc`
 **Scale Mask Thresholds**                 | `getScaleMaskProgressThresholds`<br/>`setScaleMaskProgressThresholds` | `[0.0 - 1.0] enter`<br/>`[0.0 - 0.9] return`<br/>`[0.1 - 1.0] enter w. arc`<br/>`[0.0 - 0.9] return w. arc`
@@ -392,6 +392,28 @@ transition is being re-used due to no return being set). If you need to manually
 set properties which differ depending on whether or not the transition is
 entering or returning, create two `MaterialContainerTransforms` and set both the
 `sharedElementEnterTransition` and `sharedElementReturnTransition`._
+
+#### Fade Through Variant
+
+`MaterialContainerTransform` supports the "Container transform: fade through
+variant" mentioned in the
+[spec](https://material.io/design/motion/the-motion-system.html#container-transform),
+which will sequentially fade out and in the outgoing and incoming views,
+respectively, in order to minimize the visual overlap of these views. This
+variant can be achieved with the following Fade Mode configuration:
+
+```kt
+containerTransform.fadeMode = MaterialContainerTransform.FADE_MODE_THROUGH
+```
+
+If using the fade through variant, consider also tweaking the
+`MaterialContainerTransform`'s Fade Thresholds property. For example, to make
+the container transform's fade through happen over the full duration of the
+transition, use the following Fade Thresholds configuration:
+
+```kt
+containerTransform.fadeProgressThresholds = MaterialContainerTransform.ProgressThresholds(0f, 1f)
+```
 
 ## Shared axis
 
