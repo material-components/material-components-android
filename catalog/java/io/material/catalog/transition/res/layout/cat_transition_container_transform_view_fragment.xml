@@ -16,30 +16,41 @@
   -->
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/root"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:targetApi="lollipop">
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/root"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:targetApi="lollipop">
 
   <include layout="@layout/cat_transition_list_fragment" />
 
-  <com.google.android.material.card.MaterialCardView
-      android:id="@+id/end_card"
-      android:layout_width="300dp"
-      android:layout_height="400dp"
-      android:backgroundTint="?attr/colorPrimary"
-      android:layout_gravity="bottom|center_horizontal"
-      android:padding="16dp"
-      android:layout_margin="16dp"
-      android:visibility="gone" />
-
   <com.google.android.material.floatingactionbutton.FloatingActionButton
-      android:id="@+id/start_fab"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_margin="16dp"
-      android:layout_gravity="bottom|end"
-      app:srcCompat="@drawable/ic_add_24px" />
+    android:id="@+id/start_fab"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    android:layout_gravity="bottom|end"
+    app:srcCompat="@drawable/ic_add_24px" />
+
+  <com.google.android.material.card.MaterialCardView
+    android:id="@+id/expanded_card"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginVertical="80dp"
+    android:layout_marginHorizontal="16dp"
+    android:layout_gravity="center"
+    android:padding="16dp"
+    android:backgroundTint="?attr/colorSurface"
+    android:visibility="gone" />
+
+  <com.google.android.material.card.MaterialCardView
+    android:id="@+id/contact_card"
+    android:layout_width="220dp"
+    android:layout_height="300dp"
+    android:layout_margin="16dp"
+    android:layout_gravity="bottom|end"
+    android:padding="16dp"
+    android:backgroundTint="?attr/colorSurface"
+    android:visibility="gone"/>
 </FrameLayout>

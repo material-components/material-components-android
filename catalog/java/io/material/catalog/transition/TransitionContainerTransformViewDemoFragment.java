@@ -39,12 +39,17 @@ import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.OnBackPressedHandler;
 import javax.inject.Inject;
 
-/** A fragment that displays the main Transition demo for the Catalog app. */
+/** A fragment that displays the View container transform transition demos for the Catalog app. */
 public class TransitionContainerTransformViewDemoFragment extends DemoFragment
     implements OnBackPressedHandler {
 
-  @Nullable private View startView;
+  private View startCard;
+  private View startFab;
+
+  private View contactCard;
   private View endView;
+  private View expandedCard;
+
   private FrameLayout root;
 
   private ContainerTransformConfigurationHelper configurationHelper;
@@ -66,7 +71,10 @@ public class TransitionContainerTransformViewDemoFragment extends DemoFragment
         layoutInflater.inflate(
             R.layout.cat_transition_container_transform_view_fragment, viewGroup, false);
     root = view.findViewById(R.id.root);
-    endView = view.findViewById(R.id.end_card);
+
+    startFab = view.findViewById(R.id.start_fab);
+    expandedCard = view.findViewById(R.id.expanded_card);
+    contactCard = view.findViewById(R.id.contact_card);
     return view;
   }
 
@@ -78,15 +86,16 @@ public class TransitionContainerTransformViewDemoFragment extends DemoFragment
     addTransitionableTarget(view, R.id.horizontal_card_item);
     addTransitionableTarget(view, R.id.grid_card_item);
     addTransitionableTarget(view, R.id.grid_tall_card_item);
-    addTransitionableTarget(view, R.id.end_card);
+    addTransitionableTarget(view, R.id.expanded_card);
+    addTransitionableTarget(view, R.id.contact_card);
   }
 
   private void addTransitionableTarget(@NonNull View view, @IdRes int id) {
     View target = view.findViewById(id);
     if (target != null) {
       ViewCompat.setTransitionName(target, String.valueOf(id));
-      if (id == R.id.end_card) {
-        target.setOnClickListener(v -> showStartView());
+      if (id == R.id.expanded_card || id == R.id.contact_card) {
+        target.setOnClickListener(this::showStartView);
       } else {
         target.setOnClickListener(this::showEndView);
       }
@@ -94,9 +103,14 @@ public class TransitionContainerTransformViewDemoFragment extends DemoFragment
   }
 
   private void showEndView(View startView) {
-    // Save a reference to the start view that triggered the transition in order to know which view
-    // to transition into during the return transition.
-    this.startView = startView;
+    if (startView.getId() == R.id.start_fab) {
+      this.endView = contactCard;
+    } else {
+      // Save the startView reference as the startCard that triggered the transition in order to
+      // know which card to transition into during the return transition.
+      this.startCard = startView;
+      this.endView = expandedCard;
+    }
 
     // Construct a container transform transition between two views.
     MaterialContainerTransform transition = buildContainerTransform(true);
@@ -113,18 +127,16 @@ public class TransitionContainerTransformViewDemoFragment extends DemoFragment
     endView.setVisibility(View.VISIBLE);
   }
 
-  private void showStartView() {
-    if (startView == null) {
-      throw new IllegalStateException("startView must not be null");
-    }
+  private void showStartView(View endView) {
+    View startView = endView.getId() == R.id.contact_card ? startFab : startCard;
 
     // Construct a container transform transition between two views.
     MaterialContainerTransform transition = buildContainerTransform(false);
     transition.setStartView(endView);
     transition.setEndView(startView);
 
-    // Add a single target to avoid the container transform from running on both the start
-    // and end view
+    // Add a single target to stop the container transform from running on both the start
+    // and end view.
     transition.addTarget(startView);
 
     // Trigger the container transform transition.
@@ -145,7 +157,7 @@ public class TransitionContainerTransformViewDemoFragment extends DemoFragment
   @Override
   public boolean onBackPressed() {
     if (endView.getVisibility() == View.VISIBLE) {
-      showStartView();
+      showStartView(endView);
       return true;
     }
     return false;

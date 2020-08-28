@@ -38,6 +38,12 @@ Phasellus in aliquet mi. Pellentesque habitant morbi tristique senectus et netus
 
   <string name="cat_transition_container_transform_view_title">Container Transform (View)</string>
 
+  <string name="cat_transition_contact_card_sandra">Sandra Adams</string>
+  <string name="cat_transition_contact_card_charlie">Charlie Zhao</string>
+  <string name="cat_transition_contact_card_trevor">Trevor Hansen</string>
+  <string name="cat_transition_contact_card_david">David Park</string>
+  <string name="cat_transition_contact_card_compose">Compose New</string>
+
   <string name="cat_transition_config_menu_item_title">Configure transition</string>
   <string name="cat_transition_config_path_motion_title">Path motion</string>
   <string name="cat_transition_config_path_motion_arc">Arc</string>
