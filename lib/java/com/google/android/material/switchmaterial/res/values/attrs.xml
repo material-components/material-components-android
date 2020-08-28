@@ -16,10 +16,20 @@
 -->
 <resources>
   <declare-styleable name="SwitchMaterial">
-    <!-- When set to true, SwitchMaterial will tint itself according to
+    <!--
+      When set to true, SwitchMaterial will tint itself according to
       Material Theme colors. When set to false, Material Theme colors will
       be ignored. This value should be set to false when using custom drawables
-      that should not be tinted. This value is ignored if a buttonTint is set. -->
-    <attr name="useMaterialThemeColors"/>
+      that should not be tinted. This value is ignored if a buttonTint is set.
+    -->
+    <attr name="useMaterialThemeColors" />
+    <!--
+      Pending is the interim status of checked/unchecked. When pending is true,
+      the thumb's position will reflect the current checked state; the color
+      of thumb and track will reflect the opposite state of current checked.
+      When pending is false, both position and color of the thumb and track will
+      reflect the current checked state.
+    -->
+    <attr name="state_pending" format="boolean" />
   </declare-styleable>
 </resources>

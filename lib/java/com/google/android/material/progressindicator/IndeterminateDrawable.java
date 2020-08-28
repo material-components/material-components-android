@@ -128,6 +128,16 @@ public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityC
     canvas.restore();
   }
 
+  // ******************* Helper methods *******************
+
+  @Override
+  protected void recalculateColors() {
+    super.recalculateColors();
+    if (animatorDelegate != null) {
+      animatorDelegate.invalidateSpecValues();
+    }
+  }
+
   // ******************* Setter and getter *******************
 
   public IndeterminateAnimatorDelegate<AnimatorSet> getAnimatorDelegate() {

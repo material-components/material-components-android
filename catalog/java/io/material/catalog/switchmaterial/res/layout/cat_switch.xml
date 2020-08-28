@@ -18,7 +18,6 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_viewGroup"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -34,7 +33,7 @@
         android:layout_height="match_parent"
         android:layout_columnSpan="2"
         android:text="@string/cat_switch_color_guide"
-        android:textSize="@dimen/cat_switch_header_size"/>
+        android:textSize="@dimen/cat_switch_header_size" />
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -71,7 +70,7 @@
       android:layout_height="@dimen/cat_switch_line_separator_thickness"
       android:layout_marginTop="@dimen/cat_switch_line_separator_margin"
       android:layout_marginBottom="@dimen/cat_switch_line_separator_margin"
-      android:background="?attr/colorSecondary"/>
+      android:background="?attr/colorSecondary" />
   <com.google.android.material.switchmaterial.SwitchMaterial
       android:id="@+id/switch_toggle"
       android:layout_width="match_parent"
@@ -79,5 +78,20 @@
       android:checked="false"
       android:enabled="true"
       android:text="@string/cat_switch_toggleable_description"
-      android:textSize="@dimen/cat_switch_header_size"/>
+      android:textSize="@dimen/cat_switch_header_size" />
+  <com.google.android.material.switchmaterial.SwitchMaterial
+      android:id="@+id/switch_pending_toggle"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:checked="false"
+      android:enabled="true"
+      android:text="@string/cat_switch_pending_toggleable_description"
+      android:textSize="@dimen/cat_switch_header_size" />
+  <!-- Toggled switches go here -->
+  <Button
+      android:id="@+id/clear_pending_button"
+      style="?android/buttonBarButtonStyle"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/cat_button_clear_pending" />
 </LinearLayout>
