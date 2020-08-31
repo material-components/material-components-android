@@ -44,13 +44,6 @@
     android:backgroundTint="?attr/colorSurface"
     android:visibility="gone" />
 
-  <com.google.android.material.card.MaterialCardView
-    android:id="@+id/contact_card"
-    android:layout_width="220dp"
-    android:layout_height="300dp"
-    android:layout_margin="16dp"
-    android:layout_gravity="bottom|end"
-    android:padding="16dp"
-    android:backgroundTint="?attr/colorSurface"
-    android:visibility="gone"/>
+  <include layout="@layout/cat_transition_container_transform_contact_card" />
+
 </FrameLayout>
