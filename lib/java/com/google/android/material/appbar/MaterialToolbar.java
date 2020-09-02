@@ -34,6 +34,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.MaterialShapeUtils;
+import com.google.android.material.shape.ShapeAppearanceModel;
 
 /**
  * {@code MaterialToolbar} is a {@link Toolbar} that implements certain Material features, such as
@@ -58,6 +59,8 @@ import com.google.android.material.shape.MaterialShapeUtils;
  */
 public class MaterialToolbar extends Toolbar {
 
+  private ShapeAppearanceModel shapeAppearanceModel;
+
   private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_Toolbar;
 
   public MaterialToolbar(@NonNull Context context) {
@@ -68,10 +71,12 @@ public class MaterialToolbar extends Toolbar {
     this(context, attrs, R.attr.toolbarStyle);
   }
 
-  public MaterialToolbar(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-    super(wrap(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
+  public MaterialToolbar(@NonNull Context context, @Nullable AttributeSet attrs, int defStyle) {
+    super(wrap(context, attrs, defStyle, DEF_STYLE_RES), attrs, defStyle);
     // Ensure we are using the correctly themed context rather than the context that was passed in.
     context = getContext();
+
+    shapeAppearanceModel = ShapeAppearanceModel.builder(context, attrs, defStyle, DEF_STYLE_RES).build();
 
     initBackground(context);
   }
@@ -96,7 +101,7 @@ public class MaterialToolbar extends Toolbar {
     if (background != null && !(background instanceof ColorDrawable)) {
       return;
     }
-    MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable();
+    MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable(shapeAppearanceModel);
     int backgroundColor =
         background != null ? ((ColorDrawable) background).getColor() : Color.TRANSPARENT;
     materialShapeDrawable.setFillColor(ColorStateList.valueOf(backgroundColor));
