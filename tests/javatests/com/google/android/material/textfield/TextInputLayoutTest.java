@@ -411,6 +411,36 @@ public class TextInputLayoutTest {
 
   @UiThreadTest
   @Test
+  public void testSavedState() throws Throwable {
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout layout = (TextInputLayout) activity.findViewById(R.id.textinput);
+    layout.setHint(HINT_TEXT);
+    layout.setHelperText(HELPER_MESSAGE_1);
+    layout.setPlaceholderText(PLACEHOLDER_TEXT);
+
+    // Save the current state
+    SparseArray<Parcelable> container = new SparseArray<>();
+    layout.saveHierarchyState(container);
+
+    // Restore the state into a fresh text field
+    activityTestRule.runOnUiThread(
+        () -> {
+          final TextInputLayout testLayout = new TestTextInputLayout(activity);
+          testLayout.setId(R.id.textinput);
+          final TextInputEditText testEditText = new TextInputEditText(activity);
+          testEditText.setId(R.id.textinputedittext);
+          testLayout.addView(testEditText);
+          testLayout.restoreHierarchyState(container);
+
+          // Check hint, helper and placeholder text were restored
+          assertEquals(HINT_TEXT, testLayout.getHint().toString());
+          assertEquals(HELPER_MESSAGE_1, testLayout.getHelperText().toString());
+          assertEquals(PLACEHOLDER_TEXT, testLayout.getPlaceholderText().toString());
+        });
+  }
+
+  @UiThreadTest
+  @Test
   public void testMaintainsLeftRightCompoundDrawables() throws Throwable {
     final Activity activity = activityTestRule.getActivity();
 
