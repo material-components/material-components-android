@@ -214,4 +214,14 @@
     <attr name="layout_collapseParallaxMultiplier" format="float"/>
   </declare-styleable>
 
+  <declare-styleable name="MaterialToolbar">
+    <!-- Shape appearance style reference for MaterialToolbar. Attribute declaration is in the
+     shape package. -->
+    <attr name="shapeAppearance" />
+    <!-- Shape appearance overlay style reference for MaterialToolbar. To be used to augment
+         attributes declared in the shapeAppearance. Attribute declaration is in the shape package.
+         -->
+    <attr name="shapeAppearanceOverlay" />
+  </declare-styleable>
+
 </resources>
