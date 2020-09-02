@@ -17,6 +17,8 @@
 package com.google.android.material.bottomsheet;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
@@ -75,6 +77,7 @@ import java.util.Map;
  * BottomSheetDialogFragment use {@link ViewCompat#setAccessibilityPaneTitle(View, CharSequence)}.
  */
 public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behavior<V> {
+
 
   /** Callback for monitoring events about bottom sheets. */
   public abstract static class BottomSheetCallback {
@@ -253,6 +256,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   private boolean nestedScrolled;
 
+  private int childHeight;
   int parentWidth;
   int parentHeight;
 
@@ -411,7 +415,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     // Offset the bottom sheet
     parentWidth = parent.getWidth();
     parentHeight = parent.getHeight();
-    fitToContentsOffset = Math.max(0, parentHeight - child.getHeight());
+    childHeight = child.getHeight();
+    fitToContentsOffset = max(0, parentHeight - childHeight);
     calculateHalfExpandedOffset();
     calculateCollapsedOffset();
 
@@ -772,7 +777,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       }
     } else if (peekHeightAuto || this.peekHeight != peekHeight) {
       peekHeightAuto = false;
-      this.peekHeight = Math.max(0, peekHeight);
+      this.peekHeight = max(0, peekHeight);
       layout = true;
     }
     // If sheet is already laid out, recalculate the collapsed offset based on new setting.
@@ -1130,10 +1135,11 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   private int calculatePeekHeight() {
     if (peekHeightAuto) {
-      return Math.max(peekHeightMin, parentHeight - parentWidth * 9 / 16);
+      int desiredHeight = max(peekHeightMin, parentHeight - parentWidth * 9 / 16);
+      return min(desiredHeight, childHeight);
     }
     if (!gestureInsetBottomIgnored && gestureInsetBottom > 0) {
-      return Math.max(peekHeight, gestureInsetBottom + peekHeightGestureInsetBuffer);
+      return max(peekHeight, gestureInsetBottom + peekHeightGestureInsetBuffer);
     }
     return peekHeight;
   }
@@ -1142,7 +1148,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     int peek = calculatePeekHeight();
 
     if (fitToContents) {
-      collapsedOffset = Math.max(parentHeight - peek, fitToContentsOffset);
+      collapsedOffset = max(parentHeight - peek, fitToContentsOffset);
     } else {
       collapsedOffset = parentHeight - peek;
     }
