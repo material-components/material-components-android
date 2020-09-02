@@ -83,20 +83,6 @@ public final class ProgressIndicatorSpec {
    */
   public boolean linearSeamless;
 
-  public ProgressIndicatorSpec(@NonNull ProgressIndicatorSpec spec) {
-    indicatorColors = spec.indicatorColors;
-    indicatorSize = spec.indicatorSize;
-    indicatorType = spec.indicatorType;
-    indicatorCornerRadius = spec.indicatorCornerRadius;
-    trackColor = spec.trackColor;
-    inverse = spec.inverse;
-    growMode = spec.growMode;
-    circularInset = spec.circularInset;
-    circularRadius = spec.circularRadius;
-  }
-
-  public ProgressIndicatorSpec() {}
-
   public void loadFromAttributes(@NonNull Context context, AttributeSet attrs,
       @AttrRes int defStyleAttr) {
     loadFromAttributes(context, attrs, defStyleAttr, ProgressIndicator.DEF_STYLE_RES);

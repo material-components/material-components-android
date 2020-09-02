@@ -22,14 +22,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import androidx.annotation.Nullable;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.DemoUtils;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /** A fragment that displays the main Switch demo for the Catalog app. */
 public class SwitchMainDemoFragment extends DemoFragment {
@@ -39,11 +37,9 @@ public class SwitchMainDemoFragment extends DemoFragment {
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
     View view = layoutInflater.inflate(R.layout.cat_switch, viewGroup, false /* attachToRoot */);
     ViewGroup switchDemoViewGroup = view.findViewById(R.id.main_viewGroup);
-    AtomicBoolean defaultPending = new AtomicBoolean(false);
-
     View toggledView =
         layoutInflater.inflate(R.layout.cat_switch_toggled, switchDemoViewGroup, false);
-    switchDemoViewGroup.addView(toggledView, switchDemoViewGroup.getChildCount() - 1);
+    switchDemoViewGroup.addView(toggledView);
     List<SwitchMaterial> toggledSwitches =
         DemoUtils.findViewsWithType(toggledView, SwitchMaterial.class);
 
@@ -54,27 +50,6 @@ public class SwitchMainDemoFragment extends DemoFragment {
             switchMaterial.setEnabled(isChecked);
           }
         });
-
-    for (SwitchMaterial switchMaterial : toggledSwitches) {
-      switchMaterial.setOnCheckedChangeListener(
-          (buttonView, isChecked) ->
-              ((SwitchMaterial) buttonView).setPending(defaultPending.get()));
-    }
-
-    SwitchMaterial switchPending = view.findViewById(R.id.switch_pending_toggle);
-    switchPending.setOnCheckedChangeListener(
-        (CompoundButton buttomView, boolean isChecked) -> {
-          defaultPending.set(isChecked);
-        });
-
-    Button clearPendingButton = view.findViewById(R.id.clear_pending_button);
-    clearPendingButton.setOnClickListener(
-        v -> {
-          for (SwitchMaterial pendingSwitch : toggledSwitches) {
-            pendingSwitch.setPending(false);
-          }
-        });
-
     return view;
   }
 }

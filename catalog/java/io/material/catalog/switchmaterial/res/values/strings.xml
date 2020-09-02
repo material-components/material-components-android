@@ -45,16 +45,8 @@
     description="The label explaining the function of a switch which toggles the state of enabling of the example switches. [CHAR LIMIT=NONE]">
     Turn this switch On to control the enabled state of the switches below.
   </string>
-  <string name="cat_switch_pending_toggleable_description"
-    description="The label explaining the function of a switch which toggles the pendingOnToggle attribute of the example switches. [CHAR LIMIT=NONE]">
-    Turn this switch On to control the default pending state on toggle events of the switches below.
-  </string>
   <string name="cat_switch_toggle"
     description="The label of example switches. [CHAR LIMIT=NONE]">
     Controlled by a switch
-  </string>
-  <string name="cat_button_clear_pending"
-    description="The text of a button clearing pending state of example switches. [CHAR LIMIT=NONE]">
-    Clear pending state
   </string>
 </resources>

@@ -26,7 +26,6 @@ import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.util.Property;
-import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat;
@@ -267,7 +266,7 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
 
   // ******************* Helper methods *******************
 
-  protected void recalculateColors() {
+  void recalculateColors() {
     combinedTrackColor = MaterialColors.compositeARGBWithAlpha(spec.trackColor, getAlpha());
     combinedIndicatorColorArray = spec.indicatorColors.clone();
     for (int i = 0; i < combinedIndicatorColorArray.length; i++) {
@@ -277,16 +276,6 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
   }
 
   // ******************* Getters and setters *******************
-
-  public void setIndicatorColors(@NonNull int[] colors) {
-    spec.indicatorColors = colors;
-    recalculateColors();
-  }
-
-  public void setTrackColor(@ColorInt int color) {
-    spec.trackColor = color;
-    recalculateColors();
-  }
 
   @Override
   public void setAlpha(int alpha) {
