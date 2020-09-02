@@ -32,6 +32,17 @@
     <attr name="checkedIcon"/>
     <!-- Tint color for the checked icon. -->
     <attr name="checkedIconTint"/>
+    <!-- Specifies how the checked icon should be positioned. -->
+    <attr name="checkedIconGravity">
+      <!-- Push icon to the top|start of the card. -->
+      <flag name="TOP_START" value="0x1"/>
+      <!--  Push icon to the bottom|start of the card. -->
+      <flag name="BOTTOM_START" value="0x2"/>
+      <!-- Push icon to the top|end of the card. -->
+      <flag name="TOP_END" value="0x3"/>
+      <!-- Push icon to the bottom|end of the card. -->
+      <flag name="BOTTOM_END" value="0x4"/>
+    </attr>
     <!-- Ripple color for the Card. -->
     <attr name="rippleColor"/>
     <!-- State when a Card is being dragged. -->

@@ -27,6 +27,7 @@ import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import androidx.annotation.IntDef;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -47,6 +48,8 @@ import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.MaterialShapeUtils;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.shape.Shapeable;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
  * Provides a Material card.
@@ -92,6 +95,49 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
   private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_CardView;
   private static final String LOG_TAG = "MaterialCardView";
   private static final String ACCESSIBILITY_CLASS_NAME = "androidx.cardview.widget.CardView";
+
+  /**
+   * Gravity used to position the checked icon at the top|start of the Card.
+   *
+   * @see #setCheckedIconGravity(int)
+   * @see #getCheckedIconGravity()
+   */
+  public static final int CHECKED_ICON_GRAVITY_TOP_START = 0x1;
+
+  /**
+   * Gravity used to position the checked icon at the bottom|start of the Card.
+   *
+   * @see #setCheckedIconGravity(int)
+   * @see #getCheckedIconGravity()
+   */
+  public static final int CHECKED_ICON_GRAVITY_BOTTOM_START = 0x2;
+
+  /**
+   * Gravity used to position the checked icon at the top|end of the Card.
+   *
+   * @see #setCheckedIconGravity(int)
+   * @see #getCheckedIconGravity()
+   */
+  public static final int CHECKED_ICON_GRAVITY_TOP_END = 0x3;
+
+  /**
+   * Gravity used to position the checked icon at the bottom|end of the Card.
+   *
+   * @see #setCheckedIconGravity(int)
+   * @see #getCheckedIconGravity()
+   */
+  public static final int CHECKED_ICON_GRAVITY_BOTTOM_END = 0x4;
+
+  /** Positions the icon can be set to. */
+  @IntDef({
+      CHECKED_ICON_GRAVITY_TOP_START,
+      CHECKED_ICON_GRAVITY_BOTTOM_START,
+      CHECKED_ICON_GRAVITY_TOP_END,
+      CHECKED_ICON_GRAVITY_BOTTOM_END
+  })
+  @Retention(RetentionPolicy.SOURCE)
+  public @interface CheckedIconGravity{}
+
 
   @NonNull private final MaterialCardViewHelper cardViewHelper;
 
@@ -582,4 +628,30 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
       cardViewHelper.forceRippleRedraw();
     }
   }
+
+  /**
+   * Gets the checked icon gravity for this card
+   *
+   * @return Checked Icon gravity of the card.
+   * @attr ref com.google.android.material.R.styleable#MaterialCard_checkedIconGravity
+   * @see #setCheckedIconGravity(int)
+   */
+  @CheckedIconGravity
+  public int getCheckedIconGravity() {
+    return cardViewHelper.getCheckedIconGravity();
+  }
+
+  /**
+   * Sets the checked icon gravity for this card
+   *
+   * @attr ref com.google.android.material.R.styleable#MaterialCard_checkedIconGravity
+   * @param checkedIconGravity checked icon gravity for this card
+   * @see #getCheckedIconGravity()
+   */
+  public void setCheckedIconGravity(@CheckedIconGravity int checkedIconGravity) {
+    if (cardViewHelper.getCheckedIconGravity() != checkedIconGravity) {
+      cardViewHelper.setCheckedIconGravity(checkedIconGravity);
+    }
+  }
+
 }
