@@ -38,7 +38,7 @@ import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wra
 
 /**
  * {@code MaterialToolbar} is a {@link Toolbar} that implements certain Material features, such as
- * elevation overlays for Dark Themes.
+ * elevation overlays for Dark Themes and Shape.
  *
  * <p>Regarding the Dark Theme elevation overlays, it's important to note that the Material {@link
  * AppBarLayout} component also provides elevation overlay support, and operates under the
