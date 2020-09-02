@@ -16,25 +16,25 @@
 
 package com.google.android.material.appbar;
 
-import com.google.android.material.R;
-
-import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
-
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION_CODES;
-import androidx.core.view.ViewCompat;
-import androidx.appcompat.widget.Toolbar;
 import android.util.AttributeSet;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.ViewCompat;
+import com.google.android.material.R;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.MaterialShapeUtils;
 import com.google.android.material.shape.ShapeAppearanceModel;
+import com.google.android.material.shape.Shapeable;
+
+import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 
 /**
  * {@code MaterialToolbar} is a {@link Toolbar} that implements certain Material features, such as
@@ -57,7 +57,7 @@ import com.google.android.material.shape.ShapeAppearanceModel;
  *         android:layout_height=&quot;wrap_content&quot;/&gt;
  * </pre>
  */
-public class MaterialToolbar extends Toolbar {
+public class MaterialToolbar extends Toolbar implements Shapeable {
 
   private ShapeAppearanceModel shapeAppearanceModel;
 
@@ -108,5 +108,17 @@ public class MaterialToolbar extends Toolbar {
     materialShapeDrawable.initializeElevationOverlay(context);
     materialShapeDrawable.setElevation(ViewCompat.getElevation(this));
     ViewCompat.setBackground(this, materialShapeDrawable);
+  }
+
+  @Override
+  public void setShapeAppearanceModel(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
+    this.shapeAppearanceModel = shapeAppearanceModel;
+    initBackground(getContext());
+  }
+
+  @NonNull
+  @Override
+  public ShapeAppearanceModel getShapeAppearanceModel() {
+    return shapeAppearanceModel;
   }
 }
