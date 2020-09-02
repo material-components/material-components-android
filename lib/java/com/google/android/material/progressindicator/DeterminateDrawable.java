@@ -20,8 +20,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import androidx.annotation.NonNull;
-import androidx.dynamicanimation.animation.DynamicAnimation;
-import androidx.dynamicanimation.animation.DynamicAnimation.OnAnimationUpdateListener;
 import androidx.dynamicanimation.animation.FloatPropertyCompat;
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
@@ -60,16 +58,8 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
     springForce.setDampingRatio(SpringForce.DAMPING_RATIO_NO_BOUNCY);
     springForce.setStiffness(SPRING_FORCE_STIFFNESS);
 
-    springAnimator = new SpringAnimation(this, INDICATOR_LENGTH_FRACTION);
+    springAnimator = new SpringAnimation(this, INDICATOR_LENGTH_IN_LEVEL);
     springAnimator.setSpring(springForce);
-    springAnimator.addUpdateListener(
-        new OnAnimationUpdateListener() {
-          @Override
-          public void onAnimationUpdate(DynamicAnimation animation,
-              float value, float velocity) {
-            setIndicatorFraction(value / MAX_DRAWABLE_LEVEL);
-          }
-        });
 
     setGrowFraction(1f);
   }
@@ -210,16 +200,16 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
 
   // ******************* Properties *******************
 
-  private static final FloatPropertyCompat<DeterminateDrawable> INDICATOR_LENGTH_FRACTION =
-      new FloatPropertyCompat<DeterminateDrawable>("indicatorFraction") {
+  private static final FloatPropertyCompat<DeterminateDrawable> INDICATOR_LENGTH_IN_LEVEL =
+      new FloatPropertyCompat<DeterminateDrawable>("indicatorLevel") {
         @Override
         public float getValue(DeterminateDrawable drawable) {
-          return drawable.getIndicatorFraction();
+          return drawable.getIndicatorFraction() * MAX_DRAWABLE_LEVEL;
         }
 
         @Override
         public void setValue(DeterminateDrawable drawable, float value) {
-          drawable.setIndicatorFraction(value);
+          drawable.setIndicatorFraction(value / MAX_DRAWABLE_LEVEL);
         }
       };
 }
