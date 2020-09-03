@@ -368,9 +368,9 @@ the active tab item.
 **Ripple color**     | `tabRippleColor`                                                                              | `setTabRippleColor`<br>`setTabRippleColorResource`<br>`getTabRippleColor`    | `colorOnSurface` at 8% opacity and `colorPrimary` at 8% opacity (activated) (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/tabs/res/color/mtrl_tabs_ripple_color.xml))
 **Unbounded ripple** | `tabUnboundedRipple`                                                                          | `setUnboundedRipple`<br>`setUnboundedRippleResource`<br>`hasUnboundedRipple` | `true`
 **Gravity**          | `tabGravity`                                                                                  | `setTabGravity`<br>`getTabGravity`                                           | `fill`
-**Min width**        | `tabMinWidth`                                                                                 | N/A                                                                          | `72dp` (scrollable) or `wrap_content`
-**Max width**        | `tabMaxWidth`                                                                                 | N/A                                                                          | `264dp`
-**Padding**          | `tabPaddingStart`<br>`tabPaddingEnd`<br>`tabPaddingTop`<br>`tabPaddingBottom`<br>`tabPadding` | N/A                                                                          | `12dp`<br>`12dp`<br>`0dp`<br>`0dp`<br>`0dp`
+**Min width**        | `tabMinWidth`                                                                                 | `setTabMinWidth`                                                             | `72dp` (scrollable) or `wrap_content`
+**Max width**        | `tabMaxWidth`                                                                                 | `setTabMaxWidth`                                                             | `264dp`
+**Padding**          | `tabPaddingStart`<br>`tabPaddingEnd`<br>`tabPaddingTop`<br>`tabPaddingBottom`<br>`tabPadding` | `setTabPaddingStart`<br>`setTabPaddingEnd`<br>`setTabPaddingTop`<br>`setTabPaddingBottom`<br>`setTabPaddingStartResource`<br>`setTabPaddingEndResource`<br>`setTabPaddingTopResource`<br>`setTabPaddingBottomResource`<br>`getTabPaddingStart`<br>`getTabPaddingEnd`<br>`getTabPaddingTop`<br>`getTabPaddingBottom`                      | `12dp`<br>`12dp`<br>`0dp`<br>`0dp`<br>`0dp`
 
 ### Tab indicator attributes
 
