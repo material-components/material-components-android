@@ -45,6 +45,8 @@ import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import androidx.annotation.DimenRes;
+import androidx.annotation.Px;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.util.Pools;
 import androidx.core.view.GravityCompat;
@@ -412,11 +414,11 @@ public class TabLayout extends HorizontalScrollView {
   float tabTextSize;
   float tabTextMultiLineSize;
 
-  final int tabBackgroundResId;
+  int tabBackgroundResId;
 
   int tabMaxWidth = Integer.MAX_VALUE;
-  private final int requestedTabMinWidth;
-  private final int requestedTabMaxWidth;
+  private int requestedTabMinWidth;
+  private int requestedTabMaxWidth;
   private final int scrollableTabMinWidth;
 
   private int contentInsetStart;
@@ -1093,12 +1095,7 @@ public class TabLayout extends HorizontalScrollView {
   public void setUnboundedRipple(boolean unboundedRipple) {
     if (this.unboundedRipple != unboundedRipple) {
       this.unboundedRipple = unboundedRipple;
-      for (int i = 0; i < slidingTabIndicator.getChildCount(); i++) {
-        View child = slidingTabIndicator.getChildAt(i);
-        if (child instanceof TabView) {
-          ((TabView) child).updateBackgroundDrawable(getContext());
-        }
-      }
+      updateTabViewBackground();
     }
   }
 
@@ -1205,12 +1202,7 @@ public class TabLayout extends HorizontalScrollView {
   public void setTabRippleColor(@Nullable ColorStateList color) {
     if (tabRippleColorStateList != color) {
       tabRippleColorStateList = color;
-      for (int i = 0; i < slidingTabIndicator.getChildCount(); i++) {
-        View child = slidingTabIndicator.getChildAt(i);
-        if (child instanceof TabView) {
-          ((TabView) child).updateBackgroundDrawable(getContext());
-        }
-      }
+      updateTabViewBackground();
     }
   }
 
@@ -1273,6 +1265,293 @@ public class TabLayout extends HorizontalScrollView {
     } else {
       setSelectedTabIndicator(null);
     }
+  }
+
+  /**
+   * Sets the background resource to be applied to tabs.
+   *
+   * @param tabBackgroundResourceId A resource to use as background.
+   * @see #getTabBackgroundResourceId()
+   * @attr ref com.google.android.material.R.styleable#TabLayout_tabBackground
+   */
+  public void setTabBackgroundResourceId(@DrawableRes int tabBackgroundResourceId) {
+    if (tabBackgroundResourceId != 0 && tabBackgroundResId != tabBackgroundResourceId ){
+      tabBackgroundResId = tabBackgroundResourceId;
+      updateTabViewBackground();
+    }
+  }
+
+  /**
+   * Returns the background resource applied to tabs.
+   *
+   * @return the background resource applied to tabs.
+   * @see #setTabBackgroundResourceId(int)
+   * @attr ref com.google.android.material.R.styleable#TabLayout_tabBackground
+   */
+  public int getTabBackgroundResourceId() {
+    return tabBackgroundResId;
+  }
+
+  private void updateTabViewBackground(){
+    for (int i = 0; i < slidingTabIndicator.getChildCount(); i++) {
+      View child = slidingTabIndicator.getChildAt(i);
+      if (child instanceof TabView) {
+        ((TabView) child).updateBackgroundDrawable(getContext());
+      }
+    }
+  }
+
+  private void updateTabViewPadding(){
+    for (int i = 0; i < slidingTabIndicator.getChildCount(); i++) {
+      View child = slidingTabIndicator.getChildAt(i);
+      if (child instanceof TabView) {
+        ((TabView) child).updateTabPadding();
+      }
+    }
+    applyModeAndGravity();
+  }
+
+  /**
+   * Sets the minimum width for tabs
+   *
+   * @param tabMinWidth the minimum width for tabs
+   * @see #setTabMinWidthResource(int)
+   * @attr ref com.google.android.material.R.styleable#TabLayout_tabMinWidth
+   */
+  public void setTabMinWidth(@Px int tabMinWidth){
+    if (requestedTabMinWidth != tabMinWidth) {
+      requestedTabMinWidth = tabMinWidth;
+      updateTabViews(true);
+    }
+  }
+
+  /**
+   *
+   * Sets the tabMinWidth resource to be applied to tabs.
+   *
+   * @param tabMinWidthResource A resource to use as tab min width
+   * @see #setTabMinWidth(int)
+   * @attr ref com.google.android.material.R.styleable#TabLayout_tabMinWidth
+   */
+  public void setTabMinWidthResource(@DimenRes int tabMinWidthResource) {
+    if (tabMinWidthResource != 0){
+      setTabMinWidth(getResources().getDimensionPixelSize(tabMinWidthResource));
+    }
+  }
+
+  /**
+   * Sets the  maximum width for tabs
+   *
+   * @param tabMaxWidth the  maximum width for tabs
+   * @see #setTabMaxWidthResource(int)
+   * @attr ref com.google.android.material.R.styleable#TabLayout_tabMaxWidth
+   */
+  public void setTabMaxWidth(@Px int tabMaxWidth){
+    if (requestedTabMaxWidth != tabMaxWidth) {
+      requestedTabMaxWidth = tabMaxWidth;
+      requestLayout();
+    }
+  }
+
+  /**
+   *
+   * Sets the tabMaxWidth resource to be applied to tabs.
+   *
+   * @param tabMaxWidthResource A resource to use as tab min width
+   * @see #setTabMaxWidth(int)
+   * @attr ref com.google.android.material.R.styleable#TabLayout_tabMaxWidth
+   */
+  public void setTabMaxWidthResource(@DimenRes int tabMaxWidthResource) {
+    if (tabMaxWidthResource != 0){
+      setTabMaxWidth(getResources().getDimensionPixelSize(tabMaxWidthResource));
+    }
+  }
+
+  /**
+   * Set the preferred padding along all edges of tabs.
+   *
+   * @param tabPadding the preferred padding along all edges of tabs.
+   * @attr ref com.google.android.material.R.styleable#TabLayout_tabPadding
+   */
+  public void setTabPadding(@Px int tabPadding){
+    tabPaddingStart = tabPaddingEnd = tabPaddingTop = tabPaddingBottom = tabPadding;
+    updateTabViewPadding();
+  }
+
+  /**
+   * Set the preferred padding resource to be applied along all edges of tabs.
+   *
+   * @param tabPaddingResource the preferred padding resource
+   * @attr ref com.google.android.material.R.styleable#TabLayout_tabPadding
+   */
+  public void setTabPaddingResource(@DimenRes int tabPaddingResource){
+    if (tabPaddingResource != 0){
+      setTabPadding(getResources().getDimensionPixelSize(tabPaddingResource));
+    }
+  }
+
+  /**
+   * Set the preferred padding along the start edge of tabs.
+   *
+   * @param tabPaddingStart the preferred padding along the start edge of tabs.
+   * @see #setTabPaddingStart(int)
+   * @see #setTabPaddingStartResource(int)
+   * @attr ref com.google.android.material.R.styleable#TabLayout_tabPaddingStart
+   */
+  public void setTabPaddingStart(@Px int tabPaddingStart){
+    if (this.tabPaddingStart != tabPaddingStart){
+      this.tabPaddingStart = tabPaddingStart;
+      updateTabViewPadding();
+    }
+  }
+
+  /**
+   * Set the preferred padding resource to be applied along the start edge of tabs.
+   *
+   * @param tabPaddingStartResource the preferred padding resource along the start edge of tabs.
+   * @see #setTabPaddingStart(int)
+   * @see #getTabPaddingStart()
+   * @attr ref com.google.android.material.R.styleable#TabLayout_tabPaddingStart
+   */
+  public void setTabPaddingStartResource(@DimenRes int tabPaddingStartResource){
+    if (tabPaddingStartResource != 0){
+      setTabPaddingStart(getResources().getDimensionPixelSize(tabPaddingStartResource));
+    }
+  }
+
+  /**
+   * Returns the preferred padding along the start edge of tabs.
+   *
+   * @return preferred padding along the start edge of tabs.
+   * @see #setTabPaddingStart(int)
+   * @see #setTabPaddingStartResource(int)
+   * @attr ref com.google.android.material.R.styleable#TabLayout_tabPaddingStart
+   */
+  public @Px int getTabPaddingStart() {
+    return tabPaddingStart;
+  }
+
+  /**
+   * Set the preferred padding along the end edge of tabs.
+   *
+   * @param tabPaddingEnd the preferred padding along the end edge of tabs.
+   * @see #setTabPaddingEndResource(int)
+   * @see #getTabPaddingEnd()
+   * @attr ref com.google.android.material.R.styleable#TabLayout_tabPaddingEnd
+   */
+  public void setTabPaddingEnd(@Px int tabPaddingEnd){
+    if (this.tabPaddingEnd != tabPaddingEnd){
+      this.tabPaddingEnd = tabPaddingEnd;
+      updateTabViewPadding();
+    }
+  }
+
+  /**
+   * Set the preferred padding resource to be applied along the end edge of tabs.
+   *
+   * @param tabPaddingEndResource the preferred padding resource along the end edge of tabs.
+   * @see #setTabPaddingEnd(int)
+   * @see #getTabPaddingEnd()
+   * @attr ref com.google.android.material.R.styleable#TabLayout_tabPaddingEnd
+   */
+  public void setTabPaddingEndResource(@DimenRes int tabPaddingEndResource){
+    if (tabPaddingEndResource != 0){
+      setTabPaddingEnd(getResources().getDimensionPixelSize(tabPaddingEndResource));
+    }
+  }
+
+  /**
+   * Returns the preferred padding along the end edge of tabs.
+   *
+   * @return preferred padding along the end edge of tabs.
+   * @see #setTabPaddingEnd(int)
+   * @see #setTabPaddingEndResource(int)
+   * @attr ref com.google.android.material.R.styleable#TabLayout_tabPaddingEnd
+   */
+  public @Px int getTabPaddingEnd() {
+    return tabPaddingEnd;
+  }
+
+  /**
+   * Set the preferred padding along the top edge of tabs.
+   *
+   * @param tabPaddingTop the preferred padding along the top edge of tabs.
+   * @see #setTabPaddingTopResource(int)
+   * @see #getTabPaddingTop()
+   * @attr ref com.google.android.material.R.styleable#TabLayout_tabPaddingTop
+   */
+  public void setTabPaddingTop(@Px int tabPaddingTop){
+    if (this.tabPaddingTop != tabPaddingTop){
+      this.tabPaddingTop = tabPaddingTop;
+      updateTabViewPadding();
+    }
+  }
+
+  /**
+   * Set the preferred padding resource to be applied along the top edge of tabs.
+   *
+   * @param tabPaddingTopResource the preferred padding resource along the top edge of tabs.
+   * @see #setTabPaddingTop(int)
+   * @see #getTabPaddingTop()
+   * @attr ref com.google.android.material.R.styleable#TabLayout_tabPaddingTop
+   */
+  public void setTabPaddingTopResource(@DimenRes int tabPaddingTopResource){
+    if (tabPaddingTopResource != 0){
+      setTabPaddingTop(getResources().getDimensionPixelSize(tabPaddingTopResource));
+    }
+  }
+
+  /**
+   * Returns the preferred padding along the top edge of tabs.
+   *
+   * @return preferred padding along the top edge of tabs.
+   * @see #setTabPaddingTop(int)
+   * @see #setTabPaddingTopResource(int)
+   * @attr ref com.google.android.material.R.styleable#TabLayout_tabPaddingTop
+   */
+  public @Px int getTabPaddingTop() {
+    return tabPaddingTop;
+  }
+
+  /**
+   * Set the preferred padding along the bottom edge of tabs.
+   *
+   * @param tabPaddingBottom the preferred padding along the bottom edge of tabs.*
+   * @see #setTabPaddingBottomResource(int)
+   * @see #getTabPaddingBottom()
+   * @attr ref com.google.android.material.R.styleable#TabLayout_tabPaddingStart
+   */
+  public void setTabPaddingBottom(@Px int tabPaddingBottom){
+    if (this.tabPaddingBottom != tabPaddingBottom){
+      this.tabPaddingBottom = tabPaddingBottom;
+      updateTabViewPadding();
+    }
+  }
+
+  /**
+   * Set the preferred padding resource to be applied along the bottom edge of tabs.
+   *
+   * @param tabPaddingBottomResource the preferred padding resource along the bottom edge of tabs.
+   * @see #setTabPaddingBottom(int)
+   * @see #getTabPaddingBottom()
+   * @attr ref com.google.android.material.R.styleable#TabLayout_tabPaddingBottom
+   */
+  public void setTabPaddingBottomResource(@DimenRes int tabPaddingBottomResource){
+    if (tabPaddingBottomResource != 0){
+      setTabPaddingBottom(getResources().getDimensionPixelSize(tabPaddingBottomResource));
+    }
+  }
+
+  /**
+   * Returns the preferred padding along the bottom edge of tabs.
+   *
+   * @return preferred padding along the bottom edge of tabs.
+   * @see #setTabPaddingBottom(int)
+   * @see #setTabPaddingBottomResource(int)
+   * @attr ref com.google.android.material.R.styleable#TabLayout_tabPaddingBottom
+   */
+  public @Px int getTabPaddingBottom() {
+    return tabPaddingBottom;
   }
 
   /**
@@ -2265,6 +2544,11 @@ public class TabLayout extends HorizontalScrollView {
       setClickable(true);
       ViewCompat.setPointerIcon(
           this, PointerIconCompat.getSystemIcon(getContext(), PointerIconCompat.TYPE_HAND));
+    }
+
+    private void updateTabPadding(){
+      ViewCompat.setPaddingRelative(
+          this, tabPaddingStart, tabPaddingTop, tabPaddingEnd, tabPaddingBottom);
     }
 
     private void updateBackgroundDrawable(Context context) {
