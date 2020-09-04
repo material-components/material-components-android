@@ -16,8 +16,4 @@
   -->
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-  <style name="Widget.MaterialComponents.ExposedDropdownMenu.TextInputLayout" parent="Base.Widget.MaterialComponents.ExposedDropdownMenu.TextInputLayout">
-    <item name="endIconDrawable">@drawable/mtrl_dropdown_arrow</item>
-  </style>
-
 </resources>

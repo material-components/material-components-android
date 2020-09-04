@@ -91,7 +91,13 @@
   <public name="passwordToggleTintMode" type="attr"/>
 
   <public name="textInputLayoutFocusedRectEnabled" type="attr"/>
-  <public name="exposedDropDownMenuStyle" type="attr"/>
+  <public name="popupBackgroundShapeAppearance" type="attr" />
+  <public name="popupBackgroundShapeAppearanceOverlay" type="attr"/>
+  <public name="enforceFlatTopCorners" type="attr"/>
+  <public name="popupTopPadding" type="attr"/>
+  <public name="popupBottomPadding" type="attr"/>
+  <public name="popupStartPadding" type="attr"/>
+  <public name="popupEndPadding" type="attr"/>
 
   <public name="Widget.Design.TextInputLayout" type="style"/>
   <public name="Widget.MaterialComponents.TextInputLayout.FilledBox" type="style"/>
@@ -102,8 +108,4 @@
   <public name="Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu" type="style"/>
   <public name="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu" type="style"/>
   <public name="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu" type="style"/>
-  <public name="Widget.MaterialComponents.ExposedDropDownMenu" type="style"/>
-  <public name="Widget.MaterialComponents.ExposedDropDownMenu.TextInputLayout" type="style"/>
-  <public name="Widget.MaterialComponents.ExposedDropDownMenu.TextInputLayout.FilledBox" type="style"/>
-  <public name="Widget.MaterialComponents.ExposedDropDownMenu.TextInputLayout.OutlinedBox" type="style"/>
 </resources>

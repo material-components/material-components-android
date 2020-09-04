@@ -400,8 +400,6 @@ public class TextInputLayout extends LinearLayout {
 
   @ColorInt private int disabledColor;
 
-  @StyleRes protected int exposedDropDownMenuStyle;
-
   // Only used for testing
   private boolean hintExpanded;
 
@@ -676,10 +674,6 @@ public class TextInputLayout extends LinearLayout {
     setBoxBackgroundMode(
         a.getInt(R.styleable.TextInputLayout_boxBackgroundMode, BOX_BACKGROUND_NONE));
 
-    if (a.hasValue(R.styleable.TextInputLayout_exposedDropDownMenuStyle)){
-      exposedDropDownMenuStyle = a.getResourceId(R.styleable.TextInputLayout_exposedDropDownMenuStyle,
-          R.style.Widget_MaterialComponents_ExposedDropdownMenu_TextInputLayout_FilledBox);
-    }
     // Initialize end icon view.
     endIconView =
         (CheckableImageButton)

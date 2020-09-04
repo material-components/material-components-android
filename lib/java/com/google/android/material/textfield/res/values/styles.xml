@@ -92,7 +92,6 @@
 
     <item name="shapeAppearance">?attr/shapeAppearanceSmallComponent</item>
     <item name="shapeAppearanceOverlay">@null</item>
-    <item name="exposedDropDownMenuStyle">@null</item>
   </style>
 
   <style name="Widget.MaterialComponents.TextInputLayout.FilledBox" parent="Base.Widget.MaterialComponents.TextInputLayout">
@@ -136,7 +135,6 @@
       @style/ThemeOverlay.MaterialComponents.AutoCompleteTextView.FilledBox
     </item>
     <item name="endIconMode">dropdown_menu</item>
-    <item name="exposedDropDownMenuStyle">@style/Widget.MaterialComponents.ExposedDropdownMenu.TextInputLayout.FilledBox</item>
   </style>
 
   <style name="Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu">
@@ -144,7 +142,6 @@
       @style/ThemeOverlay.MaterialComponents.AutoCompleteTextView.FilledBox.Dense
     </item>
     <item name="endIconMode">dropdown_menu</item>
-    <item name="exposedDropDownMenuStyle">@style/Widget.MaterialComponents.ExposedDropdownMenu.TextInputLayout.FilledBox</item>
   </style>
 
   <style name="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
@@ -152,7 +149,6 @@
       @style/ThemeOverlay.MaterialComponents.AutoCompleteTextView.OutlinedBox
     </item>
     <item name="endIconMode">dropdown_menu</item>
-    <item name="exposedDropDownMenuStyle">@style/Widget.MaterialComponents.ExposedDropdownMenu.TextInputLayout.OutlinedBox</item>
   </style>
 
   <style name="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu">
@@ -160,7 +156,6 @@
       @style/ThemeOverlay.MaterialComponents.AutoCompleteTextView.OutlinedBox.Dense
     </item>
     <item name="endIconMode">dropdown_menu</item>
-    <item name="exposedDropDownMenuStyle">@style/Widget.MaterialComponents.ExposedDropdownMenu.TextInputLayout.OutlinedBox</item>
   </style>
 
   <style name="Widget.Design.TextInputEditText" parent="Widget.AppCompat.EditText">
@@ -214,12 +209,19 @@
     <item name="android:textAppearance">?attr/textAppearanceSubtitle1</item>
     <item name="android:dropDownVerticalOffset">@dimen/mtrl_exposed_dropdown_menu_popup_vertical_offset</item>
     <item name="android:popupElevation" tools:ignore="NewApi">@dimen/mtrl_exposed_dropdown_menu_popup_elevation</item>
+    <item name="enforceFlatTopCorners">false</item>
+    <item name="popupBackgroundShapeAppearance">?attr/shapeAppearanceMediumComponent</item>
+    <item name="popupStartPadding">0dp</item>
+    <item name="popupTopPadding">@dimen/mtrl_exposed_dropdown_menu_popup_vertical_padding</item>
+    <item name="popupEndPadding">0dp</item>
+    <item name="popupBottomPadding">@dimen/mtrl_exposed_dropdown_menu_popup_vertical_padding</item>
   </style>
 
   <!-- Styles for the AutocompleteTextView to be used if an ExposedDropdownMenu style is being used. -->
   <style name="Widget.MaterialComponents.AutoCompleteTextView.FilledBox" parent="Base.Widget.MaterialComponents.AutoCompleteTextView">
     <item name="android:paddingTop">28dp</item>
     <item name="android:paddingBottom">12dp</item>
+    <item name="enforceFlatTopCorners">true</item>
   </style>
 
   <style name="Widget.MaterialComponents.AutoCompleteTextView.FilledBox.Dense">
@@ -321,6 +323,7 @@
     <item name="cornerSizeBottomRight">@dimen/mtrl_textinput_box_corner_radius_small</item>
   </style>
 
+  <!--
   <style name="Widget.MaterialComponents.ExposedDropdownMenu" parent="android:Widget"/>
 
   <style name="Base.Widget.MaterialComponents.ExposedDropdownMenu.TextInputLayout" parent="Widget.MaterialComponents.ExposedDropdownMenu">
@@ -338,4 +341,5 @@
   </style>
 
   <style name="Widget.MaterialComponents.ExposedDropdownMenu.TextInputLayout.OutlinedBox"/>
+  -->
 </resources>

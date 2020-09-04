@@ -258,8 +258,6 @@
       <!-- [Sa + Da - Sa * Da, Sc + Dc - Sc * Dc] -->
       <enum name="screen" value="15"/>
     </attr>
-    <!-- The style used for the exposed dropDownMenu. -->
-    <attr name="exposedDropDownMenuStyle" format="reference" />
   </declare-styleable>
 
   <declare-styleable name="TextInputEditText">
@@ -270,22 +268,21 @@
 
   <declare-styleable name="MaterialAutoCompleteTextView" parent="AppCompatAutoCompleteTextView">
     <attr name="android:inputType"/>
-  </declare-styleable>
-
-  <declare-styleable name="TextInputLayout.ExposedDropDownMenu">
+    <!-- Shape appearance style reference for DropDownMenu in MaterialAutoCompleteTextView. -->
+    <attr name="popupBackgroundShapeAppearance" format="reference" />
+    <!-- Shape appearance overlay style reference for DropDownMenu in  MaterialAutoCompleteTextView.
+     To be used to augment attributes declared in the popupBackgroundShapeAppearance. -->
+    <attr name="popupBackgroundShapeAppearanceOverlay" format="reference"/>
     <!-- Whether the flat top corners should be used in DropDownMenu -->
     <attr name="enforceFlatTopCorners" format="boolean"/>
-    <!-- popupVerticalPadding for DropDownMenu in TextInputLayout. -->
-    <attr name="popupVerticalPadding" format="dimension"/>
-    <!-- popupElevation for DropDownMenu in TextInputLayout. -->
-    <attr name="popupElevation" format="dimension"/>
-    <!-- Shape appearance style reference for DropDownMenu in TextInputLayout.
-    Attribute declaration is in the Shape package. -->
-    <attr name="shapeAppearance"/>
-    <!-- Shape appearance overlay style reference for DropDownMenu in  TextInputLayout.
-         To be used to augment attributes declared in the shapeAppearance. Attribute
-         declaration is in the Shape package. -->
-    <attr name="shapeAppearanceOverlay"/>
+    <!-- Top padding for DropDownMenu in  MaterialAutoCompleteTextView. -->
+    <attr name="popupTopPadding" format="dimension"/>
+    <!-- Bottom padding for DropDownMenu in  MaterialAutoCompleteTextView. -->
+    <attr name="popupBottomPadding" format="dimension"/>
+    <!-- Start padding for DropDownMenu in  MaterialAutoCompleteTextView. -->
+    <attr name="popupStartPadding" format="dimension"/>
+    <!-- End padding for DropDownMenu in  MaterialAutoCompleteTextView. -->
+    <attr name="popupEndPadding" format="dimension"/>
   </declare-styleable>
 
 </resources>
