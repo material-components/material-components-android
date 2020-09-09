@@ -24,6 +24,7 @@
   <attr name="materialCalendarHeaderDivider" format="reference"/>
   <attr name="materialCalendarHeaderTitle" format="reference"/>
   <attr name="materialCalendarHeaderSelection" format="reference"/>
+  <attr name="materialCalendarHeaderCancelButton" format="reference"/>
   <attr name="materialCalendarHeaderConfirmButton" format="reference"/>
   <attr name="materialCalendarHeaderToggleButton" format="reference"/>
 

@@ -35,7 +35,7 @@
 
     <com.google.android.material.button.MaterialButton
       android:id="@+id/cancel_button"
-      style="@style/Widget.MaterialComponents.Button.TextButton"
+      style="?attr/materialCalendarHeaderCancelButton"
       android:layout_width="@dimen/mtrl_min_touch_target_size"
       android:layout_height="@dimen/mtrl_min_touch_target_size"
       android:layout_gravity="top"
@@ -45,7 +45,6 @@
       android:insetBottom="0dp"
       android:padding="12dp"
       app:icon="@drawable/material_ic_clear_black_24dp"
-      app:iconTint="?attr/colorOnPrimary"
       app:rippleColor="@color/mtrl_btn_ripple_color"/>
 
     <FrameLayout

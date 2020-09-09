@@ -82,6 +82,10 @@
     <item name="autoSizeMaxTextSize">20sp</item>
   </style>
 
+  <style name="Widget.MaterialComponents.MaterialCalendar.HeaderCancelButton" parent="Widget.MaterialComponents.Button.TextButton">
+    <item name="iconTint">?attr/colorOnPrimary</item>
+  </style>
+
   <style name="Widget.MaterialComponents.MaterialCalendar.HeaderConfirmButton" parent="Widget.MaterialComponents.Button.TextButton">
     <item name="android:textColor">@color/mtrl_on_primary_text_btn_text_color_selector</item>
     <item name="rippleColor">@color/mtrl_btn_ripple_color</item>
