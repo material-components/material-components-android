@@ -109,10 +109,15 @@ public class TextAppearance {
 
     a.recycle();
 
-    a = context.obtainStyledAttributes(id, R.styleable.MaterialTextAppearance);
-    hasLetterSpacing = a.hasValue(R.styleable.MaterialTextAppearance_android_letterSpacing);
-    letterSpacing = a.getFloat(R.styleable.MaterialTextAppearance_android_letterSpacing, 0);
-    a.recycle();
+    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+      a = context.obtainStyledAttributes(id, R.styleable.MaterialTextAppearance);
+      hasLetterSpacing = a.hasValue(R.styleable.MaterialTextAppearance_android_letterSpacing);
+      letterSpacing = a.getFloat(R.styleable.MaterialTextAppearance_android_letterSpacing, 0);
+      a.recycle();
+    } else {
+      hasLetterSpacing = false;
+      letterSpacing = 0;
+    }
   }
 
   /**
