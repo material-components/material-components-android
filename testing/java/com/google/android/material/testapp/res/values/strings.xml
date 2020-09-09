@@ -52,6 +52,9 @@
   <string name="textinput_custom_end_icon">Custom end icon</string>
   <string name="textinput_prefix_text">$</string>
   <string name="textinput_suffix_text">/100</string>
+  <string name="textinput_nested_hint">Nested hint</string>
+  <string name="textinput_outer_hint">Outer hint</string>
+
 
   <string-array name="exposed_dropdown_content">
     <item>Item 1</item>

@@ -34,6 +34,7 @@ public class ViewStructureImpl extends ViewStructure {
   private CharSequence hint;
   private String className;
   private ViewStructureImpl[] children;
+  private AutofillId autofillId;
 
   @Override
   public void setHint(CharSequence hint) {
@@ -196,11 +197,13 @@ public class ViewStructureImpl extends ViewStructure {
 
   @Override
   public AutofillId getAutofillId() {
-    return null;
+    return autofillId;
   }
 
   @Override
-  public void setAutofillId(AutofillId id) {}
+  public void setAutofillId(AutofillId id) {
+    this.autofillId = id;
+  }
 
   public void setAutofillId(ViewStructure parent, int virtualId) {}
 

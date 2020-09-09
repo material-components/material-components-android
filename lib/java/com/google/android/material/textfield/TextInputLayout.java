@@ -23,6 +23,7 @@ import static com.google.android.material.textfield.IndicatorViewController.COUN
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 
 import android.animation.ValueAnimator;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Canvas;
@@ -827,6 +828,12 @@ public class TextInputLayout extends LinearLayout {
     // For accessibility, consider TextInputLayout itself to be a simple container for an EditText,
     // and do not expose it to accessibility services.
     ViewCompat.setImportantForAccessibility(this, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO);
+
+    // For autofill to work as intended, TextInputLayout needs to pass the hint text to the nested
+    // EditText so marking it as IMPORTANT_FOR_AUTOFILL_YES.
+    if (VERSION.SDK_INT >= VERSION_CODES.O) {
+      ViewCompat.setImportantForAutofill(this, View.IMPORTANT_FOR_AUTOFILL_YES);
+    }
   }
 
   @Override
@@ -1324,24 +1331,43 @@ public class TextInputLayout extends LinearLayout {
   }
 
   @Override
+  @TargetApi(VERSION_CODES.O)
   public void dispatchProvideAutofillStructure(@NonNull ViewStructure structure, int flags) {
-    if (originalHint == null || editText == null) {
+    if (editText == null) {
       super.dispatchProvideAutofillStructure(structure, flags);
       return;
     }
 
-    // Temporarily sets child's hint to its original value so it is properly set in the
-    // child's ViewStructure.
-    boolean wasProvidingHint = isProvidingHint;
-    // Ensures a child TextInputEditText does not retrieve its hint from this TextInputLayout.
-    isProvidingHint = false;
-    final CharSequence hint = editText.getHint();
-    editText.setHint(originalHint);
-    try {
-      super.dispatchProvideAutofillStructure(structure, flags);
-    } finally {
-      editText.setHint(hint);
-      isProvidingHint = wasProvidingHint;
+    if (originalHint != null) {
+      // Temporarily sets child's hint to its original value so it is properly set in the
+      // child's ViewStructure.
+      boolean wasProvidingHint = isProvidingHint;
+      // Ensures a child TextInputEditText does not retrieve its hint from this TextInputLayout.
+      isProvidingHint = false;
+      final CharSequence hint = editText.getHint();
+      editText.setHint(originalHint);
+      try {
+        super.dispatchProvideAutofillStructure(structure, flags);
+      } finally {
+        editText.setHint(hint);
+        isProvidingHint = wasProvidingHint;
+      }
+    } else {
+      // Pass the hint set on the outer TextInputLayout to the nested edit text to allow autofill
+      // services to work as intended.
+      structure.setAutofillId(getAutofillId());
+      onProvideAutofillStructure(structure, flags);
+      onProvideAutofillVirtualStructure(structure, flags);
+
+      structure.setChildCount(inputFrame.getChildCount());
+      for (int i = 0; i < inputFrame.getChildCount(); i++) {
+        View child = inputFrame.getChildAt(i);
+        ViewStructure childStructure = structure.newChild(i);
+        child.dispatchProvideAutofillStructure(childStructure, flags);
+        if (child == editText) {
+          childStructure.setHint(getHint());
+        }
+      }
     }
   }
 

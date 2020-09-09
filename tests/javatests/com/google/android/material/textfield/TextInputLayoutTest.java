@@ -346,21 +346,22 @@ public class TextInputLayoutTest {
   public void testDispatchProvideAutofillStructure() {
     final Activity activity = activityTestRule.getActivity();
 
-    final TextInputLayout layout = activity.findViewById(R.id.textinput);
+    final TextInputLayout layout = activity.findViewById(R.id.textinput_layout_without_hint);
 
     final ViewStructureImpl structure = new ViewStructureImpl();
     layout.dispatchProvideAutofillStructure(structure, 0);
 
-    assertEquals(2, structure.getChildCount()); // EditText and TextView
+    // 1 x EditText, 3 x TextView (prefix/suffix/placeholder).
+    assertEquals(4, structure.getChildCount());
 
     // Asserts the structure.
-    final ViewStructureImpl childStructure = structure.getChildAt(0);
+    ViewStructureImpl childStructure = structure.getChildAt(1);
     assertEquals(EditText.class.getName(), childStructure.getClassName());
-    assertEquals("Hint to the user", childStructure.getHint().toString());
+    assertEquals("Nested hint", childStructure.getHint().toString());
 
     // Make sure the widget's hint was restored.
-    assertEquals("Hint to the user", layout.getHint().toString());
-    final EditText editText = activity.findViewById(R.id.textinput_edittext);
+    assertEquals("Nested hint", layout.getHint().toString());
+    final EditText editText = activity.findViewById(R.id.textinput_edittext_with_hint);
     assertNull(editText.getHint());
   }
 
@@ -728,6 +729,38 @@ public class TextInputLayoutTest {
                 R.dimen.corner_radius_medium));
     // Check that the outline box's top end corner radius is cornerRadiusMedium.
     onView(withId(R.id.textinput_box_outline)).check(isBoxCornerRadiusTopEnd(cornerRadiusMedium));
+  }
+
+  @UiThreadTest
+  @Test
+  @SdkSuppress(minSdkVersion = Build.VERSION_CODES.O)
+  public void hintSetOnNestedEditText_propagateInnerHintToAutofillProvider() {
+    final Activity activity = activityTestRule.getActivity();
+    TextInputLayout textInputLayout = activity.findViewById(R.id.textinput_layout_without_hint);
+    ViewStructureImpl structure = new ViewStructureImpl();
+
+    textInputLayout.dispatchProvideAutofillStructure(structure, /* flags= */ 0);
+
+    final ViewStructureImpl editText = structure.getChildAt(1);
+    assertEquals(EditText.class.getName(), editText.getClassName());
+    assertEquals(structure.getAutofillId(), textInputLayout.getAutofillId());
+    assertEquals("Nested hint", editText.getHint().toString());
+  }
+
+  @UiThreadTest
+  @Test
+  @SdkSuppress(minSdkVersion = Build.VERSION_CODES.O)
+  public void hintSetOnOuterLayout_propagateOuterHintToAutofillProvider() {
+    final Activity activity = activityTestRule.getActivity();
+    TextInputLayout textInputLayout = activity.findViewById(R.id.textinput_layout_with_hint);
+    ViewStructureImpl structure = new ViewStructureImpl();
+
+    textInputLayout.dispatchProvideAutofillStructure(structure, /* flags= */ 0);
+
+    final ViewStructureImpl editText = structure.getChildAt(1);
+    assertEquals(EditText.class.getName(), editText.getClassName());
+    assertEquals(structure.getAutofillId(), textInputLayout.getAutofillId());
+    assertEquals("Outer hint", editText.getHint().toString());
   }
 
   private static ViewAssertion isHintExpanded(final boolean expanded) {
