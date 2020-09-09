@@ -44,6 +44,11 @@
     <!-- The top offset of the BottomSheet in the expanded-state when fitsToContent is false.
          The default value is 0, which results in the sheet matching the parent's top. -->
     <attr name="behavior_expandedOffset" format="reference|dimension"/>
+    <!-- The threshold which control when the bottom sheet should be hidden. Defaults to 0.5, if not
+     explicitly set. Value must be a float value between 0 and 1. When 0, the bottom sheet is always hidden,
+     regardless of the speed or size of the dismiss gesture.
+     -->
+    <attr name="behavior_hide_threshold" format="reference|float"/>
     <!-- Shape appearance style reference for BottomSheet. Attribute declaration is in the shape
          package. -->
      <attr name="shapeAppearance"/>

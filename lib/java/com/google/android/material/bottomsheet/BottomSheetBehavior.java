@@ -188,7 +188,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   private static final int SIGNIFICANT_VEL_THRESHOLD = 500;
 
-  private static final float HIDE_THRESHOLD = 0.5f;
+  private static final float DEFAULT_HIDE_THRESHOLD = 0.5f;
 
   private static final float HIDE_FRICTION = 0.1f;
 
@@ -214,6 +214,9 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   /** True if Behavior has a non-null value for the @shapeAppearance attribute */
   private boolean shapeThemingEnabled;
+
+  /** Threshold to control the hidden state trigger */
+  private float hideThreshold;
 
   private MaterialShapeDrawable materialShapeDrawable;
 
@@ -325,6 +328,9 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     setSaveFlags(a.getInt(R.styleable.BottomSheetBehavior_Layout_behavior_saveFlags, SAVE_NONE));
     setHalfExpandedRatio(
         a.getFloat(R.styleable.BottomSheetBehavior_Layout_behavior_halfExpandedRatio, 0.5f));
+    setHideThreshold(
+        a.getFloat(
+            R.styleable.BottomSheetBehavior_Layout_behavior_hide_threshold, DEFAULT_HIDE_THRESHOLD));
 
     value = a.peekValue(R.styleable.BottomSheetBehavior_Layout_behavior_expandedOffset);
     if (value != null && value.type == TypedValue.TYPE_FIRST_INT) {
@@ -792,6 +798,19 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     }
   }
 
+  /**
+   * The threshold which control when the bottom sheet should be hidden. Defaults to 0.5, if not
+   * explicitly set. Value must be a float value between 0 and 1. When 0, the bottom sheet is always hidden,
+   * regardless of the speed or size of the dismiss gesture.
+   *
+   * @param hideThreshold float value between 0f and 1f default = 0.5f
+   * @attr ref
+   *     com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_hide_threshold
+   */
+  public void setHideThreshold(@FloatRange(from = 0f, to = 1f) float hideThreshold) {
+    this.hideThreshold = hideThreshold;
+  }
+
   private void updatePeekHeight(boolean animate) {
     if (viewRef != null) {
       calculateCollapsedOffset();
@@ -1201,7 +1220,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     }
     int peek = calculatePeekHeight();
     final float newTop = child.getTop() + yvel * HIDE_FRICTION;
-    return Math.abs(newTop - collapsedOffset) / (float) peek > HIDE_THRESHOLD;
+    return Math.abs(newTop - collapsedOffset) / (float) peek > hideThreshold;
   }
 
   @Nullable
@@ -1555,6 +1574,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     boolean fitToContents;
     boolean hideable;
     boolean skipCollapsed;
+    float hideThreshold;
 
     public SavedState(@NonNull Parcel source) {
       this(source, null);
@@ -1568,6 +1588,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       fitToContents = source.readInt() == 1;
       hideable = source.readInt() == 1;
       skipCollapsed = source.readInt() == 1;
+      hideThreshold = source.readFloat();
     }
 
     public SavedState(Parcelable superState, @NonNull BottomSheetBehavior<?> behavior) {
@@ -1577,6 +1598,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       this.fitToContents = behavior.fitToContents;
       this.hideable = behavior.hideable;
       this.skipCollapsed = behavior.skipCollapsed;
+      this.hideThreshold = behavior.hideThreshold;
     }
 
     /**
@@ -1601,6 +1623,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       out.writeInt(fitToContents ? 1 : 0);
       out.writeInt(hideable ? 1 : 0);
       out.writeInt(skipCollapsed ? 1 : 0);
+      out.writeFloat(hideThreshold);
     }
 
     public static final Creator<SavedState> CREATOR =
