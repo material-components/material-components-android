@@ -31,6 +31,7 @@ import androidx.annotation.Nullable;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.CompositeDateValidator;
+import com.google.android.material.datepicker.DateValidatorPointBackward;
 import com.google.android.material.datepicker.DateValidatorPointForward;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.snackbar.Snackbar;
@@ -204,6 +205,29 @@ public class DatePickerMainDemoFragment extends DemoFragment {
       validators.add(new DateValidatorWeekdays());
 
       constraintsBuilder.setValidator(CompositeDateValidator.allOf(validators));
+    } else if ((validationChoice == R.id.cat_picker_validation_multiple_range)) {
+      List<CalendarConstraints.DateValidator> validatorsMultple = new ArrayList<>();
+      Calendar utc = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+      utc.setTimeInMillis(today);
+      utc.set(Calendar.DATE, 10);
+      DateValidatorPointBackward pointBackward =
+          DateValidatorPointBackward.before(utc.getTimeInMillis());
+      utc.set(Calendar.DATE, 20);
+
+      List<CalendarConstraints.DateValidator> validatorsComposite = new ArrayList<>();
+      DateValidatorPointForward pointForwardComposite =
+          DateValidatorPointForward.from(utc.getTimeInMillis());
+      utc.set(Calendar.DATE, 26);
+      DateValidatorPointBackward pointBackwardComposite =
+          DateValidatorPointBackward.before(utc.getTimeInMillis());
+      validatorsComposite.add(pointForwardComposite);
+      validatorsComposite.add(pointBackwardComposite);
+      CalendarConstraints.DateValidator compositeDateValidator =
+          CompositeDateValidator.allOf(validatorsComposite);
+
+      validatorsMultple.add(pointBackward);
+      validatorsMultple.add(compositeDateValidator);
+      constraintsBuilder.setValidator(CompositeDateValidator.anyOf(validatorsMultple));
     }
     return constraintsBuilder;
   }
