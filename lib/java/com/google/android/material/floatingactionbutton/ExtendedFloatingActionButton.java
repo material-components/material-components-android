@@ -35,7 +35,6 @@ import android.util.AttributeSet;
 import android.util.Property;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import androidx.annotation.AnimatorRes;
 import androidx.annotation.NonNull;
@@ -44,6 +43,7 @@ import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.AttachedBehavior;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior;
+//import androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams;
 import com.google.android.material.animation.MotionSpec;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -214,6 +214,23 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
             context, attrs, defStyleAttr, DEF_STYLE_RES, ShapeAppearanceModel.PILL
         ).build();
     setShapeAppearanceModel(shapeAppearanceModel);
+
+    //Patches corner case where the width does not fit to the text: http://bit.ly/35vSUJe
+    addOnExtendAnimationListener(new AnimatorListener() {
+
+      @Override
+      public void onAnimationEnd(Animator animation) {
+        LayoutParams newLayoutParams =  ExtendedFloatingActionButton.this.getLayoutParams();
+        newLayoutParams.width = LayoutParams.WRAP_CONTENT;
+        ExtendedFloatingActionButton.this.setLayoutParams(newLayoutParams);
+      }
+      @Override
+      public void onAnimationStart(Animator animation) {}
+      @Override
+      public void onAnimationCancel(Animator animation) {}
+      @Override
+      public void onAnimationRepeat(Animator animation) {}
+    });
   }
 
   @Override
@@ -230,6 +247,21 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
   @Override
   public Behavior<ExtendedFloatingActionButton> getBehavior() {
     return behavior;
+  }
+
+  /**
+   * Determines how the extended button is hidden when it needs to be collapsed
+   * @param isHide If true, none of the button will be visible when collapsed. If false, the button
+   * will "shrink" and hide button text but keep the icon.
+   *
+   * This option is "false" and perform a shrink by default.
+   */
+  public void setHideBehavior(boolean isHide) {
+
+    ExtendedFloatingActionButtonBehavior<ExtendedFloatingActionButton> extendedBehavior = (ExtendedFloatingActionButtonBehavior<ExtendedFloatingActionButton>) behavior;
+    extendedBehavior.setAutoHideEnabled(isHide);
+    extendedBehavior.setAutoShrinkEnabled(!isHide);
+
   }
 
 
@@ -779,7 +811,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     }
 
     private static boolean isBottomSheet(@NonNull View view) {
-      final ViewGroup.LayoutParams lp = view.getLayoutParams();
+      final LayoutParams lp = view.getLayoutParams();
       if (lp instanceof CoordinatorLayout.LayoutParams) {
         return ((CoordinatorLayout.LayoutParams) lp).getBehavior() instanceof BottomSheetBehavior;
       }
@@ -1111,7 +1143,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
       super.onAnimationEnd();
       animState = ANIM_STATE_NONE;
       if (!isCancelled) {
-        setVisibility(GONE);
+        setVisibility(INVISIBLE);
       }
     }
   }
