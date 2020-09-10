@@ -16,6 +16,8 @@
 -->
 <resources>
   <public name="cardForegroundColor" type="attr"/>
+  <public name="checkedIconSize" type="attr"/>
+  <public name="checkedIconMargin" type="attr"/>
   <public name="materialCardViewStyle" type="attr"/>
   <public name="state_dragged" type="attr" />
   <public name="Widget.MaterialComponents.CardView" type="style"/>

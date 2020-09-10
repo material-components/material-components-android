@@ -36,6 +36,7 @@ import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Checkable;
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
+import androidx.annotation.DimenRes;
 import androidx.annotation.Dimension;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.FloatRange;
@@ -549,6 +550,55 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
    */
   public void setCheckedIconTint(@Nullable ColorStateList checkedIconTint) {
     cardViewHelper.setCheckedIconTint(checkedIconTint);
+  }
+
+  @Dimension
+  public int getCheckedIconSize() {
+    return cardViewHelper.getCheckedIconSize();
+  }
+
+  /**
+   * Sets the size of the checked icon
+   *
+   * @param checkedIconSize checked icon size
+   * @attr ref com.google.android.material.R.styleable#MaterialCardView_checkedIconSize
+   */
+  public void setCheckedIconSize(@Dimension int checkedIconSize) {
+    cardViewHelper.setCheckedIconSize(checkedIconSize);
+  }
+
+  /**
+   * Sets the size of the checked icon using a resource id.
+   *
+   * @param checkedIconSizeResId The resource id of this Card's checked icon size
+   * @attr ref com.google.android.material.R.styleable#MaterialCardView_checkedIconSize
+   */
+  public void setCheckedIconSizeResource(@DimenRes int checkedIconSizeResId) {
+    if (checkedIconSizeResId != 0) {
+      cardViewHelper.setCheckedIconSize(getResources().getDimensionPixelSize(checkedIconSizeResId));
+    }
+  }
+
+  @Dimension
+  public int getCheckedIconMargin() {
+    return cardViewHelper.getCheckedIconMargin();
+  }
+
+  public void setCheckedIconMargin(@Dimension int checkedIconMargin) {
+    cardViewHelper.setCheckedIconMargin(checkedIconMargin);
+  }
+
+  /**
+   * Sets the margin of the checked icon using a resource id.
+   *
+   * @param checkedIconMarginResId The resource id of this Card's checked icon margin
+   * @attr ref com.google.android.material.R.styleable#MaterialCardView_checkedIconMargin
+   */
+  public void setCheckedIconMarginResource(@DimenRes int checkedIconMarginResId) {
+    if (checkedIconMarginResId != NO_ID) {
+      cardViewHelper.setCheckedIconMargin(
+          getResources().getDimensionPixelSize(checkedIconMarginResId));
+    }
   }
 
   @NonNull

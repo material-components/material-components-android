@@ -21,7 +21,6 @@ import com.google.android.material.R;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Rect;
@@ -97,8 +96,8 @@ class MaterialCardViewHelper {
   // Will always wrapped in an InsetDrawable
   @NonNull private final MaterialShapeDrawable foregroundContentDrawable;
 
-  @Dimension private final int checkedIconMargin;
-  @Dimension private final int checkedIconSize;
+  @Dimension private int checkedIconMargin;
+  @Dimension private int checkedIconSize;
   @Dimension private int strokeWidth;
 
   // If card is clickable, this is the clickableForegroundDrawable otherwise it draws the stroke.
@@ -140,11 +139,6 @@ class MaterialCardViewHelper {
     foregroundContentDrawable = new MaterialShapeDrawable();
     setShapeAppearanceModel(shapeAppearanceModelBuilder.build());
 
-    Resources resources = card.getResources();
-    // TODO(b/145298914): support custom sizing
-    checkedIconMargin = resources.getDimensionPixelSize(R.dimen.mtrl_card_checked_icon_margin);
-    checkedIconSize = resources.getDimensionPixelSize(R.dimen.mtrl_card_checked_icon_size);
-
     cardViewAttributes.recycle();
   }
 
@@ -165,6 +159,10 @@ class MaterialCardViewHelper {
     setCheckedIcon(
         MaterialResources.getDrawable(
             materialCardView.getContext(), attributes, R.styleable.MaterialCardView_checkedIcon));
+    setCheckedIconSize(
+        attributes.getDimensionPixelSize(R.styleable.MaterialCardView_checkedIconSize, 0));
+    setCheckedIconMargin(
+        attributes.getDimensionPixelSize(R.styleable.MaterialCardView_checkedIconMargin, 0));
 
     rippleColor =
         MaterialResources.getColorStateList(
@@ -395,6 +393,24 @@ class MaterialCardViewHelper {
       clickableForegroundDrawable.setDrawableByLayerId(
           R.id.mtrl_card_checked_layer_id, checkedLayer);
     }
+  }
+
+  @Dimension
+  int getCheckedIconSize() {
+    return checkedIconSize;
+  }
+
+  void setCheckedIconSize(@Dimension int checkedIconSize) {
+    this.checkedIconSize = checkedIconSize;
+  }
+
+  @Dimension
+  int getCheckedIconMargin() {
+    return checkedIconMargin;
+  }
+
+  void setCheckedIconMargin(@Dimension int checkedIconMargin) {
+    this.checkedIconMargin = checkedIconMargin;
   }
 
   void onMeasure(int measuredWidth, int measuredHeight) {
