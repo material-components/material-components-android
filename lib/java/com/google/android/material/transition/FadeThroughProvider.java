@@ -42,7 +42,7 @@ public final class FadeThroughProvider implements VisibilityAnimatorProvider {
     return createFadeThroughAnimator(
         view,
         /* startValue= */ 0f,
-        /* endValue= */ 1f,
+        /* endValue= */ view.getAlpha(),
         /* startFraction= */ PROGRESS_THRESHOLD,
         /* endFraction= */ 1f);
   }
@@ -52,7 +52,7 @@ public final class FadeThroughProvider implements VisibilityAnimatorProvider {
   public Animator createDisappear(@NonNull ViewGroup sceneRoot, @NonNull View view) {
     return createFadeThroughAnimator(
         view,
-        /* startValue= */ 1f,
+        /* startValue= */ view.getAlpha(),
         /* endValue= */ 0f,
         /* startFraction= */ 0f,
         /* endFraction= */ PROGRESS_THRESHOLD);
