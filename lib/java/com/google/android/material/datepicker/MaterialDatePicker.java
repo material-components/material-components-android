@@ -625,10 +625,30 @@ public final class MaterialDatePicker<S> extends DialogFragment {
       if (titleTextResId == 0) {
         titleTextResId = dateSelector.getDefaultTitleResId();
       }
+
       if (selection != null) {
         dateSelector.setSelection(selection);
       }
+
+      if (calendarConstraints.getOpenAt() == null) {
+        calendarConstraints.setOpenAt(createDefaultOpenAt());
+      }
+
       return MaterialDatePicker.newInstance(this);
+    }
+
+    private Month createDefaultOpenAt() {
+      if (!dateSelector.getSelectedDays().isEmpty()) {
+        // Set the month to the first selected month in the selection
+        long firstSelectedDay = dateSelector.getSelectedDays().iterator().next();
+        return Month.create(firstSelectedDay);
+      }
+
+      long today = MaterialDatePicker.thisMonthInUtcMilliseconds();
+      long start = calendarConstraints.getStart().timeInMillis;
+      long end = calendarConstraints.getEnd().timeInMillis;
+      long openAt = start <= today && today <= end ? today : start;
+      return Month.create(openAt);
     }
   }
 }

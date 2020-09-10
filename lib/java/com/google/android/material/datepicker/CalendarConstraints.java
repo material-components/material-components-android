@@ -18,7 +18,9 @@ package com.google.android.material.datepicker;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import androidx.core.util.ObjectsCompat;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Calendar;
 
@@ -32,8 +34,9 @@ public final class CalendarConstraints implements Parcelable {
 
   @NonNull private final Month start;
   @NonNull private final Month end;
-  @NonNull private final Month openAt;
-  private final DateValidator validator;
+  @NonNull private final DateValidator validator;
+
+  @Nullable private Month openAt;
 
   private final int yearSpan;
   private final int monthSpan;
@@ -51,15 +54,18 @@ public final class CalendarConstraints implements Parcelable {
   }
 
   private CalendarConstraints(
-      @NonNull Month start, @NonNull Month end, @NonNull Month openAt, DateValidator validator) {
+      @NonNull Month start,
+      @NonNull Month end,
+      @NonNull DateValidator validator,
+      @Nullable Month openAt) {
     this.start = start;
     this.end = end;
     this.openAt = openAt;
     this.validator = validator;
-    if (start.compareTo(openAt) > 0) {
+    if (openAt != null && start.compareTo(openAt) > 0) {
       throw new IllegalArgumentException("start Month cannot be after current Month");
     }
-    if (openAt.compareTo(end) > 0) {
+    if (openAt != null && openAt.compareTo(end) > 0) {
       throw new IllegalArgumentException("current Month cannot be after end Month");
     }
     monthSpan = start.monthsUntil(end) + 1;
@@ -90,9 +96,14 @@ public final class CalendarConstraints implements Parcelable {
   }
 
   /** Returns the openAt month within this set of bounds. */
-  @NonNull
+  @Nullable
   Month getOpenAt() {
     return openAt;
+  }
+
+  /** Sets the openAt month. */
+  void setOpenAt(@Nullable Month openAt) {
+    this.openAt = openAt;
   }
 
   /**
@@ -122,7 +133,7 @@ public final class CalendarConstraints implements Parcelable {
     CalendarConstraints that = (CalendarConstraints) o;
     return start.equals(that.start)
         && end.equals(that.end)
-        && openAt.equals(that.openAt)
+        && ObjectsCompat.equals(openAt, that.openAt)
         && validator.equals(that.validator);
   }
 
@@ -144,7 +155,7 @@ public final class CalendarConstraints implements Parcelable {
           Month end = source.readParcelable(Month.class.getClassLoader());
           Month openAt = source.readParcelable(Month.class.getClassLoader());
           DateValidator validator = source.readParcelable(DateValidator.class.getClassLoader());
-          return new CalendarConstraints(start, end, openAt, validator);
+          return new CalendarConstraints(start, end, validator, openAt);
         }
 
         @NonNull
@@ -300,7 +311,7 @@ public final class CalendarConstraints implements Parcelable {
      * to all dates as valid.
      */
     @NonNull
-    public Builder setValidator(DateValidator validator) {
+    public Builder setValidator(@NonNull DateValidator validator) {
       this.validator = validator;
       return this;
     }
@@ -308,17 +319,13 @@ public final class CalendarConstraints implements Parcelable {
     /** Builds the {@link CalendarConstraints} object using the set parameters or defaults. */
     @NonNull
     public CalendarConstraints build() {
-      if (openAt == null) {
-        long today = MaterialDatePicker.thisMonthInUtcMilliseconds();
-        openAt = start <= today && today <= end ? today : start;
-      }
       Bundle deepCopyBundle = new Bundle();
       deepCopyBundle.putParcelable(DEEP_COPY_VALIDATOR_KEY, validator);
       return new CalendarConstraints(
           Month.create(start),
           Month.create(end),
-          Month.create(openAt),
-          (DateValidator) deepCopyBundle.getParcelable(DEEP_COPY_VALIDATOR_KEY));
+          (DateValidator) deepCopyBundle.getParcelable(DEEP_COPY_VALIDATOR_KEY),
+          openAt == null ? null : Month.create(openAt));
     }
   }
 }
