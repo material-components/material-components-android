@@ -27,6 +27,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.PropertyValuesHolder;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
 import androidx.core.view.ViewCompat;
@@ -89,6 +90,9 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
   @NonNull private final Behavior<ExtendedFloatingActionButton> behavior;
 
   private boolean isExtended = true;
+
+  @NonNull protected ColorStateList originalTextCsl;
+
 
   /**
    * Callback to be invoked when the visibility or the state of an ExtendedFloatingActionButton
@@ -214,6 +218,31 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
             context, attrs, defStyleAttr, DEF_STYLE_RES, ShapeAppearanceModel.PILL
         ).build();
     setShapeAppearanceModel(shapeAppearanceModel);
+    saveOriginalTextCsl();
+  }
+
+  @Override
+  public void setTextColor(int color) {
+    super.setTextColor(color);
+    saveOriginalTextCsl();
+  }
+
+  @Override
+  public void setTextColor(@NonNull ColorStateList colors) {
+    super.setTextColor(colors);
+    saveOriginalTextCsl();
+  }
+
+  private void saveOriginalTextCsl() {
+    originalTextCsl = getTextColors();
+  }
+
+  /**
+   * Update the text color without affecting the original, client-set color.
+   */
+  protected void silentlyUpdateTextColor(@NonNull  ColorStateList csl) {
+    // Call super to avoid saving this silent update through extended FAB's setTextColor overrides.
+    super.setTextColor(csl);
   }
 
   @Override
@@ -969,7 +998,9 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
 
     @Override
     public int getDefaultMotionSpecResource() {
-      return R.animator.mtrl_extended_fab_change_size_motion_spec;
+      return extending
+          ? R.animator.mtrl_extended_fab_change_size_expand_motion_spec
+          : R.animator.mtrl_extended_fab_change_size_collapse_motion_spec;
     }
 
     @NonNull
@@ -986,6 +1017,14 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
         PropertyValuesHolder[] heightValues = spec.getPropertyValues("height");
         heightValues[0].setFloatValues(getHeight(), size.getHeight());
         spec.setPropertyValues("height", heightValues);
+      }
+
+      if (spec.hasPropertyValues("labelOpacity")) {
+        PropertyValuesHolder[] labelOpacityValues = spec.getPropertyValues("labelOpacity");
+        float startValue = extending ? 0F : 1F;
+        float endValue = extending ? 1F : 0F;
+        labelOpacityValues[0].setFloatValues(startValue, endValue);
+        spec.setPropertyValues("labelOpacity", labelOpacityValues);
       }
 
       return super.createAnimator(spec);

@@ -16,11 +16,17 @@
 
 package com.google.android.material.floatingactionbutton;
 
+import static com.google.android.material.animation.AnimationUtils.lerp;
+
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import androidx.core.util.Preconditions;
+import android.util.Property;
 import android.view.View;
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
@@ -59,10 +65,7 @@ abstract class BaseMotionStrategy implements MotionStrategy {
     }
 
     if (defaultMotionSpec == null) {
-      defaultMotionSpec =
-          MotionSpec.createFromResource(
-              context,
-              getDefaultMotionSpecResource());
+      defaultMotionSpec = MotionSpec.createFromResource(context, getDefaultMotionSpecResource());
     }
 
     return Preconditions.checkNotNull(defaultMotionSpec);
@@ -132,6 +135,62 @@ abstract class BaseMotionStrategy implements MotionStrategy {
 
     if (spec.hasPropertyValues("height")) {
       animators.add(spec.getAnimator("height", fab, ExtendedFloatingActionButton.HEIGHT));
+    }
+
+    if (spec.hasPropertyValues("labelOpacity")) {
+      // Use a Float Property to animate the opacity of the button text's color state list.
+      ObjectAnimator animator =
+          spec.getAnimator(
+              "labelOpacity",
+              fab,
+              new Property<ExtendedFloatingActionButton, Float>(
+                  Float.class, "LABEL_OPACITY_PROPERTY") {
+
+                @Override
+                public Float get(ExtendedFloatingActionButton object) {
+                  // The alpha of the currently drawn text
+                  int originalOpacity =
+                      Color.alpha(
+                          object.originalTextCsl.getColorForState(
+                              object.getDrawableState(), fab.originalTextCsl.getDefaultColor()));
+                  final float currentOpacity = Color.alpha(object.getCurrentTextColor()) / 255F;
+                  return lerp(0F, 1F, currentOpacity / originalOpacity);
+                }
+
+                @Override
+                public void set(ExtendedFloatingActionButton object, Float value) {
+                  // Since `value` is always between 0 (gone) and 1 (visible), interpolate between
+                  // 0 (gone) and the color's original alpha to avoid overshooting the text alpha.
+                  int originalColor =
+                      object.originalTextCsl.getColorForState(
+                          object.getDrawableState(), fab.originalTextCsl.getDefaultColor());
+
+                  final float interpolatedValue =
+                      lerp(0F, Color.alpha(originalColor) / 255F, value);
+                  int alphaColor =
+                      Color.argb(
+                          (int) (interpolatedValue * 255),
+                          Color.red(originalColor),
+                          Color.green(originalColor),
+                          Color.blue(originalColor));
+                  ColorStateList csl = ColorStateList.valueOf(alphaColor);
+
+                  // Setting the text color back to the original CSL in an onAnimationEnd callback
+                  // causes the view to blink after the animation ends. To avoid this, reset the
+                  // text color on the last frame of this animation instead.
+                  // If the user manually calls setTextColor during the collapse/expand animation,
+                  // the text will flash that color for a frame, continue the original animation,
+                  // and then be set to the new text color at the end of the animation. The color
+                  // would jump in and jank the animation, but would conserve the user's updated
+                  // color.
+                  if (value == 1F) { // last frame and visible
+                    object.silentlyUpdateTextColor(object.originalTextCsl);
+                  } else {
+                    object.silentlyUpdateTextColor(csl);
+                  }
+                }
+              });
+      animators.add(animator);
     }
 
     AnimatorSet set = new AnimatorSet();
