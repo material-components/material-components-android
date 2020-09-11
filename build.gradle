@@ -62,39 +62,9 @@ ext {
   mdcLibraryDir = "com/google/android/material"
 }
 
-// lint every library
-task lint {
-  doLast {
-  }
-}
-
 task clean(type: Delete) {
   delete rootProject.buildDir
 }
-
-String[] disabledLints = [
-  'CustomViewStyleable',
-  'CutPasteId',
-  'GifUsage',
-  'GradleDependency',
-  'GradleOverrides',
-  'IconDuplicates',
-  'IconLauncherShape',
-  'InflateParams',
-  'MergeRootFrame',
-  'MissingClass',
-  'PrivateResource',
-  'PxUsage',
-  'RestrictedApi',
-  'StringFormatMatches',
-  'SupportAnnotationUsage',
-  'SwitchIntDef',
-  'UnusedAttribute',
-  'UnusedResources',
-  'VectorDrawableCompat',
-  'VectorRaster',
-  'WrongConstant',
-]
 
 private def getTransformedProjectPath(projectPath) {
   def pathComponents = projectPath.tokenize('/')
@@ -213,10 +183,6 @@ subprojects {
     }
 
     if (isAndroidLibrary || isAndroidApp || isAndroidTest) {
-      if (!isAndroidTest) {
-        rootProject.lint.dependsOn project.lint
-      }
-
       // Disable pre-dexing when gradle called with -PdisablePreDex;
       project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibs
 
@@ -232,10 +198,10 @@ subprojects {
 
         aaptOptions.additionalParameters "--no-version-vectors"
 
-        lintOptions {
-          baseline file("baseline.xml")
-          disable disabledLints
-          warningsAsErrors true
+        android {
+          lintOptions {
+            check 'NewApi'
+          }
         }
 
         if (isAndroidLibrary) {
