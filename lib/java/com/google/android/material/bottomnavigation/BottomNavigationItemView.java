@@ -68,6 +68,7 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
   private boolean isShifting;
 
   private ImageView icon;
+  private final ViewGroup labelGroup;
   private final TextView smallLabel;
   private final TextView largeLabel;
   private int itemPosition = INVALID_ITEM_POSITION;
@@ -98,8 +99,14 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     defaultMargin = res.getDimensionPixelSize(R.dimen.design_bottom_navigation_margin);
 
     icon = findViewById(R.id.icon);
+    labelGroup = findViewById(R.id.labelGroup);
     smallLabel = findViewById(R.id.smallLabel);
     largeLabel = findViewById(R.id.largeLabel);
+
+    // Save the original bottom padding from the label group so it can be animated to and from
+    // during label visibility changes.
+    labelGroup.setTag(R.id.mtrl_view_tag_bottom_padding, labelGroup.getPaddingBottom());
+
     // The labels used aren't always visible, so they are unreliable for accessibility. Instead,
     // the content description of the BottomNavigationItemView should be used for accessibility.
     ViewCompat.setImportantForAccessibility(smallLabel, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO);
@@ -143,9 +150,10 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
       setContentDescription(itemData.getContentDescription());
     }
 
-    CharSequence tooltipText = !TextUtils.isEmpty(itemData.getTooltipText())
-        ? itemData.getTooltipText()
-        : itemData.getTitle();
+    CharSequence tooltipText =
+        !TextUtils.isEmpty(itemData.getTooltipText())
+            ? itemData.getTooltipText()
+            : itemData.getTitle();
     TooltipCompat.setTooltipText(this, tooltipText);
     setVisibility(itemData.isVisible() ? View.VISIBLE : View.GONE);
   }
@@ -193,9 +201,10 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
       setContentDescription(title);
     }
 
-    CharSequence tooltipText = itemData == null || TextUtils.isEmpty(itemData.getTooltipText())
-        ? title
-        : itemData.getTooltipText();
+    CharSequence tooltipText =
+        itemData == null || TextUtils.isEmpty(itemData.getTooltipText())
+            ? title
+            : itemData.getTooltipText();
     TooltipCompat.setTooltipText(this, tooltipText);
   }
 
@@ -216,22 +225,27 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
         if (isShifting) {
           if (checked) {
             setViewLayoutParams(icon, defaultMargin, Gravity.CENTER_HORIZONTAL | Gravity.TOP);
-            setViewValues(largeLabel, 1f, 1f, VISIBLE);
+            updateViewPaddingBottom(
+                labelGroup, (int) labelGroup.getTag(R.id.mtrl_view_tag_bottom_padding));
+            largeLabel.setVisibility(VISIBLE);
           } else {
             setViewLayoutParams(icon, defaultMargin, Gravity.CENTER);
-            setViewValues(largeLabel, 0.5f, 0.5f, INVISIBLE);
+            updateViewPaddingBottom(labelGroup, 0);
+            largeLabel.setVisibility(INVISIBLE);
           }
           smallLabel.setVisibility(INVISIBLE);
         } else {
+          updateViewPaddingBottom(
+              labelGroup, (int) labelGroup.getTag(R.id.mtrl_view_tag_bottom_padding));
           if (checked) {
             setViewLayoutParams(
                 icon, (int) (defaultMargin + shiftAmount), Gravity.CENTER_HORIZONTAL | Gravity.TOP);
-            setViewValues(largeLabel, 1f, 1f, VISIBLE);
-            setViewValues(smallLabel, scaleUpFactor, scaleUpFactor, INVISIBLE);
+            setViewScaleValues(largeLabel, 1f, 1f, VISIBLE);
+            setViewScaleValues(smallLabel, scaleUpFactor, scaleUpFactor, INVISIBLE);
           } else {
             setViewLayoutParams(icon, defaultMargin, Gravity.CENTER_HORIZONTAL | Gravity.TOP);
-            setViewValues(largeLabel, scaleDownFactor, scaleDownFactor, INVISIBLE);
-            setViewValues(smallLabel, 1f, 1f, VISIBLE);
+            setViewScaleValues(largeLabel, scaleDownFactor, scaleDownFactor, INVISIBLE);
+            setViewScaleValues(smallLabel, 1f, 1f, VISIBLE);
           }
         }
         break;
@@ -239,24 +253,29 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
       case LabelVisibilityMode.LABEL_VISIBILITY_SELECTED:
         if (checked) {
           setViewLayoutParams(icon, defaultMargin, Gravity.CENTER_HORIZONTAL | Gravity.TOP);
-          setViewValues(largeLabel, 1f, 1f, VISIBLE);
+          updateViewPaddingBottom(
+              labelGroup, (int) labelGroup.getTag(R.id.mtrl_view_tag_bottom_padding));
+          largeLabel.setVisibility(VISIBLE);
         } else {
           setViewLayoutParams(icon, defaultMargin, Gravity.CENTER);
-          setViewValues(largeLabel, 0.5f, 0.5f, INVISIBLE);
+          updateViewPaddingBottom(labelGroup, 0);
+          largeLabel.setVisibility(INVISIBLE);
         }
         smallLabel.setVisibility(INVISIBLE);
         break;
 
       case LabelVisibilityMode.LABEL_VISIBILITY_LABELED:
+        updateViewPaddingBottom(
+            labelGroup, (int) labelGroup.getTag(R.id.mtrl_view_tag_bottom_padding));
         if (checked) {
           setViewLayoutParams(
               icon, (int) (defaultMargin + shiftAmount), Gravity.CENTER_HORIZONTAL | Gravity.TOP);
-          setViewValues(largeLabel, 1f, 1f, VISIBLE);
-          setViewValues(smallLabel, scaleUpFactor, scaleUpFactor, INVISIBLE);
+          setViewScaleValues(largeLabel, 1f, 1f, VISIBLE);
+          setViewScaleValues(smallLabel, scaleUpFactor, scaleUpFactor, INVISIBLE);
         } else {
           setViewLayoutParams(icon, defaultMargin, Gravity.CENTER_HORIZONTAL | Gravity.TOP);
-          setViewValues(largeLabel, scaleDownFactor, scaleDownFactor, INVISIBLE);
-          setViewValues(smallLabel, 1f, 1f, VISIBLE);
+          setViewScaleValues(largeLabel, scaleDownFactor, scaleDownFactor, INVISIBLE);
+          setViewScaleValues(smallLabel, 1f, 1f, VISIBLE);
         }
         break;
 
@@ -307,6 +326,7 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
   /**
    * Iterate through all the preceding bottom navigating items to determine this item's visible
    * position.
+   *
    * @return This item's visible position in a bottom navigation.
    */
   private int getItemVisiblePosition() {
@@ -322,17 +342,23 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     return visiblePosition;
   }
 
-  private void setViewLayoutParams(@NonNull View view, int topMargin, int gravity) {
+  private static void setViewLayoutParams(@NonNull View view, int topMargin, int gravity) {
     LayoutParams viewParams = (LayoutParams) view.getLayoutParams();
     viewParams.topMargin = topMargin;
     viewParams.gravity = gravity;
     view.setLayoutParams(viewParams);
   }
 
-  private void setViewValues(@NonNull View view, float scaleX, float scaleY, int visibility) {
+  private static void setViewScaleValues(
+      @NonNull View view, float scaleX, float scaleY, int visibility) {
     view.setScaleX(scaleX);
     view.setScaleY(scaleY);
     view.setVisibility(visibility);
+  }
+
+  private static void updateViewPaddingBottom(@NonNull View view, int paddingBottom) {
+    view.setPadding(
+        view.getPaddingLeft(), view.getPaddingTop(), view.getPaddingRight(), paddingBottom);
   }
 
   @Override
