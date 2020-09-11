@@ -41,6 +41,7 @@
     <item name="animationMode">fade</item>
     <item name="backgroundOverlayColorAlpha">@dimen/mtrl_snackbar_background_overlay_color_alpha</item>
     <item name="actionTextColorAlpha">@dimen/mtrl_snackbar_action_text_color_alpha</item>
+    <item name="shapeAppearance">?attr/shapeAppearanceSmallComponent</item>
   </style>
 
   <style name="Widget.MaterialComponents.Snackbar.FullWidth" parent="Widget.Design.Snackbar">

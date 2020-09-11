@@ -17,6 +17,7 @@
 package com.google.android.material.snackbar;
 
 import com.google.android.material.R;
+import com.google.android.material.shape.ShapeAppearanceModel;
 
 import static android.view.accessibility.AccessibilityManager.FLAG_CONTENT_CONTROLS;
 import static android.view.accessibility.AccessibilityManager.FLAG_CONTENT_ICONS;
@@ -409,6 +410,37 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
   public Snackbar setBackgroundTintMode(@Nullable PorterDuff.Mode mode) {
     view.setBackgroundTintMode(mode);
     return this;
+  }
+
+  /**
+   * Sets the {@link ShapeAppearanceModel} used for this Snackbar.
+   *
+   * @throws IllegalStateException if the Snackabr's background has been overwritten.
+   */
+  public void setShapeAppearanceModel(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
+    if (view.isUsingOriginalBackground()){
+      view.setShapeAppearanceModel(shapeAppearanceModel);
+    } else {
+      throw new IllegalStateException(
+          "Attempted to set ShapeAppearanceModel on a Snackbar which has an overwritten"
+              + " background.");
+    }
+  }
+
+  /**
+   * Returns the {@link ShapeAppearanceModel} used for this Snackbar.
+   *
+   * @throws IllegalStateException if the Snackbar's background has been overwritten.
+   */
+  @NonNull
+  public ShapeAppearanceModel getShapeAppearanceModel() {
+    if (view.isUsingOriginalBackground()) {
+      return view.getShapeAppearanceModel();
+    } else {
+      throw new IllegalStateException(
+          "Attempted to get ShapeAppearanceModel from a Snackbar which has an overwritten"
+              + " background.");
+    }
   }
 
   /**

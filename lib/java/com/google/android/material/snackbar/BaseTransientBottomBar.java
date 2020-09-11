@@ -80,6 +80,9 @@ import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialResources;
+import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.ShapeAppearanceModel;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
@@ -1082,6 +1085,10 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     private final float actionTextColorAlpha;
     private ColorStateList backgroundTint;
     private PorterDuff.Mode backgroundTintMode;
+    private boolean backgroundOverwritten = false;
+    @NonNull private ShapeAppearanceModel shapeAppearanceModel;
+    private MaterialShapeDrawable materialBackgroundDrawable;
+    private int snackbarElevation;
 
     protected SnackbarBaseLayout(@NonNull Context context) {
       this(context, null);
@@ -1094,27 +1101,60 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
       context = getContext();
       TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SnackbarLayout);
       if (a.hasValue(R.styleable.SnackbarLayout_elevation)) {
-        ViewCompat.setElevation(
-            this, a.getDimensionPixelSize(R.styleable.SnackbarLayout_elevation, 0));
+        snackbarElevation =
+            a.getDimensionPixelSize(R.styleable.SnackbarLayout_elevation, 0);
       }
+
+      TypedArray shapeTypeArray =
+          context.obtainStyledAttributes(attrs, R.styleable.MaterialShape);
+      int shapeAppearanceResId = shapeTypeArray.getResourceId(R.styleable.MaterialShape_shapeAppearance, 0);
+      int shapeAppearanceOverlayResId =
+          shapeTypeArray.getResourceId(R.styleable.MaterialShape_shapeAppearanceOverlay, 0);
+      shapeAppearanceModel =
+          ShapeAppearanceModel.builder(context,shapeAppearanceResId,shapeAppearanceOverlayResId).build();
       animationMode = a.getInt(R.styleable.SnackbarLayout_animationMode, ANIMATION_MODE_SLIDE);
       backgroundOverlayColorAlpha =
           a.getFloat(R.styleable.SnackbarLayout_backgroundOverlayColorAlpha, 1);
-      setBackgroundTintList(
+      backgroundTint =
           MaterialResources.getColorStateList(
-              context, a, R.styleable.SnackbarLayout_backgroundTint));
-      setBackgroundTintMode(
+              context, a, R.styleable.SnackbarLayout_backgroundTint);
+      backgroundTintMode =
           ViewUtils.parseTintMode(
-              a.getInt(R.styleable.SnackbarLayout_backgroundTintMode, -1), PorterDuff.Mode.SRC_IN));
+              a.getInt(R.styleable.SnackbarLayout_backgroundTintMode, -1), PorterDuff.Mode.SRC_IN);
       actionTextColorAlpha = a.getFloat(R.styleable.SnackbarLayout_actionTextColorAlpha, 1);
+      if (a.hasValue(R.styleable.SnackbarLayout_android_background)) {
+        backgroundOverwritten = true;
+        ViewCompat.setElevation(this,snackbarElevation);
+        setBackgroundTintList(backgroundTint);
+      } else {
+        setInternalBackground(createDefaultShapeMaterialBackground());
+      }
       a.recycle();
 
       setOnTouchListener(consumeAllTouchListener);
       setFocusable(true);
 
-      if (getBackground() == null) {
-        ViewCompat.setBackground(this, createThemedBackground());
+    }
+
+    protected boolean isUsingOriginalBackground() {
+      return !backgroundOverwritten;
+    }
+
+    private Drawable createDefaultShapeMaterialBackground() {
+      materialBackgroundDrawable = new MaterialShapeDrawable(shapeAppearanceModel);
+      materialBackgroundDrawable.initializeElevationOverlay(getContext());
+      materialBackgroundDrawable.setElevation(snackbarElevation);
+      int backgroundDefaultColor =
+          MaterialColors.layer(
+              this, R.attr.colorSurface, R.attr.colorOnSurface, getBackgroundOverlayColorAlpha());
+      materialBackgroundDrawable.setFillColor(ColorStateList.valueOf(backgroundDefaultColor));
+      if (backgroundTint != null) {
+        DrawableCompat.setTintList(materialBackgroundDrawable, backgroundTint);
       }
+      if (backgroundTintMode != null) {
+        DrawableCompat.setTintMode(materialBackgroundDrawable, backgroundTintMode);
+      }
+      return materialBackgroundDrawable;
     }
 
     @Override
@@ -1122,12 +1162,22 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
       setBackgroundDrawable(drawable);
     }
 
+    void setInternalBackground(Drawable background) {
+      super.setBackgroundDrawable(background);
+    }
+
     @Override
     public void setBackgroundDrawable(@Nullable Drawable drawable) {
-      if (drawable != null && backgroundTint != null) {
-        drawable = DrawableCompat.wrap(drawable.mutate());
-        DrawableCompat.setTintList(drawable, backgroundTint);
-        DrawableCompat.setTintMode(drawable, backgroundTintMode);
+      if (isUsingOriginalBackground()){
+        backgroundOverwritten = true;
+      } else {
+        if (drawable != null && drawable != this.getBackground()) {
+          if (backgroundTint != null) {
+            drawable = DrawableCompat.wrap(drawable.mutate());
+            DrawableCompat.setTintList(drawable, backgroundTint);
+            DrawableCompat.setTintMode(drawable, backgroundTintMode);
+          }
+        }
       }
       super.setBackgroundDrawable(drawable);
     }
@@ -1135,12 +1185,18 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     @Override
     public void setBackgroundTintList(@Nullable ColorStateList backgroundTint) {
       this.backgroundTint = backgroundTint;
-      if (getBackground() != null) {
-        Drawable wrappedBackground = DrawableCompat.wrap(getBackground().mutate());
-        DrawableCompat.setTintList(wrappedBackground, backgroundTint);
-        DrawableCompat.setTintMode(wrappedBackground, backgroundTintMode);
-        if (wrappedBackground != getBackground()) {
-          super.setBackgroundDrawable(wrappedBackground);
+      if (isUsingOriginalBackground()) {
+        if (materialBackgroundDrawable != null) {
+          DrawableCompat.setTintList(materialBackgroundDrawable, backgroundTint);
+        }
+      } else {
+        if (getBackground() != null) {
+          Drawable wrappedBackground = DrawableCompat.wrap(getBackground().mutate());
+          DrawableCompat.setTintList(wrappedBackground, backgroundTint);
+          DrawableCompat.setTintMode(wrappedBackground, backgroundTintMode);
+          if (wrappedBackground != getBackground()) {
+            super.setBackgroundDrawable(wrappedBackground);
+          }
         }
       }
     }
@@ -1148,13 +1204,31 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     @Override
     public void setBackgroundTintMode(@Nullable PorterDuff.Mode backgroundTintMode) {
       this.backgroundTintMode = backgroundTintMode;
-      if (getBackground() != null) {
-        Drawable wrappedBackground = DrawableCompat.wrap(getBackground().mutate());
-        DrawableCompat.setTintMode(wrappedBackground, backgroundTintMode);
-        if (wrappedBackground != getBackground()) {
-          super.setBackgroundDrawable(wrappedBackground);
+      if (isUsingOriginalBackground()) {
+        if (materialBackgroundDrawable != null) {
+          DrawableCompat.setTintMode(materialBackgroundDrawable, backgroundTintMode);
+        }
+      } else {
+        if (getBackground() != null) {
+          Drawable wrappedBackground = DrawableCompat.wrap(getBackground().mutate());
+          DrawableCompat.setTintMode(wrappedBackground, backgroundTintMode);
+          if (wrappedBackground != getBackground()) {
+            super.setBackgroundDrawable(wrappedBackground);
+          }
         }
       }
+    }
+
+    void setShapeAppearanceModel(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
+      this.shapeAppearanceModel = shapeAppearanceModel;
+      if (materialBackgroundDrawable != null) {
+        materialBackgroundDrawable.setShapeAppearanceModel(shapeAppearanceModel);
+      }
+    }
+
+    @NonNull
+    ShapeAppearanceModel getShapeAppearanceModel() {
+      return shapeAppearanceModel;
     }
 
     @Override
