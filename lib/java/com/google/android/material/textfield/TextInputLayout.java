@@ -406,6 +406,7 @@ public class TextInputLayout extends LinearLayout {
 
   final CollapsingTextHelper collapsingTextHelper = new CollapsingTextHelper(this);
 
+  private boolean expandedHintEnabled;
   private boolean hintAnimationEnabled;
   private ValueAnimator animator;
 
@@ -474,6 +475,7 @@ public class TextInputLayout extends LinearLayout {
     hintEnabled = a.getBoolean(R.styleable.TextInputLayout_hintEnabled, true);
     setHint(a.getText(R.styleable.TextInputLayout_android_hint));
     hintAnimationEnabled = a.getBoolean(R.styleable.TextInputLayout_hintAnimationEnabled, true);
+    expandedHintEnabled = a.getBoolean(R.styleable.TextInputLayout_expandedHintEnabled, true);
 
     shapeAppearanceModel =
         ShapeAppearanceModel.builder(context, attrs, defStyleAttr, DEF_STYLE_RES).build();
@@ -1516,7 +1518,7 @@ public class TextInputLayout extends LinearLayout {
       collapsingTextHelper.setCollapsedTextColor(focusedTextColor);
     } // If none of these states apply, leave the expanded and collapsed colors as they are.
 
-    if (hasText || (isEnabled() && hasFocus)) {
+    if (hasText || !expandedHintEnabled || (isEnabled() && hasFocus)) {
       // We should be showing the label so do so if it isn't already
       if (force || hintExpanded) {
         collapseHint(animate);
@@ -2875,6 +2877,31 @@ public class TextInputLayout extends LinearLayout {
    */
   public void setHintAnimationEnabled(boolean enabled) {
     hintAnimationEnabled = enabled;
+  }
+
+  /**
+   * Returns whether the hint expands to occupy the input area when the text field is unpopulated
+   * and not focused.
+   *
+   * @see #setExpandedHintEnabled(boolean)
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_hintExpadedEnabled
+   */
+  public boolean isExpandedHintEnabled() {
+    return expandedHintEnabled;
+  }
+
+  /**
+   * Sets whether the hint should expand to occupy the input area when the text field is
+   * unpopulated and not focused.
+   *
+   * @see #isExpandedHintEnabled()
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_hintExpadedEnabled
+   */
+  public void setExpandedHintEnabled(boolean enabled) {
+    if (expandedHintEnabled != enabled) {
+      expandedHintEnabled = enabled;
+      updateLabelState(false);
+    }
   }
 
   @Override

@@ -425,12 +425,14 @@ be set on the `TextInputEditText`)._
 
 #### Label attributes
 
-&nbsp;                         | Attribute                | Related method(s)                                       | Default value
------------------------------- | ------------------------ | ------------------------------------------------------- | -------------
-**Text**                       | `android:hint`           | `setHint`<br/>`getHint`                                 | `null`
-**Color**                      | `android:textColorHint`  | `setDefaultHintTextColor`<br/>`getDefaultHintTextColor` | `?attr/colorOnSurface` at 60% opacity (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/textfield/res/color/mtrl_indicator_text_color.xml))
-**Collapsed (floating) color** | `app:hintTextColor`      | `setHintTextColor`<br/>`getHintTextColor`               | `?attr/colorPrimary`
-**Typography**                 | `app:hintTextAppearance` | `setHintTextAppearance`                                 | `?attr/textAppearanceCaption`
+&nbsp;                         | Attribute                  | Related method(s)                                       | Default value
+------------------------------ | -------------------------- | ------------------------------------------------------- | -------------
+**Text**                       | `android:hint`             | `setHint`<br/>`getHint`                                 | `null`
+**Color**                      | `android:textColorHint`    | `setDefaultHintTextColor`<br/>`getDefaultHintTextColor` | `?attr/colorOnSurface` at 60% opacity (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/textfield/res/color/mtrl_indicator_text_color.xml))
+**Collapsed (floating) color** | `app:hintTextColor`        | `setHintTextColor`<br/>`getHintTextColor`               | `?attr/colorPrimary`
+**Typography**                 | `app:hintTextAppearance`   | `setHintTextAppearance`                                 | `?attr/textAppearanceCaption`
+**Animation**                  | `app:hintAnimationEnabled` | `setHintAnimationEnabled`<br/>`isHintAnimationEnabled`  | `true`
+**Expanded enabled**           | `app:expandedHintEnabled`  | `setExpandedHintEnabled`<br/>`isExpandedHintEnabled`    | `true`
 
 **Note:** The `android:hint` should always be set on the `TextInputLayout`
 instead of on the `EditText` in order to avoid unintended behaviors.

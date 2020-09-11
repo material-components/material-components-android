@@ -62,6 +62,7 @@
   <public name="helperTextTextAppearance" type="attr"/>
   <public name="helperTextTextColor" type="attr"/>
   <public name="hintAnimationEnabled" type="attr"/>
+  <public name="expandedHintEnabled" type="attr"/>
   <public name="hintEnabled" type="attr"/>
   <public name="hintTextAppearance" type="attr"/>
   <public name="hintTextColor" type="attr"/>

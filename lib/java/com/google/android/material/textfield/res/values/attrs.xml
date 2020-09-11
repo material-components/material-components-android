@@ -37,6 +37,9 @@
     <!-- Text color of the hint in the collapsed floating label.
          If set, this takes precedence over hintTextAppearance. -->
     <attr name="hintTextColor" format="color"/>
+    <!-- Whether the hint should occupy the input area when the text field is
+         unpopulated and not focused. -->
+    <attr name="expandedHintEnabled" format="boolean"/>
 
     <!-- The text to display as helper text underneath the text input area. -->
     <attr name="helperText" format="string"/>

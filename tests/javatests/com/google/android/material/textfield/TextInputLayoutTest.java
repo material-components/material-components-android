@@ -41,6 +41,7 @@ import static com.google.android.material.testutils.TextInputLayoutActions.setEr
 import static com.google.android.material.testutils.TextInputLayoutActions.setErrorContentDescription;
 import static com.google.android.material.testutils.TextInputLayoutActions.setErrorEnabled;
 import static com.google.android.material.testutils.TextInputLayoutActions.setErrorTextAppearance;
+import static com.google.android.material.testutils.TextInputLayoutActions.setExpandedHintEnabled;
 import static com.google.android.material.testutils.TextInputLayoutActions.setHelperText;
 import static com.google.android.material.testutils.TextInputLayoutActions.setHelperTextEnabled;
 import static com.google.android.material.testutils.TextInputLayoutActions.setHint;
@@ -174,6 +175,15 @@ public class TextInputLayoutTest {
     onView(withId(R.id.textinput_edittext_filled)).perform(typeText(INPUT_TEXT));
     // Check that the cutout is closed.
     onView(withId(R.id.textinput_box_outline)).check(isCutoutOpen(false));
+  }
+
+  @Test
+  public void testHintIsCollapsedIfExpandedHintNotEnabled() {
+    // Set expandedHintEnabled to false.
+    onView(withId(R.id.textinput_box_filled)).perform(setExpandedHintEnabled(false));
+
+    // Check the hint is collapsed.
+    onView(withId(R.id.textinput_box_filled)).check(isHintExpanded(false));
   }
 
   @Test
