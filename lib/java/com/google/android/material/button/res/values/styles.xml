@@ -84,6 +84,8 @@
   <!-- Button style to show in the Snackbar component. -->
   <style name="Widget.MaterialComponents.Button.TextButton.Snackbar">
     <item name="android:textColor">?attr/colorPrimary</item>
+    <item name="android:layout_marginLeft">@dimen/mtrl_btn_snackbar_margin_horizontal</item>
+    <item name="android:layout_marginRight">@dimen/mtrl_btn_snackbar_margin_horizontal</item>
   </style>
 
   <style name="Widget.MaterialComponents.Button.OutlinedButton" parent="Widget.MaterialComponents.Button.TextButton">

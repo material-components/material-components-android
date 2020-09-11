@@ -22,6 +22,7 @@
   <dimen name="design_snackbar_background_corner_radius">0dp</dimen>
 
   <dimen name="design_snackbar_padding_horizontal">12dp</dimen>
+  <dimen name="mtrl_snackbar_padding_horizontal">16dp</dimen>
 
   <!-- Extra spacing between the action and message views -->
   <dimen name="design_snackbar_extra_spacing_horizontal">0dp</dimen>

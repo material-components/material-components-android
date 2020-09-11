@@ -49,4 +49,6 @@
 
   <item name="mtrl_btn_letter_spacing" format="float" type="dimen">0.07</item>
 
+  <dimen name="mtrl_btn_snackbar_margin_horizontal">8dp</dimen>
+
 </resources>

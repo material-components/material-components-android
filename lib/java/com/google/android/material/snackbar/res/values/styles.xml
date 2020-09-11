@@ -38,6 +38,8 @@
          will be used, which supports the Material color theming attributes. -->
     <item name="android:background">@null</item>
     <item name="android:layout_margin">@dimen/mtrl_snackbar_margin</item>
+    <item name="android:paddingLeft">0dp</item>
+    <item name="android:paddingRight">0dp</item>
     <item name="animationMode">fade</item>
     <item name="backgroundOverlayColorAlpha">@dimen/mtrl_snackbar_background_overlay_color_alpha</item>
     <item name="actionTextColorAlpha">@dimen/mtrl_snackbar_action_text_color_alpha</item>
@@ -57,8 +59,8 @@
     <item name="android:textColor">?attr/colorSurface</item>
     <item name="android:paddingTop">@dimen/design_snackbar_padding_vertical</item>
     <item name="android:paddingBottom">@dimen/design_snackbar_padding_vertical</item>
-    <item name="android:paddingLeft">@dimen/design_snackbar_padding_horizontal</item>
-    <item name="android:paddingRight">@dimen/design_snackbar_padding_horizontal</item>
+    <item name="android:paddingLeft">@dimen/mtrl_snackbar_padding_horizontal</item>
+    <item name="android:paddingRight">@dimen/mtrl_snackbar_padding_horizontal</item>
   </style>
 
 </resources>
