@@ -35,6 +35,7 @@ import android.view.Window;
 import android.widget.LinearLayout;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IntDef;
+import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.button.MaterialButton;
@@ -90,10 +91,13 @@ public final class MaterialTimePicker extends DialogFragment {
     return fragment;
   }
 
+  @IntRange(from = 0, to = 60)
   public int getMinute() {
     return time.minute;
   }
 
+  /** Returns the hour of day in the range [0, 23]. */
+  @IntRange(from = 0, to = 23)
   public int getHour() {
     return time.hour % 24;
   }
@@ -359,34 +363,45 @@ public final class MaterialTimePicker extends DialogFragment {
     dismissListeners.clear();
   }
 
-   /** Used to create MaterialTimePicker instances */
+  /** Used to create {@link MaterialTimePicker} instances. */
   public static final class Builder {
 
     private TimeModel time = new TimeModel();
 
     private int inputMode;
 
-    /** Sets the input mode to start with. */
+    /** Sets the input mode with which to start the time picker. */
     @NonNull
     public Builder setInputMode(@InputMode int inputMode) {
       this.inputMode = inputMode;
       return this;
     }
 
-    /** Sets the hour to start the Time picker. */
+    /**
+     * Sets the hour with which to start the time picker.
+     *
+     * @param hour The hour value is independent of the time format ({@link #setTimeFormat(int)}),
+     *     and should always be a number in the [0, 23] range.
+     */
     @NonNull
-    public Builder setHour(int hour) {
+    public Builder setHour(@IntRange(from = 0, to = 23) int hour) {
       time.setHourOfDay(hour);
       return this;
     }
 
-    /** Sets the minute to start the Time picker. */
+    /** Sets the minute with which to start the time picker. */
     @NonNull
-    public Builder setMinute(int minute) {
+    public Builder setMinute(@IntRange(from = 0, to = 60) int minute) {
       time.setMinute(minute);
       return this;
     }
 
+    /**
+     * Sets the time format for the time picker.
+     *
+     * @param format Either {@code CLOCK_12H} 12 hour format with an AM/PM toggle or {@code
+     *     CLOCK_24} 24 hour format without toggle.
+     */
     @NonNull
     public Builder setTimeFormat(@TimeFormat int format) {
       int hour = time.hour;

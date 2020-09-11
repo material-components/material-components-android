@@ -25,6 +25,7 @@ import static java.util.Calendar.PM;
 import android.content.res.Resources;
 import android.os.Parcel;
 import android.os.Parcelable;
+import androidx.annotation.IntRange;
 import com.google.android.material.timepicker.TimePickerControls.ActiveSelection;
 import com.google.android.material.timepicker.TimePickerControls.ClockPeriod;
 import java.util.Arrays;
@@ -90,7 +91,7 @@ class TimeModel implements Parcelable {
     this.hour = hour % 12 + (period == PM ? 12 : 0);
   }
 
-  public void setMinute(int minute) {
+  public void setMinute(@IntRange(from = 0, to = 60) int minute) {
     this.minute = minute % 60;
   }
 
