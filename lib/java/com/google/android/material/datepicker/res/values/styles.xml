@@ -91,9 +91,8 @@
     <item name="rippleColor">@color/mtrl_btn_ripple_color</item>
   </style>
 
-  <style name="Widget.MaterialComponents.MaterialCalendar.HeaderToggleButton" parent="Widget.AppCompat.ImageButton">
-    <item name="android:background">?attr/actionBarItemBackground</item>
-    <item name="android:tint">?attr/colorOnPrimary</item>
+  <style name="Widget.MaterialComponents.MaterialCalendar.HeaderToggleButton" parent="Widget.MaterialComponents.Button.TextButton">
+    <item name="iconTint">?attr/colorOnPrimary</item>
   </style>
 
   <style name="Widget.MaterialComponents.MaterialCalendar.DayTextView" parent="Widget.AppCompat.TextView">
