@@ -25,6 +25,7 @@ import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import androidx.annotation.StringRes;
 import androidx.fragment.app.DialogFragment;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -33,6 +34,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
@@ -73,8 +75,12 @@ public final class MaterialTimePicker extends DialogFragment {
 
   static final String TIME_MODEL_EXTRA = "TIME_PICKER_TIME_MODEL";
   static final String INPUT_MODE_EXTRA = "TIME_PICKER_INPUT_MODE";
+  static final String TITLE_TEXT_RES_ID_EXTRA = "TIME_PICKER_TITLE_TEXT_RES_ID_KEY";
+  static final String TITLE_TEXT_EXTRA = "TIME_PICKER_TITLE_TEXT_KEY";
 
   private MaterialButton modeButton;
+  @StringRes private int titleTextResId;
+  private CharSequence titleText;
 
   @InputMode private int inputMode = INPUT_MODE_CLOCK;
 
@@ -86,6 +92,8 @@ public final class MaterialTimePicker extends DialogFragment {
     Bundle args = new Bundle();
     args.putParcelable(TIME_MODEL_EXTRA, options.time);
     args.putInt(INPUT_MODE_EXTRA, options.inputMode);
+    args.putInt(TITLE_TEXT_RES_ID_EXTRA, options.titleTextResId);
+    args.putCharSequence(TITLE_TEXT_EXTRA, options.titleText);
     fragment.setArguments(args);
     return fragment;
   }
@@ -138,6 +146,8 @@ public final class MaterialTimePicker extends DialogFragment {
     super.onSaveInstanceState(bundle);
     bundle.putParcelable(TIME_MODEL_EXTRA, time);
     bundle.putInt(INPUT_MODE_EXTRA, inputMode);
+    bundle.putInt(TITLE_TEXT_RES_ID_EXTRA, titleTextResId);
+    bundle.putCharSequence(TITLE_TEXT_EXTRA, titleText);
   }
 
   private void restoreState(@Nullable Bundle bundle) {
@@ -150,6 +160,8 @@ public final class MaterialTimePicker extends DialogFragment {
       time = new TimeModel();
     }
     inputMode = bundle.getInt(INPUT_MODE_EXTRA, INPUT_MODE_CLOCK);
+    titleTextResId = bundle.getInt(TITLE_TEXT_RES_ID_EXTRA);
+    titleText = bundle.getCharSequence(TITLE_TEXT_EXTRA);
   }
 
   @NonNull
@@ -164,6 +176,13 @@ public final class MaterialTimePicker extends DialogFragment {
     textInputView = root.findViewById(R.id.material_textinput_timepicker);
     modeButton = root.findViewById(R.id.material_timepicker_mode_button);
     updateInputMode(modeButton);
+    TextView titleTextView = root.findViewById(R.id.header_title);
+    if (titleText != null) {
+      titleTextView.setText(titleText);
+    } else {
+      titleTextView.setText(titleTextResId);
+    }
+
     MaterialButton okButton = root.findViewById(R.id.material_timepicker_ok_button);
     okButton.setOnClickListener(
         new OnClickListener() {
@@ -365,6 +384,8 @@ public final class MaterialTimePicker extends DialogFragment {
     private TimeModel time = new TimeModel();
 
     private int inputMode;
+    private int titleTextResId = 0;
+    private CharSequence titleText = null;
 
     /** Sets the input mode to start with. */
     @NonNull
@@ -397,9 +418,32 @@ public final class MaterialTimePicker extends DialogFragment {
       return this;
     }
 
+    /**
+     * Sets the text used to guide the user at the top of the picker.
+     */
+    @NonNull
+    public Builder setTitleText(@StringRes int titleTextResId) {
+      this.titleTextResId = titleTextResId;
+      this.titleText = null;
+      return this;
+    }
+
+    /**
+     * Sets the text used to guide the user at the top of the picker.
+     */
+    @NonNull
+    public Builder setTitleText(@Nullable CharSequence charSequence) {
+      this.titleText = charSequence;
+      this.titleTextResId = 0;
+      return this;
+    }
+
     /** Creates a {@link MaterialTimePicker} with the provided options. */
     @NonNull
     public MaterialTimePicker build() {
+      if (titleTextResId == 0) {
+        titleTextResId = R.string.material_timepicker_select_time;
+      }
       return MaterialTimePicker.newInstance(this);
     }
   }

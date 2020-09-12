@@ -31,7 +31,6 @@
     android:layout_marginTop="16dp"
     android:importantForAccessibility="no"
     android:layout_marginStart="24dp"
-    android:text="@string/material_timepicker_select_time"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent" />
 
