@@ -32,5 +32,14 @@
   <string name="time_format_12">12H</string>
   <!-- Label for an option to choose the same time format as the system [CHAR LIMIT=16] -->
   <string name="time_format_system">System</string>
-
+  <!-- Label for an option to choose the time format -->
+  <string name="cat_time_picker_timeformat">Time format</string>
+  <!-- Label for an option to choose the title -->
+  <string name="cat_time_picker_title">Picker Title</string>
+  <!-- Indicates that the picker will start with a standard title [CHAR LIMIT=25] -->
+  <string name="cat_time_picker_title_standard">Standard</string>
+  <!-- Indicates that the picker will start with a custom title [CHAR LIMIT=25] -->
+  <string name="cat_time_picker_title_custom">Custom</string>
+  <!-- Custom title for the picker -->
+  <string name="cat_time_picker_demo_title_custom">Custom title</string>
 </resources>

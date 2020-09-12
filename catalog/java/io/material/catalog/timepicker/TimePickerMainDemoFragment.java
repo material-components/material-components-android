@@ -56,6 +56,8 @@ public class TimePickerMainDemoFragment extends DemoFragment {
     MaterialButtonToggleGroup timeFormatToggle = view.findViewById(R.id.time_format_toggle);
     clockFormat = TimeFormat.CLOCK_12H;
     timeFormatToggle.check(R.id.time_format_12h);
+    MaterialButtonToggleGroup timeTitleToggle = view.findViewById(R.id.time_title_toggle);
+    timeTitleToggle.check(R.id.time_title_standard);
 
     timeFormatToggle.addOnButtonCheckedListener(
         (group, checkedId, isChecked) -> {
@@ -74,12 +76,16 @@ public class TimePickerMainDemoFragment extends DemoFragment {
         return;
       }
 
-      MaterialTimePicker materialTimePicker = new MaterialTimePicker.Builder()
+      MaterialTimePicker.Builder builder = new MaterialTimePicker.Builder()
           .setTimeFormat(clockFormat)
           .setHour(hour)
-          .setMinute(minute)
-          .build();
+          .setMinute(minute);
 
+      if (timeTitleToggle.getCheckedButtonId() == R.id.time_title_custom) {
+        builder.setTitleText(R.string.cat_time_picker_demo_title_custom);
+      }
+
+      MaterialTimePicker materialTimePicker = builder.build();
       materialTimePicker.show(requireFragmentManager(), "fragment_tag");
 
       materialTimePicker.addOnPositiveButtonClickListener(dialog -> {

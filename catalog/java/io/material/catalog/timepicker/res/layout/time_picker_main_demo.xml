@@ -45,39 +45,103 @@
       app:layout_constraintStart_toEndOf="@id/timepicker_button"
       app:layout_constraintTop_toTopOf="@id/timepicker_button" />
 
-    <com.google.android.material.button.MaterialButtonToggleGroup
-      android:id="@+id/time_format_toggle"
-      android:layout_width="wrap_content"
+    <LinearLayout
+      android:id="@+id/time_timeformat_container"
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_margin="16dp"
       android:orientation="horizontal"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      app:selectionRequired="true"
-      app:singleSelection="true">
-      <Button
-        android:id="@+id/time_format_12h"
-        style="?attr/materialButtonOutlinedStyle"
+      app:layout_constraintTop_toTopOf="parent">
+
+      <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/time_format_12" />
+        android:layout_gravity="center_vertical"
+        android:text="@string/cat_time_picker_timeformat"/>
 
-      <Button
-        android:id="@+id/time_format_24h"
-        style="?attr/materialButtonOutlinedStyle"
+      <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/time_format_toggle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/time_format_24" />
+        android:layout_marginLeft="4dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:selectionRequired="true"
+        app:singleSelection="true">
 
-      <Button
-        android:id="@+id/time_format_system"
-        style="?attr/materialButtonOutlinedStyle"
+        <Button
+          android:id="@+id/time_format_12h"
+          style="?attr/materialButtonOutlinedStyle"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/time_format_12" />
+
+        <Button
+          android:id="@+id/time_format_24h"
+          style="?attr/materialButtonOutlinedStyle"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/time_format_24" />
+
+        <Button
+          android:id="@+id/time_format_system"
+          style="?attr/materialButtonOutlinedStyle"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/time_format_system" />
+
+      </com.google.android.material.button.MaterialButtonToggleGroup>
+
+    </LinearLayout>
+
+    <LinearLayout
+      android:id="@+id/time_title_container"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_margin="16dp"
+      android:orientation="horizontal"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/time_timeformat_container">
+
+      <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/time_format_system" />
+        android:layout_gravity="center_vertical"
+        android:text="@string/cat_time_picker_title" />
 
-    </com.google.android.material.button.MaterialButtonToggleGroup>
+      <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/time_title_toggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:orientation="horizontal"
+        app:selectionRequired="true"
+        app:singleSelection="true">
+
+        <Button
+          android:id="@+id/time_title_standard"
+          style="?attr/materialButtonOutlinedStyle"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/cat_time_picker_title_standard" />
+
+        <Button
+          android:id="@+id/time_title_custom"
+          style="?attr/materialButtonOutlinedStyle"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/cat_time_picker_title_custom" />
+
+
+      </com.google.android.material.button.MaterialButtonToggleGroup>
+
+    </LinearLayout>
+    >
 
     <com.google.android.material.switchmaterial.SwitchMaterial
       android:id="@+id/framework_switch"
@@ -87,7 +151,7 @@
       android:text="@string/use_framework_dialog"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/time_format_toggle" />
+      app:layout_constraintTop_toBottomOf="@+id/time_title_container" />
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 
