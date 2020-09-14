@@ -52,10 +52,6 @@
   <string name="title_scrolling">Scrolling Content</string>
   <!-- Denotes what parts of an AlertDialog this button will display. [CHAR LIMIT=60] -->
   <string name="title_2_short_actions">Short Buttons</string>
-  <!-- Denotes button emphasis in an AlertDialog this button will display. [CHAR LIMIT=60] -->
-  <string name="title_outlined_buttons">Outlined buttons</string>
-  <!-- Denotes button emphasis in an AlertDialog this button will display. [CHAR LIMIT=60] -->
-  <string name="title_filled_buttons">Filled buttons</string>
 
   <!-- Text for a positive dialog action. [CHAR LIMIT=15] -->
   <string name="positive">Accept</string>

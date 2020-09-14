@@ -218,35 +218,7 @@ public class DialogMainDemoFragment extends DemoFragment {
             .setPositiveButton(R.string.short_text_1, null)
             .setNegativeButton(R.string.short_text_2, null));
 
-    // title, outlined buttons
-    addDialogLauncher(
-        dialogLaunchersLayout,
-        R.string.title_outlined_buttons,
-        new MaterialAlertDialogBuilder(getContext(), getOutlinedButtonThemeOverlay())
-            .setTitle(title)
-            .setPositiveButton(positiveText, null)
-            .setNegativeButton(negativeText, null));
-
-    // title, filled buttons
-    addDialogLauncher(
-        dialogLaunchersLayout,
-        R.string.title_filled_buttons,
-        new MaterialAlertDialogBuilder(getContext(), getFilledButtonThemeOverlay())
-            .setTitle(title)
-            .setPositiveButton(positiveText, null)
-            .setNegativeButton(negativeText, null));
-
     return view;
-  }
-
-  @StyleRes
-  protected int getFilledButtonThemeOverlay() {
-    return R.style.ThemeOverlay_Catalog_MaterialAlertDialog_FilledButton;
-  }
-
-  @StyleRes
-  protected int getOutlinedButtonThemeOverlay() {
-    return R.style.ThemeOverlay_Catalog_MaterialAlertDialog_OutlinedButton;
   }
 
   @StyleRes
