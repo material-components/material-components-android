@@ -836,6 +836,13 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     return setLiftedState(lifted);
   }
 
+  /**
+   * Returns whether the {@link AppBarLayout} is in a lifted state or not.
+   */
+  public boolean isLifted() {
+    return lifted;
+  }
+
   // Internal helper method that updates lifted state.
   boolean setLiftedState(boolean lifted) {
     if (this.lifted != lifted) {
