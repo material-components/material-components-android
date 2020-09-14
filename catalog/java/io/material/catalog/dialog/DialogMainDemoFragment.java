@@ -138,6 +138,17 @@ public class DialogMainDemoFragment extends DemoFragment {
             .setNegativeButton(negativeText, null)
             .setIcon(R.drawable.ic_dialogs_24px));
 
+    // icon, title, message, 2 actions (centered)
+    addDialogLauncher(
+        dialogLaunchersLayout,
+        R.string.icon_title_message_2_actions_centered,
+        new MaterialAlertDialogBuilder(getContext(), getCenteredTitleThemeOverlay())
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton(positiveText, null)
+            .setNegativeButton(negativeText, null)
+            .setIcon(R.drawable.ic_dialogs_24px));
+
     // edit text
     addDialogLauncher(
         dialogLaunchersLayout,
@@ -251,6 +262,11 @@ public class DialogMainDemoFragment extends DemoFragment {
   @StyleRes
   protected int getOutlinedButtonThemeOverlay() {
     return R.style.ThemeOverlay_Catalog_MaterialAlertDialog_OutlinedButton;
+  }
+
+  @StyleRes
+  protected int getCenteredTitleThemeOverlay() {
+    return R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog_Centered;
   }
 
   private void addDialogLauncher(

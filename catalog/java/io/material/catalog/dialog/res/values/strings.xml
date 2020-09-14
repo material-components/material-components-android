@@ -37,6 +37,8 @@
   <!-- Denotes what parts of an AlertDialog this button will display. [CHAR LIMIT=60] -->
   <string name="icon_title_message_2_actions">Icon, Title, Message, 2 Actions</string>
   <!-- Denotes what parts of an AlertDialog this button will display. [CHAR LIMIT=60] -->
+  <string name="icon_title_message_2_actions_centered">Icon, Title, Message, 2 Actions (Centered)</string>
+  <!-- Denotes what parts of an AlertDialog this button will display. [CHAR LIMIT=60] -->
   <string name="edit_text">Edit Text</string>
   <!-- Denotes what parts of an AlertDialog this button will display. [CHAR LIMIT=60] -->
   <string name="title_choices_as_actions">Items list</string>
