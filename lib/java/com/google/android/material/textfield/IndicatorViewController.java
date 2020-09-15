@@ -420,7 +420,6 @@ final class IndicatorViewController {
 
     if (isCaptionView(index) && captionArea != null) {
       captionViewsAdded--;
-      setViewGroupGoneIfEmpty(captionArea, captionViewsAdded);
       captionArea.removeView(indicator);
     } else {
       indicatorArea.removeView(indicator);
