@@ -16,6 +16,7 @@
 package com.google.android.material.datepicker;
 
 import com.google.android.material.R;
+import com.google.android.material.internal.ViewUtils;
 
 import static java.lang.Math.min;
 
@@ -135,7 +136,7 @@ final class MaterialCalendarGridView extends GridView {
       if (skipMonth(firstOfMonth, lastOfMonth, startItem, endItem)) {
         continue;
       }
-
+      boolean isRtl = ViewUtils.isLayoutRtl(this);
       int firstHighlightPosition;
       int rangeHighlightStart;
       if (startItem < firstOfMonth) {
@@ -143,7 +144,8 @@ final class MaterialCalendarGridView extends GridView {
         rangeHighlightStart =
             monthAdapter.isFirstInRow(firstHighlightPosition)
                 ? 0
-                : getChildAt(firstHighlightPosition - 1).getRight();
+                : !isRtl? getChildAt(firstHighlightPosition - 1).getRight():
+                    getChildAt(firstHighlightPosition - 1).getLeft();
       } else {
         dayCompute.setTimeInMillis(startItem);
         firstHighlightPosition = monthAdapter.dayToPosition(dayCompute.get(Calendar.DAY_OF_MONTH));
@@ -157,7 +159,8 @@ final class MaterialCalendarGridView extends GridView {
         rangeHighlightEnd =
             monthAdapter.isLastInRow(lastHighlightPosition)
                 ? getWidth()
-                : getChildAt(lastHighlightPosition).getRight();
+                : !isRtl? getChildAt(lastHighlightPosition).getRight():
+                    getChildAt(lastHighlightPosition).getLeft();
       } else {
         dayCompute.setTimeInMillis(endItem);
         lastHighlightPosition = monthAdapter.dayToPosition(dayCompute.get(Calendar.DAY_OF_MONTH));
@@ -172,8 +175,15 @@ final class MaterialCalendarGridView extends GridView {
         View firstView = getChildAt(firstPositionInRow);
         int top = firstView.getTop() + calendarStyle.day.getTopInset();
         int bottom = firstView.getBottom() - calendarStyle.day.getBottomInset();
-        int left = firstPositionInRow > firstHighlightPosition ? 0 : rangeHighlightStart;
-        int right = lastHighlightPosition > lastPositionInRow ? getWidth() : rangeHighlightEnd;
+        int left;
+        int right;
+        if (!isRtl){
+          left = firstPositionInRow > firstHighlightPosition ? 0 : rangeHighlightStart;
+          right = lastHighlightPosition > lastPositionInRow ? getWidth() : rangeHighlightEnd;
+        } else {
+          left = lastHighlightPosition > lastPositionInRow ? 0 : rangeHighlightEnd;
+          right = firstPositionInRow > firstHighlightPosition ? getWidth() : rangeHighlightStart;
+        }
         canvas.drawRect(left, top, right, bottom, calendarStyle.rangeFill);
       }
     }
