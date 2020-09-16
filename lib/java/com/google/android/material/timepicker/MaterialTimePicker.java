@@ -26,6 +26,7 @@ import android.content.DialogInterface.OnDismissListener;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import androidx.fragment.app.DialogFragment;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,11 +34,13 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IntDef;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.shape.MaterialShapeDrawable;
@@ -63,6 +66,8 @@ public final class MaterialTimePicker extends DialogFragment {
   @Nullable private TimePickerClockPresenter timePickerClockPresenter;
   @Nullable private TimePickerTextInputPresenter timePickerTextInputPresenter;
   @Nullable private TimePickerPresenter activePresenter;
+  private int titleResId = 0;
+  private String titleText;
 
   /** Values supported for the input type of the dialog. */
   @IntDef({INPUT_MODE_CLOCK, INPUT_MODE_KEYBOARD})
@@ -74,6 +79,8 @@ public final class MaterialTimePicker extends DialogFragment {
 
   static final String TIME_MODEL_EXTRA = "TIME_PICKER_TIME_MODEL";
   static final String INPUT_MODE_EXTRA = "TIME_PICKER_INPUT_MODE";
+  static final String TITLE_RES_EXTRA = "TIME_PICKER_TITLE_RES";
+  static final String TITLE_TEXT_EXTRA = "TIME_PICKER_TITLE_TEXT";
 
   private MaterialButton modeButton;
 
@@ -87,6 +94,11 @@ public final class MaterialTimePicker extends DialogFragment {
     Bundle args = new Bundle();
     args.putParcelable(TIME_MODEL_EXTRA, options.time);
     args.putInt(INPUT_MODE_EXTRA, options.inputMode);
+    args.putInt(TITLE_RES_EXTRA, options.titleTextResId);
+    if (options.titleText != null) {
+      args.putString(TITLE_TEXT_EXTRA, options.titleText.toString());
+    }
+
     fragment.setArguments(args);
     return fragment;
   }
@@ -142,6 +154,8 @@ public final class MaterialTimePicker extends DialogFragment {
     super.onSaveInstanceState(bundle);
     bundle.putParcelable(TIME_MODEL_EXTRA, time);
     bundle.putInt(INPUT_MODE_EXTRA, inputMode);
+    bundle.putInt(TITLE_RES_EXTRA, titleResId);
+    bundle.putString(TITLE_TEXT_EXTRA, titleText);
   }
 
   private void restoreState(@Nullable Bundle bundle) {
@@ -154,6 +168,8 @@ public final class MaterialTimePicker extends DialogFragment {
       time = new TimeModel();
     }
     inputMode = bundle.getInt(INPUT_MODE_EXTRA, INPUT_MODE_CLOCK);
+    titleResId = bundle.getInt(TITLE_RES_EXTRA, 0);
+    titleText = bundle.getString(TITLE_TEXT_EXTRA);
   }
 
   @NonNull
@@ -167,6 +183,16 @@ public final class MaterialTimePicker extends DialogFragment {
     timePickerView = root.findViewById(R.id.material_timepicker_view);
     textInputView = root.findViewById(R.id.material_textinput_timepicker);
     modeButton = root.findViewById(R.id.material_timepicker_mode_button);
+    TextView headerTitle = root.findViewById(R.id.header_title);
+
+    if (!TextUtils.isEmpty(titleText)) {
+      headerTitle.setText(titleText);
+    }
+
+    if (titleResId != 0) {
+      headerTitle.setText(titleResId);
+    }
+
     updateInputMode(modeButton);
     MaterialButton okButton = root.findViewById(R.id.material_timepicker_ok_button);
     okButton.setOnClickListener(
@@ -369,6 +395,8 @@ public final class MaterialTimePicker extends DialogFragment {
     private TimeModel time = new TimeModel();
 
     private int inputMode;
+    private int titleTextResId = 0;
+    private CharSequence titleText;
 
     /** Sets the input mode with which to start the time picker. */
     @NonNull
@@ -409,6 +437,24 @@ public final class MaterialTimePicker extends DialogFragment {
       time = new TimeModel(format);
       time.setMinute(minute);
       time.setHourOfDay(hour);
+      return this;
+    }
+
+    /**
+     * Sets the text used to guide the user at the top of the picker.
+     */
+    @NonNull
+    public Builder setTitleText(@StringRes int titleTextResId) {
+      this.titleTextResId = titleTextResId;
+      return this;
+    }
+
+    /**
+     * Sets the text used to guide the user at the top of the picker.
+     */
+    @NonNull
+    public Builder setTitleText(@Nullable CharSequence charSequence) {
+      this.titleText = charSequence;
       return this;
     }
 
