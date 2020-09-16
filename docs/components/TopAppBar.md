@@ -426,10 +426,10 @@ In the layout:
 
 #### Navigation icon attributes
 
-&nbsp;                           | Attribute            | Related method(s)                          | Default value
--------------------------------- | -------------------- | ------------------------------------------ | -------------
-**`MaterialToolbar` icon**       | `app:navigationIcon` | `setNavigationIcon`<br>`getNavigationIcon` | `null`
-**`MaterialToolbar` icon color** | N/A                  | N/A                                        | `?attr/colorControlNormal` (as `Drawable` tint)
+&nbsp;                           | Attribute                 | Related method(s)                          | Default value
+-------------------------------- | ------------------------- | ------------------------------------------ | -------------
+**`MaterialToolbar` icon**       | `app:navigationIcon`      | `setNavigationIcon`<br>`getNavigationIcon` | `null`
+**`MaterialToolbar` icon color** | `app:navigationIconColor` | `setNavigationIconColor`                   | `?attr/colorControlNormal` (as `Drawable` tint)
 
 #### Title attributes
 

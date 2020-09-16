@@ -214,4 +214,8 @@
     <attr name="layout_collapseParallaxMultiplier" format="float"/>
   </declare-styleable>
 
+  <declare-styleable name="MaterialToolbar">
+    <attr name="navigationIconColor" format="color" />
+  </declare-styleable>
+
 </resources>
