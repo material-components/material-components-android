@@ -62,6 +62,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.view.ViewParent;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityManager;
@@ -262,6 +263,18 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   private int duration;
   private boolean gestureInsetBottomIgnored;
   @Nullable private View anchorView;
+  private boolean anchorViewLayoutListenerEnabled = false;
+  private final OnGlobalLayoutListener anchorViewLayoutListener =
+      new OnGlobalLayoutListener() {
+        @Override
+        public void onGlobalLayout() {
+          if (!anchorViewLayoutListenerEnabled) {
+            return;
+          }
+          extraBottomMarginAnchorView = calculateBottomMarginForAnchorView();
+          updateMargins();
+        }
+      };
 
   @RequiresApi(VERSION_CODES.Q)
   private final Runnable bottomMarginGestureInsetRunnable =
@@ -549,22 +562,42 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   /** Sets the view the {@link BaseTransientBottomBar} should be anchored above. */
   @NonNull
   public B setAnchorView(@Nullable View anchorView) {
+    ViewUtils.removeOnGlobalLayoutListener(this.anchorView, anchorViewLayoutListener);
     this.anchorView = anchorView;
+    ViewUtils.addOnGlobalLayoutListener(this.anchorView, anchorViewLayoutListener);
     return (B) this;
   }
 
   /**
-   * Sets the id of the view the {@link BaseTransientBottomBar} should be anchored above.
+   * Sets the view the {@link BaseTransientBottomBar} should be anchored above by id.
    *
    * @throws IllegalArgumentException if the anchor view is not found.
    */
   @NonNull
   public B setAnchorView(@IdRes int anchorViewId) {
-    this.anchorView = targetParent.findViewById(anchorViewId);
-    if (this.anchorView == null) {
+    View anchorView = targetParent.findViewById(anchorViewId);
+    if (anchorView == null) {
       throw new IllegalArgumentException("Unable to find anchor view with id: " + anchorViewId);
     }
-    return (B) this;
+    return setAnchorView(anchorView);
+  }
+
+  /**
+   * Returns whether the anchor view layout listener is enabled.
+   *
+   * @see #setAnchorViewLayoutListenerEnabled(boolean)
+   */
+  public boolean isAnchorViewLayoutListenerEnabled() {
+    return anchorViewLayoutListenerEnabled;
+  }
+
+  /**
+   * Sets whether the anchor view layout listener is enabled. If enabled, the {@link
+   * BaseTransientBottomBar} will recalculate and update its position when the position of the
+   * anchor view is changed.
+   */
+  public void setAnchorViewLayoutListenerEnabled(boolean anchorViewLayoutListenerEnabled) {
+    this.anchorViewLayoutListenerEnabled = anchorViewLayoutListenerEnabled;
   }
 
   /**
