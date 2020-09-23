@@ -98,7 +98,6 @@ final class IndicatorViewController {
   private int indicatorsAdded;
 
   private FrameLayout captionArea;
-  private int captionViewsAdded;
   @Nullable private Animator captionAnimator;
   private final float captionTranslationYPx;
   private int captionDisplayed;
@@ -403,7 +402,6 @@ final class IndicatorViewController {
     if (isCaptionView(index)) {
       captionArea.setVisibility(VISIBLE);
       captionArea.addView(indicator);
-      captionViewsAdded++;
     } else {
       LinearLayout.LayoutParams indicatorAreaLp =
           new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -419,8 +417,6 @@ final class IndicatorViewController {
     }
 
     if (isCaptionView(index) && captionArea != null) {
-      captionViewsAdded--;
-      setViewGroupGoneIfEmpty(captionArea, captionViewsAdded);
       captionArea.removeView(indicator);
     } else {
       indicatorArea.removeView(indicator);
