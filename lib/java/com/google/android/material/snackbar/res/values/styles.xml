@@ -33,20 +33,25 @@
     <item name="actionTextColorAlpha">@dimen/design_snackbar_action_text_color_alpha</item>
   </style>
 
-  <style name="Widget.MaterialComponents.Snackbar" parent="Widget.Design.Snackbar">
+  <style name="Base.Widget.MaterialComponents.Snackbar" parent="Widget.Design.Snackbar">
+    <!--
+      The snackbar view has a 8dp padding on left and right. Message Textview has a 8dp margin on left and right.
+    -->
+    <item name="android:paddingLeft">@dimen/mtrl_snackbar_padding_horizontal</item>
+    <item name="android:paddingRight">@dimen/mtrl_snackbar_padding_horizontal</item>
+    <item name="backgroundOverlayColorAlpha">@dimen/mtrl_snackbar_background_overlay_color_alpha</item>
+    <item name="actionTextColorAlpha">@dimen/mtrl_snackbar_action_text_color_alpha</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.Snackbar" parent="Base.Widget.MaterialComponents.Snackbar">
     <!-- Null out the background here so the programmatically defined default Snackbar background
          will be used, which supports the Material color theming attributes. -->
     <item name="android:background">@null</item>
     <item name="android:layout_margin">@dimen/mtrl_snackbar_margin</item>
     <item name="animationMode">fade</item>
-    <item name="backgroundOverlayColorAlpha">@dimen/mtrl_snackbar_background_overlay_color_alpha</item>
-    <item name="actionTextColorAlpha">@dimen/mtrl_snackbar_action_text_color_alpha</item>
   </style>
 
-  <style name="Widget.MaterialComponents.Snackbar.FullWidth" parent="Widget.Design.Snackbar">
-    <item name="backgroundOverlayColorAlpha">@dimen/mtrl_snackbar_background_overlay_color_alpha</item>
-    <item name="actionTextColorAlpha">@dimen/mtrl_snackbar_action_text_color_alpha</item>
-  </style>
+  <style name="Widget.MaterialComponents.Snackbar.FullWidth" parent="Base.Widget.MaterialComponents.Snackbar"/>
 
   <style name="Widget.MaterialComponents.Snackbar.TextView" parent="Widget.AppCompat.TextView">
     <item name="android:alpha">@dimen/material_emphasis_high_type</item>
@@ -57,8 +62,8 @@
     <item name="android:textColor">?attr/colorSurface</item>
     <item name="android:paddingTop">@dimen/design_snackbar_padding_vertical</item>
     <item name="android:paddingBottom">@dimen/design_snackbar_padding_vertical</item>
-    <item name="android:paddingLeft">@dimen/design_snackbar_padding_horizontal</item>
-    <item name="android:paddingRight">@dimen/design_snackbar_padding_horizontal</item>
+    <item name="android:layout_marginLeft">@dimen/mtrl_snackbar_message_margin_horizontal</item>
+    <item name="android:layout_marginRight">@dimen/mtrl_snackbar_message_margin_horizontal</item>
   </style>
 
 </resources>
