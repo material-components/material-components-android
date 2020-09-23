@@ -28,4 +28,9 @@
   <string name="material_hour_selection" description="Description for button to switch to select the hour [CHAR_LIMIT=NONE]">Select hour</string>
   <string name="material_minute_selection" description="Description for button to switch to select the minute [CHAR_LIMIT=NONE]">Select minutes</string>
   <string name="material_clock_toggle_content_description" description="Description for the toggle to choose between AM and PM [CHAR_LIMIT=NONE] ">Select AM or PM</string>
+
+  <!-- Accessibility string used for describing the button in time picker that changes the dialog to text input mode. [CHAR LIMIT=NONE] -->
+  <string name="material_timepicker_text_input_mode_description">Switch to text input mode for the time input.</string>
+  <!-- Accessibility string used for describing the button in time picker that changes the dialog to circular clock mode. [CHAR LIMIT=NONE] -->
+  <string name="material_timepicker_clock_mode_description">Switch to clock mode for the time input.</string>
 </resources>

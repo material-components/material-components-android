@@ -27,6 +27,7 @@ import android.content.res.ColorStateList;
 import android.os.Bundle;
 import androidx.fragment.app.DialogFragment;
 import android.text.TextUtils;
+import android.util.Pair;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +36,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import androidx.annotation.DrawableRes;
 import androidx.annotation.IntDef;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
@@ -52,8 +52,14 @@ import java.util.Set;
 /** A {@link Dialog} with a clock display and a clock face to choose the time. */
 public final class MaterialTimePicker extends DialogFragment {
 
-  private static final int CLOCK_ICON = R.drawable.ic_clock_black_24dp;
-  private static final int KEYBOARD_ICON = R.drawable.ic_keyboard_black_24dp;
+  private static final Pair<Integer, Integer> CLOCK_BUTTON_DATA =
+      new Pair<>(
+          R.drawable.ic_clock_black_24dp, R.string.material_timepicker_clock_mode_description);
+
+  private static final Pair<Integer, Integer> KEYBOARD_BUTTON_DATA =
+      new Pair<>(
+          R.drawable.ic_keyboard_black_24dp,
+          R.string.material_timepicker_text_input_mode_description);
 
   private final Set<OnClickListener> positiveButtonListeners = new LinkedHashSet<>();
   private final Set<OnClickListener> negativeButtonListeners = new LinkedHashSet<>();
@@ -258,7 +264,9 @@ public final class MaterialTimePicker extends DialogFragment {
     activePresenter = initializeOrRetrieveActivePresenterForMode(inputMode);
     activePresenter.show();
     activePresenter.invalidate();
-    modeButton.setIconResource(iconForMode(inputMode));
+    Pair<Integer, Integer> buttonData = dataForMode(inputMode);
+    modeButton.setIconResource(buttonData.first);
+    modeButton.setContentDescription(getResources().getString(buttonData.second));
   }
 
   private TimePickerPresenter initializeOrRetrieveActivePresenterForMode(int mode) {
@@ -278,13 +286,12 @@ public final class MaterialTimePicker extends DialogFragment {
     return timePickerTextInputPresenter;
   }
 
-  @DrawableRes
-  private static int iconForMode(@InputMode int mode) {
+  private static Pair<Integer, Integer> dataForMode(@InputMode int mode) {
     switch (mode) {
       case INPUT_MODE_KEYBOARD:
-        return CLOCK_ICON;
+        return CLOCK_BUTTON_DATA;
       case INPUT_MODE_CLOCK:
-        return KEYBOARD_ICON;
+        return KEYBOARD_BUTTON_DATA;
       default:
         throw new IllegalArgumentException("no icon for mode: " + mode);
     }
