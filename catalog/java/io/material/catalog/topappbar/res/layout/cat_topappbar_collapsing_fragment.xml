@@ -32,11 +32,6 @@
         android:id="@+id/collapsingtoolbarlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:collapsedTitleTextAppearance="?attr/textAppearanceHeadline6"
-        app:expandedTitleGravity="bottom"
-        app:expandedTitleMarginBottom="24dp"
-        app:expandedTitleMarginStart="16dp"
-        app:expandedTitleTextAppearance="?attr/textAppearanceHeadline5"
         app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
       <androidx.appcompat.widget.Toolbar

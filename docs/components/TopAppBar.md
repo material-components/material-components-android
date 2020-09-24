@@ -501,7 +501,7 @@ Default style theme attribute: `?attr/toolbarStyle`
 ----------------- | ---------------------------------
 **Default style** | `Widget.Design.CollapsingToolbar`
 
-Default style theme attribute: N/A
+Default style theme attribute: collapsingToolbarLayoutStyle
 
 See the full list of
 [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/appbar/res/values/styles.xml)
