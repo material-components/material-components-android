@@ -44,6 +44,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
 import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
@@ -275,6 +276,13 @@ public class CollapsingToolbarLayout extends FrameLayout {
 
     if (a.hasValue(R.styleable.CollapsingToolbarLayout_maxLines)) {
       collapsingTextHelper.setMaxLines(a.getInt(R.styleable.CollapsingToolbarLayout_maxLines, 1));
+    }
+
+    if (a.hasValue(R.styleable.CollapsingToolbarLayout_titlePositionInterpolator)) {
+      collapsingTextHelper.setPositionInterpolator(
+          android.view.animation.AnimationUtils.loadInterpolator(
+              context,
+              a.getResourceId(R.styleable.CollapsingToolbarLayout_titlePositionInterpolator, 0)));
     }
 
     scrimAnimationDuration =
@@ -1412,6 +1420,18 @@ public class CollapsingToolbarLayout extends FrameLayout {
       // Update the scrim visibility
       updateScrimVisibility();
     }
+  }
+
+  /**
+   * Set the interpolator to use when animating the title position from collapsed to expanded and
+   * vice versa.
+   *
+   * @param interpolator the interpolator to use.
+   * @attr ref
+   *     com.google.android.material.R.styleable#CollapsingToolbarLayout_titlePositionInterpolator
+   */
+  public void setTitlePositionInterpolator(@Nullable Interpolator interpolator) {
+    collapsingTextHelper.setPositionInterpolator(interpolator);
   }
 
   /**
