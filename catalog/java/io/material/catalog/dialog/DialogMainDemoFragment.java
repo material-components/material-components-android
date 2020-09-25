@@ -21,9 +21,11 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +35,8 @@ import androidx.annotation.StyleRes;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import io.material.catalog.feature.DemoFragment;
+import java.util.ArrayList;
+import java.util.List;
 
 /** A fragment that displays the main Dialog demos for the Catalog app. */
 public class DialogMainDemoFragment extends DemoFragment {
@@ -169,7 +173,19 @@ public class DialogMainDemoFragment extends DemoFragment {
         R.string.title_checkboxes_2_actions,
         new MaterialAlertDialogBuilder(getContext())
             .setTitle(title)
-            .setPositiveButton(positiveText, null)
+            .setPositiveButton(
+                positiveText,
+                (DialogInterface dialog, int which) -> {
+                  SparseBooleanArray checkedItemPositions =
+                      ((AlertDialog) dialog).getListView().getCheckedItemPositions();
+                  List<CharSequence> result = new ArrayList<>();
+                  for (int i = 0; i < choices.length; i++) {
+                    if (checkedItemPositions.get(i)) {
+                      result.add(choices[i]);
+                    }
+                  }
+                  Toast.makeText(getContext(), result.toString(), Toast.LENGTH_LONG).show();
+                })
             .setNegativeButton(negativeText, null)
             .setMultiChoiceItems(choices, choicesInitial, null));
 
@@ -179,7 +195,16 @@ public class DialogMainDemoFragment extends DemoFragment {
         R.string.title_radiobuttons_2_actions,
         new MaterialAlertDialogBuilder(getContext())
             .setTitle(title)
-            .setPositiveButton(positiveText, null)
+            .setPositiveButton(
+                positiveText,
+                (DialogInterface dialog, int which) -> {
+                  int checkedItemPosition =
+                      ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+                  if (checkedItemPosition != AdapterView.INVALID_POSITION) {
+                    Toast.makeText(getContext(), choices[checkedItemPosition], Toast.LENGTH_LONG)
+                        .show();
+                  }
+                })
             .setNegativeButton(negativeText, null)
             .setSingleChoiceItems(choices, 1, null));
 
