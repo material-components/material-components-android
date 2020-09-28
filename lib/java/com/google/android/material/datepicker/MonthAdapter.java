@@ -56,6 +56,7 @@ class MonthAdapter extends BaseAdapter {
     this.month = month;
     this.dateSelector = dateSelector;
     this.calendarConstraints = calendarConstraints;
+    this.previouslySelectedDates = dateSelector.getSelectedDays();
   }
 
   @Override
@@ -134,11 +135,9 @@ class MonthAdapter extends BaseAdapter {
   }
 
   public void updateSelectedStates(MaterialCalendarGridView monthGrid) {
-    // Update previously selected dates
-    if (previouslySelectedDates != null) {
-      for (Long date : previouslySelectedDates) {
-        updateSelectedStateForDate(monthGrid, date);
-      }
+    // Update previously selected dates.
+    for (Long date : previouslySelectedDates) {
+      updateSelectedStateForDate(monthGrid, date);
     }
 
     // Update currently selected dates.
