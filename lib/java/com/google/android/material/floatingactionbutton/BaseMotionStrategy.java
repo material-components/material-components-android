@@ -137,6 +137,15 @@ abstract class BaseMotionStrategy implements MotionStrategy {
       animators.add(spec.getAnimator("height", fab, ExtendedFloatingActionButton.HEIGHT));
     }
 
+    if (spec.hasPropertyValues("paddingStart")) {
+      animators.add(
+          spec.getAnimator("paddingStart", fab, ExtendedFloatingActionButton.PADDING_START));
+    }
+
+    if (spec.hasPropertyValues("paddingEnd")) {
+      animators.add(spec.getAnimator("paddingEnd", fab, ExtendedFloatingActionButton.PADDING_END));
+    }
+
     if (spec.hasPropertyValues("labelOpacity")) {
       // Use a Float Property to animate the opacity of the button text's color state list.
       ObjectAnimator animator =

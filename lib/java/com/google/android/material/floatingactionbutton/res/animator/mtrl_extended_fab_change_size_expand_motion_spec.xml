@@ -27,6 +27,16 @@
       android:duration="200"
       android:interpolator="@interpolator/mtrl_fast_out_slow_in"/>
   <objectAnimator
+    android:propertyName="paddingStart"
+    android:startOffset="0"
+    android:duration="200"
+    android:interpolator="@interpolator/mtrl_fast_out_slow_in"/>
+  <objectAnimator
+    android:propertyName="paddingEnd"
+    android:startOffset="0"
+    android:duration="200"
+    android:interpolator="@interpolator/mtrl_fast_out_slow_in"/>
+  <objectAnimator
     android:propertyName="labelOpacity"
     android:startOffset="117"
     android:duration="83"

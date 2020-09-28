@@ -26,6 +26,7 @@
   <public name="behavior_autoShrink" type="attr"/>
   <public name="extendMotionSpec" type="attr"/>
   <public name="shrinkMotionSpec" type="attr"/>
+  <public name="collapsedSize" type="attr"/>
   <public name="floatingActionButtonStyle" type="attr"/>
   <public name="extendedFloatingActionButtonStyle" type="attr"/>
   <public name="Widget.Design.FloatingActionButton" type="style"/>

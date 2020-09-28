@@ -78,6 +78,8 @@
     <attr name="extendMotionSpec" format="reference"/>
     <!-- Motion spec for shrink animation. This should be a MotionSpec resource. -->
     <attr name="shrinkMotionSpec" format="reference"/>
+    <!-- FAB size when collapsed. -->
+    <attr name="collapsedSize" format="dimension"/>
   </declare-styleable>
 
   <declare-styleable name="ExtendedFloatingActionButton_Behavior_Layout">
