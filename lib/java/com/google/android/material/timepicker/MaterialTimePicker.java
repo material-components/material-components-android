@@ -44,6 +44,7 @@ import androidx.annotation.StringRes;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.timepicker.TimePickerView.OnDoubleTapListener;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.LinkedHashSet;
@@ -187,6 +188,14 @@ public final class MaterialTimePicker extends DialogFragment {
     ViewGroup root =
         (ViewGroup) layoutInflater.inflate(R.layout.material_timepicker_dialog, viewGroup);
     timePickerView = root.findViewById(R.id.material_timepicker_view);
+    timePickerView.setOnDoubleTapListener(
+        new OnDoubleTapListener() {
+          @Override
+          public void onDoubleTap() {
+            inputMode = INPUT_MODE_KEYBOARD;
+            updateInputMode(modeButton);
+          }
+        });
     textInputView = root.findViewById(R.id.material_textinput_timepicker);
     modeButton = root.findViewById(R.id.material_timepicker_mode_button);
     TextView headerTitle = root.findViewById(R.id.header_title);
