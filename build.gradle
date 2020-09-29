@@ -27,7 +27,7 @@ ext {
     annotation            : '1.0.1',
     appCompat             : '1.1.0',
     cardView              : '1.0.0',
-    constraintlayout      : '2.0.0-rc1', // Need RC for TimePicker.
+    constraintlayout      : '2.0.1',
     coordinatorlayout     : '1.1.0',
     core                  : '1.2.0',
     experimental          : '1.0.0',
