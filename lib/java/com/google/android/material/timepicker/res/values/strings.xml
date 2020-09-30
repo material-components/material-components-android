@@ -18,7 +18,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string name="material_timepicker_pm" description="Suffix for time in 12-hour standard, after noon. [CHAR_LIMIT=2]">PM</string>
   <string name="material_timepicker_am" description="Suffix for time in 12-hour standard, before noon. [CHAR_LIMIT=2]">AM</string>
-  <string name="material_timepicker_select_time" description="Title for the dialog with a time picker. [CHAR_LIMIT=32]">SELECT TIME</string>
+  <string name="material_timepicker_select_time" description="Title for the dialog with a time picker. [CHAR_LIMIT=32]">Select time</string>
   <string name="material_timepicker_minute" description="The label for a text field to select the minute on the hour [CHAR_LIMIT=24]">Minute</string>
   <string name="material_timepicker_hour" description="The label for a text field to select the hour on the time [CHAR_LIMIT=24]">Hour</string>
   <string name="material_clock_display_divider" translatable="false">:</string>

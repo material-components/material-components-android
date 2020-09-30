@@ -25,14 +25,14 @@
 
   <TextView
     android:id="@+id/header_title"
-    style="?attr/textAppearanceCaption"
-    android:textStyle="bold"
+    style="?attr/textAppearanceOverline"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="16dp"
-    android:importantForAccessibility="no"
     android:layout_marginStart="24dp"
+    android:importantForAccessibility="no"
     android:text="@string/material_timepicker_select_time"
+    android:textColor="@/color/material_on_surface_emphasis_medium"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent" />
 
