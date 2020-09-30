@@ -34,6 +34,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.IntDef;
@@ -209,7 +210,7 @@ public final class MaterialTimePicker extends DialogFragment {
     }
 
     updateInputMode(modeButton);
-    MaterialButton okButton = root.findViewById(R.id.material_timepicker_ok_button);
+    Button okButton = root.findViewById(R.id.material_timepicker_ok_button);
     okButton.setOnClickListener(
         new OnClickListener() {
           @Override
@@ -221,7 +222,7 @@ public final class MaterialTimePicker extends DialogFragment {
           }
         });
 
-    MaterialButton cancelButton = root.findViewById(R.id.material_timepicker_cancel_button);
+    Button cancelButton = root.findViewById(R.id.material_timepicker_cancel_button);
     cancelButton.setOnClickListener(
         new OnClickListener() {
           @Override
