@@ -22,6 +22,7 @@
   android:id="@+id/main_viewGroup"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
+  android:clipChildren="false"
   android:padding="@dimen/cat_imageview_padding"
   android:orientation="vertical">
 
@@ -66,7 +67,7 @@
     app:strokeColor="?attr/colorSecondary"
     app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
     app:strokeWidth="1dp"
-    app:elevation="5dp"
+    android:elevation="5dp"
     android:padding="8dp"
     app:srcCompat="@drawable/dog_image" />
 
@@ -84,8 +85,8 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:adjustViewBounds="true"
+      android:elevation="5dp"
       android:scaleType="fitXY"
-      app:elevation="5dp"
       app:shapeAppearance="@style/ShapeAppearanceImageLeft"
       app:srcCompat="@drawable/cat_image"
       app:strokeColor="?attr/colorSecondary"
@@ -98,8 +99,8 @@
       android:layout_height="match_parent"
       android:layout_weight="1"
       android:adjustViewBounds="true"
+      android:elevation="5dp"
       android:scaleType="fitXY"
-      app:elevation="5dp"
       app:shapeAppearance="@style/ShapeAppearanceImageRight"
       app:srcCompat="@drawable/cateyes_image"
       app:strokeColor="?attr/colorSecondary"
