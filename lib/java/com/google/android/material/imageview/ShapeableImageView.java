@@ -37,8 +37,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import androidx.appcompat.content.res.AppCompatResources;
-import androidx.appcompat.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewOutlineProvider;
@@ -47,6 +45,9 @@ import androidx.annotation.DimenRes;
 import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.widget.AppCompatImageView;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
@@ -72,6 +73,11 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
   private ShapeAppearanceModel shapeAppearanceModel;
   @Dimension private float strokeWidth;
   private Path maskPath;
+
+  @Dimension private int leftContentPadding;
+  @Dimension private int topContentPadding;
+  @Dimension private int rightContentPadding;
+  @Dimension private int bottomContentPadding;
 
   public ShapeableImageView(Context context) {
     this(context, null, 0);
@@ -136,6 +142,225 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
   protected void onSizeChanged(int width, int height, int oldWidth, int oldHeight) {
     super.onSizeChanged(width, height, oldWidth, oldHeight);
     updateShapeMask(width, height);
+  }
+
+  /**
+   * Set additional padding on the image that is not applied to the background.
+   *
+   * @param left   the padding on the left of the image in pixels
+   * @param top    the padding on the top of the image in pixels
+   * @param right  the padding on the right of the image in pixels
+   * @param bottom the padding on the bottom of the image in pixels
+   */
+  public void setContentPadding(
+      @Dimension int left, @Dimension int top, @Dimension int right, @Dimension int bottom) {
+    // Super padding is equal to background padding + content padding. Adjust the content padding
+    //  portion of the super padding here:
+    super.setPadding(
+        super.getPaddingLeft() - leftContentPadding + left,
+        super.getPaddingTop() - topContentPadding + top,
+        super.getPaddingRight() - rightContentPadding + right,
+        super.getPaddingBottom() - bottomContentPadding + bottom);
+
+    leftContentPadding = left;
+    topContentPadding = top;
+    rightContentPadding = right;
+    bottomContentPadding = bottom;
+  }
+
+  /**
+   * Set additional relative padding on the image that is not applied to the background.
+   *
+   * @param start  the padding on the start of the image in pixels
+   * @param top    the padding on the top of the image in pixels
+   * @param end    the padding on the end of the image in pixels
+   * @param bottom the padding on the bottom of the image in pixels
+   */
+  @RequiresApi(17)
+  public void setContentPaddingRelative(
+      @Dimension int start, @Dimension int top, @Dimension int end, @Dimension int bottom) {
+    // Super padding is equal to background padding + content padding. Adjust the content padding
+    //  portion of the super padding here:
+    super.setPaddingRelative(
+        super.getPaddingStart() - getContentPaddingStart() + start,
+        super.getPaddingTop() - topContentPadding + top,
+        super.getPaddingEnd() - getContentPaddingEnd() + end,
+        super.getPaddingBottom() - bottomContentPadding + bottom);
+
+    leftContentPadding = isRtl() ? end : start;
+    topContentPadding = top;
+    rightContentPadding = isRtl() ? start : end;
+    bottomContentPadding = bottom;
+  }
+
+  /**
+   * The additional padding on the bottom of the image, which is not applied to the background.
+   *
+   * @return the bottom padding on the image
+   */
+  @Dimension
+  public int getContentPaddingBottom() {
+    return bottomContentPadding;
+  }
+
+  /**
+   * The additional relative padding on the end of the image, which is not applied to the
+   * background.
+   *
+   * @return the end padding on the image
+   */
+  @Dimension
+  public final int getContentPaddingEnd() {
+    return isRtl() ? getContentPaddingLeft() : getContentPaddingRight();
+  }
+
+  /**
+   * The additional padding on the left of the image, which is not applied to the background.
+   *
+   * @return the left padding on the image
+   */
+  @Dimension
+  public int getContentPaddingLeft() {
+    return leftContentPadding;
+  }
+
+  /**
+   * The additional padding on the right of the image, which is not applied to the background.
+   *
+   * @return the right padding on the image
+   */
+  @Dimension
+  public int getContentPaddingRight() {
+    return rightContentPadding;
+  }
+
+  /**
+   * The additional relative padding on the start of the image, which is not applied to the
+   * background.
+   *
+   * @return the start padding on the image
+   */
+  @Dimension
+  public final int getContentPaddingStart() {
+    return isRtl() ? getContentPaddingRight() : getContentPaddingLeft();
+  }
+
+  /**
+   * The additional padding on the top of the image, which is not applied to the background.
+   *
+   * @return the top padding on the image
+   */
+  @Dimension
+  public int getContentPaddingTop() {
+    return topContentPadding;
+  }
+
+  private boolean isRtl() {
+    return VERSION.SDK_INT >= 17 && getLayoutDirection() == LAYOUT_DIRECTION_RTL;
+  }
+
+  /**
+   * Set the padding. This is applied to both the background and the image, and does not affect the
+   * content padding differentiating the image from the background.
+   *
+   * @param left the left padding in pixels
+   * @param top the top padding in pixels
+   * @param right the right padding in pixels
+   * @param bottom the bottom padding in pixels
+   */
+  @Override
+  public void setPadding(
+      @Dimension int left, @Dimension int top, @Dimension int right, @Dimension int bottom) {
+    super.setPadding(
+        left + getContentPaddingLeft(),
+        top + getContentPaddingTop(),
+        right + getContentPaddingRight(),
+        bottom + getContentPaddingBottom());
+  }
+
+  /**
+   * Set the relative padding. This is applied to both the background and the image, and does not
+   * affect the content padding differentiating the image from the background.
+   *
+   * @param start the start padding in pixels
+   * @param top the top padding in pixels
+   * @param end the end padding in pixels
+   * @param bottom the bottom padding in pixels
+   */
+  @Override
+  public void setPaddingRelative(
+      @Dimension int start, @Dimension int top, @Dimension int end, @Dimension int bottom) {
+    super.setPaddingRelative(
+        start + getContentPaddingStart(),
+        top + getContentPaddingTop(),
+        end + getContentPaddingEnd(),
+        bottom + getContentPaddingBottom());
+  }
+
+  /**
+   * The padding on the bottom of the View, applied to both the image and the background.
+   *
+   * @return the bottom padding
+   */
+  @Override
+  @Dimension
+  public int getPaddingBottom() {
+    return super.getPaddingBottom() - getContentPaddingBottom();
+  }
+
+  /**
+   * The relative padding on the end of the View, applied to both the image and the background.
+   *
+   * @return the end padding
+   */
+  @Override
+  @Dimension
+  public int getPaddingEnd() {
+    return super.getPaddingEnd() - getContentPaddingEnd();
+  }
+
+  /**
+   * The padding on the left of the View, applied to both the image and the background.
+   *
+   * @return the left padding
+   */
+  @Override
+  @Dimension
+  public int getPaddingLeft() {
+    return super.getPaddingLeft() - getContentPaddingLeft();
+  }
+
+  /**
+   * The padding on the right of the View, applied to both the image and the background.
+   *
+   * @return the right padding
+   */
+  @Override
+  @Dimension
+  public int getPaddingRight() {
+    return super.getPaddingRight() - getContentPaddingRight();
+  }
+
+  /**
+   * The relative padding on the start of the View, applied to both the image and the background.
+   *
+   * @return the start padding
+   */
+  @Override
+  @Dimension
+  public int getPaddingStart() {
+    return super.getPaddingStart() - getContentPaddingStart();
+  }
+
+  /**
+   * The padding on the top of the View, applied to both the image and the background.
+   *
+   * @return the top padding
+   */
+  @Override
+  @Dimension
+  public int getPaddingTop() {
+    return super.getPaddingTop() - getContentPaddingTop();
   }
 
   @Override

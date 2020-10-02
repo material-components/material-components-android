@@ -107,4 +107,16 @@
 
   </LinearLayout>
 
+  <com.google.android.material.imageview.ShapeableImageView
+    android:id="@+id/icon_view"
+    android:layout_margin="10dp"
+    android:layout_gravity="center"
+    android:layout_width="40dp"
+    android:layout_height="40dp"
+    android:background="?colorSecondary"
+    android:elevation="2dp"
+    app:shapeAppearance="?shapeAppearanceSmallComponent"
+    app:srcCompat="@drawable/ic_pets_24dp"
+    app:tint="?colorOnSecondary" />
+
 </LinearLayout>

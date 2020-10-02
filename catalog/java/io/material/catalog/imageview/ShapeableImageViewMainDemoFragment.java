@@ -46,6 +46,9 @@ public class ShapeableImageViewMainDemoFragment extends DemoFragment {
     MaterialButtonToggleGroup toggleGroup = view.findViewById(R.id.togglegroup);
     ShapeableImageView imageView = view.findViewById(R.id.image_view);
 
+    ShapeableImageView iconView = view.findViewById(R.id.icon_view);
+    iconView.setContentPadding(20, 20, 20, 20);
+
     SparseArray<ShapeAppearanceModel> shapes = new SparseArray<>();
     shapes.put(
         R.id.button_diamond,
@@ -66,10 +69,14 @@ public class ShapeableImageViewMainDemoFragment extends DemoFragment {
             return;
           }
 
+          ShapeAppearanceModel shape = shapes.get(checkedId);
+
           // Randomly makes dog wink.
           imageView.setImageResource(
               random.nextBoolean() ? R.drawable.dog_image : R.drawable.dog_image_wink);
-          imageView.setShapeAppearanceModel(shapes.get(checkedId));
+          imageView.setShapeAppearanceModel(shape);
+
+          iconView.setShapeAppearanceModel(shape);
         });
 
     return view;
