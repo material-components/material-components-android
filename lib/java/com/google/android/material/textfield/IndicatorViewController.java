@@ -363,7 +363,11 @@ final class IndicatorViewController {
               R.dimen.material_helper_text_font_1_3_padding_horizontal,
               ViewCompat.getPaddingStart(editText)),
           getIndicatorPadding(
-              isFontScaleLarge, R.dimen.material_helper_text_font_1_3_padding_top, 0),
+              isFontScaleLarge,
+              R.dimen.material_helper_text_font_1_3_padding_top,
+              context
+                  .getResources()
+                  .getDimensionPixelSize(R.dimen.material_helper_text_default_padding_top)),
           getIndicatorPadding(
               isFontScaleLarge,
               R.dimen.material_helper_text_font_1_3_padding_horizontal,

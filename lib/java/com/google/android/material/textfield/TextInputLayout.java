@@ -2354,7 +2354,9 @@ public class TextInputLayout extends LinearLayout {
         prefixTextView,
         startPadding,
         editText.getCompoundPaddingTop(),
-        0,
+        getContext()
+            .getResources()
+            .getDimensionPixelSize(R.dimen.material_input_text_to_prefix_suffix_padding),
         editText.getCompoundPaddingBottom());
   }
 
@@ -2441,7 +2443,13 @@ public class TextInputLayout extends LinearLayout {
     int endPadding =
         (isEndIconVisible() || isErrorIconVisible()) ? 0 : ViewCompat.getPaddingEnd(editText);
     ViewCompat.setPaddingRelative(
-        suffixTextView, 0, editText.getPaddingTop(), endPadding, editText.getPaddingBottom());
+        suffixTextView,
+        getContext()
+            .getResources()
+            .getDimensionPixelSize(R.dimen.material_input_text_to_prefix_suffix_padding),
+        editText.getPaddingTop(),
+        endPadding,
+        editText.getPaddingBottom());
   }
 
   @Override
