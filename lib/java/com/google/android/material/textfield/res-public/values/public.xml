@@ -50,6 +50,10 @@
   <public name="suffixText" type="attr"/>
   <public name="suffixTextAppearance" type="attr"/>
   <public name="suffixTextColor" type="attr"/>
+  <public name="prefixTextStartPadding" type="attr"/>
+  <public name="prefixTextEndPadding" type="attr"/>
+  <public name="suffixTextStartPadding" type="attr"/>
+  <public name="suffixTextEndPadding" type="attr"/>
   <public name="errorEnabled" type="attr"/>
   <public name="errorTextAppearance" type="attr"/>
   <public name="errorTextColor" type="attr"/>

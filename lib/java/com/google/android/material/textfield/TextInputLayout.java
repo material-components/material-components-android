@@ -38,6 +38,7 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Parcel;
 import android.os.Parcelable;
+import androidx.annotation.Px;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.GravityCompat;
@@ -215,6 +216,11 @@ public class TextInputLayout extends LinearLayout {
   @NonNull private final TextView prefixTextView;
   @Nullable private CharSequence suffixText;
   @NonNull private final TextView suffixTextView;
+
+  @Px private int prefixTextStartPadding;
+  @Px private int prefixTextEndPadding;
+  @Px private int suffixTextStartPadding;
+  @Px private int suffixTextEndPadding;
 
   private boolean hintEnabled;
   private CharSequence hint;
@@ -821,6 +827,10 @@ public class TextInputLayout extends LinearLayout {
     if (a.hasValue(R.styleable.TextInputLayout_suffixTextColor)) {
       setSuffixTextColor(a.getColorStateList(R.styleable.TextInputLayout_suffixTextColor));
     }
+    prefixTextStartPadding = a.getDimensionPixelSize(R.styleable.TextInputLayout_prefixTextStartPadding, 0);
+    prefixTextEndPadding = a.getDimensionPixelSize(R.styleable.TextInputLayout_prefixTextEndPadding, 0);
+    suffixTextStartPadding = a.getDimensionPixelSize(R.styleable.TextInputLayout_suffixTextStartPadding, 0);
+    suffixTextEndPadding = a.getDimensionPixelSize(R.styleable.TextInputLayout_suffixTextEndPadding, 0);
     setCounterEnabled(counterEnabled);
 
     setEnabled(a.getBoolean(R.styleable.TextInputLayout_android_enabled, true));
@@ -2345,6 +2355,83 @@ public class TextInputLayout extends LinearLayout {
     TextViewCompat.setTextAppearance(prefixTextView, prefixTextAppearance);
   }
 
+  /**
+   * Sets the padding before the prefix text and after the startIcon.
+   *
+   * @param prefixTextStartPadding Padding before the prefix text and after the startIcon
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_prefixTextStartPadding
+   * @see #getPrefixTextStartPadding
+   */
+  public void setPrefixTextStartPadding(@Px int prefixTextStartPadding) {
+    if (this.prefixTextStartPadding != prefixTextStartPadding) {
+      this.prefixTextStartPadding = prefixTextStartPadding;
+      updatePrefixTextViewPadding();
+    }
+  }
+
+  /**
+   * Sets the padding before the prefix text and after the startIcon, using a resource id.
+   *
+   * @param id The resource id for the padding before the prefix text and after the startIcon
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_prefixTextStartPadding
+   */
+  public void setPrefixTextStartPaddingResource(@DimenRes int id) {
+    if (id != NO_ID){
+      setPrefixTextStartPadding(getResources().getDimensionPixelSize(id));
+    }
+  }
+
+  /**
+   * Gets the padding before the prefix text and after the startIcon.
+   *
+   * @return Padding before the prefix text and after the startIcon.
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_prefixTextStartPadding
+   * @see #setPrefixTextStartPadding(int)
+   */
+  @Px
+  public int getPrefixTextStartPadding() {
+    return prefixTextStartPadding;
+  }
+
+  /**
+   * Sets the padding after the prefix text and before the EditText
+   *
+   * @param prefixTextEndPadding Padding after the prefix text and before the EditText
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_prefixTextEndPadding
+   * @see #getPrefixTextEndPadding
+   */
+  public void setPrefixTextEndPadding(@Px int prefixTextEndPadding) {
+    if (this.prefixTextEndPadding != prefixTextEndPadding) {
+      this.prefixTextEndPadding = prefixTextEndPadding;
+      updatePrefixTextViewPadding();
+    }
+  }
+
+  /**
+   * Sets the padding after the prefix text and before the EditText, using a resource id.
+   *
+   * @param id The resource id for the padding after the prefix text and before the EditText
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_prefixTextEndPadding
+   */
+  public void setPrefixTextEndPaddingResource(@DimenRes int id) {
+    if (id != NO_ID){
+      setPrefixTextEndPadding(getResources().getDimensionPixelSize(id));
+    }
+  }
+
+  /**
+   * Gets the padding after the prefix text
+   *
+   * @return Padding after the prefix text
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_prefixTextEndPadding
+   * @see #setPrefixTextEndPadding(int)
+   */
+  @Px
+  public int getPrefixTextEndPadding() {
+    return prefixTextEndPadding;
+  }
+
+
   private void updatePrefixTextViewPadding() {
     if (editText == null) {
       return;
@@ -2352,9 +2439,9 @@ public class TextInputLayout extends LinearLayout {
     int startPadding = isStartIconVisible() ? 0 : ViewCompat.getPaddingStart(editText);
     ViewCompat.setPaddingRelative(
         prefixTextView,
-        startPadding,
+        startPadding + prefixTextStartPadding,
         editText.getCompoundPaddingTop(),
-        0,
+        prefixTextEndPadding,
         editText.getCompoundPaddingBottom());
   }
 
@@ -2394,6 +2481,82 @@ public class TextInputLayout extends LinearLayout {
   @NonNull
   public TextView getSuffixTextView() {
     return suffixTextView;
+  }
+
+  /**
+   * Sets the padding before the suffix text and after the EditText.
+   *
+   * @param suffixTextStartPadding Padding before the suffix text and after the EditText
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_suffixTextStartPadding
+   * @see #getSuffixTextStartPadding
+   */
+  public void setSuffixTextStartPadding(@Px int suffixTextStartPadding) {
+    if (this.suffixTextStartPadding != suffixTextStartPadding) {
+      this.suffixTextStartPadding = suffixTextStartPadding;
+      updateSuffixTextViewPadding();
+    }
+  }
+
+  /**
+   * Sets the padding before the suffix text and after the EditText, using a resource id.
+   *
+   * @param id The resource id for the padding before the suffix text and after the EditText
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_suffixTextStartPadding
+   */
+  public void setSuffixTextStartPaddingResource(@DimenRes int id) {
+    if (id != NO_ID){
+      setSuffixTextStartPadding(getResources().getDimensionPixelSize(id));
+    }
+  }
+
+  /**
+   * Gets the padding before the suffix text and after the EditText.
+   *
+   * @return Padding before the suffix text and after the EditText.
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_suffixTextStartPadding
+   * @see #setSuffixTextStartPadding(int)
+   */
+  @Px
+  public int getSuffixTextStartPadding() {
+    return suffixTextStartPadding;
+  }
+
+  /**
+   * Sets the padding after the suffix text and before the endIcon
+   *
+   * @param suffixTextEndPadding Padding after the suffix text and before the endIcon
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_suffixTextEndPadding
+   * @see #getSuffixTextEndPadding
+   */
+  public void setSuffixTextEndPadding(@Px int suffixTextEndPadding) {
+    if (this.suffixTextEndPadding != suffixTextEndPadding) {
+      this.suffixTextEndPadding = suffixTextEndPadding;
+      updateSuffixTextViewPadding();
+    }
+  }
+
+  /**
+   * Sets the padding after the suffix text and before the endIcon, using a resource id.
+   *
+   * @param id The resource id for the padding after the suffix text and before the endIcon
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_suffixTextEndPadding
+   */
+  public void setSuffixTextEndPaddingResource(@DimenRes int id) {
+    if (id != NO_ID){
+      setSuffixTextEndPadding(getResources().getDimensionPixelSize(id));
+    }
+  }
+
+  /**
+   * Gets the padding after the suffix text and before the endIcon
+   *
+   * @return Padding after the suffix text and before the endIcon
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_suffixTextEndPadding
+   * @see #setSuffixTextEndPadding(int)
+   */
+  @Px
+  public int getSuffixTextEndPadding() {
+    return suffixTextEndPadding;
   }
 
   private void updateSuffixTextVisibility() {
@@ -2441,7 +2604,11 @@ public class TextInputLayout extends LinearLayout {
     int endPadding =
         (isEndIconVisible() || isErrorIconVisible()) ? 0 : ViewCompat.getPaddingEnd(editText);
     ViewCompat.setPaddingRelative(
-        suffixTextView, 0, editText.getPaddingTop(), endPadding, editText.getPaddingBottom());
+        suffixTextView,
+        suffixTextStartPadding,
+        editText.getPaddingTop(),
+        endPadding + suffixTextEndPadding,
+        editText.getPaddingBottom());
   }
 
   @Override
