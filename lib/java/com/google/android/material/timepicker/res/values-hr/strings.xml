@@ -20,11 +20,11 @@
   <string name="material_timepicker_select_time">Odabir vremena</string>
   <string name="material_timepicker_minute">Minuta</string>
   <string name="material_timepicker_hour">Sat</string>
-  <string name="material_hour_suffix">%1$s o\'clock</string>
-  <string name="material_minute_suffix">%1$s minutes</string>
+  <string name="material_hour_suffix">%1$s h</string>
+  <string name="material_minute_suffix">%1$s min</string>
   <string name="material_hour_selection">Odaberite sat</string>
   <string name="material_minute_selection">Odaberite minute</string>
-  <string name="material_clock_toggle_content_description">Select AM or PM</string>
+  <string name="material_clock_toggle_content_description">Odaberite prijepodne ili poslijepodne</string>
   <string name="material_timepicker_text_input_mode_description">Prijeđite na način unosa teksta da biste unijeli vrijeme.</string>
   <string name="material_timepicker_clock_mode_description">Prijeđite na način rada sata da biste unijeli vrijeme.</string>
 </resources>

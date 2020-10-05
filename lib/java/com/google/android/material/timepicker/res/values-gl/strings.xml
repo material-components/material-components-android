@@ -17,14 +17,14 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string name="material_timepicker_pm">p.m.</string>
   <string name="material_timepicker_am">a.m.</string>
-  <string name="material_timepicker_select_time">Select time</string>
+  <string name="material_timepicker_select_time">Seleccionar hora</string>
   <string name="material_timepicker_minute">Minuto</string>
   <string name="material_timepicker_hour">Hora</string>
-  <string name="material_hour_suffix">%1$s o\'clock</string>
-  <string name="material_minute_suffix">%1$s minutes</string>
-  <string name="material_hour_selection">Select hour</string>
+  <string name="material_hour_suffix">%1$s en punto</string>
+  <string name="material_minute_suffix">%1$s minutos</string>
+  <string name="material_hour_selection">Seleccionar hora</string>
   <string name="material_minute_selection">Seleccionar minutos</string>
-  <string name="material_clock_toggle_content_description">Select AM or PM</string>
+  <string name="material_clock_toggle_content_description">Seleccionar a.m. ou p.m.</string>
   <string name="material_timepicker_text_input_mode_description">Cambia ao modo de introdución de texto para introducir a hora.</string>
   <string name="material_timepicker_clock_mode_description">Cambiar ao modo de reloxo para introducir a hora.</string>
 </resources>

@@ -20,11 +20,11 @@
   <string name="material_timepicker_select_time">సమయాన్ని ఎంచుకోండి</string>
   <string name="material_timepicker_minute">నిమిషం</string>
   <string name="material_timepicker_hour">గంట</string>
-  <string name="material_hour_suffix">%1$s o\'clock</string>
-  <string name="material_minute_suffix">%1$s minutes</string>
-  <string name="material_hour_selection">Select hour</string>
+  <string name="material_hour_suffix">%1$s అవుతుంది</string>
+  <string name="material_minute_suffix">%1$s నిమిషాలు</string>
+  <string name="material_hour_selection">గంటను ఎంచుకోండి</string>
   <string name="material_minute_selection">నిమిషాలను ఎంచుకోండి</string>
-  <string name="material_clock_toggle_content_description">Select AM or PM</string>
+  <string name="material_clock_toggle_content_description">AM లేదా PMను ఎంచుకోండి</string>
   <string name="material_timepicker_text_input_mode_description">సమయాన్ని నమోదు చేయడం కోసం వచన నమోదు మోడ్‌కి మారండి.</string>
   <string name="material_timepicker_clock_mode_description">సమయాన్ని నమోదు చేయడం కోసం గడియారం మోడ్‌కు మారండి.</string>
 </resources>

@@ -20,11 +20,11 @@
   <string name="material_timepicker_select_time">اختيار الوقت</string>
   <string name="material_timepicker_minute">دقيقة</string>
   <string name="material_timepicker_hour">الساعة</string>
-  <string name="material_hour_suffix">%1$s o\'clock</string>
-  <string name="material_minute_suffix">%1$s minutes</string>
+  <string name="material_hour_suffix">الساعة %1$s</string>
+  <string name="material_minute_suffix">%1$s دقيقة</string>
   <string name="material_hour_selection">تحديد الساعة</string>
   <string name="material_minute_selection">تحديد الدقائق</string>
-  <string name="material_clock_toggle_content_description">Select AM or PM</string>
+  <string name="material_clock_toggle_content_description">يُرجى اختيار صباحًا أو مساءً.</string>
   <string name="material_timepicker_text_input_mode_description">يُرجى التبديل إلى وضع إدخال النص لإدخال الوقت.</string>
   <string name="material_timepicker_clock_mode_description">يُرجى التبديل إلى وضع الساعة لإدخال الوقت.</string>
 </resources>

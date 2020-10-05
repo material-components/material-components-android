@@ -20,11 +20,11 @@
   <string name="material_timepicker_select_time">选择时间</string>
   <string name="material_timepicker_minute">分钟</string>
   <string name="material_timepicker_hour">小时</string>
-  <string name="material_hour_suffix">%1$s o\'clock</string>
-  <string name="material_minute_suffix">%1$s minutes</string>
+  <string name="material_hour_suffix">%1$s 点</string>
+  <string name="material_minute_suffix">%1$s 分</string>
   <string name="material_hour_selection">选择小时</string>
   <string name="material_minute_selection">选择分钟</string>
-  <string name="material_clock_toggle_content_description">Select AM or PM</string>
+  <string name="material_clock_toggle_content_description">选择上午或下午</string>
   <string name="material_timepicker_text_input_mode_description">切换到文字输入模式来输入时间。</string>
   <string name="material_timepicker_clock_mode_description">切换到时钟模式来输入时间。</string>
 </resources>

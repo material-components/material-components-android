@@ -17,14 +17,14 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string name="material_timepicker_pm">PM</string>
   <string name="material_timepicker_am">AM</string>
-  <string name="material_timepicker_select_time">Select time</string>
+  <string name="material_timepicker_select_time">Hautatu ordua</string>
   <string name="material_timepicker_minute">Minutua</string>
   <string name="material_timepicker_hour">Ordua</string>
-  <string name="material_hour_suffix">%1$s o\'clock</string>
-  <string name="material_minute_suffix">%1$s minutes</string>
-  <string name="material_hour_selection">Select hour</string>
+  <string name="material_hour_suffix">%1$s(r)ak dira</string>
+  <string name="material_minute_suffix">%1$s minutu</string>
+  <string name="material_hour_selection">Hautatu ordua</string>
   <string name="material_minute_selection">Hautatu minutuak</string>
-  <string name="material_clock_toggle_content_description">Select AM or PM</string>
+  <string name="material_clock_toggle_content_description">Hautatu AM edo PM</string>
   <string name="material_timepicker_text_input_mode_description">Ordua idazteko, aldatu testua idazteko metodora.</string>
   <string name="material_timepicker_clock_mode_description">Aldatu erloju modura ordua zehazteko.</string>
 </resources>

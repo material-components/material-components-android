@@ -20,11 +20,11 @@
   <string name="material_timepicker_select_time">நேரத்தைத் தேர்ந்தெடுக்கவும்</string>
   <string name="material_timepicker_minute">நிமிடம்</string>
   <string name="material_timepicker_hour">மணிநேரம்</string>
-  <string name="material_hour_suffix">%1$s o\'clock</string>
-  <string name="material_minute_suffix">%1$s minutes</string>
-  <string name="material_hour_selection">Select hour</string>
+  <string name="material_hour_suffix">%1$s மணி</string>
+  <string name="material_minute_suffix">%1$s நிமிடங்கள்</string>
+  <string name="material_hour_selection">மணிநேரத்தைத் தேர்ந்தெடுக்க உதவும்</string>
   <string name="material_minute_selection">நிமிடத்தைத் தேர்ந்தெடுக்கவும்</string>
-  <string name="material_clock_toggle_content_description">Select AM or PM</string>
+  <string name="material_clock_toggle_content_description">AM அல்லது PMமைத் தேர்ந்தெடுக்க உதவும்</string>
   <string name="material_timepicker_text_input_mode_description">உரை உள்ளீட்டிற்காக, கடிகாரப் பயன்முறைக்கு மாற்றும்.</string>
   <string name="material_timepicker_clock_mode_description">நேர உள்ளீட்டிற்காக, கடிகாரப் பயன்முறைக்கு மாற்றும்.</string>
 </resources>

@@ -17,14 +17,14 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string name="material_timepicker_pm">попладне</string>
   <string name="material_timepicker_am">претпладне</string>
-  <string name="material_timepicker_select_time">Select time</string>
+  <string name="material_timepicker_select_time">Изберете време</string>
   <string name="material_timepicker_minute">Минута</string>
-  <string name="material_timepicker_hour">Hour</string>
-  <string name="material_hour_suffix">%1$s o\'clock</string>
-  <string name="material_minute_suffix">%1$s minutes</string>
-  <string name="material_hour_selection">Select hour</string>
+  <string name="material_timepicker_hour">Час</string>
+  <string name="material_hour_suffix">%1$s часот</string>
+  <string name="material_minute_suffix">%1$s минути</string>
+  <string name="material_hour_selection">Изберете час</string>
   <string name="material_minute_selection">Избери минути</string>
-  <string name="material_clock_toggle_content_description">Select AM or PM</string>
+  <string name="material_clock_toggle_content_description">Изберете претпладне или попладне</string>
   <string name="material_timepicker_text_input_mode_description">Префрлете се на режимот за внесување текст за да внесете време.</string>
   <string name="material_timepicker_clock_mode_description">Префрлете се на режимот за часовник за да внесете време.</string>
 </resources>

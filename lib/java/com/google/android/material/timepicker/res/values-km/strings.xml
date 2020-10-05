@@ -20,11 +20,11 @@
   <string name="material_timepicker_select_time">ជ្រើស​ម៉ោង</string>
   <string name="material_timepicker_minute">នាទី​</string>
   <string name="material_timepicker_hour">ម៉ោង</string>
-  <string name="material_hour_suffix">%1$s o\'clock</string>
-  <string name="material_minute_suffix">%1$s minutes</string>
-  <string name="material_hour_selection">Select hour</string>
+  <string name="material_hour_suffix">ម៉ោង %1$s</string>
+  <string name="material_minute_suffix">%1$s នាទី</string>
+  <string name="material_hour_selection">ជ្រើសរើសម៉ោង</string>
   <string name="material_minute_selection">ជ្រើស​នាទី</string>
-  <string name="material_clock_toggle_content_description">Select AM or PM</string>
+  <string name="material_clock_toggle_content_description">ជ្រើសរើស AM ឬ PM</string>
   <string name="material_timepicker_text_input_mode_description">ប្តូរ​ទៅ​មុខងារ​បញ្ចូល​អក្សរ​សម្រាប់​ការ​បញ្ចូល​ម៉ោង។</string>
   <string name="material_timepicker_clock_mode_description">ប្តូរ​ទៅ​មុខងារ​នាឡិកា​សម្រាប់​ការ​បញ្ចូល​ម៉ោង។</string>
 </resources>

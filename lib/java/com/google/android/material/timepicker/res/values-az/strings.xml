@@ -20,11 +20,11 @@
   <string name="material_timepicker_select_time">Vaxt seçin</string>
   <string name="material_timepicker_minute">Dəqiqə</string>
   <string name="material_timepicker_hour">Saat</string>
-  <string name="material_hour_suffix">%1$s o\'clock</string>
-  <string name="material_minute_suffix">%1$s minutes</string>
-  <string name="material_hour_selection">Select hour</string>
+  <string name="material_hour_suffix">Saat %1$s</string>
+  <string name="material_minute_suffix">%1$s dəqiqə</string>
+  <string name="material_hour_selection">Saatı seçin</string>
   <string name="material_minute_selection">Dəqiqə seçin</string>
-  <string name="material_clock_toggle_content_description">Select AM or PM</string>
+  <string name="material_clock_toggle_content_description">Gündüz və ya axşam seçin</string>
   <string name="material_timepicker_text_input_mode_description">Zamanı daxil etmək üçün mətnlə daxiletmə rejiminə keçin</string>
   <string name="material_timepicker_clock_mode_description">Zamanı daxil etmək üçün saat rejiminə keçin</string>
 </resources>

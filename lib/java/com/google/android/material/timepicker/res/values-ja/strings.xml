@@ -20,11 +20,11 @@
   <string name="material_timepicker_select_time">時間を選択</string>
   <string name="material_timepicker_minute">分</string>
   <string name="material_timepicker_hour">時間</string>
-  <string name="material_hour_suffix">%1$s o\'clock</string>
-  <string name="material_minute_suffix">%1$s minutes</string>
+  <string name="material_hour_suffix">%1$s時</string>
+  <string name="material_minute_suffix">%1$s分</string>
   <string name="material_hour_selection">時刻を選択してください</string>
   <string name="material_minute_selection">分を選択</string>
-  <string name="material_clock_toggle_content_description">Select AM or PM</string>
+  <string name="material_clock_toggle_content_description">午前または午後を選択</string>
   <string name="material_timepicker_text_input_mode_description">時刻をテキストで入力するモードに切り替えます。</string>
   <string name="material_timepicker_clock_mode_description">時刻を時計で入力するモードに切り替えます。</string>
 </resources>

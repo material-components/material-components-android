@@ -20,11 +20,11 @@
   <string name="material_timepicker_select_time">Pilih waktu</string>
   <string name="material_timepicker_minute">Menit</string>
   <string name="material_timepicker_hour">Jam</string>
-  <string name="material_hour_suffix">%1$s o\'clock</string>
-  <string name="material_minute_suffix">%1$s minutes</string>
+  <string name="material_hour_suffix">Pukul %1$s</string>
+  <string name="material_minute_suffix">%1$s menit</string>
   <string name="material_hour_selection">Pilih jam</string>
   <string name="material_minute_selection">Pilih menit</string>
-  <string name="material_clock_toggle_content_description">Select AM or PM</string>
+  <string name="material_clock_toggle_content_description">Pilih AM atau PM</string>
   <string name="material_timepicker_text_input_mode_description">Beralih ke mode masukan teks untuk masukan waktu.</string>
   <string name="material_timepicker_clock_mode_description">Beralih ke mode jam untuk masukan waktu.</string>
 </resources>

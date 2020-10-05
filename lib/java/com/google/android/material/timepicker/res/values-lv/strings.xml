@@ -20,11 +20,11 @@
   <string name="material_timepicker_select_time">Laika atlasīšana</string>
   <string name="material_timepicker_minute">Minūte</string>
   <string name="material_timepicker_hour">Stunda</string>
-  <string name="material_hour_suffix">%1$s o\'clock</string>
-  <string name="material_minute_suffix">%1$s minutes</string>
+  <string name="material_hour_suffix">plkst. %1$s</string>
+  <string name="material_minute_suffix">%1$s min</string>
   <string name="material_hour_selection">Atlasiet stundu</string>
   <string name="material_minute_selection">Atlasiet minūtes.</string>
-  <string name="material_clock_toggle_content_description">Select AM or PM</string>
+  <string name="material_clock_toggle_content_description">Atlasiet “AM” (priekšpusdienā) vai “PM” (pēcpusdienā).</string>
   <string name="material_timepicker_text_input_mode_description">Lai ievadītu laiku, ieslēdziet teksta ievades režīmu.</string>
   <string name="material_timepicker_clock_mode_description">Lai ievadītu laiku, ieslēdziet pulksteņa režīmu.</string>
 </resources>

@@ -20,11 +20,11 @@
   <string name="material_timepicker_select_time">시간 선택</string>
   <string name="material_timepicker_minute">분</string>
   <string name="material_timepicker_hour">시간</string>
-  <string name="material_hour_suffix">%1$s o\'clock</string>
-  <string name="material_minute_suffix">%1$s minutes</string>
+  <string name="material_hour_suffix">%1$s시 정각</string>
+  <string name="material_minute_suffix">%1$s분</string>
   <string name="material_hour_selection">시간 선택</string>
   <string name="material_minute_selection">분 선택</string>
-  <string name="material_clock_toggle_content_description">Select AM or PM</string>
+  <string name="material_clock_toggle_content_description">오전 또는 오후를 선택하세요.</string>
   <string name="material_timepicker_text_input_mode_description">시간 입력을 위해 텍스트 입력 모드로 전환합니다.</string>
   <string name="material_timepicker_clock_mode_description">시간 입력을 위해 시계 모드로 전환합니다.</string>
 </resources>

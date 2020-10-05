@@ -20,11 +20,11 @@
   <string name="material_timepicker_select_time">בחר שעה</string>
   <string name="material_timepicker_minute">דקה</string>
   <string name="material_timepicker_hour">שעה</string>
-  <string name="material_hour_suffix">%1$s o\'clock</string>
-  <string name="material_minute_suffix">%1$s minutes</string>
+  <string name="material_hour_suffix">השעה %1$s</string>
+  <string name="material_minute_suffix">%1$s דקות</string>
   <string name="material_hour_selection">בחר שעה</string>
   <string name="material_minute_selection">בחר דקות</string>
-  <string name="material_clock_toggle_content_description">Select AM or PM</string>
+  <string name="material_clock_toggle_content_description">יש לבחור ב-AM או ב-PM</string>
   <string name="material_timepicker_text_input_mode_description">העבר למצב קלט טקסט לצורך הזנת השעה</string>
   <string name="material_timepicker_clock_mode_description">העבר למצב שעון לצורך הזנת השעה</string>
 </resources>

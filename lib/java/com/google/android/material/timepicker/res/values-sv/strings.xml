@@ -20,11 +20,11 @@
   <string name="material_timepicker_select_time">Välj tid</string>
   <string name="material_timepicker_minute">Minut</string>
   <string name="material_timepicker_hour">Timme</string>
-  <string name="material_hour_suffix">%1$s o\'clock</string>
-  <string name="material_minute_suffix">%1$s minutes</string>
+  <string name="material_hour_suffix">Klockan %1$s</string>
+  <string name="material_minute_suffix">%1$s minuter</string>
   <string name="material_hour_selection">Ange timme</string>
   <string name="material_minute_selection">Välj minuter</string>
-  <string name="material_clock_toggle_content_description">Select AM or PM</string>
+  <string name="material_clock_toggle_content_description">Välj mellan FM och EM</string>
   <string name="material_timepicker_text_input_mode_description">Byt till textinmatningsläget och ange tid.</string>
   <string name="material_timepicker_clock_mode_description">Byt till klockläget och ange tid.</string>
 </resources>

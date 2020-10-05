@@ -20,11 +20,11 @@
   <string name="material_timepicker_select_time">აირჩიეთ დრო</string>
   <string name="material_timepicker_minute">წუთი</string>
   <string name="material_timepicker_hour">საათი</string>
-  <string name="material_hour_suffix">%1$s o\'clock</string>
-  <string name="material_minute_suffix">%1$s minutes</string>
-  <string name="material_hour_selection">Select hour</string>
+  <string name="material_hour_suffix">%1$s საათი</string>
+  <string name="material_minute_suffix">%1$s წუთი</string>
+  <string name="material_hour_selection">აირჩიეთ საათი</string>
   <string name="material_minute_selection">აირჩიეთ წუთები</string>
-  <string name="material_clock_toggle_content_description">Select AM or PM</string>
+  <string name="material_clock_toggle_content_description">აირჩიეთ AM ან PM</string>
   <string name="material_timepicker_text_input_mode_description">დროის შეყვანისთვის ტექსტის შეყვანის რეჟიმზე გადართვა.</string>
   <string name="material_timepicker_clock_mode_description">დროის შეყვანისთვის საათის რეჟიმზე გადართვა.</string>
 </resources>

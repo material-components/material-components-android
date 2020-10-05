@@ -20,11 +20,11 @@
   <string name="material_timepicker_select_time">Vyberte čas</string>
   <string name="material_timepicker_minute">Minúta</string>
   <string name="material_timepicker_hour">Hodina</string>
-  <string name="material_hour_suffix">%1$s o\'clock</string>
-  <string name="material_minute_suffix">%1$s minutes</string>
+  <string name="material_hour_suffix">%1$s</string>
+  <string name="material_minute_suffix">%1$s min</string>
   <string name="material_hour_selection">Vybrať hodinu</string>
   <string name="material_minute_selection">Vyberte minúty</string>
-  <string name="material_clock_toggle_content_description">Select AM or PM</string>
+  <string name="material_clock_toggle_content_description">Vyberte AM alebo PM</string>
   <string name="material_timepicker_text_input_mode_description">Ak chcete zadať čas, prepnite na textový režim vstupu</string>
   <string name="material_timepicker_clock_mode_description">Ak chcete zadať čas, prepnite na režim hodín.</string>
 </resources>

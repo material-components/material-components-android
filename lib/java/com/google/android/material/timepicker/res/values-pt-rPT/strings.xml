@@ -20,11 +20,11 @@
   <string name="material_timepicker_select_time">Selecionar hora</string>
   <string name="material_timepicker_minute">Minuto</string>
   <string name="material_timepicker_hour">Hora</string>
-  <string name="material_hour_suffix">%1$s o\'clock</string>
-  <string name="material_minute_suffix">%1$s minutes</string>
+  <string name="material_hour_suffix">%1$s hora(s)</string>
+  <string name="material_minute_suffix">%1$s minutos</string>
   <string name="material_hour_selection">Selecionar hora</string>
   <string name="material_minute_selection">Selecionar minutos</string>
-  <string name="material_clock_toggle_content_description">Select AM or PM</string>
+  <string name="material_clock_toggle_content_description">Selecionar AM ou PM</string>
   <string name="material_timepicker_text_input_mode_description">Mude para o modo de introdução de texto para a introdução da hora.</string>
   <string name="material_timepicker_clock_mode_description">Mude para o modo de relógio para a introdução da hora.</string>
 </resources>

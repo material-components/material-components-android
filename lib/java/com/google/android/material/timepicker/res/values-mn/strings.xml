@@ -20,11 +20,11 @@
   <string name="material_timepicker_select_time">Цаг сонгох</string>
   <string name="material_timepicker_minute">Минут</string>
   <string name="material_timepicker_hour">Цаг</string>
-  <string name="material_hour_suffix">%1$s o\'clock</string>
-  <string name="material_minute_suffix">%1$s minutes</string>
-  <string name="material_hour_selection">Select hour</string>
+  <string name="material_hour_suffix">%1$s цаг</string>
+  <string name="material_minute_suffix">%1$s минут</string>
+  <string name="material_hour_selection">Цаг сонгох</string>
   <string name="material_minute_selection">Минут сонгоно уу</string>
-  <string name="material_clock_toggle_content_description">Select AM or PM</string>
+  <string name="material_clock_toggle_content_description">ҮӨ эсвэл ҮХ сонгоно уу</string>
   <string name="material_timepicker_text_input_mode_description">Цагийг оруулахын тулд текст оруулах горимд шилжүүлнэ үү.</string>
   <string name="material_timepicker_clock_mode_description">Цагийг оруулахын тулд цагийн горимд шилжүүлнэ үү.</string>
 </resources>

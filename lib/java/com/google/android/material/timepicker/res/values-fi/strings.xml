@@ -20,11 +20,11 @@
   <string name="material_timepicker_select_time">Valitse aika</string>
   <string name="material_timepicker_minute">Minuutti</string>
   <string name="material_timepicker_hour">Tunnit</string>
-  <string name="material_hour_suffix">%1$s o\'clock</string>
-  <string name="material_minute_suffix">%1$s minutes</string>
+  <string name="material_hour_suffix">klo %1$s</string>
+  <string name="material_minute_suffix">%1$s minuuttia</string>
   <string name="material_hour_selection">Valitse tunti</string>
   <string name="material_minute_selection">Valitse minuutit</string>
-  <string name="material_clock_toggle_content_description">Select AM or PM</string>
+  <string name="material_clock_toggle_content_description">Valitse AP tai IP</string>
   <string name="material_timepicker_text_input_mode_description">Vaihda ajan syöttämiseen tekstitilassa.</string>
   <string name="material_timepicker_clock_mode_description">Vaihda ajan syöttämiseen kellotilassa.</string>
 </resources>

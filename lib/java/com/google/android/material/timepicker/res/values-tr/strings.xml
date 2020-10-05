@@ -20,11 +20,11 @@
   <string name="material_timepicker_select_time">Zamanı seçin</string>
   <string name="material_timepicker_minute">Dakika</string>
   <string name="material_timepicker_hour">Saat</string>
-  <string name="material_hour_suffix">%1$s o\'clock</string>
-  <string name="material_minute_suffix">%1$s minutes</string>
+  <string name="material_hour_suffix">Saat %1$s</string>
+  <string name="material_minute_suffix">%1$s dakika</string>
   <string name="material_hour_selection">Saat seçin</string>
   <string name="material_minute_selection">Dakikayı seçin</string>
-  <string name="material_clock_toggle_content_description">Select AM or PM</string>
+  <string name="material_clock_toggle_content_description">ÖÖ veya ÖS\'yi seçin</string>
   <string name="material_timepicker_text_input_mode_description">Zaman girişi için metin girişi moduna geçin.</string>
   <string name="material_timepicker_clock_mode_description">Zaman girişi için saat moduna geçin.</string>
 </resources>

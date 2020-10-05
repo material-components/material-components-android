@@ -20,11 +20,11 @@
   <string name="material_timepicker_select_time">Kies tyd</string>
   <string name="material_timepicker_minute">Minuut</string>
   <string name="material_timepicker_hour">Uur</string>
-  <string name="material_hour_suffix">%1$s o\'clock</string>
-  <string name="material_minute_suffix">%1$s minutes</string>
-  <string name="material_hour_selection">Select hour</string>
+  <string name="material_hour_suffix">%1$s-uur</string>
+  <string name="material_minute_suffix">%1$s minute</string>
+  <string name="material_hour_selection">Kies uur</string>
   <string name="material_minute_selection">Kies minute</string>
-  <string name="material_clock_toggle_content_description">Select AM or PM</string>
+  <string name="material_clock_toggle_content_description">Kies vm. of nm.</string>
   <string name="material_timepicker_text_input_mode_description">Skakel oor na teksmodus vir die tydinvoer.</string>
   <string name="material_timepicker_clock_mode_description">Skakel oor na horlosiemodus vir die tydinvoer.</string>
 </resources>

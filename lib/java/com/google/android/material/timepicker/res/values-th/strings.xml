@@ -20,11 +20,11 @@
   <string name="material_timepicker_select_time">เลือกเวลา</string>
   <string name="material_timepicker_minute">นาที</string>
   <string name="material_timepicker_hour">ชั่วโมง</string>
-  <string name="material_hour_suffix">%1$s o\'clock</string>
-  <string name="material_minute_suffix">%1$s minutes</string>
+  <string name="material_hour_suffix">%1$s นาฬิกา</string>
+  <string name="material_minute_suffix">%1$s นาที</string>
   <string name="material_hour_selection">เลือกชั่วโมง</string>
   <string name="material_minute_selection">เลือกนาที</string>
-  <string name="material_clock_toggle_content_description">Select AM or PM</string>
+  <string name="material_clock_toggle_content_description">เลือก AM หรือ PM</string>
   <string name="material_timepicker_text_input_mode_description">สลับไปโหมดป้อนข้อความเพื่อป้อนเวลา</string>
   <string name="material_timepicker_clock_mode_description">สลับไปโหมดนาฬิกาเพื่อป้อนเวลา</string>
 </resources>

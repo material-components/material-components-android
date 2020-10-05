@@ -20,11 +20,11 @@
   <string name="material_timepicker_select_time">ເລືອກເວ​ລາ</string>
   <string name="material_timepicker_minute">ນາທີ</string>
   <string name="material_timepicker_hour">ຊົ່ວໂມງ</string>
-  <string name="material_hour_suffix">%1$s o\'clock</string>
-  <string name="material_minute_suffix">%1$s minutes</string>
-  <string name="material_hour_selection">Select hour</string>
+  <string name="material_hour_suffix">%1$s ໂມງ</string>
+  <string name="material_minute_suffix">%1$s ນາທີ</string>
+  <string name="material_hour_selection">ເລືອກຊົ່ວໂມງ</string>
   <string name="material_minute_selection">ເລືອກນາ​ທີ</string>
-  <string name="material_clock_toggle_content_description">Select AM or PM</string>
+  <string name="material_clock_toggle_content_description">ເລືອກຕອນເຊົ້າ ຫຼື ຕອນແລງ</string>
   <string name="material_timepicker_text_input_mode_description">ສະຫຼັບໄປໃຊ້ໂໝດປ້ອນຂໍ້ຄວາມສຳລັບການປ້ອນເວລາ.</string>
   <string name="material_timepicker_clock_mode_description">ສະຫຼັບໄປໃຊ້ໂໝດໂມງສຳລັບການປ້ອນເວລາ.</string>
 </resources>

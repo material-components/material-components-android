@@ -24,7 +24,7 @@
   <string name="material_minute_suffix">%1$s minutes</string>
   <string name="material_hour_selection">Select hour</string>
   <string name="material_minute_selection">Select minutes</string>
-  <string name="material_clock_toggle_content_description">Select AM or PM</string>
+  <string name="material_clock_toggle_content_description">Select a.m. or p.m.</string>
   <string name="material_timepicker_text_input_mode_description">Switch to text input mode for the time input.</string>
   <string name="material_timepicker_clock_mode_description">Switch to clock mode for the time input.</string>
 </resources>

@@ -20,11 +20,11 @@
   <string name="material_timepicker_select_time">Виберіть час</string>
   <string name="material_timepicker_minute">Хвилина</string>
   <string name="material_timepicker_hour">Година</string>
-  <string name="material_hour_suffix">%1$s o\'clock</string>
-  <string name="material_minute_suffix">%1$s minutes</string>
+  <string name="material_hour_suffix">%1$s год</string>
+  <string name="material_minute_suffix">%1$s хв</string>
   <string name="material_hour_selection">Вибрати годину</string>
   <string name="material_minute_selection">Виберіть хвилини</string>
-  <string name="material_clock_toggle_content_description">Select AM or PM</string>
+  <string name="material_clock_toggle_content_description">Виберіть ДП чи ПП</string>
   <string name="material_timepicker_text_input_mode_description">Перейти в текстовий режим, щоб ввести час.</string>
   <string name="material_timepicker_clock_mode_description">Перейти в режим годинника, щоб ввести час.</string>
 </resources>
