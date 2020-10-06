@@ -63,6 +63,27 @@ To select primary and secondary colors, and generate variations of each, use the
 [Material palette generator](https://material.io/go/tools-color) or 2014
 Material Design palettes.
 
+## Defining your app colors
+
+When creating your app colors, that will be used in the theme, do not use the
+same name as the color slot:
+
+```xml
+<resources>
+  <color name="color_primary">...</color>
+  <color name="color_surface">...</color>
+</resources>
+```
+
+Instead use literal names relevant to the RGB value. Eg:
+
+```xml
+<resources>
+  <color name="brand_blue">...</color>
+  <color name="brand_gray">...</color>
+</resources>
+```
+
 ## Theming an Individual Component
 
 All Material Design components use a `Widget.MaterialComponents` style, and
@@ -87,27 +108,6 @@ style and set the mapping yourself:
 
 You would then apply the `Widget.MyApp.MyButton` style to any buttons you want
 to have this alternate style.
-
-## Defining your app colors
-
-When creating your app colors, that will be used in the theme, do not use the
-same name as the color slot:
-
-```xml
-<resources>
-  <color name="color_primary">...</color>
-  <color name="color_surface">...</color>
-</resources>
-```
-
-Instead use literal names relevant to the RGB value. Eg:
-
-```xml
-<resources>
-  <color name="brand_blue">...</color>
-  <color name="brand_gray">...</color>
-</resources>
-```
 
 ## Theming All Instances of One Component
 
