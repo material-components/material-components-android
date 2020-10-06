@@ -44,7 +44,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * Progress indicators are animated views that represent the progress of a undergoing process.
+ * Progress indicators are animated views that represent the progress of an undergoing process.
  *
  * <p>The progress indicator widget can represent determinate or indeterminate progress in a linear
  * or circular form.
@@ -69,16 +69,16 @@ public final class ProgressIndicator extends ProgressBar {
   public static final int GROW_MODE_NONE = 0;
   /**
    * For linear type, the progress indicator appears as expanding from the top to the bottom
-   * (downward), and disappears with an reversed animation. For circular type, the progress
+   * (downward), and disappears with a reversed animation. For circular type, the progress
    * indicator appears as expanding from the outer edge to the inner edge (inward radial direction),
-   * and disappears with an reversed animation.
+   * and disappears with a reversed animation.
    */
   public static final int GROW_MODE_INCOMING = 1;
   /**
    * For linear type, the progress indicator appears as expanding from the bottom to the top
-   * (upward), and disappears with an reversed animation. For circular type, the progress indicator
+   * (upward), and disappears with a reversed animation. For circular type, the progress indicator
    * appears as expanding from the inner edge to the outer edge (outward radial direction), and
-   * disappears with an reversed animation.
+   * disappears with a reversed animation.
    */
   public static final int GROW_MODE_OUTGOING = 2;
   /** The progress indicator will expand from and shrink to the central line of the indicator. */
