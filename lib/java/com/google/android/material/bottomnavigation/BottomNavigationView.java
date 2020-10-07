@@ -26,7 +26,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
-import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
@@ -51,7 +50,6 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -139,7 +137,7 @@ public class BottomNavigationView extends FrameLayout {
     // Ensure we are using the correctly themed context rather than the context that was passed in.
     context = getContext();
 
-    // Create the menu
+    // Create the menu.
     this.menu = new BottomNavigationMenu(context);
 
     menuView = new BottomNavigationMenuView(context);
@@ -196,8 +194,7 @@ public class BottomNavigationView extends FrameLayout {
     }
 
     if (a.hasValue(R.styleable.BottomNavigationView_elevation)) {
-      ViewCompat.setElevation(
-          this, a.getDimensionPixelSize(R.styleable.BottomNavigationView_elevation, 0));
+      setElevation(a.getDimensionPixelSize(R.styleable.BottomNavigationView_elevation, 0));
     }
 
     ColorStateList backgroundTint =
@@ -228,7 +225,8 @@ public class BottomNavigationView extends FrameLayout {
     a.recycle();
 
     addView(menuView, params);
-    if (Build.VERSION.SDK_INT < 21) {
+
+    if (shouldDrawCompatibilityTopDivider()) {
       addCompatibilityTopDivider(context);
     }
 
@@ -298,12 +296,12 @@ public class BottomNavigationView extends FrameLayout {
    *
    * @attr ref R.styleable#BottomNavigationView_elevation
    */
-  @RequiresApi(VERSION_CODES.LOLLIPOP)
   @Override
   public void setElevation(float elevation) {
-    super.setElevation(elevation);
-
-    MaterialShapeUtils.setElevation(this, elevation);
+      if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+        super.setElevation(elevation);
+      }
+      MaterialShapeUtils.setElevation(this, elevation);
   }
 
   /**
@@ -725,6 +723,15 @@ public class BottomNavigationView extends FrameLayout {
      * @param item The selected item
      */
     void onNavigationItemReselected(@NonNull MenuItem item);
+  }
+
+  /**
+   * Draw a top divider for pre-21 legacy backgrounds in place of shadows to maintain
+   * compatibility. If a pre-21 background has been updated to a MaterialShapeDrawable,
+   * MaterialShapeDrawable will draw shadows instead.
+   */
+  private boolean shouldDrawCompatibilityTopDivider() {
+    return VERSION.SDK_INT < 21 && !(getBackground() instanceof MaterialShapeDrawable);
   }
 
   private void addCompatibilityTopDivider(Context context) {
