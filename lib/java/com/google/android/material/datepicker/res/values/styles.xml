@@ -101,6 +101,11 @@
     <item name="android:gravity">center</item>
   </style>
 
+  <style name="Widget.MaterialComponents.MaterialCalendar.MonthTextView" parent="Widget.AppCompat.TextView">
+    <item name="android:textAppearance">?attr/textAppearanceSubtitle2</item>
+    <item name="android:textColor">@color/material_on_surface_emphasis_medium</item>
+  </style>
+
   <style name="Widget.MaterialComponents.MaterialCalendar.Item" parent="">
     <item name="itemFillColor">@android:color/transparent</item>
     <item name="itemTextColor">@color/material_on_surface_emphasis_high_type</item>

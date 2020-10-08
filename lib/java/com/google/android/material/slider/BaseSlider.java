@@ -26,6 +26,7 @@ import static com.google.android.material.slider.LabelFormatter.LABEL_WITHIN_BOU
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 import static java.lang.Float.compare;
 import static java.lang.Math.abs;
+import static java.lang.Math.max;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -234,6 +235,9 @@ abstract class BaseSlider<
 
   private final int scaledTouchSlop;
 
+  private int minTrackSidePadding;
+  private int defaultThumbRadius;
+
   private int widgetHeight;
   private int labelBehavior;
   private int trackHeight;
@@ -369,7 +373,11 @@ abstract class BaseSlider<
   private void loadResources(@NonNull Resources resources) {
     widgetHeight = resources.getDimensionPixelSize(R.dimen.mtrl_slider_widget_height);
 
-    trackSidePadding = resources.getDimensionPixelOffset(R.dimen.mtrl_slider_track_side_padding);
+    minTrackSidePadding = resources.getDimensionPixelOffset(R.dimen.mtrl_slider_track_side_padding);
+    trackSidePadding = minTrackSidePadding;
+
+    defaultThumbRadius = resources.getDimensionPixelSize(R.dimen.mtrl_slider_thumb_radius);
+
     trackTop = resources.getDimensionPixelOffset(R.dimen.mtrl_slider_track_top);
 
     labelPadding = resources.getDimensionPixelSize(R.dimen.mtrl_slider_label_padding);
@@ -467,6 +475,14 @@ abstract class BaseSlider<
         null,
         0,
         a.getResourceId(R.styleable.Slider_labelStyle, R.style.Widget_MaterialComponents_Tooltip));
+  }
+
+  private void maybeIncreaseTrackSidePadding() {
+    int increasedSidePadding = max(thumbRadius - defaultThumbRadius, 0);
+    trackSidePadding = minTrackSidePadding + increasedSidePadding;
+    if (ViewCompat.isLaidOut(this)) {
+      updateTrackWidth(getWidth());
+    }
   }
 
   private void validateValueFrom() {
@@ -903,6 +919,7 @@ abstract class BaseSlider<
     }
 
     thumbRadius = radius;
+    maybeIncreaseTrackSidePadding();
 
     thumbDrawable.setShapeAppearanceModel(
         ShapeAppearanceModel.builder().setAllCorners(CornerFamily.ROUNDED, thumbRadius).build());
@@ -1427,12 +1444,7 @@ abstract class BaseSlider<
 
   @Override
   protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-    // Update the visible track width.
-    trackWidth = Math.max(w - trackSidePadding * 2, 0);
-
-    // Update the visible tick coordinates.
-    maybeCalculateTicksCoordinates();
-
+    updateTrackWidth(w);
     updateHaloHotspot();
   }
 
@@ -1455,6 +1467,14 @@ abstract class BaseSlider<
       ticksCoordinates[i] = trackSidePadding + i / 2 * interval;
       ticksCoordinates[i + 1] = calculateTop();
     }
+  }
+
+  private void updateTrackWidth(int width) {
+    // Update the visible track width.
+    trackWidth = Math.max(width - trackSidePadding * 2, 0);
+
+    // Update the visible tick coordinates.
+    maybeCalculateTicksCoordinates();
   }
 
   private void updateHaloHotspot() {

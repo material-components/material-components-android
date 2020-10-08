@@ -19,6 +19,9 @@
   <!-- Style to use for AppBarLayouts in this theme. -->
   <attr name="appBarLayoutStyle" format="reference"/>
 
+  <!-- Style to use for CollapsingToolbarLayouts in this theme. -->
+  <attr name="collapsingToolbarLayoutStyle" format="reference"/>
+
   <declare-styleable name="AppBarLayout">
     <!-- Deprecated. Elevation is now controlled via a state list animator. -->
     <attr name="elevation"/>
@@ -212,6 +215,10 @@
     <!-- The multiplier used when layout_collapseMode is set to 'parallax'. The value should
          be between 0.0 and 1.0. -->
     <attr name="layout_collapseParallaxMultiplier" format="float"/>
+  </declare-styleable>
+
+  <declare-styleable name="MaterialToolbar">
+    <attr name="navigationIconTint" format="color" />
   </declare-styleable>
 
 </resources>

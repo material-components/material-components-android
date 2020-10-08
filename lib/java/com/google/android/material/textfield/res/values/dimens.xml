@@ -41,6 +41,7 @@
   <!--  For 2.0 font scale settings, the edit text's collapsed top padding in box mode. -->
   <dimen name="material_font_2_0_box_collapsed_padding_top">8dp</dimen>
 
+  <dimen name="material_helper_text_default_padding_top">4dp</dimen>
   <!-- For large font scale settings, distance from text field to helper text's
        baseline should be 24dp when font size is 16 (16 + 8dp = 24dp) and 32dp
        when font size is 24 (24 + 8dp = 32dp). -->
@@ -51,6 +52,8 @@
        to have the appropriate spacing before and after each icon. -->
   <dimen name="mtrl_textinput_end_icon_margin_start">4dp</dimen>
   <dimen name="mtrl_textinput_start_icon_margin_end">4dp</dimen>
+
+  <dimen name="material_input_text_to_prefix_suffix_padding">2dp</dimen>
 
   <dimen name="mtrl_exposed_dropdown_menu_popup_elevation">8dp</dimen>
   <dimen name="mtrl_exposed_dropdown_menu_popup_vertical_padding">8dp</dimen>

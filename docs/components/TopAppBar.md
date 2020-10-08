@@ -426,10 +426,10 @@ In the layout:
 
 #### Navigation icon attributes
 
-&nbsp;                           | Attribute            | Related method(s)                          | Default value
--------------------------------- | -------------------- | ------------------------------------------ | -------------
-**`MaterialToolbar` icon**       | `app:navigationIcon` | `setNavigationIcon`<br>`getNavigationIcon` | `null`
-**`MaterialToolbar` icon color** | N/A                  | N/A                                        | `?attr/colorControlNormal` (as `Drawable` tint)
+&nbsp;                           | Attribute                 | Related method(s)                          | Default value
+-------------------------------- | ------------------------- | ------------------------------------------ | -------------
+**`MaterialToolbar` icon**       | `app:navigationIcon`      | `setNavigationIcon`<br>`getNavigationIcon` | `null`
+**`MaterialToolbar` icon color** | `app:navigationIconTint`  | `setNavigationIconTint`                    | `?attr/colorControlNormal` (as `Drawable` tint)
 
 #### Title attributes
 
@@ -501,7 +501,7 @@ Default style theme attribute: `?attr/toolbarStyle`
 ----------------- | ---------------------------------
 **Default style** | `Widget.Design.CollapsingToolbar`
 
-Default style theme attribute: N/A
+Default style theme attribute: collapsingToolbarLayoutStyle
 
 See the full list of
 [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/appbar/res/values/styles.xml)

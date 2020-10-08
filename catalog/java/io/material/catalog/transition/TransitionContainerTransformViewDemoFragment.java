@@ -43,11 +43,11 @@ import javax.inject.Inject;
 public class TransitionContainerTransformViewDemoFragment extends DemoFragment
     implements OnBackPressedHandler {
 
-  private View startCard;
+  @Nullable private View startCard;
   private View startFab;
 
   private View contactCard;
-  private View endView;
+  @Nullable private View endView;
   private View expandedCard;
 
   private FrameLayout root;
@@ -156,7 +156,7 @@ public class TransitionContainerTransformViewDemoFragment extends DemoFragment
 
   @Override
   public boolean onBackPressed() {
-    if (endView.getVisibility() == View.VISIBLE) {
+    if (endView != null && endView.getVisibility() == View.VISIBLE) {
       showStartView(endView);
       return true;
     }

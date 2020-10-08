@@ -26,20 +26,26 @@ import android.content.DialogInterface.OnDismissListener;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import androidx.fragment.app.DialogFragment;
+import android.text.TextUtils;
+import android.util.Pair;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.LinearLayout;
-import androidx.annotation.DrawableRes;
+import android.widget.TextView;
 import androidx.annotation.IntDef;
+import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.timepicker.TimePickerView.OnDoubleTapListener;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.LinkedHashSet;
@@ -48,8 +54,14 @@ import java.util.Set;
 /** A {@link Dialog} with a clock display and a clock face to choose the time. */
 public final class MaterialTimePicker extends DialogFragment {
 
-  private static final int CLOCK_ICON = R.drawable.ic_clock_black_24dp;
-  private static final int KEYBOARD_ICON = R.drawable.ic_keyboard_black_24dp;
+  private static final Pair<Integer, Integer> CLOCK_BUTTON_DATA =
+      new Pair<>(
+          R.drawable.ic_clock_black_24dp, R.string.material_timepicker_clock_mode_description);
+
+  private static final Pair<Integer, Integer> KEYBOARD_BUTTON_DATA =
+      new Pair<>(
+          R.drawable.ic_keyboard_black_24dp,
+          R.string.material_timepicker_text_input_mode_description);
 
   private final Set<OnClickListener> positiveButtonListeners = new LinkedHashSet<>();
   private final Set<OnClickListener> negativeButtonListeners = new LinkedHashSet<>();
@@ -62,6 +74,8 @@ public final class MaterialTimePicker extends DialogFragment {
   @Nullable private TimePickerClockPresenter timePickerClockPresenter;
   @Nullable private TimePickerTextInputPresenter timePickerTextInputPresenter;
   @Nullable private TimePickerPresenter activePresenter;
+  private int titleResId = 0;
+  private String titleText;
 
   /** Values supported for the input type of the dialog. */
   @IntDef({INPUT_MODE_CLOCK, INPUT_MODE_KEYBOARD})
@@ -73,6 +87,8 @@ public final class MaterialTimePicker extends DialogFragment {
 
   static final String TIME_MODEL_EXTRA = "TIME_PICKER_TIME_MODEL";
   static final String INPUT_MODE_EXTRA = "TIME_PICKER_INPUT_MODE";
+  static final String TITLE_RES_EXTRA = "TIME_PICKER_TITLE_RES";
+  static final String TITLE_TEXT_EXTRA = "TIME_PICKER_TITLE_TEXT";
 
   private MaterialButton modeButton;
 
@@ -86,14 +102,22 @@ public final class MaterialTimePicker extends DialogFragment {
     Bundle args = new Bundle();
     args.putParcelable(TIME_MODEL_EXTRA, options.time);
     args.putInt(INPUT_MODE_EXTRA, options.inputMode);
+    args.putInt(TITLE_RES_EXTRA, options.titleTextResId);
+    if (options.titleText != null) {
+      args.putString(TITLE_TEXT_EXTRA, options.titleText.toString());
+    }
+
     fragment.setArguments(args);
     return fragment;
   }
 
+  @IntRange(from = 0, to = 60)
   public int getMinute() {
     return time.minute;
   }
 
+  /** Returns the hour of day in the range [0, 23]. */
+  @IntRange(from = 0, to = 23)
   public int getHour() {
     return time.hour % 24;
   }
@@ -138,6 +162,8 @@ public final class MaterialTimePicker extends DialogFragment {
     super.onSaveInstanceState(bundle);
     bundle.putParcelable(TIME_MODEL_EXTRA, time);
     bundle.putInt(INPUT_MODE_EXTRA, inputMode);
+    bundle.putInt(TITLE_RES_EXTRA, titleResId);
+    bundle.putString(TITLE_TEXT_EXTRA, titleText);
   }
 
   private void restoreState(@Nullable Bundle bundle) {
@@ -150,6 +176,8 @@ public final class MaterialTimePicker extends DialogFragment {
       time = new TimeModel();
     }
     inputMode = bundle.getInt(INPUT_MODE_EXTRA, INPUT_MODE_CLOCK);
+    titleResId = bundle.getInt(TITLE_RES_EXTRA, 0);
+    titleText = bundle.getString(TITLE_TEXT_EXTRA);
   }
 
   @NonNull
@@ -161,10 +189,28 @@ public final class MaterialTimePicker extends DialogFragment {
     ViewGroup root =
         (ViewGroup) layoutInflater.inflate(R.layout.material_timepicker_dialog, viewGroup);
     timePickerView = root.findViewById(R.id.material_timepicker_view);
+    timePickerView.setOnDoubleTapListener(
+        new OnDoubleTapListener() {
+          @Override
+          public void onDoubleTap() {
+            inputMode = INPUT_MODE_KEYBOARD;
+            updateInputMode(modeButton);
+          }
+        });
     textInputView = root.findViewById(R.id.material_textinput_timepicker);
     modeButton = root.findViewById(R.id.material_timepicker_mode_button);
+    TextView headerTitle = root.findViewById(R.id.header_title);
+
+    if (!TextUtils.isEmpty(titleText)) {
+      headerTitle.setText(titleText);
+    }
+
+    if (titleResId != 0) {
+      headerTitle.setText(titleResId);
+    }
+
     updateInputMode(modeButton);
-    MaterialButton okButton = root.findViewById(R.id.material_timepicker_ok_button);
+    Button okButton = root.findViewById(R.id.material_timepicker_ok_button);
     okButton.setOnClickListener(
         new OnClickListener() {
           @Override
@@ -176,7 +222,7 @@ public final class MaterialTimePicker extends DialogFragment {
           }
         });
 
-    MaterialButton cancelButton = root.findViewById(R.id.material_timepicker_cancel_button);
+    Button cancelButton = root.findViewById(R.id.material_timepicker_cancel_button);
     cancelButton.setOnClickListener(
         new OnClickListener() {
           @Override
@@ -228,7 +274,9 @@ public final class MaterialTimePicker extends DialogFragment {
     activePresenter = initializeOrRetrieveActivePresenterForMode(inputMode);
     activePresenter.show();
     activePresenter.invalidate();
-    modeButton.setIconResource(iconForMode(inputMode));
+    Pair<Integer, Integer> buttonData = dataForMode(inputMode);
+    modeButton.setIconResource(buttonData.first);
+    modeButton.setContentDescription(getResources().getString(buttonData.second));
   }
 
   private TimePickerPresenter initializeOrRetrieveActivePresenterForMode(int mode) {
@@ -248,13 +296,12 @@ public final class MaterialTimePicker extends DialogFragment {
     return timePickerTextInputPresenter;
   }
 
-  @DrawableRes
-  private static int iconForMode(@InputMode int mode) {
+  private static Pair<Integer, Integer> dataForMode(@InputMode int mode) {
     switch (mode) {
       case INPUT_MODE_KEYBOARD:
-        return CLOCK_ICON;
+        return CLOCK_BUTTON_DATA;
       case INPUT_MODE_CLOCK:
-        return KEYBOARD_ICON;
+        return KEYBOARD_BUTTON_DATA;
       default:
         throw new IllegalArgumentException("no icon for mode: " + mode);
     }
@@ -359,34 +406,47 @@ public final class MaterialTimePicker extends DialogFragment {
     dismissListeners.clear();
   }
 
-   /** Used to create MaterialTimePicker instances */
+  /** Used to create {@link MaterialTimePicker} instances. */
   public static final class Builder {
 
     private TimeModel time = new TimeModel();
 
     private int inputMode;
+    private int titleTextResId = 0;
+    private CharSequence titleText;
 
-    /** Sets the input mode to start with. */
+    /** Sets the input mode with which to start the time picker. */
     @NonNull
     public Builder setInputMode(@InputMode int inputMode) {
       this.inputMode = inputMode;
       return this;
     }
 
-    /** Sets the hour to start the Time picker. */
+    /**
+     * Sets the hour with which to start the time picker.
+     *
+     * @param hour The hour value is independent of the time format ({@link #setTimeFormat(int)}),
+     *     and should always be a number in the [0, 23] range.
+     */
     @NonNull
-    public Builder setHour(int hour) {
+    public Builder setHour(@IntRange(from = 0, to = 23) int hour) {
       time.setHourOfDay(hour);
       return this;
     }
 
-    /** Sets the minute to start the Time picker. */
+    /** Sets the minute with which to start the time picker. */
     @NonNull
-    public Builder setMinute(int minute) {
+    public Builder setMinute(@IntRange(from = 0, to = 60) int minute) {
       time.setMinute(minute);
       return this;
     }
 
+    /**
+     * Sets the time format for the time picker.
+     *
+     * @param format Either {@code CLOCK_12H} 12 hour format with an AM/PM toggle or {@code
+     *     CLOCK_24} 24 hour format without toggle.
+     */
     @NonNull
     public Builder setTimeFormat(@TimeFormat int format) {
       int hour = time.hour;
@@ -394,6 +454,24 @@ public final class MaterialTimePicker extends DialogFragment {
       time = new TimeModel(format);
       time.setMinute(minute);
       time.setHourOfDay(hour);
+      return this;
+    }
+
+    /**
+     * Sets the text used to guide the user at the top of the picker.
+     */
+    @NonNull
+    public Builder setTitleText(@StringRes int titleTextResId) {
+      this.titleTextResId = titleTextResId;
+      return this;
+    }
+
+    /**
+     * Sets the text used to guide the user at the top of the picker.
+     */
+    @NonNull
+    public Builder setTitleText(@Nullable CharSequence charSequence) {
+      this.titleText = charSequence;
       return this;
     }
 

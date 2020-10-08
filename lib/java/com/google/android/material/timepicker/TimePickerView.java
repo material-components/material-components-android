@@ -28,8 +28,12 @@ import android.content.Context;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
+import android.view.GestureDetector;
+import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Checkable;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -58,6 +62,10 @@ class TimePickerView extends ConstraintLayout implements TimePickerControls {
     void onSelectionChanged(@ActiveSelection int selection);
   }
 
+  interface OnDoubleTapListener {
+    void onDoubleTap();
+  }
+
   private final Chip minuteView;
   private final Chip hourView;
 
@@ -77,6 +85,7 @@ class TimePickerView extends ConstraintLayout implements TimePickerControls {
 
   private OnPeriodChangeListener onPeriodChangeListener;
   private OnSelectionChange onSelectionChangeListener;
+  private OnDoubleTapListener onDoubleTapListener;
 
   public TimePickerView(Context context) {
     this(context, null);
@@ -107,7 +116,42 @@ class TimePickerView extends ConstraintLayout implements TimePickerControls {
     hourView = findViewById(R.id.material_hour_tv);
     clockHandView = findViewById(R.id.material_clock_hand);
 
+    setupDoubleTap();
+
     setUpDisplay();
+  }
+
+  @SuppressLint("ClickableViewAccessibility")
+  private void setupDoubleTap() {
+    final GestureDetector gestureDetector =
+        new GestureDetector(
+            getContext(),
+            new SimpleOnGestureListener() {
+              @Override
+              public boolean onDoubleTap(MotionEvent e) {
+                boolean ret = super.onDoubleTap(e);
+                if (onDoubleTapListener != null) {
+                  onDoubleTapListener.onDoubleTap();
+                }
+
+                return ret;
+              }
+            });
+
+    OnTouchListener onTouchListener =
+        new OnTouchListener() {
+          @Override
+          public boolean onTouch(View v, MotionEvent event) {
+            if (((Checkable) v).isChecked()) {
+              return gestureDetector.onTouchEvent(event);
+            }
+
+            return false;
+          }
+        };
+
+    minuteView.setOnTouchListener(onTouchListener);
+    hourView.setOnTouchListener(onTouchListener);
   }
 
   public void setMinuteHourDelegate(AccessibilityDelegateCompat clickActionDelegate) {
@@ -179,6 +223,10 @@ class TimePickerView extends ConstraintLayout implements TimePickerControls {
   void setOnSelectionChangeListener(
       OnSelectionChange onSelectionChangeListener) {
     this.onSelectionChangeListener = onSelectionChangeListener;
+  }
+
+  void setOnDoubleTapListener(@Nullable OnDoubleTapListener listener) {
+    this.onDoubleTapListener = listener;
   }
 
   public void showToggle() {

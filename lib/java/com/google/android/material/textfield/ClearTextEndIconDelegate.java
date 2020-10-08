@@ -135,13 +135,13 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
 
   private void animateIcon(boolean show) {
     boolean shouldSkipAnimation = textInputLayout.isEndIconVisible() == show;
-    if (show) {
+    if (show && !iconInAnim.isRunning()) {
       iconOutAnim.cancel();
       iconInAnim.start();
       if (shouldSkipAnimation) {
         iconInAnim.end();
       }
-    } else {
+    } else if (!show) {
       iconInAnim.cancel();
       iconOutAnim.start();
       if (shouldSkipAnimation) {

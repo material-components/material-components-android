@@ -98,7 +98,6 @@ final class IndicatorViewController {
   private int indicatorsAdded;
 
   private FrameLayout captionArea;
-  private int captionViewsAdded;
   @Nullable private Animator captionAnimator;
   private final float captionTranslationYPx;
   private int captionDisplayed;
@@ -364,7 +363,11 @@ final class IndicatorViewController {
               R.dimen.material_helper_text_font_1_3_padding_horizontal,
               ViewCompat.getPaddingStart(editText)),
           getIndicatorPadding(
-              isFontScaleLarge, R.dimen.material_helper_text_font_1_3_padding_top, 0),
+              isFontScaleLarge,
+              R.dimen.material_helper_text_font_1_3_padding_top,
+              context
+                  .getResources()
+                  .getDimensionPixelSize(R.dimen.material_helper_text_default_padding_top)),
           getIndicatorPadding(
               isFontScaleLarge,
               R.dimen.material_helper_text_font_1_3_padding_horizontal,
@@ -403,7 +406,6 @@ final class IndicatorViewController {
     if (isCaptionView(index)) {
       captionArea.setVisibility(VISIBLE);
       captionArea.addView(indicator);
-      captionViewsAdded++;
     } else {
       LinearLayout.LayoutParams indicatorAreaLp =
           new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -419,8 +421,6 @@ final class IndicatorViewController {
     }
 
     if (isCaptionView(index) && captionArea != null) {
-      captionViewsAdded--;
-      setViewGroupGoneIfEmpty(captionArea, captionViewsAdded);
       captionArea.removeView(indicator);
     } else {
       indicatorArea.removeView(indicator);

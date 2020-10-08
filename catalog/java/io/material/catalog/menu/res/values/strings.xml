@@ -19,11 +19,11 @@
   <string name="cat_menus_title">Menus</string>
   <string name="cat_menus_description">A menu displays a list of choices on a temporary surface. They appear when users interact with a button, action, or other control.</string>
   <string name="menu_button_label">&#8942;</string>
-  <string name="show_popup">Show Popup</string>
-  <string name="menu_with_icons">Popup menu with icons</string>
-  <string name="popup_menu">Popup Menu</string>
+  <string name="show_menu" description="Label for button that shows the menu [CHAR_LIMIT=20].">Show Menu</string>
+  <string name="menu_with_icons" description="Text to indicate button below shows a menu with icons [CHAR_LIMIT=NONE].">Menu with icons</string>
+  <string name="menu" description="Text to indicate button below shows a menu [CHAR_LIMIT=NONE].">Menu</string>
   <string name="context_menu" description="label for section where the context menu is featured [CHAR_LIMIT=20].">Context Menu</string>
-  <string name="list_popup_window" translatable="false">List Popup Window</string>
+  <string name="list_popup_window" description="Text to indicate button below shows a ListPopupWindow [CHAR_LIMIT=NONE].">ListPopupWindow</string>
   <string name="menu_demo_description">
     Menus within a Material theme will default to a text style of textAppearanceSubtitle1.
     \n\n The menu background adds top and bottom padding, rounded corners, and 8dp elevation.

@@ -21,9 +21,11 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +35,8 @@ import androidx.annotation.StyleRes;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import io.material.catalog.feature.DemoFragment;
+import java.util.ArrayList;
+import java.util.List;
 
 /** A fragment that displays the main Dialog demos for the Catalog app. */
 public class DialogMainDemoFragment extends DemoFragment {
@@ -51,7 +55,6 @@ public class DialogMainDemoFragment extends DemoFragment {
     }
     String positiveText = getResources().getString(R.string.positive);
     String negativeText = getResources().getString(R.string.negative);
-    String neutralText = getResources().getString(R.string.neutral);
     String title = getResources().getString(R.string.title);
     String message = getResources().getString(R.string.message);
     String longMessage = getResources().getString(R.string.long_message);
@@ -64,8 +67,7 @@ public class DialogMainDemoFragment extends DemoFragment {
             .setTitle(title)
             .setMessage(message)
             .setPositiveButton(positiveText, null)
-            .setNegativeButton(negativeText, null)
-            .setNeutralButton(neutralText, null));
+            .setNegativeButton(negativeText, null));
 
     // message, 2 actions
     addDialogLauncher(
@@ -92,18 +94,7 @@ public class DialogMainDemoFragment extends DemoFragment {
         new MaterialAlertDialogBuilder(getContext())
             .setTitle(title)
             .setPositiveButton(positiveText, null)
-            .setNeutralButton(neutralText, null));
-
-    // title, message, 3 actions (short)
-    addDialogLauncher(
-        dialogLaunchersLayout,
-        R.string.title_message_3_actions,
-        new MaterialAlertDialogBuilder(getContext())
-            .setTitle(title)
-            .setMessage(message)
-            .setPositiveButton(positiveText, null)
-            .setNegativeButton(negativeText, null)
-            .setNeutralButton(neutralText, null));
+            .setNegativeButton(negativeText, null));
 
     // title, message, 3 actions (long)
     addDialogLauncher(
@@ -138,6 +129,17 @@ public class DialogMainDemoFragment extends DemoFragment {
             .setNegativeButton(negativeText, null)
             .setIcon(R.drawable.ic_dialogs_24px));
 
+    // icon, title, message, 2 actions (centered)
+    addDialogLauncher(
+        dialogLaunchersLayout,
+        R.string.icon_title_message_2_actions_centered,
+        new MaterialAlertDialogBuilder(getContext(), getCenteredTitleThemeOverlay())
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton(positiveText, null)
+            .setNegativeButton(negativeText, null)
+            .setIcon(R.drawable.ic_dialogs_24px));
+
     // edit text
     addDialogLauncher(
         dialogLaunchersLayout,
@@ -162,7 +164,7 @@ public class DialogMainDemoFragment extends DemoFragment {
         R.string.title_choices_as_actions,
         new MaterialAlertDialogBuilder(getContext())
             .setTitle(title)
-            .setNeutralButton(neutralText, null)
+            .setPositiveButton(positiveText, null)
             .setItems(choices, null));
 
     // title, checkboxes, 2 actions dialog
@@ -171,8 +173,20 @@ public class DialogMainDemoFragment extends DemoFragment {
         R.string.title_checkboxes_2_actions,
         new MaterialAlertDialogBuilder(getContext())
             .setTitle(title)
-            .setPositiveButton(positiveText, null)
-            .setNeutralButton(neutralText, null)
+            .setPositiveButton(
+                positiveText,
+                (DialogInterface dialog, int which) -> {
+                  SparseBooleanArray checkedItemPositions =
+                      ((AlertDialog) dialog).getListView().getCheckedItemPositions();
+                  List<CharSequence> result = new ArrayList<>();
+                  for (int i = 0; i < choices.length; i++) {
+                    if (checkedItemPositions.get(i)) {
+                      result.add(choices[i]);
+                    }
+                  }
+                  Toast.makeText(getContext(), result.toString(), Toast.LENGTH_LONG).show();
+                })
+            .setNegativeButton(negativeText, null)
             .setMultiChoiceItems(choices, choicesInitial, null));
 
     // title, radiobutton, 2 actions dialog
@@ -181,8 +195,17 @@ public class DialogMainDemoFragment extends DemoFragment {
         R.string.title_radiobuttons_2_actions,
         new MaterialAlertDialogBuilder(getContext())
             .setTitle(title)
-            .setPositiveButton(positiveText, null)
-            .setNeutralButton(neutralText, null)
+            .setPositiveButton(
+                positiveText,
+                (DialogInterface dialog, int which) -> {
+                  int checkedItemPosition =
+                      ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+                  if (checkedItemPosition != AdapterView.INVALID_POSITION) {
+                    Toast.makeText(getContext(), choices[checkedItemPosition], Toast.LENGTH_LONG)
+                        .show();
+                  }
+                })
+            .setNegativeButton(negativeText, null)
             .setSingleChoiceItems(choices, 1, null));
 
     // title, custom view, actions dialog
@@ -192,7 +215,7 @@ public class DialogMainDemoFragment extends DemoFragment {
         new MaterialAlertDialogBuilder(getContext())
             .setTitle(title)
             .setPositiveButton(positiveText, null)
-            .setNeutralButton(neutralText, null)
+            .setNegativeButton(negativeText, null)
             .setView(R.layout.seekbar_layout));
 
     // title, scrolling long view, actions dialog
@@ -203,7 +226,7 @@ public class DialogMainDemoFragment extends DemoFragment {
             .setTitle(title)
             .setMessage(multiLineMessage.toString())
             .setPositiveButton(positiveText, null)
-            .setNeutralButton(neutralText, null));
+            .setNegativeButton(negativeText, null));
 
     // scrolling view
     addDialogLauncher(
@@ -218,39 +241,14 @@ public class DialogMainDemoFragment extends DemoFragment {
         new MaterialAlertDialogBuilder(getContext())
             .setTitle(title)
             .setPositiveButton(R.string.short_text_1, null)
-            .setNeutralButton(R.string.short_text_2, null));
-
-    // title, outlined buttons
-    addDialogLauncher(
-        dialogLaunchersLayout,
-        R.string.title_outlined_buttons,
-        new MaterialAlertDialogBuilder(getContext(), getOutlinedButtonThemeOverlay())
-            .setTitle(title)
-            .setPositiveButton(positiveText, null)
-            .setNegativeButton(negativeText, null)
-            .setNeutralButton(neutralText, null));
-
-    // title, filled buttons
-    addDialogLauncher(
-        dialogLaunchersLayout,
-        R.string.title_filled_buttons,
-        new MaterialAlertDialogBuilder(getContext(), getFilledButtonThemeOverlay())
-            .setTitle(title)
-            .setPositiveButton(positiveText, null)
-            .setNegativeButton(negativeText, null)
-            .setNeutralButton(neutralText, null));
+            .setNegativeButton(R.string.short_text_2, null));
 
     return view;
   }
 
   @StyleRes
-  protected int getFilledButtonThemeOverlay() {
-    return R.style.ThemeOverlay_Catalog_MaterialAlertDialog_FilledButton;
-  }
-
-  @StyleRes
-  protected int getOutlinedButtonThemeOverlay() {
-    return R.style.ThemeOverlay_Catalog_MaterialAlertDialog_OutlinedButton;
+  protected int getCenteredTitleThemeOverlay() {
+    return R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog_Centered;
   }
 
   private void addDialogLauncher(

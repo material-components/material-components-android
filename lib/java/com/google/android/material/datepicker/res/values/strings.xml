@@ -15,8 +15,8 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title" description="Indicates that the user must take the action of picking dates within the calendar to form a range [CHAR_LIMIT=60]">Select a Date Range</string>
-  <string name="mtrl_picker_date_header_title" description="Indicates that the user must take the action of picking a date within the calendar [CHAR_LIMIT=60]">Select a Date</string>
+  <string name="mtrl_picker_range_header_title" description="Indicates that the user must take the action of picking dates within the calendar to form a range [CHAR_LIMIT=60]">Select Range</string>
+  <string name="mtrl_picker_date_header_title" description="Indicates that the user must take the action of picking a date within the calendar [CHAR_LIMIT=60]">Select Date</string>
   <string name="mtrl_picker_range_header_unselected" description="Placeholders for two dates separated by a dash representing a range [CHAR_LIMIT=60]">Start date – End date</string>
   <string name="mtrl_picker_range_header_only_start_selected" description="Placeholders for two dates separated by a dash representing a range where start date has been selected [CHAR_LIMIT=60]">%1$s – End date</string>
   <string name="mtrl_picker_range_header_only_end_selected" description="Placeholders for two dates separated by a dash representing a range where end date has been selected [CHAR_LIMIT=60]">Start date – %1$s</string>

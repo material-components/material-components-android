@@ -29,13 +29,13 @@
   <!-- Denotes what parts of an AlertDialog this button will display. [CHAR LIMIT=60] -->
   <string name="title_2_actions">Title, 2 Actions</string>
   <!-- Denotes what parts of an AlertDialog this button will display. [CHAR LIMIT=60] -->
-  <string name="title_message_3_actions">Title, Message, 3 Actions</string>
-  <!-- Denotes what parts of an AlertDialog this button will display. [CHAR LIMIT=60] -->
   <string name="title_message_3_long_actions">Title, Message, 3 Long Actions</string>
   <!-- Denotes what parts of an AlertDialog this button will display. [CHAR LIMIT=60] -->
   <string name="long_title_message_too_long_actions">Long Title, Message, Over-length Buttons</string>
   <!-- Denotes what parts of an AlertDialog this button will display. [CHAR LIMIT=60] -->
   <string name="icon_title_message_2_actions">Icon, Title, Message, 2 Actions</string>
+  <!-- Denotes what parts of an AlertDialog this button will display. [CHAR LIMIT=60] -->
+  <string name="icon_title_message_2_actions_centered">Icon, Title, Message, 2 Actions (Centered)</string>
   <!-- Denotes what parts of an AlertDialog this button will display. [CHAR LIMIT=60] -->
   <string name="edit_text">Edit Text</string>
   <!-- Denotes what parts of an AlertDialog this button will display. [CHAR LIMIT=60] -->
@@ -52,17 +52,11 @@
   <string name="title_scrolling">Scrolling Content</string>
   <!-- Denotes what parts of an AlertDialog this button will display. [CHAR LIMIT=60] -->
   <string name="title_2_short_actions">Short Buttons</string>
-  <!-- Denotes button emphasis in an AlertDialog this button will display. [CHAR LIMIT=60] -->
-  <string name="title_outlined_buttons">Outlined buttons</string>
-  <!-- Denotes button emphasis in an AlertDialog this button will display. [CHAR LIMIT=60] -->
-  <string name="title_filled_buttons">Filled buttons</string>
 
   <!-- Text for a positive dialog action. [CHAR LIMIT=15] -->
   <string name="positive">Accept</string>
   <!-- Text for a negative dialog action. [CHAR LIMIT=15] -->
   <string name="negative">Decline</string>
-  <!-- Text for a neutral dialog action. [CHAR LIMIT=15] -->
-  <string name="neutral">Cancel</string>
   <!-- Text for a dialog title. [CHAR LIMIT=30] -->
   <string name="title">Title</string>
   <!-- A large amount of text in order to display a long dialog. [CHAR LIMIT=NONE][DO_NOT_TRANSLATE] -->

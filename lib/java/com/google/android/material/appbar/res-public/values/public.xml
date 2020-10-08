@@ -16,6 +16,7 @@
 -->
 <resources>
   <public name="appBarLayoutStyle" type="attr"/>
+  <public name="collapsingToolbarLayoutStyle" type="attr"/>
   <public name="layout_scrollInterpolator" type="attr"/>
   <public name="behavior_overlapTop" type="attr"/>
   <public name="expandedTitleMargin" type="attr"/>
@@ -61,5 +62,6 @@
   <public name="scrimVisibleHeightTrigger" type="attr"/>
   <public name="titleEnabled" type="attr"/>
   <public name="maxLines" type="attr"/>
+  <public name="navigationIconTint" type="attr"/>
 </resources>
 

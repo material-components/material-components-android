@@ -27,7 +27,7 @@ ext {
     annotation            : '1.0.1',
     appCompat             : '1.1.0',
     cardView              : '1.0.0',
-    constraintlayout      : '2.0.0-rc1', // Need RC for TimePicker.
+    constraintlayout      : '2.0.1',
     coordinatorlayout     : '1.1.0',
     core                  : '1.2.0',
     experimental          : '1.0.0',
@@ -57,44 +57,14 @@ ext {
     ? project.property('mavenRepoUrl') : '/tmp/myRepo/')
 
   // Current version of the library (could be in-development/unreleased).
-  mdcLibraryVersion = '1.3.0-alpha02'
+  mdcLibraryVersion = '1.3.0-alpha03'
   mdcLibraryPackage = "com.google.android.material"
   mdcLibraryDir = "com/google/android/material"
-}
-
-// lint every library
-task lint {
-  doLast {
-  }
 }
 
 task clean(type: Delete) {
   delete rootProject.buildDir
 }
-
-String[] disabledLints = [
-  'CustomViewStyleable',
-  'CutPasteId',
-  'GifUsage',
-  'GradleDependency',
-  'GradleOverrides',
-  'IconDuplicates',
-  'IconLauncherShape',
-  'InflateParams',
-  'MergeRootFrame',
-  'MissingClass',
-  'PrivateResource',
-  'PxUsage',
-  'RestrictedApi',
-  'StringFormatMatches',
-  'SupportAnnotationUsage',
-  'SwitchIntDef',
-  'UnusedAttribute',
-  'UnusedResources',
-  'VectorDrawableCompat',
-  'VectorRaster',
-  'WrongConstant',
-]
 
 private def getTransformedProjectPath(projectPath) {
   def pathComponents = projectPath.tokenize('/')
@@ -213,10 +183,6 @@ subprojects {
     }
 
     if (isAndroidLibrary || isAndroidApp || isAndroidTest) {
-      if (!isAndroidTest) {
-        rootProject.lint.dependsOn project.lint
-      }
-
       // Disable pre-dexing when gradle called with -PdisablePreDex;
       project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibs
 
@@ -232,10 +198,10 @@ subprojects {
 
         aaptOptions.additionalParameters "--no-version-vectors"
 
-        lintOptions {
-          baseline file("baseline.xml")
-          disable disabledLints
-          warningsAsErrors true
+        android {
+          lintOptions {
+            check 'NewApi'
+          }
         }
 
         if (isAndroidLibrary) {

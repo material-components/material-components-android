@@ -20,6 +20,7 @@ import io.material.catalog.R;
 
 import android.content.Intent;
 import androidx.fragment.app.Fragment;
+import androidx.annotation.NonNull;
 import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
 import dagger.multibindings.IntoSet;
@@ -72,23 +73,27 @@ public class TopAppBarFragment extends DemoLandingFragment {
             return new Intent(getContext(), TopAppBarScrollingTransparentStatusDemoActivity.class);
           }
         });
-    additionalDemos.add(
+    additionalDemos.addAll(getCollapsingToolbarDemos());
+    additionalDemos.add(getToolbarDemo());
+    additionalDemos.addAll(getActionBarDemos());
+    return additionalDemos;
+  }
+
+  @NonNull
+  protected List<Demo> getCollapsingToolbarDemos() {
+    return Arrays.asList(
         new Demo(R.string.cat_topappbar_collapsing_title) {
           @Override
           public Fragment createFragment() {
             return new TopAppBarCollapsingDemoFragment();
           }
-        });
-    additionalDemos.add(
+        },
         new Demo(R.string.cat_topappbar_collapsing_multiline_title) {
           @Override
           public Fragment createFragment() {
             return new TopAppBarCollapsingMultilineDemoFragment();
           }
         });
-    additionalDemos.add(getToolbarDemo());
-    additionalDemos.addAll(getActionBarDemos());
-    return additionalDemos;
   }
 
   protected Demo getToolbarDemo() {

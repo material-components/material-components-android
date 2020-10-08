@@ -83,6 +83,7 @@
     <item name="shapeAppearanceOverlay">
       @style/ShapeAppearanceOverlay.MaterialComponents.ExtendedFloatingActionButton
     </item>
+    <item name="collapsedSize">@dimen/design_fab_size_normal</item>
   </style>
 
   <style name="ShapeAppearanceOverlay.MaterialComponents.ExtendedFloatingActionButton" parent="">

@@ -17,18 +17,22 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
   <item
+      android:id="@+id/action_alarm"
       android:enabled="true"
       android:icon="@drawable/asld_clock_alarm"
       android:title="@string/cat_bottom_nav_alarm"/>
   <item
+      android:id="@+id/action_clock"
       android:enabled="true"
       android:icon="@drawable/asld_clock_clock"
       android:title="@string/cat_bottom_nav_clock"/>
   <item
+      android:id="@+id/action_timer"
       android:enabled="true"
       android:icon="@drawable/asld_clock_timer"
       android:title="@string/cat_bottom_nav_timer"/>
   <item
+      android:id="@+id/action_stopwatch"
       android:enabled="true"
       android:icon="@drawable/asld_clock_stopwatch"
       android:title="@string/cat_bottom_nav_stopwatch"/>

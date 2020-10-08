@@ -25,6 +25,8 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.os.Build;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import android.util.AttributeSet;
@@ -33,6 +35,8 @@ import android.view.View;
 import android.view.View.OnAttachStateChangeListener;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.ViewTreeObserver;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowInsets;
 import android.view.inputmethod.InputMethodManager;
 import androidx.annotation.Dimension;
@@ -311,5 +315,28 @@ public class ViewUtils {
   @Nullable
   public static ViewOverlayImpl getContentViewOverlay(@NonNull View view) {
     return getOverlay(getContentView(view));
+  }
+
+  public static void addOnGlobalLayoutListener(
+      @Nullable View view, @NonNull OnGlobalLayoutListener victim) {
+    if (view != null) {
+      view.getViewTreeObserver().addOnGlobalLayoutListener(victim);
+    }
+  }
+
+  public static void removeOnGlobalLayoutListener(
+      @Nullable View view, @NonNull OnGlobalLayoutListener victim) {
+    if (view != null) {
+      removeOnGlobalLayoutListener(view.getViewTreeObserver(), victim);
+    }
+  }
+
+  public static void removeOnGlobalLayoutListener(
+      @NonNull ViewTreeObserver viewTreeObserver, @NonNull OnGlobalLayoutListener victim) {
+    if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
+      viewTreeObserver.removeOnGlobalLayoutListener(victim);
+    } else {
+      viewTreeObserver.removeGlobalOnLayoutListener(victim);
+    }
   }
 }

@@ -39,7 +39,7 @@
         android:layout_marginTop="16dp"
         android:paddingStart="16dp"
         android:paddingLeft="16dp"
-        android:text="@string/popup_menu"
+        android:text="@string/menu"
         android:textSize="16sp"/>
 
     <Button
@@ -49,7 +49,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
-        android:text="@string/show_popup"/>
+        android:text="@string/show_menu"/>
 
     <TextView
         android:textStyle="bold"
@@ -68,7 +68,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
-        android:text="@string/show_popup"/>
+        android:text="@string/show_menu"/>
 
 
     <TextView
@@ -88,7 +88,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
-        android:text="@string/show_popup"/>
+        android:text="@string/show_menu"/>
 
     <TextView
         android:textStyle="bold"

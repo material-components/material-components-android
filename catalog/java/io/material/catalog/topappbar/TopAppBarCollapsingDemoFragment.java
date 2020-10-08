@@ -24,6 +24,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import io.material.catalog.feature.DemoFragment;
 
@@ -33,8 +34,7 @@ public class TopAppBarCollapsingDemoFragment extends DemoFragment {
   @Override
   public View onCreateDemoView(
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
-    View view =
-        layoutInflater.inflate(R.layout.cat_topappbar_collapsing_fragment, viewGroup, false);
+    View view = layoutInflater.inflate(getCollapsingToolbarLayoutResId(), viewGroup, false);
 
     Toolbar toolbar = view.findViewById(R.id.toolbar);
     AppCompatActivity activity = (AppCompatActivity) getActivity();
@@ -46,5 +46,10 @@ public class TopAppBarCollapsingDemoFragment extends DemoFragment {
   @Override
   public boolean shouldShowDefaultDemoActionBar() {
     return false;
+  }
+
+  @LayoutRes
+  protected int getCollapsingToolbarLayoutResId() {
+    return R.layout.cat_topappbar_collapsing_fragment;
   }
 }

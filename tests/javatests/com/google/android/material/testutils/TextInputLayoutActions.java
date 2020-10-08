@@ -827,4 +827,26 @@ public class TextInputLayoutActions {
       }
     };
   }
+
+  /** Sets whether the hint expands. */
+  public static ViewAction setExpandedHintEnabled(final boolean expandedHintEnabled) {
+    return new ViewAction() {
+
+      @Override
+      public Matcher<View> getConstraints() {
+        return ViewMatchers.isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Sets whether the hint expands.";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setExpandedHintEnabled(expandedHintEnabled);
+      }
+    };
+  }
 }

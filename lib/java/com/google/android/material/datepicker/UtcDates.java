@@ -223,14 +223,6 @@ class UtcDates {
     return getFormat(DateFormat.FULL, locale);
   }
 
-  static SimpleDateFormat getYearMonthFormat() {
-    return getYearMonthFormat(Locale.getDefault());
-  }
-
-  private static SimpleDateFormat getYearMonthFormat(Locale locale) {
-    return getSimpleFormat("LLLL, yyyy", locale);
-  }
-
   @NonNull
   private static String removeYearFromDateFormatPattern(@NonNull String pattern) {
     String yearCharacters = "yY";

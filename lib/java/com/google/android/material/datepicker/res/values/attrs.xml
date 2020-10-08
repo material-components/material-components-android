@@ -34,6 +34,7 @@
 
   <!-- Grid Styles -->
   <attr name="materialCalendarDay" format="reference"/>
+  <attr name="materialCalendarMonth" format="reference"/>
 
   <declare-styleable name="MaterialCalendar">
     <attr name="android:windowFullscreen"/>

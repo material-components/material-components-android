@@ -388,7 +388,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
     yearFrame = root.findViewById(R.id.mtrl_calendar_year_selector_frame);
     dayFrame = root.findViewById(R.id.mtrl_calendar_day_selector_frame);
     setSelector(CalendarSelector.DAY);
-    monthDropSelect.setText(current.getLongName());
+    monthDropSelect.setText(current.getLongName(root.getContext()));
     recyclerView.addOnScrollListener(
         new OnScrollListener() {
           @Override

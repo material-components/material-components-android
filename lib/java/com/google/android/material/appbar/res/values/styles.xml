@@ -44,6 +44,8 @@
     <item name="android:textColor">?android:attr/textColorPrimary</item>
   </style>
 
+  <style name="Widget.MaterialComponents.CollapsingToolbar" parent="Widget.Design.CollapsingToolbar"/>
+
   <!-- Toolbar styles -->
   <style name="Widget.MaterialComponents.Toolbar" parent="Widget.AppCompat.Toolbar">
     <item name="titleTextAppearance">?attr/textAppearanceHeadline6</item>
