@@ -166,10 +166,16 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
       new OnEndIconChangedListener() {
         @Override
         public void onEndIconChanged(@NonNull TextInputLayout textInputLayout, int previousIcon) {
-          AutoCompleteTextView editText = (AutoCompleteTextView) textInputLayout.getEditText();
+          final AutoCompleteTextView editText = (AutoCompleteTextView) textInputLayout.getEditText();
           if (editText != null && previousIcon == TextInputLayout.END_ICON_DROPDOWN_MENU) {
             // Remove any listeners set on the edit text.
-            editText.removeTextChangedListener(exposedDropdownEndIconTextWatcher);
+            editText.post(
+                new Runnable() {
+                  @Override
+                  public void run() {
+                    editText.removeTextChangedListener(exposedDropdownEndIconTextWatcher);
+                  }
+                });
             if (editText.getOnFocusChangeListener() == onFocusChangeListener) {
               editText.setOnFocusChangeListener(null);
             }

@@ -84,10 +84,16 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
       new OnEndIconChangedListener() {
         @Override
         public void onEndIconChanged(@NonNull TextInputLayout textInputLayout, int previousIcon) {
-          EditText editText = textInputLayout.getEditText();
+          final EditText editText = textInputLayout.getEditText();
           if (editText != null && previousIcon == TextInputLayout.END_ICON_CLEAR_TEXT) {
             // Remove any listeners set on the edit text.
-            editText.removeTextChangedListener(clearTextEndIconTextWatcher);
+            editText.post(
+                new Runnable() {
+                  @Override
+                  public void run() {
+                    editText.removeTextChangedListener(clearTextEndIconTextWatcher);
+                  }
+                });
             if (editText.getOnFocusChangeListener() == onFocusChangeListener) {
               editText.setOnFocusChangeListener(null);
             }
