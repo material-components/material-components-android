@@ -1178,7 +1178,12 @@ abstract class BaseSlider<
    * @attr ref com.google.android.material.R.styleable#Slider_thumbColor
    */
   public void setThumbTintList(@NonNull ColorStateList thumbColor) {
+    if (thumbColor.equals(thumbDrawable.getFillColor())) {
+      return;
+    }
+
     thumbDrawable.setFillColor(thumbColor);
+    invalidate();
   }
 
   /**

@@ -44,7 +44,7 @@
         android:layout_height="wrap_content"
         app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
-      <androidx.constraintlayout.widget.ConstraintLayout
+      <android.support.constraint.ConstraintLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content">
 
@@ -115,7 +115,7 @@
 
           </com.google.android.material.card.MaterialCardView>
 
-      </androidx.constraintlayout.widget.ConstraintLayout>
+      </android.support.constraint.ConstraintLayout>
 
       <com.google.android.material.appbar.MaterialToolbar
           style="@style/Widget.MaterialComponents.Toolbar.PrimarySurface"
