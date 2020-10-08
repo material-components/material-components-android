@@ -93,6 +93,10 @@
 
   <style name="Widget.MaterialComponents.MaterialCalendar.HeaderToggleButton" parent="Widget.MaterialComponents.Button.TextButton">
     <item name="iconTint">?attr/colorOnPrimary</item>
+    <item name="android:insetTop">0dp</item>
+    <item name="android:insetBottom">0dp</item>
+    <item name="android:padding">12dp</item>
+    <item name="rippleColor">@color/mtrl_btn_ripple_color</item>
   </style>
 
   <style name="Widget.MaterialComponents.MaterialCalendar.DayTextView" parent="Widget.AppCompat.TextView">

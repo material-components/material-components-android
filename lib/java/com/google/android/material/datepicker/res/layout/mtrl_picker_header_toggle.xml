@@ -17,7 +17,6 @@
 
 <com.google.android.material.button.MaterialButton
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/mtrl_picker_header_toggle"
     style="?attr/materialCalendarHeaderToggleButton"
     android:checkable="true"
@@ -25,8 +24,4 @@
     android:layout_height="@dimen/mtrl_min_touch_target_size"
     android:layout_marginBottom="@dimen/mtrl_calendar_header_toggle_margin_bottom"
     android:layout_marginTop="@dimen/mtrl_calendar_header_toggle_margin_top"
-    android:insetTop="0dp"
-    android:insetBottom="0dp"
-    android:padding="12dp"
-    app:rippleColor="@color/mtrl_btn_ripple_color"
     android:layout_gravity="bottom|end"/>
