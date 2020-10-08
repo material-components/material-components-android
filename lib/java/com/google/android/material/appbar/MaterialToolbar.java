@@ -64,7 +64,7 @@ public class MaterialToolbar extends Toolbar {
 
   private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_Toolbar;
 
-  @Nullable private Integer navigationIconColor;
+  @Nullable private Integer navigationIconTint;
 
   public MaterialToolbar(@NonNull Context context) {
     this(context, null);
@@ -83,8 +83,8 @@ public class MaterialToolbar extends Toolbar {
         ThemeEnforcement.obtainStyledAttributes(
             context, attrs, R.styleable.MaterialToolbar, defStyleAttr, DEF_STYLE_RES);
 
-    if (a.hasValue(R.styleable.MaterialToolbar_navigationIconColor)) {
-      setNavigationIconColor(a.getColor(R.styleable.MaterialToolbar_navigationIconColor, -1));
+    if (a.hasValue(R.styleable.MaterialToolbar_navigationIconTint)) {
+      setNavigationIconTint(a.getColor(R.styleable.MaterialToolbar_navigationIconTint, -1));
     }
 
     a.recycle();
@@ -117,8 +117,8 @@ public class MaterialToolbar extends Toolbar {
    *
    * @see #setNavigationIcon
    */
-  public void setNavigationIconColor(@ColorInt int navigationIconColor) {
-    this.navigationIconColor = navigationIconColor;
+  public void setNavigationIconTint(@ColorInt int navigationIconTint) {
+    this.navigationIconTint = navigationIconTint;
     Drawable navigationIcon = getNavigationIcon();
     if (navigationIcon != null) {
       // Causes navigation icon to be tinted if needed.
@@ -142,9 +142,9 @@ public class MaterialToolbar extends Toolbar {
 
   @Nullable
   private Drawable maybeTintNavigationIcon(@Nullable Drawable navigationIcon) {
-    if (navigationIcon != null && navigationIconColor != null) {
+    if (navigationIcon != null && navigationIconTint != null) {
       Drawable wrappedNavigationIcon = DrawableCompat.wrap(navigationIcon);
-      DrawableCompat.setTint(wrappedNavigationIcon, navigationIconColor);
+      DrawableCompat.setTint(wrappedNavigationIcon, navigationIconTint);
       return wrappedNavigationIcon;
     } else {
       return navigationIcon;

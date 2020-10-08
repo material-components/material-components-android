@@ -429,7 +429,7 @@ In the layout:
 &nbsp;                           | Attribute                 | Related method(s)                          | Default value
 -------------------------------- | ------------------------- | ------------------------------------------ | -------------
 **`MaterialToolbar` icon**       | `app:navigationIcon`      | `setNavigationIcon`<br>`getNavigationIcon` | `null`
-**`MaterialToolbar` icon color** | `app:navigationIconColor` | `setNavigationIconColor`                   | `?attr/colorControlNormal` (as `Drawable` tint)
+**`MaterialToolbar` icon color** | `app:navigationIconTint`  | `setNavigationIconTint`                    | `?attr/colorControlNormal` (as `Drawable` tint)
 
 #### Title attributes
 

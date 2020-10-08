@@ -218,7 +218,7 @@
   </declare-styleable>
 
   <declare-styleable name="MaterialToolbar">
-    <attr name="navigationIconColor" format="color" />
+    <attr name="navigationIconTint" format="color" />
   </declare-styleable>
 
 </resources>

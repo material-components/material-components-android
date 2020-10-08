@@ -62,6 +62,6 @@
   <public name="scrimVisibleHeightTrigger" type="attr"/>
   <public name="titleEnabled" type="attr"/>
   <public name="maxLines" type="attr"/>
-  <public name="navigationIconColor" type="attr"/>
+  <public name="navigationIconTint" type="attr"/>
 </resources>
 
