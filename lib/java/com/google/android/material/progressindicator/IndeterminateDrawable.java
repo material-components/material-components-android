@@ -20,9 +20,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.util.Pair;
 import androidx.annotation.NonNull;
-import com.google.android.material.progressindicator.ProgressIndicator.IndicatorType;
 
 /**
  * This class draws the graphics for indeterminate modes by applying different {@link
@@ -35,14 +33,15 @@ public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityC
   // Animator delegate object.
   private IndeterminateAnimatorDelegate<AnimatorSet> animatorDelegate;
 
-  public IndeterminateDrawable(@NonNull Context context, @NonNull ProgressIndicatorSpec spec) {
-    super(context, spec);
+  public IndeterminateDrawable(
+      @NonNull Context context,
+      @NonNull ProgressIndicatorSpec spec,
+      @NonNull DrawingDelegate drawingDelegate,
+      @NonNull IndeterminateAnimatorDelegate<AnimatorSet> animatorDelegate) {
+    super(context, /*animatedVisibilityChangeBehavior=*/ spec);
 
-    Pair<DrawingDelegate, IndeterminateAnimatorDelegate<AnimatorSet>> delegatePair =
-        initializeDelegates(spec.indicatorType, spec.linearSeamless);
-
-    setDrawingDelegate(delegatePair.first);
-    setAnimatorDelegate(delegatePair.second);
+    setDrawingDelegate(drawingDelegate);
+    setAnimatorDelegate(animatorDelegate);
   }
 
   // ******************* Overridden methods *******************
@@ -115,22 +114,6 @@ public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityC
           animatorDelegate.segmentColors[segmentIndex]);
     }
     canvas.restore();
-  }
-
-  // ******************* Helper methods *******************
-
-  private Pair<DrawingDelegate, IndeterminateAnimatorDelegate<AnimatorSet>> initializeDelegates(
-      @IndicatorType int type, boolean linearSeamless) {
-    if (type == ProgressIndicator.CIRCULAR) {
-      return new Pair<DrawingDelegate, IndeterminateAnimatorDelegate<AnimatorSet>>(
-          new CircularDrawingDelegate(spec), new CircularIndeterminateAnimatorDelegate(spec));
-    }
-
-    return new Pair<DrawingDelegate, IndeterminateAnimatorDelegate<AnimatorSet>>(
-        new LinearDrawingDelegate(spec),
-        linearSeamless
-            ? new LinearIndeterminateSeamlessAnimatorDelegate(spec)
-            : new LinearIndeterminateNonSeamlessAnimatorDelegate(context, spec));
   }
 
   // ******************* Setter and getter *******************

@@ -35,6 +35,8 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
   private static final int MAX_DRAWABLE_LEVEL = 10000;
   // The constant for spring force stiffness.
   private static final float SPRING_FORCE_STIFFNESS = SpringForce.STIFFNESS_VERY_LOW;
+  // Current progress indicator spec.
+  private final ProgressIndicatorSpec spec;
   // Drawing delegate object.
   private final DrawingDelegate drawingDelegate;
   // Animation.
@@ -45,15 +47,15 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
   // Whether to skip the spring animation on level change event.
   private boolean skipAnimationOnLevelChange = false;
 
-  public DeterminateDrawable(@NonNull Context context, @NonNull ProgressIndicatorSpec spec) {
-    super(context, spec);
+  public DeterminateDrawable(
+      @NonNull Context context,
+      @NonNull ProgressIndicatorSpec spec,
+      @NonNull DrawingDelegate drawingDelegate) {
+    super(context, /*animatedVisibilityChangeBehavior=*/ spec);
 
-    if (spec.indicatorType == ProgressIndicator.LINEAR) {
-      this.drawingDelegate = new LinearDrawingDelegate(spec);
-    } else {
-      this.drawingDelegate = new CircularDrawingDelegate(spec);
-    }
-    this.drawingDelegate.registerDrawable(this);
+    this.spec = spec;
+    this.drawingDelegate = drawingDelegate;
+    drawingDelegate.registerDrawable(this);
 
     springForce = new SpringForce();
 

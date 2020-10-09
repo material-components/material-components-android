@@ -40,8 +40,10 @@ import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.VisibleForTesting;
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat.AnimationCallback;
+import com.google.android.material.color.MaterialColors;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.Arrays;
 
 /**
  * Progress indicators are animated views that represent the progress of an undergoing process.
@@ -196,8 +198,27 @@ public final class ProgressIndicator extends ProgressBar {
    * Initializes the builtin drawables for LINEAR and CIRCULAR types.
    */
   private void initializeDrawables() {
-    setIndeterminateDrawable(new IndeterminateDrawable(getContext(), spec));
-    setProgressDrawable(new DeterminateDrawable(getContext(), spec));
+    if (getIndicatorType() == CIRCULAR) {
+      setIndeterminateDrawable(
+          new IndeterminateDrawable(
+              getContext(),
+              spec,
+              new CircularDrawingDelegate(spec),
+              new CircularIndeterminateAnimatorDelegate(spec)));
+      setProgressDrawable(
+          new DeterminateDrawable(getContext(), spec, new CircularDrawingDelegate(spec)));
+    } else {
+      setIndeterminateDrawable(
+          new IndeterminateDrawable(
+              getContext(),
+              spec,
+              new LinearDrawingDelegate(spec),
+              isLinearSeamless()
+                  ? new LinearIndeterminateSeamlessAnimatorDelegate(spec)
+                  : new LinearIndeterminateNonSeamlessAnimatorDelegate(getContext(), spec)));
+      setProgressDrawable(
+          new DeterminateDrawable(getContext(), spec, new LinearDrawingDelegate(spec)));
+    }
     applyNewVisibility();
   }
 
@@ -664,12 +685,18 @@ public final class ProgressIndicator extends ProgressBar {
    *     com.google.android.material.progressindicator.R.stylable#ProgressIndicator_indicatorColor
    */
   public void setIndicatorColors(int[] indicatorColors) {
-    spec.indicatorColors = indicatorColors;
-    getIndeterminateDrawable().getAnimatorDelegate().invalidateSpecValues();
-    if (!isEligibleToSeamless()) {
-      spec.linearSeamless = false;
+    if (indicatorColors == null || indicatorColors.length == 0) {
+      // Uses theme primary color for indicator by default. Indicator color cannot be empty.
+      indicatorColors = new int[] {MaterialColors.getColor(getContext(), R.attr.colorPrimary, -1)};
     }
-    invalidate();
+    if (!Arrays.equals(getIndicatorColors(), indicatorColors)) {
+      spec.indicatorColors = indicatorColors;
+      getIndeterminateDrawable().getAnimatorDelegate().invalidateSpecValues();
+      if (!isEligibleToSeamless()) {
+        spec.linearSeamless = false;
+      }
+      invalidate();
+    }
   }
 
   /**

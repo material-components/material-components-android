@@ -26,6 +26,7 @@ import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.util.Property;
+import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat;
@@ -47,8 +48,8 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
 
   // The current context this drawable is running in.
   final Context context;
-  // The spec of the component being served.
-  final ProgressIndicatorSpec spec;
+  // The animation behavior.
+  final AnimatedVisibilityChangeBehavior animationBehavior;
   // Utils class.
   AnimatorDurationScaleProvider animatorDurationScaleProvider;
 
@@ -71,9 +72,10 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
   // ******************* Constructor *******************
 
   DrawableWithAnimatedVisibilityChange(
-      @NonNull Context context, @NonNull ProgressIndicatorSpec spec) {
+      @NonNull Context context,
+      @NonNull AnimatedVisibilityChangeBehavior animatedVisibilityChangeBehavior) {
     this.context = context;
-    this.spec = spec;
+    this.animationBehavior = animatedVisibilityChangeBehavior;
     animatorDurationScaleProvider = new AnimatorDurationScaleProvider();
 
     setAlpha(255);
@@ -242,7 +244,8 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
     // If requests to show, sets the drawable visible. If requests to hide, the visibility is
     // controlled by the animation listener attached to hide animation.
     boolean changed = !visible || super.setVisible(visible, DEFAULT_DRAWABLE_RESTART);
-    animationDesired &= spec.growMode != ProgressIndicator.GROW_MODE_NONE;
+    animationDesired &=
+        visible ? animationBehavior.shouldAnimateToShow() : animationBehavior.shouldAnimateToHide();
     if (!animationDesired) {
       // This triggers onAnimationStart() callbacks for showing and onAnimationEnd() callbacks for
       // hiding. It also fast-forwards the animator properties to the end state.
@@ -343,14 +346,14 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
   }
 
   float getGrowFraction() {
+    // If no show/hide animation is needed, the growFraction is always 1.
+    if (!animationBehavior.shouldAnimateToShow() && !animationBehavior.shouldAnimateToHide()) {
+      return 1f;
+    }
     return growFraction;
   }
 
-  void setGrowFraction(float growFraction) {
-    // If no show/hide animation is needed, the growFraction is always 1.
-    if (spec.growMode == ProgressIndicator.GROW_MODE_NONE) {
-      growFraction = 1f;
-    }
+  void setGrowFraction(@FloatRange(from = 0.0, to = 1.0) float growFraction) {
     if (this.growFraction != growFraction) {
       this.growFraction = growFraction;
       invalidateSelf();

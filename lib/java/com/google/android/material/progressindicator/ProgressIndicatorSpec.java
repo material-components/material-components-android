@@ -33,7 +33,7 @@ import androidx.annotation.StyleableRes;
 import com.google.android.material.color.MaterialColors;
 
 /** A spec class managing all attributes of {@link ProgressIndicator}. */
-public final class ProgressIndicatorSpec {
+public final class ProgressIndicatorSpec implements AnimatedVisibilityChangeBehavior {
 
   /** The type of the progress indicator, either {@code #LINEAR} or {@code #CIRCULAR}. */
   public int indicatorType;
@@ -245,5 +245,15 @@ public final class ProgressIndicatorSpec {
       int trackAlpha = (int) (ProgressIndicator.MAX_ALPHA * defaultOpacity);
       trackColor = MaterialColors.compositeARGBWithAlpha(trackColor, trackAlpha);
     }
+  }
+
+  @Override
+  public boolean shouldAnimateToShow() {
+    return growMode != ProgressIndicator.GROW_MODE_NONE;
+  }
+
+  @Override
+  public boolean shouldAnimateToHide() {
+    return growMode != ProgressIndicator.GROW_MODE_NONE;
   }
 }

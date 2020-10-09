@@ -26,7 +26,7 @@ import androidx.annotation.NonNull;
 import com.google.android.material.color.MaterialColors;
 
 /** A delegate class to help draw the graphics for {@link ProgressIndicator} in circular types. */
-final class CircularDrawingDelegate extends DrawingDelegate {
+public final class CircularDrawingDelegate extends DrawingDelegate {
 
   private final ProgressIndicatorSpec spec;
 
