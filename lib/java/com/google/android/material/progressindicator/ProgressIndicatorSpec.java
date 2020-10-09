@@ -22,10 +22,12 @@ import static java.lang.Math.min;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import androidx.annotation.AttrRes;
 import androidx.annotation.DimenRes;
 import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import androidx.annotation.StyleableRes;
 import com.google.android.material.color.MaterialColors;
@@ -51,7 +53,7 @@ public final class ProgressIndicatorSpec {
    * mode, only the first item will be used. This field combines the attribute indicatorColor and
    * indicatorColors defined in the XML.
    */
-  public int[] indicatorColors;
+  @NonNull public int[] indicatorColors;
 
   /**
    * The color used for the progress track. If not defined, it will be set to the indicatorColor and
@@ -83,13 +85,15 @@ public final class ProgressIndicatorSpec {
    */
   public boolean linearSeamless;
 
-  public void loadFromAttributes(@NonNull Context context, AttributeSet attrs,
-      @AttrRes int defStyleAttr) {
+  public void loadFromAttributes(
+      @NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
     loadFromAttributes(context, attrs, defStyleAttr, ProgressIndicator.DEF_STYLE_RES);
   }
 
   public void loadFromAttributes(
-      @NonNull Context context, AttributeSet attrs, @AttrRes int defStyleAttr,
+      @NonNull Context context,
+      @Nullable AttributeSet attrs,
+      @AttrRes int defStyleAttr,
       @StyleRes int defStyleRes) {
     TypedArray a =
         context.obtainStyledAttributes(
@@ -196,15 +200,26 @@ public final class ProgressIndicatorSpec {
         throw new IllegalArgumentException(
             "indicatorColors cannot be empty when indicatorColor is not used.");
       }
+    } else if (typedArray.hasValue(R.styleable.ProgressIndicator_indicatorColor)) {
+      TypedValue indicatorColorValue =
+          typedArray.peekValue(R.styleable.ProgressIndicator_indicatorColor);
+      if (indicatorColorValue.type == TypedValue.TYPE_REFERENCE) {
+        indicatorColors =
+            context
+                .getResources()
+                .getIntArray(
+                    typedArray.getResourceId(R.styleable.ProgressIndicator_indicatorColor, -1));
+        if (indicatorColors.length == 0) {
+          throw new IllegalArgumentException(
+              "indicatorColors cannot be empty when indicatorColor is not used.");
+        }
+      } else {
+        indicatorColors =
+            new int[] {typedArray.getColor(R.styleable.ProgressIndicator_indicatorColor, -1)};
+      }
     } else {
-      // Uses theme primary color for indicator if neither indicatorColor nor indicatorColors exists
-      // in attribute set.
-      indicatorColors =
-          new int[] {
-            typedArray.hasValue(R.styleable.ProgressIndicator_indicatorColor)
-                ? typedArray.getColor(R.styleable.ProgressIndicator_indicatorColor, -1)
-                : MaterialColors.getColor(context, R.attr.colorPrimary, -1)
-          };
+      // Uses theme primary color for indicator if not provided in the attribute set.
+      indicatorColors = new int[] {MaterialColors.getColor(context, R.attr.colorPrimary, -1)};
     }
   }
 

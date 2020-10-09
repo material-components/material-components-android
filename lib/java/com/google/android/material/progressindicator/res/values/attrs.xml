@@ -15,6 +15,8 @@
   ~ limitations under the License.
 -->
 <resources>
+  <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
+  <!-- TODO(b/169262619) Deprecate when ProgressIndicator is deprecated. -->
   <declare-styleable name="ProgressIndicator">
     <!-- The type of the progress indicator, either linear or circular. -->
     <attr name="indicatorType">
@@ -36,10 +38,10 @@
     -->
     <attr name="indicatorCornerRadius" format="dimension"/>
     <!--
-      The single color used for the indicator in determinate/indeterminate mode.
-      By default it uses theme primary color.
+      The indicator color (or colors in an array). By default, it uses theme
+      primary color.
     -->
-    <attr name="indicatorColor" format="color"/>
+    <attr name="indicatorColor" format="color|reference"/>
     <!--
       A color array used for multiple color indeterminate indicator. If color
       array is used while determinate mode is set, the first color in array
@@ -120,6 +122,121 @@
 
   </declare-styleable>
 
+  <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
+  <!-- TODO(b/169262619) Deprecate when ProgressIndicator is deprecated. -->
   <!-- Style to use for ProgressIndicators in this theme. -->
   <attr name="progressIndicatorStyle" format="reference"/>
+
+  <declare-styleable name="BaseProgressIndicator">
+    <attr name="android:indeterminate"/>
+    <attr name="indicatorSize"/>
+    <attr name="indicatorCornerRadius"/>
+    <attr name="indicatorColor"/>
+    <attr name="trackColor"/>
+    <attr name="showDelay"/>
+    <attr name="minHideDelay"/>
+  </declare-styleable>
+
+  <declare-styleable name="LinearProgressIndicator">
+    <!--
+      Whether to use seamless style animation on linear indicator in different
+      colors when it's possible, i.e., in linear indeterminate mode with more
+      than 3 colors (inclusive) are defined. Ignored for circular progress
+      indicator.
+    -->
+    <attr name="seamlessIndeterminateAnimation" format="boolean"/>
+    <!--
+      The direction in which the linear indicator progresses, in the determinate
+      mode, and is animated, in the indeterminate mode.
+    -->
+    <attr name="indicatorDirectionLinear">
+      <!-- Animated from the left end to the right end of the track. -->
+      <enum name="leftToRight" value="0"/>
+      <!-- Animated from the right end to the left end of the track. -->
+      <enum name="rightToLeft" value="1"/>
+      <!--
+        Animated from the start position to the end position of the track.
+        This will be same as the leftToRight for API before 17.
+      -->
+      <enum name="startToEnd" value="2"/>
+      <!--
+        Animated from the end position to the start position of the track.
+        This will be same as the rightToLeft for API before 17.
+      -->
+      <enum name="endToStart" value="3"/>
+    </attr>
+    <!-- The animation direction to show the indicator and track. -->
+    <attr name="showBehaviorLinear">
+      <!-- No animation used; appears immediately. -->
+      <enum name="none" value="0"/>
+      <!-- Enters from the top edge to the bottom edge. -->
+      <enum name="topToBottom" value="1"/>
+      <!-- Enters from the bottom edge to the top edge. -->
+      <enum name="bottomToTop" value="2"/>
+    </attr>
+    <!-- The animation direction to hide the indicator and track. -->
+    <attr name="hideBehaviorLinear">
+      <!-- No animation used; disappears immediately. -->
+      <enum name="none" value="0"/>
+      <!-- Exits from the top edge to the bottom edge. -->
+      <enum name="topToBottom" value="1"/>
+      <!-- Exits from the bottom edge to the top edge. -->
+      <enum name="bottomToTop" value="2"/>
+    </attr>
+  </declare-styleable>
+
+  <declare-styleable name="CircularProgressIndicator">
+    <!--
+      Defines the radius of the circular progress indicator. This uses the
+      central line of the indicator as reference. Ignored for linear progress
+      indicator.
+    -->
+    <attr name="indicatorRadius" format="dimension"/>
+    <!--
+      The extra space from the outer edge of the indicator to the edge of the
+      canvas. Ignored for linear progress indicator.
+    -->
+    <attr name="indicatorInset" format="dimension"/>
+    <!--
+      The direction in which the circular indicator progresses, in the
+      determinate mode, and is animated, in the indeterminate mode.
+    -->
+    <attr name="indicatorDirectionCircular">
+      <!--
+        In the indeterminate mode, the spinner will spin clockwise; in the
+        determinate mode, the indicator will progress from the top (12 o'clock)
+        clockwise.
+      -->
+      <enum name="clockwise" value="0"/>
+      <!--
+        In the indeterminate mode, the spinner will spin counter-clockwise; in
+        the determinate mode, the indicator will progress from the top (12
+        o'clock) counter-clockwise.
+      -->
+      <enum name="counterclockwise" value="1"/>
+    </attr>
+    <!-- The animation direction to show the indicator and track. -->
+    <attr name="showBehaviorCircular">
+      <!-- No animation used; appears immediately. -->
+      <enum name="none" value="0"/>
+      <!-- Enters from the inner edge to the outer edge. -->
+      <enum name="outward" value="1"/>
+      <!-- Enters from the outer edge to the inner edge. -->
+      <enum name="inward" value="2"/>
+    </attr>
+    <!-- The animation direction to hide the indicator and track. -->
+    <attr name="hideBehaviorCircular">
+      <!-- No animation used; disappears immediately. -->
+      <enum name="none" value="0"/>
+      <!-- Exits from the inner edge to the outer edge. -->
+      <enum name="outward" value="1"/>
+      <!-- Exits from the outer edge to the inner edge. -->
+      <enum name="inward" value="2"/>
+    </attr>
+  </declare-styleable>
+
+  <!-- Style to use for LinearProgressIndicator in this theme. -->
+  <attr name="linearProgressIndicatorStyle" format="reference"/>
+  <!-- Style to use for CircularProgressIndicator in this theme. -->
+  <attr name="circularProgressIndicatorStyle" format="reference"/>
 </resources>

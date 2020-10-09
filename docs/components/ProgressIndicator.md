@@ -1,5 +1,10 @@
 # Progress Indicator
 
+<!-- TODO(b/169262416) Update API and style for sub-type progress indicator classes. -->
+
+Note: Due to an internal change of API, ProgressIndicator will be deprecated in
+the near future.
+
 com.google.android.material provides an implementation of linear and circular
 progress indicator, compatible back to API 15 (Ice Cream Sandwich MR1). The
 easiest way to make use of these indicators is through `ProgressIndicator`.
