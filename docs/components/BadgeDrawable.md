@@ -7,7 +7,7 @@ iconId: badge
 path: /catalog/badging/
 -->
 
-# `BadgeDrawable`
+# BadgeDrawable
 
 Badge                                   | Badge with number                              | Badge with a maximum character count
 --------------------------------------- | ---------------------------------------------- | ------------------------------------
@@ -42,51 +42,35 @@ In API 18+ (APIs supported by
     [ViewOverlay](https://developer.android.com/reference/android/view/ViewOverlay)
     to the desired anchor view.
 1.  Update the `BadgeDrawable`'s coordinates (center and bounds) based on its
-    anchor view using `#updateBadgeCoordinates(View)`.
+    anchor view.
 
 Both of the above steps have been encapsulated in a util method:
 
 ```java
-BadgeUtils.attachBadgeDrawable(badgeDrawable, anchor);
+  BadgeUtils.attachBadgeDrawable(badgeDrawable, anchor, null);
 ```
 
 In Pre API-18
 
-1.  Set `BadgeDrawable` as the foreground of the anchor view's `FrameLayout`
+1.  Set `BadgeDrawable` as the foreground of the anchor view's FrameLayout
     ancestor.
 1.  Update the `BadgeDrawable`'s coordinates (center and bounds) based on its
-    anchor view (relative to its `FrameLayout` ancestor's coordinate space),
+    anchor view (relative to its FrameLayout ancestor's coordinate space),
 
-Option 1: `BadgeDrawable` will dynamically create and wrap the anchor view in a
-`FrameLayout`, then insert the `FrameLayout` into the anchor view original
-position in the view hierarchy. Same syntax as API 18+
+Both of the above steps have been encapsulated in a util method:
 
 ```java
-BadgeUtils.attachBadgeDrawable(badgeDrawable, anchor);
-```
-
-Option 2: If you do not want `BadgeDrawable` to modify your view hierarchy, you
-can specify a `FrameLayout` to display the badge instead.
-
-```java
-* BadgeUtils.attachBadgeDrawable(badgeDrawable, anchor, anchorFrameLayoutParent);
+  BadgeUtils.attachBadgeDrawable(badgeDrawable, anchor, anchorFrameLayoutParent);
 ```
 
 ### `BadgeDrawable` Gravity Modes
 
-`BadgeDrawable` provides 4 pre-packaged gravity modes that control how the badge
+BadgeDrawable provides 4 pre-packaged gravity modes that control how the badge
 aligns with respect to its anchor view. By default (`TOP_END`), badge aligns to
 the top and end edges of the anchor (with some offsets). The other options are
 `TOP_START`, `BOTTOM_START` and `BOTTOM_END`.
 
-### `BadgeDrawable` center offsets
-
-By default, `BadgeDrawable` is aligned to the top and end edges of its anchor
-view (with some offsets). Call `setBadgeGravity(int)` to change it to one of the
-other supported modes. To adjust the badge's offsets w.r.t. the anchor's center,
-use `setHoriziontalOffset(int)` or `setVerticalOffset(int)`
-
-### `BadgeDrawable` Attributes
+### BadgeDrawable Attributes
 
 Feature       | Relevant attributes
 ------------- | -----------------------------------------------

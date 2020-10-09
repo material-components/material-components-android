@@ -520,7 +520,8 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
       setClipChildren(true);
       setClipToPadding(true);
 
-      BadgeUtils.detachBadgeDrawable(badgeDrawable, anchorView);
+      BadgeUtils.detachBadgeDrawable(
+          badgeDrawable, anchorView, getCustomParentForBadge(anchorView));
     }
     badgeDrawable = null;
   }
