@@ -37,12 +37,11 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/cat_progress_indicator_circular_indeterminate" />
-  <com.google.android.material.progressindicator.ProgressIndicator
-      style="@style/Widget.MaterialComponents.ProgressIndicator.Circular.Indeterminate"
+  <com.google.android.material.progressindicator.CircularProgressIndicator
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_gravity="center"
-      app:indicatorColor="?attr/colorPrimary" />
+      android:indeterminate="true"/>
 
   <TextView
       android:layout_width="wrap_content"
@@ -60,13 +59,11 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/cat_progress_indicator_circular_determinate"/>
-  <com.google.android.material.progressindicator.ProgressIndicator
+  <com.google.android.material.progressindicator.CircularProgressIndicator
       android:id="@+id/circular_determinate"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      style="@style/Widget.MaterialComponents.ProgressIndicator.Circular.Determinate"
-      app:indicatorColor="?attr/colorPrimary"/>
+      android:layout_gravity="center"/>
 
   <TextView
       android:layout_width="wrap_content"
