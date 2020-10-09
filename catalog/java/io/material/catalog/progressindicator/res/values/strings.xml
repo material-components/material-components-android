@@ -103,21 +103,21 @@
     Multiple seamless color linear with outgoing grow
   </string>
 
-  <string name="cat_progress_indicator_clockwise_circular_single_color"
-    description="A clockwise circular progress indicator with a single color [CHAR LIMIT=NONE]">
-    Single color clockwise circular
+  <string name="cat_progress_indicator_circular_no_grow_single_color"
+      description="A circular progress indicator with no grow and a single color [CHAR LIMIT=NONE]">
+    Single color circular with no grow
   </string>
-  <string name="cat_progress_indicator_rounded_counterclockwise_circular_single_color"
-    description="A counterclockwise circular progress indicator with rounded corners and a single color [CHAR LIMIT=NONE]">
-    Single color counter-clockwise circular with rounded corners
+  <string name="cat_progress_indicator_rounded_inverse_circular_bidirectional_grow_single_color"
+      description="An inverse circular progress indicator with bidirectional grow, rounded corners and a single color [CHAR LIMIT=NONE]">
+    Single color inverse circular with bidirectional grow and rounded corners
   </string>
-  <string name="cat_progress_indicator_clockwise_circular_multiple_colors_anchored_outer"
-    description="A clockwise circular progress indicator with multiple colors anchoring at the outer edge. [CHAR LIMIT=NONE]">
-    Multiple color clockwise circular, anchoring at the outer edge
+  <string name="cat_progress_indicator_circular_incoming_grow_multiple_colors"
+      description="A circular progress indicator with incoming grow and multiple colors [CHAR LIMIT=NONE]">
+    Multiple color circular with incoming grow
   </string>
-  <string name="cat_progress_indicator_clockwise_circular_multiple_colors_anchored_inner"
-    description="A clockwise circular progress indicator with multiple colors anchoring at the inner edge. [CHAR LIMIT=NONE]">
-    Multiple color clockwise circular, anchoring at the inner edge
+  <string name="cat_progress_indicator_circular_outgoing_grow_multiple_colors"
+      description="A circular progress indicator with outgoing grow and multiple colors [CHAR LIMIT=NONE]">
+    Multiple color circular with outgoing
   </string>
 
   <string name="cat_progress_indicator_standalone_indeterminate_chip"

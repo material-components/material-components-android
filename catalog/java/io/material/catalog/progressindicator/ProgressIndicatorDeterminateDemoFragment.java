@@ -24,7 +24,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.progressindicator.ProgressIndicator;
 import com.google.android.material.slider.Slider;
 import io.material.catalog.feature.DemoFragment;
@@ -54,8 +53,6 @@ public class ProgressIndicatorDeterminateDemoFragment extends DemoFragment {
   public void initialize(@NonNull View view) {
     List<ProgressIndicator> indicatorList =
         DemoUtils.findViewsWithType(view, ProgressIndicator.class);
-    List<CircularProgressIndicator> circularProgressIndicatorList =
-        DemoUtils.findViewsWithType(view, CircularProgressIndicator.class);
 
     Slider slider = view.findViewById(R.id.slider);
     Button showButton = view.findViewById(R.id.show_button);
@@ -66,26 +63,17 @@ public class ProgressIndicatorDeterminateDemoFragment extends DemoFragment {
           for (ProgressIndicator progressIndicator : indicatorList) {
             progressIndicator.setProgressCompat((int) value, true);
           }
-          for (CircularProgressIndicator indicator : circularProgressIndicatorList) {
-            indicator.setProgressCompat((int) value, true);
-          }
         });
     showButton.setOnClickListener(
         v -> {
           for (ProgressIndicator progressIndicator : indicatorList) {
             progressIndicator.show();
           }
-          for (CircularProgressIndicator indicator : circularProgressIndicatorList) {
-            indicator.show();
-          }
         });
     hideButton.setOnClickListener(
         v -> {
           for (ProgressIndicator progressIndicator : indicatorList) {
             progressIndicator.hide();
-          }
-          for (CircularProgressIndicator indicator : circularProgressIndicatorList) {
-            indicator.hide();
           }
         });
   }

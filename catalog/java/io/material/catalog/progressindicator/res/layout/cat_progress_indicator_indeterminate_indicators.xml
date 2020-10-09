@@ -83,11 +83,12 @@
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_weight="1"
-          android:text="@string/cat_progress_indicator_clockwise_circular_single_color"/>
-      <com.google.android.material.progressindicator.CircularProgressIndicator
+          android:text="@string/cat_progress_indicator_circular_no_grow_single_color"/>
+      <com.google.android.material.progressindicator.ProgressIndicator
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:indeterminate="true"/>
+          style="@style/Widget.MaterialComponents.ProgressIndicator.Circular.Indeterminate"
+          app:indicatorColor="?attr/colorPrimary"/>
     </LinearLayout>
 
     <LinearLayout
@@ -98,12 +99,14 @@
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_weight="1"
-          android:text="@string/cat_progress_indicator_rounded_counterclockwise_circular_single_color"/>
-      <com.google.android.material.progressindicator.CircularProgressIndicator
+          android:text="@string/cat_progress_indicator_rounded_inverse_circular_bidirectional_grow_single_color"/>
+      <com.google.android.material.progressindicator.ProgressIndicator
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:indeterminate="true"
-          app:indicatorDirectionCircular="counterclockwise"
+          style="@style/Widget.MaterialComponents.ProgressIndicator.Circular.Indeterminate"
+          app:indicatorColor="?attr/colorPrimary"
+          app:inverse="true"
+          app:growMode="bidirectional"
           app:indicatorCornerRadius="@dimen/mtrl_progress_indicator_full_rounded_corner_radius"/>
     </LinearLayout>
 
@@ -115,14 +118,13 @@
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_weight="1"
-          android:text="@string/cat_progress_indicator_clockwise_circular_multiple_colors_anchored_outer"/>
-      <com.google.android.material.progressindicator.CircularProgressIndicator
+          android:text="@string/cat_progress_indicator_circular_incoming_grow_multiple_colors"/>
+      <com.google.android.material.progressindicator.ProgressIndicator
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:indeterminate="true"
-          app:indicatorColor="@array/cat_custom_progress_colors"
-          app:showBehaviorCircular="inward"
-          app:hideBehaviorCircular="outward"/>
+          style="@style/Widget.MaterialComponents.ProgressIndicator.Circular.Indeterminate"
+          app:indicatorColors="@array/cat_custom_progress_colors"
+          app:growMode="incoming"/>
     </LinearLayout>
 
     <LinearLayout
@@ -133,14 +135,13 @@
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_weight="1"
-          android:text="@string/cat_progress_indicator_clockwise_circular_multiple_colors_anchored_inner"/>
-      <com.google.android.material.progressindicator.CircularProgressIndicator
+          android:text="@string/cat_progress_indicator_circular_outgoing_grow_multiple_colors"/>
+      <com.google.android.material.progressindicator.ProgressIndicator
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:indeterminate="true"
-          app:indicatorColor="@array/cat_custom_progress_colors"
-          app:showBehaviorCircular="outward"
-          app:hideBehaviorCircular="inward"/>
+          style="@style/Widget.MaterialComponents.ProgressIndicator.Circular.Indeterminate"
+          app:indicatorColors="@array/cat_custom_progress_colors"
+          app:growMode="outgoing"/>
     </LinearLayout>
   </LinearLayout>
 </LinearLayout>
