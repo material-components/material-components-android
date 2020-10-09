@@ -1036,6 +1036,47 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     return materialButtonHelper.getInsetTop();
   }
 
+  /**
+   * Sets the button left inset
+   *
+   * @attr ref com.google.android.material.R.styleable#MaterialButton_android_insetLeft
+   * @see #getInsetLeft()
+   */
+  public void setInsetLeft(@Dimension int insetLeft) {
+    materialButtonHelper.setInsetLeft(insetLeft);
+  }
+
+  /**
+   * Gets the left inset for this button
+   *
+   * @attr ref com.google.android.material.R.styleable#MaterialButton_android_insetLeft
+   * @see #setInsetLeft(int)
+   */
+  @Dimension
+  public int getInsetLeft() {
+    return materialButtonHelper.getInsetLeft();
+  }
+  /**
+   * Sets the button right inset
+   *
+   * @attr ref com.google.android.material.R.styleable#MaterialButton_android_insetRight
+   * @see #getInsetRight()
+   */
+  public void setInsetRight(@Dimension int insetRight) {
+    materialButtonHelper.setInsetRight(insetRight);
+  }
+
+  /**
+   * Gets the right inset for this button
+   *
+   * @attr ref com.google.android.material.R.styleable#MaterialButton_android_insetRight
+   * @see #setInsetRight(int)
+   */
+  @Dimension
+  public int getInsetRight() {
+    return materialButtonHelper.getInsetRight();
+  }
+
   @Override
   protected int[] onCreateDrawableState(int extraSpace) {
     final int[] drawableState = super.onCreateDrawableState(extraSpace + 2);
