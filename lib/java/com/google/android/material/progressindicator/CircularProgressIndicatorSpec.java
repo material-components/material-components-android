@@ -30,6 +30,7 @@ import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.progressindicator.CircularProgressIndicator.HideBehavior;
 import com.google.android.material.progressindicator.CircularProgressIndicator.IndicatorDirection;
 import com.google.android.material.progressindicator.CircularProgressIndicator.ShowBehavior;
+import com.google.android.material.progressindicator.ProgressIndicator.GrowMode;
 
 /**
  * This class contains the parameters for drawing a circular type progress indicator. The parameters
@@ -72,6 +73,21 @@ public class CircularProgressIndicatorSpec implements AnimatedVisibilityChangeBe
       @NonNull BaseProgressIndicatorSpec baseSpec) {
     this.baseSpec = baseSpec;
     loadSpecFromAttributes(context, attrs);
+  }
+
+  // TODO(b/169262029) Remove once ProgressIndicator is removed.
+  public CircularProgressIndicatorSpec(@NonNull ProgressIndicatorSpec progressIndicatorSpec) {
+    if (progressIndicatorSpec.indicatorType != ProgressIndicator.CIRCULAR) {
+      throw new IllegalArgumentException(
+          "Only CIRCULAR type ProgressIndicatorSpec can be converted into"
+              + " CircularProgressIndicatorSpec.");
+    }
+    baseSpec = progressIndicatorSpec.getBaseSpec();
+    indicatorRadius = progressIndicatorSpec.circularRadius;
+    indicatorInset = progressIndicatorSpec.circularInset;
+    indicatorDirection = getIndicatorDirectionFromInverse(progressIndicatorSpec.inverse);
+    showBehavior = getShowBehaviorFromGrowMode(progressIndicatorSpec.growMode);
+    hideBehavior = getHideBehaviorFromGrowMode(progressIndicatorSpec.growMode);
   }
 
   /**
@@ -159,5 +175,41 @@ public class CircularProgressIndicatorSpec implements AnimatedVisibilityChangeBe
   @NonNull
   public BaseProgressIndicatorSpec getBaseSpec() {
     return baseSpec;
+  }
+
+  // **************** Temporary methods ****************
+
+  // TODO(b/169262029) Remove once ProgressIndicator is removed.
+  @IndicatorDirection
+  protected static int getIndicatorDirectionFromInverse(boolean inverse) {
+    return inverse
+        ? CircularProgressIndicator.INDICATOR_DIRECTION_COUNTERCLOCKWISE
+        : CircularProgressIndicator.INDICATOR_DIRECTION_CLOCKWISE;
+  }
+
+  // TODO(b/169262029) Remove once ProgressIndicator is removed.
+  @ShowBehavior
+  protected static int getShowBehaviorFromGrowMode(@GrowMode int growMode) {
+    switch (growMode) {
+      case ProgressIndicator.GROW_MODE_INCOMING:
+        return CircularProgressIndicator.SHOW_INWARD;
+      case ProgressIndicator.GROW_MODE_OUTGOING:
+        return CircularProgressIndicator.SHOW_OUTWARD;
+      default:
+        return CircularProgressIndicator.SHOW_NONE;
+    }
+  }
+
+  // TODO(b/169262029) Remove once ProgressIndicator is removed.
+  @HideBehavior
+  protected static int getHideBehaviorFromGrowMode(@GrowMode int growMode) {
+    switch (growMode) {
+      case ProgressIndicator.GROW_MODE_INCOMING:
+        return CircularProgressIndicator.HIDE_OUTWARD;
+      case ProgressIndicator.GROW_MODE_OUTGOING:
+        return CircularProgressIndicator.HIDE_INWARD;
+      default:
+        return CircularProgressIndicator.HIDE_NONE;
+    }
   }
 }
