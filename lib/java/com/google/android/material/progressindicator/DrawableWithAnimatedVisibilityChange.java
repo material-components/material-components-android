@@ -29,7 +29,6 @@ import android.util.Property;
 import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.VisibleForTesting;
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat;
 import com.google.android.material.animation.AnimationUtils;
 import java.util.ArrayList;
@@ -58,11 +57,6 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
   private ValueAnimator showAnimator;
   // ValueAnimator used for hide animation.
   private ValueAnimator hideAnimator;
-
-  // Fields for test use only.
-  private boolean mockShowAnimationRunning;
-  private boolean mockHideAnimationRunning;
-  private float mockGrowFraction;
 
   // List of AnimationCallback to be called at the end of show/hide animation.
   private List<AnimationCallback> animationCallbacks;
@@ -200,15 +194,8 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
 
   @Override
   public boolean isRunning() {
-    return isShowing() || isHiding();
-  }
-
-  public boolean isShowing() {
-    return (showAnimator != null && showAnimator.isRunning()) || mockShowAnimationRunning;
-  }
-
-  public boolean isHiding() {
-    return (hideAnimator != null && hideAnimator.isRunning()) || mockHideAnimationRunning;
+    return (showAnimator != null && showAnimator.isRunning())
+        || (hideAnimator != null && hideAnimator.isRunning());
   }
 
   /** Hides the drawable immediately */
@@ -363,10 +350,6 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
     if (!animationBehavior.shouldAnimateToShow() && !animationBehavior.shouldAnimateToHide()) {
       return 1f;
     }
-    // If show/hide animation is mocked, return mocked value.
-    if (mockHideAnimationRunning || mockShowAnimationRunning) {
-      return mockGrowFraction;
-    }
     return growFraction;
   }
 
@@ -375,20 +358,6 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
       this.growFraction = growFraction;
       invalidateSelf();
     }
-  }
-
-  @VisibleForTesting
-  public void setMockShowAnimationRunning(
-      boolean running, @FloatRange(from = 0.0, to = 1.0) float fraction) {
-    mockShowAnimationRunning = running;
-    mockGrowFraction = fraction;
-  }
-
-  @VisibleForTesting
-  public void setMockHideAnimationRunning(
-      boolean running, @FloatRange(from = 0.0, to = 1.0) float fraction) {
-    mockHideAnimationRunning = running;
-    mockGrowFraction = fraction;
   }
 
   // ******************* Properties *******************

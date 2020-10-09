@@ -97,10 +97,6 @@ public final class ProgressIndicator extends ProgressBar {
 
   private final BaseProgressIndicatorSpec baseSpec;
 
-  private CircularProgressIndicatorSpec circularSpec;
-  private BaseProgressIndicatorSpec circularBaseSpec;
-  private boolean useCircularSpec;
-
   /** A temp place to hold new progress while switching from indeterminate to determinate mode. */
   private int storedProgress;
 
@@ -178,14 +174,6 @@ public final class ProgressIndicator extends ProgressBar {
 
     spec = new ProgressIndicatorSpec(context, attrs, defStyleAttr, defStyleRes);
     baseSpec = spec.getBaseSpec();
-    useCircularSpec = spec.indicatorType == CIRCULAR;
-    if (useCircularSpec) {
-      circularSpec = new CircularProgressIndicatorSpec(spec);
-      circularBaseSpec = circularSpec.getBaseSpec();
-    } else {
-      circularSpec = null;
-      circularBaseSpec = null;
-    }
     loadExtraAttributes(context, attrs, defStyleAttr, defStyleRes);
 
     initializeDrawables();
@@ -213,16 +201,16 @@ public final class ProgressIndicator extends ProgressBar {
    */
   private void initializeDrawables() {
     AnimatedVisibilityChangeBehavior behavior = spec;
-    if (useCircularSpec) {
+    if (getIndicatorType() == CIRCULAR) {
       setIndeterminateDrawable(
           new IndeterminateDrawable(
               getContext(),
               behavior,
-              new CircularDrawingDelegate(circularSpec),
-              new CircularIndeterminateAnimatorDelegate(circularSpec)));
+              new CircularDrawingDelegate(spec),
+              new CircularIndeterminateAnimatorDelegate(spec)));
       setProgressDrawable(
           new DeterminateDrawable(
-              getContext(), baseSpec, behavior, new CircularDrawingDelegate(circularSpec)));
+              getContext(), baseSpec, behavior, new CircularDrawingDelegate(spec)));
     } else {
       setIndeterminateDrawable(
           new IndeterminateDrawable(
@@ -609,23 +597,13 @@ public final class ProgressIndicator extends ProgressBar {
    *     com.google.android.material.progressindicator.R.stylable#ProgressIndicator_indicatorType
    */
   public void setIndicatorType(@IndicatorType int indicatorType) {
-    if (spec.indicatorType != indicatorType) {
-      if (visibleToUser()) {
-        throw new IllegalStateException(
-            "Cannot change indicatorType while the progress indicator is visible.");
-      }
-      spec.indicatorType = indicatorType;
-      useCircularSpec = indicatorType == CIRCULAR;
-      if (useCircularSpec) {
-        circularSpec = new CircularProgressIndicatorSpec(spec);
-        circularBaseSpec = circularSpec.getBaseSpec();
-      } else {
-        circularSpec = null;
-        circularBaseSpec = null;
-      }
-      initializeDrawables();
-      requestLayout();
+    if (visibleToUser() && spec.indicatorType != indicatorType) {
+      throw new IllegalStateException(
+          "Cannot change indicatorType while the progress indicator is visible.");
     }
+    spec.indicatorType = indicatorType;
+    initializeDrawables();
+    requestLayout();
   }
 
   /**
@@ -674,7 +652,7 @@ public final class ProgressIndicator extends ProgressBar {
    *     com.google.android.material.progressindicator.R.stylable#ProgressIndicator_indicatorSize
    */
   public int getIndicatorSize() {
-    return useCircularSpec ? circularBaseSpec.indicatorSize : baseSpec.indicatorSize;
+    return baseSpec.indicatorSize;
   }
 
   /**
@@ -686,11 +664,8 @@ public final class ProgressIndicator extends ProgressBar {
    *     com.google.android.material.progressindicator.R.stylable#ProgressIndicator_indicatorSize
    */
   public void setIndicatorSize(@Px int indicatorSize) {
-    if (getIndicatorSize() != indicatorSize) {
+    if (baseSpec.indicatorSize != indicatorSize) {
       baseSpec.indicatorSize = indicatorSize;
-      if (useCircularSpec) {
-        circularBaseSpec.indicatorSize = indicatorSize;
-      }
       requestLayout();
     }
   }
@@ -725,9 +700,6 @@ public final class ProgressIndicator extends ProgressBar {
     }
     if (!Arrays.equals(getIndicatorColors(), indicatorColors)) {
       baseSpec.indicatorColors = indicatorColors;
-      if (useCircularSpec) {
-        circularBaseSpec.indicatorColors = indicatorColors;
-      }
       getIndeterminateDrawable().getAnimatorDelegate().invalidateSpecValues();
       if (!isEligibleToSeamless()) {
         spec.linearSeamless = false;
@@ -743,7 +715,7 @@ public final class ProgressIndicator extends ProgressBar {
    * @attr ref com.google.android.material.progressindicator.R.stylable#ProgressIndicator_trackColor
    */
   public int getTrackColor() {
-    return useCircularSpec ? circularBaseSpec.trackColor : baseSpec.trackColor;
+    return baseSpec.trackColor;
   }
 
   /**
@@ -754,11 +726,8 @@ public final class ProgressIndicator extends ProgressBar {
    * @attr ref com.google.android.material.progressindicator.R.stylable#ProgressIndicator_trackColor
    */
   public void setTrackColor(@ColorInt int trackColor) {
-    if (getTrackColor() != trackColor) {
+    if (baseSpec.trackColor != trackColor) {
       baseSpec.trackColor = trackColor;
-      if (useCircularSpec) {
-        circularBaseSpec.trackColor = trackColor;
-      }
       getIndeterminateDrawable().getAnimatorDelegate().invalidateSpecValues();
       invalidate();
     }
@@ -771,10 +740,7 @@ public final class ProgressIndicator extends ProgressBar {
    * @attr ref com.google.android.material.progressindicator.R.stylable#ProgressIndicator_inverse
    */
   public boolean isInverse() {
-    return useCircularSpec
-        ? circularSpec.indicatorDirection
-            == CircularProgressIndicator.INDICATOR_DIRECTION_COUNTERCLOCKWISE
-        : spec.inverse;
+    return spec.inverse;
   }
 
   /**
@@ -786,12 +752,8 @@ public final class ProgressIndicator extends ProgressBar {
    * @attr ref com.google.android.material.progressindicator.R.stylable#ProgressIndicator_inverse
    */
   public void setInverse(boolean inverse) {
-    if (isInverse() != inverse) {
+    if (spec.inverse != inverse) {
       spec.inverse = inverse;
-      if (useCircularSpec) {
-        circularSpec.indicatorDirection =
-            CircularProgressIndicatorSpec.getIndicatorDirectionFromInverse(inverse);
-      }
       invalidate();
     }
   }
@@ -816,12 +778,6 @@ public final class ProgressIndicator extends ProgressBar {
   public void setGrowMode(@GrowMode int growMode) {
     if (spec.growMode != growMode) {
       spec.growMode = growMode;
-      if (useCircularSpec) {
-        circularSpec.showBehavior =
-            CircularProgressIndicatorSpec.getShowBehaviorFromGrowMode(growMode);
-        circularSpec.hideBehavior =
-            CircularProgressIndicatorSpec.getHideBehaviorFromGrowMode(growMode);
-      }
       invalidate();
     }
   }
@@ -884,9 +840,7 @@ public final class ProgressIndicator extends ProgressBar {
    *     com.google.android.material.progressindicator.R.stylable#ProgressIndicator_indicatorCornerRadius
    */
   public int getIndicatorCornerRadius() {
-    return useCircularSpec
-        ? circularBaseSpec.indicatorCornerRadius
-        : baseSpec.indicatorCornerRadius;
+    return baseSpec.indicatorCornerRadius;
   }
 
   /**
@@ -898,12 +852,9 @@ public final class ProgressIndicator extends ProgressBar {
    *     com.google.android.material.progressindicator.R.stylable#ProgressIndicator_indicatorCornerRadius
    */
   public void setIndicatorCornerRadius(@Px int indicatorCornerRadius) {
-    if (getIndicatorCornerRadius() != indicatorCornerRadius) {
-      baseSpec.indicatorCornerRadius = min(indicatorCornerRadius, getIndicatorSize() / 2);
-      if (useCircularSpec) {
-        circularBaseSpec.indicatorCornerRadius = baseSpec.indicatorCornerRadius;
-      }
-      if (spec.indicatorType == LINEAR && spec.linearSeamless && indicatorCornerRadius > 0) {
+    if (baseSpec.indicatorCornerRadius != indicatorCornerRadius) {
+      baseSpec.indicatorCornerRadius = min(indicatorCornerRadius, baseSpec.indicatorSize / 2);
+      if (spec.linearSeamless && indicatorCornerRadius > 0) {
         throw new IllegalArgumentException(
             "Rounded corners are not supported in linear seamless mode.");
       }
@@ -918,7 +869,7 @@ public final class ProgressIndicator extends ProgressBar {
    *     com.google.android.material.progressindicator.R.stylable#ProgressIndicator_circularInset
    */
   public int getCircularInset() {
-    return useCircularSpec ? circularSpec.indicatorInset : spec.circularInset;
+    return spec.circularInset;
   }
 
   /**
@@ -930,9 +881,8 @@ public final class ProgressIndicator extends ProgressBar {
    *     com.google.android.material.progressindicator.R.stylable#ProgressIndicator_circularInset
    */
   public void setCircularInset(@Px int circularInset) {
-    if (useCircularSpec && circularSpec.indicatorInset != circularInset) {
+    if (spec.indicatorType == CIRCULAR && spec.circularInset != circularInset) {
       spec.circularInset = circularInset;
-      circularSpec.indicatorInset = circularInset;
       invalidate();
     }
   }
@@ -945,7 +895,7 @@ public final class ProgressIndicator extends ProgressBar {
    *     com.google.android.material.progressindicator.R.stylable#ProgressIndicator_circularRadius
    */
   public int getCircularRadius() {
-    return useCircularSpec ? circularSpec.indicatorRadius : spec.circularRadius;
+    return spec.circularRadius;
   }
 
   /**
@@ -957,9 +907,8 @@ public final class ProgressIndicator extends ProgressBar {
    *     com.google.android.material.progressindicator.R.stylable#ProgressIndicator_circularRadius
    */
   public void setCircularRadius(@Px int circularRadius) {
-    if (useCircularSpec && circularSpec.indicatorRadius != circularRadius) {
+    if (spec.indicatorType == CIRCULAR && spec.circularRadius != circularRadius) {
       spec.circularRadius = circularRadius;
-      circularSpec.indicatorRadius = circularRadius;
       invalidate();
     }
   }

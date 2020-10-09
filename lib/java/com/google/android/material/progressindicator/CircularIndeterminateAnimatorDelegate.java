@@ -67,7 +67,7 @@ public final class CircularIndeterminateAnimatorDelegate
   boolean animatorCompleteEndRequested = false;
   AnimationCallback animatorCompleteCallback = null;
 
-  public CircularIndeterminateAnimatorDelegate(@NonNull CircularProgressIndicatorSpec spec) {
+  public CircularIndeterminateAnimatorDelegate(@NonNull ProgressIndicatorSpec spec) {
     super(/*segmentCount=*/ 1);
 
     baseSpec = spec.getBaseSpec();

@@ -27,8 +27,8 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.progressindicator.CircularDrawingDelegate;
 import com.google.android.material.progressindicator.CircularIndeterminateAnimatorDelegate;
-import com.google.android.material.progressindicator.CircularProgressIndicatorSpec;
 import com.google.android.material.progressindicator.IndeterminateDrawable;
+import com.google.android.material.progressindicator.ProgressIndicatorSpec;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import io.material.catalog.feature.DemoFragment;
 
@@ -49,16 +49,22 @@ public class ProgressIndicatorStandaloneDemoFragment extends DemoFragment {
             viewGroup,
             /*attachToRoot=*/ false);
 
-    CircularProgressIndicatorSpec spec =
-        new CircularProgressIndicatorSpec(getContext(), /*attrs=*/ null);
-    spec.indicatorInset = 0; // No inset.
-    spec.indicatorRadius = (int) ViewUtils.dpToPx(getContext(), 10); // Circular radius is 10 dp.
+    ProgressIndicatorSpec progressIndicatorSpec =
+        new ProgressIndicatorSpec(
+            getContext(),
+            /*attrs=*/ null,
+            /*defStyleAttr=*/ 0,
+            /*defStyleRes=*/ R.style
+                .Widget_MaterialComponents_ProgressIndicator_Circular_Indeterminate);
+    progressIndicatorSpec.circularInset = 0; // No inset.
+    progressIndicatorSpec.circularRadius =
+        (int) ViewUtils.dpToPx(getContext(), 10); // Circular radius is 10 dp.
     IndeterminateDrawable progressIndicatorDrawable =
         new IndeterminateDrawable(
             getContext(),
-            /*animatedVisibilityChangeBehavior=*/ spec,
-            new CircularDrawingDelegate(spec),
-            new CircularIndeterminateAnimatorDelegate(spec));
+            /*animatedVisibilityChangeBehavior=*/ progressIndicatorSpec,
+            new CircularDrawingDelegate(progressIndicatorSpec),
+            new CircularIndeterminateAnimatorDelegate(progressIndicatorSpec));
 
     Chip chip = view.findViewById(R.id.cat_progress_indicator_chip);
     chip.setChipIcon(progressIndicatorDrawable);
