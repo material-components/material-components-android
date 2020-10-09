@@ -20,7 +20,6 @@ import com.google.android.material.R;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import androidx.annotation.AttrRes;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -77,7 +76,7 @@ public class CircularProgressIndicator extends BaseProgressIndicator {
   }
 
   public CircularProgressIndicator(
-      @NonNull Context context, @Nullable AttributeSet attrs, @AttrRes final int defStyleAttr) {
+      @NonNull Context context, @Nullable AttributeSet attrs, final int defStyleAttr) {
     super(context, attrs, defStyleAttr);
 
     // Ensures that we are using the correctly themed context rather than the context that was
