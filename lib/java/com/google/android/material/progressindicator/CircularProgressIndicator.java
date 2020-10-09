@@ -84,22 +84,6 @@ public class CircularProgressIndicator extends BaseProgressIndicator {
     context = getContext();
 
     spec = new CircularProgressIndicatorSpec(context, attrs, baseSpec);
-
-    initializeDrawables();
-  }
-
-  // ******************** Initialization **********************
-
-  private void initializeDrawables() {
-    setIndeterminateDrawable(
-        new IndeterminateDrawable(
-            getContext(),
-            spec,
-            new CircularDrawingDelegate(spec),
-            new CircularIndeterminateAnimatorDelegate(spec)));
-    setProgressDrawable(
-        new DeterminateDrawable(getContext(), baseSpec, spec, new CircularDrawingDelegate(spec)));
-    applyNewVisibility();
   }
 
   // **************** Getters and setters ****************
