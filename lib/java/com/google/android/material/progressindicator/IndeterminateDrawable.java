@@ -31,7 +31,7 @@ import com.google.android.material.progressindicator.ProgressIndicator.Indicator
 public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityChange {
 
   // Drawing delegate object.
-  private final DrawingDelegate drawingDelegate;
+  private DrawingDelegate drawingDelegate;
   // Animator delegate object.
   private IndeterminateAnimatorDelegate<AnimatorSet> animatorDelegate;
 
@@ -41,7 +41,7 @@ public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityC
     Pair<DrawingDelegate, IndeterminateAnimatorDelegate<AnimatorSet>> delegatePair =
         initializeDelegates(spec.indicatorType, spec.linearSeamless);
 
-    this.drawingDelegate = delegatePair.first;
+    setDrawingDelegate(delegatePair.first);
     setAnimatorDelegate(delegatePair.second);
   }
 
@@ -78,12 +78,12 @@ public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityC
 
   @Override
   public int getIntrinsicWidth() {
-    return drawingDelegate.getPreferredWidth(spec);
+    return drawingDelegate.getPreferredWidth();
   }
 
   @Override
   public int getIntrinsicHeight() {
-    return drawingDelegate.getPreferredHeight(spec);
+    return drawingDelegate.getPreferredHeight();
   }
 
   // ******************* Drawing methods *******************
@@ -99,32 +99,20 @@ public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityC
     }
 
     canvas.save();
-    drawingDelegate.adjustCanvas(canvas, spec, getGrowFraction());
+    drawingDelegate.adjustCanvas(canvas, getGrowFraction());
 
-    float displayedIndicatorSize = spec.indicatorSize * getGrowFraction();
-    float displayedRoundedCornerRadius = spec.indicatorCornerRadius * getGrowFraction();
-
-    // Draws the track first as the bottom layer.
-    drawingDelegate.fillTrackWithColor(
-        canvas,
-        paint,
-        combinedTrackColor,
-        0f,
-        1f,
-        displayedIndicatorSize,
-        displayedRoundedCornerRadius);
+    // Draws the track.
+    drawingDelegate.fillTrack(canvas, paint);
     // Draws the indicators.
     for (int segmentIndex = 0;
         segmentIndex < animatorDelegate.segmentColors.length;
         segmentIndex++) {
-      drawingDelegate.fillTrackWithColor(
+      drawingDelegate.fillIndicator(
           canvas,
           paint,
-          animatorDelegate.segmentColors[segmentIndex],
           animatorDelegate.segmentPositions[2 * segmentIndex],
           animatorDelegate.segmentPositions[2 * segmentIndex + 1],
-          displayedIndicatorSize,
-          displayedRoundedCornerRadius);
+          animatorDelegate.segmentColors[segmentIndex]);
     }
     canvas.restore();
   }
@@ -135,11 +123,11 @@ public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityC
       @IndicatorType int type, boolean linearSeamless) {
     if (type == ProgressIndicator.CIRCULAR) {
       return new Pair<DrawingDelegate, IndeterminateAnimatorDelegate<AnimatorSet>>(
-          new CircularDrawingDelegate(), new CircularIndeterminateAnimatorDelegate());
+          new CircularDrawingDelegate(spec), new CircularIndeterminateAnimatorDelegate());
     }
 
     return new Pair<DrawingDelegate, IndeterminateAnimatorDelegate<AnimatorSet>>(
-        new LinearDrawingDelegate(),
+        new LinearDrawingDelegate(spec),
         linearSeamless
             ? new LinearIndeterminateSeamlessAnimatorDelegate()
             : new LinearIndeterminateNonSeamlessAnimatorDelegate(context));
@@ -155,6 +143,7 @@ public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityC
 
   // ******************* Setter and getter *******************
 
+  @NonNull
   public IndeterminateAnimatorDelegate<AnimatorSet> getAnimatorDelegate() {
     return animatorDelegate;
   }
@@ -181,6 +170,11 @@ public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityC
   @NonNull
   public DrawingDelegate getDrawingDelegate() {
     return drawingDelegate;
+  }
+
+  public void setDrawingDelegate(@NonNull DrawingDelegate drawingDelegate) {
+    this.drawingDelegate = drawingDelegate;
+    drawingDelegate.registerDrawable(this);
   }
 }
 

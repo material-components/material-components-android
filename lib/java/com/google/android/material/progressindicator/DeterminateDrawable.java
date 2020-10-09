@@ -23,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.dynamicanimation.animation.FloatPropertyCompat;
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
+import com.google.android.material.color.MaterialColors;
 
 /**
  * This class draws the graphics for determinate modes by applying different {@link DrawingDelegate}
@@ -48,10 +49,11 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
     super(context, spec);
 
     if (spec.indicatorType == ProgressIndicator.LINEAR) {
-      this.drawingDelegate = new LinearDrawingDelegate();
+      this.drawingDelegate = new LinearDrawingDelegate(spec);
     } else {
-      this.drawingDelegate = new CircularDrawingDelegate();
+      this.drawingDelegate = new CircularDrawingDelegate(spec);
     }
+    this.drawingDelegate.registerDrawable(this);
 
     springForce = new SpringForce();
 
@@ -137,12 +139,12 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
 
   @Override
   public int getIntrinsicWidth() {
-    return drawingDelegate.getPreferredWidth(spec);
+    return drawingDelegate.getPreferredWidth();
   }
 
   @Override
   public int getIntrinsicHeight() {
-    return drawingDelegate.getPreferredHeight(spec);
+    return drawingDelegate.getPreferredHeight();
   }
 
   // ******************* Drawing methods *******************
@@ -157,29 +159,13 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
     }
 
     canvas.save();
-    drawingDelegate.adjustCanvas(canvas, spec, getGrowFraction());
-
-    float displayedIndicatorSize = spec.indicatorSize * getGrowFraction();
-    float displayedRoundedCornerRadius = spec.indicatorCornerRadius * getGrowFraction();
+    drawingDelegate.adjustCanvas(canvas, getGrowFraction());
 
     // Draws the track.
-    drawingDelegate.fillTrackWithColor(
-        canvas,
-        paint,
-        spec.trackColor,
-        0f,
-        1f,
-        displayedIndicatorSize,
-        displayedRoundedCornerRadius);
+    drawingDelegate.fillTrack(canvas, paint);
     // Draws the indicator.
-    drawingDelegate.fillTrackWithColor(
-        canvas,
-        paint,
-        combinedIndicatorColorArray[0],
-        0f,
-        getIndicatorFraction(),
-        displayedIndicatorSize,
-        displayedRoundedCornerRadius);
+    int indicatorColor = MaterialColors.compositeARGBWithAlpha(spec.indicatorColors[0], getAlpha());
+    drawingDelegate.fillIndicator(canvas, paint, 0f, getIndicatorFraction(), indicatorColor);
     canvas.restore();
   }
 
