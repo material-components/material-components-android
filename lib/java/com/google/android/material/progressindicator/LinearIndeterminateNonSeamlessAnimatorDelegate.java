@@ -28,6 +28,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat.AnimationCallback;
 import androidx.vectordrawable.graphics.drawable.AnimationUtilsCompat;
+import com.google.android.material.color.MaterialColors;
 import java.util.Arrays;
 
 /**
@@ -48,6 +49,8 @@ final class LinearIndeterminateNonSeamlessAnimatorDelegate
 
   // The current context which the animation is running on.
   private final Context context;
+  // The general spec.
+  private final ProgressIndicatorSpec spec;
   // The animator controls non-seamless linear indeterminate animation.
   private AnimatorSet animatorSet;
 
@@ -62,10 +65,12 @@ final class LinearIndeterminateNonSeamlessAnimatorDelegate
   boolean animatorCompleteEndRequested = false;
   AnimationCallback animatorCompleteCallback = null;
 
-  public LinearIndeterminateNonSeamlessAnimatorDelegate(@NonNull Context context) {
+  public LinearIndeterminateNonSeamlessAnimatorDelegate(
+      @NonNull Context context, @NonNull ProgressIndicatorSpec spec) {
     super(/*segmentCount=*/ 2);
 
     this.context = context;
+    this.spec = spec;
   }
 
   // ******************* Animation control *******************
@@ -190,15 +195,20 @@ final class LinearIndeterminateNonSeamlessAnimatorDelegate
 
   /** Shifts the color used in the segment colors to the next available one. */
   private void rotateSegmentColors() {
-    displayedSegmentColorIndex =
-        (displayedSegmentColorIndex + 1) % drawable.combinedIndicatorColorArray.length;
-    Arrays.fill(segmentColors, drawable.combinedIndicatorColorArray[displayedSegmentColorIndex]);
+    displayedSegmentColorIndex = (displayedSegmentColorIndex + 1) % spec.indicatorColors.length;
+    Arrays.fill(
+        segmentColors,
+        MaterialColors.compositeARGBWithAlpha(
+            spec.indicatorColors[displayedSegmentColorIndex], drawable.getAlpha()));
   }
 
   /** Resets the segment colors to the first indicator color. */
   private void resetSegmentColors() {
     displayedSegmentColorIndex = 0;
-    Arrays.fill(segmentColors, drawable.combinedIndicatorColorArray[displayedSegmentColorIndex]);
+    Arrays.fill(
+        segmentColors,
+        MaterialColors.compositeARGBWithAlpha(
+            spec.indicatorColors[displayedSegmentColorIndex], drawable.getAlpha()));
   }
 
   // ******************* Getters and setters *******************

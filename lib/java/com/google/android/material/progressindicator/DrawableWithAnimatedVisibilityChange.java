@@ -30,7 +30,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat;
 import com.google.android.material.animation.AnimationUtils;
-import com.google.android.material.color.MaterialColors;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,10 +64,6 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
 
   // A fraction from 0 to 1 indicating the ratio used in drawing, controlled by show/hide animator.
   private float growFraction;
-
-  // Colors multiplied with the totalAlpha.
-  int combinedTrackColor;
-  int[] combinedIndicatorColorArray;
 
   final Paint paint = new Paint();
   private int totalAlpha;
@@ -264,23 +259,11 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
     return changed;
   }
 
-  // ******************* Helper methods *******************
-
-  void recalculateColors() {
-    combinedTrackColor = MaterialColors.compositeARGBWithAlpha(spec.trackColor, getAlpha());
-    combinedIndicatorColorArray = spec.indicatorColors.clone();
-    for (int i = 0; i < combinedIndicatorColorArray.length; i++) {
-      combinedIndicatorColorArray[i] =
-          MaterialColors.compositeARGBWithAlpha(combinedIndicatorColorArray[i], getAlpha());
-    }
-  }
-
   // ******************* Getters and setters *******************
 
   @Override
   public void setAlpha(int alpha) {
     totalAlpha = alpha;
-    recalculateColors();
     invalidateSelf();
   }
 

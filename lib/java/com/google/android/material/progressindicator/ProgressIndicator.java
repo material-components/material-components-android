@@ -531,11 +531,6 @@ public final class ProgressIndicator extends ProgressBar {
     } while (true);
   }
 
-  private void updateColorsInDrawables() {
-    getProgressDrawable().recalculateColors();
-    getIndeterminateDrawable().recalculateColors();
-  }
-
   /**
    * Returns {@code true} if both drawables are either null or not visible; {@code false},
    * otherwise.
@@ -670,7 +665,7 @@ public final class ProgressIndicator extends ProgressBar {
    */
   public void setIndicatorColors(int[] indicatorColors) {
     spec.indicatorColors = indicatorColors;
-    updateColorsInDrawables();
+    getIndeterminateDrawable().getAnimatorDelegate().invalidateSpecValues();
     if (!isEligibleToSeamless()) {
       spec.linearSeamless = false;
     }
@@ -697,7 +692,7 @@ public final class ProgressIndicator extends ProgressBar {
   public void setTrackColor(@ColorInt int trackColor) {
     if (spec.trackColor != trackColor) {
       spec.trackColor = trackColor;
-      updateColorsInDrawables();
+      getIndeterminateDrawable().getAnimatorDelegate().invalidateSpecValues();
       invalidate();
     }
   }
@@ -789,10 +784,11 @@ public final class ProgressIndicator extends ProgressBar {
       }
       if (linearSeamless) {
         getIndeterminateDrawable()
-            .setAnimatorDelegate(new LinearIndeterminateSeamlessAnimatorDelegate());
+            .setAnimatorDelegate(new LinearIndeterminateSeamlessAnimatorDelegate(spec));
       } else {
         getIndeterminateDrawable()
-            .setAnimatorDelegate(new LinearIndeterminateNonSeamlessAnimatorDelegate(getContext()));
+            .setAnimatorDelegate(
+                new LinearIndeterminateNonSeamlessAnimatorDelegate(getContext(), spec));
       }
     } else {
       spec.linearSeamless = false;

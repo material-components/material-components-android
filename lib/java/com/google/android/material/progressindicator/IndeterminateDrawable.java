@@ -123,22 +123,14 @@ public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityC
       @IndicatorType int type, boolean linearSeamless) {
     if (type == ProgressIndicator.CIRCULAR) {
       return new Pair<DrawingDelegate, IndeterminateAnimatorDelegate<AnimatorSet>>(
-          new CircularDrawingDelegate(spec), new CircularIndeterminateAnimatorDelegate());
+          new CircularDrawingDelegate(spec), new CircularIndeterminateAnimatorDelegate(spec));
     }
 
     return new Pair<DrawingDelegate, IndeterminateAnimatorDelegate<AnimatorSet>>(
         new LinearDrawingDelegate(spec),
         linearSeamless
-            ? new LinearIndeterminateSeamlessAnimatorDelegate()
-            : new LinearIndeterminateNonSeamlessAnimatorDelegate(context));
-  }
-
-  @Override
-  protected void recalculateColors() {
-    super.recalculateColors();
-    if (animatorDelegate != null) {
-      animatorDelegate.invalidateSpecValues();
-    }
+            ? new LinearIndeterminateSeamlessAnimatorDelegate(spec)
+            : new LinearIndeterminateNonSeamlessAnimatorDelegate(context, spec));
   }
 
   // ******************* Setter and getter *******************

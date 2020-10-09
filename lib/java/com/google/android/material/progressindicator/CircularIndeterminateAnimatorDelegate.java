@@ -25,6 +25,7 @@ import androidx.annotation.VisibleForTesting;
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat.AnimationCallback;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.animation.ArgbEvaluatorCompat;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.math.MathUtils;
 
 /**
@@ -46,6 +47,8 @@ final class CircularIndeterminateAnimatorDelegate
   private static final int COLOR_FADING_DURATION = 333;
   private static final int COLOR_FADING_DELAY = 1000;
 
+  // The general spec.
+  private final ProgressIndicatorSpec spec;
   // The animators control circular indeterminate animation.
   private AnimatorSet animatorSet;
   private ObjectAnimator indicatorCollapsingAnimator;
@@ -63,8 +66,10 @@ final class CircularIndeterminateAnimatorDelegate
   boolean animatorCompleteEndRequested = false;
   AnimationCallback animatorCompleteCallback = null;
 
-  public CircularIndeterminateAnimatorDelegate() {
+  public CircularIndeterminateAnimatorDelegate(@NonNull ProgressIndicatorSpec spec) {
     super(/*segmentCount=*/ 1);
+
+    this.spec = spec;
   }
 
   @Override
@@ -76,8 +81,10 @@ final class CircularIndeterminateAnimatorDelegate
             this,
             DISPLAYED_INDICATOR_COLOR,
             new ArgbEvaluatorCompat(),
-            drawable.combinedIndicatorColorArray[indicatorColorIndex],
-            drawable.combinedIndicatorColorArray[getNextIndicatorColorIndex()]);
+            MaterialColors.compositeARGBWithAlpha(
+                spec.indicatorColors[indicatorColorIndex], drawable.getAlpha()),
+            MaterialColors.compositeARGBWithAlpha(
+                spec.indicatorColors[getNextIndicatorColorIndex()], drawable.getAlpha()));
     colorFadingAnimator.setDuration(COLOR_FADING_DURATION);
     colorFadingAnimator.setStartDelay(COLOR_FADING_DELAY);
     colorFadingAnimator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
@@ -219,7 +226,7 @@ final class CircularIndeterminateAnimatorDelegate
 
   /** Returns the index of the next available color for indicator. */
   private int getNextIndicatorColorIndex() {
-    return (indicatorColorIndex + 1) % drawable.combinedIndicatorColorArray.length;
+    return (indicatorColorIndex + 1) % spec.indicatorColors.length;
   }
 
   /** Updates the segment position array based on current animator controlled parameters. */
@@ -240,19 +247,27 @@ final class CircularIndeterminateAnimatorDelegate
   /** Shifts the color used in the segment colors to the next available one. */
   private void shiftSegmentColors() {
     indicatorColorIndex = getNextIndicatorColorIndex();
-    colorFadingAnimator.setIntValues(
-        drawable.combinedIndicatorColorArray[indicatorColorIndex],
-        drawable.combinedIndicatorColorArray[getNextIndicatorColorIndex()]);
-    setDisplayedIndicatorColor(drawable.combinedIndicatorColorArray[indicatorColorIndex]);
+    int startColor =
+        MaterialColors.compositeARGBWithAlpha(
+            spec.indicatorColors[indicatorColorIndex], drawable.getAlpha());
+    int endColor =
+        MaterialColors.compositeARGBWithAlpha(
+            spec.indicatorColors[getNextIndicatorColorIndex()], drawable.getAlpha());
+    colorFadingAnimator.setIntValues(startColor, endColor);
+    setDisplayedIndicatorColor(startColor);
   }
 
   /** Resets the segment colors to the first indicator color. */
   private void resetSegmentColors() {
     indicatorColorIndex = 0;
-    colorFadingAnimator.setIntValues(
-        drawable.combinedIndicatorColorArray[indicatorColorIndex],
-        drawable.combinedIndicatorColorArray[getNextIndicatorColorIndex()]);
-    setDisplayedIndicatorColor(drawable.combinedIndicatorColorArray[indicatorColorIndex]);
+    int startColor =
+        MaterialColors.compositeARGBWithAlpha(
+            spec.indicatorColors[indicatorColorIndex], drawable.getAlpha());
+    int endColor =
+        MaterialColors.compositeARGBWithAlpha(
+            spec.indicatorColors[getNextIndicatorColorIndex()], drawable.getAlpha());
+    colorFadingAnimator.setIntValues(startColor, endColor);
+    setDisplayedIndicatorColor(startColor);
   }
 
   // ******************* Getters and setters *******************

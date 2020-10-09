@@ -22,9 +22,11 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.util.Property;
+import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat.AnimationCallback;
 import com.google.android.material.animation.AnimationUtils;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.math.MathUtils;
 
 /**
@@ -38,6 +40,8 @@ final class LinearIndeterminateSeamlessAnimatorDelegate
   private static final int NEXT_COLOR_DELAY = 333;
   private static final int DURATION_PER_COLOR = 667;
 
+  // The general spec.
+  private final ProgressIndicatorSpec spec;
   // The animator controls seamless linear indeterminate animation.
   private AnimatorSet animatorSet;
 
@@ -46,8 +50,10 @@ final class LinearIndeterminateSeamlessAnimatorDelegate
   private float lineConnectPoint1Fraction;
   private float lineConnectPoint2Fraction;
 
-  public LinearIndeterminateSeamlessAnimatorDelegate() {
+  public LinearIndeterminateSeamlessAnimatorDelegate(@NonNull ProgressIndicatorSpec spec) {
     super(/*segmentCount=*/ 3);
+
+    this.spec = spec;
   }
 
   // ******************* Animation control *******************
@@ -152,8 +158,7 @@ final class LinearIndeterminateSeamlessAnimatorDelegate
 
   /** Shifts the color used in the segment colors to the next available one. */
   private void shiftSegmentColors() {
-    referenceSegmentColorIndex =
-        (referenceSegmentColorIndex + 1) % drawable.combinedIndicatorColorArray.length;
+    referenceSegmentColorIndex = (referenceSegmentColorIndex + 1) % spec.indicatorColors.length;
     updateSegmentColors();
   }
 
@@ -166,14 +171,18 @@ final class LinearIndeterminateSeamlessAnimatorDelegate
   /** Updates the segment colors array based on current reference color index. */
   private void updateSegmentColors() {
     int leftSegmentColorIndex =
-        MathUtils.floorMod(
-            referenceSegmentColorIndex + 2, drawable.combinedIndicatorColorArray.length);
+        MathUtils.floorMod(referenceSegmentColorIndex + 2, spec.indicatorColors.length);
     int centralSegmentColorIndex =
-        MathUtils.floorMod(
-            referenceSegmentColorIndex + 1, drawable.combinedIndicatorColorArray.length);
-    segmentColors[0] = drawable.combinedIndicatorColorArray[leftSegmentColorIndex];
-    segmentColors[1] = drawable.combinedIndicatorColorArray[centralSegmentColorIndex];
-    segmentColors[2] = drawable.combinedIndicatorColorArray[referenceSegmentColorIndex];
+        MathUtils.floorMod(referenceSegmentColorIndex + 1, spec.indicatorColors.length);
+    segmentColors[0] =
+        MaterialColors.compositeARGBWithAlpha(
+            spec.indicatorColors[leftSegmentColorIndex], drawable.getAlpha());
+    segmentColors[1] =
+        MaterialColors.compositeARGBWithAlpha(
+            spec.indicatorColors[centralSegmentColorIndex], drawable.getAlpha());
+    segmentColors[2] =
+        MaterialColors.compositeARGBWithAlpha(
+            spec.indicatorColors[referenceSegmentColorIndex], drawable.getAlpha());
   }
 
   /**
