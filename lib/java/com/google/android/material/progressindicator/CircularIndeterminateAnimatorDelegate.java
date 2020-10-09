@@ -47,8 +47,9 @@ public final class CircularIndeterminateAnimatorDelegate
   private static final int COLOR_FADING_DURATION = 333;
   private static final int COLOR_FADING_DELAY = 1000;
 
-  // The general spec.
-  private final ProgressIndicatorSpec spec;
+  // The base spec.
+  private final BaseProgressIndicatorSpec baseSpec;
+
   // The animators control circular indeterminate animation.
   private AnimatorSet animatorSet;
   private ObjectAnimator indicatorCollapsingAnimator;
@@ -69,7 +70,7 @@ public final class CircularIndeterminateAnimatorDelegate
   public CircularIndeterminateAnimatorDelegate(@NonNull ProgressIndicatorSpec spec) {
     super(/*segmentCount=*/ 1);
 
-    this.spec = spec;
+    baseSpec = spec.getBaseSpec();
   }
 
   @Override
@@ -82,9 +83,9 @@ public final class CircularIndeterminateAnimatorDelegate
             DISPLAYED_INDICATOR_COLOR,
             new ArgbEvaluatorCompat(),
             MaterialColors.compositeARGBWithAlpha(
-                spec.indicatorColors[indicatorColorIndex], drawable.getAlpha()),
+                baseSpec.indicatorColors[indicatorColorIndex], drawable.getAlpha()),
             MaterialColors.compositeARGBWithAlpha(
-                spec.indicatorColors[getNextIndicatorColorIndex()], drawable.getAlpha()));
+                baseSpec.indicatorColors[getNextIndicatorColorIndex()], drawable.getAlpha()));
     colorFadingAnimator.setDuration(COLOR_FADING_DURATION);
     colorFadingAnimator.setStartDelay(COLOR_FADING_DELAY);
     colorFadingAnimator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
@@ -226,7 +227,7 @@ public final class CircularIndeterminateAnimatorDelegate
 
   /** Returns the index of the next available color for indicator. */
   private int getNextIndicatorColorIndex() {
-    return (indicatorColorIndex + 1) % spec.indicatorColors.length;
+    return (indicatorColorIndex + 1) % baseSpec.indicatorColors.length;
   }
 
   /** Updates the segment position array based on current animator controlled parameters. */
@@ -249,10 +250,10 @@ public final class CircularIndeterminateAnimatorDelegate
     indicatorColorIndex = getNextIndicatorColorIndex();
     int startColor =
         MaterialColors.compositeARGBWithAlpha(
-            spec.indicatorColors[indicatorColorIndex], drawable.getAlpha());
+            baseSpec.indicatorColors[indicatorColorIndex], drawable.getAlpha());
     int endColor =
         MaterialColors.compositeARGBWithAlpha(
-            spec.indicatorColors[getNextIndicatorColorIndex()], drawable.getAlpha());
+            baseSpec.indicatorColors[getNextIndicatorColorIndex()], drawable.getAlpha());
     colorFadingAnimator.setIntValues(startColor, endColor);
     setDisplayedIndicatorColor(startColor);
   }
@@ -262,10 +263,10 @@ public final class CircularIndeterminateAnimatorDelegate
     indicatorColorIndex = 0;
     int startColor =
         MaterialColors.compositeARGBWithAlpha(
-            spec.indicatorColors[indicatorColorIndex], drawable.getAlpha());
+            baseSpec.indicatorColors[indicatorColorIndex], drawable.getAlpha());
     int endColor =
         MaterialColors.compositeARGBWithAlpha(
-            spec.indicatorColors[getNextIndicatorColorIndex()], drawable.getAlpha());
+            baseSpec.indicatorColors[getNextIndicatorColorIndex()], drawable.getAlpha());
     colorFadingAnimator.setIntValues(startColor, endColor);
     setDisplayedIndicatorColor(startColor);
   }
