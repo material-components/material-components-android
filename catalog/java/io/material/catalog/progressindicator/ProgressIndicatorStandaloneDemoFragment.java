@@ -49,13 +49,12 @@ public class ProgressIndicatorStandaloneDemoFragment extends DemoFragment {
             viewGroup,
             /*attachToRoot=*/ false);
 
-    ProgressIndicatorSpec progressIndicatorSpec =
-        new ProgressIndicatorSpec(
-            getContext(),
-            /*attrs=*/ null,
-            /*defStyleAttr=*/ 0,
-            /*defStyleRes=*/ R.style
-                .Widget_MaterialComponents_ProgressIndicator_Circular_Indeterminate);
+    ProgressIndicatorSpec progressIndicatorSpec = new ProgressIndicatorSpec();
+    progressIndicatorSpec.loadFromAttributes(
+        getContext(),
+        /*attrs=*/null,
+        /*defStyleAttr=*/0,
+        /*defStyleRes=*/R.style.Widget_MaterialComponents_ProgressIndicator_Circular_Indeterminate);
     progressIndicatorSpec.circularInset = 0; // No inset.
     progressIndicatorSpec.circularRadius =
         (int) ViewUtils.dpToPx(getContext(), 10); // Circular radius is 10 dp.

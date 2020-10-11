@@ -41,7 +41,7 @@ final class LinearIndeterminateSeamlessAnimatorDelegate
   private static final int DURATION_PER_COLOR = 667;
 
   // The general spec.
-  private final BaseProgressIndicatorSpec baseSpec;
+  private final ProgressIndicatorSpec spec;
   // The animator controls seamless linear indeterminate animation.
   private AnimatorSet animatorSet;
 
@@ -53,7 +53,7 @@ final class LinearIndeterminateSeamlessAnimatorDelegate
   public LinearIndeterminateSeamlessAnimatorDelegate(@NonNull ProgressIndicatorSpec spec) {
     super(/*segmentCount=*/ 3);
 
-    baseSpec = spec.getBaseSpec();
+    this.spec = spec;
   }
 
   // ******************* Animation control *******************
@@ -158,7 +158,7 @@ final class LinearIndeterminateSeamlessAnimatorDelegate
 
   /** Shifts the color used in the segment colors to the next available one. */
   private void shiftSegmentColors() {
-    referenceSegmentColorIndex = (referenceSegmentColorIndex + 1) % baseSpec.indicatorColors.length;
+    referenceSegmentColorIndex = (referenceSegmentColorIndex + 1) % spec.indicatorColors.length;
     updateSegmentColors();
   }
 
@@ -171,18 +171,18 @@ final class LinearIndeterminateSeamlessAnimatorDelegate
   /** Updates the segment colors array based on current reference color index. */
   private void updateSegmentColors() {
     int leftSegmentColorIndex =
-        MathUtils.floorMod(referenceSegmentColorIndex + 2, baseSpec.indicatorColors.length);
+        MathUtils.floorMod(referenceSegmentColorIndex + 2, spec.indicatorColors.length);
     int centralSegmentColorIndex =
-        MathUtils.floorMod(referenceSegmentColorIndex + 1, baseSpec.indicatorColors.length);
+        MathUtils.floorMod(referenceSegmentColorIndex + 1, spec.indicatorColors.length);
     segmentColors[0] =
         MaterialColors.compositeARGBWithAlpha(
-            baseSpec.indicatorColors[leftSegmentColorIndex], drawable.getAlpha());
+            spec.indicatorColors[leftSegmentColorIndex], drawable.getAlpha());
     segmentColors[1] =
         MaterialColors.compositeARGBWithAlpha(
-            baseSpec.indicatorColors[centralSegmentColorIndex], drawable.getAlpha());
+            spec.indicatorColors[centralSegmentColorIndex], drawable.getAlpha());
     segmentColors[2] =
         MaterialColors.compositeARGBWithAlpha(
-            baseSpec.indicatorColors[referenceSegmentColorIndex], drawable.getAlpha());
+            spec.indicatorColors[referenceSegmentColorIndex], drawable.getAlpha());
   }
 
   /**

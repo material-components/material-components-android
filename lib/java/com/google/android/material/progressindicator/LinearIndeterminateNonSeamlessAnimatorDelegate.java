@@ -49,8 +49,8 @@ final class LinearIndeterminateNonSeamlessAnimatorDelegate
 
   // The current context which the animation is running on.
   private final Context context;
-  // The base spec.
-  private final BaseProgressIndicatorSpec baseSpec;
+  // The general spec.
+  private final ProgressIndicatorSpec spec;
   // The animator controls non-seamless linear indeterminate animation.
   private AnimatorSet animatorSet;
 
@@ -70,7 +70,7 @@ final class LinearIndeterminateNonSeamlessAnimatorDelegate
     super(/*segmentCount=*/ 2);
 
     this.context = context;
-    baseSpec = spec.getBaseSpec();
+    this.spec = spec;
   }
 
   // ******************* Animation control *******************
@@ -195,11 +195,11 @@ final class LinearIndeterminateNonSeamlessAnimatorDelegate
 
   /** Shifts the color used in the segment colors to the next available one. */
   private void rotateSegmentColors() {
-    displayedSegmentColorIndex = (displayedSegmentColorIndex + 1) % baseSpec.indicatorColors.length;
+    displayedSegmentColorIndex = (displayedSegmentColorIndex + 1) % spec.indicatorColors.length;
     Arrays.fill(
         segmentColors,
         MaterialColors.compositeARGBWithAlpha(
-            baseSpec.indicatorColors[displayedSegmentColorIndex], drawable.getAlpha()));
+            spec.indicatorColors[displayedSegmentColorIndex], drawable.getAlpha()));
   }
 
   /** Resets the segment colors to the first indicator color. */
@@ -208,7 +208,7 @@ final class LinearIndeterminateNonSeamlessAnimatorDelegate
     Arrays.fill(
         segmentColors,
         MaterialColors.compositeARGBWithAlpha(
-            baseSpec.indicatorColors[displayedSegmentColorIndex], drawable.getAlpha()));
+            spec.indicatorColors[displayedSegmentColorIndex], drawable.getAlpha()));
   }
 
   // ******************* Getters and setters *******************

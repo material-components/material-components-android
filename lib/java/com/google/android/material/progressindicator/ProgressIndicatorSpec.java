@@ -38,6 +38,29 @@ public final class ProgressIndicatorSpec implements AnimatedVisibilityChangeBeha
   /** The type of the progress indicator, either {@code #LINEAR} or {@code #CIRCULAR}. */
   public int indicatorType;
 
+  /** The size of the progress track and indicator. */
+  public int indicatorSize;
+
+  /**
+   * When this is greater than 0, the corners of both the track and the indicator will be rounded
+   * with this radius. If the radius is greater than half of the track width, an {@code
+   * IllegalArgumentException} will be thrown during initialization.
+   */
+  public int indicatorCornerRadius;
+
+  /**
+   * The color array of the progress stroke. In determinate mode and single color indeterminate
+   * mode, only the first item will be used. This field combines the attribute indicatorColor and
+   * indicatorColors defined in the XML.
+   */
+  @NonNull public int[] indicatorColors;
+
+  /**
+   * The color used for the progress track. If not defined, it will be set to the indicatorColor and
+   * apply the first disable alpha value from the theme.
+   */
+  public int trackColor;
+
   /**
    * Whether to inverse the progress direction. Linear positive directory is start-to-end; circular
    * positive directory is clockwise.
@@ -62,17 +85,6 @@ public final class ProgressIndicatorSpec implements AnimatedVisibilityChangeBeha
    */
   public boolean linearSeamless;
 
-  private final BaseProgressIndicatorSpec baseSpec;
-
-  public ProgressIndicatorSpec(
-      @NonNull Context context,
-      @Nullable AttributeSet attrs,
-      @AttrRes int defStyleAttr,
-      @StyleRes int defStyleRes) {
-    baseSpec = new BaseProgressIndicatorSpec(context, attrs, defStyleAttr);
-    loadFromAttributes(context, attrs, defStyleAttr, defStyleRes);
-  }
-
   public void loadFromAttributes(
       @NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
     loadFromAttributes(context, attrs, defStyleAttr, ProgressIndicator.DEF_STYLE_RES);
@@ -87,7 +99,7 @@ public final class ProgressIndicatorSpec implements AnimatedVisibilityChangeBeha
         context.obtainStyledAttributes(
             attrs, R.styleable.ProgressIndicator, defStyleAttr, defStyleRes);
     indicatorType = a.getInt(R.styleable.ProgressIndicator_indicatorType, ProgressIndicator.LINEAR);
-    baseSpec.indicatorSize =
+    indicatorSize =
         getDimensionPixelSize(
             context,
             a,
@@ -117,11 +129,11 @@ public final class ProgressIndicatorSpec implements AnimatedVisibilityChangeBeha
     linearSeamless =
         a.getBoolean(R.styleable.ProgressIndicator_linearSeamless, true)
             && indicatorType == ProgressIndicator.LINEAR
-            && baseSpec.indicatorColors.length >= 3;
-    baseSpec.indicatorCornerRadius =
+            && indicatorColors.length >= 3;
+    indicatorCornerRadius =
         min(
             a.getDimensionPixelSize(R.styleable.ProgressIndicator_indicatorCornerRadius, 0),
-            baseSpec.indicatorSize / 2);
+            indicatorSize / 2);
 
     a.recycle();
 
@@ -129,15 +141,14 @@ public final class ProgressIndicatorSpec implements AnimatedVisibilityChangeBeha
   }
 
   public void validate() {
-    if (indicatorType == ProgressIndicator.CIRCULAR
-        && circularRadius < baseSpec.indicatorSize / 2) {
+    if (indicatorType == ProgressIndicator.CIRCULAR && circularRadius < indicatorSize / 2) {
       // Throws an exception if circularRadius is less than half of the indicatorSize, which will
       // result in a part of the inner side of the indicator overshoots the center, and the visual
       // becomes undefined.
       throw new IllegalArgumentException(
           "The circularRadius cannot be less than half of the indicatorSize.");
     }
-    if (linearSeamless && baseSpec.indicatorCornerRadius > 0) {
+    if (linearSeamless && indicatorCornerRadius > 0) {
       // Throws an exception if trying to use cornered indicator for linear seamless mode.
       throw new IllegalArgumentException(
           "Rounded corners are not supported in linear seamless mode.");
@@ -176,7 +187,7 @@ public final class ProgressIndicatorSpec implements AnimatedVisibilityChangeBeha
    */
   private void loadIndicatorColors(@NonNull Context context, @NonNull TypedArray typedArray) {
     if (typedArray.hasValue(R.styleable.ProgressIndicator_indicatorColors)) {
-      baseSpec.indicatorColors =
+      indicatorColors =
           context
               .getResources()
               .getIntArray(
@@ -185,7 +196,7 @@ public final class ProgressIndicatorSpec implements AnimatedVisibilityChangeBeha
         throw new IllegalArgumentException(
             "Attributes indicatorColors and indicatorColor cannot be used at the same time.");
       }
-      if (baseSpec.indicatorColors.length == 0) {
+      if (indicatorColors.length == 0) {
         throw new IllegalArgumentException(
             "indicatorColors cannot be empty when indicatorColor is not used.");
       }
@@ -193,39 +204,38 @@ public final class ProgressIndicatorSpec implements AnimatedVisibilityChangeBeha
       TypedValue indicatorColorValue =
           typedArray.peekValue(R.styleable.ProgressIndicator_indicatorColor);
       if (indicatorColorValue.type == TypedValue.TYPE_REFERENCE) {
-        baseSpec.indicatorColors =
+        indicatorColors =
             context
                 .getResources()
                 .getIntArray(
                     typedArray.getResourceId(R.styleable.ProgressIndicator_indicatorColor, -1));
-        if (baseSpec.indicatorColors.length == 0) {
+        if (indicatorColors.length == 0) {
           throw new IllegalArgumentException(
               "indicatorColors cannot be empty when indicatorColor is not used.");
         }
       } else {
-        baseSpec.indicatorColors =
+        indicatorColors =
             new int[] {typedArray.getColor(R.styleable.ProgressIndicator_indicatorColor, -1)};
       }
     } else {
       // Uses theme primary color for indicator if not provided in the attribute set.
-      baseSpec.indicatorColors =
-          new int[] {MaterialColors.getColor(context, R.attr.colorPrimary, -1)};
+      indicatorColors = new int[] {MaterialColors.getColor(context, R.attr.colorPrimary, -1)};
     }
   }
 
   /**
    * Loads the trackColor from attributes if existing; otherwise, uses the first value in {@link
-   * BaseProgressIndicatorSpec#indicatorColors} applying the alpha value for disable items from
-   * theme. This method doesn't recycle the {@link TypedArray} argument.
+   * #indicatorColors} applying the alpha value for disable items from theme. This method doesn't
+   * recycle the {@link TypedArray} argument.
    *
    * @param context The current active context.
    * @param typedArray The TypedArray object of the attributes.
    */
   private void loadTrackColor(@NonNull Context context, @NonNull TypedArray typedArray) {
     if (typedArray.hasValue(R.styleable.ProgressIndicator_trackColor)) {
-      baseSpec.trackColor = typedArray.getColor(R.styleable.ProgressIndicator_trackColor, -1);
+      trackColor = typedArray.getColor(R.styleable.ProgressIndicator_trackColor, -1);
     } else {
-      baseSpec.trackColor = baseSpec.indicatorColors[0];
+      trackColor = indicatorColors[0];
 
       TypedArray disabledAlphaArray =
           context.getTheme().obtainStyledAttributes(new int[] {android.R.attr.disabledAlpha});
@@ -233,7 +243,7 @@ public final class ProgressIndicatorSpec implements AnimatedVisibilityChangeBeha
       disabledAlphaArray.recycle();
 
       int trackAlpha = (int) (ProgressIndicator.MAX_ALPHA * defaultOpacity);
-      baseSpec.trackColor = MaterialColors.compositeARGBWithAlpha(baseSpec.trackColor, trackAlpha);
+      trackColor = MaterialColors.compositeARGBWithAlpha(trackColor, trackAlpha);
     }
   }
 
@@ -245,10 +255,5 @@ public final class ProgressIndicatorSpec implements AnimatedVisibilityChangeBeha
   @Override
   public boolean shouldAnimateToHide() {
     return growMode != ProgressIndicator.GROW_MODE_NONE;
-  }
-
-  @NonNull
-  public BaseProgressIndicatorSpec getBaseSpec() {
-    return baseSpec;
   }
 }
