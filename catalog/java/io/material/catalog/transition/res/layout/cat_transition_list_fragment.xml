@@ -124,7 +124,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp">
 
-      <android.support.constraint.ConstraintLayout
+      <androidx.constraintlayout.widget.ConstraintLayout
           android:layout_width="match_parent"
           android:layout_height="match_parent">
 
@@ -166,7 +166,7 @@
             android:layout_marginBottom="8dp"
             android:text="@string/cat_transition_lorem_ipsum" />
 
-      </android.support.constraint.ConstraintLayout>
+      </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
 

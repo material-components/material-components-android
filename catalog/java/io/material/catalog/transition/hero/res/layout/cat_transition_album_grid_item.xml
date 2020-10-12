@@ -24,7 +24,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="4dp">
 
-  <android.support.constraint.ConstraintLayout
+  <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:paddingBottom="16dp">
@@ -72,6 +72,6 @@
         app:layout_constraintTop_toBottomOf="@+id/album_title"
         tools:text="Sandra Adams" />
 
-  </android.support.constraint.ConstraintLayout>
+  </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>
