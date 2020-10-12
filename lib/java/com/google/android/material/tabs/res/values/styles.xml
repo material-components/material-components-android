@@ -29,6 +29,7 @@
     <item name="tabIndicatorAnimationDuration">@integer/design_tab_indicator_anim_duration_ms</item>
     <item name="tabIndicatorColor">?attr/colorAccent</item>
     <item name="tabIndicatorGravity">bottom</item>
+    <item name="tabIndicatorAnimationMode">linear</item>
     <item name="tabIndicator">@drawable/mtrl_tabs_default_indicator</item>
     <item name="tabPaddingStart">12dp</item>
     <item name="tabPaddingEnd">12dp</item>

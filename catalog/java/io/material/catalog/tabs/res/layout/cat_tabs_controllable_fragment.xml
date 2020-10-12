@@ -109,6 +109,33 @@
         </RadioGroup>
 
         <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="end|center_vertical"
+          android:text="@string/cat_tabs_animation_mode_selector_label"/>
+
+        <RadioGroup
+          android:id="@+id/cat_tabs_animation_mode_group"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal">
+          <RadioButton
+            android:id="@+id/tabs_animation_mode_linear_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/cat_tabs_small_spacing"
+            android:layout_marginEnd="@dimen/cat_tabs_small_spacing"
+            android:text="@string/cat_tabs_animation_mode_linear"/>
+          <RadioButton
+            android:id="@+id/tabs_animation_mode_elastic_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/cat_tabs_small_spacing"
+            android:layout_marginEnd="@dimen/cat_tabs_small_spacing"
+            android:text="@string/cat_tabs_animation_mode_elastic"/>
+        </RadioGroup>
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
