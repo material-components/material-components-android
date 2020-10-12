@@ -88,7 +88,7 @@ Note: If you **can't** change your theme, you can do one of the following:
     [**Bridge Themes**](#bridge-themes) section for more details.
 *   Continue to inherit from an AppCompat theme and add some new theme
     attributes to your theme. See the
-    [**App Compat Themes**](#app-compat-themes) section for more details.
+    [**AppCompat Themes**](#appcompat-themes) section for more details.
 
 #### **Material Components themes**
 
@@ -124,7 +124,7 @@ only replaces `<Button>` and `<AutoCompleteTextView>` XML components with
 [`<MaterialAutoCompleteTextView>`](https://github.com/material-components/material-components-android/blob/master/lib/java/com/google/android/material/textfield/MaterialAutoCompleteTextView.java),
 respectively.
 
-#### **Bridge Themes** {#bridge-themes}
+#### **Bridge Themes**
 
 If you cannot change your theme to inherit from a Material Components theme, you
 can inherit from a Material Components **Bridge** theme.
@@ -148,7 +148,7 @@ Bridge themes inherit from AppCompat themes, but also define the new Material
 Components theme attributes for you. If you use a bridge theme, you can start
 using Material Design components without changing your app theme.
 
-#### **AppCompat Themes** {#app-compat-themes}
+#### **AppCompat Themes**
 
 You can also incrementally test new Material components without changing your
 app theme. This allows you to keep your existing layouts looking and behaving
