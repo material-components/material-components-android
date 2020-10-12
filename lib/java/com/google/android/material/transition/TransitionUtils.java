@@ -109,6 +109,7 @@ class TransitionUtils {
     return startValue + fraction * (endValue - startValue);
   }
 
+  // TODO(b/169309512): Remove in favor of AnimationUtils implementation
   static float lerp(
       float startValue,
       float endValue,

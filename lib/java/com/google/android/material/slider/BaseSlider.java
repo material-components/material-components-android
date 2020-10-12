@@ -28,6 +28,10 @@ import static java.lang.Float.compare;
 import static java.lang.Math.abs;
 import static java.lang.Math.max;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
@@ -73,6 +77,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.customview.widget.ExploreByTouchHelper;
+import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.drawable.DrawableUtils;
 import com.google.android.material.internal.DescendantOffsetUtils;
 import com.google.android.material.internal.ThemeEnforcement;
@@ -214,6 +219,9 @@ abstract class BaseSlider<
   static final int UNIT_VALUE = 1;
   static final int UNIT_PX = 0;
 
+  private static final long LABEL_ANIMATION_ENTER_DURATION = 83L;
+  private static final long LABEL_ANIMATION_EXIT_DURATION = 117L;
+
   @NonNull private final Paint inactiveTrackPaint;
   @NonNull private final Paint activeTrackPaint;
   @NonNull private final Paint thumbPaint;
@@ -232,6 +240,11 @@ abstract class BaseSlider<
   @NonNull private final List<TooltipDrawable> labels = new ArrayList<>();
   @NonNull private final List<L> changeListeners = new ArrayList<>();
   @NonNull private final List<T> touchListeners = new ArrayList<>();
+
+  // Whether the labels are showing or in the process of animating in.
+  private boolean labelsAreAnimatedIn = false;
+  private ValueAnimator labelsInAnimator;
+  private ValueAnimator labelsOutAnimator;
 
   private final int scaledTouchSlop;
 
@@ -1422,6 +1435,7 @@ abstract class BaseSlider<
       removeCallbacks(accessibilityEventSender);
     }
 
+    labelsAreAnimatedIn = false;
     for (TooltipDrawable label : labels) {
       detachLabelFromContentView(label);
     }
@@ -1525,7 +1539,7 @@ abstract class BaseSlider<
 
       // Draw labels if there is an active thumb.
       if (activeThumbIdx != -1) {
-        ensureLabels();
+        ensureLabelsAdded();
       }
     }
 
@@ -1717,9 +1731,7 @@ abstract class BaseSlider<
           snapTouchPosition();
           activeThumbIdx = -1;
         }
-        for (TooltipDrawable label : labels) {
-          ViewUtils.getContentViewOverlay(this).remove(label);
-        }
+        ensureLabelsRemoved();
         onStopTrackingTouch();
         invalidate();
         break;
@@ -1880,10 +1892,94 @@ abstract class BaseSlider<
     return normalizeValue(value) * trackWidth + trackSidePadding;
   }
 
-  private void ensureLabels() {
+  /**
+   * A helper method to get the current animated value of a {@link ValueAnimator}. If the target
+   * animator is null or not running, return the default value provided.
+   */
+  private static float getAnimatorCurrentValueOrDefault(
+      ValueAnimator animator, float defaultValue) {
+    // If the in animation is interrupting the out animation, attempt to smoothly interrupt by
+    // getting the current value of the out animator.
+    if (animator != null && animator.isRunning()) {
+      float value = (float) animator.getAnimatedValue();
+      animator.cancel();
+      return value;
+    }
+
+    return defaultValue;
+  }
+
+  /**
+   * Create an animator that shows or hides all slider labels.
+   *
+   * @param enter True if this animator should show (reveal) labels. False if this animator should
+   *     hide labels.
+   * @return A value animator that, when run, will animate all labels in or out using {@link
+   *     TooltipDrawable#setRevealFraction(float)}.
+   */
+  private ValueAnimator createLabelAnimator(boolean enter) {
+    float startFraction = enter ? 0F : 1F;
+    // Update the start fraction to the current animated value of the label, if any.
+    startFraction =
+        getAnimatorCurrentValueOrDefault(
+            enter ? labelsOutAnimator : labelsInAnimator, startFraction);
+    float endFraction = enter ? 1F : 0F;
+    ValueAnimator animator = ValueAnimator.ofFloat(startFraction, endFraction);
+    animator.setDuration(enter ? LABEL_ANIMATION_ENTER_DURATION : LABEL_ANIMATION_EXIT_DURATION);
+    animator.setInterpolator(
+        enter
+            ? AnimationUtils.DECELERATE_INTERPOLATOR
+            : AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR);
+    animator.addUpdateListener(
+        new AnimatorUpdateListener() {
+          @Override
+          public void onAnimationUpdate(ValueAnimator animation) {
+            float fraction = (float) animation.getAnimatedValue();
+            for (TooltipDrawable label : labels) {
+              label.setRevealFraction(fraction);
+            }
+            // Ensure the labels are redrawn even if the slider has stopped moving
+            ViewCompat.postInvalidateOnAnimation(BaseSlider.this);
+          }
+        });
+    return animator;
+  }
+
+  private void ensureLabelsRemoved() {
+    // If the labels are animated in or in the process of animating in, create and start a new
+    // animator to animate out the labels and remove them once the animation ends.
+    if (labelsAreAnimatedIn) {
+      labelsAreAnimatedIn = false;
+      labelsOutAnimator = createLabelAnimator(false);
+      labelsInAnimator = null;
+      labelsOutAnimator.addListener(
+          new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+              super.onAnimationEnd(animation);
+              for (TooltipDrawable label : labels) {
+                ViewUtils.getContentViewOverlay(BaseSlider.this).remove(label);
+              }
+            }
+          });
+      labelsOutAnimator.start();
+    }
+  }
+
+  private void ensureLabelsAdded() {
     if (labelBehavior == LABEL_GONE) {
       // If the label shouldn't be drawn we can skip this.
       return;
+    }
+
+    // If the labels are not animating in, start an animator to show them. ensureLabelsAdded will
+    // be called multiple times by BaseSlider's draw method, making this check necessary to avoid
+    // creating and starting an animator for each draw call.
+    if (!labelsAreAnimatedIn) {
+      labelsAreAnimatedIn = true;
+      labelsInAnimator = createLabelAnimator(true);
+      labelsOutAnimator = null;
+      labelsInAnimator.start();
     }
 
     Iterator<TooltipDrawable> labelItr = labels.iterator();
@@ -2061,9 +2157,7 @@ abstract class BaseSlider<
       case KeyEvent.KEYCODE_DPAD_CENTER:
       case KeyEvent.KEYCODE_ENTER:
         activeThumbIdx = -1;
-        for (TooltipDrawable label : labels) {
-          ViewUtils.getContentViewOverlay(this).remove(label);
-        }
+        ensureLabelsRemoved();
         postInvalidate();
         return true;
       default:
@@ -2205,9 +2299,7 @@ abstract class BaseSlider<
     super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
     if (!gainFocus) {
       activeThumbIdx = -1;
-      for (TooltipDrawable label : labels) {
-        ViewUtils.getContentViewOverlay(this).remove(label);
-      }
+      ensureLabelsRemoved();
       accessibilityHelper.clearKeyboardFocusForVirtualView(focusedThumbIdx);
     } else {
       focusThumbOnFocusGained(direction);
