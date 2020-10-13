@@ -1700,7 +1700,7 @@ abstract class BaseSlider<
       case MotionEvent.ACTION_MOVE:
         if (!thumbIsPressed) {
           // Check if we're trying to scroll instead of dragging this Slider
-          if (abs(x - touchDownX) < scaledTouchSlop) {
+          if (isInScrollingContainer() && abs(x - touchDownX) < scaledTouchSlop) {
             return false;
           }
           getParent().requestDisallowInterceptTouchEvent(true);
