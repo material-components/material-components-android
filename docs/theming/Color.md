@@ -101,13 +101,13 @@ need to do is define your own button style that extends from a Material Design
 style and set the mapping yourself:
 
 ```xml
-<style name="Widget.MyApp.MyButton" parent="Widget.MaterialComponents.Button">
+<style name="Widget.MyApp.Button" parent="Widget.MaterialComponents.Button">
   <item name="backgroundTint">?attr/colorSecondary</item>
 </style>
 ```
 
-You would then apply the `Widget.MyApp.MyButton` style to any buttons you want
-to have this alternate style.
+You would then apply the `Widget.MyApp.Button` style to any buttons you want to
+have this alternate style.
 
 ## Theming All Instances of One Component
 
@@ -118,13 +118,13 @@ component, e.g. MaterialButton, this is possible by modifying the
 ```xml
 <style name="Theme.MyApp" parent="Theme.MaterialComponents.Light">
   ...
-  <item name="materialButtonStyle">@style/Widget.MyApp.MyButton</item>
+  <item name="materialButtonStyle">@style/Widget.MyApp.Button</item>
   ...
 </style>
 ```
 
 This will set the default style of any MaterialButtons in your app to
-`Widget.MyApp.MyButton`. Similar default style attributes exist for most other
+`Widget.MyApp.Button`. Similar default style attributes exist for most other
 components, e.g. `tabStyle`, `chipStyle`, `textInputStyle`, and so on.
 
 ## Theme Attribute Mapping
