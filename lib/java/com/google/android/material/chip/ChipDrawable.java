@@ -1027,6 +1027,7 @@ public class ChipDrawable extends MaterialShapeDrawable
         chipSurfaceColor != null
             ? chipSurfaceColor.getColorForState(chipState, currentChipSurfaceColor)
             : 0;
+    newChipSurfaceColor = compositeElevationOverlayIfNeeded(newChipSurfaceColor);
     if (currentChipSurfaceColor != newChipSurfaceColor) {
       currentChipSurfaceColor = newChipSurfaceColor;
       invalidate = true;
@@ -1036,6 +1037,7 @@ public class ChipDrawable extends MaterialShapeDrawable
         chipBackgroundColor != null
             ? chipBackgroundColor.getColorForState(chipState, currentChipBackgroundColor)
             : 0;
+    newChipBackgroundColor = compositeElevationOverlayIfNeeded(newChipBackgroundColor);
     if (currentChipBackgroundColor != newChipBackgroundColor) {
       currentChipBackgroundColor = newChipBackgroundColor;
       invalidate = true;

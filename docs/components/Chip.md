@@ -1,4 +1,3 @@
-<!--docs:
 title: "Material chips"
 layout: detail
 section: components
@@ -277,6 +276,27 @@ Choice chips allow selection of a single chip from a set of options.
 
 Choice chips clearly delineate and display options in a compact area. They are a
 good alternative to toggle buttons, radio buttons, and single select menus.
+
+#### Caveats
+
+If you add choice chips to a dialog (which has 24dp elevation), disable the
+chips' elevation overlays to ensure that there is sufficient color contrast when
+the chips are checked.
+
+```xml
+<style name="Widget.MyApp.Chip.Choice" parent="Widget.MaterialComponents.Chip.Choice">
+  ...
+    <item name="materialThemeOverlay">@style/ThemeOverlay.MyApp.Chip.Choice</item>
+</style>
+
+<!-- Disabling elevation overlays because when chip's default background/surface
+     composite are combined with elevation overlays in a highly elevated dialog,
+     the resulting color becomes too light and causes contrast
+     issues. -->
+<style name="ThemeOverlay.MyApp.Chip.Choice" parent="">
+    <item name="elevationOverlayEnabled">false</item>
+</style>
+```
 
 #### Choice chip example
 

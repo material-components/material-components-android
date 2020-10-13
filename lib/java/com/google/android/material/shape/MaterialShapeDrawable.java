@@ -600,8 +600,9 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     updateZ();
   }
 
+  @RestrictTo(LIBRARY_GROUP)
   @ColorInt
-  private int compositeElevationOverlayIfNeeded(@ColorInt int backgroundColor) {
+  protected int compositeElevationOverlayIfNeeded(@ColorInt int backgroundColor) {
     float elevation = getZ() + getParentAbsoluteElevation();
     return drawableState.elevationOverlayProvider != null
         ? drawableState.elevationOverlayProvider.compositeOverlayIfNeeded(
@@ -1193,7 +1194,6 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
         // The change to support concave paths was done late in the release cycle. People
         // using pre-releases of Q would experience a crash here.
       }
-
     }
   }
 

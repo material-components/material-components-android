@@ -30,6 +30,15 @@
     <!-- No need to scale here since the text is already readable -->
     <item name="android:textSize" tools:ignore="SpUsage">56dp</item>
     <item name="shapeAppearanceOverlay">?shapeAppearanceMediumComponent</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.MaterialComponents.TimePicker.Display</item>
+  </style>
+
+  <!-- Disabling elevation overlays because when chip's default
+       background/surface composite are combined with elevation overlays in a
+       highly elevated dialog, the resulting color becomes too light and causes
+       contrast issues -->
+  <style name="ThemeOverlay.MaterialComponents.TimePicker.Display" parent="">
+    <item name="elevationOverlayEnabled">false</item>
   </style>
 
   <style name="Widget.MaterialComponents.TimePicker.Display.TextInputEditText" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
