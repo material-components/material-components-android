@@ -2705,8 +2705,7 @@ public class TabLayout extends HorizontalScrollView {
       }
       clipViewToPaddingForBadge(true);
       if (badgeAnchorView != null) {
-        BadgeUtils.detachBadgeDrawable(
-            badgeDrawable, badgeAnchorView, getCustomParentForBadge(badgeAnchorView));
+        BadgeUtils.detachBadgeDrawable(badgeDrawable, badgeAnchorView);
         badgeAnchorView = null;
       }
     }
