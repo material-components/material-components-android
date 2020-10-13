@@ -61,6 +61,8 @@ public class BaseProgressIndicatorSpec {
    */
   @ColorInt public int trackColor;
 
+  protected BaseProgressIndicatorSpec(){}
+
   /**
    * Instantiates BaseProgressIndicatorSpec.
    *

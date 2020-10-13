@@ -29,6 +29,7 @@ import com.google.android.material.color.MaterialColors;
 public final class CircularDrawingDelegate extends DrawingDelegate {
 
   private final ProgressIndicatorSpec spec;
+  private final BaseProgressIndicatorSpec baseSpec;
 
   // This is a factor effecting the positive direction to draw the arc. -1 if inverse; +1 otherwise.
   private int arcInverseFactor = 1;
@@ -39,6 +40,7 @@ public final class CircularDrawingDelegate extends DrawingDelegate {
   /** Instantiates CircularDrawingDelegate with the current spec. */
   public CircularDrawingDelegate(@NonNull ProgressIndicatorSpec spec) {
     this.spec = spec;
+    baseSpec = spec.getBaseSpec();
   }
 
   @Override
@@ -65,7 +67,8 @@ public final class CircularDrawingDelegate extends DrawingDelegate {
   public void adjustCanvas(
       @NonNull Canvas canvas,
       @FloatRange(from = 0.0, to = 1.0) float indicatorSizeFraction) {
-    int outerRadiusWithInset = spec.circularRadius + spec.indicatorSize / 2 + spec.circularInset;
+    int outerRadiusWithInset =
+        spec.circularRadius + baseSpec.indicatorSize / 2 + spec.circularInset;
     canvas.translate(outerRadiusWithInset, outerRadiusWithInset);
     // Rotates canvas so that arc starts at top.
     canvas.rotate(-90f);
@@ -77,17 +80,17 @@ public final class CircularDrawingDelegate extends DrawingDelegate {
 
     // These are used when drawing the indicator and track.
     arcInverseFactor = spec.inverse ? -1 : 1;
-    displayedIndicatorSize = spec.indicatorSize * indicatorSizeFraction;
-    displayedCornerRadius = spec.indicatorCornerRadius * indicatorSizeFraction;
+    displayedIndicatorSize = baseSpec.indicatorSize * indicatorSizeFraction;
+    displayedCornerRadius = baseSpec.indicatorCornerRadius * indicatorSizeFraction;
     adjustedRadius = spec.circularRadius;
     if (spec.growMode == ProgressIndicator.GROW_MODE_INCOMING) {
       // Increases the radius by half of the full size, then reduces it half way of the displayed
       // size to match the outer edges of the displayed indicator and the full indicator.
-      adjustedRadius += (1 - indicatorSizeFraction) * spec.indicatorSize / 2;
+      adjustedRadius += (1 - indicatorSizeFraction) * baseSpec.indicatorSize / 2;
     } else if (spec.growMode == ProgressIndicator.GROW_MODE_OUTGOING) {
       // Decreases the radius by half of the full size, then raises it half way of the displayed
       // size to match the inner edges of the displayed indicator and the full indicator.
-      adjustedRadius -= (1 - indicatorSizeFraction) * spec.indicatorSize / 2;
+      adjustedRadius -= (1 - indicatorSizeFraction) * baseSpec.indicatorSize / 2;
     }
   }
 
@@ -168,7 +171,8 @@ public final class CircularDrawingDelegate extends DrawingDelegate {
    */
   @Override
   void fillTrack(@NonNull Canvas canvas, @NonNull Paint paint) {
-    int trackColor = MaterialColors.compositeARGBWithAlpha(spec.trackColor, drawable.getAlpha());
+    int trackColor =
+        MaterialColors.compositeARGBWithAlpha(baseSpec.trackColor, drawable.getAlpha());
 
     // Sets up the paint.
     paint.setStyle(Style.STROKE);
@@ -182,7 +186,7 @@ public final class CircularDrawingDelegate extends DrawingDelegate {
   }
 
   private int getSize() {
-    return spec.circularRadius * 2 + spec.indicatorSize + spec.circularInset * 2;
+    return spec.circularRadius * 2 + baseSpec.indicatorSize + spec.circularInset * 2;
   }
 
   private void drawRoundedEnd(

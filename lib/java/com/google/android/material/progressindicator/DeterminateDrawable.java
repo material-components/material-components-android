@@ -35,8 +35,8 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
   private static final int MAX_DRAWABLE_LEVEL = 10000;
   // The constant for spring force stiffness.
   private static final float SPRING_FORCE_STIFFNESS = SpringForce.STIFFNESS_VERY_LOW;
-  // Current progress indicator spec.
-  private final ProgressIndicatorSpec spec;
+  // Base spec of this progress indicator.
+  private final BaseProgressIndicatorSpec baseSpec;
   // Drawing delegate object.
   private final DrawingDelegate drawingDelegate;
   // Animation.
@@ -49,11 +49,12 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
 
   public DeterminateDrawable(
       @NonNull Context context,
-      @NonNull ProgressIndicatorSpec spec,
+      @NonNull BaseProgressIndicatorSpec spec,
+      @NonNull AnimatedVisibilityChangeBehavior animatedVisibilityChangeBehavior,
       @NonNull DrawingDelegate drawingDelegate) {
-    super(context, /*animatedVisibilityChangeBehavior=*/ spec);
+    super(context, /*animatedVisibilityChangeBehavior=*/ animatedVisibilityChangeBehavior);
 
-    this.spec = spec;
+    this.baseSpec = spec;
     this.drawingDelegate = drawingDelegate;
     drawingDelegate.registerDrawable(this);
 
@@ -166,7 +167,8 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
     // Draws the track.
     drawingDelegate.fillTrack(canvas, paint);
     // Draws the indicator.
-    int indicatorColor = MaterialColors.compositeARGBWithAlpha(spec.indicatorColors[0], getAlpha());
+    int indicatorColor =
+        MaterialColors.compositeARGBWithAlpha(baseSpec.indicatorColors[0], getAlpha());
     drawingDelegate.fillIndicator(canvas, paint, 0f, getIndicatorFraction(), indicatorColor);
     canvas.restore();
   }

@@ -35,10 +35,10 @@ public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityC
 
   public IndeterminateDrawable(
       @NonNull Context context,
-      @NonNull ProgressIndicatorSpec spec,
+      @NonNull AnimatedVisibilityChangeBehavior animatedVisibilityChangeBehavior,
       @NonNull DrawingDelegate drawingDelegate,
       @NonNull IndeterminateAnimatorDelegate<AnimatorSet> animatorDelegate) {
-    super(context, /*animatedVisibilityChangeBehavior=*/ spec);
+    super(context, /*animatedVisibilityChangeBehavior=*/ animatedVisibilityChangeBehavior);
 
     setDrawingDelegate(drawingDelegate);
     setAnimatorDelegate(animatorDelegate);

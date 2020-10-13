@@ -31,6 +31,7 @@ import com.google.android.material.color.MaterialColors;
 final class LinearDrawingDelegate extends DrawingDelegate {
 
   private final ProgressIndicatorSpec spec;
+  private final BaseProgressIndicatorSpec baseSpec;
 
   // The length (horizontal) of the track in px.
   private float trackLength = 300f;
@@ -40,6 +41,7 @@ final class LinearDrawingDelegate extends DrawingDelegate {
   /** Instantiates LinearDrawingDelegate with the current spec. */
   public LinearDrawingDelegate(@NonNull ProgressIndicatorSpec spec) {
     this.spec = spec;
+    baseSpec = spec.getBaseSpec();
   }
 
   @Override
@@ -49,7 +51,7 @@ final class LinearDrawingDelegate extends DrawingDelegate {
 
   @Override
   public int getPreferredHeight() {
-    return spec.indicatorSize;
+    return baseSpec.indicatorSize;
   }
 
   /**
@@ -67,12 +69,12 @@ final class LinearDrawingDelegate extends DrawingDelegate {
     // Gets clip bounds from canvas.
     Rect clipBounds = canvas.getClipBounds();
     trackLength = clipBounds.width();
-    float trackSize = spec.indicatorSize;
+    float trackSize = baseSpec.indicatorSize;
 
     // Positions canvas to center of the clip bounds.
     canvas.translate(
         clipBounds.width() / 2f,
-        clipBounds.height() / 2f + max(0f, (clipBounds.height() - spec.indicatorSize) / 2f));
+        clipBounds.height() / 2f + max(0f, (clipBounds.height() - baseSpec.indicatorSize) / 2f));
 
     // Flips canvas horizontally if inverse.
     if (spec.inverse) {
@@ -85,7 +87,7 @@ final class LinearDrawingDelegate extends DrawingDelegate {
     // Offsets canvas vertically if grow from top/bottom.
     if (spec.growMode == ProgressIndicator.GROW_MODE_INCOMING
         || spec.growMode == ProgressIndicator.GROW_MODE_OUTGOING) {
-      canvas.translate(0f, spec.indicatorSize * (indicatorSizeFraction - 1) / 2f);
+      canvas.translate(0f, baseSpec.indicatorSize * (indicatorSizeFraction - 1) / 2f);
     }
 
     // Clips all drawing to the track area, so it doesn't draw outside of its bounds (which can
@@ -93,8 +95,8 @@ final class LinearDrawingDelegate extends DrawingDelegate {
     canvas.clipRect(-trackLength / 2, -trackSize / 2, trackLength / 2, trackSize / 2);
 
     // These are set for the drawing the indicator and track.
-    displayedIndicatorSize = spec.indicatorSize * indicatorSizeFraction;
-    displayedCornerRadius = spec.indicatorCornerRadius * indicatorSizeFraction;
+    displayedIndicatorSize = baseSpec.indicatorSize * indicatorSizeFraction;
+    displayedCornerRadius = baseSpec.indicatorCornerRadius * indicatorSizeFraction;
   }
 
   /**
@@ -175,7 +177,8 @@ final class LinearDrawingDelegate extends DrawingDelegate {
    */
   @Override
   void fillTrack(@NonNull Canvas canvas, @NonNull Paint paint) {
-    int trackColor = MaterialColors.compositeARGBWithAlpha(spec.trackColor, drawable.getAlpha());
+    int trackColor =
+        MaterialColors.compositeARGBWithAlpha(baseSpec.trackColor, drawable.getAlpha());
     float adjustedStartX = -trackLength / 2 + displayedCornerRadius;
     float adjustedEndX = -adjustedStartX;
 
