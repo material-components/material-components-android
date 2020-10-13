@@ -46,6 +46,7 @@
     <attr name="yearSelectedStyle" format="reference"/>
     <attr name="yearTodayStyle" format="reference"/>
     <attr name="rangeFillColor" format="color"/>
+    <attr name="nestedScrollable" format="boolean"/>
   </declare-styleable>
 
   <declare-styleable name="MaterialCalendarItem">

@@ -403,14 +403,22 @@ public final class MaterialDatePicker<S> extends DialogFragment {
   }
 
   static boolean isFullscreen(@NonNull Context context) {
+    return readMaterialCalendarStyleBoolean(context, android.R.attr.windowFullscreen);
+  }
+
+  static boolean isNestedScrollable(@NonNull Context context) {
+    return readMaterialCalendarStyleBoolean(context, R.attr.nestedScrollable);
+  }
+
+  static boolean readMaterialCalendarStyleBoolean(@NonNull Context context, int attributeResId) {
     int calendarStyle =
         MaterialAttributes.resolveOrThrow(
             context, R.attr.materialCalendarStyle, MaterialCalendar.class.getCanonicalName());
-    int[] attrs = {android.R.attr.windowFullscreen};
+    int[] attrs = {attributeResId};
     TypedArray a = context.obtainStyledAttributes(calendarStyle, attrs);
-    boolean fullscreen = a.getBoolean(0, false);
+    boolean attributeValue = a.getBoolean(0, false);
     a.recycle();
-    return fullscreen;
+    return attributeValue;
   }
 
   private static int getDialogPickerHeight(@NonNull Context context) {

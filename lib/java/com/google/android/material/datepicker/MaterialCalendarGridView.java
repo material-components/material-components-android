@@ -29,6 +29,7 @@ import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ListAdapter;
 import androidx.annotation.NonNull;
@@ -39,6 +40,7 @@ import java.util.Calendar;
 final class MaterialCalendarGridView extends GridView {
 
   private final Calendar dayCompute = UtcDates.getUtcCalendar();
+  private final boolean nestedScrollable;
 
   public MaterialCalendarGridView(Context context) {
     this(context, null);
@@ -54,6 +56,7 @@ final class MaterialCalendarGridView extends GridView {
       setNextFocusLeftId(R.id.cancel_button);
       setNextFocusRightId(R.id.confirm_button);
     }
+    nestedScrollable = MaterialDatePicker.isNestedScrollable(getContext());
     ViewCompat.setAccessibilityDelegate(
         this,
         new AccessibilityDelegateCompat() {
@@ -188,6 +191,20 @@ final class MaterialCalendarGridView extends GridView {
         }
         canvas.drawRect(left, top, right, bottom, calendarStyle.rangeFill);
       }
+    }
+  }
+
+  @Override
+  public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    if (nestedScrollable) {
+      // Calculate entire height by providing a very large height hint.
+      // View.MEASURED_SIZE_MASK represents the largest height possible.
+      int expandSpec = MeasureSpec.makeMeasureSpec(MEASURED_SIZE_MASK, MeasureSpec.AT_MOST);
+      super.onMeasure(widthMeasureSpec, expandSpec);
+      ViewGroup.LayoutParams params = getLayoutParams();
+      params.height = getMeasuredHeight();
+    } else {
+      super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
   }
 
