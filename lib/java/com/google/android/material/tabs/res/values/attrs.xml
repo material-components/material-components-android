@@ -52,6 +52,18 @@
          or if it should be fitted to the content of the tab text label. If no text label is
          present, it will be set to the width of the icon or to a minimum width of 24dp. -->
     <attr name="tabIndicatorFullWidth" format="boolean"/>
+    <!-- The animation mode used to animate the selection indicator between
+         destinations. -->
+    <attr name="tabIndicatorAnimationMode">
+      <!-- Animate the selection indicator's left and right bounds in step with
+           each other. -->
+      <enum name="linear" value="0"/>
+      <!-- Animate the selection indicator's left and right bounds out of step
+           with each other, decelerating the front and accelerating the back.
+           This causes the indicator to look like it stretches between destinations
+           an then shrinks back down to fit the size of it's target tab. -->
+      <enum name="elastic" value="1"/>
+    </attr>
     <!-- The behavior mode for the Tabs in this layout -->
     <attr name="tabMode">
       <enum name="scrollable" value="0"/>

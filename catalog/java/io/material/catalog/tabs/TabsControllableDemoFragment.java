@@ -120,6 +120,16 @@ public class TabsControllableDemoFragment extends DemoFragment {
     tabGravityCenterButton.setOnClickListener(
         v -> setAllTabLayoutGravity(TabLayout.GRAVITY_CENTER));
 
+    RadioButton tabAnimationModeLinearButton =
+        view.findViewById(R.id.tabs_animation_mode_linear_button);
+    tabAnimationModeLinearButton.setOnClickListener(
+        v -> setAllTabAnimationModes(TabLayout.INDICATOR_ANIMATION_MODE_LINEAR));
+
+    RadioButton tabsAnimationModeElasticButton =
+        view.findViewById(R.id.tabs_animation_mode_elastic_button);
+    tabsAnimationModeElasticButton.setOnClickListener(
+        v -> setAllTabAnimationModes(TabLayout.INDICATOR_ANIMATION_MODE_ELASTIC));
+
     SwitchCompat inlineToggle = view.findViewById(R.id.toggle_inline_switch);
     inlineToggle.setOnCheckedChangeListener(
         (buttonView, isChecked) -> setAllTabLayoutInline(isChecked));
@@ -249,6 +259,12 @@ public class TabsControllableDemoFragment extends DemoFragment {
   private void setAllTabLayoutGravity(int gravity) {
     for (TabLayout tabLayout : tabLayouts) {
       tabLayout.setTabGravity(gravity);
+    }
+  }
+
+  private void setAllTabAnimationModes(int mode) {
+    for (TabLayout tabLayout : tabLayouts) {
+      tabLayout.setTabIndicatorAnimationMode(mode);
     }
   }
 
