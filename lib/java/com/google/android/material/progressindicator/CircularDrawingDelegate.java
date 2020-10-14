@@ -28,17 +28,18 @@ import com.google.android.material.color.MaterialColors;
 /** A delegate class to help draw the graphics for {@link ProgressIndicator} in circular types. */
 public final class CircularDrawingDelegate extends DrawingDelegate {
 
-  private final ProgressIndicatorSpec spec;
+  private final CircularProgressIndicatorSpec spec;
   private final BaseProgressIndicatorSpec baseSpec;
 
-  // This is a factor effecting the positive direction to draw the arc. -1 if inverse; +1 otherwise.
-  private int arcInverseFactor = 1;
+  // This is a factor effecting the positive direction to draw the arc. +1 for clockwise; -1 for
+  // counter-clockwise.
+  private int arcDirectionFactor = 1;
   private float displayedIndicatorSize;
   private float displayedCornerRadius;
   private float adjustedRadius;
 
   /** Instantiates CircularDrawingDelegate with the current spec. */
-  public CircularDrawingDelegate(@NonNull ProgressIndicatorSpec spec) {
+  public CircularDrawingDelegate(@NonNull CircularProgressIndicatorSpec spec) {
     this.spec = spec;
     baseSpec = spec.getBaseSpec();
   }
@@ -68,7 +69,7 @@ public final class CircularDrawingDelegate extends DrawingDelegate {
       @NonNull Canvas canvas,
       @FloatRange(from = 0.0, to = 1.0) float indicatorSizeFraction) {
     int outerRadiusWithInset =
-        spec.circularRadius + baseSpec.indicatorSize / 2 + spec.circularInset;
+        spec.indicatorRadius + baseSpec.indicatorSize / 2 + spec.indicatorInset;
     canvas.translate(outerRadiusWithInset, outerRadiusWithInset);
     // Rotates canvas so that arc starts at top.
     canvas.rotate(-90f);
@@ -79,15 +80,18 @@ public final class CircularDrawingDelegate extends DrawingDelegate {
         -outerRadiusWithInset, -outerRadiusWithInset, outerRadiusWithInset, outerRadiusWithInset);
 
     // These are used when drawing the indicator and track.
-    arcInverseFactor = spec.inverse ? -1 : 1;
+    arcDirectionFactor =
+        spec.indicatorDirection == CircularProgressIndicator.INDICATOR_DIRECTION_CLOCKWISE ? 1 : -1;
     displayedIndicatorSize = baseSpec.indicatorSize * indicatorSizeFraction;
     displayedCornerRadius = baseSpec.indicatorCornerRadius * indicatorSizeFraction;
-    adjustedRadius = spec.circularRadius;
-    if (spec.growMode == ProgressIndicator.GROW_MODE_INCOMING) {
+    adjustedRadius = spec.indicatorRadius;
+    if ((drawable.isShowing() && spec.showBehavior == CircularProgressIndicator.SHOW_INWARD)
+        || (drawable.isHiding() && spec.hideBehavior == CircularProgressIndicator.HIDE_OUTWARD)) {
       // Increases the radius by half of the full size, then reduces it half way of the displayed
       // size to match the outer edges of the displayed indicator and the full indicator.
       adjustedRadius += (1 - indicatorSizeFraction) * baseSpec.indicatorSize / 2;
-    } else if (spec.growMode == ProgressIndicator.GROW_MODE_OUTGOING) {
+    } else if ((drawable.isShowing() && spec.showBehavior == CircularProgressIndicator.SHOW_OUTWARD)
+        || (drawable.isHiding() && spec.hideBehavior == CircularProgressIndicator.HIDE_INWARD)) {
       // Decreases the radius by half of the full size, then raises it half way of the displayed
       // size to match the inner edges of the displayed indicator and the full indicator.
       adjustedRadius -= (1 - indicatorSizeFraction) * baseSpec.indicatorSize / 2;
@@ -125,11 +129,11 @@ public final class CircularDrawingDelegate extends DrawingDelegate {
     paint.setStrokeWidth(displayedIndicatorSize);
 
     // Calculates the start and end in degrees.
-    float startDegree = startFraction * 360 * arcInverseFactor;
+    float startDegree = startFraction * 360 * arcDirectionFactor;
     float arcDegree =
         endFraction >= startFraction
-            ? (endFraction - startFraction) * 360 * arcInverseFactor
-            : (1 + endFraction - startFraction) * 360 * arcInverseFactor;
+            ? (endFraction - startFraction) * 360 * arcDirectionFactor
+            : (1 + endFraction - startFraction) * 360 * arcDirectionFactor;
 
     // Draws the indicator arc without rounded corners.
     RectF arcBound = new RectF(-adjustedRadius, -adjustedRadius, adjustedRadius, adjustedRadius);
@@ -186,7 +190,7 @@ public final class CircularDrawingDelegate extends DrawingDelegate {
   }
 
   private int getSize() {
-    return spec.circularRadius * 2 + baseSpec.indicatorSize + spec.circularInset * 2;
+    return spec.indicatorRadius * 2 + baseSpec.indicatorSize + spec.indicatorInset * 2;
   }
 
   private void drawRoundedEnd(
@@ -202,16 +206,16 @@ public final class CircularDrawingDelegate extends DrawingDelegate {
     canvas.rotate(positionInDeg);
     canvas.drawRect(
         adjustedRadius - trackSize / 2 + cornerRadius,
-        Math.min(0, startOrEndFactor * cornerRadius * arcInverseFactor),
+        Math.min(0, startOrEndFactor * cornerRadius * arcDirectionFactor),
         adjustedRadius + trackSize / 2 - cornerRadius,
-        Math.max(0, startOrEndFactor * cornerRadius * arcInverseFactor),
+        Math.max(0, startOrEndFactor * cornerRadius * arcDirectionFactor),
         paint);
     canvas.translate(adjustedRadius - trackSize / 2 + cornerRadius, 0);
     canvas.drawArc(
-        cornerPatternRectBound, 180, -startOrEndFactor * 90 * arcInverseFactor, true, paint);
+        cornerPatternRectBound, 180, -startOrEndFactor * 90 * arcDirectionFactor, true, paint);
     canvas.translate(trackSize - 2 * cornerRadius, 0);
     canvas.drawArc(
-        cornerPatternRectBound, 0, startOrEndFactor * 90 * arcInverseFactor, true, paint);
+        cornerPatternRectBound, 0, startOrEndFactor * 90 * arcDirectionFactor, true, paint);
     canvas.restore();
   }
 }
