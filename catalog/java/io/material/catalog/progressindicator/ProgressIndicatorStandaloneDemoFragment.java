@@ -62,7 +62,7 @@ public class ProgressIndicatorStandaloneDemoFragment extends DemoFragment {
     IndeterminateDrawable progressIndicatorDrawable =
         new IndeterminateDrawable(
             getContext(),
-            progressIndicatorSpec,
+            /*animatedVisibilityChangeBehavior=*/ progressIndicatorSpec,
             new CircularDrawingDelegate(progressIndicatorSpec),
             new CircularIndeterminateAnimatorDelegate(progressIndicatorSpec));
 
