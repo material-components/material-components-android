@@ -30,14 +30,14 @@
   app:layout_constraintRight_toRightOf="parent"
   tools:ignore="UnusedAttribute">
 
-  <com.google.android.material.chip.Chip
+  <include
     android:id="@+id/material_hour_tv"
-    style="@style/Widget.MaterialComponents.TimePicker.Display" />
+    layout="@layout/material_time_chip" />
 
   <include layout="@layout/material_clock_display_divider" />
 
-  <com.google.android.material.chip.Chip
+  <include
     android:id="@+id/material_minute_tv"
-    style="@style/Widget.MaterialComponents.TimePicker.Display" />
+    layout="@layout/material_time_chip" />
 
 </LinearLayout>
