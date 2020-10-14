@@ -91,7 +91,8 @@
       <com.google.android.material.progressindicator.CircularProgressIndicator
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_gravity="center"/>
+          android:layout_gravity="center"
+          style="@style/Widget.MaterialComponents.CircularProgressIndicator"/>
     </LinearLayout>
 
     <LinearLayout
@@ -107,6 +108,7 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_gravity="center"
+          style="@style/Widget.MaterialComponents.CircularProgressIndicator"
           app:indicatorDirectionCircular="counterclockwise"
           app:indicatorCornerRadius="@dimen/mtrl_progress_indicator_full_rounded_corner_radius"/>
     </LinearLayout>
@@ -124,6 +126,7 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_gravity="center"
+          style="@style/Widget.MaterialComponents.CircularProgressIndicator"
           app:indicatorColor="@array/cat_custom_progress_colors"
           app:showBehaviorCircular="inward"
           app:hideBehaviorCircular="outward"/>
@@ -142,6 +145,7 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_gravity="center"
+          style="@style/Widget.MaterialComponents.CircularProgressIndicator"
           app:indicatorColor="@array/cat_custom_progress_colors"
           app:showBehaviorCircular="outward"
           app:hideBehaviorCircular="inward"/>
