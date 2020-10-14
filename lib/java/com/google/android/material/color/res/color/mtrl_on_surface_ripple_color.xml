@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright 2017 The Android Open Source Project
+  Copyright 2020 The Android Open Source Project
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
   <item android:alpha="@dimen/mtrl_low_ripple_pressed_alpha" android:color="?attr/colorOnSurface" android:state_pressed="true"/>
-  <item android:alpha="@dimen/mtrl_low_ripple_focused_alpha" android:color="?attr/colorOnSurface" android:state_focused="true" android:state_hovered="true"/>
   <item android:alpha="@dimen/mtrl_low_ripple_focused_alpha" android:color="?attr/colorOnSurface" android:state_focused="true"/>
   <item android:alpha="@dimen/mtrl_low_ripple_hovered_alpha" android:color="?attr/colorOnSurface" android:state_hovered="true"/>
   <item android:alpha="@dimen/mtrl_low_ripple_default_alpha" android:color="?attr/colorOnSurface"/>

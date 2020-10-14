@@ -103,6 +103,7 @@
     android:paddingRight="16dp"
     android:minWidth="48dp"
     app:iconTint="@color/material_timepicker_modebutton_tint"
+    app:rippleColor="@color/mtrl_on_surface_ripple_color"
     app:iconPadding="0dp"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="@id/material_timepicker_ok_button" />

@@ -50,7 +50,7 @@
     <item name="chipBackgroundColor">@color/mtrl_chip_background_color</item>
     <item name="chipStrokeColor">?attr/colorOnSurface</item>
     <item name="chipStrokeWidth">0dp</item>
-    <item name="rippleColor">@color/mtrl_chip_ripple_color</item>
+    <item name="rippleColor">@color/mtrl_on_surface_ripple_color</item>
 
     <item name="chipMinTouchTargetSize">48dp</item>
     <item name="ensureMinTouchTargetSize">true</item>
