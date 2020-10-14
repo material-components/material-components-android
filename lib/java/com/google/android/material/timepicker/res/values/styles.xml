@@ -22,6 +22,8 @@
   </style>
 
   <style name="Widget.MaterialComponents.TimePicker.Display" parent="Widget.MaterialComponents.Chip.Choice">
+    <item name="android:layout_width">96dp</item>
+    <item name="android:layout_height">80dp</item>
     <item name="ensureMinTouchTargetSize">false</item>
     <item name="android:textAlignment">center</item>
     <item name="android:textAppearance">?attr/textAppearanceHeadline3</item>
