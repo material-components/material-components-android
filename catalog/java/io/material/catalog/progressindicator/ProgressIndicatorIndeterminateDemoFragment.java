@@ -26,6 +26,7 @@ import android.widget.EditText;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.progressindicator.ProgressIndicator;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.DemoUtils;
@@ -82,6 +83,15 @@ public class ProgressIndicatorIndeterminateDemoFragment extends DemoFragment {
   }
 
   /**
+   * Updates the circular progress indicator to show the specified progress. This is called every
+   * time the "update" button is pressed.
+   */
+  protected void updateCircularProgressIndicator(
+      @NonNull CircularProgressIndicator circularProgressIndicator, int progress) {
+    circularProgressIndicator.setProgressCompat(progress, /*animated=*/ true);
+  }
+
+  /**
    * Resets the progress indicator to its initial state (indeterminate). This is called every time
    * the "show" button is pressed.
    */
@@ -95,9 +105,26 @@ public class ProgressIndicatorIndeterminateDemoFragment extends DemoFragment {
     }
   }
 
+  /**
+   * Resets the circular progress indicator to its initial state (indeterminate). This is called
+   * every time the "show" button is pressed.
+   */
+  protected void resetCircularProgressIndicator(
+      @NonNull CircularProgressIndicator circularProgressIndicator) {
+    // Reset to indeterminate if it was changed to determinate.
+    if (!circularProgressIndicator.isIndeterminate()) {
+      // Cannot set to indeterminate if the indicator is visible. Immediately set to
+      // INVISIBLE instead of waiting for animation from calling hide().
+      circularProgressIndicator.setVisibility(View.INVISIBLE);
+      circularProgressIndicator.setIndeterminate(true);
+    }
+  }
+
   private void initialize(View view) {
     List<ProgressIndicator> indicatorList =
         DemoUtils.findViewsWithType(view, ProgressIndicator.class);
+    List<CircularProgressIndicator> circularProgressIndicatorList =
+        DemoUtils.findViewsWithType(view, CircularProgressIndicator.class);
 
     EditText progressInput = view.findViewById(R.id.progress_input);
     Button updateButton = view.findViewById(R.id.update_button);
@@ -115,6 +142,9 @@ public class ProgressIndicatorIndeterminateDemoFragment extends DemoFragment {
           for (ProgressIndicator progressIndicator : indicatorList) {
             updateProgressIndicator(progressIndicator, progress);
           }
+          for (CircularProgressIndicator indicator : circularProgressIndicatorList) {
+            updateCircularProgressIndicator(indicator, progress);
+          }
         });
     showButton.setOnClickListener(
         v -> {
@@ -122,11 +152,18 @@ public class ProgressIndicatorIndeterminateDemoFragment extends DemoFragment {
             resetProgressIndicator(progressIndicator);
             progressIndicator.show();
           }
+          for (CircularProgressIndicator indicator : circularProgressIndicatorList) {
+            resetCircularProgressIndicator(indicator);
+            indicator.show();
+          }
         });
     hideButton.setOnClickListener(
         v -> {
           for (ProgressIndicator progressIndicator : indicatorList) {
             progressIndicator.hide();
+          }
+          for (CircularProgressIndicator indicator : circularProgressIndicatorList) {
+            indicator.hide();
           }
         });
   }
