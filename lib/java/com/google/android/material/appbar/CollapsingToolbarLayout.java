@@ -438,6 +438,15 @@ public class CollapsingToolbarLayout extends FrameLayout {
           MeasureSpec.makeMeasureSpec(getMeasuredHeight() + topInset, MeasureSpec.EXACTLY);
       super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
+
+    // Set our minimum height to enable proper AppBarLayout collapsing
+    if (toolbar != null) {
+      if (toolbarDirectChild == null || toolbarDirectChild == this) {
+        setMinimumHeight(getHeightWithMargins(toolbar));
+      } else {
+        setMinimumHeight(getHeightWithMargins(toolbarDirectChild));
+      }
+    }
   }
 
   @Override
@@ -496,16 +505,10 @@ public class CollapsingToolbarLayout extends FrameLayout {
       }
     }
 
-    // Set our minimum height to enable proper AppBarLayout collapsing
     if (toolbar != null) {
       if (collapsingTitleEnabled && TextUtils.isEmpty(collapsingTextHelper.getText())) {
         // If we do not currently have a title, try and grab it from the Toolbar
         setTitle(toolbar.getTitle());
-      }
-      if (toolbarDirectChild == null || toolbarDirectChild == this) {
-        setMinimumHeight(getHeightWithMargins(toolbar));
-      } else {
-        setMinimumHeight(getHeightWithMargins(toolbarDirectChild));
       }
     }
 
@@ -521,9 +524,9 @@ public class CollapsingToolbarLayout extends FrameLayout {
     final ViewGroup.LayoutParams lp = view.getLayoutParams();
     if (lp instanceof MarginLayoutParams) {
       final MarginLayoutParams mlp = (MarginLayoutParams) lp;
-      return view.getHeight() + mlp.topMargin + mlp.bottomMargin;
+      return view.getMeasuredHeight() + mlp.topMargin + mlp.bottomMargin;
     }
-    return view.getHeight();
+    return view.getMeasuredHeight();
   }
 
   @NonNull
