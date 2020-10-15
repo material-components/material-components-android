@@ -7,7 +7,7 @@ iconId: picker
 path: /catalog/time-pickers/
 -->
 
-## Time Pickers
+# Time Pickers
 
 Time Pickers allow users to select a single time.
 
