@@ -16,76 +16,18 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical"
+  tools:targetApi="lollipop">
+
+  <FrameLayout
+    android:id="@+id/fragment_container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    tools:targetApi="lollipop">
+    android:layout_height="0dp"
+    android:layout_weight="1" />
 
-  <FrameLayout
-      android:id="@+id/fragment_container"
-      android:layout_width="match_parent"
-      android:layout_height="0dp"
-      android:layout_weight="1"/>
+  <include layout="@layout/cat_transition_shared_axis_controls" />
 
-  <FrameLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:padding="16dp">
-
-    <Button
-        android:id="@+id/back_button"
-        style="?attr/borderlessButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:enabled="false"
-        android:text="@string/cat_transition_shared_axis_back"/>
-
-    <Button
-        android:id="@+id/next_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:text="@string/cat_transition_shared_axis_next"/>
-  </FrameLayout>
-
-  <View
-      android:layout_width="match_parent"
-      android:layout_height="1dp"
-      android:background="@android:color/white"
-      android:backgroundTint="?attr/colorControlHighlight"/>
-
-  <RadioGroup
-      android:id="@+id/radio_button_group_direction"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center_horizontal"
-      android:orientation="horizontal">
-
-    <RadioButton
-        android:id="@+id/radio_button_axis_x"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:checked="true"
-        android:text="@string/cat_transition_shared_axis_x"/>
-
-    <RadioButton
-        android:id="@+id/radio_button_axis_y"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:text="@string/cat_transition_shared_axis_y"/>
-
-    <RadioButton
-        android:id="@+id/radio_button_axis_z"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:text="@string/cat_transition_shared_axis_z"/>
-  </RadioGroup>
 </LinearLayout>

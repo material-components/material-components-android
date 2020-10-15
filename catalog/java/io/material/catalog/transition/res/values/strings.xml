@@ -75,6 +75,7 @@ Phasellus in aliquet mi. Pellentesque habitant morbi tristique senectus et netus
   <string name="cat_transition_fade_through_photo_count">123 photos</string>
 
   <string name="cat_transition_shared_axis_title">Shared Axis</string>
+  <string name="cat_transition_shared_axis_view_title">Shared Axis (View)</string>
   <string name="cat_transition_shared_axis_back">Back</string>
   <string name="cat_transition_shared_axis_next">Next</string>
   <string name="cat_transition_shared_axis_x">X</string>

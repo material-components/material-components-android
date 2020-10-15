@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 The Android Open Source Project
+ * Copyright 2020 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,67 +19,66 @@ package io.material.catalog.transition;
 import io.material.catalog.R;
 
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.transition.TransitionManager;
 import com.google.android.material.transition.MaterialSharedAxis;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.OnBackPressedHandler;
 
-/** A fragment that displays the Shared Axis Transition demo for the Catalog app. */
-public class TransitionSharedAxisDemoFragment extends DemoFragment implements OnBackPressedHandler {
+/** A fragment that displays the Shared Axis Transition (View) demo for the Catalog app. */
+public class TransitionSharedAxisViewDemoFragment extends DemoFragment
+    implements OnBackPressedHandler {
 
-  private static final int LAYOUT_RES_ID_START = R.layout.cat_transition_shared_axis_start_fragment;
-  private static final int LAYOUT_RES_ID_END = R.layout.cat_transition_shared_axis_end_fragment;
+  private ViewGroup container;
+  private View startView;
+  private View endView;
 
   private SharedAxisHelper sharedAxisHelper;
 
   @Override
+  @NonNull
   public View onCreateDemoView(
       @NonNull LayoutInflater layoutInflater,
       @Nullable ViewGroup viewGroup,
       @Nullable Bundle bundle) {
     return layoutInflater.inflate(
-        R.layout.cat_transition_shared_axis_fragment, viewGroup, false /* attachToRoot */);
+        R.layout.cat_transition_shared_axis_view_fragment, viewGroup, false /* attachToRoot */);
   }
 
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle bundle) {
     sharedAxisHelper = new SharedAxisHelper(view.findViewById(R.id.controls_layout));
+    container = view.findViewById(R.id.container);
+    startView = view.findViewById(R.id.start_view);
+    endView = view.findViewById(R.id.end_view);
 
-    replaceFragment(LAYOUT_RES_ID_START);
-
-    sharedAxisHelper.setBackButtonOnClickListener(v -> replaceFragment(LAYOUT_RES_ID_START));
-    sharedAxisHelper.setNextButtonOnClickListener(v -> replaceFragment(LAYOUT_RES_ID_END));
+    sharedAxisHelper.setBackButtonOnClickListener(v -> switchView());
+    sharedAxisHelper.setNextButtonOnClickListener(v -> switchView());
   }
 
   @Override
   public boolean onBackPressed() {
-    if (requireView().findViewById(R.id.end_root) != null) {
-      replaceFragment(LAYOUT_RES_ID_START);
+    if (!isStartViewShowing()) {
+      switchView();
       return true;
     }
     return false;
   }
 
-  private void replaceFragment(@LayoutRes int layoutResId) {
-    boolean entering = layoutResId == LAYOUT_RES_ID_END;
+  private void switchView() {
+    boolean startViewShowing = isStartViewShowing();
 
-    Fragment fragment = TransitionSimpleLayoutFragment.newInstance(layoutResId);
-    // Set the transition as the Fragment's enter transition. This will be used when the fragment
-    // is added to the container and re-used when the fragment is removed from the container.
-    fragment.setEnterTransition(createTransition(entering));
+    // Change the visibility of the start and end views, animating using a shared axis transition.
+    MaterialSharedAxis sharedAxis = createTransition(startViewShowing);
+    TransitionManager.beginDelayedTransition(container, sharedAxis);
+    startView.setVisibility(startViewShowing ? View.GONE : View.VISIBLE);
+    endView.setVisibility(startViewShowing ? View.VISIBLE : View.GONE);
 
-    getChildFragmentManager()
-        .beginTransaction()
-        .replace(R.id.fragment_container, fragment)
-        .commit();
-
-    sharedAxisHelper.updateButtonsEnabled(!entering);
+    sharedAxisHelper.updateButtonsEnabled(!startViewShowing);
   }
 
   private MaterialSharedAxis createTransition(boolean entering) {
@@ -88,10 +87,14 @@ public class TransitionSharedAxisDemoFragment extends DemoFragment implements On
 
     // Add targets for this transition to explicitly run transitions only on these views. Without
     // targeting, a MaterialSharedAxis transition would be run for every view in the
-    // Fragment's layout.
-    transition.addTarget(R.id.start_root);
-    transition.addTarget(R.id.end_root);
+    // the ViewGroup's layout.
+    transition.addTarget(startView);
+    transition.addTarget(endView);
 
     return transition;
+  }
+
+  private boolean isStartViewShowing() {
+    return startView.getVisibility() == View.VISIBLE;
   }
 }

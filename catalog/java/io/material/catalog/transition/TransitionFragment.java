@@ -90,6 +90,12 @@ public class TransitionFragment extends DemoLandingFragment {
                 return new TransitionSharedAxisDemoFragment();
               }
             },
+            new Demo(R.string.cat_transition_shared_axis_view_title) {
+              @Override
+              public Fragment createFragment() {
+                return new TransitionSharedAxisViewDemoFragment();
+              }
+            },
             new Demo(R.string.cat_transition_fade_through_title) {
               @Override
               public Fragment createFragment() {

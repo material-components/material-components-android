@@ -19,6 +19,7 @@ package com.google.android.material.transition;
 import static com.google.android.material.transition.TransitionUtils.lerp;
 
 import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.view.View;
@@ -30,7 +31,7 @@ import androidx.annotation.Nullable;
 /** A class that configures and is able to provide an {@link Animator} that fades a view. */
 public final class FadeProvider implements VisibilityAnimatorProvider {
 
-  private float incomingEndThreshold = 1f;
+  private float incomingEndThreshold = 1F;
 
   /**
    * Get the fraction at which the appearing fade animation will end between 0 and 1.
@@ -56,23 +57,27 @@ public final class FadeProvider implements VisibilityAnimatorProvider {
   @Nullable
   @Override
   public Animator createAppear(@NonNull ViewGroup sceneRoot, @NonNull View view) {
+    float originalAlpha = view.getAlpha();
     return createFadeAnimator(
         view,
-        /* startValue= */ 0f,
-        /* endValue= */ 1f,
+        /* startValue= */ 0F,
+        /* endValue= */ originalAlpha,
         /* startFraction= */ 0F,
-        /* endFraction=*/ incomingEndThreshold);
+        /* endFraction=*/ incomingEndThreshold,
+        originalAlpha);
   }
 
   @Nullable
   @Override
   public Animator createDisappear(@NonNull ViewGroup sceneRoot, @NonNull View view) {
+    float originalAlpha = view.getAlpha();
     return createFadeAnimator(
         view,
-        /* startValue= */ 1f,
-        /* endValue= */ 0f,
+        /* startValue= */ originalAlpha,
+        /* endValue= */ 0F,
         /* startFraction= */ 0F,
-        /* endFraction=*/ 1F);
+        /* endFraction=*/ 1F,
+        originalAlpha);
   }
 
   private static Animator createFadeAnimator(
@@ -80,14 +85,23 @@ public final class FadeProvider implements VisibilityAnimatorProvider {
       final float startValue,
       final float endValue,
       final @FloatRange(from = 0.0, to = 1.0) float startFraction,
-      final @FloatRange(from = 0.0, to = 1.0) float endFraction) {
-    ValueAnimator animator = ValueAnimator.ofFloat(0f, 1f);
+      final @FloatRange(from = 0.0, to = 1.0) float endFraction,
+      final float originalAlpha) {
+    ValueAnimator animator = ValueAnimator.ofFloat(0F, 1F);
     animator.addUpdateListener(
         new AnimatorUpdateListener() {
           @Override
           public void onAnimationUpdate(ValueAnimator animation) {
             float progress = (float) animation.getAnimatedValue();
             view.setAlpha(lerp(startValue, endValue, startFraction, endFraction, progress));
+          }
+        });
+    animator.addListener(
+        new AnimatorListenerAdapter() {
+          @Override
+          public void onAnimationEnd(Animator animation) {
+            // Restore the view's alpha back to its original value.
+            view.setAlpha(originalAlpha);
           }
         });
     return animator;
