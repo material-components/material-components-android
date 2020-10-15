@@ -1724,15 +1724,17 @@ abstract class BaseSlider<
             && lastEvent.getActionMasked() == MotionEvent.ACTION_DOWN
             && abs(lastEvent.getX() - event.getX()) <= scaledTouchSlop
             && abs(lastEvent.getY() - event.getY()) <= scaledTouchSlop) {
-          pickActiveThumb();
+          if (pickActiveThumb()) {
+            onStartTrackingTouch();
+          }
         }
 
         if (activeThumbIdx != -1) {
           snapTouchPosition();
           activeThumbIdx = -1;
+          onStopTrackingTouch();
         }
         ensureLabelsRemoved();
-        onStopTrackingTouch();
         invalidate();
         break;
       default:
