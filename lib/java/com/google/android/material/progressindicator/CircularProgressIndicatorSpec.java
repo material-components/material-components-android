@@ -56,8 +56,8 @@ public class CircularProgressIndicatorSpec implements AnimatedVisibilityChangeBe
   /** The animation direction to hide the indicator and track. */
   @HideBehavior public int hideBehavior;
 
-  // TODO(b/169262029) Remove once ProgressIndicator is removed.
   public CircularProgressIndicatorSpec(@NonNull ProgressIndicatorSpec progressIndicatorSpec) {
+    // TODO(b/169262029) Remove this constructor once ProgressIndicator is removed.
     if (progressIndicatorSpec.indicatorType != ProgressIndicator.CIRCULAR) {
       throw new IllegalArgumentException(
           "Only CIRCULAR type ProgressIndicatorSpec can be converted into"
