@@ -62,8 +62,13 @@ public final class ProgressIndicator extends ProgressBar {
 
   /** The indicator appears as a horizontal bar. */
   public static final int LINEAR = 0;
-  /** The indicator appears as a circular spinner. */
-  public static final int CIRCULAR = 1;
+  /**
+   * The indicator appears as a circular spinner.
+   *
+   * @deprecated ProgressIndicator does no longer support circular type. Please use {@link
+   *     CircularProgressIndicator} instead.
+   */
+  @Deprecated public static final int CIRCULAR = 1;
 
   // Constants for show/hide animation.
 

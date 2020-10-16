@@ -46,7 +46,7 @@
   </style>
 
   <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
-  <!-- TODO(b/169262612) Deprecate when LinearProgressIndicator is implemented. -->
+  <!-- {@deprecated Use CircularProgressIndicator instead.} -->
   <style name="Base.Widget.MaterialComponents.ProgressIndicator.Circular">
     <item name="indicatorType">circular</item>
     <item name="trackColor">@android:color/transparent</item>
@@ -68,13 +68,13 @@
   </style>
 
   <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
-  <!-- TODO(b/169262612) Deprecate when LinearProgressIndicator is implemented. -->
+  <!-- {@deprecated Use CircularProgressIndicator instead.} -->
   <style name="Widget.MaterialComponents.ProgressIndicator.Circular.Determinate" parent="Base.Widget.MaterialComponents.ProgressIndicator.Circular">
     <item name="android:indeterminate">false</item>
   </style>
 
   <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
-  <!-- TODO(b/169262612) Deprecate when LinearProgressIndicator is implemented. -->
+  <!-- {@deprecated Use CircularProgressIndicator instead.} -->
   <style name="Widget.MaterialComponents.ProgressIndicator.Circular.Indeterminate" parent="Base.Widget.MaterialComponents.ProgressIndicator.Circular">
     <item name="android:indeterminate">true</item>
   </style>

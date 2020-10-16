@@ -71,10 +71,10 @@
   <!-- TODO(b/169262416) Deprecate when LinearProgressIndicator is implemented. -->
   <public name="Widget.MaterialComponents.ProgressIndicator.Linear.Indeterminate" type="style" />
   <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
-  <!-- TODO(b/169262612) Deprecate when LinearProgressIndicator is implemented. -->
+  <!-- {@deprecated Use CircularProgressIndicator instead.} -->
   <public name="Widget.MaterialComponents.ProgressIndicator.Circular.Determinate" type="style" />
   <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
-  <!-- TODO(b/169262612) Deprecate when LinearProgressIndicator is implemented. -->
+  <!-- {@deprecated Use CircularProgressIndicator instead.} -->
   <public name="Widget.MaterialComponents.ProgressIndicator.Circular.Indeterminate" type="style" />
 
 </resources>
