@@ -24,6 +24,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.res.ColorStateList;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import androidx.fragment.app.DialogFragment;
 import android.text.TextUtils;
@@ -37,6 +38,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.IntDef;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
@@ -54,15 +56,6 @@ import java.util.Set;
 /** A {@link Dialog} with a clock display and a clock face to choose the time. */
 public final class MaterialTimePicker extends DialogFragment {
 
-  private static final Pair<Integer, Integer> CLOCK_BUTTON_DATA =
-      new Pair<>(
-          R.drawable.ic_clock_black_24dp, R.string.material_timepicker_clock_mode_description);
-
-  private static final Pair<Integer, Integer> KEYBOARD_BUTTON_DATA =
-      new Pair<>(
-          R.drawable.ic_keyboard_black_24dp,
-          R.string.material_timepicker_text_input_mode_description);
-
   private final Set<OnClickListener> positiveButtonListeners = new LinkedHashSet<>();
   private final Set<OnClickListener> negativeButtonListeners = new LinkedHashSet<>();
   private final Set<OnCancelListener> cancelListeners = new LinkedHashSet<>();
@@ -74,6 +67,10 @@ public final class MaterialTimePicker extends DialogFragment {
   @Nullable private TimePickerClockPresenter timePickerClockPresenter;
   @Nullable private TimePickerTextInputPresenter timePickerTextInputPresenter;
   @Nullable private TimePickerPresenter activePresenter;
+
+  @DrawableRes private int keyboardIcon;
+  @DrawableRes private int clockIcon;
+
   private int titleResId = 0;
   private String titleText;
 
@@ -138,7 +135,23 @@ public final class MaterialTimePicker extends DialogFragment {
             context, R.attr.colorSurface, MaterialTimePicker.class.getCanonicalName());
 
     MaterialShapeDrawable background =
-        new MaterialShapeDrawable(context, null, 0, R.style.Widget_MaterialComponents_TimePicker);
+        new MaterialShapeDrawable(
+            context,
+            null,
+            R.attr.materialTimePickerStyle,
+            R.style.Widget_MaterialComponents_TimePicker);
+
+    TypedArray a =
+        context.obtainStyledAttributes(
+            null,
+            R.styleable.MaterialTimePicker,
+            R.attr.materialTimePickerStyle,
+            R.style.Widget_MaterialComponents_TimePicker);
+
+    clockIcon = a.getResourceId(R.styleable.MaterialTimePicker_clockIcon, 0);
+    keyboardIcon = a.getResourceId(R.styleable.MaterialTimePicker_keyboardIcon, 0);
+
+    a.recycle();
 
     background.initializeElevationOverlay(context);
     background.setFillColor(ColorStateList.valueOf(surfaceColor));
@@ -296,15 +309,15 @@ public final class MaterialTimePicker extends DialogFragment {
     return timePickerTextInputPresenter;
   }
 
-  private static Pair<Integer, Integer> dataForMode(@InputMode int mode) {
+  private Pair<Integer, Integer> dataForMode(@InputMode int mode) {
     switch (mode) {
       case INPUT_MODE_KEYBOARD:
-        return CLOCK_BUTTON_DATA;
+        return new Pair<>(clockIcon, R.string.material_timepicker_clock_mode_description);
       case INPUT_MODE_CLOCK:
-        return KEYBOARD_BUTTON_DATA;
-      default:
-        throw new IllegalArgumentException("no icon for mode: " + mode);
+        return new Pair<>(keyboardIcon, R.string.material_timepicker_text_input_mode_description);
     }
+
+    throw new IllegalArgumentException("no icon for mode: " + mode);
   }
 
   @Nullable

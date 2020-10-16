@@ -19,6 +19,8 @@
 
   <style name="Widget.MaterialComponents.TimePicker" parent="" >
     <item name="shapeAppearance">?shapeAppearanceMediumComponent</item>
+    <item name="keyboardIcon">@drawable/ic_keyboard_black_24dp</item>
+    <item name="clockIcon">@drawable/ic_clock_black_24dp</item>
   </style>
 
   <style name="Widget.MaterialComponents.TimePicker.Display" parent="Widget.MaterialComponents.Chip.Choice">

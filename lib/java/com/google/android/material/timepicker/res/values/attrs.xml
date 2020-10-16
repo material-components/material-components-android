@@ -17,27 +17,38 @@
 
 <resources>
 
-  <attr format="dimension" name="materialCircleRadius"/>
-  <attr name="materialTimePickerTheme" format="reference"/>
+  <attr name="materialCircleRadius" format="dimension" />
+  <attr name="materialTimePickerStyle" format="reference" />
+  <attr name="materialTimePickerTheme" format="reference" />
+  <attr name="keyboardIcon" format="reference" />
+
+  <attr name="clockIcon" format="reference" />
 
   <declare-styleable name="RadialViewGroup">
 
     <!-- Radius indicating how far away from the center of the group the
          children are positioned -->
-    <attr name="materialCircleRadius"/>
+    <attr name="materialCircleRadius" />
+  </declare-styleable>
+
+  <declare-styleable name="MaterialTimePicker">
+
+    <attr name="keyboardIcon" />
+    <attr name="clockIcon" />
+
   </declare-styleable>
 
 
   <declare-styleable name="ClockHandView">
 
-    <attr name="materialCircleRadius"/>
+    <attr name="materialCircleRadius" />
 
-    <attr format="dimension" name="selectorSize"/>
+    <attr name="selectorSize" format="dimension" />
   </declare-styleable>
 
   <declare-styleable name="ClockFaceView">
 
-    <attr format="color" name="valueTextColor" />
+    <attr name="valueTextColor" format="color" />
 
   </declare-styleable>
 
