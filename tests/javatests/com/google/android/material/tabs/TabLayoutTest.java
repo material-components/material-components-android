@@ -438,8 +438,8 @@ public class TabLayoutTest {
               int tabTwoLeft = tabs1.getTabAt(/* index= */ 2).view.getLeft();
               int tabTwoRight = tabs1.getTabAt(/* index= */ 2).view.getRight();
 
-              assertEquals(tabs1.slidingTabIndicator.indicatorLeft, tabTwoLeft);
-              assertEquals(tabs1.slidingTabIndicator.indicatorRight, tabTwoRight);
+              assertEquals(tabs1.tabSelectedIndicator.getBounds().left, tabTwoLeft);
+              assertEquals(tabs1.tabSelectedIndicator.getBounds().right, tabTwoRight);
             });
 
     IdlingRegistry.getInstance().unregister(idler);

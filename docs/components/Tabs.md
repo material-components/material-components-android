@@ -374,14 +374,15 @@ the active tab item.
 
 ### Tab indicator attributes
 
-&nbsp;                 | Attribute                       | Related method(s)                                            | Default value
----------------------- | ------------------------------- | ------------------------------------------------------------ | -------------
-**Color**              | `tabIndicatorColor`             | `setSelectedTabIndicatorColor`                               | `colorPrimary`
-**Drawable**           | `tabIndicator`                  | `setSelectedTabIndicator`<br>`getSelectedTabIndicator`       | [`mtrl_tabs_default_indicator`](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/tabs/res/drawable/mtrl_tabs_default_indicator.xml)
-**Height**             | `tabIndicatorHeight`            | `setSelectedTabIndicatorHeight`                              | `2dp`
-**Full width**         | `tabIndicatorFullWidth`         | `setTabIndicatorFullWidth`<br>`isTabIndicatorFullWidth`      | `true`
-**Gravity**            | `tabIndicatorGravity`           | `setSelectedTabIndicatorGravity`<br>`getTabIndicatorGravity` | `bottom`
-**Animation duration** | `tabIndicatorAnimationDuration` | N/A                                                          | `250`
+&nbsp;                 | Attribute                       | Related method(s)                                                   | Default value
+---------------------- | ------------------------------- | ------------------------------------------------------------------- | -------------
+**Color**              | `tabIndicatorColor`             | `setSelectedTabIndicatorColor`                                      | `colorPrimary`
+**Drawable**           | `tabIndicator`                  | `setSelectedTabIndicator`<br>`getSelectedTabIndicator`              | [`mtrl_tabs_default_indicator`](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/tabs/res/drawable/mtrl_tabs_default_indicator.xml)
+**Height**             | `tabIndicatorHeight`            | `setSelectedTabIndicatorHeight`                                     | `2dp`
+**Full width**         | `tabIndicatorFullWidth`         | `setTabIndicatorFullWidth`<br>`isTabIndicatorFullWidth`             | `true`
+**Animation mode**     | `tabIndicatorAnimationMode`     | `setTabIndicatorAnimationMode`<br>`getTabIndicatorAnimationMode`    | `linear`
+**Gravity**            | `tabIndicatorGravity`           | `setSelectedTabIndicatorGravity`<br>`getTabIndicatorGravity`        | `bottom`
+**Animation duration** | `tabIndicatorAnimationDuration` | N/A                                                                 | `250`
 
 ### Styles
 

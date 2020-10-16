@@ -30,9 +30,12 @@
   <string name="cat_tabs_icon_switch_label">Show icons</string>
   <string name="cat_tabs_labels_switch_label">Show labels</string>
   <string name="cat_tabs_gravity_selector_label">Gravity</string>
+  <string name="cat_tabs_animation_mode_selector_label">Animation mode</string>
   <string name="cat_tabs_gravity_start">Start</string>
   <string name="cat_tabs_gravity_fill">Fill</string>
   <string name="cat_tabs_gravity_center">Center</string>
+  <string name="cat_tabs_animation_mode_linear">Linear</string>
+  <string name="cat_tabs_animation_mode_elastic">Elastic</string>
   <string name="cat_tabs_inline_switch_label">Inline</string>
   <string name="cat_tabs_indicator_spinner_label">Indicator</string>
   <string name="cat_tabs_legacy_tabs_label">Legacy Tabs</string>
