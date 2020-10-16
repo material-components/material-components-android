@@ -31,13 +31,13 @@
 
   <Button
     android:id="@+id/material_clock_period_am_button"
-    style="@style/Widget.MaterialComponents.TimePicker.Button"
+    style="?attr/materialButtonOutlinedStyle"
     android:layout_width="0dp"
     android:layout_weight="1"
     android:text="@string/material_timepicker_am" />
   <Button
     android:id="@+id/material_clock_period_pm_button"
-    style="@style/Widget.MaterialComponents.TimePicker.Button"
+    style="?attr/materialButtonOutlinedStyle"
     android:layout_width="0dp"
     android:layout_weight="1"
     android:text="@string/material_timepicker_pm" />
