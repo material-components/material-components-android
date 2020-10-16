@@ -31,6 +31,16 @@
     <item name="materialThemeOverlay">@style/ThemeOverlay.MaterialComponents.TimePicker.Display</item>
   </style>
 
+  <style name="Widget.MaterialComponents.TimePicker.ImageButton" parent="">
+    <item name="android:minWidth">?attr/minTouchTargetSize</item>
+    <item name="android:minHeight">?attr/minTouchTargetSize</item>
+    <item name="android:paddingLeft">16dp</item>
+    <item name="android:paddingRight">16dp</item>
+    <item name="iconPadding">0dp</item>
+    <item name="iconTint">@color/material_timepicker_modebutton_tint</item>
+    <item name="rippleColor">@color/mtrl_on_surface_ripple_color</item>
+  </style>
+
   <!-- Disabling elevation overlays because when chip's default
        background/surface composite are combined with elevation overlays in a
        highly elevated dialog, the resulting color becomes too light and causes

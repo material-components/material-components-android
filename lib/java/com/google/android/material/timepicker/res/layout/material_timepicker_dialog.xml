@@ -94,17 +94,11 @@
     app:layout_constraintTop_toBottomOf="@id/barrier" />
 
   <com.google.android.material.button.MaterialButton
+    style="?attr/imageButtonStyle"
     android:id="@+id/material_timepicker_mode_button"
-    style="?attr/borderlessButtonStyle"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginStart="12dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:minWidth="48dp"
-    app:iconTint="@color/material_timepicker_modebutton_tint"
-    app:rippleColor="@color/mtrl_on_surface_ripple_color"
-    app:iconPadding="0dp"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="@id/material_timepicker_ok_button" />
 
