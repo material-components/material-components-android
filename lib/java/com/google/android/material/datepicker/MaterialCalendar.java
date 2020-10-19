@@ -28,7 +28,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.LinearSnapHelper;
+import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration;
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener;
@@ -221,7 +221,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
     }
 
     if (!MaterialDatePicker.isFullscreen(themedContext)) {
-      new LinearSnapHelper().attachToRecyclerView(recyclerView);
+      new PagerSnapHelper().attachToRecyclerView(recyclerView);
     }
     recyclerView.scrollToPosition(monthsPagerAdapter.getPosition(current));
     return root;

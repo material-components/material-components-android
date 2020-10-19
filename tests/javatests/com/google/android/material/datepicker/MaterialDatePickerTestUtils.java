@@ -17,10 +17,6 @@ package com.google.android.material.datepicker;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.swipeDown;
-import static androidx.test.espresso.action.ViewActions.swipeLeft;
-import static androidx.test.espresso.action.ViewActions.swipeRight;
-import static androidx.test.espresso.action.ViewActions.swipeUp;
 import static androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static androidx.test.espresso.matcher.ViewMatchers.withTagValue;
@@ -41,6 +37,11 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import androidx.annotation.VisibleForTesting;
 import androidx.test.espresso.ViewInteraction;
+import androidx.test.espresso.action.CoordinatesProvider;
+import androidx.test.espresso.action.GeneralLocation;
+import androidx.test.espresso.action.GeneralSwipeAction;
+import androidx.test.espresso.action.Press;
+import androidx.test.espresso.action.Swipe;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 import java.util.Calendar;
@@ -215,9 +216,9 @@ public final class MaterialDatePickerTestUtils {
   public static void swipeEarlier(DialogFragment dialogFragment) {
     int orientation = getPagingOrientation(dialogFragment);
     if (orientation == LinearLayoutManager.HORIZONTAL) {
-      onMonthsGroup.perform(swipeRight());
+      onMonthsGroup.perform(swipeRightAction());
     } else {
-      onMonthsGroup.perform(swipeDown());
+      onMonthsGroup.perform(swipeDownAction());
     }
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
   }
@@ -225,11 +226,33 @@ public final class MaterialDatePickerTestUtils {
   static void swipeLater(DialogFragment dialogFragment) {
     int orientation = getPagingOrientation(dialogFragment);
     if (orientation == LinearLayoutManager.HORIZONTAL) {
-      onMonthsGroup.perform(swipeLeft());
+      onMonthsGroup.perform(swipeLeftAction());
     } else {
-      onMonthsGroup.perform(swipeUp());
+      onMonthsGroup.perform(swipeUpAction());
     }
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+  }
+
+  private static GeneralSwipeAction swipeLeftAction() {
+    return swipeAction(GeneralLocation.CENTER_RIGHT, GeneralLocation.CENTER_LEFT);
+  }
+
+  private static GeneralSwipeAction swipeRightAction() {
+    return swipeAction(GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER_RIGHT);
+  }
+
+  private static GeneralSwipeAction swipeUpAction() {
+    return swipeAction(GeneralLocation.BOTTOM_CENTER, GeneralLocation.TOP_CENTER);
+  }
+
+  private static GeneralSwipeAction swipeDownAction() {
+    return swipeAction(GeneralLocation.TOP_CENTER, GeneralLocation.BOTTOM_CENTER);
+  }
+
+  private static GeneralSwipeAction swipeAction(
+      CoordinatesProvider startCoordinatesProvider, CoordinatesProvider endCoordinatesProvider) {
+    return new GeneralSwipeAction(
+        Swipe.SLOW, startCoordinatesProvider, endCoordinatesProvider, Press.FINGER);
   }
 
   static void clickHeaderToggle(Fragment fragment) {
