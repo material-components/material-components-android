@@ -207,6 +207,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     @PluralsRes private int contentDescriptionQuantityStrings;
     @StringRes private int contentDescriptionExceedsMaxBadgeNumberRes;
     @BadgeGravity private int badgeGravity;
+    private boolean isVisible;
 
     @Dimension(unit = Dimension.PX)
     private int horizontalOffset;
@@ -225,6 +226,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       contentDescriptionQuantityStrings = R.plurals.mtrl_badge_content_description;
       contentDescriptionExceedsMaxBadgeNumberRes =
           R.string.mtrl_exceed_max_badge_number_content_description;
+      isVisible = true;
     }
 
     protected SavedState(@NonNull Parcel in) {
@@ -238,6 +240,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       badgeGravity = in.readInt();
       horizontalOffset = in.readInt();
       verticalOffset = in.readInt();
+      isVisible = in.readInt() != 0;
     }
 
     public static final Creator<SavedState> CREATOR =
@@ -272,6 +275,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       dest.writeInt(badgeGravity);
       dest.writeInt(horizontalOffset);
       dest.writeInt(verticalOffset);
+      dest.writeInt(isVisible ? 1 : 0);
     }
   }
 
@@ -335,6 +339,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
    */
   public void setVisible(boolean visible) {
     setVisible(visible, /* restart= */ false);
+    savedState.isVisible = visible;
     // When hiding a badge in pre-API 18, invalidate the custom parent in order to trigger a draw
     // pass to remove this badge from its foreground.
     if (BadgeUtils.USE_COMPAT_PARENT && getCustomBadgeParent() != null && !visible) {
@@ -362,6 +367,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
 
     setHorizontalOffset(savedState.horizontalOffset);
     setVerticalOffset(savedState.verticalOffset);
+    setVisible(savedState.isVisible);
   }
 
   private void loadDefaultStateFromAttributes(
