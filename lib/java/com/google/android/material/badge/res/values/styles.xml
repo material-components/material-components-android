@@ -20,6 +20,13 @@
     <item name="backgroundColor">?attr/colorError</item>
     <item name="maxCharacterCount">@integer/mtrl_badge_max_character_count</item>
     <item name="badgeGravity">TOP_END</item>
+    <item name="badgeRadius">@dimen/mtrl_badge_radius</item>
+    <item name="badgeWithTextRadius">@dimen/mtrl_badge_with_text_radius</item>
+    <item name="badgeStrokeWidth">0dp</item>
+    <item name="shapeAppearance">?attr/shapeAppearanceSmallComponent</item>
+    <item name="shapeAppearanceOverlay">
+      @style/ShapeAppearanceOverlay.MaterialComponents.Badge
+    </item>
   </style>
 
   <style name="Base.TextAppearance.MaterialComponents.Badge" parent="TextAppearance.AppCompat">
@@ -34,4 +41,9 @@
   </style>
 
   <style name="TextAppearance.MaterialComponents.Badge" parent="Base.TextAppearance.MaterialComponents.Badge"/>
+
+  <style name="ShapeAppearanceOverlay.MaterialComponents.Badge" parent="">
+    <item name="cornerSize">50%</item>
+  </style>
+
 </resources>

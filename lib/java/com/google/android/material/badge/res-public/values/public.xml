@@ -23,5 +23,9 @@
   <public name="badgeGravity" type="attr"/>
   <public name="horizontalOffset" type="attr"/>
   <public name="verticalOffset" type="attr"/>
+  <public name="badgeRadius" type="attr"/>
+  <public name="badgeRadiusWithText" type="attr"/>
+  <public name="badgeStrokeColor" type="attr"/>
+  <public name="badgeStrokeWidth" type="attr"/>
   <public name="Widget.MaterialComponents.Badge" type="style"/>
 </resources>
