@@ -424,7 +424,11 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
       if (background != this.getBackground()) {
         Log.w(
             LOG_TAG,
-            "Do not set the background; MaterialButton manages its own background drawable.");
+            "MaterialButton manages its own background to control elevation, shape, color and"
+                + " states. Consider using backgroundTint, shapeAppearance and other attributes"
+                + " where available. A custom background will ignore these attributes and you"
+                + " should consider handling interaction states such as pressed, focused and"
+                + " disabled");
         materialButtonHelper.setBackgroundOverwritten();
         super.setBackgroundDrawable(background);
       } else {
