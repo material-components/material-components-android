@@ -14,7 +14,7 @@ that are published daily via
 [GitHub Packages](https://help.github.com/en/packages/publishing-and-managing-packages/about-github-packages).
 
 To do so, you need to
-[create a GitHub access token](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line#creating-a-token),
+[create a GitHub access token](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line#creating-a-token) with the `read:packages` scope,
 and add the following to your `build.gradle` Maven repositories:
 
 ```groovy
