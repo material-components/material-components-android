@@ -112,7 +112,7 @@ public class CircularProgressIndicator extends BaseProgressIndicator {
   }
 
   /**
-   * Returns the inset of circular progress indicator.
+   * Returns the inset of this progress indicator.
    *
    * @see #setIndicatorInset(int)
    * @attr ref
@@ -124,7 +124,7 @@ public class CircularProgressIndicator extends BaseProgressIndicator {
   }
 
   /**
-   * Sets the inset of this progress indicator, if it's circular type.
+   * Sets the inset of this progress indicator.
    *
    * @param indicatorInset The new inset in pixels.
    * @see #getIndicatorInset()
@@ -139,7 +139,7 @@ public class CircularProgressIndicator extends BaseProgressIndicator {
   }
 
   /**
-   * Returns the radius of circular progress indicator.
+   * Returns the radius of this progress indicator.
    *
    * @see #setIndicatorRadius(int)
    * @attr ref
@@ -151,18 +151,34 @@ public class CircularProgressIndicator extends BaseProgressIndicator {
   }
 
   /**
-   * Sets the radius of this progress indicator, if it's circular type.
+   * Sets the radius of this progress indicator.
    *
    * @param indicatorRadius The new radius in pixels.
    * @see #getIndicatorrRadius()
    * @attr ref
    *     com.google.android.material.progressindicator.R.stylable#ProgressIndicator_circularRadius
+   * @throws IllegalArgumentException if new indicator radius is less than half of the indicator
+   *     size.
    */
   public void setIndicatorRadius(@Px int indicatorRadius) {
     if (spec.indicatorRadius != indicatorRadius) {
       spec.indicatorRadius = indicatorRadius;
+      spec.validateSpec();
       invalidate();
     }
+  }
+
+  /**
+   * Sets the indicator size of this progress indicator.
+   *
+   * @param indicatorSize The new indicator size in pixel.
+   * @throws IllegalArgumentException if indicator radius is less than half of the new indicator
+   *     size.
+   */
+  @Override
+  public void setIndicatorSize(int indicatorSize) {
+    super.setIndicatorSize(indicatorSize);
+    spec.validateSpec();
   }
 
   /**
@@ -170,7 +186,7 @@ public class CircularProgressIndicator extends BaseProgressIndicator {
    *
    * @see #setIndicatorDirection(int)
    * @attr ref
-   *     com.google.android.material.progressindicator.R.stylable#CircularProgressIndicator_indicatorDirection
+   *     com.google.android.material.progressindicator.R.stylable#CircularProgressIndicator_indicatorDirectionCircular
    */
   @IndicatorDirection
   public int getIndicatorDirection() {
@@ -178,12 +194,12 @@ public class CircularProgressIndicator extends BaseProgressIndicator {
   }
 
   /**
-   * Sets the indicator animatiing direction used in this progress indicator.
+   * Sets the indicator animating direction used in this progress indicator.
    *
    * @param indicatorDirection The new indicator direction.
    * @see #getIndicatorDirection()
    * @attr ref
-   *     com.google.android.material.progressindicator.R.stylable#CircularProgressIndicator_indicatorDirection
+   *     com.google.android.material.progressindicator.R.stylable#CircularProgressIndicator_indicatorDirectionCircular
    */
   public void setIndicatorDirection(@IndicatorDirection int indicatorDirection) {
     spec.indicatorDirection = indicatorDirection;
@@ -195,7 +211,7 @@ public class CircularProgressIndicator extends BaseProgressIndicator {
    *
    * @see #setShowBehavior(int)
    * @attr ref
-   *     com.google.android.material.progressindicator.R.stylable#CircularProgressIndicator_showBehavior
+   *     com.google.android.material.progressindicator.R.stylable#CircularProgressIndicator_showBehaviorCircular
    */
   @ShowBehavior
   public int getShowBehavior() {
@@ -208,7 +224,7 @@ public class CircularProgressIndicator extends BaseProgressIndicator {
    * @param showBehavior The new behavior of show animation.
    * @see #getShowBehavior()
    * @attr ref
-   *     com.google.android.material.progressindicator.R.stylable#CircularProgressIndicator_showBehavior
+   *     com.google.android.material.progressindicator.R.stylable#CircularProgressIndicator_showBehaviorCircular
    */
   public void setShowBehavior(@ShowBehavior int showBehavior) {
     spec.showBehavior = showBehavior;
@@ -220,7 +236,7 @@ public class CircularProgressIndicator extends BaseProgressIndicator {
    *
    * @see #setHideBehavior(int)
    * @attr ref
-   *     com.google.android.material.progressindicator.R.stylable#CircularProgressIndicator_hideBehavior
+   *     com.google.android.material.progressindicator.R.stylable#CircularProgressIndicator_hideBehaviorCircular
    */
   @HideBehavior
   public int getHideBehavior() {
@@ -233,7 +249,7 @@ public class CircularProgressIndicator extends BaseProgressIndicator {
    * @param hideBehavior The new behavior of hide animation.
    * @see #getHideBehavior()
    * @attr ref
-   *     com.google.android.material.progressindicator.R.stylable#CircularProgressIndicator_hideBehavior
+   *     com.google.android.material.progressindicator.R.stylable#CircularProgressIndicator_hideBehaviorCircular
    */
   public void setHideBehavior(@HideBehavior int hideBehavior) {
     spec.hideBehavior = hideBehavior;

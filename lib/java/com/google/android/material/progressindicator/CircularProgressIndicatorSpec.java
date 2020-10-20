@@ -143,7 +143,7 @@ public class CircularProgressIndicatorSpec implements AnimatedVisibilityChangeBe
     a.recycle();
   }
 
-  private void validateSpec() {
+  protected void validateSpec() {
     if (indicatorRadius < baseSpec.indicatorSize / 2) {
       // Throws an exception if circularRadius is less than half of the indicatorSize, which will
       // result in a part of the inner side of the indicator overshoots the center, and the visual
