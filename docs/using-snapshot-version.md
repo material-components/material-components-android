@@ -46,6 +46,24 @@ If you prefer to depend on a specific snapshot version, you can add
 all versions
 [here](https://github.com/material-components/material-components-android/packages/81484/versions)).
 
+You can also find the list of versions through the [GraphQL explorer](https://developer.github.com/v4/explorer/) with the following query:
+
+```graphql
+{
+  node(id: "MDE0OlBhY2thZ2VWZXJzaW9uMjMyNDc2OQ==") {
+    ... on PackageVersion {
+      id
+      version
+      files(last: 12, orderBy: {field: CREATED_AT, direction: ASC}) {
+        nodes {
+          name
+        }
+      }
+    }
+  }
+}
+```
+
 Alternatively, you could use
 [JitPack](https://jitpack.io/#material-components/material-components-android)
 to generate library releases based on specific commits.
