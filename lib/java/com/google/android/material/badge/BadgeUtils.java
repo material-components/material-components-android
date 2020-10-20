@@ -85,14 +85,17 @@ public class BadgeUtils {
       @NonNull View anchor,
       @Nullable FrameLayout customBadgeParent) {
     setBadgeDrawableBounds(badgeDrawable, anchor, customBadgeParent);
-    if (USE_COMPAT_PARENT && badgeDrawable.getCustomBadgeParent() == null) {
-      throw new IllegalArgumentException("Trying to reference null customBadgeParent");
-    }
+
     if (badgeDrawable.getCustomBadgeParent() != null) {
       badgeDrawable.getCustomBadgeParent().setForeground(badgeDrawable);
     } else {
-      anchor.getOverlay().add(badgeDrawable);
+      if (USE_COMPAT_PARENT) {
+        throw new IllegalArgumentException("Trying to reference null customBadgeParent");
+      } else {
+        anchor.getOverlay().add(badgeDrawable);
+      }
     }
+
   }
 
   /**
