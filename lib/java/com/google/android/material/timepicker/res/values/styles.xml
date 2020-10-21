@@ -34,13 +34,21 @@
   </style>
 
   <style name="Widget.MaterialComponents.TimePicker.ImageButton" parent="">
+    <item name="android:insetTop">0dp</item>
+    <item name="android:insetBottom">0dp</item>
     <item name="android:minWidth">?attr/minTouchTargetSize</item>
     <item name="android:minHeight">?attr/minTouchTargetSize</item>
-    <item name="android:paddingLeft">16dp</item>
-    <item name="android:paddingRight">16dp</item>
+    <item name="iconGravity">textStart</item>
     <item name="iconPadding">0dp</item>
     <item name="iconTint">@color/material_timepicker_modebutton_tint</item>
     <item name="rippleColor">@color/mtrl_on_surface_ripple_color</item>
+    <item name="shapeAppearance">@style/Widget.MaterialComponents.TimePicker.ImageButton.ShapeAppearance</item>
+  </style>
+
+
+  <style name="Widget.MaterialComponents.TimePicker.ImageButton.ShapeAppearance" parent="">
+    <item name="cornerSize">50%</item>
+    <item name="cornerFamily">rounded</item>
   </style>
 
   <!-- Disabling elevation overlays because when chip's default

@@ -41,6 +41,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       app:barrierDirection="bottom"
+      app:barrierMargin="@dimen/material_timepicker_dialog_buttons_margin_top"
       app:constraint_referenced_ids="material_textinput_timepicker, material_timepicker_view" />
 
   <com.google.android.material.timepicker.TimePickerView
@@ -70,36 +71,37 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent" />
 
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/material_timepicker_mode_button"
+    style="?attr/imageButtonStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="12dp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/barrier" />
+
   <Button
     android:id="@+id/material_timepicker_cancel_button"
     style="?attr/borderlessButtonStyle"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_marginTop="2dp"
+    android:layout_marginEnd="8dp"
     android:minWidth="72dp"
     android:text="@android:string/cancel"
-    android:layout_marginEnd="8dp"
     app:layout_constraintEnd_toStartOf="@id/material_timepicker_ok_button"
-    app:layout_constraintTop_toTopOf="@id/material_timepicker_ok_button" />
+    app:layout_constraintTop_toTopOf="@id/material_timepicker_mode_button" />
 
   <Button
     android:id="@+id/material_timepicker_ok_button"
     style="?attr/borderlessButtonStyle"
     android:layout_width="wrap_content"
-    android:minWidth="64dp"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/material_timepicker_dialog_buttons_margin_top"
+    android:layout_marginTop="2dp"
     android:layout_marginEnd="8dp"
+    android:minWidth="64dp"
     android:text="@android:string/ok"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/barrier" />
-
-  <com.google.android.material.button.MaterialButton
-    style="?attr/imageButtonStyle"
-    android:id="@+id/material_timepicker_mode_button"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="12dp"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="@id/material_timepicker_ok_button" />
+    app:layout_constraintTop_toTopOf="@id/material_timepicker_mode_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
