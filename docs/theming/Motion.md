@@ -615,10 +615,11 @@ override fun onCreate(savedInstanceState: Bundle?) {
 ```
 
 When you're ready to navigate from Activity A to Activity B, start Activity B
-like your normally would.
+like your normally would, passing in an `ActivityOptions` `Bundle`.
 
 ```kt
-startActivity(Intent(this, ActivityB::class.java))
+val bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
+startActivity(Intent(this, ActivityB::class.java), bundle)
 ```
 
 #### Transition between Views
@@ -855,10 +856,11 @@ override fun onCreate(savedInstanceState: Bundle?) {
 ```
 
 When you're ready to navigate from Activity A to Activity B, start Activity B as
-your normally would.
+your normally would, passing in an `ActivityOptions` `Bundle`.
 
 ```kt
-startActivity(Intent(this, ActivityB::class.java))
+val bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
+startActivity(Intent(this, ActivityB::class.java), bundle)
 ```
 
 #### Transition between Views
