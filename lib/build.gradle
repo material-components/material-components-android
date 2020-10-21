@@ -142,7 +142,7 @@ task generateJavadocs(type: Javadoc) {
     options.encoding = "UTF-8"
     options.doclet = "com.google.doclava.Doclava"
     options.docletpath = [
-      file(docletPathRoot + "/doclava/r6517d8/doclava.jar"),
+      file(docletPathRoot + "/doclava/current/doclava.jar"),
       file(docletPathRoot + "/jsilver/v1_0_0/jsilver.jar")
     ]
   }
