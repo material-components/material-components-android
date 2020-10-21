@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
      Copyright (C) 2020 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +14,11 @@
      limitations under the License.
 -->
 
-<merge xmlns:tools="http://schemas.android.com/tools"
-  xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:paddingTop="8dp"
   tools:showIn="@layout/material_textinput_timepicker">
 
   <include
@@ -29,4 +31,4 @@
     android:id="@+id/material_minute_text_input"
     layout="@layout/material_chip_input_combo" />
 
-</merge>
+</LinearLayout>

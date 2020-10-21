@@ -35,6 +35,7 @@
   <com.google.android.material.button.MaterialButton
     style="?attr/materialButtonOutlinedStyle"
     android:id="@+id/material_clock_period_am_button"
+    android:insetTop="8dp"
     android:layout_width="wrap_content"
     app:shapeAppearanceOverlay="?attr/shapeAppearanceMediumComponent"
     android:text="@string/material_timepicker_am"/>
@@ -42,6 +43,7 @@
     style="?attr/materialButtonOutlinedStyle"
     android:id="@+id/material_clock_period_pm_button"
     android:layout_width="wrap_content"
+    android:insetBottom="8dp"
     app:shapeAppearanceOverlay="?attr/shapeAppearanceMediumComponent"
     android:text="@string/material_timepicker_pm"/>
 

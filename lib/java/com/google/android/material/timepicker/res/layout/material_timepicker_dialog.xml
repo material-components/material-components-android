@@ -62,7 +62,7 @@
     layout="@layout/material_textinput_timepicker"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginTop="52dp"
+    android:layout_marginTop="44dp"
     android:layout_marginBottom="24dp"
     android:layout_marginLeft="24dp"
     android:layout_marginRight="24dp"

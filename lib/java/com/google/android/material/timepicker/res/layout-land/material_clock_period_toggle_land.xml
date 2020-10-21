@@ -34,12 +34,16 @@
     style="?attr/materialButtonOutlinedStyle"
     android:layout_width="0dp"
     android:layout_weight="1"
+    android:insetTop="4dp"
+    android:insetBottom="4dp"
     android:text="@string/material_timepicker_am" />
   <Button
     android:id="@+id/material_clock_period_pm_button"
     style="?attr/materialButtonOutlinedStyle"
     android:layout_width="0dp"
     android:layout_weight="1"
+    android:insetTop="4dp"
+    android:insetBottom="4dp"
     android:text="@string/material_timepicker_pm" />
 
 </com.google.android.material.button.MaterialButtonToggleGroup>

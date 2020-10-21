@@ -73,7 +73,7 @@
     <item name="backgroundTint">
       @color/material_timepicker_button_background
     </item>
-    <item name="android:layout_height">40dp</item>
+    <item name="android:layout_height">48dp</item>
     <item name="android:padding">0dp</item>
     <item name="android:insetTop">0dp</item>
     <item name="android:insetBottom">0dp</item>
