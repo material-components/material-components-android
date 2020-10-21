@@ -967,7 +967,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
   private RectF getCloseIconTouchBounds() {
     rectF.setEmpty();
 
-    if (hasCloseIcon()) {
+    if (hasCloseIcon() && onCloseIconClickListener != null) {
       // noinspection ConstantConditions
       chipDrawable.getCloseIconTouchBounds(rectF);
     }
