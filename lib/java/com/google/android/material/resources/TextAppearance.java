@@ -168,7 +168,7 @@ public class TextAppearance {
    */
   public void getFontAsync(
       @NonNull Context context, @NonNull final TextAppearanceFontCallback callback) {
-    if (TextAppearanceConfig.shouldLoadFontSynchronously()) {
+    if (shouldLoadFontSynchronously(context)) {
       getFont(context);
     } else {
       // No-op if font already resolved.
@@ -324,7 +324,7 @@ public class TextAppearance {
       @NonNull Context context,
       @NonNull TextPaint textPaint,
       @NonNull TextAppearanceFontCallback callback) {
-    if (TextAppearanceConfig.shouldLoadFontSynchronously()) {
+    if (shouldLoadFontSynchronously(context)) {
       updateTextPaintMeasureState(textPaint, getFont(context));
     } else {
       getFontAsync(context, textPaint, callback);
@@ -351,5 +351,9 @@ public class TextAppearance {
         textPaint.setLetterSpacing(letterSpacing);
       }
     }
+  }
+
+  private boolean shouldLoadFontSynchronously(Context context) {
+    return TextAppearanceConfig.shouldLoadFontSynchronously();
   }
 }
