@@ -57,7 +57,7 @@ public final class FadeProvider implements VisibilityAnimatorProvider {
   @Nullable
   @Override
   public Animator createAppear(@NonNull ViewGroup sceneRoot, @NonNull View view) {
-    float originalAlpha = view.getAlpha();
+    float originalAlpha = view.getAlpha() == 0F ? 1F : view.getAlpha();
     return createFadeAnimator(
         view,
         /* startValue= */ 0F,
@@ -70,7 +70,7 @@ public final class FadeProvider implements VisibilityAnimatorProvider {
   @Nullable
   @Override
   public Animator createDisappear(@NonNull ViewGroup sceneRoot, @NonNull View view) {
-    float originalAlpha = view.getAlpha();
+    float originalAlpha = view.getAlpha() == 0F ? 1F : view.getAlpha();
     return createFadeAnimator(
         view,
         /* startValue= */ originalAlpha,
