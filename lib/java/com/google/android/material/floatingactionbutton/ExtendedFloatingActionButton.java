@@ -96,6 +96,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
 
   private boolean isExtended = true;
   private boolean isTransforming = false;
+  private boolean animateShowBeforeLayout = false;
 
   @NonNull protected ColorStateList originalTextCsl;
 
@@ -318,6 +319,17 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     return isExtended;
   }
 
+  /**
+   * Sets whether to enable animation for a call to show {@link #show} even if the view has not been
+   * laid out yet.
+   *
+   * <p>This may be set to {@code true} if the button is initially hidden but should animate when
+   * later shown. The default is {@code false}.
+   */
+  public void setAnimateShowBeforeLayout(boolean animateShowBeforeLayout) {
+    this.animateShowBeforeLayout = animateShowBeforeLayout;
+  }
+
   @Override
   public void setPaddingRelative(int start, int top, int end, int bottom) {
     super.setPaddingRelative(start, top, end, bottom);
@@ -451,7 +463,8 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
   /**
    * Shows the button.
    *
-   * <p>This method will animate the button show if the view has already been laid out.
+   * <p>This method will animate the button show if the view has already been laid out, or if {@link
+   * #setAnimateShowBeforeLayout} is {@code true}.
    */
   public void show() {
     performMotion(showStrategy, null);
@@ -460,7 +473,8 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
   /**
    * Shows the button.
    *
-   * <p>This method will animate the button show if the view has already been laid out.
+   * <p>This method will animate the button show if the view has already been laid out, or if {@link
+   * #setAnimateShowBeforeLayout} is {@code true}.
    *
    * @param callback the callback to notify when this view is shown
    */
@@ -683,7 +697,8 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
   }
 
   private boolean shouldAnimateVisibilityChange() {
-    return ViewCompat.isLaidOut(this) && !isInEditMode();
+    return (ViewCompat.isLaidOut(this) || (!isOrWillBeShown() && animateShowBeforeLayout))
+        && !isInEditMode();
   }
 
   /**
