@@ -19,6 +19,7 @@ package com.google.android.material.progressindicator;
 import com.google.android.material.R;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import androidx.annotation.AttrRes;
@@ -89,6 +90,8 @@ public class LinearProgressIndicator extends BaseProgressIndicator {
     context = getContext();
 
     spec = new LinearProgressIndicatorSpec(context, attrs, baseSpec);
+
+    initializeDrawables();
   }
 
   @Override
@@ -104,7 +107,64 @@ public class LinearProgressIndicator extends BaseProgressIndicator {
                 && spec.indicatorDirection == INDICATOR_DIRECTION_END_TO_START);
   }
 
+  @Override
+  protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+    int contentWidth = w - (getPaddingLeft() + getPaddingRight());
+    int contentHeight = h - (getPaddingTop() + getPaddingBottom());
+    Drawable drawable = getIndeterminateDrawable();
+    if (drawable != null) {
+      drawable.setBounds(/*left=*/ 0, /*top=*/ 0, contentWidth, contentHeight);
+    }
+    drawable = getProgressDrawable();
+    if (drawable != null) {
+      drawable.setBounds(/*left=*/ 0, /*top=*/ 0, contentWidth, contentHeight);
+    }
+  }
+
+  // ******************** Initialization **********************
+
+  private void initializeDrawables() {
+    AnimatedVisibilityChangeBehavior behavior = spec;
+    setIndeterminateDrawable(
+        new IndeterminateDrawable(
+            getContext(),
+            behavior,
+            new LinearDrawingDelegate(spec),
+            spec.indeterminateAnimationType == INDETERMINATE_ANIMATION_TYPE_SEAMLESS
+                ? new LinearIndeterminateSeamlessAnimatorDelegate(spec)
+                : new LinearIndeterminateSpacingAnimatorDelegate(getContext(), spec)));
+    setProgressDrawable(
+        new DeterminateDrawable(getContext(), baseSpec, behavior, new LinearDrawingDelegate(spec)));
+    applyNewVisibility();
+  }
+
   // **************** Getters and setters ****************
+
+  /**
+   * Sets the colors used in the indicator of this progress indicator.
+   *
+   * @param indicatorColors The new colors used in indicator.
+   * @throws IllegalArgumentException if there are less than 3 indicator colors when
+   *     indeterminateAnimationType is {@link #INDETERMINATE_ANIMATION_TYPE_SEAMLESS}.
+   */
+  @Override
+  public void setIndicatorColor(@NonNull int... indicatorColors) {
+    super.setIndicatorColor(indicatorColors);
+    spec.validateSpec();
+  }
+
+  /**
+   * Sets the corner radius for progress indicator with rounded corners in pixels.
+   *
+   * @param indicatorCornerRadius The new corner radius in pixels.
+   * @throws IllegalArgumentException if indicatorCornerRadius is not zero, when
+   *     indeterminateAnimationType is {@link #INDETERMINATE_ANIMATION_TYPE_SEAMLESS}.
+   */
+  @Override
+  public void setIndicatorCornerRadius(int indicatorCornerRadius) {
+    super.setIndicatorCornerRadius(indicatorCornerRadius);
+    spec.validateSpec();
+  }
 
   /**
    * Returns the type of indeterminate animation of this progress indicator.
@@ -219,6 +279,26 @@ public class LinearProgressIndicator extends BaseProgressIndicator {
   public void setHideBehavior(@HideBehavior int hideBehavior) {
     spec.hideBehavior = hideBehavior;
     invalidate();
+  }
+
+  /**
+   * Sets the current progress to the specified value with/without animation based on the input.
+   *
+   * <p>If it's in the indeterminate mode and using non-seamless animation, it will smoothly
+   * transition to determinate mode by finishing the current indeterminate animation cycle.
+   *
+   * @param progress The new progress value.
+   * @param animated Whether to update the progress with the animation.
+   * @see BaseProgressIndicator#setProgress(int)
+   */
+  @Override
+  public void setProgressCompat(int progress, boolean animated) {
+    // Doesn't support to switching into determinate mode while seamless animation is used.
+    if (spec.indeterminateAnimationType == INDETERMINATE_ANIMATION_TYPE_SEAMLESS
+        && isIndeterminate()) {
+      return;
+    }
+    super.setProgressCompat(progress, animated);
   }
 
   // **************** Interface ****************

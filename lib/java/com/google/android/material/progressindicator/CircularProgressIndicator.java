@@ -92,23 +92,32 @@ public class CircularProgressIndicator extends BaseProgressIndicator {
   // ******************** Initialization **********************
 
   private void initializeDrawables() {
+    AnimatedVisibilityChangeBehavior behavior = spec;
     setIndeterminateDrawable(
         new IndeterminateDrawable(
             getContext(),
-            spec,
+            behavior,
             new CircularDrawingDelegate(spec),
             new CircularIndeterminateAnimatorDelegate(spec)));
     setProgressDrawable(
-        new DeterminateDrawable(getContext(), baseSpec, spec, new CircularDrawingDelegate(spec)));
+        new DeterminateDrawable(
+            getContext(), baseSpec, behavior, new CircularDrawingDelegate(spec)));
     applyNewVisibility();
   }
 
   // **************** Getters and setters ****************
 
-  /** Returns the spec of this progress indicator. */
-  @NonNull
-  public CircularProgressIndicatorSpec getSpec() {
-    return spec;
+  /**
+   * Sets the indicator size of this progress indicator.
+   *
+   * @param indicatorSize The new indicator size in pixel.
+   * @throws IllegalArgumentException if indicator radius is less than half of the new indicator
+   *     size.
+   */
+  @Override
+  public void setIndicatorSize(int indicatorSize) {
+    super.setIndicatorSize(indicatorSize);
+    spec.validateSpec();
   }
 
   /**
@@ -166,19 +175,6 @@ public class CircularProgressIndicator extends BaseProgressIndicator {
       spec.validateSpec();
       invalidate();
     }
-  }
-
-  /**
-   * Sets the indicator size of this progress indicator.
-   *
-   * @param indicatorSize The new indicator size in pixel.
-   * @throws IllegalArgumentException if indicator radius is less than half of the new indicator
-   *     size.
-   */
-  @Override
-  public void setIndicatorSize(int indicatorSize) {
-    super.setIndicatorSize(indicatorSize);
-    spec.validateSpec();
   }
 
   /**
