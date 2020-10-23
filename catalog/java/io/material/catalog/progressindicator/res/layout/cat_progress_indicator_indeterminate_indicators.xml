@@ -22,52 +22,49 @@
   <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="@string/cat_progress_indicator_linear_no_grow_single_color"/>
-  <com.google.android.material.progressindicator.ProgressIndicator
+      android:text="@string/cat_progress_indicator_start_to_end_linear_single_color"/>
+  <com.google.android.material.progressindicator.LinearProgressIndicator
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      style="@style/Widget.MaterialComponents.ProgressIndicator.Linear.Indeterminate"
-      app:indicatorColor="?attr/colorPrimary"/>
+      android:indeterminate="true"/>
 
   <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="@string/cat_progress_indicator_rounded_inverse_linear_bidirectional_grow_single_color"/>
-  <com.google.android.material.progressindicator.ProgressIndicator
+      android:text="@string/cat_progress_indicator_rounded_end_to_start_linear_single_color"/>
+  <com.google.android.material.progressindicator.LinearProgressIndicator
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      style="@style/Widget.MaterialComponents.ProgressIndicator.Linear.Indeterminate"
-      app:indicatorColor="?attr/colorPrimary"
-      app:inverse="true"
-      app:growMode="bidirectional"
+      android:indeterminate="true"
+      app:indicatorDirectionLinear="endToStart"
       app:indicatorCornerRadius="@dimen/mtrl_progress_indicator_full_rounded_corner_radius"/>
 
   <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="@string/cat_progress_indicator_linear_incoming_grow_multiple_colors"/>
-  <com.google.android.material.progressindicator.ProgressIndicator
+      android:text="@string/cat_progress_indicator_left_to_right_linear_multiple_colors_anchored_top"/>
+  <com.google.android.material.progressindicator.LinearProgressIndicator
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      style="@style/Widget.MaterialComponents.ProgressIndicator.Linear.Indeterminate"
-      app:indicatorColors="@array/cat_custom_progress_colors"
-      app:linearSeamless="false"
-      app:growMode="incoming"/>
+      android:indeterminate="true"
+      app:indicatorColor="@array/cat_custom_progress_colors"
+      app:indicatorDirectionLinear="leftToRight"
+      app:showBehaviorLinear="downward"
+      app:hideBehaviorLinear="upward"/>
 
   <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="@string/cat_progress_indicator_linear_outgoing_grow_multiple_seamless_colors"/>
-  <com.google.android.material.progressindicator.ProgressIndicator
+      android:text="@string/cat_progress_indicator_right_to_left_linear_multiple_colors_anchored_bottom_seamless_animation"/>
+  <com.google.android.material.progressindicator.LinearProgressIndicator
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      style="@style/Widget.MaterialComponents.ProgressIndicator.Linear.Indeterminate"
-      app:indicatorColors="@array/cat_custom_progress_colors"
-      app:growMode="outgoing"/>
+      android:indeterminate="true"
+      app:indicatorColor="@array/cat_custom_progress_colors"
+      app:indeterminateAnimationType="seamless"
+      app:indicatorDirectionLinear="rightToLeft"
+      app:showBehaviorLinear="upward"
+      app:hideBehaviorLinear="downward"/>
 
   <LinearLayout
       android:layout_width="match_parent"

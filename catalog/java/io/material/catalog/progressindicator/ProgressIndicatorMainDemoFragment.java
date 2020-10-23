@@ -26,6 +26,7 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.progressindicator.ProgressIndicator;
 import io.material.catalog.feature.DemoFragment;
 
@@ -47,7 +48,7 @@ public class ProgressIndicatorMainDemoFragment extends DemoFragment {
   }
 
   public void initialize(@NonNull View view) {
-    ProgressIndicator linearDeterminate = view.findViewById(R.id.linear_determinate);
+    LinearProgressIndicator linearDeterminate = view.findViewById(R.id.linear_determinate);
     CircularProgressIndicator circularDeterminate = view.findViewById(R.id.circular_determinate);
     EditText progressInput = view.findViewById(R.id.progress_input);
     Button updateButton = view.findViewById(R.id.update_button);

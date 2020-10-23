@@ -27,22 +27,22 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
-import com.google.android.material.progressindicator.ProgressIndicator;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.DemoUtils;
 import java.util.List;
 
 /**
- * This is the fragment to demo in details of different indeterminate types of {@link
- * ProgressIndicator}.
+ * This is the fragment to demo in details of different indeterminate progress indicators.
  *
- * <p>This demo includes multiple examples of indeterminate ProgressIndicators and the ability to:
+ * <p>This demo includes multiple examples of indeterminate {@link LinearProgressIndicator} and
+ * {@link CircularProgressIndicator} and the ability to:
  *
  * <ul>
- *   <li>Update the ProgressIndicator with a specified progress (which will change the mode to be
+ *   <li>Update the indicator with a specified progress (which will change the mode to be
  *       determinate).
- *   <li>Hide the ProgressIndicator
- *   <li>Show the ProgressIndicator (this will reset the ProgressIndicator to indeterminate mode)
+ *   <li>Hide the indicator
+ *   <li>Show the indicator (this will reset the indicator to indeterminate mode)
  * </ul>
  */
 public class ProgressIndicatorIndeterminateDemoFragment extends DemoFragment {
@@ -67,19 +67,19 @@ public class ProgressIndicatorIndeterminateDemoFragment extends DemoFragment {
     return view;
   }
 
-  /** Layout resource containing {@link ProgressIndicator} examples. */
+  /** Layout resource containing the progress indicator examples. */
   @LayoutRes
   protected int getIndicatorsContent() {
     return R.layout.cat_progress_indicator_indeterminate_indicators;
   }
 
   /**
-   * Updates the progress indicator to show the specified progress. This is called every time the
-   * "update" button is pressed.
+   * Updates the linear progress indicator to show the specified progress. This is called every time
+   * the "update" button is pressed.
    */
-  protected void updateProgressIndicator(
-      @NonNull ProgressIndicator progressIndicator, int progress) {
-    progressIndicator.setProgressCompat(progress, /*animated=*/ true);
+  protected void updateLinearProgressIndicator(
+      @NonNull LinearProgressIndicator linearProgressIndicator, int progress) {
+    linearProgressIndicator.setProgressCompat(progress, /*animated=*/ true);
   }
 
   /**
@@ -92,16 +92,17 @@ public class ProgressIndicatorIndeterminateDemoFragment extends DemoFragment {
   }
 
   /**
-   * Resets the progress indicator to its initial state (indeterminate). This is called every time
-   * the "show" button is pressed.
+   * Resets the linear progress indicator to its initial state (indeterminate). This is called every
+   * time the "show" button is pressed.
    */
-  protected void resetProgressIndicator(@NonNull ProgressIndicator progressIndicator) {
+  protected void resetLinearProgressIndicator(
+      @NonNull LinearProgressIndicator linearProgressIndicator) {
     // Reset to indeterminate if it was changed to determinate.
-    if (!progressIndicator.isIndeterminate()) {
+    if (!linearProgressIndicator.isIndeterminate()) {
       // Cannot set to indeterminate if the indicator is visible. Immediately set to
       // INVISIBLE instead of waiting for animation from calling hide().
-      progressIndicator.setVisibility(View.INVISIBLE);
-      progressIndicator.setIndeterminate(true);
+      linearProgressIndicator.setVisibility(View.INVISIBLE);
+      linearProgressIndicator.setIndeterminate(true);
     }
   }
 
@@ -121,8 +122,8 @@ public class ProgressIndicatorIndeterminateDemoFragment extends DemoFragment {
   }
 
   private void initialize(View view) {
-    List<ProgressIndicator> indicatorList =
-        DemoUtils.findViewsWithType(view, ProgressIndicator.class);
+    List<LinearProgressIndicator> linearProgressIndicatorList =
+        DemoUtils.findViewsWithType(view, LinearProgressIndicator.class);
     List<CircularProgressIndicator> circularProgressIndicatorList =
         DemoUtils.findViewsWithType(view, CircularProgressIndicator.class);
 
@@ -139,8 +140,8 @@ public class ProgressIndicatorIndeterminateDemoFragment extends DemoFragment {
           } catch (NumberFormatException e) {
             progress = 0;
           }
-          for (ProgressIndicator progressIndicator : indicatorList) {
-            updateProgressIndicator(progressIndicator, progress);
+          for (LinearProgressIndicator indicator : linearProgressIndicatorList) {
+            updateLinearProgressIndicator(indicator, progress);
           }
           for (CircularProgressIndicator indicator : circularProgressIndicatorList) {
             updateCircularProgressIndicator(indicator, progress);
@@ -148,9 +149,9 @@ public class ProgressIndicatorIndeterminateDemoFragment extends DemoFragment {
         });
     showButton.setOnClickListener(
         v -> {
-          for (ProgressIndicator progressIndicator : indicatorList) {
-            resetProgressIndicator(progressIndicator);
-            progressIndicator.show();
+          for (LinearProgressIndicator indicator : linearProgressIndicatorList) {
+            resetLinearProgressIndicator(indicator);
+            indicator.show();
           }
           for (CircularProgressIndicator indicator : circularProgressIndicatorList) {
             resetCircularProgressIndicator(indicator);
@@ -159,8 +160,8 @@ public class ProgressIndicatorIndeterminateDemoFragment extends DemoFragment {
         });
     hideButton.setOnClickListener(
         v -> {
-          for (ProgressIndicator progressIndicator : indicatorList) {
-            progressIndicator.hide();
+          for (LinearProgressIndicator indicator : linearProgressIndicatorList) {
+            indicator.hide();
           }
           for (CircularProgressIndicator indicator : circularProgressIndicatorList) {
             indicator.hide();

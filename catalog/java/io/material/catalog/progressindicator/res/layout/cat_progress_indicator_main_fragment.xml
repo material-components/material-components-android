@@ -12,7 +12,6 @@
   limitations under the License.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -26,12 +25,10 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/cat_progress_indicator_linear_indeterminate" />
-  <com.google.android.material.progressindicator.ProgressIndicator
-      style="@style/Widget.MaterialComponents.ProgressIndicator.Linear.Indeterminate"
+  <com.google.android.material.progressindicator.LinearProgressIndicator
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      app:indicatorColor="?attr/colorPrimary" />
+      android:indeterminate="true"/>
 
   <TextView
       android:layout_width="wrap_content"
@@ -47,13 +44,10 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/cat_progress_indicator_linear_determinate"/>
-  <com.google.android.material.progressindicator.ProgressIndicator
+  <com.google.android.material.progressindicator.LinearProgressIndicator
       android:id="@+id/linear_determinate"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      style="@style/Widget.MaterialComponents.ProgressIndicator.Linear.Determinate"
-      app:indicatorColor="?attr/colorPrimary"/>
+      android:layout_height="wrap_content"/>
 
   <TextView
       android:layout_width="wrap_content"
