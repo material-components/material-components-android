@@ -1,6 +1,6 @@
 # Progress Indicator
 
-<!-- TODO(b/169262416) Update API and style for sub-type progress indicator classes. -->
+<!-- TODO(b/169262619) Update API and style for sub-type progress indicator classes. -->
 
 Note: Due to an internal change of API, ProgressIndicator will be deprecated in
 the near future.
@@ -280,3 +280,7 @@ can have different animation effects as follows:
 `CircularProgressIndicator` is final. For more customized appearances, please
 consider to implement custom `DrawingDelegate` and
 `IndetermianteAnimatorDelegate` and inherit from the `BaseProgressIndicator`.
+
+## LinearProgressIndicator
+
+<!--TODO(b/169262416) Finishes after implementation is done. -->

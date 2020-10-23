@@ -138,13 +138,21 @@
   </declare-styleable>
 
   <declare-styleable name="LinearProgressIndicator">
-    <!--
-      Whether to use seamless style animation on linear indicator in different
-      colors when it's possible, i.e., in linear indeterminate mode with more
-      than 3 colors (inclusive) are defined. Ignored for circular progress
-      indicator.
-    -->
-    <attr name="seamlessIndeterminateAnimation" format="boolean"/>
+    <!-- The animation style of the indeterminate mode. -->
+    <attr name="indeterminateAnimationType">
+      <!--
+        The track will be filled with connected segments in different colors.
+        This type is only available when there are three or more indicator
+        colors. The color of the new segment will alternate.
+      -->
+      <enum name="seamless" value="0"/>
+      <!--
+        There will be two segments with spacing between each other swiping the
+        track in each cycle. They will be in the same color, which will
+        alternate between cycles.
+      -->
+      <enum name="spacing" value="1"/>
+    </attr>
     <!--
       The direction in which the linear indicator progresses, in the determinate
       mode, and is animated, in the indeterminate mode.
@@ -169,19 +177,19 @@
     <attr name="showBehaviorLinear">
       <!-- No animation used; appears immediately. -->
       <enum name="none" value="0"/>
-      <!-- Enters from the top edge to the bottom edge. -->
-      <enum name="topToBottom" value="1"/>
       <!-- Enters from the bottom edge to the top edge. -->
-      <enum name="bottomToTop" value="2"/>
+      <enum name="upward" value="1"/>
+      <!-- Enters from the top edge to the bottom edge. -->
+      <enum name="downward" value="2"/>
     </attr>
     <!-- The animation direction to hide the indicator and track. -->
     <attr name="hideBehaviorLinear">
       <!-- No animation used; disappears immediately. -->
       <enum name="none" value="0"/>
-      <!-- Exits from the top edge to the bottom edge. -->
-      <enum name="topToBottom" value="1"/>
       <!-- Exits from the bottom edge to the top edge. -->
-      <enum name="bottomToTop" value="2"/>
+      <enum name="upward" value="1"/>
+      <!-- Exits from the top edge to the bottom edge. -->
+      <enum name="downward" value="2"/>
     </attr>
   </declare-styleable>
 

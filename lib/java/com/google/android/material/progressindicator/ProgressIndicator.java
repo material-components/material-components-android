@@ -236,7 +236,7 @@ public final class ProgressIndicator extends ProgressBar {
               new LinearDrawingDelegate(spec),
               isLinearSeamless()
                   ? new LinearIndeterminateSeamlessAnimatorDelegate(spec)
-                  : new LinearIndeterminateNonSeamlessAnimatorDelegate(getContext(), spec)));
+                  : new LinearIndeterminateSpacingAnimatorDelegate(getContext(), spec)));
       setProgressDrawable(
           new DeterminateDrawable(
               getContext(), baseSpec, behavior, new LinearDrawingDelegate(spec)));
@@ -873,7 +873,7 @@ public final class ProgressIndicator extends ProgressBar {
       } else {
         getIndeterminateDrawable()
             .setAnimatorDelegate(
-                new LinearIndeterminateNonSeamlessAnimatorDelegate(getContext(), spec));
+                new LinearIndeterminateSpacingAnimatorDelegate(getContext(), spec));
       }
     } else {
       spec.linearSeamless = false;

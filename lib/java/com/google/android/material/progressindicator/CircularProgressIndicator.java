@@ -34,7 +34,7 @@ import java.lang.annotation.RetentionPolicy;
  * This class implements the circular type progress indicators.
  *
  * <p>With the default style {@link R.style#Widget_MaterialComponents_CircularProgressIndicator},
- * 4dp indicator/track size and no animation is used for visibility change. Without customization,
+ * 4dp indicator/track size is used without animation for visibility change. Without customization,
  * primaryColor will be used as the indicator color; the track is transparent. The following
  * attributes can be used to customize the component's appearance:
  *

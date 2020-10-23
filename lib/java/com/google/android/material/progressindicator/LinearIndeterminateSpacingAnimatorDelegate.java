@@ -35,7 +35,7 @@ import java.util.Arrays;
  * This is the implementation class for drawing progress indicator in the linear non-seamless
  * indeterminate mode.
  */
-final class LinearIndeterminateNonSeamlessAnimatorDelegate
+final class LinearIndeterminateSpacingAnimatorDelegate
     extends IndeterminateAnimatorDelegate<AnimatorSet> {
 
   // Constants for animation timing.
@@ -65,7 +65,7 @@ final class LinearIndeterminateNonSeamlessAnimatorDelegate
   boolean animatorCompleteEndRequested = false;
   AnimationCallback animatorCompleteCallback = null;
 
-  public LinearIndeterminateNonSeamlessAnimatorDelegate(
+  public LinearIndeterminateSpacingAnimatorDelegate(
       @NonNull Context context, @NonNull ProgressIndicatorSpec spec) {
     super(/*segmentCount=*/ 2);
 
@@ -264,17 +264,17 @@ final class LinearIndeterminateNonSeamlessAnimatorDelegate
    * the total track width of the distance between the left (right when inverse) end of the track
    * and the right (left) end of the first line.
    */
-  private static final Property<LinearIndeterminateNonSeamlessAnimatorDelegate, Float>
+  private static final Property<LinearIndeterminateSpacingAnimatorDelegate, Float>
       LINE_1_HEAD_FRACTION =
-          new Property<LinearIndeterminateNonSeamlessAnimatorDelegate, Float>(
+          new Property<LinearIndeterminateSpacingAnimatorDelegate, Float>(
               Float.class, "line1HeadFraction") {
             @Override
-            public Float get(LinearIndeterminateNonSeamlessAnimatorDelegate drawable) {
+            public Float get(LinearIndeterminateSpacingAnimatorDelegate drawable) {
               return drawable.getLine1HeadFraction();
             }
 
             @Override
-            public void set(LinearIndeterminateNonSeamlessAnimatorDelegate drawable, Float value) {
+            public void set(LinearIndeterminateSpacingAnimatorDelegate drawable, Float value) {
               drawable.setLine1HeadFraction(value);
             }
           };
@@ -284,17 +284,17 @@ final class LinearIndeterminateNonSeamlessAnimatorDelegate
    * the total track width of the distance between the left (right when inverse) end of the track
    * and the left (right) end of the first line.
    */
-  private static final Property<LinearIndeterminateNonSeamlessAnimatorDelegate, Float>
+  private static final Property<LinearIndeterminateSpacingAnimatorDelegate, Float>
       LINE_1_TAIL_FRACTION =
-          new Property<LinearIndeterminateNonSeamlessAnimatorDelegate, Float>(
+          new Property<LinearIndeterminateSpacingAnimatorDelegate, Float>(
               Float.class, "line1TailFraction") {
             @Override
-            public Float get(LinearIndeterminateNonSeamlessAnimatorDelegate drawable) {
+            public Float get(LinearIndeterminateSpacingAnimatorDelegate drawable) {
               return drawable.getLine1TailFraction();
             }
 
             @Override
-            public void set(LinearIndeterminateNonSeamlessAnimatorDelegate drawable, Float value) {
+            public void set(LinearIndeterminateSpacingAnimatorDelegate drawable, Float value) {
               drawable.setLine1TailFraction(value);
             }
           };
@@ -304,17 +304,17 @@ final class LinearIndeterminateNonSeamlessAnimatorDelegate
    * the total track width of the distance between the left (right when inverse) end of the track
    * and the right (left) end of the second line.
    */
-  private static final Property<LinearIndeterminateNonSeamlessAnimatorDelegate, Float>
+  private static final Property<LinearIndeterminateSpacingAnimatorDelegate, Float>
       LINE_2_HEAD_FRACTION =
-          new Property<LinearIndeterminateNonSeamlessAnimatorDelegate, Float>(
+          new Property<LinearIndeterminateSpacingAnimatorDelegate, Float>(
               Float.class, "line2HeadFraction") {
             @Override
-            public Float get(LinearIndeterminateNonSeamlessAnimatorDelegate drawable) {
+            public Float get(LinearIndeterminateSpacingAnimatorDelegate drawable) {
               return drawable.getLine2HeadFraction();
             }
 
             @Override
-            public void set(LinearIndeterminateNonSeamlessAnimatorDelegate drawable, Float value) {
+            public void set(LinearIndeterminateSpacingAnimatorDelegate drawable, Float value) {
               drawable.setLine2HeadFraction(value);
             }
           };
@@ -324,17 +324,17 @@ final class LinearIndeterminateNonSeamlessAnimatorDelegate
    * the total track width of the distance between the left (right when inverse) end of the track
    * and the left (right) end of the second line.
    */
-  private static final Property<LinearIndeterminateNonSeamlessAnimatorDelegate, Float>
+  private static final Property<LinearIndeterminateSpacingAnimatorDelegate, Float>
       LINE_2_TAIL_FRACTION =
-          new Property<LinearIndeterminateNonSeamlessAnimatorDelegate, Float>(
+          new Property<LinearIndeterminateSpacingAnimatorDelegate, Float>(
               Float.class, "line2TailFraction") {
             @Override
-            public Float get(LinearIndeterminateNonSeamlessAnimatorDelegate drawable) {
+            public Float get(LinearIndeterminateSpacingAnimatorDelegate drawable) {
               return drawable.getLine2TailFraction();
             }
 
             @Override
-            public void set(LinearIndeterminateNonSeamlessAnimatorDelegate drawable, Float value) {
+            public void set(LinearIndeterminateSpacingAnimatorDelegate drawable, Float value) {
               drawable.setLine2TailFraction(value);
             }
           };

@@ -414,7 +414,7 @@ public class BaseProgressIndicator extends ProgressBar {
    * Returns whether or not this view is currently displayed in window, based on whether it is
    * attached to a window and whether it and its ancestors are visible.
    */
-  private boolean visibleToUser() {
+  protected boolean visibleToUser() {
     return ViewCompat.isAttachedToWindow(this)
         && getWindowVisibility() == View.VISIBLE
         && isEffectivelyVisible();
