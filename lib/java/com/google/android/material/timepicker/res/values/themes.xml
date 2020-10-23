@@ -21,6 +21,7 @@
     <item name="chipStyle">@style/Widget.MaterialComponents.TimePicker.Display</item>
     <item name="imageButtonStyle">@style/Widget.MaterialComponents.TimePicker.ImageButton</item>
     <item name="materialButtonOutlinedStyle">@style/Widget.MaterialComponents.TimePicker.Button</item>
+    <item name="textAppearanceOverline">@style/TextAppearance.MaterialComponents.TimePicker.Title</item>
   </style>
 
 </resources>

@@ -84,4 +84,8 @@
     <item name="strokeWidth">@dimen/mtrl_btn_stroke_size</item>
   </style>
 
+  <style name="TextAppearance.MaterialComponents.TimePicker.Title" parent="TextAppearance.MaterialComponents.Overline">
+    <item name="android:textColor">@/color/material_on_surface_emphasis_medium</item>
+  </style>
+
 </resources>
