@@ -197,6 +197,13 @@ public class LinearProgressIndicator extends BaseProgressIndicator {
     }
     spec.indeterminateAnimationType = indeterminateAnimationType;
     spec.validateSpec();
+    if (indeterminateAnimationType == INDETERMINATE_ANIMATION_TYPE_SEAMLESS) {
+      getIndeterminateDrawable()
+          .setAnimatorDelegate(new LinearIndeterminateSeamlessAnimatorDelegate(spec));
+    } else {
+      getIndeterminateDrawable()
+          .setAnimatorDelegate(new LinearIndeterminateSpacingAnimatorDelegate(getContext(), spec));
+    }
     invalidate();
   }
 
@@ -294,7 +301,7 @@ public class LinearProgressIndicator extends BaseProgressIndicator {
   @Override
   public void setProgressCompat(int progress, boolean animated) {
     // Doesn't support to switching into determinate mode while seamless animation is used.
-    if (spec.indeterminateAnimationType == INDETERMINATE_ANIMATION_TYPE_SEAMLESS
+    if (spec != null && spec.indeterminateAnimationType == INDETERMINATE_ANIMATION_TYPE_SEAMLESS
         && isIndeterminate()) {
       return;
     }

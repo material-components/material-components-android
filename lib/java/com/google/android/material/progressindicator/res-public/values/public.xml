@@ -15,8 +15,7 @@
   ~ limitations under the License.
 -->
 <resources>
-  <!-- TODO(b/169262416) Uncomment this line while implementing LinearProgressIndicator. -->
-  <!-- <public name="linearProgressIndicatorStyle" type="attr"/> -->
+  <public name="linearProgressIndicatorStyle" type="attr"/>
   <public name="circularProgressIndicatorStyle" type="attr"/>
 
   <!-- Base attributes -->
@@ -39,8 +38,7 @@
   <public name="showBehaviorCircular" type="attr"/>
   <public name="hideBehaviorCircular" type="attr"/>
 
-  <!-- TODO(b/169262416) Uncomment this line while implementing LinearProgressIndicator. -->
-  <!-- <public name="Widget.MaterialComponents.LinearProgressIndicator" type="style"/> -->
+  <public name="Widget.MaterialComponents.LinearProgressIndicator" type="style"/>
   <public name="Widget.MaterialComponents.CircularProgressIndicator" type="style"/>
 
   <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
