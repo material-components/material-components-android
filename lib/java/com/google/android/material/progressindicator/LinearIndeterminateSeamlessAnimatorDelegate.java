@@ -23,6 +23,7 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.util.Property;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat.AnimationCallback;
 import com.google.android.material.animation.AnimationUtils;
@@ -33,7 +34,7 @@ import com.google.android.material.math.MathUtils;
  * This is the implementation class for drawing progress indicator in the linear seamless
  * indeterminate mode.
  */
-final class LinearIndeterminateSeamlessAnimatorDelegate
+public final class LinearIndeterminateSeamlessAnimatorDelegate
     extends IndeterminateAnimatorDelegate<AnimatorSet> {
 
   // Constants for animation timing.
@@ -42,6 +43,7 @@ final class LinearIndeterminateSeamlessAnimatorDelegate
 
   // The general spec.
   private final BaseProgressIndicatorSpec baseSpec;
+
   // The animator controls seamless linear indeterminate animation.
   private AnimatorSet animatorSet;
 
@@ -50,7 +52,7 @@ final class LinearIndeterminateSeamlessAnimatorDelegate
   private float lineConnectPoint1Fraction;
   private float lineConnectPoint2Fraction;
 
-  public LinearIndeterminateSeamlessAnimatorDelegate(@NonNull ProgressIndicatorSpec spec) {
+  public LinearIndeterminateSeamlessAnimatorDelegate(@NonNull LinearProgressIndicatorSpec spec) {
     super(/*segmentCount=*/ 3);
 
     baseSpec = spec.getBaseSpec();
@@ -145,7 +147,7 @@ final class LinearIndeterminateSeamlessAnimatorDelegate
   }
 
   @Override
-  public void registerAnimatorsCompleteCallback(AnimationCallback callback) {
+  public void registerAnimatorsCompleteCallback(@Nullable AnimationCallback callback) {
     // In seamless mode, indeterminate mode cannot be switched. This is left as blank in purpose.
   }
 

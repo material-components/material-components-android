@@ -28,6 +28,7 @@ import com.google.android.material.progressindicator.LinearProgressIndicator.Hid
 import com.google.android.material.progressindicator.LinearProgressIndicator.IndeterminateAnimationType;
 import com.google.android.material.progressindicator.LinearProgressIndicator.IndicatorDirection;
 import com.google.android.material.progressindicator.LinearProgressIndicator.ShowBehavior;
+import com.google.android.material.progressindicator.ProgressIndicator.GrowMode;
 
 /**
  * This class contains the parameters for drawing a linear type progress indicator. The parameters
@@ -49,6 +50,26 @@ public class LinearProgressIndicatorSpec implements AnimatedVisibilityChangeBeha
 
   /** The animation direction to hide the indicator and track. */
   @HideBehavior public int hideBehavior;
+
+  protected boolean drawHorizontallyInverse;
+
+  public LinearProgressIndicatorSpec(@NonNull ProgressIndicatorSpec progressIndicatorSpec) {
+    // TODO(b/169262029) Remove this constructor once ProgressIndicator is removed.
+    if (progressIndicatorSpec.indicatorType != ProgressIndicator.LINEAR) {
+      throw new IllegalArgumentException(
+          "Only LINEAR type ProgressIndicatorSpec can be converted into "
+              + "LinearProgressIndicatorSpec");
+    }
+    baseSpec = progressIndicatorSpec.getBaseSpec();
+    indeterminateAnimationType =
+        getIndeterminateAnimationTypeFromLinearSeamless(progressIndicatorSpec.linearSeamless);
+    indicatorDirection = getIndicatorDirectionFromInverse(progressIndicatorSpec.inverse);
+    showBehavior = getShowBehaviorFromGrowMode(progressIndicatorSpec.growMode);
+    hideBehavior = getHideBehaviorFromGrowMode(progressIndicatorSpec.growMode);
+
+    drawHorizontallyInverse =
+        indicatorDirection == LinearProgressIndicator.INDICATOR_DIRECTION_RIGHT_TO_LEFT;
+  }
 
   /**
    * Instantiates LinearProgressIndicator.
@@ -81,6 +102,8 @@ public class LinearProgressIndicatorSpec implements AnimatedVisibilityChangeBeha
   private void loadSpecFromAttributes(@NonNull Context context, @Nullable AttributeSet attrs) {
     loadAttributes(context, attrs);
     validateSpec();
+    drawHorizontallyInverse =
+        indicatorDirection == LinearProgressIndicator.INDICATOR_DIRECTION_RIGHT_TO_LEFT;
   }
 
   private void loadAttributes(@NonNull Context context, @Nullable AttributeSet attrs) {
@@ -141,5 +164,49 @@ public class LinearProgressIndicatorSpec implements AnimatedVisibilityChangeBeha
   @NonNull
   public BaseProgressIndicatorSpec getBaseSpec() {
     return baseSpec;
+  }
+
+  // **************** Temporary methods ****************
+
+  // TODO(b/169262029) Remove once ProgressIndicator is removed.
+  @IndeterminateAnimationType
+  protected static int getIndeterminateAnimationTypeFromLinearSeamless(boolean linearSeamless) {
+    return linearSeamless
+        ? LinearProgressIndicator.INDETERMINATE_ANIMATION_TYPE_SEAMLESS
+        : LinearProgressIndicator.INDETERMINATE_ANIMATION_TYPE_SPACING;
+  }
+
+  // TODO(b/169262029) Remove once ProgressIndicator is removed.
+  @IndicatorDirection
+  protected static int getIndicatorDirectionFromInverse(boolean inverse) {
+    return inverse
+        ? LinearProgressIndicator.INDICATOR_DIRECTION_RIGHT_TO_LEFT
+        : LinearProgressIndicator.INDICATOR_DIRECTION_LEFT_TO_RIGHT;
+  }
+
+  // TODO(b/169262029) Remove once ProgressIndicator is removed.
+  @ShowBehavior
+  protected static int getShowBehaviorFromGrowMode(@GrowMode int growMode) {
+    switch (growMode) {
+      case ProgressIndicator.GROW_MODE_INCOMING:
+        return LinearProgressIndicator.SHOW_DOWNWARD;
+      case ProgressIndicator.GROW_MODE_OUTGOING:
+        return LinearProgressIndicator.SHOW_UPWARD;
+      default:
+        return LinearProgressIndicator.SHOW_NONE;
+    }
+  }
+
+  // TODO(b/169262029) Remove once ProgressIndicator is removed.
+  @HideBehavior
+  protected static int getHideBehaviorFromGrowMode(@GrowMode int growMode) {
+    switch (growMode) {
+      case ProgressIndicator.GROW_MODE_INCOMING:
+        return LinearProgressIndicator.HIDE_UPWARD;
+      case ProgressIndicator.GROW_MODE_OUTGOING:
+        return LinearProgressIndicator.HIDE_DOWNWARD;
+      default:
+        return LinearProgressIndicator.HIDE_NONE;
+    }
   }
 }

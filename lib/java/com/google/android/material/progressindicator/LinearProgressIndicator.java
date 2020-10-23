@@ -19,6 +19,7 @@ package com.google.android.material.progressindicator;
 import com.google.android.material.R;
 
 import android.content.Context;
+import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import androidx.annotation.AttrRes;
 import androidx.annotation.IntDef;
@@ -90,6 +91,19 @@ public class LinearProgressIndicator extends BaseProgressIndicator {
     spec = new LinearProgressIndicatorSpec(context, attrs, baseSpec);
   }
 
+  @Override
+  protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+    super.onLayout(changed, left, top, right, bottom);
+
+    // In case that layout direction is changed, update the spec.
+    spec.drawHorizontallyInverse =
+        spec.indicatorDirection == INDICATOR_DIRECTION_RIGHT_TO_LEFT
+            || (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL
+                && spec.indicatorDirection == INDICATOR_DIRECTION_START_TO_END)
+            || (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_LTR
+                && spec.indicatorDirection == INDICATOR_DIRECTION_END_TO_START);
+  }
+
   // **************** Getters and setters ****************
 
   /**
@@ -148,6 +162,12 @@ public class LinearProgressIndicator extends BaseProgressIndicator {
    */
   public void setIndicatorDirection(@IndicatorDirection int indicatorDirection) {
     spec.indicatorDirection = indicatorDirection;
+    spec.drawHorizontallyInverse =
+        indicatorDirection == INDICATOR_DIRECTION_RIGHT_TO_LEFT
+            || (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL
+                && spec.indicatorDirection == INDICATOR_DIRECTION_START_TO_END)
+            || (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_LTR
+                && indicatorDirection == INDICATOR_DIRECTION_END_TO_START);
     invalidate();
   }
 

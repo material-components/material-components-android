@@ -100,10 +100,10 @@ public final class ProgressIndicator extends ProgressBar {
   /** A place to hold all the attributes. */
   private final ProgressIndicatorSpec spec;
 
-  private final BaseProgressIndicatorSpec baseSpec;
+  private BaseProgressIndicatorSpec baseSpec;
 
   private CircularProgressIndicatorSpec circularSpec;
-  private BaseProgressIndicatorSpec circularBaseSpec;
+  private LinearProgressIndicatorSpec linearSpec;
   private boolean useCircularSpec;
 
   /** A temp place to hold new progress while switching from indeterminate to determinate mode. */
@@ -186,10 +186,12 @@ public final class ProgressIndicator extends ProgressBar {
     useCircularSpec = spec.indicatorType == CIRCULAR;
     if (useCircularSpec) {
       circularSpec = new CircularProgressIndicatorSpec(spec);
-      circularBaseSpec = circularSpec.getBaseSpec();
+      linearSpec = null;
+      baseSpec = circularSpec.getBaseSpec();
     } else {
       circularSpec = null;
-      circularBaseSpec = null;
+      linearSpec = new LinearProgressIndicatorSpec(spec);
+      baseSpec = linearSpec.getBaseSpec();
     }
     loadExtraAttributes(context, attrs, defStyleAttr, defStyleRes);
 
@@ -217,8 +219,8 @@ public final class ProgressIndicator extends ProgressBar {
    * Initializes the builtin drawables for LINEAR and CIRCULAR types.
    */
   private void initializeDrawables() {
-    AnimatedVisibilityChangeBehavior behavior = spec;
     if (useCircularSpec) {
+      AnimatedVisibilityChangeBehavior behavior = circularSpec;
       setIndeterminateDrawable(
           new IndeterminateDrawable(
               getContext(),
@@ -229,17 +231,18 @@ public final class ProgressIndicator extends ProgressBar {
           new DeterminateDrawable(
               getContext(), baseSpec, behavior, new CircularDrawingDelegate(circularSpec)));
     } else {
+      AnimatedVisibilityChangeBehavior behavior = linearSpec;
       setIndeterminateDrawable(
           new IndeterminateDrawable(
               getContext(),
               behavior,
-              new LinearDrawingDelegate(spec),
+              new LinearDrawingDelegate(linearSpec),
               isLinearSeamless()
-                  ? new LinearIndeterminateSeamlessAnimatorDelegate(spec)
-                  : new LinearIndeterminateSpacingAnimatorDelegate(getContext(), spec)));
+                  ? new LinearIndeterminateSeamlessAnimatorDelegate(linearSpec)
+                  : new LinearIndeterminateSpacingAnimatorDelegate(getContext(), linearSpec)));
       setProgressDrawable(
           new DeterminateDrawable(
-              getContext(), baseSpec, behavior, new LinearDrawingDelegate(spec)));
+              getContext(), baseSpec, behavior, new LinearDrawingDelegate(linearSpec)));
     }
     applyNewVisibility();
   }
@@ -623,10 +626,12 @@ public final class ProgressIndicator extends ProgressBar {
       useCircularSpec = indicatorType == CIRCULAR;
       if (useCircularSpec) {
         circularSpec = new CircularProgressIndicatorSpec(spec);
-        circularBaseSpec = circularSpec.getBaseSpec();
+        linearSpec = null;
+        baseSpec = circularSpec.getBaseSpec();
       } else {
         circularSpec = null;
-        circularBaseSpec = null;
+        linearSpec = new LinearProgressIndicatorSpec(spec);
+        baseSpec = linearSpec.getBaseSpec();
       }
       initializeDrawables();
       requestLayout();
@@ -679,7 +684,7 @@ public final class ProgressIndicator extends ProgressBar {
    *     com.google.android.material.progressindicator.R.stylable#ProgressIndicator_indicatorSize
    */
   public int getIndicatorSize() {
-    return useCircularSpec ? circularBaseSpec.indicatorSize : baseSpec.indicatorSize;
+    return baseSpec.indicatorSize;
   }
 
   /**
@@ -693,9 +698,6 @@ public final class ProgressIndicator extends ProgressBar {
   public void setIndicatorSize(@Px int indicatorSize) {
     if (getIndicatorSize() != indicatorSize) {
       baseSpec.indicatorSize = indicatorSize;
-      if (useCircularSpec) {
-        circularBaseSpec.indicatorSize = indicatorSize;
-      }
       requestLayout();
     }
   }
@@ -730,9 +732,6 @@ public final class ProgressIndicator extends ProgressBar {
     }
     if (!Arrays.equals(getIndicatorColors(), indicatorColors)) {
       baseSpec.indicatorColors = indicatorColors;
-      if (useCircularSpec) {
-        circularBaseSpec.indicatorColors = indicatorColors;
-      }
       getIndeterminateDrawable().getAnimatorDelegate().invalidateSpecValues();
       if (!isEligibleToSeamless()) {
         spec.linearSeamless = false;
@@ -748,7 +747,7 @@ public final class ProgressIndicator extends ProgressBar {
    * @attr ref com.google.android.material.progressindicator.R.stylable#ProgressIndicator_trackColor
    */
   public int getTrackColor() {
-    return useCircularSpec ? circularBaseSpec.trackColor : baseSpec.trackColor;
+    return baseSpec.trackColor;
   }
 
   /**
@@ -761,9 +760,6 @@ public final class ProgressIndicator extends ProgressBar {
   public void setTrackColor(@ColorInt int trackColor) {
     if (getTrackColor() != trackColor) {
       baseSpec.trackColor = trackColor;
-      if (useCircularSpec) {
-        circularBaseSpec.trackColor = trackColor;
-      }
       getIndeterminateDrawable().getAnimatorDelegate().invalidateSpecValues();
       invalidate();
     }
@@ -779,7 +775,8 @@ public final class ProgressIndicator extends ProgressBar {
     return useCircularSpec
         ? circularSpec.indicatorDirection
             == CircularProgressIndicator.INDICATOR_DIRECTION_COUNTERCLOCKWISE
-        : spec.inverse;
+        : linearSpec.indicatorDirection
+            == LinearProgressIndicator.INDICATOR_DIRECTION_RIGHT_TO_LEFT;
   }
 
   /**
@@ -796,6 +793,15 @@ public final class ProgressIndicator extends ProgressBar {
       if (useCircularSpec) {
         circularSpec.indicatorDirection =
             CircularProgressIndicatorSpec.getIndicatorDirectionFromInverse(inverse);
+      } else {
+        linearSpec.indicatorDirection =
+            LinearProgressIndicatorSpec.getIndicatorDirectionFromInverse(inverse);
+        linearSpec.drawHorizontallyInverse =
+            linearSpec.indicatorDirection
+                    == LinearProgressIndicator.INDICATOR_DIRECTION_RIGHT_TO_LEFT
+                || (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL
+                    && linearSpec.indicatorDirection
+                        == LinearProgressIndicator.INDICATOR_DIRECTION_END_TO_START);
       }
       invalidate();
     }
@@ -826,6 +832,9 @@ public final class ProgressIndicator extends ProgressBar {
             CircularProgressIndicatorSpec.getShowBehaviorFromGrowMode(growMode);
         circularSpec.hideBehavior =
             CircularProgressIndicatorSpec.getHideBehaviorFromGrowMode(growMode);
+      } else {
+        linearSpec.showBehavior = LinearProgressIndicatorSpec.getShowBehaviorFromGrowMode(growMode);
+        linearSpec.hideBehavior = LinearProgressIndicatorSpec.getHideBehaviorFromGrowMode(growMode);
       }
       invalidate();
     }
@@ -864,16 +873,19 @@ public final class ProgressIndicator extends ProgressBar {
     }
     if (isEligibleToSeamless()) {
       spec.linearSeamless = linearSeamless;
+      linearSpec.indicatorDirection =
+          LinearProgressIndicatorSpec.getIndeterminateAnimationTypeFromLinearSeamless(
+              linearSeamless);
       if (linearSeamless) {
         baseSpec.indicatorCornerRadius = 0;
       }
       if (linearSeamless) {
         getIndeterminateDrawable()
-            .setAnimatorDelegate(new LinearIndeterminateSeamlessAnimatorDelegate(spec));
+            .setAnimatorDelegate(new LinearIndeterminateSeamlessAnimatorDelegate(linearSpec));
       } else {
         getIndeterminateDrawable()
             .setAnimatorDelegate(
-                new LinearIndeterminateSpacingAnimatorDelegate(getContext(), spec));
+                new LinearIndeterminateSpacingAnimatorDelegate(getContext(), linearSpec));
       }
     } else {
       spec.linearSeamless = false;
@@ -889,9 +901,7 @@ public final class ProgressIndicator extends ProgressBar {
    *     com.google.android.material.progressindicator.R.stylable#ProgressIndicator_indicatorCornerRadius
    */
   public int getIndicatorCornerRadius() {
-    return useCircularSpec
-        ? circularBaseSpec.indicatorCornerRadius
-        : baseSpec.indicatorCornerRadius;
+    return baseSpec.indicatorCornerRadius;
   }
 
   /**
@@ -905,9 +915,6 @@ public final class ProgressIndicator extends ProgressBar {
   public void setIndicatorCornerRadius(@Px int indicatorCornerRadius) {
     if (getIndicatorCornerRadius() != indicatorCornerRadius) {
       baseSpec.indicatorCornerRadius = min(indicatorCornerRadius, getIndicatorSize() / 2);
-      if (useCircularSpec) {
-        circularBaseSpec.indicatorCornerRadius = baseSpec.indicatorCornerRadius;
-      }
       if (spec.indicatorType == LINEAR && spec.linearSeamless && indicatorCornerRadius > 0) {
         throw new IllegalArgumentException(
             "Rounded corners are not supported in linear seamless mode.");

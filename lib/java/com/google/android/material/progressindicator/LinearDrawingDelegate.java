@@ -30,7 +30,7 @@ import com.google.android.material.color.MaterialColors;
 /** A delegate class to help draw the graphics for {@link ProgressIndicator} in linear types. */
 final class LinearDrawingDelegate extends DrawingDelegate {
 
-  private final ProgressIndicatorSpec spec;
+  private final LinearProgressIndicatorSpec spec;
   private final BaseProgressIndicatorSpec baseSpec;
 
   // The length (horizontal) of the track in px.
@@ -39,7 +39,7 @@ final class LinearDrawingDelegate extends DrawingDelegate {
   private float displayedCornerRadius;
 
   /** Instantiates LinearDrawingDelegate with the current spec. */
-  public LinearDrawingDelegate(@NonNull ProgressIndicatorSpec spec) {
+  public LinearDrawingDelegate(@NonNull LinearProgressIndicatorSpec spec) {
     this.spec = spec;
     baseSpec = spec.getBaseSpec();
   }
@@ -76,17 +76,17 @@ final class LinearDrawingDelegate extends DrawingDelegate {
         clipBounds.width() / 2f,
         clipBounds.height() / 2f + max(0f, (clipBounds.height() - baseSpec.indicatorSize) / 2f));
 
-    // Flips canvas horizontally if inverse.
-    if (spec.inverse) {
+    // Flips canvas horizontally if need to draw right to left.
+    if (spec.drawHorizontallyInverse) {
       canvas.scale(-1f, 1f);
     }
-    // Flips canvas vertically if grow upward.
-    if (spec.growMode == ProgressIndicator.GROW_MODE_OUTGOING) {
+    // Flips canvas vertically if need to anchor to the bottom edge.
+    if ((drawable.isShowing() && spec.showBehavior == LinearProgressIndicator.SHOW_UPWARD)
+        || (drawable.isHiding() && spec.hideBehavior == LinearProgressIndicator.HIDE_DOWNWARD)) {
       canvas.scale(1f, -1f);
     }
-    // Offsets canvas vertically if grow from top/bottom.
-    if (spec.growMode == ProgressIndicator.GROW_MODE_INCOMING
-        || spec.growMode == ProgressIndicator.GROW_MODE_OUTGOING) {
+    // Offsets canvas vertically while showing or hiding.
+    if (drawable.isShowing() || drawable.isHiding()) {
       canvas.translate(0f, baseSpec.indicatorSize * (indicatorSizeFraction - 1) / 2f);
     }
 

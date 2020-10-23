@@ -51,6 +51,7 @@ final class LinearIndeterminateSpacingAnimatorDelegate
   private final Context context;
   // The base spec.
   private final BaseProgressIndicatorSpec baseSpec;
+
   // The animator controls non-seamless linear indeterminate animation.
   private AnimatorSet animatorSet;
 
@@ -66,7 +67,7 @@ final class LinearIndeterminateSpacingAnimatorDelegate
   AnimationCallback animatorCompleteCallback = null;
 
   public LinearIndeterminateSpacingAnimatorDelegate(
-      @NonNull Context context, @NonNull ProgressIndicatorSpec spec) {
+      @NonNull Context context, @NonNull LinearProgressIndicatorSpec spec) {
     super(/*segmentCount=*/ 2);
 
     this.context = context;
