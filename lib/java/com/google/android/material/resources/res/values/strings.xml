@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2018 The Android Open Source Project
+  ~ Copyright 2020 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,6 +15,6 @@
   ~ limitations under the License.
   -->
 <resources>
-  <!-- The class name for the HideBottomViewOnScrollBehavior -->
-  <string name="hide_bottom_view_on_scroll_behavior" translatable="false">com.google.android.material.behavior.HideBottomViewOnScrollBehavior</string>
+  <!-- The description used for accessibility that describes the role of a tab item. [CHAR_LIMIT=30] -->
+  <string name="item_view_role_description">Tab</string>
 </resources>

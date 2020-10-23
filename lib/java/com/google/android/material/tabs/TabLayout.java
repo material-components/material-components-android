@@ -2487,7 +2487,7 @@ public class TabLayout extends HorizontalScrollView {
         infoCompat.setClickable(false);
         infoCompat.removeAction(AccessibilityActionCompat.ACTION_CLICK);
       }
-      infoCompat.setRoleDescription("Tab");
+      infoCompat.setRoleDescription(getResources().getString(R.string.item_view_role_description));
     }
 
     @Override
