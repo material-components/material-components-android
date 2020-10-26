@@ -37,6 +37,7 @@ import io.material.catalog.feature.DemoFragment;
  */
 public class ProgressIndicatorStandaloneDemoFragment extends DemoFragment {
 
+  @SuppressWarnings("RestrictTo")
   @Override
   @NonNull
   public View onCreateDemoView(

@@ -82,6 +82,7 @@ public class TopAppBarCollapsingMultilineDemoFragment extends DemoFragment {
 
     CollapsingToolbarLayout collapsingToolbarLayout =
         requireView().findViewById(R.id.collapsingtoolbarlayout);
+    @SuppressWarnings("RestrictTo")
     int maxLines = collapsingToolbarLayout.getMaxLines();
     for (int i = 0; i < linesMap.size(); i++) {
       int value = linesMap.valueAt(i);
@@ -98,6 +99,7 @@ public class TopAppBarCollapsingMultilineDemoFragment extends DemoFragment {
     }
   }
 
+  @SuppressWarnings("RestrictTo")
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     CollapsingToolbarLayout collapsingToolbarLayout =
