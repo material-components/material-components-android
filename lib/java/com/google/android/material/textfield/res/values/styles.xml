@@ -171,6 +171,8 @@
     <item name="android:paddingEnd" tools:ignore="NewApi">16dp</item>
     <item name="android:paddingLeft">16dp</item>
     <item name="android:paddingRight">16dp</item>
+    <!-- Edit text's default text size is 16sp which currently equals to 22dp total line height, so
+         we need a total of 34dp to get the 56dp height of the default layout. -->
     <item name="android:paddingTop">17dp</item>
     <item name="android:paddingBottom">17dp</item>
     <item name="android:textAppearance">?attr/textAppearanceSubtitle1</item>
@@ -178,11 +180,13 @@
   </style>
 
   <style name="Widget.MaterialComponents.TextInputEditText.FilledBox" parent="Base.Widget.MaterialComponents.TextInputEditText">
+    <!-- Padding values that total 34dp to visually match the spec. -->
     <item name="android:paddingTop">24dp</item>
     <item name="android:paddingBottom">10dp</item>
   </style>
 
   <style name="Widget.MaterialComponents.TextInputEditText.FilledBox.Dense">
+    <!-- Dense layout height is 54dp so we need a total of 32dp of top and bottom padding. -->
     <item name="android:paddingTop">24dp</item>
     <item name="android:paddingBottom">8dp</item>
   </style>
