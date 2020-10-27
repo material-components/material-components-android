@@ -58,9 +58,8 @@ public abstract class DemoActivity extends AppCompatActivity implements HasAndro
 
   @Override
   protected void onCreate(@Nullable Bundle bundle) {
-    String transitionName = getIntent().getStringExtra(EXTRA_TRANSITION_NAME);
-
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP && transitionName != null) {
+    if (shouldSetUpContainerTransform()) {
+      String transitionName = getIntent().getStringExtra(EXTRA_TRANSITION_NAME);
       findViewById(android.R.id.content).setTransitionName(transitionName);
       setEnterSharedElementCallback(new MaterialContainerTransformSharedElementCallback());
       getWindow().setSharedElementEnterTransition(buildContainerTransform(DURATION_ENTER));
@@ -101,6 +100,11 @@ public abstract class DemoActivity extends AppCompatActivity implements HasAndro
 
   protected boolean shouldShowDefaultDemoActionBarCloseButton() {
     return true;
+  }
+
+  protected boolean shouldSetUpContainerTransform() {
+    return VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP
+        && getIntent().getStringExtra(EXTRA_TRANSITION_NAME) != null;
   }
 
   @Override

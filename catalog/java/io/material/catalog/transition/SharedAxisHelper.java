@@ -64,4 +64,16 @@ public class SharedAxisHelper {
   public int getSelectedAxis() {
     return BUTTON_AXIS_MAP.get(directionRadioGroup.getCheckedRadioButtonId());
   }
+
+  public void setSelectedAxis(int axis) {
+    int index = BUTTON_AXIS_MAP.indexOfValue(axis);
+    int id = BUTTON_AXIS_MAP.keyAt(index);
+    directionRadioGroup.check(id);
+  }
+
+  public void setAxisButtonGroupEnabled(boolean enabled) {
+    for (int i = 0; i < directionRadioGroup.getChildCount(); i++) {
+      directionRadioGroup.getChildAt(i).setEnabled(enabled);
+    }
+  }
 }

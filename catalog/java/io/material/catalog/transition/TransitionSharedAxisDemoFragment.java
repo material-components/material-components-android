@@ -33,8 +33,8 @@ import io.material.catalog.feature.OnBackPressedHandler;
 /** A fragment that displays the Shared Axis Transition demo for the Catalog app. */
 public class TransitionSharedAxisDemoFragment extends DemoFragment implements OnBackPressedHandler {
 
-  private static final int LAYOUT_RES_ID_START = R.layout.cat_transition_shared_axis_start_fragment;
-  private static final int LAYOUT_RES_ID_END = R.layout.cat_transition_shared_axis_end_fragment;
+  private static final int LAYOUT_RES_ID_START = R.layout.cat_transition_shared_axis_start;
+  private static final int LAYOUT_RES_ID_END = R.layout.cat_transition_shared_axis_end;
 
   private SharedAxisHelper sharedAxisHelper;
 

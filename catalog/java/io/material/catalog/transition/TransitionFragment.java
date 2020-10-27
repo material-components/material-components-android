@@ -61,7 +61,8 @@ public class TransitionFragment extends DemoLandingFragment {
   @Override
   public List<Demo> getAdditionalDemos() {
     List<Demo> demos = new ArrayList<>();
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+    boolean shouldAddPlatformDemos = VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP;
+    if (shouldAddPlatformDemos) {
       demos.add(
           new Demo(R.string.cat_transition_container_transform_activity_title) {
             @Override
@@ -83,8 +84,21 @@ public class TransitionFragment extends DemoLandingFragment {
               public Fragment createFragment() {
                 return new TransitionContainerTransformViewDemoFragment();
               }
-            },
-            new Demo(R.string.cat_transition_shared_axis_title) {
+            }));
+
+    if (shouldAddPlatformDemos) {
+      demos.add(
+          new Demo(R.string.cat_transition_shared_axis_activity_title) {
+            @Override
+            public Intent createActivityIntent() {
+              return new Intent(getContext(), TransitionSharedAxisStartDemoActivity.class);
+            }
+          }
+      );
+    }
+    demos.addAll(
+        Arrays.asList(
+            new Demo(R.string.cat_transition_shared_axis_fragment_title) {
               @Override
               public Fragment createFragment() {
                 return new TransitionSharedAxisDemoFragment();

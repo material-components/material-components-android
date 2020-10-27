@@ -43,22 +43,22 @@
     </activity>
     <activity
       android:name=".elevation.ElevationOverlayDemoActivity"
-      android:exported="false"
+      android:exported="true"
       android:label="@string/cat_elevation_overlay_title"
       android:theme="@style/Theme.Catalog.Dark"/>
     <activity
       android:name=".topappbar.TopAppBarActionBarDemoActivity"
-      android:exported="false"
+      android:exported="true"
       android:label="@string/cat_topappbar_action_bar_title"
       android:theme="@style/Theme.MaterialComponents.DayNight"/>
     <activity
       android:name=".topappbar.TopAppBarDarkActionBarDemoActivity"
-      android:exported="false"
+      android:exported="true"
       android:label="@string/cat_topappbar_dark_action_bar_title"
       android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar"/>
     <activity
       android:name=".topappbar.TopAppBarScrollingTransparentStatusDemoActivity"
-      android:exported="false"
+      android:exported="true"
       android:label="@string/cat_topappbar_scrolling_transparent_title"
       android:theme="@style/Theme.Catalog.TransparentStatus"/>
     <activity
@@ -66,14 +66,20 @@
       android:exported="true"/>
     <activity
       android:name=".transition.hero.TransitionMusicDemoActivity"
-      android:exported="false"
+      android:exported="true"
       android:theme="@style/Theme.Catalog.Music"/>
     <activity
       android:name=".transition.TransitionContainerTransformStartDemoActivity"
-      android:exported="false"/>
+      android:exported="true"/>
     <activity
       android:name=".transition.TransitionContainerTransformEndDemoActivity"
-      android:exported="false"/>
+      android:exported="true"/>
+    <activity
+      android:name="io.material.catalog.transition.TransitionSharedAxisStartDemoActivity"
+      android:exported="true" />
+    <activity
+      android:name="io.material.catalog.transition.TransitionSharedAxisEndDemoActivity"
+      android:exported="true" />
   </application>
 
 </manifest>
