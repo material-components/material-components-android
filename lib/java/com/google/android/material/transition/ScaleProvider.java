@@ -17,6 +17,7 @@
 package com.google.android.material.transition;
 
 import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.view.View;
@@ -167,10 +168,24 @@ public final class ScaleProvider implements VisibilityAnimatorProvider {
     }
   }
 
-  private static Animator createScaleAnimator(View view, float startScale, float endScale) {
-    return ObjectAnimator.ofPropertyValuesHolder(
-        view,
-        PropertyValuesHolder.ofFloat(View.SCALE_X, startScale, endScale),
-        PropertyValuesHolder.ofFloat(View.SCALE_Y, startScale, endScale));
+  private static Animator createScaleAnimator(final View view, float startScale, float endScale) {
+    final float originalScaleX = view.getScaleX();
+    final float originalScaleY = view.getScaleY();
+    ObjectAnimator animator =
+        ObjectAnimator.ofPropertyValuesHolder(
+            view,
+            PropertyValuesHolder.ofFloat(
+                View.SCALE_X, originalScaleX * startScale, originalScaleX * endScale),
+            PropertyValuesHolder.ofFloat(
+                View.SCALE_Y, originalScaleY * startScale, originalScaleY * endScale));
+    animator.addListener(
+        new AnimatorListenerAdapter() {
+          @Override
+          public void onAnimationEnd(Animator animation) {
+            view.setScaleX(originalScaleX);
+            view.setScaleY(originalScaleY);
+          }
+        });
+    return animator;
   }
 }
