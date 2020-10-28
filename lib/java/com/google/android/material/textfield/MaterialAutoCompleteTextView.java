@@ -24,7 +24,9 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.StateListDrawable;
 import android.os.Build.VERSION;
+import androidx.annotation.StyleRes;
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.appcompat.widget.ListPopupWindow;
 import android.text.InputType;
@@ -41,6 +43,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.internal.ManufacturerUtils;
 import com.google.android.material.internal.ThemeEnforcement;
+import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.ShapeAppearanceModel;
 
 /**
  * A special sub-class of {@link android.widget.AutoCompleteTextView} that is auto-inflated so that
@@ -60,6 +64,19 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
   @NonNull private final ListPopupWindow modalListPopup;
   @Nullable private final AccessibilityManager accessibilityManager;
   @NonNull private final Rect tempRect = new Rect();
+  private StateListDrawable popupBackground;
+  private int popupStartPadding;
+  private int popupTopPadding;
+  private int popupBottomPadding;
+  private int popupEndPadding;
+  private float popupElevation;
+  @StyleRes int popupShapeAppearanceResId;
+  @StyleRes int popupShapeAppearanceOverlayResId;
+  boolean enforceFlatTopCorners;
+
+  private static final int[] POPUP_ATTRS = {
+      android.R.attr.popupElevation
+  };
 
   public MaterialAutoCompleteTextView(@NonNull Context context) {
     this(context, null);
@@ -95,6 +112,15 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
       }
     }
 
+    TypedArray a =
+        context.obtainStyledAttributes(
+            attributeSet, POPUP_ATTRS, defStyleAttr, 0);
+    if (a.hasValue(0)) {
+      popupElevation = a.getDimension(0, 0);
+    }
+    a.recycle();
+    loadPopupAttributes(attributes);
+
     accessibilityManager =
         (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
 
@@ -127,7 +153,68 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
           }
         });
 
+    createPopupBackground();
+    setPopupBackground();
     attributes.recycle();
+  }
+
+  private void loadPopupAttributes(@NonNull TypedArray a){
+
+    popupShapeAppearanceResId = a.getResourceId(R.styleable.MaterialAutoCompleteTextView_popupBackgroundShapeAppearance, 0);
+    popupShapeAppearanceOverlayResId =
+        a.getResourceId(R.styleable.MaterialAutoCompleteTextView_popupBackgroundShapeAppearanceOverlay, 0);
+
+    popupStartPadding = a.getDimensionPixelSize(R.styleable.MaterialAutoCompleteTextView_popupStartPadding, 0);
+    popupTopPadding = a.getDimensionPixelSize(R.styleable.MaterialAutoCompleteTextView_popupTopPadding, 0);
+    popupBottomPadding = a.getDimensionPixelSize(R.styleable.MaterialAutoCompleteTextView_popupBottomPadding, 0);
+    popupEndPadding = a.getDimensionPixelSize(R.styleable.MaterialAutoCompleteTextView_popupEndPadding, 0);
+
+    enforceFlatTopCorners = a.getBoolean(R.styleable.MaterialAutoCompleteTextView_enforceFlatTopCorners,false);
+  }
+
+  private void createPopupBackground() {
+
+    ShapeAppearanceModel popupShapeAppearanceModel = ShapeAppearanceModel.builder(
+        getContext(), popupShapeAppearanceResId, popupShapeAppearanceOverlayResId)
+        .build();
+
+    // Background for the popups of the outlined variation and for the filled variation when it is
+    // being displayed above the layout.
+    MaterialShapeDrawable defaultRoundedCornersPopupBackground =
+        createDefaultPopupMaterialShapeDrawable(popupShapeAppearanceModel);
+
+    MaterialShapeDrawable flatTopCornersPopupBackground = null;
+    popupBackground = new StateListDrawable();
+    if (enforceFlatTopCorners) {
+      ShapeAppearanceModel flatTopCornersShapeAppearanceModel =
+          ShapeAppearanceModel.builder(
+              getContext(), popupShapeAppearanceResId, popupShapeAppearanceOverlayResId)
+              .setTopLeftCornerSize(0)
+              .setTopRightCornerSize(0)
+              .build();
+
+      flatTopCornersPopupBackground =
+          createDefaultPopupMaterialShapeDrawable(flatTopCornersShapeAppearanceModel);
+
+      popupBackground.addState(
+          new int[] {android.R.attr.state_above_anchor}, defaultRoundedCornersPopupBackground);
+      popupBackground.addState(new int[] {}, flatTopCornersPopupBackground);
+    } else {
+      popupBackground.addState(new int[]{}, defaultRoundedCornersPopupBackground);
+    }
+  }
+
+  private MaterialShapeDrawable createDefaultPopupMaterialShapeDrawable(
+      ShapeAppearanceModel shapeAppearanceModel) {
+    MaterialShapeDrawable popupDrawable =
+        MaterialShapeDrawable.createWithElevationOverlay(getContext(), popupElevation);
+    popupDrawable.setShapeAppearanceModel(shapeAppearanceModel);
+    popupDrawable.setPadding(popupStartPadding, popupTopPadding, popupEndPadding, popupBottomPadding);
+    return popupDrawable;
+  }
+
+  private void setPopupBackground(){
+    setDropDownBackgroundDrawable(popupBackground);
   }
 
   @Override

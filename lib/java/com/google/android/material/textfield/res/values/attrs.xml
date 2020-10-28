@@ -271,6 +271,21 @@
 
   <declare-styleable name="MaterialAutoCompleteTextView" parent="AppCompatAutoCompleteTextView">
     <attr name="android:inputType"/>
+    <!-- Shape appearance style reference for DropDownMenu in MaterialAutoCompleteTextView. -->
+    <attr name="popupBackgroundShapeAppearance" format="reference" />
+    <!-- Shape appearance overlay style reference for DropDownMenu in  MaterialAutoCompleteTextView.
+     To be used to augment attributes declared in the popupBackgroundShapeAppearance. -->
+    <attr name="popupBackgroundShapeAppearanceOverlay" format="reference"/>
+    <!-- Whether the flat top corners should be used in DropDownMenu -->
+    <attr name="enforceFlatTopCorners" format="boolean"/>
+    <!-- Top padding for DropDownMenu in  MaterialAutoCompleteTextView. -->
+    <attr name="popupTopPadding" format="dimension"/>
+    <!-- Bottom padding for DropDownMenu in  MaterialAutoCompleteTextView. -->
+    <attr name="popupBottomPadding" format="dimension"/>
+    <!-- Start padding for DropDownMenu in  MaterialAutoCompleteTextView. -->
+    <attr name="popupStartPadding" format="dimension"/>
+    <!-- End padding for DropDownMenu in  MaterialAutoCompleteTextView. -->
+    <attr name="popupEndPadding" format="dimension"/>
   </declare-styleable>
 
 </resources>
