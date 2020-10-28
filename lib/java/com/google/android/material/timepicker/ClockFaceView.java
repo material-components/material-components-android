@@ -24,9 +24,9 @@ import static java.lang.Math.max;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.graphics.RadialGradient;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -44,12 +44,10 @@ import android.view.View;
 import android.view.ViewTreeObserver.OnPreDrawListener;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.TextView;
-import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
-import com.google.android.material.color.MaterialColors;
 import com.google.android.material.timepicker.ClockHandView.OnRotateListener;
 
 /**
@@ -77,35 +75,42 @@ class ClockFaceView extends RadialViewGroup implements OnRotateListener {
 
   private float currentHandRotation;
 
-  @ColorInt
-  private final int textColor;
+  private final ColorStateList textColor;
 
   public ClockFaceView(@NonNull Context context) {
     this(context, null);
   }
 
   public ClockFaceView(@NonNull Context context, @Nullable AttributeSet attrs) {
-    this(context, attrs, 0);
+    this(context, attrs, R.attr.materialClockStyle);
   }
 
   @SuppressLint("ClickableViewAccessibility")
   public ClockFaceView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
     TypedArray a =
-        context.obtainStyledAttributes(attrs, R.styleable.ClockFaceView, defStyleAttr, 0);
+        context.obtainStyledAttributes(
+            attrs,
+            R.styleable.ClockFaceView,
+            defStyleAttr,
+            R.style.Widget_MaterialComponents_TimePicker_Clock);
     Resources res = getResources();
-    textColor = a.getColor(R.styleable.ClockFaceView_valueTextColor, Color.BLACK);
+    textColor = a.getColorStateList(R.styleable.ClockFaceView_clockNumberTextColor);
     LayoutInflater.from(context).inflate(R.layout.material_clockface_view, this, true);
     clockHandView = findViewById(R.id.material_clock_hand);
     clockHandPadding = res.getDimensionPixelSize(R.dimen.material_clock_hand_padding);
-    int colorOnSurface = MaterialColors.getColor(this, R.attr.colorOnSurface);
-    int colorOnPrimary = MaterialColors.getColor(this, R.attr.colorOnPrimary);
-    gradientColors = new int[] {colorOnPrimary, colorOnPrimary, colorOnSurface};
+    int clockHandTextColor =
+        textColor.getColorForState(
+            new int[] {android.R.attr.state_selected}, textColor.getDefaultColor());
+    gradientColors =
+        new int[] {clockHandTextColor, clockHandTextColor, textColor.getDefaultColor()};
     clockHandView.addOnRotateListener(this);
 
     int backgroundColor =
-        AppCompatResources.getColorStateList(context, R.color.material_timepicker_clockface)
-            .getDefaultColor();
+        a.getColor(
+            R.styleable.ClockFaceView_clockFaceBackgroundColor,
+            AppCompatResources.getColorStateList(context, R.color.material_timepicker_clockface)
+                .getDefaultColor());
     setBackgroundColor(backgroundColor);
 
     getViewTreeObserver()

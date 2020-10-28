@@ -56,7 +56,6 @@
     android:layout_height="@dimen/material_clock_size"
     android:layout_marginStart="@dimen/clock_face_margin_start"
     app:layout_constraintStart_toEndOf="@+id/material_clock_display"
-    app:layout_constraintTop_toTopOf="parent"
-    app:valueTextColor="?attr/colorOnSurface" />
+    app:layout_constraintTop_toTopOf="parent" />
 
 </merge>

@@ -88,4 +88,10 @@
     <item name="android:textColor">@/color/material_on_surface_emphasis_medium</item>
   </style>
 
+  <style name="Widget.MaterialComponents.TimePicker.Clock" parent="">
+    <item name="clockFaceBackgroundColor">@color/material_timepicker_clockface</item>
+    <item name="clockHandColor">?attr/colorPrimary</item>
+    <item name="clockNumberTextColor">@color/material_timepicker_clock_text_color</item>
+  </style>
+
 </resources>

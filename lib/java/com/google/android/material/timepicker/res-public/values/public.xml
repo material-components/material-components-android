@@ -18,9 +18,14 @@
 <resources>
   <public name="materialTimePickerTheme" type="attr" />
   <public name="materialTimePickerStyle" type="attr" />
+  <public name="materialClockStyle" type="attr" />
 
   <public name="keyboardIcon" type="attr" />
   <public name="clockIcon" type="attr" />
+
+  <public name="clockFaceBackgroundColor" type="attr" />
+  <public name="clockHandColor" type="attr" />
+  <public name="clockNumberTextColor" type="attr" />
 
   <public name="Widget.MaterialComponents.TimePicker" type="style" />
   <public name="Widget.MaterialComponents.TimePicker.Button" type="style" />

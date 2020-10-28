@@ -40,7 +40,6 @@ import androidx.annotation.Dimension;
 import androidx.annotation.FloatRange;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
-import com.google.android.material.color.MaterialColors;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,20 +88,24 @@ class ClockHandView extends View {
   }
 
   public ClockHandView(Context context, @Nullable AttributeSet attrs) {
-    this(context, attrs, 0);
+    this(context, attrs, R.attr.materialClockStyle);
   }
 
   public ClockHandView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
     TypedArray a =
-        context.obtainStyledAttributes(attrs, R.styleable.ClockHandView, defStyleAttr, 0);
+        context.obtainStyledAttributes(
+            attrs,
+            R.styleable.ClockHandView,
+            defStyleAttr,
+            R.style.Widget_MaterialComponents_TimePicker_Clock);
 
     circleRadius = a.getDimensionPixelSize(R.styleable.ClockHandView_materialCircleRadius, 0);
     selectorRadius = a.getDimensionPixelSize(R.styleable.ClockHandView_selectorSize, 0);
     Resources res = getResources();
     selectorStrokeWidth = res.getDimensionPixelSize(R.dimen.material_clock_hand_stroke_width);
     centerDotRadius = res.getDimensionPixelSize(R.dimen.material_clock_hand_center_dot_radius);
-    int selectorColor = MaterialColors.getColor(this, R.attr.colorPrimary);
+    int selectorColor = a.getColor(R.styleable.ClockHandView_clockHandColor, 0);
     paint.setAntiAlias(true);
     paint.setColor(selectorColor);
     setHandRotation(0);
