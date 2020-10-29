@@ -12,7 +12,7 @@ path: /catalog/cards/
 [Cards](https://material.io/components/cards/) contain content and actions about
 a single subject.
 
-!["Cards on a screen"](assets/cards/cards_hero.png)
+!["Cards with text, numbers, graph, and a chart"](assets/cards/cards_hero.png)
 
 ## Contents
 
@@ -214,8 +214,8 @@ Material Components Theme. If not, set the style to
 
 The following example shows an elevated card.
 
-!["Elevated card with a title, a secondary title, text, and Action 1 and Action
-2 buttons in purple"](assets/cards/cards_elevated.png)
+!["Elevated card with photo, a title, a secondary title, text, and Action 1 and
+Action 2 buttons in purple"](assets/cards/cards_elevated.png)
 
 ```xml
 <com.google.android.material.card.MaterialCardView
@@ -300,8 +300,8 @@ The following example shows an elevated card.
 
 The following example shows an outlined card.
 
-!["Outlined card with a title, a secondary title, text, and Action 1 and Action
-2 buttons in purple"](assets/cards/cards_outlined.png)
+!["Outlined card with a photo, title, a secondary title, text, and Action 1 and
+Action 2 buttons in purple"](assets/cards/cards_outlined.png)
 
 In the layout:
 
@@ -417,7 +417,8 @@ API and source code
 
 The following example shows a card with Material Theming.
 
-![Card theming example in Shrine theme](assets/cards/cards_theming.png)
+![Card with Shrine theme with photo, title, secondary title, text and Action 1
+and 2 buttons in black](assets/cards/cards_theming.png)
 
 #### Implementing card theming
 
