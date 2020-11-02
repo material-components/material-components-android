@@ -16,4 +16,5 @@
   -->
 <resources>
   <item type="id" name="row_index_key" />
+  <item type="id" name="mtrl_view_tag_bottom_padding" />
 </resources>
