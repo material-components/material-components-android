@@ -27,6 +27,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.google.android.material.testutils.TestUtilsActions.setLayoutDirection;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.AllOf.allOf;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -39,8 +40,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import androidx.core.view.ViewCompat;
 import android.text.TextUtils;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -56,6 +59,9 @@ import androidx.test.runner.AndroidJUnit4;
 import com.google.android.material.testapp.R;
 import com.google.android.material.testapp.SnackbarActivity;
 import com.google.android.material.testutils.SnackbarUtils;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -391,5 +397,46 @@ public class SnackbarTest {
         .onDismissed(snackbar, BaseTransientBottomBar.BaseCallback.DISMISS_EVENT_MANUAL);
     verify(mockCallback2, never())
         .onDismissed(snackbar, BaseTransientBottomBar.BaseCallback.DISMISS_EVENT_MANUAL);
+  }
+
+  @Test
+  public void testDefaultContext_usesAppCompat() throws Throwable {
+    final Snackbar snackbar =
+        Snackbar.make(coordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
+            .setAction(ACTION_TEXT, mock(View.OnClickListener.class));
+    SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(snackbar);
+
+    onView(isAssignableFrom(SnackbarContentLayout.class)).check(matches(not(hasMaterialTheme())));
+  }
+
+  @Test
+  public void testOverrideContext_usesMaterial() throws Throwable {
+    ContextThemeWrapper context =
+        new ContextThemeWrapper(coordinatorLayout.getContext(), R.style.Theme_MaterialComponents);
+
+    final Snackbar snackbar =
+        Snackbar.make(context, coordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
+            .setAction(ACTION_TEXT, mock(View.OnClickListener.class));
+    SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(snackbar);
+
+    onView(isAssignableFrom(SnackbarContentLayout.class)).check(matches(hasMaterialTheme()));
+  }
+
+  static Matcher<View> hasMaterialTheme() {
+    return new TypeSafeMatcher<View>() {
+      @Override
+      public void describeTo(Description description) {
+        description.appendText("View has material theme");
+      }
+
+      @Override
+      protected boolean matchesSafely(View view) {
+        TypedArray a =
+            view.getContext().obtainStyledAttributes(new int[] {R.attr.snackbarButtonStyle});
+        boolean result = a.hasValue(0);
+        a.recycle();
+        return result;
+      }
+    };
   }
 }

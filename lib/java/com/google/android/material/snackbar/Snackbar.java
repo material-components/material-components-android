@@ -104,10 +104,11 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
   @Nullable private BaseCallback<Snackbar> callback;
 
   private Snackbar(
+      @NonNull Context context,
       @NonNull ViewGroup parent,
       @NonNull View content,
       @NonNull com.google.android.material.snackbar.ContentViewCallback contentViewCallback) {
-    super(parent, content, contentViewCallback);
+    super(context, parent, content, contentViewCallback);
     accessibilityManager =
         (AccessibilityManager) parent.getContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
   }
@@ -153,22 +154,65 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
   @NonNull
   public static Snackbar make(
       @NonNull View view, @NonNull CharSequence text, @Duration int duration) {
+    return makeInternal(/* context= */ null, view, text, duration);
+  }
+
+  /**
+   * Make a Snackbar to display a message
+   *
+   * <p>Snackbar will try and find a parent view to hold Snackbar's view from the value given to
+   * {@code view}. Snackbar will walk up the view tree trying to find a suitable parent, which is
+   * defined as a {@link CoordinatorLayout} or the window decor's content view, whichever comes
+   * first.
+   *
+   * <p>Having a {@link CoordinatorLayout} in your view hierarchy allows Snackbar to enable certain
+   * features, such as swipe-to-dismiss and automatically moving of widgets.
+   *
+   * @param context The context to use to create the Snackbar view.
+   * @param view The view to find a parent from. This view is also used to find the anchor view when
+   *     calling {@link Snackbar#setAnchorView(int)}.
+   * @param text The text to show. Can be formatted text.
+   * @param duration How long to display the message. Can be {@link #LENGTH_SHORT}, {@link
+   *     #LENGTH_LONG}, {@link #LENGTH_INDEFINITE}, or a custom duration in milliseconds.
+   */
+  @NonNull
+  public static Snackbar make(
+      @NonNull Context context,
+      @NonNull View view,
+      @NonNull CharSequence text,
+      @Duration int duration) {
+    return makeInternal(context, view, text, duration);
+  }
+
+  /**
+   * Makes a Snackbar using the given context if non-null, otherwise uses the parent view context.
+   */
+  @NonNull
+  private static Snackbar makeInternal(
+      @Nullable Context context,
+      @NonNull View view,
+      @NonNull CharSequence text,
+      @Duration int duration) {
     final ViewGroup parent = findSuitableParent(view);
     if (parent == null) {
       throw new IllegalArgumentException(
           "No suitable parent found from the given view. Please provide a valid view.");
     }
 
-    final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+    if (context == null) {
+      context = parent.getContext();
+    }
+
+    final LayoutInflater inflater = LayoutInflater.from(context);
     final SnackbarContentLayout content =
         (SnackbarContentLayout)
             inflater.inflate(
-                hasSnackbarContentStyleAttrs(parent.getContext())
+                hasSnackbarContentStyleAttrs(context)
                     ? R.layout.mtrl_layout_snackbar_include
                     : R.layout.design_layout_snackbar_include,
                 parent,
                 false);
-    final Snackbar snackbar = new Snackbar(parent, content, content);
+    final Snackbar snackbar = new Snackbar(context, parent, content, content);
     snackbar.setText(text);
     snackbar.setDuration(duration);
     return snackbar;

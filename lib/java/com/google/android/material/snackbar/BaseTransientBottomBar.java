@@ -340,11 +340,21 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   /**
    * Constructor for the transient bottom bar.
    *
+   * <p>Uses {@link Context} from {@code parent}.
+   *
    * @param parent The parent for this transient bottom bar.
    * @param content The content view for this transient bottom bar.
    * @param contentViewCallback The content view callback for this transient bottom bar.
    */
   protected BaseTransientBottomBar(
+      @NonNull ViewGroup parent,
+      @NonNull View content,
+      @NonNull com.google.android.material.snackbar.ContentViewCallback contentViewCallback) {
+    this(parent.getContext(), parent, content, contentViewCallback);
+  }
+
+  protected BaseTransientBottomBar(
+      @NonNull Context context,
       @NonNull ViewGroup parent,
       @NonNull View content,
       @NonNull com.google.android.material.snackbar.ContentViewCallback contentViewCallback) {
@@ -360,7 +370,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
     targetParent = parent;
     this.contentViewCallback = contentViewCallback;
-    context = parent.getContext();
+    this.context = context;
 
     ThemeEnforcement.checkAppCompatTheme(context);
 
