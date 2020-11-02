@@ -14,16 +14,18 @@ that are published daily via
 [GitHub Packages](https://help.github.com/en/packages/publishing-and-managing-packages/about-github-packages).
 
 To do so, you need to
-[create a GitHub access token](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line#creating-a-token),
-and add the following to your `build.gradle` Maven repositories:
+[create a GitHub access token](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line#creating-a-token)
+with the `read:packages` scope, and add the following to your `build.gradle`
+Maven repositories, replacing `<github_username>` and `<github_access_token>`
+with your credentials:
 
 ```groovy
 maven {
     name = "MaterialSnapshots"
     url = uri("https://maven.pkg.github.com/material-components/material-components-android")
     credentials {
-        username = <github_username>
-        password = <github_access_token>
+        username = "<github_username>"
+        password = "<github_access_token>"
     }
 }
 ```
@@ -45,6 +47,26 @@ If you prefer to depend on a specific snapshot version, you can add
 `<uniqueversion>` is a combination of the date, a timestamp, and a counter (see
 all versions
 [here](https://github.com/material-components/material-components-android/packages/81484/versions)).
+
+You can also find the list of versions through the
+[GraphQL explorer](https://developer.github.com/v4/explorer/) with the following
+query:
+
+```graphql
+{
+  node(id: "MDE0OlBhY2thZ2VWZXJzaW9uMjMyNDc2OQ==") {
+    ... on PackageVersion {
+      id
+      version
+      files(last: 12, orderBy: {field: CREATED_AT, direction: ASC}) {
+        nodes {
+          name
+        }
+      }
+    }
+  }
+}
+```
 
 Alternatively, you could use
 [JitPack](https://jitpack.io/#material-components/material-components-android)
