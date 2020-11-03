@@ -1699,6 +1699,10 @@ abstract class BaseSlider<
         break;
       case MotionEvent.ACTION_MOVE:
         if (!thumbIsPressed) {
+          // Check if we're trying to scroll instead of dragging this Slider
+          if (isInVerticalScrollingContainer() && abs(x - touchDownX) < scaledTouchSlop) {
+            return false;
+          }
           getParent().requestDisallowInterceptTouchEvent(true);
           onStartTrackingTouch();
         }
@@ -2035,20 +2039,30 @@ abstract class BaseSlider<
     activeTicksPaint.setStrokeWidth(trackHeight / 2.0f);
   }
 
-  /**
-   * If this returns true, we can't start dragging the Slider immediately when we receive a {@link
-   * MotionEvent#ACTION_DOWN}. Instead, we must wait for a {@link MotionEvent#ACTION_MOVE}. Copied
-   * from hidden method of {@link View} isInScrollingContainer.
-   *
-   * @return true if any of this View's parents is a scrolling View.
-   */
   private boolean isInScrollingContainer() {
-    ViewParent p = getParent();
-    while (p instanceof ViewGroup) {
-      if (((ViewGroup) p).shouldDelayChildPressedState()) {
+    return isInVerticalScrollingContainer() || isInHorizontalScrollingContainer();
+  }
+
+  private boolean isInVerticalScrollingContainer() {
+    ViewParent parent = getParent();
+    while (parent instanceof View) {
+      if (((View) parent).canScrollVertically(1) ||
+          ((View) parent).canScrollVertically(-1)) {
         return true;
       }
-      p = p.getParent();
+      parent = parent.getParent();
+    }
+    return false;
+  }
+
+  private boolean isInHorizontalScrollingContainer() {
+    ViewParent parent = getParent();
+    while (parent instanceof View) {
+      if (((View) parent).canScrollHorizontally(1) ||
+          ((View) parent).canScrollHorizontally(-1)) {
+        return true;
+      }
+      parent = parent.getParent();
     }
     return false;
   }
