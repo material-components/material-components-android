@@ -15,8 +15,8 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">Sélectionnez une période</string>
-  <string name="mtrl_picker_date_header_title">Sélectionnez une date</string>
+  <string name="mtrl_picker_range_header_title">Sélectionnez la plage</string>
+  <string name="mtrl_picker_date_header_title">Sélectionnez la date</string>
   <string name="mtrl_picker_range_header_unselected">Du (date de début) au (date de fin)</string>
   <string name="mtrl_picker_range_header_only_start_selected">Du %1$s au (date de fin)</string>
   <string name="mtrl_picker_range_header_only_end_selected">Du (date de début) au %1$s</string>

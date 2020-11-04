@@ -15,8 +15,8 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">ရက်အပိုင်းအခြား ရွေးရန်</string>
-  <string name="mtrl_picker_date_header_title">ရက်စွဲ ရွေးချယ်ရန်</string>
+  <string name="mtrl_picker_range_header_title">အပိုင်းအခြား ရွေးပါ</string>
+  <string name="mtrl_picker_date_header_title">ရက်စွဲ ရွေးပါ</string>
   <string name="mtrl_picker_range_header_unselected">စတင်ရက် – ပြီးဆုံးရက်</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – ပြီးဆုံးရက်</string>
   <string name="mtrl_picker_range_header_only_end_selected">စတင်ရက် – %1$s</string>

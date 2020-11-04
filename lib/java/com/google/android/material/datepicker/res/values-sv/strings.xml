@@ -15,8 +15,8 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">Välj ett datumintervall</string>
-  <string name="mtrl_picker_date_header_title">Välj ett datum</string>
+  <string name="mtrl_picker_range_header_title">Välj intervall</string>
+  <string name="mtrl_picker_date_header_title">Välj datum</string>
   <string name="mtrl_picker_range_header_unselected">Startdatum–slutdatum</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s–slutdatum</string>
   <string name="mtrl_picker_range_header_only_end_selected">Startdatum–%1$s</string>

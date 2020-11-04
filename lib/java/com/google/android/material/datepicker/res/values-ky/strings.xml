@@ -16,7 +16,7 @@
 -->
 <resources>
   <string name="mtrl_picker_range_header_title">Даталар диапазонун тандоо</string>
-  <string name="mtrl_picker_date_header_title">Күндү тандоо</string>
+  <string name="mtrl_picker_date_header_title">Күн тандоо</string>
   <string name="mtrl_picker_range_header_unselected">Баштоо күнү – Аяктоо күнү</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – Аяктоо күнү</string>
   <string name="mtrl_picker_range_header_only_end_selected">Баштоо күнү – %1$s</string>

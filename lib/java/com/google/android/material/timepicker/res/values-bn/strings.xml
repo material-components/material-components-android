@@ -20,11 +20,11 @@
   <string name="material_timepicker_select_time">সময় বেছে নিন</string>
   <string name="material_timepicker_minute">মিনিট</string>
   <string name="material_timepicker_hour">ঘণ্টা</string>
-  <string name="material_hour_suffix">%1$s o\'clock</string>
-  <string name="material_minute_suffix">%1$s minutes</string>
-  <string name="material_hour_selection">Select hour</string>
+  <string name="material_hour_suffix">%1$sটা বাজে</string>
+  <string name="material_minute_suffix">%1$s মিনিট</string>
+  <string name="material_hour_selection">ঘণ্টা বেছে নিন</string>
   <string name="material_minute_selection">মিনিট বেছে নিন</string>
-  <string name="material_clock_toggle_content_description">Select AM or PM</string>
+  <string name="material_clock_toggle_content_description">AM অথবা PM বেছে নিন</string>
   <string name="material_timepicker_text_input_mode_description">সময় ইনপুট দেওয়ার জন্য পাঠ্য ইনপুট মোডে যান।</string>
   <string name="material_timepicker_clock_mode_description">সময় ইনপুট দেওয়ার জন্য ঘড়ি মোডে যান।</string>
 </resources>

@@ -15,8 +15,8 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">Zgjidh një gamë datash</string>
-  <string name="mtrl_picker_date_header_title">Zgjidh një datë</string>
+  <string name="mtrl_picker_range_header_title">Zgjidh gamën</string>
+  <string name="mtrl_picker_date_header_title">Zgjidh datën</string>
   <string name="mtrl_picker_range_header_unselected">Data e fillimit - data e përfundimit</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – data e përfundimit</string>
   <string name="mtrl_picker_range_header_only_end_selected">Data e fillimit – %1$s</string>

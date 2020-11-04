@@ -15,8 +15,8 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">Күндер ауқымын таңдаңыз.</string>
-  <string name="mtrl_picker_date_header_title">Күнді таңдаңыз.</string>
+  <string name="mtrl_picker_range_header_title">Аралықты таңдау</string>
+  <string name="mtrl_picker_date_header_title">Күнді таңдау</string>
   <string name="mtrl_picker_range_header_unselected">Басталу күні – аяқталу күні</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – аяқталу күні</string>
   <string name="mtrl_picker_range_header_only_end_selected">Басталу күні – %1$s</string>

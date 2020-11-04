@@ -15,8 +15,8 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">选择日期范围</string>
-  <string name="mtrl_picker_date_header_title">选择一个日期</string>
+  <string name="mtrl_picker_range_header_title">请选择范围</string>
+  <string name="mtrl_picker_date_header_title">请选择日期</string>
   <string name="mtrl_picker_range_header_unselected">开始日期 - 结束日期</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – 结束日期</string>
   <string name="mtrl_picker_range_header_only_end_selected">开始日期 – %1$s</string>

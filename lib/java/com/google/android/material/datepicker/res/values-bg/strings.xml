@@ -15,8 +15,8 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">Изберете период от време</string>
-  <string name="mtrl_picker_date_header_title">Изберете дата</string>
+  <string name="mtrl_picker_range_header_title">Избиране на период от време</string>
+  <string name="mtrl_picker_date_header_title">Избиране на дата</string>
   <string name="mtrl_picker_range_header_unselected">Начална дата – крайна дата</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – крайна дата</string>
   <string name="mtrl_picker_range_header_only_end_selected">Начална дата – %1$s</string>

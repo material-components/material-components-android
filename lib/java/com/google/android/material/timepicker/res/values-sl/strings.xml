@@ -15,8 +15,8 @@
   ~ limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-  <string name="material_timepicker_pm">popoldne</string>
-  <string name="material_timepicker_am">dopoldne</string>
+  <string name="material_timepicker_pm">pop.</string>
+  <string name="material_timepicker_am">dop.</string>
   <string name="material_timepicker_select_time">Izberite uro</string>
   <string name="material_timepicker_minute">Minuta</string>
   <string name="material_timepicker_hour">Ura</string>

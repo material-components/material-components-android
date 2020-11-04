@@ -15,8 +15,8 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">Vælg et datointerval</string>
-  <string name="mtrl_picker_date_header_title">Vælg en dato</string>
+  <string name="mtrl_picker_range_header_title">Vælg interval</string>
+  <string name="mtrl_picker_date_header_title">Vælg dato</string>
   <string name="mtrl_picker_range_header_unselected">Startdato – slutdato</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – slutdato</string>
   <string name="mtrl_picker_range_header_only_end_selected">Startdato – %1$s</string>

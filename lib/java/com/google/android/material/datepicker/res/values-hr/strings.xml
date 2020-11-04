@@ -15,7 +15,7 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">Odaberite datumski raspon</string>
+  <string name="mtrl_picker_range_header_title">Odaberite raspon</string>
   <string name="mtrl_picker_date_header_title">Odaberite datum</string>
   <string name="mtrl_picker_range_header_unselected">Datum početka – datum završetka</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – datum završetka</string>

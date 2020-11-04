@@ -15,7 +15,7 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">Tarih Aralığı seçin</string>
+  <string name="mtrl_picker_range_header_title">Aralık Seçin</string>
   <string name="mtrl_picker_date_header_title">Tarih Seçin</string>
   <string name="mtrl_picker_range_header_unselected">Başlangıç tarihi - Bitiş tarihi</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – Bitiş tarihi</string>

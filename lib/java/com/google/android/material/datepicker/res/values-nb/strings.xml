@@ -15,8 +15,8 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">Velg en datoperiode</string>
-  <string name="mtrl_picker_date_header_title">Velg en dato</string>
+  <string name="mtrl_picker_range_header_title">Velg periode</string>
+  <string name="mtrl_picker_date_header_title">Velg dato</string>
   <string name="mtrl_picker_range_header_unselected">Startdato–sluttdato</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – sluttdato</string>
   <string name="mtrl_picker_range_header_only_end_selected">Startdato – %1$s</string>

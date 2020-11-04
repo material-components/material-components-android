@@ -15,7 +15,7 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">Chọn phạm vi ngày</string>
+  <string name="mtrl_picker_range_header_title">Chọn dải ô</string>
   <string name="mtrl_picker_date_header_title">Chọn ngày</string>
   <string name="mtrl_picker_range_header_unselected">Ngày bắt đầu – Ngày kết thúc</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – Ngày kết thúc</string>

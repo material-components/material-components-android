@@ -15,7 +15,7 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">Pilih Rentang Tanggal</string>
+  <string name="mtrl_picker_range_header_title">Pilih Rentang</string>
   <string name="mtrl_picker_date_header_title">Pilih Tanggal</string>
   <string name="mtrl_picker_range_header_unselected">Tanggal mulai – Tanggal akhir</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – Tanggal akhir</string>

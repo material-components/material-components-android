@@ -15,7 +15,7 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">ເລືອກຊ່ວງວັນທີ</string>
+  <string name="mtrl_picker_range_header_title">ເລືອກຊ່ວງ</string>
   <string name="mtrl_picker_date_header_title">ເລືອກວັນທີ</string>
   <string name="mtrl_picker_range_header_unselected">ວັນທີເລີ່ມຕົ້ນ – ວັນທີສິ້ນສຸດ</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – ວັນທີສິ້ນສຸດ</string>

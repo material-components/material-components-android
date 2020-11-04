@@ -15,8 +15,8 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">ದಿನಾಂಕ ವ್ಯಾಪ್ತಿಯನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
-  <string name="mtrl_picker_date_header_title">ದಿನಾಂಕವನ್ನು ಆಯ್ಕೆ ಮಾಡಿ</string>
+  <string name="mtrl_picker_range_header_title">ಶ್ರೇಣಿಯನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
+  <string name="mtrl_picker_date_header_title">ದಿನಾಂಕವನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
   <string name="mtrl_picker_range_header_unselected">ಪ್ರಾರಂಭ ದಿನಾಂಕ – ಮುಕ್ತಾಯ ದಿನಾಂಕ</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – ಮುಕ್ತಾಯ ದಿನಾಂಕ</string>
   <string name="mtrl_picker_range_header_only_end_selected">ಪ್ರಾರಂಭ ದಿನಾಂಕ – %1$s</string>

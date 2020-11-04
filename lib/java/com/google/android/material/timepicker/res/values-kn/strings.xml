@@ -20,11 +20,11 @@
   <string name="material_timepicker_select_time">ಸಮಯವನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
   <string name="material_timepicker_minute">ನಿಮಿಷ</string>
   <string name="material_timepicker_hour">ಗಂಟೆ</string>
-  <string name="material_hour_suffix">%1$s o\'clock</string>
-  <string name="material_minute_suffix">%1$s minutes</string>
-  <string name="material_hour_selection">Select hour</string>
+  <string name="material_hour_suffix">%1$s ಗಂಟೆ</string>
+  <string name="material_minute_suffix">%1$s ನಿಮಿಷಗಳು</string>
+  <string name="material_hour_selection">ಸಮಯವನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
   <string name="material_minute_selection">ನಿಮಿಷಗಳನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
-  <string name="material_clock_toggle_content_description">Select AM or PM</string>
+  <string name="material_clock_toggle_content_description">ಬೆಳಿಗ್ಗೆ ಅಥವಾ ಮಧ್ಯಾಹ್ನ ಆಯ್ಕೆಮಾಡಿ</string>
   <string name="material_timepicker_text_input_mode_description">ಸಮಯವನ್ನು ನಮೂದಿಸಲು ಪಠ್ಯದ ನಮೂನೆಗೆ ಬದಲಿಸಿ.</string>
   <string name="material_timepicker_clock_mode_description">ಸಮಯವನ್ನು ನಮೂದಿಸಲು ಗಡಿಯಾರದ ನಮೂನೆಗೆ ಬದಲಿಸಿ.</string>
 </resources>

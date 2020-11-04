@@ -15,8 +15,8 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">انتخاب محدوده تاریخ</string>
-  <string name="mtrl_picker_date_header_title">تاریخی انتخاب کنید</string>
+  <string name="mtrl_picker_range_header_title">انتخاب محدوده</string>
+  <string name="mtrl_picker_date_header_title">انتخاب تاریخ</string>
   <string name="mtrl_picker_range_header_unselected">تاریخ شروع – تاریخ پایان</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – تاریخ پایان</string>
   <string name="mtrl_picker_range_header_only_end_selected">تاریخ شروع – %1$s</string>

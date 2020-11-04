@@ -15,7 +15,7 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">Sana orasini tanlash</string>
+  <string name="mtrl_picker_range_header_title">Oraliqni tanlang</string>
   <string name="mtrl_picker_date_header_title">Sanani tanlang</string>
   <string name="mtrl_picker_range_header_unselected">Boshlanishi – Tugashi</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – Tugash sanasi</string>

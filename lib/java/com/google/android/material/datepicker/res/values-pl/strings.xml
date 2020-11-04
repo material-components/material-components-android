@@ -15,7 +15,7 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">Wybierz zakres dat</string>
+  <string name="mtrl_picker_range_header_title">Wybierz zakres</string>
   <string name="mtrl_picker_date_header_title">Wybierz datę</string>
   <string name="mtrl_picker_range_header_unselected">Data rozpoczęcia – data zakończenia</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – data zakończenia</string>

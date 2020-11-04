@@ -15,7 +15,7 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">Selecciona un interval de dates</string>
+  <string name="mtrl_picker_range_header_title">Selecciona un interval</string>
   <string name="mtrl_picker_date_header_title">Selecciona una data</string>
   <string name="mtrl_picker_range_header_unselected">Data d\'inici - data de finalització</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s - data de finalització</string>

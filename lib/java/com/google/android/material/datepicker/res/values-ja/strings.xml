@@ -15,8 +15,8 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">期間の選択</string>
-  <string name="mtrl_picker_date_header_title">日付の選択</string>
+  <string name="mtrl_picker_range_header_title">期間を選択してください</string>
+  <string name="mtrl_picker_date_header_title">日付を選択してください</string>
   <string name="mtrl_picker_range_header_unselected">開始日～終了日</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s～終了日</string>
   <string name="mtrl_picker_range_header_only_end_selected">開始日～%1$s</string>

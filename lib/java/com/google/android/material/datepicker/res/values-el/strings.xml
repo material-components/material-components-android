@@ -15,8 +15,8 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">Επιλέξτε ένα εύρος ημερομηνιών</string>
-  <string name="mtrl_picker_date_header_title">Επιλέξτε ημερομηνία</string>
+  <string name="mtrl_picker_range_header_title">Επιλογή εύρους</string>
+  <string name="mtrl_picker_date_header_title">Επιλογή ημερομηνίας</string>
   <string name="mtrl_picker_range_header_unselected">Ημερομηνία έναρξης – Ημερομηνία λήξης</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – Ημερομηνία λήξης</string>
   <string name="mtrl_picker_range_header_only_end_selected">Ημερομηνία έναρξης – %1$s</string>

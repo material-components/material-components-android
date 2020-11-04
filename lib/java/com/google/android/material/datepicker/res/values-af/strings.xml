@@ -15,8 +15,8 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">Kies \'n datumreeks</string>
-  <string name="mtrl_picker_date_header_title">Kies \'n datum</string>
+  <string name="mtrl_picker_range_header_title">Kies datumreeks</string>
+  <string name="mtrl_picker_date_header_title">Kies datum</string>
   <string name="mtrl_picker_range_header_unselected">Begindatum – Einddatum</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – Einddatum</string>
   <string name="mtrl_picker_range_header_only_end_selected">Begindatum – %1$s</string>

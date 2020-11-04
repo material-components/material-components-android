@@ -15,8 +15,8 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">তারিখের ব্যাপ্তি বেছে নিন</string>
-  <string name="mtrl_picker_date_header_title">একটি তারিখ বেছে নিন</string>
+  <string name="mtrl_picker_range_header_title">রেঞ্জ বেছে নিন</string>
+  <string name="mtrl_picker_date_header_title">তারিখ বেছে নিন</string>
   <string name="mtrl_picker_range_header_unselected">শুরুর তারিখ - সমাপ্তির তারিখ</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – সমাপ্তির তারিখ</string>
   <string name="mtrl_picker_range_header_only_end_selected">শুরুর তারিখ – %1$s</string>

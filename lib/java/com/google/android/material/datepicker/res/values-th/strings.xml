@@ -15,7 +15,7 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">เลือกช่วงวันที่</string>
+  <string name="mtrl_picker_range_header_title">เลือกช่วง</string>
   <string name="mtrl_picker_date_header_title">เลือกวันที่</string>
   <string name="mtrl_picker_range_header_unselected">วันที่เริ่มต้น – วันที่สิ้นสุด</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – วันที่สิ้นสุด</string>

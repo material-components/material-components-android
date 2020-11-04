@@ -15,7 +15,7 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">יש לבחור טווח תאריכים</string>
+  <string name="mtrl_picker_range_header_title">יש לבחור טווח</string>
   <string name="mtrl_picker_date_header_title">יש לבחור תאריך</string>
   <string name="mtrl_picker_range_header_unselected">תאריך התחלה - תאריך סיום</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – תאריך סיום</string>

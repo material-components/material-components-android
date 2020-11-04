@@ -15,8 +15,8 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">તારીખની કોઈ રેંજ પસંદ કરો</string>
-  <string name="mtrl_picker_date_header_title">કોઈ તારીખ પસંદ કરો</string>
+  <string name="mtrl_picker_range_header_title">શ્રેણી પસંદ કરો</string>
+  <string name="mtrl_picker_date_header_title">તારીખ પસંદ કરો</string>
   <string name="mtrl_picker_range_header_unselected">શરૂ કરવાની તારીખ – સમાપ્તિની તારીખ</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – સમાપ્તિની તારીખ</string>
   <string name="mtrl_picker_range_header_only_end_selected">શરૂ કરવાની તારીખ – %1$s</string>

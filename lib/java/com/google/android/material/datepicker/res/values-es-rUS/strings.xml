@@ -16,7 +16,7 @@
 -->
 <resources>
   <string name="mtrl_picker_range_header_title">Selecciona un período</string>
-  <string name="mtrl_picker_date_header_title">Selecciona una fecha</string>
+  <string name="mtrl_picker_date_header_title">Seleccionar fecha</string>
   <string name="mtrl_picker_range_header_unselected">Fecha de inicio - fecha de finalización</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s - fecha de finalización</string>
   <string name="mtrl_picker_range_header_only_end_selected">Fecha de inicio - %1$s</string>

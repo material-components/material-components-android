@@ -15,8 +15,8 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">ជ្រើសរើស​ចន្លោះកាលបរិច្ឆេទ</string>
-  <string name="mtrl_picker_date_header_title">ជ្រើសរើស​កាលបរិច្ឆេទ</string>
+  <string name="mtrl_picker_range_header_title">ជ្រើស​រើស​ចន្លោះ</string>
+  <string name="mtrl_picker_date_header_title">ជ្រើសរើស​កាល​បរិច្ឆេទ</string>
   <string name="mtrl_picker_range_header_unselected">កាលបរិច្ឆេទ​ចាប់ផ្ដើម – កាលបរិច្ឆេទ​បញ្ចប់</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – កាលបរិច្ឆេទ​បញ្ចប់</string>
   <string name="mtrl_picker_range_header_only_end_selected">កាលបរិច្ឆេទ​ចាប់ផ្ដើម – %1$s</string>

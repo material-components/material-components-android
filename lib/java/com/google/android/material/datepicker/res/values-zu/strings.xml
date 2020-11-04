@@ -15,8 +15,8 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">Khetha ibanga ledethi</string>
-  <string name="mtrl_picker_date_header_title">Khetha idethi</string>
+  <string name="mtrl_picker_range_header_title">Khetha Ibanga</string>
+  <string name="mtrl_picker_date_header_title">Khetha Idethi</string>
   <string name="mtrl_picker_range_header_unselected">Idethi yokuqala – Idethi yokuphela</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – Idethi yokuphela</string>
   <string name="mtrl_picker_range_header_only_end_selected">Idethi yokuqala – %1$s</string>

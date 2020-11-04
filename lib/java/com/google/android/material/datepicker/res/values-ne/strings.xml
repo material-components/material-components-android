@@ -15,8 +15,8 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">मितिको दायरा चयन गर्नुहोस्</string>
-  <string name="mtrl_picker_date_header_title">कुनै मिति चयन गर्नुहोस्</string>
+  <string name="mtrl_picker_range_header_title">दायरा चयन गर्नुहोस्</string>
+  <string name="mtrl_picker_date_header_title">मिति चयन गर्नुहोस्</string>
   <string name="mtrl_picker_range_header_unselected">सुरु हुने मिति – अन्त्य हुने मिति</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – अन्त्य हुने मिति</string>
   <string name="mtrl_picker_range_header_only_end_selected">सुरु हुने मिति – %1$s</string>

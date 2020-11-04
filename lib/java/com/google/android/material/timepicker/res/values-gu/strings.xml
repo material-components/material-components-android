@@ -18,13 +18,13 @@
   <string name="material_timepicker_pm">PM</string>
   <string name="material_timepicker_am">AM</string>
   <string name="material_timepicker_select_time">સમય પસંદ કરો</string>
-  <string name="material_timepicker_minute">Minute</string>
+  <string name="material_timepicker_minute">મિનિટ</string>
   <string name="material_timepicker_hour">કલાક</string>
-  <string name="material_hour_suffix">%1$s o\'clock</string>
-  <string name="material_minute_suffix">%1$s minutes</string>
-  <string name="material_hour_selection">Select hour</string>
+  <string name="material_hour_suffix">%1$s વાગ્યા છે</string>
+  <string name="material_minute_suffix">%1$s મિનિટ</string>
+  <string name="material_hour_selection">સમય પસંદ કરો</string>
   <string name="material_minute_selection">મિનિટ પસંદ કરો</string>
-  <string name="material_clock_toggle_content_description">Select AM or PM</string>
+  <string name="material_clock_toggle_content_description">AM અથવા PM પસંદ કરો</string>
   <string name="material_timepicker_text_input_mode_description">સમય દાખલ કરવા માટે ટેક્સ્ટ ઇનપુટ મોડમાં સ્વિચ કરો.</string>
   <string name="material_timepicker_clock_mode_description">સમય દાખલ કરવા માટે ઘડિયાળ મોડમાં સ્વિચ કરો.</string>
 </resources>

@@ -15,7 +15,7 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">აირჩიეთ თარიღების დიაპაზონი</string>
+  <string name="mtrl_picker_range_header_title">აირჩიეთ დიაპაზონი</string>
   <string name="mtrl_picker_date_header_title">აირჩიეთ თარიღი</string>
   <string name="mtrl_picker_range_header_unselected">დაწყების თარიღი - დასრულების თარიღი</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s - დასრულების თარიღი</string>

@@ -15,8 +15,8 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">Ընտրեք ժամանակահատվածը</string>
-  <string name="mtrl_picker_date_header_title">Ընտրեք ամսաթիվ</string>
+  <string name="mtrl_picker_range_header_title">Ընտրեք ընդգրկույթը</string>
+  <string name="mtrl_picker_date_header_title">Ընտրեք ամսաթիվը</string>
   <string name="mtrl_picker_range_header_unselected">Մեկնարկի ամսաթիվը – Ավարտի ամսաթիվը</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – Ավարտի ամսաթիվը</string>
   <string name="mtrl_picker_range_header_only_end_selected">Մեկնարկի ամսաթիվը – %1$s</string>

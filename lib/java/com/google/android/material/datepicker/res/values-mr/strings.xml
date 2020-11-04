@@ -15,7 +15,7 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">तारीख श्रेणी निवडा</string>
+  <string name="mtrl_picker_range_header_title">रेंज निवडा</string>
   <string name="mtrl_picker_date_header_title">तारीख निवडा</string>
   <string name="mtrl_picker_range_header_unselected">सुरू होण्याची तारीख – संपण्याची तारीख</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – संपण्याची तारीख</string>

@@ -15,7 +15,7 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">Изберете временски период</string>
+  <string name="mtrl_picker_range_header_title">Изберете опсег</string>
   <string name="mtrl_picker_date_header_title">Изберете датум</string>
   <string name="mtrl_picker_range_header_unselected">Почетен датум - краен датум</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s - краен датум</string>

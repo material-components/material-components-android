@@ -15,7 +15,7 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">தேதி வரம்பைத் தேர்வுசெய்யவும்</string>
+  <string name="mtrl_picker_range_header_title">வரம்பைத் தேர்ந்தெடுக்கவும்</string>
   <string name="mtrl_picker_date_header_title">தேதியைத் தேர்ந்தெடுக்கவும்</string>
   <string name="mtrl_picker_range_header_unselected">தொடக்கத் தேதி - முடிவுத் தேதி</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – முடிவுத் தேதி</string>

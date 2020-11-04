@@ -15,8 +15,8 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">اختيار نطاق زمني</string>
-  <string name="mtrl_picker_date_header_title">اختيار التاريخ</string>
+  <string name="mtrl_picker_range_header_title">يُرجى اختيار نطاق زمني.</string>
+  <string name="mtrl_picker_date_header_title">يُرجى اختيار تاريخ.</string>
   <string name="mtrl_picker_range_header_unselected">تاريخ البدء - تاريخ الانتهاء</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – تاريخ الانتهاء</string>
   <string name="mtrl_picker_range_header_only_end_selected">تاريخ البدء – %1$s</string>

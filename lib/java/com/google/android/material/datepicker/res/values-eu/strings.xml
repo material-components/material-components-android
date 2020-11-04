@@ -15,7 +15,7 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">Hautatu data tartea</string>
+  <string name="mtrl_picker_range_header_title">Hautatu barrutia</string>
   <string name="mtrl_picker_date_header_title">Hautatu data</string>
   <string name="mtrl_picker_range_header_unselected">Hasiera-data - Amaiera-data</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – Amaiera-data</string>

@@ -15,8 +15,8 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">የቀን ክልል ይምረጡ</string>
-  <string name="mtrl_picker_date_header_title">አንድ ቀን ይምረጡ</string>
+  <string name="mtrl_picker_range_header_title">ክልል ይምረጡ</string>
+  <string name="mtrl_picker_date_header_title">ቀን ይምረጡ</string>
   <string name="mtrl_picker_range_header_unselected">የመጀመሪያ ቀን – የመጨረሻ ቀን</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – መጨረሻ ቀን</string>
   <string name="mtrl_picker_range_header_only_end_selected">መጀመሪያ ቀን – %1$s</string>

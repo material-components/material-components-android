@@ -15,7 +15,7 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">Хугацааны интервал сонгох</string>
+  <string name="mtrl_picker_range_header_title">Муж сонгох</string>
   <string name="mtrl_picker_date_header_title">Огноо сонгох</string>
   <string name="mtrl_picker_range_header_unselected">Эхлэх огноо – Дуусах огноо</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – Дуусах огноо</string>

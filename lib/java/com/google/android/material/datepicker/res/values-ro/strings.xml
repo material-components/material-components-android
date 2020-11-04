@@ -15,8 +15,8 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">Selectați un interval de date</string>
-  <string name="mtrl_picker_date_header_title">Selectați o dată</string>
+  <string name="mtrl_picker_range_header_title">Selectați intervalul</string>
+  <string name="mtrl_picker_date_header_title">Selectați data</string>
   <string name="mtrl_picker_range_header_unselected">Data de începere – data de încheiere</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – data de încheiere</string>
   <string name="mtrl_picker_range_header_only_end_selected">Data de începere – %1$s</string>

@@ -15,8 +15,8 @@
   ~ limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-  <string name="material_timepicker_pm">ТК</string>
-  <string name="material_timepicker_am">күндүзгү</string>
+  <string name="material_timepicker_pm">PM</string>
+  <string name="material_timepicker_am">AM</string>
   <string name="material_timepicker_select_time">Убакыт тандоо</string>
   <string name="material_timepicker_minute">Мүнөт</string>
   <string name="material_timepicker_hour">Саат</string>

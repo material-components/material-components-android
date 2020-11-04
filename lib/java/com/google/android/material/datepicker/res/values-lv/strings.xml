@@ -15,7 +15,7 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">Atlasiet datumu diapazonu</string>
+  <string name="mtrl_picker_range_header_title">Atlasiet diapazonu</string>
   <string name="mtrl_picker_date_header_title">Atlasiet datumu</string>
   <string name="mtrl_picker_range_header_unselected">Sākuma datums–beigu datums</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s–beigu datums</string>

@@ -15,8 +15,8 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">तारीख की कोई सीमा चुनें</string>
-  <string name="mtrl_picker_date_header_title">कोई तारीख चुनें</string>
+  <string name="mtrl_picker_range_header_title">रेंज चुनें</string>
+  <string name="mtrl_picker_date_header_title">तारीख चुनें</string>
   <string name="mtrl_picker_range_header_unselected">शुरू होने की तारीख – खत्म होने की तारीख</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – खत्म होने की तारीख</string>
   <string name="mtrl_picker_range_header_only_end_selected">शुरू होने की तारीख – %1$s</string>

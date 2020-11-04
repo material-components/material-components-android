@@ -15,8 +15,8 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">දින පරාසයක් තෝරන්න</string>
-  <string name="mtrl_picker_date_header_title">දිනයක් තෝරන්න</string>
+  <string name="mtrl_picker_range_header_title">පරාසය තෝරන්න</string>
+  <string name="mtrl_picker_date_header_title">දිනය තෝරන්න</string>
   <string name="mtrl_picker_range_header_unselected">ආරම්භක දිනය – නිමා වන දිනය</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – නිමා වන දිනය</string>
   <string name="mtrl_picker_range_header_only_end_selected">ආරම්භක දිනය – %1$s</string>

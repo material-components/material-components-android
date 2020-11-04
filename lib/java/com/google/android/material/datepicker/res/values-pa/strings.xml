@@ -15,8 +15,8 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">ਤਾਰੀਖ ਦੀ ਰੇਂਜ ਚੁਣੋ</string>
-  <string name="mtrl_picker_date_header_title">ਕੋਈ ਤਾਰੀਖ ਚੁਣੋ</string>
+  <string name="mtrl_picker_range_header_title">ਰੇਂਜ ਚੁਣੋ</string>
+  <string name="mtrl_picker_date_header_title">ਤਾਰੀਖ ਚੁਣੋ</string>
   <string name="mtrl_picker_range_header_unselected">ਸ਼ੁਰੂਆਤੀ ਤਾਰੀਖ – ਸਮਾਪਤੀ ਤਾਰੀਖ</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – ਸਮਾਪਤੀ ਤਾਰੀਖ</string>
   <string name="mtrl_picker_range_header_only_end_selected">ਸ਼ੁੁਰੂਆਤੀ ਤਾਰੀਖ – %1$s</string>

@@ -15,7 +15,7 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="mtrl_picker_range_header_title">Chagua Kipindi</string>
+  <string name="mtrl_picker_range_header_title">Chagua Kipindi cha Tarehe</string>
   <string name="mtrl_picker_date_header_title">Chagua Tarehe</string>
   <string name="mtrl_picker_range_header_unselected">Tarehe ya kuanza – Tarehe ya mwisho</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – Tarehe ya mwisho</string>

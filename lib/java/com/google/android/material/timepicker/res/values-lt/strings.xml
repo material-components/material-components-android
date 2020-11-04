@@ -15,8 +15,8 @@
   ~ limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-  <string name="material_timepicker_pm">po pietų</string>
-  <string name="material_timepicker_am">iki pietų</string>
+  <string name="material_timepicker_pm">PM</string>
+  <string name="material_timepicker_am">AM</string>
   <string name="material_timepicker_select_time">Pasirinkite laiką</string>
   <string name="material_timepicker_minute">Minutė</string>
   <string name="material_timepicker_hour">Valanda</string>
