@@ -46,6 +46,11 @@ public class SliderHelper {
           public boolean shouldDelayChildPressedState() {
             return simulateScrollableContainer;
           }
+
+          @Override
+          public boolean canScrollVertically(int direction) {
+            return simulateScrollableContainer;
+          }
         };
     container.setPadding(50, 50, 50, 50);
     container.setOrientation(LinearLayout.VERTICAL);

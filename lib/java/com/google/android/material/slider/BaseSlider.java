@@ -1677,9 +1677,9 @@ abstract class BaseSlider<
       case MotionEvent.ACTION_DOWN:
         touchDownX = x;
 
-        // If we're inside a scrolling container,
+        // If we're inside a vertical scrolling container,
         // we should start dragging in ACTION_MOVE
-        if (isInScrollingContainer()) {
+        if (isInVerticalScrollingContainer()) {
           break;
         }
 
@@ -1699,8 +1699,8 @@ abstract class BaseSlider<
         break;
       case MotionEvent.ACTION_MOVE:
         if (!thumbIsPressed) {
-          // Check if we're trying to scroll instead of dragging this Slider
-          if (isInScrollingContainer() && abs(x - touchDownX) < scaledTouchSlop) {
+          // Check if we're trying to scroll vertically instead of dragging this Slider
+          if (isInVerticalScrollingContainer() && abs(x - touchDownX) < scaledTouchSlop) {
             return false;
           }
           getParent().requestDisallowInterceptTouchEvent(true);
@@ -2042,14 +2042,16 @@ abstract class BaseSlider<
   /**
    * If this returns true, we can't start dragging the Slider immediately when we receive a {@link
    * MotionEvent#ACTION_DOWN}. Instead, we must wait for a {@link MotionEvent#ACTION_MOVE}. Copied
-   * from hidden method of {@link View} isInScrollingContainer.
+   * and modified from hidden method of {@link View} isInScrollingContainer.
    *
-   * @return true if any of this View's parents is a scrolling View.
+   * @return true if any of this View's parents is a scrolling View and can scroll vertically.
    */
-  private boolean isInScrollingContainer() {
+  private boolean isInVerticalScrollingContainer() {
     ViewParent p = getParent();
     while (p instanceof ViewGroup) {
-      if (((ViewGroup) p).shouldDelayChildPressedState()) {
+      ViewGroup parent = (ViewGroup) p;
+      boolean canScrollVertically = parent.canScrollVertically(1) || parent.canScrollVertically(-1);
+      if (canScrollVertically && parent.shouldDelayChildPressedState()) {
         return true;
       }
       p = p.getParent();
