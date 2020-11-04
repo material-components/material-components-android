@@ -1679,7 +1679,7 @@ abstract class BaseSlider<
 
         // If we're inside a scrolling container,
         // we should start dragging in ACTION_MOVE
-        if (isInScrollingContainer()) {
+        if (isInVerticalScrollingContainer()) {
           break;
         }
 
@@ -2039,27 +2039,12 @@ abstract class BaseSlider<
     activeTicksPaint.setStrokeWidth(trackHeight / 2.0f);
   }
 
-  private boolean isInScrollingContainer() {
-    return isInVerticalScrollingContainer() || isInHorizontalScrollingContainer();
-  }
-
   private boolean isInVerticalScrollingContainer() {
     ViewParent parent = getParent();
-    while (parent instanceof View) {
-      if (((View) parent).canScrollVertically(1) ||
-          ((View) parent).canScrollVertically(-1)) {
-        return true;
-      }
-      parent = parent.getParent();
-    }
-    return false;
-  }
-
-  private boolean isInHorizontalScrollingContainer() {
-    ViewParent parent = getParent();
-    while (parent instanceof View) {
-      if (((View) parent).canScrollHorizontally(1) ||
-          ((View) parent).canScrollHorizontally(-1)) {
+    while (parent instanceof ViewGroup) {
+      if ((((ViewGroup) parent).canScrollVertically(1) ||
+          ((ViewGroup) parent).canScrollVertically(-1)) &&
+          ((ViewGroup) parent).shouldDelayChildPressedState()) {
         return true;
       }
       parent = parent.getParent();
