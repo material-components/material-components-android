@@ -72,10 +72,7 @@ There are two types of top app bar: 1\.
 [Regular top app bar](#regular-top-app-bar), 2\.
 [Contextual action bar](#contextual-action-bar)
 
-![Top app bar examples of both regular and contextual action bar types. The
-regular top app bar shows a purple background with white icons and text. The
-contextual action bar shows a dark grey background with white icons and
-text.](assets/topappbar/topappbars_types.png)
+![Regular and contextual app bars](assets/topappbar/topappbars_types.png)
 
 ## Regular top app bar
 
@@ -101,7 +98,7 @@ API and source code:
 The following example shows a top app bar with a page title, a navigation icon,
 two action icons, and an overflow menu.
 
-![Regular app bar example with purple background, white icons and "page title".](assets/topappbar/topappbar_basic.png)
+![Top app bar with purple background, white icons, and page title](assets/topappbar/topappbar_basic.png)
 
 In the layout:
 
@@ -268,8 +265,8 @@ In the layout:
 The following example shows a prominent top app bar with a page title, a
 navigation icon, two action icons, and an overflow menu.
 
-![Prominent app bar example with purple background, white icons and "page
-title".](assets/topappbar/topappbar_prominent.png)
+![App bar with purple background and white icons with the page title on a
+newline below the icons](assets/topappbar/topappbar_prominent.png)
 
 In the layout:
 
@@ -320,8 +317,8 @@ In `res/values/type.xml`:
 The following example shows a prominent top app bar with an image background, a
 page title, a navigation icon, two action icons, and an overflow menu.
 
-![Prominent app bar example with red image background, white icons and "page
-title".](assets/topappbar/topappbar_prominent_image.png)
+![App bar with red background and white icons. The page title is on a newline
+below the icons](assets/topappbar/topappbar_prominent_image.png)
 
 In the layout:
 
