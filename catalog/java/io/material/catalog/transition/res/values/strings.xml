@@ -52,6 +52,10 @@ Phasellus in aliquet mi. Pellentesque habitant morbi tristique senectus et netus
   <string name="cat_transition_config_return_duration_title">Return Duration</string>
   <string name="cat_transition_config_interpolation_title">Interpolation</string>
   <string name="cat_transition_config_fast_out_slow_in_title">FastOutSlowIn</string>
+  <string name="cat_transition_config_overshoot">Overshoot</string>
+  <string name="cat_transition_config_anticipate_overshoot">AnticipateOvershoot</string>
+  <string name="cat_transition_config_overshoot_tension_hint">Tension</string>
+  <string name="cat_transition_config_bounce">Bounce</string>
   <string name="cat_transition_config_custom_interpolator_title">Custom cubic bezier</string>
   <string name="cat_transition_config_custom_interpolator_desc">Custom (%1$.3f, %2$.3f, %3$.3f, %4$.3f)</string>
   <string name="cat_transition_config_cubic_bezier_control_x1_hint">x1</string>

@@ -44,7 +44,13 @@ class FitModeEvaluators {
             float endHeight) {
           // Use same width for start/end views; calculate heights using respective aspect ratios.
           float currentWidth =
-              lerp(startWidth, endWidth, scaleStartFraction, scaleEndFraction, progress);
+              lerp(
+                  startWidth,
+                  endWidth,
+                  scaleStartFraction,
+                  scaleEndFraction,
+                  progress,
+                  /* allowOvershoot= */ true);
           float startScale = currentWidth / startWidth;
           float endScale = currentWidth / endWidth;
           float currentStartHeight = startHeight * startScale;
@@ -84,7 +90,13 @@ class FitModeEvaluators {
             float endHeight) {
           // Use same height for start/end views; calculate widths using respective aspect ratios.
           float currentHeight =
-              lerp(startHeight, endHeight, scaleStartFraction, scaleEndFraction, progress);
+              lerp(
+                  startHeight,
+                  endHeight,
+                  scaleStartFraction,
+                  scaleEndFraction,
+                  progress,
+                  /* allowOvershoot= */ true);
           float startScale = currentHeight / startHeight;
           float endScale = currentHeight / endHeight;
           float currentStartWidth = startWidth * startScale;

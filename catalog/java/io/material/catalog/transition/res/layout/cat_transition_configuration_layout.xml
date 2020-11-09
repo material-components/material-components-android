@@ -24,10 +24,9 @@
   <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:paddingTop="8dp"
-      android:paddingBottom="24dp"
-      android:paddingStart="8dp"
-      android:paddingEnd="8dp"
+      android:padding="16dp"
+      android:clipToPadding="false"
+      android:clipChildren="false"
       android:orientation="vertical">
 
     <LinearLayout
@@ -41,19 +40,13 @@
       <TextView
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:paddingTop="16dp"
-          android:paddingStart="16dp"
-          android:paddingEnd="16dp"
           android:text="@string/cat_transition_config_path_motion_title"/>
 
       <com.google.android.material.button.MaterialButtonToggleGroup
           android:id="@+id/path_motion_button_group"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:paddingStart="16dp"
-          android:paddingEnd="16dp"
           android:layout_marginTop="8dp"
-          android:layout_marginBottom="8dp"
           app:selectionRequired="true"
           app:singleSelection="true">
 
@@ -73,19 +66,22 @@
 
       </com.google.android.material.button.MaterialButtonToggleGroup>
 
+      <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:background="@android:color/white"
+        android:backgroundTint="?attr/colorControlHighlight"/>
+
       <TextView
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:paddingTop="8dp"
-          android:paddingStart="16dp"
-          android:paddingEnd="16dp"
           android:text="@string/cat_transition_config_enter_duration_title"/>
 
       <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:paddingTop="4dp"
-          android:paddingBottom="8dp"
           android:orientation="horizontal"
           android:gravity="center_vertical"
           android:clipChildren="false"
@@ -96,8 +92,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
             android:valueFrom="0"
             android:valueTo="10000"
             android:stepSize="25"
@@ -108,9 +102,7 @@
             android:layout_width="48dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginEnd="8dp"
             android:gravity="center_horizontal"
             tools:text="300"/>
 
@@ -119,16 +111,12 @@
       <TextView
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:paddingTop="8dp"
-          android:paddingStart="16dp"
-          android:paddingEnd="16dp"
-          android:text="@string/cat_transition_config_return_duration_title"/>
+          android:text="@string/cat_transition_config_return_duration_title"
+          android:layout_marginTop="4dp"/>
 
       <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:paddingTop="4dp"
-          android:paddingBottom="8dp"
           android:orientation="horizontal"
           android:gravity="center_vertical"
           android:clipChildren="false"
@@ -139,8 +127,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
             android:valueFrom="0"
             android:valueTo="10000"
             android:stepSize="25"
@@ -151,63 +137,105 @@
             android:layout_width="48dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginEnd="8dp"
             android:gravity="center_horizontal"
             tools:text="275"/>
 
       </LinearLayout>
 
+      <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:background="@android:color/white"
+        android:backgroundTint="?attr/colorControlHighlight"/>
+
       <TextView
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:paddingTop="8dp"
           android:paddingBottom="4dp"
-          android:paddingStart="16dp"
-          android:paddingEnd="16dp"
           android:text="@string/cat_transition_config_interpolation_title"/>
 
       <RadioGroup
           android:id="@+id/interpolation_radio_group"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:paddingStart="8dp"
-          android:paddingEnd="8dp"
+          android:animateLayoutChanges="true"
           android:orientation="vertical">
 
         <RadioButton
             android:id="@+id/radio_fast_out_slow_in"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
             android:text="@string/cat_transition_config_fast_out_slow_in_title"
             android:checked="true"/>
+
+        <RadioButton
+          android:id="@+id/radio_overshoot"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="@string/cat_transition_config_overshoot" />
+
+        <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/overshoot_tension_text_input_layout"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="36dp"
+          android:layout_marginEnd="4dp"
+          android:hint="@string/cat_transition_config_overshoot_tension_hint">
+
+          <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/overshoot_tension_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <RadioButton
+          android:id="@+id/radio_anticipate_overshoot"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="@string/cat_transition_config_anticipate_overshoot" />
+
+        <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/anticipate_overshoot_tension_text_input_layout"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="36dp"
+          android:layout_marginEnd="4dp"
+          android:hint="@string/cat_transition_config_overshoot_tension_hint">
+
+          <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/anticipate_overshoot_tension_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <RadioButton
+          android:id="@+id/radio_bounce"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="@string/cat_transition_config_bounce" />
 
         <RadioButton
             android:id="@+id/radio_custom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
             android:text="@string/cat_transition_config_custom_interpolator_title"/>
 
-      </RadioGroup>
-
-      <LinearLayout
+        <LinearLayout
           android:id="@+id/custom_curve_container"
           android:layout_width="match_parent"
           android:layout_height="64dp"
-          android:layout_marginStart="42dp"
-          android:layout_marginLeft="42dp"
-          android:layout_marginTop="8dp"
-          android:layout_marginBottom="8dp"
+          android:layout_marginStart="32dp"
+          android:layout_marginLeft="32dp"
           android:weightSum="4"
           android:baselineAligned="false"
           android:orientation="horizontal">
 
-        <com.google.android.material.textfield.TextInputLayout
+          <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/x1_text_input_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -216,16 +244,15 @@
             android:layout_weight="1"
             android:hint="@string/cat_transition_config_cubic_bezier_control_x1_hint">
 
-          <com.google.android.material.textfield.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
               android:id="@+id/x1_edit_text"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:imeOptions="actionNext"
               android:inputType="numberDecimal"/>
+          </com.google.android.material.textfield.TextInputLayout>
 
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
+          <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/y1_text_input_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -234,15 +261,15 @@
             android:layout_weight="1"
             android:hint="@string/cat_transition_config_cubic_bezier_control_y1_hint">
 
-          <com.google.android.material.textfield.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
               android:id="@+id/y1_edit_text"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:imeOptions="actionNext"
               android:inputType="numberDecimal"/>
-        </com.google.android.material.textfield.TextInputLayout>
+          </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
+          <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/x2_text_input_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -251,16 +278,15 @@
             android:layout_weight="1"
             android:hint="@string/cat_transition_config_cubic_bezier_control_x2_hint">
 
-          <com.google.android.material.textfield.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
               android:id="@+id/x2_edit_text"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:imeOptions="actionNext"
               android:inputType="numberDecimal"/>
+          </com.google.android.material.textfield.TextInputLayout>
 
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
+          <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/y2_text_input_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -269,31 +295,33 @@
             android:layout_weight="1"
             android:hint="@string/cat_transition_config_cubic_bezier_control_y2_hint">
 
-          <com.google.android.material.textfield.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
               android:id="@+id/y2_edit_text"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:imeOptions="actionDone"
               android:inputType="numberDecimal"/>
+          </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+      </RadioGroup>
 
-        </com.google.android.material.textfield.TextInputLayout>
-
-      </LinearLayout>
+      <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:background="@android:color/white"
+        android:backgroundTint="?attr/colorControlHighlight"/>
 
       <TextView
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:paddingTop="16dp"
-          android:paddingStart="16dp"
-          android:paddingEnd="16dp"
           android:text="@string/cat_transition_config_fade_mode_title"/>
 
       <com.google.android.material.button.MaterialButtonToggleGroup
           android:id="@+id/fade_mode_button_group"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:paddingStart="16dp"
-          android:paddingEnd="16dp"
           android:layout_marginTop="8dp"
           android:layout_marginBottom="8dp"
           app:selectionRequired="true"
@@ -333,20 +361,23 @@
 
       </com.google.android.material.button.MaterialButtonToggleGroup>
 
+      <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:background="@android:color/white"
+        android:backgroundTint="?attr/colorControlHighlight"/>
+
       <TextView
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:paddingTop="8dp"
-          android:paddingStart="16dp"
-          android:paddingEnd="16dp"
           android:text="@string/cat_transition_config_debug_title"/>
 
       <CheckBox
           android:id="@+id/draw_debug_checkbox"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginStart="16dp"
-          android:layout_marginEnd="16dp"
           android:checked="false"
           android:text="@string/cat_transition_config_draw_debug_checkbox_desc" />
 
@@ -356,9 +387,7 @@
         android:id="@+id/apply_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:text="@string/cat_transition_config_apply_button_text"/>
 
@@ -367,8 +396,6 @@
         style="?attr/materialButtonOutlinedStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         android:text="@string/cat_transition_config_clear_button_text"/>
 
   </LinearLayout>

@@ -1327,6 +1327,26 @@ public final class MaterialContainerTransform extends Transition {
       float motionPathX = motionPathPosition[0];
       float motionPathY = motionPathPosition[1];
 
+      // Allow overshoot by extrapolating position using trajectory at closest part of motion path
+      if (progress > 1 || progress < 0) {
+        float trajectoryProgress;
+        float trajectoryMultiplier;
+        if (progress > 1) {
+          trajectoryProgress = 0.99f;
+          trajectoryMultiplier = (progress - 1f) / (1f - trajectoryProgress);
+        } else {
+          trajectoryProgress = 0.01f;
+          trajectoryMultiplier = progress / trajectoryProgress * -1;
+        }
+
+        motionPathMeasure.getPosTan(
+            motionPathLength * trajectoryProgress, motionPathPosition, null);
+        float trajectoryMotionPathX = motionPathPosition[0];
+        float trajectoryMotionPathY = motionPathPosition[1];
+        motionPathX += (motionPathX - trajectoryMotionPathX) * trajectoryMultiplier;
+        motionPathY += (motionPathY - trajectoryMotionPathY) * trajectoryMultiplier;
+      }
+
       // Calculate current start and end bounds
       float scaleStartFraction = checkNotNull(progressThresholds.scale.start);
       float scaleEndFraction = checkNotNull(progressThresholds.scale.end);
@@ -1392,8 +1412,7 @@ public final class MaterialContainerTransform extends Transition {
       float fadeEndFraction = checkNotNull(progressThresholds.fade.end);
       fadeModeResult = fadeModeEvaluator.evaluate(progress, fadeStartFraction, fadeEndFraction);
 
-      // Update the start and end container paints to share the same opacity as their respective
-      // view.
+      // Update start and end container paints to share the same opacity as their respective view
       if (startContainerPaint.getColor() != Color.TRANSPARENT) {
         startContainerPaint.setAlpha(fadeModeResult.startAlpha);
       }

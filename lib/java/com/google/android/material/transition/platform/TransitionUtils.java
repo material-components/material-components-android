@@ -109,8 +109,7 @@ class TransitionUtils {
     CornerSize apply(@NonNull CornerSize cornerSize1, @NonNull CornerSize cornerSize2);
   }
 
-  static float lerp(
-      float startValue, float endValue, @FloatRange(from = 0.0, to = 1.0) float fraction) {
+  static float lerp(float startValue, float endValue, float fraction) {
     return startValue + fraction * (endValue - startValue);
   }
 
@@ -121,6 +120,20 @@ class TransitionUtils {
       @FloatRange(from = 0.0, to = 1.0) float startFraction,
       @FloatRange(from = 0.0, to = 1.0) float endFraction,
       @FloatRange(from = 0.0, to = 1.0) float fraction) {
+    return lerp(
+        startValue, endValue, startFraction, endFraction, fraction, /* allowOvershoot= */ false);
+  }
+
+  static float lerp(
+      float startValue,
+      float endValue,
+      @FloatRange(from = 0.0, to = 1.0) float startFraction,
+      @FloatRange(from = 0.0, to = 1.0) float endFraction,
+      @FloatRange(from = 0.0) float fraction,
+      boolean allowOvershoot) {
+    if (allowOvershoot && (fraction < 0 || fraction > 1)) {
+      return lerp(startValue, endValue, fraction);
+    }
     if (fraction < startFraction) {
       return startValue;
     }

@@ -19,6 +19,7 @@ package io.material.catalog.transition;
 import io.material.catalog.R;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface.OnDismissListener;
 import android.os.Build.VERSION_CODES;
@@ -29,7 +30,10 @@ import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnticipateOvershootInterpolator;
+import android.view.animation.BounceInterpolator;
 import android.view.animation.Interpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioGroup;
@@ -51,6 +55,7 @@ import io.material.catalog.feature.ContainerTransformConfiguration;
  * A helper class which manages all configuration UI presented in {@link
  * TransitionContainerTransformDemoFragment}.
  */
+@TargetApi(VERSION_CODES.ICE_CREAM_SANDWICH)
 public class ContainerTransformConfigurationHelper {
 
   private static final String CUBIC_CONTROL_FORMAT = "%.3f";
@@ -250,17 +255,45 @@ public class ContainerTransformConfigurationHelper {
   private void setUpBottomSheetInterpolation(View view) {
     RadioGroup interpolationGroup = view.findViewById(R.id.interpolation_radio_group);
     ViewGroup customContainer = view.findViewById(R.id.custom_curve_container);
-    if (interpolationGroup != null && customContainer != null) {
+    TextInputLayout overshootTensionTextInputLayout =
+        view.findViewById(R.id.overshoot_tension_text_input_layout);
+    EditText overshootTensionEditText = view.findViewById(R.id.overshoot_tension_edit_text);
+    TextInputLayout anticipateOvershootTensionTextInputLayout =
+        view.findViewById(R.id.anticipate_overshoot_tension_text_input_layout);
+    EditText anticipateOvershootTensionEditText =
+        view.findViewById(R.id.anticipate_overshoot_tension_edit_text);
 
+    if (interpolationGroup != null && customContainer != null) {
       setTextInputClearOnTextChanged(view.findViewById(R.id.x1_text_input_layout));
       setTextInputClearOnTextChanged(view.findViewById(R.id.x2_text_input_layout));
       setTextInputClearOnTextChanged(view.findViewById(R.id.y1_text_input_layout));
       setTextInputClearOnTextChanged(view.findViewById(R.id.y2_text_input_layout));
 
+      overshootTensionEditText.setText(String.valueOf(CustomOvershootInterpolator.DEFAULT_TENSION));
+      anticipateOvershootTensionEditText.setText(
+          String.valueOf(CustomAnticipateOvershootInterpolator.DEFAULT_TENSION));
+
       // Check the correct current radio button and fill in custom bezier fields if applicable.
       if (interpolator instanceof FastOutSlowInInterpolator) {
         interpolationGroup.check(R.id.radio_fast_out_slow_in);
-      } else {
+      } else if (interpolator instanceof OvershootInterpolator) {
+        interpolationGroup.check(R.id.radio_overshoot);
+        if (interpolator instanceof CustomOvershootInterpolator) {
+          CustomOvershootInterpolator customOvershootInterpolator =
+              (CustomOvershootInterpolator) interpolator;
+          overshootTensionEditText.setText(String.valueOf(customOvershootInterpolator.tension));
+        }
+      } else if (interpolator instanceof AnticipateOvershootInterpolator) {
+        interpolationGroup.check(R.id.radio_anticipate_overshoot);
+        if (interpolator instanceof CustomAnticipateOvershootInterpolator) {
+          CustomAnticipateOvershootInterpolator customAnticipateOvershootInterpolator =
+              (CustomAnticipateOvershootInterpolator) interpolator;
+          anticipateOvershootTensionEditText.setText(
+              String.valueOf(customAnticipateOvershootInterpolator.tension));
+        }
+      } else if (interpolator instanceof BounceInterpolator) {
+        interpolationGroup.check(R.id.radio_bounce);
+      } else if (interpolator instanceof CustomCubicBezier) {
         interpolationGroup.check(R.id.radio_custom);
         CustomCubicBezier currentInterp = (CustomCubicBezier) interpolator;
         setTextFloat(view.findViewById(R.id.x1_edit_text), currentInterp.controlX1);
@@ -269,16 +302,35 @@ public class ContainerTransformConfigurationHelper {
         setTextFloat(view.findViewById(R.id.y2_edit_text), currentInterp.controlY2);
       }
 
-      // Enable/disable custom bezier fields depending on initial checked radio button.
-      setViewGroupDescendantsEnabled(
-          customContainer, interpolationGroup.getCheckedRadioButtonId() == R.id.radio_custom);
+      // Show/hide custom text input fields depending on initial checked radio button.
+      updateCustomTextFieldsVisibility(
+          interpolationGroup.getCheckedRadioButtonId(),
+          overshootTensionTextInputLayout,
+          anticipateOvershootTensionTextInputLayout,
+          customContainer);
 
-      // Watch for any changes to the selected radio button and update custom bezier enabled state.
-      // The custom bezier values will be captured when the configuration is applied.
+      // Watch for any changes to selected radio button and update custom text fields visibility.
+      // The custom text field values will be captured when the configuration is applied.
       interpolationGroup.setOnCheckedChangeListener(
           (group, checkedId) ->
-              setViewGroupDescendantsEnabled(customContainer, checkedId == R.id.radio_custom));
+              updateCustomTextFieldsVisibility(
+                  checkedId,
+                  overshootTensionTextInputLayout,
+                  anticipateOvershootTensionTextInputLayout,
+                  customContainer));
     }
+  }
+
+  private static void updateCustomTextFieldsVisibility(
+      int checkedId,
+      TextInputLayout overshootTensionTextInputLayout,
+      TextInputLayout anticipateOvershootTensionTextInputLayout,
+      ViewGroup customContainer) {
+    overshootTensionTextInputLayout.setVisibility(
+        checkedId == R.id.radio_overshoot ? View.VISIBLE : View.GONE);
+    anticipateOvershootTensionTextInputLayout.setVisibility(
+        checkedId == R.id.radio_anticipate_overshoot ? View.VISIBLE : View.GONE);
+    customContainer.setVisibility(checkedId == R.id.radio_custom ? View.VISIBLE : View.GONE);
   }
 
   @SuppressLint("DefaultLocale")
@@ -366,8 +418,8 @@ public class ContainerTransformConfigurationHelper {
             v -> {
               // Capture and update interpolation
               RadioGroup interpolationGroup = view.findViewById(R.id.interpolation_radio_group);
-              if (interpolationGroup != null
-                  && interpolationGroup.getCheckedRadioButtonId() == R.id.radio_custom) {
+              int checkedRadioButtonId = interpolationGroup.getCheckedRadioButtonId();
+              if (checkedRadioButtonId == R.id.radio_custom) {
                 Float x1 = getTextFloat(view.findViewById(R.id.x1_edit_text));
                 Float y1 = getTextFloat(view.findViewById(R.id.y1_edit_text));
                 Float x2 = getTextFloat(view.findViewById(R.id.x2_edit_text));
@@ -377,6 +429,27 @@ public class ContainerTransformConfigurationHelper {
                   interpolator = new CustomCubicBezier(x1, y1, x2, y2);
                   dialog.dismiss();
                 }
+              } else if (checkedRadioButtonId == R.id.radio_overshoot) {
+                EditText overshootTensionEditText =
+                    view.findViewById(R.id.overshoot_tension_edit_text);
+                Float tension = getTextFloat(overshootTensionEditText);
+                interpolator =
+                    tension != null
+                        ? new CustomOvershootInterpolator(tension)
+                        : new CustomOvershootInterpolator();
+                dialog.dismiss();
+              } else if (checkedRadioButtonId == R.id.radio_anticipate_overshoot) {
+                EditText overshootTensionEditText =
+                    view.findViewById(R.id.anticipate_overshoot_tension_edit_text);
+                Float tension = getTextFloat(overshootTensionEditText);
+                interpolator =
+                    tension != null
+                        ? new CustomAnticipateOvershootInterpolator(tension)
+                        : new CustomAnticipateOvershootInterpolator();
+                dialog.dismiss();
+              } else if (checkedRadioButtonId == R.id.radio_bounce) {
+                interpolator = new BounceInterpolator();
+                dialog.dismiss();
               } else {
                 interpolator = new FastOutSlowInInterpolator();
                 dialog.dismiss();
@@ -391,17 +464,44 @@ public class ContainerTransformConfigurationHelper {
             });
   }
 
-  private static void setViewGroupDescendantsEnabled(ViewGroup viewGroup, boolean enabled) {
-    for (int i = 0; i < viewGroup.getChildCount(); i++) {
-      View view = viewGroup.getChildAt(i);
-      view.setEnabled(enabled);
-      if (view instanceof ViewGroup) {
-        setViewGroupDescendantsEnabled((ViewGroup) view, enabled);
-      }
+  /** A custom overshoot interpolator which exposes its tension. */
+  private static class CustomOvershootInterpolator extends OvershootInterpolator {
+
+    // This is the default tension value in OvershootInterpolator
+    static final float DEFAULT_TENSION = 2.0f;
+
+    final float tension;
+
+    CustomOvershootInterpolator() {
+      this(DEFAULT_TENSION);
+    }
+
+    CustomOvershootInterpolator(float tension) {
+      super(tension);
+      this.tension = tension;
     }
   }
 
-  /** A custom cubic bezier interpolator which exposes it control points. */
+  /** A custom anticipate overshoot interpolator which exposes its tension. */
+  private static class CustomAnticipateOvershootInterpolator
+      extends AnticipateOvershootInterpolator {
+
+    // This is the default tension value in AnticipateOvershootInterpolator
+    static final float DEFAULT_TENSION = 2.0f;
+
+    final float tension;
+
+    CustomAnticipateOvershootInterpolator() {
+      this(DEFAULT_TENSION);
+    }
+
+    CustomAnticipateOvershootInterpolator(float tension) {
+      super(tension);
+      this.tension = tension;
+    }
+  }
+
+  /** A custom cubic bezier interpolator which exposes its control points. */
   private static class CustomCubicBezier implements Interpolator {
 
     final float controlX1;
