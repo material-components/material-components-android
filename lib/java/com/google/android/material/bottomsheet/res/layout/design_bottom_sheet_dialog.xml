@@ -20,8 +20,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:layout_height="match_parent">
 
   <androidx.coordinatorlayout.widget.CoordinatorLayout
       android:id="@+id/coordinator"
@@ -44,6 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|top"
+        android:fitsSystemWindows="true"
         app:layout_behavior="@string/bottom_sheet_behavior"/>
 
   </androidx.coordinatorlayout.widget.CoordinatorLayout>
