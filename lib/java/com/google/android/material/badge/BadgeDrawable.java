@@ -62,6 +62,7 @@ import com.google.android.material.shape.MaterialShapeDrawable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
+import java.text.NumberFormat;
 
 /**
  * {@code BadgeDrawable} contains all the layout and draw logic for a badge.
@@ -948,7 +949,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   private String getBadgeText() {
     // If number exceeds max count, show badgeMaxCount+ instead of the number.
     if (getNumber() <= maxBadgeNumber) {
-      return Integer.toString(getNumber());
+      return NumberFormat.getInstance().format(getNumber());
     } else {
       Context context = contextRef.get();
       if (context == null) {
