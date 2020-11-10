@@ -17,7 +17,7 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="NewApi">
 
-  <style name="Widget.MaterialComponents.TimePicker" parent="" >
+  <style name="Widget.MaterialComponents.TimePicker" parent="">
     <item name="shapeAppearance">?shapeAppearanceMediumComponent</item>
     <item name="keyboardIcon">@drawable/ic_keyboard_black_24dp</item>
     <item name="clockIcon">@drawable/ic_clock_black_24dp</item>
@@ -85,7 +85,7 @@
   </style>
 
   <style name="TextAppearance.MaterialComponents.TimePicker.Title" parent="TextAppearance.MaterialComponents.Overline">
-    <item name="android:textColor">@/color/material_on_surface_emphasis_medium</item>
+    <item name="android:textColor">@color/material_on_surface_emphasis_medium</item>
   </style>
 
   <style name="Widget.MaterialComponents.TimePicker.Clock" parent="">
