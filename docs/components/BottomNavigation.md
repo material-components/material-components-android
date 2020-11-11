@@ -12,7 +12,7 @@ path: /catalog/bottom-navigation/
 [Bottom navigation](https://material.io/components/bottom-navigation/#) bars
 allow movement between primary destinations in an app.
 
-!["Bottom navigation bar on a screen"](assets/bottomnav/bottomnav_hero.png)
+!["Bottom navigation bar with 4 icons"](assets/bottomnav/bottomnav_hero.png)
 
 ## Contents
 
@@ -323,9 +323,8 @@ API and source code:
 
 The following example shows a bottom navigation bar with Material Theming.
 
-![Bottom navigation theming example, it has a pink background and four dark
-brown icons: favorites, music note, places, and
-news](assets/bottomnav/bottom-nav-theming.png)
+![Bottom navigation bar with brown icons (favorites, music, places, news) and
+pink background](assets/bottomnav/bottom-nav-theming.png)
 
 #### Implementing bottom navigation theming
 
