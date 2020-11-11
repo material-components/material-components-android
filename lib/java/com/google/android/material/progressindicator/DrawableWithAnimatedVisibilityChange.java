@@ -68,6 +68,8 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
   private List<AnimationCallback> animationCallbacks;
   // An internal AnimationCallback which is executed before the user's animation callbacks.
   private AnimationCallback internalAnimationCallback;
+  // Flag to ignore all external callbacks.
+  private boolean ignoreCallbacks;
 
   // A fraction from 0 to 1 indicating the ratio used in drawing, controlled by show/hide animator.
   private float growFraction;
@@ -165,7 +167,7 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
     if (internalAnimationCallback != null) {
       internalAnimationCallback.onAnimationStart(this);
     }
-    if (animationCallbacks != null) {
+    if (animationCallbacks != null && !ignoreCallbacks) {
       for (AnimationCallback callback : animationCallbacks) {
         callback.onAnimationStart(this);
       }
@@ -177,7 +179,7 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
     if (internalAnimationCallback != null) {
       internalAnimationCallback.onAnimationEnd(this);
     }
-    if (animationCallbacks != null) {
+    if (animationCallbacks != null && !ignoreCallbacks) {
       for (AnimationCallback callback : animationCallbacks) {
         callback.onAnimationEnd(this);
       }
@@ -211,27 +213,37 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
     return (hideAnimator != null && hideAnimator.isRunning()) || mockHideAnimationRunning;
   }
 
-  /** Hides the drawable immediately */
-  public boolean hideNow(){
+  /** Hides the drawable immediately without triggering animation callbacks. */
+  public boolean hideNow() {
     return setVisible(/*visible=*/ false, /*restart=*/ false, /*animationDesired=*/ false);
   }
 
-  /**
-   * Sets the visibility with/without animation based on system animator duration scale.
-   *
-   * @see #setVisible(boolean, boolean, boolean)
-   */
   @Override
   public boolean setVisible(boolean visible, boolean restart) {
+    return setVisible(visible, restart, /*animationDesired=*/ true);
+  }
+
+  /**
+   * Changes the visibility with/without triggering the animation callbacks.
+   *
+   * @param visible Whether to make the drawable visible.
+   * @param restart Whether to force starting the animation from the beginning.
+   * @param animationDesired Whether to change the visibility with animation.
+   * @return {@code true}, if the visibility changes or will change after the animation; {@code
+   *     false}, otherwise.
+   * @see #setVisible(boolean, boolean, boolean)
+   */
+  public boolean setVisible(boolean visible, boolean restart, boolean animationDesired) {
     float systemAnimatorDurationScale =
         animatorDurationScaleProvider.getSystemAnimatorDurationScale(context.getContentResolver());
     // Only show/hide the drawable with animations if system animator duration scale is not off and
     // some grow mode is used.
-    return setVisible(visible, restart, systemAnimatorDurationScale > 0);
+    return setVisibleInternal(
+        visible, restart, animationDesired && systemAnimatorDurationScale > 0);
   }
 
   /**
-   * Show or hide the drawable with/without animation effects.
+   * Show or hide the drawable with/without animation effects and/or animation callbacks.
    *
    * @param visible Whether to make the drawable visible.
    * @param restart Whether to force starting the animation from the beginning.
@@ -239,20 +251,28 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
    * @return {@code true}, if the visibility changes or will change after the animation; {@code
    *     false}, otherwise.
    */
-  public boolean setVisible(boolean visible, boolean restart, boolean animationDesired) {
-    if (!isVisible() && !visible) {
-      // Early return if trying to hide a hidden drawable.
-      return false;
-    }
-
+  protected boolean setVisibleInternal(boolean visible, boolean restart, boolean animationDesired) {
     maybeInitializeAnimators();
-
-    if (animationDesired && (visible ? showAnimator : hideAnimator).isRunning()) {
-      // Show/hide animation should not be reset while being played.
+    if (!isVisible() && !visible) {
+      // Early returns if trying to hide a hidden drawable.
       return false;
     }
 
-    ValueAnimator animationInAction = visible ? showAnimator : hideAnimator;
+    ValueAnimator animatorInAction = visible ? showAnimator : hideAnimator;
+
+    if (!animationDesired) {
+      if (animatorInAction.isRunning()) {
+        // Show/hide animation should fast-forward to the end without callbacks.
+        endAnimatorWithoutCallbacks(animatorInAction);
+      }
+      // Immediately updates the drawable's visibility without animation if not desired.
+      return super.setVisible(visible, DEFAULT_DRAWABLE_RESTART);
+    }
+
+    if (animationDesired && animatorInAction.isRunning()) {
+      // Show/hide animation should not be replayed while playing.
+      return false;
+    }
 
     // If requests to show, sets the drawable visible. If requests to hide, the visibility is
     // controlled by the animation listener attached to hide animation.
@@ -262,17 +282,26 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
     if (!animationDesired) {
       // This triggers onAnimationStart() callbacks for showing and onAnimationEnd() callbacks for
       // hiding. It also fast-forwards the animator properties to the end state.
-      animationInAction.end();
+      animatorInAction.end();
       return changed;
     }
 
-    if (restart || VERSION.SDK_INT < 19 || !animationInAction.isPaused()) {
+    if (restart || VERSION.SDK_INT < 19 || !animatorInAction.isPaused()) {
       // Starts/restarts the animator if requested or not eligible to resume.
-      animationInAction.start();
+      animatorInAction.start();
     } else {
-      animationInAction.resume();
+      animatorInAction.resume();
     }
     return changed;
+  }
+
+  private void endAnimatorWithoutCallbacks(@NonNull ValueAnimator... animators) {
+    boolean ignoreCallbacksOrig = ignoreCallbacks;
+    ignoreCallbacks = true;
+    for (ValueAnimator animator : animators) {
+      animator.end();
+    }
+    ignoreCallbacks = ignoreCallbacksOrig;
   }
 
   // ******************* Getters and setters *******************

@@ -135,7 +135,6 @@ public class LinearProgressIndicator extends BaseProgressIndicator {
                 : new LinearIndeterminateSpacingAnimatorDelegate(getContext(), spec)));
     setProgressDrawable(
         new DeterminateDrawable(getContext(), baseSpec, behavior, new LinearDrawingDelegate(spec)));
-    applyNewVisibility();
   }
 
   // **************** Getters and setters ****************

@@ -98,8 +98,8 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
    *     false}, otherwise.
    */
   @Override
-  public boolean setVisible(boolean visible, boolean restart, boolean animationDesired) {
-    boolean changed = super.setVisible(visible, restart, animationDesired);
+  protected boolean setVisibleInternal(boolean visible, boolean restart, boolean animationDesired) {
+    boolean changed = super.setVisibleInternal(visible, restart, animationDesired);
 
     float systemAnimatorDurationScale =
         animatorDurationScaleProvider.getSystemAnimatorDurationScale(context.getContentResolver());

@@ -102,7 +102,6 @@ public class CircularProgressIndicator extends BaseProgressIndicator {
     setProgressDrawable(
         new DeterminateDrawable(
             getContext(), baseSpec, behavior, new CircularDrawingDelegate(spec)));
-    applyNewVisibility();
   }
 
   // **************** Getters and setters ****************

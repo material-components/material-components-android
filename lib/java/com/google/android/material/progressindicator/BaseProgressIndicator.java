@@ -237,7 +237,8 @@ public class BaseProgressIndicator extends ProgressBar {
    * @see #hide()
    */
   private void internalHide() {
-    getCurrentDrawable().setVisible(/*visible=*/ false, /*restart=*/ false);
+    getCurrentDrawable()
+        .setVisible(/*visible=*/ false, /*restart=*/ false, /*animationDesired=*/ true);
 
     if (isNoLongerNeedToBeVisible()) {
       setVisibility(INVISIBLE);
@@ -245,27 +246,29 @@ public class BaseProgressIndicator extends ProgressBar {
   }
 
   @Override
-  protected void onVisibilityChanged(@NonNull View changeView, int visibility) {
-    super.onVisibilityChanged(changeView, visibility);
-    applyNewVisibility();
+  protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
+    super.onVisibilityChanged(changedView, visibility);
+    applyNewVisibility(/*animationDesired=*/ visibility == VISIBLE);
   }
 
   @Override
   protected void onWindowVisibilityChanged(int visibility) {
     super.onWindowVisibilityChanged(visibility);
-    applyNewVisibility();
+    applyNewVisibility(/*animationDesired=*/ false);
   }
 
   /**
    * If it changes to visible, the start animation will be started if {@code growMode} indicates
    * any. If it changes to invisible, hides the drawable immediately.
+   *
+   * @param animationDesired Whether to change the visibility with animation.
    */
-  protected void applyNewVisibility() {
+  protected void applyNewVisibility(boolean animationDesired) {
     if (!isParentDoneInitializing) {
       return;
     }
 
-    getCurrentDrawable().setVisible(visibleToUser(), /*restart=*/ false);
+    getCurrentDrawable().setVisible(visibleToUser(), /*restart=*/ false, animationDesired);
   }
 
   @Override

@@ -20,6 +20,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import androidx.annotation.NonNull;
 
 /**
@@ -59,8 +61,8 @@ public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityC
    *     false}, otherwise.
    */
   @Override
-  public boolean setVisible(boolean visible, boolean restart, boolean animationDesired) {
-    boolean changed = super.setVisible(visible, restart, animationDesired);
+  protected boolean setVisibleInternal(boolean visible, boolean restart, boolean animationDesired) {
+    boolean changed = super.setVisibleInternal(visible, restart, animationDesired);
 
     // Unless it's showing or hiding, cancels and resets main animator.
     if (!isRunning()) {
@@ -68,7 +70,11 @@ public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityC
       animatorDelegate.resetPropertiesForNewStart();
     }
     // Restarts the main animator if it's visible and needs to be animated.
-    if (visible && animationDesired) {
+    float systemAnimatorDurationScale =
+        animatorDurationScaleProvider.getSystemAnimatorDurationScale(context.getContentResolver());
+    if (visible
+        && (animationDesired
+            || (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP && systemAnimatorDurationScale > 0))) {
       animatorDelegate.startAnimator();
     }
 
