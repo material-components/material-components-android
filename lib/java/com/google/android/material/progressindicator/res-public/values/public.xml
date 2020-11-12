@@ -22,8 +22,6 @@
   <public name="indicatorSize" type="attr" />
   <public name="indicatorCornerRadius" type="attr" />
   <public name="indicatorColor" type="attr" />
-  <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
-  <public name="indicatorColors" type="attr" />
   <public name="showDelay" type="attr"/>
   <public name="minHideDelay" type="attr"/>
   <!-- LinearProgressIndicator attributes -->
@@ -40,28 +38,5 @@
 
   <public name="Widget.MaterialComponents.LinearProgressIndicator" type="style"/>
   <public name="Widget.MaterialComponents.CircularProgressIndicator" type="style"/>
-
-  <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
-  <public name="progressIndicatorStyle" type="attr" />
-
-  <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
-  <public name="indicatorType" type="attr" />
-  <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
-  <public name="progressMode" type="attr" />
-  <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
-  <public name="growMode" type="attr" />
-  <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
-  <public name="inverse" type="attr" />
-  <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
-  <public name="linearSeamless" type="attr" />
-
-  <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
-  <public name="Widget.MaterialComponents.ProgressIndicator.Linear.Determinate" type="style" />
-  <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
-  <public name="Widget.MaterialComponents.ProgressIndicator.Linear.Indeterminate" type="style" />
-  <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
-  <public name="Widget.MaterialComponents.ProgressIndicator.Circular.Determinate" type="style" />
-  <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
-  <public name="Widget.MaterialComponents.ProgressIndicator.Circular.Indeterminate" type="style" />
 
 </resources>

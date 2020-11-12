@@ -1,7 +1,5 @@
 # Progress Indicator
 
-<!-- TODO(b/169262619) Update API and style for sub-type progress indicator classes. -->
-
 Note: Due to an internal change of API, `ProgressIndicator` has been deprecated.
 It will be removed in the near future after the internal migration process.
 

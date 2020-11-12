@@ -93,7 +93,7 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
    *     spring animation for changing progress.
    * @param animationDesired Whether to change the visibility with animation. The spring animation
    *     for changing progress only depends on system animator duration scale. Use {@link
-   *     ProgressIndicator#setProgress(int, boolean)} to change the progress without animation.
+   *     BaseProgressIndicator#setProgress(int, boolean)} to change the progress without animation.
    * @return {@code true}, if the visibility changes or will change after the animation; {@code
    *     false}, otherwise.
    */

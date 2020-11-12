@@ -22,10 +22,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 
-/**
- * A delegate abstract class for drawing the graphics in different drawable classes used in {@link
- * ProgressIndicator}.
- */
+/** A delegate abstract class for drawing the graphics in different drawable classes. */
 abstract class DrawingDelegate {
 
   protected DrawableWithAnimatedVisibilityChange drawable;

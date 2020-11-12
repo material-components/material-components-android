@@ -24,58 +24,9 @@
     <item name="indicatorDirectionLinear">startToEnd</item>
   </style>
   <style name="Widget.MaterialComponents.CircularProgressIndicator" parent="Widget.MaterialComponents.ProgressIndicator">
-    <item name="circularRadius">@dimen/mtrl_progress_circular_radius</item>
-    <item name="circularInset">@dimen/mtrl_progress_circular_inset</item>
+    <item name="indicatorRadius">@dimen/mtrl_progress_circular_radius</item>
+    <item name="indicatorInset">@dimen/mtrl_progress_circular_inset</item>
     <item name="trackColor">@android:color/transparent</item>
     <item name="indicatorDirectionCircular">clockwise</item>
-  </style>
-
-  <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
-  <!-- {@deprecated Use LinearProgressIndicator and CircularProgressIndicator instead.} -->
-  <style name="Base.Widget.MaterialComponents.ProgressIndicator" parent="android:Widget">
-    <item name="indicatorSize">@dimen/mtrl_progress_indicator_size</item>
-    <item name="inverse">false</item>
-    <item name="growMode">none</item>
-  </style>
-
-  <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
-  <!-- {@deprecated Use LinearProgressIndicator instead.} -->
-  <style name="Base.Widget.MaterialComponents.ProgressIndicator.Linear">
-    <item name="indicatorType">linear</item>
-    <item name="linearSeamless">true</item>
-  </style>
-
-  <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
-  <!-- {@deprecated Use CircularProgressIndicator instead.} -->
-  <style name="Base.Widget.MaterialComponents.ProgressIndicator.Circular">
-    <item name="indicatorType">circular</item>
-    <item name="trackColor">@android:color/transparent</item>
-    <item name="circularRadius">@dimen/mtrl_progress_circular_radius</item>
-    <item name="circularInset">@dimen/mtrl_progress_circular_inset</item>
-  </style>
-
-  <!-- Styles used by clients -->
-  <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
-  <!-- {@deprecated Use LinearProgressIndicator instead.} -->
-  <style name="Widget.MaterialComponents.ProgressIndicator.Linear.Determinate" parent="Base.Widget.MaterialComponents.ProgressIndicator.Linear">
-    <item name="android:indeterminate">false</item>
-  </style>
-
-  <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
-  <!-- {@deprecated Use LinearProgressIndicator instead.} -->
-  <style name="Widget.MaterialComponents.ProgressIndicator.Linear.Indeterminate" parent="Base.Widget.MaterialComponents.ProgressIndicator.Linear">
-    <item name="android:indeterminate">true</item>
-  </style>
-
-  <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
-  <!-- {@deprecated Use CircularProgressIndicator instead.} -->
-  <style name="Widget.MaterialComponents.ProgressIndicator.Circular.Determinate" parent="Base.Widget.MaterialComponents.ProgressIndicator.Circular">
-    <item name="android:indeterminate">false</item>
-  </style>
-
-  <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
-  <!-- {@deprecated Use CircularProgressIndicator instead.} -->
-  <style name="Widget.MaterialComponents.ProgressIndicator.Circular.Indeterminate" parent="Base.Widget.MaterialComponents.ProgressIndicator.Circular">
-    <item name="android:indeterminate">true</item>
   </style>
 </resources>

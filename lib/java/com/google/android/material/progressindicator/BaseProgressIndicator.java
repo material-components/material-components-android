@@ -43,14 +43,14 @@ import com.google.android.material.internal.ThemeEnforcement;
 import java.util.Arrays;
 
 /**
- * This class contains the common functions shared between ProgressIndicator in different types.
- * This is an abstract class which is meant for directly use.
+ * This class contains the common functions shared in different types of progress indicators. This
+ * is an abstract class which is meant for directly use.
  *
  * <p>With the default style {@link R.style#Widget_MaterialComponents_ProgressIndicator}, 4dp
  * indicator/track size and no animation is used for visibility change. Without customization,
  * primaryColor will be used as the indicator color; the indicator color applying disabledAlpha will
- * be used as the track color. The following attributes can be used to customize the
- * ProgressIndicator's appearance:
+ * be used as the track color. The following attributes can be used to customize the progress
+ * indicator's appearance:
  *
  * <ul>
  *   <li>{@code indicatorSize}: the stroke width of the indicator and track.
@@ -93,9 +93,8 @@ public class BaseProgressIndicator extends ProgressBar {
 
   /**
    * The minimum time, in milliseconds, that the requested hide action will wait to start once
-   * {@link ProgressIndicator#show()} is called. If set to zero or negative values, the requested
-   * hide action will start as soon as {@link ProgressIndicator#hide()} is called. This value is
-   * capped to {@link #MAX_HIDE_DELAY}.
+   * {@link #show()} is called. If set to zero or negative values, the requested hide action will
+   * start as soon as {@link #hide()} is called. This value is capped to {@link #MAX_HIDE_DELAY}.
    *
    * @see #showDelay
    */
@@ -258,7 +257,7 @@ public class BaseProgressIndicator extends ProgressBar {
   }
 
   /**
-   * If it changes to visible, the start animation will be started if {@code growMode} indicates
+   * If it changes to visible, the start animation will be started if {@code showBehavior} indicates
    * any. If it changes to invisible, hides the drawable immediately.
    *
    * @param animationDesired Whether to change the visibility with animation.
@@ -513,7 +512,7 @@ public class BaseProgressIndicator extends ProgressBar {
    *
    * @see #setIndicatorSize(int)
    * @attr ref
-   *     com.google.android.material.progressindicator.R.stylable#ProgressIndicator_indicatorSize
+   *     com.google.android.material.progressindicator.R.stylable#BaseProgressIndicator_indicatorSize
    */
   @Px
   public int getIndicatorSize() {
@@ -526,7 +525,7 @@ public class BaseProgressIndicator extends ProgressBar {
    * @param indicatorSize The new indicator size in pixel.
    * @see #getIndicatorSize()
    * @attr ref
-   *     com.google.android.material.progressindicator.R.stylable#ProgressIndicator_indicatorSize
+   *     com.google.android.material.progressindicator.R.stylable#BaseProgressIndicator_indicatorSize
    */
   public void setIndicatorSize(@Px int indicatorSize) {
     if (baseSpec.indicatorSize != indicatorSize) {
@@ -540,7 +539,7 @@ public class BaseProgressIndicator extends ProgressBar {
    *
    * @see #setIndicatorColor(int...)
    * @attr ref
-   *     com.google.android.material.progressindicator.R.stylable#ProgressIndicator_indicatorColor
+   *     com.google.android.material.progressindicator.R.stylable#BaseProgressIndicator_indicatorColor
    */
   @NonNull
   public int[] getIndicatorColor() {
@@ -553,7 +552,7 @@ public class BaseProgressIndicator extends ProgressBar {
    * @param indicatorColors The new colors used in indicator.
    * @see #getIndicatorColor()
    * @attr ref
-   *     com.google.android.material.progressindicator.R.stylable#ProgressIndicator_indicatorColor
+   *     com.google.android.material.progressindicator.R.stylable#BaseProgressIndicator_indicatorColor
    */
   public void setIndicatorColor(@ColorInt int... indicatorColors) {
     if (indicatorColors.length == 0) {
@@ -571,7 +570,8 @@ public class BaseProgressIndicator extends ProgressBar {
    * Returns the color used in the track of this progress indicator.
    *
    * @see #setTrackColor(int)
-   * @attr ref com.google.android.material.progressindicator.R.stylable#ProgressIndicator_trackColor
+   * @attr ref
+   *     com.google.android.material.progressindicator.R.stylable#BaseProgressIndicator_trackColor
    */
   @ColorInt
   public int getTrackColor() {
@@ -583,7 +583,8 @@ public class BaseProgressIndicator extends ProgressBar {
    *
    * @param trackColor The new color used in the track of this progress indicator.
    * @see #getTrackColor()
-   * @attr ref com.google.android.material.progressindicator.R.stylable#ProgressIndicator_trackColor
+   * @attr ref
+   *     com.google.android.material.progressindicator.R.stylable#BaseProgressIndicator_trackColor
    */
   public void setTrackColor(@ColorInt int trackColor) {
     if (baseSpec.trackColor != trackColor) {
@@ -597,7 +598,7 @@ public class BaseProgressIndicator extends ProgressBar {
    *
    * @see #setIndicatorCornerRadius(int)
    * @attr ref
-   *     com.google.android.material.progressindicator.R.stylable#ProgressIndicator_indicatorCornerRadius
+   *     com.google.android.material.progressindicator.R.stylable#BaseProgressIndicator_indicatorCornerRadius
    */
   @Px
   public int getIndicatorCornerRadius() {
@@ -610,7 +611,7 @@ public class BaseProgressIndicator extends ProgressBar {
    * @param indicatorCornerRadius The new corner radius in pixels.
    * @see #getIndicatorCornerRadius()
    * @attr ref
-   *     com.google.android.material.progressindicator.R.stylable#ProgressIndicator_indicatorCornerRadius
+   *     com.google.android.material.progressindicator.R.stylable#BaseProgressIndicator_indicatorCornerRadius
    */
   public void setIndicatorCornerRadius(@Px int indicatorCornerRadius) {
     if (baseSpec.indicatorCornerRadius != indicatorCornerRadius) {

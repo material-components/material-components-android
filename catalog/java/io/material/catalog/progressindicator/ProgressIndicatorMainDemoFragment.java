@@ -27,10 +27,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
-import com.google.android.material.progressindicator.ProgressIndicator;
 import io.material.catalog.feature.DemoFragment;
 
-/** This is the fragment to briefly demo different types of {@link ProgressIndicator}. */
+/**
+ * This is the fragment to demo simple use cases of {@link LinearProgressIndicator} and {@link
+ * CircularProgressIndicator}.
+ */
 public class ProgressIndicatorMainDemoFragment extends DemoFragment {
   @Override
   @NonNull

@@ -137,7 +137,7 @@ public class CircularProgressIndicator extends BaseProgressIndicator {
    * @param indicatorInset The new inset in pixels.
    * @see #getIndicatorInset()
    * @attr ref
-   *     com.google.android.material.progressindicator.R.stylable#ProgressIndicator_circularInset
+   *     com.google.android.material.progressindicator.R.stylable#CircularProgressIndicator_indicatorInset
    */
   public void setIndicatorInset(@Px int indicatorInset) {
     if (spec.indicatorInset != indicatorInset) {
@@ -151,7 +151,7 @@ public class CircularProgressIndicator extends BaseProgressIndicator {
    *
    * @see #setIndicatorRadius(int)
    * @attr ref
-   *     com.google.android.material.progressindicator.R.stylable#ProgressIndicator_circularRadius
+   *     com.google.android.material.progressindicator.R.stylable#CircularProgressIndicator_indicatorRadius
    */
   @Px
   public int getIndicatorrRadius() {
@@ -164,7 +164,7 @@ public class CircularProgressIndicator extends BaseProgressIndicator {
    * @param indicatorRadius The new radius in pixels.
    * @see #getIndicatorrRadius()
    * @attr ref
-   *     com.google.android.material.progressindicator.R.stylable#ProgressIndicator_circularRadius
+   *     com.google.android.material.progressindicator.R.stylable#CircularProgressIndicator_indicatorRadius
    * @throws IllegalArgumentException if new indicator radius is less than half of the indicator
    *     size.
    */

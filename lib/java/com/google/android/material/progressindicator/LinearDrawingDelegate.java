@@ -27,7 +27,7 @@ import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import com.google.android.material.color.MaterialColors;
 
-/** A delegate class to help draw the graphics for {@link ProgressIndicator} in linear types. */
+/** A delegate class to help draw the graphics for {@link LinearProgressIndicator}. */
 final class LinearDrawingDelegate extends DrawingDelegate {
 
   private final LinearProgressIndicatorSpec spec;

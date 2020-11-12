@@ -15,24 +15,10 @@
   ~ limitations under the License.
 -->
 <resources>
-  <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
-  <!-- {@deprecated Use LinearProgressIndicator and CircularProgressIndicator instead.} -->
-  <declare-styleable name="ProgressIndicator">
-    <!--
-      The type of the progress indicator, either linear or circular.
 
-      {@deprecated Use LinearProgressIndicator or CircularProgressIndicator directly.}
-    -->
-    <attr name="indicatorType">
-      <!-- The indicator appears as a horizontal bar. -->
-      <enum name="linear" value="0"/>
-      <!-- The indicator appears as a circular spinner. -->
-      <enum name="circular" value="1"/>
-    </attr>
-
-    <!-- Whether the progress indicator should be indeteminate mode. -->
+  <declare-styleable name="BaseProgressIndicator">
+    <!-- Whether the progress indicator should be indeterminate mode. -->
     <attr name="android:indeterminate"/>
-
     <!-- The size of the progress track and indicator. -->
     <attr name="indicatorSize" format="dimension"/>
     <!--
@@ -47,118 +33,23 @@
     -->
     <attr name="indicatorColor" format="color|reference"/>
     <!--
-      A color array used for multiple color indeterminate indicator. If color
-      array is used while determinate mode is set, the first color in array
-      will be used.
-
-      {@deprecated ProgressIndicator is deprecated, use indicatorColor in LinearProgressIndicator
-      or CircularProgressIndicator instead.}
-    -->
-    <attr name="indicatorColors" format="reference"/>
-    <!--
       The color used for the progress track. If not defined, it will be set to
       the indicatorColor and apply the android:disabledAlpha from the theme.
     -->
     <attr name="trackColor"/>
-
-    <!--
-      Whether to inverse the progress direction. Linear positive direction is
-      start-to-end; circular positive direction is clockwise.
-
-      {@deprecated ProgressIndicator is deprecated, use indicatorDirection in
-      LinearProgressIndicator or CircularProgressIndicator instead.}
-    -->
-    <attr name="inverse" format="boolean"/>
-    <!--
-      How the progress indicator appears and disappears.
-
-      {@deprecated ProgressIndicator is deprecated, use showBehavior and hideBehavior in
-      LinearProgressIndicator or CircularProgressIndicator.}
-    -->
-    <attr name="growMode">
-      <!-- There is no animation used while showing or hiding. -->
-      <enum name="none" value="0"/>
-      <!--
-        For linear type, the progress indicator appears as expanding from the
-        top to the bottom (downward), and disappears with a reversed animation.
-        For circular type, the progress indicator appears as expanding from the
-        outer edge to the inner edge (inward radial direction), and disappears
-        with a reversed animation.
-      -->
-      <enum name="incoming" value="1"/>
-      <!--
-        For linear type, the progress indicator appears as expanding from the
-        bottom to the top (upward), and disappears with a reversed animation.
-        For circular type, the progress indicator appears as expanding from the
-        inner edge to the outer edge (outward radial direction), and disappears
-        with a reversed animation.
-      -->
-      <enum name="outgoing" value="2"/>
-      <!--
-        The progress indicator will expand from and shrink to the central line
-        of the indicator.
-      -->
-      <enum name="bidirectional" value="3"/>
-    </attr>
-
-    <!--
-      Defines the radius of the circular progress indicator. This uses the
-      central line of the indicator as reference. Ignored for linear progress
-      indicator.
-
-      {@deprecated Use indicatorRadius in CircularProgressIndicator instead.}
-    -->
-    <attr name="circularRadius" format="dimension"/>
-    <!--
-      The extra space from the outer edge of the indicator to the edge of the
-      canvas. Ignored for linear progress indicator.
-
-      {@deprecated Use indicatorInset in CircularProgressIndicator instead.}
-    -->
-    <attr name="circularInset" format="dimension"/>
-    <!--
-      Whether to use seamless style animation on linear indicator in different
-      colors when it's possible, i.e., in linear indeterminate mode with more
-      than 3 colors (inclusive) are defined. Ignored for circular progress
-      indicator.
-
-      {@deprecated Use indeterminateAnimationType in LinearProgressIndicator instead.}
-    -->
-    <attr name="linearSeamless" format="boolean"/>
-
     <!--
       The time, in milliseconds, that the progress indicator will wait to show
       once show() is called. If set to zero or negative values (-1 as default),
       the show action will start immediately.
     -->
     <attr name="showDelay" format="integer"/>
-
     <!--
       The minimum time, in milliseconds, that the requested hide action will
       wait to start once show action is started. If set to zero or negative
       values (-1 as default), the requested hide action will start immediately.
       This value is capped to a limit defined in ProgressIndicator class.
     -->
-    <attr name="minHideDelay" format="integer" />
-
-  </declare-styleable>
-
-  <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
-  <!--
-    Style to use for ProgressIndicators in this theme.
-
-    {@deprecated Use LinearProgressIndicator and CircularProgressIndicator instead.}
-  -->
-  <attr name="progressIndicatorStyle" format="reference"/>
-
-  <declare-styleable name="BaseProgressIndicator">
-    <attr name="android:indeterminate"/>
-    <attr name="indicatorSize"/>
-    <attr name="indicatorCornerRadius"/>
-    <attr name="indicatorColor"/>
-    <attr name="trackColor"/>
-    <attr name="showDelay"/>
-    <attr name="minHideDelay"/>
+    <attr name="minHideDelay" format="integer"/>
   </declare-styleable>
 
   <declare-styleable name="LinearProgressIndicator">

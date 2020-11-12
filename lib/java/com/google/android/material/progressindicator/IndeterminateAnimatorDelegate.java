@@ -21,10 +21,7 @@ import android.graphics.drawable.Drawable;
 import androidx.annotation.NonNull;
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat.AnimationCallback;
 
-/**
- * A delegate abstract class for animating properties used in drawing the graphics in different
- * drawable classes for {@link ProgressIndicator}.
- */
+/** A delegate abstract class for animating properties used in drawing the graphics. */
 abstract class IndeterminateAnimatorDelegate<T extends Animator> {
 
   // The drawable associated with this delegate.
@@ -73,8 +70,8 @@ abstract class IndeterminateAnimatorDelegate<T extends Animator> {
 
   /**
    * Invalidates the spec values used by the animator delegate. When the spec values are changed in
-   * {@link ProgressIndicator}, values assigned to animators or segments don't get updated until
-   * they are explicitly reset. Call this to apply the changes immediately.
+   * indicator class, values assigned to animators or segments don't get updated until they are
+   * explicitly reset. Call this to apply the changes immediately.
    */
   public abstract void invalidateSpecValues();
 
