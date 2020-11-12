@@ -146,6 +146,9 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
     }
     updateShapeMask(getWidth(), getHeight());
     invalidate();
+    if (VERSION.SDK_INT >= 21) {
+      invalidateOutline();
+    }
   }
 
   @NonNull
