@@ -43,6 +43,8 @@
       android:layout_toEndOf="@+id/cat_demo_landing_row_icon"
       android:layout_toRightOf="@+id/cat_demo_landing_row_icon"
       android:textAppearance="?attr/textAppearanceBody2"
+      android:ellipsize="end"
+      android:maxLines="1"
       tools:text="Demo"/>
 
   <TextView
@@ -54,6 +56,8 @@
       android:layout_below="@+id/cat_demo_landing_row_title"
       android:layout_toEndOf="@+id/cat_demo_landing_row_icon"
       android:layout_toRightOf="@+id/cat_demo_landing_row_icon"
+      android:ellipsize="end"
+      android:maxLines="1"
       android:textAppearance="?attr/textAppearanceCaption"
       tools:text="MainDemoFragment"/>
 
