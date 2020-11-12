@@ -31,7 +31,7 @@
   </style>
 
   <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
-  <!-- TODO(b/169262619) Deprecate when ProgressIndicator is deprecated. -->
+  <!-- {@deprecated Use LinearProgressIndicator and CircularProgressIndicator instead.} -->
   <style name="Base.Widget.MaterialComponents.ProgressIndicator" parent="android:Widget">
     <item name="indicatorSize">@dimen/mtrl_progress_indicator_size</item>
     <item name="inverse">false</item>
@@ -39,7 +39,7 @@
   </style>
 
   <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
-  <!-- TODO(b/169262416) Deprecate when LinearProgressIndicator is implemented. -->
+  <!-- {@deprecated Use LinearProgressIndicator instead.} -->
   <style name="Base.Widget.MaterialComponents.ProgressIndicator.Linear">
     <item name="indicatorType">linear</item>
     <item name="linearSeamless">true</item>
@@ -56,13 +56,13 @@
 
   <!-- Styles used by clients -->
   <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
-  <!-- TODO(b/169262416) Deprecate when LinearProgressIndicator is implemented. -->
+  <!-- {@deprecated Use LinearProgressIndicator instead.} -->
   <style name="Widget.MaterialComponents.ProgressIndicator.Linear.Determinate" parent="Base.Widget.MaterialComponents.ProgressIndicator.Linear">
     <item name="android:indeterminate">false</item>
   </style>
 
   <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
-  <!-- TODO(b/169262416) Deprecate when LinearProgressIndicator is implemented. -->
+  <!-- {@deprecated Use LinearProgressIndicator instead.} -->
   <style name="Widget.MaterialComponents.ProgressIndicator.Linear.Indeterminate" parent="Base.Widget.MaterialComponents.ProgressIndicator.Linear">
     <item name="android:indeterminate">true</item>
   </style>

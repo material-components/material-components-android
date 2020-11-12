@@ -42,36 +42,26 @@
   <public name="Widget.MaterialComponents.CircularProgressIndicator" type="style"/>
 
   <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
-  <!-- TODO(b/169262619) Deprecate when ProgressIndicator is deprecated. -->
   <public name="progressIndicatorStyle" type="attr" />
 
   <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
-  <!-- TODO(b/169262619) Deprecate when ProgressIndicator is deprecated. -->
   <public name="indicatorType" type="attr" />
   <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
-  <!-- TODO(b/169262619) Deprecate when ProgressIndicator is deprecated. -->
   <public name="progressMode" type="attr" />
   <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
-  <!-- TODO(b/169262619) Deprecate when ProgressIndicator is deprecated. -->
   <public name="growMode" type="attr" />
   <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
-  <!-- TODO(b/169262619) Deprecate when ProgressIndicator is deprecated. -->
   <public name="inverse" type="attr" />
   <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
-  <!-- TODO(b/169262619) Deprecate when ProgressIndicator is deprecated. -->
   <public name="linearSeamless" type="attr" />
 
   <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
-  <!-- TODO(b/169262416) Deprecate when LinearProgressIndicator is implemented. -->
   <public name="Widget.MaterialComponents.ProgressIndicator.Linear.Determinate" type="style" />
   <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
-  <!-- TODO(b/169262416) Deprecate when LinearProgressIndicator is implemented. -->
   <public name="Widget.MaterialComponents.ProgressIndicator.Linear.Indeterminate" type="style" />
   <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
-  <!-- {@deprecated Use CircularProgressIndicator instead.} -->
   <public name="Widget.MaterialComponents.ProgressIndicator.Circular.Determinate" type="style" />
   <!-- TODO(b/169262029) Remove when all ProgressIndicator usages are migrated. -->
-  <!-- {@deprecated Use CircularProgressIndicator instead.} -->
   <public name="Widget.MaterialComponents.ProgressIndicator.Circular.Indeterminate" type="style" />
 
 </resources>
