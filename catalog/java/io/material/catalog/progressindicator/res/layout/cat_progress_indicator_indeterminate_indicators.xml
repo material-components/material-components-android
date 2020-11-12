@@ -49,8 +49,8 @@
       android:indeterminate="true"
       app:indicatorColor="@array/cat_custom_progress_colors"
       app:indicatorDirectionLinear="leftToRight"
-      app:showBehaviorLinear="downward"
-      app:hideBehaviorLinear="upward"/>
+      app:showAnimationBehavior="inward"
+      app:hideAnimationBehavior="outward"/>
 
   <TextView
       android:layout_width="wrap_content"
@@ -63,8 +63,8 @@
       app:indicatorColor="@array/cat_custom_progress_colors"
       app:indeterminateAnimationType="seamless"
       app:indicatorDirectionLinear="rightToLeft"
-      app:showBehaviorLinear="upward"
-      app:hideBehaviorLinear="downward"/>
+      app:showAnimationBehavior="outward"
+      app:hideAnimationBehavior="inward"/>
 
   <LinearLayout
       android:layout_width="match_parent"
@@ -121,8 +121,8 @@
           android:indeterminate="true"
           style="@style/Widget.MaterialComponents.CircularProgressIndicator"
           app:indicatorColor="@array/cat_custom_progress_colors"
-          app:showBehaviorCircular="inward"
-          app:hideBehaviorCircular="outward"/>
+          app:showAnimationBehavior="inward"
+          app:hideAnimationBehavior="outward"/>
     </LinearLayout>
 
     <LinearLayout
@@ -140,8 +140,8 @@
           android:indeterminate="true"
           style="@style/Widget.MaterialComponents.CircularProgressIndicator"
           app:indicatorColor="@array/cat_custom_progress_colors"
-          app:showBehaviorCircular="outward"
-          app:hideBehaviorCircular="inward"/>
+          app:showAnimationBehavior="outward"
+          app:hideAnimationBehavior="inward"/>
     </LinearLayout>
   </LinearLayout>
 </LinearLayout>

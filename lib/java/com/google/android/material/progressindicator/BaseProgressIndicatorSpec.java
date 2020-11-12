@@ -32,12 +32,14 @@ import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.ThemeEnforcement;
+import com.google.android.material.progressindicator.BaseProgressIndicator.HideAnimationBehavior;
+import com.google.android.material.progressindicator.BaseProgressIndicator.ShowAnimationBehavior;
 
 /**
  * This class contains the parameters shared between linear type and circular type. The parameters
  * reflect the attribtues defined in {@link R.styleable#BaseProgressIndicator}.
  */
-public class BaseProgressIndicatorSpec {
+public class BaseProgressIndicatorSpec implements AnimatedVisibilityChangeBehavior {
   /** The size of the progress track and indicator. */
   @Px public int indicatorSize;
 
@@ -60,6 +62,12 @@ public class BaseProgressIndicatorSpec {
    * apply the first disable alpha value from the theme.
    */
   @ColorInt public int trackColor;
+
+  /** The animation behavior to show the indicator and track. */
+  @ShowAnimationBehavior public int showAnimationBehavior;
+
+  /** The animation behavior to hide the indicator and track. */
+  @HideAnimationBehavior public int hideAnimationBehavior;
 
   protected BaseProgressIndicatorSpec(){}
 
@@ -96,6 +104,14 @@ public class BaseProgressIndicatorSpec {
             getDimensionPixelSize(
                 context, a, R.styleable.BaseProgressIndicator_indicatorCornerRadius, 0),
             indicatorSize / 2);
+    showAnimationBehavior =
+        a.getInt(
+            R.styleable.BaseProgressIndicator_showAnimationBehavior,
+            BaseProgressIndicator.SHOW_NONE);
+    hideAnimationBehavior =
+        a.getInt(
+            R.styleable.BaseProgressIndicator_hideAnimationBehavior,
+            BaseProgressIndicator.HIDE_NONE);
 
     loadIndicatorColors(context, a);
     loadTrackColor(context, a);
@@ -161,5 +177,15 @@ public class BaseProgressIndicatorSpec {
 
     int trackAlpha = (int) (BaseProgressIndicator.MAX_ALPHA * defaultOpacity);
     trackColor = MaterialColors.compositeARGBWithAlpha(trackColor, trackAlpha);
+  }
+
+  @Override
+  public boolean isShowAnimationEnabled() {
+    return showAnimationBehavior != BaseProgressIndicator.SHOW_NONE;
+  }
+
+  @Override
+  public boolean isHideAnimationEnabled() {
+    return hideAnimationBehavior != BaseProgressIndicator.HIDE_NONE;
   }
 }

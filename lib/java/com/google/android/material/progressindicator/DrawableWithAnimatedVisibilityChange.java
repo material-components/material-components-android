@@ -278,7 +278,9 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
     // controlled by the animation listener attached to hide animation.
     boolean changed = !visible || super.setVisible(visible, DEFAULT_DRAWABLE_RESTART);
     animationDesired &=
-        visible ? animationBehavior.shouldAnimateToShow() : animationBehavior.shouldAnimateToHide();
+        visible
+            ? animationBehavior.isShowAnimationEnabled()
+            : animationBehavior.isHideAnimationEnabled();
     if (!animationDesired) {
       // This triggers onAnimationStart() callbacks for showing and onAnimationEnd() callbacks for
       // hiding. It also fast-forwards the animator properties to the end state.
@@ -389,7 +391,8 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
 
   float getGrowFraction() {
     // If no show/hide animation is needed, the growFraction is always 1.
-    if (!animationBehavior.shouldAnimateToShow() && !animationBehavior.shouldAnimateToHide()) {
+    if (!animationBehavior.isShowAnimationEnabled()
+        && !animationBehavior.isHideAnimationEnabled()) {
       return 1f;
     }
     // If show/hide animation is mocked, return mocked value.

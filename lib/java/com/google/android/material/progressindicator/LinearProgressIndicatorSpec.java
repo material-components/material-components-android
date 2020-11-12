@@ -24,10 +24,8 @@ import android.util.AttributeSet;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.internal.ThemeEnforcement;
-import com.google.android.material.progressindicator.LinearProgressIndicator.HideBehavior;
 import com.google.android.material.progressindicator.LinearProgressIndicator.IndeterminateAnimationType;
 import com.google.android.material.progressindicator.LinearProgressIndicator.IndicatorDirection;
-import com.google.android.material.progressindicator.LinearProgressIndicator.ShowBehavior;
 
 /**
  * This class contains the parameters for drawing a linear type progress indicator. The parameters
@@ -43,12 +41,6 @@ public class LinearProgressIndicatorSpec implements AnimatedVisibilityChangeBeha
 
   /** The direction in which the indicator will swipe or grow to. */
   @IndicatorDirection public int indicatorDirection;
-
-  /** The animation direction to show the indicator and track. */
-  @ShowBehavior public int showBehavior;
-
-  /** The animation direction to hide the indicator and track. */
-  @HideBehavior public int hideBehavior;
 
   protected boolean drawHorizontallyInverse;
 
@@ -103,14 +95,6 @@ public class LinearProgressIndicatorSpec implements AnimatedVisibilityChangeBeha
         a.getInt(
             R.styleable.LinearProgressIndicator_indicatorDirectionLinear,
             LinearProgressIndicator.INDICATOR_DIRECTION_LEFT_TO_RIGHT);
-    showBehavior =
-        a.getInt(
-            R.styleable.LinearProgressIndicator_showBehaviorLinear,
-            LinearProgressIndicator.SHOW_NONE);
-    hideBehavior =
-        a.getInt(
-            R.styleable.LinearProgressIndicator_hideBehaviorLinear,
-            LinearProgressIndicator.HIDE_NONE);
     a.recycle();
   }
 
@@ -133,13 +117,13 @@ public class LinearProgressIndicatorSpec implements AnimatedVisibilityChangeBeha
   }
 
   @Override
-  public boolean shouldAnimateToShow() {
-    return showBehavior != LinearProgressIndicator.SHOW_NONE;
+  public boolean isShowAnimationEnabled() {
+    return baseSpec.isShowAnimationEnabled();
   }
 
   @Override
-  public boolean shouldAnimateToHide() {
-    return hideBehavior != LinearProgressIndicator.HIDE_NONE;
+  public boolean isHideAnimationEnabled() {
+    return baseSpec.isHideAnimationEnabled();
   }
 
   @NonNull

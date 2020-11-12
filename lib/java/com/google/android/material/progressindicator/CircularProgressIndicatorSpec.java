@@ -27,9 +27,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import com.google.android.material.internal.ThemeEnforcement;
-import com.google.android.material.progressindicator.CircularProgressIndicator.HideBehavior;
 import com.google.android.material.progressindicator.CircularProgressIndicator.IndicatorDirection;
-import com.google.android.material.progressindicator.CircularProgressIndicator.ShowBehavior;
 
 /**
  * This class contains the parameters for drawing a circular type progress indicator. The parameters
@@ -48,12 +46,6 @@ public class CircularProgressIndicatorSpec implements AnimatedVisibilityChangeBe
 
   /** The direction in which the indicator will rotate and grow to. */
   @IndicatorDirection public int indicatorDirection;
-
-  /** The animation direction to show the indicator and track. */
-  @ShowBehavior public int showBehavior;
-
-  /** The animation direction to hide the indicator and track. */
-  @HideBehavior public int hideBehavior;
 
   /**
    * Instantiates CircularProgressIndicatorSpec.
@@ -116,14 +108,6 @@ public class CircularProgressIndicatorSpec implements AnimatedVisibilityChangeBe
         a.getInt(
             R.styleable.CircularProgressIndicator_indicatorDirectionCircular,
             CircularProgressIndicator.INDICATOR_DIRECTION_CLOCKWISE);
-    showBehavior =
-        a.getInt(
-            R.styleable.CircularProgressIndicator_showBehaviorCircular,
-            CircularProgressIndicator.SHOW_NONE);
-    hideBehavior =
-        a.getInt(
-            R.styleable.CircularProgressIndicator_hideBehaviorCircular,
-            CircularProgressIndicator.HIDE_NONE);
     a.recycle();
   }
 
@@ -138,13 +122,13 @@ public class CircularProgressIndicatorSpec implements AnimatedVisibilityChangeBe
   }
 
   @Override
-  public boolean shouldAnimateToShow() {
-    return showBehavior != CircularProgressIndicator.SHOW_NONE;
+  public boolean isShowAnimationEnabled() {
+    return baseSpec.isShowAnimationEnabled();
   }
 
   @Override
-  public boolean shouldAnimateToHide() {
-    return hideBehavior != CircularProgressIndicator.HIDE_NONE;
+  public boolean isHideAnimationEnabled() {
+    return baseSpec.isHideAnimationEnabled();
   }
 
   /** Returns the base spec included in this circular spec. */

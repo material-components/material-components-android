@@ -85,13 +85,17 @@ public final class CircularDrawingDelegate extends DrawingDelegate {
     displayedIndicatorSize = baseSpec.indicatorSize * indicatorSizeFraction;
     displayedCornerRadius = baseSpec.indicatorCornerRadius * indicatorSizeFraction;
     adjustedRadius = spec.indicatorRadius;
-    if ((drawable.isShowing() && spec.showBehavior == CircularProgressIndicator.SHOW_INWARD)
-        || (drawable.isHiding() && spec.hideBehavior == CircularProgressIndicator.HIDE_OUTWARD)) {
+    if ((drawable.isShowing()
+            && baseSpec.showAnimationBehavior == CircularProgressIndicator.SHOW_INWARD)
+        || (drawable.isHiding()
+            && baseSpec.hideAnimationBehavior == CircularProgressIndicator.HIDE_OUTWARD)) {
       // Increases the radius by half of the full size, then reduces it half way of the displayed
       // size to match the outer edges of the displayed indicator and the full indicator.
       adjustedRadius += (1 - indicatorSizeFraction) * baseSpec.indicatorSize / 2;
-    } else if ((drawable.isShowing() && spec.showBehavior == CircularProgressIndicator.SHOW_OUTWARD)
-        || (drawable.isHiding() && spec.hideBehavior == CircularProgressIndicator.HIDE_INWARD)) {
+    } else if ((drawable.isShowing()
+            && baseSpec.showAnimationBehavior == CircularProgressIndicator.SHOW_OUTWARD)
+        || (drawable.isHiding()
+            && baseSpec.hideAnimationBehavior == CircularProgressIndicator.HIDE_INWARD)) {
       // Decreases the radius by half of the full size, then raises it half way of the displayed
       // size to match the inner edges of the displayed indicator and the full indicator.
       adjustedRadius -= (1 - indicatorSizeFraction) * baseSpec.indicatorSize / 2;

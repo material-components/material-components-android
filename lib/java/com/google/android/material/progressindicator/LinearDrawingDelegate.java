@@ -81,8 +81,10 @@ final class LinearDrawingDelegate extends DrawingDelegate {
       canvas.scale(-1f, 1f);
     }
     // Flips canvas vertically if need to anchor to the bottom edge.
-    if ((drawable.isShowing() && spec.showBehavior == LinearProgressIndicator.SHOW_UPWARD)
-        || (drawable.isHiding() && spec.hideBehavior == LinearProgressIndicator.HIDE_DOWNWARD)) {
+    if ((drawable.isShowing()
+            && baseSpec.showAnimationBehavior == LinearProgressIndicator.SHOW_OUTWARD)
+        || (drawable.isHiding()
+            && baseSpec.hideAnimationBehavior == LinearProgressIndicator.HIDE_INWARD)) {
       canvas.scale(1f, -1f);
     }
     // Offsets canvas vertically while showing or hiding.

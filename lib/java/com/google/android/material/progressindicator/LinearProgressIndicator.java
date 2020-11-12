@@ -47,8 +47,6 @@ import java.lang.annotation.RetentionPolicy;
  *   <li>{@code indicatorCornerRadius}: the radius of the rounded corner of the indicator stroke.
  *   <li>{@code indeterminateAnimationType}: the type of indeterminate animation.
  *   <li>{@code indicatorDirectionLinear}: the sweeping direction of the indicator.
- *   <li>{@code showBehaviorLinear}: the animation direction to show the indicator and track.
- *   <li>{@code hideBehaviorLinear}: the animation direction to hide the indicator and track.
  * </ul>
  */
 public class LinearProgressIndicator extends BaseProgressIndicator {
@@ -61,13 +59,6 @@ public class LinearProgressIndicator extends BaseProgressIndicator {
   public static final int INDICATOR_DIRECTION_RIGHT_TO_LEFT = 1;
   public static final int INDICATOR_DIRECTION_START_TO_END = 2;
   public static final int INDICATOR_DIRECTION_END_TO_START = 3;
-
-  public static final int SHOW_NONE = 0;
-  public static final int SHOW_UPWARD = 1;
-  public static final int SHOW_DOWNWARD = 2;
-  public static final int HIDE_NONE = 0;
-  public static final int HIDE_UPWARD = 1;
-  public static final int HIDE_DOWNWARD = 2;
 
   protected final LinearProgressIndicatorSpec spec;
 
@@ -238,56 +229,6 @@ public class LinearProgressIndicator extends BaseProgressIndicator {
   }
 
   /**
-   * Returns the show behavior used in this progress indicator.
-   *
-   * @see #setShowBehavior(int)
-   * @attr ref
-   *     com.google.android.material.progressindicator.R.styleable#LinearProgressIndicator_showBehaviorLinear
-   */
-  @ShowBehavior
-  public int getShowBehavior() {
-    return spec.showBehavior;
-  }
-
-  /**
-   * Sets the show behavior used in this progress indicator.
-   *
-   * @param showBehavior The new behavior of show animation.
-   * @see #getShowBehavior()
-   * @attr ref
-   *     com.google.android.material.progressindicator.R.styleable#LinearProgressIndicator_showBehaviorLinear
-   */
-  public void setShowBehavior(@ShowBehavior int showBehavior) {
-    spec.showBehavior = showBehavior;
-    invalidate();
-  }
-
-  /**
-   * Returns the hide behavior used in this progress indicator.
-   *
-   * @see #setHideBehavior(int)
-   * @attr ref
-   *     com.google.android.material.progressindicator.R.styleable#LinearProgressIndicator_hideBehaviorLinear
-   */
-  @HideBehavior
-  public int getHideBehavior() {
-    return spec.hideBehavior;
-  }
-
-  /**
-   * Sets the hide behavior used in this progress indicator.
-   *
-   * @param hideBehavior The new behavior of hide animation.
-   * @see #getHideBehavior()
-   * @attr ref
-   *     com.google.android.material.progressindicator.R.styleable#LinearProgressIndicator_hideBehaviorLinear
-   */
-  public void setHideBehavior(@HideBehavior int hideBehavior) {
-    spec.hideBehavior = hideBehavior;
-    invalidate();
-  }
-
-  /**
    * Sets the current progress to the specified value with/without animation based on the input.
    *
    * <p>If it's in the indeterminate mode and using non-seamless animation, it will smoothly
@@ -325,16 +266,4 @@ public class LinearProgressIndicator extends BaseProgressIndicator {
   })
   @Retention(RetentionPolicy.SOURCE)
   public @interface IndicatorDirection {}
-
-  /** @hide */
-  @RestrictTo(Scope.LIBRARY_GROUP)
-  @IntDef({SHOW_NONE, SHOW_UPWARD, SHOW_DOWNWARD})
-  @Retention(RetentionPolicy.SOURCE)
-  public @interface ShowBehavior {}
-
-  /** @hide */
-  @RestrictTo(Scope.LIBRARY_GROUP)
-  @IntDef({HIDE_NONE, HIDE_UPWARD, HIDE_DOWNWARD})
-  @Retention(RetentionPolicy.SOURCE)
-  public @interface HideBehavior {}
 }

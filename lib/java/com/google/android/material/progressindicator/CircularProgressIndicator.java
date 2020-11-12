@@ -46,8 +46,6 @@ import java.lang.annotation.RetentionPolicy;
  *   <li>{@code indicatorRadius}: the radius of the central line of the spinner.
  *   <li>{@code indicatorInset}: the inset from component's bound to the spinner's outer edge.
  *   <li>{@code indicatorDirectionCircular}: the rotation direction of the spinner or indicator.
- *   <li>{@code showBehaviorCircular}: the animation direction to show the indicator and track.
- *   <li>{@code hideBehaviorCircular}: the animation direction to hide the indicator and track.
  * </ul>
  */
 public class CircularProgressIndicator extends BaseProgressIndicator {
@@ -56,13 +54,6 @@ public class CircularProgressIndicator extends BaseProgressIndicator {
 
   public static final int INDICATOR_DIRECTION_CLOCKWISE = 0;
   public static final int INDICATOR_DIRECTION_COUNTERCLOCKWISE = 1;
-
-  public static final int SHOW_NONE = 0;
-  public static final int SHOW_OUTWARD = 1;
-  public static final int SHOW_INWARD = 2;
-  public static final int HIDE_NONE = 0;
-  public static final int HIDE_OUTWARD = 1;
-  public static final int HIDE_INWARD = 2;
 
   protected final CircularProgressIndicatorSpec spec;
 
@@ -201,56 +192,6 @@ public class CircularProgressIndicator extends BaseProgressIndicator {
     invalidate();
   }
 
-  /**
-   * Returns the show behavior used in this progress indicator.
-   *
-   * @see #setShowBehavior(int)
-   * @attr ref
-   *     com.google.android.material.progressindicator.R.stylable#CircularProgressIndicator_showBehaviorCircular
-   */
-  @ShowBehavior
-  public int getShowBehavior() {
-    return spec.showBehavior;
-  }
-
-  /**
-   * Sets the show behavior used in this progress indicator.
-   *
-   * @param showBehavior The new behavior of show animation.
-   * @see #getShowBehavior()
-   * @attr ref
-   *     com.google.android.material.progressindicator.R.stylable#CircularProgressIndicator_showBehaviorCircular
-   */
-  public void setShowBehavior(@ShowBehavior int showBehavior) {
-    spec.showBehavior = showBehavior;
-    invalidate();
-  }
-
-  /**
-   * Returns the hide behavior used in this progress indicator.
-   *
-   * @see #setHideBehavior(int)
-   * @attr ref
-   *     com.google.android.material.progressindicator.R.stylable#CircularProgressIndicator_hideBehaviorCircular
-   */
-  @HideBehavior
-  public int getHideBehavior() {
-    return spec.hideBehavior;
-  }
-
-  /**
-   * Sets the hide behavior used in this progress indicator.
-   *
-   * @param hideBehavior The new behavior of hide animation.
-   * @see #getHideBehavior()
-   * @attr ref
-   *     com.google.android.material.progressindicator.R.stylable#CircularProgressIndicator_hideBehaviorCircular
-   */
-  public void setHideBehavior(@HideBehavior int hideBehavior) {
-    spec.hideBehavior = hideBehavior;
-    invalidate();
-  }
-
   // **************** Interface ****************
 
   /** @hide */
@@ -258,16 +199,4 @@ public class CircularProgressIndicator extends BaseProgressIndicator {
   @IntDef({INDICATOR_DIRECTION_CLOCKWISE, INDICATOR_DIRECTION_COUNTERCLOCKWISE})
   @Retention(RetentionPolicy.SOURCE)
   public @interface IndicatorDirection {}
-
-  /** @hide */
-  @RestrictTo(Scope.LIBRARY_GROUP)
-  @IntDef({SHOW_NONE, SHOW_OUTWARD, SHOW_INWARD})
-  @Retention(RetentionPolicy.SOURCE)
-  public @interface ShowBehavior {}
-
-  /** @hide */
-  @RestrictTo(Scope.LIBRARY_GROUP)
-  @IntDef({HIDE_NONE, HIDE_OUTWARD, HIDE_INWARD})
-  @Retention(RetentionPolicy.SOURCE)
-  public @interface HideBehavior {}
 }

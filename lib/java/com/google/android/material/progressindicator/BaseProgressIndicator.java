@@ -33,13 +33,18 @@ import android.view.ViewParent;
 import android.widget.ProgressBar;
 import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
+import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.VisibleForTesting;
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat.AnimationCallback;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.ThemeEnforcement;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.Arrays;
 
 /**
@@ -57,9 +62,19 @@ import java.util.Arrays;
  *   <li>{@code indicatorColor}: the color of the indicator.
  *   <li>{@code trackColor}: the color of the track.
  *   <li>{@code indicatorCornerRadius}: the radius of the rounded corner of the indicator stroke.
+ *   <li>{@code showAnimationBehavior}: the animation direction to show the indicator and track.
+ *   <li>{@code hideAnimationBehavior}: the animation direction to hide the indicator and track.
  * </ul>
  */
 public class BaseProgressIndicator extends ProgressBar {
+  // Constants for show/hide animation behaviors.
+  public static final int SHOW_NONE = 0;
+  public static final int SHOW_OUTWARD = 1;
+  public static final int SHOW_INWARD = 2;
+  public static final int HIDE_NONE = 0;
+  public static final int HIDE_OUTWARD = 1;
+  public static final int HIDE_INWARD = 2;
+
   protected static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_ProgressIndicator;
 
   protected static final float DEFAULT_OPACITY = 0.2f;
@@ -257,8 +272,8 @@ public class BaseProgressIndicator extends ProgressBar {
   }
 
   /**
-   * If it changes to visible, the start animation will be started if {@code showBehavior} indicates
-   * any. If it changes to invisible, hides the drawable immediately.
+   * If it changes to visible, the start animation will be started if {@code showAnimationBehavior}
+   * indicates any. If it changes to invisible, hides the drawable immediately.
    *
    * @param animationDesired Whether to change the visibility with animation.
    */
@@ -620,6 +635,56 @@ public class BaseProgressIndicator extends ProgressBar {
   }
 
   /**
+   * Returns the show animation behavior used in this progress indicator.
+   *
+   * @see #setShowAnimationBehavior(int)
+   * @attr ref
+   *     com.google.android.material.progressindicator.R.stylable#BaseProgressIndicator_showAnimationBehavior
+   */
+  @ShowAnimationBehavior
+  public int getShowAnimationBehavior() {
+    return baseSpec.showAnimationBehavior;
+  }
+
+  /**
+   * Sets the show animation behavior used in this progress indicator.
+   *
+   * @param showAnimationBehavior The new behavior of show animation.
+   * @see #getShowAnimationBehavior()
+   * @attr ref
+   *     com.google.android.material.progressindicator.R.stylable#BaseProgressIndicator_showAnimationBehavior
+   */
+  public void setShowAnimationBehavior(@ShowAnimationBehavior int showAnimationBehavior) {
+    baseSpec.showAnimationBehavior = showAnimationBehavior;
+    invalidate();
+  }
+
+  /**
+   * Returns the hide animation behavior used in this progress indicator.
+   *
+   * @see #setHideAnimationBehavior(int)
+   * @attr ref
+   *     com.google.android.material.progressindicator.R.stylable#BaseProgressIndicator_hideAnimationBehavior
+   */
+  @HideAnimationBehavior
+  public int getHideAnimationBehavior() {
+    return baseSpec.hideAnimationBehavior;
+  }
+
+  /**
+   * Sets the hide animation behavior used in this progress indicator.
+   *
+   * @param hideAnimationBehavior The new behavior of hide animation.
+   * @see #getHideAnimationBehavior()
+   * @attr ref
+   *     com.google.android.material.progressindicator.R.stylable#BaseProgressIndicator_hideAnimationBehavior
+   */
+  public void setHideAnimationBehavior(@HideAnimationBehavior int hideAnimationBehavior) {
+    baseSpec.hideAnimationBehavior = hideAnimationBehavior;
+    invalidate();
+  }
+
+  /**
    * Sets the current progress to the specified value. Does not do anything if the progress bar is
    * in indeterminate mode. Animation is not used by default. This default setting is aligned with
    * {@link ProgressBar#setProgress(int)}.
@@ -751,4 +816,18 @@ public class BaseProgressIndicator extends ProgressBar {
           }
         }
       };
+
+  // **************** Interface ****************
+
+  /** @hide */
+  @RestrictTo(Scope.LIBRARY_GROUP)
+  @IntDef({SHOW_NONE, SHOW_OUTWARD, SHOW_INWARD})
+  @Retention(RetentionPolicy.SOURCE)
+  public @interface ShowAnimationBehavior {}
+
+  /** @hide */
+  @RestrictTo(Scope.LIBRARY_GROUP)
+  @IntDef({HIDE_NONE, HIDE_OUTWARD, HIDE_INWARD})
+  @Retention(RetentionPolicy.SOURCE)
+  public @interface HideAnimationBehavior {}
 }

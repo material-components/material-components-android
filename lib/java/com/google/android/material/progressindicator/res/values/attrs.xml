@@ -37,6 +37,36 @@
       the indicatorColor and apply the android:disabledAlpha from the theme.
     -->
     <attr name="trackColor"/>
+    <!-- The animation behavior to show the indicator and track. -->
+    <attr name="showAnimationBehavior">
+      <!-- No animation used; appears immediately. -->
+      <enum name="none" value="0"/>
+      <!--
+        Expands from the bottom edge to the top edge for the linear type;
+        expands from the inner edge to the outer edge for the circular type.
+      -->
+      <enum name="outward" value="1"/>
+      <!--
+        Expands from the top edge to the bottom edge for the linear type;
+        expands from the outer edge to the inner edge for the circular type.
+      -->
+      <enum name="inward" value="2"/>
+    </attr>
+    <!-- The animation behavior to hide the indicator and track. -->
+    <attr name="hideAnimationBehavior">
+      <!-- No animation used; disappears immediately. -->
+      <enum name="none" value="0"/>
+      <!--
+        Collapses from the bottom edge to the top edge for the linear type;
+        collapses from the inner edge to the outer edge for the circular type.
+      -->
+      <enum name="outward" value="1"/>
+      <!--
+        Collapses from the top edge to the bottom edge for the linear type;
+        collapses from the outer edge to the inner edge for the circular type.
+      -->
+      <enum name="inward" value="2"/>
+    </attr>
     <!--
       The time, in milliseconds, that the progress indicator will wait to show
       once show() is called. If set to zero or negative values (-1 as default),
@@ -88,24 +118,6 @@
       -->
       <enum name="endToStart" value="3"/>
     </attr>
-    <!-- The animation direction to show the indicator and track. -->
-    <attr name="showBehaviorLinear">
-      <!-- No animation used; appears immediately. -->
-      <enum name="none" value="0"/>
-      <!-- Enters from the bottom edge to the top edge. -->
-      <enum name="upward" value="1"/>
-      <!-- Enters from the top edge to the bottom edge. -->
-      <enum name="downward" value="2"/>
-    </attr>
-    <!-- The animation direction to hide the indicator and track. -->
-    <attr name="hideBehaviorLinear">
-      <!-- No animation used; disappears immediately. -->
-      <enum name="none" value="0"/>
-      <!-- Exits from the bottom edge to the top edge. -->
-      <enum name="upward" value="1"/>
-      <!-- Exits from the top edge to the bottom edge. -->
-      <enum name="downward" value="2"/>
-    </attr>
   </declare-styleable>
 
   <declare-styleable name="CircularProgressIndicator">
@@ -137,24 +149,6 @@
         o'clock) counter-clockwise.
       -->
       <enum name="counterclockwise" value="1"/>
-    </attr>
-    <!-- The animation direction to show the indicator and track. -->
-    <attr name="showBehaviorCircular">
-      <!-- No animation used; appears immediately. -->
-      <enum name="none" value="0"/>
-      <!-- Enters from the inner edge to the outer edge. -->
-      <enum name="outward" value="1"/>
-      <!-- Enters from the outer edge to the inner edge. -->
-      <enum name="inward" value="2"/>
-    </attr>
-    <!-- The animation direction to hide the indicator and track. -->
-    <attr name="hideBehaviorCircular">
-      <!-- No animation used; disappears immediately. -->
-      <enum name="none" value="0"/>
-      <!-- Exits from the inner edge to the outer edge. -->
-      <enum name="outward" value="1"/>
-      <!-- Exits from the outer edge to the inner edge. -->
-      <enum name="inward" value="2"/>
     </attr>
   </declare-styleable>
 

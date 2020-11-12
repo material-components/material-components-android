@@ -19,8 +19,8 @@ package com.google.android.material.progressindicator;
 public interface AnimatedVisibilityChangeBehavior {
 
   /** Returns whether the visibility change should be animated while showing. */
-  boolean shouldAnimateToShow();
+  boolean isShowAnimationEnabled();
 
   /** Returns whether the visibility change should be animated while hiding. */
-  boolean shouldAnimateToHide();
+  boolean isHideAnimationEnabled();
 }

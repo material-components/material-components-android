@@ -100,15 +100,15 @@ LinearProgressIndicator progress =
 layout.addView(progress, new LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
 ```
 
-By setting the `showBehaviorLinear` and `hideBehaviorLinear`, the indicator can
+By setting the `showAnimationBehavior` and `hideAnimationBehavior`, the indicator can
 have different animation effects as follows:
 
 <table>
-  <tr><td colspan=2>showBehaviorLinear<td></tr>
+  <tr><td colspan=2>showAnimationBehavior<td></tr>
   <tr><td>none</td><td>Appear immediately</td></tr>
   <tr><td>upward</td><td>Expanding from the bottom edge</td></tr>
   <tr><td>downward</td><td>Expanding from the top edge</td></tr>
-  <tr><td colspan=2>hideBehaviorLinear<td></tr>
+  <tr><td colspan=2>hideAnimationBehavior<td></tr>
   <tr><td>none</td><td>Disappear immediately</td></tr>
   <tr><td>upward</td><td>Collapsing to the top edge</td></tr>
   <tr><td>downward</td><td>Collapsing to the bottom edge</td></tr>
@@ -205,15 +205,15 @@ CircularProgressIndicator progress =
 layout.addView(progress, new LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
 ```
 
-By setting the `showBehaviorCircular` and `hideBehaviorCircular`, the indicator
+By setting the `showAnimationBehavior` and `hideAnimationBehavior`, the indicator
 can have different animation effects as follows:
 
 <table>
-  <tr><td colspan=2>showBehaviorCircular<td></tr>
+  <tr><td colspan=2>showAnimationBehavior<td></tr>
   <tr><td>none</td><td>Appear immediately</td></tr>
   <tr><td>inward</td><td>Expanding from the outer edge</td></tr>
   <tr><td>outward</td><td>Expanding from the inner edge</td></tr>
-  <tr><td colspan=2>hideBehaviorCircular<td></tr>
+  <tr><td colspan=2>hideAnimationBehavior<td></tr>
   <tr><td>none</td><td>Disappear immediately</td></tr>
   <tr><td>inward</td><td>Collapsing to the inner edge</td></tr>
   <tr><td>outward</td><td>Collapsing to the outer edge</td></tr>
