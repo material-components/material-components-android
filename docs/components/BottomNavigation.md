@@ -349,7 +349,7 @@ all bottom navigation bars but does not affect other components):
     <item name="bottomNavigationStyle">@style/Widget.App.BottomNavigationView</item>
 </style>
 
-<style name="Widget.App.BottomNavigationView" parent="WWidget.MaterialComponents.BottomNavigationView.Colored">
+<style name="Widget.App.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
     <item name="materialThemeOverlay">@style/ThemeOverlay.App.BottomNavigationView</item>
 </style>
 
