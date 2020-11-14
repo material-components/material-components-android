@@ -2876,7 +2876,7 @@ public class TabLayout extends HorizontalScrollView {
       }
 
       final CharSequence contentDesc = tab != null ? tab.contentDesc : null;
-      TooltipCompat.setTooltipText(this, hasText ? null : contentDesc);
+      TooltipCompat.setTooltipText(this, hasText ? text : contentDesc);
     }
 
     private void tryUpdateBadgeDrawableBounds(@NonNull View anchor) {
