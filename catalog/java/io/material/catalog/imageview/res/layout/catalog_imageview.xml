@@ -22,6 +22,7 @@
   android:id="@+id/main_viewGroup"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
+  android:layoutDirection="inherit"
   android:padding="@dimen/cat_imageview_padding"
   android:orientation="vertical">
 
@@ -115,6 +116,7 @@
     android:layout_height="40dp"
     android:background="?colorSecondary"
     android:elevation="2dp"
+    app:contentPadding="8dp"
     app:shapeAppearance="?shapeAppearanceSmallComponent"
     app:srcCompat="@drawable/ic_pets_24dp"
     app:tint="?colorOnSecondary" />

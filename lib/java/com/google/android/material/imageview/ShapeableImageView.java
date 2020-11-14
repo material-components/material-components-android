@@ -59,6 +59,8 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
 
   private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_ShapeableImageView;
 
+  private static final int UNDEFINED_PADDING = Integer.MIN_VALUE;
+
   private final ShapeAppearancePathProvider pathProvider =
       ShapeAppearancePathProvider.getInstance();
   private final RectF destination;
@@ -78,6 +80,9 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
   @Dimension private int topContentPadding;
   @Dimension private int rightContentPadding;
   @Dimension private int bottomContentPadding;
+  @Dimension private int startContentPadding;
+  @Dimension private int endContentPadding;
+  private boolean hasAdjustedPaddingAfterLayoutDirectionResolved = false;
 
   public ShapeableImageView(Context context) {
     this(context, null, 0);
@@ -109,6 +114,35 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
 
     strokeWidth = attributes.getDimensionPixelSize(R.styleable.ShapeableImageView_strokeWidth, 0);
 
+    //region Content padding
+
+    // First set all 4 contentPadding values from the `app:contentPadding` attribute:
+    int contentPaddingIndex = R.styleable.ShapeableImageView_contentPadding;
+    leftContentPadding = attributes.getDimensionPixelSize(contentPaddingIndex, 0);
+    topContentPadding = attributes.getDimensionPixelSize(contentPaddingIndex, 0);
+    rightContentPadding = attributes.getDimensionPixelSize(contentPaddingIndex, 0);
+    bottomContentPadding = attributes.getDimensionPixelSize(contentPaddingIndex, 0);
+
+    // Next, update each contentPadding value individually from the `app:contentPadding<Side>`
+    //  attributes:
+    leftContentPadding = attributes.getDimensionPixelSize(
+        R.styleable.ShapeableImageView_contentPaddingLeft, leftContentPadding);
+    topContentPadding = attributes.getDimensionPixelSize(
+        R.styleable.ShapeableImageView_contentPaddingTop, topContentPadding);
+    rightContentPadding = attributes.getDimensionPixelSize(
+        R.styleable.ShapeableImageView_contentPaddingRight, rightContentPadding);
+    bottomContentPadding = attributes.getDimensionPixelSize(
+        R.styleable.ShapeableImageView_contentPaddingBottom, bottomContentPadding);
+
+    // Next, update the relative start and end contentPadding values from those attributes:
+    startContentPadding = attributes.getDimensionPixelSize(
+        R.styleable.ShapeableImageView_contentPaddingStart, UNDEFINED_PADDING);
+    endContentPadding = attributes.getDimensionPixelSize(
+        R.styleable.ShapeableImageView_contentPaddingEnd, UNDEFINED_PADDING);
+    //endregion
+
+    attributes.recycle();
+
     borderPaint = new Paint();
     borderPaint.setStyle(Style.STROKE);
     borderPaint.setAntiAlias(true);
@@ -129,6 +163,31 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
   protected void onAttachedToWindow() {
     super.onAttachedToWindow();
     setLayerType(LAYER_TYPE_HARDWARE, null);
+  }
+
+  @Override
+  protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+    if ((VERSION.SDK_INT < 19 || isLayoutDirectionResolved())
+        && !hasAdjustedPaddingAfterLayoutDirectionResolved) {
+      // Finally, update the super padding to be the combined `android:padding` and
+      //  `app:contentPadding`, in keeping with ShapeableImageView's crazy internal padding contract:
+      if (VERSION.SDK_INT >= 21 && (isPaddingRelative() || isContentPaddingRelative())) {
+        setPaddingRelative(
+            super.getPaddingStart(),
+            super.getPaddingTop(),
+            super.getPaddingEnd(),
+            super.getPaddingBottom());
+      } else {
+        setPadding(
+            super.getPaddingLeft(),
+            super.getPaddingTop(),
+            super.getPaddingRight(),
+            super.getPaddingBottom());
+      }
+      hasAdjustedPaddingAfterLayoutDirectionResolved = true;
+    }
   }
 
   @Override
@@ -154,6 +213,9 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
    */
   public void setContentPadding(
       @Dimension int left, @Dimension int top, @Dimension int right, @Dimension int bottom) {
+    startContentPadding = UNDEFINED_PADDING;
+    endContentPadding = UNDEFINED_PADDING;
+
     // Super padding is equal to background padding + content padding. Adjust the content padding
     //  portion of the super padding here:
     super.setPadding(
@@ -193,6 +255,10 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
     bottomContentPadding = bottom;
   }
 
+  private boolean isContentPaddingRelative() {
+    return startContentPadding != UNDEFINED_PADDING || endContentPadding != UNDEFINED_PADDING;
+  }
+
   /**
    * The additional padding on the bottom of the image, which is not applied to the background.
    *
@@ -211,7 +277,11 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
    */
   @Dimension
   public final int getContentPaddingEnd() {
-    return isRtl() ? getContentPaddingLeft() : getContentPaddingRight();
+    if (endContentPadding != UNDEFINED_PADDING) {
+      return endContentPadding;
+    } else {
+      return isRtl() ? leftContentPadding : rightContentPadding;
+    }
   }
 
   /**
@@ -221,6 +291,14 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
    */
   @Dimension
   public int getContentPaddingLeft() {
+    if (isContentPaddingRelative()) {
+      if (isRtl() && endContentPadding != UNDEFINED_PADDING) {
+        return endContentPadding;
+      } else if (!isRtl() && startContentPadding != UNDEFINED_PADDING) {
+        return startContentPadding;
+      }
+    }
+
     return leftContentPadding;
   }
 
@@ -231,6 +309,14 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
    */
   @Dimension
   public int getContentPaddingRight() {
+    if (isContentPaddingRelative()) {
+      if (isRtl() && startContentPadding != UNDEFINED_PADDING) {
+        return startContentPadding;
+      } else if (!isRtl() && endContentPadding != UNDEFINED_PADDING) {
+        return endContentPadding;
+      }
+    }
+
     return rightContentPadding;
   }
 
@@ -242,7 +328,11 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
    */
   @Dimension
   public final int getContentPaddingStart() {
-    return isRtl() ? getContentPaddingRight() : getContentPaddingLeft();
+    if (startContentPadding != UNDEFINED_PADDING) {
+      return startContentPadding;
+    } else {
+      return isRtl() ? rightContentPadding : leftContentPadding;
+    }
   }
 
   /**

@@ -45,9 +45,7 @@ public class ShapeableImageViewMainDemoFragment extends DemoFragment {
         layoutInflater.inflate(R.layout.catalog_imageview, viewGroup, false /* attachToRoot */);
     MaterialButtonToggleGroup toggleGroup = view.findViewById(R.id.togglegroup);
     ShapeableImageView imageView = view.findViewById(R.id.image_view);
-
     ShapeableImageView iconView = view.findViewById(R.id.icon_view);
-    iconView.setContentPadding(20, 20, 20, 20);
 
     SparseArray<ShapeAppearanceModel> shapes = new SparseArray<>();
     shapes.put(
