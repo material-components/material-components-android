@@ -75,10 +75,10 @@ public class BaseProgressIndicator extends ProgressBar {
   public static final int HIDE_OUTWARD = 1;
   public static final int HIDE_INWARD = 2;
 
-  protected static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_ProgressIndicator;
+  static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_ProgressIndicator;
 
-  protected static final float DEFAULT_OPACITY = 0.2f;
-  protected static final int MAX_ALPHA = 255;
+  static final float DEFAULT_OPACITY = 0.2f;
+  static final int MAX_ALPHA = 255;
   /**
    * The maximum time, in milliseconds, that the requested hide action is allowed to wait once
    * {@link #show()} is called.
@@ -86,7 +86,7 @@ public class BaseProgressIndicator extends ProgressBar {
   private static final int MAX_HIDE_DELAY = 1000;
 
   /** A place to hold all the attributes. */
-  protected final BaseProgressIndicatorSpec baseSpec;
+  final BaseProgressIndicatorSpec baseSpec;
 
   /** A temp place to hold new progress while switching from indeterminate to determinate mode. */
   private int storedProgress;
@@ -251,8 +251,8 @@ public class BaseProgressIndicator extends ProgressBar {
    * @see #hide()
    */
   private void internalHide() {
-    getCurrentDrawable()
-        .setVisible(/*visible=*/ false, /*restart=*/ false, /*animationDesired=*/ true);
+    ((DrawableWithAnimatedVisibilityChange) getCurrentDrawable())
+        .setVisible(/*visible=*/ false, /*restart=*/ false, /*animate=*/ true);
 
     if (isNoLongerNeedToBeVisible()) {
       setVisibility(INVISIBLE);
@@ -262,27 +262,28 @@ public class BaseProgressIndicator extends ProgressBar {
   @Override
   protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
     super.onVisibilityChanged(changedView, visibility);
-    applyNewVisibility(/*animationDesired=*/ visibility == VISIBLE);
+    applyNewVisibility(/*animate=*/ visibility == VISIBLE);
   }
 
   @Override
   protected void onWindowVisibilityChanged(int visibility) {
     super.onWindowVisibilityChanged(visibility);
-    applyNewVisibility(/*animationDesired=*/ false);
+    applyNewVisibility(/*animate=*/ false);
   }
 
   /**
    * If it changes to visible, the start animation will be started if {@code showAnimationBehavior}
    * indicates any. If it changes to invisible, hides the drawable immediately.
    *
-   * @param animationDesired Whether to change the visibility with animation.
+   * @param animate Whether to change the visibility with animation.
    */
-  protected void applyNewVisibility(boolean animationDesired) {
+  protected void applyNewVisibility(boolean animate) {
     if (!isParentDoneInitializing) {
       return;
     }
 
-    getCurrentDrawable().setVisible(visibleToUser(), /*restart=*/ false, animationDesired);
+    ((DrawableWithAnimatedVisibilityChange) getCurrentDrawable())
+        .setVisible(visibleToUser(), /*restart=*/ false, animate);
   }
 
   @Override
@@ -300,7 +301,7 @@ public class BaseProgressIndicator extends ProgressBar {
     // Removes the delayedHide and delayedShow runnables from the queue if it has been scheduled.
     removeCallbacks(delayedHide);
     removeCallbacks(delayedShow);
-    getCurrentDrawable().hideNow();
+    ((DrawableWithAnimatedVisibilityChange) getCurrentDrawable()).hideNow();
     unregisterAnimationCallbacks();
     super.onDetachedFromWindow();
   }
@@ -329,6 +330,9 @@ public class BaseProgressIndicator extends ProgressBar {
   protected synchronized void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     DrawingDelegate drawingDelegate = getCurrentDrawingDelegate();
+    if (drawingDelegate == null) {
+      return;
+    }
     int drawableMeasuredWidth = drawingDelegate.getPreferredWidth();
     int drawableMeasuredHeight = drawingDelegate.getPreferredHeight();
     setMeasuredDimension(
@@ -353,13 +357,13 @@ public class BaseProgressIndicator extends ProgressBar {
   /** Returns the corresponding drawable based on current indeterminate state. */
   @Override
   @Nullable
-  public DrawableWithAnimatedVisibilityChange getCurrentDrawable() {
+  public Drawable getCurrentDrawable() {
     return isIndeterminate() ? getIndeterminateDrawable() : getProgressDrawable();
   }
 
   /** Returns the drawing delegate associated with the current drawable. */
   @Nullable
-  public DrawingDelegate getCurrentDrawingDelegate() {
+  private DrawingDelegate getCurrentDrawingDelegate() {
     if (isIndeterminate()) {
       return getIndeterminateDrawable() == null
           ? null
@@ -431,7 +435,7 @@ public class BaseProgressIndicator extends ProgressBar {
    * Returns whether or not this view is currently displayed in window, based on whether it is
    * attached to a window and whether it and its ancestors are visible.
    */
-  protected boolean visibleToUser() {
+  boolean visibleToUser() {
     return ViewCompat.isAttachedToWindow(this)
         && getWindowVisibility() == View.VISIBLE
         && isEffectivelyVisible();
@@ -460,7 +464,7 @@ public class BaseProgressIndicator extends ProgressBar {
    * conclusively prove otherwise (but may result in some false positives, if this view ends up
    * being attached to a non-visible hierarchy after being detached in a visible state).
    */
-  protected boolean isEffectivelyVisible() {
+  boolean isEffectivelyVisible() {
     View current = this;
     do {
       if (current.getVisibility() != VISIBLE) {
@@ -508,14 +512,16 @@ public class BaseProgressIndicator extends ProgressBar {
 
     // Needs to explicitly set visibility of two drawables. ProgressBar.setIndeterminate doesn't
     // handle it properly for pre-lollipop.
-    DrawableWithAnimatedVisibilityChange oldDrawable = getCurrentDrawable();
+    DrawableWithAnimatedVisibilityChange oldDrawable =
+        (DrawableWithAnimatedVisibilityChange) getCurrentDrawable();
     if (oldDrawable != null) {
       oldDrawable.hideNow();
     }
     super.setIndeterminate(indeterminate);
-    DrawableWithAnimatedVisibilityChange newDrawable = getCurrentDrawable();
+    DrawableWithAnimatedVisibilityChange newDrawable =
+        (DrawableWithAnimatedVisibilityChange) getCurrentDrawable();
     if (newDrawable != null) {
-      newDrawable.setVisible(visibleToUser(), /*restart=*/ false, /*animationDesired=*/ false);
+      newDrawable.setVisible(visibleToUser(), /*restart=*/ false, /*animate=*/ false);
     }
 
     // Indeterminate mode change finished.
@@ -691,7 +697,7 @@ public class BaseProgressIndicator extends ProgressBar {
    *
    * @param progress The new progress value.
    * @see ProgressBar#setProgress(int)
-   * @see #setProgress(int, boolean)
+   * @see #setProgressCompat(int, boolean)
    */
   @Override
   public synchronized void setProgress(int progress) {

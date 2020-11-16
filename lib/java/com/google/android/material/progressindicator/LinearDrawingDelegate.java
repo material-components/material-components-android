@@ -66,6 +66,8 @@ final class LinearDrawingDelegate extends DrawingDelegate {
   public void adjustCanvas(
       @NonNull Canvas canvas,
       @FloatRange(from = 0.0, to = 1.0) float indicatorSizeFraction) {
+    spec.validateSpec();
+
     // Gets clip bounds from canvas.
     Rect clipBounds = canvas.getClipBounds();
     trackLength = clipBounds.width();

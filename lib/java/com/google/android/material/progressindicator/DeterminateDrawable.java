@@ -25,20 +25,18 @@ import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
 import com.google.android.material.color.MaterialColors;
 
-/**
- * This class draws the graphics for determinate modes by applying different {@link DrawingDelegate}
- * for different indicator types.
- */
+/** This class draws the graphics for determinate mode. */
 public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityChange {
-
   // Constants for drawing progress.
   private static final int MAX_DRAWABLE_LEVEL = 10000;
   // The constant for spring force stiffness.
   private static final float SPRING_FORCE_STIFFNESS = SpringForce.STIFFNESS_VERY_LOW;
+
   // Base spec of this progress indicator.
   private final BaseProgressIndicatorSpec baseSpec;
   // Drawing delegate object.
-  private final DrawingDelegate drawingDelegate;
+  private DrawingDelegate drawingDelegate;
+
   // Animation.
   private final SpringForce springForce;
   private final SpringAnimation springAnimator;
@@ -47,7 +45,7 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
   // Whether to skip the spring animation on level change event.
   private boolean skipAnimationOnLevelChange = false;
 
-  public DeterminateDrawable(
+  DeterminateDrawable(
       @NonNull Context context,
       @NonNull BaseProgressIndicatorSpec spec,
       @NonNull AnimatedVisibilityChangeBehavior animatedVisibilityChangeBehavior,
@@ -55,8 +53,7 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
     super(context, /*animatedVisibilityChangeBehavior=*/ animatedVisibilityChangeBehavior);
 
     this.baseSpec = spec;
-    this.drawingDelegate = drawingDelegate;
-    drawingDelegate.registerDrawable(this);
+    setDrawingDelegate(drawingDelegate);
 
     springForce = new SpringForce();
 
@@ -69,15 +66,24 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
     setGrowFraction(1f);
   }
 
-  /**
-   * Sets the drawable level with a fraction [0,1] of the progress. Note: this function is not used
-   * to force updating the level in opposite to the automatic level updates by framework {@link
-   * ProgressBar}.
-   *
-   * @param fraction Progress in fraction, in [0, 1].
-   */
-  void setLevelByFraction(float fraction) {
-    setLevel((int) (MAX_DRAWABLE_LEVEL * fraction));
+  @NonNull
+  public static DeterminateDrawable createLinearDrawable(
+      @NonNull Context context, @NonNull LinearProgressIndicatorSpec spec) {
+    return new DeterminateDrawable(
+        context,
+        spec.getBaseSpec(),
+        /*animatedVisibilityChangeBehavior=*/ spec,
+        new LinearDrawingDelegate(spec));
+  }
+
+  @NonNull
+  public static DeterminateDrawable createCircularDrawable(
+      @NonNull Context context, @NonNull CircularProgressIndicatorSpec spec) {
+    return new DeterminateDrawable(
+        context,
+        spec.getBaseSpec(),
+        /*animatedVisibilityChangeBehavior=*/ spec,
+        new CircularDrawingDelegate(spec));
   }
 
   // ******************* Overridden methods *******************
@@ -91,15 +97,16 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
    * @param visible Whether to make the drawable visible.
    * @param restart Whether to force starting the animation from the beginning. Doesn't apply to the
    *     spring animation for changing progress.
-   * @param animationDesired Whether to change the visibility with animation. The spring animation
-   *     for changing progress only depends on system animator duration scale. Use {@link
-   *     BaseProgressIndicator#setProgress(int, boolean)} to change the progress without animation.
+   * @param animate Whether to change the visibility with animation. The spring animation for
+   *     changing progress only depends on system animator duration scale. Use {@link
+   *     BaseProgressIndicator#setProgressCompat(int, boolean)} to change the progress without
+   *     animation.
    * @return {@code true}, if the visibility changes or will change after the animation; {@code
    *     false}, otherwise.
    */
   @Override
-  protected boolean setVisibleInternal(boolean visible, boolean restart, boolean animationDesired) {
-    boolean changed = super.setVisibleInternal(visible, restart, animationDesired);
+  boolean setVisibleInternal(boolean visible, boolean restart, boolean animate) {
+    boolean changed = super.setVisibleInternal(visible, restart, animate);
 
     float systemAnimatorDurationScale =
         animatorDurationScaleProvider.getSystemAnimatorDurationScale(context.getContentResolver());
@@ -123,8 +130,8 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
   }
 
   /**
-   * When ProgressBar updates progress, it changes the level of drawable's level and calls this
-   * method afterward. It sets the new progress value to animator and starts the animator.
+   * When progress is updated, it changes the level of drawable's level and calls this method
+   * afterward. It sets the new progress value to animator and starts the animator.
    *
    * @param level New progress level.
    */
@@ -148,6 +155,17 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
   @Override
   public int getIntrinsicHeight() {
     return drawingDelegate.getPreferredHeight();
+  }
+
+  /**
+   * Sets the drawable level with a fraction [0,1] of the progress. Note: this function is not used
+   * to force updating the level in opposite to the automatic level updates by framework {@link
+   * ProgressBar}.
+   *
+   * @param fraction Progress in fraction, in [0, 1].
+   */
+  void setLevelByFraction(float fraction) {
+    setLevel((int) (MAX_DRAWABLE_LEVEL * fraction));
   }
 
   // ******************* Drawing methods *******************
@@ -184,8 +202,14 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
     invalidateSelf();
   }
 
-  public DrawingDelegate getDrawingDelegate() {
+  @NonNull
+  DrawingDelegate getDrawingDelegate() {
     return drawingDelegate;
+  }
+
+  void setDrawingDelegate(@NonNull DrawingDelegate drawingDelegate) {
+    this.drawingDelegate = drawingDelegate;
+    drawingDelegate.registerDrawable(this);
   }
 
   // ******************* Properties *******************

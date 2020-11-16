@@ -32,7 +32,7 @@ import com.google.android.material.math.MathUtils;
  * This is the implementation class for drawing progress indicator in the circular indeterminate
  * mode.
  */
-public final class CircularIndeterminateAnimatorDelegate
+final class CircularIndeterminateAnimatorDelegate
     extends IndeterminateAnimatorDelegate<AnimatorSet> {
 
   // Constants for animation values.

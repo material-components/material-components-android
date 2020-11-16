@@ -49,7 +49,7 @@ import java.lang.annotation.RetentionPolicy;
  *   <li>{@code indicatorDirectionLinear}: the sweeping direction of the indicator.
  * </ul>
  */
-public class LinearProgressIndicator extends BaseProgressIndicator {
+public final class LinearProgressIndicator extends BaseProgressIndicator {
   public static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_LinearProgressIndicator;
 
   public static final int INDETERMINATE_ANIMATION_TYPE_SEAMLESS = 0;
@@ -60,7 +60,7 @@ public class LinearProgressIndicator extends BaseProgressIndicator {
   public static final int INDICATOR_DIRECTION_START_TO_END = 2;
   public static final int INDICATOR_DIRECTION_END_TO_START = 3;
 
-  protected final LinearProgressIndicatorSpec spec;
+  final LinearProgressIndicatorSpec spec;
 
   // **************** Constructors ****************
 
@@ -115,17 +115,8 @@ public class LinearProgressIndicator extends BaseProgressIndicator {
   // ******************** Initialization **********************
 
   private void initializeDrawables() {
-    AnimatedVisibilityChangeBehavior behavior = spec;
-    setIndeterminateDrawable(
-        new IndeterminateDrawable(
-            getContext(),
-            behavior,
-            new LinearDrawingDelegate(spec),
-            spec.indeterminateAnimationType == INDETERMINATE_ANIMATION_TYPE_SEAMLESS
-                ? new LinearIndeterminateSeamlessAnimatorDelegate(spec)
-                : new LinearIndeterminateSpacingAnimatorDelegate(getContext(), spec)));
-    setProgressDrawable(
-        new DeterminateDrawable(getContext(), baseSpec, behavior, new LinearDrawingDelegate(spec)));
+    setIndeterminateDrawable(IndeterminateDrawable.createLinearDrawable(getContext(), spec));
+    setProgressDrawable(DeterminateDrawable.createLinearDrawable(getContext(), spec));
   }
 
   // **************** Getters and setters ****************

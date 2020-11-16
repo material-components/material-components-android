@@ -158,7 +158,7 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
    *
    * @param callback New internal animation callback.
    */
-  public void setInternalAnimationCallback(@NonNull AnimationCallback callback) {
+  void setInternalAnimationCallback(@NonNull AnimationCallback callback) {
     internalAnimationCallback = callback;
   }
 
@@ -215,12 +215,12 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
 
   /** Hides the drawable immediately without triggering animation callbacks. */
   public boolean hideNow() {
-    return setVisible(/*visible=*/ false, /*restart=*/ false, /*animationDesired=*/ false);
+    return setVisible(/*visible=*/ false, /*restart=*/ false, /*animate=*/ false);
   }
 
   @Override
   public boolean setVisible(boolean visible, boolean restart) {
-    return setVisible(visible, restart, /*animationDesired=*/ true);
+    return setVisible(visible, restart, /*animate=*/ true);
   }
 
   /**
@@ -228,18 +228,17 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
    *
    * @param visible Whether to make the drawable visible.
    * @param restart Whether to force starting the animation from the beginning.
-   * @param animationDesired Whether to change the visibility with animation.
+   * @param animate Whether to change the visibility with animation.
    * @return {@code true}, if the visibility changes or will change after the animation; {@code
    *     false}, otherwise.
    * @see #setVisible(boolean, boolean, boolean)
    */
-  public boolean setVisible(boolean visible, boolean restart, boolean animationDesired) {
+  public boolean setVisible(boolean visible, boolean restart, boolean animate) {
     float systemAnimatorDurationScale =
         animatorDurationScaleProvider.getSystemAnimatorDurationScale(context.getContentResolver());
     // Only show/hide the drawable with animations if system animator duration scale is not off and
     // some grow mode is used.
-    return setVisibleInternal(
-        visible, restart, animationDesired && systemAnimatorDurationScale > 0);
+    return setVisibleInternal(visible, restart, animate && systemAnimatorDurationScale > 0);
   }
 
   /**
@@ -247,11 +246,11 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
    *
    * @param visible Whether to make the drawable visible.
    * @param restart Whether to force starting the animation from the beginning.
-   * @param animationDesired Whether to change the visibility with animation.
+   * @param animate Whether to change the visibility with animation.
    * @return {@code true}, if the visibility changes or will change after the animation; {@code
    *     false}, otherwise.
    */
-  protected boolean setVisibleInternal(boolean visible, boolean restart, boolean animationDesired) {
+  boolean setVisibleInternal(boolean visible, boolean restart, boolean animate) {
     maybeInitializeAnimators();
     if (!isVisible() && !visible) {
       // Early returns if trying to hide a hidden drawable.
@@ -260,7 +259,7 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
 
     ValueAnimator animatorInAction = visible ? showAnimator : hideAnimator;
 
-    if (!animationDesired) {
+    if (!animate) {
       if (animatorInAction.isRunning()) {
         // Show/hide animation should fast-forward to the end without callbacks.
         endAnimatorWithoutCallbacks(animatorInAction);
@@ -269,7 +268,7 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
       return super.setVisible(visible, DEFAULT_DRAWABLE_RESTART);
     }
 
-    if (animationDesired && animatorInAction.isRunning()) {
+    if (animate && animatorInAction.isRunning()) {
       // Show/hide animation should not be replayed while playing.
       return false;
     }
@@ -277,11 +276,11 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
     // If requests to show, sets the drawable visible. If requests to hide, the visibility is
     // controlled by the animation listener attached to hide animation.
     boolean changed = !visible || super.setVisible(visible, DEFAULT_DRAWABLE_RESTART);
-    animationDesired &=
+    animate &=
         visible
             ? animationBehavior.isShowAnimationEnabled()
             : animationBehavior.isHideAnimationEnabled();
-    if (!animationDesired) {
+    if (!animate) {
       // This triggers onAnimationStart() callbacks for showing and onAnimationEnd() callbacks for
       // hiding. It also fast-forwards the animator properties to the end state.
       animatorInAction.end();
@@ -410,14 +409,14 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
   }
 
   @VisibleForTesting
-  public void setMockShowAnimationRunning(
+  void setMockShowAnimationRunning(
       boolean running, @FloatRange(from = 0.0, to = 1.0) float fraction) {
     mockShowAnimationRunning = running;
     mockGrowFraction = fraction;
   }
 
   @VisibleForTesting
-  public void setMockHideAnimationRunning(
+  void setMockHideAnimationRunning(
       boolean running, @FloatRange(from = 0.0, to = 1.0) float fraction) {
     mockHideAnimationRunning = running;
     mockGrowFraction = fraction;

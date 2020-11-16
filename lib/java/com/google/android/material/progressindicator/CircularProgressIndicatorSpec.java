@@ -31,10 +31,10 @@ import com.google.android.material.progressindicator.CircularProgressIndicator.I
 
 /**
  * This class contains the parameters for drawing a circular type progress indicator. The parameters
- * reflect the attributes defined in {@link R.styleable.BaseProgressIndicator} and {@link
- * R.styleable.CircularProgressIndicator}.
+ * reflect the attributes defined in {@link R.styleable#BaseProgressIndicator} and {@link
+ * R.styleable#CircularProgressIndicator}.
  */
-public class CircularProgressIndicatorSpec implements AnimatedVisibilityChangeBehavior {
+public final class CircularProgressIndicatorSpec implements AnimatedVisibilityChangeBehavior {
 
   private final BaseProgressIndicatorSpec baseSpec;
 
@@ -111,7 +111,7 @@ public class CircularProgressIndicatorSpec implements AnimatedVisibilityChangeBe
     a.recycle();
   }
 
-  protected void validateSpec() {
+  void validateSpec() {
     if (indicatorRadius < baseSpec.indicatorSize / 2) {
       // Throws an exception if circularRadius is less than half of the indicatorSize, which will
       // result in a part of the inner side of the indicator overshoots the center, and the visual

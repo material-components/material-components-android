@@ -48,14 +48,14 @@ import java.lang.annotation.RetentionPolicy;
  *   <li>{@code indicatorDirectionCircular}: the rotation direction of the spinner or indicator.
  * </ul>
  */
-public class CircularProgressIndicator extends BaseProgressIndicator {
+public final class CircularProgressIndicator extends BaseProgressIndicator {
   public static final int DEF_STYLE_RES =
       R.style.Widget_MaterialComponents_CircularProgressIndicator;
 
   public static final int INDICATOR_DIRECTION_CLOCKWISE = 0;
   public static final int INDICATOR_DIRECTION_COUNTERCLOCKWISE = 1;
 
-  protected final CircularProgressIndicatorSpec spec;
+  final CircularProgressIndicatorSpec spec;
 
   // **************** Constructors ****************
 
@@ -83,16 +83,8 @@ public class CircularProgressIndicator extends BaseProgressIndicator {
   // ******************** Initialization **********************
 
   private void initializeDrawables() {
-    AnimatedVisibilityChangeBehavior behavior = spec;
-    setIndeterminateDrawable(
-        new IndeterminateDrawable(
-            getContext(),
-            behavior,
-            new CircularDrawingDelegate(spec),
-            new CircularIndeterminateAnimatorDelegate(spec)));
-    setProgressDrawable(
-        new DeterminateDrawable(
-            getContext(), baseSpec, behavior, new CircularDrawingDelegate(spec)));
+    setIndeterminateDrawable(IndeterminateDrawable.createCircularDrawable(getContext(), spec));
+    setProgressDrawable(DeterminateDrawable.createCircularDrawable(getContext(), spec));
   }
 
   // **************** Getters and setters ****************
@@ -145,7 +137,7 @@ public class CircularProgressIndicator extends BaseProgressIndicator {
    *     com.google.android.material.progressindicator.R.stylable#CircularProgressIndicator_indicatorRadius
    */
   @Px
-  public int getIndicatorrRadius() {
+  public int getIndicatorRadius() {
     return spec.indicatorRadius;
   }
 
@@ -153,7 +145,7 @@ public class CircularProgressIndicator extends BaseProgressIndicator {
    * Sets the radius of this progress indicator.
    *
    * @param indicatorRadius The new radius in pixels.
-   * @see #getIndicatorrRadius()
+   * @see #getIndicatorRadius()
    * @attr ref
    *     com.google.android.material.progressindicator.R.stylable#CircularProgressIndicator_indicatorRadius
    * @throws IllegalArgumentException if new indicator radius is less than half of the indicator

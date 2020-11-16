@@ -29,10 +29,10 @@ import com.google.android.material.progressindicator.LinearProgressIndicator.Ind
 
 /**
  * This class contains the parameters for drawing a linear type progress indicator. The parameters
- * reflect the attributes defined in {@link R.styleable.BaseProgressIndicator} and {@link
- * R.styleable.LinearProgressIndicator}.
+ * reflect the attributes defined in {@link R.styleable#BaseProgressIndicator} and {@link
+ * R.styleable#LinearProgressIndicator}.
  */
-public class LinearProgressIndicatorSpec implements AnimatedVisibilityChangeBehavior {
+public final class LinearProgressIndicatorSpec implements AnimatedVisibilityChangeBehavior {
 
   private final BaseProgressIndicatorSpec baseSpec;
 
@@ -42,7 +42,7 @@ public class LinearProgressIndicatorSpec implements AnimatedVisibilityChangeBeha
   /** The direction in which the indicator will swipe or grow to. */
   @IndicatorDirection public int indicatorDirection;
 
-  protected boolean drawHorizontallyInverse;
+  boolean drawHorizontallyInverse;
 
   /**
    * Instantiates LinearProgressIndicator.
@@ -98,7 +98,7 @@ public class LinearProgressIndicatorSpec implements AnimatedVisibilityChangeBeha
     a.recycle();
   }
 
-  protected void validateSpec() {
+  void validateSpec() {
     if (indeterminateAnimationType
         == LinearProgressIndicator.INDETERMINATE_ANIMATION_TYPE_SEAMLESS) {
       if (baseSpec.indicatorCornerRadius > 0) {

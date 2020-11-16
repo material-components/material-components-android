@@ -25,8 +25,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.internal.ViewUtils;
-import com.google.android.material.progressindicator.CircularDrawingDelegate;
-import com.google.android.material.progressindicator.CircularIndeterminateAnimatorDelegate;
 import com.google.android.material.progressindicator.CircularProgressIndicatorSpec;
 import com.google.android.material.progressindicator.IndeterminateDrawable;
 import com.google.android.material.switchmaterial.SwitchMaterial;
@@ -55,11 +53,7 @@ public class ProgressIndicatorStandaloneDemoFragment extends DemoFragment {
     spec.indicatorInset = 0; // No inset.
     spec.indicatorRadius = (int) ViewUtils.dpToPx(getContext(), 10); // Circular radius is 10 dp.
     IndeterminateDrawable progressIndicatorDrawable =
-        new IndeterminateDrawable(
-            getContext(),
-            /*animatedVisibilityChangeBehavior=*/ spec,
-            new CircularDrawingDelegate(spec),
-            new CircularIndeterminateAnimatorDelegate(spec));
+        IndeterminateDrawable.createCircularDrawable(getContext(), spec);
 
     Chip chip = view.findViewById(R.id.cat_progress_indicator_chip);
     chip.setChipIcon(progressIndicatorDrawable);

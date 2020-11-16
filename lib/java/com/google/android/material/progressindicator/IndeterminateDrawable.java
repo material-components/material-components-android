@@ -24,10 +24,7 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.annotation.NonNull;
 
-/**
- * This class draws the graphics for indeterminate modes by applying different {@link
- * DrawingDelegate} and {@link IndeterminateAnimatorDelegate} for different indicator types.
- */
+/** This class draws the graphics for indeterminate mode. */
 public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityChange {
 
   // Drawing delegate object.
@@ -35,7 +32,7 @@ public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityC
   // Animator delegate object.
   private IndeterminateAnimatorDelegate<AnimatorSet> animatorDelegate;
 
-  public IndeterminateDrawable(
+  IndeterminateDrawable(
       @NonNull Context context,
       @NonNull AnimatedVisibilityChangeBehavior animatedVisibilityChangeBehavior,
       @NonNull DrawingDelegate drawingDelegate,
@@ -44,6 +41,29 @@ public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityC
 
     setDrawingDelegate(drawingDelegate);
     setAnimatorDelegate(animatorDelegate);
+  }
+
+  @NonNull
+  public static IndeterminateDrawable createLinearDrawable(
+      @NonNull Context context, @NonNull LinearProgressIndicatorSpec spec) {
+    return new IndeterminateDrawable(
+        context,
+        /*animatedVisibilityChangeBehavior=*/ spec,
+        new LinearDrawingDelegate(spec),
+        spec.indeterminateAnimationType
+                == LinearProgressIndicator.INDETERMINATE_ANIMATION_TYPE_SEAMLESS
+            ? new LinearIndeterminateSeamlessAnimatorDelegate(spec)
+            : new LinearIndeterminateSpacingAnimatorDelegate(context, spec));
+  }
+
+  @NonNull
+  public static IndeterminateDrawable createCircularDrawable(
+      @NonNull Context context, @NonNull CircularProgressIndicatorSpec spec) {
+    return new IndeterminateDrawable(
+        context,
+        /*animatedVisibilityChangeBehavior=*/ spec,
+        new CircularDrawingDelegate(spec),
+        new CircularIndeterminateAnimatorDelegate(spec));
   }
 
   // ******************* Overridden methods *******************
@@ -56,13 +76,13 @@ public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityC
    *
    * @param visible Whether to make the drawable visible.
    * @param restart Whether to force starting the animation from the beginning.
-   * @param animationDesired Whether to change the visibility with animation.
+   * @param animate Whether to change the visibility with animation.
    * @return {@code true}, if the visibility changes or will change after the animation; {@code
    *     false}, otherwise.
    */
   @Override
-  protected boolean setVisibleInternal(boolean visible, boolean restart, boolean animationDesired) {
-    boolean changed = super.setVisibleInternal(visible, restart, animationDesired);
+  boolean setVisibleInternal(boolean visible, boolean restart, boolean animate) {
+    boolean changed = super.setVisibleInternal(visible, restart, animate);
 
     // Unless it's showing or hiding, cancels and resets main animator.
     if (!isRunning()) {
@@ -73,7 +93,7 @@ public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityC
     float systemAnimatorDurationScale =
         animatorDurationScaleProvider.getSystemAnimatorDurationScale(context.getContentResolver());
     if (visible
-        && (animationDesired
+        && (animate
             || (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP && systemAnimatorDurationScale > 0))) {
       animatorDelegate.startAnimator();
     }
@@ -125,12 +145,11 @@ public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityC
   // ******************* Setter and getter *******************
 
   @NonNull
-  public IndeterminateAnimatorDelegate<AnimatorSet> getAnimatorDelegate() {
+  IndeterminateAnimatorDelegate<AnimatorSet> getAnimatorDelegate() {
     return animatorDelegate;
   }
 
-  public void setAnimatorDelegate(
-      @NonNull IndeterminateAnimatorDelegate<AnimatorSet> animatorDelegate) {
+  void setAnimatorDelegate(@NonNull IndeterminateAnimatorDelegate<AnimatorSet> animatorDelegate) {
     this.animatorDelegate = animatorDelegate;
     animatorDelegate.registerDrawable(this);
 
@@ -149,11 +168,11 @@ public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityC
   }
 
   @NonNull
-  public DrawingDelegate getDrawingDelegate() {
+  DrawingDelegate getDrawingDelegate() {
     return drawingDelegate;
   }
 
-  public void setDrawingDelegate(@NonNull DrawingDelegate drawingDelegate) {
+  void setDrawingDelegate(@NonNull DrawingDelegate drawingDelegate) {
     this.drawingDelegate = drawingDelegate;
     drawingDelegate.registerDrawable(this);
   }

@@ -26,7 +26,7 @@ import androidx.annotation.NonNull;
 import com.google.android.material.color.MaterialColors;
 
 /** A delegate class to help draw the graphics for {@link CircularProgressIndicator}. */
-public final class CircularDrawingDelegate extends DrawingDelegate {
+final class CircularDrawingDelegate extends DrawingDelegate {
 
   private final CircularProgressIndicatorSpec spec;
   private final BaseProgressIndicatorSpec baseSpec;
@@ -68,6 +68,8 @@ public final class CircularDrawingDelegate extends DrawingDelegate {
   public void adjustCanvas(
       @NonNull Canvas canvas,
       @FloatRange(from = 0.0, to = 1.0) float indicatorSizeFraction) {
+    spec.validateSpec();
+
     int outerRadiusWithInset =
         spec.indicatorRadius + baseSpec.indicatorSize / 2 + spec.indicatorInset;
     canvas.translate(outerRadiusWithInset, outerRadiusWithInset);
