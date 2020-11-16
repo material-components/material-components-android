@@ -23,7 +23,13 @@ import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 
 /** A delegate abstract class for drawing the graphics in different drawable classes. */
-abstract class DrawingDelegate {
+abstract class DrawingDelegate<S extends BaseProgressIndicatorSpec> {
+
+  S spec;
+
+  public DrawingDelegate(S spec) {
+    this.spec = spec;
+  }
 
   protected DrawableWithAnimatedVisibilityChange drawable;
 
@@ -77,5 +83,11 @@ abstract class DrawingDelegate {
 
   protected void registerDrawable(@NonNull DrawableWithAnimatedVisibilityChange drawable) {
     this.drawable = drawable;
+  }
+
+  void validateSpecAndAdjustCanvas(
+      @NonNull Canvas canvas, @FloatRange(from = 0.0, to = 1.0) float indicatorSizeFraction) {
+    spec.validateSpec();
+    adjustCanvas(canvas, indicatorSizeFraction);
   }
 }

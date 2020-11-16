@@ -28,10 +28,7 @@ import androidx.annotation.NonNull;
 import com.google.android.material.color.MaterialColors;
 
 /** A delegate class to help draw the graphics for {@link LinearProgressIndicator}. */
-final class LinearDrawingDelegate extends DrawingDelegate {
-
-  private final LinearProgressIndicatorSpec spec;
-  private final BaseProgressIndicatorSpec baseSpec;
+final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicatorSpec> {
 
   // The length (horizontal) of the track in px.
   private float trackLength = 300f;
@@ -40,8 +37,7 @@ final class LinearDrawingDelegate extends DrawingDelegate {
 
   /** Instantiates LinearDrawingDelegate with the current spec. */
   public LinearDrawingDelegate(@NonNull LinearProgressIndicatorSpec spec) {
-    this.spec = spec;
-    baseSpec = spec.getBaseSpec();
+    super(spec);
   }
 
   @Override
@@ -51,7 +47,7 @@ final class LinearDrawingDelegate extends DrawingDelegate {
 
   @Override
   public int getPreferredHeight() {
-    return baseSpec.indicatorSize;
+    return spec.indicatorSize;
   }
 
   /**
@@ -66,32 +62,29 @@ final class LinearDrawingDelegate extends DrawingDelegate {
   public void adjustCanvas(
       @NonNull Canvas canvas,
       @FloatRange(from = 0.0, to = 1.0) float indicatorSizeFraction) {
-    spec.validateSpec();
-
     // Gets clip bounds from canvas.
     Rect clipBounds = canvas.getClipBounds();
     trackLength = clipBounds.width();
-    float trackSize = baseSpec.indicatorSize;
+    float trackSize = spec.indicatorSize;
 
     // Positions canvas to center of the clip bounds.
     canvas.translate(
         clipBounds.width() / 2f,
-        clipBounds.height() / 2f + max(0f, (clipBounds.height() - baseSpec.indicatorSize) / 2f));
+        clipBounds.height() / 2f + max(0f, (clipBounds.height() - spec.indicatorSize) / 2f));
 
     // Flips canvas horizontally if need to draw right to left.
     if (spec.drawHorizontallyInverse) {
       canvas.scale(-1f, 1f);
     }
     // Flips canvas vertically if need to anchor to the bottom edge.
-    if ((drawable.isShowing()
-            && baseSpec.showAnimationBehavior == LinearProgressIndicator.SHOW_OUTWARD)
+    if ((drawable.isShowing() && spec.showAnimationBehavior == LinearProgressIndicator.SHOW_OUTWARD)
         || (drawable.isHiding()
-            && baseSpec.hideAnimationBehavior == LinearProgressIndicator.HIDE_INWARD)) {
+            && spec.hideAnimationBehavior == LinearProgressIndicator.HIDE_INWARD)) {
       canvas.scale(1f, -1f);
     }
     // Offsets canvas vertically while showing or hiding.
     if (drawable.isShowing() || drawable.isHiding()) {
-      canvas.translate(0f, baseSpec.indicatorSize * (indicatorSizeFraction - 1) / 2f);
+      canvas.translate(0f, spec.indicatorSize * (indicatorSizeFraction - 1) / 2f);
     }
 
     // Clips all drawing to the track area, so it doesn't draw outside of its bounds (which can
@@ -99,8 +92,8 @@ final class LinearDrawingDelegate extends DrawingDelegate {
     canvas.clipRect(-trackLength / 2, -trackSize / 2, trackLength / 2, trackSize / 2);
 
     // These are set for the drawing the indicator and track.
-    displayedIndicatorSize = baseSpec.indicatorSize * indicatorSizeFraction;
-    displayedCornerRadius = baseSpec.indicatorCornerRadius * indicatorSizeFraction;
+    displayedIndicatorSize = spec.indicatorSize * indicatorSizeFraction;
+    displayedCornerRadius = spec.indicatorCornerRadius * indicatorSizeFraction;
   }
 
   /**
@@ -181,8 +174,7 @@ final class LinearDrawingDelegate extends DrawingDelegate {
    */
   @Override
   void fillTrack(@NonNull Canvas canvas, @NonNull Paint paint) {
-    int trackColor =
-        MaterialColors.compositeARGBWithAlpha(baseSpec.trackColor, drawable.getAlpha());
+    int trackColor = MaterialColors.compositeARGBWithAlpha(spec.trackColor, drawable.getAlpha());
     float adjustedStartX = -trackLength / 2 + displayedCornerRadius;
     float adjustedEndX = -adjustedStartX;
 

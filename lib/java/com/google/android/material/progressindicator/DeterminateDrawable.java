@@ -26,16 +26,15 @@ import androidx.dynamicanimation.animation.SpringForce;
 import com.google.android.material.color.MaterialColors;
 
 /** This class draws the graphics for determinate mode. */
-public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityChange {
+public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
+    extends DrawableWithAnimatedVisibilityChange {
   // Constants for drawing progress.
   private static final int MAX_DRAWABLE_LEVEL = 10000;
   // The constant for spring force stiffness.
   private static final float SPRING_FORCE_STIFFNESS = SpringForce.STIFFNESS_VERY_LOW;
 
-  // Base spec of this progress indicator.
-  private final BaseProgressIndicatorSpec baseSpec;
   // Drawing delegate object.
-  private DrawingDelegate drawingDelegate;
+  private DrawingDelegate<S> drawingDelegate;
 
   // Animation.
   private final SpringForce springForce;
@@ -47,12 +46,10 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
 
   DeterminateDrawable(
       @NonNull Context context,
-      @NonNull BaseProgressIndicatorSpec spec,
-      @NonNull AnimatedVisibilityChangeBehavior animatedVisibilityChangeBehavior,
-      @NonNull DrawingDelegate drawingDelegate) {
-    super(context, /*animatedVisibilityChangeBehavior=*/ animatedVisibilityChangeBehavior);
+      @NonNull BaseProgressIndicatorSpec baseSpec,
+      @NonNull DrawingDelegate<S> drawingDelegate) {
+    super(context, baseSpec);
 
-    this.baseSpec = spec;
     setDrawingDelegate(drawingDelegate);
 
     springForce = new SpringForce();
@@ -66,24 +63,31 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
     setGrowFraction(1f);
   }
 
+  /**
+   * Creates an instance of {@link DeterminateDrawable} for {@link LinearProgressIndicator} with
+   * {@link LinearProgressIndicatorSpec}.
+   *
+   * @param context The current context.
+   * @param spec The spec for the linear indicator.
+   */
   @NonNull
-  public static DeterminateDrawable createLinearDrawable(
+  public static DeterminateDrawable<LinearProgressIndicatorSpec> createLinearDrawable(
       @NonNull Context context, @NonNull LinearProgressIndicatorSpec spec) {
-    return new DeterminateDrawable(
-        context,
-        spec.getBaseSpec(),
-        /*animatedVisibilityChangeBehavior=*/ spec,
-        new LinearDrawingDelegate(spec));
+    return new DeterminateDrawable<>(context, /*baseSpec=*/ spec, new LinearDrawingDelegate(spec));
   }
 
+  /**
+   * Creates an instance of {@link DeterminateDrawable} for {@link CircularProgressIndicator} with
+   * {@link CircularProgressIndicatorSpec}.
+   *
+   * @param context The current context.
+   * @param spec The spec for the circular indicator.
+   */
   @NonNull
-  public static DeterminateDrawable createCircularDrawable(
+  public static DeterminateDrawable<CircularProgressIndicatorSpec> createCircularDrawable(
       @NonNull Context context, @NonNull CircularProgressIndicatorSpec spec) {
-    return new DeterminateDrawable(
-        context,
-        spec.getBaseSpec(),
-        /*animatedVisibilityChangeBehavior=*/ spec,
-        new CircularDrawingDelegate(spec));
+    return new DeterminateDrawable<>(
+        context, /*baseSpec=*/ spec, new CircularDrawingDelegate(spec));
   }
 
   // ******************* Overridden methods *******************
@@ -180,7 +184,7 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
     }
 
     canvas.save();
-    drawingDelegate.adjustCanvas(canvas, getGrowFraction());
+    drawingDelegate.validateSpecAndAdjustCanvas(canvas, getGrowFraction());
 
     // Draws the track.
     drawingDelegate.fillTrack(canvas, paint);
@@ -203,11 +207,11 @@ public final class DeterminateDrawable extends DrawableWithAnimatedVisibilityCha
   }
 
   @NonNull
-  DrawingDelegate getDrawingDelegate() {
+  DrawingDelegate<S> getDrawingDelegate() {
     return drawingDelegate;
   }
 
-  void setDrawingDelegate(@NonNull DrawingDelegate drawingDelegate) {
+  void setDrawingDelegate(@NonNull DrawingDelegate<S> drawingDelegate) {
     this.drawingDelegate = drawingDelegate;
     drawingDelegate.registerDrawable(this);
   }

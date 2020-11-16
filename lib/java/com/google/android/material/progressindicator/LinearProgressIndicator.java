@@ -49,7 +49,8 @@ import java.lang.annotation.RetentionPolicy;
  *   <li>{@code indicatorDirectionLinear}: the sweeping direction of the indicator.
  * </ul>
  */
-public final class LinearProgressIndicator extends BaseProgressIndicator {
+public final class LinearProgressIndicator
+    extends BaseProgressIndicator<LinearProgressIndicatorSpec> {
   public static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_LinearProgressIndicator;
 
   public static final int INDETERMINATE_ANIMATION_TYPE_SEAMLESS = 0;
@@ -59,8 +60,6 @@ public final class LinearProgressIndicator extends BaseProgressIndicator {
   public static final int INDICATOR_DIRECTION_RIGHT_TO_LEFT = 1;
   public static final int INDICATOR_DIRECTION_START_TO_END = 2;
   public static final int INDICATOR_DIRECTION_END_TO_START = 3;
-
-  final LinearProgressIndicatorSpec spec;
 
   // **************** Constructors ****************
 
@@ -76,13 +75,14 @@ public final class LinearProgressIndicator extends BaseProgressIndicator {
       @NonNull Context context, @Nullable AttributeSet attrs, @AttrRes final int defStyleAttr) {
     super(context, attrs, defStyleAttr);
 
-    // Ensures that we are using the correctly themed context rather than the context that was
-    // passed in.
-    context = getContext();
-
-    spec = new LinearProgressIndicatorSpec(context, attrs, baseSpec);
-
     initializeDrawables();
+  }
+
+  // **************** Inherited functions ****************
+
+  @Override
+  LinearProgressIndicatorSpec createSpec(@NonNull Context context, @NonNull AttributeSet attrs) {
+    return new LinearProgressIndicatorSpec(context, attrs);
   }
 
   @Override
@@ -145,6 +145,7 @@ public final class LinearProgressIndicator extends BaseProgressIndicator {
   public void setIndicatorCornerRadius(int indicatorCornerRadius) {
     super.setIndicatorCornerRadius(indicatorCornerRadius);
     spec.validateSpec();
+    invalidate();
   }
 
   /**

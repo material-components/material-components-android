@@ -71,7 +71,7 @@ final class LinearIndeterminateSpacingAnimatorDelegate
     super(/*segmentCount=*/ 2);
 
     this.context = context;
-    baseSpec = spec.getBaseSpec();
+    baseSpec = spec;
   }
 
   // ******************* Animation control *******************

@@ -25,30 +25,38 @@ import android.os.Build.VERSION_CODES;
 import androidx.annotation.NonNull;
 
 /** This class draws the graphics for indeterminate mode. */
-public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityChange {
+public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
+    extends DrawableWithAnimatedVisibilityChange {
 
   // Drawing delegate object.
-  private DrawingDelegate drawingDelegate;
+  private DrawingDelegate<S> drawingDelegate;
   // Animator delegate object.
   private IndeterminateAnimatorDelegate<AnimatorSet> animatorDelegate;
 
   IndeterminateDrawable(
       @NonNull Context context,
-      @NonNull AnimatedVisibilityChangeBehavior animatedVisibilityChangeBehavior,
-      @NonNull DrawingDelegate drawingDelegate,
+      @NonNull BaseProgressIndicatorSpec baseSpec,
+      @NonNull DrawingDelegate<S> drawingDelegate,
       @NonNull IndeterminateAnimatorDelegate<AnimatorSet> animatorDelegate) {
-    super(context, /*animatedVisibilityChangeBehavior=*/ animatedVisibilityChangeBehavior);
+    super(context, baseSpec);
 
     setDrawingDelegate(drawingDelegate);
     setAnimatorDelegate(animatorDelegate);
   }
 
+  /**
+   * Creates an instance of {@link IndeterminateDrawable} for {@link LinearProgressIndicator} with
+   * {@link LinearProgressIndicatorSpec}.
+   *
+   * @param context The current context.
+   * @param spec The spec for the linear indicator.
+   */
   @NonNull
-  public static IndeterminateDrawable createLinearDrawable(
+  public static IndeterminateDrawable<LinearProgressIndicatorSpec> createLinearDrawable(
       @NonNull Context context, @NonNull LinearProgressIndicatorSpec spec) {
-    return new IndeterminateDrawable(
+    return new IndeterminateDrawable<>(
         context,
-        /*animatedVisibilityChangeBehavior=*/ spec,
+        /*baseSpec=*/ spec,
         new LinearDrawingDelegate(spec),
         spec.indeterminateAnimationType
                 == LinearProgressIndicator.INDETERMINATE_ANIMATION_TYPE_SEAMLESS
@@ -56,12 +64,19 @@ public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityC
             : new LinearIndeterminateSpacingAnimatorDelegate(context, spec));
   }
 
+  /**
+   * Creates an instance of {@link IndeterminateDrawable} for {@link CircularProgressIndicator} with
+   * {@link CircularProgressIndicatorSpec}.
+   *
+   * @param context The current context.
+   * @param spec The spec for the circular indicator.
+   */
   @NonNull
-  public static IndeterminateDrawable createCircularDrawable(
+  public static IndeterminateDrawable<CircularProgressIndicatorSpec> createCircularDrawable(
       @NonNull Context context, @NonNull CircularProgressIndicatorSpec spec) {
-    return new IndeterminateDrawable(
+    return new IndeterminateDrawable<>(
         context,
-        /*animatedVisibilityChangeBehavior=*/ spec,
+        /*baseSpec=*/ spec,
         new CircularDrawingDelegate(spec),
         new CircularIndeterminateAnimatorDelegate(spec));
   }
@@ -124,7 +139,7 @@ public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityC
     }
 
     canvas.save();
-    drawingDelegate.adjustCanvas(canvas, getGrowFraction());
+    drawingDelegate.validateSpecAndAdjustCanvas(canvas, getGrowFraction());
 
     // Draws the track.
     drawingDelegate.fillTrack(canvas, paint);
@@ -168,11 +183,11 @@ public final class IndeterminateDrawable extends DrawableWithAnimatedVisibilityC
   }
 
   @NonNull
-  DrawingDelegate getDrawingDelegate() {
+  DrawingDelegate<S> getDrawingDelegate() {
     return drawingDelegate;
   }
 
-  void setDrawingDelegate(@NonNull DrawingDelegate drawingDelegate) {
+  void setDrawingDelegate(@NonNull DrawingDelegate<S> drawingDelegate) {
     this.drawingDelegate = drawingDelegate;
     drawingDelegate.registerDrawable(this);
   }

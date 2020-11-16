@@ -32,9 +32,7 @@ import com.google.android.material.progressindicator.LinearProgressIndicator.Ind
  * reflect the attributes defined in {@link R.styleable#BaseProgressIndicator} and {@link
  * R.styleable#LinearProgressIndicator}.
  */
-public final class LinearProgressIndicatorSpec implements AnimatedVisibilityChangeBehavior {
-
-  private final BaseProgressIndicatorSpec baseSpec;
+public final class LinearProgressIndicatorSpec extends BaseProgressIndicatorSpec {
 
   /** The type of animation of indeterminate mode. */
   @IndeterminateAnimationType public int indeterminateAnimationType;
@@ -45,30 +43,18 @@ public final class LinearProgressIndicatorSpec implements AnimatedVisibilityChan
   boolean drawHorizontallyInverse;
 
   /**
-   * Instantiates LinearProgressIndicator.
+   * Instantiates the spec for {@link LinearProgressIndicator}.
    *
    * <p>If attributes in {@link R.styleable#LinearProgressIndicator} are missing, the values in the
    * default style {@link R.style#Widget_MaterialComponents_LinearProgressIndicator} will be loaded.
-   * Attributes defined in {@link R.styleable#BaseProgressIndicator} will be loaded by {@link
-   * BaseProgressIndicatorSpec#BaseProgressIndicatorSpec(Context, AttributeSet, int)}.
-   *
-   * <p>If there's an existing {@link BaseProgressIndicatorSpec}, please use {@link
-   * #LinearProgressIndicatorSpec(Context, AttributeSet, BaseProgressIndicatorSpec)}.
+   * If attributes in {@link R.styleable#BaseProgressIndicator} are missing, the values in the
+   * default style {@link R.style#Widget_MaterialComponents_ProgressIndicator} will be loaded.
    *
    * @param context Current themed context.
    * @param attrs Component's attributes set.
    */
   public LinearProgressIndicatorSpec(@NonNull Context context, @Nullable AttributeSet attrs) {
-    this.baseSpec =
-        new BaseProgressIndicatorSpec(context, attrs, R.attr.linearProgressIndicatorStyle);
-    loadSpecFromAttributes(context, attrs);
-  }
-
-  public LinearProgressIndicatorSpec(
-      @NonNull Context context,
-      @Nullable AttributeSet attrs,
-      @NonNull BaseProgressIndicatorSpec baseSpec) {
-    this.baseSpec = baseSpec;
+    super(context, attrs, R.attr.linearProgressIndicatorStyle);
     loadSpecFromAttributes(context, attrs);
   }
 
@@ -98,36 +84,22 @@ public final class LinearProgressIndicatorSpec implements AnimatedVisibilityChan
     a.recycle();
   }
 
+  @Override
   void validateSpec() {
     if (indeterminateAnimationType
         == LinearProgressIndicator.INDETERMINATE_ANIMATION_TYPE_SEAMLESS) {
-      if (baseSpec.indicatorCornerRadius > 0) {
+      if (indicatorCornerRadius > 0) {
         // Throws an exception if trying to use cornered indicator with seamless indeterminate
         // animation type.
         throw new IllegalArgumentException(
             "Rounded corners are not supported in seamless indeterminate animation.");
       }
-      if (baseSpec.indicatorColors.length < 3) {
+      if (indicatorColors.length < 3) {
         // Throws an exception if trying to set seamless indeterminate animation with less than 3
         // indicator colors.
         throw new IllegalArgumentException(
             "Seamless indeterminate animation must be used with 3 or more indicator colors.");
       }
     }
-  }
-
-  @Override
-  public boolean isShowAnimationEnabled() {
-    return baseSpec.isShowAnimationEnabled();
-  }
-
-  @Override
-  public boolean isHideAnimationEnabled() {
-    return baseSpec.isHideAnimationEnabled();
-  }
-
-  @NonNull
-  public BaseProgressIndicatorSpec getBaseSpec() {
-    return baseSpec;
   }
 }

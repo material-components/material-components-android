@@ -37,9 +37,9 @@ import com.google.android.material.progressindicator.BaseProgressIndicator.ShowA
 
 /**
  * This class contains the parameters shared between linear type and circular type. The parameters
- * reflect the attribtues defined in {@link R.styleable#BaseProgressIndicator}.
+ * reflect the attributes defined in {@link R.styleable#BaseProgressIndicator}.
  */
-public class BaseProgressIndicatorSpec implements AnimatedVisibilityChangeBehavior {
+public abstract class BaseProgressIndicatorSpec {
   /** The size of the progress track and indicator. */
   @Px public int indicatorSize;
 
@@ -52,8 +52,7 @@ public class BaseProgressIndicatorSpec implements AnimatedVisibilityChangeBehavi
 
   /**
    * The color array of the progress stroke. In determinate mode and single color indeterminate
-   * mode, only the first item will be used. This field combines the attribute indicatorColor and
-   * indicatorColors defined in the XML.
+   * mode, only the first item will be used.
    */
   @NonNull public int[] indicatorColors = new int[0];
 
@@ -69,8 +68,6 @@ public class BaseProgressIndicatorSpec implements AnimatedVisibilityChangeBehavi
   /** The animation behavior to hide the indicator and track. */
   @HideAnimationBehavior public int hideAnimationBehavior;
 
-  protected BaseProgressIndicatorSpec(){}
-
   /**
    * Instantiates BaseProgressIndicatorSpec.
    *
@@ -82,10 +79,10 @@ public class BaseProgressIndicatorSpec implements AnimatedVisibilityChangeBehavi
    */
   protected BaseProgressIndicatorSpec(
       @NonNull Context context, @Nullable AttributeSet attrs, @AttrRes final int defStyleAttr) {
-    loadSpecFromAttributes(context, attrs, defStyleAttr);
+    loadBaseSpecFromAttributes(context, attrs, defStyleAttr);
   }
 
-  private void loadSpecFromAttributes(
+  private void loadBaseSpecFromAttributes(
       @NonNull Context context, @Nullable AttributeSet attrs, @AttrRes final int defStyleAttr) {
     int defaultIndicatorSize =
         context.getResources().getDimensionPixelSize(R.dimen.mtrl_progress_indicator_size);
@@ -179,13 +176,13 @@ public class BaseProgressIndicatorSpec implements AnimatedVisibilityChangeBehavi
     trackColor = MaterialColors.compositeARGBWithAlpha(trackColor, trackAlpha);
   }
 
-  @Override
   public boolean isShowAnimationEnabled() {
     return showAnimationBehavior != BaseProgressIndicator.SHOW_NONE;
   }
 
-  @Override
   public boolean isHideAnimationEnabled() {
     return hideAnimationBehavior != BaseProgressIndicator.HIDE_NONE;
   }
+
+  abstract void validateSpec();
 }

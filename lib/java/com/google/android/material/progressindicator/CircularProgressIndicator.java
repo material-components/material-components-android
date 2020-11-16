@@ -48,14 +48,13 @@ import java.lang.annotation.RetentionPolicy;
  *   <li>{@code indicatorDirectionCircular}: the rotation direction of the spinner or indicator.
  * </ul>
  */
-public final class CircularProgressIndicator extends BaseProgressIndicator {
+public final class CircularProgressIndicator
+    extends BaseProgressIndicator<CircularProgressIndicatorSpec> {
   public static final int DEF_STYLE_RES =
       R.style.Widget_MaterialComponents_CircularProgressIndicator;
 
   public static final int INDICATOR_DIRECTION_CLOCKWISE = 0;
   public static final int INDICATOR_DIRECTION_COUNTERCLOCKWISE = 1;
-
-  final CircularProgressIndicatorSpec spec;
 
   // **************** Constructors ****************
 
@@ -71,13 +70,14 @@ public final class CircularProgressIndicator extends BaseProgressIndicator {
       @NonNull Context context, @Nullable AttributeSet attrs, @AttrRes final int defStyleAttr) {
     super(context, attrs, defStyleAttr);
 
-    // Ensures that we are using the correctly themed context rather than the context that was
-    // passed in.
-    context = getContext();
-
-    spec = new CircularProgressIndicatorSpec(context, attrs, baseSpec);
-
     initializeDrawables();
+  }
+
+  // **************** Inherited functions ****************
+
+  @Override
+  CircularProgressIndicatorSpec createSpec(@NonNull Context context, @NonNull AttributeSet attrs) {
+    return new CircularProgressIndicatorSpec(context, attrs);
   }
 
   // ******************** Initialization **********************

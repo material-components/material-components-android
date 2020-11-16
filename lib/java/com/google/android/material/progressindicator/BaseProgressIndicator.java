@@ -49,7 +49,7 @@ import java.util.Arrays;
 
 /**
  * This class contains the common functions shared in different types of progress indicators. This
- * is an abstract class which is meant for directly use.
+ * is an abstract class which is not meant for directly use.
  *
  * <p>With the default style {@link R.style#Widget_MaterialComponents_ProgressIndicator}, 4dp
  * indicator/track size and no animation is used for visibility change. Without customization,
@@ -66,7 +66,8 @@ import java.util.Arrays;
  *   <li>{@code hideAnimationBehavior}: the animation direction to hide the indicator and track.
  * </ul>
  */
-public class BaseProgressIndicator extends ProgressBar {
+public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
+    extends ProgressBar {
   // Constants for show/hide animation behaviors.
   public static final int SHOW_NONE = 0;
   public static final int SHOW_OUTWARD = 1;
@@ -83,10 +84,10 @@ public class BaseProgressIndicator extends ProgressBar {
    * The maximum time, in milliseconds, that the requested hide action is allowed to wait once
    * {@link #show()} is called.
    */
-  private static final int MAX_HIDE_DELAY = 1000;
+  static final int MAX_HIDE_DELAY = 1000;
 
   /** A place to hold all the attributes. */
-  final BaseProgressIndicatorSpec baseSpec;
+  S spec;
 
   /** A temp place to hold new progress while switching from indeterminate to determinate mode. */
   private int storedProgress;
@@ -117,7 +118,7 @@ public class BaseProgressIndicator extends ProgressBar {
 
   private long lastShowStartTime = -1L;
 
-  private AnimatorDurationScaleProvider animatorDurationScaleProvider;
+  AnimatorDurationScaleProvider animatorDurationScaleProvider;
 
   // The flag to mark if an indeterminate mode switching is requested.
   private boolean isIndeterminateModeChangeRequested = false;
@@ -127,14 +128,6 @@ public class BaseProgressIndicator extends ProgressBar {
 
   // **************** Constructors ****************
 
-  protected BaseProgressIndicator(@NonNull Context context) {
-    this(context, null);
-  }
-
-  protected BaseProgressIndicator(@NonNull Context context, @Nullable AttributeSet attrs) {
-    this(context, attrs, 0);
-  }
-
   protected BaseProgressIndicator(
       @NonNull Context context, @Nullable AttributeSet attrs, @AttrRes final int defStyleAttr) {
     super(wrap(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
@@ -143,7 +136,7 @@ public class BaseProgressIndicator extends ProgressBar {
     // passed in.
     context = getContext();
 
-    baseSpec = new BaseProgressIndicatorSpec(context, attrs, defStyleAttr);
+    spec = createSpec(context, attrs);
 
     // Loads additional attributes for view level.
     TypedArray a =
@@ -161,6 +154,8 @@ public class BaseProgressIndicator extends ProgressBar {
     animatorDurationScaleProvider = new AnimatorDurationScaleProvider();
     isParentDoneInitializing = true;
   }
+
+  abstract S createSpec(@NonNull Context context, @NonNull AttributeSet attrs);
 
   // ******************** Initialization **********************
 
@@ -329,7 +324,7 @@ public class BaseProgressIndicator extends ProgressBar {
   @Override
   protected synchronized void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    DrawingDelegate drawingDelegate = getCurrentDrawingDelegate();
+    DrawingDelegate<S> drawingDelegate = getCurrentDrawingDelegate();
     if (drawingDelegate == null) {
       return;
     }
@@ -363,7 +358,7 @@ public class BaseProgressIndicator extends ProgressBar {
 
   /** Returns the drawing delegate associated with the current drawable. */
   @Nullable
-  private DrawingDelegate getCurrentDrawingDelegate() {
+  private DrawingDelegate<S> getCurrentDrawingDelegate() {
     if (isIndeterminate()) {
       return getIndeterminateDrawable() == null
           ? null
@@ -386,7 +381,7 @@ public class BaseProgressIndicator extends ProgressBar {
       return;
     }
     if (drawable instanceof DeterminateDrawable) {
-      DeterminateDrawable determinateDrawable = (DeterminateDrawable) drawable;
+      DeterminateDrawable<S> determinateDrawable = (DeterminateDrawable<S>) drawable;
       determinateDrawable.hideNow();
       super.setProgressDrawable(determinateDrawable);
       // Every time ProgressBar sets progress drawable, it refreshes the drawable's level with
@@ -411,7 +406,7 @@ public class BaseProgressIndicator extends ProgressBar {
       return;
     }
     if (drawable instanceof IndeterminateDrawable) {
-      ((IndeterminateDrawable) drawable).hideNow();
+      ((DrawableWithAnimatedVisibilityChange) drawable).hideNow();
       super.setIndeterminateDrawable(drawable);
     } else {
       throw new IllegalArgumentException(
@@ -421,14 +416,14 @@ public class BaseProgressIndicator extends ProgressBar {
 
   @Nullable
   @Override
-  public DeterminateDrawable getProgressDrawable() {
-    return (DeterminateDrawable) super.getProgressDrawable();
+  public DeterminateDrawable<S> getProgressDrawable() {
+    return (DeterminateDrawable<S>) super.getProgressDrawable();
   }
 
   @Nullable
   @Override
-  public IndeterminateDrawable getIndeterminateDrawable() {
-    return (IndeterminateDrawable) super.getIndeterminateDrawable();
+  public IndeterminateDrawable<S> getIndeterminateDrawable() {
+    return (IndeterminateDrawable<S>) super.getIndeterminateDrawable();
   }
 
   /**
@@ -537,7 +532,7 @@ public class BaseProgressIndicator extends ProgressBar {
    */
   @Px
   public int getIndicatorSize() {
-    return baseSpec.indicatorSize;
+    return spec.indicatorSize;
   }
 
   /**
@@ -549,8 +544,8 @@ public class BaseProgressIndicator extends ProgressBar {
    *     com.google.android.material.progressindicator.R.stylable#BaseProgressIndicator_indicatorSize
    */
   public void setIndicatorSize(@Px int indicatorSize) {
-    if (baseSpec.indicatorSize != indicatorSize) {
-      baseSpec.indicatorSize = indicatorSize;
+    if (spec.indicatorSize != indicatorSize) {
+      spec.indicatorSize = indicatorSize;
       requestLayout();
     }
   }
@@ -564,7 +559,7 @@ public class BaseProgressIndicator extends ProgressBar {
    */
   @NonNull
   public int[] getIndicatorColor() {
-    return baseSpec.indicatorColors;
+    return spec.indicatorColors;
   }
 
   /**
@@ -581,7 +576,7 @@ public class BaseProgressIndicator extends ProgressBar {
       indicatorColors = new int[] {MaterialColors.getColor(getContext(), R.attr.colorPrimary, -1)};
     }
     if (!Arrays.equals(getIndicatorColor(), indicatorColors)) {
-      baseSpec.indicatorColors = indicatorColors;
+      spec.indicatorColors = indicatorColors;
       getIndeterminateDrawable().getAnimatorDelegate().invalidateSpecValues();
       invalidate();
     }
@@ -596,7 +591,7 @@ public class BaseProgressIndicator extends ProgressBar {
    */
   @ColorInt
   public int getTrackColor() {
-    return baseSpec.trackColor;
+    return spec.trackColor;
   }
 
   /**
@@ -608,8 +603,8 @@ public class BaseProgressIndicator extends ProgressBar {
    *     com.google.android.material.progressindicator.R.stylable#BaseProgressIndicator_trackColor
    */
   public void setTrackColor(@ColorInt int trackColor) {
-    if (baseSpec.trackColor != trackColor) {
-      baseSpec.trackColor = trackColor;
+    if (spec.trackColor != trackColor) {
+      spec.trackColor = trackColor;
       invalidate();
     }
   }
@@ -623,7 +618,7 @@ public class BaseProgressIndicator extends ProgressBar {
    */
   @Px
   public int getIndicatorCornerRadius() {
-    return baseSpec.indicatorCornerRadius;
+    return spec.indicatorCornerRadius;
   }
 
   /**
@@ -635,8 +630,8 @@ public class BaseProgressIndicator extends ProgressBar {
    *     com.google.android.material.progressindicator.R.stylable#BaseProgressIndicator_indicatorCornerRadius
    */
   public void setIndicatorCornerRadius(@Px int indicatorCornerRadius) {
-    if (baseSpec.indicatorCornerRadius != indicatorCornerRadius) {
-      baseSpec.indicatorCornerRadius = min(indicatorCornerRadius, baseSpec.indicatorSize / 2);
+    if (spec.indicatorCornerRadius != indicatorCornerRadius) {
+      spec.indicatorCornerRadius = min(indicatorCornerRadius, spec.indicatorSize / 2);
     }
   }
 
@@ -649,7 +644,7 @@ public class BaseProgressIndicator extends ProgressBar {
    */
   @ShowAnimationBehavior
   public int getShowAnimationBehavior() {
-    return baseSpec.showAnimationBehavior;
+    return spec.showAnimationBehavior;
   }
 
   /**
@@ -661,7 +656,7 @@ public class BaseProgressIndicator extends ProgressBar {
    *     com.google.android.material.progressindicator.R.stylable#BaseProgressIndicator_showAnimationBehavior
    */
   public void setShowAnimationBehavior(@ShowAnimationBehavior int showAnimationBehavior) {
-    baseSpec.showAnimationBehavior = showAnimationBehavior;
+    spec.showAnimationBehavior = showAnimationBehavior;
     invalidate();
   }
 
@@ -674,7 +669,7 @@ public class BaseProgressIndicator extends ProgressBar {
    */
   @HideAnimationBehavior
   public int getHideAnimationBehavior() {
-    return baseSpec.hideAnimationBehavior;
+    return spec.hideAnimationBehavior;
   }
 
   /**
@@ -686,7 +681,7 @@ public class BaseProgressIndicator extends ProgressBar {
    *     com.google.android.material.progressindicator.R.stylable#BaseProgressIndicator_hideAnimationBehavior
    */
   public void setHideAnimationBehavior(@HideAnimationBehavior int hideAnimationBehavior) {
-    baseSpec.hideAnimationBehavior = hideAnimationBehavior;
+    spec.hideAnimationBehavior = hideAnimationBehavior;
     invalidate();
   }
 
@@ -743,6 +738,20 @@ public class BaseProgressIndicator extends ProgressBar {
         getProgressDrawable().jumpToCurrentState();
       }
     }
+  }
+
+  /**
+   * Sets the visibility which the component will be after hide animation finishes.
+   *
+   * @param visibility New component's visibility after the hide animation finishes.
+   */
+  public void setVisibilityAfterHide(int visibility) {
+    if (visibility != View.VISIBLE && visibility != View.INVISIBLE && visibility != View.GONE) {
+      throw new IllegalArgumentException(
+          "The component's visibility must be one of VISIBLE, INVISIBLE, and GONE defined in"
+              + " View.");
+    }
+    visibilityAfterHide = visibility;
   }
 
   @VisibleForTesting

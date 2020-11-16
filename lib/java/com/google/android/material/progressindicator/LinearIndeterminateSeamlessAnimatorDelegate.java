@@ -55,7 +55,7 @@ final class LinearIndeterminateSeamlessAnimatorDelegate
   public LinearIndeterminateSeamlessAnimatorDelegate(@NonNull LinearProgressIndicatorSpec spec) {
     super(/*segmentCount=*/ 3);
 
-    baseSpec = spec.getBaseSpec();
+    baseSpec = spec;
   }
 
   // ******************* Animation control *******************

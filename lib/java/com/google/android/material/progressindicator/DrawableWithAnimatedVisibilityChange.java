@@ -50,7 +50,7 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
   // The current context this drawable is running in.
   final Context context;
   // The animation behavior.
-  final AnimatedVisibilityChangeBehavior animationBehavior;
+  final BaseProgressIndicatorSpec baseSpec;
   // Utils class.
   AnimatorDurationScaleProvider animatorDurationScaleProvider;
 
@@ -80,10 +80,9 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
   // ******************* Constructor *******************
 
   DrawableWithAnimatedVisibilityChange(
-      @NonNull Context context,
-      @NonNull AnimatedVisibilityChangeBehavior animatedVisibilityChangeBehavior) {
+      @NonNull Context context, @NonNull BaseProgressIndicatorSpec baseSpec) {
     this.context = context;
-    this.animationBehavior = animatedVisibilityChangeBehavior;
+    this.baseSpec = baseSpec;
     animatorDurationScaleProvider = new AnimatorDurationScaleProvider();
 
     setAlpha(255);
@@ -276,10 +275,7 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
     // If requests to show, sets the drawable visible. If requests to hide, the visibility is
     // controlled by the animation listener attached to hide animation.
     boolean changed = !visible || super.setVisible(visible, DEFAULT_DRAWABLE_RESTART);
-    animate &=
-        visible
-            ? animationBehavior.isShowAnimationEnabled()
-            : animationBehavior.isHideAnimationEnabled();
+    animate &= visible ? baseSpec.isShowAnimationEnabled() : baseSpec.isHideAnimationEnabled();
     if (!animate) {
       // This triggers onAnimationStart() callbacks for showing and onAnimationEnd() callbacks for
       // hiding. It also fast-forwards the animator properties to the end state.
@@ -390,8 +386,7 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
 
   float getGrowFraction() {
     // If no show/hide animation is needed, the growFraction is always 1.
-    if (!animationBehavior.isShowAnimationEnabled()
-        && !animationBehavior.isHideAnimationEnabled()) {
+    if (!baseSpec.isShowAnimationEnabled() && !baseSpec.isHideAnimationEnabled()) {
       return 1f;
     }
     // If show/hide animation is mocked, return mocked value.

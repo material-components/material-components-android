@@ -70,7 +70,7 @@ final class CircularIndeterminateAnimatorDelegate
   public CircularIndeterminateAnimatorDelegate(@NonNull CircularProgressIndicatorSpec spec) {
     super(/*segmentCount=*/ 1);
 
-    baseSpec = spec.getBaseSpec();
+    baseSpec = spec;
   }
 
   @Override

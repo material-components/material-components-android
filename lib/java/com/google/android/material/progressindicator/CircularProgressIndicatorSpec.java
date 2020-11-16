@@ -34,9 +34,7 @@ import com.google.android.material.progressindicator.CircularProgressIndicator.I
  * reflect the attributes defined in {@link R.styleable#BaseProgressIndicator} and {@link
  * R.styleable#CircularProgressIndicator}.
  */
-public final class CircularProgressIndicatorSpec implements AnimatedVisibilityChangeBehavior {
-
-  private final BaseProgressIndicatorSpec baseSpec;
+public final class CircularProgressIndicatorSpec extends BaseProgressIndicatorSpec {
 
   /** The radius of the central line of the circular progress stroke. */
   @Px public int indicatorRadius;
@@ -48,30 +46,18 @@ public final class CircularProgressIndicatorSpec implements AnimatedVisibilityCh
   @IndicatorDirection public int indicatorDirection;
 
   /**
-   * Instantiates CircularProgressIndicatorSpec.
+   * Instantiates the spec for {@link CircularProgressIndicator}.
    *
    * <p>If attributes in {@link R.styleable#CircularProgressIndicator} are missing, the values in
    * the default style {@link R.style#Widget_MaterialComponents_CircularProgressIndicator} will be
-   * loaded. Attributes defined in {@link R.styleable#BaseProgressIndicator} will be loaded by
-   * {@link BaseProgressIndicatorSpec#BaseProgressIndicatorSpec(Context, AttributeSet, int)}.
-   *
-   * <p>If there's an existing {@link BaseProgressIndicatorSpec}, please use {@link
-   * #CircularProgressIndicatorSpec(Context, AttributeSet, BaseProgressIndicatorSpec)}.
+   * loaded. If attributes in {@link R.styleable#BaseProgressIndicator} are missing, the values in
+   * the default style {@link R.style#Widget_MaterialComponents_ProgressIndicator} will be loaded.
    *
    * @param context Current themed context.
    * @param attrs Component's attributes set.
    */
   public CircularProgressIndicatorSpec(@NonNull Context context, @Nullable AttributeSet attrs) {
-    this.baseSpec =
-        new BaseProgressIndicatorSpec(context, attrs, R.attr.circularProgressIndicatorStyle);
-    loadSpecFromAttributes(context, attrs);
-  }
-
-  public CircularProgressIndicatorSpec(
-      @NonNull Context context,
-      @Nullable AttributeSet attrs,
-      @NonNull BaseProgressIndicatorSpec baseSpec) {
-    this.baseSpec = baseSpec;
+    super(context, attrs, R.attr.circularProgressIndicatorStyle);
     loadSpecFromAttributes(context, attrs);
   }
 
@@ -111,29 +97,14 @@ public final class CircularProgressIndicatorSpec implements AnimatedVisibilityCh
     a.recycle();
   }
 
+  @Override
   void validateSpec() {
-    if (indicatorRadius < baseSpec.indicatorSize / 2) {
+    if (indicatorRadius < indicatorSize / 2) {
       // Throws an exception if circularRadius is less than half of the indicatorSize, which will
       // result in a part of the inner side of the indicator overshoots the center, and the visual
       // becomes undefined.
       throw new IllegalArgumentException(
           "The circularRadius cannot be less than half of the indicatorSize.");
     }
-  }
-
-  @Override
-  public boolean isShowAnimationEnabled() {
-    return baseSpec.isShowAnimationEnabled();
-  }
-
-  @Override
-  public boolean isHideAnimationEnabled() {
-    return baseSpec.isHideAnimationEnabled();
-  }
-
-  /** Returns the base spec included in this circular spec. */
-  @NonNull
-  public BaseProgressIndicatorSpec getBaseSpec() {
-    return baseSpec;
   }
 }
