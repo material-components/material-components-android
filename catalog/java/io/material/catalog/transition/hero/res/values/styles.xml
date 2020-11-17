@@ -23,4 +23,23 @@
     <item name="android:statusBarColor" tools:targetApi="21">?attr/colorControlNormal</item>
     <item name="android:windowLightStatusBar" tools:targetApi="m">?attr/isLightTheme</item>
   </style>
+
+  <style name="ThemeOverlay.Catalog.Music.Player" parent="">
+    <item name="colorPrimary">@color/music_player_primary</item>
+  </style>
+
+  <style name="Widget.Catalog.Music.Player.Button" parent="Widget.MaterialComponents.Button.TextButton.Icon">
+    <item name="android:insetTop">0dp</item>
+    <item name="android:insetBottom">0dp</item>
+    <item name="android:paddingLeft">16dp</item>
+    <item name="android:paddingRight">16dp</item>
+    <item name="iconPadding">0dp</item>
+    <item name="iconTint">?attr/colorPrimary</item>
+    <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Catalog.Music.Player.Button</item>
+  </style>
+
+  <style name="ShapeAppearanceOverlay.Catalog.Music.Player.Button" parent="">
+    <item name="cornerSize">50%</item>
+  </style>
+
 </resources>

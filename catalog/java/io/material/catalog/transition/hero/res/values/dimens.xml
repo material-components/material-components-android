@@ -16,4 +16,7 @@
 -->
 <resources>
   <dimen name="album_list_padding_vertical">8dp</dimen>
+  <dimen name="music_player_button_size">56dp</dimen>
+  <dimen name="music_player_control_button_margin">36dp</dimen>
+  <dimen name="music_player_volume_button_margin">48dp</dimen>
 </resources>

@@ -18,6 +18,7 @@ package io.material.catalog.transition.hero;
 
 import io.material.catalog.R;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.ListAdapter;
@@ -31,6 +32,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.transition.TransitionManager;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.transition.MaterialArcMotion;
@@ -46,6 +48,8 @@ public class TransitionMusicAlbumDemoFragment extends DaggerFragment {
 
   public static final String TAG = "TransitionMusicAlbumDemoFragment";
   private static final String ALBUM_ID_KEY = "album_id_key";
+
+  private ViewGroup container;
 
   @Inject ContainerTransformConfiguration containerTransformConfiguration;
 
@@ -74,7 +78,7 @@ public class TransitionMusicAlbumDemoFragment extends DaggerFragment {
 
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle bundle) {
-    View container = view.findViewById(R.id.container);
+    container = view.findViewById(R.id.container);
     Toolbar toolbar = view.findViewById(R.id.toolbar);
     AppBarLayout appBarLayout = view.findViewById(R.id.app_bar_layout);
     FloatingActionButton fab = view.findViewById(R.id.fab);
@@ -82,6 +86,8 @@ public class TransitionMusicAlbumDemoFragment extends DaggerFragment {
     TextView albumTitle = view.findViewById(R.id.album_title);
     TextView albumArtist = view.findViewById(R.id.album_artist);
     RecyclerView songRecyclerView = view.findViewById(R.id.song_recycler_view);
+
+    View musicPlayerContainer = view.findViewById(R.id.music_player_container);
 
     long albumId = getArguments().getLong(ALBUM_ID_KEY, 0L);
     Album album = MusicData.getAlbumById(albumId);
@@ -96,7 +102,9 @@ public class TransitionMusicAlbumDemoFragment extends DaggerFragment {
               (float) Math.abs(verticalOffset) / (float) appBarLayout1.getTotalScrollRange();
           if (verticalOffsetPercentage > 0.2F && fab.isOrWillBeShown()) {
             fab.hide();
-          } else if (verticalOffsetPercentage <= 0.2F && fab.isOrWillBeHidden()) {
+          } else if (verticalOffsetPercentage <= 0.2F
+              && fab.isOrWillBeHidden()
+              && musicPlayerContainer.getVisibility() != View.VISIBLE) {
             fab.show();
           }
         });
@@ -115,6 +123,38 @@ public class TransitionMusicAlbumDemoFragment extends DaggerFragment {
     TrackAdapter adapter = new TrackAdapter();
     songRecyclerView.setAdapter(adapter);
     adapter.submitList(album.tracks);
+
+    // Set up music player transitions
+    MaterialContainerTransform musicPlayerEnterTransform =
+        createMusicPlayerTransform(fab, musicPlayerContainer);
+
+    fab.setOnClickListener(
+        v -> {
+          TransitionManager.beginDelayedTransition(container, musicPlayerEnterTransform);
+          fab.setVisibility(View.GONE);
+          musicPlayerContainer.setVisibility(View.VISIBLE);
+        });
+
+    MaterialContainerTransform musicPlayerExitTransform =
+        createMusicPlayerTransform(musicPlayerContainer, fab);
+
+    musicPlayerContainer.setOnClickListener(
+        v -> {
+          TransitionManager.beginDelayedTransition(container, musicPlayerExitTransform);
+          musicPlayerContainer.setVisibility(View.GONE);
+          fab.setVisibility(View.VISIBLE);
+        });
+  }
+
+  private static MaterialContainerTransform createMusicPlayerTransform(
+      View startView, View endView) {
+    MaterialContainerTransform musicPlayerTransform = new MaterialContainerTransform();
+    musicPlayerTransform.setPathMotion(new MaterialArcMotion());
+    musicPlayerTransform.setScrimColor(Color.TRANSPARENT);
+    musicPlayerTransform.setStartView(startView);
+    musicPlayerTransform.setEndView(endView);
+    musicPlayerTransform.addTarget(endView);
+    return musicPlayerTransform;
   }
 
   private void setUpTransitions() {

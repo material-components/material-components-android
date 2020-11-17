@@ -18,6 +18,15 @@
 <resources>
   <string name="cat_album_cover_content_description">Album cover</string>
 
+  <string name="cat_music_player_progress_indicator_content_description">Music progress indicator</string>
+  <string name="cat_music_player_pause_button_content_description">Pause button</string>
+  <string name="cat_music_player_play_button_content_description">Play button</string>
+  <string name="cat_music_player_rewind_button_content_description">Rewind button</string>
+  <string name="cat_music_player_fast_forward_button_content_description">Fast forward button</string>
+  <string name="cat_music_player_volume_down_button_content_description">Volume down button</string>
+  <string name="cat_music_player_volume_slider_content_description">Volume slider</string>
+  <string name="cat_music_player_volume_up_button_content_description">Volume up button</string>
+
   <string name="cat_album_menu_favorite_title">Favorite</string>
   <string name="cat_album_menu_share_title">Share</string>
 
