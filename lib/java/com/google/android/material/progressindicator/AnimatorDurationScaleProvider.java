@@ -15,17 +15,23 @@
  */
 package com.google.android.material.progressindicator;
 
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+
 import android.content.ContentResolver;
 import android.os.Build.VERSION;
 import android.provider.Settings.Global;
 import android.provider.Settings.System;
 import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
 import androidx.annotation.VisibleForTesting;
 
 /**
  * This is a utility class to get system animator duration scale from the system settings. It's used
  * as instances so that some requirements for testing can be met by mocking.
+ *
+ * @hide
  */
+@RestrictTo(LIBRARY_GROUP)
 public class AnimatorDurationScaleProvider {
 
   /** The emulated system animator duration scale setting for SDK_INT < 16. */

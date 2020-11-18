@@ -754,6 +754,8 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
     visibilityAfterHide = visibility;
   }
 
+  /** @hide */
+  @RestrictTo(Scope.LIBRARY_GROUP)
   @VisibleForTesting
   public void setAnimatorDurationScaleProvider(
       @NonNull AnimatorDurationScaleProvider animatorDurationScaleProvider) {
