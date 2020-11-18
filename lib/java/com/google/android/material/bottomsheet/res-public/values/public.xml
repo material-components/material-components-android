@@ -18,6 +18,7 @@
   <public name="bottom_sheet_behavior" type="string"/>
   <public name="Theme.MaterialComponents.BottomSheetDialog" type="style"/>
   <public name="Theme.MaterialComponents.Light.BottomSheetDialog" type="style"/>
+  <public name="ThemeOverlay.MaterialComponents.BottomSheetDialog" type="style"/>
   <public name="Theme.Design.BottomSheetDialog" type="style"/>
   <public name="bottomSheetDialogTheme" type="attr"/>
   <public name="bottomSheetStyle" type="attr"/>

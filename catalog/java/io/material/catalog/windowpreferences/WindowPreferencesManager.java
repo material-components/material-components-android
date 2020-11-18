@@ -20,6 +20,7 @@ import static android.graphics.Color.TRANSPARENT;
 import static android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
 import static android.view.View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
 import static android.view.View.SYSTEM_UI_FLAG_VISIBLE;
+import static com.google.android.material.color.MaterialColors.isColorLight;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -30,7 +31,6 @@ import android.os.Build.VERSION_CODES;
 import androidx.core.graphics.ColorUtils;
 import android.view.View;
 import android.view.Window;
-import androidx.annotation.ColorInt;
 import androidx.annotation.RequiresApi;
 import com.google.android.material.color.MaterialColors;
 
@@ -121,10 +121,6 @@ public class WindowPreferencesManager {
       return TRANSPARENT;
     }
     return MaterialColors.getColor(context, android.R.attr.navigationBarColor, Color.BLACK);
-  }
-
-  private static boolean isColorLight(@ColorInt int color) {
-    return color != TRANSPARENT && ColorUtils.calculateLuminance(color) > 0.5;
   }
 
   private SharedPreferences getSharedPreferences() {

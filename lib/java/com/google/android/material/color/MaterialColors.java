@@ -15,6 +15,8 @@
  */
 package com.google.android.material.color;
 
+import static android.graphics.Color.TRANSPARENT;
+
 import android.content.Context;
 import android.graphics.Color;
 import androidx.core.graphics.ColorUtils;
@@ -152,5 +154,10 @@ public class MaterialColors {
       @ColorInt int originalARGB, @IntRange(from = 0, to = 255) int alpha) {
     alpha = Color.alpha(originalARGB) * alpha / 255;
     return ColorUtils.setAlphaComponent(originalARGB, alpha);
+  }
+
+  /** Determines if a color should be considered light or dark. */
+  public static boolean isColorLight(@ColorInt int color) {
+    return color != TRANSPARENT && ColorUtils.calculateLuminance(color) > 0.5;
   }
 }

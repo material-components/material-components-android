@@ -69,6 +69,13 @@ bottomSheetBehavior.setPeekHeight(300);
 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 ```
 
+## Handling Insets
+
+`BottomSheetBehavior` can be made to automatically handle insets (such as for
+edge to edge) by specifying any of `paddingBottomSystemWindowInsets`,
+`paddingLeftSystemWindowInsets`, or `paddingRightSystemWindowInsets` to true on
+the view.
+
 ## Related Concepts
 
 Using [BottomSheetDialogFragment](BottomSheetDialogFragment.md) provides a
