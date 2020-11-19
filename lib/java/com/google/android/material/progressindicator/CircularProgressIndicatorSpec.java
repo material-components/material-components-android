@@ -36,8 +36,8 @@ import com.google.android.material.progressindicator.CircularProgressIndicator.I
  */
 public final class CircularProgressIndicatorSpec extends BaseProgressIndicatorSpec {
 
-  /** The radius of the central line of the circular progress stroke. */
-  @Px public int indicatorRadius;
+  /** The size (outer diameter) of the spinner. */
+  @Px public int indicatorSize;
 
   /** The extra space from the outer edge of the indicator to the edge of the canvas. */
   @Px public int indicatorInset;
@@ -67,8 +67,8 @@ public final class CircularProgressIndicatorSpec extends BaseProgressIndicatorSp
   }
 
   private void loadAttributes(@NonNull Context context, @Nullable AttributeSet attrs) {
-    int defaultIndicatorRadius =
-        context.getResources().getDimensionPixelSize(R.dimen.mtrl_progress_circular_radius);
+    int defaultIndicatorSize =
+        context.getResources().getDimensionPixelSize(R.dimen.mtrl_progress_circular_size);
     int defaultIndicatorInset =
         context.getResources().getDimensionPixelSize(R.dimen.mtrl_progress_circular_inset);
     TypedArray a =
@@ -78,12 +78,9 @@ public final class CircularProgressIndicatorSpec extends BaseProgressIndicatorSp
             R.styleable.CircularProgressIndicator,
             R.attr.circularProgressIndicatorStyle,
             CircularProgressIndicator.DEF_STYLE_RES);
-    indicatorRadius =
+    indicatorSize =
         getDimensionPixelSize(
-            context,
-            a,
-            R.styleable.CircularProgressIndicator_indicatorRadius,
-            defaultIndicatorRadius);
+            context, a, R.styleable.CircularProgressIndicator_indicatorSize, defaultIndicatorSize);
     indicatorInset =
         getDimensionPixelSize(
             context,
@@ -99,12 +96,16 @@ public final class CircularProgressIndicatorSpec extends BaseProgressIndicatorSp
 
   @Override
   void validateSpec() {
-    if (indicatorRadius < indicatorSize / 2) {
-      // Throws an exception if circularRadius is less than half of the indicatorSize, which will
+    if (indicatorSize < trackThickness * 2) {
+      // Throws an exception if indicatorSize is less than twice of the trackThickness, which will
       // result in a part of the inner side of the indicator overshoots the center, and the visual
       // becomes undefined.
       throw new IllegalArgumentException(
-          "The circularRadius cannot be less than half of the indicatorSize.");
+          "The indicatorSize ("
+              + indicatorSize
+              + " px) cannot be less than twice of the trackThickness ("
+              + trackThickness
+              + " px).");
     }
   }
 }

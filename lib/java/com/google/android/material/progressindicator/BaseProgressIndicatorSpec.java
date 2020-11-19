@@ -40,15 +40,15 @@ import com.google.android.material.progressindicator.BaseProgressIndicator.ShowA
  * reflect the attributes defined in {@link R.styleable#BaseProgressIndicator}.
  */
 public abstract class BaseProgressIndicatorSpec {
-  /** The size of the progress track and indicator. */
-  @Px public int indicatorSize;
+  /** The thickness of the progress track and indicator. */
+  @Px public int trackThickness;
 
   /**
    * When this is greater than 0, the corners of both the track and the indicator will be rounded
    * with this radius. If the radius is greater than half of the track width, an {@code
    * IllegalArgumentException} will be thrown during initialization.
    */
-  @Px public int indicatorCornerRadius;
+  @Px public int trackCornerRadius;
 
   /**
    * The color array of the progress stroke. In determinate mode and single color indeterminate
@@ -85,7 +85,7 @@ public abstract class BaseProgressIndicatorSpec {
   private void loadBaseSpecFromAttributes(
       @NonNull Context context, @Nullable AttributeSet attrs, @AttrRes final int defStyleAttr) {
     int defaultIndicatorSize =
-        context.getResources().getDimensionPixelSize(R.dimen.mtrl_progress_indicator_size);
+        context.getResources().getDimensionPixelSize(R.dimen.mtrl_progress_track_thickness);
     TypedArray a =
         ThemeEnforcement.obtainStyledAttributes(
             context,
@@ -93,14 +93,14 @@ public abstract class BaseProgressIndicatorSpec {
             R.styleable.BaseProgressIndicator,
             defStyleAttr,
             BaseProgressIndicator.DEF_STYLE_RES);
-    indicatorSize =
+    trackThickness =
         getDimensionPixelSize(
-            context, a, R.styleable.BaseProgressIndicator_indicatorSize, defaultIndicatorSize);
-    indicatorCornerRadius =
+            context, a, R.styleable.BaseProgressIndicator_trackThickness, defaultIndicatorSize);
+    trackCornerRadius =
         min(
             getDimensionPixelSize(
-                context, a, R.styleable.BaseProgressIndicator_indicatorCornerRadius, 0),
-            indicatorSize / 2);
+                context, a, R.styleable.BaseProgressIndicator_trackCornerRadius, 0),
+            trackThickness / 2);
     showAnimationBehavior =
         a.getInt(
             R.styleable.BaseProgressIndicator_showAnimationBehavior,

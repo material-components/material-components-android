@@ -51,8 +51,8 @@ public class ProgressIndicatorStandaloneDemoFragment extends DemoFragment {
     CircularProgressIndicatorSpec spec =
         new CircularProgressIndicatorSpec(getContext(), /*attrs=*/ null);
     spec.indicatorInset = 0; // No inset.
-    spec.indicatorRadius = (int) ViewUtils.dpToPx(getContext(), 10); // Circular radius is 10 dp.
-    IndeterminateDrawable progressIndicatorDrawable =
+    spec.indicatorSize = (int) ViewUtils.dpToPx(getContext(), 22); // Circular radius is 10 dp.
+    IndeterminateDrawable<CircularProgressIndicatorSpec> progressIndicatorDrawable =
         IndeterminateDrawable.createCircularDrawable(getContext(), spec);
 
     Chip chip = view.findViewById(R.id.cat_progress_indicator_chip);

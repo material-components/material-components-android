@@ -37,7 +37,7 @@
       android:layout_height="wrap_content"
       android:indeterminate="true"
       app:indicatorDirectionLinear="endToStart"
-      app:indicatorCornerRadius="@dimen/mtrl_progress_indicator_full_rounded_corner_radius"/>
+      app:trackCornerRadius="@dimen/mtrl_progress_indicator_full_rounded_corner_radius"/>
 
   <TextView
       android:layout_width="wrap_content"
@@ -103,7 +103,7 @@
           android:indeterminate="true"
           style="@style/Widget.MaterialComponents.CircularProgressIndicator"
           app:indicatorDirectionCircular="counterclockwise"
-          app:indicatorCornerRadius="@dimen/mtrl_progress_indicator_full_rounded_corner_radius"/>
+          app:trackCornerRadius="@dimen/mtrl_progress_indicator_full_rounded_corner_radius"/>
     </LinearLayout>
 
     <LinearLayout

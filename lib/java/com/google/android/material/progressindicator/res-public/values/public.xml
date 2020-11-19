@@ -19,8 +19,8 @@
   <public name="circularProgressIndicatorStyle" type="attr"/>
 
   <!-- Base attributes -->
-  <public name="indicatorSize" type="attr" />
-  <public name="indicatorCornerRadius" type="attr" />
+  <public name="trackThickness" type="attr" />
+  <public name="trackCornerRadius" type="attr" />
   <public name="indicatorColor" type="attr" />
   <public name="showAnimationBehavior" type="attr"/>
   <public name="hideAnimationBehavior" type="attr"/>
@@ -30,7 +30,7 @@
   <public name="indeterminateAnimationType" type="attr"/>
   <public name="indicatorDirectionLinear" type="attr"/>
   <!-- CircularProgressIndicator attributes -->
-  <public name="indicatorRadius" type="attr"/>
+  <public name="indicatorSize" type="attr"/>
   <public name="indicatorInset" type="attr"/>
   <public name="indicatorDirectionCircular" type="attr"/>
 

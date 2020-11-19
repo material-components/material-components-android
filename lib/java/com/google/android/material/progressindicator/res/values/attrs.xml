@@ -19,14 +19,14 @@
   <declare-styleable name="BaseProgressIndicator">
     <!-- Whether the progress indicator should be indeterminate mode. -->
     <attr name="android:indeterminate"/>
-    <!-- The size of the progress track and indicator. -->
-    <attr name="indicatorSize" format="dimension"/>
+    <!-- The thickness of the progress track and indicator. -->
+    <attr name="trackThickness" format="dimension"/>
     <!--
       The radius of each corner of both the indicator and the track. A radius
       larger than half of the track width will throw exceptions during
       initialization.
     -->
-    <attr name="indicatorCornerRadius" format="dimension"/>
+    <attr name="trackCornerRadius" format="dimension"/>
     <!--
       The indicator color (or colors in an array). By default, it uses theme
       primary color.
@@ -122,11 +122,11 @@
 
   <declare-styleable name="CircularProgressIndicator">
     <!--
-      Defines the radius of the circular progress indicator. This uses the
-      central line of the indicator as reference. Ignored for linear progress
-      indicator.
+      Defines the size (outer diameter) of the circular progress indicator. This
+      uses the central line of the indicator as reference. Ignored for linear
+      progress indicator.
     -->
-    <attr name="indicatorRadius" format="dimension"/>
+    <attr name="indicatorSize" format="dimension"/>
     <!--
       The extra space from the outer edge of the indicator to the edge of the
       canvas. Ignored for linear progress indicator.

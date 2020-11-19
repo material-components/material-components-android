@@ -88,9 +88,9 @@ public final class LinearProgressIndicatorSpec extends BaseProgressIndicatorSpec
   void validateSpec() {
     if (indeterminateAnimationType
         == LinearProgressIndicator.INDETERMINATE_ANIMATION_TYPE_SEAMLESS) {
-      if (indicatorCornerRadius > 0) {
-        // Throws an exception if trying to use cornered indicator with seamless indeterminate
-        // animation type.
+      if (trackCornerRadius > 0) {
+        // Throws an exception if trying to use the cornered indicator/track with seamless
+        // indeterminate animation type.
         throw new IllegalArgumentException(
             "Rounded corners are not supported in seamless indeterminate animation.");
       }

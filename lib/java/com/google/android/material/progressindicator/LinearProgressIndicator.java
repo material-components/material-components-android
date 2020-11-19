@@ -35,16 +35,16 @@ import java.lang.annotation.RetentionPolicy;
  * This class implements the linear type progress indicators.
  *
  * <p>With the default style {@link R.style#Widget_MaterialComponents_LinearProgressIndicator}, 4dp
- * indicator/track size is used without animation is used for visibility change. Without
+ * indicator/track thickness is used without animation is used for visibility change. Without
  * customization, primaryColor will be used as the indicator color; the track is the (first)
  * indicator color applying the disabledAlpha. The following attributes can be used to customize the
  * component's appearance:
  *
  * <ul>
- *   <li>{@code indicatorSize}: the stroke width of the indicator and track.
+ *   <li>{@code trackThickness}: the thickness of the indicator and track.
  *   <li>{@code indicatorColor}: the color of the indicator.
  *   <li>{@code trackColor}: the color of the track.
- *   <li>{@code indicatorCornerRadius}: the radius of the rounded corner of the indicator stroke.
+ *   <li>{@code trackCornerRadius}: the radius of the rounded corner of the indicator and track.
  *   <li>{@code indeterminateAnimationType}: the type of indeterminate animation.
  *   <li>{@code indicatorDirectionLinear}: the sweeping direction of the indicator.
  * </ul>
@@ -135,15 +135,15 @@ public final class LinearProgressIndicator
   }
 
   /**
-   * Sets the corner radius for progress indicator with rounded corners in pixels.
+   * Sets the radius of the rounded corner for the indicator and track in pixels.
    *
-   * @param indicatorCornerRadius The new corner radius in pixels.
-   * @throws IllegalArgumentException if indicatorCornerRadius is not zero, when
+   * @param trackCornerRadius The new corner radius in pixels.
+   * @throws IllegalArgumentException if trackCornerRadius is not zero, when
    *     indeterminateAnimationType is {@link #INDETERMINATE_ANIMATION_TYPE_SEAMLESS}.
    */
   @Override
-  public void setIndicatorCornerRadius(int indicatorCornerRadius) {
-    super.setIndicatorCornerRadius(indicatorCornerRadius);
+  public void setTrackCornerRadius(int trackCornerRadius) {
+    super.setTrackCornerRadius(trackCornerRadius);
     spec.validateSpec();
     invalidate();
   }
