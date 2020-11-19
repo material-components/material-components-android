@@ -48,8 +48,8 @@ LinearProgressIndicator indicator = new LinearProgressIndicator(getContext());
 ### Default style
 
 The default style `Widget.MaterialComponents.LinearProgressIndicator` will
-configure the indicator to draw a linear strip with the track width of 4dp. The
-indicator will swipe or grow from `start` to `end` regarding the layout
+configure the indicator to draw a linear strip with the track thickness of 4dp.
+The indicator will swipe or grow from `start` to `end` regarding the layout
 direction. No animation will be used while showing or hiding.
 
 ### Custom styling
@@ -69,8 +69,8 @@ regardless the number of indicator colors used.
 
 #### Size and layout
 
-`LinearProgressIndicator` can configure its height by adjusting `indicatorSize`.
-`indicatorSize` sets the width of the track/indicator; in the linear type case,
+`LinearProgressIndicator` can configure its height by adjusting `trackThickness`.
+`trackThickness` sets the width of the track/indicator; in the linear type case,
 it's the height of the strip.
 
 Note: The width of strip depends on the view and its layout.
@@ -104,11 +104,11 @@ By setting the `showAnimationBehavior` and `hideAnimationBehavior`, the indicato
 have different animation effects as follows:
 
 <table>
-  <tr><td colspan=2>showAnimationBehavior<td></tr>
+  <tr><td colspan=2>showAnimationBehavior</td></tr>
   <tr><td>none</td><td>Appear immediately</td></tr>
   <tr><td>upward</td><td>Expanding from the bottom edge</td></tr>
   <tr><td>downward</td><td>Expanding from the top edge</td></tr>
-  <tr><td colspan=2>hideAnimationBehavior<td></tr>
+  <tr><td colspan=2>hideAnimationBehavior</td></tr>
   <tr><td>none</td><td>Disappear immediately</td></tr>
   <tr><td>upward</td><td>Collapsing to the top edge</td></tr>
   <tr><td>downward</td><td>Collapsing to the bottom edge</td></tr>
@@ -155,10 +155,10 @@ CircularProgressIndicator indicator = new CircularProgressIndicator(getContext()
 
 The default style `Widget.MaterialComponents.CircularProgressIndicator` will
 configure the indicator to draw a circular (or partial) ring with the track
-width of 4dp. The radius is 18dp measured from the axial line (or the circular
-between the inner and outer edges). There is also 4dp inset added on all sides.
-The indicator will spin or grow clockwise regardless the layout direction. No
-animation will be used while showing or hiding.
+thickness of 4dp. The indicator size is 40dp measured as the outer edge. There
+is also 4dp inset added on all sides. The indicator will spin or grow clockwise
+regardless the layout direction. No animation will be used while showing or
+hiding.
 
 ### Custom styling
 
@@ -171,13 +171,13 @@ Same as `LinearProgressIndicator`.
 
 #### Size and layout
 
-`CircularProgressIndicator` can configure its size by adjusting `indicatorSize`,
-`indicatorRadius`, and `indicatorInset`. `indicatorSize` sets the width of the
-track/indicator. `indicatorRadius` sets the size of the ring by the radius
-measured from the axial line. `indicatorInset` gives an extra space between the
-outer edge to the drawable's bounds.
+`CircularProgressIndicator` can configure its size by adjusting
+`trackThickness`, `indicatorSize`, and `indicatorInset`. `trackThickness` sets
+the thickness of the track/indicator. `indicatorSize` sets the size of the ring
+by the diameter of the outer edge. `indicatorInset` gives an extra space between
+the outer edge to the drawable's bounds.
 
-Note: If half of the `indicatorSize` is greater than the `indicatorRadius`,
+Note: If the `trackThickness` is greater than the half of the `indicatorSize`,
 `IllegalArgumentException` will be thrown during initialization.
 
 #### Showing and hiding with animations
@@ -209,11 +209,11 @@ By setting the `showAnimationBehavior` and `hideAnimationBehavior`, the indicato
 can have different animation effects as follows:
 
 <table>
-  <tr><td colspan=2>showAnimationBehavior<td></tr>
+  <tr><td colspan=2>showAnimationBehavior</td></tr>
   <tr><td>none</td><td>Appear immediately</td></tr>
   <tr><td>inward</td><td>Expanding from the outer edge</td></tr>
   <tr><td>outward</td><td>Expanding from the inner edge</td></tr>
-  <tr><td colspan=2>hideAnimationBehavior<td></tr>
+  <tr><td colspan=2>hideAnimationBehavior</td></tr>
   <tr><td>none</td><td>Disappear immediately</td></tr>
   <tr><td>inward</td><td>Collapsing to the inner edge</td></tr>
   <tr><td>outward</td><td>Collapsing to the outer edge</td></tr>

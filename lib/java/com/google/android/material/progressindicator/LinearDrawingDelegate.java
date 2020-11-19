@@ -32,7 +32,7 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
 
   // The length (horizontal) of the track in px.
   private float trackLength = 300f;
-  private float displayedIndicatorSize;
+  private float displayedTrackThickness;
   private float displayedCornerRadius;
 
   /** Instantiates LinearDrawingDelegate with the current spec. */
@@ -47,7 +47,7 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
 
   @Override
   public int getPreferredHeight() {
-    return spec.indicatorSize;
+    return spec.trackThickness;
   }
 
   /**
@@ -55,22 +55,21 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
    * it's inverted. It flips the canvas vertically if outgoing grow mode is applied.
    *
    * @param canvas Canvas to draw.
-   * @param indicatorSizeFraction A fraction representing how much portion of the indicator size
-   * should be used in the drawing.
+   * @param trackThicknessFraction A fraction representing how much portion of the track thickness
+   *     should be used in the drawing.
    */
   @Override
   public void adjustCanvas(
-      @NonNull Canvas canvas,
-      @FloatRange(from = 0.0, to = 1.0) float indicatorSizeFraction) {
+      @NonNull Canvas canvas, @FloatRange(from = 0.0, to = 1.0) float trackThicknessFraction) {
     // Gets clip bounds from canvas.
     Rect clipBounds = canvas.getClipBounds();
     trackLength = clipBounds.width();
-    float trackSize = spec.indicatorSize;
+    float trackSize = spec.trackThickness;
 
     // Positions canvas to center of the clip bounds.
     canvas.translate(
         clipBounds.width() / 2f,
-        clipBounds.height() / 2f + max(0f, (clipBounds.height() - spec.indicatorSize) / 2f));
+        clipBounds.height() / 2f + max(0f, (clipBounds.height() - spec.trackThickness) / 2f));
 
     // Flips canvas horizontally if need to draw right to left.
     if (spec.drawHorizontallyInverse) {
@@ -84,7 +83,7 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
     }
     // Offsets canvas vertically while showing or hiding.
     if (drawable.isShowing() || drawable.isHiding()) {
-      canvas.translate(0f, spec.indicatorSize * (indicatorSizeFraction - 1) / 2f);
+      canvas.translate(0f, spec.trackThickness * (trackThicknessFraction - 1) / 2f);
     }
 
     // Clips all drawing to the track area, so it doesn't draw outside of its bounds (which can
@@ -92,8 +91,8 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
     canvas.clipRect(-trackLength / 2, -trackSize / 2, trackLength / 2, trackSize / 2);
 
     // These are set for the drawing the indicator and track.
-    displayedIndicatorSize = spec.indicatorSize * indicatorSizeFraction;
-    displayedCornerRadius = spec.indicatorCornerRadius * indicatorSizeFraction;
+    displayedTrackThickness = spec.trackThickness * trackThicknessFraction;
+    displayedCornerRadius = spec.trackCornerRadius * trackThicknessFraction;
   }
 
   /**
@@ -138,9 +137,9 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
     // Draws the rectangle as the indicator and the rounded corners.
     canvas.drawRect(
         adjustedStartX,
-        -displayedIndicatorSize / 2,
+        -displayedTrackThickness / 2,
         adjustedEndX,
-        displayedIndicatorSize / 2,
+        displayedTrackThickness / 2,
         paint);
     RectF cornerPatternRectBound =
         new RectF(
@@ -151,7 +150,7 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
     drawRoundedEnd(
         canvas,
         paint,
-        displayedIndicatorSize,
+        displayedTrackThickness,
         displayedCornerRadius,
         adjustedStartX,
         true,
@@ -159,7 +158,7 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
     drawRoundedEnd(
         canvas,
         paint,
-        displayedIndicatorSize,
+        displayedTrackThickness,
         displayedCornerRadius,
         adjustedEndX,
         false,
@@ -185,9 +184,9 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
 
     canvas.drawRect(
         adjustedStartX,
-        -displayedIndicatorSize / 2,
+        -displayedTrackThickness / 2,
         adjustedEndX,
-        displayedIndicatorSize / 2,
+        displayedTrackThickness / 2,
         paint);
     RectF cornerPatternRectBound =
         new RectF(
@@ -198,7 +197,7 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
     drawRoundedEnd(
         canvas,
         paint,
-        displayedIndicatorSize,
+        displayedTrackThickness,
         displayedCornerRadius,
         adjustedStartX,
         true,
@@ -206,7 +205,7 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
     drawRoundedEnd(
         canvas,
         paint,
-        displayedIndicatorSize,
+        displayedTrackThickness,
         displayedCornerRadius,
         adjustedEndX,
         false,

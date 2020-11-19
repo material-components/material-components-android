@@ -52,16 +52,16 @@ import java.util.Arrays;
  * is an abstract class which is not meant for directly use.
  *
  * <p>With the default style {@link R.style#Widget_MaterialComponents_ProgressIndicator}, 4dp
- * indicator/track size and no animation is used for visibility change. Without customization,
+ * indicator/track thickness and no animation is used for visibility change. Without customization,
  * primaryColor will be used as the indicator color; the indicator color applying disabledAlpha will
  * be used as the track color. The following attributes can be used to customize the progress
  * indicator's appearance:
  *
  * <ul>
- *   <li>{@code indicatorSize}: the stroke width of the indicator and track.
+ *   <li>{@code trackThickness}: the thickness of the indicator and track.
  *   <li>{@code indicatorColor}: the color of the indicator.
  *   <li>{@code trackColor}: the color of the track.
- *   <li>{@code indicatorCornerRadius}: the radius of the rounded corner of the indicator stroke.
+ *   <li>{@code trackCornerRadius}: the radius of the rounded corner of the indicator and track.
  *   <li>{@code showAnimationBehavior}: the animation direction to show the indicator and track.
  *   <li>{@code hideAnimationBehavior}: the animation direction to hide the indicator and track.
  * </ul>
@@ -524,28 +524,28 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
   }
 
   /**
-   * Returns the indicator size of this progress indicator in pixels.
+   * Returns the track thickness of this progress indicator in pixels.
    *
-   * @see #setIndicatorSize(int)
+   * @see #setTrackThickness(int)
    * @attr ref
-   *     com.google.android.material.progressindicator.R.stylable#BaseProgressIndicator_indicatorSize
+   *     com.google.android.material.progressindicator.R.stylable#BaseProgressIndicator_trackThickness
    */
   @Px
-  public int getIndicatorSize() {
-    return spec.indicatorSize;
+  public int getTrackThickness() {
+    return spec.trackThickness;
   }
 
   /**
-   * Sets the indicator size of this progress indicator.
+   * Sets the track thickness of this progress indicator.
    *
-   * @param indicatorSize The new indicator size in pixel.
-   * @see #getIndicatorSize()
+   * @param trackThickness The new indicator size in pixel.
+   * @see #getTrackThickness()
    * @attr ref
-   *     com.google.android.material.progressindicator.R.stylable#BaseProgressIndicator_indicatorSize
+   *     com.google.android.material.progressindicator.R.stylable#BaseProgressIndicator_trackThickness
    */
-  public void setIndicatorSize(@Px int indicatorSize) {
-    if (spec.indicatorSize != indicatorSize) {
-      spec.indicatorSize = indicatorSize;
+  public void setTrackThickness(@Px int trackThickness) {
+    if (spec.trackThickness != trackThickness) {
+      spec.trackThickness = trackThickness;
       requestLayout();
     }
   }
@@ -610,28 +610,28 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
   }
 
   /**
-   * Returns the corner radius for progress indicator with rounded corners in pixels.
+   * Returns the radius of the rounded corner for the indicator and track in pixels.
    *
-   * @see #setIndicatorCornerRadius(int)
+   * @see #setTrackCornerRadius(int)
    * @attr ref
-   *     com.google.android.material.progressindicator.R.stylable#BaseProgressIndicator_indicatorCornerRadius
+   *     com.google.android.material.progressindicator.R.stylable#BaseProgressIndicator_trackCornerRadius
    */
   @Px
-  public int getIndicatorCornerRadius() {
-    return spec.indicatorCornerRadius;
+  public int getTrackCornerRadius() {
+    return spec.trackCornerRadius;
   }
 
   /**
-   * Sets the corner radius for progress indicator with rounded corners in pixels.
+   * Sets the radius of the rounded corner for the indicator and track in pixels.
    *
-   * @param indicatorCornerRadius The new corner radius in pixels.
-   * @see #getIndicatorCornerRadius()
+   * @param trackCornerRadius The new corner radius in pixels.
+   * @see #getTrackCornerRadius()
    * @attr ref
-   *     com.google.android.material.progressindicator.R.stylable#BaseProgressIndicator_indicatorCornerRadius
+   *     com.google.android.material.progressindicator.R.stylable#BaseProgressIndicator_trackCornerRadius
    */
-  public void setIndicatorCornerRadius(@Px int indicatorCornerRadius) {
-    if (spec.indicatorCornerRadius != indicatorCornerRadius) {
-      spec.indicatorCornerRadius = min(indicatorCornerRadius, spec.indicatorSize / 2);
+  public void setTrackCornerRadius(@Px int trackCornerRadius) {
+    if (spec.trackCornerRadius != trackCornerRadius) {
+      spec.trackCornerRadius = min(trackCornerRadius, spec.trackThickness / 2);
     }
   }
 

@@ -16,7 +16,7 @@
 -->
 <resources>
   <style name="Widget.MaterialComponents.ProgressIndicator" parent="android:Widget">
-    <item name="indicatorSize">@dimen/mtrl_progress_indicator_size</item>
+    <item name="trackThickness">@dimen/mtrl_progress_track_thickness</item>
     <item name="android:indeterminateOnly">false</item>
   </style>
   <style name="Widget.MaterialComponents.LinearProgressIndicator" parent="Widget.MaterialComponents.ProgressIndicator">
@@ -24,7 +24,7 @@
     <item name="indicatorDirectionLinear">startToEnd</item>
   </style>
   <style name="Widget.MaterialComponents.CircularProgressIndicator" parent="Widget.MaterialComponents.ProgressIndicator">
-    <item name="indicatorRadius">@dimen/mtrl_progress_circular_radius</item>
+    <item name="indicatorSize">@dimen/mtrl_progress_circular_size</item>
     <item name="indicatorInset">@dimen/mtrl_progress_circular_inset</item>
     <item name="trackColor">@android:color/transparent</item>
     <item name="indicatorDirectionCircular">clockwise</item>

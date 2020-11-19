@@ -50,11 +50,11 @@ abstract class DrawingDelegate<S extends BaseProgressIndicatorSpec> {
    * (per frame).
    *
    * @param canvas Canvas to draw.
-   * @param indicatorSizeFraction A fraction representing how much portion of the indicator size
+   * @param trackThicknessFraction A fraction representing how much portion of the track thickness
    *     should be used in the drawing.
    */
   abstract void adjustCanvas(
-      @NonNull Canvas canvas, @FloatRange(from = 0.0, to = 1.0) float indicatorSizeFraction);
+      @NonNull Canvas canvas, @FloatRange(from = 0.0, to = 1.0) float trackThicknessFraction);
 
   /**
    * Fills a part of the track with the designated indicator color. The filling part is defined with
@@ -86,8 +86,8 @@ abstract class DrawingDelegate<S extends BaseProgressIndicatorSpec> {
   }
 
   void validateSpecAndAdjustCanvas(
-      @NonNull Canvas canvas, @FloatRange(from = 0.0, to = 1.0) float indicatorSizeFraction) {
+      @NonNull Canvas canvas, @FloatRange(from = 0.0, to = 1.0) float trackThicknessFraction) {
     spec.validateSpec();
-    adjustCanvas(canvas, indicatorSizeFraction);
+    adjustCanvas(canvas, trackThicknessFraction);
   }
 }

@@ -34,16 +34,16 @@ import java.lang.annotation.RetentionPolicy;
  * This class implements the circular type progress indicators.
  *
  * <p>With the default style {@link R.style#Widget_MaterialComponents_CircularProgressIndicator},
- * 4dp indicator/track size is used without animation for visibility change. Without customization,
- * primaryColor will be used as the indicator color; the track is transparent. The following
- * attributes can be used to customize the component's appearance:
+ * 4dp indicator/track thickness is used without animation for visibility change. Without
+ * customization, primaryColor will be used as the indicator color; the track is transparent. The
+ * following attributes can be used to customize the component's appearance:
  *
  * <ul>
- *   <li>{@code indicatorSize}: the stroke width of the indicator and track.
+ *   <li>{@code trackThickness}: the thickness of the indicator and track.
  *   <li>{@code indicatorColor}: the color of the indicator.
  *   <li>{@code trackColor}: the color of the track.
- *   <li>{@code indicatorCornerRadius}: the radius of the rounded corner of the indicator stroke.
- *   <li>{@code indicatorRadius}: the radius of the central line of the spinner.
+ *   <li>{@code trackCornerRadius}: the radius of the rounded corner of the indicator and track.
+ *   <li>{@code indicatorSize}: the outer diameter of the spinner.
  *   <li>{@code indicatorInset}: the inset from component's bound to the spinner's outer edge.
  *   <li>{@code indicatorDirectionCircular}: the rotation direction of the spinner or indicator.
  * </ul>
@@ -92,13 +92,13 @@ public final class CircularProgressIndicator
   /**
    * Sets the indicator size of this progress indicator.
    *
-   * @param indicatorSize The new indicator size in pixel.
+   * @param trackThickness The new indicator size in pixel.
    * @throws IllegalArgumentException if indicator radius is less than half of the new indicator
    *     size.
    */
   @Override
-  public void setIndicatorSize(int indicatorSize) {
-    super.setIndicatorSize(indicatorSize);
+  public void setTrackThickness(int trackThickness) {
+    super.setTrackThickness(trackThickness);
     spec.validateSpec();
   }
 
@@ -132,28 +132,28 @@ public final class CircularProgressIndicator
   /**
    * Returns the radius of this progress indicator.
    *
-   * @see #setIndicatorRadius(int)
+   * @see #setIndicatorSize(int)
    * @attr ref
-   *     com.google.android.material.progressindicator.R.stylable#CircularProgressIndicator_indicatorRadius
+   *     com.google.android.material.progressindicator.R.stylable#CircularProgressIndicator_indicatorSize
    */
   @Px
-  public int getIndicatorRadius() {
-    return spec.indicatorRadius;
+  public int getIndicatorSize() {
+    return spec.indicatorSize;
   }
 
   /**
-   * Sets the radius of this progress indicator.
+   * Sets the size (outer diameter) of this circular progress indicator.
    *
-   * @param indicatorRadius The new radius in pixels.
-   * @see #getIndicatorRadius()
+   * @param indicatorSize The new size in pixels.
+   * @see #getIndicatorSize()
    * @attr ref
-   *     com.google.android.material.progressindicator.R.stylable#CircularProgressIndicator_indicatorRadius
+   *     com.google.android.material.progressindicator.R.stylable#CircularProgressIndicator_indicatorSize
    * @throws IllegalArgumentException if new indicator radius is less than half of the indicator
    *     size.
    */
-  public void setIndicatorRadius(@Px int indicatorRadius) {
-    if (spec.indicatorRadius != indicatorRadius) {
-      spec.indicatorRadius = indicatorRadius;
+  public void setIndicatorSize(@Px int indicatorSize) {
+    if (spec.indicatorSize != indicatorSize) {
+      spec.indicatorSize = indicatorSize;
       spec.validateSpec();
       invalidate();
     }
