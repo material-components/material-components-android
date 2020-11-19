@@ -109,6 +109,18 @@ public class MaterialAttributes {
         : defaultValue;
   }
 
+  /**
+   * Returns the integer value for the provided {@code attributeResId} or {@code defaultValue} if
+   * the attribute is not a integer or not present in the current theme.
+   */
+  public static int resolveInteger(
+      @NonNull Context context, @AttrRes int attributeResId, int defaultValue) {
+    TypedValue typedValue = resolve(context, attributeResId);
+    return (typedValue != null && typedValue.type == TypedValue.TYPE_INT_DEC)
+        ? typedValue.data
+        : defaultValue;
+  }
+
   /** Returns the minimum touch target size, acceptable for accessibility, in pixels. */
   @Px
   public static int resolveMinimumAccessibleTouchTarget(@NonNull Context context) {

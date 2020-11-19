@@ -16,10 +16,55 @@
 -->
 <resources>
 
+  <!-- Elements that begin and end at rest use standard easing. Can either be
+       in the format "cubic-bezier(x1, y1, x2, y2)" or "path(<path_data>)". -->
+  <attr name="motionEasingStandard" format="string"/>
+  <!-- In comparison to standard easing, emphasized easing draws extra attention
+       at the end of an animation. Can either be in the format
+       "cubic-bezier(x1, y1, x2, y2)" or "path(<path_data>)". -->
+  <attr name="motionEasingEmphasized" format="string"/>
+  <!-- Incoming elements are animated using decelerated easing, in which
+       transitions begin at peak velocity and end at rest. Can either be in the
+       format "cubic-bezier(x1, y1, x2, y2)" or "path(<path_data>)".-->
+  <attr name="motionEasingDecelerate" format="string"/>
+  <!-- Elements exiting a screen use accelerated easing, a transition in which
+       the element starts at rest and ends at peak velocity. Can either be in
+       the format "cubic-bezier(x1, y1, x2, y2)" or "path(<path_data>)". -->
+  <attr name="motionEasingAccelerate" format="string"/>
+  <!-- Linear easing is often used for simple fade animations. Can either be in
+       the format "cubic-bezier(x1, y1, x2, y2)" or "path(<path_data>)".-->
+  <attr name="motionEasingLinear" format="string"/>
+
+  <!-- Elements with small transition areas, such as icons and selection
+       controls, have short durations. -->
+  <attr name="motionDurationShort1" format="integer"/>
+  <!-- Elements with small transition areas, such as icons and selection
+       controls, have short durations. -->
+  <attr name="motionDurationShort2" format="integer"/>
+  <!-- Elements with larger transition areas, such as bottom sheets and
+       expanding chips, have slightly longer durations. -->
+  <attr name="motionDurationMedium1" format="integer"/>
+  <!-- Elements with larger transition areas, such as bottom sheets and
+       expanding chips, have slightly longer durations. -->
+  <attr name="motionDurationMedium2" format="integer"/>
+  <!-- Animated elements that traverse a large portion of the screen have the
+       longest durations. -->
+  <attr name="motionDurationLong1" format="integer"/>
+  <!-- Animated elements that traverse a large portion of the screen have the
+       longest durations. -->
+  <attr name="motionDurationLong2" format="integer"/>
+
+  <!-- Defines whether certain transitions such as the Container Transform move
+       along a straight path (@string/material_motion_path_linear) or arced path
+       (@string/material_motion_path_arc). Can also be in the format of generic
+       path data. -->
+  <attr name="motionPath" format="string"/>
+
   <!-- Can be used in conjunction with the MaterialContainerTransform
        transition to provide a shape appearance for any arbitrary view, for the
        corner morph animation. This attribute should be set in a theme overlay
        which is then applied to the view. Useful for cases where a view has
        shaped corners but doesn't implement the Shapeable interface. -->
   <attr name="transitionShapeAppearance" format="reference"/>
+
 </resources>

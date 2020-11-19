@@ -15,5 +15,35 @@
   ~ limitations under the License.
 -->
 <resources>
+
+  <public name="motionEasingStandard" type="attr" />
+  <public name="motionEasingEmphasized" type="attr" />
+  <public name="motionEasingDecelerate" type="attr" />
+  <public name="motionEasingAccelerate" type="attr" />
+  <public name="motionEasingLinear" type="attr" />
+  <public name="motionDurationShort1" type="attr" />
+  <public name="motionDurationShort2" type="attr" />
+  <public name="motionDurationMedium1" type="attr" />
+  <public name="motionDurationMedium2" type="attr" />
+  <public name="motionDurationLong1" type="attr" />
+  <public name="motionDurationLong2" type="attr" />
+  <public name="motionPath" type="attr" />
   <public name="transitionShapeAppearance" type="attr" />
+
+  <public name="material_motion_easing_standard" type="string" />
+  <public name="material_motion_easing_emphasized" type="string" />
+  <public name="material_motion_easing_decelerate" type="string" />
+  <public name="material_motion_easing_accelerate" type="string" />
+  <public name="material_motion_easing_linear" type="string" />
+
+  <public name="material_motion_duration_short_1" type="integer" />
+  <public name="material_motion_duration_short_2" type="integer" />
+  <public name="material_motion_duration_medium_1" type="integer" />
+  <public name="material_motion_duration_medium_2" type="integer" />
+  <public name="material_motion_duration_long_1" type="integer" />
+  <public name="material_motion_duration_long_2" type="integer" />
+
+  <public name="material_motion_path_linear" type="string" />
+  <public name="material_motion_path_arc" type="string" />
+
 </resources>
