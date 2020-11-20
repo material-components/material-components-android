@@ -40,7 +40,7 @@ import java.lang.annotation.RetentionPolicy;
  *
  * <ul>
  *   <li>{@code trackThickness}: the thickness of the indicator and track.
- *   <li>{@code indicatorColor}: the color of the indicator.
+ *   <li>{@code indicatorColor}: the color(s) of the indicator.
  *   <li>{@code trackColor}: the color of the track.
  *   <li>{@code trackCornerRadius}: the radius of the rounded corner of the indicator and track.
  *   <li>{@code indicatorSize}: the outer diameter of the spinner.
@@ -90,11 +90,13 @@ public final class CircularProgressIndicator
   // **************** Getters and setters ****************
 
   /**
-   * Sets the indicator size of this progress indicator.
+   * Sets the track thickness of this progress indicator.
    *
-   * @param trackThickness The new indicator size in pixel.
-   * @throws IllegalArgumentException if indicator radius is less than half of the new indicator
-   *     size.
+   * @param trackThickness The new track/indicator thickness in pixel.
+   * @see #getTrackThickness()
+   * @attr ref
+   *     com.google.android.material.progressindicator.R.stylable#BaseProgressIndicator_trackThickness
+   * @throws IllegalArgumentException if indicator size is less than twice of the track thickness.
    */
   @Override
   public void setTrackThickness(int trackThickness) {
@@ -130,7 +132,7 @@ public final class CircularProgressIndicator
   }
 
   /**
-   * Returns the radius of this progress indicator.
+   * Returns the size (outer diameter) of this progress indicator.
    *
    * @see #setIndicatorSize(int)
    * @attr ref

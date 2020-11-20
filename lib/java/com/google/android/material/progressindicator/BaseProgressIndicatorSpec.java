@@ -40,7 +40,7 @@ import com.google.android.material.progressindicator.BaseProgressIndicator.ShowA
  * reflect the attributes defined in {@link R.styleable#BaseProgressIndicator}.
  */
 public abstract class BaseProgressIndicatorSpec {
-  /** The thickness of the progress track and indicator. */
+  /** The thickness of the track and indicator. */
   @Px public int trackThickness;
 
   /**
@@ -51,13 +51,12 @@ public abstract class BaseProgressIndicatorSpec {
   @Px public int trackCornerRadius;
 
   /**
-   * The color array of the progress stroke. In determinate mode and single color indeterminate
-   * mode, only the first item will be used.
+   * The color array used in the indicator. In determinate mode, only the first item will be used.
    */
   @NonNull public int[] indicatorColors = new int[0];
 
   /**
-   * The color used for the progress track. If not defined, it will be set to the indicatorColor and
+   * The color used in the track. If not defined, it will be set to the indicatorColors and
    * apply the first disable alpha value from the theme.
    */
   @ColorInt public int trackColor;
@@ -71,7 +70,7 @@ public abstract class BaseProgressIndicatorSpec {
   /**
    * Instantiates BaseProgressIndicatorSpec.
    *
-   * <p>If attributes are missing, the values stored in the default style {@link
+   * <p>If attributes are missing, the values defined in the default style {@link
    * R.style#Widget_MaterialComponents_ProgressIndicator} will be loaded.
    *
    * @param context Current themed context.

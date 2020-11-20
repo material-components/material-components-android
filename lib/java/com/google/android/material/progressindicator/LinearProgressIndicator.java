@@ -42,7 +42,7 @@ import java.lang.annotation.RetentionPolicy;
  *
  * <ul>
  *   <li>{@code trackThickness}: the thickness of the indicator and track.
- *   <li>{@code indicatorColor}: the color of the indicator.
+ *   <li>{@code indicatorColor}: the color(s) of the indicator.
  *   <li>{@code trackColor}: the color of the track.
  *   <li>{@code trackCornerRadius}: the radius of the rounded corner of the indicator and track.
  *   <li>{@code indeterminateAnimationType}: the type of indeterminate animation.
