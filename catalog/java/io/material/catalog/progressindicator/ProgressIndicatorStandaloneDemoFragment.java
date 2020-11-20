@@ -50,8 +50,10 @@ public class ProgressIndicatorStandaloneDemoFragment extends DemoFragment {
 
     CircularProgressIndicatorSpec spec =
         new CircularProgressIndicatorSpec(getContext(), /*attrs=*/ null);
-    spec.indicatorInset = 0; // No inset.
-    spec.indicatorSize = (int) ViewUtils.dpToPx(getContext(), 22); // Circular radius is 10 dp.
+    spec.indicatorInset = (int) ViewUtils.dpToPx(getContext(), 2);
+    spec.indicatorSize = (int) ViewUtils.dpToPx(getContext(), 20);
+    spec.trackThickness = (int) ViewUtils.dpToPx(getContext(), 5) / 2;
+
     IndeterminateDrawable<CircularProgressIndicatorSpec> progressIndicatorDrawable =
         IndeterminateDrawable.createCircularDrawable(getContext(), spec);
 
