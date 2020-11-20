@@ -59,7 +59,7 @@ import java.util.Arrays;
  *
  * <ul>
  *   <li>{@code trackThickness}: the thickness of the indicator and track.
- *   <li>{@code indicatorColor}: the color of the indicator.
+ *   <li>{@code indicatorColor}: the color(s) of the indicator.
  *   <li>{@code trackColor}: the color of the track.
  *   <li>{@code trackCornerRadius}: the radius of the rounded corner of the indicator and track.
  *   <li>{@code showAnimationBehavior}: the animation direction to show the indicator and track.
@@ -538,7 +538,7 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
   /**
    * Sets the track thickness of this progress indicator.
    *
-   * @param trackThickness The new indicator size in pixel.
+   * @param trackThickness The new track/indicator thickness in pixels.
    * @see #getTrackThickness()
    * @attr ref
    *     com.google.android.material.progressindicator.R.stylable#BaseProgressIndicator_trackThickness
