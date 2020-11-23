@@ -1098,7 +1098,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
   /** Returns true if we should animate the Snackbar view in/out. */
   boolean shouldAnimate() {
-    if (accessibilityManager == null) {
+    if (accessibilityManager == null || !accessibilityManager.isEnabled()) {
       return true;
     }
     int feedbackFlags = AccessibilityServiceInfo.FEEDBACK_SPOKEN;
