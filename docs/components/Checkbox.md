@@ -146,6 +146,9 @@ enabled, disabled, hover, focused, and pressed states.
 pressed. Rows are selected, unselected, or
 indeterminite](assets/checkbox/checkbox_states.png)
 
+_**Note:** `MaterialCheckBox` does not support the indeterminate state. Only
+selected and unselected states are supported._
+
 ### Styles
 
 &nbsp;            | Style
