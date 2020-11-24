@@ -30,6 +30,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
+import androidx.annotation.StyleRes;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.progressindicator.BaseProgressIndicator.HideAnimationBehavior;
@@ -67,31 +68,16 @@ public abstract class BaseProgressIndicatorSpec {
   /** The animation behavior to hide the indicator and track. */
   @HideAnimationBehavior public int hideAnimationBehavior;
 
-  /**
-   * Instantiates BaseProgressIndicatorSpec.
-   *
-   * <p>If attributes are missing, the values defined in the default style {@link
-   * R.style#Widget_MaterialComponents_ProgressIndicator} will be loaded.
-   *
-   * @param context Current themed context.
-   * @param attrs Component's attributes set.
-   */
   protected BaseProgressIndicatorSpec(
-      @NonNull Context context, @Nullable AttributeSet attrs, @AttrRes final int defStyleAttr) {
-    loadBaseSpecFromAttributes(context, attrs, defStyleAttr);
-  }
-
-  private void loadBaseSpecFromAttributes(
-      @NonNull Context context, @Nullable AttributeSet attrs, @AttrRes final int defStyleAttr) {
+      @NonNull Context context,
+      @Nullable AttributeSet attrs,
+      @AttrRes final int defStyleAttr,
+      @StyleRes final int defStyleRes) {
     int defaultIndicatorSize =
         context.getResources().getDimensionPixelSize(R.dimen.mtrl_progress_track_thickness);
     TypedArray a =
         ThemeEnforcement.obtainStyledAttributes(
-            context,
-            attrs,
-            R.styleable.BaseProgressIndicator,
-            defStyleAttr,
-            BaseProgressIndicator.DEF_STYLE_RES);
+            context, attrs, R.styleable.BaseProgressIndicator, defStyleAttr, defStyleRes);
     trackThickness =
         getDimensionPixelSize(
             context, a, R.styleable.BaseProgressIndicator_trackThickness, defaultIndicatorSize);
