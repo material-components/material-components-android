@@ -21,8 +21,10 @@ import com.google.android.material.R;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import androidx.annotation.AttrRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StyleRes;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.progressindicator.LinearProgressIndicator.IndeterminateAnimationType;
 import com.google.android.material.progressindicator.LinearProgressIndicator.IndicatorDirection;
@@ -54,18 +56,21 @@ public final class LinearProgressIndicatorSpec extends BaseProgressIndicatorSpec
    * @param attrs Component's attributes set.
    */
   public LinearProgressIndicatorSpec(@NonNull Context context, @Nullable AttributeSet attrs) {
-    super(context, attrs, R.attr.linearProgressIndicatorStyle);
-    loadSpecFromAttributes(context, attrs);
+    this(context, attrs, R.attr.linearProgressIndicatorStyle);
   }
 
-  private void loadSpecFromAttributes(@NonNull Context context, @Nullable AttributeSet attrs) {
-    loadAttributes(context, attrs);
-    validateSpec();
-    drawHorizontallyInverse =
-        indicatorDirection == LinearProgressIndicator.INDICATOR_DIRECTION_RIGHT_TO_LEFT;
+  public LinearProgressIndicatorSpec(
+      @NonNull Context context, @Nullable AttributeSet attrs, @AttrRes final int defStyleAttr) {
+    this(context, attrs, defStyleAttr, LinearProgressIndicator.DEF_STYLE_RES);
   }
 
-  private void loadAttributes(@NonNull Context context, @Nullable AttributeSet attrs) {
+  public LinearProgressIndicatorSpec(
+      @NonNull Context context,
+      @Nullable AttributeSet attrs,
+      @AttrRes final int defStyleAttr,
+      @StyleRes final int defStyleRes) {
+    super(context, attrs, defStyleAttr, defStyleRes);
+
     TypedArray a =
         ThemeEnforcement.obtainStyledAttributes(
             context,
@@ -82,6 +87,11 @@ public final class LinearProgressIndicatorSpec extends BaseProgressIndicatorSpec
             R.styleable.LinearProgressIndicator_indicatorDirectionLinear,
             LinearProgressIndicator.INDICATOR_DIRECTION_LEFT_TO_RIGHT);
     a.recycle();
+
+    validateSpec();
+
+    drawHorizontallyInverse =
+        indicatorDirection == LinearProgressIndicator.INDICATOR_DIRECTION_RIGHT_TO_LEFT;
   }
 
   @Override

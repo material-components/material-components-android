@@ -23,8 +23,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StyleRes;
 import com.google.android.material.chip.Chip;
-import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.progressindicator.CircularProgressIndicatorSpec;
 import com.google.android.material.progressindicator.IndeterminateDrawable;
 import com.google.android.material.switchmaterial.SwitchMaterial;
@@ -49,11 +49,7 @@ public class ProgressIndicatorStandaloneDemoFragment extends DemoFragment {
             /*attachToRoot=*/ false);
 
     CircularProgressIndicatorSpec spec =
-        new CircularProgressIndicatorSpec(getContext(), /*attrs=*/ null);
-    spec.indicatorInset = (int) ViewUtils.dpToPx(getContext(), 2);
-    spec.indicatorSize = (int) ViewUtils.dpToPx(getContext(), 20);
-    spec.trackThickness = (int) ViewUtils.dpToPx(getContext(), 5) / 2;
-
+        new CircularProgressIndicatorSpec(getContext(), /*attrs=*/ null, 0, getSpecStyleResId());
     IndeterminateDrawable<CircularProgressIndicatorSpec> progressIndicatorDrawable =
         IndeterminateDrawable.createCircularDrawable(getContext(), spec);
 
@@ -67,5 +63,10 @@ public class ProgressIndicatorStandaloneDemoFragment extends DemoFragment {
           chip.setChipIconVisible(isChecked);
         });
     return view;
+  }
+
+  @StyleRes
+  protected int getSpecStyleResId() {
+    return R.style.Widget_MaterialComponents_CircularProgressIndicator_ExtraSmall;
   }
 }

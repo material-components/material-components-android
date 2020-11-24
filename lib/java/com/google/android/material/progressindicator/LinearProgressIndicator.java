@@ -73,7 +73,7 @@ public final class LinearProgressIndicator
 
   public LinearProgressIndicator(
       @NonNull Context context, @Nullable AttributeSet attrs, @AttrRes final int defStyleAttr) {
-    super(context, attrs, defStyleAttr);
+    super(context, attrs, defStyleAttr, DEF_STYLE_RES);
 
     initializeDrawables();
   }

@@ -39,6 +39,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
+import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat.AnimationCallback;
 import com.google.android.material.color.MaterialColors;
@@ -129,7 +130,10 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
   // **************** Constructors ****************
 
   protected BaseProgressIndicator(
-      @NonNull Context context, @Nullable AttributeSet attrs, @AttrRes final int defStyleAttr) {
+      @NonNull Context context,
+      @Nullable AttributeSet attrs,
+      @AttrRes final int defStyleAttr,
+      @StyleRes final int defStyleRes) {
     super(wrap(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
 
     // Ensures that we are using the correctly themed context rather than the context that was
@@ -141,11 +145,7 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
     // Loads additional attributes for view level.
     TypedArray a =
         ThemeEnforcement.obtainStyledAttributes(
-            context,
-            attrs,
-            R.styleable.BaseProgressIndicator,
-            defStyleAttr,
-            BaseProgressIndicator.DEF_STYLE_RES);
+            context, attrs, R.styleable.BaseProgressIndicator, defStyleAttr, defStyleRes);
     showDelay = a.getInt(R.styleable.BaseProgressIndicator_showDelay, -1);
     int minHideDelayUncapped = a.getInt(R.styleable.BaseProgressIndicator_minHideDelay, -1);
     minHideDelay = min(minHideDelayUncapped, MAX_HIDE_DELAY);

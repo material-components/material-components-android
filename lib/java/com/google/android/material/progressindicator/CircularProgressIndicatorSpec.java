@@ -23,9 +23,11 @@ import static com.google.android.material.resources.MaterialResources.getDimensi
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import androidx.annotation.AttrRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
+import androidx.annotation.StyleRes;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.progressindicator.CircularProgressIndicator.IndicatorDirection;
 
@@ -57,27 +59,28 @@ public final class CircularProgressIndicatorSpec extends BaseProgressIndicatorSp
    * @param attrs Component's attributes set.
    */
   public CircularProgressIndicatorSpec(@NonNull Context context, @Nullable AttributeSet attrs) {
-    super(context, attrs, R.attr.circularProgressIndicatorStyle);
-    loadSpecFromAttributes(context, attrs);
+    this(context, attrs, R.attr.circularProgressIndicatorStyle);
   }
 
-  private void loadSpecFromAttributes(@NonNull Context context, @Nullable AttributeSet attrs) {
-    loadAttributes(context, attrs);
-    validateSpec();
+  public CircularProgressIndicatorSpec(
+      @NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
+    this(context, attrs, defStyleAttr, CircularProgressIndicator.DEF_STYLE_RES);
   }
 
-  private void loadAttributes(@NonNull Context context, @Nullable AttributeSet attrs) {
+  public CircularProgressIndicatorSpec(
+      @NonNull Context context,
+      @Nullable AttributeSet attrs,
+      @AttrRes final int defStyleAttr,
+      @StyleRes final int defStyleRes) {
+    super(context, attrs, defStyleAttr, defStyleRes);
+
     int defaultIndicatorSize =
-        context.getResources().getDimensionPixelSize(R.dimen.mtrl_progress_circular_size);
+        context.getResources().getDimensionPixelSize(R.dimen.mtrl_progress_circular_size_medium);
     int defaultIndicatorInset =
-        context.getResources().getDimensionPixelSize(R.dimen.mtrl_progress_circular_inset);
+        context.getResources().getDimensionPixelSize(R.dimen.mtrl_progress_circular_inset_medium);
     TypedArray a =
         ThemeEnforcement.obtainStyledAttributes(
-            context,
-            attrs,
-            R.styleable.CircularProgressIndicator,
-            R.attr.circularProgressIndicatorStyle,
-            CircularProgressIndicator.DEF_STYLE_RES);
+            context, attrs, R.styleable.CircularProgressIndicator, defStyleAttr, defStyleRes);
     indicatorSize =
         getDimensionPixelSize(
             context, a, R.styleable.CircularProgressIndicator_indicatorSize, defaultIndicatorSize);
@@ -92,6 +95,8 @@ public final class CircularProgressIndicatorSpec extends BaseProgressIndicatorSp
             R.styleable.CircularProgressIndicator_indicatorDirectionCircular,
             CircularProgressIndicator.INDICATOR_DIRECTION_CLOCKWISE);
     a.recycle();
+
+    validateSpec();
   }
 
   @Override

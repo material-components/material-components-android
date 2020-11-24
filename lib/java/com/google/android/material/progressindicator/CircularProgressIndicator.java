@@ -68,7 +68,7 @@ public final class CircularProgressIndicator
 
   public CircularProgressIndicator(
       @NonNull Context context, @Nullable AttributeSet attrs, @AttrRes final int defStyleAttr) {
-    super(context, attrs, defStyleAttr);
+    super(context, attrs, defStyleAttr, CircularProgressIndicator.DEF_STYLE_RES);
 
     initializeDrawables();
   }
