@@ -96,6 +96,12 @@ import java.lang.annotation.RetentionPolicy;
  * container will be translated and scaled from the position and size of the start View to the
  * position and size of the end View.
  *
+ * <p>MaterialContainerTransform supports theme-based easing, duration, and path values. In order to
+ * have the transition load these values upfront, use the {@link
+ * #MaterialContainerTransform(Context, boolean)} constructor. Otherwise, use the default
+ * constructor and the transition will load theme values from the View context before it runs, and
+ * only use them if the corresponding properties weren't already set on the transition instance.
+ *
  * <p>The composition of MaterialContainerTransform's animation can be customized in a number of
  * ways. The two most prominent customizations are the way in which content inside the container is
  * swapped via {@link #setFadeMode(int)} and path the container follows from its starting position
@@ -230,6 +236,8 @@ public final class MaterialContainerTransform extends Transition {
 
   private boolean drawDebugEnabled = false;
   private boolean holdAtEndEnabled = false;
+  private boolean pathMotionCustom = false;
+  private boolean appliedThemeValues = false;
   @IdRes private int drawingViewId = android.R.id.content;
   @IdRes private int startViewId = View.NO_ID;
   @IdRes private int endViewId = View.NO_ID;
@@ -253,7 +261,12 @@ public final class MaterialContainerTransform extends Transition {
   private float endElevation = ELEVATION_NOT_SET;
 
   public MaterialContainerTransform() {
-    setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
+    // Default constructor
+  }
+
+  public MaterialContainerTransform(@NonNull Context context, boolean entering) {
+    applyThemeValues(context, entering);
+    appliedThemeValues = true;
   }
 
   /** Get the id of the View which will be used as the start shared element container. */
@@ -776,6 +789,12 @@ public final class MaterialContainerTransform extends Transition {
     this.drawDebugEnabled = drawDebugEnabled;
   }
 
+  @Override
+  public void setPathMotion(@Nullable PathMotion pathMotion) {
+    super.setPathMotion(pathMotion);
+    pathMotionCustom = true;
+  }
+
   @Nullable
   @Override
   public String[] getTransitionProperties() {
@@ -914,6 +933,11 @@ public final class MaterialContainerTransform extends Transition {
 
     boolean entering = isEntering(startBounds, endBounds);
 
+    if (!appliedThemeValues) {
+      // Apply theme values if we didn't already apply them up front in the constructor.
+      applyThemeValues(drawingBaseView.getContext(), entering);
+    }
+
     final TransitionDrawable transitionDrawable =
         new TransitionDrawable(
             getPathMotion(),
@@ -981,6 +1005,16 @@ public final class MaterialContainerTransform extends Transition {
         });
 
     return animator;
+  }
+
+  private void applyThemeValues(Context context, boolean entering) {
+    TransitionUtils.applyThemeInterpolator(
+        this, context, R.attr.motionEasingStandard, AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
+    TransitionUtils.applyThemeDuration(
+        this, context, entering ? R.attr.motionDurationLong1 : R.attr.motionDurationMedium2);
+    if (!pathMotionCustom) {
+      TransitionUtils.applyThemePath(this, context, R.attr.motionPath);
+    }
   }
 
   private static float getElevationOrDefault(float elevation, View view) {

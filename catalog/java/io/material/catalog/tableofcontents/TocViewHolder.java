@@ -26,7 +26,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import io.material.catalog.feature.ContainerTransformConfiguration;
 import io.material.catalog.feature.FeatureDemo;
 import io.material.catalog.feature.FeatureDemoUtils;
 
@@ -35,20 +34,14 @@ class TocViewHolder extends ViewHolder {
 
   private static final String FRAGMENT_CONTENT = "fragment_content";
 
-  private final ContainerTransformConfiguration containerTransformConfiguration;
   private final TextView titleView;
   private final ImageView imageView;
   private final TextView statusWipLabelView;
 
-  TocViewHolder(
-      FragmentActivity activity,
-      ViewGroup viewGroup,
-      ContainerTransformConfiguration containerTransformConfiguration) {
+  TocViewHolder(FragmentActivity activity, ViewGroup viewGroup) {
     super(
         LayoutInflater.from(activity)
             .inflate(R.layout.cat_toc_item, viewGroup, false /* attachToRoot */));
-
-    this.containerTransformConfiguration = containerTransformConfiguration;
 
     titleView = itemView.findViewById(R.id.cat_toc_title);
     imageView = itemView.findViewById(R.id.cat_toc_image);
@@ -63,12 +56,7 @@ class TocViewHolder extends ViewHolder {
     itemView.setOnClickListener(
         v ->
             FeatureDemoUtils.startFragment(
-                activity,
-                featureDemo.createFragment(),
-                FRAGMENT_CONTENT,
-                v,
-                transitionName,
-                containerTransformConfiguration));
+                activity, featureDemo.createFragment(), FRAGMENT_CONTENT, v, transitionName));
     statusWipLabelView.setVisibility(
         featureDemo.getStatus() == FeatureDemo.STATUS_WIP ? View.VISIBLE : View.GONE);
   }

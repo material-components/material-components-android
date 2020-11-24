@@ -322,6 +322,8 @@ public class MaterialContainerTransformSharedElementCallback extends SharedEleme
    */
   private static void updateBackgroundFadeDuration(
       Window window, MaterialContainerTransform transform) {
-    window.setTransitionBackgroundFadeDuration(transform.getDuration());
+    if (transform.getDuration() >= 0) {
+      window.setTransitionBackgroundFadeDuration(transform.getDuration());
+    }
   }
 }

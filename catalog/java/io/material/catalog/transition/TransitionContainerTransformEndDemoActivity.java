@@ -67,7 +67,7 @@ public class TransitionContainerTransformEndDemoActivity extends DemoActivity {
   }
 
   private MaterialContainerTransform buildContainerTransform(boolean entering) {
-    MaterialContainerTransform transform = new MaterialContainerTransform();
+    MaterialContainerTransform transform = new MaterialContainerTransform(this, entering);
     // Use all 3 container layer colors since this transform can be configured using any fade mode
     // and some of the start views don't have a background and the end view doesn't have a
     // background.

@@ -36,10 +36,8 @@ import androidx.annotation.Nullable;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.transition.Hold;
 import com.google.android.material.transition.MaterialContainerTransform;
-import io.material.catalog.feature.ContainerTransformConfiguration;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.OnBackPressedHandler;
-import javax.inject.Inject;
 
 /** A fragment that displays the main Transition demo for the Catalog app. */
 public class TransitionContainerTransformDemoFragment extends DemoFragment
@@ -51,14 +49,11 @@ public class TransitionContainerTransformDemoFragment extends DemoFragment
 
   private final Hold holdTransition = new Hold();
 
-  @Inject ContainerTransformConfiguration containerTransformConfiguration;
-
   @Override
   public void onAttach(Context context) {
     super.onAttach(context);
 
-    configurationHelper =
-        new ContainerTransformConfigurationHelper(containerTransformConfiguration);
+    configurationHelper = new ContainerTransformConfigurationHelper();
   }
 
   @Override
@@ -174,7 +169,8 @@ public class TransitionContainerTransformDemoFragment extends DemoFragment
   }
 
   private MaterialContainerTransform buildContainerTransform(boolean entering) {
-    MaterialContainerTransform transform = new MaterialContainerTransform();
+    Context context = requireContext();
+    MaterialContainerTransform transform = new MaterialContainerTransform(context, entering);
     transform.setDrawingViewId(entering ? R.id.end_root : R.id.start_root);
     configurationHelper.configure(transform, entering);
     return transform;

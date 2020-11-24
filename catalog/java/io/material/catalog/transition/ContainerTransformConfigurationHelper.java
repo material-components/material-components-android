@@ -49,7 +49,6 @@ import com.google.android.material.slider.Slider.OnChangeListener;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.transition.MaterialArcMotion;
 import com.google.android.material.transition.MaterialContainerTransform;
-import io.material.catalog.feature.ContainerTransformConfiguration;
 
 /**
  * A helper class which manages all configuration UI presented in {@link
@@ -60,6 +59,7 @@ public class ContainerTransformConfigurationHelper {
 
   private static final String CUBIC_CONTROL_FORMAT = "%.3f";
   private static final String DURATION_FORMAT = "%.0f";
+  private static final long NO_DURATION = -1;
 
   private boolean arcMotionEnabled;
   private long enterDuration;
@@ -67,8 +67,6 @@ public class ContainerTransformConfigurationHelper {
   private Interpolator interpolator;
   private int fadeModeButtonId;
   private boolean drawDebugEnabled;
-
-  private ContainerTransformConfiguration containerTransformConfiguration;
 
   private static final SparseIntArray FADE_MODE_MAP = new SparseIntArray();
 
@@ -79,9 +77,7 @@ public class ContainerTransformConfigurationHelper {
     FADE_MODE_MAP.append(R.id.fade_through_button, MaterialContainerTransform.FADE_MODE_THROUGH);
   }
 
-  public ContainerTransformConfigurationHelper(
-      ContainerTransformConfiguration containerTransformConfiguration) {
-    this.containerTransformConfiguration = containerTransformConfiguration;
+  public ContainerTransformConfigurationHelper() {
     setUpDefaultValues();
   }
 
@@ -99,7 +95,10 @@ public class ContainerTransformConfigurationHelper {
 
   /** Set up the androidx transition according to the config helper's parameters. */
   void configure(MaterialContainerTransform transform, boolean entering) {
-    transform.setDuration(entering ? getEnterDuration() : getReturnDuration());
+    long duration = entering ? getEnterDuration() : getReturnDuration();
+    if (duration != NO_DURATION) {
+      transform.setDuration(duration);
+    }
     transform.setInterpolator(getInterpolator());
     if (isArcMotionEnabled()) {
       transform.setPathMotion(new MaterialArcMotion());
@@ -113,7 +112,10 @@ public class ContainerTransformConfigurationHelper {
   void configure(
       com.google.android.material.transition.platform.MaterialContainerTransform transform,
       boolean entering) {
-    transform.setDuration(entering ? getEnterDuration() : getReturnDuration());
+    long duration = entering ? getEnterDuration() : getReturnDuration();
+    if (duration != NO_DURATION) {
+      transform.setDuration(duration);
+    }
     transform.setInterpolator(getInterpolator());
     if (isArcMotionEnabled()) {
       transform.setPathMotion(
@@ -157,10 +159,10 @@ public class ContainerTransformConfigurationHelper {
   }
 
   private void setUpDefaultValues() {
-    arcMotionEnabled = containerTransformConfiguration.isArcMotionEnabled();
-    enterDuration = containerTransformConfiguration.getEnterDuration();
-    returnDuration = containerTransformConfiguration.getReturnDuration();
-    interpolator = containerTransformConfiguration.getInterpolator();
+    arcMotionEnabled = false;
+    enterDuration = NO_DURATION;
+    returnDuration = NO_DURATION;
+    interpolator = null;
     fadeModeButtonId = R.id.fade_in_button;
     drawDebugEnabled = false;
   }
@@ -240,7 +242,7 @@ public class ContainerTransformConfigurationHelper {
     TextView durationValue = view.findViewById(labelResId);
     if (durationSlider != null && durationValue != null) {
       // Set initial value.
-      durationSlider.setValue(duration);
+      durationSlider.setValue(duration != NO_DURATION ? duration : 0);
       durationValue.setText(String.format(DURATION_FORMAT, durationSlider.getValue()));
       // Update the duration and durationValue's text whenever the slider is slid.
       durationSlider.addOnChangeListener(

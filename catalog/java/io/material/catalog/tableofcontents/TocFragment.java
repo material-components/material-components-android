@@ -37,7 +37,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.math.MathUtils;
 import com.google.android.material.appbar.AppBarLayout;
 import dagger.android.support.DaggerFragment;
-import io.material.catalog.feature.ContainerTransformConfiguration;
 import io.material.catalog.feature.FeatureDemo;
 import io.material.catalog.feature.FeatureDemoUtils;
 import io.material.catalog.themeswitcher.ThemePreferencesManager;
@@ -59,7 +58,6 @@ public class TocFragment extends DaggerFragment {
   @Inject Set<FeatureDemo> featureDemos;
   @Inject TocResourceProvider tocResourceProvider;
   @Inject ThemeSwitcherResourceProvider themeSwitcherResourceProvider;
-  @Inject ContainerTransformConfiguration containerTransformConfiguration;
 
   private ThemePreferencesManager themePreferencesManager;
   private WindowPreferencesManager windowPreferencesManager;
@@ -145,8 +143,7 @@ public class TocFragment extends DaggerFragment {
                 getContext().getString(feature1.getTitleResId()),
                 getContext().getString(feature2.getTitleResId())));
 
-    TocAdapter tocAdapter =
-        new TocAdapter(getActivity(), featureList, containerTransformConfiguration);
+    TocAdapter tocAdapter = new TocAdapter(getActivity(), featureList);
     recyclerView.setAdapter(tocAdapter);
 
     initThemeButton();

@@ -17,15 +17,7 @@
 package io.material.catalog.application;
 
 import dagger.Module;
-import dagger.Provides;
-import io.material.catalog.feature.ContainerTransformConfiguration;
 
 /** A module for catalog demo dependencies. */
 @Module
-public abstract class CatalogDemoModule {
-
-  @Provides
-  static ContainerTransformConfiguration provideContainerTransformConfiguration() {
-    return new ContainerTransformConfiguration();
-  }
-}
+public abstract class CatalogDemoModule {}

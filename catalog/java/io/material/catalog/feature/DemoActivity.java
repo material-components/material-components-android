@@ -48,9 +48,6 @@ public abstract class DemoActivity extends AppCompatActivity implements HasAndro
 
   static final String EXTRA_TRANSITION_NAME = "EXTRA_TRANSITION_NAME";
 
-  private static final long DURATION_ENTER = 300;
-  private static final long DURATION_RETURN = 275;
-
   private Toolbar toolbar;
   private ViewGroup demoContainer;
 
@@ -62,8 +59,8 @@ public abstract class DemoActivity extends AppCompatActivity implements HasAndro
       String transitionName = getIntent().getStringExtra(EXTRA_TRANSITION_NAME);
       findViewById(android.R.id.content).setTransitionName(transitionName);
       setEnterSharedElementCallback(new MaterialContainerTransformSharedElementCallback());
-      getWindow().setSharedElementEnterTransition(buildContainerTransform(DURATION_ENTER));
-      getWindow().setSharedElementReturnTransition(buildContainerTransform(DURATION_RETURN));
+      getWindow().setSharedElementEnterTransition(buildContainerTransform(/* entering= */ true));
+      getWindow().setSharedElementReturnTransition(buildContainerTransform(/* entering= */ false));
     }
 
     safeInject();
@@ -121,9 +118,8 @@ public abstract class DemoActivity extends AppCompatActivity implements HasAndro
   }
 
   @RequiresApi(VERSION_CODES.LOLLIPOP)
-  private MaterialContainerTransform buildContainerTransform(long duration) {
-    MaterialContainerTransform transform = new MaterialContainerTransform();
-    transform.setDuration(duration);
+  private MaterialContainerTransform buildContainerTransform(boolean entering) {
+    MaterialContainerTransform transform = new MaterialContainerTransform(this, entering);
     transform.addTarget(android.R.id.content);
     transform.setContainerColor(
         MaterialColors.getColor(findViewById(android.R.id.content), R.attr.colorSurface));

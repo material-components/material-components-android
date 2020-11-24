@@ -34,10 +34,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.transition.TransitionManager;
 import com.google.android.material.transition.MaterialContainerTransform;
-import io.material.catalog.feature.ContainerTransformConfiguration;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.OnBackPressedHandler;
-import javax.inject.Inject;
 
 /** A fragment that displays the View container transform transition demos for the Catalog app. */
 public class TransitionContainerTransformViewDemoFragment extends DemoFragment
@@ -54,14 +52,11 @@ public class TransitionContainerTransformViewDemoFragment extends DemoFragment
 
   private ContainerTransformConfigurationHelper configurationHelper;
 
-  @Inject ContainerTransformConfiguration containerTransformConfiguration;
-
   @Override
   public void onAttach(Context context) {
     super.onAttach(context);
 
-    configurationHelper =
-        new ContainerTransformConfigurationHelper(containerTransformConfiguration);
+    configurationHelper = new ContainerTransformConfigurationHelper();
   }
 
   @Override
@@ -147,7 +142,8 @@ public class TransitionContainerTransformViewDemoFragment extends DemoFragment
 
   @NonNull
   private MaterialContainerTransform buildContainerTransform(boolean entering) {
-    MaterialContainerTransform transform = new MaterialContainerTransform();
+    Context context = requireContext();
+    MaterialContainerTransform transform = new MaterialContainerTransform(context, entering);
     transform.setScrimColor(Color.TRANSPARENT);
     transform.setDrawingViewId(root.getId());
     configurationHelper.configure(transform, entering);

@@ -18,6 +18,7 @@ package io.material.catalog.transition.hero;
 
 import io.material.catalog.R;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import androidx.core.view.ViewCompat;
@@ -38,10 +39,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.transition.MaterialArcMotion;
 import com.google.android.material.transition.MaterialContainerTransform;
 import dagger.android.support.DaggerFragment;
-import io.material.catalog.feature.ContainerTransformConfiguration;
 import io.material.catalog.transition.hero.MusicData.Album;
 import io.material.catalog.transition.hero.MusicData.Track;
-import javax.inject.Inject;
 
 /** A Fragment that displays an album's details. */
 public class TransitionMusicAlbumDemoFragment extends DaggerFragment {
@@ -51,20 +50,12 @@ public class TransitionMusicAlbumDemoFragment extends DaggerFragment {
 
   private ViewGroup container;
 
-  @Inject ContainerTransformConfiguration containerTransformConfiguration;
-
   public static TransitionMusicAlbumDemoFragment newInstance(long albumId) {
     TransitionMusicAlbumDemoFragment fragment = new TransitionMusicAlbumDemoFragment();
     Bundle bundle = new Bundle();
     bundle.putLong(ALBUM_ID_KEY, albumId);
     fragment.setArguments(bundle);
     return fragment;
-  }
-
-  @Override
-  public void onCreate(@Nullable Bundle bundle) {
-    super.onCreate(bundle);
-    setUpTransitions();
   }
 
   @Nullable
@@ -125,8 +116,9 @@ public class TransitionMusicAlbumDemoFragment extends DaggerFragment {
     adapter.submitList(album.tracks);
 
     // Set up music player transitions
+    Context context = requireContext();
     MaterialContainerTransform musicPlayerEnterTransform =
-        createMusicPlayerTransform(fab, musicPlayerContainer);
+        createMusicPlayerTransform(context, /* entering= */ true, fab, musicPlayerContainer);
 
     fab.setOnClickListener(
         v -> {
@@ -136,7 +128,7 @@ public class TransitionMusicAlbumDemoFragment extends DaggerFragment {
         });
 
     MaterialContainerTransform musicPlayerExitTransform =
-        createMusicPlayerTransform(musicPlayerContainer, fab);
+        createMusicPlayerTransform(context, /* entering= */ false, musicPlayerContainer, fab);
 
     musicPlayerContainer.setOnClickListener(
         v -> {
@@ -147,22 +139,15 @@ public class TransitionMusicAlbumDemoFragment extends DaggerFragment {
   }
 
   private static MaterialContainerTransform createMusicPlayerTransform(
-      View startView, View endView) {
-    MaterialContainerTransform musicPlayerTransform = new MaterialContainerTransform();
+      Context context, boolean entering, View startView, View endView) {
+    MaterialContainerTransform musicPlayerTransform =
+        new MaterialContainerTransform(context, entering);
     musicPlayerTransform.setPathMotion(new MaterialArcMotion());
     musicPlayerTransform.setScrimColor(Color.TRANSPARENT);
     musicPlayerTransform.setStartView(startView);
     musicPlayerTransform.setEndView(endView);
     musicPlayerTransform.addTarget(endView);
     return musicPlayerTransform;
-  }
-
-  private void setUpTransitions() {
-    MaterialContainerTransform transform = new MaterialContainerTransform();
-    if (containerTransformConfiguration.isArcMotionEnabled()) {
-      transform.setPathMotion(new MaterialArcMotion());
-    }
-    setSharedElementEnterTransition(transform);
   }
 
   /** An adapter to hold an albums list of tracks. */

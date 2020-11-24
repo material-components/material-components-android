@@ -32,9 +32,7 @@ import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
-import io.material.catalog.feature.ContainerTransformConfiguration;
 import io.material.catalog.feature.DemoActivity;
-import javax.inject.Inject;
 
 /**
  * An activity that displays the Container Transform activity transition demo for the Catalog app.
@@ -43,8 +41,6 @@ import javax.inject.Inject;
 public class TransitionContainerTransformStartDemoActivity extends DemoActivity {
 
   static ContainerTransformConfigurationHelper configurationHelper;
-
-  @Inject ContainerTransformConfiguration containerTransformConfiguration;
 
   @Override
   protected void onCreate(@Nullable Bundle bundle) {
@@ -56,8 +52,7 @@ public class TransitionContainerTransformStartDemoActivity extends DemoActivity 
 
     super.onCreate(bundle);
 
-    configurationHelper =
-        new ContainerTransformConfigurationHelper(containerTransformConfiguration);
+    configurationHelper = new ContainerTransformConfigurationHelper();
 
     addTransitionableTarget(R.id.start_fab);
     addTransitionableTarget(R.id.single_line_list_item);

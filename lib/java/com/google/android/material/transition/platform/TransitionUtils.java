@@ -57,7 +57,7 @@ import com.google.android.material.shape.ShapeAppearanceModel.CornerSizeUnaryOpe
 @androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.LOLLIPOP)
 class TransitionUtils {
 
-  private static final int NO_DURATION = -1;
+  static final int NO_DURATION = -1;
 
   private static final String EASING_TYPE_CUBIC_BEZIER = "cubic-bezier";
   private static final String EASING_TYPE_PATH = "path";
@@ -66,7 +66,7 @@ class TransitionUtils {
 
   private TransitionUtils() {}
 
-  static void applyThemeInterpolator(
+  static boolean applyThemeInterpolator(
       Transition transition,
       Context context,
       @AttrRes int attrResId,
@@ -75,28 +75,34 @@ class TransitionUtils {
       TimeInterpolator interpolator =
           TransitionUtils.resolveThemeInterpolator(context, attrResId, defaultInterpolator);
       transition.setInterpolator(interpolator);
+      return true;
     }
+    return false;
   }
 
-  static void applyThemeDuration(Transition transition, Context context, @AttrRes int attrResId) {
+  static boolean applyThemeDuration(
+      Transition transition, Context context, @AttrRes int attrResId) {
     if (transition.getDuration() == NO_DURATION) {
       int duration = MaterialAttributes.resolveInteger(context, attrResId, NO_DURATION);
       if (duration != NO_DURATION) {
         transition.setDuration(duration);
+        return true;
       }
     }
+    return false;
   }
 
-  static void applyThemePath(Transition transition, Context context, @AttrRes int attrResId) {
+  static boolean applyThemePath(Transition transition, Context context, @AttrRes int attrResId) {
     PathMotion pathMotion = resolveThemePath(context, attrResId);
     if (pathMotion != null) {
       transition.setPathMotion(pathMotion);
+      return true;
     }
+    return false;
   }
 
-  @Nullable
   static TimeInterpolator resolveThemeInterpolator(
-      Context context, @AttrRes int attrResId, TimeInterpolator defaultInterpolator) {
+      Context context, @AttrRes int attrResId, @NonNull TimeInterpolator defaultInterpolator) {
     TypedValue easingValue = new TypedValue();
     if (context.getTheme().resolveAttribute(attrResId, easingValue, true)) {
       if (easingValue.type != TypedValue.TYPE_STRING) {

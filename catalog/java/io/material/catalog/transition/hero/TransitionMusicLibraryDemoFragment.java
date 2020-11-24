@@ -40,6 +40,7 @@ import androidx.annotation.Nullable;
 import androidx.transition.Transition;
 import androidx.transition.TransitionManager;
 import com.google.android.material.transition.Hold;
+import com.google.android.material.transition.MaterialContainerTransform;
 import com.google.android.material.transition.MaterialFadeThrough;
 import com.google.android.material.transition.MaterialSharedAxis;
 import io.material.catalog.transition.hero.AlbumsAdapter.AlbumAdapterListener;
@@ -61,19 +62,6 @@ public class TransitionMusicLibraryDemoFragment extends Fragment
 
   private boolean listTypeGrid = true;
   private boolean listSorted = true;
-
-  @Override
-  public void onCreate(@Nullable Bundle bundle) {
-    super.onCreate(bundle);
-    // Use a Hold transition to keep this fragment visible beneath the MaterialContainerTransform
-    // that transitions to the album details screen. Without a Hold, this fragment would disappear
-    // as soon its container is replaced with a new Fragment.
-    Hold hold = new Hold();
-    // Add root view as target for the Hold so that the entire view hierarchy is held in place as
-    // one instead of each child view individually. Helps keep shadows during the transition.
-    hold.addTarget(R.id.container);
-    setExitTransition(hold);
-  }
 
   @Nullable
   @Override
@@ -107,6 +95,20 @@ public class TransitionMusicLibraryDemoFragment extends Fragment
   public void onAlbumClicked(View view, Album album) {
     TransitionMusicAlbumDemoFragment fragment =
         TransitionMusicAlbumDemoFragment.newInstance(album.id);
+
+    MaterialContainerTransform transform =
+        new MaterialContainerTransform(requireContext(), /* entering= */ true);
+    fragment.setSharedElementEnterTransition(transform);
+
+    // Use a Hold transition to keep this fragment visible beneath the MaterialContainerTransform
+    // that transitions to the album details screen. Without a Hold, this fragment would disappear
+    // as soon its container is replaced with a new Fragment.
+    Hold hold = new Hold();
+    // Add root view as target for the Hold so that the entire view hierarchy is held in place as
+    // one instead of each child view individually. Helps keep shadows during the transition.
+    hold.addTarget(R.id.container);
+    hold.setDuration(transform.getDuration());
+    setExitTransition(hold);
 
     getParentFragmentManager()
         .beginTransaction()
