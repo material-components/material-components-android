@@ -1758,7 +1758,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
   /**
    * Returns whether this chip is checkable.
    *
-   * @see #setIsCheckable(boolean)
+   * @see #setCheckable(boolean)
    * @attr ref com.google.android.material.R.styleable#Chip_android_checkable
    */
   public boolean isCheckable() {
@@ -1915,7 +1915,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
   /**
    * Returns this chip's show motion spec.
    *
-   * @see #setShowMotionSpec(Drawable)
+   * @see #setShowMotionSpec(MotionSpec)
    * @attr ref com.google.android.material.R.styleable#Chip_showMotionSpec
    */
   @Nullable
@@ -1950,7 +1950,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
   /**
    * Returns this chip's hide motion spec.
    *
-   * @see #setHideMotionSpec(Drawable)
+   * @see #setHideMotionSpec(MotionSpec)
    * @attr ref com.google.android.material.R.styleable#Chip_hideMotionSpec
    */
   @Nullable
