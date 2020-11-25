@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2020 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,6 +25,8 @@
   <public name="clockFaceBackgroundColor" type="attr" />
   <public name="clockHandColor" type="attr" />
   <public name="clockNumberTextColor" type="attr" />
+
+  <public name="ThemeOverlay.MaterialComponents.MaterialTimePicker" type="style" />
 
   <public name="Widget.MaterialComponents.TimePicker" type="style" />
   <public name="Widget.MaterialComponents.TimePicker.Button" type="style" />
