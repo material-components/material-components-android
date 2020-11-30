@@ -247,4 +247,4 @@ views that support elevation overlays.
 [dark-theme-mdc-spec-custom-application]: https://material.io/design/color/dark-theme.html#custom-application
 [dark-theme-dac-docs]: https://developer.android.com/preview/features/darktheme
 [daynight-appcompat-docs]: https://medium.com/androiddevelopers/appcompat-v23-2-daynight-d10f90c83e94
-[maven-repo-mdc]: https://mvnrepository.com/artifact/com.google.android.material/material
+[maven-repo-mdc]: https://maven.google.com/web/index.html#com.google.android.material:material
