@@ -80,7 +80,7 @@ Instead use literal names relevant to the RGB value. Eg:
 ```xml
 <resources>
   <color name="brand_blue">...</color>
-  <color name="brand_gray">...</color>
+  <color name="brand_grey">...</color>
 </resources>
 ```
 

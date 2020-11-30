@@ -146,7 +146,7 @@ In `res/menu/overflow_menu.xml`:
 The following example shows a context menu that appears when a `TextView` is
 long pressed.
 
-![White menu window with two options floating over a white background with gray
+![White menu window with two options floating over a white background with grey
 text](assets/menu/menus_context.png)
 
 In code:
@@ -536,17 +536,23 @@ the filter set to `false`.
 
 ### Anatomy and key properties
 
-![Exposed dropdown menu anatomy diagram](assets/menu/menus_exposed_dropdown_anatomy.png)
-
 The exposed dropdown menu is made of an `AutoCompleteTextView` within a
 `TextInputLayout` that has a dropdown menu displayed below it.
 
-#### `TextInputLayout` attributes
+![Exposed dropdown menu anatomy diagram](assets/menu/menus_exposed_dropdown_anatomy.png)
+
+1.  Container
+1.  Text
+1.  Label
+1.  Selection/Input text
+1.  Trailing icon
+
+#### `TextInputLayout` attributes (container, label, trailing icon)
 
 To see all attributes that apply to the `TextInputLayout`, see the
 [TextInputLayout documentation](TextField.md).
 
-#### `AutoCompleteTextView` attributes
+#### `AutoCompleteTextView` attributes (input text, dropdown menu)
 
 &nbsp;                                | Attribute                                                           | Related method(s)                                            | Default value
 ------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------ | -------------
@@ -673,7 +679,7 @@ The following example shows filled and outlined exposed dropdown menu types with
 Material Theming.
 
 ![Two examples of a 3-option white menu container below a "Show menu" button:
-button 1 is gray,, button 2 has a pink
+button 1 is grey,, button 2 has a pink
 outline](assets/menu/menus_exposed_dropdown_theming.png)
 
 #### Implementing exposed dropdown menu theming

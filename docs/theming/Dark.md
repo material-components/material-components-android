@@ -87,7 +87,7 @@ colors and light foreground colors. The Material `Dark` themes make use of the
 [Material Color System](Color.md), in order to provide default dark theme values
 for neutral palette colors such as `colorBackground` and `colorSurface`.
 
-The baseline Material `Dark` theme background and surface colors are dark gray
+The baseline Material `Dark` theme background and surface colors are dark grey
 instead of black, which increases visibility for shadows and also reduces eye
 strain for light text.
 

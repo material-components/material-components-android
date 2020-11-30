@@ -419,7 +419,7 @@ API and source code:
 The following example shows a row of scrollable tabs with Material Theming.
 
 ![Example of 4 scrollable tabs with light pink background. The selected text is
-dark pink, the unselected text is gray.](assets/tabs/tabs_theming.png)
+dark pink, the unselected text is grey.](assets/tabs/tabs_theming.png)
 
 #### Implementing tabs theming
 

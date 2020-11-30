@@ -328,8 +328,8 @@ There are two types of text fields: 1\. [Filled text field](#filled-text-field),
 2\. [Outlined text field](#outlined-text-field)
 
 !["Text field examples of both filled and outlined types, and each type showing
-both inactive and focused states. The filled text fields show a gray background
-and a darker gray activation indicator that is purple when focused. The outlined
+both inactive and focused states. The filled text fields show a grey background
+and a darker grey activation indicator that is purple when focused. The outlined
 text fields show a clear background and an outline that is purple when
 focused"](assets/textfields/text-field-generic.png)
 
