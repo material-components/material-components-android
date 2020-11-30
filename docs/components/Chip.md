@@ -65,7 +65,7 @@ chip.setOnCheckedChangeListener { chip, isChecked ->
 ### Making chips accessible
 
 Chips support content labeling for accessibility and are readable by most screen
-readers, such as TalkBack. Text rendered in chipss is automatically provided to
+readers, such as TalkBack. Text rendered in chips is automatically provided to
 accessibility services. Additional content labels are usually unnecessary.
 
 #### Touch target
