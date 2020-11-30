@@ -15,10 +15,5 @@
   ~ limitations under the License.
 -->
 <resources>
-  <string name="character_counter_content_description">Eingegebene Zeichen: %1$d von %2$d</string>
-  <string name="character_counter_overflowed_content_description">Zeichenbeschränkung überschritten: %1$d/%2$d</string>
-  <string name="password_toggle_content_description">Passwort anzeigen</string>
-  <string name="clear_text_end_icon_content_description">Text löschen</string>
-  <string name="exposed_dropdown_menu_content_description">Drop-down-Menü anzeigen</string>
-  <string name="error_icon_content_description">Fehler</string>
+  <string name="item_view_role_description">タブ</string>
 </resources>
