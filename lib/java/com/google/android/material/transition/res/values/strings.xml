@@ -16,7 +16,10 @@
 -->
 <resources>
 
-  <string name="material_motion_path_linear" translatable="false">linear</string>
-  <string name="material_motion_path_arc" translatable="false">arc</string>
+  <string name="material_motion_easing_standard" translatable="false">cubic-bezier(0.4, 0.0, 0.2, 1.0)</string>
+  <string name="material_motion_easing_emphasized" translatable="false">path(M 0,0 C 0.05, 0, 0.133333, 0.06, 0.166666, 0.4 C 0.208333, 0.82, 0.25, 1, 1, 1)</string>
+  <string name="material_motion_easing_decelerate" translatable="false">cubic-bezier(0.0, 0.0, 0.2, 1.0)</string>
+  <string name="material_motion_easing_accelerate" translatable="false">cubic-bezier(0.4, 0.0, 1.0, 1.0)</string>
+  <string name="material_motion_easing_linear" translatable="false">cubic-bezier(0.0, 0.0, 1.0, 1.0)</string>
 
 </resources>

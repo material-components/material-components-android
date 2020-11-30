@@ -16,8 +16,6 @@
 
 package com.google.android.material.transition;
 
-import com.google.android.material.R;
-
 import android.animation.TimeInterpolator;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -38,7 +36,6 @@ import androidx.annotation.FloatRange;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import androidx.transition.PathMotion;
 import androidx.transition.PatternPathMotion;
 import androidx.transition.Transition;
@@ -54,10 +51,15 @@ class TransitionUtils {
 
   static final int NO_DURATION = -1;
 
+  // Constants corresponding to motionEasing* theme attr values.
   private static final String EASING_TYPE_CUBIC_BEZIER = "cubic-bezier";
   private static final String EASING_TYPE_PATH = "path";
   private static final String EASING_TYPE_FORMAT_START = "(";
   private static final String EASING_TYPE_FORMAT_END = ")";
+
+  // Constants corresponding to motionPath theme attr enum values.
+  private static final int PATH_TYPE_LINEAR = 0;
+  private static final int PATH_TYPE_ARC = 1;
 
   private TransitionUtils() {}
 
@@ -156,27 +158,25 @@ class TransitionUtils {
   static PathMotion resolveThemePath(Context context, @AttrRes int attrResId) {
     TypedValue pathValue = new TypedValue();
     if (context.getTheme().resolveAttribute(attrResId, pathValue, true)) {
-      if (pathValue.type != TypedValue.TYPE_STRING) {
-        throw new IllegalArgumentException("Motion path theme attribute must be a string");
-      }
-
-      String pathString = String.valueOf(pathValue.string);
-
-      if (isPathType(context, pathString, R.string.material_motion_path_linear)) {
-        // Default Transition PathMotion is linear; no need to override with a different PathMotion.
-        return null;
-      } else if (isPathType(context, pathString, R.string.material_motion_path_arc)) {
-        return new MaterialArcMotion();
-      } else {
+      if (pathValue.type == TypedValue.TYPE_INT_DEC) {
+        int pathInt = pathValue.data;
+        if (pathInt == PATH_TYPE_LINEAR) {
+          // Default Transition PathMotion is linear; no need to override with different PathMotion.
+          return null;
+        } else if (pathInt == PATH_TYPE_ARC) {
+          return new MaterialArcMotion();
+        } else {
+          throw new IllegalArgumentException("Invalid motion path type: " + pathInt);
+        }
+      } else if (pathValue.type == TypedValue.TYPE_STRING) {
+        String pathString = String.valueOf(pathValue.string);
         return new PatternPathMotion(PathParser.createPathFromPathData(pathString));
+      } else {
+        throw new IllegalArgumentException(
+            "Motion path theme attribute must either be an enum value or path data string");
       }
     }
     return null;
-  }
-
-  private static boolean isPathType(
-      Context context, String pathString, @StringRes int pathTypeResId) {
-    return context.getResources().getString(pathTypeResId).equals(pathString);
   }
 
   static ShapeAppearanceModel convertToRelativeCornerSizes(

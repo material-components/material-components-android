@@ -23,4 +23,6 @@
   <integer name="material_motion_duration_long_1">300</integer>
   <integer name="material_motion_duration_long_2">350</integer>
 
+  <integer name="material_motion_path" translatable="false">0</integer>
+
 </resources>

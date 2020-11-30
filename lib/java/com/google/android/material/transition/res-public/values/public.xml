@@ -43,7 +43,4 @@
   <public name="material_motion_duration_long_1" type="integer" />
   <public name="material_motion_duration_long_2" type="integer" />
 
-  <public name="material_motion_path_linear" type="string" />
-  <public name="material_motion_path_arc" type="string" />
-
 </resources>

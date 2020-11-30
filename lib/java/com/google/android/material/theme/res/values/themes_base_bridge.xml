@@ -105,7 +105,7 @@
     <item name="motionDurationLong1">@integer/material_motion_duration_long_1</item>
     <item name="motionDurationLong2">@integer/material_motion_duration_long_2</item>
 
-    <item name="motionPath">@string/material_motion_path</item>
+    <item name="motionPath">@integer/material_motion_path</item>
 
     <!-- Elevation Overlays -->
     <item name="elevationOverlayEnabled">true</item>
@@ -187,7 +187,7 @@
     <item name="motionDurationLong1">@integer/material_motion_duration_long_1</item>
     <item name="motionDurationLong2">@integer/material_motion_duration_long_2</item>
 
-    <item name="motionPath">@string/material_motion_path</item>
+    <item name="motionPath">@integer/material_motion_path</item>
 
     <!-- Elevation Overlays -->
     <item name="elevationOverlayEnabled">false</item>
@@ -252,7 +252,7 @@
     <item name="motionDurationLong1">@integer/material_motion_duration_long_1</item>
     <item name="motionDurationLong2">@integer/material_motion_duration_long_2</item>
 
-    <item name="motionPath">@string/material_motion_path</item>
+    <item name="motionPath">@integer/material_motion_path</item>
 
     <!-- Elevation Overlays -->
     <item name="elevationOverlayEnabled">false</item>
