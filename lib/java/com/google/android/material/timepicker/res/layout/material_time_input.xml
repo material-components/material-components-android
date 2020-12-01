@@ -32,7 +32,6 @@
     android:layout_width="96dp"
     android:textCursorDrawable="@drawable/material_cursor_drawable"
     android:layout_height="80dp"
-    android:paddingStart="16dp"
     android:paddingBottom="6dp"
     tools:ignore="LabelFor" />
 

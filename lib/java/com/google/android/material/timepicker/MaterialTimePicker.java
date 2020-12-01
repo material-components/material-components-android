@@ -208,6 +208,7 @@ public final class MaterialTimePicker extends DialogFragment {
           public void onDoubleTap() {
             inputMode = INPUT_MODE_KEYBOARD;
             updateInputMode(modeButton);
+            timePickerTextInputPresenter.resetChecked();
           }
         });
     textInputView = root.findViewById(R.id.material_textinput_timepicker);
@@ -305,6 +306,8 @@ public final class MaterialTimePicker extends DialogFragment {
     if (timePickerTextInputPresenter == null) {
       timePickerTextInputPresenter = new TimePickerTextInputPresenter(textInputView, time);
     }
+
+    timePickerTextInputPresenter.clearCheck();
 
     return timePickerTextInputPresenter;
   }

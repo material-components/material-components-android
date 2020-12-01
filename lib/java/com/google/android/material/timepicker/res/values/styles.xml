@@ -62,11 +62,15 @@
   <style name="Widget.MaterialComponents.TimePicker.Display.TextInputEditText" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
     <item name="android:textAppearance">?attr/textAppearanceHeadline3</item>
     <item name="android:textSize" tools:ignore="SpUsage">56dp</item>
-    <item name="android:paddingTop">0dp</item>
+    <item name="android:paddingTop">4dp</item>
     <item name="android:paddingBottom">0dp</item>
     <item name="android:inputType">number</item>
     <item name="android:maxLength">2</item>
-
+    <item name="android:textAlignment">center</item>
+    <item name="android:minEms">2</item>
+    <item name="android:gravity">center</item>
+    <item name="android:paddingStart">0dp</item>
+    <item name="android:paddingEnd">0dp</item>
   </style>
 
   <style name="Widget.MaterialComponents.TimePicker.Button" parent="Widget.MaterialComponents.Button.OutlinedButton">

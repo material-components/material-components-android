@@ -70,7 +70,7 @@ class ChipTextInputComboView extends FrameLayout implements Checkable {
     textInputLayout = (TextInputLayout) inflater.inflate(R.layout.material_time_input, this, false);
     editText = textInputLayout.getEditText();
     editText.setVisibility(INVISIBLE);
-    watcher = new HintSetterTextWatcher();
+    watcher = new TextFormatter();
     editText.addTextChangedListener(watcher);
     updateHintLocales();
     addView(chip);
@@ -98,6 +98,9 @@ class ChipTextInputComboView extends FrameLayout implements Checkable {
     chip.setVisibility(checked ? GONE : VISIBLE);
     if (isChecked()) {
       editText.requestFocus();
+      if (!TextUtils.isEmpty(editText.getText())) {
+        editText.setSelection(editText.getText().length());
+      }
     }
   }
 
@@ -108,14 +111,11 @@ class ChipTextInputComboView extends FrameLayout implements Checkable {
 
   public void setText(CharSequence text) {
     chip.setText(formatText(text));
-    EditText editText = textInputLayout.getEditText();
     if (!TextUtils.isEmpty(editText.getText())) {
       editText.removeTextChangedListener(watcher);
       editText.setText(null);
-      editText.setHint(formatText(HintSetterTextWatcher.DEFAULT_HINT));
       editText.addTextChangedListener(watcher);
     }
-    editText.setHint(formatText(text));
   }
 
   private String formatText(CharSequence text) {
@@ -155,16 +155,15 @@ class ChipTextInputComboView extends FrameLayout implements Checkable {
     ViewCompat.setAccessibilityDelegate(chip, clickActionDelegate);
   }
 
-  private class HintSetterTextWatcher extends TextWatcherAdapter {
+  private class TextFormatter extends TextWatcherAdapter {
 
-    private static final String DEFAULT_HINT = "00";
+    private static final String DEFAULT_TEXT = "00";
+
     @Override
     public void afterTextChanged(Editable editable) {
       if (TextUtils.isEmpty(editable)) {
-        setText(formatText(DEFAULT_HINT));
+        chip.setText(formatText(DEFAULT_TEXT));
         return;
-      } else {
-        textInputLayout.getEditText().setHint(null);
       }
 
       chip.setText(formatText(editable));

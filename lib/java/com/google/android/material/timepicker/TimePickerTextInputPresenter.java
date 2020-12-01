@@ -168,8 +168,6 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
     String hourFormatted = String.format(current, "%02d", time.getHourForDisplay());
     minuteTextInput.setText(minuteFormatted);
     hourTextInput.setText(hourFormatted);
-    minuteTextInput.setChecked(time.selection == MINUTE);
-    hourTextInput.setChecked(time.selection == HOUR);
     addTextWatchers();
     updateSelection();
   }
@@ -259,5 +257,15 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
     } catch (Throwable ignored) {
       // ignore use the drawable default color (black).
     }
+  }
+
+  public void resetChecked() {
+    minuteTextInput.setChecked(time.selection == MINUTE);
+    hourTextInput.setChecked(time.selection == HOUR);
+  }
+
+  public void clearCheck() {
+    minuteTextInput.setChecked(false);
+    hourTextInput.setChecked(false);
   }
 }
