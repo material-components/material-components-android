@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 The Android Open Source Project
+ * Copyright 2020 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.google.android.material.bottomnavigation;
+package com.google.android.material.navigation;
 
 import com.google.android.material.R;
 
@@ -23,6 +23,8 @@ import static com.google.common.truth.Truth.assertThat;
 import android.content.Context;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuItemImpl;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
 import androidx.test.core.app.ApplicationProvider;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,10 +32,10 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
-/** Tests for {@link BottomNavigationItemView}. */
+/** Tests for {@link NavigationBarItemView}. */
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = O)
-public final class BottomNavigationItemViewTest {
+public final class NavigationBarItemViewTest {
 
   private static final int MENU_TYPE = 0;
 
@@ -48,7 +50,7 @@ public final class BottomNavigationItemViewTest {
   public void testSetTooltip_itemHasTooltip() {
     String tooltip = "menu item tooltip";
     MenuItemImpl menuItem = createMenuItemImpl("menu item title", tooltip);
-    BottomNavigationItemView itemView = new BottomNavigationItemView(context);
+    NavigationBarItemView itemView = new NavigationBarItemTestView(context);
 
     itemView.initialize(menuItem, MENU_TYPE);
 
@@ -59,7 +61,7 @@ public final class BottomNavigationItemViewTest {
   public void testMissingTooltip_itemFallsBackToTitle() {
     String title = "menu item title";
     MenuItemImpl menuItem = createMenuItemImpl(title, null);
-    BottomNavigationItemView itemView = new BottomNavigationItemView(context);
+    NavigationBarItemView itemView = new NavigationBarItemTestView(context);
 
     itemView.initialize(menuItem, MENU_TYPE);
 
@@ -69,7 +71,7 @@ public final class BottomNavigationItemViewTest {
   @Test
   public void testSetTitle_updatesTooltip() {
     MenuItemImpl menuItem = createMenuItemImpl("menu item title", null);
-    BottomNavigationItemView itemView = new BottomNavigationItemView(context);
+    NavigationBarItemView itemView = new NavigationBarItemTestView(context);
     itemView.initialize(menuItem, MENU_TYPE);
 
     String updatedTitle = "menu item title updated";
@@ -84,5 +86,17 @@ public final class BottomNavigationItemViewTest {
     MenuItemImpl menuItem = (MenuItemImpl) builder.getItem(0);
     menuItem.setTooltipText(tooltip);
     return menuItem;
+  }
+
+  private static class NavigationBarItemTestView extends NavigationBarItemView {
+    public NavigationBarItemTestView(@NonNull Context context) {
+      super(context);
+    }
+
+    @Override
+    @LayoutRes
+    protected int getItemLayoutResId() {
+      return R.layout.test_navigation_bar_item_layout;
+    }
   }
 }

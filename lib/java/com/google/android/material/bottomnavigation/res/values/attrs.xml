@@ -20,53 +20,8 @@
   <attr name="bottomNavigationStyle" format="reference"/>
 
   <declare-styleable name="BottomNavigationView">
-    <!-- Background tint for the BottomNavigationView. -->
-    <attr name="backgroundTint"/>
-    <!-- The menu resource to inflate and populate items from. Attribute type definition is in
-         navigation package. -->
-    <attr name="menu"/>
-    <!-- Whether navigation items display with a label, without a label, or with a label during
-         selected state. Can also be "auto", which uses the item count to determine whether to show
-         or hide the label. -->
-    <attr name="labelVisibilityMode">
-      <!-- Label behaves as "labeled" when there are 3 items or less, or "selected" when there are
-           4 items or more. -->
-      <enum name="auto" value="-1"/>
-      <!-- Label is shown on the selected navigation item. -->
-      <enum name="selected" value="0"/>
-      <!-- Label is shown on all navigation items. -->
-      <enum name="labeled" value="1"/>
-      <!-- Label is not shown on any navigation items. -->
-      <enum name="unlabeled" value="2"/>
-    </attr>
-    <!-- The background for the navigation items. Attribute type definition is in navigation
-         package. -->
-    <attr name="itemBackground"/>
-    <!-- The ColorStateList to use for a ripple background. This only exists because creating
-         ripples in drawable xml based on theme colors is not supported pre-23. This will be ignored
-         if itemBackground is set.-->
-    <attr name="itemRippleColor" format="color"/>
-    <!-- The size to provide for the navigation item icons. -->
-    <attr name="itemIconSize"/>
-    <!-- The tint to apply to the navigation item icons. Attribute type definition is in navigation
-         package. -->
-    <attr name="itemIconTint"/>
-    <!-- The text appearance to apply to the inactive navigation item labels. Setting
-         android:textColor in itemTextAppearanceInactive will take precedence over android:textColor
-         in itemTextAppearanceActive. Instead, set itemTextColor with a ColorStateList to make
-         the text color stateful. -->
-    <attr name="itemTextAppearanceInactive" format="reference"/>
-    <!-- The text appearance to apply to the active navigation item label. You should not set
-         android:textColor in itemTextAppearanceActive. Instead, set itemTextColor to a
-         ColorStateList to make the text color stateful. -->
-    <attr name="itemTextAppearanceActive" format="reference"/>
-    <!-- The color to apply to the navigation items' text. Setting itemTextColor will take
-         precedence over android:textColor in itemTextAppearanceInactive or
-         itemTextAppearanceActive. Attribute type definition is in navigation package. -->
-    <attr name="itemTextColor"/>
     <!-- Whether the items translate horizontally when in "selected" label visibility mode. -->
     <attr name="itemHorizontalTranslationEnabled" format="boolean"/>
-    <attr name="elevation"/>
   </declare-styleable>
 
 </resources>

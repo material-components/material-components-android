@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2016 The Android Open Source Project
+  ~ Copyright (C) 2020 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -19,8 +19,8 @@
       android:id="@id/navigation_bar_item_icon_view"
       android:layout_width="24dp"
       android:layout_height="24dp"
-      android:layout_marginTop="@dimen/design_bottom_navigation_margin"
-      android:layout_marginBottom="@dimen/design_bottom_navigation_margin"
+      android:layout_marginTop="@dimen/mtrl_navigation_bar_item_default_margin"
+      android:layout_marginBottom="@dimen/mtrl_navigation_bar_item_default_margin"
       android:layout_gravity="center_horizontal"
       android:contentDescription="@null"
       android:duplicateParentState="true"/>
@@ -29,7 +29,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_gravity="bottom|center_horizontal"
-      android:paddingBottom="@dimen/design_bottom_navigation_label_padding"
+      android:paddingBottom="@dimen/test_navigation_bar_label_padding"
       android:clipChildren="false"
       android:clipToPadding="false"
       android:duplicateParentState="true">
@@ -40,7 +40,7 @@
         android:duplicateParentState="true"
         android:ellipsize="end"
         android:maxLines="1"
-        android:textSize="@dimen/design_bottom_navigation_text_size"/>
+        android:textSize="@dimen/test_navigation_bar_text_size"/>
     <TextView
         android:id="@id/navigation_bar_item_large_label_view"
         android:layout_width="wrap_content"
@@ -48,7 +48,7 @@
         android:duplicateParentState="true"
         android:ellipsize="end"
         android:maxLines="1"
-        android:textSize="@dimen/design_bottom_navigation_active_text_size"
+        android:textSize="@dimen/test_navigation_bar_active_text_size"
         android:visibility="invisible"/>
   </com.google.android.material.internal.BaselineLayout>
 </merge>

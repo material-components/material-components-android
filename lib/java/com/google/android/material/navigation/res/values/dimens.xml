@@ -16,6 +16,9 @@
 -->
 <resources>
 
+  <dimen name="mtrl_navigation_bar_item_default_margin">8dp</dimen>
+  <dimen name="mtrl_navigation_bar_item_default_icon_size">24dp</dimen>
+
   <!-- 5 * standard increment (56dp) -->
   <dimen name="design_navigation_max_width">280dp</dimen>
   <dimen name="design_navigation_elevation">16dp</dimen>

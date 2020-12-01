@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.android.material.bottomnavigation;
+package com.google.android.material.navigation;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
@@ -35,26 +35,31 @@ import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.badge.BadgeUtils;
 import com.google.android.material.internal.ParcelableSparseArray;
 
-/** @hide */
+/**
+ * For internal use only.
+ *
+ * @hide
+ */
 @RestrictTo(LIBRARY_GROUP)
-public class BottomNavigationPresenter implements MenuPresenter {
+public class NavigationBarPresenter implements MenuPresenter {
   private MenuBuilder menu;
-  private BottomNavigationMenuView menuView;
+  private NavigationBarMenuView menuView;
   private boolean updateSuspended = false;
   private int id;
 
-  public void setBottomNavigationMenuView(BottomNavigationMenuView menuView) {
+  public void setMenuView(@NonNull NavigationBarMenuView menuView) {
     this.menuView = menuView;
   }
 
   @Override
-  public void initForMenu(Context context, MenuBuilder menu) {
+  public void initForMenu(@NonNull Context context, @NonNull MenuBuilder menu) {
     this.menu = menu;
     menuView.initialize(this.menu);
   }
 
   @Override
-  public MenuView getMenuView(ViewGroup root) {
+  @Nullable
+  public MenuView getMenuView(@Nullable ViewGroup root) {
     return menuView;
   }
 
@@ -71,15 +76,15 @@ public class BottomNavigationPresenter implements MenuPresenter {
   }
 
   @Override
-  public void setCallback(Callback cb) {}
+  public void setCallback(@Nullable Callback cb) {}
 
   @Override
-  public boolean onSubMenuSelected(SubMenuBuilder subMenu) {
+  public boolean onSubMenuSelected(@Nullable SubMenuBuilder subMenu) {
     return false;
   }
 
   @Override
-  public void onCloseMenu(MenuBuilder menu, boolean allMenusAreClosing) {}
+  public void onCloseMenu(@Nullable MenuBuilder menu, boolean allMenusAreClosing) {}
 
   @Override
   public boolean flagActionItems() {
@@ -87,12 +92,12 @@ public class BottomNavigationPresenter implements MenuPresenter {
   }
 
   @Override
-  public boolean expandItemActionView(MenuBuilder menu, MenuItemImpl item) {
+  public boolean expandItemActionView(@Nullable MenuBuilder menu, @Nullable MenuItemImpl item) {
     return false;
   }
 
   @Override
-  public boolean collapseItemActionView(MenuBuilder menu, MenuItemImpl item) {
+  public boolean collapseItemActionView(@Nullable MenuBuilder menu, @Nullable MenuItemImpl item) {
     return false;
   }
 
@@ -116,7 +121,7 @@ public class BottomNavigationPresenter implements MenuPresenter {
   }
 
   @Override
-  public void onRestoreInstanceState(Parcelable state) {
+  public void onRestoreInstanceState(@NonNull Parcelable state) {
     if (state instanceof SavedState) {
       menuView.tryRestoreSelectedItemId(((SavedState) state).selectedItemId);
       SparseArray<BadgeDrawable> badgeDrawables =

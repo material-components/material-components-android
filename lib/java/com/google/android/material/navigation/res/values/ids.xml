@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2018 The Android Open Source Project
+  ~ Copyright 2020 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -14,14 +14,9 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-
-<!-- Definitions of attributes to be exposed as public -->
 <resources>
-  <public name="bottomNavigationStyle" type="attr"/>
-  <public name="itemHorizontalTranslationEnabled" type="attr"/>
-  <public name="hide_bottom_view_on_scroll_behavior" type="string"/>
-  <public name="Widget.Design.BottomNavigationView" type="style"/>
-  <public name="Widget.MaterialComponents.BottomNavigationView" type="style"/>
-  <public name="Widget.MaterialComponents.BottomNavigationView.Colored" type="style"/>
-  <public name="Widget.MaterialComponents.BottomNavigationView.PrimarySurface" type="style"/>
+  <item type="id" name="navigation_bar_item_icon_view" />
+  <item type="id" name="navigation_bar_item_labels_group" />
+  <item type="id" name="navigation_bar_item_small_label_view" />
+  <item type="id" name="navigation_bar_item_large_label_view" />
 </resources>

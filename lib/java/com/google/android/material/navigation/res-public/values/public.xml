@@ -18,19 +18,24 @@
 <!-- Definitions of attributes to be exposed as public -->
 <resources>
   <public name="navigationViewStyle" type="attr"/>
+
+  <public name="headerLayout" type="attr"/>
   <public name="itemBackground" type="attr"/>
+  <public name="itemHorizontalPadding" type="attr"/>
   <public name="itemTextAppearance" type="attr"/>
+  <public name="itemIconPadding" type="attr"/>
   <public name="itemIconSize" type="attr"/>
   <public name="itemIconTint" type="attr"/>
+  <public name="itemMaxLines" type="attr"/>
+  <public name="itemRippleColor" type="attr"/>
   <public name="itemShapeInsetStart" type="attr"/>
   <public name="itemShapeInsetTop" type="attr"/>
   <public name="itemShapeInsetEnd" type="attr"/>
   <public name="itemShapeInsetBottom" type="attr"/>
   <public name="itemShapeFillColor" type="attr"/>
+  <public name="itemTextAppearanceInactive" type="attr"/>
+  <public name="itemTextAppearanceActive" type="attr"/>
+  <public name="labelVisibilityMode" type="attr"/>
   <public name="menu" type="attr"/>
-  <public name="headerLayout" type="attr"/>
-  <public name="itemHorizontalPadding" type="attr"/>
-  <public name="itemIconPadding" type="attr"/>
-  <public name="itemMaxLines" type="attr"/>
   <public name="Widget.Design.NavigationView" type="style"/>
 </resources>
