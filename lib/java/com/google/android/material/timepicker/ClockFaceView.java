@@ -48,6 +48,7 @@ import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
+import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.timepicker.ClockHandView.OnRotateListener;
 
 /**
@@ -95,7 +96,9 @@ class ClockFaceView extends RadialViewGroup implements OnRotateListener {
             defStyleAttr,
             R.style.Widget_MaterialComponents_TimePicker_Clock);
     Resources res = getResources();
-    textColor = a.getColorStateList(R.styleable.ClockFaceView_clockNumberTextColor);
+    textColor =
+        MaterialResources.getColorStateList(
+            context, a, R.styleable.ClockFaceView_clockNumberTextColor);
     LayoutInflater.from(context).inflate(R.layout.material_clockface_view, this, true);
     clockHandView = findViewById(R.id.material_clock_hand);
     clockHandPadding = res.getDimensionPixelSize(R.dimen.material_clock_hand_padding);
@@ -106,12 +109,16 @@ class ClockFaceView extends RadialViewGroup implements OnRotateListener {
         new int[] {clockHandTextColor, clockHandTextColor, textColor.getDefaultColor()};
     clockHandView.addOnRotateListener(this);
 
-    int backgroundColor =
-        a.getColor(
-            R.styleable.ClockFaceView_clockFaceBackgroundColor,
-            AppCompatResources.getColorStateList(context, R.color.material_timepicker_clockface)
-                .getDefaultColor());
-    setBackgroundColor(backgroundColor);
+    int defaultBackgroundColor = AppCompatResources
+        .getColorStateList(context, R.color.material_timepicker_clockface)
+        .getDefaultColor();
+
+    ColorStateList backgroundColor =
+        MaterialResources.getColorStateList(
+            context, a, R.styleable.ClockFaceView_clockFaceBackgroundColor);
+
+    setBackgroundColor(
+        backgroundColor == null ? defaultBackgroundColor : backgroundColor.getDefaultColor());
 
     getViewTreeObserver()
         .addOnPreDrawListener(
