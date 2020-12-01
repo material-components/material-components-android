@@ -78,7 +78,9 @@ public class RangeSlider extends BaseSlider<RangeSlider, OnChangeListener, OnSli
 
   /**
    * Interface definition for a callback invoked when a slider's value is changed. This is called
-   * for all existing values to check all the current values use {@see RangeSlider#getValues()}
+   * for all existing values.
+   *
+   * To check all the current values, use {@see RangeSlider#getValues()}.
    */
   public interface OnChangeListener extends BaseOnChangeListener<RangeSlider> {}
 

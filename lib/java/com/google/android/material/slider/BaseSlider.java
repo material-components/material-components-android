@@ -815,6 +815,7 @@ abstract class BaseSlider<
 
   /**
    * Registers a callback to be invoked when the slider changes.
+   * On the RangeSlider implementation, the listener is invoked once for each value.
    *
    * @param listener The callback to run when the slider changes
    */
