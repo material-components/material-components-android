@@ -799,7 +799,9 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
       animateViewIn();
     } else {
       // Else if animations are disabled, just make view VISIBLE and call back now
-      view.setVisibility(View.VISIBLE);
+      if (view.getParent() != null) {
+        view.setVisibility(View.VISIBLE);
+      }
       onViewShown();
     }
   }
@@ -833,7 +835,9 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
         new SwipeDismissBehavior.OnDismissListener() {
           @Override
           public void onDismiss(@NonNull View view) {
-            view.setVisibility(View.GONE);
+            if (view.getParent() != null) {
+              view.setVisibility(View.GONE);
+            }
             dispatchDismiss(BaseCallback.DISMISS_EVENT_SWIPE);
           }
 
@@ -888,7 +892,9 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
               return;
             }
             // Make view VISIBLE now that we are about to start the enter animation
-            view.setVisibility(View.VISIBLE);
+            if (view.getParent() != null) {
+              view.setVisibility(View.VISIBLE);
+            }
             if (view.getAnimationMode() == ANIMATION_MODE_FADE) {
               startFadeInAnimation();
             } else {
