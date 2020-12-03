@@ -60,13 +60,19 @@ class PasswordToggleEndIconDelegate extends EndIconDelegate {
       new OnEndIconChangedListener() {
         @Override
         public void onEndIconChanged(@NonNull TextInputLayout textInputLayout, int previousIcon) {
-          EditText editText = textInputLayout.getEditText();
+          final EditText editText = textInputLayout.getEditText();
           if (editText != null && previousIcon == TextInputLayout.END_ICON_PASSWORD_TOGGLE) {
             // If the end icon was the password toggle add it back the PasswordTransformation
             // in case it might have been removed to make the password visible.
             editText.setTransformationMethod(PasswordTransformationMethod.getInstance());
             // Remove any listeners set on the edit text.
-            editText.removeTextChangedListener(textWatcher);
+            editText.post(
+                new Runnable() {
+                  @Override
+                  public void run() {
+                    editText.removeTextChangedListener(textWatcher);
+                  }
+                });
           }
         }
       };

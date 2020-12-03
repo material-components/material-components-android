@@ -160,16 +160,24 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
           textInputLayout.setEndIconVisible(true);
         }
       };
+
   @SuppressLint("ClickableViewAccessibility") // There's an accessibility delegate that handles
   // interactions with the dropdown menu.
   private final OnEndIconChangedListener endIconChangedListener =
       new OnEndIconChangedListener() {
         @Override
         public void onEndIconChanged(@NonNull TextInputLayout textInputLayout, int previousIcon) {
-          AutoCompleteTextView editText = (AutoCompleteTextView) textInputLayout.getEditText();
+          final AutoCompleteTextView editText =
+              (AutoCompleteTextView) textInputLayout.getEditText();
           if (editText != null && previousIcon == TextInputLayout.END_ICON_DROPDOWN_MENU) {
             // Remove any listeners set on the edit text.
-            editText.removeTextChangedListener(exposedDropdownEndIconTextWatcher);
+            editText.post(
+                new Runnable() {
+                  @Override
+                  public void run() {
+                    editText.removeTextChangedListener(exposedDropdownEndIconTextWatcher);
+                  }
+                });
             if (editText.getOnFocusChangeListener() == onFocusChangeListener) {
               editText.setOnFocusChangeListener(null);
             }
