@@ -1,226 +1,362 @@
-# Progress Indicator
+<!--docs:
+title: "Progress indicators"
+layout: detail
+section: components
+excerpt: "Progress indicators express an unspecified wait time or display the length of a process."
+iconId: progress_indicator
+path: /catalog/progress-indicators/
+-->
 
-Note: Due to an internal change of API, `ProgressIndicator` has been deprecated.
-It will be removed in the near future after the internal migration process.
+# Progress Indicators
 
-com.google.android.material provides an implementation of linear and circular
-progress indicator, compatible back to API 15 (Ice Cream Sandwich MR1). The
-easiest way to make use of these indicators is through `LinearProgressIndicator`
-and `CircularProgressIndicator`.
+[Progress indicators](https://material.io/components/progress-indicators)
+express an unspecified wait time or display the length of a process.
 
-## LinearProgressIndicator
+![Progress indicator hero](assets/progressindicator/indeterminate_hero.gif)
 
-`LinearProgressIndicator` is a separate implementation of linear type. It can be
-added to the layout via xml or programmatically.
+## Contents
 
-### XML
+*   [Using progress indicators](#using-progress-indicators)
+*   [Linear progress indicators](#linear-progress-indicators)
+*   [Circular progress indicators](#circular-progress-indicators)
+*   [Anatomy](#anatomy)
+*   [Theming progress indicators](#theming-progress-indicators)
 
+## Using progress indicators
+
+Before you can use Material sliders, you need to add a dependency to the
+Material Components for Android library. For more information, go to the
+[Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
+page.
+
+Progress indicators inform users about the status of ongoing processes, such as
+loading an app, submitting a form, or saving updates. They communicate an app’s
+state and indicate available actions, such as whether users can navigate away
+from the current screen.
+
+_**Note: When displaying progress for a sequence of processes, indicate overall
+progress rather than the progress of each activity.**_
+
+### Usage
+
+![determinate type composite](assets/progressindicator/determinate_composite.gif)
+
+A determinate progress indicator can added in a layout like so:
+
+```xml
+<!-- Linear progress indicator -->
+<com.google.android.material.progressindicator.LinearProgressIndicator
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
+<!-- Circular progress indicator -->
+<com.google.android.material.progressindicator.CircularProgressIndicator
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
 ```
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent">
-  <!-- ... -->
 
-  <com.google.android.material.progressindicator.LinearProgressIndicator
+![indeterminate type composite](assets/progressindicator/indeterminate_composite.gif)
+
+An indeterminate progress indicator can be added like so:
+
+```xml
+<!-- Linear progress indicator -->
+<com.google.android.material.progressindicator.LinearProgressIndicator
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:indeterminate="true" />
+<!-- Circular progress indicator -->
+<com.google.android.material.progressindicator.CircularProgressIndicator
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:id="@+id/Progress"/>
-
-  <!-- ... -->
-</FrameLayout>
+    android:indeterminate="true" />
 ```
 
-The default material style `Widget.MaterialComponents.LinearProgressIndicator`
-will be used as a determinate progress indicator. For the indeterminate mode,
-please add `android:indeterminate="true"` as the attribute.
+### Switching from indeterminate to determinate
 
-### Java
+![Switching from indeterminate to determinate](assets/progressindicator/switch_composite.gif)
 
-```java
-// An example to create a linear indeterminate progress indicator.
-import com.google.android.material.progressindicator.LinearProgressIndicator;
+Indeterminate progress indicators can smoothly transit to determinate progress
+indicators by setting the `progress` programmatically:
 
-LinearProgressIndicator indicator = new LinearProgressIndicator(getContext());
+```kt
+int progress = getLoadingProgress()
+indicator.setProgressCompat(progress, true)
 ```
 
-### Default style
+_**Note:** Once indeterminate progress indicators are switched to the
+determinate mode (or initialized as determinate), they can be set back to
+indeterminate mode via calling the `setIndeterminate(false)` method. However, in
+order to keep the smoothness of animation, they need to be set `INVISIBLE` or
+`GONE` via the `setVisibility` or `hide` methods first._
 
-The default style `Widget.MaterialComponents.LinearProgressIndicator` will
-configure the indicator to draw a linear strip with the track thickness of 4dp.
-The indicator will swipe or grow from `start` to `end` regarding the layout
-direction. No animation will be used while showing or hiding.
+### Making progress indicators accessible
 
-### Custom styling
+Progress indicators inherit accessibility support from the `ProgressBar` class
+in the framework. Please consider setting the content descriptor for use with
+screen readers.
 
-`LinearProgressIndicator` can be configured with custom values to have different
-appearance.
+That can be done in XML via the `android:contentDescription` attribute or
+programmatically like so:
 
-#### Colors
-
-The indicator color and track color can be configured by setting
-`indicatorColor` and `trackColor`. For multiple indicator color use, a color
-array can be assigned to `indicatorColor`, too. To set it programmatically, one
-can use `setIndicatorColor(int[])`.
-
-Note: `getIndicatorColor()` will always return in the form of an int array
-regardless the number of indicator colors used.
-
-#### Size and layout
-
-`LinearProgressIndicator` can configure its height by adjusting `trackThickness`.
-`trackThickness` sets the width of the track/indicator; in the linear type case,
-it's the height of the strip.
-
-Note: The width of strip depends on the view and its layout.
-
-#### Showing and hiding with animations
-
-The progress indicator can be animated in and out by calling `#show()` or
-`#hide()` actively on `LinearProgressIndicator`:
-
-```java
-// ...
-LinearProgressIndicator progress =
-    (LinearProgressIndicator) findViewById(R.id.Progress);
-progress.show();
-// ... wait until finished
-progress.hide();
+```kt
+progressIndicator.contentDescription = contentDescription
 ```
 
-The component can also be animated in when it's attached to the current window:
+### Showing/hiding the progressindicator
 
-```java
-// ...
-LinearLayout layout = (LinearLayout) findViewById(R.id.layout);
-LinearProgressIndicator progress =
-    new LinearProgressIndicator(getContext());
-// ... configures the components.
-layout.addView(progress, new LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+By default, the progress indicator will be shown or hidden without animations.
+You can change the animation behaviors via `app:showAnimationBehavior` (or
+`setShowAnimationBehavior` method) and `app:hideAnimationBehavior` (or
+`setHideAnimationBehavior` method).
+
+The modes of behaviors are:
+
+*   `none` (default) - shows/hides the view immediately when the visibility is
+    being changed via `show`, `hide` or `setVisibility` method.
+*   `outward` - for the linear type, shows the view by expanding from the
+    baseline (or bottom edge) and hides the view by collapsing to the top edge;
+    for the circular type, shows the view by expanding from the inner edge and
+    hides the view by collapsing to the outer edge.
+*   `inward` - for the linear type, shows the view by expanding from the top
+    edge and hides the view by collapsing to the baseline (bottom edge); for the
+    circular type, shows the view by expanding from the outer edge and hides the
+    view by collapsing to the inner edge.
+
+When the hide animation behavior is not none, the visibility of the view will be
+changed after the animation finishes. Please use `setVisibilityAfterHide` method
+to set the target visibility as `Visibiltiy.INVISIBLE` (default) or
+`Visibility.GONE`.
+
+### Rounded corners
+
+![rounded progress indicators](assets/progressindicator/rounded_corner_composite.png)
+
+Progress indicators can have rounded corners via `app:trackCornerRadius` or the
+`setTrackCornerRadius` method.
+
+## Types
+
+Material Design offers two visually distinct types of progress indicators:
+
+1.  [linear](#linear-progress-indicators)
+2.  [circular](#circular-progress-indicators)
+
+Only one type should represent each kind of activity in an app. For example, if
+a refresh action displays a circular indicator on one screen, that same action
+shouldn’t use a linear indicator elsewhere in the app.
+
+![Composite image of progress indicator types](assets/progressindicator/indeterminate_composite.gif)
+
+### Linear progress indicators
+
+Linear progress indicators display progress by animating an indicator along the
+length of a fixed, visible track. The behavior of the indicator is dependent on
+whether the progress of a process is known.
+
+Linear progress indicators support both determinate and indeterminate
+operations.
+
+*   Determinate operations display the indicator increasing in width from 0 to
+    100% of the track, in sync with the process’s progress.
+*   Indeterminate operations display the indicator continually growing and
+    shrinking along the track until the process is complete.
+
+Source code:
+
+*   [`LinearProgressIndicator`](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/progressindicator/LinearProgressIndicator.java)
+
+The following example shows a determinate linear progress indicator.
+
+![determinate linear progress indicator](assets/progressindicator/linear_determinate_compact.gif)
+
+In the layout:
+
+```xml
+<com.google.android.material.progressindicator.LinearProgressIndicator
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
 ```
 
-By setting the `showAnimationBehavior` and `hideAnimationBehavior`, the indicator can
-have different animation effects as follows:
+The following example shows an indeterminate linear progress indicator.
 
-<table>
-  <tr><td colspan=2>showAnimationBehavior</td></tr>
-  <tr><td>none</td><td>Appear immediately</td></tr>
-  <tr><td>upward</td><td>Expanding from the bottom edge</td></tr>
-  <tr><td>downward</td><td>Expanding from the top edge</td></tr>
-  <tr><td colspan=2>hideAnimationBehavior</td></tr>
-  <tr><td>none</td><td>Disappear immediately</td></tr>
-  <tr><td>upward</td><td>Collapsing to the top edge</td></tr>
-  <tr><td>downward</td><td>Collapsing to the bottom edge</td></tr>
-</table>
+![indeterminate linear progress indicator](assets/progressindicator/linear_indeterminate_compact.gif)
 
-## CircularProgressIndicator
+In the layout:
 
-`CircularProgressIndicator` is a separate implementation of circular type. It
-can be added to the layout via xml or programmatically.
-
-### XML
-
+```xml
+<com.google.android.material.progressindicator.LinearProgressIndicator
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:indeterminate="true" />
 ```
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent">
-  <!-- ... -->
 
-  <com.google.android.material.progressindicator.CircularProgressIndicator
+#### Multi-color indeterminate animation type
+
+For linear progress indicator, there are two indeterminate animation types:
+
+![indeterminate linear progress indicator with disjoint animation](assets/progressindicator/linear_multicolor_disjoint.gif)
+
+*   `disjoint` - animates as repeated cycles with two disjoint segments in the
+    same color at a time.
+
+![indeterminate linear progress indicator with contiguous animation](assets/progressindicator/linear_multicolor_contiguous.gif)
+
+*   `contiguous` - animates as repeated cycles with three adjacent segments in
+    iterative different colors.
+
+### Circular progress indicators
+
+Circular progress indicators display progress by animating an indicator along an
+invisible circular track in a clockwise direction. They can be applied directly
+to a surface, such as a button or card.
+
+Circular progress indicators support both determinate and indeterminate
+processes.
+
+*   Determinate circular indicators fill the invisible, circular track with
+    color, as the indicator moves from 0 to 360 degrees.
+*   Indeterminate circular indicators grow and shrink in size while moving along
+    the invisible track.
+
+Source code:
+
+*   [`CircularProgressIndicator`](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/progressindicator/CircularProgressIndicator.java)
+
+The following example shows a determinate circular progress indicator.
+
+![determinate circular progress indicator](assets/progressindicator/circular_determinate_compact.gif)
+
+In the layout:
+
+```xml
+<com.google.android.material.progressindicator.LinearProgressIndicator
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:indeterminate="true" />
+```
+
+The following example shows an indeterminate circular progress indicator.
+
+![indeterminate circular progress indicator](assets/progressindicator/circular_indeterminate_compact.gif)
+
+In the layout:
+
+```xml
+<com.google.android.material.progressindicator.CircularProgressIndicator
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:id="@+id/Progress"/>
-
-  <!-- ... -->
-</FrameLayout>
+    android:indeterminate="true" />
 ```
 
-The default material style `Widget.MaterialComponents.CircularProgressIndicator`
-will be used as a determinate progress indicator. For the indeterminate mode,
-please add `android:indeterminate="true"` as the attribute.
+### Anatomy and key properties
 
-### Java
+A progress indicator consists of a track and an indicator.
 
-```java
-// An example to create a circular indeterminate progress indicator.
-import com.google.android.material.progressindicator.CircularProgressIndicator;
+![Progress indicator anatomy composte](assets/progressindicator/anatomy.png)
 
-CircularProgressIndicator indicator = new CircularProgressIndicator(getContext());
+1.  Track
+2.  Indicator
+
+#### Common attributes
+
+The following attributes are shared between linear and circular progress
+indicators:
+
+&nbsp;                        | Attribute                   | Related method(s)                                         | Default value
+----------------------------- | --------------------------- | --------------------------------------------------------- | -------------
+**track thickness**           | `app:trackThickness`        | `setTrackThickness`</br>`getTrackThickness`               | `4dp`
+**indicator color**           | `app:indicatorColor`        | `setIndicatorColor`</br>`getIndicatorColor`               | `colorPrimary`
+**track color**               | `app:trackColor`            | `setTrackColor`</br>`getTrackColor`                       | `indicatorColor` at `disabledAlpha`
+**track corner radius**       | `app:trackCornerRadius`     | `setTrackCornerRadius`</br>`getTrackCornerRadius`         | `0dp`
+**show animation behavior**   | `app:showAnimationBehavior` | `setShowAnimationBehavior`</br>`getShowAnimationBehavior` | `none`
+**hide animation behavior**   | `app:hideAnimationBehavior` | `setHideAnimationBehavior`</br>`getHideAnimationBehavior` | `none`
+**delay (in ms) to show**     | `app:showDelay`             | N/A                                                       | 0
+**min delay (in ms) to hide** | `app:minHideDelay`          | N/A                                                       | 0
+
+#### Linear type specific attributes
+
+Linear type progress indicators also have the following attributes:
+
+&nbsp;                           | Attribute                        | Related method(s)                                                   | Default value
+-------------------------------- | -------------------------------- | ------------------------------------------------------------------- | -------------
+**indeterminate animation type** | `app:indeterminateAnimationType` | `setIndeterminateAnimationType`</br>`getIndeterminateAnimationType` | `disjoint`
+**indicator direction**          | `app:indicatorDirectionLinear`   | `setIndicatorDirection`</br>`getIndicatorDirection`                 | `leftToRight`
+
+#### Circular type specific attributes
+
+Circular type progress indicators also have the following attributes:
+
+&nbsp;                            | Attribute                        | Related method(s)                                   | Default value
+--------------------------------- | -------------------------------- | --------------------------------------------------- | -------------
+**spinner size (outer diameter)** | `app:indicatorSize`              | `setIndicatorSize`</br>`getIndicatorSize`           | `40dp`
+**inset**                         | `app:indicatorInset`             | `setIndicatorInset`</br>`getIndicatorInset`         | `4dp`
+**indicator direction**           | `app:indicatorDirectionCircular` | `setIndicatorDirection`</br>`getIndicatorDirection` | `clockwise`
+
+#### Styles
+
+| &nbsp;             | Style                                                 |
+| ------------------ | ----------------------------------------------------- |
+| **Default linear   | `Widget.MaterialComponents.LinearProgressIndicator`   |
+: style**            :                                                       :
+| **Default circular | `Widget.MaterialComponents.CircularProgressIndicator` |
+: style**            :                                                       :
+
+Default linear style theme attribute: `?attr/linearProgressIndicatorStyle`
+
+Default circular style theme attribute: `?attr/circularProgressIndicatorStyle`
+
+See the full list of
+[styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/progressindicator/res/values/styles.xml)
+and
+[attributes](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/progressindicator/res/values/attrs.xml).
+
+## Theming
+
+Progress indicators support Material theming and can be customized in terms of
+color and size.
+
+### Progress indicator theming example
+
+The following example shows a circular progress indicator with Material Theming.
+
+!["Circular progress indicator example with pink color."](assets/progressindicator/circular_theming.gif)
+
+#### Implementing progress indicator theming
+
+Using theme attributes and style sin `res/values/styles.xml` (themes all
+circular progress indicators and affects other components):
+
+```xml
+<style name="Theme.App" parent="Theme.MaterialComponents.*">
+    ...
+    <item name="colorPrimary">@color/shrine_pink_100</item>
+</style>
 ```
 
-### Default style
+or using a default stype theme attribute, styles and a theme overlay (themes all
+circular progress indicators but does not affect other components):
 
-The default style `Widget.MaterialComponents.CircularProgressIndicator` will
-configure the indicator to draw a circular (or partial) ring with the track
-thickness of 4dp. The indicator size is 40dp measured as the outer edge. There
-is also 4dp inset added on all sides. The indicator will spin or grow clockwise
-regardless the layout direction. No animation will be used while showing or
-hiding.
+```xml
+<style name="Theme.App" parent="Theme.MaterialComponents.*">
+    ...
+    <item name="circularProgressIndicatorStyle">@style/Widget.App.CircularProgressIndicator</item>
+</style>
 
-### Custom styling
+<style name="Widget.App.CircularProgressIndicator" parent="Widget.MaterialComponents.CircularProgressIndicator">
+    <item name="materialThemeOverlay">@style/ThemeOverlay.App.CircularProgressIndicator</item>
+    <item name="trackThickness">20dp</item>
+</style>
 
-`CircularProgressIndicator` can be configured with custom values to have
-different appearance.
-
-#### Colors
-
-Same as `LinearProgressIndicator`.
-
-#### Size and layout
-
-`CircularProgressIndicator` can configure its size by adjusting
-`trackThickness`, `indicatorSize`, and `indicatorInset`. `trackThickness` sets
-the thickness of the track/indicator. `indicatorSize` sets the size of the ring
-by the diameter of the outer edge. `indicatorInset` gives an extra space between
-the outer edge to the drawable's bounds.
-
-Note: If the `trackThickness` is greater than the half of the `indicatorSize`,
-`IllegalArgumentException` will be thrown during initialization.
-
-#### Showing and hiding with animations
-
-The progress indicator can be animated in and out by calling `#show()` or
-`#hide()` actively on `CircularProgressIndicator`:
-
-```java
-// ...
-CircularProgressIndicator progress =
-    (CircularProgressIndicator) findViewById(R.id.Progress);
-progress.show();
-// ... wait until finished
-progress.hide();
+<style name="ThemeOverlay.App.CircularProgressIndicator" parent="">
+    <item name="colorPrimary">@color/shrine_pink_100</item>
+</style>
 ```
 
-The component can also be animated in when it's attached to the current window:
+or using the style in the layout (affects only this specific circular progress
+indicator):
 
-```java
-// ...
-LinearLayout layout = (LinearLayout) findViewById(R.id.layout);
-CircularProgressIndicator progress =
-    new CircularProgressIndicator(getContext());
-// ... configures the components.
-layout.addView(progress, new LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+```xml
+<com.google.android.material.progressindicator.CircularProgressIndicator
+    ...
+    style="@style/Widget.App.CircularProgressIndicator"  />
 ```
-
-By setting the `showAnimationBehavior` and `hideAnimationBehavior`, the indicator
-can have different animation effects as follows:
-
-<table>
-  <tr><td colspan=2>showAnimationBehavior</td></tr>
-  <tr><td>none</td><td>Appear immediately</td></tr>
-  <tr><td>inward</td><td>Expanding from the outer edge</td></tr>
-  <tr><td>outward</td><td>Expanding from the inner edge</td></tr>
-  <tr><td colspan=2>hideAnimationBehavior</td></tr>
-  <tr><td>none</td><td>Disappear immediately</td></tr>
-  <tr><td>inward</td><td>Collapsing to the inner edge</td></tr>
-  <tr><td>outward</td><td>Collapsing to the outer edge</td></tr>
-</table>
-
-## Caveats
-
-`CircularProgressIndicator` and `LinearProgressIndicator` are final. For more
-customized appearances, please consider to implement custom `DrawingDelegate`
-and `IndetermianteAnimatorDelegate` and inherit from the `BaseProgressIndicator`.
