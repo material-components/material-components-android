@@ -31,10 +31,10 @@ import com.google.android.material.color.MaterialColors;
 import com.google.android.material.math.MathUtils;
 
 /**
- * This is the implementation class for drawing progress indicator in the linear seamless
+ * This is the implementation class for drawing progress indicator in the linear contiguous
  * indeterminate mode.
  */
-final class LinearIndeterminateSeamlessAnimatorDelegate
+final class LinearIndeterminateContiguousAnimatorDelegate
     extends IndeterminateAnimatorDelegate<AnimatorSet> {
 
   // Constants for animation timing.
@@ -44,7 +44,7 @@ final class LinearIndeterminateSeamlessAnimatorDelegate
   // The general spec.
   private final BaseProgressIndicatorSpec baseSpec;
 
-  // The animator controls seamless linear indeterminate animation.
+  // The animator controls contiguous linear indeterminate animation.
   private AnimatorSet animatorSet;
 
   // Internal parameters controlled by the animator.
@@ -52,7 +52,7 @@ final class LinearIndeterminateSeamlessAnimatorDelegate
   private float lineConnectPoint1Fraction;
   private float lineConnectPoint2Fraction;
 
-  public LinearIndeterminateSeamlessAnimatorDelegate(@NonNull LinearProgressIndicatorSpec spec) {
+  public LinearIndeterminateContiguousAnimatorDelegate(@NonNull LinearProgressIndicatorSpec spec) {
     super(/*segmentCount=*/ 3);
 
     baseSpec = spec;
@@ -126,7 +126,7 @@ final class LinearIndeterminateSeamlessAnimatorDelegate
 
   @Override
   public void resetPropertiesForNextCycle() {
-    // In seamless mode, there's no concept of cycle. This is left as blank in purpose.
+    // In contiguous type, there's no concept of cycle. This is left as blank in purpose.
   }
 
   @Override
@@ -138,7 +138,7 @@ final class LinearIndeterminateSeamlessAnimatorDelegate
 
   @Override
   public void requestCancelAnimatorAfterCurrentCycle() {
-    // In seamless mode, there's no concept of cycle. This is left as blank in purpose.
+    // In contiguous type, there's no concept of cycle. This is left as blank in purpose.
   }
 
   @Override
@@ -148,12 +148,12 @@ final class LinearIndeterminateSeamlessAnimatorDelegate
 
   @Override
   public void registerAnimatorsCompleteCallback(@Nullable AnimationCallback callback) {
-    // In seamless mode, indeterminate mode cannot be switched. This is left as blank in purpose.
+    // In contiguous type, indeterminate mode cannot be switched. This is left as blank in purpose.
   }
 
   @Override
   public void unregisterAnimatorsCompleteCallback() {
-    // In seamless mode, indeterminate mode cannot be switched. This is left as blank in purpose.
+    // In contiguous type, indeterminate mode cannot be switched. This is left as blank in purpose.
   }
 
   // ******************* Helper methods *******************
@@ -229,45 +229,45 @@ final class LinearIndeterminateSeamlessAnimatorDelegate
   // ******************* Properties *******************
 
   /**
-   * The property controlled by the main animator for seamless mode. It indicates the ratio to the
+   * The property controlled by the main animator in contiguous type. It indicates the ratio to the
    * total track width of the distance between the left (right when inverse) end of the track and
    * the connecting position of one side line and the central line.
    *
    * @see #LINE_CONNECT_POINT_2_FRACTION
    */
-  private static final Property<LinearIndeterminateSeamlessAnimatorDelegate, Float>
+  private static final Property<LinearIndeterminateContiguousAnimatorDelegate, Float>
       LINE_CONNECT_POINT_1_FRACTION =
-          new Property<LinearIndeterminateSeamlessAnimatorDelegate, Float>(
+          new Property<LinearIndeterminateContiguousAnimatorDelegate, Float>(
               Float.class, "lineConnectPoint1Fraction") {
             @Override
-            public Float get(LinearIndeterminateSeamlessAnimatorDelegate drawable) {
+            public Float get(LinearIndeterminateContiguousAnimatorDelegate drawable) {
               return drawable.getLineConnectPoint1Fraction();
             }
 
             @Override
-            public void set(LinearIndeterminateSeamlessAnimatorDelegate drawable, Float value) {
+            public void set(LinearIndeterminateContiguousAnimatorDelegate drawable, Float value) {
               drawable.setLineConnectPoint1Fraction(value);
             }
           };
 
   /**
-   * The property controlled by the main animator for seamless mode. It indicates the ratio to the
+   * The property controlled by the main animator in contiguous type. It indicates the ratio to the
    * total track width of the distance between the left (right when inverse) end of the track and
    * the connecting position of the other side line to the central line.
    *
    * @see #LINE_CONNECT_POINT_1_FRACTION
    */
-  private static final Property<LinearIndeterminateSeamlessAnimatorDelegate, Float>
+  private static final Property<LinearIndeterminateContiguousAnimatorDelegate, Float>
       LINE_CONNECT_POINT_2_FRACTION =
-          new Property<LinearIndeterminateSeamlessAnimatorDelegate, Float>(
+          new Property<LinearIndeterminateContiguousAnimatorDelegate, Float>(
               Float.class, "lineConnectPoint2Fraction") {
             @Override
-            public Float get(LinearIndeterminateSeamlessAnimatorDelegate drawable) {
+            public Float get(LinearIndeterminateContiguousAnimatorDelegate drawable) {
               return drawable.getLineConnectPoint2Fraction();
             }
 
             @Override
-            public void set(LinearIndeterminateSeamlessAnimatorDelegate drawable, Float value) {
+            public void set(LinearIndeterminateContiguousAnimatorDelegate drawable, Float value) {
               drawable.setLineConnectPoint2Fraction(value);
             }
           };

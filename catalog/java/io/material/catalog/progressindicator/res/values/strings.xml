@@ -98,9 +98,9 @@
       description="A right-to-left linear progress indicator anchoring at the bottom edge with multiple colors [CHAR LIMIT=NONE]">
     Multiple color right-to-left linear, anchoring at the bottom edge
   </string>
-  <string name="cat_progress_indicator_right_to_left_linear_multiple_colors_anchored_bottom_seamless_animation"
-      description="A right-to-left linear progress indicator anchoring at the bottom edge with multiple colors and seamless animation [CHAR LIMIT=NONE]">
-    Multiple color right-to-left linear with seamless animation, anchoring at the bottom edge
+  <string name="cat_progress_indicator_right_to_left_linear_multiple_colors_anchored_bottom_contiguous_animation"
+      description="A right-to-left linear progress indicator anchoring at the bottom edge with multiple colors and contiguous animation [CHAR LIMIT=NONE]">
+    Multiple color right-to-left linear with contiguous animation, anchoring at the bottom edge
   </string>
 
   <string name="cat_progress_indicator_clockwise_circular_single_color"

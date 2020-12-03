@@ -81,7 +81,7 @@ public final class LinearProgressIndicatorSpec extends BaseProgressIndicatorSpec
     indeterminateAnimationType =
         a.getInt(
             R.styleable.LinearProgressIndicator_indeterminateAnimationType,
-            LinearProgressIndicator.INDETERMINATE_ANIMATION_TYPE_SPACING);
+            LinearProgressIndicator.INDETERMINATE_ANIMATION_TYPE_DISJOINT);
     indicatorDirection =
         a.getInt(
             R.styleable.LinearProgressIndicator_indicatorDirectionLinear,
@@ -97,18 +97,18 @@ public final class LinearProgressIndicatorSpec extends BaseProgressIndicatorSpec
   @Override
   void validateSpec() {
     if (indeterminateAnimationType
-        == LinearProgressIndicator.INDETERMINATE_ANIMATION_TYPE_SEAMLESS) {
+        == LinearProgressIndicator.INDETERMINATE_ANIMATION_TYPE_CONTIGUOUS) {
       if (trackCornerRadius > 0) {
-        // Throws an exception if trying to use the cornered indicator/track with seamless
+        // Throws an exception if trying to use the cornered indicator/track with contiguous
         // indeterminate animation type.
         throw new IllegalArgumentException(
-            "Rounded corners are not supported in seamless indeterminate animation.");
+            "Rounded corners are not supported in contiguous indeterminate animation.");
       }
       if (indicatorColors.length < 3) {
-        // Throws an exception if trying to set seamless indeterminate animation with less than 3
+        // Throws an exception if trying to set contiguous indeterminate animation with less than 3
         // indicator colors.
         throw new IllegalArgumentException(
-            "Seamless indeterminate animation must be used with 3 or more indicator colors.");
+            "Contiguous indeterminate animation must be used with 3 or more indicator colors.");
       }
     }
   }

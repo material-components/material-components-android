@@ -53,8 +53,8 @@ public final class LinearProgressIndicator
     extends BaseProgressIndicator<LinearProgressIndicatorSpec> {
   public static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_LinearProgressIndicator;
 
-  public static final int INDETERMINATE_ANIMATION_TYPE_SEAMLESS = 0;
-  public static final int INDETERMINATE_ANIMATION_TYPE_SPACING = 1;
+  public static final int INDETERMINATE_ANIMATION_TYPE_CONTIGUOUS = 0;
+  public static final int INDETERMINATE_ANIMATION_TYPE_DISJOINT = 1;
 
   public static final int INDICATOR_DIRECTION_LEFT_TO_RIGHT = 0;
   public static final int INDICATOR_DIRECTION_RIGHT_TO_LEFT = 1;
@@ -126,7 +126,7 @@ public final class LinearProgressIndicator
    *
    * @param indicatorColors The new colors used in indicator.
    * @throws IllegalArgumentException if there are less than 3 indicator colors when
-   *     indeterminateAnimationType is {@link #INDETERMINATE_ANIMATION_TYPE_SEAMLESS}.
+   *     indeterminateAnimationType is {@link #INDETERMINATE_ANIMATION_TYPE_CONTIGUOUS}.
    */
   @Override
   public void setIndicatorColor(@NonNull int... indicatorColors) {
@@ -139,7 +139,7 @@ public final class LinearProgressIndicator
    *
    * @param trackCornerRadius The new corner radius in pixels.
    * @throws IllegalArgumentException if trackCornerRadius is not zero, when
-   *     indeterminateAnimationType is {@link #INDETERMINATE_ANIMATION_TYPE_SEAMLESS}.
+   *     indeterminateAnimationType is {@link #INDETERMINATE_ANIMATION_TYPE_CONTIGUOUS}.
    */
   @Override
   public void setTrackCornerRadius(int trackCornerRadius) {
@@ -179,12 +179,12 @@ public final class LinearProgressIndicator
     }
     spec.indeterminateAnimationType = indeterminateAnimationType;
     spec.validateSpec();
-    if (indeterminateAnimationType == INDETERMINATE_ANIMATION_TYPE_SEAMLESS) {
+    if (indeterminateAnimationType == INDETERMINATE_ANIMATION_TYPE_CONTIGUOUS) {
       getIndeterminateDrawable()
-          .setAnimatorDelegate(new LinearIndeterminateSeamlessAnimatorDelegate(spec));
+          .setAnimatorDelegate(new LinearIndeterminateContiguousAnimatorDelegate(spec));
     } else {
       getIndeterminateDrawable()
-          .setAnimatorDelegate(new LinearIndeterminateSpacingAnimatorDelegate(getContext(), spec));
+          .setAnimatorDelegate(new LinearIndeterminateDisjointAnimatorDelegate(getContext(), spec));
     }
     invalidate();
   }
@@ -223,8 +223,8 @@ public final class LinearProgressIndicator
   /**
    * Sets the current progress to the specified value with/without animation based on the input.
    *
-   * <p>If it's in the indeterminate mode and using non-seamless animation, it will smoothly
-   * transition to determinate mode by finishing the current indeterminate animation cycle.
+   * <p>If it's in the indeterminate mode and using disjoint animation, it will smoothly transition
+   * to determinate mode by finishing the current indeterminate animation cycle.
    *
    * @param progress The new progress value.
    * @param animated Whether to update the progress with the animation.
@@ -232,8 +232,9 @@ public final class LinearProgressIndicator
    */
   @Override
   public void setProgressCompat(int progress, boolean animated) {
-    // Doesn't support to switching into determinate mode while seamless animation is used.
-    if (spec != null && spec.indeterminateAnimationType == INDETERMINATE_ANIMATION_TYPE_SEAMLESS
+    // Doesn't support to switching into determinate mode while disjoint animation is used.
+    if (spec != null
+        && spec.indeterminateAnimationType == INDETERMINATE_ANIMATION_TYPE_CONTIGUOUS
         && isIndeterminate()) {
       return;
     }
@@ -244,7 +245,7 @@ public final class LinearProgressIndicator
 
   /** @hide */
   @RestrictTo(Scope.LIBRARY_GROUP)
-  @IntDef({INDETERMINATE_ANIMATION_TYPE_SEAMLESS, INDETERMINATE_ANIMATION_TYPE_SPACING})
+  @IntDef({INDETERMINATE_ANIMATION_TYPE_CONTIGUOUS, INDETERMINATE_ANIMATION_TYPE_DISJOINT})
   @Retention(RetentionPolicy.SOURCE)
   public @interface IndeterminateAnimationType {}
 
