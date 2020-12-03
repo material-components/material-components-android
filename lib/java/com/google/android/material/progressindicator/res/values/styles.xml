@@ -20,7 +20,7 @@
     <item name="android:indeterminateOnly">false</item>
   </style>
   <style name="Widget.MaterialComponents.LinearProgressIndicator" parent="Widget.MaterialComponents.ProgressIndicator">
-    <item name="indeterminateAnimationType">spacing</item>
+    <item name="indeterminateAnimationType">disjoint</item>
     <item name="indicatorDirectionLinear">startToEnd</item>
   </style>
   <style name="Widget.MaterialComponents.CircularProgressIndicator" parent="Widget.MaterialComponents.ProgressIndicator">

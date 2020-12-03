@@ -59,9 +59,9 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
         /*baseSpec=*/ spec,
         new LinearDrawingDelegate(spec),
         spec.indeterminateAnimationType
-                == LinearProgressIndicator.INDETERMINATE_ANIMATION_TYPE_SEAMLESS
-            ? new LinearIndeterminateSeamlessAnimatorDelegate(spec)
-            : new LinearIndeterminateSpacingAnimatorDelegate(context, spec));
+                == LinearProgressIndicator.INDETERMINATE_ANIMATION_TYPE_CONTIGUOUS
+            ? new LinearIndeterminateContiguousAnimatorDelegate(spec)
+            : new LinearIndeterminateDisjointAnimatorDelegate(context, spec));
   }
 
   /**

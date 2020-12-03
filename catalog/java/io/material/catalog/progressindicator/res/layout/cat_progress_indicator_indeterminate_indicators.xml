@@ -55,13 +55,13 @@
   <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="@string/cat_progress_indicator_right_to_left_linear_multiple_colors_anchored_bottom_seamless_animation"/>
+      android:text="@string/cat_progress_indicator_right_to_left_linear_multiple_colors_anchored_bottom_contiguous_animation"/>
   <com.google.android.material.progressindicator.LinearProgressIndicator
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:indeterminate="true"
       app:indicatorColor="@array/cat_custom_progress_colors"
-      app:indeterminateAnimationType="seamless"
+      app:indeterminateAnimationType="contiguous"
       app:indicatorDirectionLinear="rightToLeft"
       app:showAnimationBehavior="outward"
       app:hideAnimationBehavior="inward"/>

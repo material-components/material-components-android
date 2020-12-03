@@ -32,10 +32,10 @@ import com.google.android.material.color.MaterialColors;
 import java.util.Arrays;
 
 /**
- * This is the implementation class for drawing progress indicator in the linear non-seamless
+ * This is the implementation class for drawing progress indicator in the linear disjoint
  * indeterminate mode.
  */
-final class LinearIndeterminateSpacingAnimatorDelegate
+final class LinearIndeterminateDisjointAnimatorDelegate
     extends IndeterminateAnimatorDelegate<AnimatorSet> {
 
   // Constants for animation timing.
@@ -52,7 +52,7 @@ final class LinearIndeterminateSpacingAnimatorDelegate
   // The base spec.
   private final BaseProgressIndicatorSpec baseSpec;
 
-  // The animator controls non-seamless linear indeterminate animation.
+  // The animator controls disjoint linear indeterminate animation.
   private AnimatorSet animatorSet;
 
   // Internal parameters controlled by the animator.
@@ -66,7 +66,7 @@ final class LinearIndeterminateSpacingAnimatorDelegate
   boolean animatorCompleteEndRequested = false;
   AnimationCallback animatorCompleteCallback = null;
 
-  public LinearIndeterminateSpacingAnimatorDelegate(
+  public LinearIndeterminateDisjointAnimatorDelegate(
       @NonNull Context context, @NonNull LinearProgressIndicatorSpec spec) {
     super(/*segmentCount=*/ 2);
 
@@ -261,81 +261,81 @@ final class LinearIndeterminateSpacingAnimatorDelegate
   // ******************* Properties *******************
 
   /**
-   * The property controlled by the main animator for non seamless mode. It indicates the ratio to
-   * the total track width of the distance between the left (right when inverse) end of the track
-   * and the right (left) end of the first line.
+   * The property controlled by the main animator in disjoint type. It indicates the ratio to the
+   * total track width of the distance between the left (right when inverse) end of the track and
+   * the right (left) end of the first line.
    */
-  private static final Property<LinearIndeterminateSpacingAnimatorDelegate, Float>
+  private static final Property<LinearIndeterminateDisjointAnimatorDelegate, Float>
       LINE_1_HEAD_FRACTION =
-          new Property<LinearIndeterminateSpacingAnimatorDelegate, Float>(
+          new Property<LinearIndeterminateDisjointAnimatorDelegate, Float>(
               Float.class, "line1HeadFraction") {
             @Override
-            public Float get(LinearIndeterminateSpacingAnimatorDelegate drawable) {
+            public Float get(LinearIndeterminateDisjointAnimatorDelegate drawable) {
               return drawable.getLine1HeadFraction();
             }
 
             @Override
-            public void set(LinearIndeterminateSpacingAnimatorDelegate drawable, Float value) {
+            public void set(LinearIndeterminateDisjointAnimatorDelegate drawable, Float value) {
               drawable.setLine1HeadFraction(value);
             }
           };
 
   /**
-   * The property controlled by the main animator for non seamless mode. It indicates the ratio to
-   * the total track width of the distance between the left (right when inverse) end of the track
-   * and the left (right) end of the first line.
+   * The property controlled by the main animator in disjoint type. It indicates the ratio to the
+   * total track width of the distance between the left (right when inverse) end of the track and
+   * the left (right) end of the first line.
    */
-  private static final Property<LinearIndeterminateSpacingAnimatorDelegate, Float>
+  private static final Property<LinearIndeterminateDisjointAnimatorDelegate, Float>
       LINE_1_TAIL_FRACTION =
-          new Property<LinearIndeterminateSpacingAnimatorDelegate, Float>(
+          new Property<LinearIndeterminateDisjointAnimatorDelegate, Float>(
               Float.class, "line1TailFraction") {
             @Override
-            public Float get(LinearIndeterminateSpacingAnimatorDelegate drawable) {
+            public Float get(LinearIndeterminateDisjointAnimatorDelegate drawable) {
               return drawable.getLine1TailFraction();
             }
 
             @Override
-            public void set(LinearIndeterminateSpacingAnimatorDelegate drawable, Float value) {
+            public void set(LinearIndeterminateDisjointAnimatorDelegate drawable, Float value) {
               drawable.setLine1TailFraction(value);
             }
           };
 
   /**
-   * The property controlled by the main animator for non seamless mode. It indicates the ratio to
-   * the total track width of the distance between the left (right when inverse) end of the track
-   * and the right (left) end of the second line.
+   * The property controlled by the main animator in disjoint type. It indicates the ratio to the
+   * total track width of the distance between the left (right when inverse) end of the track and
+   * the right (left) end of the second line.
    */
-  private static final Property<LinearIndeterminateSpacingAnimatorDelegate, Float>
+  private static final Property<LinearIndeterminateDisjointAnimatorDelegate, Float>
       LINE_2_HEAD_FRACTION =
-          new Property<LinearIndeterminateSpacingAnimatorDelegate, Float>(
+          new Property<LinearIndeterminateDisjointAnimatorDelegate, Float>(
               Float.class, "line2HeadFraction") {
             @Override
-            public Float get(LinearIndeterminateSpacingAnimatorDelegate drawable) {
+            public Float get(LinearIndeterminateDisjointAnimatorDelegate drawable) {
               return drawable.getLine2HeadFraction();
             }
 
             @Override
-            public void set(LinearIndeterminateSpacingAnimatorDelegate drawable, Float value) {
+            public void set(LinearIndeterminateDisjointAnimatorDelegate drawable, Float value) {
               drawable.setLine2HeadFraction(value);
             }
           };
 
   /**
-   * The property controlled by the main animator for non seamless mode. It indicates the ratio to
-   * the total track width of the distance between the left (right when inverse) end of the track
-   * and the left (right) end of the second line.
+   * The property controlled by the main animator in disjoint type. It indicates the ratio to the
+   * total track width of the distance between the left (right when inverse) end of the track and
+   * the left (right) end of the second line.
    */
-  private static final Property<LinearIndeterminateSpacingAnimatorDelegate, Float>
+  private static final Property<LinearIndeterminateDisjointAnimatorDelegate, Float>
       LINE_2_TAIL_FRACTION =
-          new Property<LinearIndeterminateSpacingAnimatorDelegate, Float>(
+          new Property<LinearIndeterminateDisjointAnimatorDelegate, Float>(
               Float.class, "line2TailFraction") {
             @Override
-            public Float get(LinearIndeterminateSpacingAnimatorDelegate drawable) {
+            public Float get(LinearIndeterminateDisjointAnimatorDelegate drawable) {
               return drawable.getLine2TailFraction();
             }
 
             @Override
-            public void set(LinearIndeterminateSpacingAnimatorDelegate drawable, Float value) {
+            public void set(LinearIndeterminateDisjointAnimatorDelegate drawable, Float value) {
               drawable.setLine2TailFraction(value);
             }
           };
