@@ -9,6 +9,8 @@ path: /catalog/bottom-sheet-behavior/
 
 # Bottom Sheets
 
+## Using standard bottom sheets
+
 `BottomSheetBehavior` is applied to a child of
 [CoordinatorLayout](https://developer.android.com/reference/androidx/coordinatorlayout/widget/CoordinatorLayout)
 to make that child a **persistent bottom sheet**.

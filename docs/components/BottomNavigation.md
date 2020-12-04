@@ -14,7 +14,7 @@ allow movement between primary destinations in an app.
 
 !["Bottom navigation bar with 4 icons"](assets/bottomnav/bottomnav_hero.png)
 
-## Contents
+**Contents**
 
 *   [Using bottom navigation](#using-bottom-navigation)
 *   [Bottom navigation bar](#bottom-navigation-bar)

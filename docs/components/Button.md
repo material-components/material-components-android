@@ -14,7 +14,7 @@ and make choices, with a single tap.
 
 !["Button on a screen"](assets/buttons/buttons_hero.png)
 
-## Contents
+**Contents**
 
 *   [Using buttons](#using-buttons)
 *   [Text button](#text-button)

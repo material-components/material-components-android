@@ -14,7 +14,7 @@ information and actions relating to the current screen.
 
 !["Top app bar on a screen"](assets/topappbar/topappbar_hero.png)
 
-## Contents
+**Contents**
 
 *   [Using top app bars](#using-top-app-bars)
 *   [Regular top app bar](#regular-top-app-bar)

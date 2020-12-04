@@ -14,7 +14,7 @@ navigation and key actions at the bottom of mobile screens.
 
 ![Example bottom app bar with inset floating action button](assets/bottomappbar/bottom-app-bar-hero.png)
 
-## Contents
+**Contents**
 
 *   [Using bottom app bars](#using-bottom-app-bars)
 *   [Bottom app bar](#bottom-app-bar)

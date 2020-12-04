@@ -9,6 +9,8 @@ path: /catalog/navigation-view/
 
 # Navigation Views
 
+## Using navigation drawers
+
 `NavigationView` is an easy way to display a navigation menu from a menu
 resource.
 

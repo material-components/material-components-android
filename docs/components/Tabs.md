@@ -14,7 +14,7 @@ screens, data sets, and other interactions.
 
 ![Tab types](assets/tabs/tabs-types.png)
 
-## Contents
+**Contents**
 
 *   [Using tabs](#using-sliders)
 *   [Fixed tabs](#fixed-tabs)

@@ -14,7 +14,7 @@ edit text.
 
 !["Text fields on a screen"](assets/textfields/textfields_hero.png)
 
-## Contents
+**Contents**
 
 *   [Using text fields](#using-text-fields)
 *   [Filled text field](#filled-text-field)

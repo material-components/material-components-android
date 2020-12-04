@@ -14,7 +14,7 @@ a single subject.
 
 !["Cards with text, numbers, graph, and a chart"](assets/cards/cards_hero.png)
 
-## Contents
+**Contents**
 
 *   [Using cards](#using-cards)
 *   [Card](#card)

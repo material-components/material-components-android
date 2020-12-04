@@ -20,7 +20,7 @@ Use checkboxes to:
 
 ![Checkbox hero example for menu options](assets/checkbox/checkbox_hero.png)
 
-## Contents
+**Contents**
 
 *   [Using checkboxes](#using-checkboxes)
 *   [Checkbox](#checkbox)

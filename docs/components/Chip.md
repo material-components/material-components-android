@@ -13,7 +13,7 @@ represent an input, attribute, or action.
 
 ![Hero image of an input chip](assets/chips/chips_hero.png)
 
-## Contents
+**Contents**
 
 *   [Using chips](#using-chips)
 *   [Input chip](#input-chip)

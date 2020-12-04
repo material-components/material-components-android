@@ -14,7 +14,7 @@ about app processes at the bottom of the screen.
 
 ![Snackbars hero image](assets/snackbar/snackbar_hero.png)
 
-## Contents
+**Contents**
 
 *   [Using snackbars](#using-snackbars)
 *   [Snackbar](#snackbar)

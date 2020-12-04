@@ -11,7 +11,7 @@ path: /catalog/picker/
 
 Date Pickers allow users to select a single date or date range.
 
-## Design
+**Design**
 
 [Material Design: Pickers](https://material.io/design/components/pickers.html)
 

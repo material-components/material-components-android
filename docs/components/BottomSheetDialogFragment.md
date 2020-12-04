@@ -9,6 +9,8 @@ path: /catalog/bottom-sheet-dialog-fragment/
 
 # Modal Bottom Sheets
 
+## Using modal bottom sheets
+
 `BottomSheetDialogFragment` is a thin layer on top of the regular support
 library Fragment that renders your fragment as a **modal bottom sheet**,
 fundamentally acting as a dialog.

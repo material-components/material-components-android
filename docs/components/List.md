@@ -11,19 +11,19 @@ path: /catalog/lists/
 
 Lists are continuous, vertical indexes of text or images.
 
-## Design
+**Design**
 
 [Material Design guidelines: Lists](https://material.io/go/design-lists)
 
-## Single-line list
+**Single-line list**
 
 Single-line list items contain a maximum of one line of text.
 
-## Two-line list
+**Two-line list**
 
 Two-line list items contain a maximum of two lines of text.
 
-## Three-line list
+**Three-line list**
 
 Three-line list items contains a maximum of three lines of text.
 

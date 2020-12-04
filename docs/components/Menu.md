@@ -14,7 +14,7 @@ temporary surfaces.
 
 ![Menu hero example showing two cascading menus](assets/menu/menus_hero.png)
 
-## Contents
+**Contents**
 
 *   [Using menus](#using-menus)
 *   [Dropdown menus](#dropdown-menus)

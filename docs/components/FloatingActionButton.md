@@ -15,7 +15,7 @@ represents the primary action of a screen.
 
 !["A FAB on a screen"](assets/fabs/fab_hero.png)
 
-## Contents
+**Contents**
 
 *   [Using FABs](#using-fabs)
 *   [Regular FABs](#regular-fabs)

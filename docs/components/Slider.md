@@ -14,7 +14,7 @@ selections from a range of values.
 
 !["Slider with sound icon buttons on each end."](assets/slider/slider_hero.png)
 
-## Contents
+**Contents**
 
 *   [Using sliders](#using-sliders)
 *   [Continuous slider](#continuous-slider)

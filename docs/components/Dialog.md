@@ -14,7 +14,7 @@ can contain critical information, require decisions, or involve multiple tasks.
 
 !["Dialog to confirm settings centered in a screen"](assets/dialogs/dialogs_hero.png)
 
-## Contents
+**Contents**
 
 *   [Using dialogs](#using-dialogs)
 *   [Alert dialog](#alert-dialog)

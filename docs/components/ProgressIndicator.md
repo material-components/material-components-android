@@ -14,7 +14,7 @@ express an unspecified wait time or display the length of a process.
 
 ![Progress indicator hero](assets/progressindicator/indeterminate_hero.gif)
 
-## Contents
+**Contents**
 
 *   [Using progress indicators](#using-progress-indicators)
 *   [Linear progress indicators](#linear-progress-indicators)

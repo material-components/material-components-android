@@ -11,7 +11,7 @@ path: /catalog/time-pickers/
 
 Time Pickers allow users to select a single time.
 
-## Design
+**Design**
 
 [Material Design: Time Picker](https://material.io/components/time-pickers)
 

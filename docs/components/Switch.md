@@ -17,7 +17,7 @@ way to adjust settings on mobile.
 
 ![Switch hero example for menu options](assets/switch/switch_hero.png)
 
-## Contents
+**Contents**
 
 *   [Using switches](#using-switches)
 *   [Switch](#switch)
