@@ -4252,10 +4252,12 @@ public class TextInputLayout extends LinearLayout {
       CharSequence inputText = (editText != null) ? editText.getText() : null;
       CharSequence hintText = layout.getHint();
       CharSequence errorText = layout.getError();
+      CharSequence placeholderText = layout.getPlaceholderText();
       int maxCharLimit = layout.getCounterMaxLength();
       CharSequence counterOverflowDesc = layout.getCounterOverflowDescription();
       boolean showingText = !TextUtils.isEmpty(inputText);
       boolean hasHint = !TextUtils.isEmpty(hintText);
+      boolean isHintCollapsed = !layout.isHintExpanded();
       boolean showingError = !TextUtils.isEmpty(errorText);
       boolean contentInvalid = showingError || !TextUtils.isEmpty(counterOverflowDesc);
 
@@ -4265,6 +4267,11 @@ public class TextInputLayout extends LinearLayout {
         info.setText(inputText);
       } else if (!TextUtils.isEmpty(hint)) {
         info.setText(hint);
+        if (isHintCollapsed && placeholderText != null) {
+          info.setText(hint + ", " + placeholderText);
+        }
+      } else if (placeholderText != null) {
+        info.setText(placeholderText);
       }
 
       if (!TextUtils.isEmpty(hint)) {
