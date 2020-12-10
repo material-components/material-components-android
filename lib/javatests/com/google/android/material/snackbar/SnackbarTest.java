@@ -31,13 +31,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.LooperMode;
 import org.robolectric.annotation.internal.DoNotInstrument;
 import org.robolectric.shadow.api.Shadow;
 import org.robolectric.shadows.ShadowAccessibilityManager;
 
-/**
- * Tests for {@link com.google.android.material.snackbar.Snackbar}.
- */
+@LooperMode(LooperMode.Mode.LEGACY)
+/** Tests for {@link com.google.android.material.snackbar.Snackbar}. */
 @RunWith(RobolectricTestRunner.class)
 @DoNotInstrument
 public class SnackbarTest {

@@ -41,7 +41,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
+import org.robolectric.annotation.LooperMode;
 
+@LooperMode(LooperMode.Mode.LEGACY)
 /** Tests for {@link com.google.android.material.button.MaterialButtonToggleGroup}. */
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = 21)
