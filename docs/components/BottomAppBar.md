@@ -12,7 +12,7 @@ path: /catalog/bottom-app-bars/
 A [bottom app bar](https://material.io/components/app-bars-bottom/) displays
 navigation and key actions at the bottom of mobile screens.
 
-![Example bottom app bar with inset floating action button](assets/bottomappbar/bottom-app-bar-hero.png)
+![Purple bottom app bar with floating action button](assets/bottomappbar/bottom-app-bar-hero.png)
 
 **Contents**
 
@@ -83,7 +83,7 @@ API and source code:
 The following example shows a bottom app bar with a navigation icon, an action
 icon, a cradled FAB, and an overflow menu.
 
-![Example bottom app bar with inset floating action button](assets/bottomappbar/bottomappbar_basic.png)
+![Purple bottom app bar with white icons and teal inset floating action button](assets/bottomappbar/bottomappbar_basic.png)
 
 In the layout:
 
@@ -296,7 +296,7 @@ API and source code:
 
 The following example shows a bottom app bar with Material Theming.
 
-!["Bottom app bar theming with pink and brown colors"](assets/bottomappbar/bottomappbar_theming.png)
+!["Pink bottom app bar with pink diamond inset FAB and brown icons"](assets/bottomappbar/bottomappbar_theming.png)
 
 #### Implementing bottom app bar theming
 
