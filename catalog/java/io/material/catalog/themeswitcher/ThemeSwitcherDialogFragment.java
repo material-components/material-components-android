@@ -19,7 +19,6 @@ package io.material.catalog.themeswitcher;
 import io.material.catalog.R;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -46,7 +45,6 @@ import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasAndroidInjector;
 import dagger.android.support.AndroidSupportInjection;
-import io.material.catalog.windowpreferences.WindowPreferencesManager;
 import javax.inject.Inject;
 
 /**
@@ -79,23 +77,6 @@ public class ThemeSwitcherDialogFragment extends BottomSheetDialogFragment
   private RadioGroup secondaryColorGroup;
   private RadioGroup shapeCornerFamilyGroup;
   private RadioGroup shapeCornerSizeGroup;
-
-  private WindowPreferencesManager windowPreferencesManager;
-
-  @Override
-  public void onCreate(@Nullable Bundle bundle) {
-    super.onCreate(bundle);
-    windowPreferencesManager = new WindowPreferencesManager(getContext());
-  }
-
-  @NonNull
-  @Override
-  public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-    Dialog dialog = super.onCreateDialog(savedInstanceState);
-    // We have to apply the edge to edge preference to the new window that is created.
-    windowPreferencesManager.applyEdgeToEdgePreference(dialog.getWindow());
-    return dialog;
-  }
 
   @Nullable
   @Override

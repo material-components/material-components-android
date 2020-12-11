@@ -19,5 +19,7 @@
   <!-- Material themes (day/night versions) for bottomsheets. -->
   <style name="Theme.MaterialComponents.DayNight.BottomSheetDialog"
       parent="Theme.MaterialComponents.BottomSheetDialog"/>
+  <style name="ThemeOverlay.MaterialComponents.DayNight.BottomSheetDialog"
+      parent="ThemeOverlay.MaterialComponents.BottomSheetDialog"/>
 
 </resources>

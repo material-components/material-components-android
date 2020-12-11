@@ -115,7 +115,7 @@
     <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar</item>
 
     <!-- Dialog themes -->
-    <item name="bottomSheetDialogTheme">@style/ThemeOverlay.MaterialComponents.BottomSheetDialog</item>
+    <item name="bottomSheetDialogTheme">@style/ThemeOverlay.MaterialComponents.Light.BottomSheetDialog</item>
     <item name="alertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert</item>
     <item name="materialAlertDialogTheme">@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog</item>
     <item name="android:datePickerDialogTheme" tools:ignore="NewApi">@style/ThemeOverlay.MaterialComponents.Dialog</item>

@@ -219,12 +219,6 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   private int gestureInsetBottom;
   private boolean gestureInsetBottomIgnored;
-  private boolean paddingBottomSystemWindowInsets;
-  private boolean paddingLeftSystemWindowInsets;
-  private boolean paddingRightSystemWindowInsets;
-
-  private int insetBottom;
-  private int insetTop;
 
   /** Default Shape Appearance to be used in bottomsheet */
   private ShapeAppearanceModel shapeAppearanceModelDefault;
@@ -340,15 +334,6 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
           a.getDimensionPixelOffset(
               R.styleable.BottomSheetBehavior_Layout_behavior_expandedOffset, 0));
     }
-
-    // Reading out if we are handling padding, so we can apply it to the content.
-    paddingBottomSystemWindowInsets =
-        a.getBoolean(R.styleable.BottomSheetBehavior_Layout_paddingBottomSystemWindowInsets, false);
-    paddingLeftSystemWindowInsets =
-        a.getBoolean(R.styleable.BottomSheetBehavior_Layout_paddingLeftSystemWindowInsets, false);
-    paddingRightSystemWindowInsets =
-        a.getBoolean(R.styleable.BottomSheetBehavior_Layout_paddingRightSystemWindowInsets, false);
-
     a.recycle();
     ViewConfiguration configuration = ViewConfiguration.get(context);
     maximumVelocity = configuration.getScaledMaximumFlingVelocity();
@@ -403,7 +388,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       // First layout with this behavior.
       peekHeightMin =
           parent.getResources().getDimensionPixelSize(R.dimen.design_bottom_sheet_peek_height_min);
-      setWindowInsetsListener(child);
+      setSystemGestureInsets(child);
       viewRef = new WeakReference<>(child);
       // Only set MaterialShapeDrawable as background if shapeTheming is enabled, otherwise will
       // default to android:background declared in styles or layout.
@@ -436,11 +421,6 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     parentWidth = parent.getWidth();
     parentHeight = parent.getHeight();
     childHeight = child.getHeight();
-    // If the bottomsheet would land in the middle of the status bar when fully expanded add extra
-    // space to make sure it goes all the way.
-    if (parentHeight - childHeight < insetTop) {
-      childHeight = parentHeight;
-    }
     fitToContentsOffset = max(0, parentHeight - childHeight);
     calculateHalfExpandedOffset();
     calculateCollapsedOffset();
@@ -1161,14 +1141,12 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   private int calculatePeekHeight() {
     if (peekHeightAuto) {
       int desiredHeight = max(peekHeightMin, parentHeight - parentWidth * 9 / 16);
-      return min(desiredHeight, childHeight) + insetBottom;
+      return min(desiredHeight, childHeight);
     }
-    // Only make sure the peek height is above the gesture insets if we're not applying system
-    // insets.
-    if (!gestureInsetBottomIgnored && !paddingBottomSystemWindowInsets && gestureInsetBottom > 0) {
+    if (!gestureInsetBottomIgnored && gestureInsetBottom > 0) {
       return max(peekHeight, gestureInsetBottom + peekHeightGestureInsetBuffer);
     }
-    return peekHeight + insetBottom;
+    return peekHeight;
   }
 
   private void calculateCollapsedOffset() {
@@ -1273,10 +1251,6 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     }
   }
 
-  MaterialShapeDrawable getMaterialShapeDrawable() {
-    return materialShapeDrawable;
-  }
-
   private void createShapeValueAnimator() {
     interpolatorAnimator = ValueAnimator.ofFloat(0f, 1f);
     interpolatorAnimator.setDuration(CORNER_ANIMATION_DURATION);
@@ -1292,62 +1266,24 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         });
   }
 
-  private void setWindowInsetsListener(@NonNull View child) {
-    // Ensure the peek height is at least as large as the bottom gesture inset size so that
-    // the sheet can always be dragged, but only when the inset is required by the system.
-    final boolean shouldHandleGestureInsets =
-        VERSION.SDK_INT >= VERSION_CODES.Q && !isGestureInsetBottomIgnored() && !peekHeightAuto;
-
-    // If were not handling insets at all, don't apply the listener.
-    if (!paddingBottomSystemWindowInsets
-        && !paddingLeftSystemWindowInsets
-        && !paddingRightSystemWindowInsets
-        && !shouldHandleGestureInsets) {
-      return;
-    }
-    ViewUtils.doOnApplyWindowInsets(
-        child,
-        new ViewUtils.OnApplyWindowInsetsListener() {
-          @Override
-          public WindowInsetsCompat onApplyWindowInsets(
-              View view, WindowInsetsCompat insets, RelativePadding initialPadding) {
-            insetTop = insets.getSystemWindowInsetTop();
-
-            boolean isRtl = ViewUtils.isLayoutRtl(view);
-
-            int bottomPadding = view.getPaddingBottom();
-            int leftPadding = view.getPaddingLeft();
-            int rightPadding = view.getPaddingRight();
-
-            if (paddingBottomSystemWindowInsets) {
-              insetBottom = insets.getSystemWindowInsetBottom();
-              bottomPadding = initialPadding.bottom + insetBottom;
-            }
-
-            if (paddingLeftSystemWindowInsets) {
-              leftPadding = isRtl ? initialPadding.end : initialPadding.start;
-              leftPadding += insets.getSystemWindowInsetLeft();
-            }
-
-            if (paddingRightSystemWindowInsets) {
-              rightPadding = isRtl ? initialPadding.start : initialPadding.end;
-              rightPadding += insets.getSystemWindowInsetRight();
-            }
-
-            view.setPadding(leftPadding, view.getPaddingTop(), rightPadding, bottomPadding);
-
-            if (shouldHandleGestureInsets) {
+  /**
+   * Ensure the peek height is at least as large as the bottom gesture inset size so that the sheet
+   * can always be dragged, but only when the inset is required by the system.
+   */
+  private void setSystemGestureInsets(@NonNull View child) {
+    if (VERSION.SDK_INT >= VERSION_CODES.Q && !isGestureInsetBottomIgnored() && !peekHeightAuto) {
+      ViewUtils.doOnApplyWindowInsets(
+          child,
+          new ViewUtils.OnApplyWindowInsetsListener() {
+            @Override
+            public WindowInsetsCompat onApplyWindowInsets(
+                View view, WindowInsetsCompat insets, RelativePadding initialPadding) {
               gestureInsetBottom = insets.getMandatorySystemGestureInsets().bottom;
-            }
-
-            // Don't update the peek height to be above the navigation bar or gestures if these
-            // flags are off. It means the client is already handling it.
-            if (paddingBottomSystemWindowInsets || shouldHandleGestureInsets) {
               updatePeekHeight(/* animate= */ false);
+              return insets;
             }
-            return insets;
-          }
-        });
+          });
+    }
   }
 
   private float getYVelocity() {
