@@ -19,7 +19,9 @@
   <!-- Material themes (day/night versions) for bottomsheets. -->
   <style name="Theme.MaterialComponents.DayNight.BottomSheetDialog"
       parent="Theme.MaterialComponents.Light.BottomSheetDialog"/>
+
+  <!-- Deprecated. Use ThemeOverlay.MaterialComponents.BottomSheetDialog. Light or Dark colors will come from your main theme -->
   <style name="ThemeOverlay.MaterialComponents.DayNight.BottomSheetDialog"
-      parent="ThemeOverlay.MaterialComponents.Light.BottomSheetDialog"/>
+      parent="ThemeOverlay.MaterialComponents.BottomSheetDialog"/>
 
 </resources>

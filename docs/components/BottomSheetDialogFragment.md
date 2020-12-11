@@ -45,6 +45,31 @@ Note: Don't call `setOnCancelListener` or `setOnDismissListener` on a
 `BottomSheetDialogFragment`, instead you can override `onCancel(DialogInterface)`
 or `onDismiss(DialogInterface)` if necessary.
 
+## Theming
+
+There are two options for theming the `BottomSheetDialog` that is displayed by
+this fragment. Either using the `Theme.MaterialComponents.BottomSheetDialog`,
+`Theme.MaterialComponents.Light.BottomSheetDialog`, and
+`Theme.MaterialComponents.DayNight.BottomSheetDialog` variants of the themes, or
+by using `ThemeOverlay.MaterialComponents.BottomSheetDialog`. The benefit of
+using the `ThemeOverlay` version is that any changes to your main theme, such as
+updated colors will be reflected in the BottomSheet. If you use the `Theme`
+versions you have more control over exactly what attributes are included in
+each, but it also means you'll have to duplicate any changes that you've made in
+your main theme into these as well.
+
+## Fullscreen mode
+
+The BottomSheet will be rendered fullscreen (edge to edge) if the navigationBar
+is transparent on API 21 and above. It can automatically add insets if any of
+`paddingBottomSystemWindowInsets`, `paddingLeftSystemWindowInsets`, or
+`paddingRightSystemWindowInsets` are set to true in the style, either by
+updating the style passed to the constructor, or by updating the default style
+specified by the `bottomSheetDialogTheme` attribute in your theme.
+
+`BottomSheetDialog` will also add padding to the top when the BottomSheet slides
+under the status bar to prevent content from being drawn underneath it.
+
 ## Related Concepts
 
 `BottomSheetDialogFragment`s are a more modern version of
