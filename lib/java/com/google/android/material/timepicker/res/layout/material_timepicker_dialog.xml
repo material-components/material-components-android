@@ -56,16 +56,16 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent" />
 
-  <include
+  <ViewStub
     android:id="@+id/material_textinput_timepicker"
-    layout="@layout/material_textinput_timepicker"
+    android:inflatedId="@+id/material_textinput_timepicker"
+    android:layout="@layout/material_textinput_timepicker"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="44dp"
     android:layout_marginBottom="24dp"
     android:layout_marginLeft="24dp"
     android:layout_marginRight="24dp"
-    android:visibility="gone"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent" />
