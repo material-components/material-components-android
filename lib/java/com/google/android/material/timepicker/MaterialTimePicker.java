@@ -34,6 +34,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -63,6 +64,7 @@ public final class MaterialTimePicker extends DialogFragment {
 
   private TimePickerView timePickerView;
   private LinearLayout textInputView;
+  private ViewStub textInputStub;
 
   @Nullable private TimePickerClockPresenter timePickerClockPresenter;
   @Nullable private TimePickerTextInputPresenter timePickerTextInputPresenter;
@@ -211,7 +213,7 @@ public final class MaterialTimePicker extends DialogFragment {
             timePickerTextInputPresenter.resetChecked();
           }
         });
-    textInputView = root.findViewById(R.id.material_textinput_timepicker);
+    textInputStub = root.findViewById(R.id.material_textinput_timepicker);
     modeButton = root.findViewById(R.id.material_timepicker_mode_button);
     TextView headerTitle = root.findViewById(R.id.header_title);
 
@@ -294,6 +296,7 @@ public final class MaterialTimePicker extends DialogFragment {
   }
 
   private TimePickerPresenter initializeOrRetrieveActivePresenterForMode(int mode) {
+
     if (mode == INPUT_MODE_CLOCK) {
       timePickerClockPresenter =
           timePickerClockPresenter == null
@@ -304,6 +307,7 @@ public final class MaterialTimePicker extends DialogFragment {
     }
 
     if (timePickerTextInputPresenter == null) {
+      textInputView = (LinearLayout) textInputStub.inflate();
       timePickerTextInputPresenter = new TimePickerTextInputPresenter(textInputView, time);
     }
 
