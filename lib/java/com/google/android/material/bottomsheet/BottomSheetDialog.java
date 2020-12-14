@@ -54,13 +54,16 @@ import com.google.android.material.shape.MaterialShapeDrawable;
 /**
  * Base class for {@link android.app.Dialog}s styled as a bottom sheet.
  *
- * <p>Automatically handles showing full screen depending on if the {@link
- * android.R.attr#navigationBarColor} is transparent at all. This can be set in the theme that is
- * passed to the constructor, or will be taken from the theme of the context (ie. your application
- * or activity theme).
+ * <p>Edge to edge window flags are automatically applied if the {@link
+ * android.R.attr#navigationBarColor} is transparent or translucent and {@link
+ * R.attr#enableEdgeToEdge} is true. These can be set in the theme that is passed to the
+ * constructor, or will be taken from the theme of the context (ie. your application or activity
+ * theme).
  *
- * <p>If this dialog is shown in fullscreen mode, it will also add padding to the top when sliding
- * under the status bar.
+ * <p>In edge to edge mode, padding will be added automatically to the top when sliding under the
+ * status bar. Padding can be applied automatically to the left, right, or bottom if any of
+ * `paddingBottomSystemWindowInsets`, `paddingLeftSystemWindowInsets`, or
+ * `paddingRightSystemWindowInsets` are set to true in the style.
  */
 public class BottomSheetDialog extends AppCompatDialog {
 
@@ -76,6 +79,7 @@ public class BottomSheetDialog extends AppCompatDialog {
   private boolean canceledOnTouchOutside = true;
   private boolean canceledOnTouchOutsideSet;
   private BottomSheetCallback edgeToEdgeCallback;
+  private boolean edgeToEdgeEnabled;
 
   public BottomSheetDialog(@NonNull Context context) {
     this(context, 0);
@@ -119,6 +123,12 @@ public class BottomSheetDialog extends AppCompatDialog {
       }
       window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
     }
+
+    edgeToEdgeEnabled =
+        getContext()
+            .getTheme()
+            .obtainStyledAttributes(new int[] {R.attr.enableEdgeToEdge})
+            .getBoolean(0, false);
   }
 
   @Override
@@ -157,7 +167,8 @@ public class BottomSheetDialog extends AppCompatDialog {
     if (window != null) {
       if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
         // If the navigation bar is transparent at all the BottomSheet should be edge to edge.
-        boolean drawEdgeToEdge = Color.alpha(window.getNavigationBarColor()) < 255;
+        boolean drawEdgeToEdge =
+            edgeToEdgeEnabled && Color.alpha(window.getNavigationBarColor()) < 255;
         if (container != null) {
           container.setFitsSystemWindows(!drawEdgeToEdge);
         }
@@ -236,6 +247,20 @@ public class BottomSheetDialog extends AppCompatDialog {
    */
   public boolean getDismissWithAnimation() {
     return dismissWithAnimation;
+  }
+
+  /**
+   * Determines if the dialog should be displayed in edge to edge mode if the navigationBarColor of
+   * the window is transparent. By default this is true. Passing false will disable any edge to edge
+   * behavior done by this class.
+   */
+  public void setEdgeToEdgeEnabled(boolean enabled) {
+    edgeToEdgeEnabled = enabled;
+  }
+
+  /** Returns if edge to edge behavior is enabled for this dialog. */
+  public boolean getEdgeToEdgeEnabled() {
+    return edgeToEdgeEnabled;
   }
 
   /** Creates the container layout which must exist to find the behavior */

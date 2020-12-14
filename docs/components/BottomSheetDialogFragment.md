@@ -60,12 +60,13 @@ your main theme into these as well.
 
 ## Fullscreen mode
 
-The BottomSheet will be rendered fullscreen (edge to edge) if the navigationBar
-is transparent on API 21 and above. It can automatically add insets if any of
-`paddingBottomSystemWindowInsets`, `paddingLeftSystemWindowInsets`, or
-`paddingRightSystemWindowInsets` are set to true in the style, either by
-updating the style passed to the constructor, or by updating the default style
-specified by the `bottomSheetDialogTheme` attribute in your theme.
+On API 21 and above the BottomSheet will be rendered fullscreen (edge to edge)
+if the navigationBar is transparent, and `enableEdgeToEdge` is true. It can
+automatically add insets if any of `paddingBottomSystemWindowInsets`,
+`paddingLeftSystemWindowInsets`, or `paddingRightSystemWindowInsets` are set to
+true in the style, either by updating the style passed to the constructor, or by
+updating the default style specified by the `bottomSheetDialogTheme` attribute
+in your theme.
 
 `BottomSheetDialog` will also add padding to the top when the BottomSheet slides
 under the status bar to prevent content from being drawn underneath it.

@@ -35,6 +35,7 @@
   <public name="behavior_hideable" type="attr"/>
   <public name="behavior_saveFlags" type="attr"/>
   <public name="behavior_skipCollapsed" type="attr"/>
+  <public name="enableEdgeToEdge" type="attr"/>
   <public name="gestureInsetBottomIgnored" type="attr"/>
 </resources>
 

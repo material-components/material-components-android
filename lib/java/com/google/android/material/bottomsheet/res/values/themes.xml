@@ -47,6 +47,7 @@
     <item name="android:windowBackground">@android:color/transparent</item>
     <item name="android:windowAnimationStyle">@style/Animation.MaterialComponents.BottomSheetDialog</item>
     <item name="bottomSheetStyle">@style/Widget.MaterialComponents.BottomSheet.Modal</item>
+    <item name="enableEdgeToEdge">true</item>
   </style>
 
   <style name="ThemeOverlay.MaterialComponents.BottomSheetDialog"

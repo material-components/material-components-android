@@ -20,6 +20,8 @@
   <attr name="bottomSheetDialogTheme" format="reference"/>
   <!-- Style to use for modal bottom sheets in this theme. -->
   <attr name="bottomSheetStyle" format="reference"/>
+  <!-- Determines if the BottomSheetDialog should be shown in edge to edge mode. -->
+  <attr name="enableEdgeToEdge" format="boolean" />
 
   <declare-styleable name="BottomSheetBehavior_Layout">
     <!-- The height of the bottom sheet when it is collapsed. -->
