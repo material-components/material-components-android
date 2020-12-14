@@ -98,7 +98,7 @@ Or, you can set a custom size via the `app:fabCustomSize` attribute. If set,
 There are three types of FABS: 1\. [Regular FABs](#regular-fabs), 2\.
 [Mini FABs](#mini-fabs), 3\. [Extended FABs](#extended-fabs)
 
-![Regular FAB example](assets/fabs/FAB_types.png)
+![FAB types](assets/fabs/FAB_types.png)
 
 ## FABs
 
@@ -118,7 +118,7 @@ Regular FABs are FABs that are not expanded and are a regular size.
 
 The following example shows a regular FAB with a plus icon.
 
-![Regular FAB example with a plus icon](assets/fabs/fab_regular.png)
+![56dp round teal FAB with black plus icon](assets/fabs/fab_regular.png)
 
 In the layout:
 
@@ -170,7 +170,7 @@ elements.
 
 The following example shows a mini FAB with a plus icon.
 
-![Mini FAB example with a plus icon](assets/fabs/fab_mini.png)
+![40dp round teal FAB with black plus icon](assets/fabs/fab_mini.png)
 
 In the layout:
 
@@ -263,7 +263,7 @@ API and source code:
 
 The following example shows an extended FAB with a plus icon.
 
-![Extended FAB example with a plus icon and the word "extended"](assets/fabs/fab_extended.png)
+![Teal FAB with plus icon and "Extended" label](assets/fabs/fab_extended.png)
 
 In the layout:
 
@@ -312,7 +312,7 @@ An extended FAB has a text label, a transparent container and an optional icon.
 **Color**                     | `app:backgroundTint`                                                                       | `setBackgroundTintList`<br/>`getBackgroundTintList`                | `?attr/colorSecondary` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingactionbutton/res/color/mtrl_fab_bg_color_selector.xml))
 **Stroke color**              | `app:strokeColor`                                                                          | `setStrokeColor`<br/>`getStrokeColor`                              | `null`
 **Stroke width**              | `app:strokeWidth`                                                                          | `setStrokeWidth`<br/>`getStrokeWidth`                              | `0dp`
-**Size**                      | `app:collapsedSize`                                                                        | N/A
+**Size**                      | `app:collapsedSize`                                                                        | N/A                                                                |
 **Shape**                     | `app:shapeAppearance`<br/>`app:shapeAppearanceOverlay`                                     | `setShapeAppearanceModel`<br/>`getShapeAppearanceModel`            | `?attr/shapeAppearanceSmallComponent`
 **Elevation**                 | `app:elevation`                                                                            | `setElevation`<br/>`getElevation`                                  | `6dp`
 **Hovered/Focused elevation** | `app:hoveredFocusedTranslationZ`                                                           | N/A                                                                | `2dp`
@@ -367,8 +367,8 @@ API and source code:
 The following example shows a regular, mini, and extended FABs with Material
 Theming.
 
-!["FAB theming with three FABs - regular, mini and extended - with pink color
-theming and cut corners."](assets/fabs/fab_theming.png)
+!["3 square pink FABs with cut corners with brown plus icons: 56dp, 40dp, 56dp
+with "Extended" label"](assets/fabs/fab_theming.png)
 
 #### Implementing FAB theming
 
