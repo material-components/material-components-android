@@ -12,11 +12,11 @@ path: /catalog/tabs/
 [Tabs](https://material.io/components/tabs/) organize content across different
 screens, data sets, and other interactions.
 
-![Tab types](assets/tabs/tabs-types.png)
+![Example travel app with Explore, Flights, and Trips tabs](assets/tabs/tabs-hero.png)
 
 **Contents**
 
-*   [Using tabs](#using-sliders)
+*   [Using tabs](#using-tabs)
 *   [Fixed tabs](#fixed-tabs)
 *   [Scrollable tabs](#scrollable-tabs)
 *   [Theming tabs](#theming-tabs)
@@ -204,6 +204,14 @@ badge.number = number
 tab.removeBadge()
 ```
 
+## Types
+
+There are two types of tabs: 1\. [Fixed tabs](#fixed-tabs), 2\.
+[Scrollable tabs](#scrollable-tabs)
+
+![Composite image: Pets with Dogs, Cats, and Birds tabs; Dog breeds with
+Pitbulls, Terrier, Poodle, Labrador (partial)](assets/tabs/tabs-types.png)
+
 ## Fixed tabs
 
 Fixed tabs display all tabs on one screen, with each tab at a fixed width. The
@@ -374,15 +382,15 @@ the active tab item.
 
 ### Tab indicator attributes
 
-&nbsp;                 | Attribute                       | Related method(s)                                                   | Default value
----------------------- | ------------------------------- | ------------------------------------------------------------------- | -------------
-**Color**              | `tabIndicatorColor`             | `setSelectedTabIndicatorColor`                                      | `colorPrimary`
-**Drawable**           | `tabIndicator`                  | `setSelectedTabIndicator`<br>`getSelectedTabIndicator`              | [`mtrl_tabs_default_indicator`](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/tabs/res/drawable/mtrl_tabs_default_indicator.xml)
-**Height**             | `tabIndicatorHeight`            | `setSelectedTabIndicatorHeight`                                     | `2dp`
-**Full width**         | `tabIndicatorFullWidth`         | `setTabIndicatorFullWidth`<br>`isTabIndicatorFullWidth`             | `true`
-**Animation mode**     | `tabIndicatorAnimationMode`     | `setTabIndicatorAnimationMode`<br>`getTabIndicatorAnimationMode`    | `linear`
-**Gravity**            | `tabIndicatorGravity`           | `setSelectedTabIndicatorGravity`<br>`getTabIndicatorGravity`        | `bottom`
-**Animation duration** | `tabIndicatorAnimationDuration` | N/A                                                                 | `250`
+&nbsp;                 | Attribute                       | Related method(s)                                                | Default value
+---------------------- | ------------------------------- | ---------------------------------------------------------------- | -------------
+**Color**              | `tabIndicatorColor`             | `setSelectedTabIndicatorColor`                                   | `colorPrimary`
+**Drawable**           | `tabIndicator`                  | `setSelectedTabIndicator`<br>`getSelectedTabIndicator`           | [`mtrl_tabs_default_indicator`](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/tabs/res/drawable/mtrl_tabs_default_indicator.xml)
+**Height**             | `tabIndicatorHeight`            | `setSelectedTabIndicatorHeight`                                  | `2dp`
+**Full width**         | `tabIndicatorFullWidth`         | `setTabIndicatorFullWidth`<br>`isTabIndicatorFullWidth`          | `true`
+**Animation mode**     | `tabIndicatorAnimationMode`     | `setTabIndicatorAnimationMode`<br>`getTabIndicatorAnimationMode` | `linear`
+**Gravity**            | `tabIndicatorGravity`           | `setSelectedTabIndicatorGravity`<br>`getTabIndicatorGravity`     | `bottom`
+**Animation duration** | `tabIndicatorAnimationDuration` | N/A                                                              | `250`
 
 ### Styles
 
