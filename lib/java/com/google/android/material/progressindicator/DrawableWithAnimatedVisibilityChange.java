@@ -275,7 +275,13 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
     // If requests to show, sets the drawable visible. If requests to hide, the visibility is
     // controlled by the animation listener attached to hide animation.
     boolean changed = !visible || super.setVisible(visible, DEFAULT_DRAWABLE_RESTART);
-    animate &= visible ? baseSpec.isShowAnimationEnabled() : baseSpec.isHideAnimationEnabled();
+    boolean specAnimationEnabled =
+        visible ? baseSpec.isShowAnimationEnabled() : baseSpec.isHideAnimationEnabled();
+    if (!specAnimationEnabled) {
+      // If no animation enabled in spec, end the animator without callbacks.
+      endAnimatorWithoutCallbacks(animatorInAction);
+      return changed;
+    }
     if (!animate) {
       // This triggers onAnimationStart() callbacks for showing and onAnimationEnd() callbacks for
       // hiding. It also fast-forwards the animator properties to the end state.
@@ -376,8 +382,7 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
           public void onAnimationEnd(Animator animation) {
             super.onAnimationEnd(animation);
             // Sets visibility to false.
-            DrawableWithAnimatedVisibilityChange.super.setVisible(
-                false, DEFAULT_DRAWABLE_RESTART);
+            DrawableWithAnimatedVisibilityChange.super.setVisible(false, DEFAULT_DRAWABLE_RESTART);
 
             dispatchAnimationEnd();
           }
