@@ -160,7 +160,7 @@ in dark theme, because they use `colorSurface` and can be elevated:
 *   [Dialog](../components/Dialog.md)
 *   [Menu](../components/Menu.md)
 *   [Bottom Sheet](../components/BottomSheetBehavior.md)
-*   [Navigation Drawer](../components/NavigationView.md)
+*   [Navigation Drawer](../components/NavigationDrawer.md)
 *   [Switch](../components/Switch.md)
 
 #### Theme Attributes

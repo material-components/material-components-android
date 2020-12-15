@@ -255,6 +255,6 @@ Components that support shape theming have a `shapeAppearance` attribute, a
 *   [Floating Action Button](../components/FloatingActionButton.md)
 *   [Button](../components/Button.md)
 *   [Toggle Button](../components/Button.md?#toggle-button)
-*   [Navigation View](../components/NavigationView.md)
+*   [Navigation Drawer](../components/NavigationDrawer.md)
 *   [Slider](../components/Slider.md)
 *   [Text Field](../components/TextField.md)
