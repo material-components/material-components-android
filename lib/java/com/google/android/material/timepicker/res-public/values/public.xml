@@ -26,7 +26,7 @@
   <public name="clockHandColor" type="attr" />
   <public name="clockNumberTextColor" type="attr" />
 
-  <public name="ThemeOverlay.MaterialComponents.MaterialTimePicker" type="style" />
+  <public name="ThemeOverlay.MaterialComponents.TimePicker" type="style" />
 
   <public name="Widget.MaterialComponents.TimePicker" type="style" />
   <public name="Widget.MaterialComponents.TimePicker.Button" type="style" />

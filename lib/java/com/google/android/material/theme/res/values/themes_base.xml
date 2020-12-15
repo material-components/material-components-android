@@ -73,7 +73,7 @@
     <item name="materialCalendarStyle">@style/Widget.MaterialComponents.MaterialCalendar</item>
     <item name="materialCalendarFullscreenTheme">@style/ThemeOverlay.MaterialComponents.MaterialCalendar.Fullscreen</item>
     <item name="materialCalendarTheme">@style/ThemeOverlay.MaterialComponents.MaterialCalendar</item>
-    <item name="materialTimePickerTheme">@style/ThemeOverlay.MaterialComponents.MaterialTimePicker</item>
+    <item name="materialTimePickerTheme">@style/ThemeOverlay.MaterialComponents.TimePicker</item>
   </style>
 
   <style name="Base.V14.Theme.MaterialComponents.Light" parent="Base.V14.Theme.MaterialComponents.Light.Bridge">
@@ -129,7 +129,7 @@
     <item name="materialCalendarStyle">@style/Widget.MaterialComponents.MaterialCalendar</item>
     <item name="materialCalendarFullscreenTheme">@style/ThemeOverlay.MaterialComponents.MaterialCalendar.Fullscreen</item>
     <item name="materialCalendarTheme">@style/ThemeOverlay.MaterialComponents.MaterialCalendar</item>
-    <item name="materialTimePickerTheme">@style/ThemeOverlay.MaterialComponents.MaterialTimePicker</item>
+    <item name="materialTimePickerTheme">@style/ThemeOverlay.MaterialComponents.TimePicker</item>
   </style>
 
   <!-- Themes in the "Base.Theme" family vary based on the current platform
