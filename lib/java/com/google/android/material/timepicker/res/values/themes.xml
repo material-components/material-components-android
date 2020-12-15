@@ -17,7 +17,7 @@
 
 <resources>
 
-  <style name="ThemeOverlay.MaterialComponents.MaterialTimePicker" parent="ThemeOverlay.MaterialComponents.Dialog">
+  <style name="ThemeOverlay.MaterialComponents.TimePicker" parent="ThemeOverlay.MaterialComponents.Dialog">
     <item name="chipStyle">@style/Widget.MaterialComponents.TimePicker.Display</item>
     <item name="materialClockStyle">@style/Widget.MaterialComponents.TimePicker.Clock</item>
     <item name="imageButtonStyle">@style/Widget.MaterialComponents.TimePicker.ImageButton</item>
