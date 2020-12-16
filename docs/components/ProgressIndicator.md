@@ -294,12 +294,14 @@ Circular type progress indicators also have the following attributes:
 
 #### Styles
 
-| &nbsp;             | Style                                                 |
-| ------------------ | ----------------------------------------------------- |
-| **Default linear   | `Widget.MaterialComponents.LinearProgressIndicator`   |
-: style**            :                                                       :
-| **Default circular | `Widget.MaterialComponents.CircularProgressIndicator` |
-: style**            :                                                       :
+&nbsp;                                 | Style
+-------------------------------------- | -----
+**Default linear**<br/>**style**       | `Widget.MaterialComponents.LinearProgressIndicator`
+**Default circular**<br/>**style**     | `Widget.MaterialComponents.CircularProgressIndicator`
+**Medium circular**<br/>**style**      | `Widget.MaterialComponents.CircularProgressIndicator.Medium`
+**Small circular**<br/>**style**       | `Widget.MaterialComponents.CircularProgressIndicator.Small`
+**Extra small circular**<br/>**style** | `Widget.MaterialComponents.CircularProgressIndicator.ExtraSmall`
+
 
 Default linear style theme attribute: `?attr/linearProgressIndicatorStyle`
 
