@@ -37,9 +37,6 @@
   </style>
 
   <style name="ThemeOverlay.Catalog.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
-    <item name="paddingBottomSystemWindowInsets">true</item>
-    <item name="paddingLeftSystemWindowInsets">true</item>
-    <item name="paddingRightSystemWindowInsets">true</item>
   </style>
 
 </resources>
