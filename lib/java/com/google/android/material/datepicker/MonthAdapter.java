@@ -161,7 +161,9 @@ class MonthAdapter extends BaseAdapter {
 
   private TextView updateSelectedState(TextView day, long date) {
     if (calendarConstraints.getDateValidator().isValid(date)) {
-      day.setEnabled(true);
+      if (day != null) {
+        day.setEnabled(true);
+      }
       for (long selectedDay : dateSelector.getSelectedDays()) {
         if (UtcDates.canonicalYearMonthDay(date) == UtcDates.canonicalYearMonthDay(selectedDay)) {
           calendarStyle.selectedDay.styleItem(day);
@@ -177,7 +179,9 @@ class MonthAdapter extends BaseAdapter {
         return day;
       }
     } else {
-      day.setEnabled(false);
+      if (day != null) {
+        day.setEnabled(false);
+      }
       calendarStyle.invalidDay.styleItem(day);
       return day;
     }
