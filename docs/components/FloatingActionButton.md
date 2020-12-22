@@ -324,7 +324,7 @@ An extended FAB has a text label, a transparent container and an optional icon.
 
 &nbsp;                            | Attribute         | Related method(s)                                         | Default value
 --------------------------------- | ----------------- | --------------------------------------------------------- | -------------
-**Icon**                          | `app:icon`        | `setIcon`<br/>`setIconResource`<br/>`getIcon`             | `?attr/colorOnSecondary`
+**Icon**                          | `app:icon`        | `setIcon`<br/>`setIconResource`<br/>`getIcon`             | `null`
 **Color**                         | `app:iconTint`    | `setIconTint`<br/>`setIconTintResource`<br/>`getIconTint` | `?attr/colorOnSecondary` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingactionbutton/res/color/mtrl_fab_icon_text_color_selector.xml))
 **Size**                          | `app:iconSize`    | `setIconSize`<br/>`getIconSize`                           | `24dp`
 **Padding between icon and text** | `app:iconPadding` | `setIconPadding`<br/>`getIconPadding`                     | `16dp`
