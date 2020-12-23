@@ -24,5 +24,10 @@
     <item name="cornerFamily">cut</item>
   </style>
 
+  <style name="ThemeOverlay.Shapes.Cut.30p" parent="">
+    <item name="cornerFamily">cut</item>
+    <item name="cornerSize">30%</item>
+  </style>
+
 </resources>
 
