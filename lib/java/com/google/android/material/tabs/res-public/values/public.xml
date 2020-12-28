@@ -24,6 +24,7 @@
   <public name="tabIndicator" type="attr"/>
   <public name="tabIndicatorColor" type="attr"/>
   <public name="tabIndicatorFullWidth" type="attr"/>
+  <public name="tabIndicatorAnimationMode" type="attr"/>
   <public name="tabIndicatorGravity" type="attr"/>
   <public name="tabIndicatorHeight" type="attr"/>
   <public name="tabInlineLabel" type="attr"/>
@@ -43,4 +44,5 @@
   <public name="Widget.Design.TabLayout" type="style"/>
   <public name="Widget.MaterialComponents.TabLayout" type="style"/>
   <public name="Widget.MaterialComponents.TabLayout.Colored" type="style"/>
+  <public name="Widget.MaterialComponents.TabLayout.PrimarySurface" type="style"/>
 </resources>

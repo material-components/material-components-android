@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 
 dependencies {
+<<<<<<< HEAD
   api 'com.google.dagger:dagger:2.16'
   annotationProcessor 'com.google.dagger:dagger-compiler:2.16'
 
@@ -9,8 +10,39 @@ dependencies {
   annotationProcessor 'com.google.dagger:dagger-android-processor:2.16'
 
   api 'androidx.multidex:multidex:2.0.0'
+=======
+  api 'com.google.dagger:dagger:2.28.1'
+  annotationProcessor 'com.google.dagger:dagger-compiler:2.28.1'
+
+  api 'com.google.dagger:dagger-android:2.28.1'
+  api 'com.google.dagger:dagger-android-support:2.28.1'
+  annotationProcessor 'com.google.dagger:dagger-android-processor:2.28.1'
+
+  api 'androidx.multidex:multidex:2.0.1'
+  api 'androidx.constraintlayout:constraintlayout:1.1.3'
+  api 'androidx.gridlayout:gridlayout:1.0.0'
+
+  api 'com.google.guava:guava:27.0.1-android'
+>>>>>>> pr/1944
 
   api project(':lib')
+
+  api compatibility("recyclerViewSelection")
+
+  androidTestImplementation "androidx.test:core:${project.rootProject.ext.testRunnerVersion}"
+  androidTestImplementation "androidx.test:runner:${project.rootProject.ext.testRunnerVersion}"
+  androidTestImplementation "androidx.test:rules:${project.rootProject.ext.testRunnerVersion}"
+  androidTestImplementation "androidx.test.espresso:espresso-core:${project.rootProject.ext.espressoVersion}"
+  androidTestImplementation "androidx.test.espresso:espresso-contrib:${project.rootProject.ext.espressoVersion}"
+
+  testImplementation "androidx.test:core:${project.rootProject.ext.testRunnerVersion}"
+  testImplementation "androidx.test:runner:${project.rootProject.ext.testRunnerVersion}"
+  testImplementation "junit:junit:4.12"
+  testImplementation "com.google.truth:truth:${project.rootProject.ext.truthVersion}"
+  testImplementation "org.mockito:mockito-core:${project.rootProject.ext.mockitoCoreVersion}"
+  testImplementation "org.robolectric:robolectric:4.3"
+
+  testAnnotationProcessor "com.google.auto.service:auto-service:1.0-rc4"
 }
 
 def srcDirs = [
@@ -22,26 +54,36 @@ def srcDirs = [
   'assets',
   'bottomappbar',
   'bottomnav',
+  'bottomsheet',
   'button',
   'card',
   'checkbox',
   'chip',
+  'datepicker',
   'dialog',
   'draggable',
+  'elevation',
+  'imageview',
   'fab',
   'feature',
   'font',
+  'internal',
   'main',
   'menu',
+  'progressindicator',
   'radiobutton',
   'shapetheming',
+  'slider',
   'switchmaterial',
   'tableofcontents',
   'tabs',
   'textfield',
   'themeswitcher',
+  'timepicker',
   'topappbar',
-  'transformation'
+  'transition',
+  'transition/hero',
+  'windowpreferences'
 ]
 
 android {
@@ -51,15 +93,33 @@ android {
       application_theme            : 'Catalog',
       catalog_application_component: 'io.material.catalog.application.DaggerCatalogApplicationComponent'
     ]
+<<<<<<< HEAD
     minSdkVersion 14
     targetSdkVersion 27
+=======
+
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    vectorDrawables.useSupportLibrary = true
+    minSdkVersion 14
+    targetSdkVersion 29
+  }
+
+  testOptions {
+    unitTests.returnDefaultValues = true
+  }
+
+  aaptOptions {
+    additionalParameters "--no-version-vectors"
+>>>>>>> pr/1944
   }
 
   sourceSets {
     main {
       manifest.srcFile 'java/io/material/catalog/AndroidManifest.xml'
       java.srcDir 'java'
-      java.includes = srcDirs.collect { 'io/material/catalog/' + it + '/**/*.java' }
+      java.includes = srcDirs.collect {
+        'io/material/catalog/' + it + '/**/*.java'
+      }
       java.excludes = [
         '**/build/**',
       ]
@@ -68,6 +128,9 @@ android {
         res.srcDirs += 'java/io/material/catalog/' + it + '/res'
       }
     }
+    //TODO(b/141695010)
+    // androidTest.java.srcDir 'androidTest/javatests'
+    // test.java.srcDir 'test/javatests'
   }
 
   compileOptions {

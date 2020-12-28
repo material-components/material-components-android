@@ -1,30 +1,44 @@
-apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
+import org.gradle.internal.os.OperatingSystem
 
-archivesBaseName = getArchivesBaseName(project.name)
-version = rootProject.ext.mdcLibraryVersion
+apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
+
+version = mdcLibraryVersion
 
 dependencies {
-  api compatibility("annotations")
-  api compatibility("compat")
-  api compatibility("core_ui")
-  api compatibility("core_utils")
+  api compatibility("annotation")
+  api compatibility("appcompat")
+  api compatibility("cardview")
+  api compatibility("coordinatorlayout")
+  api compatibility("constraintlayout")
+  api compatibility("core")
+  api compatibility("dynamicanimation")
+  api compatibility("experimental")
   api compatibility("fragment")
+  api compatibility("lifecycleRuntime")
+  api compatibility("recyclerview")
   api compatibility("transition")
-  api compatibility("v7/appcompat")
-  api compatibility("v7/cardview")
-  api compatibility("v7/recyclerview")
+  api compatibility("vectordrawable")
+  api compatibility("viewpager2")
 
+<<<<<<< HEAD
   testImplementation "androidx.test:runner:${project.rootProject.ext.testRunnerVersion}"
+=======
+  testImplementation "androidx.test:core:${testRunnerVersion}"
+  testImplementation "androidx.test:runner:${testRunnerVersion}"
+>>>>>>> pr/1944
   testImplementation "junit:junit:4.12"
-  testImplementation "com.google.truth:truth:0.35"
-  testImplementation "org.mockito:mockito-core:1.9.5"
-  testImplementation "org.robolectric:robolectric:3.3.2"
+  testImplementation "com.google.truth:truth:${truthVersion}"
+  testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
+  testImplementation "org.robolectric:robolectric:4.3"
+
+  testAnnotationProcessor "com.google.auto.service:auto-service:1.0-rc4"
 }
 
 def srcDirs = [
   'com/google/android/material/animation',
   'com/google/android/material/appbar',
+  'com/google/android/material/badge',
   'com/google/android/material/behavior',
   'com/google/android/material/bottomappbar',
   'com/google/android/material/bottomnavigation',
@@ -38,25 +52,35 @@ def srcDirs = [
   'com/google/android/material/circularreveal/cardview',
   'com/google/android/material/circularreveal/coordinatorlayout',
   'com/google/android/material/color',
+  'com/google/android/material/datepicker',
   'com/google/android/material/dialog',
   'com/google/android/material/drawable',
+  'com/google/android/material/elevation',
   'com/google/android/material/expandable',
   'com/google/android/material/floatingactionbutton',
+  'com/google/android/material/imageview',
   'com/google/android/material/internal',
   'com/google/android/material/math',
   'com/google/android/material/menu',
   'com/google/android/material/navigation',
+  'com/google/android/material/progressindicator',
   'com/google/android/material/radiobutton',
   'com/google/android/material/resources',
   'com/google/android/material/ripple',
   'com/google/android/material/shape',
   'com/google/android/material/shadow',
+  'com/google/android/material/slider',
   'com/google/android/material/snackbar',
   'com/google/android/material/stateful',
   'com/google/android/material/switchmaterial',
   'com/google/android/material/tabs',
   'com/google/android/material/textfield',
+  'com/google/android/material/textview',
   'com/google/android/material/theme',
+  'com/google/android/material/theme/overlay',
+  'com/google/android/material/timepicker',
+  'com/google/android/material/tooltip',
+  'com/google/android/material/transition',
   'com/google/android/material/transformation',
   'com/google/android/material/typography',
 ]
@@ -82,6 +106,10 @@ android {
   buildTypes.all {
     consumerProguardFiles 'proguard-behaviors.pro', 'proguard-inflater.pro'
   }
+
+  defaultConfig {
+    minSdkVersion 14
+  }
 }
 
 // Add the resource directories to the main sourceSet for all test tasks
@@ -93,7 +121,7 @@ gradle.projectsEvaluated {
   }
 }
 
-task generateJavadocs(type: Javadoc, dependsOn: ':lib:compileReleaseJavaWithJavac') {
+task generateJavadocs(type: Javadoc) {
   if (project.hasProperty("online")) {
     options.addStringOption("toroot", "/")
     options.addStringOption("hdf", "android.whichdoc online")
@@ -110,7 +138,6 @@ task generateJavadocs(type: Javadoc, dependsOn: ':lib:compileReleaseJavaWithJava
 
     source = android.sourceSets.main.java.source
     source = source.findAll { it.name.endsWith(".java") }
-    include '**/com/google/android/material/**'
 
     title = null
     destinationDir = new File(outputPath)
@@ -125,47 +152,62 @@ task generateJavadocs(type: Javadoc, dependsOn: ':lib:compileReleaseJavaWithJava
   }
 }
 
-task getVersion << {
-  println version
+task getVersion {
+  doLast {
+    println version
+  }
 }
 
-task generateApiXml(type: Javadoc, dependsOn: ':lib:compileReleaseJavaWithJavac') {
+task generateApiXml(type: Javadoc) {
   if (project.hasProperty("apiName")) {
     def jdiff = project.property("jdiffJar")
     def apiName = project.property("apiName")
     source = android.sourceSets.main.java.source
     source = source.findAll { it.name.endsWith(".java") }
     classpath = files("${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar")
-    include '**/com/google/android/material/**'
     options.doclet = "jdiff.JDiff"
     options.addStringOption("subpackages", ".")
     options.addStringOption("apiname", apiName)
     options.docletpath = [
       file(jdiff),
     ]
+
+    // Doclava does not understand -notimestamp option that is default since Gradle 6.0
+    options.setNoTimestamp(false)
+  }
+
+  doLast {
+    // Escape incorrect ampersands in API XML file
+    if (OperatingSystem.current().isLinux()) {
+      ["sed", "-i", "s/ & / \\&amp; /g", "lib/${apiName}.xml"].execute()
+    } else {
+      ["sed", "-i", "''", "s/ & / \\&amp; /g", "lib/${apiName}.xml"].execute()
+    }
   }
 }
 
 task generateJdiffReport(type: Javadoc) {
-  if (project.hasProperty("oldApi")) {
-    def outputPath = project.hasProperty("outputPath") ? project.property("outputPath") : "diffs-out"
-    def jdiff = project.property("jdiffjar")
-    def xerces = project.property("xercesjar")
-    def oldApi = project.property("oldApi")
-    def newApi = project.property("newApi")
-    def newApiDir = project.property("newApiDir")
-    def oldApiDir = project.property("oldApiDir")
+  if (project.hasProperty('oldApi')) {
+    def outputPath = project.hasProperty('outputPath') ? project.property('outputPath') : 'diffs-out'
+    def jdiff = project.property('jdiffjar')
+    def xerces = project.property('xercesjar')
+    def oldApi = project.property('oldApi')
+    def newApi = project.property('newApi')
+    def newApiDir = project.property('newApiDir')
+    def oldApiDir = project.property('oldApiDir')
     destinationDir = new File(outputPath)
     source = android.sourceSets.main.java.source
-    source = source.findAll { it.name.endsWith(".java") }
-    classpath = files("${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar")
-    options.doclet = "jdiff.JDiff"
-    options.addStringOption("subpackages", ".")
-    options.addStringOption("newapidir", newApiDir)
-    options.addStringOption("oldapidir", oldApiDir)
-    options.addStringOption("oldapi", oldApi)
-    options.addBooleanOption("verbose", true)
-    options.addStringOption("newapi", newApi)
+    source = source.findAll { it.name.endsWith('.java') }
+    classpath = files('${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar')
+    options.doclet = 'jdiff.JDiff'
+    options.addStringOption('subpackages', '.')
+    options.addStringOption('newapidir', newApiDir)
+    options.addStringOption('oldapidir', oldApiDir)
+    options.addStringOption('oldapi', oldApi)
+    options.addBooleanOption('verbose', true)
+    options.addStringOption('newapi', newApi)
+    // Doclava does not understand -notimestamp option that is default since Gradle 6.0
+    options.setNoTimestamp(false)
     options.docletpath = [
       file(jdiff),
       file(xerces),
@@ -173,26 +215,79 @@ task generateJdiffReport(type: Javadoc) {
   }
 }
 
+def R_CLASS_PATH = "build/generated/not_namespaced_r_class_sources/releaseUnitTest/processReleaseUnitTestResources/r/com/google/android/material/R.java"
 afterEvaluate {
-  addResources([generateJavadocs, generateApiXml])
-}
+  [generateJavadocs, generateApiXml].forEach { task ->
+    task.dependsOn(':lib:processReleaseUnitTestResources')
+    task.source += R_CLASS_PATH
 
-def addResources(tasks) {
-  tasks.each {
     def releaseVariant = android.libraryVariants.find { it.name == 'release' }
-    it.classpath += files(android.libraryVariants.collect { variant ->
-      variant.javaCompile.classpath.files
-    })
-    it.classpath += releaseVariant.getCompileClasspath(null)
-    it.classpath += it.project.files(releaseVariant.javaCompile.destinationDir)
-    it.source += releaseVariant.javaCompile.source
+    if (releaseVariant == null) {
+      return
+    }
+    releaseVariant.javaCompileProvider.configure { javaCompileProvider ->
+      task.classpath += releaseVariant.getCompileClasspath(null)
+      task.classpath += task.project.files(javaCompileProvider.destinationDir)
+      task.source += javaCompileProvider.source
+    }
+
+    // Doclava does not understand -notimestamp option that is default since Gradle 6.0
+    task.options.setNoTimestamp(false)
   }
 }
 
-uploadArchives {
-  repositories {
-    mavenDeployer {
-      repository(url: rootProject.ext.mavenRepoUrl)
+task androidSourcesJar(type: Jar) {
+  classifier = 'sources'
+  from(android.sourceSets.main.java.srcDirs) {
+    // Needed because we have Java sources and resources in same directory
+    include '**/*.java'
+    includeEmptyDirs = false
+  }
+}
+
+afterEvaluate {
+  publishing {
+    repositories {
+      maven {
+        url = "$mavenRepoUrl"
+      }
+    }
+
+    publications {
+      release(MavenPublication) {
+        from components.release
+
+        artifact androidSourcesJar
+
+        groupId = 'com.google.android.material'
+        artifactId = 'material'
+        version project.version
+        pom {
+          name = 'Material Components for Android'
+          description = 'Material Components for Android is a static library ' +
+            'that you can add to your Android application in order to use ' +
+            'APIs that provide implementations of the Material Design specification. ' +
+            'Compatible on devices running API 14 or later.'
+          url = 'https://github.com/material-components/material-components-android'
+          inceptionYear = '2015'
+          licenses {
+            license {
+              name = 'The Apache Software License, Version 2.0'
+              url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+              distribution = 'repo'
+            }
+          }
+          developers {
+            developer {
+              name = 'The Android Open Source Project'
+            }
+          }
+          scm {
+            connection = 'scm:git:https://github.com/material-components/material-components-android.git'
+            url = 'https://github.com/material-components/material-components-android'
+          }
+        }
+      }
     }
   }
 }

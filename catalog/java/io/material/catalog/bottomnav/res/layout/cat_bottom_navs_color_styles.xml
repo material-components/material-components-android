@@ -17,6 +17,7 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
@@ -27,8 +28,6 @@
       android:layout_margin="@dimen/cat_bottom_nav_standard_spacing"
       android:text="@string/cat_bottom_nav_legacy_title"/>
   <com.google.android.material.bottomnavigation.BottomNavigationView
-      xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
       style="@style/Widget.Design.BottomNavigationView"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -40,11 +39,8 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_margin="@dimen/cat_bottom_nav_standard_spacing"
-      android:text="@string/cat_bottom_nav_default_colored_title"/>
+      android:text="@string/cat_bottom_nav_default_title"/>
   <com.google.android.material.bottomnavigation.BottomNavigationView
-      xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
-      style="@style/Widget.MaterialComponents.BottomNavigationView"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       app:menu="@menu/bottom_nav_menu"/>
@@ -57,8 +53,6 @@
       android:layout_margin="@dimen/cat_bottom_nav_standard_spacing"
       android:text="@string/cat_bottom_nav_colored_title"/>
   <com.google.android.material.bottomnavigation.BottomNavigationView
-      xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
       style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"

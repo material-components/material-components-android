@@ -16,8 +16,12 @@
 
 package com.google.android.material.testapp;
 
-import com.google.android.material.testapp.base.BaseTestActivity;
 import androidx.appcompat.widget.Toolbar;
+import com.google.android.material.testapp.base.BaseTestActivity;
+<<<<<<< HEAD
+import androidx.appcompat.widget.Toolbar;
+=======
+>>>>>>> pr/1944
 
 /** Activity for testing collapse state restoration in AppBar. */
 public class AppBarLayoutCollapsePinActivity extends BaseTestActivity {

@@ -27,9 +27,12 @@
   <string name="cat_chip_text">Hello, World!</string>
   <string name="cat_chip_text_to_truncate">Hello, very very very very very very very very big World!</string>
   <string name="cat_chip_long_text_switch_label">Long text</string>
+  <string name="cat_chip_enabled_switch_label">Enabled</string>
 
   <string name="cat_chip_group_demo_title">Chip Group Demo</string>
   <string name="cat_chip_group_single_selection_text">Single selection</string>
+  <string name="cat_chip_group_selection_required_text">Selection required</string>
+
   <string name="cat_chip_reflow_group">Reflowing chip group</string>
   <string name="cat_chip_scroll_group">Scrolling chip group</string>
 
@@ -58,5 +61,7 @@
     <item>Jacksonville</item>
     <item>San Francisco</item>
   </string-array>
+
+  <string name="cat_chip_group_refresh_content_description">Refresh chip groups</string>
 
 </resources>

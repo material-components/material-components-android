@@ -22,14 +22,23 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+<<<<<<< HEAD
 import androidx.annotation.AttrRes;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
 import androidx.annotation.StyleableRes;
 import androidx.appcompat.view.ContextThemeWrapper;
+=======
+>>>>>>> pr/1944
 import androidx.appcompat.widget.TintTypedArray;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import androidx.annotation.AttrRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.StyleRes;
+import androidx.annotation.StyleableRes;
 
 /**
  * Utility methods to check Theme compatibility with components.
@@ -44,10 +53,6 @@ public final class ThemeEnforcement {
 
   private static final int[] MATERIAL_CHECK_ATTRS = {R.attr.colorPrimaryVariant};
   private static final String MATERIAL_THEME_NAME = "Theme.MaterialComponents";
-
-  private static final int[] ANDROID_THEME_OVERLAY_ATTRS =
-      new int[] {android.R.attr.theme, R.attr.theme};
-  private static final int[] MATERIAL_THEME_OVERLAY_ATTR = new int[] {R.attr.materialThemeOverlay};
 
   private ThemeEnforcement() {}
 
@@ -66,10 +71,11 @@ public final class ThemeEnforcement {
    * check that a valid TextAppearance is set on this component for the text appearance resources
    * passed in.
    */
+  @NonNull
   public static TypedArray obtainStyledAttributes(
-      Context context,
+      @NonNull Context context,
       AttributeSet set,
-      @StyleableRes int[] attrs,
+      @NonNull @StyleableRes int[] attrs,
       @AttrRes int defStyleAttr,
       @StyleRes int defStyleRes,
       @StyleableRes int... textAppearanceResIndices) {
@@ -96,7 +102,12 @@ public final class ThemeEnforcement {
    * {@link R.attr#colorSecondary colorSecondary}.
    *
    * <p>New components should prefer to use {@link #obtainStyledAttributes(Context, AttributeSet,
+<<<<<<< HEAD
    * int[], int, int, int...)}, and use {@link com.google.android.material.resources.MaterialResources}
+=======
+   * int[], int, int, int...)}, and use
+   * {@link com.google.android.material.resources.MaterialResources}
+>>>>>>> pr/1944
    * as a replacement for the functionality in {@link androidx.appcompat.widget.TintTypedArray}.
    *
    * <p>If {@link R.attr#enforceTextAppearance} attribute is set to <code>true</code> and
@@ -105,9 +116,9 @@ public final class ThemeEnforcement {
    * passed in.
    */
   public static TintTypedArray obtainTintedStyledAttributes(
-      Context context,
+      @NonNull Context context,
       AttributeSet set,
-      @StyleableRes int[] attrs,
+      @NonNull @StyleableRes int[] attrs,
       @AttrRes int defStyleAttr,
       @StyleRes int defStyleRes,
       @StyleableRes int... textAppearanceResIndices) {
@@ -123,7 +134,10 @@ public final class ThemeEnforcement {
   }
 
   private static void checkCompatibleTheme(
-      Context context, AttributeSet set, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
+      @NonNull Context context,
+      AttributeSet set,
+      @AttrRes int defStyleAttr,
+      @StyleRes int defStyleRes) {
     TypedArray a =
         context.obtainStyledAttributes(
             set, R.styleable.ThemeEnforcement, defStyleAttr, defStyleRes);
@@ -147,12 +161,12 @@ public final class ThemeEnforcement {
   }
 
   private static void checkTextAppearance(
-      Context context,
+      @NonNull Context context,
       AttributeSet set,
-      @StyleableRes int[] attrs,
+      @NonNull @StyleableRes int[] attrs,
       @AttrRes int defStyleAttr,
       @StyleRes int defStyleRes,
-      @StyleableRes int... textAppearanceResIndices) {
+      @Nullable @StyleableRes int... textAppearanceResIndices) {
     TypedArray themeEnforcementAttrs =
         context.obtainStyledAttributes(
             set, R.styleable.ThemeEnforcement, defStyleAttr, defStyleRes);
@@ -189,12 +203,12 @@ public final class ThemeEnforcement {
   }
 
   private static boolean isCustomTextAppearanceValid(
-      Context context,
+      @NonNull Context context,
       AttributeSet set,
-      @StyleableRes int[] attrs,
+      @NonNull @StyleableRes int[] attrs,
       @AttrRes int defStyleAttr,
       @StyleRes int defStyleRes,
-      @StyleableRes int... textAppearanceResIndices) {
+      @NonNull @StyleableRes int... textAppearanceResIndices) {
     TypedArray componentAttrs =
         context.obtainStyledAttributes(set, attrs, defStyleAttr, defStyleRes);
     for (int customTextAppearanceIndex : textAppearanceResIndices) {
@@ -207,23 +221,23 @@ public final class ThemeEnforcement {
     return true;
   }
 
-  public static void checkAppCompatTheme(Context context) {
+  public static void checkAppCompatTheme(@NonNull Context context) {
     checkTheme(context, APPCOMPAT_CHECK_ATTRS, APPCOMPAT_THEME_NAME);
   }
 
-  public static void checkMaterialTheme(Context context) {
+  public static void checkMaterialTheme(@NonNull Context context) {
     checkTheme(context, MATERIAL_CHECK_ATTRS, MATERIAL_THEME_NAME);
   }
 
-  public static boolean isAppCompatTheme(Context context) {
+  public static boolean isAppCompatTheme(@NonNull Context context) {
     return isTheme(context, APPCOMPAT_CHECK_ATTRS);
   }
 
-  public static boolean isMaterialTheme(Context context) {
+  public static boolean isMaterialTheme(@NonNull Context context) {
     return isTheme(context, MATERIAL_CHECK_ATTRS);
   }
 
-  private static boolean isTheme(Context context, int[] themeAttributes) {
+  private static boolean isTheme(@NonNull Context context, @NonNull int[] themeAttributes) {
     TypedArray a = context.obtainStyledAttributes(themeAttributes);
     for (int i = 0; i < themeAttributes.length; i++) {
       if (!a.hasValue(i)) {
@@ -235,73 +249,13 @@ public final class ThemeEnforcement {
     return true;
   }
 
-  private static void checkTheme(Context context, int[] themeAttributes, String themeName) {
+  private static void checkTheme(
+      @NonNull Context context, @NonNull int[] themeAttributes, String themeName) {
     if (!isTheme(context, themeAttributes)) {
       throw new IllegalArgumentException(
           "The style on this component requires your app theme to be "
               + themeName
               + " (or a descendant).");
     }
-  }
-
-  /**
-   * Uses the materialThemeOverlay attribute to create a themed context. This allows us to use
-   * ThemeOverlays with a default style, and gives us some protection against losing our
-   * ThemeOverlay by clients who set android:theme or app:theme. If android:theme or app:theme is
-   * specified by the client, any attributes defined there will take precedence over attributes
-   * defined in materialThemeOverlay.
-   */
-  public static Context createThemedContext(
-      Context context, AttributeSet attrs, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
-    int materialThemeOverlayId =
-        obtainMaterialThemeOverlayId(context, attrs, defStyleAttr, defStyleRes);
-    if (materialThemeOverlayId != 0
-        && (!(context instanceof ContextThemeWrapper)
-            || ((ContextThemeWrapper) context).getThemeResId() != materialThemeOverlayId)) {
-      // If the context isn't a ContextThemeWrapper, or it is but does not have the same theme as we
-      // need, wrap it in a new wrapper.
-      context = new ContextThemeWrapper(context, materialThemeOverlayId);
-
-      // We want values set in android:theme or app:theme to always override values supplied by
-      // materialThemeOverlay, so we'll wrap the context again if either of those are set.
-      int androidThemeOverlayId = obtainAndroidThemeOverlayId(context, attrs);
-      if (androidThemeOverlayId != 0) {
-        context = new ContextThemeWrapper(context, androidThemeOverlayId);
-      }
-    }
-    return context;
-  }
-
-  /**
-   * Retrieves the value of {@code android:theme} or {@code app:theme}, not taking into account
-   * {@code defStyleAttr} and {@code defStyleRes} because the Android theme overlays shouldn't work
-   * from default styles.
-   */
-  @StyleRes
-  private static int obtainAndroidThemeOverlayId(Context context, AttributeSet attrs) {
-    TypedArray a = context.obtainStyledAttributes(attrs, ANDROID_THEME_OVERLAY_ATTRS);
-    int androidThemeId = a.getResourceId(0 /* index */, 0 /* defaultVal */);
-    int appThemeId = a.getResourceId(1 /* index */, 0 /* defaultVal */);
-    a.recycle();
-    if (androidThemeId != 0) {
-      return androidThemeId;
-    } else {
-      return appThemeId;
-    }
-  }
-
-  /**
-   * Retrieves the value of {@code materialThemeOverlay}, taking into account {@code defStyleAttr}
-   * and {@code defStyleRes} because the Material theme overlay should work from default styles.
-   */
-  @StyleRes
-  private static int obtainMaterialThemeOverlayId(
-      Context context, AttributeSet attrs, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
-    TypedArray a =
-        context.obtainStyledAttributes(
-            attrs, MATERIAL_THEME_OVERLAY_ATTR, defStyleAttr, defStyleRes);
-    int materialThemeOverlayId = a.getResourceId(0 /* index */, 0 /* defaultVal */);
-    a.recycle();
-    return materialThemeOverlayId;
   }
 }

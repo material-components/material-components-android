@@ -18,13 +18,44 @@
 
   <dimen name="design_textinput_caption_translate_y">5dp</dimen>
 
+  <dimen name="mtrl_textinput_counter_margin_start">16dp</dimen>
+
   <dimen name="mtrl_textinput_outline_box_expanded_padding">16dp</dimen>
-  <dimen name="mtrl_textinput_box_padding_end">12dp</dimen>
 
   <dimen name="mtrl_textinput_box_corner_radius_small">0dp</dimen>
   <dimen name="mtrl_textinput_box_corner_radius_medium">4dp</dimen>
-  <dimen name="mtrl_textinput_box_bottom_offset">3dp</dimen>
   <dimen name="mtrl_textinput_box_stroke_width_default">1dp</dimen>
   <dimen name="mtrl_textinput_box_stroke_width_focused">2dp</dimen>
   <dimen name="mtrl_textinput_box_label_cutout_padding">4dp</dimen>
+
+  <dimen name="mtrl_edittext_rectangle_top_offset">12dp</dimen>
+
+  <!-- Dimens for edit text's top and bottom padding adjustments for large font scale settings. -->
+  <dimen name="material_filled_edittext_font_1_3_padding_top">23dp</dimen>
+  <dimen name="material_filled_edittext_font_1_3_padding_bottom">12dp</dimen>
+  <dimen name="material_filled_edittext_font_2_0_padding_top">32dp</dimen>
+  <dimen name="material_filled_edittext_font_2_0_padding_bottom">8dp</dimen>
+
+  <!--  For 1.3 font scale settings, the edit text's collapsed top padding in box mode. -->
+  <dimen name="material_font_1_3_box_collapsed_padding_top">4dp</dimen>
+  <!--  For 2.0 font scale settings, the edit text's collapsed top padding in box mode. -->
+  <dimen name="material_font_2_0_box_collapsed_padding_top">8dp</dimen>
+
+  <dimen name="material_helper_text_default_padding_top">4dp</dimen>
+  <!-- For large font scale settings, distance from text field to helper text's
+       baseline should be 24dp when font size is 16 (16 + 8dp = 24dp) and 32dp
+       when font size is 24 (24 + 8dp = 32dp). -->
+  <dimen name="material_helper_text_font_1_3_padding_top">8dp</dimen>
+  <dimen name="material_helper_text_font_1_3_padding_horizontal">12dp</dimen>
+
+  <!-- The icon views' minimum width is 48dp and since each icon is 24dp wide we need a 4dp margin
+       to have the appropriate spacing before and after each icon. -->
+  <dimen name="mtrl_textinput_end_icon_margin_start">4dp</dimen>
+  <dimen name="mtrl_textinput_start_icon_margin_end">4dp</dimen>
+
+  <dimen name="material_input_text_to_prefix_suffix_padding">2dp</dimen>
+
+  <dimen name="mtrl_exposed_dropdown_menu_popup_elevation">8dp</dimen>
+  <dimen name="mtrl_exposed_dropdown_menu_popup_vertical_padding">8dp</dimen>
+  <dimen name="mtrl_exposed_dropdown_menu_popup_vertical_offset">-8dp</dimen>
 </resources>

@@ -15,6 +15,19 @@
  */
 package com.google.android.material.navigation;
 
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
+import static androidx.test.espresso.matcher.ViewMatchers.isChecked;
+import static androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.isNotChecked;
+import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.google.android.material.testutils.DrawerLayoutActions.closeDrawer;
 import static com.google.android.material.testutils.DrawerLayoutActions.openDrawer;
 import static com.google.android.material.testutils.NavigationViewActions.addHeaderView;
@@ -36,6 +49,7 @@ import static com.google.android.material.testutils.TestUtilsMatchers.withBackgr
 import static com.google.android.material.testutils.TestUtilsMatchers.withStartDrawableFilledWith;
 import static com.google.android.material.testutils.TestUtilsMatchers.withTextColor;
 import static com.google.android.material.testutils.TestUtilsMatchers.withTextSize;
+<<<<<<< HEAD
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
@@ -49,6 +63,8 @@ import static androidx.test.espresso.matcher.ViewMatchers.isNotChecked;
 import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+=======
+>>>>>>> pr/1944
 import static org.hamcrest.core.AllOf.allOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -62,6 +78,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Parcelable;
+<<<<<<< HEAD
 import androidx.annotation.ColorInt;
 import androidx.annotation.IdRes;
 import com.google.android.material.testapp.NavigationViewActivity;
@@ -71,6 +88,10 @@ import com.google.android.material.testutils.TestDrawable;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+=======
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.view.GravityCompat;
+>>>>>>> pr/1944
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.SwitchCompat;
 import android.util.SparseArray;
@@ -79,10 +100,23 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+<<<<<<< HEAD
+=======
+import androidx.annotation.ColorInt;
+import androidx.annotation.IdRes;
+import androidx.drawerlayout.widget.DrawerLayout;
+>>>>>>> pr/1944
 import androidx.test.espresso.matcher.ViewMatchers.Visibility;
 import androidx.test.filters.MediumTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
+<<<<<<< HEAD
+=======
+import com.google.android.material.testapp.NavigationViewActivity;
+import com.google.android.material.testapp.R;
+import com.google.android.material.testapp.custom.NavigationTestView;
+import com.google.android.material.testutils.TestDrawable;
+>>>>>>> pr/1944
 import java.util.HashMap;
 import java.util.Map;
 import org.hamcrest.Matcher;
@@ -249,7 +283,7 @@ public class NavigationViewTest {
       // direct child of RecyclerView which is expected to have the background set
       // on it. If the internal implementation of NavigationView changes, the second
       // Matcher below will need to be tweaked.
-      Matcher menuItemMatcher =
+      Matcher<View> menuItemMatcher =
           allOf(
               hasDescendant(withText(menuStringContent.get(MENU_CONTENT_ITEM_IDS[i]))),
               isChildOfA(isAssignableFrom(RecyclerView.class)),
@@ -265,7 +299,7 @@ public class NavigationViewTest {
     // And check that all the menu items have the new fill
     final @ColorInt int newFillColorBlue = ResourcesCompat.getColor(res, R.color.test_blue, null);
     for (int i = 0; i < MENU_CONTENT_ITEM_IDS.length; i++) {
-      Matcher menuItemMatcher =
+      Matcher<View> menuItemMatcher =
           allOf(
               hasDescendant(withText(menuStringContent.get(MENU_CONTENT_ITEM_IDS[i]))),
               isChildOfA(isAssignableFrom(RecyclerView.class)),
@@ -283,7 +317,7 @@ public class NavigationViewTest {
     // And check that all the menu items have the new fill
     final @ColorInt int newFillColorGreen = ResourcesCompat.getColor(res, R.color.test_green, null);
     for (int i = 0; i < MENU_CONTENT_ITEM_IDS.length; i++) {
-      Matcher menuItemMatcher =
+      Matcher<View> menuItemMatcher =
           allOf(
               hasDescendant(withText(menuStringContent.get(MENU_CONTENT_ITEM_IDS[i]))),
               isChildOfA(isAssignableFrom(RecyclerView.class)),
@@ -575,7 +609,7 @@ public class NavigationViewTest {
 
       // For the background fill check we need to select a view that has its background
       // set by the current implementation (see disclaimer in testBackground)
-      Matcher menuItemMatcher =
+      Matcher<View> menuItemMatcher =
           allOf(
               hasDescendant(withText(menuStringContent.get(MENU_CONTENT_ITEM_IDS[i]))),
               isChildOfA(isAssignableFrom(RecyclerView.class)),
@@ -583,7 +617,7 @@ public class NavigationViewTest {
       onView(menuItemMatcher).check(matches(withBackgroundFill(expectedItemBackground)));
 
       // And for the foreground color check we need to select a view with the text content
-      Matcher menuItemTextMatcher =
+      Matcher<View> menuItemTextMatcher =
           allOf(
               withText(menuStringContent.get(MENU_CONTENT_ITEM_IDS[i])),
               isDescendantOfA(withId(R.id.start_drawer)));
@@ -634,13 +668,7 @@ public class NavigationViewTest {
         checkedItemBackground);
 
     // Register a navigation listener that "marks" the selected item
-    navigationView.setNavigationItemSelectedListener(
-        new NavigationView.OnNavigationItemSelectedListener() {
-          @Override
-          public boolean onNavigationItemSelected(MenuItem item) {
-            return true;
-          }
-        });
+    navigationView.setNavigationItemSelectedListener(item -> true);
 
     // Click one of our items
     onView(
@@ -657,13 +685,7 @@ public class NavigationViewTest {
         checkedItemBackground);
 
     // Register a navigation listener that doesn't "mark" the selected item
-    navigationView.setNavigationItemSelectedListener(
-        new NavigationView.OnNavigationItemSelectedListener() {
-          @Override
-          public boolean onNavigationItemSelected(MenuItem item) {
-            return false;
-          }
-        });
+    navigationView.setNavigationItemSelectedListener(item -> false);
 
     // Click another items
     onView(
@@ -696,7 +718,7 @@ public class NavigationViewTest {
     // details of the NavigationMenu, while conditions 3 and 4 aim to be as generic as
     // possible and to not rely on the internal details of the current layout implementation
     // of an individual menu item in NavigationMenu.
-    Matcher menuItemMatcher =
+    Matcher<View> menuItemMatcher =
         allOf(
             isDescendantOfA(withId(R.id.start_drawer)),
             isChildOfA(isAssignableFrom(RecyclerView.class)),
@@ -710,7 +732,7 @@ public class NavigationViewTest {
 
     // Check that the full custom view is displayed without title and icon.
     final Resources res = activityTestRule.getActivity().getResources();
-    Matcher customItemMatcher =
+    Matcher<View> customItemMatcher =
         allOf(
             isDescendantOfA(withId(R.id.start_drawer)),
             isChildOfA(isAssignableFrom(RecyclerView.class)),

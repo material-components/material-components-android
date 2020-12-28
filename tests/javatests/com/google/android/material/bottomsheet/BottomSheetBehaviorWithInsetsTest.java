@@ -19,12 +19,19 @@ package com.google.android.material.bottomsheet;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+<<<<<<< HEAD
 import com.google.android.material.testapp.BottomSheetBehaviorWithInsetsActivity;
+=======
+>>>>>>> pr/1944
 import androidx.core.view.ViewCompat;
 import android.view.ViewGroup;
 import androidx.test.filters.SmallTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
+<<<<<<< HEAD
+=======
+import com.google.android.material.testapp.BottomSheetBehaviorWithInsetsActivity;
+>>>>>>> pr/1944
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;

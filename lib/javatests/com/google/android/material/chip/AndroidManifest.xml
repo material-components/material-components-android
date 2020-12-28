@@ -15,8 +15,14 @@
 -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-    package="com.google.android.material.chip">
+  xmlns:tools="http://schemas.android.com/tools"
+  package="com.google.android.material.chip">
 
+<<<<<<< HEAD
+=======
+  <uses-sdk
+    tools:overrideLibrary="androidx.test.core"/>
+
+>>>>>>> pr/1944
   <application/>
 </manifest>

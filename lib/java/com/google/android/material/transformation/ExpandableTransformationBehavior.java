@@ -20,12 +20,19 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.content.Context;
+<<<<<<< HEAD
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.expandable.ExpandableWidget;
+=======
+>>>>>>> pr/1944
 import android.util.AttributeSet;
 import android.view.View;
+import androidx.annotation.CallSuper;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.expandable.ExpandableWidget;
 
 /**
  * Base Behavior for views that can react to an {@link ExpandableWidget}'s {@link
@@ -34,7 +41,11 @@ import android.view.View;
  *
  * <p>Behaviors should override {@link #onCreateExpandedStateChangeAnimation(View, View, boolean,
  * boolean)} to return an animation
+ *
+ * @deprecated Use {@link com.google.android.material.transition.MaterialContainerTransform}
+ *     instead.
  */
+@Deprecated
 public abstract class ExpandableTransformationBehavior extends ExpandableBehavior {
 
   @Nullable private AnimatorSet currentAnimation;
@@ -54,7 +65,8 @@ public abstract class ExpandableTransformationBehavior extends ExpandableBehavio
    * <p>If the new {@code expanded} state is false, the {@code dependency} should be shown and the
    * {@code child} should be hidden.
    *
-   * @param dependency the {@link ExpandableWidget} dependency containing the new expanded state.
+   * @param dependency the {@link com.google.android.material.expandable.ExpandableWidget}
+   * dependency containing the new expanded state.
    * @param child the view that should react to the change in expanded state.
    * @param expanded the new expanded state.
    * @param isAnimating whether this state change occurred while a previous state change was still

@@ -9,8 +9,7 @@ path: /catalog/bottom-sheet-behavior/
 
 # Bottom Sheets
 
-![Bottom Sheets](assets/bottom-sheets.svg)
-<!--{: .article__asset.article__asset--screenshot }-->
+## Using standard bottom sheets
 
 `BottomSheetBehavior` is applied to a child of
 [CoordinatorLayout](https://developer.android.com/reference/androidx/coordinatorlayout/widget/CoordinatorLayout)
@@ -25,15 +24,9 @@ Note: If you want to use Bottom Sheets that are modal (dialogs), use
 
 ## Design & API Documentation
 
--   [Material Design guidelines: Bottom
-    Sheets](https://material.io/go/design-sheets-bottom#bottom-sheets-persistent-bottom-sheets)
-    <!--{: .icon-list-item.icon-list-item--spec }-->
--   [Class
-    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/bottomsheet/BottomSheetBehavior.java)
-    <!--{: .icon-list-item.icon-list-item--link }-->
--   [Class
-    overview](https://developer.android.com/reference/com/google/android/material/bottomsheet/BottomSheetBehavior)
-    <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
+-   [Material Design guidelines: Bottom Sheets](https://material.io/go/design-sheets-bottom#bottom-sheets-persistent-bottom-sheets)
+-   [Class definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/bottomsheet/BottomSheetBehavior.java)
+-   [Class overview](https://developer.android.com/reference/com/google/android/material/bottomsheet/BottomSheetBehavior)
 
 ## Usage
 
@@ -77,6 +70,13 @@ setting the state to collapsed to make it visible to the user:
 bottomSheetBehavior.setPeekHeight(300);
 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 ```
+
+## Handling Insets
+
+`BottomSheetBehavior` can be made to automatically handle insets (such as for
+edge to edge) by specifying any of `paddingBottomSystemWindowInsets`,
+`paddingLeftSystemWindowInsets`, or `paddingRightSystemWindowInsets` to true on
+the view.
 
 ## Related Concepts
 

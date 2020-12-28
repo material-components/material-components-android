@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2019 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingLeft="16dp"
+      android:paddingRight="16dp"
+      android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/cat_slider_title_top_padding"
+        android:text="@string/cat_slider_title_1"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
+
+      <androidx.appcompat.widget.SwitchCompat
+          android:id="@+id/switch_button_1"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:theme="@style/ThemeOverlay.SecondaryPalette.Red" />
+
+      <com.google.android.material.slider.Slider
+          android:id="@+id/slider_1"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:layout_marginLeft="@dimen/cat_slider_left_margin"
+          android:layout_marginStart="@dimen/cat_slider_left_margin"
+          android:theme="@style/ThemeOverlay.PrimaryPalette.Red"
+          android:valueFrom="0"
+          android:valueTo="11"
+          android:stepSize="1" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/cat_slider_title_top_padding"
+        android:text="@string/cat_slider_title_2"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
+
+      <androidx.appcompat.widget.SwitchCompat
+          android:id="@+id/switch_button_2"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:theme="@style/ThemeOverlay.SecondaryPalette.Orange" />
+
+      <com.google.android.material.slider.Slider
+          android:id="@+id/slider_2"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:layout_marginLeft="@dimen/cat_slider_left_margin"
+          android:layout_marginStart="@dimen/cat_slider_left_margin"
+          android:theme="@style/ThemeOverlay.PrimaryPalette.Orange"
+          android:valueFrom="100"
+          android:valueTo="1000"
+          android:stepSize="100" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/cat_slider_title_top_padding"
+        android:text="@string/cat_slider_title_3"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
+
+      <androidx.appcompat.widget.SwitchCompat
+          android:id="@+id/switch_button_3"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:theme="@style/ThemeOverlay.SecondaryPalette.Purple" />
+
+      <com.google.android.material.slider.Slider
+          android:id="@+id/slider_3"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:layout_marginLeft="@dimen/cat_slider_left_margin"
+          android:layout_marginStart="@dimen/cat_slider_left_margin"
+          android:theme="@style/ThemeOverlay.PrimaryPalette.Purple"
+          android:valueFrom="-5"
+          android:valueTo="5"
+          android:stepSize="1" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/cat_slider_title_top_padding"
+        android:text="@string/cat_slider_title_4"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
+
+      <androidx.appcompat.widget.SwitchCompat
+          android:id="@+id/switch_button_4"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:theme="@style/ThemeOverlay.SecondaryPalette.Indigo" />
+
+      <com.google.android.material.slider.Slider
+          android:id="@+id/slider_4"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:layout_marginLeft="@dimen/cat_slider_left_margin"
+          android:layout_marginStart="@dimen/cat_slider_left_margin"
+          android:theme="@style/ThemeOverlay.PrimaryPalette.Indigo"
+          android:valueFrom="500"
+          android:valueTo="50000"
+          android:stepSize="500" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/cat_slider_title_top_padding"
+        android:text="@string/cat_slider_title_5"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
+
+      <androidx.appcompat.widget.SwitchCompat
+          android:id="@+id/switch_button_5"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:theme="@style/ThemeOverlay.SecondaryPalette.Blue" />
+
+      <com.google.android.material.slider.Slider
+          android:id="@+id/slider_5"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:layout_marginLeft="@dimen/cat_slider_left_margin"
+          android:layout_marginStart="@dimen/cat_slider_left_margin"
+          android:theme="@style/ThemeOverlay.PrimaryPalette.Blue"
+          android:valueFrom="0"
+          android:valueTo="5.75"
+          android:stepSize="0.25" />
+    </LinearLayout>
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:paddingTop="@dimen/cat_slider_title_top_padding"
+      android:text="@string/cat_slider_title_6"/>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center_vertical">
+
+      <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switch_button_6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.SecondaryPalette.Green" />
+
+      <com.google.android.material.slider.Slider
+        android:id="@+id/slider_6"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginLeft="@dimen/cat_slider_left_margin"
+        android:layout_marginStart="@dimen/cat_slider_left_margin"
+        android:theme="@style/ThemeOverlay.PrimaryPalette.Green"
+        android:valueFrom="0"
+        android:valueTo="10"
+        android:stepSize="1"
+        app:tickVisible="false"/>
+    </LinearLayout>
+  </LinearLayout>
+</ScrollView>

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2020 The Android Open Source Project
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+      http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:showDividers="middle"
+    android:divider="@drawable/layout_divider">
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/cat_progress_indicator_start_to_end_linear_single_color"/>
+  <com.google.android.material.progressindicator.LinearProgressIndicator
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:indeterminate="true"/>
+
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/cat_progress_indicator_rounded_end_to_start_linear_single_color"/>
+  <com.google.android.material.progressindicator.LinearProgressIndicator
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:indeterminate="true"
+      app:indicatorDirectionLinear="endToStart"
+      app:trackCornerRadius="@dimen/mtrl_progress_indicator_full_rounded_corner_radius"/>
+
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/cat_progress_indicator_left_to_right_linear_multiple_colors_anchored_top"/>
+  <com.google.android.material.progressindicator.LinearProgressIndicator
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:indeterminate="true"
+      app:indicatorColor="@array/cat_custom_progress_colors"
+      app:indicatorDirectionLinear="leftToRight"
+      app:showAnimationBehavior="inward"
+      app:hideAnimationBehavior="outward"/>
+
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/cat_progress_indicator_right_to_left_linear_multiple_colors_anchored_bottom_contiguous_animation"/>
+  <com.google.android.material.progressindicator.LinearProgressIndicator
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:indeterminate="true"
+      app:indicatorColor="@array/cat_custom_progress_colors"
+      app:indeterminateAnimationType="contiguous"
+      app:indicatorDirectionLinear="rightToLeft"
+      app:showAnimationBehavior="outward"
+      app:hideAnimationBehavior="inward"/>
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:showDividers="middle"
+      android:divider="@drawable/layout_divider">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+      <TextView
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:text="@string/cat_progress_indicator_clockwise_circular_single_color"/>
+      <com.google.android.material.progressindicator.CircularProgressIndicator
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:indeterminate="true"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+      <TextView
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:text="@string/cat_progress_indicator_rounded_counterclockwise_circular_single_color"/>
+      <com.google.android.material.progressindicator.CircularProgressIndicator
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:indeterminate="true"
+          app:indicatorDirectionCircular="counterclockwise"
+          app:trackCornerRadius="@dimen/mtrl_progress_indicator_full_rounded_corner_radius"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+      <TextView
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:text="@string/cat_progress_indicator_clockwise_circular_multiple_colors_anchored_outer"/>
+      <com.google.android.material.progressindicator.CircularProgressIndicator
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:indeterminate="true"
+          app:indicatorColor="@array/cat_custom_progress_colors"
+          app:showAnimationBehavior="inward"
+          app:hideAnimationBehavior="outward"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+      <TextView
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:text="@string/cat_progress_indicator_clockwise_circular_multiple_colors_anchored_inner"/>
+      <com.google.android.material.progressindicator.CircularProgressIndicator
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:indeterminate="true"
+          app:indicatorColor="@array/cat_custom_progress_colors"
+          app:showAnimationBehavior="outward"
+          app:hideAnimationBehavior="inward"/>
+    </LinearLayout>
+  </LinearLayout>
+</LinearLayout>

@@ -14,26 +14,32 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-  <style name="Theme.Catalog" parent="Theme.MaterialComponents.Light.NoActionBar">
-    <item name="colorPrimary">@color/cat_color_primary</item>
-    <item name="colorPrimaryDark">@color/cat_color_primary_dark</item>
-    <item name="colorOnPrimary">@color/cat_color_on_primary</item>
-    <item name="colorSecondary">@color/cat_color_secondary</item>
-    <item name="colorOnSecondary">@color/cat_color_on_secondary</item>
-
+  <style name="Theme.Catalog" parent="Theme.MaterialComponents.DayNight.NoActionBar">
     <item name="catalogToolbarStyle">@style/Widget.Catalog.Toolbar</item>
     <item name="catalogToolbarWithCloseButtonStyle">@style/Widget.Catalog.Toolbar.WithCloseButton</item>
+    <item name="textInputSignInStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox</item>
+    <item name="bottomSheetDialogTheme">@style/ThemeOverlay.Catalog.BottomSheetDialog</item>
+    <item name="windowActionModeOverlay">true</item>
   </style>
 
   <style name="Theme.Catalog.Dark" parent="Theme.MaterialComponents.NoActionBar">
     <item name="catalogToolbarStyle">@style/Widget.Catalog.Toolbar</item>
     <item name="catalogToolbarWithCloseButtonStyle">@style/Widget.Catalog.Toolbar.WithCloseButton</item>
+    <item name="bottomSheetDialogTheme">@style/ThemeOverlay.Catalog.BottomSheetDialog</item>
+    <item name="windowActionModeOverlay">true</item>
   </style>
 
-  <style name="Theme.Catalog.DayNight" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-    <item name="catalogToolbarStyle">@style/Widget.Catalog.Toolbar</item>
-    <item name="catalogToolbarWithCloseButtonStyle">@style/Widget.Catalog.Toolbar.WithCloseButton</item>
+  <!-- A theme which sets the status bar color to transparent -->
+  <style name="Theme.Catalog.TransparentStatus">
+    <item name="android:statusBarColor" tools:targetApi="21">@android:color/transparent</item>
   </style>
+
+  <style name="ThemeOverlay.Catalog.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+    <item name="paddingBottomSystemWindowInsets">true</item>
+    <item name="paddingLeftSystemWindowInsets">true</item>
+    <item name="paddingRightSystemWindowInsets">true</item>
+  </style>
+
 </resources>

@@ -18,6 +18,17 @@
 <resources>
 
   <string name="cat_card_title">Cards</string>
+  <string name="cat_card_draggable_card">Draggable Card</string>
+  <string name="cat_card_selection_mode">Selectable Cards</string>
+  <string name="cat_card_selectable_item_title">Message</string>
+  <string name="cat_card_states">Card States</string>
+  <string name="cat_card_list" translatable="false">Card List With Drag-and-Drop</string>
+  <string name="cat_card_draggable_card_content">This is a draggable Card.</string>
+  <string name="cat_card_states_card_content">This demo shows the different states on a card.</string>
+  <string name="cat_card_state_hovered">Hovered</string>
+  <string name="cat_card_state_pressed">Pressed</string>
+  <string name="cat_card_state_none">None</string>
+  <string name="cat_card_checkable_card">This is a checkable Card</string>
   <string name="cat_card_m1_section_title">Material 1 CardView</string>
   <string name="cat_card_description">
     Cards represent entry points into deeper levels of detail or navigation, such as an album in
@@ -42,4 +53,54 @@
     use MaterialCardView in your layout, or apply a style tag to a CardView. We recommend using
     the MaterialCardView class for the latest Material designs and maximum flexibility in your UI.
   </string>
+  <string name="cat_card_select">Select a state</string>
+  <string name="cat_card_selectable_content">
+    Lorem ipsum dolor sit amet, nec no nominavi scaevola. Per et sint sapientem, nobis perpetua salutandi mei te. Quo tamquam probatus reprehendunt in. Eos esse purto eruditi ea. Enim tation persius ut sea, eos ad consul populo.
+    Ne eum solet altera. Cibo eligendi et est, electram theophrastus te vel eu.
+  </string>
+
+  <!-- Rich Media Demo Strings -->
+  <string name="cat_card_rich_media_demo">Rich Media Cards</string>
+  <string name="cat_card_rich_media_sample_1">Sample #1</string>
+  <string name="cat_card_rich_media_sample_2">Sample #2</string>
+  <string name="cat_card_rich_media_sample_3">Sample #3</string>
+  <string name="cat_card_rich_media_view_overline">Title goes here</string>
+  <string name="cat_card_rich_media_view_title">Title goes here</string>
+  <string name="cat_card_rich_media_view_subtitle">Subtitle goes here</string>
+  <string name="cat_card_rich_media_view_secondary_line_text">Secondary line text Lorem ipsum dolor sit amet, nec no nominavi scaevola. Per et sint sapientem, nobis perpetua salutandi mei te.</string>
+  <string name="cat_card_rich_media_logo_view_description">Card Logo</string>
+  <string name="cat_card_rich_media_image_view_description">Card Image</string>
+  <string name="cat_card_rich_media_rating_text">4.5 (413)</string>
+  <string name="cat_card_rich_media_rating_view_description">Card Rating</string>
+  <string name="cat_card_rich_media_chip_title_1">Item 1</string>
+  <string name="cat_card_rich_media_chip_title_2">Item 2</string>
+  <string name="cat_card_rich_media_chip_title_3">Item 3</string>
+  <string name="cat_card_rich_media_chip_title_4">Item 4</string>
+  <string name="cat_card_rich_media_action_1">Action 1</string>
+  <string name="cat_card_rich_media_action_2">Action 2</string>
+
+  <string description="A description of an action that a user of an accessibility service can perform to move the card to the top left corner of the screen. [CHAR LIMIT=25]"
+      name="cat_card_action_move_top_left">Move to top left</string>
+
+
+  <string description="A description of an action that a user of an accessibility service can perform to swap the card with the one above it. [CHAR LIMIT=25]"
+      name="cat_card_action_move_up">Move Up</string>
+  <string description="A description of an action that a user of an accessibility service can perform to swap the card with the one below it. [CHAR LIMIT=25]"
+      name="cat_card_action_move_down">Move Down</string>
+  <string description="A description of an action that a user of an accessibility service can perform to move the card to the top right corner of the screen. [CHAR LIMIT=25]"
+      name="cat_card_action_move_top_right">Move to top right</string>
+  <string description="A description of an action that a user of an accessibility service can perform to move the card to the bottom left corner of the screen. [CHAR LIMIT=25]"
+      name="cat_card_action_move_bottom_left">Move to bottom left</string>
+  <string description="A description of an action that a user of an accessibility service can perform to move the card to the bottom right corner of the screen. [CHAR LIMIT=25]"
+      name="cat_card_action_move_bottom_right">Move to bottom right</string>
+  <string description="A description of an action that a user of an accessibility service can perform to move the card to the center of the screen. [CHAR LIMIT=25]"
+      name="cat_card_action_move_center">Move to center</string>
+
+  <string description="a transient text that appears on screen when a card is dismissed [CHAR LIMIT=30]"
+      name="cat_card_dismissed">Card Dismissed</string>
+  <string description="A label in a button to dismiss the last action [CHAR LIMIT=15]"
+      name="cat_card_undo">Undo</string>
+  <string description="A label in a button to dismiss the last action [CHAR LIMIT=30]"
+      name="cat_card_swipe_to_dismiss">Swipe this card to dismiss it</string>
+  <string name="cat_card_swipe_dismiss" description="the title of a screen where you can swipe to dismiss a card [CHAR LIMIT=20]">Card Swipe Dismiss</string>
 </resources>

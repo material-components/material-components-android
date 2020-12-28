@@ -20,7 +20,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
   <androidx.core.widget.NestedScrollView
       android:id="@+id/cat_demo_landing_content"
@@ -41,7 +42,7 @@
           android:layout_marginLeft="16dp"
           android:layout_marginRight="16dp"
           android:text="@string/cat_demo_landing_description_header"
-          android:textAppearance="@style/TextAppearance.Catalog.SectionTitle"/>
+          android:textAppearance="?attr/textAppearanceSubtitle1"/>
 
       <TextView
           android:id="@+id/cat_demo_landing_description"
@@ -51,7 +52,7 @@
           android:layout_marginLeft="16dp"
           android:layout_marginRight="16dp"
           android:lineSpacingMultiplier="1.5"
-          android:textAppearance="@style/TextAppearance.Catalog.Body"
+          android:textAppearance="?attr/textAppearanceBody2"
           tools:text="This is placeholder text for the description of the feature demo which should explain the key aspects of the feature."/>
 
       <FrameLayout
@@ -77,7 +78,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:text="@string/cat_demo_landing_additional_demos_header"
-            android:textAppearance="@style/TextAppearance.Catalog.SectionTitle"/>
+            android:textAppearance="?attr/textAppearanceSubtitle1"/>
 
         <LinearLayout
             android:id="@+id/cat_demo_landing_additional_demos_container"
@@ -87,14 +88,14 @@
       </LinearLayout>
 
       <include layout="@layout/cat_demo_landing_links_section"/>
-
     </LinearLayout>
   </androidx.core.widget.NestedScrollView>
 
   <com.google.android.material.appbar.AppBarLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      app:liftOnScroll="true">
+      app:liftOnScroll="true"
+      android:fitsSystemWindows="true">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"

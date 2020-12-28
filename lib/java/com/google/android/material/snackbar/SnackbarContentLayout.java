@@ -21,14 +21,21 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+<<<<<<< HEAD
 import androidx.annotation.RestrictTo;
 import com.google.android.material.color.MaterialColors;
+=======
+>>>>>>> pr/1944
 import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+import com.google.android.material.color.MaterialColors;
 
 /** @hide */
 @RestrictTo(LIBRARY_GROUP)
@@ -39,11 +46,11 @@ public class SnackbarContentLayout extends LinearLayout implements ContentViewCa
   private int maxWidth;
   private int maxInlineActionWidth;
 
-  public SnackbarContentLayout(Context context) {
+  public SnackbarContentLayout(@NonNull Context context) {
     this(context, null);
   }
 
-  public SnackbarContentLayout(Context context, AttributeSet attrs) {
+  public SnackbarContentLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
     super(context, attrs);
     TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SnackbarLayout);
     maxWidth = a.getDimensionPixelSize(R.styleable.SnackbarLayout_android_maxWidth, -1);
@@ -127,7 +134,8 @@ public class SnackbarContentLayout extends LinearLayout implements ContentViewCa
     return changed;
   }
 
-  private static void updateTopBottomPadding(View view, int topPadding, int bottomPadding) {
+  private static void updateTopBottomPadding(
+      @NonNull View view, int topPadding, int bottomPadding) {
     if (ViewCompat.isPaddingRelative(view)) {
       ViewCompat.setPaddingRelative(
           view,
@@ -160,5 +168,9 @@ public class SnackbarContentLayout extends LinearLayout implements ContentViewCa
       actionView.setAlpha(1f);
       actionView.animate().alpha(0f).setDuration(duration).setStartDelay(delay).start();
     }
+  }
+
+  public void setMaxInlineActionWidth(int width) {
+    maxInlineActionWidth = width;
   }
 }

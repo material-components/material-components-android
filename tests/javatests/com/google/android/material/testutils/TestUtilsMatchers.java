@@ -24,11 +24,14 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+<<<<<<< HEAD
 import androidx.annotation.ColorInt;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import com.google.android.material.expandable.ExpandableWidget;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+=======
+>>>>>>> pr/1944
 import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.TextViewCompat;
@@ -40,7 +43,16 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.ImageView;
 import android.widget.TextView;
+<<<<<<< HEAD
 import androidx.test.espresso.matcher.BoundedMatcher;
+=======
+import androidx.annotation.ColorInt;
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
+import androidx.test.espresso.matcher.BoundedMatcher;
+import com.google.android.material.expandable.ExpandableWidget;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+>>>>>>> pr/1944
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;

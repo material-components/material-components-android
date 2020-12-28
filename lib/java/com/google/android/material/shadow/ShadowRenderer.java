@@ -28,8 +28,15 @@ import android.graphics.RadialGradient;
 import android.graphics.RectF;
 import android.graphics.Region.Op;
 import android.graphics.Shader;
+<<<<<<< HEAD
 import androidx.annotation.RestrictTo;
 import androidx.core.graphics.ColorUtils;
+=======
+import androidx.core.graphics.ColorUtils;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+>>>>>>> pr/1944
 
 /**
  * A helper class to draw linear or radial shadows using gradient shaders.
@@ -46,9 +53,9 @@ public class ShadowRenderer {
 
   private static final int COLOR_ALPHA_END = 0;
 
-  private final Paint shadowPaint;
-  private final Paint cornerShadowPaint;
-  private final Paint edgeShadowPaint;
+  @NonNull private final Paint shadowPaint;
+  @NonNull private final Paint cornerShadowPaint;
+  @NonNull private final Paint edgeShadowPaint;
 
   private int shadowStartColor;
   private int shadowMiddleColor;
@@ -63,19 +70,19 @@ public class ShadowRenderer {
   private static final float[] cornerPositions = new float[] {0f, 0f, .5f, 1f};
 
   private final Path scratch = new Path();
+  private Paint transparentPaint = new Paint();
 
   public ShadowRenderer() {
     this(Color.BLACK);
   }
 
   public ShadowRenderer(int color) {
+    shadowPaint = new Paint();
     setShadowColor(color);
 
+    transparentPaint.setColor(Color.TRANSPARENT);
     cornerShadowPaint = new Paint(Paint.DITHER_FLAG);
     cornerShadowPaint.setStyle(Paint.Style.FILL);
-
-    shadowPaint = new Paint();
-    shadowPaint.setColor(shadowStartColor);
 
     edgeShadowPaint = new Paint(cornerShadowPaint);
   }
@@ -84,10 +91,12 @@ public class ShadowRenderer {
     shadowStartColor = ColorUtils.setAlphaComponent(color, COLOR_ALPHA_START);
     shadowMiddleColor = ColorUtils.setAlphaComponent(color, COLOR_ALPHA_MIDDLE);
     shadowEndColor = ColorUtils.setAlphaComponent(color, COLOR_ALPHA_END);
+    shadowPaint.setColor(shadowStartColor);
   }
 
   /** Draws an edge shadow on the canvas in the current bounds with the matrix transform applied. */
-  public void drawEdgeShadow(Canvas canvas, Matrix transform, RectF bounds, int elevation) {
+  public void drawEdgeShadow(
+      @NonNull Canvas canvas, @Nullable Matrix transform, @NonNull RectF bounds, int elevation) {
     bounds.bottom += elevation;
     bounds.offset(0, -elevation);
 
@@ -115,9 +124,9 @@ public class ShadowRenderer {
    * Draws a corner shadow on the canvas in the current bounds with the matrix transform applied.
    */
   public void drawCornerShadow(
-      Canvas canvas,
-      Matrix matrix,
-      RectF bounds,
+      @NonNull Canvas canvas,
+      @Nullable Matrix matrix,
+      @NonNull RectF bounds,
       int elevation,
       float startAngle,
       float sweepAngle) {
@@ -145,33 +154,40 @@ public class ShadowRenderer {
       cornerColors[3] = shadowEndColor;
     }
 
-    float startRatio = 1f - (elevation / (bounds.width() / 2f));
+    float radius = bounds.width() / 2f;
+    // The shadow is not big enough to draw.
+    if (radius <= 0) {
+      return;
+    }
+
+    float startRatio = 1f - (elevation / radius);
     float midRatio = startRatio + ((1f - startRatio) / 2f);
     cornerPositions[1] = startRatio;
     cornerPositions[2] = midRatio;
-
     cornerShadowPaint.setShader(
         new RadialGradient(
             bounds.centerX(),
             bounds.centerY(),
-            bounds.width() / 2,
+            radius,
             cornerColors,
             cornerPositions,
             Shader.TileMode.CLAMP));
 
-    // TODO: handle oval bounds by scaling the canvas.
-
+    // TODO(b/117606382): handle oval bounds by scaling the canvas.
     canvas.save();
     canvas.concat(matrix);
 
     if (!drawShadowInsideBounds) {
       canvas.clipPath(arcBounds, Op.DIFFERENCE);
+      // This line is required for the next drawArc to work correctly, I think.
+      canvas.drawPath(arcBounds, transparentPaint);
     }
 
     canvas.drawArc(bounds, startAngle, sweepAngle, true, cornerShadowPaint);
     canvas.restore();
   }
 
+  @NonNull
   public Paint getShadowPaint() {
     return shadowPaint;
   }

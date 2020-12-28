@@ -16,19 +16,35 @@
 
 package com.google.android.material.snackbar;
 
-import static com.google.android.material.testutils.DesignViewActions.setVisibility;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static androidx.test.espresso.matcher.ViewMatchers.isEnabled;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static com.google.android.material.testutils.DesignViewActions.setVisibility;
+<<<<<<< HEAD
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
+import static androidx.test.espresso.matcher.ViewMatchers.isEnabled;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+=======
+>>>>>>> pr/1944
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 import android.os.Build;
+import androidx.appcompat.widget.AppCompatTextView;
+import android.view.View;
+import android.view.ViewGroup;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.test.espresso.UiController;
+import androidx.test.espresso.ViewAction;
+import androidx.test.filters.MediumTest;
+import androidx.test.runner.AndroidJUnit4;
 import com.google.android.material.internal.BaseDynamicCoordinatorLayoutTest;
 import com.google.android.material.testapp.R;
 import com.google.android.material.testapp.custom.TestFloatingBehavior;
 import com.google.android.material.testutils.SnackbarUtils;
+<<<<<<< HEAD
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.appcompat.widget.AppCompatTextView;
 import android.view.View;
@@ -37,6 +53,8 @@ import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
 import androidx.test.filters.MediumTest;
 import androidx.test.runner.AndroidJUnit4;
+=======
+>>>>>>> pr/1944
 import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.Test;

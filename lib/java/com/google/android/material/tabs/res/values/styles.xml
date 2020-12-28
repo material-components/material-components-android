@@ -29,6 +29,7 @@
     <item name="tabIndicatorAnimationDuration">@integer/design_tab_indicator_anim_duration_ms</item>
     <item name="tabIndicatorColor">?attr/colorAccent</item>
     <item name="tabIndicatorGravity">bottom</item>
+    <item name="tabIndicatorAnimationMode">linear</item>
     <item name="tabIndicator">@drawable/mtrl_tabs_default_indicator</item>
     <item name="tabPaddingStart">12dp</item>
     <item name="tabPaddingEnd">12dp</item>
@@ -64,5 +65,7 @@
     <item name="tabTextColor">@color/mtrl_tabs_icon_color_selector_colored</item>
     <item name="tabRippleColor">@color/mtrl_tabs_colored_ripple_color</item>
   </style>
+
+  <style name="Widget.MaterialComponents.TabLayout.PrimarySurface" parent="Widget.MaterialComponents.TabLayout.Colored"/>
 
 </resources>

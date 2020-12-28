@@ -17,6 +17,7 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
@@ -27,12 +28,10 @@
       android:layout_margin="@dimen/cat_bottom_nav_standard_spacing"
       android:text="@string/cat_bottom_nav_legacy_title"/>
   <com.google.android.material.bottomnavigation.BottomNavigationView
-      xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
       style="@style/Widget.Design.BottomNavigationView"
+      android:id="@+id/cat_bottom_nav1"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:background="?attr/selectableItemBackground"
       app:menu="@menu/bottom_nav_menu"/>
   <Space
       android:layout_width="match_parent"
@@ -43,9 +42,7 @@
       android:layout_margin="@dimen/cat_bottom_nav_standard_spacing"
       android:text="@string/cat_bottom_nav_title"/>
   <com.google.android.material.bottomnavigation.BottomNavigationView
-      xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
-      style="@style/Widget.MaterialComponents.BottomNavigationView"
+      android:id="@+id/cat_bottom_nav2"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       app:menu="@menu/bottom_nav_menu"/>

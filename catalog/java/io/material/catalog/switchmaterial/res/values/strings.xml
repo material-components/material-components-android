@@ -17,14 +17,36 @@
 
 <resources>
 
-  <string name="cat_switch_title">Switch</string>
-  <string name="cat_switch_description">
-    The Switch provides a single element that toggles between two states.</string>
-  <string name="cat_switch_color_guide">Switch elements respond to changes in colorSecondary</string>
-  <string name="cat_switch_disabled_guide">Switch elements that are disabled cannot be interacted with and will appear faded.</string>
-  <string name="cat_switch_enabled">Enabled</string>
-  <string name="cat_switch_disabled">Disabled</string>
-  <string name="cat_switch_toggleable_description">Turn this switch On to control the enabled state of the switches below.</string>
-  <string name="cat_switch_toggle">Controlled by a switch</string>
-
+  <string name="cat_switch_title"
+    description="Title of demo for the component Switch. [CHAR LIMIT=NONE]">
+    Switch
+  </string>
+  <string name="cat_switch_description"
+    description="The description of demo for the component Switch. [CHAR LIMIT=NONE]">
+    The Switch provides a single element that toggles between two states.
+  </string>
+  <string name="cat_switch_color_guide"
+    description="The description of how switches look like when enabled. [CHAR LIMIT=NONE]">
+    Switch elements respond to changes in colorSecondary
+  </string>
+  <string name="cat_switch_disabled_guide"
+    description="The description of how switches look like when disabled. [CHAR LIMIT=NONE]">
+    Switch elements that are disabled cannot be interacted with and will appear faded.
+  </string>
+  <string name="cat_switch_enabled"
+    description="The label of enabled switches. [CHAR LIMIT=NONE]">
+    Enabled
+  </string>
+  <string name="cat_switch_disabled"
+    description="The label of disabled switches. [CHAR LIMIT=NONE]">
+    Disabled
+  </string>
+  <string name="cat_switch_toggleable_description"
+    description="The label explaining the function of a switch which toggles the state of enabling of the example switches. [CHAR LIMIT=NONE]">
+    Turn this switch On to control the enabled state of the switches below.
+  </string>
+  <string name="cat_switch_toggle"
+    description="The label of example switches. [CHAR LIMIT=NONE]">
+    Controlled by a switch
+  </string>
 </resources>

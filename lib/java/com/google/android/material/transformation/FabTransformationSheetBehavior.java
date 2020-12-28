@@ -19,17 +19,28 @@ import com.google.android.material.R;
 
 import android.content.Context;
 import android.os.Build;
+<<<<<<< HEAD
 import androidx.annotation.AnimatorRes;
 import androidx.annotation.CallSuper;
 import com.google.android.material.animation.MotionSpec;
 import com.google.android.material.animation.Positioning;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+=======
+>>>>>>> pr/1944
 import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewParent;
+import androidx.annotation.AnimatorRes;
+import androidx.annotation.CallSuper;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import com.google.android.material.animation.MotionSpec;
+import com.google.android.material.animation.Positioning;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,10 +50,14 @@ import java.util.Map;
  *
  * <p>A sheet usually has some width and height that's smaller than the screen, has an elevation,
  * and may have a scrim underneath.
+ *
+ * @deprecated Use {@link com.google.android.material.transition.MaterialContainerTransform}
+ *     instead.
  */
+@Deprecated
 public class FabTransformationSheetBehavior extends FabTransformationBehavior {
 
-  private Map<View, Integer> importantForAccessibilityMap;
+  @Nullable private Map<View, Integer> importantForAccessibilityMap;
 
   public FabTransformationSheetBehavior() {}
 
@@ -50,6 +65,7 @@ public class FabTransformationSheetBehavior extends FabTransformationBehavior {
     super(context, attrs);
   }
 
+  @NonNull
   @Override
   protected FabTransformationSpec onCreateMotionSpec(Context context, boolean expanded) {
     @AnimatorRes int specRes;
@@ -68,12 +84,12 @@ public class FabTransformationSheetBehavior extends FabTransformationBehavior {
   @CallSuper
   @Override
   protected boolean onExpandedStateChange(
-      View dependency, View child, boolean expanded, boolean animated) {
+      @NonNull View dependency, @NonNull View child, boolean expanded, boolean animated) {
     updateImportantForAccessibility(child, expanded);
     return super.onExpandedStateChange(dependency, child, expanded, animated);
   }
 
-  private void updateImportantForAccessibility(View sheet, boolean expanded) {
+  private void updateImportantForAccessibility(@NonNull View sheet, boolean expanded) {
     ViewParent viewParent = sheet.getParent();
     if (!(viewParent instanceof CoordinatorLayout)) {
       return;

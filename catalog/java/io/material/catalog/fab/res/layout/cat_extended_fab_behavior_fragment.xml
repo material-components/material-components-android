@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2018 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+  <com.google.android.material.appbar.AppBarLayout
+      android:id="@+id/app_bar"
+      android:layout_width="match_parent"
+      android:layout_height="192dp"
+      android:fitsSystemWindows="true">
+    <com.google.android.material.appbar.CollapsingToolbarLayout
+        style="?attr/catalogToolbarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:collapsedTitleTextAppearance="?attr/textAppearanceHeadline6"
+        app:contentScrim="?attr/colorPrimary"
+        app:expandedTitleGravity="bottom"
+        app:expandedTitleMarginBottom="56dp"
+        app:expandedTitleMarginStart="16dp"
+        app:expandedTitleTextAppearance="?attr/textAppearanceHeadline5"
+        app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+
+      <androidx.appcompat.widget.Toolbar
+          android:id="@+id/toolbar"
+          style="?attr/catalogToolbarWithCloseButtonStyle"
+          android:layout_width="match_parent"
+          android:layout_height="?attr/actionBarSize"
+          app:layout_collapseMode="pin"
+          app:title="Collapsing Title" />
+    </com.google.android.material.appbar.CollapsingToolbarLayout>
+  </com.google.android.material.appbar.AppBarLayout>
+
+  <androidx.core.widget.NestedScrollView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <include layout="@layout/cat_topappbar_filler_text_view" />
+  </androidx.core.widget.NestedScrollView>
+
+  <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_margin="8dp"
+      android:contentDescription="@string/cat_extended_fab_content_desc"
+      android:text="@string/extended_fab_label"
+      app:icon="@drawable/ic_add_24px"
+      app:layout_anchor="@id/app_bar"
+      app:layout_anchorGravity="bottom|right|end" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

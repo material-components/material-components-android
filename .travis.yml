@@ -1,47 +1,46 @@
-language: android
-jdk: oraclejdk8
-
-# Choosing faster environment since it's a full VM.
-# https://docs.travis-ci.com/user/reference/overview/
 sudo: required
+language: generic
+
 dist: trusty
+jdk: openjdk9
 
 env:
+  global:
+  - ABI="google_apis;armeabi-v7a"
+  - BUILD_TOOLS_VERSION=28.0.3
+  - ADB_INSTALL_TIMEOUT=25
+  - QEMU_AUDIO_DRV=none
+  - TERM=dumb
   matrix:
-    # Notice matrix environment variables are not available during the install phase for android >
-    # components.
-    # These CANNOT BE USED in the android > components section, only in before_script and script.
-    - TEST_TYPE=unit
-    - TEST_TYPE=instrumentation EMULATOR_TAG=android EMULATOR_API=16 ABI=armeabi-v7a
-    - TEST_TYPE=instrumentation EMULATOR_TAG=android EMULATOR_API=19 ABI=armeabi-v7a
-    - TEST_TYPE=instrumentation EMULATOR_TAG=android EMULATOR_API=21 ABI=armeabi-v7a
+    - EMULATOR_API=16
+    - EMULATOR_API=19
+    - EMULATOR_API=23
 
-before_cache:
-  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
-  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
-
-cache:
-  directories:
-    - $HOME/.gradle/caches/
-    - $HOME/.gradle/wrapper/
-    - $HOME/.android/build-cache
-
-android:
-  components:
-    # https://github.com/travis-ci/travis-ci/issues/6040#issuecomment-219367943
-    - tools
-    - tools
-
-before_install:
+install:
+  - export ANDROID_HOME=~/android-sdk-linux
+  - wget -q "https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip" -O android-sdk-tools.zip
+  - unzip -q android-sdk-tools.zip -d ${ANDROID_HOME}
+  - rm android-sdk-tools.zip
+  - PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools
+  - yes | sdkmanager --update
+  - yes | sdkmanager --licenses
+  - ./gradlew dependencies || true
+  - sdkmanager "emulator" "tools" "platform-tools" > /dev/null
+  - sdkmanager --list | head -20
+  - sdkmanager "build-tools;$BUILD_TOOLS_VERSION" "platforms;android-$28" > /dev/null
+  - sdkmanager "system-images;android-$EMULATOR_API;$ABI" > /dev/null
+  - sdkmanager --list | head -15
   - mkdir "$ANDROID_HOME/licenses" || true
-  - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55\nd56f5187479451eabf01fb78af6dfcb131a6481e" > "$ANDROID_HOME/licenses/android-sdk-license"
-  - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd\n504667f4c0de7af1a06de9f4b1727b84351f2910" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
+  - echo 8933bad161af4178b1185d1a37fbf41ea5269c55 > "$ANDROID_HOME/licenses/android-sdk-license"
+  - echo 24333f8a63b6825ea9c5514f83c2829b004d1fee >> "$ANDROID_HOME/licenses/android-sdk-license"
+  - echo 84831b9409646a918e30573bab4c9c91346d8abd > "$ANDROID_HOME/licenses/android-sdk-preview-license"
 
 before_script:
-  - ./travis_before_script.sh
+  - echo no | avdmanager create avd --force -n test -k "system-images;android-$EMULATOR_API;$ABI"
+  - $ANDROID_HOME/emulator/emulator -avd test -no-window &
+  - bash android-wait-for-emulator
+  - adb shell input keyevent 82
 
 script:
-  - ./gradlew assemble -PdisablePreDex;
-  - ./travis_run_unit_tests.sh
-  - travis_wait ./travis_set_up_emulator.sh
-  - travis_wait 60 ./travis_run_instrumentation_tests.sh
+  - ./gradlew test -PdisablePreDex
+  - ./gradlew connectedAndroidTest -PdisablePreDex

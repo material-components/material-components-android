@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2020 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<androidx.constraintlayout.widget.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:accessibilityPaneTitle="@string/material_timepicker_select_time"
+  android:paddingBottom="2dp">
+
+  <TextView
+    android:id="@+id/header_title"
+    style="?attr/textAppearanceOverline"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:layout_marginStart="24dp"
+    android:importantForAccessibility="no"
+    android:text="@string/material_timepicker_select_time"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+   <androidx.constraintlayout.widget.Barrier
+      android:id="@+id/barrier"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:barrierDirection="bottom"
+      app:barrierMargin="@dimen/material_timepicker_dialog_buttons_margin_top"
+      app:constraint_referenced_ids="material_textinput_timepicker, material_timepicker_view" />
+
+  <com.google.android.material.timepicker.TimePickerView
+    android:id="@+id/material_timepicker_view"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/material_clock_face_margin_top"
+    android:layout_marginBottom="24dp"
+    android:layout_marginLeft="24dp"
+    android:layout_marginRight="24dp"
+    android:visibility="gone"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+  <ViewStub
+    android:id="@+id/material_textinput_timepicker"
+    android:inflatedId="@+id/material_textinput_timepicker"
+    android:layout="@layout/material_textinput_timepicker"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="44dp"
+    android:layout_marginBottom="24dp"
+    android:layout_marginLeft="24dp"
+    android:layout_marginRight="24dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/material_timepicker_mode_button"
+    style="?attr/imageButtonStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="12dp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/barrier" />
+
+  <Button
+    android:id="@+id/material_timepicker_cancel_button"
+    style="?attr/borderlessButtonStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="2dp"
+    android:layout_marginEnd="8dp"
+    android:minWidth="72dp"
+    android:text="@android:string/cancel"
+    app:layout_constraintEnd_toStartOf="@id/material_timepicker_ok_button"
+    app:layout_constraintTop_toTopOf="@id/material_timepicker_mode_button" />
+
+  <Button
+    android:id="@+id/material_timepicker_ok_button"
+    style="?attr/borderlessButtonStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="2dp"
+    android:layout_marginEnd="8dp"
+    android:minWidth="64dp"
+    android:text="@android:string/ok"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="@id/material_timepicker_mode_button" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,6 +19,7 @@ package com.google.android.material.testutils;
 import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 
 import android.content.res.ColorStateList;
+<<<<<<< HEAD
 import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -26,6 +27,16 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import android.view.View;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
+=======
+import android.view.View;
+import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.test.espresso.UiController;
+import androidx.test.espresso.ViewAction;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.shape.ShapeAppearanceModel;
+>>>>>>> pr/1944
 import org.hamcrest.Matcher;
 
 public class FloatingActionButtonActions {
@@ -199,6 +210,33 @@ public class FloatingActionButtonActions {
 
         long duration = fab.getHideMotionSpec().getTotalDuration();
         uiController.loopMainThreadForAtLeast(duration + 50);
+      }
+    };
+  }
+
+  /**
+   * Returns a {@link ViewAction} that requests will make the visual representation of the FAB fill
+   * the {@link View}. It will remove corners, shadow padding, and stop ensuring min touch target
+   * size. This should only be used to help with checking color contrast heuristics.
+   */
+  public static ViewAction fillView() {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(FloatingActionButton.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "removing corner radii from FAB";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        FloatingActionButton fab = (FloatingActionButton) view;
+        fab.setShapeAppearanceModel(new ShapeAppearanceModel());
+        fab.setShadowPaddingEnabled(false);
+        fab.setEnsureMinTouchTargetSize(false);
       }
     };
   }

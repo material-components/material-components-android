@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2020 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+  <string name="mtrl_picker_range_header_title">Аралықты таңдау</string>
+  <string name="mtrl_picker_date_header_title">Күнді таңдау</string>
+  <string name="mtrl_picker_range_header_unselected">Басталу күні – аяқталу күні</string>
+  <string name="mtrl_picker_range_header_only_start_selected">%1$s – аяқталу күні</string>
+  <string name="mtrl_picker_range_header_only_end_selected">Басталу күні – %1$s</string>
+  <string name="mtrl_picker_range_header_selected">%1$s – %2$s</string>
+  <string name="mtrl_picker_date_header_unselected">Таңдалған күн</string>
+  <string name="mtrl_picker_date_header_selected">%1$s</string>
+  <string name="mtrl_picker_confirm">@android:string/ok</string>
+  <string name="mtrl_picker_text_input_date_hint">Күні</string>
+  <string name="mtrl_picker_text_input_date_range_start_hint">Басталу күні</string>
+  <string name="mtrl_picker_text_input_date_range_end_hint">Аяқталу күні</string>
+  <string name="mtrl_picker_text_input_year_abbr">ж</string>
+  <string name="mtrl_picker_text_input_month_abbr">а</string>
+  <string name="mtrl_picker_text_input_day_abbr">к</string>
+  <string name="mtrl_picker_save">Сақтау</string>
+  <string name="mtrl_picker_invalid_range">Ауқым жарамсыз.</string>
+  <string name="mtrl_picker_out_of_range">Ауқымнан тыc: %1$s</string>
+  <string name="mtrl_picker_invalid_format">Формат жарамсыз.</string>
+  <string name="mtrl_picker_invalid_format_use">Жарамды формат: %1$s.</string>
+  <string name="mtrl_picker_invalid_format_example">Мысал: %1$s.</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode">Күнтізбенің енгізу режиміне ауысу</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode">Мәтін енгізу режиміне ауысу</string>
+  <string name="mtrl_picker_a11y_prev_month">Алдыңғы айға өту</string>
+  <string name="mtrl_picker_a11y_next_month">Келесі айға өту</string>
+  <string name="mtrl_picker_toggle_to_year_selection">Жылды таңдауға ауысу үшін түртіңіз.</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Күнді таңдауға ауысу үшін түртіңіз.</string>
+  <string name="mtrl_picker_day_of_week_column_header">Күндер бағаны: %1$s</string>
+  <string name="mtrl_picker_announce_current_selection">Ағымдағы таңдау: %1$s</string>
+  <string name="mtrl_picker_navigate_to_year_description">%1$s жылына жылжу</string>
+</resources>

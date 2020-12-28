@@ -16,12 +16,21 @@
 package com.google.android.material.testapp.custom;
 
 import android.content.Context;
+<<<<<<< HEAD
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+=======
+>>>>>>> pr/1944
 import androidx.appcompat.widget.AppCompatTextView;
 import android.util.AttributeSet;
+import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
-@CoordinatorLayout.DefaultBehavior(TestFloatingBehavior.class)
-public class CustomTextView extends AppCompatTextView {
+/**
+ * Custom extension of AppCompat's text view for testing a runtime-specified behavior.
+ */
+public class CustomTextView extends AppCompatTextView
+    implements CoordinatorLayout.AttachedBehavior {
   public CustomTextView(Context context) {
     super(context);
   }
@@ -32,5 +41,11 @@ public class CustomTextView extends AppCompatTextView {
 
   public CustomTextView(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
+  }
+
+  @Override
+  @NonNull
+  public CoordinatorLayout.Behavior<TextView> getBehavior() {
+      return new TestFloatingBehavior();
   }
 }

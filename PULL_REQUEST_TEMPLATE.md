@@ -7,5 +7,5 @@
 - [ ] Link to GitHub issues it solves. `closes #1234`
 - [ ] Sign the CLA bot. You can do this once the pull request is opened.
 
-[Contributing](https://github.com/material-components/material-components/blob/develop/CONTRIBUTING.md#pull-requests)
+[Contributing](https://github.com/material-components/material-components-android/blob/master/docs/contributing.md)
 has more information and tips for a great pull request.

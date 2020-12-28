@@ -20,7 +20,7 @@ git clone https://github.com/material-components/material-components-android.git
 Then, build the library's AARs using Gradle:
 
 ```sh
-./gradlew uploadArchives -PmavenRepoUrl="file://localhost/<path_to_aars>"
+./gradlew publish -PmavenRepoUrl="file://localhost/<path_to_aars>"
 ```
 
 This will output AARs and Maven artifacts for each of the library's modules
@@ -34,14 +34,13 @@ specified as `mdcLibraryVersion` in the library's top-level `build.gradle`
 file.
 
 ## Useful Links
-- [Getting Started](getting-started.md)
-- [Contributing](contributing.md)
-- [Catalog App](catalog-app.md)
-- [Class
-  documentation](https://developer.android.com/reference/com/google/android/material/classes)
-- [MDC-Android on Stack
-  Overflow](https://www.stackoverflow.com/questions/tagged/material-components+android)
-- [Android Developer’s
-  Guide](https://developer.android.com/training/material/index.html)
-- [Material.io](https://www.material.io)
-- [Material Design Guidelines](https://material.google.com)
+
+-   [Getting Started](getting-started.md)
+-   [Contributing](contributing.md)
+-   [Catalog App](catalog-app.md)
+-   [Using Snapshot Version](using-snapshot-version.md)
+-   [Class documentation](https://developer.android.com/reference/com/google/android/material/classes)
+-   [MDC-Android on Stack Overflow](https://www.stackoverflow.com/questions/tagged/material-components+android)
+-   [Android Developer’s Guide](https://developer.android.com/training/material/index.html)
+-   [Material.io](https://www.material.io)
+-   [Material Design Guidelines](https://material.google.com)

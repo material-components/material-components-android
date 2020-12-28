@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright 2020 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+ -->
+
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="NewApi">
+
+  <style name="Widget.MaterialComponents.TimePicker" parent="">
+    <item name="shapeAppearance">?shapeAppearanceMediumComponent</item>
+    <item name="keyboardIcon">@drawable/ic_keyboard_black_24dp</item>
+    <item name="clockIcon">@drawable/ic_clock_black_24dp</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.TimePicker.Display" parent="Widget.MaterialComponents.Chip.Choice">
+    <item name="ensureMinTouchTargetSize">false</item>
+    <item name="android:textAlignment">center</item>
+    <item name="android:textAppearance">?attr/textAppearanceHeadline3</item>
+    <!-- No need to scale here since the text is already readable -->
+    <item name="android:textSize" tools:ignore="SpUsage">56dp</item>
+    <item name="shapeAppearanceOverlay">?shapeAppearanceMediumComponent</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.MaterialComponents.TimePicker.Display</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.TimePicker.ImageButton" parent="">
+    <item name="android:insetTop">0dp</item>
+    <item name="android:insetBottom">0dp</item>
+    <item name="android:minWidth">?attr/minTouchTargetSize</item>
+    <item name="android:minHeight">?attr/minTouchTargetSize</item>
+    <item name="iconGravity">textStart</item>
+    <item name="iconPadding">0dp</item>
+    <item name="iconTint">@color/material_timepicker_modebutton_tint</item>
+    <item name="rippleColor">@color/mtrl_on_surface_ripple_color</item>
+    <item name="shapeAppearance">@style/Widget.MaterialComponents.TimePicker.ImageButton.ShapeAppearance</item>
+  </style>
+
+
+  <style name="Widget.MaterialComponents.TimePicker.ImageButton.ShapeAppearance" parent="">
+    <item name="cornerSize">50%</item>
+    <item name="cornerFamily">rounded</item>
+  </style>
+
+  <!-- Disabling elevation overlays because when chip's default
+       background/surface composite are combined with elevation overlays in a
+       highly elevated dialog, the resulting color becomes too light and causes
+       contrast issues -->
+  <style name="ThemeOverlay.MaterialComponents.TimePicker.Display" parent="">
+    <item name="elevationOverlayEnabled">false</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.TimePicker.Display.TextInputEditText" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
+    <item name="android:textAppearance">?attr/textAppearanceHeadline3</item>
+    <item name="android:textSize" tools:ignore="SpUsage">56dp</item>
+    <item name="android:paddingTop">4dp</item>
+    <item name="android:paddingBottom">0dp</item>
+    <item name="android:inputType">number</item>
+    <item name="android:maxLength">2</item>
+    <item name="android:textAlignment">center</item>
+    <item name="android:minEms">2</item>
+    <item name="android:gravity">center</item>
+    <item name="android:paddingStart">0dp</item>
+    <item name="android:paddingEnd">0dp</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.TimePicker.Button" parent="Widget.MaterialComponents.Button.OutlinedButton">
+    <item name="backgroundTint">
+      @color/material_timepicker_button_background
+    </item>
+    <item name="android:layout_height">48dp</item>
+    <item name="android:padding">0dp</item>
+    <item name="android:insetTop">0dp</item>
+    <item name="android:insetBottom">0dp</item>
+    <item name="android:textAppearance">?attr/textAppearanceSubtitle2</item>
+    <item name="android:textSize">16sp</item>
+    <item name="android:textAlignment">center</item>
+    <item name="strokeColor">@color/material_timepicker_button_stroke</item>
+    <item name="strokeWidth">@dimen/mtrl_btn_stroke_size</item>
+  </style>
+
+  <style name="TextAppearance.MaterialComponents.TimePicker.Title" parent="TextAppearance.MaterialComponents.Overline">
+    <item name="android:textColor">@color/material_on_surface_emphasis_medium</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.TimePicker.Clock" parent="">
+    <item name="clockFaceBackgroundColor">@color/material_timepicker_clockface</item>
+    <item name="clockHandColor">?attr/colorPrimary</item>
+    <item name="clockNumberTextColor">@color/material_timepicker_clock_text_color</item>
+  </style>
+
+</resources>

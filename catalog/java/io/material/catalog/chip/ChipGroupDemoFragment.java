@@ -19,20 +19,30 @@ package io.material.catalog.chip;
 import io.material.catalog.R;
 
 import android.os.Bundle;
+<<<<<<< HEAD
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.switchmaterial.SwitchMaterial;
+=======
+>>>>>>> pr/1944
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.Nullable;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import io.material.catalog.feature.DemoFragment;
 
 /** A fragment that displays the ChipGroup demos for the Catalog app. */
 public class ChipGroupDemoFragment extends DemoFragment {
 
   private SwitchMaterial singleSelectionSwitch;
+  private SwitchMaterial selectionRequiredSwitch;
 
   @Nullable
   @Override
@@ -41,6 +51,8 @@ public class ChipGroupDemoFragment extends DemoFragment {
     View view = layoutInflater.inflate(getChipGroupContent(), viewGroup, false /* attachToRoot */);
 
     singleSelectionSwitch = view.findViewById(R.id.single_selection);
+    selectionRequiredSwitch = view.findViewById(R.id.selection_required);
+
     ChipGroup reflowGroup = view.findViewById(R.id.reflow_group);
     ChipGroup scrollGroup = view.findViewById(R.id.scroll_group);
 
@@ -52,9 +64,26 @@ public class ChipGroupDemoFragment extends DemoFragment {
           initChipGroup(reflowGroup);
           initChipGroup(scrollGroup);
         });
+
+    selectionRequiredSwitch.setOnCheckedChangeListener(
+        (buttonView, isChecked) -> {
+          reflowGroup.setSelectionRequired(isChecked);
+          scrollGroup.setSelectionRequired(isChecked);
+
+          initChipGroup(reflowGroup);
+          initChipGroup(scrollGroup);
+        });
+
     initChipGroup(reflowGroup);
     initChipGroup(scrollGroup);
 
+    FloatingActionButton fab = view.findViewById(R.id.cat_chip_group_refresh);
+    fab.setOnClickListener(
+        v -> {
+          // Reload the chip group UI.
+          initChipGroup(reflowGroup);
+          initChipGroup(scrollGroup);
+        });
     return view;
   }
 
@@ -78,7 +107,9 @@ public class ChipGroupDemoFragment extends DemoFragment {
     for (String text : textArray) {
       Chip chip =
           (Chip) getLayoutInflater().inflate(getChipGroupItem(singleSelection), chipGroup, false);
-      chip.setChipText(text);
+      chip.setText(text);
+      chip.setCloseIconVisible(true);
+      chip.setOnCloseIconClickListener(v -> chipGroup.removeView(chip));
       chipGroup.addView(chip);
     }
   }

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2019 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<resources>
+  <string name="cat_slider_title" description="Title for the screen that showcases demonstrative usages of the Slider widget">Slider</string>
+  <string name="cat_slider_demo_continuous_title" description="Title for the continuous Slider widget demo">Continuous Slider demo</string>
+  <string name="cat_slider_demo_discrete_title" description="Title for the discrete Slider widget demo">Discrete Slider demo</string>
+  <string name="cat_slider_demo_scroll_container_title" description="Title for the Slider inside scrolling container demo">Slider in scrolling container demo</string>
+
+  <string name="cat_slider_description" description="Body text describing the Slider widget within the design system [CHAR LIMIT=NONE]">
+    Sliders let users select from a range of values by moving the slider thumb.
+    Sliders are ideal components for adjusting settings that reflect intensity levels, such as volume, brightness, or color saturation.
+    Sliders may have icons on both ends of the bar that reflect the value intensity. Place the smallest value for the slider range on the left and the largest value on the right.
+    Continuous sliders allow users to select a value along a subjective range. They do not require a specific value to make adjustments, although they may, in some instances, offer an editable numeric value.
+    Discrete sliders allow users to select a specific value from a range.
+  </string>
+
+  <string name="cat_slider_set" description="The label for a set button">Set</string>
+  <string name="cat_slider_title_1" description="The title for the first demonstration slider">This one goes to eleven</string>
+  <string name="cat_slider_title_2" description="The title for a demonstration slider">From 100 to 1000</string>
+  <string name="cat_slider_title_3" description="The title for a demonstration slider">Negative numbers!</string>
+  <string name="cat_slider_title_4" description="The title for a demonstration slider">With a label formatter</string>
+  <string name="cat_slider_title_5" description="The title for a demonstration slider">I can have decimal numbers?</string>
+  <string name="cat_slider_title_6" description="The title for a demonstration slider">Without tick marks</string>
+  <string name="cat_slider_start_touch_description" description="Indicates the slider is now being touched">Slider started being touched</string>
+  <string name="cat_slider_stop_touch_description" description="Indicates the slider stopped being touched">Slider stopped being touched</string>
+
+</resources>

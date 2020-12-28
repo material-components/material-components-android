@@ -19,12 +19,16 @@ package com.google.android.material.internal;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
+<<<<<<< HEAD
 import androidx.annotation.RestrictTo;
+=======
+>>>>>>> pr/1944
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.util.AttributeSet;
+import androidx.annotation.RestrictTo;
 
 /** @hide */
 @RestrictTo(LIBRARY_GROUP)
@@ -40,7 +44,7 @@ public class NavigationMenuView extends RecyclerView implements MenuView {
 
   public NavigationMenuView(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
-    setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+    setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
   }
 
   @Override

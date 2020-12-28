@@ -25,6 +25,8 @@
 
   <declare-styleable name="Chip">
     <!-- Surface layer color to apply to the chip. -->
+    <!-- Do not expose publicly because there is no public getter/setter and the user doesn't need
+         to configure this.-->
     <attr name="chipSurfaceColor" format="color"/>
     <!-- Background color to apply to the chip. -->
     <attr name="chipBackgroundColor" format="color"/>
@@ -41,7 +43,7 @@
     <!-- Minimum size of chip's touch target, by default, Android recommended 48dp. -->
     <attr name="chipMinTouchTargetSize" format="dimension"/>
     <!-- Whether to extend the bounds of chip to meet chipMinTouchTargetSize. -->
-    <attr name="ensureMinTouchTargetSize" format="boolean"/>
+    <attr name="ensureMinTouchTargetSize"/>
 
     <!-- Text to display on the chip. -->
     <attr name="android:text"/>
@@ -49,6 +51,8 @@
     <attr name="android:textColor"/>
     <!-- Default appearance of text: color, typeface, size, and style. -->
     <attr name="android:textAppearance"/>
+    <!-- Text size. Overrides the size set in the textAppearance -->
+    <attr name="android:textSize"/>
     <!-- If set, causes words that are longer than the view is wide to be ellipsized instead of
          truncated at the end. -->
     <attr name="android:ellipsize"/>
@@ -84,7 +88,9 @@
     <!-- Deprecated. Use checkedIconVisible instead -->
     <attr name="checkedIconEnabled" format="boolean"/>
     <!-- Check icon drawable to overlay the chip's icon. -->
-    <attr name="checkedIcon" format="reference"/>
+    <attr name="checkedIcon"/>
+    <!-- Tint to apply to the chip's checked icon. -->
+    <attr name="checkedIconTint"/>
 
     <!-- Motion spec for show animation. This should be a MotionSpec resource. -->
     <attr name="showMotionSpec"/>
@@ -149,7 +155,10 @@
 
     <!-- Whether only a single chip in this group is allowed to be checked at any time. By default,
          this is false and multiple chips in this group are allowed to be checked at once. -->
-    <attr name="singleSelection" format="boolean"/>
+    <attr name="singleSelection"/>
+    <!-- Whether we prevent all child chips from being deselected.
+         It's false by default. -->
+    <attr name="selectionRequired"/>
     <!-- The id of the child chip that should be checked by default within this chip group. -->
     <attr name="checkedChip" format="reference"/>
 

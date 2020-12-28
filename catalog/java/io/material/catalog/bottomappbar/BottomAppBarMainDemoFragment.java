@@ -18,8 +18,8 @@ package io.material.catalog.bottomappbar;
 
 import io.material.catalog.R;
 
-import android.graphics.Rect;
 import android.os.Bundle;
+<<<<<<< HEAD
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,6 +33,8 @@ import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+=======
+>>>>>>> pr/1944
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -43,6 +45,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ToggleButton;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.bottomappbar.BottomAppBarTopEdgeTreatment;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.shape.CutCornerTreatment;
+import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.ShapeAppearanceModel;
+import com.google.android.material.snackbar.Snackbar;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.OnBackPressedHandler;
 import io.material.catalog.themeswitcher.ThemeSwitcherHelper;
@@ -54,8 +68,6 @@ public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBack
   protected CoordinatorLayout coordinatorLayout;
   protected FloatingActionButton fab;
 
-  private final Rect fabRect = new Rect();
-
   @Nullable private ThemeSwitcherHelper themeSwitcherHelper;
   private BottomSheetBehavior<View> bottomDrawerBehavior;
 
@@ -66,7 +78,7 @@ public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBack
 
     // The theme switcher helper is used in an adhoc way with the toolbar since the BottomAppBar is
     // set as the action bar.
-    themeSwitcherHelper = new ThemeSwitcherHelper(getFragmentManager());
+    themeSwitcherHelper = new ThemeSwitcherHelper(getParentFragmentManager());
   }
 
   @Override
@@ -86,7 +98,6 @@ public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBack
   }
 
   @Override
-  @SuppressWarnings("RestrictTo")
   public View onCreateDemoView(
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
     View view = layoutInflater.inflate(getBottomAppBarContent(), viewGroup, false);
@@ -95,10 +106,7 @@ public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBack
     toolbar.setTitle(getDefaultDemoTitle());
     themeSwitcherHelper.onCreateOptionsMenu(toolbar.getMenu(), getActivity().getMenuInflater());
     toolbar.setOnMenuItemClickListener(themeSwitcherHelper::onOptionsItemSelected);
-    toolbar.setNavigationOnClickListener(
-        v -> {
-          getActivity().onBackPressed();
-        });
+    toolbar.setNavigationOnClickListener(v -> getActivity().onBackPressed());
 
     coordinatorLayout = view.findViewById(R.id.coordinator_layout);
     bar = view.findViewById(R.id.bar);
@@ -120,8 +128,15 @@ public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBack
     ToggleButton attachToggle = view.findViewById(R.id.attach_toggle);
     attachToggle.setChecked(fab.getVisibility() == View.VISIBLE);
     centerButton.setOnClickListener(
-        v -> bar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER));
-    endButton.setOnClickListener(v -> bar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END));
+        v -> {
+          bar.setFabAlignmentModeAndReplaceMenu(
+              BottomAppBar.FAB_ALIGNMENT_MODE_CENTER, R.menu.demo_primary);
+        });
+    endButton.setOnClickListener(
+        v -> {
+          bar.setFabAlignmentModeAndReplaceMenu(
+              BottomAppBar.FAB_ALIGNMENT_MODE_END, R.menu.demo_primary_alternate);
+        });
     attachToggle.setOnCheckedChangeListener(
         (buttonView, isChecked) -> {
           if (isChecked) {
@@ -130,40 +145,23 @@ public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBack
             fab.hide();
           }
         });
-    ToggleButton shapeToggle = view.findViewById(R.id.shape_toggle);
-    shapeToggle.setOnCheckedChangeListener(
-        (buttonView, isChecked) -> {
-          fab.getMeasuredContentRect(fabRect);
-          ((MaterialShapeDrawable) bar.getBackground())
-              .getShapeAppearanceModel()
-              .setTopEdge(createTopEdge(!isChecked));
 
-          ShapeAppearanceModel shapeAppearance = new ShapeAppearanceModel();
-          int cornerFamily = isChecked ? CornerFamily.CUT : CornerFamily.ROUNDED;
-          shapeAppearance.setAllCorners(cornerFamily, -1);
-          fab.setShapeAppearance(shapeAppearance);
-          bar.getBackground().invalidateSelf();
-        });
+    ToggleButton barScrollToggle = view.findViewById(R.id.bar_scroll_toggle);
+    barScrollToggle.setChecked(bar.getHideOnScroll());
+    barScrollToggle.setOnCheckedChangeListener(
+        (buttonView, isChecked) -> bar.setHideOnScroll(isChecked));
+
+    ToggleButton fabAnimToggle = view.findViewById(R.id.fab_animation_mode_toggle);
+    fabAnimToggle.setOnCheckedChangeListener(
+        (buttonView, isChecked) ->
+            bar.setFabAnimationMode(
+                isChecked
+                    ? BottomAppBar.FAB_ANIMATION_MODE_SLIDE
+                    : BottomAppBar.FAB_ANIMATION_MODE_SCALE));
+
+    setUpBottomAppBarShapeAppearance();
 
     return view;
-  }
-
-  @NonNull
-  @SuppressWarnings("RestrictTo")
-  private BottomAppBarTopEdgeTreatment createTopEdge(boolean isDefault) {
-    BottomAppBarTopEdgeTreatment topEdge =
-        isDefault
-            ? new BottomAppBarTopEdgeTreatment(
-                bar.getFabCradleMargin(),
-                bar.getFabCradleRoundedCornerRadius(),
-                bar.getCradleVerticalOffset())
-            : new BottomAppBarCutCornersTopEdge(
-                bar.getFabCradleMargin(),
-                bar.getFabCradleRoundedCornerRadius(),
-                bar.getCradleVerticalOffset());
-
-    topEdge.setFabDiameter(fabRect.width());
-    return topEdge;
   }
 
   @Override
@@ -178,6 +176,28 @@ public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBack
   @Override
   public boolean shouldShowDefaultDemoActionBar() {
     return false;
+  }
+
+  private void setUpBottomAppBarShapeAppearance() {
+    ShapeAppearanceModel fabShapeAppearanceModel = fab.getShapeAppearanceModel();
+    boolean cutCornersFab =
+        fabShapeAppearanceModel.getBottomLeftCorner() instanceof CutCornerTreatment
+            && fabShapeAppearanceModel.getBottomRightCorner() instanceof CutCornerTreatment;
+
+    BottomAppBarTopEdgeTreatment topEdge =
+        cutCornersFab
+            ? new BottomAppBarCutCornersTopEdge(
+                bar.getFabCradleMargin(),
+                bar.getFabCradleRoundedCornerRadius(),
+                bar.getCradleVerticalOffset())
+            : new BottomAppBarTopEdgeTreatment(
+                bar.getFabCradleMargin(),
+                bar.getFabCradleRoundedCornerRadius(),
+                bar.getCradleVerticalOffset());
+
+    MaterialShapeDrawable babBackground = (MaterialShapeDrawable) bar.getBackground();
+    babBackground.setShapeAppearanceModel(
+        babBackground.getShapeAppearanceModel().toBuilder().setTopEdge(topEdge).build());
   }
 
   protected void setUpBottomDrawer(View view) {

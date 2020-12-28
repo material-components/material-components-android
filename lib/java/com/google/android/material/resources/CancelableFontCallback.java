@@ -17,13 +17,21 @@
 package com.google.android.material.resources;
 
 import android.graphics.Typeface;
+<<<<<<< HEAD
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.core.content.res.ResourcesCompat.FontCallback;
+=======
+import androidx.core.content.res.ResourcesCompat.FontCallback;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.RestrictTo.Scope;
+>>>>>>> pr/1944
 
 /**
  * {@link FontCallback} allowing cancelling of pending async font fetch, in case a different font is
  * set / requested in the meantime. On failed fetch, specified fallback font will be applied.
+ *
+ * @hide
  */
 @RestrictTo(Scope.LIBRARY_GROUP)
 public final class CancelableFontCallback extends TextAppearanceFontCallback {

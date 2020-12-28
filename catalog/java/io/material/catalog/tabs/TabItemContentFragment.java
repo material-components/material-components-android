@@ -19,12 +19,16 @@ package io.material.catalog.tabs;
 import io.material.catalog.R;
 
 import android.os.Bundle;
+<<<<<<< HEAD
 import androidx.annotation.Nullable;
+=======
+>>>>>>> pr/1944
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import androidx.annotation.Nullable;
 
 /** Fragment to display layout for each tab item in tabs demo for the Catalog app. */
 public class TabItemContentFragment extends Fragment {

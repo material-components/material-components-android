@@ -16,8 +16,12 @@
 
 package com.google.android.material.testapp;
 
+<<<<<<< HEAD
 import androidx.annotation.VisibleForTesting;
+=======
+>>>>>>> pr/1944
 import android.view.View;
+import androidx.annotation.VisibleForTesting;
 
 public class BottomSheetBehaviorWithInsetsActivity extends BottomSheetBehaviorActivity {
 

@@ -29,13 +29,22 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
+<<<<<<< HEAD
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.graphics.drawable.DrawableWrapper;
+=======
+import androidx.appcompat.graphics.drawable.DrawableWrapper;
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+>>>>>>> pr/1944
 
 /**
  * A {@link android.graphics.drawable.Drawable} which wraps another drawable and draws a shadow
  * around it.
+ *
+ * @deprecated Use {@link com.google.android.material.shape.MaterialShapeDrawable} instead.
  */
+@Deprecated
 public class ShadowDrawableWrapper extends DrawableWrapper {
   // used to calculate content padding
   static final double COS_45 = Math.cos(Math.toRadians(45));
@@ -46,10 +55,10 @@ public class ShadowDrawableWrapper extends DrawableWrapper {
   static final float SHADOW_HORIZ_SCALE = 0.5f;
   static final float SHADOW_BOTTOM_SCALE = 1f;
 
-  final Paint cornerShadowPaint;
-  final Paint edgeShadowPaint;
+  @NonNull final Paint cornerShadowPaint;
+  @NonNull final Paint edgeShadowPaint;
 
-  final RectF contentBounds;
+  @NonNull final RectF contentBounds;
 
   float cornerRadius;
 
@@ -150,7 +159,7 @@ public class ShadowDrawableWrapper extends DrawableWrapper {
   }
 
   @Override
-  public boolean getPadding(Rect padding) {
+  public boolean getPadding(@NonNull Rect padding) {
     int vOffset =
         (int)
             Math.ceil(
@@ -197,7 +206,7 @@ public class ShadowDrawableWrapper extends DrawableWrapper {
   }
 
   @Override
-  public void draw(Canvas canvas) {
+  public void draw(@NonNull Canvas canvas) {
     if (dirty) {
       buildComponents(getBounds());
       dirty = false;
@@ -214,7 +223,7 @@ public class ShadowDrawableWrapper extends DrawableWrapper {
     }
   }
 
-  private void drawShadow(Canvas canvas) {
+  private void drawShadow(@NonNull Canvas canvas) {
     final int rotateSaved = canvas.save();
     canvas.rotate(rotation, contentBounds.centerX(), contentBounds.centerY());
 
@@ -350,7 +359,7 @@ public class ShadowDrawableWrapper extends DrawableWrapper {
     edgeShadowPaint.setAntiAlias(false);
   }
 
-  private void buildComponents(Rect bounds) {
+  private void buildComponents(@NonNull Rect bounds) {
     // Card is offset SHADOW_MULTIPLIER * maxShadowSize to account for the shadow shift.
     // We could have different top-bottom offsets to avoid extra gap above but in that case
     // center aligning Views inside the CardView would be problematic.

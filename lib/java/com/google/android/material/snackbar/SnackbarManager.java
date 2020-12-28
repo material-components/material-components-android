@@ -19,6 +19,8 @@ package com.google.android.material.snackbar;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import java.lang.ref.WeakReference;
 
 /** Manages {@link Snackbar}s. */
@@ -38,11 +40,11 @@ class SnackbarManager {
     return snackbarManager;
   }
 
-  private final Object lock;
-  private final Handler handler;
+  @NonNull private final Object lock;
+  @NonNull private final Handler handler;
 
-  private SnackbarRecord currentSnackbar;
-  private SnackbarRecord nextSnackbar;
+  @Nullable private SnackbarRecord currentSnackbar;
+  @Nullable private SnackbarRecord nextSnackbar;
 
   private SnackbarManager() {
     lock = new Object();
@@ -51,13 +53,14 @@ class SnackbarManager {
             Looper.getMainLooper(),
             new Handler.Callback() {
               @Override
-              public boolean handleMessage(Message message) {
+              public boolean handleMessage(@NonNull Message message) {
                 switch (message.what) {
                   case MSG_TIMEOUT:
                     handleTimeout((SnackbarRecord) message.obj);
                     return true;
+                  default:
+                    return false;
                 }
-                return false;
               }
             });
   }
@@ -169,7 +172,7 @@ class SnackbarManager {
   }
 
   private static class SnackbarRecord {
-    final WeakReference<Callback> callback;
+    @NonNull final WeakReference<Callback> callback;
     int duration;
     boolean paused;
 
@@ -178,7 +181,7 @@ class SnackbarManager {
       this.duration = duration;
     }
 
-    boolean isSnackbar(Callback callback) {
+    boolean isSnackbar(@Nullable Callback callback) {
       return callback != null && this.callback.get() == callback;
     }
   }
@@ -198,7 +201,7 @@ class SnackbarManager {
     }
   }
 
-  private boolean cancelSnackbarLocked(SnackbarRecord record, int event) {
+  private boolean cancelSnackbarLocked(@NonNull SnackbarRecord record, int event) {
     final Callback callback = record.callback.get();
     if (callback != null) {
       // Make sure we remove any timeouts for the SnackbarRecord
@@ -217,7 +220,7 @@ class SnackbarManager {
     return nextSnackbar != null && nextSnackbar.isSnackbar(callback);
   }
 
-  private void scheduleTimeoutLocked(SnackbarRecord r) {
+  private void scheduleTimeoutLocked(@NonNull SnackbarRecord r) {
     if (r.duration == Snackbar.LENGTH_INDEFINITE) {
       // If we're set to indefinite, we don't want to set a timeout
       return;
@@ -233,7 +236,7 @@ class SnackbarManager {
     handler.sendMessageDelayed(Message.obtain(handler, MSG_TIMEOUT, r), durationMs);
   }
 
-  void handleTimeout(SnackbarRecord record) {
+  void handleTimeout(@NonNull SnackbarRecord record) {
     synchronized (lock) {
       if (currentSnackbar == record || nextSnackbar == record) {
         cancelSnackbarLocked(record, Snackbar.Callback.DISMISS_EVENT_TIMEOUT);

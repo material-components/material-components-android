@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2019 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+  <declare-styleable name="Slider">
+    <attr name="android:value" />
+    <attr name="android:valueFrom" />
+    <attr name="android:valueTo" />
+    <attr name="android:stepSize" />
+    <!-- Whether the Slider is enabled. -->
+    <attr name="android:enabled"/>
+    <!-- The color of the slider's halo. -->
+    <attr name="haloColor" format="color" />
+    <!-- The radius of the halo. -->
+    <attr name="haloRadius" format="dimension" />
+    <!-- Determines if Slider should increase its default height to include space for the label. -->
+    <attr name="labelBehavior">
+      <!-- Mode that draws the label floating above the bounds of this view. -->
+      <enum name="floating" value="0"/>
+      <!-- Mode that draws the label within the bounds of the view. -->
+      <enum name="withinBounds" value="1"/>
+      <!-- Mode that prevents the label from being drawn -->
+      <enum name="gone" value="2"/>
+    </attr>
+    <!-- The style used for the label TooltipDrawable. -->
+    <attr name="labelStyle" format="reference" />
+    <!-- The color of the slider's thumb. -->
+    <attr name="thumbColor" format="color" />
+    <!-- The elevation of the thumb. -->
+    <attr name="thumbElevation" format="dimension" />
+    <!-- The radius of the thumb. -->
+    <attr name="thumbRadius" format="dimension" />
+    <!-- The stroke color for the thumb. -->
+    <attr name="thumbStrokeColor" format="color" />
+    <!-- The stroke width for the thumb. -->
+    <attr name="thumbStrokeWidth" format="dimension" />
+    <!-- The color of the slider's tick marks. Only used when the slider is in discrete mode. -->
+    <attr name="tickColor" format="color" />
+    <!-- The color of the slider's tick marks for the active portion of the track. Only used when
+         the slider is in discrete mode. -->
+    <attr name="tickColorActive" format="color" />
+    <!-- The color of the slider's tick marks for the inactive portion of the track. Only used when
+         the slider is in discrete mode. -->
+    <attr name="tickColorInactive" format="color" />
+    <!-- Whether to show the tick marks. Only used when the slider is in discrete mode. -->
+    <attr name="tickVisible" format="boolean" />
+    <!-- The color of the track. -->
+    <attr name="trackColor" />
+    <!-- The color of active portion of the track. -->
+    <attr name="trackColorActive" format="color" />
+    <!-- The color of inactive portion of the track. -->
+    <attr name="trackColorInactive" format="color" />
+    <!-- The height of the track. -->
+    <attr name="trackHeight" format="dimension" />
+  </declare-styleable>
+
+  <declare-styleable name="RangeSlider">
+    <attr name="values" format="reference" />
+
+    <!-- If there is more than one thumb, and the slider is
+         not discrete the thumbs will be separated by this dimen -->
+    <attr name="minSeparation" format="dimension"/>
+  </declare-styleable>
+
+  <!-- Style to use for Slider in this theme. -->
+  <attr name="sliderStyle" format="reference" />
+
+</resources>

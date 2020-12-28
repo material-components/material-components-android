@@ -19,16 +19,28 @@
 
   <string name="cat_fab_title">Floating Action Button</string>
   <string name="cat_fab_description">The Floating Action Button (FAB) represents your product\'s primary action, and should be considered a direct extension of its brand.</string>
+  <string name="cat_extended_fab_demo_title">Extended FAB</string>
+  <string name="cat_extended_fab_behavior_demo_title">Extended FAB Behavior</string>
 
   <string name="regular_fab_label">Regular</string>
   <string name="legacy_fab_label">Legacy</string>
   <string name="theme_fab_label">Theme</string>
 
+  <string name="extended_fab_with_text">With icon and text</string>
+  <string name="extended_fab_without_icon">Without icon</string>
+  <string name="extended_fab_without_text">Without text</string>
+  <string name="extended_fab_label">Extended FAB</string>
+
   <string name="hide_fabs_label">Hide FABs</string>
   <string name="show_fabs_label">Show FABs</string>
   <string name="rotate_fabs_label">Rotate FABs</string>
+  <string name="shrink_fabs_label">Shrink FABs</string>
+  <string name="extend_fabs_label">Extend FABs</string>
+  <string name="hide_fab_on_scroll_label">Hide FAB on Scroll</string>
+  <string name="shrink_fab_on_scroll_label">Shrink FAB on Scroll</string>
 
   <string name="cat_fab_clicked">FAB clicked</string>
+  <string name="cat_extended_fab_clicked">Extended FAB clicked</string>
 
   <!-- Content descriptions for demo FABs. -->
   <string name="cat_regular_fab_content_desc">Regular FAB</string>
@@ -37,5 +49,6 @@
   <string name="cat_legacy_fab_mini_content_desc">Legacy mini FAB</string>
   <string name="cat_theme_fab_content_desc">Themed FAB</string>
   <string name="cat_theme_fab_mini_content_desc">Mini themed FAB</string>
+  <string name="cat_extended_fab_content_desc">Extended FAB</string>
 
 </resources>

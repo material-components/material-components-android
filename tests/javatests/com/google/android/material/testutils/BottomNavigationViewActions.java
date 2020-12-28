@@ -20,6 +20,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
+<<<<<<< HEAD
 import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -27,6 +28,15 @@ import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import android.view.View;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
+=======
+import android.view.View;
+import androidx.annotation.IdRes;
+import androidx.annotation.Nullable;
+import androidx.test.espresso.UiController;
+import androidx.test.espresso.ViewAction;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.bottomnavigation.LabelVisibilityMode;
+>>>>>>> pr/1944
 import org.hamcrest.Matcher;
 
 public class BottomNavigationViewActions {
@@ -69,6 +79,28 @@ public class BottomNavigationViewActions {
       public void perform(UiController uiController, View view) {
         BottomNavigationView navigationView = (BottomNavigationView) view;
         navigationView.getMenu().findItem(menuItemId).setIcon(iconDrawable);
+      }
+    };
+  }
+
+  /** Sets and show badge number for the menu item of the navigation view. */
+  public static ViewAction showBadgeNumberForMenuItem(
+      @IdRes final int menuItemId, final int badgeNumber) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isDisplayed();
+      }
+
+      @Override
+      public String getDescription() {
+        return "Set menu item badge number";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        BottomNavigationView navigationView = (BottomNavigationView) view;
+        navigationView.getOrCreateBadge(menuItemId).setNumber(badgeNumber);
       }
     };
   }

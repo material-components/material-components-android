@@ -19,11 +19,16 @@ package io.material.catalog.textfield;
 import io.material.catalog.R;
 
 import android.os.Bundle;
+<<<<<<< HEAD
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
+=======
+>>>>>>> pr/1944
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.Nullable;
 
 /** A fragment that displays the main text field demos for the Catalog app. */
 public class TextFieldMainDemoFragment extends TextFieldDemoFragment {

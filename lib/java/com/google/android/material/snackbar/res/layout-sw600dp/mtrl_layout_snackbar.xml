@@ -20,5 +20,4 @@
     class="com.google.android.material.snackbar.Snackbar$SnackbarLayout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_gravity="bottom|center_horizontal"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark"/>
+    android:layout_gravity="bottom|center_horizontal"/>

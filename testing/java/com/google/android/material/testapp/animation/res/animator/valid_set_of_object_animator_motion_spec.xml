@@ -20,6 +20,9 @@
       android:propertyName="alpha"
       android:startOffset="3"
       android:duration="5"
+      android:valueFrom="0.2"
+      android:valueTo="0.8"
+      android:valueType="floatType"
       android:interpolator="@interpolator/mtrl_fast_out_linear_in"
       android:repeatCount="7"
       android:repeatMode="restart"/>
@@ -27,7 +30,15 @@
       android:propertyName="translation"
       android:startOffset="11"
       android:duration="13"
+      android:valueFrom="0"
+      android:valueTo="101"
+      android:valueType="intType"
       android:interpolator="@interpolator/mtrl_fast_out_slow_in"
       android:repeatCount="17"
       android:repeatMode="reverse"/>
+  <objectAnimator
+      android:propertyName="foo"
+      android:duration="10"
+      android:valueType="floatType"
+      android:interpolator="@interpolator/mtrl_fast_out_slow_in"/>
 </set>

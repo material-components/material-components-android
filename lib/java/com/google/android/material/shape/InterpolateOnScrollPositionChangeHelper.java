@@ -16,14 +16,13 @@
 
 package com.google.android.material.shape;
 
-import com.google.android.material.internal.Experimental;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnScrollChangedListener;
 import android.widget.ScrollView;
+import androidx.annotation.NonNull;
 
 /** Helper class to handle shape interpolation when shaped views enter or exit the window. */
-@Experimental("The shapes API is currently experimental and subject to change")
 public class InterpolateOnScrollPositionChangeHelper {
 
   private View shapedView;
@@ -80,7 +79,7 @@ public class InterpolateOnScrollPositionChangeHelper {
    * @param viewTreeObserver {@link ViewTreeObserver belonging to the {@link View} being
    * interpolated.
    */
-  public void startListeningForScrollChanges(ViewTreeObserver viewTreeObserver) {
+  public void startListeningForScrollChanges(@NonNull ViewTreeObserver viewTreeObserver) {
     viewTreeObserver.addOnScrollChangedListener(scrollChangedListener);
   }
 
@@ -90,7 +89,7 @@ public class InterpolateOnScrollPositionChangeHelper {
    * @param viewTreeObserver {@link ViewTreeObserver belonging to the {@link View} being
    * interpolated.
    */
-  public void stopListeningForScrollChanges(ViewTreeObserver viewTreeObserver) {
+  public void stopListeningForScrollChanges(@NonNull ViewTreeObserver viewTreeObserver) {
     viewTreeObserver.removeOnScrollChangedListener(scrollChangedListener);
   }
 

@@ -1,0 +1,84 @@
+<!--
+  Copyright 2019 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<vector
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:width="24dp"
+  android:height="24dp"
+  android:tint="?attr/colorControlNormal"
+  android:viewportHeight="24"
+  android:viewportWidth="24">
+  <group
+    android:name="button"
+    android:translateX="12"
+    android:translateY="12">
+    <group
+      android:name="button_pivot"
+      android:translateX="-12"
+      android:translateY="-12">
+      <group
+        android:name="right_button"
+        android:translateX="19.0722"
+        android:translateY="4.5758">
+        <path
+          android:name="path_1"
+          android:fillAlpha="1"
+          android:fillColor="@android:color/white"
+          android:pathData="M 2.9409942627,1.16249084473 c 0,0 -4.59599304199,-3.85699462891 -4.59599304199,-3.85699462891 c 0,0 -1.2859954834,1.53300476074 -1.2859954834,1.53300476074 c 0,0 4.59599304199,3.85600280762 4.59599304199,3.85600280762 c 0,0 1.2859954834,-1.53201293945 1.2859954834,-1.53201293945 Z"/>
+      </group>
+      <group
+        android:name="left_button"
+        android:translateX="4.9262"
+        android:translateY="4.5729">
+        <path
+          android:name="left_button_path"
+          android:fillAlpha="1"
+          android:fillColor="@android:color/white"
+          android:pathData="M 2.9409942627,-1.16250610352 c 0,0 -1.2859954834,-1.53199768066 -1.2859954834,-1.53199768066 c 0,0 -4.59599304199,3.85600280762 -4.59599304199,3.85600280762 c 0,0 1.2859954834,1.53300476074 1.2859954834,1.53300476074 c 0,0 4.59599304199,-3.8570098877 4.59599304199,-3.8570098877 Z"/>
+      </group>
+    </group>
+  </group>
+  <group
+    android:name="alarm"
+    android:translateX="12"
+    android:translateY="12">
+    <group
+      android:name="alarm_pivot"
+      android:translateX="-12"
+      android:translateY="-12">
+      <group
+        android:name="alarm_hands"
+        android:translateX="13.75"
+        android:translateY="12.4473">
+        <path
+          android:name="alarm_hands_path"
+          android:fillAlpha="1"
+          android:fillColor="@android:color/white"
+          android:pathData="M -1.25,-4.42700195312 c 0,0 -1.5,0 -1.5,0 c 0,0 0,6.0 0,6.0 c 0,0 4.74699401855,2.85400390625 4.74699401855,2.85400390625 c 0,0 0.753005981445,-1.23199462891 0.753005981445,-1.23199462891 c 0,0 -4.0,-2.37200927734 -4.0,-2.37200927734 c 0,0 0,-5.25 0,-5.25 Z"/>
+      </group>
+      <group
+        android:name="alarm_body"
+        android:translateX="12"
+        android:translateY="13.0203">
+        <path
+          android:name="alarm_outline_path"
+          android:fillAlpha="1"
+          android:fillColor="@android:color/white"
+          android:pathData="M -0.0050048828125,-9 c -4.97399902344,0 -8.99499511719,4.0299987793 -8.99499511719,9 c 0,4.9700012207 4.02099609375,9 8.99499511719,9 c 4.97399902344,0 9.00500488281,-4.0299987793 9.00500488281,-9 c 0,-4.9700012207 -4.03100585938,-9 -9.00500488281,-9 Z M 0,7 c -3.86700439453,0 -7,-3.13400268555 -7,-7 c 0,-3.86599731445 3.13299560547,-7 7,-7 c 3.86700439453,0 7,3.13400268555 7,7 c 0,3.86599731445 -3.13299560547,7 -7,7 Z"/>
+      </group>
+    </group>
+  </group>
+</vector>

@@ -18,10 +18,15 @@ package com.google.android.material.internal;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+<<<<<<< HEAD
 import androidx.annotation.RestrictTo;
+=======
+>>>>>>> pr/1944
 import android.util.AttributeSet;
 import android.widget.ImageButton;
+import androidx.annotation.RestrictTo;
 
 /**
  * An {@link ImageButton} that keeps track of visibility changes.
@@ -29,6 +34,7 @@ import android.widget.ImageButton;
  * @hide
  */
 @RestrictTo(LIBRARY_GROUP)
+@SuppressLint("AppCompatCustomView")
 public class VisibilityAwareImageButton extends ImageButton {
 
   private int userSetVisibility;

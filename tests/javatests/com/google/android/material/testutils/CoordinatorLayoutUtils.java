@@ -16,8 +16,12 @@
 
 package com.google.android.material.testutils;
 
+<<<<<<< HEAD
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+=======
+>>>>>>> pr/1944
 import android.view.View;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 public class CoordinatorLayoutUtils {
 

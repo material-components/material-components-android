@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2020 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+  <string name="mtrl_picker_range_header_title">Seleziona intervallo</string>
+  <string name="mtrl_picker_date_header_title">Seleziona data</string>
+  <string name="mtrl_picker_range_header_unselected">Data di inizio - Data di fine</string>
+  <string name="mtrl_picker_range_header_only_start_selected">%1$s - Data di fine</string>
+  <string name="mtrl_picker_range_header_only_end_selected">Data di inizio - %1$s</string>
+  <string name="mtrl_picker_range_header_selected">%1$s - %2$s</string>
+  <string name="mtrl_picker_date_header_unselected">Data selezionata</string>
+  <string name="mtrl_picker_date_header_selected">%1$s</string>
+  <string name="mtrl_picker_confirm">@android:string/ok</string>
+  <string name="mtrl_picker_text_input_date_hint">Data</string>
+  <string name="mtrl_picker_text_input_date_range_start_hint">Data di inizio</string>
+  <string name="mtrl_picker_text_input_date_range_end_hint">Data di fine</string>
+  <string name="mtrl_picker_text_input_year_abbr">a</string>
+  <string name="mtrl_picker_text_input_month_abbr">m</string>
+  <string name="mtrl_picker_text_input_day_abbr">g</string>
+  <string name="mtrl_picker_save">Salva</string>
+  <string name="mtrl_picker_invalid_range">Intervallo non valido.</string>
+  <string name="mtrl_picker_out_of_range">Non compresa nell\'intervallo: %1$s</string>
+  <string name="mtrl_picker_invalid_format">Formato non valido.</string>
+  <string name="mtrl_picker_invalid_format_use">Usa: %1$s</string>
+  <string name="mtrl_picker_invalid_format_example">Esempio: %1$s</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode">Passa alla modalità di immissione Calendario</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode">Passa alla modalità di immissione Testo</string>
+  <string name="mtrl_picker_a11y_prev_month">Passa al mese precedente</string>
+  <string name="mtrl_picker_a11y_next_month">Passa al mese successivo</string>
+  <string name="mtrl_picker_toggle_to_year_selection">Tocca per passare alla selezione di un anno</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Tocca per passare alla selezione di un giorno</string>
+  <string name="mtrl_picker_day_of_week_column_header">Colonna dei giorni: %1$s</string>
+  <string name="mtrl_picker_announce_current_selection">Selezione attuale: %1$s</string>
+  <string name="mtrl_picker_navigate_to_year_description">Vai all\'anno %1$s</string>
+</resources>

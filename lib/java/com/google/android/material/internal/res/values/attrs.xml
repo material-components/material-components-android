@@ -16,8 +16,6 @@
 -->
 <resources>
 
-  <attr name="materialThemeOverlay" format="reference"/>
-
   <declare-styleable name="ThemeEnforcement">
     <!-- Internal flag used to denote that a style uses new attributes defined by
          Theme.MaterialComponents, and that the component should check via ThemeEnforcement that the
@@ -38,6 +36,7 @@
   <declare-styleable name="ForegroundLinearLayout">
     <attr name="android:foreground"/>
     <attr name="android:foregroundGravity"/>
+    <!-- Do not expose publicly, used by ForegroundLinearLayout but never set by any style.  -->
     <attr name="foregroundInsidePadding" format="boolean"/>
   </declare-styleable>
 
@@ -45,11 +44,20 @@
     <attr name="insetForeground" format="color|reference"/>
   </declare-styleable>
 
+    <!-- Do not expose publicly, FlowLayout (private class) that is the parent for ChipGroup (public), which has its own public spacing attributes.  -->
   <declare-styleable name="FlowLayout">
     <!-- Horizontal spacing between two items being laid out. -->
     <attr name="itemSpacing" format="dimension"/>
     <!-- Vertical Spacing between two lines of items being laid out. -->
     <attr name="lineSpacing" format="dimension"/>
+  </declare-styleable>
+
+  <declare-styleable name="Insets">
+    <!-- Just adding the parameters that we need for now. We can add others if we need them, but
+         ideally we'll be able to use https://github.com/chrisbanes/insetter once it's ready. -->
+    <attr name="paddingBottomSystemWindowInsets" format="boolean"/>
+    <attr name="paddingLeftSystemWindowInsets" format="boolean"/>
+    <attr name="paddingRightSystemWindowInsets" format="boolean"/>
   </declare-styleable>
 
 </resources>

@@ -16,6 +16,9 @@
 -->
 <resources>
 
+  <dimen name="mtrl_navigation_bar_item_default_margin">8dp</dimen>
+  <dimen name="mtrl_navigation_bar_item_default_icon_size">24dp</dimen>
+
   <!-- 5 * standard increment (56dp) -->
   <dimen name="design_navigation_max_width">280dp</dimen>
   <dimen name="design_navigation_elevation">16dp</dimen>
@@ -24,5 +27,8 @@
 
   <dimen name="mtrl_navigation_elevation">0dp</dimen>
   <dimen name="mtrl_navigation_item_icon_padding">14dp</dimen>
+  <dimen name="mtrl_navigation_item_icon_size">24dp</dimen>
   <dimen name="mtrl_navigation_item_horizontal_padding">22dp</dimen>
+  <dimen name="mtrl_navigation_item_shape_horizontal_margin">8dp</dimen>
+  <dimen name="mtrl_navigation_item_shape_vertical_margin">4dp</dimen>
 </resources>

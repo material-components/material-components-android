@@ -17,11 +17,9 @@
 apply plugin: 'com.android.library'
 
 dependencies {
-  api compatibility("compat")
-  api compatibility("core_ui")
-  api compatibility("core_utils")
+  api compatibility("appcompat")
+  api compatibility("core")
   api compatibility("fragment")
-  api compatibility("v7/appcompat")
 }
 
 android {
@@ -36,6 +34,10 @@ android {
   }
   defaultConfig {
     minSdkVersion 14
+<<<<<<< HEAD
     targetSdkVersion 27
+=======
+    targetSdkVersion 29
+>>>>>>> pr/1944
   }
 }

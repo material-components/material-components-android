@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2020 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+  <string name="mtrl_picker_range_header_title">Izaberite period</string>
+  <string name="mtrl_picker_date_header_title">Izaberite datum</string>
+  <string name="mtrl_picker_range_header_unselected">Datum početka – Datum završetka</string>
+  <string name="mtrl_picker_range_header_only_start_selected">%1$s – Datum završetka</string>
+  <string name="mtrl_picker_range_header_only_end_selected">Datum početka – %1$s</string>
+  <string name="mtrl_picker_range_header_selected">%1$s–%2$s</string>
+  <string name="mtrl_picker_date_header_unselected">Izabrani datum</string>
+  <string name="mtrl_picker_date_header_selected">%1$s</string>
+  <string name="mtrl_picker_confirm">@android:string/ok</string>
+  <string name="mtrl_picker_text_input_date_hint">Datum</string>
+  <string name="mtrl_picker_text_input_date_range_start_hint">Datum početka</string>
+  <string name="mtrl_picker_text_input_date_range_end_hint">Datum završetka</string>
+  <string name="mtrl_picker_text_input_year_abbr">g</string>
+  <string name="mtrl_picker_text_input_month_abbr">m</string>
+  <string name="mtrl_picker_text_input_day_abbr">d</string>
+  <string name="mtrl_picker_save">Sačuvaj</string>
+  <string name="mtrl_picker_invalid_range">Nevažeći period.</string>
+  <string name="mtrl_picker_out_of_range">Izvan perioda: %1$s</string>
+  <string name="mtrl_picker_invalid_format">Format je nevažeći.</string>
+  <string name="mtrl_picker_invalid_format_use">Koristite: %1$s</string>
+  <string name="mtrl_picker_invalid_format_example">Primer: %1$s</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode">Pređite na režim unosa u Kalendaru</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode">Pređite na režim unosa teksta</string>
+  <string name="mtrl_picker_a11y_prev_month">Pređite na prethodni mesec</string>
+  <string name="mtrl_picker_a11y_next_month">Pređite na sledeći mesec</string>
+  <string name="mtrl_picker_toggle_to_year_selection">Dodirnite da biste prešli na izbor godine</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Dodirnite da biste prešli na izbor dana</string>
+  <string name="mtrl_picker_day_of_week_column_header">Kolona sa danima: %1$s</string>
+  <string name="mtrl_picker_announce_current_selection">Aktuelni izbor: %1$s</string>
+  <string name="mtrl_picker_navigate_to_year_description">Idite na godinu %1$s</string>
+</resources>

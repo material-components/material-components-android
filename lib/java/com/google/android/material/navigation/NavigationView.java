@@ -19,13 +19,25 @@ package com.google.android.material.navigation;
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+<<<<<<< HEAD
+=======
+import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
+>>>>>>> pr/1944
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.InsetDrawable;
+import android.os.Build;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+<<<<<<< HEAD
 import androidx.annotation.DimenRes;
 import androidx.annotation.Dimension;
 import androidx.annotation.DrawableRes;
@@ -41,6 +53,8 @@ import com.google.android.material.internal.ScrimInsetsFrameLayout;
 import com.google.android.material.internal.ThemeEnforcement;
 import androidx.core.content.ContextCompat;
 import androidx.customview.view.AbsSavedState;
+=======
+>>>>>>> pr/1944
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -54,6 +68,27 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import androidx.annotation.DimenRes;
+import androidx.annotation.Dimension;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.IdRes;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.StyleRes;
+import androidx.core.content.ContextCompat;
+import androidx.customview.view.AbsSavedState;
+import com.google.android.material.internal.ContextUtils;
+import com.google.android.material.internal.NavigationMenu;
+import com.google.android.material.internal.NavigationMenuPresenter;
+import com.google.android.material.internal.ScrimInsetsFrameLayout;
+import com.google.android.material.internal.ThemeEnforcement;
+import com.google.android.material.resources.MaterialResources;
+import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.MaterialShapeUtils;
+import com.google.android.material.shape.ShapeAppearanceModel;
 
 /**
  * Represents a standard navigation menu for application. The menu contents can be populated by a
@@ -86,26 +121,32 @@ public class NavigationView extends ScrimInsetsFrameLayout {
   private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
   private static final int[] DISABLED_STATE_SET = {-android.R.attr.state_enabled};
 
+  private static final int DEF_STYLE_RES = R.style.Widget_Design_NavigationView;
   private static final int PRESENTER_NAVIGATION_VIEW_ID = 1;
 
-  private final NavigationMenu menu;
+  @NonNull private final NavigationMenu menu;
   private final NavigationMenuPresenter presenter = new NavigationMenuPresenter();
 
   OnNavigationItemSelectedListener listener;
   private final int maxWidth;
 
-  private MenuInflater menuInflater;
+  private final int[] tmpLocation = new int[2];
 
-  public NavigationView(Context context) {
+  private MenuInflater menuInflater;
+  private OnGlobalLayoutListener onGlobalLayoutListener;
+
+  public NavigationView(@NonNull Context context) {
     this(context, null);
   }
 
-  public NavigationView(Context context, AttributeSet attrs) {
+  public NavigationView(@NonNull Context context, @Nullable AttributeSet attrs) {
     this(context, attrs, R.attr.navigationViewStyle);
   }
 
-  public NavigationView(Context context, AttributeSet attrs, int defStyleAttr) {
-    super(context, attrs, defStyleAttr);
+  public NavigationView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    super(wrap(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
+    // Ensure we are using the correctly themed context rather than the context that was passed in.
+    context = getContext();
 
     // Create the menu
     this.menu = new NavigationMenu(context);
@@ -117,15 +158,31 @@ public class NavigationView extends ScrimInsetsFrameLayout {
             attrs,
             R.styleable.NavigationView,
             defStyleAttr,
-            R.style.Widget_Design_NavigationView);
+            DEF_STYLE_RES);
 
-    ViewCompat.setBackground(this, a.getDrawable(R.styleable.NavigationView_android_background));
-    if (a.hasValue(R.styleable.NavigationView_elevation)) {
-      ViewCompat.setElevation(
-          this, a.getDimensionPixelSize(R.styleable.NavigationView_elevation, 0));
+    if (a.hasValue(R.styleable.NavigationView_android_background)) {
+      ViewCompat.setBackground(this, a.getDrawable(R.styleable.NavigationView_android_background));
     }
-    ViewCompat.setFitsSystemWindows(
-        this, a.getBoolean(R.styleable.NavigationView_android_fitsSystemWindows, false));
+
+    // Set the background to a MaterialShapeDrawable if it hasn't been set or if it can be converted
+    // to a MaterialShapeDrawable.
+    if (getBackground() == null || getBackground() instanceof ColorDrawable) {
+      ShapeAppearanceModel shapeAppearanceModel =
+          ShapeAppearanceModel.builder(context, attrs, defStyleAttr, DEF_STYLE_RES).build();
+      Drawable orig = getBackground();
+      MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable(shapeAppearanceModel);
+      if (orig instanceof ColorDrawable) {
+        materialShapeDrawable.setFillColor(
+            ColorStateList.valueOf(((ColorDrawable) orig).getColor()));
+      }
+      materialShapeDrawable.initializeElevationOverlay(context);
+      ViewCompat.setBackground(this, materialShapeDrawable);
+    }
+
+    if (a.hasValue(R.styleable.NavigationView_elevation)) {
+      setElevation(a.getDimensionPixelSize(R.styleable.NavigationView_elevation, 0));
+    }
+    setFitsSystemWindows(a.getBoolean(R.styleable.NavigationView_android_fitsSystemWindows, false));
 
     maxWidth = a.getDimensionPixelSize(R.styleable.NavigationView_android_maxWidth, 0);
 
@@ -157,7 +214,12 @@ public class NavigationView extends ScrimInsetsFrameLayout {
       itemTextColor = createDefaultColorStateList(android.R.attr.textColorPrimary);
     }
 
-    final Drawable itemBackground = a.getDrawable(R.styleable.NavigationView_itemBackground);
+    Drawable itemBackground = a.getDrawable(R.styleable.NavigationView_itemBackground);
+    // Set a shaped itemBackground if itemBackground hasn't been set and there is a shape
+    // appearance.
+    if (itemBackground == null && hasShapeAppearance(a)) {
+      itemBackground = createDefaultItemBackground(a);
+    }
 
     if (a.hasValue(R.styleable.NavigationView_itemHorizontalPadding)) {
       final int itemHorizontalPadding =
@@ -166,6 +228,8 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     }
     final int itemIconPadding =
         a.getDimensionPixelSize(R.styleable.NavigationView_itemIconPadding, 0);
+
+    setItemMaxLines(a.getInt(R.styleable.NavigationView_itemMaxLines, 1));
 
     this.menu.setCallback(
         new MenuBuilder.Callback() {
@@ -180,6 +244,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     presenter.setId(PRESENTER_NAVIGATION_VIEW_ID);
     presenter.initForMenu(context, this.menu);
     presenter.setItemIconTintList(itemIconTint);
+    presenter.setOverScrollMode(getOverScrollMode());
     if (textAppearanceSet) {
       presenter.setItemTextAppearance(textAppearance);
     }
@@ -198,6 +263,63 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     }
 
     a.recycle();
+
+    setupInsetScrimsListener();
+  }
+
+  @Override
+  public void setOverScrollMode(int overScrollMode) {
+    super.setOverScrollMode(overScrollMode);
+    if (presenter != null) {
+      presenter.setOverScrollMode(overScrollMode);
+    }
+  }
+
+  private boolean hasShapeAppearance(@NonNull TintTypedArray a) {
+    return a.hasValue(R.styleable.NavigationView_itemShapeAppearance)
+        || a.hasValue(R.styleable.NavigationView_itemShapeAppearanceOverlay);
+  }
+
+  @Override
+  protected void onAttachedToWindow() {
+    super.onAttachedToWindow();
+
+    MaterialShapeUtils.setParentAbsoluteElevation(this);
+  }
+
+  @Override
+  public void setElevation(float elevation) {
+    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+      super.setElevation(elevation);
+    }
+    MaterialShapeUtils.setElevation(this, elevation);
+  }
+
+  /**
+   * Creates a {@link MaterialShapeDrawable} to use as the {@code itemBackground} and wraps it in an
+   * {@link InsetDrawable} for margins.
+   *
+   * @param a The TintTypedArray containing the resolved NavigationView style attributes.
+   */
+  @NonNull
+  private final Drawable createDefaultItemBackground(@NonNull TintTypedArray a) {
+    int shapeAppearanceResId = a.getResourceId(R.styleable.NavigationView_itemShapeAppearance, 0);
+    int shapeAppearanceOverlayResId =
+        a.getResourceId(R.styleable.NavigationView_itemShapeAppearanceOverlay, 0);
+    MaterialShapeDrawable materialShapeDrawable =
+        new MaterialShapeDrawable(
+            ShapeAppearanceModel.builder(
+                    getContext(), shapeAppearanceResId, shapeAppearanceOverlayResId)
+                .build());
+    materialShapeDrawable.setFillColor(
+        MaterialResources.getColorStateList(
+            getContext(), a, R.styleable.NavigationView_itemShapeFillColor));
+
+    int insetLeft = a.getDimensionPixelSize(R.styleable.NavigationView_itemShapeInsetStart, 0);
+    int insetTop = a.getDimensionPixelSize(R.styleable.NavigationView_itemShapeInsetTop, 0);
+    int insetRight = a.getDimensionPixelSize(R.styleable.NavigationView_itemShapeInsetEnd, 0);
+    int insetBottom = a.getDimensionPixelSize(R.styleable.NavigationView_itemShapeInsetBottom, 0);
+    return new InsetDrawable(materialShapeDrawable, insetLeft, insetTop, insetRight, insetBottom);
   }
 
   @Override
@@ -252,7 +374,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
   /** @hide */
   @RestrictTo(LIBRARY_GROUP)
   @Override
-  protected void onInsetsChanged(WindowInsetsCompat insets) {
+  protected void onInsetsChanged(@NonNull WindowInsetsCompat insets) {
     presenter.dispatchApplyWindowInsets(insets);
   }
 
@@ -271,6 +393,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
   }
 
   /** Returns the {@link Menu} instance associated with this navigation view. */
+  @NonNull
   public Menu getMenu() {
     return menu;
   }
@@ -377,7 +500,8 @@ public class NavigationView extends ScrimInsetsFrameLayout {
   }
 
   /**
-   * Set the background of our menu items to the given resource.
+   * Set the background of our menu items to the given resource. This overrides the default
+   * background set to items and it's styling.
    *
    * @param resId The identifier of the resource.
    * @attr ref R.styleable#NavigationView_itemBackground
@@ -485,9 +609,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     }
   }
 
-  /**
-   * @return Returns the currently checked item in this navigation menu.
-   */
+  /** Returns the currently checked item in this navigation menu. */
   @Nullable
   public MenuItem getCheckedItem() {
     return presenter.getCheckedItem();
@@ -503,13 +625,31 @@ public class NavigationView extends ScrimInsetsFrameLayout {
   }
 
   /**
-   * Sets the size to be used for the menu item icons in pixels.
-   * If no icons are set, calling this method will do nothing.
+   * Sets the size to be used for the menu item icons in pixels. If no icons are set, calling this
+   * method will do nothing.
    *
    * @attr ref R.styleable#NavigationView_itemIconSize
    */
   public void setItemIconSize(@Dimension int iconSize) {
     presenter.setItemIconSize(iconSize);
+  }
+
+  /**
+   * Sets the android:maxLines attribute of the text view in the menu item.
+   *
+   * @attr ref R.styleable#NavigationView_itemMaxLines
+   */
+  public void setItemMaxLines(int itemMaxLines) {
+    presenter.setItemMaxLines(itemMaxLines);
+  }
+
+  /**
+   * Gets the android:maxLines attribute of the text view in the menu item.
+   *
+   * @attr ref R.styleable#NavigationView_itemMaxLines
+   */
+  public int getItemMaxLines() {
+    return presenter.getItemMaxLines();
   }
 
   private MenuInflater getMenuInflater() {
@@ -519,6 +659,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     return menuInflater;
   }
 
+  @Nullable
   private ColorStateList createDefaultColorStateList(int baseColorThemeAttr) {
     final TypedValue value = new TypedValue();
     if (!getContext().getTheme().resolveAttribute(baseColorThemeAttr, value, true)) {
@@ -539,6 +680,47 @@ public class NavigationView extends ScrimInsetsFrameLayout {
         });
   }
 
+  @Override
+  protected void onDetachedFromWindow() {
+    super.onDetachedFromWindow();
+    if (Build.VERSION.SDK_INT < 16) {
+      getViewTreeObserver().removeGlobalOnLayoutListener(onGlobalLayoutListener);
+    } else {
+      getViewTreeObserver().removeOnGlobalLayoutListener(onGlobalLayoutListener);
+    }
+  }
+
+  /**
+   * Add a listener to wait for layout changes so we can determine the location on screen. Based on
+   * the location we'll try to be smart about showing the scrim at under the status bar and under
+   * the system nav only when we should.
+   */
+  private void setupInsetScrimsListener() {
+    onGlobalLayoutListener = new OnGlobalLayoutListener() {
+      @Override
+      public void onGlobalLayout() {
+        getLocationOnScreen(tmpLocation);
+        boolean isBehindStatusBar = tmpLocation[1] == 0;
+        presenter.setBehindStatusBar(isBehindStatusBar);
+        setDrawTopInsetForeground(isBehindStatusBar);
+
+        Activity activity = ContextUtils.getActivity(getContext());
+        if (activity != null && VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+          boolean isBehindSystemNav =
+              activity.findViewById(android.R.id.content).getHeight() == getHeight();
+          boolean hasNonZeroAlpha =
+              Color.alpha(activity.getWindow().getNavigationBarColor()) != 0;
+
+          setDrawBottomInsetForeground(isBehindSystemNav && hasNonZeroAlpha);
+        }
+      }
+    };
+
+    getViewTreeObserver()
+        .addOnGlobalLayoutListener(
+            onGlobalLayoutListener);
+  }
+
   /** Listener for handling events on navigation items. */
   public interface OnNavigationItemSelectedListener {
 
@@ -555,9 +737,9 @@ public class NavigationView extends ScrimInsetsFrameLayout {
    * User interface state that is stored by NavigationView for implementing onSaveInstanceState().
    */
   public static class SavedState extends AbsSavedState {
-    public Bundle menuState;
+    @Nullable public Bundle menuState;
 
-    public SavedState(Parcel in, ClassLoader loader) {
+    public SavedState(@NonNull Parcel in, @Nullable ClassLoader loader) {
       super(in, loader);
       menuState = in.readBundle(loader);
     }
@@ -574,16 +756,19 @@ public class NavigationView extends ScrimInsetsFrameLayout {
 
     public static final Creator<SavedState> CREATOR =
         new ClassLoaderCreator<SavedState>() {
+          @NonNull
           @Override
-          public SavedState createFromParcel(Parcel in, ClassLoader loader) {
+          public SavedState createFromParcel(@NonNull Parcel in, ClassLoader loader) {
             return new SavedState(in, loader);
           }
 
+          @Nullable
           @Override
-          public SavedState createFromParcel(Parcel in) {
+          public SavedState createFromParcel(@NonNull Parcel in) {
             return new SavedState(in, null);
           }
 
+          @NonNull
           @Override
           public SavedState[] newArray(int size) {
             return new SavedState[size];

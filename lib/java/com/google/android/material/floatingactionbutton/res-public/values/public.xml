@@ -18,11 +18,19 @@
   <public name="fabSize" type="attr"/>
   <public name="fabCustomSize" type="attr"/>
   <public name="hoveredFocusedTranslationZ" type="attr"/>
+  <public name="pressedTranslationZ" type="attr"/>
   <public name="borderWidth" type="attr"/>
   <public name="useCompatPadding" type="attr"/>
   <public name="maxImageSize" type="attr"/>
   <public name="behavior_autoHide" type="attr"/>
+  <public name="behavior_autoShrink" type="attr"/>
+  <public name="extendMotionSpec" type="attr"/>
+  <public name="shrinkMotionSpec" type="attr"/>
+  <public name="collapsedSize" type="attr"/>
   <public name="floatingActionButtonStyle" type="attr"/>
+  <public name="extendedFloatingActionButtonStyle" type="attr"/>
   <public name="Widget.Design.FloatingActionButton" type="style"/>
   <public name="Widget.MaterialComponents.FloatingActionButton" type="style"/>
+  <public name="Widget.MaterialComponents.ExtendedFloatingActionButton" type="style"/>
+  <public name="Widget.MaterialComponents.ExtendedFloatingActionButton.Icon" type="style"/>
 </resources>

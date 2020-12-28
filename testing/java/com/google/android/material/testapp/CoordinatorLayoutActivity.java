@@ -16,10 +16,16 @@
 
 package com.google.android.material.testapp;
 
+<<<<<<< HEAD
 import androidx.annotation.VisibleForTesting;
 import com.google.android.material.testapp.base.BaseTestActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+=======
+>>>>>>> pr/1944
 import android.widget.FrameLayout;
+import androidx.annotation.VisibleForTesting;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import com.google.android.material.testapp.base.BaseTestActivity;
 
 public class CoordinatorLayoutActivity extends BaseTestActivity {
 

@@ -14,202 +14,123 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-<resources>
-
-  <!--
-      Theme in the "Platform.MaterialComponents" family are designed to be aliases for the default
-      theme on a given platform version and should set up the default theme ready for adding our
-      material component attributes.
-  -->
-  <eat-comment/>
-
-  <style name="Platform.MaterialComponents.Dialog" parent="Theme.AppCompat.Dialog"/>
-
-  <style name="Platform.MaterialComponents.Light.Dialog" parent="Theme.AppCompat.Light.Dialog"/>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
   <!-- All new attributes should be set in the follow four Base.V14 themes. -->
   <eat-comment/>
 
-  <style name="Base.V14.Theme.MaterialComponents.Dialog" parent="Platform.MaterialComponents.Dialog">
-    <item name="isMaterialTheme">true</item>
+  <style name="Base.V14.Theme.MaterialComponents.Dialog" parent="Base.V14.Theme.MaterialComponents.Dialog.Bridge">
     <item name="viewInflaterClass">com.google.android.material.theme.MaterialComponentsViewInflater</item>
 
-    <!-- Colors -->
     <item name="colorPrimary">@color/design_dark_default_color_primary</item>
-    <item name="colorPrimaryVariant">@color/design_dark_default_color_primary_variant</item>
-
+    <item name="colorPrimaryDark">@color/design_dark_default_color_primary_dark</item>
     <item name="colorSecondary">@color/design_dark_default_color_secondary</item>
-    <item name="colorSecondaryVariant">@color/design_dark_default_color_secondary_variant</item>
+    <item name="colorAccent">?attr/colorSecondary</item>
 
     <item name="android:colorBackground">@color/design_dark_default_color_background</item>
     <item name="colorError">@color/design_dark_default_color_error</item>
-    <item name="colorSurface">@color/design_dark_default_color_surface</item>
 
-    <item name="colorOnPrimary">@color/design_dark_default_color_on_primary</item>
-    <item name="colorOnSecondary">@color/design_dark_default_color_on_secondary</item>
-    <item name="colorOnBackground">@color/design_dark_default_color_on_background</item>
-    <item name="colorOnError">@color/design_dark_default_color_on_error</item>
-    <item name="colorOnSurface">@color/design_dark_default_color_on_surface</item>
-
-    <item name="colorPrimaryDark">@color/design_dark_default_color_primary_dark</item>
-
-    <item name="colorAccent">?attr/colorSecondary</item>
-
-    <item name="scrimBackground">@color/mtrl_scrim_color</item>
-
-    <item name="colorOnPrimaryDisabled">@color/mtrl_dark_on_primary_disabled</item>
-    <item name="colorOnPrimaryEmphasisHighType">@color/mtrl_dark_on_primary_emphasis_high_type
-    </item>
-    <item name="colorOnPrimaryEmphasisMedium">@color/mtrl_dark_on_primary_emphasis_medium</item>
-    <item name="colorOnSurfaceDisabled">@color/mtrl_dark_on_surface_disabled</item>
-    <item name="colorOnSurfaceEmphasisHighType">@color/mtrl_dark_on_surface_emphasis_high_type
-    </item>
-    <item name="colorOnSurfaceEmphasisMedium">@color/mtrl_dark_on_surface_emphasis_medium</item>
-
+    <!-- Action bar -->
     <item name="actionBarSize">@dimen/mtrl_toolbar_default_height</item>
-    <item name="minTouchTargetSize">@dimen/mtrl_min_touch_target_size</item>
-
-    <!-- Widget styles -->
-    <item name="actionBarStyle">@style/Widget.MaterialComponents.ActionBar.Solid</item>
+    <item name="actionBarPopupTheme">@style/ThemeOverlay.MaterialComponents.Dark</item>
+    <item name="actionBarStyle">@style/Widget.MaterialComponents.ActionBar.Surface</item>
+    <item name="actionBarTheme">@style/ThemeOverlay.MaterialComponents.ActionBar.Surface</item>
     <item name="actionOverflowMenuStyle">@style/Widget.MaterialComponents.PopupMenu.Overflow</item>
+
+    <!-- Framework, AppCompat, or Design Widget styles -->
+    <item name="appBarLayoutStyle">@style/Widget.MaterialComponents.AppBarLayout.Surface</item>
     <item name="borderlessButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>
-    <item name="bottomAppBarStyle">@style/Widget.MaterialComponents.BottomAppBar</item>
-    <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView.Colored</item>
-    <item name="buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
-    <item name="checkboxStyle">@style/Widget.MaterialComponents.CompoundButton.CheckBox</item>
-    <item name="chipStyle">@style/Widget.MaterialComponents.Chip.Action</item>
-    <item name="chipGroupStyle">@style/Widget.MaterialComponents.ChipGroup</item>
-    <item name="chipStandaloneStyle">@style/Widget.MaterialComponents.Chip.Entry</item>
-    <item name="floatingActionButtonStyle">@style/Widget.MaterialComponents.FloatingActionButton</item>
-    <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button</item>
-    <item name="materialCardViewStyle">@style/Widget.MaterialComponents.CardView</item>
-    <item name="navigationViewStyle">@style/Widget.MaterialComponents.NavigationView</item>
-    <item name="popupMenuStyle">@style/Widget.MaterialComponents.PopupMenu</item>
-    <item name="radioButtonStyle">@style/Widget.MaterialComponents.CompoundButton.RadioButton</item>
-    <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
-    <item name="snackbarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Snackbar</item>
-    <item name="switchStyle">@style/Widget.MaterialComponents.CompoundButton.Switch</item>
-    <item name="tabStyle">@style/Widget.MaterialComponents.TabLayout.Colored</item>
-    <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.FilledBox</item>
-    <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar</item>
-
-    <item name="alertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert</item>
-    <item name="alertDialogStyle">@style/AlertDialog.MaterialComponents</item>
-    <item name="alertDialogTitlePanelStyle">@style/AlertDialog.MaterialComponents.Title.Panel</item>
-    <item name="alertDialogTitleIconStyle">@style/AlertDialog.MaterialComponents.Title.Icon</item>
-    <item name="alertDialogTitleTextStyle">@style/AlertDialog.MaterialComponents.Title.Text</item>
-
-    <!-- Type styles -->
-    <item name="textAppearanceLargePopupMenu">?attr/textAppearanceSubtitle1</item>
-    <item name="textAppearanceSmallPopupMenu">?attr/textAppearanceSubtitle1</item>
-    <item name="textAppearanceHeadline1">@style/TextAppearance.MaterialComponents.Headline1</item>
-    <item name="textAppearanceHeadline2">@style/TextAppearance.MaterialComponents.Headline2</item>
-    <item name="textAppearanceHeadline3">@style/TextAppearance.MaterialComponents.Headline3</item>
-    <item name="textAppearanceHeadline4">@style/TextAppearance.MaterialComponents.Headline4</item>
-    <item name="textAppearanceHeadline5">@style/TextAppearance.MaterialComponents.Headline5</item>
-    <item name="textAppearanceHeadline6">@style/TextAppearance.MaterialComponents.Headline6</item>
-    <item name="textAppearanceSubtitle1">@style/TextAppearance.MaterialComponents.Subtitle1</item>
-    <item name="textAppearanceSubtitle2">@style/TextAppearance.MaterialComponents.Subtitle2</item>
-    <item name="textAppearanceBody1">@style/TextAppearance.MaterialComponents.Body1</item>
-    <item name="textAppearanceBody2">@style/TextAppearance.MaterialComponents.Body2</item>
-    <item name="textAppearanceCaption">@style/TextAppearance.MaterialComponents.Caption</item>
-    <item name="textAppearanceButton">@style/TextAppearance.MaterialComponents.Button</item>
-    <item name="textAppearanceOverline">@style/TextAppearance.MaterialComponents.Overline</item>
-  </style>
-
-  <style name="Base.V14.Theme.MaterialComponents.Light.Dialog" parent="Platform.MaterialComponents.Light.Dialog">
-    <item name="isMaterialTheme">true</item>
-    <item name="viewInflaterClass">com.google.android.material.theme.MaterialComponentsViewInflater</item>
-
-    <!-- Colors -->
-    <item name="colorPrimary">@color/design_default_color_primary</item>
-    <item name="colorPrimaryVariant">@color/design_default_color_primary_variant</item>
-
-    <item name="colorSecondary">@color/design_default_color_secondary</item>
-    <item name="colorSecondaryVariant">@color/design_default_color_secondary_variant</item>
-
-    <item name="android:colorBackground">@color/design_default_color_background</item>
-    <item name="colorError">@color/design_default_color_error</item>
-    <item name="colorSurface">@color/design_default_color_surface</item>
-
-    <item name="colorOnPrimary">@color/design_default_color_on_primary</item>
-    <item name="colorOnSecondary">@color/design_default_color_on_secondary</item>
-    <item name="colorOnBackground">@color/design_default_color_on_background</item>
-    <item name="colorOnError">@color/design_default_color_on_error</item>
-    <item name="colorOnSurface">@color/design_default_color_on_surface</item>
-
-    <item name="colorPrimaryDark">@color/design_default_color_primary_dark</item>
-
-    <item name="colorAccent">?attr/colorSecondary</item>
-
-    <item name="scrimBackground">@color/mtrl_scrim_color</item>
-
-    <item name="colorOnPrimaryDisabled">@color/mtrl_on_primary_disabled</item>
-    <item name="colorOnPrimaryEmphasisHighType">@color/mtrl_on_primary_emphasis_high_type</item>
-    <item name="colorOnPrimaryEmphasisMedium">@color/mtrl_on_primary_emphasis_medium</item>
-    <item name="colorOnSurfaceDisabled">@color/mtrl_on_surface_disabled</item>
-    <item name="colorOnSurfaceEmphasisHighType">@color/mtrl_on_surface_emphasis_high_type</item>
-    <item name="colorOnSurfaceEmphasisMedium">@color/mtrl_on_surface_emphasis_medium</item>
-
-    <item name="actionBarSize">@dimen/mtrl_toolbar_default_height</item>
-    <item name="minTouchTargetSize">@dimen/mtrl_min_touch_target_size</item>
-
-    <!-- Widget styles -->
-    <item name="actionBarStyle">@style/Widget.MaterialComponents.Light.ActionBar.Solid</item>
-    <item name="actionOverflowMenuStyle">@style/Widget.MaterialComponents.PopupMenu.Overflow</item>
-    <item name="borderlessButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>
-    <item name="bottomAppBarStyle">@style/Widget.MaterialComponents.BottomAppBar</item>
     <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView</item>
-    <item name="buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
+    <item name="buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush</item>
     <item name="checkboxStyle">@style/Widget.MaterialComponents.CompoundButton.CheckBox</item>
-    <item name="chipStyle">@style/Widget.MaterialComponents.Chip.Action</item>
-    <item name="chipGroupStyle">@style/Widget.MaterialComponents.ChipGroup</item>
-    <item name="chipStandaloneStyle">@style/Widget.MaterialComponents.Chip.Entry</item>
+    <item name="android:contextPopupMenuStyle" tools:targetApi="n">@style/Widget.MaterialComponents.PopupMenu.ContextMenu</item>
     <item name="floatingActionButtonStyle">@style/Widget.MaterialComponents.FloatingActionButton</item>
-    <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button</item>
-    <item name="materialCardViewStyle">@style/Widget.MaterialComponents.CardView</item>
+    <item name="listPopupWindowStyle">@style/Widget.MaterialComponents.PopupMenu.ListPopupWindow</item>
     <item name="navigationViewStyle">@style/Widget.MaterialComponents.NavigationView</item>
     <item name="popupMenuStyle">@style/Widget.MaterialComponents.PopupMenu</item>
     <item name="radioButtonStyle">@style/Widget.MaterialComponents.CompoundButton.RadioButton</item>
     <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
     <item name="snackbarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Snackbar</item>
+    <item name="snackbarTextViewStyle">@style/Widget.MaterialComponents.Snackbar.TextView</item>
     <item name="switchStyle">@style/Widget.MaterialComponents.CompoundButton.Switch</item>
     <item name="tabStyle">@style/Widget.MaterialComponents.TabLayout</item>
     <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.FilledBox</item>
     <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar</item>
 
     <item name="alertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert</item>
-    <item name="alertDialogStyle">@style/AlertDialog.MaterialComponents</item>
-    <item name="alertDialogTitlePanelStyle">@style/AlertDialog.MaterialComponents.Title.Panel</item>
-    <item name="alertDialogTitleIconStyle">@style/AlertDialog.MaterialComponents.Title.Icon</item>
-    <item name="alertDialogTitleTextStyle">@style/AlertDialog.MaterialComponents.Title.Text</item>
+    <item name="materialAlertDialogTheme">@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog</item>
 
     <!-- Type styles -->
     <item name="textAppearanceLargePopupMenu">?attr/textAppearanceSubtitle1</item>
     <item name="textAppearanceSmallPopupMenu">?attr/textAppearanceSubtitle1</item>
-    <item name="textAppearanceHeadline1">@style/TextAppearance.MaterialComponents.Headline1</item>
-    <item name="textAppearanceHeadline2">@style/TextAppearance.MaterialComponents.Headline2</item>
-    <item name="textAppearanceHeadline3">@style/TextAppearance.MaterialComponents.Headline3</item>
-    <item name="textAppearanceHeadline4">@style/TextAppearance.MaterialComponents.Headline4</item>
-    <item name="textAppearanceHeadline5">@style/TextAppearance.MaterialComponents.Headline5</item>
-    <item name="textAppearanceHeadline6">@style/TextAppearance.MaterialComponents.Headline6</item>
-    <item name="textAppearanceSubtitle1">@style/TextAppearance.MaterialComponents.Subtitle1</item>
-    <item name="textAppearanceSubtitle2">@style/TextAppearance.MaterialComponents.Subtitle2</item>
-    <item name="textAppearanceBody1">@style/TextAppearance.MaterialComponents.Body1</item>
-    <item name="textAppearanceBody2">@style/TextAppearance.MaterialComponents.Body2</item>
-    <item name="textAppearanceCaption">@style/TextAppearance.MaterialComponents.Caption</item>
-    <item name="textAppearanceButton">@style/TextAppearance.MaterialComponents.Button</item>
-    <item name="textAppearanceOverline">@style/TextAppearance.MaterialComponents.Overline</item>
+  </style>
+
+  <style name="Base.V14.Theme.MaterialComponents.Light.Dialog" parent="Base.V14.Theme.MaterialComponents.Light.Dialog.Bridge">
+    <item name="viewInflaterClass">com.google.android.material.theme.MaterialComponentsViewInflater</item>
+
+    <!-- Colors -->
+    <item name="colorPrimary">@color/design_default_color_primary</item>
+    <item name="colorPrimaryDark">@color/design_default_color_primary_dark</item>
+    <item name="colorSecondary">@color/design_default_color_secondary</item>
+    <item name="colorAccent">?attr/colorSecondary</item>
+
+    <item name="android:colorBackground">@color/design_default_color_background</item>
+    <item name="colorError">@color/design_default_color_error</item>
+
+    <!-- Action bar -->
+    <item name="actionBarSize">@dimen/mtrl_toolbar_default_height</item>
+    <item name="actionBarPopupTheme">@style/ThemeOverlay.MaterialComponents.Light</item>
+    <item name="actionBarStyle">@style/Widget.MaterialComponents.Light.ActionBar.Solid</item>
+    <item name="actionOverflowMenuStyle">@style/Widget.MaterialComponents.PopupMenu.Overflow</item>
+
+    <!-- Framework, AppCompat, or Design Widget styles -->
+    <item name="appBarLayoutStyle">@style/Widget.MaterialComponents.AppBarLayout.Primary</item>
+    <item name="borderlessButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>
+    <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView</item>
+    <item name="buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush</item>
+    <item name="checkboxStyle">@style/Widget.MaterialComponents.CompoundButton.CheckBox</item>
+    <item name="android:contextPopupMenuStyle" tools:targetApi="n">@style/Widget.MaterialComponents.PopupMenu.ContextMenu</item>
+    <item name="floatingActionButtonStyle">@style/Widget.MaterialComponents.FloatingActionButton</item>
+    <item name="listPopupWindowStyle">@style/Widget.MaterialComponents.PopupMenu.ListPopupWindow</item>
+    <item name="navigationViewStyle">@style/Widget.MaterialComponents.NavigationView</item>
+    <item name="popupMenuStyle">@style/Widget.MaterialComponents.PopupMenu</item>
+    <item name="radioButtonStyle">@style/Widget.MaterialComponents.CompoundButton.RadioButton</item>
+    <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
+    <item name="snackbarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Snackbar</item>
+    <item name="snackbarTextViewStyle">@style/Widget.MaterialComponents.Snackbar.TextView</item>
+    <item name="switchStyle">@style/Widget.MaterialComponents.CompoundButton.Switch</item>
+    <item name="tabStyle">@style/Widget.MaterialComponents.TabLayout</item>
+    <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.FilledBox</item>
+    <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar</item>
+
+    <item name="alertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert</item>
+    <item name="materialAlertDialogTheme">@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog</item>
+
+    <!-- Type styles -->
+    <item name="textAppearanceLargePopupMenu">?attr/textAppearanceSubtitle1</item>
+    <item name="textAppearanceSmallPopupMenu">?attr/textAppearanceSubtitle1</item>
   </style>
 
   <style name="Base.V14.ThemeOverlay.MaterialComponents.Dialog" parent="ThemeOverlay.AppCompat.Dialog">
     <!-- Widget styles -->
-    <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
+    <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush</item>
   </style>
 
   <style name="Base.V14.ThemeOverlay.MaterialComponents.Dialog.Alert" parent="ThemeOverlay.AppCompat.Dialog.Alert">
     <!-- Widget styles -->
+    <item name="buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush</item>
+  </style>
+  <style name="Base.V14.ThemeOverlay.MaterialComponents.MaterialAlertDialog" parent="ThemeOverlay.AppCompat.Dialog.Alert">
+    <!-- Widget styles -->
+    <item name="alertDialogStyle">@style/MaterialAlertDialog.MaterialComponents</item>
+    <item name="android:checkedTextViewStyle" tools:ignore="NewApi">@style/Widget.MaterialComponents.CheckedTextView</item>
+    <item name="android:dialogCornerRadius" tools:ignore="newApi">@null</item>
     <item name="buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
+    <item name="buttonBarPositiveButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
+    <item name="buttonBarNegativeButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
+    <item name="buttonBarNeutralButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush</item>
+    <item name="android:backgroundDimAmount">0.32</item>
+    <item name="materialAlertDialogBodyTextStyle">@style/MaterialAlertDialog.MaterialComponents.Body.Text</item>
   </style>
 
   <!-- Themes in the "Base.Theme" family vary based on the current platform
@@ -225,23 +146,23 @@
   <style name="Base.Theme.MaterialComponents.Light.Dialog" parent="Base.V14.Theme.MaterialComponents.Light.Dialog"/>
 
   <style name="Base.Theme.MaterialComponents.Dialog.Alert">
-    <item name="windowMinWidthMajor">@dimen/abc_dialog_min_width_major</item>
-    <item name="windowMinWidthMinor">@dimen/abc_dialog_min_width_minor</item>
+    <item name="android:windowMinWidthMajor">@dimen/abc_dialog_min_width_major</item>
+    <item name="android:windowMinWidthMinor">@dimen/abc_dialog_min_width_minor</item>
   </style>
 
   <style name="Base.Theme.MaterialComponents.Light.Dialog.Alert">
-    <item name="windowMinWidthMajor">@dimen/abc_dialog_min_width_major</item>
-    <item name="windowMinWidthMinor">@dimen/abc_dialog_min_width_minor</item>
+    <item name="android:windowMinWidthMajor">@dimen/abc_dialog_min_width_major</item>
+    <item name="android:windowMinWidthMinor">@dimen/abc_dialog_min_width_minor</item>
   </style>
 
   <style name="Base.Theme.MaterialComponents.Dialog.MinWidth">
-    <item name="windowMinWidthMajor">@dimen/abc_dialog_min_width_major</item>
-    <item name="windowMinWidthMinor">@dimen/abc_dialog_min_width_minor</item>
+    <item name="android:windowMinWidthMajor">@dimen/abc_dialog_min_width_major</item>
+    <item name="android:windowMinWidthMinor">@dimen/abc_dialog_min_width_minor</item>
   </style>
 
   <style name="Base.Theme.MaterialComponents.Light.Dialog.MinWidth">
-    <item name="windowMinWidthMajor">@dimen/abc_dialog_min_width_major</item>
-    <item name="windowMinWidthMinor">@dimen/abc_dialog_min_width_minor</item>
+    <item name="android:windowMinWidthMajor">@dimen/abc_dialog_min_width_major</item>
+    <item name="android:windowMinWidthMinor">@dimen/abc_dialog_min_width_minor</item>
   </style>
 
   <style name="Base.Theme.MaterialComponents.Dialog.FixedSize">
@@ -260,5 +181,6 @@
 
   <style name="Base.ThemeOverlay.MaterialComponents.Dialog" parent="Base.V14.ThemeOverlay.MaterialComponents.Dialog"/>
   <style name="Base.ThemeOverlay.MaterialComponents.Dialog.Alert" parent="Base.V14.ThemeOverlay.MaterialComponents.Dialog.Alert"/>
+  <style name="Base.ThemeOverlay.MaterialComponents.MaterialAlertDialog" parent="Base.V14.ThemeOverlay.MaterialComponents.MaterialAlertDialog"/>
 
 </resources>

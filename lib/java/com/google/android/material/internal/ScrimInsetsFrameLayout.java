@@ -25,33 +25,42 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+<<<<<<< HEAD
 import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
+=======
+>>>>>>> pr/1944
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
 
 /** @hide */
 @RestrictTo(LIBRARY_GROUP)
 public class ScrimInsetsFrameLayout extends FrameLayout {
 
-  Drawable insetForeground;
+  @Nullable Drawable insetForeground;
 
   Rect insets;
 
   private Rect tempRect = new Rect();
+  private boolean drawTopInsetForeground = true;
+  private boolean drawBottomInsetForeground = true;
 
-  public ScrimInsetsFrameLayout(Context context) {
+  public ScrimInsetsFrameLayout(@NonNull Context context) {
     this(context, null);
   }
 
-  public ScrimInsetsFrameLayout(Context context, AttributeSet attrs) {
+  public ScrimInsetsFrameLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
     this(context, attrs, 0);
   }
 
-  public ScrimInsetsFrameLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+  public ScrimInsetsFrameLayout(
+      @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
 
     final TypedArray a =
@@ -69,7 +78,8 @@ public class ScrimInsetsFrameLayout extends FrameLayout {
         this,
         new androidx.core.view.OnApplyWindowInsetsListener() {
           @Override
-          public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
+          public WindowInsetsCompat onApplyWindowInsets(
+              View v, @NonNull WindowInsetsCompat insets) {
             if (null == ScrimInsetsFrameLayout.this.insets) {
               ScrimInsetsFrameLayout.this.insets = new Rect();
             }
@@ -86,6 +96,19 @@ public class ScrimInsetsFrameLayout extends FrameLayout {
         });
   }
 
+  /** Sets the drawable used for the inset foreground. */
+  public void setScrimInsetForeground(@Nullable Drawable drawable) {
+    insetForeground = drawable;
+  }
+
+  public void setDrawTopInsetForeground(boolean drawTopInsetForeground) {
+    this.drawTopInsetForeground = drawTopInsetForeground;
+  }
+
+  public void setDrawBottomInsetForeground(boolean drawBottomInsetForeground) {
+    this.drawBottomInsetForeground = drawBottomInsetForeground;
+  }
+
   @Override
   public void draw(@NonNull Canvas canvas) {
     super.draw(canvas);
@@ -97,14 +120,18 @@ public class ScrimInsetsFrameLayout extends FrameLayout {
       canvas.translate(getScrollX(), getScrollY());
 
       // Top
-      tempRect.set(0, 0, width, insets.top);
-      insetForeground.setBounds(tempRect);
-      insetForeground.draw(canvas);
+      if (drawTopInsetForeground) {
+        tempRect.set(0, 0, width, insets.top);
+        insetForeground.setBounds(tempRect);
+        insetForeground.draw(canvas);
+      }
 
       // Bottom
-      tempRect.set(0, height - insets.bottom, width, height);
-      insetForeground.setBounds(tempRect);
-      insetForeground.draw(canvas);
+      if (drawBottomInsetForeground) {
+        tempRect.set(0, height - insets.bottom, width, height);
+        insetForeground.setBounds(tempRect);
+        insetForeground.draw(canvas);
+      }
 
       // Left
       tempRect.set(0, insets.top, insets.left, height - insets.bottom);

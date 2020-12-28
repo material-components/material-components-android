@@ -21,6 +21,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
+
   <com.google.android.material.textfield.TextInputLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -30,7 +31,8 @@
       app:counterMaxLength="10"
       app:errorEnabled="true"
       app:helperText="@string/cat_textfield_filled_helper_text"
-      app:helperTextEnabled="true">
+      app:helperTextEnabled="true"
+      app:placeholderText="@string/cat_textfield_placeholder_text">
     <com.google.android.material.textfield.TextInputEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
@@ -46,45 +48,11 @@
       app:counterMaxLength="10"
       app:errorEnabled="true"
       app:helperText="@string/cat_textfield_filled_dense_helper_text"
-      app:helperTextEnabled="true">
+      app:helperTextEnabled="true"
+      app:placeholderText="@string/cat_textfield_placeholder_text">
     <com.google.android.material.textfield.TextInputEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
   </com.google.android.material.textfield.TextInputLayout>
 
-  <com.google.android.material.textfield.TextInputLayout
-      android:id="@+id/text_input_demo_box_filled_dense_password"
-      style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_margin="4dp"
-      android:hint="@string/cat_textfield_password"
-      app:errorEnabled="true"
-      app:helperText="@string/cat_textfield_filled_dense_password_helper_text"
-      app:helperTextEnabled="true"
-      app:passwordToggleEnabled="true">
-    <com.google.android.material.textfield.TextInputEditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"/>
-  </com.google.android.material.textfield.TextInputLayout>
-
-  <com.google.android.material.textfield.TextInputLayout
-      android:id="@+id/text_input_demo_box_filled_start_icon"
-      style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_margin="4dp"
-      android:hint="@string/cat_textfield_label"
-      app:counterEnabled="true"
-      app:counterMaxLength="10"
-      app:errorEnabled="true"
-      app:helperText="@string/cat_textfield_filled_start_icon_helper_text"
-      app:helperTextEnabled="true">
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/edit_text_start_icon"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawablePadding="8dp"/>
-  </com.google.android.material.textfield.TextInputLayout>
 </LinearLayout>

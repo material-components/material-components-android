@@ -19,7 +19,12 @@ package com.google.android.material.internal;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
+<<<<<<< HEAD
 import androidx.annotation.RestrictTo;
+=======
+import android.os.Parcel;
+import android.os.Parcelable;
+>>>>>>> pr/1944
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityEventCompat;
@@ -29,6 +34,9 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.Checkable;
+import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
+import androidx.customview.view.AbsSavedState;
 
 /** @hide */
 @RestrictTo(LIBRARY_GROUP)
@@ -37,6 +45,8 @@ public class CheckableImageButton extends AppCompatImageButton implements Checka
   private static final int[] DRAWABLE_STATE_CHECKED = new int[] {android.R.attr.state_checked};
 
   private boolean checked;
+  private boolean checkable = true;
+  private boolean pressable = true;
 
   public CheckableImageButton(Context context) {
     this(context, null);
@@ -53,16 +63,16 @@ public class CheckableImageButton extends AppCompatImageButton implements Checka
         this,
         new AccessibilityDelegateCompat() {
           @Override
-          public void onInitializeAccessibilityEvent(View host, AccessibilityEvent event) {
+          public void onInitializeAccessibilityEvent(View host, @NonNull AccessibilityEvent event) {
             super.onInitializeAccessibilityEvent(host, event);
             event.setChecked(isChecked());
           }
 
           @Override
           public void onInitializeAccessibilityNodeInfo(
-              View host, AccessibilityNodeInfoCompat info) {
+              View host, @NonNull AccessibilityNodeInfoCompat info) {
             super.onInitializeAccessibilityNodeInfo(host, info);
-            info.setCheckable(true);
+            info.setCheckable(isCheckable());
             info.setChecked(isChecked());
           }
         });
@@ -70,7 +80,7 @@ public class CheckableImageButton extends AppCompatImageButton implements Checka
 
   @Override
   public void setChecked(boolean checked) {
-    if (this.checked != checked) {
+    if (checkable && this.checked != checked) {
       this.checked = checked;
       refreshDrawableState();
       sendAccessibilityEvent(AccessibilityEventCompat.TYPE_WINDOW_CONTENT_CHANGED);
@@ -88,6 +98,13 @@ public class CheckableImageButton extends AppCompatImageButton implements Checka
   }
 
   @Override
+  public void setPressed(boolean pressed) {
+    if (pressable) {
+      super.setPressed(pressed);
+    }
+  }
+
+  @Override
   public int[] onCreateDrawableState(int extraSpace) {
     if (checked) {
       return mergeDrawableStates(
@@ -96,5 +113,93 @@ public class CheckableImageButton extends AppCompatImageButton implements Checka
     } else {
       return super.onCreateDrawableState(extraSpace);
     }
+  }
+
+  @NonNull
+  @Override
+  protected Parcelable onSaveInstanceState() {
+    Parcelable superState = super.onSaveInstanceState();
+    SavedState savedState = new SavedState(superState);
+    savedState.checked = checked;
+    return savedState;
+  }
+
+  @Override
+  protected void onRestoreInstanceState(Parcelable state) {
+    if (!(state instanceof SavedState)) {
+      super.onRestoreInstanceState(state);
+      return;
+    }
+    SavedState savedState = (SavedState) state;
+    super.onRestoreInstanceState(savedState.getSuperState());
+    setChecked(savedState.checked);
+  }
+
+  /** Sets image button to be checkable or not. */
+  public void setCheckable(boolean checkable) {
+    if (this.checkable != checkable) {
+      this.checkable = checkable;
+      sendAccessibilityEvent(AccessibilityEventCompat.CONTENT_CHANGE_TYPE_UNDEFINED);
+    }
+  }
+
+  /** Returns whether the image button is checkable. */
+  public boolean isCheckable() {
+    return checkable;
+  }
+
+  /** Sets image button to be pressable or not. */
+  public void setPressable(boolean pressable) {
+    this.pressable = pressable;
+  }
+
+  /** Returns whether the image button is pressable. */
+  public boolean isPressable() {
+    return pressable;
+  }
+
+  static class SavedState extends AbsSavedState {
+
+    boolean checked;
+
+    public SavedState(Parcelable superState) {
+      super(superState);
+    }
+
+    public SavedState(@NonNull Parcel source, ClassLoader loader) {
+      super(source, loader);
+      readFromParcel(source);
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel out, int flags) {
+      super.writeToParcel(out, flags);
+      out.writeInt(checked ? 1 : 0);
+    }
+
+    private void readFromParcel(@NonNull Parcel in) {
+      checked = in.readInt() == 1;
+    }
+
+    public static final Creator<SavedState> CREATOR =
+        new ClassLoaderCreator<SavedState>() {
+          @NonNull
+          @Override
+          public SavedState createFromParcel(@NonNull Parcel in, ClassLoader loader) {
+            return new SavedState(in, loader);
+          }
+
+          @NonNull
+          @Override
+          public SavedState createFromParcel(@NonNull Parcel in) {
+            return new SavedState(in, null);
+          }
+
+          @NonNull
+          @Override
+          public SavedState[] newArray(int size) {
+            return new SavedState[size];
+          }
+        };
   }
 }

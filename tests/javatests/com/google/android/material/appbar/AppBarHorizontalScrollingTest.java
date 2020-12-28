@@ -27,8 +27,6 @@ import static org.mockito.Mockito.verify;
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.os.SystemClock;
-import com.google.android.material.testapp.AppBarHorizontalScrollingActivity;
-import com.google.android.material.testapp.R;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -37,6 +35,11 @@ import androidx.test.InstrumentationRegistry;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
+<<<<<<< HEAD
+=======
+import com.google.android.material.testapp.AppBarHorizontalScrollingActivity;
+import com.google.android.material.testapp.R;
+>>>>>>> pr/1944
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;

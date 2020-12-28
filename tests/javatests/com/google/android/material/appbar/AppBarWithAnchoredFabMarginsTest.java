@@ -18,11 +18,17 @@ package com.google.android.material.appbar;
 
 import static org.junit.Assert.assertEquals;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.testapp.R;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.test.filters.SmallTest;
 import androidx.test.runner.AndroidJUnit4;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.testapp.R;
+<<<<<<< HEAD
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.test.filters.SmallTest;
+import androidx.test.runner.AndroidJUnit4;
+=======
+>>>>>>> pr/1944
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

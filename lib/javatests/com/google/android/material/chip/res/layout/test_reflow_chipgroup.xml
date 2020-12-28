@@ -23,8 +23,21 @@
     android:layout_height="wrap_content"
     android:layout_margin="16dp">
   <com.google.android.material.chip.Chip
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/filter_chip"
+    android:id="@+id/chip1"
+    style="@style/Widget.MaterialComponents.Chip.Filter"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:ellipsize="end"
+    android:text="@string/chip_text"/>
+  <com.google.android.material.chip.Chip
+    android:id="@+id/chip2"
+    style="@style/Widget.MaterialComponents.Chip.Filter"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:ellipsize="end"
+    android:text="@string/chip_text"/>
+  <com.google.android.material.chip.Chip
+    android:id="@+id/chip3"
     style="@style/Widget.MaterialComponents.Chip.Filter"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"

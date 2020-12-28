@@ -17,7 +17,9 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/coordinator"
     android:layout_width="match_parent"
+<<<<<<< HEAD
     android:layout_height="match_parent">
 
   <androidx.core.widget.NestedScrollView
@@ -27,10 +29,16 @@
 
     <include layout="@layout/cat_topappbar_filler_text_view"/>
   </androidx.core.widget.NestedScrollView>
+=======
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+>>>>>>> pr/1944
 
   <com.google.android.material.appbar.AppBarLayout
+      android:id="@+id/appbarlayout"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:fitsSystemWindows="true"
       app:liftOnScroll="true">
 
     <androidx.appcompat.widget.Toolbar
@@ -40,4 +48,16 @@
         android:layout_height="wrap_content"
         app:title="@string/cat_topappbar_main_demo_toolbar_title"/>
   </com.google.android.material.appbar.AppBarLayout>
+<<<<<<< HEAD
+=======
+
+  <androidx.core.widget.NestedScrollView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <include layout="@layout/cat_topappbar_filler_text_view"/>
+  </androidx.core.widget.NestedScrollView>
+
+>>>>>>> pr/1944
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

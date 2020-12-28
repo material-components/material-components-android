@@ -20,7 +20,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cat_demo_landing_row_root"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/cat_list_two_line_row_height"
+    android:layout_height="wrap_content"
+    android:minHeight="@dimen/cat_list_two_line_row_height"
     android:paddingLeft="@dimen/cat_list_horizontal_padding"
     android:paddingRight="@dimen/cat_list_horizontal_padding"
     android:background="?attr/selectableItemBackground"
@@ -42,7 +43,9 @@
       android:layout_marginLeft="@dimen/cat_list_text_margin_from_icon"
       android:layout_toEndOf="@+id/cat_demo_landing_row_icon"
       android:layout_toRightOf="@+id/cat_demo_landing_row_icon"
-      android:textAppearance="@style/TextAppearance.Catalog.ListTitle"
+      android:textAppearance="?attr/textAppearanceBody2"
+      android:ellipsize="end"
+      android:maxLines="1"
       tools:text="Demo"/>
 
   <TextView
@@ -54,7 +57,9 @@
       android:layout_below="@+id/cat_demo_landing_row_title"
       android:layout_toEndOf="@+id/cat_demo_landing_row_icon"
       android:layout_toRightOf="@+id/cat_demo_landing_row_icon"
-      android:textAppearance="@style/TextAppearance.Catalog.ListSubtitle"
+      android:ellipsize="end"
+      android:maxLines="1"
+      android:textAppearance="?attr/textAppearanceCaption"
       tools:text="MainDemoFragment"/>
 
 </RelativeLayout>

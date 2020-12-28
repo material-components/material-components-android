@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2020 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+  <string name="mtrl_picker_range_header_title">Vyberte rozsah</string>
+  <string name="mtrl_picker_date_header_title">Vyberte datum</string>
+  <string name="mtrl_picker_range_header_unselected">Datum zahájení – datum ukončení</string>
+  <string name="mtrl_picker_range_header_only_start_selected">%1$s – datum ukončení</string>
+  <string name="mtrl_picker_range_header_only_end_selected">Datum zahájení – %1$s</string>
+  <string name="mtrl_picker_range_header_selected">%1$s – %2$s</string>
+  <string name="mtrl_picker_date_header_unselected">Vybrané datum</string>
+  <string name="mtrl_picker_date_header_selected">%1$s</string>
+  <string name="mtrl_picker_confirm">@android:string/ok</string>
+  <string name="mtrl_picker_text_input_date_hint">Datum</string>
+  <string name="mtrl_picker_text_input_date_range_start_hint">Datum zahájení</string>
+  <string name="mtrl_picker_text_input_date_range_end_hint">Datum ukončení</string>
+  <string name="mtrl_picker_text_input_year_abbr">r</string>
+  <string name="mtrl_picker_text_input_month_abbr">m</string>
+  <string name="mtrl_picker_text_input_day_abbr">d</string>
+  <string name="mtrl_picker_save">Uložit</string>
+  <string name="mtrl_picker_invalid_range">Neplatný rozsah.</string>
+  <string name="mtrl_picker_out_of_range">Mimo rozsah: %1$s</string>
+  <string name="mtrl_picker_invalid_format">Neplatný formát.</string>
+  <string name="mtrl_picker_invalid_format_use">Použijte: %1$s</string>
+  <string name="mtrl_picker_invalid_format_example">Příklad: %1$s</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode">Přepnout na režim zadávání do kalendáře</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode">Přepnout na režim zadávání textu</string>
+  <string name="mtrl_picker_a11y_prev_month">Přejít na předchozí měsíc</string>
+  <string name="mtrl_picker_a11y_next_month">Přejít na další měsíc</string>
+  <string name="mtrl_picker_toggle_to_year_selection">Klepnutím přepnete na výběr roku</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Klepnutím přepnete na výběr dne</string>
+  <string name="mtrl_picker_day_of_week_column_header">Sloupec dnů: %1$s</string>
+  <string name="mtrl_picker_announce_current_selection">Aktuální výběr: %1$s</string>
+  <string name="mtrl_picker_navigate_to_year_description">Přejít na rok %1$s</string>
+</resources>

@@ -22,21 +22,33 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+<<<<<<< HEAD
 import androidx.annotation.NonNull;
 import com.google.android.material.animation.AnimatorSetCompat;
 import com.google.android.material.animation.MotionTiming;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+=======
+>>>>>>> pr/1944
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import androidx.annotation.NonNull;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import com.google.android.material.animation.AnimatorSetCompat;
+import com.google.android.material.animation.MotionTiming;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Behavior that should be attached to a scrim that should appear when a {@link
  * FloatingActionButton} is {@link FloatingActionButton#setExpanded(boolean)} expanded}.
+ *
+ * @deprecated Use {@link com.google.android.material.transition.MaterialContainerTransform}
+ *     instead.
  */
+@Deprecated
 public class FabTransformationScrimBehavior extends ExpandableTransformationBehavior {
 
   public static final long EXPAND_DELAY = 75;
@@ -60,7 +72,8 @@ public class FabTransformationScrimBehavior extends ExpandableTransformationBeha
   }
 
   @Override
-  public boolean onTouchEvent(CoordinatorLayout parent, View child, MotionEvent ev) {
+  public boolean onTouchEvent(
+      @NonNull CoordinatorLayout parent, @NonNull View child, @NonNull MotionEvent ev) {
     // TODO: Implement click detection so clients don't have to manually set a listener.
     return super.onTouchEvent(parent, child, ev);
   }
@@ -68,7 +81,10 @@ public class FabTransformationScrimBehavior extends ExpandableTransformationBeha
   @NonNull
   @Override
   protected AnimatorSet onCreateExpandedStateChangeAnimation(
-      View dependency, final View child, final boolean expanded, boolean isAnimating) {
+      @NonNull View dependency,
+      @NonNull final View child,
+      final boolean expanded,
+      boolean isAnimating) {
     List<Animator> animations = new ArrayList<>();
     List<AnimatorListener> listeners = new ArrayList<>();
 
@@ -96,10 +112,10 @@ public class FabTransformationScrimBehavior extends ExpandableTransformationBeha
   }
 
   private void createScrimAnimation(
-      View child,
+      @NonNull View child,
       boolean expanded,
       boolean currentlyAnimating,
-      List<Animator> animations,
+      @NonNull List<Animator> animations,
       List<AnimatorListener> unusedListeners) {
     MotionTiming timing = expanded ? expandTiming : collapseTiming;
 

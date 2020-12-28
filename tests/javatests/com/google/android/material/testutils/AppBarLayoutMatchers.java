@@ -16,9 +16,12 @@
 
 package com.google.android.material.testutils;
 
-import com.google.android.material.appbar.AppBarLayout;
 import android.view.View;
 import androidx.test.espresso.matcher.BoundedMatcher;
+<<<<<<< HEAD
+=======
+import com.google.android.material.appbar.AppBarLayout;
+>>>>>>> pr/1944
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 

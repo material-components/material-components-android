@@ -18,25 +18,24 @@ individual text appearance.
 
 -   [Material Design guidelines:
     Typography](https://material.io/go/design-typography/)
-    <!--{: .icon-list-item.icon-list-item--spec }-->
 
 ## Usage
 
 Attribute name            | Default style
-------------------------- | --------------------
+------------------------- | ---------------------
 `textAppearanceHeadline1` | Light 96sp
 `textAppearanceHeadline2` | Light 60sp
 `textAppearanceHeadline3` | Regular 48sp
 `textAppearanceHeadline4` | Regular 34sp
 `textAppearanceHeadline5` | Regular 24sp
-`textAppearanceHeadline6` | Regular 20sp
+`textAppearanceHeadline6` | Medium 20sp
 `textAppearanceSubtitle1` | Regular 16sp
 `textAppearanceSubtitle2` | Medium 14sp
 `textAppearanceBody1`     | Regular 16sp
 `textAppearanceBody2`     | Regular 14sp
 `textAppearanceCaption`   | Regular 12sp
 `textAppearanceButton`    | Medium all caps 14sp
-`textAppearanceOverline`  | Medium all caps 12sp
+`textAppearanceOverline`  | Regular all caps 10sp
 
 ## Style values
 
@@ -49,11 +48,10 @@ Style values are a combination of the following:
 
 ## Customization
 
-Soon all components included in the Material Design Library will reference these
-themeable text attributes, enabling you to easily change text appearance across
-your whole application. If you display text in `TextView`s or create custom
-components, consider referencing one of these text attributes where it makes
-sense.
+The components included in the Material Design Library reference these themeable
+text attributes, enabling you to easily change text appearance across your whole
+application. If you display text in `TextView`s or create custom components,
+consider referencing one of these text attributes where it makes sense.
 
 You can change the look of any text style by creating a new style and setting it
 in your theme:

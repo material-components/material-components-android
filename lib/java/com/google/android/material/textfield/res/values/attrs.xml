@@ -20,11 +20,14 @@
   <attr name="textInputStyle" format="reference"/>
 
   <declare-styleable name="TextInputLayout">
-    <!-- The text color for input text. -->
-    <attr name="android:textColorHint"/>
-
+    <!-- Whether the layout is enabled -->
+    <attr name="android:enabled"/>
     <!-- The hint to display in the floating label. -->
     <attr name="android:hint"/>
+    <!-- The text color for the hint when the text field is not activated (such
+         as for the resting and disabled states). -->
+    <attr name="android:textColorHint"/>
+
     <!-- Whether the layout's floating label functionality is enabled. -->
     <attr name="hintEnabled" format="boolean"/>
     <!-- Whether to animate hint state changes. -->
@@ -34,6 +37,9 @@
     <!-- Text color of the hint in the collapsed floating label.
          If set, this takes precedence over hintTextAppearance. -->
     <attr name="hintTextColor" format="color"/>
+    <!-- Whether the hint should occupy the input area when the text field is
+         unpopulated and not focused. -->
+    <attr name="expandedHintEnabled" format="boolean"/>
 
     <!-- The text to display as helper text underneath the text input area. -->
     <attr name="helperText" format="string"/>
@@ -52,6 +58,31 @@
     <!-- Text color for any error message displayed.
          If set, this takes precedence over errorTextAppearance. -->
     <attr name="errorTextColor" format="color"/>
+    <!-- Text to set as the content description for the error view.
+         Should be set when the error message has special characters that a
+         screen reader is not able to announce properly. -->
+    <attr name="errorContentDescription" format="string"/>
+    <!-- End icon to be shown when an error is displayed. -->
+    <attr name="errorIconDrawable" format="reference"/>
+    <!-- Tint color to use for the error icon. -->
+    <attr name="errorIconTint" format="reference"/>
+    <!-- Blending mode used to apply the error icon tint. -->
+    <attr name="errorIconTintMode">
+      <!-- The tint is drawn on top of the drawable.
+           [Sa + (1 - Sa)*Da, Rc = Sc + (1 - Sa)*Dc] -->
+      <enum name="src_over" value="3"/>
+      <!-- The tint is masked by the alpha channel of the drawable. The drawable’s
+           color channels are thrown out. [Sa * Da, Sc * Da] -->
+      <enum name="src_in" value="5"/>
+      <!-- The tint is drawn above the drawable, but with the drawable’s alpha
+           channel masking the result. [Da, Sc * Da + (1 - Sa) * Dc] -->
+      <enum name="src_atop" value="9"/>
+      <!-- Multiplies the color and alpha channels of the drawable with those of
+           the tint. [Sa * Da, Sc * Dc] -->
+      <enum name="multiply" value="14"/>
+      <!-- [Sa + Da - Sa * Da, Sc + Dc - Sc * Dc] -->
+      <enum name="screen" value="15"/>
+    </attr>
 
     <!-- Whether the layout is laid out as if the character counter will be displayed. -->
     <attr name="counterEnabled" format="boolean"/>
@@ -68,16 +99,78 @@
          If set, this takes precedence over counterOverflowTextAppearance. -->
     <attr name="counterOverflowTextColor" format="reference"/>
 
-    <!-- Whether the view will display a toggle when the EditText has a password. -->
-    <attr name="passwordToggleEnabled" format="boolean"/>
-    <!-- Drawable to use as the password input visibility toggle icon. -->
-    <attr name="passwordToggleDrawable" format="reference"/>
-    <!-- Text to set as the content description for the password input visibility toggle. -->
-    <attr name="passwordToggleContentDescription" format="string"/>
-    <!-- Icon to use for the password input visibility toggle -->
-    <attr name="passwordToggleTint" format="color"/>
+    <!-- The text to display as placeholder text in the text input area. -->
+    <attr name="placeholderText" format="string"/>
+    <!-- TextAppearance of the placeholder text displayed in the text input area. -->
+    <attr name="placeholderTextAppearance" format="reference"/>
+    <!-- Text color of the placeholder text displayed in the text input area.
+         If set, this takes precedence over placeholderTextAppearance. -->
+    <attr name="placeholderTextColor" format="color"/>
+
+    <!-- The text to display as prefix text in the text input area. -->
+    <attr name="prefixText" format="string"/>
+    <!-- TextAppearance of the prefix text displayed in the text input area. -->
+    <attr name="prefixTextAppearance" format="reference"/>
+    <!-- Text color of the prefix text displayed in the text input area.
+         If set, this takes precedence over prefixTextAppearance. -->
+    <attr name="prefixTextColor" format="color"/>
+    <!-- The text to display as suffix text in the text input area. -->
+    <attr name="suffixText" format="string"/>
+    <!-- TextAppearance of the suffix text displayed in the text input area. -->
+    <attr name="suffixTextAppearance" format="reference"/>
+    <!-- Text color of the suffix text displayed in the text input area.
+         If set, this takes precedence over suffixTextAppearance. -->
+    <attr name="suffixTextColor" format="color"/>
+
+    <!-- Drawable to use for the start icon. -->
+    <attr name="startIconDrawable" format="reference"/>
+    <!-- Text to set as the content description for the start icon. -->
+    <attr name="startIconContentDescription" format="string"/>
+    <!-- Whether the start icon is checkable. -->
+    <attr name="startIconCheckable" format="boolean"/>
+    <!-- Tint color to use for the start icon. -->
+    <attr name="startIconTint" format="color"/>
     <!-- Blending mode used to apply the background tint. -->
-    <attr name="passwordToggleTintMode">
+    <attr name="startIconTintMode">
+      <!-- The tint is drawn on top of the drawable.
+           [Sa + (1 - Sa)*Da, Rc = Sc + (1 - Sa)*Dc] -->
+      <enum name="src_over" value="3"/>
+      <!-- The tint is masked by the alpha channel of the drawable. The drawable’s
+           color channels are thrown out. [Sa * Da, Sc * Da] -->
+      <enum name="src_in" value="5"/>
+      <!-- The tint is drawn above the drawable, but with the drawable’s alpha
+           channel masking the result. [Da, Sc * Da + (1 - Sa) * Dc] -->
+      <enum name="src_atop" value="9"/>
+      <!-- Multiplies the color and alpha channels of the drawable with those of
+           the tint. [Sa * Da, Sc * Dc] -->
+      <enum name="multiply" value="14"/>
+      <!-- [Sa + Da - Sa * Da, Sc + Dc - Sc * Dc] -->
+      <enum name="screen" value="15"/>
+    </attr>
+    <!-- The end icon mode of the TextInputLayout. It will display one of the end icons detailed
+         below, or no end icon. -->
+    <attr name="endIconMode">
+      <!-- The view will display a custom icon specified by the user. -->
+      <enum name="custom" value="-1"/>
+      <!-- No end icon. -->
+      <enum name="none" value="0"/>
+      <!-- The view will display a toggle when the EditText has a password. -->
+      <enum name="password_toggle" value="1"/>
+      <!-- The view will display a clear text button while the EditText contains input. -->
+      <enum name="clear_text" value="2"/>
+      <!-- The view will display a toggle that displays/hides a dropdown menu. -->
+      <enum name="dropdown_menu" value="3"/>
+    </attr>
+    <!-- Drawable to use for the end icon. -->
+    <attr name="endIconDrawable" format="reference"/>
+    <!-- Text to set as the content description for the end icon. -->
+    <attr name="endIconContentDescription" format="string"/>
+    <!-- Whether the end icon is checkable. -->
+    <attr name="endIconCheckable" format="boolean"/>
+    <!-- Tint color to use for the end icon. -->
+    <attr name="endIconTint" format="color"/>
+    <!-- Blending mode used to apply the background tint. -->
+    <attr name="endIconTintMode">
       <!-- The tint is drawn on top of the drawable.
            [Sa + (1 - Sa)*Da, Rc = Sc + (1 - Sa)*Dc] -->
       <enum name="src_over" value="3"/>
@@ -115,10 +208,20 @@
     <attr name="boxCornerRadiusBottomEnd" format="dimension"/>
     <!-- The color to use for the box's stroke when in outline box mode. -->
     <attr name="boxStrokeColor" format="color"/>
-    <!-- The color to use for the box's background color when in filled box mode. -->
+    <!-- The color to use for the box's stroke in outline box mode when an error
+         is being displayed. If not set, it defaults to errorTextColor if on
+         error state, or to counterOverflowTextColor if on overflow state. -->
+    <attr name="boxStrokeErrorColor" format="color"/>
+    <!-- The color to use for the box's background color when in filled box mode.
+         If a non-stateful color resource is specified, default colors will be used for the hover
+         and disabled states.  -->
     <attr name="boxBackgroundColor" format="color"/>
-    <!-- The value to use for the box's stroke when in outline box mode. -->
+    <!-- The value to use for the box's stroke when in outline box mode, or for the underline stroke
+         in filled mode. -->
     <attr name="boxStrokeWidth" format="dimension"/>
+    <!-- The value to use for the focused box's stroke when in outline box mode, or for the focused
+         underline stroke in filled mode.. -->
+    <attr name="boxStrokeWidthFocused" format="dimension"/>
 
     <!-- Shape appearance style reference for TextInputLayout. Attribute declaration is in the Shape
         package. -->
@@ -127,6 +230,47 @@
          attributes declared in the shapeAppearance. Attribute declaration is in the Shape
          package. -->
     <attr name="shapeAppearanceOverlay"/>
+
+    <!-- Whether the view will display a toggle when the EditText has a password.
+         Deprecated. The view's end icon should be specified via endIconMode instead. -->
+    <attr name="passwordToggleEnabled" format="boolean"/>
+    <!-- Drawable to use as the password input visibility toggle icon.
+         Deprecated. Use endIconDrawable instead. -->
+    <attr name="passwordToggleDrawable" format="reference"/>
+    <!-- Text to set as the content description for the password input visibility toggle.
+         Deprecated. Use endIconContentDescription instead. -->
+    <attr name="passwordToggleContentDescription" format="string"/>
+    <!-- Icon to use for the password input visibility toggle
+         Deprecated. Use endIconTint instead. -->
+    <attr name="passwordToggleTint" format="color"/>
+    <!-- Blending mode used to apply the background tint.
+         Deprecated. Use endIconTintMode instead. -->
+    <attr name="passwordToggleTintMode">
+      <!-- The tint is drawn on top of the drawable.
+           [Sa + (1 - Sa)*Da, Rc = Sc + (1 - Sa)*Dc] -->
+      <enum name="src_over" value="3"/>
+      <!-- The tint is masked by the alpha channel of the drawable. The drawable’s
+           color channels are thrown out. [Sa * Da, Sc * Da] -->
+      <enum name="src_in" value="5"/>
+      <!-- The tint is drawn above the drawable, but with the drawable’s alpha
+           channel masking the result. [Da, Sc * Da + (1 - Sa) * Dc] -->
+      <enum name="src_atop" value="9"/>
+      <!-- Multiplies the color and alpha channels of the drawable with those of
+           the tint. [Sa * Da, Sc * Dc] -->
+      <enum name="multiply" value="14"/>
+      <!-- [Sa + Da - Sa * Da, Sc + Dc - Sc * Dc] -->
+      <enum name="screen" value="15"/>
+    </attr>
+  </declare-styleable>
+
+  <declare-styleable name="TextInputEditText">
+    <!-- Whether the TextInputEditText should use the TextInputLayout's focused
+         rectangle instead of its own. -->
+    <attr name="textInputLayoutFocusedRectEnabled" format="boolean"/>
+  </declare-styleable>
+
+  <declare-styleable name="MaterialAutoCompleteTextView" parent="AppCompatAutoCompleteTextView">
+    <attr name="android:inputType"/>
   </declare-styleable>
 
 </resources>

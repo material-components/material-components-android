@@ -16,10 +16,16 @@
 
 package com.google.android.material.appbar;
 
-import com.google.android.material.testapp.AppBarWithScrollbarsActivity;
 import androidx.test.filters.SmallTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
+import com.google.android.material.testapp.AppBarWithScrollbarsActivity;
+<<<<<<< HEAD
+import androidx.test.filters.SmallTest;
+import androidx.test.rule.ActivityTestRule;
+import androidx.test.runner.AndroidJUnit4;
+=======
+>>>>>>> pr/1944
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;

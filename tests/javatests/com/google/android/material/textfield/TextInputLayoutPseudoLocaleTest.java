@@ -25,12 +25,19 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import com.google.android.material.testapp.R;
-import com.google.android.material.testapp.TextInputLayoutActivity;
 import androidx.test.filters.MediumTest;
 import androidx.test.filters.SdkSuppress;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
+import com.google.android.material.testapp.R;
+import com.google.android.material.testapp.TextInputLayoutActivity;
+<<<<<<< HEAD
+import androidx.test.filters.MediumTest;
+import androidx.test.filters.SdkSuppress;
+import androidx.test.rule.ActivityTestRule;
+import androidx.test.runner.AndroidJUnit4;
+=======
+>>>>>>> pr/1944
 import java.util.Locale;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;

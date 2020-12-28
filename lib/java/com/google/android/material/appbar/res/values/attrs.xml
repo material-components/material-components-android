@@ -16,6 +16,12 @@
 -->
 <resources>
 
+  <!-- Style to use for AppBarLayouts in this theme. -->
+  <attr name="appBarLayoutStyle" format="reference"/>
+
+  <!-- Style to use for CollapsingToolbarLayouts in this theme. -->
+  <attr name="collapsingToolbarLayoutStyle" format="reference"/>
+
   <declare-styleable name="AppBarLayout">
     <!-- Deprecated. Elevation is now controlled via a state list animator. -->
     <attr name="elevation"/>
@@ -37,6 +43,9 @@
          If this id is not set, the {@link AppBarLayout} will use the target view provided
          by nested scrolling to determine whether it should be lifted. -->
     <attr name="liftOnScrollTargetViewId" format="reference"/>
+    <!-- The drawable to display in front of the layout's content, but behind the status bar.
+         Only works on Lollipop when used together with android:fitSystemWindows="true". -->
+    <attr name="statusBarForeground" format="color"/>
   </declare-styleable>
 
   <declare-styleable name="AppBarLayoutStates">
@@ -54,6 +63,10 @@
 
   <declare-styleable name="AppBarLayout_Layout">
     <attr name="layout_scrollFlags">
+      <!-- Disable scrolling on the view. This flag should not be combined with any of the other
+           scroll flags. -->
+      <flag name="noScroll" value="0x0"/>
+
       <!-- The view will be scroll in direct relation to scroll events. This flag needs to be
            set for any of the other flags to take effect. If any sibling views
            before this one do not have this flag, then this value has no effect. -->
@@ -120,7 +133,7 @@
     <attr name="contentScrim" format="color"/>
     <!-- The drawable to use as a scrim for the status bar content when the
          CollapsingToolbarLayout has been scrolled sufficiently off screen. Only works on
-         Lollipop with the correct setup. -->
+         Lollipop when used together with android:fitSystemWindows="true". -->
     <attr name="statusBarScrim" format="color"/>
     <!-- The id of the primary Toolbar child that you wish to use for the purpose of collapsing.
          This Toolbar descendant view does not need to be a direct child of the layout.
@@ -184,6 +197,8 @@
     <attr name="titleEnabled" format="boolean"/>
     <!-- The title to show when titleEnabled is set to true. -->
     <attr name="title"/>
+    <!-- The maximum number of lines to display in the expanded state. Experimental Feature. -->
+    <attr name="maxLines" format="integer" />
   </declare-styleable>
 
   <declare-styleable name="CollapsingToolbarLayout_Layout">
@@ -200,6 +215,10 @@
     <!-- The multiplier used when layout_collapseMode is set to 'parallax'. The value should
          be between 0.0 and 1.0. -->
     <attr name="layout_collapseParallaxMultiplier" format="float"/>
+  </declare-styleable>
+
+  <declare-styleable name="MaterialToolbar">
+    <attr name="navigationIconTint" format="color" />
   </declare-styleable>
 
 </resources>

@@ -23,7 +23,10 @@
     android:fitsSystemWindows="true">
 
   <androidx.core.widget.NestedScrollView
+<<<<<<< HEAD
       xmlns:android="http://schemas.android.com/apk/res/android"
+=======
+>>>>>>> pr/1944
       android:id="@+id/scrolling_content"
       android:layout_width="match_parent"
       android:layout_height="match_parent">

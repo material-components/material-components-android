@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2020 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+  <string name="mtrl_picker_range_header_title">పరిధిని ఎంచుకోండి</string>
+  <string name="mtrl_picker_date_header_title">తేదీని ఎంచుకోండి</string>
+  <string name="mtrl_picker_range_header_unselected">ప్రారంభ తేది - ముగింపు తేది</string>
+  <string name="mtrl_picker_range_header_only_start_selected">%1$s – ముగింపు తేది</string>
+  <string name="mtrl_picker_range_header_only_end_selected">ప్రారంభ తేదీ – %1$s</string>
+  <string name="mtrl_picker_range_header_selected">%1$s – %2$s</string>
+  <string name="mtrl_picker_date_header_unselected">ఎంచుకున్న తేది</string>
+  <string name="mtrl_picker_date_header_selected">%1$s</string>
+  <string name="mtrl_picker_confirm">@android:string/ok</string>
+  <string name="mtrl_picker_text_input_date_hint">తేదీ</string>
+  <string name="mtrl_picker_text_input_date_range_start_hint">ప్రారంభ తేదీ</string>
+  <string name="mtrl_picker_text_input_date_range_end_hint">ముగింపు తేదీ</string>
+  <string name="mtrl_picker_text_input_year_abbr">సం</string>
+  <string name="mtrl_picker_text_input_month_abbr">నె</string>
+  <string name="mtrl_picker_text_input_day_abbr">రో</string>
+  <string name="mtrl_picker_save">సేవ్ చేయి</string>
+  <string name="mtrl_picker_invalid_range">చెల్లని పరిధి.</string>
+  <string name="mtrl_picker_out_of_range">పరిధి వెలుపల ఉంది: %1$s</string>
+  <string name="mtrl_picker_invalid_format">ఫార్మాట్ చెల్లదు.</string>
+  <string name="mtrl_picker_invalid_format_use">ఇలా ఉపయోగించండి: %1$s</string>
+  <string name="mtrl_picker_invalid_format_example">ఉదాహరణ: %1$s</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode">క్యాలెండర్ ఇన్‌పుట్ మోడ్‌కు మారుస్తుంది</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode">వచన ఇన్‌పుట్ మోడ్‌కు మారుస్తుంది</string>
+  <string name="mtrl_picker_a11y_prev_month">మునుపటి నెలకు మార్చుతుంది</string>
+  <string name="mtrl_picker_a11y_next_month">వచ్చే నెలకు మార్చుతుంది</string>
+  <string name="mtrl_picker_toggle_to_year_selection">\'సంవత్సరాన్ని ఎంపిక చేసుకోవడం\'కు మారడానికి నొక్కండి</string>
+  <string name="mtrl_picker_toggle_to_day_selection">\'రోజును ఎంపిక చేసుకోవడం\'కు మారడానికి నొక్కండి</string>
+  <string name="mtrl_picker_day_of_week_column_header">రోజుల నిలువు వరుస: %1$s</string>
+  <string name="mtrl_picker_announce_current_selection">ప్రస్తుత ఎంపిక: %1$s</string>
+  <string name="mtrl_picker_navigate_to_year_description">%1$sసంవత్సరానికి నావిగేట్ చేస్తుంది</string>
+</resources>

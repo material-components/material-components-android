@@ -28,6 +28,7 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Typeface;
+<<<<<<< HEAD
 import androidx.annotation.ColorInt;
 import androidx.annotation.IntDef;
 import androidx.annotation.Nullable;
@@ -36,15 +37,29 @@ import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.animation.AnimatorSetCompat;
 import androidx.core.view.ViewCompat;
 import androidx.legacy.widget.Space;
+=======
+import android.os.Build.VERSION;
+import androidx.core.view.ViewCompat;
+>>>>>>> pr/1944
 import androidx.core.widget.TextViewCompat;
 import androidx.appcompat.widget.AppCompatTextView;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import androidx.annotation.ColorInt;
+import androidx.annotation.DimenRes;
+import androidx.annotation.IntDef;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StyleRes;
+import com.google.android.material.animation.AnimationUtils;
+import com.google.android.material.animation.AnimatorSetCompat;
+import com.google.android.material.resources.MaterialResources;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
@@ -52,13 +67,10 @@ import java.util.List;
 
 /**
  * Controller for indicator views underneath the text input line in {@link
- * com.google.android.material.textfield.TextInputLayout}. This class controls helper and error views.
+ * com.google.android.material.textfield.TextInputLayout}. This class controls helper and error
+ * views.
  */
 final class IndicatorViewController {
-  /*
-   * TODO: Update placeholder values for caption animation.
-   *
-   */
 
   /** Duration for the caption's vertical translation animation. */
   private static final int CAPTION_TRANSLATE_Y_ANIMATION_DURATION = 217;
@@ -91,33 +103,33 @@ final class IndicatorViewController {
   private static final int CAPTION_STATE_HELPER_TEXT = 2;
 
   private final Context context;
-  private final TextInputLayout textInputView;
+  @NonNull private final TextInputLayout textInputView;
 
   private LinearLayout indicatorArea;
   private int indicatorsAdded;
 
   private FrameLayout captionArea;
-  private int captionViewsAdded;
   @Nullable private Animator captionAnimator;
   private final float captionTranslationYPx;
   private int captionDisplayed;
   private int captionToShow;
 
-  private CharSequence errorText;
+  @Nullable private CharSequence errorText;
   private boolean errorEnabled;
-  private TextView errorView;
+  @Nullable private TextView errorView;
+  @Nullable private CharSequence errorViewContentDescription;
   private int errorTextAppearance;
   @Nullable private ColorStateList errorViewTextColor;
 
   private CharSequence helperText;
   private boolean helperTextEnabled;
-  private TextView helperTextView;
+  @Nullable private TextView helperTextView;
   private int helperTextTextAppearance;
   @Nullable private ColorStateList helperTextViewTextColor;
 
   private Typeface typeface;
 
-  public IndicatorViewController(TextInputLayout textInputView) {
+  public IndicatorViewController(@NonNull TextInputLayout textInputView) {
     this.context = textInputView.getContext();
     this.textInputView = textInputView;
     this.captionTranslationYPx =
@@ -187,7 +199,7 @@ final class IndicatorViewController {
    * @return Whether the view should animate when setting the caption
    */
   private boolean shouldAnimateCaptionView(
-      TextView captionView, @Nullable final CharSequence captionText) {
+      @Nullable TextView captionView, @Nullable final CharSequence captionText) {
     return ViewCompat.isLaidOut(textInputView)
         && textInputView.isEnabled()
         && (captionToShow != captionDisplayed
@@ -199,6 +211,10 @@ final class IndicatorViewController {
       final @CaptionDisplayState int captionToHide,
       final @CaptionDisplayState int captionToShow,
       boolean animate) {
+
+    if (captionToHide == captionToShow) {
+      return;
+    }
 
     if (animate) {
       final AnimatorSet captionAnimator = new AnimatorSet();
@@ -236,6 +252,11 @@ final class IndicatorViewController {
                 if (captionToHide == CAPTION_STATE_ERROR && errorView != null) {
                   errorView.setText(null);
                 }
+              }
+
+              if (captionViewToShow != null) {
+                captionViewToShow.setTranslationY(0f);
+                captionViewToShow.setAlpha(1f);
               }
             }
 
@@ -283,9 +304,9 @@ final class IndicatorViewController {
   }
 
   private void createCaptionAnimators(
-      List<Animator> captionAnimatorList,
+      @NonNull List<Animator> captionAnimatorList,
       boolean captionEnabled,
-      TextView captionView,
+      @Nullable TextView captionView,
       @CaptionDisplayState int captionState,
       @CaptionDisplayState int captionToHide,
       @CaptionDisplayState int captionToShow) {
@@ -336,6 +357,7 @@ final class IndicatorViewController {
         return errorView;
       case CAPTION_STATE_HELPER_TEXT:
         return helperTextView;
+      case CAPTION_STATE_NONE:
       default: // No caption displayed, fall out and return null.
     }
     return null;
@@ -343,18 +365,37 @@ final class IndicatorViewController {
 
   void adjustIndicatorPadding() {
     if (canAdjustIndicatorPadding()) {
-      // Add padding to the indicators so that they match the EditText
+      EditText editText = textInputView.getEditText();
+      boolean isFontScaleLarge = MaterialResources.isFontScaleAtLeast1_3(context);
       ViewCompat.setPaddingRelative(
           indicatorArea,
-          ViewCompat.getPaddingStart(textInputView.getEditText()),
-          0,
-          ViewCompat.getPaddingEnd(textInputView.getEditText()),
+          getIndicatorPadding(
+              isFontScaleLarge,
+              R.dimen.material_helper_text_font_1_3_padding_horizontal,
+              ViewCompat.getPaddingStart(editText)),
+          getIndicatorPadding(
+              isFontScaleLarge,
+              R.dimen.material_helper_text_font_1_3_padding_top,
+              context
+                  .getResources()
+                  .getDimensionPixelSize(R.dimen.material_helper_text_default_padding_top)),
+          getIndicatorPadding(
+              isFontScaleLarge,
+              R.dimen.material_helper_text_font_1_3_padding_horizontal,
+              ViewCompat.getPaddingEnd(editText)),
           0);
     }
   }
 
   private boolean canAdjustIndicatorPadding() {
     return indicatorArea != null && textInputView.getEditText() != null;
+  }
+
+  private int getIndicatorPadding(
+      boolean isFontScaleLarge, @DimenRes int largeFontPaddingRes, int defaultPadding) {
+    return isFontScaleLarge
+        ? context.getResources().getDimensionPixelSize(largeFontPaddingRes)
+        : defaultPadding;
   }
 
   void addIndicator(TextView indicator, @IndicatorIndex int index) {
@@ -364,14 +405,9 @@ final class IndicatorViewController {
       textInputView.addView(indicatorArea, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 
       captionArea = new FrameLayout(context);
-      indicatorArea.addView(
-          captionArea,
-          -1,
-          new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-
-      final Space spacer = new Space(context);
-      final LayoutParams spacerLp = new LinearLayout.LayoutParams(0, 0, 1f);
-      indicatorArea.addView(spacer, spacerLp);
+      LinearLayout.LayoutParams captionAreaLp =
+          new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f);
+      indicatorArea.addView(captionArea, captionAreaLp);
 
       if (textInputView.getEditText() != null) {
         adjustIndicatorPadding();
@@ -381,9 +417,10 @@ final class IndicatorViewController {
     if (isCaptionView(index)) {
       captionArea.setVisibility(VISIBLE);
       captionArea.addView(indicator);
-      captionViewsAdded++;
     } else {
-      indicatorArea.addView(indicator, index);
+      LinearLayout.LayoutParams indicatorAreaLp =
+          new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+      indicatorArea.addView(indicator, indicatorAreaLp);
     }
     indicatorArea.setVisibility(VISIBLE);
     indicatorsAdded++;
@@ -395,8 +432,6 @@ final class IndicatorViewController {
     }
 
     if (isCaptionView(index) && captionArea != null) {
-      captionViewsAdded--;
-      setViewGroupGoneIfEmpty(captionArea, captionViewsAdded);
       captionArea.removeView(indicator);
     } else {
       indicatorArea.removeView(indicator);
@@ -405,7 +440,7 @@ final class IndicatorViewController {
     setViewGroupGoneIfEmpty(indicatorArea, indicatorsAdded);
   }
 
-  private void setViewGroupGoneIfEmpty(ViewGroup viewGroup, int indicatorsAdded) {
+  private void setViewGroupGoneIfEmpty(@NonNull ViewGroup viewGroup, int indicatorsAdded) {
     if (indicatorsAdded == 0) {
       viewGroup.setVisibility(View.GONE);
     }
@@ -423,11 +458,15 @@ final class IndicatorViewController {
     if (enabled) {
       errorView = new AppCompatTextView(context);
       errorView.setId(R.id.textinput_error);
+      if (VERSION.SDK_INT >= 17) {
+        errorView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
+      }
       if (typeface != null) {
         errorView.setTypeface(typeface);
       }
       setErrorTextAppearance(errorTextAppearance);
       setErrorViewTextColor(errorViewTextColor);
+      setErrorContentDescription(errorViewContentDescription);
       errorView.setVisibility(View.INVISIBLE);
       ViewCompat.setAccessibilityLiveRegion(errorView, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
       addIndicator(errorView, ERROR_INDEX);
@@ -461,6 +500,9 @@ final class IndicatorViewController {
     if (enabled) {
       helperTextView = new AppCompatTextView(context);
       helperTextView.setId(R.id.textinput_helper_text);
+      if (VERSION.SDK_INT >= 17) {
+        helperTextView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
+      }
       if (typeface != null) {
         helperTextView.setTypeface(typeface);
       }
@@ -508,6 +550,7 @@ final class IndicatorViewController {
         && !TextUtils.isEmpty(helperText);
   }
 
+  @Nullable
   CharSequence getErrorText() {
     return errorText;
   }
@@ -541,7 +584,7 @@ final class IndicatorViewController {
     return errorView != null ? errorView.getTextColors() : null;
   }
 
-  void setErrorViewTextColor(ColorStateList errorViewTextColor) {
+  void setErrorViewTextColor(@Nullable ColorStateList errorViewTextColor) {
     this.errorViewTextColor = errorViewTextColor;
     if (errorView != null && errorViewTextColor != null) {
       errorView.setTextColor(errorViewTextColor);
@@ -554,6 +597,19 @@ final class IndicatorViewController {
       textInputView.setTextAppearanceCompatWithErrorFallback(errorView, resId);
     }
   }
+
+  void setErrorContentDescription(@Nullable final CharSequence errorContentDescription) {
+    this.errorViewContentDescription = errorContentDescription;
+    if (errorView != null) {
+      errorView.setContentDescription(errorContentDescription);
+    }
+  }
+
+  @Nullable
+  CharSequence getErrorContentDescription() {
+    return errorViewContentDescription;
+  }
+
   @ColorInt
   int getHelperTextViewCurrentTextColor() {
     return helperTextView != null ? helperTextView.getCurrentTextColor() : -1;
@@ -564,7 +620,7 @@ final class IndicatorViewController {
     return helperTextView != null ? helperTextView.getTextColors() : null;
   }
 
-  void setHelperTextViewTextColor(ColorStateList helperTextViewTextColor) {
+  void setHelperTextViewTextColor(@Nullable ColorStateList helperTextViewTextColor) {
     this.helperTextViewTextColor = helperTextViewTextColor;
     if (helperTextView != null && helperTextViewTextColor != null) {
       helperTextView.setTextColor(helperTextViewTextColor);

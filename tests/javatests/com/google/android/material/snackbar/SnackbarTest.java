@@ -16,7 +16,6 @@
 
 package com.google.android.material.snackbar;
 
-import static com.google.android.material.testutils.TestUtilsActions.setLayoutDirection;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.swipeLeft;
@@ -27,10 +26,25 @@ import static androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static com.google.android.material.testutils.TestUtilsActions.setLayoutDirection;
+<<<<<<< HEAD
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.swipeLeft;
+import static androidx.test.espresso.action.ViewActions.swipeRight;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
+import static androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+=======
+import static org.hamcrest.Matchers.not;
+>>>>>>> pr/1944
 import static org.hamcrest.core.AllOf.allOf;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
@@ -39,6 +53,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import android.content.res.Resources;
+<<<<<<< HEAD
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import com.google.android.material.testapp.R;
@@ -57,6 +72,30 @@ import androidx.test.espresso.action.Swipe;
 import androidx.test.filters.MediumTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
+=======
+import android.content.res.TypedArray;
+import androidx.core.view.ViewCompat;
+import android.text.TextUtils;
+import android.view.ContextThemeWrapper;
+import android.view.View;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.test.espresso.ViewAction;
+import androidx.test.espresso.ViewInteraction;
+import androidx.test.espresso.action.GeneralSwipeAction;
+import androidx.test.espresso.action.Press;
+import androidx.test.espresso.action.Swipe;
+import androidx.test.filters.MediumTest;
+import androidx.test.rule.ActivityTestRule;
+import androidx.test.runner.AndroidJUnit4;
+import com.google.android.material.testapp.R;
+import com.google.android.material.testapp.SnackbarActivity;
+import com.google.android.material.testutils.SnackbarUtils;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
+>>>>>>> pr/1944
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -121,11 +160,15 @@ public class SnackbarTest {
 
     // String message and no action
     verifySnackbarContent(
-        Snackbar.make(coordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_SHORT), MESSAGE_TEXT, null);
+        Snackbar.make(coordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE),
+        MESSAGE_TEXT,
+        null);
 
     // Resource message and no action
     verifySnackbarContent(
-        Snackbar.make(coordinatorLayout, MESSAGE_ID, Snackbar.LENGTH_LONG), resolvedMessage, null);
+        Snackbar.make(coordinatorLayout, MESSAGE_ID, Snackbar.LENGTH_INDEFINITE),
+        resolvedMessage,
+        null);
 
     // String message and string action
     verifySnackbarContent(
@@ -136,14 +179,14 @@ public class SnackbarTest {
 
     // String message and resource action
     verifySnackbarContent(
-        Snackbar.make(coordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_SHORT)
+        Snackbar.make(coordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
             .setAction(ACTION_ID, mock(View.OnClickListener.class)),
         MESSAGE_TEXT,
         resolvedAction);
 
     // Resource message and resource action
     verifySnackbarContent(
-        Snackbar.make(coordinatorLayout, MESSAGE_ID, Snackbar.LENGTH_LONG)
+        Snackbar.make(coordinatorLayout, MESSAGE_ID, Snackbar.LENGTH_INDEFINITE)
             .setAction(ACTION_ID, mock(View.OnClickListener.class)),
         resolvedMessage,
         resolvedAction);
@@ -177,20 +220,11 @@ public class SnackbarTest {
     // Now perform the UI interaction
     SnackbarUtils.performActionAndWaitUntilFullyDismissed(
         snackbar,
-        new SnackbarUtils.TransientBottomBarAction() {
-          @Override
-          public void perform() throws Throwable {
-            if (action != null) {
-              interaction.perform(action);
-            } else if (dismissAction != null) {
-              activityTestRule.runOnUiThread(
-                  new Runnable() {
-                    @Override
-                    public void run() {
-                      dismissAction.dismiss(snackbar);
-                    }
-                  });
-            }
+        () -> {
+          if (action != null) {
+            interaction.perform(action);
+          } else if (dismissAction != null) {
+            activityTestRule.runOnUiThread(() -> dismissAction.dismiss(snackbar));
           }
         });
 
@@ -207,7 +241,7 @@ public class SnackbarTest {
         onView(withId(R.id.snackbar_action)),
         click(),
         null,
-        Snackbar.LENGTH_LONG,
+        Snackbar.LENGTH_INDEFINITE,
         Snackbar.Callback.DISMISS_EVENT_ACTION);
   }
 
@@ -217,7 +251,7 @@ public class SnackbarTest {
         onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
         swipeRight(),
         null,
-        Snackbar.LENGTH_LONG,
+        Snackbar.LENGTH_INDEFINITE,
         Snackbar.Callback.DISMISS_EVENT_SWIPE);
   }
 
@@ -231,7 +265,7 @@ public class SnackbarTest {
           onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
           swipeLeft(),
           null,
-          Snackbar.LENGTH_LONG,
+          Snackbar.LENGTH_INDEFINITE,
           Snackbar.Callback.DISMISS_EVENT_SWIPE);
     }
   }
@@ -241,13 +275,8 @@ public class SnackbarTest {
     verifyDismissCallback(
         onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
         null,
-        new DismissAction() {
-          @Override
-          public void dismiss(Snackbar snackbar) {
-            snackbar.dismiss();
-          }
-        },
-        Snackbar.LENGTH_LONG,
+        Snackbar::dismiss,
+        Snackbar.LENGTH_INDEFINITE,
         Snackbar.Callback.DISMISS_EVENT_MANUAL);
   }
 
@@ -269,21 +298,15 @@ public class SnackbarTest {
         // (outside the bounds)
         new GeneralSwipeAction(
             Swipe.SLOW,
-            new CoordinatesProvider() {
-              @Override
-              public float[] calculateCoordinates(View view) {
-                final int[] loc = new int[2];
-                view.getLocationOnScreen(loc);
-                return new float[] {loc[0] + view.getWidth() / 2, loc[1] + view.getHeight() / 2};
-              }
+            view -> {
+              final int[] loc = new int[2];
+              view.getLocationOnScreen(loc);
+              return new float[] {loc[0] + view.getWidth() / 2, loc[1] + view.getHeight() / 2};
             },
-            new CoordinatesProvider() {
-              @Override
-              public float[] calculateCoordinates(View view) {
-                final int[] loc = new int[2];
-                view.getLocationOnScreen(loc);
-                return new float[] {loc[0] + view.getWidth() / 2, loc[1] - view.getHeight()};
-              }
+            view -> {
+              final int[] loc = new int[2];
+              view.getLocationOnScreen(loc);
+              return new float[] {loc[0] + view.getWidth() / 2, loc[1] - view.getHeight()};
             },
             Press.FINGER),
         null,
@@ -301,13 +324,8 @@ public class SnackbarTest {
     verifyDismissCallback(
         onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
         null,
-        new DismissAction() {
-          @Override
-          public void dismiss(Snackbar snackbar) {
-            anotherSnackbar.show();
-          }
-        },
-        Snackbar.LENGTH_LONG,
+        snackbar -> anotherSnackbar.show(),
+        Snackbar.LENGTH_INDEFINITE,
         Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE);
 
     // And dismiss the second snackbar to get back to clean state
@@ -318,7 +336,7 @@ public class SnackbarTest {
   public void testActionClickListener() {
     final View.OnClickListener mockClickListener = mock(View.OnClickListener.class);
     final Snackbar snackbar =
-        Snackbar.make(coordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_SHORT)
+        Snackbar.make(coordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
             .setAction(ACTION_TEXT, mockClickListener);
 
     // Show the snackbar
@@ -413,5 +431,46 @@ public class SnackbarTest {
         .onDismissed(snackbar, BaseTransientBottomBar.BaseCallback.DISMISS_EVENT_MANUAL);
     verify(mockCallback2, never())
         .onDismissed(snackbar, BaseTransientBottomBar.BaseCallback.DISMISS_EVENT_MANUAL);
+  }
+
+  @Test
+  public void testDefaultContext_usesAppCompat() throws Throwable {
+    final Snackbar snackbar =
+        Snackbar.make(coordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
+            .setAction(ACTION_TEXT, mock(View.OnClickListener.class));
+    SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(snackbar);
+
+    onView(isAssignableFrom(SnackbarContentLayout.class)).check(matches(not(hasMaterialTheme())));
+  }
+
+  @Test
+  public void testOverrideContext_usesMaterial() throws Throwable {
+    ContextThemeWrapper context =
+        new ContextThemeWrapper(coordinatorLayout.getContext(), R.style.Theme_MaterialComponents);
+
+    final Snackbar snackbar =
+        Snackbar.make(context, coordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
+            .setAction(ACTION_TEXT, mock(View.OnClickListener.class));
+    SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(snackbar);
+
+    onView(isAssignableFrom(SnackbarContentLayout.class)).check(matches(hasMaterialTheme()));
+  }
+
+  static Matcher<View> hasMaterialTheme() {
+    return new TypeSafeMatcher<View>() {
+      @Override
+      public void describeTo(Description description) {
+        description.appendText("View has material theme");
+      }
+
+      @Override
+      protected boolean matchesSafely(View view) {
+        TypedArray a =
+            view.getContext().obtainStyledAttributes(new int[] {R.attr.snackbarButtonStyle});
+        boolean result = a.hasValue(0);
+        a.recycle();
+        return result;
+      }
+    };
   }
 }

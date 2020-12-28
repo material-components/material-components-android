@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2020 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+  <string name="mtrl_picker_range_header_title">வரம்பைத் தேர்ந்தெடுக்கவும்</string>
+  <string name="mtrl_picker_date_header_title">தேதியைத் தேர்ந்தெடுக்கவும்</string>
+  <string name="mtrl_picker_range_header_unselected">தொடக்கத் தேதி - முடிவுத் தேதி</string>
+  <string name="mtrl_picker_range_header_only_start_selected">%1$s – முடிவுத் தேதி</string>
+  <string name="mtrl_picker_range_header_only_end_selected">தொடக்கத் தேதி – %1$s</string>
+  <string name="mtrl_picker_range_header_selected">%1$s – %2$s</string>
+  <string name="mtrl_picker_date_header_unselected">தேர்ந்தெடுக்கப்பட்ட தேதி</string>
+  <string name="mtrl_picker_date_header_selected">%1$s</string>
+  <string name="mtrl_picker_confirm">@android:string/ok</string>
+  <string name="mtrl_picker_text_input_date_hint">தேதி</string>
+  <string name="mtrl_picker_text_input_date_range_start_hint">தொடக்கத் தேதி</string>
+  <string name="mtrl_picker_text_input_date_range_end_hint">முடிவுத் தேதி</string>
+  <string name="mtrl_picker_text_input_year_abbr">ஆ</string>
+  <string name="mtrl_picker_text_input_month_abbr">மா</string>
+  <string name="mtrl_picker_text_input_day_abbr">நா</string>
+  <string name="mtrl_picker_save">சேமி</string>
+  <string name="mtrl_picker_invalid_range">தவறான வரம்பு.</string>
+  <string name="mtrl_picker_out_of_range">எல்லைக்கு வெளியே உள்ளது: %1$s</string>
+  <string name="mtrl_picker_invalid_format">தவறான வடிவம்.</string>
+  <string name="mtrl_picker_invalid_format_use">%1$sஐப் பயன்படுத்துக</string>
+  <string name="mtrl_picker_invalid_format_example">உதாரணம்: %1$s</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode">கேலெண்டர் உள்ளீட்டு முறைக்கு மாற்றும்</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode">உரை உள்ளீட்டு முறைக்கு மாற்றும்</string>
+  <string name="mtrl_picker_a11y_prev_month">முந்தைய மாதத்தைக் காட்டு</string>
+  <string name="mtrl_picker_a11y_next_month">அடுத்த மாதத்தைக் காட்டு</string>
+  <string name="mtrl_picker_toggle_to_year_selection">ஆண்டைத் தேர்வுசெய்வதற்கு மாற்ற தட்டவும்</string>
+  <string name="mtrl_picker_toggle_to_day_selection">நாளைத் தேர்வுசெய்வதற்கு மாற்ற தட்டவும்</string>
+  <string name="mtrl_picker_day_of_week_column_header">நாட்களின் நெடுவரிசை: %1$s</string>
+  <string name="mtrl_picker_announce_current_selection">தற்போதைய தேர்வு: %1$s</string>
+  <string name="mtrl_picker_navigate_to_year_description">%1$s ஆம் ஆண்டிற்குச் செல்லும்</string>
+</resources>

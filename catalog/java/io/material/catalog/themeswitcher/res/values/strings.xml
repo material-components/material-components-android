@@ -31,4 +31,20 @@
   <string name="mtrl_brown">Brown</string>
   <string name="mtrl_grey">Grey</string>
   <string name="mtrl_blue_grey">Blue grey</string>
+  <string name="mtrl_rounded">Rounded</string>
+  <string name="mtrl_cut">Cut</string>
+  <string name="mtrl_rounded_content_description">Rounded corners</string>
+  <string name="mtrl_cut_content_description">Cut corners</string>
+  <string name="mtrl_small_shape_content_description">Small</string>
+  <string name="mtrl_medium_shape_content_description">Medium</string>
+  <string name="mtrl_large_shape_content_description">Large</string>
+  <string name="mtrl_shape_corner_family">Shape corner family</string>
+  <string name="mtrl_shape_corner_size">Shape corner size</string>
+  <string name="mtrl_apply">Apply</string>
+  <string name="mtrl_clear">Clear</string>
+
+  <string name="cat_choose_theme_label">Choose theme</string>
+  <string name="cat_choose_theme_light">Light</string>
+  <string name="cat_choose_theme_dark">Dark</string>
+  <string name="cat_choose_theme_default">System default</string>
 </resources>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2019 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+  <com.google.android.material.textfield.TextInputLayout
+      android:id="@+id/textinput_no_icon"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:errorEnabled="true">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/textinput_edittext_no_icon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/textinput_hint"
+        android:imeOptions="flagNoExtractUi"/>
+
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <com.google.android.material.textfield.TextInputLayout
+      android:id="@+id/textinput_password"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:endIconMode="password_toggle">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/textinput_edittext_pwd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/textinput_hint"
+        android:imeOptions="flagNoExtractUi"
+        android:inputType="textPassword"/>
+
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <com.google.android.material.textfield.TextInputLayout
+      android:id="@+id/textinput_clear"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:endIconMode="clear_text">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/textinput_edittext_clear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/textinput_hint"/>
+
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <com.google.android.material.textfield.TextInputLayout
+      android:id="@+id/textinput_custom"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:endIconMode="custom"
+      app:endIconDrawable="@drawable/test_background_green"
+      app:endIconContentDescription="@string/textinput_custom_end_icon">
+
+  <com.google.android.material.textfield.TextInputEditText
+      android:id="@+id/textinput_edittext_custom"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:hint="@string/textinput_hint"/>
+
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <com.google.android.material.textfield.TextInputLayout
+      android:id="@+id/textinput_starticon"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:startIconDrawable="@drawable/ic_lightbulb_outline_white_24dp">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/textinput_edittext_starticon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/textinput_hint"
+        android:imeOptions="flagNoExtractUi"/>
+
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <com.google.android.material.textfield.TextInputLayout
+      android:id="@+id/textinput_prefix"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:prefixText="@string/textinput_prefix_text">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/textinput_edittext_prefix"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/textinput_hint"
+        android:imeOptions="flagNoExtractUi"/>
+
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <com.google.android.material.textfield.TextInputLayout
+      android:id="@+id/textinput_suffix"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:suffixText="@string/textinput_suffix_text">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/textinput_edittext_suffix"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/textinput_hint"
+        android:imeOptions="flagNoExtractUi"/>
+
+  </com.google.android.material.textfield.TextInputLayout>
+</LinearLayout>

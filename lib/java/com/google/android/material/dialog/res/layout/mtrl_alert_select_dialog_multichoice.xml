@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2019 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<!--
+    This layout file is used by the AlertDialog when displaying a multi select list of items.
+
+    A left android:gravity will handle text alignemnt on API 16 and below while
+    android:textAlignemnt will be used on 17+. A start android:gravity is not added
+    to avoid text being aligned right while a drawable is aligned left in RTL configurations
+    on API 16 and below.
+
+    app:drawableLeftCompat (and app:drawableStartCompat) used instead of android:drawableLeft
+    (and android:drawableStart) because of bug on api 17 that aligned drawable both left and
+    right when in RTL configurations
+-->
+<CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@android:id/text1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="?attr/listPreferredItemHeightSmall"
+    android:gravity="left|center_vertical"
+    android:textAlignment="viewStart"
+    android:paddingLeft="@dimen/abc_select_dialog_padding_start_material"
+    android:paddingRight="?attr/dialogPreferredPadding"
+    android:paddingStart="@dimen/abc_select_dialog_padding_start_material"
+    android:paddingEnd="?attr/dialogPreferredPadding"
+    app:drawableLeftCompat="?android:attr/listChoiceIndicatorMultiple"
+    app:drawableStartCompat="?android:attr/listChoiceIndicatorMultiple"
+    android:drawablePadding="20dp"
+    android:ellipsize="marquee" />

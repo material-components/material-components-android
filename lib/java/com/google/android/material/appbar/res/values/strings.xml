@@ -16,6 +16,5 @@
 -->
 <resources>
   <!-- The class name for the ScrollingChildBehavior required for AppBarLayout -->
-  <!-- TODO: change to com.google.android.material.appbar after the widget migration -->
   <string name="appbar_scrolling_view_behavior" translatable="false">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
 </resources>

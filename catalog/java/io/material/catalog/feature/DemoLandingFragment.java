@@ -18,10 +18,15 @@ package io.material.catalog.feature;
 
 import io.material.catalog.R;
 
+import android.app.ActivityOptions;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
+<<<<<<< HEAD
 import androidx.annotation.ArrayRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.DimenRes;
@@ -31,6 +36,15 @@ import androidx.fragment.app.Fragment;
 import androidx.core.view.MarginLayoutParamsCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.appcompat.app.AppCompatActivity;
+=======
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.core.view.MarginLayoutParamsCompat;
+import androidx.core.view.MenuItemCompat;
+import androidx.core.view.ViewCompat;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+>>>>>>> pr/1944
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -39,6 +53,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.TextView;
+import androidx.annotation.ArrayRes;
+import androidx.annotation.ColorInt;
+import androidx.annotation.DimenRes;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import com.google.android.material.resources.MaterialResources;
+import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
 import dagger.android.support.DaggerFragment;
 import java.util.Collections;
 import java.util.List;
@@ -48,20 +69,15 @@ public abstract class DemoLandingFragment extends DaggerFragment {
 
   private static final String FRAGMENT_DEMO_CONTENT = "fragment_demo_content";
   @ColorInt private int colorControlNormal;
-  @ColorInt private int colorSecondary;
+  @ColorInt private int colorAccent;
 
   @Override
   public void onCreate(@Nullable Bundle bundle) {
     super.onCreate(bundle);
     setHasOptionsMenu(true);
-    TypedArray a =
-        getContext()
-            .getTheme()
-            .obtainStyledAttributes(new int[] {R.attr.colorControlNormal, R.attr.colorSecondary});
-    colorControlNormal = a.getColor(0, 0);
-    colorSecondary = a.getColor(1, 0);
   }
 
+  @SuppressWarnings("RestrictTo")
   @Nullable
   @Override
   public View onCreateView(
@@ -70,10 +86,27 @@ public abstract class DemoLandingFragment extends DaggerFragment {
         layoutInflater.inflate(
             R.layout.cat_demo_landing_fragment, viewGroup, false /* attachToRoot */);
 
+    Bundle arguments = getArguments();
+    if (arguments != null) {
+      String transitionName = arguments.getString(FeatureDemoUtils.ARG_TRANSITION_NAME);
+      ViewCompat.setTransitionName(view, transitionName);
+    }
+
+    Toolbar toolbar = view.findViewById(R.id.toolbar);
+
     AppCompatActivity activity = (AppCompatActivity) getActivity();
-    activity.setSupportActionBar(view.findViewById(R.id.toolbar));
+    activity.setSupportActionBar(toolbar);
     activity.getSupportActionBar().setTitle(getTitleResId());
     activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+    Context toolbarContext = toolbar.getContext();
+    TypedArray a =
+        toolbarContext
+            .getTheme()
+            .obtainStyledAttributes(new int[] {R.attr.colorControlNormal, R.attr.colorAccent});
+    colorControlNormal =
+        MaterialResources.getColorStateList(toolbarContext, a, 0).getDefaultColor();
+    colorAccent = a.getColor(1, 0);
 
     TextView descriptionTextView = view.findViewById(R.id.cat_demo_landing_description);
     ViewGroup mainDemoContainer = view.findViewById(R.id.cat_demo_landing_main_demo_container);
@@ -82,8 +115,19 @@ public abstract class DemoLandingFragment extends DaggerFragment {
     ViewGroup additionalDemosContainer =
         view.findViewById(R.id.cat_demo_landing_additional_demos_container);
 
-    descriptionTextView.setText(getDescriptionResId());
+    // Links should be added whether or not the feature is restricted.
     addLinks(layoutInflater, view);
+
+    // If this fragments demos is restricted, due to conditions set by the subclass, exit early
+    // without showing any demos and just show the restricted message.
+    if (isRestricted()) {
+      descriptionTextView.setText(getRestrictedMessageId());
+      mainDemoContainer.setVisibility(View.GONE);
+      additionalDemosSection.setVisibility(View.GONE);
+      return view;
+    }
+
+    descriptionTextView.setText(getDescriptionResId());
     addDemoView(layoutInflater, mainDemoContainer, getMainDemo(), false);
     List<Demo> additionalDemos = getAdditionalDemos();
     for (Demo additionalDemo : additionalDemos) {
@@ -91,6 +135,7 @@ public abstract class DemoLandingFragment extends DaggerFragment {
     }
     additionalDemosSection.setVisibility(additionalDemos.isEmpty() ? View.GONE : View.VISIBLE);
 
+    DemoUtils.addBottomSpaceInsetsIfNeeded((ViewGroup) view, viewGroup);
     return view;
   }
 
@@ -124,7 +169,9 @@ public abstract class DemoLandingFragment extends DaggerFragment {
     TextView titleTextView = demoView.findViewById(R.id.cat_demo_landing_row_title);
     TextView subtitleTextView = demoView.findViewById(R.id.cat_demo_landing_row_subtitle);
 
-    rootView.setOnClickListener(v -> startDemo(demo));
+    String transitionName = getString(demo.getTitleResId());
+    ViewCompat.setTransitionName(rootView, transitionName);
+    rootView.setOnClickListener(v -> startDemo(v, demo, transitionName));
 
     titleTextView.setText(demo.getTitleResId());
     subtitleTextView.setText(getDemoClassName(demo));
@@ -148,26 +195,41 @@ public abstract class DemoLandingFragment extends DaggerFragment {
     }
   }
 
-  private void startDemo(Demo demo) {
+  private void startDemo(View sharedElement, Demo demo, String transitionName) {
     if (demo.createFragment() != null) {
-      startDemoFragment(demo.createFragment());
+      startDemoFragment(sharedElement, demo.createFragment(), transitionName);
     } else if (demo.createActivityIntent() != null) {
-      startDemoActivity(demo.createActivityIntent());
+      startDemoActivity(sharedElement, demo.createActivityIntent(), transitionName);
     } else {
       throw new IllegalStateException("Demo must implement createFragment or createActivityIntent");
     }
   }
 
-  private void startDemoFragment(Fragment fragment) {
+  private void startDemoFragment(View sharedElement, Fragment fragment, String transitionName) {
     Bundle args = new Bundle();
     args.putString(DemoFragment.ARG_DEMO_TITLE, getString(getTitleResId()));
+    args.putString(FeatureDemoUtils.ARG_TRANSITION_NAME, transitionName);
     fragment.setArguments(args);
-    FeatureDemoUtils.startFragment(getActivity(), fragment, FRAGMENT_DEMO_CONTENT);
+    FeatureDemoUtils.startFragment(
+        getActivity(), fragment, FRAGMENT_DEMO_CONTENT, sharedElement, transitionName);
   }
 
-  private void startDemoActivity(Intent intent) {
+  private void startDemoActivity(View sharedElement, Intent intent, String transitionName) {
     intent.putExtra(DemoActivity.EXTRA_DEMO_TITLE, getString(getTitleResId()));
-    startActivity(intent);
+    intent.putExtra(DemoActivity.EXTRA_TRANSITION_NAME, transitionName);
+
+    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+      // Set up shared element transition and disable overlay so views don't show above system bars
+      FragmentActivity activity = getActivity();
+      activity.setExitSharedElementCallback(new MaterialContainerTransformSharedElementCallback());
+      activity.getWindow().setSharedElementsUseOverlay(false);
+
+      ActivityOptions options =
+          ActivityOptions.makeSceneTransitionAnimation(activity, sharedElement, transitionName);
+      startActivity(intent, options.toBundle());
+    } else {
+      startActivity(intent);
+    }
   }
 
   private void setMarginStart(View view, @DimenRes int marginResId) {
@@ -185,11 +247,8 @@ public abstract class DemoLandingFragment extends DaggerFragment {
   @Override
   public void onPrepareOptionsMenu(Menu menu) {
     MenuItem item = menu.findItem(R.id.favorite_toggle);
-    boolean isChecked =
-        FeatureDemoUtils.getDefaultDemo(getContext()).equals(getClass().getName());
-    item.setChecked(isChecked);
-    MenuItemCompat.setIconTintList(
-        item, ColorStateList.valueOf(isChecked ? colorSecondary : colorControlNormal));
+    boolean isChecked = FeatureDemoUtils.getDefaultDemo(getContext()).equals(getClass().getName());
+    setMenuItemChecked(item, isChecked);
   }
 
   @Override
@@ -197,13 +256,41 @@ public abstract class DemoLandingFragment extends DaggerFragment {
     if (menuItem.getItemId() == R.id.favorite_toggle) {
       boolean isChecked = !menuItem.isChecked();
       FeatureDemoUtils.saveDefaultDemo(getContext(), isChecked ? getClass().getName() : "");
-      if (getActivity() != null) {
-        getActivity().invalidateOptionsMenu();
-      }
+      setMenuItemChecked(menuItem, isChecked);
       return true;
     }
 
     return super.onOptionsItemSelected(menuItem);
+  }
+
+  private void setMenuItemChecked(MenuItem menuItem, boolean isChecked) {
+    menuItem.setChecked(isChecked);
+    MenuItemCompat.setIconTintList(
+        menuItem, ColorStateList.valueOf(isChecked ? colorAccent : colorControlNormal));
+  }
+
+  /**
+   * Whether or not the feature shown by this fragment should be flagged as restricted.
+   *
+   * <p>Examples of restricted feature could be features which depends on an API level that is
+   * greater than MDCs min sdk version. If overriding this method, you should also override {@link
+   * #getRestrictedMessageId()} and provide information about why the feature is restricted.
+   */
+  public boolean isRestricted() {
+    return false;
+  }
+
+  /**
+   * The message to display if a feature {@link #isRestricted()}.
+   *
+   * <p>This message should provide insight into why the feature is restricted for the device it is
+   * running on. This message will be displayed in the description area of the demo fragment instead
+   * of the the provided {@link #getDescriptionResId()}. Additionally, all demos, both the main demo
+   * and any additional demos will not be shown.
+   */
+  @StringRes
+  public int getRestrictedMessageId() {
+    return 0;
   }
 
   @StringRes

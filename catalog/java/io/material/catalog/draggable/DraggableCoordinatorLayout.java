@@ -16,20 +16,34 @@
 package io.material.catalog.draggable;
 
 import android.content.Context;
+<<<<<<< HEAD
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.customview.widget.ViewDragHelper;
 import androidx.customview.widget.ViewDragHelper.Callback;
+=======
+>>>>>>> pr/1944
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import androidx.annotation.NonNull;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.customview.widget.ViewDragHelper;
+import androidx.customview.widget.ViewDragHelper.Callback;
 import java.util.ArrayList;
 import java.util.List;
 
 /** A CoordinatorLayout whose children can be dragged. */
 public class DraggableCoordinatorLayout extends CoordinatorLayout {
 
+  /** A listener to use when a child view is being dragged */
+  public interface ViewDragListener {
+    void onViewCaptured(@NonNull View view, int i);
+    void onViewReleased(@NonNull View view, float v, float v1);
+  }
+
   private final ViewDragHelper viewDragHelper;
   private final List<View> draggableChildren = new ArrayList<>();
+  private ViewDragListener viewDragListener;
 
   public DraggableCoordinatorLayout(Context context) {
     this(context, null);
@@ -74,6 +88,20 @@ public class DraggableCoordinatorLayout extends CoordinatorLayout {
         }
 
         @Override
+        public void onViewCaptured(@NonNull View view, int i) {
+          if (viewDragListener != null) {
+            viewDragListener.onViewCaptured(view, i);
+          }
+        }
+
+        @Override
+        public void onViewReleased(@NonNull View view, float v, float v1) {
+          if (viewDragListener != null) {
+            viewDragListener.onViewReleased(view, v, v1);
+          }
+        }
+
+        @Override
         public int getViewHorizontalDragRange(View view) {
           return view.getWidth();
         }
@@ -96,5 +124,10 @@ public class DraggableCoordinatorLayout extends CoordinatorLayout {
 
   private boolean viewIsDraggableChild(View view) {
     return draggableChildren.isEmpty() || draggableChildren.contains(view);
+  }
+
+  public void setViewDragListener(
+      ViewDragListener viewDragListener) {
+    this.viewDragListener = viewDragListener;
   }
 }

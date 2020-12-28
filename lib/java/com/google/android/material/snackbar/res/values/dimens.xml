@@ -22,6 +22,8 @@
   <dimen name="design_snackbar_background_corner_radius">0dp</dimen>
 
   <dimen name="design_snackbar_padding_horizontal">12dp</dimen>
+  <dimen name="mtrl_snackbar_padding_horizontal">8dp</dimen>
+  <dimen name="mtrl_snackbar_message_margin_horizontal">8dp</dimen>
 
   <!-- Extra spacing between the action and message views -->
   <dimen name="design_snackbar_extra_spacing_horizontal">0dp</dimen>
@@ -32,7 +34,7 @@
   <dimen name="design_snackbar_text_size">14sp</dimen>
 
   <dimen name="design_snackbar_padding_vertical">14dp</dimen>
-  <dimen name="design_snackbar_padding_vertical_2lines">24dp</dimen>
+  <dimen name="design_snackbar_padding_vertical_2lines">16dp</dimen>
 
   <item name="design_snackbar_action_text_color_alpha" format="float" type="dimen">1.0</item>
 

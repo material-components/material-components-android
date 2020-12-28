@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2019 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+  <attr name="materialCalendarStyle" format="reference"/>
+  <attr name="materialCalendarFullscreenTheme" format="reference"/>
+  <attr name="materialCalendarTheme" format="reference"/>
+
+  <!-- Header Styles -->
+  <attr name="materialCalendarHeaderLayout" format="reference"/>
+  <attr name="materialCalendarHeaderDivider" format="reference"/>
+  <attr name="materialCalendarHeaderTitle" format="reference"/>
+  <attr name="materialCalendarHeaderSelection" format="reference"/>
+  <attr name="materialCalendarHeaderCancelButton" format="reference"/>
+  <attr name="materialCalendarHeaderConfirmButton" format="reference"/>
+  <attr name="materialCalendarHeaderToggleButton" format="reference"/>
+
+  <!-- Navigation Styles -->
+  <attr name="materialCalendarYearNavigationButton" format="reference"/>
+  <attr name="materialCalendarMonthNavigationButton" format="reference"/>
+
+  <!-- Grid Styles -->
+  <attr name="materialCalendarDay" format="reference"/>
+  <attr name="materialCalendarMonth" format="reference"/>
+
+  <declare-styleable name="MaterialCalendar">
+    <attr name="android:windowFullscreen"/>
+    <attr name="dayStyle" format="reference"/>
+    <attr name="dayInvalidStyle" format="reference"/>
+    <attr name="daySelectedStyle" format="reference"/>
+    <attr name="dayTodayStyle" format="reference"/>
+    <attr name="yearStyle" format="reference"/>
+    <attr name="yearSelectedStyle" format="reference"/>
+    <attr name="yearTodayStyle" format="reference"/>
+    <attr name="rangeFillColor" format="color"/>
+    <attr name="nestedScrollable" format="boolean"/>
+  </declare-styleable>
+
+  <declare-styleable name="MaterialCalendarItem">
+    <attr name="android:insetLeft"/>
+    <attr name="android:insetTop"/>
+    <attr name="android:insetRight"/>
+    <attr name="android:insetBottom"/>
+    <attr name="itemFillColor" format="color"/>
+    <attr name="itemTextColor"/>
+    <attr name="itemStrokeColor" format="color"/>
+    <attr name="itemStrokeWidth" format="dimension"/>
+    <attr name="itemShapeAppearance"/>
+    <attr name="itemShapeAppearanceOverlay"/>
+  </declare-styleable>
+
+</resources>

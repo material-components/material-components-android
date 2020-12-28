@@ -16,15 +16,22 @@
 
 package com.google.android.material.snackbar;
 
+<<<<<<< HEAD
 import static com.google.android.material.testutils.TestUtilsActions.setLayoutDirection;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.swipeLeft;
 import static androidx.test.espresso.action.ViewActions.swipeRight;
+=======
+import static androidx.test.espresso.Espresso.onView;
+>>>>>>> pr/1944
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
+<<<<<<< HEAD
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+=======
+>>>>>>> pr/1944
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.core.AllOf.allOf;
 import static org.junit.Assert.assertFalse;
@@ -34,12 +41,25 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
+<<<<<<< HEAD
 import androidx.annotation.Nullable;
+=======
+import android.view.LayoutInflater;
+import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.test.espresso.ViewAction;
+import androidx.test.espresso.ViewInteraction;
+import androidx.test.filters.LargeTest;
+import androidx.test.filters.MediumTest;
+import androidx.test.rule.ActivityTestRule;
+import androidx.test.runner.AndroidJUnit4;
+>>>>>>> pr/1944
 import com.google.android.material.testapp.R;
 import com.google.android.material.testapp.SnackbarActivity;
 import com.google.android.material.testapp.custom.CustomSnackbar;
 import com.google.android.material.testapp.custom.CustomSnackbarMainContent;
 import com.google.android.material.testutils.SnackbarUtils;
+<<<<<<< HEAD
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.ViewCompat;
 import android.view.LayoutInflater;
@@ -49,6 +69,8 @@ import androidx.test.filters.LargeTest;
 import androidx.test.filters.MediumTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
+=======
+>>>>>>> pr/1944
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -126,25 +148,7 @@ public class CustomSnackbarTest {
   @LargeTest
   public void testBasicContent() throws Throwable {
     // Verify different combinations of snackbar content (title / subtitle and action)
-    // and duration
-
-    // Short duration
-    verifySnackbarContent(
-        makeCustomSnackbar()
-            .setTitle(TITLE_TEXT)
-            .setSubtitle(SUBTITLE_TEXT)
-            .setDuration(Snackbar.LENGTH_SHORT),
-        TITLE_TEXT,
-        SUBTITLE_TEXT);
-
-    // Long duration
-    verifySnackbarContent(
-        makeCustomSnackbar()
-            .setTitle(TITLE_TEXT)
-            .setSubtitle(SUBTITLE_TEXT)
-            .setDuration(Snackbar.LENGTH_LONG),
-        TITLE_TEXT,
-        SUBTITLE_TEXT);
+    // We can't test duration here because timing can be flaky when run in the emulator.
 
     // Indefinite duration
     verifySnackbarContent(
@@ -186,20 +190,11 @@ public class CustomSnackbarTest {
     // Now perform the UI interaction
     SnackbarUtils.performActionAndWaitUntilFullyDismissed(
         snackbar,
-        new SnackbarUtils.TransientBottomBarAction() {
-          @Override
-          public void perform() throws Throwable {
-            if (action != null) {
-              interaction.perform(action);
-            } else if (dismissAction != null) {
-              activityTestRule.runOnUiThread(
-                  new Runnable() {
-                    @Override
-                    public void run() {
-                      dismissAction.dismiss(snackbar);
-                    }
-                  });
-            }
+        () -> {
+          if (action != null) {
+            interaction.perform(action);
+          } else if (dismissAction != null) {
+            activityTestRule.runOnUiThread(() -> dismissAction.dismiss(snackbar));
           }
         });
 
@@ -212,44 +207,12 @@ public class CustomSnackbarTest {
 
   @Test
   @MediumTest
-  public void testDismissViaSwipe() throws Throwable {
-    verifyDismissCallback(
-        onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
-        swipeRight(),
-        null,
-        Snackbar.LENGTH_LONG,
-        Snackbar.Callback.DISMISS_EVENT_SWIPE);
-  }
-
-  @Test
-  @MediumTest
-  public void testDismissViaSwipeRtl() throws Throwable {
-    onView(withId(R.id.col)).perform(setLayoutDirection(ViewCompat.LAYOUT_DIRECTION_RTL));
-    if (ViewCompat.getLayoutDirection(coordinatorLayout) == ViewCompat.LAYOUT_DIRECTION_RTL) {
-      // On devices that support RTL layout, the start-to-end dismiss swipe is done
-      // with swipeLeft() action
-      verifyDismissCallback(
-          onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
-          swipeLeft(),
-          null,
-          Snackbar.LENGTH_LONG,
-          Snackbar.Callback.DISMISS_EVENT_SWIPE);
-    }
-  }
-
-  @Test
-  @MediumTest
   public void testDismissViaApi() throws Throwable {
     verifyDismissCallback(
         onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
         null,
-        new DismissAction() {
-          @Override
-          public void dismiss(CustomSnackbar snackbar) {
-            snackbar.dismiss();
-          }
-        },
-        Snackbar.LENGTH_LONG,
+        BaseTransientBottomBar::dismiss,
+        Snackbar.LENGTH_INDEFINITE,
         Snackbar.Callback.DISMISS_EVENT_MANUAL);
   }
 
@@ -278,13 +241,8 @@ public class CustomSnackbarTest {
     verifyDismissCallback(
         onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
         null,
-        new DismissAction() {
-          @Override
-          public void dismiss(CustomSnackbar snackbar) {
-            anotherSnackbar.show();
-          }
-        },
-        Snackbar.LENGTH_LONG,
+        snackbar -> anotherSnackbar.show(),
+        Snackbar.LENGTH_INDEFINITE,
         Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE);
 
     // And dismiss the second snackbar to get back to clean state

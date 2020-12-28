@@ -21,8 +21,8 @@ import com.google.android.material.R;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.content.res.Resources;
+<<<<<<< HEAD
 import android.graphics.drawable.Drawable;
 import androidx.annotation.Dimension;
 import androidx.annotation.Nullable;
@@ -42,52 +42,40 @@ import androidx.appcompat.view.menu.MenuView;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.MenuItem;
+=======
+import androidx.core.view.ViewCompat;
+import androidx.appcompat.view.menu.MenuBuilder;
+import android.view.Gravity;
+>>>>>>> pr/1944
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
+import com.google.android.material.navigation.NavigationBarItemView;
+import com.google.android.material.navigation.NavigationBarMenuView;
 
 /** @hide For internal use only. */
 @RestrictTo(LIBRARY_GROUP)
-public class BottomNavigationMenuView extends ViewGroup implements MenuView {
-  private static final long ACTIVE_ANIMATION_DURATION_MS = 115L;
-
-  private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
-  private static final int[] DISABLED_STATE_SET = {-android.R.attr.state_enabled};
-
-  private final TransitionSet set;
+public class BottomNavigationMenuView extends NavigationBarMenuView {
   private final int inactiveItemMaxWidth;
   private final int inactiveItemMinWidth;
   private final int activeItemMaxWidth;
   private final int activeItemMinWidth;
   private final int itemHeight;
-  private final OnClickListener onClickListener;
-  private final Pools.Pool<BottomNavigationItemView> itemPool = new Pools.SynchronizedPool<>(5);
 
   private boolean itemHorizontalTranslationEnabled;
-  @LabelVisibilityMode private int labelVisibilityMode;
-
-  private BottomNavigationItemView[] buttons;
-  private int selectedItemId = 0;
-  private int selectedItemPosition = 0;
-
-  private ColorStateList itemIconTint;
-  @Dimension private int itemIconSize;
-  private ColorStateList itemTextColorFromUser;
-  private final ColorStateList itemTextColorDefault;
-  @StyleRes private int itemTextAppearanceInactive;
-  @StyleRes private int itemTextAppearanceActive;
-  private Drawable itemBackground;
-  private int itemBackgroundRes;
   private int[] tempChildWidths;
 
-  private BottomNavigationPresenter presenter;
-  private MenuBuilder menu;
+  public BottomNavigationMenuView(@NonNull Context context) {
+    super(context);
 
-  public BottomNavigationMenuView(Context context) {
-    this(context, null);
-  }
+    FrameLayout.LayoutParams params =
+        new FrameLayout.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+    params.gravity = Gravity.CENTER;
+    setLayoutParams(params);
 
-  public BottomNavigationMenuView(Context context, AttributeSet attrs) {
-    super(context, attrs);
     final Resources res = getResources();
     inactiveItemMaxWidth =
         res.getDimensionPixelSize(R.dimen.design_bottom_navigation_item_max_width);
@@ -98,35 +86,13 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
     activeItemMinWidth =
         res.getDimensionPixelSize(R.dimen.design_bottom_navigation_active_item_min_width);
     itemHeight = res.getDimensionPixelSize(R.dimen.design_bottom_navigation_height);
-    itemTextColorDefault = createDefaultColorStateList(android.R.attr.textColorSecondary);
 
-    set = new AutoTransition();
-    set.setOrdering(TransitionSet.ORDERING_TOGETHER);
-    set.setDuration(ACTIVE_ANIMATION_DURATION_MS);
-    set.setInterpolator(new FastOutSlowInInterpolator());
-    set.addTransition(new TextScale());
-
-    onClickListener =
-        new OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            final BottomNavigationItemView itemView = (BottomNavigationItemView) v;
-            MenuItem item = itemView.getItemData();
-            if (!menu.performItemAction(item, presenter, 0)) {
-              item.setChecked(true);
-            }
-          }
-        };
-    tempChildWidths = new int[BottomNavigationMenu.MAX_ITEM_COUNT];
-  }
-
-  @Override
-  public void initialize(MenuBuilder menu) {
-    this.menu = menu;
+    tempChildWidths = new int[BottomNavigationView.MAX_ITEM_COUNT];
   }
 
   @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    final MenuBuilder menu = getMenu();
     final int width = MeasureSpec.getSize(widthMeasureSpec);
     // Use visible item count to calculate widths
     final int visibleCount = menu.getVisibleItems().size();
@@ -135,8 +101,9 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
 
     final int heightSpec = MeasureSpec.makeMeasureSpec(itemHeight, MeasureSpec.EXACTLY);
 
-    if (isShifting(labelVisibilityMode, visibleCount) && itemHorizontalTranslationEnabled) {
-      final View activeChild = getChildAt(selectedItemPosition);
+    if (isShifting(getLabelVisibilityMode(), visibleCount)
+        && isItemHorizontalTranslationEnabled()) {
+      final View activeChild = getChildAt(getSelectedItemPosition());
       int activeItemWidth = activeItemMinWidth;
       if (activeChild.getVisibility() != View.GONE) {
         // Do an AT_MOST measure pass on the active child to get its desired width, and resize the
@@ -156,7 +123,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
 
       for (int i = 0; i < totalCount; i++) {
         if (getChildAt(i).getVisibility() != View.GONE) {
-          tempChildWidths[i] = (i == selectedItemPosition) ? activeWidth : inactiveWidth;
+          tempChildWidths[i] = (i == getSelectedItemPosition()) ? activeWidth : inactiveWidth;
           // Account for integer division which sometimes leaves some extra pixel spaces.
           // e.g. If the nav was 10px wide, and 3 children were measured to be 3px-3px-3px, there
           // would be a 1px gap somewhere, which this fills in.
@@ -223,219 +190,6 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
     }
   }
 
-  @Override
-  public int getWindowAnimations() {
-    return 0;
-  }
-
-  /**
-   * Sets the tint which is applied to the menu items' icons.
-   *
-   * @param tint the tint to apply
-   */
-  public void setIconTintList(ColorStateList tint) {
-    itemIconTint = tint;
-    if (buttons != null) {
-      for (BottomNavigationItemView item : buttons) {
-        item.setIconTintList(tint);
-      }
-    }
-  }
-
-  /**
-   * Returns the tint which is applied for the menu item labels.
-   *
-   * @return the ColorStateList that is used to tint menu items' icons
-   */
-  @Nullable
-  public ColorStateList getIconTintList() {
-    return itemIconTint;
-  }
-
-  /**
-   * Sets the size to provide for the menu item icons.
-   *
-   * <p>For best image resolution, use an icon with the same size set in this method.
-   *
-   * @param iconSize the size to provide for the menu item icons in pixels
-   */
-  public void setItemIconSize(@Dimension int iconSize) {
-    this.itemIconSize = iconSize;
-    if (buttons != null) {
-      for (BottomNavigationItemView item : buttons) {
-        item.setIconSize(iconSize);
-      }
-    }
-  }
-
-  /** Returns the size in pixels provided for the menu item icons. */
-  @Dimension
-  public int getItemIconSize() {
-    return itemIconSize;
-  }
-
-  /**
-   * Sets the text color to be used for the menu item labels.
-   *
-   * @param color the ColorStateList used for menu item labels
-   */
-  public void setItemTextColor(ColorStateList color) {
-    itemTextColorFromUser = color;
-    if (buttons != null) {
-      for (BottomNavigationItemView item : buttons) {
-        item.setTextColor(color);
-      }
-    }
-  }
-
-  /**
-   * Returns the text color used for menu item labels.
-   *
-   * @return the ColorStateList used for menu items labels
-   */
-  public ColorStateList getItemTextColor() {
-    return itemTextColorFromUser;
-  }
-
-  /**
-   * Sets the text appearance to be used for inactive menu item labels.
-   *
-   * @param textAppearanceRes the text appearance ID used for inactive menu item labels
-   */
-  public void setItemTextAppearanceInactive(@StyleRes int textAppearanceRes) {
-    this.itemTextAppearanceInactive = textAppearanceRes;
-    if (buttons != null) {
-      for (BottomNavigationItemView item : buttons) {
-        item.setTextAppearanceInactive(textAppearanceRes);
-        // Set the text color if the user has set it, since itemTextColorFromUser takes precedence
-        // over a color set in the text appearance.
-        if (itemTextColorFromUser != null) {
-          item.setTextColor(itemTextColorFromUser);
-        }
-      }
-    }
-  }
-
-  /**
-   * Returns the text appearance used for inactive menu item labels.
-   *
-   * @return the text appearance ID used for inactive menu item labels
-   */
-  @StyleRes
-  public int getItemTextAppearanceInactive() {
-    return itemTextAppearanceInactive;
-  }
-
-  /**
-   * Sets the text appearance to be used for the active menu item label.
-   *
-   * @param textAppearanceRes the text appearance ID used for the active menu item label
-   */
-  public void setItemTextAppearanceActive(@StyleRes int textAppearanceRes) {
-    this.itemTextAppearanceActive = textAppearanceRes;
-    if (buttons != null) {
-      for (BottomNavigationItemView item : buttons) {
-        item.setTextAppearanceActive(textAppearanceRes);
-        // Set the text color if the user has set it, since itemTextColorFromUser takes precedence
-        // over a color set in the text appearance.
-        if (itemTextColorFromUser != null) {
-          item.setTextColor(itemTextColorFromUser);
-        }
-      }
-    }
-  }
-
-  /**
-   * Returns the text appearance used for the active menu item label.
-   *
-   * @return the text appearance ID used for the active menu item label
-   */
-  @StyleRes
-  public int getItemTextAppearanceActive() {
-    return itemTextAppearanceActive;
-  }
-
-  /**
-   * Sets the resource ID to be used for item backgrounds.
-   *
-   * @param background the resource ID of the background
-   */
-  public void setItemBackgroundRes(int background) {
-    itemBackgroundRes = background;
-    if (buttons != null) {
-      for (BottomNavigationItemView item : buttons) {
-        item.setItemBackground(background);
-      }
-    }
-  }
-
-  /**
-   * Returns the resource ID for the background of the menu items.
-   *
-   * @return the resource ID for the background
-   * @deprecated Use {@link #getItemBackground()} instead.
-   */
-  @Deprecated
-  public int getItemBackgroundRes() {
-    return itemBackgroundRes;
-  }
-
-  /**
-   * Sets the drawable to be used for item backgrounds.
-   *
-   * @param background the drawable of the background
-   */
-  public void setItemBackground(@Nullable Drawable background) {
-    itemBackground = background;
-    if (buttons != null) {
-      for (BottomNavigationItemView item : buttons) {
-        item.setItemBackground(background);
-      }
-    }
-  }
-
-  /**
-   * Returns the drawable for the background of the menu items.
-   *
-   * @return the drawable for the background
-   */
-  @Nullable
-  public Drawable getItemBackground() {
-    if (buttons != null && buttons.length > 0) {
-      // Return button background instead of itemBackground if possible, so that the correct
-      // drawable is returned if the background is set via #setItemBackgroundRes.
-      return buttons[0].getBackground();
-    } else {
-      return itemBackground;
-    }
-  }
-
-  /**
-   * Sets the navigation items' label visibility mode.
-   *
-   * <p>The label is either always shown, never shown, or only shown when activated. Also supports
-   * "auto" mode, which uses the item count to determine whether to show or hide the label.
-   *
-   * @param labelVisibilityMode mode which decides whether or not the label should be shown. Can be
-   *     one of {@link LabelVisibilityMode#LABEL_VISIBILITY_AUTO}, {@link
-   *     LabelVisibilityMode#LABEL_VISIBILITY_SELECTED}, {@link
-   *     LabelVisibilityMode#LABEL_VISIBILITY_LABELED}, or {@link
-   *     LabelVisibilityMode#LABEL_VISIBILITY_UNLABELED}
-   * @see #getLabelVisibilityMode()
-   */
-  public void setLabelVisibilityMode(@LabelVisibilityMode int labelVisibilityMode) {
-    this.labelVisibilityMode = labelVisibilityMode;
-  }
-
-  /**
-   * Returns the current label visibility mode.
-   *
-   * @see #setLabelVisibilityMode(int)
-   */
-  public int getLabelVisibilityMode() {
-    return labelVisibilityMode;
-  }
-
   /**
    * Sets whether the menu items horizontally translate on selection when the combined item widths
    * fill the screen.
@@ -459,6 +213,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
     return itemHorizontalTranslationEnabled;
   }
 
+<<<<<<< HEAD
   public ColorStateList createDefaultColorStateList(int baseColorThemeAttr) {
     final TypedValue value = new TypedValue();
     if (!getContext().getTheme().resolveAttribute(baseColorThemeAttr, value, true)) {
@@ -594,5 +349,11 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
         break;
       }
     }
+=======
+  @Override
+  @NonNull
+  protected NavigationBarItemView createNavigationBarItemView(@NonNull Context context) {
+    return new BottomNavigationItemView(context);
+>>>>>>> pr/1944
   }
 }

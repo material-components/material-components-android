@@ -27,6 +27,8 @@ import io.material.catalog.application.scope.FragmentScope;
 import io.material.catalog.feature.Demo;
 import io.material.catalog.feature.DemoLandingFragment;
 import io.material.catalog.feature.FeatureDemo;
+import java.util.ArrayList;
+import java.util.List;
 
 /** A landing fragment that links to FAB demos for the Catalog app. */
 public class FabFragment extends DemoLandingFragment {
@@ -49,6 +51,26 @@ public class FabFragment extends DemoLandingFragment {
         return new FabMainDemoFragment();
       }
     };
+  }
+
+  @Override
+  public List<Demo> getAdditionalDemos() {
+    List<Demo> additionalDemos = new ArrayList<>();
+    additionalDemos.add(
+        new Demo(R.string.cat_extended_fab_demo_title) {
+          @Override
+          public Fragment createFragment() {
+            return new ExtendedFabDemoFragment();
+          }
+        });
+    additionalDemos.add(
+        new Demo(R.string.cat_extended_fab_behavior_demo_title) {
+          @Override
+          public Fragment createFragment() {
+            return new ExtendedFabBehaviorDemoFragment();
+          }
+        });
+    return additionalDemos;
   }
 
   /** The Dagger module for {@link FabFragment} dependencies. */

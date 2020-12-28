@@ -19,7 +19,7 @@
 <com.google.android.material.bottomnavigation.BottomNavigationView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/Widget.MaterialComponents.BottomNavigationView"
+    android:id="@+id/cat_bottom_nav"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"

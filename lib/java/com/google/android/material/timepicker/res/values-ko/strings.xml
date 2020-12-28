@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2020 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="material_timepicker_pm">오후</string>
+  <string name="material_timepicker_am">오전</string>
+  <string name="material_timepicker_select_time">시간 선택</string>
+  <string name="material_timepicker_minute">분</string>
+  <string name="material_timepicker_hour">시간</string>
+  <string name="material_hour_suffix">%1$s시 정각</string>
+  <string name="material_minute_suffix">%1$s분</string>
+  <string name="material_hour_selection">시간 선택</string>
+  <string name="material_minute_selection">분 선택</string>
+  <string name="material_clock_toggle_content_description">오전 또는 오후를 선택하세요.</string>
+  <string name="material_timepicker_text_input_mode_description">시간 입력을 위해 텍스트 입력 모드로 전환합니다.</string>
+  <string name="material_timepicker_clock_mode_description">시간 입력을 위해 시계 모드로 전환합니다.</string>
+</resources>

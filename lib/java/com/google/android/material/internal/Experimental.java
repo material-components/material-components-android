@@ -16,6 +16,7 @@
 
 package com.google.android.material.internal;
 
+import androidx.annotation.NonNull;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -27,7 +28,10 @@ import java.lang.annotation.Target;
  * compatibility guarantees made by its containing library. Note that the presence of this
  * annotation implies nothing about the quality or performance of the API in question, only the fact
  * that it is not "API-frozen."
+ *
+ * @deprecated This annotation never enforced the above statement about compatibility.
  */
+@Deprecated
 @Retention(RetentionPolicy.CLASS)
 @Target({
   ElementType.ANNOTATION_TYPE,
@@ -38,5 +42,6 @@ import java.lang.annotation.Target;
 })
 public @interface Experimental {
   /** The optional reason why the API is experimental. */
+  @NonNull
   String value() default "";
 }

@@ -30,15 +30,26 @@
   <string name="cat_tabs_icon_switch_label">Show icons</string>
   <string name="cat_tabs_labels_switch_label">Show labels</string>
   <string name="cat_tabs_gravity_selector_label">Gravity</string>
+  <string name="cat_tabs_animation_mode_selector_label">Animation mode</string>
+  <string name="cat_tabs_gravity_start">Start</string>
   <string name="cat_tabs_gravity_fill">Fill</string>
   <string name="cat_tabs_gravity_center">Center</string>
+  <string name="cat_tabs_animation_mode_linear">Linear</string>
+  <string name="cat_tabs_animation_mode_elastic">Elastic</string>
   <string name="cat_tabs_inline_switch_label">Inline</string>
   <string name="cat_tabs_indicator_spinner_label">Indicator</string>
   <string name="cat_tabs_legacy_tabs_label">Legacy Tabs</string>
   <string name="cat_tabs_material_tabs_label">Material Tabs</string>
   <string name="cat_tabs_colored_tabs_label">Material Tabs (Colored)</string>
+  <string name="cat_tabs_add_tab_button_label">Add Tab</string>
+  <string name="cat_tabs_remove_tab_button_label">Remove Tab</string>
   <string name="cat_tabs_controllable_demo_title">Controllable Tabs Demo</string>
   <string name="cat_tabs_scrollable_demo_title">Scrollable Tabs Demo</string>
+  <string name="cat_tabs_auto_demo_title">Auto Tabs Demo</string>
+  <string name="cat_tabs_auto_scrollable_explanation">
+    Tabs in \"auto\" mode behave like fixed tabs with tabGravity = \"center\" when the tabs are less
+    wide than the screen, and behave like scrollable tabs when the tabs are wider than the screen.
+  </string>
 
   <!-- Selected indicator names -->
   <string name="cat_tabs_selected_indicator_line_bottom">Line (bottom)</string>
@@ -59,5 +70,14 @@
   <string name="cat_tabs_label_settings">Settings</string>
   <string name="cat_tabs_label_plugins">Plugins</string>
   <string name="cat_tabs_label_more">More</string>
+
+  <!-- Badge increment button label -->
+  <string name="cat_tabs_increment_badge_number" description="The title of a button to increment the notification number. [CHAR_LIMIT=20]">+Badge number</string>
+
+  <string name="cat_tabs_badge_gravity_spinner_label">Badge gravity</string>
+  <string name="cat_tabs_badge_gravity_top_end">Top end</string>
+  <string name="cat_tabs_badge_gravity_top_start">Top start</string>
+  <string name="cat_tabs_badge_gravity_bottom_end">Bottom end</string>
+  <string name="cat_tabs_badge_gravity_bottom_start">Bottom start</string>
 
 </resources>

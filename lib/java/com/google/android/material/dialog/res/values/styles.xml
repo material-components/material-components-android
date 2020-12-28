@@ -17,17 +17,27 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-  <style name="AlertDialog.MaterialComponents" parent="AlertDialog.AppCompat">
-    <item name="android:layout">@layout/material_alert_dialog</item>
+  <style name="Base.Widget.MaterialComponents.CheckedTextView" parent="android:Widget"/>
+
+  <style name="Widget.MaterialComponents.CheckedTextView" parent="Base.Widget.MaterialComponents.CheckedTextView">
+    <item name="android:textAppearance">?attr/textAppearanceBody1</item>
+    <item name="android:textColor">@color/material_on_surface_emphasis_medium</item>
+  </style>
+
+  <style name="MaterialAlertDialog.MaterialComponents" parent="AlertDialog.AppCompat">
+    <item name="android:layout">@layout/mtrl_alert_dialog</item>
+    <item name="listItemLayout">@layout/mtrl_alert_select_dialog_item</item>
+    <item name="multiChoiceItemLayout">@layout/mtrl_alert_select_dialog_multichoice</item>
+    <item name="singleChoiceItemLayout">@layout/mtrl_alert_select_dialog_singlechoice</item>
+
     <item name="backgroundInsetStart">@dimen/mtrl_alert_dialog_background_inset_start</item>
     <item name="backgroundInsetTop">@dimen/mtrl_alert_dialog_background_inset_top</item>
     <item name="backgroundInsetEnd">@dimen/mtrl_alert_dialog_background_inset_end</item>
     <item name="backgroundInsetBottom">@dimen/mtrl_alert_dialog_background_inset_bottom</item>
     <item name="shapeAppearance">?attr/shapeAppearanceMediumComponent</item>
-    <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialComponents.AlertDialog</item>
   </style>
 
-  <style name="Base.AlertDialog.MaterialComponents.Title.Panel" parent="android:Widget">
+  <style name="Base.MaterialAlertDialog.MaterialComponents.Title.Panel" parent="android:Widget">
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:paddingLeft">?attr/dialogPreferredPadding</item>
@@ -35,7 +45,7 @@
     <item name="android:paddingTop">@dimen/abc_dialog_padding_top_material</item>
   </style>
 
-  <style name="Base.AlertDialog.MaterialComponents.Title.Icon" parent="android:Widget">
+  <style name="Base.MaterialAlertDialog.MaterialComponents.Title.Icon" parent="android:Widget">
     <item name="android:layout_width">32dip</item>
     <item name="android:layout_height">32dip</item>
     <item name="android:scaleType">fitCenter</item>
@@ -43,51 +53,52 @@
     <item name="android:contentDescription">@string/icon_content_description</item>
   </style>
 
-  <style name="Base.AlertDialog.MaterialComponents.Title.Text" parent="RtlOverlay.DialogWindowTitle.AppCompat">
-    <item name="android:textAppearance">?attr/textAppearanceHeadline6</item>
+  <style name="Base.MaterialAlertDialog.MaterialComponents.Title.Text" parent="RtlOverlay.DialogWindowTitle.AppCompat">
+    <item name="android:textAppearance">?attr/textAppearanceSubtitle1</item>
+    <item name="android:textColor">@color/material_on_surface_emphasis_high_type</item>
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:ellipsize">end</item>
     <item name="android:singleLine">true</item>
   </style>
 
-  <style name="AlertDialog.MaterialComponents.Title.Panel"
-      parent="Base.AlertDialog.MaterialComponents.Title.Panel">
+  <style name="MaterialAlertDialog.MaterialComponents.Body.Text" parent="TextAppearance.MaterialComponents.Body2">
+    <item name="android:textAppearance">?attr/textAppearanceBody2</item>
+    <item name="android:textColor">@color/material_on_surface_emphasis_medium</item>
+  </style>
+
+  <style name="MaterialAlertDialog.MaterialComponents.Title.Panel"
+      parent="Base.MaterialAlertDialog.MaterialComponents.Title.Panel">
     <item name="android:orientation">horizontal</item>
   </style>
 
-  <style name="AlertDialog.MaterialComponents.Title.Icon"
-      parent="Base.AlertDialog.MaterialComponents.Title.Icon">
+  <style name="MaterialAlertDialog.MaterialComponents.Title.Icon"
+      parent="Base.MaterialAlertDialog.MaterialComponents.Title.Icon">
     <item name="android:layout_gravity">start|center_vertical</item>
     <item name="android:layout_marginEnd" tools:ignore="NewApi">8dip</item>
     <item name="android:layout_marginRight">8dip</item>
   </style>
 
-  <style name="AlertDialog.MaterialComponents.Title.Text"
-      parent="Base.AlertDialog.MaterialComponents.Title.Text">
+  <style name="MaterialAlertDialog.MaterialComponents.Title.Text"
+      parent="Base.MaterialAlertDialog.MaterialComponents.Title.Text">
     <item name="android:layout_gravity">start|center_vertical</item>
     <item name="android:textAlignment" tools:ignore="NewApi">viewStart</item>
   </style>
 
-  <style name="AlertDialog.MaterialComponents.Title.Panel.CenterStacked"
-      parent="Base.AlertDialog.MaterialComponents.Title.Panel">
+  <style name="MaterialAlertDialog.MaterialComponents.Title.Panel.CenterStacked"
+      parent="Base.MaterialAlertDialog.MaterialComponents.Title.Panel">
     <item name="android:orientation">vertical</item>
   </style>
 
-  <style name="AlertDialog.MaterialComponents.Title.Icon.CenterStacked"
-      parent="Base.AlertDialog.MaterialComponents.Title.Icon">
+  <style name="MaterialAlertDialog.MaterialComponents.Title.Icon.CenterStacked"
+      parent="Base.MaterialAlertDialog.MaterialComponents.Title.Icon">
     <item name="android:layout_gravity">center</item>
   </style>
 
-  <style name="AlertDialog.MaterialComponents.Title.Text.CenterStacked"
-      parent="Base.AlertDialog.MaterialComponents.Title.Text">
+  <style name="MaterialAlertDialog.MaterialComponents.Title.Text.CenterStacked"
+      parent="Base.MaterialAlertDialog.MaterialComponents.Title.Text">
     <item name="android:layout_gravity">center</item>
     <item name="android:textAlignment" tools:ignore="NewApi">center</item>
-  </style>
-
-  <style name="ShapeAppearanceOverlay.MaterialComponents.AlertDialog" parent="">
-    <item name="cornerSize">4dp</item>
-    <item name="cornerFamily">rounded</item>
   </style>
 
 </resources>

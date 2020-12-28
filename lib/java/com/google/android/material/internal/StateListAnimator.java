@@ -21,8 +21,14 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
+<<<<<<< HEAD
 import androidx.annotation.RestrictTo;
+=======
+>>>>>>> pr/1944
 import android.util.StateSet;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
 import java.util.ArrayList;
 
 /**
@@ -36,8 +42,8 @@ public final class StateListAnimator {
 
   private final ArrayList<Tuple> tuples = new ArrayList<>();
 
-  private Tuple lastMatch = null;
-  ValueAnimator runningAnimator = null;
+  @Nullable private Tuple lastMatch = null;
+  @Nullable ValueAnimator runningAnimator = null;
 
   private final ValueAnimator.AnimatorListener animationListener =
       new AnimatorListenerAdapter() {
@@ -87,7 +93,7 @@ public final class StateListAnimator {
     }
   }
 
-  private void start(Tuple match) {
+  private void start(@NonNull Tuple match) {
     runningAnimator = match.animator;
     runningAnimator.start();
   }

@@ -18,10 +18,16 @@ package com.google.android.material.expandable;
 
 import android.os.Bundle;
 import android.os.Parcelable;
+<<<<<<< HEAD
 import androidx.annotation.IdRes;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+=======
+>>>>>>> pr/1944
 import android.view.View;
 import android.view.ViewParent;
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 /**
  * ExpandableWidgetHelper is a helper class for writing custom {@link ExpandableWidget}s and {@link
@@ -30,7 +36,7 @@ import android.view.ViewParent;
  */
 public final class ExpandableWidgetHelper {
 
-  private final View widget;
+  @NonNull private final View widget;
 
   private boolean expanded = false;
   @IdRes private int expandedComponentIdHint = 0;
@@ -56,6 +62,7 @@ public final class ExpandableWidgetHelper {
   }
 
   /** Call this from {@link View#onSaveInstanceState()}. */
+  @NonNull
   public Bundle onSaveInstanceState() {
     Bundle state = new Bundle();
     state.putBoolean("expanded", expanded);
@@ -65,7 +72,7 @@ public final class ExpandableWidgetHelper {
   }
 
   /** Call this from {@link View#onRestoreInstanceState(Parcelable)}. */
-  public void onRestoreInstanceState(Bundle state) {
+  public void onRestoreInstanceState(@NonNull Bundle state) {
     expanded = state.getBoolean("expanded", false);
     expandedComponentIdHint = state.getInt("expandedComponentIdHint", 0);
 

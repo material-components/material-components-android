@@ -19,14 +19,20 @@ package io.material.catalog.chip;
 import io.material.catalog.R;
 
 import android.os.Bundle;
+<<<<<<< HEAD
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import com.google.android.material.chip.Chip;
+=======
+>>>>>>> pr/1944
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.Nullable;
+import com.google.android.material.chip.Chip;
 import io.material.catalog.feature.DemoFragment;
 import java.util.HashSet;
 import java.util.Set;

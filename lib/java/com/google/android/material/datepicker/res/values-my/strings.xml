@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2020 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+  <string name="mtrl_picker_range_header_title">အပိုင်းအခြား ရွေးပါ</string>
+  <string name="mtrl_picker_date_header_title">ရက်စွဲ ရွေးပါ</string>
+  <string name="mtrl_picker_range_header_unselected">စတင်ရက် – ပြီးဆုံးရက်</string>
+  <string name="mtrl_picker_range_header_only_start_selected">%1$s – ပြီးဆုံးရက်</string>
+  <string name="mtrl_picker_range_header_only_end_selected">စတင်ရက် – %1$s</string>
+  <string name="mtrl_picker_range_header_selected">%1$s – %2$s</string>
+  <string name="mtrl_picker_date_header_unselected">ရွေးထားသည့် ရက်စွဲ</string>
+  <string name="mtrl_picker_date_header_selected">%1$s</string>
+  <string name="mtrl_picker_confirm">@android:string/ok</string>
+  <string name="mtrl_picker_text_input_date_hint">ရက်စွဲ</string>
+  <string name="mtrl_picker_text_input_date_range_start_hint">စတင်ရက်</string>
+  <string name="mtrl_picker_text_input_date_range_end_hint">ပြီးဆုံးရက်</string>
+  <string name="mtrl_picker_text_input_year_abbr">y</string>
+  <string name="mtrl_picker_text_input_month_abbr">m</string>
+  <string name="mtrl_picker_text_input_day_abbr">d</string>
+  <string name="mtrl_picker_save">သိမ်းရန်</string>
+  <string name="mtrl_picker_invalid_range">ရက်အပိုင်းအခြား မမှန်ပါ။</string>
+  <string name="mtrl_picker_out_of_range">ရက်အပိုင်းအခြား ပြင်ပ− %1$s</string>
+  <string name="mtrl_picker_invalid_format">ဖော်မက် မမှန်ကန်ပါ။</string>
+  <string name="mtrl_picker_invalid_format_use">%1$s သုံးရန်</string>
+  <string name="mtrl_picker_invalid_format_example">ဥပမာ− %1$s</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode">ပြက္ခဒိန် ထည့်သွင်းမှုမုဒ်သို့ ပြောင်းရန်</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode">စာသား ထည့်သွင်းမှုမုဒ်သို့ ပြောင်းရန်</string>
+  <string name="mtrl_picker_a11y_prev_month">ယခင်လသို့ ပြောင်းရန်</string>
+  <string name="mtrl_picker_a11y_next_month">နောက်လသို့ ပြောင်းရန်</string>
+  <string name="mtrl_picker_toggle_to_year_selection">နှစ်ရွေးချယ်ခြင်းသို့ ပြောင်းရန် တို့ပါ</string>
+  <string name="mtrl_picker_toggle_to_day_selection">ရက်ရွေးချယ်ခြင်းသို့ ပြောင်းရန် တို့ပါ</string>
+  <string name="mtrl_picker_day_of_week_column_header">ရက်ကော်လံ- %1$s</string>
+  <string name="mtrl_picker_announce_current_selection">လက်ရှိ ရွေးချယ်မှု- %1$s</string>
+  <string name="mtrl_picker_navigate_to_year_description">နှစ် %1$s သို့ လမ်းညွှန်ရန်</string>
+</resources>

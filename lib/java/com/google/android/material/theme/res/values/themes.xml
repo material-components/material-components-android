@@ -54,34 +54,6 @@
   <!-- Menu/item attributes -->
   <style name="Theme.MaterialComponents.CompactMenu" parent="Base.Theme.MaterialComponents.CompactMenu"/>
 
-
-  <style name="ThemeOverlay.MaterialComponents" parent="ThemeOverlay.AppCompat"/>
-
-  <!--
-    Theme overlay that replaces colors with their light versions but preserves
-    the value of colorAccent, colorPrimary and its variants.
-  -->
-  <style name="ThemeOverlay.MaterialComponents.Light" parent="ThemeOverlay.AppCompat.Light"/>
-
-  <!--
-    Theme overlay that replaces colors with their dark versions but preserves
-    the value of colorAccent, colorPrimary and its variants.
-  -->
-  <style name="ThemeOverlay.MaterialComponents.Dark" parent="ThemeOverlay.AppCompat.Dark"/>
-
-  <!--
-    Theme overlay that replaces the normal control color, which by default is the same as the
-    secondary text color, with the primary text color.
-  -->
-  <style name="ThemeOverlay.MaterialComponents.ActionBar" parent="ThemeOverlay.AppCompat.ActionBar"/>
-
-  <!--
-    Theme overlay that replaces colors with their dark versions and replaces the normal
-    control color, which by default is the same as the secondary text color, with the primary
-    text color.
-  -->
-  <style name="ThemeOverlay.MaterialComponents.Dark.ActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
-
   <!-- Deprecated. Use Theme.MaterialComponents instead. -->
   <style name="Theme.Design" parent="Theme.AppCompat">
   </style>

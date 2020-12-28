@@ -19,83 +19,92 @@ package io.material.catalog.elevation;
 import io.material.catalog.R;
 
 import android.os.Bundle;
+<<<<<<< HEAD
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import com.google.android.material.card.MaterialCardView;
 import androidx.core.view.ViewCompat;
+=======
+>>>>>>> pr/1944
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import androidx.annotation.ArrayRes;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.internal.ViewUtils;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.DemoUtils;
 import java.util.List;
 
 /** A fragment that displays the main Elevation demo for the Catalog app. */
 public class ElevationMainDemoFragment extends DemoFragment {
-  protected int currentElevation;
-  protected int elevationDP;
-  protected int[] elevationValues;
+  protected int currentElevationLevel = 0;
+  protected int elevationInDp;
+  private int[] elevationLevelValues;
 
   @Override
   public View onCreateDemoView(
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
     View view = layoutInflater.inflate(getDemoContent(), viewGroup, false /* attachToRoot */);
-    setUpElevationValues();
-    setUp(view);
-    return view;
-  }
 
-  @LayoutRes
-  protected int getDemoContent() {
-    return R.layout.cat_elevation_shadows_fragment;
-  }
-
-  protected void updateElevationLevel(View view, int newLevel) {
-    List<MaterialCardView> elevationCards =
-        DemoUtils.findViewsWithType(view, MaterialCardView.class);
-
-    TextView levelText = view.findViewById(R.id.current_elevation_level);
-
-    if (newLevel >= 0 && newLevel <= 7) {
-      currentElevation = newLevel;
-      elevationDP = elevationValues[currentElevation];
-      for (MaterialCardView elevationCard : elevationCards) {
-        ViewCompat.setElevation(elevationCard, elevationDP);
-      }
-      levelText.setText(
-          getResources()
-              .getString(R.string.cat_elevation_fragment_level, elevationDP));
-    }
-  }
-
-  protected void setUp(View view) {
-    currentElevation = 0;
+    elevationLevelValues = getResources().getIntArray(getElevationLevelValues());
 
     Button increaseButton = view.findViewById(R.id.increase_elevation);
     Button decreaseButton = view.findViewById(R.id.decrease_elevation);
 
-    elevationDP = elevationValues[currentElevation];
-
     increaseButton.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View button) {
-            updateElevationLevel(view, currentElevation + 1);
-          }
-        });
+        button -> updateCardsElevationLevel(view, currentElevationLevel + 1));
     decreaseButton.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View button) {
-            updateElevationLevel(view, currentElevation - 1);
-          }
-        });
-    updateElevationLevel(view, 0);
+        button -> updateCardsElevationLevel(view, currentElevationLevel - 1));
+
+    updateCardsElevationLevel(view, currentElevationLevel);
+    return view;
   }
 
-  protected void setUpElevationValues() {
-    elevationValues = getResources().getIntArray(R.array.cat_elevation_values);
+  @LayoutRes
+  private int getDemoContent() {
+    return R.layout.cat_elevation_fragment;
+  }
+
+  @SuppressWarnings("RestrictTo") // It's safe to use restricted MDC code in MDC Catalog.
+  private void updateCardsElevationLevel(View view, int newElevationLevel) {
+    List<MaterialCardView> elevationCards =
+        DemoUtils.findViewsWithType(view, MaterialCardView.class);
+
+    if (newElevationLevel >= 0 && newElevationLevel <= getMaxElevationValue()) {
+      setElevationLevel(newElevationLevel);
+      for (MaterialCardView elevationCard : elevationCards) {
+        elevationCard.setCardElevation(ViewUtils.dpToPx(view.getContext(), elevationInDp));
+      }
+      setElevationLevelTextView(view, getElevationLevelText());
+    }
+  }
+
+  private void setElevationLevel(int newElevationLevel) {
+    currentElevationLevel = newElevationLevel;
+    elevationInDp = elevationLevelValues[currentElevationLevel];
+  }
+
+  private static void setElevationLevelTextView(View view, @NonNull String levelText) {
+    TextView levelTextView = view.findViewById(R.id.current_elevation_level_label);
+    levelTextView.setText(levelText);
+  }
+
+  protected String getElevationLevelText() {
+    return getResources().getString(R.string.cat_elevation_fragment_level, elevationInDp);
+  }
+
+  @ArrayRes
+  protected int getElevationLevelValues() {
+    return R.array.cat_elevation_level_values;
+  }
+
+  private int getMaxElevationValue() {
+    return elevationLevelValues.length - 1;
   }
 }

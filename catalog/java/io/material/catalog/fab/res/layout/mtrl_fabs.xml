@@ -25,9 +25,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:columnCount="3"
     android:padding="8dp"
     android:clipToPadding="false"
+    android:columnCount="3"
     android:rowCount="3">
 
   <TextView
@@ -51,8 +51,8 @@
       android:layout_margin="8dp"
       android:layout_gravity="center"
       android:contentDescription="@string/cat_regular_fab_mini_content_desc"
-      app:srcCompat="@drawable/ic_add_24px"
-      app:fabSize="mini"/>
+      app:fabSize="mini"
+      app:srcCompat="@drawable/ic_add_24px"/>
 
   <TextView
       android:layout_width="wrap_content"
@@ -75,6 +75,6 @@
       android:layout_margin="8dp"
       android:layout_gravity="center"
       android:contentDescription="@string/cat_legacy_fab_mini_content_desc"
-      app:srcCompat="@drawable/ic_add_24px"
-      app:fabSize="mini"/>
+      app:fabSize="mini"
+      app:srcCompat="@drawable/ic_add_24px"/>
 </GridLayout>

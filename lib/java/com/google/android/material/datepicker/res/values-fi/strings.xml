@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2020 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+  <string name="mtrl_picker_range_header_title">Valitse jakso</string>
+  <string name="mtrl_picker_date_header_title">Valitse päivämäärä</string>
+  <string name="mtrl_picker_range_header_unselected">Alkamispäivä – päättymispäivä</string>
+  <string name="mtrl_picker_range_header_only_start_selected">%1$s – päättymispäivä</string>
+  <string name="mtrl_picker_range_header_only_end_selected">Alkamispäivä – %1$s</string>
+  <string name="mtrl_picker_range_header_selected">%1$s – %2$s</string>
+  <string name="mtrl_picker_date_header_unselected">Valittu päivämäärä</string>
+  <string name="mtrl_picker_date_header_selected">%1$s</string>
+  <string name="mtrl_picker_confirm">@android:string/ok</string>
+  <string name="mtrl_picker_text_input_date_hint">Päivämäärä</string>
+  <string name="mtrl_picker_text_input_date_range_start_hint">Alkamispäivä</string>
+  <string name="mtrl_picker_text_input_date_range_end_hint">Päättymispäivä</string>
+  <string name="mtrl_picker_text_input_year_abbr">v</string>
+  <string name="mtrl_picker_text_input_month_abbr">k</string>
+  <string name="mtrl_picker_text_input_day_abbr">p</string>
+  <string name="mtrl_picker_save">Tallenna</string>
+  <string name="mtrl_picker_invalid_range">Virheellinen alue</string>
+  <string name="mtrl_picker_out_of_range">Katvealueella: %1$s</string>
+  <string name="mtrl_picker_invalid_format">Virheellinen muoto</string>
+  <string name="mtrl_picker_invalid_format_use">Käytä muotoa %1$s</string>
+  <string name="mtrl_picker_invalid_format_example">Esimerkki: %1$s</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode">Vaihda syöttötavaksi kalenteri</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode">Valitse syöttötavaksi teksti</string>
+  <string name="mtrl_picker_a11y_prev_month">Vaihda edelliseen kuukauteen</string>
+  <string name="mtrl_picker_a11y_next_month">Vaihda seuraavaan kuukauteen</string>
+  <string name="mtrl_picker_toggle_to_year_selection">Siirry vuoden valintaan napauttamalla</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Siirry päivän valintaan napauttamalla</string>
+  <string name="mtrl_picker_day_of_week_column_header">Päiväsarake: %1$s</string>
+  <string name="mtrl_picker_announce_current_selection">Nykyinen valinta: %1$s</string>
+  <string name="mtrl_picker_navigate_to_year_description">Siirry vuoteen %1$s</string>
+</resources>

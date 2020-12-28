@@ -17,6 +17,7 @@
 package com.google.android.material.theme;
 
 import android.content.Context;
+<<<<<<< HEAD
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.annotation.Keep;
@@ -29,51 +30,32 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.AppCompatRadioButton;
 import android.util.AttributeSet;
+=======
+import androidx.appcompat.app.AppCompatViewInflater;
+import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatCheckBox;
+import androidx.appcompat.widget.AppCompatRadioButton;
+import androidx.appcompat.widget.AppCompatTextView;
+import android.util.AttributeSet;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.checkbox.MaterialCheckBox;
+import com.google.android.material.radiobutton.MaterialRadioButton;
+import com.google.android.material.textfield.MaterialAutoCompleteTextView;
+import com.google.android.material.textview.MaterialTextView;
+>>>>>>> pr/1944
 
 /**
  * An extension of {@link AppCompatViewInflater} that replaces some framework widgets with Material
  * Components ones at inflation time, provided a Material Components theme is in use.
  */
-@Keep // Make proguard keep this class as it's accessed reflectively by AppCompat
 public class MaterialComponentsViewInflater extends AppCompatViewInflater {
-
-  // Cached background resource ID used for workaround to not inflate MaterialButton in
-  // API 23 FloatingToolbar. Technically 0 is the only invalid resource ID, but we are assuming
-  // it's safe to use -1 as a sentinel here.
-  private static int floatingToolbarItemBackgroundResId = -1;
-
   @NonNull
   @Override
-  protected AppCompatButton createButton(Context context, AttributeSet attrs) {
-    if (VERSION.SDK_INT == VERSION_CODES.M && isFloatingToolbarItemButton(context, attrs)) {
-      return new AppCompatButton(context, attrs);
-    }
-
+  protected AppCompatButton createButton(@NonNull Context context, @NonNull AttributeSet attrs) {
     return new MaterialButton(context, attrs);
-  }
-
-  private boolean isFloatingToolbarItemButton(Context context, AttributeSet attrs) {
-    // Workaround for FloatingToolbar inflating floating_popup_menu_button.xml on API 23, which
-    // should not have MaterialButton styling.
-    if (floatingToolbarItemBackgroundResId == -1) {
-      floatingToolbarItemBackgroundResId =
-          context
-              .getResources()
-              .getIdentifier("floatingToolbarItemBackgroundDrawable", "^attr-private", "android");
-    }
-
-    if (floatingToolbarItemBackgroundResId != 0 && floatingToolbarItemBackgroundResId != -1) {
-      for (int i = 0; i < attrs.getAttributeCount(); i++) {
-        if (attrs.getAttributeNameResource(i) == android.R.attr.background) {
-          int backgroundResourceId = attrs.getAttributeListValue(i, null, 0);
-          if (floatingToolbarItemBackgroundResId == backgroundResourceId) {
-            return true;
-          }
-        }
-      }
-    }
-
-    return false;
   }
 
   @NonNull
@@ -86,5 +68,18 @@ public class MaterialComponentsViewInflater extends AppCompatViewInflater {
   @Override
   protected AppCompatRadioButton createRadioButton(Context context, AttributeSet attrs) {
     return new MaterialRadioButton(context, attrs);
+  }
+
+  @NonNull
+  @Override
+  protected AppCompatTextView createTextView(Context context, AttributeSet attrs) {
+    return new MaterialTextView(context, attrs);
+  }
+
+  @NonNull
+  @Override
+  protected AppCompatAutoCompleteTextView createAutoCompleteTextView(
+      @NonNull Context context, @Nullable AttributeSet attrs) {
+    return new MaterialAutoCompleteTextView(context, attrs);
   }
 }

@@ -16,6 +16,8 @@
 -->
 <resources>
   <declare-styleable name="FloatingActionButton">
+    <!-- Whether the FloatingActionButton is enabled -->
+    <attr name="android:enabled"/>
     <!-- Background for the FloatingActionButton -->
     <attr name="backgroundTint"/>
     <attr name="backgroundTintMode"/>
@@ -36,6 +38,9 @@
     <attr name="fabCustomSize" format="dimension"/>
     <!-- Elevation value for the FAB -->
     <attr name="elevation"/>
+    <!-- Whether to extend the bounds of the FloatingActionButton to meet
+        @dimen/mtrl_fab_min_touch_target. -->
+    <attr name="ensureMinTouchTargetSize"/>
     <!-- TranslationZ value for the FAB when hovered, focused, or hovered and focused. -->
     <attr name="hoveredFocusedTranslationZ" format="dimension"/>
     <!-- TranslationZ value for the FAB when pressed-->
@@ -62,6 +67,31 @@
     <attr name="behavior_autoHide" format="boolean"/>
   </declare-styleable>
 
+  <declare-styleable name="ExtendedFloatingActionButton">
+    <!-- Elevation for the ExtendedFloatingActionButton. -->
+    <attr name="elevation"/>
+    <!-- Motion spec for show animation. This should be a MotionSpec resource. -->
+    <attr name="showMotionSpec"/>
+    <!-- Motion spec for hide animation. This should be a MotionSpec resource. -->
+    <attr name="hideMotionSpec"/>
+    <!-- Motion spec for extend animation. This should be a MotionSpec resource. -->
+    <attr name="extendMotionSpec" format="reference"/>
+    <!-- Motion spec for shrink animation. This should be a MotionSpec resource. -->
+    <attr name="shrinkMotionSpec" format="reference"/>
+    <!-- FAB size when collapsed. -->
+    <attr name="collapsedSize" format="dimension"/>
+  </declare-styleable>
+
+  <declare-styleable name="ExtendedFloatingActionButton_Behavior_Layout">
+    <!-- Whether the extended FAB should automatically hide when there is no space for it. -->
+    <attr name="behavior_autoHide"/>
+    <!-- Whether the extended FAB should automatically shrink when there is no space for it. -->
+    <attr name="behavior_autoShrink" format="boolean"/>
+  </declare-styleable>
+
   <!-- Style to use for FloatingActionButtons in this theme. -->
-  <attr name="floatingActionButtonStyle"/>
+  <attr name="floatingActionButtonStyle" format="reference"/>
+
+  <!-- Style to use for ExtendedFloatingActionButtons in this theme. -->
+  <attr name="extendedFloatingActionButtonStyle" format="reference"/>
 </resources>

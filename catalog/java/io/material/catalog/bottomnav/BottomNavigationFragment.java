@@ -70,6 +70,13 @@ public class BottomNavigationFragment extends DemoLandingFragment {
             return new BottomNavigationColorStylesDemoFragment();
           }
         });
+    additionalDemos.add(
+        new Demo(R.string.cat_bottom_nav_animated_demo_title) {
+          @Override
+          public Fragment createFragment() {
+            return new BottomNavigationAnimatedDemoFragment();
+          }
+        });
     return additionalDemos;
   }
 

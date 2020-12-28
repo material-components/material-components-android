@@ -19,18 +19,30 @@ package io.material.catalog.topappbar;
 import io.material.catalog.R;
 
 import android.os.Bundle;
+<<<<<<< HEAD
 import androidx.annotation.Nullable;
+=======
+>>>>>>> pr/1944
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.badge.BadgeUtils;
 import io.material.catalog.feature.DemoFragment;
+import io.material.catalog.feature.DemoUtils;
 
 /** A fragment that displays the main Top App Bar demo for the Catalog app. */
 public class TopAppBarMainDemoFragment extends DemoFragment {
+
+  private Toolbar toolbar;
+  private BadgeDrawable badgeDrawable;
 
   @Override
   public void onCreate(@Nullable Bundle bundle) {
@@ -43,7 +55,7 @@ public class TopAppBarMainDemoFragment extends DemoFragment {
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
     View view = layoutInflater.inflate(R.layout.cat_topappbar_fragment, viewGroup, false);
 
-    Toolbar toolbar = view.findViewById(R.id.toolbar);
+    toolbar = view.findViewById(R.id.toolbar);
     AppCompatActivity activity = (AppCompatActivity) getActivity();
     activity.setSupportActionBar(toolbar);
 
@@ -54,6 +66,24 @@ public class TopAppBarMainDemoFragment extends DemoFragment {
   public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
     menuInflater.inflate(R.menu.cat_topappbar_menu, menu);
     super.onCreateOptionsMenu(menu, menuInflater);
+  }
+
+  @Override
+  public void onPrepareOptionsMenu(@NonNull Menu menu) {
+    super.onPrepareOptionsMenu(menu);
+
+    badgeDrawable = BadgeDrawable.create(requireContext());
+    badgeDrawable.setNumber(1);
+    BadgeUtils.attachBadgeDrawable(badgeDrawable, toolbar, R.id.cat_topappbar_item_favorite);
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    if (item.getItemId() == R.id.cat_topappbar_item_favorite) {
+      badgeDrawable.clearNumber();
+      badgeDrawable.setVisible(false);
+    }
+    return DemoUtils.showSnackbar(getActivity(), item) || super.onOptionsItemSelected(item);
   }
 
   @Override

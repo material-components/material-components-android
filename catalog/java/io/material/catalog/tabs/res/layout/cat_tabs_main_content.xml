@@ -14,87 +14,114 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
-
-  <TextView
-      android:textStyle="bold"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:padding="@dimen/cat_tabs_standard_spacing"
-      android:text="@string/cat_tabs_legacy_tabs_label"
-      android:textSize="16sp"/>
-
-  <com.google.android.material.tabs.TabLayout
-      style="@style/Widget.Design.TabLayout"
+    android:layout_height="wrap_content">
+  <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginBottom="16dp">
+      android:orientation="vertical">
 
-    <com.google.android.material.tabs.TabItem
-        android:icon="@drawable/ic_colors_24px"
-        android:text="@string/cat_tabs_label_shopping"/>
-    <com.google.android.material.tabs.TabItem
-        android:icon="@drawable/ic_fab_24px"
-        android:text="@string/cat_tabs_label_news"/>
-    <com.google.android.material.tabs.TabItem
-        android:icon="@drawable/ic_components_24px"
-        android:text="@string/cat_tabs_label_maps"/>
+    <TextView
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/cat_tabs_standard_spacing"
+        android:text="@string/cat_tabs_legacy_tabs_label"
+        android:textSize="16sp"/>
 
-  </com.google.android.material.tabs.TabLayout>
+    <com.google.android.material.tabs.TabLayout
+        style="@style/Widget.Design.TabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp">
 
-  <TextView
-      android:textStyle="bold"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:padding="@dimen/cat_tabs_standard_spacing"
-      android:text="@string/cat_tabs_material_tabs_label"
-      android:textSize="16sp"/>
+      <com.google.android.material.tabs.TabItem
+          android:icon="@drawable/ic_colors_24px"
+          android:text="@string/cat_tabs_label_shopping"/>
+      <com.google.android.material.tabs.TabItem
+          android:icon="@drawable/ic_fab_24px"
+          android:text="@string/cat_tabs_label_news"/>
+      <com.google.android.material.tabs.TabItem
+          android:icon="@drawable/ic_components_24px"
+          android:text="@string/cat_tabs_label_maps"/>
 
-  <com.google.android.material.tabs.TabLayout
-      style="@style/Widget.MaterialComponents.TabLayout"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginBottom="16dp">
+    </com.google.android.material.tabs.TabLayout>
 
-    <com.google.android.material.tabs.TabItem
-        android:icon="@drawable/ic_colors_24px"
-        android:text="@string/cat_tabs_label_shopping"/>
-    <com.google.android.material.tabs.TabItem
-        android:icon="@drawable/ic_fab_24px"
-        android:text="@string/cat_tabs_label_news"/>
-    <com.google.android.material.tabs.TabItem
-        android:icon="@drawable/ic_components_24px"
-        android:text="@string/cat_tabs_label_maps"/>
+    <TextView
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/cat_tabs_standard_spacing"
+        android:text="@string/cat_tabs_material_tabs_label"
+        android:textSize="16sp"/>
 
-  </com.google.android.material.tabs.TabLayout>
+    <com.google.android.material.tabs.TabLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp">
 
-  <TextView
-      android:textStyle="bold"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:padding="@dimen/cat_tabs_standard_spacing"
-      android:text="@string/cat_tabs_colored_tabs_label"
-      android:textSize="16sp"/>
+      <com.google.android.material.tabs.TabItem
+          android:icon="@drawable/ic_colors_24px"
+          android:text="@string/cat_tabs_label_shopping"/>
+      <com.google.android.material.tabs.TabItem
+          android:icon="@drawable/ic_fab_24px"
+          android:text="@string/cat_tabs_label_news"/>
+      <com.google.android.material.tabs.TabItem
+          android:icon="@drawable/ic_components_24px"
+          android:text="@string/cat_tabs_label_maps"/>
 
-  <com.google.android.material.tabs.TabLayout
-      style="@style/Widget.MaterialComponents.TabLayout.Colored"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content">
+    </com.google.android.material.tabs.TabLayout>
 
-    <com.google.android.material.tabs.TabItem
-        android:icon="@drawable/ic_colors_24px"
-        android:text="@string/cat_tabs_label_shopping"/>
-    <com.google.android.material.tabs.TabItem
-        android:icon="@drawable/ic_fab_24px"
-        android:text="@string/cat_tabs_label_news"/>
-    <com.google.android.material.tabs.TabItem
-        android:icon="@drawable/ic_components_24px"
-        android:text="@string/cat_tabs_label_maps"/>
+    <TextView
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/cat_tabs_standard_spacing"
+        android:text="@string/cat_tabs_colored_tabs_label"
+        android:textSize="16sp"/>
 
-  </com.google.android.material.tabs.TabLayout>
+    <com.google.android.material.tabs.TabLayout
+        style="@style/Widget.MaterialComponents.TabLayout.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-</LinearLayout>
+      <com.google.android.material.tabs.TabItem
+          android:icon="@drawable/ic_colors_24px"
+          android:text="@string/cat_tabs_label_shopping"/>
+      <com.google.android.material.tabs.TabItem
+          android:icon="@drawable/ic_fab_24px"
+          android:text="@string/cat_tabs_label_news"/>
+      <com.google.android.material.tabs.TabItem
+          android:icon="@drawable/ic_components_24px"
+          android:text="@string/cat_tabs_label_maps"/>
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <Button
+        android:id="@+id/increment_badge_number_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="8dp"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/cat_tabs_increment_badge_number"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="end|center_vertical"
+          android:labelFor="@+id/badge_gravity_spinner"
+          android:text="@string/cat_tabs_badge_gravity_spinner_label"/>
+      <Spinner
+          android:id="@id/badge_gravity_spinner"
+          android:layout_width="wrap_content"
+          android:layout_height="48dp"/>
+    </LinearLayout>
+  </LinearLayout>
+</ScrollView>

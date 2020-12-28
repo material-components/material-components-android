@@ -18,6 +18,10 @@ package io.material.catalog.card;
 
 import io.material.catalog.R;
 
+<<<<<<< HEAD
+=======
+import android.content.Intent;
+>>>>>>> pr/1944
 import androidx.fragment.app.Fragment;
 import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
@@ -27,6 +31,8 @@ import io.material.catalog.application.scope.FragmentScope;
 import io.material.catalog.feature.Demo;
 import io.material.catalog.feature.DemoLandingFragment;
 import io.material.catalog.feature.FeatureDemo;
+import java.util.Arrays;
+import java.util.List;
 
 /** A landing fragment that links to card demos for the Catalog app. */
 public class CardFragment extends DemoLandingFragment {
@@ -49,6 +55,47 @@ public class CardFragment extends DemoLandingFragment {
         return new CardMainDemoFragment();
       }
     };
+  }
+
+  @Override
+  public List<Demo> getAdditionalDemos() {
+    return Arrays.asList(
+        new Demo(R.string.cat_card_selection_mode) {
+          @Override
+          public Intent createActivityIntent() {
+            return new Intent(getContext(), CardSelectionModeActivity.class);
+          }
+        },
+        new Demo(R.string.cat_card_draggable_card) {
+          @Override
+          public Fragment createFragment() {
+            return new DraggableCardFragment();
+          }
+        },
+        new Demo(R.string.cat_card_states) {
+          @Override
+          public Fragment createFragment() {
+            return new CardStatesFragment();
+          }
+        },
+        new Demo(R.string.cat_card_rich_media_demo) {
+          @Override
+          public Fragment createFragment() {
+            return new CardRichMediaDemoFragment();
+          }
+        },
+        new Demo(R.string.cat_card_list) {
+          @Override
+          public Fragment createFragment() {
+            return new CardListDemoFragment();
+          }
+        },
+        new Demo(R.string.cat_card_swipe_dismiss) {
+          @Override
+          public Fragment createFragment() {
+            return new CardSwipeDismissFragment();
+          }
+        });
   }
 
   /** The Dagger module for {@link CardFragment} dependencies. */

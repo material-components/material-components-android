@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2020 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+  <string name="mtrl_picker_range_header_title">Aralıq seçin</string>
+  <string name="mtrl_picker_date_header_title">Tarix seçin</string>
+  <string name="mtrl_picker_range_header_unselected">Başlama tarixi - Bitmə tarixi</string>
+  <string name="mtrl_picker_range_header_only_start_selected">%1$s – Bitmə tarixi</string>
+  <string name="mtrl_picker_range_header_only_end_selected">Başlama tarixi – %1$s</string>
+  <string name="mtrl_picker_range_header_selected">%1$s: %2$s</string>
+  <string name="mtrl_picker_date_header_unselected">Seçilmiş tarix</string>
+  <string name="mtrl_picker_date_header_selected">%1$s</string>
+  <string name="mtrl_picker_confirm">@android:string/ok</string>
+  <string name="mtrl_picker_text_input_date_hint">Tarix</string>
+  <string name="mtrl_picker_text_input_date_range_start_hint">Başlama tarixi</string>
+  <string name="mtrl_picker_text_input_date_range_end_hint">Bitmə tarixi</string>
+  <string name="mtrl_picker_text_input_year_abbr">il</string>
+  <string name="mtrl_picker_text_input_month_abbr">ay</string>
+  <string name="mtrl_picker_text_input_day_abbr">gün</string>
+  <string name="mtrl_picker_save">Saxlayın</string>
+  <string name="mtrl_picker_invalid_range">Yanlış diapazon.</string>
+  <string name="mtrl_picker_out_of_range">Əhatə dairəsindən kənar: %1$s</string>
+  <string name="mtrl_picker_invalid_format">Yanlış format.</string>
+  <string name="mtrl_picker_invalid_format_use">%1$s istifadə edin</string>
+  <string name="mtrl_picker_invalid_format_example">Nümunə: %1$s</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode">Təqvim daxiletmə rejiminə keçin</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode">Mətn daxiletmə rejiminə keçin</string>
+  <string name="mtrl_picker_a11y_prev_month">Əvvəlki aya dəyişin</string>
+  <string name="mtrl_picker_a11y_next_month">Növbəti aya dəyişin</string>
+  <string name="mtrl_picker_toggle_to_year_selection">İl seçiminə keçmək üçün toxunun</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Gün seçiminə keçmək üçün toxunun</string>
+  <string name="mtrl_picker_day_of_week_column_header">Gün sütunu: %1$s</string>
+  <string name="mtrl_picker_announce_current_selection">Cari seçim: %1$s</string>
+  <string name="mtrl_picker_navigate_to_year_description">%1$s ilinə keçin</string>
+</resources>

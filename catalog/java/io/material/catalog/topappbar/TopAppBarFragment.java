@@ -20,6 +20,10 @@ import io.material.catalog.R;
 
 import android.content.Intent;
 import androidx.fragment.app.Fragment;
+<<<<<<< HEAD
+=======
+import androidx.annotation.NonNull;
+>>>>>>> pr/1944
 import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
 import dagger.multibindings.IntoSet;
@@ -29,6 +33,7 @@ import io.material.catalog.feature.Demo;
 import io.material.catalog.feature.DemoLandingFragment;
 import io.material.catalog.feature.FeatureDemo;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /** A landing fragment that links to Top App Bar demos for the Catalog app. */
@@ -65,33 +70,58 @@ public class TopAppBarFragment extends DemoLandingFragment {
           }
         });
     additionalDemos.add(
+        new Demo(R.string.cat_topappbar_scrolling_transparent_title) {
+          @Override
+          public Intent createActivityIntent() {
+            return new Intent(getContext(), TopAppBarScrollingTransparentStatusDemoActivity.class);
+          }
+        });
+    additionalDemos.addAll(getCollapsingToolbarDemos());
+    additionalDemos.add(getToolbarDemo());
+    additionalDemos.addAll(getActionBarDemos());
+    return additionalDemos;
+  }
+
+  @NonNull
+  protected List<Demo> getCollapsingToolbarDemos() {
+    return Arrays.asList(
         new Demo(R.string.cat_topappbar_collapsing_title) {
           @Override
           public Fragment createFragment() {
             return new TopAppBarCollapsingDemoFragment();
           }
+        },
+        new Demo(R.string.cat_topappbar_collapsing_multiline_title) {
+          @Override
+          public Fragment createFragment() {
+            return new TopAppBarCollapsingMultilineDemoFragment();
+          }
         });
-    additionalDemos.addAll(getActionBarDemos());
-    return additionalDemos;
   }
 
-  public List<Demo> getActionBarDemos() {
-    List<Demo> demos = new ArrayList<>();
-    demos.add(
+  protected Demo getToolbarDemo() {
+    return new Demo(R.string.cat_topappbar_toolbar_title) {
+      @Override
+      public Fragment createFragment() {
+        return new TopAppBarToolbarDemoFragment();
+      }
+    };
+  }
+
+  protected List<Demo> getActionBarDemos() {
+    return Arrays.asList(
         new Demo(R.string.cat_topappbar_action_bar_title) {
           @Override
           public Intent createActivityIntent() {
             return new Intent(getContext(), TopAppBarActionBarDemoActivity.class);
           }
-        });
-    demos.add(
+        },
         new Demo(R.string.cat_topappbar_dark_action_bar_title) {
           @Override
           public Intent createActivityIntent() {
             return new Intent(getContext(), TopAppBarDarkActionBarDemoActivity.class);
           }
         });
-    return demos;
   }
 
   /** The Dagger module for {@link TopAppBarFragment} dependencies. */

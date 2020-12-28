@@ -20,6 +20,7 @@ import io.material.catalog.R;
 
 import android.content.res.TypedArray;
 import android.os.Bundle;
+<<<<<<< HEAD
 import androidx.annotation.ArrayRes;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.LayoutRes;
@@ -28,18 +29,30 @@ import androidx.annotation.StringRes;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayout.LabelVisibility;
 import androidx.viewpager.widget.ViewPager;
+=======
+import androidx.core.view.ViewCompat;
+>>>>>>> pr/1944
 import androidx.appcompat.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import androidx.annotation.ArrayRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.viewpager.widget.ViewPager;
+import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayout.LabelVisibility;
+import com.google.android.material.tabs.TabLayout.OnTabSelectedListener;
+import com.google.android.material.tabs.TabLayout.Tab;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.DemoUtils;
 import java.util.List;
@@ -71,64 +84,66 @@ public class TabsControllableDemoFragment extends DemoFragment {
     tabLayouts = DemoUtils.findViewsWithType(view, TabLayout.class);
     pager = view.findViewById(R.id.viewpager);
 
+    CoordinatorLayout coordinatorLayout = view.findViewById(R.id.coordinator_layout);
+    ViewCompat.setOnApplyWindowInsetsListener(
+        view,
+        (v, insetsCompat) -> {
+          View scrollable = coordinatorLayout.findViewById(R.id.cat_tabs_controllable_scrollview);
+          scrollable.setPadding(
+              scrollable.getPaddingLeft(),
+              0,
+              scrollable.getPaddingRight(),
+              scrollable.getPaddingBottom());
+          return insetsCompat;
+        });
+
     setupViewPager();
     setAllTabLayoutIcons(ICON_DRAWABLE_RES);
     setAllTabLayoutText(LABEL_STRING_RES);
+    setAllTabLayoutBadges();
 
     SwitchCompat iconsToggle = view.findViewById(R.id.toggle_icons_switch);
     iconsToggle.setOnCheckedChangeListener(
-        new OnCheckedChangeListener() {
-          @Override
-          public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            showIcons = isChecked;
-            setAllTabLayoutIcons(ICON_DRAWABLE_RES);
-          }
+        (buttonView, isChecked) -> {
+          showIcons = isChecked;
+          setAllTabLayoutIcons(ICON_DRAWABLE_RES);
         });
 
     SwitchCompat labelsToggle = view.findViewById(R.id.toggle_labels_switch);
     labelsToggle.setOnCheckedChangeListener(
-        new OnCheckedChangeListener() {
-          @Override
-          public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            showLabels = isChecked;
-            if (isChecked) {
-              for (TabLayout tabLayout : tabLayouts) {
-                setLabelVisibility(tabLayout, TabLayout.TAB_LABEL_VISIBILITY_LABELED);
-              }
-            } else {
-              for (TabLayout tabLayout : tabLayouts) {
-                setLabelVisibility(tabLayout, TabLayout.TAB_LABEL_VISIBILITY_UNLABELED);
-              }
+        (buttonView, isChecked) -> {
+          showLabels = isChecked;
+          if (isChecked) {
+            for (TabLayout tabLayout : tabLayouts) {
+              setLabelVisibility(tabLayout, TabLayout.TAB_LABEL_VISIBILITY_LABELED);
+            }
+          } else {
+            for (TabLayout tabLayout : tabLayouts) {
+              setLabelVisibility(tabLayout, TabLayout.TAB_LABEL_VISIBILITY_UNLABELED);
             }
           }
         });
 
     RadioButton tabGravityFillButton = view.findViewById(R.id.tabs_gravity_fill_button);
-    tabGravityFillButton.setOnClickListener(
-        new OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            setAllTabLayoutGravity(TabLayout.GRAVITY_FILL);
-          }
-        });
+    tabGravityFillButton.setOnClickListener(v -> setAllTabLayoutGravity(TabLayout.GRAVITY_FILL));
 
     RadioButton tabGravityCenterButton = view.findViewById(R.id.tabs_gravity_center_button);
     tabGravityCenterButton.setOnClickListener(
-        new OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            setAllTabLayoutGravity(TabLayout.GRAVITY_CENTER);
-          }
-        });
+        v -> setAllTabLayoutGravity(TabLayout.GRAVITY_CENTER));
+
+    RadioButton tabAnimationModeLinearButton =
+        view.findViewById(R.id.tabs_animation_mode_linear_button);
+    tabAnimationModeLinearButton.setOnClickListener(
+        v -> setAllTabAnimationModes(TabLayout.INDICATOR_ANIMATION_MODE_LINEAR));
+
+    RadioButton tabsAnimationModeElasticButton =
+        view.findViewById(R.id.tabs_animation_mode_elastic_button);
+    tabsAnimationModeElasticButton.setOnClickListener(
+        v -> setAllTabAnimationModes(TabLayout.INDICATOR_ANIMATION_MODE_ELASTIC));
 
     SwitchCompat inlineToggle = view.findViewById(R.id.toggle_inline_switch);
     inlineToggle.setOnCheckedChangeListener(
-        new OnCheckedChangeListener() {
-          @Override
-          public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            setAllTabLayoutInline(isChecked);
-          }
-        });
+        (buttonView, isChecked) -> setAllTabLayoutInline(isChecked));
 
     Spinner selectedIndicatorSpinner = (Spinner) view.findViewById(R.id.selector_spinner);
     ArrayAdapter<CharSequence> adapter =
@@ -176,7 +191,7 @@ public class TabsControllableDemoFragment extends DemoFragment {
   }
 
   private void setupViewPager() {
-    pager.setAdapter(new TabsPagerAdapter(getFragmentManager(), getContext(), TAB_COUNT));
+    pager.setAdapter(new TabsPagerAdapter(getChildFragmentManager(), getContext(), TAB_COUNT));
     for (TabLayout tabLayout : tabLayouts) {
       tabLayout.setupWithViewPager(pager);
     }
@@ -211,6 +226,41 @@ public class TabsControllableDemoFragment extends DemoFragment {
     }
   }
 
+  private void setAllTabLayoutBadges() {
+    for (TabLayout tabLayout : tabLayouts) {
+      setupBadging(tabLayout);
+      tabLayout.addOnTabSelectedListener(
+          new OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(Tab tab) {
+              tab.removeBadge();
+            }
+
+            @Override
+            public void onTabUnselected(Tab tab) {}
+
+            @Override
+            public void onTabReselected(Tab tab) {
+              tab.removeBadge();
+            }
+          });
+    }
+  }
+
+  private void setupBadging(TabLayout tabLayout) {
+    BadgeDrawable badgeDrawable = tabLayout.getTabAt(0).getOrCreateBadge();
+    badgeDrawable.setVisible(true);
+    badgeDrawable.setNumber(1);
+
+    badgeDrawable = tabLayout.getTabAt(1).getOrCreateBadge();
+    badgeDrawable.setVisible(true);
+    badgeDrawable.setNumber(88);
+
+    badgeDrawable = tabLayout.getTabAt(2).getOrCreateBadge();
+    badgeDrawable.setVisible(true);
+    badgeDrawable.setNumber(999);
+  }
+
   private void setLabelVisibility(TabLayout tabLayout, @LabelVisibility int mode) {
      for (int i = 0; i < tabLayout.getTabCount(); i++) {
       tabLayout.getTabAt(i).setTabLabelVisibility(mode);
@@ -220,6 +270,12 @@ public class TabsControllableDemoFragment extends DemoFragment {
   private void setAllTabLayoutGravity(int gravity) {
     for (TabLayout tabLayout : tabLayouts) {
       tabLayout.setTabGravity(gravity);
+    }
+  }
+
+  private void setAllTabAnimationModes(int mode) {
+    for (TabLayout tabLayout : tabLayouts) {
+      tabLayout.setTabIndicatorAnimationMode(mode);
     }
   }
 

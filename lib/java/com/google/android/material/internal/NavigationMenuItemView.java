@@ -26,8 +26,11 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
+<<<<<<< HEAD
 import androidx.annotation.Dimension;
 import androidx.annotation.RestrictTo;
+=======
+>>>>>>> pr/1944
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.AccessibilityDelegateCompat;
@@ -45,6 +48,10 @@ import android.view.View;
 import android.view.ViewStub;
 import android.widget.CheckedTextView;
 import android.widget.FrameLayout;
+import androidx.annotation.Dimension;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
 
 /** @hide */
 @RestrictTo(LIBRARY_GROUP)
@@ -74,21 +81,23 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
       new AccessibilityDelegateCompat() {
 
         @Override
-        public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfoCompat info) {
+        public void onInitializeAccessibilityNodeInfo(
+            View host, @NonNull AccessibilityNodeInfoCompat info) {
           super.onInitializeAccessibilityNodeInfo(host, info);
           info.setCheckable(checkable);
         }
       };
 
-  public NavigationMenuItemView(Context context) {
+  public NavigationMenuItemView(@NonNull Context context) {
     this(context, null);
   }
 
-  public NavigationMenuItemView(Context context, AttributeSet attrs) {
+  public NavigationMenuItemView(@NonNull Context context, @Nullable AttributeSet attrs) {
     this(context, attrs, 0);
   }
 
-  public NavigationMenuItemView(Context context, AttributeSet attrs, int defStyleAttr) {
+  public NavigationMenuItemView(
+      @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
     setOrientation(HORIZONTAL);
     LayoutInflater.from(context).inflate(R.layout.design_navigation_menu_item, this, true);
@@ -99,8 +108,11 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
   }
 
   @Override
-  public void initialize(MenuItemImpl itemData, int menuType) {
+  public void initialize(@NonNull MenuItemImpl itemData, int menuType) {
     this.itemData = itemData;
+    if (itemData.getItemId() > 0) {
+      setId(itemData.getItemId());
+    }
 
     setVisibility(itemData.isVisible() ? VISIBLE : GONE);
 
@@ -151,7 +163,7 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
     textView.setCompoundDrawables(null, null, null, null);
   }
 
-  private void setActionView(View actionView) {
+  private void setActionView(@Nullable View actionView) {
     if (actionView != null) {
       if (actionArea == null) {
         actionArea =
@@ -163,6 +175,7 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
     }
   }
 
+  @Nullable
   private StateListDrawable createDefaultBackground() {
     TypedValue value = new TypedValue();
     if (getContext()
@@ -206,7 +219,7 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
   public void setShortcut(boolean showShortcut, char shortcutKey) {}
 
   @Override
-  public void setIcon(Drawable icon) {
+  public void setIcon(@Nullable Drawable icon) {
     if (icon != null) {
       if (hasIconTintList) {
         Drawable.ConstantState state = icon.getConstantState();
@@ -278,5 +291,9 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
 
   public void setIconPadding(int padding) {
     textView.setCompoundDrawablePadding(padding);
+  }
+
+  public void setMaxLines(int maxLines) {
+    textView.setMaxLines(maxLines);
   }
 }

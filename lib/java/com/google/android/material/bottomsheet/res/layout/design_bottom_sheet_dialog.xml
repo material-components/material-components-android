@@ -33,6 +33,7 @@
         android:id="@+id/touch_outside"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:focusable="false"
         android:importantForAccessibility="no"
         android:soundEffectsEnabled="false"
         tools:ignore="UnusedAttribute"/>

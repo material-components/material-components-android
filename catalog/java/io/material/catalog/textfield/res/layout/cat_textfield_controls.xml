@@ -32,12 +32,24 @@
         android:layout_marginBottom="@dimen/cat_textfield_standard_spacing"
         android:layout_gravity="center_horizontal"
         android:text="@string/cat_textfield_show_error_text"/>
+
     <Button
-        android:id="@+id/button_change_color"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/cat_textfield_customize_color"/>
+      android:id="@+id/button_toggle_leading_icon"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/cat_textfield_standard_spacing"
+      android:layout_gravity="center_horizontal"
+      android:text="@string/cat_textfield_show_leading_icon"
+      android:visibility="gone"/>
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+      android:id="@+id/cat_textfield_enabled_switch"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="8dp"
+      android:layout_gravity="center_horizontal"
+      android:checked="true"
+      android:text="@string/cat_textfield_label_enabled"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -67,32 +79,24 @@
           app:errorEnabled="true">
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:imeOptions="actionDone"/>
       </com.google.android.material.textfield.TextInputLayout>
-      <Button
-          android:id="@+id/button_update_label_text"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_gravity="center_horizontal"
-          android:text="@string/cat_textfield_update_label_text"/>
 
       <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/text_input_error"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_margin="4dp"
           android:hint="@string/cat_textfield_customize_error_text"
           app:errorEnabled="true">
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_text_error"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:inputType="text"
+           android:imeOptions="actionDone"/>
       </com.google.android.material.textfield.TextInputLayout>
-      <Button
-          android:id="@+id/button_update_error_text"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_gravity="center_horizontal"
-          android:text="@string/cat_textfield_update_error_text"/>
 
       <com.google.android.material.textfield.TextInputLayout
           android:id="@+id/text_input_helper_text"
@@ -103,14 +107,10 @@
           app:errorEnabled="true">
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:imeOptions="actionDone"/>
       </com.google.android.material.textfield.TextInputLayout>
-      <Button
-          android:id="@+id/button_update_helper_text"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_gravity="center_horizontal"
-          android:text="@string/cat_textfield_update_helper_text"/>
 
       <com.google.android.material.textfield.TextInputLayout
           android:id="@+id/text_input_counter_max"
@@ -122,14 +122,23 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"/>
+            android:inputType="number"
+            android:imeOptions="actionDone"/>
       </com.google.android.material.textfield.TextInputLayout>
-      <Button
-          android:id="@+id/button_counter_max"
-          android:layout_width="wrap_content"
+
+      <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/text_input_placeholder"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_gravity="center_horizontal"
-          android:text="@string/cat_textfield_update_counter_text"/>
+          android:layout_margin="4dp"
+          android:hint="@string/cat_textfield_customize_placeholder_text"
+          app:errorEnabled="true">
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:imeOptions="actionDone"/>
+      </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
   </LinearLayout>
 </ScrollView>

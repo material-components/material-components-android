@@ -157,4 +157,14 @@
       android:layout_below="@id/cat_chip_action_chip"
       android:layout_centerHorizontal="true"
       android:text="@string/cat_chip_long_text_switch_label"/>
+
+  <com.google.android.material.switchmaterial.SwitchMaterial
+    android:id="@+id/cat_chip_enabled_switch"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:layout_below="@id/cat_chip_text_length_switch"
+    android:layout_centerHorizontal="true"
+    android:checked="true"
+    android:text="@string/cat_chip_enabled_switch_label"/>
 </RelativeLayout>

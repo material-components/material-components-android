@@ -20,11 +20,19 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
+<<<<<<< HEAD
 import androidx.annotation.RestrictTo;
 import androidx.transition.Transition;
 import androidx.transition.TransitionValues;
+=======
+>>>>>>> pr/1944
 import android.view.ViewGroup;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+import androidx.transition.Transition;
+import androidx.transition.TransitionValues;
 import java.util.Map;
 
 /** @hide */
@@ -33,16 +41,16 @@ public class TextScale extends Transition {
   private static final String PROPNAME_SCALE = "android:textscale:scale";
 
   @Override
-  public void captureStartValues(TransitionValues transitionValues) {
+  public void captureStartValues(@NonNull TransitionValues transitionValues) {
     captureValues(transitionValues);
   }
 
   @Override
-  public void captureEndValues(TransitionValues transitionValues) {
+  public void captureEndValues(@NonNull TransitionValues transitionValues) {
     captureValues(transitionValues);
   }
 
-  private void captureValues(TransitionValues transitionValues) {
+  private void captureValues(@NonNull TransitionValues transitionValues) {
     if (transitionValues.view instanceof TextView) {
       TextView textview = (TextView) transitionValues.view;
       transitionValues.values.put(PROPNAME_SCALE, textview.getScaleX());
@@ -51,7 +59,9 @@ public class TextScale extends Transition {
 
   @Override
   public Animator createAnimator(
-      ViewGroup sceneRoot, TransitionValues startValues, TransitionValues endValues) {
+      @NonNull ViewGroup sceneRoot,
+      @Nullable TransitionValues startValues,
+      @Nullable TransitionValues endValues) {
     if (startValues == null
         || endValues == null
         || !(startValues.view instanceof TextView)
@@ -74,7 +84,7 @@ public class TextScale extends Transition {
     animator.addUpdateListener(
         new ValueAnimator.AnimatorUpdateListener() {
           @Override
-          public void onAnimationUpdate(ValueAnimator valueAnimator) {
+          public void onAnimationUpdate(@NonNull ValueAnimator valueAnimator) {
             float animatedValue = (float) valueAnimator.getAnimatedValue();
             view.setScaleX(animatedValue);
             view.setScaleY(animatedValue);

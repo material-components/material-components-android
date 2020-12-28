@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2020 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+  <string name="mtrl_picker_range_header_title">පරාසය තෝරන්න</string>
+  <string name="mtrl_picker_date_header_title">දිනය තෝරන්න</string>
+  <string name="mtrl_picker_range_header_unselected">ආරම්භක දිනය – නිමා වන දිනය</string>
+  <string name="mtrl_picker_range_header_only_start_selected">%1$s – නිමා වන දිනය</string>
+  <string name="mtrl_picker_range_header_only_end_selected">ආරම්භක දිනය – %1$s</string>
+  <string name="mtrl_picker_range_header_selected">%1$s – %2$s</string>
+  <string name="mtrl_picker_date_header_unselected">තේරූ දිනය</string>
+  <string name="mtrl_picker_date_header_selected">%1$s</string>
+  <string name="mtrl_picker_confirm">@android:string/ok</string>
+  <string name="mtrl_picker_text_input_date_hint">දිනය</string>
+  <string name="mtrl_picker_text_input_date_range_start_hint">ආරම්භක දිනය</string>
+  <string name="mtrl_picker_text_input_date_range_end_hint">නිමා වන දිනය</string>
+  <string name="mtrl_picker_text_input_year_abbr">ව</string>
+  <string name="mtrl_picker_text_input_month_abbr">ම</string>
+  <string name="mtrl_picker_text_input_day_abbr">ද</string>
+  <string name="mtrl_picker_save">සුරකින්න</string>
+  <string name="mtrl_picker_invalid_range">අවලංගු පරාසයකි.</string>
+  <string name="mtrl_picker_out_of_range">පරාසයෙන් පිටත: %1$s</string>
+  <string name="mtrl_picker_invalid_format">අවලංගු ආකෘතියකි.</string>
+  <string name="mtrl_picker_invalid_format_use">භාවිතය: %1$s</string>
+  <string name="mtrl_picker_invalid_format_example">උදාහරණය: %1$s</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode">දින දර්ශන ආදාන ප්‍රකාරයට මාරු වන්න</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode">පෙළ ආදාන ප්‍රකාරයට මාරු වන්න</string>
+  <string name="mtrl_picker_a11y_prev_month">කලින් මාසයට වෙනස් කරන්න</string>
+  <string name="mtrl_picker_a11y_next_month">ලබන මාසයට වෙනස් කරන්න</string>
+  <string name="mtrl_picker_toggle_to_year_selection">වසරක් තේරීමට මාරු වීමට තට්ටු කරන්න</string>
+  <string name="mtrl_picker_toggle_to_day_selection">දිනයක් තේරීමට මාරු වීමට තට්ටු කරන්න</string>
+  <string name="mtrl_picker_day_of_week_column_header">දින තීරුව: %1$s</string>
+  <string name="mtrl_picker_announce_current_selection">වත්මන් තේරීම: %1$s</string>
+  <string name="mtrl_picker_navigate_to_year_description">%1$s වසරට සංචාලනය කරන්න</string>
+</resources>

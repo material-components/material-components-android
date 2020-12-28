@@ -24,6 +24,8 @@
   <public name="colorOnBackground" type="attr"/>
   <public name="colorOnError" type="attr"/>
   <public name="colorOnSurface" type="attr"/>
+  <public name="colorPrimarySurface" type="attr"/>
+  <public name="colorOnPrimarySurface" type="attr"/>
   <public name="scrimBackground" type="attr"/>
 
   <public name="design_default_color_primary" type="color"/>
@@ -36,21 +38,19 @@
   <public name="design_default_color_error" type="color"/>
   <public name="design_default_color_on_primary" type="color"/>
   <public name="design_default_color_on_secondary" type="color"/>
-  <public name="mtrl_on_primary_disabled" type="color"/>
-  <public name="mtrl_on_primary_emphasis_high_type" type="color"/>
-  <public name="mtrl_on_primary_emphasis_medium" type="color"/>
-  <public name="mtrl_on_surface_disabled" type="color"/>
-  <public name="mtrl_on_surface_emphasis_high_type" type="color"/>
-  <public name="mtrl_on_surface_emphasis_medium" type="color"/>
-  <public name="mtrl_dark_on_primary_disabled" type="color"/>
-  <public name="mtrl_dark_on_primary_emphasis_high_type" type="color"/>
-  <public name="mtrl_dark_on_primary_emphasis_medium" type="color"/>
-  <public name="mtrl_dark_on_surface_disabled" type="color"/>
-  <public name="mtrl_dark_on_surface_emphasis_high_type" type="color"/>
-  <public name="mtrl_dark_on_surface_emphasis_medium" type="color"/>
-  <public name="mtrl_emphasis_high_type" format="float" type="dimen" />
-  <public name="mtrl_emphasis_medium" format="float" type="dimen"/>
-  <public name="mtrl_emphasis_disabled" format="float" type="dimen"/>
+  <public name="material_on_primary_disabled" type="color"/>
+  <public name="material_on_primary_emphasis_high_type" type="color"/>
+  <public name="material_on_primary_emphasis_medium" type="color"/>
+  <public name="material_on_background_disabled" type="color"/>
+  <public name="material_on_background_emphasis_high_type" type="color"/>
+  <public name="material_on_background_emphasis_medium" type="color"/>
+  <public name="material_on_surface_disabled" type="color"/>
+  <public name="material_on_surface_emphasis_high_type" type="color"/>
+  <public name="material_on_surface_emphasis_medium" type="color"/>
+  <public name="material_on_surface_stroke" type="color"/>
+  <public name="material_emphasis_high_type" type="dimen" />
+  <public name="material_emphasis_medium" type="dimen"/>
+  <public name="material_emphasis_disabled" type="dimen"/>
 
   <public name="useMaterialThemeColors" type="attr"/>
 </resources>

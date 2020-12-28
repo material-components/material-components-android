@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2019 The Android Open Source Project
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+  <style name="MaterialAlertDialog.MaterialComponents.Picker.Date.Spinner" parent="android:Widget.DeviceDefault.DatePicker">
+    <item name="backgroundInsetTop">@dimen/mtrl_alert_dialog_picker_background_inset</item>
+    <item name="backgroundInsetBottom">@dimen/mtrl_alert_dialog_picker_background_inset</item>
+    <item name="shapeAppearance">?attr/shapeAppearanceMediumComponent</item>
+  </style>
+
+  <style name="MaterialAlertDialog.MaterialComponents.Picker.Date.Calendar" parent="android:Widget.DeviceDefault.DatePicker">
+    <item name="backgroundInsetTop">@dimen/mtrl_alert_dialog_picker_background_inset</item>
+    <item name="backgroundInsetBottom">@dimen/mtrl_alert_dialog_picker_background_inset</item>
+    <item name="shapeAppearance">?attr/shapeAppearanceMediumComponent</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.MaterialCalendar" parent="android:Widget">
+    <item name="android:windowFullscreen">false</item>
+    <item name="shapeAppearance">?attr/shapeAppearanceMediumComponent</item>
+    <item name="dayStyle">@style/Widget.MaterialComponents.MaterialCalendar.Day</item>
+    <item name="dayInvalidStyle">@style/Widget.MaterialComponents.MaterialCalendar.Day.Invalid</item>
+    <item name="daySelectedStyle">@style/Widget.MaterialComponents.MaterialCalendar.Day.Selected</item>
+    <item name="dayTodayStyle">@style/Widget.MaterialComponents.MaterialCalendar.Day.Today</item>
+    <item name="yearStyle">@style/Widget.MaterialComponents.MaterialCalendar.Year</item>
+    <item name="yearSelectedStyle">@style/Widget.MaterialComponents.MaterialCalendar.Year.Selected</item>
+    <item name="yearTodayStyle">@style/Widget.MaterialComponents.MaterialCalendar.Year.Today</item>
+    <item name="rangeFillColor">@color/mtrl_calendar_selected_range</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.MaterialCalendar.Fullscreen" parent="Widget.MaterialComponents.MaterialCalendar">
+    <item name="android:windowFullscreen">true</item>
+    <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar.Window.Fullscreen</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.MaterialCalendar.HeaderLayout" parent="android:Widget">
+    <item name="android:background">?attr/colorPrimary</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.MaterialCalendar.HeaderDivider" parent="android:Widget">
+    <item name="android:visibility">gone</item>
+    <item name="android:background">?attr/colorOnPrimary</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.MaterialCalendar.HeaderTitle" parent="Widget.AppCompat.TextView">
+    <item name="android:textAppearance">?attr/textAppearanceOverline</item>
+    <item name="android:textColor">?attr/colorOnPrimary</item>
+    <item name="android:maxLines">1</item>
+    <item name="android:ellipsize">end</item>
+    <item name="autoSizeTextType">uniform</item>
+    <item name="autoSizeMaxTextSize">10sp</item>
+    <item name="autoSizeMinTextSize">2sp</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.MaterialCalendar.HeaderSelection" parent="Widget.AppCompat.TextView">
+    <item name="android:textAppearance">?attr/textAppearanceHeadline4</item>
+    <item name="android:textColor">?attr/colorOnPrimary</item>
+    <item name="android:maxLines">@integer/mtrl_calendar_selection_text_lines</item>
+    <item name="android:ellipsize">end</item>
+    <item name="autoSizeTextType">uniform</item>
+    <item name="autoSizeMaxTextSize">34sp</item>
+    <item name="autoSizeMinTextSize">2sp</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.MaterialCalendar.HeaderSelection.Fullscreen">
+    <item name="android:textAppearance">?attr/textAppearanceHeadline6</item>
+    <item name="android:maxLines">1</item>
+    <item name="autoSizeMaxTextSize">20sp</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.MaterialCalendar.HeaderCancelButton" parent="Widget.MaterialComponents.Button.TextButton">
+    <item name="iconTint">?attr/colorOnPrimary</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.MaterialCalendar.HeaderConfirmButton" parent="Widget.MaterialComponents.Button.TextButton">
+    <item name="android:textColor">@color/mtrl_on_primary_text_btn_text_color_selector</item>
+    <item name="rippleColor">@color/mtrl_btn_ripple_color</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.MaterialCalendar.HeaderToggleButton" parent="Widget.AppCompat.ImageButton">
+    <item name="android:background">?attr/actionBarItemBackground</item>
+    <item name="android:tint">?attr/colorOnPrimary</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.MaterialCalendar.DayTextView" parent="Widget.AppCompat.TextView">
+    <item name="android:textAppearance">?attr/textAppearanceCaption</item>
+    <item name="android:gravity">center</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.MaterialCalendar.MonthTextView" parent="Widget.AppCompat.TextView">
+    <item name="android:textAppearance">?attr/textAppearanceSubtitle2</item>
+    <item name="android:textColor">@color/material_on_surface_emphasis_medium</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.MaterialCalendar.Item" parent="">
+    <item name="itemFillColor">@android:color/transparent</item>
+    <item name="itemTextColor">@color/material_on_surface_emphasis_high_type</item>
+    <item name="itemStrokeColor">@color/mtrl_calendar_item_stroke_color</item>
+    <item name="itemStrokeWidth">1dp</item>
+    <item name="itemShapeAppearance">?attr/shapeAppearanceSmallComponent</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.MaterialCalendar.Day" parent="Widget.MaterialComponents.MaterialCalendar.Item">
+    <item name="itemShapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar.Day</item>
+    <item name="android:width">@dimen/mtrl_calendar_day_width</item>
+    <item name="android:height">@dimen/mtrl_calendar_day_height</item>
+    <item name="android:insetTop">@dimen/mtrl_calendar_day_vertical_padding</item>
+    <item name="android:insetBottom">@dimen/mtrl_calendar_day_vertical_padding</item>
+    <item name="android:insetLeft">@dimen/mtrl_calendar_day_horizontal_padding</item>
+    <item name="android:insetRight">@dimen/mtrl_calendar_day_horizontal_padding</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.MaterialCalendar.Day.Invalid">
+    <item name="itemTextColor">@color/material_on_surface_disabled</item>
+    <item name="itemStrokeWidth">0dp</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.MaterialCalendar.Day.Selected">
+    <item name="itemFillColor">?attr/colorPrimary</item>
+    <item name="itemTextColor">?attr/colorOnPrimary</item>
+    <item name="itemStrokeWidth">0dp</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.MaterialCalendar.Day.Today">
+    <item name="itemStrokeColor">@color/material_on_surface_emphasis_high_type</item>
+    <item name="itemStrokeWidth">@dimen/mtrl_calendar_day_today_stroke</item>
+  </style>
+
+  <style name="ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar.Day" parent="">
+    <item name="cornerSize">@dimen/mtrl_calendar_day_corner</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.MaterialCalendar.Year" parent="Widget.MaterialComponents.MaterialCalendar.Item">
+    <item name="itemShapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar.Year</item>
+    <item name="android:width">@dimen/mtrl_calendar_year_width</item>
+    <item name="android:height">@dimen/mtrl_calendar_year_height</item>
+    <item name="android:insetTop">@dimen/mtrl_calendar_year_vertical_padding</item>
+    <item name="android:insetBottom">@dimen/mtrl_calendar_year_vertical_padding</item>
+    <item name="android:insetLeft">@dimen/mtrl_calendar_year_horizontal_padding</item>
+    <item name="android:insetRight">@dimen/mtrl_calendar_year_horizontal_padding</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.MaterialCalendar.Year.Selected" parent="Widget.MaterialComponents.MaterialCalendar.Year">
+    <item name="itemFillColor">?attr/colorPrimary</item>
+    <item name="itemTextColor">?attr/colorOnPrimary</item>
+    <item name="itemStrokeColor">?attr/colorOnPrimary</item>
+    <item name="itemStrokeWidth">0dp</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.MaterialCalendar.Year.Today" parent="Widget.MaterialComponents.MaterialCalendar.Year">
+    <item name="itemStrokeColor">@color/material_on_surface_emphasis_high_type</item>
+    <item name="itemStrokeWidth">@dimen/mtrl_calendar_day_today_stroke</item>
+  </style>
+
+  <style name="Base.Widget.MaterialComponents.MaterialCalendar.NavigationButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog.Flush">
+    <item name="android:textColor">@color/material_on_surface_emphasis_medium</item>
+    <item name="iconTint">@color/material_on_surface_emphasis_medium</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.MaterialCalendar.YearNavigationButton" parent="Base.Widget.MaterialComponents.MaterialCalendar.NavigationButton"/>
+  <style name="Widget.MaterialComponents.MaterialCalendar.MonthNavigationButton" parent="Base.Widget.MaterialComponents.MaterialCalendar.NavigationButton"/>
+
+  <style name="ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar.Year" parent="">
+    <item name="cornerSize">@dimen/mtrl_calendar_year_corner</item>
+  </style>
+
+  <style name="ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar.Window.Fullscreen" parent="">
+    <item name="cornerSize">0dp</item>
+  </style>
+
+</resources>

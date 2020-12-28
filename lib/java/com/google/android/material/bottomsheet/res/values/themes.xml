@@ -14,17 +14,17 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <style name="Theme.MaterialComponents.BottomSheetDialog" parent="Theme.MaterialComponents.Dialog">
     <item name="android:windowBackground">@android:color/transparent</item>
     <item name="android:windowAnimationStyle">@style/Animation.MaterialComponents.BottomSheetDialog</item>
-    <item name="bottomSheetStyle">@style/Widget.Design.BottomSheet.Modal</item>
+    <item name="bottomSheetStyle">@style/Widget.MaterialComponents.BottomSheet.Modal</item>
   </style>
 
   <style name="Theme.MaterialComponents.Light.BottomSheetDialog" parent="Theme.MaterialComponents.Light.Dialog">
     <item name="android:windowBackground">@android:color/transparent</item>
     <item name="android:windowAnimationStyle">@style/Animation.MaterialComponents.BottomSheetDialog</item>
-    <item name="bottomSheetStyle">@style/Widget.Design.BottomSheet.Modal</item>
+    <item name="bottomSheetStyle">@style/Widget.MaterialComponents.BottomSheet.Modal</item>
   </style>
 
   <!-- Deprecated. Use Theme.MaterialComponents.BottomSheetDialog instead. -->
@@ -40,4 +40,16 @@
     <item name="android:windowAnimationStyle">@style/Animation.Design.BottomSheetDialog</item>
     <item name="bottomSheetStyle">@style/Widget.Design.BottomSheet.Modal</item>
   </style>
+
+  <style name="Base.V14.ThemeOverlay.MaterialComponents.BottomSheetDialog"
+    parent="Base.ThemeOverlay.MaterialComponents.Dialog">
+    <item name="android:windowIsFloating">false</item>
+    <item name="android:windowBackground">@android:color/transparent</item>
+    <item name="android:windowAnimationStyle">@style/Animation.MaterialComponents.BottomSheetDialog</item>
+    <item name="bottomSheetStyle">@style/Widget.MaterialComponents.BottomSheet.Modal</item>
+    <item name="enableEdgeToEdge">true</item>
+  </style>
+
+  <style name="ThemeOverlay.MaterialComponents.BottomSheetDialog"
+    parent="Base.V14.ThemeOverlay.MaterialComponents.BottomSheetDialog"/>
 </resources>

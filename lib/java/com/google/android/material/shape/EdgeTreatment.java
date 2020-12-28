@@ -16,7 +16,7 @@
 
 package com.google.android.material.shape;
 
-import com.google.android.material.internal.Experimental;
+import androidx.annotation.NonNull;
 
 /**
  * A basic edge treatment (a single straight line). Sub-classed for custom edge treatments.
@@ -26,8 +26,18 @@ import com.google.android.material.internal.Experimental;
  * setting `android:clipChildren="false"` in xml. `clipToPadding` may also need to be false if there
  * is any padding on the parent that could intersect the shadow.
  */
-@Experimental("The shapes API is currently experimental and subject to change")
-public class EdgeTreatment implements Cloneable {
+public class EdgeTreatment {
+
+  /**
+   * @deprecated Does not support interpolation. Use {@link #getEdgePath(float, float, float,
+   *     ShapePath)} instead.
+   */
+  @Deprecated
+  public void getEdgePath(float length, float interpolation, @NonNull ShapePath shapePath) {
+    // Best guess at center since it could be offset by corners of different size.
+    float center = length / 2f;
+    getEdgePath(length, center,  interpolation, shapePath);
+  }
 
   /**
    * Generates a {@link ShapePath} for this edge treatment.
@@ -49,17 +59,17 @@ public class EdgeTreatment implements Cloneable {
    *     "heal" or "reveal" an edge treatment.
    * @param shapePath the {@link ShapePath} that this treatment should write to.
    */
-  public void getEdgePath(float length, float center, float interpolation, ShapePath shapePath) {
+  public void getEdgePath(
+      float length, float center, float interpolation, @NonNull ShapePath shapePath) {
     shapePath.lineTo(length, 0);
   }
 
-  @Override
-  public EdgeTreatment clone() {
-    try {
-      return (EdgeTreatment) super.clone();
-    } catch (CloneNotSupportedException e) {
-      throw new AssertionError(e); // This should never happen, because EdgeTreatment handles the
-      // cloning, so all subclasses of EdgeTreatment will support cloning.
-    }
+  /**
+   * Causes this edge to be intersected with the line between the start of the previous corner, and
+   * the end of the next corner. This allows for simpler definition of edge treatments since they
+   * can be less exact about how they calculate the start and ending point of the edge.
+   */
+  boolean forceIntersection() {
+    return false;
   }
 }

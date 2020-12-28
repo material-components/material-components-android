@@ -16,11 +16,16 @@
 package com.google.android.material.testapp.custom;
 
 import android.content.Context;
+<<<<<<< HEAD
 import com.google.android.material.snackbar.Snackbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+=======
+>>>>>>> pr/1944
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import com.google.android.material.snackbar.Snackbar;
 
 public class TestFloatingBehavior extends CoordinatorLayout.Behavior<TextView> {
   // Default constructor is needed to instantiate a Behavior object when it is attached

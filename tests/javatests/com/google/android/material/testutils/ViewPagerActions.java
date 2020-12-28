@@ -19,12 +19,21 @@ package com.google.android.material.testutils;
 import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast;
 
+<<<<<<< HEAD
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import android.view.View;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
+=======
+import android.view.View;
+import androidx.annotation.Nullable;
+import androidx.test.espresso.UiController;
+import androidx.test.espresso.ViewAction;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+>>>>>>> pr/1944
 import org.hamcrest.Matcher;
 
 public class ViewPagerActions {

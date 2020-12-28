@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2019 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+  <string name="cat_toc_transition" tools:ignore="UnusedResources">Transition</string>
+  <string name="cat_transition_title">Transition</string>
+  <string name="cat_transition_description">
+    Transition choreography is a coordinated sequence of motion that maintains user focus as the interface adapts.
+  </string>
+
+  <string name="cat_transition_container_transform_activity_title">Container Transform (Activity)</string>
+
+  <string name="cat_transition_container_transform_fragment_title">Container Transform (Fragment)</string>
+  <string name="cat_transition_card_title">Title</string>
+  <string name="cat_transition_lorem_ipsum" translatable="false">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris volutpat, dolor id interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus dui nec risus. Maecenas non sodales nisi, vel dictum dolor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse blandit eleifend diam, vel rutrum tellus vulputate quis. Aliquam eget libero aliquet, imperdiet nisl a, ornare ex. Sed rhoncus est ut libero porta lobortis. Fusce in dictum tellus.\n\n
+Suspendisse interdum ornare ante. Aliquam nec cursus lorem. Morbi id magna felis. Vivamus egestas, est a condimentum egestas, turpis nisl iaculis ipsum, in dictum tellus dolor sed neque. Morbi tellus erat, dapibus ut sem a, iaculis tincidunt dui. Interdum et malesuada fames ac ante ipsum primis in faucibus. Curabitur et eros porttitor, ultricies urna vitae, molestie nibh. Phasellus at commodo eros, non aliquet metus. Sed maximus nisl nec dolor bibendum, vel congue leo egestas.\n\n
+Sed interdum tortor nibh, in sagittis risus mollis quis. Curabitur mi odio, condimentum sit amet auctor at, mollis non turpis. Nullam pretium libero vestibulum, finibus orci vel, molestie quam. Fusce blandit tincidunt nulla, quis sollicitudin libero facilisis et. Integer interdum nunc ligula, et fermentum metus hendrerit id. Vestibulum lectus felis, dictum at lacinia sit amet, tristique id quam. Cras eu consequat dui. Suspendisse sodales nunc ligula, in lobortis sem porta sed. Integer id ultrices magna, in luctus elit. Sed a pellentesque est.\n\n
+Aenean nunc velit, lacinia sed dolor sed, ultrices viverra nulla. Etiam a venenatis nibh. Morbi laoreet, tortor sed facilisis varius, nibh orci rhoncus nulla, id elementum leo dui non lorem. Nam mollis ipsum quis auctor varius. Quisque elementum eu libero sed commodo. In eros nisl, imperdiet vel imperdiet et, scelerisque a mauris. Pellentesque varius ex nunc, quis imperdiet eros placerat ac. Duis finibus orci et est auctor tincidunt. Sed non viverra ipsum. Nunc quis augue egestas, cursus lorem at, molestie sem. Morbi a consectetur ipsum, a placerat diam. Etiam vulputate dignissim convallis. Integer faucibus mauris sit amet finibus convallis.\n\n
+Phasellus in aliquet mi. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In volutpat arcu ut felis sagittis, in finibus massa gravida. Pellentesque id tellus orci. Integer dictum, lorem sed efficitur ullamcorper, libero justo consectetur ipsum, in mollis nisl ex sed nisl. Donec maximus ullamcorper sodales. Praesent bibendum rhoncus tellus nec feugiat. In a ornare nulla. Donec rhoncus libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim."</string>
+  <string name="cat_transition_title_content_desc">Sample title</string>
+  <string name="cat_transition_body_content_desc">Sample body text</string>
+  <string name="cat_transition_image_content_desc">Sample header image</string>
+
+  <string name="cat_transition_container_transform_view_title">Container Transform (View)</string>
+
+  <string name="cat_transition_contact_card_sandra">Sandra Adams</string>
+  <string name="cat_transition_contact_card_charlie">Charlie Zhao</string>
+  <string name="cat_transition_contact_card_trevor">Trevor Hansen</string>
+  <string name="cat_transition_contact_card_david">David Park</string>
+  <string name="cat_transition_contact_card_compose">Compose New</string>
+
+  <string name="cat_transition_config_menu_item_title">Configure transition</string>
+  <string name="cat_transition_config_path_motion_title">Path motion</string>
+  <string name="cat_transition_config_path_motion_arc">Arc</string>
+  <string name="cat_transition_config_path_motion_linear">Linear</string>
+  <string name="cat_transition_config_enter_duration_title">Enter Duration</string>
+  <string name="cat_transition_config_return_duration_title">Return Duration</string>
+  <string name="cat_transition_config_interpolation_title">Interpolation</string>
+  <string name="cat_transition_config_fast_out_slow_in_title">FastOutSlowIn</string>
+  <string name="cat_transition_config_overshoot">Overshoot</string>
+  <string name="cat_transition_config_anticipate_overshoot">AnticipateOvershoot</string>
+  <string name="cat_transition_config_overshoot_tension_hint">Tension</string>
+  <string name="cat_transition_config_bounce">Bounce</string>
+  <string name="cat_transition_config_custom_interpolator_title">Custom cubic bezier</string>
+  <string name="cat_transition_config_custom_interpolator_desc">Custom (%1$.3f, %2$.3f, %3$.3f, %4$.3f)</string>
+  <string name="cat_transition_config_cubic_bezier_control_x1_hint">x1</string>
+  <string name="cat_transition_config_cubic_bezier_control_y1_hint">y1</string>
+  <string name="cat_transition_config_cubic_bezier_control_x2_hint">x2</string>
+  <string name="cat_transition_config_cubic_bezier_control_y2_hint">y2</string>
+  <string name="cat_transition_config_fade_mode_title">Fade mode</string>
+  <string name="cat_transition_config_fade_mode_in">In</string>
+  <string name="cat_transition_config_fade_mode_out">Out</string>
+  <string name="cat_transition_config_fade_mode_cross">Cross</string>
+  <string name="cat_transition_config_fade_mode_through">Through</string>
+  <string name="cat_transition_config_debug_title">Debug</string>
+  <string name="cat_transition_config_draw_debug_checkbox_desc">Draw debugging lines</string>
+  <string name="cat_transition_config_apply_button_text">Apply</string>
+  <string name="cat_transition_config_clear_button_text">Clear</string>
+
+  <string name="cat_transition_fade_through_title">Fade Through</string>
+  <string name="cat_transition_fade_through_menu_item_albums">Albums</string>
+  <string name="cat_transition_fade_through_menu_item_photos">Photos</string>
+  <string name="cat_transition_fade_through_menu_item_search">Search</string>
+  <string name="cat_transition_fade_through_photo_count">123 photos</string>
+
+  <string name="cat_transition_shared_axis_fragment_title">Shared Axis (Fragment)</string>
+  <string name="cat_transition_shared_axis_activity_title">Shared Axis (Activity)</string>
+  <string name="cat_transition_shared_axis_view_title">Shared Axis (View)</string>
+  <string name="cat_transition_shared_axis_back">Back</string>
+  <string name="cat_transition_shared_axis_next">Next</string>
+  <string name="cat_transition_shared_axis_x">X</string>
+  <string name="cat_transition_shared_axis_y">Y</string>
+  <string name="cat_transition_shared_axis_z">Z</string>
+  <string name="cat_transition_shared_axis_sign_in_greeting">Hi David Park</string>
+  <string name="cat_transition_shared_axis_sign_in_title">Sign in with your account</string>
+  <string name="cat_transition_shared_axis_sign_in_hint">Email or phone number</string>
+  <string name="cat_transition_shared_axis_sign_in_forgot_email">Forgot email?</string>
+  <string name="cat_transition_shared_axis_sign_in_create_account">Create account</string>
+  <string name="cat_transition_shared_axis_courses_title">Streamline your courses</string>
+  <string name="cat_transition_shared_axis_courses_caption">Bundled categories appear as groups in your feed. You can always change this later.</string>
+  <string name="cat_transition_shared_axis_courses_bundled">Bundled</string>
+  <string name="cat_transition_shared_axis_courses_unbundled">Shown individually</string>
+  <string name="cat_transition_shared_axis_courses_one"><![CDATA[Arts & Crafts]]></string>
+  <string name="cat_transition_shared_axis_courses_two">Business</string>
+  <string name="cat_transition_shared_axis_courses_three">Illustration</string>
+  <string name="cat_transition_shared_axis_courses_four">Design</string>
+  <string name="cat_transition_shared_axis_courses_five">Culinary</string>
+
+  <string name="cat_transition_fade_title">Fade</string>
+  <string name="cat_transition_fade_button_hide_fab">Hide FAB</string>
+  <string name="cat_transition_fade_button_show_fab">Show FAB</string>
+
+</resources>

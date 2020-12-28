@@ -16,5 +16,5 @@
   -->
 
 <resources>
-  <dimen name="cat_bottom_nav_standard_spacing">16dp</dimen>
+  <dimen name="cat_bottom_nav_standard_spacing">8dp</dimen>
 </resources>

@@ -19,7 +19,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
   <com.google.android.material.appbar.AppBarLayout
       android:layout_width="match_parent"
-      android:layout_height="wrap_content">
+      android:layout_height="wrap_content"
+      android:fitsSystemWindows="true">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -40,10 +41,33 @@
         android:orientation="vertical">
 
       <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <ToggleButton
+          android:id="@+id/bar_scroll_toggle"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textOff="@string/cat_bottomappbar_scroll_hide"
+          android:textOn="@string/cat_bottomappbar_scroll_hide"/>
+
+        <ToggleButton
+          android:id="@+id/fab_animation_mode_toggle"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textOff="@string/cat_bottomappbar_fab_anim_scale"
+          android:textOn="@string/cat_bottomappbar_fab_anim_slide"/>
+
+      </LinearLayout>
+
+      <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:gravity="center_horizontal"
-          android:orientation="horizontal">
+          android:orientation="horizontal"
+          android:paddingBottom="2dp">
 
         <Button
             android:id="@+id/center"
@@ -67,13 +91,6 @@
             android:layout_height="wrap_content"
             android:textOff="@string/cat_bottomappbar_fab_show"
             android:textOn="@string/cat_bottomappbar_fab_hide"/>
-
-        <ToggleButton
-            android:id="@+id/shape_toggle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textOff="@string/cat_bottomappbar_fab_diamond"
-            android:textOn="@string/cat_bottomappbar_fab_circle"/>
 
       </LinearLayout>
 

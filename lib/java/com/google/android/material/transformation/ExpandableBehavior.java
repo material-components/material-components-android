@@ -16,17 +16,27 @@
 package com.google.android.material.transformation;
 
 import android.content.Context;
+<<<<<<< HEAD
 import androidx.annotation.CallSuper;
 import androidx.annotation.IntDef;
 import androidx.annotation.Nullable;
 import com.google.android.material.expandable.ExpandableWidget;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior;
+=======
+>>>>>>> pr/1944
 import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver.OnPreDrawListener;
+import androidx.annotation.CallSuper;
+import androidx.annotation.IntDef;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior;
+import com.google.android.material.expandable.ExpandableWidget;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.List;
@@ -34,7 +44,11 @@ import java.util.List;
 /**
  * Base Behavior for views that can react to an {@link ExpandableWidget}'s {@link
  * ExpandableWidget#setExpanded(boolean)} state changes.
+ *
+ * @deprecated Use {@link com.google.android.material.transition.MaterialContainerTransform}
+ *     instead.
  */
+@Deprecated
 public abstract class ExpandableBehavior extends Behavior<View> {
 
   /** Uninitialized expanded state. */
@@ -50,8 +64,9 @@ public abstract class ExpandableBehavior extends Behavior<View> {
 
   /**
    * The current expanded state of this behavior. This state follows the expanded state of the
-   * {@link ExpandableWidget} dependency, and is updated in {@link #onLayoutChild(CoordinatorLayout,
-   * View, int)} and {@link #onDependentViewChanged(CoordinatorLayout, View, View)}.
+   * {@link com.google.android.material.expandable.ExpandableWidget} dependency, and is updated in
+   * {@link #onLayoutChild(CoordinatorLayout, View, int)} and {@link
+   * #onDependentViewChanged(CoordinatorLayout, View, View)}.
    *
    * <p>This state may be {@link #STATE_UNINITIALIZED} before either of those callbacks have been
    * invoked.
@@ -69,14 +84,17 @@ public abstract class ExpandableBehavior extends Behavior<View> {
 
   /**
    * Reacts to a change in expanded state. This callback is guaranteed to be called only once even
-   * if {@link ExpandableWidget#setExpanded(boolean)} is called multiple times with the same value.
-   * Upon configuration change, this callback is called with {@code animated} set to false.
+   * if {@link com.google.android.material.expandable.ExpandableWidget#setExpanded(boolean)} is
+   * called multiple times with the same value. Upon configuration change, this callback is called
+   * with {@code animated} set to false.
    *
-   * @param dependency the {@link ExpandableWidget} dependency containing the new expanded state.
+   * @param dependency the {@link com.google.android.material.expandable.ExpandableWidget}
+   *     dependency containing the new expanded state.
    * @param child the view that should react to the change in expanded state.
    * @param expanded the new expanded state.
-   * @param animated true if {@link ExpandableWidget#setExpanded(boolean)} was called, false if
-   *     restoring from a configuration change.
+   * @param animated true if {@link
+   *     com.google.android.material.expandable.ExpandableWidget#setExpanded(boolean)} was called,
+   *     false if restoring from a configuration change.
    * @return true if the Behavior changed the child view's size or position, false otherwise.
    */
   protected abstract boolean onExpandedStateChange(
@@ -84,7 +102,8 @@ public abstract class ExpandableBehavior extends Behavior<View> {
 
   @CallSuper
   @Override
-  public boolean onLayoutChild(CoordinatorLayout parent, final View child, int layoutDirection) {
+  public boolean onLayoutChild(
+      @NonNull CoordinatorLayout parent, @NonNull final View child, int layoutDirection) {
     if (!ViewCompat.isLaidOut(child)) {
       final ExpandableWidget dep = findExpandableWidget(parent, child);
       if (dep != null && didStateChange(dep.isExpanded())) {
@@ -124,7 +143,8 @@ public abstract class ExpandableBehavior extends Behavior<View> {
   }
 
   @Nullable
-  protected ExpandableWidget findExpandableWidget(CoordinatorLayout parent, View child) {
+  protected ExpandableWidget findExpandableWidget(
+      @NonNull CoordinatorLayout parent, @NonNull View child) {
     List<View> dependencies = parent.getDependencies(child);
     for (int i = 0, size = dependencies.size(); i < size; i++) {
       View dependency = dependencies.get(i);
@@ -152,7 +172,8 @@ public abstract class ExpandableBehavior extends Behavior<View> {
    * @param klass The expected {@link Class} of the attached {@link ExpandableBehavior}.
    * @return The {@link ExpandableBehavior} attached to the {@code view}.
    */
-  public static <T extends ExpandableBehavior> T from(View view, Class<T> klass) {
+  @Nullable
+  public static <T extends ExpandableBehavior> T from(@NonNull View view, @NonNull Class<T> klass) {
     ViewGroup.LayoutParams params = view.getLayoutParams();
     if (!(params instanceof CoordinatorLayout.LayoutParams)) {
       throw new IllegalArgumentException("The view is not a child of CoordinatorLayout");

@@ -16,6 +16,12 @@
 
 package com.google.android.material.floatingactionbutton;
 
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static com.google.android.material.testutils.DesignViewActions.setVisibility;
 import static com.google.android.material.testutils.FloatingActionButtonActions.hideThenShow;
 import static com.google.android.material.testutils.FloatingActionButtonActions.setBackgroundTintColor;
@@ -39,12 +45,15 @@ import static com.google.android.material.testutils.TestUtilsMatchers.withFabBac
 import static com.google.android.material.testutils.TestUtilsMatchers.withFabContentAreaOnMargins;
 import static com.google.android.material.testutils.TestUtilsMatchers.withFabContentHeight;
 import static com.google.android.material.testutils.TestUtilsMatchers.withFabCustomSize;
+<<<<<<< HEAD
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+=======
+>>>>>>> pr/1944
 import static org.hamcrest.Matchers.not;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -54,10 +63,22 @@ import android.app.Activity;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.view.Gravity;
+import android.view.View;
+import androidx.core.content.ContextCompat;
+import androidx.test.espresso.action.GeneralSwipeAction;
+import androidx.test.espresso.action.Press;
+import androidx.test.espresso.action.Swipe;
+import androidx.test.filters.LargeTest;
+import androidx.test.filters.MediumTest;
+import androidx.test.filters.SmallTest;
+import androidx.test.rule.ActivityTestRule;
+import androidx.test.runner.AndroidJUnit4;
 import com.google.android.material.testapp.FloatingActionButtonActivity;
 import com.google.android.material.testapp.R;
 import com.google.android.material.testutils.ActivityUtils;
 import com.google.android.material.testutils.TestUtils;
+<<<<<<< HEAD
 import androidx.core.content.ContextCompat;
 import android.view.Gravity;
 import android.view.View;
@@ -70,6 +91,8 @@ import androidx.test.filters.MediumTest;
 import androidx.test.filters.SmallTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
+=======
+>>>>>>> pr/1944
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -229,32 +252,26 @@ public class FloatingActionButtonTest {
         .perform(
             new GeneralSwipeAction(
                 Swipe.SLOW,
-                new CoordinatesProvider() {
-                  @Override
-                  public float[] calculateCoordinates(View view) {
-                    // Create coordinators that in the center of the FAB's content area
-                    final FloatingActionButton fab = (FloatingActionButton) view;
+                view -> {
+                  // Create coordinators that in the center of the FAB's content area
+                  final FloatingActionButton fab = (FloatingActionButton) view;
 
-                    final int[] xy = new int[2];
-                    fab.getLocationOnScreen(xy);
-                    final Rect rect = new Rect();
-                    fab.getContentRect(rect);
+                  final int[] xy = new int[2];
+                  fab.getLocationOnScreen(xy);
+                  final Rect rect = new Rect();
+                  fab.getContentRect(rect);
 
-                    return new float[] {xy[0] + rect.centerX(), xy[1] + rect.centerY()};
-                  }
+                  return new float[] {xy[0] + rect.centerX(), xy[1] + rect.centerY()};
                 },
-                new CoordinatesProvider() {
-                  @Override
-                  public float[] calculateCoordinates(View view) {
-                    // Create coordinators that in the center horizontally, but well
-                    // below the view vertically (by 50% of the height)
-                    final int[] xy = new int[2];
-                    view.getLocationOnScreen(xy);
+                view -> {
+                  // Create coordinators that in the center horizontally, but well
+                  // below the view vertically (by 50% of the height)
+                  final int[] xy = new int[2];
+                  view.getLocationOnScreen(xy);
 
-                    return new float[] {
-                      xy[0] + (view.getWidth() / 2f), xy[1] + (view.getHeight() * 1.5f)
-                    };
-                  }
+                  return new float[] {
+                    xy[0] + (view.getWidth() / 2f), xy[1] + (view.getHeight() * 1.5f)
+                  };
                 },
                 Press.FINGER))
         .check(matches(not(isPressed())));

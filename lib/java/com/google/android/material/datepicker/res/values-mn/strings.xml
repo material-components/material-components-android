@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2020 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+  <string name="mtrl_picker_range_header_title">Муж сонгох</string>
+  <string name="mtrl_picker_date_header_title">Огноо сонгох</string>
+  <string name="mtrl_picker_range_header_unselected">Эхлэх огноо – Дуусах огноо</string>
+  <string name="mtrl_picker_range_header_only_start_selected">%1$s – Дуусах огноо</string>
+  <string name="mtrl_picker_range_header_only_end_selected">Эхлэх огноо – %1$s</string>
+  <string name="mtrl_picker_range_header_selected">%1$s – %2$s</string>
+  <string name="mtrl_picker_date_header_unselected">Сонгосон огноо</string>
+  <string name="mtrl_picker_date_header_selected">%1$s</string>
+  <string name="mtrl_picker_confirm">@android:string/ok</string>
+  <string name="mtrl_picker_text_input_date_hint">Огноо</string>
+  <string name="mtrl_picker_text_input_date_range_start_hint">Эхлэх огноо</string>
+  <string name="mtrl_picker_text_input_date_range_end_hint">Дуусах огноо</string>
+  <string name="mtrl_picker_text_input_year_abbr">ж</string>
+  <string name="mtrl_picker_text_input_month_abbr">с</string>
+  <string name="mtrl_picker_text_input_day_abbr">ө</string>
+  <string name="mtrl_picker_save">Хадгалах</string>
+  <string name="mtrl_picker_invalid_range">Огнооны хязгаар буруу байна.</string>
+  <string name="mtrl_picker_out_of_range">Хязгаараас хэтэрсэн: %1$s</string>
+  <string name="mtrl_picker_invalid_format">Буруу формат байна.</string>
+  <string name="mtrl_picker_invalid_format_use">Ашиглах формат: %1$s</string>
+  <string name="mtrl_picker_invalid_format_example">Жишээ нь: %1$s</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode">Календарийн орох горим руу сэлгэх</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode">Текстийн орох горим руу сэлгэх</string>
+  <string name="mtrl_picker_a11y_prev_month">Өмнөх сар луу өөрчлөх</string>
+  <string name="mtrl_picker_a11y_next_month">Дараагийн сар луу өөрчлөх</string>
+  <string name="mtrl_picker_toggle_to_year_selection">Он сонгох руу сэлгэхийн тулд товшино уу</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Өдөр сонгох руу сэлгэхийн тулд товшино уу</string>
+  <string name="mtrl_picker_day_of_week_column_header">Өдрийн багана: %1$s</string>
+  <string name="mtrl_picker_announce_current_selection">Одоогийн сонголт: %1$s</string>
+  <string name="mtrl_picker_navigate_to_year_description">%1$s он руу шилжих</string>
+</resources>

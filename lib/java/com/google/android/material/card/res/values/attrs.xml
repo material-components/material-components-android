@@ -24,6 +24,22 @@
   <attr name="materialCardViewStyle" format="reference"/>
 
   <declare-styleable name="MaterialCardView">
+    <!-- Whether the card can be checked. -->
+    <attr name="android:checkable"/>
+    <!-- Foreground color for CardView. -->
+    <attr name="cardForegroundColor" format="color"/>
+    <!-- Check icon drawable. -->
+    <attr name="checkedIcon"/>
+    <!-- Tint color for the checked icon. -->
+    <attr name="checkedIconTint"/>
+    <!-- Check icon size for Checkable Cards-->
+    <attr name="checkedIconSize" format="dimension"/>
+    <!-- Check icon margin for Checkable Cards-->
+    <attr name="checkedIconMargin" format="dimension"/>
+    <!-- Ripple color for the Card. -->
+    <attr name="rippleColor"/>
+    <!-- State when a Card is being dragged. -->
+    <attr name="state_dragged" format="boolean" />
     <!-- Specifies the color used to draw the path outline of the card. Attribute type definition is
          in resources package. -->
     <attr name="strokeColor"/>

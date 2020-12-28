@@ -18,16 +18,30 @@ package com.google.android.material.behavior;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
+<<<<<<< HEAD
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.ViewCompat;
 import androidx.customview.widget.ViewDragHelper;
+=======
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
+import androidx.core.view.accessibility.AccessibilityViewCommand;
+>>>>>>> pr/1944
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import androidx.annotation.IntDef;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.VisibleForTesting;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.customview.widget.ViewDragHelper;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -108,8 +122,14 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
    *
    * @param listener the listener to use.
    */
-  public void setListener(OnDismissListener listener) {
+  public void setListener(@Nullable OnDismissListener listener) {
     this.listener = listener;
+  }
+
+  @VisibleForTesting
+  @Nullable
+  public OnDismissListener getListener() {
+    return listener;
   }
 
   /**
@@ -162,7 +182,20 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
   }
 
   @Override
-  public boolean onInterceptTouchEvent(CoordinatorLayout parent, V child, MotionEvent event) {
+  public boolean onLayoutChild(
+      @NonNull CoordinatorLayout parent, @NonNull V child, int layoutDirection) {
+    boolean handled = super.onLayoutChild(parent, child, layoutDirection);
+    if (ViewCompat.getImportantForAccessibility(child)
+        == ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_AUTO) {
+      ViewCompat.setImportantForAccessibility(child, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
+      updateAccessibilityActions(child);
+    }
+    return handled;
+  }
+
+  @Override
+  public boolean onInterceptTouchEvent(
+      @NonNull CoordinatorLayout parent, @NonNull V child, @NonNull MotionEvent event) {
     boolean dispatchEventToHelper = interceptingEvents;
 
     switch (event.getActionMasked()) {
@@ -173,7 +206,7 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
         break;
       case MotionEvent.ACTION_UP:
       case MotionEvent.ACTION_CANCEL:
-        // Reset the ignore flag for next time
+        // Reset the ignore flag for next times
         interceptingEvents = false;
         break;
     }
@@ -214,11 +247,12 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
         @Override
         public boolean tryCaptureView(View child, int pointerId) {
           // Only capture if we don't already have an active pointer id
-          return activePointerId == INVALID_POINTER_ID && canSwipeDismissView(child);
+          return (activePointerId == INVALID_POINTER_ID || activePointerId == pointerId)
+              && canSwipeDismissView(child);
         }
 
         @Override
-        public void onViewCaptured(View capturedChild, int activePointerId) {
+        public void onViewCaptured(@NonNull View capturedChild, int activePointerId) {
           this.activePointerId = activePointerId;
           originalCapturedViewLeft = capturedChild.getLeft();
 
@@ -238,7 +272,7 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
         }
 
         @Override
-        public void onViewReleased(View child, float xvel, float yvel) {
+        public void onViewReleased(@NonNull View child, float xvel, float yvel) {
           // Reset the active pointer ID
           activePointerId = INVALID_POINTER_ID;
 
@@ -264,7 +298,7 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
           }
         }
 
-        private boolean shouldDismiss(View child, float xvel) {
+        private boolean shouldDismiss(@NonNull View child, float xvel) {
           if (xvel != 0f) {
             final boolean isRtl =
                 ViewCompat.getLayoutDirection(child) == ViewCompat.LAYOUT_DIRECTION_RTL;
@@ -291,12 +325,12 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
         }
 
         @Override
-        public int getViewHorizontalDragRange(View child) {
+        public int getViewHorizontalDragRange(@NonNull View child) {
           return child.getWidth();
         }
 
         @Override
-        public int clampViewPositionHorizontal(View child, int left, int dx) {
+        public int clampViewPositionHorizontal(@NonNull View child, int left, int dx) {
           final boolean isRtl =
               ViewCompat.getLayoutDirection(child) == ViewCompat.LAYOUT_DIRECTION_RTL;
           int min;
@@ -327,12 +361,12 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
         }
 
         @Override
-        public int clampViewPositionVertical(View child, int top, int dy) {
+        public int clampViewPositionVertical(@NonNull View child, int top, int dy) {
           return child.getTop();
         }
 
         @Override
-        public void onViewPositionChanged(View child, int left, int top, int dx, int dy) {
+        public void onViewPositionChanged(@NonNull View child, int left, int top, int dx, int dy) {
           final float startAlphaDistance =
               originalCapturedViewLeft + child.getWidth() * alphaStartSwipeDistance;
           final float endAlphaDistance =
@@ -377,6 +411,36 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
           listener.onDismiss(view);
         }
       }
+    }
+  }
+
+  private void updateAccessibilityActions(View child) {
+    ViewCompat.removeAccessibilityAction(child, AccessibilityNodeInfoCompat.ACTION_DISMISS);
+    if (canSwipeDismissView(child)) {
+      ViewCompat.replaceAccessibilityAction(
+          child,
+          AccessibilityActionCompat.ACTION_DISMISS,
+          null,
+          new AccessibilityViewCommand() {
+            @Override
+            public boolean perform(@NonNull View view, @Nullable CommandArguments arguments) {
+              if (canSwipeDismissView(view)) {
+                final boolean isRtl =
+                    ViewCompat.getLayoutDirection(view) == ViewCompat.LAYOUT_DIRECTION_RTL;
+                boolean dismissToLeft =
+                    (swipeDirection == SWIPE_DIRECTION_START_TO_END && isRtl)
+                        || (swipeDirection == SWIPE_DIRECTION_END_TO_START && !isRtl);
+                int offset = dismissToLeft ? -view.getWidth() : view.getWidth();
+                ViewCompat.offsetLeftAndRight(view, offset);
+                view.setAlpha(0f);
+                if (listener != null) {
+                  listener.onDismiss(view);
+                }
+                return true;
+              }
+              return false;
+            }
+          });
     }
   }
 

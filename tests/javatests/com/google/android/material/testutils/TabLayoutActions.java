@@ -18,6 +18,7 @@ package com.google.android.material.testutils;
 
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast;
 
+<<<<<<< HEAD
 import androidx.annotation.Nullable;
 import com.google.android.material.tabs.TabLayout;
 import androidx.viewpager.widget.ViewPager;
@@ -25,6 +26,15 @@ import android.view.View;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.matcher.ViewMatchers;
+=======
+import android.view.View;
+import androidx.annotation.Nullable;
+import androidx.test.espresso.UiController;
+import androidx.test.espresso.ViewAction;
+import androidx.test.espresso.matcher.ViewMatchers;
+import androidx.viewpager.widget.ViewPager;
+import com.google.android.material.tabs.TabLayout;
+>>>>>>> pr/1944
 import org.hamcrest.Matcher;
 
 public class TabLayoutActions {
@@ -47,8 +57,28 @@ public class TabLayoutActions {
 
         TabLayout tabLayout = (TabLayout) view;
         tabLayout.setupWithViewPager(viewPager);
-
         uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
+
+  /** Setup and show badge number for the specified tab of the <code>TabLayout</code>. */
+  public static ViewAction showBadgeOnTab(final int tabIndex, final int badgeNumber) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isDisplayingAtLeast(90);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Setup tab badge number";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TabLayout tabLayout = (TabLayout) view;
+        tabLayout.getTabAt(tabIndex).getOrCreateBadge().setNumber(badgeNumber);
       }
     };
   }

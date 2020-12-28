@@ -17,7 +17,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
   <style name="Widget.MaterialComponents.ChipGroup" parent="android:Widget">
-    <item name="chipSpacingHorizontal">4dp</item>
+    <item name="chipSpacingHorizontal">8dp</item>
     <item name="singleLine">false</item>
     <item name="singleSelection">false</item>
   </style>
@@ -39,6 +39,7 @@
     <item name="closeIcon">@drawable/ic_mtrl_chip_close_circle</item>
 
     <item name="android:text">@null</item>
+    <item name="android:includeFontPadding">false</item>
     <item name="enforceMaterialTheme">true</item>
     <item name="enforceTextAppearance">true</item>
     <item name="android:textAppearance">?attr/textAppearanceBody2</item>
@@ -49,7 +50,7 @@
     <item name="chipBackgroundColor">@color/mtrl_chip_background_color</item>
     <item name="chipStrokeColor">?attr/colorOnSurface</item>
     <item name="chipStrokeWidth">0dp</item>
-    <item name="rippleColor">@color/mtrl_chip_ripple_color</item>
+    <item name="rippleColor">@color/mtrl_on_surface_ripple_color</item>
 
     <item name="chipMinTouchTargetSize">48dp</item>
     <item name="ensureMinTouchTargetSize">true</item>
@@ -66,15 +67,12 @@
     <item name="closeIconEndPadding">2dp</item>
     <item name="chipEndPadding">6dp</item>
 
-    <item name="chipCornerRadius">16dp</item>
-
     <item name="shapeAppearance">?attr/shapeAppearanceSmallComponent</item>
     <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialComponents.Chip</item>
   </style>
 
   <style name="ShapeAppearanceOverlay.MaterialComponents.Chip" parent="">
-    <!-- Replace with 50% -->
-    <item name="cornerSize">16dp</item>
+    <item name="cornerSize">50%</item>
   </style>
 
   <!-- Style for Chips that appear in text fields as a span.
@@ -122,6 +120,12 @@
     <item name="closeIconVisible">false</item>
 
     <item name="checkedIcon">@drawable/ic_mtrl_chip_checked_black</item>
+
+    <item name="android:textColor">@color/mtrl_choice_chip_text_color</item>
+
+    <item name="chipBackgroundColor">@color/mtrl_choice_chip_background_color</item>
+    <item name="rippleColor">@color/mtrl_choice_chip_ripple_color</item>
+
   </style>
 
   <!-- Style for Chips that act as a button.

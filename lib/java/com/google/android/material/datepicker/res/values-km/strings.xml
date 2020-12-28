@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2020 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+  <string name="mtrl_picker_range_header_title">ជ្រើស​រើស​ចន្លោះ</string>
+  <string name="mtrl_picker_date_header_title">ជ្រើសរើស​កាល​បរិច្ឆេទ</string>
+  <string name="mtrl_picker_range_header_unselected">កាលបរិច្ឆេទ​ចាប់ផ្ដើម – កាលបរិច្ឆេទ​បញ្ចប់</string>
+  <string name="mtrl_picker_range_header_only_start_selected">%1$s – កាលបរិច្ឆេទ​បញ្ចប់</string>
+  <string name="mtrl_picker_range_header_only_end_selected">កាលបរិច្ឆេទ​ចាប់ផ្ដើម – %1$s</string>
+  <string name="mtrl_picker_range_header_selected">%1$s – %2$s</string>
+  <string name="mtrl_picker_date_header_unselected">កាលបរិច្ឆេទដែលបាន​ជ្រើសរើស</string>
+  <string name="mtrl_picker_date_header_selected">%1$s</string>
+  <string name="mtrl_picker_confirm">@android:string/ok</string>
+  <string name="mtrl_picker_text_input_date_hint">កាលបរិច្ឆេទ</string>
+  <string name="mtrl_picker_text_input_date_range_start_hint">កាល​បរិច្ឆេទ​ចាប់ផ្ដើម</string>
+  <string name="mtrl_picker_text_input_date_range_end_hint">កាល​បរិច្ឆេទ​បញ្ចប់</string>
+  <string name="mtrl_picker_text_input_year_abbr">ឆ</string>
+  <string name="mtrl_picker_text_input_month_abbr">ខ</string>
+  <string name="mtrl_picker_text_input_day_abbr">ថ</string>
+  <string name="mtrl_picker_save">រក្សាទុក</string>
+  <string name="mtrl_picker_invalid_range">ជួរ​មិនត្រឹមត្រូវទេ។</string>
+  <string name="mtrl_picker_out_of_range">នៅក្រៅ​ជួរ៖ %1$s</string>
+  <string name="mtrl_picker_invalid_format">ទម្រង់មិន​ត្រឹមត្រូវទេ។</string>
+  <string name="mtrl_picker_invalid_format_use">ប្រើ៖ %1$s</string>
+  <string name="mtrl_picker_invalid_format_example">ឧទាហរណ៍៖ %1$s</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode">ប្ដូរទៅ​របៀប​បញ្ចូល​ប្រតិទិន</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode">ប្ដូរទៅ​របៀប​បញ្ចូល​អក្សរ</string>
+  <string name="mtrl_picker_a11y_prev_month">ប្ដូរ​ទៅ​ខែមុន</string>
+  <string name="mtrl_picker_a11y_next_month">ប្ដូរ​ទៅ​ខែបន្ទាប់</string>
+  <string name="mtrl_picker_toggle_to_year_selection">ចុច​ដើម្បីប្ដូរទៅ​ការជ្រើសរើសឆ្នាំ</string>
+  <string name="mtrl_picker_toggle_to_day_selection">ចុច​ដើម្បីប្ដូរទៅ​ការជ្រើសរើសថ្ងៃ</string>
+  <string name="mtrl_picker_day_of_week_column_header">ជួរឈរ​នៃ​ថ្ងៃ៖ %1$s</string>
+  <string name="mtrl_picker_announce_current_selection">ការជ្រើសរើស​បច្ចុប្បន្ន៖ %1$s</string>
+  <string name="mtrl_picker_navigate_to_year_description">ប្ដូរទៅ​ឆ្នាំ %1$s</string>
+</resources>

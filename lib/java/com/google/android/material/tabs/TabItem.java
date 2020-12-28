@@ -35,13 +35,13 @@ import android.view.View;
  * @attr ref com.google.android.material.R.styleable#TabItem_android_layout
  * @see TabLayout
  */
-//TODO: make class final after the widget migration
+//TODO(b/76413401): make class final after the widget migration
 public class TabItem extends View {
-  //TODO: make package private after the widget migration
+  //TODO(b/76413401): make package private after the widget migration
   public final CharSequence text;
-  //TODO: make package private after the widget migration
+  //TODO(b/76413401): make package private after the widget migration
   public final Drawable icon;
-  //TODO: make package private after the widget migration
+  //TODO(b/76413401): make package private after the widget migration
   public final int customLayout;
 
   public TabItem(Context context) {

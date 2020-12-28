@@ -16,19 +16,43 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:orientation="vertical">
 
+<<<<<<< HEAD
   <androidx.appcompat.widget.Toolbar
       android:id="@+id/toolbar"
       style="?attr/catalogToolbarWithCloseButtonStyle"
+=======
+  <io.material.catalog.feature.MemoryView
+      android:id="@+id/memorymonitor_widget"
+      android:layout_height="wrap_content"
+      android:padding="16dp"
+      android:visibility="gone"
+      android:text="Loading..."
+>>>>>>> pr/1944
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"/>
+      tools:ignore="HardcodedText"/>
 
-  <FrameLayout
+  <com.google.android.material.appbar.AppBarLayout
+      android:id="@+id/cat_demo_fragment_appbar"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:fitsSystemWindows="true">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        style="?attr/catalogToolbarWithCloseButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+  </com.google.android.material.appbar.AppBarLayout>
+
+  <androidx.coordinatorlayout.widget.CoordinatorLayout
       android:id="@+id/cat_demo_fragment_container"
       android:layout_width="match_parent"
-      android:layout_height="match_parent"/>
+      android:layout_height="match_parent"
+      android:fitsSystemWindows="true"/>
 </LinearLayout>

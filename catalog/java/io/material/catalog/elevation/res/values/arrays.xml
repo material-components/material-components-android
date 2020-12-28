@@ -17,7 +17,7 @@
 
 <resources>
     <integer-array
-        name="cat_elevation_values">
+        name="cat_elevation_level_values">
         <item>0</item>
         <item>1</item>
         <item>3</item>

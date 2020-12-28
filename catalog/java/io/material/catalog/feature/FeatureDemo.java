@@ -16,10 +16,17 @@
 
 package io.material.catalog.feature;
 
+<<<<<<< HEAD
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IntDef;
 import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
+=======
+import androidx.fragment.app.Fragment;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.IntDef;
+import androidx.annotation.StringRes;
+>>>>>>> pr/1944
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 

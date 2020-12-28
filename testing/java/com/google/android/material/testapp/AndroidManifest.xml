@@ -24,7 +24,7 @@
   <application
     android:name="androidx.multidex.MultiDexApplication"
     android:supportsRtl="true"
-    android:theme="@style/Theme.Design">
+    android:theme="@style/Theme.MaterialComponents.Light">
 
     <activity
       android:name=".AppBarHorizontalScrollingActivity"
@@ -73,6 +73,11 @@
       android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
     <activity
+      android:name=".ExposedDropdownMenuActivity"
+      android:theme="@style/Theme.MaterialComponents.NoActionBar"
+      android:exported="false"/>
+
+    <activity
       android:name=".NavigationViewActivity"
       android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
@@ -99,6 +104,11 @@
     <activity
       android:name=".TextInputLayoutActivity"
       android:theme="@style/Theme.MaterialComponents.NoActionBar"/>
+
+    <activity
+      android:name=".TextInputLayoutWithIconsActivity"
+      android:theme="@style/Theme.MaterialComponents.NoActionBar"
+      android:exported="false"/>
 
 
   </application>

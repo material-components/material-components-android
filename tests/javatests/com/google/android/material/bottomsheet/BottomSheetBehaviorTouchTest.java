@@ -23,6 +23,7 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+<<<<<<< HEAD
 import com.google.android.material.testapp.CoordinatorLayoutActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import android.view.MotionEvent;
@@ -31,10 +32,21 @@ import android.widget.FrameLayout;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.espresso.ViewAssertion;
+=======
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.FrameLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.test.espresso.Espresso;
+>>>>>>> pr/1944
 import androidx.test.espresso.action.ViewActions;
 import androidx.test.filters.MediumTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
+<<<<<<< HEAD
+=======
+import com.google.android.material.testapp.CoordinatorLayoutActivity;
+>>>>>>> pr/1944
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -74,21 +86,18 @@ public class BottomSheetBehaviorTouchTest {
   public void setUpBottomSheet() {
     getInstrumentation()
         .runOnMainSync(
-            new Runnable() {
-              @Override
-              public void run() {
-                CoordinatorLayoutActivity activity = activityTestRule.getActivity();
-                activity.mContainer.setOnTouchListener(onTouchListener);
-                bottomSheet = new FrameLayout(activity);
-                CoordinatorLayout.LayoutParams params =
-                    new CoordinatorLayout.LayoutParams(
-                        CoordinatorLayout.LayoutParams.MATCH_PARENT,
-                        CoordinatorLayout.LayoutParams.MATCH_PARENT);
-                behavior = new BottomSheetBehavior<>();
-                behavior.setPeekHeight(PEEK_HEIGHT);
-                params.setBehavior(behavior);
-                activity.mCoordinatorLayout.addView(bottomSheet, params);
-              }
+            () -> {
+              CoordinatorLayoutActivity activity = activityTestRule.getActivity();
+              activity.mContainer.setOnTouchListener(onTouchListener);
+              bottomSheet = new FrameLayout(activity);
+              CoordinatorLayout.LayoutParams params =
+                  new CoordinatorLayout.LayoutParams(
+                      CoordinatorLayout.LayoutParams.MATCH_PARENT,
+                      CoordinatorLayout.LayoutParams.MATCH_PARENT);
+              behavior = new BottomSheetBehavior<>();
+              behavior.setPeekHeight(PEEK_HEIGHT);
+              params.setBehavior(behavior);
+              activity.mCoordinatorLayout.addView(bottomSheet, params);
             });
   }
 
@@ -105,14 +114,11 @@ public class BottomSheetBehaviorTouchTest {
     Espresso.onView(sameInstance((View) activity.mCoordinatorLayout))
         .perform(ViewActions.click()) // Click outside the bottom sheet
         .check(
-            new ViewAssertion() {
-              @Override
-              public void check(View view, NoMatchingViewException e) {
-                assertThat(e, is(nullValue()));
-                assertThat(view, is(notNullValue()));
-                // Check that the touch event fell through to the container
-                assertThat(down, is(true));
-              }
+            (view, e) -> {
+              assertThat(e, is(nullValue()));
+              assertThat(view, is(notNullValue()));
+              // Check that the touch event fell through to the container
+              assertThat(down, is(true));
             });
   }
 }

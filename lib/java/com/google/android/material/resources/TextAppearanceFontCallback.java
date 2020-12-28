@@ -17,11 +17,21 @@
 package com.google.android.material.resources;
 
 import android.graphics.Typeface;
+<<<<<<< HEAD
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.core.content.res.ResourcesCompat.FontCallback;
+=======
+import androidx.core.content.res.ResourcesCompat.FontCallback;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.RestrictTo.Scope;
+>>>>>>> pr/1944
 
-/** {@link FontCallback} font fetch, in case a different font is set / requested in the meantime. */
+/**
+ * {@link FontCallback} font fetch, in case a different font is set / requested in the meantime.
+ *
+ * @hide
+ */
 @RestrictTo(Scope.LIBRARY_GROUP)
 public abstract class TextAppearanceFontCallback {
   /**

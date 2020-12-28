@@ -16,9 +16,13 @@
 package com.google.android.material.testapp.custom;
 
 import android.content.Context;
+<<<<<<< HEAD
 import com.google.android.material.navigation.NavigationView;
+=======
+>>>>>>> pr/1944
 import androidx.core.view.WindowInsetsCompat;
 import android.util.AttributeSet;
+import com.google.android.material.navigation.NavigationView;
 
 /** Expose hasSystemWindowInsets() for testing. */
 public class NavigationTestView extends NavigationView {

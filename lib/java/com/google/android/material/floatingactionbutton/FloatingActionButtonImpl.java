@@ -18,12 +18,16 @@ package com.google.android.material.floatingactionbutton;
 
 import com.google.android.material.R;
 
+import static androidx.core.util.Preconditions.checkNotNull;
+
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
+import android.animation.FloatEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.TimeInterpolator;
+import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -36,6 +40,14 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
+<<<<<<< HEAD
+=======
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.util.Preconditions;
+import androidx.core.view.ViewCompat;
+import android.view.View;
+import android.view.ViewTreeObserver;
+>>>>>>> pr/1944
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.animation.AnimationUtils;
@@ -44,18 +56,25 @@ import com.google.android.material.animation.ImageMatrixProperty;
 import com.google.android.material.animation.MatrixEvaluator;
 import com.google.android.material.animation.MotionSpec;
 import com.google.android.material.internal.StateListAnimator;
+import com.google.android.material.ripple.RippleDrawableCompat;
 import com.google.android.material.ripple.RippleUtils;
 import com.google.android.material.shadow.ShadowViewDelegate;
 import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.MaterialShapeUtils;
 import com.google.android.material.shape.ShapeAppearanceModel;
+<<<<<<< HEAD
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
 import android.view.View;
 import android.view.ViewTreeObserver;
+=======
+import com.google.android.material.shape.Shapeable;
+>>>>>>> pr/1944
 import java.util.ArrayList;
 import java.util.List;
 
 class FloatingActionButtonImpl {
+
   static final TimeInterpolator ELEVATION_ANIM_INTERPOLATOR =
       AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR;
   static final long ELEVATION_ANIM_DURATION = 100;
@@ -72,41 +91,39 @@ class FloatingActionButtonImpl {
   private static final float SHOW_OPACITY = 1f;
   private static final float SHOW_SCALE = 1f;
   private static final float SHOW_ICON_SCALE = 1f;
-  private static final float ELEVATION_MULTIPLIER = .75f;
-  private static final float OFFSET_MULTIPLIER = .25f;
 
-  int animState = ANIM_STATE_NONE;
-  @Nullable Animator currentAnimator;
-  @Nullable MotionSpec showMotionSpec;
-  @Nullable MotionSpec hideMotionSpec;
   @Nullable ShapeAppearanceModel shapeAppearance;
-  boolean usingDefaultCorner;
+  @Nullable MaterialShapeDrawable shapeDrawable;
+  @Nullable Drawable rippleDrawable;
+  @Nullable BorderDrawable borderDrawable;
+  @Nullable Drawable contentBackground;
 
-  @Nullable private MotionSpec defaultShowMotionSpec;
-  @Nullable private MotionSpec defaultHideMotionSpec;
-
-  private final StateListAnimator stateListAnimator;
-  private float rotation;
-  private InsetDrawable insetDrawable;
-
-  MaterialShapeDrawable shapeDrawable;
-  Drawable rippleDrawable;
-  BorderDrawable borderDrawable;
-  Drawable contentBackground;
-
+  boolean ensureMinTouchTargetSize;
+  boolean shadowPaddingEnabled = true;
   float elevation;
   float hoveredFocusedTranslationZ;
   float pressedTranslationZ;
   int minTouchTargetSize;
 
-  int maxImageSize;
-  float imageMatrixScale = 1f;
+  @NonNull private final StateListAnimator stateListAnimator;
+
+  @Nullable private MotionSpec defaultShowMotionSpec;
+  @Nullable private MotionSpec defaultHideMotionSpec;
+  @Nullable private Animator currentAnimator;
+  @Nullable private MotionSpec showMotionSpec;
+  @Nullable private MotionSpec hideMotionSpec;
+
+  private float rotation;
+  private float imageMatrixScale = 1f;
+  private int maxImageSize;
+  private int animState = ANIM_STATE_NONE;
 
   private ArrayList<AnimatorListener> showListeners;
   private ArrayList<AnimatorListener> hideListeners;
-  private ArrayList<InternalTransformationListener> transformationListeners;
+  private ArrayList<InternalTransformationCallback> transformationCallbacks;
 
-  interface InternalTransformationListener {
+  interface InternalTransformationCallback {
+
     void onTranslationChanged();
 
     void onScaleChanged();
@@ -119,16 +136,16 @@ class FloatingActionButtonImpl {
   }
 
   static final int[] PRESSED_ENABLED_STATE_SET = {
-    android.R.attr.state_pressed, android.R.attr.state_enabled
+      android.R.attr.state_pressed, android.R.attr.state_enabled
   };
   static final int[] HOVERED_FOCUSED_ENABLED_STATE_SET = {
-    android.R.attr.state_hovered, android.R.attr.state_focused, android.R.attr.state_enabled
+      android.R.attr.state_hovered, android.R.attr.state_focused, android.R.attr.state_enabled
   };
   static final int[] FOCUSED_ENABLED_STATE_SET = {
-    android.R.attr.state_focused, android.R.attr.state_enabled
+      android.R.attr.state_focused, android.R.attr.state_enabled
   };
   static final int[] HOVERED_ENABLED_STATE_SET = {
-    android.R.attr.state_hovered, android.R.attr.state_enabled
+      android.R.attr.state_hovered, android.R.attr.state_enabled
   };
   static final int[] ENABLED_STATE_SET = {android.R.attr.state_enabled};
   static final int[] EMPTY_STATE_SET = new int[0];
@@ -141,8 +158,10 @@ class FloatingActionButtonImpl {
   private final RectF tmpRectF2 = new RectF();
   private final Matrix tmpMatrix = new Matrix();
 
+  @Nullable
   private ViewTreeObserver.OnPreDrawListener preDrawListener;
 
+  @SuppressWarnings("nullness")
   FloatingActionButtonImpl(FloatingActionButton view, ShadowViewDelegate shadowViewDelegate) {
     this.view = view;
     this.shadowViewDelegate = shadowViewDelegate;
@@ -172,9 +191,9 @@ class FloatingActionButtonImpl {
     rotation = this.view.getRotation();
   }
 
-  void setBackgroundDrawable(
+  void initializeBackgroundDrawable(
       ColorStateList backgroundTint,
-      PorterDuff.Mode backgroundTintMode,
+      @Nullable PorterDuff.Mode backgroundTintMode,
       ColorStateList rippleColor,
       int borderWidth) {
     // Now we need to tint the original background with the tint, using
@@ -186,18 +205,21 @@ class FloatingActionButtonImpl {
     }
 
     shapeDrawable.setShadowColor(Color.DKGRAY);
+    shapeDrawable.initializeElevationOverlay(view.getContext());
 
     // Now we created a mask Drawable which will be used for touch feedback.
-    MaterialShapeDrawable touchFeedbackShape = createShapeDrawable();
-    touchFeedbackShape.setTintList(RippleUtils.convertToRippleDrawableColor(rippleColor));
+    RippleDrawableCompat touchFeedbackShape =
+        new RippleDrawableCompat(shapeDrawable.getShapeAppearanceModel());
+    touchFeedbackShape.setTintList(RippleUtils.sanitizeRippleDrawableColor(rippleColor));
     rippleDrawable = touchFeedbackShape;
 
-    final Drawable[] layers = new Drawable[] {shapeDrawable, rippleDrawable};
+    final Drawable[] layers = new Drawable[]{
+        checkNotNull(shapeDrawable),
+        touchFeedbackShape};
     contentBackground = new LayerDrawable(layers);
-    shadowViewDelegate.setBackgroundDrawable(contentBackground);
   }
 
-  void setBackgroundTintList(ColorStateList tint) {
+  void setBackgroundTintList(@Nullable ColorStateList tint) {
     if (shapeDrawable != null) {
       shapeDrawable.setTintList(tint);
     }
@@ -206,9 +228,9 @@ class FloatingActionButtonImpl {
     }
   }
 
-  void setBackgroundTintMode(PorterDuff.Mode tintMode) {
+  void setBackgroundTintMode(@Nullable PorterDuff.Mode tintMode) {
     if (shapeDrawable != null) {
-      DrawableCompat.setTintMode(shapeDrawable, tintMode);
+      shapeDrawable.setTintMode(tintMode);
     }
   }
 
@@ -216,10 +238,10 @@ class FloatingActionButtonImpl {
     this.minTouchTargetSize = minTouchTargetSize;
   }
 
-  void setRippleColor(ColorStateList rippleColor) {
+  void setRippleColor(@Nullable ColorStateList rippleColor) {
     if (rippleDrawable != null) {
       DrawableCompat.setTintList(
-          rippleDrawable, RippleUtils.convertToRippleDrawableColor(rippleColor));
+          rippleDrawable, RippleUtils.sanitizeRippleDrawableColor(rippleColor));
     }
   }
 
@@ -277,7 +299,7 @@ class FloatingActionButtonImpl {
     view.setImageMatrix(matrix);
   }
 
-  private void calculateImageMatrixFromScale(float scale, Matrix matrix) {
+  private void calculateImageMatrixFromScale(float scale, @NonNull Matrix matrix) {
     matrix.reset();
 
     Drawable drawable = view.getDrawable();
@@ -294,24 +316,24 @@ class FloatingActionButtonImpl {
     }
   }
 
-  final void setShapeAppearance(ShapeAppearanceModel shapeAppearance, boolean usingDefaultCorner) {
-    if (usingDefaultCorner) {
-      shapeAppearance.setCornerRadius(view.getSizeDimension() / 2);
-    }
-
+  final void setShapeAppearance(@NonNull ShapeAppearanceModel shapeAppearance) {
     this.shapeAppearance = shapeAppearance;
-    this.usingDefaultCorner = usingDefaultCorner;
     if (shapeDrawable != null) {
       shapeDrawable.setShapeAppearanceModel(shapeAppearance);
     }
 
-    if (rippleDrawable instanceof MaterialShapeDrawable) {
-      ((MaterialShapeDrawable) rippleDrawable).setShapeAppearanceModel(shapeAppearance);
+    if (rippleDrawable instanceof Shapeable) {
+      ((Shapeable) rippleDrawable).setShapeAppearanceModel(shapeAppearance);
     }
 
     if (borderDrawable != null) {
       borderDrawable.setShapeAppearanceModel(shapeAppearance);
     }
+  }
+
+  @Nullable
+  final ShapeAppearanceModel getShapeAppearance() {
+    return shapeAppearance;
   }
 
   @Nullable
@@ -332,20 +354,33 @@ class FloatingActionButtonImpl {
     hideMotionSpec = spec;
   }
 
-  final boolean isAccessible() {
-    return view.getSizeDimension() >= minTouchTargetSize;
+  final boolean shouldExpandBoundsForA11y() {
+    return !ensureMinTouchTargetSize || view.getSizeDimension() >= minTouchTargetSize;
+  }
+
+  boolean getEnsureMinTouchTargetSize() {
+    return ensureMinTouchTargetSize;
+  }
+
+  void setEnsureMinTouchTargetSize(boolean flag) {
+    ensureMinTouchTargetSize = flag;
+  }
+
+  void setShadowPaddingEnabled(boolean shadowPaddingEnabled) {
+    this.shadowPaddingEnabled = shadowPaddingEnabled;
+    updatePadding();
   }
 
   void onElevationsChanged(
       float elevation, float hoveredFocusedTranslationZ, float pressedTranslationZ) {
     updatePadding();
-    updateShadow(elevation);
+    updateShapeElevation(elevation);
   }
 
-  private void updateShadow(float elevation) {
-    // TODO material shape drawable should handle this calculations.
-    shapeDrawable.setShadowElevation((int) Math.ceil((elevation * ELEVATION_MULTIPLIER)));
-    shapeDrawable.setShadowVerticalOffset((int) Math.ceil((elevation * OFFSET_MULTIPLIER)));
+  void updateShapeElevation(float elevation) {
+    if (shapeDrawable != null) {
+      shapeDrawable.setElevation(elevation);
+    }
   }
 
   void onDrawableStateChanged(int[] state) {
@@ -519,7 +554,8 @@ class FloatingActionButtonImpl {
       defaultShowMotionSpec =
           MotionSpec.createFromResource(view.getContext(), R.animator.design_fab_show_motion_spec);
     }
-    return defaultShowMotionSpec;
+
+    return checkNotNull(defaultShowMotionSpec);
   }
 
   private MotionSpec getDefaultHideMotionSpec() {
@@ -527,35 +563,38 @@ class FloatingActionButtonImpl {
       defaultHideMotionSpec =
           MotionSpec.createFromResource(view.getContext(), R.animator.design_fab_hide_motion_spec);
     }
-    return defaultHideMotionSpec;
+
+    return checkNotNull(defaultHideMotionSpec);
   }
 
   @NonNull
   private AnimatorSet createAnimator(
       @NonNull MotionSpec spec, float opacity, float scale, float iconScale) {
     List<Animator> animators = new ArrayList<>();
-    Animator animator;
 
-    animator = ObjectAnimator.ofFloat(view, View.ALPHA, opacity);
-    spec.getTiming("opacity").apply(animator);
-    animators.add(animator);
+    ObjectAnimator animatorOpacity = ObjectAnimator.ofFloat(view, View.ALPHA, opacity);
+    spec.getTiming("opacity").apply(animatorOpacity);
+    animators.add(animatorOpacity);
 
-    animator = ObjectAnimator.ofFloat(view, View.SCALE_X, scale);
-    spec.getTiming("scale").apply(animator);
-    animators.add(animator);
+    ObjectAnimator animatorScaleX = ObjectAnimator.ofFloat(view, View.SCALE_X, scale);
+    spec.getTiming("scale").apply(animatorScaleX);
+    workAroundOreoBug(animatorScaleX);
+    animators.add(animatorScaleX);
 
-    animator = ObjectAnimator.ofFloat(view, View.SCALE_Y, scale);
-    spec.getTiming("scale").apply(animator);
-    animators.add(animator);
+    ObjectAnimator animatorScaleY = ObjectAnimator.ofFloat(view, View.SCALE_Y, scale);
+    spec.getTiming("scale").apply(animatorScaleY);
+    workAroundOreoBug(animatorScaleY);
+    animators.add(animatorScaleY);
 
     calculateImageMatrixFromScale(iconScale, tmpMatrix);
-    animator =
+    ObjectAnimator animatorIconScale =
         ObjectAnimator.ofObject(
             view,
             new ImageMatrixProperty(),
             new MatrixEvaluator() {
               @Override
-              public Matrix evaluate(float fraction, Matrix startValue, Matrix endValue) {
+              public Matrix evaluate(
+                  float fraction, @NonNull Matrix startValue, @NonNull Matrix endValue) {
                 // Also set the current imageMatrixScale fraction so it can be used to correctly
                 // calculate the image matrix at any given point.
                 imageMatrixScale = fraction;
@@ -563,62 +602,72 @@ class FloatingActionButtonImpl {
               }
             },
             new Matrix(tmpMatrix));
-    spec.getTiming("iconScale").apply(animator);
-    animators.add(animator);
+    spec.getTiming("iconScale").apply(animatorIconScale);
+    animators.add(animatorIconScale);
 
     AnimatorSet set = new AnimatorSet();
     AnimatorSetCompat.playTogether(set, animators);
     return set;
   }
 
-  void addTransformationListener(@NonNull InternalTransformationListener listener) {
-    if (transformationListeners == null) {
-      transformationListeners = new ArrayList<>();
-    }
-    transformationListeners.add(listener);
-  }
-
-  void removeTransformationListener(@NonNull InternalTransformationListener listener) {
-    if (transformationListeners == null) {
-      // This can happen if this method is called before the first call to
-      // addTransformationListener.
+  /**
+   * There appears to be a bug in the OpenGL shadow rendering code on API 26. We can work around it
+   * by preventing any scaling close to 0.
+   */
+  private void workAroundOreoBug(final ObjectAnimator animator) {
+    if (Build.VERSION.SDK_INT != Build.VERSION_CODES.O) {
       return;
     }
-    transformationListeners.remove(listener);
+
+    animator.setEvaluator(new TypeEvaluator<Float>() {
+      FloatEvaluator floatEvaluator = new FloatEvaluator();
+      @Override
+      public Float evaluate(float fraction, Float startValue, Float endValue) {
+        float evaluated = floatEvaluator.evaluate(fraction, startValue, endValue);
+        return evaluated < 0.1f ? 0.0f : evaluated;
+      }
+    });
+  }
+
+  void addTransformationCallback(@NonNull InternalTransformationCallback listener) {
+    if (transformationCallbacks == null) {
+      transformationCallbacks = new ArrayList<>();
+    }
+    transformationCallbacks.add(listener);
+  }
+
+  void removeTransformationCallback(@NonNull InternalTransformationCallback listener) {
+    if (transformationCallbacks == null) {
+      // This can happen if this method is called before the first call to
+      // addTransformationCallback.
+      return;
+    }
+    transformationCallbacks.remove(listener);
   }
 
   void onTranslationChanged() {
-    if (transformationListeners != null) {
-      for (InternalTransformationListener l : transformationListeners) {
+    if (transformationCallbacks != null) {
+      for (InternalTransformationCallback l : transformationCallbacks) {
         l.onTranslationChanged();
       }
     }
   }
 
   void onScaleChanged() {
-    if (transformationListeners != null) {
-      for (InternalTransformationListener l : transformationListeners) {
+    if (transformationCallbacks != null) {
+      for (InternalTransformationCallback l : transformationCallbacks) {
         l.onScaleChanged();
       }
     }
   }
 
+  @Nullable
   final Drawable getContentBackground() {
     return contentBackground;
   }
 
   void onCompatShadowChanged() {
     // Ignore pre-v21
-  }
-
-  void updateSize() {
-    if (!usingDefaultCorner) {
-      // Leave shape appearance as is.
-      return;
-    }
-
-    ShapeAppearanceModel shapeAppearanceModel = shapeDrawable.getShapeAppearanceModel();
-    shapeAppearanceModel.setCornerRadius(view.getSizeDimension() / 2);
   }
 
   final void updatePadding() {
@@ -628,19 +677,22 @@ class FloatingActionButtonImpl {
     shadowViewDelegate.setShadowPadding(rect.left, rect.top, rect.right, rect.bottom);
   }
 
-  void getPadding(Rect rect) {
-    final int minPadding = (minTouchTargetSize - view.getSizeDimension()) / 2;
-    final float maxShadowSize = (getElevation() + pressedTranslationZ);
+  void getPadding(@NonNull Rect rect) {
+    final int minPadding = ensureMinTouchTargetSize
+        ? (minTouchTargetSize - view.getSizeDimension()) / 2
+        : 0;
+
+    final float maxShadowSize = shadowPaddingEnabled ? (getElevation() + pressedTranslationZ) : 0;
     final int hPadding = Math.max(minPadding, (int) Math.ceil(maxShadowSize));
     final int vPadding = Math.max(minPadding, (int) Math.ceil(maxShadowSize * SHADOW_MULTIPLIER));
     rect.set(hPadding, vPadding, hPadding, vPadding);
   }
 
-  void onPaddingUpdated(Rect padding) {
+  void onPaddingUpdated(@NonNull Rect padding) {
+    Preconditions.checkNotNull(contentBackground, "Didn't initialize content background");
     if (shouldAddPadding()) {
-      insetDrawable =
-          new InsetDrawable(
-              contentBackground, padding.left, padding.top, padding.right, padding.bottom);
+      InsetDrawable insetDrawable = new InsetDrawable(
+          contentBackground, padding.left, padding.top, padding.right, padding.bottom);
       shadowViewDelegate.setBackgroundDrawable(insetDrawable);
     } else {
       shadowViewDelegate.setBackgroundDrawable(contentBackground);
@@ -652,15 +704,19 @@ class FloatingActionButtonImpl {
   }
 
   void onAttachedToWindow() {
+    if (shapeDrawable != null) {
+      MaterialShapeUtils.setParentAbsoluteElevation(view, shapeDrawable);
+    }
+
     if (requirePreDrawListener()) {
-      ensurePreDrawListener();
-      view.getViewTreeObserver().addOnPreDrawListener(preDrawListener);
+      view.getViewTreeObserver().addOnPreDrawListener(getOrCreatePreDrawListener());
     }
   }
 
   void onDetachedFromWindow() {
+    ViewTreeObserver viewTreeObserver = view.getViewTreeObserver();
     if (preDrawListener != null) {
-      view.getViewTreeObserver().removeOnPreDrawListener(preDrawListener);
+      viewTreeObserver.removeOnPreDrawListener(preDrawListener);
       preDrawListener = null;
     }
   }
@@ -677,7 +733,8 @@ class FloatingActionButtonImpl {
     }
   }
 
-  private void ensurePreDrawListener() {
+  @NonNull
+  private ViewTreeObserver.OnPreDrawListener getOrCreatePreDrawListener() {
     if (preDrawListener == null) {
       preDrawListener =
           new ViewTreeObserver.OnPreDrawListener() {
@@ -688,12 +745,12 @@ class FloatingActionButtonImpl {
             }
           };
     }
+
+    return preDrawListener;
   }
 
   MaterialShapeDrawable createShapeDrawable() {
-    if (usingDefaultCorner) {
-      shapeAppearance.setCornerRadius(view.getSizeDimension() / 2);
-    }
+    ShapeAppearanceModel shapeAppearance = checkNotNull(this.shapeAppearance);
     return new MaterialShapeDrawable(shapeAppearance);
   }
 
@@ -717,6 +774,7 @@ class FloatingActionButtonImpl {
     }
   }
 
+  @NonNull
   private ValueAnimator createElevationAnimator(@NonNull ShadowAnimatorImpl impl) {
     final ValueAnimator animator = new ValueAnimator();
     animator.setInterpolator(ELEVATION_ANIM_INTERPOLATOR);
@@ -729,30 +787,32 @@ class FloatingActionButtonImpl {
 
   private abstract class ShadowAnimatorImpl extends AnimatorListenerAdapter
       implements ValueAnimator.AnimatorUpdateListener {
+
     private boolean validValues;
     private float shadowSizeStart;
     private float shadowSizeEnd;
 
     @Override
-    public void onAnimationUpdate(ValueAnimator animator) {
+    public void onAnimationUpdate(@NonNull ValueAnimator animator) {
       if (!validValues) {
-        shadowSizeStart = shapeDrawable.getShadowElevation();
+        shadowSizeStart = shapeDrawable == null ? 0 : shapeDrawable.getElevation();
         shadowSizeEnd = getTargetShadowSize();
         validValues = true;
       }
 
-      updateShadow((int)
-          (shadowSizeStart
-              + ((shadowSizeEnd - shadowSizeStart) * animator.getAnimatedFraction())));
+      updateShapeElevation(
+          (int)
+              (shadowSizeStart
+                  + ((shadowSizeEnd - shadowSizeStart) * animator.getAnimatedFraction())));
     }
 
     @Override
     public void onAnimationEnd(Animator animator) {
-      updateShadow((int) shadowSizeEnd);
+      updateShapeElevation((int) shadowSizeEnd);
       validValues = false;
     }
 
-    /** @return the shadow size we want to animate to. */
+    /** Returns the shadow size we want to animate to. */
     protected abstract float getTargetShadowSize();
   }
 

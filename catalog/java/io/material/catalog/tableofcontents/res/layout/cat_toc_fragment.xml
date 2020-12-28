@@ -21,19 +21,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cat_toc_coordinator_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
   <com.google.android.material.appbar.AppBarLayout
       android:id="@+id/cat_toc_app_bar_layout"
       android:layout_width="match_parent"
-      android:layout_height="@dimen/cat_toc_tall_toolbar_height">
+      android:layout_height="@dimen/cat_toc_tall_toolbar_height"
+      android:theme="@style/ThemeOverlay.Catalog.AppBarLayout"
+      android:fitsSystemWindows="true">
 
     <com.google.android.material.appbar.CollapsingToolbarLayout
+        android:id="@+id/cat_toc_collapsingtoolbarlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
         app:titleEnabled="false">
 
+<<<<<<< HEAD
       <FrameLayout
           android:id="@+id/content"
           android:layout_width="wrap_content"
@@ -41,11 +46,20 @@
           android:layout_gravity="center"
           app:layout_collapseMode="parallax"/>
 
+=======
+>>>>>>> pr/1944
       <androidx.appcompat.widget.Toolbar
           android:id="@+id/toolbar"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           app:layout_collapseMode="pin"/>
+
+      <FrameLayout
+          android:id="@+id/content"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_vertical"
+          app:layout_collapseMode="parallax"/>
     </com.google.android.material.appbar.CollapsingToolbarLayout>
   </com.google.android.material.appbar.AppBarLayout>
 

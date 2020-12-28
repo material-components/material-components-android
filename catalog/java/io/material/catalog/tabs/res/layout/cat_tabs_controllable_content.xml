@@ -29,7 +29,6 @@
       android:textSize="16sp"/>
 
   <com.google.android.material.tabs.TabLayout
-      style="@style/Widget.MaterialComponents.TabLayout"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginBottom="16dp"/>

@@ -18,11 +18,10 @@
 <!-- Definitions of attributes to be exposed as public -->
 <resources>
   <public name="bottomNavigationStyle" type="attr"/>
-  <public name="itemTextAppearanceInactive" type="attr"/>
-  <public name="itemTextAppearanceActive" type="attr"/>
-  <public name="labelVisibilityMode" type="attr"/>
+  <public name="itemHorizontalTranslationEnabled" type="attr"/>
+  <public name="hide_bottom_view_on_scroll_behavior" type="string"/>
   <public name="Widget.Design.BottomNavigationView" type="style"/>
   <public name="Widget.MaterialComponents.BottomNavigationView" type="style"/>
   <public name="Widget.MaterialComponents.BottomNavigationView.Colored" type="style"/>
-  <public name="hide_bottom_view_on_scroll_behavior" type="string"/>
+  <public name="Widget.MaterialComponents.BottomNavigationView.PrimarySurface" type="style"/>
 </resources>

@@ -18,9 +18,12 @@ package com.google.android.material.appbar;
 
 import android.content.Context;
 import android.graphics.Rect;
+<<<<<<< HEAD
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior;
 import androidx.core.math.MathUtils;
+=======
+>>>>>>> pr/1944
 import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -28,6 +31,11 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior;
+import androidx.core.math.MathUtils;
 import java.util.List;
 
 /**
@@ -50,8 +58,8 @@ abstract class HeaderScrollingViewBehavior extends ViewOffsetBehavior<View> {
 
   @Override
   public boolean onMeasureChild(
-      CoordinatorLayout parent,
-      View child,
+      @NonNull CoordinatorLayout parent,
+      @NonNull View child,
       int parentWidthMeasureSpec,
       int widthUsed,
       int parentHeightMeasureSpec,
@@ -65,20 +73,16 @@ abstract class HeaderScrollingViewBehavior extends ViewOffsetBehavior<View> {
       final List<View> dependencies = parent.getDependencies(child);
       final View header = findFirstDependency(dependencies);
       if (header != null) {
-        if (ViewCompat.getFitsSystemWindows(header) && !ViewCompat.getFitsSystemWindows(child)) {
-          // If the header is fitting system windows then we need to also,
-          // otherwise we'll get CoL's compatible measuring
-          ViewCompat.setFitsSystemWindows(child, true);
-
-          if (ViewCompat.getFitsSystemWindows(child)) {
-            // If the set succeeded, trigger a new layout and return true
-            child.requestLayout();
-            return true;
-          }
-        }
-
         int availableHeight = View.MeasureSpec.getSize(parentHeightMeasureSpec);
-        if (availableHeight == 0) {
+        if (availableHeight > 0) {
+          if (ViewCompat.getFitsSystemWindows(header)) {
+            final WindowInsetsCompat parentInsets = parent.getLastWindowInsets();
+            if (parentInsets != null) {
+              availableHeight += parentInsets.getSystemWindowInsetTop()
+                  + parentInsets.getSystemWindowInsetBottom();
+            }
+          }
+        } else {
           // If the measure spec doesn't specify a size, use the current height
           availableHeight = parent.getHeight();
         }
@@ -109,7 +113,9 @@ abstract class HeaderScrollingViewBehavior extends ViewOffsetBehavior<View> {
 
   @Override
   protected void layoutChild(
-      final CoordinatorLayout parent, final View child, final int layoutDirection) {
+      @NonNull final CoordinatorLayout parent,
+      @NonNull final View child,
+      final int layoutDirection) {
     final List<View> dependencies = parent.getDependencies(child);
     final View header = findFirstDependency(dependencies);
 
@@ -172,9 +178,10 @@ abstract class HeaderScrollingViewBehavior extends ViewOffsetBehavior<View> {
     return gravity == Gravity.NO_GRAVITY ? GravityCompat.START | Gravity.TOP : gravity;
   }
 
+  @Nullable
   abstract View findFirstDependency(List<View> views);
 
-  int getScrollRange(View v) {
+  int getScrollRange(@NonNull View v) {
     return v.getMeasuredHeight();
   }
 

@@ -18,7 +18,10 @@ package com.google.android.material.testutils;
 
 import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.Typeface;
+<<<<<<< HEAD
 import androidx.annotation.ColorInt;
 import androidx.annotation.DimenRes;
 import com.google.android.material.R;
@@ -27,6 +30,22 @@ import android.view.View;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.matcher.ViewMatchers;
+=======
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.text.method.TransformationMethod;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
+import androidx.annotation.ColorInt;
+import androidx.annotation.DimenRes;
+import androidx.test.espresso.UiController;
+import androidx.test.espresso.ViewAction;
+import androidx.test.espresso.matcher.ViewMatchers;
+import com.google.android.material.internal.CheckableImageButton;
+import com.google.android.material.testapp.R;
+import com.google.android.material.textfield.TextInputLayout;
+>>>>>>> pr/1944
 import org.hamcrest.Matcher;
 
 public class TextInputLayoutActions {
@@ -91,6 +110,26 @@ public class TextInputLayoutActions {
     };
   }
 
+  public static ViewAction setErrorContentDescription(final CharSequence errorContentDesc) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Sets the error message's content description";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setErrorContentDescription(errorContentDesc);
+      }
+    };
+  }
+
   public static ViewAction setHelperTextEnabled(final boolean enabled) {
     return new ViewAction() {
       @Override
@@ -151,6 +190,46 @@ public class TextInputLayoutActions {
     };
   }
 
+  public static ViewAction setPlaceholderText(final CharSequence placeholder) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Sets the placeholder";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setPlaceholderText(placeholder);
+      }
+    };
+  }
+
+  public static ViewAction setPlaceholderTextAppearance(final int resId) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Sets the placeholder text appearance";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setPlaceholderTextAppearance(resId);
+      }
+    };
+  }
+
   public static ViewAction setTypeface(final Typeface typeface) {
     return new ViewAction() {
       @Override
@@ -171,7 +250,30 @@ public class TextInputLayoutActions {
     };
   }
 
-  public static ViewAction setPasswordVisibilityToggleEnabled(final boolean enabled) {
+  /** Sets the transformation method. */
+  public static ViewAction setTransformationMethod(
+      final TransformationMethod transformationMethod) {
+    return new ViewAction() {
+
+      @Override
+      public Matcher<View> getConstraints() {
+        return ViewMatchers.isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Sets the transformation method";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout item = (TextInputLayout) view;
+        item.getEditText().setTransformationMethod(transformationMethod);
+      }
+    };
+  }
+
+  public static ViewAction setEndIconOnClickListener(final OnClickListener onClickListener) {
     return new ViewAction() {
       @Override
       public Matcher<View> getConstraints() {
@@ -180,13 +282,196 @@ public class TextInputLayoutActions {
 
       @Override
       public String getDescription() {
-        return "Sets the error";
+        return "Set end icon OnClickListener";
       }
 
       @Override
       public void perform(UiController uiController, View view) {
         TextInputLayout layout = (TextInputLayout) view;
-        layout.setPasswordVisibilityToggleEnabled(enabled);
+        layout.setEndIconOnClickListener(onClickListener);
+      }
+    };
+  }
+
+  public static ViewAction setEndIconOnLongClickListener(
+      final OnLongClickListener onLongClickListener) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Set end icon OnLongClickListener";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setEndIconOnLongClickListener(onLongClickListener);
+      }
+    };
+  }
+
+  public static ViewAction setErrorIconOnClickListener(final OnClickListener onClickListener) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Set error icon OnClickListener";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setErrorIconOnClickListener(onClickListener);
+      }
+    };
+  }
+
+  public static ViewAction setEndIconMode(final int endIconMode) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Set end icon mode";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setEndIconMode(endIconMode);
+      }
+    };
+  }
+
+  public static ViewAction setCustomEndIconContent() {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Set custom end icon content";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setEndIconDrawable(new ColorDrawable(Color.BLUE));
+        layout.setEndIconContentDescription(R.string.textinput_custom_end_icon);
+      }
+    };
+  }
+
+  public static ViewAction setStartIcon(final Drawable startIconDrawable) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Set start icon";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setStartIconDrawable(startIconDrawable);
+      }
+    };
+  }
+
+  public static ViewAction setStartIconContentDescription(final CharSequence contentDesc) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Set a content description for the start icon";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setStartIconContentDescription(contentDesc);
+      }
+    };
+  }
+
+  public static ViewAction setStartIconTintList(final ColorStateList tintList) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Set a tint list for the start icon";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setStartIconTintList(tintList);
+      }
+    };
+  }
+
+  public static ViewAction setStartIconOnClickListener(final OnClickListener onClickListener) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Set a click listener for the start icon";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setStartIconOnClickListener(onClickListener);
+      }
+    };
+  }
+
+  public static ViewAction setStartIconOnLongClickListener(
+      final OnLongClickListener onLongClickListener) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Set a long click listener for the start icon";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setStartIconOnLongClickListener(onLongClickListener);
       }
     };
   }
@@ -227,6 +512,78 @@ public class TextInputLayoutActions {
       public void perform(UiController uiController, View view) {
         TextInputLayout layout = (TextInputLayout) view;
         layout.setCounterMaxLength(maxLength);
+      }
+    };
+  }
+
+  public static ViewAction setBoxStrokeErrorColor(@ColorInt final ColorStateList strokeErrorColor) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Sets the box's stroke error color";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setBoxStrokeErrorColor(strokeErrorColor);
+      }
+    };
+  }
+
+  /**
+   * Sets the text field's stroke width.
+   *
+   * @param strokeWidth the value to use for the text field box's stroke
+   * @return the action of setting the box stroke width on a {@link TextInputLayout}
+   */
+  public static ViewAction setBoxStrokeWidth(final int strokeWidth) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Sets the box's stroke width.";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setBoxStrokeWidth(strokeWidth);
+      }
+    };
+  }
+
+  /**
+   * Sets the text field's focused stroke width.
+   *
+   * @param strokeWidthFocused the value to use for the text field box's stroke when focused
+   * @return the action of setting the box's focused stroke width on a {@link TextInputLayout}
+   */
+  public static ViewAction setBoxStrokeWidthFocused(final int strokeWidthFocused) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Sets the box's stroke width when focused.";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setBoxStrokeWidthFocused(strokeWidthFocused);
       }
     };
   }
@@ -367,8 +724,8 @@ public class TextInputLayoutActions {
     };
   }
 
-  /** Toggles password. */
-  public static ViewAction clickPasswordToggle() {
+  /** Clicks end or start icon. */
+  public static ViewAction clickIcon(final boolean isEndIcon) {
     return new ViewAction() {
 
       @Override
@@ -378,16 +735,128 @@ public class TextInputLayoutActions {
 
       @Override
       public String getDescription() {
-        return "Clicks the password toggle";
+        return "Clicks the end or start icon";
       }
 
       @Override
       public void perform(UiController uiController, View view) {
-        TextInputLayout textInputLayout = (TextInputLayout) view;
-        // Reach in and find the password toggle since we don't have a public API
-        // to get a reference to it
-        View passwordToggle = textInputLayout.findViewById(R.id.text_input_password_toggle);
-        passwordToggle.performClick();
+        TextInputLayout item = (TextInputLayout) view;
+        // Reach in and find the icon view since we don't have a public API to get a reference to it
+        CheckableImageButton iconView =
+            item.findViewById(isEndIcon ? R.id.text_input_end_icon : R.id.text_input_start_icon);
+        iconView.performClick();
+      }
+    };
+  }
+
+  /** Long clicks end or start icon. */
+  public static ViewAction longClickIcon(final boolean isEndIcon) {
+    return new ViewAction() {
+
+      @Override
+      public Matcher<View> getConstraints() {
+        return ViewMatchers.isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Long clicks the end or start icon";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout item = (TextInputLayout) view;
+        // Reach in and find the icon view since we don't have a public API to get a reference to it
+        CheckableImageButton iconView =
+            item.findViewById(isEndIcon ? R.id.text_input_end_icon : R.id.text_input_start_icon);
+        iconView.performLongClick();
+      }
+    };
+  }
+
+  /** Skips any animations on the layout. */
+  public static ViewAction skipAnimations() {
+    return new ViewAction() {
+
+      @Override
+      public Matcher<View> getConstraints() {
+        return ViewMatchers.isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Skips any animations.";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        view.jumpDrawablesToCurrentState();
+      }
+    };
+  }
+
+  /** Sets prefix. */
+  public static ViewAction setPrefixText(final CharSequence prefixText) {
+    return new ViewAction() {
+
+      @Override
+      public Matcher<View> getConstraints() {
+        return ViewMatchers.isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Sets prefix text.";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setPrefixText(prefixText);
+      }
+    };
+  }
+
+  /** Sets suffix. */
+  public static ViewAction setSuffixText(final CharSequence suffixText) {
+    return new ViewAction() {
+
+      @Override
+      public Matcher<View> getConstraints() {
+        return ViewMatchers.isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Sets suffix text.";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setSuffixText(suffixText);
+      }
+    };
+  }
+
+  /** Sets whether the hint expands. */
+  public static ViewAction setExpandedHintEnabled(final boolean expandedHintEnabled) {
+    return new ViewAction() {
+
+      @Override
+      public Matcher<View> getConstraints() {
+        return ViewMatchers.isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Sets whether the hint expands.";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setExpandedHintEnabled(expandedHintEnabled);
       }
     };
   }

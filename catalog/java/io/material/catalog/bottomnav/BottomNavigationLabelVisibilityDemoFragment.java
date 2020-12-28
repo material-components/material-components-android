@@ -18,16 +18,15 @@ package io.material.catalog.bottomnav;
 
 import io.material.catalog.R;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 
 /** A fragment that displays controls for the bottom nav's label visibility. */
 public class BottomNavigationLabelVisibilityDemoFragment extends BottomNavigationDemoFragment {
@@ -77,12 +76,7 @@ public class BottomNavigationLabelVisibilityDemoFragment extends BottomNavigatio
   private void initLabelVisibilityModeButton(
       Button labelVisibilityModeButton, @LabelVisibilityMode int labelVisibilityMode) {
     labelVisibilityModeButton.setOnClickListener(
-        new OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            setAllBottomNavsLabelVisibilityMode(labelVisibilityMode);
-          }
-        });
+        v -> setAllBottomNavsLabelVisibilityMode(labelVisibilityMode));
   }
 
   private void initIconSlider(View view) {

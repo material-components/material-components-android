@@ -17,8 +17,46 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+<<<<<<< HEAD
+  <androidx.core.widget.NestedScrollView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <include layout="@layout/cat_topappbar_filler_text_view"/>
+  </androidx.core.widget.NestedScrollView>
+
+=======
+>>>>>>> pr/1944
+  <com.google.android.material.appbar.AppBarLayout
+      android:id="@+id/appbarlayout"
+      android:layout_width="match_parent"
+      android:layout_height="@dimen/cat_topappbar_tall_toolbar_height"
+      android:fitsSystemWindows="true"
+      android:theme="@style/ThemeOverlay.Catalog.AppBarLayout">
+
+    <com.google.android.material.appbar.CollapsingToolbarLayout
+        android:id="@+id/collapsingtoolbarlayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+
+      <androidx.appcompat.widget.Toolbar
+          android:id="@+id/toolbar"
+          style="?attr/catalogToolbarWithCloseButtonStyle"
+          android:layout_width="match_parent"
+          android:layout_height="?attr/actionBarSize"
+          android:elevation="0dp"
+          app:layout_collapseMode="pin"
+          app:title="@string/cat_topappbar_collapsing_demo_toolbar_title"/>
+    </com.google.android.material.appbar.CollapsingToolbarLayout>
+  </com.google.android.material.appbar.AppBarLayout>
+<<<<<<< HEAD
+=======
 
   <androidx.core.widget.NestedScrollView
       android:layout_width="match_parent"
@@ -28,29 +66,5 @@
     <include layout="@layout/cat_topappbar_filler_text_view"/>
   </androidx.core.widget.NestedScrollView>
 
-  <com.google.android.material.appbar.AppBarLayout
-      android:layout_width="match_parent"
-      android:layout_height="@dimen/cat_topappbar_tall_toolbar_height">
-
-    <com.google.android.material.appbar.CollapsingToolbarLayout
-        style="?attr/catalogToolbarStyle"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:collapsedTitleTextAppearance="@style/TextAppearance.AppCompat.Title"
-        app:contentScrim="?attr/colorPrimary"
-        app:expandedTitleGravity="bottom"
-        app:expandedTitleMarginBottom="24dp"
-        app:expandedTitleMarginStart="16dp"
-        app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Headline"
-        app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
-
-      <androidx.appcompat.widget.Toolbar
-          android:id="@+id/toolbar"
-          style="?attr/catalogToolbarWithCloseButtonStyle"
-          android:layout_width="match_parent"
-          android:layout_height="?attr/actionBarSize"
-          app:layout_collapseMode="pin"
-          app:title="@string/cat_topappbar_collapsing_demo_toolbar_title"/>
-    </com.google.android.material.appbar.CollapsingToolbarLayout>
-  </com.google.android.material.appbar.AppBarLayout>
+>>>>>>> pr/1944
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

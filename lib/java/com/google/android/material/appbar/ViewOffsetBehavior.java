@@ -17,9 +17,14 @@
 package com.google.android.material.appbar;
 
 import android.content.Context;
+<<<<<<< HEAD
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+=======
+>>>>>>> pr/1944
 import android.util.AttributeSet;
 import android.view.View;
+import androidx.annotation.NonNull;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 /** Behavior will automatically sets up a {@link ViewOffsetHelper} on a {@link View}. */
 class ViewOffsetBehavior<V extends View> extends CoordinatorLayout.Behavior<V> {
@@ -36,7 +41,8 @@ class ViewOffsetBehavior<V extends View> extends CoordinatorLayout.Behavior<V> {
   }
 
   @Override
-  public boolean onLayoutChild(CoordinatorLayout parent, V child, int layoutDirection) {
+  public boolean onLayoutChild(
+      @NonNull CoordinatorLayout parent, @NonNull V child, int layoutDirection) {
     // First let lay the child out
     layoutChild(parent, child, layoutDirection);
 
@@ -44,6 +50,7 @@ class ViewOffsetBehavior<V extends View> extends CoordinatorLayout.Behavior<V> {
       viewOffsetHelper = new ViewOffsetHelper(child);
     }
     viewOffsetHelper.onViewLayout();
+    viewOffsetHelper.applyOffsets();
 
     if (tempTopBottomOffset != 0) {
       viewOffsetHelper.setTopAndBottomOffset(tempTopBottomOffset);
@@ -57,7 +64,8 @@ class ViewOffsetBehavior<V extends View> extends CoordinatorLayout.Behavior<V> {
     return true;
   }
 
-  protected void layoutChild(CoordinatorLayout parent, V child, int layoutDirection) {
+  protected void layoutChild(
+      @NonNull CoordinatorLayout parent, @NonNull V child, int layoutDirection) {
     // Let the parent lay it out by default
     parent.onLayoutChild(child, layoutDirection);
   }

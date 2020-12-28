@@ -15,6 +15,8 @@
   ~ limitations under the License.
 -->
 <resources>
+  <public name="appBarLayoutStyle" type="attr"/>
+  <public name="collapsingToolbarLayoutStyle" type="attr"/>
   <public name="layout_scrollInterpolator" type="attr"/>
   <public name="behavior_overlapTop" type="attr"/>
   <public name="expandedTitleMargin" type="attr"/>
@@ -25,15 +27,23 @@
   <public name="expandedTitleTextAppearance" type="attr"/>
   <public name="collapsedTitleTextAppearance" type="attr"/>
   <public name="contentScrim" type="attr"/>
+  <public name="statusBarForeground" type="attr"/>
   <public name="statusBarScrim" type="attr"/>
   <public name="toolbarId" type="attr"/>
   <public name="Widget.Design.AppBarLayout" type="style"/>
   <public name="Widget.Design.CollapsingToolbar" type="style"/>
+  <public name="Widget.MaterialComponents.AppBarLayout.Primary" type="style"/>
+  <public name="Widget.MaterialComponents.AppBarLayout.Surface" type="style"/>
+  <public name="Widget.MaterialComponents.AppBarLayout.PrimarySurface" type="style"/>
   <public name="Widget.MaterialComponents.Toolbar" type="style"/>
   <public name="Widget.MaterialComponents.Toolbar.Primary" type="style"/>
   <public name="Widget.MaterialComponents.Toolbar.Surface" type="style"/>
+  <public name="Widget.MaterialComponents.Toolbar.PrimarySurface" type="style"/>
   <public name="Widget.MaterialComponents.ActionBar.Solid" type="style"/>
   <public name="Widget.MaterialComponents.Light.ActionBar.Solid" type="style"/>
+  <public name="Widget.MaterialComponents.ActionBar.Primary" type="style"/>
+  <public name="Widget.MaterialComponents.ActionBar.Surface" type="style"/>
+  <public name="Widget.MaterialComponents.ActionBar.PrimarySurface" type="style"/>
   <public name="ThemeOverlay.MaterialComponents.Toolbar.Primary" type="style"/>
   <public name="ThemeOverlay.MaterialComponents.Toolbar.Surface" type="style"/>
   <public name="TextAppearance.Design.CollapsingToolbar.Expanded" type="style"/>
@@ -41,5 +51,17 @@
   <public name="expanded" type="attr"/>
   <public name="liftOnScroll" type="attr"/>
   <public name="liftOnScrollTargetViewId" type="attr"/>
+  <public name="collapsedTitleGravity" type="attr"/>
+  <public name="expandedTitleGravity" type="attr"/>
+  <public name="layout_collapseMode" type="attr"/>
+  <public name="layout_collapseParallaxMultiplier" type="attr"/>
+  <public name="layout_scrollFlags" type="attr"/>
+  <public name="state_liftable" type="attr"/>
+  <public name="state_lifted" type="attr"/>
+  <public name="scrimAnimationDuration" type="attr"/>
+  <public name="scrimVisibleHeightTrigger" type="attr"/>
+  <public name="titleEnabled" type="attr"/>
+  <public name="maxLines" type="attr"/>
+  <public name="navigationIconTint" type="attr"/>
 </resources>
 

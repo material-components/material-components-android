@@ -20,8 +20,14 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+<<<<<<< HEAD
 import androidx.annotation.RestrictTo;
+=======
+>>>>>>> pr/1944
 import android.util.SparseArray;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
 
 /** @hide */
 @RestrictTo(LIBRARY_GROUP)
@@ -31,7 +37,7 @@ public class ParcelableSparseArray extends SparseArray<Parcelable> implements Pa
     super();
   }
 
-  public ParcelableSparseArray(Parcel source, ClassLoader loader) {
+  public ParcelableSparseArray(@NonNull Parcel source, @Nullable ClassLoader loader) {
     super();
     int size = source.readInt();
     int[] keys = new int[size];
@@ -48,7 +54,7 @@ public class ParcelableSparseArray extends SparseArray<Parcelable> implements Pa
   }
 
   @Override
-  public void writeToParcel(Parcel parcel, int flags) {
+  public void writeToParcel(@NonNull Parcel parcel, int flags) {
     int size = size();
     int[] keys = new int[size];
     Parcelable[] values = new Parcelable[size];
@@ -63,16 +69,19 @@ public class ParcelableSparseArray extends SparseArray<Parcelable> implements Pa
 
   public static final Creator<ParcelableSparseArray> CREATOR =
       new ClassLoaderCreator<ParcelableSparseArray>() {
+        @NonNull
         @Override
-        public ParcelableSparseArray createFromParcel(Parcel source, ClassLoader loader) {
+        public ParcelableSparseArray createFromParcel(@NonNull Parcel source, ClassLoader loader) {
           return new ParcelableSparseArray(source, loader);
         }
 
+        @Nullable
         @Override
-        public ParcelableSparseArray createFromParcel(Parcel source) {
+        public ParcelableSparseArray createFromParcel(@NonNull Parcel source) {
           return new ParcelableSparseArray(source, null);
         }
 
+        @NonNull
         @Override
         public ParcelableSparseArray[] newArray(int size) {
           return new ParcelableSparseArray[size];

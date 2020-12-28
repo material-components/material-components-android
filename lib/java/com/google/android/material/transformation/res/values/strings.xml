@@ -15,8 +15,12 @@
   ~ limitations under the License.
 -->
 <resources>
-  <!-- The class name for the FabTransformationSheetBehavior -->
+  <!--The class name for the FabTransformationSheetBehavior. Deprecated. Use
+      com.google.android.material.transition.MaterialContainerTransform
+      instead. -->
   <string name="fab_transformation_sheet_behavior" translatable="false">com.google.android.material.transformation.FabTransformationSheetBehavior</string>
-  <!-- The class name for the FabTransformationScrimBehavior -->
+  <!--The class name for the FabTransformationScrimBehavior. Deprecated. Use
+      com.google.android.material.transition.MaterialContainerTransform
+      instead. -->
   <string name="fab_transformation_scrim_behavior" translatable="false">com.google.android.material.transformation.FabTransformationScrimBehavior</string>
 </resources>

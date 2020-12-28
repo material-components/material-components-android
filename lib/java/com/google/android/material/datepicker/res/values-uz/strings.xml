@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2020 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+  <string name="mtrl_picker_range_header_title">Oraliqni tanlang</string>
+  <string name="mtrl_picker_date_header_title">Sanani tanlang</string>
+  <string name="mtrl_picker_range_header_unselected">Boshlanishi – Tugashi</string>
+  <string name="mtrl_picker_range_header_only_start_selected">%1$s – Tugash sanasi</string>
+  <string name="mtrl_picker_range_header_only_end_selected">Boshlanish sanasi – %1$s</string>
+  <string name="mtrl_picker_range_header_selected">%1$s – %2$s</string>
+  <string name="mtrl_picker_date_header_unselected">Tanlangan sana</string>
+  <string name="mtrl_picker_date_header_selected">%1$s</string>
+  <string name="mtrl_picker_confirm">@android:string/ok</string>
+  <string name="mtrl_picker_text_input_date_hint">Sana</string>
+  <string name="mtrl_picker_text_input_date_range_start_hint">Boshlanish sanasi</string>
+  <string name="mtrl_picker_text_input_date_range_end_hint">Tugash sanasi</string>
+  <string name="mtrl_picker_text_input_year_abbr">y</string>
+  <string name="mtrl_picker_text_input_month_abbr">o</string>
+  <string name="mtrl_picker_text_input_day_abbr">k</string>
+  <string name="mtrl_picker_save">Saqlash</string>
+  <string name="mtrl_picker_invalid_range">Yaroqsiz oraliq.</string>
+  <string name="mtrl_picker_out_of_range">Chegaradan tashqari: %1$s</string>
+  <string name="mtrl_picker_invalid_format">Yaroqsiz format.</string>
+  <string name="mtrl_picker_invalid_format_use">Ishlatish: %1$s</string>
+  <string name="mtrl_picker_invalid_format_example">Masalan: %1$s</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode">Taqvim kiritish rejimiga oʻtish</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode">Matn kiritish rejimiga oʻtish</string>
+  <string name="mtrl_picker_a11y_prev_month">Avvalgi oyga oʻzgartirish</string>
+  <string name="mtrl_picker_a11y_next_month">Keyingi oyga oʻzgartirish</string>
+  <string name="mtrl_picker_toggle_to_year_selection">Yilni tanlash uchun bosing</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Kunni tanlash uchun bosing</string>
+  <string name="mtrl_picker_day_of_week_column_header">Kunlar ustuni: %1$s</string>
+  <string name="mtrl_picker_announce_current_selection">Joriy tanlov: %1$s</string>
+  <string name="mtrl_picker_navigate_to_year_description">Yilga nazar solish: %1$s</string>
+</resources>

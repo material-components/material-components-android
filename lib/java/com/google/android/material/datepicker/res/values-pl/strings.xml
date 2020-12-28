@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2020 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+  <string name="mtrl_picker_range_header_title">Wybierz zakres</string>
+  <string name="mtrl_picker_date_header_title">Wybierz datę</string>
+  <string name="mtrl_picker_range_header_unselected">Data rozpoczęcia – data zakończenia</string>
+  <string name="mtrl_picker_range_header_only_start_selected">%1$s – data zakończenia</string>
+  <string name="mtrl_picker_range_header_only_end_selected">Data rozpoczęcia – %1$s</string>
+  <string name="mtrl_picker_range_header_selected">%1$s–%2$s</string>
+  <string name="mtrl_picker_date_header_unselected">Wybrana data</string>
+  <string name="mtrl_picker_date_header_selected">%1$s</string>
+  <string name="mtrl_picker_confirm">@android:string/ok</string>
+  <string name="mtrl_picker_text_input_date_hint">Data</string>
+  <string name="mtrl_picker_text_input_date_range_start_hint">Data rozpoczęcia</string>
+  <string name="mtrl_picker_text_input_date_range_end_hint">Data zakończenia</string>
+  <string name="mtrl_picker_text_input_year_abbr">r</string>
+  <string name="mtrl_picker_text_input_month_abbr">m</string>
+  <string name="mtrl_picker_text_input_day_abbr">d</string>
+  <string name="mtrl_picker_save">Zapisz</string>
+  <string name="mtrl_picker_invalid_range">Nieprawidłowy zakres.</string>
+  <string name="mtrl_picker_out_of_range">Poza zakresem: %1$s</string>
+  <string name="mtrl_picker_invalid_format">Nieprawidłowy format.</string>
+  <string name="mtrl_picker_invalid_format_use">Użyj formatu: %1$s</string>
+  <string name="mtrl_picker_invalid_format_example">Przykład: %1$s</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode">Włącz kalendarzowy tryb wprowadzania</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode">Włącz tekstowy tryb wprowadzania</string>
+  <string name="mtrl_picker_a11y_prev_month">Zmień na poprzedni miesiąc</string>
+  <string name="mtrl_picker_a11y_next_month">Zmień na następny miesiąc</string>
+  <string name="mtrl_picker_toggle_to_year_selection">Kliknij, by wybrać rok</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Kliknij, by wybrać dzień</string>
+  <string name="mtrl_picker_day_of_week_column_header">Kolumna z dniami: %1$s</string>
+  <string name="mtrl_picker_announce_current_selection">Bieżący wybór: %1$s</string>
+  <string name="mtrl_picker_navigate_to_year_description">Przejdź do roku %1$s</string>
+</resources>

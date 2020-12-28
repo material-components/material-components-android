@@ -19,6 +19,10 @@ package com.google.android.material.appbar;
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+<<<<<<< HEAD
+=======
+import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
+>>>>>>> pr/1944
 
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -29,6 +33,7 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+<<<<<<< HEAD
 import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IntDef;
@@ -45,11 +50,19 @@ import com.google.android.material.internal.ThemeEnforcement;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.math.MathUtils;
+=======
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
+import androidx.core.graphics.drawable.DrawableCompat;
+>>>>>>> pr/1944
 import androidx.core.util.ObjectsCompat;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+<<<<<<< HEAD
 import androidx.appcompat.widget.Toolbar;
+=======
+>>>>>>> pr/1944
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -57,6 +70,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.FrameLayout;
+import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.IntDef;
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.StyleRes;
+import androidx.core.content.ContextCompat;
+import androidx.core.math.MathUtils;
+import com.google.android.material.animation.AnimationUtils;
+import com.google.android.material.internal.CollapsingTextHelper;
+import com.google.android.material.internal.DescendantOffsetUtils;
+import com.google.android.material.internal.ThemeEnforcement;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -111,12 +139,13 @@ import java.lang.annotation.RetentionPolicy;
  */
 public class CollapsingToolbarLayout extends FrameLayout {
 
+  private static final int DEF_STYLE_RES = R.style.Widget_Design_CollapsingToolbar;
   private static final int DEFAULT_SCRIM_ANIMATION_DURATION = 600;
 
   private boolean refreshToolbar = true;
   private int toolbarId;
-  private Toolbar toolbar;
-  private View toolbarDirectChild;
+  @Nullable private ViewGroup toolbar;
+  @Nullable private View toolbarDirectChild;
   private View dummyView;
 
   private int expandedMarginStart;
@@ -125,12 +154,12 @@ public class CollapsingToolbarLayout extends FrameLayout {
   private int expandedMarginBottom;
 
   private final Rect tmpRect = new Rect();
-  final CollapsingTextHelper collapsingTextHelper;
+  @NonNull final CollapsingTextHelper collapsingTextHelper;
   private boolean collapsingTitleEnabled;
   private boolean drawCollapsingTitle;
 
-  private Drawable contentScrim;
-  Drawable statusBarScrim;
+  @Nullable private Drawable contentScrim;
+  @Nullable Drawable statusBarScrim;
   private int scrimAlpha;
   private boolean scrimsAreShown;
   private ValueAnimator scrimAnimator;
@@ -141,18 +170,20 @@ public class CollapsingToolbarLayout extends FrameLayout {
 
   int currentOffset;
 
-  WindowInsetsCompat lastInsets;
+  @Nullable WindowInsetsCompat lastInsets;
 
-  public CollapsingToolbarLayout(Context context) {
+  public CollapsingToolbarLayout(@NonNull Context context) {
     this(context, null);
   }
 
-  public CollapsingToolbarLayout(Context context, AttributeSet attrs) {
-    this(context, attrs, 0);
+  public CollapsingToolbarLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
+    this(context, attrs, R.attr.collapsingToolbarLayoutStyle);
   }
 
-  public CollapsingToolbarLayout(Context context, AttributeSet attrs, int defStyleAttr) {
-    super(context, attrs, defStyleAttr);
+  public CollapsingToolbarLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    super(wrap(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
+    // Ensure we are using the correctly themed context rather than the context that was passed in.
+    context = getContext();
 
     collapsingTextHelper = new CollapsingTextHelper(this);
     collapsingTextHelper.setTextSizeInterpolator(AnimationUtils.DECELERATE_INTERPOLATOR);
@@ -163,7 +194,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
             attrs,
             R.styleable.CollapsingToolbarLayout,
             defStyleAttr,
-            R.style.Widget_Design_CollapsingToolbar);
+            DEF_STYLE_RES);
 
     collapsingTextHelper.setExpandedTextGravity(
         a.getInt(
@@ -220,6 +251,10 @@ public class CollapsingToolbarLayout extends FrameLayout {
     scrimVisibleHeightTrigger =
         a.getDimensionPixelSize(R.styleable.CollapsingToolbarLayout_scrimVisibleHeightTrigger, -1);
 
+    if (a.hasValue(R.styleable.CollapsingToolbarLayout_maxLines)) {
+      collapsingTextHelper.setMaxLines(a.getInt(R.styleable.CollapsingToolbarLayout_maxLines, 1));
+    }
+
     scrimAnimationDuration =
         a.getInt(
             R.styleable.CollapsingToolbarLayout_scrimAnimationDuration,
@@ -238,7 +273,8 @@ public class CollapsingToolbarLayout extends FrameLayout {
         this,
         new androidx.core.view.OnApplyWindowInsetsListener() {
           @Override
-          public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
+          public WindowInsetsCompat onApplyWindowInsets(
+              View v, @NonNull WindowInsetsCompat insets) {
             return onWindowInsetChanged(insets);
           }
         });
@@ -275,7 +311,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
     super.onDetachedFromWindow();
   }
 
-  WindowInsetsCompat onWindowInsetChanged(final WindowInsetsCompat insets) {
+  WindowInsetsCompat onWindowInsetChanged(@NonNull final WindowInsetsCompat insets) {
     WindowInsetsCompat newInsets = null;
 
     if (ViewCompat.getFitsSystemWindows(this)) {
@@ -295,7 +331,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
   }
 
   @Override
-  public void draw(Canvas canvas) {
+  public void draw(@NonNull Canvas canvas) {
     super.draw(canvas);
 
     // If we don't have a toolbar, the scrim will be not be drawn in drawChild() below.
@@ -364,11 +400,11 @@ public class CollapsingToolbarLayout extends FrameLayout {
     if (this.toolbar == null) {
       // If we don't have an ID, or couldn't find a Toolbar with the correct ID, try and find
       // one from our direct children
-      Toolbar toolbar = null;
+      ViewGroup toolbar = null;
       for (int i = 0, count = getChildCount(); i < count; i++) {
         final View child = getChildAt(i);
-        if (child instanceof Toolbar) {
-          toolbar = (Toolbar) child;
+        if (isToolbar(child)) {
+          toolbar = (ViewGroup) child;
           break;
         }
       }
@@ -379,6 +415,11 @@ public class CollapsingToolbarLayout extends FrameLayout {
     refreshToolbar = false;
   }
 
+  private static boolean isToolbar(View view) {
+    return view instanceof androidx.appcompat.widget.Toolbar
+        || (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP && view instanceof android.widget.Toolbar);
+  }
+
   private boolean isToolbarChild(View child) {
     return (toolbarDirectChild == null || toolbarDirectChild == this)
         ? child == toolbar
@@ -386,7 +427,8 @@ public class CollapsingToolbarLayout extends FrameLayout {
   }
 
   /** Returns the direct child of this layout, which itself is the ancestor of the given view. */
-  private View findDirectChild(final View descendant) {
+  @NonNull
+  private View findDirectChild(@NonNull final View descendant) {
     View directChild = descendant;
     for (ViewParent p = descendant.getParent(); p != this && p != null; p = p.getParent()) {
       if (p instanceof View) {
@@ -428,6 +470,15 @@ public class CollapsingToolbarLayout extends FrameLayout {
           MeasureSpec.makeMeasureSpec(getMeasuredHeight() + topInset, MeasureSpec.EXACTLY);
       super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
+
+    // Set our minimum height to enable proper AppBarLayout collapsing
+    if (toolbar != null) {
+      if (toolbarDirectChild == null || toolbarDirectChild == this) {
+        setMinimumHeight(getHeightWithMargins(toolbar));
+      } else {
+        setMinimumHeight(getHeightWithMargins(toolbarDirectChild));
+      }
+    }
   }
 
   @Override
@@ -449,6 +500,11 @@ public class CollapsingToolbarLayout extends FrameLayout {
       }
     }
 
+    // Update our child view offset helpers so that they track the correct layout coordinates
+    for (int i = 0, z = getChildCount(); i < z; i++) {
+      getViewOffsetHelper(getChildAt(i)).onViewLayout();
+    }
+
     // Update the collapsed bounds by getting its transformed bounds
     if (collapsingTitleEnabled && dummyView != null) {
       // We only draw the title if the dummy view is being displayed (Toolbar removes
@@ -461,14 +517,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
             ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL;
 
         // Update the collapsed bounds
-        final int maxOffset =
-            getMaxOffsetForPinChild(toolbarDirectChild != null ? toolbarDirectChild : toolbar);
-        DescendantOffsetUtils.getDescendantRect(this, dummyView, tmpRect);
-        collapsingTextHelper.setCollapsedBounds(
-            tmpRect.left + (isRtl ? toolbar.getTitleMarginEnd() : toolbar.getTitleMarginStart()),
-            tmpRect.top + maxOffset + toolbar.getTitleMarginTop(),
-            tmpRect.right + (isRtl ? toolbar.getTitleMarginStart() : toolbar.getTitleMarginEnd()),
-            tmpRect.bottom + maxOffset - toolbar.getTitleMarginBottom());
+        updateCollapsedBounds(isRtl);
 
         // Update the expanded bounds
         collapsingTextHelper.setExpandedBounds(
@@ -476,43 +525,82 @@ public class CollapsingToolbarLayout extends FrameLayout {
             tmpRect.top + expandedMarginTop,
             right - left - (isRtl ? expandedMarginStart : expandedMarginEnd),
             bottom - top - expandedMarginBottom);
+
         // Now recalculate using the new bounds
         collapsingTextHelper.recalculate();
       }
     }
 
-    // Update our child view offset helpers. This needs to be done after the title has been
-    // setup, so that any Toolbars are in their original position
-    for (int i = 0, z = getChildCount(); i < z; i++) {
-      getViewOffsetHelper(getChildAt(i)).onViewLayout();
-    }
-
-    // Finally, set our minimum height to enable proper AppBarLayout collapsing
     if (toolbar != null) {
       if (collapsingTitleEnabled && TextUtils.isEmpty(collapsingTextHelper.getText())) {
         // If we do not currently have a title, try and grab it from the Toolbar
-        setTitle(toolbar.getTitle());
-      }
-      if (toolbarDirectChild == null || toolbarDirectChild == this) {
-        setMinimumHeight(getHeightWithMargins(toolbar));
-      } else {
-        setMinimumHeight(getHeightWithMargins(toolbarDirectChild));
+        setTitle(getToolbarTitle(toolbar));
       }
     }
 
     updateScrimVisibility();
+
+    // Apply any view offsets, this should be done at the very end of layout
+    for (int i = 0, z = getChildCount(); i < z; i++) {
+      getViewOffsetHelper(getChildAt(i)).applyOffsets();
+    }
+  }
+
+  private void updateCollapsedBounds(boolean isRtl) {
+    final int maxOffset =
+        getMaxOffsetForPinChild(toolbarDirectChild != null ? toolbarDirectChild : toolbar);
+    DescendantOffsetUtils.getDescendantRect(this, dummyView, tmpRect);
+    final int titleMarginStart;
+    final int titleMarginEnd;
+    final int titleMarginTop;
+    final int titleMarginBottom;
+    if (toolbar instanceof androidx.appcompat.widget.Toolbar) {
+      androidx.appcompat.widget.Toolbar compatToolbar = (androidx.appcompat.widget.Toolbar) toolbar;
+      titleMarginStart = compatToolbar.getTitleMarginStart();
+      titleMarginEnd = compatToolbar.getTitleMarginEnd();
+      titleMarginTop = compatToolbar.getTitleMarginTop();
+      titleMarginBottom = compatToolbar.getTitleMarginBottom();
+    } else if (VERSION.SDK_INT >= VERSION_CODES.N && toolbar instanceof android.widget.Toolbar) {
+      android.widget.Toolbar frameworkToolbar = (android.widget.Toolbar) toolbar;
+      titleMarginStart = frameworkToolbar.getTitleMarginStart();
+      titleMarginEnd = frameworkToolbar.getTitleMarginEnd();
+      titleMarginTop = frameworkToolbar.getTitleMarginTop();
+      titleMarginBottom = frameworkToolbar.getTitleMarginBottom();
+    } else {
+      titleMarginStart = 0;
+      titleMarginEnd = 0;
+      titleMarginTop = 0;
+      titleMarginBottom = 0;
+    }
+    collapsingTextHelper.setCollapsedBounds(
+        tmpRect.left + (isRtl ? titleMarginEnd : titleMarginStart),
+        tmpRect.top + maxOffset + titleMarginTop,
+        tmpRect.right - (isRtl ? titleMarginStart : titleMarginEnd),
+        tmpRect.bottom + maxOffset - titleMarginBottom);
+  }
+
+  private static CharSequence getToolbarTitle(View view) {
+    if (view instanceof androidx.appcompat.widget.Toolbar) {
+      return ((androidx.appcompat.widget.Toolbar) view).getTitle();
+    } else if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP
+        && view instanceof android.widget.Toolbar) {
+      return ((android.widget.Toolbar) view).getTitle();
+    } else {
+      return null;
+    }
   }
 
   private static int getHeightWithMargins(@NonNull final View view) {
     final ViewGroup.LayoutParams lp = view.getLayoutParams();
     if (lp instanceof MarginLayoutParams) {
       final MarginLayoutParams mlp = (MarginLayoutParams) lp;
-      return view.getHeight() + mlp.topMargin + mlp.bottomMargin;
+      return view.getMeasuredHeight() + mlp.topMargin + mlp.bottomMargin;
     }
-    return view.getHeight();
+    return view.getMeasuredHeight();
   }
 
-  static ViewOffsetHelper getViewOffsetHelper(View view) {
+  @NonNull
+  static ViewOffsetHelper getViewOffsetHelper(@NonNull View view) {
     ViewOffsetHelper offsetHelper = (ViewOffsetHelper) view.getTag(R.id.view_offset_helper);
     if (offsetHelper == null) {
       offsetHelper = new ViewOffsetHelper(view);
@@ -617,7 +705,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
       scrimAnimator.addUpdateListener(
           new ValueAnimator.AnimatorUpdateListener() {
             @Override
-            public void onAnimationUpdate(ValueAnimator animator) {
+            public void onAnimationUpdate(@NonNull ValueAnimator animator) {
               setScrimAlpha((int) animator.getAnimatedValue());
             }
           });
@@ -754,7 +842,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
   }
 
   @Override
-  protected boolean verifyDrawable(Drawable who) {
+  protected boolean verifyDrawable(@NonNull Drawable who) {
     return super.verifyDrawable(who) || who == contentScrim || who == statusBarScrim;
   }
 
@@ -785,7 +873,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
   }
 
   /**
-   * Set the drawable to use for the content scrim from resources.
+   * Set the drawable to use for the status bar scrim from resources.
    *
    * @param resId drawable resource id
    * @attr ref R.styleable#CollapsingToolbarLayout_statusBarScrim
@@ -1037,6 +1125,24 @@ public class CollapsingToolbarLayout extends FrameLayout {
   }
 
   /**
+   * Sets the maximum number of lines to display in the expanded state.
+   * Experimental Feature.
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  public void setMaxLines(int maxLines) {
+    collapsingTextHelper.setMaxLines(maxLines);
+  }
+
+  /**
+   * Gets the maximum number of lines to display in the expanded state.
+   * Experimental Feature.
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  public int getMaxLines() {
+    return collapsingTextHelper.getMaxLines();
+  }
+
+  /**
    * Set the amount of visible height in pixels used to define when to trigger a scrim visibility
    * change.
    *
@@ -1044,7 +1150,8 @@ public class CollapsingToolbarLayout extends FrameLayout {
    * visible, otherwise they are hidden.
    *
    * @param height value in pixels used to define when to trigger a scrim visibility change
-   * @attr ref com.google.android.material.R.styleable#CollapsingToolbarLayout_scrimVisibleHeightTrigger
+   * @attr ref
+   *     com.google.android.material.R.styleable#CollapsingToolbarLayout_scrimVisibleHeightTrigger
    */
   public void setScrimVisibleHeightTrigger(@IntRange(from = 0) final int height) {
     if (scrimVisibleHeightTrigger != height) {
@@ -1165,16 +1272,16 @@ public class CollapsingToolbarLayout extends FrameLayout {
       super(width, height, gravity);
     }
 
-    public LayoutParams(ViewGroup.LayoutParams p) {
+    public LayoutParams(@NonNull ViewGroup.LayoutParams p) {
       super(p);
     }
 
-    public LayoutParams(MarginLayoutParams source) {
+    public LayoutParams(@NonNull MarginLayoutParams source) {
       super(source);
     }
 
     @RequiresApi(19)
-    public LayoutParams(FrameLayout.LayoutParams source) {
+    public LayoutParams(@NonNull FrameLayout.LayoutParams source) {
       // The copy constructor called here only exists on API 19+.
       super(source);
     }
@@ -1230,7 +1337,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
     }
   }
 
-  final int getMaxOffsetForPinChild(View child) {
+  final int getMaxOffsetForPinChild(@NonNull View child) {
     final ViewOffsetHelper offsetHelper = getViewOffsetHelper(child);
     final LayoutParams lp = (LayoutParams) child.getLayoutParams();
     return getHeight() - offsetHelper.getLayoutTop() - child.getHeight() - lp.bottomMargin;

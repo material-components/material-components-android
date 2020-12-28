@@ -17,8 +17,12 @@
 package com.google.android.material.testapp.base;
 
 import android.os.Bundle;
+<<<<<<< HEAD
 import androidx.annotation.LayoutRes;
+=======
+>>>>>>> pr/1944
 import android.view.WindowManager;
+import androidx.annotation.LayoutRes;
 
 /** Base activity type for all Material Components test fixtures. */
 public abstract class BaseTestActivity extends RecreatableAppCompatActivity {

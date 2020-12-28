@@ -18,6 +18,7 @@ package io.material.catalog.textfield;
 
 import io.material.catalog.R;
 
+<<<<<<< HEAD
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import androidx.annotation.LayoutRes;
@@ -29,30 +30,16 @@ import androidx.appcompat.content.res.AppCompatResources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+=======
+import androidx.annotation.LayoutRes;
+>>>>>>> pr/1944
 
 /** A fragment that displays the filled text field demos with controls for the Catalog app. */
 public class TextFieldFilledDemoFragment extends TextFieldControllableDemoFragment {
 
   @Override
-  public void onChangeTextFieldColors(TextInputLayout textfield, int color) {
-    textfield.setBoxBackgroundColor(color);
-  }
-
-  @Override
   @LayoutRes
   public int getTextFieldContent() {
     return R.layout.cat_textfield_filled_content;
-  }
-
-  @Override
-  public View onCreateDemoView(
-      LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
-    View view = super.onCreateDemoView(layoutInflater, viewGroup, bundle);
-    TextInputEditText startIconEditText = view.findViewById(R.id.edit_text_start_icon);
-    Drawable startIcon =
-        AppCompatResources.getDrawable(view.getContext(), R.drawable.ic_search_24px);
-    TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(
-        startIconEditText, startIcon, null, null, null);
-    return view;
   }
 }

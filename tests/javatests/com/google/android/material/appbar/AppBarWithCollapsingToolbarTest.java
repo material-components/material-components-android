@@ -22,18 +22,27 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 import android.os.Build;
+import android.widget.ImageView;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.test.filters.LargeTest;
+import androidx.test.filters.SdkSuppress;
+import androidx.test.runner.AndroidJUnit4;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.testapp.R;
 import com.google.android.material.testutils.PollingCheck;
+<<<<<<< HEAD
 import android.widget.ImageView;
 import androidx.test.filters.LargeTest;
 import androidx.test.filters.SdkSuppress;
 import androidx.test.runner.AndroidJUnit4;
+=======
+>>>>>>> pr/1944
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
+@SuppressWarnings("unchecked")
 public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
   @Test
   // Suppressed due to high % flakiness on API 15
@@ -46,6 +55,16 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         (CollapsingToolbarLayout.LayoutParams) mToolbar.getLayoutParams();
     assertEquals(
         CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_PIN, toolbarLp.getCollapseMode());
+
+    // Call onLayout so the accessibility actions are initially updated.
+    activityTestRule.runOnUiThread(
+        () -> {
+          final CoordinatorLayout.Behavior<AppBarLayout> behavior =
+              ((CoordinatorLayout.LayoutParams) mAppBar.getLayoutParams()).getBehavior();
+          behavior.onLayoutChild(mCoordinatorLayout, mAppBar, mAppBar.getLayoutDirection());
+        });
+    assertAccessibilityHasScrollForwardAction(true);
+    assertAccessibilityHasScrollBackwardAction(false);
 
     final int[] appbarOnScreenXY = new int[2];
     final int[] coordinatorLayoutOnScreenXY = new int[2];
@@ -72,6 +91,10 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         originalAppbarBottom + longSwipeAmount / 2,
         longSwipeAmount);
 
+    // Content is already collapsed, so it can't scroll forward. The pre-scroll range will be 0
+    // for SCROLL_FLAG_SCROLL and SCROLL_EXIT_UNTIL_COLLAPSED, so it can't scroll backward.
+    assertAccessibilityHasScrollForwardAction(false);
+    assertAccessibilityHasScrollBackwardAction(false);
     mAppBar.getLocationOnScreen(appbarOnScreenXY);
     // At this point the app bar should be visually snapped below the system status bar.
     // Allow for off-by-a-pixel margin of error.
@@ -137,6 +160,8 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
     assertEquals(originalAppbarBottom, appbarOnScreenXY[1] + appbarHeight, 1);
     assertAppBarElevation(0f);
     assertScrimAlpha(0);
+    assertAccessibilityHasScrollForwardAction(true);
+    assertAccessibilityHasScrollBackwardAction(false);
   }
 
   @Test
@@ -172,10 +197,25 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
     assertAppBarElevation(0f);
     assertScrimAlpha(0);
 
+    // Call onLayout so the accessibility actions are initially updated.
+    activityTestRule.runOnUiThread(
+        () -> {
+          final CoordinatorLayout.Behavior<AppBarLayout> behavior =
+              ((CoordinatorLayout.LayoutParams) mAppBar.getLayoutParams()).getBehavior();
+          behavior.onLayoutChild(mCoordinatorLayout, mAppBar, mAppBar.getLayoutDirection());
+        });
+    assertAccessibilityHasScrollForwardAction(true);
+    assertAccessibilityHasScrollBackwardAction(false);
+
     // Perform a swipe-up gesture across the horizontal center of the screen, starting from
     // just below the AppBarLayout
     performVerticalSwipeUpGesture(
         R.id.coordinator_layout, centerX, originalAppbarBottom + 20, longSwipeAmount);
+
+    // Bar is collapsed. With SCROLL_ENTER_ALWAYS the bar expands immediately on any scroll and thus
+    // has a scroll backward action.
+    assertAccessibilityHasScrollForwardAction(false);
+    assertAccessibilityHasScrollBackwardAction(true);
 
     mAppBar.getLocationOnScreen(appbarOnScreenXY);
     // At this point the app bar should not be visually "present" on the screen, with its bottom
@@ -223,6 +263,8 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
     assertEquals(originalAppbarBottom, appbarOnScreenXY[1] + appbarHeight);
     assertAppBarElevation(0f);
     assertScrimAlpha(0);
+    assertAccessibilityHasScrollForwardAction(true);
+    assertAccessibilityHasScrollBackwardAction(false);
 
     // Perform yet another swipe-down gesture across the horizontal center of the screen.
     performVerticalSwipeDownGesture(
@@ -366,13 +408,7 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
     // that scales the FAB to 0/0 scales and interpolates its alpha to 0. Since that animation
     // starts running partway through our swipe gesture and may complete a bit later then
     // the swipe gesture, poll to catch the "final" state of the FAB.
-    PollingCheck.waitFor(
-        new PollingCheck.PollingCheckCondition() {
-          @Override
-          public boolean canProceed() {
-            return fab.getScaleX() == 0.0f;
-          }
-        });
+    PollingCheck.waitFor(() -> fab.getScaleX() == 0.0f);
 
     assertEquals(0.0f, fab.getScaleX(), 0.0f);
     assertEquals(0.0f, fab.getScaleY(), 0.0f);
@@ -383,13 +419,7 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         R.id.coordinator_layout, centerX, originalAppbarBottom, longSwipeAmount);
 
     // Same as for swipe-up gesture.
-    PollingCheck.waitFor(
-        new PollingCheck.PollingCheckCondition() {
-          @Override
-          public boolean canProceed() {
-            return fab.getScaleX() == 1.0f;
-          }
-        });
+    PollingCheck.waitFor(() -> fab.getScaleX() == 1.0f);
 
     // At this point the FAB should be scaled back to its original size and be at full opacity.
     assertEquals(1.0f, fab.getScaleX(), 0.0f);
@@ -482,12 +512,9 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         R.layout.design_appbar_toolbar_collapse_pin, R.string.design_appbar_collapsing_toolbar_pin);
 
     activityTestRule.runOnUiThread(
-        new Runnable() {
-          @Override
-          public void run() {
-            ImageView view = new ImageView(mCollapsingToolbar.getContext());
-            mCollapsingToolbar.addView(view);
-          }
+        () -> {
+          ImageView view = new ImageView(mCollapsingToolbar.getContext());
+          mCollapsingToolbar.addView(view);
         });
   }
 
@@ -516,7 +543,8 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
     final int appbarHeight = mAppBar.getHeight();
 
     // Perform a swipe-up gesture across the horizontal center of the screen.
-    int swipeAmount = appbarHeight - toolbarHeight - toolbarVerticalMargins;
+    int swipeAmount =
+        appbarHeight - toolbarHeight - toolbarVerticalMargins + getAdditionalScrollForTouchSlop();
     performVerticalSwipeUpGesture(
         R.id.coordinator_layout,
         centerX,

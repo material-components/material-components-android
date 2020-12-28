@@ -17,24 +17,51 @@
 <resources>
   <public name="Theme.MaterialComponents.Dialog" type="style"/>
   <public name="Theme.MaterialComponents.Light.Dialog" type="style"/>
+  <public name="Theme.MaterialComponents.DayNight.Dialog" type="style"/>
   <public name="Theme.MaterialComponents.Dialog.Alert" type="style"/>
   <public name="Theme.MaterialComponents.Light.Dialog.Alert" type="style"/>
+  <public name="Theme.MaterialComponents.DayNight.Dialog.Alert" type="style"/>
   <public name="Theme.MaterialComponents.Dialog.MinWidth" type="style"/>
   <public name="Theme.MaterialComponents.Light.Dialog.MinWidth" type="style"/>
+  <public name="Theme.MaterialComponents.DayNight.Dialog.MinWidth" type="style"/>
+  <public name="Theme.MaterialComponents.Dialog.FixedSize" type="style"/>
+  <public name="Theme.MaterialComponents.Light.Dialog.FixedSize" type="style"/>
+  <public name="Theme.MaterialComponents.DayNight.Dialog.FixedSize" type="style"/>
+
+  <public name="Theme.MaterialComponents.Dialog.Bridge" type="style"/>
+  <public name="Theme.MaterialComponents.Light.Dialog.Bridge" type="style"/>
+  <public name="Theme.MaterialComponents.DayNight.Dialog.Bridge" type="style"/>
+  <public name="Theme.MaterialComponents.Dialog.Alert.Bridge" type="style"/>
+  <public name="Theme.MaterialComponents.Light.Dialog.Alert.Bridge" type="style"/>
+  <public name="Theme.MaterialComponents.DayNight.Dialog.Alert.Bridge" type="style"/>
+  <public name="Theme.MaterialComponents.Dialog.MinWidth.Bridge" type="style"/>
+  <public name="Theme.MaterialComponents.DayNight.Dialog.MinWidth.Bridge" type="style"/>
+  <public name="Theme.MaterialComponents.Light.Dialog.MinWidth.Bridge" type="style"/>
+  <public name="Theme.MaterialComponents.Dialog.FixedSize.Bridge" type="style"/>
+  <public name="Theme.MaterialComponents.Light.Dialog.FixedSize.Bridge" type="style"/>
+  <public name="Theme.MaterialComponents.DayNight.Dialog.FixedSize.Bridge" type="style"/>
+
   <public name="ThemeOverlay.MaterialComponents.Dialog" type="style"/>
   <public name="ThemeOverlay.MaterialComponents.Dialog.Alert" type="style"/>
   <public name="ThemeOverlay.MaterialComponents.Dialog.Alert.Centered" type="style"/>
 
-  <public name="alertDialogTitlePanelStyle" type="attr"/>
-  <public name="alertDialogTitleIconStyle" type="attr"/>
-  <public name="alertDialogTitleTextStyle" type="attr"/>
+  <public name="materialAlertDialogTheme" type="attr"/>
+  <public name="materialAlertDialogTitlePanelStyle" type="attr"/>
+  <public name="materialAlertDialogTitleIconStyle" type="attr"/>
+  <public name="materialAlertDialogTitleTextStyle" type="attr"/>
+  <public name="materialAlertDialogBodyTextStyle" type="attr"/>
 
-  <public name="AlertDialog.MaterialComponents.Title.Panel" type="style"/>
-  <public name="AlertDialog.MaterialComponents.Title.Icon" type="style"/>
-  <public name="AlertDialog.MaterialComponents.Title.Text" type="style"/>
-  <public name="AlertDialog.MaterialComponents.Title.Panel.CenterStacked" type="style"/>
-  <public name="AlertDialog.MaterialComponents.Title.Icon.CenterStacked" type="style"/>
-  <public name="AlertDialog.MaterialComponents.Title.Text.CenterStacked" type="style"/>
+  <public name="backgroundInsetStart" type="attr"/>
+  <public name="backgroundInsetTop" type="attr"/>
+  <public name="backgroundInsetEnd" type="attr"/>
+  <public name="backgroundInsetBottom" type="attr"/>
+
+  <public name="MaterialAlertDialog.MaterialComponents.Title.Panel" type="style"/>
+  <public name="MaterialAlertDialog.MaterialComponents.Title.Icon" type="style"/>
+  <public name="MaterialAlertDialog.MaterialComponents.Title.Text" type="style"/>
+  <public name="MaterialAlertDialog.MaterialComponents.Title.Panel.CenterStacked" type="style"/>
+  <public name="MaterialAlertDialog.MaterialComponents.Title.Icon.CenterStacked" type="style"/>
+  <public name="MaterialAlertDialog.MaterialComponents.Title.Text.CenterStacked" type="style"/>
 
 </resources>
 

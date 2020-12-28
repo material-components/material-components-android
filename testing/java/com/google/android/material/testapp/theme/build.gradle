@@ -17,8 +17,8 @@
 apply plugin: 'com.android.application'
 
 dependencies {
-  api compatibility("compat")
-  api compatibility("v7/appcompat")
+  api compatibility("appcompat")
+  api compatibility("core")
 
  /* api project(fromPath("lib/java/com/google/android/material/theme"))
   api project(fromPath("lib/java/com/google/android/material/button"))
@@ -27,6 +27,8 @@ dependencies {
 */
   api project(fromPath("lib"))
   api project(fromPath("testing/java/com/google/android/material/testapp/base"))
+
+  api 'androidx.multidex:multidex:2.0.1'
 }
 
 android {
@@ -41,6 +43,10 @@ android {
     main.res.srcDirs = [ 'res' ]
   }
   defaultConfig {
+<<<<<<< HEAD
+=======
+    multiDexEnabled true
+>>>>>>> pr/1944
     minSdkVersion 14
     targetSdkVersion 27
   }

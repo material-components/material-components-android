@@ -18,6 +18,7 @@
 <resources>
 
   <string name="cat_toc_buttons">Buttons</string>
+  <string name="cat_buttons_toggle_group">Buttons Toggle Group</string>
   <string name="cat_buttons_title">Buttons</string>
   <string name="cat_buttons_description">
     Buttons communicate the action that will occur when the user touches them.
@@ -36,6 +37,31 @@
   <string name="cat_filled_buttons_section_title">Filled buttons</string>
   <string name="cat_outlined_btn_text">Outlined buttons</string>
   <string name="cat_outlined_icon_btn_text">Icon only buttons</string>
+  <string name="cat_top_icon_btn_text" description="Section header label for buttons with a top icon">Top icon buttons</string>
+  <string name="cat_button_top_icon_btn_text" description="Content description for a button with a top icon">Top icon buttons</string>
   <string name="cat_button_clicked">Button clicked</string>
   <string name="cat_snackbar_action_button_text">Done</string>
+
+  <string name="cat_single_select">Single-select</string>
+  <string name="cat_multi_select">Multi-select</string>
+  <string name="cat_icon_only">Icon only</string>
+  <string name="cat_button_label_private">Private</string>
+  <string name="cat_button_label_team">Team</string>
+  <string name="cat_button_label_everyone">Everyone</string>
+  <string name="cat_button_label_custom">Custom</string>
+  <string name="cat_button_label_cheese">Cheese</string>
+  <string name="cat_button_label_tomatoes">Tomatoes</string>
+  <string name="cat_button_label_mushrooms">Mushrooms</string>
+  <string description="A label for an icon-only button [CHAR LIMIT=NONE]"
+      name="cat_icon_button_label_paint_bucket">Paint bucket icon</string>
+  <string description="A label for an icon-only button [CHAR LIMIT=NONE]"
+      name="cat_icon_button_label_plus">Plus icon</string>
+  <string description="A label for an icon-only button [CHAR LIMIT=NONE]"
+      name="cat_icon_button_label_components">Components icon</string>
+  <string description="A label for an icon-only button [CHAR LIMIT=NONE]"
+      name="cat_icon_button_label_accelerator">Accelerator icon</string>
+  <string description="A label for an icon-only button [CHAR LIMIT=NONE]"
+      name="cat_icon_button_label_dialog">Dialog icon</string>
+  <string name="cat_button_require_selection" translatable="false">Require Selection</string>
+  <string name="cat_button_vertical_orientation" translatable="false">Vertical Orientation</string>
 </resources>

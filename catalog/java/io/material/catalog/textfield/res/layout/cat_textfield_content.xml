@@ -15,12 +15,9 @@
   ~ limitations under the License.
   -->
 
-<ScrollView
+  <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-  <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_margin="@dimen/cat_textfield_standard_spacing"
@@ -32,8 +29,9 @@
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         android:hint="@string/cat_textfield_label"
-        app:helperText="@string/cat_textfield_outline_helper_text"
-        app:helperTextEnabled="true">
+        app:helperText="@string/cat_textfield_outlined_helper_text"
+        app:helperTextEnabled="true"
+        app:placeholderText="@string/cat_textfield_placeholder_text">
       <com.google.android.material.textfield.TextInputEditText
           android:layout_width="match_parent"
           android:layout_height="wrap_content"/>
@@ -45,8 +43,9 @@
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         android:hint="@string/cat_textfield_label"
-        app:helperText="@string/cat_textfield_outline_dense_helper_text"
-        app:helperTextEnabled="true">
+        app:helperText="@string/cat_textfield_outlined_dense_helper_text"
+        app:helperTextEnabled="true"
+        app:placeholderText="@string/cat_textfield_placeholder_text">
       <com.google.android.material.textfield.TextInputEditText
           android:layout_width="match_parent"
           android:layout_height="wrap_content"/>
@@ -59,7 +58,8 @@
         android:layout_margin="4dp"
         android:hint="@string/cat_textfield_label"
         app:helperText="@string/cat_textfield_filled_helper_text"
-        app:helperTextEnabled="true">
+        app:helperTextEnabled="true"
+        app:placeholderText="@string/cat_textfield_placeholder_text">
       <com.google.android.material.textfield.TextInputEditText
           android:layout_width="match_parent"
           android:layout_height="wrap_content"/>
@@ -72,10 +72,10 @@
         android:layout_margin="4dp"
         android:hint="@string/cat_textfield_label"
         app:helperText="@string/cat_textfield_filled_dense_helper_text"
-        app:helperTextEnabled="true">
+        app:helperTextEnabled="true"
+        app:placeholderText="@string/cat_textfield_placeholder_text">
       <com.google.android.material.textfield.TextInputEditText
           android:layout_width="match_parent"
           android:layout_height="wrap_content"/>
     </com.google.android.material.textfield.TextInputLayout>
   </LinearLayout>
-</ScrollView>

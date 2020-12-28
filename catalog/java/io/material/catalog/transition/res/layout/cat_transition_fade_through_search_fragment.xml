@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2019 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<androidx.gridlayout.widget.GridLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/search_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:clipToPadding="false"
+    app:columnCount="2"
+    app:rowCount="3"
+    android:gravity="center_horizontal"
+    app:orientation="vertical"
+    android:padding="4dp"
+    tools:targetApi="lollipop">
+
+  <com.google.android.material.card.MaterialCardView
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      app:layout_rowWeight="1"
+      app:layout_columnWeight="1"
+      android:layout_margin="4dp"
+      android:clickable="true"
+      android:focusable="true"
+      android:minWidth="200dp"
+      android:minHeight="200dp">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="?attr/colorSecondary"
+        android:contentDescription="@string/cat_transition_image_content_desc"
+        app:srcCompat="@drawable/ic_search_24px" />
+  </com.google.android.material.card.MaterialCardView>
+
+  <com.google.android.material.card.MaterialCardView
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      app:layout_rowWeight="1"
+      app:layout_columnWeight="1"
+      android:layout_margin="4dp"
+      android:clickable="true"
+      android:focusable="true"
+      android:minWidth="200dp"
+      android:minHeight="200dp">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="?attr/colorSecondary"
+        android:contentDescription="@string/cat_transition_image_content_desc"
+        app:srcCompat="@drawable/ic_search_24px" />
+  </com.google.android.material.card.MaterialCardView>
+
+  <com.google.android.material.card.MaterialCardView
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      app:layout_rowWeight="1"
+      app:layout_columnWeight="1"
+      android:layout_margin="4dp"
+      android:clickable="true"
+      android:focusable="true"
+      android:minWidth="200dp"
+      android:minHeight="200dp">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="?attr/colorSecondary"
+        android:contentDescription="@string/cat_transition_image_content_desc"
+        app:srcCompat="@drawable/ic_search_24px" />
+  </com.google.android.material.card.MaterialCardView>
+
+  <com.google.android.material.card.MaterialCardView
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      app:layout_rowWeight="1"
+      app:layout_columnWeight="1"
+      android:layout_margin="4dp"
+      android:clickable="true"
+      android:focusable="true"
+      android:minWidth="200dp"
+      android:minHeight="200dp">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="?attr/colorSecondary"
+        android:contentDescription="@string/cat_transition_image_content_desc"
+        app:srcCompat="@drawable/ic_search_24px" />
+  </com.google.android.material.card.MaterialCardView>
+
+  <com.google.android.material.card.MaterialCardView
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      app:layout_rowWeight="1"
+      app:layout_columnWeight="1"
+      android:layout_margin="4dp"
+      android:clickable="true"
+      android:focusable="true"
+      android:minWidth="200dp"
+      android:minHeight="200dp">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="?attr/colorSecondary"
+        android:contentDescription="@string/cat_transition_image_content_desc"
+        app:srcCompat="@drawable/ic_search_24px" />
+  </com.google.android.material.card.MaterialCardView>
+
+  <com.google.android.material.card.MaterialCardView
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      app:layout_rowWeight="1"
+      app:layout_columnWeight="1"
+      android:layout_margin="4dp"
+      android:clickable="true"
+      android:focusable="true"
+      android:minWidth="200dp"
+      android:minHeight="200dp">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="?attr/colorSecondary"
+        android:contentDescription="@string/cat_transition_image_content_desc"
+        app:srcCompat="@drawable/ic_search_24px" />
+  </com.google.android.material.card.MaterialCardView>
+
+</androidx.gridlayout.widget.GridLayout>

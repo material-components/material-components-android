@@ -73,4 +73,30 @@ public final class MathUtils {
   private static float max(float a, float b, float c, float d) {
     return a > b && a > c && a > d ? a : b > c && b > d ? b : c > d ? c : d;
   }
+
+  /**
+   * This returns as similar as {@link Math#floorMod(int, int)}. Instead it works for float type
+   * values. And the re-implementation makes it back compatible to API<24.
+   */
+  public static float floorMod(float x, int y) {
+    int r = (int) (x / y);
+    // if the signs are different and modulo not zero, round down
+    if (Math.signum(x) * y < 0 && (r * y != x)) {
+      r--;
+    }
+    return x - r * y;
+  }
+
+  /**
+   * This is same as {@link Math#floorMod(int, int)}. Re-implementation makes it back compatible to
+   * API<24.
+   */
+  public static int floorMod(int x, int y) {
+    int r = x / y;
+    // if the signs are different and modulo not zero, round down
+    if ((x ^ y) < 0 && (r * y != x)) {
+      r--;
+    }
+    return x - r * y;
+  }
 }

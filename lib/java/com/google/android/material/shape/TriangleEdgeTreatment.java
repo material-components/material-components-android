@@ -16,14 +16,16 @@
 
 package com.google.android.material.shape;
 
-import com.google.android.material.internal.Experimental;
+import androidx.annotation.NonNull;
 
 /**
  * An edge treatment which draws triangles at the midpoint of an edge, facing into or out of the
  * shape.
+ *
+ * <p>If you want to draw a triangular shape below a circle (similar to a map marker), use {@link
+ * MarkerEdgeTreatment} instead.
  */
-@Experimental("The shapes API is currently experimental and subject to change")
-public class TriangleEdgeTreatment extends EdgeTreatment implements Cloneable {
+public class TriangleEdgeTreatment extends EdgeTreatment {
 
   private final float size;
   private final boolean inside;
@@ -43,7 +45,8 @@ public class TriangleEdgeTreatment extends EdgeTreatment implements Cloneable {
   }
 
   @Override
-  public void getEdgePath(float length, float center, float interpolation, ShapePath shapePath) {
+  public void getEdgePath(
+      float length, float center, float interpolation, @NonNull ShapePath shapePath) {
     shapePath.lineTo(center - (size * interpolation), 0);
     shapePath.lineTo(center, inside ? size * interpolation : -size * interpolation);
     shapePath.lineTo(center + (size * interpolation), 0);

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2020 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+  <string name="mtrl_picker_range_header_title">ਰੇਂਜ ਚੁਣੋ</string>
+  <string name="mtrl_picker_date_header_title">ਤਾਰੀਖ ਚੁਣੋ</string>
+  <string name="mtrl_picker_range_header_unselected">ਸ਼ੁਰੂਆਤੀ ਤਾਰੀਖ – ਸਮਾਪਤੀ ਤਾਰੀਖ</string>
+  <string name="mtrl_picker_range_header_only_start_selected">%1$s – ਸਮਾਪਤੀ ਤਾਰੀਖ</string>
+  <string name="mtrl_picker_range_header_only_end_selected">ਸ਼ੁੁਰੂਆਤੀ ਤਾਰੀਖ – %1$s</string>
+  <string name="mtrl_picker_range_header_selected">%1$s – %2$s</string>
+  <string name="mtrl_picker_date_header_unselected">ਚੁਣੀ ਗਈ ਤਾਰੀਖ</string>
+  <string name="mtrl_picker_date_header_selected">%1$s</string>
+  <string name="mtrl_picker_confirm">@android:string/ok</string>
+  <string name="mtrl_picker_text_input_date_hint">ਤਾਰੀਖ</string>
+  <string name="mtrl_picker_text_input_date_range_start_hint">ਸ਼ੁਰੂਆਤੀ ਤਾਰੀਖ</string>
+  <string name="mtrl_picker_text_input_date_range_end_hint">ਸਮਾਪਤੀ ਤਾਰੀਖ</string>
+  <string name="mtrl_picker_text_input_year_abbr">y</string>
+  <string name="mtrl_picker_text_input_month_abbr">m</string>
+  <string name="mtrl_picker_text_input_day_abbr">d</string>
+  <string name="mtrl_picker_save">ਰੱਖਿਅਤ ਕਰੋ</string>
+  <string name="mtrl_picker_invalid_range">ਅਵੈਧ ਰੇਂਜ।</string>
+  <string name="mtrl_picker_out_of_range">ਰੇਂਜ ਤੋਂ ਬਾਹਰ: %1$s</string>
+  <string name="mtrl_picker_invalid_format">ਅਵੈਧ ਫਾਰਮੈਟ।</string>
+  <string name="mtrl_picker_invalid_format_use">ਵਰਤੋ: %1$s</string>
+  <string name="mtrl_picker_invalid_format_example">ਉਦਾਹਰਨ: %1$s</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode">ਕੈਲੰਡਰ ਇਨਪੁੱਟ ਮੋਡ \'ਤੇ ਜਾਓ</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode">ਲਿਖਤ ਇਨਪੁੱਟ ਮੋਡ \'ਤੇ ਜਾਓ</string>
+  <string name="mtrl_picker_a11y_prev_month">ਪਿਛਲੇ ਮਹੀਨੇ \'ਤੇ ਜਾਓ</string>
+  <string name="mtrl_picker_a11y_next_month">ਅਗਲੇ ਮਹੀਨੇ \'ਤੇ ਜਾਓ</string>
+  <string name="mtrl_picker_toggle_to_year_selection">ਸਾਲ ਦੀ ਚੋਣ \'ਤੇ ਜਾਣ ਲਈ ਟੈਪ ਕਰੋ</string>
+  <string name="mtrl_picker_toggle_to_day_selection">ਦਿਨ ਦੀ ਚੋਣ \'ਤੇ ਜਾਣ ਲਈ ਟੈਪ ਕਰੋ</string>
+  <string name="mtrl_picker_day_of_week_column_header">ਦਿਨਾਂ ਦਾ ਕਾਲਮ: %1$s</string>
+  <string name="mtrl_picker_announce_current_selection">ਮੌਜੂਦਾ ਚੋਣ: %1$s</string>
+  <string name="mtrl_picker_navigate_to_year_description">ਸਾਲ %1$s \'ਤੇ ਨੈਵੀਗੇਟ ਕਰੋ</string>
+</resources>

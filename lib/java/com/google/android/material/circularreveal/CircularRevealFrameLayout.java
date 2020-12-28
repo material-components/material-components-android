@@ -19,21 +19,27 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+<<<<<<< HEAD
 import androidx.annotation.ColorInt;
 import androidx.annotation.Nullable;
+=======
+>>>>>>> pr/1944
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /** A CircularRevealWidget wrapper for {@link FrameLayout}. */
 public class CircularRevealFrameLayout extends FrameLayout implements CircularRevealWidget {
 
-  private final CircularRevealHelper helper;
+  @NonNull private final CircularRevealHelper helper;
 
-  public CircularRevealFrameLayout(Context context) {
+  public CircularRevealFrameLayout(@NonNull Context context) {
     this(context, null);
   }
 
-  public CircularRevealFrameLayout(Context context, AttributeSet attrs) {
+  public CircularRevealFrameLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
     super(context, attrs);
     helper = new CircularRevealHelper(this);
   }
@@ -82,7 +88,7 @@ public class CircularRevealFrameLayout extends FrameLayout implements CircularRe
 
   @SuppressLint("MissingSuperCall")
   @Override
-  public void draw(Canvas canvas) {
+  public void draw(@NonNull Canvas canvas) {
     if (helper != null) {
       helper.draw(canvas);
     } else {

@@ -24,8 +24,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.times;
@@ -34,12 +34,19 @@ import static org.mockito.Mockito.verify;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.SystemClock;
+<<<<<<< HEAD
 import com.google.android.material.testapp.BottomSheetDialogActivity;
 import com.google.android.material.testapp.R;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.appcompat.widget.AppCompatTextView;
 import android.view.View;
 import android.widget.FrameLayout;
+=======
+import androidx.appcompat.widget.AppCompatTextView;
+import android.view.View;
+import android.widget.FrameLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+>>>>>>> pr/1944
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
@@ -48,6 +55,11 @@ import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.filters.MediumTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
+<<<<<<< HEAD
+=======
+import com.google.android.material.testapp.BottomSheetDialogActivity;
+import com.google.android.material.testapp.R;
+>>>>>>> pr/1944
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -157,26 +169,18 @@ public class BottomSheetDialogTest {
     assertThat(behavior.isHideable(), is(false));
     assertThat(dialog.isShowing(), is(true));
 
-    activityTestRule.runOnUiThread(new Runnable() {
-      @Override
-      public void run() {
-        dialog.cancel();
-        assertThat(dialog.isShowing(), is(false));
-      }
-    });
+    activityTestRule.runOnUiThread(
+        () -> {
+          dialog.cancel();
+          assertThat(dialog.isShowing(), is(false));
+        });
   }
 
   @Test
   public void testHideBottomSheet() throws Throwable {
     final AtomicBoolean canceled = new AtomicBoolean(false);
     showDialog();
-    dialog.setOnCancelListener(
-        new DialogInterface.OnCancelListener() {
-          @Override
-          public void onCancel(DialogInterface dialogInterface) {
-            canceled.set(true);
-          }
-        });
+    dialog.setOnCancelListener(dialogInterface -> canceled.set(true));
     onView(ViewMatchers.withId(R.id.design_bottom_sheet))
         .perform(setState(BottomSheetBehavior.STATE_HIDDEN));
     // The dialog should be canceled
@@ -204,13 +208,9 @@ public class BottomSheetDialogTest {
     final BottomSheetBehavior.BottomSheetCallback callback =
         mock(BottomSheetBehavior.BottomSheetCallback.class);
     BottomSheetBehavior.from(dialog.findViewById(R.id.design_bottom_sheet))
-        .setBottomSheetCallback(callback);
-    activityTestRule.runOnUiThread(new Runnable() {
-      @Override
-      public void run() {
-        dialog.show(); // Show the same dialog again.
-      }
-    });
+        .addBottomSheetCallback(callback);
+    // Show the same dialog again.
+    activityTestRule.runOnUiThread(() -> dialog.show());
     verify(callback, timeout(3000))
         .onStateChanged(any(View.class), eq(BottomSheetBehavior.STATE_SETTLING));
     verify(callback, timeout(3000))
@@ -218,19 +218,17 @@ public class BottomSheetDialogTest {
   }
 
   private void showDialog() throws Throwable {
-    activityTestRule.runOnUiThread(new Runnable() {
-      @Override
-      public void run() {
-        Context context = activityTestRule.getActivity();
-        dialog = new BottomSheetDialog(context);
-        AppCompatTextView text = new AppCompatTextView(context);
-        StringBuilder builder = new StringBuilder();
-        builder.append("It is fine today. ");
-        text.setText(builder);
-        dialog.setContentView(text);
-        dialog.show();
-      }
-    });
+    activityTestRule.runOnUiThread(
+        () -> {
+          Context context = activityTestRule.getActivity();
+          dialog = new BottomSheetDialog(context);
+          AppCompatTextView text = new AppCompatTextView(context);
+          StringBuilder builder = new StringBuilder();
+          builder.append("It is fine today. ");
+          text.setText(builder);
+          dialog.setContentView(text);
+          dialog.show();
+        });
   }
 
   private static ViewAction setTallPeekHeight() {
@@ -247,7 +245,7 @@ public class BottomSheetDialogTest {
 
       @Override
       public void perform(UiController uiController, View view) {
-        BottomSheetBehavior behavior = BottomSheetBehavior.from(view);
+        BottomSheetBehavior<?> behavior = BottomSheetBehavior.from(view);
         behavior.setPeekHeight(view.getHeight() + 100);
       }
     };

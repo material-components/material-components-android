@@ -19,10 +19,14 @@ import io.material.catalog.R;
  */
 
 import android.os.Bundle;
+<<<<<<< HEAD
 import androidx.annotation.Nullable;
+=======
+>>>>>>> pr/1944
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.Nullable;
 import io.material.catalog.feature.DemoFragment;
 
 /** A fragment that displays the main RadioButton demo for the Catalog app. */

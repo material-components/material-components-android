@@ -16,26 +16,39 @@
 
 package com.google.android.material.textfield;
 
-import static com.google.android.material.testutils.TestUtilsActions.setCompoundDrawablesRelative;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.clearText;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.typeText;
+import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.isEnabled;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.google.android.material.testutils.TestUtilsActions.setEnabled;
-import static com.google.android.material.testutils.TestUtilsMatchers.withCompoundDrawable;
 import static com.google.android.material.testutils.TestUtilsMatchers.withTextColor;
 import static com.google.android.material.testutils.TestUtilsMatchers.withTypeface;
-import static com.google.android.material.testutils.TextInputLayoutActions.clickPasswordToggle;
 import static com.google.android.material.testutils.TextInputLayoutActions.setBoxBackgroundColor;
 import static com.google.android.material.testutils.TextInputLayoutActions.setBoxCornerRadii;
 import static com.google.android.material.testutils.TextInputLayoutActions.setBoxStrokeColor;
+import static com.google.android.material.testutils.TextInputLayoutActions.setBoxStrokeErrorColor;
+import static com.google.android.material.testutils.TextInputLayoutActions.setBoxStrokeWidth;
+import static com.google.android.material.testutils.TextInputLayoutActions.setBoxStrokeWidthFocused;
 import static com.google.android.material.testutils.TextInputLayoutActions.setCounterEnabled;
 import static com.google.android.material.testutils.TextInputLayoutActions.setCounterMaxLength;
 import static com.google.android.material.testutils.TextInputLayoutActions.setError;
+import static com.google.android.material.testutils.TextInputLayoutActions.setErrorContentDescription;
 import static com.google.android.material.testutils.TextInputLayoutActions.setErrorEnabled;
 import static com.google.android.material.testutils.TextInputLayoutActions.setErrorTextAppearance;
+import static com.google.android.material.testutils.TextInputLayoutActions.setExpandedHintEnabled;
 import static com.google.android.material.testutils.TextInputLayoutActions.setHelperText;
 import static com.google.android.material.testutils.TextInputLayoutActions.setHelperTextEnabled;
 import static com.google.android.material.testutils.TextInputLayoutActions.setHint;
 import static com.google.android.material.testutils.TextInputLayoutActions.setHintTextAppearance;
-import static com.google.android.material.testutils.TextInputLayoutActions.setPasswordVisibilityToggleEnabled;
+import static com.google.android.material.testutils.TextInputLayoutActions.setPlaceholderText;
 import static com.google.android.material.testutils.TextInputLayoutActions.setTypeface;
+<<<<<<< HEAD
 import static com.google.android.material.testutils.TextInputLayoutMatchers.doesNotShowPasswordToggle;
 import static com.google.android.material.testutils.TextInputLayoutMatchers.passwordToggleHasContentDescription;
 import static androidx.test.InstrumentationRegistry.getInstrumentation;
@@ -53,21 +66,24 @@ import static androidx.test.espresso.matcher.ViewMatchers.isEnabled;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
+=======
+>>>>>>> pr/1944
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Parcelable;
+<<<<<<< HEAD
 import androidx.annotation.ColorInt;
 import com.google.android.material.testapp.R;
 import com.google.android.material.testapp.TextInputLayoutActivity;
@@ -75,25 +91,36 @@ import com.google.android.material.testapp.base.RecreatableAppCompatActivity;
 import com.google.android.material.testutils.ActivityUtils;
 import com.google.android.material.testutils.TestUtils;
 import com.google.android.material.testutils.ViewStructureImpl;
+=======
+>>>>>>> pr/1944
 import androidx.core.widget.TextViewCompat;
 import android.text.TextPaint;
-import android.text.method.PasswordTransformationMethod;
-import android.text.method.TransformationMethod;
 import android.util.AttributeSet;
 import android.util.SparseArray;
-import android.view.KeyEvent;
-import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+<<<<<<< HEAD
 import androidx.test.annotation.UiThreadTest;
 import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.espresso.ViewAssertion;
 import androidx.test.filters.LargeTest;
+=======
+import androidx.annotation.ColorInt;
+import androidx.test.annotation.UiThreadTest;
+import androidx.test.espresso.ViewAssertion;
+>>>>>>> pr/1944
 import androidx.test.filters.MediumTest;
 import androidx.test.filters.SdkSuppress;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
+<<<<<<< HEAD
+=======
+import com.google.android.material.testapp.R;
+import com.google.android.material.testapp.TextInputLayoutActivity;
+import com.google.android.material.testutils.TestUtils;
+import com.google.android.material.testutils.ViewStructureImpl;
+>>>>>>> pr/1944
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -109,6 +136,7 @@ public class TextInputLayoutTest {
   private static final String ERROR_MESSAGE_2 = "Some other error has occurred";
   private static final String HELPER_MESSAGE_1 = "Helpful helper text";
   private static final String HELPER_MESSAGE_2 = "Some other helper text";
+  private static final String PLACEHOLDER_TEXT = "This text is holding the place";
   private static final String HINT_TEXT = "Hint text";
   private static final String INPUT_TEXT = "Random input text";
   private static final Typeface CUSTOM_TYPEFACE = Typeface.SANS_SERIF;
@@ -187,6 +215,15 @@ public class TextInputLayoutTest {
     onView(withId(R.id.textinput_edittext_filled)).perform(typeText(INPUT_TEXT));
     // Check that the cutout is closed.
     onView(withId(R.id.textinput_box_outline)).check(isCutoutOpen(false));
+  }
+
+  @Test
+  public void testHintIsCollapsedIfExpandedHintNotEnabled() {
+    // Set expandedHintEnabled to false.
+    onView(withId(R.id.textinput_box_filled)).perform(setExpandedHintEnabled(false));
+
+    // Check the hint is collapsed.
+    onView(withId(R.id.textinput_box_filled)).check(isHintExpanded(false));
   }
 
   @Test
@@ -275,107 +312,41 @@ public class TextInputLayoutTest {
   }
 
   @Test
-  public void testPasswordToggleClick() {
-    // Type some text on the EditText
-    onView(withId(R.id.textinput_edittext_pwd)).perform(typeText(INPUT_TEXT));
+  public void testSetPlaceholderText() {
+    onView(withId(R.id.textinput_box_outline)).perform(setPlaceholderText(PLACEHOLDER_TEXT));
 
-    final Activity activity = activityTestRule.getActivity();
-    final EditText textInput = activity.findViewById(R.id.textinput_edittext_pwd);
+    // Click on the EditText so that the hint collapses and the placeholder text is shown.
+    onView(withId(R.id.textinput_edittext_outline)).perform(click());
 
-    // Assert that the password is disguised
-    assertNotEquals(INPUT_TEXT, textInput.getLayout().getText().toString());
-
-    // Now click the toggle button
-    onView(withId(R.id.textinput_password)).perform(clickPasswordToggle());
-
-    // And assert that the password is not disguised
-    assertEquals(INPUT_TEXT, textInput.getLayout().getText().toString());
+    // Check that the placeholder text is displayed.
+    onView(withText(PLACEHOLDER_TEXT)).check(matches(isDisplayed()));
   }
 
   @Test
-  public void testPasswordToggleDisable() {
-    final Activity activity = activityTestRule.getActivity();
-    final EditText textInput = activity.findViewById(R.id.textinput_edittext_pwd);
+  public void testSetPlaceholderTextViaAttribute() {
+    // The text input with id textinput_box_outline has the string textinput_placeholder set on it
+    // via the placeholder text attribute. Check that the placeholder text is displayed via the
+    // attribute.
+    String placeholderText =
+        activityTestRule.getActivity().getResources().getString(R.string.textinput_placeholder);
 
-    // Set some text on the EditText
-    onView(withId(R.id.textinput_edittext_pwd)).perform(typeText(INPUT_TEXT));
-    // Assert that the password is disguised
-    assertNotEquals(INPUT_TEXT, textInput.getLayout().getText().toString());
+    // Click on the EditText so that the hint collapses and the placeholder text is shown.
+    onView(withId(R.id.textinput_edittext_outline)).perform(click());
 
-    // Disable the password toggle
-    onView(withId(R.id.textinput_password)).perform(setPasswordVisibilityToggleEnabled(false));
-
-    // Check that the password toggle view is not visible
-    onView(withId(R.id.textinput_password)).check(matches(doesNotShowPasswordToggle()));
-    // ...and that the password is disguised still
-    assertNotEquals(INPUT_TEXT, textInput.getLayout().getText().toString());
+    // Check that the placeholder text is displayed.
+    onView(withText(placeholderText)).check(matches(isDisplayed()));
   }
 
   @Test
-  public void testPasswordToggleDisableWhenVisible() {
-    final Activity activity = activityTestRule.getActivity();
-    final EditText textInput = activity.findViewById(R.id.textinput_edittext_pwd);
+  public void testSetErrorNullDoesNotHideHelperText() {
+    // Show helper text in layout with error enabled
+    onView(withId(R.id.textinput)).perform(setHelperText(HELPER_MESSAGE_1));
 
-    // Type some text on the EditText
-    onView(withId(R.id.textinput_edittext_pwd)).perform(typeText(INPUT_TEXT));
-    // Assert that the password is disguised
-    assertNotEquals(INPUT_TEXT, textInput.getLayout().getText().toString());
+    // Set error to null
+    onView(withId(R.id.textinput)).perform(setError(null));
 
-    // Now click the toggle button
-    onView(withId(R.id.textinput_password)).perform(clickPasswordToggle());
-    // Disable the password toggle
-    onView(withId(R.id.textinput_password)).perform(setPasswordVisibilityToggleEnabled(false));
-
-    // Check that the password is disguised again
-    assertNotEquals(INPUT_TEXT, textInput.getLayout().getText().toString());
-  }
-
-  @Test
-  public void testPasswordToggleMaintainsCompoundDrawables() {
-    // Set a known set of test compound drawables on the EditText
-    final Drawable start = new ColorDrawable(Color.RED);
-    final Drawable top = new ColorDrawable(Color.GREEN);
-    final Drawable end = new ColorDrawable(Color.BLUE);
-    final Drawable bottom = new ColorDrawable(Color.BLACK);
-    onView(withId(R.id.textinput_edittext_pwd))
-        .perform(setCompoundDrawablesRelative(start, top, end, bottom));
-
-    // Enable the password toggle and check that the start, top and bottom drawables are
-    // maintained
-    onView(withId(R.id.textinput_password)).perform(setPasswordVisibilityToggleEnabled(true));
-    onView(withId(R.id.textinput_edittext_pwd))
-        .check(matches(withCompoundDrawable(0, start)))
-        .check(matches(withCompoundDrawable(1, top)))
-        .check(matches(not(withCompoundDrawable(2, end))))
-        .check(matches(withCompoundDrawable(3, bottom)));
-
-    // Now disable the password toggle and check that all of the original compound drawables
-    // are set
-    onView(withId(R.id.textinput_password)).perform(setPasswordVisibilityToggleEnabled(false));
-    onView(withId(R.id.textinput_edittext_pwd))
-        .check(matches(withCompoundDrawable(0, start)))
-        .check(matches(withCompoundDrawable(1, top)))
-        .check(matches(withCompoundDrawable(2, end)))
-        .check(matches(withCompoundDrawable(3, bottom)));
-  }
-
-  @Test
-  public void testPasswordToggleIsHiddenAfterReenable() {
-    final Activity activity = activityTestRule.getActivity();
-    final EditText textInput = activity.findViewById(R.id.textinput_edittext_pwd);
-
-    // Type some text on the EditText and then click the toggle button
-    onView(withId(R.id.textinput_edittext_pwd)).perform(typeText(INPUT_TEXT));
-    onView(withId(R.id.textinput_password)).perform(clickPasswordToggle());
-
-    // Disable the password toggle, and then re-enable it
-    onView(withId(R.id.textinput_password))
-        .perform(setPasswordVisibilityToggleEnabled(false))
-        .perform(setPasswordVisibilityToggleEnabled(true));
-
-    // Check that the password is disguised and the toggle button reflects the same state
-    assertNotEquals(INPUT_TEXT, textInput.getLayout().getText().toString());
-    onView(withId(R.id.textinput_password)).perform(clickPasswordToggle());
+    // Check helper text is still visible
+    onView(withText(HELPER_MESSAGE_1)).check(matches(isDisplayed()));
   }
 
   @Test
@@ -416,7 +387,7 @@ public class TextInputLayoutTest {
     final EditorInfo info = new EditorInfo();
     editText.onCreateInputConnection(info);
 
-    assertEquals(INPUT_TEXT, info.hintText);
+    assertEquals(INPUT_TEXT, info.hintText.toString());
   }
 
   @UiThreadTest
@@ -425,23 +396,25 @@ public class TextInputLayoutTest {
   public void testDispatchProvideAutofillStructure() {
     final Activity activity = activityTestRule.getActivity();
 
-    final TextInputLayout layout = activity.findViewById(R.id.textinput);
+    final TextInputLayout layout = activity.findViewById(R.id.textinput_layout_without_hint);
 
     final ViewStructureImpl structure = new ViewStructureImpl();
     layout.dispatchProvideAutofillStructure(structure, 0);
 
-    assertEquals(2, structure.getChildCount()); // EditText and TextView
+    // 1 x EditText, 3 x TextView (prefix/suffix/placeholder).
+    assertEquals(4, structure.getChildCount());
 
     // Asserts the structure.
-    final ViewStructureImpl childStructure = structure.getChildAt(0);
+    ViewStructureImpl childStructure = structure.getChildAt(1);
     assertEquals(EditText.class.getName(), childStructure.getClassName());
-    assertEquals("Hint to the user", childStructure.getHint());
+    assertEquals("Nested hint", childStructure.getHint().toString());
 
     // Make sure the widget's hint was restored.
-    assertEquals("Hint to the user", layout.getHint());
-    final EditText editText = activity.findViewById(R.id.textinput_edittext);
+    assertEquals("Nested hint", layout.getHint().toString());
+    final EditText editText = activity.findViewById(R.id.textinput_edittext_with_hint);
     assertNull(editText.getHint());
   }
+
   @UiThreadTest
   @Test
   public void testDrawableStateChanged() {
@@ -485,6 +458,36 @@ public class TextInputLayoutTest {
         "Expected no additional animations since we simply saved/restored state",
         1,
         layout.animateToExpansionFractionCount);
+  }
+
+  @UiThreadTest
+  @Test
+  public void testSavedState() throws Throwable {
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout layout = (TextInputLayout) activity.findViewById(R.id.textinput);
+    layout.setHint(HINT_TEXT);
+    layout.setHelperText(HELPER_MESSAGE_1);
+    layout.setPlaceholderText(PLACEHOLDER_TEXT);
+
+    // Save the current state
+    SparseArray<Parcelable> container = new SparseArray<>();
+    layout.saveHierarchyState(container);
+
+    // Restore the state into a fresh text field
+    activityTestRule.runOnUiThread(
+        () -> {
+          final TextInputLayout testLayout = new TestTextInputLayout(activity);
+          testLayout.setId(R.id.textinput);
+          final TextInputEditText testEditText = new TextInputEditText(activity);
+          testEditText.setId(R.id.textinputedittext);
+          testLayout.addView(testEditText);
+          testLayout.restoreHierarchyState(container);
+
+          // Check hint, helper and placeholder text were restored
+          assertEquals(HINT_TEXT, testLayout.getHint().toString());
+          assertEquals(HELPER_MESSAGE_1, testLayout.getHelperText().toString());
+          assertEquals(PLACEHOLDER_TEXT, testLayout.getPlaceholderText().toString());
+        });
   }
 
   @UiThreadTest
@@ -540,23 +543,20 @@ public class TextInputLayoutTest {
   }
 
   @Test
-  public void testPasswordToggleHasDefaultContentDescription() {
-    // Check that the TextInputLayout says that it has a content description and that the
-    // underlying toggle has content description as well
-    onView(withId(R.id.textinput_password)).check(matches(passwordToggleHasContentDescription()));
-  }
+  public void testSetErrorContentDescription() {
+    String errorContentDesc = "Error content description";
+    // Set error and error content description.
+    onView(withId(R.id.textinput))
+        .perform(setErrorEnabled(true))
+        .perform(setError(ERROR_MESSAGE_1))
+        .perform(setErrorContentDescription(errorContentDesc));
 
-  /**
-   * Simple test that uses AccessibilityChecks to check that the password toggle icon is
-   * 'accessible'.
-   */
-  @Test
-  public void testPasswordToggleIsAccessible() {
-    onView(
-            allOf(
-                withId(R.id.text_input_password_toggle),
-                isDescendantOfA(withId(R.id.textinput_password))))
-        .check(accessibilityAssertion());
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout textInputLayout =
+        activity.findViewById(R.id.textinput);
+
+    // Assert the error content description is as expected.
+    assertEquals(errorContentDesc, textInputLayout.getErrorContentDescription().toString());
   }
 
   @Test
@@ -610,39 +610,8 @@ public class TextInputLayoutTest {
   }
 
   @Test
-  public void testFocusMovesToEditTextWithPasswordEnabled() {
-    // Focus the preceding EditText
-    onView(withId(R.id.textinput_edittext)).perform(click()).check(matches(hasFocus()));
-
-    // Then send a TAB to focus the next view
-    getInstrumentation().sendKeyDownUpSync(KeyEvent.KEYCODE_TAB);
-
-    // And check that the EditText is focused
-    onView(withId(R.id.textinput_edittext_pwd)).check(matches(hasFocus()));
-  }
-
-  @Test
   public void testTextSetViaAttributeCollapsedHint() {
     onView(withId(R.id.textinput_with_text)).check(isHintExpanded(false));
-  }
-
-  @Test
-  @LargeTest
-  public void testSaveAndRestorePasswordVisibility() throws Throwable {
-    // Type some text on the EditText
-    onView(withId(R.id.textinput_edittext_pwd)).perform(typeText(INPUT_TEXT));
-    onView(withId(R.id.textinput_password)).check(isPasswordToggledVisible(false));
-
-    // Toggle password to be shown as plain text
-    onView(withId(R.id.textinput_password)).perform(clickPasswordToggle());
-    onView(withId(R.id.textinput_password)).check(isPasswordToggledVisible(true));
-
-    RecreatableAppCompatActivity activity = activityTestRule.getActivity();
-    ActivityUtils.recreateActivity(activityTestRule, activity);
-    ActivityUtils.waitForExecution(activityTestRule);
-
-    // Check that the password is still toggled to be shown as plain text
-    onView(withId(R.id.textinput_password)).check(isPasswordToggledVisible(true));
   }
 
   @Test
@@ -674,6 +643,30 @@ public class TextInputLayoutTest {
   }
 
   @Test
+  public void testSetBoxStrokeWidth() {
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout layout = activity.findViewById(R.id.textinput_box_outline);
+
+    // Set stroke width
+    onView(withId(R.id.textinput_box_outline)).perform(setBoxStrokeWidth(10));
+
+    // Assert stroke width is correct
+    assertEquals(10, layout.getBoxStrokeWidth());
+  }
+
+  @Test
+  public void testSetBoxStrokeFocusedWidth() {
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout layout = activity.findViewById(R.id.textinput_box_outline);
+
+    // Set stroke width
+    onView(withId(R.id.textinput_box_outline)).perform(setBoxStrokeWidthFocused(10));
+
+    // Assert stroke width is correct
+    assertEquals(10, layout.getBoxStrokeWidthFocused());
+  }
+
+  @Test
   public void testOutlineBoxStrokeChangesColor() {
     @ColorInt int cyan = Color.CYAN;
     @ColorInt int green = Color.GREEN;
@@ -686,6 +679,22 @@ public class TextInputLayoutTest {
     onView(withId(R.id.textinput_box_outline)).perform(setBoxStrokeColor(green));
     // Check that the outline box's stroke color is green.
     onView(withId(R.id.textinput_box_outline)).check(isBoxStrokeColor(green));
+  }
+
+  @Test
+  public void testOutlineBoxStrokeChangesErrorColor() {
+    ColorStateList cyan = new ColorStateList(new int[][] {new int[] {}}, new int[] {Color.CYAN});
+    ColorStateList green = new ColorStateList(new int[][] {new int[] {}}, new int[] {Color.GREEN});
+    onView(withId(R.id.textinput_box_outline)).perform(setError(ERROR_MESSAGE_1));
+
+    // Change the outline box's stroke error color to cyan.
+    onView(withId(R.id.textinput_box_outline)).perform(setBoxStrokeErrorColor(cyan));
+    // Check that the outline box's stroke error color is cyan.
+    onView(withId(R.id.textinput_box_outline)).check(isBoxStrokeErrorColor(cyan));
+    // Change the outline box's stroke error color to green.
+    onView(withId(R.id.textinput_box_outline)).perform(setBoxStrokeErrorColor(green));
+    // Check that the outline box's stroke error color is green.
+    onView(withId(R.id.textinput_box_outline)).check(isBoxStrokeErrorColor(green));
   }
 
   @Test
@@ -772,70 +781,78 @@ public class TextInputLayoutTest {
     onView(withId(R.id.textinput_box_outline)).check(isBoxCornerRadiusTopEnd(cornerRadiusMedium));
   }
 
+  @UiThreadTest
+  @Test
+  @SdkSuppress(minSdkVersion = Build.VERSION_CODES.O)
+  public void hintSetOnNestedEditText_propagateInnerHintToAutofillProvider() {
+    final Activity activity = activityTestRule.getActivity();
+    TextInputLayout textInputLayout = activity.findViewById(R.id.textinput_layout_without_hint);
+    ViewStructureImpl structure = new ViewStructureImpl();
+
+    textInputLayout.dispatchProvideAutofillStructure(structure, /* flags= */ 0);
+
+    final ViewStructureImpl editText = structure.getChildAt(1);
+    assertEquals(EditText.class.getName(), editText.getClassName());
+    assertEquals(structure.getAutofillId(), textInputLayout.getAutofillId());
+    assertEquals("Nested hint", editText.getHint().toString());
+  }
+
+  @UiThreadTest
+  @Test
+  @SdkSuppress(minSdkVersion = Build.VERSION_CODES.O)
+  public void hintSetOnOuterLayout_propagateOuterHintToAutofillProvider() {
+    final Activity activity = activityTestRule.getActivity();
+    TextInputLayout textInputLayout = activity.findViewById(R.id.textinput_layout_with_hint);
+    ViewStructureImpl structure = new ViewStructureImpl();
+
+    textInputLayout.dispatchProvideAutofillStructure(structure, /* flags= */ 0);
+
+    final ViewStructureImpl editText = structure.getChildAt(1);
+    assertEquals(EditText.class.getName(), editText.getClassName());
+    assertEquals(structure.getAutofillId(), textInputLayout.getAutofillId());
+    assertEquals("Outer hint", editText.getHint().toString());
+  }
+
   private static ViewAssertion isHintExpanded(final boolean expanded) {
-    return new ViewAssertion() {
-      @Override
-      public void check(View view, NoMatchingViewException noViewFoundException) {
-        assertTrue(view instanceof TextInputLayout);
-        assertEquals(expanded, ((TextInputLayout) view).isHintExpanded());
-      }
+    return (view, noViewFoundException) -> {
+      assertTrue(view instanceof TextInputLayout);
+      assertEquals(expanded, ((TextInputLayout) view).isHintExpanded());
     };
   }
 
   private static ViewAssertion isBoxStrokeColor(@ColorInt final int boxStrokeColor) {
-    return new ViewAssertion() {
-      @Override
-      public void check(View view, NoMatchingViewException noViewFoundException) {
-        assertTrue(view instanceof TextInputLayout);
-        assertEquals(boxStrokeColor, ((TextInputLayout) view).getBoxStrokeColor());
-      }
+    return (view, noViewFoundException) -> {
+      assertTrue(view instanceof TextInputLayout);
+      assertEquals(boxStrokeColor, ((TextInputLayout) view).getBoxStrokeColor());
+    };
+  }
+
+  private static ViewAssertion isBoxStrokeErrorColor(final ColorStateList boxStrokeColor) {
+    return (view, noViewFoundException) -> {
+      assertTrue(view instanceof TextInputLayout);
+      assertEquals(boxStrokeColor, ((TextInputLayout) view).getBoxStrokeErrorColor());
     };
   }
 
   private static ViewAssertion isBoxBackgroundColor(@ColorInt final int boxBackgroundColor) {
-    return new ViewAssertion() {
-      @Override
-      public void check(View view, NoMatchingViewException noViewFoundException) {
-        assertTrue(view instanceof TextInputLayout);
-        assertEquals(boxBackgroundColor, ((TextInputLayout) view).getBoxBackgroundColor());
-      }
+    return (view, noViewFoundException) -> {
+      assertTrue(view instanceof TextInputLayout);
+      assertEquals(boxBackgroundColor, ((TextInputLayout) view).getBoxBackgroundColor());
     };
   }
 
   private static ViewAssertion isBoxCornerRadiusTopEnd(final float boxCornerRadiusTopEnd) {
-    return new ViewAssertion() {
-      @Override
-      public void check(View view, NoMatchingViewException noViewFoundException) {
-        assertTrue(view instanceof TextInputLayout);
-        assertEquals(
-            boxCornerRadiusTopEnd, ((TextInputLayout) view).getBoxCornerRadiusTopEnd(), 0.01);
-      }
+    return (view, noViewFoundException) -> {
+      assertTrue(view instanceof TextInputLayout);
+      assertEquals(
+          boxCornerRadiusTopEnd, ((TextInputLayout) view).getBoxCornerRadiusTopEnd(), 0.01);
     };
   }
 
   private static ViewAssertion isCutoutOpen(final boolean open) {
-    return new ViewAssertion() {
-      @Override
-      public void check(View view, NoMatchingViewException noViewFoundException) {
-        assertTrue(view instanceof TextInputLayout);
-        assertEquals(open, ((TextInputLayout) view).cutoutIsOpen());
-      }
-    };
-  }
-
-  static ViewAssertion isPasswordToggledVisible(final boolean isToggledVisible) {
-    return new ViewAssertion() {
-      @Override
-      public void check(View view, NoMatchingViewException noViewFoundException) {
-        assertTrue(view instanceof TextInputLayout);
-        EditText editText = ((TextInputLayout) view).getEditText();
-        TransformationMethod transformationMethod = editText.getTransformationMethod();
-        if (isToggledVisible) {
-          assertNull(transformationMethod);
-        } else {
-          assertEquals(PasswordTransformationMethod.getInstance(), transformationMethod);
-        }
-      }
+    return (view, noViewFoundException) -> {
+      assertTrue(view instanceof TextInputLayout);
+      assertEquals(open, ((TextInputLayout) view).cutoutIsOpen());
     };
   }
 }

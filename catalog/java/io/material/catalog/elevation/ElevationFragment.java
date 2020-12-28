@@ -18,6 +18,10 @@ package io.material.catalog.elevation;
 
 import io.material.catalog.R;
 
+<<<<<<< HEAD
+=======
+import android.content.Intent;
+>>>>>>> pr/1944
 import androidx.fragment.app.Fragment;
 import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
@@ -27,6 +31,8 @@ import io.material.catalog.application.scope.FragmentScope;
 import io.material.catalog.feature.Demo;
 import io.material.catalog.feature.DemoLandingFragment;
 import io.material.catalog.feature.FeatureDemo;
+import java.util.Arrays;
+import java.util.List;
 
 /** A landing fragment that links to Elevation demos for the Catalog app. */
 public class ElevationFragment extends DemoLandingFragment {
@@ -51,6 +57,23 @@ public class ElevationFragment extends DemoLandingFragment {
     };
   }
 
+  @Override
+  public List<Demo> getAdditionalDemos() {
+    return Arrays.asList(
+        new Demo(R.string.cat_elevation_overlay_title) {
+          @Override
+          public Intent createActivityIntent() {
+            return new Intent(getContext(), ElevationOverlayDemoActivity.class);
+          }
+        },
+        new Demo(R.string.cat_elevation_animation_title) {
+          @Override
+          public Fragment createFragment() {
+            return new ElevationAnimationDemoFragment();
+          }
+        });
+  }
+
   /** The Dagger module for {@link ElevationFragment} dependencies. */
   @dagger.Module
   public abstract static class Module {
@@ -63,7 +86,7 @@ public class ElevationFragment extends DemoLandingFragment {
     @Provides
     @ActivityScope
     static FeatureDemo provideFeatureDemo() {
-      return new FeatureDemo(R.string.cat_elevation_fragment_title, R.drawable.ic_card) {
+      return new FeatureDemo(R.string.cat_elevation_fragment_title, R.drawable.ic_elevation) {
         @Override
         public Fragment createFragment() {
           return new ElevationFragment();

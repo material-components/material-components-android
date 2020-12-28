@@ -16,18 +16,29 @@
 
 package com.google.android.material.appbar;
 
-import static com.google.android.material.testutils.AppBarLayoutMatchers.isCollapsed;
-import static com.google.android.material.testutils.SwipeUtils.swipeUp;
-import static com.google.android.material.testutils.TestUtilsMatchers.hasZ;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static com.google.android.material.testutils.AppBarLayoutMatchers.isCollapsed;
+import static com.google.android.material.testutils.SwipeUtils.swipeUp;
+import static com.google.android.material.testutils.TestUtilsMatchers.hasZ;
+<<<<<<< HEAD
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+=======
+>>>>>>> pr/1944
 
+import androidx.test.rule.ActivityTestRule;
+import androidx.test.runner.AndroidJUnit4;
 import com.google.android.material.testapp.AppBarLayoutCollapsePinActivity;
 import com.google.android.material.testapp.R;
 import com.google.android.material.testutils.ActivityUtils;
+<<<<<<< HEAD
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
+=======
+>>>>>>> pr/1944
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,16 +50,42 @@ public class AppBarWithCollapsingToolbarStateRestoreTest {
       new ActivityTestRule<>(AppBarLayoutCollapsePinActivity.class);
 
   @Test
-  public void testRecreateAndRestore() throws Throwable {
+  public void testRecreateAndRestoreWithSwipeInHeader() throws Throwable {
     AppBarLayoutCollapsePinActivity activity = activityTestRule.getActivity();
     AppBarLayout appBar = activity.findViewById(R.id.app_bar);
 
-    // Swipe up and collapse the AppBarLayout
+    int[] appBarLocationOnScreenXY = new int[2];
+    appBar.getLocationOnScreen(appBarLocationOnScreenXY);
+
+    // Swipe up from AppBarLayout and collapse the AppBarLayout
     onView(withId(R.id.coordinator_layout))
         .perform(
             swipeUp(
-                appBar.getLeft() + (appBar.getWidth() / 2),
-                appBar.getBottom() + 20,
+                appBarLocationOnScreenXY[0] + (appBar.getWidth() / 2),
+                appBarLocationOnScreenXY[1] + (appBar.getHeight() / 2),
+                appBar.getHeight()));
+    onView(withId(R.id.app_bar)).check(matches(hasZ())).check(matches(isCollapsed()));
+
+    ActivityUtils.recreateActivity(activityTestRule, activity);
+    ActivityUtils.waitForExecution(activityTestRule);
+
+    onView(withId(R.id.app_bar)).check(matches(hasZ())).check(matches(isCollapsed()));
+  }
+
+  @Test
+  public void testRecreateAndRestoreWithSwipeInContent() throws Throwable {
+    AppBarLayoutCollapsePinActivity activity = activityTestRule.getActivity();
+    AppBarLayout appBar = activity.findViewById(R.id.app_bar);
+
+    int[] appBarLocationOnScreenXY = new int[2];
+    appBar.getLocationOnScreen(appBarLocationOnScreenXY);
+
+    // Swipe up from scrollView and collapse the AppBarLayout
+    onView(withId(R.id.coordinator_layout))
+        .perform(
+            swipeUp(
+                appBarLocationOnScreenXY[0] + (appBar.getWidth() / 2),
+                appBarLocationOnScreenXY[1] + (3 * appBar.getHeight() / 2),
                 appBar.getHeight()));
     onView(withId(R.id.app_bar)).check(matches(hasZ())).check(matches(isCollapsed()));
 

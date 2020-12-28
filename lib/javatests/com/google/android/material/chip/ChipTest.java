@@ -17,10 +17,25 @@ package com.google.android.material.chip;
 
 import com.google.android.material.R;
 
+<<<<<<< HEAD
 
 import androidx.appcompat.app.AppCompatActivity;
+=======
+import static com.google.android.material.internal.ViewUtils.dpToPx;
+import static com.google.common.truth.Truth.assertThat;
+
+import android.content.Context;
+import android.graphics.RectF;
+import androidx.core.view.AccessibilityDelegateCompat;
+import androidx.core.view.ViewCompat;
+import androidx.appcompat.app.AppCompatActivity;
+import android.text.TextUtils;
+>>>>>>> pr/1944
 import android.text.TextUtils.TruncateAt;
 import android.view.View;
+import android.view.View.MeasureSpec;
+import android.view.View.OnClickListener;
+import androidx.test.core.app.ApplicationProvider;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -28,10 +43,11 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
+import org.robolectric.annotation.TextLayoutMode;
 import org.robolectric.annotation.internal.DoNotInstrument;
 
 /** Tests for {@link com.google.android.material.chip.Chip}. */
+@TextLayoutMode(value = TextLayoutMode.Mode.LEGACY, issueId = "130377392")
 @RunWith(RobolectricTestRunner.class)
 @DoNotInstrument
 public class ChipTest {
@@ -39,13 +55,17 @@ public class ChipTest {
   @Rule public final ExpectedException thrown = ExpectedException.none();
 
   private static final int CHIP_LINES = 2;
+  private static final float DELTA = 0.01f;
+  private static final int MIN_SIZE_FOR_ALLY_DP = 48;
+
   private Chip chip;
+  private AppCompatActivity activity;
 
   @Before
   public void themeApplicationContext() {
-    RuntimeEnvironment.application.setTheme(
-        R.style.Theme_MaterialComponents_Light_NoActionBar_Bridge);
-    AppCompatActivity activity = Robolectric.buildActivity(AppCompatActivity.class).setup().get();
+    ApplicationProvider.getApplicationContext()
+        .setTheme(R.style.Theme_MaterialComponents_Light_NoActionBar_Bridge);
+    activity = Robolectric.buildActivity(AppCompatActivity.class).setup().get();
     View inflated = activity.getLayoutInflater().inflate(R.layout.test_action_chip, null);
     chip = inflated.findViewById(R.id.chip);
   }
@@ -120,5 +140,94 @@ public class ChipTest {
   public void testSetMaxLinesMultiple_throwsException() {
     thrown.expect(UnsupportedOperationException.class);
     chip.setMaxLines(CHIP_LINES);
+  }
+
+  @Test
+  public void ensureMinTouchTarget_is48dp() {
+    setupAndMeasureChip(true);
+
+    assertThat(getMinTouchTargetSize()).isWithin(DELTA).of(chip.getMeasuredWidth());
+    assertThat(getMinTouchTargetSize()).isWithin(DELTA).of(chip.getMeasuredHeight());
+  }
+
+  @Test
+  public void ensureMinTouchTargetFalse_isLessThan48dp() {
+
+    setupAndMeasureChip(false);
+
+    assertThat(getMinTouchTargetSize()).isNotWithin(DELTA).of(chip.getMeasuredWidth());
+
+    assertThat(chip.getMeasuredWidth()).isLessThan((int) getMinTouchTargetSize());
+
+    assertThat(chip.getMeasuredHeight()).isLessThan((int) getMinTouchTargetSize());
+  }
+
+  @Test
+  public void testSetChipDrawableGetText() {
+    Context context = ApplicationProvider.getApplicationContext();
+    Chip resultChip = new Chip(context);
+    ChipDrawable chipDrawable =
+        ChipDrawable.createFromAttributes(
+            context, null, 0, R.style.Widget_MaterialComponents_Chip_Choice);
+    resultChip.setChipDrawable(chipDrawable);
+    resultChip.setText("foo");
+    assertThat(TextUtils.equals(resultChip.getText(), "foo")).isTrue();
+  }
+
+  @Test
+  public void testHasCustomAccessibilityDelegate() {
+    chip.setCloseIconResource(R.drawable.ic_mtrl_chip_close_circle);
+    chip.setCloseIconVisible(true);
+    chip.setOnCloseIconClickListener(
+        new OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            /* Do something */
+          }
+        });
+    AccessibilityDelegateCompat accessibilityDelegate = ViewCompat.getAccessibilityDelegate(chip);
+    assertThat(accessibilityDelegate).isNotNull();
+  }
+
+  @Test
+  public void testNoCustomAccessibilityDelegate() {
+    chip.setCloseIconResource(R.drawable.ic_mtrl_chip_close_circle);
+    AccessibilityDelegateCompat accessibilityDelegate = ViewCompat.getAccessibilityDelegate(chip);
+    assertThat(accessibilityDelegate).isNull();
+  }
+
+  private static float getMinTouchTargetSize() {
+    return dpToPx(ApplicationProvider.getApplicationContext(), MIN_SIZE_FOR_ALLY_DP);
+  }
+
+  private void setupAndMeasureChip(boolean shouldEnsureMinTouchTargeSize) {
+    chip.setEnsureMinTouchTargetSize(shouldEnsureMinTouchTargeSize);
+    int measureSpec =
+        MeasureSpec.makeMeasureSpec((int) (getMinTouchTargetSize() * 2), MeasureSpec.AT_MOST);
+    chip.measure(measureSpec, measureSpec);
+  }
+
+  @Test
+  public void testZeroChipCornerRadius() {
+    View inflated =
+        activity.getLayoutInflater().inflate(R.layout.test_chip_zero_corner_radius, null);
+    chip = inflated.findViewById(R.id.zero_corner_chip);
+    RectF bounds = new RectF();
+    bounds.bottom = 0;
+    bounds.top = 100;
+    bounds.left = 0;
+    bounds.right = 100;
+    assertThat(chip.getShapeAppearanceModel().getTopLeftCornerSize().getCornerSize(bounds))
+        .isWithin(DELTA)
+        .of(0);
+    assertThat(chip.getShapeAppearanceModel().getTopRightCornerSize().getCornerSize(bounds))
+        .isWithin(DELTA)
+        .of(0);
+    assertThat(chip.getShapeAppearanceModel().getBottomLeftCornerSize().getCornerSize(bounds))
+        .isWithin(DELTA)
+        .of(0);
+    assertThat(chip.getShapeAppearanceModel().getBottomRightCornerSize().getCornerSize(bounds))
+        .isWithin(DELTA)
+        .of(0);
   }
 }

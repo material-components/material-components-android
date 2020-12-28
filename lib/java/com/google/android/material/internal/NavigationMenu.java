@@ -19,11 +19,16 @@ package com.google.android.material.internal;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
+<<<<<<< HEAD
 import androidx.annotation.RestrictTo;
+=======
+>>>>>>> pr/1944
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuItemImpl;
 import androidx.appcompat.view.menu.SubMenuBuilder;
 import android.view.SubMenu;
+import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
 
 /**
  * This is a {@link MenuBuilder} that returns an instance of {@link NavigationSubMenu} instead of
@@ -38,6 +43,7 @@ public class NavigationMenu extends MenuBuilder {
     super(context);
   }
 
+  @NonNull
   @Override
   public SubMenu addSubMenu(int group, int id, int categoryOrder, CharSequence title) {
     final MenuItemImpl item = (MenuItemImpl) addInternal(group, id, categoryOrder, title);

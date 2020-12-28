@@ -20,13 +20,23 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.TimeInterpolator;
 import android.content.Context;
+<<<<<<< HEAD
 import com.google.android.material.animation.AnimationUtils;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior;
+=======
+>>>>>>> pr/1944
 import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewPropertyAnimator;
+import androidx.annotation.Dimension;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior;
+import com.google.android.material.animation.AnimationUtils;
 
 /**
  * The {@link Behavior} for a View within a {@link CoordinatorLayout} to hide the view off the
@@ -42,7 +52,8 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
 
   private int height = 0;
   private int currentState = STATE_SCROLLED_UP;
-  private ViewPropertyAnimator currentAnimator;
+  private int additionalHiddenOffsetY = 0;
+  @Nullable private ViewPropertyAnimator currentAnimator;
 
   public HideBottomViewOnScrollBehavior() {}
 
@@ -51,33 +62,53 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
   }
 
   @Override
-  public boolean onLayoutChild(CoordinatorLayout parent, V child, int layoutDirection) {
-    height = child.getMeasuredHeight();
+  public boolean onLayoutChild(
+      @NonNull CoordinatorLayout parent, @NonNull V child, int layoutDirection) {
+    ViewGroup.MarginLayoutParams paramsCompat =
+        (ViewGroup.MarginLayoutParams) child.getLayoutParams();
+    height = child.getMeasuredHeight() + paramsCompat.bottomMargin;
     return super.onLayoutChild(parent, child, layoutDirection);
+  }
+
+  /**
+   * Sets an additional offset for the y position used to hide the view.
+   *
+   * @param child the child view that is hidden by this behavior
+   * @param offset the additional offset in pixels that should be added when the view slides away
+   */
+  public void setAdditionalHiddenOffsetY(@NonNull V child, @Dimension int offset) {
+    additionalHiddenOffsetY = offset;
+
+    if (currentState == STATE_SCROLLED_DOWN) {
+      child.setTranslationY(height + additionalHiddenOffsetY);
+    }
   }
 
   @Override
   public boolean onStartNestedScroll(
-      CoordinatorLayout coordinatorLayout,
-      V child,
-      View directTargetChild,
-      View target,
-      int nestedScrollAxes) {
+      @NonNull CoordinatorLayout coordinatorLayout,
+      @NonNull V child,
+      @NonNull View directTargetChild,
+      @NonNull View target,
+      int nestedScrollAxes,
+      int type) {
     return nestedScrollAxes == ViewCompat.SCROLL_AXIS_VERTICAL;
   }
 
   @Override
   public void onNestedScroll(
       CoordinatorLayout coordinatorLayout,
-      V child,
-      View target,
+      @NonNull V child,
+      @NonNull View target,
       int dxConsumed,
       int dyConsumed,
       int dxUnconsumed,
-      int dyUnconsumed) {
-    if (currentState != STATE_SCROLLED_DOWN && dyConsumed > 0) {
+      int dyUnconsumed,
+      int type,
+      @NonNull int[] consumed) {
+    if (dyConsumed > 0) {
       slideDown(child);
-    } else if (currentState != STATE_SCROLLED_UP && dyConsumed < 0) {
+    } else if (dyConsumed < 0) {
       slideUp(child);
     }
   }
@@ -86,7 +117,11 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
    * Perform an animation that will slide the child from it's current position to be totally on the
    * screen.
    */
-  public void slideUp(V child) {
+  public void slideUp(@NonNull V child) {
+    if (currentState == STATE_SCROLLED_UP) {
+      return;
+    }
+
     if (currentAnimator != null) {
       currentAnimator.cancel();
       child.clearAnimation();
@@ -100,17 +135,25 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
    * Perform an animation that will slide the child from it's current position to be totally off the
    * screen.
    */
-  public void slideDown(V child) {
+  public void slideDown(@NonNull V child) {
+    if (currentState == STATE_SCROLLED_DOWN) {
+      return;
+    }
+
     if (currentAnimator != null) {
       currentAnimator.cancel();
       child.clearAnimation();
     }
     currentState = STATE_SCROLLED_DOWN;
     animateChildTo(
-        child, height, EXIT_ANIMATION_DURATION, AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR);
+        child,
+        height + additionalHiddenOffsetY,
+        EXIT_ANIMATION_DURATION,
+        AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR);
   }
 
-  private void animateChildTo(V child, int targetY, long duration, TimeInterpolator interpolator) {
+  private void animateChildTo(
+      @NonNull V child, int targetY, long duration, TimeInterpolator interpolator) {
     currentAnimator =
         child
             .animate()

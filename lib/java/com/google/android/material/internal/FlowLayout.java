@@ -24,12 +24,18 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
+<<<<<<< HEAD
 import androidx.annotation.RestrictTo;
+=======
+>>>>>>> pr/1944
 import androidx.core.view.MarginLayoutParamsCompat;
 import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
 
 /**
  * Horizontally lay out children until the row is filled and then moved to the next line. Call
@@ -42,29 +48,31 @@ public class FlowLayout extends ViewGroup {
   private int lineSpacing;
   private int itemSpacing;
   private boolean singleLine;
+  private int rowCount;
 
-  public FlowLayout(Context context) {
+  public FlowLayout(@NonNull Context context) {
     this(context, null);
   }
 
-  public FlowLayout(Context context, AttributeSet attrs) {
+  public FlowLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
     this(context, attrs, 0);
   }
 
-  public FlowLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+  public FlowLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
     singleLine = false;
     loadFromAttributes(context, attrs);
   }
 
   @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-  public FlowLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+  public FlowLayout(
+      @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
     super(context, attrs, defStyleAttr, defStyleRes);
     singleLine = false;
     loadFromAttributes(context, attrs);
   }
 
-  private void loadFromAttributes(Context context, AttributeSet attrs) {
+  private void loadFromAttributes(@NonNull Context context, @Nullable AttributeSet attrs) {
     final TypedArray array =
         context.getTheme().obtainStyledAttributes(attrs, R.styleable.FlowLayout, 0, 0);
     lineSpacing = array.getDimensionPixelSize(R.styleable.FlowLayout_lineSpacing, 0);
@@ -88,7 +96,8 @@ public class FlowLayout extends ViewGroup {
     this.itemSpacing = itemSpacing;
   }
 
-  protected boolean isSingleLine() {
+  /** Returns whether this chip group is single line or reflowed multiline. */
+  public boolean isSingleLine() {
     return singleLine;
   }
 
@@ -184,10 +193,12 @@ public class FlowLayout extends ViewGroup {
   protected void onLayout(boolean sizeChanged, int left, int top, int right, int bottom) {
     if (getChildCount() == 0) {
       // Do not re-layout when there are no children.
+      rowCount = 0;
       return;
     }
+    rowCount = 1;
 
-    boolean isRtl = ViewCompat.getLayoutDirection(this) == LAYOUT_DIRECTION_RTL;
+    boolean isRtl = ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL;
     int paddingStart = isRtl ? getPaddingRight() : getPaddingLeft();
     int paddingEnd = isRtl ? getPaddingLeft() : getPaddingRight();
     int childStart = paddingStart;
@@ -201,6 +212,7 @@ public class FlowLayout extends ViewGroup {
       View child = getChildAt(i);
 
       if (child.getVisibility() == View.GONE) {
+        child.setTag(R.id.row_index_key, -1);
         continue;
       }
 
@@ -218,7 +230,9 @@ public class FlowLayout extends ViewGroup {
       if (!singleLine && (childEnd > maxChildEnd)) {
         childStart = paddingStart;
         childTop = childBottom + lineSpacing;
+        rowCount++;
       }
+      child.setTag(R.id.row_index_key, rowCount - 1);
 
       childEnd = childStart + startMargin + child.getMeasuredWidth();
       childBottom = childTop + child.getMeasuredHeight();
@@ -232,5 +246,18 @@ public class FlowLayout extends ViewGroup {
 
       childStart += (startMargin + endMargin + child.getMeasuredWidth()) + itemSpacing;
     }
+  }
+
+  protected int getRowCount() {
+    return rowCount;
+  }
+
+  /** Gets the row index of the child, primarily for accessibility.   */
+  public int getRowIndex(@NonNull View child) {
+    Object index = child.getTag(R.id.row_index_key);
+    if (!(index instanceof Integer)) {
+      return -1;
+    }
+    return (int) index;
   }
 }

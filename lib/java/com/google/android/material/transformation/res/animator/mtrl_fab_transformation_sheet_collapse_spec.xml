@@ -14,55 +14,57 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-
+<!-- Deprecated. Use
+     com.google.android.material.transition.MaterialContainerTransform
+     instead. -->
 <set xmlns:android="http://schemas.android.com/apk/res/android">
 
   <objectAnimator
       android:propertyName="elevation"
       android:startOffset="150"
-      android:duration="150"/>
+      android:duration="150" />
 
   <objectAnimator
       android:propertyName="translationXLinear"
       android:startOffset="0"
-      android:duration="300"/>
+      android:duration="300" />
   <objectAnimator
       android:propertyName="translationXCurveUpwards"
       android:startOffset="0"
-      android:duration="255"/>
+      android:duration="255" />
   <objectAnimator
       android:propertyName="translationXCurveDownwards"
       android:startOffset="45"
-      android:duration="255"/>
+      android:duration="255" />
 
   <objectAnimator
       android:propertyName="translationYLinear"
       android:startOffset="0"
-      android:duration="300"/>
+      android:duration="300" />
   <objectAnimator
       android:propertyName="translationYCurveUpwards"
       android:startOffset="45"
-      android:duration="255"/>
+      android:duration="255" />
   <objectAnimator
       android:propertyName="translationYCurveDownwards"
       android:startOffset="0"
-      android:duration="255"/>
+      android:duration="255" />
 
   <objectAnimator
       android:propertyName="iconFade"
       android:startOffset="150"
-      android:duration="150"/>
+      android:duration="150" />
   <objectAnimator
       android:propertyName="expansion"
       android:startOffset="0"
-      android:duration="180"/>
+      android:duration="180" />
   <objectAnimator
       android:propertyName="color"
       android:startOffset="60"
-      android:duration="150"/>
+      android:duration="150" />
   <objectAnimator
       android:propertyName="contentFade"
       android:startOffset="0"
-      android:duration="75"/>
+      android:duration="75" />
 
 </set>

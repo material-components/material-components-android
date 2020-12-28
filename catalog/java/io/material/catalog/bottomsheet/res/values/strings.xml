@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2018 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<resources>
+  <string name="cat_bottomsheet_title">Bottom Sheet</string>
+  <string name="cat_bottomsheet_description">
+    Displays a demo of the Bottom Sheet component.
+  </string>
+  <string name="cat_bottomsheet_switch_text">
+    fullscreen mode
+  </string>
+  <string name="cat_bottomsheet_expansion_switch_text">
+    restrict expansion
+  </string>
+
+  <string name="cat_bottomsheet_button_text">
+    Show Modal BottomSheetDialog
+  </string>
+  <string name="cat_bottomsheet_state_collapsed" translatable="false">
+    STATE_COLLAPSED
+  </string>
+  <string name="cat_bottomsheet_state_dragging" translatable="false">
+    STATE_DRAGGING
+  </string>
+  <string name="cat_bottomsheet_state_expanded" translatable="false">
+    STATE_EXPANDED
+  </string>
+  <string name="cat_bottomsheet_state_half_expanded" translatable="false">
+    STATE_HALF_EXPANDED\nhalfExpandedRatio = %.2f
+  </string>
+  <string name="cat_bottomsheet_persistent">
+    Persistent Bottomsheet
+  </string>
+  <string name="cat_bottomsheet_button_label_enabled">Enabled</string>
+  <string name="cat_bottomsheet_button_label_disabled">Disabled</string>
+  <string name="cat_bottomsheet_button_clicked">Button clicked</string>
+  <string name="cat_bottomsheet_scrollable_content_demo_title">
+    Vertically scrollable content demo
+  </string>
+  <string name="cat_bottomsheet_label_add_people">Add People</string>
+  <string name="cat_bottomsheet_label_copy_link">Copy link</string>
+  <string name="cat_bottomsheet_label_open_in">Open In</string>
+  <string name="cat_bottomsheet_label_move">Move</string>
+  <string name="cat_bottomsheet_label_available_offline">Available offline</string>
+  <string name="cat_bottomsheet_label_star">Star</string>
+  <string name="cat_bottomsheet_label_remove">Remove</string>
+  <string name="cat_bottomsheet_label_rename">Rename</string>
+</resources>

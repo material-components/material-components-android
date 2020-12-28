@@ -19,6 +19,10 @@ package io.material.catalog.button;
 import io.material.catalog.R;
 
 import androidx.fragment.app.Fragment;
+<<<<<<< HEAD
+=======
+import androidx.annotation.Nullable;
+>>>>>>> pr/1944
 import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
 import dagger.multibindings.IntoSet;
@@ -27,6 +31,8 @@ import io.material.catalog.application.scope.FragmentScope;
 import io.material.catalog.feature.Demo;
 import io.material.catalog.feature.DemoLandingFragment;
 import io.material.catalog.feature.FeatureDemo;
+import java.util.Arrays;
+import java.util.List;
 
 /** A landing fragment that links to button demos for the Catalog app. */
 public class ButtonsFragment extends DemoLandingFragment {
@@ -49,6 +55,18 @@ public class ButtonsFragment extends DemoLandingFragment {
         return new ButtonsMainDemoFragment();
       }
     };
+  }
+
+  @Override
+  public List<Demo> getAdditionalDemos() {
+    return Arrays.asList(
+        new Demo(R.string.cat_buttons_toggle_group) {
+          @Nullable
+          @Override
+          public Fragment createFragment() {
+            return new ButtonToggleGroupDemoFragment();
+          }
+        });
   }
 
   /** The Dagger module for {@link ButtonsFragment} dependencies. */

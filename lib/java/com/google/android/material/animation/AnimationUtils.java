@@ -17,15 +17,28 @@
 package com.google.android.material.animation;
 
 import android.animation.TimeInterpolator;
+<<<<<<< HEAD
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import androidx.interpolator.view.animation.LinearOutSlowInInterpolator;
+=======
+>>>>>>> pr/1944
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
+import androidx.annotation.FloatRange;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.RestrictTo.Scope;
+import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
+import androidx.interpolator.view.animation.LinearOutSlowInInterpolator;
 
-/** Utility class for animations containing Material interpolators. */
+/**
+ * Utility class for animations containing Material interpolators.
+ *
+ * @hide
+ */
 @RestrictTo(Scope.LIBRARY_GROUP)
 public class AnimationUtils {
 
@@ -46,5 +59,25 @@ public class AnimationUtils {
   /** Linear interpolation between {@code startValue} and {@code endValue} by {@code fraction}. */
   public static int lerp(int startValue, int endValue, float fraction) {
     return startValue + Math.round(fraction * (endValue - startValue));
+  }
+
+  /**
+   * Linear interpolation between {@code startValue} and {@code endValue} when {@code fraction} is
+   * between {@code startFraction} and {@code endFraction}.
+   */
+  public static float lerp(
+      float startValue,
+      float endValue,
+      @FloatRange(from = 0.0, to = 1.0) float startFraction,
+      @FloatRange(from = 0.0, to = 1.0) float endFraction,
+      @FloatRange(from = 0.0, to = 1.0) float fraction) {
+    if (fraction < startFraction) {
+      return startValue;
+    }
+    if (fraction > endFraction) {
+      return endValue;
+    }
+
+    return lerp(startValue, endValue, (fraction - startFraction) / (endFraction - startFraction));
   }
 }

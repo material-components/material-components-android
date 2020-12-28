@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2020 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+  <string name="mtrl_picker_range_header_title">请选择范围</string>
+  <string name="mtrl_picker_date_header_title">请选择日期</string>
+  <string name="mtrl_picker_range_header_unselected">开始日期 - 结束日期</string>
+  <string name="mtrl_picker_range_header_only_start_selected">%1$s – 结束日期</string>
+  <string name="mtrl_picker_range_header_only_end_selected">开始日期 – %1$s</string>
+  <string name="mtrl_picker_range_header_selected">%1$s - %2$s</string>
+  <string name="mtrl_picker_date_header_unselected">选定的日期</string>
+  <string name="mtrl_picker_date_header_selected">%1$s</string>
+  <string name="mtrl_picker_confirm">@android:string/ok</string>
+  <string name="mtrl_picker_text_input_date_hint">日期</string>
+  <string name="mtrl_picker_text_input_date_range_start_hint">开始日期</string>
+  <string name="mtrl_picker_text_input_date_range_end_hint">结束日期</string>
+  <string name="mtrl_picker_text_input_year_abbr">y</string>
+  <string name="mtrl_picker_text_input_month_abbr">m</string>
+  <string name="mtrl_picker_text_input_day_abbr">d</string>
+  <string name="mtrl_picker_save">保存</string>
+  <string name="mtrl_picker_invalid_range">范围无效。</string>
+  <string name="mtrl_picker_out_of_range">不在允许的范围内：%1$s</string>
+  <string name="mtrl_picker_invalid_format">格式无效。</string>
+  <string name="mtrl_picker_invalid_format_use">使用：%1$s</string>
+  <string name="mtrl_picker_invalid_format_example">示例：%1$s</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode">切换到日历输入模式</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode">切换到文本字段输入模式</string>
+  <string name="mtrl_picker_a11y_prev_month">转到上个月</string>
+  <string name="mtrl_picker_a11y_next_month">转到下个月</string>
+  <string name="mtrl_picker_toggle_to_year_selection">点按即可切换到选择某年</string>
+  <string name="mtrl_picker_toggle_to_day_selection">点按即可切换到选择某天</string>
+  <string name="mtrl_picker_day_of_week_column_header">表示周几的列：%1$s</string>
+  <string name="mtrl_picker_announce_current_selection">当前的选择是：%1$s</string>
+  <string name="mtrl_picker_navigate_to_year_description">转到 %1$s 年</string>
+</resources>

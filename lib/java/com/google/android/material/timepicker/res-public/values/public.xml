@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) 2020 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+
+<resources>
+  <public name="materialTimePickerTheme" type="attr" />
+  <public name="materialTimePickerStyle" type="attr" />
+  <public name="materialClockStyle" type="attr" />
+
+  <public name="keyboardIcon" type="attr" />
+  <public name="clockIcon" type="attr" />
+
+  <public name="clockFaceBackgroundColor" type="attr" />
+  <public name="clockHandColor" type="attr" />
+  <public name="clockNumberTextColor" type="attr" />
+
+  <public name="ThemeOverlay.MaterialComponents.TimePicker" type="style" />
+
+  <public name="Widget.MaterialComponents.TimePicker" type="style" />
+  <public name="Widget.MaterialComponents.TimePicker.Button" type="style" />
+  <public name="Widget.MaterialComponents.TimePicker.Display" type="style" />
+  <public name="Widget.MaterialComponents.TimePicker.Display.TextInputEditText" type="style" />
+  <public name="Widget.MaterialComponents.TimePicker.ImageButton" type="style" />
+
+</resources>

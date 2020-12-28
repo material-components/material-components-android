@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2020 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+  <string name="mtrl_picker_range_header_title">ശ്രേണി തിരഞ്ഞെടുക്കുക</string>
+  <string name="mtrl_picker_date_header_title">തീയതി തിരഞ്ഞെടുക്കുക</string>
+  <string name="mtrl_picker_range_header_unselected">ആരംഭിക്കുന്ന തീയതി – അവസാനിക്കുന്ന തീയതി</string>
+  <string name="mtrl_picker_range_header_only_start_selected">%1$s – അവസാനിക്കുന്ന തീയതി</string>
+  <string name="mtrl_picker_range_header_only_end_selected">ആരംഭിക്കുന്ന തീയതി – %1$s</string>
+  <string name="mtrl_picker_range_header_selected">%1$s – %2$s</string>
+  <string name="mtrl_picker_date_header_unselected">തിരഞ്ഞെടുത്ത തീയതി</string>
+  <string name="mtrl_picker_date_header_selected">%1$s</string>
+  <string name="mtrl_picker_confirm">@android:string/ok</string>
+  <string name="mtrl_picker_text_input_date_hint">തീയതി</string>
+  <string name="mtrl_picker_text_input_date_range_start_hint">ആരംഭിക്കുന്ന തീയതി</string>
+  <string name="mtrl_picker_text_input_date_range_end_hint">അവസാനിക്കുന്ന തീയതി</string>
+  <string name="mtrl_picker_text_input_year_abbr">y</string>
+  <string name="mtrl_picker_text_input_month_abbr">m</string>
+  <string name="mtrl_picker_text_input_day_abbr">d</string>
+  <string name="mtrl_picker_save">സംരക്ഷിക്കുക</string>
+  <string name="mtrl_picker_invalid_range">അസാധുവായ ശ്രേണി.</string>
+  <string name="mtrl_picker_out_of_range">ശ്രേണിക്ക് പുറത്താണ്: %1$s</string>
+  <string name="mtrl_picker_invalid_format">അസാധുവായ ഫോർമാറ്റ്.</string>
+  <string name="mtrl_picker_invalid_format_use">%1$s ഉപയോഗിക്കുക</string>
+  <string name="mtrl_picker_invalid_format_example">ഉദാഹരണം: %1$s</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode">കലണ്ടർ ഇൻപുട്ട് മോഡിലേക്ക് മാറുക</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode">ടെക്‌സ്‌റ്റ് ഇൻപുട്ട് മോഡിലേക്ക് മാറുക</string>
+  <string name="mtrl_picker_a11y_prev_month">മുമ്പത്തെ മാസത്തിലേക്ക് മാറ്റുക</string>
+  <string name="mtrl_picker_a11y_next_month">അടുത്ത മാസത്തിലേക്ക് മാറ്റുക</string>
+  <string name="mtrl_picker_toggle_to_year_selection">വർഷം തിരഞ്ഞെടുക്കുന്നതിലേക്ക് മാറാൻ ടാപ്പ് ചെയ്യുക</string>
+  <string name="mtrl_picker_toggle_to_day_selection">ദിവസം തിരഞ്ഞെടുക്കുന്നതിലേക്ക് മാറാൻ ടാപ്പ് ചെയ്യുക</string>
+  <string name="mtrl_picker_day_of_week_column_header">ദിവസത്തിന്റെ കോളം: %1$s</string>
+  <string name="mtrl_picker_announce_current_selection">നിലവിൽ തിരഞ്ഞെടുത്തത്: %1$s</string>
+  <string name="mtrl_picker_navigate_to_year_description">%1$s വർഷത്തിലേക്ക് നാവിഗേറ്റ് ചെയ്യുക</string>
+</resources>

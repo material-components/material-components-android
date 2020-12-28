@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2020 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+  <string name="mtrl_picker_range_header_title">Pumili ng Range</string>
+  <string name="mtrl_picker_date_header_title">Pumili ng Petsa</string>
+  <string name="mtrl_picker_range_header_unselected">Petsa ng pagsisimula – Petsa ng pagtatapos</string>
+  <string name="mtrl_picker_range_header_only_start_selected">%1$s – Petsa ng pagtatapos</string>
+  <string name="mtrl_picker_range_header_only_end_selected">Petsa ng pagsisimula – %1$s</string>
+  <string name="mtrl_picker_range_header_selected">%1$s – %2$s</string>
+  <string name="mtrl_picker_date_header_unselected">Piniling petsa</string>
+  <string name="mtrl_picker_date_header_selected">%1$s</string>
+  <string name="mtrl_picker_confirm">@android:string/ok</string>
+  <string name="mtrl_picker_text_input_date_hint">Petsa</string>
+  <string name="mtrl_picker_text_input_date_range_start_hint">Petsa ng pagsisimula</string>
+  <string name="mtrl_picker_text_input_date_range_end_hint">Petsa ng pagtatapos</string>
+  <string name="mtrl_picker_text_input_year_abbr">y</string>
+  <string name="mtrl_picker_text_input_month_abbr">m</string>
+  <string name="mtrl_picker_text_input_day_abbr">d</string>
+  <string name="mtrl_picker_save">I-save</string>
+  <string name="mtrl_picker_invalid_range">Invalid na hanay.</string>
+  <string name="mtrl_picker_out_of_range">Wala sa sakop: %1$s</string>
+  <string name="mtrl_picker_invalid_format">Invalid na format.</string>
+  <string name="mtrl_picker_invalid_format_use">Gamitin: %1$s</string>
+  <string name="mtrl_picker_invalid_format_example">Halimbawa: %1$s</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode">Lumipat sa pamamaraan ng pag-input ng kalendaryo</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode">Lumipat sa pamamaraan ng pag-input ng text</string>
+  <string name="mtrl_picker_a11y_prev_month">Lumipat sa nakaraang buwan</string>
+  <string name="mtrl_picker_a11y_next_month">Lumipat sa susunod na buwan</string>
+  <string name="mtrl_picker_toggle_to_year_selection">I-tap para lumipat sa pagpili ng taon</string>
+  <string name="mtrl_picker_toggle_to_day_selection">I-tap para lumipat sa pagpili ng araw</string>
+  <string name="mtrl_picker_day_of_week_column_header">Column ng mga araw: %1$s</string>
+  <string name="mtrl_picker_announce_current_selection">Kasalukuyang seleksyon: %1$s</string>
+  <string name="mtrl_picker_navigate_to_year_description">Mag-navigate patungo sa taong %1$s</string>
+</resources>

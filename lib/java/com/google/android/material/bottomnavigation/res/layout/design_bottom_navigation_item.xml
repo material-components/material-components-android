@@ -16,7 +16,7 @@
   -->
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
   <ImageView
-      android:id="@+id/icon"
+      android:id="@id/navigation_bar_item_icon_view"
       android:layout_width="24dp"
       android:layout_height="24dp"
       android:layout_marginTop="@dimen/design_bottom_navigation_margin"
@@ -25,14 +25,16 @@
       android:contentDescription="@null"
       android:duplicateParentState="true"/>
   <com.google.android.material.internal.BaselineLayout
+      android:id="@id/navigation_bar_item_labels_group"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_gravity="bottom|center_horizontal"
-      android:paddingBottom="10dp"
+      android:paddingBottom="@dimen/design_bottom_navigation_label_padding"
+      android:clipChildren="false"
       android:clipToPadding="false"
       android:duplicateParentState="true">
     <TextView
-        android:id="@+id/smallLabel"
+        android:id="@id/navigation_bar_item_small_label_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:duplicateParentState="true"
@@ -40,7 +42,7 @@
         android:maxLines="1"
         android:textSize="@dimen/design_bottom_navigation_text_size"/>
     <TextView
-        android:id="@+id/largeLabel"
+        android:id="@id/navigation_bar_item_large_label_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:duplicateParentState="true"

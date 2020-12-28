@@ -15,7 +15,14 @@
   limitations under the License.
   -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
   package="com.google.android.material.shape">
 
+<<<<<<< HEAD
+=======
+  <uses-sdk
+    tools:overrideLibrary="androidx.test.core"/>
+
+>>>>>>> pr/1944
   <application/>
 </manifest>

@@ -17,12 +17,21 @@
 package com.google.android.material.testapp;
 
 import android.content.Intent;
+<<<<<<< HEAD
 import androidx.annotation.VisibleForTesting;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.testapp.base.BaseTestActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import android.widget.LinearLayout;
+=======
+import android.widget.LinearLayout;
+import androidx.annotation.VisibleForTesting;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.testapp.base.BaseTestActivity;
+>>>>>>> pr/1944
 
 public class BottomSheetBehaviorActivity extends BaseTestActivity {
 

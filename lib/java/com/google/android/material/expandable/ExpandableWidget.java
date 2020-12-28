@@ -16,6 +16,9 @@
 
 package com.google.android.material.expandable;
 
+import android.os.Parcelable;
+import android.view.View;
+
 /**
  * A widget that has expanded/collapsed state. When the expanded state changes, {@link
  * androidx.coordinatorlayout.widget.CoordinatorLayout#dispatchDependentViewsChanged an event is
@@ -26,7 +29,7 @@ package com.google.android.material.expandable;
  * and forward all calls to it.
  *
  * <p>The expanded state can saved across configuration changes by implementing {@link
- * #onSaveInstanceState} and {@link #onRestoreInstanceState}:
+ * View#onSaveInstanceState()} and {@link View#onRestoreInstanceState(Parcelable)}:
  *
  * <pre><code>
  * {@literal @}Override

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2020 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+  <string name="mtrl_picker_range_header_title">Veldu tímabil</string>
+  <string name="mtrl_picker_date_header_title">Veldu dagsetningu</string>
+  <string name="mtrl_picker_range_header_unselected">Upphafsdagur – lokadagur</string>
+  <string name="mtrl_picker_range_header_only_start_selected">%1$s – lokadagur</string>
+  <string name="mtrl_picker_range_header_only_end_selected">Upphafsdagur – %1$s</string>
+  <string name="mtrl_picker_range_header_selected">%1$s – %2$s</string>
+  <string name="mtrl_picker_date_header_unselected">Valin dagsetning</string>
+  <string name="mtrl_picker_date_header_selected">%1$s</string>
+  <string name="mtrl_picker_confirm">@android:string/ok</string>
+  <string name="mtrl_picker_text_input_date_hint">Dagsetning</string>
+  <string name="mtrl_picker_text_input_date_range_start_hint">Upphafsdagur</string>
+  <string name="mtrl_picker_text_input_date_range_end_hint">Lokadagur</string>
+  <string name="mtrl_picker_text_input_year_abbr">á</string>
+  <string name="mtrl_picker_text_input_month_abbr">m</string>
+  <string name="mtrl_picker_text_input_day_abbr">d</string>
+  <string name="mtrl_picker_save">Vista</string>
+  <string name="mtrl_picker_invalid_range">Ógilt svið.</string>
+  <string name="mtrl_picker_out_of_range">Utan sviðs: %1$s</string>
+  <string name="mtrl_picker_invalid_format">Ógilt snið.</string>
+  <string name="mtrl_picker_invalid_format_use">Nota: %1$s</string>
+  <string name="mtrl_picker_invalid_format_example">Dæmi: %1$s</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode">Skipta yfir í innfærsluaðferð fyrir dagatal</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode">Skipta yfir í innfærsluaðferð fyrir texta</string>
+  <string name="mtrl_picker_a11y_prev_month">Breyta í fyrri mánuð</string>
+  <string name="mtrl_picker_a11y_next_month">Breyta í næsta mánuð</string>
+  <string name="mtrl_picker_toggle_to_year_selection">Ýttu til að skipta yfir í að velja ár</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Ýttu til að skipta yfir í að velja dag</string>
+  <string name="mtrl_picker_day_of_week_column_header">Dálkur með dögum: %1$s</string>
+  <string name="mtrl_picker_announce_current_selection">Núverandi val: %1$s</string>
+  <string name="mtrl_picker_navigate_to_year_description">Fara í árið %1$s</string>
+</resources>

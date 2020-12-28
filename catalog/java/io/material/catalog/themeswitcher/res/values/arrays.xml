@@ -16,6 +16,28 @@
   -->
 <resources>
 
+  <array name="mtrl_shape_overlays">
+    <item>@style/ThemeOverlay.Shapes.Rounded</item>
+    <item>@style/ThemeOverlay.Shapes.Cut</item>
+  </array>
+
+  <array name="mtrl_shapes_content_description">
+    <item>@string/mtrl_rounded_content_description</item>
+    <item>@string/mtrl_cut_content_description</item>
+  </array>
+
+  <array name="mtrl_shape_size_overlays">
+    <item>@style/ThemeOverlay.ShapeSize.Small</item>
+    <item>@style/ThemeOverlay.ShapeSize.Medium</item>
+    <item>@style/ThemeOverlay.ShapeSize.Large</item>
+  </array>
+
+  <array name="mtrl_shape_size_content_description">
+    <item>@string/mtrl_small_shape_content_description</item>
+    <item>@string/mtrl_medium_shape_content_description</item>
+    <item>@string/mtrl_large_shape_content_description</item>
+  </array>
+
   <array name="mtrl_primary_palettes">
     <item>@style/ThemeOverlay.PrimaryPalette.Red</item>
     <item>@style/ThemeOverlay.PrimaryPalette.Purple</item>

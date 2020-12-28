@@ -17,8 +17,8 @@
 apply plugin: 'com.android.application'
 
 dependencies {
-  api compatibility("compat")
-  api compatibility("v7/appcompat")
+  api compatibility("appcompat")
+  api compatibility("core")
 
   api project(fromPath("lib"))
   api project(fromPath("testing/java/com/google/android/material/testapp/base"))
@@ -37,6 +37,10 @@ android {
   }
   defaultConfig {
     minSdkVersion 14
+<<<<<<< HEAD
     targetSdkVersion 27
+=======
+    targetSdkVersion 29
+>>>>>>> pr/1944
   }
 }

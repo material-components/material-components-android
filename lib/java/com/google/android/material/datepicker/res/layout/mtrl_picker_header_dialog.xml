@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2019 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="@dimen/mtrl_calendar_header_height">
+
+  <LinearLayout
+    android:id="@+id/mtrl_picker_header"
+    style="?attr/materialCalendarHeaderLayout"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/mtrl_calendar_header_height"
+    android:layout_gravity="top"
+    android:paddingStart="@dimen/mtrl_calendar_header_content_padding"
+    android:paddingEnd="@dimen/mtrl_calendar_header_content_padding"
+    android:paddingLeft="@dimen/mtrl_calendar_header_content_padding"
+    android:paddingRight="@dimen/mtrl_calendar_header_content_padding"
+    android:baselineAligned="false"
+    android:orientation="horizontal">
+
+    <FrameLayout
+      android:id="@+id/mtrl_picker_header_title_and_selection"
+      android:layout_width="0dp"
+      android:layout_height="match_parent"
+      android:layout_weight="1"
+      android:paddingStart="@dimen/mtrl_calendar_header_text_padding"
+      android:paddingLeft="@dimen/mtrl_calendar_header_text_padding">
+
+      <include layout="@layout/mtrl_picker_header_title_text"/>
+      <include layout="@layout/mtrl_picker_header_selection_text"/>
+
+    </FrameLayout>
+
+    <include layout="@layout/mtrl_picker_header_toggle"/>
+
+  </LinearLayout>
+
+  <View
+    style="?attr/materialCalendarHeaderDivider"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/mtrl_calendar_header_divider_thickness"
+    android:layout_gravity="bottom"/>
+
+</merge>

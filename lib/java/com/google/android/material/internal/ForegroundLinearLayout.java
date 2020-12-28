@@ -26,18 +26,25 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+<<<<<<< HEAD
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
+=======
+>>>>>>> pr/1944
 import androidx.appcompat.widget.LinearLayoutCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.annotation.RestrictTo;
 
 /** @hide */
 @RestrictTo(LIBRARY_GROUP)
 public class ForegroundLinearLayout extends LinearLayoutCompat {
 
-  private Drawable foreground;
+  @Nullable private Drawable foreground;
 
   private final Rect selfBounds = new Rect();
 
@@ -49,15 +56,16 @@ public class ForegroundLinearLayout extends LinearLayoutCompat {
 
   boolean foregroundBoundsChanged = false;
 
-  public ForegroundLinearLayout(Context context) {
+  public ForegroundLinearLayout(@NonNull Context context) {
     this(context, null);
   }
 
-  public ForegroundLinearLayout(Context context, AttributeSet attrs) {
+  public ForegroundLinearLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
     this(context, attrs, 0);
   }
 
-  public ForegroundLinearLayout(Context context, AttributeSet attrs, int defStyle) {
+  public ForegroundLinearLayout(
+      @NonNull Context context, @Nullable AttributeSet attrs, int defStyle) {
     super(context, attrs, defStyle);
 
     TypedArray a =
@@ -147,7 +155,7 @@ public class ForegroundLinearLayout extends LinearLayoutCompat {
    * @param drawable The Drawable to be drawn on top of the children.
    */
   @Override
-  public void setForeground(Drawable drawable) {
+  public void setForeground(@Nullable Drawable drawable) {
     if (foreground != drawable) {
       if (foreground != null) {
         foreground.setCallback(null);
@@ -180,6 +188,7 @@ public class ForegroundLinearLayout extends LinearLayoutCompat {
    *
    * @return A Drawable or null if no foreground was set.
    */
+  @Nullable
   @Override
   public Drawable getForeground() {
     return foreground;

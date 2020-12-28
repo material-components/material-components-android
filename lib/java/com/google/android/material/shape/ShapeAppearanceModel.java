@@ -25,373 +25,679 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+<<<<<<< HEAD
 import androidx.annotation.AttrRes;
 import androidx.annotation.Dimension;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
 import com.google.android.material.internal.Experimental;
+=======
+>>>>>>> pr/1944
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
+import androidx.annotation.AttrRes;
+import androidx.annotation.Dimension;
+import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.StyleRes;
 
 /**
  * This class models the edges and corners of a shape, which are used by {@link
  * MaterialShapeDrawable} to generate and render the shape for a view's background.
  */
-@Experimental("The shapes API is currently experimental and subject to change")
 public class ShapeAppearanceModel {
-  private CornerTreatment topLeftCorner;
-  private CornerTreatment topRightCorner;
-  private CornerTreatment bottomRightCorner;
-  private CornerTreatment bottomLeftCorner;
-  private EdgeTreatment topEdge;
-  private EdgeTreatment rightEdge;
-  private EdgeTreatment bottomEdge;
-  private EdgeTreatment leftEdge;
 
-  /** Constructs a default path generator with default edge and corner treatments. */
-  public ShapeAppearanceModel() {
-    setTopLeftCorner(MaterialShapeUtils.createDefaultCornerTreatment());
-    setTopRightCorner(MaterialShapeUtils.createDefaultCornerTreatment());
-    setBottomRightCorner(MaterialShapeUtils.createDefaultCornerTreatment());
-    setBottomLeftCorner(MaterialShapeUtils.createDefaultCornerTreatment());
+  /** Builder to create instances of {@link ShapeAppearanceModel}s. */
+  public static final class Builder {
 
-    setTopEdge(MaterialShapeUtils.createDefaultEdgeTreatment());
-    setRightEdge(MaterialShapeUtils.createDefaultEdgeTreatment());
-    setBottomEdge(MaterialShapeUtils.createDefaultEdgeTreatment());
-    setLeftEdge(MaterialShapeUtils.createDefaultEdgeTreatment());
+    @NonNull
+    private CornerTreatment topLeftCorner = MaterialShapeUtils.createDefaultCornerTreatment();
+
+    @NonNull
+    private CornerTreatment topRightCorner = MaterialShapeUtils.createDefaultCornerTreatment();
+
+    @NonNull
+    private CornerTreatment bottomRightCorner = MaterialShapeUtils.createDefaultCornerTreatment();
+
+    @NonNull
+    private CornerTreatment bottomLeftCorner = MaterialShapeUtils.createDefaultCornerTreatment();
+
+    @NonNull private CornerSize topLeftCornerSize = new AbsoluteCornerSize(0);
+    @NonNull private CornerSize topRightCornerSize = new AbsoluteCornerSize(0);
+    @NonNull private CornerSize bottomRightCornerSize = new AbsoluteCornerSize(0);
+    @NonNull private CornerSize bottomLeftCornerSize = new AbsoluteCornerSize(0);
+
+    @NonNull private EdgeTreatment topEdge = MaterialShapeUtils.createDefaultEdgeTreatment();
+    @NonNull private EdgeTreatment rightEdge = MaterialShapeUtils.createDefaultEdgeTreatment();
+    @NonNull private EdgeTreatment bottomEdge = MaterialShapeUtils.createDefaultEdgeTreatment();
+    @NonNull private EdgeTreatment leftEdge = MaterialShapeUtils.createDefaultEdgeTreatment();
+
+    public Builder() {}
+
+    public Builder(@NonNull ShapeAppearanceModel other) {
+      topLeftCorner = other.topLeftCorner;
+      topRightCorner = other.topRightCorner;
+      bottomRightCorner = other.bottomRightCorner;
+      bottomLeftCorner = other.bottomLeftCorner;
+
+      topLeftCornerSize = other.topLeftCornerSize;
+      topRightCornerSize = other.topRightCornerSize;
+      bottomRightCornerSize = other.bottomRightCornerSize;
+      bottomLeftCornerSize = other.bottomLeftCornerSize;
+
+      topEdge = other.topEdge;
+      rightEdge = other.rightEdge;
+      bottomEdge = other.bottomEdge;
+      leftEdge = other.leftEdge;
+    }
+
+    /**
+     * Sets all corner treatments to {@link CornerTreatment}s generated from a {@code cornerFamily}
+     * and {@code cornerSize}.
+     *
+     * @param cornerFamily The family to be used to create the {@link CornerTreatment}s for all four
+     *     corners. May be one of {@link CornerFamily#ROUNDED} or {@link CornerFamily#CUT}.
+     * @param cornerSize The size to be used to create the {@link CornerTreatment}s for all four
+     *     corners.
+     */
+    @NonNull
+    public Builder setAllCorners(@CornerFamily int cornerFamily, @Dimension float cornerSize) {
+      return setAllCorners(MaterialShapeUtils.createCornerTreatment(cornerFamily))
+          .setAllCornerSizes(cornerSize);
+    }
+
+    /**
+     * Sets all corner treatments.
+     *
+     * @param cornerTreatment the corner treatment to use for all four corners.
+     */
+    @NonNull
+    public Builder setAllCorners(@NonNull CornerTreatment cornerTreatment) {
+      return setTopLeftCorner(cornerTreatment)
+          .setTopRightCorner(cornerTreatment)
+          .setBottomRightCorner(cornerTreatment)
+          .setBottomLeftCorner(cornerTreatment);
+    }
+
+    /**
+     * Sets all corner sizes.
+     *
+     * @param cornerSize the corner size to use for all four corners.
+     */
+    @NonNull
+    public Builder setAllCornerSizes(@NonNull CornerSize cornerSize) {
+      return setTopLeftCornerSize(cornerSize)
+          .setTopRightCornerSize(cornerSize)
+          .setBottomRightCornerSize(cornerSize)
+          .setBottomLeftCornerSize(cornerSize);
+    }
+
+    /** Sets the corner size of all four corner treatments to {@code cornerSize}. */
+    @NonNull
+    public Builder setAllCornerSizes(@Dimension float cornerSize) {
+      return setTopLeftCornerSize(cornerSize)
+          .setTopRightCornerSize(cornerSize)
+          .setBottomRightCornerSize(cornerSize)
+          .setBottomLeftCornerSize(cornerSize);
+    }
+
+    /** Sets the top left corner size for the current corner. */
+    @NonNull
+    public Builder setTopLeftCornerSize(@Dimension float cornerSize) {
+      topLeftCornerSize = new AbsoluteCornerSize(cornerSize);
+      return this;
+    }
+
+    /** Sets the top left corner size for the current corner. */
+    @NonNull
+    public Builder setTopLeftCornerSize(@NonNull CornerSize cornerSize) {
+      topLeftCornerSize = cornerSize;
+      return this;
+    }
+
+    /** Sets the top right corner size for the current corner. */
+    @NonNull
+    public Builder setTopRightCornerSize(@Dimension float cornerSize) {
+      topRightCornerSize = new AbsoluteCornerSize(cornerSize);
+      return this;
+    }
+
+    /** Sets the top right corner size for the current corner. */
+    @NonNull
+    public Builder setTopRightCornerSize(@NonNull CornerSize cornerSize) {
+      topRightCornerSize = cornerSize;
+      return this;
+    }
+
+    /** Sets the bottom right corner size for the current corner. */
+    @NonNull
+    public Builder setBottomRightCornerSize(@Dimension float cornerSize) {
+      bottomRightCornerSize = new AbsoluteCornerSize(cornerSize);
+      return this;
+    }
+
+    /** Sets the bottom right corner size for the current corner. */
+    @NonNull
+    public Builder setBottomRightCornerSize(@NonNull CornerSize cornerSize) {
+      bottomRightCornerSize = cornerSize;
+      return this;
+    }
+
+    /** Sets the bottom left corner size for the current corner. */
+    @NonNull
+    public Builder setBottomLeftCornerSize(@Dimension float cornerSize) {
+      bottomLeftCornerSize = new AbsoluteCornerSize(cornerSize);
+      return this;
+    }
+
+    /** Sets the bottom left corner size for the current corner. */
+    @NonNull
+    public Builder setBottomLeftCornerSize(@NonNull CornerSize cornerSize) {
+      bottomLeftCornerSize = cornerSize;
+      return this;
+    }
+
+    /**
+     * Sets the corner treatment for the top left corner.
+     *
+     * @param cornerFamily the family to use to create the corner treatment
+     * @param cornerSize the size to use for the corner
+     */
+    @NonNull
+    public Builder setTopLeftCorner(@CornerFamily int cornerFamily, @Dimension float cornerSize) {
+      return setTopLeftCorner(MaterialShapeUtils.createCornerTreatment(cornerFamily))
+          .setTopLeftCornerSize(cornerSize);
+    }
+
+    /**
+     * Sets the corner treatment for the top left corner.
+     *
+     * @param cornerFamily the family to use to create the corner treatment
+     * @param cornerSize the {@link CornerSize} to use for the corner
+     */
+    @NonNull
+    public Builder setTopLeftCorner(
+        @CornerFamily int cornerFamily, @NonNull CornerSize cornerSize) {
+      return setTopLeftCorner(MaterialShapeUtils.createCornerTreatment(cornerFamily))
+          .setTopLeftCornerSize(cornerSize);
+    }
+
+    /**
+     * Sets the corner treatment for the top left corner.
+     *
+     * @param topLeftCorner the desired treatment.
+     */
+    @NonNull
+    public Builder setTopLeftCorner(@NonNull CornerTreatment topLeftCorner) {
+      this.topLeftCorner = topLeftCorner;
+      // For backwards compatibility, set the size from the treatment if it exists
+      float size = compatCornerTreatmentSize(topLeftCorner);
+      if (size != -1) {
+        setTopLeftCornerSize(size);
+      }
+      return this;
+    }
+
+    /**
+     * Sets the corner treatment for the top right corner.
+     *
+     * @param cornerFamily the family to use to create the corner treatment
+     * @param cornerSize the size to use for the corner
+     */
+    @NonNull
+    public Builder setTopRightCorner(@CornerFamily int cornerFamily, @Dimension float cornerSize) {
+      return setTopRightCorner(MaterialShapeUtils.createCornerTreatment(cornerFamily))
+          .setTopRightCornerSize(cornerSize);
+    }
+
+    /**
+     * Sets the corner treatment for the top right corner.
+     *
+     * @param cornerFamily the family to use to create the corner treatment
+     * @param cornerSize the {@link CornerSize} to use for the corner
+     */
+    @NonNull
+    public Builder setTopRightCorner(
+        @CornerFamily int cornerFamily, @NonNull CornerSize cornerSize) {
+      return setTopRightCorner(MaterialShapeUtils.createCornerTreatment(cornerFamily))
+          .setTopRightCornerSize(cornerSize);
+    }
+
+    /**
+     * Sets the corner treatment for the top right corner.
+     *
+     * @param topRightCorner the desired treatment.
+     */
+    @NonNull
+    public Builder setTopRightCorner(@NonNull CornerTreatment topRightCorner) {
+      this.topRightCorner = topRightCorner;
+      // For backwards compatibility, set the size from the treatment if it exists
+      float size = compatCornerTreatmentSize(topRightCorner);
+      if (size != -1) {
+        setTopRightCornerSize(size);
+      }
+      return this;
+    }
+
+    /**
+     * Sets the corner treatment for the bottom right corner.
+     *
+     * @param cornerFamily the family to use to create the corner treatment
+     * @param cornerSize the size to use for the corner
+     */
+    @NonNull
+    public Builder setBottomRightCorner(
+        @CornerFamily int cornerFamily, @Dimension float cornerSize) {
+      return setBottomRightCorner(MaterialShapeUtils.createCornerTreatment(cornerFamily))
+          .setBottomRightCornerSize(cornerSize);
+    }
+
+    /**
+     * Sets the corner treatment for the bottom right corner.
+     *
+     * @param cornerFamily the family to use to create the corner treatment
+     * @param cornerSize the {@link CornerSize} to use for the corner
+     */
+    @NonNull
+    public Builder setBottomRightCorner(
+        @CornerFamily int cornerFamily, @NonNull CornerSize cornerSize) {
+      return setBottomRightCorner(MaterialShapeUtils.createCornerTreatment(cornerFamily))
+          .setBottomRightCornerSize(cornerSize);
+    }
+
+    /**
+     * Sets the corner treatment for the bottom right corner.
+     *
+     * @param bottomRightCorner the desired treatment.
+     */
+    @NonNull
+    public Builder setBottomRightCorner(@NonNull CornerTreatment bottomRightCorner) {
+      this.bottomRightCorner = bottomRightCorner;
+      // For backwards compatibility, set the size from the treatment if it exists
+      float size = compatCornerTreatmentSize(bottomRightCorner);
+      if (size != -1) {
+        setBottomRightCornerSize(size);
+      }
+      return this;
+    }
+
+    /**
+     * Sets the corner treatment for the bottom left corner.
+     *
+     * @param cornerFamily the family to use to create the corner treatment
+     * @param cornerSize the size to use for the corner
+     */
+    @NonNull
+    public Builder setBottomLeftCorner(
+        @CornerFamily int cornerFamily, @Dimension float cornerSize) {
+      return setBottomLeftCorner(MaterialShapeUtils.createCornerTreatment(cornerFamily))
+          .setBottomLeftCornerSize(cornerSize);
+    }
+
+    /**
+     * Sets the corner treatment for the bottom left corner.
+     *
+     * @param cornerFamily the family to use to create the corner treatment
+     * @param cornerSize the {@link CornerSize} to use for the corner
+     */
+    @NonNull
+    public Builder setBottomLeftCorner(
+        @CornerFamily int cornerFamily, @NonNull CornerSize cornerSize) {
+      return setBottomLeftCorner(MaterialShapeUtils.createCornerTreatment(cornerFamily))
+          .setBottomLeftCornerSize(cornerSize);
+    }
+
+    /**
+     * Sets the corner treatment for the bottom left corner.
+     *
+     * @param bottomLeftCorner the desired treatment.
+     */
+    @NonNull
+    public Builder setBottomLeftCorner(@NonNull CornerTreatment bottomLeftCorner) {
+      this.bottomLeftCorner = bottomLeftCorner;
+      // For backwards compatibility, set the size from the treatment if it exists
+      float size = compatCornerTreatmentSize(bottomLeftCorner);
+      if (size != -1) {
+        setBottomLeftCornerSize(size);
+      }
+      return this;
+    }
+
+    /**
+     * Sets all edge treatments.
+     *
+     * @param edgeTreatment the edge treatment to use for all four edges.
+     */
+    @NonNull
+    public Builder setAllEdges(@NonNull EdgeTreatment edgeTreatment) {
+      return setLeftEdge(edgeTreatment)
+          .setTopEdge(edgeTreatment)
+          .setRightEdge(edgeTreatment)
+          .setBottomEdge(edgeTreatment);
+    }
+
+    /**
+     * Sets the edge treatment for the left edge.
+     *
+     * @param leftEdge the desired treatment.
+     */
+    @NonNull
+    public Builder setLeftEdge(@NonNull EdgeTreatment leftEdge) {
+      this.leftEdge = leftEdge;
+      return this;
+    }
+
+    /**
+     * Sets the edge treatment for the top edge.
+     *
+     * @param topEdge the desired treatment.
+     */
+    @NonNull
+    public Builder setTopEdge(@NonNull EdgeTreatment topEdge) {
+      this.topEdge = topEdge;
+      return this;
+    }
+
+    /**
+     * Sets the edge treatment for the right edge.
+     *
+     * @param rightEdge the desired treatment.
+     */
+    @NonNull
+    public Builder setRightEdge(@NonNull EdgeTreatment rightEdge) {
+      this.rightEdge = rightEdge;
+      return this;
+    }
+
+    /**
+     * Sets the edge treatment for the bottom edge.
+     *
+     * @param bottomEdge the desired treatment.
+     */
+    @NonNull
+    public Builder setBottomEdge(@NonNull EdgeTreatment bottomEdge) {
+      this.bottomEdge = bottomEdge;
+      return this;
+    }
+
+    /** Pulls the corner size from specific CornerTreatments for backwards compatibility */
+    private static float compatCornerTreatmentSize(CornerTreatment treatment) {
+      if (treatment instanceof RoundedCornerTreatment) {
+        return ((RoundedCornerTreatment) treatment).radius;
+      } else if (treatment instanceof CutCornerTreatment) {
+        return ((CutCornerTreatment) treatment).size;
+      }
+      return -1;
+    }
+
+    /** Builds an instance of a {@link ShapeAppearanceModel} */
+    @NonNull
+    public ShapeAppearanceModel build() {
+      return new ShapeAppearanceModel(this);
+    }
   }
 
-  public ShapeAppearanceModel(ShapeAppearanceModel shapeAppearanceModel) {
-    topLeftCorner = shapeAppearanceModel.getTopLeftCorner().clone();
-    topRightCorner = shapeAppearanceModel.getTopRightCorner().clone();
-    bottomRightCorner = shapeAppearanceModel.getBottomRightCorner().clone();
-    bottomLeftCorner = shapeAppearanceModel.getBottomLeftCorner().clone();
-
-    topEdge = shapeAppearanceModel.getTopEdge().clone();
-    rightEdge = shapeAppearanceModel.getRightEdge().clone();
-    leftEdge = shapeAppearanceModel.getLeftEdge().clone();
-    bottomEdge = shapeAppearanceModel.getBottomEdge().clone();
+  @NonNull
+  public static Builder builder() {
+    return new ShapeAppearanceModel.Builder();
   }
 
-  public ShapeAppearanceModel(
-      Context context, AttributeSet attrs, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
-    this(context, attrs, defStyleAttr, defStyleRes, 0);
+  @NonNull
+  public static Builder builder(
+      @NonNull Context context,
+      AttributeSet attrs,
+      @AttrRes int defStyleAttr,
+      @StyleRes int defStyleRes) {
+    return builder(context, attrs, defStyleAttr, defStyleRes, 0);
   }
 
-  public ShapeAppearanceModel(
-      Context context,
+  @NonNull
+  public static Builder builder(
+      @NonNull Context context,
       AttributeSet attrs,
       @AttrRes int defStyleAttr,
       @StyleRes int defStyleRes,
       int defaultCornerSize) {
+    return builder(
+        context, attrs, defStyleAttr, defStyleRes, new AbsoluteCornerSize(defaultCornerSize));
+  }
+
+  @NonNull
+  public static Builder builder(
+      @NonNull Context context,
+      AttributeSet attrs,
+      @AttrRes int defStyleAttr,
+      @StyleRes int defStyleRes,
+      @NonNull CornerSize defaultCornerSize) {
     TypedArray a =
         context.obtainStyledAttributes(attrs, R.styleable.MaterialShape, defStyleAttr, defStyleRes);
 
-    int shapeAppearanceResId =
-        a.getResourceId(R.styleable.MaterialShape_shapeAppearance, 0);
+    int shapeAppearanceResId = a.getResourceId(R.styleable.MaterialShape_shapeAppearance, 0);
     int shapeAppearanceOverlayResId =
         a.getResourceId(R.styleable.MaterialShape_shapeAppearanceOverlay, 0);
     a.recycle();
+    return builder(context, shapeAppearanceResId, shapeAppearanceOverlayResId, defaultCornerSize);
+  }
 
+  @NonNull
+  public static Builder builder(
+      Context context,
+      @StyleRes int shapeAppearanceResId,
+      @StyleRes int shapeAppearanceOverlayResId) {
+    return builder(context, shapeAppearanceResId, shapeAppearanceOverlayResId, 0);
+  }
+
+  @NonNull
+  private static Builder builder(
+      Context context,
+      @StyleRes int shapeAppearanceResId,
+      @StyleRes int shapeAppearanceOverlayResId,
+      int defaultCornerSize) {
+    return builder(
+        context,
+        shapeAppearanceResId,
+        shapeAppearanceOverlayResId,
+        new AbsoluteCornerSize(defaultCornerSize));
+  }
+
+  @NonNull
+  private static Builder builder(
+      Context context,
+      @StyleRes int shapeAppearanceResId,
+      @StyleRes int shapeAppearanceOverlayResId,
+      @NonNull CornerSize defaultCornerSize) {
     // The attributes in shapeAppearanceOverlay should be applied on top of shapeAppearance.
     if (shapeAppearanceOverlayResId != 0) {
       context = new ContextThemeWrapper(context, shapeAppearanceResId);
       shapeAppearanceResId = shapeAppearanceOverlayResId;
     }
 
-    a = context.obtainStyledAttributes(shapeAppearanceResId, R.styleable.ShapeAppearance);
+    TypedArray a =
+        context.obtainStyledAttributes(shapeAppearanceResId, R.styleable.ShapeAppearance);
 
-    int cornerFamily = a.getInt(R.styleable.ShapeAppearance_cornerFamily, CornerFamily.ROUNDED);
-    int cornerFamilyTopLeft =
-        a.getInt(R.styleable.ShapeAppearance_cornerFamilyTopLeft, cornerFamily);
-    int cornerFamilyTopRight =
-        a.getInt(R.styleable.ShapeAppearance_cornerFamilyTopRight, cornerFamily);
-    int cornerFamilyBottomRight =
-        a.getInt(R.styleable.ShapeAppearance_cornerFamilyBottomRight, cornerFamily);
-    int cornerFamilyBottomLeft =
-        a.getInt(R.styleable.ShapeAppearance_cornerFamilyBottomLeft, cornerFamily);
+    try {
+      int cornerFamily = a.getInt(R.styleable.ShapeAppearance_cornerFamily, CornerFamily.ROUNDED);
+      int cornerFamilyTopLeft =
+          a.getInt(R.styleable.ShapeAppearance_cornerFamilyTopLeft, cornerFamily);
+      int cornerFamilyTopRight =
+          a.getInt(R.styleable.ShapeAppearance_cornerFamilyTopRight, cornerFamily);
+      int cornerFamilyBottomRight =
+          a.getInt(R.styleable.ShapeAppearance_cornerFamilyBottomRight, cornerFamily);
+      int cornerFamilyBottomLeft =
+          a.getInt(R.styleable.ShapeAppearance_cornerFamilyBottomLeft, cornerFamily);
 
-    int cornerSize =
-        a.getDimensionPixelSize(R.styleable.ShapeAppearance_cornerSize, defaultCornerSize);
-    int cornerSizeTopLeft =
-        a.getDimensionPixelSize(R.styleable.ShapeAppearance_cornerSizeTopLeft, cornerSize);
-    int cornerSizeTopRight =
-        a.getDimensionPixelSize(R.styleable.ShapeAppearance_cornerSizeTopRight, cornerSize);
-    int cornerSizeBottomRight =
-        a.getDimensionPixelSize(R.styleable.ShapeAppearance_cornerSizeBottomRight, cornerSize);
-    int cornerSizeBottomLeft =
-        a.getDimensionPixelSize(R.styleable.ShapeAppearance_cornerSizeBottomLeft, cornerSize);
+      CornerSize cornerSize =
+          getCornerSize(a, R.styleable.ShapeAppearance_cornerSize, defaultCornerSize);
 
-    setTopLeftCorner(cornerFamilyTopLeft, cornerSizeTopLeft);
-    setTopRightCorner(cornerFamilyTopRight, cornerSizeTopRight);
-    setBottomRightCorner(cornerFamilyBottomRight, cornerSizeBottomRight);
-    setBottomLeftCorner(cornerFamilyBottomLeft, cornerSizeBottomLeft);
+      CornerSize cornerSizeTopLeft =
+          getCornerSize(a, R.styleable.ShapeAppearance_cornerSizeTopLeft, cornerSize);
+      CornerSize cornerSizeTopRight =
+          getCornerSize(a, R.styleable.ShapeAppearance_cornerSizeTopRight, cornerSize);
+      CornerSize cornerSizeBottomRight =
+          getCornerSize(a, R.styleable.ShapeAppearance_cornerSizeBottomRight, cornerSize);
+      CornerSize cornerSizeBottomLeft =
+          getCornerSize(a, R.styleable.ShapeAppearance_cornerSizeBottomLeft, cornerSize);
 
-    setTopEdge(MaterialShapeUtils.createDefaultEdgeTreatment());
-    setRightEdge(MaterialShapeUtils.createDefaultEdgeTreatment());
-    setBottomEdge(MaterialShapeUtils.createDefaultEdgeTreatment());
-    setLeftEdge(MaterialShapeUtils.createDefaultEdgeTreatment());
+      return new Builder()
+          .setTopLeftCorner(cornerFamilyTopLeft, cornerSizeTopLeft)
+          .setTopRightCorner(cornerFamilyTopRight, cornerSizeTopRight)
+          .setBottomRightCorner(cornerFamilyBottomRight, cornerSizeBottomRight)
+          .setBottomLeftCorner(cornerFamilyBottomLeft, cornerSizeBottomLeft);
+    } finally {
+      a.recycle();
+    }
+  }
 
-    a.recycle();
+  @NonNull
+  private static CornerSize getCornerSize(
+      TypedArray a, int index, @NonNull CornerSize defaultValue) {
+    TypedValue value = a.peekValue(index);
+    if (value == null) {
+      return defaultValue;
+    }
+
+    if (value.type == TypedValue.TYPE_DIMENSION) {
+      // Eventually we might want to change this to call getDimension() since corner sizes support
+      // floats.
+      return new AbsoluteCornerSize(
+          TypedValue.complexToDimensionPixelSize(value.data, a.getResources().getDisplayMetrics()));
+    } else if (value.type == TypedValue.TYPE_FRACTION) {
+      return new RelativeCornerSize(value.getFraction(1.0f, 1.0f));
+    } else {
+      return defaultValue;
+    }
+  }
+
+  // Constant corner size value to indicate that shape should use 50% height corner radii
+  public static final CornerSize PILL = new RelativeCornerSize(0.5f);
+
+  CornerTreatment topLeftCorner;
+  CornerTreatment topRightCorner;
+  CornerTreatment bottomRightCorner;
+  CornerTreatment bottomLeftCorner;
+  CornerSize topLeftCornerSize;
+  CornerSize topRightCornerSize;
+  CornerSize bottomRightCornerSize;
+  CornerSize bottomLeftCornerSize;
+  EdgeTreatment topEdge;
+  EdgeTreatment rightEdge;
+  EdgeTreatment bottomEdge;
+  EdgeTreatment leftEdge;
+
+  private ShapeAppearanceModel(@NonNull ShapeAppearanceModel.Builder builder) {
+    topLeftCorner = builder.topLeftCorner;
+    topRightCorner = builder.topRightCorner;
+    bottomRightCorner = builder.bottomRightCorner;
+    bottomLeftCorner = builder.bottomLeftCorner;
+
+    topLeftCornerSize = builder.topLeftCornerSize;
+    topRightCornerSize = builder.topRightCornerSize;
+    bottomRightCornerSize = builder.bottomRightCornerSize;
+    bottomLeftCornerSize = builder.bottomLeftCornerSize;
+
+    topEdge = builder.topEdge;
+    rightEdge = builder.rightEdge;
+    bottomEdge = builder.bottomEdge;
+    leftEdge = builder.leftEdge;
+  }
+
+  /** Constructs a default path generator with default edge and corner treatments. */
+  public ShapeAppearanceModel() {
+    topLeftCorner = MaterialShapeUtils.createDefaultCornerTreatment();
+    topRightCorner = MaterialShapeUtils.createDefaultCornerTreatment();
+    bottomRightCorner = MaterialShapeUtils.createDefaultCornerTreatment();
+    bottomLeftCorner = MaterialShapeUtils.createDefaultCornerTreatment();
+
+    topLeftCornerSize = new AbsoluteCornerSize(0);
+    topRightCornerSize = new AbsoluteCornerSize(0);
+    bottomRightCornerSize = new AbsoluteCornerSize(0);
+    bottomLeftCornerSize = new AbsoluteCornerSize(0);
+
+    topEdge = MaterialShapeUtils.createDefaultEdgeTreatment();
+    rightEdge = MaterialShapeUtils.createDefaultEdgeTreatment();
+    bottomEdge = MaterialShapeUtils.createDefaultEdgeTreatment();
+    leftEdge = MaterialShapeUtils.createDefaultEdgeTreatment();
   }
 
   /**
-   * Sets all corner treatments.
+   * Gets the corner treatment for the top left corner.
    *
-   * @param cornerTreatment the corner treatment to use for all four corners.
+   * @return the corner treatment for the top left corner.
    */
-  public void setAllCorners(CornerTreatment cornerTreatment) {
-    topLeftCorner = cornerTreatment.clone();
-    topRightCorner = cornerTreatment.clone();
-    bottomRightCorner = cornerTreatment.clone();
-    bottomLeftCorner = cornerTreatment.clone();
-  }
-
-  public void setAllCorners(@CornerFamily int cornerFamily, @Dimension int cornerSize) {
-    setAllCorners(MaterialShapeUtils.createCornerTreatment(cornerFamily, cornerSize));
-  }
-
-  public void setCornerRadius(float cornerRadius) {
-    topLeftCorner.setCornerSize(cornerRadius);
-    topRightCorner.setCornerSize(cornerRadius);
-    bottomRightCorner.setCornerSize(cornerRadius);
-    bottomLeftCorner.setCornerSize(cornerRadius);
-  }
-
-  public void setCornerRadii(
-      float topLeftCornerRadius,
-      float topRightCornerRadius,
-      float bottomRightCornerRadius,
-      float bottomLeftCornerRadius) {
-    topLeftCorner.setCornerSize(topLeftCornerRadius);
-    topRightCorner.setCornerSize(topRightCornerRadius);
-    bottomRightCorner.setCornerSize(bottomRightCornerRadius);
-    bottomLeftCorner.setCornerSize(bottomLeftCornerRadius);
-  }
-
-  /**
-   * Sets all edge treatments.
-   *
-   * @param edgeTreatment the edge treatment to use for all four edges.
-   */
-  public void setAllEdges(EdgeTreatment edgeTreatment) {
-    leftEdge = edgeTreatment.clone();
-    topEdge = edgeTreatment.clone();
-    rightEdge = edgeTreatment.clone();
-    bottomEdge = edgeTreatment.clone();
-  }
-
-  /**
-   * Sets corner treatments.
-   *
-   * @param topLeftCorner the corner treatment to use in the top-left corner.
-   * @param topRightCorner the corner treatment to use in the top-right corner.
-   * @param bottomRightCorner the corner treatment to use in the bottom-right corner.
-   * @param bottomLeftCorner the corner treatment to use in the bottom-left corner.
-   */
-  public void setCornerTreatments(
-      CornerTreatment topLeftCorner,
-      CornerTreatment topRightCorner,
-      CornerTreatment bottomRightCorner,
-      CornerTreatment bottomLeftCorner) {
-    this.topLeftCorner = topLeftCorner;
-    this.topRightCorner = topRightCorner;
-    this.bottomRightCorner = bottomRightCorner;
-    this.bottomLeftCorner = bottomLeftCorner;
-  }
-
-  /**
-   * Sets edge treatments.
-   *
-   * @param leftEdge the edge treatment to use on the left edge.
-   * @param topEdge the edge treatment to use on the top edge.
-   * @param rightEdge the edge treatment to use on the right edge.
-   * @param bottomEdge the edge treatment to use on the bottom edge.
-   */
-  public void setEdgeTreatments(
-      EdgeTreatment leftEdge,
-      EdgeTreatment topEdge,
-      EdgeTreatment rightEdge,
-      EdgeTreatment bottomEdge) {
-    this.leftEdge = leftEdge;
-    this.topEdge = topEdge;
-    this.rightEdge = rightEdge;
-    this.bottomEdge = bottomEdge;
-  }
-
-  /**
-   * Sets the corner treatment for the top-left corner.
-   *
-   * @param cornerFamily the family to use to create the corner treatment
-   * @param cornerSize the size to use to create the corner treatment
-   */
-  public void setTopLeftCorner(@CornerFamily int cornerFamily, @Dimension int cornerSize) {
-    setTopLeftCorner(MaterialShapeUtils.createCornerTreatment(cornerFamily, cornerSize));
-  }
-
-  /**
-   * Sets the corner treatment for the top-left corner.
-   *
-   * @param topLeftCorner the desired treatment.
-   */
-  public void setTopLeftCorner(CornerTreatment topLeftCorner) {
-    this.topLeftCorner = topLeftCorner;
-  }
-
-  /**
-   * Gets the corner treatment for the top-left corner.
-   *
-   * @return the corner treatment for the top-left corner.
-   */
+  @NonNull
   public CornerTreatment getTopLeftCorner() {
     return topLeftCorner;
   }
 
   /**
-   * Sets the corner treatment for the top-right corner.
+   * Gets the corner treatment for the top right corner.
    *
-   * @param cornerFamily the family to use to create the corner treatment
-   * @param cornerSize the size to use to create the corner treatment
+   * @return the corner treatment for the top right corner.
    */
-  public void setTopRightCorner(@CornerFamily int cornerFamily, @Dimension int cornerSize) {
-    setTopRightCorner(MaterialShapeUtils.createCornerTreatment(cornerFamily, cornerSize));
-  }
-
-  /**
-   * Sets the corner treatment for the top-right corner.
-   *
-   * @param topRightCorner the desired treatment.
-   */
-  public void setTopRightCorner(CornerTreatment topRightCorner) {
-    this.topRightCorner = topRightCorner;
-  }
-
-  /**
-   * Gets the corner treatment for the top-right corner.
-   *
-   * @return the corner treatment for the top-right corner.
-   */
+  @NonNull
   public CornerTreatment getTopRightCorner() {
     return topRightCorner;
   }
 
   /**
-   * Sets the corner treatment for the bottom-right corner.
+   * Gets the corner treatment for the bottom right corner.
    *
-   * @param cornerFamily the family to use to create the corner treatment
-   * @param cornerSize the size to use to create the corner treatment
+   * @return the corner treatment for the bottom right corner.
    */
-  public void setBottomRightCorner(@CornerFamily int cornerFamily, @Dimension int cornerSize) {
-    setBottomRightCorner(MaterialShapeUtils.createCornerTreatment(cornerFamily, cornerSize));
-  }
-
-  /**
-   * Sets the corner treatment for the bottom-right corner.
-   *
-   * @param bottomRightCorner the desired treatment.
-   */
-  public void setBottomRightCorner(CornerTreatment bottomRightCorner) {
-    this.bottomRightCorner = bottomRightCorner;
-  }
-
-  /**
-   * Gets the corner treatment for the bottom-right corner.
-   *
-   * @return the corner treatment for the bottom-right corner.
-   */
+  @NonNull
   public CornerTreatment getBottomRightCorner() {
     return bottomRightCorner;
   }
 
   /**
-   * Sets the corner treatment for the bottom-left corner.
+   * Gets the corner treatment for the bottom left corner.
    *
-   * @param cornerFamily the family to use to create the corner treatment
-   * @param cornerSize the size to use to create the corner treatment
+   * @return the corner treatment for the bottom left corner.
    */
-  public void setBottomLeftCorner(@CornerFamily int cornerFamily, @Dimension int cornerSize) {
-    setBottomLeftCorner(MaterialShapeUtils.createCornerTreatment(cornerFamily, cornerSize));
-  }
-
-  /**
-   * Sets the corner treatment for the bottom-left corner.
-   *
-   * @param bottomLeftCorner the desired treatment.
-   */
-  public void setBottomLeftCorner(CornerTreatment bottomLeftCorner) {
-    this.bottomLeftCorner = bottomLeftCorner;
-  }
-
-  /**
-   * Gets the corner treatment for the bottom-left corner.
-   *
-   * @return the corner treatment for the bottom-left corner.
-   */
+  @NonNull
   public CornerTreatment getBottomLeftCorner() {
     return bottomLeftCorner;
   }
 
   /**
-   * Sets the edge treatment for the top edge.
+   * Gets the corner size for the top left corner.
    *
-   * @param topEdge the desired treatment.
+   * @return the corner size for the top left corner.
    */
-  public void setTopEdge(EdgeTreatment topEdge) {
-    this.topEdge = topEdge;
+  @NonNull
+  public CornerSize getTopLeftCornerSize() {
+    return topLeftCornerSize;
   }
 
   /**
-   * Gets the edge treatment for the top edge.
+   * Gets the corner size for the top right corner.
    *
-   * @return the edge treatment for the top edge.
+   * @return the corner size for the top right corner.
    */
-  public EdgeTreatment getTopEdge() {
-    return topEdge;
+  @NonNull
+  public CornerSize getTopRightCornerSize() {
+    return topRightCornerSize;
   }
 
   /**
-   * Sets the edge treatment for the right edge.
+   * Gets the corner size for the bottom right corner.
    *
-   * @param rightEdge the desired treatment.
+   * @return the corner size for the bottom right corner.
    */
-  public void setRightEdge(EdgeTreatment rightEdge) {
-    this.rightEdge = rightEdge;
+  @NonNull
+  public CornerSize getBottomRightCornerSize() {
+    return bottomRightCornerSize;
   }
 
   /**
-   * Gets the edge treatment for the right edge.
+   * Gets the corner size for the bottom left corner.
    *
-   * @return the edge treatment for the right edge.
+   * @return the corner size for the bottom left corner.
    */
-  public EdgeTreatment getRightEdge() {
-    return rightEdge;
-  }
-
-  /**
-   * Sets the edge treatment for the bottom edge.
-   *
-   * @param bottomEdge the desired treatment.
-   */
-  public void setBottomEdge(EdgeTreatment bottomEdge) {
-    this.bottomEdge = bottomEdge;
-  }
-
-  /**
-   * Gets the edge treatment for the bottom edge.
-   *
-   * @return the edge treatment for the bottom edge.
-   */
-  public EdgeTreatment getBottomEdge() {
-    return bottomEdge;
-  }
-
-  /**
-   * Sets the edge treatment for the left edge.
-   *
-   * @param leftEdge the desired treatment.
-   */
-  public void setLeftEdge(EdgeTreatment leftEdge) {
-    this.leftEdge = leftEdge;
+  @NonNull
+  public CornerSize getBottomLeftCornerSize() {
+    return bottomLeftCornerSize;
   }
 
   /**
@@ -399,8 +705,87 @@ public class ShapeAppearanceModel {
    *
    * @return the edge treatment for the left edge.
    */
+  @NonNull
   public EdgeTreatment getLeftEdge() {
     return leftEdge;
+  }
+
+  /**
+   * Gets the edge treatment for the top edge.
+   *
+   * @return the edge treatment for the top edge.
+   */
+  @NonNull
+  public EdgeTreatment getTopEdge() {
+    return topEdge;
+  }
+
+  /**
+   * Gets the edge treatment for the right edge.
+   *
+   * @return the edge treatment for the right edge.
+   */
+  @NonNull
+  public EdgeTreatment getRightEdge() {
+    return rightEdge;
+  }
+
+  /**
+   * Gets the edge treatment for the bottom edge.
+   *
+   * @return the edge treatment for the bottom edge.
+   */
+  @NonNull
+  public EdgeTreatment getBottomEdge() {
+    return bottomEdge;
+  }
+
+  /** Returns a builder with the edges and corners from this {@link ShapeAppearanceModel} */
+  @NonNull
+  public Builder toBuilder() {
+    return new Builder(this);
+  }
+
+  /**
+   * Returns a copy of this {@link ShapeAppearanceModel} with the same edges and corners, but with
+   * the corner size for all corners updated.
+   */
+  @NonNull
+  public ShapeAppearanceModel withCornerSize(float cornerSize) {
+    return toBuilder().setAllCornerSizes(cornerSize).build();
+  }
+
+  @NonNull
+  public ShapeAppearanceModel withCornerSize(@NonNull CornerSize cornerSize) {
+    return toBuilder().setAllCornerSizes(cornerSize).build();
+  }
+
+  /**
+   * A UnaryOperator that takes and returns a CornerSize.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  public interface CornerSizeUnaryOperator {
+    @NonNull
+    CornerSize apply(@NonNull CornerSize cornerSize);
+  }
+
+  /**
+   * Returns a copy of this {@link ShapeAppearanceModel} with the same edges and corners, but with
+   * the corner size for all corners converted by a {@link CornerSizeUnaryOperator}.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  @NonNull
+  public ShapeAppearanceModel withTransformedCornerSizes(@NonNull CornerSizeUnaryOperator op) {
+    return toBuilder()
+        .setTopLeftCornerSize(op.apply(getTopLeftCornerSize()))
+        .setTopRightCornerSize(op.apply(getTopRightCornerSize()))
+        .setBottomLeftCornerSize(op.apply(getBottomLeftCornerSize()))
+        .setBottomRightCornerSize(op.apply(getBottomRightCornerSize()))
+        .build();
   }
 
   /**
@@ -410,19 +795,19 @@ public class ShapeAppearanceModel {
    * @hide
    */
   @RestrictTo(LIBRARY_GROUP)
-  public boolean isRoundRect() {
+  public boolean isRoundRect(@NonNull RectF bounds) {
     boolean hasDefaultEdges =
         leftEdge.getClass().equals(EdgeTreatment.class)
             && rightEdge.getClass().equals(EdgeTreatment.class)
             && topEdge.getClass().equals(EdgeTreatment.class)
             && bottomEdge.getClass().equals(EdgeTreatment.class);
 
-    float cornerSize = topLeftCorner.getCornerSize();
+    float cornerSize = topLeftCornerSize.getCornerSize(bounds);
 
     boolean cornersHaveSameSize =
-        topRightCorner.getCornerSize() == cornerSize
-            && bottomLeftCorner.getCornerSize() == cornerSize
-            && bottomRightCorner.getCornerSize() == cornerSize;
+        topRightCornerSize.getCornerSize(bounds) == cornerSize
+            && bottomLeftCornerSize.getCornerSize(bounds) == cornerSize
+            && bottomRightCornerSize.getCornerSize(bounds) == cornerSize;
 
     boolean hasRoundedCorners =
         topRightCorner instanceof RoundedCornerTreatment

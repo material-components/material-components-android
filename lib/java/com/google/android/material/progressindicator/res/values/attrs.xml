@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2020 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+
+  <declare-styleable name="BaseProgressIndicator">
+    <!-- Whether the progress indicator should be indeterminate mode. -->
+    <attr name="android:indeterminate"/>
+    <!-- The thickness of the progress track and indicator. -->
+    <attr name="trackThickness" format="dimension"/>
+    <!--
+      The radius of each corner of both the indicator and the track. A radius
+      larger than half of the track width will throw exceptions during
+      initialization.
+    -->
+    <attr name="trackCornerRadius" format="dimension"/>
+    <!--
+      The indicator color (or colors in an array). By default, it uses theme
+      primary color.
+    -->
+    <attr name="indicatorColor" format="color|reference"/>
+    <!--
+      The color used for the progress track. If not defined, it will be set to
+      the indicatorColor and apply the android:disabledAlpha from the theme.
+    -->
+    <attr name="trackColor"/>
+    <!-- The animation behavior to show the indicator and track. -->
+    <attr name="showAnimationBehavior">
+      <!-- No animation used; appears immediately. -->
+      <enum name="none" value="0"/>
+      <!--
+        Expands from the bottom edge to the top edge for the linear type;
+        expands from the inner edge to the outer edge for the circular type.
+      -->
+      <enum name="outward" value="1"/>
+      <!--
+        Expands from the top edge to the bottom edge for the linear type;
+        expands from the outer edge to the inner edge for the circular type.
+      -->
+      <enum name="inward" value="2"/>
+    </attr>
+    <!-- The animation behavior to hide the indicator and track. -->
+    <attr name="hideAnimationBehavior">
+      <!-- No animation used; disappears immediately. -->
+      <enum name="none" value="0"/>
+      <!--
+        Collapses from the bottom edge to the top edge for the linear type;
+        collapses from the inner edge to the outer edge for the circular type.
+      -->
+      <enum name="outward" value="1"/>
+      <!--
+        Collapses from the top edge to the bottom edge for the linear type;
+        collapses from the outer edge to the inner edge for the circular type.
+      -->
+      <enum name="inward" value="2"/>
+    </attr>
+    <!--
+      The time, in milliseconds, that the progress indicator will wait to show
+      once show() is called. If set to zero or negative values (-1 as default),
+      the show action will start immediately.
+    -->
+    <attr name="showDelay" format="integer"/>
+    <!--
+      The minimum time, in milliseconds, that the requested hide action will
+      wait to start once show action is started. If set to zero or negative
+      values (-1 as default), the requested hide action will start immediately.
+      This value is capped to a limit defined in ProgressIndicator class.
+    -->
+    <attr name="minHideDelay" format="integer"/>
+  </declare-styleable>
+
+  <declare-styleable name="LinearProgressIndicator">
+    <!-- The animation style of the indeterminate mode. -->
+    <attr name="indeterminateAnimationType">
+      <!--
+        The track will be filled with three adjacent segments in iterative different colors.
+        This type is only available when there are three or more indicator
+        colors.
+      -->
+      <enum name="contiguous" value="0"/>
+      <!--
+        There will be two disjoint segments in the same color per cycle. The color iterates between cycles.
+      -->
+      <enum name="disjoint" value="1"/>
+    </attr>
+    <!--
+      The direction in which the linear indicator progresses, in the determinate
+      mode, and is animated, in the indeterminate mode.
+    -->
+    <attr name="indicatorDirectionLinear">
+      <!-- Animated from the left end to the right end of the track. -->
+      <enum name="leftToRight" value="0"/>
+      <!-- Animated from the right end to the left end of the track. -->
+      <enum name="rightToLeft" value="1"/>
+      <!--
+        Animated from the start position to the end position of the track.
+        This will be same as the leftToRight for API before 17.
+      -->
+      <enum name="startToEnd" value="2"/>
+      <!--
+        Animated from the end position to the start position of the track.
+        This will be same as the rightToLeft for API before 17.
+      -->
+      <enum name="endToStart" value="3"/>
+    </attr>
+  </declare-styleable>
+
+  <declare-styleable name="CircularProgressIndicator">
+    <!--
+      Defines the size (outer diameter) of the circular progress indicator. This
+      uses the central line of the indicator as reference. Ignored for linear
+      progress indicator.
+    -->
+    <attr name="indicatorSize" format="dimension"/>
+    <!--
+      The extra space from the outer edge of the indicator to the edge of the
+      canvas. Ignored for linear progress indicator.
+    -->
+    <attr name="indicatorInset" format="dimension"/>
+    <!--
+      The direction in which the circular indicator progresses, in the
+      determinate mode, and is animated, in the indeterminate mode.
+    -->
+    <attr name="indicatorDirectionCircular">
+      <!--
+        In the indeterminate mode, the spinner will spin clockwise; in the
+        determinate mode, the indicator will progress from the top (12 o'clock)
+        clockwise.
+      -->
+      <enum name="clockwise" value="0"/>
+      <!--
+        In the indeterminate mode, the spinner will spin counter-clockwise; in
+        the determinate mode, the indicator will progress from the top (12
+        o'clock) counter-clockwise.
+      -->
+      <enum name="counterclockwise" value="1"/>
+    </attr>
+  </declare-styleable>
+
+  <!-- Style to use for LinearProgressIndicator in this theme. -->
+  <attr name="linearProgressIndicatorStyle" format="reference"/>
+  <!-- Style to use for CircularProgressIndicator in this theme. -->
+  <attr name="circularProgressIndicatorStyle" format="reference"/>
+</resources>

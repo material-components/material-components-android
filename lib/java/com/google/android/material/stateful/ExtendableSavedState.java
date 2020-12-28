@@ -19,6 +19,11 @@ package com.google.android.material.stateful;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+<<<<<<< HEAD
+=======
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+>>>>>>> pr/1944
 import androidx.collection.SimpleArrayMap;
 import androidx.customview.view.AbsSavedState;
 
@@ -33,14 +38,14 @@ import androidx.customview.view.AbsSavedState;
  */
 public class ExtendableSavedState extends AbsSavedState {
 
-  public final SimpleArrayMap<String, Bundle> extendableStates;
+  @NonNull public final SimpleArrayMap<String, Bundle> extendableStates;
 
   public ExtendableSavedState(Parcelable superState) {
     super(superState);
     extendableStates = new SimpleArrayMap<>();
   }
 
-  private ExtendableSavedState(Parcel in, ClassLoader loader) {
+  private ExtendableSavedState(@NonNull Parcel in, ClassLoader loader) {
     super(in, loader);
 
     int size = in.readInt();
@@ -58,7 +63,7 @@ public class ExtendableSavedState extends AbsSavedState {
   }
 
   @Override
-  public void writeToParcel(Parcel out, int flags) {
+  public void writeToParcel(@NonNull Parcel out, int flags) {
     super.writeToParcel(out, flags);
 
     int size = extendableStates.size();
@@ -76,6 +81,7 @@ public class ExtendableSavedState extends AbsSavedState {
     out.writeTypedArray(states, 0);
   }
 
+  @NonNull
   @Override
   public String toString() {
     return "ExtendableSavedState{"
@@ -88,16 +94,19 @@ public class ExtendableSavedState extends AbsSavedState {
   public static final Parcelable.Creator<ExtendableSavedState> CREATOR =
       new Parcelable.ClassLoaderCreator<ExtendableSavedState>() {
 
+        @NonNull
         @Override
-        public ExtendableSavedState createFromParcel(Parcel in, ClassLoader loader) {
+        public ExtendableSavedState createFromParcel(@NonNull Parcel in, ClassLoader loader) {
           return new ExtendableSavedState(in, loader);
         }
 
+        @Nullable
         @Override
-        public ExtendableSavedState createFromParcel(Parcel in) {
+        public ExtendableSavedState createFromParcel(@NonNull Parcel in) {
           return new ExtendableSavedState(in, null);
         }
 
+        @NonNull
         @Override
         public ExtendableSavedState[] newArray(int size) {
           return new ExtendableSavedState[size];

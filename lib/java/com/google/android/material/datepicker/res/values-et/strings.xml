@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2020 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+  <string name="mtrl_picker_range_header_title">Valige vahemik</string>
+  <string name="mtrl_picker_date_header_title">Valige kuupäev</string>
+  <string name="mtrl_picker_range_header_unselected">Alguskuupäev – lõppkuupäev</string>
+  <string name="mtrl_picker_range_header_only_start_selected">%1$s – lõppkuupäev</string>
+  <string name="mtrl_picker_range_header_only_end_selected">Alguskuupäev – %1$s</string>
+  <string name="mtrl_picker_range_header_selected">%1$s–%2$s</string>
+  <string name="mtrl_picker_date_header_unselected">Valitud kuupäev</string>
+  <string name="mtrl_picker_date_header_selected">%1$s</string>
+  <string name="mtrl_picker_confirm">@android:string/ok</string>
+  <string name="mtrl_picker_text_input_date_hint">Kuupäev</string>
+  <string name="mtrl_picker_text_input_date_range_start_hint">Alguskuupäev</string>
+  <string name="mtrl_picker_text_input_date_range_end_hint">Lõppkuupäev</string>
+  <string name="mtrl_picker_text_input_year_abbr">a</string>
+  <string name="mtrl_picker_text_input_month_abbr">k</string>
+  <string name="mtrl_picker_text_input_day_abbr">p</string>
+  <string name="mtrl_picker_save">Salvesta</string>
+  <string name="mtrl_picker_invalid_range">Sobimatu vahemik.</string>
+  <string name="mtrl_picker_out_of_range">Vahemikust väljas: %1$s</string>
+  <string name="mtrl_picker_invalid_format">Sobimatu vorming.</string>
+  <string name="mtrl_picker_invalid_format_use">Kasutage: %1$s</string>
+  <string name="mtrl_picker_invalid_format_example">Näide: %1$s</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode">Lülitu kalendrisisestusrežiimile</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode">Lülitu tekstisisestusrežiimile</string>
+  <string name="mtrl_picker_a11y_prev_month">Vaheta eelmisele kuule</string>
+  <string name="mtrl_picker_a11y_next_month">Vaheta järgmisele kuule</string>
+  <string name="mtrl_picker_toggle_to_year_selection">Puudutage, et lülituda aasta valimisele</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Puudutage, et lülituda päeva valimisele</string>
+  <string name="mtrl_picker_day_of_week_column_header">Päevade veerg: %1$s</string>
+  <string name="mtrl_picker_announce_current_selection">Praegune valik: %1$s</string>
+  <string name="mtrl_picker_navigate_to_year_description">Mine aastasse %1$s</string>
+</resources>

@@ -19,15 +19,21 @@ package io.material.catalog.topappbar;
 import io.material.catalog.R;
 
 import android.os.Bundle;
+<<<<<<< HEAD
 import androidx.annotation.Nullable;
+=======
+>>>>>>> pr/1944
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.Nullable;
 import io.material.catalog.feature.DemoFragment;
+import io.material.catalog.feature.DemoUtils;
 
 /** A fragment that displays a scrolling Top App Bar demo for the Catalog app. */
 public class TopAppBarScrollingDemoFragment extends DemoFragment {
@@ -54,6 +60,11 @@ public class TopAppBarScrollingDemoFragment extends DemoFragment {
   public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
     menuInflater.inflate(R.menu.cat_topappbar_menu, menu);
     super.onCreateOptionsMenu(menu, menuInflater);
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    return DemoUtils.showSnackbar(getActivity(), item) || super.onOptionsItemSelected(item);
   }
 
   @Override

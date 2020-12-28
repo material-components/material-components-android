@@ -15,6 +15,7 @@
   limitations under the License.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
@@ -24,15 +25,75 @@
   <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_marginBottom="4dp"
+      android:text="@string/cat_choose_theme_label"/>
+
+  <com.google.android.material.button.MaterialButtonToggleGroup
+      android:id="@+id/theme_toggle_group"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="8dp"
+      app:selectionRequired="true"
+      app:singleSelection="true">
+
+    <Button
+        android:id="@id/theme_light"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:paddingRight="12dp"
+        android:minWidth="0dp"
+        android:text="@string/cat_choose_theme_light"
+        app:icon="@drawable/ic_theme_light_24px"
+        app:iconPadding="4dp"/>
+
+    <Button
+        android:id="@id/theme_dark"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:paddingRight="12dp"
+        android:minWidth="0dp"
+        android:text="@string/cat_choose_theme_dark"
+        app:icon="@drawable/ic_theme_dark_24px"
+        app:iconPadding="4dp"/>
+
+    <Button
+        android:id="@id/theme_default"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:paddingRight="12dp"
+        android:minWidth="0dp"
+        android:text="@string/cat_choose_theme_default"
+        app:icon="@drawable/ic_theme_default_24px"
+        app:iconPadding="4dp"/>
+  </com.google.android.material.button.MaterialButtonToggleGroup>
+
+  <View
+      android:layout_width="match_parent"
+      android:layout_height="1dp"
+      android:layout_marginTop="8dp"
+      android:layout_marginBottom="16dp"
+      android:background="@android:color/white"
+      android:backgroundTint="?attr/colorControlHighlight"/>
+
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
       android:text="\?attr/colorPrimary"/>
   <HorizontalScrollView
       android:layout_width="wrap_content"
-      android:layout_height="wrap_content">
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="16dp"
+      android:scrollbars="none">
     <RadioGroup
         android:id="@+id/primary_colors"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:orientation="horizontal"/>
   </HorizontalScrollView>
 
@@ -42,12 +103,86 @@
       android:text="\?attr/colorSecondary"/>
   <HorizontalScrollView
       android:layout_width="wrap_content"
-      android:layout_height="wrap_content">
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="16dp"
+      android:scrollbars="none">
     <RadioGroup
         android:id="@+id/secondary_colors"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"/>
   </HorizontalScrollView>
+
+  <View
+      android:layout_width="match_parent"
+      android:layout_height="1dp"
+      android:layout_marginBottom="16dp"
+      android:background="@android:color/white"
+      android:backgroundTint="?attr/colorControlHighlight"/>
+
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/mtrl_shape_corner_family"/>
+
+  <RadioGroup
+      android:id="@+id/shape_families"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="16dp"
+      android:layout_gravity="center_horizontal"
+      android:gravity="center"
+      android:orientation="horizontal">
+
+    <RadioButton
+        android:id="@+id/rounded_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:drawableLeft="@drawable/ic_rounded_corners_24px"
+        android:drawablePadding="8dp"
+        android:drawableStart="@drawable/ic_rounded_corners_24px"
+        android:text="@string/mtrl_rounded"/>
+
+    <RadioButton
+        android:id="@+id/cut_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:drawableLeft="@drawable/ic_cut_corners_24px"
+        android:drawablePadding="8dp"
+        android:drawableStart="@drawable/ic_cut_corners_24px"
+        android:text="@string/mtrl_cut"/>
+  </RadioGroup>
+
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/mtrl_shape_corner_size"/>
+
+  <RadioGroup
+      android:id="@+id/shape_corner_sizes"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="16dp"
+      android:layout_gravity="center_horizontal"
+      android:gravity="center"
+      android:orientation="horizontal"/>
+
+  <Button
+      android:id="@+id/apply_button"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="8dp"
+      android:text="@string/mtrl_apply"/>
+
+  <Button
+      android:id="@+id/clear_button"
+      style="?attr/materialButtonOutlinedStyle"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="16dp"
+      android:text="@string/mtrl_clear"/>
 
 </LinearLayout>
