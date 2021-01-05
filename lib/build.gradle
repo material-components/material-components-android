@@ -175,13 +175,16 @@ task generateApiXml(type: Javadoc) {
   doLast {
     // Escape incorrect ampersands in API XML file
     if (OperatingSystem.current().isLinux()) {
-      ["sed", "-i", "s/ & / \\&amp; /g", "lib/${apiName}.xml"].execute()
+      exec {
+        commandLine "sed", "-i", "s/ & / \\&amp; /g", "lib/${apiName}.xml"
+      }
     } else {
-      ["sed", "-i", "''", "s/ & / \\&amp; /g", "lib/${apiName}.xml"].execute()
+      exec {
+        commandLine "sed", "-i", "''", "s/ & / \\&amp; /g", "lib/${apiName}.xml"
+      }
     }
   }
 }
-
 task generateJdiffReport(type: Javadoc) {
   if (project.hasProperty('oldApi')) {
     def outputPath = project.hasProperty('outputPath') ? project.property('outputPath') : 'diffs-out'
