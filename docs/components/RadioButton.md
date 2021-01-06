@@ -247,7 +247,7 @@ and in `color/button_tint.xml`:
 
 ```xml
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:color=">@color/shrine_pink_900" android:state_checked="true"/>
+  <item android:color="@color/shrine_pink_900" android:state_checked="true"/>
   <item android:alpha="0.38" android:color="@color/shrine_pink_100" android:state_enabled="false"/>
   <item android:color="@color/shrine_pink_100"/>
 </selector>
