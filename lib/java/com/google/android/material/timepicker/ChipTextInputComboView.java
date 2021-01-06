@@ -76,6 +76,7 @@ class ChipTextInputComboView extends FrameLayout implements Checkable {
     addView(chip);
     addView(textInputLayout);
     label = findViewById(R.id.material_label);
+    editText.setSaveEnabled(false);
   }
 
   private void updateHintLocales() {
