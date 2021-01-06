@@ -95,7 +95,17 @@ class RadialViewGroup extends ConstraintLayout {
     if (child.getId() == NO_ID) {
       child.setId(ViewCompat.generateViewId());
     }
+    updateLayoutParamsAsync();
+  }
 
+  @Override
+  public void onViewRemoved(View view) {
+    super.onViewRemoved(view);
+    // Post so we only update once on a batch of added views.
+    updateLayoutParamsAsync();
+  }
+
+  private void updateLayoutParamsAsync() {
     // Post so we only update once on a batch of added views.
     Handler handler = getHandler();
     if (handler != null) {
@@ -110,7 +120,7 @@ class RadialViewGroup extends ConstraintLayout {
     updateLayoutParams();
   }
 
-  private void updateLayoutParams() {
+  protected void updateLayoutParams() {
     // Subtracting 1 since we shouldn't count the view we use as the center of the circle.
     int skippedChildren = 1;
     int childCount = getChildCount();

@@ -22,4 +22,5 @@
   android:textColor="?attr/colorOnSurface"
   android:padding="16dp"
   android:textSize="@dimen/material_clock_number_text_size"
+  android:visibility="gone"
   tools:ignore="SpUsage" />
