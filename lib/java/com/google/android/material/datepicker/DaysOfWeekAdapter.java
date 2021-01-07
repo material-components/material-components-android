@@ -86,8 +86,9 @@ class DaysOfWeekAdapter extends BaseAdapter {
           (TextView) layoutInflater.inflate(R.layout.mtrl_calendar_day_of_week, parent, false);
     }
     calendar.set(Calendar.DAY_OF_WEEK, positionToDayOfWeek(position));
+    Locale locale = dayOfWeek.getResources().getConfiguration().locale;
     dayOfWeek.setText(
-        calendar.getDisplayName(Calendar.DAY_OF_WEEK, CALENDAR_DAY_STYLE, Locale.getDefault()));
+        calendar.getDisplayName(Calendar.DAY_OF_WEEK, CALENDAR_DAY_STYLE, locale));
     dayOfWeek.setContentDescription(
         String.format(
             parent.getContext().getString(R.string.mtrl_picker_day_of_week_column_header),
