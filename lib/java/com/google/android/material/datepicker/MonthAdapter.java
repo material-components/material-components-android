@@ -27,6 +27,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Locale;
 
 /**
  * Represents the days of a month with {@link TextView} instances for each day.
@@ -116,7 +117,8 @@ class MonthAdapter extends BaseAdapter {
       int dayNumber = offsetPosition + 1;
       // The tag and text uniquely identify the view within the MaterialCalendar for testing
       day.setTag(month);
-      day.setText(String.valueOf(dayNumber));
+      Locale locale = day.getResources().getConfiguration().locale;
+      day.setText(String.format(locale, "%d", dayNumber));
       long dayInMillis = month.getDay(dayNumber);
       if (month.year == Month.current().year) {
         day.setContentDescription(DateStrings.getMonthDayOfWeekDay(dayInMillis));
