@@ -19,14 +19,14 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.util.Property;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat.AnimationCallback;
-import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.animation.ArgbEvaluatorCompat;
 import com.google.android.material.color.MaterialColors;
-import com.google.android.material.math.MathUtils;
 
 /**
  * This is the implementation class for drawing progress indicator in the circular indeterminate
@@ -35,64 +35,42 @@ import com.google.android.material.math.MathUtils;
 final class CircularIndeterminateAnimatorDelegate
     extends IndeterminateAnimatorDelegate<AnimatorSet> {
 
-  // Constants for animation values.
-  private static final float INDICATOR_MAX_DEGREES = 270f;
-  private static final float INDICATOR_MIN_DEGREES = 20f;
-  private static final float INDICATOR_DELTA_DEGREES =
-      INDICATOR_MAX_DEGREES - INDICATOR_MIN_DEGREES;
-  private static final float INDICATOR_OFFSET_PER_COLOR_DEGREES = 360f;
-
   // Constants for animation timing.
-  private static final int DURATION_PER_COLOR_IN_MS = 1333;
-  private static final int COLOR_FADING_DURATION = 333;
-  private static final int COLOR_FADING_DELAY = 1000;
+  private static final int TOTAL_CYCLES = 4;
+  private static final int TOTAL_DURATION_IN_MS = 5400;
+  private static final int DURATION_TO_EXPAND_IN_MS = 667;
+  private static final int DURATION_TO_COLLAPSE_IN_MS = 667;
+  private static final int DURATION_TO_FADE_IN_MS = 333;
+  private static final int DURATION_TO_COMPLETE_END_IN_MS = 333;
+  private static final int[] DELAY_TO_EXPAND_IN_MS = {0, 1350, 2700, 4050};
+  private static final int[] DELAY_TO_COLLAPSE_IN_MS = {667, 2017, 3367, 4717};
+  private static final int[] DELAY_TO_FADE_IN_MS = {1000, 2350, 3700, 5050};
+
+  // Constants for animation values.
+  private static final int TAIL_DEGREES_OFFSET = -20;
+  private static final int EXTRA_DEGREES_PER_CYCLE = 250;
+  private static final int CONSTANT_ROTATION_DEGREES = 1520;
+
+  private AnimatorSet animatorSet;
+  private ObjectAnimator animator;
+  private ObjectAnimator completeEndAnimator;
+  private final FastOutSlowInInterpolator interpolator;
 
   // The base spec.
   private final BaseProgressIndicatorSpec baseSpec;
 
-  // The animators control circular indeterminate animation.
-  private AnimatorSet animatorSet;
-  private ObjectAnimator indicatorCollapsingAnimator;
-  private ObjectAnimator colorFadingAnimator;
-
-  // Internal parameters controlled by the animator.
-  private int indicatorColorIndex;
-  private int displayedIndicatorColor;
-  private float indicatorStartOffset;
-  private float indicatorInCycleOffset;
-  private float indicatorHeadChangeFraction;
-  private float indicatorTailChangeFraction;
-
   // For animator control.
-  boolean animatorCompleteEndRequested = false;
+  private int indicatorColorIndexOffset = 0;
+  private float animationFraction;
+  private float completeEndFraction;
   AnimationCallback animatorCompleteCallback = null;
 
   public CircularIndeterminateAnimatorDelegate(@NonNull CircularProgressIndicatorSpec spec) {
     super(/*segmentCount=*/ 1);
 
     baseSpec = spec;
-  }
 
-  @Override
-  protected void registerDrawable(@NonNull IndeterminateDrawable drawable) {
-    super.registerDrawable(drawable);
-
-    colorFadingAnimator =
-        ObjectAnimator.ofObject(
-            this,
-            DISPLAYED_INDICATOR_COLOR,
-            new ArgbEvaluatorCompat(),
-            MaterialColors.compositeARGBWithAlpha(
-                baseSpec.indicatorColors[indicatorColorIndex], drawable.getAlpha()),
-            MaterialColors.compositeARGBWithAlpha(
-                baseSpec.indicatorColors[getNextIndicatorColorIndex()], drawable.getAlpha()));
-    colorFadingAnimator.setDuration(COLOR_FADING_DURATION);
-    colorFadingAnimator.setStartDelay(COLOR_FADING_DELAY);
-    colorFadingAnimator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-
-    if (animatorSet != null) {
-      animatorSet.playTogether(colorFadingAnimator);
-    }
+    interpolator = new FastOutSlowInInterpolator();
   }
 
   // ******************* Animation control *******************
@@ -101,63 +79,41 @@ final class CircularIndeterminateAnimatorDelegate
   void startAnimator() {
     maybeInitializeAnimators();
 
+    resetPropertiesForNewStart();
     animatorSet.start();
   }
 
   private void maybeInitializeAnimators() {
     if (animatorSet == null) {
-      // Instantiates the animator.
-      ObjectAnimator constantlyRotateAnimator =
-          ObjectAnimator.ofFloat(
-              this, INDICATOR_IN_CYCLE_OFFSET, 0f, INDICATOR_OFFSET_PER_COLOR_DEGREES);
-      constantlyRotateAnimator.setDuration(DURATION_PER_COLOR_IN_MS);
-      // Sets null to get a linear interpolator.
-      constantlyRotateAnimator.setInterpolator(null);
-
-      ObjectAnimator expandAnimator =
-          ObjectAnimator.ofFloat(this, INDICATOR_HEAD_CHANGE_FRACTION, 0f, 1f);
-      expandAnimator.setDuration(DURATION_PER_COLOR_IN_MS / 2);
-      expandAnimator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-      expandAnimator.addListener(
+      // Instantiates an animator with the linear interpolator to control the animation progress.
+      animator = ObjectAnimator.ofFloat(this, ANIMATION_FRACTION, 0, 1);
+      animator.setDuration(TOTAL_DURATION_IN_MS);
+      animator.setInterpolator(null);
+      animator.setRepeatCount(ValueAnimator.INFINITE);
+      animator.addListener(
           new AnimatorListenerAdapter() {
             @Override
-            public void onAnimationEnd(Animator animation) {
-              super.onAnimationEnd(animation);
-              // Manipulates collapse animator to make the indicator span ends with 0 degree.
-              if (animatorCompleteEndRequested) {
-                indicatorCollapsingAnimator.setFloatValues(
-                    0f, 1f + INDICATOR_MIN_DEGREES / INDICATOR_DELTA_DEGREES);
-              }
+            public void onAnimationRepeat(Animator animation) {
+              super.onAnimationRepeat(animation);
+              indicatorColorIndexOffset =
+                  (indicatorColorIndexOffset + TOTAL_CYCLES) % baseSpec.indicatorColors.length;
             }
           });
-
-      indicatorCollapsingAnimator =
-          ObjectAnimator.ofFloat(this, INDICATOR_TAIL_CHANGE_FRACTION, 0f, 1f);
-      indicatorCollapsingAnimator.setDuration(DURATION_PER_COLOR_IN_MS / 2);
-      indicatorCollapsingAnimator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-
       animatorSet = new AnimatorSet();
-      animatorSet.playSequentially(expandAnimator, indicatorCollapsingAnimator);
-      animatorSet.playTogether(constantlyRotateAnimator);
-      if (colorFadingAnimator != null) {
-        animatorSet.playTogether(colorFadingAnimator);
-      }
-      animatorSet.addListener(
+      animatorSet.play(animator);
+    }
+
+    if (completeEndAnimator == null) {
+      completeEndAnimator = ObjectAnimator.ofFloat(this, COMPLETE_END_FRACTION, 0, 1);
+      completeEndAnimator.setDuration(DURATION_TO_COMPLETE_END_IN_MS);
+      completeEndAnimator.setInterpolator(interpolator);
+      completeEndAnimator.addListener(
           new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
               super.onAnimationEnd(animation);
-
-              if (animatorCompleteEndRequested && segmentPositions[0] == segmentPositions[1]) {
-                animatorCompleteCallback.onAnimationEnd(drawable);
-                animatorCompleteEndRequested = false;
-              } else {
-                // If the drawable is still visible, continues the main animator by restarting.
-                if (drawable.isVisible()) {
-                  resetPropertiesForNextCycle();
-                  startAnimator();
-                }
-              }
+              cancelAnimatorImmediately();
+              animatorCompleteCallback.onAnimationEnd(drawable);
             }
           });
     }
@@ -173,44 +129,33 @@ final class CircularIndeterminateAnimatorDelegate
   @Override
   void requestCancelAnimatorAfterCurrentCycle() {
     // Do nothing if main animator complete end has been requested.
-    if (animatorCompleteEndRequested) {
+    if (completeEndAnimator.isRunning()) {
       return;
     }
 
     if (drawable.isVisible()) {
-      animatorCompleteEndRequested = true;
+      completeEndAnimator.start();
     } else {
       cancelAnimatorImmediately();
     }
   }
 
   @Override
-  void resetPropertiesForNewStart() {
-    setIndicatorHeadChangeFraction(0f);
-    setIndicatorTailChangeFraction(0f);
-    setIndicatorStartOffset(0f);
-    if (indicatorCollapsingAnimator != null) {
-      indicatorCollapsingAnimator.setFloatValues(0f, 1f);
-    }
-    resetSegmentColors();
-  }
-
-  @Override
   void resetPropertiesForNextCycle() {
-    setIndicatorHeadChangeFraction(0f);
-    setIndicatorTailChangeFraction(0f);
-    setIndicatorStartOffset(
-        MathUtils.floorMod(
-            getIndicatorStartOffset()
-                + INDICATOR_OFFSET_PER_COLOR_DEGREES
-                + INDICATOR_DELTA_DEGREES,
-            360));
-    shiftSegmentColors();
+    // For circular type, cycles are controlled internally.
   }
 
   @Override
   public void invalidateSpecValues() {
-    resetSegmentColors();
+    resetPropertiesForNewStart();
+  }
+
+  @Override
+  void resetPropertiesForNewStart() {
+    indicatorColorIndexOffset = 0;
+    segmentColors[0] =
+        MaterialColors.compositeARGBWithAlpha(baseSpec.indicatorColors[0], drawable.getAlpha());
+    completeEndFraction = 0f;
   }
 
   @Override
@@ -225,180 +170,103 @@ final class CircularIndeterminateAnimatorDelegate
 
   // ******************* Helper methods *******************
 
-  /** Returns the index of the next available color for indicator. */
-  private int getNextIndicatorColorIndex() {
-    return (indicatorColorIndex + 1) % baseSpec.indicatorColors.length;
+  /** Updates the segment position array based on current playtime. */
+  private void updateSegmentPositions(int playtime) {
+    // Adds constant rotation to segment positions.
+    segmentPositions[0] = CONSTANT_ROTATION_DEGREES * animationFraction + TAIL_DEGREES_OFFSET;
+    segmentPositions[1] = CONSTANT_ROTATION_DEGREES * animationFraction;
+    // Adds cycle specific rotation to segment positions.
+    for (int cycleIndex = 0; cycleIndex < TOTAL_CYCLES; cycleIndex++) {
+      // While expanding.
+      float fraction =
+          getFractionInRange(playtime, DELAY_TO_EXPAND_IN_MS[cycleIndex], DURATION_TO_EXPAND_IN_MS);
+      segmentPositions[1] += interpolator.getInterpolation(fraction) * EXTRA_DEGREES_PER_CYCLE;
+      // While collapsing.
+      fraction =
+          getFractionInRange(
+              playtime, DELAY_TO_COLLAPSE_IN_MS[cycleIndex], DURATION_TO_COLLAPSE_IN_MS);
+      segmentPositions[0] += interpolator.getInterpolation(fraction) * EXTRA_DEGREES_PER_CYCLE;
+    }
+    // Closes the gap between head and tail for complete end.
+    segmentPositions[0] += (segmentPositions[1] - segmentPositions[0]) * completeEndFraction;
+
+    segmentPositions[0] /= 360;
+    segmentPositions[1] /= 360;
   }
 
-  /** Updates the segment position array based on current animator controlled parameters. */
-  private void updateSegmentPositions() {
-    segmentPositions[0] =
-        (getIndicatorStartOffset()
-                + getIndicatorInCycleOffset()
-                - INDICATOR_MIN_DEGREES
-                + getIndicatorTailChangeFraction() * INDICATOR_DELTA_DEGREES)
-            / 360;
-    segmentPositions[1] =
-        (getIndicatorStartOffset()
-                + getIndicatorInCycleOffset()
-                + getIndicatorHeadChangeFraction() * INDICATOR_DELTA_DEGREES)
-            / 360;
-  }
-
-  /** Shifts the color used in the segment colors to the next available one. */
-  private void shiftSegmentColors() {
-    indicatorColorIndex = getNextIndicatorColorIndex();
-    int startColor =
-        MaterialColors.compositeARGBWithAlpha(
-            baseSpec.indicatorColors[indicatorColorIndex], drawable.getAlpha());
-    int endColor =
-        MaterialColors.compositeARGBWithAlpha(
-            baseSpec.indicatorColors[getNextIndicatorColorIndex()], drawable.getAlpha());
-    colorFadingAnimator.setIntValues(startColor, endColor);
-    setDisplayedIndicatorColor(startColor);
-  }
-
-  /** Resets the segment colors to the first indicator color. */
-  private void resetSegmentColors() {
-    indicatorColorIndex = 0;
-    int startColor =
-        MaterialColors.compositeARGBWithAlpha(
-            baseSpec.indicatorColors[indicatorColorIndex], drawable.getAlpha());
-    int endColor =
-        MaterialColors.compositeARGBWithAlpha(
-            baseSpec.indicatorColors[getNextIndicatorColorIndex()], drawable.getAlpha());
-    colorFadingAnimator.setIntValues(startColor, endColor);
-    setDisplayedIndicatorColor(startColor);
+  /** Updates the segment color array based on current playtime. */
+  private void maybeUpdateSegmentColors(int playtime) {
+    for (int cycleIndex = 0; cycleIndex < TOTAL_CYCLES; cycleIndex++) {
+      float timeFraction =
+          getFractionInRange(playtime, DELAY_TO_FADE_IN_MS[cycleIndex], DURATION_TO_FADE_IN_MS);
+      if (timeFraction >= 0 && timeFraction <= 1) {
+        int startColorIndex =
+            (cycleIndex + indicatorColorIndexOffset) % baseSpec.indicatorColors.length;
+        int endColorIndex = (startColorIndex + 1) % baseSpec.indicatorColors.length;
+        int startColor =
+            MaterialColors.compositeARGBWithAlpha(
+                baseSpec.indicatorColors[startColorIndex], drawable.getAlpha());
+        int endColor =
+            MaterialColors.compositeARGBWithAlpha(
+                baseSpec.indicatorColors[endColorIndex], drawable.getAlpha());
+        float colorFraction = interpolator.getInterpolation(timeFraction);
+        segmentColors[0] =
+            ArgbEvaluatorCompat.getInstance().evaluate(colorFraction, startColor, endColor);
+        break;
+      }
+    }
   }
 
   // ******************* Getters and setters *******************
 
-  private int getDisplayedIndicatorColor() {
-    return displayedIndicatorColor;
-  }
-
-  private void setDisplayedIndicatorColor(int displayedIndicatorColor) {
-    this.displayedIndicatorColor = displayedIndicatorColor;
-    segmentColors[0] = displayedIndicatorColor;
-    drawable.invalidateSelf();
-  }
-
-  private float getIndicatorStartOffset() {
-    return indicatorStartOffset;
+  private float getAnimationFraction() {
+    return animationFraction;
   }
 
   @VisibleForTesting
-  void setIndicatorStartOffset(float indicatorStartOffset) {
-    this.indicatorStartOffset = indicatorStartOffset;
-    updateSegmentPositions();
+  void setAnimationFraction(float fraction) {
+    animationFraction = fraction;
+    int playtime = (int) (animationFraction * TOTAL_DURATION_IN_MS);
+    updateSegmentPositions(playtime);
+    maybeUpdateSegmentColors(playtime);
     drawable.invalidateSelf();
   }
 
-  private float getIndicatorInCycleOffset() {
-    return indicatorInCycleOffset;
+  private float getCompleteEndFraction() {
+    return completeEndFraction;
   }
 
-  @VisibleForTesting
-  void setIndicatorInCycleOffset(float indicatorInCycleOffset) {
-    this.indicatorInCycleOffset = indicatorInCycleOffset;
-    updateSegmentPositions();
-    drawable.invalidateSelf();
-  }
-
-  private float getIndicatorHeadChangeFraction() {
-    return indicatorHeadChangeFraction;
-  }
-
-  @VisibleForTesting
-  void setIndicatorHeadChangeFraction(float indicatorHeadChangeFraction) {
-    this.indicatorHeadChangeFraction = indicatorHeadChangeFraction;
-    updateSegmentPositions();
-    drawable.invalidateSelf();
-  }
-
-  private float getIndicatorTailChangeFraction() {
-    return indicatorTailChangeFraction;
-  }
-
-  @VisibleForTesting
-  void setIndicatorTailChangeFraction(float indicatorTailChangeFraction) {
-    this.indicatorTailChangeFraction = indicatorTailChangeFraction;
-    updateSegmentPositions();
-    drawable.invalidateSelf();
+  private void setCompleteEndFraction(float fraction) {
+    completeEndFraction = fraction;
   }
 
   // ******************* Properties *******************
 
-  /** The property of indicator color being currently displayed. */
-  private static final Property<CircularIndeterminateAnimatorDelegate, Integer>
-      DISPLAYED_INDICATOR_COLOR =
-          new Property<CircularIndeterminateAnimatorDelegate, Integer>(
-              Integer.class, "displayedIndicatorColor") {
-            @Override
-            public Integer get(CircularIndeterminateAnimatorDelegate delegate) {
-              return delegate.getDisplayedIndicatorColor();
-            }
+  private static final Property<CircularIndeterminateAnimatorDelegate, Float> ANIMATION_FRACTION =
+      new Property<CircularIndeterminateAnimatorDelegate, Float>(Float.class, "animationFraction") {
+        @Override
+        public Float get(CircularIndeterminateAnimatorDelegate delegate) {
+          return delegate.getAnimationFraction();
+        }
 
-            @Override
-            public void set(CircularIndeterminateAnimatorDelegate delegate, Integer value) {
-              delegate.setDisplayedIndicatorColor(value);
-            }
-          };
+        @Override
+        public void set(CircularIndeterminateAnimatorDelegate delegate, Float value) {
+          delegate.setAnimationFraction(value);
+        }
+      };
 
-  /**
-   * The property of degrees which the indicator should rotate clockwise from the {@code
-   * indicatorStartOffset}.
-   */
   private static final Property<CircularIndeterminateAnimatorDelegate, Float>
-      INDICATOR_IN_CYCLE_OFFSET =
+      COMPLETE_END_FRACTION =
           new Property<CircularIndeterminateAnimatorDelegate, Float>(
-              Float.class, "indicatorInCycleOffset") {
+              Float.class, "completeEndFraction") {
             @Override
             public Float get(CircularIndeterminateAnimatorDelegate delegate) {
-              return delegate.getIndicatorInCycleOffset();
+              return delegate.getCompleteEndFraction();
             }
 
             @Override
             public void set(CircularIndeterminateAnimatorDelegate delegate, Float value) {
-              delegate.setIndicatorInCycleOffset(value);
-            }
-          };
-
-  /**
-   * The property of the fraction of the head (the more clockwise end) of the indicator in the total
-   * amount it can change.
-   */
-  private static final Property<CircularIndeterminateAnimatorDelegate, Float>
-      INDICATOR_HEAD_CHANGE_FRACTION =
-          new Property<CircularIndeterminateAnimatorDelegate, Float>(
-              Float.class, "indicatorHeadChangeFraction") {
-            @Override
-            public Float get(CircularIndeterminateAnimatorDelegate delegate) {
-              return delegate.getIndicatorHeadChangeFraction();
-            }
-
-            @Override
-            public void set(CircularIndeterminateAnimatorDelegate delegate, Float value) {
-              delegate.setIndicatorHeadChangeFraction(value);
-            }
-          };
-
-  /**
-   * The property of the fraction of the tail (the less clockwise end) of the indicator in the total
-   * amount it can change.
-   */
-  private static final Property<CircularIndeterminateAnimatorDelegate, Float>
-      INDICATOR_TAIL_CHANGE_FRACTION =
-          new Property<CircularIndeterminateAnimatorDelegate, Float>(
-              Float.class, "indicatorTailChangeFraction") {
-            @Override
-            public Float get(CircularIndeterminateAnimatorDelegate delegate) {
-              return delegate.getIndicatorTailChangeFraction();
-            }
-
-            @Override
-            public void set(CircularIndeterminateAnimatorDelegate delegate, Float value) {
-              delegate.setIndicatorTailChangeFraction(value);
+              delegate.setCompleteEndFraction(value);
             }
           };
 }
