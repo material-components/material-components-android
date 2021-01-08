@@ -118,16 +118,16 @@ and an AM/PM selector.
 
 #### Attributes
 
-&nbsp;                                      | Attribute                          | Related method(s)                                         | Default value
-------------------------------------------- | ---------------------------------- | --------------------------------------------------------- | -------------
-**Hour**                                    | `N/A`                              | `Builder.setHour` </br/> `MaterialTimePicker.getHour`     | `0`
-**Minute**                                  | `N/A`                              | `Builder.setMinute` </br/> `MaterialTimePicker.getMinute` | `0`
-**Title**                                   | `N/A`                              | `Builder.setTitle`                                        | `Select Time`
-**Keyboard Icon**                           | `app:keyboardIcon`                 | `N/A`                                                     | `@drawable/ic_keyboard_black_24dp`
-**Clock Icon**                              | `app:clockIcon`                    | `N/A`                                                     | `@drawable/ic_clock_black_24dp`
-**Clock face Background Color**             | `app:clockFaceBackgroundColor`     | `N/A`                                                     | `?colorOnSurface 24%`
-**Clock hand color**                        | `app:clockNumberTextColor`         | `N/A`                                                     | `?colorPrimary`
-**Clock Number Text Color**                 | `app:clockNumberTextColor`         | `N/A`                                                     | `colorOnSurface`
+&nbsp;                          | Attribute                      | Related method(s)                                     | Default value
+------------------------------- | ------------------------------ | ----------------------------------------------------- | -------------
+**Hour**                        | `N/A`                          | `Builder.setHour`<br>`MaterialTimePicker.getHour`     | `0`
+**Minute**                      | `N/A`                          | `Builder.setMinute`<br>`MaterialTimePicker.getMinute` | `0`
+**Title**                       | `N/A`                          | `Builder.setTitle`                                    | `Select Time`
+**Keyboard Icon**               | `app:keyboardIcon`             | `N/A`                                                 | `@drawable/ic_keyboard_black_24dp`
+**Clock Icon**                  | `app:clockIcon`                | `N/A`                                                 | `@drawable/ic_clock_black_24dp`
+**Clock face Background Color** | `app:clockFaceBackgroundColor` | `N/A`                                                 | `?attr/colorOnSurface 24%`
+**Clock hand color**            | `app:clockNumberTextColor`     | `N/A`                                                 | `?attr/colorPrimary`
+**Clock Number Text Color**     | `app:clockNumberTextColor`     | `N/A`                                                 | `?attr/colorOnSurface`
 
 #### Styles
 
