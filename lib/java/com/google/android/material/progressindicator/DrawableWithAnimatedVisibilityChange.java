@@ -259,8 +259,12 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
     ValueAnimator animatorInAction = visible ? showAnimator : hideAnimator;
 
     if (!animate) {
-      // Show/hide animation should fast-forward to the end without callbacks.
-      endAnimatorWithoutCallbacks(animatorInAction);
+      if (animatorInAction.isRunning()) {
+        animatorInAction.end();
+      } else {
+        // Show/hide animation should fast-forward to the end without callbacks.
+        endAnimatorWithoutCallbacks(animatorInAction);
+      }
       // Immediately updates the drawable's visibility without animation if not desired.
       return super.setVisible(visible, DEFAULT_DRAWABLE_RESTART);
     }

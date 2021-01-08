@@ -19,7 +19,6 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.annotation.NonNull;
@@ -167,18 +166,6 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
       @NonNull IndeterminateAnimatorDelegate<ObjectAnimator> animatorDelegate) {
     this.animatorDelegate = animatorDelegate;
     animatorDelegate.registerDrawable(this);
-
-    // Sets the end action of the internal callback to cancel indeterminate animator after hidden.
-    setInternalAnimationCallback(
-        new AnimationCallback() {
-          @Override
-          public void onAnimationEnd(Drawable drawable) {
-            super.onAnimationEnd(drawable);
-            IndeterminateDrawable.this.animatorDelegate.cancelAnimatorImmediately();
-          }
-        });
-
-    setGrowFraction(1f);
   }
 
   @NonNull

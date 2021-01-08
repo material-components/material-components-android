@@ -826,9 +826,9 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
         @Override
         public void onAnimationEnd(Drawable drawable) {
           super.onAnimationEnd(drawable);
-          if (!isIndeterminateModeChangeRequested && visibleToUser()) {
+          if (!isIndeterminateModeChangeRequested) {
             // Don't hide the component if under transition from indeterminate mode to
-            // determinate mode or the component is current not visible to users.
+            // determinate mode.
             setVisibility(visibilityAfterHide);
           }
         }
