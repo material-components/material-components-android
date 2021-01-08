@@ -47,6 +47,10 @@ abstract class IndeterminateAnimatorDelegate<T extends Animator> {
     this.drawable = drawable;
   }
 
+  protected float getFractionInRange(int playtime, int start, int duration) {
+    return (float) (playtime - start) / duration;
+  }
+
   /** Starts the animator. */
   abstract void startAnimator();
 
