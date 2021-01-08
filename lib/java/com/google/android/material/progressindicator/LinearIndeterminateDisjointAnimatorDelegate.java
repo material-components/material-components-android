@@ -18,12 +18,16 @@ package com.google.android.material.progressindicator;
 
 import com.google.android.material.R;
 
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.util.Property;
+import android.view.animation.Interpolator;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat.AnimationCallback;
@@ -36,42 +40,44 @@ import java.util.Arrays;
  * indeterminate mode.
  */
 final class LinearIndeterminateDisjointAnimatorDelegate
-    extends IndeterminateAnimatorDelegate<AnimatorSet> {
+    extends IndeterminateAnimatorDelegate<ObjectAnimator> {
 
   // Constants for animation timing.
-  private static final int MAIN_LINE_1_HEAD_DURATION = 750;
-  private static final int MAIN_LINE_1_TAIL_DELAY = 333;
-  private static final int MAIN_LINE_1_TAIL_DURATION = 850;
-  private static final int MAIN_LINE_2_HEAD_DELAY = 1000;
-  private static final int MAIN_LINE_2_HEAD_DURATION = 567;
-  private static final int MAIN_LINE_2_TAIL_DELAY = 1267;
-  private static final int MAIN_LINE_2_TAIL_DURATION = 533;
+  private static final int TOTAL_DURATION_IN_MS = 1800;
+  private static final int[] DURATION_TO_MOVE_SEGMENT_ENDS = {533, 567, 850, 750};
+  private static final int[] DELAY_TO_MOVE_SEGMENT_ENDS = {1267, 1000, 333, 0};
 
-  // The current context which the animation is running on.
-  private final Context context;
+  // The animator controls disjoint linear indeterminate animation.
+  private ObjectAnimator animator;
+  private final Interpolator[] interpolatorArray;
+
   // The base spec.
   private final BaseProgressIndicatorSpec baseSpec;
 
-  // The animator controls disjoint linear indeterminate animation.
-  private AnimatorSet animatorSet;
-
-  // Internal parameters controlled by the animator.
-  private int displayedSegmentColorIndex;
-  private float line1HeadFraction;
-  private float line1TailFraction;
-  private float line2HeadFraction;
-  private float line2TailFraction;
-
   // For animator control.
-  boolean animatorCompleteEndRequested = false;
+  private int indicatorColorIndex = 0;
+  private boolean dirtyColors;
+  private float animationFraction;
+  private boolean animatorCompleteEndRequested;
   AnimationCallback animatorCompleteCallback = null;
 
   public LinearIndeterminateDisjointAnimatorDelegate(
       @NonNull Context context, @NonNull LinearProgressIndicatorSpec spec) {
     super(/*segmentCount=*/ 2);
 
-    this.context = context;
     baseSpec = spec;
+
+    interpolatorArray =
+        new Interpolator[] {
+          AnimationUtilsCompat.loadInterpolator(
+              context, R.animator.linear_indeterminate_line1_head_interpolator),
+          AnimationUtilsCompat.loadInterpolator(
+              context, R.animator.linear_indeterminate_line1_tail_interpolator),
+          AnimationUtilsCompat.loadInterpolator(
+              context, R.animator.linear_indeterminate_line2_head_interpolator),
+          AnimationUtilsCompat.loadInterpolator(
+              context, R.animator.linear_indeterminate_line2_tail_interpolator)
+        };
   }
 
   // ******************* Animation control *******************
@@ -80,60 +86,33 @@ final class LinearIndeterminateDisjointAnimatorDelegate
   public void startAnimator() {
     maybeInitializeAnimators();
 
-    animatorSet.start();
+    resetPropertiesForNewStart();
+    animator.start();
   }
 
   private void maybeInitializeAnimators() {
-    if (animatorSet == null) {
-      // Instantiates the animator.
-      ObjectAnimator line1HeadAnimator = ObjectAnimator.ofFloat(this, LINE_1_HEAD_FRACTION, 0f, 1f);
-      line1HeadAnimator.setDuration(MAIN_LINE_1_HEAD_DURATION);
-      line1HeadAnimator.setInterpolator(
-          AnimationUtilsCompat.loadInterpolator(
-              context, R.animator.linear_indeterminate_line1_head_interpolator));
-
-      ObjectAnimator line1TailAnimator = ObjectAnimator.ofFloat(this, LINE_1_TAIL_FRACTION, 0f, 1f);
-      line1TailAnimator.setStartDelay(MAIN_LINE_1_TAIL_DELAY);
-      line1TailAnimator.setDuration(MAIN_LINE_1_TAIL_DURATION);
-      line1TailAnimator.setInterpolator(
-          AnimationUtilsCompat.loadInterpolator(
-              context, R.animator.linear_indeterminate_line1_tail_interpolator));
-
-      ObjectAnimator line2HeadAnimator = ObjectAnimator.ofFloat(this, LINE_2_HEAD_FRACTION, 0f, 1f);
-      line2HeadAnimator.setStartDelay(MAIN_LINE_2_HEAD_DELAY);
-      line2HeadAnimator.setDuration(MAIN_LINE_2_HEAD_DURATION);
-      line2HeadAnimator.setInterpolator(
-          AnimationUtilsCompat.loadInterpolator(
-              context, R.animator.linear_indeterminate_line2_head_interpolator));
-
-      ObjectAnimator line2TailAnimator = ObjectAnimator.ofFloat(this, LINE_2_TAIL_FRACTION, 0f, 1f);
-      line2TailAnimator.setStartDelay(MAIN_LINE_2_TAIL_DELAY);
-      line2TailAnimator.setDuration(MAIN_LINE_2_TAIL_DURATION);
-      line2TailAnimator.setInterpolator(
-          AnimationUtilsCompat.loadInterpolator(
-              context, R.animator.linear_indeterminate_line2_tail_interpolator));
-
-      animatorSet = new AnimatorSet();
-      animatorSet.playTogether(
-          line1HeadAnimator, line1TailAnimator, line2HeadAnimator, line2TailAnimator);
-      animatorSet.addListener(
+    if (animator == null) {
+      // Instantiates an animator with the linear interpolator to control the animation progress.
+      animator = ObjectAnimator.ofFloat(this, ANIMATION_FRACTION, 0, 1);
+      animator.setDuration(TOTAL_DURATION_IN_MS);
+      animator.setInterpolator(null);
+      animator.setRepeatCount(ValueAnimator.INFINITE);
+      animator.addListener(
           new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+              super.onAnimationRepeat(animation);
+              indicatorColorIndex = (indicatorColorIndex + 1) % baseSpec.indicatorColors.length;
+              dirtyColors = true;
+            }
+
             @Override
             public void onAnimationEnd(Animator animation) {
               super.onAnimationEnd(animation);
-
               if (animatorCompleteEndRequested) {
-                animatorCompleteEndRequested = false;
+                animator.setRepeatCount(ValueAnimator.INFINITE);
                 animatorCompleteCallback.onAnimationEnd(drawable);
-                resetPropertiesForNewStart();
-              } else {
-                // If the drawable is still visible, continues the main animator by restarting.
-                if (drawable.isVisible()) {
-                  resetPropertiesForNextCycle();
-                  startAnimator();
-                } else {
-                  resetPropertiesForNewStart();
-                }
+                animatorCompleteEndRequested = false;
               }
             }
           });
@@ -141,45 +120,25 @@ final class LinearIndeterminateDisjointAnimatorDelegate
   }
 
   @Override
-  public void resetPropertiesForNewStart() {
-    resetPropertiesForNextCycle();
-    resetSegmentColors();
-  }
-
-  @Override
-  public void resetPropertiesForNextCycle() {
-    setLine1HeadFraction(0f);
-    setLine1TailFraction(0f);
-    setLine2HeadFraction(0f);
-    setLine2TailFraction(0f);
-    rotateSegmentColors();
-  }
-
-  @Override
   public void cancelAnimatorImmediately() {
-    if (animatorSet != null) {
-      animatorSet.cancel();
+    if (animator != null) {
+      animator.cancel();
     }
   }
 
   @Override
   public void requestCancelAnimatorAfterCurrentCycle() {
-    // Do nothing if main animator complete end has been requested.
-    if (animatorCompleteEndRequested) {
-      return;
-    }
-
-    if (!drawable.isVisible()) {
+    if (drawable.isVisible()) {
+      animatorCompleteEndRequested = true;
+      animator.setRepeatCount(0);
+    } else {
       cancelAnimatorImmediately();
-      return;
     }
-
-    animatorCompleteEndRequested = true;
   }
 
   @Override
   public void invalidateSpecValues() {
-    resetSegmentColors();
+    resetPropertiesForNewStart();
   }
 
   @Override
@@ -194,149 +153,66 @@ final class LinearIndeterminateDisjointAnimatorDelegate
 
   // ******************* Helper methods *******************
 
-  /** Shifts the color used in the segment colors to the next available one. */
-  private void rotateSegmentColors() {
-    displayedSegmentColorIndex = (displayedSegmentColorIndex + 1) % baseSpec.indicatorColors.length;
-    Arrays.fill(
-        segmentColors,
-        MaterialColors.compositeARGBWithAlpha(
-            baseSpec.indicatorColors[displayedSegmentColorIndex], drawable.getAlpha()));
+  /** Updates the segment position array based on current playtime. */
+  private void updateSegmentPositions(int playtime) {
+    for (int i = 0; i < 4; i++) {
+      float fraction =
+          getFractionInRange(
+              playtime, DELAY_TO_MOVE_SEGMENT_ENDS[i], DURATION_TO_MOVE_SEGMENT_ENDS[i]);
+      float segmentPosition = interpolatorArray[i].getInterpolation(fraction);
+      segmentPositions[i] = max(0f, min(1f, segmentPosition));
+    }
   }
 
-  /** Resets the segment colors to the first indicator color. */
-  private void resetSegmentColors() {
-    displayedSegmentColorIndex = 0;
-    Arrays.fill(
-        segmentColors,
-        MaterialColors.compositeARGBWithAlpha(
-            baseSpec.indicatorColors[displayedSegmentColorIndex], drawable.getAlpha()));
+  /** Updates the segment color array based on the updated color index. */
+  private void maybeUpdateSegmentColors() {
+    if (dirtyColors) {
+      Arrays.fill(
+          segmentColors,
+          MaterialColors.compositeARGBWithAlpha(
+              baseSpec.indicatorColors[indicatorColorIndex], drawable.getAlpha()));
+      dirtyColors = false;
+    }
+  }
+
+  @VisibleForTesting
+  void resetPropertiesForNewStart() {
+    indicatorColorIndex = 0;
+    int indicatorColor =
+        MaterialColors.compositeARGBWithAlpha(baseSpec.indicatorColors[0], drawable.getAlpha());
+    segmentColors[0] = indicatorColor;
+    segmentColors[1] = indicatorColor;
   }
 
   // ******************* Getters and setters *******************
 
-  private float getLine1HeadFraction() {
-    return line1HeadFraction;
+  private float getAnimationFraction() {
+    return animationFraction;
   }
 
   @VisibleForTesting
-  void setLine1HeadFraction(float line1HeadFraction) {
-    this.line1HeadFraction = line1HeadFraction;
-    this.segmentPositions[3] = line1HeadFraction;
-    drawable.invalidateSelf();
-  }
-
-  private float getLine1TailFraction() {
-    return line1TailFraction;
-  }
-
-  @VisibleForTesting
-  void setLine1TailFraction(float line1TailFraction) {
-    this.line1TailFraction = line1TailFraction;
-    this.segmentPositions[2] = line1TailFraction;
-    drawable.invalidateSelf();
-  }
-
-  private float getLine2HeadFraction() {
-    return line2HeadFraction;
-  }
-
-  @VisibleForTesting
-  void setLine2HeadFraction(float line2HeadFraction) {
-    this.line2HeadFraction = line2HeadFraction;
-    this.segmentPositions[1] = line2HeadFraction;
-    drawable.invalidateSelf();
-  }
-
-  private float getLine2TailFraction() {
-    return line2TailFraction;
-  }
-
-  @VisibleForTesting
-  void setLine2TailFraction(float line2TailFraction) {
-    this.line2TailFraction = line2TailFraction;
-    this.segmentPositions[0] = line2TailFraction;
+  void setAnimationFraction(float fraction) {
+    animationFraction = fraction;
+    int playtime = (int) (animationFraction * TOTAL_DURATION_IN_MS);
+    updateSegmentPositions(playtime);
+    maybeUpdateSegmentColors();
     drawable.invalidateSelf();
   }
 
   // ******************* Properties *******************
 
-  /**
-   * The property controlled by the main animator in disjoint type. It indicates the ratio to the
-   * total track width of the distance between the left (right when inverse) end of the track and
-   * the right (left) end of the first line.
-   */
   private static final Property<LinearIndeterminateDisjointAnimatorDelegate, Float>
-      LINE_1_HEAD_FRACTION =
+      ANIMATION_FRACTION =
           new Property<LinearIndeterminateDisjointAnimatorDelegate, Float>(
-              Float.class, "line1HeadFraction") {
+              Float.class, "animationFraction") {
             @Override
-            public Float get(LinearIndeterminateDisjointAnimatorDelegate drawable) {
-              return drawable.getLine1HeadFraction();
+            public Float get(LinearIndeterminateDisjointAnimatorDelegate delegate) {
+              return delegate.getAnimationFraction();
             }
 
             @Override
-            public void set(LinearIndeterminateDisjointAnimatorDelegate drawable, Float value) {
-              drawable.setLine1HeadFraction(value);
-            }
-          };
-
-  /**
-   * The property controlled by the main animator in disjoint type. It indicates the ratio to the
-   * total track width of the distance between the left (right when inverse) end of the track and
-   * the left (right) end of the first line.
-   */
-  private static final Property<LinearIndeterminateDisjointAnimatorDelegate, Float>
-      LINE_1_TAIL_FRACTION =
-          new Property<LinearIndeterminateDisjointAnimatorDelegate, Float>(
-              Float.class, "line1TailFraction") {
-            @Override
-            public Float get(LinearIndeterminateDisjointAnimatorDelegate drawable) {
-              return drawable.getLine1TailFraction();
-            }
-
-            @Override
-            public void set(LinearIndeterminateDisjointAnimatorDelegate drawable, Float value) {
-              drawable.setLine1TailFraction(value);
-            }
-          };
-
-  /**
-   * The property controlled by the main animator in disjoint type. It indicates the ratio to the
-   * total track width of the distance between the left (right when inverse) end of the track and
-   * the right (left) end of the second line.
-   */
-  private static final Property<LinearIndeterminateDisjointAnimatorDelegate, Float>
-      LINE_2_HEAD_FRACTION =
-          new Property<LinearIndeterminateDisjointAnimatorDelegate, Float>(
-              Float.class, "line2HeadFraction") {
-            @Override
-            public Float get(LinearIndeterminateDisjointAnimatorDelegate drawable) {
-              return drawable.getLine2HeadFraction();
-            }
-
-            @Override
-            public void set(LinearIndeterminateDisjointAnimatorDelegate drawable, Float value) {
-              drawable.setLine2HeadFraction(value);
-            }
-          };
-
-  /**
-   * The property controlled by the main animator in disjoint type. It indicates the ratio to the
-   * total track width of the distance between the left (right when inverse) end of the track and
-   * the left (right) end of the second line.
-   */
-  private static final Property<LinearIndeterminateDisjointAnimatorDelegate, Float>
-      LINE_2_TAIL_FRACTION =
-          new Property<LinearIndeterminateDisjointAnimatorDelegate, Float>(
-              Float.class, "line2TailFraction") {
-            @Override
-            public Float get(LinearIndeterminateDisjointAnimatorDelegate drawable) {
-              return drawable.getLine2TailFraction();
-            }
-
-            @Override
-            public void set(LinearIndeterminateDisjointAnimatorDelegate drawable, Float value) {
-              drawable.setLine2TailFraction(value);
+            public void set(LinearIndeterminateDisjointAnimatorDelegate delegate, Float value) {
+              delegate.setAnimationFraction(value);
             }
           };
 }

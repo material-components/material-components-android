@@ -17,7 +17,6 @@ package com.google.android.material.progressindicator;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.util.Property;
@@ -33,7 +32,7 @@ import com.google.android.material.color.MaterialColors;
  * mode.
  */
 final class CircularIndeterminateAnimatorDelegate
-    extends IndeterminateAnimatorDelegate<AnimatorSet> {
+    extends IndeterminateAnimatorDelegate<ObjectAnimator> {
 
   // Constants for animation timing.
   private static final int TOTAL_CYCLES = 4;
@@ -51,7 +50,6 @@ final class CircularIndeterminateAnimatorDelegate
   private static final int EXTRA_DEGREES_PER_CYCLE = 250;
   private static final int CONSTANT_ROTATION_DEGREES = 1520;
 
-  private AnimatorSet animatorSet;
   private ObjectAnimator animator;
   private ObjectAnimator completeEndAnimator;
   private final FastOutSlowInInterpolator interpolator;
@@ -80,11 +78,11 @@ final class CircularIndeterminateAnimatorDelegate
     maybeInitializeAnimators();
 
     resetPropertiesForNewStart();
-    animatorSet.start();
+    animator.start();
   }
 
   private void maybeInitializeAnimators() {
-    if (animatorSet == null) {
+    if (animator == null) {
       // Instantiates an animator with the linear interpolator to control the animation progress.
       animator = ObjectAnimator.ofFloat(this, ANIMATION_FRACTION, 0, 1);
       animator.setDuration(TOTAL_DURATION_IN_MS);
@@ -99,8 +97,6 @@ final class CircularIndeterminateAnimatorDelegate
                   (indicatorColorIndexOffset + TOTAL_CYCLES) % baseSpec.indicatorColors.length;
             }
           });
-      animatorSet = new AnimatorSet();
-      animatorSet.play(animator);
     }
 
     if (completeEndAnimator == null) {
@@ -121,8 +117,8 @@ final class CircularIndeterminateAnimatorDelegate
 
   @Override
   void cancelAnimatorImmediately() {
-    if (animatorSet != null) {
-      animatorSet.cancel();
+    if (animator != null) {
+      animator.cancel();
     }
   }
 
@@ -141,21 +137,8 @@ final class CircularIndeterminateAnimatorDelegate
   }
 
   @Override
-  void resetPropertiesForNextCycle() {
-    // For circular type, cycles are controlled internally.
-  }
-
-  @Override
   public void invalidateSpecValues() {
     resetPropertiesForNewStart();
-  }
-
-  @Override
-  void resetPropertiesForNewStart() {
-    indicatorColorIndexOffset = 0;
-    segmentColors[0] =
-        MaterialColors.compositeARGBWithAlpha(baseSpec.indicatorColors[0], drawable.getAlpha());
-    completeEndFraction = 0f;
   }
 
   @Override
@@ -215,6 +198,14 @@ final class CircularIndeterminateAnimatorDelegate
         break;
       }
     }
+  }
+
+  @VisibleForTesting
+  void resetPropertiesForNewStart() {
+    indicatorColorIndexOffset = 0;
+    segmentColors[0] =
+        MaterialColors.compositeARGBWithAlpha(baseSpec.indicatorColors[0], drawable.getAlpha());
+    completeEndFraction = 0f;
   }
 
   // ******************* Getters and setters *******************

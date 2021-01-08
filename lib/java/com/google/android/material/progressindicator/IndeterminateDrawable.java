@@ -15,7 +15,7 @@
  */
 package com.google.android.material.progressindicator;
 
-import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
@@ -31,13 +31,13 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
   // Drawing delegate object.
   private DrawingDelegate<S> drawingDelegate;
   // Animator delegate object.
-  private IndeterminateAnimatorDelegate<AnimatorSet> animatorDelegate;
+  private IndeterminateAnimatorDelegate<ObjectAnimator> animatorDelegate;
 
   IndeterminateDrawable(
       @NonNull Context context,
       @NonNull BaseProgressIndicatorSpec baseSpec,
       @NonNull DrawingDelegate<S> drawingDelegate,
-      @NonNull IndeterminateAnimatorDelegate<AnimatorSet> animatorDelegate) {
+      @NonNull IndeterminateAnimatorDelegate<ObjectAnimator> animatorDelegate) {
     super(context, baseSpec);
 
     setDrawingDelegate(drawingDelegate);
@@ -99,10 +99,9 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
   boolean setVisibleInternal(boolean visible, boolean restart, boolean animate) {
     boolean changed = super.setVisibleInternal(visible, restart, animate);
 
-    // Unless it's showing or hiding, cancels and resets main animator.
+    // Unless it's showing or hiding, cancels the main animator.
     if (!isRunning()) {
       animatorDelegate.cancelAnimatorImmediately();
-      animatorDelegate.resetPropertiesForNewStart();
     }
     // Restarts the main animator if it's visible and needs to be animated.
     float systemAnimatorDurationScale =
@@ -160,11 +159,12 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
   // ******************* Setter and getter *******************
 
   @NonNull
-  IndeterminateAnimatorDelegate<AnimatorSet> getAnimatorDelegate() {
+  IndeterminateAnimatorDelegate<ObjectAnimator> getAnimatorDelegate() {
     return animatorDelegate;
   }
 
-  void setAnimatorDelegate(@NonNull IndeterminateAnimatorDelegate<AnimatorSet> animatorDelegate) {
+  void setAnimatorDelegate(
+      @NonNull IndeterminateAnimatorDelegate<ObjectAnimator> animatorDelegate) {
     this.animatorDelegate = animatorDelegate;
     animatorDelegate.registerDrawable(this);
 
@@ -175,7 +175,6 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
           public void onAnimationEnd(Drawable drawable) {
             super.onAnimationEnd(drawable);
             IndeterminateDrawable.this.animatorDelegate.cancelAnimatorImmediately();
-            IndeterminateDrawable.this.animatorDelegate.resetPropertiesForNewStart();
           }
         });
 
@@ -192,4 +191,3 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
     drawingDelegate.registerDrawable(this);
   }
 }
-

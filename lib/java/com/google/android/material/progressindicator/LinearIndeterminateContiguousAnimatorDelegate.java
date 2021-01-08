@@ -18,44 +18,45 @@ package com.google.android.material.progressindicator;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.util.Property;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat.AnimationCallback;
-import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.color.MaterialColors;
-import com.google.android.material.math.MathUtils;
+import java.util.Arrays;
 
 /**
  * This is the implementation class for drawing progress indicator in the linear contiguous
  * indeterminate mode.
  */
 final class LinearIndeterminateContiguousAnimatorDelegate
-    extends IndeterminateAnimatorDelegate<AnimatorSet> {
+    extends IndeterminateAnimatorDelegate<ObjectAnimator> {
 
   // Constants for animation timing.
-  private static final int NEXT_COLOR_DELAY = 333;
-  private static final int DURATION_PER_COLOR = 667;
+  private static final int TOTAL_DURATION_IN_MS = 667;
+  private static final int DURATION_PER_CYCLE_IN_MS = 333;
 
-  // The general spec.
+  private ObjectAnimator animator;
+  private FastOutSlowInInterpolator interpolator;
+
+  // The base spec.
   private final BaseProgressIndicatorSpec baseSpec;
 
-  // The animator controls contiguous linear indeterminate animation.
-  private AnimatorSet animatorSet;
-
   // Internal parameters controlled by the animator.
-  private int referenceSegmentColorIndex;
-  private float lineConnectPoint1Fraction;
-  private float lineConnectPoint2Fraction;
+  private int newIndicatorColorIndex = 1;
+  private boolean dirtyColors;
+  private float animationFraction;
 
   public LinearIndeterminateContiguousAnimatorDelegate(@NonNull LinearProgressIndicatorSpec spec) {
     super(/*segmentCount=*/ 3);
 
     baseSpec = spec;
+
+    interpolator = new FastOutSlowInInterpolator();
   }
 
   // ******************* Animation control *******************
@@ -64,86 +65,46 @@ final class LinearIndeterminateContiguousAnimatorDelegate
   public void startAnimator() {
     maybeInitializeAnimators();
 
-    animatorSet.start();
+    resetPropertiesForNewStart();
+    animator.start();
   }
 
   private void maybeInitializeAnimators() {
-    if (animatorSet == null) {
-      // Instantiates the animator.
-      ObjectAnimator connectPoint1Animator =
-          ObjectAnimator.ofFloat(this, LINE_CONNECT_POINT_1_FRACTION, 0f, 1f);
-      connectPoint1Animator.setDuration(DURATION_PER_COLOR);
-      connectPoint1Animator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-      connectPoint1Animator.setRepeatCount(ValueAnimator.INFINITE);
-      connectPoint1Animator.setRepeatMode(ValueAnimator.RESTART);
-      connectPoint1Animator.addListener(
+    if (animator == null) {
+      // Instantiates an animator with the linear interpolator to control the animation progress.
+      animator = ObjectAnimator.ofFloat(this, ANIMATION_FRACTION, 0, 1);
+      animator.setDuration(DURATION_PER_CYCLE_IN_MS);
+      animator.setInterpolator(null);
+      animator.setRepeatCount(ValueAnimator.INFINITE);
+      animator.addListener(
           new AnimatorListenerAdapter() {
             @Override
             public void onAnimationRepeat(Animator animation) {
               super.onAnimationRepeat(animation);
-              if (getLineConnectPoint2Fraction() > 0 && getLineConnectPoint2Fraction() < 1) {
-                shiftSegmentColors();
-              }
+              newIndicatorColorIndex =
+                  (newIndicatorColorIndex + 1) % baseSpec.indicatorColors.length;
+              dirtyColors = true;
             }
           });
-
-      ObjectAnimator connectPoint2StayAtZeroAnimator =
-          ObjectAnimator.ofFloat(this, LINE_CONNECT_POINT_2_FRACTION, 0f, 0f);
-      connectPoint2StayAtZeroAnimator.setDuration(NEXT_COLOR_DELAY);
-
-      ObjectAnimator connectPoint2Animator =
-          ObjectAnimator.ofFloat(this, LINE_CONNECT_POINT_2_FRACTION, 0f, 1f);
-      connectPoint2Animator.setDuration(DURATION_PER_COLOR);
-      connectPoint2Animator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-      connectPoint2Animator.setRepeatCount(ValueAnimator.INFINITE);
-      connectPoint2Animator.setRepeatMode(ValueAnimator.RESTART);
-      connectPoint2Animator.addListener(
-          new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-              super.onAnimationRepeat(animation);
-              if (getLineConnectPoint1Fraction() > 0 && getLineConnectPoint1Fraction() < 1) {
-                shiftSegmentColors();
-              }
-            }
-          });
-
-      AnimatorSet connectPoint2AnimatorSet = new AnimatorSet();
-      connectPoint2AnimatorSet.playSequentially(
-          connectPoint2StayAtZeroAnimator, connectPoint2Animator);
-
-      animatorSet = new AnimatorSet();
-      animatorSet.playTogether(connectPoint1Animator, connectPoint2AnimatorSet);
     }
   }
 
   @Override
-  public void resetPropertiesForNewStart() {
-    setLineConnectPoint1Fraction(0f);
-    setLineConnectPoint2Fraction(0f);
-    resetSegmentColors();
-  }
-
-  @Override
-  public void resetPropertiesForNextCycle() {
-    // In contiguous type, there's no concept of cycle. This is left as blank in purpose.
-  }
-
-  @Override
   public void cancelAnimatorImmediately() {
-    if (animatorSet != null) {
-      animatorSet.cancel();
+    if (animator != null) {
+      animator.cancel();
     }
   }
 
   @Override
   public void requestCancelAnimatorAfterCurrentCycle() {
-    // In contiguous type, there's no concept of cycle. This is left as blank in purpose.
+    // This function is used to cancel animator after a complete cycle when switching to determinate
+    // type. In contiguous type, the switching is not supported. This is left in purpose.
   }
 
   @Override
   public void invalidateSpecValues() {
-    resetSegmentColors();
+    resetPropertiesForNewStart();
   }
 
   @Override
@@ -158,117 +119,66 @@ final class LinearIndeterminateContiguousAnimatorDelegate
 
   // ******************* Helper methods *******************
 
-  /** Shifts the color used in the segment colors to the next available one. */
-  private void shiftSegmentColors() {
-    referenceSegmentColorIndex = (referenceSegmentColorIndex + 1) % baseSpec.indicatorColors.length;
-    updateSegmentColors();
-  }
-
-  /** Resets the segment colors to the first indicator color. */
-  private void resetSegmentColors() {
-    referenceSegmentColorIndex = 0;
-    updateSegmentColors();
-  }
-
-  /** Updates the segment colors array based on current reference color index. */
-  private void updateSegmentColors() {
-    int leftSegmentColorIndex =
-        MathUtils.floorMod(referenceSegmentColorIndex + 2, baseSpec.indicatorColors.length);
-    int centralSegmentColorIndex =
-        MathUtils.floorMod(referenceSegmentColorIndex + 1, baseSpec.indicatorColors.length);
-    segmentColors[0] =
-        MaterialColors.compositeARGBWithAlpha(
-            baseSpec.indicatorColors[leftSegmentColorIndex], drawable.getAlpha());
-    segmentColors[1] =
-        MaterialColors.compositeARGBWithAlpha(
-            baseSpec.indicatorColors[centralSegmentColorIndex], drawable.getAlpha());
-    segmentColors[2] =
-        MaterialColors.compositeARGBWithAlpha(
-            baseSpec.indicatorColors[referenceSegmentColorIndex], drawable.getAlpha());
-  }
-
-  /**
-   * Updates the segment positions array based on current {@link #lineConnectPoint1Fraction} and
-   * {@link #lineConnectPoint2Fraction};
-   */
-  private void updateSegmentPositions() {
+  /** Updates the segment position array based on current playtime. */
+  private void updateSegmentPositions(int playtime) {
     segmentPositions[0] = 0f;
-    segmentPositions[1] =
-        segmentPositions[2] =
-            Math.min(getLineConnectPoint1Fraction(), getLineConnectPoint2Fraction());
-    segmentPositions[3] =
-        segmentPositions[4] =
-            Math.max(getLineConnectPoint1Fraction(), getLineConnectPoint2Fraction());
+    float fraction = getFractionInRange(playtime, 0, TOTAL_DURATION_IN_MS);
+    segmentPositions[1] = segmentPositions[2] = interpolator.getInterpolation(fraction);
+    fraction += (float) DURATION_PER_CYCLE_IN_MS / TOTAL_DURATION_IN_MS;
+    segmentPositions[3] = segmentPositions[4] = interpolator.getInterpolation(fraction);
     segmentPositions[5] = 1f;
+  }
+
+  /** Updates the segment colors array based on the updated color index. */
+  private void maybeUpdateSegmentColors() {
+    if (dirtyColors && segmentPositions[3] < 1f) {
+      segmentColors[2] = segmentColors[1];
+      segmentColors[1] = segmentColors[0];
+      segmentColors[0] =
+          MaterialColors.compositeARGBWithAlpha(
+              baseSpec.indicatorColors[newIndicatorColorIndex], drawable.getAlpha());
+      dirtyColors = false;
+    }
+  }
+
+  @VisibleForTesting
+  void resetPropertiesForNewStart() {
+    dirtyColors = true;
+    newIndicatorColorIndex = 1;
+    Arrays.fill(
+        segmentColors,
+        MaterialColors.compositeARGBWithAlpha(baseSpec.indicatorColors[0], drawable.getAlpha()));
   }
 
   // ******************* Getters and setters *******************
 
-  private float getLineConnectPoint1Fraction() {
-    return lineConnectPoint1Fraction;
+  private float getAnimationFraction() {
+    return animationFraction;
   }
 
   @VisibleForTesting
-  void setLineConnectPoint1Fraction(float lineConnectPoint1Fraction) {
-    this.lineConnectPoint1Fraction = lineConnectPoint1Fraction;
-    updateSegmentPositions();
-    drawable.invalidateSelf();
-  }
-
-  private float getLineConnectPoint2Fraction() {
-    return lineConnectPoint2Fraction;
-  }
-
-  @VisibleForTesting
-  void setLineConnectPoint2Fraction(float lineConnectPoint2Fraction) {
-    this.lineConnectPoint2Fraction = lineConnectPoint2Fraction;
-    updateSegmentPositions();
+  void setAnimationFraction(float value) {
+    animationFraction = value;
+    int playtime = (int) (animationFraction * DURATION_PER_CYCLE_IN_MS);
+    updateSegmentPositions(playtime);
+    maybeUpdateSegmentColors();
     drawable.invalidateSelf();
   }
 
   // ******************* Properties *******************
 
-  /**
-   * The property controlled by the main animator in contiguous type. It indicates the ratio to the
-   * total track width of the distance between the left (right when inverse) end of the track and
-   * the connecting position of one side line and the central line.
-   *
-   * @see #LINE_CONNECT_POINT_2_FRACTION
-   */
   private static final Property<LinearIndeterminateContiguousAnimatorDelegate, Float>
-      LINE_CONNECT_POINT_1_FRACTION =
+      ANIMATION_FRACTION =
           new Property<LinearIndeterminateContiguousAnimatorDelegate, Float>(
-              Float.class, "lineConnectPoint1Fraction") {
+              Float.class, "animationFraction") {
             @Override
-            public Float get(LinearIndeterminateContiguousAnimatorDelegate drawable) {
-              return drawable.getLineConnectPoint1Fraction();
+            public Float get(LinearIndeterminateContiguousAnimatorDelegate delegate) {
+              return delegate.getAnimationFraction();
             }
 
             @Override
-            public void set(LinearIndeterminateContiguousAnimatorDelegate drawable, Float value) {
-              drawable.setLineConnectPoint1Fraction(value);
-            }
-          };
-
-  /**
-   * The property controlled by the main animator in contiguous type. It indicates the ratio to the
-   * total track width of the distance between the left (right when inverse) end of the track and
-   * the connecting position of the other side line to the central line.
-   *
-   * @see #LINE_CONNECT_POINT_1_FRACTION
-   */
-  private static final Property<LinearIndeterminateContiguousAnimatorDelegate, Float>
-      LINE_CONNECT_POINT_2_FRACTION =
-          new Property<LinearIndeterminateContiguousAnimatorDelegate, Float>(
-              Float.class, "lineConnectPoint2Fraction") {
-            @Override
-            public Float get(LinearIndeterminateContiguousAnimatorDelegate drawable) {
-              return drawable.getLineConnectPoint2Fraction();
-            }
-
-            @Override
-            public void set(LinearIndeterminateContiguousAnimatorDelegate drawable, Float value) {
-              drawable.setLineConnectPoint2Fraction(value);
+            public void set(LinearIndeterminateContiguousAnimatorDelegate delegate, Float value) {
+              delegate.setAnimationFraction(value);
             }
           };
 }
