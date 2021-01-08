@@ -108,7 +108,7 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
         animatorDurationScaleProvider.getSystemAnimatorDurationScale(context.getContentResolver());
     if (visible
         && (animate
-            || (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP && systemAnimatorDurationScale > 0))) {
+            || (VERSION.SDK_INT <= VERSION_CODES.LOLLIPOP && systemAnimatorDurationScale > 0))) {
       animatorDelegate.startAnimator();
     }
 
