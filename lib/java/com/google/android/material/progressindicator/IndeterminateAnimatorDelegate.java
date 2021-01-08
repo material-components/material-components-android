@@ -61,18 +61,6 @@ abstract class IndeterminateAnimatorDelegate<T extends Animator> {
   abstract void requestCancelAnimatorAfterCurrentCycle();
 
   /**
-   * Resets all properties controlled by the animator for a fresh start. This should be called after
-   * the drawable is hidden or before the drawable becomes visible.
-   */
-  abstract void resetPropertiesForNewStart();
-
-  /**
-   * Resets all properties controlled by the animator for the next animation cycle. This should be
-   * called between the animation cycles.
-   */
-  abstract void resetPropertiesForNextCycle();
-
-  /**
    * Invalidates the spec values used by the animator delegate. When the spec values are changed in
    * indicator class, values assigned to animators or segments don't get updated until they are
    * explicitly reset. Call this to apply the changes immediately.
