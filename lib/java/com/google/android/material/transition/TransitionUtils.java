@@ -64,7 +64,7 @@ class TransitionUtils {
 
   private TransitionUtils() {}
 
-  static boolean applyThemeInterpolator(
+  static boolean maybeApplyThemeInterpolator(
       Transition transition,
       Context context,
       @AttrRes int attrResId,
@@ -78,7 +78,7 @@ class TransitionUtils {
     return false;
   }
 
-  static boolean applyThemeDuration(
+  static boolean maybeApplyThemeDuration(
       Transition transition, Context context, @AttrRes int attrResId) {
     if (attrResId != NO_ATTR_RES_ID && transition.getDuration() == NO_DURATION) {
       int duration = MaterialAttributes.resolveInteger(context, attrResId, NO_DURATION);
@@ -90,7 +90,8 @@ class TransitionUtils {
     return false;
   }
 
-  static boolean applyThemePath(Transition transition, Context context, @AttrRes int attrResId) {
+  static boolean maybeApplyThemePath(
+      Transition transition, Context context, @AttrRes int attrResId) {
     if (attrResId != NO_ATTR_RES_ID) {
       PathMotion pathMotion = resolveThemePath(context, attrResId);
       if (pathMotion != null) {

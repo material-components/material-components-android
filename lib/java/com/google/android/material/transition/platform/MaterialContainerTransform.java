@@ -265,7 +265,7 @@ public final class MaterialContainerTransform extends Transition {
   }
 
   public MaterialContainerTransform(@NonNull Context context, boolean entering) {
-    applyThemeValues(context, entering);
+    maybeApplyThemeValues(context, entering);
     appliedThemeValues = true;
   }
 
@@ -934,8 +934,9 @@ public final class MaterialContainerTransform extends Transition {
     boolean entering = isEntering(startBounds, endBounds);
 
     if (!appliedThemeValues) {
-      // Apply theme values if we didn't already apply them up front in the constructor.
-      applyThemeValues(drawingBaseView.getContext(), entering);
+      // Apply theme values if we didn't already apply them up front in the constructor and if they
+      // haven't already been set by the user.
+      maybeApplyThemeValues(drawingBaseView.getContext(), entering);
     }
 
     final TransitionDrawable transitionDrawable =
@@ -1007,13 +1008,13 @@ public final class MaterialContainerTransform extends Transition {
     return animator;
   }
 
-  private void applyThemeValues(Context context, boolean entering) {
-    TransitionUtils.applyThemeInterpolator(
+  private void maybeApplyThemeValues(Context context, boolean entering) {
+    TransitionUtils.maybeApplyThemeInterpolator(
         this, context, R.attr.motionEasingStandard, AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-    TransitionUtils.applyThemeDuration(
+    TransitionUtils.maybeApplyThemeDuration(
         this, context, entering ? R.attr.motionDurationLong1 : R.attr.motionDurationMedium2);
     if (!pathMotionCustom) {
-      TransitionUtils.applyThemePath(this, context, R.attr.motionPath);
+      TransitionUtils.maybeApplyThemePath(this, context, R.attr.motionPath);
     }
   }
 

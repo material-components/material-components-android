@@ -137,7 +137,7 @@ abstract class MaterialVisibility<P extends VisibilityAnimatorProvider> extends 
       addAnimatorIfNeeded(animators, additionalAnimatorProvider, sceneRoot, view, appearing);
     }
 
-    applyThemeValues(sceneRoot.getContext(), appearing);
+    maybeApplyThemeValues(sceneRoot.getContext(), appearing);
 
     AnimatorSetCompat.playTogether(set, animators);
     return set;
@@ -161,9 +161,9 @@ abstract class MaterialVisibility<P extends VisibilityAnimatorProvider> extends 
     }
   }
 
-  private void applyThemeValues(@NonNull Context context, boolean appearing) {
-    TransitionUtils.applyThemeDuration(this, context, getDurationThemeAttrResId(appearing));
-    TransitionUtils.applyThemeInterpolator(
+  private void maybeApplyThemeValues(@NonNull Context context, boolean appearing) {
+    TransitionUtils.maybeApplyThemeDuration(this, context, getDurationThemeAttrResId(appearing));
+    TransitionUtils.maybeApplyThemeInterpolator(
         this, context, getEasingThemeAttrResId(appearing), getDefaultEasingInterpolator(appearing));
   }
 
