@@ -773,9 +773,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
       // Set view to INVISIBLE so it doesn't flash on the screen before the inset adjustment is
       // handled and the enter animation is started
-      if (view.getParent() != null) {
-        view.setVisibility(View.INVISIBLE);
-      }
+      view.setVisibility(View.INVISIBLE);
       targetParent.addView(this.view);
     }
 
