@@ -20,15 +20,34 @@
  */
 package com.google.android.material.transition.platform;
 
+import com.google.android.material.R;
+
+import android.animation.TimeInterpolator;
+import androidx.annotation.AttrRes;
+import androidx.annotation.NonNull;
+import com.google.android.material.animation.AnimationUtils;
+
 /**
  * A {@link android.transition.Visibility} transition that is composed of a fade and scale of
  * incoming content and a simple fade of outgoing content.
+ *
+ * <p>MaterialFade supports theme-based easing and duration. The transition will load theme values
+ * from the {@code SceneRoot}'s context before it runs, and only use them if the corresponding
+ * properties weren't already set on the transition instance.
  */
 @androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.LOLLIPOP)
 public final class MaterialFade extends MaterialVisibility<FadeProvider> {
 
   private static final float DEFAULT_START_SCALE = 0.8f;
   private static final float DEFAULT_FADE_END_THRESHOLD_ENTER = 0.3f;
+
+  @AttrRes
+  private static final int DEFAULT_THEMED_INCOMING_DURATION_ATTR = R.attr.motionDurationShort2;
+
+  @AttrRes
+  private static final int DEFAULT_THEMED_OUTGOING_DURATION_ATTR = R.attr.motionDurationShort1;
+
+  @AttrRes private static final int DEFAULT_THEMED_EASING_ATTR = R.attr.motionEasingLinear;
 
   public MaterialFade() {
     super(createPrimaryAnimatorProvider(), createSecondaryAnimatorProvider());
@@ -45,5 +64,25 @@ public final class MaterialFade extends MaterialVisibility<FadeProvider> {
     scaleProvider.setScaleOnDisappear(false);
     scaleProvider.setIncomingStartScale(DEFAULT_START_SCALE);
     return scaleProvider;
+  }
+
+  @AttrRes
+  @Override
+  int getDurationThemeAttrResId(boolean appearing) {
+    return appearing
+        ? DEFAULT_THEMED_INCOMING_DURATION_ATTR
+        : DEFAULT_THEMED_OUTGOING_DURATION_ATTR;
+  }
+
+  @AttrRes
+  @Override
+  int getEasingThemeAttrResId(boolean appearing) {
+    return DEFAULT_THEMED_EASING_ATTR;
+  }
+
+  @NonNull
+  @Override
+  TimeInterpolator getDefaultEasingInterpolator(boolean appearing) {
+    return AnimationUtils.LINEAR_INTERPOLATOR;
   }
 }

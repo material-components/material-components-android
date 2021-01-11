@@ -50,6 +50,7 @@ import com.google.android.material.shape.ShapeAppearanceModel.CornerSizeUnaryOpe
 class TransitionUtils {
 
   static final int NO_DURATION = -1;
+  @AttrRes static final int NO_ATTR_RES_ID = 0;
 
   // Constants corresponding to motionEasing* theme attr values.
   private static final String EASING_TYPE_CUBIC_BEZIER = "cubic-bezier";
@@ -68,7 +69,7 @@ class TransitionUtils {
       Context context,
       @AttrRes int attrResId,
       TimeInterpolator defaultInterpolator) {
-    if (transition.getInterpolator() == null) {
+    if (attrResId != NO_ATTR_RES_ID && transition.getInterpolator() == null) {
       TimeInterpolator interpolator =
           TransitionUtils.resolveThemeInterpolator(context, attrResId, defaultInterpolator);
       transition.setInterpolator(interpolator);
@@ -79,7 +80,7 @@ class TransitionUtils {
 
   static boolean applyThemeDuration(
       Transition transition, Context context, @AttrRes int attrResId) {
-    if (transition.getDuration() == NO_DURATION) {
+    if (attrResId != NO_ATTR_RES_ID && transition.getDuration() == NO_DURATION) {
       int duration = MaterialAttributes.resolveInteger(context, attrResId, NO_DURATION);
       if (duration != NO_DURATION) {
         transition.setDuration(duration);
@@ -90,10 +91,12 @@ class TransitionUtils {
   }
 
   static boolean applyThemePath(Transition transition, Context context, @AttrRes int attrResId) {
-    PathMotion pathMotion = resolveThemePath(context, attrResId);
-    if (pathMotion != null) {
-      transition.setPathMotion(pathMotion);
-      return true;
+    if (attrResId != NO_ATTR_RES_ID) {
+      PathMotion pathMotion = resolveThemePath(context, attrResId);
+      if (pathMotion != null) {
+        transition.setPathMotion(pathMotion);
+        return true;
+      }
     }
     return false;
   }

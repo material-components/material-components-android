@@ -22,8 +22,11 @@ package com.google.android.material.transition.platform;
 
 import android.animation.Animator;
 import android.animation.AnimatorSet;
+import android.animation.TimeInterpolator;
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.AttrRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.transition.TransitionValues;
@@ -45,7 +48,6 @@ abstract class MaterialVisibility<P extends VisibilityAnimatorProvider> extends 
       P primaryAnimatorProvider, @Nullable VisibilityAnimatorProvider secondaryAnimatorProvider) {
     this.primaryAnimatorProvider = primaryAnimatorProvider;
     this.secondaryAnimatorProvider = secondaryAnimatorProvider;
-    setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
   }
 
   /**
@@ -122,7 +124,8 @@ abstract class MaterialVisibility<P extends VisibilityAnimatorProvider> extends 
     return createAnimator(sceneRoot, view, false);
   }
 
-  private Animator createAnimator(ViewGroup sceneRoot, View view, boolean appearing) {
+  private Animator createAnimator(
+      @NonNull ViewGroup sceneRoot, @NonNull View view, boolean appearing) {
     AnimatorSet set = new AnimatorSet();
     List<Animator> animators = new ArrayList<>();
 
@@ -133,6 +136,8 @@ abstract class MaterialVisibility<P extends VisibilityAnimatorProvider> extends 
     for (VisibilityAnimatorProvider additionalAnimatorProvider : additionalAnimatorProviders) {
       addAnimatorIfNeeded(animators, additionalAnimatorProvider, sceneRoot, view, appearing);
     }
+
+    applyThemeValues(sceneRoot.getContext(), appearing);
 
     AnimatorSetCompat.playTogether(set, animators);
     return set;
@@ -154,5 +159,26 @@ abstract class MaterialVisibility<P extends VisibilityAnimatorProvider> extends 
     if (animator != null) {
       animators.add(animator);
     }
+  }
+
+  private void applyThemeValues(@NonNull Context context, boolean appearing) {
+    TransitionUtils.applyThemeDuration(this, context, getDurationThemeAttrResId(appearing));
+    TransitionUtils.applyThemeInterpolator(
+        this, context, getEasingThemeAttrResId(appearing), getDefaultEasingInterpolator(appearing));
+  }
+
+  @AttrRes
+  int getDurationThemeAttrResId(boolean appearing) {
+    return TransitionUtils.NO_ATTR_RES_ID;
+  }
+
+  @AttrRes
+  int getEasingThemeAttrResId(boolean appearing) {
+    return TransitionUtils.NO_ATTR_RES_ID;
+  }
+
+  @NonNull
+  TimeInterpolator getDefaultEasingInterpolator(boolean appearing) {
+    return AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR;
   }
 }
