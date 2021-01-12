@@ -158,7 +158,10 @@ class MonthAdapter extends BaseAdapter {
       // Validate that the day is in the right month.
       int day = month.getDayOfMonth(date);
       updateSelectedState(
-          (TextView) monthGrid.getChildAt(monthGrid.getAdapter().dayToPosition(day)), date);
+          (TextView)
+              monthGrid.getChildAt(
+                  monthGrid.getAdapter().dayToPosition(day) - monthGrid.getFirstVisiblePosition()),
+          date);
     }
   }
 
