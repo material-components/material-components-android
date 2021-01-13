@@ -187,16 +187,16 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
 
   // ******************* Visibility control *******************
 
-  /** The drawable will start with show animator as default. */
+  /** The drawable will start the main animation without show animator. */
   @Override
   public void start() {
-    setVisible(true, true);
+    setVisibleInternal(true, true, false);
   }
 
-  /** The drawable will stop with hide animator as default. */
+  /** The drawable will stop the main animation without hide animator. */
   @Override
   public void stop() {
-    setVisible(false, true);
+    setVisibleInternal(false, true, false);
   }
 
   @Override
