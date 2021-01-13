@@ -73,6 +73,7 @@ public class ButtonsMainDemoFragment extends DemoFragment {
               button.setText(updatedText);
             }
             button.setEnabled(isChecked);
+            button.setFocusable(isChecked);
           }
         });
 
