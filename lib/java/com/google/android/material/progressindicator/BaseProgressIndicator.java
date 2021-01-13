@@ -721,9 +721,10 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
         storedProgressAnimated = animated;
         isIndeterminateModeChangeRequested = true;
 
-        if (animatorDurationScaleProvider.getSystemAnimatorDurationScale(
-                getContext().getContentResolver())
-            == 0) {
+        if (!getIndeterminateDrawable().isVisible()
+            || animatorDurationScaleProvider.getSystemAnimatorDurationScale(
+                    getContext().getContentResolver())
+                == 0) {
           switchIndeterminateModeCallback.onAnimationEnd(getIndeterminateDrawable());
         } else {
           getIndeterminateDrawable().getAnimatorDelegate().requestCancelAnimatorAfterCurrentCycle();
