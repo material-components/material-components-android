@@ -16,9 +16,12 @@
 
 package com.google.android.material.transition;
 
+import com.google.android.material.R;
+
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.view.Gravity;
+import androidx.annotation.AttrRes;
 import androidx.annotation.IntDef;
 import androidx.annotation.RestrictTo;
 import java.lang.annotation.Retention;
@@ -40,6 +43,10 @@ import java.lang.annotation.RetentionPolicy;
  * true, the target will slide to the left on the X axis, up on the Y axis and out in on the Z axis.
  * When false, the target will slide to the right on the X axis, down on the Y axis and in on the Z
  * axis. Note that this is independent of whether or not the target is appearing or disappearing.
+ *
+ * <p>MaterialSharedAxis supports theme-based easing and duration. The transition will load theme
+ * values from the {@code SceneRoot}'s context before it runs, and only use them if the
+ * corresponding properties weren't already set on the transition instance.
  */
 public final class MaterialSharedAxis extends MaterialVisibility<VisibilityAnimatorProvider> {
 
@@ -76,6 +83,9 @@ public final class MaterialSharedAxis extends MaterialVisibility<VisibilityAnima
   @Axis private final int axis;
   private final boolean forward;
 
+  @AttrRes private static final int DEFAULT_THEMED_DURATION_ATTR = R.attr.motionDurationLong1;
+  @AttrRes private static final int DEFAULT_THEMED_EASING_ATTR = R.attr.motionEasingStandard;
+
   public MaterialSharedAxis(@Axis int axis, boolean forward) {
     super(createPrimaryAnimatorProvider(axis, forward), createSecondaryAnimatorProvider());
     this.axis = axis;
@@ -107,5 +117,17 @@ public final class MaterialSharedAxis extends MaterialVisibility<VisibilityAnima
 
   private static VisibilityAnimatorProvider createSecondaryAnimatorProvider() {
     return new FadeThroughProvider();
+  }
+
+  @AttrRes
+  @Override
+  int getDurationThemeAttrResId(boolean appearing) {
+    return DEFAULT_THEMED_DURATION_ATTR;
+  }
+
+  @AttrRes
+  @Override
+  int getEasingThemeAttrResId(boolean appearing) {
+    return DEFAULT_THEMED_EASING_ATTR;
   }
 }
