@@ -20,14 +20,25 @@
  */
 package com.google.android.material.transition.platform;
 
+import com.google.android.material.R;
+
+import androidx.annotation.AttrRes;
+
 /**
  * A {@link android.transition.Visibility} transition that, by default, provides a fade in and
  * scale out when appearing and a fade out and scale out when disappearing.
+ *
+ * <p>MaterialFadeThrough supports theme-based easing and duration. The transition will load theme
+ * values from the {@code SceneRoot}'s context before it runs, and only use them if the
+ * corresponding properties weren't already set on the transition instance.
  */
 @androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.LOLLIPOP)
 public final class MaterialFadeThrough extends MaterialVisibility<FadeThroughProvider> {
 
   private static final float DEFAULT_START_SCALE = 0.92f;
+
+  @AttrRes private static final int DEFAULT_THEMED_DURATION_ATTR = R.attr.motionDurationLong1;
+  @AttrRes private static final int DEFAULT_THEMED_EASING_ATTR = R.attr.motionEasingStandard;
 
   public MaterialFadeThrough() {
     super(createPrimaryAnimatorProvider(), createSecondaryAnimatorProvider());
@@ -42,5 +53,17 @@ public final class MaterialFadeThrough extends MaterialVisibility<FadeThroughPro
     scaleProvider.setScaleOnDisappear(false);
     scaleProvider.setIncomingStartScale(DEFAULT_START_SCALE);
     return scaleProvider;
+  }
+
+  @AttrRes
+  @Override
+  int getDurationThemeAttrResId(boolean appearing) {
+    return DEFAULT_THEMED_DURATION_ATTR;
+  }
+
+  @AttrRes
+  @Override
+  int getEasingThemeAttrResId(boolean appearing) {
+    return DEFAULT_THEMED_EASING_ATTR;
   }
 }
