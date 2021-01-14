@@ -25,7 +25,7 @@ requests in a [`BottomNavigationView`](BottomNavigation.md) or
 
 ## Design & API Documentation
 
--   [Material Design guidelines: Chips](https://material.io/design/components/bottom-navigation.html#behavior)
+-   [Material Design guidelines: Bottom Navigation](https://material.io/design/components/bottom-navigation.html#behavior)
 -   [Class definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/badge/BadgeDrawable.java)
 -   [Class overview](https://developer.android.com/reference/com/google/android/material/badge/BadgeDrawable)
 
