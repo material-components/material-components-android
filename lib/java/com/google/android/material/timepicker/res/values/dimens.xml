@@ -21,7 +21,6 @@
   <dimen name="material_clock_period_toggle_width">52dp</dimen>
   <dimen name="material_clock_period_toggle_margin_left">12dp</dimen>
   <dimen name="material_clock_face_margin_top">44dp</dimen>
-  <dimen name="material_clock_size">256dp</dimen>
   <dimen name="clock_face_margin_start">64dp</dimen>
   <dimen name="material_timepicker_dialog_buttons_margin_top">24dp</dimen>
   <dimen name="material_clock_hand_stroke_width">2dp</dimen>
@@ -35,4 +34,8 @@
   <dimen name="material_cursor_inset_top">-12dp</dimen>
   <dimen name="material_cursor_width">2dp</dimen>
 
+  <dimen name="material_clock_size">256dp</dimen>
+
+  <dimen name="material_time_picker_minimum_screen_height">560dp</dimen>
+  <dimen name="material_time_picker_minimum_screen_width">340dp</dimen>
 </resources>

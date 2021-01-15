@@ -16,6 +16,5 @@
 -->
 
 <resources>
-  <dimen name="material_clock_size">240dp</dimen>
   <dimen name="clock_face_margin_start">64dp</dimen>
 </resources>

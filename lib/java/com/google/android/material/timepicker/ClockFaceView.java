@@ -38,6 +38,7 @@ import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionIn
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionItemInfoCompat;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,6 +75,9 @@ class ClockFaceView extends RadialViewGroup implements OnRotateListener {
   private final int[] gradientColors;
   private final float[] gradientPositions = new float[] {0f, 0.9f, 1f};
   private final int clockHandPadding;
+  private final int minimumHeight;
+  private final int minimumWidth;
+  private final int clockSize;
 
   private String[] values;
 
@@ -167,6 +171,10 @@ class ClockFaceView extends RadialViewGroup implements OnRotateListener {
     String[] initialValues = new String[INITIAL_CAPACITY];
     Arrays.fill(initialValues, VALUE_PLACEHOLDER);
     setValues(initialValues, /* contentDescription= */ 0);
+
+    minimumHeight = res.getDimensionPixelSize(R.dimen.material_time_picker_minimum_screen_height);
+    minimumWidth = res.getDimensionPixelSize(R.dimen.material_time_picker_minimum_screen_width);
+    clockSize = res.getDimensionPixelSize(R.dimen.material_clock_size);
   }
 
   /**
@@ -277,5 +285,26 @@ class ClockFaceView extends RadialViewGroup implements OnRotateListener {
       currentHandRotation = rotation;
       findIntersectingTextView();
     }
+  }
+
+  @Override
+  protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    Resources r = getResources();
+    DisplayMetrics displayMetrics = r.getDisplayMetrics();
+
+    float height = displayMetrics.heightPixels;
+    float width = displayMetrics.widthPixels;
+
+    // If the screen is smaller than our defined values. Scale the clock face
+    // proportionally to the smaller size
+    int size = (int) (clockSize / max3(minimumHeight / height, minimumWidth / width, 1f));
+
+    int spec = MeasureSpec.makeMeasureSpec(size, MeasureSpec.EXACTLY);
+    setMeasuredDimension(size, size);
+    super.onMeasure(spec, spec);
+  }
+
+  private static float max3(float a, float b, float c) {
+    return max(max(a, b), c);
   }
 }
