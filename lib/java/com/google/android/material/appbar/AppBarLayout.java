@@ -174,6 +174,11 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
 
   private int pendingAction = PENDING_ACTION_NONE;
 
+  public static final int EXPAND_NONE = 0;
+  public static final int EXPAND_ENTERED = -1;
+  public static final int EXPAND_ALL = -2;
+  private int pendingExpandedHeight = EXPAND_NONE;
+
   @Nullable private WindowInsetsCompat lastInsets;
 
   private List<BaseOnOffsetChangedListener> listeners;
@@ -540,6 +545,22 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     super.setElevation(elevation);
 
     MaterialShapeUtils.setElevation(this, elevation);
+  }
+
+  public void expand(int height) {
+    expand(height, ViewCompat.isLaidOut(this));
+  }
+
+  public void expand(int height, boolean animate) {
+    expand(height, animate, false);
+  }
+
+  private void expand(int height, boolean animate, boolean force) {
+    pendingAction = PENDING_ACTION_EXPANDED
+            | (animate ? PENDING_ACTION_ANIMATE_ENABLED : 0)
+            | (force ? PENDING_ACTION_FORCE : 0);
+    pendingExpandedHeight = height;
+    requestLayout();
   }
 
   /**
@@ -980,6 +1001,10 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
 
   void resetPendingAction() {
     pendingAction = PENDING_ACTION_NONE;
+  }
+
+  int getPendingExpandedHeight() {
+    return pendingExpandedHeight;
   }
 
   @VisibleForTesting
@@ -1546,6 +1571,10 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
         setHeaderTopBottomOffset(parent, abl, offset);
       } else if (pendingAction != PENDING_ACTION_NONE) {
         final boolean animate = (pendingAction & PENDING_ACTION_ANIMATE_ENABLED) != 0;
+        if ((pendingAction & PENDING_ACTION_EXPANDED) > 0) {
+          processExpand(parent, abl, animate);
+        }
+        /*
         if ((pendingAction & PENDING_ACTION_COLLAPSED) != 0) {
           final int offset = -abl.getUpNestedPreScrollRange();
           if (animate) {
@@ -1560,6 +1589,8 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
             setHeaderTopBottomOffset(parent, abl, 0);
           }
         }
+
+         */
       }
 
       // Finally reset any pending states
@@ -1582,6 +1613,31 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
 
       updateAccessibilityActions(parent, abl);
       return handled;
+    }
+
+    private void processExpand(CoordinatorLayout parent, T child, boolean animate) {
+      final int height = child.getPendingExpandedHeight();
+      int offset;
+      if (height > 0) {
+        offset = -Math.min(height, child.getUpNestedPreScrollRange());
+      } else {
+        switch(height) {
+          case EXPAND_NONE:
+            offset = -child.getUpNestedPreScrollRange();
+            break;
+          case EXPAND_ENTERED:
+            offset = -child.getUpNestedPreScrollRange() + child.getDownNestedPreScrollRange();
+            break;
+          default:
+            offset = 0;
+            break;
+        }
+      }
+      if (animate) {
+        animateOffsetTo(parent, child, offset, 0);
+      } else {
+        setHeaderTopBottomOffset(parent, child, offset);
+      }
     }
 
     private void updateAccessibilityActions(
