@@ -594,11 +594,8 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
   }
 
   private void setExpanded(boolean expanded, boolean animate, boolean force) {
-    pendingAction =
-        (expanded ? PENDING_ACTION_EXPANDED : PENDING_ACTION_COLLAPSED)
-            | (animate ? PENDING_ACTION_ANIMATE_ENABLED : 0)
-            | (force ? PENDING_ACTION_FORCE : 0);
-    requestLayout();
+    final int height = expanded ? EXPAND_ALL : EXPAND_NONE;
+    expand(height, animate, force);
   }
 
   @Override
