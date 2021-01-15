@@ -173,9 +173,21 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
 
   private int pendingAction = PENDING_ACTION_NONE;
 
+  /**
+   * Hide all the children whose scroll behavior is 'scroll'.
+   */
   public static final int EXPAND_NONE = 0;
+
+  /**
+   * Show the children like entering scroll.
+   */
   public static final int EXPAND_ENTERED = -1;
+
+  /**
+   * Show all the children.
+   */
   public static final int EXPAND_ALL = -2;
+
   private int pendingExpandedHeight = EXPAND_NONE;
 
   @Nullable private WindowInsetsCompat lastInsets;
