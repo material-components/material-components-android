@@ -1641,6 +1641,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
             offset = 0;
             break;
           default:
+            // invalid height
             break;
         }
       }
