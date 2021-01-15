@@ -131,9 +131,8 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
 
   static final int PENDING_ACTION_NONE = 0x0;
   static final int PENDING_ACTION_EXPANDED = 0x1;
-  static final int PENDING_ACTION_COLLAPSED = 1 << 1;
-  static final int PENDING_ACTION_ANIMATE_ENABLED = 1 << 2;
-  static final int PENDING_ACTION_FORCE = 1 << 3;
+  static final int PENDING_ACTION_ANIMATE_ENABLED = 1 << 1;
+  static final int PENDING_ACTION_FORCE = 1 << 2;
 
   /**
    * Interface definition for a callback to be invoked when an {@link AppBarLayout}'s vertical
