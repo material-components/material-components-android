@@ -47,6 +47,12 @@
     <!-- Alpha level for the action button text, to allow for adjusting the lightness or darkness of
          the theme color used for Snackbar text buttons (e.g., colorPrimary). -->
     <attr name="actionTextColorAlpha" format="float"/>
+    <!-- Background for the SnackbarLayout. If this is set to a drawable or color, SnackBar
+     will respect this background and not create its own MaterialShapeDrawable for the
+     background. This means that the insets, shape appearance, and stroke will be ignored.
+     If this attribute is not set or is @empty or @null, a MaterialShapeDrawable will be used
+     for the background based on the insets, shape appearance, and stroke. -->
+    <attr name="android:background"/>
   </declare-styleable>
 
 </resources>

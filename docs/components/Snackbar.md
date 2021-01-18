@@ -172,13 +172,14 @@ The following is an anatomy diagram of a snackbar:
 
 ### Container attributes
 
-&nbsp;                  | Attribute                         | Related method(s)                               | Default value
------------------------ | --------------------------------- | ----------------------------------------------- | -------------
-**Color**               | `app:backgroundTint`              | `setBackgroundTint`<br/>`setBackgroundTintList` | `?attr/colorSurface` at 80% over `?attr/colorOnSurface`
-**Color overlay alpha** | `app:backgroundOverlayColorAlpha` | N/A                                             | `0.8f` (ignored if `app:backgroundTint` is set)
-**Margin**              | `android:layout_margin`           | N/A                                             | `8dp`
-**Elevation**           | `app:elevation`                   | N/A                                             | `6dp`
-**Animation mode**      | `app:animationMode`               | `setAnimationMode`<br/>`getAnimationMode`       | `fade`
+&nbsp;                  | Attribute                         | Related method(s)                                      | Default value
+----------------------- | --------------------------------- | ------------------------------------------------------ | -------------
+**Color**               | `app:backgroundTint`              | `setBackgroundTint`<br/>`setBackgroundTintList`        | `?attr/colorSurface` at 80% over `?attr/colorOnSurface`
+**Color overlay alpha** | `app:backgroundOverlayColorAlpha` | N/A                                                    | `0.8f` (ignored if `app:backgroundTint` is set)
+**Margin**              | `android:layout_margin`           | N/A                                                    | `8dp`
+**Elevation**           | `app:elevation`                   | N/A                                                    | `6dp`
+**Animation mode**      | `app:animationMode`               | `setAnimationMode`<br/>`getAnimationMode`              | `fade`
+**Shape**               | `app:shapeAppearance`             |`setShapeAppearanceModel`<br/>`getShapeAppearanceModel` | `?attr/shapeAppearanceSmallComponent`
 
 ### Action attributes
 
