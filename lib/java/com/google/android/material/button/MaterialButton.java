@@ -766,6 +766,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     // Forced icon update
     if (needsIconReset) {
       resetIconDrawable();
+      adjustTextFromIcon();
       return;
     }
 
@@ -781,6 +782,17 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
     if (hasIconChanged) {
       resetIconDrawable();
+      adjustTextFromIcon();
+    }
+  }
+
+  private void adjustTextFromIcon() {
+    if (icon != null) {
+      if (isIconViewStart()) {
+          setIconPadding(-icon.getIntrinsicWidth());
+      } else if (isIconViewEnd()) {
+        setIconPadding(icon.getIntrinsicWidth());
+      }
     }
   }
 
@@ -794,12 +806,20 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     }
   }
 
+  private boolean isIconViewStart() {
+    return iconGravity == ICON_GRAVITY_START;
+  }
+
   private boolean isIconStart() {
-    return iconGravity == ICON_GRAVITY_START || iconGravity == ICON_GRAVITY_TEXT_START;
+    return isIconViewStart() || iconGravity == ICON_GRAVITY_TEXT_START;
+  }
+
+  private boolean isIconViewEnd() {
+    return iconGravity == ICON_GRAVITY_END;
   }
 
   private boolean isIconEnd() {
-    return iconGravity == ICON_GRAVITY_END || iconGravity == ICON_GRAVITY_TEXT_END;
+    return isIconViewEnd() || iconGravity == ICON_GRAVITY_TEXT_END;
   }
 
   private boolean isIconTop() {
