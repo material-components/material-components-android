@@ -63,7 +63,6 @@ public final class MaterialTimePicker extends DialogFragment {
   private final Set<OnDismissListener> dismissListeners = new LinkedHashSet<>();
 
   private TimePickerView timePickerView;
-  private LinearLayout textInputView;
   private ViewStub textInputStub;
 
   @Nullable private TimePickerClockPresenter timePickerClockPresenter;
@@ -263,6 +262,15 @@ public final class MaterialTimePicker extends DialogFragment {
   }
 
   @Override
+  public void onStop() {
+    super.onStop();
+    activePresenter = null;
+    timePickerClockPresenter = null;
+    timePickerTextInputPresenter = null;
+    timePickerView = null;
+  }
+
+  @Override
   public final void onCancel(@NonNull DialogInterface dialogInterface) {
     for (OnCancelListener listener : cancelListeners) {
       listener.onCancel(dialogInterface);
@@ -275,10 +283,7 @@ public final class MaterialTimePicker extends DialogFragment {
     for (OnDismissListener listener : dismissListeners) {
       listener.onDismiss(dialogInterface);
     }
-    ViewGroup viewGroup = ((ViewGroup) getView());
-    if (viewGroup != null) {
-      viewGroup.removeAllViews();
-    }
+
     super.onDismiss(dialogInterface);
   }
 
@@ -296,7 +301,6 @@ public final class MaterialTimePicker extends DialogFragment {
   }
 
   private TimePickerPresenter initializeOrRetrieveActivePresenterForMode(int mode) {
-
     if (mode == INPUT_MODE_CLOCK) {
       timePickerClockPresenter =
           timePickerClockPresenter == null
@@ -307,7 +311,7 @@ public final class MaterialTimePicker extends DialogFragment {
     }
 
     if (timePickerTextInputPresenter == null) {
-      textInputView = (LinearLayout) textInputStub.inflate();
+      LinearLayout textInputView = (LinearLayout) textInputStub.inflate();
       timePickerTextInputPresenter = new TimePickerTextInputPresenter(textInputView, time);
     }
 
