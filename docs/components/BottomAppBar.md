@@ -332,7 +332,7 @@ bottom app bars and FABs but does not affect other components):
 <style name="Theme.App" parent="Theme.MaterialComponents.*">
     ...
     <item name="bottomAppBarStyle">@style/Widget.App.BottomAppBar</item>
-    <item name="fabStyle">@style/Widget.App.FloatingActionButton</item>
+    <item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
 </style>
 
 <style name="Widget.App.BottomAppBar" parent="Widget.MaterialComponents.BottomAppBar.Colored">
