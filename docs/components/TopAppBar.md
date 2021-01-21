@@ -66,7 +66,7 @@ needs to be set in the menu:
 For images within promininent top app bars, set an `android:contentDescription`
 or use the `setContentDescription` method on the `ImageView`.
 
-## Types
+### Types
 
 There are two types of top app bar: 1\.
 [Regular top app bar](#regular-top-app-bar), 2\.

@@ -43,7 +43,7 @@ such as an icon on a title having a content description via the
 `android:contentDescription` attribute set in the
 `MaterialAlertDialog.MaterialComponents.Title.Icon` style or descendant.
 
-## Types
+### Types
 
 There are four types of dialogs: 1\. [Alert dialog](#alert-dialog), 2\.
 [Simple dialog](#simple-dialog), 3\.
@@ -69,7 +69,7 @@ API and source code:
     *   [Class description](https://developer.android.com/reference/com/google/android/material/dialog/MaterialAlertDialogBuilder)
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/dialog/MaterialAlertDialogBuilder.java)
 
-#### Alert dialog
+## Alert dialog
 
 Alert dialogs interrupt users with urgent information, details, or actions.
 
@@ -95,7 +95,7 @@ MaterialAlertDialogBuilder(context)
         .show()
 ```
 
-#### Simple dialog
+## Simple dialog
 
 Simple dialogs can display items that are immediately actionable when selected.
 They don’t have text buttons.
@@ -121,7 +121,7 @@ MaterialAlertDialogBuilder(context)
         .show()
 ```
 
-#### Confirmation dialog
+## Confirmation dialog
 
 Confirmation dialogs give users the ability to provide final confirmation of a
 choice before committing to it, so they have a chance to change their minds if
@@ -170,7 +170,7 @@ MaterialAlertDialogBuilder(context)
         .show()
 ```
 
-#### Full-screen dialog
+## Full-screen dialog
 
 Full-screen dialogs group a series of tasks, such as creating a calendar entry
 with the event title, date, location, and time. Because they take up the entire

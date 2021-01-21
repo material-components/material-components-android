@@ -300,7 +300,7 @@ Default style theme attribute: `?attr/navigationViewStyle`
 
 Default style theme attribute: `?attr/drawerLayoutStyle`
 
-## Types
+### Types
 
 There are three types of navigation drawers: 1\.
 [Standard navigation drawer](#standard-navigation-drawer), 2\.

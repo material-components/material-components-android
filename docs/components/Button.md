@@ -45,7 +45,7 @@ unnecessary.
 For more information on content labels, go to the
 [Android accessibility help guide](https://support.google.com/accessibility/android/answer/7158690).
 
-## Types
+### Types
 
 There are four types of buttons: 1\. [Text button](#text-button), 2\.
 [Outlined button](#outlined-button), 3\. [Contained button](#contained-button),

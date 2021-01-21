@@ -168,7 +168,7 @@ rangeSlider.setLabelFormatter { value: Float ->
 }
 ```
 
-## Types
+### Types
 
 There are two types of sliders: 1\. [Continuous slider](#continuous-slider), 2\.
 [Discrete slider](#discrete-slider)
@@ -177,7 +177,7 @@ There are two types of sliders: 1\. [Continuous slider](#continuous-slider), 2\.
 
 A slider with two thumbs is called a range slider.
 
-### Continuous slider
+## Continuous slider
 
 Continuous sliders allow users to make meaningful selections that don’t require
 a specific value.
@@ -205,7 +205,7 @@ In the layout:
     android:valueTo="100.0" />
 ```
 
-#### Continuous range slider
+### Continuous range slider
 
 API and source code:
 
@@ -230,7 +230,7 @@ In the layout:
   android:valueTo="100.0" />
 ```
 
-### Discrete slider
+## Discrete slider
 
 Discrete sliders display a numeric value label upon pressing the thumb, which
 allows a user to input an exact value.
@@ -253,7 +253,7 @@ In the layout:
     android:stepSize="5.0" />
 ```
 
-#### Discrete range slider
+### Discrete range slider
 
 API and source code:
 

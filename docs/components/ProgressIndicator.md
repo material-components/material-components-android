@@ -134,20 +134,19 @@ to set the target visibility as `Visibiltiy.INVISIBLE` (default) or
 Progress indicators can have rounded corners via `app:trackCornerRadius` or the
 `setTrackCornerRadius` method.
 
-## Types
+### Types
 
-Material Design offers two visually distinct types of progress indicators:
-
-1.  [linear](#linear-progress-indicators)
-2.  [circular](#circular-progress-indicators)
+Material Design offers two visually distinct types of progress indicators: 1\.
+[linear](#linear-progress-indicators) 2\.
+[circular](#circular-progress-indicators)
 
 Only one type should represent each kind of activity in an app. For example, if
 a refresh action displays a circular indicator on one screen, that same action
 shouldn’t use a linear indicator elsewhere in the app.
 
-![Composite image of progress indicator types](assets/progressindicator/indeterminate_composite.gif)
+![Composite image of progress indicator types](assets/progressindicator/types.gif)
 
-### Linear progress indicators
+## Linear progress indicators
 
 Linear progress indicators display progress by animating an indicator along the
 length of a fixed, visible track. The behavior of the indicator is dependent on
@@ -204,7 +203,7 @@ For linear progress indicator, there are two indeterminate animation types:
 *   `contiguous` - animates as repeated cycles with three adjacent segments in
     iterative different colors.
 
-### Circular progress indicators
+## Circular progress indicators
 
 Circular progress indicators display progress by animating an indicator along an
 invisible circular track in a clockwise direction. They can be applied directly
@@ -264,14 +263,14 @@ indicators:
 
 &nbsp;                        | Attribute                   | Related method(s)                                         | Default value
 ----------------------------- | --------------------------- | --------------------------------------------------------- | -------------
-**track thickness**           | `app:trackThickness`        | `setTrackThickness`</br>`getTrackThickness`               | `4dp`
-**indicator color**           | `app:indicatorColor`        | `setIndicatorColor`</br>`getIndicatorColor`               | `colorPrimary`
-**track color**               | `app:trackColor`            | `setTrackColor`</br>`getTrackColor`                       | `indicatorColor` at `disabledAlpha`
-**track corner radius**       | `app:trackCornerRadius`     | `setTrackCornerRadius`</br>`getTrackCornerRadius`         | `0dp`
-**show animation behavior**   | `app:showAnimationBehavior` | `setShowAnimationBehavior`</br>`getShowAnimationBehavior` | `none`
-**hide animation behavior**   | `app:hideAnimationBehavior` | `setHideAnimationBehavior`</br>`getHideAnimationBehavior` | `none`
-**delay (in ms) to show**     | `app:showDelay`             | N/A                                                       | 0
-**min delay (in ms) to hide** | `app:minHideDelay`          | N/A                                                       | 0
+**Track thickness**           | `app:trackThickness`        | `setTrackThickness`</br>`getTrackThickness`               | `4dp`
+**Indicator color**           | `app:indicatorColor`        | `setIndicatorColor`</br>`getIndicatorColor`               | `colorPrimary`
+**Track color**               | `app:trackColor`            | `setTrackColor`</br>`getTrackColor`                       | `indicatorColor` at `disabledAlpha`
+**Track corner radius**       | `app:trackCornerRadius`     | `setTrackCornerRadius`</br>`getTrackCornerRadius`         | `0dp`
+**Show animation behavior**   | `app:showAnimationBehavior` | `setShowAnimationBehavior`</br>`getShowAnimationBehavior` | `none`
+**Hide animation behavior**   | `app:hideAnimationBehavior` | `setHideAnimationBehavior`</br>`getHideAnimationBehavior` | `none`
+**Delay (in ms) to show**     | `app:showDelay`             | N/A                                                       | 0
+**Min delay (in ms) to hide** | `app:minHideDelay`          | N/A                                                       | 0
 
 #### Linear type specific attributes
 
@@ -279,8 +278,8 @@ Linear type progress indicators also have the following attributes:
 
 &nbsp;                           | Attribute                        | Related method(s)                                                   | Default value
 -------------------------------- | -------------------------------- | ------------------------------------------------------------------- | -------------
-**indeterminate animation type** | `app:indeterminateAnimationType` | `setIndeterminateAnimationType`</br>`getIndeterminateAnimationType` | `disjoint`
-**indicator direction**          | `app:indicatorDirectionLinear`   | `setIndicatorDirection`</br>`getIndicatorDirection`                 | `leftToRight`
+**Indeterminate animation type** | `app:indeterminateAnimationType` | `setIndeterminateAnimationType`</br>`getIndeterminateAnimationType` | `disjoint`
+**Indicator direction**          | `app:indicatorDirectionLinear`   | `setIndicatorDirection`</br>`getIndicatorDirection`                 | `leftToRight`
 
 #### Circular type specific attributes
 
@@ -288,9 +287,9 @@ Circular type progress indicators also have the following attributes:
 
 &nbsp;                            | Attribute                        | Related method(s)                                   | Default value
 --------------------------------- | -------------------------------- | --------------------------------------------------- | -------------
-**spinner size (outer diameter)** | `app:indicatorSize`              | `setIndicatorSize`</br>`getIndicatorSize`           | `40dp`
-**inset**                         | `app:indicatorInset`             | `setIndicatorInset`</br>`getIndicatorInset`         | `4dp`
-**indicator direction**           | `app:indicatorDirectionCircular` | `setIndicatorDirection`</br>`getIndicatorDirection` | `clockwise`
+**Spinner size (outer diameter)** | `app:indicatorSize`              | `setIndicatorSize`</br>`getIndicatorSize`           | `40dp`
+**Inset**                         | `app:indicatorInset`             | `setIndicatorInset`</br>`getIndicatorInset`         | `4dp`
+**Indicator direction**           | `app:indicatorDirectionCircular` | `setIndicatorDirection`</br>`getIndicatorDirection` | `clockwise`
 
 #### Styles
 

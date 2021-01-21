@@ -80,7 +80,7 @@ menu. While optional, their use is strongly encouraged. For more information
 about this component's accessibility, check out
 [the text field's a11y section](TextField.md#making-text-fields-accessible).
 
-## Types
+### Types
 
 Menus allow users to make a selection from multiple options. They are less
 prominent and take up less space than selection controls, such as a set of radio
@@ -452,7 +452,7 @@ _**Note:** The exposed dropdown menu is implemented through the
 [Material text fields](https://material.io/design/components/text-fields.html)
 and their usage, see the [TextInputLayout documentation](TextField.md)._
 
-#### Exposed dropdown menu example
+### Exposed dropdown menu example
 
 API and source code:
 
@@ -522,13 +522,13 @@ To have an outlined variation of the exposed dropdown menu, set the `style` to
 
 ![Menu with purple outlined text field element and 4 options. Option 1 selected.](assets/menu/menus_exposed_dropdown_outlined.png)
 
-##### Non editable variation
+#### Non editable variation
 
 Disable the user input in the `AutoCompleteTextView` to have a non editable
 variation of the menu by setting `android:inputType="none"` on the
 `AutoCompleteTextView`.
 
-##### Setting a default value
+#### Setting a default value
 
 In order to have a pre-selected value displayed, you can call
 `setText(CharSequence text, boolean filter)` on the `AutoCompleteTextView` with
@@ -582,6 +582,10 @@ and
 
 ## Theming menus
 
+Menus drawers support
+[Material Theming](https://material.io/components/text-fields/#theming) and can
+be customized in terms of color, typography and shape.
+
 ### Menu theming examples
 
 Popup, overflow, and list popup window menus support
@@ -605,7 +609,7 @@ The following example shows a menu with Material Theming.
 
 ![White menu container with brown text showing 3 options](assets/menu/menus_theming.png)
 
-#### Implementing menu theming
+### Implementing menu theming
 
 Using default style theme attributes (affects all menus but does not affect
 other components):
@@ -682,7 +686,7 @@ Material Theming.
 button 1 is grey,, button 2 has a pink
 outline](assets/menu/menus_exposed_dropdown_theming.png)
 
-#### Implementing exposed dropdown menu theming
+### Implementing exposed dropdown menu theming
 
 Using default style theme attributes, styles and theme overlays (themes all
 menus but does not affect other components):

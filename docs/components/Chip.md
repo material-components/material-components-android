@@ -213,7 +213,7 @@ val text = editText.text!!
 text.setSpan(span, 0, text.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 ```
 
-## Types
+### Types
 
 There are four types of chips: 1\. [input (entry)](#input-chip), 2\.
 [choice](#choice-chip), 3\. [filter](#filter-chip), 4\. [action](#action-chip)
@@ -232,14 +232,14 @@ API and source code:
     *   [Class definition](https://developer.android.com/reference/com/google/android/material/chip/ChipDrawable)
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/chip/ChipDrawable.java)
 
-### Input chip
+## Input chip
 
 Input chips (refered to as **entry** chips in Android) represent a complex piece
 of information in compact form, such as an entity (person, place, or thing) or
 text. They enable user input and verify that input by converting text into
 chips.
 
-#### Input chip example
+### Input chip example
 
 The following example shows three input chips.
 
@@ -270,14 +270,14 @@ In the layout:
 </com.google.android.material.chip.ChipGroup>
 ```
 
-### Choice chip
+## Choice chip
 
 Choice chips allow selection of a single chip from a set of options.
 
 Choice chips clearly delineate and display options in a compact area. They are a
 good alternative to toggle buttons, radio buttons, and single select menus.
 
-#### Caveats
+### Caveats
 
 If you add choice chips to a dialog (which has 24dp elevation), disable the
 chips' elevation overlays to ensure that there is sufficient color contrast when
@@ -298,7 +298,7 @@ the chips are checked.
 </style>
 ```
 
-#### Choice chip example
+### Choice chip example
 
 The following example shows four choice chips.
 
@@ -335,14 +335,14 @@ In the layout:
 </com.google.android.material.chip.ChipGroup>
 ```
 
-### Filter chip
+## Filter chip
 
 Filter chips use tags or descriptive words to filter content.
 
 Filter chips clearly delineate and display options in a compact area. They are a
 good alternative to toggle buttons or checkboxes.
 
-#### Filter chip example
+### Filter chip example
 
 The following example shows six filter chips.
 
@@ -390,7 +390,7 @@ In the layout:
 </com.google.android.material.chip.ChipGroup>
 ```
 
-### Action chip
+## Action chip
 
 Action chips offer actions related to primary content. They should appear
 dynamically and contextually in a UI.
@@ -398,7 +398,7 @@ dynamically and contextually in a UI.
 An alternative to action chips are buttons, which should appear persistently and
 consistently.
 
-#### Action chip example
+### Action chip example
 
 The following example shows four action chips.
 

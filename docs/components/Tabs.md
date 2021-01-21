@@ -204,7 +204,7 @@ badge.number = number
 tab.removeBadge()
 ```
 
-## Types
+### Types
 
 There are two types of tabs: 1\. [Fixed tabs](#fixed-tabs), 2\.
 [Scrollable tabs](#scrollable-tabs)
@@ -328,7 +328,7 @@ In the layout:
 </com.google.android.material.tabs.TabLayout>
 ```
 
-## Anatomy and key properties
+### Anatomy and key properties
 
 Tabs have a container and each tab item has an optional icon and text label. Tab
 items can be in an active or inactive state. The tab indicator is shown below
