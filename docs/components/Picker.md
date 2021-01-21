@@ -27,7 +27,7 @@ These classes allow you to
 -   Select the theme: dialog, fullscreen, or default (dialog for single date,
     fullscreen for range).
 -   Select the bounds: bounds can be restricted to any contiguous set of months.
-    Defaults Janaury 1900 to December 2100.
+    Defaults January 1900 to December 2100.
 -   Select valid days: valid days can restrict selections to weekdays only.
     Defaults to all days as valid.
 -   Set a title.
