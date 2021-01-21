@@ -118,7 +118,7 @@ and an AM/PM selector.
 
 #### Attributes
 
-&nbsp;                          | Attribute                      | Related method(s)                                     | Default value
+Element                         | Attribute                      | Related method(s)                                     | Default value
 ------------------------------- | ------------------------------ | ----------------------------------------------------- | -------------
 **Hour**                        | `N/A`                          | `Builder.setHour`<br>`MaterialTimePicker.getHour`     | `0`
 **Minute**                      | `N/A`                          | `Builder.setMinute`<br>`MaterialTimePicker.getMinute` | `0`
@@ -131,7 +131,7 @@ and an AM/PM selector.
 
 #### Styles
 
-&nbsp;            | Style
+Element           | Style
 ----------------- | ----------------------------------
 **Default style** | `Widget.MaterialComponents.TimePicker`
 
@@ -139,7 +139,7 @@ Default style theme attribute: `?attr/materialTimePickerStyle`
 
 The style attributes are assigned to the following components:
 
-&nbsp;                           | Affected component                  | Default
+Element                          | Affected component                  | Default
 ------------------------         | ----------------------------------  | ---------------------
 **chipStyle**                    | Number inputs in the clock mode     | `@style/Widget.MaterialComponents.TimePicker.Display`
 **materialButtonOutlinedStyle**  | AM/PM toggle                        | `@style/Widget.MaterialComponents.TimePicker.Button`

@@ -216,7 +216,7 @@ floating action button (FAB), action item(s) and an overflow menu.
 
 ### Container attributes
 
-&nbsp;        | Attribute            | Related method(s)                          | Default value
+Element       | Attribute            | Related method(s)                          | Default value
 ------------- | -------------------- | ------------------------------------------ | -------------
 **Color**     | `app:backgroundTint` | `setBackgroundTint`<br>`getBackgroundTint` | `?attr/colorSurface`
 **Elevation** | `app:elevation`      | `setElevation`                             | `8dp`
@@ -224,14 +224,14 @@ floating action button (FAB), action item(s) and an overflow menu.
 
 ### Navigation icon attributes
 
-&nbsp;    | Attribute            | Related method(s)                          | Default value
+Element   | Attribute            | Related method(s)                          | Default value
 --------- | -------------------- | ------------------------------------------ | -------------
 **Icon**  | `app:navigationIcon` | `setNavigationIcon`<br>`getNavigationIcon` | `null`
 **Color** | N/A                  | N/A                                        | `?attr/colorControlNormal` (as `Drawable` tint)
 
 ### FAB attributes
 
-&nbsp;                           | Attribute                          | Related method(s)                                                      | Default value
+Element                          | Attribute                          | Related method(s)                                                      | Default value
 -------------------------------- | ---------------------------------- | ---------------------------------------------------------------------- | -------------
 **Alignment mode**               | `app:fabAlignmentMode`             | `setFabAlignmentMode`<br>`getFabAlignmentMode`                         | `center`
 **Animation mode**               | `app:fabAnimationMode`             | `setFabAnimationMode`<br>`getFabAnimationMode`                         | `scale`
@@ -245,14 +245,14 @@ for more attributes.
 
 #### Action item(s) attributes
 
-&nbsp;         | Attribute  | Related method(s)          | Default value
+Element        | Attribute  | Related method(s)          | Default value
 -------------- | ---------- | -------------------------- | -------------
 **Menu**       | `app:menu` | `replaceMenu`<br>`getMenu` | `null`
 **Icon color** | N/A        | N/A                        | `?attr/colorControlNormal` (as `Drawable` tint)
 
 ### Overflow menu attributes
 
-&nbsp;              | Attribute                                                                                          | Related method(s)                      | Default value
+Element             | Attribute                                                                                          | Related method(s)                      | Default value
 ------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------- | -------------
 **Icon**            | `android:src` and `app:srcCompat` in `actionOverflowButtonStyle` (in app theme)                    | `setOverflowIcon`<br>`getOverflowIcon` | `@drawable/abc_ic_menu_overflow_material` (before API 23) or `@drawable/ic_menu_moreoverflow_material` (after API 23)
 **Theme**           | `app:popupTheme`                                                                                   | `setPopupTheme`<br>`getPopupTheme`     | `@style/ThemeOverlay.MaterialComponents.*`
@@ -260,7 +260,7 @@ for more attributes.
 
 ### Styles
 
-&nbsp;                                                                           | Style
+Element                                                                          | Style
 -------------------------------------------------------------------------------- | -----
 **Default style**                                                                | `Widget.MaterialComponents.BottomAppBar`
 **Primary background color style**                                               | `Widget.MaterialComponents.BottomAppBar.Colored`

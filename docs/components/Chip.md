@@ -451,7 +451,7 @@ The following is an anatomy diagram of a chip:
 
 #### Container attributes
 
-&nbsp;               | Attribute                                                       | Related method(s)                                                                                          | Default value
+Element              | Attribute                                                       | Related method(s)                                                                                          | Default value
 -------------------- | --------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | -------------
 **Color**            | `app:chipBackgroundColor`                                       | `setChipBackgroundColor`<br/>`setChipBackgroundColorResource`<br/>`getChipBackgroundColor`                 | `?attr/colorOnSurface` at 10%
 **Ripple color**     | `app:rippleColor`                                               | `setRippleColor`<br/>`setRippleColorResource`<br/>`getRippleColor`                                         | `?attr/colorOnSurface` at 12%
@@ -467,7 +467,7 @@ The following is an anatomy diagram of a chip:
 
 **Chip icon**
 
-&nbsp;         | Attribute                                       | Related method(s)                                                     | Default value
+Element        | Attribute                                       | Related method(s)                                                     | Default value
 -------------- | ----------------------------------------------- | --------------------------------------------------------------------- | -------------
 **Icon**       | `app:chipIcon`                                  | `setChipIconVisible`<br/>`isChipIconVisible`                          | `null`
 **Visibility** | `app:chipIconVisible`                           | `setChipIcon`<br/>`setChipIconResource`<br/>`getChipIcon`             | `true` (action and entry)
@@ -479,7 +479,7 @@ The following is an anatomy diagram of a chip:
 
 If visible, the checked icon overlays the chip icon.
 
-&nbsp;         | Attribute                | Related method(s)                                                              | Default value
+Element        | Attribute                | Related method(s)                                                              | Default value
 -------------- | ------------------------ | ------------------------------------------------------------------------------ | -------------
 **Icon**       | `app:checkedIcon`        | `setCheckedIconVisible`<br/>`isCheckedIconVisible`                             | `@drawable/ic_mtrl_chip_checked_circle`
 **Visibility** | `app:checkedIconVisible` | `setCheckedIcon`<br/>`setCheckedIconResource`<br/>`getCheckedIcon`             | `true` (entry, filter, choice)
@@ -487,7 +487,7 @@ If visible, the checked icon overlays the chip icon.
 
 #### Text attributes
 
-&nbsp;         | Attribute                                       | Related method(s)                                                           | Default value
+Element        | Attribute                                       | Related method(s)                                                           | Default value
 -------------- | ----------------------------------------------- | --------------------------------------------------------------------------- | -------------
 **Text label** | `android:text`                                  | `setChipText`<br/>`setChipTextResource`<br/>`getChipText`                   | `null`
 **Color**      | `android:textColor`                             | `setTextColor`<br/>`getTextColors`                                          | `?attr/colorOnSurface` at 87%
@@ -496,7 +496,7 @@ If visible, the checked icon overlays the chip icon.
 
 #### Remove (close) icon attributes
 
-&nbsp;                  | Attribute                                                 | Related method(s)                                                                    | Default value
+Element                 | Attribute                                                 | Related method(s)                                                                    | Default value
 ----------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------ | -------------
 **Icon**                | `app:closeIcon`                                           | `setCloseIcon`<br/>`setCloseIconResource`<br/>`getCloseIcon`                         | `@drawable/ic_mtrl_chip_close_circle`
 **Visibility**          | `app:closeIconVisible`                                    | `setCloseIconVisible`<br/>`isCloseIconVisible`                                       | `true` for entry
@@ -507,7 +507,7 @@ If visible, the checked icon overlays the chip icon.
 
 #### `ChipGroup` attributes
 
-&nbsp;        | Attribute                                                                   | Related method(s)                                             | Default value
+Element       | Attribute                                                                   | Related method(s)                                             | Default value
 ------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------- | -------------
 **Layout**    | `app:singleLine`                                                            | `setSingleLine`<br/>`isSingleLine`                            | `false`
 **Selection** | `app:singleSelection`<br/>`app:selectionRequired`                           | `setSingleSelection*`<br/>`isSingleSelection*`                | `false`<br/>`false`
@@ -515,7 +515,7 @@ If visible, the checked icon overlays the chip icon.
 
 #### Styles
 
-&nbsp;                          | Style
+Element                         | Style
 ------------------------------- | ---------------------------------------
 **Default style (action chip)** | `Widget.MaterialComponents.Chip.Action`
 **Input (entry) chip**          | `Widget.MaterialComponents.Chip.Entry`
@@ -525,7 +525,7 @@ If visible, the checked icon overlays the chip icon.
 
 #### Theme attributes
 
-&nbsp;             | Theme attribute             | Default style
+Element            | Theme attribute             | Default style
 ------------------ | --------------------------- | -------------
 **`Chip`**         | `?attr/chipStyle`           | `Widget.MaterialComponents.Chip.Action`
 **`ChipGroup`**    | `?attr/chipGroupStyle`      | `Widget.MaterialComponents.ChipGroup`

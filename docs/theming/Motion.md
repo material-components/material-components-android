@@ -357,13 +357,13 @@ customize the look and feel of the animation:
 
 <!--  Todo: Update this table with links to source where listing defaults is too lengthy (thresholds) -->
 
-&nbsp;         | Attribute                | Related method(s)                 | Default value
+Element        | Attribute                | Related method(s)                 | Default value
 -------------- | ------------------------ | --------------------------------- | -------------
 **Shape** | `transitionShapeAppearance`           | `getStartShapeAppearanceModel`<br/>`setStartShapeAppearanceModel`<br/>`getEndShapeAppearanceModel`<br/>`setEndShapeAppearanceModel`          | `null`
 
 #### Container transform properties
 
-&nbsp;                                    | Related method(s)                                                     | Default value
+Element                                   | Related method(s)                                                     | Default value
 ----------------------------------------- | --------------------------------------------------------------------- | -------------
 **Duration**                              | `getDuration`<br/>`setDuration`                                       | `300`
 **Interpolation**                         | `getInterpolation`<br/>`setInterpolation`                             | `R.interpolator.fast_out_slow_in`
@@ -661,7 +661,7 @@ adhering to a pattern's foundation and is refered to as a _variant_.
 
 #### Shared axis composition
 
-| &nbsp;                 | Primary transition         | Secondary transition |
+| Element                | Primary transition         | Secondary transition |
 | ---------------------- | -------------------------- | -------------------- |
 | **MaterialSharedAxis** |  **X** -`SlideDistance`<br> **Y** -`SlideDistance`<br> **Z** -`Scale` | `FadeThrough`        |
 
@@ -901,7 +901,7 @@ adhering to a pattern's foundation and is refered to as a _variant_.
 
 #### Fade through composition
 
-&nbsp;                  | Primary transition | Secondary transition
+Element                 | Primary transition | Secondary transition
 ----------------------- | ------------------ | --------------------
 **MaterialFadeThrough** | `FadeThrough`      | `Scale`
 
@@ -1005,7 +1005,7 @@ adhering to a pattern's foundation and is refered to as a _variant_.
 
 #### Fade composition
 
-&nbsp;           | Primary transition | Secondary transition
+Element          | Primary transition | Secondary transition
 ---------------- | ------------------ | --------------------
 **MaterialFade** | `Fade`             | `Scale`
 

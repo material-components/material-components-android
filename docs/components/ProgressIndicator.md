@@ -261,7 +261,7 @@ A progress indicator consists of a track and an indicator.
 The following attributes are shared between linear and circular progress
 indicators:
 
-&nbsp;                        | Attribute                   | Related method(s)                                         | Default value
+Element                       | Attribute                   | Related method(s)                                         | Default value
 ----------------------------- | --------------------------- | --------------------------------------------------------- | -------------
 **Track thickness**           | `app:trackThickness`        | `setTrackThickness`</br>`getTrackThickness`               | `4dp`
 **Indicator color**           | `app:indicatorColor`        | `setIndicatorColor`</br>`getIndicatorColor`               | `colorPrimary`
@@ -276,7 +276,7 @@ indicators:
 
 Linear type progress indicators also have the following attributes:
 
-&nbsp;                           | Attribute                        | Related method(s)                                                   | Default value
+Element                          | Attribute                        | Related method(s)                                                   | Default value
 -------------------------------- | -------------------------------- | ------------------------------------------------------------------- | -------------
 **Indeterminate animation type** | `app:indeterminateAnimationType` | `setIndeterminateAnimationType`</br>`getIndeterminateAnimationType` | `disjoint`
 **Indicator direction**          | `app:indicatorDirectionLinear`   | `setIndicatorDirection`</br>`getIndicatorDirection`                 | `leftToRight`
@@ -285,7 +285,7 @@ Linear type progress indicators also have the following attributes:
 
 Circular type progress indicators also have the following attributes:
 
-&nbsp;                            | Attribute                        | Related method(s)                                   | Default value
+Element                           | Attribute                        | Related method(s)                                   | Default value
 --------------------------------- | -------------------------------- | --------------------------------------------------- | -------------
 **Spinner size (outer diameter)** | `app:indicatorSize`              | `setIndicatorSize`</br>`getIndicatorSize`           | `40dp`
 **Inset**                         | `app:indicatorInset`             | `setIndicatorInset`</br>`getIndicatorInset`         | `4dp`
@@ -293,7 +293,7 @@ Circular type progress indicators also have the following attributes:
 
 #### Styles
 
-&nbsp;                                 | Style
+Element                                | Style
 -------------------------------------- | -----
 **Default linear**<br/>**style**       | `Widget.MaterialComponents.LinearProgressIndicator`
 **Default circular**<br/>**style**     | `Widget.MaterialComponents.CircularProgressIndicator`

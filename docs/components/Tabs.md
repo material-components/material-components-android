@@ -346,7 +346,7 @@ the active tab item.
 
 ### Container attributes
 
-&nbsp;        | Attribute            | Related method(s)                  | Default value
+Element       | Attribute            | Related method(s)                  | Default value
 ------------- | -------------------- | ---------------------------------- | -------------
 **Color**     | `android:background` | `setBackground`<br>`getBackground` | `?attr/colorSurface`
 **Elevation** | `android:elevation`  | `setElevation`                     | `0dp`
@@ -355,14 +355,14 @@ the active tab item.
 
 ### Tab item icon attributes
 
-&nbsp;    | Attribute      | Related method(s)                                                | Default value
+Element   | Attribute      | Related method(s)                                                | Default value
 --------- | -------------- | ---------------------------------------------------------------- | -------------
 **Icon**  | `android:icon` | `setIcon`<br>`getIcon`                                           | `null`
 **Color** | `tabIconTint`  | `setTabIconTint`<br>`setTabIconTintResource`<br>`getTabIconTint` | `colorOnSurface` at 60% opacity and `colorPrimary` (activated) (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/tabs/res/color/mtrl_tabs_icon_color_selector.xml))
 
 ### Tab item text label attributes
 
-&nbsp;           | Attribute           | Related method(s)                                               | Default value
+Element          | Attribute           | Related method(s)                                               | Default value
 ---------------- | ------------------- | --------------------------------------------------------------- | -------------
 **Text**         | `android:text`      | `setText`<br>`getText`                                          | `null`
 **Color**        | `tabTextColor`      | `setTabTextColors`<br>`getTabTextColors`                        | `colorOnSurface` at 60% opacity and `colorPrimary` (activated) (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/tabs/res/color/mtrl_tabs_icon_color_selector.xml))
@@ -371,7 +371,7 @@ the active tab item.
 
 ### Tab item container attributes
 
-&nbsp;               | Attribute                                                                                     | Related method(s)                                                            | Default value
+Element              | Attribute                                                                                     | Related method(s)                                                            | Default value
 -------------------- | --------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | -------------
 **Ripple color**     | `tabRippleColor`                                                                              | `setTabRippleColor`<br>`setTabRippleColorResource`<br>`getTabRippleColor`    | `colorOnSurface` at 8% opacity and `colorPrimary` at 8% opacity (activated) (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/tabs/res/color/mtrl_tabs_ripple_color.xml))
 **Unbounded ripple** | `tabUnboundedRipple`                                                                          | `setUnboundedRipple`<br>`setUnboundedRippleResource`<br>`hasUnboundedRipple` | `true`
@@ -382,7 +382,7 @@ the active tab item.
 
 ### Tab indicator attributes
 
-&nbsp;                 | Attribute                       | Related method(s)                                                | Default value
+Element                | Attribute                       | Related method(s)                                                | Default value
 ---------------------- | ------------------------------- | ---------------------------------------------------------------- | -------------
 **Color**              | `tabIndicatorColor`             | `setSelectedTabIndicatorColor`                                   | `colorPrimary`
 **Drawable**           | `tabIndicator`                  | `setSelectedTabIndicator`<br>`getSelectedTabIndicator`           | [`mtrl_tabs_default_indicator`](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/tabs/res/drawable/mtrl_tabs_default_indicator.xml)
@@ -394,7 +394,7 @@ the active tab item.
 
 ### Styles
 
-&nbsp;                                                                           | Style
+Element                                                                          | Style
 -------------------------------------------------------------------------------- | -----
 **Default style**                                                                | `Widget.MaterialComponents.TabLayout`
 **Primary background color style**                                               | `Widget.MaterialComponents.TabLayout.Colored`

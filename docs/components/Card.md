@@ -349,7 +349,7 @@ shown in the [card examples](#card-examples) section._
 
 #### Container attributes
 
-&nbsp;               | Attribute                 | Related method(s)                                                   | Default value
+Element              | Attribute                 | Related method(s)                                                   | Default value
 -------------------- | ------------------------- | ------------------------------------------------------------------- | -------------
 **Color**            | `app:cardBackgroundColor` | `setCardBackgroundColor`<br/>`getCardBackgroundColor`               | `?attr/colorSurface`
 **Foreground color** | `app:cardForegroundColor` | `setCardForegroundColor`<br/>`getCardForegroundColor`               | `@android:color/transparent` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/card/res/color/mtrl_card_view_foreground.xml))
@@ -370,7 +370,7 @@ border, regardless of the `app:strokeWidth` value._
 
 #### Checked icon attributes
 
-&nbsp;        | Attribute           | Related method(s)                                                                    | Default value
+Element       | Attribute           | Related method(s)                                                                    | Default value
 ------------- | ------------------- | ------------------------------------------------------------------------------------ | -------------
 **Icon**      | `checkedIcon`       | `setCheckedIcon`<br/>`setCheckedIconResource`<br/>`getCheckedIcon`                   | [`@drawable/ic_mtrl_checked_circle.xml`](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/resources/res/drawable/ic_mtrl_checked_circle.xml)
 **Color**     | `checkedIconTint`   | `setCheckedIconTint`<br/>`getCheckedIconTint`                                        | `?attr/colorPrimary`
@@ -390,7 +390,7 @@ State                                 | Description                         | Re
 
 #### Styles
 
-&nbsp;            | Style
+Element           | Style
 ----------------- | ------------------------------------
 **Default style** | `Widget.MaterialComponents.CardView`
 

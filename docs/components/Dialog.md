@@ -198,7 +198,7 @@ particular type), a background scrim, and, optionally, title and buttons.
 
 #### Container attributes
 
-&nbsp;                              | **Attribute**                                            | **Related methods**                                    | **Default value**
+Element                             | **Attribute**                                            | **Related methods**                                    | **Default value**
 ----------------------------------- | -------------------------------------------------------- | ------------------------------------------------------ | -----------------
 **Color**                           | N/A                                                      | N/A                                                    | `?attr/colorSurface`
 **Shape**                           | `app:shapeAppearance`<br/>`app:shapeAppearanceOverlay`   | N/A                                                    | `?attr/shapeAppearanceMediumComponent`
@@ -207,7 +207,7 @@ particular type), a background scrim, and, optionally, title and buttons.
 
 #### Title attributes
 
-&nbsp;         | **Attribute**            | **Related methods**              | **Default value**
+Element        | **Attribute**            | **Related methods**              | **Default value**
 -------------- | ------------------------ | -------------------------------- | -----------------
 **Text label** | N/A                      | `setTitle`<br/>`setCustomTitle`  | `null`
 **Text color** | `android:textColor`      | N/A                              | `?attr/colorOnSurface` at 87%
@@ -218,7 +218,7 @@ particular type), a background scrim, and, optionally, title and buttons.
 
 **Supporting text**
 
-&nbsp;         | **Attribute**            | **Related methods** | **Default value**
+Element        | **Attribute**            | **Related methods** | **Default value**
 -------------- | ------------------------ | ------------------- | -----------------
 **Text**       | N/A                      | `setMessage`        | `null`
 **Color**      | `android:textColor`      | N/A                 | `?attr/colorOnSurface` at 60%
@@ -226,7 +226,7 @@ particular type), a background scrim, and, optionally, title and buttons.
 
 **List item**
 
-&nbsp;                                  | **Attribute**                  | **Related methods**    | **Default value**
+Element                                 | **Attribute**                  | **Related methods**    | **Default value**
 --------------------------------------- | ------------------------------ | ---------------------- | -----------------
 **List item layout**                    | `app:listItemLayout`           | `setItems`             | [`@layout/mtrl_alert_select_dialog_item`](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/dialog/res/layout/mtrl_alert_select_dialog_item.xml)
 **List item layout style**              | N/A                            | N/A                    | `?attr/materialAlertDialogBodyTextStyle`
@@ -243,7 +243,7 @@ _**Note:** You can set any view to be the content of your dialog via the
 
 #### Buttons attributes
 
-&nbsp;                                  | **Attribute**               | **Related methods** | **Default value**
+Element                                 | **Attribute**               | **Related methods** | **Default value**
 --------------------------------------- | --------------------------- | ------------------- | -----------------
 **Buttons theme attributes**            | `app:buttonBar*ButtonStyle` | N/A                 | `@style/Widget.MaterialComponents.Button.TextButton.Dialog`
 **Buttons (neutral/negative/positive)** | N/A                         | `set*Button`        | `null`
@@ -254,13 +254,13 @@ For specific button attributes, see the
 
 #### Scrim attributes
 
-&nbsp;          | **Attribute**                 | **Related methods** | **Default value**
+Element         | **Attribute**                 | **Related methods** | **Default value**
 --------------- | ----------------------------- | ------------------- | -----------------
 **Dim ammount** | `android:backgroundDimAmount` | N/A                 | 32%
 
 #### Theme overlays
 
-&nbsp;                     | **Theme overlay**
+Element                    | **Theme overlay**
 -------------------------- | -----------------
 **Default theme overlay**  | `ThemeOverlay.MaterialComponents.MaterialAlertDialog`
 **Centered theme overlay** | `ThemeOverlay.MaterialComponents.MaterialAlertDialog.Centered`
@@ -269,7 +269,7 @@ Default theme overlay attribute: `?attr/materialAlertDialogTheme`
 
 #### Theme attributes
 
-&nbsp;                    | **Theme attribute**                       | **Default value**
+Element                   | **Theme attribute**                       | **Default value**
 ------------------------- | ----------------------------------------- | -----------------
 **Default style**         | `?attr/alertDialogStyle`                  | `@style/MaterialAlertDialog.MaterialComponents`
 **Title text style**      | `?attr/materialAlertDialogTitleTextStyle` | `@style/MaterialAlertDialog.MaterialComponents.Title.Text`

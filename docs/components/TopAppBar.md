@@ -415,7 +415,7 @@ In the layout:
 
 #### Container attributes
 
-&nbsp;                          | Attribute                   | Related method(s)                                | Default value
+Element                         | Attribute                   | Related method(s)                                | Default value
 ------------------------------- | --------------------------- | ------------------------------------------------ | -------------
 **Color**                       | `android:background`        | `setBackground`<br>`getBackground`               | `?attr/colorPrimary`
 **`MaterialToolbar` Elevation** | `android:elevation`         | `setElevation`<br>`getElevation`                 | `4dp`
@@ -423,14 +423,14 @@ In the layout:
 
 #### Navigation icon attributes
 
-&nbsp;                           | Attribute                 | Related method(s)                          | Default value
+Element                          | Attribute                 | Related method(s)                          | Default value
 -------------------------------- | ------------------------- | ------------------------------------------ | -------------
 **`MaterialToolbar` icon**       | `app:navigationIcon`      | `setNavigationIcon`<br>`getNavigationIcon` | `null`
 **`MaterialToolbar` icon color** | `app:navigationIconTint`  | `setNavigationIconTint`                    | `?attr/colorControlNormal` (as `Drawable` tint)
 
 #### Title attributes
 
-&nbsp;                                                   | Attribute                                                   | Related method(s)                 | Default value
+Element                                                  | Attribute                                                   | Related method(s)                 | Default value
 -------------------------------------------------------- | ----------------------------------------------------------- | --------------------------------- | -------------
 **`MaterialToolbar` title text**                         | `app:title`                                                 | `setTitle`<br>`getTitle`          | `null`
 **`MaterialToolbar` subtitle text**                      | `app:subtitle`                                              | `setSubtitle`<br>`getSubtitle`    | `null`
@@ -447,14 +447,14 @@ In the layout:
 
 #### Action items attributes
 
-&nbsp;                           | Attribute  | Related method(s)          | Default value
+Element                          | Attribute  | Related method(s)          | Default value
 -------------------------------- | ---------- | -------------------------- | -------------
 **`MaterialToolbar` menu**       | `app:menu` | `inflateMenu`<br>`getMenu` | `null`
 **`MaterialToolbar` icon color** | N/A        | N/A                        | `?attr/colorControlNormal` (as `Drawable` tint)
 
 #### Overflow menu attributes
 
-&nbsp;                                         | Attribute                                                                                          | Related method(s)                      | Default value
+Element                                        | Attribute                                                                                          | Related method(s)                      | Default value
 ---------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------- | -------------
 **`MaterialToolbar` icon**                     | `android:src` and `app:srcCompat` in `actionOverflowButtonStyle` (in app theme)                    | `setOverflowIcon`<br>`getOverflowIcon` | `@drawable/abc_ic_menu_overflow_material` (before API 23) or `@drawable/ic_menu_moreoverflow_material` (after API 23)
 **`MaterialToolbar` overflow theme**           | `app:popupTheme`                                                                                   | `setPopupTheme`<br>`getPopupTheme`     | `@style/ThemeOverlay.MaterialComponents.*`
@@ -462,7 +462,7 @@ In the layout:
 
 #### Scrolling behavior attributes
 
-&nbsp;                                                          | Attribute                    | Related method(s)                                                                                     | Default value
+Element                                                         | Attribute                    | Related method(s)                                                                                     | Default value
 --------------------------------------------------------------- | ---------------------------- | ----------------------------------------------------------------------------------------------------- | -------------
 **`MaterialToolbar` or `CollapsingToolbarLayout` scroll flags** | `app:layout_scrollFlags`     | `setScrollFlags`<br>`getScrollFlags`<br>(on `AppBarLayout.LayoutParams`)                              | `noScroll`
 **`MaterialToolbar` collapse mode**                             | `app:collapseMode`           | `setCollapseMode`<br>`getCollapseMode`<br>(on `CollapsingToolbar`)                                    | `none`
@@ -473,7 +473,7 @@ In the layout:
 
 #### `AppBarLayout` styles
 
-&nbsp;                                                                   | Style
+Element                                                                  | Style
 ------------------------------------------------------------------------ | -----
 **Primary background color style**                                       | `Widget.MaterialComponents.AppBarLayout.Primary`
 **Surface background color style**                                       | `Widget.MaterialComponents.AppBarLayout.Surface`
@@ -483,7 +483,7 @@ Default style theme attribute: `?attr/appBarLayoutStyle`
 
 #### `MaterialToolbar` styles
 
-&nbsp;                                                                   | Style
+Element                                                                  | Style
 ------------------------------------------------------------------------ | -----
 **Default style**                                                        | `Widget.MaterialComponents.Toolbar`
 **Primary background color style**                                       | `Widget.MaterialComponents.Toolbar.Primary`
@@ -494,7 +494,7 @@ Default style theme attribute: `?attr/toolbarStyle`
 
 #### `CollapsingToolbarLayout` styles
 
-&nbsp;            | Style
+Element           | Style
 ----------------- | ---------------------------------
 **Default style** | `Widget.Design.CollapsingToolbar`
 
@@ -637,14 +637,14 @@ In menu/navigation icons:
 
 #### Close button attributes
 
-&nbsp;    | Attribute                                    | Related method(s) | Default value
+Element   | Attribute                                    | Related method(s) | Default value
 --------- | -------------------------------------------- | ----------------- | -------------
 **Icon**  | `app:actionModeCloseDrawable` (in app theme) | N/A               | `@drawable/abc_ic_ab_back_material`
 **Color** | N/A                                          | N/A               | `?attr/colorControlNormal` (as `Drawable` tint)
 
 #### Contextual title attributes
 
-&nbsp;                  | Attribute               | Related method(s)              | Default value
+Element                 | Attribute               | Related method(s)              | Default value
 ----------------------- | ----------------------- | ------------------------------ | -------------
 **Title text**          | N/A                     | `setTitle`<br>`getTitle`       | `null`
 **Subtitle text**       | N/A                     | `setSubtitle`<br>`getSubtitle` | `null`
@@ -653,21 +653,21 @@ In menu/navigation icons:
 
 #### Contextual actions attributes
 
-&nbsp;         | Attribute | Related method(s)                               | Default value
+Element        | Attribute | Related method(s)                               | Default value
 -------------- | --------- | ----------------------------------------------- | -------------
 **Menu**       | N/A       | `menuInflater.inflate` in `ActionMode.Callback` | `null`
 **Icon color** | N/A       | N/A                                             | `?attr/colorControlNormal` (as `Drawable` tint)
 
 #### Overflow menu attributes
 
-&nbsp;                       | Attribute                                                                       | Related method(s)                      | Default value
+Element                      | Attribute                                                                       | Related method(s)                      | Default value
 ---------------------------- | ------------------------------------------------------------------------------- | -------------------------------------- | -------------
 **Icon**                     | `android:src` and `app:srcCompat` in `actionOverflowButtonStyle` (in app theme) | `setOverflowIcon`<br>`getOverflowIcon` | `@drawable/abc_ic_menu_overflow_material` (before API 23) or `@drawable/ic_menu_moreoverflow_material` (after API 23)
 **Overflow item typography** | `textAppearanceSmallPopupMenu` and `textAppearanceLargePopupMenu` in app theme  | N/A                                    | `?attr/textAppearanceSubtitle1`
 
 #### Container attributes
 
-&nbsp;             | Attribute                                    | Related method(s) | Default value
+Element            | Attribute                                    | Related method(s) | Default value
 ------------------ | -------------------------------------------- | ----------------- | -------------
 **Color**          | `app:background`                             | N/A               | `?attr/actionModeBackground`
 **Height**         | `app:height`                                 | N/A               | `?attr/actionBarSize`
@@ -675,7 +675,7 @@ In menu/navigation icons:
 
 #### Styles
 
-&nbsp;            | Style
+Element           | Style
 ----------------- | -----------------------------
 **Default style** | `Widget.AppCompat.ActionMode`
 

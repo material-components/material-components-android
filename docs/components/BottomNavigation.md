@@ -253,14 +253,14 @@ The following is an anatomy diagram for the bottom navigation bar:
 
 #### Container attributes
 
-&nbsp;        | **Attribute**        | **Related methods**      | **Default value**
+Element       | **Attribute**        | **Related methods**      | **Default value**
 ------------- | -------------------- | ------------------------ | -----------------
 **Color**     | `app:backgroundTint` | N/A                      | `?attr/colorSurface`
 **Elevation** | `app:elevation`      | `setElevation`           | `8dp`
 
 #### Navigation item attributes
 
-&nbsp;                    | **Attribute**             | **Related methods**                                   | **Default value**
+Element                   | **Attribute**             | **Related methods**                                   | **Default value**
 ------------------------- | ------------------------- | ----------------------------------------------------- | -----------------
 **Menu resource**         | `app:menu`                | `inflateMenu`<br/>`getMenu`                           | N/A
 **Ripple (inactive)**     | `app:itemRippleColor`     | `setItemRippleColor`<br/>`getItemRippleColor`         | `?attr/colorOnSurface` at 8% (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/navigation/res/color/mtrl_navigation_bar_ripple_color.xml))
@@ -269,7 +269,7 @@ The following is an anatomy diagram for the bottom navigation bar:
 
 #### Icon attributes
 
-&nbsp;               | **Attribute**                         | **Related methods**                                              | **Default value**
+Element              | **Attribute**                         | **Related methods**                                              | **Default value**
 -------------------- | ------------------------------------- | ---------------------------------------------------------------- | -----------------
 **Icon**             | `android:icon` in the `menu` resource | N/A                                                              | N/A
 **Size**             | `app:itemIconSize`                    | `setItemIconSize`<br/>`setItemIconSizeRes`<br/>`getItemIconSize` | `24dp`
@@ -278,7 +278,7 @@ The following is an anatomy diagram for the bottom navigation bar:
 
 #### Text label attributes
 
-&nbsp;                    | **Attribute**                          | **Related methods**                                                 | **Default value**
+Element                   | **Attribute**                          | **Related methods**                                                 | **Default value**
 ------------------------- | -------------------------------------- | ------------------------------------------------------------------- | -----------------
 **Text label**            | `android:title` in the `menu` resource | N/A                                                                 | N/A
 **Color (inactive)**      | `app:itemTextColor`                    | `setItemTextColor`<br/>`getItemTextColor`                           | `?attr/colorOnSurface` at 60%
@@ -288,7 +288,7 @@ The following is an anatomy diagram for the bottom navigation bar:
 
 #### Styles
 
-&nbsp;                         | **Style**                                                       | **Container color**                                                        | **Icon/Text label color (inactive)**                                                          | **Icon/Text label color (active)**
+Element                        | **Style**                                                       | **Container color**                                                        | **Icon/Text label color (inactive)**                                                          | **Icon/Text label color (active)**
 ------------------------------ | --------------------------------------------------------------- | -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ----------------------------------
 **Default style**              | `Widget.MaterialComponents.BottomNavigationView`                | `?attr/colorSurface`                                                       | `?attr/colorOnSurface` at 60%                                                                 | `?attr/colorPrimary`
 **Colored style**              | `Widget.MaterialComponents.BottomNavigationView.Colored`        | `?attr/colorPrimary`                                                       | `?attr/colorOnPrimary` at 60%                                                                 | `?attr/colorOnPrimary`

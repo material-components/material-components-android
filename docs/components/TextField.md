@@ -406,7 +406,7 @@ be set on the `TextInputEditText`)._
 
 #### Container attributes
 
-&nbsp;                 | Attribute                | Related method(s)                                                                       | Default value
+Element                | Attribute                | Related method(s)                                                                       | Default value
 ---------------------- | ------------------------ | --------------------------------------------------------------------------------------- | -------------
 **Color**              | `app:boxBackgroundColor` | `setBoxBackgroundColor`<br/>`setBoxBackgroundColorResource`<br/>`getBoxBackgroundColor` | `?attr/colorOnSurface` at 12% opacity (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/textfield/res/color/mtrl_filled_background_color.xml))
 **Shape**              | `app:shapeAppearance`    | N/A                                                                                     | `?attr/shapeAppearanceSmallComponent`
@@ -414,7 +414,7 @@ be set on the `TextInputEditText`)._
 
 #### Leading icon attributes
 
-&nbsp;                  | Attribute                         | Related method(s)                                                     | Default value
+Element                 | Attribute                         | Related method(s)                                                     | Default value
 ----------------------- | --------------------------------- | --------------------------------------------------------------------- | -------------
 **Icon**                | `app:startIconDrawable`           | `setStartIconDrawable`<br/>`getStartIconDrawable`                     | `null`
 **Content description** | `app:startIconContentDescription` | `setStartIconContentDescription`<br/>`getStartIconContentDescription` | `null`
@@ -423,7 +423,7 @@ be set on the `TextInputEditText`)._
 
 #### Label attributes
 
-&nbsp;                         | Attribute                  | Related method(s)                                       | Default value
+Element                        | Attribute                  | Related method(s)                                       | Default value
 ------------------------------ | -------------------------- | ------------------------------------------------------- | -------------
 **Text**                       | `android:hint`             | `setHint`<br/>`getHint`                                 | `null`
 **Color**                      | `android:textColorHint`    | `setDefaultHintTextColor`<br/>`getDefaultHintTextColor` | `?attr/colorOnSurface` at 60% opacity (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/textfield/res/color/mtrl_indicator_text_color.xml))
@@ -437,7 +437,7 @@ instead of on the `EditText` in order to avoid unintended behaviors.
 
 #### Input text attributes
 
-&nbsp;               | Attribute                                                           | Related method(s)                                            | Default value
+Element              | Attribute                                                           | Related method(s)                                            | Default value
 -------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------ | -------------
 **Input text**       | `android:text`                                                      | `setText`<br/>`getText`                                      | `@null`
 **Typography**       | `android:textAppearance`                                            | `setTextAppearance`                                          | `?attr/textAppearanceSubtitle1`
@@ -448,7 +448,7 @@ _**Note:** The input text attributes should be set on the `TextInputEditText`._
 
 #### Trailing icon attributes
 
-&nbsp;                              | Attribute                       | Related method(s)                                                 | Default value
+Element                             | Attribute                       | Related method(s)                                                 | Default value
 ----------------------------------- | ------------------------------- | ----------------------------------------------------------------- | -------------
 **Mode**                            | `app:endIconMode`               | `setEndIconMode`<br/>`getEndIconMode`                             | `END_ICON_NONE`
 **Color**                           | `app:endIconTint`               | `setEndIconTintList`                                              | `colorOnSurface` at 54% opacity and `colorPrimary` (activated) (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/textfield/res/color/mtrl_filled_icon_tint.xml))
@@ -460,7 +460,7 @@ _**Note:** The input text attributes should be set on the `TextInputEditText`._
 
 #### Activation indicator attributes
 
-&nbsp;            | Attribute                   | Related method(s)                                                            | Default value
+Element           | Attribute                   | Related method(s)                                                            | Default value
 ----------------- | --------------------------- | ---------------------------------------------------------------------------- | -------------
 **Color**         | `app:boxStrokeColor`        | `setBoxStrokeColor`<br/>`setBoxStrokeColorStateList`<br/>`getBoxStrokeColor` | `?attr/colorOnSurface` at 42% opacity and `?attr/colorPrimary` (focused) (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/textfield/res/color/mtrl_filled_stroke_color.xml))
 **Error color**   | `app:boxStrokeErrorColor`   | `setBoxStrokeErrorColor`<br/>`getBoxStrokeErrorColor`                        | `?attr/colorError` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/textfield/res/color/mtrl_error.xml))
@@ -469,7 +469,7 @@ _**Note:** The input text attributes should be set on the `TextInputEditText`._
 
 #### Helper/error/counter text attributes
 
-&nbsp;                      | Attribute                                                           | Related method(s)                                                                                                   | Default value
+Element                     | Attribute                                                           | Related method(s)                                                                                                   | Default value
 --------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | -------------
 **Helper text enabled**     | `app:helperTextEnabled`                                             | `setHelperTextEnabled`<br/>`isHelperTextEnabled`                                                                    | `false`
 **Helper text**             | `app:helperText`                                                    | `setHelperText`<br/>`getHelperText`                                                                                 | `null`
@@ -486,7 +486,7 @@ _**Note:** The input text attributes should be set on the `TextInputEditText`._
 
 #### Prefix/suffix attributes
 
-&nbsp;                | Attribute                  | Related method(s)                             | Default value
+Element               | Attribute                  | Related method(s)                             | Default value
 --------------------- | -------------------------- | --------------------------------------------- | -------------
 **Prefix**            | `app:prefixText`           | `setPrefixText`<br/>`getPrefixText`           | `null`
 **Prefix color**      | `app:prefixTextColor`      | `setPrefixTextColor`<br/>`getPrefixTextColor` | `?attr/colorOnSurface` at 60% opacity (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/textfield/res/color/mtrl_indicator_text_color.xml))
@@ -497,7 +497,7 @@ _**Note:** The input text attributes should be set on the `TextInputEditText`._
 
 #### Styles
 
-&nbsp;                                | Style
+Element                               | Style
 ------------------------------------- | -----
 **Default style**                     | `Widget.MaterialComponents.TextInputLayout.FilledBox`
 **Dense style**                       | `Widget.MaterialComponents.TextInputLayout.FilledBox.Dense`
@@ -585,7 +585,7 @@ be set on the `TextInputEditText`)._
 
 #### Container attributes
 
-&nbsp;                   | Attribute                   | Related method(s)                                                            | Default value
+Element                  | Attribute                   | Related method(s)                                                            | Default value
 ------------------------ | --------------------------- | ---------------------------------------------------------------------------- | -------------
 **Stroke color**         | `app:boxStrokeColor`        | `setBoxStrokeColor`<br/>`setBoxStrokeColorStateList`<br/>`getBoxStrokeColor` | `?attr/colorOnSurface` at 38% opacity and `?attr/colorPrimary` (focused) (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/textfield/res/color/mtrl_outlined_stroke_color.xml))
 **Stroke error color**   | `app:boxStrokeErrorColor`   | `setBoxStrokeErrorColor`<br/>`getBoxStrokeErrorColor`                        | `?attr/colorError` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/textfield/res/color/mtrl_error.xml))
@@ -596,7 +596,7 @@ be set on the `TextInputEditText`)._
 
 #### Leading icon attributes
 
-&nbsp;                  | Attribute                         | Related method(s)                                                     | Default value
+Element                 | Attribute                         | Related method(s)                                                     | Default value
 ----------------------- | --------------------------------- | --------------------------------------------------------------------- | -------------
 **Icon**                | `app:startIconDrawable`           | `setStartIconDrawable`<br/>`getStartIconDrawable`                     | `null`
 **Content description** | `app:startIconContentDescription` | `setStartIconContentDescription`<br/>`getStartIconContentDescription` | `null`
@@ -605,7 +605,7 @@ be set on the `TextInputEditText`)._
 
 #### Label attributes
 
-&nbsp;                         | Attribute                | Related method(s)                                       | Default value
+Element                        | Attribute                | Related method(s)                                       | Default value
 ------------------------------ | ------------------------ | ------------------------------------------------------- | -------------
 **Text**                       | `android:hint`           | `setHint`<br/>`getHint`                                 | `null`
 **Color**                      | `android:textColorHint`  | `setDefaultHintTextColor`<br/>`getDefaultHintTextColor` | `?attr/colorOnSurface` at 60% opacity (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/textfield/res/color/mtrl_indicator_text_color.xml))
@@ -617,7 +617,7 @@ instead of on the `EditText` in order to avoid unintended behaviors.
 
 #### Input text attributes
 
-&nbsp;               | Attribute                                                           | Related method(s)                                            | Default value
+Element              | Attribute                                                           | Related method(s)                                            | Default value
 -------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------ | -------------
 **Input text**       | `android:text`                                                      | `setText`<br/>`getText`                                      | `@null`
 **Typography**       | `android:textAppearance`                                            | `setTextAppearance`                                          | `?attr/textAppearanceSubtitle1`
@@ -628,7 +628,7 @@ _**Note:** The input text attributes should be set on the `TextInputEditText`._
 
 #### Trailing icon attributes
 
-&nbsp;                              | Attribute                       | Related method(s)                                                 | Default value
+Element                             | Attribute                       | Related method(s)                                                 | Default value
 ----------------------------------- | ------------------------------- | ----------------------------------------------------------------- | -------------
 **Mode**                            | `app:endIconMode`               | `setEndIconMode`<br/>`getEndIconMode`                             | `END_ICON_NONE`
 **Color**                           | `app:endIconTint`               | `setEndIconTintList`                                              | `colorOnSurface` at 60% opacity and `colorPrimary` (activated) (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/textfield/res/color/mtrl_outlined_icon_tint.xml))
@@ -640,7 +640,7 @@ _**Note:** The input text attributes should be set on the `TextInputEditText`._
 
 #### Helper/error/counter text attributes
 
-&nbsp;                      | Attribute                                                           | Related method(s)                                                                                                   | Default value
+Element                     | Attribute                                                           | Related method(s)                                                                                                   | Default value
 --------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | -------------
 **Helper text enabled**     | `app:helperTextEnabled`                                             | `setHelperTextEnabled`<br/>`isHelperTextEnabled`                                                                    | `false`
 **Helper text**             | `app:helperText`                                                    | `setHelperText`<br/>`getHelperText`                                                                                 | `null`
@@ -657,7 +657,7 @@ _**Note:** The input text attributes should be set on the `TextInputEditText`._
 
 #### Prefix/suffix attributes
 
-&nbsp;                | Attribute                  | Related method(s)                             | Default value
+Element               | Attribute                  | Related method(s)                             | Default value
 --------------------- | -------------------------- | --------------------------------------------- | -------------
 **Prefix**            | `app:prefixText`           | `setPrefixText`<br/>`getPrefixText`           | `null`
 **Prefix color**      | `app:prefixTextColor`      | `setPrefixTextColor`<br/>`getPrefixTextColor` | `?attr/colorOnSurface` at 60% opacity (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/textfield/res/color/mtrl_indicator_text_color.xml))
@@ -668,7 +668,7 @@ _**Note:** The input text attributes should be set on the `TextInputEditText`._
 
 #### Styles
 
-&nbsp;                                | Style
+Element                               | Style
 ------------------------------------- | -----
 **Default style**                     | `Widget.MaterialComponents.TextInputLayout.OutlinedBox`
 **Dense style**                       | `Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense`

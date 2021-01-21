@@ -133,7 +133,7 @@ radioButton.setOnCheckedChangeListener { buttonView, isChecked
 
 ### Radio button attributes
 
-&nbsp;                     | Attribute                                  | Related method(s)                                          | Default value
+Element                    | Attribute                                  | Related method(s)                                          | Default value
 -------------------------- | ------------------------------------------ | ---------------------------------------------------------- | -------------
 **To use material colors** | `app:useMaterialThemeColors`               | `setUseMaterialThemeColors`<br/>`isUseMaterialThemeColors` | `true` (ignored if `app:buttonTint` is set)
 **Color**                  | `app:buttonTint`                           | `setButtonTintList`<br/>`getButtonTintList`                | `null`
@@ -153,7 +153,7 @@ tinted, set `app:useMaterialThemeColors` to `false`:
 
 ### Text label attributes
 
-&nbsp;         | Attribute                | Related method(s)                  | Default value
+Element        | Attribute                | Related method(s)                  | Default value
 -------------- | ------------------------ | ---------------------------------- | -------------
 **Text label** | `android:text`           | `setText`<br/>`getText`            | `null`
 **Color**      | `android:textColor`      | `setTextColor`<br/>`getTextColors` | inherits from `AppCompatRadioButton`
@@ -170,7 +170,7 @@ unselected](assets/radiobutton/radiobutton_states.png)
 
 ### Styles
 
-&nbsp;            | Style
+Element           | Style
 ----------------- | ------------------------------------------------------
 **Default style** | `Widget.MaterialComponents.CompoundButton.RadioButton`
 

@@ -287,7 +287,7 @@ slider also has tick marks.
 
 #### Track attributes
 
-&nbsp;                                      | Attribute                | Related method(s)                                         | Default value
+Element                                     | Attribute                | Related method(s)                                         | Default value
 ------------------------------------------- | ------------------------ | --------------------------------------------------------- | -------------
 **Min value**                               | `android:valueFrom`      | `setValueFrom`<br/>`getValueFrom`                         | N/A
 **Max value**                               | `android:valueTo`        | `setValueTo`<br/>`getValueTo`                             | N/A
@@ -306,7 +306,7 @@ thing._
 
 #### Thumb attributes
 
-&nbsp;           | Attribute              | Related method(s)                                                                 | Default value
+Element          | Attribute              | Related method(s)                                                                 | Default value
 ---------------- | ---------------------- | --------------------------------------------------------------------------------- | -------------
 **Color**        | `app:thumbColor`       | `setThumbTintList`<br/>`getThumbTintList`                                         | `?attr/colorPrimary`
 **Radius**       | `app:thumbRadius`      | `setThumbRadiusResource`<br/>`setThumbRadius`<br/>`getThumbRadius`                | `10dp`
@@ -318,7 +318,7 @@ thing._
 
 #### Value label attributes
 
-&nbsp;        | Attribute           | Related method(s)                           | Default value
+Element       | Attribute           | Related method(s)                           | Default value
 ------------- | ------------------- | ------------------------------------------- | -------------
 **Style**     | `app:labelStyle`    | N/A                                         | `@style/Widget.MaterialComponents.Tooltip`
 **Formatter** | N/A                 | `setLabelFormatter`<br/>`hasLabelFormatter` | `null`
@@ -329,7 +329,7 @@ _**Note:** The value label is a
 
 #### Tick mark attributes
 
-&nbsp;                              | Attribute               | Related method(s)                                       | Default value
+Element                             | Attribute               | Related method(s)                                       | Default value
 ----------------------------------- | ----------------------- | ------------------------------------------------------- | -------------
 **Color**                           | `app:tickColor`         | `setTickTintList`<br/>`getTickTintList`                 | `null`
 **Color for track's active part**   | `app:tickColorActive`   | `setTickActiveTintList`<br/>`getTickActiveTintList`     | `?attr/colorOnPrimary` at 54%
@@ -342,7 +342,7 @@ thing._
 
 #### Styles
 
-&nbsp;            | Style
+Element           | Style
 ----------------- | ----------------------------------
 **Default style** | `Widget.MaterialComponents.Slider`
 

@@ -415,7 +415,7 @@ The following are menu anatomy diagrams showing all possible elements:
 
 #### Container attributes
 
-&nbsp;         | Attribute                     | Related method(s) | Default value
+Element        | Attribute                     | Related method(s) | Default value
 -------------- | ----------------------------- | ----------------- | -------------
 **Background** | `android:popupMenuBackground` | N/A               | `?attr/popupMenuBackground`
 **Color**      | N/A                           | N/A               | `?attr/colorSurface`
@@ -423,14 +423,14 @@ The following are menu anatomy diagrams showing all possible elements:
 
 #### Text attributes
 
-&nbsp;         | Attribute                                                                     | Related method(s)                                                  | Default value
+Element        | Attribute                                                                     | Related method(s)                                                  | Default value
 -------------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------------ | -------------
 **Text label** | `android:title`                                                               | `getMenu().add`<br/>`getMenu().addSubMenu`<br/>`getMenu().getItem` | N/A
 **Typography** | `?attr/textAppearanceLargePopupMenu`<br/>`?attr/textAppearanceSmallPopupMenu` | N/A                                                                | `?attr/textAppearanceSubtitle1`
 
 #### Styles
 
-&nbsp;                      | **Theme attribute**              | **Default value**
+Element                     | **Theme attribute**              | **Default value**
 --------------------------- | -------------------------------- | -----------------
 **Popup menus**             | `?attr/popupMenuStyle`           | `@style/Widget.MaterialComponents.PopupMenu`
 **List popup window style** | `?attr/listPopupWindowStyle`     | `@style/Widget.MaterialComponents.PopupMenu.ListPopupWindow`
@@ -554,7 +554,7 @@ To see all attributes that apply to the `TextInputLayout`, see the
 
 #### `AutoCompleteTextView` attributes (input text, dropdown menu)
 
-&nbsp;                                | Attribute                                                           | Related method(s)                                            | Default value
+Element                               | Attribute                                                           | Related method(s)                                            | Default value
 ------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------ | -------------
 **Input text**                        | `android:text`                                                      | `setText`<br/>`getText`                                      | `@null`
 **Typography**                        | `android:textAppearance`                                            | `setTextAppearance`                                          | `?attr/textAppearanceSubtitle1`
@@ -566,7 +566,7 @@ To see all attributes that apply to the `TextInputLayout`, see the
 
 #### Styles
 
-&nbsp;             | Style
+Element            | Style
 ------------------ | -----
 **Filled style**   | `Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu`
 **Outlined style** | `Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu`

@@ -163,7 +163,7 @@ The following is an anatomy diagram of a snackbar:
 
 ### Text label attributes
 
-&nbsp;               | Attribute                | Related method(s) | Default value
+Element              | Attribute                | Related method(s) | Default value
 -------------------- | ------------------------ | ----------------- | -------------
 **Text label style** | N/A                      | N/A               | `?attr/snackbarTextViewStyle`
 **Text label**       | `android:text`           | `setText`         | `null`
@@ -172,7 +172,7 @@ The following is an anatomy diagram of a snackbar:
 
 ### Container attributes
 
-&nbsp;                  | Attribute                         | Related method(s)                               | Default value
+Element                 | Attribute                         | Related method(s)                               | Default value
 ----------------------- | --------------------------------- | ----------------------------------------------- | -------------
 **Color**               | `app:backgroundTint`              | `setBackgroundTint`<br/>`setBackgroundTintList` | `?attr/colorSurface` at 80% over `?attr/colorOnSurface`
 **Color overlay alpha** | `app:backgroundOverlayColorAlpha` | N/A                                             | `0.8f` (ignored if `app:backgroundTint` is set)
@@ -182,7 +182,7 @@ The following is an anatomy diagram of a snackbar:
 
 ### Action attributes
 
-&nbsp;               | Attribute                  | Related method(s)    | Default value
+Element              | Attribute                  | Related method(s)    | Default value
 -------------------- | -------------------------- | -------------------- | -------------
 **Button style**     | N/A                        | N/A                  | `?attr/snackbarButtonStyle`
 **Text color alpha** | `app:actionTextColorAlpha` | N/A                  | `0.5f`
@@ -190,7 +190,7 @@ The following is an anatomy diagram of a snackbar:
 
 ### Styles
 
-&nbsp;                  | **Theme attribute**           | **Default value**
+Element                 | **Theme attribute**           | **Default value**
 ----------------------- | ----------------------------- | -----------------
 **Default style**       | `?attr/snackbarStyle`         | `@style/Widget.MaterialComponents.Snackbar`
 **Action button style** | `?attr/snackbarButtonStyle`   | `@style/Widget.MaterialComponents.Button.TextButton.Snackbar`

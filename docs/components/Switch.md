@@ -118,7 +118,7 @@ track:
 
 ### Switch attributes
 
-&nbsp;                     | Attribute                                  | Related method(s)                                          | Default value
+Element                    | Attribute                                  | Related method(s)                                          | Default value
 -------------------------- | ------------------------------------------ | ---------------------------------------------------------- | -------------
 **To use material colors** | `app:useMaterialThemeColors`               | `setUseMaterialThemeColors`<br/>`isUseMaterialThemeColors` | `true` (ignored if specific tint attrs are set)
 **Min size**               | `android:minWidth`<br/>`android:minHeight` | `(set/get)MinWidth`<br/>`(set/get)MinHeight`               | `?attr/minTouchTargetSize`
@@ -137,7 +137,7 @@ should not be tinted, set `app:useMaterialThemeColors` to `false`:
 
 ### Thumb attributes
 
-&nbsp;        | Attribute       | Related method(s)                         | Default value
+Element       | Attribute       | Related method(s)                         | Default value
 ------------- | --------------- | ----------------------------------------- | -------------
 **Thumb**     | `android:thumb` | `setThumbDrawable`<br/>`getThumbDrawable` | inherits from `SwitchCompat`
 **Color**     | `app:thumbTint` | `setThumbTintList`<br/>`getThumbTintList` | `?attr/colorSurface` (unchecked)<br/>`?attr/colorSecondary` (checked)
@@ -145,14 +145,14 @@ should not be tinted, set `app:useMaterialThemeColors` to `false`:
 
 ### Track attributes
 
-&nbsp;    | Attribute       | Related method(s)                         | Default value
+Element   | Attribute       | Related method(s)                         | Default value
 --------- | --------------- | ----------------------------------------- | -------------
 **Track** | `app:track`     | `setTrackDrawable`<br/>`getTrackDrawable` | inherits from `SwitchCompat`
 **Color** | `app:trackTint` | `setTrackTintList`<br/>`getTrackTintList` | `?attr/colorOnSurface` (unchecked)<br/>`?attr/colorSecondary` (checked)
 
 ### Text label attributes
 
-&nbsp;         | Attribute                | Related method(s)                  | Default value
+Element        | Attribute                | Related method(s)                  | Default value
 -------------- | ------------------------ | ---------------------------------- | -------------
 **Text label** | `android:text`           | `setText`<br/>`getText`            | `null`
 **Color**      | `android:textColor`      | `setTextColor`<br/>`getTextColors` | inherits from `SwitchCompat`
@@ -173,7 +173,7 @@ pressed. Rows are on or off](assets/switch/switch_states.png)
 
 ### Styles
 
-&nbsp;            | Style
+Element           | Style
 ----------------- | -------------------------------------------------
 **Default style** | `Widget.MaterialComponents.CompoundButton.Switch`
 

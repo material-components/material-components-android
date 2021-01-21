@@ -226,7 +226,7 @@ subtitles, and an optional scrim.
 
 ### Container attributes
 
-&nbsp;                  | Attribute(s)                                                        | Related method(s)                                | Default value
+Element                 | Attribute(s)                                                        | Related method(s)                                | Default value
 ----------------------- | ------------------------------------------------------------------- | ------------------------------------------------ | -------------
 **Color**               | `android:background`                                                | `setBackground`<br>`getBackground`               | `?attr/colorSurface`
 **Shape**               | `app:shapeAppearance`<br>`app:shapeAppearanceOverlay`               | N/A                                              | `null`
@@ -236,20 +236,20 @@ subtitles, and an optional scrim.
 
 ### Header attributes
 
-&nbsp;     | Attribute          | Related method(s)                                                                                   | Default value
+Element    | Attribute          | Related method(s)                                                                                   | Default value
 ---------- | ------------------ | --------------------------------------------------------------------------------------------------- | -------------
 **Layout** | `app:headerLayout` | `addHeaderView`<br>`inflateHeaderView`<br>`getHeaderView`<br>`getHeaderCount`<br>`removeHeaderView` | `null`
 
 ### Divider attributes
 
-&nbsp;      | Attribute                                                                                                                                                                                                                    | Related method(s) | Default value
+Element     | Attribute                                                                                                                                                                                                                    | Related method(s) | Default value
 ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- | -------------
 **Divider** | `android:listDivider` in app theme                                                                                                                                                                                           | N/A               | Varies per platform version
 **Height**  | N/A (see [layout](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/internal/res/layout/design_navigation_item_separator.xml)) | N/A               | `1dp`
 
 ### Text overlay attributes
 
-&nbsp;                 | Attribute(s)                                                                                                  | Related method(s)                                                                              | Default value
+Element                | Attribute(s)                                                                                                  | Related method(s)                                                                              | Default value
 ---------------------- | ------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | -------------
 **Color**              | `app:itemShapeFillColor`                                                                                      | N/A                                                                                            | `?attr/colorPrimary` at 12% opacity (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/navigation/res/color/mtrl_navigation_item_background_color.xml))
 **Shape**              | `app:itemShapeAppearance`<br>`app:itemShapeAppearanceOverlay`                                                 | N/A                                                                                            | `?attr/shapeAppearanceSmallComponent`<br>`null`
@@ -258,7 +258,7 @@ subtitles, and an optional scrim.
 
 ### Text attributes
 
-&nbsp;          | Attribute                | Related method(s)                        | Default value
+Element         | Attribute                | Related method(s)                        | Default value
 --------------- | ------------------------ | ---------------------------------------- | -------------
 **Color**       | `app:itemTextColor`      | `setItemTextColor`<br>`getItemTextColor` | `?attr/colorPrimary` when active else `?attr/colorOnSurface` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/navigation/res/color/mtrl_navigation_item_text_color.xml))
 **Typograhphy** | `app:itemTextAppearance` | `setItemTextAppearance`                  | `?attr/textAppearanceSubtitle2`
@@ -266,7 +266,7 @@ subtitles, and an optional scrim.
 
 ### Icon attributes
 
-&nbsp;      | Attribute             | Related method(s)                                                            | Default value
+Element     | Attribute             | Related method(s)                                                            | Default value
 ----------- | --------------------- | ---------------------------------------------------------------------------- | -------------
 **Color**   | `app:itemIconTint`    | `setIconItemTintList`<br>`getIconItemTintList`                               | `?attr/colorPrimary` when active else `?attr/colorOnSurface` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/navigation/res/color/mtrl_navigation_item_icon_tint.xml))
 **Size**    | `app:itemIconSize`    | `setItemIconSize`                                                            | `24dp`
@@ -274,7 +274,7 @@ subtitles, and an optional scrim.
 
 ### Subtitle attributes
 
-&nbsp;         | Attribute                                                                                                                                                                                                                    | Related method(s) | Default value
+Element        | Attribute                                                                                                                                                                                                                    | Related method(s) | Default value
 -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- | -------------
 **Color**      | N/A (see [layout](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/internal/res/layout/design_navigation_item_subheader.xml)) | N/A               | `?android:textColorSecondary`
 **Typography** | N/A                                                                                                                                                                                                                          | N/A               | `@style/TextAppearance.AppCompat.Body2`
@@ -284,13 +284,13 @@ subtitles, and an optional scrim.
 
 ### Scrim attributes
 
-&nbsp;    | Attribute | Related method(s)                 | Default value
+Element   | Attribute | Related method(s)                 | Default value
 --------- | --------- | --------------------------------- | --------------------
 **Color** | N/A       | `setScrimColor` on `DrawerLayout` | Black at 60% opacity
 
 ### `NavigationView` styles
 
-&nbsp;            | Style
+Element           | Style
 ----------------- | ------------------------------------------
 **Default style** | `Widget.MaterialComponents.NavigationView`
 
