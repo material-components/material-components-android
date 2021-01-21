@@ -124,8 +124,8 @@ import java.util.List;
  * &lt;/androidx.coordinatorlayout.widget.CoordinatorLayout&gt;
  * </pre>
  *
- * @see <a href="http://www.google.com/design/spec/layout/structure.html#structure-app-bar">
- *     http://www.google.com/design/spec/layout/structure.html#structure-app-bar</a>
+ * @see <a href="https://material.io/components/app-bars-top#anatomy">
+ *     https://material.io/components/app-bars-top#anatomy</a>
  */
 public class AppBarLayout extends LinearLayout implements CoordinatorLayout.AttachedBehavior {
 
