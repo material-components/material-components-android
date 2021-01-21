@@ -12,7 +12,8 @@ path: /catalog/buttons/
 [Buttons](https://material.io/components/buttons/) allow users to take actions,
 and make choices, with a single tap.
 
-!["Button on a screen"](assets/buttons/buttons_hero.png)
+!["Photo of tan stone archways above a modal bottom sheet titled "Walk below the
+arches" with filled "Learn more" button"](assets/buttons/buttons_hero.png)
 
 **Contents**
 
