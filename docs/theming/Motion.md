@@ -35,14 +35,14 @@ the
 [Android Transition Framework](https://developer.android.com/training/transitions)
 (`android.transition`):
 
-#### AndroidX (preferred)
+**AndroidX (preferred)**
 
 *   Available in the `com.google.android.material.transition` package
 *   Supports API Level 14+
 *   Supports Fragments and Views, but not Activities or Windows
 *   Contains backported bug fixes and consistent behavior across API Levels
 
-#### Platform
+**Platform**
 
 *   Available in the `com.google.android.material.transition.platform` package
 *   Supports API Level 21+

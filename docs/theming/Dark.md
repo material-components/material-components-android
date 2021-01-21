@@ -28,7 +28,7 @@ Android system UI and apps running on the device.
 -   [Android Q Dark Theme Documentation][dark-theme-dac-docs]
 -   [AppCompat DayNight Documentation][daynight-appcompat-docs]
 
-### Setup
+## Setup
 
 In order to support the dark theme functionality in Android Q, make sure you are
 depending on the `1.1.0` stable version of the
@@ -36,7 +36,7 @@ depending on the `1.1.0` stable version of the
 to inherit from `Theme.MaterialComponents.DayNight` (or one of its descendants).
 E.g.:
 
-##### res/values/themes.xml
+**res/values/themes.xml**
 
 ```xml
 <style name="Theme.MyApp" parent="Theme.MaterialComponents.DayNight">
@@ -48,7 +48,7 @@ Alternatively, if you want to define separate `Light` and `Dark` themes for your
 app, you can inherit from `Theme.MaterialComponents.Light` in the `values`
 directory, and `Theme.MaterialComponents` in the `values-night` directory. E.g.:
 
-##### res/values/themes.xml
+**res/values/themes.xml**
 
 ```xml
 <style name="Theme.MyApp" parent="Theme.MaterialComponents.Light">
@@ -56,7 +56,7 @@ directory, and `Theme.MaterialComponents` in the `values-night` directory. E.g.:
 </style>
 ```
 
-##### res/values-night/themes.xml
+**res/values-night/themes.xml**
 
 ```xml
 <style name="Theme.MyApp" parent="Theme.MaterialComponents">
@@ -70,7 +70,7 @@ facilitate easy switching between your app's `Light` and `Dark` theme. If using
 a `DayNight` theme, you can define one app theme that references color
 resources, which can be overridden in the `values-night` directory if needed.
 
-### Catalog
+## Catalog
 
 To see how Material components adapt in a dark theme, build and run the
 [Catalog app](../catalog-app.md) and enable dark theme in one of the following
@@ -80,7 +80,7 @@ ways:
 *   Android Q: `Settings > Display > Dark Theme` (or Dark Theme tile in Notification Tray)
 *   Android P: `Settings > System > Developer options > Night mode`
 
-### Color Palette
+## Color Palette
 
 At the core of any dark theme is a color palette that uses dark background
 colors and light foreground colors. The Material `Dark` themes make use of the
@@ -96,7 +96,7 @@ branded palette, including `colorPrimary` and `colorSecondary`. See the
 [Material Dark Theme spec][dark-theme-mdc-spec-ui-application] for guidance on
 how you can adjust your brand colors for dark theme.
 
-#### Primary vs. Surface Coloring for Large Surfaces
+### Primary vs. Surface Coloring for Large Surfaces
 
 According to the
 [Material Dark Theme spec][dark-theme-mdc-spec-custom-application], large
@@ -125,7 +125,7 @@ dark theme. E.g.:
 * `Widget.MaterialComponents.TabLayout.PrimarySurface`
 * `Widget.MaterialComponents.Toolbar.PrimarySurface`
 
-### Elevation Overlays
+## Elevation Overlays
 
 In addition to the color palette adjustments mentioned above, communicating the
 hierarchy of a UI via elevation requires some dark theme specific
@@ -147,7 +147,7 @@ Note: we avoid overdraw with the elevation overlays by calculating a composite
 blend of the surface color with the overlay color and using that as the
 surface's background, instead of drawing another layer to the canvas.
 
-#### Affected Components
+### Affected Components
 
 The following is a list of Material components that support elevation overlays
 in dark theme, because they use `colorSurface` and can be elevated:
@@ -163,7 +163,7 @@ in dark theme, because they use `colorSurface` and can be elevated:
 *   [Navigation Drawer](../components/NavigationDrawer.md)
 *   [Switch](../components/Switch.md)
 
-#### Theme Attributes
+### Theme Attributes
 
 In order to facilitate some orchestration around the elevation overlays, we have
 the following theme attributes:
@@ -177,13 +177,13 @@ Note: If inheriting from the `Theme.MaterialComponents` theme or a descendant,
 you most likely do not have to set these attributes yourself because the
 Material themes already set up the above defaults.
 
-#### Custom Views & Non-Material Components
+### Custom Views & Non-Material Components
 
 If you would like to apply dark theme elevation overlays to your custom views or
 any non-Material views that are elevated surfaces, then you can use the
 `MaterialShapeDrawable` or `ElevationOverlayProvider` APIs.
 
-##### MaterialShapeDrawable
+#### MaterialShapeDrawable
 
 The key to supporting elevation overlays in a custom view is creating a
 `MaterialShapeDrawable` with the overlay support enabled via
@@ -198,7 +198,7 @@ will keep track of the elevation value for you and factor that in to the overlay
 any time elevation changes, and you don't have to worry about incorrectly
 compounding the overlays multiple times.
 
-##### ElevationOverlayProvider
+#### ElevationOverlayProvider
 
 If you have a case where the elevation value is more static and you would like
 to get the corresponding dark theme overlay color (perhaps to color an existing
@@ -216,7 +216,7 @@ color, or get access to lower level values such as the overlay alpha
 percentages, take a look at the other `ElevationOverlayProvider` methods
 including `compositeOverlayIfNeeded`, `compositeOverlay`, and `calculateOverlayAlpha`.
 
-##### Absolute Elevation
+#### Absolute Elevation
 
 When calculating the elevation overlay alpha percentage, Material components
 factor in the absolute elevation of their parent view. This is because the

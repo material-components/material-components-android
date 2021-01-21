@@ -12,6 +12,8 @@ Take a look at our
 that helps you migrate your codebase from the Design Support Library to Material
 Components for Android.
 
+## Instructions
+
 ### 1. Depend on our library
 
 Material Components for Android is available through Google's Maven Repository.
@@ -46,7 +48,7 @@ or
 [MVN Repository](https://mvnrepository.com/artifact/com.google.android.material/material)
 to find the latest version of the library.
 
-##### New Namespace and AndroidX
+#### New Namespace and AndroidX
 
 If your app currently depends on the original Design Support Library, you can
 make use of the
