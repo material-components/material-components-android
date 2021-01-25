@@ -12,7 +12,7 @@ path: /catalog/navigation-drawer/
 [Navigation drawers](https://material.io/components/navigation-drawer) provide
 access to destinations in your app.
 
-![Hero navigation drawer image](assets/navigationdrawer/NavDrawer-hero.png)
+![Nav drawer hero with profile pic, username, email, and user account options](assets/navigationdrawer/NavDrawer-hero.png)
 
 **Contents**
 
@@ -48,7 +48,7 @@ navigation drawer type and parent `ViewGroup`._
 
 ### Adding a menu
 
-![Basic navigation drawer image](assets/navigationdrawer/navigation_drawer_basic.png)
+![Nav drawer with 3 menu items](assets/navigationdrawer/navigation_drawer_basic.png)
 
 In the layout:
 

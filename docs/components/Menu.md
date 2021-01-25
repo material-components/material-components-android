@@ -116,7 +116,8 @@ API and source code:
 
 The following example shows an overflow menu.
 
-![White menu container on top of purple menu bar](assets/menu/menus_overflow.png)
+![Composite image: purple "Menus" bar, and purple "Menus" bar with white menu
+and 3 options](assets/menu/menus_overflow.png)
 
 In code:
 
@@ -682,8 +683,8 @@ API and source code:
 The following example shows filled and outlined exposed dropdown menu types with
 Material Theming.
 
-![Two examples of a 3-option white menu container below a "Show menu" button:
-button 1 is grey,, button 2 has a pink
+![Composite image of "Show menu" button and options: gray button with pink
+underline, and white button with pink
 outline](assets/menu/menus_exposed_dropdown_theming.png)
 
 ### Implementing exposed dropdown menu theming

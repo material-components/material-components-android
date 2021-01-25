@@ -18,7 +18,9 @@ Use checkboxes to:
 *   Present a list containing sub-selections
 *   Turn an item on or off in a desktop environment
 
-![Checkbox hero example for menu options](assets/checkbox/checkbox_hero.png)
+![Checkbox hero: "Meal options" header, "Additions" checkbox, "Pickles"
+"Lettuce" "Tomato" checkboxes with “Lettuce”
+checked](assets/checkbox/checkbox_hero.png)
 
 **Contents**
 
@@ -178,7 +180,8 @@ API and source code:
 
 The following example shows a checkbox with Material Theming.
 
-!["Checkbox theming with pink and brown colors"](assets/checkbox/checkbox_theming.png)
+!["5 checkboxes with brown text and box outlines, checkbox 1 is selected box
+with pink fill and white checkmark"](assets/checkbox/checkbox_theming.png)
 
 #### Implementing checkbox theming
 
