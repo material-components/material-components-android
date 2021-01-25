@@ -231,6 +231,7 @@ public class TextInputLayout extends LinearLayout {
   @NonNull private ShapeAppearanceModel shapeAppearanceModel;
 
   private final int boxLabelCutoutPaddingPx;
+  private int boxLabelCutoutWidth;
   @BoxBackgroundMode private int boxBackgroundMode;
   private int boxCollapsedPaddingTopPx;
   private int boxStrokeWidthPx;
@@ -3980,11 +3981,21 @@ public class TextInputLayout extends LinearLayout {
     final RectF cutoutBounds = tmpRectF;
     collapsingTextHelper.getCollapsedTextActualBounds(
         cutoutBounds, editText.getWidth(), editText.getGravity());
+    boxLabelCutoutWidth = boxStrokeWidthPx;
+    cutoutBounds.bottom = cutoutBounds.top + boxLabelCutoutWidth;
     applyCutoutPadding(cutoutBounds);
     // Offset the cutout bounds by the TextInputLayout's left and top paddings to ensure that the
     // cutout is inset relative to the TextInputLayout's bounds.
     cutoutBounds.offset(-getPaddingLeft(), -getPaddingTop());
     ((CutoutDrawable) boxBackground).setCutout(cutoutBounds);
+  }
+
+  /** If stroke changed width, cutout bounds need to be recalculated.  **/
+  private void updateCutout() {
+    if (cutoutEnabled() && !hintExpanded && boxLabelCutoutWidth != boxStrokeWidthPx) {
+      closeCutout();
+      openCutout();
+    }
   }
 
   private void closeCutout() {
@@ -3995,9 +4006,7 @@ public class TextInputLayout extends LinearLayout {
 
   private void applyCutoutPadding(@NonNull RectF cutoutBounds) {
     cutoutBounds.left -= boxLabelCutoutPaddingPx;
-    cutoutBounds.top -= boxLabelCutoutPaddingPx;
     cutoutBounds.right += boxLabelCutoutPaddingPx;
-    cutoutBounds.bottom += boxLabelCutoutPaddingPx;
   }
 
   @VisibleForTesting
@@ -4089,6 +4098,10 @@ public class TextInputLayout extends LinearLayout {
       boxStrokeWidthPx = boxStrokeWidthFocusedPx;
     } else {
       boxStrokeWidthPx = boxStrokeWidthDefaultPx;
+    }
+
+    if (boxBackgroundMode == BOX_BACKGROUND_OUTLINE) {
+      updateCutout();
     }
 
     // Update the text box's background color based on the current state.
