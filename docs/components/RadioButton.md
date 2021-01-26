@@ -19,7 +19,7 @@ Use radio buttons to:
 *   If available options can be collapsed, consider using a dropdown menu
     instead, as it uses less space.
 
-![Radio button hero example for menu options](assets/radiobutton/radiobutton_hero.png)
+![Settings menu with radio buttons for ringtones](assets/radiobutton/radiobutton_hero.png)
 
 **Contents**
 
@@ -199,7 +199,9 @@ API and source code:
 
 The following example shows a radio button with Material Theming.
 
-!["Radio button theming with pink and brown colors"](assets/radiobutton/radiobutton_theming.png)
+!["5 radio buttons with brown text; first selected with pink outline and fill,
+last disabled with light brown text and
+button"](assets/radiobutton/radiobutton_theming.png)
 
 #### Implementing radio button theming
 
