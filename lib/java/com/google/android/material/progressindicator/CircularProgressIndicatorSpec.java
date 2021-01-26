@@ -19,6 +19,7 @@ package com.google.android.material.progressindicator;
 import com.google.android.material.R;
 
 import static com.google.android.material.resources.MaterialResources.getDimensionPixelSize;
+import static java.lang.Math.max;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -82,8 +83,13 @@ public final class CircularProgressIndicatorSpec extends BaseProgressIndicatorSp
         ThemeEnforcement.obtainStyledAttributes(
             context, attrs, R.styleable.CircularProgressIndicator, defStyleAttr, defStyleRes);
     indicatorSize =
-        getDimensionPixelSize(
-            context, a, R.styleable.CircularProgressIndicator_indicatorSize, defaultIndicatorSize);
+        max(
+            getDimensionPixelSize(
+                context,
+                a,
+                R.styleable.CircularProgressIndicator_indicatorSize,
+                defaultIndicatorSize),
+            trackThickness * 2);
     indicatorInset =
         getDimensionPixelSize(
             context,
@@ -100,17 +106,5 @@ public final class CircularProgressIndicatorSpec extends BaseProgressIndicatorSp
   }
 
   @Override
-  void validateSpec() {
-    if (indicatorSize < trackThickness * 2) {
-      // Throws an exception if indicatorSize is less than twice of the trackThickness, which will
-      // result in a part of the inner side of the indicator overshoots the center, and the visual
-      // becomes undefined.
-      throw new IllegalArgumentException(
-          "The indicatorSize ("
-              + indicatorSize
-              + " px) cannot be less than twice of the trackThickness ("
-              + trackThickness
-              + " px).");
-    }
-  }
+  void validateSpec() {}
 }

@@ -18,6 +18,8 @@ package com.google.android.material.progressindicator;
 
 import com.google.android.material.R;
 
+import static java.lang.Math.max;
+
 import android.content.Context;
 import android.util.AttributeSet;
 import androidx.annotation.AttrRes;
@@ -150,10 +152,9 @@ public final class CircularProgressIndicator
    * @see #getIndicatorSize()
    * @attr ref
    *     com.google.android.material.progressindicator.R.stylable#CircularProgressIndicator_indicatorSize
-   * @throws IllegalArgumentException if new indicator radius is less than half of the indicator
-   *     size.
    */
   public void setIndicatorSize(@Px int indicatorSize) {
+    indicatorSize = max(indicatorSize, getTrackThickness() * 2);
     if (spec.indicatorSize != indicatorSize) {
       spec.indicatorSize = indicatorSize;
       spec.validateSpec();
