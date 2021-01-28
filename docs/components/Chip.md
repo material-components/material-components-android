@@ -11,7 +11,8 @@ path: /catalog/chips/
 [Chips](https://material.io/components/chips) are compact elements that
 represent an input, attribute, or action.
 
-![Hero image of an input chip](assets/chips/chips_hero.png)
+![Email with purple "Compose" header and grey chip with an email address on the
+"To" line](assets/chips/chips_hero.png)
 
 **Contents**
 
@@ -102,7 +103,8 @@ to a `ViewGroup` such as `RecyclerView`). A `ChipGroup` contains a set of
 
 A `ChipGroup` rearranges chips across multiple rows by default.
 
-!["A group of 6 chips."](assets/chips/chips_filter.png)
+!["6 grey "Filter" chips spread across 2 lines: "Filters" 1 and 3 selected and
+are darker grey and include checkmarks."](assets/chips/chips_filter.png)
 
 ```xml
 <com.google.android.material.chip.ChipGroup
@@ -119,7 +121,8 @@ A `ChipGroup` can also constrain its chips to a single row using the
 `app:singleLine` attribute. Using a single row may necessitate wrapping the
 `ChipGroup` with a `HorizontalScrollView`.
 
-!["Chips in a single line."](assets/chips/chips_singleline.png)
+!["Single line of grey chips: chips 1, 2, and 3 are fully visible, chip 4 is
+partly visible"](assets/chips/chips_singleline.png)
 
 ```xml
 <HorizontalScrollView
@@ -147,7 +150,7 @@ for lower amounts._
 The following image shows a group of chips with
 `app:chipSpacingHorizontal="42dp"`.
 
-!["A group of chips with horizontal spacing."](assets/chips/chips_spacing.png)
+!["6 grey chips in 2 rows with 42dp horizontal spacing"](assets/chips/chips_spacing.png)
 
 #### Multiple exclusion scope
 
@@ -204,7 +207,7 @@ For example, consider an editable e-mail address field that converts addresses
 to chips as they are typed and validated. We can combine `ChipDrawable` with
 spans to add a chip to an `EditText`:
 
-!["A standalone chip insite a text field."](assets/chips/chips_standalone.png)
+!["Standalone chip inside a text field"](assets/chips/chips_standalone.png)
 
 ```kt
 chip.setBounds(0, 0, chip.intrinsicWidth, chip.intrinsicHeight)
@@ -302,7 +305,8 @@ the chips are checked.
 
 The following example shows four choice chips.
 
-!["Choice chips with texts Choice 1 to 4 and the first one selected."](assets/chips/chips_choice.png)
+!["4 choice chips, Choice 1 is selected with purple fill, Choices 2-4 unselected
+with grey fill"](assets/chips/chips_choice.png)
 
 In the layout:
 
@@ -346,7 +350,8 @@ good alternative to toggle buttons or checkboxes.
 
 The following example shows six filter chips.
 
-!["Filter chips with texts Filter 1 to 6, the first and third selected."](assets/chips/chips_filter.png)
+!["6 grey "Filter" chips spread across 2 lines: "Filters" 1 and 3 selected and
+are darker grey and include checkmarks."](assets/chips/chips_filter.png)
 
 In the layout:
 
@@ -557,7 +562,7 @@ API and source code:
 
 The following example shows chips with Material Theming.
 
-!["Chip theming example with pink and brown colors."](assets/chips/chips_theming.png)
+!["3 chips with brown text and icons, white fill, and pink outlines"](assets/chips/chips_theming.png)
 
 #### Implementing chip theming
 

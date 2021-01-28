@@ -15,7 +15,8 @@ allow the user to select options.
 Switches toggle the state of a single setting on or off. They are the preferred
 way to adjust settings on mobile.
 
-![Switch hero example for menu options](assets/switch/switch_hero.png)
+![White "Settings" menu with purple header and switches to turn on options, such
+as "Wi-fi" and "Bluetooth"](assets/switch/switch_hero.png)
 
 **Contents**
 
@@ -200,7 +201,7 @@ API and source code:
 
 The following example shows a list of switches with Material Theming.
 
-!["Switch theming with pink and brown colors"](assets/switch/switch_theming.png)
+!["5 switches with brown text: first switch is on and has pink thumb and track"](assets/switch/switch_theming.png)
 
 #### Implementing switch theming
 
