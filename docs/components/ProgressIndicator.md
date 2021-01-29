@@ -12,7 +12,7 @@ path: /catalog/progress-indicators/
 [Progress indicators](https://material.io/components/progress-indicators)
 express an unspecified wait time or display the length of a process.
 
-![Progress indicator hero](assets/progressindicator/indeterminate_hero.gif)
+![Animation of purple linear progress indicator beneath "My Recipes" top app bar](assets/progressindicator/indeterminate_hero.gif)
 
 **Contents**
 
@@ -39,7 +39,9 @@ progress rather than the progress of each activity.**_
 
 ### Usage
 
-![determinate type composite](assets/progressindicator/determinate_composite.gif)
+![Animation of determinate linear and circular progress indicators: purple
+indicators fill up grey
+tracks](assets/progressindicator/determinate_composite.gif)
 
 A determinate progress indicator can added in a layout like so:
 
@@ -54,7 +56,9 @@ A determinate progress indicator can added in a layout like so:
     android:layout_height="wrap_content" />
 ```
 
-![indeterminate type composite](assets/progressindicator/indeterminate_composite.gif)
+![Animation of indeterminate linear and circular progress indicators: purple
+indicators travel along grey
+tracks](assets/progressindicator/indeterminate_composite.gif)
 
 An indeterminate progress indicator can be added like so:
 
@@ -73,7 +77,9 @@ An indeterminate progress indicator can be added like so:
 
 ### Switching from indeterminate to determinate
 
-![Switching from indeterminate to determinate](assets/progressindicator/switch_composite.gif)
+![Animation of linear and circular progress indicators: purple indicators travel
+along gray tracks then fill up
+tracks.](assets/progressindicator/switch_composite.gif)
 
 Indeterminate progress indicators can smoothly transit to determinate progress
 indicators by setting the `progress` programmatically:
@@ -129,7 +135,8 @@ to set the target visibility as `Visibiltiy.INVISIBLE` (default) or
 
 ### Rounded corners
 
-![rounded progress indicators](assets/progressindicator/rounded_corner_composite.png)
+![Linear and circular progress indicators: tracks and indicators have rounded
+corners](assets/progressindicator/rounded_corner_composite.png)
 
 Progress indicators can have rounded corners via `app:trackCornerRadius` or the
 `setTrackCornerRadius` method.
@@ -144,7 +151,7 @@ Only one type should represent each kind of activity in an app. For example, if
 a refresh action displays a circular indicator on one screen, that same action
 shouldn’t use a linear indicator elsewhere in the app.
 
-![Composite image of progress indicator types](assets/progressindicator/types.gif)
+![Composite image of linear and circular progress indicator types](assets/progressindicator/types.gif)
 
 ## Linear progress indicators
 
@@ -166,7 +173,8 @@ Source code:
 
 The following example shows a determinate linear progress indicator.
 
-![determinate linear progress indicator](assets/progressindicator/linear_determinate_compact.gif)
+![Determinate linear progress indicator animation: purple indicator fills up
+grey track](assets/progressindicator/linear_determinate_compact.gif)
 
 In the layout:
 
@@ -178,7 +186,8 @@ In the layout:
 
 The following example shows an indeterminate linear progress indicator.
 
-![indeterminate linear progress indicator](assets/progressindicator/linear_indeterminate_compact.gif)
+![Indeterminate linear progress indicator animation: purple indicator travels
+along grey track](assets/progressindicator/linear_indeterminate_compact.gif)
 
 In the layout:
 
@@ -193,12 +202,16 @@ In the layout:
 
 For linear progress indicator, there are two indeterminate animation types:
 
-![indeterminate linear progress indicator with disjoint animation](assets/progressindicator/linear_multicolor_disjoint.gif)
+![Disjointed indeterminate linear progress indicator animation: red indicator
+travels along track 2x then switches to
+yellow](assets/progressindicator/linear_multicolor_disjoint.gif)
 
 *   `disjoint` - animates as repeated cycles with two disjoint segments in the
     same color at a time.
 
-![indeterminate linear progress indicator with contiguous animation](assets/progressindicator/linear_multicolor_contiguous.gif)
+![Contiguous indeterminate linear progress indicator animation: red, yellow,
+blue indicators move sequentially and cover
+track](assets/progressindicator/linear_multicolor_contiguous.gif)
 
 *   `contiguous` - animates as repeated cycles with three adjacent segments in
     iterative different colors.
@@ -223,7 +236,9 @@ Source code:
 
 The following example shows a determinate circular progress indicator.
 
-![determinate circular progress indicator](assets/progressindicator/circular_determinate_compact.gif)
+![Determinate circular progress indicator animation: purple indicator draws a
+circle clockwise from the
+top](assets/progressindicator/circular_determinate_compact.gif)
 
 In the layout:
 
@@ -236,7 +251,9 @@ In the layout:
 
 The following example shows an indeterminate circular progress indicator.
 
-![indeterminate circular progress indicator](assets/progressindicator/circular_indeterminate_compact.gif)
+![Indeterminate circular progress indicator animation: purple indicator follows
+a circle clockwise from the
+top](assets/progressindicator/circular_indeterminate_compact.gif)
 
 In the layout:
 
@@ -301,7 +318,6 @@ Element                                | Style
 **Small circular**<br/>**style**       | `Widget.MaterialComponents.CircularProgressIndicator.Small`
 **Extra small circular**<br/>**style** | `Widget.MaterialComponents.CircularProgressIndicator.ExtraSmall`
 
-
 Default linear style theme attribute: `?attr/linearProgressIndicatorStyle`
 
 Default circular style theme attribute: `?attr/circularProgressIndicatorStyle`
@@ -320,7 +336,9 @@ color and size.
 
 The following example shows a circular progress indicator with Material Theming.
 
-!["Circular progress indicator example with pink color."](assets/progressindicator/circular_theming.gif)
+!["Circular progress indicator animation: pink circle segment circles center,
+then pink circle segment fills
+circle"](assets/progressindicator/circular_theming.gif)
 
 #### Implementing progress indicator theming
 

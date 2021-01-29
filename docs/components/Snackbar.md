@@ -12,7 +12,9 @@ path: /catalog/snackbars/
 [Snackbars](https://material.io/components/snackbars) provide brief messages
 about app processes at the bottom of the screen.
 
-![Snackbars hero image](assets/snackbar/snackbar_hero.png)
+![Photo grid: each photo has heart toggle button, 2 selected. Snackbar has
+upload error message and 'retry' text
+button.](assets/snackbar/snackbar_hero.png)
 
 **Contents**
 
@@ -219,7 +221,8 @@ The following is an example of a snackbar with an action button that uses the
 Material.io [Shrine](https://material.io/design/material-studies/shrine.html)
 color theming:
 
-!["Snackbar theming with pink and brown colors"](assets/snackbar/snackbar_theming.png)
+!["Snackbar with brown container, pink text, and pink 'Action' text button on
+light grey screen"](assets/snackbar/snackbar_theming.png)
 
 #### Implementing snackbar theming
 
