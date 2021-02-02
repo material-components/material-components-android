@@ -33,11 +33,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import androidx.annotation.ArrayRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.annotation.StyleableRes;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -112,6 +114,8 @@ public class ThemeSwitcherDialogFragment extends BottomSheetDialogFragment
         resourceProvider.getPrimaryColorsContentDescription(),
         resourceProvider.getPrimaryThemeOverlayAttrs(),
         R.id.theme_feature_primary_color,
+        view.findViewById(R.id.primary_colors_label),
+        resourceProvider.getPrimaryColorsGroupDescription(),
         ThemingType.COLOR);
 
     secondaryColorGroup = view.findViewById(R.id.secondary_colors);
@@ -121,6 +125,8 @@ public class ThemeSwitcherDialogFragment extends BottomSheetDialogFragment
         resourceProvider.getSecondaryColorsContentDescription(),
         resourceProvider.getSecondaryThemeOverlayAttrs(),
         R.id.theme_feature_secondary_color,
+        view.findViewById(R.id.secondary_colors_label),
+        resourceProvider.getSecondaryColorsGroupDescription(),
         ThemingType.COLOR);
 
     shapeCornerFamilyGroup = view.findViewById(R.id.shape_families);
@@ -129,6 +135,8 @@ public class ThemeSwitcherDialogFragment extends BottomSheetDialogFragment
         resourceProvider.getShapes(),
         resourceProvider.getShapesContentDescription(),
         R.id.theme_feature_corner_family,
+        view.findViewById(R.id.shape_families_label),
+        resourceProvider.getShapesGroupDescription(),
         ThemingType.SHAPE_CORNER_FAMILY);
 
     shapeCornerSizeGroup = view.findViewById(R.id.shape_corner_sizes);
@@ -137,6 +145,8 @@ public class ThemeSwitcherDialogFragment extends BottomSheetDialogFragment
         resourceProvider.getShapeSizes(),
         resourceProvider.getShapeSizesContentDescription(),
         R.id.theme_feature_corner_size,
+        view.findViewById(R.id.shape_corner_sizes_label),
+        resourceProvider.getShapeSizesGroupDescription(),
         ThemingType.SHAPE_CORNER_SIZE);
 
     View applyButton = view.findViewById(R.id.apply_button);
@@ -203,9 +213,18 @@ public class ThemeSwitcherDialogFragment extends BottomSheetDialogFragment
       @ArrayRes int overlays,
       @ArrayRes int contentDescriptions,
       @IdRes int overlayId,
+      TextView groupLabel,
+      @StringRes int groupDescriptionResId,
       ThemingType themingType) {
     initializeThemingValues(
-        group, overlays, contentDescriptions, new int[] {}, overlayId, themingType);
+        group,
+        overlays,
+        contentDescriptions,
+        new int[] {},
+        overlayId,
+        groupLabel,
+        groupDescriptionResId,
+        themingType);
   }
 
   private void initializeThemingValues(
@@ -214,7 +233,11 @@ public class ThemeSwitcherDialogFragment extends BottomSheetDialogFragment
       @ArrayRes int contentDescriptions,
       @StyleableRes int[] themeOverlayAttrs,
       @IdRes int overlayId,
+      TextView groupLabel,
+      @StringRes int groupDescriptionResId,
       ThemingType themingType) {
+    groupLabel.setText(groupDescriptionResId);
+
     TypedArray themingValues = getResources().obtainTypedArray(overlays);
     TypedArray contentDescriptionArray = getResources().obtainTypedArray(contentDescriptions);
     if (themingValues.length() != contentDescriptionArray.length()) {

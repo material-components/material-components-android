@@ -84,7 +84,7 @@
   <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="\?attr/colorPrimary"/>
+      android:id="@+id/primary_colors_label"/>
   <HorizontalScrollView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -100,7 +100,7 @@
   <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="\?attr/colorSecondary"/>
+      android:id="@+id/secondary_colors_label"/>
   <HorizontalScrollView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -123,7 +123,7 @@
   <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="@string/mtrl_shape_corner_family"/>
+      android:id="@+id/shape_families_label"/>
 
   <RadioGroup
       android:id="@+id/shape_families"
@@ -159,7 +159,7 @@
   <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="@string/mtrl_shape_corner_size"/>
+      android:id="@+id/shape_corner_sizes_label"/>
 
   <RadioGroup
       android:id="@+id/shape_corner_sizes"

@@ -21,6 +21,12 @@
   <string name="mtrl_theme_switcher_cancel">Cancel</string>
   <string name="mtrl_theme_switcher_reset">Reset</string>
 
+  <string name="mtrl_primary_color_description" translatable="false">
+    \?attr/colorPrimary
+  </string>
+  <string name="mtrl_secondary_color_description" translatable="false">
+    \?attr/colorSecondary
+  </string>
   <string name="mtrl_red">Red</string>
   <string name="mtrl_purple">Purple</string>
   <string name="mtrl_indigo">Indigo</string>
