@@ -63,6 +63,7 @@
     <item name="materialButtonOutlinedStyle">@style/Widget.MaterialComponents.Button.OutlinedButton</item>
     <item name="materialButtonToggleGroupStyle">@style/Widget.MaterialComponents.MaterialButtonToggleGroup</item>
     <item name="materialCardViewStyle">@style/Widget.MaterialComponents.CardView</item>
+    <item name="navigationRailStyle">@style/Widget.MaterialComponents.NavigationRailView</item>
     <item name="sliderStyle">@style/Widget.MaterialComponents.Slider</item>
 
     <!-- Type styles -->
@@ -145,6 +146,7 @@
     <item name="materialButtonOutlinedStyle">@style/Widget.MaterialComponents.Button.OutlinedButton</item>
     <item name="materialButtonToggleGroupStyle">@style/Widget.MaterialComponents.MaterialButtonToggleGroup</item>
     <item name="materialCardViewStyle">@style/Widget.MaterialComponents.CardView</item>
+    <item name="navigationRailStyle">@style/Widget.MaterialComponents.NavigationRailView</item>
     <item name="sliderStyle">@style/Widget.MaterialComponents.Slider</item>
 
     <!-- Type styles -->

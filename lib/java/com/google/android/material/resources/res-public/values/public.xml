@@ -29,6 +29,7 @@
   <public name="trackColor" type="attr" />
 
   <!-- Navigation and datepicker -->
+  <public name="headerLayout" type="attr"/>
   <public name="itemTextColor" type="attr"/>
   <public name="itemShapeAppearance" type="attr"/>
   <public name="itemShapeAppearanceOverlay" type="attr"/>

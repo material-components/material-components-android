@@ -19,7 +19,6 @@
 <resources>
   <public name="navigationViewStyle" type="attr"/>
 
-  <public name="headerLayout" type="attr"/>
   <public name="itemBackground" type="attr"/>
   <public name="itemHorizontalPadding" type="attr"/>
   <public name="itemTextAppearance" type="attr"/>

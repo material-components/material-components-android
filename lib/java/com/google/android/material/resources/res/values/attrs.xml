@@ -27,6 +27,7 @@
   <attr name="trackColor" format="color" />
 
   <!-- Navigation and Pickers -->
+  <attr name="headerLayout" format="reference"/>
   <attr name="itemTextColor" format="color" />
   <attr name="itemShapeAppearance" format="reference" />
   <attr name="itemShapeAppearanceOverlay" format="reference" />

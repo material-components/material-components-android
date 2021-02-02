@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2021 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<resources>
+
+  <!-- Default style for NavigationRailViews.
+       Use the default style to get the default navigation rail view with a colorSurface background
+       and colorPrimary for the icon and text colors. -->
+  <style name="Widget.MaterialComponents.NavigationRailView" parent="">
+    <item name="elevation">@dimen/mtrl_navigation_rail_elevation</item>
+    <item name="enforceTextAppearance">true</item>
+    <item name="enforceMaterialTheme">true</item>
+    <item name="android:background">?attr/colorSurface</item>
+    <item name="android:minWidth">@dimen/mtrl_navigation_rail_default_width</item>
+    <item name="itemBackground">@null</item>
+    <item name="itemIconSize">@dimen/mtrl_navigation_rail_icon_size</item>
+    <item name="itemIconTint">@color/mtrl_navigation_bar_item_tint</item>
+    <item name="itemRippleColor">@color/mtrl_navigation_bar_ripple_color</item>
+    <item name="itemTextAppearanceInactive">?attr/textAppearanceCaption</item>
+    <item name="itemTextAppearanceActive">?attr/textAppearanceCaption</item>
+    <item name="itemTextColor">@color/mtrl_navigation_bar_item_tint</item>
+    <item name="labelVisibilityMode">auto</item>
+    <item name="menuGravity">top</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.NavigationRailView.Compact">
+    <item name="android:minWidth">@dimen/mtrl_navigation_rail_compact_width</item>
+    <item name="labelVisibilityMode">selected</item>
+  </style>
+
+  <!-- Colored style for NavigationRailViews.
+       Use the colored style to get a navigation rail view with a colorPrimary background and
+       percentages of colorOnPrimary for the icon and text colors. -->
+  <style name="Widget.MaterialComponents.NavigationRailView.Colored">
+    <item name="android:background">?attr/colorPrimary</item>
+    <item name="itemIconTint">@color/mtrl_navigation_bar_colored_item_tint</item>
+    <item name="itemRippleColor">@color/mtrl_navigation_bar_colored_ripple_color</item>
+    <item name="itemTextColor">@color/mtrl_navigation_bar_colored_item_tint</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.NavigationRailView.Colored.Compact">
+    <item name="android:minWidth">@dimen/mtrl_navigation_rail_compact_width</item>
+    <item name="labelVisibilityMode">selected</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.NavigationRailView.PrimarySurface"
+         parent="Widget.MaterialComponents.NavigationRailView.Colored"/>
+
+</resources>
