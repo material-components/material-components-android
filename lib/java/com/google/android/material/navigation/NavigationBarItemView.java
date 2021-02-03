@@ -23,6 +23,8 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.PointerIconCompat;
 import androidx.core.view.ViewCompat;
@@ -150,7 +152,11 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
         !TextUtils.isEmpty(itemData.getTooltipText())
             ? itemData.getTooltipText()
             : itemData.getTitle();
-    TooltipCompat.setTooltipText(this, tooltipText);
+
+    // Avoid calling tooltip for L and M devices because long pressing twuice may freeze devices.
+    if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP || VERSION.SDK_INT > VERSION_CODES.M) {
+      TooltipCompat.setTooltipText(this, tooltipText);
+    }
     setVisibility(itemData.isVisible() ? View.VISIBLE : View.GONE);
   }
 
@@ -202,7 +208,10 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
         itemData == null || TextUtils.isEmpty(itemData.getTooltipText())
             ? title
             : itemData.getTooltipText();
-    TooltipCompat.setTooltipText(this, tooltipText);
+    // Avoid calling tooltip for L and M devices because long pressing twuice may freeze devices.
+    if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP || VERSION.SDK_INT > VERSION_CODES.M) {
+      TooltipCompat.setTooltipText(this, tooltipText);
+    }
   }
 
   @Override

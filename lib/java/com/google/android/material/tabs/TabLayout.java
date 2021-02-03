@@ -2876,7 +2876,10 @@ public class TabLayout extends HorizontalScrollView {
       }
 
       final CharSequence contentDesc = tab != null ? tab.contentDesc : null;
-      TooltipCompat.setTooltipText(this, hasText ? text : contentDesc);
+      // Avoid calling tooltip for L and M devices because long pressing twuice may freeze devices.
+      if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP || VERSION.SDK_INT > VERSION_CODES.M) {
+        TooltipCompat.setTooltipText(this, hasText ? text : contentDesc);
+      }
     }
 
     private void tryUpdateBadgeDrawableBounds(@NonNull View anchor) {
