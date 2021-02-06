@@ -245,8 +245,7 @@ In the layout:
 ```xml
 <com.google.android.material.progressindicator.LinearProgressIndicator
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:indeterminate="true" />
+    android:layout_height="wrap_content" />
 ```
 
 The following example shows an indeterminate circular progress indicator.
