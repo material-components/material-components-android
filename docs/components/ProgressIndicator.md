@@ -243,8 +243,8 @@ top](assets/progressindicator/circular_determinate_compact.gif)
 In the layout:
 
 ```xml
-<com.google.android.material.progressindicator.LinearProgressIndicator
-    android:layout_width="match_parent"
+<com.google.android.material.progressindicator.CircularProgressIndicator
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content" />
 ```
 
