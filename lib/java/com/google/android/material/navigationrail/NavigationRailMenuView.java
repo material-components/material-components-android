@@ -16,6 +16,7 @@
 
 package com.google.android.material.navigationrail;
 
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static com.google.android.material.navigationrail.NavigationRailView.DEFAULT_MENU_GRAVITY;
@@ -37,7 +38,7 @@ import com.google.android.material.navigation.NavigationBarMenuView;
 public class NavigationRailMenuView extends NavigationBarMenuView {
 
   private final FrameLayout.LayoutParams layoutParams =
-      new FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+      new FrameLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
 
   public NavigationRailMenuView(@NonNull Context context) {
     super(context);
