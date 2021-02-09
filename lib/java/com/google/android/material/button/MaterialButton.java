@@ -73,7 +73,7 @@ import java.util.LinkedHashSet;
  * <p>This class supplies updated Material styles for the button in the constructor. The widget will
  * display the correct default Material styles without the use of the style flag.
  *
- * <p>All attributes from {@link com.google.android.material.R.styleable#MaterialButton} are
+ * <p>All attributes from {@code com.google.android.material.R.styleable#MaterialButton} are
  * supported. Do not use the {@code android:background} attribute. MaterialButton manages its own
  * background drawable, and setting a new background means {@link MaterialButton} can no longer
  * guarantee that the new attributes it introduces will function properly. If the default background
