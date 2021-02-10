@@ -1792,7 +1792,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     if (expandHalfwayActionId != View.NO_ID) {
       ViewCompat.removeAccessibilityAction(child, expandHalfwayActionId);
     }
-    if (state != STATE_HALF_EXPANDED) {
+    if (!fitToContents && state != STATE_HALF_EXPANDED) {
       expandHalfwayActionId =
           addAccessibilityActionForState(
               child, R.string.bottomsheet_action_expand_halfway, STATE_HALF_EXPANDED);
