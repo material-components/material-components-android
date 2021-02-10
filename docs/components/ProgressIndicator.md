@@ -243,10 +243,9 @@ top](assets/progressindicator/circular_determinate_compact.gif)
 In the layout:
 
 ```xml
-<com.google.android.material.progressindicator.LinearProgressIndicator
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:indeterminate="true" />
+<com.google.android.material.progressindicator.CircularProgressIndicator
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
 ```
 
 The following example shows an indeterminate circular progress indicator.
