@@ -26,11 +26,11 @@
   <!-- Incoming elements are animated using decelerated easing, in which
        transitions begin at peak velocity and end at rest. Can either be in the
        format "cubic-bezier(x1, y1, x2, y2)" or "path(<path_data>)".-->
-  <attr name="motionEasingDecelerate" format="string"/>
+  <attr name="motionEasingDecelerated" format="string"/>
   <!-- Elements exiting a screen use accelerated easing, a transition in which
        the element starts at rest and ends at peak velocity. Can either be in
        the format "cubic-bezier(x1, y1, x2, y2)" or "path(<path_data>)". -->
-  <attr name="motionEasingAccelerate" format="string"/>
+  <attr name="motionEasingAccelerated" format="string"/>
   <!-- Linear easing is often used for simple fade animations. Can either be in
        the format "cubic-bezier(x1, y1, x2, y2)" or "path(<path_data>)".-->
   <attr name="motionEasingLinear" format="string"/>

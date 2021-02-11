@@ -18,8 +18,8 @@
 
   <public name="motionEasingStandard" type="attr" />
   <public name="motionEasingEmphasized" type="attr" />
-  <public name="motionEasingDecelerate" type="attr" />
-  <public name="motionEasingAccelerate" type="attr" />
+  <public name="motionEasingDecelerated" type="attr" />
+  <public name="motionEasingAccelerated" type="attr" />
   <public name="motionEasingLinear" type="attr" />
   <public name="motionDurationShort1" type="attr" />
   <public name="motionDurationShort2" type="attr" />
@@ -32,8 +32,8 @@
 
   <public name="material_motion_easing_standard" type="string" />
   <public name="material_motion_easing_emphasized" type="string" />
-  <public name="material_motion_easing_decelerate" type="string" />
-  <public name="material_motion_easing_accelerate" type="string" />
+  <public name="material_motion_easing_decelerated" type="string" />
+  <public name="material_motion_easing_accelerated" type="string" />
   <public name="material_motion_easing_linear" type="string" />
 
   <public name="material_motion_duration_short_1" type="integer" />

@@ -95,8 +95,8 @@
     <!-- Motion -->
     <item name="motionEasingStandard">@string/material_motion_easing_standard</item>
     <item name="motionEasingEmphasized">@string/material_motion_easing_emphasized</item>
-    <item name="motionEasingDecelerate">@string/material_motion_easing_decelerate</item>
-    <item name="motionEasingAccelerate">@string/material_motion_easing_accelerate</item>
+    <item name="motionEasingDecelerated">@string/material_motion_easing_decelerated</item>
+    <item name="motionEasingAccelerated">@string/material_motion_easing_accelerated</item>
     <item name="motionEasingLinear">@string/material_motion_easing_linear</item>
 
     <item name="motionDurationShort1">@integer/material_motion_duration_short_1</item>
@@ -178,8 +178,8 @@
     <!-- Motion -->
     <item name="motionEasingStandard">@string/material_motion_easing_standard</item>
     <item name="motionEasingEmphasized">@string/material_motion_easing_emphasized</item>
-    <item name="motionEasingDecelerate">@string/material_motion_easing_decelerate</item>
-    <item name="motionEasingAccelerate">@string/material_motion_easing_accelerate</item>
+    <item name="motionEasingDecelerated">@string/material_motion_easing_decelerated</item>
+    <item name="motionEasingAccelerated">@string/material_motion_easing_accelerated</item>
     <item name="motionEasingLinear">@string/material_motion_easing_linear</item>
 
     <item name="motionDurationShort1">@integer/material_motion_duration_short_1</item>
@@ -243,8 +243,8 @@
     <!-- Motion -->
     <item name="motionEasingStandard">@string/material_motion_easing_standard</item>
     <item name="motionEasingEmphasized">@string/material_motion_easing_emphasized</item>
-    <item name="motionEasingDecelerate">@string/material_motion_easing_decelerate</item>
-    <item name="motionEasingAccelerate">@string/material_motion_easing_accelerate</item>
+    <item name="motionEasingDecelerated">@string/material_motion_easing_decelerated</item>
+    <item name="motionEasingAccelerated">@string/material_motion_easing_accelerated</item>
     <item name="motionEasingLinear">@string/material_motion_easing_linear</item>
 
     <item name="motionDurationShort1">@integer/material_motion_duration_short_1</item>
