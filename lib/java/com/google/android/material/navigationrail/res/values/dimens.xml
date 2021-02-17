@@ -21,8 +21,8 @@
   <dimen name="mtrl_navigation_rail_compact_width">56dp</dimen>
   <dimen name="mtrl_navigation_rail_default_width">72dp</dimen>
   <dimen name="mtrl_navigation_rail_margin">8dp</dimen>
-  <dimen name="mtrl_navigation_rail_label_padding">10dp</dimen>
   <dimen name="mtrl_navigation_rail_text_size" tools:ignore="SpUsage">12dp</dimen>
   <dimen name="mtrl_navigation_rail_active_text_size" tools:ignore="SpUsage">14dp</dimen>
-  <dimen name="mtrl_navigation_rail_active_item_max_height">72dp</dimen>
+  <dimen name="mtrl_navigation_rail_icon_margin">14dp</dimen>
+  <dimen name="mtrl_navigation_rail_text_bottom_margin">16dp</dimen>
 </resources>

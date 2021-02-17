@@ -19,6 +19,7 @@ package com.google.android.material.navigation;
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static java.lang.Math.max;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -133,6 +134,24 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
             }
           });
     }
+  }
+
+  @Override
+  protected int getSuggestedMinimumWidth() {
+    LayoutParams labelGroupParams = (LayoutParams) labelGroup.getLayoutParams();
+    int labelWidth =
+        labelGroupParams.leftMargin + labelGroup.getMeasuredWidth() + labelGroupParams.rightMargin;
+
+    return max(getSuggestedIconWidth(), labelWidth);
+  }
+
+  @Override
+  protected int getSuggestedMinimumHeight() {
+    LayoutParams labelGroupParams = (LayoutParams) labelGroup.getLayoutParams();
+    return getSuggestedIconHeight()
+        + labelGroupParams.topMargin
+        + labelGroup.getMeasuredHeight()
+        + labelGroupParams.bottomMargin;
   }
 
   @Override
@@ -539,6 +558,33 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
     }
     // TODO(b/138148581): Support displaying a badge on label-only bottom navigation views.
     return null;
+  }
+
+  private int getSuggestedIconWidth() {
+    int badgeWidth =
+        badgeDrawable == null
+            ? 0
+            : badgeDrawable.getMinimumWidth() - badgeDrawable.getHorizontalOffset();
+
+    // Account for the fact that the badge may fit within the left or right margin. Give the same
+    // space of either side so that icon position does not move if badge gravity is changed.
+    LayoutParams iconParams = (LayoutParams) icon.getLayoutParams();
+    return max(badgeWidth, iconParams.leftMargin)
+        + icon.getMeasuredWidth()
+        + max(badgeWidth, iconParams.rightMargin);
+  }
+
+  private int getSuggestedIconHeight() {
+    int badgeHeight = 0;
+    if (badgeDrawable != null) {
+      badgeHeight = badgeDrawable.getMinimumHeight() / 2;
+    }
+
+    // Account for the fact that the badge may fit within the top margin. Bottom margin is ignored
+    // because the icon view will be aligned to the baseline of the label group. But give space for
+    // the badge at the bottom as well, so that icon does not move if badge gravity is changed.
+    LayoutParams iconParams = (LayoutParams) icon.getLayoutParams();
+    return max(badgeHeight, iconParams.topMargin) + icon.getMeasuredWidth() + badgeHeight;
   }
 
   /**

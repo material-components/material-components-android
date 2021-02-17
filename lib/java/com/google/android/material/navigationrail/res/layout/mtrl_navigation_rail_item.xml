@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2021 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,19 +16,17 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
   <ImageView
       android:id="@id/navigation_bar_item_icon_view"
-      android:layout_width="24dp"
-      android:layout_height="24dp"
-      android:layout_marginTop="@dimen/mtrl_navigation_rail_margin"
-      android:layout_marginBottom="@dimen/mtrl_navigation_rail_margin"
-      android:layout_gravity="center_horizontal"
+      android:layout_width="@dimen/mtrl_navigation_rail_icon_size"
+      android:layout_height="@dimen/mtrl_navigation_rail_icon_size"
+      android:layout_marginBottom="@dimen/mtrl_navigation_rail_icon_margin"
       android:contentDescription="@null"
-      android:duplicateParentState="true"/>
+      android:duplicateParentState="true" />
   <com.google.android.material.internal.BaselineLayout
       android:id="@id/navigation_bar_item_labels_group"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:paddingBottom="@dimen/mtrl_navigation_rail_text_bottom_margin"
       android:layout_gravity="bottom|center_horizontal"
-      android:paddingBottom="@dimen/mtrl_navigation_rail_label_padding"
       android:clipChildren="false"
       android:clipToPadding="false"
       android:duplicateParentState="true">
@@ -40,7 +37,7 @@
         android:duplicateParentState="true"
         android:ellipsize="end"
         android:maxLines="1"
-        android:textSize="@dimen/mtrl_navigation_rail_text_size"/>
+        android:textSize="@dimen/mtrl_navigation_rail_text_size" />
     <TextView
         android:id="@id/navigation_bar_item_large_label_view"
         android:layout_width="wrap_content"
@@ -49,6 +46,6 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:textSize="@dimen/mtrl_navigation_rail_active_text_size"
-        android:visibility="invisible"/>
+        android:visibility="invisible" />
   </com.google.android.material.internal.BaselineLayout>
 </merge>

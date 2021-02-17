@@ -19,8 +19,10 @@ package com.google.android.material.navigationrail;
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static java.lang.Math.max;
 
 import android.content.Context;
+import android.view.View;
 import androidx.annotation.DimenRes;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
@@ -35,6 +37,22 @@ final class NavigationRailItemView extends NavigationBarItemView {
   }
 
   @Override
+  protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+    if (MeasureSpec.getMode(heightMeasureSpec) == MeasureSpec.UNSPECIFIED) {
+      int preferredHeight = MeasureSpec.getSize(heightMeasureSpec);
+      int measuredHeight = getMeasuredHeight();
+      int bestHeight = max(measuredHeight, preferredHeight);
+
+      // Set view to use measured width, but use the best height possible
+      setMeasuredDimension(
+          getMeasuredWidthAndState(),
+          View.resolveSizeAndState(bestHeight, heightMeasureSpec, /* childMeasuredState= */ 0));
+    }
+  }
+
+  @Override
   @LayoutRes
   protected int getItemLayoutResId() {
     return R.layout.mtrl_navigation_rail_item;
@@ -43,6 +61,6 @@ final class NavigationRailItemView extends NavigationBarItemView {
   @Override
   @DimenRes
   protected int getItemDefaultMarginResId() {
-    return R.dimen.mtrl_navigation_rail_margin;
+    return R.dimen.mtrl_navigation_rail_icon_margin;
   }
 }

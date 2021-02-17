@@ -20,13 +20,12 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static com.google.android.material.navigationrail.NavigationRailView.DEFAULT_MENU_GRAVITY;
+import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 import android.content.Context;
-import androidx.appcompat.view.menu.MenuBuilder;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
@@ -49,35 +48,21 @@ public class NavigationRailMenuView extends NavigationBarMenuView {
 
   @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-    int childHeightSpec = makeSharedHeightSpec(widthMeasureSpec, heightMeasureSpec);
+    int maxHeight = MeasureSpec.getSize(heightMeasureSpec);
+    int visibleCount = getMenu().getVisibleItems().size();
 
-    int childCount = getChildCount();
-    int maxWidth = 0;
-    int totalHeight = 0;
-    for (int i = 0; i < childCount; i++) {
-      final View child = getChildAt(i);
-      if (child.getVisibility() != GONE) {
-        child.measure(widthMeasureSpec, childHeightSpec);
-        ViewGroup.LayoutParams params = child.getLayoutParams();
-        params.width = child.getMeasuredWidth();
-        params.height = child.getMeasuredHeight();
-        totalHeight += params.height;
-        if (params.width > maxWidth) {
-          maxWidth = params.width;
-        }
-      }
+    int measuredHeight;
+    if (visibleCount > 1 && isShifting(getLabelVisibilityMode(), visibleCount)) {
+      measuredHeight = measureShiftingChildHeights(widthMeasureSpec, maxHeight, visibleCount);
+    } else {
+      measuredHeight = measureSharedChildHeights(widthMeasureSpec, maxHeight, visibleCount, null);
     }
 
-    // Set view to use a fixed width, but wrap all item heights
+    // Set view to use parent width, but wrap all item heights
+    int parentWidth = MeasureSpec.getSize(widthMeasureSpec);
     setMeasuredDimension(
-        View.resolveSizeAndState(
-            maxWidth,
-            MeasureSpec.makeMeasureSpec(maxWidth, MeasureSpec.EXACTLY),
-            /* childMeasuredState= */ 0),
-        View.resolveSizeAndState(
-            totalHeight,
-            MeasureSpec.makeMeasureSpec(totalHeight, MeasureSpec.EXACTLY),
-            /* childMeasuredState= */ 0));
+        View.resolveSizeAndState(parentWidth, widthMeasureSpec, /* childMeasuredState= */ 0),
+        View.resolveSizeAndState(measuredHeight, heightMeasureSpec, /* childMeasuredState= */ 0));
   }
 
   @Override
@@ -101,14 +86,59 @@ public class NavigationRailMenuView extends NavigationBarMenuView {
     return new NavigationRailItemView(context);
   }
 
-  private int makeSharedHeightSpec(int parentWidthSpec, int parentHeightSpec) {
-    MenuBuilder menu = getMenu();
-    int visibleCount = menu.getVisibleItems().size();
-    int maxHeight = MeasureSpec.getSize(parentHeightSpec);
-    int maxAvailable = maxHeight / (visibleCount == 0 ? 1 : visibleCount);
-
+  private int makeSharedHeightSpec(int parentWidthSpec, int maxHeight, int shareCount) {
+    int maxAvailable = maxHeight / max(1, shareCount);
     return MeasureSpec.makeMeasureSpec(
-        min(MeasureSpec.getSize(parentWidthSpec), maxAvailable), MeasureSpec.EXACTLY);
+        min(MeasureSpec.getSize(parentWidthSpec), maxAvailable), MeasureSpec.UNSPECIFIED);
+  }
+
+  private int measureShiftingChildHeights(int widthMeasureSpec, int maxHeight, int shareCount) {
+    int selectedViewHeight = 0;
+
+    View selectedView = getChildAt(getSelectedItemPosition());
+    if (selectedView != null) {
+      int childHeightSpec = makeSharedHeightSpec(widthMeasureSpec, maxHeight, shareCount);
+      selectedViewHeight = measureChildHeight(selectedView, widthMeasureSpec, childHeightSpec);
+      maxHeight -= selectedViewHeight;
+      --shareCount;
+    }
+
+    return selectedViewHeight
+        + measureSharedChildHeights(widthMeasureSpec, maxHeight, shareCount, selectedView);
+  }
+
+  private int measureSharedChildHeights(
+      int widthMeasureSpec, int maxHeight, int shareCount, View selectedView) {
+    int childHeightSpec = makeSharedHeightSpec(widthMeasureSpec, maxHeight, shareCount);
+    if (selectedView == null) {
+      childHeightSpec = makeSharedHeightSpec(widthMeasureSpec, maxHeight, shareCount);
+    } else {
+      // Use the same height for the unselected views, so the items do not have different heights
+      // This may cause the last time to overflow and get cropped, but the developer is expected to
+      // ensure that there is enough height for the rail or place it inside scroll view.
+      childHeightSpec =
+          MeasureSpec.makeMeasureSpec(selectedView.getMeasuredHeight(), MeasureSpec.UNSPECIFIED);
+    }
+
+    int childCount = getChildCount();
+    int totalHeight = 0;
+    for (int i = 0; i < childCount; i++) {
+      final View child = getChildAt(i);
+      if (child != selectedView) {
+        totalHeight += measureChildHeight(child, widthMeasureSpec, childHeightSpec);
+      }
+    }
+
+    return totalHeight;
+  }
+
+  private int measureChildHeight(View child, int widthMeasureSpec, int heightMeasureSpec) {
+    if (child.getVisibility() != GONE) {
+      child.measure(widthMeasureSpec, heightMeasureSpec);
+      return child.getMeasuredHeight();
+    }
+
+    return 0;
   }
 
   void setMenuGravity(int gravity) {
