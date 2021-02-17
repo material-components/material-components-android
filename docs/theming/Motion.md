@@ -20,6 +20,9 @@ information, go to the
 [Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
 page.
 
+_**Note:** [Motion theming](#theming) will only be available in Material
+Components for Android version `1.4.0-alpha01` and above._
+
 Material Components for Android provides support for all four motion patterns
 defined in the Material spec.
 
@@ -187,6 +190,14 @@ override fun onCreate(savedInstanceState: Bundle?) {
   exitTransition = Hold()
 }
 ```
+
+_**Note:** When setting a `Hold` or `MaterialElevationScale` transition, it’s
+important that the transition matches the duration of the
+`MaterialContainerTransform` it’s paired with. If explicitly setting a duration
+on `MaterialContainerTransform` with `setDuration`, use the same value.
+Otherwise, prefer the `MaterialContainerTransform(Context, boolean)` constructor
+which loads theme-based values upfront so `Hold` or `MaterialElevationScale`’s
+duration can be accurately set using `MaterialContainerTransform.getDuration`._
 
 Alternatively, to subtly scale and fade Fragment A while the container transform
 is playing, set FragmentA's exit and reenter transitions to a
@@ -360,6 +371,29 @@ customize the look and feel of the animation:
 Element        | Attribute                | Related method(s)                 | Default value
 -------------- | ------------------------ | --------------------------------- | -------------
 **Shape** | `transitionShapeAppearance`           | `getStartShapeAppearanceModel`<br/>`setStartShapeAppearanceModel`<br/>`getEndShapeAppearanceModel`<br/>`setEndShapeAppearanceModel`          | `null`
+**Duration (incoming)** | `motionDurationLong1`           | `getDuration`<br/>`setDuration`          | `300ms`
+**Duration (outgoing)** | `motionDurationMedium2`           | `getDuration`<br/>`setDuration`          | `250ms`
+**Easing** | `motionEasingStandard`           | `getInterpolator`<br/>`setInterpolator`          | `cubic-bezier(0.4, 0.0, 0.2, 1)`<br/>`FastOutSlowIn`
+**Motion path** | `motionPath`           | `getPathMotion`<br/>`setPathMotion`          | `linear`
+
+_**Note:** By default, `MaterialContainerTransform` uses different durations
+when incoming vs. outgoing. Calling `setDuration` on an instance of
+`MaterialContainerTransform` will override this behavior, causing the passed
+duration to be used both when incoming and outgoing. If you would like different
+durations for incoming and outgoing animations, you should create and set
+separate instances of `MaterialContainerTransform` for entering and returning
+transitions with the desired values. Alternatively, update the duration theme
+attributes._
+
+`MaterialContainerTransform` provides two constructors - an empty parameter
+constructor and a `(Context, boolean)` constructor. The `(Context, boolean)`
+constructor is used to load theme-values upfront, making it possible to query
+for duration, interpolation and motion path if other transitions or animations,
+such as `Hold` and `MaterialElevationScale`, depend on these values from
+`MaterialContainerTransform`.
+
+See the [Motion Theming section](#theming) for details on how to systematically
+update motion.
 
 #### Container transform properties
 
@@ -694,6 +728,15 @@ override fun onCreate(savedInstanceState: Bundle?) {
 }
 ```
 
+#### Shared axis attributes
+
+Element        | Attribute                | Related method(s)                 | Default value
+-------------- | ------------------------ | --------------------------------- | -------------
+**Duration** | `motionDurationLong1`           | `getDuration`<br/>`setDuration`          | `300ms`
+**Easing** | `motionEasingStandard`           | `getInterpolator`<br/>`setInterpolator`          | `cubic-bezier(0.4, 0.0, 0.2, 1)`<br/>`FastOutSlowIn`
+
+See the [Motion Theming section](#theming) for details on how to systematically
+update motion.
 
 ## Fade Through
 
@@ -936,6 +979,16 @@ override fun onCreate(savedInstanceState: Bundle?) {
 }
 ```
 
+#### Fade through attributes
+
+Element        | Attribute                | Related method(s)                 | Default value
+-------------- | ------------------------ | --------------------------------- | -------------
+**Duration** | `motionDurationLong1`           | `getDuration`<br/>`setDuration`          | `300ms`
+**Easing** | `motionEasingStandard`           | `getInterpolator`<br/>`setInterpolator`          | `cubic-bezier(0.4, 0.0, 0.2, 1)`<br/>`FastOutSlowIn`
+
+See the [Motion Theming section](#theming) for details on how to systematically
+update motion.
+
 ## Fade
 
 The **fade** pattern is used for UI elements that enter or exit within the
@@ -1009,5 +1062,97 @@ Element          | Primary transition | Secondary transition
 ---------------- | ------------------ | --------------------
 **MaterialFade** | `Fade`             | `Scale`
 
-
 <!-- Todo: Add snippet of variant -->
+
+#### Fade through attributes
+
+Element        | Attribute                | Related method(s)                 | Default value
+-------------- | ------------------------ | --------------------------------- | -------------
+**Duration (incoming)** | `motionDurationShort2`           | `getDuration`<br/>`setDuration`          | `150ms`
+**Duration (outgoing)** | `motionDurationShort1`           | `getDuration`<br/>`setDuration`          | `75ms`
+**Easing** | `motionEasingLinear`           | `getInterpolator`<br/>`setInterpolator`          | `cubic-bezier(0 0, 1, 1)`<br/>`Linear`
+
+See the [Motion Theming section](#theming) for details on how to systematically
+update motion.
+
+## Theming
+
+Motion theming will only be available in Material Components for Android version
+`1.4.0-alpha01` and above.
+
+The Material motion system is backed by a limited number of slots which
+transitions use by default to create a consistent, branded feel. These slots are
+implemented as theme attributes, similar to color or shape attributes.
+
+### Easing
+
+Easing theme attributes define a set of curves that can be inflated and used as [Interpolators](https://developer.android.com/reference/androidx/core/animation/Interpolator).
+
+Attribute        | Default value                | Description
+-------------- | ------------------------ | ---------------------------------
+**?attr/motionEasingStandard** | `cubic-bezier(0.4, 0.0, 0.2, 1)`<br/>`FastOutSlowIn`   | Easing used for elements that begin and end at rest.
+**?attr/motionEasingEmphasized** | `path(M 0,0 C 0.05, 0, 0.133333, 0.06, 0.166666, 0.4 C 0.208333, 0.82, 0.25, 1, 1, 1)`<br/>`FastOutExtraSlowIn`   | Easing used for elements that begin and end at rest but want extra attention drawn to the end of the animation.
+**?attr/motionEasingDecelerated** | `cubic-bezier(0.0, 0.0, 0.2, 1)`<br/>`LinearOutSlowIn`   | Easing used for incoming elements; motion begins at peak velocity and ends at rest.
+**?attr/motionEasingAccelerated** | `cubic-bezier(0.4, 0.0, 1, 1)`<br/>`FastOutLinearIn`   | Easing used for outgoing elements; motion begins at rest and ends at peak velocity.
+**?attr/motionEasingLinear** | `cubic-bezier(0, 0, 1, 1)`<br/>`Linear`   | Easing for simple motion such as fading.
+
+Easing attributes are able to accept two types of curves - cubic beziers and
+vector paths. Cubic bezier curves are in the standard (x1, y1, x2, y2) format.
+For vector path curves, the curve must start at 0,0 and end at 1, 1. Vector path
+curves can be beneficial if you’d like to introduce 3-point (quintic) easing
+curves to your app in a backwards compatible way.
+
+To update an easing value override any of the attributes in your app’s theme
+following the `<type>(value)` string format.
+
+```
+<style name="Theme.MyTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    ....
+    <item name="motionEasingEmphasized">path(M 0,0 C .25, 0, .266666, .333334, .333334, .7166664 C .366667, .9666664, .3333334, 1, 1, 1)</item>
+</style>
+```
+
+For more information on easing, see
+[material.io/design/motion/customization.html#applying-customizations](https://material.io/design/motion/customization.html#applying-customizations).
+
+### Duration
+
+Duration attributes are a set of durations in milliseconds that can be used for
+animations.
+
+Attribute        | Default value                | Description
+-------------- | ------------------------ | ---------------------------------
+**?attr/motionDurationShort1** | `75ms`   | Duration for use with small motion areas such as icons and selection controls.
+**?attr/motionDurationShort2** | `150ms`   |
+**?attr/motionDurationMedium1** | `200ms`   | Duration for use with large motion areas such as bottom sheets and expanding chips.
+**?attr/motionDurationMedium2** | `250ms`   |
+**?attr/motionDurationLong1** | `300ms`   | Duration for use with elements that traverse a large portion of the screen, such as page transitions.
+**?attr/motionDurationLong2** | `350ms`   |
+
+In general, durations should increase in duration as the area/traversal of an
+animation increases. Maintaining this rule when customizing duration attributes
+will ensure your transitions have a consistent sense of speed.
+
+To override a duration attribute, assign the attribute to your desired
+millisecond integer value.
+
+```
+<style name="Theme.MyTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    ....
+    <item name="motionDurationLong2">450</item>
+</style>
+```
+
+For more information on duration, see
+[material.io/design/motion/customization.html#speed](https://material.io/design/motion/customization.html#speed)
+
+### Path
+
+Path attributes are values which control the behavior of animating elements.
+
+Attribute        | Default value                | Description
+-------------- | ------------------------ | ---------------------------------
+**?attr/motionPath** | `linear`   | An enum that controls the path along which animating elements move.<br/>`linear`: Elements move along a straight path from their current position to their new position. A linear path corresponds to a `null` `PathMotion`.<br/>`arc`: Elements move along a curved/arced path. An arc path corresponds to a `MaterialArcMotion` `PathMotion`.
+
+For more information of motionPath, see
+[material.io/design/motion/customization.html#motion-paths](https://material.io/design/motion/customization.html#motion-paths)
