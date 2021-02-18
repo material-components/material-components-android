@@ -18,24 +18,17 @@ package io.material.catalog.themeswitcher;
 
 import io.material.catalog.R;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.os.Bundle;
-import androidx.core.view.MarginLayoutParamsCompat;
-import androidx.core.widget.CompoundButtonCompat;
 import androidx.appcompat.widget.AppCompatRadioButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import androidx.annotation.ArrayRes;
-import androidx.annotation.ColorInt;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -48,6 +41,7 @@ import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasAndroidInjector;
 import dagger.android.support.AndroidSupportInjection;
+import io.material.catalog.themeswitcher.ThemeAttributeValuesCreator.ThemeAttributeValues;
 import io.material.catalog.windowpreferences.WindowPreferencesManager;
 import javax.inject.Inject;
 
@@ -77,6 +71,7 @@ public class ThemeSwitcherDialogFragment extends BottomSheetDialogFragment
   }
 
   @Inject ThemeSwitcherResourceProvider resourceProvider;
+  @Inject ThemeAttributeValuesCreator themeAttributeValuesCreator;
   private RadioGroup primaryColorGroup;
   private RadioGroup secondaryColorGroup;
   private RadioGroup shapeCornerFamilyGroup;
@@ -251,14 +246,17 @@ public class ThemeSwitcherDialogFragment extends BottomSheetDialogFragment
       // Create RadioButtons for themeAttributeValues values
       switch (themingType) {
         case COLOR:
-          themeAttributeValues = new ColorPalette(valueThemeOverlay, themeOverlayAttrs);
+          themeAttributeValues =
+              themeAttributeValuesCreator.createColorPalette(
+                  getContext(), valueThemeOverlay, themeOverlayAttrs);
           break;
         case SHAPE_CORNER_FAMILY:
-          themeAttributeValues = new ThemeAttributeValues(valueThemeOverlay);
+          themeAttributeValues =
+              themeAttributeValuesCreator.createThemeAttributeValues(valueThemeOverlay);
           break;
         case SHAPE_CORNER_SIZE:
           themeAttributeValues =
-              new ThemeAttributeValuesWithContentDescription(
+              themeAttributeValuesCreator.createThemeAttributeValuesWithContentDescription(
                   valueThemeOverlay, contentDescriptionArray.getString(i));
           break;
       }
@@ -289,63 +287,6 @@ public class ThemeSwitcherDialogFragment extends BottomSheetDialogFragment
     button.setContentDescription(contentDescription);
     group.addView(button);
     return button;
-  }
-
-  private static class ThemeAttributeValues {
-    @StyleRes private final int themeOverlay;
-
-    @SuppressLint("ResourceType")
-    public ThemeAttributeValues(@StyleRes int themeOverlay) {
-      this.themeOverlay = themeOverlay;
-    }
-
-    public void customizeRadioButton(AppCompatRadioButton button) {}
-  }
-
-  private static class ThemeAttributeValuesWithContentDescription extends ThemeAttributeValues {
-    private final String contentDescription;
-
-    @SuppressLint("ResourceType")
-    public ThemeAttributeValuesWithContentDescription(
-        @StyleRes int themeOverlay, String contentDescription) {
-      super(themeOverlay);
-      this.contentDescription = contentDescription;
-    }
-
-    @Override
-    public void customizeRadioButton(AppCompatRadioButton button) {
-      button.setText(contentDescription);
-      LinearLayout.LayoutParams size =
-          new LinearLayout.LayoutParams(
-              LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-      MarginLayoutParamsCompat.setMarginEnd(
-          size, button.getResources().getDimensionPixelSize(R.dimen.theme_switcher_radio_spacing));
-      button.setLayoutParams(size);
-    }
-  }
-
-  private class ColorPalette extends ThemeAttributeValues {
-    @ColorInt private final int main;
-
-    @SuppressLint("ResourceType")
-    public ColorPalette(@StyleRes int themeOverlay, @StyleableRes int[] themeOverlayAttrs) {
-      super(themeOverlay);
-      TypedArray a = getContext().obtainStyledAttributes(themeOverlay, themeOverlayAttrs);
-      main = a.getColor(0, Color.TRANSPARENT);
-
-      a.recycle();
-    }
-
-    @Override
-    public void customizeRadioButton(AppCompatRadioButton button) {
-      CompoundButtonCompat.setButtonTintList(
-          button, ColorStateList.valueOf(convertToDisplay(main)));
-    }
-
-    @ColorInt
-    private int convertToDisplay(@ColorInt int color) {
-      return color == Color.WHITE ? Color.BLACK : color;
-    }
   }
 
   @Inject DispatchingAndroidInjector<Object> childFragmentInjector;
