@@ -68,6 +68,15 @@ public abstract class BaseProgressIndicatorSpec {
   /** The animation behavior to hide the indicator and track. */
   @HideAnimationBehavior public int hideAnimationBehavior;
 
+  /**
+   * Instantiates BaseProgressIndicatorSpec.
+   *
+   * <p>If attributes are missing, the values defined in the default style {@link
+   * R.style#Widget_MaterialComponents_ProgressIndicator} will be loaded.
+   *
+   * @param context Current themed context.
+   * @param attrs Component's attributes set.
+   */
   protected BaseProgressIndicatorSpec(
       @NonNull Context context,
       @Nullable AttributeSet attrs,
