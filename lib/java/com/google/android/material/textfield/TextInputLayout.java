@@ -4105,7 +4105,7 @@ public class TextInputLayout extends LinearLayout {
     }
 
     // Update the text box's background color based on the current state.
-    if (boxBackgroundMode == BOX_BACKGROUND_FILLED) {
+    if (boxBackgroundMode == BOX_BACKGROUND_FILLED || boxBackgroundMode == BOX_BACKGROUND_OUTLINE) {
       if (!isEnabled()) {
         boxBackgroundColor = disabledFilledBackgroundColor;
       } else if (isHovered && !hasFocus) {
