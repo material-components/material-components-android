@@ -199,6 +199,8 @@
     <attr name="title"/>
     <!-- The maximum number of lines to display in the expanded state. Experimental Feature. -->
     <attr name="maxLines" format="integer" />
+    <!-- The interpolator to use when animating the title position from collapsed to expanded and vice versa -->
+    <attr name="titlePositionInterpolator" format="reference"/>
   </declare-styleable>
 
   <declare-styleable name="CollapsingToolbarLayout_Layout">
