@@ -237,6 +237,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   private static final int DEF_STYLE_RES = R.style.Widget_Design_BottomSheet_Modal;
 
+  private int requestedExpandedOffset;
   int expandedOffset;
 
   int fitToContentsOffset;
@@ -266,6 +267,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   private boolean nestedScrolled;
 
   private int childHeight;
+  private int childTopMargin;
   int parentWidth;
   int parentHeight;
 
@@ -441,18 +443,22 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     if (parentHeight - childHeight < insetTop) {
       childHeight = parentHeight;
     }
-    fitToContentsOffset = max(0, parentHeight - childHeight);
+    fitToContentsOffset = max(childTopMargin, parentHeight - childHeight);
+    calculateExpandedOffset();
     calculateHalfExpandedOffset();
     calculateCollapsedOffset();
 
+    ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
+    childTopMargin = params.topMargin;
+
     if (state == STATE_EXPANDED) {
-      ViewCompat.offsetTopAndBottom(child, getExpandedOffset());
+      ViewCompat.offsetTopAndBottom(child, getExpandedOffset() - childTopMargin);
     } else if (state == STATE_HALF_EXPANDED) {
-      ViewCompat.offsetTopAndBottom(child, halfExpandedOffset);
+      ViewCompat.offsetTopAndBottom(child, halfExpandedOffset - childTopMargin);
     } else if (hideable && state == STATE_HIDDEN) {
-      ViewCompat.offsetTopAndBottom(child, parentHeight);
+      ViewCompat.offsetTopAndBottom(child, parentHeight - childTopMargin);
     } else if (state == STATE_COLLAPSED) {
-      ViewCompat.offsetTopAndBottom(child, collapsedOffset);
+      ViewCompat.offsetTopAndBottom(child, collapsedOffset - childTopMargin);
     } else if (state == STATE_DRAGGING || state == STATE_SETTLING) {
       ViewCompat.offsetTopAndBottom(child, savedTop - child.getTop());
     }
@@ -888,7 +894,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     if (offset < 0) {
       throw new IllegalArgumentException("offset must be greater than or equal to 0");
     }
-    this.expandedOffset = offset;
+    this.requestedExpandedOffset = offset;
+    calculateExpandedOffset();
   }
 
   /**
@@ -1181,8 +1188,12 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     }
   }
 
+  private void calculateExpandedOffset() {
+    this.expandedOffset = max(childTopMargin, requestedExpandedOffset);
+  }
+
   private void calculateHalfExpandedOffset() {
-    this.halfExpandedOffset = (int) (parentHeight * (1 - halfExpandedRatio));
+    this.halfExpandedOffset = (int) ((parentHeight - childTopMargin) * (1 - halfExpandedRatio));
   }
 
   private void reset() {
