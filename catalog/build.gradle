@@ -59,6 +59,7 @@ def srcDirs = [
   'internal',
   'main',
   'menu',
+  'navigationrail',
   'progressindicator',
   'radiobutton',
   'shapetheming',

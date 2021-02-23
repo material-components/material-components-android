@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright 2020 The Android Open Source Project
+  Copyright 2021 The Android Open Source Project
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -15,10 +15,45 @@
   limitations under the License.
   -->
 <resources>
-  <string name="cat_nav_rail_title">Navigation Rail</string>
-  <string name="cat_nav_rail_description">
+  <string name="cat_navigation_rail_title"
+          description="The title for the navigation rail demo. [CHAR_LIMIT=100]">Navigation Rail</string>
+  <string name="cat_navigation_rail_description"
+          description="Brief summary about navigation rail componentdemo. [CHAR_LIMIT=500]">
     Navigation Rails make it easy to explore and switch between top-level views in a single
     tap. This navigational element resides at the bottom of the screen, and provides direct access
     for three to five destinations within an app.
   </string>
+
+  <string name="cat_navigation_rail_page_1_name"
+          description="The title of a page in the navigation rail demo. [CHAR_LIMIT=50]">Page 1</string>
+  <string name="cat_navigation_rail_page_2_name"
+          description="The title of a page in the navigation rail demo. [CHAR_LIMIT=50]">Page 2</string>
+  <string name="cat_navigation_rail_page_3_name"
+          description="The title of a page in the navigation rail demo. [CHAR_LIMIT=50]">Page 3</string>
+  <string name="cat_navigation_rail_page_4_name"
+          description="The title of a page in the navigation rail demo. [CHAR_LIMIT=50]">Page 4</string>
+  <string name="cat_navigation_rail_page_5_name"
+          description="The title of a page in the navigation rail demo. [CHAR_LIMIT=50]">Page 5</string>
+  <string name="cat_navigation_rail_page_6_name"
+          description="The title of a page in the navigation rail demo. [CHAR_LIMIT=50]">Page 6</string>
+  <string name="cat_navigation_rail_page_7_name"
+          description="The title of a page in the navigation rail demo. [CHAR_LIMIT=50]">Page 7</string>
+
+  <string name="cat_navigation_rail_add_nav_item"
+          description="Label for the button that will add a destination to the navigation rail. [CHAR_LIMIT=50]">Add destination</string>
+  <string name="cat_navigation_rail_remove_nav_item"
+          description="Label for the button that will the last destination from the navigation rail. [CHAR_LIMIT=50]">Remove destination</string>
+  <string name="cat_navigation_rail_increment_badge_number"
+          description="The title of a button to increment the notification number. [CHAR_LIMIT=20]">+Badge number</string>
+
+  <string name="cat_navigation_rail_badge_gravity_spinner_label"
+          description="Label for the dropdown that controls where badges will be positioned relative to the icon. [CHAR_LIMIT=50]">Badge gravity</string>
+  <string name="cat_navigation_rail_badge_gravity_top_end"
+          description="Label for the option that will cause badges to be positioned at the end, above the icon. [CHAR_LIMIT=50]">Top end</string>
+  <string name="cat_navigation_rail_badge_gravity_top_start"
+          description="Label for the option that will cause badges to be positioned at the start, above the icon. [CHAR_LIMIT=50]">Top start</string>
+  <string name="cat_navigation_rail_badge_gravity_bottom_end"
+          description="Label for the option that will cause badges to be positioned at the end, below the icon. [CHAR_LIMIT=50]">Bottom end</string>
+  <string name="cat_navigation_rail_badge_gravity_bottom_start"
+          description="Label for the option that will cause badges to be positioned at starting, below the icon. [CHAR_LIMIT=50]">Bottom start</string>
 </resources>
