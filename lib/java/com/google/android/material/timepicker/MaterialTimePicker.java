@@ -26,6 +26,8 @@ import android.content.DialogInterface.OnDismissListener;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+
+import androidx.annotation.StyleRes;
 import androidx.fragment.app.DialogFragment;
 import android.text.TextUtils;
 import android.util.Pair;
@@ -87,12 +89,15 @@ public final class MaterialTimePicker extends DialogFragment {
   static final String INPUT_MODE_EXTRA = "TIME_PICKER_INPUT_MODE";
   static final String TITLE_RES_EXTRA = "TIME_PICKER_TITLE_RES";
   static final String TITLE_TEXT_EXTRA = "TIME_PICKER_TITLE_TEXT";
+  static final String OVERRIDE_THEME_RES_ID = "TIME_PICKER_OVERRIDE_THEME_RES_ID";
 
   private MaterialButton modeButton;
 
   @InputMode private int inputMode = INPUT_MODE_CLOCK;
 
   private TimeModel time;
+
+  private int overrideThemeResId = 0;
 
   @NonNull
   private static MaterialTimePicker newInstance(@NonNull Builder options) {
@@ -101,6 +106,7 @@ public final class MaterialTimePicker extends DialogFragment {
     args.putParcelable(TIME_MODEL_EXTRA, options.time);
     args.putInt(INPUT_MODE_EXTRA, options.inputMode);
     args.putInt(TITLE_RES_EXTRA, options.titleTextResId);
+    args.putInt(OVERRIDE_THEME_RES_ID, options.overrideThemeResId);
     if (options.titleText != null) {
       args.putString(TITLE_TEXT_EXTRA, options.titleText.toString());
     }
@@ -128,8 +134,7 @@ public final class MaterialTimePicker extends DialogFragment {
   @NonNull
   @Override
   public final Dialog onCreateDialog(@Nullable Bundle bundle) {
-    TypedValue value = MaterialAttributes.resolve(requireContext(), R.attr.materialTimePickerTheme);
-    Dialog dialog = new Dialog(requireContext(), value == null ? 0 : value.data);
+    Dialog dialog = new Dialog(requireContext(), getThemeResId());
     Context context = dialog.getContext();
     int surfaceColor =
         MaterialAttributes.resolveOrThrow(
@@ -178,6 +183,7 @@ public final class MaterialTimePicker extends DialogFragment {
     bundle.putInt(INPUT_MODE_EXTRA, inputMode);
     bundle.putInt(TITLE_RES_EXTRA, titleResId);
     bundle.putString(TITLE_TEXT_EXTRA, titleText);
+    bundle.putInt(OVERRIDE_THEME_RES_ID, overrideThemeResId);
   }
 
   private void restoreState(@Nullable Bundle bundle) {
@@ -192,6 +198,7 @@ public final class MaterialTimePicker extends DialogFragment {
     inputMode = bundle.getInt(INPUT_MODE_EXTRA, INPUT_MODE_CLOCK);
     titleResId = bundle.getInt(TITLE_RES_EXTRA, 0);
     titleText = bundle.getString(TITLE_TEXT_EXTRA);
+    overrideThemeResId = bundle.getInt(OVERRIDE_THEME_RES_ID, 0);
   }
 
   @NonNull
@@ -430,6 +437,14 @@ public final class MaterialTimePicker extends DialogFragment {
     dismissListeners.clear();
   }
 
+  private int getThemeResId() {
+    if(overrideThemeResId != 0) {
+      return overrideThemeResId;
+    }
+    TypedValue value = MaterialAttributes.resolve(requireContext(), R.attr.materialTimePickerTheme  );
+    return value == null ? 0 : value.data;
+  }
+
   /** Used to create {@link MaterialTimePicker} instances. */
   public static final class Builder {
 
@@ -438,6 +453,7 @@ public final class MaterialTimePicker extends DialogFragment {
     private int inputMode;
     private int titleTextResId = 0;
     private CharSequence titleText;
+    private int overrideThemeResId = 0;
 
     /** Sets the input mode with which to start the time picker. */
     @NonNull
@@ -496,6 +512,13 @@ public final class MaterialTimePicker extends DialogFragment {
     @NonNull
     public Builder setTitleText(@Nullable CharSequence charSequence) {
       this.titleText = charSequence;
+      return this;
+    }
+
+    /** Sets the theme for the time picker. */
+    @NonNull
+    public Builder setTheme(@StyleRes int themeResId) {
+      this.overrideThemeResId = themeResId;
       return this;
     }
 
