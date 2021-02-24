@@ -21,5 +21,6 @@ categories:   [Material Components]
 languages:    [Java]
 solutions:    [Mobile]
 github:       material-components/material-components-android
+branch:       master
 level:        INTERMEDIATE
 license:      apache2
