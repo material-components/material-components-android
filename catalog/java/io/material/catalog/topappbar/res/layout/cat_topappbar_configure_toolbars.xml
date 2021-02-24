@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2021 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<androidx.core.widget.NestedScrollView
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/cat_topappbar_configure_toolbars"
+      android:layout_marginBottom="8dp"
+      android:textAppearance="?attr/textAppearanceHeadline6" />
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="16dp"
+      android:orientation="horizontal">
+
+      <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginEnd="8dp"
+        android:hint="@string/cat_topappbar_configure_title_text">
+
+        <com.google.android.material.textfield.TextInputEditText
+          android:id="@+id/toolbar_title_edittext"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"/>
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <CheckBox
+        android:id="@+id/toolbar_title_centered_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cat_topappbar_configure_centered" />
+    </LinearLayout>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="16dp"
+      android:orientation="horizontal">
+
+      <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginEnd="8dp"
+        android:hint="@string/cat_topappbar_configure_subtitle_text">
+
+        <com.google.android.material.textfield.TextInputEditText
+          android:id="@+id/toolbar_subtitle_edittext"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"/>
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <CheckBox
+        android:id="@+id/toolbar_subtitle_centered_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cat_topappbar_configure_centered" />
+    </LinearLayout>
+
+    <CheckBox
+      android:id="@+id/toolbar_navigation_icon_checkbox"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/cat_topappbar_configure_navigation_icon" />
+
+    <CheckBox
+      android:id="@+id/toolbar_menu_items_checkbox"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/cat_topappbar_configure_menu_items" />
+
+    <Button
+      android:id="@+id/apply_button"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="8dp"
+      android:layout_marginBottom="8dp"
+      android:text="@string/cat_topappbar_configure_apply_button"/>
+
+    <Button
+      android:id="@+id/cancel_button"
+      style="?attr/materialButtonOutlinedStyle"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/cat_topappbar_configure_cancel_button"/>
+  </LinearLayout>
+</androidx.core.widget.NestedScrollView>

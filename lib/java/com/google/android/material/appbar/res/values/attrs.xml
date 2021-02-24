@@ -218,7 +218,17 @@
   </declare-styleable>
 
   <declare-styleable name="MaterialToolbar">
+    <!-- The tint color for the navigation button icon drawable corresponding to
+         the "app:navigationIcon" attribute. -->
     <attr name="navigationIconTint" format="color" />
+    <!-- Whether the title text corresponding to the "app:title" attribute
+         should be centered horizontally within the toolbar. Default is false.
+    -->
+    <attr name="titleCentered" format="boolean" />
+    <!-- Whether the subtitle text corresponding to the "app:subtitle" attribute
+         should be centered horizontally within the toolbar. Default is false.
+    -->
+    <attr name="subtitleCentered" format="boolean" />
   </declare-styleable>
 
 </resources>

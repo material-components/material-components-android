@@ -72,4 +72,22 @@
     extremely long and thus will be displayed in multiple lines.</string>
   <!-- Label for a button to change the maximum number of lines [CHAR_LIMIT=32] -->
   <string name="menu_max_lines">Max lines = <xliff:g id="max">%d</xliff:g></string>
+
+  <!-- Label for a button to show a toolbar configuration popup [CHAR_LIMIT=NONE] -->
+  <string name="cat_topappbar_configure_toolbars">Configure Toolbars</string>
+  <!-- Label for a text field for configuring toolbar title [CHAR_LIMIT=NONE] -->
+  <string name="cat_topappbar_configure_title_text">Title Text</string>
+  <!-- Label for a text field for configuring toolbar subtitle [CHAR_LIMIT=NONE] -->
+  <string name="cat_topappbar_configure_subtitle_text">Subtitle Text</string>
+  <!-- Label for a check box for configuring toolbar title centering [CHAR_LIMIT=NONE] -->
+  <string name="cat_topappbar_configure_centered">Centered</string>
+  <!-- Label for a check box for configuring toolbar navigation icon [CHAR_LIMIT=NONE] -->
+  <string name="cat_topappbar_configure_navigation_icon">Navigation Icon</string>
+  <!-- Label for a check box for configuring toolbar menu items [CHAR_LIMIT=NONE] -->
+  <string name="cat_topappbar_configure_menu_items">Menu Items</string>
+  <!-- Label for a button to apply toolbar configurations [CHAR_LIMIT=NONE] -->
+  <string name="cat_topappbar_configure_apply_button">Apply</string>
+  <!-- Label for a button to cancel toolbar configurations [CHAR_LIMIT=NONE] -->
+  <string name="cat_topappbar_configure_cancel_button">Cancel</string>
+
 </resources>

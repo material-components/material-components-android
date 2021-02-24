@@ -16,11 +16,14 @@
 
 package com.google.android.material.internal;
 
+import android.graphics.drawable.Drawable;
 import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,6 +40,30 @@ public class ToolbarUtils {
 
   private ToolbarUtils() {
     // Private constructor to prevent unwanted construction.
+  }
+
+  @Nullable
+  public static TextView getTitleTextView(@NonNull Toolbar toolbar) {
+    return getTextView(toolbar, toolbar.getTitle());
+  }
+
+  @Nullable
+  public static TextView getSubtitleTextView(@NonNull Toolbar toolbar) {
+    return getTextView(toolbar, toolbar.getSubtitle());
+  }
+
+  @Nullable
+  private static TextView getTextView(@NonNull Toolbar toolbar, CharSequence text) {
+    for (int i = 0; i < toolbar.getChildCount(); i++) {
+      View child = toolbar.getChildAt(i);
+      if (child instanceof TextView) {
+        TextView textView = (TextView) child;
+        if (TextUtils.equals(textView.getText(), text)) {
+          return textView;
+        }
+      }
+    }
+    return null;
   }
 
   @Nullable
@@ -64,10 +91,17 @@ public class ToolbarUtils {
 
   @Nullable
   public static ImageButton getNavigationIconButton(@NonNull Toolbar toolbar) {
-    if (toolbar.getChildCount() > 0) {
-      View child = toolbar.getChildAt(0);
+    Drawable navigationIcon = toolbar.getNavigationIcon();
+    if (navigationIcon == null) {
+      return null;
+    }
+    for (int i = 0; i < toolbar.getChildCount(); i++) {
+      View child = toolbar.getChildAt(i);
       if (child instanceof ImageButton) {
-        return (ImageButton) child;
+        ImageButton imageButton = (ImageButton) child;
+        if (imageButton.getDrawable() == navigationIcon) {
+          return imageButton;
+        }
       }
     }
     return null;

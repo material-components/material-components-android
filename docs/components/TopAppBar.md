@@ -423,10 +423,10 @@ Element                         | Attribute                   | Related method(s
 
 #### Navigation icon attributes
 
-Element                          | Attribute                 | Related method(s)                          | Default value
--------------------------------- | ------------------------- | ------------------------------------------ | -------------
-**`MaterialToolbar` icon**       | `app:navigationIcon`      | `setNavigationIcon`<br>`getNavigationIcon` | `null`
-**`MaterialToolbar` icon color** | `app:navigationIconTint`  | `setNavigationIconTint`                    | `?attr/colorControlNormal` (as `Drawable` tint)
+Element                                  | Attribute                 | Related method(s)                          | Default value
+---------------------------------------- | ------------------------- | ------------------------------------------ | -------------
+**`MaterialToolbar` icon**               | `app:navigationIcon`      | `setNavigationIcon`<br>`getNavigationIcon` | `null`
+**`MaterialToolbar` icon color**         | `app:navigationIconTint`  | `setNavigationIconTint`                    | `?attr/colorControlNormal` (as `Drawable` tint)
 
 #### Title attributes
 
@@ -438,6 +438,8 @@ Element                                                  | Attribute            
 **`MaterialToolbar` subtitle color**                     | `app:subtitleTextColor`                                     | `setSubtitleTextColor`            | `?android:attr/textColorSecondary`
 **`MaterialToolbar` title typography**                   | `app:titleTextAppearance`                                   | `setTitleTextAppearance`          | `?attr/textAppearanceHeadline6`
 **`MaterialToolbar` subtitle typography**                | `app:subtitleTextAppearance`                                | `setSubtitleTextAppearance`       | `?attr/textAppearanceSubtitle1`
+**`MaterialToolbar` title centering**                    | `app:titleCentered`                                         | `setTitleCentered`                | `false`
+**`MaterialToolbar` subtitle centering**                 | `app:subtitleCentered`                                      | `setSubtitleCentered`             | `false`
 **`CollapsingToolbarLayout` collapsed title typography** | `app:collapsedTitleTextAppearance`                          | `setCollapsedTitleTextAppearance` | `@style/TextAppearance.AppCompat.Widget.ActionBar.Title`
 **`CollapsingToolbarLayout` expanded title typography**  | `app:expandedTitleTextAppearance`                           | `setExpandedTitleTextAppearance`  | `@style/TextAppearance.Design.CollapsingToolbar.Expanded`
 **`CollapsingToolbarLayout` collapsed title color**      | `android:textColor` (in `app:collapsedTitleTextAppearance`) | `setCollapsedTitleTextColor`      | `?android:attr/textColorPrimary`
