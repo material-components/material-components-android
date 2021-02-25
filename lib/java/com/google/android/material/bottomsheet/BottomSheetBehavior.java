@@ -222,6 +222,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   private boolean paddingBottomSystemWindowInsets;
   private boolean paddingLeftSystemWindowInsets;
   private boolean paddingRightSystemWindowInsets;
+  private boolean paddingTopSystemWindowInsets;
 
   private int insetBottom;
   private int insetTop;
@@ -348,6 +349,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         a.getBoolean(R.styleable.BottomSheetBehavior_Layout_paddingLeftSystemWindowInsets, false);
     paddingRightSystemWindowInsets =
         a.getBoolean(R.styleable.BottomSheetBehavior_Layout_paddingRightSystemWindowInsets, false);
+    paddingTopSystemWindowInsets =
+        a.getBoolean(R.styleable.BottomSheetBehavior_Layout_paddingTopSystemWindowInsets, false);
 
     a.recycle();
     ViewConfiguration configuration = ViewConfiguration.get(context);
@@ -436,10 +439,15 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     parentWidth = parent.getWidth();
     parentHeight = parent.getHeight();
     childHeight = child.getHeight();
-    // If the bottomsheet would land in the middle of the status bar when fully expanded add extra
-    // space to make sure it goes all the way.
     if (parentHeight - childHeight < insetTop) {
-      childHeight = parentHeight;
+      if (paddingTopSystemWindowInsets) {
+        // If the bottomsheet would land in the middle of the status bar when fully expanded add
+        // extra space to make sure it goes all the way.
+        childHeight = parentHeight;
+      } else {
+        // If we don't want the bottomsheet to go under the status bar we cap its height
+        childHeight = parentHeight - insetTop;
+      }
     }
     fitToContentsOffset = max(0, parentHeight - childHeight);
     calculateHalfExpandedOffset();
@@ -652,7 +660,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
           top = halfExpandedOffset;
           targetState = STATE_HALF_EXPANDED;
         } else {
-          top = expandedOffset;
+          top = getExpandedOffset();
           targetState = STATE_EXPANDED;
         }
       }
@@ -672,7 +680,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       } else {
         if (currentTop < halfExpandedOffset) {
           if (currentTop < Math.abs(currentTop - collapsedOffset)) {
-            top = expandedOffset;
+            top = getExpandedOffset();
             targetState = STATE_EXPANDED;
           } else {
             top = halfExpandedOffset;
@@ -899,7 +907,9 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    *     com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_expandedOffset
    */
   public int getExpandedOffset() {
-    return fitToContents ? fitToContentsOffset : expandedOffset;
+    return fitToContents
+        ? fitToContentsOffset
+        : Math.max(expandedOffset, paddingTopSystemWindowInsets ? 0 : insetTop);
   }
 
   /**
@@ -1460,7 +1470,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
                 top = halfExpandedOffset;
                 targetState = STATE_HALF_EXPANDED;
               } else {
-                top = expandedOffset;
+                top = getExpandedOffset();
                 targetState = STATE_EXPANDED;
               }
             }
@@ -1474,9 +1484,9 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
             } else if (fitToContents) {
               top = fitToContentsOffset;
               targetState = STATE_EXPANDED;
-            } else if (Math.abs(releasedChild.getTop() - expandedOffset)
+            } else if (Math.abs(releasedChild.getTop() - getExpandedOffset())
                 < Math.abs(releasedChild.getTop() - halfExpandedOffset)) {
-              top = expandedOffset;
+              top = getExpandedOffset();
               targetState = STATE_EXPANDED;
             } else {
               top = halfExpandedOffset;
@@ -1498,7 +1508,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
             } else {
               if (currentTop < halfExpandedOffset) {
                 if (currentTop < Math.abs(currentTop - collapsedOffset)) {
-                  top = expandedOffset;
+                  top = getExpandedOffset();
                   targetState = STATE_EXPANDED;
                 } else {
                   top = halfExpandedOffset;

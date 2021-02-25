@@ -58,6 +58,7 @@
     <attr name="paddingBottomSystemWindowInsets" format="boolean"/>
     <attr name="paddingLeftSystemWindowInsets" format="boolean"/>
     <attr name="paddingRightSystemWindowInsets" format="boolean"/>
+    <attr name="paddingTopSystemWindowInsets" format="boolean"/>
   </declare-styleable>
 
 </resources>

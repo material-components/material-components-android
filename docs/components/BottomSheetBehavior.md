@@ -75,8 +75,8 @@ bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
 `BottomSheetBehavior` can be made to automatically handle insets (such as for
 edge to edge) by specifying any of `paddingBottomSystemWindowInsets`,
-`paddingLeftSystemWindowInsets`, or `paddingRightSystemWindowInsets` to true on
-the view.
+`paddingLeftSystemWindowInsets`, `paddingRightSystemWindowInsets`, or
+`paddingTopSystemWindowInsets` to true on the view.
 
 ## Related Concepts
 

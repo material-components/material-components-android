@@ -442,7 +442,7 @@ public class BottomSheetDialog extends AppCompatDialog {
     }
 
     private void setPaddingForPosition(View bottomSheet) {
-      if (bottomSheet.getTop() <= insetsCompat.getSystemWindowInsetTop()) {
+      if (bottomSheet.getTop() < insetsCompat.getSystemWindowInsetTop()) {
         // If the bottomsheet is light, we should set light status bar so the icons are visible
         // since the bottomsheet is now under the status bar.
         setLightStatusBar(bottomSheet, lightBottomSheet);

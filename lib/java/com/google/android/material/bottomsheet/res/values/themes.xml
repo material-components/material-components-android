@@ -51,6 +51,7 @@
     <item name="paddingBottomSystemWindowInsets">true</item>
     <item name="paddingLeftSystemWindowInsets">true</item>
     <item name="paddingRightSystemWindowInsets">true</item>
+    <item name="paddingTopSystemWindowInsets">true</item>
   </style>
 
   <style name="ThemeOverlay.MaterialComponents.BottomSheetDialog"

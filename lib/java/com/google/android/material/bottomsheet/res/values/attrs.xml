@@ -80,6 +80,7 @@
     <attr name="paddingBottomSystemWindowInsets" />
     <attr name="paddingLeftSystemWindowInsets" />
     <attr name="paddingRightSystemWindowInsets" />
+    <attr name="paddingTopSystemWindowInsets" />
     <attr name="android:elevation"/>
 
   </declare-styleable>
