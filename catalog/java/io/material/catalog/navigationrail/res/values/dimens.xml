@@ -17,4 +17,5 @@
 
 <resources>
   <dimen name="cat_navigation_rail_standard_spacing">8dp</dimen>
+  <dimen name="cat_navigation_rail_controls_horizontal_margin">32dp</dimen>
 </resources>

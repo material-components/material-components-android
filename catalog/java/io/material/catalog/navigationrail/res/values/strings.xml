@@ -24,6 +24,9 @@
     for three to five destinations within an app.
   </string>
 
+  <string name="cat_navigation_rail_additional_controls_demo_title"
+          description="Label for the demo that shows how the look and behavior navigation rail may be configured. [CHAR_LIMIT=100]">Additional Controls Demo</string>
+
   <string name="cat_navigation_rail_page_1_name"
           description="The title of a page in the navigation rail demo. [CHAR_LIMIT=50]">Page 1</string>
   <string name="cat_navigation_rail_page_2_name"
@@ -45,6 +48,31 @@
           description="Label for the button that will the last destination from the navigation rail. [CHAR_LIMIT=50]">Remove destination</string>
   <string name="cat_navigation_rail_increment_badge_number"
           description="The title of a button to increment the notification number. [CHAR_LIMIT=20]">+Badge number</string>
+
+  <string name="cat_navigation_rail_icon_size_slider_title"
+          description="Label for the current icon size display. [CHAR_LIMIT=50]">Icon size: </string>
+  <string name="cat_navigation_rail_slider_max" translatable="false">48dp</string>
+  <string name="cat_navigation_rail_slider_min" translatable="false">0dp</string>
+
+  <string name="cat_navigation_rail_menu_gravity_control_title"
+          description="Label for the group of choices that controls how destinations will be grouped in the navigation rail. [CHAR_LIMIT=100]">Menu Gravity:</string>
+  <string name="cat_navigation_rail_menu_gravity_top"
+          description="Label for the choice that will cause the destinations to be grouped at the top of the navigation rail. [CHAR_LIMIT=50]">Top</string>
+  <string name="cat_navigation_rail_menu_gravity_center"
+          description="Label for the choice that will cause the destinations to be grouped at the center of the navigation rail. [CHAR_LIMIT=50]">Center</string>
+  <string name="cat_navigation_rail_menu_gravity_bottom"
+          description="Label for the choice that will cause the destinations to be grouped at the bottom of the navigation rail. [CHAR_LIMIT=50]">Bottom</string>
+
+  <string name="cat_navigation_rail_label_visibility_mode_title"
+          description="Label for the group of choices that controls if and when the destination labels will be displayed in the navigation rail. [CHAR_LIMIT=100]">Label visibility mode:</string>
+  <string name="cat_navigation_rail_label_visibility_mode_auto"
+          description="Label for the choice that will cause the destination lables to be displayed automatically based on the total number of destinations in the navigation rail. [CHAR_LIMIT=50]">Auto</string>
+  <string name="cat_navigation_rail_label_visibility_mode_selected"
+          description="Label for the choice that will cause the destination lables to be displayed only for the currently selected destination in the navigation rail. [CHAR_LIMIT=50]">Selected</string>
+  <string name="cat_navigation_rail_label_visibility_mode_labeled"
+          description="Label for the choice that will cause the destination lables to be displayed always in the navigation rail. [CHAR_LIMIT=50]">Labeled</string>
+  <string name="cat_navigation_rail_label_visibility_mode_unlabeled"
+          description="Label for the choice that will cause the destination lables to be hidden always in the navigation rail. [CHAR_LIMIT=50]">Unlabeled</string>
 
   <string name="cat_navigation_rail_badge_gravity_spinner_label"
           description="Label for the dropdown that controls where badges will be positioned relative to the icon. [CHAR_LIMIT=50]">Badge gravity</string>

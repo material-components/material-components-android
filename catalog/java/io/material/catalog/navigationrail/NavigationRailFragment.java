@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 The Android Open Source Project
+ * Copyright 2021 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,8 @@ import io.material.catalog.application.scope.FragmentScope;
 import io.material.catalog.feature.Demo;
 import io.material.catalog.feature.DemoLandingFragment;
 import io.material.catalog.feature.FeatureDemo;
+import java.util.ArrayList;
+import java.util.List;
 
 /** A landing fragment that links to navigation rail demos for the Catalog app. */
 public class NavigationRailFragment extends DemoLandingFragment {
@@ -49,6 +51,19 @@ public class NavigationRailFragment extends DemoLandingFragment {
         return new NavigationRailDemoFragment();
       }
     };
+  }
+
+  @Override
+  public List<Demo> getAdditionalDemos() {
+    List<Demo> additionalDemos = new ArrayList<>();
+    additionalDemos.add(
+        new Demo(R.string.cat_navigation_rail_additional_controls_demo_title) {
+          @Override
+          public Fragment createFragment() {
+            return new NavigationRailDemoControlsFragment();
+          }
+        });
+    return additionalDemos;
   }
 
   /** The Dagger module for {@link NavigationRailFragment} dependencies. */
