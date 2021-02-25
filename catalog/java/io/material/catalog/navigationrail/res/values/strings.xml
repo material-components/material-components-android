@@ -26,6 +26,8 @@
 
   <string name="cat_navigation_rail_additional_controls_demo_title"
           description="Label for the demo that shows how the look and behavior navigation rail may be configured. [CHAR_LIMIT=100]">Additional Controls Demo</string>
+  <string name="cat_navigation_rail_animated_demo_title"
+          description="Label the navigation rail demo that shows animated icons [CHAR_LIMIT=100]">Animated Demo</string>
 
   <string name="cat_navigation_rail_page_1_name"
           description="The title of a page in the navigation rail demo. [CHAR_LIMIT=50]">Page 1</string>
@@ -84,4 +86,13 @@
           description="Label for the option that will cause badges to be positioned at the end, below the icon. [CHAR_LIMIT=50]">Bottom end</string>
   <string name="cat_navigation_rail_badge_gravity_bottom_start"
           description="Label for the option that will cause badges to be positioned at starting, below the icon. [CHAR_LIMIT=50]">Bottom start</string>
+
+  <string name="cat_navigation_rail_alarm"
+          description="Label for an alarm icon. [CHAR_LIMIT=50]">Alarm</string>
+  <string name="cat_navigation_rail_clock"
+          description="Label for a clock icon. [CHAR_LIMIT=50]">Clock</string>
+  <string name="cat_navigation_rail_timer"
+          description="Label for a timer icon. [CHAR_LIMIT=50]">Timer</string>
+  <string name="cat_navigation_rail_stopwatch"
+          description="Label for a stopwatch icon. [CHAR_LIMIT=50]">Stopwatch</string>
 </resources>
