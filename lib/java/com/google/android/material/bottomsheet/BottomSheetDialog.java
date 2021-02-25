@@ -249,15 +249,6 @@ public class BottomSheetDialog extends AppCompatDialog {
     return dismissWithAnimation;
   }
 
-  /**
-   * Determines if the dialog should be displayed in edge to edge mode if the navigationBarColor of
-   * the window is transparent. By default this is true. Passing false will disable any edge to edge
-   * behavior done by this class.
-   */
-  public void setEdgeToEdgeEnabled(boolean enabled) {
-    edgeToEdgeEnabled = enabled;
-  }
-
   /** Returns if edge to edge behavior is enabled for this dialog. */
   public boolean getEdgeToEdgeEnabled() {
     return edgeToEdgeEnabled;
@@ -287,23 +278,25 @@ public class BottomSheetDialog extends AppCompatDialog {
       view = getLayoutInflater().inflate(layoutResId, coordinator, false);
     }
 
-    ViewCompat.setOnApplyWindowInsetsListener(
-        bottomSheet,
-        new OnApplyWindowInsetsListener() {
-          @Override
-          public WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
-            if (edgeToEdgeCallback != null) {
-              behavior.removeBottomSheetCallback(edgeToEdgeCallback);
-            }
+    if (edgeToEdgeEnabled) {
+      ViewCompat.setOnApplyWindowInsetsListener(
+          bottomSheet,
+          new OnApplyWindowInsetsListener() {
+            @Override
+            public WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
+              if (edgeToEdgeCallback != null) {
+                behavior.removeBottomSheetCallback(edgeToEdgeCallback);
+              }
 
-            if (insets != null) {
-              edgeToEdgeCallback = new EdgeToEdgeCallback(bottomSheet, insets);
-              behavior.addBottomSheetCallback(edgeToEdgeCallback);
-            }
+              if (insets != null) {
+                edgeToEdgeCallback = new EdgeToEdgeCallback(bottomSheet, insets);
+                behavior.addBottomSheetCallback(edgeToEdgeCallback);
+              }
 
-            return insets;
-          }
-        });
+              return insets;
+            }
+          });
+    }
 
     bottomSheet.removeAllViews();
     if (params == null) {
