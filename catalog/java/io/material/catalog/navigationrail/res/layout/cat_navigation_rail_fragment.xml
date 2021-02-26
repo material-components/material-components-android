@@ -36,6 +36,8 @@
 
     <LinearLayout
         android:id="@+id/demo_controls"
+        android:clipChildren="false"
+        android:clipToPadding="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/cat_navigation_rail_standard_spacing"

@@ -18,6 +18,8 @@ package io.material.catalog.navigationrail;
 
 import io.material.catalog.R;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static com.google.android.material.navigation.NavigationBarView.LABEL_VISIBILITY_AUTO;
 import static com.google.android.material.navigation.NavigationBarView.LABEL_VISIBILITY_LABELED;
 import static com.google.android.material.navigation.NavigationBarView.LABEL_VISIBILITY_SELECTED;
@@ -27,6 +29,7 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
@@ -41,6 +44,7 @@ public class NavigationRailDemoControlsFragment extends NavigationRailDemoFragme
   @Override
   protected void initNavigationRailDemoControls(@NonNull View view) {
     super.initNavigationRailDemoControls(view);
+    initAddRemoveHeaderViewButtons(view);
     initMenuGravityButtons(view);
     initLabelVisibilityModeButtons(view);
     initIconSlider(view);
@@ -49,6 +53,23 @@ public class NavigationRailDemoControlsFragment extends NavigationRailDemoFragme
   @Override
   protected int getNavigationRailDemoControlsLayout() {
     return R.layout.cat_navigation_demo_controls;
+  }
+
+  private void initAddRemoveHeaderViewButtons(View view) {
+    final Button addHeaderViewButton = view.findViewById(R.id.add_header_view_button);
+    final Button removeHeaderViewButton = view.findViewById(R.id.remove_header_view_button);
+    addHeaderViewButton.setOnClickListener(
+        v -> {
+          navigationRailView.addHeaderView(R.layout.cat_navigation_rail_header_view);
+          addHeaderViewButton.setVisibility(GONE);
+          removeHeaderViewButton.setVisibility(VISIBLE);
+        });
+    removeHeaderViewButton.setOnClickListener(
+        v -> {
+          navigationRailView.removeHeaderView();
+          addHeaderViewButton.setVisibility(VISIBLE);
+          removeHeaderViewButton.setVisibility(GONE);
+        });
   }
 
   private void initMenuGravityButtons(View view) {

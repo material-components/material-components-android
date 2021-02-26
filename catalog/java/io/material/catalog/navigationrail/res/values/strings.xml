@@ -53,6 +53,11 @@
   <string name="cat_navigation_rail_increment_badge_number"
           description="The title of a button to increment the notification number. [CHAR_LIMIT=20]">+Badge number</string>
 
+  <string name="cat_navigation_rail_add_header_view"
+          description="Label for the button that will add a header view to the navigation rail. [CHAR_LIMIT=50]">Add Header View</string>
+  <string name="cat_navigation_rail_remove_header_view"
+          description="Label for the button that will remove the header view from the navigation rail. [CHAR_LIMIT=50]">Remove Header View</string>
+
   <string name="cat_navigation_rail_icon_size_slider_title"
           description="Label for the current icon size display. [CHAR_LIMIT=50]">Icon size: </string>
   <string name="cat_navigation_rail_slider_max" translatable="false">48dp</string>
@@ -97,4 +102,7 @@
           description="Label for a timer icon. [CHAR_LIMIT=50]">Timer</string>
   <string name="cat_navigation_rail_stopwatch"
           description="Label for a stopwatch icon. [CHAR_LIMIT=50]">Stopwatch</string>
+
+  <string name="cat_navigation_rail_fab_content_desc"
+          description="Content description for a floating action button in the navigation rail.[CHAR_LIMIT=50]">Navigation Rail FAB</string>
 </resources>
