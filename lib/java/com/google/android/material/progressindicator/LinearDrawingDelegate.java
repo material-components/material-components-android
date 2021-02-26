@@ -68,8 +68,10 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
 
     // Positions canvas to center of the clip bounds.
     canvas.translate(
-        clipBounds.width() / 2f,
-        clipBounds.height() / 2f + max(0f, (clipBounds.height() - spec.trackThickness) / 2f));
+        clipBounds.left + clipBounds.width() / 2f,
+        clipBounds.top
+            + clipBounds.height() / 2f
+            + max(0f, (clipBounds.height() - spec.trackThickness) / 2f));
 
     // Flips canvas horizontally if need to draw right to left.
     if (spec.drawHorizontallyInverse) {
