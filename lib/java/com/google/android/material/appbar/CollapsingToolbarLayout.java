@@ -63,7 +63,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * CollapsingToolbarLayout is a wrapper for {@link Toolbar} which implements a collapsing app bar.
+ * CollapsingToolbarLayout is a wrapper for {@code Toolbar} which implements a collapsing app bar.
  * It is designed to be used as a direct child of a {@link AppBarLayout}. CollapsingToolbarLayout
  * contains the following features:
  *
@@ -94,7 +94,7 @@ import java.lang.annotation.RetentionPolicy;
  * <h4>Pinned position children</h4>
  *
  * Child views can opt to be pinned in space globally. This is useful when implementing a collapsing
- * as it allows the {@link Toolbar} to be fixed in place even though this layout is moving. See
+ * as it allows the {@code Toolbar} to be fixed in place even though this layout is moving. See
  * {@link LayoutParams#COLLAPSE_MODE_PIN}.
  *
  * <p><strong>Do not manually add views to the Toolbar at run time</strong>. We will add a 'dummy
