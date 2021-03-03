@@ -49,20 +49,25 @@ In `navigation_rail_menu.xml` inside a `menu` resource directory:
 ```xml
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
   <item
-      android:id="@+id/albums"
+      android:id="@+id/alarms"
       android:enabled="true"
-      android:icon="@drawable/icon_folder"
-      android:title="@string/albums_destination_label"/>
+      android:icon="@drawable/icon_alarms"
+      android:title="@string/alarms_destination_label"/>
   <item
-      android:id="@+id/timeline"
+      android:id="@+id/schedule"
       android:enabled="true"
       android:icon="@drawable/icon_clock"
-      android:title="@string/timeline_destination_label"/>
+      android:title="@string/schedule_destination_label"/>
   <item
-      android:id="@+id/images"
+      android:id="@+id/timer"
       android:enabled="true"
-      android:icon="@drawable/icon_image"
-      android:title="@string/images_destination_label"/>
+      android:icon="@drawable/icon_sand_clock"
+      android:title="@string/timer_destination_label"/>
+  <item
+      android:id="@+id/stopwatch"
+      android:enabled="true"
+      android:icon="@drawable/icon_stop_watch"
+      android:title="@string/stopwatch_destination_label"/>
 </menu>
 ```
 
@@ -105,7 +110,7 @@ navigationRail.setOnNavigationItemReselectedListener { item ->
 
 That results in:
 
-![The navigation rail container is 72 dp wide by default.](assets/navigationrail/navigation-rail-default.png)
+![The navigation rail container is 72 dp wide by default.](assets/navigationrail/navigation-rail-demo.png)
 
 ### Making navigation rail accessible
 
@@ -218,10 +223,10 @@ API and source code:
 
 The following example shows a navigation rail with four icons in dense layout:
 
-*   Albums
-*   Timeline
-*   Images
-*   Music
+*   Alarms
+*   Schedule
+*   Timers
+*   Stopwatch
 
 !["In denser layouts, the rail can be reduced to 56 dp and text labels are
 omitted."](assets/navigationrail/navigation-rail-dense.png)
@@ -237,7 +242,7 @@ In `layout.xml`:
 
   <com.google.android.material.navigationrail.NavigationRailView
       android:id="@+id/navigation_rail"
-      style="@style/Widget.MaterialComponents.NavigationRailView.Compact"
+      style="@style/Widget.MaterialComponents.NavigationRailView.Colored.Compact"
       android:layout_width="wrap_content"
       android:layout_height="match_parent"
       app:menu="@menu/navigation_rail_menu" />
@@ -250,25 +255,25 @@ In `navigation_rail_menu.xml` inside a `menu` resource directory:
 ```xml
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
   <item
-      android:id="@+id/albums"
+      android:id="@+id/alarms"
       android:enabled="true"
-      android:icon="@drawable/icon_folder"
-      android:title="@string/albums_destination_label"/>
+      android:icon="@drawable/icon_alarm"
+      android:title="@string/alarms_destination_label"/>
   <item
-      android:id="@+id/timeline"
+      android:id="@+id/schedule"
       android:enabled="true"
       android:icon="@drawable/icon_clock"
-      android:title="@string/timeline_destination_label"/>
+      android:title="@string/schedule_destination_label"/>
   <item
-      android:id="@+id/images"
+      android:id="@+id/timers"
       android:enabled="true"
-      android:icon="@drawable/icon_image"
-      android:title="@string/images_destination_label"/>
+      android:icon="@drawable/icon_sand_clock"
+      android:title="@string/timers_destination_label"/>
   <item
-      android:id="@+id/music"
+      android:id="@+id/stopwatch"
       android:enabled="true"
-      android:icon="@drawable/icon_music_note"
-      android:title="@string/music_destination_label"/>
+      android:icon="@drawable/icon_stop_watch"
+      android:title="@string/stopwatch_destination_label"/>
 </menu>
 ```
 
@@ -292,11 +297,10 @@ The following is an anatomy diagram for the navigation rail:
 
 #### Container attributes
 
-| Element       | **Attribute**        | **Related      | **Default value**    |
-:               :                      : methods**      :                      :
-| ------------- | -------------------- | -------------- | -------------------- |
-| **Color**     | `app:backgroundTint` | N/A            | `?attr/colorSurface` |
-| **Elevation** | `app:elevation`      | `setElevation` | `8dp`                |
+| Element       | **Attribute**        | **Related methods** | **Default value**    |
+| ------------- | -------------------- | ------------------- | -------------------- |
+| **Color**     | `app:backgroundTint` | N/A                 | `?attr/colorSurface` |
+| **Elevation** | `app:elevation`      | `setElevation`      | `8dp`                |
 
 #### Navigation item attributes
 
