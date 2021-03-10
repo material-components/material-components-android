@@ -349,8 +349,10 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         a.getBoolean(R.styleable.BottomSheetBehavior_Layout_paddingLeftSystemWindowInsets, false);
     paddingRightSystemWindowInsets =
         a.getBoolean(R.styleable.BottomSheetBehavior_Layout_paddingRightSystemWindowInsets, false);
+    // Setting this to false will prevent the bottomsheet from going below the status bar. Since
+    // this is a breaking change from the old behavior the default is true.
     paddingTopSystemWindowInsets =
-        a.getBoolean(R.styleable.BottomSheetBehavior_Layout_paddingTopSystemWindowInsets, false);
+        a.getBoolean(R.styleable.BottomSheetBehavior_Layout_paddingTopSystemWindowInsets, true);
 
     a.recycle();
     ViewConfiguration configuration = ViewConfiguration.get(context);
