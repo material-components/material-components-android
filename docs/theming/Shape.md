@@ -255,7 +255,7 @@ Components that support shape theming have a `shapeAppearance` attribute, a
 *   [Bottom Sheet](../components/BottomSheetBehavior.md)
 *   [Card](../components/Card.md)
 *   [Chip](../components/Chip.md)
-*   [Date Picker](../components/Picker.md)
+*   [Date Picker](../components/DatePicker.md)
 *   [Dialog](../components/Dialog.md)
 *   [Extended Floating Action Button](../components/FloatingActionButton.md?#extended-fabs)
 *   [Floating Action Button](../components/FloatingActionButton.md)
