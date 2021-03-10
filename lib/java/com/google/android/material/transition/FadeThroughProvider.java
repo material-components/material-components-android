@@ -35,7 +35,29 @@ import androidx.annotation.Nullable;
  */
 public final class FadeThroughProvider implements VisibilityAnimatorProvider {
 
-  static final float PROGRESS_THRESHOLD = 0.35F;
+  static final float FADE_THROUGH_THRESHOLD = 0.35F;
+
+  private float progressThreshold = FADE_THROUGH_THRESHOLD;
+
+  /**
+   * Get the point at which a disappearing target finishes fading out and an appearing target begins
+   * to fade in.
+   *
+   * @see #setProgressThreshold(float)
+   */
+  public float getProgressThreshold() {
+    return progressThreshold;
+  }
+
+  /**
+   * Set the point, between 0 and 1, at which a disappearing target finishes fading out and an
+   * appearing target begins to fade in.
+   *
+   * @param progressThreshold A float between 0 and 1.
+   */
+  public void setProgressThreshold(@FloatRange(from = 0.0F, to = 1F) float progressThreshold) {
+    this.progressThreshold = progressThreshold;
+  }
 
   @Nullable
   @Override
@@ -45,7 +67,7 @@ public final class FadeThroughProvider implements VisibilityAnimatorProvider {
         view,
         /* startValue= */ 0F,
         /* endValue= */ originalAlpha,
-        /* startFraction= */ PROGRESS_THRESHOLD,
+        /* startFraction= */ progressThreshold,
         /* endFraction= */ 1F,
         originalAlpha);
   }
@@ -59,7 +81,7 @@ public final class FadeThroughProvider implements VisibilityAnimatorProvider {
         /* startValue= */ originalAlpha,
         /* endValue= */ 0F,
         /* startFraction= */ 0F,
-        /* endFraction= */ PROGRESS_THRESHOLD,
+        /* endFraction= */ progressThreshold,
         originalAlpha);
   }
 

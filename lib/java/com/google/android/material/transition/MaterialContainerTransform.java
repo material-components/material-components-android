@@ -1445,7 +1445,12 @@ public final class MaterialContainerTransform extends Transition {
       // Cross-fade images of the start/end states over range of `progress`
       float fadeStartFraction = checkNotNull(progressThresholds.fade.start);
       float fadeEndFraction = checkNotNull(progressThresholds.fade.end);
-      fadeModeResult = fadeModeEvaluator.evaluate(progress, fadeStartFraction, fadeEndFraction);
+      fadeModeResult =
+          fadeModeEvaluator.evaluate(
+              progress,
+              fadeStartFraction,
+              fadeEndFraction,
+              FadeThroughProvider.FADE_THROUGH_THRESHOLD);
 
       // Update start and end container paints to share the same opacity as their respective view
       if (startContainerPaint.getColor() != Color.TRANSPARENT) {
