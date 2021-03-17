@@ -216,6 +216,9 @@ track](assets/progressindicator/linear_multicolor_contiguous.gif)
 *   `contiguous` - animates as repeated cycles with three adjacent segments in
     iterative different colors.
 
+Note: There is a minimum requirement of 3 indicator colors to use the
+**contiguous** animation. Otherwise, an IllegalArgumentException will be thrown.
+
 ## Circular progress indicators
 
 Circular progress indicators display progress by animating an indicator along an
