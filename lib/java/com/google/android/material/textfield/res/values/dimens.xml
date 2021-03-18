@@ -20,6 +20,12 @@
 
   <dimen name="mtrl_textinput_counter_margin_start">16dp</dimen>
 
+  <dimen name="material_textinput_default_width">245dp</dimen>
+  <!-- Minimum width for text fields without a label. If a label is present,
+       minimum width should be 88dp. -->
+  <dimen name="material_textinput_min_width">56dp</dimen>
+  <dimen name="material_textinput_max_width">488dp</dimen>
+
   <dimen name="mtrl_textinput_outline_box_expanded_padding">16dp</dimen>
 
   <dimen name="mtrl_textinput_box_corner_radius_small">0dp</dimen>

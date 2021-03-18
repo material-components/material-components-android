@@ -54,6 +54,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/cat_textfield_large_spacing"
         android:layout_marginBottom="@dimen/cat_textfield_standard_spacing"
         android:text="@string/cat_textfield_customize_section_title"
@@ -61,6 +62,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:text="@string/cat_textfield_customize_section_description"
         android:textAppearance="?attr/textAppearanceSubtitle1"/>
     <LinearLayout
@@ -72,8 +74,9 @@
 
       <com.google.android.material.textfield.TextInputLayout
           android:id="@+id/text_input_label"
-          android:layout_width="match_parent"
+          android:layout_width="@dimen/material_textinput_default_width"
           android:layout_height="wrap_content"
+          android:layout_gravity="center_horizontal"
           android:layout_margin="4dp"
           android:hint="@string/cat_textfield_customize_label_text"
           app:errorEnabled="true">
@@ -86,9 +89,10 @@
 
       <com.google.android.material.textfield.TextInputLayout
           android:id="@+id/text_input_error"
-          android:layout_width="match_parent"
+          android:layout_width="@dimen/material_textinput_default_width"
           android:layout_height="wrap_content"
           android:layout_margin="4dp"
+          android:layout_gravity="center_horizontal"
           android:hint="@string/cat_textfield_customize_error_text"
           app:errorEnabled="true">
         <com.google.android.material.textfield.TextInputEditText
@@ -100,9 +104,10 @@
 
       <com.google.android.material.textfield.TextInputLayout
           android:id="@+id/text_input_helper_text"
-          android:layout_width="match_parent"
+          android:layout_width="@dimen/material_textinput_default_width"
           android:layout_height="wrap_content"
           android:layout_margin="4dp"
+          android:layout_gravity="center_horizontal"
           android:hint="@string/cat_textfield_customize_helper_text"
           app:errorEnabled="true">
         <com.google.android.material.textfield.TextInputEditText
@@ -114,9 +119,10 @@
 
       <com.google.android.material.textfield.TextInputLayout
           android:id="@+id/text_input_counter_max"
-          android:layout_width="match_parent"
+          android:layout_width="@dimen/material_textinput_default_width"
           android:layout_height="wrap_content"
           android:layout_margin="4dp"
+          android:layout_gravity="center_horizontal"
           android:hint="@string/cat_textfield_customize_counter_text"
           app:errorEnabled="true">
         <com.google.android.material.textfield.TextInputEditText
@@ -128,9 +134,10 @@
 
       <com.google.android.material.textfield.TextInputLayout
           android:id="@+id/text_input_placeholder"
-          android:layout_width="match_parent"
+          android:layout_width="@dimen/material_textinput_default_width"
           android:layout_height="wrap_content"
           android:layout_margin="4dp"
+          android:layout_gravity="center_horizontal"
           android:hint="@string/cat_textfield_customize_placeholder_text"
           app:errorEnabled="true">
         <com.google.android.material.textfield.TextInputEditText

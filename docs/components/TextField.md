@@ -310,6 +310,14 @@ _**Note:** Non-null error text will replace any existing helper text._
 </com.google.android.material.textfield.TextInputLayout>
 ```
 
+### Text field dimensions
+
+By default, text fields have a maximum width of `488dp`, and a minimum with of
+`56dp` for layouts without a label. If a label is present, the minimum width
+recommended is of `88dp`.
+
+The recommended default `android:layout_width` is of `245dp`.
+
 ### Using text fields programmatically
 
 If you construct the `TextInputEditText` child of a `TextInputLayout`

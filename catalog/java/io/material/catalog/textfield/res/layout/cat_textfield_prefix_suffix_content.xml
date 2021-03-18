@@ -24,9 +24,10 @@
 
   <com.google.android.material.textfield.TextInputLayout
       style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-      android:layout_width="match_parent"
+      android:layout_width="@dimen/material_textinput_default_width"
       android:layout_height="wrap_content"
       android:layout_margin="4dp"
+      android:layout_gravity="center_horizontal"
       android:hint="@string/cat_textfield_label"
       app:errorEnabled="true"
       app:helperText="@string/cat_textfield_filled_prefix_helper_text"
@@ -40,9 +41,10 @@
 
   <com.google.android.material.textfield.TextInputLayout
       style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-      android:layout_width="match_parent"
+      android:layout_width="@dimen/material_textinput_default_width"
       android:layout_height="wrap_content"
       android:layout_margin="4dp"
+      android:layout_gravity="center_horizontal"
       android:hint="@string/cat_textfield_label"
       app:errorEnabled="true"
       app:helperText="@string/cat_textfield_filled_suffix_helper_text"
@@ -58,9 +60,10 @@
 
   <com.google.android.material.textfield.TextInputLayout
       style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-      android:layout_width="match_parent"
+      android:layout_width="@dimen/material_textinput_default_width"
       android:layout_height="wrap_content"
       android:layout_margin="4dp"
+      android:layout_gravity="center_horizontal"
       android:hint="@string/cat_textfield_label"
       app:errorEnabled="true"
       app:helperText="@string/cat_textfield_filled_prefix_icon_helper_text"
@@ -75,9 +78,10 @@
 
   <com.google.android.material.textfield.TextInputLayout
       style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-      android:layout_width="match_parent"
+      android:layout_width="@dimen/material_textinput_default_width"
       android:layout_height="wrap_content"
       android:layout_margin="4dp"
+      android:layout_gravity="center_horizontal"
       android:hint="@string/cat_textfield_label"
       app:errorEnabled="true"
       app:helperText="@string/cat_textfield_filled_suffix_icon_helper_text"
@@ -94,9 +98,10 @@
 
   <com.google.android.material.textfield.TextInputLayout
       style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-      android:layout_width="match_parent"
+      android:layout_width="@dimen/material_textinput_default_width"
       android:layout_height="wrap_content"
       android:layout_margin="4dp"
+      android:layout_gravity="center_horizontal"
       android:hint="@string/cat_textfield_label"
       app:errorEnabled="true"
       app:helperText="@string/cat_textfield_outlined_prefix_helper_text"
@@ -110,9 +115,10 @@
 
   <com.google.android.material.textfield.TextInputLayout
       style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-      android:layout_width="match_parent"
+      android:layout_width="@dimen/material_textinput_default_width"
       android:layout_height="wrap_content"
       android:layout_margin="4dp"
+      android:layout_gravity="center_horizontal"
       android:hint="@string/cat_textfield_label"
       app:errorEnabled="true"
       app:helperText="@string/cat_textfield_outlined_suffix_helper_text"
@@ -128,9 +134,10 @@
 
   <com.google.android.material.textfield.TextInputLayout
       style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-      android:layout_width="match_parent"
+      android:layout_width="@dimen/material_textinput_default_width"
       android:layout_height="wrap_content"
       android:layout_margin="4dp"
+      android:layout_gravity="center_horizontal"
       android:hint="@string/cat_textfield_label"
       app:errorEnabled="true"
       app:helperText="@string/cat_textfield_outlined_prefix_icon_helper_text"
@@ -145,9 +152,10 @@
 
   <com.google.android.material.textfield.TextInputLayout
       style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-      android:layout_width="match_parent"
+      android:layout_width="@dimen/material_textinput_default_width"
       android:layout_height="wrap_content"
       android:layout_margin="4dp"
+      android:layout_gravity="center_horizontal"
       android:hint="@string/cat_textfield_label"
       app:errorEnabled="true"
       app:helperText="@string/cat_textfield_outlined_suffix_icon_helper_text"

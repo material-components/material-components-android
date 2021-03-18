@@ -24,9 +24,10 @@
 
   <com.google.android.material.textfield.TextInputLayout
       style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-      android:layout_width="match_parent"
+      android:layout_width="@dimen/material_textinput_default_width"
       android:layout_height="wrap_content"
       android:layout_margin="4dp"
+      android:layout_gravity="center_horizontal"
       android:hint="@string/cat_textfield_password"
       app:endIconMode="password_toggle"
       app:errorEnabled="true"
@@ -41,9 +42,10 @@
 
   <com.google.android.material.textfield.TextInputLayout
       style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-      android:layout_width="match_parent"
+      android:layout_width="@dimen/material_textinput_default_width"
       android:layout_height="wrap_content"
       android:layout_margin="4dp"
+      android:layout_gravity="center_horizontal"
       android:hint="@string/cat_textfield_label"
       app:endIconMode="clear_text"
       app:errorEnabled="true"
@@ -57,9 +59,10 @@
 
   <com.google.android.material.textfield.TextInputLayout
       style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-      android:layout_width="match_parent"
+      android:layout_width="@dimen/material_textinput_default_width"
       android:layout_height="wrap_content"
       android:layout_margin="4dp"
+      android:layout_gravity="center_horizontal"
       android:hint="@string/cat_textfield_label"
       app:endIconContentDescription="@string/cat_textfield_custom_end_icon_content_description"
       app:endIconDrawable="@drawable/ic_accelerator_24px"
@@ -75,9 +78,10 @@
 
   <com.google.android.material.textfield.TextInputLayout
       style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-      android:layout_width="match_parent"
+      android:layout_width="@dimen/material_textinput_default_width"
       android:layout_height="wrap_content"
       android:layout_margin="4dp"
+      android:layout_gravity="center_horizontal"
       android:hint="@string/cat_textfield_label"
       app:counterEnabled="true"
       app:counterMaxLength="10"
@@ -94,9 +98,10 @@
 
   <com.google.android.material.textfield.TextInputLayout
       style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-      android:layout_width="match_parent"
+      android:layout_width="@dimen/material_textinput_default_width"
       android:layout_height="wrap_content"
       android:layout_margin="4dp"
+      android:layout_gravity="center_horizontal"
       android:hint="@string/cat_textfield_label"
       app:counterEnabled="true"
       app:counterMaxLength="10"
