@@ -332,6 +332,7 @@ public class MaterialButtonToggleGroup extends LinearLayout {
     }
 
     checkForced(id);
+    invalidate();
   }
 
   /**
@@ -348,6 +349,7 @@ public class MaterialButtonToggleGroup extends LinearLayout {
     updateCheckedStates(id, false);
     checkedId = View.NO_ID;
     dispatchOnButtonChecked(id, false);
+    invalidate();
   }
 
   /**
