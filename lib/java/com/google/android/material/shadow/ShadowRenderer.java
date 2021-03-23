@@ -28,6 +28,7 @@ import android.graphics.RadialGradient;
 import android.graphics.RectF;
 import android.graphics.Region.Op;
 import android.graphics.Shader;
+import android.graphics.Shader.TileMode;
 import androidx.core.graphics.ColorUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -159,18 +160,17 @@ public class ShadowRenderer {
     float midRatio = startRatio + ((1f - startRatio) / 2f);
     cornerPositions[1] = startRatio;
     cornerPositions[2] = midRatio;
-    cornerShadowPaint.setShader(
-        new RadialGradient(
-            bounds.centerX(),
-            bounds.centerY(),
-            radius,
-            cornerColors,
-            cornerPositions,
-            Shader.TileMode.CLAMP));
-
-    // TODO(b/117606382): handle oval bounds by scaling the canvas.
+    RadialGradient shader = new RadialGradient(
+        bounds.centerX(),
+        bounds.centerY(),
+        radius,
+        cornerColors,
+        cornerPositions,
+        TileMode.CLAMP);
+    cornerShadowPaint.setShader(shader);
     canvas.save();
     canvas.concat(matrix);
+    canvas.scale(1, bounds.height() / bounds.width());
 
     if (!drawShadowInsideBounds) {
       canvas.clipPath(arcBounds, Op.DIFFERENCE);

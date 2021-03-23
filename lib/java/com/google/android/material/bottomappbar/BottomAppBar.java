@@ -30,6 +30,7 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.core.graphics.drawable.DrawableCompat;
@@ -550,6 +551,13 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     return false;
   }
 
+  void setFabCornerSize(@Px int radius) {
+    if (radius != getTopEdgeTreatment().getFabCornerRadius()) {
+      getTopEdgeTreatment().setFabCornerSize(radius);
+      materialShapeDrawable.invalidateSelf();
+    }
+  }
+
   private void maybeAnimateModeChange(@FabAlignmentMode int targetMode) {
     if (fabAlignmentMode == targetMode || !ViewCompat.isLaidOut(this)) {
       return;
@@ -1026,6 +1034,12 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
 
             // Set the cutout diameter based on the height of the fab.
             child.setFabDiameter(height);
+
+            // Assume symmetrical corners
+            int cornerSize = (int) fab.getShapeAppearanceModel().getTopLeftCornerSize()
+                .getCornerSize(new RectF(fabContentRect));
+
+            child.setFabCornerSize(cornerSize);
 
             CoordinatorLayout.LayoutParams fabLayoutParams =
                 (CoordinatorLayout.LayoutParams) v.getLayoutParams();
