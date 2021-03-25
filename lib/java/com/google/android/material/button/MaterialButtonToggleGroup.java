@@ -207,7 +207,7 @@ public class MaterialButtonToggleGroup extends LinearLayout {
 
     // Checks the appropriate button as requested via XML
     if (checkedId != View.NO_ID) {
-      checkForced(checkedId);
+      checkForced(checkedId, true);
     }
   }
 
@@ -331,7 +331,7 @@ public class MaterialButtonToggleGroup extends LinearLayout {
       return;
     }
 
-    checkForced(id);
+    checkForced(id, true);
   }
 
   /**
@@ -344,10 +344,7 @@ public class MaterialButtonToggleGroup extends LinearLayout {
    * @see #getCheckedButtonId()
    */
   public void uncheck(@IdRes int id) {
-    setCheckedStateForView(id, false);
-    updateCheckedStates(id, false);
-    checkedId = View.NO_ID;
-    dispatchOnButtonChecked(id, false);
+    checkForced(id, false);
   }
 
   /**
@@ -728,10 +725,11 @@ public class MaterialButtonToggleGroup extends LinearLayout {
     }
   }
 
-  private void checkForced(int checkedId) {
-    setCheckedStateForView(checkedId, true);
-    updateCheckedStates(checkedId, true);
-    setCheckedId(checkedId);
+  private void checkForced(int checkedId, boolean checked) {
+    MaterialButton button = findViewById(checkedId);
+    if (button != null) {
+      button.setChecked(checked);
+    }
   }
 
   private void setGeneratedIdIfNeeded(@NonNull MaterialButton materialButton) {
