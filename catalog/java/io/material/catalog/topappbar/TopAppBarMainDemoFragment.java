@@ -27,10 +27,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.badge.BadgeUtils;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.DemoUtils;
 
@@ -39,6 +40,8 @@ public class TopAppBarMainDemoFragment extends DemoFragment {
 
   private Toolbar toolbar;
   private BadgeDrawable badgeDrawable;
+  private SwitchMaterial editMenuToggle;
+  private MaterialButton incrementBadgeNumber;
 
   @Override
   public void onCreate(@Nullable Bundle bundle) {
@@ -55,6 +58,20 @@ public class TopAppBarMainDemoFragment extends DemoFragment {
     AppCompatActivity activity = (AppCompatActivity) getActivity();
     activity.setSupportActionBar(toolbar);
 
+    editMenuToggle = view.findViewById(R.id.cat_topappbar_switch_edit_menu);
+    editMenuToggle.setOnCheckedChangeListener(
+        (buttonView, isChecked) -> {
+          BadgeUtils.detachBadgeDrawable(badgeDrawable, toolbar, R.id.cat_topappbar_item_favorite);
+          toolbar.getMenu().findItem(R.id.cat_topappbar_item_edit).setVisible(isChecked);
+          BadgeUtils.attachBadgeDrawable(badgeDrawable, toolbar, R.id.cat_topappbar_item_favorite);
+        });
+
+    incrementBadgeNumber = view.findViewById(R.id.cat_topappbar_button_increment_badge);
+    incrementBadgeNumber.setOnClickListener(
+        v -> {
+          badgeDrawable.setNumber(badgeDrawable.getNumber() + 1);
+          badgeDrawable.setVisible(true);
+        });
     return view;
   }
 
@@ -62,12 +79,6 @@ public class TopAppBarMainDemoFragment extends DemoFragment {
   public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
     menuInflater.inflate(R.menu.cat_topappbar_menu, menu);
     super.onCreateOptionsMenu(menu, menuInflater);
-  }
-
-  @Override
-  public void onPrepareOptionsMenu(@NonNull Menu menu) {
-    super.onPrepareOptionsMenu(menu);
-
     badgeDrawable = BadgeDrawable.create(requireContext());
     badgeDrawable.setNumber(1);
     BadgeUtils.attachBadgeDrawable(badgeDrawable, toolbar, R.id.cat_topappbar_item_favorite);

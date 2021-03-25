@@ -19,6 +19,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="AppCompatResource">
   <item
+    android:id="@+id/cat_topappbar_item_edit"
       android:title="@string/cat_topappbar_edit_menu_item_title"
       app:showAsAction="ifRoom"/>
   <item

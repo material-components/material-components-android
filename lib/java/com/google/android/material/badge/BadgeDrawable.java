@@ -216,6 +216,12 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     @Dimension(unit = Dimension.PX)
     private int verticalOffset;
 
+    @Dimension(unit = Dimension.PX)
+    private int additionalHorizontalOffset;
+
+    @Dimension(unit = Dimension.PX)
+    private int additionalVerticalOffset;
+
     public SavedState(@NonNull Context context) {
       // If the badge text color attribute was not explicitly set, use the text color specified in
       // the TextAppearance.
@@ -241,6 +247,8 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       badgeGravity = in.readInt();
       horizontalOffset = in.readInt();
       verticalOffset = in.readInt();
+      additionalHorizontalOffset = in.readInt();
+      additionalVerticalOffset = in.readInt();
       isVisible = in.readInt() != 0;
     }
 
@@ -276,6 +284,8 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       dest.writeInt(badgeGravity);
       dest.writeInt(horizontalOffset);
       dest.writeInt(verticalOffset);
+      dest.writeInt(additionalHorizontalOffset);
+      dest.writeInt(additionalVerticalOffset);
       dest.writeInt(isVisible ? 1 : 0);
     }
   }
@@ -368,6 +378,10 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
 
     setHorizontalOffset(savedState.horizontalOffset);
     setVerticalOffset(savedState.verticalOffset);
+
+    setAdditionalHorizontalOffset(savedState.additionalHorizontalOffset);
+    setAdditionalVerticalOffset(savedState.additionalVerticalOffset);
+
     setVisible(savedState.isVisible);
   }
 
@@ -814,6 +828,20 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   }
 
   /**
+   * Sets how much (in pixels) more (in addition to {@code savedState.horizontalOffset}) to
+   * horizontally move this badge towards the center of its anchor. Currently used to adjust the
+   * placement of badges on toolbar items.
+   */
+  void setAdditionalHorizontalOffset(int px) {
+    savedState.additionalHorizontalOffset = px;
+    updateCenterAndBounds();
+  }
+
+  int getAdditionalHorizontalOffset() {
+    return savedState.additionalHorizontalOffset;
+  }
+
+  /**
    * Sets how much (in pixels) to vertically move this badge towards the center of its anchor.
    *
    * @param px badge's vertical offset
@@ -829,6 +857,20 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
    */
   public int getVerticalOffset() {
     return savedState.verticalOffset;
+  }
+
+  /**
+   * Sets how much (in pixels) more (in addition to {@code savedState.verticalOffset}) to vertically
+   * move this badge towards the center of its anchor. Currently used to adjust the placement of
+   * badges on toolbar items.
+   */
+  void setAdditionalVerticalOffset(int px) {
+    savedState.additionalVerticalOffset = px;
+    updateCenterAndBounds();
+  }
+
+  int getAdditionalVerticalOffset() {
+    return savedState.additionalVerticalOffset;
   }
 
   private void setTextAppearanceResource(@StyleRes int id) {
@@ -884,15 +926,16 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
 
   private void calculateCenterAndBounds(
       @NonNull Context context, @NonNull Rect anchorRect, @NonNull View anchorView) {
+    int totalVerticalOffset = savedState.verticalOffset + savedState.additionalVerticalOffset;
     switch (savedState.badgeGravity) {
       case BOTTOM_END:
       case BOTTOM_START:
-        badgeCenterY = anchorRect.bottom - savedState.verticalOffset;
+        badgeCenterY = anchorRect.bottom - totalVerticalOffset;
         break;
       case TOP_END:
       case TOP_START:
       default:
-        badgeCenterY = anchorRect.top + savedState.verticalOffset;
+        badgeCenterY = anchorRect.top + totalVerticalOffset;
         break;
     }
 
@@ -914,22 +957,25 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
                 hasNumber()
                     ? R.dimen.mtrl_badge_text_horizontal_edge_offset
                     : R.dimen.mtrl_badge_horizontal_edge_offset);
+
+    int totalHorizontalOffset = savedState.horizontalOffset + savedState.additionalHorizontalOffset;
+
     // Update the centerX based on the badge width and 'inset' from start or end boundary of anchor.
     switch (savedState.badgeGravity) {
       case BOTTOM_START:
       case TOP_START:
         badgeCenterX =
             ViewCompat.getLayoutDirection(anchorView) == View.LAYOUT_DIRECTION_LTR
-                ? anchorRect.left - halfBadgeWidth + inset + savedState.horizontalOffset
-                : anchorRect.right + halfBadgeWidth - inset - savedState.horizontalOffset;
+                ? anchorRect.left - halfBadgeWidth + inset + totalHorizontalOffset
+                : anchorRect.right + halfBadgeWidth - inset - totalHorizontalOffset;
         break;
       case BOTTOM_END:
       case TOP_END:
       default:
         badgeCenterX =
             ViewCompat.getLayoutDirection(anchorView) == View.LAYOUT_DIRECTION_LTR
-                ? anchorRect.right + halfBadgeWidth - inset - savedState.horizontalOffset
-                : anchorRect.left - halfBadgeWidth + inset + savedState.horizontalOffset;
+                ? anchorRect.right + halfBadgeWidth - inset - totalHorizontalOffset
+                : anchorRect.left - halfBadgeWidth + inset + totalHorizontalOffset;
         break;
     }
   }

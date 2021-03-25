@@ -70,6 +70,17 @@ public class BadgeDrawableTest {
     badgeDrawable.setHorizontalOffset(TEST_BADGE_HORIZONTAL_OFFSET);
     badgeDrawable.setVerticalOffset(TEST_BADGE_VERTICAL_OFFSET);
 
+    int additionalHorizontalOffset =
+        context
+            .getResources()
+            .getDimensionPixelOffset(R.dimen.mtrl_badge_toolbar_action_menu_item_horizontal_offset);
+    badgeDrawable.setAdditionalHorizontalOffset(additionalHorizontalOffset);
+    int additionalVerticalOffset =
+        context
+            .getResources()
+            .getDimensionPixelOffset(R.dimen.mtrl_badge_toolbar_action_menu_item_vertical_offset);
+    badgeDrawable.setAdditionalVerticalOffset(additionalVerticalOffset);
+
     badgeDrawable.setBackgroundColor(testBackgroundColor);
     badgeDrawable.setBadgeTextColor(testBadgeTextColor);
     badgeDrawable.setVisible(false);
@@ -91,6 +102,11 @@ public class BadgeDrawableTest {
     // badge offsets
     assertThat(restoredBadgeDrawable.getHorizontalOffset()).isEqualTo(TEST_BADGE_HORIZONTAL_OFFSET);
     assertThat(restoredBadgeDrawable.getVerticalOffset()).isEqualTo(TEST_BADGE_VERTICAL_OFFSET);
+    // Additional badge offsets
+    assertThat(restoredBadgeDrawable.getAdditionalHorizontalOffset())
+        .isEqualTo(additionalHorizontalOffset);
+    assertThat(restoredBadgeDrawable.getAdditionalVerticalOffset())
+        .isEqualTo(additionalVerticalOffset);
 
     // badge visibility
     assertThat(restoredBadgeDrawable.isVisible()).isFalse();

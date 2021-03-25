@@ -19,6 +19,7 @@ package com.google.android.material.badge;
 import com.google.android.material.R;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
@@ -31,6 +32,7 @@ import android.widget.FrameLayout;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import com.google.android.material.badge.BadgeDrawable.SavedState;
 import com.google.android.material.internal.ParcelableSparseArray;
 import com.google.android.material.internal.ToolbarUtils;
@@ -128,19 +130,7 @@ public class BadgeUtils {
             ActionMenuItemView menuItemView =
                 ToolbarUtils.getActionMenuItemView(toolbar, menuItemId);
             if (menuItemView != null) {
-              badgeDrawable.setHorizontalOffset(
-                  badgeDrawable.getHorizontalOffset()
-                      + toolbar
-                          .getResources()
-                          .getDimensionPixelOffset(
-                              R.dimen.mtrl_badge_toolbar_action_menu_item_horizontal_offset));
-              badgeDrawable.setVerticalOffset(
-                  badgeDrawable.getVerticalOffset()
-                      + toolbar
-                          .getResources()
-                          .getDimensionPixelOffset(
-                              R.dimen.mtrl_badge_toolbar_action_menu_item_vertical_offset));
-
+              setToolbarOffset(badgeDrawable, toolbar.getResources());
               BadgeUtils.attachBadgeDrawable(badgeDrawable, menuItemView, customBadgeParent);
             }
           }
@@ -176,10 +166,27 @@ public class BadgeUtils {
     }
     ActionMenuItemView menuItemView = ToolbarUtils.getActionMenuItemView(toolbar, menuItemId);
     if (menuItemView != null) {
+      removeToolbarOffset(badgeDrawable);
       detachBadgeDrawable(badgeDrawable, menuItemView);
     } else {
       Log.w(LOG_TAG, "Trying to remove badge from a null menuItemView: " + menuItemId);
     }
+  }
+
+  @VisibleForTesting
+  static void setToolbarOffset(BadgeDrawable badgeDrawable, Resources resources) {
+    badgeDrawable.setAdditionalHorizontalOffset(
+        resources.getDimensionPixelOffset(
+            R.dimen.mtrl_badge_toolbar_action_menu_item_horizontal_offset));
+    badgeDrawable.setAdditionalVerticalOffset(
+        resources.getDimensionPixelOffset(
+            R.dimen.mtrl_badge_toolbar_action_menu_item_vertical_offset));
+  }
+
+  @VisibleForTesting
+  static void removeToolbarOffset(BadgeDrawable badgeDrawable) {
+    badgeDrawable.setAdditionalHorizontalOffset(0);
+    badgeDrawable.setAdditionalVerticalOffset(0);
   }
 
   /**
