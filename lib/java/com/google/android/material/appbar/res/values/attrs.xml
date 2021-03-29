@@ -193,10 +193,17 @@
       <flag name="end" value="0x00800005"/>
     </attr>
 
-    <!-- Whether the CollapsingToolbarLayout should draw its own shrinking/growing title. -->
+    <!-- Whether the CollapsingToolbarLayout should draw its own collapsing title. -->
     <attr name="titleEnabled" format="boolean"/>
     <!-- The title to show when titleEnabled is set to true. -->
     <attr name="title"/>
+    <!-- Mode to specify the effect used to collapse and expand the title text. -->
+    <attr name="titleCollapseMode">
+      <!-- The expanded title will continuously scale and translate to its final collapsed position. -->
+      <enum name="scale" value="0"/>
+      <!-- The expanded title will fade out and translate, and the collapsed title will fade in. -->
+      <enum name="fade" value="1"/>
+    </attr>
     <!-- The maximum number of lines to display in the expanded state. Experimental Feature. -->
     <attr name="maxLines" format="integer" />
   </declare-styleable>

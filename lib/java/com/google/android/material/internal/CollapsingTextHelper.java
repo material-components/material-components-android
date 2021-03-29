@@ -43,6 +43,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import androidx.annotation.ColorInt;
+import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
@@ -68,6 +69,8 @@ public final class CollapsingTextHelper {
   private static final String TAG = "CollapsingTextHelper";
   private static final String ELLIPSIS_NORMAL = "\u2026"; // HORIZONTAL ELLIPSIS (…)
 
+  private static final float FADE_MODE_THRESHOLD_FRACTION_RELATIVE = 0.5f;
+
   private static final boolean DEBUG_DRAW = false;
   @NonNull private static final Paint DEBUG_DRAW_PAINT;
 
@@ -83,6 +86,10 @@ public final class CollapsingTextHelper {
 
   private boolean drawTitle;
   private float expandedFraction;
+  private boolean fadeModeEnabled;
+  private float fadeModeStartFraction;
+  private float fadeModeThresholdFraction;
+  private int currentOffsetY;
 
   @NonNull private final Rect expandedBounds;
   @NonNull private final Rect collapsedBounds;
@@ -156,6 +163,8 @@ public final class CollapsingTextHelper {
     collapsedBounds = new Rect();
     expandedBounds = new Rect();
     currentBounds = new RectF();
+
+    fadeModeThresholdFraction = calculateFadeModeThresholdFraction();
   }
 
   public void setTextSizeInterpolator(TimeInterpolator interpolator) {
@@ -270,6 +279,24 @@ public final class CollapsingTextHelper {
     getTextPaintCollapsed(tmpPaint);
     // Return collapsed height measured from the baseline.
     return -tmpPaint.ascent();
+  }
+
+  public void setCurrentOffsetY(int currentOffsetY) {
+    this.currentOffsetY = currentOffsetY;
+  }
+
+  public void setFadeModeStartFraction(float fadeModeStartFraction) {
+    this.fadeModeStartFraction = fadeModeStartFraction;
+    fadeModeThresholdFraction = calculateFadeModeThresholdFraction();
+  }
+
+  private float calculateFadeModeThresholdFraction() {
+    return fadeModeStartFraction
+        + (1 - fadeModeStartFraction) * FADE_MODE_THRESHOLD_FRACTION_RELATIVE;
+  }
+
+  public void setFadeModeEnabled(boolean fadeModeEnabled) {
+    this.fadeModeEnabled = fadeModeEnabled;
   }
 
   private void getTextPaintExpanded(@NonNull TextPaint textPaint) {
@@ -475,6 +502,10 @@ public final class CollapsingTextHelper {
         || (expandedTextColor != null && expandedTextColor.isStateful());
   }
 
+  public float getFadeModeThresholdFraction() {
+    return fadeModeThresholdFraction;
+  }
+
   public float getExpansionFraction() {
     return expandedFraction;
   }
@@ -493,11 +524,25 @@ public final class CollapsingTextHelper {
 
   private void calculateOffsets(final float fraction) {
     interpolateBounds(fraction);
-    currentDrawX = lerp(expandedDrawX, collapsedDrawX, fraction, positionInterpolator);
-    currentDrawY = lerp(expandedDrawY, collapsedDrawY, fraction, positionInterpolator);
+    if (fadeModeEnabled) {
+      if (fraction < fadeModeThresholdFraction) {
+        currentDrawX = expandedDrawX;
+        currentDrawY = lerp(expandedDrawY, collapsedDrawY, fraction, positionInterpolator);
 
-    setInterpolatedTextSize(
-        lerp(expandedTextSize, collapsedTextSize, fraction, textSizeInterpolator));
+        setInterpolatedTextSize(expandedTextSize);
+      } else {
+        currentDrawX = collapsedDrawX;
+        currentDrawY = collapsedDrawY - currentOffsetY;
+
+        setInterpolatedTextSize(collapsedTextSize);
+      }
+    } else {
+      currentDrawX = lerp(expandedDrawX, collapsedDrawX, fraction, positionInterpolator);
+      currentDrawY = lerp(expandedDrawY, collapsedDrawY, fraction, positionInterpolator);
+
+      setInterpolatedTextSize(
+          lerp(expandedTextSize, collapsedTextSize, fraction, textSizeInterpolator));
+    }
 
     setCollapsedTextBlend(
         1 - lerp(0, 1, 1 - fraction, AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR));
@@ -532,7 +577,31 @@ public final class CollapsingTextHelper {
         blendColors(
             getCurrentColor(expandedShadowColor), getCurrentColor(collapsedShadowColor), fraction));
 
+    if (fadeModeEnabled) {
+      int textAlpha = (int) (calculateFadeModeTextAlpha(fraction) * 255);
+      textPaint.setAlpha(textAlpha);
+    }
+
     ViewCompat.postInvalidateOnAnimation(view);
+  }
+
+  private float calculateFadeModeTextAlpha(
+      @FloatRange(from = 0.0, to = 1.0) float fraction) {
+    if (fraction <= fadeModeThresholdFraction) {
+      return AnimationUtils.lerp(
+          /* startValue= */ 1,
+          /* endValue= */ 0,
+          /* startFraction= */ fadeModeStartFraction,
+          /* endFraction= */ fadeModeThresholdFraction,
+          fraction);
+    } else {
+      return AnimationUtils.lerp(
+          /* startValue= */ 0,
+          /* endValue= */ 1,
+          /* startFraction= */ fadeModeThresholdFraction,
+          /* endFraction= */ 1,
+          fraction);
+    }
   }
 
   @ColorInt
@@ -649,13 +718,28 @@ public final class CollapsingTextHelper {
   }
 
   private void interpolateBounds(float fraction) {
-    currentBounds.left =
-        lerp(expandedBounds.left, collapsedBounds.left, fraction, positionInterpolator);
-    currentBounds.top = lerp(expandedDrawY, collapsedDrawY, fraction, positionInterpolator);
-    currentBounds.right =
-        lerp(expandedBounds.right, collapsedBounds.right, fraction, positionInterpolator);
-    currentBounds.bottom =
-        lerp(expandedBounds.bottom, collapsedBounds.bottom, fraction, positionInterpolator);
+    if (fadeModeEnabled) {
+      if (fraction < fadeModeThresholdFraction) {
+        currentBounds.left = expandedBounds.left;
+        currentBounds.top = lerp(expandedDrawY, collapsedDrawY, fraction, positionInterpolator);
+        currentBounds.right = expandedBounds.right;
+        currentBounds.bottom =
+            lerp(expandedBounds.bottom, collapsedBounds.bottom, fraction, positionInterpolator);
+      } else {
+        currentBounds.left = collapsedBounds.left;
+        currentBounds.top = collapsedBounds.top;
+        currentBounds.right = collapsedBounds.right;
+        currentBounds.bottom = collapsedBounds.bottom;
+      }
+    } else {
+      currentBounds.left =
+          lerp(expandedBounds.left, collapsedBounds.left, fraction, positionInterpolator);
+      currentBounds.top = lerp(expandedDrawY, collapsedDrawY, fraction, positionInterpolator);
+      currentBounds.right =
+          lerp(expandedBounds.right, collapsedBounds.right, fraction, positionInterpolator);
+      currentBounds.bottom =
+          lerp(expandedBounds.bottom, collapsedBounds.bottom, fraction, positionInterpolator);
+    }
   }
 
   private void setCollapsedTextBlend(float blend) {
@@ -690,7 +774,7 @@ public final class CollapsingTextHelper {
             DEBUG_DRAW_PAINT);
       }
 
-      if (scale != 1f) {
+      if (scale != 1f && !fadeModeEnabled) {
         canvas.scale(scale, scale, x, y);
       }
 
