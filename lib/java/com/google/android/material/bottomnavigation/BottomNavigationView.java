@@ -18,6 +18,8 @@ package com.google.android.material.bottomnavigation;
 
 import com.google.android.material.R;
 
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+
 import android.content.Context;
 import android.os.Build.VERSION;
 import androidx.appcompat.widget.TintTypedArray;
@@ -27,6 +29,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import com.google.android.material.behavior.HideBottomViewOnScrollBehavior;
@@ -149,6 +152,8 @@ public class BottomNavigationView extends NavigationBarView {
     return MAX_ITEM_COUNT;
   }
 
+  /** @hide */
+  @RestrictTo(LIBRARY_GROUP)
   @Override
   @NonNull
   protected NavigationBarMenuView createNavigationBarMenuView(@NonNull Context context) {

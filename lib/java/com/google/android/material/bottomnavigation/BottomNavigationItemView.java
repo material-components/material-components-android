@@ -29,7 +29,7 @@ import com.google.android.material.navigation.NavigationBarItemView;
 
 /** @hide For internal use only. */
 @RestrictTo(LIBRARY_GROUP)
-final class BottomNavigationItemView extends NavigationBarItemView {
+public class BottomNavigationItemView extends NavigationBarItemView {
   public BottomNavigationItemView(@NonNull Context context) {
     super(context);
   }

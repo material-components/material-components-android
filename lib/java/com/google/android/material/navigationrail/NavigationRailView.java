@@ -19,6 +19,7 @@ package com.google.android.material.navigationrail;
 import com.google.android.material.R;
 
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static java.lang.Math.min;
 
 import android.content.Context;
@@ -32,6 +33,7 @@ import android.widget.FrameLayout;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -235,6 +237,8 @@ public class NavigationRailView extends NavigationBarView {
     return (NavigationRailMenuView) getMenuView();
   }
 
+  /** @hide */
+  @RestrictTo(LIBRARY_GROUP)
   @Override
   @NonNull
   protected NavigationRailMenuView createNavigationBarMenuView(@NonNull Context context) {

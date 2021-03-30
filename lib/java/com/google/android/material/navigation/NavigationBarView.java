@@ -708,7 +708,12 @@ public abstract class NavigationBarView extends FrameLayout {
   /** Returns the maximum number of items that can be shown in NavigationBarView. */
   public abstract int getMaxItemCount();
 
-  /** Returns reference to a newly created {@link NavigationBarMenuView} */
+  /**
+   * Returns reference to a newly created {@link NavigationBarMenuView}
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
   @NonNull
   protected abstract NavigationBarMenuView createNavigationBarMenuView(@NonNull Context context);
 
