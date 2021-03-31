@@ -56,7 +56,7 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
           if (textInputLayout.getSuffixText() != null) {
             return;
           }
-          animateIcon(hasText(s));
+          animateIcon(textInputLayout.hasFocus() && hasText(s));
         }
       };
   private final OnFocusChangeListener onFocusChangeListener =
