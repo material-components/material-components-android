@@ -312,11 +312,36 @@ _**Note:** Non-null error text will replace any existing helper text._
 
 ### Text field dimensions
 
-By default, text fields have a maximum width of `488dp`, and a minimum with of
-`56dp` for layouts without a label. If a label is present, the minimum width
-recommended is of `88dp`.
+The recommended default `android:layout_width` is `245dp`.
 
-The recommended default `android:layout_width` is of `245dp`.
+By default, text fields have a maximum width of `488dp`, and a minimum width of
+`56dp` for layouts without a label. If a label is present, the minimum width
+recommended is `88dp`. `android:minWidth` and `android:maxWidth` should be set
+on the `TextInputLayout` instead of on the `TextInputEditText` to avoid
+unintended behaviors.
+
+You can override those values in a custom style that inherits from a
+`TextInputLayout` style or directly on the layout:
+
+```xml
+<com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/textField"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:minWidth="@dimen/custom_min_width"
+    android:maxWidth="@dimen/custom_max_width"
+    android:hint="@string/label">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+    />
+
+</com.google.android.material.textfield.TextInputLayout>
+```
+
+_**Note:** The `android:layout_width` of the `TextInputLayout` should be
+`wrap_content` in order for those minimum and maximum dimensions to be used._
 
 ### Using text fields programmatically
 

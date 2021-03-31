@@ -27,6 +27,12 @@
     <!-- The text color for the hint when the text field is not activated (such
          as for the resting and disabled states). -->
     <attr name="android:textColorHint"/>
+    <!-- Makes the text field be at least this dimension wide if its width is
+         set to wrap_content. -->
+    <attr name="android:minWidth"/>
+    <!-- Makes the text field be at most this dimension wide if its width is set
+         to wrap_content.  -->
+    <attr name="android:maxWidth"/>
 
     <!-- Whether the layout's floating label functionality is enabled. -->
     <attr name="hintEnabled" format="boolean"/>

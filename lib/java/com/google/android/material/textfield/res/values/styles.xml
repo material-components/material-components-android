@@ -58,7 +58,7 @@
     <item name="enforceTextAppearance">true</item>
 
     <item name="android:minWidth">@dimen/material_textinput_min_width</item>
-    <item name="android:maxWidth">@dimen/material_textinput_min_width</item>
+    <item name="android:maxWidth">@dimen/material_textinput_max_width</item>
     <item name="boxBackgroundMode">outline</item>
     <item name="boxBackgroundColor">@null</item>
     <item name="errorIconDrawable">@drawable/mtrl_ic_error</item>

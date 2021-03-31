@@ -73,6 +73,7 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
@@ -183,6 +184,7 @@ public class TextInputLayout extends LinearLayout {
   private static final int LABEL_SCALE_ANIMATION_DURATION = 167;
 
   private static final int INVALID_MAX_LENGTH = -1;
+  private static final int NO_WIDTH = -1;
 
   private static final String LOG_TAG = "TextInputLayout";
 
@@ -192,6 +194,9 @@ public class TextInputLayout extends LinearLayout {
   @NonNull private final FrameLayout endIconFrame;
   EditText editText;
   private CharSequence originalHint;
+
+  private int minWidth = NO_WIDTH;
+  private int maxWidth = NO_WIDTH;
 
   private final IndicatorViewController indicatorViewController = new IndicatorViewController(this);
 
@@ -477,6 +482,13 @@ public class TextInputLayout extends LinearLayout {
     setHint(a.getText(R.styleable.TextInputLayout_android_hint));
     hintAnimationEnabled = a.getBoolean(R.styleable.TextInputLayout_hintAnimationEnabled, true);
     expandedHintEnabled = a.getBoolean(R.styleable.TextInputLayout_expandedHintEnabled, true);
+
+    if (a.hasValue(R.styleable.TextInputLayout_android_minWidth)) {
+      setMinWidth(a.getDimensionPixelSize(R.styleable.TextInputLayout_android_minWidth, NO_WIDTH));
+    }
+    if (a.hasValue(R.styleable.TextInputLayout_android_maxWidth)) {
+      setMaxWidth(a.getDimensionPixelSize(R.styleable.TextInputLayout_android_maxWidth, NO_WIDTH));
+    }
 
     shapeAppearanceModel =
         ShapeAppearanceModel.builder(context, attrs, defStyleAttr, DEF_STYLE_RES).build();
@@ -1388,6 +1400,8 @@ public class TextInputLayout extends LinearLayout {
     }
 
     this.editText = editText;
+    setMinWidth(minWidth);
+    setMaxWidth(maxWidth);
     onApplyBoxBackgroundMode();
     setTextInputAccessibilityDelegate(new AccessibilityDelegate(this));
 
@@ -1536,6 +1550,88 @@ public class TextInputLayout extends LinearLayout {
   @Nullable
   public EditText getEditText() {
     return editText;
+  }
+
+  /**
+   * Sets the minimum width of the text field. The layout will be at least this dimension wide if
+   * its {@code layout_width} is set to {@code wrap_content}.
+   *
+   * @param minWidth The minimum width to be set
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_android_minWidth
+   * @see #setMinWidthResource(int)
+   * @see #getMinWidth()
+   */
+  public void setMinWidth(@Px int minWidth) {
+    this.minWidth = minWidth;
+    if (editText != null && minWidth != NO_WIDTH) {
+      editText.setMinWidth(minWidth);
+    }
+  }
+
+  /**
+   * Sets the minimum width of the text field. The layout will be at least this dimension wide if
+   * its {@code layout_width} is set to {@code wrap_content}.
+   *
+   * @param minWidthId The id of the minimum width dimension resource to be set
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_android_minWidth
+   * @see #setMinWidth(int)
+   * @see #getMinWidth()
+   */
+  public void setMinWidthResource(@DimenRes int minWidthId) {
+    setMinWidth(getContext().getResources().getDimensionPixelSize(minWidthId));
+  }
+
+  /**
+   * Returns the text field's minimum width, or -1 if no minimum width is set.
+   *
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_android_minWidth
+   * @see #setMinWidth(int)
+   * @see #setMinWidthResource(int) (int)
+   */
+  @Px
+  public int getMinWidth() {
+    return minWidth;
+  }
+
+  /**
+   * Sets the maximum width of the text field. The layout will be at most this dimension wide if
+   * its {@code layout_width} is set to {@code wrap_content}.
+   *
+   * @param maxWidth The maximum width to be set
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_android_maxWidth
+   * @see #setMaxWidthResource(int)
+   * @see #getMaxWidth()
+   */
+  public void setMaxWidth(@Px int maxWidth) {
+    this.maxWidth = maxWidth;
+    if (editText != null && maxWidth != NO_WIDTH) {
+      editText.setMaxWidth(maxWidth);
+    }
+  }
+
+  /**
+   * Sets the maximum width of the text field. The layout will be at most this dimension wide if
+   * its {@code layout_width} is set to {@code wrap_content}.
+   *
+   * @param maxWidthId The id of the maximum width dimension resource to be set
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_android_maxWidth
+   * @see #setMaxWidth(int)
+   * @see #getMaxWidth()
+   */
+  public void setMaxWidthResource(@DimenRes int maxWidthId) {
+    setMaxWidth(getContext().getResources().getDimensionPixelSize(maxWidthId));
+  }
+
+  /**
+   * Returns the text field's maximum width, or -1 if no maximum width is set.
+   *
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_android_maxWidth
+   * @see #setMaxWidth(int)
+   * @see #setMaxWidthResource(int) (int)
+   */
+  @Px
+  public int getMaxWidth() {
+    return maxWidth;
   }
 
   /**
