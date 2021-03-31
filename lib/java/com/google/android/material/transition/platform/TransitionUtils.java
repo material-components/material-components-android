@@ -30,7 +30,6 @@ import android.graphics.Shader;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.core.graphics.PathParser;
-import androidx.core.view.animation.PathInterpolatorCompat;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewParent;
@@ -44,7 +43,7 @@ import android.transition.PathMotion;
 import android.transition.PatternPathMotion;
 import android.transition.Transition;
 import android.transition.TransitionSet;
-import com.google.android.material.resources.MaterialAttributes;
+import com.google.android.material.motion.MotionUtils;
 import com.google.android.material.shape.AbsoluteCornerSize;
 import com.google.android.material.shape.CornerSize;
 import com.google.android.material.shape.RelativeCornerSize;
@@ -56,12 +55,6 @@ class TransitionUtils {
 
   static final int NO_DURATION = -1;
   @AttrRes static final int NO_ATTR_RES_ID = 0;
-
-  // Constants corresponding to motionEasing* theme attr values.
-  private static final String EASING_TYPE_CUBIC_BEZIER = "cubic-bezier";
-  private static final String EASING_TYPE_PATH = "path";
-  private static final String EASING_TYPE_FORMAT_START = "(";
-  private static final String EASING_TYPE_FORMAT_END = ")";
 
   // Constants corresponding to motionPath theme attr enum values.
   private static final int PATH_TYPE_LINEAR = 0;
@@ -76,7 +69,7 @@ class TransitionUtils {
       TimeInterpolator defaultInterpolator) {
     if (attrResId != NO_ATTR_RES_ID && transition.getInterpolator() == null) {
       TimeInterpolator interpolator =
-          TransitionUtils.resolveThemeInterpolator(context, attrResId, defaultInterpolator);
+          MotionUtils.resolveThemeInterpolator(context, attrResId, defaultInterpolator);
       transition.setInterpolator(interpolator);
       return true;
     }
@@ -86,7 +79,7 @@ class TransitionUtils {
   static boolean maybeApplyThemeDuration(
       Transition transition, Context context, @AttrRes int attrResId) {
     if (attrResId != NO_ATTR_RES_ID && transition.getDuration() == NO_DURATION) {
-      int duration = MaterialAttributes.resolveInteger(context, attrResId, NO_DURATION);
+      int duration = MotionUtils.resolveThemeDuration(context, attrResId, NO_DURATION);
       if (duration != NO_DURATION) {
         transition.setDuration(duration);
         return true;
@@ -105,62 +98,6 @@ class TransitionUtils {
       }
     }
     return false;
-  }
-
-  static TimeInterpolator resolveThemeInterpolator(
-      Context context, @AttrRes int attrResId, @NonNull TimeInterpolator defaultInterpolator) {
-    TypedValue easingValue = new TypedValue();
-    if (context.getTheme().resolveAttribute(attrResId, easingValue, true)) {
-      if (easingValue.type != TypedValue.TYPE_STRING) {
-        throw new IllegalArgumentException("Motion easing theme attribute must be a string");
-      }
-
-      String easingString = String.valueOf(easingValue.string);
-
-      if (isEasingType(easingString, EASING_TYPE_CUBIC_BEZIER)) {
-        String controlPointsString = getEasingContent(easingString, EASING_TYPE_CUBIC_BEZIER);
-        String[] controlPoints = controlPointsString.split(",");
-        if (controlPoints.length != 4) {
-          throw new IllegalArgumentException(
-              "Motion easing theme attribute must have 4 control points if using bezier curve"
-                  + " format; instead got: "
-                  + controlPoints.length);
-        }
-
-        float controlX1 = getControlPoint(controlPoints, 0);
-        float controlY1 = getControlPoint(controlPoints, 1);
-        float controlX2 = getControlPoint(controlPoints, 2);
-        float controlY2 = getControlPoint(controlPoints, 3);
-        return PathInterpolatorCompat.create(controlX1, controlY1, controlX2, controlY2);
-      } else if (isEasingType(easingString, EASING_TYPE_PATH)) {
-        String path = getEasingContent(easingString, EASING_TYPE_PATH);
-        return PathInterpolatorCompat.create(PathParser.createPathFromPathData(path));
-      } else {
-        throw new IllegalArgumentException("Invalid motion easing type: " + easingString);
-      }
-    }
-    return defaultInterpolator;
-  }
-
-  private static boolean isEasingType(String easingString, String easingType) {
-    return easingString.startsWith(easingType + EASING_TYPE_FORMAT_START)
-        && easingString.endsWith(EASING_TYPE_FORMAT_END);
-  }
-
-  private static String getEasingContent(String easingString, String easingType) {
-    return easingString.substring(
-        easingType.length() + EASING_TYPE_FORMAT_START.length(),
-        easingString.length() - EASING_TYPE_FORMAT_END.length());
-  }
-
-  private static float getControlPoint(String[] controlPoints, int index) {
-    float controlPoint = Float.parseFloat(controlPoints[index]);
-    if (controlPoint < 0 || controlPoint > 1) {
-      throw new IllegalArgumentException(
-          "Motion easing control point value must be between 0 and 1; instead got: "
-              + controlPoint);
-    }
-    return controlPoint;
   }
 
   @Nullable

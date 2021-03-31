@@ -58,6 +58,7 @@ def srcDirs = [
   'com/google/android/material/internal',
   'com/google/android/material/math',
   'com/google/android/material/menu',
+  'com/google/android/material/motion',
   'com/google/android/material/navigation',
   'com/google/android/material/navigationrail',
   'com/google/android/material/progressindicator',
