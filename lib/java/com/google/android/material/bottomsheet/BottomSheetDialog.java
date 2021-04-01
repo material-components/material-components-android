@@ -83,6 +83,12 @@ public class BottomSheetDialog extends AppCompatDialog {
 
   public BottomSheetDialog(@NonNull Context context) {
     this(context, 0);
+
+    edgeToEdgeEnabled =
+        getContext()
+            .getTheme()
+            .obtainStyledAttributes(new int[] {R.attr.enableEdgeToEdge})
+            .getBoolean(0, false);
   }
 
   public BottomSheetDialog(@NonNull Context context, @StyleRes int theme) {
@@ -90,6 +96,12 @@ public class BottomSheetDialog extends AppCompatDialog {
     // We hide the title bar for any style configuration. Otherwise, there will be a gap
     // above the bottom sheet when it is expanded.
     supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+
+    edgeToEdgeEnabled =
+        getContext()
+            .getTheme()
+            .obtainStyledAttributes(new int[] {R.attr.enableEdgeToEdge})
+            .getBoolean(0, false);
   }
 
   protected BottomSheetDialog(
@@ -97,6 +109,12 @@ public class BottomSheetDialog extends AppCompatDialog {
     super(context, cancelable, cancelListener);
     supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
     this.cancelable = cancelable;
+
+    edgeToEdgeEnabled =
+        getContext()
+            .getTheme()
+            .obtainStyledAttributes(new int[] {R.attr.enableEdgeToEdge})
+            .getBoolean(0, false);
   }
 
   @Override
@@ -123,12 +141,6 @@ public class BottomSheetDialog extends AppCompatDialog {
       }
       window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
     }
-
-    edgeToEdgeEnabled =
-        getContext()
-            .getTheme()
-            .obtainStyledAttributes(new int[] {R.attr.enableEdgeToEdge})
-            .getBoolean(0, false);
   }
 
   @Override
