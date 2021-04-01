@@ -46,7 +46,7 @@
     <item name="colorOnPrimarySurface">?attr/colorOnSurface</item>
 
     <item name="scrimBackground">@color/mtrl_scrim_color</item>
-    <item name="popupMenuBackground">@drawable/mtrl_popupmenu_background_dark</item>
+    <item name="popupMenuBackground">@drawable/mtrl_popupmenu_background_overlay</item>
 
     <item name="minTouchTargetSize">@dimen/mtrl_min_touch_target_size</item>
 
