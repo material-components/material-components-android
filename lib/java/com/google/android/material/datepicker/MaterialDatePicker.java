@@ -215,10 +215,8 @@ public final class MaterialDatePicker<S> extends DialogFragment {
           new LayoutParams(getPaddedPickerWidth(context), LayoutParams.WRAP_CONTENT));
     } else {
       View pane = root.findViewById(R.id.mtrl_calendar_main_pane);
-      View frame = root.findViewById(R.id.mtrl_calendar_frame);
       pane.setLayoutParams(
           new LayoutParams(getPaddedPickerWidth(context), LayoutParams.MATCH_PARENT));
-      frame.setMinimumHeight(getDialogPickerHeight(requireContext()));
     }
 
     headerSelectionText = root.findViewById(R.id.mtrl_picker_header_selection_text);
@@ -419,23 +417,6 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     boolean attributeValue = a.getBoolean(0, false);
     a.recycle();
     return attributeValue;
-  }
-
-  private static int getDialogPickerHeight(@NonNull Context context) {
-    Resources resources = context.getResources();
-    int navigationHeight =
-        resources.getDimensionPixelSize(R.dimen.mtrl_calendar_navigation_height)
-            + resources.getDimensionPixelOffset(R.dimen.mtrl_calendar_navigation_top_padding)
-            + resources.getDimensionPixelOffset(R.dimen.mtrl_calendar_navigation_bottom_padding);
-    int daysOfWeekHeight =
-        resources.getDimensionPixelSize(R.dimen.mtrl_calendar_days_of_week_height);
-    int calendarHeight =
-        MonthAdapter.MAXIMUM_WEEKS
-                * resources.getDimensionPixelSize(R.dimen.mtrl_calendar_day_height)
-            + (MonthAdapter.MAXIMUM_WEEKS - 1)
-                * resources.getDimensionPixelOffset(R.dimen.mtrl_calendar_month_vertical_padding);
-    int calendarPadding = resources.getDimensionPixelOffset(R.dimen.mtrl_calendar_bottom_padding);
-    return navigationHeight + daysOfWeekHeight + calendarHeight + calendarPadding;
   }
 
   private static int getPaddedPickerWidth(@NonNull Context context) {

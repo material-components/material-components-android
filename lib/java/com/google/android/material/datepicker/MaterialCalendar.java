@@ -18,6 +18,7 @@ package com.google.android.material.datepicker;
 import com.google.android.material.R;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
@@ -147,6 +148,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
     }
 
     View root = themedInflater.inflate(layout, viewGroup, false);
+    root.setMinimumHeight(getDialogPickerHeight(getContext()));
     GridView daysHeader = root.findViewById(R.id.mtrl_calendar_days_of_week);
     ViewCompat.setAccessibilityDelegate(
         daysHeader,
@@ -454,6 +456,23 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
             recyclerView.smoothScrollToPosition(position);
           }
         });
+  }
+
+  private static int getDialogPickerHeight(@NonNull Context context) {
+    Resources resources = context.getResources();
+    int navigationHeight =
+        resources.getDimensionPixelSize(R.dimen.mtrl_calendar_navigation_height)
+            + resources.getDimensionPixelOffset(R.dimen.mtrl_calendar_navigation_top_padding)
+            + resources.getDimensionPixelOffset(R.dimen.mtrl_calendar_navigation_bottom_padding);
+    int daysOfWeekHeight =
+        resources.getDimensionPixelSize(R.dimen.mtrl_calendar_days_of_week_height);
+    int calendarHeight =
+        MonthAdapter.MAXIMUM_WEEKS
+            * resources.getDimensionPixelSize(R.dimen.mtrl_calendar_day_height)
+            + (MonthAdapter.MAXIMUM_WEEKS - 1)
+            * resources.getDimensionPixelOffset(R.dimen.mtrl_calendar_month_vertical_padding);
+    int calendarPadding = resources.getDimensionPixelOffset(R.dimen.mtrl_calendar_bottom_padding);
+    return navigationHeight + daysOfWeekHeight + calendarHeight + calendarPadding;
   }
 
   @NonNull
