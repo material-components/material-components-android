@@ -788,8 +788,9 @@ public final class CollapsingTextHelper {
         return;
       }
 
-      if (shouldDrawMultiline()) {
-        drawMultinlineTransition(canvas, currentExpandedX, y);
+      if (shouldDrawMultiline()
+          && (!fadeModeEnabled || expandedFraction > fadeModeThresholdFraction)) {
+        drawMultilineTransition(canvas, currentExpandedX, y);
       } else {
         canvas.translate(x, y);
         textLayout.draw(canvas);
@@ -803,7 +804,7 @@ public final class CollapsingTextHelper {
     return maxLines > 1 && (!isRtl || fadeModeEnabled) && !useTexture;
   }
 
-  private void drawMultinlineTransition(@NonNull Canvas canvas, float currentExpandedX, float y) {
+  private void drawMultilineTransition(@NonNull Canvas canvas, float currentExpandedX, float y) {
     int originalAlpha = textPaint.getAlpha();
     // positon expanded text appropriately
     canvas.translate(currentExpandedX, y);
@@ -821,20 +822,22 @@ public final class CollapsingTextHelper {
         /* x = */ 0,
         lineBaseline,
         textPaint);
-    // Remove ellipsis for Cross-section animation
-    String tmp = textToDrawCollapsed.toString().trim();
-    if (tmp.endsWith(ELLIPSIS_NORMAL)) {
-      tmp = tmp.substring(0, tmp.length() - 1);
+    if (!fadeModeEnabled) {
+      // Remove ellipsis for Cross-section animation
+      String tmp = textToDrawCollapsed.toString().trim();
+      if (tmp.endsWith(ELLIPSIS_NORMAL)) {
+        tmp = tmp.substring(0, tmp.length() - 1);
+      }
+      // Cross-section between both texts (should stay at original alpha)
+      textPaint.setAlpha(originalAlpha);
+      canvas.drawText(
+          tmp,
+          /* start = */ 0,
+          min(textLayout.getLineEnd(0), tmp.length()),
+          /* x = */ 0,
+          lineBaseline,
+          textPaint);
     }
-    // Cross-section between both texts (should stay at original alpha)
-    textPaint.setAlpha(originalAlpha);
-    canvas.drawText(
-        tmp,
-        /* start = */ 0,
-        min(textLayout.getLineEnd(0), tmp.length()),
-        /* x = */ 0,
-        lineBaseline,
-        textPaint);
   }
 
   private boolean calculateIsRtl(@NonNull CharSequence text) {
