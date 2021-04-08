@@ -50,7 +50,7 @@ public class BottomAppBarTopEdgeTreatment extends EdgeTreatment implements Clone
   private float fabDiameter;
   private float cradleVerticalOffset;
   private float horizontalOffset;
-  private int fabCornerSize = -1;
+  private float fabCornerSize = -1f;
 
   /**
    * @param fabMargin the margin in pixels between the cutout and the fab.
@@ -101,7 +101,7 @@ public class BottomAppBarTopEdgeTreatment extends EdgeTreatment implements Clone
     // Calculate the X distance between the center of the two adjacent circles using pythagorean
     // theorem.
     float cornerSize = fabCornerSize * interpolation;
-    boolean useCircleCutout = fabCornerSize == -1 || abs(fabCornerSize * 2 - fabDiameter) < .1f;
+    boolean useCircleCutout = fabCornerSize == -1 || abs(fabCornerSize * 2f - fabDiameter) < .1f;
     float arcOffset = 0;
     if (!useCircleCutout) {
       verticalOffset = 0;
@@ -251,11 +251,11 @@ public class BottomAppBarTopEdgeTreatment extends EdgeTreatment implements Clone
     this.roundedCornerRadius = roundedCornerRadius;
   }
 
-  public int getFabCornerRadius() {
+  public float getFabCornerRadius() {
     return fabCornerSize;
   }
 
-  public void setFabCornerSize(int size) {
+  public void setFabCornerSize(float size) {
     this.fabCornerSize = size;
   }
 }
