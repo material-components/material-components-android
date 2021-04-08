@@ -551,7 +551,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     return false;
   }
 
-  void setFabCornerSize(@Px int radius) {
+  void setFabCornerSize(@Dimension float radius) {
     if (radius != getTopEdgeTreatment().getFabCornerRadius()) {
       getTopEdgeTreatment().setFabCornerSize(radius);
       materialShapeDrawable.invalidateSelf();
@@ -1036,7 +1036,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
             child.setFabDiameter(height);
 
             // Assume symmetrical corners
-            int cornerSize = (int) fab.getShapeAppearanceModel().getTopLeftCornerSize()
+            float cornerSize = fab.getShapeAppearanceModel().getTopLeftCornerSize()
                 .getCornerSize(new RectF(fabContentRect));
 
             child.setFabCornerSize(cornerSize);
