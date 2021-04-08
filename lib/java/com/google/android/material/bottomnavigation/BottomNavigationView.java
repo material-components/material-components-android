@@ -193,6 +193,7 @@ public class BottomNavigationView extends NavigationBarView {
    * @param listener The listener to notify
    * @see #setOnNavigationItemReselectedListener(OnNavigationItemReselectedListener)
    */
+  @Deprecated
   public void setOnNavigationItemSelectedListener(
       @Nullable OnNavigationItemSelectedListener listener) {
     setOnItemSelectedListener(listener);
@@ -205,14 +206,17 @@ public class BottomNavigationView extends NavigationBarView {
    * @param listener The listener to notify
    * @see #setOnNavigationItemSelectedListener(OnNavigationItemSelectedListener)
    */
+  @Deprecated
   public void setOnNavigationItemReselectedListener(
       @Nullable OnNavigationItemReselectedListener listener) {
     setOnItemReselectedListener(listener);
   }
 
   /** Listener for handling selection events on bottom navigation items. */
+  @Deprecated
   public interface OnNavigationItemSelectedListener extends OnItemSelectedListener {}
 
   /** Listener for handling reselection events on bottom navigation items. */
+  @Deprecated
   public interface OnNavigationItemReselectedListener extends OnItemReselectedListener {}
 }

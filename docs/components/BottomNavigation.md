@@ -102,6 +102,13 @@ That results in:
 ![Bottom navigation bar with a white background, one selected purple icon and
 another unselected icon.](assets/bottomnav/bottom-nav-default.png)
 
+**Note:** We have deprecated the
+`BottomNavigationView#setOnNavigationItemSelectedListener` and
+`BottomNavigationView#setOnNavigationItemReselectedListener` methods in favor of
+the listeners in `NavigationBarView`. This will allow you to share the same
+selection code between both `BottomNavigation` and `NavigationRail` view
+elements.
+
 ### Making bottom navigation accessible
 
 You should set an `android:title` for each of your `menu` items so that screen
