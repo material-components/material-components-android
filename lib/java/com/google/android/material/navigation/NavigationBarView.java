@@ -312,7 +312,7 @@ public abstract class NavigationBarView extends FrameLayout {
    * @param listener The listener to notify
    * @see #setOnItemReselectedListener(OnItemReselectedListener)
    */
-  protected void setOnItemSelectedListener(@Nullable OnItemSelectedListener listener) {
+  public void setOnItemSelectedListener(@Nullable OnItemSelectedListener listener) {
     selectedListener = listener;
   }
 
@@ -323,7 +323,7 @@ public abstract class NavigationBarView extends FrameLayout {
    * @param listener The listener to notify
    * @see #setOnItemSelectedListener(OnItemSelectedListener)
    */
-  protected void setOnItemReselectedListener(@Nullable OnItemReselectedListener listener) {
+  public void setOnItemReselectedListener(@Nullable OnItemReselectedListener listener) {
     reselectedListener = listener;
   }
 
@@ -681,7 +681,7 @@ public abstract class NavigationBarView extends FrameLayout {
   }
 
   /** Listener for handling selection events on navigation items. */
-  protected interface OnItemSelectedListener {
+  public interface OnItemSelectedListener {
 
     /**
      * Called when an item in the navigation menu is selected.
@@ -695,7 +695,7 @@ public abstract class NavigationBarView extends FrameLayout {
   }
 
   /** Listener for handling reselection events on navigation items. */
-  protected interface OnItemReselectedListener {
+  public interface OnItemReselectedListener {
 
     /**
      * Called when the currently selected item in the navigation menu is selected again.

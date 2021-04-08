@@ -25,7 +25,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -36,8 +35,8 @@ import androidx.annotation.Nullable;
 import androidx.core.math.MathUtils;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.badge.BadgeDrawable.BadgeGravity;
+import com.google.android.material.navigation.NavigationBarView.OnItemSelectedListener;
 import com.google.android.material.navigationrail.NavigationRailView;
-import com.google.android.material.navigationrail.NavigationRailView.OnNavigationItemSelectedListener;
 import io.material.catalog.feature.DemoFragment;
 
 /** A base class that provides a demo screen structure for a single navigation rail demo. */
@@ -66,7 +65,7 @@ public class NavigationRailDemoFragment extends DemoFragment {
     initNavigationRail(getContext(), view);
     initNavigationRailDemoControls(view);
 
-    OnNavigationItemSelectedListener navigationItemListener =
+    OnItemSelectedListener navigationItemListener =
         item -> {
           handleAllNavigationRailSelections(item.getItemId());
 
@@ -178,7 +177,7 @@ public class NavigationRailDemoFragment extends DemoFragment {
     badgeGravitySpinner.setAdapter(adapter);
 
     badgeGravitySpinner.setOnItemSelectedListener(
-        new OnItemSelectedListener() {
+        new AdapterView.OnItemSelectedListener() {
           @Override
           public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             updateBadgeGravity(
@@ -214,8 +213,8 @@ public class NavigationRailDemoFragment extends DemoFragment {
         });
   }
 
-  private void setNavigationRailListeners(OnNavigationItemSelectedListener listener) {
-    navigationRailView.setOnNavigationItemSelectedListener(listener);
+  private void setNavigationRailListeners(OnItemSelectedListener listener) {
+    navigationRailView.setOnItemSelectedListener(listener);
   }
 
   private void removeNavItemsFromNavigationRails() {

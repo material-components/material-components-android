@@ -245,37 +245,6 @@ public class NavigationRailView extends NavigationBarView {
     return new NavigationRailMenuView(context);
   }
 
-  /**
-   * Sets a listener that will be notified when a navigation rail item is selected. This listener
-   * will also be notified when the currently selected item is reselected, unless an {@link
-   * OnNavigationItemReselectedListener} has also been set.
-   *
-   * @param listener The listener to notify
-   * @see #setOnNavigationItemReselectedListener(OnNavigationItemReselectedListener)
-   */
-  public void setOnNavigationItemSelectedListener(
-      @Nullable OnNavigationItemSelectedListener listener) {
-    setOnItemSelectedListener(listener);
-  }
-
-  /**
-   * Sets a listener that will be notified when the currently selected navigation rail item is
-   * reselected. This does not require an {@link OnNavigationItemSelectedListener} to be set.
-   *
-   * @param listener The listener to notify
-   * @see #setOnNavigationItemSelectedListener(OnNavigationItemSelectedListener)
-   */
-  public void setOnNavigationItemReselectedListener(
-      @Nullable OnNavigationItemReselectedListener listener) {
-    setOnItemReselectedListener(listener);
-  }
-
-  /** Listener for handling selection events on bottom navigation items. */
-  public interface OnNavigationItemSelectedListener extends OnItemSelectedListener {}
-
-  /** Listener for handling reselection events on bottom navigation items. */
-  public interface OnNavigationItemReselectedListener extends OnItemReselectedListener {}
-
   private int makeMinWidthSpec(int measureSpec) {
     int minWidth = getSuggestedMinimumWidth();
     if (MeasureSpec.getMode(measureSpec) != MeasureSpec.EXACTLY && minWidth > 0) {

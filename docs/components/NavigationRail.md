@@ -78,7 +78,10 @@ an icon and a text label.
 In code:
 
 ```kt
-NavigationRailView.OnNavigationItemSelectedListener { item ->
+// Listeners are defined on the super class NavigationBarView
+// to support both NavigationRail and BottomNavigation with the
+// same listeners
+NavigationBarView.OnNavigationItemSelectedListener { item ->
     when(item.itemId) {
         R.id.item1 -> {
             // Respond to navigation item 1 click
