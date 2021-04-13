@@ -675,10 +675,13 @@ public final class CollapsingTextHelper {
 
     float measuredWidth = textToDraw != null
         ? textPaint.measureText(textToDraw, 0, textToDraw.length()) : 0;
-    width = textLayout != null && maxLines > 1 && !isRtl
+    width = textLayout != null && maxLines > 1
         ? textLayout.getWidth()
         : measuredWidth;
-    expandedFirstLineDrawX = textLayout != null ? textLayout.getLineLeft(0) : 0;
+    expandedFirstLineDrawX =
+        textLayout != null
+            ? maxLines > 1 ? textLayout.getLineStart(0) : textLayout.getLineLeft(0)
+            : 0;
 
     final int expandedAbsGravity =
         GravityCompat.getAbsoluteGravity(
@@ -798,7 +801,7 @@ public final class CollapsingTextHelper {
   }
 
   private boolean shouldDrawMultiline() {
-    return maxLines > 1 && !isRtl && !useTexture;
+    return maxLines > 1 && (!isRtl || fadeModeEnabled) && !useTexture;
   }
 
   private void drawMultilineTransition(@NonNull Canvas canvas, float currentExpandedX, float y) {
