@@ -21,8 +21,10 @@ import com.google.android.material.R;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.TypedArray;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -52,6 +54,7 @@ import androidx.annotation.IdRes;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
 import androidx.customview.view.AbsSavedState;
@@ -63,6 +66,7 @@ import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.ripple.RippleUtils;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.MaterialShapeUtils;
+import com.google.android.material.shape.ShapeAppearanceModel;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -199,6 +203,16 @@ public abstract class NavigationBarView extends FrameLayout {
       ViewCompat.setBackground(this, createMaterialShapeDrawableBackground(context));
     }
 
+    if (attributes.hasValue(R.styleable.NavigationBarView_itemPaddingTop)) {
+      setItemPaddingTop(
+          attributes.getDimensionPixelSize(R.styleable.NavigationBarView_itemPaddingTop, 0));
+    }
+
+    if (attributes.hasValue(R.styleable.NavigationBarView_itemPaddingBottom)) {
+      setItemPaddingBottom(
+          attributes.getDimensionPixelSize(R.styleable.NavigationBarView_itemPaddingBottom, 0));
+    }
+
     if (attributes.hasValue(R.styleable.NavigationBarView_elevation)) {
       setElevation(attributes.getDimensionPixelSize(R.styleable.NavigationBarView_elevation, 0));
     }
@@ -220,6 +234,48 @@ public abstract class NavigationBarView extends FrameLayout {
       setItemRippleColor(
           MaterialResources.getColorStateList(
               context, attributes, R.styleable.NavigationBarView_itemRippleColor));
+    }
+
+    int activeIndicatorStyleResId =
+        attributes.getResourceId(R.styleable.NavigationBarView_itemActiveIndicatorStyle, 0);
+
+    if (activeIndicatorStyleResId != 0) {
+      setItemActiveIndicatorEnabled(true);
+
+      @SuppressLint("CustomViewStyleable") TypedArray activeIndicatorAttributes =
+          context.obtainStyledAttributes(
+              activeIndicatorStyleResId, R.styleable.NavigationBarActiveIndicator);
+
+      int itemActiveIndicatorWidth =
+          activeIndicatorAttributes.getDimensionPixelSize(
+              R.styleable.NavigationBarActiveIndicator_android_width, 0);
+      setItemActiveIndicatorWidth(itemActiveIndicatorWidth);
+
+      int itemActiveIndicatorHeight =
+          activeIndicatorAttributes.getDimensionPixelSize(
+              R.styleable.NavigationBarActiveIndicator_android_height, 0);
+      setItemActiveIndicatorHeight(itemActiveIndicatorHeight);
+
+      int itemActiveIndicatorMarginHorizontal =
+          activeIndicatorAttributes.getDimensionPixelOffset(
+              R.styleable.NavigationBarActiveIndicator_marginHorizontal, 0);
+      setItemActiveIndicatorMarginHorizontal(itemActiveIndicatorMarginHorizontal);
+
+      ColorStateList itemActiveIndicatorColor =
+          MaterialResources.getColorStateList(
+              context,
+              activeIndicatorAttributes,
+              R.styleable.NavigationBarActiveIndicator_android_color);
+      setItemActiveIndicatorColor(itemActiveIndicatorColor);
+
+      int shapeAppearanceResId =
+          activeIndicatorAttributes.getResourceId(
+              R.styleable.NavigationBarActiveIndicator_shapeAppearance, 0);
+      ShapeAppearanceModel itemActiveIndicatorShapeAppearance =
+          ShapeAppearanceModel.builder(context, shapeAppearanceResId, 0).build();
+      setItemActiveIndicatorShapeAppearance(itemActiveIndicatorShapeAppearance);
+
+      activeIndicatorAttributes.recycle();
     }
 
     if (attributes.hasValue(R.styleable.NavigationBarView_menu)) {
@@ -538,6 +594,154 @@ public abstract class NavigationBarView extends FrameLayout {
         menuView.setItemBackground(rippleDrawableCompat);
       }
     }
+  }
+
+  /**
+   * Get the distance from the top of an item's icon/active indicator to the top of the navigation
+   * bar item.
+   */
+  @Px
+  public int getItemPaddingTop() {
+    return menuView.getItemPaddingTop();
+  }
+
+  /**
+   * Set the distance from the top of an items icon/active indicator to the top of the navigation
+   * bar item.
+   */
+  public void setItemPaddingTop(@Px int paddingTop) {
+    menuView.setItemPaddingTop(paddingTop);
+  }
+
+  /**
+   * Get the distance from the bottom of an item's label to the bottom of the navigation bar item.
+   */
+  @Px
+  public int getItemPaddingBottom() {
+    return menuView.getItemPaddingBottom();
+  }
+
+  /**
+   * Set the distance from the bottom of an item's label to the bottom of the navigation bar item.
+   */
+  public void setItemPaddingBottom(@Px int paddingBottom) {
+    menuView.setItemPaddingBottom(paddingBottom);
+  }
+
+  /**
+   * Get whether or not a selected item should show an active indicator.
+   *
+   * @return true if an active indicator will be shown when an item is selected.
+   */
+  public boolean isItemActiveIndicatorEnabled() {
+    return menuView.getItemActiveIndicatorEnabled();
+  }
+
+  /**
+   * Set whether a selected item should show an active indicator.
+   *
+   * @param enabled true if a selected item should show an active indicator.
+   */
+  public void setItemActiveIndicatorEnabled(boolean enabled) {
+    menuView.setItemActiveIndicatorEnabled(enabled);
+  }
+
+  /**
+   * Get the width of an item's active indicator.
+   *
+   * @return The width, in pixels, of a menu item's active indicator.
+   */
+  @Px
+  public int getItemActiveIndicatorWidth() {
+    return menuView.getItemActiveIndicatorWidth();
+  }
+
+  /**
+   * Set the width of an item's active indicator.
+   *
+   * @param width The width, in pixels, of the menu item's active indicator.
+   */
+  public void setItemActiveIndicatorWidth(@Px int width) {
+    menuView.setItemActiveIndicatorWidth(width);
+  }
+
+  /**
+   * Get the width of an item's active indicator.
+   *
+   * @return The width, in pixels, of a menu item's active indicator.
+   */
+  @Px
+  public int getItemActiveIndicatorHeight() {
+    return menuView.getItemActiveIndicatorHeight();
+  }
+
+  /**
+   * Set the height of an item's active indicator.
+   *
+   * @param height The height, in pixels, of the menu item's active indicator.
+   */
+  public void setItemActiveIndicatorHeight(@Px int height) {
+    menuView.setItemActiveIndicatorHeight(height);
+  }
+
+  /**
+   * Get the margin that will be maintained at the start and end of the active indicator away from
+   * the edges of its parent container.
+   *
+   * @return The horizontal margin, in pixels.
+   */
+  @Px
+  public int getItemActiveIndicatorMarginHorizontal() {
+    return menuView.getItemActiveIndicatorMarginHorizontal();
+  }
+
+  /**
+   * Set the horizontal margin that will be maintained at the start and end of the active indicator,
+   * making sure the indicator remains the given distance from the edge of its parent container.
+   *
+   * @param horizontalMargin The horizontal margin, in pixels.
+   */
+  public void setItemActiveIndicatorMarginHorizontal(@Px int horizontalMargin)   {
+    menuView.setItemActiveIndicatorMarginHorizontal(horizontalMargin);
+  }
+
+  /**
+   * Get the {@link ShapeAppearanceModel} of the active indicator drawable.
+   *
+   * @return The {@link ShapeAppearanceModel} of the active indicator drawable.
+   */
+  @Nullable
+  public ShapeAppearanceModel getItemActiveIndicatorShapeAppearance() {
+    return menuView.getItemActiveIndicatorShapeAppearance();
+  }
+
+  /**
+   * Set the {@link ShapeAppearanceModel} of the active indicator drawable.
+   *
+   * @param shapeAppearance The {@link ShapeAppearanceModel} of the active indicator drawable.
+   */
+  public void setItemActiveIndicatorShapeAppearance(
+      @Nullable ShapeAppearanceModel shapeAppearance) {
+    menuView.setItemActiveIndicatorShapeAppearance(shapeAppearance);
+  }
+
+  /**
+   * Get the color of the active indicator drawable.
+   *
+   * @return A {@link ColorStateList} used as the color of the active indicator.
+   */
+  @Nullable
+  public ColorStateList getItemActiveIndicatorColor() {
+    return menuView.getItemActiveIndicatorColor();
+  }
+
+  /**
+   * Set the {@link ColorStateList} of the active indicator drawable.
+   *
+   * @param csl The {@link ColorStateList} used as the color of the active indicator.
+   */
+  public void setItemActiveIndicatorColor(@Nullable ColorStateList csl) {
+    menuView.setItemActiveIndicatorColor(csl);
   }
 
   /**

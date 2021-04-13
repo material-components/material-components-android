@@ -40,6 +40,7 @@ import android.view.accessibility.AccessibilityNodeInfo;
 import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
@@ -48,6 +49,8 @@ import androidx.transition.TransitionManager;
 import androidx.transition.TransitionSet;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.internal.TextScale;
+import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.ShapeAppearanceModel;
 import java.util.HashSet;
 
 /**
@@ -59,6 +62,7 @@ import java.util.HashSet;
 public abstract class NavigationBarMenuView extends ViewGroup implements MenuView {
   private static final long ACTIVE_ANIMATION_DURATION_MS = 115L;
   private static final int ITEM_POOL_SIZE = 5;
+  private static final int NO_PADDING = -1;
 
   private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
   private static final int[] DISABLED_STATE_SET = {-android.R.attr.state_enabled};
@@ -86,6 +90,14 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
   private Drawable itemBackground;
   private int itemBackgroundRes;
   @NonNull private SparseArray<BadgeDrawable> badgeDrawables = new SparseArray<>(ITEM_POOL_SIZE);
+  private int itemPaddingTop = NO_PADDING;
+  private int itemPaddingBottom = NO_PADDING;
+  private boolean itemActiveIndicatorEnabled;
+  private int itemActiveIndicatorWidth;
+  private int itemActiveIndicatorHeight;
+  private int itemActiveIndicatorMarginHorizontal;
+  private ShapeAppearanceModel itemActiveIndicatorShapeAppearance;
+  private ColorStateList itemActiveIndicatorColor;
 
   private NavigationBarPresenter presenter;
   private MenuBuilder menu;
@@ -281,6 +293,215 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
   }
 
   /**
+   * Get the distance from the top of an item's icon/active indicator to the top of the navigation
+   * bar item.
+   */
+  @Px
+  public int getItemPaddingTop() {
+    return itemPaddingTop;
+  }
+
+  /**
+   * Set the distance from the top of an items icon/active indicator to the top of the navigation
+   * bar item.
+   */
+  public void setItemPaddingTop(@Px int paddingTop) {
+    itemPaddingTop = paddingTop;
+    if (buttons != null) {
+      for (NavigationBarItemView item : buttons) {
+        item.setItemPaddingTop(paddingTop);
+      }
+    }
+  }
+
+  /**
+   * Get the distance from the bottom of an item's label to the bottom of the navigation bar item.
+   */
+  @Px
+  public int getItemPaddingBottom() {
+    return itemPaddingBottom;
+  }
+
+  /**
+   * Set the distance from the bottom of an item's label to the bottom of the navigation bar item.
+   */
+  public void setItemPaddingBottom(@Px int paddingBottom) {
+    itemPaddingBottom = paddingBottom;
+    if (buttons != null) {
+      for (NavigationBarItemView item : buttons) {
+        item.setItemPaddingBottom(paddingBottom);
+      }
+    }
+  }
+
+  /**
+   * Returns whether or not an active indicator is enabled for the navigation bar.
+   *
+   * @return true if the active indicator is enabled.
+   */
+  public boolean getItemActiveIndicatorEnabled() {
+    return itemActiveIndicatorEnabled;
+  }
+
+  /**
+   * Set whether or not an active indicator is enabled for the navigation bar.
+   *
+   * @param enabled true if an active indicator should be shown.
+   */
+  public void setItemActiveIndicatorEnabled(boolean enabled) {
+    this.itemActiveIndicatorEnabled = enabled;
+    if (buttons != null) {
+      for (NavigationBarItemView item : buttons) {
+        item.setActiveIndicatorEnabled(enabled);
+      }
+    }
+  }
+
+  /**
+   * Get the width of the selected item's active indicator.
+   *
+   * @return The width, in pixels, of the active indicator.
+   */
+  @Px
+  public int getItemActiveIndicatorWidth() {
+    return itemActiveIndicatorWidth;
+  }
+
+  /**
+   * Set the width to be used for the selected item's active indicator.
+   *
+   * @param width The width, in pixels, of the active indicator.
+   */
+  public void setItemActiveIndicatorWidth(@Px int width) {
+    this.itemActiveIndicatorWidth = width;
+    if (buttons != null) {
+      for (NavigationBarItemView item : buttons) {
+        item.setActiveIndicatorWidth(width);
+      }
+    }
+  }
+
+  /**
+   * Get the height of the selected item's active indicator.
+   *
+   * @return The height, in pixels, of the active indicator.
+   */
+  @Px
+  public int getItemActiveIndicatorHeight() {
+    return itemActiveIndicatorHeight;
+  }
+
+  /**
+   * Set the height to be used for the selected item's active indicator.
+   *
+   * @param height The height, in pixels, of the active indicator.
+   */
+  public void setItemActiveIndicatorHeight(@Px int height) {
+    this.itemActiveIndicatorHeight = height;
+    if (buttons != null) {
+      for (NavigationBarItemView item : buttons) {
+        item.setActiveIndicatorHeight(height);
+      }
+    }
+  }
+
+  /**
+   * Get the margin that will be maintained at the start and end of the active indicator away from
+   * the edges of its parent container.
+   *
+   * @return The horizontal margin, in pixels.
+   */
+  @Px
+  public int getItemActiveIndicatorMarginHorizontal() {
+    return itemActiveIndicatorMarginHorizontal;
+  }
+
+  /**
+   * Set the horizontal margin that will be maintained at the start and end of the active indicator,
+   * making sure the indicator remains the given distance from the edge of its parent container.
+   *
+   * @param marginHorizontal The horizontal margin, in pixels.
+   */
+  public void setItemActiveIndicatorMarginHorizontal(@Px int marginHorizontal) {
+    itemActiveIndicatorMarginHorizontal = marginHorizontal;
+    if (buttons != null) {
+      for (NavigationBarItemView item : buttons) {
+        item.setActiveIndicatorMarginHorizontal(marginHorizontal);
+      }
+    }
+  }
+
+  /**
+   * Get the {@link ShapeAppearanceModel} of the active indicator drawable.
+   *
+   * @return The {@link ShapeAppearanceModel} of the active indicator drawable.
+   */
+  @Nullable
+  public ShapeAppearanceModel getItemActiveIndicatorShapeAppearance() {
+    return itemActiveIndicatorShapeAppearance;
+  }
+
+  /**
+   * Set the {@link ShapeAppearanceModel} of the active indicator drawable.
+   *
+   * @param shapeAppearance The {@link ShapeAppearanceModel} of the active indicator drawable.
+   */
+  public void setItemActiveIndicatorShapeAppearance(
+      @Nullable ShapeAppearanceModel shapeAppearance) {
+    this.itemActiveIndicatorShapeAppearance = shapeAppearance;
+    if (buttons != null) {
+      for (NavigationBarItemView item : buttons) {
+        item.setActiveIndicatorDrawable(createItemActiveIndicatorDrawable());
+      }
+    }
+  }
+
+  /**
+   * Get the color of the active indicator drawable.
+   *
+   * @return A {@link ColorStateList} used as the color of the active indicator.
+   */
+  @Nullable
+  public ColorStateList getItemActiveIndicatorColor() {
+    return itemActiveIndicatorColor;
+  }
+
+  /**
+   * Set the {@link ColorStateList} of the active indicator drawable.
+   *
+   * @param csl The {@link ColorStateList} used as the color of the active indicator.
+   */
+  public void setItemActiveIndicatorColor(@Nullable ColorStateList csl) {
+    this.itemActiveIndicatorColor = csl;
+    if (buttons != null) {
+      for (NavigationBarItemView item : buttons) {
+        item.setActiveIndicatorDrawable(createItemActiveIndicatorDrawable());
+      }
+    }
+  }
+
+  /**
+   * Create a drawable using the {@code itemActiveIndicatorShapeAppearance} and {@code
+   * itemActiveIndicatorColor} to be used as an item's active indicator.
+   *
+   * <p>This method is called once per menu item so each item has a unique drawable instance which
+   * can be manipulated/animated independently.
+   *
+   * @return A drawable to be used as a menu item's active indicator.
+   */
+  @Nullable
+  private Drawable createItemActiveIndicatorDrawable() {
+    if (itemActiveIndicatorShapeAppearance != null && itemActiveIndicatorColor != null) {
+      MaterialShapeDrawable drawable =
+          new MaterialShapeDrawable(itemActiveIndicatorShapeAppearance);
+      drawable.setFillColor(itemActiveIndicatorColor);
+      return drawable;
+    }
+
+    return null;
+  }
+
+  /**
    * Returns the resource ID for the background of the menu items.
    *
    * @return the resource ID for the background
@@ -427,6 +648,17 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
       child.setTextAppearanceInactive(itemTextAppearanceInactive);
       child.setTextAppearanceActive(itemTextAppearanceActive);
       child.setTextColor(itemTextColorFromUser);
+      if (itemPaddingTop != NO_PADDING) {
+        child.setItemPaddingTop(itemPaddingTop);
+      }
+      if (itemPaddingBottom != NO_PADDING) {
+        child.setItemPaddingBottom(itemPaddingBottom);
+      }
+      child.setActiveIndicatorWidth(itemActiveIndicatorWidth);
+      child.setActiveIndicatorHeight(itemActiveIndicatorHeight);
+      child.setActiveIndicatorMarginHorizontal(itemActiveIndicatorMarginHorizontal);
+      child.setActiveIndicatorDrawable(createItemActiveIndicatorDrawable());
+      child.setActiveIndicatorEnabled(itemActiveIndicatorEnabled);
       if (itemBackground != null) {
         child.setItemBackground(itemBackground);
       } else {

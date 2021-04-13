@@ -15,15 +15,28 @@
   ~ limitations under the License.
   -->
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
-  <ImageView
+
+  <FrameLayout
+    android:id="@id/navigation_bar_item_icon_container"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="@dimen/design_bottom_navigation_margin"
+    android:layout_marginBottom="@dimen/design_bottom_navigation_margin"
+    android:duplicateParentState="true">
+    <View
+      android:id="@id/navigation_bar_item_active_indicator_view"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:layout_gravity="center" />
+    <ImageView
       android:id="@id/navigation_bar_item_icon_view"
       android:layout_width="24dp"
       android:layout_height="24dp"
-      android:layout_marginTop="@dimen/design_bottom_navigation_margin"
-      android:layout_marginBottom="@dimen/design_bottom_navigation_margin"
-      android:layout_gravity="center_horizontal"
+      android:layout_gravity="center"
       android:contentDescription="@null"
       android:duplicateParentState="true"/>
+  </FrameLayout>
   <com.google.android.material.internal.BaselineLayout
       android:id="@id/navigation_bar_item_labels_group"
       android:layout_width="wrap_content"

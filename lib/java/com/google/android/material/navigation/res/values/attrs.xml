@@ -62,8 +62,31 @@
          precedence over android:textColor in itemTextAppearanceInactive or
          itemTextAppearanceActive. Attribute type definition is in navigation package. -->
     <attr name="itemTextColor"/>
+    <!-- The distance from the top of the icon/active indicator to the top of
+         the navigation bar item. -->
+    <attr name="itemPaddingTop" format="dimension"/>
+    <!-- The distance from the bottom of the label to the bottom of the navigation
+         bar item.-->
+    <attr name="itemPaddingBottom" format="dimension"/>
+
+    <!-- The style used for each navigation item's active indicator-->
+    <attr name="itemActiveIndicatorStyle" format="reference"/>
+
     <!-- The elevation to use for the navigation bar view -->
     <attr name="elevation"/>
+  </declare-styleable>
+
+  <declare-styleable name="NavigationBarActiveIndicator">
+    <!--The color to be used for the navigation item's active indicator. -->
+    <attr name="android:color"/>
+    <!--The shape appearance style to be used for the navigation items' active indicator. -->
+    <attr name="android:width"/>
+    <!--The desired height of the navigation items' active indicator. -->
+    <attr name="android:height"/>
+    <!--The start and end margin used by the navigation items' active indicator. -->
+    <attr name="shapeAppearance"/>
+    <!--The desired width of the navigation items' active indicator. -->
+    <attr name="marginHorizontal" format="dimension"/>
   </declare-styleable>
 
   <declare-styleable name="NavigationView">

@@ -19,6 +19,7 @@ package com.google.android.material.bottomnavigation;
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static java.lang.Math.min;
 
 import android.content.Context;
 import android.os.Build.VERSION;
@@ -119,6 +120,24 @@ public class BottomNavigationView extends NavigationBarView {
     if (shouldDrawCompatibilityTopDivider()) {
       addCompatibilityTopDivider(context);
     }
+  }
+
+  @Override
+  protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    int minHeightSpec = makeMinHeightSpec(heightMeasureSpec);
+    super.onMeasure(widthMeasureSpec, minHeightSpec);
+  }
+
+  private int makeMinHeightSpec(int measureSpec) {
+    int minHeight = getSuggestedMinimumHeight();
+    if (MeasureSpec.getMode(measureSpec) != MeasureSpec.EXACTLY && minHeight > 0) {
+      minHeight += getPaddingTop() + getPaddingBottom();
+
+      return MeasureSpec.makeMeasureSpec(
+          min(MeasureSpec.getSize(measureSpec), minHeight), MeasureSpec.EXACTLY);
+    }
+
+    return measureSpec;
   }
 
   /**

@@ -24,6 +24,7 @@
     <item name="itemHorizontalTranslationEnabled">true</item>
     <item name="itemIconSize">@dimen/design_bottom_navigation_icon_size</item>
     <item name="labelVisibilityMode">auto</item>
+    <item name="android:minHeight">@dimen/design_bottom_navigation_height</item>
   </style>
 
   <!-- Default style for BottomNavigationViews.
