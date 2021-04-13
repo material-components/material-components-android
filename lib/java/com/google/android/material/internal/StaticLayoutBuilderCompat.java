@@ -210,6 +210,9 @@ final class StaticLayoutBuilderCompat {
         builder.setEllipsize(ellipsize);
       }
       builder.setMaxLines(maxLines);
+      if (maxLines > 1) {
+        builder.setHyphenationFrequency(StaticLayout.HYPHENATION_FREQUENCY_NORMAL);
+      }
       return builder.build();
     }
 
