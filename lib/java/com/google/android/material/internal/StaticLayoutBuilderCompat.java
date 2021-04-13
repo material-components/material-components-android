@@ -192,7 +192,7 @@ final class StaticLayoutBuilderCompat {
 
     end = Math.min(textToDraw.length(), end);
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-      if (isRtl) {
+      if (isRtl && maxLines == 1) {
         alignment = Alignment.ALIGN_OPPOSITE;
       }
       // Marshmallow introduced StaticLayout.Builder which allows us not to use
