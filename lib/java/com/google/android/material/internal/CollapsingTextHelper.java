@@ -1022,6 +1022,10 @@ public final class CollapsingTextHelper {
     return maxLines;
   }
 
+  public int getLineCount() {
+    return textLayout != null ? textLayout.getLineCount() : 0;
+  }
+
   /**
    * Returns true if {@code value} is 'close' to it's closest decimal value. Close is currently
    * defined as it's difference being < 0.001.
