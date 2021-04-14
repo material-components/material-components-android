@@ -51,6 +51,7 @@ import androidx.annotation.FloatRange;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.annotation.VisibleForTesting;
@@ -194,6 +195,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   private static final int CORNER_ANIMATION_DURATION = 500;
 
+  private static final int NO_WIDTH = -1;
+
   private boolean fitToContents = true;
 
   private boolean updateImportantForAccessibilityOnSiblings = false;
@@ -216,6 +219,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   private boolean shapeThemingEnabled;
 
   private MaterialShapeDrawable materialShapeDrawable;
+
+  private int maxWidth = NO_WIDTH;
 
   private int gestureInsetBottom;
   private boolean gestureInsetBottomIgnored;
@@ -313,6 +318,12 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       this.elevation = a.getDimension(R.styleable.BottomSheetBehavior_Layout_android_elevation, -1);
     }
 
+    if (a.hasValue(R.styleable.BottomSheetBehavior_Layout_android_maxWidth)) {
+      setMaxWidth(
+          a.getDimensionPixelSize(
+              R.styleable.BottomSheetBehavior_Layout_android_maxWidth, NO_WIDTH));
+    }
+
     TypedValue value = a.peekValue(R.styleable.BottomSheetBehavior_Layout_behavior_peekHeight);
     if (value != null && value.data == PEEK_HEIGHT_AUTO) {
       setPeekHeight(value.data);
@@ -399,7 +410,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   @Override
   public boolean onLayoutChild(
-      @NonNull CoordinatorLayout parent, @NonNull V child, int layoutDirection) {
+      @NonNull CoordinatorLayout parent, @NonNull final V child, int layoutDirection) {
     if (ViewCompat.getFitsSystemWindows(parent) && !ViewCompat.getFitsSystemWindows(child)) {
       child.setFitsSystemWindows(true);
     }
@@ -428,6 +439,19 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       if (ViewCompat.getImportantForAccessibility(child)
           == ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_AUTO) {
         ViewCompat.setImportantForAccessibility(child, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
+      }
+
+      // Adjust the width to be at most the maxWidth if needed.
+      int width = child.getMeasuredWidth();
+      if (width > maxWidth && maxWidth != NO_WIDTH) {
+        final ViewGroup.LayoutParams lp = child.getLayoutParams();
+        lp.width = maxWidth;
+        child.post(new Runnable() {
+          @Override
+          public void run() {
+            child.setLayoutParams(lp);
+          }
+        });
       }
     }
     if (viewDragHelper == null) {
@@ -779,6 +803,30 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     setStateInternal((this.fitToContents && state == STATE_HALF_EXPANDED) ? STATE_EXPANDED : state);
 
     updateAccessibilityActions();
+  }
+
+  /**
+   * Sets the maximum width of the bottom sheet. The layout will be at most this dimension wide.
+   * This method should be called before {@link BottomSheetDialog#show()} in order for the width to
+   * be adjusted as expected.
+   *
+   * @param maxWidth The maximum width in pixels to be set
+   * @attr ref com.google.android.material.R.styleable#BottomSheetBehavior_Layout_android_maxWidth
+   * @see #getMaxWidth()
+   */
+  public void setMaxWidth(@Px int maxWidth) {
+    this.maxWidth = maxWidth;
+  }
+
+  /**
+   * Returns the bottom sheet's maximum width, or -1 if no maximum width is set.
+   *
+   * @attr ref com.google.android.material.R.styleable#BottomSheetBehavior_Layout_android_maxWidth
+   * @see #setMaxWidth(int)
+   */
+  @Px
+  public int getMaxWidth() {
+    return maxWidth;
   }
 
   /**

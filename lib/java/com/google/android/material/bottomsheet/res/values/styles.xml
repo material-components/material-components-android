@@ -43,12 +43,14 @@
   <style name="Widget.MaterialComponents.BottomSheet" parent="Widget.Design.BottomSheet.Modal">
     <item name="enforceMaterialTheme">true</item>
     <item name="android:background">@null</item>
+    <item name="android:layout_gravity">center_horizontal</item>
     <item name="shapeAppearance">?attr/shapeAppearanceLargeComponent</item>
     <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialComponents.BottomSheet</item>
     <item name="backgroundTint">?attr/colorSurface</item>
     <item name="android:elevation" tools:ignore="NewApi">
       @dimen/design_bottom_sheet_elevation
     </item>
+    <item name="android:maxWidth">@dimen/material_bottom_sheet_max_width</item>
   </style>
 
   <style name="Widget.MaterialComponents.BottomSheet.Modal" parent="Widget.MaterialComponents.BottomSheet">
