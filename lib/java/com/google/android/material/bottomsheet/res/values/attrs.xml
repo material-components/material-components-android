@@ -82,6 +82,7 @@
     <attr name="paddingRightSystemWindowInsets" />
     <attr name="paddingTopSystemWindowInsets" />
     <attr name="android:elevation"/>
+    <attr name="android:maxWidth"/>
 
   </declare-styleable>
 

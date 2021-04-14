@@ -20,4 +20,6 @@
   <dimen name="design_bottom_sheet_elevation">8dp</dimen>
   <dimen name="design_bottom_sheet_peek_height_min">64dp</dimen>
 
+  <dimen name="material_bottom_sheet_max_width">640dp</dimen>
+
 </resources>
