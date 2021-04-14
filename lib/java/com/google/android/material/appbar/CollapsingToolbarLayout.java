@@ -1231,15 +1231,6 @@ public class CollapsingToolbarLayout extends FrameLayout {
   }
 
   /**
-   * Gets the current number of lines of the title text.
-   * Experimental Feature.
-   */
-  @RestrictTo(LIBRARY_GROUP)
-  public int getLineCount() {
-    return collapsingTextHelper.getLineCount();
-  }
-
-  /**
    * Set the amount of visible height in pixels used to define when to trigger a scrim visibility
    * change.
    *
