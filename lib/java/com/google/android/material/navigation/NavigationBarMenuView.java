@@ -16,6 +16,8 @@
 
 package com.google.android.material.navigation;
 
+import com.google.android.material.R;
+
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.annotation.SuppressLint;
@@ -43,12 +45,13 @@ import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
-import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import androidx.transition.AutoTransition;
 import androidx.transition.TransitionManager;
 import androidx.transition.TransitionSet;
+import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.internal.TextScale;
+import com.google.android.material.motion.MotionUtils;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import java.util.HashSet;
@@ -60,7 +63,6 @@ import java.util.HashSet;
  */
 @RestrictTo(LIBRARY_GROUP)
 public abstract class NavigationBarMenuView extends ViewGroup implements MenuView {
-  private static final long ACTIVE_ANIMATION_DURATION_MS = 115L;
   private static final int ITEM_POOL_SIZE = 5;
   private static final int NO_PADDING = -1;
 
@@ -109,8 +111,16 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
 
     set = new AutoTransition();
     set.setOrdering(TransitionSet.ORDERING_TOGETHER);
-    set.setDuration(ACTIVE_ANIMATION_DURATION_MS);
-    set.setInterpolator(new FastOutSlowInInterpolator());
+    set.setDuration(
+        MotionUtils.resolveThemeDuration(
+            getContext(),
+            R.attr.motionDurationLong1,
+            getResources().getInteger(R.integer.material_motion_duration_long_1)));
+    set.setInterpolator(
+        MotionUtils.resolveThemeInterpolator(
+            getContext(),
+            R.attr.motionEasingStandard,
+            AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR));
     set.addTransition(new TextScale());
 
     onClickListener =

@@ -61,6 +61,7 @@ import androidx.core.content.ContextCompat;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.badge.BadgeUtils;
+import com.google.android.material.motion.MotionUtils;
 
 /**
  * Provides a view that will be used to render destination items inside a {@link
@@ -322,11 +323,16 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
             setActiveIndicatorProgress(progress, newProgress);
           }
         });
-    // TODO: Use motion theming values for duration and interpolation
-    // Currently, these values match the values used by the label animation when showing/hiding
-    // label visibility.
-    activeIndicatorAnimator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-    activeIndicatorAnimator.setDuration(115L);
+    activeIndicatorAnimator.setInterpolator(
+        MotionUtils.resolveThemeInterpolator(
+            getContext(),
+            R.attr.motionEasingStandard,
+            AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR));
+    activeIndicatorAnimator.setDuration(
+        MotionUtils.resolveThemeDuration(
+            getContext(),
+            R.attr.motionDurationLong1,
+            getResources().getInteger(R.integer.material_motion_duration_long_1)));
     activeIndicatorAnimator.start();
   }
 
