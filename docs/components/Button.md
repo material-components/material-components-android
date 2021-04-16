@@ -149,10 +149,11 @@ Element                                         | Attribute         | Related me
 
 #### Styles
 
-Element           | Style
------------------ | --------------------------------------------------
-**Default style** | `Widget.MaterialComponents.Button.TextButton`
-**Icon style**    | `Widget.MaterialComponents.Button.TextButton.Icon`
+| Element                | Style                                                          |
+| ---------------------- | -------------------------------------------------------------- |
+| **Default style**      | `Widget.MaterialComponents.Button.TextButton`                  |
+| **Icon style**         | `Widget.MaterialComponents.Button.TextButton.Icon`             |
+| **Full Width Buttons** | `Widget.MaterialComponents.Button.TextButton.Dialog.FullWidth` |
 
 Default style theme attribute: `?attr/borderlessButtonStyle`
 

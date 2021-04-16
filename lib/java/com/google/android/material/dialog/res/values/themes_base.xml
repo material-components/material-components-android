@@ -122,6 +122,7 @@
   </style>
   <style name="Base.V14.ThemeOverlay.MaterialComponents.MaterialAlertDialog" parent="ThemeOverlay.AppCompat.Dialog.Alert">
     <!-- Widget styles -->
+    <item name="materialAlertDialogButtonSpacerVisibility">@integer/mtrl_view_invisible</item>
     <item name="alertDialogStyle">@style/MaterialAlertDialog.MaterialComponents</item>
     <item name="android:checkedTextViewStyle" tools:ignore="NewApi">@style/Widget.MaterialComponents.CheckedTextView</item>
     <item name="android:dialogCornerRadius" tools:ignore="newApi">@null</item>

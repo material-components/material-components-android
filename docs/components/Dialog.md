@@ -43,6 +43,34 @@ such as an icon on a title having a content description via the
 `android:contentDescription` attribute set in the
 `MaterialAlertDialog.MaterialComponents.Title.Icon` style or descendant.
 
+### Adding full width buttons
+
+The buttons in a dialog can be made to span the full width of the dialog by
+using the theme overrides
+`R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog_FullWidthButtons`
+or
+`R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog_Centered_FullWidthButtons`.
+
+The following example shows an alert dialog with a long message and two full
+width buttons.
+
+!["Dialog with decline and accept buttons that span the full width"](assets/dialogs/dialogs_alert_with_fullwidth_buttons.png)
+
+In code:
+
+```kt
+MaterialAlertDialogBuilder(context,
+  R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog_FullWidthButtons)
+        .setMessage(resources.getString(R.string.long_message))
+        .setNegativeButton(resources.getString(R.string.decline)) { dialog, which ->
+            // Respond to negative button press
+        }
+        .setPositiveButton(resources.getString(R.string.accept)) { dialog, which ->
+            // Respond to positive button press
+        }
+        .show()
+```
+
 ### Types
 
 There are four types of dialogs: 1\. [Alert dialog](#alert-dialog), 2\.
