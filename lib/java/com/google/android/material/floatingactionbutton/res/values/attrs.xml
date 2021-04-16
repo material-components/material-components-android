@@ -51,9 +51,13 @@
     <attr name="useCompatPadding" format="boolean"/>
     <!-- Maximum icon image size. -->
     <attr name="maxImageSize" format="dimension"/>
-    <!-- Motion spec for show animation. This should be a MotionSpec resource. -->
+    <!-- Motion spec for show animation. This should be a MotionSpec resource.
+         If this attr is set to @null, a default animation will be used which
+         respects duration and easing theme values.-->
     <attr name="showMotionSpec"/>
-    <!-- Motion spec for hide animation. This should be a MotionSpec resource. -->
+    <!-- Motion spec for hide animation. This should be a MotionSpec resource.
+         If this attr is set to @null, a default animation will be used which
+         respects duration and easing theme values.-->
     <attr name="hideMotionSpec"/>
     <!-- Shape appearance style reference for FloatingActionButton. Attribute declaration
          is in the shape package. -->

@@ -1098,6 +1098,16 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
         if (dependentView instanceof FloatingActionButton) {
           FloatingActionButton fab = ((FloatingActionButton) dependentView);
 
+          // TODO (b/185233196): Update to use FABs default animator with motion theming.
+          // If there is no motion spec set on the anchored fab, set one which scales the fab to
+          // zero so the top edge cutout will be properly animated out when the fab is hidden.
+          if (fab.getShowMotionSpec() == null) {
+            fab.setShowMotionSpecResource(R.animator.mtrl_fab_show_motion_spec);
+          }
+          if (fab.getHideMotionSpec() == null) {
+            fab.setHideMotionSpecResource(R.animator.mtrl_fab_hide_motion_spec);
+          }
+
           // Always update the BAB if the fab is laid out.
           fab.addOnLayoutChangeListener(fabLayoutListener);
 
