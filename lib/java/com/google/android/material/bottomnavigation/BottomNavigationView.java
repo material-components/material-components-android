@@ -115,6 +115,11 @@ public class BottomNavigationView extends NavigationBarView {
         attributes.getBoolean(
             R.styleable.BottomNavigationView_itemHorizontalTranslationEnabled, true));
 
+    if (attributes.hasValue(R.styleable.BottomNavigationView_android_minHeight)) {
+      setMinimumHeight(
+          attributes.getDimensionPixelSize(R.styleable.BottomNavigationView_android_minHeight, 0));
+    }
+
     attributes.recycle();
 
     if (shouldDrawCompatibilityTopDivider()) {

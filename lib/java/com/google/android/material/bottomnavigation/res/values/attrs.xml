@@ -22,6 +22,8 @@
   <declare-styleable name="BottomNavigationView">
     <!-- Whether the items translate horizontally when in "selected" label visibility mode. -->
     <attr name="itemHorizontalTranslationEnabled" format="boolean"/>
+    <!-- The min height this view should maintain. -->
+    <attr name="android:minHeight" />
   </declare-styleable>
 
 </resources>
