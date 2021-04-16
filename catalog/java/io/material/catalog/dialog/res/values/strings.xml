@@ -83,4 +83,6 @@
   <string name="too_long_negative">This is a long Decline message. It is so long that it spans multiple lines on normal screens.</string>
   <!-- Denotes a new line. [CHAR LIMIT=40] -->
   <string name="line">"Line "</string>
+  <!-- Label for full width buttons checkbox [CHAR LIMIT=200] -->
+  <string name="cat_dialog_demo_full_width_buttons_checkbox_title">"Full Width Buttons"</string>
 </resources>

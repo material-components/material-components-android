@@ -26,6 +26,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,11 +42,14 @@ import java.util.List;
 /** A fragment that displays the main Dialog demos for the Catalog app. */
 public class DialogMainDemoFragment extends DemoFragment {
 
+  private CheckBox fullWidthButtons;
+
   @Override
   public View onCreateDemoView(
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
     View view = layoutInflater.inflate(R.layout.dialog_main_demo, viewGroup, false);
     LinearLayout dialogLaunchersLayout = view.findViewById(R.id.dialog_launcher_buttons_layout);
+    fullWidthButtons = dialogLaunchersLayout.findViewById(R.id.fullWidthButtons);
     CharSequence[] choices = {"Choice1", "Choice2", "Choice3"};
     boolean[] choicesInitial = {false, true, false};
     StringBuilder multiLineMessage = new StringBuilder();
@@ -63,198 +67,240 @@ public class DialogMainDemoFragment extends DemoFragment {
     addDialogLauncher(
         dialogLaunchersLayout,
         R.string.app_compat_alert_dialog,
-        new AlertDialog.Builder(getContext())
-            .setTitle(title)
-            .setMessage(message)
-            .setPositiveButton(positiveText, null)
-            .setNegativeButton(negativeText, null));
+        v ->
+            new AlertDialog.Builder(getContext(), getOverrideThemeResId())
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(positiveText, null)
+                .setNegativeButton(negativeText, null)
+                .show());
 
     // message, 2 actions
     addDialogLauncher(
         dialogLaunchersLayout,
         R.string.message_2_actions,
-        new MaterialAlertDialogBuilder(getContext())
-            .setMessage(message)
-            .setPositiveButton(positiveText, null)
-            .setNegativeButton(negativeText, null));
+        v ->
+            new MaterialAlertDialogBuilder(getContext(), getOverrideThemeResId())
+                .setMessage(message)
+                .setPositiveButton(positiveText, null)
+                .setNegativeButton(negativeText, null)
+                .show());
 
     // long message, 2 actions
     addDialogLauncher(
         dialogLaunchersLayout,
         R.string.long_message_2_actions,
-        new MaterialAlertDialogBuilder(getContext())
-            .setMessage(longMessage)
-            .setPositiveButton(positiveText, null)
-            .setNegativeButton(negativeText, null));
+        v ->
+            new MaterialAlertDialogBuilder(getContext(), getOverrideThemeResId())
+                .setMessage(longMessage)
+                .setPositiveButton(positiveText, null)
+                .setNegativeButton(negativeText, null)
+                .show());
 
     // title, 2 actions
     addDialogLauncher(
         dialogLaunchersLayout,
         R.string.title_2_actions,
-        new MaterialAlertDialogBuilder(getContext())
-            .setTitle(title)
-            .setPositiveButton(positiveText, null)
-            .setNegativeButton(negativeText, null));
+        v ->
+            new MaterialAlertDialogBuilder(getContext(), getOverrideThemeResId())
+                .setTitle(title)
+                .setPositiveButton(positiveText, null)
+                .setNegativeButton(negativeText, null)
+                .show());
 
     // title, message, 3 actions (long)
     addDialogLauncher(
         dialogLaunchersLayout,
         R.string.title_message_3_long_actions,
-        new MaterialAlertDialogBuilder(getContext())
-            .setTitle(title)
-            .setMessage(message)
-            .setPositiveButton(getResources().getString(R.string.long_positive), null)
-            .setNegativeButton(getResources().getString(R.string.long_negative), null)
-            .setNeutralButton(getResources().getString(R.string.long_neutral), null));
+        v ->
+            new MaterialAlertDialogBuilder(getContext(), getOverrideThemeResId())
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(getResources().getString(R.string.long_positive), null)
+                .setNegativeButton(getResources().getString(R.string.long_negative), null)
+                .setNeutralButton(getResources().getString(R.string.long_neutral), null)
+                .show());
 
     // long title, message, 1 action (too long)
     addDialogLauncher(
         dialogLaunchersLayout,
         R.string.long_title_message_too_long_actions,
-        new MaterialAlertDialogBuilder(getContext())
-            .setTitle(getResources().getString(R.string.long_title))
-            .setMessage(message)
-            .setPositiveButton(getResources().getString(R.string.too_long_positive), null)
-            .setNegativeButton(getResources().getString(R.string.too_long_negative), null)
-            .setNeutralButton(getResources().getString(R.string.too_long_neutral), null));
+        v ->
+            new MaterialAlertDialogBuilder(getContext(), getOverrideThemeResId())
+                .setTitle(getResources().getString(R.string.long_title))
+                .setMessage(message)
+                .setPositiveButton(getResources().getString(R.string.too_long_positive), null)
+                .setNegativeButton(getResources().getString(R.string.too_long_negative), null)
+                .setNeutralButton(getResources().getString(R.string.too_long_neutral), null)
+                .show());
 
     // icon, title, message, 2 actions
     addDialogLauncher(
         dialogLaunchersLayout,
         R.string.icon_title_message_2_actions,
-        new MaterialAlertDialogBuilder(getContext())
-            .setTitle(title)
-            .setMessage(message)
-            .setPositiveButton(positiveText, null)
-            .setNegativeButton(negativeText, null)
-            .setIcon(R.drawable.ic_dialogs_24px));
+        v ->
+            new MaterialAlertDialogBuilder(getContext(), getOverrideThemeResId())
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(positiveText, null)
+                .setNegativeButton(negativeText, null)
+                .setIcon(R.drawable.ic_dialogs_24px)
+                .show());
 
     // icon, title, message, 2 actions (centered)
     addDialogLauncher(
         dialogLaunchersLayout,
         R.string.icon_title_message_2_actions_centered,
-        new MaterialAlertDialogBuilder(getContext(), getCenteredTitleThemeOverlay())
-            .setTitle(title)
-            .setMessage(message)
-            .setPositiveButton(positiveText, null)
-            .setNegativeButton(negativeText, null)
-            .setIcon(R.drawable.ic_dialogs_24px));
+        v ->
+            new MaterialAlertDialogBuilder(getContext(), getCenteredTitleThemeOverlay())
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(positiveText, null)
+                .setNegativeButton(negativeText, null)
+                .setIcon(R.drawable.ic_dialogs_24px)
+                .show());
 
     // edit text
     addDialogLauncher(
         dialogLaunchersLayout,
         R.string.edit_text,
-        new MaterialAlertDialogBuilder(getContext())
-            .setTitle(title)
-            .setView(R.layout.edit_text)
-            .setPositiveButton(
-                positiveText,
-                new OnClickListener() {
-                  @Override
-                  public void onClick(DialogInterface dialog, int which) {
-                    TextView input = ((AlertDialog) dialog).findViewById(android.R.id.text1);
-                    Toast.makeText(getContext(), input.getText(), Toast.LENGTH_LONG).show();
-                  }
-                })
-            .setNegativeButton(negativeText, null));
+        v ->
+            new MaterialAlertDialogBuilder(getContext(), getOverrideThemeResId())
+                .setTitle(title)
+                .setView(R.layout.edit_text)
+                .setPositiveButton(
+                    positiveText,
+                    new OnClickListener() {
+                      @Override
+                      public void onClick(DialogInterface dialog, int which) {
+                        TextView input = ((AlertDialog) dialog).findViewById(android.R.id.text1);
+                        Toast.makeText(getContext(), input.getText(), Toast.LENGTH_LONG).show();
+                      }
+                    })
+                .setNegativeButton(negativeText, null)
+                .show());
 
     // title, auto-action choice dialog
     addDialogLauncher(
         dialogLaunchersLayout,
         R.string.title_choices_as_actions,
-        new MaterialAlertDialogBuilder(getContext())
-            .setTitle(title)
-            .setPositiveButton(positiveText, null)
-            .setItems(choices, null));
+        v ->
+            new MaterialAlertDialogBuilder(getContext(), getOverrideThemeResId())
+                .setTitle(title)
+                .setPositiveButton(positiveText, null)
+                .setItems(choices, null)
+                .show());
 
     // title, checkboxes, 2 actions dialog
     addDialogLauncher(
         dialogLaunchersLayout,
         R.string.title_checkboxes_2_actions,
-        new MaterialAlertDialogBuilder(getContext())
-            .setTitle(title)
-            .setPositiveButton(
-                positiveText,
-                (DialogInterface dialog, int which) -> {
-                  SparseBooleanArray checkedItemPositions =
-                      ((AlertDialog) dialog).getListView().getCheckedItemPositions();
-                  List<CharSequence> result = new ArrayList<>();
-                  for (int i = 0; i < choices.length; i++) {
-                    if (checkedItemPositions.get(i)) {
-                      result.add(choices[i]);
-                    }
-                  }
-                  Toast.makeText(getContext(), result.toString(), Toast.LENGTH_LONG).show();
-                })
-            .setNegativeButton(negativeText, null)
-            .setMultiChoiceItems(choices, choicesInitial, null));
+        v ->
+            new MaterialAlertDialogBuilder(getContext(), getOverrideThemeResId())
+                .setTitle(title)
+                .setPositiveButton(
+                    positiveText,
+                    (DialogInterface dialog, int which) -> {
+                      SparseBooleanArray checkedItemPositions =
+                          ((AlertDialog) dialog).getListView().getCheckedItemPositions();
+                      List<CharSequence> result = new ArrayList<>();
+                      for (int i = 0; i < choices.length; i++) {
+                        if (checkedItemPositions.get(i)) {
+                          result.add(choices[i]);
+                        }
+                      }
+                      Toast.makeText(getContext(), result.toString(), Toast.LENGTH_LONG).show();
+                    })
+                .setNegativeButton(negativeText, null)
+                .setMultiChoiceItems(choices, choicesInitial, null)
+                .show());
 
     // title, radiobutton, 2 actions dialog
     addDialogLauncher(
         dialogLaunchersLayout,
         R.string.title_radiobuttons_2_actions,
-        new MaterialAlertDialogBuilder(getContext())
-            .setTitle(title)
-            .setPositiveButton(
-                positiveText,
-                (DialogInterface dialog, int which) -> {
-                  int checkedItemPosition =
-                      ((AlertDialog) dialog).getListView().getCheckedItemPosition();
-                  if (checkedItemPosition != AdapterView.INVALID_POSITION) {
-                    Toast.makeText(getContext(), choices[checkedItemPosition], Toast.LENGTH_LONG)
-                        .show();
-                  }
-                })
-            .setNegativeButton(negativeText, null)
-            .setSingleChoiceItems(choices, 1, null));
+        v ->
+            new MaterialAlertDialogBuilder(getContext(), getOverrideThemeResId())
+                .setTitle(title)
+                .setPositiveButton(
+                    positiveText,
+                    (DialogInterface dialog, int which) -> {
+                      int checkedItemPosition =
+                          ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+                      if (checkedItemPosition != AdapterView.INVALID_POSITION) {
+                        Toast.makeText(
+                                getContext(), choices[checkedItemPosition], Toast.LENGTH_LONG)
+                            .show();
+                      }
+                    })
+                .setNegativeButton(negativeText, null)
+                .setSingleChoiceItems(choices, 1, null)
+                .show());
 
     // title, custom view, actions dialog
     addDialogLauncher(
         dialogLaunchersLayout,
         R.string.title_slider_2_actions,
-        new MaterialAlertDialogBuilder(getContext())
-            .setTitle(title)
-            .setPositiveButton(positiveText, null)
-            .setNegativeButton(negativeText, null)
-            .setView(R.layout.seekbar_layout));
+        v ->
+            new MaterialAlertDialogBuilder(getContext(), getOverrideThemeResId())
+                .setTitle(title)
+                .setPositiveButton(positiveText, null)
+                .setNegativeButton(negativeText, null)
+                .setView(R.layout.seekbar_layout)
+                .show());
 
     // title, scrolling long view, actions dialog
     addDialogLauncher(
         dialogLaunchersLayout,
         R.string.title_scrolling_2_actions,
-        new MaterialAlertDialogBuilder(getContext())
-            .setTitle(title)
-            .setMessage(multiLineMessage.toString())
-            .setPositiveButton(positiveText, null)
-            .setNegativeButton(negativeText, null));
+        v ->
+            new MaterialAlertDialogBuilder(getContext(), getOverrideThemeResId())
+                .setTitle(title)
+                .setMessage(multiLineMessage.toString())
+                .setPositiveButton(positiveText, null)
+                .setNegativeButton(negativeText, null)
+                .show());
 
     // scrolling view
     addDialogLauncher(
         dialogLaunchersLayout,
         R.string.title_scrolling,
-        new MaterialAlertDialogBuilder(getContext()).setMessage(multiLineMessage.toString()));
+        v ->
+            new MaterialAlertDialogBuilder(getContext())
+                .setMessage(multiLineMessage.toString())
+                .show());
 
     // title, short buttons
     addDialogLauncher(
         dialogLaunchersLayout,
         R.string.title_2_short_actions,
-        new MaterialAlertDialogBuilder(getContext())
-            .setTitle(title)
-            .setPositiveButton(R.string.short_text_1, null)
-            .setNegativeButton(R.string.short_text_2, null));
+        v ->
+            new MaterialAlertDialogBuilder(getContext(), getOverrideThemeResId())
+                .setTitle(title)
+                .setPositiveButton(R.string.short_text_1, null)
+                .setNegativeButton(R.string.short_text_2, null)
+                .show());
 
     return view;
   }
 
+  private int getOverrideThemeResId() {
+    return fullWidthButtons.isChecked()
+        ? R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog_FullWidthButtons
+        : 0;
+  }
+
   @StyleRes
   protected int getCenteredTitleThemeOverlay() {
-    return R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog_Centered;
+    return fullWidthButtons.isChecked()
+        ? R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog_Centered_FullWidthButtons
+        : R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog_Centered;
   }
 
   private void addDialogLauncher(
-      ViewGroup viewGroup, @StringRes int stringResId, AlertDialog.Builder alertDialogBuilder) {
+      ViewGroup viewGroup, @StringRes int stringResId, View.OnClickListener clickListener) {
     MaterialButton dialogLauncherButton = new MaterialButton(viewGroup.getContext());
-    dialogLauncherButton.setOnClickListener(v -> alertDialogBuilder.show());
+    dialogLauncherButton.setOnClickListener(clickListener);
     dialogLauncherButton.setText(stringResId);
     viewGroup.addView(dialogLauncherButton);
   }
