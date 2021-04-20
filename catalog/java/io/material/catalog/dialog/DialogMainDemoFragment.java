@@ -284,15 +284,20 @@ public class DialogMainDemoFragment extends DemoFragment {
     return view;
   }
 
-  private int getOverrideThemeResId() {
-    return fullWidthButtons.isChecked()
+  protected boolean isFullWidthButtons() {
+    return fullWidthButtons.isChecked();
+  }
+
+  @StyleRes
+  protected int getOverrideThemeResId() {
+    return isFullWidthButtons()
         ? R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog_FullWidthButtons
         : 0;
   }
 
   @StyleRes
   protected int getCenteredTitleThemeOverlay() {
-    return fullWidthButtons.isChecked()
+    return isFullWidthButtons()
         ? R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog_Centered_FullWidthButtons
         : R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog_Centered;
   }
