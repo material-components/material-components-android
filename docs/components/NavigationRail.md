@@ -140,10 +140,11 @@ text labels for each navigation item. There are four visibility modes:
 *   `LABEL_VISIBILITY_LABELED`: The label is shown on all navigation items
 *   `LABEL_VISIBILITY_UNLABELED`: The label is hidden for all navigation items
 
-### Adding a header view
+### Adding a header view (eg. Floating action button)
 
-The rail provides a convenient container for anchoring the header view to the
-top of the rail, using the `app:headerLayout` attribute.
+The rail provides a convenient container for anchoring a header view (such as a
+`FloatingActionButton`, logo, etc.) to the top of the rail, using the
+`app:headerLayout` attribute.
 
 ![Navigation rail with badges](assets/navigationrail/navigation-rail-fab.png)
 
@@ -159,24 +160,16 @@ top of the rail, using the `app:headerLayout` attribute.
 The header view can also be added or removed at runtime using the following
 methods:
 
-| **Method**                          | **Description**                       |
-| ----------------------------------- | ------------------------------------- |
-| `void addHeaderView(@NonNull` `View | The specified header view will be     |
-: view)`                              : attached to the `NavigationRailView`, :
-:                                     : so that it will appear at the top. If :
-:                                     : the view already has a header view    :
-:                                     : attached to it, it will be removed    :
-:                                     : first.                                :
-| `void removeHeaderView()`           | Detaches the current header view if   |
-:                                     : any, from the Navigation Rail.        :
+**Method**                               | **Description**
+---------------------------------------- | ---------------
+`void addHeaderView(@NonNull View view)` | The specified header view will be attached to the NavigationRailView, so that it will appear at the top. If the view already has a header view attached to it, it will be removed first.
+`void removeHeaderView()`                | Detaches the current header view if any, from the Navigation Rail.
 
 The following methods can be used to manipulate the header view at runtime.
 
-| **Method**                       | **Description**                           |
-| -------------------------------- | ----------------------------------------- |
-| `@Nullable view getHeaderView()` | Returns an instance of the header view    |
-:                                  : associated with the Navigation Rail, null :
-:                                  : if none was currently attached.           :
+**Method**                       | **Description**
+-------------------------------- | ---------------
+`@Nullable view getHeaderView()` | Returns an instance of the header view associated with the Navigation Rail, null if none was currently attached.
 
 ### Adding badges
 
@@ -293,17 +286,27 @@ The following is an anatomy diagram for the navigation rail:
 ![Navigation rail anatomy diagram](assets/navigationrail/navigation-rail-anatomy.png)
 
 1.  Container
-2.  Floating Action Button (optional)
+2.  Header (eg. Floating action button) (optional)
 3.  A destination
 4.  Text label
 5.  Divider (optional)
 
 #### Container attributes
 
-| Element       | **Attribute**        | **Related methods** | **Default value**    |
-| ------------- | -------------------- | ------------------- | -------------------- |
-| **Color**     | `app:backgroundTint` | N/A                 | `?attr/colorSurface` |
-| **Elevation** | `app:elevation`      | `setElevation`      | `8dp`                |
+Element       | **Attribute**        | **Related methods** | **Default value**
+------------- | -------------------- | ------------------- | -----------------
+**Color**     | `app:backgroundTint` | N/A                 | `?attr/colorSurface`
+**Elevation** | `app:elevation`      | `setElevation`      | `8dp`
+
+#### Header (eg. Floating action button) attributes
+
+Element             | **Attribute**      | **Related methods**                                        | **Default value**
+------------------- | ------------------ | ---------------------------------------------------------- | -----------------
+**Header view**     | `app:headerLayout` | `addHeaderView`<br/>`removeHeaderView`<br/>`getHeaderView` | N/A
+
+See the
+[FAB documentation](https://github.com/material-components/material-components-android/tree/master/docs/components/FloatingActionButton.md)
+for more attributes.
 
 #### Navigation item attributes
 

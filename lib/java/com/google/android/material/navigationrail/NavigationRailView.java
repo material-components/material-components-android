@@ -39,7 +39,7 @@ import com.google.android.material.navigation.NavigationBarView;
 
 /**
  * Represents a standard navigation rail view for application. It is an implementation of <a
- * href="https://material.io/components/navigation-rail">material design navigation rail.</a>.
+ * href="https://material.io/components/navigation-rail">Material Design navigation rail.</a>.
  *
  * <p>Navigation rails make it easy for users to explore and switch between top-level views in a
  * single tap. They should be placed at the side edge of large screen devices such as tablets, when
@@ -48,7 +48,11 @@ import com.google.android.material.navigation.NavigationBarView;
  * <p>The bar contents can be populated by specifying a menu resource file. Each menu item title,
  * icon and enabled state will be used for displaying navigation rail bar items. Menu items can also
  * be used for programmatically selecting which destination is currently active. It can be done
- * using {@code MenuItem#setChecked(true)}
+ * using {@code MenuItem#setChecked(true)}.
+ *
+ * <p>A header view (such as a
+ * {@link com.google.android.material.floatingactionbutton.FloatingActionButton}, logo, etc.) can be
+ * added with the {@code app:headerLayout} attribute or by using {@link #addHeaderView}.
  *
  * <pre>
  * layout resource file:
@@ -58,7 +62,8 @@ import com.google.android.material.navigation.NavigationBarView;
  *     android:id="@+id/navigation"
  *     android:layout_width="wrap_content"
  *     android:layout_height="match_parent"
- *     app:menu="@menu/my_navigation_items" /&gt;
+ *     app:menu="@menu/my_navigation_items"
+ *     app:headerLayout="@layout/my_navigation_rail_fab" /&gt;
  *
  * res/menu/my_navigation_items.xml:
  * &lt;menu xmlns:android="http://schemas.android.com/apk/res/android"&gt;
@@ -72,6 +77,16 @@ import com.google.android.material.navigation.NavigationBarView;
  *          android:title="@string/menu_navigation"
  *          android:icon="@drawable/ic_action_navigation_menu" /&gt;
  * &lt;/menu&gt;
+ *
+ * res/layout/my_navigation_rail_fab.xml:
+ * &lt;com.google.android.material.floatingactionbutton.FloatingActionButton
+ *     xmlns:android="http://schemas.android.com/apk/res/android"
+ *     xmlns:app="http://schemas.android.com/apk/res-auto"
+ *     android:id="@+id/my_navigation_rail_fab"
+ *     android:layout_width="wrap_content"
+ *     android:layout_height="wrap_content"
+ *     android:contentDescription="@string/my_navigation_rail_fab_content_desc"
+ *     app:srcCompat="@drawable/ic_add" /&gt;
  * </pre>
  */
 public class NavigationRailView extends NavigationBarView {
