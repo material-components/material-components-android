@@ -19,6 +19,8 @@ package io.material.catalog.chip;
 import io.material.catalog.R;
 
 import androidx.fragment.app.Fragment;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.StringRes;
 import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
 import dagger.multibindings.IntoSet;
@@ -73,6 +75,21 @@ public class ChipFragment extends DemoLandingFragment {
     return additionalDemos;
   }
 
+  @StringRes
+  protected static int getDemoTitleResId() {
+    return R.string.cat_chip_title;
+  }
+
+  @DrawableRes
+  protected static int getDemoDrawableResId() {
+    return R.drawable.ic_chips;
+  }
+
+  @StringRes
+  protected static int getChipGroupTitleRes() {
+    return R.string.cat_chip_group_demo_title;
+  }
+
   /** The Dagger module for {@link ChipFragment} dependencies. */
   @dagger.Module
   public abstract static class Module {
@@ -85,7 +102,7 @@ public class ChipFragment extends DemoLandingFragment {
     @Provides
     @ActivityScope
     static FeatureDemo provideFeatureDemo() {
-      return new FeatureDemo(R.string.cat_chip_title, R.drawable.ic_chips) {
+      return new FeatureDemo(getDemoTitleResId(), getDemoDrawableResId()) {
         @Override
         public Fragment createFragment() {
           return new ChipFragment();
