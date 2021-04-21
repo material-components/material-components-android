@@ -65,6 +65,8 @@ import com.google.android.material.internal.ViewUtils.RelativePadding;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
@@ -1287,10 +1289,30 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   @Nullable
+  private View getCurrentViewWithVP2(ViewPager2 viewPager) {
+    final int currentItem = viewPager.getCurrentItem();
+    View child = viewPager.getChildAt(0);
+    if (child instanceof RecyclerView) {
+      if(((RecyclerView) child).getLayoutManager() == null)
+        return null;
+      child = ((RecyclerView) child).getLayoutManager().findViewByPosition(currentItem);
+    }
+
+    return child;
+  }
+
+  @Nullable
   @VisibleForTesting
   View findScrollingChild(View view) {
-    if (ViewCompat.isNestedScrollingEnabled(view)) {
+    if (ViewCompat.isNestedScrollingEnabled(view) && view.isShown()) {
       return view;
+    }
+    if (view instanceof ViewPager2) {
+      ViewPager2 viewPager2 = (ViewPager2) view;
+      View currentViewPagerChild = getCurrentViewWithVP2(viewPager2);
+      if (currentViewPagerChild != null) {
+        return findScrollingChild(currentViewPagerChild);
+      }
     }
     if (view instanceof ViewGroup) {
       ViewGroup group = (ViewGroup) view;
