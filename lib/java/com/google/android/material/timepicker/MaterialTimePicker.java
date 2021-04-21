@@ -27,7 +27,6 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import androidx.fragment.app.DialogFragment;
-import androidx.core.view.ViewCompat;
 import android.text.TextUtils;
 import android.util.Pair;
 import android.util.TypedValue;
@@ -159,10 +158,9 @@ public final class MaterialTimePicker extends DialogFragment {
 
     a.recycle();
 
-    Window window = dialog.getWindow();
     background.initializeElevationOverlay(context);
     background.setFillColor(ColorStateList.valueOf(surfaceColor));
-    background.setElevation(ViewCompat.getElevation(window.getDecorView()));
+    Window window = dialog.getWindow();
     window.setBackgroundDrawable(background);
     window.requestFeature(Window.FEATURE_NO_TITLE);
     // On some Android APIs the dialog won't wrap content by default. Explicitly update here.

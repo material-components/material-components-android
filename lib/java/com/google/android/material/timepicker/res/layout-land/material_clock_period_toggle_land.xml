@@ -22,6 +22,7 @@
   tools:ignore="MissingDefaultResource"
   android:layout_width="wrap_content"
   android:layout_height="wrap_content"
+  android:background="?attr/colorSurface"
   android:orientation="horizontal"
   android:visibility="gone"
   app:checkedButton="@id/material_clock_period_am_button"
