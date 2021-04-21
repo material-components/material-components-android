@@ -22,7 +22,6 @@
   android:layout_width="@dimen/material_clock_period_toggle_width"
   android:layout_height="@dimen/material_clock_period_toggle_height"
   android:layout_marginStart="@dimen/material_clock_period_toggle_margin_left"
-  android:background="?attr/colorSurface"
   android:orientation="vertical"
   android:contentDescription="@string/material_clock_toggle_content_description"
   app:checkedButton="@id/material_clock_period_am_button"
