@@ -21,4 +21,6 @@
   <item name="material_emphasis_medium" format="float" type="dimen">0.6</item>
   <!-- Disabled emphasis of 38% is the same for type and icon. -->
   <item name="material_emphasis_disabled" format="float" type="dimen">0.38</item>
+  <!-- Disabled emphasis of 12% for background containers. -->
+  <item name="material_emphasis_disabled_background" format="float" type="dimen">0.12</item>
 </resources>

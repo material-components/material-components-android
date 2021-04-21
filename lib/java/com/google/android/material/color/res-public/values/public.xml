@@ -51,6 +51,7 @@
   <public name="material_emphasis_high_type" type="dimen" />
   <public name="material_emphasis_medium" type="dimen"/>
   <public name="material_emphasis_disabled" type="dimen"/>
+  <public name="material_emphasis_disabled_background" type="dimen"/>
 
   <public name="useMaterialThemeColors" type="attr"/>
 </resources>
