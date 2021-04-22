@@ -1,3 +1,4 @@
+<!--docs:
 title: "Material chips"
 layout: detail
 section: components
