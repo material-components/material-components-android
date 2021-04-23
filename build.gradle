@@ -29,7 +29,7 @@ ext {
     cardView              : '1.0.0',
     constraintlayout      : '2.0.1',
     coordinatorlayout     : '1.1.0',
-    core                  : '1.2.0',
+    core                  : '1.5.0-rc01', // Need ResourcesCompat#getCachedFont
     experimental          : '1.0.0',
     fragment              : '1.0.0',
     lifecycle             : '2.0.0',

@@ -18,7 +18,13 @@ package com.google.android.material.resources;
 
 import com.google.android.material.R;
 
-/** Utility for configuring TextAppearance. */
+/**
+ * Utility for configuring TextAppearance.
+ *
+ * @deprecated The class is no longer needed because TextAppearance checks internally whether the
+ *     desired typeface has already been fetched and cached.
+ */
+@Deprecated
 public class TextAppearanceConfig {
 
   private static boolean shouldLoadFontSynchronously;

@@ -354,6 +354,10 @@ public class TextAppearance {
   }
 
   private boolean shouldLoadFontSynchronously(Context context) {
-    return TextAppearanceConfig.shouldLoadFontSynchronously();
+    Typeface typeface =
+        (fontFamilyResourceId != 0)
+            ? ResourcesCompat.getCachedFont(context, fontFamilyResourceId)
+            : null;
+    return (typeface != null);
   }
 }
