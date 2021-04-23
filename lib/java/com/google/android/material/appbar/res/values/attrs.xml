@@ -96,6 +96,15 @@
       <flag name="snapMargins" value="0x20"/>
     </attr>
 
+    <attr name="layout_scrollEffect" format="enum">
+      <!-- No effect will be applied to this child when its parent
+           AppBarLayout's offset changes.-->
+      <enum name="none" value="0"/>
+      <!-- This view will be compressed (masked and parallaxed) when it reaches
+           the top of the screen and continues to scroll out of view.-->
+      <enum name="compress" value="1"/>
+    </attr>
+
     <!-- An interpolator to use when scrolling this View. Only takes effect when View
          is scrollable. -->
     <attr name="layout_scrollInterpolator" format="reference"/>
