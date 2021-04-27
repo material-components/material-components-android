@@ -152,7 +152,7 @@ By using a `LabelFormatter` you can display the selected value using letters to
 indicate magnitude (e.g.: 1.5K, 3M, 12B). That can be achieved through the
 `setLabelFormatter` method.
 
-The following example shows a slider for a prince range in the USD currency.
+The following example shows a slider for a price range in the USD currency.
 
 !["Range slider with range of $0 to $100. Left thumb is set at $20, right thumb
 at $70."](assets/slider/slider_price.png)
