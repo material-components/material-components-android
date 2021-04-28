@@ -25,6 +25,7 @@
   <attr name="strokeWidth" format="dimension" />
   <attr name="ensureMinTouchTargetSize" format="boolean" />
   <attr name="trackColor" format="color" />
+  <attr name="navigationIconTint" format="color"/>
 
   <!-- Navigation and Pickers -->
   <attr name="headerLayout" format="reference"/>

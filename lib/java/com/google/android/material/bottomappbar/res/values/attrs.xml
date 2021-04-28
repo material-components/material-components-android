@@ -18,6 +18,9 @@
   <declare-styleable name="BottomAppBar">
     <!-- Background for the BottomAppBar. -->
     <attr name="backgroundTint"/>
+    <!-- The tint color for the navigation button icon drawable corresponding to
+         the "app:navigationIcon" attribute. -->
+    <attr name="navigationIconTint"/>
     <!-- Elevation for the BottomAppBar. -->
     <attr name="elevation"/>
     <!-- The alignment of the fab relative to the BottomAppBar. -->

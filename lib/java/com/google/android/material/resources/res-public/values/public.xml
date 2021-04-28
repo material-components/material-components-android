@@ -27,6 +27,7 @@
   <public name="strokeWidth" type="attr" />
   <public name="ensureMinTouchTargetSize" type="attr" />
   <public name="trackColor" type="attr" />
+  <public name="navigationIconTint" type="attr" />
 
   <!-- Navigation and datepicker -->
   <public name="headerLayout" type="attr"/>

@@ -224,10 +224,10 @@ Element       | Attribute            | Related method(s)                        
 
 ### Navigation icon attributes
 
-Element   | Attribute            | Related method(s)                          | Default value
---------- | -------------------- | ------------------------------------------ | -------------
-**Icon**  | `app:navigationIcon` | `setNavigationIcon`<br>`getNavigationIcon` | `null`
-**Color** | N/A                  | N/A                                        | `?attr/colorControlNormal` (as `Drawable` tint)
+Element   | Attribute                | Related method(s)                          | Default value
+--------- | ------------------------ | ------------------------------------------ | -------------
+**Icon**  | `app:navigationIcon`     | `setNavigationIcon`<br>`getNavigationIcon` | `null`
+**Color** | `app:navigationIconTint` | `setNavigationIconTint`                    | `?attr/colorControlNormal` (as `Drawable` tint)
 
 ### FAB attributes
 

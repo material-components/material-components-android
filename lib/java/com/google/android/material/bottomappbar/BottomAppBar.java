@@ -31,6 +31,7 @@ import android.content.res.TypedArray;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.core.graphics.drawable.DrawableCompat;
@@ -44,6 +45,7 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.ColorInt;
 import androidx.annotation.Dimension;
 import androidx.annotation.IntDef;
 import androidx.annotation.MenuRes;
@@ -136,6 +138,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   @Retention(RetentionPolicy.SOURCE)
   public @interface FabAnimationMode {}
 
+  @Nullable private Integer navigationIconTint;
   private final int fabOffsetEndMode;
   private final MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable();
 
@@ -252,6 +255,10 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     ColorStateList backgroundTint =
         MaterialResources.getColorStateList(context, a, R.styleable.BottomAppBar_backgroundTint);
 
+    if (a.hasValue(R.styleable.BottomAppBar_navigationIconTint)) {
+      setNavigationIconTint(a.getColor(R.styleable.BottomAppBar_navigationIconTint, -1));
+    }
+
     int elevation = a.getDimensionPixelSize(R.styleable.BottomAppBar_elevation, 0);
     float fabCradleMargin = a.getDimensionPixelOffset(R.styleable.BottomAppBar_fabCradleMargin, 0);
     float fabCornerRadius =
@@ -328,6 +335,25 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
             return insets;
           }
         });
+  }
+
+  @Override
+  public void setNavigationIcon(@Nullable Drawable drawable) {
+    super.setNavigationIcon(maybeTintNavigationIcon(drawable));
+  }
+
+  /**
+   * Sets the color of the toolbar's navigation icon.
+   *
+   * @see #setNavigationIcon
+   */
+  public void setNavigationIconTint(@ColorInt int navigationIconTint) {
+    this.navigationIconTint = navigationIconTint;
+    Drawable navigationIcon = getNavigationIcon();
+    if (navigationIcon != null) {
+      // Causes navigation icon to be tinted if needed.
+      setNavigationIcon(navigationIcon);
+    }
   }
 
   /**
@@ -661,6 +687,17 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
         ObjectAnimator.ofFloat(findDependentFab(), "translationX", getFabTranslationX(targetMode));
     animator.setDuration(ANIMATION_DURATION);
     animators.add(animator);
+  }
+
+  @Nullable
+  private Drawable maybeTintNavigationIcon(@Nullable Drawable navigationIcon) {
+    if (navigationIcon != null && navigationIconTint != null) {
+      Drawable wrappedNavigationIcon = DrawableCompat.wrap(navigationIcon);
+      DrawableCompat.setTint(wrappedNavigationIcon, navigationIconTint);
+      return wrappedNavigationIcon;
+    } else {
+      return navigationIcon;
+    }
   }
 
   private void maybeAnimateMenuView(@FabAlignmentMode int targetMode, boolean newFabAttached) {
