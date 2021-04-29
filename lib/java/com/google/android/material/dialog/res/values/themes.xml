@@ -73,28 +73,11 @@
     <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.MaterialComponents.Title.Text</item>
   </style>
 
-  <!-- A theme overlay for dialogs with buttons that span the width of the dialog. -->
-  <style name="ThemeOverlay.MaterialComponents.MaterialAlertDialog.FullWidthButtons">
-    <item name="materialAlertDialogButtonSpacerVisibility">@integer/mtrl_view_gone</item>
-    <item name="buttonBarPositiveButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.FullWidth</item>
-    <item name="buttonBarNegativeButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.FullWidth</item>
-    <item name="buttonBarNeutralButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.FullWidth</item>
-  </style>
-
   <!-- A theme overlay for Alert Dialog panels with a center aligned title text and icon. -->
   <style name="ThemeOverlay.MaterialComponents.MaterialAlertDialog.Centered" parent="Base.ThemeOverlay.MaterialComponents.MaterialAlertDialog">
     <item name="materialAlertDialogTitlePanelStyle">@style/MaterialAlertDialog.MaterialComponents.Title.Panel.CenterStacked</item>
     <item name="materialAlertDialogTitleIconStyle">@style/MaterialAlertDialog.MaterialComponents.Title.Icon.CenterStacked</item>
     <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.MaterialComponents.Title.Text.CenterStacked</item>
-  </style>
-
-  <!-- A theme overlay for dialogs with a center aligned title text, icon and buttons that span the width of the dialog. -->
-  <style name="ThemeOverlay.MaterialComponents.MaterialAlertDialog.Centered.FullWidthButtons">
-    <!-- Mark spacer as gone when showing full width buttons -->
-    <item name="materialAlertDialogButtonSpacerVisibility">@integer/mtrl_view_gone</item>
-    <item name="buttonBarPositiveButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.FullWidth</item>
-    <item name="buttonBarNegativeButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.FullWidth</item>
-    <item name="buttonBarNeutralButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.FullWidth</item>
   </style>
 
 </resources>

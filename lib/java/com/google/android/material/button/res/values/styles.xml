@@ -115,13 +115,6 @@
     <item name="android:layout_marginLeft">0dp</item>
   </style>
 
-  <!-- Style to make buttons in a dialog to span the full width. -->
-  <style name="Widget.MaterialComponents.Button.TextButton.Dialog.FullWidth">
-    <item name="android:layout_width">0dp</item>
-    <item name="android:layout_weight">1</item>
-    <item name="android:maxWidth">@null</item>
-  </style>
-
   <style name="Widget.MaterialComponents.Button.TextButton.Dialog.Icon">
     <!-- Icon text button has the same padding as a regular text button -->
   </style>

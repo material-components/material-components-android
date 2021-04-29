@@ -52,6 +52,10 @@
   <string name="title_scrolling">Scrolling Content</string>
   <!-- Denotes what parts of an AlertDialog this button will display. [CHAR LIMIT=60] -->
   <string name="title_2_short_actions">Short Buttons</string>
+  <!-- Denotes what parts of an AlertDialog this button will display. [CHAR LIMIT=100] -->
+  <string name="icon_title_message_2_actions_fullwidth_buttons">Icon, Title, Message, 2 Full Width Actions</string>
+  <!-- Denotes what parts of an AlertDialog this button will display. [CHAR LIMIT=100] -->
+  <string name="icon_title_message_2_actions_centered_fullwidth_buttons">Icon, Title, Message, 2 Full Width Actions (Centered)</string>
 
   <!-- Text for a positive dialog action. [CHAR LIMIT=15] -->
   <string name="positive">Accept</string>
@@ -83,6 +87,4 @@
   <string name="too_long_negative">This is a long Decline message. It is so long that it spans multiple lines on normal screens.</string>
   <!-- Denotes a new line. [CHAR LIMIT=40] -->
   <string name="line">"Line "</string>
-  <!-- Label for full width buttons checkbox [CHAR LIMIT=200] -->
-  <string name="cat_dialog_demo_full_width_buttons_checkbox_title">"Full Width Buttons"</string>
 </resources>

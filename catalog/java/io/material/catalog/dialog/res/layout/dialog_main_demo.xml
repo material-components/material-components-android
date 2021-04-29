@@ -26,10 +26,5 @@
       android:layout_height="wrap_content"
       android:padding="@dimen/cat_dialog_demo_padding"
       android:orientation="vertical">
-    <com.google.android.material.checkbox.MaterialCheckBox
-      android:id="@+id/fullWidthButtons"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:text="@string/cat_dialog_demo_full_width_buttons_checkbox_title"/>
   </LinearLayout>
 </ScrollView>

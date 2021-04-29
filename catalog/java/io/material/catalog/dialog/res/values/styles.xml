@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2021 The Android Open Source Project
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+  <style name="Widget.Catalog.Button.TextButton.Dialog.FullWidth" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+    <item name="android:layout_width">0dp</item>
+    <item name="android:layout_weight">1</item>
+    <item name="android:maxWidth">@null</item>
+  </style>
+
+  <!-- A theme overlay for dialogs with buttons that span the width of the dialog. -->
+  <style name="ThemeOverlay.Catalog.MaterialAlertDialog.FullWidthButtons" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+    <item name="materialAlertDialogButtonSpacerVisibility">@integer/mtrl_view_gone</item>
+    <item name="buttonBarPositiveButtonStyle">@style/Widget.Catalog.Button.TextButton.Dialog.FullWidth</item>
+    <item name="buttonBarNegativeButtonStyle">@style/Widget.Catalog.Button.TextButton.Dialog.FullWidth</item>
+    <item name="buttonBarNeutralButtonStyle">@style/Widget.Catalog.Button.TextButton.Dialog.FullWidth</item>
+  </style>
+
+  <!-- A theme overlay for dialogs with a center aligned title text, icon and buttons that span the width of the dialog. -->
+  <style name="ThemeOverlay.Catalog.MaterialAlertDialog.Centered.FullWidthButtons" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog.Centered">
+    <!-- Mark spacer as gone when showing full width buttons -->
+    <item name="materialAlertDialogButtonSpacerVisibility">@integer/mtrl_view_gone</item>
+    <item name="buttonBarPositiveButtonStyle">@style/Widget.Catalog.Button.TextButton.Dialog.FullWidth</item>
+    <item name="buttonBarNegativeButtonStyle">@style/Widget.Catalog.Button.TextButton.Dialog.FullWidth</item>
+    <item name="buttonBarNeutralButtonStyle">@style/Widget.Catalog.Button.TextButton.Dialog.FullWidth</item>
+  </style>
+
+</resources>
