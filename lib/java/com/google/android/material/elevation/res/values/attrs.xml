@@ -22,5 +22,8 @@
   <!-- The color of the elevation overlay layer, which will be used with an alpha
        percentage based on elevation. -->
   <attr name="elevationOverlayColor" format="color"/>
+  <!-- The color of the elevation overlay accent layer, which will be placed
+       on top of the composited background and overlay color. -->
+  <attr name="elevationOverlayAccentColor" format="color"/>
 
 </resources>
