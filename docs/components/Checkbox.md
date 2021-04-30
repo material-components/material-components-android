@@ -119,7 +119,7 @@ Element                    | Attribute                                  | Relate
 **Color**                  | `app:buttonTint`                           | `setButtonTintList`<br/>`getButtonTintList`                | `null`
 **Min size**               | `android:minWidth`<br/>`android:minHeight` | `(set/get)MinWidth`<br/>`(set/get)MinHeight`               | `?attr/minTouchTargetSize`
 
-The color of the checbox defaults to `?attr/colorOnSurface` (unchecked) and
+The color of the checkbox defaults to `?attr/colorOnSurface` (unchecked) and
 `?attr/colorSecondary` (checked) defined in your app theme. If you want to
 override this behavior, as you might with a custom drawable that should not be
 tinted, set `app:useMaterialThemeColors` to `false`:
