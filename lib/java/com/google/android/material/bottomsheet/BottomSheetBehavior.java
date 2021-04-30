@@ -122,7 +122,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   /** The bottom sheet is hidden. */
   public static final int STATE_HIDDEN = 5;
 
-  /** The bottom sheet is half-expanded (used when mFitToContents is false). */
+  /** The bottom sheet is half-expanded (used when fitToContents is false). */
   public static final int STATE_HALF_EXPANDED = 6;
 
   /** @hide */
