@@ -19,6 +19,8 @@ package io.material.catalog.navigationrail;
 import io.material.catalog.R;
 
 import androidx.fragment.app.Fragment;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.StringRes;
 import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
 import dagger.multibindings.IntoSet;
@@ -41,6 +43,16 @@ public class NavigationRailFragment extends DemoLandingFragment {
   @Override
   public int getDescriptionResId() {
     return R.string.cat_navigation_rail_description;
+  }
+
+  @StringRes
+  protected static int getDemoTitleResId() {
+    return R.string.cat_navigation_rail_title;
+  }
+
+  @DrawableRes
+  protected static int getDemoDrawableResId() {
+    return R.drawable.ic_placeholder;
   }
 
   @Override
@@ -91,7 +103,7 @@ public class NavigationRailFragment extends DemoLandingFragment {
     @Provides
     @ActivityScope
     static FeatureDemo provideFeatureDemo() {
-      return new FeatureDemo(R.string.cat_navigation_rail_title, R.drawable.ic_placeholder) {
+      return new FeatureDemo(getDemoTitleResId(), getDemoDrawableResId()) {
         @Override
         public Fragment createFragment() {
           return new NavigationRailFragment();
