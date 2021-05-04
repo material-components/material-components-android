@@ -19,6 +19,7 @@ package com.google.android.material.internal;
 import static androidx.core.util.Preconditions.checkNotNull;
 
 import android.os.Build;
+import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.text.Layout;
 import android.text.Layout.Alignment;
@@ -52,6 +53,13 @@ import java.lang.reflect.Constructor;
 @RestrictTo(Scope.LIBRARY_GROUP)
 final class StaticLayoutBuilderCompat {
 
+  static final int DEFAULT_HYPHENATION_FREQUENCY =
+      VERSION.SDK_INT >= VERSION_CODES.M ? StaticLayout.HYPHENATION_FREQUENCY_NORMAL : 0;
+
+  // Default line spacing values to match android.text.Layout constants.
+  static final float DEFAULT_LINE_SPACING_ADD = 0.0f;
+  static final float DEFAULT_LINE_SPACING_MULTIPLIER = 1.0f;
+
   private static final String TEXT_DIR_CLASS = "android.text.TextDirectionHeuristic";
   private static final String TEXT_DIRS_CLASS = "android.text.TextDirectionHeuristics";
   private static final String TEXT_DIR_CLASS_LTR = "LTR";
@@ -70,6 +78,9 @@ final class StaticLayoutBuilderCompat {
 
   private Alignment alignment;
   private int maxLines;
+  private float lineSpacingAdd;
+  private float lineSpacingMultiplier;
+  private int hyphenationFrequency;
   private boolean includePad;
   private boolean isRtl;
   @Nullable private TextUtils.TruncateAt ellipsize;
@@ -82,6 +93,9 @@ final class StaticLayoutBuilderCompat {
     this.end = source.length();
     this.alignment = Alignment.ALIGN_NORMAL;
     this.maxLines = Integer.MAX_VALUE;
+    this.lineSpacingAdd = DEFAULT_LINE_SPACING_ADD;
+    this.lineSpacingMultiplier = DEFAULT_LINE_SPACING_MULTIPLIER;
+    this.hyphenationFrequency = DEFAULT_HYPHENATION_FREQUENCY;
     this.includePad = true;
     this.ellipsize = null;
   }
@@ -164,6 +178,34 @@ final class StaticLayoutBuilderCompat {
   }
 
   /**
+   * Set the line spacing addition and multiplier frequency. Only available on API level 23+.
+   *
+   * @param spacingAdd Line spacing addition for the resulting {@link StaticLayout}
+   * @param lineSpacingMultiplier Line spacing multiplier for the resulting {@link StaticLayout}
+   * @return this builder, useful for chaining
+   * @see android.widget.TextView#setLineSpacing(float, float)
+   */
+  @NonNull
+  public StaticLayoutBuilderCompat setLineSpacing(float spacingAdd, float lineSpacingMultiplier) {
+    this.lineSpacingAdd = spacingAdd;
+    this.lineSpacingMultiplier = lineSpacingMultiplier;
+    return this;
+  }
+
+  /**
+   * Set the hyphenation frequency. Only available on API level 23+.
+   *
+   * @param hyphenationFrequency Hyphenation frequency for the resulting {@link StaticLayout}
+   * @return this builder, useful for chaining
+   * @see android.widget.TextView#setHyphenationFrequency(int)
+   */
+  @NonNull
+  public StaticLayoutBuilderCompat setHyphenationFrequency(int hyphenationFrequency) {
+    this.hyphenationFrequency = hyphenationFrequency;
+    return this;
+  }
+
+  /**
    * Set ellipsizing on the layout. Causes words that are longer than the view is wide, or exceeding
    * the number of lines (see #setMaxLines).
    *
@@ -210,8 +252,12 @@ final class StaticLayoutBuilderCompat {
         builder.setEllipsize(ellipsize);
       }
       builder.setMaxLines(maxLines);
+      if (lineSpacingAdd != DEFAULT_LINE_SPACING_ADD
+          || lineSpacingMultiplier != DEFAULT_LINE_SPACING_MULTIPLIER) {
+        builder.setLineSpacing(lineSpacingAdd, lineSpacingMultiplier);
+      }
       if (maxLines > 1) {
-        builder.setHyphenationFrequency(StaticLayout.HYPHENATION_FREQUENCY_NORMAL);
+        builder.setHyphenationFrequency(hyphenationFrequency);
       }
       return builder.build();
     }

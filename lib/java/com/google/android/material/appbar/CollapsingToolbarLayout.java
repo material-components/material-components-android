@@ -47,6 +47,7 @@ import android.view.ViewParent;
 import android.widget.FrameLayout;
 import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
+import androidx.annotation.FloatRange;
 import androidx.annotation.IntDef;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
@@ -1237,6 +1238,57 @@ public class CollapsingToolbarLayout extends FrameLayout {
   @RestrictTo(LIBRARY_GROUP)
   public int getLineCount() {
     return collapsingTextHelper.getLineCount();
+  }
+
+  /**
+   * Sets the line spacing addition of the title text. See {@link
+   * android.widget.TextView#setLineSpacing(float, float)}. Experimental Feature.
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  @RequiresApi(VERSION_CODES.M)
+  public void setLineSpacingAdd(float spacingAdd) {
+    collapsingTextHelper.setLineSpacingAdd(spacingAdd);
+  }
+
+  /** Gets the line spacing addition of the title text, or -1 if not set. Experimental Feature. */
+  @RestrictTo(LIBRARY_GROUP)
+  @RequiresApi(VERSION_CODES.M)
+  public float getLineSpacingAdd() {
+    return collapsingTextHelper.getLineSpacingAdd();
+  }
+
+  /**
+   * Sets the line spacing multiplier of the title text. See {@link
+   * android.widget.TextView#setLineSpacing(float, float)}. Experimental Feature.
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  @RequiresApi(VERSION_CODES.M)
+  public void setLineSpacingMultiplier(@FloatRange(from = 0.0) float spacingMultiplier) {
+    collapsingTextHelper.setLineSpacingMultiplier(spacingMultiplier);
+  }
+
+  /** Gets the line spacing multiplier of the title text, or -1 if not set. Experimental Feature. */
+  @RestrictTo(LIBRARY_GROUP)
+  @RequiresApi(VERSION_CODES.M)
+  public float getLineSpacingMultiplier() {
+    return collapsingTextHelper.getLineSpacingMultiplier();
+  }
+
+  /**
+   * Sets the hyphenation frequency of the title text. See {@link
+   * android.widget.TextView#setHyphenationFrequency(int)}. Experimental Feature.
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  @RequiresApi(VERSION_CODES.M)
+  public void setHyphenationFrequency(int hyphenationFrequency) {
+    collapsingTextHelper.setHyphenationFrequency(hyphenationFrequency);
+  }
+
+  /** Gets the hyphenation frequency of the title text, or -1 if not set. Experimental Feature. */
+  @RestrictTo(LIBRARY_GROUP)
+  @RequiresApi(VERSION_CODES.M)
+  public int getHyphenationFrequency() {
+    return collapsingTextHelper.getHyphenationFrequency();
   }
 
   /**

@@ -46,6 +46,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.core.math.MathUtils;
 import androidx.core.text.TextDirectionHeuristicsCompat;
@@ -153,6 +154,9 @@ public final class CollapsingTextHelper {
   private float expandedFirstLineDrawX;
   private CharSequence textToDrawCollapsed;
   private int maxLines = 1;
+  private float lineSpacingAdd = StaticLayoutBuilderCompat.DEFAULT_LINE_SPACING_ADD;
+  private float lineSpacingMultiplier = StaticLayoutBuilderCompat.DEFAULT_LINE_SPACING_MULTIPLIER;
+  private int hyphenationFrequency = StaticLayoutBuilderCompat.DEFAULT_HYPHENATION_FREQUENCY;
 
   public CollapsingTextHelper(View view) {
     this.view = view;
@@ -944,6 +948,8 @@ public final class CollapsingTextHelper {
               .setAlignment(ALIGN_NORMAL)
               .setIncludePad(false)
               .setMaxLines(maxLines)
+              .setLineSpacing(lineSpacingAdd, lineSpacingMultiplier)
+              .setHyphenationFrequency(hyphenationFrequency)
               .build();
     } catch (StaticLayoutBuilderCompatException e) {
       Log.e(TAG, e.getCause().getMessage(), e);
@@ -1024,6 +1030,36 @@ public final class CollapsingTextHelper {
 
   public int getLineCount() {
     return textLayout != null ? textLayout.getLineCount() : 0;
+  }
+
+  @RequiresApi(VERSION_CODES.M)
+  public void setLineSpacingAdd(float spacingAdd) {
+    this.lineSpacingAdd = spacingAdd;
+  }
+
+  @RequiresApi(VERSION_CODES.M)
+  public float getLineSpacingAdd() {
+    return textLayout.getSpacingAdd();
+  }
+
+  @RequiresApi(VERSION_CODES.M)
+  public void setLineSpacingMultiplier(@FloatRange(from = 0.0) float spacingMultiplier) {
+    this.lineSpacingMultiplier = spacingMultiplier;
+  }
+
+  @RequiresApi(VERSION_CODES.M)
+  public float getLineSpacingMultiplier() {
+    return textLayout.getSpacingMultiplier();
+  }
+
+  @RequiresApi(VERSION_CODES.M)
+  public void setHyphenationFrequency(int hyphenationFrequency) {
+    this.hyphenationFrequency = hyphenationFrequency;
+  }
+
+  @RequiresApi(VERSION_CODES.M)
+  public int getHyphenationFrequency() {
+    return hyphenationFrequency;
   }
 
   /**
