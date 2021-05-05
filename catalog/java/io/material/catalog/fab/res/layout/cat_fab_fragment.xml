@@ -23,62 +23,43 @@
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
-  <FrameLayout
+  <ScrollView
+    android:layout_width="wrap_content"
+    android:layout_height="0dp"
+    android:layout_weight="1">
+    <GridLayout
+      android:id="@+id/content"
       android:layout_width="wrap_content"
-      android:layout_height="0dp"
-      android:layout_weight="1">
-    <ScrollView
-        android:id="@+id/content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"/>
-  </FrameLayout>
+      android:layout_height="wrap_content"
+      android:columnCount="3"
+      android:rowCount="5">
+    </GridLayout>
+  </ScrollView>
 
   <!-- Padding is used to avoid clipping the FAB's shadows. This is not normally necessary for
        full-screen containers. -->
 
   <LinearLayout
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:padding="8dp"
-      android:clipToPadding="false"
-      android:orientation="horizontal">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="24dp"
-        android:layout_gravity="center"
-        android:text="@string/theme_fab_label"/>
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:layout_gravity="center"
-        android:contentDescription="@string/cat_theme_fab_content_desc"
-        app:srcCompat="@drawable/ic_add_24px"/>
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_gravity="center"
-        android:contentDescription="@string/cat_theme_fab_mini_content_desc"
-        app:srcCompat="@drawable/ic_add_24px"
-        app:fabSize="mini"/>
-  </LinearLayout>
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:clipToPadding="false"
+    android:orientation="horizontal">
 
-  <Button
+    <Button
       android:id="@+id/show_hide_fabs"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginBottom="8dp"
+      android:layout_marginEnd="4dp"
       android:text="@string/hide_fabs_label"/>
 
-  <Button
+    <Button
       android:id="@+id/rotate_fabs"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginBottom="8dp"
+      android:layout_marginStart="4dp"
       android:text="@string/rotate_fabs_label"/>
+  </LinearLayout>
+
 
   <io.material.catalog.feature.BottomWindowInsetView
       android:layout_width="wrap_content"

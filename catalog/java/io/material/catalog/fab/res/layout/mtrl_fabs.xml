@@ -20,15 +20,14 @@
      full-screen containers. -->
 
 
-<GridLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:padding="8dp"
     android:clipToPadding="false"
-    android:columnCount="3"
-    android:rowCount="3">
+    tools:parentTag="android.widget.GridLayout">
 
   <TextView
       android:layout_width="wrap_content"
@@ -77,4 +76,4 @@
       android:contentDescription="@string/cat_legacy_fab_mini_content_desc"
       app:fabSize="mini"
       app:srcCompat="@drawable/ic_add_24px"/>
-</GridLayout>
+</merge>

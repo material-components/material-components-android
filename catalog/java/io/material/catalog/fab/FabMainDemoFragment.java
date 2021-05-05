@@ -46,6 +46,7 @@ public class FabMainDemoFragment extends DemoFragment {
 
     ViewGroup content = view.findViewById(R.id.content);
     View.inflate(getContext(), getFabsContent(), content);
+    View.inflate(getContext(), getThemeFabLayoutResId(), content);
 
     List<FloatingActionButton> fabs = DemoUtils.findViewsWithType(view, FloatingActionButton.class);
 
@@ -95,5 +96,10 @@ public class FabMainDemoFragment extends DemoFragment {
   @LayoutRes
   protected int getFabsContent() {
     return R.layout.mtrl_fabs;
+  }
+
+  @LayoutRes
+  protected int getThemeFabLayoutResId() {
+    return R.layout.theme_fab;
   }
 }
