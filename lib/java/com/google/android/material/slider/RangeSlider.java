@@ -45,7 +45,7 @@ import java.util.List;
  * <p>{@code app:minSeparation}: <b>Optional.</b> The minimum distance between two thumbs that would
  * otherwise overlap.
  *
- * @attr ref com.google.android.material.R.styleable#RangeSlider_values
+ * @attr ref com.google.android.material.R.styleable#RangeSlider_initialValues
  * @attr ref com.google.android.material.R.styleable#RangeSlider_minSeparation
  */
 public class RangeSlider extends BaseSlider<RangeSlider, OnChangeListener, OnSliderTouchListener> {
@@ -66,8 +66,8 @@ public class RangeSlider extends BaseSlider<RangeSlider, OnChangeListener, OnSli
     TypedArray a =
         ThemeEnforcement.obtainStyledAttributes(
             context, attrs, R.styleable.RangeSlider, defStyleAttr, DEF_STYLE_RES);
-    if (a.hasValue(R.styleable.RangeSlider_values)) {
-      int valuesId = a.getResourceId(R.styleable.RangeSlider_values, 0);
+    if (a.hasValue(R.styleable.RangeSlider_initialValues)) {
+      int valuesId = a.getResourceId(R.styleable.RangeSlider_initialValues, 0);
       TypedArray values = a.getResources().obtainTypedArray(valuesId);
       setValues(convertToFloat(values));
     }
