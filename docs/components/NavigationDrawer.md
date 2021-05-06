@@ -274,13 +274,13 @@ Element     | Attribute             | Related method(s)                         
 
 ### Subtitle attributes
 
-Element        | Attribute                                                                                                                                                                                                                    | Related method(s) | Default value
--------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- | -------------
-**Color**      | N/A (see [layout](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/internal/res/layout/design_navigation_item_subheader.xml)) | N/A               | `?android:textColorSecondary`
-**Typography** | N/A                                                                                                                                                                                                                          | N/A               | `@style/TextAppearance.AppCompat.Body2`
-**Max lines**  | N/A                                                                                                                                                                                                                          | N/A               | `1`
-**Height**     | N/A                                                                                                                                                                                                                          | N/A               | `?attr/listPreferredItemHeightSmall`
-**Padding**    | N/A                                                                                                                                                                                                                          | N/A               | `?attr/listPreferredItemPaddingLeft` and `?attr/listPreferredItemPaddingRight`
+Element        | Attribute                     | Related method(s) | Default value
+-------------- | ----------------------------- | ----------------- | -------------
+**Color**      | `app:subheaderColor`          | N/A               | `?android:textColorSecondary`
+**Typography** | `app:subheaderTextAppearance` | N/A               | `@style/TextAppearance.AppCompat.Body2`
+**Max lines**  | N/A                           | N/A               | `1`
+**Height**     | N/A                           | N/A               | `?attr/listPreferredItemHeightSmall`
+**Padding**    | N/A                           | N/A               | `?attr/listPreferredItemPaddingLeft` and `?attr/listPreferredItemPaddingRight`
 
 ### Scrim attributes
 

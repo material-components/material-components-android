@@ -36,5 +36,7 @@
   <public name="itemTextAppearanceActive" type="attr"/>
   <public name="labelVisibilityMode" type="attr"/>
   <public name="menu" type="attr"/>
+  <public name="subheaderColor" type="attr"/>
+  <public name="subheaderTextAppearance" type="attr"/>
   <public name="Widget.Design.NavigationView" type="style"/>
 </resources>

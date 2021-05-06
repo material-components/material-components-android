@@ -96,6 +96,8 @@
     <attr name="elevation"/>
     <!-- The menu resource to inflate and populate items from. -->
     <attr name="menu" format="reference"/>
+    <attr name="subheaderColor" format="reference|color" />
+    <attr name="subheaderTextAppearance" format="reference"/>
     <attr name="itemIconTint" format="color"/>
     <attr name="itemTextColor"/>
     <!-- A background drawable to use for navigation items. If this is set, this overrides the
