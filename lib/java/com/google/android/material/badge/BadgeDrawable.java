@@ -47,6 +47,7 @@ import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.PluralsRes;
+import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
@@ -175,9 +176,9 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   @NonNull private final MaterialShapeDrawable shapeDrawable;
   @NonNull private final TextDrawableHelper textDrawableHelper;
   @NonNull private final Rect badgeBounds;
-  private final float badgeRadius;
-  private final float badgeWithTextRadius;
-  private final float badgeWidePadding;
+  private float badgeRadius;
+  private float badgeWithTextRadius;
+  private float badgeWidePadding;
   @NonNull private final SavedState savedState;
 
   private float badgeCenterX;
@@ -217,6 +218,12 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     private int verticalOffset;
 
     @Dimension(unit = Dimension.PX)
+    private int horizontalOffsetWithText;
+
+    @Dimension(unit = Dimension.PX)
+    private int verticalOffsetWithText;
+
+    @Dimension(unit = Dimension.PX)
     private int additionalHorizontalOffset;
 
     @Dimension(unit = Dimension.PX)
@@ -247,6 +254,8 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       badgeGravity = in.readInt();
       horizontalOffset = in.readInt();
       verticalOffset = in.readInt();
+      horizontalOffsetWithText = in.readInt();
+      verticalOffsetWithText = in.readInt();
       additionalHorizontalOffset = in.readInt();
       additionalVerticalOffset = in.readInt();
       isVisible = in.readInt() != 0;
@@ -284,6 +293,8 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       dest.writeInt(badgeGravity);
       dest.writeInt(horizontalOffset);
       dest.writeInt(verticalOffset);
+      dest.writeInt(horizontalOffsetWithText);
+      dest.writeInt(verticalOffsetWithText);
       dest.writeInt(additionalHorizontalOffset);
       dest.writeInt(additionalVerticalOffset);
       dest.writeInt(isVisible ? 1 : 0);
@@ -379,6 +390,9 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     setHorizontalOffset(savedState.horizontalOffset);
     setVerticalOffset(savedState.verticalOffset);
 
+    setHorizontalOffsetWithText(savedState.horizontalOffsetWithText);
+    setVerticalOffsetWithText(savedState.verticalOffsetWithText);
+
     setAdditionalHorizontalOffset(savedState.additionalHorizontalOffset);
     setAdditionalVerticalOffset(savedState.additionalVerticalOffset);
 
@@ -413,6 +427,25 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
 
     setHorizontalOffset(a.getDimensionPixelOffset(R.styleable.Badge_horizontalOffset, 0));
     setVerticalOffset(a.getDimensionPixelOffset(R.styleable.Badge_verticalOffset, 0));
+
+    // Set the offsets when the badge has text. Default to using the badge "dot" offsets
+    // (horizontalOffset and verticalOffset) if there is no offsets defined for badges with text.
+    setHorizontalOffsetWithText(
+        a.getDimensionPixelOffset(
+            R.styleable.Badge_horizontalOffsetWithText, getHorizontalOffset()));
+    setVerticalOffsetWithText(
+        a.getDimensionPixelOffset(R.styleable.Badge_verticalOffsetWithText, getVerticalOffset()));
+
+    if (a.hasValue(R.styleable.Badge_badgeRadius)) {
+      badgeRadius = a.getDimension(R.styleable.Badge_badgeRadius, badgeRadius);
+    }
+    if (a.hasValue(R.styleable.Badge_badgeWidePadding)) {
+      badgeWidePadding = a.getDimension(R.styleable.Badge_badgeWidePadding, badgeWidePadding);
+    }
+    if (a.hasValue(R.styleable.Badge_badgeWithTextRadius)) {
+      badgeWithTextRadius =
+          a.getDimension(R.styleable.Badge_badgeWithTextRadius, badgeWithTextRadius);
+    }
 
     a.recycle();
   }
@@ -828,6 +861,26 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   }
 
   /**
+   * Sets how much (in pixels) to horizontally move this badge towards the center of its anchor
+   * when this badge has text.
+   *
+   * @param px badge's horizontal offset when the badge has text.
+   */
+  public void setHorizontalOffsetWithText(@Px int px) {
+    savedState.horizontalOffsetWithText = px;
+    updateCenterAndBounds();
+  }
+
+  /**
+   * Returns how much (in pixels) this badge is being horizontally offset towards the center of its
+   * anchor when this badge has text.
+   */
+  @Px
+  public int getHorizontalOffsetWithText() {
+    return savedState.horizontalOffsetWithText;
+  }
+
+  /**
    * Sets how much (in pixels) more (in addition to {@code savedState.horizontalOffset}) to
    * horizontally move this badge towards the center of its anchor. Currently used to adjust the
    * placement of badges on toolbar items.
@@ -857,6 +910,26 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
    */
   public int getVerticalOffset() {
     return savedState.verticalOffset;
+  }
+
+  /**
+   * Sets how much (in pixels) to vertically move this badge towards the center of its anchor when
+   * this badge has text.
+   *
+   * @param px badge's vertical offset when the badge has text.
+   */
+  public void setVerticalOffsetWithText(@Px int px) {
+    savedState.verticalOffsetWithText = px;
+    updateCenterAndBounds();
+  }
+
+  /**
+   * Returns how much (in pixels) this badge is being vertically moved towards the center of its
+   * anchor when the badge has text.
+   */
+  @Px
+  public int getVerticalOffsetWithText() {
+    return savedState.verticalOffsetWithText;
   }
 
   /**
@@ -924,9 +997,19 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     }
   }
 
+  private int getTotalVerticalOffsetForState() {
+    int vOffset = hasNumber() ? savedState.verticalOffsetWithText : savedState.verticalOffset;
+    return vOffset + savedState.additionalVerticalOffset;
+  }
+
+  private int getTotalHorizontalOffsetForState() {
+    int hOffset = hasNumber() ? savedState.horizontalOffsetWithText : savedState.horizontalOffset;
+    return hOffset + savedState.additionalHorizontalOffset;
+  }
+
   private void calculateCenterAndBounds(
       @NonNull Context context, @NonNull Rect anchorRect, @NonNull View anchorView) {
-    int totalVerticalOffset = savedState.verticalOffset + savedState.additionalVerticalOffset;
+    int totalVerticalOffset = getTotalVerticalOffsetForState();
     switch (savedState.badgeGravity) {
       case BOTTOM_END:
       case BOTTOM_START:
@@ -958,7 +1041,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
                     ? R.dimen.mtrl_badge_text_horizontal_edge_offset
                     : R.dimen.mtrl_badge_horizontal_edge_offset);
 
-    int totalHorizontalOffset = savedState.horizontalOffset + savedState.additionalHorizontalOffset;
+    int totalHorizontalOffset = getTotalHorizontalOffsetForState();
 
     // Update the centerX based on the badge width and 'inset' from start or end boundary of anchor.
     switch (savedState.badgeGravity) {
