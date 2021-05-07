@@ -27,7 +27,7 @@ to the Material Components for Android library. For more information, go to the
 [Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
 page.
 
-A typical layout will look similar to this:
+A typical layout would look something like this:
 
 ```xml
 <LinearLayout
@@ -45,7 +45,8 @@ A typical layout will look similar to this:
 </LinearLayout>
 ```
 
-In `bottom_navigation_menu.xml` inside a `menu` resource directory:
+The `@menu/bottom_navigation_menu` resource should point to a file named
+`bottom_navigation_menu.xml` inside a `menu` resource directory:
 
 ```xml
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
@@ -105,9 +106,8 @@ another unselected icon.](assets/bottomnav/bottom-nav-default.png)
 **Note:** We have deprecated the
 `BottomNavigationView#setOnNavigationItemSelectedListener` and
 `BottomNavigationView#setOnNavigationItemReselectedListener` methods in favor of
-the listeners in `NavigationBarView`. This will allow you to share the same
-selection code between both `BottomNavigation` and `NavigationRail` view
-elements.
+the listeners in `NavigationBarView`. This allows you to share selection
+handling code between the `BottomNavigation` and `NavigationRail` view elements.
 
 ### Making bottom navigation accessible
 
@@ -150,8 +150,8 @@ badge.isVisible = true
 badge.number = 99
 ```
 
-As best practice if you need to temporarily hide the badge (e.g. until the next
-notification is received), change the visibility of `BadgeDrawable`:
+As a best practice if you need to temporarily hide the badge (e.g. until the
+next notification is received), change the visibility of `BadgeDrawable`:
 
 ```kt
 val badgeDrawable = bottomNavigation.getBadge(menuItemId)
@@ -168,7 +168,7 @@ bottomNavigation.removeBadge(menuItemId)
 ```
 
 See the [`BadgeDrawable`](BadgeDrawable.md) documentation for more information
-about it.
+about badges.
 
 ## Bottom navigation bar
 
@@ -186,10 +186,10 @@ API and source code:
 
 The following example shows a bottom navigation bar with four icons:
 
-*   favorites
-*   music note
-*   places
-*   news
+*   Favorites
+*   Music note
+*   Places
+*   News
 
 ![Bottom navigation bar with favorites, music note, places, and news icons](assets/bottomnav/bottom-nav-generic.png)
 
@@ -234,7 +234,7 @@ In `bottom_navigation_menu.xml` inside a `menu` resource directory:
   <item
       android:id="@+id/page_4"
       android:enabled="true"
-      android:icon="@drawable/ic_new"
+      android:icon="@drawable/ic_news"
       android:title="@string/news"/>
 </menu>
 ```
