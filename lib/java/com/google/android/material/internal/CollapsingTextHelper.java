@@ -528,19 +528,23 @@ public final class CollapsingTextHelper {
 
   private void calculateOffsets(final float fraction) {
     interpolateBounds(fraction);
+    float textBlendFraction;
     if (fadeModeEnabled) {
       if (fraction < fadeModeThresholdFraction) {
+        textBlendFraction = 0F;
         currentDrawX = expandedDrawX;
-        currentDrawY = lerp(expandedDrawY, collapsedDrawY, fraction, positionInterpolator);
+        currentDrawY = expandedDrawY;
 
         setInterpolatedTextSize(expandedTextSize);
       } else {
+        textBlendFraction = 1F;
         currentDrawX = collapsedDrawX;
         currentDrawY = collapsedDrawY - currentOffsetY;
 
         setInterpolatedTextSize(collapsedTextSize);
       }
     } else {
+      textBlendFraction = fraction;
       currentDrawX = lerp(expandedDrawX, collapsedDrawX, fraction, positionInterpolator);
       currentDrawY = lerp(expandedDrawY, collapsedDrawY, fraction, positionInterpolator);
 
@@ -556,7 +560,8 @@ public final class CollapsingTextHelper {
       // If the collapsed and expanded text colors are different, blend them based on the
       // fraction
       textPaint.setColor(
-          blendColors(getCurrentExpandedTextColor(), getCurrentCollapsedTextColor(), fraction));
+          blendColors(
+              getCurrentExpandedTextColor(), getCurrentCollapsedTextColor(), textBlendFraction));
     } else {
       textPaint.setColor(getCurrentCollapsedTextColor());
     }
@@ -726,18 +731,7 @@ public final class CollapsingTextHelper {
 
   private void interpolateBounds(float fraction) {
     if (fadeModeEnabled) {
-      if (fraction < fadeModeThresholdFraction) {
-        currentBounds.left = expandedBounds.left;
-        currentBounds.top = lerp(expandedDrawY, collapsedDrawY, fraction, positionInterpolator);
-        currentBounds.right = expandedBounds.right;
-        currentBounds.bottom =
-            lerp(expandedBounds.bottom, collapsedBounds.bottom, fraction, positionInterpolator);
-      } else {
-        currentBounds.left = collapsedBounds.left;
-        currentBounds.top = collapsedBounds.top;
-        currentBounds.right = collapsedBounds.right;
-        currentBounds.bottom = collapsedBounds.bottom;
-      }
+      currentBounds.set(fraction < fadeModeThresholdFraction ? expandedBounds : collapsedBounds);
     } else {
       currentBounds.left =
           lerp(expandedBounds.left, collapsedBounds.left, fraction, positionInterpolator);
