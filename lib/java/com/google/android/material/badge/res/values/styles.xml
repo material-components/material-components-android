@@ -17,9 +17,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="NewApi">
 
   <style name="Widget.MaterialComponents.Badge" parent="android:Widget">
-    <item name="badgeRadius">@dimen/mtrl_badge_radius</item>
-    <item name="badgeWidePadding">@dimen/mtrl_badge_long_text_horizontal_padding</item>
-    <item name="badgeWithTextRadius">@dimen/mtrl_badge_with_text_radius</item>
     <item name="backgroundColor">?attr/colorError</item>
     <item name="maxCharacterCount">@integer/mtrl_badge_max_character_count</item>
     <item name="badgeGravity">TOP_END</item>
