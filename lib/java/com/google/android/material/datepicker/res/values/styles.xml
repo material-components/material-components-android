@@ -84,6 +84,7 @@
 
   <style name="Widget.MaterialComponents.MaterialCalendar.HeaderCancelButton" parent="Widget.MaterialComponents.Button.TextButton">
     <item name="iconTint">?attr/colorOnPrimary</item>
+    <item name="rippleColor">@color/mtrl_btn_ripple_color</item>
   </style>
 
   <style name="Widget.MaterialComponents.MaterialCalendar.HeaderConfirmButton" parent="Widget.MaterialComponents.Button.TextButton">
@@ -104,6 +105,11 @@
   <style name="Widget.MaterialComponents.MaterialCalendar.MonthTextView" parent="Widget.AppCompat.TextView">
     <item name="android:textAppearance">?attr/textAppearanceSubtitle2</item>
     <item name="android:textColor">@color/material_on_surface_emphasis_medium</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.MaterialCalendar.DayOfWeekLabel" parent="">
+    <item name="android:textAppearance">?attr/textAppearanceBody2</item>
+    <item name="android:gravity">center</item>
   </style>
 
   <style name="Widget.MaterialComponents.MaterialCalendar.Item" parent="">

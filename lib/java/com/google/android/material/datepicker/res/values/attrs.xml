@@ -33,6 +33,7 @@
   <attr name="materialCalendarMonthNavigationButton" format="reference"/>
 
   <!-- Grid Styles -->
+  <attr name="materialCalendarDayOfWeekLabel" format="reference"/>
   <attr name="materialCalendarDay" format="reference"/>
   <attr name="materialCalendarMonth" format="reference"/>
 

@@ -38,6 +38,7 @@
     <item name="materialCalendarMonthNavigationButton">@style/Widget.MaterialComponents.MaterialCalendar.MonthNavigationButton</item>
 
     <!-- Grid Styles -->
+    <item name="materialCalendarDayOfWeekLabel">@style/Widget.MaterialComponents.MaterialCalendar.DayOfWeekLabel</item>
     <item name="materialCalendarDay">@style/Widget.MaterialComponents.MaterialCalendar.DayTextView</item>
     <item name="materialCalendarMonth">@style/Widget.MaterialComponents.MaterialCalendar.MonthTextView</item>
 

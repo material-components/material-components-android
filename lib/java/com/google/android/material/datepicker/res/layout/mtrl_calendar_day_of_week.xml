@@ -16,7 +16,6 @@
 -->
 <TextView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    style="?attr/materialCalendarDayOfWeekLabel"
     android:layout_width="@dimen/mtrl_calendar_day_width"
-    android:layout_height="@dimen/mtrl_calendar_days_of_week_height"
-    android:gravity="center"
-    android:textAppearance="?attr/textAppearanceBody2"/>
+    android:layout_height="@dimen/mtrl_calendar_days_of_week_height"/>

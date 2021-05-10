@@ -44,8 +44,7 @@
       android:insetTop="0dp"
       android:insetBottom="0dp"
       android:padding="12dp"
-      app:icon="@drawable/material_ic_clear_black_24dp"
-      app:rippleColor="@color/mtrl_btn_ripple_color"/>
+      app:icon="@drawable/material_ic_clear_black_24dp"/>
 
     <FrameLayout
       android:id="@+id/mtrl_picker_header_title_and_selection"
