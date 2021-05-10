@@ -42,14 +42,25 @@ public class ElevationOverlayProvider {
   private final float displayDensity;
 
   public ElevationOverlayProvider(@NonNull Context context) {
-    this.elevationOverlayEnabled =
-        MaterialAttributes.resolveBoolean(context, R.attr.elevationOverlayEnabled, false);
-    this.elevationOverlayColor =
-        MaterialColors.getColor(context, R.attr.elevationOverlayColor, Color.TRANSPARENT);
-    this.elevationOverlayAccentColor =
-        MaterialColors.getColor(context, R.attr.elevationOverlayAccentColor, Color.TRANSPARENT);
-    this.colorSurface = MaterialColors.getColor(context, R.attr.colorSurface, Color.TRANSPARENT);
-    this.displayDensity = context.getResources().getDisplayMetrics().density;
+    this(
+        MaterialAttributes.resolveBoolean(context, R.attr.elevationOverlayEnabled, false),
+        MaterialColors.getColor(context, R.attr.elevationOverlayColor, Color.TRANSPARENT),
+        MaterialColors.getColor(context, R.attr.elevationOverlayAccentColor, Color.TRANSPARENT),
+        MaterialColors.getColor(context, R.attr.colorSurface, Color.TRANSPARENT),
+        context.getResources().getDisplayMetrics().density);
+  }
+
+  public ElevationOverlayProvider(
+      boolean elevationOverlayEnabled,
+      @ColorInt int elevationOverlayColor,
+      @ColorInt int elevationOverlayAccentColor,
+      @ColorInt int colorSurface,
+      float displayDensity) {
+    this.elevationOverlayEnabled = elevationOverlayEnabled;
+    this.elevationOverlayColor = elevationOverlayColor;
+    this.elevationOverlayAccentColor = elevationOverlayAccentColor;
+    this.colorSurface = colorSurface;
+    this.displayDensity = displayDensity;
   }
 
   /**
