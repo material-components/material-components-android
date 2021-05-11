@@ -59,6 +59,16 @@
     <item name="elevationOverlayEnabled">false</item>
   </style>
 
+  <style name="Widget.MaterialComponents.TimePicker.Display.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+    <item name="materialThemeOverlay">@style/ThemeOverlay.MaterialComponents.TimePicker.Display.TextInputEditText</item>
+  </style>
+
+  <style name="ThemeOverlay.MaterialComponents.TimePicker.Display.TextInputEditText" parent="ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox">
+    <item name="editTextStyle">@style/Widget.MaterialComponents.TimePicker.Display.TextInputEditText</item>
+    <!-- NOTE: the only text view used in TimePicker text input is custom helper text view. -->
+    <item name="android:textViewStyle">@style/Widget.MaterialComponents.TimePicker.Display.HelperText</item>
+  </style>
+
   <style name="Widget.MaterialComponents.TimePicker.Display.TextInputEditText" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
     <item name="android:textAppearance">?attr/textAppearanceHeadline3</item>
     <item name="android:textSize" tools:ignore="SpUsage">56dp</item>
@@ -71,6 +81,10 @@
     <item name="android:gravity">center</item>
     <item name="android:paddingStart">0dp</item>
     <item name="android:paddingEnd">0dp</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.TimePicker.Display.HelperText" parent="Widget.MaterialComponents.TextView">
+    <item name="android:textAppearance">?attr/textAppearanceCaption</item>
   </style>
 
   <style name="Widget.MaterialComponents.TimePicker.Button" parent="Widget.MaterialComponents.Button.OutlinedButton">

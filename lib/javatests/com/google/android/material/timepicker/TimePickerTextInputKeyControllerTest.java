@@ -47,6 +47,8 @@ public class TimePickerTextInputKeyControllerTest {
   public void createController() {
     ApplicationProvider.getApplicationContext().setTheme(R.style.Theme_MaterialComponents_Light);
     Activity activity = Robolectric.buildActivity(Activity.class).setup().start().get();
+    activity.setTheme(R.style.ThemeOverlay_MaterialComponents_TimePicker);
+    activity.setTheme(R.style.ThemeOverlay_MaterialComponents_TimePicker_Display_TextInputEditText);
     timeModel = new TimeModel();
     minuteInput = new ChipTextInputComboView(activity);
     hourInput = new ChipTextInputComboView(activity);
