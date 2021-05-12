@@ -60,7 +60,7 @@ public class RippleUtilsTest {
   public void testValidateColor_transparentDefaultColor_returnsSelf_kitkat_noWarning() {
     ColorStateList rippleColor = createTransparentDefaultColor();
     assertThat(RippleUtils.sanitizeRippleDrawableColor(rippleColor)).isEqualTo(rippleColor);
-    ShadowLog.getLogsForTag(RippleUtils.LOG_TAG).isEmpty();
+    assertThat(ShadowLog.getLogsForTag(RippleUtils.LOG_TAG)).isEmpty();
   }
 
   @Test
@@ -68,7 +68,7 @@ public class RippleUtilsTest {
   public void testValidateColor_transparentDefaultColor_returnsSelf_lollipop_noWarning() {
     ColorStateList rippleColor = createTransparentDefaultColor();
     assertThat(RippleUtils.sanitizeRippleDrawableColor(rippleColor)).isEqualTo(rippleColor);
-    ShadowLog.getLogsForTag(RippleUtils.LOG_TAG).isEmpty();
+    assertThat(ShadowLog.getLogsForTag(RippleUtils.LOG_TAG)).isEmpty();
   }
 
   @Test
@@ -94,7 +94,7 @@ public class RippleUtilsTest {
   public void testValidateColor_transparentDefaultColor_returnsSelf_pie_noWarning() {
     ColorStateList rippleColor = createTransparentDefaultColor();
     assertThat(RippleUtils.sanitizeRippleDrawableColor(rippleColor)).isEqualTo(rippleColor);
-    ShadowLog.getLogsForTag(RippleUtils.LOG_TAG).isEmpty();
+    assertThat(ShadowLog.getLogsForTag(RippleUtils.LOG_TAG)).isEmpty();
   }
 
   private ColorStateList createTransparentDefaultColor() {
