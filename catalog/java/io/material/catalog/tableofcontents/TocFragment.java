@@ -39,8 +39,7 @@ import com.google.android.material.appbar.AppBarLayout;
 import dagger.android.support.DaggerFragment;
 import io.material.catalog.feature.FeatureDemo;
 import io.material.catalog.feature.FeatureDemoUtils;
-import io.material.catalog.themeswitcher.ThemePreferencesManager;
-import io.material.catalog.themeswitcher.ThemeSwitcherResourceProvider;
+import io.material.catalog.preferences.CatalogPreferencesDialogFragment;
 import io.material.catalog.windowpreferences.WindowPreferencesManager;
 import java.text.Collator;
 import java.util.ArrayList;
@@ -57,22 +56,18 @@ public class TocFragment extends DaggerFragment {
 
   @Inject Set<FeatureDemo> featureDemos;
   @Inject TocResourceProvider tocResourceProvider;
-  @Inject ThemeSwitcherResourceProvider themeSwitcherResourceProvider;
 
-  private ThemePreferencesManager themePreferencesManager;
   private WindowPreferencesManager windowPreferencesManager;
   private AppBarLayout appBarLayout;
   private View gridTopDivider;
   private RecyclerView recyclerView;
-  private ImageButton themeButton;
+  private ImageButton preferencesButton;
   private ImageButton edgeToEdgeButton;
 
   @Override
   public void onCreate(@Nullable Bundle bundle) {
     super.onCreate(bundle);
 
-    themePreferencesManager =
-        new ThemePreferencesManager(getContext(), themeSwitcherResourceProvider);
     windowPreferencesManager = new WindowPreferencesManager(getContext());
 
     String defaultDemo = FeatureDemoUtils.getDefaultDemo(getContext());
@@ -106,7 +101,7 @@ public class TocFragment extends DaggerFragment {
     appBarLayout = view.findViewById(R.id.cat_toc_app_bar_layout);
     gridTopDivider = view.findViewById(R.id.cat_toc_grid_top_divider);
     recyclerView = view.findViewById(R.id.cat_toc_grid);
-    themeButton = view.findViewById(R.id.cat_toc_theme_button);
+    preferencesButton = view.findViewById(R.id.cat_toc_preferences_button);
     edgeToEdgeButton = view.findViewById(R.id.cat_edge_to_edge_button);
 
     ViewCompat.setOnApplyWindowInsetsListener(
@@ -146,7 +141,7 @@ public class TocFragment extends DaggerFragment {
     TocAdapter tocAdapter = new TocAdapter(getActivity(), featureList);
     recyclerView.setAdapter(tocAdapter);
 
-    initThemeButton();
+    initPreferencesButton();
 
     initEdgeToEdgeButton();
     return view;
@@ -180,9 +175,10 @@ public class TocFragment extends DaggerFragment {
     return MathUtils.clamp(gridSpanCount, GRID_SPAN_COUNT_MIN, GRID_SPAN_COUNT_MAX);
   }
 
-  private void initThemeButton() {
-    themePreferencesManager.applyTheme();
-    themeButton.setOnClickListener(v -> themePreferencesManager.showChooseThemePopup(themeButton));
+  private void initPreferencesButton() {
+    preferencesButton.setOnClickListener(
+        v -> new CatalogPreferencesDialogFragment().show(
+            getParentFragmentManager(), "preferences-screen"));
   }
 
   private void initEdgeToEdgeButton() {

@@ -24,6 +24,7 @@ import android.util.Log;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasAndroidInjector;
+import io.material.catalog.preferences.BaseCatalogPreferences;
 import java.lang.reflect.InvocationTargetException;
 import javax.inject.Inject;
 
@@ -37,6 +38,7 @@ public class CatalogApplication extends Application implements HasAndroidInjecto
       "io.material.catalog.application.componentOverride";
 
   @Inject DispatchingAndroidInjector<Object> androidInjector;
+  @Inject BaseCatalogPreferences catalogPreferences;
 
   @Override
   public void onCreate() {
@@ -45,6 +47,7 @@ public class CatalogApplication extends Application implements HasAndroidInjecto
     if (!overrideApplicationComponent(this)) {
       DaggerCatalogApplicationComponent.builder().application(this).build().inject(this);
     }
+    catalogPreferences.applyPreferences(this);
   }
 
   /**
@@ -58,7 +61,6 @@ public class CatalogApplication extends Application implements HasAndroidInjecto
    * <p>Suppressing unchecked warnings because there is no way we have a statically typed class
    * argument for instances of Class in this method.
    */
-  @SuppressWarnings("unchecked")
   private boolean overrideApplicationComponent(CatalogApplication catalogApplication) {
     try {
       ApplicationInfo applicationInfo =

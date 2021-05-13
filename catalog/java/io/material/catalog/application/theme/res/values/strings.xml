@@ -16,4 +16,7 @@
   -->
 <resources>
   <string name="toolbar_navigation_close_description">Close demo</string>
+  <string name="cat_edge_to_edge_enable_description">Enable edge to edge</string>
+  <string name="cat_edge_to_edge_disable_description">Disable edge to edge</string>
+  <string name="cat_choose_preferences_description">Open preferences dialog</string>
 </resources>

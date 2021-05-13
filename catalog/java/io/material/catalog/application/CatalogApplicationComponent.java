@@ -30,6 +30,7 @@ import javax.inject.Singleton;
 @dagger.Component(
     modules = {
       AndroidInjectionModule.class,
+      CatalogApplicationModule.class,
       MainActivity.Module.class,
       CatalogDemoModule.class,
       TransitionDemoModule.class,

@@ -34,6 +34,7 @@ import io.material.catalog.font.FontFragment;
 import io.material.catalog.imageview.ShapeableImageViewFragment;
 import io.material.catalog.menu.MenuFragment;
 import io.material.catalog.navigationrail.NavigationRailFragment;
+import io.material.catalog.preferences.CatalogPreferencesDialogFragment;
 import io.material.catalog.progressindicator.ProgressIndicatorFragment;
 import io.material.catalog.radiobutton.RadioButtonFragment;
 import io.material.catalog.shapetheming.ShapeThemingFragment;
@@ -81,6 +82,10 @@ public abstract class TocModule {
   @FragmentScope
   @ContributesAndroidInjector
   abstract TocFragment contributeTocFragment();
+
+  @FragmentScope
+  @ContributesAndroidInjector
+  abstract CatalogPreferencesDialogFragment contributeCatalogPreferencesDialogFragment();
 
   @Provides
   static TocResourceProvider provideTocResourceProvider() {

@@ -16,9 +16,11 @@
   -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:theme="@style/ThemeOverlay.Catalog.AppBarLayout">
+    android:theme="@style/ThemeOverlay.Catalog.AppBarLayout"
+    tools:ignore="ContentDescription">
 
   <LinearLayout
       android:layout_width="wrap_content"
@@ -43,11 +45,9 @@
   </LinearLayout>
 
   <ImageButton
-      style="@style/Widget.Catalog.EdgeToEdgeButton"
-      android:contentDescription="@string/cat_choose_theme_description"/>
+      style="@style/Widget.Catalog.EdgeToEdgeButton"/>
 
   <ImageButton
-      style="@style/Widget.Catalog.ChooseThemeButton"
-      android:contentDescription="@string/cat_edge_to_edge_enable_description"/>
+      style="@style/Widget.Catalog.ChoosePreferencesButton"/>
 
 </FrameLayout>
