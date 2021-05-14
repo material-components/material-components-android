@@ -15,7 +15,7 @@
      limitations under the License.
  -->
 
-<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="NewApi">
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="NewApi,SpUsage">
 
   <style name="Widget.MaterialComponents.TimePicker" parent="">
     <item name="shapeAppearance">?shapeAppearanceMediumComponent</item>
@@ -31,6 +31,16 @@
     <item name="android:textSize" tools:ignore="SpUsage">56dp</item>
     <item name="shapeAppearanceOverlay">?shapeAppearanceMediumComponent</item>
     <item name="materialThemeOverlay">@style/ThemeOverlay.MaterialComponents.TimePicker.Display</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.TimePicker.Display.Divider" parent="">
+    <item name="android:includeFontPadding">false</item>
+    <item name="android:lineSpacingExtra">0dp</item>
+    <item name="android:maxEms">1</item>
+    <item name="android:text">@string/material_clock_display_divider</item>
+    <item name="android:textAppearance">?attr/textAppearanceHeadline3</item>
+    <item name="android:textColor">?attr/colorOnSurface</item>
+    <item name="android:textSize">56dp</item>
   </style>
 
   <style name="Widget.MaterialComponents.TimePicker.ImageButton" parent="">
