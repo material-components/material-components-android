@@ -18,9 +18,10 @@ package io.material.catalog.preferences;
 
 import io.material.catalog.R;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import androidx.core.view.ViewCompat;
+import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +49,8 @@ public class CatalogPreferencesDialogFragment extends BottomSheetDialogFragment
 
   @Inject DispatchingAndroidInjector<Object> childFragmentInjector;
 
+  private final SparseIntArray buttonIdToOptionId = new SparseIntArray();
+
   @Override
   public void onAttach(Context context) {
     AndroidSupportInjection.inject(this);
@@ -57,13 +60,6 @@ public class CatalogPreferencesDialogFragment extends BottomSheetDialogFragment
   @Override
   public AndroidInjector<Object> androidInjector() {
     return childFragmentInjector;
-  }
-
-  @NonNull
-  @Override
-  public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-    // Do not restore states. All buttons will be checked according to preference settings.
-    return super.onCreateDialog(null);
   }
 
   @Nullable
@@ -92,18 +88,19 @@ public class CatalogPreferencesDialogFragment extends BottomSheetDialogFragment
     description.setEnabled(isEnabled);
     description.setText(preference.description);
     MaterialButtonToggleGroup buttonToggleGroup = view.findViewById(R.id.preference_options);
+    int selectedOptionId = preference.getSelectedOption(view.getContext()).id;
     for (Option option : preference.getOptions()) {
       MaterialButton button = createOptionButton(layoutInflater, buttonToggleGroup, option);
       button.setEnabled(isEnabled);
       buttonToggleGroup.addView(button);
+      button.setChecked(selectedOptionId == option.id);
     }
-    buttonToggleGroup.check(preference.getSelectedOption(view.getContext()).id);
     buttonToggleGroup.setEnabled(isEnabled);
     if (isEnabled) {
       buttonToggleGroup.addOnButtonCheckedListener(
           (group, checkedId, isChecked) -> {
             if (isChecked) {
-              preference.setSelectedOption(group.getContext(), checkedId);
+              preference.setSelectedOption(group.getContext(), buttonIdToOptionId.get(checkedId));
             }
           });
     }
@@ -117,7 +114,9 @@ public class CatalogPreferencesDialogFragment extends BottomSheetDialogFragment
     MaterialButton button =
         (MaterialButton) layoutInflater.inflate(
             R.layout.mtrl_preferences_dialog_option_button, rootView, false);
-    button.setId(option.id);
+    int buttonId = ViewCompat.generateViewId();
+    buttonIdToOptionId.append(buttonId, option.id);
+    button.setId(buttonId);
     button.setIconResource(option.icon);
     button.setText(option.description);
     return button;
