@@ -189,6 +189,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
 
     collapsingTextHelper = new CollapsingTextHelper(this);
     collapsingTextHelper.setTextSizeInterpolator(AnimationUtils.DECELERATE_INTERPOLATOR);
+    collapsingTextHelper.setRtlTextDirectionHeuristicsEnabled(false);
 
     elevationOverlayProvider = new ElevationOverlayProvider(context);
 
