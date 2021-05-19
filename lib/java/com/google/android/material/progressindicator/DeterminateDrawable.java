@@ -129,7 +129,7 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
   public void jumpToCurrentState() {
     // Set spring target value to the current level (may not be same as the desired level, depends
     // on the completion of progress animator) and end the animator immediately.
-    springAnimator.cancel();
+    springAnimator.skipToEnd();
     setIndicatorFraction((float) getLevel() / MAX_DRAWABLE_LEVEL);
   }
 
@@ -142,7 +142,7 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
   @Override
   protected boolean onLevelChange(int level) {
     if (skipAnimationOnLevelChange) {
-      springAnimator.cancel();
+      springAnimator.skipToEnd();
       setIndicatorFraction((float) level / MAX_DRAWABLE_LEVEL);
     } else {
       springAnimator.setStartValue(getIndicatorFraction() * MAX_DRAWABLE_LEVEL);
