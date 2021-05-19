@@ -25,7 +25,7 @@ import com.google.common.collect.ImmutableList;
  */
 public abstract class BaseCatalogPreferences {
   protected static final ImmutableList<CatalogPreference> COMMON_PREFERENCES =
-      ImmutableList.of(new ThemePreference());
+      ImmutableList.of(new ThemePreference(), new ShapePreference());
 
   public final void applyPreferences(Context context) {
     for (CatalogPreference preference : getPreferences()) {

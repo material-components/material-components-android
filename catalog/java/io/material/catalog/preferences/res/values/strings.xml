@@ -19,4 +19,7 @@
   <string name="night_mode_preference_option_light" translatable="false">Light</string>
   <string name="night_mode_preference_option_dark" translatable="false">Dark</string>
   <string name="night_mode_preference_option_system_default" translatable="false">System default</string>
+  <string name="shape_preference_description" translatable="false">Shape</string>
+  <string name="shape_preference_option_rounded_corner" translatable="false">Rounded corners</string>
+  <string name="shape_preference_option_cut_corner" translatable="false">Cut corners</string>
 </resources>
