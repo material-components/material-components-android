@@ -44,22 +44,22 @@ public class ThemePreference extends CatalogPreference {
       new Option(
           OPTION_ID_SYSTEM_DEFAULT,
           R.drawable.ic_theme_default_24px,
-          R.string.night_mode_preference_option_system_default);
+          R.string.theme_preference_option_system_default);
 
   private static final ImmutableList<Option> OPTIONS =
       ImmutableList.of(
           new Option(
               OPTION_ID_LIGHT,
               R.drawable.ic_theme_light_24px,
-              R.string.night_mode_preference_option_light),
+              R.string.theme_preference_option_light),
           new Option(
               OPTION_ID_DARK,
               R.drawable.ic_theme_dark_24px,
-              R.string.night_mode_preference_option_dark),
+              R.string.theme_preference_option_dark),
           DEFAULT_OPTION);
 
   public ThemePreference() {
-    super(R.string.night_mode_preference_description);
+    super(R.string.theme_preference_description);
   }
 
   @Override

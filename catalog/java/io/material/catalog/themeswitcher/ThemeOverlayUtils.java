@@ -24,12 +24,18 @@ import androidx.annotation.StyleRes;
 /** Utils for theme themeOverlays. */
 public class ThemeOverlayUtils {
 
+  public static final int NO_THEME_OVERLAY = 0;
+
   private ThemeOverlayUtils() { }
 
   private static final SparseIntArray themeOverlays = new SparseIntArray();
 
   public static void setThemeOverlay(@IdRes int id, @StyleRes int themeOverlay) {
-    themeOverlays.put(id, themeOverlay);
+    if (themeOverlay == NO_THEME_OVERLAY) {
+      themeOverlays.delete(id);
+    } else {
+      themeOverlays.put(id, themeOverlay);
+    }
   }
 
   public static void clearThemeOverlays(Activity activity) {

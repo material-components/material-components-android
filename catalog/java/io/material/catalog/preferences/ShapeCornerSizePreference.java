@@ -25,36 +25,46 @@ import com.google.common.collect.ImmutableList;
 import io.material.catalog.themeswitcher.ThemeOverlayUtils;
 
 /**
- * Shape preference to change the corner family to rounded or cut.
+ * Shape corner size preference to change the corner size among small, medium, and large.
  */
-public class ShapePreference extends CatalogPreference {
-  private static final int OPTION_ID_ROUNDED_CORNER = 1;
-  private static final int OPTION_ID_CUT_CORNER = 2;
+public class ShapeCornerSizePreference extends CatalogPreference {
+  private static final int OPTION_ID_SMALL = 1;
+  private static final int OPTION_ID_MEDIUM = 2;
+  private static final int OPTION_ID_LARGE = 3;
+  private static final int OPTION_ID_DEFAULT = 4;
 
   private static final SparseIntArray OPTION_ID_TO_THEME_OVERLAY = new SparseIntArray();
   static {
-    OPTION_ID_TO_THEME_OVERLAY.append(
-        OPTION_ID_ROUNDED_CORNER, R.style.ThemeOverlay_Shapes_Rounded);
-    OPTION_ID_TO_THEME_OVERLAY.append(OPTION_ID_CUT_CORNER, R.style.ThemeOverlay_Shapes_Cut);
+    OPTION_ID_TO_THEME_OVERLAY.append(OPTION_ID_SMALL, R.style.ThemeOverlay_ShapeSize_Small);
+    OPTION_ID_TO_THEME_OVERLAY.append(OPTION_ID_MEDIUM, R.style.ThemeOverlay_ShapeSize_Medium);
+    OPTION_ID_TO_THEME_OVERLAY.append(OPTION_ID_LARGE, R.style.ThemeOverlay_ShapeSize_Large);
+    OPTION_ID_TO_THEME_OVERLAY.append(OPTION_ID_DEFAULT, ThemeOverlayUtils.NO_THEME_OVERLAY);
   }
 
   private static final Option DEFAULT_OPTION =
       new Option(
-          OPTION_ID_ROUNDED_CORNER,
-          R.drawable.ic_rounded_corners_24px,
-          R.string.shape_preference_option_rounded_corner);
+          OPTION_ID_DEFAULT,
+          0,
+          R.string.shape_corner_size_preference_option_default);
 
   private static final ImmutableList<Option> OPTIONS =
       ImmutableList.of(
-          DEFAULT_OPTION,
           new Option(
-              OPTION_ID_CUT_CORNER,
-              R.drawable.ic_cut_corners_24px,
-              R.string.shape_preference_option_cut_corner));
+              OPTION_ID_SMALL,
+              0,
+              R.string.shape_corner_size_preference_option_small),
+          new Option(
+              OPTION_ID_MEDIUM,
+              0,
+              R.string.shape_corner_size_preference_option_medium),
+          new Option(
+              OPTION_ID_LARGE,
+              0,
+              R.string.shape_corner_size_preference_option_large),
+          DEFAULT_OPTION);
 
-
-  public ShapePreference() {
-    super(R.string.shape_preference_description);
+  public ShapeCornerSizePreference() {
+    super(R.string.shape_corner_size_preference_description);
   }
 
   @Override
@@ -72,7 +82,7 @@ public class ShapePreference extends CatalogPreference {
   @Override
   protected void apply(@NonNull Context context, @NonNull Option selectedOption) {
     ThemeOverlayUtils.setThemeOverlay(
-        R.id.theme_feature_corner_family,
+        R.id.theme_feature_corner_size,
         OPTION_ID_TO_THEME_OVERLAY.get(selectedOption.id));
   }
 
