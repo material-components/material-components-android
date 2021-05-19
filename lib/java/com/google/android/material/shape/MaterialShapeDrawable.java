@@ -107,6 +107,10 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   public @interface CompatibilityShadowMode {}
 
   private static final Paint clearPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+  static {
+    clearPaint.setColor(Color.WHITE);
+    clearPaint.setXfermode(new PorterDuffXfermode(Mode.DST_OUT));
+  }
 
   private MaterialShapeDrawableState drawableState;
 
@@ -206,8 +210,6 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     this.drawableState = drawableState;
     strokePaint.setStyle(Style.STROKE);
     fillPaint.setStyle(Style.FILL);
-    clearPaint.setColor(Color.WHITE);
-    clearPaint.setXfermode(new PorterDuffXfermode(Mode.DST_OUT));
     updateTintFilter();
     updateColorsForState(getState());
     // Listens to additions of corners and edges, to create the shadow operations.
