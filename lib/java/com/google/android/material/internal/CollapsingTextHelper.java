@@ -19,6 +19,7 @@ package com.google.android.material.internal;
 import static androidx.core.util.Preconditions.checkNotNull;
 import static android.text.Layout.Alignment.ALIGN_NORMAL;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 import android.animation.TimeInterpolator;
@@ -548,7 +549,7 @@ public final class CollapsingTextHelper {
       } else {
         textBlendFraction = 1F;
         currentDrawX = collapsedDrawX;
-        currentDrawY = collapsedDrawY - currentOffsetY;
+        currentDrawY = collapsedDrawY - max(0, currentOffsetY);
 
         setInterpolatedTextSize(collapsedTextSize);
       }
