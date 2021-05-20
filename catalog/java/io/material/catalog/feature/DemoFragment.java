@@ -42,13 +42,13 @@ import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasAndroidInjector;
 import dagger.android.support.AndroidSupportInjection;
-import io.material.catalog.themeswitcher.ThemeSwitcherHelper;
-import io.material.catalog.themeswitcher.ThemeSwitcherHelper.ThemeSwitcherFragment;
+import io.material.catalog.preferences.CatalogPreferencesHelper;
+import io.material.catalog.preferences.CatalogPreferencesHelper.PreferencesFragment;
 import javax.inject.Inject;
 
 /** Base Fragment class that provides a demo screen structure for a single demo. */
 public abstract class DemoFragment extends Fragment
-    implements ThemeSwitcherFragment, HasAndroidInjector {
+    implements PreferencesFragment, HasAndroidInjector {
 
   public static final String ARG_DEMO_TITLE = "demo_title";
 
@@ -61,7 +61,7 @@ public abstract class DemoFragment extends Fragment
 
   @Inject DispatchingAndroidInjector<Object> childFragmentInjector;
 
-  @Nullable private ThemeSwitcherHelper themeSwitcherHelper;
+  @Nullable private CatalogPreferencesHelper catalogPreferencesHelper;
   @Nullable private GestureDetector gestureDetector;
   @Nullable private MemoryView memoryWidget;
   @Nullable private ViewScheduler viewScheduler;
@@ -71,7 +71,7 @@ public abstract class DemoFragment extends Fragment
     safeInject();
     super.onAttach(context);
 
-    themeSwitcherHelper = new ThemeSwitcherHelper(this);
+    catalogPreferencesHelper = new CatalogPreferencesHelper(this);
   }
 
   @StringRes
@@ -171,12 +171,12 @@ public abstract class DemoFragment extends Fragment
   @Override
   public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
     super.onCreateOptionsMenu(menu, menuInflater);
-    themeSwitcherHelper.onCreateOptionsMenu(menu, menuInflater);
+    catalogPreferencesHelper.onCreateOptionsMenu(menu, menuInflater);
   }
 
   @Override
   public boolean onOptionsItemSelected(MenuItem menuItem) {
-    return themeSwitcherHelper.onOptionsItemSelected(menuItem)
+    return catalogPreferencesHelper.onOptionsItemSelected(menuItem)
         || super.onOptionsItemSelected(menuItem);
   }
 

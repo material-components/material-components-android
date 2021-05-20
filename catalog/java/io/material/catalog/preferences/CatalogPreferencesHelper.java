@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.material.catalog.themeswitcher;
+package io.material.catalog.preferences;
 
 import io.material.catalog.R;
 
@@ -23,55 +23,60 @@ import androidx.fragment.app.FragmentManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import androidx.annotation.NonNull;
 
 /** Helper class for demos to support theme switcher functionality. */
-public class ThemeSwitcherHelper {
+public class CatalogPreferencesHelper {
   private final FragmentManager fragmentManager;
   private final boolean enabled;
 
-  public <F extends Fragment & ThemeSwitcherFragment> ThemeSwitcherHelper(F fragment) {
+  public <F extends Fragment & PreferencesFragment> CatalogPreferencesHelper(@NonNull F fragment) {
     fragmentManager = fragment.getParentFragmentManager();
     enabled =
         fragment.shouldShowDefaultDemoActionBar()
-            && fragment.getActivity() instanceof ThemeSwitcherActivity;
+            && fragment.getActivity() instanceof PreferencesActivity;
 
     if (enabled) {
       fragment.setHasOptionsMenu(true);
     }
   }
 
-  public ThemeSwitcherHelper(FragmentManager fragmentManager) {
+  public CatalogPreferencesHelper(@NonNull FragmentManager fragmentManager) {
     this.fragmentManager = fragmentManager;
     this.enabled = true;
   }
 
-  public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+  public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
     if (enabled) {
       menuInflater.inflate(R.menu.mtrl_theme_switcher_menu, menu);
     }
   }
 
-  public boolean onOptionsItemSelected(MenuItem menuItem) {
+  public boolean onOptionsItemSelected(@NonNull MenuItem menuItem) {
     if (enabled) {
       if (menuItem.getItemId() == R.id.theme_switcher) {
-        showThemeSwitcher();
+        showPreferences();
         return true;
       }
     }
     return false;
   }
 
-  private void showThemeSwitcher() {
-    new ThemeSwitcherDialogFragment().show(fragmentManager, "theme-switcher");
+  private void showPreferences() {
+    new CatalogPreferencesDialogFragment().show(fragmentManager, "preferences");
   }
 
-  /** Implement this interface to include an Activity for theme switcher support. */
-  public interface ThemeSwitcherActivity {}
+  /** Implement this interface to include an Activity for preferences screen support. */
+  public interface PreferencesActivity {}
 
-  /** Implement this interface to allow a Fragment to be used with {@link ThemeSwitcherHelper}. */
-  public interface ThemeSwitcherFragment {
+  /**
+   * Implement this interface to allow a Fragment to be used with {@link CatalogPreferencesHelper}.
+   */
+  public interface PreferencesFragment {
 
-    /** If this is true, then the demo's default action bar comes with theme switcher support. */
+    /**
+     * If this is true, then the demo's default action bar comes with preferences screen support.
+     */
     boolean shouldShowDefaultDemoActionBar();
   }
 }
