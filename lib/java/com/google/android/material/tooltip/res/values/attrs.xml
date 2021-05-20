@@ -18,6 +18,7 @@
   <declare-styleable name="Tooltip">
     <attr name="android:text" />
     <attr name="android:textAppearance" />
+    <attr name="android:textColor" />
     <attr name="android:layout_margin" />
     <attr name="android:minWidth" />
     <attr name="android:minHeight" />

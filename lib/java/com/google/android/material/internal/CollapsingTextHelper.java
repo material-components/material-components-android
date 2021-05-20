@@ -354,11 +354,11 @@ public final class CollapsingTextHelper {
   public void setCollapsedTextAppearance(int resId) {
     TextAppearance textAppearance = new TextAppearance(view.getContext(), resId);
 
-    if (textAppearance.textColor != null) {
-      collapsedTextColor = textAppearance.textColor;
+    if (textAppearance.getTextColor() != null) {
+      collapsedTextColor = textAppearance.getTextColor();
     }
-    if (textAppearance.textSize != 0) {
-      collapsedTextSize = textAppearance.textSize;
+    if (textAppearance.getTextSize() != 0) {
+      collapsedTextSize = textAppearance.getTextSize();
     }
     if (textAppearance.shadowColor != null) {
       collapsedShadowColor = textAppearance.shadowColor;
@@ -388,11 +388,11 @@ public final class CollapsingTextHelper {
 
   public void setExpandedTextAppearance(int resId) {
     TextAppearance textAppearance = new TextAppearance(view.getContext(), resId);
-    if (textAppearance.textColor != null) {
-      expandedTextColor = textAppearance.textColor;
+    if (textAppearance.getTextColor() != null) {
+      expandedTextColor = textAppearance.getTextColor();
     }
-    if (textAppearance.textSize != 0) {
-      expandedTextSize = textAppearance.textSize;
+    if (textAppearance.getTextSize() != 0) {
+      expandedTextSize = textAppearance.getTextSize();
     }
     if (textAppearance.shadowColor != null) {
       expandedShadowColor = textAppearance.shadowColor;

@@ -155,9 +155,13 @@ public class TooltipDrawable extends MaterialShapeDrawable implements TextDrawab
         getShapeAppearanceModel().toBuilder().setBottomEdge(createMarkerEdge()).build());
 
     setText(a.getText(R.styleable.Tooltip_android_text));
-    setTextAppearance(
-        MaterialResources.getTextAppearance(
-            context, a, R.styleable.Tooltip_android_textAppearance));
+    TextAppearance textAppearance = MaterialResources.getTextAppearance(
+        context, a, R.styleable.Tooltip_android_textAppearance);
+    if (textAppearance != null && a.hasValue(R.styleable.Tooltip_android_textColor)) {
+      textAppearance.setTextColor(
+          MaterialResources.getColorStateList(context, a, R.styleable.Tooltip_android_textColor));
+    }
+    setTextAppearance(textAppearance);
 
     int onBackground =
         MaterialColors.getColor(

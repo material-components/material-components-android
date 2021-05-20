@@ -195,7 +195,7 @@ public class FontMainDemoFragment extends DemoFragment {
           + " - "
           + convertFontFamilyToDescription(textAppearance.fontFamily)
           + " "
-          + pxToSp(textAppearance.textSize)
+          + pxToSp(textAppearance.getTextSize())
           + "sp";
     }
 

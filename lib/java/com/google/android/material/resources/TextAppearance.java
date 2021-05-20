@@ -54,7 +54,6 @@ public class TextAppearance {
   private static final int TYPEFACE_SERIF = 2;
   private static final int TYPEFACE_MONOSPACE = 3;
 
-  @Nullable public final ColorStateList textColor;
   @Nullable public final ColorStateList textColorHint;
   @Nullable public final ColorStateList textColorLink;
   @Nullable public final ColorStateList shadowColor;
@@ -69,7 +68,9 @@ public class TextAppearance {
   public final boolean hasLetterSpacing;
   public final float letterSpacing;
 
-  public float textSize;
+  @Nullable
+  private ColorStateList textColor;
+  private float textSize;
 
   @FontRes private final int fontFamilyResourceId;
 
@@ -80,10 +81,10 @@ public class TextAppearance {
   public TextAppearance(@NonNull Context context, @StyleRes int id) {
     TypedArray a = context.obtainStyledAttributes(id, R.styleable.TextAppearance);
 
-    textSize = a.getDimension(R.styleable.TextAppearance_android_textSize, 0f);
-    textColor =
+    setTextSize(a.getDimension(R.styleable.TextAppearance_android_textSize, 0f));
+    setTextColor(
         MaterialResources.getColorStateList(
-            context, a, R.styleable.TextAppearance_android_textColor);
+            context, a, R.styleable.TextAppearance_android_textColor));
     textColorHint =
         MaterialResources.getColorStateList(
             context, a, R.styleable.TextAppearance_android_textColorHint);
@@ -351,6 +352,23 @@ public class TextAppearance {
         textPaint.setLetterSpacing(letterSpacing);
       }
     }
+  }
+
+  @Nullable
+  public ColorStateList getTextColor() {
+    return textColor;
+  }
+
+  public void setTextColor(@Nullable ColorStateList textColor) {
+    this.textColor = textColor;
+  }
+
+  public float getTextSize() {
+    return textSize;
+  }
+
+  public void setTextSize(float textSize) {
+    this.textSize = textSize;
   }
 
   private boolean shouldLoadFontSynchronously(Context context) {

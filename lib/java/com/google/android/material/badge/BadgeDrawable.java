@@ -227,7 +227,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       // the TextAppearance.
       TextAppearance textAppearance =
           new TextAppearance(context, R.style.TextAppearance_MaterialComponents_Badge);
-      badgeTextColor = textAppearance.textColor.getDefaultColor();
+      badgeTextColor = textAppearance.getTextColor().getDefaultColor();
       contentDescriptionNumberless =
           context.getString(R.string.mtrl_badge_numberless_content_description);
       contentDescriptionQuantityStrings = R.plurals.mtrl_badge_content_description;
