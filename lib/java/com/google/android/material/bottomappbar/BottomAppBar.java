@@ -692,7 +692,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   @Nullable
   private Drawable maybeTintNavigationIcon(@Nullable Drawable navigationIcon) {
     if (navigationIcon != null && navigationIconTint != null) {
-      Drawable wrappedNavigationIcon = DrawableCompat.wrap(navigationIcon);
+      Drawable wrappedNavigationIcon = DrawableCompat.wrap(navigationIcon.mutate());
       DrawableCompat.setTint(wrappedNavigationIcon, navigationIconTint);
       return wrappedNavigationIcon;
     } else {
