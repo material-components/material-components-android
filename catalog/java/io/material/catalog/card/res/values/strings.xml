@@ -103,4 +103,5 @@
   <string description="A label in a button to dismiss the last action [CHAR LIMIT=30]"
       name="cat_card_swipe_to_dismiss">Swipe this card to dismiss it</string>
   <string name="cat_card_swipe_dismiss" description="the title of a screen where you can swipe to dismiss a card [CHAR LIMIT=20]">Card Swipe Dismiss</string>
+  <string name="cat_card_shape_appearance" description="the title of a screen where you can see shapeAppearance card [CHAR LIMIT=20]">Card Swipe Dismiss</string>
 </resources>

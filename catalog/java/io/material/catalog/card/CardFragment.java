@@ -92,7 +92,15 @@ public class CardFragment extends DemoLandingFragment {
           public Fragment createFragment() {
             return new CardSwipeDismissFragment();
           }
+        },
+        new Demo(R.string.cat_card_shape_appearance) {
+          @Override
+          public Fragment createFragment() {
+            return new CardShapeFragment();
+          }
         });
+
+
   }
 
   /** The Dagger module for {@link CardFragment} dependencies. */

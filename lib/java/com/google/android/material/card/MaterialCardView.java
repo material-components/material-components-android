@@ -23,6 +23,8 @@ import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wra
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.Canvas;
+import android.graphics.Path;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
@@ -47,6 +49,7 @@ import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.MaterialShapeUtils;
 import com.google.android.material.shape.ShapeAppearanceModel;
+import com.google.android.material.shape.ShapeAppearancePathProvider;
 import com.google.android.material.shape.Shapeable;
 
 /**
@@ -106,6 +109,12 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
   private boolean dragged = false;
   private OnCheckedChangeListener onCheckedChangeListener;
 
+  private Path path = new Path();
+  private RectF rectF = new RectF(0f, 0f, 0f, 0f);
+  private ShapeAppearanceModel shapeAppearance = null;
+  private ShapeAppearancePathProvider pathProvider = new ShapeAppearancePathProvider();
+
+
   public MaterialCardView(Context context) {
     this(context, null /* attrs */);
   }
@@ -119,6 +128,12 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
     isParentCardViewDoneInitializing = true;
     // Ensure we are using the correctly themed context rather than the context that was passed in.
     context = getContext();
+    shapeAppearance = ShapeAppearanceModel.builder(
+        getContext(),
+        attrs,
+        defStyleAttr,
+        R.style.Widget_MaterialComponents_CardView
+    ).build();
 
     TypedArray attributes =
         ThemeEnforcement.obtainStyledAttributes(
@@ -631,5 +646,21 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
     if (VERSION.SDK_INT > VERSION_CODES.O) {
       cardViewHelper.forceRippleRedraw();
     }
+  }
+
+
+
+  @Override
+  protected void onDraw(Canvas canvas) {
+    canvas.clipPath(path);
+    super.onDraw(canvas);
+  }
+
+  @Override
+  protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+    rectF.right = w;
+    rectF.bottom = h;
+    pathProvider.calculatePath(shapeAppearance, 1f, rectF, path);
+    super.onSizeChanged(w, h, oldw, oldh);
   }
 }
