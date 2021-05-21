@@ -38,6 +38,10 @@ public class ThemeOverlayUtils {
     }
   }
 
+  public static void clearThemeOverlay(@IdRes int id) {
+    themeOverlays.delete(id);
+  }
+
   public static void clearThemeOverlays(Activity activity) {
     themeOverlays.clear();
     activity.recreate();
