@@ -137,6 +137,12 @@
     <!-- The text appearance of the CollapsingToolbarLayouts title when it is fully
          'collapsed' -->
     <attr name="collapsedTitleTextAppearance" format="reference"/>
+    <!-- The text color of the CollapsingToolbarLayout's title when it is fully
+         'expanded' -->
+    <attr name="expandedTitleTextColor" format="color|reference"/>
+    <!-- The text color of the CollapsingToolbarLayouts title when it is fully
+         'collapsed' -->
+    <attr name="collapsedTitleTextColor" format="color|reference"/>
     <!-- The drawable to use as a scrim on top of the CollapsingToolbarLayouts content when
          it has been scrolled sufficiently off screen. -->
     <attr name="contentScrim" format="color"/>

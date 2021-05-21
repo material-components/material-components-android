@@ -62,6 +62,7 @@ import com.google.android.material.elevation.ElevationOverlayProvider;
 import com.google.android.material.internal.CollapsingTextHelper;
 import com.google.android.material.internal.DescendantOffsetUtils;
 import com.google.android.material.internal.ThemeEnforcement;
+import com.google.android.material.resources.MaterialResources;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -251,6 +252,17 @@ public class CollapsingToolbarLayout extends FrameLayout {
     if (a.hasValue(R.styleable.CollapsingToolbarLayout_collapsedTitleTextAppearance)) {
       collapsingTextHelper.setCollapsedTextAppearance(
           a.getResourceId(R.styleable.CollapsingToolbarLayout_collapsedTitleTextAppearance, 0));
+    }
+
+    if (a.hasValue(R.styleable.CollapsingToolbarLayout_expandedTitleTextColor)) {
+      collapsingTextHelper.setExpandedTextColor(
+          MaterialResources.getColorStateList(
+              context, a, R.styleable.CollapsingToolbarLayout_expandedTitleTextColor));
+    }
+    if (a.hasValue(R.styleable.CollapsingToolbarLayout_collapsedTitleTextColor)) {
+      collapsingTextHelper.setCollapsedTextColor(
+          MaterialResources.getColorStateList(
+              context, a, R.styleable.CollapsingToolbarLayout_collapsedTitleTextColor));
     }
 
     scrimVisibleHeightTrigger =

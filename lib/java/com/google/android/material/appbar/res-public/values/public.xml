@@ -25,7 +25,9 @@
   <public name="expandedTitleMarginEnd" type="attr"/>
   <public name="expandedTitleMarginBottom" type="attr"/>
   <public name="expandedTitleTextAppearance" type="attr"/>
+  <public name="expandedTitleTextColor" type="attr"/>
   <public name="collapsedTitleTextAppearance" type="attr"/>
+  <public name="collapsedTitleTextColor" type="attr"/>
   <public name="contentScrim" type="attr"/>
   <public name="statusBarForeground" type="attr"/>
   <public name="statusBarScrim" type="attr"/>

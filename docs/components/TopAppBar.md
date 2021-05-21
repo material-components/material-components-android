@@ -430,22 +430,22 @@ Element                                  | Attribute                 | Related m
 
 #### Title attributes
 
-Element                                                  | Attribute                                                   | Related method(s)                 | Default value
--------------------------------------------------------- | ----------------------------------------------------------- | --------------------------------- | -------------
-**`MaterialToolbar` title text**                         | `app:title`                                                 | `setTitle`<br>`getTitle`          | `null`
-**`MaterialToolbar` subtitle text**                      | `app:subtitle`                                              | `setSubtitle`<br>`getSubtitle`    | `null`
-**`MaterialToolbar` title color**                        | `app:titleTextColor`                                        | `setTitleTextColor`               | `?android:attr/textColorPrimary`
-**`MaterialToolbar` subtitle color**                     | `app:subtitleTextColor`                                     | `setSubtitleTextColor`            | `?android:attr/textColorSecondary`
-**`MaterialToolbar` title typography**                   | `app:titleTextAppearance`                                   | `setTitleTextAppearance`          | `?attr/textAppearanceHeadline6`
-**`MaterialToolbar` subtitle typography**                | `app:subtitleTextAppearance`                                | `setSubtitleTextAppearance`       | `?attr/textAppearanceSubtitle1`
-**`MaterialToolbar` title centering**                    | `app:titleCentered`                                         | `setTitleCentered`                | `false`
-**`MaterialToolbar` subtitle centering**                 | `app:subtitleCentered`                                      | `setSubtitleCentered`             | `false`
-**`CollapsingToolbarLayout` collapsed title typography** | `app:collapsedTitleTextAppearance`                          | `setCollapsedTitleTextAppearance` | `@style/TextAppearance.AppCompat.Widget.ActionBar.Title`
-**`CollapsingToolbarLayout` expanded title typography**  | `app:expandedTitleTextAppearance`                           | `setExpandedTitleTextAppearance`  | `@style/TextAppearance.Design.CollapsingToolbar.Expanded`
-**`CollapsingToolbarLayout` collapsed title color**      | `android:textColor` (in `app:collapsedTitleTextAppearance`) | `setCollapsedTitleTextColor`      | `?android:attr/textColorPrimary`
-**`CollapsingToolbarLayout` expanded title color**       | `android:textColor` (in `app:expandedTitleTextAppearance`)  | `setExpandedTitleTextColor`       | `?android:attr/textColorPrimary`
-**`CollapsingToolbarLayout` expanded title margins**     | `app:expandedTitleMargin*`                                  | `setExpandedTitleMargin*`         | `32dp`
-**`CollapsingToolbarLayout` title max lines**            | `app:maxLines`                                              | `setMaxLines`<br>`getMaxLines`    | `1`
+Element                                                  | Attribute                                                                                    | Related method(s)                 | Default value
+-------------------------------------------------------- | -------------------------------------------------------------------------------------------- | --------------------------------- | -------------
+**`MaterialToolbar` title text**                         | `app:title`                                                                                  | `setTitle`<br>`getTitle`          | `null`
+**`MaterialToolbar` subtitle text**                      | `app:subtitle`                                                                               | `setSubtitle`<br>`getSubtitle`    | `null`
+**`MaterialToolbar` title color**                        | `app:titleTextColor`                                                                         | `setTitleTextColor`               | `?android:attr/textColorPrimary`
+**`MaterialToolbar` subtitle color**                     | `app:subtitleTextColor`                                                                      | `setSubtitleTextColor`            | `?android:attr/textColorSecondary`
+**`MaterialToolbar` title typography**                   | `app:titleTextAppearance`                                                                    | `setTitleTextAppearance`          | `?attr/textAppearanceHeadline6`
+**`MaterialToolbar` subtitle typography**                | `app:subtitleTextAppearance`                                                                 | `setSubtitleTextAppearance`       | `?attr/textAppearanceSubtitle1`
+**`MaterialToolbar` title centering**                    | `app:titleCentered`                                                                          | `setTitleCentered`                | `false`
+**`MaterialToolbar` subtitle centering**                 | `app:subtitleCentered`                                                                       | `setSubtitleCentered`             | `false`
+**`CollapsingToolbarLayout` collapsed title typography** | `app:collapsedTitleTextAppearance`                                                           | `setCollapsedTitleTextAppearance` | `@style/TextAppearance.AppCompat.Widget.ActionBar.Title`
+**`CollapsingToolbarLayout` expanded title typography**  | `app:expandedTitleTextAppearance`                                                            | `setExpandedTitleTextAppearance`  | `@style/TextAppearance.Design.CollapsingToolbar.Expanded`
+**`CollapsingToolbarLayout` collapsed title color**      | `android:textColor` (in `app:collapsedTitleTextAppearance`) or `app:collapsedTitleTextColor` | `setCollapsedTitleTextColor`      | `?android:attr/textColorPrimary`
+**`CollapsingToolbarLayout` expanded title color**       | `android:textColor` (in `app:expandedTitleTextAppearance`) or `app:expandedTitleTextColor`   | `setExpandedTitleTextColor`       | `?android:attr/textColorPrimary`
+**`CollapsingToolbarLayout` expanded title margins**     | `app:expandedTitleMargin*`                                                                   | `setExpandedTitleMargin*`         | `32dp`
+**`CollapsingToolbarLayout` title max lines**            | `app:maxLines`                                                                               | `setMaxLines`<br>`getMaxLines`    | `1`
 
 #### Action items attributes
 
