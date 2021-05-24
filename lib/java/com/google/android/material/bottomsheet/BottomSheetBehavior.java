@@ -197,6 +197,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   private static final int NO_WIDTH = -1;
 
+  private static final int NO_HEIGHT = -1;
+
   private boolean fitToContents = true;
 
   private boolean updateImportantForAccessibilityOnSiblings = false;
@@ -221,6 +223,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   private MaterialShapeDrawable materialShapeDrawable;
 
   private int maxWidth = NO_WIDTH;
+
+  private int maxHeight = NO_HEIGHT;
 
   private int gestureInsetBottom;
   private boolean gestureInsetBottomIgnored;
@@ -322,6 +326,12 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       setMaxWidth(
           a.getDimensionPixelSize(
               R.styleable.BottomSheetBehavior_Layout_android_maxWidth, NO_WIDTH));
+    }
+
+    if (a.hasValue(R.styleable.BottomSheetBehavior_Layout_android_maxHeight)) {
+      setMaxHeight(
+          a.getDimensionPixelSize(
+              R.styleable.BottomSheetBehavior_Layout_android_maxHeight, NO_HEIGHT));
     }
 
     TypedValue value = a.peekValue(R.styleable.BottomSheetBehavior_Layout_behavior_peekHeight);
@@ -446,6 +456,18 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       if (width > maxWidth && maxWidth != NO_WIDTH) {
         final ViewGroup.LayoutParams lp = child.getLayoutParams();
         lp.width = maxWidth;
+        child.post(new Runnable() {
+          @Override
+          public void run() {
+            child.setLayoutParams(lp);
+          }
+        });
+      }
+
+      int height = child.getMeasuredHeight();
+      if (height > maxHeight && maxHeight != NO_HEIGHT) {
+        final ViewGroup.LayoutParams lp = child.getLayoutParams();
+        lp.height = maxHeight;
         child.post(new Runnable() {
           @Override
           public void run() {
@@ -828,6 +850,28 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   public int getMaxWidth() {
     return maxWidth;
   }
+
+  /**
+   * Sets the maximum height of the bottom sheet.
+   * This method should be called before {@link BottomSheetDialog#show()} in order for the height to
+   * be adjusted as expected.
+   *
+   * @param maxHeight The maximum height in pixels to be set
+   * @attr ref com.google.android.material.R.styleable#BottomSheetBehavior_Layout_android_maxHeight
+   * @see #getMaxHeight()
+   */
+  public void setMaxHeight(@Px int maxHeight) {
+    this.maxHeight = maxHeight;
+  }
+
+  /**
+   * Returns the bottom sheet's maximum height, or -1 if no maximum height is set.
+   *
+   * @attr ref com.google.android.material.R.styleable#BottomSheetBehavior_Layout_android_maxHeight
+   * @see #setMaxHeight(int)
+   */
+  @Px
+  public int getMaxHeight() { return maxHeight; }
 
   /**
    * Sets the height of the bottom sheet when it is collapsed.
