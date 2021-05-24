@@ -21,6 +21,12 @@
   <attr name="badgeStyle" format="reference"/>
 
   <declare-styleable name="Badge">
+    <!-- The radius of a badge without text (a "dot"). -->
+    <attr name="badgeRadius" format="dimension"/>
+    <!-- Start and end padding for a badge that is oblong due to long text. -->
+    <attr name="badgeWidePadding" format="dimension"/>
+    <!-- Radius of a badge with text. -->
+    <attr name="badgeWithTextRadius" format="dimension"/>
     <attr name="backgroundColor" format="color"/>
     <attr name="badgeTextColor" format="color"/>
     <attr name="maxCharacterCount" format="integer"/>
@@ -36,9 +42,20 @@
       <enum name="BOTTOM_START" value ="8388691"/>
     </attr>
 
-    <!-- Offset moves the badge towards the center of its anchor. -->
+    <!-- Offsets the badge horizontally towards the center of its anchor when
+        the badge doesn't have text (is a "dot"). Defaults to 0. -->
     <attr name="horizontalOffset" format="dimension"/>
+    <!-- Offsets the badge vertically towards the center of its anchor when the
+         badge doesn't have text (is a "dot"). Defaults to 0. -->
     <attr name="verticalOffset" format="dimension"/>
+    <!-- Offsets the badge horizontally towards the center of its anchor when
+         the badge has text. If this is not defined, it will default to
+         horizontalOffset's value. -->
+    <attr name="horizontalOffsetWithText" format="dimension"/>
+    <!-- Offsets the badge vertically towards the center of its anchor when the
+         badge has text. If this is not defined, it will default to
+         verticalOffset's value. -->
+    <attr name="verticalOffsetWithText" format="dimension"/>
   </declare-styleable>
 
 </resources>
