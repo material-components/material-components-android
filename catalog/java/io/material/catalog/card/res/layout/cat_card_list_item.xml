@@ -28,15 +28,13 @@
     android:layout_marginBottom="8dp"
     android:clickable="true"
     android:focusable="true"
-    android:minHeight="118dp">
+    android:minHeight="118dp"
+    app:contentPadding="@dimen/cat_card_content_padding">
 
   <TextView
       android:id="@+id/cat_card_list_item_title"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginLeft="16dp"
-      android:layout_marginTop="8dp"
-      android:layout_marginRight="16dp"
       android:textAppearance="?attr/textAppearanceHeadline6"/>
 
   <ImageView
@@ -44,7 +42,6 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_gravity="end"
-      android:padding="16dp"
       app:srcCompat="@drawable/ic_drag_handle_vd_theme_24px"
       tools:targetApi="jelly_bean"/>
 </com.google.android.material.card.MaterialCardView>

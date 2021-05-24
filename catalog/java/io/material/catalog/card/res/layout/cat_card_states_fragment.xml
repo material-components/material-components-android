@@ -31,7 +31,7 @@
       android:layout_margin="16dp"
       android:clickable="true"
       android:focusable="true"
-      app:contentPadding="16dp">
+      app:contentPadding="@dimen/cat_card_content_padding">
 
     <TextView
         android:layout_width="wrap_content"
@@ -50,7 +50,7 @@
       android:checkable="true"
       android:clickable="true"
       android:focusable="true"
-      app:contentPadding="8dp">
+      app:contentPadding="@dimen/cat_card_content_padding">
 
     <TextView
         android:layout_width="wrap_content"
