@@ -40,8 +40,7 @@
       <com.google.android.material.switchmaterial.SwitchMaterial
           android:id="@+id/switch_button_1"
           android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:theme="@style/ThemeOverlay.SecondaryPalette.Red" />
+          android:layout_height="wrap_content" />
 
       <com.google.android.material.slider.Slider
           android:id="@+id/slider_1"
@@ -50,7 +49,6 @@
           android:layout_weight="1"
           android:layout_marginLeft="@dimen/cat_slider_left_margin"
           android:layout_marginStart="@dimen/cat_slider_left_margin"
-          android:theme="@style/ThemeOverlay.PrimaryPalette.Red"
           android:valueFrom="0"
           android:valueTo="11" />
 
@@ -74,8 +72,7 @@
       <com.google.android.material.switchmaterial.SwitchMaterial
           android:id="@+id/switch_button_2"
           android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:theme="@style/ThemeOverlay.SecondaryPalette.Orange" />
+          android:layout_height="wrap_content" />
 
       <com.google.android.material.slider.Slider
           android:id="@+id/slider_2"
@@ -84,7 +81,6 @@
           android:layout_weight="1"
           android:layout_marginLeft="@dimen/cat_slider_left_margin"
           android:layout_marginStart="@dimen/cat_slider_left_margin"
-          android:theme="@style/ThemeOverlay.PrimaryPalette.Orange"
           android:valueFrom="100"
           android:valueTo="1000" />
 
@@ -108,8 +104,7 @@
       <com.google.android.material.switchmaterial.SwitchMaterial
           android:id="@+id/switch_button_3"
           android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:theme="@style/ThemeOverlay.SecondaryPalette.Purple" />
+          android:layout_height="wrap_content" />
 
       <com.google.android.material.slider.Slider
           android:id="@+id/slider_3"
@@ -118,7 +113,6 @@
           android:layout_weight="1"
           android:layout_marginLeft="@dimen/cat_slider_left_margin"
           android:layout_marginStart="@dimen/cat_slider_left_margin"
-          android:theme="@style/ThemeOverlay.PrimaryPalette.Purple"
           android:valueFrom="-5"
           android:valueTo="5" />
 

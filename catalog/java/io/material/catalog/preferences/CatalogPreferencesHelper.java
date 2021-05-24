@@ -48,13 +48,13 @@ public class CatalogPreferencesHelper {
 
   public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
     if (enabled) {
-      menuInflater.inflate(R.menu.mtrl_theme_switcher_menu, menu);
+      menuInflater.inflate(R.menu.mtrl_preferences_menu, menu);
     }
   }
 
   public boolean onOptionsItemSelected(@NonNull MenuItem menuItem) {
     if (enabled) {
-      if (menuItem.getItemId() == R.id.theme_switcher) {
+      if (menuItem.getItemId() == R.id.preferences) {
         showPreferences();
         return true;
       }

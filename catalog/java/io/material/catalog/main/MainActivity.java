@@ -32,9 +32,9 @@ import io.material.catalog.feature.FeatureDemoUtils;
 import io.material.catalog.feature.OnBackPressedHandler;
 import io.material.catalog.internal.InternalOptionsMenuPresenter;
 import io.material.catalog.preferences.CatalogPreferencesHelper.PreferencesActivity;
+import io.material.catalog.preferences.ThemeOverlayUtils;
 import io.material.catalog.tableofcontents.TocFragment;
 import io.material.catalog.tableofcontents.TocModule;
-import io.material.catalog.themeswitcher.ThemeOverlayUtils;
 import io.material.catalog.windowpreferences.WindowPreferencesManager;
 import javax.inject.Inject;
 

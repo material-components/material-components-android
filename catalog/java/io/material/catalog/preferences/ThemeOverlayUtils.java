@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.material.catalog.themeswitcher;
+package io.material.catalog.preferences;
 
 import android.app.Activity;
 import android.util.SparseIntArray;

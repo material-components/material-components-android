@@ -22,7 +22,6 @@ import android.content.Context;
 import android.util.SparseIntArray;
 import androidx.annotation.NonNull;
 import com.google.common.collect.ImmutableList;
-import io.material.catalog.themeswitcher.ThemeOverlayUtils;
 
 /**
  * Shape corner family preference to change the corner family to rounded or cut.

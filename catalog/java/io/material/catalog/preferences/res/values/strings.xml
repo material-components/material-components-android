@@ -14,7 +14,8 @@
   limitations under the License.
   -->
 <resources>
-  <string name="preference_screen_title" translatable="false">Preferences</string>
+  <string name="preferences_menu_title" translatable="false">Preferences</string>
+  <string name="preferences_screen_title" translatable="false">Preferences</string>
   <string name="theme_preference_description" translatable="false">Theme</string>
   <string name="theme_preference_option_light" translatable="false">Light</string>
   <string name="theme_preference_option_dark" translatable="false">Dark</string>

@@ -42,9 +42,6 @@ import io.material.catalog.slider.SliderFragment;
 import io.material.catalog.switchmaterial.SwitchFragment;
 import io.material.catalog.tabs.TabsFragment;
 import io.material.catalog.textfield.TextFieldFragment;
-import io.material.catalog.themeswitcher.ThemeAttributeValuesCreator;
-import io.material.catalog.themeswitcher.ThemeSwitcherDialogFragment;
-import io.material.catalog.themeswitcher.ThemeSwitcherResourceProvider;
 import io.material.catalog.timepicker.TimePickerDemoLandingFragment;
 import io.material.catalog.topappbar.TopAppBarFragment;
 import io.material.catalog.transition.TransitionFragment;
@@ -90,19 +87,5 @@ public abstract class TocModule {
   @Provides
   static TocResourceProvider provideTocResourceProvider() {
     return new TocResourceProvider();
-  }
-
-  @FragmentScope
-  @ContributesAndroidInjector
-  abstract ThemeSwitcherDialogFragment contributeThemeSwitcherDialogFragment();
-
-  @Provides
-  static ThemeSwitcherResourceProvider provideThemeSwitcherResourceProvider() {
-    return new ThemeSwitcherResourceProvider();
-  }
-
-  @Provides
-  static ThemeAttributeValuesCreator provideThemeAttributeValuesCreator() {
-    return new ThemeAttributeValuesCreator();
   }
 }

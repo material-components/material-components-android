@@ -26,7 +26,7 @@
     android:layout_height="wrap_content"
     android:gravity="center"
     android:paddingBottom="8dp"
-    android:text="@string/preference_screen_title"
+    android:text="@string/preferences_screen_title"
     android:textAppearance="?attr/textAppearanceHeadline3"/>
 
 </LinearLayout>
