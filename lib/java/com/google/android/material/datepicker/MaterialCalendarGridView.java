@@ -18,6 +18,7 @@ package com.google.android.material.datepicker;
 import com.google.android.material.R;
 
 import static java.lang.Math.min;
+import static java.lang.Math.max;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -152,7 +153,9 @@ final class MaterialCalendarGridView extends GridView {
                     : getChildAt(firstHighlightPosition - 1).getLeft();
       } else {
         dayCompute.setTimeInMillis(startItem);
-        firstHighlightPosition = monthAdapter.dayToPosition(dayCompute.get(Calendar.DAY_OF_MONTH));
+        int day = dayCompute.get(Calendar.DAY_OF_MONTH);
+        int dayPosition = monthAdapter.dayToPosition(day);
+        firstHighlightPosition = max(dayPosition, 0);
         rangeHighlightStart = horizontalMidPoint(getChildAt(firstHighlightPosition));
       }
 
@@ -168,7 +171,9 @@ final class MaterialCalendarGridView extends GridView {
                     : getChildAt(lastHighlightPosition).getLeft();
       } else {
         dayCompute.setTimeInMillis(endItem);
-        lastHighlightPosition = monthAdapter.dayToPosition(dayCompute.get(Calendar.DAY_OF_MONTH));
+        int day = dayCompute.get(Calendar.DAY_OF_MONTH);
+        int dayPosition = monthAdapter.dayToPosition(day);
+        lastHighlightPosition = min(dayPosition, getChildCount() - 1);
         rangeHighlightEnd = horizontalMidPoint(getChildAt(lastHighlightPosition));
       }
 
