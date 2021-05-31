@@ -50,7 +50,7 @@ import java.lang.annotation.RetentionPolicy;
  *   <li>{@code indicatorDirectionCircular}: the rotation direction of the spinner or indicator.
  * </ul>
  */
-public final class CircularProgressIndicator
+public class CircularProgressIndicator
     extends BaseProgressIndicator<CircularProgressIndicatorSpec> {
   public static final int DEF_STYLE_RES =
       R.style.Widget_MaterialComponents_CircularProgressIndicator;
