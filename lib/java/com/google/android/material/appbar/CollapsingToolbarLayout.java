@@ -1305,6 +1305,24 @@ public class CollapsingToolbarLayout extends FrameLayout {
   }
 
   /**
+   * Sets whether {@code TextDirectionHeuristics} should be used to determine whether the title text
+   * is RTL. Experimental Feature.
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  public void setRtlTextDirectionHeuristicsEnabled(boolean rtlTextDirectionHeuristicsEnabled) {
+    collapsingTextHelper.setRtlTextDirectionHeuristicsEnabled(rtlTextDirectionHeuristicsEnabled);
+  }
+
+  /**
+   * Gets whether {@code TextDirectionHeuristics} should be used to determine whether the title text
+   * is RTL. Experimental Feature.
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  public boolean isRtlTextDirectionHeuristicsEnabled() {
+    return collapsingTextHelper.isRtlTextDirectionHeuristicsEnabled();
+  }
+
+  /**
    * Set the amount of visible height in pixels used to define when to trigger a scrim visibility
    * change.
    *
