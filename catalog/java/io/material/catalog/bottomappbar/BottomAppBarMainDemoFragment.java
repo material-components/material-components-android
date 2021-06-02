@@ -27,23 +27,27 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ToggleButton;
 import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomappbar.BottomAppBarTopEdgeTreatment;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.shape.CutCornerTreatment;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import io.material.catalog.feature.DemoFragment;
+import io.material.catalog.feature.DemoUtils;
 import io.material.catalog.feature.OnBackPressedHandler;
 import io.material.catalog.preferences.CatalogPreferencesHelper;
+import java.util.List;
 
 /** A fragment that displays the main Bottom App Bar demos for the Catalog app. */
 public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBackPressedHandler {
@@ -108,45 +112,75 @@ public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBack
           return false;
         });
 
-    Button centerButton = view.findViewById(R.id.center);
-    Button endButton = view.findViewById(R.id.end);
-    ToggleButton attachToggle = view.findViewById(R.id.attach_toggle);
-    attachToggle.setChecked(fab.getVisibility() == View.VISIBLE);
+    setUpDemoControls(view);
+    setUpBottomAppBarShapeAppearance();
+
+    return view;
+  }
+
+  private void setUpDemoControls(@NonNull View view) {
+    // Set up generic settings for toggle button groups.
+    List<MaterialButtonToggleGroup> toggleButtonGroups =
+        DemoUtils.findViewsWithType(view, MaterialButtonToggleGroup.class);
+
+    for (MaterialButtonToggleGroup toggleGroup : toggleButtonGroups) {
+      toggleGroup.setSingleSelection(true);
+      toggleGroup.setSelectionRequired(true);
+    }
+
+    // Set up FAB visibility mode toggle buttons.
+    MaterialButton showFabButton = view.findViewById(R.id.show_fab_button);
+    MaterialButton hideFabButton = view.findViewById(R.id.hide_fab_button);
+
+    if (fab.getVisibility() == View.VISIBLE) {
+      showFabButton.setChecked(true);
+    } else {
+      hideFabButton.setChecked(true);
+    }
+
+    showFabButton.setOnClickListener(v -> fab.show());
+    hideFabButton.setOnClickListener(v -> fab.hide());
+
+    // Set up FAB alignment mode toggle buttons.
+    MaterialButton centerButton = view.findViewById(R.id.fab_position_button_center);
+    MaterialButton endButton = view.findViewById(R.id.fab_position_button_end);
+
+    if (bar.getFabAlignmentMode() == BottomAppBar.FAB_ALIGNMENT_MODE_CENTER) {
+      centerButton.setChecked(true);
+    } else {
+      endButton.setChecked(true);
+    }
+
     centerButton.setOnClickListener(
         v -> {
           bar.setFabAlignmentModeAndReplaceMenu(
               BottomAppBar.FAB_ALIGNMENT_MODE_CENTER, R.menu.demo_primary);
         });
     endButton.setOnClickListener(
-        v -> {
-          bar.setFabAlignmentModeAndReplaceMenu(
-              BottomAppBar.FAB_ALIGNMENT_MODE_END, R.menu.demo_primary_alternate);
-        });
-    attachToggle.setOnCheckedChangeListener(
-        (buttonView, isChecked) -> {
-          if (isChecked) {
-            fab.show();
-          } else {
-            fab.hide();
-          }
-        });
+        v ->
+            bar.setFabAlignmentModeAndReplaceMenu(
+                BottomAppBar.FAB_ALIGNMENT_MODE_END, R.menu.demo_primary_alternate));
 
-    ToggleButton barScrollToggle = view.findViewById(R.id.bar_scroll_toggle);
-    barScrollToggle.setChecked(bar.getHideOnScroll());
-    barScrollToggle.setOnCheckedChangeListener(
+    // Set up FAB animation mode toggle buttons.
+    MaterialButton slideButton = view.findViewById(R.id.fab_animation_mode_button_slide);
+    MaterialButton scaleButton = view.findViewById(R.id.fab_animation_mode_button_scale);
+
+    if (bar.getFabAnimationMode() == BottomAppBar.FAB_ANIMATION_MODE_SCALE) {
+      scaleButton.setChecked(true);
+    } else {
+      slideButton.setChecked(true);
+    }
+
+    scaleButton.setOnClickListener(
+        v -> bar.setFabAnimationMode(BottomAppBar.FAB_ANIMATION_MODE_SCALE));
+    slideButton.setOnClickListener(
+        v -> bar.setFabAnimationMode(BottomAppBar.FAB_ANIMATION_MODE_SLIDE));
+
+    // Set up hide on scroll switch.
+    SwitchMaterial barScrollSwitch = view.findViewById(R.id.bar_scroll_switch);
+    barScrollSwitch.setChecked(bar.getHideOnScroll());
+    barScrollSwitch.setOnCheckedChangeListener(
         (buttonView, isChecked) -> bar.setHideOnScroll(isChecked));
-
-    ToggleButton fabAnimToggle = view.findViewById(R.id.fab_animation_mode_toggle);
-    fabAnimToggle.setOnCheckedChangeListener(
-        (buttonView, isChecked) ->
-            bar.setFabAnimationMode(
-                isChecked
-                    ? BottomAppBar.FAB_ANIMATION_MODE_SLIDE
-                    : BottomAppBar.FAB_ANIMATION_MODE_SCALE));
-
-    setUpBottomAppBarShapeAppearance();
-
-    return view;
   }
 
   @Override

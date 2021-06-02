@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright 2018 The Android Open Source Project
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,90 +15,113 @@
   -->
 
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-  <com.google.android.material.appbar.AppBarLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:fitsSystemWindows="true">
+  xmlns:app="http://schemas.android.com/apk/res-auto">
 
+  <com.google.android.material.appbar.AppBarLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fitsSystemWindows="true">
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        style="?attr/catalogToolbarWithCloseButtonStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+      android:id="@+id/toolbar"
+      style="?attr/catalogToolbarWithCloseButtonStyle"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content" />
   </com.google.android.material.appbar.AppBarLayout>
 
   <androidx.core.widget.NestedScrollView
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="16dp"
-        android:orientation="vertical">
-
-      <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal">
-
-        <ToggleButton
-          android:id="@+id/bar_scroll_toggle"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:textOff="@string/cat_bottomappbar_scroll_hide"
-          android:textOn="@string/cat_bottomappbar_scroll_hide"/>
-
-        <ToggleButton
-          android:id="@+id/fab_animation_mode_toggle"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:textOff="@string/cat_bottomappbar_fab_anim_scale"
-          android:textOn="@string/cat_bottomappbar_fab_anim_slide"/>
-
-      </LinearLayout>
-
-      <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:gravity="center_horizontal"
-          android:orientation="horizontal"
-          android:paddingBottom="2dp">
-
-        <Button
-            android:id="@+id/center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:insetLeft="4dp"
-            android:insetRight="4dp"
-            android:text="@string/cat_bottomappbar_center"/>
-
-        <Button
-            android:id="@+id/end"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:insetLeft="4dp"
-            android:insetRight="4dp"
-            android:text="@string/cat_bottomappbar_end"/>
-
-        <ToggleButton
-            android:id="@+id/attach_toggle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textOff="@string/cat_bottomappbar_fab_show"
-            android:textOn="@string/cat_bottomappbar_fab_hide"/>
-
-      </LinearLayout>
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingTop="16dp"
+      android:gravity="center_horizontal"
+      android:orientation="vertical">
 
       <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cat_bottomappbar_fab_alignment_mode"
+        android:textAppearance="?attr/textAppearanceBody1" />
+      <com.google.android.material.button.MaterialButtonToggleGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <Button
+          android:id="@+id/fab_position_button_center"
+          style="?attr/materialButtonOutlinedStyle"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:padding="10dp"
-          android:text="@string/cat_bottomappbar_lorem_ipsum"/>
-    </LinearLayout>
+          android:text="@string/cat_bottomappbar_center" />
+        <Button
+          android:id="@+id/fab_position_button_end"
+          style="?attr/materialButtonOutlinedStyle"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/cat_bottomappbar_end" />
+      </com.google.android.material.button.MaterialButtonToggleGroup>
 
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/cat_bottomappbar_fab_animation_mode"
+        android:textAppearance="?attr/textAppearanceBody1" />
+      <com.google.android.material.button.MaterialButtonToggleGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <Button
+          android:id="@+id/fab_animation_mode_button_scale"
+          style="?attr/materialButtonOutlinedStyle"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/cat_bottomappbar_fab_anim_scale" />
+        <Button
+          android:id="@+id/fab_animation_mode_button_slide"
+          style="?attr/materialButtonOutlinedStyle"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/cat_bottomappbar_fab_anim_slide" />
+      </com.google.android.material.button.MaterialButtonToggleGroup>
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/cat_bottomappbar_fab_visibility_mode"
+        android:textAppearance="?attr/textAppearanceBody1" />
+      <com.google.android.material.button.MaterialButtonToggleGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <Button
+          android:id="@+id/show_fab_button"
+          style="?attr/materialButtonOutlinedStyle"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/cat_bottomappbar_fab_show" />
+        <Button
+          android:id="@+id/hide_fab_button"
+          style="?attr/materialButtonOutlinedStyle"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/cat_bottomappbar_fab_hide" />
+      </com.google.android.material.button.MaterialButtonToggleGroup>
+
+      <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/bar_scroll_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:layout_marginTop="8dp"
+        android:text="@string/cat_bottomappbar_scroll_hide"
+        android:textAppearance="?attr/textAppearanceBody1"/>
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="@string/cat_bottomappbar_lorem_ipsum" />
+    </LinearLayout>
   </androidx.core.widget.NestedScrollView>
 </merge>
