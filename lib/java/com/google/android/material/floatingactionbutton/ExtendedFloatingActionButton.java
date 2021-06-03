@@ -824,7 +824,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     }
 
     // Behavior attrs should be nullable in the framework
-    @SuppressWarnings("argument.type.incompatible")
+    @SuppressWarnings({"argument.type.incompatible", "nullness:argument"})
     public ExtendedFloatingActionButtonBehavior(
         @NonNull Context context, @Nullable AttributeSet attrs) {
       super(context, attrs);
