@@ -6,6 +6,8 @@ include ':testing:java:com:google:android:material:testapp:base'
 include ':testing:java:com:google:android:material:testapp:custom'
 include ':testing:java:com:google:android:material:testapp:theme'
 
+include ':lint-checks'
+
 include ':catalog'
 
 rootProject.children.each { p ->
