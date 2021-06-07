@@ -216,6 +216,8 @@ public class BottomNavigationView extends NavigationBarView {
    *
    * @param listener The listener to notify
    * @see #setOnNavigationItemReselectedListener(OnNavigationItemReselectedListener)
+   * @deprecated Use {@link NavigationBarView#setOnItemSelectedListener(OnItemSelectedListener)}
+   *     instead.
    */
   @Deprecated
   public void setOnNavigationItemSelectedListener(
@@ -229,6 +231,8 @@ public class BottomNavigationView extends NavigationBarView {
    *
    * @param listener The listener to notify
    * @see #setOnNavigationItemSelectedListener(OnNavigationItemSelectedListener)
+   * @deprecated Use {@link NavigationBarView#setOnItemReselectedListener(OnItemReselectedListener)}
+   *     instead.
    */
   @Deprecated
   public void setOnNavigationItemReselectedListener(
@@ -236,11 +240,19 @@ public class BottomNavigationView extends NavigationBarView {
     setOnItemReselectedListener(listener);
   }
 
-  /** Listener for handling selection events on bottom navigation items. */
+  /**
+   * Listener for handling selection events on bottom navigation items.
+   *
+   * @deprecated Use {@link NavigationBarView.OnItemSelectedListener} instead.
+   */
   @Deprecated
   public interface OnNavigationItemSelectedListener extends OnItemSelectedListener {}
 
-  /** Listener for handling reselection events on bottom navigation items. */
+  /**
+   * Listener for handling reselection events on bottom navigation items.
+   *
+   * @deprecated Use {@link NavigationBarView.OnItemReselectedListener} instead.
+   */
   @Deprecated
   public interface OnNavigationItemReselectedListener extends OnItemReselectedListener {}
 }
