@@ -293,7 +293,8 @@ passwordLayout.error = getString(R.string.error)
 passwordLayout.error = null
 ```
 
-_**Note:** Non-null error text will replace any existing helper text._
+_**Note:** Non-null error text will replace any existing helper text, and
+non-null helper text will replace any existing error text._
 
 ### Adding a prefix/suffix to a text field
 
