@@ -263,6 +263,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   @State int state = STATE_COLLAPSED;
 
+  @State int lastStableState = STATE_COLLAPSED;
+
   @Nullable ViewDragHelper viewDragHelper;
 
   private boolean ignoreEvents;
@@ -386,8 +388,10 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     // Intermediate states are restored as collapsed state
     if (ss.state == STATE_DRAGGING || ss.state == STATE_SETTLING) {
       this.state = STATE_COLLAPSED;
+      this.lastStableState = this.state;
     } else {
       this.state = ss.state;
+      this.lastStableState = this.state;
     }
   }
 
@@ -616,7 +620,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       return;
     }
     View scrollingChild = nestedScrollingChildRef != null ? nestedScrollingChildRef.get() : null;
-    if (target != scrollingChild) {
+    if (isNestedScrollingCheckEnabled() && target != scrollingChild) {
       return;
     }
     int currentTop = child.getTop();
@@ -669,9 +673,10 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       setStateInternal(STATE_EXPANDED);
       return;
     }
-    if (nestedScrollingChildRef == null
-        || target != nestedScrollingChildRef.get()
-        || !nestedScrolled) {
+    if (isNestedScrollingCheckEnabled()
+        && (nestedScrollingChildRef == null
+            || target != nestedScrollingChildRef.get()
+            || !nestedScrolled)) {
       return;
     }
     int top;
@@ -709,8 +714,13 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
             top = getExpandedOffset();
             targetState = STATE_EXPANDED;
           } else {
-            top = halfExpandedOffset;
-            targetState = STATE_HALF_EXPANDED;
+            if (shouldSkipHalfExpandedStateWhenDragging()) {
+              top = collapsedOffset;
+              targetState = STATE_COLLAPSED;
+            } else {
+              top = halfExpandedOffset;
+              targetState = STATE_HALF_EXPANDED;
+            }
           }
         } else {
           if (Math.abs(currentTop - halfExpandedOffset) < Math.abs(currentTop - collapsedOffset)) {
@@ -763,7 +773,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       @NonNull View target,
       float velocityX,
       float velocityY) {
-    if (nestedScrollingChildRef != null) {
+
+    if (isNestedScrollingCheckEnabled() && nestedScrollingChildRef != null) {
       return target == nestedScrollingChildRef.get()
           && (state != STATE_EXPANDED
               || super.onNestedPreFling(coordinatorLayout, child, target, velocityX, velocityY));
@@ -1110,6 +1121,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
           || state == STATE_HALF_EXPANDED
           || (hideable && state == STATE_HIDDEN)) {
         this.state = state;
+        this.lastStableState = state;
       }
       return;
     }
@@ -1173,6 +1185,12 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       return;
     }
     this.state = state;
+    if (state == STATE_COLLAPSED
+        || state == STATE_EXPANDED
+        || state == STATE_HALF_EXPANDED
+        || (hideable && state == STATE_HIDDEN)) {
+      this.lastStableState = state;
+    }
 
     if (viewRef == null) {
       return;
@@ -1470,6 +1488,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   private final ViewDragHelper.Callback dragCallback =
       new ViewDragHelper.Callback() {
 
+        private long viewCapturedMillis;
+
         @Override
         public boolean tryCaptureView(@NonNull View child, int pointerId) {
           if (state == STATE_DRAGGING) {
@@ -1485,6 +1505,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
               return false;
             }
           }
+          viewCapturedMillis = System.currentTimeMillis();
           return viewRef != null && viewRef.get() == child;
         }
 
@@ -1516,12 +1537,26 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
               targetState = STATE_EXPANDED;
             } else {
               int currentTop = releasedChild.getTop();
-              if (currentTop > halfExpandedOffset) {
-                top = halfExpandedOffset;
-                targetState = STATE_HALF_EXPANDED;
+              long dragDurationMillis = System.currentTimeMillis() - viewCapturedMillis;
+
+              if (shouldSkipHalfExpandedStateWhenDragging()) {
+                float yPositionPercentage = currentTop * 100f / parentHeight;
+
+                if (shouldExpandOnUpwardDrag(dragDurationMillis, yPositionPercentage)) {
+                  top = expandedOffset;
+                  targetState = STATE_EXPANDED;
+                } else {
+                  top = collapsedOffset;
+                  targetState = STATE_COLLAPSED;
+                }
               } else {
-                top = getExpandedOffset();
-                targetState = STATE_EXPANDED;
+                if (currentTop > halfExpandedOffset) {
+                  top = halfExpandedOffset;
+                  targetState = STATE_HALF_EXPANDED;
+                } else {
+                  top = getExpandedOffset();
+                  targetState = STATE_EXPANDED;
+                }
               }
             }
           } else if (hideable && shouldHide(releasedChild, yvel)) {
@@ -1561,14 +1596,24 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
                   top = getExpandedOffset();
                   targetState = STATE_EXPANDED;
                 } else {
-                  top = halfExpandedOffset;
-                  targetState = STATE_HALF_EXPANDED;
+                  if (shouldSkipHalfExpandedStateWhenDragging()) {
+                    top = collapsedOffset;
+                    targetState = STATE_COLLAPSED;
+                  } else {
+                    top = halfExpandedOffset;
+                    targetState = STATE_HALF_EXPANDED;
+                  }
                 }
               } else {
                 if (Math.abs(currentTop - halfExpandedOffset)
                     < Math.abs(currentTop - collapsedOffset)) {
-                  top = halfExpandedOffset;
-                  targetState = STATE_HALF_EXPANDED;
+                  if (shouldSkipHalfExpandedStateWhenDragging()) {
+                    top = collapsedOffset;
+                    targetState = STATE_COLLAPSED;
+                  } else {
+                    top = halfExpandedOffset;
+                    targetState = STATE_HALF_EXPANDED;
+                  }
                 } else {
                   top = collapsedOffset;
                   targetState = STATE_COLLAPSED;
@@ -1584,15 +1629,20 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
               int currentTop = releasedChild.getTop();
               if (Math.abs(currentTop - halfExpandedOffset)
                   < Math.abs(currentTop - collapsedOffset)) {
-                top = halfExpandedOffset;
-                targetState = STATE_HALF_EXPANDED;
+                if (shouldSkipHalfExpandedStateWhenDragging()) {
+                  top = collapsedOffset;
+                  targetState = STATE_COLLAPSED;
+                } else {
+                  top = halfExpandedOffset;
+                  targetState = STATE_HALF_EXPANDED;
+                }
               } else {
                 top = collapsedOffset;
                 targetState = STATE_COLLAPSED;
               }
             }
           }
-          startSettlingAnimation(releasedChild, targetState, top, true);
+          startSettlingAnimation(releasedChild, targetState, top, shouldSkipSmoothAnimation());
         }
 
         @Override
@@ -1646,6 +1696,76 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   public void disableShapeAnimations() {
     // Sets the shape value animator to null, prevents animations from occuring during testing.
     interpolatorAnimator = null;
+  }
+
+  /**
+   * Checks weather a nested scroll should be enabled. If {@code false} all nested scrolls will be
+   * consumed by the bottomSheet.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  public boolean isNestedScrollingCheckEnabled() {
+    return true;
+  }
+
+  /**
+   * Checks weather half expended state should be skipped when drag is ended. If {@code true}, the
+   * bottomSheet will go to the next closest state.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  public boolean shouldSkipHalfExpandedStateWhenDragging() {
+    return false;
+  }
+
+  /**
+   * Checks weather an animation should be smooth after the bottomSheet is realeased after dragging.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  public boolean shouldSkipSmoothAnimation() {
+    return true;
+  }
+
+  /**
+   * Checks weather an animation should be smooth after the bottomSheet is realeased after dragging.
+   *
+   * @param dragDurationMillis how long the bottom sheet was dragged.
+   * @param yPositionPercentage position of the bottom sheet when realeased after dragging. Lower
+   *     values mean that view was realsed closer to the top of the screen.
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  public boolean shouldExpandOnUpwardDrag(
+      long dragDurationMillis, @FloatRange(from = 0.0f, to = 100.0f) float yPositionPercentage) {
+    return false;
+  }
+
+  /**
+   * Sets whether this bottom sheet can hide when it is swiped down.
+   *
+   * @param hideable {@code true} to make this bottom sheet hideable.
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  public void setHideableInternal(boolean hideable) {
+    this.hideable = hideable;
+  }
+
+  /**
+   * Gets the last stable state of the bottom sheet.
+   *
+   * @return One of {@link #STATE_EXPANDED}, {@link #STATE_HALF_EXPANDED}, {@link #STATE_COLLAPSED},
+   *     {@link #STATE_HIDDEN}.
+   * @hide
+   */
+  @State
+  @RestrictTo(LIBRARY_GROUP)
+  public int getLastStableState() {
+    return lastStableState;
   }
 
   private class SettleRunnable implements Runnable {
