@@ -91,9 +91,7 @@ indicator.setProgressCompat(progress, true)
 
 _**Note:** Once indeterminate progress indicators are switched to the
 determinate mode (or initialized as determinate), they can be set back to
-indeterminate mode via calling the `setIndeterminate(false)` method. However, in
-order to keep the smoothness of animation, they need to be set `INVISIBLE` or
-`GONE` via the `setVisibility` or `hide` methods first._
+indeterminate mode via calling the `setIndeterminate(false)` method._
 
 ### Making progress indicators accessible
 

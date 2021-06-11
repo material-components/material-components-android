@@ -500,11 +500,6 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
       return;
     }
 
-    if (visibleToUser() && indeterminate) {
-      throw new IllegalStateException(
-          "Cannot switch to indeterminate mode while the progress indicator is visible.");
-    }
-
     // Needs to explicitly set visibility of two drawables. ProgressBar.setIndeterminate doesn't
     // handle it properly for pre-lollipop.
     DrawableWithAnimatedVisibilityChange oldDrawable =
@@ -517,6 +512,9 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
         (DrawableWithAnimatedVisibilityChange) getCurrentDrawable();
     if (newDrawable != null) {
       newDrawable.setVisible(visibleToUser(), /*restart=*/ false, /*animate=*/ false);
+    }
+    if (newDrawable instanceof IndeterminateDrawable && visibleToUser()) {
+      ((IndeterminateDrawable) newDrawable).getAnimatorDelegate().startAnimator();
     }
 
     // Indeterminate mode change finished.
@@ -810,9 +808,6 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
         public void onAnimationEnd(Drawable drawable) {
 
           setIndeterminate(false);
-
-          // Resets progress bar to minimum value then updates to new progress.
-          setProgressCompat(/*progress=*/ 0, /*animated=*/ false);
           setProgressCompat(storedProgress, storedProgressAnimated);
         }
       };

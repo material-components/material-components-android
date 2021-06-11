@@ -54,7 +54,7 @@
       description="Button label to update progress value on the progress indicators [CHAR LIMIT=NONE]">
     Update
   </string>
-  <string name="cat_progress_indicator_deteriminate_progress_prompt"
+  <string name="cat_progress_indicator_determinate_progress_prompt"
       description="Prompt for a text field that will take a number between 0 and 100 and apply that as the progress for progress indicators [CHAR LIMIT=NONE]">
     Enter an integer value from 0 to 100 to change progress in determinate mode:
   </string>
@@ -62,24 +62,20 @@
       description="Hint for a text field that will take a number between 0 and 100 and apply that as the progress for progress indicators [CHAR LIMIT=NONE]">
     Progress (0-100)
   </string>
+  <string name="cat_progress_indicator_set_to_determinate_mode"
+    description="Set the displayed progress indicators to the determinate mode. [CHAR LIMIT=NONE]">
+    Determinate Mode
+  </string>
 
   <!-- Descriptions of various examples of progress indicators -->
 
-  <string name="cat_progress_indicator_linear_indeterminate"
-      description="A linear progress indeterminate progress indicator [CHAR LIMIT=NONE]">
-    Linear indeterminate type
+  <string name="cat_progress_indicator_linear"
+      description="A linear progress progress indicator [CHAR LIMIT=NONE]">
+    Linear type
   </string>
-  <string name="cat_progress_indicator_circular_indeterminate"
-      description="A circular progress indeterminate progress indicator [CHAR LIMIT=NONE]">
-    Circular indeterminate type
-  </string>
-  <string name="cat_progress_indicator_linear_determinate"
-      description="A linear progress determinate progress indicator [CHAR LIMIT=NONE]">
-    Linear determinate type
-  </string>
-  <string name="cat_progress_indicator_circular_determinate"
-      description="A circular progress determinate progress indicator [CHAR LIMIT=NONE]">
-    Circular determinate type
+  <string name="cat_progress_indicator_circular"
+      description="A circular progress progress indicator [CHAR LIMIT=NONE]">
+    Circular type
   </string>
 
   <string name="cat_progress_indicator_start_to_end_linear_single_color"
