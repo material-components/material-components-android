@@ -845,7 +845,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   }
 
   @Override
-  @SuppressWarnings({"argument.type.incompatible", "nullness:argument"})
+  @SuppressWarnings("nullness:argument")
   // onRestoreInstanceState should accept nullable
   protected void onRestoreInstanceState(Parcelable state) {
     if (!(state instanceof ExtendableSavedState)) {
