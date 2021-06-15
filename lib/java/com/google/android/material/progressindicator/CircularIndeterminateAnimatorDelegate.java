@@ -109,7 +109,9 @@ final class CircularIndeterminateAnimatorDelegate
             public void onAnimationEnd(Animator animation) {
               super.onAnimationEnd(animation);
               cancelAnimatorImmediately();
-              animatorCompleteCallback.onAnimationEnd(drawable);
+              if (animatorCompleteCallback != null) {
+                animatorCompleteCallback.onAnimationEnd(drawable);
+              }
             }
           });
     }
