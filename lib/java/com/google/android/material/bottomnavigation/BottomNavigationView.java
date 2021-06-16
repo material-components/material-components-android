@@ -33,8 +33,12 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import com.google.android.material.behavior.HideBottomViewOnScrollBehavior;
 import com.google.android.material.internal.ThemeEnforcement;
+import com.google.android.material.internal.ViewUtils;
+import com.google.android.material.internal.ViewUtils.RelativePadding;
 import com.google.android.material.navigation.NavigationBarMenuView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.shape.MaterialShapeDrawable;
@@ -125,6 +129,33 @@ public class BottomNavigationView extends NavigationBarView {
     if (shouldDrawCompatibilityTopDivider()) {
       addCompatibilityTopDivider(context);
     }
+
+    applyWindowInsets();
+  }
+
+  private void applyWindowInsets() {
+    ViewUtils.doOnApplyWindowInsets(
+        this,
+        new ViewUtils.OnApplyWindowInsetsListener() {
+          @NonNull
+          @Override
+          public WindowInsetsCompat onApplyWindowInsets(
+              View view,
+              @NonNull WindowInsetsCompat insets,
+              @NonNull RelativePadding initialPadding) {
+            // Apply the bottom, start, and end padding for a BottomNavigationView
+            // to dodge the system navigation bar
+            initialPadding.bottom += insets.getSystemWindowInsetBottom();
+
+            boolean isRtl = ViewCompat.getLayoutDirection(view) == ViewCompat.LAYOUT_DIRECTION_RTL;
+            int systemWindowInsetLeft = insets.getSystemWindowInsetLeft();
+            int systemWindowInsetRight = insets.getSystemWindowInsetRight();
+            initialPadding.start += isRtl ? systemWindowInsetRight : systemWindowInsetLeft;
+            initialPadding.end += isRtl ? systemWindowInsetLeft : systemWindowInsetRight;
+            initialPadding.applyToView(view);
+            return insets;
+          }
+        });
   }
 
   @Override

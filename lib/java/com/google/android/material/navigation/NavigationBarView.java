@@ -44,7 +44,6 @@ import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.FrameLayout;
 import androidx.annotation.AttrRes;
 import androidx.annotation.DimenRes;
@@ -60,8 +59,6 @@ import androidx.annotation.StyleRes;
 import androidx.customview.view.AbsSavedState;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.internal.ThemeEnforcement;
-import com.google.android.material.internal.ViewUtils;
-import com.google.android.material.internal.ViewUtils.RelativePadding;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.ripple.RippleUtils;
 import com.google.android.material.shape.MaterialShapeDrawable;
@@ -299,32 +296,6 @@ public abstract class NavigationBarView extends FrameLayout {
 
           @Override
           public void onMenuModeChange(MenuBuilder menu) {}
-        });
-
-    applyWindowInsets();
-  }
-
-  private void applyWindowInsets() {
-    ViewUtils.doOnApplyWindowInsets(
-        this,
-        new ViewUtils.OnApplyWindowInsetsListener() {
-          @NonNull
-          @Override
-          public androidx.core.view.WindowInsetsCompat onApplyWindowInsets(
-              View view,
-              @NonNull androidx.core.view.WindowInsetsCompat insets,
-              @NonNull RelativePadding initialPadding) {
-            // Window insets may add additional padding, e.g., to dodge the system navigation bar
-            initialPadding.bottom += insets.getSystemWindowInsetBottom();
-
-            boolean isRtl = ViewCompat.getLayoutDirection(view) == ViewCompat.LAYOUT_DIRECTION_RTL;
-            int systemWindowInsetLeft = insets.getSystemWindowInsetLeft();
-            int systemWindowInsetRight = insets.getSystemWindowInsetRight();
-            initialPadding.start += isRtl ? systemWindowInsetRight : systemWindowInsetLeft;
-            initialPadding.end += isRtl ? systemWindowInsetLeft : systemWindowInsetRight;
-            initialPadding.applyToView(view);
-            return insets;
-          }
         });
   }
 

@@ -34,7 +34,12 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
 import com.google.android.material.internal.ThemeEnforcement;
+import com.google.android.material.internal.ViewUtils;
+import com.google.android.material.internal.ViewUtils.RelativePadding;
 import com.google.android.material.navigation.NavigationBarView;
 
 /**
@@ -134,6 +139,33 @@ public class NavigationRailView extends NavigationBarView {
     setMenuGravity(
         attributes.getInt(R.styleable.NavigationRailView_menuGravity, DEFAULT_MENU_GRAVITY));
     attributes.recycle();
+
+    applyWindowInsets();
+  }
+
+  private void applyWindowInsets() {
+    ViewUtils.doOnApplyWindowInsets(
+        this,
+        new ViewUtils.OnApplyWindowInsetsListener() {
+          @NonNull
+          @Override
+          public WindowInsetsCompat onApplyWindowInsets(
+              View view,
+              @NonNull WindowInsetsCompat insets,
+              @NonNull RelativePadding initialPadding) {
+            // Apply the top, bottom, and start padding for a start edge aligned
+            // NavigationRailView to dodge the system status and navigation bars
+            initialPadding.top += insets.getSystemWindowInsetTop();
+            initialPadding.bottom += insets.getSystemWindowInsetBottom();
+
+            boolean isRtl = ViewCompat.getLayoutDirection(view) == ViewCompat.LAYOUT_DIRECTION_RTL;
+            int systemWindowInsetLeft = insets.getSystemWindowInsetLeft();
+            int systemWindowInsetRight = insets.getSystemWindowInsetRight();
+            initialPadding.start += isRtl ? systemWindowInsetRight : systemWindowInsetLeft;
+            initialPadding.applyToView(view);
+            return insets;
+          }
+        });
   }
 
   @Override
