@@ -1095,6 +1095,10 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
         callbacks.get(i).onDismissed((B) this, event);
       }
     }
+
+    // Reset anchor view and onGlobalLayoutListener so they won't be leaked.
+    setAnchorView(null);
+
     // Lastly, hide and remove the view from the parent (if attached)
     ViewParent parent = view.getParent();
     if (parent instanceof ViewGroup) {
