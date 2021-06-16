@@ -919,7 +919,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    * @attr ref
    *     com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_halfExpandedRatio
    */
-  public void setHalfExpandedRatio(@FloatRange(from = 0.0f, to = 1.0f) float ratio) {
+  public void setHalfExpandedRatio(
+      @FloatRange(from = 0.0f, to = 1.0f, fromInclusive = false, toInclusive = false) float ratio) {
 
     if ((ratio <= 0) || (ratio >= 1)) {
       throw new IllegalArgumentException("ratio must be a float value between 0 and 1");
