@@ -25,7 +25,6 @@ import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -56,15 +55,14 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
           if (textInputLayout.getSuffixText() != null) {
             return;
           }
-          animateIcon(textInputLayout.hasFocus() && hasText(s));
+          animateIcon(shouldBeVisible());
         }
       };
   private final OnFocusChangeListener onFocusChangeListener =
       new OnFocusChangeListener() {
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
-          boolean hasText = !TextUtils.isEmpty(((EditText) v).getText());
-          animateIcon(hasText && hasFocus);
+          animateIcon(shouldBeVisible());
         }
       };
   private final OnEditTextAttachedListener clearTextOnEditTextAttachedListener =
@@ -72,10 +70,11 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
         @Override
         public void onEditTextAttached(@NonNull TextInputLayout textInputLayout) {
           EditText editText = textInputLayout.getEditText();
-          textInputLayout.setEndIconVisible(editText.hasFocus() && hasText(editText.getText()));
+          textInputLayout.setEndIconVisible(shouldBeVisible());
           // Make sure there's always only one clear text text watcher added
           textInputLayout.setEndIconCheckable(false);
           editText.setOnFocusChangeListener(onFocusChangeListener);
+          endIconView.setOnFocusChangeListener(onFocusChangeListener);
           editText.removeTextChangedListener(clearTextEndIconTextWatcher);
           editText.addTextChangedListener(clearTextEndIconTextWatcher);
         }
@@ -97,6 +96,10 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
             if (editText.getOnFocusChangeListener() == onFocusChangeListener) {
               editText.setOnFocusChangeListener(null);
             }
+            if (endIconView.getOnFocusChangeListener() == onFocusChangeListener) {
+              endIconView.setOnFocusChangeListener(null);
+            }
+
           }
         }
       };
@@ -210,7 +213,10 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
     return animator;
   }
 
-  private static boolean hasText(@NonNull Editable editable) {
-    return editable.length() > 0;
+  private boolean shouldBeVisible() {
+    EditText editText = textInputLayout.getEditText();
+    return editText != null
+        && (editText.hasFocus() || endIconView.hasFocus())
+        && editText.getText().length() > 0;
   }
 }
