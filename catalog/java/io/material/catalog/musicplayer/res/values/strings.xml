@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2021 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources>
+  <string name="cat_music_player_album_cover_content_description" description="Content description of album cover [CHAR_LIMIT=NONE]">Album cover</string>
+
+  <string name="cat_music_player_progress_indicator_content_description" description="Content description of the progress indicator [CHAR_LIMIT=NONE]">Music progress indicator</string>
+  <string name="cat_music_player_pause_button_content_description" description="Content description of the pause button [CHAR_LIMIT=NONE]">Pause button</string>
+  <string name="cat_music_player_play_button_content_description" description="Content description of the play button [CHAR_LIMIT=NONE]">Play button</string>
+  <string name="cat_music_player_rewind_button_content_description" description="Content description of the rewind button [CHAR_LIMIT=NONE]">Rewind button</string>
+  <string name="cat_music_player_fast_forward_button_content_description" description="Content description of the fast forward button [CHAR_LIMIT=NONE]">Fast forward button</string>
+  <string name="cat_music_player_volume_down_button_content_description" description="Content description of the volume down button [CHAR_LIMIT=NONE]">Volume down button</string>
+  <string name="cat_music_player_volume_slider_content_description" description="Content description of the volume slider [CHAR_LIMIT=NONE]">Volume slider</string>
+  <string name="cat_music_player_volume_up_button_content_description" description="Content description of the volume up button [CHAR_LIMIT=NONE]">Volume up button</string>
+
+  <string name="cat_music_player_album_menu_favorite_title" description="Content description of the favorite button [CHAR_LIMIT=NONE]">Favorite</string>
+  <string name="cat_music_player_album_menu_share_title" description="Content description of the share button [CHAR_LIMIT=NONE]">Share</string>
+
+  <string name="cat_music_player_lib_menu_sort_title" description="Name of the sort list button [CHAR_LIMIT=NONE]">Sort</string>
+  <string name="cat_music_player_lib_menu_list_type_title" description="Name of the list type toggle button [CHAR_LIMIT=NONE]">Toggle list type</string>
+
+  <string name="cat_music_player_album_duration" description="Duration of the album [CHAR_LIMIT=NONE]">52 mins</string>
+</resources>

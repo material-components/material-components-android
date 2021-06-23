@@ -59,6 +59,7 @@ def srcDirs = [
   'internal',
   'main',
   'menu',
+  'musicplayer',
   'navigationrail',
   'preferences',
   'progressindicator',
@@ -73,7 +74,6 @@ def srcDirs = [
   'timepicker',
   'topappbar',
   'transition',
-  'transition/hero',
   'windowpreferences'
 ]
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 The Android Open Source Project
+ * Copyright 2021 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,29 +14,22 @@
  * limitations under the License.
  */
 
-package io.material.catalog.transition;
+package io.material.catalog.musicplayer;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 import io.material.catalog.application.scope.ActivityScope;
 import io.material.catalog.application.scope.FragmentScope;
 
-/** A module for transition demo dependencies. */
+/** A module for Music Player demo dependencies. */
 @Module
-public abstract class TransitionDemoModule {
+public abstract class MusicPlayerDemoModule {
 
   @ActivityScope
   @ContributesAndroidInjector
-  abstract TransitionContainerTransformStartDemoActivity
-      contributeTransitionContainerTransformStartDemoActivity();
+  abstract MusicPlayerDemoActivity contributeMusicPlayerDemoActivity();
 
   @FragmentScope
   @ContributesAndroidInjector
-  abstract TransitionContainerTransformDemoFragment
-      contributeTransitionContainerTransformDemoFragment();
-
-  @FragmentScope
-  @ContributesAndroidInjector
-  abstract TransitionContainerTransformViewDemoFragment
-      contributeTransitionContainerTransformViewDemoFragment();
+  abstract MusicPlayerAlbumDemoFragment contributeMusicPlayerAlbumDemoFragment();
 }
