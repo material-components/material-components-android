@@ -130,7 +130,7 @@ In the layout:
       android:id="@+id/floating_action_button"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_gravity="bottom|right"
+      android:layout_gravity="bottom|end"
       android:layout_margin="16dp"
       android:contentDescription="@string/fab_content_desc"
       app:srcCompat="@drawable/ic_plus_24"/>
@@ -281,7 +281,7 @@ In the layout:
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
-    android:layout_gravity="bottom|right"
+    android:layout_gravity="bottom|end"
     android:contentDescription="@string/extended_fab_content_desc"
     android:text="@string/extended_fab_label"
     app:icon="@drawable/ic_plus_24px"/>
