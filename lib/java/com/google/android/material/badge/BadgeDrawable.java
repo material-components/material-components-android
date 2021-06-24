@@ -689,6 +689,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   /** Resets any badge number so that a numberless badge will be displayed. */
   public void clearNumber() {
     savedState.number = BADGE_NUMBER_NONE;
+    updateCenterAndBounds();
     invalidateSelf();
   }
 
