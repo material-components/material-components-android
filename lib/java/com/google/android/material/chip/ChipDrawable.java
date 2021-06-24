@@ -1329,11 +1329,11 @@ public class ChipDrawable extends MaterialShapeDrawable
       DrawableCompat.setTintList(drawable, closeIconTint);
       return;
     }
-    if (drawable.isStateful()) {
-      drawable.setState(getState());
-    }
     if (drawable == chipIcon && hasChipIconTint) {
       DrawableCompat.setTintList(chipIcon, chipIconTint);
+    }
+    if (drawable.isStateful()) {
+      drawable.setState(getState());
     }
   }
 
