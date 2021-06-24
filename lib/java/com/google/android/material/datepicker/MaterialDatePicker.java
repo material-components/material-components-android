@@ -102,7 +102,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
    * <p>The text is updated when the Dialog launches and on user clicks.
    */
   public String getHeaderText() {
-    return dateSelector.getSelectionDisplayString(getContext());
+    return getDateSelector().getSelectionDisplayString(getContext());
   }
 
   private final LinkedHashSet<MaterialPickerOnPositiveButtonClickListener<? super S>>
@@ -175,7 +175,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     if (overrideThemeResId != 0) {
       return overrideThemeResId;
     }
-    return dateSelector.getDefaultThemeResId(context);
+    return getDateSelector().getDefaultThemeResId(context);
   }
 
   @NonNull
@@ -234,7 +234,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     initHeaderToggle(context);
 
     confirmButton = root.findViewById(R.id.confirm_button);
-    if (dateSelector.isSelectionComplete()) {
+    if (getDateSelector().isSelectionComplete()) {
       confirmButton.setEnabled(true);
     } else {
       confirmButton.setEnabled(false);
@@ -320,7 +320,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
    */
   @Nullable
   public final S getSelection() {
-    return dateSelector.getSelection();
+    return getDateSelector().getSelection();
   }
 
   private void updateHeader() {
@@ -332,10 +332,11 @@ public final class MaterialDatePicker<S> extends DialogFragment {
 
   private void startPickerFragment() {
     int themeResId = getThemeResId(requireContext());
-    calendar = MaterialCalendar.newInstance(dateSelector, themeResId, calendarConstraints);
+    calendar = MaterialCalendar.newInstance(getDateSelector(), themeResId, calendarConstraints);
     pickerFragment =
         headerToggleButton.isChecked()
-            ? MaterialTextInputPicker.newInstance(dateSelector, themeResId, calendarConstraints)
+            ? MaterialTextInputPicker.newInstance(
+                getDateSelector(), themeResId, calendarConstraints)
             : calendar;
     updateHeader();
 
@@ -348,7 +349,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
           @Override
           public void onSelectionChanged(S selection) {
             updateHeader();
-            confirmButton.setEnabled(dateSelector.isSelectionComplete());
+            confirmButton.setEnabled(getDateSelector().isSelectionComplete());
           }
 
           @Override
@@ -372,7 +373,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
           @Override
           public void onClick(View v) {
             // Update confirm button in case in progress selection has been reset
-            confirmButton.setEnabled(dateSelector.isSelectionComplete());
+            confirmButton.setEnabled(getDateSelector().isSelectionComplete());
 
             headerToggleButton.toggle();
             updateToggleContentDescription(headerToggleButton);
@@ -387,6 +388,13 @@ public final class MaterialDatePicker<S> extends DialogFragment {
             ? toggle.getContext().getString(R.string.mtrl_picker_toggle_to_calendar_input_mode)
             : toggle.getContext().getString(R.string.mtrl_picker_toggle_to_text_input_mode);
     headerToggleButton.setContentDescription(contentDescription);
+  }
+
+  private DateSelector<S> getDateSelector() {
+    if (dateSelector == null) {
+      dateSelector = getArguments().getParcelable(DATE_SELECTOR_KEY);
+    }
+    return dateSelector;
   }
 
   // Create StateListDrawable programmatically for pre-lollipop support
