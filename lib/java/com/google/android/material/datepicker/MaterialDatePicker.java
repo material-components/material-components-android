@@ -646,22 +646,23 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     }
 
     private Month createDefaultOpenAt() {
-      long start = calendarConstraints.getStart().timeInMillis;
-      long end = calendarConstraints.getEnd().timeInMillis;
-
       if (!dateSelector.getSelectedDays().isEmpty()) {
         // Set the month to the first selected month in the selection
-        long firstSelectedDay = dateSelector.getSelectedDays().iterator().next();
-
+        Month firstSelectedMonth = Month.create(dateSelector.getSelectedDays().iterator().next());
         // Make sure the selection is in a valid month we can open to; otherwise use default openAt
-        if (firstSelectedDay >= start && firstSelectedDay <= end) {
-          return Month.create(firstSelectedDay);
+        if (monthInValidRange(firstSelectedMonth, calendarConstraints)) {
+          return firstSelectedMonth;
         }
       }
 
-      long today = MaterialDatePicker.thisMonthInUtcMilliseconds();
-      long openAt = start <= today && today <= end ? today : start;
-      return Month.create(openAt);
+      Month thisMonth = Month.current();
+      return monthInValidRange(thisMonth, calendarConstraints)
+          ? thisMonth : calendarConstraints.getStart();
+    }
+
+    private static boolean monthInValidRange(Month month, CalendarConstraints constraints) {
+      return month.compareTo(constraints.getStart()) >= 0
+          && month.compareTo(constraints.getEnd()) <= 0;
     }
   }
 }
