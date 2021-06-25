@@ -1839,6 +1839,8 @@ abstract class BaseSlider<
   }
 
   private boolean snapThumbToValue(int idx, float value) {
+    focusedThumbIdx = idx;
+
     // Check if the new value equals a value that was already set.
     if (abs(value - values.get(idx)) < THRESHOLD) {
       return false;
@@ -1847,7 +1849,6 @@ abstract class BaseSlider<
     float newValue = getClampedValue(idx, value);
     // Replace the old value with the new value of the touch position.
     values.set(idx, newValue);
-    focusedThumbIdx = idx;
 
     dispatchOnChangedFromUser(idx);
     return true;
