@@ -625,6 +625,7 @@ public class TabLayout extends HorizontalScrollView {
    */
   public void setSelectedTabIndicatorColor(@ColorInt int color) {
     this.tabSelectedIndicatorColor = color;
+    updateTabViews(false);
   }
 
   /**
@@ -3250,14 +3251,21 @@ public class TabLayout extends HorizontalScrollView {
             indicatorBounds.left, indicatorTop, indicatorBounds.right, indicatorBottom);
         Drawable indicator = tabSelectedIndicator;
 
-        // If a tint color has been specified using TabLayout's setSelectedTabIndicatorColor, wrap
-        // the drawable and tint it as specified.
         if (tabSelectedIndicatorColor != Color.TRANSPARENT) {
+          // If a tint color has been specified using TabLayout's setSelectedTabIndicatorColor, wrap
+          // the drawable and tint it as specified.
           indicator = DrawableCompat.wrap(indicator);
           if (VERSION.SDK_INT == VERSION_CODES.LOLLIPOP) {
             indicator.setColorFilter(tabSelectedIndicatorColor, PorterDuff.Mode.SRC_IN);
           } else {
             DrawableCompat.setTint(indicator, tabSelectedIndicatorColor);
+          }
+        } else {
+          // Remove existing tint if setSelectedTabIndicatorColor to Color.Transparent.
+          if (VERSION.SDK_INT == VERSION_CODES.LOLLIPOP) {
+            indicator.setColorFilter(null);
+          } else {
+            DrawableCompat.setTintList(indicator, null);
           }
         }
 
