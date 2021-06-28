@@ -507,6 +507,13 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     getBehavior().slideUp(this);
   }
 
+  /**
+   * Returns true if the {@link BottomAppBar} is shown
+   */
+  public boolean isScrolledUp() {
+    return getBehavior().isScrolledUp();
+  }
+
   @Override
   public void setElevation(float elevation) {
     materialShapeDrawable.setElevation(elevation);
