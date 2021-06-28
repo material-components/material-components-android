@@ -28,6 +28,7 @@ import io.material.catalog.checkbox.CheckBoxFragment;
 import io.material.catalog.chip.ChipFragment;
 import io.material.catalog.datepicker.DatePickerDemoLandingFragment;
 import io.material.catalog.dialog.DialogDemoLandingFragment;
+import io.material.catalog.divider.DividerFragment;
 import io.material.catalog.elevation.ElevationFragment;
 import io.material.catalog.fab.FabFragment;
 import io.material.catalog.font.FontFragment;
@@ -58,6 +59,7 @@ import io.material.catalog.transition.TransitionFragment;
       ChipFragment.Module.class,
       DatePickerDemoLandingFragment.Module.class,
       DialogDemoLandingFragment.Module.class,
+      DividerFragment.Module.class,
       ElevationFragment.Module.class,
       FabFragment.Module.class,
       FontFragment.Module.class,

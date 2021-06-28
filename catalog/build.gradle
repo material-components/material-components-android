@@ -50,6 +50,7 @@ def srcDirs = [
   'chip',
   'datepicker',
   'dialog',
+  'divider',
   'draggable',
   'elevation',
   'imageview',

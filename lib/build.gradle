@@ -50,6 +50,7 @@ def srcDirs = [
   'com/google/android/material/color',
   'com/google/android/material/datepicker',
   'com/google/android/material/dialog',
+  'com/google/android/material/divider',
   'com/google/android/material/drawable',
   'com/google/android/material/elevation',
   'com/google/android/material/expandable',

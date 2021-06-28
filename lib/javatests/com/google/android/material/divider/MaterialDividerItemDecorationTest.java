@@ -19,7 +19,6 @@ package com.google.android.material.divider;
 import com.google.android.material.R;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.assertThrows;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -28,7 +27,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.widget.LinearLayout;
 import androidx.test.core.app.ApplicationProvider;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.robolectric.RobolectricTestRunner;
@@ -36,6 +37,9 @@ import org.robolectric.RobolectricTestRunner;
 /** Tests for {@link MaterialDividerItemDecoration}. */
 @RunWith(RobolectricTestRunner.class)
 public final class MaterialDividerItemDecorationTest {
+
+  @Rule
+  public final ExpectedException thrown = ExpectedException.none();
 
   private static final int DIVIDER_THICKNESS = 5;
 
@@ -63,7 +67,8 @@ public final class MaterialDividerItemDecorationTest {
 
   @Test
   public void setOrientation_invalidInput_throws() {
-    assertThrows(IllegalArgumentException.class, () -> divider.setOrientation(3));
+    thrown.expect(IllegalArgumentException.class);
+    divider.setOrientation(3);
   }
 
   @Test

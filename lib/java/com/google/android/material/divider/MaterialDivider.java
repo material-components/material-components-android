@@ -18,7 +18,6 @@ package com.google.android.material.divider;
 
 import com.google.android.material.R;
 
-import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 
 import android.content.Context;
@@ -34,7 +33,6 @@ import androidx.annotation.DimenRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
-import androidx.annotation.RestrictTo;
 import androidx.core.content.ContextCompat;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.resources.MaterialResources;
@@ -46,10 +44,7 @@ import com.google.android.material.shape.MaterialShapeDrawable;
  * <p>The divider will display the correct default Material colors without the use of a style flag
  * in a layout file. Make sure to set {@code android:layout_height="wrap_content"} to ensure that
  * the correct thickness is set for the divider.
- *
- * @hide For internal use only.
  */
-@RestrictTo(LIBRARY_GROUP)
 public class MaterialDivider extends View {
 
   private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_MaterialDivider;
