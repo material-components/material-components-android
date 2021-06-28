@@ -245,12 +245,13 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
     textInputLayout.setEndIconDrawable(AppCompatResources.getDrawable(context, drawableResId));
     textInputLayout.setEndIconContentDescription(
         textInputLayout.getResources().getText(R.string.exposed_dropdown_menu_content_description));
-    textInputLayout.setEndIconOnClickListener(
+    textInputLayout.internalSetEndIconOnClickListener(
         new OnClickListener() {
           @Override
           public void onClick(View v) {
             AutoCompleteTextView editText = (AutoCompleteTextView) textInputLayout.getEditText();
             showHideDropdown(editText);
+            callOriginalEndIconOnClickListener(v);
           }
         });
     textInputLayout.addOnEditTextAttachedListener(dropdownMenuOnEditTextAttachedListener);

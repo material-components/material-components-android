@@ -17,6 +17,7 @@
 package com.google.android.material.textfield;
 
 import android.content.Context;
+import android.view.View;
 import androidx.annotation.NonNull;
 import com.google.android.material.internal.CheckableImageButton;
 import com.google.android.material.textfield.TextInputLayout.BoxBackgroundMode;
@@ -68,4 +69,16 @@ abstract class EndIconDelegate {
    * @param visible whether the icon should be set to visible
    */
   void onSuffixVisibilityChanged(boolean visible) {}
+
+  /**
+   * This method allows to call the {@link TextInputLayout#setEndIconOnClickListener} original set on the TextInputLayout
+   *
+   * @param view The view that was clicked
+   */
+  void callOriginalEndIconOnClickListener(View view){
+    if (textInputLayout.endIconOnClickListener != null) {
+      textInputLayout.endIconOnClickListener.onClick(view);
+    }
+  }
+
 }
