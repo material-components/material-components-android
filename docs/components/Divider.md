@@ -7,7 +7,7 @@ iconId: divider
 path: /catalog/dividers/
 -->
 
-# Divider
+# Dividers
 
 [Dividers](https://material.io/components/dividers) separate content into clear
 groups.
