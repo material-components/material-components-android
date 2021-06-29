@@ -491,9 +491,6 @@ In the layout:
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="none"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:cursorVisible="false"
     />
 
 </com.google.android.material.textfield.TextInputLayout>
@@ -531,13 +528,6 @@ To have an outlined variation of the exposed dropdown menu, set the `style` to
 Disable the user input in the `AutoCompleteTextView` to have a non editable
 variation of the menu by setting `android:inputType="none"` on the
 `AutoCompleteTextView`.
-
-Also add the following attributes to prevent typing, the cursor showing up or pasting from clipboard.
-```
-android:focusable="false"
-android:focusableInTouchMode="false"
-android:cursorVisible="false"
-```
 
 #### Setting a default value
 
