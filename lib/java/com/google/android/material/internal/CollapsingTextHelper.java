@@ -767,8 +767,8 @@ public final class CollapsingTextHelper {
     final int saveCount = canvas.save();
     // Compute where to draw textLayout for this frame
     if (textToDraw != null && drawTitle) {
-      final float currentExpandedX =
-          currentDrawX + textLayout.getLineLeft(0) - expandedFirstLineDrawX * 2;
+      float firstLineX = maxLines > 1 ? textLayout.getLineStart(0) : textLayout.getLineLeft(0);
+      final float currentExpandedX = currentDrawX + firstLineX - expandedFirstLineDrawX * 2;
 
       textPaint.setTextSize(currentTextSize);
       float x = currentDrawX;
