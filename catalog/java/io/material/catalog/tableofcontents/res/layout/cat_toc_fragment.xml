@@ -27,14 +27,14 @@
   <com.google.android.material.appbar.AppBarLayout
       android:id="@+id/cat_toc_app_bar_layout"
       android:layout_width="match_parent"
-      android:layout_height="@dimen/cat_toc_tall_toolbar_height"
+      android:layout_height="wrap_content"
       android:theme="@style/ThemeOverlay.Catalog.AppBarLayout"
       android:fitsSystemWindows="true">
 
     <com.google.android.material.appbar.CollapsingToolbarLayout
         android:id="@+id/cat_toc_collapsingtoolbarlayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="@dimen/cat_toc_tall_toolbar_height"
         app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
         app:titleEnabled="false">
 
