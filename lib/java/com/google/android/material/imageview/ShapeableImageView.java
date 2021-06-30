@@ -37,8 +37,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import androidx.appcompat.content.res.AppCompatResources;
-import androidx.appcompat.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewOutlineProvider;
@@ -48,6 +46,8 @@ import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.widget.AppCompatImageView;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
@@ -169,28 +169,25 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
       return;
     }
 
-    if (VERSION.SDK_INT > 19 && !isLayoutDirectionResolved()) {
-      return;
+    if ((VERSION.SDK_INT < 19 || isLayoutDirectionResolved())
+        && !hasAdjustedPaddingAfterLayoutDirectionResolved) {
+      // Finally, update the super padding to be the combined `android:padding` and
+      //  `app:contentPadding`, in keeping with ShapeableImageView's crazy internal padding contract:
+      if (VERSION.SDK_INT >= 21 && (isPaddingRelative() || isContentPaddingRelative())) {
+        setPaddingRelative(
+            super.getPaddingStart(),
+            super.getPaddingTop(),
+            super.getPaddingEnd(),
+            super.getPaddingBottom());
+      } else {
+        setPadding(
+            super.getPaddingLeft(),
+            super.getPaddingTop(),
+            super.getPaddingRight(),
+            super.getPaddingBottom());
+      }
+      hasAdjustedPaddingAfterLayoutDirectionResolved = true;
     }
-
-    hasAdjustedPaddingAfterLayoutDirectionResolved = true;
-
-    // Update the super padding to be the combined `android:padding` and
-    // `app:contentPadding`, keeping with ShapeableImageView's internal padding contract:
-    if (VERSION.SDK_INT >= 21 && (isPaddingRelative() || isContentPaddingRelative())) {
-      setPaddingRelative(
-          super.getPaddingStart(),
-          super.getPaddingTop(),
-          super.getPaddingEnd(),
-          super.getPaddingBottom());
-      return;
-    }
-
-    setPadding(
-        super.getPaddingLeft(),
-        super.getPaddingTop(),
-        super.getPaddingRight(),
-        super.getPaddingBottom());
   }
 
   @Override
