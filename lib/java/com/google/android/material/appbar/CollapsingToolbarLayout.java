@@ -174,6 +174,8 @@ public class CollapsingToolbarLayout extends FrameLayout {
   @TitleCollapseMode private int titleCollapseMode;
 
   @Nullable WindowInsetsCompat lastInsets;
+  private int topInsetApplied = 0;
+  private boolean forceApplySystemWindowInsetTop = false;
 
   public CollapsingToolbarLayout(@NonNull Context context) {
     this(context, null);
@@ -284,6 +286,9 @@ public class CollapsingToolbarLayout extends FrameLayout {
         a.getInt(R.styleable.CollapsingToolbarLayout_titleCollapseMode, TITLE_COLLAPSE_MODE_SCALE));
 
     toolbarId = a.getResourceId(R.styleable.CollapsingToolbarLayout_toolbarId, -1);
+
+    forceApplySystemWindowInsetTop =
+        a.getBoolean(R.styleable.CollapsingToolbarLayout_forceApplySystemWindowInsetTop, false);
 
     a.recycle();
 
@@ -528,9 +533,10 @@ public class CollapsingToolbarLayout extends FrameLayout {
 
     final int mode = MeasureSpec.getMode(heightMeasureSpec);
     final int topInset = lastInsets != null ? lastInsets.getSystemWindowInsetTop() : 0;
-    if (mode == MeasureSpec.UNSPECIFIED && topInset > 0) {
-      // If we have a top inset and we're set to wrap_content height we need to make sure
-      // we add the top inset to our height, therefore we re-measure
+    if ((mode == MeasureSpec.UNSPECIFIED || forceApplySystemWindowInsetTop) && topInset > 0) {
+      // If we have a top inset and we're set to wrap_content height or force apply,
+      // we need to make sure we add the top inset to our height, therefore we re-measure
+      topInsetApplied = topInset;
       heightMeasureSpec =
           MeasureSpec.makeMeasureSpec(getMeasuredHeight() + topInset, MeasureSpec.EXACTLY);
       super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -1323,6 +1329,24 @@ public class CollapsingToolbarLayout extends FrameLayout {
   }
 
   /**
+   * Sets whether the top system window inset should be respected regardless of what the
+   * {@code layout_height} of the {@code CollapsingToolbarLayout} is set to. Experimental Feature.
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  public void setForceApplySystemWindowInsetTop(boolean forceApplySystemWindowInsetTop) {
+    this.forceApplySystemWindowInsetTop = forceApplySystemWindowInsetTop;
+  }
+
+  /**
+   * Gets whether the top system window inset should be respected regardless of what the
+   * {@code layout_height} of the {@code CollapsingToolbarLayout} is set to. Experimental Feature.
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  public boolean isForceApplySystemWindowInsetTop() {
+    return forceApplySystemWindowInsetTop;
+  }
+
+  /**
    * Set the amount of visible height in pixels used to define when to trigger a scrim visibility
    * change.
    *
@@ -1350,7 +1374,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
   public int getScrimVisibleHeightTrigger() {
     if (scrimVisibleHeightTrigger >= 0) {
       // If we have one explicitly set, return it
-      return scrimVisibleHeightTrigger;
+      return scrimVisibleHeightTrigger + topInsetApplied;
     }
 
     // Otherwise we'll use the default computed value

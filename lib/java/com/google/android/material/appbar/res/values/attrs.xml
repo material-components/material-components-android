@@ -221,6 +221,9 @@
     </attr>
     <!-- The maximum number of lines to display in the expanded state. Experimental Feature. -->
     <attr name="maxLines" format="integer" />
+    <!-- Whether the system window inset top should be applied regardless of
+         what the layout_height is set to. Experimental Feature. -->
+    <attr name="forceApplySystemWindowInsetTop" format="boolean" />
   </declare-styleable>
 
   <declare-styleable name="CollapsingToolbarLayout_Layout">
