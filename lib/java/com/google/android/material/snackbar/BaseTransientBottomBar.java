@@ -83,6 +83,7 @@ import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialResources;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -262,19 +263,11 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
   private int duration;
   private boolean gestureInsetBottomIgnored;
-  @Nullable private View anchorView;
+
+  @Nullable
+  private Anchor anchor;
+
   private boolean anchorViewLayoutListenerEnabled = false;
-  private final OnGlobalLayoutListener anchorViewLayoutListener =
-      new OnGlobalLayoutListener() {
-        @Override
-        public void onGlobalLayout() {
-          if (!anchorViewLayoutListenerEnabled) {
-            return;
-          }
-          extraBottomMarginAnchorView = calculateBottomMarginForAnchorView();
-          updateMargins();
-        }
-      };
 
   @RequiresApi(VERSION_CODES.Q)
   private final Runnable bottomMarginGestureInsetRunnable =
@@ -451,7 +444,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     }
 
     int extraBottomMargin =
-        anchorView != null ? extraBottomMarginAnchorView : extraBottomMarginWindowInset;
+        getAnchorView() != null ? extraBottomMarginAnchorView : extraBottomMarginWindowInset;
     MarginLayoutParams marginParams = (MarginLayoutParams) layoutParams;
     marginParams.bottomMargin = originalMargins.bottom + extraBottomMargin;
     marginParams.leftMargin = originalMargins.left + extraLeftMarginWindowInset;
@@ -566,15 +559,16 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
    */
   @Nullable
   public View getAnchorView() {
-    return anchorView;
+    return anchor == null ? null : anchor.getAnchorView();
   }
 
   /** Sets the view the {@link BaseTransientBottomBar} should be anchored above. */
   @NonNull
   public B setAnchorView(@Nullable View anchorView) {
-    ViewUtils.removeOnGlobalLayoutListener(this.anchorView, anchorViewLayoutListener);
-    this.anchorView = anchorView;
-    ViewUtils.addOnGlobalLayoutListener(this.anchorView, anchorViewLayoutListener);
+    if (this.anchor != null) {
+      this.anchor.unanchor();
+    }
+    this.anchor = anchorView == null ? null : Anchor.anchor(this, anchorView);
     return (B) this;
   }
 
@@ -768,8 +762,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
         setUpBehavior((CoordinatorLayout.LayoutParams) lp);
       }
 
-      extraBottomMarginAnchorView = calculateBottomMarginForAnchorView();
-      updateMargins();
+      recalculateAndUpdateMargins();
 
       // Set view to INVISIBLE so it doesn't flash on the screen before the inset adjustment is
       // handled and the enter animation is started
@@ -861,18 +854,23 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     clp.setBehavior(behavior);
     // Also set the inset edge so that views can dodge the bar correctly, but only if there is
     // no anchor view.
-    if (anchorView == null) {
+    if (getAnchorView() == null) {
       clp.insetEdge = Gravity.BOTTOM;
     }
   }
 
+  private void recalculateAndUpdateMargins() {
+    extraBottomMarginAnchorView = calculateBottomMarginForAnchorView();
+    updateMargins();
+  }
+
   private int calculateBottomMarginForAnchorView() {
-    if (anchorView == null) {
+    if (getAnchorView() == null) {
       return 0;
     }
 
     int[] anchorViewLocation = new int[2];
-    anchorView.getLocationOnScreen(anchorViewLocation);
+    getAnchorView().getLocationOnScreen(anchorViewLocation);
     int anchorViewAbsoluteYTop = anchorViewLocation[1];
 
     int[] targetParentLocation = new int[2];
@@ -1095,9 +1093,6 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
         callbacks.get(i).onDismissed((B) this, event);
       }
     }
-
-    // Reset anchor view and onGlobalLayoutListener so they won't be leaked.
-    setAnchorView(null);
 
     // Lastly, hide and remove the view from the parent (if attached)
     ViewParent parent = view.getParent();
@@ -1360,6 +1355,79 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
         default:
           break;
       }
+    }
+  }
+
+  @SuppressWarnings("rawtypes") // Generic type of BaseTransientBottomBar doesn't matter here.
+  static class Anchor
+      implements android.view.View.OnAttachStateChangeListener, OnGlobalLayoutListener {
+    @NonNull
+    private final WeakReference<BaseTransientBottomBar> transientBottomBar;
+
+    @NonNull
+    private final WeakReference<View> anchorView;
+
+    static Anchor anchor(
+        @NonNull BaseTransientBottomBar transientBottomBar, @NonNull View anchorView) {
+      Anchor anchor = new Anchor(transientBottomBar, anchorView);
+      if (ViewCompat.isAttachedToWindow(anchorView)) {
+        ViewUtils.addOnGlobalLayoutListener(anchorView, anchor);
+      }
+      anchorView.addOnAttachStateChangeListener(anchor);
+      return anchor;
+    }
+
+    private Anchor(
+        @NonNull BaseTransientBottomBar transientBottomBar, @NonNull View anchorView) {
+      this.transientBottomBar = new WeakReference<>(transientBottomBar);
+      this.anchorView = new WeakReference<>(anchorView);
+    }
+
+    @Override
+    public void onViewAttachedToWindow(View anchorView) {
+      if (unanchorIfNoTransientBottomBar()) {
+        return;
+      }
+      ViewUtils.addOnGlobalLayoutListener(anchorView, this);
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(View anchorView) {
+      if (unanchorIfNoTransientBottomBar()) {
+        return;
+      }
+      ViewUtils.removeOnGlobalLayoutListener(anchorView, this);
+    }
+
+    @Override
+    public void onGlobalLayout() {
+      if (unanchorIfNoTransientBottomBar()
+          || !transientBottomBar.get().anchorViewLayoutListenerEnabled) {
+        return;
+      }
+      transientBottomBar.get().recalculateAndUpdateMargins();
+    }
+
+    @Nullable
+    View getAnchorView() {
+      return anchorView.get();
+    }
+
+    private boolean unanchorIfNoTransientBottomBar() {
+      if (transientBottomBar.get() == null) {
+        unanchor();
+        return true;
+      }
+      return false;
+    }
+
+    void unanchor() {
+      if (anchorView.get() != null) {
+        anchorView.get().removeOnAttachStateChangeListener(this);
+        ViewUtils.removeOnGlobalLayoutListener(anchorView.get(), this);
+      }
+      anchorView.clear();
+      transientBottomBar.clear();
     }
   }
 }
