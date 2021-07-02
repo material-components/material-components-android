@@ -175,7 +175,10 @@ public class CollapsingToolbarLayout extends FrameLayout {
 
   @Nullable WindowInsetsCompat lastInsets;
   private int topInsetApplied = 0;
-  private boolean forceApplySystemWindowInsetTop = false;
+  private boolean forceApplySystemWindowInsetTop;
+
+  private int extraMultilineHeight = 0;
+  private boolean extraMultilineHeightEnabled;
 
   public CollapsingToolbarLayout(@NonNull Context context) {
     this(context, null);
@@ -289,6 +292,9 @@ public class CollapsingToolbarLayout extends FrameLayout {
 
     forceApplySystemWindowInsetTop =
         a.getBoolean(R.styleable.CollapsingToolbarLayout_forceApplySystemWindowInsetTop, false);
+
+    extraMultilineHeightEnabled =
+        a.getBoolean(R.styleable.CollapsingToolbarLayout_extraMultilineHeightEnabled, false);
 
     a.recycle();
 
@@ -537,9 +543,25 @@ public class CollapsingToolbarLayout extends FrameLayout {
       // If we have a top inset and we're set to wrap_content height or force apply,
       // we need to make sure we add the top inset to our height, therefore we re-measure
       topInsetApplied = topInset;
-      heightMeasureSpec =
-          MeasureSpec.makeMeasureSpec(getMeasuredHeight() + topInset, MeasureSpec.EXACTLY);
+      int newHeight = getMeasuredHeight() + topInset;
+      heightMeasureSpec = MeasureSpec.makeMeasureSpec(newHeight, MeasureSpec.EXACTLY);
       super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
+
+    if (extraMultilineHeightEnabled && collapsingTextHelper.getMaxLines() > 1) {
+      // Need to update title and bounds in order to calculate line count and text height.
+      updateTitleFromToolbarIfNeeded();
+      updateTextBounds(0, 0, getMeasuredWidth(), getMeasuredHeight(), /* forceRecalculate= */ true);
+
+      int lineCount = collapsingTextHelper.getLineCount();
+      if (lineCount > 1) {
+        // Add extra height based on the amount of height beyond the first line of title text.
+        int expandedTextHeight = Math.round(collapsingTextHelper.getExpandedTextFullHeight());
+        extraMultilineHeight = expandedTextHeight * (lineCount - 1);
+        int newHeight = getMeasuredHeight() + extraMultilineHeight;
+        heightMeasureSpec = MeasureSpec.makeMeasureSpec(newHeight, MeasureSpec.EXACTLY);
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+      }
     }
 
     // Set our minimum height to enable proper AppBarLayout collapsing
@@ -576,6 +598,20 @@ public class CollapsingToolbarLayout extends FrameLayout {
       getViewOffsetHelper(getChildAt(i)).onViewLayout();
     }
 
+    updateTextBounds(left, top, right, bottom, /* forceRecalculate= */false);
+
+    updateTitleFromToolbarIfNeeded();
+
+    updateScrimVisibility();
+
+    // Apply any view offsets, this should be done at the very end of layout
+    for (int i = 0, z = getChildCount(); i < z; i++) {
+      getViewOffsetHelper(getChildAt(i)).applyOffsets();
+    }
+  }
+
+  private void updateTextBounds(
+      int left, int top, int right, int bottom, boolean forceRecalculate) {
     // Update the collapsed bounds by getting its transformed bounds
     if (collapsingTitleEnabled && dummyView != null) {
       // We only draw the title if the dummy view is being displayed (Toolbar removes
@@ -583,7 +619,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
       drawCollapsingTitle =
           ViewCompat.isAttachedToWindow(dummyView) && dummyView.getVisibility() == VISIBLE;
 
-      if (drawCollapsingTitle) {
+      if (drawCollapsingTitle || forceRecalculate) {
         final boolean isRtl =
             ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL;
 
@@ -598,22 +634,17 @@ public class CollapsingToolbarLayout extends FrameLayout {
             bottom - top - expandedMarginBottom);
 
         // Now recalculate using the new bounds
-        collapsingTextHelper.recalculate();
+        collapsingTextHelper.recalculate(forceRecalculate);
       }
     }
+  }
 
+  private void updateTitleFromToolbarIfNeeded() {
     if (toolbar != null) {
       if (collapsingTitleEnabled && TextUtils.isEmpty(collapsingTextHelper.getText())) {
         // If we do not currently have a title, try and grab it from the Toolbar
         setTitle(getToolbarTitle(toolbar));
       }
-    }
-
-    updateScrimVisibility();
-
-    // Apply any view offsets, this should be done at the very end of layout
-    for (int i = 0, z = getChildCount(); i < z; i++) {
-      getViewOffsetHelper(getChildAt(i)).applyOffsets();
     }
   }
 
@@ -1347,6 +1378,24 @@ public class CollapsingToolbarLayout extends FrameLayout {
   }
 
   /**
+   * Sets whether extra height should be added when the title text spans across multiple lines.
+   * Experimental Feature.
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  public void setExtraMultilineHeightEnabled(boolean extraMultilineHeightEnabled) {
+    this.extraMultilineHeightEnabled = extraMultilineHeightEnabled;
+  }
+
+  /**
+   * Gets whether extra height should be added when the title text spans across multiple lines.
+   * Experimental Feature.
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  public boolean isExtraMultilineHeightEnabled() {
+    return extraMultilineHeightEnabled;
+  }
+
+  /**
    * Set the amount of visible height in pixels used to define when to trigger a scrim visibility
    * change.
    *
@@ -1374,7 +1423,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
   public int getScrimVisibleHeightTrigger() {
     if (scrimVisibleHeightTrigger >= 0) {
       // If we have one explicitly set, return it
-      return scrimVisibleHeightTrigger + topInsetApplied;
+      return scrimVisibleHeightTrigger + topInsetApplied + extraMultilineHeight;
     }
 
     // Otherwise we'll use the default computed value

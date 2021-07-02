@@ -224,6 +224,9 @@
     <!-- Whether the system window inset top should be applied regardless of
          what the layout_height is set to. Experimental Feature. -->
     <attr name="forceApplySystemWindowInsetTop" format="boolean" />
+    <!-- Whether extra height should be added when the title text spans across
+         multiple lines. Experimental Feature. -->
+    <attr name="extraMultilineHeightEnabled" format="boolean" />
   </declare-styleable>
 
   <declare-styleable name="CollapsingToolbarLayout_Layout">
