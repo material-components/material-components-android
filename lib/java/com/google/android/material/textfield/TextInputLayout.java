@@ -719,19 +719,23 @@ public class TextInputLayout extends LinearLayout {
           (ViewGroup.MarginLayoutParams) endIconView.getLayoutParams();
       MarginLayoutParamsCompat.setMarginStart(lp, 0);
     }
-    endIconDelegates.append(END_ICON_CUSTOM, new CustomEndIconDelegate(this));
+    int endIconDrawableId = a.getResourceId(R.styleable.TextInputLayout_endIconDrawable, 0);
+    endIconDelegates.append(END_ICON_CUSTOM, new CustomEndIconDelegate(this, endIconDrawableId));
     endIconDelegates.append(END_ICON_NONE, new NoEndIconDelegate(this));
-    endIconDelegates.append(END_ICON_PASSWORD_TOGGLE, new PasswordToggleEndIconDelegate(this));
-    endIconDelegates.append(END_ICON_CLEAR_TEXT, new ClearTextEndIconDelegate(this));
-    endIconDelegates.append(END_ICON_DROPDOWN_MENU, new DropdownMenuEndIconDelegate(this));
+    endIconDelegates.append(END_ICON_PASSWORD_TOGGLE,
+        new PasswordToggleEndIconDelegate(
+            this,
+            endIconDrawableId == 0
+                ? a.getResourceId(R.styleable.TextInputLayout_passwordToggleDrawable, 0)
+                : endIconDrawableId));
+    endIconDelegates.append(
+        END_ICON_CLEAR_TEXT, new ClearTextEndIconDelegate(this, endIconDrawableId));
+    endIconDelegates.append(
+        END_ICON_DROPDOWN_MENU, new DropdownMenuEndIconDelegate(this, endIconDrawableId));
     // Set up the end icon if any.
     if (a.hasValue(R.styleable.TextInputLayout_endIconMode)) {
       // Specific defaults depending on which end icon mode is set
       setEndIconMode(a.getInt(R.styleable.TextInputLayout_endIconMode, END_ICON_NONE));
-      // Overwrite default values if user specified any different ones
-      if (a.hasValue(R.styleable.TextInputLayout_endIconDrawable)) {
-        setEndIconDrawable(a.getDrawable(R.styleable.TextInputLayout_endIconDrawable));
-      }
       if (a.hasValue(R.styleable.TextInputLayout_endIconContentDescription)) {
         setEndIconContentDescription(
             a.getText(R.styleable.TextInputLayout_endIconContentDescription));
@@ -742,7 +746,6 @@ public class TextInputLayout extends LinearLayout {
       boolean passwordToggleEnabled =
           a.getBoolean(R.styleable.TextInputLayout_passwordToggleEnabled, false);
       setEndIconMode(passwordToggleEnabled ? END_ICON_PASSWORD_TOGGLE : END_ICON_NONE);
-      setEndIconDrawable(a.getDrawable(R.styleable.TextInputLayout_passwordToggleDrawable));
       setEndIconContentDescription(
           a.getText(R.styleable.TextInputLayout_passwordToggleContentDescription));
       if (a.hasValue(R.styleable.TextInputLayout_passwordToggleTint)) {

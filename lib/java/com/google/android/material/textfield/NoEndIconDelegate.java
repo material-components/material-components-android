@@ -23,7 +23,7 @@ import androidx.annotation.NonNull;
  */
 class NoEndIconDelegate extends EndIconDelegate {
   NoEndIconDelegate(@NonNull TextInputLayout textInputLayout) {
-    super(textInputLayout);
+    super(textInputLayout, 0);
   }
 
   @Override

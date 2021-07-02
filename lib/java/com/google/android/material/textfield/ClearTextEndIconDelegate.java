@@ -23,13 +23,13 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
-import androidx.appcompat.content.res.AppCompatResources;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.widget.EditText;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.textfield.TextInputLayout.OnEditTextAttachedListener;
@@ -107,14 +107,15 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
   private AnimatorSet iconInAnim;
   private ValueAnimator iconOutAnim;
 
-  ClearTextEndIconDelegate(@NonNull TextInputLayout textInputLayout) {
-    super(textInputLayout);
+  ClearTextEndIconDelegate(
+      @NonNull TextInputLayout textInputLayout, @DrawableRes int customEndIcon) {
+    super(textInputLayout, customEndIcon);
   }
 
   @Override
   void initialize() {
     textInputLayout.setEndIconDrawable(
-        AppCompatResources.getDrawable(context, R.drawable.mtrl_ic_cancel));
+        customEndIcon == 0 ? R.drawable.mtrl_ic_cancel : customEndIcon);
     textInputLayout.setEndIconContentDescription(
         textInputLayout.getResources().getText(R.string.clear_text_end_icon_content_description));
     textInputLayout.setEndIconOnClickListener(

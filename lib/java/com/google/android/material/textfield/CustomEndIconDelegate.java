@@ -16,6 +16,7 @@
 
 package com.google.android.material.textfield;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 
 /**
@@ -23,12 +24,13 @@ import androidx.annotation.NonNull;
  */
 class CustomEndIconDelegate extends EndIconDelegate {
 
-  CustomEndIconDelegate(@NonNull TextInputLayout textInputLayout) {
-    super(textInputLayout);
+  CustomEndIconDelegate(@NonNull TextInputLayout textInputLayout, @DrawableRes int customEndIcon) {
+    super(textInputLayout, customEndIcon);
   }
 
   @Override
   void initialize() {
+    textInputLayout.setEndIconDrawable(customEndIcon);
     textInputLayout.setEndIconOnClickListener(null);
     textInputLayout.setEndIconOnLongClickListener(null);
   }
