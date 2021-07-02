@@ -2411,7 +2411,6 @@ abstract class BaseSlider<
     if (sliderState.hasFocus) {
       requestFocus();
     }
-    dispatchOnChangedProgramatically();
   }
 
   static class SliderState extends BaseSavedState {
