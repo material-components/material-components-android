@@ -64,11 +64,11 @@ the `com.android.support:design:28.0.0` dependency.
 Note: You should not use the `com.android.support` and
 `com.google.android.material` dependencies in your app at the same time.
 
-### 2. Compile your app with Android 10
+### 2. Compile your app with Android 11
 
 In order to use Material Components for Android, and the latest versions of the
-Support Libraries, you will have to install Android Studio 3.5 or higher to
-build with Android 10, and update your app's `compileSdkVersion` to `29`.
+Support Libraries, you will have to install Android Studio 4.0 or higher to
+build with Android 11, and update your app's `compileSdkVersion` to `30`.
 
 ### 3. Ensure you are using `AppCompatActivity`
 
