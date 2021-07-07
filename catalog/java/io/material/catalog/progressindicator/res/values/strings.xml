@@ -120,6 +120,10 @@
     description="An example of using progress indicator drawable as chip icon [CHAR LIMIT=NONE]">
     Indeterminate Chip
   </string>
+  <string name="cat_progress_indicator_standalone_indeterminate_button"
+    description="An example of using progress indicator drawable as button icon [CHAR LIMIT=NONE]">
+    Indeterminate Button
+  </string>
   <string name="cat_progress_indicator_standalone_switch_label"
     description="A material switch to toggle progress indicator drawable on chip [CHAR LIMIT=NONE]">
     Show Icon

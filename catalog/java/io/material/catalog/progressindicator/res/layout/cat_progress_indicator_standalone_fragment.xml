@@ -32,6 +32,14 @@
     android:ellipsize="end"
     android:text="@string/cat_progress_indicator_standalone_indeterminate_chip"/>
 
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/cat_progress_indicator_button"
+    style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:ellipsize="end"
+    android:text="@string/cat_progress_indicator_standalone_indeterminate_button"/>
+
   <com.google.android.material.switchmaterial.SwitchMaterial
     android:id="@+id/cat_progress_indicator_standalone_chip_switch"
     android:layout_width="wrap_content"

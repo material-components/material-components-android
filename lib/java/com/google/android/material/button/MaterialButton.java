@@ -761,6 +761,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
       int width = iconSize != 0 ? iconSize : icon.getIntrinsicWidth();
       int height = iconSize != 0 ? iconSize : icon.getIntrinsicHeight();
       icon.setBounds(iconLeft, iconTop, iconLeft + width, iconTop + height);
+      icon.setVisible(true, needsIconReset);
     }
 
     // Forced icon update
