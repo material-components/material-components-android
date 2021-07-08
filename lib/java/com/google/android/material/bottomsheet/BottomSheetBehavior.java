@@ -82,7 +82,6 @@ import java.util.Map;
  */
 public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behavior<V> {
 
-
   /** Callback for monitoring events about bottom sheets. */
   public abstract static class BottomSheetCallback {
 
@@ -197,6 +196,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   private static final int NO_WIDTH = -1;
 
+  private static final int NO_HEIGHT = -1;
+
   private boolean fitToContents = true;
 
   private boolean updateImportantForAccessibilityOnSiblings = false;
@@ -221,6 +222,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   private MaterialShapeDrawable materialShapeDrawable;
 
   private int maxWidth = NO_WIDTH;
+
+  private int maxHeight = NO_HEIGHT;
 
   private int gestureInsetBottom;
   private boolean gestureInsetBottomIgnored;
@@ -324,6 +327,12 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       setMaxWidth(
           a.getDimensionPixelSize(
               R.styleable.BottomSheetBehavior_Layout_android_maxWidth, NO_WIDTH));
+    }
+
+    if (a.hasValue(R.styleable.BottomSheetBehavior_Layout_android_maxHeight)) {
+      setMaxHeight(
+          a.getDimensionPixelSize(
+              R.styleable.BottomSheetBehavior_Layout_android_maxHeight, NO_HEIGHT));
     }
 
     TypedValue value = a.peekValue(R.styleable.BottomSheetBehavior_Layout_behavior_peekHeight);
@@ -445,18 +454,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         ViewCompat.setImportantForAccessibility(child, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
       }
 
-      // Adjust the width to be at most the maxWidth if needed.
-      int width = child.getMeasuredWidth();
-      if (width > maxWidth && maxWidth != NO_WIDTH) {
-        final ViewGroup.LayoutParams lp = child.getLayoutParams();
-        lp.width = maxWidth;
-        child.post(new Runnable() {
-          @Override
-          public void run() {
-            child.setLayoutParams(lp);
-          }
-        });
-      }
+      adjustChildWidthAndHeightIfNeeded(child);
     }
     if (viewDragHelper == null) {
       viewDragHelper = ViewDragHelper.create(parent, dragCallback);
@@ -841,6 +839,29 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   /**
+   * Sets the maximum height of the bottom sheet. This method should be called before {@link
+   * BottomSheetDialog#show()} in order for the height to be adjusted as expected.
+   *
+   * @param maxHeight The maximum height in pixels to be set
+   * @attr ref com.google.android.material.R.styleable#BottomSheetBehavior_Layout_android_maxHeight
+   * @see #getMaxHeight()
+   */
+  public void setMaxHeight(@Px int maxHeight) {
+    this.maxHeight = maxHeight;
+  }
+
+  /**
+   * Returns the bottom sheet's maximum height, or -1 if no maximum height is set.
+   *
+   * @attr ref com.google.android.material.R.styleable#BottomSheetBehavior_Layout_android_maxHeight
+   * @see #setMaxHeight(int)
+   */
+  @Px
+  public int getMaxHeight() {
+    return maxHeight;
+  }
+
+  /**
    * Sets the height of the bottom sheet when it is collapsed.
    *
    * @param peekHeight The height of the collapsed bottom sheet in pixels, or {@link
@@ -1213,6 +1234,33 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       callbacks.get(i).onStateChanged(bottomSheet, state);
     }
     updateAccessibilityActions();
+  }
+
+  private void adjustChildWidthAndHeightIfNeeded(@NonNull final V child) {
+    final ViewGroup.LayoutParams lp = child.getLayoutParams();
+    boolean layoutHasChanges = false;
+
+    int width = child.getMeasuredWidth();
+    if (width > maxWidth && maxWidth != NO_WIDTH) {
+      lp.width = maxWidth;
+      layoutHasChanges = true;
+    }
+
+    int height = child.getMeasuredHeight();
+    if (height > maxHeight && maxHeight != NO_HEIGHT) {
+      lp.height = maxHeight;
+      layoutHasChanges = true;
+    }
+
+    if (layoutHasChanges) {
+      child.post(
+          new Runnable() {
+            @Override
+            public void run() {
+              child.setLayoutParams(lp);
+            }
+          });
+    }
   }
 
   private void updateDrawableForTargetState(@State int state) {
