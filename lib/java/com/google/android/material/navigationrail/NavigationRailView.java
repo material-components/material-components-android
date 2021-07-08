@@ -24,6 +24,8 @@ import static java.lang.Math.min;
 
 import android.content.Context;
 import android.content.res.Resources;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.appcompat.widget.TintTypedArray;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -35,6 +37,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import com.google.android.material.internal.ThemeEnforcement;
+import com.google.android.material.internal.ViewUtils;
+import com.google.android.material.internal.ViewUtils.RelativePadding;
 import com.google.android.material.navigation.NavigationBarView;
 
 /**
@@ -50,9 +54,9 @@ import com.google.android.material.navigation.NavigationBarView;
  * be used for programmatically selecting which destination is currently active. It can be done
  * using {@code MenuItem#setChecked(true)}.
  *
- * <p>A header view (such as a
- * {@link com.google.android.material.floatingactionbutton.FloatingActionButton}, logo, etc.) can be
- * added with the {@code app:headerLayout} attribute or by using {@link #addHeaderView}.
+ * <p>A header view (such as a {@link
+ * com.google.android.material.floatingactionbutton.FloatingActionButton}, logo, etc.) can be added
+ * with the {@code app:headerLayout} attribute or by using {@link #addHeaderView}.
  *
  * <pre>
  * layout resource file:
@@ -134,6 +138,33 @@ public class NavigationRailView extends NavigationBarView {
     setMenuGravity(
         attributes.getInt(R.styleable.NavigationRailView_menuGravity, DEFAULT_MENU_GRAVITY));
     attributes.recycle();
+
+    applyWindowInsets();
+  }
+
+  private void applyWindowInsets() {
+    ViewUtils.doOnApplyWindowInsets(
+        this,
+        new ViewUtils.OnApplyWindowInsetsListener() {
+          @NonNull
+          @Override
+          public WindowInsetsCompat onApplyWindowInsets(
+              View view,
+              @NonNull WindowInsetsCompat insets,
+              @NonNull RelativePadding initialPadding) {
+            // Apply the top, bottom, and start padding for a start edge aligned
+            // NavigationRailView to dodge the system status and navigation bars
+            initialPadding.top += insets.getSystemWindowInsetTop();
+            initialPadding.bottom += insets.getSystemWindowInsetBottom();
+
+            boolean isRtl = ViewCompat.getLayoutDirection(view) == ViewCompat.LAYOUT_DIRECTION_RTL;
+            int systemWindowInsetLeft = insets.getSystemWindowInsetLeft();
+            int systemWindowInsetRight = insets.getSystemWindowInsetRight();
+            initialPadding.start += isRtl ? systemWindowInsetRight : systemWindowInsetLeft;
+            initialPadding.applyToView(view);
+            return insets;
+          }
+        });
   }
 
   @Override
