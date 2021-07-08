@@ -45,6 +45,7 @@ import static com.google.android.material.testutils.TextInputLayoutActions.setSt
 import static com.google.android.material.testutils.TextInputLayoutActions.setStartIconOnClickListener;
 import static com.google.android.material.testutils.TextInputLayoutActions.setStartIconOnLongClickListener;
 import static com.google.android.material.testutils.TextInputLayoutActions.setStartIconTintList;
+import static com.google.android.material.testutils.TextInputLayoutActions.setStartIconTintMode;
 import static com.google.android.material.testutils.TextInputLayoutActions.setSuffixText;
 import static com.google.android.material.testutils.TextInputLayoutActions.setTransformationMethod;
 import static com.google.android.material.testutils.TextInputLayoutMatchers.doesNotShowEndIcon;
@@ -53,6 +54,7 @@ import static com.google.android.material.testutils.TextInputLayoutMatchers.endI
 import static com.google.android.material.testutils.TextInputLayoutMatchers.endIconIsChecked;
 import static com.google.android.material.testutils.TextInputLayoutMatchers.endIconIsNotChecked;
 import static com.google.android.material.testutils.TextInputLayoutMatchers.showsEndIcon;
+import static com.google.common.truth.Truth.assertThat;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
@@ -62,13 +64,17 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import android.app.Activity;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import androidx.core.graphics.drawable.TintAwareDrawable;
 import android.text.method.PasswordTransformationMethod;
 import android.text.method.TransformationMethod;
 import android.view.KeyEvent;
 import android.widget.EditText;
+import androidx.annotation.Nullable;
 import androidx.test.espresso.ViewAssertion;
 import androidx.test.espresso.matcher.ViewMatchers.Visibility;
 import androidx.test.filters.LargeTest;
@@ -526,6 +532,30 @@ public class TextInputLayoutIconsTest {
   }
 
   @Test
+  public void testSetStartIconTint() {
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout textInputLayout = activity.findViewById(R.id.textinput_no_icon);
+    Drawable drawable = new TintCapturedDrawable();
+
+    // Set start icon
+    onView(withId(R.id.textinput_no_icon)).perform(
+        setStartIconTintList(ColorStateList.valueOf(Color.RED)));
+    onView(withId(R.id.textinput_no_icon)).perform(setStartIconTintMode(PorterDuff.Mode.MULTIPLY));
+    onView(withId(R.id.textinput_no_icon)).perform(setStartIcon(drawable));
+
+    // Assert the start icon's tint is set
+    assertNotNull(textInputLayout.getStartIconDrawable());
+    assertThat(textInputLayout.getStartIconDrawable()).isInstanceOf(TintCapturedDrawable.class);
+    assertEquals(
+        Color.RED,
+        ((TintCapturedDrawable) textInputLayout.getStartIconDrawable())
+            .capturedTint.getDefaultColor());
+    assertEquals(
+        PorterDuff.Mode.MULTIPLY,
+        ((TintCapturedDrawable) textInputLayout.getStartIconDrawable()).capturedTintMode);
+  }
+
+  @Test
   public void testStartIconDisables() {
     // Disable the start icon
     onView(withId(R.id.textinput_starticon)).perform(setStartIcon(null));
@@ -875,5 +905,24 @@ public class TextInputLayoutIconsTest {
         assertEquals(PasswordTransformationMethod.getInstance(), transformationMethod);
       }
     };
+  }
+
+  private static class TintCapturedDrawable extends ColorDrawable implements TintAwareDrawable {
+    ColorStateList capturedTint;
+    PorterDuff.Mode capturedTintMode;
+
+    TintCapturedDrawable() {
+      super(Color.WHITE);
+    }
+
+    @Override
+    public void setTintList(@Nullable ColorStateList tint) {
+      capturedTint = tint;
+    }
+
+    @Override
+    public void setTintMode(@Nullable PorterDuff.Mode tintMode) {
+      capturedTintMode = tintMode;
+    }
   }
 }
