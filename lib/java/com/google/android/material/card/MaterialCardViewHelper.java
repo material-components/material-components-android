@@ -58,8 +58,6 @@ import com.google.android.material.shape.ShapeAppearanceModel;
 @RestrictTo(LIBRARY_GROUP)
 class MaterialCardViewHelper {
 
-  private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
-
   private static final int DEFAULT_STROKE_VALUE = -1;
 
   // used to calculate content padding
@@ -384,14 +382,14 @@ class MaterialCardViewHelper {
   void setCheckedIcon(@Nullable Drawable checkedIcon) {
     this.checkedIcon = checkedIcon;
     if (checkedIcon != null) {
-      this.checkedIcon = DrawableCompat.wrap(checkedIcon.mutate());
+      this.checkedIcon = DrawableCompat.wrap(checkedIcon).mutate();
       DrawableCompat.setTintList(this.checkedIcon, checkedIconTint);
+      setChecked(materialCardView.isChecked());
     }
 
     if (clickableForegroundDrawable != null) {
-      Drawable checkedLayer = createCheckedIconLayer();
       clickableForegroundDrawable.setDrawableByLayerId(
-          R.id.mtrl_card_checked_layer_id, checkedLayer);
+          R.id.mtrl_card_checked_layer_id, this.checkedIcon);
     }
   }
 
@@ -610,10 +608,9 @@ class MaterialCardViewHelper {
     }
 
     if (clickableForegroundDrawable == null) {
-      Drawable checkedLayer = createCheckedIconLayer();
       clickableForegroundDrawable =
           new LayerDrawable(
-              new Drawable[] {rippleDrawable, foregroundContentDrawable, checkedLayer});
+              new Drawable[] {rippleDrawable, foregroundContentDrawable, checkedIcon});
       clickableForegroundDrawable.setId(CHECKED_ICON_LAYER_INDEX, R.id.mtrl_card_checked_layer_id);
     }
 
@@ -650,16 +647,13 @@ class MaterialCardViewHelper {
   }
 
   @NonNull
-  private Drawable createCheckedIconLayer() {
-    StateListDrawable checkedLayer = new StateListDrawable();
-    if (checkedIcon != null) {
-      checkedLayer.addState(CHECKED_STATE_SET, checkedIcon);
-    }
-    return checkedLayer;
-  }
-
-  @NonNull
   private MaterialShapeDrawable createForegroundShapeDrawable() {
     return new MaterialShapeDrawable(shapeAppearanceModel);
+  }
+
+  public void setChecked(boolean checked) {
+    if (checkedIcon != null) {
+      checkedIcon.setAlpha(checked ? 255 : 0);
+    }
   }
 }
