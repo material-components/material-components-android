@@ -206,10 +206,17 @@ abstract class BaseSlider<
       "valueTo(%s) must be greater than valueFrom(%s)";
   private static final String EXCEPTION_ILLEGAL_STEP_SIZE =
       "The stepSize(%s) must be 0, or a factor of the valueFrom(%s)-valueTo(%s) range";
-  private static final String WARNING_FLOATING_POINT_ERRROR =
+  private static final String EXCEPTION_ILLEGAL_MIN_SEPARATION =
+      "minSeparation(%s) must be greater or equal to 0";
+  private static final String EXCEPTION_ILLEGAL_MIN_SEPARATION_STEP_SIZE_UNIT =
+      "minSeparation(%s) cannot be set as a dimension when using stepSize(%s)";
+  private static final String EXCEPTION_ILLEGAL_MIN_SEPARATION_STEP_SIZE =
+      "minSeparation(%s) must be greater or equal and a multiple of stepSize(%s) when using"
+          + " stepSize(%s)";
+  private static final String WARNING_FLOATING_POINT_ERROR =
       "Floating point value used for %s(%s). Using floats can have rounding errors which may"
           + " result in incorrect values. Instead, consider using integers with a custom"
-          + " LabelFormatter to display the  value correctly.";
+          + " LabelFormatter to display the value correctly.";
 
   private static final int TIMEOUT_SEND_ACCESSIBILITY_EVENT = 200;
   private static final int HALO_ALPHA = 63;
@@ -501,40 +508,37 @@ abstract class BaseSlider<
   private void validateValueFrom() {
     if (valueFrom >= valueTo) {
       throw new IllegalStateException(
-          String.format(
-              EXCEPTION_ILLEGAL_VALUE_FROM, Float.toString(valueFrom), Float.toString(valueTo)));
+          String.format(EXCEPTION_ILLEGAL_VALUE_FROM, valueFrom, valueTo));
     }
   }
 
   private void validateValueTo() {
     if (valueTo <= valueFrom) {
       throw new IllegalStateException(
-          String.format(
-              EXCEPTION_ILLEGAL_VALUE_TO, Float.toString(valueTo), Float.toString(valueFrom)));
+          String.format(EXCEPTION_ILLEGAL_VALUE_TO, valueTo, valueFrom));
     }
   }
 
   private boolean valueLandsOnTick(float value) {
-    // Check that the value is a multiple of stepSize given the offset of valueFrom
+    // Check that the value is a multiple of stepSize given the offset of valueFrom.
+    return isMultipleOfStepSize(value - valueFrom);
+  }
+
+  private boolean isMultipleOfStepSize(float value) {
     // We're using BigDecimal here to avoid floating point rounding errors.
-    double potentialTickValue =
+    double result =
         new BigDecimal(Float.toString(value))
-            .subtract(new BigDecimal(Float.toString(valueFrom)))
             .divide(new BigDecimal(Float.toString(stepSize)), MathContext.DECIMAL64)
             .doubleValue();
 
-    // If the potentialTickValue is a whole number, it means the value lands on a tick.
-    return Math.abs(Math.round(potentialTickValue) - potentialTickValue) < THRESHOLD;
+    // If the result is a whole number, it means the value is a multiple of stepSize.
+    return Math.abs(Math.round(result) - result) < THRESHOLD;
   }
 
   private void validateStepSize() {
     if (stepSize > 0.0f && !valueLandsOnTick(valueTo)) {
       throw new IllegalStateException(
-          String.format(
-              EXCEPTION_ILLEGAL_STEP_SIZE,
-              Float.toString(stepSize),
-              Float.toString(valueFrom),
-              Float.toString(valueTo)));
+          String.format(EXCEPTION_ILLEGAL_STEP_SIZE, stepSize, valueFrom, valueTo));
     }
   }
 
@@ -542,20 +546,31 @@ abstract class BaseSlider<
     for (Float value : values) {
       if (value < valueFrom || value > valueTo) {
         throw new IllegalStateException(
-            String.format(
-                EXCEPTION_ILLEGAL_VALUE,
-                Float.toString(value),
-                Float.toString(valueFrom),
-                Float.toString(valueTo)));
+            String.format(EXCEPTION_ILLEGAL_VALUE, value, valueFrom, valueTo));
       }
       if (stepSize > 0.0f && !valueLandsOnTick(value)) {
         throw new IllegalStateException(
+            String.format(EXCEPTION_ILLEGAL_DISCRETE_VALUE, value, valueFrom, stepSize, stepSize));
+      }
+    }
+  }
+
+  private void validateMinSeparation() {
+    final float minSeparation = getMinSeparation();
+    if (minSeparation < 0) {
+      throw new IllegalStateException(
+          String.format(EXCEPTION_ILLEGAL_MIN_SEPARATION, minSeparation));
+    }
+    if (stepSize > 0 && minSeparation > 0) {
+      if (separationUnit != UNIT_VALUE) {
+        throw new IllegalStateException(
             String.format(
-                EXCEPTION_ILLEGAL_DISCRETE_VALUE,
-                Float.toString(value),
-                Float.toString(valueFrom),
-                Float.toString(stepSize),
-                Float.toString(stepSize)));
+                EXCEPTION_ILLEGAL_MIN_SEPARATION_STEP_SIZE_UNIT, minSeparation, stepSize));
+      }
+      if (minSeparation < stepSize || !isMultipleOfStepSize(minSeparation)) {
+        throw new IllegalStateException(
+            String.format(
+                EXCEPTION_ILLEGAL_MIN_SEPARATION_STEP_SIZE, minSeparation, stepSize, stepSize));
       }
     }
   }
@@ -567,15 +582,15 @@ abstract class BaseSlider<
     }
 
     if ((int) stepSize != stepSize) {
-      Log.w(TAG, String.format(WARNING_FLOATING_POINT_ERRROR, "stepSize", stepSize));
+      Log.w(TAG, String.format(WARNING_FLOATING_POINT_ERROR, "stepSize", stepSize));
     }
 
     if ((int) valueFrom != valueFrom) {
-      Log.w(TAG, String.format(WARNING_FLOATING_POINT_ERRROR, "valueFrom", valueFrom));
+      Log.w(TAG, String.format(WARNING_FLOATING_POINT_ERROR, "valueFrom", valueFrom));
     }
 
     if ((int) valueTo != valueTo) {
-      Log.w(TAG, String.format(WARNING_FLOATING_POINT_ERRROR, "valueTo", valueTo));
+      Log.w(TAG, String.format(WARNING_FLOATING_POINT_ERROR, "valueTo", valueTo));
     }
   }
 
@@ -585,6 +600,7 @@ abstract class BaseSlider<
       validateValueTo();
       validateStepSize();
       validateValues();
+      validateMinSeparation();
       warnAboutFloatingPointError();
       dirtyConfig = false;
     }
@@ -710,7 +726,7 @@ abstract class BaseSlider<
     focusedThumbIdx = 0;
     updateHaloHotspot();
     createLabelPool();
-    dispatchOnChangedProgramatically();
+    dispatchOnChangedProgrammatically();
     postInvalidate();
   }
 
@@ -776,11 +792,7 @@ abstract class BaseSlider<
   public void setStepSize(float stepSize) {
     if (stepSize < 0.0f) {
       throw new IllegalArgumentException(
-          String.format(
-              EXCEPTION_ILLEGAL_STEP_SIZE,
-              Float.toString(stepSize),
-              Float.toString(valueFrom),
-              Float.toString(valueTo)));
+          String.format(EXCEPTION_ILLEGAL_STEP_SIZE, stepSize, valueFrom, valueTo));
     }
     if (this.stepSize != stepSize) {
       this.stepSize = stepSize;
@@ -1856,7 +1868,7 @@ abstract class BaseSlider<
 
   /** Thumbs cannot cross each other, clamp the value to a bound or the value next to it. */
   private float getClampedValue(int idx, float value) {
-    float minSeparation = stepSize == 0 ? getMinSeparation() : 0;
+    float minSeparation = getMinSeparation();
     minSeparation = separationUnit == UNIT_PX ? dimenToValue(minSeparation) : minSeparation;
     if (isRtl()) {
       minSeparation = -minSeparation;
@@ -1876,6 +1888,8 @@ abstract class BaseSlider<
 
   protected void setSeparationUnit(int separationUnit) {
     this.separationUnit = separationUnit;
+    dirtyConfig = true;
+    postInvalidate();
   }
 
   protected float getMinSeparation() {
@@ -2062,7 +2076,7 @@ abstract class BaseSlider<
   }
 
   @SuppressWarnings("unchecked")
-  private void dispatchOnChangedProgramatically() {
+  private void dispatchOnChangedProgrammatically() {
     for (L listener : changeListeners) {
       for (Float value : values) {
         listener.onValueChange((S) this, value, false);

@@ -139,4 +139,86 @@ public class SliderTouchTest {
     // Verify the right thumb moved
     assertThat(slider.getValues()).contains(0f);
   }
+
+  @Test
+  public void test2thumbs_minSeparation_leftThumbDoesNotMove() {
+    slider.setValues(20.0f, 40.0f);
+    slider.setMinSeparationValue(20.0f);
+
+    // Slide left thumb towards right thumb
+    dragSliderBetweenValues(slider, 20.01f, 40.0f, 100);
+
+    // Verify the left thumb didn't move
+    assertThat(slider.getValues()).contains(20.0f);
+    assertThat(slider.getValues()).contains(40.0f);
+  }
+
+  @Test
+  public void test2thumbs_minSeparation_rightThumbDoesNotMove() {
+    slider.setValues(20.0f, 40.0f);
+    slider.setMinSeparationValue(20.0f);
+
+    // Slide right thumb towards left thumb
+    dragSliderBetweenValues(slider, 39.99f, 20.0f, 100);
+
+    // Verify the right thumb didn't move
+    assertThat(slider.getValues()).contains(20.0f);
+    assertThat(slider.getValues()).contains(40.0f);
+  }
+
+  @Test
+  public void test2thumbs_minSeparation_stepSize_leftThumbMovesUntilSeparation() {
+    slider.setValues(20.0f, 80.0f);
+    slider.setMinSeparationValue(30.0f);
+    slider.setStepSize(10.0f);
+
+    // Slide left thumb towards right thumb
+    dragSliderBetweenValues(slider, 20.01f, 80.0f, 3);
+
+    // Verify the left thumb stopped at set separation
+    assertThat(slider.getValues()).contains(50.0f);
+    assertThat(slider.getValues()).contains(80.0f);
+  }
+
+  @Test
+  public void test2thumbs_minSeparation_stepSize_rightThumbMovesUntilSeparation() {
+    slider.setValues(20.0f, 80.0f);
+    slider.setMinSeparationValue(30.0f);
+    slider.setStepSize(10.0f);
+
+    // Slide right thumb towards left thumb
+    dragSliderBetweenValues(slider, 79.99f, 20.0f, 3);
+
+    // Verify the right thumb stopped at set separation
+    assertThat(slider.getValues()).contains(20.0f);
+    assertThat(slider.getValues()).contains(50.0f);
+  }
+
+  @Test
+  public void test3thumbs_minSeparation_middleThumbDoesNotMoveLeft() {
+    slider.setValues(20.0f, 40.0f, 60.0f);
+    slider.setMinSeparationValue(20.0f);
+
+    // Slide middle thumb towards left thumb
+    dragSliderBetweenValues(slider, 39.99f, 20.0f, 100);
+
+    // Verify the middle thumb didn't move
+    assertThat(slider.getValues()).contains(20.0f);
+    assertThat(slider.getValues()).contains(40.0f);
+    assertThat(slider.getValues()).contains(60.0f);
+  }
+
+  @Test
+  public void test3thumbs_minSeparation_middleThumbDoesNotMoveRight() {
+    slider.setValues(20.0f, 40.0f, 60.0f);
+    slider.setMinSeparationValue(20.0f);
+
+    // Slide middle thumb towards right thumb
+    dragSliderBetweenValues(slider, 40.01f, 60.0f, 100);
+
+    // Verify the middle thumb didn't move
+    assertThat(slider.getValues()).contains(20.0f);
+    assertThat(slider.getValues()).contains(40.0f);
+    assertThat(slider.getValues()).contains(60.0f);
+  }
 }
