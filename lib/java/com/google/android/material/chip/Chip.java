@@ -54,6 +54,7 @@ import android.view.PointerIcon;
 import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.ViewOutlineProvider;
+import android.view.ViewParent;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import androidx.annotation.AnimatorRes;
@@ -164,6 +165,8 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
   private static final String BUTTON_ACCESSIBILITY_CLASS_NAME = "android.widget.Button";
   private static final String COMPOUND_BUTTON_ACCESSIBILITY_CLASS_NAME =
       "android.widget.CompoundButton";
+  private static final String RADIO_BUTTON_ACCESSIBILITY_CLASS_NAME =
+      "android.widget.RadioButton";
   private static final String GENERIC_VIEW_ACCESSIBILITY_CLASS_NAME = "android.view.View";
 
   @NonNull private final ChipTouchHelper touchHelper;
@@ -266,14 +269,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
   @Override
   public void onInitializeAccessibilityNodeInfo(@NonNull AccessibilityNodeInfo info) {
     super.onInitializeAccessibilityNodeInfo(info);
-    if (isCheckable() || isClickable()) {
-      info.setClassName(
-          isCheckable()
-              ? COMPOUND_BUTTON_ACCESSIBILITY_CLASS_NAME
-              : BUTTON_ACCESSIBILITY_CLASS_NAME);
-    } else {
-      info.setClassName(GENERIC_VIEW_ACCESSIBILITY_CLASS_NAME);
-    }
+    info.setClassName(getAccessibilityClassName());
     info.setCheckable(isCheckable());
     info.setClickable(isClickable());
 
@@ -1051,14 +1047,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
     protected void onPopulateNodeForHost(@NonNull AccessibilityNodeInfoCompat node) {
       node.setCheckable(isCheckable());
       node.setClickable(isClickable());
-      if (isCheckable() || isClickable()) {
-        node.setClassName(
-            isCheckable()
-                ? COMPOUND_BUTTON_ACCESSIBILITY_CLASS_NAME
-                : BUTTON_ACCESSIBILITY_CLASS_NAME);
-      } else {
-        node.setClassName(GENERIC_VIEW_ACCESSIBILITY_CLASS_NAME);
-      }
+      node.setClassName(getAccessibilityClassName());
       CharSequence chipText = getText();
       if (VERSION.SDK_INT >= VERSION_CODES.M) {
         node.setText(chipText);
@@ -2335,6 +2324,23 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
     insetChipBackgroundDrawable(deltaX, deltaY, deltaX, deltaY);
     updateBackgroundDrawable();
     return true;
+  }
+
+  @Override
+  @NonNull
+  public CharSequence getAccessibilityClassName() {
+    if (isCheckable()) {
+      ViewParent parent = getParent();
+      if (parent instanceof ChipGroup && ((ChipGroup) parent).isSingleSelection()) {
+        return RADIO_BUTTON_ACCESSIBILITY_CLASS_NAME;
+      } else {
+        return COMPOUND_BUTTON_ACCESSIBILITY_CLASS_NAME;
+      }
+    } else if (isClickable()) {
+      return BUTTON_ACCESSIBILITY_CLASS_NAME;
+    } else {
+      return GENERIC_VIEW_ACCESSIBILITY_CLASS_NAME;
+    }
   }
 
   private void removeBackgroundInset() {
