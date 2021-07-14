@@ -175,8 +175,8 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
 
     hasAdjustedPaddingAfterLayoutDirectionResolved = true;
 
-    // Finally, update the super padding to be the combined `android:padding` and
-    //  `app:contentPadding`, in keeping with ShapeableImageView's crazy internal padding contract:
+    // Update the super padding to be the combined `android:padding` and
+    // `app:contentPadding`, keeping with ShapeableImageView's internal padding contract:
     if (VERSION.SDK_INT >= 17 && (isPaddingRelative() || isContentPaddingRelative())) {
       setPaddingRelative(
           super.getPaddingStart(),
@@ -366,9 +366,9 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
    * Set the padding. This is applied to both the background and the image, and does not affect the
    * content padding differentiating the image from the background.
    *
-   * @param left   the left padding in pixels
-   * @param top    the top padding in pixels
-   * @param right  the right padding in pixels
+   * @param left the left padding in pixels
+   * @param top the top padding in pixels
+   * @param right the right padding in pixels
    * @param bottom the bottom padding in pixels
    */
   @Override
@@ -389,9 +389,9 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
    * Set the relative padding. This is applied to both the background and the image, and does not
    * affect the content padding differentiating the image from the background.
    *
-   * @param start  the start padding in pixels
-   * @param top    the top padding in pixels
-   * @param end    the end padding in pixels
+   * @param start the start padding in pixels
+   * @param top the top padding in pixels
+   * @param end the end padding in pixels
    * @param bottom the bottom padding in pixels
    */
   @Override
