@@ -330,6 +330,12 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     void onViewDetachedFromWindow(View v);
   }
 
+  /** @hide */
+  @RestrictTo(LIBRARY_GROUP)
+  protected interface OnMeasureListener {
+    void onMeasure(View v);
+  }
+
   /**
    * Constructor for the transient bottom bar.
    *
@@ -724,6 +730,21 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   }
 
   final void showView() {
+    this.view.setOnMeasureListener(new OnMeasureListener()
+    {
+      @Override
+      public void onMeasure(View v)
+      {
+        if (view.getAnimationMode() == ANIMATION_MODE_SLIDE && shouldAnimate()) {
+          int translationYBottom = getTranslationYBottom();
+          if (USE_OFFSET_API) {
+            ViewCompat.offsetTopAndBottom(view, translationYBottom);
+          } else {
+            view.setTranslationY(translationYBottom);
+          }
+        }
+      }
+    });
     this.view.setOnAttachStateChangeListener(
         new BaseTransientBottomBar.OnAttachStateChangeListener() {
           @Override
@@ -1053,7 +1074,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   }
 
   private int getTranslationYBottom() {
-    int translationY = view.getHeight();
+    int translationY = view.getMeasuredHeight();
     LayoutParams layoutParams = view.getLayoutParams();
     if (layoutParams instanceof MarginLayoutParams) {
       translationY += ((MarginLayoutParams) layoutParams).bottomMargin;
@@ -1128,6 +1149,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
     private BaseTransientBottomBar.OnLayoutChangeListener onLayoutChangeListener;
     private BaseTransientBottomBar.OnAttachStateChangeListener onAttachStateChangeListener;
+    private BaseTransientBottomBar.OnMeasureListener onMeasureListener;
     @AnimationMode private int animationMode;
     private final float backgroundOverlayColorAlpha;
     private final float actionTextColorAlpha;
@@ -1224,6 +1246,14 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     }
 
     @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
+    {
+      super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+      if (onMeasureListener != null)
+        onMeasureListener.onMeasure(this);
+    }
+
+    @Override
     protected void onAttachedToWindow() {
       super.onAttachedToWindow();
       if (onAttachStateChangeListener != null) {
@@ -1249,6 +1279,10 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     void setOnAttachStateChangeListener(
         BaseTransientBottomBar.OnAttachStateChangeListener listener) {
       onAttachStateChangeListener = listener;
+    }
+
+    void setOnMeasureListener(BaseTransientBottomBar.OnMeasureListener listener) {
+      onMeasureListener = listener;
     }
 
     @AnimationMode
