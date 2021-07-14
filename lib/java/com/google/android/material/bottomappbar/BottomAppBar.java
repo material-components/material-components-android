@@ -508,6 +508,13 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   }
 
   /**
+   * Returns true if the {@link BottomAppBar} is hidden
+   */
+  public boolean isScrolledDown() {
+    return getBehavior().isScrolledDown();
+  }
+
+  /**
    * Returns true if the {@link BottomAppBar} is shown
    */
   public boolean isScrolledUp() {
