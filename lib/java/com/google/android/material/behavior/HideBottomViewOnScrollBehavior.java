@@ -107,12 +107,17 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
     }
   }
 
+  /** Returns true if the current state is scrolled up. */
+  public boolean isScrolledUp() {
+    return currentState == STATE_SCROLLED_UP;
+  }
+
   /**
    * Perform an animation that will slide the child from it's current position to be totally on the
    * screen.
    */
   public void slideUp(@NonNull V child) {
-    if (currentState == STATE_SCROLLED_UP) {
+    if (isScrolledUp()) {
       return;
     }
 
@@ -125,12 +130,17 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
         child, 0, ENTER_ANIMATION_DURATION, AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR);
   }
 
+  /** Returns true if the current state is scrolled down. */
+  public boolean isScrolledDown() {
+    return currentState == STATE_SCROLLED_DOWN;
+  }
+
   /**
    * Perform an animation that will slide the child from it's current position to be totally off the
    * screen.
    */
   public void slideDown(@NonNull V child) {
-    if (currentState == STATE_SCROLLED_DOWN) {
+    if (isScrolledDown()) {
       return;
     }
 
