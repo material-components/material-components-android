@@ -35,6 +35,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
+import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.transition.Transition;
@@ -54,10 +55,8 @@ public class MusicPlayerLibraryDemoFragment extends Fragment
     implements AlbumAdapterListener, OnMenuItemClickListener {
 
   private static final int GRID_SPAN_COUNT = 2;
-
-  private FrameLayout listContainer;
-
   private static final int ALBUM_RECYCLER_VIEW_ID = ViewCompat.generateViewId();
+  private FrameLayout listContainer;
   private Parcelable listState = null;
 
   private boolean listTypeGrid = true;
@@ -69,8 +68,12 @@ public class MusicPlayerLibraryDemoFragment extends Fragment
       @NonNull LayoutInflater layoutInflater,
       @Nullable ViewGroup viewGroup,
       @Nullable Bundle bundle) {
-    return layoutInflater.inflate(
-        R.layout.cat_music_player_library_demo_fragment, viewGroup, false);
+    return layoutInflater.inflate(getDemoLayoutResId(), viewGroup, false);
+  }
+
+  @LayoutRes
+  protected final int getDemoLayoutResId() {
+    return R.layout.cat_music_player_library_demo_fragment;
   }
 
   @Override
@@ -132,6 +135,16 @@ public class MusicPlayerLibraryDemoFragment extends Fragment
     MaterialSharedAxis sharedAxis = new MaterialSharedAxis(MaterialSharedAxis.Y, true);
     setList(listTypeGrid, !listSorted, sharedAxis);
     return true;
+  }
+
+  /**
+   * Add or replace the RecyclerView containing the list of albums with a new RecyclerView that is
+   * either a list/grid and has the current sorting.
+   */
+  protected void setListType(boolean listTypeGrid, @NonNull Transition transition) {
+    if (this.listTypeGrid != listTypeGrid) {
+      setList(listTypeGrid, listSorted, transition);
+    }
   }
 
   /**

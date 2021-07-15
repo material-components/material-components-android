@@ -19,9 +19,11 @@ package io.material.catalog.musicplayer;
 import io.material.catalog.R;
 
 import android.os.Bundle;
+import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import io.material.catalog.feature.DemoActivity;
 
@@ -39,8 +41,13 @@ public class MusicPlayerDemoActivity extends DemoActivity {
     super.onCreate(bundle);
     getSupportFragmentManager()
         .beginTransaction()
-        .replace(R.id.fragment_container, new MusicPlayerLibraryDemoFragment())
+        .replace(R.id.fragment_container, getLibraryDemoFragment())
         .commit();
+  }
+
+  @NonNull
+  protected Fragment getLibraryDemoFragment() {
+    return new MusicPlayerLibraryDemoFragment();
   }
 
   @Override

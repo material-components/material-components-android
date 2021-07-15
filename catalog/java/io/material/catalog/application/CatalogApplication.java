@@ -44,7 +44,7 @@ public class CatalogApplication extends Application implements HasAndroidInjecto
   public void onCreate() {
     super.onCreate();
     AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-    
+
     if (!overrideApplicationComponent(this)) {
       DaggerCatalogApplicationComponent.builder().application(this).build().inject(this);
     }
