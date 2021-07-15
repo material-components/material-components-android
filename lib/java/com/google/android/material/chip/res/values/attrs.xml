@@ -153,6 +153,10 @@
          HorizontalScrollView. -->
     <attr name="singleLine" format="boolean"/>
 
+    <attr name="maxRowCount" format="integer"/>
+    <attr name="overflowChipEnabled" format="boolean"/>
+    <attr name="overflowChipPluralResource" format="reference"/>
+
     <!-- Whether only a single chip in this group is allowed to be checked at any time. By default,
          this is false and multiple chips in this group are allowed to be checked at once. -->
     <attr name="singleSelection"/>

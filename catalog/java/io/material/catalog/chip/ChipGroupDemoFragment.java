@@ -45,6 +45,7 @@ public class ChipGroupDemoFragment extends DemoFragment {
     singleSelectionSwitch = view.findViewById(R.id.single_selection);
     selectionRequiredSwitch = view.findViewById(R.id.selection_required);
 
+    ChipGroup maxRowflowGroup = view.findViewById(R.id.maxrow_group);
     ChipGroup reflowGroup = view.findViewById(R.id.reflow_group);
     ChipGroup scrollGroup = view.findViewById(R.id.scroll_group);
 
