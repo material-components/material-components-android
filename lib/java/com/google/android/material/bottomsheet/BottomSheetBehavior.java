@@ -1518,7 +1518,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
             && (settleFromViewDragHelper
                 ? viewDragHelper.settleCapturedViewAt(child.getLeft(), top)
                 : viewDragHelper.smoothSlideViewTo(child, child.getLeft(), top));
-    if (startedSettling) {
+    if (startedSettling && ViewCompat.isAttachedToWindow(child)) {
       setStateInternal(STATE_SETTLING);
       // STATE_SETTLING won't animate the material shape, so do that here with the target state.
       updateDrawableForTargetState(state);
@@ -1527,7 +1527,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         settleRunnable = new SettleRunnable(child, state);
       }
       // If the SettleRunnable has not been posted, post it with the correct state.
-      if (settleRunnable.isPosted == false) {
+      if (!settleRunnable.isPosted) {
         settleRunnable.targetState = state;
         ViewCompat.postOnAnimation(child, settleRunnable);
         settleRunnable.isPosted = true;
@@ -1838,7 +1838,9 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
     @Override
     public void run() {
-      if (viewDragHelper != null && viewDragHelper.continueSettling(true)) {
+      if (viewDragHelper != null
+          && viewDragHelper.continueSettling(true)
+          && ViewCompat.isAttachedToWindow(view)) {
         ViewCompat.postOnAnimation(view, this);
       } else {
         setStateInternal(targetState);
