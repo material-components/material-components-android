@@ -1884,10 +1884,10 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
         final int direction,
         final boolean forceJump) {
       final View child = getAppBarChildOnOffset(layout, offset);
+      boolean lifted = false;
       if (child != null) {
         final AppBarLayout.LayoutParams childLp = (LayoutParams) child.getLayoutParams();
         final int flags = childLp.getScrollFlags();
-        boolean lifted = false;
 
         if ((flags & LayoutParams.SCROLL_FLAG_SCROLL) != 0) {
           final int minHeight = ViewCompat.getMinimumHeight(child);
@@ -1906,20 +1906,20 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
             lifted = -offset >= child.getBottom() - minHeight - layout.getTopInset();
           }
         }
+      }
 
-        if (layout.isLiftOnScroll()) {
-          // Use first scrolling child as default scrolling view for updating lifted state because
-          // it represents the content that would be scrolled beneath the app bar.
-          lifted = layout.shouldLift(findFirstScrollingChild(parent));
-        }
+      if (layout.isLiftOnScroll()) {
+        // Use first scrolling child as default scrolling view for updating lifted state because
+        // it represents the content that would be scrolled beneath the app bar.
+        lifted = layout.shouldLift(findFirstScrollingChild(parent));
+      }
 
-        final boolean changed = layout.setLiftedState(lifted);
+      final boolean changed = layout.setLiftedState(lifted);
 
-        if (forceJump || (changed && shouldJumpElevationState(parent, layout))) {
-          // If the collapsed state changed, we may need to
-          // jump to the current state if we have an overlapping view
-          layout.jumpDrawablesToCurrentState();
-        }
+      if (forceJump || (changed && shouldJumpElevationState(parent, layout))) {
+        // If the collapsed state changed, we may need to
+        // jump to the current state if we have an overlapping view
+        layout.jumpDrawablesToCurrentState();
       }
     }
 
