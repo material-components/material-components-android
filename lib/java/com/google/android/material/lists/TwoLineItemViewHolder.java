@@ -31,7 +31,7 @@ public class TwoLineItemViewHolder extends SingleLineItemViewHolder {
 
   public TwoLineItemViewHolder(@NonNull View view) {
     super(view);
-    this.secondary = itemView.findViewById(R.id.mtrl_list_item_secondary_text);
+    this.secondary = itemView.findViewById(R.id.material_list_item_secondary_text);
   }
 
   @NonNull

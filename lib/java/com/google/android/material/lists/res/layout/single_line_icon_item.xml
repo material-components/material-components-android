@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2019 The Android Open Source Project
+  ~ Copyright (C) 2020 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -16,27 +16,13 @@
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/material_list_item_single_line_medium_height"
     android:background="?attr/selectableItemBackground"
-    android:minHeight="?attr/minTouchTargetSize">
+    android:gravity="center_vertical"
+    android:paddingStart="@dimen/material_list_item_side_padding"
+    android:paddingEnd="@dimen/material_list_item_side_padding">
 
-  <ImageView
-      android:id="@+id/material_list_item_icon"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:paddingTop="8dp"
-      android:paddingBottom="8dp"
-      android:paddingStart="16dp"
-      android:paddingEnd="16dp"/>
+    <include layout="@layout/line_item_primary_action" />
 
-  <TextView
-      android:id="@+id/material_list_item_text"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center_vertical"
-      android:paddingEnd="16dp"
-      android:maxLines="1"
-      android:textAppearance="?attr/textAppearanceSubtitle1"
-      android:textColor="@color/material_list_item_primary"/>
-
+    <include layout="@layout/line_item_primary_text" />
 </LinearLayout>
