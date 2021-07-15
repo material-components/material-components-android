@@ -868,7 +868,11 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
         new AnimatorUpdateListener() {
           @Override
           public void onAnimationUpdate(@NonNull ValueAnimator valueAnimator) {
-            background.setElevation((float) valueAnimator.getAnimatedValue());
+            float elevation = (float) valueAnimator.getAnimatedValue();
+            background.setElevation(elevation);
+            if (statusBarForeground instanceof MaterialShapeDrawable) {
+              ((MaterialShapeDrawable) statusBarForeground).setElevation(elevation);
+            }
           }
         });
     elevationOverlayAnimator.start();

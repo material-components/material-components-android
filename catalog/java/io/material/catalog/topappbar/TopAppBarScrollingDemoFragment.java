@@ -28,6 +28,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.Nullable;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.shape.MaterialShapeDrawable;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.DemoUtils;
 
@@ -48,6 +50,10 @@ public class TopAppBarScrollingDemoFragment extends DemoFragment {
     Toolbar toolbar = view.findViewById(R.id.toolbar);
     AppCompatActivity activity = (AppCompatActivity) getActivity();
     activity.setSupportActionBar(toolbar);
+
+    AppBarLayout appBarLayout = view.findViewById(R.id.appbarlayout);
+    appBarLayout.setStatusBarForeground(
+        MaterialShapeDrawable.createWithElevationOverlay(requireContext()));
 
     return view;
   }
