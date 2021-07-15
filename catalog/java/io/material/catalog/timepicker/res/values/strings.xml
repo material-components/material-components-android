@@ -32,5 +32,13 @@
   <string name="time_format_12">12H</string>
   <!-- Label for an option to choose the same time format as the system [CHAR LIMIT=16] -->
   <string name="time_format_system">System</string>
+  <!-- Label for an option to choose the time format -->
+  <string name="cat_time_picker_timeformat">Time format</string>
+  <!-- Label for an option to choose the input mode -->
+  <string name="cat_time_picker_inputmode">Input mode</string>
+  <!-- Indicates that the picker will start with clock mode [CHAR LIMIT=25] -->
+  <string name="cat_time_picker_inputmode_clock">Clock</string>
+  <!-- Indicates that the picker will start with text input mode [CHAR LIMIT=25] -->
+  <string name="cat_time_picker_inputmode_inputtext">Text Input</string>
 
 </resources>
