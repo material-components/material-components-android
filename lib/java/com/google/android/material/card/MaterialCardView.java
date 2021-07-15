@@ -167,7 +167,7 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
    * @param strokeColor The color of the stroke.
    */
   public void setStrokeColor(@ColorInt int strokeColor) {
-    cardViewHelper.setStrokeColor(ColorStateList.valueOf(strokeColor));
+    setStrokeColor(ColorStateList.valueOf(strokeColor));
   }
 
   /**
@@ -177,6 +177,7 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
    */
   public void setStrokeColor(ColorStateList strokeColor) {
     cardViewHelper.setStrokeColor(strokeColor);
+    invalidate();
   }
 
   /** @deprecated use {@link #getStrokeColorStateList()} */
@@ -199,6 +200,7 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
    */
   public void setStrokeWidth(@Dimension int strokeWidth) {
     cardViewHelper.setStrokeWidth(strokeWidth);
+    invalidate();
   }
 
   /** Returns the stroke width of this card view. */
