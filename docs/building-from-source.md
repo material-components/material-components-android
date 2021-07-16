@@ -5,7 +5,7 @@ section: docs
 path: /docs/building-from-source/
 -->
 
-# Building From the Latest Source
+# Building From the Latest Sourc
 
 If you'll be contributing to the library, or need a version newer than what has
 been released, Material Components for Android can also be built from source.
