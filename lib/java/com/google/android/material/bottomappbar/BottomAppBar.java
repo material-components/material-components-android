@@ -236,7 +236,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
       };
 
   public BottomAppBar(@NonNull Context context) {
-    this(context, null, 0);
+    this(context, null);
   }
 
   public BottomAppBar(@NonNull Context context, @Nullable AttributeSet attrs) {
