@@ -20,6 +20,7 @@
   <dimen name="mtrl_alert_dialog_background_inset_top">80dp</dimen>
   <dimen name="mtrl_alert_dialog_background_inset_end">24dp</dimen>
   <dimen name="mtrl_alert_dialog_background_inset_bottom">80dp</dimen>
+  <dimen name="mtrl_alert_dialog_elevation">24dp</dimen>
   <!-- 16dp from abc_dialog_material_background.xml -->
   <dimen name="appcompat_dialog_background_inset">16dp</dimen>
 </resources>
