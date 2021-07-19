@@ -16,21 +16,29 @@
 
 package com.google.android.material.switchmaterial;
 
-import com.google.android.material.R;
-
-import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
-
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
-import androidx.appcompat.widget.SwitchCompat;
+import android.os.Build;
 import android.util.AttributeSet;
+import android.view.View;
+
+import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.view.ViewCompat;
+
+import com.google.android.material.R;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.elevation.ElevationOverlayProvider;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 
 /**
  * A class that creates a Material Themed Switch.
@@ -52,11 +60,28 @@ public class SwitchMaterial extends SwitchCompat {
         new int[] {-android.R.attr.state_enabled, -android.R.attr.state_checked} // [3]
       };
 
+  /**
+   * Gravity used to position the switch at the start of the view.
+   */
+  public static final int SWITCH_GRAVITY_START = 0x1;
+
+  /**
+   * Gravity used to position the switch at the end of the view. This is the default value.
+   */
+  public static final int SWITCH_GRAVITY_END = 0x2;
+
+  /** Positions the icon can be set to. */
+  @IntDef({SWITCH_GRAVITY_START, SWITCH_GRAVITY_END})
+  @Retention(RetentionPolicy.SOURCE)
+  @interface SwitchGravity {}
+
   @NonNull private final ElevationOverlayProvider elevationOverlayProvider;
 
   @Nullable private ColorStateList materialThemeColorsThumbTintList;
   @Nullable private ColorStateList materialThemeColorsTrackTintList;
   private boolean useMaterialThemeColors;
+  private boolean invertDirection = false;
+  @SwitchGravity private int switchGravity;
 
   public SwitchMaterial(@NonNull Context context) {
     this(context, null);
@@ -79,6 +104,9 @@ public class SwitchMaterial extends SwitchCompat {
 
     useMaterialThemeColors =
         attributes.getBoolean(R.styleable.SwitchMaterial_useMaterialThemeColors, false);
+
+    switchGravity =
+        attributes.getInt(R.styleable.SwitchMaterial_switchGravity, SWITCH_GRAVITY_END);
 
     attributes.recycle();
   }
@@ -160,5 +188,46 @@ public class SwitchMaterial extends SwitchCompat {
           new ColorStateList(ENABLED_CHECKED_STATES, switchTrackColorsList);
     }
     return materialThemeColorsTrackTintList;
+  }
+
+  @Override
+  public int getCompoundPaddingLeft() {
+    invertDirection = true;
+    int padding = super.getCompoundPaddingLeft();
+    invertDirection = false;
+    return padding;
+  }
+
+  @Override
+  protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+    invertDirection = true;
+    super.onLayout(changed, left, top, right, bottom);
+    invertDirection = false;
+  }
+
+  @Override
+  public int getCompoundPaddingRight() {
+    invertDirection = true;
+    int padding = super.getCompoundPaddingRight();
+    invertDirection = false;
+    return padding;
+  }
+
+  @Override
+  public int getLayoutDirection() {
+    int direction = super.getLayoutDirection();
+    if (!isInvertDirection() || Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+      return direction;
+    } else {
+      return isLayoutRtl(direction) ? View.LAYOUT_DIRECTION_LTR : View.LAYOUT_DIRECTION_RTL;
+    }
+  }
+
+  private boolean isLayoutRtl(int direction) {
+    return direction == ViewCompat.LAYOUT_DIRECTION_RTL;
+  }
+
+  private boolean isInvertDirection() {
+    return invertDirection && switchGravity == SWITCH_GRAVITY_START;
   }
 }

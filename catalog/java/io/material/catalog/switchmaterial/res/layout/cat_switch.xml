@@ -65,6 +65,18 @@
         android:checked="false"
         android:enabled="false"
         android:text="@string/cat_switch_disabled"/>
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_columnSpan="2"
+      android:text="@string/cat_switch_gravity_guide"
+      android:textSize="@dimen/cat_switch_header_size"/>
+    <com.google.android.material.switchmaterial.SwitchMaterial
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:text="@string/cat_switch_gravity"
+      android:gravity="center_vertical|end"
+      app:switchGravity="start"/>
   </GridLayout>
   <ImageView
       android:layout_width="match_parent"
