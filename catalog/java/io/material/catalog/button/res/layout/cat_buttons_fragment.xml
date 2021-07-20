@@ -158,6 +158,70 @@
         app:icon="@drawable/ic_dialogs_24px"
         app:iconGravity="textTop" />
 
+      <TextView
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:text="@string/cat_btn_icon_only_text"
+        android:textSize="16sp"/>
+
+      <Button
+        style="@style/Widget.MaterialComponents.Button.IconOnly"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/cat_btn_icon_only_text"
+        app:icon="@drawable/ic_add_24px"
+         />
+
+      <TextView
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:text="@string/cat_unelevated_btn_icon_only_text"
+        android:textSize="16sp"/>
+
+      <Button
+        style="@style/Widget.MaterialComponents.Button.UnelevatedButton.IconOnly"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/cat_unelevated_btn_icon_only_text"
+        app:icon="@drawable/ic_add_24px"
+        />
+
+      <TextView
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:text="@string/cat_text_btn_icon_only_text"
+        android:textSize="16sp"/>
+
+      <Button
+        style="@style/Widget.MaterialComponents.Button.TextButton.IconOnly"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/cat_text_btn_icon_only_text"
+        app:icon="@drawable/ic_add_24px"
+        />
+
+      <TextView
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:text="@string/cat_outlined_btn_icon_only_text"
+        android:textSize="16sp"/>
+
+      <Button
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton.IconOnly"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/cat_outlined_btn_icon_only_text"
+        app:icon="@drawable/ic_add_24px"
+        />
+
       <com.google.android.material.switchmaterial.SwitchMaterial
           android:id="@+id/cat_button_enabled_switch"
           android:layout_width="wrap_content"

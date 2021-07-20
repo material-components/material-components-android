@@ -42,6 +42,11 @@
   <string name="cat_button_clicked">Button clicked</string>
   <string name="cat_snackbar_action_button_text">Done</string>
 
+  <string name="cat_btn_icon_only_text">Icon only Material button</string>
+  <string name="cat_unelevated_btn_icon_only_text">Icon only Unelevated button</string>
+  <string name="cat_text_btn_icon_only_text">Icon only Text button</string>
+  <string name="cat_outlined_btn_icon_only_text">Icon only utlined button</string>
+
   <string name="cat_single_select">Single-select</string>
   <string name="cat_multi_select">Multi-select</string>
   <string name="cat_icon_only">Icon only</string>
