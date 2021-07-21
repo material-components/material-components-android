@@ -27,6 +27,7 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION_CODES;
 import android.os.Parcelable;
 import androidx.core.graphics.BlendModeColorFilterCompat;
@@ -298,9 +299,11 @@ public class MaterialContainerTransformSharedElementCallback extends SharedEleme
    * android.graphics.drawable.Drawable#setTint(int)} instead.
    */
   private static void removeWindowBackground(Window window) {
-    window
-        .getDecorView()
-        .getBackground()
+    Drawable windowBackground = getWindowBackground(window);
+    if (windowBackground == null) {
+      return;
+    }
+    windowBackground
         .mutate()
         .setColorFilter(
             BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
@@ -313,7 +316,16 @@ public class MaterialContainerTransformSharedElementCallback extends SharedEleme
    * @see #removeWindowBackground(Window)
    */
   private static void restoreWindowBackground(Window window) {
-    window.getDecorView().getBackground().mutate().clearColorFilter();
+    Drawable windowBackground = getWindowBackground(window);
+    if (windowBackground == null) {
+      return;
+    }
+    windowBackground.mutate().clearColorFilter();
+  }
+
+  @Nullable
+  private static Drawable getWindowBackground(Window window) {
+    return window.getDecorView().getBackground();
   }
 
   /**
