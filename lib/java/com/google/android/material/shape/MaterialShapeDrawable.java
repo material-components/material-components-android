@@ -145,6 +145,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
   @Nullable private PorterDuffColorFilter tintFilter;
   @Nullable private PorterDuffColorFilter strokeTintFilter;
+  private int resolvedTintColor;
 
   @NonNull private final RectF pathBounds = new RectF();
 
@@ -437,6 +438,17 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   public void setStrokeWidth(float strokeWidth) {
     drawableState.strokeWidth = strokeWidth;
     invalidateSelf();
+  }
+
+  /**
+   * Get the tint color factoring in any other runtime modifications such as elevation overlays.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  @ColorInt
+  public int getResolvedTintColor() {
+    return resolvedTintColor;
   }
 
   @Override
@@ -1253,6 +1265,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     if (requiresElevationOverlay) {
       int paintColor = paint.getColor();
       int tintColor = compositeElevationOverlayIfNeeded(paintColor);
+      resolvedTintColor = tintColor;
       if (tintColor != paintColor) {
         return new PorterDuffColorFilter(tintColor, PorterDuff.Mode.SRC_IN);
       }
@@ -1269,6 +1282,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     if (requiresElevationOverlay) {
       tintColor = compositeElevationOverlayIfNeeded(tintColor);
     }
+    resolvedTintColor = tintColor;
     return new PorterDuffColorFilter(tintColor, tintMode);
   }
 

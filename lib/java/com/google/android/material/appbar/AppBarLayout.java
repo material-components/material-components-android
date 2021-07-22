@@ -55,6 +55,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import androidx.annotation.ColorInt;
+import androidx.annotation.Dimension;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
 import androidx.annotation.IntDef;
@@ -163,6 +164,14 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset);
   }
 
+  /**
+   * Definition for a callback to be invoked when the lift on scroll elevation and background color
+   * change.
+   */
+  public interface LiftOnScrollListener {
+    void onUpdate(@Dimension float elevation, @ColorInt int backgroundColor);
+  }
+
   private static final int DEF_STYLE_RES = R.style.Widget_Design_AppBarLayout;
   private static final int INVALID_SCROLL_RANGE = -1;
 
@@ -187,6 +196,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
   @IdRes private int liftOnScrollTargetViewId;
   @Nullable private WeakReference<View> liftOnScrollTargetView;
   @Nullable private ValueAnimator elevationOverlayAnimator;
+  private final List<LiftOnScrollListener> liftOnScrollListeners = new ArrayList<>();
 
   private int[] tmpStatesArray;
 
@@ -310,6 +320,24 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
   @SuppressWarnings("FunctionalInterfaceClash")
   public void removeOnOffsetChangedListener(OnOffsetChangedListener listener) {
     removeOnOffsetChangedListener((BaseOnOffsetChangedListener) listener);
+  }
+
+  /**
+   * Add a {@link LiftOnScrollListener} that will be called when the lift on scroll elevation and
+   * background color of this {@link AppBarLayout} change.
+   */
+  public void addLiftOnScrollListener(@NonNull LiftOnScrollListener liftOnScrollListener) {
+    liftOnScrollListeners.add(liftOnScrollListener);
+  }
+
+  /** Remove a previously added {@link LiftOnScrollListener}. */
+  public boolean removeLiftOnScrollListener(@NonNull LiftOnScrollListener liftOnScrollListener) {
+    return liftOnScrollListeners.remove(liftOnScrollListener);
+  }
+
+  /** Remove all previously added {@link LiftOnScrollListener}s. */
+  public void clearLiftOnScrollListener() {
+    liftOnScrollListeners.clear();
   }
 
   /**
@@ -872,6 +900,9 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
             background.setElevation(elevation);
             if (statusBarForeground instanceof MaterialShapeDrawable) {
               ((MaterialShapeDrawable) statusBarForeground).setElevation(elevation);
+            }
+            for (LiftOnScrollListener liftOnScrollListener : liftOnScrollListeners) {
+              liftOnScrollListener.onUpdate(elevation, background.getResolvedTintColor());
             }
           }
         });
