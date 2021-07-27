@@ -3011,7 +3011,7 @@ public class TextInputLayout extends LinearLayout {
    * and not focused.
    *
    * @see #setExpandedHintEnabled(boolean)
-   * @attr ref com.google.android.material.R.styleable#TextInputLayout_hintExpadedEnabled
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_hintExpandedEnabled
    */
   public boolean isExpandedHintEnabled() {
     return expandedHintEnabled;
@@ -3022,7 +3022,7 @@ public class TextInputLayout extends LinearLayout {
    * and not focused.
    *
    * @see #isExpandedHintEnabled()
-   * @attr ref com.google.android.material.R.styleable#TextInputLayout_hintExpadedEnabled
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_hintExpandedEnabled
    */
   public void setExpandedHintEnabled(boolean enabled) {
     if (expandedHintEnabled != enabled) {

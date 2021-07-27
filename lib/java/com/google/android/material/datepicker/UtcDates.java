@@ -150,7 +150,7 @@ class UtcDates {
   static SimpleDateFormat getTextInputFormat() {
     String pattern =
         ((SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault()))
-            .toLocalizedPattern()
+            .toPattern()
             .replaceAll("\\s+", "");
     SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.getDefault());
     format.setTimeZone(UtcDates.getTimeZone());
@@ -159,12 +159,18 @@ class UtcDates {
   }
 
   static String getTextInputHint(Resources res, SimpleDateFormat format) {
-    String formatHint = format.toLocalizedPattern();
+    String formatHint = format.toPattern();
     String yearChar = res.getString(R.string.mtrl_picker_text_input_year_abbr);
     String monthChar = res.getString(R.string.mtrl_picker_text_input_month_abbr);
     String dayChar = res.getString(R.string.mtrl_picker_text_input_day_abbr);
 
-    return formatHint.replaceAll("d", dayChar).replaceAll("M", monthChar).replaceAll("y", yearChar);
+    // Format year to always be displayed as 4 chars when only 1 char is used in localized pattern.
+    // Example: (fr-FR) dd/MM/y -> dd/MM/yyyy
+    if (formatHint.replaceAll("[^y]", "").length() == 1) {
+      formatHint = formatHint.replace("y", "yyyy");
+    }
+
+    return formatHint.replace("d", dayChar).replace("M", monthChar).replace("y", yearChar);
   }
 
   static SimpleDateFormat getSimpleFormat(String pattern) {
