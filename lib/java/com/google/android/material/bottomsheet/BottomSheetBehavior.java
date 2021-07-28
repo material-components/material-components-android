@@ -43,8 +43,10 @@ import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
+import android.view.View.MeasureSpec;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.view.ViewGroup.MarginLayoutParams;
 import android.view.ViewParent;
 import android.view.accessibility.AccessibilityEvent;
 import androidx.annotation.FloatRange;
@@ -194,9 +196,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   private static final int CORNER_ANIMATION_DURATION = 500;
 
-  private static final int NO_WIDTH = -1;
-
-  private static final int NO_HEIGHT = -1;
+  private static final int NO_MAX_SIZE = -1;
 
   private boolean fitToContents = true;
 
@@ -221,9 +221,9 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   private MaterialShapeDrawable materialShapeDrawable;
 
-  private int maxWidth = NO_WIDTH;
+  private int maxWidth = NO_MAX_SIZE;
 
-  private int maxHeight = NO_HEIGHT;
+  private int maxHeight = NO_MAX_SIZE;
 
   private int gestureInsetBottom;
   private boolean gestureInsetBottomIgnored;
@@ -326,13 +326,13 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     if (a.hasValue(R.styleable.BottomSheetBehavior_Layout_android_maxWidth)) {
       setMaxWidth(
           a.getDimensionPixelSize(
-              R.styleable.BottomSheetBehavior_Layout_android_maxWidth, NO_WIDTH));
+              R.styleable.BottomSheetBehavior_Layout_android_maxWidth, NO_MAX_SIZE));
     }
 
     if (a.hasValue(R.styleable.BottomSheetBehavior_Layout_android_maxHeight)) {
       setMaxHeight(
           a.getDimensionPixelSize(
-              R.styleable.BottomSheetBehavior_Layout_android_maxHeight, NO_HEIGHT));
+              R.styleable.BottomSheetBehavior_Layout_android_maxHeight, NO_MAX_SIZE));
     }
 
     TypedValue value = a.peekValue(R.styleable.BottomSheetBehavior_Layout_behavior_peekHeight);
@@ -422,6 +422,62 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   @Override
+  public boolean onMeasureChild(
+      @NonNull CoordinatorLayout parent,
+      @NonNull V child,
+      int parentWidthMeasureSpec,
+      int widthUsed,
+      int parentHeightMeasureSpec,
+      int heightUsed) {
+    MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
+    int childWidthMeasureSpec =
+        getChildMeasureSpec(
+            parentWidthMeasureSpec,
+            parent.getPaddingLeft()
+                + parent.getPaddingRight()
+                + lp.leftMargin
+                + lp.rightMargin
+                + widthUsed,
+            maxWidth,
+            lp.width);
+    int childHeightMeasureSpec =
+        getChildMeasureSpec(
+            parentHeightMeasureSpec,
+            parent.getPaddingTop()
+                + parent.getPaddingBottom()
+                + lp.topMargin
+                + lp.bottomMargin
+                + heightUsed,
+            maxHeight,
+            lp.height);
+    child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
+    return true; // Child was measured
+  }
+
+  private int getChildMeasureSpec(
+      int parentMeasureSpec,
+      int padding,
+      int maxSize,
+      int childDimension) {
+    int result = ViewGroup.getChildMeasureSpec(parentMeasureSpec, padding, childDimension);
+    if (maxSize == NO_MAX_SIZE) {
+      return result;
+    } else {
+      int mode = MeasureSpec.getMode(result);
+      int size = MeasureSpec.getSize(result);
+      switch (mode) {
+        case MeasureSpec.EXACTLY:
+          return MeasureSpec.makeMeasureSpec(min(size, maxSize), MeasureSpec.EXACTLY);
+        case MeasureSpec.AT_MOST:
+        case MeasureSpec.UNSPECIFIED:
+        default:
+          return MeasureSpec.makeMeasureSpec(
+              size == 0 ? maxSize : min(size, maxSize), MeasureSpec.AT_MOST);
+      }
+    }
+  }
+
+  @Override
   public boolean onLayoutChild(
       @NonNull CoordinatorLayout parent, @NonNull final V child, int layoutDirection) {
     if (ViewCompat.getFitsSystemWindows(parent) && !ViewCompat.getFitsSystemWindows(child)) {
@@ -453,8 +509,6 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
           == ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_AUTO) {
         ViewCompat.setImportantForAccessibility(child, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
       }
-
-      adjustChildWidthAndHeightIfNeeded(child);
     }
     if (viewDragHelper == null) {
       viewDragHelper = ViewDragHelper.create(parent, dragCallback);
@@ -1234,33 +1288,6 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       callbacks.get(i).onStateChanged(bottomSheet, state);
     }
     updateAccessibilityActions();
-  }
-
-  private void adjustChildWidthAndHeightIfNeeded(@NonNull final V child) {
-    final ViewGroup.LayoutParams lp = child.getLayoutParams();
-    boolean layoutHasChanges = false;
-
-    int width = child.getMeasuredWidth();
-    if (width > maxWidth && maxWidth != NO_WIDTH) {
-      lp.width = maxWidth;
-      layoutHasChanges = true;
-    }
-
-    int height = child.getMeasuredHeight();
-    if (height > maxHeight && maxHeight != NO_HEIGHT) {
-      lp.height = maxHeight;
-      layoutHasChanges = true;
-    }
-
-    if (layoutHasChanges) {
-      child.post(
-          new Runnable() {
-            @Override
-            public void run() {
-              child.setLayoutParams(lp);
-            }
-          });
-    }
   }
 
   private void updateDrawableForTargetState(@State int state) {
