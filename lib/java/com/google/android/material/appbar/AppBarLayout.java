@@ -857,7 +857,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
    * @return true if the lifted state changed
    */
   public boolean setLifted(boolean lifted) {
-    return setLiftedState(lifted);
+    return setLiftedState(lifted, /* force= */ true);
   }
 
   /** Returns whether the {@link AppBarLayout} is in a lifted state or not. */
@@ -865,9 +865,13 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     return lifted;
   }
 
-  // Internal helper method that updates lifted state.
   boolean setLiftedState(boolean lifted) {
-    if (this.lifted != lifted) {
+    return setLiftedState(lifted, /* force= */ !liftableOverride);
+  }
+
+  // Internal helper method that updates lifted state.
+  boolean setLiftedState(boolean lifted, boolean force) {
+    if (force && this.lifted != lifted) {
       this.lifted = lifted;
       refreshDrawableState();
       if (liftOnScroll && getBackground() instanceof MaterialShapeDrawable) {
