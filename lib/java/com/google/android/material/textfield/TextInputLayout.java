@@ -2566,7 +2566,7 @@ public class TextInputLayout extends LinearLayout {
         || suffixTextView == null || endLayout == null)
       return;;
 
-    if (endIconMode == END_ICON_NONE && endIconView.getVisibility() != GONE)
+    if (!hasEndIcon() && endIconView.getVisibility() != GONE)
       endIconView.setVisibility(GONE);
 
     if (endIconFrame.getVisibility() != endIconView.getVisibility())
@@ -3372,7 +3372,7 @@ public class TextInputLayout extends LinearLayout {
     int previousEndIconMode = this.endIconMode;
     this.endIconMode = endIconMode;
     dispatchOnEndIconChanged(previousEndIconMode);
-    setEndIconVisible(endIconMode != END_ICON_NONE);
+    setEndIconVisible(hasEndIcon());
     if (getEndIconDelegate().isBoxBackgroundModeSupported(boxBackgroundMode)) {
       getEndIconDelegate().initialize();
     } else {
@@ -4343,7 +4343,12 @@ public class TextInputLayout extends LinearLayout {
 
   private void setErrorIconVisible(boolean errorIconVisible) {
     errorIconView.setVisibility(errorIconVisible ? VISIBLE : GONE);
-    endIconFrame.setVisibility(errorIconVisible ? GONE : VISIBLE);
+    if (errorIconVisible && isEndIconVisible())
+      setEndIconVisible(false);
+    else if (hasEndIcon() && getEndIconMode() == END_ICON_CLEAR_TEXT && editText != null &&
+        !isEndIconVisible() && editText.getText().length() > 0 &&
+        (editText.hasFocus() || endIconView.hasFocus()))
+      setEndIconVisible(true);
     updateEndLayoutVisible();
     updateSuffixTextViewPadding();
     if (!hasEndIcon()) {
