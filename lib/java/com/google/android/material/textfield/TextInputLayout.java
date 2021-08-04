@@ -447,6 +447,7 @@ public class TextInputLayout extends LinearLayout {
     inputFrame.setAddStatesFromChildren(true);
     addView(inputFrame);
     startLayout = new LinearLayout(context);
+    startLayout.setVisibility(GONE);
     startLayout.setOrientation(HORIZONTAL);
     startLayout.setLayoutParams(
         new FrameLayout.LayoutParams(
@@ -455,6 +456,7 @@ public class TextInputLayout extends LinearLayout {
             Gravity.START | Gravity.LEFT));
     inputFrame.addView(startLayout);
     endLayout = new LinearLayout(context);
+    endLayout.setVisibility(GONE);
     endLayout.setOrientation(HORIZONTAL);
     endLayout.setLayoutParams(
         new FrameLayout.LayoutParams(
@@ -463,6 +465,7 @@ public class TextInputLayout extends LinearLayout {
             Gravity.END | Gravity.RIGHT));
     inputFrame.addView(endLayout);
     endIconFrame = new FrameLayout(context);
+    endIconFrame.setVisibility(GONE);
     endIconFrame.setLayoutParams(
         new FrameLayout.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -617,8 +620,8 @@ public class TextInputLayout extends LinearLayout {
         (CheckableImageButton)
             LayoutInflater.from(getContext())
                 .inflate(R.layout.design_text_input_end_icon, endLayout, false);
-    errorIconView.setId(R.id.text_input_error_icon);
     errorIconView.setVisibility(GONE);
+    errorIconView.setId(R.id.text_input_error_icon);
     if (MaterialResources.isFontScaleAtLeast1_3(context)) {
       ViewGroup.MarginLayoutParams lp =
           (ViewGroup.MarginLayoutParams) errorIconView.getLayoutParams();
@@ -712,8 +715,8 @@ public class TextInputLayout extends LinearLayout {
         (CheckableImageButton)
             LayoutInflater.from(getContext())
                 .inflate(R.layout.design_text_input_end_icon, endIconFrame, false);
-    endIconFrame.addView(endIconView);
     endIconView.setVisibility(GONE);
+    endIconFrame.addView(endIconView);
     if (MaterialResources.isFontScaleAtLeast1_3(context)) {
       ViewGroup.MarginLayoutParams lp =
           (ViewGroup.MarginLayoutParams) endIconView.getLayoutParams();
@@ -777,6 +780,7 @@ public class TextInputLayout extends LinearLayout {
 
     // Set up prefix view.
     prefixTextView = new AppCompatTextView(context);
+    prefixTextView.setVisibility(GONE);
     prefixTextView.setId(R.id.textinput_prefix_text);
     prefixTextView.setLayoutParams(
         new FrameLayout.LayoutParams(
@@ -789,6 +793,7 @@ public class TextInputLayout extends LinearLayout {
 
     // Set up suffix view.
     suffixTextView = new AppCompatTextView(context);
+    suffixTextView.setVisibility(GONE);
     suffixTextView.setId(R.id.textinput_suffix_text);
     suffixTextView.setLayoutParams(
         new FrameLayout.LayoutParams(
@@ -2432,7 +2437,10 @@ public class TextInputLayout extends LinearLayout {
   }
 
   private void updatePrefixTextVisibility() {
-    prefixTextView.setVisibility((prefixText != null && !isHintExpanded()) ? VISIBLE : GONE);
+    boolean visible = prefixText != null && !isHintExpanded();
+    prefixTextView.setVisibility(visible ? VISIBLE : GONE);
+    if (visible)
+        updateStartLayoutVisible();
     updateDummyDrawables();
   }
 
@@ -2521,10 +2529,23 @@ public class TextInputLayout extends LinearLayout {
     int oldSuffixVisibility = suffixTextView.getVisibility();
     boolean visible = suffixText != null && !isHintExpanded();
     suffixTextView.setVisibility(visible ? VISIBLE : GONE);
+    if (visible)
+      updateEndLayoutVisible();
     if (oldSuffixVisibility != suffixTextView.getVisibility()) {
       getEndIconDelegate().onSuffixVisibilityChanged(visible);
     }
     updateDummyDrawables();
+  }
+
+  private void updateEndLayoutVisible() {
+    if (endLayout.getVisibility() != VISIBLE)
+      endLayout.setVisibility(VISIBLE);
+  }
+
+
+  private void updateStartLayoutVisible() {
+    if (startLayout.getVisibility() != VISIBLE)
+      startLayout.setVisibility(VISIBLE);
   }
 
   /**
@@ -3162,6 +3183,8 @@ public class TextInputLayout extends LinearLayout {
   public void setStartIconVisible(boolean visible) {
     if (isStartIconVisible() != visible) {
       startIconView.setVisibility(visible ? View.VISIBLE : View.GONE);
+      if (visible)
+        updateStartLayoutVisible();
       updatePrefixTextViewPadding();
       updateDummyDrawables();
     }
@@ -3384,6 +3407,11 @@ public class TextInputLayout extends LinearLayout {
   public void setEndIconVisible(boolean visible) {
     if (isEndIconVisible() != visible) {
       endIconView.setVisibility(visible ? View.VISIBLE : View.GONE);
+      if (endIconFrame.getVisibility() != VISIBLE)
+        endIconFrame.setVisibility(VISIBLE);
+
+      if (visible)
+        updateEndLayoutVisible();
       updateSuffixTextViewPadding();
       updateDummyDrawables();
     }
@@ -4265,6 +4293,8 @@ public class TextInputLayout extends LinearLayout {
   private void setErrorIconVisible(boolean errorIconVisible) {
     errorIconView.setVisibility(errorIconVisible ? VISIBLE : GONE);
     endIconFrame.setVisibility(errorIconVisible ? GONE : VISIBLE);
+    if (errorIconVisible)
+        updateEndLayoutVisible();
     updateSuffixTextViewPadding();
     if (!hasEndIcon()) {
       updateDummyDrawables();
