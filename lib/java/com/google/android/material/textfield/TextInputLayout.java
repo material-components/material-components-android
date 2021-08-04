@@ -2462,9 +2462,9 @@ public class TextInputLayout extends LinearLayout {
   private void updatePrefixTextVisibility() {
     boolean visible = prefixText != null && !isHintExpanded();
     prefixTextView.setVisibility(visible ? VISIBLE : GONE);
-    if (visible)
-        updateStartLayoutVisible();
+    updateStartLayoutVisible();
     updateDummyDrawables();
+    updateStartLayoutVisible();
   }
 
   /**
@@ -2552,23 +2552,54 @@ public class TextInputLayout extends LinearLayout {
     int oldSuffixVisibility = suffixTextView.getVisibility();
     boolean visible = suffixText != null && !isHintExpanded();
     suffixTextView.setVisibility(visible ? VISIBLE : GONE);
-    if (visible)
-      updateEndLayoutVisible();
+    updateEndLayoutVisible();
     if (oldSuffixVisibility != suffixTextView.getVisibility()) {
       getEndIconDelegate().onSuffixVisibilityChanged(visible);
     }
     updateDummyDrawables();
+    updateEndLayoutVisible();
   }
 
+  @SuppressWarnings("ConstantConditions")
   private void updateEndLayoutVisible() {
-    if (endLayout.getVisibility() != VISIBLE)
-      endLayout.setVisibility(VISIBLE);
+    if (endIconView == null || endIconFrame == null || errorIconView == null
+        || suffixTextView == null || endLayout == null)
+      return;;
+
+    if (endIconMode == END_ICON_NONE && endIconView.getVisibility() != GONE)
+      endIconView.setVisibility(GONE);
+
+    if (endIconFrame.getVisibility() != endIconView.getVisibility())
+      endIconFrame.setVisibility(endIconView.getVisibility());
+
+    int endIconFrameVis = endIconFrame.getVisibility();
+    int suffixVis = suffixTextView.getVisibility();
+    int errorVis = errorIconView.getVisibility();
+
+    if (endIconFrameVis == VISIBLE || suffixVis == VISIBLE ||errorVis == VISIBLE) {
+      if (endLayout.getVisibility() != VISIBLE)
+        endLayout.setVisibility(VISIBLE);
+    } else {
+      if (endLayout.getVisibility() != GONE)
+        endLayout.setVisibility(GONE);
+    }
   }
 
-
+  @SuppressWarnings("ConstantConditions")
   private void updateStartLayoutVisible() {
-    if (startLayout.getVisibility() != VISIBLE)
-      startLayout.setVisibility(VISIBLE);
+    if (startIconView == null || prefixTextView == null || startLayout == null)
+      return;;
+
+    int startIconVis = startIconView.getVisibility();
+    int prefixVis = prefixTextView.getVisibility();
+
+    if (startIconVis == VISIBLE || prefixVis == VISIBLE) {
+      if (startLayout.getVisibility() != VISIBLE)
+        startLayout.setVisibility(VISIBLE);
+    } else {
+      if (startLayout.getVisibility() != GONE)
+        startLayout.setVisibility(GONE);
+    }
   }
 
   /**
@@ -3206,11 +3237,11 @@ public class TextInputLayout extends LinearLayout {
   public void setStartIconVisible(boolean visible) {
     if (isStartIconVisible() != visible) {
       startIconView.setVisibility(visible ? View.VISIBLE : View.GONE);
-      if (visible)
-        updateStartLayoutVisible();
+      updateStartLayoutVisible();
       updatePrefixTextViewPadding();
       updateDummyDrawables();
     }
+    updateStartLayoutVisible();
   }
 
   /**
@@ -3430,14 +3461,11 @@ public class TextInputLayout extends LinearLayout {
   public void setEndIconVisible(boolean visible) {
     if (isEndIconVisible() != visible) {
       endIconView.setVisibility(visible ? View.VISIBLE : View.GONE);
-      if (endIconFrame.getVisibility() != VISIBLE)
-        endIconFrame.setVisibility(VISIBLE);
-
-      if (visible)
-        updateEndLayoutVisible();
+      updateEndLayoutVisible();
       updateSuffixTextViewPadding();
       updateDummyDrawables();
     }
+    updateEndLayoutVisible();
   }
 
   /**
@@ -4316,12 +4344,12 @@ public class TextInputLayout extends LinearLayout {
   private void setErrorIconVisible(boolean errorIconVisible) {
     errorIconView.setVisibility(errorIconVisible ? VISIBLE : GONE);
     endIconFrame.setVisibility(errorIconVisible ? GONE : VISIBLE);
-    if (errorIconVisible)
-        updateEndLayoutVisible();
+    updateEndLayoutVisible();
     updateSuffixTextViewPadding();
     if (!hasEndIcon()) {
       updateDummyDrawables();
     }
+    updateEndLayoutVisible();
   }
 
   private boolean isErrorIconVisible() {
