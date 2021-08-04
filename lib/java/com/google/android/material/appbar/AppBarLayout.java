@@ -841,6 +841,21 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     return setLiftableState(liftable);
   }
 
+  /**
+   * Sets whether the {@link AppBarLayout} lifted state corresponding to {@link
+   * #setLiftable(boolean)} and {@link #setLifted(boolean)} will be overridden manually.
+   *
+   * <p>If true, this means that the {@link AppBarLayout} will not manage its own lifted state and
+   * it should instead be manually updated via {@link #setLifted(boolean)}. If false, the {@link
+   * AppBarLayout} will manage its lifted state based on the scrolling sibling view.
+   *
+   * <p>Note that calling {@link #setLiftable(boolean)} will result in this liftable override being
+   * enabled and set to true by default.
+   */
+  public void setLiftableOverrideEnabled(boolean enabled) {
+    this.liftableOverride = enabled;
+  }
+
   // Internal helper method that updates liftable state without enabling the override.
   private boolean setLiftableState(boolean liftable) {
     if (this.liftable != liftable) {
