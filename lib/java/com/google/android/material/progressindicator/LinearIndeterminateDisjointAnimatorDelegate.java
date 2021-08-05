@@ -130,7 +130,9 @@ final class LinearIndeterminateDisjointAnimatorDelegate
   public void requestCancelAnimatorAfterCurrentCycle() {
     if (drawable.isVisible()) {
       animatorCompleteEndRequested = true;
-      animator.setRepeatCount(0);
+      if (animator != null) {
+        animator.setRepeatCount(0);
+      }
     } else {
       cancelAnimatorImmediately();
     }
