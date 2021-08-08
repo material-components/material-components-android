@@ -880,7 +880,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
    * @see #setBadgeStrokeColor(int)
    * @see #getBadgeStrokeColor()
    */
-  public void setBadgeStrokeColorrResource(@ColorRes int badgeStrokeColorResourceId) {
+  public void setBadgeStrokeColorResource(@ColorRes int badgeStrokeColorResourceId) {
     if (badgeStrokeColorResourceId != 0) {
       ColorStateList colorStateList = ContextCompat.getColorStateList(contextRef.get(), badgeStrokeColorResourceId);
       savedState.badgeStrokeColor = colorStateList.getDefaultColor();
@@ -897,7 +897,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
    * @see #setBadgeStrokeColor(int)
    * @attr ref com.google.android.material.R.styleable#Badge_badgeStrokeColor
    * @see #setBadgeStrokeColor(int)
-   * @see #setBadgeStrokeColorrResource(int)
+   * @see #setBadgeStrokeColorResource(int)
    */
   @ColorInt
   public int getBadgeStrokeColor() {
@@ -910,7 +910,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
    * @param badgeStrokeWidth badge's stroke width
    * @attr ref com.google.android.material.R.styleable#Badge_badgeStrokeWidth
    * @see #getBadgeStrokeWidth()
-   * @see #settBadgeStrokeWidthResource(int)
+   * @see #setBadgeStrokeWidthResource(int)
    */
   public void setBadgeStrokeWidth(@Px int badgeStrokeWidth) {
     savedState.badgeStrokeWidth = badgeStrokeWidth;
@@ -928,7 +928,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
    * @see #setBadgeStrokeWidth(int)
    * @see #getBadgeStrokeWidth()
    */
-  public void settBadgeStrokeWidthResource(@DimenRes int badgeStrokeWidthResourceId) {
+  public void setBadgeStrokeWidthResource(@DimenRes int badgeStrokeWidthResourceId) {
     if (badgeStrokeWidthResourceId != 0) {
       setBadgeStrokeWidth(contextRef.get().getResources().getDimensionPixelSize(badgeStrokeWidthResourceId));
     }
@@ -940,7 +940,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
    * @see #setBadgeStrokeWidth(int)
    * @attr ref com.google.android.material.R.styleable#Badge_badgeStrokeWidth
    * @see #setBadgeStrokeWidth(int)
-   * @see #settBadgeStrokeWidthResource(int)
+   * @see #setBadgeStrokeWidthResource(int)
    */
   @Dimension
   public float getBadgeStrokeWidth() {
