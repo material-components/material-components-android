@@ -170,7 +170,7 @@ class MaterialCardViewHelper {
     setCheckedIcon(
         MaterialResources.getDrawable(
             materialCardView.getContext(), attributes, R.styleable.MaterialCardView_checkedIcon));
-    checkedIconGravity =attributes.getInteger(
+    checkedIconGravity = attributes.getInteger(
         R.styleable.MaterialCardView_checkedIconGravity, CHECKED_ICON_GRAVITY_TOP_END);
 
     rippleColor =
@@ -406,29 +406,18 @@ class MaterialCardViewHelper {
 
   void onMeasure(int measuredWidth, int measuredHeight) {
     if (clickableForegroundDrawable != null) {
-      int left = checkedIconMargin;
-      int bottom = measuredHeight - checkedIconMargin - checkedIconSize;
+      int left = isCheckedIconEnd() ? measuredWidth - checkedIconMargin - checkedIconSize : checkedIconMargin;
+      int bottom = isCheckedIconBottom() ? checkedIconMargin : measuredHeight - checkedIconMargin - checkedIconSize;
 
-      if (isCheckedIconEnd()) {
-        left = measuredWidth - checkedIconMargin - checkedIconSize;
-      }
-      if (isCheckedIconBottom()){
-        bottom = checkedIconMargin;
-      }
       boolean isPreLollipop = VERSION.SDK_INT < VERSION_CODES.LOLLIPOP;
       if (isPreLollipop || materialCardView.getUseCompatPadding()) {
         bottom -= (int) Math.ceil(2f * calculateVerticalBackgroundPadding());
         left -= (int) Math.ceil(2f * calculateHorizontalBackgroundPadding());
       }
 
-      int right = measuredWidth - checkedIconMargin - checkedIconSize;
-      if (isCheckedIconEnd()){
-        right = checkedIconMargin;
-      }
-      int top = checkedIconMargin;
-      if (isCheckedIconBottom()){
-        top = measuredHeight - checkedIconMargin - checkedIconSize;
-      }
+      int right = isCheckedIconEnd() ? checkedIconMargin : measuredWidth - checkedIconMargin - checkedIconSize;
+      int top = isCheckedIconBottom() ? measuredHeight - checkedIconMargin - checkedIconSize : checkedIconMargin;
+
       if (ViewCompat.getLayoutDirection(materialCardView) == ViewCompat.LAYOUT_DIRECTION_RTL) {
         // swap left and right
         int tmp = right;
@@ -692,5 +681,4 @@ class MaterialCardViewHelper {
   private  boolean isCheckedIconBottom() {
     return checkedIconGravity == CHECKED_ICON_GRAVITY_BOTTOM_START || checkedIconGravity == CHECKED_ICON_GRAVITY_BOTTOM_END;
   }
-
 }
