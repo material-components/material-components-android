@@ -260,10 +260,10 @@ public final class MaterialDatePicker<S> extends DialogFragment {
       confirmButton.setEnabled(false);
     }
     confirmButton.setTag(CONFIRM_BUTTON_TAG);
-    if (positiveButtonTextResId != 0){
-      confirmButton.setText(positiveButtonTextResId);
-    } else if (positiveButtonText != null){
+    if (positiveButtonText != null){
       confirmButton.setText(positiveButtonText);
+    } else if (positiveButtonTextResId != 0){
+      confirmButton.setText(positiveButtonTextResId);
     }
     confirmButton.setOnClickListener(
         new View.OnClickListener() {
@@ -279,10 +279,10 @@ public final class MaterialDatePicker<S> extends DialogFragment {
 
     Button cancelButton = root.findViewById(R.id.cancel_button);
     cancelButton.setTag(CANCEL_BUTTON_TAG);
-    if (negativeButtonTextResId != 0){
-      cancelButton.setText(negativeButtonTextResId);
-    } else if (negativeButtonText != null){
+    if (negativeButtonText != null){
       cancelButton.setText(negativeButtonText);
+    } else if (negativeButtonTextResId != 0){
+      cancelButton.setText(negativeButtonTextResId);
     }
     cancelButton.setOnClickListener(
         new View.OnClickListener() {
@@ -649,7 +649,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
      * @param textId resource id to be used as text in the positive button
      */
     @NonNull
-    public Builder<S> setPositiveButton(@StringRes int textId){
+    public Builder<S> setPositiveButtonText(@StringRes int textId){
       this.positiveButtonTextResId = textId;
       this.positiveButtonText = null;
       return this;
@@ -660,7 +660,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
      *
      * @param text text used in the positive button
      */
-    public Builder<S> setPositiveButton(CharSequence text){
+    public Builder<S> setPositiveButtonText(CharSequence text){
       this.positiveButtonText = text;
       this.positiveButtonTextResId = 0;
       return this;
@@ -672,7 +672,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
      * @param textId resource id to be used as text in the negative button
      */
     @NonNull
-    public Builder<S> setNegativeButton(@StringRes int textId){
+    public Builder<S> setNegativeButtonText(@StringRes int textId){
       this.negativeButtonTextResId = textId;
       this.negativeButtonText = null;
       return this;
@@ -683,7 +683,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
      *
      * @param text text used in the negative button
      */
-    public Builder<S> setNegativeButton(CharSequence text){
+    public Builder<S> setNegativeButtonText(CharSequence text){
       this.negativeButtonText = text;
       this.negativeButtonTextResId = 0;
       return this;
