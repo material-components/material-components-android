@@ -32,7 +32,7 @@
   <string name="mtrl_picker_text_input_day_abbr">p</string>
   <string name="mtrl_picker_save">Tallenna</string>
   <string name="mtrl_picker_invalid_range">Virheellinen alue</string>
-  <string name="mtrl_picker_out_of_range">Katvealueella: %1$s</string>
+  <string name="mtrl_picker_out_of_range">Aikavälin ulkop.: %1$s</string>
   <string name="mtrl_picker_invalid_format">Virheellinen muoto</string>
   <string name="mtrl_picker_invalid_format_use">Käytä muotoa %1$s</string>
   <string name="mtrl_picker_invalid_format_example">Esimerkki: %1$s</string>

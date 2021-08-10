@@ -17,7 +17,7 @@
 <resources>
   <string name="character_counter_content_description">Đã nhập %1$d trong số %2$d ký tự</string>
   <string name="character_counter_overflowed_content_description">Đã vượt quá giới hạn ký tự %1$d/%2$d</string>
-  <string name="password_toggle_content_description">Hiển thị mật khẩu</string>
+  <string name="password_toggle_content_description">Hiện mật khẩu</string>
   <string name="clear_text_end_icon_content_description">Xóa văn bản</string>
   <string name="exposed_dropdown_menu_content_description">Hiển thị menu thả xuống</string>
   <string name="error_icon_content_description">Lỗi</string>

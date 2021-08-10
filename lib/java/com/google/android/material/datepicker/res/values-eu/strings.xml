@@ -43,6 +43,6 @@
   <string name="mtrl_picker_toggle_to_year_selection">Sakatu urtea hautatzeko modura aldatzeko</string>
   <string name="mtrl_picker_toggle_to_day_selection">Sakatu eguna hautatzeko modura aldatzeko</string>
   <string name="mtrl_picker_day_of_week_column_header">Egunen zutabea:%1$s</string>
-  <string name="mtrl_picker_announce_current_selection">Uneko hautapena: %1$s</string>
+  <string name="mtrl_picker_announce_current_selection">Oraingo hautapena: %1$s</string>
   <string name="mtrl_picker_navigate_to_year_description">Joan %1$s. urtera</string>
 </resources>

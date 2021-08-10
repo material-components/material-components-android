@@ -15,8 +15,8 @@
   ~ limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-  <string name="material_timepicker_pm">P. M.</string>
-  <string name="material_timepicker_am">A. M.</string>
+  <string name="material_timepicker_pm">p.m.</string>
+  <string name="material_timepicker_am">a.m.</string>
   <string name="material_timepicker_select_time">Seleccionar la hora</string>
   <string name="material_timepicker_minute">Minuto</string>
   <string name="material_timepicker_hour">Hora</string>
