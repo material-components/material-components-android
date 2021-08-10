@@ -91,7 +91,7 @@ indicator.setProgressCompat(progress, true)
 
 _**Note:** Once indeterminate progress indicators are switched to the
 determinate mode (or initialized as determinate), they can be set back to
-indeterminate mode via calling the `setIndeterminate(false)` method._
+indeterminate mode via calling the `setIndeterminate(true)` method._
 
 ### Making progress indicators accessible
 
