@@ -48,7 +48,7 @@
     <!-- TODO: Populate elevation overlay attributes here -->
 
     <!-- Theme overlays. -->
-    <item name="dynamicColorThemeOverlay">@style/ThemeOverlay.Material3.DynamicColors.Light</item>
+    <item name="dynamicColorThemeOverlay">@style/ThemeOverlay.Material3.DynamicColors.Dark</item>
   </style>
 
   <style name="Base.V14.ThemeOverlay.Material3.Dialog" parent="ThemeOverlay.MaterialComponents.Dialog" />
