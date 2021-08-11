@@ -19,6 +19,90 @@
   <!-- All new attributes should be set in the follow four Base.V14 themes. -->
   <eat-comment/>
 
+  <style name="Base.V14.Theme.Material3.Light.Dialog" parent="Theme.MaterialComponents.Light.Dialog">
+    <!-- TODO: Populate color palettes here -->
+    <!-- TODO: Populate widget styles here -->
+    <!-- TODO: Populate top app bar attributes here -->
+    <!-- TODO: Populate popup menu styles here -->
+    <!-- TODO: Populate divider styles here -->
+    <!-- TODO: Populate TextAppearances here -->
+    <!-- TODO: Populate font families here -->
+    <!-- TODO: Populate shape appearance here -->
+    <!-- TODO: Populate motion attributes here -->
+    <!-- TODO: Populate elevation overlay attributes here -->
+
+    <!-- Theme overlays. -->
+    <item name="dynamicColorThemeOverlay">@style/ThemeOverlay.Material3.DynamicColors.Light</item>
+  </style>
+
+  <style name="Base.V14.Theme.Material3.Dark.Dialog" parent="Theme.MaterialComponents.Dialog">
+    <!-- TODO: Populate color palettes here -->
+    <!-- TODO: Populate widget styles here -->
+    <!-- TODO: Populate top app bar attributes here -->
+    <!-- TODO: Populate popup menu styles here -->
+    <!-- TODO: Populate divider styles here -->
+    <!-- TODO: Populate TextAppearances here -->
+    <!-- TODO: Populate font families here -->
+    <!-- TODO: Populate shape appearance here -->
+    <!-- TODO: Populate motion attributes here -->
+    <!-- TODO: Populate elevation overlay attributes here -->
+
+    <!-- Theme overlays. -->
+    <item name="dynamicColorThemeOverlay">@style/ThemeOverlay.Material3.DynamicColors.Light</item>
+  </style>
+
+  <style name="Base.V14.ThemeOverlay.Material3.Dialog" parent="ThemeOverlay.MaterialComponents.Dialog" />
+  <style name="Base.V14.ThemeOverlay.Material3.Dialog.Alert" parent="ThemeOverlay.MaterialComponents.Dialog.Alert" />
+
+  <style name="Base.V14.ThemeOverlay.Material3.MaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+    <!-- TODO: Populate alert dialog styles here -->
+  </style>
+
+  <style name="Base.Theme.Material3.Light.Dialog" parent="Base.V14.Theme.Material3.Light.Dialog"/>
+  <style name="Base.Theme.Material3.Dark.Dialog" parent="Base.V14.Theme.Material3.Dark.Dialog"/>
+
+  <style name="Base.Theme.Material3.Light.Dialog.Alert">
+    <item name="windowMinWidthMajor">@dimen/abc_dialog_min_width_major</item>
+    <item name="windowMinWidthMinor">@dimen/abc_dialog_min_width_minor</item>
+  </style>
+
+  <style name="Base.Theme.Material3.Dark.Dialog.Alert">
+    <item name="windowMinWidthMajor">@dimen/abc_dialog_min_width_major</item>
+    <item name="windowMinWidthMinor">@dimen/abc_dialog_min_width_minor</item>
+  </style>
+
+  <style name="Base.Theme.Material3.Light.Dialog.MinWidth">
+    <item name="windowMinWidthMajor">@dimen/abc_dialog_min_width_major</item>
+    <item name="windowMinWidthMinor">@dimen/abc_dialog_min_width_minor</item>
+  </style>
+
+  <style name="Base.Theme.Material3.Dark.Dialog.MinWidth">
+    <item name="windowMinWidthMajor">@dimen/abc_dialog_min_width_major</item>
+    <item name="windowMinWidthMinor">@dimen/abc_dialog_min_width_minor</item>
+  </style>
+
+  <style name="Base.Theme.Material3.Light.Dialog.FixedSize">
+    <item name="windowFixedWidthMajor">@dimen/abc_dialog_fixed_width_major</item>
+    <item name="windowFixedWidthMinor">@dimen/abc_dialog_fixed_width_minor</item>
+    <item name="windowFixedHeightMajor">@dimen/abc_dialog_fixed_height_major</item>
+    <item name="windowFixedHeightMinor">@dimen/abc_dialog_fixed_height_minor</item>
+  </style>
+
+  <style name="Base.Theme.Material3.Dark.Dialog.FixedSize">
+    <item name="windowFixedWidthMajor">@dimen/abc_dialog_fixed_width_major</item>
+    <item name="windowFixedWidthMinor">@dimen/abc_dialog_fixed_width_minor</item>
+    <item name="windowFixedHeightMajor">@dimen/abc_dialog_fixed_height_major</item>
+    <item name="windowFixedHeightMinor">@dimen/abc_dialog_fixed_height_minor</item>
+  </style>
+
+  <!-- We're not large, so redirect to Theme.Material3 -->
+  <style name="Base.Theme.Material3.Light.DialogWhenLarge" parent="Theme.Material3.Light.Dialog"/>
+  <style name="Base.Theme.Material3.Dark.DialogWhenLarge" parent="Theme.Material3.Dark.Dialog"/>
+
+  <style name="Base.ThemeOverlay.Material3.Dialog" parent="Base.V14.ThemeOverlay.Material3.Dialog"/>
+  <style name="Base.ThemeOverlay.Material3.Dialog.Alert" parent="Base.V14.ThemeOverlay.Material3.Dialog.Alert"/>
+  <style name="Base.ThemeOverlay.Material3.MaterialAlertDialog" parent="Base.V14.ThemeOverlay.Material3.MaterialAlertDialog"/>
+
   <style name="Base.V14.Theme.MaterialComponents.Dialog" parent="Base.V14.Theme.MaterialComponents.Dialog.Bridge">
     <item name="viewInflaterClass">com.google.android.material.theme.MaterialComponentsViewInflater</item>
 

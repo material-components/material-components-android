@@ -15,6 +15,10 @@
   ~ limitations under the License.
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
+  <style name="Theme.Material3.Light.BottomSheetDialog" parent="Base.Theme.Material3.Light.BottomSheetDialog"/>
+  <style name="Theme.Material3.Dark.BottomSheetDialog" parent="Base.Theme.Material3.Dark.BottomSheetDialog"/>
+  <style name="ThemeOverlay.Material3.BottomSheetDialog" parent="Base.ThemeOverlay.Material3.BottomSheetDialog"/>
+
   <style name="Theme.MaterialComponents.BottomSheetDialog" parent="Theme.MaterialComponents.Dialog">
     <item name="android:windowBackground">@android:color/transparent</item>
     <item name="android:windowAnimationStyle">@style/Animation.MaterialComponents.BottomSheetDialog</item>

@@ -15,6 +15,9 @@
   ~ limitations under the License.
 -->
 <resources>
+  <!-- Material 3 themes (day/night versions) for activities. -->
+  <style name="Theme.Material3.DayNight" parent="Theme.Material3.Dark"/>
+  <style name="Theme.Material3.DayNight.NoActionBar" parent="Theme.Material3.Dark.NoActionBar"/>
 
   <!-- Material themes (day/night versions) for activities. -->
   <style name="Theme.MaterialComponents.DayNight" parent="Theme.MaterialComponents"/>

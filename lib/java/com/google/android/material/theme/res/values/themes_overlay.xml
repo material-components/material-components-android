@@ -15,7 +15,37 @@
   ~ limitations under the License.
 -->
 <resources>
+  <!--
+    Material 3 theme overlay.
+  -->
+  <style name="ThemeOverlay.Material3" parent="ThemeOverlay.MaterialComponents"/>
 
+  <!--
+    Theme overlay that replaces colors with their light versions.
+  -->
+  <style name="ThemeOverlay.Material3.Light" parent="ThemeOverlay.MaterialComponents.Light">
+    <!-- TODO: Populate color palettes -->
+    <!-- TODO: Populate overriding elevation overlay attributes -->
+  </style>
+
+  <!--
+    Theme overlay that replaces colors with their dark versions.
+  -->
+  <style name="ThemeOverlay.Material3.Dark" parent="ThemeOverlay.MaterialComponents.Dark">
+    <!-- TODO: Populate color palettes -->
+    <!-- TODO: Populate overriding elevation overlay attributes -->
+  </style>
+
+  <!--
+    Theme overlay to support dynamic colors.
+  -->
+  <style name="ThemeOverlay.Material3.DynamicColors.Light" parent="ThemeOverlay.Material3.Light"/>
+  <style name="ThemeOverlay.Material3.DynamicColors.Dark" parent="ThemeOverlay.Material3.Dark"/>
+  <style name="ThemeOverlay.Material3.DynamicColors.DayNight" parent="ThemeOverlay.Material3.DynamicColors.Light" />
+
+  <!--
+    Material theme overlay.
+  -->
   <style name="ThemeOverlay.MaterialComponents" parent="ThemeOverlay.AppCompat"/>
 
   <!--

@@ -61,4 +61,6 @@
        Set this attribute on your styles for each selection control.-->
   <attr name="useMaterialThemeColors" format="boolean"/>
 
+  <!-- The default dynamic color theme overlay to use when applying dynamic colors. -->
+  <attr name="dynamicColorThemeOverlay" format="reference"/>
 </resources>

@@ -14,7 +14,95 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+  <!--
+    Themes in the "Theme.Material3" family will contain a default full color scheme.
+
+    These theme declarations contain any version-independent specification. Items
+    that need to vary based on platform version should be defined in the corresponding
+    "Base.Theme" theme.
+  -->
+
+  <style name="Theme.Material3.Light.DialogWhenLarge" parent="Base.Theme.Material3.Light.DialogWhenLarge"/>
+  <style name="Theme.Material3.Dark.DialogWhenLarge" parent="Base.Theme.Material3.Dark.DialogWhenLarge"/>
+  <style name="Theme.Material3.Light.Dialog" parent="Base.Theme.Material3.Light.Dialog"/>
+  <style name="Theme.Material3.Dark.Dialog" parent="Base.Theme.Material3.Dark.Dialog"/>
+
+  <!--
+    Material theme for alert dialog windows, which is used by the AlertDialog class.
+    This is basically a dialog but sets the background to empty so it can do
+    two-tone backgrounds. For applications targeting Honeycomb or newer, this is the default
+    AlertDialog theme.
+  -->
+  <style name="Theme.Material3.Light.Dialog.Alert" parent="Base.Theme.Material3.Light.Dialog.Alert"/>
+  <style name="Theme.Material3.Dark.Dialog.Alert" parent="Base.Theme.Material3.Dark.Dialog.Alert"/>
+
+  <!--
+    Variant of Theme.Material3.Dialog that has a nice minimum width for a regular dialog.
+  -->
+  <style name="Theme.Material3.Light.Dialog.MinWidth" parent="Base.Theme.Material3.Light.Dialog.MinWidth"/>
+  <style name="Theme.Material3.Dark.Dialog.MinWidth" parent="Base.Theme.Material3.Dark.Dialog.MinWidth"/>
+
+  <!--
+    Theme overlay that replaces the normal control color, which by default is the same as the
+    secondary text color, with the primary text color.
+  -->
+  <style name="ThemeOverlay.Material3.ActionBar" parent="ThemeOverlay.MaterialComponents.ActionBar"/>
+
+  <!--
+    Theme overlay that replaces colors with their dark versions and replaces the normal
+    control color, which by default is the same as the secondary text color, with the primary
+    text color.
+  -->
+  <style name="ThemeOverlay.Material3.Dark.ActionBar" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar"/>
+
+  <style name="ThemeOverlay.Material3.Dialog" parent="Base.ThemeOverlay.Material3.Dialog"/>
+
+  <!--
+    Theme overlay used by default Material3 themes for alert dialogs, via the
+    alertDialogTheme attribute.
+  -->
+  <style name="ThemeOverlay.Material3.Dialog.Alert" parent="Base.ThemeOverlay.Material3.Dialog.Alert">
+    <!-- TODO: Populate overriding background color -->
+  </style>
+
+  <!--
+    The default theme overlay used by Material3 for AlertDialogs built with the MaterialAlertDialogBuilder, via the
+    materialAlertDialogTheme attribute.
+  -->
+  <style name="ThemeOverlay.Material3.MaterialAlertDialog" parent="Base.ThemeOverlay.Material3.MaterialAlertDialog"/>
+  <style name="ThemeOverlay.Material3.MaterialAlertDialog.Centered">
+    <!-- TODO: Populate overriding alert dialog styles -->
+  </style>
+
+  <style name="ThemeOverlay.Material3.MaterialCalendar" parent="ThemeOverlay.Material3.Dialog">
+    <!-- TODO: Populate overriding window elevation -->
+    <!-- TODO: Populate calendar header component styles -->
+    <!-- TODO: Populate calendar navigation component styles -->
+    <!-- TODO: Populate calendar grid styles -->
+    <!-- TODO: Populate calendar action button styles -->
+  </style>
+
+  <style name="ThemeOverlay.Material3.MaterialCalendar.Fullscreen">
+    <!-- TODO: Populate overriding window elevation -->
+    <!-- TODO: Populate overriding materialCalendarStyle -->
+    <!-- TODO: Populate overriding materialCalendarHeaderSelection -->
+  </style>
+
+  <!--
+    The default theme overlay used by Material3 for TimePickers, via the
+    materialTimePickerTheme attribute.
+  -->
+  <style name="ThemeOverlay.Material3.MaterialTimePicker" parent="ThemeOverlay.Material3.Dialog">
+    <!-- TODO: Populate overriding window elevation -->
+    <!-- TODO: Populate overriding chipStyle -->
+    <!-- TODO: Populate overriding textInputStyle -->
+    <!-- TODO: Populate time picker component styles -->
+    <!-- TODO: Populate overriding imageButtonStyle -->
+    <!-- TODO: Populate overriding text appearances -->
+    <item name="elevationOverlayEnabled">true</item>
+  </style>
 
   <!--
     Themes in the "Theme.MaterialComponents" family will contain a default full color scheme.

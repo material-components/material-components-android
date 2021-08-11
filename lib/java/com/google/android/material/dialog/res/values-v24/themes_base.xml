@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2019 The Android Open Source Project
+  ~ Copyright (C) 2021 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,10 +15,14 @@
   ~ limitations under the License.
 -->
 <resources>
-  <style name="Theme.Material3.DayNight.BottomSheetDialog" parent="Theme.Material3.Dark.BottomSheetDialog"/>
+  <style name="Base.V24.Theme.Material3.Light.Dialog" parent="Base.V14.Theme.Material3.Light.Dialog">
+    <!-- TODO: Populate overriding android:contextPopupMenuStyle -->
+  </style>
 
-  <!-- Material themes (day/night versions) for bottomsheets. -->
-  <style name="Theme.MaterialComponents.DayNight.BottomSheetDialog"
-      parent="Theme.MaterialComponents.BottomSheetDialog"/>
+  <style name="Base.V24.Theme.Material3.Dark.Dialog" parent="Base.V14.Theme.Material3.Dark.Dialog">
+    <!-- TODO: Populate overriding android:contextPopupMenuStyle -->
+  </style>
 
+  <style name="Base.Theme.Material3.Light.Dialog" parent="Base.V24.Theme.Material3.Light.Dialog"/>
+  <style name="Base.Theme.Material3.Dark.Dialog" parent="Base.V24.Theme.Material3.Dark.Dialog"/>
 </resources>

@@ -19,6 +19,65 @@
   <!-- All new attributes should be set in the following four Base.V14 themes. -->
   <eat-comment/>
 
+  <style name="Base.V14.Theme.Material3.Light" parent="Theme.MaterialComponents.Light">
+    <!-- TODO: Populate color palettes here -->
+
+    <!-- Dialog themes. -->
+    <item name="alertDialogTheme">@style/ThemeOverlay.Material3.Dialog.Alert</item>
+    <item name="bottomSheetDialogTheme">@style/ThemeOverlay.Material3.BottomSheetDialog</item>
+    <item name="materialAlertDialogTheme">@style/ThemeOverlay.Material3.MaterialAlertDialog</item>
+
+    <!-- Picker styles and themes. -->
+    <!-- TODO: Populate materialCalendarStyle -->
+    <item name="materialCalendarFullscreenTheme">@style/ThemeOverlay.Material3.MaterialCalendar.Fullscreen</item>
+    <item name="materialCalendarTheme">@style/ThemeOverlay.Material3.MaterialCalendar</item>
+    <item name="materialTimePickerTheme">@style/ThemeOverlay.Material3.MaterialTimePicker</item>
+
+    <!-- TODO: Populate widget styles here -->
+    <!-- TODO: Populate top app bar attributes here -->
+    <!-- TODO: Populate popup menu styles here -->
+    <!-- TODO: Populate divider styles here -->
+    <!-- TODO: Populate TextAppearances here -->
+    <!-- TODO: Populate font families here -->
+    <!-- TODO: Populate shape appearance here -->
+    <!-- TODO: Populate motion attributes here -->
+    <!-- TODO: Populate elevation overlay attributes here -->
+
+    <!-- Theme overlays. -->
+    <item name="dynamicColorThemeOverlay">@style/ThemeOverlay.Material3.DynamicColors.Light</item>
+  </style>
+
+  <style name="Base.V14.Theme.Material3.Dark" parent="Theme.MaterialComponents">
+    <!-- TODO: Populate color palettes here -->
+
+    <!-- Dialog themes. -->
+    <item name="alertDialogTheme">@style/ThemeOverlay.Material3.Dialog.Alert</item>
+    <item name="bottomSheetDialogTheme">@style/ThemeOverlay.Material3.BottomSheetDialog</item>
+    <item name="materialAlertDialogTheme">@style/ThemeOverlay.Material3.MaterialAlertDialog</item>
+
+    <!-- Picker styles and themes. -->
+    <!-- TODO: Populate materialCalendarStyle -->
+    <item name="materialCalendarFullscreenTheme">@style/ThemeOverlay.Material3.MaterialCalendar.Fullscreen</item>
+    <item name="materialCalendarTheme">@style/ThemeOverlay.Material3.MaterialCalendar</item>
+    <item name="materialTimePickerTheme">@style/ThemeOverlay.Material3.MaterialTimePicker</item>
+
+    <!-- TODO: Populate widget styles here -->
+    <!-- TODO: Populate top app bar attributes here -->
+    <!-- TODO: Populate popup menu styles here -->
+    <!-- TODO: Populate divider styles here -->
+    <!-- TODO: Populate TextAppearances here -->
+    <!-- TODO: Populate font families here -->
+    <!-- TODO: Populate shape appearance here -->
+    <!-- TODO: Populate motion attributes here -->
+    <!-- TODO: Populate elevation overlay attributes here -->
+
+    <!-- Theme overlays. -->
+    <item name="dynamicColorThemeOverlay">@style/ThemeOverlay.Material3.DynamicColors.Dark</item>
+  </style>
+
+  <style name="Base.Theme.Material3.Light" parent="Base.V14.Theme.Material3.Light"/>
+  <style name="Base.Theme.Material3.Dark" parent="Base.V14.Theme.Material3.Dark"/>
+
   <style name="Base.V14.Theme.MaterialComponents" parent="Base.V14.Theme.MaterialComponents.Bridge">
     <item name="viewInflaterClass">com.google.android.material.theme.MaterialComponentsViewInflater</item>
 

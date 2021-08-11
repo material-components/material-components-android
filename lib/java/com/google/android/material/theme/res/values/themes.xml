@@ -17,6 +17,30 @@
 <resources>
 
   <!--
+    Themes in the "Theme.Material3" family will contain a default full color scheme.
+
+    These theme declarations contain any version-independent specification. Items
+    that need to vary based on platform version should be defined in the corresponding
+    "Base.Theme" theme.
+  -->
+
+  <!-- Platform-independent theme providing a full color scheme in a light-themed activity. -->
+  <style name="Theme.Material3.Light" parent="Base.Theme.Material3.Light"/>
+
+  <!-- Platform-independent theme providing a full color scheme in a dark-themed activity. -->
+  <style name="Theme.Material3.Dark" parent="Base.Theme.Material3.Dark"/>
+
+  <style name="Theme.Material3.Light.NoActionBar">
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
+  </style>
+
+  <style name="Theme.Material3.Dark.NoActionBar">
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
+  </style>
+
+  <!--
     Themes in the "Theme.MaterialComponents" family will contain a default full color scheme.
 
     These theme declarations contain any version-independent specification. Items

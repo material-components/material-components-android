@@ -15,6 +15,11 @@
   ~ limitations under the License.
 -->
 <resources>
+  <!-- Material 3 themes (day/night versions) for dialogs. -->
+  <style name="Theme.Material3.DayNight.Dialog" parent="Theme.Material3.Light.Dialog"/>
+  <style name="Theme.Material3.DayNight.Dialog.Alert" parent="Theme.Material3.Light.Dialog.Alert"/>
+  <style name="Theme.Material3.DayNight.DialogWhenLarge" parent="Theme.Material3.Light.DialogWhenLarge"/>
+  <style name="Theme.Material3.DayNight.Dialog.MinWidth" parent="Theme.Material3.Light.Dialog.MinWidth"/>
 
   <!-- Material themes (day/night versions) for dialogs. -->
   <style name="Theme.MaterialComponents.DayNight.Dialog" parent="Theme.MaterialComponents.Light.Dialog"/>
