@@ -17,7 +17,7 @@ groups.
 **Contents**
 
 *   [Using dividers](#using-dividers)
-*   [Divider](#divider)
+*   [Divider's key properties](#key-properties)
 *   [Theming dividers](#theming-dividers)
 
 ## Using dividers
