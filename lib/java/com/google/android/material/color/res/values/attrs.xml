@@ -15,30 +15,79 @@
   ~ limitations under the License.
 -->
 <resources>
-  <!-- A tonal variation of the primary color. -->
-  <attr name="colorPrimaryVariant" format="color"/>
-  <!-- The secondary branding color for the app, usually a bright complement to the primary
-       branding color. -->
-  <attr name="colorSecondary" format="color"/>
-  <!-- A tonal variation of the secondary color. -->
-  <attr name="colorSecondaryVariant" format="color"/>
-  <!-- The color of surfaces such as cards, sheets, menus. -->
-  <attr name="colorSurface" format="color"/>
+
   <!-- A color that passes accessibility guidelines for text/iconography when drawn on top of
        primary. -->
   <attr name="colorOnPrimary" format="color"/>
+  <!-- The inverse color of colorPrimary. -->
+  <attr name="colorPrimaryInverse" format="color"/>
+  <!-- A tonal variation of the primary color suitable for background color of container views. -->
+  <attr name="colorPrimaryContainer" format="color"/>
+  <!-- A color that passes accessibility guidelines for text/iconography when drawn on top of
+       the primary container color. -->
+  <attr name="colorOnPrimaryContainer" format="color"/>
+
+  <!-- The secondary branding color for the app, usually a bright complement to the primary
+       branding color. -->
+  <attr name="colorSecondary" format="color"/>
   <!-- A color that passes accessibility guidelines for text/iconography when drawn on top of
        secondary. -->
   <attr name="colorOnSecondary" format="color"/>
+  <!-- A tonal variation of the secondary color suitable for background color of container views. -->
+  <attr name="colorSecondaryContainer" format="color"/>
+  <!-- A color that passes accessibility guidelines for text/iconography when drawn on top of
+       the secondary container color. -->
+  <attr name="colorOnSecondaryContainer" format="color"/>
+
+  <!-- The tertiary branding color for the app, usually a bright complement to the primary
+       branding color. -->
+  <attr name="colorTertiary" format="color"/>
+  <!-- A color that passes accessibility guidelines for text/iconography when drawn on top of
+       tertiary. -->
+  <attr name="colorOnTertiary" format="color"/>
+  <!-- A tonal variation of the tertiary color suitable for background color of container views. -->
+  <attr name="colorTertiaryContainer" format="color"/>
+  <!-- A color that passes accessibility guidelines for text/iconography when drawn on top of
+       the tertiary container color. -->
+  <attr name="colorOnTertiaryContainer" format="color"/>
+
   <!-- A color that passes accessibility guidelines for text/iconography when drawn on top of
        background. -->
   <attr name="colorOnBackground"/>
-  <!-- A color that passes accessibility guidelines for text/iconography when drawn on top of
-       error. -->
-  <attr name="colorOnError" format="color"/>
+
+  <!-- The color of surfaces such as cards, sheets, menus. -->
+  <attr name="colorSurface" format="color"/>
   <!-- A color that passes accessibility guidelines for text/iconography when drawn on top of
        surface. -->
   <attr name="colorOnSurface" format="color"/>
+  <!-- A tonal variation of the surface color. -->
+  <attr name="colorSurfaceVariant" format="color"/>
+  <!-- A tonal variation of the on surface color that passes accessibility guidelines for
+       text/iconography when drawn on top of surface variant. -->
+  <attr name="colorOnSurfaceVariant" format="color"/>
+  <!-- The surface inverse color, useful for inverted backgrounds. -->
+  <attr name="colorSurfaceInverse" format="color"/>
+  <!-- The "on surface" inverse color, useful for inverted backgrounds. -->
+  <attr name="colorOnSurfaceInverse" format="color"/>
+
+  <!-- A color meant to be used in element outlines. -->
+  <attr name="colorOutline" format="color"/>
+
+  <!-- A color that passes accessibility guidelines for text/iconography when drawn on top of
+       error. -->
+  <attr name="colorOnError" format="color"/>
+  <!-- A tonal variation of the error color suitable for background color of container views. -->
+  <attr name="colorErrorContainer" format="color"/>
+  <!-- A tonal variation of the on error color that passes accessibility guidelines for
+       text/iconography when drawn on top of error container. -->
+  <attr name="colorOnErrorContainer" format="color"/>
+
+  <!-- The color of disabled elements, usually the background color. -->
+  <attr name="colorDisabled" format="color"/>
+  <!-- A color that passes accessibility guidelines for text/iconography when drawn on top of
+       disabled. -->
+  <attr name="colorOnDisabled" format="color"/>
+
   <!-- A color that corresponds to colorPrimary in light themes and colorSurface in dark
        themes. -->
   <attr name="colorPrimarySurface" format="color"/>
@@ -63,4 +112,11 @@
 
   <!-- The default dynamic color theme overlay to use when applying dynamic colors. -->
   <attr name="dynamicColorThemeOverlay" format="reference"/>
+
+  <!-- Deprecated. -->
+
+  <!-- A tonal variation of the primary color. -->
+  <attr name="colorPrimaryVariant" format="color"/>
+  <!-- A tonal variation of the secondary color. -->
+  <attr name="colorSecondaryVariant" format="color"/>
 </resources>
