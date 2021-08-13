@@ -2106,8 +2106,8 @@ public class TextInputLayout extends LinearLayout {
   /**
    * Returns the text color used for the character counter, or null if one has not been set.
    *
-   * @attr ref com.google.android.material.R.styleable#TextInputLayout_counterOverflowTextColor
-   * @see #setCounterTextAppearance(int)
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_counterTextColor
+   * @see #setCounterTextColor(ColorStateList)
    * @return the text color used for the character counter
    */
   @Nullable
