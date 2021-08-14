@@ -22,6 +22,8 @@ import static com.google.common.truth.Truth.assertThat;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import androidx.core.graphics.drawable.DrawableCompat;
+
+import android.os.Build;
 import android.view.View.MeasureSpec;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -64,8 +66,22 @@ public class MaterialButtonTest {
 
     ShapeAppearanceModel newShapeAppearanceModel = materialButton.getShapeAppearanceModel();
 
+    assertThat(shapeAppearanceModel).isSameInstanceAs(newShapeAppearanceModel);
     assertThatCornerSizesMatch(shapeAppearanceModel, newShapeAppearanceModel);
   }
+
+  @Test
+  @Config(sdk = Build.VERSION_CODES.LOLLIPOP)
+  public void testShapeRippleDrawableInLollipop() {
+    MaterialButton materialButton = new MaterialButton(context);
+    ShapeAppearanceModel shapeAppearanceModel =  materialButton.getShapeAppearanceModel();
+
+    materialButton.setCornerRadius((int) LARGE_CORNER_SIZE);
+    ShapeAppearanceModel newShapeAppearanceModel = materialButton.getShapeAppearanceModel();
+    assertThat(shapeAppearanceModel).isNotSameInstanceAs(newShapeAppearanceModel);
+    assertThat(shapeAppearanceModel).isNotEqualTo(newShapeAppearanceModel);
+  }
+
 
   @Test
   public void testSetShapeAppearanceModel() {
