@@ -1018,6 +1018,29 @@ public class TextInputLayout extends LinearLayout {
   }
 
   /**
+   * Set the value to use for the EditText's collapsed top padding in box mode.
+   *
+   * <p> Customized boxCollapsedPaddingTop will be disabled if the font scale is larger than 1.3.
+   *
+   * @param boxCollapsedPaddingTop the value to use for the EditText's collapsed top padding
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_boxCollapsedPaddingTop
+   * @see #getBoxCollapsedPaddingTop()
+   */
+  public void setBoxCollapsedPaddingTop(int boxCollapsedPaddingTop) {
+    boxCollapsedPaddingTopPx = boxCollapsedPaddingTop;
+  }
+
+  /**
+   * Returns the EditText's collapsed top padding
+   *
+   * @return the value used for the box's padding top when collapsed
+   * @see #setBoxCollapsedPaddingTop(int)
+   */
+  public int getBoxCollapsedPaddingTop() {
+    return boxCollapsedPaddingTopPx;
+  }
+
+  /**
    * Set the resource dimension to use for the box's stroke when in outline box mode, or for the
    * underline stroke in filled mode.
    *
