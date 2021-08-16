@@ -165,9 +165,11 @@ operations.
 *   Indeterminate operations display the indicator continually growing and
     shrinking along the track until the process is complete.
 
-Source code:
+API and source code:
 
-*   [`LinearProgressIndicator`](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/progressindicator/LinearProgressIndicator.java)
+*   `LinearProgressIndicator`
+    *   [Class description](https://developer.android.com/reference/com/google/android/material/progressindicator/LinearProgressIndicator)
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/progressindicator/LinearProgressIndicator.java)
 
 The following example shows a determinate linear progress indicator.
 
@@ -231,9 +233,11 @@ processes.
 *   Indeterminate circular indicators grow and shrink in size while moving along
     the invisible track.
 
-Source code:
+API and source code:
 
-*   [`CircularProgressIndicator`](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/progressindicator/CircularProgressIndicator.java)
+*   `CircularProgressIndicator`
+    *   [Class description](https://developer.android.com/reference/com/google/android/material/progressindicator/CircularProgressIndicator)
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/progressindicator/CircularProgressIndicator.java)
 
 The following example shows a determinate circular progress indicator.
 
@@ -333,6 +337,15 @@ Progress indicators support Material theming and can be customized in terms of
 color and size.
 
 ### Progress indicator theming example
+
+API and source code:
+
+*   `LinearProgressIndicator`
+    *   [Class description](https://developer.android.com/reference/com/google/android/material/progressindicator/LinearProgressIndicator)
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/progressindicator/LinearProgressIndicator.java)
+*   `CircularProgressIndicator`
+    *   [Class description](https://developer.android.com/reference/com/google/android/material/progressindicator/CircularProgressIndicator)
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/progressindicator/CircularProgressIndicator.java)
 
 The following example shows a circular progress indicator with Material Theming.
 
