@@ -252,7 +252,7 @@ The following are some Material components that support shape theming.
 Components that support shape theming have a `shapeAppearance` attribute, a
 `shapeAppearanceOverlay` attribute, and are backed by a `MaterialShapeDrawable`.
 
-*   [Bottom Sheet](../components/BottomSheetBehavior.md)
+*   [Bottom Sheet](../components/BottomSheet.md)
 *   [Card](../components/Card.md)
 *   [Chip](../components/Chip.md)
 *   [Date Picker](../components/DatePicker.md)
