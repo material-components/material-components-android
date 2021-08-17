@@ -24,14 +24,16 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.PluralsRes;
+import androidx.annotation.RestrictTo;
 import androidx.core.view.MarginLayoutParamsCompat;
 import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RestrictTo;
+import android.widget.TextView;
 
 /**
  * Horizontally lay out children until the row is filled and then moved to the next line. Call
@@ -45,6 +47,11 @@ public class FlowLayout extends ViewGroup {
   private int itemSpacing;
   private boolean singleLine;
   private int rowCount;
+  private int maxRowCount;
+  private boolean overflowChildEnabled;
+  private int remainingItems;
+  @PluralsRes
+  private int overflowChildPluralResource;
 
   public FlowLayout(@NonNull Context context) {
     this(context, null);
@@ -102,6 +109,27 @@ public class FlowLayout extends ViewGroup {
     this.singleLine = singleLine;
   }
 
+  public int getMaxRowCount() {
+    return maxRowCount;
+  }
+
+  /** Sets the maximum rows rendered for children **/
+  public void setMaxRowCount(int maxRowCount) { this.maxRowCount = maxRowCount; }
+
+  public boolean isOverflowChildEnabled() {
+    return overflowChildEnabled;
+  }
+
+  /** Sets whether to render a overflow child view that displays number of remaining items **/
+  public void setOverflowChildEnabled(boolean overflowChildEnabled) {
+    this.overflowChildEnabled = overflowChildEnabled;
+  }
+
+  /** Sets the plural resource string to use as the text for overflow child ivew */
+  public void setOverflowChildPluralResource(@PluralsRes int overflowChildPluralResource) {
+    this.overflowChildPluralResource = overflowChildPluralResource;
+  }
+
   @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     final int width = MeasureSpec.getSize(widthMeasureSpec);
@@ -120,8 +148,16 @@ public class FlowLayout extends ViewGroup {
     int childBottom = childTop;
     int childRight = childLeft;
     int maxChildRight = 0;
+
     final int maxRight = maxWidth - getPaddingRight();
-    for (int i = 0; i < getChildCount(); i++) {
+
+    rowCount = 1;
+
+    int children = this.getChildCount();
+
+    remainingItems = children;
+
+    for (int i = 0; i < children; i++) {
       View child = getChildAt(i);
 
       if (child.getVisibility() == View.GONE) {
@@ -144,6 +180,12 @@ public class FlowLayout extends ViewGroup {
       // not confined to a single line, move this child to the next line and reset its left bound to
       // flowlayout's left bound.
       if (childRight > maxRight && !isSingleLine()) {
+        rowCount++;
+
+        if (this.maxRowCount > 0 && this.maxRowCount < rowCount) {
+          break;
+        }
+
         childLeft = getPaddingLeft();
         childTop = childBottom + lineSpacing;
       }
@@ -164,10 +206,60 @@ public class FlowLayout extends ViewGroup {
       if (i == (getChildCount() - 1)) {
         maxChildRight += rightMargin;
       }
+
+      remainingItems--;
     }
 
     maxChildRight += getPaddingRight();
     childBottom += getPaddingBottom();
+
+    // if we have remaining child views, adjust height to enable showing the `X more child` view on
+    // next line
+    if (this.overflowChildEnabled && remainingItems > 0) {
+      View child = this.getChildAt(this.getChildCount() - 1);
+
+      if (child.getVisibility() != View.GONE) {
+
+        // need to assign TextView text here, otherwise measurement of view width will be wrong
+        ((TextView)child).setText(
+                getContext().getResources().getQuantityString(
+                  this.overflowChildPluralResource, remainingItems, remainingItems
+                )
+        );
+
+        this.measureChild(child, widthMeasureSpec, heightMeasureSpec);
+
+        LayoutParams lp = child.getLayoutParams();
+        int leftMargin = 0;
+
+        if (lp instanceof MarginLayoutParams) {
+          leftMargin += ((MarginLayoutParams) lp).leftMargin;
+        }
+
+        childLeft = this.getPaddingLeft();
+        childTop = childBottom + lineSpacing;
+
+        childRight = childLeft + leftMargin + child.getMeasuredWidth();
+        childBottom = childTop + child.getMeasuredHeight();
+
+        if (childRight > maxChildRight) {
+          maxChildRight = childRight;
+        }
+      }
+    }
+
+    // hide any remaining child views
+    if (this.overflowChildEnabled) {
+      for (int i = 1; i < remainingItems; i++) {
+        // get child view, ignoring the last child item as we
+        // assume that if we have remaining items, we are showing the last child view
+        // which is the `X more childs` view
+        View child = this.getChildAt((this.getChildCount() - i - 1));
+        if (child != null) {
+          child.setVisibility(View.GONE);
+        }
+      }
+    }
 
     int finalWidth = getMeasuredDimension(width, widthMode, maxChildRight);
     int finalHeight = getMeasuredDimension(height, heightMode, childBottom);
@@ -200,11 +292,15 @@ public class FlowLayout extends ViewGroup {
     int childStart = paddingStart;
     int childTop = getPaddingTop();
     int childBottom = childTop;
-    int childEnd;
 
     final int maxChildEnd = right - left - paddingEnd;
 
-    for (int i = 0; i < getChildCount(); i++) {
+
+    // if maxRowCount > 0 then can assume that the last child view is used to display the
+    // `X more childs` view
+    int children = (this.maxRowCount == 0 || !this.overflowChildEnabled) ? this.getChildCount() : this.getChildCount() - 1;
+
+    for (int i = 0; i < children; i++) {
       View child = getChildAt(i);
 
       if (child.getVisibility() == View.GONE) {
@@ -221,7 +317,7 @@ public class FlowLayout extends ViewGroup {
         endMargin = MarginLayoutParamsCompat.getMarginEnd(marginLp);
       }
 
-      childEnd = childStart + startMargin + child.getMeasuredWidth();
+      int childEnd = childStart + startMargin + child.getMeasuredWidth();
 
       if (!singleLine && (childEnd > maxChildEnd)) {
         childStart = paddingStart;
@@ -241,6 +337,41 @@ public class FlowLayout extends ViewGroup {
       }
 
       childStart += (startMargin + endMargin + child.getMeasuredWidth()) + itemSpacing;
+    }
+
+    // if we have remaining child views and overflow is enabled
+    // display the `x more childs` view on the next line
+    if (this.overflowChildEnabled && remainingItems > 0) {
+      View child = getChildAt(this.getChildCount() - 1);
+
+      if (child.getVisibility() == View.GONE) {
+        child.setTag(R.id.row_index_key, -1);
+        return;
+      }
+
+      LayoutParams lp = child.getLayoutParams();
+      int startMargin = 0;
+      if (lp instanceof MarginLayoutParams) {
+        MarginLayoutParams marginLp = (MarginLayoutParams) lp;
+        startMargin = MarginLayoutParamsCompat.getMarginStart(marginLp);
+      }
+
+      if (!singleLine) {
+        childStart = paddingStart;
+        childTop = childBottom + lineSpacing;
+      }
+
+      child.setTag(R.id.row_index_key, rowCount - 1);
+
+      int childEnd = childStart + startMargin + child.getMeasuredWidth();
+      childBottom = childTop + child.getMeasuredHeight();
+
+      if (isRtl) {
+        child.layout(
+                maxChildEnd - childEnd, childTop, maxChildEnd - childStart - startMargin, childBottom);
+      } else {
+        child.layout(childStart + startMargin, childTop, childEnd, childBottom);
+      }
     }
   }
 

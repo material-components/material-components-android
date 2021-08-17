@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright 2017 The Android Open Source Project
+  Copyright 2020 The Android Open Source Project
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
 
-      http://www.apache.org/licenses/LICENSE-2.0
+      https://www.apache.org/licenses/LICENSE-2.0
 
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,10 +15,12 @@
   limitations under the License.
   -->
 
-<resources>
-  <string name="cat_app_name">Material Components Catalog</string>
-  <plurals name="cat_app_plural">
-    <item formatted="true" quantity="one">%d more city</item>
-    <item formatted="true" quantity="other">%d more cities</item>
-  </plurals>
-</resources>
+<com.google.android.material.chip.Chip
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Widget.MaterialComponents.Chip.Entry"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:clickable="false"
+    app:closeIconEnabled="false"
+    app:closeIconVisible="false"/>
