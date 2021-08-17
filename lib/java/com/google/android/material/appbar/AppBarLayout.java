@@ -50,6 +50,7 @@ import androidx.appcompat.content.res.AppCompatResources;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewOutlineProvider;
 import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -219,7 +220,9 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     if (Build.VERSION.SDK_INT >= 21) {
       // Use the bounds view outline provider so that we cast a shadow, even without a
       // background
-      ViewUtilsLollipop.setBoundsViewOutlineProvider(this);
+      if (getOutlineProvider() == ViewOutlineProvider.BACKGROUND) {
+        ViewUtilsLollipop.setBoundsViewOutlineProvider(this);
+      }
 
       // If we're running on API 21+, we should reset any state list animator from our
       // default style
