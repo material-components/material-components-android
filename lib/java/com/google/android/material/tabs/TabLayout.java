@@ -2608,17 +2608,6 @@ public class TabLayout extends HorizontalScrollView {
         if (this.iconView == null) {
           inflateAndAddDefaultIconView();
         }
-        final Drawable icon =
-            (tab != null && tab.getIcon() != null)
-                ? DrawableCompat.wrap(tab.getIcon()).mutate()
-                : null;
-        if (icon != null) {
-          DrawableCompat.setTintList(icon, tabIconTint);
-          if (tabIconTintMode != null) {
-            DrawableCompat.setTintMode(icon, tabIconTintMode);
-          }
-        }
-
         if (this.textView == null) {
           inflateAndAddDefaultTextView();
           defaultMaxLines = TextViewCompat.getMaxLines(this.textView);
@@ -2821,6 +2810,13 @@ public class TabLayout extends HorizontalScrollView {
           (tab != null && tab.getIcon() != null)
               ? DrawableCompat.wrap(tab.getIcon()).mutate()
               : null;
+      if (icon != null) {
+        DrawableCompat.setTintList(icon, tabIconTint);
+        if (tabIconTintMode != null) {
+          DrawableCompat.setTintMode(icon, tabIconTintMode);
+        }
+      }
+
       final CharSequence text = tab != null ? tab.getText() : null;
 
       if (iconView != null) {
