@@ -16,6 +16,150 @@
 -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="NewApi">
 
+  <style name="TextAppearance.Material3.DisplayLarge" parent="TextAppearance.MaterialComponents.Headline2">
+    <item name="fontFamily">sans-serif</item>
+    <item name="android:fontFamily">sans-serif</item>
+    <item name="android:textStyle">normal</item>
+    <item name="android:textAllCaps">false</item>
+    <item name="android:textSize">57sp</item>
+    <item name="android:letterSpacing">-0.004385964912</item>
+  </style>
+
+  <style name="TextAppearance.Material3.DisplayMedium" parent="TextAppearance.MaterialComponents.Headline3">
+    <item name="fontFamily">sans-serif</item>
+    <item name="android:fontFamily">sans-serif</item>
+    <item name="android:textStyle">normal</item>
+    <item name="android:textAllCaps">false</item>
+    <item name="android:textSize">45sp</item>
+    <item name="android:letterSpacing">0</item>
+  </style>
+
+  <style name="TextAppearance.Material3.DisplaySmall" parent="TextAppearance.MaterialComponents.Headline4">
+    <item name="fontFamily">sans-serif</item>
+    <item name="android:fontFamily">sans-serif</item>
+    <item name="android:textStyle">normal</item>
+    <item name="android:textAllCaps">false</item>
+    <item name="android:textSize">36sp</item>
+    <item name="android:letterSpacing">0</item>
+  </style>
+
+  <style name="TextAppearance.Material3.HeadlineLarge" parent="TextAppearance.MaterialComponents.Headline4">
+    <item name="fontFamily">sans-serif</item>
+    <item name="android:fontFamily">sans-serif</item>
+    <item name="android:textStyle">normal</item>
+    <item name="android:textAllCaps">false</item>
+    <item name="android:textSize">32sp</item>
+    <item name="android:letterSpacing">0</item>
+  </style>
+
+  <style name="TextAppearance.Material3.HeadlineMedium" parent="TextAppearance.MaterialComponents.Headline5">
+    <item name="fontFamily">sans-serif</item>
+    <item name="android:fontFamily">sans-serif</item>
+    <item name="android:textStyle">normal</item>
+    <item name="android:textAllCaps">false</item>
+    <item name="android:textSize">28sp</item>
+    <item name="android:letterSpacing">0</item>
+  </style>
+
+  <style name="TextAppearance.Material3.HeadlineSmall" parent="TextAppearance.MaterialComponents.Headline6">
+    <item name="fontFamily">sans-serif</item>
+    <item name="android:fontFamily">sans-serif</item>
+    <item name="android:textStyle">normal</item>
+    <item name="android:textAllCaps">false</item>
+    <item name="android:textSize">24sp</item>
+    <item name="android:letterSpacing">0</item>
+  </style>
+
+  <style name="TextAppearance.Material3.TitleLarge" parent="TextAppearance.MaterialComponents.Headline6">
+    <item name="fontFamily">sans-serif</item>
+    <item name="android:fontFamily">sans-serif</item>
+    <item name="android:textStyle">normal</item>
+    <item name="android:textAllCaps">false</item>
+    <item name="android:textSize">22sp</item>
+    <item name="android:letterSpacing">0</item>
+  </style>
+
+  <style name="Base.TextAppearance.Material3.TitleMedium" parent="TextAppearance.MaterialComponents.Subtitle1">
+    <item name="fontFamily">sans-serif</item>
+    <item name="android:fontFamily">sans-serif</item>
+    <item name="android:textStyle">normal</item>
+    <item name="android:textAllCaps">false</item>
+    <item name="android:textSize">15sp</item>
+    <item name="android:letterSpacing">0.009375</item>
+  </style>
+  <style name="TextAppearance.Material3.TitleMedium" parent="Base.TextAppearance.Material3.TitleMedium"/>
+
+  <style name="Base.TextAppearance.Material3.TitleSmall" parent="TextAppearance.MaterialComponents.Subtitle2">
+    <item name="fontFamily">sans-serif</item>
+    <item name="android:fontFamily">sans-serif</item>
+    <item name="android:textStyle">normal</item>
+    <item name="android:textAllCaps">false</item>
+    <item name="android:textSize">14sp</item>
+    <item name="android:letterSpacing">0.007142857143</item>
+  </style>
+  <style name="TextAppearance.Material3.TitleSmall" parent="Base.TextAppearance.Material3.TitleSmall"/>
+
+  <style name="TextAppearance.Material3.BodyLarge" parent="TextAppearance.MaterialComponents.Body1">
+    <item name="fontFamily">sans-serif</item>
+    <item name="android:fontFamily">sans-serif</item>
+    <item name="android:textStyle">normal</item>
+    <item name="android:textAllCaps">false</item>
+    <item name="android:textSize">16sp</item>
+    <item name="android:letterSpacing">0.03125</item>
+  </style>
+
+  <style name="TextAppearance.Material3.BodyMedium" parent="TextAppearance.MaterialComponents.Body2">
+    <item name="fontFamily">sans-serif</item>
+    <item name="android:fontFamily">sans-serif</item>
+    <item name="android:textStyle">normal</item>
+    <item name="android:textAllCaps">false</item>
+    <item name="android:textSize">14sp</item>
+    <item name="android:letterSpacing">0.01785714286</item>
+  </style>
+
+  <style name="TextAppearance.Material3.BodySmall" parent="TextAppearance.MaterialComponents.Caption">
+    <item name="fontFamily">sans-serif</item>
+    <item name="android:fontFamily">sans-serif</item>
+    <item name="android:textStyle">normal</item>
+    <item name="android:textAllCaps">false</item>
+    <item name="android:textSize">12sp</item>
+    <item name="android:letterSpacing">0.03333333333</item>
+  </style>
+
+  <style name="Base.TextAppearance.Material3.LabelLarge" parent="TextAppearance.MaterialComponents.Body2">
+    <item name="fontFamily">sans-serif</item>
+    <item name="android:fontFamily">sans-serif</item>
+    <item name="android:textStyle">normal</item>
+    <item name="android:textAllCaps">false</item>
+    <item name="android:textSize">14sp</item>
+    <item name="android:letterSpacing">0.007142857143</item>
+  </style>
+  <style name="TextAppearance.Material3.LabelLarge" parent="Base.TextAppearance.Material3.LabelLarge"/>
+
+  <style name="Base.TextAppearance.Material3.LabelMedium" parent="TextAppearance.MaterialComponents.Caption">
+    <item name="fontFamily">sans-serif</item>
+    <item name="android:fontFamily">sans-serif</item>
+    <item name="android:textStyle">normal</item>
+    <item name="android:textAllCaps">false</item>
+    <item name="android:textSize">12sp</item>
+    <item name="android:letterSpacing">0.04166666667</item>
+  </style>
+  <style name="TextAppearance.Material3.LabelMedium" parent="Base.TextAppearance.Material3.LabelMedium"/>
+
+  <style name="Base.TextAppearance.Material3.LabelSmall" parent="TextAppearance.MaterialComponents.Caption">
+    <item name="fontFamily">sans-serif</item>
+    <item name="android:fontFamily">sans-serif</item>
+    <item name="android:textStyle">normal</item>
+    <item name="android:textAllCaps">false</item>
+    <item name="android:textSize">11sp</item>
+    <item name="android:letterSpacing">0.04545454545</item>
+  </style>
+  <style name="TextAppearance.Material3.LabelSmall" parent="Base.TextAppearance.Material3.LabelSmall"/>
+
+
+
+  <!-- Deprecated -->
+
   <style name="TextAppearance.MaterialComponents.Headline1" parent="TextAppearance.AppCompat.Display4">
     <item name="fontFamily">sans-serif-light</item>
     <item name="android:fontFamily">sans-serif-light</item>

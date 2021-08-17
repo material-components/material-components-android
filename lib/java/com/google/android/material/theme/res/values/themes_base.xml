@@ -37,7 +37,24 @@
     <!-- TODO: Populate top app bar attributes here -->
     <!-- TODO: Populate popup menu styles here -->
     <!-- TODO: Populate divider styles here -->
-    <!-- TODO: Populate TextAppearances here -->
+
+    <!-- Type styles. -->
+    <item name="textAppearanceDisplayLarge">@style/TextAppearance.Material3.DisplayLarge</item>
+    <item name="textAppearanceDisplayMedium">@style/TextAppearance.Material3.DisplayMedium</item>
+    <item name="textAppearanceDisplaySmall">@style/TextAppearance.Material3.DisplaySmall</item>
+    <item name="textAppearanceHeadlineLarge">@style/TextAppearance.Material3.HeadlineLarge</item>
+    <item name="textAppearanceHeadlineMedium">@style/TextAppearance.Material3.HeadlineMedium</item>
+    <item name="textAppearanceHeadlineSmall">@style/TextAppearance.Material3.HeadlineSmall</item>
+    <item name="textAppearanceTitleLarge">@style/TextAppearance.Material3.TitleLarge</item>
+    <item name="textAppearanceTitleMedium">@style/TextAppearance.Material3.TitleMedium</item>
+    <item name="textAppearanceTitleSmall">@style/TextAppearance.Material3.TitleSmall</item>
+    <item name="textAppearanceBodyLarge">@style/TextAppearance.Material3.BodyLarge</item>
+    <item name="textAppearanceBodyMedium">@style/TextAppearance.Material3.BodyMedium</item>
+    <item name="textAppearanceBodySmall">@style/TextAppearance.Material3.BodySmall</item>
+    <item name="textAppearanceLabelLarge">@style/TextAppearance.Material3.LabelLarge</item>
+    <item name="textAppearanceLabelMedium">@style/TextAppearance.Material3.LabelMedium</item>
+    <item name="textAppearanceLabelSmall">@style/TextAppearance.Material3.LabelSmall</item>
+
     <!-- TODO: Populate font families here -->
     <!-- TODO: Populate shape appearance here -->
     <!-- TODO: Populate motion attributes here -->
@@ -65,7 +82,24 @@
     <!-- TODO: Populate top app bar attributes here -->
     <!-- TODO: Populate popup menu styles here -->
     <!-- TODO: Populate divider styles here -->
-    <!-- TODO: Populate TextAppearances here -->
+
+    <!-- Type styles. -->
+    <item name="textAppearanceDisplayLarge">@style/TextAppearance.Material3.DisplayLarge</item>
+    <item name="textAppearanceDisplayMedium">@style/TextAppearance.Material3.DisplayMedium</item>
+    <item name="textAppearanceDisplaySmall">@style/TextAppearance.Material3.DisplaySmall</item>
+    <item name="textAppearanceHeadlineLarge">@style/TextAppearance.Material3.HeadlineLarge</item>
+    <item name="textAppearanceHeadlineMedium">@style/TextAppearance.Material3.HeadlineMedium</item>
+    <item name="textAppearanceHeadlineSmall">@style/TextAppearance.Material3.HeadlineSmall</item>
+    <item name="textAppearanceTitleLarge">@style/TextAppearance.Material3.TitleLarge</item>
+    <item name="textAppearanceTitleMedium">@style/TextAppearance.Material3.TitleMedium</item>
+    <item name="textAppearanceTitleSmall">@style/TextAppearance.Material3.TitleSmall</item>
+    <item name="textAppearanceBodyLarge">@style/TextAppearance.Material3.BodyLarge</item>
+    <item name="textAppearanceBodyMedium">@style/TextAppearance.Material3.BodyMedium</item>
+    <item name="textAppearanceBodySmall">@style/TextAppearance.Material3.BodySmall</item>
+    <item name="textAppearanceLabelLarge">@style/TextAppearance.Material3.LabelLarge</item>
+    <item name="textAppearanceLabelMedium">@style/TextAppearance.Material3.LabelMedium</item>
+    <item name="textAppearanceLabelSmall">@style/TextAppearance.Material3.LabelSmall</item>
+
     <!-- TODO: Populate font families here -->
     <!-- TODO: Populate shape appearance here -->
     <!-- TODO: Populate motion attributes here -->
