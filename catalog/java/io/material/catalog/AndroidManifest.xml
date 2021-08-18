@@ -44,18 +44,12 @@
     <activity
       android:name=".elevation.ElevationOverlayDemoActivity"
       android:exported="true"
-      android:label="@string/cat_elevation_overlay_title"
-      android:theme="@style/Theme.Catalog.Dark"/>
+      android:label="@string/cat_elevation_overlay_title" />
     <activity
       android:name=".topappbar.TopAppBarActionBarDemoActivity"
       android:exported="true"
       android:label="@string/cat_topappbar_action_bar_title"
-      android:theme="@style/Theme.MaterialComponents.DayNight"/>
-    <activity
-      android:name=".topappbar.TopAppBarDarkActionBarDemoActivity"
-      android:exported="true"
-      android:label="@string/cat_topappbar_dark_action_bar_title"
-      android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar"/>
+      android:theme="@style/Theme.Material3.DayNight"/>
     <activity
       android:name=".topappbar.TopAppBarScrollingTransparentStatusDemoActivity"
       android:exported="true"
