@@ -444,28 +444,40 @@ public class TextInputLayout extends LinearLayout {
     setAddStatesFromChildren(true);
 
     inputFrame = new FrameLayout(context);
-    inputFrame.setAddStatesFromChildren(true);
-    addView(inputFrame);
+    endIconFrame = new FrameLayout(context);
+
     startLayout = new LinearLayout(context);
+    endLayout = new LinearLayout(context);
+
+    prefixTextView = new AppCompatTextView(context);
+    suffixTextView = new AppCompatTextView(context);
+
+    endIconFrame.setVisibility(GONE);
     startLayout.setVisibility(GONE);
+    endLayout.setVisibility(GONE);
+
+    prefixTextView.setVisibility(GONE);
+    suffixTextView.setVisibility(GONE);
+
+    final LayoutInflater lf = LayoutInflater.from(context);
+    startIconView = (CheckableImageButton) lf.inflate(R.layout.design_text_input_start_icon, startLayout, false);
+    errorIconView = (CheckableImageButton) lf.inflate(R.layout.design_text_input_end_icon, endLayout, false);
+    endIconView = (CheckableImageButton) lf.inflate(R.layout.design_text_input_end_icon, endIconFrame, false);
+
+    inputFrame.setAddStatesFromChildren(true);
+
     startLayout.setOrientation(HORIZONTAL);
     startLayout.setLayoutParams(
         new FrameLayout.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.MATCH_PARENT,
             Gravity.START | Gravity.LEFT));
-    inputFrame.addView(startLayout);
-    endLayout = new LinearLayout(context);
-    endLayout.setVisibility(GONE);
     endLayout.setOrientation(HORIZONTAL);
     endLayout.setLayoutParams(
         new FrameLayout.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.MATCH_PARENT,
             Gravity.END | Gravity.RIGHT));
-    inputFrame.addView(endLayout);
-    endIconFrame = new FrameLayout(context);
-    endIconFrame.setVisibility(GONE);
     endIconFrame.setLayoutParams(
         new FrameLayout.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -615,12 +627,8 @@ public class TextInputLayout extends LinearLayout {
     final CharSequence errorContentDescription =
         a.getText(R.styleable.TextInputLayout_errorContentDescription);
     final boolean errorEnabled = a.getBoolean(R.styleable.TextInputLayout_errorEnabled, false);
+
     // Initialize error icon view.
-    errorIconView =
-        (CheckableImageButton)
-            LayoutInflater.from(getContext())
-                .inflate(R.layout.design_text_input_end_icon, endLayout, false);
-    errorIconView.setVisibility(GONE);
     errorIconView.setId(R.id.text_input_error_icon);
     if (MaterialResources.isFontScaleAtLeast1_3(context)) {
       ViewGroup.MarginLayoutParams lp =
@@ -673,11 +681,6 @@ public class TextInputLayout extends LinearLayout {
         a.getResourceId(R.styleable.TextInputLayout_counterOverflowTextAppearance, 0);
 
     // Initialize start icon view.
-    startIconView =
-        (CheckableImageButton)
-            LayoutInflater.from(getContext())
-                .inflate(R.layout.design_text_input_start_icon, startLayout, false);
-    startIconView.setVisibility(GONE);
     if (MaterialResources.isFontScaleAtLeast1_3(context)) {
       ViewGroup.MarginLayoutParams lp =
           (ViewGroup.MarginLayoutParams) startIconView.getLayoutParams();
@@ -711,12 +714,6 @@ public class TextInputLayout extends LinearLayout {
         a.getInt(R.styleable.TextInputLayout_boxBackgroundMode, BOX_BACKGROUND_NONE));
 
     // Initialize end icon view.
-    endIconView =
-        (CheckableImageButton)
-            LayoutInflater.from(getContext())
-                .inflate(R.layout.design_text_input_end_icon, endIconFrame, false);
-    endIconView.setVisibility(GONE);
-    endIconFrame.addView(endIconView);
     if (MaterialResources.isFontScaleAtLeast1_3(context)) {
       ViewGroup.MarginLayoutParams lp =
           (ViewGroup.MarginLayoutParams) endIconView.getLayoutParams();
@@ -779,8 +776,6 @@ public class TextInputLayout extends LinearLayout {
     }
 
     // Set up prefix view.
-    prefixTextView = new AppCompatTextView(context);
-    prefixTextView.setVisibility(GONE);
     prefixTextView.setId(R.id.textinput_prefix_text);
     prefixTextView.setLayoutParams(
         new FrameLayout.LayoutParams(
@@ -788,12 +783,8 @@ public class TextInputLayout extends LinearLayout {
     ViewCompat.setAccessibilityLiveRegion(
         prefixTextView, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
 
-    startLayout.addView(startIconView);
-    startLayout.addView(prefixTextView);
 
     // Set up suffix view.
-    suffixTextView = new AppCompatTextView(context);
-    suffixTextView.setVisibility(GONE);
     suffixTextView.setId(R.id.textinput_suffix_text);
     suffixTextView.setLayoutParams(
         new FrameLayout.LayoutParams(
@@ -802,10 +793,6 @@ public class TextInputLayout extends LinearLayout {
             Gravity.BOTTOM));
     ViewCompat.setAccessibilityLiveRegion(
         suffixTextView, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
-
-    endLayout.addView(suffixTextView);
-    endLayout.addView(errorIconView);
-    endLayout.addView(endIconFrame);
 
     setHelperTextEnabled(helperTextEnabled);
     setHelperText(helperText);
@@ -863,6 +850,20 @@ public class TextInputLayout extends LinearLayout {
     if (VERSION.SDK_INT >= VERSION_CODES.O) {
       ViewCompat.setImportantForAutofill(this, View.IMPORTANT_FOR_AUTOFILL_YES);
     }
+
+    startLayout.addView(startIconView);
+    startLayout.addView(prefixTextView);
+
+    endIconFrame.addView(endIconView);
+
+    endLayout.addView(suffixTextView);
+    endLayout.addView(errorIconView);
+    endLayout.addView(endIconFrame);
+
+    inputFrame.addView(startLayout);
+    inputFrame.addView(endLayout);
+
+    addView(inputFrame);
   }
 
   @Override
@@ -2549,56 +2550,60 @@ public class TextInputLayout extends LinearLayout {
   }
 
   private void updateSuffixTextVisibility() {
-    int oldSuffixVisibility = suffixTextView.getVisibility();
-    boolean visible = suffixText != null && !isHintExpanded();
-    suffixTextView.setVisibility(visible ? VISIBLE : GONE);
-    updateEndLayoutVisible();
-    if (oldSuffixVisibility != suffixTextView.getVisibility()) {
+    final int oldSuffixVisibility = suffixTextView.getVisibility();
+    final boolean visible = suffixText != null && !isHintExpanded();
+    final int visibleInt = visible ? VISIBLE : GONE;
+
+    if (oldSuffixVisibility != visibleInt) {
+      suffixTextView.setVisibility(visibleInt);
       getEndIconDelegate().onSuffixVisibilityChanged(visible);
     }
     updateDummyDrawables();
     updateEndLayoutVisible();
   }
 
-  @SuppressWarnings("ConstantConditions")
   private void updateEndLayoutVisible() {
-    if (endIconView == null || endIconFrame == null || errorIconView == null
-        || suffixTextView == null || endLayout == null)
-      return;;
-
-    if (!hasEndIcon() && endIconView.getVisibility() != GONE)
+    int endIconViewVis = endIconView.getVisibility();
+    if (!hasEndIcon() && endIconViewVis != GONE) {
       endIconView.setVisibility(GONE);
-
-    if (endIconFrame.getVisibility() != endIconView.getVisibility())
-      endIconFrame.setVisibility(endIconView.getVisibility());
+      endIconViewVis = GONE;
+    }
 
     int endIconFrameVis = endIconFrame.getVisibility();
-    int suffixVis = suffixTextView.getVisibility();
-    int errorVis = errorIconView.getVisibility();
+    // sync with endIconView to reduce tree depth
+    if (endIconViewVis != endIconFrameVis) {
+      endIconFrame.setVisibility(endIconViewVis);
+      endIconFrameVis = endIconViewVis;
+    }
 
-    if (endIconFrameVis == VISIBLE || suffixVis == VISIBLE ||errorVis == VISIBLE) {
-      if (endLayout.getVisibility() != VISIBLE)
+    final int suffixVis = suffixTextView.getVisibility();
+    final int errorVis = errorIconView.getVisibility();
+    final int endLayoutVis = endLayout.getVisibility();
+
+    if (endIconFrameVis == VISIBLE || suffixVis == VISIBLE || errorVis == VISIBLE) {
+      if (endLayoutVis != VISIBLE) {
         endLayout.setVisibility(VISIBLE);
+      }
     } else {
-      if (endLayout.getVisibility() != GONE)
+      if (endLayoutVis != GONE) {
         endLayout.setVisibility(GONE);
+      }
     }
   }
 
-  @SuppressWarnings("ConstantConditions")
   private void updateStartLayoutVisible() {
-    if (startIconView == null || prefixTextView == null || startLayout == null)
-      return;;
-
-    int startIconVis = startIconView.getVisibility();
-    int prefixVis = prefixTextView.getVisibility();
+    final int startIconVis = startIconView.getVisibility();
+    final int prefixVis = prefixTextView.getVisibility();
+    final int startLayoutVis = startLayout.getVisibility();
 
     if (startIconVis == VISIBLE || prefixVis == VISIBLE) {
-      if (startLayout.getVisibility() != VISIBLE)
+      if (startLayoutVis != VISIBLE) {
         startLayout.setVisibility(VISIBLE);
+      }
     } else {
-      if (startLayout.getVisibility() != GONE)
+      if (startLayoutVis != GONE) {
         startLayout.setVisibility(GONE);
+      }
     }
   }
 

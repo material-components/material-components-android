@@ -25,5 +25,6 @@
     android:layout_marginStart="@dimen/mtrl_textinput_end_icon_margin_start"
     android:background="?attr/actionBarItemBackground"
     android:minHeight="48dp"
+    android:visibility="gone"
     android:minWidth="48dp"
     tools:ignore="Overdraw"/>
