@@ -2554,6 +2554,7 @@ public class TextInputLayout extends LinearLayout {
     final boolean visible = suffixText != null && !isHintExpanded();
     final int visibleInt = visible ? VISIBLE : GONE;
 
+updateEndLayoutVisible();
     if (oldSuffixVisibility != visibleInt) {
       suffixTextView.setVisibility(visibleInt);
       getEndIconDelegate().onSuffixVisibilityChanged(visible);
