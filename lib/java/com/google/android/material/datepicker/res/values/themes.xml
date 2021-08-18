@@ -52,4 +52,37 @@
     <item name="materialCalendarHeaderSelection">@style/Widget.MaterialComponents.MaterialCalendar.HeaderSelection.Fullscreen</item>
   </style>
 
+  <style name="ThemeOverlay.Material3.MaterialCalendar" parent="ThemeOverlay.Material3.Dialog">
+    <!-- TODO: Populate correct M3 attributes -->
+    <item name="materialCalendarStyle">@style/Widget.MaterialComponents.MaterialCalendar</item>
+
+    <!-- Header Styles -->
+    <item name="materialCalendarHeaderLayout">@style/Widget.MaterialComponents.MaterialCalendar.HeaderLayout</item>
+    <item name="materialCalendarHeaderDivider">@style/Widget.MaterialComponents.MaterialCalendar.HeaderDivider</item>
+    <item name="materialCalendarHeaderTitle">@style/Widget.MaterialComponents.MaterialCalendar.HeaderTitle</item>
+    <item name="materialCalendarHeaderSelection">@style/Widget.MaterialComponents.MaterialCalendar.HeaderSelection</item>
+    <item name="materialCalendarHeaderCancelButton">@style/Widget.MaterialComponents.MaterialCalendar.HeaderCancelButton</item>
+    <item name="materialCalendarHeaderConfirmButton">@style/Widget.MaterialComponents.MaterialCalendar.HeaderConfirmButton</item>
+    <item name="materialCalendarHeaderToggleButton">@style/Widget.MaterialComponents.MaterialCalendar.HeaderToggleButton</item>
+
+    <!-- Navigation Styles -->
+    <item name="materialCalendarYearNavigationButton">@style/Widget.MaterialComponents.MaterialCalendar.YearNavigationButton</item>
+    <item name="materialCalendarMonthNavigationButton">@style/Widget.MaterialComponents.MaterialCalendar.MonthNavigationButton</item>
+
+    <!-- Grid Styles -->
+    <item name="materialCalendarDayOfWeekLabel">@style/Widget.MaterialComponents.MaterialCalendar.DayOfWeekLabel</item>
+    <item name="materialCalendarDay">@style/Widget.MaterialComponents.MaterialCalendar.DayTextView</item>
+    <item name="materialCalendarMonth">@style/Widget.MaterialComponents.MaterialCalendar.MonthTextView</item>
+
+    <!-- Action Styles -->
+    <item name="buttonBarPositiveButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
+    <item name="buttonBarNegativeButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.MaterialCalendar.Fullscreen">
+    <!-- TODO: Populate correct M3 attributes -->
+    <item name="materialCalendarStyle">@style/Widget.MaterialComponents.MaterialCalendar.Fullscreen</item>
+    <item name="materialCalendarHeaderSelection">@style/Widget.MaterialComponents.MaterialCalendar.HeaderSelection.Fullscreen</item>
+  </style>
+
 </resources>

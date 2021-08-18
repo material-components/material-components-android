@@ -21,6 +21,7 @@ import io.material.catalog.R;
 import android.content.Intent;
 import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
+import com.google.common.collect.ImmutableList;
 import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
 import dagger.multibindings.IntoSet;
@@ -106,17 +107,11 @@ public class TopAppBarFragment extends DemoLandingFragment {
   }
 
   protected List<Demo> getActionBarDemos() {
-    return Arrays.asList(
+    return ImmutableList.of(
         new Demo(R.string.cat_topappbar_action_bar_title) {
           @Override
           public Intent createActivityIntent() {
             return new Intent(getContext(), TopAppBarActionBarDemoActivity.class);
-          }
-        },
-        new Demo(R.string.cat_topappbar_dark_action_bar_title) {
-          @Override
-          public Intent createActivityIntent() {
-            return new Intent(getContext(), TopAppBarDarkActionBarDemoActivity.class);
           }
         });
   }

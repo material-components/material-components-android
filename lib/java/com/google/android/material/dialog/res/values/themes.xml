@@ -76,34 +76,6 @@
     <!-- TODO: Populate overriding alert dialog styles -->
   </style>
 
-  <style name="ThemeOverlay.Material3.MaterialCalendar" parent="ThemeOverlay.Material3.Dialog">
-    <!-- TODO: Populate overriding window elevation -->
-    <!-- TODO: Populate calendar header component styles -->
-    <!-- TODO: Populate calendar navigation component styles -->
-    <!-- TODO: Populate calendar grid styles -->
-    <!-- TODO: Populate calendar action button styles -->
-  </style>
-
-  <style name="ThemeOverlay.Material3.MaterialCalendar.Fullscreen">
-    <!-- TODO: Populate overriding window elevation -->
-    <!-- TODO: Populate overriding materialCalendarStyle -->
-    <!-- TODO: Populate overriding materialCalendarHeaderSelection -->
-  </style>
-
-  <!--
-    The default theme overlay used by Material3 for TimePickers, via the
-    materialTimePickerTheme attribute.
-  -->
-  <style name="ThemeOverlay.Material3.MaterialTimePicker" parent="ThemeOverlay.Material3.Dialog">
-    <!-- TODO: Populate overriding window elevation -->
-    <!-- TODO: Populate overriding chipStyle -->
-    <!-- TODO: Populate overriding textInputStyle -->
-    <!-- TODO: Populate time picker component styles -->
-    <!-- TODO: Populate overriding imageButtonStyle -->
-    <!-- TODO: Populate overriding text appearances -->
-    <item name="elevationOverlayEnabled">true</item>
-  </style>
-
   <!--
     Themes in the "Theme.MaterialComponents" family will contain a default full color scheme.
 
