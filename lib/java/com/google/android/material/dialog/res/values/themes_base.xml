@@ -20,7 +20,34 @@
   <eat-comment/>
 
   <style name="Base.V14.Theme.Material3.Light.Dialog" parent="Theme.MaterialComponents.Light.Dialog">
-    <!-- TODO: Populate color palettes here -->
+    <!-- Color palettes -->
+    <item name="colorPrimary">@color/m3_sys_color_light_primary</item>
+    <item name="colorOnPrimary">@color/m3_sys_color_light_on_primary</item>
+    <item name="colorPrimaryInverse">@color/m3_sys_color_light_inverse_primary</item>
+    <item name="colorPrimaryContainer">@color/m3_sys_color_light_primary_container</item>
+    <item name="colorOnPrimaryContainer">@color/m3_sys_color_light_on_primary_container</item>
+    <item name="colorSecondary">@color/m3_sys_color_light_secondary</item>
+    <item name="colorOnSecondary">@color/m3_sys_color_light_on_secondary</item>
+    <item name="colorSecondaryContainer">@color/m3_sys_color_light_secondary_container</item>
+    <item name="colorOnSecondaryContainer">@color/m3_sys_color_light_on_secondary_container</item>
+    <item name="colorTertiary">@color/m3_sys_color_light_tertiary</item>
+    <item name="colorOnTertiary">@color/m3_sys_color_light_on_tertiary</item>
+    <item name="colorTertiaryContainer">@color/m3_sys_color_light_tertiary_container</item>
+    <item name="colorOnTertiaryContainer">@color/m3_sys_color_light_on_tertiary_container</item>
+    <item name="android:colorBackground">@color/m3_sys_color_light_background</item>
+    <item name="colorOnBackground">@color/m3_sys_color_light_on_background</item>
+    <item name="colorSurface">@color/m3_sys_color_light_surface</item>
+    <item name="colorOnSurface">@color/m3_sys_color_light_on_surface</item>
+    <item name="colorSurfaceVariant">@color/m3_sys_color_light_surface_variant</item>
+    <item name="colorOnSurfaceVariant">@color/m3_sys_color_light_on_surface_variant</item>
+    <item name="colorSurfaceInverse">@color/m3_sys_color_light_inverse_surface</item>
+    <item name="colorOnSurfaceInverse">@color/m3_sys_color_light_inverse_on_surface</item>
+    <item name="colorOutline">@color/m3_sys_color_light_outline</item>
+    <item name="colorError">@color/m3_sys_color_light_error</item>
+    <item name="colorOnError">@color/m3_sys_color_light_on_error</item>
+    <item name="colorErrorContainer">@color/m3_sys_color_light_error_container</item>
+    <item name="colorOnErrorContainer">@color/m3_sys_color_light_on_error_container</item>
+
     <!-- TODO: Populate widget styles here -->
     <!-- TODO: Populate top app bar attributes here -->
     <!-- TODO: Populate popup menu styles here -->
@@ -53,7 +80,34 @@
   </style>
 
   <style name="Base.V14.Theme.Material3.Dark.Dialog" parent="Theme.MaterialComponents.Dialog">
-    <!-- TODO: Populate color palettes here -->
+    <!-- Color palettes -->
+    <item name="colorPrimary">@color/m3_sys_color_dark_primary</item>
+    <item name="colorOnPrimary">@color/m3_sys_color_dark_on_primary</item>
+    <item name="colorPrimaryInverse">@color/m3_sys_color_dark_inverse_primary</item>
+    <item name="colorPrimaryContainer">@color/m3_sys_color_dark_primary_container</item>
+    <item name="colorOnPrimaryContainer">@color/m3_sys_color_dark_on_primary_container</item>
+    <item name="colorSecondary">@color/m3_sys_color_dark_secondary</item>
+    <item name="colorOnSecondary">@color/m3_sys_color_dark_on_secondary</item>
+    <item name="colorSecondaryContainer">@color/m3_sys_color_dark_secondary_container</item>
+    <item name="colorOnSecondaryContainer">@color/m3_sys_color_dark_on_secondary_container</item>
+    <item name="colorTertiary">@color/m3_sys_color_dark_tertiary</item>
+    <item name="colorOnTertiary">@color/m3_sys_color_dark_on_tertiary</item>
+    <item name="colorTertiaryContainer">@color/m3_sys_color_dark_tertiary_container</item>
+    <item name="colorOnTertiaryContainer">@color/m3_sys_color_dark_on_tertiary_container</item>
+    <item name="android:colorBackground">@color/m3_sys_color_dark_background</item>
+    <item name="colorOnBackground">@color/m3_sys_color_dark_on_background</item>
+    <item name="colorSurface">@color/m3_sys_color_dark_surface</item>
+    <item name="colorOnSurface">@color/m3_sys_color_dark_on_surface</item>
+    <item name="colorSurfaceVariant">@color/m3_sys_color_dark_surface_variant</item>
+    <item name="colorOnSurfaceVariant">@color/m3_sys_color_dark_on_surface_variant</item>
+    <item name="colorSurfaceInverse">@color/m3_sys_color_dark_inverse_surface</item>
+    <item name="colorOnSurfaceInverse">@color/m3_sys_color_dark_inverse_on_surface</item>
+    <item name="colorOutline">@color/m3_sys_color_dark_outline</item>
+    <item name="colorError">@color/m3_sys_color_dark_error</item>
+    <item name="colorOnError">@color/m3_sys_color_dark_on_error</item>
+    <item name="colorErrorContainer">@color/m3_sys_color_dark_error_container</item>
+    <item name="colorOnErrorContainer">@color/m3_sys_color_dark_on_error_container</item>
+
     <!-- TODO: Populate widget styles here -->
     <!-- TODO: Populate top app bar attributes here -->
     <!-- TODO: Populate popup menu styles here -->
