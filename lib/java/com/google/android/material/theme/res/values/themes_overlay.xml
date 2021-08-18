@@ -24,7 +24,21 @@
     Theme overlay that replaces colors with their light versions.
   -->
   <style name="ThemeOverlay.Material3.Light" parent="ThemeOverlay.MaterialComponents.Light">
-    <!-- TODO: Populate color palettes -->
+    <!-- Color palettes -->
+    <item name="android:colorBackground">@color/m3_sys_color_light_background</item>
+    <item name="colorOnBackground">@color/m3_sys_color_light_on_background</item>
+    <item name="colorSurface">@color/m3_sys_color_light_surface</item>
+    <item name="colorOnSurface">@color/m3_sys_color_light_on_surface</item>
+    <item name="colorSurfaceVariant">@color/m3_sys_color_light_surface_variant</item>
+    <item name="colorOnSurfaceVariant">@color/m3_sys_color_light_on_surface_variant</item>
+    <item name="colorSurfaceInverse">@color/m3_sys_color_light_inverse_surface</item>
+    <item name="colorOnSurfaceInverse">@color/m3_sys_color_light_inverse_on_surface</item>
+    <item name="colorOutline">@color/m3_sys_color_light_outline</item>
+    <item name="colorError">@color/m3_sys_color_light_error</item>
+    <item name="colorOnError">@color/m3_sys_color_light_on_error</item>
+    <item name="colorErrorContainer">@color/m3_sys_color_light_error_container</item>
+    <item name="colorOnErrorContainer">@color/m3_sys_color_light_on_error_container</item>
+
     <!-- TODO: Populate overriding elevation overlay attributes -->
   </style>
 
@@ -32,7 +46,21 @@
     Theme overlay that replaces colors with their dark versions.
   -->
   <style name="ThemeOverlay.Material3.Dark" parent="ThemeOverlay.MaterialComponents.Dark">
-    <!-- TODO: Populate color palettes -->
+    <!-- Color palettes -->
+    <item name="android:colorBackground">@color/m3_sys_color_dark_background</item>
+    <item name="colorOnBackground">@color/m3_sys_color_dark_on_background</item>
+    <item name="colorSurface">@color/m3_sys_color_dark_surface</item>
+    <item name="colorOnSurface">@color/m3_sys_color_dark_on_surface</item>
+    <item name="colorSurfaceVariant">@color/m3_sys_color_dark_surface_variant</item>
+    <item name="colorOnSurfaceVariant">@color/m3_sys_color_dark_on_surface_variant</item>
+    <item name="colorSurfaceInverse">@color/m3_sys_color_dark_inverse_surface</item>
+    <item name="colorOnSurfaceInverse">@color/m3_sys_color_dark_inverse_on_surface</item>
+    <item name="colorOutline">@color/m3_sys_color_dark_outline</item>
+    <item name="colorError">@color/m3_sys_color_dark_error</item>
+    <item name="colorOnError">@color/m3_sys_color_dark_on_error</item>
+    <item name="colorErrorContainer">@color/m3_sys_color_dark_error_container</item>
+    <item name="colorOnErrorContainer">@color/m3_sys_color_dark_on_error_container</item>
+
     <!-- TODO: Populate overriding elevation overlay attributes -->
   </style>
 
