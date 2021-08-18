@@ -82,12 +82,6 @@
        text/iconography when drawn on top of error container. -->
   <attr name="colorOnErrorContainer" format="color"/>
 
-  <!-- The color of disabled elements, usually the background color. -->
-  <attr name="colorDisabled" format="color"/>
-  <!-- A color that passes accessibility guidelines for text/iconography when drawn on top of
-       disabled. -->
-  <attr name="colorOnDisabled" format="color"/>
-
   <!-- A color that corresponds to colorPrimary in light themes and colorSurface in dark
        themes. -->
   <attr name="colorPrimarySurface" format="color"/>
