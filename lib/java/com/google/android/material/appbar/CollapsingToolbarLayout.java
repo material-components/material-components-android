@@ -553,7 +553,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
       updateTitleFromToolbarIfNeeded();
       updateTextBounds(0, 0, getMeasuredWidth(), getMeasuredHeight(), /* forceRecalculate= */ true);
 
-      int lineCount = collapsingTextHelper.getLineCount();
+      int lineCount = collapsingTextHelper.getExpandedLineCount();
       if (lineCount > 1) {
         // Add extra height based on the amount of height beyond the first line of title text.
         int expandedTextHeight = Math.round(collapsingTextHelper.getExpandedTextFullHeight());
