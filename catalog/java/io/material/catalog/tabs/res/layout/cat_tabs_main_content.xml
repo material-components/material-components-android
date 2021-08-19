@@ -79,11 +79,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="@dimen/cat_tabs_standard_spacing"
-        android:text="@string/cat_tabs_colored_tabs_label"
+        android:text="@string/cat_tabs_secondary_tabs_label"
         android:textSize="16sp"/>
 
     <com.google.android.material.tabs.TabLayout
-        style="@style/Widget.MaterialComponents.TabLayout.Colored"
+        style="?attr/tabSecondaryStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

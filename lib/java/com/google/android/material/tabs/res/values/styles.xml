@@ -68,4 +68,36 @@
 
   <style name="Widget.MaterialComponents.TabLayout.PrimarySurface" parent="Widget.MaterialComponents.TabLayout.Colored"/>
 
+  <!-- Styles for M3 Tabs -->
+  <style name="Base.Widget.Material3.TabLayout" parent="Widget.MaterialComponents.TabLayout">
+    <item name="tabIconTint">@color/m3_tabs_icon_color</item>
+    <item name="tabTextAppearance">?attr/textAppearanceLabelLarge</item>
+    <item name="tabTextColor">@color/m3_tabs_icon_color</item>
+    <item name="tabIndicator">@drawable/m3_tabs_rounded_line_indicator</item>
+    <item name="tabIndicatorAnimationMode">elastic</item>
+    <item name="tabIndicatorColor">?attr/colorPrimary</item>
+    <item name="tabRippleColor">@color/m3_tabs_ripple_color</item>
+    <item name="tabIndicatorFullWidth">false</item>
+  </style>
+
+  <style name="Widget.Material3.TabLayout" parent="Base.Widget.Material3.TabLayout"/>
+
+  <!-- Styles for M3 Tabs used on an elevatable surface. -->
+  <style name="Base.Widget.Material3.TabLayout.OnSurface" parent="Widget.Material3.TabLayout">
+    <item name="android:background">@android:color/transparent</item>
+  </style>
+
+  <style name="Widget.Material3.TabLayout.OnSurface" parent="Base.Widget.Material3.TabLayout.OnSurface"/>
+
+  <!-- Style for M3 secondary tabs, which are used as an alternate when primary tabs are already
+       present in the UI. This style does not have a bottom divider, which is added in v21 because
+       the drawable cannot use theme colors pre-21. -->
+  <style name="Base.Widget.Material3.TabLayout.Secondary" parent="Widget.Material3.TabLayout">
+    <item name="tabIndicator">@drawable/m3_tabs_line_indicator</item>
+    <item name="tabTextColor">@color/m3_tabs_secondary_text_color</item>
+    <item name="tabIndicatorFullWidth">true</item>
+  </style>
+
+  <style name="Widget.Material3.TabLayout.Secondary" parent="Base.Widget.Material3.TabLayout.Secondary"/>
+
 </resources>
