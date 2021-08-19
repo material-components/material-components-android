@@ -344,7 +344,14 @@
     <item name="startIconTint">@color/m3_textfield_indicator_text_color</item>
     <item name="endIconTint">@color/m3_textfield_indicator_text_color</item>
 
-    <item name="placeholderTextAppearance">?attr/textAppearanceBody1</item>
+    <item name="counterTextAppearance">?attr/textAppearanceBodySmall</item>
+    <item name="counterOverflowTextAppearance">?attr/textAppearanceBodySmall</item>
+    <item name="errorTextAppearance">?attr/textAppearanceBodySmall</item>
+    <item name="helperTextTextAppearance">?attr/textAppearanceBodySmall</item>
+    <item name="hintTextAppearance">?attr/textAppearanceBodySmall</item>
+    <item name="placeholderTextAppearance">?attr/textAppearanceBodyLarge</item>
+    <item name="prefixTextAppearance">?attr/textAppearanceTitleMedium</item>
+    <item name="suffixTextAppearance">?attr/textAppearanceTitleMedium</item>
     <item name="shapeAppearanceOverlay">?attr/shapeAppearanceSmallComponent</item>
   </style>
 
@@ -385,7 +392,14 @@
     <item name="startIconTint">@color/m3_textfield_indicator_text_color</item>
     <item name="endIconTint">@color/m3_textfield_indicator_text_color</item>
 
-    <item name="placeholderTextAppearance">?attr/textAppearanceBody1</item>
+    <item name="counterTextAppearance">?attr/textAppearanceBodySmall</item>
+    <item name="counterOverflowTextAppearance">?attr/textAppearanceBodySmall</item>
+    <item name="errorTextAppearance">?attr/textAppearanceBodySmall</item>
+    <item name="helperTextTextAppearance">?attr/textAppearanceBodySmall</item>
+    <item name="hintTextAppearance">?attr/textAppearanceBodySmall</item>
+    <item name="placeholderTextAppearance">?attr/textAppearanceBodyLarge</item>
+    <item name="prefixTextAppearance">?attr/textAppearanceTitleMedium</item>
+    <item name="suffixTextAppearance">?attr/textAppearanceTitleMedium</item>
     <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Material3.TextField.Filled</item>
   </style>
 
@@ -407,40 +421,40 @@
 
   <!-- Styles for the M3 TextInputEditText. -->
   <style name="Widget.Material3.TextInputEditText.OutlinedBox" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
-    <item name="android:textAppearance">?attr/textAppearanceBody1</item>
+    <item name="android:textAppearance">?attr/textAppearanceBodyLarge</item>
     <item name="android:textColor">@color/m3_textfield_input_text_color</item>
   </style>
 
   <style name="Widget.Material3.TextInputEditText.OutlinedBox.Dense" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox.Dense">
-    <item name="android:textAppearance">?attr/textAppearanceBody1</item>
+    <item name="android:textAppearance">?attr/textAppearanceBodyLarge</item>
     <item name="android:textColor">@color/m3_textfield_input_text_color</item>
   </style>
 
   <style name="Widget.Material3.TextInputEditText.FilledBox" parent="Widget.MaterialComponents.TextInputEditText.FilledBox">
-    <item name="android:textAppearance">?attr/textAppearanceBody1</item>
+    <item name="android:textAppearance">?attr/textAppearanceBodyLarge</item>
     <item name="android:textColor">@color/m3_textfield_input_text_color</item>
   </style>
 
   <style name="Widget.Material3.TextInputEditText.FilledBox.Dense" parent="Widget.MaterialComponents.TextInputEditText.FilledBox.Dense">
-    <item name="android:textAppearance">?attr/textAppearanceBody1</item>
+    <item name="android:textAppearance">?attr/textAppearanceBodyLarge</item>
     <item name="android:textColor">@color/m3_textfield_input_text_color</item>
   </style>
 
   <!-- Styles for the M3 AutoCompleteTextView. -->
   <style name="Widget.Material3.AutoCompleteTextView.OutlinedBox" parent="Widget.MaterialComponents.AutoCompleteTextView.OutlinedBox">
-    <item name="android:textAppearance">?attr/textAppearanceBody1</item>
+    <item name="android:textAppearance">?attr/textAppearanceBodyLarge</item>
   </style>
 
   <style name="Widget.Material3.AutoCompleteTextView.OutlinedBox.Dense" parent="Widget.MaterialComponents.AutoCompleteTextView.OutlinedBox.Dense">
-    <item name="android:textAppearance">?attr/textAppearanceBody1</item>
+    <item name="android:textAppearance">?attr/textAppearanceBodyLarge</item>
   </style>
 
   <style name="Widget.Material3.AutoCompleteTextView.FilledBox" parent="Widget.MaterialComponents.AutoCompleteTextView.FilledBox">
-    <item name="android:textAppearance">?attr/textAppearanceBody1</item>
+    <item name="android:textAppearance">?attr/textAppearanceBodyLarge</item>
   </style>
 
   <style name="Widget.Material3.AutoCompleteTextView.FilledBox.Dense" parent="Widget.MaterialComponents.AutoCompleteTextView.FilledBox.Dense">
-    <item name="android:textAppearance">?attr/textAppearanceBody1</item>
+    <item name="android:textAppearance">?attr/textAppearanceBodyLarge</item>
   </style>
 
   <!-- ThemeOverlays to be used internally in the TextInputLayout styles to automatically apply the correct TextInputEditText style to the TextInputEditText. -->
