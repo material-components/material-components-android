@@ -20,7 +20,7 @@
   <style name="ThemeOverlay.Catalog.MaterialCalendar.Custom" parent="@style/ThemeOverlay.MaterialComponents.MaterialCalendar">
     <item name="colorPrimary">?attr/colorSecondary</item>
     <item name="colorOnPrimary">?attr/colorOnSecondary</item>
-    <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox</item>
+    <item name="textInputStyle">@style/Widget.Material3.TextInputLayout.OutlinedBox</item>
   </style>
 
 </resources>
