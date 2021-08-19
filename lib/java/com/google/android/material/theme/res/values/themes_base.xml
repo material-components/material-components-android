@@ -22,6 +22,7 @@
   <style name="Base.V14.Theme.Material3.Light" parent="Theme.MaterialComponents.Light">
     <!-- Color palettes -->
     <item name="colorPrimary">@color/m3_sys_color_light_primary</item>
+    <item name="colorPrimaryDark">?attr/colorPrimary</item>
     <item name="colorOnPrimary">@color/m3_sys_color_light_on_primary</item>
     <item name="colorPrimaryInverse">@color/m3_sys_color_light_inverse_primary</item>
     <item name="colorPrimaryContainer">@color/m3_sys_color_light_primary_container</item>
@@ -109,6 +110,7 @@
   <style name="Base.V14.Theme.Material3.Dark" parent="Theme.MaterialComponents">
     <!-- Color palettes -->
     <item name="colorPrimary">@color/m3_sys_color_dark_primary</item>
+    <item name="colorPrimaryDark">?attr/colorPrimary</item>
     <item name="colorOnPrimary">@color/m3_sys_color_dark_on_primary</item>
     <item name="colorPrimaryInverse">@color/m3_sys_color_dark_inverse_primary</item>
     <item name="colorPrimaryContainer">@color/m3_sys_color_dark_primary_container</item>
