@@ -48,8 +48,20 @@
     <item name="colorErrorContainer">@color/m3_sys_color_light_error_container</item>
     <item name="colorOnErrorContainer">@color/m3_sys_color_light_on_error_container</item>
 
+    <!-- Widget styles. -->
     <!-- TODO: Populate widget styles here -->
-    <!-- TODO: Populate top app bar attributes here -->
+    <item name="appBarLayoutStyle">@style/Widget.Material3.AppBarLayout</item>
+    <item name="collapsingToolbarLayoutStyle">@style/Widget.Material3.CollapsingToolbar</item>
+    <item name="collapsingToolbarLayoutMediumStyle">@style/Widget.Material3.CollapsingToolbar.Medium</item>
+    <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.Material3.CollapsingToolbar.Large</item>
+    <item name="toolbarStyle">@style/Widget.Material3.Toolbar</item>
+    <item name="toolbarSurfaceStyle">@style/Widget.Material3.Toolbar.Surface</item>
+
+    <!-- Top App Bars. -->
+    <item name="actionBarSize">@dimen/m3_appbar_size_compact</item>
+    <item name="collapsingToolbarLayoutMediumSize">@dimen/m3_appbar_size_medium</item>
+    <item name="collapsingToolbarLayoutLargeSize">@dimen/m3_appbar_size_large</item>
+
     <!-- TODO: Populate popup menu styles here -->
     <!-- TODO: Populate divider styles here -->
 
@@ -112,8 +124,20 @@
     <item name="colorErrorContainer">@color/m3_sys_color_dark_error_container</item>
     <item name="colorOnErrorContainer">@color/m3_sys_color_dark_on_error_container</item>
 
+    <!-- Widget styles. -->
     <!-- TODO: Populate widget styles here -->
-    <!-- TODO: Populate top app bar attributes here -->
+    <item name="appBarLayoutStyle">@style/Widget.Material3.AppBarLayout</item>
+    <item name="collapsingToolbarLayoutStyle">@style/Widget.Material3.CollapsingToolbar</item>
+    <item name="collapsingToolbarLayoutMediumStyle">@style/Widget.Material3.CollapsingToolbar.Medium</item>
+    <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.Material3.CollapsingToolbar.Large</item>
+    <item name="toolbarStyle">@style/Widget.Material3.Toolbar</item>
+    <item name="toolbarSurfaceStyle">@style/Widget.Material3.Toolbar.Surface</item>
+
+    <!-- Top App Bars. -->
+    <item name="actionBarSize">@dimen/m3_appbar_size_compact</item>
+    <item name="collapsingToolbarLayoutMediumSize">@dimen/m3_appbar_size_medium</item>
+    <item name="collapsingToolbarLayoutLargeSize">@dimen/m3_appbar_size_large</item>
+
     <!-- TODO: Populate popup menu styles here -->
     <!-- TODO: Populate divider styles here -->
 

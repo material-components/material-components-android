@@ -24,14 +24,14 @@
   <com.google.android.material.appbar.AppBarLayout
       android:id="@+id/appbarlayout"
       android:layout_width="match_parent"
-      android:layout_height="@dimen/cat_topappbar_tall_toolbar_height"
-      android:fitsSystemWindows="true"
-      android:theme="@style/ThemeOverlay.Catalog.AppBarLayout">
+      android:layout_height="wrap_content"
+      android:fitsSystemWindows="true">
 
     <com.google.android.material.appbar.CollapsingToolbarLayout
+        style="?attr/collapsingToolbarLayoutLargeStyle"
         android:id="@+id/collapsingtoolbarlayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
         app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
       <androidx.appcompat.widget.Toolbar
