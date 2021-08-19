@@ -119,11 +119,11 @@ public class FontMainDemoFragment extends DemoFragment {
 
       TypedValue value = new TypedValue();
       for (int i = 0; i < stylesArray.length(); i++) {
-        // 1. Get the attribute from the array: ?attr/textAppearanceHeadline1
+        // 1. Get the attribute from the array: ?attr/textAppearanceBodyLarge
         stylesArray.getValue(i, value);
         int attribute = value.data;
 
-        // 2. Get the style from the attribute: @style/TextAppearance.MaterialComponents.Headline1
+        // 2. Get the style from the attribute: @style/TextAppearance.MaterialComponents.BodyLarge
         TypedArray a = context.obtainStyledAttributes(new int[] {attribute});
         int style = a.getResourceId(0, 0);
         a.recycle();

@@ -32,8 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:maxLines="1"
-        android:textAppearance="?attr/textAppearanceCaption"
-        app:textAllCaps="true"/>
+        android:textAppearance="?attr/textAppearanceLabelSmall" />
     <TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
