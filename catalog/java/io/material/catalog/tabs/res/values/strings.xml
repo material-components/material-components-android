@@ -40,7 +40,7 @@
   <string name="cat_tabs_indicator_spinner_label">Indicator</string>
   <string name="cat_tabs_legacy_tabs_label">Legacy Tabs</string>
   <string name="cat_tabs_material_tabs_label">Material Tabs</string>
-  <string name="cat_tabs_colored_tabs_label">Material Tabs (Colored)</string>
+  <string name="cat_tabs_secondary_tabs_label">Material Tabs (Secondary)</string>
   <string name="cat_tabs_add_tab_button_label">Add Tab</string>
   <string name="cat_tabs_remove_tab_button_label">Remove Tab</string>
   <string name="cat_tabs_controllable_demo_title">Controllable Tabs Demo</string>

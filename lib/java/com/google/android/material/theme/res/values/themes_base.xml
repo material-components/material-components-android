@@ -66,6 +66,8 @@
     <item name="collapsingToolbarLayoutStyle">@style/Widget.Material3.CollapsingToolbar</item>
     <item name="collapsingToolbarLayoutMediumStyle">@style/Widget.Material3.CollapsingToolbar.Medium</item>
     <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.Material3.CollapsingToolbar.Large</item>
+    <item name="tabStyle">@style/Widget.Material3.TabLayout</item>
+    <item name="tabSecondaryStyle">@style/Widget.Material3.TabLayout.Secondary</item>
     <item name="textInputStyle">?attr/textInputOutlinedStyle</item>
     <item name="textInputOutlinedStyle">@style/Widget.Material3.TextInputLayout.OutlinedBox</item>
     <item name="textInputFilledStyle">@style/Widget.Material3.TextInputLayout.FilledBox</item>
@@ -166,6 +168,8 @@
     <item name="collapsingToolbarLayoutStyle">@style/Widget.Material3.CollapsingToolbar</item>
     <item name="collapsingToolbarLayoutMediumStyle">@style/Widget.Material3.CollapsingToolbar.Medium</item>
     <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.Material3.CollapsingToolbar.Large</item>
+    <item name="tabStyle">@style/Widget.Material3.TabLayout</item>
+    <item name="tabSecondaryStyle">@style/Widget.Material3.TabLayout.Secondary</item>
     <item name="textInputStyle">?attr/textInputOutlinedStyle</item>
     <item name="textInputOutlinedStyle">@style/Widget.Material3.TextInputLayout.OutlinedBox</item>
     <item name="textInputFilledStyle">@style/Widget.Material3.TextInputLayout.FilledBox</item>

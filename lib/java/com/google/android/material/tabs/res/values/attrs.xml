@@ -20,6 +20,9 @@
   <!-- Style to use for TabLayout in the theme. -->
   <attr name="tabStyle" format="reference"/>
 
+  <!-- Style to use for Secondary TabLayout in the theme. -->
+  <attr name="tabSecondaryStyle" format="reference"/>
+
   <declare-styleable name="TabLayout">
     <!-- Color of the indicator used to show the currently selected tab. -->
     <attr name="tabIndicatorColor" format="color"/>
