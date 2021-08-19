@@ -16,12 +16,12 @@
   -->
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-  <style name="Widget.Catalog.Toolbar" parent="Widget.MaterialComponents.Toolbar.PrimarySurface">
-    <!-- Toolbar should always be within an AppBarLayout which provides the background. -->
-    <item name="android:background">@null</item>
-  </style>
+  <!-- For the catalog we know that toolbars will always be on top of a "surface" color,
+       so it's better for them to have no background, especially because it's common for
+       toolbars to be nested in an AppBarLayout which has its own background handling. -->
+  <style name="Widget.Catalog.Toolbar" parent="Widget.Material3.Toolbar.OnSurface" />
 
-  <style name="Widget.Catalog.Toolbar.WithCloseButton" parent="Widget.Catalog.Toolbar">
+  <style name="Widget.Catalog.Toolbar.WithCloseButton">
     <item name="navigationContentDescription">@string/toolbar_navigation_close_description</item>
     <item name="navigationIcon">@drawable/ic_close_vd_theme_24px</item>
   </style>
@@ -44,18 +44,6 @@
     <item name="android:layout_gravity">center_vertical|start</item>
     <item name="srcCompat">@drawable/ic_edge_to_edge_enable_24dp</item>
     <item name="android:contentDescription">@string/cat_edge_to_edge_enable_description</item>
-  </style>
-
-  <style name="ThemeOverlay.Catalog.AppBarLayout" parent="">
-    <item name="android:textColorPrimary">?attr/colorOnPrimarySurface</item>
-    <item name="colorControlNormal">?attr/colorOnPrimarySurface</item>
-    <item name="android:popupTheme" tools:targetApi="lollipop">@style/Theme.Catalog.PopupMenu</item>
-    <item name="popupTheme">@style/Theme.Catalog.PopupMenu</item>
-  </style>
-
-  <style name="Theme.Catalog.PopupMenu" parent="">
-    <item name="android:textColorPrimary">?attr/colorOnSurface</item>
-    <item name="colorControlNormal">?attr/colorOnSurface</item>
   </style>
 
 </resources>
