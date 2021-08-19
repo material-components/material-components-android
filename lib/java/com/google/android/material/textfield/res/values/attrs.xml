@@ -19,6 +19,24 @@
   <!-- Style to use for TextInputLayout in the theme. -->
   <attr name="textInputStyle" format="reference"/>
 
+  <!-- Style to use for Outlined Textfield in this theme. -->
+  <attr name="textInputOutlinedStyle" format="reference"/>
+
+  <!-- Style to use for Filled Textfield in this theme. -->
+  <attr name="textInputFilledStyle" format="reference"/>
+
+  <!-- Style to use for Outlined Dense Textfield in this theme. -->
+  <attr name="textInputOutlinedDenseStyle" format="reference"/>
+
+  <!-- Style to use for Filled Dense Textfield in this theme. -->
+  <attr name="textInputFilledDenseStyle" format="reference"/>
+
+  <!-- Style to use for Outlined Textfield for Exposed Dropdown Menu in this theme. -->
+  <attr name="textInputOutlinedExposedDropdownMenuStyle" format="reference"/>
+
+  <!-- Style to use for Filled Textfield for Exposed Dropdown Menu in this theme. -->
+  <attr name="textInputFilledExposedDropdownMenuStyle" format="reference"/>
+
   <declare-styleable name="TextInputLayout">
     <!-- Whether the layout is enabled -->
     <attr name="android:enabled"/>

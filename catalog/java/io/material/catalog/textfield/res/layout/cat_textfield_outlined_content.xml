@@ -23,7 +23,7 @@
     android:orientation="vertical">
 
   <com.google.android.material.textfield.TextInputLayout
-      style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+      style="?attr/textInputOutlinedStyle"
       android:layout_width="@dimen/material_textinput_default_width"
       android:layout_height="wrap_content"
       android:layout_margin="4dp"
@@ -41,7 +41,7 @@
   </com.google.android.material.textfield.TextInputLayout>
 
   <com.google.android.material.textfield.TextInputLayout
-      style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+      style="?attr/textInputOutlinedDenseStyle"
       android:layout_width="@dimen/material_textinput_default_width"
       android:layout_height="wrap_content"
       android:layout_margin="4dp"

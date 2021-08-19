@@ -325,4 +325,177 @@
     <item name="cornerSizeBottomRight">@dimen/mtrl_textinput_box_corner_radius_small</item>
   </style>
 
+  <!-- Style for an M3 Outlined text field. -->
+  <style name="Widget.Material3.TextInputLayout.OutlinedBox" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox</item>
+
+    <item name="boxStrokeColor">@color/m3_textfield_stroke_color</item>
+    <item name="boxStrokeErrorColor">?attr/colorError</item>
+    <item name="helperTextTextColor">@color/m3_textfield_indicator_text_color</item>
+    <item name="counterTextColor">@color/m3_textfield_indicator_text_color</item>
+    <item name="counterOverflowTextColor">?attr/colorError</item>
+    <item name="hintTextColor">@color/m3_textfield_label_color</item>
+    <item name="android:textColorHint">@color/m3_textfield_label_color</item>
+    <item name="placeholderTextColor">@color/m3_textfield_indicator_text_color</item>
+    <item name="prefixTextColor">@color/m3_textfield_indicator_text_color</item>
+    <item name="suffixTextColor">@color/m3_textfield_indicator_text_color</item>
+    <item name="errorTextColor">?attr/colorError</item>
+    <item name="errorIconTint">?attr/colorError</item>
+    <item name="startIconTint">@color/m3_textfield_indicator_text_color</item>
+    <item name="endIconTint">@color/m3_textfield_indicator_text_color</item>
+
+    <item name="placeholderTextAppearance">?attr/textAppearanceBody1</item>
+    <item name="shapeAppearanceOverlay">?attr/shapeAppearanceSmallComponent</item>
+  </style>
+
+  <!-- Style for a dense M3 Outlined text field. -->
+  <style name="Widget.Material3.TextInputLayout.OutlinedBox.Dense">
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox.Dense</item>
+  </style>
+
+  <!-- Style to be used for the exposed dropdown menu. -->
+  <style name="Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox</item>
+    <item name="endIconMode">dropdown_menu</item>
+  </style>
+
+  <!-- Style to be used for the exposed dropdown menu. -->
+  <style name="Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu">
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox.Dense</item>
+    <item name="endIconMode">dropdown_menu</item>
+  </style>
+
+  <!-- Style for a M3 Filled text field. -->
+  <style name="Widget.Material3.TextInputLayout.FilledBox" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.TextInputEditText.FilledBox</item>
+
+    <item name="boxStrokeColor">@color/m3_textfield_stroke_color</item>
+    <item name="boxStrokeErrorColor">?attr/colorError</item>
+    <item name="boxBackgroundColor">@color/m3_textfield_filled_background_color</item>
+    <item name="helperTextTextColor">@color/m3_textfield_indicator_text_color</item>
+    <item name="counterTextColor">@color/m3_textfield_indicator_text_color</item>
+    <item name="counterOverflowTextColor">?attr/colorError</item>
+    <item name="hintTextColor">@color/m3_textfield_label_color</item>
+    <item name="android:textColorHint">@color/m3_textfield_label_color</item>
+    <item name="placeholderTextColor">@color/m3_textfield_indicator_text_color</item>
+    <item name="prefixTextColor">@color/m3_textfield_indicator_text_color</item>
+    <item name="suffixTextColor">@color/m3_textfield_indicator_text_color</item>
+    <item name="errorTextColor">?attr/colorError</item>
+    <item name="errorIconTint">?attr/colorError</item>
+    <item name="startIconTint">@color/m3_textfield_indicator_text_color</item>
+    <item name="endIconTint">@color/m3_textfield_indicator_text_color</item>
+
+    <item name="placeholderTextAppearance">?attr/textAppearanceBody1</item>
+    <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Material3.TextField.Filled</item>
+  </style>
+
+  <style name="Widget.Material3.TextInputLayout.FilledBox.Dense">
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.TextInputEditText.FilledBox.Dense</item>
+  </style>
+
+  <!-- Style to be used for the exposed dropdown menu. -->
+  <style name="Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu">
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.AutoCompleteTextView.FilledBox</item>
+    <item name="endIconMode">dropdown_menu</item>
+  </style>
+
+  <!-- Style to be used for the exposed dropdown menu. -->
+  <style name="Widget.Material3.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu">
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.AutoCompleteTextView.FilledBox.Dense</item>
+    <item name="endIconMode">dropdown_menu</item>
+  </style>
+
+  <!-- Styles for the M3 TextInputEditText. -->
+  <style name="Widget.Material3.TextInputEditText.OutlinedBox" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
+    <item name="android:textAppearance">?attr/textAppearanceBody1</item>
+    <item name="android:textColor">@color/m3_textfield_input_text_color</item>
+  </style>
+
+  <style name="Widget.Material3.TextInputEditText.OutlinedBox.Dense" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox.Dense">
+    <item name="android:textAppearance">?attr/textAppearanceBody1</item>
+    <item name="android:textColor">@color/m3_textfield_input_text_color</item>
+  </style>
+
+  <style name="Widget.Material3.TextInputEditText.FilledBox" parent="Widget.MaterialComponents.TextInputEditText.FilledBox">
+    <item name="android:textAppearance">?attr/textAppearanceBody1</item>
+    <item name="android:textColor">@color/m3_textfield_input_text_color</item>
+  </style>
+
+  <style name="Widget.Material3.TextInputEditText.FilledBox.Dense" parent="Widget.MaterialComponents.TextInputEditText.FilledBox.Dense">
+    <item name="android:textAppearance">?attr/textAppearanceBody1</item>
+    <item name="android:textColor">@color/m3_textfield_input_text_color</item>
+  </style>
+
+  <!-- Styles for the M3 AutoCompleteTextView. -->
+  <style name="Widget.Material3.AutoCompleteTextView.OutlinedBox" parent="Widget.MaterialComponents.AutoCompleteTextView.OutlinedBox">
+    <item name="android:textAppearance">?attr/textAppearanceBody1</item>
+  </style>
+
+  <style name="Widget.Material3.AutoCompleteTextView.OutlinedBox.Dense" parent="Widget.MaterialComponents.AutoCompleteTextView.OutlinedBox.Dense">
+    <item name="android:textAppearance">?attr/textAppearanceBody1</item>
+  </style>
+
+  <style name="Widget.Material3.AutoCompleteTextView.FilledBox" parent="Widget.MaterialComponents.AutoCompleteTextView.FilledBox">
+    <item name="android:textAppearance">?attr/textAppearanceBody1</item>
+  </style>
+
+  <style name="Widget.Material3.AutoCompleteTextView.FilledBox.Dense" parent="Widget.MaterialComponents.AutoCompleteTextView.FilledBox.Dense">
+    <item name="android:textAppearance">?attr/textAppearanceBody1</item>
+  </style>
+
+  <!-- ThemeOverlays to be used internally in the TextInputLayout styles to automatically apply the correct TextInputEditText style to the TextInputEditText. -->
+  <style name="Base.ThemeOverlay.Material3.TextInputEditText" parent="ThemeOverlay.MaterialComponents.TextInputEditText">
+    <item name="colorControlActivated">?attr/colorPrimary</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.TextInputEditText" parent="Base.ThemeOverlay.Material3.TextInputEditText">
+    <item name="colorControlNormal">?attr/colorOnSurfaceVariant</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.TextInputEditText.FilledBox">
+    <item name="editTextStyle">@style/Widget.Material3.TextInputEditText.FilledBox</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.TextInputEditText.FilledBox.Dense">
+    <item name="editTextStyle">@style/Widget.Material3.TextInputEditText.FilledBox.Dense</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.TextInputEditText.OutlinedBox">
+    <item name="editTextStyle">@style/Widget.Material3.TextInputEditText.OutlinedBox</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.TextInputEditText.OutlinedBox.Dense">
+    <item name="editTextStyle">@style/Widget.Material3.TextInputEditText.OutlinedBox.Dense</item>
+  </style>
+
+  <!-- ThemeOverlays to be used internally in the TextInputLayout M3 box styles to automatically
+       apply the correct box style to the AutocompleteTextView. -->
+  <style name="Base.ThemeOverlay.Material3.AutoCompleteTextView" parent="ThemeOverlay.MaterialComponents.AutoCompleteTextView">
+    <item name="colorControlActivated">?attr/colorPrimary</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.AutoCompleteTextView" parent="Base.ThemeOverlay.Material3.AutoCompleteTextView">
+    <item name="colorControlNormal">?attr/colorOnSurfaceVariant</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.AutoCompleteTextView.FilledBox">
+    <item name="autoCompleteTextViewStyle">@style/Widget.Material3.AutoCompleteTextView.FilledBox</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.AutoCompleteTextView.FilledBox.Dense">
+    <item name="autoCompleteTextViewStyle">@style/Widget.Material3.AutoCompleteTextView.FilledBox.Dense</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox">
+    <item name="autoCompleteTextViewStyle">@style/Widget.Material3.AutoCompleteTextView.OutlinedBox</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox.Dense">
+    <item name="autoCompleteTextViewStyle">@style/Widget.Material3.AutoCompleteTextView.OutlinedBox.Dense</item>
+  </style>
+
+  <style name="ShapeAppearanceOverlay.Material3.TextField.Filled" parent="ShapeAppearance.Material3.SmallComponent">
+    <item name="cornerSizeBottomLeft">0dp</item>
+    <item name="cornerSizeBottomRight">0dp</item>
+  </style>
 </resources>

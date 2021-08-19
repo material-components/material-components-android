@@ -49,20 +49,16 @@
     <item name="colorErrorContainer">@color/m3_sys_color_light_error_container</item>
     <item name="colorOnErrorContainer">@color/m3_sys_color_light_on_error_container</item>
 
-    <!-- Widget styles. -->
     <!-- TODO: Populate widget styles here -->
-    <item name="appBarLayoutStyle">@style/Widget.Material3.AppBarLayout</item>
-    <item name="collapsingToolbarLayoutStyle">@style/Widget.Material3.CollapsingToolbar</item>
-    <item name="collapsingToolbarLayoutMediumStyle">@style/Widget.Material3.CollapsingToolbar.Medium</item>
-    <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.Material3.CollapsingToolbar.Large</item>
-    <item name="toolbarStyle">@style/Widget.Material3.Toolbar</item>
-    <item name="toolbarSurfaceStyle">@style/Widget.Material3.Toolbar.Surface</item>
+    <item name="textInputStyle">?attr/textInputOutlinedStyle</item>
+    <item name="textInputOutlinedStyle">@style/Widget.Material3.TextInputLayout.OutlinedBox</item>
+    <item name="textInputFilledStyle">@style/Widget.Material3.TextInputLayout.FilledBox</item>
+    <item name="textInputOutlinedDenseStyle">@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense</item>
+    <item name="textInputFilledDenseStyle">@style/Widget.Material3.TextInputLayout.FilledBox.Dense</item>
+    <item name="textInputOutlinedExposedDropdownMenuStyle">@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu</item>
+    <item name="textInputFilledExposedDropdownMenuStyle">@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu</item>
 
-    <!-- Top App Bars. -->
-    <item name="actionBarSize">@dimen/m3_appbar_size_compact</item>
-    <item name="collapsingToolbarLayoutMediumSize">@dimen/m3_appbar_size_medium</item>
-    <item name="collapsingToolbarLayoutLargeSize">@dimen/m3_appbar_size_large</item>
-
+    <!-- TODO: Populate top app bar attributes here -->
     <!-- TODO: Populate popup menu styles here -->
     <!-- TODO: Populate divider styles here -->
 
@@ -84,7 +80,11 @@
     <item name="textAppearanceLabelSmall">@style/TextAppearance.Material3.LabelSmall</item>
 
     <!-- TODO: Populate font families here -->
-    <!-- TODO: Populate shape appearance here -->
+
+    <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Material3.SmallComponent</item>
+    <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.Material3.MediumComponent</item>
+    <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.Material3.LargeComponent</item>
+
     <!-- TODO: Populate motion attributes here -->
 
     <!-- Elevation overlays. -->
@@ -126,20 +126,16 @@
     <item name="colorErrorContainer">@color/m3_sys_color_dark_error_container</item>
     <item name="colorOnErrorContainer">@color/m3_sys_color_dark_on_error_container</item>
 
-    <!-- Widget styles. -->
     <!-- TODO: Populate widget styles here -->
-    <item name="appBarLayoutStyle">@style/Widget.Material3.AppBarLayout</item>
-    <item name="collapsingToolbarLayoutStyle">@style/Widget.Material3.CollapsingToolbar</item>
-    <item name="collapsingToolbarLayoutMediumStyle">@style/Widget.Material3.CollapsingToolbar.Medium</item>
-    <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.Material3.CollapsingToolbar.Large</item>
-    <item name="toolbarStyle">@style/Widget.Material3.Toolbar</item>
-    <item name="toolbarSurfaceStyle">@style/Widget.Material3.Toolbar.Surface</item>
+    <item name="textInputStyle">?attr/textInputOutlinedStyle</item>
+    <item name="textInputOutlinedStyle">@style/Widget.Material3.TextInputLayout.OutlinedBox</item>
+    <item name="textInputFilledStyle">@style/Widget.Material3.TextInputLayout.FilledBox</item>
+    <item name="textInputOutlinedDenseStyle">@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense</item>
+    <item name="textInputFilledDenseStyle">@style/Widget.Material3.TextInputLayout.FilledBox.Dense</item>
+    <item name="textInputOutlinedExposedDropdownMenuStyle">@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu</item>
+    <item name="textInputFilledExposedDropdownMenuStyle">@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu</item>
 
-    <!-- Top App Bars. -->
-    <item name="actionBarSize">@dimen/m3_appbar_size_compact</item>
-    <item name="collapsingToolbarLayoutMediumSize">@dimen/m3_appbar_size_medium</item>
-    <item name="collapsingToolbarLayoutLargeSize">@dimen/m3_appbar_size_large</item>
-
+    <!-- TODO: Populate top app bar attributes here -->
     <!-- TODO: Populate popup menu styles here -->
     <!-- TODO: Populate divider styles here -->
 
@@ -161,7 +157,11 @@
     <item name="textAppearanceLabelSmall">@style/TextAppearance.Material3.LabelSmall</item>
 
     <!-- TODO: Populate font families here -->
-    <!-- TODO: Populate shape appearance here -->
+
+    <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Material3.SmallComponent</item>
+    <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.Material3.MediumComponent</item>
+    <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.Material3.LargeComponent</item>
+
     <!-- TODO: Populate motion attributes here -->
 
     <!-- Elevation overlays. -->

@@ -71,7 +71,7 @@
     <item name="cornerSize">4dp</item>
   </style>
 
-  <style name="Widget.Shrine.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox"/>
+  <style name="Widget.Shrine.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox"/>
 
    <style name="Theme.Shrine.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
     <item name="bottomSheetStyle">@style/Widget.Shrine.BottomSheet.Modal</item>
@@ -142,7 +142,7 @@
     <item name="chipCornerRadius">@null</item>
   </style>
 
-  <style name="Widget.Fortnightly.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox"/>
+  <style name="Widget.Fortnightly.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox"/>
 
   <style name="Theme.Fortnightly.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
     <item name="bottomSheetStyle">@style/Widget.Fortnightly.BottomSheet.Modal</item>
@@ -206,7 +206,7 @@
     <item name="chipCornerRadius">@null</item>
   </style>
 
-  <style name="Widget.Crane.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox"/>
+  <style name="Widget.Crane.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox"/>
 
   <style name="Theme.Crane.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
     <item name="bottomSheetStyle">@style/Widget.Crane.BottomSheet.Modal</item>

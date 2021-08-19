@@ -33,4 +33,15 @@
     <item name="cornerSize">@dimen/mtrl_shape_corner_size_large_component</item>
   </style>
 
+  <style name="ShapeAppearance.Material3.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+    <!-- TODO: Populate cornerFamily and cornerSize. -->
+  </style>
+
+  <style name="ShapeAppearance.Material3.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+    <!-- TODO: Populate cornerFamily and cornerSize. -->
+  </style>
+
+  <style name="ShapeAppearance.Material3.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+    <!-- TODO: Populate cornerFamily and cornerSize. -->
+  </style>
 </resources>
