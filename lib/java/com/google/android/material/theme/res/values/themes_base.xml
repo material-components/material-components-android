@@ -84,7 +84,11 @@
     <!-- TODO: Populate font families here -->
     <!-- TODO: Populate shape appearance here -->
     <!-- TODO: Populate motion attributes here -->
-    <!-- TODO: Populate elevation overlay attributes here -->
+
+    <!-- Elevation overlays. -->
+    <item name="elevationOverlayEnabled">true</item>
+    <item name="elevationOverlayColor">@color/m3_default_color_elevation_overlay</item>
+    <item name="elevationOverlayAccentColor">@color/m3_default_color_elevation_overlay_accent</item>
 
     <!-- Theme overlays. -->
     <item name="dynamicColorThemeOverlay">@style/ThemeOverlay.Material3.DynamicColors.Light</item>
@@ -155,7 +159,11 @@
     <!-- TODO: Populate font families here -->
     <!-- TODO: Populate shape appearance here -->
     <!-- TODO: Populate motion attributes here -->
-    <!-- TODO: Populate elevation overlay attributes here -->
+
+    <!-- Elevation overlays. -->
+    <item name="elevationOverlayEnabled">true</item>
+    <item name="elevationOverlayColor">@color/m3_dark_default_color_elevation_overlay</item>
+    <item name="elevationOverlayAccentColor">@color/m3_dark_default_color_elevation_overlay_accent</item>
 
     <!-- Theme overlays. -->
     <item name="dynamicColorThemeOverlay">@style/ThemeOverlay.Material3.DynamicColors.Dark</item>
