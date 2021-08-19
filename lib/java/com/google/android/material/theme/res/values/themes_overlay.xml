@@ -39,7 +39,9 @@
     <item name="colorErrorContainer">@color/m3_sys_color_light_error_container</item>
     <item name="colorOnErrorContainer">@color/m3_sys_color_light_on_error_container</item>
 
-    <!-- TODO: Populate overriding elevation overlay attributes -->
+    <!-- Elevation overlays. -->
+    <item name="elevationOverlayColor">@color/m3_default_color_elevation_overlay</item>
+    <item name="elevationOverlayAccentColor">@color/m3_default_color_elevation_overlay_accent</item>
   </style>
 
   <!--
@@ -61,7 +63,9 @@
     <item name="colorErrorContainer">@color/m3_sys_color_dark_error_container</item>
     <item name="colorOnErrorContainer">@color/m3_sys_color_dark_on_error_container</item>
 
-    <!-- TODO: Populate overriding elevation overlay attributes -->
+    <!-- Elevation overlays. -->
+    <item name="elevationOverlayColor">@color/m3_dark_default_color_elevation_overlay</item>
+    <item name="elevationOverlayAccentColor">@color/m3_dark_default_color_elevation_overlay_accent</item>
   </style>
 
   <!--
