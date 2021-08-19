@@ -27,7 +27,7 @@
 
   <!-- M3 CollapsingToolbarLayout styles -->
   <style name="Base.Widget.Material3.CollapsingToolbar" parent="Widget.MaterialComponents.CollapsingToolbar">
-    <item name="collapsedTitleTextAppearance">?attr/textAppearanceHeadlineLarge</item>
+    <item name="collapsedTitleTextAppearance">?attr/textAppearanceTitleLarge</item>
     <item name="collapsedTitleTextColor">?attr/colorOnSurface</item>
     <item name="expandedTitleTextColor">?attr/colorOnSurface</item>
     <item name="expandedTitleMarginStart">@dimen/m3_appbar_expanded_title_margin_horizontal</item>
