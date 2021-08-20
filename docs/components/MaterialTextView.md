@@ -40,7 +40,7 @@ reference.
 
 Note: If you use our full themes (which we recommend), `TextView` will
 auto-inflate to `MaterialTextView`, otherwise, you will need to specify
-`<com.google.android.material.textview` in your xml.
+`<com.google.android.material.textview.MaterialTextView` in your xml.
 
 ### Attributes
 
