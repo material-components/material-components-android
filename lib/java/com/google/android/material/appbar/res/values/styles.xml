@@ -140,6 +140,7 @@
     <item name="subtitleTextColor">@color/material_on_primary_emphasis_medium</item>
     <!-- Note: this theme overlay will only work if the style is applied directly to a Toolbar. -->
     <item name="android:theme">@style/ThemeOverlay.MaterialComponents.Toolbar.Primary</item>
+    <item name="popupTheme">@style/ThemeOverlay.MaterialComponents.Toolbar.Popup.Primary</item>
   </style>
 
   <style name="Widget.MaterialComponents.Toolbar.Surface">
@@ -155,6 +156,10 @@
   <style name="ThemeOverlay.MaterialComponents.Toolbar.Primary" parent="">
     <item name="colorControlNormal">?attr/colorOnPrimary</item>
     <item name="actionMenuTextColor">?attr/colorOnPrimary</item>
+  </style>
+
+  <style name="ThemeOverlay.MaterialComponents.Toolbar.Popup.Primary" parent="">
+    <item name="colorControlNormal">?attr/colorOnSurface</item>
   </style>
 
   <style name="ThemeOverlay.MaterialComponents.Toolbar.Surface" parent="">
