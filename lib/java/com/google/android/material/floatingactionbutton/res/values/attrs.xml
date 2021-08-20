@@ -96,6 +96,15 @@
   <!-- Style to use for FloatingActionButtons in this theme. -->
   <attr name="floatingActionButtonStyle" format="reference"/>
 
+  <!-- Style to use for Primary FloatingActionButtons in this theme. -->
+  <attr name="floatingActionButtonPrimaryStyle" format="reference"/>
+
+  <!-- Style to use for Secondary FloatingActionButtons in this theme. -->
+  <attr name="floatingActionButtonSecondaryStyle" format="reference"/>
+
+  <!-- Style to use for Surface FloatingActionButtons in this theme. -->
+  <attr name="floatingActionButtonSurfaceStyle" format="reference"/>
+
   <!-- Style to use for ExtendedFloatingActionButtons in this theme. -->
   <attr name="extendedFloatingActionButtonStyle" format="reference"/>
 </resources>

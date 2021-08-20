@@ -47,4 +47,9 @@
   <dimen name="mtrl_extended_fab_elevation">6dp</dimen>
   <dimen name="mtrl_extended_fab_translation_z_pressed">6dp</dimen>
 
+  <dimen name="m3_fab_border_width">0dp</dimen>
+  <dimen name="m3_fab_corner_size">30%</dimen>
+  <dimen name="m3_fab_translation_z_hovered_focused">2dp</dimen>
+  <dimen name="m3_fab_translation_z_pressed">6dp</dimen>
+
 </resources>
