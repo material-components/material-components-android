@@ -94,7 +94,6 @@
        the drawable cannot use theme colors pre-21. -->
   <style name="Base.Widget.Material3.TabLayout.Secondary" parent="Widget.Material3.TabLayout">
     <item name="tabIndicator">@drawable/m3_tabs_line_indicator</item>
-    <item name="tabTextColor">@color/m3_tabs_secondary_text_color</item>
     <item name="tabIndicatorFullWidth">true</item>
   </style>
 
