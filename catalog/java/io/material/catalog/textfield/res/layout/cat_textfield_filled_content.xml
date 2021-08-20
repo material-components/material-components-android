@@ -23,6 +23,7 @@
     android:orientation="vertical">
 
   <com.google.android.material.textfield.TextInputLayout
+      style="?attr/textInputFilledStyle"
       android:layout_width="@dimen/material_textinput_default_width"
       android:layout_height="wrap_content"
       android:layout_margin="4dp"
