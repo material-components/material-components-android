@@ -102,6 +102,54 @@
     <item name="android:paddingRight">@dimen/mtrl_extended_fab_end_padding_icon</item>
   </style>
 
+  <!-- M3 Regular FABs -->
+  <style name="Base.Widget.Material3.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
+    <item name="backgroundTint">@color/m3_button_background_color_selector</item>
+    <item name="borderWidth">@dimen/m3_fab_border_width</item>
+    <item name="elevation">6dp</item>
+    <item name="enforceMaterialTheme">true</item>
+    <item name="hoveredFocusedTranslationZ">@dimen/m3_fab_translation_z_hovered_focused</item>
+    <item name="pressedTranslationZ">@dimen/m3_fab_translation_z_pressed</item>
+    <item name="rippleColor">@color/m3_button_ripple_color_selector</item>
+    <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Material3.FloatingActionButton</item>
+    <item name="tint">@color/m3_button_foreground_color_selector</item>
+    <!--Remove the motion spec and allow FloatingActionButtonImpl to create a theme-based animation-->
+    <item name="showMotionSpec">@null</item>
+    <item name="hideMotionSpec">@null</item>
+  </style>
+
+  <style name="Widget.Material3.FloatingActionButton.Primary" parent="Base.Widget.Material3.FloatingActionButton">
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.FloatingActionButton.Primary</item>
+  </style>
+
+  <style name="Widget.Material3.FloatingActionButton.Secondary" parent="Base.Widget.Material3.FloatingActionButton">
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.FloatingActionButton.Secondary</item>
+  </style>
+
+  <style name="Widget.Material3.FloatingActionButton.Surface" parent="Base.Widget.Material3.FloatingActionButton">
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.FloatingActionButton.Surface</item>
+  </style>
+
+  <!-- Overlays -->
+  <style name="ShapeAppearanceOverlay.Material3.FloatingActionButton" parent="">
+    <item name="cornerSize">@dimen/m3_fab_corner_size</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.FloatingActionButton.Primary" parent="">
+    <item name="colorContainer">?attr/colorPrimaryContainer</item>
+    <item name="colorOnContainer">?attr/colorOnPrimaryContainer</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.FloatingActionButton.Secondary" parent="">
+    <item name="colorContainer">?attr/colorSecondaryContainer</item>
+    <item name="colorOnContainer">?attr/colorOnSecondaryContainer</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.FloatingActionButton.Surface" parent="">
+    <item name="colorContainer">?attr/colorSurface</item>
+    <item name="colorOnContainer">?attr/colorPrimary</item>
+  </style>
+
 </resources>
 
 
