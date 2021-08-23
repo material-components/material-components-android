@@ -52,4 +52,11 @@
   <dimen name="m3_fab_translation_z_hovered_focused">2dp</dimen>
   <dimen name="m3_fab_translation_z_pressed">6dp</dimen>
 
+  <dimen name="m3_extended_fab_icon_padding">12dp</dimen>
+  <dimen name="m3_extended_fab_end_padding">20dp</dimen>
+  <dimen name="m3_extended_fab_bottom_padding">8dp</dimen>
+  <dimen name="m3_extended_fab_start_padding">16dp</dimen>
+  <dimen name="m3_extended_fab_top_padding">8dp</dimen>
+  <dimen name="m3_extended_fab_min_height">56dp</dimen>
+
 </resources>
