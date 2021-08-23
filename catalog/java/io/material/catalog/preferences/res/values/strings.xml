@@ -29,4 +29,7 @@
   <string name="shape_corner_size_preference_option_medium" translatable="false">Medium</string>
   <string name="shape_corner_size_preference_option_large" translatable="false">Large</string>
   <string name="shape_corner_size_preference_option_default" translatable="false">Default</string>
+  <string name="dynamic_color_preference_description" translatable="false">Dynamic Colors</string>
+  <string name="dynamic_color_preference_option_on" translatable="false">On</string>
+  <string name="dynamic_color_preference_option_off" translatable="false">Off</string>
 </resources>

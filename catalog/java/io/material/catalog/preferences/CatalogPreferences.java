@@ -25,9 +25,15 @@ import io.material.catalog.application.scope.ApplicationScope;
  */
 @ApplicationScope
 public class CatalogPreferences extends BaseCatalogPreferences {
+  private static final ImmutableList<CatalogPreference> PREFERENCES =
+      new ImmutableList.Builder<CatalogPreference>()
+          .addAll(COMMON_PREFERENCES)
+          .add(new DynamicColorPreference())
+          .build();
+
   @Override
   @NonNull
   protected ImmutableList<CatalogPreference> getPreferences() {
-    return COMMON_PREFERENCES;
+    return PREFERENCES;
   }
 }
