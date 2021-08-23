@@ -19,6 +19,8 @@
 
   <attr name="materialCircleRadius" format="dimension" />
   <attr name="materialDisplayDividerStyle" format="reference" />
+  <attr name="materialTimePickerTitleStyle" format="reference" />
+
   <attr name="materialClockStyle" format="reference" />
   <attr name="materialTimePickerStyle" format="reference" />
   <attr name="materialTimePickerTheme" format="reference" />
