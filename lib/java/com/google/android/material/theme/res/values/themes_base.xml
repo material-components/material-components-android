@@ -66,6 +66,10 @@
     <item name="collapsingToolbarLayoutStyle">@style/Widget.Material3.CollapsingToolbar</item>
     <item name="collapsingToolbarLayoutMediumStyle">@style/Widget.Material3.CollapsingToolbar.Medium</item>
     <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.Material3.CollapsingToolbar.Large</item>
+    <item name="extendedFloatingActionButtonStyle">?attr/extendedFloatingActionButtonPrimaryStyle</item>
+    <item name="extendedFloatingActionButtonPrimaryStyle">@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Primary</item>
+    <item name="extendedFloatingActionButtonSecondaryStyle">@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary</item>
+    <item name="extendedFloatingActionButtonSurfaceStyle">@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Surface</item>
     <item name="floatingActionButtonStyle">?attr/floatingActionButtonPrimaryStyle</item>
     <item name="floatingActionButtonPrimaryStyle">@style/Widget.Material3.FloatingActionButton.Primary</item>
     <item name="floatingActionButtonSecondaryStyle">@style/Widget.Material3.FloatingActionButton.Secondary</item>
@@ -185,6 +189,10 @@
     <item name="collapsingToolbarLayoutStyle">@style/Widget.Material3.CollapsingToolbar</item>
     <item name="collapsingToolbarLayoutMediumStyle">@style/Widget.Material3.CollapsingToolbar.Medium</item>
     <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.Material3.CollapsingToolbar.Large</item>
+    <item name="extendedFloatingActionButtonStyle">?attr/extendedFloatingActionButtonPrimaryStyle</item>
+    <item name="extendedFloatingActionButtonPrimaryStyle">@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Primary</item>
+    <item name="extendedFloatingActionButtonSecondaryStyle">@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary</item>
+    <item name="extendedFloatingActionButtonSurfaceStyle">@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Surface</item>
     <item name="floatingActionButtonStyle">?attr/floatingActionButtonPrimaryStyle</item>
     <item name="floatingActionButtonPrimaryStyle">@style/Widget.Material3.FloatingActionButton.Primary</item>
     <item name="floatingActionButtonSecondaryStyle">@style/Widget.Material3.FloatingActionButton.Secondary</item>

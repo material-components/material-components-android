@@ -107,4 +107,13 @@
 
   <!-- Style to use for ExtendedFloatingActionButtons in this theme. -->
   <attr name="extendedFloatingActionButtonStyle" format="reference"/>
+
+  <!-- Style to use for Primary ExtendedFloatingActionButtons in this theme. -->
+  <attr name="extendedFloatingActionButtonPrimaryStyle" format="reference"/>
+
+  <!-- Style to use for Secondary ExtendedFloatingActionButtons in this theme. -->
+  <attr name="extendedFloatingActionButtonSecondaryStyle" format="reference"/>
+
+  <!-- Style to use for Surface ExtendedFloatingActionButtons in this theme. -->
+  <attr name="extendedFloatingActionButtonSurfaceStyle" format="reference"/>
 </resources>
