@@ -34,4 +34,18 @@
     <item name="cornerSize">4dp</item>
   </style>
 
+  <style name="Widget.Material3.Tooltip" parent="Widget.MaterialComponents.Tooltip">
+    <item name="android:textAppearance">?attr/textAppearanceBodySmall</item>
+    <item name="android:textColor">?attr/colorOnPrimary</item>
+    <item name="backgroundTint">?attr/colorPrimary</item>
+    <item name="android:padding">4dp</item>
+    <item name="android:minWidth">28dp</item>
+    <item name="android:minHeight">28dp</item>
+    <item name="shapeAppearance">@style/ShapeAppearance.Material3.Tooltip</item>
+  </style>
+
+  <style name="ShapeAppearance.Material3.Tooltip" parent="ShapeAppearance.MaterialComponents.Tooltip">
+    <item name="cornerSize">50%</item>
+  </style>
+
 </resources>
