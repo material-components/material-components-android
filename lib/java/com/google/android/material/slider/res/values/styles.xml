@@ -33,4 +33,15 @@
 
   <style name="Widget.MaterialComponents.Slider" parent="Base.Widget.MaterialComponents.Slider"/>
 
+  <style name="Widget.Material3.Slider" parent="Widget.MaterialComponents.Slider">
+    <item name="haloColor">@color/m3_slider_halo_color</item>
+    <item name="labelStyle">@style/Widget.Material3.Tooltip</item>
+    <item name="thumbColor">@color/m3_slider_thumb_color</item>
+    <item name="tickColorActive">@color/m3_slider_inactive_track_color</item>
+    <item name="tickColorInactive">@color/m3_slider_active_track_color</item>
+    <item name="trackColorActive">@color/m3_slider_active_track_color</item>
+    <item name="trackColorInactive">@color/m3_slider_inactive_track_color</item>
+    <item name="thumbElevation">@dimen/m3_slider_thumb_elevation</item>
+  </style>
+
 </resources>
