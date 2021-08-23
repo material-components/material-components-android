@@ -22,4 +22,14 @@
     <item name="android:minWidth">?attr/minTouchTargetSize</item>
     <item name="android:minHeight">?attr/minTouchTargetSize</item>
   </style>
+
+  <style name="Base.Widget.Material3.CompoundButton.Switch" parent="Widget.MaterialComponents.CompoundButton.Switch">
+    <!-- Inherit default text color since the component doesn't draw a surface. -->
+    <item name="android:textAppearance">?attr/textAppearanceBodyMedium</item>
+    <item name="thumbTint">@color/m3_switch_thumb_tint</item>
+    <item name="trackTint">@color/m3_switch_track_tint</item>
+    <item name="trackTintMode">src_in</item>
+  </style>
+
+  <style name="Widget.Material3.CompoundButton.Switch" parent="Base.Widget.Material3.CompoundButton.Switch"/>
 </resources>
