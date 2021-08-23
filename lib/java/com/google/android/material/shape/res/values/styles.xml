@@ -34,14 +34,17 @@
   </style>
 
   <style name="ShapeAppearance.Material3.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
-    <!-- TODO: Populate cornerFamily and cornerSize. -->
+    <item name="cornerFamily">@integer/m3_sys_shape_small_corner_family</item>
+    <item name="cornerSize">@dimen/m3_sys_shape_small_corner_size</item>
   </style>
 
   <style name="ShapeAppearance.Material3.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
-    <!-- TODO: Populate cornerFamily and cornerSize. -->
+    <item name="cornerFamily">@integer/m3_sys_shape_medium_corner_family</item>
+    <item name="cornerSize">@dimen/m3_sys_shape_medium_corner_size</item>
   </style>
 
   <style name="ShapeAppearance.Material3.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
-    <!-- TODO: Populate cornerFamily and cornerSize. -->
+    <item name="cornerFamily">@integer/m3_sys_shape_large_corner_family</item>
+    <item name="cornerSize">@dimen/m3_sys_shape_large_corner_size</item>
   </style>
 </resources>
