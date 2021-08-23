@@ -24,7 +24,7 @@
     <item name="materialClockStyle">@style/Widget.MaterialComponents.TimePicker.Clock</item>
     <item name="imageButtonStyle">@style/Widget.MaterialComponents.TimePicker.ImageButton</item>
     <item name="materialButtonOutlinedStyle">@style/Widget.MaterialComponents.TimePicker.Button</item>
-    <item name="textAppearanceOverline">@style/TextAppearance.MaterialComponents.TimePicker.Title</item>
+    <item name="materialTimePickerTitleStyle">@style/TextAppearance.MaterialComponents.TimePicker.Title</item>
     <item name="elevationOverlayEnabled">false</item>
   </style>
 
@@ -36,6 +36,6 @@
     <item name="materialClockStyle">@style/Widget.MaterialComponents.TimePicker.Clock</item>
     <item name="imageButtonStyle">@style/Widget.MaterialComponents.TimePicker.ImageButton</item>
     <item name="materialButtonOutlinedStyle">@style/Widget.MaterialComponents.TimePicker.Button</item>
-    <item name="textAppearanceOverline">@style/TextAppearance.MaterialComponents.TimePicker.Title</item>
+    <item name="materialTimePickerTitleStyle">@style/TextAppearance.MaterialComponents.TimePicker.Title</item>
   </style>
 </resources>
