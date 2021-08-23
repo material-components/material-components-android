@@ -104,7 +104,19 @@
     <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.Material3.MediumComponent</item>
     <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.Material3.LargeComponent</item>
 
-    <!-- TODO: Populate motion attributes here -->
+    <!-- Motion-->
+    <item name="motionEasingStandard">@string/m3_sys_motion_easing_standard</item>
+    <item name="motionEasingEmphasized">@string/m3_sys_motion_easing_emphasized</item>
+    <item name="motionEasingDecelerated">@string/m3_sys_motion_easing_decelerated</item>
+    <item name="motionEasingAccelerated">@string/m3_sys_motion_easing_accelerated</item>
+    <item name="motionEasingLinear">@string/m3_sys_motion_easing_linear</item>
+    <item name="motionDurationShort1">@integer/m3_sys_motion_duration_short1</item>
+    <item name="motionDurationShort2">@integer/m3_sys_motion_duration_short2</item>
+    <item name="motionDurationMedium1">@integer/m3_sys_motion_duration_medium1</item>
+    <item name="motionDurationMedium2">@integer/m3_sys_motion_duration_medium2</item>
+    <item name="motionDurationLong1">@integer/m3_sys_motion_duration_long1</item>
+    <item name="motionDurationLong2">@integer/m3_sys_motion_duration_long2</item>
+    <item name="motionPath">@integer/m3_sys_motion_path</item>
 
     <!-- Elevation overlays. -->
     <item name="elevationOverlayEnabled">true</item>
@@ -200,7 +212,19 @@
     <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.Material3.MediumComponent</item>
     <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.Material3.LargeComponent</item>
 
-    <!-- TODO: Populate motion attributes here -->
+    <!-- Motion-->
+    <item name="motionEasingStandard">@string/m3_sys_motion_easing_standard</item>
+    <item name="motionEasingEmphasized">@string/m3_sys_motion_easing_emphasized</item>
+    <item name="motionEasingDecelerated">@string/m3_sys_motion_easing_decelerated</item>
+    <item name="motionEasingAccelerated">@string/m3_sys_motion_easing_accelerated</item>
+    <item name="motionEasingLinear">@string/m3_sys_motion_easing_linear</item>
+    <item name="motionDurationShort1">@integer/m3_sys_motion_duration_short1</item>
+    <item name="motionDurationShort2">@integer/m3_sys_motion_duration_short2</item>
+    <item name="motionDurationMedium1">@integer/m3_sys_motion_duration_medium1</item>
+    <item name="motionDurationMedium2">@integer/m3_sys_motion_duration_medium2</item>
+    <item name="motionDurationLong1">@integer/m3_sys_motion_duration_long1</item>
+    <item name="motionDurationLong2">@integer/m3_sys_motion_duration_long2</item>
+    <item name="motionPath">@integer/m3_sys_motion_path</item>
 
     <!-- Elevation overlays. -->
     <item name="elevationOverlayEnabled">true</item>
