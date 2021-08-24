@@ -16,12 +16,6 @@
 -->
 <resources>
 
-  <!-- Elevation overlay colors -->
-  <color name="m3_default_color_elevation_overlay">@color/m3_ref_palette_primary70</color>
-  <color name="m3_default_color_elevation_overlay_accent">@color/m3_ref_palette_neutral50</color>
-  <color name="m3_dark_default_color_elevation_overlay">@color/m3_ref_palette_primary80</color>
-  <color name="m3_dark_default_color_elevation_overlay_accent">@color/m3_ref_palette_neutral80</color>
-
   <!-- Light theme brand colors. -->
   <color name="design_default_color_primary">#6200EE</color>
   <color name="design_default_color_primary_dark">#3700B3</color>

@@ -43,10 +43,6 @@
     <item name="colorOnError">@color/m3_sys_color_light_on_error</item>
     <item name="colorErrorContainer">@color/m3_sys_color_light_error_container</item>
     <item name="colorOnErrorContainer">@color/m3_sys_color_light_on_error_container</item>
-
-    <!-- Elevation overlays. -->
-    <item name="elevationOverlayColor">?attr/colorPrimary</item>
-    <item name="elevationOverlayAccentColor">@android:color/transparent</item>
   </style>
 
   <style name="ThemeOverlay.Material3.DynamicColors.Dark" parent="">
@@ -77,10 +73,6 @@
     <item name="colorOnError">@color/m3_sys_color_dark_on_error</item>
     <item name="colorErrorContainer">@color/m3_sys_color_dark_error_container</item>
     <item name="colorOnErrorContainer">@color/m3_sys_color_dark_on_error_container</item>
-
-    <!-- Elevation overlays. -->
-    <item name="elevationOverlayColor">?attr/colorPrimary</item>
-    <item name="elevationOverlayAccentColor">@android:color/transparent</item>
   </style>
 
   <style name="ThemeOverlay.Material3.DynamicColors.DayNight" parent="ThemeOverlay.Material3.DynamicColors.Light" />
