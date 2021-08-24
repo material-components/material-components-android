@@ -52,4 +52,28 @@
 
   <dimen name="mtrl_btn_snackbar_margin_horizontal">8dp</dimen>
 
+  <dimen name="m3_btn_inset">4dp</dimen>
+  <dimen name="m3_btn_max_width">320dp</dimen>
+  <dimen name="m3_btn_stroke_size">1dp</dimen>
+  <dimen name="m3_btn_padding_left">16dp</dimen>
+  <dimen name="m3_btn_padding_top">6dp</dimen>
+  <dimen name="m3_btn_padding_right">16dp</dimen>
+  <dimen name="m3_btn_padding_bottom">6dp</dimen>
+  <dimen name="m3_btn_elevated_btn_elevation">1dp</dimen>
+  <dimen name="m3_btn_icon_btn_padding_left">16dp</dimen>
+  <dimen name="m3_btn_icon_btn_padding_right">24dp</dimen>
+  <dimen name="m3_btn_icon_only_default_padding">10dp</dimen>
+  <dimen name="m3_btn_icon_only_min_width">20dp</dimen>
+  <dimen name="m3_btn_icon_only_default_size">20dp</dimen>
+  <dimen name="m3_btn_icon_only_icon_padding">0dp</dimen>
+
+  <dimen name="m3_btn_dialog_btn_min_width">64dp</dimen>
+  <dimen name="m3_btn_dialog_btn_spacing">8dp</dimen>
+
+  <dimen name="m3_btn_translation_z_base">0dp</dimen>
+  <dimen name="m3_btn_translation_z_pressed">3dp</dimen>
+  <dimen name="m3_btn_translation_z_hovered_focused">1dp</dimen>
+  <dimen name="m3_btn_disabled_translation_z">0dp</dimen>
+  <dimen name="m3_btn_disabled_elevation">0dp</dimen>
+
 </resources>

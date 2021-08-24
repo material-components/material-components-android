@@ -57,10 +57,10 @@
 
       <Button
           android:id="@+id/material_unelevated_button"
-          style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+          style="@style/Widget.Material3.Button.UnelevatedButton"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="@string/cat_button_label_enabled"/>
+          android:text="@string/cat_button_label_enabled" />
 
       <TextView
           android:textStyle="bold"
@@ -72,7 +72,7 @@
 
       <Button
           android:id="@+id/material_icon_button"
-          style="@style/Widget.MaterialComponents.Button.Icon"
+          style="@style/Widget.Material3.Button.Icon"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="@string/cat_button_label_enabled"
@@ -88,7 +88,7 @@
 
       <Button
           android:id="@+id/material_text_button"
-          style="@style/Widget.MaterialComponents.Button.TextButton"
+          style="@style/Widget.Material3.Button.TextButton"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="@string/cat_button_label_enabled"/>
@@ -103,7 +103,7 @@
 
       <Button
           android:id="@+id/material_icon_text_button"
-          style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+          style="@style/Widget.Material3.Button.TextButton.Icon"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="@string/cat_button_label_enabled"
@@ -119,7 +119,7 @@
 
       <Button
           android:id="@+id/material_outlined_button"
-          style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+          style="?attr/materialButtonOutlinedStyle"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="@string/cat_button_label_enabled"/>
@@ -133,7 +133,7 @@
           android:textSize="16sp"/>
 
       <Button
-          style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+          style="?attr/materialButtonOutlinedStyle"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:contentDescription="@string/cat_button_icon_btn_text"
@@ -150,7 +150,6 @@
         android:textSize="16sp"/>
 
       <Button
-        style="@style/Widget.MaterialComponents.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/cat_button_top_icon_btn_text"
