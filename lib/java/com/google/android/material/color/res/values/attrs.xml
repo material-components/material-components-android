@@ -107,6 +107,9 @@
        Theme.MaterialComponents.Bridge theme. -->
   <attr name="isMaterialTheme" format="boolean"/>
 
+  <!-- Internal flag used to denote that a theme is a Theme.Material3 theme. -->
+  <attr name="isMaterial3Theme" format="boolean"/>
+
   <!-- When set to true, the material selection controls will tint themselves according to
        Material Theme colors. When set to false, Material Theme colors will
        be ignored. This value should be set to false when using custom drawables

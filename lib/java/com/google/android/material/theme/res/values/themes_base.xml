@@ -20,6 +20,8 @@
   <eat-comment/>
 
   <style name="Base.V14.Theme.Material3.Light" parent="Theme.MaterialComponents.Light">
+    <item name="isMaterial3Theme">true</item>
+
     <!-- Color palettes -->
     <item name="colorPrimary">@color/m3_sys_color_light_primary</item>
     <item name="colorPrimaryDark">?attr/colorPrimary</item>
@@ -144,6 +146,8 @@
   </style>
 
   <style name="Base.V14.Theme.Material3.Dark" parent="Theme.MaterialComponents">
+    <item name="isMaterial3Theme">true</item>
+
     <!-- Color palettes -->
     <item name="colorPrimary">@color/m3_sys_color_dark_primary</item>
     <item name="colorPrimaryDark">?attr/colorPrimary</item>
