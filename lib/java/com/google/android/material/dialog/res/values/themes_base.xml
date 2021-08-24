@@ -63,6 +63,7 @@
     <item name="floatingActionButtonPrimaryStyle">@style/Widget.Material3.FloatingActionButton.Primary</item>
     <item name="floatingActionButtonSecondaryStyle">@style/Widget.Material3.FloatingActionButton.Secondary</item>
     <item name="floatingActionButtonSurfaceStyle">@style/Widget.Material3.FloatingActionButton.Surface</item>
+    <item name="radioButtonStyle">@style/Widget.Material3.CompoundButton.RadioButton</item>
     <item name="sliderStyle">@style/Widget.Material3.Slider</item>
     <item name="switchStyle">@style/Widget.Material3.CompoundButton.Switch</item>
     <item name="tabStyle">@style/Widget.Material3.TabLayout</item>
@@ -176,6 +177,7 @@
     <item name="floatingActionButtonPrimaryStyle">@style/Widget.Material3.FloatingActionButton.Primary</item>
     <item name="floatingActionButtonSecondaryStyle">@style/Widget.Material3.FloatingActionButton.Secondary</item>
     <item name="floatingActionButtonSurfaceStyle">@style/Widget.Material3.FloatingActionButton.Surface</item>
+    <item name="radioButtonStyle">@style/Widget.Material3.CompoundButton.RadioButton</item>
     <item name="sliderStyle">@style/Widget.Material3.Slider</item>
     <item name="switchStyle">@style/Widget.Material3.CompoundButton.Switch</item>
     <item name="tabStyle">@style/Widget.Material3.TabLayout</item>
