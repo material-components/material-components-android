@@ -180,6 +180,24 @@
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.FloatingActionButton.Surface</item>
   </style>
 
+  <!-- M3 Large FABs -->
+  <style name="Base.Widget.Material3.FloatingActionButton.Large" parent="Base.Widget.Material3.FloatingActionButton">
+    <item name="fabCustomSize">@dimen/m3_large_fab_size</item>
+    <item name="maxImageSize">@dimen/m3_large_fab_max_image_size</item>
+  </style>
+
+  <style name="Widget.Material3.FloatingActionButton.Large.Primary" parent="Base.Widget.Material3.FloatingActionButton.Large">
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.FloatingActionButton.Primary</item>
+  </style>
+
+  <style name="Widget.Material3.FloatingActionButton.Large.Secondary" parent="Base.Widget.Material3.FloatingActionButton.Large">
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.FloatingActionButton.Secondary</item>
+  </style>
+
+  <style name="Widget.Material3.FloatingActionButton.Large.Surface" parent="Base.Widget.Material3.FloatingActionButton.Large">
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.FloatingActionButton.Surface</item>
+  </style>
+
   <!-- Overlays -->
   <style name="ShapeAppearanceOverlay.Material3.FloatingActionButton" parent="">
     <item name="cornerSize">@dimen/m3_fab_corner_size</item>
