@@ -16,6 +16,14 @@
   -->
 <resources>
 
+  <dimen name="m3_bottom_nav_min_height">80dp</dimen>
+  <dimen name="m3_bottom_nav_item_padding_top">12dp</dimen>
+  <dimen name="m3_bottom_nav_item_padding_bottom">16dp</dimen>
+
+  <dimen name="m3_bottom_nav_item_active_indicator_width">64dp</dimen>
+  <dimen name="m3_bottom_nav_item_active_indicator_height">32dp</dimen>
+  <dimen name="m3_bottom_nav_item_active_indicator_margin_horizontal">4dp</dimen>
+
   <dimen name="design_bottom_navigation_elevation">8dp</dimen>
   <dimen name="design_bottom_navigation_shadow_height">1dp</dimen>
   <dimen name="design_bottom_navigation_icon_size">24dp</dimen>

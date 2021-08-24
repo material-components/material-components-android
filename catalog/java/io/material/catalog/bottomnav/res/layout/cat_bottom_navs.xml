@@ -22,25 +22,6 @@
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
     android:orientation="vertical">
-  <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_margin="@dimen/cat_bottom_nav_standard_spacing"
-      android:text="@string/cat_bottom_nav_legacy_title"/>
-  <com.google.android.material.bottomnavigation.BottomNavigationView
-      style="@style/Widget.Design.BottomNavigationView"
-      android:id="@+id/cat_bottom_nav1"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      app:menu="@menu/bottom_nav_menu"/>
-  <Space
-      android:layout_width="match_parent"
-      android:layout_height="16dp"/>
-  <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_margin="@dimen/cat_bottom_nav_standard_spacing"
-      android:text="@string/cat_bottom_nav_title"/>
   <com.google.android.material.bottomnavigation.BottomNavigationView
       android:id="@+id/cat_bottom_nav2"
       android:layout_width="match_parent"
