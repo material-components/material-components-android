@@ -59,4 +59,7 @@
   <dimen name="m3_extended_fab_top_padding">8dp</dimen>
   <dimen name="m3_extended_fab_min_height">56dp</dimen>
 
+  <dimen name="m3_large_fab_size">96dp</dimen>
+  <dimen name="m3_large_fab_max_image_size">36dp</dimen>
+
 </resources>
