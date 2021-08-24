@@ -38,4 +38,7 @@
 
   <dimen name="material_time_picker_minimum_screen_height">560dp</dimen>
   <dimen name="material_time_picker_minimum_screen_width">340dp</dimen>
+
+  <dimen name="m3_timepicker_window_elevation">@dimen/m3_sys_elevation_level3</dimen>
+  <dimen name="m3_timepicker_display_stroke_width">2dp</dimen>
 </resources>

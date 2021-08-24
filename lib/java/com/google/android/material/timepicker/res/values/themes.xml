@@ -15,7 +15,7 @@
      limitations under the License.
 -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
   <style name="ThemeOverlay.MaterialComponents.TimePicker" parent="ThemeOverlay.MaterialComponents.Dialog">
     <item name="chipStyle">@style/Widget.MaterialComponents.TimePicker.Display</item>
@@ -29,13 +29,14 @@
   </style>
 
   <style name="ThemeOverlay.Material3.MaterialTimePicker" parent="ThemeOverlay.Material3.Dialog">
-    <!-- TODO: Populate correct M3 attributes -->
-    <item name="chipStyle">@style/Widget.MaterialComponents.TimePicker.Display</item>
-    <item name="textInputStyle">@style/Widget.MaterialComponents.TimePicker.Display.TextInputLayout</item>
-    <item name="materialDisplayDividerStyle">@style/Widget.MaterialComponents.TimePicker.Display.Divider</item>
-    <item name="materialClockStyle">@style/Widget.MaterialComponents.TimePicker.Clock</item>
-    <item name="imageButtonStyle">@style/Widget.MaterialComponents.TimePicker.ImageButton</item>
-    <item name="materialButtonOutlinedStyle">@style/Widget.MaterialComponents.TimePicker.Button</item>
-    <item name="materialTimePickerTitleStyle">@style/TextAppearance.MaterialComponents.TimePicker.Title</item>
+    <item name="android:windowElevation" tools:ignore="NewApi">@dimen/m3_timepicker_window_elevation</item>
+    <item name="chipStyle">@style/Widget.Material3.TimePicker.Display</item>
+    <item name="textInputStyle">@style/Widget.Material3.TimePicker.Display.TextInputLayout</item>
+    <item name="materialDisplayDividerStyle">@style/Widget.Material3.TimePicker.Display.Divider</item>
+    <item name="materialButtonOutlinedStyle">@style/Widget.Material3.TimePicker.Button</item>
+    <item name="materialClockStyle">@style/Widget.Material3.MaterialTimePicker.Clock</item>
+    <item name="materialTimePickerStyle">@style/Widget.Material3.MaterialTimePicker</item>
+    <item name="imageButtonStyle">@style/Widget.Material3.MaterialTimePicker.ImageButton</item>
+    <item name="materialTimePickerTitleStyle">@style/TextAppearance.Material3.TimePicker.Title</item>
   </style>
 </resources>

@@ -122,4 +122,73 @@
     <item name="clockNumberTextColor">@color/material_timepicker_clock_text_color</item>
   </style>
 
+  <style name="Widget.Material3.TimePicker.Button" parent="Widget.MaterialComponents.TimePicker.Button">
+    <item name="android:textAppearance">?attr/textAppearanceTitleMedium</item>
+    <item name="android:textColor">@color/m3_timepicker_button_text_color</item>
+    <item name="backgroundTint">@color/m3_timepicker_button_background_color</item>
+    <item name="iconTint">@color/m3_timepicker_button_text_color</item>
+    <item name="rippleColor">@color/m3_timepicker_button_ripple_color</item>
+    <item name="strokeColor">?attr/colorOutline</item>
+    <!-- Apply theme overlay to disable elevation overlays so we can get a purely colorSurface chip. -->
+    <item name="materialThemeOverlay">@style/ThemeOverlay.MaterialComponents.TimePicker.Display</item>
+  </style>
+
+  <style name="Widget.Material3.MaterialTimePicker" parent="Widget.MaterialComponents.TimePicker" />
+
+  <style name="Widget.Material3.MaterialTimePicker.ImageButton" parent="Widget.MaterialComponents.TimePicker.ImageButton">
+    <item name="iconTint">@color/m3_timepicker_secondary_text_button_text_color</item>
+    <item name="rippleColor">@color/m3_timepicker_secondary_text_button_ripple_color</item>
+  </style>
+
+  <style name="Widget.Material3.TimePicker.Display" parent="Widget.MaterialComponents.TimePicker.Display">
+    <item name="android:textAppearance">?attr/textAppearanceDisplayLarge</item>
+    <item name="android:textColor">@color/m3_timepicker_display_text_color</item>
+    <item name="chipBackgroundColor">@color/m3_timepicker_display_background_color</item>
+    <item name="rippleColor">@color/m3_timepicker_display_ripple_color</item>
+    <item name="chipStrokeColor">@color/m3_timepicker_display_stroke_color</item>
+    <item name="chipStrokeWidth">@dimen/m3_timepicker_display_stroke_width</item>
+  </style>
+
+  <style name="Widget.Material3.TimePicker.Display.Divider" parent="Widget.MaterialComponents.TimePicker.Display.Divider">
+    <item name="android:textAppearance">?attr/textAppearanceHeadlineMedium</item>
+  </style>
+
+  <style name="Widget.Material3.TimePicker.Display.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.TimePicker.Display.TextInputEditText</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.TimePicker.Display.TextInputEditText" parent="ThemeOverlay.Material3.TextInputEditText.OutlinedBox">
+    <item name="editTextStyle">@style/Widget.Material3.TimePicker.Display.TextInputEditText</item>
+    <!-- NOTE: the only text view used in TimePicker text input is custom helper text view. -->
+    <item name="android:textViewStyle">@style/Widget.Material3.TimePicker.Display.HelperText</item>
+  </style>
+
+  <style name="Widget.Material3.TimePicker.Display.TextInputEditText" parent="Widget.Material3.TextInputEditText.OutlinedBox">
+    <item name="android:textAppearance">?attr/textAppearanceHeadlineMedium</item>
+    <item name="android:textSize" tools:ignore="SpUsage">56dp</item>
+    <item name="android:paddingTop">4dp</item>
+    <item name="android:paddingBottom">0dp</item>
+    <item name="android:inputType">number</item>
+    <item name="android:maxLength">2</item>
+    <item name="android:textAlignment">center</item>
+    <item name="android:minEms">2</item>
+    <item name="android:gravity">center</item>
+    <item name="android:paddingStart">0dp</item>
+    <item name="android:paddingEnd">0dp</item>
+  </style>
+
+  <style name="Widget.Material3.TimePicker.Display.HelperText" parent="Widget.MaterialComponents.TimePicker.Display.HelperText">
+    <item name="android:textAppearance">?attr/textAppearanceBodySmall</item>
+    <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+  </style>
+
+  <style name="TextAppearance.Material3.TimePicker.Title" parent="TextAppearance.Material3.LabelMedium">
+    <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+  </style>
+
+  <style name="Widget.Material3.MaterialTimePicker.Clock" parent="Widget.MaterialComponents.TimePicker.Clock">
+    <item name="clockFaceBackgroundColor">?attr/colorSurfaceVariant</item>
+    <item name="clockHandColor">?attr/colorPrimary</item>
+    <item name="clockNumberTextColor">@color/m3_timepicker_clock_text_color</item>
+  </style>
 </resources>
