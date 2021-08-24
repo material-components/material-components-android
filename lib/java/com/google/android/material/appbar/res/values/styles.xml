@@ -16,82 +16,6 @@
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-  <!-- M3 AppBarLayout styles -->
-  <style name="Widget.Material3.AppBarLayout" parent="Widget.MaterialComponents.AppBarLayout.Surface">
-    <item name="liftOnScroll">true</item>
-
-    <!-- On newer API levels, hide shadows while keeping elevation. -->
-    <item name="android:outlineAmbientShadowColor" tools:ignore="NewApi">@android:color/transparent</item>
-    <item name="android:outlineSpotShadowColor" tools:ignore="NewApi">@android:color/transparent</item>
-  </style>
-
-  <!-- M3 CollapsingToolbarLayout styles -->
-  <style name="Base.Widget.Material3.CollapsingToolbar" parent="Widget.MaterialComponents.CollapsingToolbar">
-    <item name="collapsedTitleTextAppearance">?attr/textAppearanceTitleLarge</item>
-    <item name="collapsedTitleTextColor">?attr/colorOnSurface</item>
-    <item name="expandedTitleTextColor">?attr/colorOnSurface</item>
-    <item name="expandedTitleMarginStart">@dimen/m3_appbar_expanded_title_margin_horizontal</item>
-    <item name="expandedTitleMarginEnd">@dimen/m3_appbar_expanded_title_margin_horizontal</item>
-    <item name="expandedTitleMarginBottom">@dimen/m3_appbar_expanded_title_margin_bottom</item>
-    <item name="extraMultilineHeightEnabled">true</item>
-    <item name="forceApplySystemWindowInsetTop">true</item>
-
-    <!-- Title fade behavior -->
-    <item name="titleCollapseMode">fade</item>
-    <item name="statusBarScrim">@empty</item>
-    <item name="scrimAnimationDuration">@integer/app_bar_elevation_anim_duration</item>
-    <!-- Allows contentScrim to be drawn in top padding area for edge-to-edge. -->
-    <item name="android:clipToPadding">false</item>
-  </style>
-
-  <style name="Widget.Material3.CollapsingToolbar" parent="Base.Widget.Material3.CollapsingToolbar">
-    <item name="scrimVisibleHeightTrigger">@dimen/m3_appbar_scrim_height_trigger</item>
-    <item name="expandedTitleTextAppearance">?attr/textAppearanceHeadlineSmall</item>
-  </style>
-
-  <style name="Widget.Material3.CollapsingToolbar.Medium" parent="Base.Widget.Material3.CollapsingToolbar">
-    <item name="scrimVisibleHeightTrigger">@dimen/m3_appbar_scrim_height_trigger_medium</item>
-    <item name="expandedTitleTextAppearance">?attr/textAppearanceHeadlineSmall</item>
-  </style>
-
-  <style name="Widget.Material3.CollapsingToolbar.Large" parent="Base.Widget.Material3.CollapsingToolbar">
-    <item name="scrimVisibleHeightTrigger">@dimen/m3_appbar_scrim_height_trigger_large</item>
-    <item name="expandedTitleTextAppearance">?attr/textAppearanceHeadlineMedium</item>
-  </style>
-
-  <!-- Style for a M3 Toolbar. -->
-  <style name="Widget.Material3.Toolbar" parent="Widget.AppCompat.Toolbar">
-    <item name="titleTextAppearance">?attr/textAppearanceTitleLarge</item>
-    <item name="subtitleTextAppearance">?attr/textAppearanceTitleMedium</item>
-    <item name="contentInsetStartWithNavigation">0dp</item>
-  </style>
-
-  <!-- Style for a M3 On Surface Toolbar (transparent background and on-surface
-       colors for text and iconography). Use with MaterialToolbar to get
-       navigation icon and menu icon coloring. -->
-  <style name="Widget.Material3.Toolbar.OnSurface">
-    <item name="titleTextColor">?attr/colorOnSurface</item>
-    <item name="subtitleTextColor">?attr/colorOnSurfaceVariant</item>
-    <item name="navigationIconTint">?attr/colorOnSurface</item>
-    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Toolbar.Surface</item>
-  </style>
-
-  <!-- Style for a M3 Surface Toolbar (surface background and on-surface
-       colors for text and iconography). Use with MaterialToolbar to get
-       navigation icon and menu icon coloring. -->
-  <style name="Widget.Material3.Toolbar.Surface" parent="Widget.Material3.Toolbar.OnSurface">
-    <item name="android:background">?attr/colorSurface</item>
-
-    <!-- On newer API levels, hide shadows while keeping elevation. -->
-    <item name="android:outlineAmbientShadowColor" tools:ignore="NewApi">@android:color/transparent</item>
-    <item name="android:outlineSpotShadowColor" tools:ignore="NewApi">@android:color/transparent</item>
-  </style>
-
-  <style name="ThemeOverlay.Material3.Toolbar.Surface" parent="">
-    <item name="actionMenuTextColor">?attr/colorOnSurfaceVariant</item>
-    <item name="colorControlNormal">?attr/colorOnSurfaceVariant</item>
-  </style>
-
   <!-- AppBarLayout styles -->
   <style name="Widget.Design.AppBarLayout" parent="android:Widget">
     <item name="android:background">?attr/colorPrimary</item>
@@ -212,6 +136,82 @@
     <item name="colorControlNormal">@color/material_on_surface_emphasis_medium</item>
     <!-- Used to tint the ActionMode background and preserve the underline. -->
     <item name="android:colorBackground">?attr/colorSurface</item>
+  </style>
+
+  <!-- M3 AppBarLayout styles -->
+  <style name="Widget.Material3.AppBarLayout" parent="Widget.MaterialComponents.AppBarLayout.Surface">
+    <item name="liftOnScroll">true</item>
+
+    <!-- On newer API levels, hide shadows while keeping elevation. -->
+    <item name="android:outlineAmbientShadowColor" tools:ignore="NewApi">@android:color/transparent</item>
+    <item name="android:outlineSpotShadowColor" tools:ignore="NewApi">@android:color/transparent</item>
+  </style>
+
+  <!-- M3 CollapsingToolbarLayout styles -->
+  <style name="Base.Widget.Material3.CollapsingToolbar" parent="Widget.MaterialComponents.CollapsingToolbar">
+    <item name="collapsedTitleTextAppearance">?attr/textAppearanceTitleLarge</item>
+    <item name="collapsedTitleTextColor">?attr/colorOnSurface</item>
+    <item name="expandedTitleTextColor">?attr/colorOnSurface</item>
+    <item name="expandedTitleMarginStart">@dimen/m3_appbar_expanded_title_margin_horizontal</item>
+    <item name="expandedTitleMarginEnd">@dimen/m3_appbar_expanded_title_margin_horizontal</item>
+    <item name="expandedTitleMarginBottom">@dimen/m3_appbar_expanded_title_margin_bottom</item>
+    <item name="extraMultilineHeightEnabled">true</item>
+    <item name="forceApplySystemWindowInsetTop">true</item>
+
+    <!-- Title fade behavior -->
+    <item name="titleCollapseMode">fade</item>
+    <item name="statusBarScrim">@empty</item>
+    <item name="scrimAnimationDuration">@integer/app_bar_elevation_anim_duration</item>
+    <!-- Allows contentScrim to be drawn in top padding area for edge-to-edge. -->
+    <item name="android:clipToPadding">false</item>
+  </style>
+
+  <style name="Widget.Material3.CollapsingToolbar" parent="Base.Widget.Material3.CollapsingToolbar">
+    <item name="scrimVisibleHeightTrigger">@dimen/m3_appbar_scrim_height_trigger</item>
+    <item name="expandedTitleTextAppearance">?attr/textAppearanceHeadlineSmall</item>
+  </style>
+
+  <style name="Widget.Material3.CollapsingToolbar.Medium" parent="Base.Widget.Material3.CollapsingToolbar">
+    <item name="scrimVisibleHeightTrigger">@dimen/m3_appbar_scrim_height_trigger_medium</item>
+    <item name="expandedTitleTextAppearance">?attr/textAppearanceHeadlineSmall</item>
+  </style>
+
+  <style name="Widget.Material3.CollapsingToolbar.Large" parent="Base.Widget.Material3.CollapsingToolbar">
+    <item name="scrimVisibleHeightTrigger">@dimen/m3_appbar_scrim_height_trigger_large</item>
+    <item name="expandedTitleTextAppearance">?attr/textAppearanceHeadlineMedium</item>
+  </style>
+
+  <!-- Style for a M3 Toolbar. -->
+  <style name="Widget.Material3.Toolbar" parent="Widget.AppCompat.Toolbar">
+    <item name="titleTextAppearance">?attr/textAppearanceTitleLarge</item>
+    <item name="subtitleTextAppearance">?attr/textAppearanceTitleMedium</item>
+    <item name="contentInsetStartWithNavigation">0dp</item>
+  </style>
+
+  <!-- Style for a M3 On Surface Toolbar (transparent background and on-surface
+       colors for text and iconography). Use with MaterialToolbar to get
+       navigation icon and menu icon coloring. -->
+  <style name="Widget.Material3.Toolbar.OnSurface">
+    <item name="titleTextColor">?attr/colorOnSurface</item>
+    <item name="subtitleTextColor">?attr/colorOnSurfaceVariant</item>
+    <item name="navigationIconTint">?attr/colorOnSurface</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Toolbar.Surface</item>
+  </style>
+
+  <!-- Style for a M3 Surface Toolbar (surface background and on-surface
+       colors for text and iconography). Use with MaterialToolbar to get
+       navigation icon and menu icon coloring. -->
+  <style name="Widget.Material3.Toolbar.Surface" parent="Widget.Material3.Toolbar.OnSurface">
+    <item name="android:background">?attr/colorSurface</item>
+
+    <!-- On newer API levels, hide shadows while keeping elevation. -->
+    <item name="android:outlineAmbientShadowColor" tools:ignore="NewApi">@android:color/transparent</item>
+    <item name="android:outlineSpotShadowColor" tools:ignore="NewApi">@android:color/transparent</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.Toolbar.Surface" parent="">
+    <item name="actionMenuTextColor">?attr/colorOnSurfaceVariant</item>
+    <item name="colorControlNormal">?attr/colorOnSurfaceVariant</item>
   </style>
 
 </resources>
