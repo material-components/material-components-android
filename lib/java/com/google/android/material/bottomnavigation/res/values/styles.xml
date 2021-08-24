@@ -16,6 +16,33 @@
   -->
 <resources>
 
+  <!-- Style for Material 3 Bottom Navigation View. -->
+  <style name="Widget.Material3.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
+    <item name="android:background">?attr/colorSurface</item>
+    <item name="elevation">@dimen/m3_sys_elevation_level2</item>
+    <item name="itemActiveIndicatorStyle">@style/Widget.Material3.BottomNavigationView.ActiveIndicator</item>
+    <item name="itemTextAppearanceInactive">?attr/textAppearanceTitleSmall</item>
+    <item name="itemTextAppearanceActive">?attr/textAppearanceTitleSmall</item>
+    <item name="itemRippleColor">@color/m3_bottom_nav_ripple_color_selector</item>
+    <item name="itemIconTint">@color/m3_bottom_nav_item_with_indicator_icon_tint</item>
+    <item name="itemTextColor">@color/m3_bottom_nav_item_with_indicator_label_tint</item>
+    <item name="itemPaddingTop">@dimen/m3_bottom_nav_item_padding_top</item>
+    <item name="itemPaddingBottom">@dimen/m3_bottom_nav_item_padding_bottom</item>
+    <item name="android:minHeight">@dimen/m3_bottom_nav_min_height</item>
+  </style>
+
+  <style name="Widget.Material3.BottomNavigationView.ActiveIndicator" parent="">
+    <item name="android:width">@dimen/m3_bottom_nav_item_active_indicator_width</item>
+    <item name="android:height">@dimen/m3_bottom_nav_item_active_indicator_height</item>
+    <item name="marginHorizontal">@dimen/m3_bottom_nav_item_active_indicator_margin_horizontal</item>
+    <item name="shapeAppearance">@style/ShapeAppearance.Material3.BottomNavigationView.ActiveIndicator</item>
+    <item name="android:color">?attr/colorSecondaryContainer</item>
+  </style>
+
+  <style name="ShapeAppearance.Material3.BottomNavigationView.ActiveIndicator" parent="ShapeAppearance.Material3.SmallComponent">
+    <item name="cornerSize">50%</item>
+  </style>
+
   <style name="Widget.Design.BottomNavigationView" parent="">
     <item name="elevation">@dimen/design_bottom_navigation_elevation</item>
     <item name="enforceTextAppearance">false</item>
@@ -24,6 +51,9 @@
     <item name="itemHorizontalTranslationEnabled">true</item>
     <item name="itemIconSize">@dimen/design_bottom_navigation_icon_size</item>
     <item name="labelVisibilityMode">auto</item>
+    <item name="itemPaddingTop">@dimen/design_bottom_navigation_margin</item>
+    <item name="itemPaddingBottom">@dimen/design_bottom_navigation_label_padding</item>
+    <item name="itemActiveIndicatorStyle">@null</item>
     <item name="android:minHeight">@dimen/design_bottom_navigation_height</item>
   </style>
 

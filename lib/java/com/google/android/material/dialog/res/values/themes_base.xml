@@ -56,6 +56,7 @@
     <item name="appBarLayoutStyle">@style/Widget.Material3.AppBarLayout</item>
     <item name="borderlessButtonStyle">@style/Widget.Material3.Button.TextButton</item>
     <item name="buttonBarButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog</item>
+    <item name="bottomNavigationStyle">@style/Widget.Material3.BottomNavigationView</item>
     <item name="collapsingToolbarLayoutStyle">@style/Widget.Material3.CollapsingToolbar</item>
     <item name="collapsingToolbarLayoutMediumStyle">@style/Widget.Material3.CollapsingToolbar.Medium</item>
     <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.Material3.CollapsingToolbar.Large</item>
@@ -176,6 +177,7 @@
     <item name="appBarLayoutStyle">@style/Widget.Material3.AppBarLayout</item>
     <item name="borderlessButtonStyle">@style/Widget.Material3.Button.TextButton</item>
     <item name="buttonBarButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog</item>
+    <item name="bottomNavigationStyle">@style/Widget.Material3.BottomNavigationView</item>
     <item name="collapsingToolbarLayoutStyle">@style/Widget.Material3.CollapsingToolbar</item>
     <item name="collapsingToolbarLayoutMediumStyle">@style/Widget.Material3.CollapsingToolbar.Medium</item>
     <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.Material3.CollapsingToolbar.Large</item>
