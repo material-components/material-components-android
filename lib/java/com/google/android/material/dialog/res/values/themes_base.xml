@@ -126,8 +126,7 @@
 
     <!-- Elevation overlays. -->
     <item name="elevationOverlayEnabled">true</item>
-    <item name="elevationOverlayColor">@color/m3_default_color_elevation_overlay</item>
-    <item name="elevationOverlayAccentColor">@color/m3_default_color_elevation_overlay_accent</item>
+    <item name="elevationOverlayColor">?attr/colorPrimary</item>
 
     <!-- Theme overlays. -->
     <item name="dynamicColorThemeOverlay">@style/ThemeOverlay.Material3.DynamicColors.Light</item>
@@ -240,8 +239,7 @@
 
     <!-- Elevation overlays. -->
     <item name="elevationOverlayEnabled">true</item>
-    <item name="elevationOverlayColor">@color/m3_dark_default_color_elevation_overlay</item>
-    <item name="elevationOverlayAccentColor">@color/m3_dark_default_color_elevation_overlay_accent</item>
+    <item name="elevationOverlayColor">?attr/colorPrimary</item>
 
     <!-- Theme overlays. -->
     <item name="dynamicColorThemeOverlay">@style/ThemeOverlay.Material3.DynamicColors.Dark</item>
