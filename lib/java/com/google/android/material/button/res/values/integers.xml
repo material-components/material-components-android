@@ -20,4 +20,7 @@
   <integer name="mtrl_btn_anim_duration_ms">100</integer>
   <integer name="mtrl_btn_anim_delay_ms">100</integer>
 
+  <integer name="m3_btn_anim_duration_ms">100</integer>
+  <integer name="m3_btn_anim_delay_ms">100</integer>
+
 </resources>

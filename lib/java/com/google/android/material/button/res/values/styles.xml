@@ -120,4 +120,181 @@
     <!-- Icon text button has the same padding as a regular text button -->
   </style>
 
+  <!-- Styles for M3 Buttons. -->
+
+  <!-- M3 filled button style. -->
+  <style name="Widget.Material3.Button" parent="Widget.MaterialComponents.Button">
+    <item name="android:maxWidth">@dimen/m3_btn_max_width</item>
+    <item name="android:paddingTop">@dimen/m3_btn_padding_top</item>
+    <item name="android:paddingBottom">@dimen/m3_btn_padding_bottom</item>
+    <item name="android:insetTop">@dimen/m3_btn_inset</item>
+    <item name="android:insetBottom">@dimen/m3_btn_inset</item>
+    <item name="android:textAppearance">?attr/textAppearanceLabelLarge</item>
+    <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Material3.Button</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Button</item>
+
+    <item name="android:textColor">@color/m3_button_foreground_color_selector</item>
+    <item name="iconTint">@color/m3_button_foreground_color_selector</item>
+    <item name="iconSize">18dp</item>
+    <item name="backgroundTint">@color/m3_button_background_color_selector</item>
+    <item name="rippleColor">@color/m3_button_ripple_color_selector</item>
+  </style>
+
+  <!-- M3 filled button with a start-gravity icon style. This adjusts
+       padding slightly to achieve a better visual balance. This style should only be used with a
+       start-gravity icon button. If your icon is end-gravity, mirror the padding such that this
+       adjustment happens on the other side. -->
+  <style name="Widget.Material3.Button.Icon">
+    <item name="android:paddingLeft">@dimen/m3_btn_icon_btn_padding_left</item>
+    <item name="android:paddingRight">@dimen/m3_btn_icon_btn_padding_right</item>
+  </style>
+
+  <style name="Widget.Material3.Button.UnelevatedButton">
+    <item name="android:stateListAnimator" tools:ignore="NewApi">@animator/mtrl_btn_unelevated_state_list_anim</item>
+    <item name="elevation">0dp</item>
+  </style>
+
+  <!-- M3 tonal button style. -->
+  <style name="Widget.Material3.Button.TonalButton">
+    <item name="rippleColor">@color/m3_tonal_button_ripple_color_selector</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Button.TonalButton</item>
+  </style>
+
+  <!-- M3 tonal button with a start-gravity icon style. This adjusts
+       padding slightly to achieve a better visual balance. This style should only be used with a
+       start-gravity icon button. If your icon is end-gravity, mirror the padding such that this
+       adjustment happens to the other side. -->
+  <style name="Widget.Material3.Button.TonalButton.Icon">
+    <item name="android:paddingLeft">@dimen/m3_btn_icon_btn_padding_left</item>
+    <item name="android:paddingRight">@dimen/m3_btn_icon_btn_padding_right</item>
+  </style>
+
+  <!-- M3 text button style. -->
+  <style name="Widget.Material3.Button.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
+    <item name="android:maxWidth">@dimen/m3_btn_max_width</item>
+    <item name="android:paddingTop">@dimen/m3_btn_padding_top</item>
+    <item name="android:paddingBottom">@dimen/m3_btn_padding_bottom</item>
+    <item name="android:insetTop">@dimen/m3_btn_inset</item>
+    <item name="android:insetBottom">@dimen/m3_btn_inset</item>
+    <item name="android:textAppearance">?attr/textAppearanceLabelLarge</item>
+    <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Material3.Button</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Button.TextButton</item>
+    <item name="android:textColor">@color/m3_text_button_foreground_color_selector</item>
+    <item name="iconTint">@color/m3_text_button_foreground_color_selector</item>
+    <item name="backgroundTint">@color/m3_text_button_background_color_selector</item>
+    <item name="rippleColor">@color/m3_text_button_ripple_color_selector</item>
+  </style>
+
+  <!-- M3 text button with a start-gravity icon style. -->
+  <style name="Widget.Material3.Button.TextButton.Icon">
+    <!-- Text buttons have the same padding even when an icon is present -->
+  </style>
+
+  <!-- M3 button style to show in the Dialog component.  -->
+  <style name="Widget.Material3.Button.TextButton.Dialog">
+    <item name="android:minWidth">@dimen/m3_btn_dialog_btn_min_width</item>
+    <item name="android:layout_marginLeft">@dimen/m3_btn_dialog_btn_spacing</item>
+    <item name="android:layout_marginStart">@dimen/m3_btn_dialog_btn_spacing</item>
+    <item name="android:lines">1</item>
+    <item name="android:ellipsize">end</item>
+    <item name="android:singleLine">true</item>
+  </style>
+
+  <style name="Widget.Material3.Button.TextButton.Dialog.Flush">
+    <item name="android:layout_marginStart">0dp</item>
+    <item name="android:layout_marginLeft">0dp</item>
+  </style>
+
+  <!-- M3 button with a start-gravity icon style to show in the Dialog component. -->
+  <style name="Widget.Material3.Button.TextButton.Dialog.Icon">
+    <!-- Dialog text buttons have the same padding even when an icon is present -->
+  </style>
+
+  <!-- M3 button style to show in the Snackbar component. -->
+  <style name="Widget.Material3.Button.TextButton.Snackbar">
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Button.TextButton.Snackbar</item>
+  </style>
+
+  <!-- M3 outlined button style. -->
+  <style name="Widget.Material3.Button.OutlinedButton" parent="Widget.Material3.Button.TextButton">
+    <item name="android:paddingLeft">@dimen/m3_btn_padding_left</item>
+    <item name="android:paddingRight">@dimen/m3_btn_padding_right</item>
+    <item name="strokeColor">@color/m3_button_outline_color_selector</item>
+    <item name="strokeWidth">@dimen/m3_btn_stroke_size</item>
+  </style>
+
+  <!-- M3 outlined button with a start-gravity icon style. -->
+  <style name="Widget.Material3.Button.OutlinedButton.Icon">
+    <item name="android:paddingLeft">@dimen/m3_btn_icon_btn_padding_left</item>
+    <item name="android:paddingRight">@dimen/m3_btn_icon_btn_padding_right</item>
+  </style>
+
+  <!-- M3 elevated button style. -->
+  <style name="Widget.Material3.Button.ElevatedButton">
+    <item name="android:stateListAnimator" tools:ignore="NewApi">
+      @animator/m3_btn_elevated_btn_state_list_anim
+    </item>
+    <item name="android:textColor">@color/m3_text_button_foreground_color_selector</item>
+    <item name="elevation">@dimen/m3_btn_elevated_btn_elevation</item>
+    <item name="iconTint">@color/m3_text_button_foreground_color_selector</item>
+    <item name="rippleColor">@color/m3_text_button_ripple_color_selector</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Button.ElevatedButton</item>
+  </style>
+
+  <!-- M3 elevated button with a start-gravity icon style. -->
+  <style name="Widget.Material3.Button.ElevatedButton.Icon">
+    <item name="android:paddingLeft">@dimen/m3_btn_icon_btn_padding_left</item>
+    <item name="android:paddingRight">@dimen/m3_btn_icon_btn_padding_right</item>
+  </style>
+
+  <!-- M3 icon only button style.
+       If using an icon bigger than the default size, the padding dimensions
+       should be adjusted to preserve the circular shape. Inset dimensions can
+       also be adjusted if less empty space is desired around the icon.
+       The default dimensions allow for a touch target of 48dp.
+   -->
+  <style name="Widget.Material3.Button.IconButton" parent="Widget.Material3.Button.TextButton">
+    <item name="android:minWidth">@dimen/m3_btn_icon_only_min_width</item>
+    <item name="android:paddingLeft">@dimen/m3_btn_icon_only_default_padding</item>
+    <item name="android:paddingRight">@dimen/m3_btn_icon_only_default_padding</item>
+    <item name="android:paddingTop">@dimen/m3_btn_icon_only_default_padding</item>
+    <item name="android:paddingBottom">@dimen/m3_btn_icon_only_default_padding</item>
+    <item name="android:insetLeft">@dimen/m3_btn_inset</item>
+    <item name="android:insetRight">@dimen/m3_btn_inset</item>
+    <item name="iconSize">@dimen/m3_btn_icon_only_default_size</item>
+    <item name="iconPadding">@dimen/m3_btn_icon_only_icon_padding</item>
+  </style>
+
+  <style name="ShapeAppearanceOverlay.Material3.Button" parent="">
+    <item name="cornerSize">50%</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.Button" parent="">
+    <!-- The colors used by the color selectors -->
+    <item name="colorOnContainer">?attr/colorOnPrimary</item>
+    <item name="colorContainer">?attr/colorPrimary</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.Button.TonalButton">
+    <!-- The colors used by the color selectors -->
+    <item name="colorOnContainer">?attr/colorOnSecondaryContainer</item>
+    <item name="colorContainer">?attr/colorSecondaryContainer</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.Button.TextButton" parent="">
+    <!-- The colors used by the color selectors -->
+    <item name="colorOnContainer">?attr/colorPrimary</item>
+    <item name="colorContainer">@android:color/transparent</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.Button.TextButton.Snackbar">
+    <!-- The colors used by the color selectors -->
+    <item name="colorOnContainer">?attr/colorPrimaryInverse</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.Button.ElevatedButton" parent="ThemeOverlay.Material3.Button.TextButton">
+    <!-- The colors used by the color selectors -->
+    <item name="colorContainer">?attr/colorSurface</item>
+  </style>
+
 </resources>
