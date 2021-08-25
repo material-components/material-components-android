@@ -188,4 +188,142 @@
     <item name="cornerSize">0dp</item>
   </style>
 
+  <!-- M3 Date Picker styles -->
+  <style name="Widget.Material3.MaterialCalendar" parent="Widget.MaterialComponents.MaterialCalendar">
+    <item name="android:windowFullscreen">false</item>
+    <item name="dayStyle">@style/Widget.Material3.MaterialCalendar.Day</item>
+    <item name="dayInvalidStyle">@style/Widget.Material3.MaterialCalendar.Day.Invalid</item>
+    <item name="daySelectedStyle">@style/Widget.Material3.MaterialCalendar.Day.Selected</item>
+    <item name="dayTodayStyle">@style/Widget.Material3.MaterialCalendar.Day.Today</item>
+    <item name="yearStyle">@style/Widget.Material3.MaterialCalendar.Year</item>
+    <item name="yearSelectedStyle">@style/Widget.Material3.MaterialCalendar.Year.Selected</item>
+    <item name="yearTodayStyle">@style/Widget.Material3.MaterialCalendar.Year.Today</item>
+    <item name="rangeFillColor">?attr/colorSurfaceVariant</item>
+  </style>
+
+  <style name="Widget.Material3.MaterialCalendar.Fullscreen">
+    <item name="android:windowFullscreen">true</item>
+    <item name="shapeAppearanceOverlay">
+      @style/ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar.Window.Fullscreen
+    </item>
+  </style>
+
+  <style name="Widget.Material3.MaterialCalendar.HeaderLayout" parent="Widget.MaterialComponents.MaterialCalendar.HeaderLayout">
+    <item name="android:background">@android:color/transparent</item>
+  </style>
+
+  <style name="Widget.Material3.MaterialCalendar.HeaderDivider" parent="Widget.MaterialComponents.MaterialCalendar.HeaderDivider">
+    <item name="android:visibility">gone</item>
+  </style>
+
+  <style name="Widget.Material3.MaterialCalendar.HeaderTitle" parent="Widget.MaterialComponents.MaterialCalendar.HeaderTitle">
+    <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+  </style>
+
+  <style name="Widget.Material3.MaterialCalendar.HeaderSelection" parent="Widget.MaterialComponents.MaterialCalendar.HeaderSelection">
+    <item name="android:textAppearance">?attr/textAppearanceHeadlineLarge</item>
+    <item name="android:textColor">?attr/colorOnSurface</item>
+  </style>
+
+  <style name="Widget.Material3.MaterialCalendar.HeaderSelection.Fullscreen">
+    <item name="android:textAppearance">?attr/textAppearanceHeadlineSmall</item>
+    <item name="android:maxLines">1</item>
+    <item name="autoSizeMaxTextSize">20sp</item>
+  </style>
+
+  <style name="Widget.Material3.MaterialCalendar.HeaderCancelButton" parent="Widget.Material3.Button.TextButton">
+    <item name="iconTint">?attr/colorOnSurfaceVariant</item>
+    <item name="rippleColor">@color/m3_button_ripple_color</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.MaterialCalendar.HeaderCancelButton</item>
+  </style>
+
+  <style name="Widget.Material3.MaterialCalendar.HeaderToggleButton" parent="Widget.MaterialComponents.MaterialCalendar.HeaderToggleButton">
+    <item name="android:tint">?attr/colorOnSurfaceVariant</item>
+  </style>
+
+  <style name="Widget.Material3.MaterialCalendar.DayOfWeekLabel" parent="Widget.MaterialComponents.MaterialCalendar.DayOfWeekLabel">
+    <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+  </style>
+
+  <style name="Widget.Material3.MaterialCalendar.DayTextView" parent="Widget.MaterialComponents.MaterialCalendar.DayTextView">
+    <item name="android:textAppearance">?attr/textAppearanceBodyMedium</item>
+  </style>
+
+  <style name="Widget.Material3.MaterialCalendar.MonthTextView" parent="Widget.MaterialComponents.MaterialCalendar.MonthTextView">
+    <item name="android:textAppearance">?attr/textAppearanceTitleSmall</item>
+    <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+  </style>
+
+  <style name="Widget.Material3.MaterialCalendar.Item" parent="">
+    <item name="itemFillColor">@android:color/transparent</item>
+    <item name="itemTextColor">?attr/colorOnSurface</item>
+    <item name="itemStrokeColor">@color/m3_calendar_item_stroke_color</item>
+    <item name="itemStrokeWidth">1dp</item>
+    <item name="itemShapeAppearance">?attr/shapeAppearanceSmallComponent</item>
+    <item name="itemShapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar.Day</item>
+  </style>
+
+  <style name="Widget.Material3.MaterialCalendar.Day" parent="Widget.Material3.MaterialCalendar.Item">
+    <item name="android:width">@dimen/mtrl_calendar_day_width</item>
+    <item name="android:height">@dimen/mtrl_calendar_day_height</item>
+    <item name="android:insetTop">@dimen/mtrl_calendar_day_vertical_padding</item>
+    <item name="android:insetBottom">@dimen/mtrl_calendar_day_vertical_padding</item>
+    <item name="android:insetLeft">@dimen/mtrl_calendar_day_horizontal_padding</item>
+    <item name="android:insetRight">@dimen/mtrl_calendar_day_horizontal_padding</item>
+  </style>
+
+  <style name="Widget.Material3.MaterialCalendar.Day.Invalid">
+    <item name="itemTextColor">@color/m3_calendar_item_disabled_text</item>
+    <item name="itemStrokeWidth">0dp</item>
+  </style>
+
+  <style name="Widget.Material3.MaterialCalendar.Day.Selected">
+    <item name="itemFillColor">?attr/colorPrimary</item>
+    <item name="itemTextColor">?attr/colorOnPrimary</item>
+    <item name="itemStrokeWidth">0dp</item>
+  </style>
+
+  <style name="Widget.Material3.MaterialCalendar.Day.Today">
+    <item name="itemTextColor">?attr/colorPrimary</item>
+    <item name="itemStrokeColor">?attr/colorPrimary</item>
+    <item name="itemStrokeWidth">@dimen/mtrl_calendar_day_today_stroke</item>
+  </style>
+
+  <style name="Widget.Material3.MaterialCalendar.Year" parent="Widget.Material3.MaterialCalendar.Item">
+    <item name="itemShapeAppearanceOverlay">
+      @style/ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar.Year
+    </item>
+    <item name="android:width">@dimen/mtrl_calendar_year_width</item>
+    <item name="android:height">@dimen/mtrl_calendar_year_height</item>
+    <item name="android:insetTop">@dimen/mtrl_calendar_year_vertical_padding</item>
+    <item name="android:insetBottom">@dimen/mtrl_calendar_year_vertical_padding</item>
+    <item name="android:insetLeft">@dimen/mtrl_calendar_year_horizontal_padding</item>
+    <item name="android:insetRight">@dimen/mtrl_calendar_year_horizontal_padding</item>
+  </style>
+
+  <style name="Widget.Material3.MaterialCalendar.Year.Selected">
+    <item name="itemFillColor">?attr/colorPrimary</item>
+    <item name="itemTextColor">?attr/colorOnPrimary</item>
+    <item name="itemStrokeWidth">0dp</item>
+    <item name="itemStrokeColor">?attr/colorPrimary</item>
+  </style>
+
+  <style name="Widget.Material3.MaterialCalendar.Year.Today">
+    <item name="itemTextColor">?attr/colorPrimary</item>
+    <item name="itemStrokeColor">?attr/colorPrimary</item>
+    <item name="itemStrokeWidth">@dimen/mtrl_calendar_day_today_stroke</item>
+  </style>
+
+  <style name="Base.Widget.Material3.MaterialCalendar.NavigationButton" parent="Widget.Material3.Button.TextButton.Dialog.Flush">
+    <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    <item name="iconTint">?attr/colorOnSurfaceVariant</item>
+  </style>
+
+  <style name="Widget.Material3.MaterialCalendar.YearNavigationButton" parent="Base.Widget.Material3.MaterialCalendar.NavigationButton"/>
+  <style name="Widget.Material3.MaterialCalendar.MonthNavigationButton" parent="Base.Widget.Material3.MaterialCalendar.NavigationButton"/>
+
+  <style name="ThemeOverlay.Material3.MaterialCalendar.HeaderCancelButton" parent="ThemeOverlay.Material3.Button.TextButton">
+     <item name="colorOnContainer">?attr/colorOnSurfaceVariant</item>
+  </style>
+
 </resources>

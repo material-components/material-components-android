@@ -77,4 +77,6 @@
   <!-- only portrait and screens with less than 360dp minimum dimension-->
   <dimen name="mtrl_calendar_days_of_week_height">24dp</dimen>
 
+  <dimen name="m3_datepicker_elevation">@dimen/m3_sys_elevation_level1</dimen>
+
 </resources>
