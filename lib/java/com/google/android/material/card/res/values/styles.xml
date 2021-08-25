@@ -36,4 +36,28 @@
     <item name="shapeAppearance">?attr/shapeAppearanceMediumComponent</item>
   </style>
 
+  <!-- Style for the M3 card. -->
+  <style name="Base.Widget.Material3.CardView" parent="Widget.MaterialComponents.CardView">
+    <item name="android:stateListAnimator" tools:ignore="NewApi">
+      @animator/m3_card_state_list_anim
+    </item>
+    <item name="cardCornerRadius">@dimen/m3_card_corner_radius</item>
+    <item name="cardElevation">@dimen/m3_card_elevation</item>
+    <item name="cardForegroundColor">@color/m3_card_foreground_color</item>
+    <item name="rippleColor">@color/m3_card_ripple_color</item>
+    <item name="strokeColor">@color/m3_card_stroke_color</item>
+    <item name="strokeWidth">@dimen/m3_card_stroke_width</item>
+    <item name="checkedIconTint">@color/m3_card_stroke_color</item>
+  </style>
+
+  <style name="Widget.Material3.CardView.Outlined" parent="Base.Widget.Material3.CardView"/>
+
+  <style name="Widget.Material3.CardView.Elevated" parent="Base.Widget.Material3.CardView">
+    <item name="android:stateListAnimator" tools:ignore="NewApi">
+      @animator/m3_card_elevated_state_list_anim
+    </item>
+    <item name="cardElevation">@dimen/m3_card_elevated_elevation</item>
+    <item name="strokeWidth">0dp</item>
+  </style>
+
 </resources>

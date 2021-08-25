@@ -42,7 +42,9 @@
   <string name="cat_card_clickable_desc">
     Cards can be clickable.
   </string>
-  <string name="cat_card_elevation_desc">Cards have 1dp elevation.</string>
+  <string name="cat_card_elevation_desc">
+        Cards use outlined styling with no elevation and with 8dp rounded corners.
+  </string>
   <string name="cat_card_m1_desc">
     CardView from the Support Library works side-by-side with MaterialCardView. These cards default
     to Material 1 styles and support fewer style attributes than MaterialCardView.

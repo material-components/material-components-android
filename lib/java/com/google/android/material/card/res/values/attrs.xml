@@ -23,6 +23,12 @@
       attribute name may change in the future if that usage restriction changes. -->
   <attr name="materialCardViewStyle" format="reference"/>
 
+  <!-- Style to use for outlined MaterialCardView. -->
+  <attr name="materialCardViewOutlinedStyle" format="reference"/>
+
+  <!-- Style to use for elevated MaterialCardView. -->
+  <attr name="materialCardViewElevatedStyle" format="reference"/>
+
   <declare-styleable name="MaterialCardView">
     <!-- Whether the card can be checked. -->
     <attr name="android:checkable"/>
