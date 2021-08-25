@@ -31,4 +31,11 @@
   <!-- TranslationZ for card when it's on dragged state. -->
   <dimen name="mtrl_card_dragged_z">5dp</dimen>
 
+  <dimen name="m3_card_corner_radius">8dp</dimen>
+  <dimen name="m3_card_elevation">@dimen/m3_sys_elevation_level0</dimen>
+  <dimen name="m3_card_dragged_z">8dp</dimen>
+  <dimen name="m3_card_stroke_width">1dp</dimen>
+
+  <dimen name="m3_card_elevated_elevation">@dimen/m3_sys_elevation_level1</dimen>
+  <dimen name="m3_card_elevated_dragged_pressed_z">2dp</dimen>
 </resources>
