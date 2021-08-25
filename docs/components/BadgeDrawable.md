@@ -11,9 +11,9 @@ path: /catalog/badging/
 
 ## Using badges
 
-Badge                                   | Badge with number                              | Badge with a maximum character count
---------------------------------------- | ---------------------------------------------- | ------------------------------------
-![badge_icon](assets/IconOnlyBadge.png) | ![badge_with_number_8](assets/BadgeNumber.png) | ![badge_with_999+](assets/BadgeNumberLongerThanMaxCharCount.png)
+Badge                                         | Badge with number                                    | Badge with a maximum character count
+--------------------------------------------- | ---------------------------------------------------- | ------------------------------------
+![badge_icon](assets/badge/IconOnlyBadge.png) | ![badge_with_number_8](assets/badge/BadgeNumber.png) | ![badge_with_999+](assets/badge/BadgeNumberLongerThanMaxCharCount.png)
 
 NOTE: This component is still under development and may not support the full
 range of customization Material Android components generally support (e.g.
