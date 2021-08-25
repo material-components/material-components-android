@@ -432,4 +432,43 @@ class MaterialButtonHelper {
     return insetTop;
   }
 
+
+  public void setInsetLeft(@Dimension int newInsetLeft) {
+    setHorizontalInsets(newInsetLeft, insetRight);
+  }
+
+  public int getInsetLeft() {
+    return insetLeft;
+  }
+
+  public void setInsetRight(@Dimension int newInsetRight) {
+    setHorizontalInsets(insetLeft, newInsetRight);
+  }
+
+  private void setHorizontalInsets(@Dimension int newInsetLeft, @Dimension int newInsetRight) {
+    // Store padding before setting background, since background overwrites padding values
+    int paddingStart = ViewCompat.getPaddingStart(materialButton);
+    int paddingTop = materialButton.getPaddingTop();
+    int paddingEnd = ViewCompat.getPaddingEnd(materialButton);
+    int paddingBottom = materialButton.getPaddingBottom();
+    int oldInsetLeft = insetLeft;
+    int oldInsetRight = insetRight;
+    insetLeft = newInsetLeft;
+    insetRight = newInsetRight;
+    if (!backgroundOverwritten) {
+      updateBackground();
+    }
+    // Set the stored padding values
+    ViewCompat.setPaddingRelative(
+        materialButton,
+        paddingStart + newInsetLeft - oldInsetLeft,
+        paddingTop ,
+        paddingEnd + newInsetRight - oldInsetRight,
+        paddingBottom);
+  }
+
+  public int getInsetRight() {
+    return insetRight;
+  }
+
 }
