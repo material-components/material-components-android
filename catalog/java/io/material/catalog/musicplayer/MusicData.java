@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Locale;
 
 /** A static store of data to be used in the main music player flow example. */
-class MusicData {
+public class MusicData {
 
   private MusicData() {}
 
@@ -131,7 +131,7 @@ class MusicData {
   }
 
   /** A data class to hold information about a music album. */
-  static class Album {
+  public static class Album {
 
     final long id;
     final String title;
@@ -166,6 +166,10 @@ class MusicData {
       this.cover = cover;
       this.tracks = tracks;
       this.duration = duration;
+    }
+
+    public long getAlbumId() {
+      return id;
     }
   }
 
