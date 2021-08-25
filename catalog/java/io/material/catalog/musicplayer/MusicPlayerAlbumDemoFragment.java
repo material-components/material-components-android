@@ -48,8 +48,6 @@ public class MusicPlayerAlbumDemoFragment extends DaggerFragment {
   public static final String TAG = "MusicPlayerAlbumDemoFragment";
   private static final String ALBUM_ID_KEY = "album_id_key";
 
-  private ViewGroup container;
-
   public static MusicPlayerAlbumDemoFragment newInstance(long albumId) {
     MusicPlayerAlbumDemoFragment fragment = new MusicPlayerAlbumDemoFragment();
     Bundle bundle = new Bundle();
@@ -69,23 +67,17 @@ public class MusicPlayerAlbumDemoFragment extends DaggerFragment {
 
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle bundle) {
-    container = view.findViewById(R.id.container);
+    ViewGroup container = view.findViewById(R.id.container);
     Toolbar toolbar = view.findViewById(R.id.toolbar);
-    AppBarLayout appBarLayout = view.findViewById(R.id.app_bar_layout);
-    FloatingActionButton fab = view.findViewById(R.id.fab);
     ImageView albumImage = view.findViewById(R.id.album_image);
     TextView albumTitle = view.findViewById(R.id.album_title);
     TextView albumArtist = view.findViewById(R.id.album_artist);
     RecyclerView songRecyclerView = view.findViewById(R.id.song_recycler_view);
+    setUpAlbumViews(container, toolbar, albumImage, albumTitle, albumArtist, songRecyclerView);
 
+    AppBarLayout appBarLayout = view.findViewById(R.id.app_bar_layout);
+    FloatingActionButton fab = view.findViewById(R.id.fab);
     View musicPlayerContainer = view.findViewById(R.id.music_player_container);
-
-    long albumId = getArguments().getLong(ALBUM_ID_KEY, 0L);
-    Album album = MusicData.getAlbumById(albumId);
-
-    // Set the transition name which matches the list/grid item to be transitioned from for
-    // the shared element transition.
-    ViewCompat.setTransitionName(container, album.title);
 
     appBarLayout.addOnOffsetChangedListener(
         (appBarLayout1, verticalOffset) -> {
@@ -99,21 +91,6 @@ public class MusicPlayerAlbumDemoFragment extends DaggerFragment {
             fab.show();
           }
         });
-
-    // Set up toolbar
-    ViewCompat.setElevation(toolbar, 0F);
-    toolbar.setNavigationOnClickListener(v -> getActivity().onBackPressed());
-
-    // Set up album info area
-    albumImage.setImageResource(album.cover);
-    albumTitle.setText(album.title);
-    albumArtist.setText(album.artist);
-
-    // Set up track list
-    songRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-    TrackAdapter adapter = new TrackAdapter();
-    songRecyclerView.setAdapter(adapter);
-    adapter.submitList(album.tracks);
 
     // Set up music player transitions
     Context context = requireContext();
@@ -136,6 +113,36 @@ public class MusicPlayerAlbumDemoFragment extends DaggerFragment {
           musicPlayerContainer.setVisibility(View.GONE);
           fab.setVisibility(View.VISIBLE);
         });
+  }
+
+  protected void setUpAlbumViews(
+      @NonNull ViewGroup container,
+      @NonNull Toolbar toolbar,
+      @NonNull ImageView albumImage,
+      @NonNull TextView albumTitle,
+      @NonNull TextView albumArtist,
+      @NonNull RecyclerView songRecyclerView) {
+    long albumId = getArguments().getLong(ALBUM_ID_KEY, 0L);
+    Album album = MusicData.getAlbumById(albumId);
+
+    // Set the transition name which matches the list/grid item to be transitioned from for
+    // the shared element transition.
+    ViewCompat.setTransitionName(container, album.title);
+
+    // Set up toolbar
+    ViewCompat.setElevation(toolbar, 0F);
+    toolbar.setNavigationOnClickListener(v -> getActivity().onBackPressed());
+
+    // Set up album info area
+    albumImage.setImageResource(album.cover);
+    albumTitle.setText(album.title);
+    albumArtist.setText(album.artist);
+
+    // Set up track list
+    songRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+    TrackAdapter adapter = new TrackAdapter();
+    songRecyclerView.setAdapter(adapter);
+    adapter.submitList(album.tracks);
   }
 
   private static MaterialContainerTransform createMusicPlayerTransform(
