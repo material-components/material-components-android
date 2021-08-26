@@ -89,7 +89,7 @@ android {
     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
     minSdkVersion 14
-    targetSdkVersion 29
+    targetSdkVersion 31
   }
 
   testOptions {
