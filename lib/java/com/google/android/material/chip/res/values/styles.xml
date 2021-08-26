@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2017 The Android Open Source Project
+  ~ Copyright (C) 2021 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -111,6 +111,7 @@
        chipIconEnabled - optional
        closeIconEnabled - never
        checkable - always
+       checkable - always
        checkedIconEnabled - optional -->
   <style name="Widget.MaterialComponents.Chip.Choice" parent="Base.Widget.MaterialComponents.Chip">
     <item name="android:checkable">true</item>
@@ -143,6 +144,194 @@
   <style name="TextAppearance.MaterialComponents.Chip" parent="TextAppearance.AppCompat">
     <item name="android:textColor">@color/mtrl_chip_text_color</item>
     <item name="android:textSize">@dimen/mtrl_chip_text_size</item>
+  </style>
+
+
+  <!-- M3 Chips -->
+
+  <style name="Base.Widget.Material3.Chip" parent="Base.Widget.MaterialComponents.Chip">
+    <item name="android:textAppearance">?attr/textAppearanceLabelLarge</item>
+    <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Material3.Chip</item>
+    <item name="android:textColor">@color/m3_chip_text_color</item>
+    <item name="closeIconTint">@color/m3_chip_text_color</item>
+    <item name="chipStrokeColor">@color/m3_chip_stroke_color</item>
+    <item name="chipSurfaceColor">?attr/colorSurface</item>
+    <item name="chipBackgroundColor">@color/m3_chip_background_color</item>
+    <item name="chipStrokeWidth">1dp</item>
+    <item name="rippleColor">@color/m3_chip_ripple_color</item>
+    <item name="checkedIcon">@drawable/ic_m3_chip_checked_circle</item>
+  </style>
+
+  <!-- Style for Input Chip: for user-entered information.
+       Input Chips are used to represent discrete pieces of information entered
+       by a user, such as filter options. They can have an avatar style icon or
+       no icon at all. For input chips with a system icon, use
+       Widget.Material3.Chip.Input.Icon, instead.
+
+       Input Chips should adhere to the following attributes:
+       chipIconVisible (for avatar style icons) - optional
+       closeIconVisible - optional
+       checkable - optional
+       checkedIconVisible - optional -->
+  <style name="Widget.Material3.Chip.Input" parent="Base.Widget.Material3.Chip">
+    <item name="android:checkable">true</item>
+
+    <item name="chipMinHeight">32dp</item>
+    <item name="chipIconSize">24dp</item>
+
+    <item name="chipStartPadding">4dp</item>
+    <item name="iconStartPadding">0dp</item>
+    <!-- The existence of a chip icon takes away padding before the text. -->
+    <item name="iconEndPadding">0dp</item>
+    <item name="textStartPadding">8dp</item>
+    <item name="textEndPadding">8dp</item>
+    <item name="closeIconStartPadding">0dp</item>
+    <item name="closeIconEndPadding">4dp</item>
+    <item name="chipEndPadding">4dp</item>
+  </style>
+
+  <!-- Style for input chips with system icons. For input chips with avatar
+       style icons, use Widget.Material3.Chip.Input, instead. -->
+  <style name="Widget.Material3.Chip.Input.Icon" parent="Widget.Material3.Chip.Input">
+    <item name="chipIconSize">18dp</item>
+    <item name="iconStartPadding">4dp</item>
+  </style>
+
+  <!-- Style for Suggestion Chips: for suggested information.
+       Suggestion Chips are used to help a user narrow their intent by
+       presenting dynamically generated suggestions like possible responses or
+       search filters. The shape of Suggestion Chips echoes the shape of cards
+       and search fields.
+
+       Suggestion Chips should adhere to the following attributes:
+       chipIconVisible - never
+       closeIconVisible - optional
+       checkable - optional
+       checkedIconVisible - optional -->
+  <style name="Widget.Material3.Chip.Suggestion" parent="Base.Widget.Material3.Chip">
+    <item name="android:checkable">true</item>
+
+    <item name="chipIconVisible">false</item>
+    <item name="checkedIconVisible">false</item>
+    <item name="closeIconVisible">false</item>
+
+    <item name="enforceTextAppearance">false</item>
+
+    <item name="chipMinHeight">32dp</item>
+
+    <item name="chipStartPadding">8dp</item>
+    <item name="iconStartPadding">0dp</item>
+    <!-- The existence of a chip icon takes away padding before the text. -->
+    <item name="iconEndPadding">-2dp</item>
+    <item name="textStartPadding">8dp</item>
+    <item name="textEndPadding">6dp</item>
+    <!-- The existence of a chip icon takes away padding after the text. -->
+    <item name="closeIconStartPadding">-2dp</item>
+    <item name="closeIconEndPadding">0dp</item>
+    <item name="chipEndPadding">10dp</item>
+  </style>
+
+  <!-- Style for Suggestion Chip, to be used when placed against a background
+       that needs protection, such as an image. -->
+  <style name="Widget.Material3.Chip.Suggestion.Elevated">
+    <item name="android:elevation" tools:ignore="NewApi">
+      @dimen/m3_chip_elevated_elevation
+    </item>
+    <item name="android:stateListAnimator" tools:ignore="NewApi">
+      @animator/m3_chip_state_list_anim
+    </item>
+    <item name="chipStrokeColor">@android:color/transparent</item>
+  </style>
+
+  <!-- Style for Assist Chips: each Assist Chip represents a set of automated
+       action steps spanning multiple apps to achieve a desired result.
+       Assist Chips use previously stored information to function as though the
+       user asked a human assistant to complete the action. For example, an
+       assist chip could allow a user to make a reservation for dinner directly
+       from a conversation window.
+
+       Assist Chips should adhere to the following attributes:
+       chipIconVisible - optional
+       closeIconVisible - never
+       checkable - never
+       checkedIconVisible - never -->
+  <style name="Widget.Material3.Chip.Assist" parent="Base.Widget.Material3.Chip">
+    <item name="android:checkable">false</item>
+    <item name="chipIconVisible">true</item>
+    <item name="checkedIconVisible">false</item>
+    <item name="closeIconVisible">false</item>
+
+    <item name="enforceTextAppearance">false</item>
+    <item name="android:textColor">@color/m3_chip_assist_text_color</item>
+
+    <item name="chipMinHeight">32dp</item>
+
+    <item name="chipStartPadding">8dp</item>
+    <item name="iconStartPadding">0dp</item>
+    <item name="iconEndPadding">0dp</item>
+    <item name="textStartPadding">8dp</item>
+    <item name="textEndPadding">8dp</item>
+    <item name="closeIconStartPadding">0dp</item>
+    <item name="closeIconEndPadding">0dp</item>
+    <item name="chipEndPadding">8dp</item>
+  </style>
+
+  <!-- Style for Assist Chip to be used against a background that needs
+       protection, such as an image. -->
+  <style name="Widget.Material3.Chip.Assist.Elevated">
+    <item name="android:elevation" tools:ignore="NewApi">
+      @dimen/m3_chip_elevated_elevation
+    </item>
+    <item name="android:stateListAnimator" tools:ignore="NewApi">
+      @animator/m3_chip_state_list_anim
+    </item>
+    <item name="chipStrokeColor">@android:color/transparent</item>
+  </style>
+
+  <style name="Widget.Material3.Chip.Filter" parent="Base.Widget.Material3.Chip">
+    <item name="android:checkable">true</item>
+    <item name="chipIconVisible">false</item>
+    <item name="closeIconVisible">false</item>
+
+    <item name="chipIconSize">18dp</item>
+    <item name="checkedIcon">@drawable/ic_m3_chip_check</item>
+    <item name="enforceTextAppearance">false</item>
+
+    <item name="chipMinHeight">32dp</item>
+
+    <item name="chipStartPadding">8dp</item>
+    <item name="iconStartPadding">0dp</item>
+    <!-- The existence of a chip icon takes away padding before the text. -->
+    <item name="iconEndPadding">-2dp</item>
+    <item name="textStartPadding">8dp</item>
+    <item name="textEndPadding">6dp</item>
+    <!-- The existence of a chip icon takes away padding after the text. -->
+    <item name="closeIconStartPadding">-2dp</item>
+    <item name="closeIconEndPadding">0dp</item>
+    <item name="chipEndPadding">10dp</item>
+  </style>
+
+  <!-- Style for Filter Chip to be used against a background that needs
+       protection, such as an image. -->
+  <style name="Widget.Material3.Chip.Filter.Elevated">
+    <item name="android:elevation" tools:ignore="NewApi">
+      @dimen/m3_chip_elevated_elevation</item>
+    <item name="android:stateListAnimator" tools:ignore="NewApi">
+      @animator/m3_chip_state_list_anim
+    </item>
+    <item name="chipStrokeColor">@android:color/transparent</item>
+  </style>
+
+  <!-- M3 ChipGroup styles -->
+
+  <style name="Widget.Material3.ChipGroup" parent="Widget.MaterialComponents.ChipGroup">
+    <item name="chipSpacingVertical">8dp</item>
+  </style>
+
+  <!-- ShapeAppearanceOverlay for M3 Chips -->
+
+  <style name="ShapeAppearanceOverlay.Material3.Chip" parent="">
+    <item name="cornerSize">8dp</item>
   </style>
 
 </resources>

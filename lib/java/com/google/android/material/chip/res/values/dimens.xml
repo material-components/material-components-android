@@ -19,4 +19,8 @@
   <dimen name="mtrl_chip_pressed_translation_z">3dp</dimen>
   <dimen name="mtrl_chip_text_size">14sp</dimen>
 
+  <dimen name="m3_chip_pressed_translation_z">3dp</dimen>
+  <dimen name="m3_chip_corner_size">8dp</dimen>
+  <dimen name="m3_chip_elevated_elevation">1dp</dimen>
+
 </resources>

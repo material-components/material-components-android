@@ -17,5 +17,6 @@
 <resources>
 
   <integer name="mtrl_chip_anim_duration">100</integer>
+  <integer name="m3_chip_anim_duration">100</integer>
 
 </resources>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright 2018 The Android Open Source Project
+  Copyright 2021 The Android Open Source Project
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -15,10 +15,16 @@
   limitations under the License.
   -->
 
-<com.google.android.material.chip.Chip
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/Widget.Material3.Chip.Filter"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
-    android:layout_marginEnd="16dp"/>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:height="24dp"
+    android:viewportHeight="24.0"
+    android:viewportWidth="24.0"
+    android:width="24dp"
+    tools:ignore="NewApi">
+  <path
+      android:fillColor="@color/m3_chip_text_color"
+      android:pathData="M9.189,15.939l-3.127,-3.128l-1.061,1.061l4.189,4.189l9,-9l-1.061,-1.061z"
+      android:strokeColor="#00000000"
+      android:strokeWidth="1"/>
+</vector>
