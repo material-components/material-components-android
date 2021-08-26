@@ -16,4 +16,5 @@
 
 <resources>
   <dimen name="material_divider_thickness">1dp</dimen>
+  <dimen name="m3_divider_heavy_thickness">8dp</dimen>
 </resources>

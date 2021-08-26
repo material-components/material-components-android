@@ -20,4 +20,14 @@
     <item name="dividerColor">@color/material_divider_color</item>
     <item name="dividerThickness">@dimen/material_divider_thickness</item>
   </style>
+
+  <!-- Default style for the Material3 divider. -->
+  <style name="Widget.Material3.MaterialDivider" parent="Widget.MaterialComponents.MaterialDivider">
+    <item name="dividerColor">?attr/colorOutline</item>
+  </style>
+
+  <!-- Heavy style for the Material3 divider. -->
+  <style name="Widget.Material3.MaterialDivider.Heavy">
+    <item name="dividerThickness">@dimen/m3_divider_heavy_thickness</item>
+  </style>
 </resources>

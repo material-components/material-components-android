@@ -100,7 +100,10 @@
     <item name="collapsingToolbarLayoutLargeSize">@dimen/m3_appbar_size_large</item>
 
     <!-- TODO: Populate popup menu styles here -->
-    <!-- TODO: Populate divider styles here -->
+
+    <!-- Divider styles. -->
+    <item name="materialDividerStyle">@style/Widget.Material3.MaterialDivider</item>
+    <item name="materialDividerHeavyStyle">@style/Widget.Material3.MaterialDivider.Heavy</item>
 
     <!-- Type styles. -->
     <item name="textAppearanceDisplayLarge">@style/TextAppearance.Material3.DisplayLarge</item>
@@ -229,7 +232,10 @@
     <item name="collapsingToolbarLayoutLargeSize">@dimen/m3_appbar_size_large</item>
 
     <!-- TODO: Populate popup menu styles here -->
-    <!-- TODO: Populate divider styles here -->
+
+    <!-- Divider styles. -->
+    <item name="materialDividerStyle">@style/Widget.Material3.MaterialDivider</item>
+    <item name="materialDividerHeavyStyle">@style/Widget.Material3.MaterialDivider.Heavy</item>
 
     <!-- Type styles. -->
     <item name="textAppearanceDisplayLarge">@style/TextAppearance.Material3.DisplayLarge</item>

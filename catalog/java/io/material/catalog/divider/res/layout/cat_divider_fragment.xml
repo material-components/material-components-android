@@ -34,7 +34,7 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_margin="16dp"
-          android:textAppearance="?attr/textAppearanceHeadline4"
+          android:textAppearance="?attr/textAppearanceHeadlineLarge"
           android:text="@string/cat_divider_title"/>
       <TextView
           android:layout_width="wrap_content"
@@ -52,7 +52,7 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_margin="16dp"
-          android:textAppearance="?attr/textAppearanceHeadline4"
+          android:textAppearance="?attr/textAppearanceHeadlineLarge"
           android:text="@string/cat_divider_inset_title"/>
       <TextView
           android:layout_width="wrap_content"
@@ -71,7 +71,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:textAppearance="?attr/textAppearanceHeadline4"
+        android:textAppearance="?attr/textAppearanceHeadlineLarge"
         android:text="@string/cat_divider_middle_title"/>
       <TextView
         android:layout_width="wrap_content"
@@ -86,6 +86,25 @@
         app:dividerInsetStart="32dp"
         app:dividerInsetEnd="32dp"
         android:layout_gravity="center_vertical"/>
+
+      <!-- Heavy divider. -->
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:textAppearance="?attr/textAppearanceHeadlineLarge"
+        android:text="@string/cat_divider_heavy_title"/>
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/cat_divider_heavy_subtitle"/>
+      <com.google.android.material.divider.MaterialDivider
+        style="?attr/materialDividerHeavyStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     </LinearLayout>
   </ScrollView>

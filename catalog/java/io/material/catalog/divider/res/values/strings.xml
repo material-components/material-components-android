@@ -48,6 +48,14 @@
     description="Middle divider's subtitle label [CHAR_LIMIT=NONE]">
     The middle divider (a divider with both start and end insets) is displayed below.
   </string>
+  <string name="cat_divider_heavy_title"
+    description="Heavy divider's title label [CHAR_LIMIT=20]">
+    Heavy divider
+  </string>
+  <string name="cat_divider_heavy_subtitle"
+    description="Heavy divider's subtitle label [CHAR_LIMIT=NONE]">
+    The heavy divider (a divider with a heavy stroke) is displayed below.
+  </string>
 
   <!-- MaterialDividerItemDecoration demo. -->
   <string name="cat_divider_item_decoration_demo_title"
