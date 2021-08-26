@@ -16,11 +16,11 @@
 -->
 <resources>
   <style name="Base.V24.Theme.Material3.Light.Dialog" parent="Base.V14.Theme.Material3.Light.Dialog">
-    <!-- TODO: Populate overriding android:contextPopupMenuStyle -->
+    <item name="android:contextPopupMenuStyle">@style/Widget.Material3.PopupMenu.ContextMenu</item>
   </style>
 
   <style name="Base.V24.Theme.Material3.Dark.Dialog" parent="Base.V14.Theme.Material3.Dark.Dialog">
-    <!-- TODO: Populate overriding android:contextPopupMenuStyle -->
+    <item name="android:contextPopupMenuStyle">@style/Widget.Material3.PopupMenu.ContextMenu</item>
   </style>
 
   <style name="Base.Theme.Material3.Light.Dialog" parent="Base.V24.Theme.Material3.Light.Dialog"/>

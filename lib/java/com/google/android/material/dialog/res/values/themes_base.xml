@@ -99,7 +99,11 @@
     <item name="collapsingToolbarLayoutMediumSize">@dimen/m3_appbar_size_medium</item>
     <item name="collapsingToolbarLayoutLargeSize">@dimen/m3_appbar_size_large</item>
 
-    <!-- TODO: Populate popup menu styles here -->
+    <!-- Popup Menu styles. -->
+    <item name="popupMenuBackground">@drawable/m3_popupmenu_background_overlay</item>
+    <item name="listPopupWindowStyle">@style/Widget.Material3.PopupMenu.ListPopupWindow</item>
+    <item name="popupMenuStyle">@style/Widget.Material3.PopupMenu</item>
+    <item name="actionOverflowMenuStyle">@style/Widget.Material3.PopupMenu.Overflow</item>
 
     <!-- Divider styles. -->
     <item name="materialDividerStyle">@style/Widget.Material3.MaterialDivider</item>
@@ -121,6 +125,10 @@
     <item name="textAppearanceLabelLarge">@style/TextAppearance.Material3.LabelLarge</item>
     <item name="textAppearanceLabelMedium">@style/TextAppearance.Material3.LabelMedium</item>
     <item name="textAppearanceLabelSmall">@style/TextAppearance.Material3.LabelSmall</item>
+
+    <!-- Menu type styles. -->
+    <item name="textAppearanceLargePopupMenu">?attr/textAppearanceBodyLarge</item>
+    <item name="textAppearanceSmallPopupMenu">?attr/textAppearanceBodyLarge</item>
 
     <!-- TODO: Populate font families here -->
 
@@ -231,7 +239,11 @@
     <item name="collapsingToolbarLayoutMediumSize">@dimen/m3_appbar_size_medium</item>
     <item name="collapsingToolbarLayoutLargeSize">@dimen/m3_appbar_size_large</item>
 
-    <!-- TODO: Populate popup menu styles here -->
+    <!-- Popup Menu styles. -->
+    <item name="popupMenuBackground">@drawable/m3_popupmenu_background_overlay</item>
+    <item name="listPopupWindowStyle">@style/Widget.Material3.PopupMenu.ListPopupWindow</item>
+    <item name="popupMenuStyle">@style/Widget.Material3.PopupMenu</item>
+    <item name="actionOverflowMenuStyle">@style/Widget.Material3.PopupMenu.Overflow</item>
 
     <!-- Divider styles. -->
     <item name="materialDividerStyle">@style/Widget.Material3.MaterialDivider</item>
@@ -253,6 +265,10 @@
     <item name="textAppearanceLabelLarge">@style/TextAppearance.Material3.LabelLarge</item>
     <item name="textAppearanceLabelMedium">@style/TextAppearance.Material3.LabelMedium</item>
     <item name="textAppearanceLabelSmall">@style/TextAppearance.Material3.LabelSmall</item>
+
+    <!-- Menu type styles. -->
+    <item name="textAppearanceLargePopupMenu">?attr/textAppearanceBodyLarge</item>
+    <item name="textAppearanceSmallPopupMenu">?attr/textAppearanceBodyLarge</item>
 
     <!-- TODO: Populate font families here -->
 
