@@ -18,6 +18,9 @@
   <!-- Style to use for MaterialDivider in the theme. -->
   <attr name="materialDividerStyle" type="reference"/>
 
+  <!-- Style to use for the heavy variation of the MaterialDivider in the theme. -->
+  <attr name="materialDividerHeavyStyle" type="reference"/>
+
   <declare-styleable name="MaterialDivider">
     <!-- Color of the divider. -->
     <attr name="dividerColor" format="color"/>
