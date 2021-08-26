@@ -51,4 +51,23 @@
   <string name="cat_theme_fab_mini_content_desc">Mini themed FAB</string>
   <string name="cat_extended_fab_content_desc">Extended FAB</string>
 
+  <!-- M3 FAB strings -->
+  <string name="m3_primary_fab_label">Primary</string>
+  <string name="m3_secondary_fab_label">Secondary</string>
+  <string name="m3_surface_fab_label">Surface</string>
+
+  <string name="m3_primary_fab_content_desc">Primary FAB</string>
+  <string name="m3_primary_fab_mini_content_desc">Primary mini FAB</string>
+  <string name="m3_secondary_fab_content_desc">Secondary FAB</string>
+  <string name="m3_secondary_fab_mini_content_desc">Secondary mini FAB</string>
+  <string name="m3_surface_fab_content_desc">Surface FAB</string>
+  <string name="m3_surface_fab_mini_content_desc">Surface mini FAB</string>
+  <string name="m3_theme_large_fab_content_desc">Theme large FAB</string>
+
+  <string name="m3_large_fab_demo_title">Large FAB</string>
+
+  <string name="m3_large_primary_fab_content_desc">Large primary FAB</string>
+  <string name="m3_large_secondary_fab_content_desc">Large secondary FAB</string>
+  <string name="m3_large_surface_fab_content_desc">Large surface FAB</string>
+
 </resources>

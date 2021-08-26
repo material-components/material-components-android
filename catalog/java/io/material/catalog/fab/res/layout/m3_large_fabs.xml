@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <!--
-  Copyright 2019 The Android Open Source Project
+  Copyright 2021 The Android Open Source Project
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -13,64 +14,63 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
-  -->
+-->
 
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="wrap_content"
   android:layout_height="wrap_content"
-  android:layout_gravity="center_vertical"
-  android:padding="8dp"
   android:clipToPadding="false"
-  android:columnCount="2"
-  android:rowCount="3">
+  android:padding="8dp"
+  tools:parentTag="android.widget.GridLayout">
 
   <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginRight="24dp"
-    android:layout_gravity="start|center"
-    android:text="@string/m3_primary_fab_label" />
-  <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-    style="?attr/extendedFloatingActionButtonPrimaryStyle"
+    android:layout_gravity="center"
+    android:text="@string/m3_primary_fab_label"/>
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    style="?attr/floatingActionButtonLargePrimaryStyle"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     android:layout_gravity="center"
-    android:contentDescription="@string/cat_extended_fab_content_desc"
-    android:text="@string/extended_fab_label"
-    app:icon="@drawable/ic_add_24px" />
+    android:contentDescription="@string/m3_large_primary_fab_content_desc"
+    app:srcCompat="@drawable/ic_add_24px" />
+  <Space/>
 
   <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginRight="24dp"
-    android:layout_gravity="start|center"
-    android:text="@string/m3_secondary_fab_label" />
-  <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-    style="?extendedFloatingActionButtonSecondaryStyle"
+    android:layout_gravity="center"
+    android:text="@string/m3_secondary_fab_label"/>
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    style="?attr/floatingActionButtonLargeSecondaryStyle"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     android:layout_gravity="center"
-    android:contentDescription="@string/cat_extended_fab_content_desc"
-    android:text="@string/extended_fab_label"
-    app:icon="@drawable/ic_add_24px"/>
+    android:contentDescription="@string/m3_large_secondary_fab_content_desc"
+    app:srcCompat="@drawable/ic_add_24px" />
+  <Space/>
 
   <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginRight="24dp"
-    android:layout_gravity="start|center"
-    android:text="@string/m3_surface_fab_label" />
-  <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-    style="?attr/extendedFloatingActionButtonSurfaceStyle"
+    android:layout_gravity="center"
+    android:text="@string/m3_surface_fab_label"/>
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    style="?attr/floatingActionButtonLargeSurfaceStyle"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     android:layout_gravity="center"
-    android:contentDescription="@string/cat_extended_fab_content_desc"
-    android:text="@string/extended_fab_label"
-    app:icon="@drawable/ic_add_24px" />
+    android:contentDescription="@string/m3_large_surface_fab_content_desc"
+    app:srcCompat="@drawable/ic_add_24px" />
+  <Space/>
 
-</GridLayout>
+</merge>
