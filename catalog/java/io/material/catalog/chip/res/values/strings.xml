@@ -38,10 +38,16 @@
 
   <string name="cat_chip_recyclerview_demo_title">Chip RecyclerView Demo</string>
 
-  <string name="cat_chip_entry_label">Entry</string>
+  <string name="cat_chip_input_label">Input</string>
   <string name="cat_chip_filter_label">Filter</string>
-  <string name="cat_chip_choice_label">Choice</string>
-  <string name="cat_chip_action_label">Action</string>
+  <string name="cat_chip_input_icon_label">Input Icon</string>
+  <string name="cat_chip_input_no_icon_label">Input no icon</string>
+  <string name="m3_chip_suggestion_label">Suggestion</string>
+  <string name="m3_chip_suggestion_elevated_label">Suggestion Elevated</string>
+  <string name="m3_chip_assist_label">Assist</string>
+  <string name="m3_chip_assist_elevated_label">Assist Elevated</string>
+  <string name="m3_chip_assist_no_icon_label">Assist without icon</string>
+  <string name="m3_chip_filter_elevated_label">Filter Elevated</string>
 
   <string name="cat_chip_edit_text">Standalone: [chip]</string>
   <string name="cat_chip_edit_text_token">[chip]</string>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright 2018 The Android Open Source Project
+  Copyright 2021 The Android Open Source Project
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -15,10 +15,14 @@
   limitations under the License.
   -->
 
-<com.google.android.material.chip.Chip
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/Widget.Material3.Chip.Filter"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
-    android:layout_marginEnd="16dp"/>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+  <!-- Disabled -->
+  <item android:alpha="@dimen/material_emphasis_disabled_background" android:color="?attr/colorOnSurface" android:state_enabled="false"/>
+
+  <!-- Selected -->
+  <item android:color="?attr/colorSecondaryContainer" android:state_selected="true"/>
+  <item android:color="?attr/colorSecondaryContainer" android:state_checked="true"/>
+
+  <!-- Not selected -->
+  <item android:color="?attr/colorSurface" />
+</selector>
