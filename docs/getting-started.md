@@ -197,7 +197,7 @@ theme, or you will encounter `ThemeEnforcement` errors:
 
 ### 5. Add a Material component to your app
 
-Take a look at our [documentation](https://www.material.io/components/android)
+Take a look at our [documentation](https://material.io/components?platform=android)
 for the full list of available Material components. Each component's page has
 specific instructions on how to implement it in your app.
 
