@@ -23,7 +23,7 @@
 
   <declare-styleable name="MaterialDivider">
     <!-- Color of the divider. -->
-    <attr name="dividerColor" format="color"/>
+    <attr name="dividerColor" format="color|reference"/>
     <!-- Thickness of the divider. -->
     <attr name="dividerThickness" format="dimension"/>
     <!-- Start indent of the divider. -->
