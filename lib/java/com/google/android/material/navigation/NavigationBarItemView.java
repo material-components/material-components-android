@@ -74,6 +74,7 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
   private static final int INVALID_ITEM_POSITION = -1;
   private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
 
+  private boolean initialized = false;
   private int itemPaddingTop;
   private int itemPaddingBottom;
   private float shiftAmount;
@@ -198,6 +199,22 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
       TooltipCompat.setTooltipText(this, tooltipText);
     }
     setVisibility(itemData.isVisible() ? View.VISIBLE : View.GONE);
+    this.initialized = true;
+  }
+
+  /**
+   * Remove state so this View can be reused.
+   *
+   * Item Views are held in a pool and reused when the number of menu items to be shown changes.
+   * This will be called when this View is released from the pool.
+   *
+   * @see NavigationBarMenuView#buildMenuView()
+   */
+  void clear() {
+    this.removeBadge();
+    this.itemData = null;
+    this.activeIndicatorProgress = 0;
+    this.initialized = false;
   }
 
   /**
@@ -305,7 +322,9 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
   /** If the active indicator is enabled, animate from it's current state to it's new state. */
   private void maybeAnimateActiveIndicatorToProgress(
       @FloatRange(from = 0F, to = 1F) final float newProgress) {
-    if (!activeIndicatorEnabled) {
+    // If the active indicator is disabled or this view is in the process of being initialized,
+    // jump the active indicator to it's final state.
+    if (!activeIndicatorEnabled || !initialized) {
       setActiveIndicatorProgress(newProgress, newProgress);
       return;
     }
@@ -628,14 +647,18 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
    * Set the padding applied to the icon/active indicator container from the top of the item view.
    */
   public void setItemPaddingTop(int paddingTop) {
-    this.itemPaddingTop = paddingTop;
-    refreshChecked();
+    if (this.itemPaddingTop != paddingTop) {
+      this.itemPaddingTop = paddingTop;
+      refreshChecked();
+    }
   }
 
   /** Set the padding applied to the labels from the bottom of the item view. */
   public void setItemPaddingBottom(int paddingBottom) {
-    this.itemPaddingBottom = paddingBottom;
-    refreshChecked();
+    if (this.itemPaddingBottom != paddingBottom) {
+      this.itemPaddingBottom = paddingBottom;
+      refreshChecked();
+    }
   }
 
   /** Set whether or not this item should show an active indicator when checked. */
