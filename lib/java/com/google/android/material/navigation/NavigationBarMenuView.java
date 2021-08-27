@@ -630,7 +630,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
       for (NavigationBarItemView item : buttons) {
         if (item != null) {
           itemPool.release(item);
-          item.removeBadge();
+          item.clear();
         }
       }
     }
