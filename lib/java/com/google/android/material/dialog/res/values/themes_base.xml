@@ -54,6 +54,7 @@
     <!-- Widget styles. -->
     <!-- TODO: Populate widget styles here -->
     <item name="appBarLayoutStyle">@style/Widget.Material3.AppBarLayout</item>
+    <item name="badgeStyle">@style/Widget.Material3.Badge</item>
     <item name="borderlessButtonStyle">@style/Widget.Material3.Button.TextButton</item>
     <item name="buttonBarButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog</item>
     <item name="bottomNavigationStyle">@style/Widget.Material3.BottomNavigationView</item>
@@ -194,6 +195,7 @@
     <!-- Widget styles. -->
     <!-- TODO: Populate widget styles here -->
     <item name="appBarLayoutStyle">@style/Widget.Material3.AppBarLayout</item>
+    <item name="badgeStyle">@style/Widget.Material3.Badge</item>
     <item name="borderlessButtonStyle">@style/Widget.Material3.Button.TextButton</item>
     <item name="buttonBarButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog</item>
     <item name="bottomNavigationStyle">@style/Widget.Material3.BottomNavigationView</item>
