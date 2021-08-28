@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright 2017 The Android Open Source Project
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,43 +13,63 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/coordinator"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/coordinator"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
 
   <com.google.android.material.appbar.AppBarLayout
-      android:id="@+id/appbarlayout"
-      android:layout_width="match_parent"
-      android:layout_height="@dimen/cat_topappbar_tall_toolbar_height"
-      android:fitsSystemWindows="true"
-      android:theme="@style/ThemeOverlay.Catalog.AppBarLayout">
+    android:id="@+id/appbarlayout"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/cat_topappbar_tall_toolbar_height"
+    android:fitsSystemWindows="true"
+    android:theme="@style/ThemeOverlay.Catalog.AppBarLayout">
 
     <com.google.android.material.appbar.CollapsingToolbarLayout
-        android:id="@+id/collapsingtoolbarlayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+      android:id="@+id/collapsingtoolbarlayout"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      app:collapsedTitleGravity="center"
+      app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
       <androidx.appcompat.widget.Toolbar
-          android:id="@+id/toolbar"
-          style="?attr/catalogToolbarWithCloseButtonStyle"
-          android:layout_width="match_parent"
-          android:layout_height="?attr/actionBarSize"
-          android:elevation="0dp"
-          app:layout_collapseMode="pin"
-          app:title="@string/cat_topappbar_collapsing_demo_toolbar_title"/>
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:elevation="0dp"
+        android:paddingLeft="0dp"
+        android:visibility="visible"
+        app:contentInsetEnd="6dp"
+        app:contentInsetLeft="6dp"
+        app:contentInsetRight="6dp"
+        app:contentInsetStart="0dp"
+        app:contentInsetStartWithNavigation="0dp"
+        app:layout_collapseMode="pin"
+        app:navigationIcon="@drawable/ic_delete_24dp" />
+
     </com.google.android.material.appbar.CollapsingToolbarLayout>
   </com.google.android.material.appbar.AppBarLayout>
 
   <androidx.core.widget.NestedScrollView
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="false"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <include layout="@layout/cat_topappbar_filler_text_view"/>
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
+
+      <include layout="@layout/cat_topappbar_filler_text_view" />
+
+      <EditText
+        android:id="@+id/edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    </LinearLayout>
   </androidx.core.widget.NestedScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
