@@ -9,14 +9,13 @@ path: /theming/color/
 
 # Color Theming
 
-The Material Design color theming system can be used to create a color scheme
+The Material 3 color theming system can be used to create a color scheme
 that reflects your brand or style.
 
-The Material Design color theming system uses an organized approach to applying
-color to your UI. In this system, two theme colors are selected to express
-different parts of a UI: a primary color and a secondary color. Material
-components use these theme colors and their variations to style their individual
-backgrounds, text, and more.
+The Material 3 color theming system uses an organized approach to apply colors
+to your UI. In this system, theme colors are selected to express different parts
+of a UI. Material components use these theme colors and their variations to
+style their individual backgrounds, text, and more.
 
 ## Design & API Documentation
 
@@ -25,48 +24,267 @@ backgrounds, text, and more.
 
 ## Using The Color Theming System
 
-All Material Design components use a `Widget.MaterialComponents` style, and
-these styles reference color attributes from the Material Design theme
-(`Theme.MaterialComponents`). So, it is easy to re-color attributes across your
-app by simply modifying the color attributes in your theme. These attributes
-are:
+All Material 3 components use a `Widget.Material3` style, and these styles
+reference color attributes from the Material 3 theme (`Theme.Material3`).
+So, it is easy to customize those color attributes across your app by simply
+overriding them in your theme. We provide three accent color groups (Primary,
+Secondary, Tertiary), each with 4-5 color roles that you can customize to
+represent your brand color:
 
-Attribute Name          | Description                        | Default Value
------------------------ | ---------------------------------- | -------------
-`colorPrimary`          | The color displayed most frequently across your app’s screens and components. This color should pass accessibilty guidelines for text / iconography when drawn on top of the surface or background color. | #6200EE
-`colorPrimaryVariant`   | A tonal variation of the primary color. | #3700B3
-`colorOnPrimary`        | A color that passes accessibility guidelines for text/iconography when drawn on top of the primary color. | #FFFFFF
-`colorSecondary`        | The secondary branding color for the app, usually an accented complement to the primary branding color. | #03DAC6
-`colorSecondaryVariant` | A tonal variation of the secondary color. | #018786
-`colorOnSecondary`      | A color that passes accessibility guidelines for text/iconography when drawn on top of the secondary  color. | #000000
+<!-- TODO: Populate the color table with more info by scripts. -->
 
-By changing these six color attributes, you can easily change the style of all
+Design Color Name      | Android Attribute
+---------------------- | -------------------------
+Primary                | colorPrimary
+On Primary             | colorOnPrimary
+Primary Container      | colorPrimaryContainer
+On Primary Container   | colorOnPrimaryContainer
+Primary Inverse        | colorPrimaryInverse
+Secondary              | colorSecondary
+On Secondary           | colorOnSecondary
+Secondary Container    | colorSecondaryContainer
+On Secondary Container | colorOnSecondaryContainer
+Tertiary               | colorTertiary
+On Tertiary            | colorOnTertiary
+Tertiary Container     | colorTertiaryContainer
+On Tertiary Container  | colorOnTertiaryContainer
+
+By changing these color attributes, you can easily change the styles of all
 the Material components to which your theme is applied.
 
 The Material Design color theming system provides additional colors which don't
 represent your brand, but define your UI and ensures accessible color
 combinations. These additional color attributes are as follows:
 
-Attribute Name           |Description                                                                                                 |Default Value
--------------------------|------------------------------------------------------------------------------------------------------------|-------------
-`android:colorBackground`|The background color appears behind scrollable content.                                                     |#FFFFFF
-`colorOnBackground`      |A color that passes accessibility guidelines for text/iconography when drawn on top of the background color.|#000000
-`colorSurface`           |Surface colors affect surfaces of components, such as cards, sheets, and menus.                             |#FFFFFF
-`colorOnSurface`         |A color that passes accessibility guidelines for text/iconography when drawn on top of the surface color.   |#000000
-`colorError`             |Error color indicates errors states, for components such as text fields                                     |#B00020
-`colorOnError`           |A color that passes accessibility guidelines for text/iconography when drawn on top of the error color.     |#FFFFFF
+<!-- TODO: Populate the color table with more info by scripts. -->
 
-Note: We are reusing several existing attributes -- `colorPrimary`,
-`colorSecondary`, `android:colorBackground`, and `colorError`.
+Design Color Name      | Android Attribute
+---------------------- | -------------------------
+Error                  | colorError
+On Error               | colorOnError
+Error Container        | colorErrorContainer
+On Error Container     | colorOnErrorContainer
+Outline                | colorOutline
+Background             | android:colorBackground
+On Background          | colorOnBackground
+Surface                | colorSurface
+On Surface             | colorOnSurface
+Surface Variant        | colorSurfaceVariant
+On Surface Variant     | colorOnSurfaceVariant
+Inverse Surface        | colorSurfaceInverse
+Inverse On Surface     | colorOnSurfaceInverse
 
-To select primary and secondary colors, and generate variations of each, use the
-[Material palette generator](https://material.io/go/tools-color) or 2014
-Material Design palettes.
+## Using Surface Colors
 
-## Defining your app colors
+Material 3 involves using primary colored elevation overlays to present visual
+hierarchy with different elevations in both light and dark themes. Material 3
+themes enable this by default with setting `?attr/elevationOverlayColor` to
+`?attr/colorPrimary`.
 
-When creating your app colors, that will be used in the theme, do not use the
-same name as the color slot:
+In order to facilitate some orchestration around the elevation overlays, we have
+the following theme attributes:
+
+Attribute Name              |Description                                                                          |Default Value
+----------------------------|-------------------------------------------------------------------------------------|-------------
+`elevationOverlayEnabled`   |Whether the elevation overlay functionality is enabled.                              |`true`
+`elevationOverlayColor`     |The color used for the elevation overlays, applied at an alpha based on elevation.   |`colorPrimary`
+
+If inheriting from the `Theme.Material3` theme or a descendant, you most likely
+do not have to set these attributes yourself because the Material themes already
+set up the above defaults.
+
+The elevation overlays will be applied upon surface colors and create various
+tonal variations of surface colors. Within the Material 3 color palette, we have
+five predefined surface tonal variations (Surface1-5) which are used as the
+default surface colors (by applying different elevations) of different
+Material 3 components. However, these surface tonal colors are **NOT**
+implemented as color resources but their actual color values are calculated
+*on the fly* with the given `?attr/elevationOverlayColor`, as mentioned above.
+
+In a practical scenario, you have three ways to include those tonal surface
+colors in your app:
+
+##### Material Design Components
+
+The easiest way is using Material Design Components with built-in support of
+tonal surface colors/elevation overlays. You can customize surface colors of
+those components by changing their elevation.
+
+The following is a list of Material components that support elevation overlays.
+Those components has `colorSurface` set as the default background color and can
+be elevated:
+
+*   [Top App Bar](../components/TopAppBar.md)
+*   [Bottom App Bar](../components/BottomAppBar.md)
+*   [Bottom Navigation](../components/BottomNavigation.md)
+*   [Button](../components/Button.md)
+*   [Floating Action Button](../components/FloatingActionButton.md)
+*   [Chip](../components/Chip.md)
+*   [Tabs](../components/Tabs.md)
+*   [Card](../components/Card.md)
+*   [Dialog](../components/Dialog.md)
+*   [Menu](../components/Menu.md)
+*   [Bottom Sheet](../components/BottomSheet.md)
+*   [Navigation Drawer](../components/NavigationDrawer.md)
+*   [Switch](../components/Switch.md)
+*   [Date Picker](../components/DatePicker.md)
+*   [Time Picker](../components/TimePicker.md)
+
+##### SurfaceColors enums
+
+If using Material Design Components is not an option in your use case, you may
+want to consider getting those tonal surface colors on the fly, by using the
+convenient enums we provide in Material Library. For example, if you want to get
+the color hex value of Surface1, you can do:
+
+```
+int colorSurface1 = SurfaceColors.SURFACE_1.getColor(context);
+```
+
+This will return the calculated tonal surface color corresponding to the
+Surface1 definition and your `?attr/elevationOverlayColor` setting in your
+themes.
+
+##### MaterialShapeDrawable or ElevationOverlayProvider (*advanced*)
+
+If you have a more complicated use case than the above ones, you can check if
+`com.google.android.material.shape.MaterialShapeDrawable`
+or
+`com.google.android.material.elevation.ElevationOverlayProvider`
+would serve your needs. These two classes provide a set of APIs to help you
+calculate and render blended colors according to different background colors and
+elevations, with the same elevation overlay formula we are using across
+the Material libraries. Note that we suggest you use them carefully to ensure
+a consistent look and feel of your app.
+
+## Using dynamic colors
+
+Starting from Android S, the framework provides the ability to support dynamic
+colors in your UI based on the user's wallpaper or color choice on the device.
+
+To apply dynamic colors, the Material 3 library provides 3 theme overlays to
+be used upon the base Material 3 themes:
+
+-   `ThemeOverlay.Material3.DynamicColors.Light`
+-   `ThemeOverlay.Material3.DynamicColors.Dark`
+-   `ThemeOverlay.Material3.DynamicColors.DayNight` (select day/night mode
+    automatically.)
+
+To make implementing dynamic color solutions easier, the Material 3 library
+provides a helper class to apply dynamic colors:
+`com.google.android.material.color.DynamicColors`.
+There are several ways to use this helper class according to different
+scenarios:
+
+##### Apply dynamic colors to all activities in the app
+
+In your application class’ `onCreate()` method, call:
+
+```
+DynamicColors.applyToActivitiesIfAvailable(this);
+```
+
+This will register an `ActivityLifeCycleCallbacks` to your application and will
+attempt to apply the dynamic color theme overlay specified by
+`R.attr.dynamicColorThemeOverlay` in your app/activity theme in the
+`onActivityPreCreated()` callback method, if the app is running on Android S+.
+By default `R.attr.dynamicColorThemeOverlay` will be
+`ThemeOverlay.Material3.DynamicColors.Light/Dark` if you are using Material 3
+themes.
+
+You can also have finer control over applying the theme overlay by providing a
+precondition when calling the method:
+
+```
+DynamicColors.applyToActivitiesIfAvailable(this, (activity, themeResId) -> {
+  // ...implement your own logic here. Return `true` if dynamic colors should be applied.
+});
+```
+
+Or provide your own customized dynamic color theme overlays, likely inheriting
+from the Material3 theme overlays above, by doing:
+
+```
+DynamicColors.applyToActivitiesIfAvailable(this, R.style.ThemeOverlay_MyApp_DynamicColors_DayNight);
+```
+
+Note that if you are applying your own non-dynamic theme overlays to override
+Material colors in certain activities, fragments, layouts, etc., the dynamic
+colors will be overwritten by your theme overlays as well because dynamic colors
+are applied *before* activities are created. If that’s not the desired behavior
+you want, you will need to either stop overriding Material colors in your theme
+overlays or customize them with a proper dynamic color definition.
+
+##### Apply dynamic colors to a specific activity
+
+You can also opt to only apply dynamic colors to a few specific activities, by
+calling the below method in your activities’ `onCreate()` method (or before you
+inflate anything from it):
+
+```
+DynamicColors.applyIfAvailable(this);
+```
+
+If the app is running on Android S+, dynamic colors will be applied to the
+activity. You can also apply with a custom theme overlay or with a precondition
+as depicted above in the application section.
+
+##### Apply dynamic colors to a specific fragment/view
+
+To apply dynamic colors only to a few of the views in an activity is less
+straightforward. If you have to do that, the easiest solution would be creating
+a themed context to create the view. We provide a helper method for this
+purpose:
+
+```
+context = DynamicColors.wrapContextIfAvailable(context);
+```
+
+This method will return a context with the dynamic color theme overlay applied,
+if dynamic colors are available on the device.
+
+Note that no matter which approach you follow, you will have to have M3 base
+themes (e.g.,`Theme.Material3.DayNight.NoActionBar`) applied first to make
+dynamic color theme overlays work, becaue they use all of the same color theme
+attributes.
+
+## Custom Colors
+
+Material 3 uses purple-ish colors as the default accent colors if dynamic colors
+are not available. If you need different brand colors in your app, you may want
+to define custom colors for your theme. Keep in mind that the default Material 3
+styles generally use colors in the following combinations:
+
+| Container Color           | Content Color                               |
+| ------------------------- | ------------------------------------------- |
+| Surface / Surface Variant | On Surface / On Surface Variant / Primary / |
+:                           : Secondary / Error                           :
+| Primary                   | On Primary                                  |
+| Primary Container         | On Primary Container                        |
+| Secondary                 | On Secondary                                |
+| Secondary Container       | On Secondary Container                      |
+| Tertiary                  | On Tertiary                                 |
+| Tertiary Container        | On Tertiary Container                       |
+
+So if changing one of the above colors, you may want to change their relevant
+colors as well to maintain the visual consistency and the contrast requirement
+of Material components.
+
+These color theme attributes can be customized in your theme that inherits from
+one of the "baseline" `Theme.Material3.*` themes, and dynamic color theme
+overlays (`ThemeOverlay.Material3.DynamicColors.*`), can be applied on top
+of your customized "baseline" theme.
+
+**[Important]** Be careful to maintain the same luminance level when creating
+custom colors so the contrast requirement won't be broken. For example, since
+the default Primary color in light theme has a luminance level of 40, it would
+be best to use a luminance level of 40 with your custom Primary color as well,
+in order to avoid accidentally breaking the contrast requirement in certain
+components.
+
+#### Defining custom colors
+
+When creating your app colors, do not use the same name as the color slot:
 
 ```xml
 <resources>
@@ -84,24 +302,19 @@ Instead use literal names relevant to the RGB value. Eg:
 </resources>
 ```
 
-## Theming an Individual Component
+#### Theming an Individual Component
 
-All Material Design components use a `Widget.MaterialComponents` style, and
-these styles reference color attributes from the Material Design theme
-(`Theme.MaterialComponents`). So, it is easy to re-color attributes across your
-app by simply modifying the color attributes in your theme.
-
-However, if you want to change the color of just one instance of a component
-without tweaking theme-level attributes, this can be done by creating a new
-component style that extends from a `Widget.MaterialComponents` style.
+If you want to change the color of just one instance of a component without
+tweaking theme-level attributes, this can be done by creating a new component
+style that extends from a `Widget.Material3` style.
 
 For example, if you want to change MaterialButton so that it uses
-`colorSecondary` for its background tint rather than `colorPrimary`, all you
+`colorSecondary` for its background tint rather than the default color, all you
 need to do is define your own button style that extends from a Material Design
 style and set the mapping yourself:
 
 ```xml
-<style name="Widget.MyApp.Button" parent="Widget.MaterialComponents.Button">
+<style name="Widget.MyApp.Button" parent="Widget.Material3.Button">
   <item name="backgroundTint">?attr/colorSecondary</item>
 </style>
 ```
@@ -109,14 +322,14 @@ style and set the mapping yourself:
 You would then apply the `Widget.MyApp.Button` style to any buttons you want to
 have this alternate style.
 
-## Theming All Instances of One Component
+#### Theming All Instances of One Component
 
 If, however, you want to change the default styles for **all** instances of a
 component, e.g. MaterialButton, this is possible by modifying the
 `materialButtonStyle` attribute in your theme.
 
 ```xml
-<style name="Theme.MyApp" parent="Theme.MaterialComponents.Light">
+<style name="Theme.MyApp" parent="Theme.Material3.Light.NoActionBar">
   ...
   <item name="materialButtonStyle">@style/Widget.MyApp.Button</item>
   ...
@@ -127,7 +340,7 @@ This will set the default style of any MaterialButtons in your app to
 `Widget.MyApp.Button`. Similar default style attributes exist for most other
 components, e.g. `tabStyle`, `chipStyle`, `textInputStyle`, and so on.
 
-## Theme Attribute Mapping
+#### Theme Attribute Mapping
 
 All MDC-Android components have been updated to use the theme attributes
 described above, when applicable.
