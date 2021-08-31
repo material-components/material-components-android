@@ -19,7 +19,7 @@
   <style name="TextAppearance.Material3.DisplayLarge" parent="TextAppearance.MaterialComponents.Headline2">
     <item name="fontFamily">@string/m3_sys_typescale_display_large_font</item>
     <item name="android:fontFamily">@string/m3_sys_typescale_display_large_font</item>
-    <item name="android:textStyle">@integer/m3_sys_typescale_display_large_text_style</item>
+    <item name="android:textStyle">normal</item>
     <item name="android:textAllCaps">@bool/m3_sys_typescale_display_large_text_all_caps</item>
     <item name="android:textSize">@dimen/m3_sys_typescale_display_large_text_size</item>
     <item name="android:letterSpacing">@dimen/m3_sys_typescale_display_large_letter_spacing</item>
@@ -28,7 +28,7 @@
   <style name="TextAppearance.Material3.DisplayMedium" parent="TextAppearance.MaterialComponents.Headline3">
     <item name="fontFamily">@string/m3_sys_typescale_display_medium_font</item>
     <item name="android:fontFamily">@string/m3_sys_typescale_display_medium_font</item>
-    <item name="android:textStyle">@integer/m3_sys_typescale_display_medium_text_style</item>
+    <item name="android:textStyle">normal</item>
     <item name="android:textAllCaps">@bool/m3_sys_typescale_display_medium_text_all_caps</item>
     <item name="android:textSize">@dimen/m3_sys_typescale_display_medium_text_size</item>
     <item name="android:letterSpacing">@dimen/m3_sys_typescale_display_medium_letter_spacing</item>
@@ -37,7 +37,7 @@
   <style name="TextAppearance.Material3.DisplaySmall" parent="TextAppearance.MaterialComponents.Headline4">
     <item name="fontFamily">@string/m3_sys_typescale_display_small_font</item>
     <item name="android:fontFamily">@string/m3_sys_typescale_display_small_font</item>
-    <item name="android:textStyle">@integer/m3_sys_typescale_display_small_text_style</item>
+    <item name="android:textStyle">normal</item>
     <item name="android:textAllCaps">@bool/m3_sys_typescale_display_small_text_all_caps</item>
     <item name="android:textSize">@dimen/m3_sys_typescale_display_small_text_size</item>
     <item name="android:letterSpacing">@dimen/m3_sys_typescale_display_small_letter_spacing</item>
@@ -46,7 +46,7 @@
   <style name="TextAppearance.Material3.HeadlineLarge" parent="TextAppearance.MaterialComponents.Headline4">
     <item name="fontFamily">@string/m3_sys_typescale_headline_large_font</item>
     <item name="android:fontFamily">@string/m3_sys_typescale_headline_large_font</item>
-    <item name="android:textStyle">@integer/m3_sys_typescale_headline_large_text_style</item>
+    <item name="android:textStyle">normal</item>
     <item name="android:textAllCaps">@bool/m3_sys_typescale_headline_large_text_all_caps</item>
     <item name="android:textSize">@dimen/m3_sys_typescale_headline_large_text_size</item>
     <item name="android:letterSpacing">@dimen/m3_sys_typescale_headline_large_letter_spacing</item>
@@ -55,7 +55,7 @@
   <style name="TextAppearance.Material3.HeadlineMedium" parent="TextAppearance.MaterialComponents.Headline5">
     <item name="fontFamily">@string/m3_sys_typescale_headline_medium_font</item>
     <item name="android:fontFamily">@string/m3_sys_typescale_headline_medium_font</item>
-    <item name="android:textStyle">@integer/m3_sys_typescale_headline_medium_text_style</item>
+    <item name="android:textStyle">normal</item>
     <item name="android:textAllCaps">@bool/m3_sys_typescale_headline_medium_text_all_caps</item>
     <item name="android:textSize">@dimen/m3_sys_typescale_headline_medium_text_size</item>
     <item name="android:letterSpacing">@dimen/m3_sys_typescale_headline_medium_letter_spacing</item>
@@ -64,7 +64,7 @@
   <style name="TextAppearance.Material3.HeadlineSmall" parent="TextAppearance.MaterialComponents.Headline6">
     <item name="fontFamily">@string/m3_sys_typescale_headline_small_font</item>
     <item name="android:fontFamily">@string/m3_sys_typescale_headline_small_font</item>
-    <item name="android:textStyle">@integer/m3_sys_typescale_headline_small_text_style</item>
+    <item name="android:textStyle">normal</item>
     <item name="android:textAllCaps">@bool/m3_sys_typescale_headline_small_text_all_caps</item>
     <item name="android:textSize">@dimen/m3_sys_typescale_headline_small_text_size</item>
     <item name="android:letterSpacing">@dimen/m3_sys_typescale_headline_small_letter_spacing</item>
@@ -73,7 +73,7 @@
   <style name="TextAppearance.Material3.TitleLarge" parent="TextAppearance.MaterialComponents.Headline6">
     <item name="fontFamily">@string/m3_sys_typescale_title_large_font</item>
     <item name="android:fontFamily">@string/m3_sys_typescale_title_large_font</item>
-    <item name="android:textStyle">@integer/m3_sys_typescale_title_large_text_style</item>
+    <item name="android:textStyle">normal</item>
     <item name="android:textAllCaps">@bool/m3_sys_typescale_title_large_text_all_caps</item>
     <item name="android:textSize">@dimen/m3_sys_typescale_title_large_text_size</item>
     <item name="android:letterSpacing">@dimen/m3_sys_typescale_title_large_letter_spacing</item>
@@ -82,7 +82,7 @@
   <style name="Base.TextAppearance.Material3.TitleMedium" parent="TextAppearance.MaterialComponents.Subtitle1">
     <item name="fontFamily">@string/m3_sys_typescale_title_medium_font</item>
     <item name="android:fontFamily">@string/m3_sys_typescale_title_medium_font</item>
-    <item name="android:textStyle">@integer/m3_sys_typescale_title_medium_text_style</item>
+    <item name="android:textStyle">bold</item>
     <item name="android:textAllCaps">@bool/m3_sys_typescale_title_medium_text_all_caps</item>
     <item name="android:textSize">@dimen/m3_sys_typescale_title_medium_text_size</item>
     <item name="android:letterSpacing">@dimen/m3_sys_typescale_title_medium_letter_spacing</item>
@@ -92,7 +92,7 @@
   <style name="Base.TextAppearance.Material3.TitleSmall" parent="TextAppearance.MaterialComponents.Subtitle2">
     <item name="fontFamily">@string/m3_sys_typescale_title_small_font</item>
     <item name="android:fontFamily">@string/m3_sys_typescale_title_small_font</item>
-    <item name="android:textStyle">@integer/m3_sys_typescale_title_small_text_style</item>
+    <item name="android:textStyle">bold</item>
     <item name="android:textAllCaps">@bool/m3_sys_typescale_title_small_text_all_caps</item>
     <item name="android:textSize">@dimen/m3_sys_typescale_title_small_text_size</item>
     <item name="android:letterSpacing">@dimen/m3_sys_typescale_title_small_letter_spacing</item>
@@ -102,7 +102,7 @@
   <style name="TextAppearance.Material3.BodyLarge" parent="TextAppearance.MaterialComponents.Body1">
     <item name="fontFamily">@string/m3_sys_typescale_body_large_font</item>
     <item name="android:fontFamily">@string/m3_sys_typescale_body_large_font</item>
-    <item name="android:textStyle">@integer/m3_sys_typescale_body_large_text_style</item>
+    <item name="android:textStyle">normal</item>
     <item name="android:textAllCaps">@bool/m3_sys_typescale_body_large_text_all_caps</item>
     <item name="android:textSize">@dimen/m3_sys_typescale_body_large_text_size</item>
     <item name="android:letterSpacing">@dimen/m3_sys_typescale_body_large_letter_spacing</item>
@@ -111,7 +111,7 @@
   <style name="TextAppearance.Material3.BodyMedium" parent="TextAppearance.MaterialComponents.Body2">
     <item name="fontFamily">@string/m3_sys_typescale_body_medium_font</item>
     <item name="android:fontFamily">@string/m3_sys_typescale_body_medium_font</item>
-    <item name="android:textStyle">@integer/m3_sys_typescale_body_medium_text_style</item>
+    <item name="android:textStyle">normal</item>
     <item name="android:textAllCaps">@bool/m3_sys_typescale_body_medium_text_all_caps</item>
     <item name="android:textSize">@dimen/m3_sys_typescale_body_medium_text_size</item>
     <item name="android:letterSpacing">@dimen/m3_sys_typescale_body_medium_letter_spacing</item>
@@ -120,7 +120,7 @@
   <style name="TextAppearance.Material3.BodySmall" parent="TextAppearance.MaterialComponents.Caption">
     <item name="fontFamily">@string/m3_sys_typescale_body_small_font</item>
     <item name="android:fontFamily">@string/m3_sys_typescale_body_small_font</item>
-    <item name="android:textStyle">@integer/m3_sys_typescale_body_small_text_style</item>
+    <item name="android:textStyle">normal</item>
     <item name="android:textAllCaps">@bool/m3_sys_typescale_body_small_text_all_caps</item>
     <item name="android:textSize">@dimen/m3_sys_typescale_body_small_text_size</item>
     <item name="android:letterSpacing">@dimen/m3_sys_typescale_body_small_letter_spacing</item>
@@ -129,7 +129,7 @@
   <style name="Base.TextAppearance.Material3.LabelLarge" parent="TextAppearance.MaterialComponents.Body2">
     <item name="fontFamily">@string/m3_sys_typescale_label_large_font</item>
     <item name="android:fontFamily">@string/m3_sys_typescale_label_large_font</item>
-    <item name="android:textStyle">@integer/m3_sys_typescale_label_large_text_style</item>
+    <item name="android:textStyle">bold</item>
     <item name="android:textAllCaps">@bool/m3_sys_typescale_label_large_text_all_caps</item>
     <item name="android:textSize">@dimen/m3_sys_typescale_label_large_text_size</item>
     <item name="android:letterSpacing">@dimen/m3_sys_typescale_label_large_letter_spacing</item>
@@ -139,7 +139,7 @@
   <style name="Base.TextAppearance.Material3.LabelMedium" parent="TextAppearance.MaterialComponents.Caption">
     <item name="fontFamily">@string/m3_sys_typescale_label_medium_font</item>
     <item name="android:fontFamily">@string/m3_sys_typescale_label_medium_font</item>
-    <item name="android:textStyle">@integer/m3_sys_typescale_label_medium_text_style</item>
+    <item name="android:textStyle">bold</item>
     <item name="android:textAllCaps">@bool/m3_sys_typescale_label_medium_text_all_caps</item>
     <item name="android:textSize">@dimen/m3_sys_typescale_label_medium_text_size</item>
     <item name="android:letterSpacing">@dimen/m3_sys_typescale_label_medium_letter_spacing</item>
@@ -149,7 +149,7 @@
   <style name="Base.TextAppearance.Material3.LabelSmall" parent="TextAppearance.MaterialComponents.Caption">
     <item name="fontFamily">@string/m3_sys_typescale_label_small_font</item>
     <item name="android:fontFamily">@string/m3_sys_typescale_label_small_font</item>
-    <item name="android:textStyle">@integer/m3_sys_typescale_label_small_text_style</item>
+    <item name="android:textStyle">bold</item>
     <item name="android:textAllCaps">@bool/m3_sys_typescale_label_small_text_all_caps</item>
     <item name="android:textSize">@dimen/m3_sys_typescale_label_small_text_size</item>
     <item name="android:letterSpacing">@dimen/m3_sys_typescale_label_small_letter_spacing</item>

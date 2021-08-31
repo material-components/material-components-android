@@ -41,7 +41,6 @@
     <item name="android:textStyle">normal</item>
   </style>
 
-
   <!-- Deprecated. -->
 
   <style name="TextAppearance.MaterialComponents.Headline6" parent="Base.TextAppearance.MaterialComponents.Headline6">
