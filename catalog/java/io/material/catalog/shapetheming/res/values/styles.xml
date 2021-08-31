@@ -61,7 +61,7 @@
     <item name="shapeAppearanceOverlay">@null</item>
   </style>
 
-  <style name="Widget.Shrine.Chip" parent="Widget.MaterialComponents.Chip.Choice">
+  <style name="Widget.Shrine.Chip" parent="Widget.Material3.Chip.Filter">
     <item name="chipCornerRadius">@null</item>
     <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Shrine.Chip</item>
   </style>
@@ -137,7 +137,7 @@
     <item name="cornerSize">@null</item>
   </style>
 
-  <style name="Widget.Fortnightly.Chip" parent="Widget.MaterialComponents.Chip.Choice">
+  <style name="Widget.Fortnightly.Chip" parent="Widget.Material3.Chip.Filter">
     <item name="shapeAppearanceOverlay">@null</item>
     <item name="chipCornerRadius">@null</item>
   </style>
@@ -201,7 +201,7 @@
     <item name="cornerSize">20dp</item>
   </style>
 
-  <style name="Widget.Crane.Chip" parent="Widget.MaterialComponents.Chip.Choice">
+  <style name="Widget.Crane.Chip" parent="Widget.Material3.Chip.Filter">
     <item name="shapeAppearanceOverlay">@null</item>
     <item name="chipCornerRadius">@null</item>
   </style>

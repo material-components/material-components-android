@@ -60,6 +60,9 @@
     <item name="bottomNavigationStyle">@style/Widget.Material3.BottomNavigationView</item>
     <item name="buttonBarButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog</item>
     <item name="checkboxStyle">@style/Widget.Material3.CompoundButton.CheckBox</item>
+    <item name="chipStyle">@style/Widget.Material3.Chip.Assist</item>
+    <item name="chipGroupStyle">@style/Widget.Material3.ChipGroup</item>
+    <item name="chipStandaloneStyle">@style/Widget.Material3.Chip.Input</item>
     <item name="collapsingToolbarLayoutStyle">@style/Widget.Material3.CollapsingToolbar</item>
     <item name="collapsingToolbarLayoutMediumStyle">@style/Widget.Material3.CollapsingToolbar.Medium</item>
     <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.Material3.CollapsingToolbar.Large</item>
@@ -202,6 +205,9 @@
     <item name="bottomNavigationStyle">@style/Widget.Material3.BottomNavigationView</item>
     <item name="buttonBarButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog</item>
     <item name="checkboxStyle">@style/Widget.Material3.CompoundButton.CheckBox</item>
+    <item name="chipStyle">@style/Widget.Material3.Chip.Assist</item>
+    <item name="chipGroupStyle">@style/Widget.Material3.ChipGroup</item>
+    <item name="chipStandaloneStyle">@style/Widget.Material3.Chip.Input</item>
     <item name="collapsingToolbarLayoutStyle">@style/Widget.Material3.CollapsingToolbar</item>
     <item name="collapsingToolbarLayoutMediumStyle">@style/Widget.Material3.CollapsingToolbar.Medium</item>
     <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.Material3.CollapsingToolbar.Large</item>
