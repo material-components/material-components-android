@@ -123,7 +123,7 @@ public class FontMainDemoFragment extends DemoFragment {
         stylesArray.getValue(i, value);
         int attribute = value.data;
 
-        // 2. Get the style from the attribute: @style/TextAppearance.MaterialComponents.BodyLarge
+        // 2. Get the style from the attribute: @style/TextAppearance.Material3.BodyLarge
         TypedArray a = context.obtainStyledAttributes(new int[] {attribute});
         int style = a.getResourceId(0, 0);
         a.recycle();
