@@ -111,7 +111,6 @@
        chipIconEnabled - optional
        closeIconEnabled - never
        checkable - always
-       checkable - always
        checkedIconEnabled - optional -->
   <style name="Widget.MaterialComponents.Chip.Choice" parent="Base.Widget.MaterialComponents.Chip">
     <item name="android:checkable">true</item>
