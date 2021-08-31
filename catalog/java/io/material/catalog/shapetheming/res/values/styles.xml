@@ -42,22 +42,22 @@
     <item name="textInputStyle">@style/Widget.Shrine.TextInputLayout</item>
   </style>
 
-  <style name="ShapeAppearance.Shrine.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+  <style name="ShapeAppearance.Shrine.SmallComponent" parent="ShapeAppearance.Material3.SmallComponent">
     <item name="cornerFamily">cut</item>
     <item name="cornerSize">4dp</item>
   </style>
 
-  <style name="ShapeAppearance.Shrine.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+  <style name="ShapeAppearance.Shrine.MediumComponent" parent="ShapeAppearance.Material3.MediumComponent">
     <item name="cornerFamily">cut</item>
     <item name="cornerSize">8dp</item>
   </style>
 
-  <style name="ShapeAppearance.Shrine.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+  <style name="ShapeAppearance.Shrine.LargeComponent" parent="ShapeAppearance.Material3.LargeComponent">
     <item name="cornerFamily">cut</item>
     <item name="cornerSize">24dp</item>
   </style>
 
-  <style name="Widget.Shrine.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
+  <style name="Widget.Shrine.FloatingActionButton" parent="Widget.Material3.FloatingActionButton.Primary">
     <item name="shapeAppearanceOverlay">@null</item>
   </style>
 
@@ -114,22 +114,22 @@
     <item name="textInputStyle">@style/Widget.Fortnightly.TextInputLayout</item>
   </style>
 
-  <style name="ShapeAppearance.Fortnightly.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+  <style name="ShapeAppearance.Fortnightly.SmallComponent" parent="ShapeAppearance.Material3.SmallComponent">
     <item name="cornerFamily">cut</item>
     <item name="cornerSize">0dp</item>
   </style>
 
-  <style name="ShapeAppearance.Fortnightly.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+  <style name="ShapeAppearance.Fortnightly.MediumComponent" parent="ShapeAppearance.Material3.MediumComponent">
     <item name="cornerFamily">cut</item>
     <item name="cornerSize">0dp</item>
   </style>
 
-  <style name="ShapeAppearance.Fortnightly.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+  <style name="ShapeAppearance.Fortnightly.LargeComponent" parent="ShapeAppearance.Material3.LargeComponent">
     <item name="cornerFamily">cut</item>
     <item name="cornerSize">0dp</item>
   </style>
 
-  <style name="Widget.Fortnightly.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
+  <style name="Widget.Fortnightly.FloatingActionButton" parent="Widget.Material3.FloatingActionButton.Primary">
     <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Fortnightly.FloatingActionButton</item>
   </style>
 
@@ -186,17 +186,17 @@
     <item name="textInputStyle">@style/Widget.Crane.TextInputLayout</item>
   </style>
 
-  <style name="ShapeAppearance.Crane.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+  <style name="ShapeAppearance.Crane.SmallComponent" parent="ShapeAppearance.Material3.SmallComponent">
     <item name="cornerFamily">rounded</item>
     <item name="cornerSize">4dp</item>
   </style>
 
-  <style name="ShapeAppearance.Crane.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+  <style name="ShapeAppearance.Crane.MediumComponent" parent="ShapeAppearance.Material3.MediumComponent">
     <item name="cornerFamily">rounded</item>
     <item name="cornerSize">16dp</item>
   </style>
 
-  <style name="ShapeAppearance.Crane.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+  <style name="ShapeAppearance.Crane.LargeComponent" parent="ShapeAppearance.Material3.LargeComponent">
     <item name="cornerFamily">rounded</item>
     <item name="cornerSize">20dp</item>
   </style>
