@@ -63,6 +63,7 @@
     <item name="chipStyle">@style/Widget.Material3.Chip.Assist</item>
     <item name="chipGroupStyle">@style/Widget.Material3.ChipGroup</item>
     <item name="chipStandaloneStyle">@style/Widget.Material3.Chip.Input</item>
+    <item name="circularProgressIndicatorStyle">@style/Widget.Material3.CircularProgressIndicator</item>
     <item name="collapsingToolbarLayoutStyle">@style/Widget.Material3.CollapsingToolbar</item>
     <item name="collapsingToolbarLayoutMediumStyle">@style/Widget.Material3.CollapsingToolbar.Medium</item>
     <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.Material3.CollapsingToolbar.Large</item>
@@ -78,6 +79,7 @@
     <item name="floatingActionButtonLargePrimaryStyle">@style/Widget.Material3.FloatingActionButton.Large.Primary</item>
     <item name="floatingActionButtonLargeSecondaryStyle">@style/Widget.Material3.FloatingActionButton.Large.Secondary</item>
     <item name="floatingActionButtonLargeSurfaceStyle">@style/Widget.Material3.FloatingActionButton.Large.Surface</item>
+    <item name="linearProgressIndicatorStyle">@style/Widget.Material3.LinearProgressIndicator</item>
     <item name="materialButtonOutlinedStyle">@style/Widget.Material3.Button.OutlinedButton</item>
     <item name="materialButtonStyle">@style/Widget.Material3.Button</item>
     <item name="materialCardViewStyle">?attr/materialCardViewOutlinedStyle</item>
@@ -208,6 +210,7 @@
     <item name="chipStyle">@style/Widget.Material3.Chip.Assist</item>
     <item name="chipGroupStyle">@style/Widget.Material3.ChipGroup</item>
     <item name="chipStandaloneStyle">@style/Widget.Material3.Chip.Input</item>
+    <item name="circularProgressIndicatorStyle">@style/Widget.Material3.CircularProgressIndicator</item>
     <item name="collapsingToolbarLayoutStyle">@style/Widget.Material3.CollapsingToolbar</item>
     <item name="collapsingToolbarLayoutMediumStyle">@style/Widget.Material3.CollapsingToolbar.Medium</item>
     <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.Material3.CollapsingToolbar.Large</item>
@@ -223,6 +226,7 @@
     <item name="floatingActionButtonLargePrimaryStyle">@style/Widget.Material3.FloatingActionButton.Large.Primary</item>
     <item name="floatingActionButtonLargeSecondaryStyle">@style/Widget.Material3.FloatingActionButton.Large.Secondary</item>
     <item name="floatingActionButtonLargeSurfaceStyle">@style/Widget.Material3.FloatingActionButton.Large.Surface</item>
+    <item name="linearProgressIndicatorStyle">@style/Widget.Material3.LinearProgressIndicator</item>
     <item name="materialButtonOutlinedStyle">@style/Widget.Material3.Button.OutlinedButton</item>
     <item name="materialButtonStyle">@style/Widget.Material3.Button</item>
     <item name="materialCardViewStyle">?attr/materialCardViewOutlinedStyle</item>

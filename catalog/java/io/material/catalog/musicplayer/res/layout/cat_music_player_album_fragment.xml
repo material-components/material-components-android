@@ -73,7 +73,7 @@
 
           <com.google.android.material.progressindicator.LinearProgressIndicator
             android:id="@+id/music_progress_indicator"
-            style="@style/Widget.MaterialComponents.LinearProgressIndicator"
+            style="@style/Widget.Material3.LinearProgressIndicator"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

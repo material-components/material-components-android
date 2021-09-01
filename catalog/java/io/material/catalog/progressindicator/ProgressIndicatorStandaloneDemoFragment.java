@@ -71,6 +71,6 @@ public class ProgressIndicatorStandaloneDemoFragment extends DemoFragment {
 
   @StyleRes
   protected int getSpecStyleResId() {
-    return R.style.Widget_MaterialComponents_CircularProgressIndicator_ExtraSmall;
+    return R.style.Widget_Material3_CircularProgressIndicator_ExtraSmall;
   }
 }
