@@ -113,10 +113,20 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
   }
 
   /**
-   * Perform an animation that will slide the child from it's current position to be totally on the
+   * Performs an animation that will slide the child from it's current position to be totally on the
    * screen.
    */
   public void slideUp(@NonNull V child) {
+    slideUp(child, /*animate=*/ true);
+  }
+
+  /**
+   * Slides the child with or without animation from its current position to be totally on the
+   * screen.
+   *
+   * @param animate {@code true} to slide with animation.
+   */
+  public void slideUp(@NonNull V child, boolean animate) {
     if (isScrolledUp()) {
       return;
     }
@@ -126,8 +136,16 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
       child.clearAnimation();
     }
     currentState = STATE_SCROLLED_UP;
-    animateChildTo(
-        child, 0, ENTER_ANIMATION_DURATION, AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR);
+    int targetTranslationY = 0;
+    if (animate) {
+      animateChildTo(
+          child,
+          targetTranslationY,
+          ENTER_ANIMATION_DURATION,
+          AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR);
+    } else {
+      child.setTranslationY(targetTranslationY);
+    }
   }
 
   /** Returns true if the current state is scrolled down. */
@@ -136,10 +154,20 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
   }
 
   /**
-   * Perform an animation that will slide the child from it's current position to be totally off the
-   * screen.
+   * Performs an animation that will slide the child from it's current position to be totally off
+   * the screen.
    */
   public void slideDown(@NonNull V child) {
+    slideDown(child, /*animate=*/ true);
+  }
+
+  /**
+   * Slides the child with or without animation from its current position to be totally off the
+   * screen.
+   *
+   * @param animate {@code true} to slide with animation.
+   */
+  public void slideDown(@NonNull V child, boolean animate) {
     if (isScrolledDown()) {
       return;
     }
@@ -149,11 +177,16 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
       child.clearAnimation();
     }
     currentState = STATE_SCROLLED_DOWN;
-    animateChildTo(
-        child,
-        height + additionalHiddenOffsetY,
-        EXIT_ANIMATION_DURATION,
-        AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR);
+    int targetTranslationY = height + additionalHiddenOffsetY;
+    if (animate) {
+      animateChildTo(
+          child,
+          targetTranslationY,
+          EXIT_ANIMATION_DURATION,
+          AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR);
+    } else {
+      child.setTranslationY(targetTranslationY);
+    }
   }
 
   private void animateChildTo(
