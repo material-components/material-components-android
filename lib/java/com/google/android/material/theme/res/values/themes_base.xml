@@ -98,7 +98,9 @@
     <item name="materialCardViewElevatedStyle">@style/Widget.Material3.CardView.Elevated</item>
     <item name="radioButtonStyle">@style/Widget.Material3.CompoundButton.RadioButton</item>
     <item name="sliderStyle">@style/Widget.Material3.Slider</item>
+    <item name="snackbarStyle">@style/Widget.Material3.Snackbar</item>
     <item name="snackbarButtonStyle">@style/Widget.Material3.Button.TextButton.Snackbar</item>
+    <item name="snackbarTextViewStyle">@style/Widget.Material3.Snackbar.TextView</item>
     <item name="switchStyle">@style/Widget.Material3.CompoundButton.Switch</item>
     <item name="tabStyle">@style/Widget.Material3.TabLayout</item>
     <item name="tabSecondaryStyle">@style/Widget.Material3.TabLayout.Secondary</item>
@@ -256,7 +258,9 @@
     <item name="materialCardViewElevatedStyle">@style/Widget.Material3.CardView.Elevated</item>
     <item name="radioButtonStyle">@style/Widget.Material3.CompoundButton.RadioButton</item>
     <item name="sliderStyle">@style/Widget.Material3.Slider</item>
+    <item name="snackbarStyle">@style/Widget.Material3.Snackbar</item>
     <item name="snackbarButtonStyle">@style/Widget.Material3.Button.TextButton.Snackbar</item>
+    <item name="snackbarTextViewStyle">@style/Widget.Material3.Snackbar.TextView</item>
     <item name="switchStyle">@style/Widget.Material3.CompoundButton.Switch</item>
     <item name="tabStyle">@style/Widget.Material3.TabLayout</item>
     <item name="tabSecondaryStyle">@style/Widget.Material3.TabLayout.Secondary</item>
