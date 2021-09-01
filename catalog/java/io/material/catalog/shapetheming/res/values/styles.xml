@@ -73,11 +73,11 @@
 
   <style name="Widget.Shrine.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox"/>
 
-   <style name="Theme.Shrine.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+   <style name="Theme.Shrine.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
     <item name="bottomSheetStyle">@style/Widget.Shrine.BottomSheet.Modal</item>
   </style>
 
-  <style name="Widget.Shrine.BottomSheet.Modal" parent="Widget.MaterialComponents.BottomSheet.Modal">
+  <style name="Widget.Shrine.BottomSheet.Modal" parent="Widget.Material3.BottomSheet.Modal">
     <item name="android:background">?android:attr/colorBackground</item>
     <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Shrine.BottomSheet</item>
     <item name="backgroundTint">?attr/colorPrimary</item>
@@ -144,11 +144,11 @@
 
   <style name="Widget.Fortnightly.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox"/>
 
-  <style name="Theme.Fortnightly.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+  <style name="Theme.Fortnightly.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
     <item name="bottomSheetStyle">@style/Widget.Fortnightly.BottomSheet.Modal</item>
   </style>
 
-  <style name="Widget.Fortnightly.BottomSheet.Modal" parent="Widget.MaterialComponents.BottomSheet.Modal">
+  <style name="Widget.Fortnightly.BottomSheet.Modal" parent="Widget.Material3.BottomSheet.Modal">
     <item name="shapeAppearance">?attr/shapeAppearanceLargeComponent</item>
     <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Fortnightly.BottomSheet</item>
     <item name="backgroundTint">?attr/colorPrimary</item>
@@ -208,11 +208,11 @@
 
   <style name="Widget.Crane.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox"/>
 
-  <style name="Theme.Crane.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+  <style name="Theme.Crane.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
     <item name="bottomSheetStyle">@style/Widget.Crane.BottomSheet.Modal</item>
   </style>
 
-   <style name="Widget.Crane.BottomSheet.Modal" parent="Widget.MaterialComponents.BottomSheet.Modal">
+   <style name="Widget.Crane.BottomSheet.Modal" parent="Widget.Material3.BottomSheet.Modal">
     <item name="shapeAppearance">?attr/shapeAppearanceLargeComponent</item>
     <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Crane.BottomSheet</item>
     <item name="backgroundTint">?attr/colorPrimary</item>

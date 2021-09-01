@@ -17,7 +17,6 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/bottom_drawer_2"
-    style="@style/Widget.MaterialComponents.BottomSheet"
     android:layout_width="match_parent"
     android:layout_height="600dp">
     <TextView
