@@ -20,16 +20,12 @@
     <item name="catalogToolbarStyle">@style/Widget.Catalog.Toolbar</item>
     <item name="catalogToolbarWithCloseButtonStyle">@style/Widget.Catalog.Toolbar.WithCloseButton</item>
     <item name="textInputSignInStyle">@style/Widget.Material3.TextInputLayout.OutlinedBox</item>
-    <item name="bottomSheetDialogTheme">@style/ThemeOverlay.Catalog.BottomSheetDialog</item>
     <item name="windowActionModeOverlay">true</item>
   </style>
 
   <!-- A theme which sets the status bar color to transparent -->
   <style name="Theme.Catalog.TransparentStatus">
     <item name="android:statusBarColor" tools:targetApi="21">@android:color/transparent</item>
-  </style>
-
-  <style name="ThemeOverlay.Catalog.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
   </style>
 
 </resources>

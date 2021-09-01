@@ -22,4 +22,7 @@
 
   <dimen name="material_bottom_sheet_max_width">640dp</dimen>
 
+  <dimen name="m3_bottom_sheet_elevation">@dimen/m3_sys_elevation_level2</dimen>
+  <dimen name="m3_bottom_sheet_modal_elevation">@dimen/m3_sys_elevation_level3</dimen>
+
 </resources>
