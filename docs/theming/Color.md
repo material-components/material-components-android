@@ -31,23 +31,25 @@ overriding them in your theme. We provide three accent color groups (Primary,
 Secondary, Tertiary), each with 4-5 color roles that you can customize to
 represent your brand color:
 
-<!-- TODO: Populate the color table with more info by scripts. -->
+<!-- Auto-generated accent color table starts. Do not edit below or remove this comment. -->
 
-Design Color Name      | Android Attribute
----------------------- | -------------------------
-Primary                | colorPrimary
-On Primary             | colorOnPrimary
-Primary Container      | colorPrimaryContainer
-On Primary Container   | colorOnPrimaryContainer
-Primary Inverse        | colorPrimaryInverse
-Secondary              | colorSecondary
-On Secondary           | colorOnSecondary
-Secondary Container    | colorSecondaryContainer
-On Secondary Container | colorOnSecondaryContainer
-Tertiary               | colorTertiary
-On Tertiary            | colorOnTertiary
-Tertiary Container     | colorTertiaryContainer
-On Tertiary Container  | colorOnTertiaryContainer
+Design Color Name      | Android Attribute         | Light Theme Baseline (Dynamic) Color | Dark Theme Baseline (Dynamic) Color
+---------------------- | ------------------------- | ------------------------------------ | -----------------------------------
+Primary                | colorPrimary              | #ff6750a4</br>(system_accent1_600)   | #ffd0bcff</br>(system_accent1_200)
+On Primary             | colorOnPrimary            | white</br>(system_accent1_0)         | #ff381e72</br>(system_accent1_800)
+Primary Container      | colorPrimaryContainer     | #ffeaddff</br>(system_accent1_100)   | #ff4f378b</br>(system_accent1_700)
+On Primary Container   | colorOnPrimaryContainer   | #ff21005d</br>(system_accent1_900)   | #ffeaddff</br>(system_accent1_100)
+Inverse Primary        | colorPrimaryInverse       | #ffd0bcff</br>(system_accent1_200)   | #ff6750a4</br>(system_accent1_600)
+Secondary              | colorSecondary            | #ff625b71</br>(system_accent2_600)   | #ffccc2dc</br>(system_accent2_200)
+On Secondary           | colorOnSecondary          | white</br>(system_accent2_0)         | #ff332d41</br>(system_accent2_800)
+Secondary Container    | colorSecondaryContainer   | #ffe8def8</br>(system_accent2_100)   | #ff4a4458</br>(system_accent2_700)
+On Secondary Container | colorOnSecondaryContainer | #ff1d192b</br>(system_accent2_900)   | #ffe8def8</br>(system_accent2_100)
+Tertiary               | colorTertiary             | #ff7d5260</br>(system_accent3_600)   | #ffefb8c8</br>(system_accent3_200)
+On Tertiary            | colorOnTertiary           | white</br>(system_accent3_0)         | #ff492532</br>(system_accent3_800)
+Tertiary Container     | colorTertiaryContainer    | #ffffd8e4</br>(system_accent3_100)   | #ff633b48</br>(system_accent3_700)
+On Tertiary Container  | colorOnTertiaryContainer  | #ff31111d</br>(system_accent3_900)   | #ffffd8e4</br>(system_accent3_100)
+
+<!-- Auto-generated accent color table ends. Do not edit below or remove this comment. -->
 
 By changing these color attributes, you can easily change the styles of all
 the Material components to which your theme is applied.
@@ -56,23 +58,25 @@ The Material Design color theming system provides additional colors which don't
 represent your brand, but define your UI and ensures accessible color
 combinations. These additional color attributes are as follows:
 
-<!-- TODO: Populate the color table with more info by scripts. -->
+<!-- Auto-generated additional color table starts. Do not edit below or remove this comment. -->
 
-Design Color Name      | Android Attribute
----------------------- | -------------------------
-Error                  | colorError
-On Error               | colorOnError
-Error Container        | colorErrorContainer
-On Error Container     | colorOnErrorContainer
-Outline                | colorOutline
-Background             | android:colorBackground
-On Background          | colorOnBackground
-Surface                | colorSurface
-On Surface             | colorOnSurface
-Surface Variant        | colorSurfaceVariant
-On Surface Variant     | colorOnSurfaceVariant
-Inverse Surface        | colorSurfaceInverse
-Inverse On Surface     | colorOnSurfaceInverse
+Design Color Name  | Android Attribute       | Light Theme Baseline (Dynamic) Color | Dark Theme Baseline (Dynamic) Color
+------------------ | ----------------------- | ------------------------------------ | -----------------------------------
+Error              | colorError              | #ffb3261e</br>(Same)                 | #fff2b8b5</br>(Same)
+On Error           | colorOnError            | white</br>(Same)                     | #ff601410</br>(Same)
+Error Container    | colorErrorContainer     | #fff9dedc</br>(Same)                 | #ff8c1d18</br>(Same)
+On Error Container | colorOnErrorContainer   | #ff410e0b</br>(Same)                 | #fff2b8b5</br>(Same)
+Outline            | colorOutline            | #ff79747e</br>(system_neutral2_500)  | #ff938f99</br>(system_neutral2_400)
+Background         | android:colorBackground | #fffffbfe</br>(system_neutral1_10)   | #ff1c1b1f</br>(system_neutral1_900)
+On Background      | colorOnBackground       | #ff1c1b1f</br>(system_neutral1_900)  | #ffe6e1e5</br>(system_neutral1_100)
+Surface            | colorSurface            | #fffffbfe</br>(system_neutral1_10)   | #ff1c1b1f</br>(system_neutral1_900)
+On Surface         | colorOnSurface          | #ff1c1b1f</br>(system_neutral1_900)  | #ffe6e1e5</br>(system_neutral1_100)
+Surface Variant    | colorSurfaceVariant     | #ffe7e0ec</br>(system_neutral2_100)  | #ff49454f</br>(system_neutral2_700)
+On Surface Variant | colorOnSurfaceVariant   | #ff49454f</br>(system_neutral2_700)  | #ffcac4d0</br>(system_neutral2_200)
+Inverse Surface    | colorSurfaceInverse     | #ff313033</br>(system_neutral1_800)  | #ffe6e1e5</br>(system_neutral1_100)
+Inverse On Surface | colorOnSurfaceInverse   | #fff4eff4</br>(system_neutral1_50)   | #ff313033</br>(system_neutral1_800)
+
+<!-- Auto-generated additional color table ends. Do not edit below or remove this comment. -->
 
 ## Using Surface Colors
 
