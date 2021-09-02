@@ -2570,45 +2570,45 @@ public class TextInputLayout extends LinearLayout {
   }
 
   private void updateEndLayoutVisible() {
-    int endIconViewVis = endIconView.getVisibility();
-    if (!hasEndIcon() && endIconViewVis != GONE) {
+    int endIconViewVisibility = endIconView.getVisibility();
+    if (!hasEndIcon() && endIconViewVisibility != GONE) {
       endIconView.setVisibility(GONE);
-      endIconViewVis = GONE;
+      endIconViewVisibility = GONE;
     }
 
-    int endIconFrameVis = endIconFrame.getVisibility();
+    int endIconFrameVisibility = endIconFrame.getVisibility();
     // sync with endIconView to reduce tree depth
-    if (endIconViewVis != endIconFrameVis) {
-      endIconFrame.setVisibility(endIconViewVis);
-      endIconFrameVis = endIconViewVis;
+    if (endIconViewVisibility != endIconFrameVisibility) {
+      endIconFrame.setVisibility(endIconViewVisibility);
+      endIconFrameVisibility = endIconViewVisibility;
     }
 
-    final int suffixVis = suffixTextView.getVisibility();
-    final int errorVis = errorIconView.getVisibility();
-    final int endLayoutVis = endLayout.getVisibility();
+    final int suffixVisibility = suffixTextView.getVisibility();
+    final int errorVisibility = errorIconView.getVisibility();
+    final int endLayoutVisibility = endLayout.getVisibility();
 
-    if (endIconFrameVis == VISIBLE || suffixVis == VISIBLE || errorVis == VISIBLE) {
-      if (endLayoutVis != VISIBLE) {
+    if (endIconFrameVisibility == VISIBLE || suffixVisibility == VISIBLE || errorVisibility == VISIBLE) {
+      if (endLayoutVisibility != VISIBLE) {
         endLayout.setVisibility(VISIBLE);
       }
     } else {
-      if (endLayoutVis != GONE) {
+      if (endLayoutVisibility != GONE) {
         endLayout.setVisibility(GONE);
       }
     }
   }
 
   private void updateStartLayoutVisible() {
-    final int startIconVis = startIconView.getVisibility();
-    final int prefixVis = prefixTextView.getVisibility();
-    final int startLayoutVis = startLayout.getVisibility();
+    final int startIconVisibility = startIconView.getVisibility();
+    final int prefixVisibility = prefixTextView.getVisibility();
+    final int startLayoutVisibility = startLayout.getVisibility();
 
-    if (startIconVis == VISIBLE || prefixVis == VISIBLE) {
-      if (startLayoutVis != VISIBLE) {
+    if (startIconVisibility == VISIBLE || prefixVisibility == VISIBLE) {
+      if (startLayoutVisibility != VISIBLE) {
         startLayout.setVisibility(VISIBLE);
       }
     } else {
-      if (startLayoutVis != GONE) {
+      if (startLayoutVisibility != GONE) {
         startLayout.setVisibility(GONE);
       }
     }
