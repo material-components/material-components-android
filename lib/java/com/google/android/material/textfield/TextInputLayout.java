@@ -794,20 +794,16 @@ public class TextInputLayout extends LinearLayout {
     ViewCompat.setAccessibilityLiveRegion(
         suffixTextView, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
 
-    setHelperTextEnabled(helperTextEnabled);
-    setHelperText(helperText);
-    setHelperTextTextAppearance(helperTextTextAppearance);
-    setErrorEnabled(errorEnabled);
-    setErrorTextAppearance(errorTextAppearance);
     setErrorContentDescription(errorContentDescription);
-    setCounterTextAppearance(counterTextAppearance);
+
     setCounterOverflowTextAppearance(counterOverflowTextAppearance);
-    setPlaceholderText(placeholderText);
+    setHelperTextTextAppearance(helperTextTextAppearance);
+    setErrorTextAppearance(errorTextAppearance);
+    setCounterTextAppearance(counterTextAppearance);
     setPlaceholderTextAppearance(placeholderTextAppearance);
-    setPrefixText(prefixText);
     setPrefixTextAppearance(prefixTextAppearance);
-    setSuffixText(suffixText);
     setSuffixTextAppearance(suffixTextAppearance);
+
 
     if (a.hasValue(R.styleable.TextInputLayout_errorTextColor)) {
       setErrorTextColor(a.getColorStateList(R.styleable.TextInputLayout_errorTextColor));
@@ -835,7 +831,6 @@ public class TextInputLayout extends LinearLayout {
     if (a.hasValue(R.styleable.TextInputLayout_suffixTextColor)) {
       setSuffixTextColor(a.getColorStateList(R.styleable.TextInputLayout_suffixTextColor));
     }
-    setCounterEnabled(counterEnabled);
 
     setEnabled(a.getBoolean(R.styleable.TextInputLayout_android_enabled, true));
 
@@ -851,6 +846,7 @@ public class TextInputLayout extends LinearLayout {
       ViewCompat.setImportantForAutofill(this, View.IMPORTANT_FOR_AUTOFILL_YES);
     }
 
+
     startLayout.addView(startIconView);
     startLayout.addView(prefixTextView);
 
@@ -864,6 +860,16 @@ public class TextInputLayout extends LinearLayout {
     inputFrame.addView(endLayout);
 
     addView(inputFrame);
+
+    setHelperTextEnabled(helperTextEnabled);
+    setErrorEnabled(errorEnabled);
+    setCounterEnabled(counterEnabled);
+
+    setHelperText(helperText);
+    setPlaceholderText(placeholderText);
+    setPrefixText(prefixText);
+    setSuffixText(suffixText);
+
   }
 
   @Override

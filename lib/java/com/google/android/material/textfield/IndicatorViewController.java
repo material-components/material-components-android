@@ -237,7 +237,7 @@ final class IndicatorViewController {
               captionDisplayed = captionToShow;
               IndicatorViewController.this.captionAnimator = null;
               if (captionViewToHide != null) {
-                captionViewToHide.setVisibility(View.INVISIBLE);
+                captionViewToHide.setVisibility(View.GONE);
                 if (captionToHide == CAPTION_STATE_ERROR && errorView != null) {
                   errorView.setText(null);
                 }
@@ -282,7 +282,7 @@ final class IndicatorViewController {
     if (captionToHide != CAPTION_STATE_NONE) {
       TextView captionViewDisplayed = getCaptionViewFromDisplayState(captionToHide);
       if (captionViewDisplayed != null) {
-        captionViewDisplayed.setVisibility(View.INVISIBLE);
+        captionViewDisplayed.setVisibility(View.GONE);
         // Only set the caption text to null if it's the error.
         if (captionToHide == CAPTION_STATE_ERROR) {
           captionViewDisplayed.setText(null);
@@ -404,8 +404,8 @@ final class IndicatorViewController {
     }
 
     if (isCaptionView(index)) {
-      captionArea.setVisibility(VISIBLE);
       captionArea.addView(indicator);
+      captionArea.setVisibility(VISIBLE);
     } else {
       LinearLayout.LayoutParams indicatorAreaLp =
           new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -456,7 +456,7 @@ final class IndicatorViewController {
       setErrorTextAppearance(errorTextAppearance);
       setErrorViewTextColor(errorViewTextColor);
       setErrorContentDescription(errorViewContentDescription);
-      errorView.setVisibility(View.INVISIBLE);
+      errorView.setVisibility(View.GONE);
       ViewCompat.setAccessibilityLiveRegion(errorView, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
       addIndicator(errorView, ERROR_INDEX);
     } else {
@@ -495,7 +495,7 @@ final class IndicatorViewController {
       if (typeface != null) {
         helperTextView.setTypeface(typeface);
       }
-      helperTextView.setVisibility(View.INVISIBLE);
+      helperTextView.setVisibility(View.GONE);
       ViewCompat.setAccessibilityLiveRegion(
           helperTextView, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
       setHelperTextAppearance(helperTextTextAppearance);
