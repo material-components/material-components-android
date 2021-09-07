@@ -22,12 +22,14 @@ import android.app.Application;
 import android.app.Application.ActivityLifecycleCallbacks;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
+import androidx.annotation.ChecksSdkIntAtLeast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
-import androidx.core.os.BuildCompat;
 
 /**
  * Utility for applying dynamic colors to application/activities.
@@ -206,8 +208,9 @@ public class DynamicColors {
   /**
    * Returns {@code true} if dynamic colors are available on the current SDK level.
    */
+  @ChecksSdkIntAtLeast(api = VERSION_CODES.S)
   public static boolean isDynamicColorAvailable() {
-    return BuildCompat.isAtLeastS();
+    return VERSION.SDK_INT >= VERSION_CODES.S;
   }
 
   private static int getDefaultThemeOverlay(@NonNull Context context) {
