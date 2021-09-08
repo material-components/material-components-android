@@ -290,6 +290,7 @@
   <style name="ThemeOverlay.Material3.Button.TextButton.Snackbar">
     <!-- The colors used by the color selectors -->
     <item name="colorOnContainer">?attr/colorPrimaryInverse</item>
+    <item name="colorContainer">@android:color/transparent</item>
   </style>
 
   <style name="ThemeOverlay.Material3.Button.ElevatedButton" parent="ThemeOverlay.Material3.Button.TextButton">
