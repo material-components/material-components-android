@@ -61,6 +61,13 @@ public class TopAppBarFragment extends DemoLandingFragment {
   public List<Demo> getAdditionalDemos() {
     List<Demo> additionalDemos = new ArrayList<>();
     additionalDemos.add(
+        new Demo(R.string.cat_topappbar_compress_effect_demo_title) {
+          @Override
+          public Fragment createFragment() {
+            return new TopAppBarCompressEffectFragment();
+          }
+        });
+    additionalDemos.add(
         new Demo(R.string.cat_topappbar_scrolling_title) {
           @Override
           public Fragment createFragment() {
