@@ -50,7 +50,7 @@ A typical exposed dropdown menu looks like this:
 ```xml
 <com.google.android.material.textfield.TextInputLayout
     android:id="@+id/menu"
-    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+    style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:hint="@string/label">
@@ -361,7 +361,7 @@ val listPopupWindow = ListPopupWindow(context!!, null, R.attr.listPopupWindowSty
 listPopupWindow.anchorView = listPopupWindowButton
 
 // Set list popup's content
-val items = listOf("Option 1", "Option 2", "Option 3")
+val items = listOf("Item 1", "Item 2", "Item 3", "Item 4")
 val adapter = ArrayAdapter(requireContext(), R.layout.list_popup_window_item, items)
 listPopupWindow.setAdapter(adapter)
 
@@ -397,7 +397,7 @@ In the item layout `res/layout/list_popup_window_item.xml`:
     android:padding="16dp"
     android:ellipsize="end"
     android:maxLines="1"
-    android:textAppearance="?attr/textAppearanceSubtitle1"
+    android:textAppearance="?attr/textAppearanceBodyLarge"
 />
 ```
 
@@ -420,23 +420,23 @@ Element        | Attribute                     | Related method(s) | Default val
 -------------- | ----------------------------- | ----------------- | -------------
 **Background** | `android:popupMenuBackground` | N/A               | `?attr/popupMenuBackground`
 **Color**      | N/A                           | N/A               | `?attr/colorSurface`
-**Elevation**  | `android:popupElevation`      | N/A               | `8dp`
+**Elevation**  | `android:popupElevation`      | N/A               | `3dp`
 
 #### Text attributes
 
 Element        | Attribute                                                                     | Related method(s)                                                  | Default value
 -------------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------------ | -------------
 **Text label** | `android:title`                                                               | `getMenu().add`<br/>`getMenu().addSubMenu`<br/>`getMenu().getItem` | N/A
-**Typography** | `?attr/textAppearanceLargePopupMenu`<br/>`?attr/textAppearanceSmallPopupMenu` | N/A                                                                | `?attr/textAppearanceSubtitle1`
+**Typography** | `?attr/textAppearanceLargePopupMenu`<br/>`?attr/textAppearanceSmallPopupMenu` | N/A                                                                | `?attr/textAppearanceBodyLarge`
 
 #### Styles
 
 Element                     | **Theme attribute**              | **Default value**
 --------------------------- | -------------------------------- | -----------------
-**Popup menus**             | `?attr/popupMenuStyle`           | `@style/Widget.MaterialComponents.PopupMenu`
-**List popup window style** | `?attr/listPopupWindowStyle`     | `@style/Widget.MaterialComponents.PopupMenu.ListPopupWindow`
-**Context menus**           | `?android:contextPopupMenuStyle` | `@style/Widget.MaterialComponents.PopupMenu.ContextMenu`
-**Overflow menus**          | `?attr/actionOverflowMenuStyle`  | `@style/Widget.MaterialComponents.PopupMenu.Overflow`
+**Popup menus**             | `?attr/popupMenuStyle`           | `@style/Widget.Material3.PopupMenu`
+**List popup window style** | `?attr/listPopupWindowStyle`     | `@style/Widget.Material3.PopupMenu.ListPopupWindow`
+**Context menus**           | `?android:contextPopupMenuStyle` | `@style/Widget.Material3.PopupMenu.ContextMenu`
+**Overflow menus**          | `?attr/actionOverflowMenuStyle`  | `@style/Widget.Material3.PopupMenu.Overflow`
 
 See the full list of
 [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/menu/res/values/styles.xml)
@@ -469,12 +469,12 @@ API and source code:
 _**Note:** `MaterialComponentsViewInflater` auto-inflates
 `<AutoCompleteTextView>` to
 `<com.google.android.material.textfield.MaterialAutoCompleteTextView>` when
-using a non-Bridge `Theme.MaterialComponents.*` theme._
+using `Theme.Material3.*` themes.*
 
 The following is an example of a filled exposed dropdown menu:
 
-![2 menu states with text field element: 1) has "option 1", 2) has an empty text
-field and a 3-option white menu
+![2 menu states with text field element: 1) has "item 1", 2) has an empty text
+field and a 4-item menu
 container.](assets/menu/menus_exposed_dropdown_filled.png)
 
 In the layout:
@@ -482,7 +482,7 @@ In the layout:
 ```xml
 <com.google.android.material.textfield.TextInputLayout
     android:id="@+id/menu"
-    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+    style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:hint="@string/label">
@@ -499,7 +499,7 @@ In the layout:
 In code:
 
 ```kt
-val items = listOf("Option 1", "Option 2", "Option 3", "Option 4")
+val items = listOf("Item 1", "Item 2", "Item 3", "Item 4")
 val adapter = ArrayAdapter(requireContext(), R.layout.list_item, items)
 (textField.editText as? AutoCompleteTextView)?.setAdapter(adapter)
 ```
@@ -514,14 +514,14 @@ In the item layout (`list_item.xml`):
     android:padding="16dp"
     android:ellipsize="end"
     android:maxLines="1"
-    android:textAppearance="?attr/textAppearanceSubtitle1"
+    android:textAppearance="?attr/textAppearanceBodyLarge"
 />
 ```
 
 To have an outlined variation of the exposed dropdown menu, set the `style` to
-`@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu`:
+`@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu`:
 
-![Menu with purple outlined text field element and 4 options. Option 1 selected.](assets/menu/menus_exposed_dropdown_outlined.png)
+![Menu with purple outlined text field element and 4 items. Item 1 selected.](assets/menu/menus_exposed_dropdown_outlined.png)
 
 #### Non editable variation
 
@@ -558,7 +558,7 @@ To see all attributes that apply to the `TextInputLayout`, see the
 Element                               | Attribute                                                           | Related method(s)                                            | Default value
 ------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------ | -------------
 **Input text**                        | `android:text`                                                      | `setText`<br/>`getText`                                      | `@null`
-**Typography**                        | `android:textAppearance`                                            | `setTextAppearance`                                          | `?attr/textAppearanceSubtitle1`
+**Typography**                        | `android:textAppearance`                                            | `setTextAppearance`                                          | `?attr/textAppearanceBodyLarge`
 **Input accepted**                    | `android:inputType`                                                 | `N/A`                                                        | framework's default
 **Input text color**                  | `android:textColor`                                                 | `setTextColor`<br/>`getTextColors`<br/>`getCurrentTextColor` | `?android:textColorPrimary`
 **Cursor color**                      | N/A (color comes from the theme attr `?attr/colorControlActivated`) | N/A                                                          | `?attr/colorPrimary`
@@ -569,10 +569,10 @@ Element                               | Attribute                               
 
 Element            | Style
 ------------------ | -----
-**Filled style**   | `Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu`
-**Outlined style** | `Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu`
-**Filled dense**   | `Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu`
-**Outlined dense** | `Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu`
+**Filled style**   | `Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu`
+**Outlined style** | `Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu`
+**Filled dense**   | `Widget.Material3.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu`
+**Outlined dense** | `Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu`
 
 Default style theme attribute: `?attr/textInputStyle`
 
@@ -616,14 +616,14 @@ Using default style theme attributes (affects all menus but does not affect
 other components):
 
 ```xml
-<style name="Theme.App" parent="Theme.MaterialComponents.*">
+<style name="Theme.App" parent="Theme.Material3.*">
     ...
-    <item name="textAppearanceLargePopupMenu">@style/TextAppearance.App.Subtitle1</item>
-    <item name="textAppearanceSmallPopupMenu">@style/TextAppearance.App.Subtitle1</item>
+    <item name="textAppearanceLargePopupMenu">@style/TextAppearance.App.BodyLarge</item>
+    <item name="textAppearanceSmallPopupMenu">@style/TextAppearance.App.BodyLarge</item>
     <item name="popupMenuBackground">@drawable/custom_popup_background</item>
 </style>
 
-<style name="TextAppearance.App.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
+<style name="TextAppearance.App.BodyLarge" parent="TextAppearance.Material3.BodyLarge">
     <item name="fontFamily">@font/rubik</item>
     <item name="android:fontFamily">@font/rubik</item>
     <item name="android:textColor">@color/shrine_pink_900</item>
@@ -648,12 +648,12 @@ Use a custom style instead of overriding `?attr/popupMenuBackground` if you want
 to set a custom background for one type of menu:
 
 ```xml
-<style name="Theme.App" parent="Theme.MaterialComponents.*">
+<style name="Theme.App" parent="Theme.Material3.*">
     ...
     <item name="popupMenuStyle">@style/Widget.App.PopupMenu</item>
 </style>
 
-<style name="Widget.App.PopupMenu" parent="Widget.MaterialComponents.PopupMenu">
+<style name="Widget.App.PopupMenu" parent="Widget.Material3.PopupMenu">
     <item name="android:popupBackground">@drawable/custom_popupmenu_background</item>
 </style>
 ```
@@ -693,12 +693,12 @@ Using default style theme attributes, styles and theme overlays (themes all
 menus but does not affect other components):
 
 ```xml
-<style name="Theme.App" parent="Theme.MaterialComponents.*">
+<style name="Theme.App" parent="Theme.Material3.*">
     ...
     <item name="textInputStyle">@style/Widget.App.ExposedDropdownMenu</item>
 </style>
 
-<style name="Widget.App.ExposedDropdownMenu" parent="Widget.MaterialComponents.TextInputLayout.*.ExposedDropdownMenu">
+<style name="Widget.App.ExposedDropdownMenu" parent="Widget.Material3.TextInputLayout.*.ExposedDropdownMenu">
     <item name="materialThemeOverlay">@style/ThemeOverlay.App.ExposedDropdownMenu</item>
     <item name="shapeAppearance">@style/ShapeAppearance.App.SmallComponent</item>
     <item name="hintTextColor">?attr/colorOnSurface</item>
@@ -709,22 +709,22 @@ menus but does not affect other components):
     <item name="colorPrimary">@color/shrine_pink_100</item>
     <item name="colorOnSurface">@color/shrine_pink_900</item>
     <item name="colorError">@color/shrine_red</item>
-    <item name="textAppearanceSubtitle1">@style/TextAppearance.App.Subtitle1</item>
-    <item name="textAppearanceCaption">@style/TextAppearance.App.Caption</item>
-    <item name="autoCompleteTextViewStyle">@style/Widget.MaterialComponents.AutoCompleteTextView.*</item>
+    <item name="textAppearanceBodyLarge">@style/TextAppearance.App.BodyLarge</item>
+    <item name="textAppearanceBodySmall">@style/TextAppearance.App.BodySmall</item>
+    <item name="autoCompleteTextViewStyle">@style/Widget.Material3.AutoCompleteTextView.*</item>
 </style>
 
-<style name="TextAppearance.App.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
+<style name="TextAppearance.App.BodyLarge" parent="TextAppearance.Material3.BodyLarge">
     <item name="fontFamily">@font/rubik</item>
     <item name="android:fontFamily">@font/rubik</item>
 </style>
 
-<style name="TextAppearance.App.Caption" parent="TextAppearance.MaterialComponents.Caption">
+<style name="TextAppearance.App.BodySmall" parent="TextAppearance.Material3.BodySmall">
     <item name="fontFamily">@font/rubik</item>
     <item name="android:fontFamily">@font/rubik</item>
 </style>
 
-<style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+<style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.Material3.SmallComponent">
     <item name="cornerFamily">cut</item>
     <item name="cornerSize">4dp</item>
 </style>
@@ -742,11 +742,10 @@ or using the style in the layout (affects only this menu):
 </com.google.android.material.textfield.TextInputLayout>
 ```
 
-_**Note:** When setting a `materialThemeOverlay` on a custom `TextInputLayout`
+***Note:** When setting a `materialThemeOverlay` on a custom `TextInputLayout`
 style, set `autoCompleteTextViewStyle` to either a
-`@style/Widget.MaterialComponents.AutoCompleteTextView.*` style or to a custom one
-that inherits from that.
-<br/>
-The `TextInputLayout.*.ExposedDropdownMenu` styles set `materialThemeOverlay` that overrides
-`autoCompleteTextViewStyle` with the specific `AutoCompleteTextView` style needed. Therefore,
-you don't need to specify a style tag on the `AutoCompleteTextView`._
+`@style/Widget.Material3.AutoCompleteTextView.*` style or to a custom one that
+inherits from that. <br/> The `TextInputLayout.*.ExposedDropdownMenu` styles set
+`materialThemeOverlay` that overrides `autoCompleteTextViewStyle` with the
+specific `AutoCompleteTextView` style needed. Therefore, you don't need to
+specify a style tag on the `AutoCompleteTextView`.*

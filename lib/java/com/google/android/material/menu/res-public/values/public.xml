@@ -18,4 +18,9 @@
 <!-- Definitions of attributes to be exposed as public -->
 <resources>
   <public name="popupMenuBackground" type="attr" />
+
+  <public name="Widget.Material3.PopupMenu.Overflow" type="style"/>
+  <public name="Widget.Material3.PopupMenu" type="style"/>
+  <public name="Widget.Material3.PopupMenu.ListPopupWindow" type="style"/>
+  <public name="Widget.Material3.PopupMenu.ContextMenu" type="style"/>
 </resources>

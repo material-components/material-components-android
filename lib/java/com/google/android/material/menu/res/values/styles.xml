@@ -42,12 +42,12 @@
 
   <!-- Styles for M3 Menus. -->
 
-  <!-- Styles for M3 Popup Menus -->
+  <!-- Styles for M3 Overflow Menus -->
   <style name="Widget.Material3.PopupMenu.Overflow" parent="Widget.MaterialComponents.PopupMenu.Overflow">
     <item name="android:popupElevation" tools:ignore="NewApi">@dimen/m3_menu_elevation</item>
   </style>
 
-  <!-- Styles for M3 Overflow Menus -->
+  <!-- Styles for M3 Popup Menus -->
   <style name="Widget.Material3.PopupMenu" parent="Widget.MaterialComponents.PopupMenu">
     <item name="android:popupElevation" tools:ignore="NewApi">@dimen/m3_menu_elevation</item>
   </style>
