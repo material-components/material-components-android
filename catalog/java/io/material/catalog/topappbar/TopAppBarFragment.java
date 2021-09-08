@@ -83,10 +83,16 @@ public class TopAppBarFragment extends DemoLandingFragment {
   @NonNull
   protected List<Demo> getCollapsingToolbarDemos() {
     return Arrays.asList(
-        new Demo(R.string.cat_topappbar_collapsing_title) {
+        new Demo(R.string.cat_topappbar_collapsing_medium_title) {
           @Override
           public Fragment createFragment() {
-            return new TopAppBarCollapsingDemoFragment();
+            return new TopAppBarCollapsingMediumDemoFragment();
+          }
+        },
+        new Demo(R.string.cat_topappbar_collapsing_large_title) {
+          @Override
+          public Fragment createFragment() {
+            return new TopAppBarCollapsingLargeDemoFragment();
           }
         },
         new Demo(R.string.cat_topappbar_collapsing_multiline_title) {

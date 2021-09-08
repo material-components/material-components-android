@@ -25,15 +25,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import io.material.catalog.feature.DemoFragment;
 
-/** A fragment that displays a collapsing Top App Bar demo for the Catalog app. */
-public class TopAppBarCollapsingDemoFragment extends DemoFragment {
+/** A base fragment that displays a collapsing Top App Bar demo for the Catalog app. */
+public abstract class BaseTopAppBarCollapsingDemoFragment extends DemoFragment {
 
+  @NonNull
   @Override
   public View onCreateDemoView(
-      LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
+      @NonNull LayoutInflater layoutInflater,
+      @Nullable ViewGroup viewGroup,
+      @Nullable Bundle bundle) {
     View view = layoutInflater.inflate(getCollapsingToolbarLayoutResId(), viewGroup, false);
 
     Toolbar toolbar = view.findViewById(R.id.toolbar);
@@ -49,7 +53,5 @@ public class TopAppBarCollapsingDemoFragment extends DemoFragment {
   }
 
   @LayoutRes
-  protected int getCollapsingToolbarLayoutResId() {
-    return R.layout.cat_topappbar_collapsing_fragment;
-  }
+  protected abstract int getCollapsingToolbarLayoutResId();
 }
