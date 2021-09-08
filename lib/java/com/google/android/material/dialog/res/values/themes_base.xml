@@ -405,6 +405,12 @@
     <item name="switchStyle">@style/Widget.MaterialComponents.CompoundButton.Switch</item>
     <item name="tabStyle">@style/Widget.MaterialComponents.TabLayout</item>
     <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.FilledBox</item>
+    <item name="textInputOutlinedStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox</item>
+    <item name="textInputFilledStyle">@style/Widget.MaterialComponents.TextInputLayout.FilledBox</item>
+    <item name="textInputOutlinedDenseStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense</item>
+    <item name="textInputFilledDenseStyle">@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense</item>
+    <item name="textInputOutlinedExposedDropdownMenuStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu</item>
+    <item name="textInputFilledExposedDropdownMenuStyle">@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu</item>
     <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar</item>
 
     <item name="alertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert</item>
@@ -451,6 +457,12 @@
     <item name="switchStyle">@style/Widget.MaterialComponents.CompoundButton.Switch</item>
     <item name="tabStyle">@style/Widget.MaterialComponents.TabLayout</item>
     <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.FilledBox</item>
+    <item name="textInputOutlinedStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox</item>
+    <item name="textInputFilledStyle">@style/Widget.MaterialComponents.TextInputLayout.FilledBox</item>
+    <item name="textInputOutlinedDenseStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense</item>
+    <item name="textInputFilledDenseStyle">@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense</item>
+    <item name="textInputOutlinedExposedDropdownMenuStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu</item>
+    <item name="textInputFilledExposedDropdownMenuStyle">@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu</item>
     <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar</item>
 
     <item name="alertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert</item>
