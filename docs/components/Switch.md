@@ -124,10 +124,11 @@ Element                    | Attribute                                  | Relate
 **To use material colors** | `app:useMaterialThemeColors`               | `setUseMaterialThemeColors`<br/>`isUseMaterialThemeColors` | `true` (ignored if specific tint attrs are set)
 **Min size**               | `android:minWidth`<br/>`android:minHeight` | `(set/get)MinWidth`<br/>`(set/get)MinHeight`               | `?attr/minTouchTargetSize`
 
-The color of the switch defaults to using `?attr/colorSurface`,
-`?attr/colorOnSurface`, and `?attr/colorSecondary` defined in your app theme. If
-you want to override this behavior, as you might with a custom drawable that
-should not be tinted, set `app:useMaterialThemeColors` to `false`:
+The color of the switch defaults to using `?attr/colorPrimary`,
+`?attr/colorPrimaryContainer`, `?attr/colorOnSurface`, and `?attr/colorOutline`
+defined in your app theme. If you want to override this behavior, as you might
+with a custom drawable that should not be tinted, set
+`app:useMaterialThemeColors` to `false`:
 
 ```xml
 <com.google.android.material.switchmaterial.SwitchMaterial
@@ -141,7 +142,7 @@ should not be tinted, set `app:useMaterialThemeColors` to `false`:
 Element       | Attribute       | Related method(s)                         | Default value
 ------------- | --------------- | ----------------------------------------- | -------------
 **Thumb**     | `android:thumb` | `setThumbDrawable`<br/>`getThumbDrawable` | inherits from `SwitchCompat`
-**Color**     | `app:thumbTint` | `setThumbTintList`<br/>`getThumbTintList` | `?attr/colorSurface` (unchecked)<br/>`?attr/colorSecondary` (checked)
+**Color**     | `app:thumbTint` | `setThumbTintList`<br/>`getThumbTintList` | `?attr/colorOnSurface` (unchecked)<br/>`?attr/colorPrimary` (checked)
 **Elevation** | N/A             | N/A                                       | `4dp`
 
 ### Track attributes
@@ -149,15 +150,15 @@ Element       | Attribute       | Related method(s)                         | De
 Element   | Attribute       | Related method(s)                         | Default value
 --------- | --------------- | ----------------------------------------- | -------------
 **Track** | `app:track`     | `setTrackDrawable`<br/>`getTrackDrawable` | inherits from `SwitchCompat`
-**Color** | `app:trackTint` | `setTrackTintList`<br/>`getTrackTintList` | `?attr/colorOnSurface` (unchecked)<br/>`?attr/colorSecondary` (checked)
+**Color** | `app:trackTint` | `setTrackTintList`<br/>`getTrackTintList` | `?attr/colorOutline` (unchecked)<br/>`?attr/colorPrimaryContainer` (checked)
 
 ### Text label attributes
 
 Element        | Attribute                | Related method(s)                  | Default value
 -------------- | ------------------------ | ---------------------------------- | -------------
 **Text label** | `android:text`           | `setText`<br/>`getText`            | `null`
-**Color**      | `android:textColor`      | `setTextColor`<br/>`getTextColors` | inherits from `SwitchCompat`
-**Typography** | `android:textAppearance` | `setTextAppearance`                | inherits from `SwitchCompat`
+**Color**      | `android:textColor`      | `setTextColor`<br/>`getTextColors` | `?android:attr/textColorPrimaryDisableOnly`
+**Typography** | `android:textAppearance` | `setTextAppearance`                | `?attr/textAppearanceBodyMedium`
 
 ### Switch states
 
@@ -175,8 +176,8 @@ pressed. Rows are on or off](assets/switch/switch_states.png)
 ### Styles
 
 Element           | Style
------------------ | -------------------------------------------------
-**Default style** | `Widget.MaterialComponents.CompoundButton.Switch`
+----------------- | ----------------------------------------
+**Default style** | `Widget.Material3.CompoundButton.Switch`
 
 Default style theme attribute: `?attr/switchStyle`
 
@@ -209,10 +210,10 @@ Using theme attributes in `res/values/styles.xml` (themes all switches and
 affects other components):
 
 ```xml
-<style name="Theme.App" parent="Theme.MaterialComponents.*">
+<style name="Theme.App" parent="Theme.Material3.*">
     ...
-    <item name="colorOnSurface">@color/shrine_pink_900</item>
-    <item name="colorSecondary">@color/shrine_pink_100</item>
+    <item name="colorPrimaryContainer">@color/pink_100</item>
+    <item name="colorPrimary">@color/pink_200</item>
 </style>
 
 ```
@@ -221,18 +222,18 @@ or using default style theme attributes, styles and theme overlays (themes all
 switches but does not affect other components):
 
 ```xml
-<style name="Theme.App" parent="Theme.MaterialComponents.*">
+<style name="Theme.App" parent="Theme.Material3.*">
     ...
     <item name="switchStyle">@style/Widget.App.Switch</item>
 </style>
 
-<style name="Widget.App.Switch" parent="Widget.MaterialComponents.CompoundButton.Switch">
+<style name="Widget.App.Switch" parent="Widget.Material3.CompoundButton.Switch">
     <item name="materialThemeOverlay">@style/ThemeOverlay.App.Switch</item>
 </style>
 
 <style name="ThemeOverlay.App.Switch" parent="">
-    <item name="colorOnSurface">@color/shrine_pink_900</item>
-    <item name="colorSecondary">@color/shrine_pink_100</item>
+    <item name="colorPrimaryContainer">@color/pink_100</item>
+    <item name="colorPrimary">@color/pink_200</item>
 </style>
 ```
 
