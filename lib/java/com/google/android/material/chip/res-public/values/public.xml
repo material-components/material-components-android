@@ -57,4 +57,13 @@
   <public name="Widget.MaterialComponents.Chip.Filter" type="style"/>
   <public name="Widget.MaterialComponents.Chip.Choice" type="style"/>
   <public name="Widget.MaterialComponents.Chip.Action" type="style"/>
+  <public name="Widget.Material3.ChipGroup" type="style"/>
+  <public name="Widget.Material3.Chip.Input" type="style"/>
+  <public name="Widget.Material3.Chip.Input.Icon" type="style"/>
+  <public name="Widget.Material3.Chip.Filter" type="style"/>
+  <public name="Widget.Material3.Chip.Filter.Elevated" type="style"/>
+  <public name="Widget.Material3.Chip.Suggestion" type="style"/>
+  <public name="Widget.Material3.Chip.Suggestion.Elevated" type="style"/>
+  <public name="Widget.Material3.Chip.Assist" type="style"/>
+  <public name="Widget.Material3.Chip.Assist.Elevated" type="style"/>
 </resources>
