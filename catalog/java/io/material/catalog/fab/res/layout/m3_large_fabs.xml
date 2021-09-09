@@ -30,6 +30,22 @@
     android:layout_height="wrap_content"
     android:layout_marginRight="24dp"
     android:layout_gravity="center"
+    android:text="@string/m3_surface_fab_label"/>
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    style="?attr/floatingActionButtonLargeSurfaceStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:layout_gravity="center"
+    android:contentDescription="@string/m3_large_surface_fab_content_desc"
+    app:srcCompat="@drawable/ic_add_24px" />
+  <Space/>
+
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="24dp"
+    android:layout_gravity="center"
     android:text="@string/m3_primary_fab_label"/>
   <com.google.android.material.floatingactionbutton.FloatingActionButton
     style="?attr/floatingActionButtonLargePrimaryStyle"
@@ -62,14 +78,14 @@
     android:layout_height="wrap_content"
     android:layout_marginRight="24dp"
     android:layout_gravity="center"
-    android:text="@string/m3_surface_fab_label"/>
+    android:text="@string/m3_tertiary_fab_label"/>
   <com.google.android.material.floatingactionbutton.FloatingActionButton
-    style="?attr/floatingActionButtonLargeSurfaceStyle"
+    style="?attr/floatingActionButtonLargeTertiaryStyle"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     android:layout_gravity="center"
-    android:contentDescription="@string/m3_large_surface_fab_content_desc"
+    android:contentDescription="@string/m3_large_tertiary_fab_content_desc"
     app:srcCompat="@drawable/ic_add_24px" />
   <Space/>
 
