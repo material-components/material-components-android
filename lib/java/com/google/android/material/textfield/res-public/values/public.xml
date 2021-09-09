@@ -18,6 +18,12 @@
 <!-- Definitions of attributes to be exposed as public -->
 <resources>
   <public name="textInputStyle" type="attr"/>
+  <public name="textInputOutlinedStyle" type="attr"/>
+  <public name="textInputFilledStyle" type="attr"/>
+  <public name="textInputOutlinedDenseStyle" type="attr"/>
+  <public name="textInputFilledDenseStyle" type="attr"/>
+  <public name="textInputOutlinedExposedDropdownMenuStyle" type="attr"/>
+  <public name="textInputFilledExposedDropdownMenuStyle" type="attr"/>
 
   <public name="boxBackgroundColor" type="attr"/>
   <public name="boxBackgroundMode" type="attr"/>
@@ -102,4 +108,13 @@
   <public name="Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu" type="style"/>
   <public name="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu" type="style"/>
   <public name="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu" type="style"/>
+
+  <public name="Widget.Material3.TextInputLayout.FilledBox" type="style"/>
+  <public name="Widget.Material3.TextInputLayout.FilledBox.Dense" type="style"/>
+  <public name="Widget.Material3.TextInputLayout.OutlinedBox" type="style"/>
+  <public name="Widget.Material3.TextInputLayout.OutlinedBox.Dense" type="style"/>
+  <public name="Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu" type="style"/>
+  <public name="Widget.Material3.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu" type="style"/>
+  <public name="Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu" type="style"/>
+  <public name="Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu" type="style"/>
 </resources>
