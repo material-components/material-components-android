@@ -80,10 +80,10 @@ API and source code:
     *   [Class definition](https://developer.android.com/reference/com/google/android/material/floatingactionbutton/FloatingActionButton)
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingactionbutton/FloatingActionButton.java)
 
-The following example shows a bottom app bar with a navigation icon, an action
-icon, a cradled FAB, and an overflow menu.
+The following example shows a bottom app bar with an action icon, a cradled FAB,
+and an overflow menu.
 
-![Purple bottom app bar with white icons and teal inset floating action button](assets/bottomappbar/bottomappbar_basic.png)
+![Purple bottom app bar with grey icons and purple inset floating action button](assets/bottomappbar/bottomappbar_basic.png)
 
 In the layout:
 
@@ -109,8 +109,8 @@ In the layout:
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
-        app:navigationIcon="@drawable/ic_menu_24dp"
+        style="@style/Widget.Material3.BottomAppBar"
+        app:navigationIcon="@drawable/ic_drawer_menu_24px"
         app:menu="@menu/bottom_app_bar"
         />
 
@@ -219,7 +219,7 @@ floating action button (FAB), action item(s) and an overflow menu.
 Element       | Attribute            | Related method(s)                          | Default value
 ------------- | -------------------- | ------------------------------------------ | -------------
 **Color**     | `app:backgroundTint` | `setBackgroundTint`<br>`getBackgroundTint` | `?attr/colorSurface`
-**Elevation** | `app:elevation`      | `setElevation`                             | `8dp`
+**Elevation** | `app:elevation`      | `setElevation`                             | `3dp`
 **Height**    | `android:minHeight`  | `setMinimumHeight`<br>`getMinimumHeight`   | `56dp` (default) and `64dp` (w600dp)
 
 ### Navigation icon attributes
@@ -227,17 +227,17 @@ Element       | Attribute            | Related method(s)                        
 Element   | Attribute                | Related method(s)                          | Default value
 --------- | ------------------------ | ------------------------------------------ | -------------
 **Icon**  | `app:navigationIcon`     | `setNavigationIcon`<br>`getNavigationIcon` | `null`
-**Color** | `app:navigationIconTint` | `setNavigationIconTint`                    | `?attr/colorControlNormal` (as `Drawable` tint)
+**Color** | `app:navigationIconTint` | `setNavigationIconTint`                    | `?attr/colorOnSurfaceVariant` (as `Drawable` tint)
 
 ### FAB attributes
 
 Element                          | Attribute                          | Related method(s)                                                      | Default value
 -------------------------------- | ---------------------------------- | ---------------------------------------------------------------------- | -------------
 **Alignment mode**               | `app:fabAlignmentMode`             | `setFabAlignmentMode`<br>`getFabAlignmentMode`                         | `center`
-**Animation mode**               | `app:fabAnimationMode`             | `setFabAnimationMode`<br>`getFabAnimationMode`                         | `scale`
-**Cradle margin**                | `app:fabCradleMargin`              | `setFabCradleMargin`<br>`getFabCradleMargin`                           | `5dp`
-**Cradle rounded corner radius** | `app:fabCradleRoundedCornerRadius` | `setFabCradleRoundedCornerRadius`<br>`getFabCradleRoundedCornerRadius` | `8dp`
-**Cradle vertical offset**       | `app:fabCradleVerticalOffset`      | `setCradleVerticalOffset`<br>`getCradleVerticalOffset`                 | `0dp`
+**Animation mode**               | `app:fabAnimationMode`             | `setFabAnimationMode`<br>`getFabAnimationMode`                         | `slide`
+**Cradle margin**                | `app:fabCradleMargin`              | `setFabCradleMargin`<br>`getFabCradleMargin`                           | `6dp`
+**Cradle rounded corner radius** | `app:fabCradleRoundedCornerRadius` | `setFabCradleRoundedCornerRadius`<br>`getFabCradleRoundedCornerRadius` | `4dp`
+**Cradle vertical offset**       | `app:fabCradleVerticalOffset`      | `setCradleVerticalOffset`<br>`getCradleVerticalOffset`                 | `12dp`
 
 See the
 [FAB documentation](https://github.com/material-components/material-components-android/tree/master/docs/components/FloatingActionButton.md)
@@ -255,16 +255,14 @@ Element        | Attribute  | Related method(s)          | Default value
 Element             | Attribute                                                                                          | Related method(s)                      | Default value
 ------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------- | -------------
 **Icon**            | `android:src` and `app:srcCompat` in `actionOverflowButtonStyle` (in app theme)                    | `setOverflowIcon`<br>`getOverflowIcon` | `@drawable/abc_ic_menu_overflow_material` (before API 23) or `@drawable/ic_menu_moreoverflow_material` (after API 23)
-**Theme**           | `app:popupTheme`                                                                                   | `setPopupTheme`<br>`getPopupTheme`     | `@style/ThemeOverlay.MaterialComponents.*`
-**Item typography** | `textAppearanceSmallPopupMenu` and `textAppearanceLargePopupMenu` in `app:popupTheme` or app theme | N/A                                    | `?attr/textAppearanceSubtitle1`
+**Theme**           | `app:popupTheme`                                                                                   | `setPopupTheme`<br>`getPopupTheme`     | `@style/ThemeOverlay.Material3.*`
+**Item typography** | `textAppearanceSmallPopupMenu` and `textAppearanceLargePopupMenu` in `app:popupTheme` or app theme | N/A                                    | `?attr/textAppearanceTitleMedium`
 
 ### Styles
 
-Element                                                                          | Style
--------------------------------------------------------------------------------- | -----
-**Default style**                                                                | `Widget.MaterialComponents.BottomAppBar`
-**Primary background color style**                                               | `Widget.MaterialComponents.BottomAppBar.Colored`
-**Primary (light theme) or surface (dark theme)**<br/>**background color style** | `Widget.MaterialComponents.BottomAppBar.PrimarySurface`
+Element           | Style
+----------------- | -------------------------------
+**Default style** | `Widget.Material3.BottomAppBar`
 
 Default style theme attribute: `bottomAppBarStyle`
 
@@ -304,22 +302,22 @@ Using theme attributes in `res/values/styles.xml` (themes all bottom app bars
 and FABs and affects other components):
 
 ```xml
-<style name="Theme.App" parent="Theme.MaterialComponents.*">
+<style name="Theme.App" parent="Theme.Material3.*">
     ...
     <item name="colorPrimary">@color/shrine_pink_100</item>
     <item name="colorOnPrimary">@color/shrine_pink_900</item>
     <item name="colorSecondary">@color/shrine_pink_50</item>
     <item name="colorOnSecondary">@color/shrine_pink_900</item>
-    <item name="textAppearanceSubtitle1">@style/TextAppearance.App.Subtitle1</item>
+    <item name="textAppearanceTitleMedium">@style/TextAppearance.App.Medium</item>
     <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.App.SmallComponent</item>
 </style>
 
-<style name="TextAppearance.App.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
+<style name="TextAppearance.App.Medium" parent="TextAppearance.Material3.TitleMedium">
     <item name="fontFamily">@font/rubik</item>
     <item name="android:fontFamily">@font/rubik</item>
 </style>
 
-<style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+<style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.Material3.SmallComponent">
     <item name="cornerFamily">cut</item>
     <item name="cornerSize">4dp</item>
 </style>
@@ -329,24 +327,24 @@ or using default style theme attributes, styles and theme overlays (themes all
 bottom app bars and FABs but does not affect other components):
 
 ```xml
-<style name="Theme.App" parent="Theme.MaterialComponents.*">
+<style name="Theme.App" parent="Theme.Material3.*">
     ...
     <item name="bottomAppBarStyle">@style/Widget.App.BottomAppBar</item>
     <item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
 </style>
 
-<style name="Widget.App.BottomAppBar" parent="Widget.MaterialComponents.BottomAppBar.Colored">
+<style name="Widget.App.BottomAppBar" parent="Widget.Material3.BottomAppBar">
     <item name="materialThemeOverlay">@style/ThemeOverlay.App.BottomAppBar</item>
 </style>
 
-<style name="Widget.App.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
+<style name="Widget.App.FloatingActionButton" parent="Widget.Material3.FloatingActionButton">
     <item name="materialThemeOverlay">@style/ThemeOverlay.App.FloatingActionButton</item>
 </style>
 
 <style name="ThemeOverlay.App.BottomAppBar" parent="">
     <item name="colorPrimary">@color/shrine_pink_100</item>
     <item name="colorOnPrimary">@color/shrine_pink_900</item>
-    <item name="textAppearanceSubtitle1">@style/TextAppearance.App.Subtitle1</item>
+    <item name="textAppearanceTitleMedium">@style/TextAppearance.App.TitleMedium</item>
 </style>
 
 <style name="ThemeOverlay.App.FloatingActionButton" parent="">

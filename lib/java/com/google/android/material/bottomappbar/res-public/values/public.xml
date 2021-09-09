@@ -25,4 +25,5 @@
   <public name="Widget.MaterialComponents.BottomAppBar" type="style"/>
   <public name="Widget.MaterialComponents.BottomAppBar.Colored" type="style"/>
   <public name="Widget.MaterialComponents.BottomAppBar.PrimarySurface" type="style"/>
+  <public name="Widget.Material3.BottomAppBar" type="style"/>
 </resources>
