@@ -15,8 +15,7 @@
     limitations under the License.
 -->
 <resources>
-
-  <!-- ThemeOverlay for Framework Alert Dialogs. -->
+  <!-- MaterialComponents ThemeOverlays for Framework Alert Dialogs. -->
 
   <style name="Base.ThemeOverlay.MaterialComponents.Dialog.Alert.Framework" parent="@android:style/Theme.Material.Dialog.Alert">
     <item name="android:buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush</item>
@@ -44,4 +43,13 @@
 
   <style name="Base.Theme.MaterialComponents.Light.Dialog" parent="Base.V21.Theme.MaterialComponents.Light.Dialog"/>
 
+  <!-- Material3 ThemeOverlays for Framework Alert Dialogs. -->
+
+  <style name="Base.ThemeOverlay.Material3.Dialog.Alert.Framework" parent="Base.ThemeOverlay.MaterialComponents.Dialog.Alert.Framework">
+    <item name="android:buttonBarButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog.Flush</item>
+  </style>
+
+  <style name="Base.ThemeOverlay.Material3.Light.Dialog.Alert.Framework" parent="Base.ThemeOverlay.MaterialComponents.Light.Dialog.Alert.Framework">
+    <item name="android:buttonBarButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog.Flush</item>
+  </style>
 </resources>
