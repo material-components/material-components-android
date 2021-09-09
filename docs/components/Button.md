@@ -51,7 +51,7 @@ For more information on content labels, go to the
 There are six types of buttons:
 1\. [Elevated button](#elevated-button),
 2\. [Filled button](#filled-button),
-3\. [Filled button: tonal style](#filled-button:-tonal-style),
+3\. [Filled button: tonal style](#filled-button-tonal-style),
 4\. [Outlined button](#outlined-button),
 5\. [Text button](#text-button),
 6\. [Toggle button](#toggle-button)
@@ -157,7 +157,6 @@ Element                                         | Attribute         | Related me
 | ---------------------- | -------------------------------------------------------------- |
 | **Default style**      | `Widget.Material3.Button.TextButton`                  |
 | **Icon style**         | `Widget.Material3.Button.TextButton.Icon`             |
-| **Full Width Buttons** | `Widget.Material3.Button.TextButton.Dialog.Flush`     |
 
 Default style theme attribute: `?attr/borderlessButtonStyle`
 
@@ -362,7 +361,7 @@ Element        | Attribute                | Related method(s)                 | 
 
 Element          | Attribute             | Related method(s)                                                            | Default value
 ---------------- | --------------------- | ---------------------------------------------------------------------------- | -------------
-**Color**        | `app:backgroundTint`  | `setBackgroundColor`<br/>`setBackgroundTintList`<br/>`getBackgroundTintList` | `>?attr/colorPrimary` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/color/res/color/m3_button_background_color_selector.xml))
+**Color**        | `app:backgroundTint`  | `setBackgroundColor`<br/>`setBackgroundTintList`<br/>`getBackgroundTintList` | `?attr/colorPrimary` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/color/res/color/m3_button_background_color_selector.xml))
 **Stroke color** | `app:strokeColor`     | `setStrokeColor`<br/>`setStrokeColorResource`<br/>`getStrokeColor`           | `null`
 **Stroke width** | `app:strokeWidth`     | `setStrokeWidth`<br/>`setStrokeWidthResource`<br/>`getStrokeWidth`           | `0dp`
 **Shape**        | `app:shapeAppearance` | `setShapeAppearanceModel`<br/>`getShapeAppearanceModel`                      | `?attr/shapeAppearanceSmallComponent`
@@ -421,10 +420,10 @@ In the layout:
 
 ```xml
 <Button
-    android:id="@+id/filledButton"
+    android:id="@+id/filledTonalButton"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="Filled button"
+    android:text="Filled button: Tonal style"
     style="@style/Widget.Material3.Button.TonalButton"
 />
 ```
@@ -533,7 +532,7 @@ In the layout:
     android:id="@+id/elevatedButton"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="Outlined button"
+    android:text="Elevated button"
     style="@style/Widget.Material3.Button.ElevatedButton"
 />
 ```
@@ -586,8 +585,8 @@ Element        | Attribute                | Related method(s)                 | 
 Element          | Attribute             | Related method(s)                                                            | Default value
 ---------------- | --------------------- | ---------------------------------------------------------------------------- | -------------
 **Color**        | `app:backgroundTint`  | `setBackgroundColor`<br/>`setBackgroundTintList`<br/>`getBackgroundTintList` | `?attr/colorSurface` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/color/m3_text_button_background_color_selector.xml))
-**Stroke color** | `app:strokeColor`     | `setStrokeColor`<br/>`setStrokeColorResource`<br/>`getStrokeColor`           | `?attr/colorOnSurface` at 12% opacity (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/color/m3_button_outline_color_selector.xml))
-**Stroke width** | `app:strokeWidth`     | `setStrokeWidth`<br/>`setStrokeWidthResource`<br/>`getStrokeWidth`           | `1dp`
+**Stroke color** | `app:strokeColor`     | `setStrokeColor`<br/>`setStrokeColorResource`<br/>`getStrokeColor`           | `null`
+**Stroke width** | `app:strokeWidth`     | `setStrokeWidth`<br/>`setStrokeWidthResource`<br/>`getStrokeWidth`           | `0dp`
 **Shape**        | `app:shapeAppearance` | `setShapeAppearanceModel`<br/>`getShapeAppearanceModel`                      | `?attr/shapeAppearanceSmallComponent`
 **Elevation**    | `app:elevation`       | `setElevation`<br/>`getElevation`                                            | `1dp`
 **Ripple color** | `app:rippleColor`     | `setRippleColor`<br/>`setRippleColorResource`<br/>`getRippleColor`           | `?attr/colorOnSurface` at 16% opacity (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/color/m3_text_button_ripple_color_selector.xml))
