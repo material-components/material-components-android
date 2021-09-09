@@ -192,8 +192,10 @@ You can see an example
 
 ## Card
 
-On mobile, a [card’s](https://material.io/components/cards/#specs) default
-elevation is `1dp`, with a raised dragged elevation of `8dp`.
+On mobile, an outlined [card’s](https://material.io/components/cards/#specs)
+default elevation is `0dp`, with a raised dragged elevation of `8dp`. The
+Material Androiid library also provide an elevated card style, which has an
+elevation of `1dp`, with a raised dragged elevation of `2dp`.
 
 ![Elevated card with a secondary title and Action 1 and Action 2 buttons in
 purple](assets/cards/cards_basic.png)
@@ -208,14 +210,14 @@ API and source code:
 
 _**Note:** You don't need to specify a style tag as long as you are using a
 Material Components Theme. If not, set the style to
-`Widget.MaterialComponents.CardView`._
+`Widget.Material3.CardView.Outlined` or `Widget.Material3.CardView.Elevated`.*
 
-#### Elevated card
+#### Outlined card
 
-The following example shows an elevated card.
+The following example shows an outlined card.
 
-!["Elevated card with photo, a title, a secondary title, text, and Action 1 and
-Action 2 buttons in purple"](assets/cards/cards_elevated.png)
+!["Outlined card with photo, a title, a secondary title, text, and Action 1 and
+Action 2 buttons in purple"](assets/cards/cards_outlined.png)
 
 ```xml
 <com.google.android.material.card.MaterialCardView
@@ -249,14 +251,14 @@ Action 2 buttons in purple"](assets/cards/cards_elevated.png)
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title"
-                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
                 />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/secondary_text"
-                android:textAppearance="?attr/textAppearanceBody2"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
                 android:textColor="?android:attr/textColorSecondary"
                 />
             <TextView
@@ -264,7 +266,7 @@ Action 2 buttons in purple"](assets/cards/cards_elevated.png)
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/supporting_text"
-                android:textAppearance="?attr/textAppearanceBody2"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
                 android:textColor="?android:attr/textColorSecondary"
                 />
 
@@ -296,34 +298,23 @@ Action 2 buttons in purple"](assets/cards/cards_elevated.png)
 </com.google.android.material.card.MaterialCardView>
 ```
 
-#### Outlined card
+#### Elevated card
 
-The following example shows an outlined card.
+The following example shows an elevated card.
 
-!["Outlined card with a photo, title, a secondary title, text, and Action 1 and
-Action 2 buttons in purple"](assets/cards/cards_outlined.png)
+!["Elevated card with a photo, title, a secondary title, text, and Action 1 and
+Action 2 buttons in purple"](assets/cards/cards_elevated.png)
 
 In the layout:
 
 ```xml
 <com.google.android.material.card.MaterialCardView
     ...
-    app:strokeWidth="1dp"
-    app:strokeColor="@color/stroke_color"
-    app:cardElevation="0dp">
+    style="?attr/materialCardViewElevatedStyle">
 
     ...
 
 </com.google.android.material.card.MaterialCardView>
-```
-
-In the stroke color (`stroke_color.xml`):
-
-```xml
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:color="?attr/colorPrimary" android:state_checked="true"/>
-    <item android:alpha="0.12" android:color="?attr/colorOnSurface" android:state_checked="false"/>
-</selector>
 ```
 
 ### Anatomy and key properties
@@ -352,12 +343,12 @@ shown in the [card examples](#card-examples) section._
 Element              | Attribute                 | Related method(s)                                                   | Default value
 -------------------- | ------------------------- | ------------------------------------------------------------------- | -------------
 **Color**            | `app:cardBackgroundColor` | `setCardBackgroundColor`<br/>`getCardBackgroundColor`               | `?attr/colorSurface`
-**Foreground color** | `app:cardForegroundColor` | `setCardForegroundColor`<br/>`getCardForegroundColor`               | `@android:color/transparent` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/card/res/color/mtrl_card_view_foreground.xml))
-**Stroke color**     | `app:strokeColor`         | `setStrokeColor`<br/>`getStrokeColor`<br/>`getStrokeColorStateList` | `null`
-**Stroke width**     | `app:strokeWidth`         | `setStrokeWidth`<br/>`getStrokeWidth`                               | `0dp`
+**Foreground color** | `app:cardForegroundColor` | `setCardForegroundColor`<br/>`getCardForegroundColor`               | `@android:color/transparent` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/card/res/color/m3_card_foreground_color.xml))
+**Stroke color**     | `app:strokeColor`         | `setStrokeColor`<br/>`getStrokeColor`<br/>`getStrokeColorStateList` | `?attr/colorOutline` (unchecked)<br/>`?attr/colorSecondary` (checked)
+**Stroke width**     | `app:strokeWidth`         | `setStrokeWidth`<br/>`getStrokeWidth`                               | `1dp` (outlined style)<br/>`0dp` (elevated style)
 **Shape**            | `app:shapeAppearance`     | `setShapeAppearanceModel`<br/>`getShapeAppearanceModel`             | `?attr/shapeAppearanceMediumComponent`
-**Elevation**        | `app:cardElevation`       | `setCardElevation`<br/>`setCardMaxElevation`                        | `1dp`
-**Ripple color**     | `app:rippleColor`         | `setRippleColor`<br/>`setRippleColorResource`<br/>`getRippleColor`  | `?attr/colorOnSurface` at 20% opacity (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/card/res/color/mtrl_card_view_ripple.xml))
+**Elevation**        | `app:cardElevation`       | `setCardElevation`<br/>`setCardMaxElevation`                        | `0dp` (outlined style)<br/>`1dp` (elevated style)
+**Ripple color**     | `app:rippleColor`         | `setRippleColor`<br/>`setRippleColorResource`<br/>`getRippleColor`  | `?attr/colorOnSurfaceVariant` at 20% opacity (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/card/res/color/m3_card_ripple_color.xml))
 
 _**Note:** We recommend that cards on mobile have `8dp` margins.
 `android:layout_margin` will [**NOT**](https://stackoverflow.com/a/13365288)
@@ -373,7 +364,7 @@ border, regardless of the `app:strokeWidth` value._
 Element       | Attribute           | Related method(s)                                                                    | Default value
 ------------- | ------------------- | ------------------------------------------------------------------------------------ | -------------
 **Icon**      | `checkedIcon`       | `setCheckedIcon`<br/>`setCheckedIconResource`<br/>`getCheckedIcon`                   | [`@drawable/ic_mtrl_checked_circle.xml`](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/resources/res/drawable/ic_mtrl_checked_circle.xml)
-**Color**     | `checkedIconTint`   | `setCheckedIconTint`<br/>`getCheckedIconTint`                                        | `?attr/colorPrimary`
+**Color**     | `checkedIconTint`   | `setCheckedIconTint`<br/>`getCheckedIconTint`                                        | `?attr/colorOutline` (unchecked)<br/>`?attr/colorSecondary` (checked)
 **Checkable** | `android:checkable` | `setCheckable`<br/>`isCheckable`                                                     | `false`
 **Size**      | `checkedIconSize`   | `setCheckedIconSize`<br/>`setCheckedIconSizeResource`<br/>`getCheckedIconSize`       | `24dp`
 **Margin**    | `checkedIconMargin` | `setCheckedIconMargin`<br/>`setCheckedIconMarginResource`<br/>`getCheckedIconMargin` | `8dp`
@@ -392,9 +383,12 @@ State                                 | Description                         | Re
 
 Element           | Style
 ----------------- | ------------------------------------
-**Default style** | `Widget.MaterialComponents.CardView`
+**Default style** | `Widget.Material3.CardView.Outlined`
 
 Default style theme attribute: `?attr/materialCardViewStyle`
+
+Additional style theme attributes: `?attr/materialCardViewOutlinedStyle`,
+`?attr/materialCardViewElevatedStyle`
 
 See the full list of
 [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/card/res/values/styles.xml)
@@ -426,15 +420,15 @@ Using theme attributes and a style in `res/values/styles.xml` (themes all cards
 and affects other components):
 
 ```xml
-<style name="Theme.App" parent="Theme.MaterialComponents.*">
+<style name="Theme.App" parent="Theme.Material3.*">
     ...
-    <item name="colorPrimary">@color/shrine_pink_100</item>
+    <item name="colorSecondary">@color/shrine_pink_100</item>
     <item name="colorSurface">@color/shrine_pink_light</item>
-    <item name="colorOnSurface">@color/shrine_pink_900</item>
+    <item name="colorOnSurfaceVariant">@color/shrine_pink_900</item>
     <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.App.MediumComponent</item>
 </style>
 
-<style name="ShapeAppearance.App.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+<style name="ShapeAppearance.App.MediumComponent" parent="ShapeAppearance.Material3.MediumComponent">
     <item name="cornerFamily">cut</item>
     <item name="cornerSize">8dp</item>
 </style>
@@ -444,20 +438,20 @@ or using a default style theme attribute, styles and a theme overlay (themes all
 cards but does not affect other components):
 
 ```xml
-<style name="Theme.App" parent="Theme.MaterialComponents.*">
+<style name="Theme.App" parent="Theme.Material3.*">
     ...
     <item name="materialCardViewStyle">@style/Widget.App.CardView</item>
 </style>
 
-<style name="Widget.App.CardView" parent="Widget.MaterialComponents.CardView">
+<style name="Widget.App.CardView" parent="Widget.Material3.CardView.Outlined">
     <item name="materialThemeOverlay">@style/ThemeOverlay.App.Card</item>
     <item name="shapeAppearance">@style/ShapeAppearance.App.MediumComponent</item>
 </style>
 
 <style name="ThemeOverlay.App.Card" parent="">
-    <item name="colorPrimary">@color/shrine_pink_100</item>
+    <item name="colorSecondary">@color/shrine_pink_100</item>
     <item name="colorSurface">@color/shrine_pink_light</item>
-    <item name="colorOnSurface">@color/shrine_pink_900</item>
+    <item name="colorOnSurfaceVariant">@color/shrine_pink_900</item>
 </style>
 ```
 
