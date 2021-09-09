@@ -60,8 +60,8 @@ values that components read in to set their shapes.
 Attribute Name                   | Description            | Default Value
 -------------------------------- | ---------------------- | -------------
 `shapeAppearanceSmallComponent`  | Style reference that contains shape values that are used to style small components  | 4dp rounded
-`shapeAppearanceMediumComponent` | Style reference that contains shape values that are used to style medium components  | 4dp rounded
-`shapeAppearanceLargeComponent`  | Style reference that contains shape values that are used to style large components  | 0dp rounded
+`shapeAppearanceMediumComponent` | Style reference that contains shape values that are used to style medium components  | 8dp rounded
+`shapeAppearanceLargeComponent`  | Style reference that contains shape values that are used to style large components  | 8dp rounded
 
 Aside from defining these attributes in your theme, you likely will not need to
 reference these attributes at all; the widget styles are already mapped to the
@@ -135,7 +135,7 @@ app to cut corners. To accomplish this, define the shape theme attributes to
 point to custom style references that contain shape values:
 
 ```xml
-<style name="Theme.MyApp" parent="Theme.MaterialComponents.Light">
+<style name="Theme.MyApp" parent="Theme.Material3.Light">
   ...
   <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.MyApp.SmallComponent</item>
   <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.MyApp.MediumComponent</item>
@@ -149,17 +149,17 @@ define both `cornerSize` and `cornerFamily`. These `shapeAppearance` styles
 might look something like this:
 
 ```xml
-<style name="ShapeAppearance.MyApp.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+<style name="ShapeAppearance.MyApp.SmallComponent" parent="ShapeAppearance.Material3.SmallComponent">
   <item name="cornerFamily">cut</item>
   <item name="cornerSize">4dp</item>
 </style>
 
-<style name="ShapeAppearance.MyApp.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+<style name="ShapeAppearance.MyApp.MediumComponent" parent="ShapeAppearance.Material3.MediumComponent">
   <item name="cornerFamily">cut</item>
   <item name="cornerSize">8dp</item>
 </style>
 
-<style name="ShapeAppearance.MyApp.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+<style name="ShapeAppearance.MyApp.LargeComponent" parent="ShapeAppearance.Material3.LargeComponent">
   <item name="cornerFamily">rounded</item>
   <item name="cornerSize">4dp</item>
 </style>
@@ -181,15 +181,15 @@ style that extends from the widget's style, and set the relevant attributes to
 the desired theme attributes:
 
 ```xml
-<style name="Widget.MyApp.MaterialCardView" parent="Widget.MaterialComponents.MaterialCardView">
-  <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MyApp.MaterialCardView</item>
+<style name="Widget.MyApp.CardView" parent="Widget.Material3.CardView">
+  <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MyApp.CardView</item>
 </style>
 ```
 
-And define `ShapeAppearanceOverlay.MyApp.MaterialCardView` as follows:
+And define `ShapeAppearanceOverlay.MyApp.CardView` as follows:
 
 ```xml
-<style name="ShapeAppearanceOverlay.MyApp.MaterialCardView" parent="">
+<style name="ShapeAppearanceOverlay.MyApp.CardView" parent="">
   <item name="cornerFamily">rounded</item>
   <item name="cornerSize">16dp</item>
 </style>
@@ -198,9 +198,9 @@ And define `ShapeAppearanceOverlay.MyApp.MaterialCardView` as follows:
 Then make sure to set component's style in your theme to your custom style:
 
 ```xml
-<style name="Theme.MyApp" parent="Theme.MaterialComponents.Light">
+<style name="Theme.MyApp" parent="Theme.Material3.Light">
   ...
-  <item name="materialCardViewStyle">@style/Widget.MyApp.MaterialCardView</item>
+  <item name="materialCardViewStyle">@style/Widget.MyApp.CardView</item>
   ...
 </style>
 ```
@@ -219,7 +219,7 @@ to overlay on top of the existing `shapeAppearance`. In this case, you would set
 `cornerFamily` to `cut`:
 
 ```xml
-<style name="ShapeAppearanceOverlay.MyApp.MaterialCardView.Cut" parent="">
+<style name="ShapeAppearanceOverlay.MyApp.CardView.Cut" parent="">
   <item name="cornerFamily">cut</item>
 </style>
 ```
@@ -234,7 +234,7 @@ Then, set the card's `shapeAppearanceOverlay` attribute to that
     android:layout_marginLeft="@dimen/mtrl_card_spacing"
     android:layout_marginTop="@dimen/mtrl_card_spacing"
     android:layout_marginRight="@dimen/mtrl_card_spacing"
-    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.MaterialCardView.Cut">
+    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.CardView.Cut">
   <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"

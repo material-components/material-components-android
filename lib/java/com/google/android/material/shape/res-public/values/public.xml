@@ -38,4 +38,8 @@
   <public name="ShapeAppearance.MaterialComponents.SmallComponent" type="style"/>
   <public name="ShapeAppearance.MaterialComponents.MediumComponent" type="style"/>
   <public name="ShapeAppearance.MaterialComponents.LargeComponent" type="style"/>
+
+  <public name="ShapeAppearance.Material3.SmallComponent" type="style"/>
+  <public name="ShapeAppearance.Material3.MediumComponent" type="style"/>
+  <public name="ShapeAppearance.Material3.LargeComponent" type="style"/>
 </resources>
