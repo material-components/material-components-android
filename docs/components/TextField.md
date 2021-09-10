@@ -43,13 +43,13 @@ page.
 </com.google.android.material.textfield.TextInputLayout>
 ```
 
-_**Note:** A text field is composed of a `TextInputLayout` and a
+**Note:** A text field is composed of a `TextInputLayout` and a
 `TextInputEditText` as a direct child. Using an `EditText` as the child might
 work, but `TextInputEditText` provides accessibility support for the text field
 and allows `TextInputLayout` greater control over the visual aspects of the
 input text. If an `EditText` is being used, make sure to set its
 `android:background` to `@null` so that `TextInputLayout` can set the proper
-background on it._
+background on it.
 
 ### Making text fields accessible
 
@@ -188,9 +188,9 @@ textField.addOnEndIconChangedListener {
 }
 ```
 
-_**Note:** You should opt to use the `EndIconMode` API instead of setting an
+**Note:** You should opt to use the `EndIconMode` API instead of setting an
 end/right compound `Drawable` on the `TextInputEditText`. The same applies to
-the now-deprecated `passwordToggle*` attributes._
+the now-deprecated `passwordToggle*` attributes.
 
 See the full list of
 [end icon modes](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/textfield/res/values/attrs.xml#L149).
@@ -293,8 +293,8 @@ passwordLayout.error = getString(R.string.error)
 passwordLayout.error = null
 ```
 
-_**Note:** Non-null error text will replace any existing helper text, and
-non-null helper text will replace any existing error text._
+**Note:** Non-null error text will replace any existing helper text, and
+non-null helper text will replace any existing error text.
 
 ### Adding a prefix/suffix to a text field
 
@@ -341,8 +341,8 @@ You can override those values in a custom style that inherits from a
 </com.google.android.material.textfield.TextInputLayout>
 ```
 
-_**Note:** The `android:layout_width` of the `TextInputLayout` should be
-`wrap_content` in order for those minimum and maximum dimensions to be used._
+**Note:** The `android:layout_width` of the `TextInputLayout` should be
+`wrap_content` in order for those minimum and maximum dimensions to be used.
 
 ### Using text fields programmatically
 
@@ -433,9 +433,9 @@ indicator, optional helper/error text and optional leading/trailing icons.
 7.  Helper/error/counter text
 8.  Prefix/suffix/placeholder (not shown)
 
-_**Note:** All the attributes on the tables below should be set on the
+**Note:** All the attributes on the tables below should be set on the
 `TextInputLayout`, with the exception of the input text attributes (which should
-be set on the `TextInputEditText`)._
+be set on the `TextInputEditText`).
 
 #### Container attributes
 
@@ -477,7 +477,7 @@ Element              | Attribute                                                
 **Input text color** | `android:textColor`                                                 | `setTextColor`<br/>`getTextColors`<br/>`getCurrentTextColor` | `?attr/colorOnSurface`
 **Cursor color**     | N/A (color comes from the theme attr `?attr/colorControlActivated`) | N/A                                                          | `?attr/colorPrimary`
 
-_**Note:** The input text attributes should be set on the `TextInputEditText`._
+**Note:** The input text attributes should be set on the `TextInputEditText`.
 
 #### Trailing icon attributes
 
@@ -549,8 +549,7 @@ have less visual emphasis than filled text fields. When they appear in places
 like forms, where many text fields are placed together, their reduced emphasis
 helps simplify the layout.
 
-***Note:** The outlined text field is the default style if the style is not
-set.*
+**Note:** The outlined text field is the default style if the style is not set.
 
 ### Outlined text field examples
 
@@ -612,9 +611,9 @@ helper/error text and optional leading/trailing icons.
 6.  Helper/error/counter text
 7.  Prefix/suffix/placeholder (not shown)
 
-_**Note:** All the attributes on the tables below should be set on the
+**Note:** All the attributes on the tables below should be set on the
 `TextInputLayout`, with the exception of the input text attributes (which should
-be set on the `TextInputEditText`)._
+be set on the `TextInputEditText`).
 
 #### Container attributes
 
@@ -657,7 +656,7 @@ Element              | Attribute                                                
 **Input text color** | `android:textColor`                                                 | `setTextColor`<br/>`getTextColors`<br/>`getCurrentTextColor` | `?attr/colorOnSurface`
 **Cursor color**     | N/A (color comes from the theme attr `?attr/colorControlActivated`) | N/A                                                          | `?attr/colorPrimary`
 
-_**Note:** The input text attributes should be set on the `TextInputEditText`._
+**Note:** The input text attributes should be set on the `TextInputEditText`.
 
 #### Trailing icon attributes
 
@@ -805,10 +804,10 @@ or using one the style in the layout (affects only this text field):
 </com.google.android.material.textfield.TextInputLayout>
 ```
 
-***Note:** When setting a `materialThemeOverlay` on a custom `TextInputLayout`
+**Note:** When setting a `materialThemeOverlay` on a custom `TextInputLayout`
 style, don't forget to set `editTextStyle` to either a
 `@style/Widget.Material3.TextInputEditText.*` style or to a custom one that
 inherits from that. <br/> The `TextInputLayout` styles set
 `materialThemeOverlay` that overrides `editTextStyle` with the specific
 `TextInputEditText` style needed. Therefore, you don't need to specify a style
-tag on the edit text.*
+tag on the edit text.

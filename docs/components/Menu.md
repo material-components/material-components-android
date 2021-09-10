@@ -448,10 +448,10 @@ and
 Exposed dropdown menus display the currently selected menu item above the list
 of options. Some variations can accept user-entered input.
 
-_**Note:** The exposed dropdown menu is implemented through the
+**Note:** The exposed dropdown menu is implemented through the
 `TextInputLayout`. For detailed information on
 [Material text fields](https://material.io/design/components/text-fields.html)
-and their usage, see the [TextInputLayout documentation](TextField.md)._
+and their usage, see the [TextInputLayout documentation](TextField.md).
 
 ### Exposed dropdown menu example
 
@@ -466,10 +466,10 @@ API and source code:
     *   [Class definition](https://developer.android.com/reference/com/google/android/material/textfield/MaterialAutoCompleteTextView)
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/textfield/MaterialAutoCompleteTextView.java)
 
-_**Note:** `MaterialComponentsViewInflater` auto-inflates
+**Note:** `MaterialComponentsViewInflater` auto-inflates
 `<AutoCompleteTextView>` to
 `<com.google.android.material.textfield.MaterialAutoCompleteTextView>` when
-using `Theme.Material3.*` themes.*
+using `Theme.Material3.*` themes.
 
 The following is an example of a filled exposed dropdown menu:
 
@@ -664,10 +664,10 @@ Exposed dropdown menus support
 [Material Theming](https://material.io/components/chips/#theming) and can be
 customized in terms of color, typography, and shape.
 
-_**Note:** The exposed dropdown menu is implemented through the
+**Note:** The exposed dropdown menu is implemented through the
 `TextInputLayout`. For detailed information on how
 [Material text fields](https://material.io/design/components/text-fields.html)
-work, see the [TextInputLayout documentation](TextField.md)._
+work, see the [TextInputLayout documentation](TextField.md).
 
 API and source code:
 
@@ -742,10 +742,10 @@ or using the style in the layout (affects only this menu):
 </com.google.android.material.textfield.TextInputLayout>
 ```
 
-***Note:** When setting a `materialThemeOverlay` on a custom `TextInputLayout`
+**Note:** When setting a `materialThemeOverlay` on a custom `TextInputLayout`
 style, set `autoCompleteTextViewStyle` to either a
 `@style/Widget.Material3.AutoCompleteTextView.*` style or to a custom one that
 inherits from that. <br/> The `TextInputLayout.*.ExposedDropdownMenu` styles set
 `materialThemeOverlay` that overrides `autoCompleteTextViewStyle` with the
 specific `AutoCompleteTextView` style needed. Therefore, you don't need to
-specify a style tag on the `AutoCompleteTextView`.*
+specify a style tag on the `AutoCompleteTextView`.
