@@ -34,4 +34,12 @@
   <public name="Widget.MaterialComponents.TimePicker.Display.TextInputEditText" type="style" />
   <public name="Widget.MaterialComponents.TimePicker.ImageButton" type="style" />
 
+  <public name="ThemeOverlay.Material3.TimePicker" type="style" />
+
+  <public name="Widget.Material3.TimePicker" type="style" />
+  <public name="Widget.Material3.TimePicker.Button" type="style" />
+  <public name="Widget.Material3.TimePicker.Display" type="style" />
+  <public name="Widget.Material3.TimePicker.Display.TextInputEditText" type="style" />
+  <public name="Widget.Material3.TimePicker.ImageButton" type="style" />
+
 </resources>

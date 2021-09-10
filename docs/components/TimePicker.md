@@ -125,15 +125,15 @@ Element                         | Attribute                      | Related metho
 **Title**                       | `N/A`                          | `Builder.setTitle`                                    | `Select Time`
 **Keyboard Icon**               | `app:keyboardIcon`             | `N/A`                                                 | `@drawable/ic_keyboard_black_24dp`
 **Clock Icon**                  | `app:clockIcon`                | `N/A`                                                 | `@drawable/ic_clock_black_24dp`
-**Clock face Background Color** | `app:clockFaceBackgroundColor` | `N/A`                                                 | `?attr/colorOnSurface 24%`
+**Clock face Background Color** | `app:clockFaceBackgroundColor` | `N/A`                                                 | `?attr/colorSurfaceVariant`
 **Clock hand color**            | `app:clockNumberTextColor`     | `N/A`                                                 | `?attr/colorPrimary`
-**Clock Number Text Color**     | `app:clockNumberTextColor`     | `N/A`                                                 | `?attr/colorOnSurface`
+**Clock Number Text Color**     | `app:clockNumberTextColor`     | `N/A`                                                 | `?attr/colorOnBackground`
 
 #### Styles
 
 Element           | Style
 ----------------- | ----------------------------------
-**Default style** | `Widget.MaterialComponents.TimePicker`
+**Default style** | `Widget.Material3.TimePicker`
 
 Default style theme attribute: `?attr/materialTimePickerStyle`
 
@@ -141,10 +141,10 @@ The style attributes are assigned to the following components:
 
 Element                          | Affected component                  | Default
 ------------------------         | ----------------------------------  | ---------------------
-**chipStyle**                    | Number inputs in the clock mode     | `@style/Widget.MaterialComponents.TimePicker.Display`
-**materialButtonOutlinedStyle**  | AM/PM toggle                        | `@style/Widget.MaterialComponents.TimePicker.Button`
-**imageButtonStyle**             | Keyboard/Text Input button          | `@style/Widget.MaterialComponents.TimePicker.ImageButton`
-**materialClockStyle**           | Clock Face of the Time Picker       | `@style/Widget.MaterialComponents.TimePicker.Clock`
+**chipStyle**                    | Number inputs in the clock mode     | `@style/Widget.Material3.TimePicker.Display`
+**materialButtonOutlinedStyle**  | AM/PM toggle                        | `@style/Widget.Material3.TimePicker.Button`
+**imageButtonStyle**             | Keyboard/Text Input button          | `@style/Widget.Material3.TimePicker.ImageButton`
+**materialClockStyle**           | Clock Face of the Time Picker       | `@style/Widget.Material3.TimePicker.Clock`
 
 
 See the full list of
@@ -168,7 +168,7 @@ Using theme attributes and styles in `res/values/styles.xml` (themes all time pi
 and affects other components):
 
 ```xml
-<style name="Theme.App" parent="Theme.MaterialComponents.*">
+<style name="Theme.App" parent="Theme.Material3.*">
     ...
     <item name="colorPrimary">@color/shrine_pink_100</item>
     <item name="colorOnPrimary">@color/shrine_pink_900</item>
@@ -178,7 +178,7 @@ and affects other components):
 ```
 
 ```xml
-<style name="Widget.App.Chip" parent="Widget.MaterialComponents.TimePicker.Display">
+<style name="Widget.App.Chip" parent="Widget.Material3.TimePicker.Display">
   <item name="android:textColor">@color/shrine_diplay_text_color</item>
 </style>
 ```
@@ -197,7 +197,7 @@ In res/color/shrine_diplay_text_color.xml:
 ```
 
 ```xml
-<style name="Widget.App.TimePicker.Clock" parent="Widget.MaterialComponents.TimePicker.Clock">
+<style name="Widget.App.TimePicker.Clock" parent="Widget.Material3.TimePicker.Clock">
     <item name="clockFaceBackgroundColor">@color/...</item>
     <item name="clockHandColor">@color/...</item>
     <item name="clockNumberTextColor">@color/...</item>
@@ -207,7 +207,7 @@ In res/color/shrine_diplay_text_color.xml:
 You can also set a theme specific to the time picker
 
 ```xml
-<style name="Theme.App" parent="Theme.MaterialComponents.*">
+<style name="Theme.App" parent="Theme.Material3.*">
     ...
     <item name="materialTimePickerTheme">@style/ThemeOverlay.App.TimePicker</item>
 </style>
