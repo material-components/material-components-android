@@ -88,6 +88,7 @@
   <style name="Widget.Material3.Snackbar.TextView" parent="Widget.MaterialComponents.Snackbar.TextView">
     <item name="android:alpha">@dimen/m3_snackbar_action_text_color_alpha</item>
     <item name="android:textColor">?attr/colorOnSurfaceInverse</item>
+    <item name="android:textAppearance">?attr/textAppearanceBodyMedium</item>
   </style>
 
   <style name="ThemeOverlay.Material3.Snackbar" parent="">

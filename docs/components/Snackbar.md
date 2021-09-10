@@ -169,14 +169,14 @@ Element              | Attribute                | Related method(s) | Default va
 -------------------- | ------------------------ | ----------------- | -------------
 **Text label style** | N/A                      | N/A               | `?attr/snackbarTextViewStyle`
 **Text label**       | `android:text`           | `setText`         | `null`
-**Color**            | `android:textColor`      | `setTextColor`    | `?attr/colorSurface`
-**Typography**       | `android:textAppearance` | N/A               | `?attr/textAppearanceBody2`
+**Color**            | `android:textColor`      | `setTextColor`    | `?attr/colorOnSurfaceInverse`
+**Typography**       | `android:textAppearance` | N/A               | `?attr/textAppearanceBodyMedium`
 
 ### Container attributes
 
 Element                 | Attribute                         | Related method(s)                               | Default value
 ----------------------- | --------------------------------- | ----------------------------------------------- | -------------
-**Color**               | `app:backgroundTint`              | `setBackgroundTint`<br/>`setBackgroundTintList` | `?attr/colorSurface` at 80% over `?attr/colorOnSurface`
+**Color**               | `app:backgroundTint`              | `setBackgroundTint`<br/>`setBackgroundTintList` | `?attr/colorSurfaceInverse`
 **Color overlay alpha** | `app:backgroundOverlayColorAlpha` | N/A                                             | `0.8f` (ignored if `app:backgroundTint` is set)
 **Margin**              | `android:layout_margin`           | N/A                                             | `8dp`
 **Elevation**           | `app:elevation`                   | N/A                                             | `6dp`
@@ -187,16 +187,16 @@ Element                 | Attribute                         | Related method(s) 
 Element              | Attribute                  | Related method(s)    | Default value
 -------------------- | -------------------------- | -------------------- | -------------
 **Button style**     | N/A                        | N/A                  | `?attr/snackbarButtonStyle`
-**Text color alpha** | `app:actionTextColorAlpha` | N/A                  | `0.5f`
-**Text Color**       | `android:textColor`        | `setTextActionColor` | `?attr/colorPrimary`
+**Text color alpha** | `app:actionTextColorAlpha` | N/A                  | `1.0f`
+**Text Color**       | `android:textColor`        | `setTextActionColor` | `?attr/colorPrimaryInverse`
 
 ### Styles
 
 Element                 | **Theme attribute**           | **Default value**
 ----------------------- | ----------------------------- | -----------------
-**Default style**       | `?attr/snackbarStyle`         | `@style/Widget.MaterialComponents.Snackbar`
-**Action button style** | `?attr/snackbarButtonStyle`   | `@style/Widget.MaterialComponents.Button.TextButton.Snackbar`
-**Text label style**    | `?attr/snackbarTextViewStyle` | `@style/Widget.MaterialComponents.Snackbar.TextView`
+**Default style**       | `?attr/snackbarStyle`         | `@style/Widget.Material3.Snackbar`
+**Action button style** | `?attr/snackbarButtonStyle`   | `@style/Widget.Material3.Button.TextButton.Snackbar`
+**Text label style**    | `?attr/snackbarTextViewStyle` | `@style/Widget.Material3.Snackbar.TextView`
 
 See the full list of
 [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/snackbar/res/values/styles.xml)
@@ -230,10 +230,10 @@ Using theme attributes in `res/values/styles.xml` (themes all snackbars and
 affects other components):
 
 ```xml
-<style name="Theme.App" parent="Theme.MaterialComponents.*">
+<style name="Theme.App" parent="Theme.Material3.*">
     ...
-    <item name="colorPrimary">@color/shrine_pink_100</item>
-    <item name="colorOnSurface">@color/shrine_pink_900</item>
+    <item name="colorPrimaryInverse">@color/shrine_pink_100</item>
+    <item name="colorOnSurfaceInverse">@color/shrine_pink_100</item>
 </style>
 
 ```
@@ -242,24 +242,23 @@ or using default style theme attributes, styles and theme overlays (themes all
 snackbars but does not affect other components):
 
 ```xml
-<style name="Theme.App" parent="Theme.MaterialComponents.*">
+<style name="Theme.App" parent="Theme.Material3.*">
     ...
     <item name="snackbarStyle">@style/Widget.App.Snackbar</item>
     <item name="snackbarButtonStyle">@style/Widget.App.SnackbarButton</item>
 </style>
 
-<style name="Widget.App.Snackbar" parent="Widget.MaterialComponents.Snackbar">
+<style name="Widget.App.Snackbar" parent="Widget.Material3.Snackbar">
     <item name="materialThemeOverlay">@style/ThemeOverlay.App.Snackbar</item>
-    <item name="actionTextColorAlpha">1</item>
   </style>
 
-<style name="Widget.App.SnackbarButton" parent="Widget.MaterialComponents.Button.TextButton.Snackbar">
+<style name="Widget.App.SnackbarButton" parent="Widget.Material3.Button.TextButton.Snackbar">
     <item name="android:textColor">@color/shrine_pink_100</item>
 </style>
 
 <style name="ThemeOverlay.App.Snackbar" parent="">
-    <item name="colorPrimary">@color/shrine_pink_100</item>
-    <item name="colorOnSurface">@color/shrine_pink_900</item>
+    <item name="colorPrimaryInverse">@color/shrine_pink_100</item>
+    <item name="colorOnSurfaceInverse">@color/shrine_pink_100</item>
 </style>
 ```
 
