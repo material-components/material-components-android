@@ -34,5 +34,20 @@
   <public name="Widget.MaterialComponents.Button.OutlinedButton" type="style"/>
   <public name="Widget.MaterialComponents.Button.TextButton.Dialog" type="style"/>
   <public name="Widget.MaterialComponents.Button.TextButton.Dialog.Flush" type="style"/>
+  <public name="Widget.Material3.Button" type="style"/>
+  <public name="Widget.Material3.Button.Icon" type="style"/>
+  <public name="Widget.Material3.Button.UnelevatedButton" type="style"/>
+  <public name="Widget.Material3.Button.TonalButton" type="style"/>
+  <public name="Widget.Material3.Button.TonalButton.Icon" type="style"/>
+  <public name="Widget.Material3.Button.TextButton" type="style"/>
+  <public name="Widget.Material3.Button.TextButton.Icon" type="style"/>
+  <public name="Widget.Material3.Button.TextButton.Dialog" type="style"/>
+  <public name="Widget.Material3.Button.TextButton.Dialog.Flush" type="style"/>
+  <public name="Widget.Material3.Button.TextButton.Dialog.Icon" type="style"/>
+  <public name="Widget.Material3.Button.TextButton.Snackbar" type="style"/>
+  <public name="Widget.Material3.Button.OutlinedButton" type="style"/>
+  <public name="Widget.Material3.Button.OutlinedButton.Icon" type="style"/>
+  <public name="Widget.Material3.Button.ElevatedButton" type="style"/>
+  <public name="Widget.Material3.Button.ElevatedButton.Icon" type="style"/>
+  <public name="Widget.Material3.Button.IconButton" type="style"/>
 </resources>
-
