@@ -157,6 +157,7 @@ Element                                         | Attribute         | Related me
 | ---------------------- | -------------------------------------------------------------- |
 | **Default style**      | `Widget.Material3.Button.TextButton`                  |
 | **Icon style**         | `Widget.Material3.Button.TextButton.Icon`             |
+| **Full Width Buttons** | `Widget.Material3.Button.TextButton.Dialog.FullWidth` |
 
 Default style theme attribute: `?attr/borderlessButtonStyle`
 
