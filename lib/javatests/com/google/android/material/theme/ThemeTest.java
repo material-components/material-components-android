@@ -42,6 +42,38 @@ import org.robolectric.annotation.internal.DoNotInstrument;
 @DoNotInstrument
 public class ThemeTest {
 
+  /** These are motion styles that should be the same for *all* full themes. */
+  private static final ImmutableList<Integer> MOTION_STYLE_ATTRIBUTES =
+      ImmutableList.of(
+          R.attr.motionEasingStandard,
+          R.attr.motionEasingEmphasized,
+          R.attr.motionEasingDecelerated,
+          R.attr.motionEasingAccelerated,
+          R.attr.motionEasingLinear,
+          R.attr.motionDurationShort1,
+          R.attr.motionDurationShort2,
+          R.attr.motionDurationMedium1,
+          R.attr.motionDurationMedium2,
+          R.attr.motionDurationLong1,
+          R.attr.motionDurationLong2,
+          R.attr.motionPath);
+
+  private static final ImmutableList<Integer> DEPRECATED_TYPOGRAPHY_ATTRIBUTES =
+      ImmutableList.of(
+          R.attr.textAppearanceHeadline1,
+          R.attr.textAppearanceHeadline2,
+          R.attr.textAppearanceHeadline3,
+          R.attr.textAppearanceHeadline4,
+          R.attr.textAppearanceHeadline5,
+          R.attr.textAppearanceHeadline6,
+          R.attr.textAppearanceSubtitle1,
+          R.attr.textAppearanceSubtitle2,
+          R.attr.textAppearanceBody1,
+          R.attr.textAppearanceBody2,
+          R.attr.textAppearanceCaption,
+          R.attr.textAppearanceButton,
+          R.attr.textAppearanceOverline);
+
   /** These attributes pairs should be same in Material Light theme. */
   private static final ImmutableList<int[]> MATERIAL_INTRA_LIGHT_THEME_ATTRIBUTES =
       ImmutableList.of(
@@ -52,6 +84,144 @@ public class ThemeTest {
       ImmutableList.of(
           new int[] {R.attr.colorPrimarySurface, R.attr.colorSurface},
           new int[] {R.attr.colorOnPrimarySurface, R.attr.colorOnSurface});
+
+  /**
+   * These are color attribtues that all themes, including bridge themes, should have.
+   *
+   * <p>All Light themes should match {@link R.style#Theme_MaterialComponents_Light} and all Dark
+   * themes should match {@link R.style#Theme_MaterialComponents}.
+   */
+  private static final ImmutableList<Integer> MATERIAL_BRIDGE_COLOR_ATTRIBUTES =
+      ImmutableList.of(
+          R.attr.colorPrimaryVariant,
+          R.attr.colorSecondary,
+          R.attr.colorSecondaryVariant,
+          R.attr.colorSurface,
+          R.attr.colorOnPrimary,
+          R.attr.colorOnSecondary,
+          R.attr.colorOnBackground,
+          R.attr.colorOnError,
+          R.attr.colorOnSurface,
+          R.attr.colorOnPrimarySurface);
+
+  /**
+   * These are color attributes that all full themes should have in addition to {@link
+   * #MATERIAL_BRIDGE_COLOR_ATTRIBUTES}.
+   *
+   * <p>All Light full themes should match {@link R.style#Theme_MaterialComponents_Light} and all
+   * Dark themes should match {@link R.style#Theme_MaterialComponents}.
+   */
+  private static final ImmutableList<Integer> MATERIAL_NON_BRIDGE_COLOR_ATTRIBUTES =
+      ImmutableList.of(
+          R.attr.colorPrimary,
+          R.attr.colorPrimaryDark,
+          R.attr.colorAccent,
+          android.R.attr.colorBackground,
+          R.attr.colorError);
+
+  /**
+   * There are color attribtues that all theme overlays should have.
+   *
+   * <p>All Light theme overlays shold match {@link R.style#Theme_MaterialComponents_Light} and all
+   * Dark theme overlays should match {@link R.style#Theme_MaterialComponents}.
+   */
+  private static final ImmutableList<Integer> MATERIAL_OVERLAY_COLOR_ATTRIBUTES =
+      ImmutableList.of(
+          android.R.attr.colorBackground,
+          R.attr.colorOnBackground,
+          R.attr.colorSurface,
+          R.attr.colorOnSurface,
+          R.attr.colorError,
+          R.attr.colorOnError);
+
+  /**
+   * These are all the color attributes that all full themes should have.
+   *
+   * <p>All Light full themes should match {@link R.style#Theme_MaterialComponents_Light} and all
+   * Dark full themes should match {@link R.style#Theme_MaterialComponents}.
+   */
+  private static final ImmutableList<Integer> MATERIAL_FULL_COLOR_ATTRIBUTES =
+      ImmutableList.<Integer>builder()
+          .addAll(MATERIAL_BRIDGE_COLOR_ATTRIBUTES)
+          .addAll(MATERIAL_NON_BRIDGE_COLOR_ATTRIBUTES)
+          .build();
+
+  /**
+   * These are widget styles that should be the same for *all* bridge and full themes (Light and
+   * Dark).
+   */
+  private static final ImmutableList<Integer> MATERIAL_BRIDGE_WIDGET_STYLE_ATTRIBUTES =
+      ImmutableList.of(
+          R.attr.badgeStyle,
+          R.attr.chipStyle,
+          R.attr.chipGroupStyle,
+          R.attr.chipStandaloneStyle,
+          R.attr.circularProgressIndicatorStyle,
+          R.attr.extendedFloatingActionButtonStyle,
+          R.attr.linearProgressIndicatorStyle,
+          R.attr.materialButtonStyle,
+          R.attr.materialButtonOutlinedStyle,
+          R.attr.materialButtonToggleGroupStyle,
+          R.attr.materialCardViewStyle,
+          R.attr.navigationRailStyle,
+          R.attr.sliderStyle);
+
+  /**
+   * These are widget styles that should be the same for *all* full themes (Light and Dark) in
+   * addition to the {@link #MATERIAL_BRIDGE_WIDGET_STYLE_ATTRIBUTES}.
+   */
+  private static final ImmutableList<Integer> MATERIAL_NON_BRIDGE_WIDGET_STYLE_ATTRIBUTES =
+      ImmutableList.of(
+          R.attr.borderlessButtonStyle,
+          R.attr.bottomNavigationStyle,
+          R.attr.checkboxStyle,
+          R.attr.floatingActionButtonStyle,
+          R.attr.listPopupWindowStyle,
+          R.attr.navigationViewStyle,
+          R.attr.popupMenuStyle,
+          R.attr.radioButtonStyle,
+          R.attr.snackbarStyle,
+          R.attr.snackbarButtonStyle,
+          R.attr.snackbarTextViewStyle,
+          R.attr.switchStyle,
+          R.attr.tabStyle,
+          R.attr.textInputStyle,
+          R.attr.textInputOutlinedStyle,
+          R.attr.textInputFilledStyle,
+          R.attr.textInputOutlinedDenseStyle,
+          R.attr.textInputFilledDenseStyle,
+          R.attr.textInputOutlinedExposedDropdownMenuStyle,
+          R.attr.textInputFilledExposedDropdownMenuStyle,
+          R.attr.toolbarStyle);
+
+  /** These are all the widget style attributes that should be the same for *all* full themes. */
+  private static final ImmutableList<Integer> MATERIAL_COMMON_WIDGET_STYLE_ATTRIBUTES =
+      ImmutableList.<Integer>builder()
+          .addAll(MATERIAL_BRIDGE_WIDGET_STYLE_ATTRIBUTES)
+          .addAll(MATERIAL_NON_BRIDGE_WIDGET_STYLE_ATTRIBUTES)
+          .build();
+
+  /**
+   * These are all the attributes where the light bridge theme should match the light full theme and
+   * the dark bridge theme should match the dark full theme.
+   */
+  private static final ImmutableList<Integer> MATERIAL_BRIDGE_ATTRIBUTES =
+      ImmutableList.<Integer>builder()
+          .addAll(MATERIAL_BRIDGE_COLOR_ATTRIBUTES)
+          .addAll(MATERIAL_BRIDGE_WIDGET_STYLE_ATTRIBUTES)
+          .addAll(MOTION_STYLE_ATTRIBUTES)
+          .addAll(DEPRECATED_TYPOGRAPHY_ATTRIBUTES)
+          .build();
+
+  /**
+   * These are all the attributes where full themes should match {@link
+   * R.style#Theme_MaterialComponents} or {@link R.style#Theme_MaterialComponents_Light}.
+   */
+  private static final ImmutableList<Integer> MATERIAL_FULL_ATTRIBUTES =
+      ImmutableList.<Integer>builder()
+          .addAll(MATERIAL_FULL_COLOR_ATTRIBUTES)
+          .addAll(MATERIAL_COMMON_WIDGET_STYLE_ATTRIBUTES)
+          .build();
 
   /**
    * These are color attributes that all M3 themes should have.
@@ -137,22 +307,6 @@ public class ThemeTest {
           R.attr.textAppearanceLabelMedium,
           R.attr.textAppearanceLabelSmall);
 
-  private static final ImmutableList<Integer> M3_DEPRECATED_TYPOGRAPHY_ATTRIBUTES =
-      ImmutableList.of(
-          R.attr.textAppearanceHeadline1,
-          R.attr.textAppearanceHeadline2,
-          R.attr.textAppearanceHeadline3,
-          R.attr.textAppearanceHeadline4,
-          R.attr.textAppearanceHeadline5,
-          R.attr.textAppearanceHeadline6,
-          R.attr.textAppearanceSubtitle1,
-          R.attr.textAppearanceSubtitle2,
-          R.attr.textAppearanceBody1,
-          R.attr.textAppearanceBody2,
-          R.attr.textAppearanceCaption,
-          R.attr.textAppearanceButton,
-          R.attr.textAppearanceOverline);
-
   private static final ImmutableList<Integer> DEFAULT_FRAMEWORK_TEXT_STYLE_ATTRIBUTES =
       ImmutableList.of(
           android.R.attr.textAppearance,
@@ -168,25 +322,9 @@ public class ThemeTest {
   private static final ImmutableList<Integer> M3_FULL_TYPOGRAPHY_ATTRIBUTES =
       ImmutableList.<Integer>builder()
           .addAll(M3_ACTIVE_TYPOGRAPHY_ATTRIBUTES)
-          .addAll(M3_DEPRECATED_TYPOGRAPHY_ATTRIBUTES)
+          .addAll(DEPRECATED_TYPOGRAPHY_ATTRIBUTES)
           .addAll(DEFAULT_FRAMEWORK_TEXT_STYLE_ATTRIBUTES)
           .build();
-
-  /** These are motion styles that should be the same for *all* M3 full themes. */
-  private static final ImmutableList<Integer> M3_MOTION_STYLE_ATTRIBUTES =
-      ImmutableList.of(
-          R.attr.motionEasingStandard,
-          R.attr.motionEasingEmphasized,
-          R.attr.motionEasingDecelerated,
-          R.attr.motionEasingAccelerated,
-          R.attr.motionEasingLinear,
-          R.attr.motionDurationShort1,
-          R.attr.motionDurationShort2,
-          R.attr.motionDurationMedium1,
-          R.attr.motionDurationMedium2,
-          R.attr.motionDurationLong1,
-          R.attr.motionDurationLong2,
-          R.attr.motionPath);
 
   /** These are widget styles that should be the same for *all* M3 full themes. */
   private static final ImmutableList<Integer> M3_COMMON_WIDGET_STYLE_ATTRIBUTES =
@@ -252,20 +390,87 @@ public class ThemeTest {
       ImmutableList.<Integer>builder()
           .addAll(M3_FULL_COLOR_ATTRIBUTES)
           .addAll(M3_FULL_TYPOGRAPHY_ATTRIBUTES)
-          .addAll(M3_MOTION_STYLE_ATTRIBUTES)
+          .addAll(MOTION_STYLE_ATTRIBUTES)
           .addAll(M3_COMMON_WIDGET_STYLE_ATTRIBUTES)
           .build();
 
   @Parameters(name = "{0}")
   public static ImmutableList<Object[]> getTestData() {
     return ImmutableList.<Object[]>builder()
-        // Attributes inside the Material Light theme.
+        // Within Material Light theme.
         .addAll(
             createTestData(
                 R.style.Theme_MaterialComponents_Light, MATERIAL_INTRA_LIGHT_THEME_ATTRIBUTES))
-        // Attribtues inside the Material Dark theme.
+        // Within Material Dark theme.
         .addAll(
             createTestData(R.style.Theme_MaterialComponents, MATERIAL_INTRA_DARK_THEME_ATTRIBUTES))
+        // Material Dark Themes and Theme Overlays.
+        .addAll(
+            createTestData(
+                R.style.Theme_MaterialComponents_Bridge,
+                R.style.Theme_MaterialComponents,
+                MATERIAL_BRIDGE_ATTRIBUTES))
+        .addAll(
+            createTestData(
+                R.style.Theme_MaterialComponents_NoActionBar,
+                R.style.Theme_MaterialComponents,
+                MATERIAL_FULL_ATTRIBUTES))
+        .addAll(
+            createTestData(
+                R.style.Theme_MaterialComponents_Dialog,
+                R.style.Theme_MaterialComponents,
+                MATERIAL_FULL_ATTRIBUTES))
+        .addAll(
+            createTestData(
+                R.style.ThemeOverlay_MaterialComponents_Dark,
+                R.style.Theme_MaterialComponents,
+                MATERIAL_OVERLAY_COLOR_ATTRIBUTES))
+        // Material Light Themes and Theme Overlays.
+        .addAll(
+            createTestData(
+                R.style.Theme_MaterialComponents_Light_Bridge,
+                R.style.Theme_MaterialComponents_Light,
+                MATERIAL_BRIDGE_ATTRIBUTES))
+        .addAll(
+            createTestData(
+                R.style.Theme_MaterialComponents_Light_NoActionBar,
+                R.style.Theme_MaterialComponents_Light,
+                MATERIAL_FULL_ATTRIBUTES))
+        .addAll(
+            createTestData(
+                R.style.Theme_MaterialComponents_Light_Dialog,
+                R.style.Theme_MaterialComponents_Light,
+                MATERIAL_FULL_ATTRIBUTES))
+        .addAll(
+            createTestData(
+                R.style.ThemeOverlay_MaterialComponents_Light,
+                R.style.Theme_MaterialComponents_Light,
+                MATERIAL_OVERLAY_COLOR_ATTRIBUTES))
+        // Compare Material Light and Dark themes - they should have the same common widget styles.
+        .addAll(
+            createTestData(
+                R.style.Theme_MaterialComponents,
+                R.style.Theme_MaterialComponents_Light,
+                MATERIAL_COMMON_WIDGET_STYLE_ATTRIBUTES))
+        // Compare Material Light and Dark themes - they should have the same motion styles.
+        .addAll(
+            createTestData(
+                R.style.Theme_MaterialComponents,
+                R.style.Theme_MaterialComponents_Light,
+                MOTION_STYLE_ATTRIBUTES))
+        // Compare Material Light and Dark themes - they should have the same typography styles.
+        .addAll(
+            createTestData(
+                R.style.Theme_MaterialComponents,
+                R.style.Theme_MaterialComponents_Light,
+                DEPRECATED_TYPOGRAPHY_ATTRIBUTES))
+        // Compare Material Light and Dark bridge themes - they should have the same bridge widget
+        // styles.
+        .addAll(
+            createTestData(
+                R.style.Theme_MaterialComponents_Bridge,
+                R.style.Theme_MaterialComponents_Light_Bridge,
+                MATERIAL_BRIDGE_WIDGET_STYLE_ATTRIBUTES))
         // M3 Dark Themes and Theme Overlays
         .addAll(
             createTestData(
@@ -315,7 +520,7 @@ public class ThemeTest {
             createTestData(
                 R.style.Theme_Material3_Dark,
                 R.style.Theme_Material3_Light,
-                M3_MOTION_STYLE_ATTRIBUTES))
+                MOTION_STYLE_ATTRIBUTES))
         .build();
   }
 
