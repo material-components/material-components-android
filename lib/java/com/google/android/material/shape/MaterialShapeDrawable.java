@@ -442,10 +442,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
   /**
    * Get the tint color factoring in any other runtime modifications such as elevation overlays.
-   *
-   * @hide
    */
-  @RestrictTo(LIBRARY_GROUP)
   @ColorInt
   public int getResolvedTintColor() {
     return resolvedTintColor;
