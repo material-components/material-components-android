@@ -174,7 +174,8 @@ API and source code:
 The following example shows a determinate linear progress indicator.
 
 ![Determinate linear progress indicator animation: purple indicator fills up
-grey track](assets/progressindicator/linear_determinate_compact.gif)
+grey
+track](assets/progressindicator/linear_determinate_compact.gif){width="600"}
 
 In the layout:
 
@@ -187,7 +188,8 @@ In the layout:
 The following example shows an indeterminate linear progress indicator.
 
 ![Indeterminate linear progress indicator animation: purple indicator travels
-along grey track](assets/progressindicator/linear_indeterminate_compact.gif)
+along grey
+track](assets/progressindicator/linear_indeterminate_compact.gif){width="600"}
 
 In the layout:
 
@@ -204,14 +206,14 @@ For linear progress indicator, there are two indeterminate animation types:
 
 ![Disjointed indeterminate linear progress indicator animation: red indicator
 travels along track 2x then switches to
-yellow](assets/progressindicator/linear_multicolor_disjoint.gif)
+yellow](assets/progressindicator/linear_multicolor_disjoint.gif){width="600"}
 
 *   `disjoint` - animates as repeated cycles with two disjoint segments in the
     same color at a time.
 
 ![Contiguous indeterminate linear progress indicator animation: red, yellow,
 blue indicators move sequentially and cover
-track](assets/progressindicator/linear_multicolor_contiguous.gif)
+track](assets/progressindicator/linear_multicolor_contiguous.gif){width="600"}
 
 *   `contiguous` - animates as repeated cycles with three adjacent segments in
     iterative different colors.
@@ -243,7 +245,7 @@ The following example shows a determinate circular progress indicator.
 
 ![Determinate circular progress indicator animation: purple indicator draws a
 circle clockwise from the
-top](assets/progressindicator/circular_determinate_compact.gif)
+top](assets/progressindicator/circular_determinate_compact.gif){width="600"}
 
 In the layout:
 
@@ -257,7 +259,7 @@ The following example shows an indeterminate circular progress indicator.
 
 ![Indeterminate circular progress indicator animation: purple indicator follows
 a circle clockwise from the
-top](assets/progressindicator/circular_indeterminate_compact.gif)
+top](assets/progressindicator/circular_indeterminate_compact.gif){width="600"}
 
 In the layout:
 
@@ -316,11 +318,11 @@ Element                           | Attribute                        | Related m
 
 Element                                | Style
 -------------------------------------- | -----
-**Default linear**<br/>**style**       | `Widget.MaterialComponents.LinearProgressIndicator`
-**Default circular**<br/>**style**     | `Widget.MaterialComponents.CircularProgressIndicator`
-**Medium circular**<br/>**style**      | `Widget.MaterialComponents.CircularProgressIndicator.Medium`
-**Small circular**<br/>**style**       | `Widget.MaterialComponents.CircularProgressIndicator.Small`
-**Extra small circular**<br/>**style** | `Widget.MaterialComponents.CircularProgressIndicator.ExtraSmall`
+**Default linear**<br/>**style**       | `Widget.Material3.LinearProgressIndicator`
+**Default circular**<br/>**style**     | `Widget.Material3.CircularProgressIndicator`
+**Medium circular**<br/>**style**      | `Widget.Material3.CircularProgressIndicator.Medium`
+**Small circular**<br/>**style**       | `Widget.Material3.CircularProgressIndicator.Small`
+**Extra small circular**<br/>**style** | `Widget.Material3.CircularProgressIndicator.ExtraSmall`
 
 Default linear style theme attribute: `?attr/linearProgressIndicatorStyle`
 
@@ -359,7 +361,7 @@ Using theme attributes and style sin `res/values/styles.xml` (themes all
 circular progress indicators and affects other components):
 
 ```xml
-<style name="Theme.App" parent="Theme.MaterialComponents.*">
+<style name="Theme.App" parent="Theme.Material3.*">
     ...
     <item name="colorPrimary">@color/shrine_pink_100</item>
 </style>
@@ -369,12 +371,12 @@ or using a default stype theme attribute, styles and a theme overlay (themes all
 circular progress indicators but does not affect other components):
 
 ```xml
-<style name="Theme.App" parent="Theme.MaterialComponents.*">
+<style name="Theme.App" parent="Theme.Material3.*">
     ...
     <item name="circularProgressIndicatorStyle">@style/Widget.App.CircularProgressIndicator</item>
 </style>
 
-<style name="Widget.App.CircularProgressIndicator" parent="Widget.MaterialComponents.CircularProgressIndicator">
+<style name="Widget.App.CircularProgressIndicator" parent="Widget.Material3.CircularProgressIndicator">
     <item name="materialThemeOverlay">@style/ThemeOverlay.App.CircularProgressIndicator</item>
     <item name="trackThickness">20dp</item>
 </style>

@@ -37,4 +37,11 @@
   <public name="Widget.MaterialComponents.LinearProgressIndicator" type="style"/>
   <public name="Widget.MaterialComponents.CircularProgressIndicator" type="style"/>
 
+  <public name="Widget.Material3.LinearProgressIndicator" type="style"/>
+
+  <public name="Widget.Material3.CircularProgressIndicator" type="style"/>
+  <public name="Widget.Material3.CircularProgressIndicator.Medium" type="style"/>
+  <public name="Widget.Material3.CircularProgressIndicator.Small" type="style"/>
+  <public name="Widget.Material3.CircularProgressIndicator.ExtraSmall" type="style"/>
+
 </resources>
