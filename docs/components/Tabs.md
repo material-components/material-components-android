@@ -188,8 +188,8 @@ TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
 
 ### Adding badges to tabs
 
-![Example of 3 fixed tabs with badges: a red dot, a red badge with "1", and a
-red badge with "+999.](assets/tabs/tabs_badged.png)
+![Example of 3 fixed tabs with badges: a red badge with "1", a red badge with
+"88", and a red badge with "999".](assets/tabs/tabs_badged.png)
 
 Tabs support badging with the
 [`BadgeDrawable`](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/badge/BadgeDrawable.java)
@@ -284,7 +284,7 @@ API and source code:
 
 The following example shows a row of scrollable tabs.
 
-![Example of 4 scrollable tabs.](assets/tabs/tabs_scrollable.png)
+![Example of 6 scrollable tabs, with the 6th partially cut off by screensize.](assets/tabs/tabs_scrollable.png)
 
 In the layout:
 
@@ -324,7 +324,7 @@ In the layout:
         android:layout_height="wrap_content"
         android:text="@string/tab_5"
         />
-
+    ...
 </com.google.android.material.tabs.TabLayout>
 ```
 
@@ -348,7 +348,7 @@ the active tab item.
 
 Element       | Attribute            | Related method(s)                  | Default value
 ------------- | -------------------- | ---------------------------------- | -------------
-**Color**     | `android:background` | `setBackground`<br>`getBackground` | `?attr/colorSurface`
+**Color**     | `android:background` | `setBackground`<br>`getBackground` | `?attr/colorOnSurfaceVariant`
 **Elevation** | `android:elevation`  | `setElevation`                     | `0dp`
 **Height**    | N/A                  | N/A                                | `48dp` (inline text) or `72dp` (non-inline text and icon)
 **Tab mode**  | `tabMode`            | `setTabMode`<br>`getTabMode`       | `fixed`
@@ -358,22 +358,22 @@ Element       | Attribute            | Related method(s)                  | Defa
 Element   | Attribute      | Related method(s)                                                | Default value
 --------- | -------------- | ---------------------------------------------------------------- | -------------
 **Icon**  | `android:icon` | `setIcon`<br>`getIcon`                                           | `null`
-**Color** | `tabIconTint`  | `setTabIconTint`<br>`setTabIconTintResource`<br>`getTabIconTint` | `colorOnSurface` at 60% opacity and `colorPrimary` (activated) (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/tabs/res/color/mtrl_tabs_icon_color_selector.xml))
+**Color** | `tabIconTint`  | `setTabIconTint`<br>`setTabIconTintResource`<br>`getTabIconTint` | `colorOnSurfaceVariant` and `colorPrimary` (activated) (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/tabs/res/color/m3_tabs_icon_color.xml))
 
 ### Tab item text label attributes
 
 Element          | Attribute           | Related method(s)                                               | Default value
 ---------------- | ------------------- | --------------------------------------------------------------- | -------------
 **Text**         | `android:text`      | `setText`<br>`getText`                                          | `null`
-**Color**        | `tabTextColor`      | `setTabTextColors`<br>`getTabTextColors`                        | `colorOnSurface` at 60% opacity and `colorPrimary` (activated) (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/tabs/res/color/mtrl_tabs_icon_color_selector.xml))
-**Typography**   | `tabTextAppearance` | N/A                                                             | `?attr/textAppearanceButton`
+**Color**        | `tabTextColor`      | `setTabTextColors`<br>`getTabTextColors`                        | `colorOnSurfaceVariant` and `colorPrimary` (activated) (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/tabs/res/color/m3_tabs_icon_color.xml))
+**Typography**   | `tabTextAppearance` | N/A                                                             | `?attr/textAppearanceLabelLarge`
 **Inline label** | `tabInlineLabel`    | `setInlineLabel`<br>`setInlineLabelResource`<br>`isInlineLabel` | `false`
 
 ### Tab item container attributes
 
 Element              | Attribute                                                                                     | Related method(s)                                                            | Default value
 -------------------- | --------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | -------------
-**Ripple color**     | `tabRippleColor`                                                                              | `setTabRippleColor`<br>`setTabRippleColorResource`<br>`getTabRippleColor`    | `colorOnSurface` at 8% opacity and `colorPrimary` at 8% opacity (activated) (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/tabs/res/color/mtrl_tabs_ripple_color.xml))
+**Ripple color**     | `tabRippleColor`                                                                              | `setTabRippleColor`<br>`setTabRippleColorResource`<br>`getTabRippleColor`    | `colorOnSurfaceVariant` at 16% opacity and `colorPrimary` at 16% opacity (activated) (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/tabs/res/color/m3_tabs_ripple_color.xml))
 **Unbounded ripple** | `tabUnboundedRipple`                                                                          | `setUnboundedRipple`<br>`setUnboundedRippleResource`<br>`hasUnboundedRipple` | `true`
 **Gravity**          | `tabGravity`                                                                                  | `setTabGravity`<br>`getTabGravity`                                           | `fill`
 **Min width**        | `tabMinWidth`                                                                                 | N/A                                                                          | `72dp` (scrollable) or `wrap_content`
@@ -385,22 +385,24 @@ Element              | Attribute                                                
 Element                | Attribute                       | Related method(s)                                                | Default value
 ---------------------- | ------------------------------- | ---------------------------------------------------------------- | -------------
 **Color**              | `tabIndicatorColor`             | `setSelectedTabIndicatorColor`                                   | `colorPrimary`
-**Drawable**           | `tabIndicator`                  | `setSelectedTabIndicator`<br>`getSelectedTabIndicator`           | [`mtrl_tabs_default_indicator`](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/tabs/res/drawable/mtrl_tabs_default_indicator.xml)
+**Drawable**           | `tabIndicator`                  | `setSelectedTabIndicator`<br>`getSelectedTabIndicator`           | [`m3_tabs_rounded_line_indicator`](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/tabs/res/drawable/m3_tabs_rounded_line_indicator.xml)
 **Height**             | `tabIndicatorHeight`            | `setSelectedTabIndicatorHeight`                                  | `2dp`
-**Full width**         | `tabIndicatorFullWidth`         | `setTabIndicatorFullWidth`<br>`isTabIndicatorFullWidth`          | `true`
-**Animation mode**     | `tabIndicatorAnimationMode`     | `setTabIndicatorAnimationMode`<br>`getTabIndicatorAnimationMode` | `linear`
+**Full width**         | `tabIndicatorFullWidth`         | `setTabIndicatorFullWidth`<br>`isTabIndicatorFullWidth`          | `false`
+**Animation mode**     | `tabIndicatorAnimationMode`     | `setTabIndicatorAnimationMode`<br>`getTabIndicatorAnimationMode` | `elastic`
 **Gravity**            | `tabIndicatorGravity`           | `setSelectedTabIndicatorGravity`<br>`getTabIndicatorGravity`     | `bottom`
 **Animation duration** | `tabIndicatorAnimationDuration` | N/A                                                              | `250`
 
 ### Styles
 
-Element                                                                          | Style
--------------------------------------------------------------------------------- | -----
-**Default style**                                                                | `Widget.MaterialComponents.TabLayout`
-**Primary background color style**                                               | `Widget.MaterialComponents.TabLayout.Colored`
-**Primary (light theme) or surface (dark theme)**<br/>**background color style** | `Widget.MaterialComponents.TabLayout.PrimarySurface`
+Element                            | Style
+---------------------------------- | --------------------------------------
+**Default style**                  | `Widget.Material3.TabLayout`
+**Style for elevateable surfaces** | `Widget.Material3.TabLayout.OnSurface`
+**Primary secondary color style**  | `Widget.Material3.TabLayout.Secondary`
 
 Default style theme attribute: `?attr/tabStyle`
+
+Additional style theme attributes": `?attr/tabSecondaryStyle`
 
 See the full list of
 [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/tabs/res/values/styles.xml)
@@ -435,15 +437,15 @@ Using theme attributes and styles in `res/values/styles.xml` (themes all tabs
 and affects other components):
 
 ```xml
-<style name="Theme.App" parent="Theme.MaterialComponents.*">
+<style name="Theme.App" parent="Theme.Material3.*">
     ...
     <item name="colorPrimary">@color/shrine_pink_900</item>
     <item name="colorSurface">@color/shrine_pink_light</item>
     <item name="colorOnSurface">@color/shrine_pink_900</item>
-    <item name="textAppearanceButton">@style/TextAppearance.App.Button</item>
+    <item name="textAppearanceLabelLarge">@style/TextAppearance.App.LabelLarge</item>
 </style>
 
-<style name="TextAppearance.App.Button" parent="TextAppearance.MaterialComponents.Button">
+<style name="TextAppearance.App.LabelLarge" parent="TextAppearance.Material3.LabelLarge">
     <item name="fontFamily">@font/rubik</item>
     <item name="android:fontFamily">@font/rubik</item>
 </style>
@@ -453,14 +455,14 @@ or using default style theme attributes, styles and theme overlays (themes all
 tabs but does not affect other components):
 
 ```xml
-<style name="Theme.App" parent="Theme.MaterialComponents.*">
+<style name="Theme.App" parent="Theme.Material3.*">
     ...
-    <item name="tabStyle">@style/Widget.App.TabLayout</item>
+    <item name="tabStyle">@style/Widget.App.LabelLarge</item>
 </style>
 
-<style name="Widget.App.TabLayout" parent="Widget.MaterialComponents.TabLayout">
+<style name="Widget.App.TabLayout" parent="Widget.Material3.TabLayout">
     <item name="materialThemeOverlay">@style/ThemeOverlay.App.TabLayout</item>
-    <item name="tabTextAppearance">@style/TextAppearance.App.Button</item>
+    <item name="tabTextAppearance">@style/TextAppearance.App.LabelLarge</item>
 </style>
 
 <style name="ThemeOverlay.App.TabLayout" parent="">
