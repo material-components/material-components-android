@@ -170,8 +170,8 @@ and
 
 [Outlined buttons](https://material.io/components/buttons/#outlined-button) are
 for actions that need attention but aren’t the primary action, such as “See all”
-or “Add to cart.” This is also the button to use for giving someone the
-opportunity to change their mind or escape a flow.
+or “Add to cart.” This is also the button used to give someone the opportunity
+to change their mind or escape a flow.
 
 ### Outlined button examples
 
@@ -520,10 +520,9 @@ API and source code:
   *   [Class description](https://developer.android.com/reference/com/google/android/material/button/MaterialButton)
   *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/MaterialButton.java)
 
-The following example shows an elevated button with a text label and stroked
-container.
+The following example shows an elevated button with a text label.
 
-!["Elevated button with purple text 'Elevated button' and grey border over a
+!["Elevated button with purple text 'Elevated button' over a
 white background."](assets/buttons/elevated-button.png)
 
 In the layout:
@@ -771,8 +770,8 @@ API and source code:
 *   `CheckBox`
     *   [Class description](https://developer.android.com/reference/android/widget/CheckBox)
 
-**Note** The `CheckBox` API is just one of several inputs that can implement
-the icon button. See other
+**Note** The `CheckBox` API is just one of several inputs that can implement the
+icon button. See other
 [selection controls](https://material.io/components/selection-controls/) for
 more details.
 
@@ -840,8 +839,8 @@ color theming and cut corners."](assets/buttons/button-theming.png)
 
 #### Implementing button theming
 
-Using theme attributes and styles in `res/values/styles.xml` (themes all buttons
-and affects other components):
+Use theme attributes and styles in `res/values/styles.xml` to add the theme to
+all buttons. This affects other components:
 
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
@@ -863,8 +862,8 @@ and affects other components):
 </style>
 ```
 
-or using default style theme attributes, styles and theme overlays (themes all
-buttons but does not affect other components):
+Use default style theme attributes, styles and theme overlays. This adds the
+theme to all buttons but does not affect other components:
 
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
@@ -902,7 +901,7 @@ buttons but does not affect other components):
 </style>
 ```
 
-or using one of the styles in the layout (affects only this button):
+Use one of the styles in the layout. That will affect only this button:
 
 ```xml
 <Button
