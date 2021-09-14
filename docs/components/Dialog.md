@@ -266,8 +266,8 @@ Element                                 | **Attribute**                  | **Rel
 **Multi/single choice item text color** | `android:textColor`            | N/A                    | `?attr/colorOnSurface` at 60%
 **Multi/single choice item typography** | `android:textAppearance`       | N/A                    | `?attr/textAppearanceBody1`
 
-_**Note:** You can set any view to be the content of your dialog via the
-`setView` method._
+**Note:** You can set any view to be the content of your dialog via the
+`setView` method.
 
 #### Buttons attributes
 

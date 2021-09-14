@@ -145,8 +145,8 @@ using the `app:chipSpacing` attribute. Different horizontal and vertical spacing
 can be set using the `app:chipSpacingHorizontal` and `app:chipSpacingVertical`
 attributes.
 
-_**Note:** The `app:chipMinTouchTargetSize` will overrule vertical chip spacing
-for lower amounts._
+**Note:** The `app:chipMinTouchTargetSize` will overrule vertical chip spacing
+for lower amounts.
 
 The following image shows a group of chips with
 `app:chipSpacingHorizontal="42dp"`.

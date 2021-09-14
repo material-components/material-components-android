@@ -380,5 +380,5 @@ val background = bottomAppBar.background as MaterialShapeDrawable
 background.shapeAppearanceModel = background.shapeAppearanceModel.toBuilder().setTopEdge(topEdge).build()
 ```
 
-_**Note:** Using `BottomAppBarCutCornersTopEdge` is not necessary with rounded
-shapeAppearance corners._
+**Note:** Using `BottomAppBarCutCornersTopEdge` is not necessary with rounded
+shapeAppearance corners.

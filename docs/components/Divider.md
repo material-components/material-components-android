@@ -38,7 +38,7 @@ API and source code:
 The `MaterialDivider` is a view that can be used in layouts to separate content
 into clear groups.
 
-Note: Make sure to set `android:layout_height="wrap_content"` on the
+**Note:** Make sure to set `android:layout_height="wrap_content"` on the
 `MaterialDivider` to ensure that the correct size is set for the divider.
 
 The full-bleed divider is displayed below:

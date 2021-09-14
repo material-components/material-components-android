@@ -42,9 +42,9 @@ The content of all navigation drawer types can be implemented using a
   ... />
 ```
 
-_**Note:** The `layout_width` and `layout_height` attributes should be set to
+**Note:** The `layout_width` and `layout_height` attributes should be set to
 `wrap_content`, `match_parent`, or a custom dimension depending on the
-navigation drawer type and parent `ViewGroup`._
+navigation drawer type and parent `ViewGroup`.
 
 ### Adding a menu
 

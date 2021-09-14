@@ -300,9 +300,9 @@ Element                                    | Attribute                | Related 
 **Color for track's inactive part**        | `app:trackColorInactive` | `setTrackInactiveTintList`<br/>`getTrackInactiveTintList` | `?attr/colorSurfaceVariant`
 **Minimum separation for adjacent thumbs** | `app:minSeparation`      | `setMinSeparation`<br/>`getMinSeparation`                 | `0dp`
 
-_**Note:** `app:trackColor` takes precedence over `app:trackColorActive` and
+**Note:** `app:trackColor` takes precedence over `app:trackColorActive` and
 `app:trackColorInative`. It's a shorthand for setting both values to the same
-thing._
+thing.
 
 #### Thumb attributes
 
@@ -324,8 +324,8 @@ Element       | Attribute           | Related method(s)                         
 **Formatter** | N/A                 | `setLabelFormatter`<br/>`hasLabelFormatter` | `null`
 **Behavior**  | `app:labelBehavior` | `setLabelBehavior`<br/>`getLabelBehavior`   | `floating`
 
-_**Note:** The value label is a
-[Tooltip](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/tooltip/TooltipDrawable.java)._
+**Note:** The value label is a
+[Tooltip](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/tooltip/TooltipDrawable.java).
 
 #### Tick mark attributes
 
@@ -336,9 +336,9 @@ Element                             | Attribute               | Related method(s
 **Color for track's inactive part** | `app:tickColorInactive` | `setTickInactiveTintList`<br/>`getTickInactiveTintList` | `?attr/colorPrimary`
 **Tick visible**                    | `app:tickVisible`       | `setTickVisible`<br/>`isTickVisible()`                  | `true`
 
-_**Note:** `app:tickColor` takes precedence over `app:tickColorActive` and
+**Note:** `app:tickColor` takes precedence over `app:tickColorActive` and
 `app:tickColorInative`. It's a shorthand for setting both values to the same
-thing._
+thing.
 
 #### Styles
 

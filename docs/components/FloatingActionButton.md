@@ -34,7 +34,7 @@ Components for Android library. For more information, go to the
 [Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
 page.
 
-Note: If the `FloatingActionButton` is a child of a `CoordinatorLayout`, you get
+**Note:** If the `FloatingActionButton` is a child of a `CoordinatorLayout`, you get
 certain behaviors for free. It will automatically shift so that any displayed
 `Snackbar`s do not cover it, and will automatially hide when covered by an
 `AppBarLayout` or `BottomSheetBehavior`.
@@ -247,7 +247,7 @@ and
 
 The extended FAB is wider, and it includes a text label.
 
-Note: `ExtendedFloatingActionButton` is a child class of
+**Note:** `ExtendedFloatingActionButton` is a child class of
 [`MaterialButton`](Button.md), rather than `FloatingActionButton`. This means
 that several attributes which are applicable to `FloatingActionButton` have
 different naming in `ExtendedFloatingActionButton`. For example,

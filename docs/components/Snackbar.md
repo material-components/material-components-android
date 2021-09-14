@@ -43,11 +43,11 @@ Available duration presets are:
 *   `LENGTH_LONG` (Show the snackbar for a long period of time)
 *   `LENGTH_SHORT` (Show the snackbar for a short period of time)
 
-_**Note:** Snackbars work best if they are displayed inside of a
+**Note:** Snackbars work best if they are displayed inside of a
 [CoordinatorLayout](https://developer.android.com/reference/androidx/coordinatorlayout/widget/CoordinatorLayout).
 `CoordinatorLayout` allows the snackbar to enable behavior like
 swipe-to-dismiss, as well as automatically moving widgets like
-[FloatingActionButton](FloatingActionButton.md)._
+[FloatingActionButton](FloatingActionButton.md).
 
 ### Making snackbars accessible
 

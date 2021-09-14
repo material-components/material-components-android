@@ -35,10 +35,10 @@ Material Components for Android library. For more information, go to the
 [Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
 page.
 
-_**Note:** `<CheckBox>` is auto-inflated as
+**Note:** `<CheckBox>` is auto-inflated as
 `<com.google.android.material.button.MaterialCheckBox>` via
 `MaterialComponentsViewInflater` when using a `Theme.Material3.*`
-theme._
+theme.
 
 ### Making checkboxes accessible
 
@@ -54,8 +54,8 @@ Checkboxes allow the user to select one or more items from a set. Checkboxes can
 be used to turn an option on or off. Unlike radio buttons, changes in the states
 of one checkbox do not usually affect other checkboxes.
 
-_**Note:** Checkboxes do not support shape theming and are only rounded square
-checkboxes._
+**Note:** Checkboxes do not support shape theming and are only rounded square
+checkboxes.
 
 ### Checkboxes example
 
@@ -148,8 +148,8 @@ enabled, disabled, hover, focused, and pressed states.
 pressed. Rows are selected, unselected, or
 indeterminite](assets/checkbox/checkbox_states.png)
 
-_**Note:** `MaterialCheckBox` does not support the indeterminate state. Only
-selected and unselected states are supported._
+**Note:** `MaterialCheckBox` does not support the indeterminate state. Only
+selected and unselected states are supported.
 
 ### Styles
 

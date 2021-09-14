@@ -32,9 +32,9 @@ Material Components for Android library. For more information, go to the
 [Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
 page.
 
-_**Note:** `<Button>` is auto-inflated as
+**Note:** `<Button>` is auto-inflated as
 `<com.google.android.material.button.MaterialButton>` via
-`MaterialComponentsViewInflater` when using a `Theme.Material3.*` theme._
+`MaterialComponentsViewInflater` when using a `Theme.Material3.*` theme.
 
 ### Making buttons accessible
 
@@ -284,7 +284,7 @@ and
 contrasting surface color makes it the most prominent button after the FAB. It’s
 used for final or unblocking actions in a flow.
 
-_**Note** The filled button is the default style if the style is not set._
+**Note** The filled button is the default style if the style is not set.
 
 ### Filled button examples
 
@@ -311,9 +311,9 @@ In the layout:
 />
 ```
 
-_**Note:** Since this is the default type, you don't need to specify a style tag
+**Note:** Since this is the default type, you don't need to specify a style tag
 as long as you are using a Material Components Theme. If not, set the style to
-`@style/Widget.Material3.Button`._
+`@style/Widget.Material3.Button`.
 
 In code:
 
@@ -771,10 +771,10 @@ API and source code:
 *   `CheckBox`
     *   [Class description](https://developer.android.com/reference/android/widget/CheckBox)
 
-_**Note** The `CheckBox` API is just one of several inputs that can implement
+**Note** The `CheckBox` API is just one of several inputs that can implement
 the icon button. See other
 [selection controls](https://material.io/components/selection-controls/) for
-more details._
+more details.
 
 The following example shows an icon that can be used independently or in items
 of a `RecyclerView`.

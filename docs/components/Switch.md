@@ -31,11 +31,11 @@ Material Components for Android library. For more information, go to the
 [Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
 page.
 
-_**Note:** The `SwitchMaterial` widget provides a complete implementation of
+**Note:** The `SwitchMaterial` widget provides a complete implementation of
 Material Design's switch component. It extends from the support library's
 `SwitchCompat` widget, but not from the framework `Switch` widget. As such, it
 does not auto-inflate, unlike other selection controls, and must be explicitly
-specified in layouts._
+specified in layouts.
 
 Use switches to:
 

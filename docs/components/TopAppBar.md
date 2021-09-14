@@ -202,13 +202,13 @@ topAppBar.setOnMenuItemClickListener { menuItem ->
 }
 ```
 
-_**Note:** The above example is the recommended approach and, in order for it to
+**Note:** The above example is the recommended approach and, in order for it to
 work, you need to be using a `Theme.MaterialComponents.*` theme containing the
 `NoActionBar` segment (eg. `Theme.MaterialComponents.Light.NoActionBar`). If
 not, an action bar will be added to the current `Activity` window. The
 `MaterialToolbar` can be set as the support action bar and thus receive various
 `Activity` callbacks, as shown in this
-[guide](https://developer.android.com/training/appbar)._
+[guide](https://developer.android.com/training/appbar).
 
 #### Applying scrolling behavior to the top app bar
 

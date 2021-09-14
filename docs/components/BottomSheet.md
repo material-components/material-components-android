@@ -161,7 +161,7 @@ You can set a state on the bottom sheet like so:
 bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
 ```
 
-Note: `STATE_SETTLING` and `STATE_DRAGGING` should not be set programmatically.
+**Note:** `STATE_SETTLING` and `STATE_DRAGGING` should not be set programmatically.
 
 ### Listening to state and slide changes
 
@@ -344,7 +344,7 @@ modalBottomSheet.show(supportFragmentManager, ModalBottomSheet.TAG)
 `BottomSheetDialogFragment` is a subclass of `AppCompatFragment`, which means
 you need to use `Activity.getSupportFragmentManager()`.
 
-Note: Don't call `setOnCancelListener` or `setOnDismissListener` on a
+**Note:** Don't call `setOnCancelListener` or `setOnDismissListener` on a
 `BottomSheetDialogFragment`, instead you can override
 `onCancel(DialogInterface)` or `onDismiss(DialogInterface)` if necessary.
 
@@ -466,7 +466,7 @@ In `res/values/styles.xml`:
 </style>
 ```
 
-Note: The benefit of using a custom `ThemeOverlay` is that any changes to your
+**Note:** The benefit of using a custom `ThemeOverlay` is that any changes to your
 main theme, such as updated colors, will be reflected in the bottom sheet (as
 long as they're not overridden in your custom theme overlay). If you use a
 custom `Theme` instead (by extending from one of the

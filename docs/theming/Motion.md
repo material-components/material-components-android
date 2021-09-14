@@ -20,8 +20,8 @@ information, go to the
 [Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
 page.
 
-_**Note:** [Motion theming](#theming) will only be available in Material
-Components for Android version `1.4.0-alpha01` and above._
+**Note:** [Motion theming](#theming) will only be available in Material
+Components for Android version `1.4.0-alpha01` and above.
 
 Material Components for Android provides support for all four motion patterns
 defined in the Material spec.
@@ -116,11 +116,11 @@ which will be shared. Add a matching `transitionName` to each of these Views.
   android:transitionName="shared_element_container" />
 ```
 
-_**Note:** There cannot be more than a 1:1 mapping of `transitionNames` between
+**Note:** There cannot be more than a 1:1 mapping of `transitionNames` between
 the start and end layouts. If you have multiple Views in your start layout that
 could be mapped to an end View in your end layout (e.g. each `RecyclerView` item
 to a details screen), read about shared element mapping at
-[Continuous Shared Element Transitions: RecyclerView to ViewPager](https://android-developers.googleblog.com/2018/02/continuous-shared-element-transitions.html)._
+[Continuous Shared Element Transitions: RecyclerView to ViewPager](https://android-developers.googleblog.com/2018/02/continuous-shared-element-transitions.html).
 
 Set Fragment B's `sharedElementEnterTransition` to a new
 `MaterialContainerTransform`. This can be done either before adding/replacing
@@ -166,12 +166,12 @@ Completing these steps should give you a working enter and return container
 transform when navigating from Fragment A to Fragment B and popping from
 Fragment B to Fragment A.
 
-_**Note:** Fragments are able to define enter and return shared element
+**Note:** Fragments are able to define enter and return shared element
 transitions. When only an enter shared element transition is set, it will be
 re-used when the Fragment is popped (returns). `MaterialContainerTransform`
 internally configures the transition’s properties based on whether or not it’s
 entering or returning. If you need to customize either the enter or return style
-of the transition, see [Customizing the container transform](#customization)._
+of the transition, see [Customizing the container transform](#customization).
 
 When running this new transition, you might notice that Fragment A (everything
 besides the shared element) disappears as soon as the container transform
@@ -191,13 +191,13 @@ override fun onCreate(savedInstanceState: Bundle?) {
 }
 ```
 
-_**Note:** When setting a `Hold` or `MaterialElevationScale` transition, it’s
+**Note:** When setting a `Hold` or `MaterialElevationScale` transition, it’s
 important that the transition matches the duration of the
 `MaterialContainerTransform` it’s paired with. If explicitly setting a duration
 on `MaterialContainerTransform` with `setDuration`, use the same value.
 Otherwise, prefer the `MaterialContainerTransform(Context, boolean)` constructor
 which loads theme-based values upfront so `Hold` or `MaterialElevationScale`’s
-duration can be accurately set using `MaterialContainerTransform.getDuration`._
+duration can be accurately set using `MaterialContainerTransform.getDuration`.
 
 Alternatively, to subtly scale and fade Fragment A while the container transform
 is playing, set FragmentA's exit and reenter transitions to a
@@ -220,20 +220,20 @@ container transform. Whereas we pass in `true` for the reenter
 `MaterialElevationScale` to scale up or expand Fragment A when it is reentering
 during the return container transform.
 
-_**Note:** When using `MaterialElevationScale`, make sure to mark the root view
+**Note:** When using `MaterialElevationScale`, make sure to mark the root view
 of your Fragment as a
 [transition group](https://developer.android.com/reference/android/view/ViewGroup#setTransitionGroup\(boolean\)),
 either with `android:transitionGroup="true"` for API level 21+ or
 `ViewGroupCompat#setTransitionGroup` for all API levels. This will ensure that
 the animation is applied to the Fragment view as a whole, as opposed to each
 child view individually, which is the default behavior of the Android
-Transitions system._
+Transitions system.
 
 #### Transition between Activities
 
-_**Note:** Activity and Window transitions require using Android Framework
+**Note:** Activity and Window transitions require using Android Framework
 Transitions provided in the `com.google.android.material.transition.platform`
-package and are only available on API level 21 and above._
+package and are only available on API level 21 and above.
 
 In Activity A’s layout, identify the start View to be used as the “shared
 element” as described in the
@@ -301,13 +301,13 @@ override fun onCreate(savedInstanceState: Bundle?) {
 }
 ```
 
-_**Note:** We are using `android.R.id.content` (the window’s root) as the shared
+**Note:** We are using `android.R.id.content` (the window’s root) as the shared
 element “container” in Activity B. This will cause the start view from Activity
 A to transition into the full screen of Activity B. If you have views in
 Activity A and Activity B that you do not want included as part of the
 transform, you can alternatively set the transition name on a `View`/`ViewGroup`
 in Activity B’s layout or include/exclude `View`s with helper methods on the
-Transition class (`Transition#addTarget`, `Transition#excludeChildren`, etc)._
+Transition class (`Transition#addTarget`, `Transition#excludeChildren`, etc).
 
 From Activity A, start the container transform by constructing an Intent with
 the following options.
@@ -376,14 +376,14 @@ Element        | Attribute                | Related method(s)                 | 
 **Easing** | `motionEasingStandard`           | `getInterpolator`<br/>`setInterpolator`          | `cubic-bezier(0.4, 0.0, 0.2, 1)`<br/>`FastOutSlowIn`
 **Motion path** | `motionPath`           | `getPathMotion`<br/>`setPathMotion`          | `linear`
 
-_**Note:** By default, `MaterialContainerTransform` uses different durations
+**Note:** By default, `MaterialContainerTransform` uses different durations
 when incoming vs. outgoing. Calling `setDuration` on an instance of
 `MaterialContainerTransform` will override this behavior, causing the passed
 duration to be used both when incoming and outgoing. If you would like different
 durations for incoming and outgoing animations, you should create and set
 separate instances of `MaterialContainerTransform` for entering and returning
 transitions with the desired values. Alternatively, update the duration theme
-attributes._
+attributes.
 
 `MaterialContainerTransform` provides two constructors - an empty parameter
 constructor and a `(Context, boolean)` constructor. The `(Context, boolean)`
@@ -416,9 +416,9 @@ Element                                   | Related method(s)                   
 **Shape Mask Thresholds**                 | `getShapeMaskProgressThresholds`<br/>`setShapeMaskProgressThresholds` | `[0.0 - 0.75] enter`<br/>`[0.3 - 0.9] return`<br/>`[0.1 - 0.9] enter w. arc`<br/>`[0.2 - 0.9] return w. arc`
 **Debug Drawing**                         | `isDrawDebugEnabled()`<br/>`setDrawDebugEnabled()`                    | `false`
 
-_**Note:** All of these properties have defaults. In most cases, each property
+**Note:** All of these properties have defaults. In most cases, each property
 has a different default value depending on whether or not the transition is
-entering or returning._
+entering or returning.
 
 _When you manually set any of the above properties, the value set will be used
 when the transition is both entering and returning (including when an enter
@@ -482,12 +482,12 @@ Axis  | Forward           | Backward
 **Y** | Up on y-axis      | Down on y-axis
 **Z** | Forward on z-axis | Backward on z-axis
 
-_**Note:** Since a shared axis' direction is independent of whether its target
+**Note:** Since a shared axis' direction is independent of whether its target
 is appearing or dissapearing (an appearing target will sometimes be moving
 forward when entering **and** forward when exiting), `MaterialSharedAxis` is not
 able to automatically reverse when only a target's enter transition is set. For
 this reason, you should manually configure and set a target's transitions (enter
-,exit, return, reenter) with the correct direction._
+,exit, return, reenter) with the correct direction.
 
 A shared axis transition can be configured to transition between a number of
 Android structures including Fragments, Activities and Views.
@@ -555,9 +555,9 @@ _not_ spatially related.
 
 #### Transition between Activities
 
-_**Note:** Activity and Window transitions require using Android Framework
+**Note:** Activity and Window transitions require using Android Framework
 Transitions provided in the `com.google.android.material.transition.platform`
-package and are only available on API level 21 and above._
+package and are only available on API level 21 and above.
 
 Enable Activity transitions by either setting
 `android:windowActivityTransitions` to true in your theme or enabling them on an
@@ -789,9 +789,9 @@ override fun onCreate(savedInstanceState: Bundle?) {
 }
 ```
 
-_**Note:** Since `MaterialFadeThrough` extends `Visibility`,
+**Note:** Since `MaterialFadeThrough` extends `Visibility`,
 `MaterialFadeThrough` is able to appropriately animate targets depending on
-whether they are apperaing or disappearing._
+whether they are apperaing or disappearing.
 
 When you're ready to navigate between Fragment A and Fragment B, use a standard
 Fragment transaction or use the
@@ -806,9 +806,9 @@ supportFragmentManager
 
 #### Transition between Activities
 
-_**Note:** Activity and Window transitions require using Android Framework
+**Note:** Activity and Window transitions require using Android Framework
 Transitions provided in the `com.google.android.material.transition.platform`
-package and are only available on API level 21 and above._
+package and are only available on API level 21 and above.
 
 Enable Activity transitions by either setting
 `android:windowActivityTransitions` to true in your theme or enabling them on an

@@ -34,8 +34,8 @@ loading an app, submitting a form, or saving updates. They communicate an app’
 state and indicate available actions, such as whether users can navigate away
 from the current screen.
 
-_**Note: When displaying progress for a sequence of processes, indicate overall
-progress rather than the progress of each activity.**_
+**Note:** When displaying progress for a sequence of processes, indicate overall
+progress rather than the progress of each activity.
 
 ### Usage
 
@@ -89,9 +89,9 @@ int progress = getLoadingProgress()
 indicator.setProgressCompat(progress, true)
 ```
 
-_**Note:** Once indeterminate progress indicators are switched to the
+**Note:** Once indeterminate progress indicators are switched to the
 determinate mode (or initialized as determinate), they can be set back to
-indeterminate mode via calling the `setIndeterminate(true)` method._
+indeterminate mode via calling the `setIndeterminate(true)` method.
 
 ### Making progress indicators accessible
 
@@ -216,7 +216,7 @@ track](assets/progressindicator/linear_multicolor_contiguous.gif)
 *   `contiguous` - animates as repeated cycles with three adjacent segments in
     iterative different colors.
 
-Note: There is a minimum requirement of 3 indicator colors to use the
+**Note:** There is a minimum requirement of 3 indicator colors to use the
 **contiguous** animation. Otherwise, an IllegalArgumentException will be thrown.
 
 ## Circular progress indicators
