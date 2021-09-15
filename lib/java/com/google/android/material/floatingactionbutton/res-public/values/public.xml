@@ -28,9 +28,38 @@
   <public name="shrinkMotionSpec" type="attr"/>
   <public name="collapsedSize" type="attr"/>
   <public name="floatingActionButtonStyle" type="attr"/>
+  <public name="floatingActionButtonPrimaryStyle" type="attr"/>
+  <public name="floatingActionButtonSecondaryStyle" type="attr"/>
+  <public name="floatingActionButtonTertiaryStyle" type="attr"/>
+  <public name="floatingActionButtonSurfaceStyle" type="attr"/>
+  <public name="floatingActionButtonLargeStyle" type="attr"/>
+  <public name="floatingActionButtonLargePrimaryStyle" type="attr"/>
+  <public name="floatingActionButtonLargeSecondaryStyle" type="attr"/>
+  <public name="floatingActionButtonLargeTertiaryStyle" type="attr"/>
+  <public name="floatingActionButtonLargeSurfaceStyle" type="attr"/>
   <public name="extendedFloatingActionButtonStyle" type="attr"/>
+  <public name="extendedFloatingActionButtonPrimaryStyle" type="attr"/>
+  <public name="extendedFloatingActionButtonSecondaryStyle" type="attr"/>
+  <public name="extendedFloatingActionButtonTertiaryStyle" type="attr"/>
+  <public name="extendedFloatingActionButtonSurfaceStyle" type="attr"/>
   <public name="Widget.Design.FloatingActionButton" type="style"/>
   <public name="Widget.MaterialComponents.FloatingActionButton" type="style"/>
   <public name="Widget.MaterialComponents.ExtendedFloatingActionButton" type="style"/>
   <public name="Widget.MaterialComponents.ExtendedFloatingActionButton.Icon" type="style"/>
+  <public name="Widget.Material3.FloatingActionButton.Primary" type="style"/>
+  <public name="Widget.Material3.FloatingActionButton.Secondary" type="style"/>
+  <public name="Widget.Material3.FloatingActionButton.Tertiary" type="style"/>
+  <public name="Widget.Material3.FloatingActionButton.Surface" type="style"/>
+  <public name="Widget.Material3.FloatingActionButton.Large.Primary" type="style"/>
+  <public name="Widget.Material3.FloatingActionButton.Large.Secondary" type="style"/>
+  <public name="Widget.Material3.FloatingActionButton.Large.Tertiary" type="style"/>
+  <public name="Widget.Material3.FloatingActionButton.Large.Surface" type="style"/>
+  <public name="Widget.Material3.ExtendedFloatingActionButton.Primary" type="style"/>
+  <public name="Widget.Material3.ExtendedFloatingActionButton.Secondary" type="style"/>
+  <public name="Widget.Material3.ExtendedFloatingActionButton.Tertiary" type="style"/>
+  <public name="Widget.Material3.ExtendedFloatingActionButton.Surface" type="style"/>
+  <public name="Widget.Material3.ExtendedFloatingActionButton.Icon.Primary" type="style"/>
+  <public name="Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary" type="style"/>
+  <public name="Widget.Material3.ExtendedFloatingActionButton.Icon.Tertiary" type="style"/>
+  <public name="Widget.Material3.ExtendedFloatingActionButton.Icon.Surface" type="style"/>
 </resources>
