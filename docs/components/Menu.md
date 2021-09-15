@@ -75,9 +75,9 @@ menus is automatically provided to accessibility services. Additional content
 labels are usually unnecessary.
 
 Android's exposed dropdown menu component APIs support both label text and
-helper text for informing the user as to what information is requested for a
-menu. While optional, their use is strongly encouraged. For more information
-about this component's accessibility, check out
+helper text, which tell the user what information is requested for a menu. While
+optional, their use is strongly encouraged. For more information about this
+component's accessibility, check out
 [the text field's a11y section](TextField.md#making-text-fields-accessible).
 
 ### Types
@@ -145,7 +145,7 @@ In `res/menu/overflow_menu.xml`:
 #### Context menus
 
 The following example shows a context menu that appears when a `TextView` is
-long pressed.
+pressed for a designated amount of time.
 
 ![White menu window with two options floating over a white background with grey
 text](assets/menu/menus_context.png)
@@ -190,8 +190,8 @@ In the layout:
     android:text="@string/menu_context_menu_description"/>
 ```
 
-Alternatively, you can inflate a context menu in `onCreateContextMenu`
-(similarly to the overflow menu):
+Alternatively, you can inflate a context menu in `onCreateContextMenu` (as with
+the overflow menu):
 
 ```kt
 override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
@@ -230,7 +230,7 @@ with a `res/menu/context_menu.xml`:
 
 #### Popup menus
 
-The following example shows a popup menu when a button is clicked.
+The following example shows a popup menu that displays when a button is clicked.
 
 ![White menu container with 3 options open below a purple "Show menu" button](assets/menu/menus_popup.png)
 
@@ -283,9 +283,9 @@ In `res/menu/popup_menu.xml`:
 </menu>
 ```
 
-##### Adding icons on popup menus
+##### Adding icons to popup menus
 
-Currently, there is no public API to add icons on popup menus. The following
+Currently, there is no public API to add icons to popup menus. The following
 workaround is for API 21+, and uses library-only APIs, and is not guaranteed to
 work in future versions.
 
@@ -347,7 +347,8 @@ In `res/menu/popup_menu.xml`:
 
 #### List popup window menus
 
-The following example shows a list popup window menu when a button is clicked.
+The following example shows a list popup window menu that appears when a button
+is clicked.
 
 ![White menu container with 3 options below a purple "Show menu" button](assets/menu/menus_list_popup_window.png)
 
@@ -445,8 +446,8 @@ and
 
 ## Exposed dropdown menus
 
-Exposed dropdown menus display the currently selected menu item above the list
-of options. Some variations can accept user-entered input.
+Exposed dropdown menus display the currently selected menu item above a list of
+options. Some variations can accept user-entered input.
 
 **Note:** The exposed dropdown menu is implemented through the
 `TextInputLayout`. For detailed information on
@@ -518,16 +519,15 @@ In the item layout (`list_item.xml`):
 />
 ```
 
-To have an outlined variation of the exposed dropdown menu, set the `style` to
+To add an outline to the exposed dropdown menu, set the `style` to
 `@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu`:
 
 ![Menu with purple outlined text field element and 4 items. Item 1 selected.](assets/menu/menus_exposed_dropdown_outlined.png)
 
 #### Non editable variation
 
-Disable the user input in the `AutoCompleteTextView` to have a non editable
-variation of the menu by setting `android:inputType="none"` on the
-`AutoCompleteTextView`.
+For a non-editable menu, disable the user input in the `AutoCompleteTextView` by
+setting `android:inputType="none"` on the `AutoCompleteTextView`.
 
 #### Setting a default value
 
@@ -537,8 +537,8 @@ the filter set to `false`.
 
 ### Anatomy and key properties
 
-The exposed dropdown menu is made of an `AutoCompleteTextView` within a
-`TextInputLayout` that has a dropdown menu displayed below it.
+The exposed dropdown menu is an `AutoCompleteTextView` within a
+`TextInputLayout`. It displays a dropdown menu below a text field.
 
 ![Exposed dropdown menu anatomy diagram](assets/menu/menus_exposed_dropdown_anatomy.png)
 
@@ -550,7 +550,7 @@ The exposed dropdown menu is made of an `AutoCompleteTextView` within a
 
 #### `TextInputLayout` attributes (container, label, trailing icon)
 
-To see all attributes that apply to the `TextInputLayout`, see the
+For all attributes that apply to the `TextInputLayout`, see the
 [TextInputLayout documentation](TextField.md).
 
 #### `AutoCompleteTextView` attributes (input text, dropdown menu)
@@ -584,14 +584,14 @@ and
 ## Theming menus
 
 Menus drawers support
-[Material Theming](https://material.io/components/text-fields/#theming) and can
-be customized in terms of color, typography and shape.
+[Material Theming](https://material.io/components/text-fields/#theming) which
+can customize color, typography and shape.
 
 ### Menu theming examples
 
 Popup, overflow, and list popup window menus support
-[Material Theming](https://material.io/components/chips/#theming) and can be
-customized in terms of typography.
+[Material Theming](https://material.io/components/chips/#theming) which can
+customize typography.
 
 API and source code:
 
@@ -612,8 +612,8 @@ The following example shows a menu with Material Theming.
 
 ### Implementing menu theming
 
-Using default style theme attributes (affects all menus but does not affect
-other components):
+Use default style theme attributes, which affect all menus but do not affect
+other components:
 
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
@@ -661,8 +661,8 @@ to set a custom background for one type of menu:
 ### Exposed dropdown menu theming example
 
 Exposed dropdown menus support
-[Material Theming](https://material.io/components/chips/#theming) and can be
-customized in terms of color, typography, and shape.
+[Material Theming](https://material.io/components/chips/#theming) which can
+customize color, typography, and shape.
 
 **Note:** The exposed dropdown menu is implemented through the
 `TextInputLayout`. For detailed information on how
@@ -689,8 +689,8 @@ outline](assets/menu/menus_exposed_dropdown_theming.png)
 
 ### Implementing exposed dropdown menu theming
 
-Using default style theme attributes, styles and theme overlays (themes all
-menus but does not affect other components):
+Use default style theme attributes, styles and theme overlays which adds themes
+to all menus but does not affect other components:
 
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
@@ -730,7 +730,7 @@ menus but does not affect other components):
 </style>
 ```
 
-or using the style in the layout (affects only this menu):
+or use the style in the layout, which affects only this menu:
 
 ```xml
 <com.google.android.material.textfield.TextInputLayout
@@ -746,6 +746,6 @@ or using the style in the layout (affects only this menu):
 style, set `autoCompleteTextViewStyle` to either a
 `@style/Widget.Material3.AutoCompleteTextView.*` style or to a custom one that
 inherits from that. <br/> The `TextInputLayout.*.ExposedDropdownMenu` styles set
-`materialThemeOverlay` that overrides `autoCompleteTextViewStyle` with the
+`materialThemeOverlay` to override `autoCompleteTextViewStyle` with the
 specific `AutoCompleteTextView` style needed. Therefore, you don't need to
 specify a style tag on the `AutoCompleteTextView`.
