@@ -24,4 +24,5 @@
   <dimen name="appcompat_dialog_background_inset">16dp</dimen>
 
   <dimen name="m3_alert_dialog_corner_size">28dp</dimen>
+  <dimen name="m3_alert_dialog_icon_size">24dp</dimen>
 </resources>

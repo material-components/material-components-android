@@ -123,7 +123,11 @@
     <item name="android:orientation">vertical</item>
   </style>
 
-  <style name="MaterialAlertDialog.Material3.Title.Icon" parent="MaterialAlertDialog.MaterialComponents.Title.Icon"/>
+  <style name="MaterialAlertDialog.Material3.Title.Icon" parent="MaterialAlertDialog.MaterialComponents.Title.Icon">
+    <item name="android:layout_width">@dimen/m3_alert_dialog_icon_size</item>
+    <item name="android:layout_height">@dimen/m3_alert_dialog_icon_size</item>
+    <item name="tint">?attr/colorSecondary</item>
+  </style>
 
   <style name="MaterialAlertDialog.Material3.Title.Icon.CenterStacked">
     <item name="android:layout_gravity">center</item>
