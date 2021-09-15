@@ -53,15 +53,15 @@ background on it.
 
 ### Making text fields accessible
 
-Android's text field component APIs support both label text and helper text for
-informing the user as to what information is requested for a text field. While
-optional, their use is strongly encouraged.
+Android's text field component APIs support both label text and helper text,
+which explain what is requested for a text field. While optional, their use is
+strongly encouraged.
 
 #### Content description
 
 When using **custom icons**, you should set a content description on them so
-that screen readers like TalkBack are able to announce their purpose or action,
-if any.
+that screen readers, like TalkBack, are able to announce their purpose or
+action.
 
 For the leading icon, that can be achieved via the
 `app:startIconContentDescription` attribute or `setStartIconContentDescription`
@@ -72,8 +72,8 @@ method.
 When setting an **error message** that contains special characters that screen
 readers or other accessibility systems are not able to read, you should set a
 content description via the `app:errorContentDescription` attribute or
-`setErrorContentDescription` method. That way, when the error needs to be
-announced, it will announce the content description instead.
+`setErrorContentDescription` method. That way the error will announce the
+content description instead of the error message.
 
 #### Custom `EditText`
 
@@ -104,9 +104,8 @@ of providing an `AccessibilityDelegate` directly on the `EditText`.
 
 !["Text field with a password toggle trailing icon."](assets/textfields/textfields_trailing_icon_password_toggle.png)
 
-If set, an icon is displayed to toggle between the password being displayed as
-plain-text or disguised (when the `TextInputEditText` is set to display a
-password).
+When the `TextInputEditText` is set to display a password, an icon can be added
+to toggle between masking the password or displaying the password as plain-text.
 
 ```xml
 <com.google.android.material.textfield.TextInputLayout
@@ -125,8 +124,8 @@ password).
 
 !["Text field with a clear text trailing icon."](assets/textfields/textfields_trailing_icon_clear_text.png)
 
-If set, an icon is displayed when text is present and pressing it clears the
-input text.
+An icon can be set to display when text is present. The icon can be pressed to
+clear the input text.
 
 ```xml
 <com.google.android.material.textfield.TextInputLayout
@@ -144,7 +143,7 @@ input text.
 
 It is possible to set a custom `Drawable` as the text field's trailing icon via
 `app:endIconMode="custom"`. You should specify a drawable and content
-description for the icon, and, optionally, specify custom behaviors.
+description for the icon, and, you have the option to specify custom behaviors.
 
 In the layout:
 
@@ -322,7 +321,7 @@ on the `TextInputLayout` instead of on the `TextInputEditText` to avoid
 unintended behaviors.
 
 You can override those values in a custom style that inherits from a
-`TextInputLayout` style or directly on the layout:
+`TextInputLayout` style or by making changes directly on the layout:
 
 ```xml
 <com.google.android.material.textfield.TextInputLayout
@@ -382,7 +381,7 @@ API and source code:
     *   [Class definition](https://developer.android.com/reference/com/google/android/material/textfield/TextInputEditText)
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/textfield/TextInputEditText.java)
 
-The following examples shows a filled text field with a label.
+The following example shows a filled text field with a label.
 
 ![Filled text field](assets/textfields/textfields_filled.png)
 
@@ -433,9 +432,9 @@ indicator, optional helper/error text and optional leading/trailing icons.
 7.  Helper/error/counter text
 8.  Prefix/suffix/placeholder (not shown)
 
-**Note:** All the attributes on the tables below should be set on the
-`TextInputLayout`, with the exception of the input text attributes (which should
-be set on the `TextInputEditText`).
+**Note:** All the attributes in the tables below should be set on the
+`TextInputLayout`, with the exception of the input text attributes, which should
+be set on the `TextInputEditText`.
 
 #### Container attributes
 
@@ -545,11 +544,11 @@ and
 ## Outlined text field
 
 [Outlined text fields](https://material.io/components/text-fields/#outlined-text-field)
-have less visual emphasis than filled text fields. When they appear in places
-like forms, where many text fields are placed together, their reduced emphasis
+have less visual emphasis than filled text fields. When they appear in forms,
+for example, where many text fields are placed together, their reduced emphasis
 helps simplify the layout.
 
-**Note:** The outlined text field is the default style if the style is not set.
+**Note:** The outlined text field is the default style.
 
 ### Outlined text field examples
 
@@ -562,7 +561,7 @@ API and source code:
     *   [Class definition](https://developer.android.com/reference/com/google/android/material/textfield/TextInputEditText)
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/textfield/TextInputEditText.java)
 
-The following examples shows an outlined text field.
+The following example shows an outlined text field.
 
 ![Outlined text field](assets/textfields/textfields_outlined.png)
 
@@ -611,9 +610,9 @@ helper/error text and optional leading/trailing icons.
 6.  Helper/error/counter text
 7.  Prefix/suffix/placeholder (not shown)
 
-**Note:** All the attributes on the tables below should be set on the
-`TextInputLayout`, with the exception of the input text attributes (which should
-be set on the `TextInputEditText`).
+**Note:** All the attributes in the tables below should be set on the
+`TextInputLayout`, with the exception of the input text attributes, which should
+be set on the `TextInputEditText`.
 
 #### Container attributes
 
@@ -715,8 +714,8 @@ and
 ## Theming text fields
 
 Text fields support
-[Material Theming](https://material.io/components/text-fields/#theming) and can
-be customized in terms of color, typography and shape.
+[Material Theming](https://material.io/components/text-fields/#theming) which
+provides color, typography and shape customization.
 
 ### Text field theming example
 
@@ -737,8 +736,8 @@ corners"](assets/textfields/textfields_theming.png)
 
 #### Implementing text field theming
 
-Using theme attributes and styles in `res/values/styles.xml` (themes all text
-fields and affects other components):
+Using theme attributes and styles in `res/values/styles.xml` adds themes to all
+text fields and affects other components:
 
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
@@ -767,8 +766,8 @@ fields and affects other components):
 </style>
 ```
 
-or using default style theme attributes, styles and theme overlays (themes all
-text fields but does not affect other components):
+Using default style theme attributes, styles and theme overlays adds themes to
+all text fields but does not affect other components:
 
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
@@ -792,7 +791,7 @@ text fields but does not affect other components):
 </style>
 ```
 
-or using one the style in the layout (affects only this text field):
+Using the style in the layout affects only this text field:
 
 ```xml
 <com.google.android.material.textfield.TextInputLayout
@@ -808,6 +807,6 @@ or using one the style in the layout (affects only this text field):
 style, don't forget to set `editTextStyle` to either a
 `@style/Widget.Material3.TextInputEditText.*` style or to a custom one that
 inherits from that. <br/> The `TextInputLayout` styles set
-`materialThemeOverlay` that overrides `editTextStyle` with the specific
+`materialThemeOverlay` to override `editTextStyle` with the specific
 `TextInputEditText` style needed. Therefore, you don't need to specify a style
 tag on the edit text.
