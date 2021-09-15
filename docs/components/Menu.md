@@ -519,7 +519,7 @@ In the item layout (`list_item.xml`):
 />
 ```
 
-To add an outline to the exposed dropdown menu, set the `style` to
+To use the exposed dropdown menu with an outlined text field, set the `style` to
 `@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu`:
 
 ![Menu with purple outlined text field element and 4 items. Item 1 selected.](assets/menu/menus_exposed_dropdown_outlined.png)
