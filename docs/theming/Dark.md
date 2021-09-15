@@ -30,28 +30,33 @@ Android system UI and apps running on the device.
 
 ## Setup
 
-In order to support the dark theme functionality in Android Q, make sure you are
-depending on the `1.1.0` stable version of the
-[Material Android library][maven-repo-mdc] or later, and update your app theme
-to inherit from `Theme.MaterialComponents.DayNight` (or one of its descendants).
-E.g.:
+Before you can use the Material dark theme functionality, you need to add a
+dependency to the Material Components for Android library. For more information,
+go to the
+[Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
+page.
+
+In order to support dark theme for Android Q and above, make sure you are
+depending on the latest version of the
+[Material Android library][maven-repo-mdc], and update your app theme to inherit
+from `Theme.Material3.DayNight` (or one of its descendants). E.g.:
 
 **res/values/themes.xml**
 
 ```xml
-<style name="Theme.MyApp" parent="Theme.MaterialComponents.DayNight">
+<style name="Theme.MyApp" parent="Theme.Material3.DayNight">
     <!-- ... -->
 </style>
 ```
 
 Alternatively, if you want to define separate `Light` and `Dark` themes for your
-app, you can inherit from `Theme.MaterialComponents.Light` in the `values`
-directory, and `Theme.MaterialComponents` in the `values-night` directory. E.g.:
+app, you can inherit from `Theme.Material3.Light` in the `res/values` directory,
+and `Theme.Material3.Dark` in the `res/values-night` directory. E.g.:
 
 **res/values/themes.xml**
 
 ```xml
-<style name="Theme.MyApp" parent="Theme.MaterialComponents.Light">
+<style name="Theme.MyApp" parent="Theme.Material3.Light">
     <!-- ... -->
 </style>
 ```
@@ -59,16 +64,16 @@ directory, and `Theme.MaterialComponents` in the `values-night` directory. E.g.:
 **res/values-night/themes.xml**
 
 ```xml
-<style name="Theme.MyApp" parent="Theme.MaterialComponents">
+<style name="Theme.MyApp" parent="Theme.Material3.Dark">
     <!-- ... -->
 </style>
 ```
 
-The `Theme.MaterialComponents` theme is a static dark theme, whereas
-`Theme.MaterialComponents.DayNight` is a more dynamic theme which will help
-facilitate easy switching between your app's `Light` and `Dark` theme. If using
-a `DayNight` theme, you can define one app theme that references color
-resources, which can be overridden in the `values-night` directory if needed.
+The `Theme.Material3.Dark` theme is a static dark theme, whereas
+`Theme.Material3.DayNight` is a more dynamic theme which will help facilitate
+easy switching between your app's `Light` and `Dark` theme. If using a
+`DayNight` theme, you can define one app theme that references color resources,
+which can be overridden in the `values-night` directory if needed.
 
 ## Catalog
 
@@ -76,7 +81,7 @@ To see how Material components adapt in a dark theme, build and run the
 [Catalog app](../catalog-app.md) and enable dark theme in one of the following
 ways:
 
-*   Any API Level: Overflow menu on Catalog home screen
+*   Any API Level: Settings gear menu icon on Catalog home and demo screens
 *   Android Q: `Settings > Display > Dark Theme` (or Dark Theme tile in Notification Tray)
 *   Android P: `Settings > System > Developer options > Night mode`
 
@@ -85,45 +90,16 @@ ways:
 At the core of any dark theme is a color palette that uses dark background
 colors and light foreground colors. The Material `Dark` themes make use of the
 [Material Color System](Color.md), in order to provide default dark theme values
-for neutral palette colors such as `colorBackground` and `colorSurface`.
+for neutral palette colors such as `android:colorBackground` and `colorSurface`.
 
 The baseline Material `Dark` theme background and surface colors are dark grey
 instead of black, which increases visibility for shadows and also reduces eye
 strain for light text.
 
 The Material `Dark` themes also provide adjusted defaults for the baseline
-branded palette, including `colorPrimary` and `colorSecondary`. See the
-[Material Dark Theme spec][dark-theme-mdc-spec-ui-application] for guidance on
-how you can adjust your brand colors for dark theme.
-
-### Primary vs. Surface Coloring for Large Surfaces
-
-According to the
-[Material Dark Theme spec][dark-theme-mdc-spec-custom-application], large
-surfaces should not use bright background colors because they can emit too much
-brightness. When applicable, the Material themes will provide this behavior
-out-of-the-box, e.g., by having the `Light` theme default to
-`Widget.MaterialComponents.AppBarLayout.Primary` and the `Dark` theme default to
-`Widget.MaterialComponents.AppBarLayout.Surface`.
-
-However, there may be some cases where you need to apply this primary vs.
-surface color swap to some custom UI. For convenience, the Material themes
-provide a `colorPrimarySurface` attribute, that points to `colorPrimary` in the
-`Light` theme and `colorSurface` in the `Dark` theme. There is also a
-corresponding `colorOnPrimarySurface` attribute that can be used for foreground
-elements such as text and iconography on top of a `colorPrimarySurface`
-background.
-
-Additionally, the Material Android library provides `PrimarySurface` styles for
-components that act as large surfaces and commonly use `colorPrimary` for their
-background in light theme. These styles will automatically switch between the
-component's primary colored style in light theme and surface colored style in
-dark theme. E.g.:
-
-* `Widget.MaterialComponents.BottomAppBar.PrimarySurface`
-* `Widget.MaterialComponents.BottomNavigationView.PrimarySurface`
-* `Widget.MaterialComponents.TabLayout.PrimarySurface`
-* `Widget.MaterialComponents.Toolbar.PrimarySurface`
+branded palette, including `colorPrimary`, `colorSecondary`, `colorTertiary`,
+and more. See the [Material Dark Theme spec][dark-theme-mdc-spec-ui-application]
+for guidance on how you can adjust your brand colors for dark theme.
 
 ## Elevation Overlays
 
@@ -133,34 +109,44 @@ considerations.
 
 Shadows are less effective in an app using a dark theme, because they will have
 less contrast with the dark background colors and will appear to be less
-visible. In order to compensate for this, Material surfaces in a dark theme
-become lighter at higher elevations, when they are closer to the implied light
+visible. In order to compensate for this, Material surfaces become lighter and
+more colorful at higher elevations, when they are closer to the implied light
 source.
 
-This is accomplished via elevation overlays, which are semi-transparent white
-(`colorOnSurface`) overlays that are conceptually placed on top of the surface
+This is accomplished via elevation overlays, which are semi-transparent
+(`colorPrimary`) overlays that are conceptually placed on top of the surface
 color. The semi-transparent alpha percentage is calculated using an equation
 based on elevation, which results in higher alpha percentages at higher
 elevations, and therefore lighter surfaces.
 
-Note: we avoid overdraw with the elevation overlays by calculating a composite
-blend of the surface color with the overlay color and using that as the
-surface's background, instead of drawing another layer to the canvas.
+Starting with the `Theme.Material3.*` themes, elevation overlays are now enabled
+for light themes as well, in order to consistently communicate elevation
+hierarchy with color.
+
+**Note:** we avoid overdraw with the elevation overlays by calculating a
+composite blend of the surface color with the overlay color and using that as
+the surface's background, instead of drawing another layer on the canvas.
 
 ### Affected Components
 
-The following is a list of Material components that support elevation overlays
-in dark theme, because they use `colorSurface` and can be elevated:
+The following is a list of Material components that support elevation overlays,
+because they use `colorSurface` for their background and can be elevated:
 
 *   [Top App Bar](../components/TopAppBar.md)
 *   [Bottom App Bar](../components/BottomAppBar.md)
 *   [Bottom Navigation](../components/BottomNavigation.md)
+*   [Navigation Rail](../components/NavigationRail.md)
+*   [Navigation Drawer](../components/NavigationDrawer.md)
+*   [Bottom Sheet](../components/BottomSheet.md)
+*   [Dialog](../components/Dialog.md)
+*   [Date Picker](../components/DatePicker.md)
+*   [Time Picker](../components/TimePicker.md)
+*   [Menu](../components/Menu.md)
 *   [Tabs](../components/Tabs.md)
 *   [Card](../components/Card.md)
-*   [Dialog](../components/Dialog.md)
-*   [Menu](../components/Menu.md)
-*   [Bottom Sheet](../components/BottomSheet.md)
-*   [Navigation Drawer](../components/NavigationDrawer.md)
+*   [FAB](../components/FloatingActionButton.md)
+*   [Button](../components/Button.md)
+*   [Chip](../components/Chip.md)
 *   [Switch](../components/Switch.md)
 
 ### Theme Attributes
@@ -170,17 +156,17 @@ the following theme attributes:
 
 Attribute Name              |Description                                                                          |Default Value
 ----------------------------|-------------------------------------------------------------------------------------|-------------
-`elevationOverlayEnabled`   |Whether the elevation overlay functionality is enabled.                              |`false` in `Light` themes, `true` in `Dark` themes
-`elevationOverlayColor`     |The color used for the elevation overlays, applied at an alpha based on elevation.   |`colorOnSurface`
+`elevationOverlayEnabled`   |Whether the elevation overlay functionality is enabled.                              |`true` in `Light` and `Dark` themes
+`elevationOverlayColor`     |The color used for the elevation overlays, applied at an alpha based on elevation.   |`colorPrimary`
 
-Note: If inheriting from the `Theme.MaterialComponents` theme or a descendant,
-you most likely do not have to set these attributes yourself because the
-Material themes already set up the above defaults.
+**Note:** If inheriting from a `Theme.Material3.*` theme, you most likely do not
+have to set these attributes yourself because the Material themes already set up
+the above defaults.
 
 ### Custom Views & Non-Material Components
 
-If you would like to apply dark theme elevation overlays to your custom views or
-any non-Material views that are elevated surfaces, then you can use the
+If you would like to apply elevation overlays to your custom views or any
+non-Material views that are elevated surfaces, then you can use the
 `MaterialShapeDrawable` or `ElevationOverlayProvider` APIs.
 
 #### MaterialShapeDrawable
@@ -201,20 +187,21 @@ compounding the overlays multiple times.
 #### ElevationOverlayProvider
 
 If you have a case where the elevation value is more static and you would like
-to get the corresponding dark theme overlay color (perhaps to color an existing
+to get the corresponding elevation overlay color (perhaps to color an existing
 view), then you can use `ElevationOverlayProvider`.
 
 If elevation overlays are enabled at the theme level, the
 `ElevationOverlayProvider#compositeOverlayWithThemeSurfaceColorIfNeeded` method
 will return `colorSurface` with the overlay color blended in at an alpha level
 based on the elevation passed in. Otherwise, it will simply return
-`colorSurface`, so that you can use the result of this method in both `Light`
-and `Dark` themes without needing any additional orchestration.
+`colorSurface`, so that you can use the result of this method without needing
+any additional orchestration logic.
 
 If you need to blend the overlays with an arbitrary color or an adjusted surface
 color, or get access to lower level values such as the overlay alpha
 percentages, take a look at the other `ElevationOverlayProvider` methods
-including `compositeOverlayIfNeeded`, `compositeOverlay`, and `calculateOverlayAlpha`.
+including `compositeOverlayIfNeeded`, `compositeOverlay`, and
+`calculateOverlayAlpha`.
 
 #### Absolute Elevation
 
@@ -238,9 +225,9 @@ protected void onAttachedToWindow() {
 Alternatively, you could use the `ElevationOverlayProvider` composite methods
 that take in a `View` parameter or the `getParentAbsoluteElevation` method.
 
-Note: This means that you should consider accessibility contrast ratios for
-text and iconography, when deeply nesting elevated Material components and
-views that support elevation overlays.
+**Note:** This means that you should consider accessibility contrast ratios for
+text and iconography, when deeply nesting elevated Material components and views
+that support elevation overlays.
 
 [dark-theme-mdc-spec]: https://material.io/design/color/dark-theme.html
 [dark-theme-mdc-spec-ui-application]: https://material.io/design/color/dark-theme.html#ui-application
