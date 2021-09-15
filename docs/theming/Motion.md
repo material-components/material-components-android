@@ -20,8 +20,8 @@ information, go to the
 [Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
 page.
 
-**Note:** [Motion theming](#theming) will only be available in Material
-Components for Android version `1.4.0-alpha01` and above.
+**Note:** [Motion theming](#theming) is only be available in Material Components
+for Android version `1.4.0` and above.
 
 Material Components for Android provides support for all four motion patterns
 defined in the Material spec.
@@ -565,7 +565,7 @@ Activity by Activity basis by setting the `Window.FEATURE_ACTIVITY_TRANSITIONS`
 flag.
 
 ```xml
-<style  name="MyTheme" parent="Theme.MaterialComponents.DayNight">
+<style  name="MyTheme" parent="Theme.Material3.DayNight.NoActionBar">
   ...
   <item  name="android:windowActivityTransitions">true</item>
 </style>
@@ -816,7 +816,7 @@ Activity-by-Activity basis by setting the `Window.FEATURE_ACTIVITY_TRANSITIONS`
 flag.
 
 ```xml
-<style name="MyTheme" parent="Theme.MaterialComponents.DayNight">
+<style name="MyTheme" parent="Theme.Material3.DayNight.NoActionBar">
   ...
   <item name="android:windowActivityTransitions">true</item>
 </style>
@@ -1090,7 +1090,7 @@ Easing theme attributes define a set of curves that can be inflated and used as 
 
 Attribute        | Default value                | Description
 -------------- | ------------------------ | ---------------------------------
-**?attr/motionEasingStandard** | `cubic-bezier(0.4, 0.0, 0.2, 1)`<br/>`FastOutSlowIn`   | Easing used for elements that begin and end at rest.
+**?attr/motionEasingStandard** | `path(M 0,0 C 0.05, 0, 0.133333, 0.06, 0.166666, 0.4 C 0.208333, 0.82, 0.25, 1, 1, 1)`<br/>`FastOutExtraSlowIn`   | Easing used for elements that begin and end at rest.
 **?attr/motionEasingEmphasized** | `path(M 0,0 C 0.05, 0, 0.133333, 0.06, 0.166666, 0.4 C 0.208333, 0.82, 0.25, 1, 1, 1)`<br/>`FastOutExtraSlowIn`   | Easing used for elements that begin and end at rest but want extra attention drawn to the end of the animation.
 **?attr/motionEasingDecelerated** | `cubic-bezier(0.0, 0.0, 0.2, 1)`<br/>`LinearOutSlowIn`   | Easing used for incoming elements; motion begins at peak velocity and ends at rest.
 **?attr/motionEasingAccelerated** | `cubic-bezier(0.4, 0.0, 1, 1)`<br/>`FastOutLinearIn`   | Easing used for outgoing elements; motion begins at rest and ends at peak velocity.
@@ -1106,7 +1106,7 @@ To update an easing value override any of the attributes in your app’s theme
 following the `<type>(value)` string format.
 
 ```
-<style name="Theme.MyTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+<style name="Theme.MyTheme" parent="Theme.Material3.DayNight.NoActionBar">
     ....
     <item name="motionEasingEmphasized">path(M 0,0 C .25, 0, .266666, .333334, .333334, .7166664 C .366667, .9666664, .3333334, 1, 1, 1)</item>
 </style>
@@ -1122,12 +1122,12 @@ animations.
 
 Attribute        | Default value                | Description
 -------------- | ------------------------ | ---------------------------------
-**?attr/motionDurationShort1** | `75ms`   | Duration for use with small motion areas such as icons and selection controls.
-**?attr/motionDurationShort2** | `150ms`   |
-**?attr/motionDurationMedium1** | `200ms`   | Duration for use with large motion areas such as bottom sheets and expanding chips.
-**?attr/motionDurationMedium2** | `250ms`   |
-**?attr/motionDurationLong1** | `300ms`   | Duration for use with elements that traverse a large portion of the screen, such as page transitions.
-**?attr/motionDurationLong2** | `350ms`   |
+**?attr/motionDurationShort1** | `100ms`   | Duration for use with small motion areas such as icons and selection controls.
+**?attr/motionDurationShort2** | `200ms`   |
+**?attr/motionDurationMedium1** | `300ms`   | Duration for use with large motion areas such as bottom sheets and expanding chips.
+**?attr/motionDurationMedium2** | `400ms`   |
+**?attr/motionDurationLong1** | `500ms`   | Duration for use with elements that traverse a large portion of the screen, such as page transitions.
+**?attr/motionDurationLong2** | `600ms`   |
 
 In general, durations should increase in duration as the area/traversal of an
 animation increases. Maintaining this rule when customizing duration attributes
@@ -1137,7 +1137,7 @@ To override a duration attribute, assign the attribute to your desired
 millisecond integer value.
 
 ```
-<style name="Theme.MyTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+<style name="Theme.MyTheme" parent="Theme.Material3.DayNight.NoActionBar">
     ....
     <item name="motionDurationLong2">450</item>
 </style>
