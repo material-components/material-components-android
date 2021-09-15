@@ -11,8 +11,8 @@ path: /theming/typography/
 
 Material Design typography theming can be used to create typographic styles that
 reflect your brand or style by defining a set of type scales which will be used
-throughout your app. Material components use these type scales to style their
-individual text appearance.
+throughout your app. You can use type scales to customize the appearance of text
+in Material components.
 
 ## Design & API Documentation
 
