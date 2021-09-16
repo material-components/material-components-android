@@ -346,3 +346,70 @@ described above, when applicable.
 
 To understand how the high-level theme attributes map to specific parts of each
 component, please refer directly to the component's documentation.
+
+## Using Color Harmonization
+
+Color harmonization solves the problem of "How do we ensure any particular
+Reserved color (eg. those used for semantic or brand) looks good next to a
+user's dynamically-generated color?"
+
+To make it easier to implement color harmonization to ensure visual cohesion in
+any M3 themes with dynamic colors enabled, MDC-Android provides the following
+`MaterialColors` helper method in the `com.google.android.material.color`
+package:
+
+##### Harmonize a color with `colorPrimary`
+
+In your application class or activity/fragment/view, call:
+
+```
+int harmonizedColor = MaterialColors.harmonizeWithPrimary(context, colorToHarmonize);
+```
+
+This method will find the context theme's `colorPrimary`, and shift the hue of
+the input color, `colorToHarmonize`, towards the hue of `colorPrimary`. This
+will leave the input color recognizable while still meaningfully shifting it
+towards `colorPrimary`.
+
+Note: If the input color `colorToHarmonize` is the same as `colorPrimary`,
+harmonization won't happen and `colorToHarmonize` will be returned.
+
+## Color role mapping utilities
+
+M3 schemes also include roles for much of the semantic meaning and other
+conventional uses of color that products are identified with. A single color
+scheme currently consists of 4 roles for utility colors. The `ColorRoles` class
+is available in the `com.google.android.material.color` package and has getter
+methods defined for each utility color role. The luminance level value [0, 100]
+will be shifted for each color role based on the theme `LightTheme` or
+`DarkTheme`, and the Hue and Chroma values of the color role will stay the same.
+
+#### `ColorRoles` properties
+
+| Name                    | Method                 | Description               |
+| ----------------------- | ---------------------- | ------------------------- |
+| **Accent**              | `getAccent`            | The accent color, used as |
+:                         :                        : the main color from the   :
+:                         :                        : color role.               :
+| **On Accent**           | `getOnAccent`          | Used for content such as  |
+:                         :                        : icons and text on top of  :
+:                         :                        : the Accent color.         :
+| **Accent Container**    | `getAccentContainer`   | Used with less emphasis   |
+:                         :                        : than the accent color.    :
+| **On Accent Container** | `getOnAccentContainer` | Used for content such as  |
+:                         :                        : icons and text on top of  :
+:                         :                        : the accent_container      :
+:                         :                        : color.                    :
+
+The library provides the following two helper methods in the `MaterialColors`
+class which return the above-mentioned `ColorRoles` object:
+
+```
+ColorRoles colorRoles = MaterialColors.getColorRoles(context, color);
+```
+
+or
+
+```
+ColorRoles colorRoles = MaterialColors.getColorRoles(color, /* isLightTheme= */ booleanValue);
+```
