@@ -91,15 +91,15 @@ In modal bottom sheets they can be applied via app-level theme attributes and
 styles:
 
 ```xml
-<style name="ModalBottomSheet" parent="Widget.MaterialComponents.BottomSheet.Modal">
+<style name="ModalBottomSheet" parent="Widget.Material3.BottomSheet.Modal">
   <!-- Apply attributes here -->
 </style>
 
-<style name="ModalBottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+<style name="ModalBottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
   <item name="bottomSheetStyle">@style/ModalBottomSheet</item>
 </style>
 
-<style name="AppTheme" parent="Theme.MaterialComponents.*">
+<style name="AppTheme" parent="Theme.Material3.*">
   <item name="bottomSheetDialogTheme">@style/ModalBottomSheetDialog</item>
 </style>
 ```
@@ -280,6 +280,11 @@ like so:
     android:text="@string/action"
     .../>
 
+    <com.google.android.material.switchmaterial.SwitchMaterial
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/switch_label"/>
+
   </FrameLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
@@ -364,7 +369,7 @@ Element        | Attribute             | Related method(s)                 | Def
 -------------- | --------------------- | --------------------------------- | -------------
 **Color**      | `app:backgroundTint`  | N/A                               | `?attr/colorSurface`
 **Shape**      | `app:shapeAppearance` | N/A                               | `?attr/shapeAppearanceLargeComponent`
-**Elevation**  | `android:elevation`   | N/A                               | `1dp`
+**Elevation**  | `android:elevation`   | N/A                               | `3dp`
 **Max width**  | `android:maxWidth`    | `setMaxWidth`<br/>`getMaxWidth`   | `640dp`
 **Max height** | `android:maxHeight`   | `setMaxHeight`<br/>`getMaxHeight` | N/A
 
@@ -392,16 +397,16 @@ Attribute                | Related method(s)                 | Default value
 ### Styles
 
 Element                   | **Default value**
-------------------------- | ----------------------------------------------------
-**Default style (modal)** | `@style/Widget.MaterialComponents.BottomSheet.Modal`
+------------------------- | -------------------------------------------
+**Default style (modal)** | `@style/Widget.Material3.BottomSheet.Modal`
 
 Default style theme attribute:`?attr/bottomSheetStyle`
 
 ### Theme overlays
 
 Element                   | **Theme overlay**
-------------------------- | ---------------------------------------------------
-**Default theme overlay** | `ThemeOverlay.MaterialComponents.BottomSheetDialog`
+------------------------- | ------------------------------------------
+**Default theme overlay** | `ThemeOverlay.Material3.BottomSheetDialog`
 
 Default theme overlay attribute: `?attr/bottomSheetDialogTheme`
 
@@ -442,12 +447,12 @@ Setting the theme attribute `bottomSheetDialogTheme` to your custom
 In `res/values/themes.xml`:
 
 ```xml
-<style name="Theme.App" parent="Theme.MaterialComponents.*">
+<style name="Theme.App" parent="Theme.Material3.*">
   ...
   <item name="bottomSheetDialogTheme">@style/ThemeOverlay.App.BottomSheetDialog</item>
 </style>
 
-<style name="ThemeOverlay.App.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+<style name="ThemeOverlay.App.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
     <item name="bottomSheetStyle">@style/ModalBottomSheetDialog</item>
 </style>
 ```
@@ -455,21 +460,21 @@ In `res/values/themes.xml`:
 In `res/values/styles.xml`:
 
 ```xml
-<style name="ModalBottomSheetDialog" parent="Widget.MaterialComponents.BottomSheet.Modal">
+<style name="ModalBottomSheetDialog" parent="Widget.Material3.BottomSheet.Modal">
     <item name="backgroundTint">@color/shrine_pink_light</item>
     <item name="shapeAppearance">@style/ShapeAppearance.App.LargeComponent</item>
 </style>
 
-<style name="ShapeAppearance.App.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+<style name="ShapeAppearance.App.LargeComponent" parent="ShapeAppearance.Material3.LargeComponent">
     <item name="cornerFamily">cut</item>
     <item name="cornerSize">24dp</item>
 </style>
 ```
 
-**Note:** The benefit of using a custom `ThemeOverlay` is that any changes to your
-main theme, such as updated colors, will be reflected in the bottom sheet (as
-long as they're not overridden in your custom theme overlay). If you use a
+**Note:** The benefit of using a custom `ThemeOverlay` is that any changes to
+your main theme, such as updated colors, will be reflected in the bottom sheet
+(as long as they're not overridden in your custom theme overlay). If you use a
 custom `Theme` instead (by extending from one of the
-`Theme.MaterialComponents.*.BottomSheetDialog` variants) you have more control
-over exactly what attributes are included in each, but it also means you'll have
-to duplicate any changes that you've made in your main theme into these as well.
+`Theme.Material3.*.BottomSheetDialog` variants) you have more control over
+exactly what attributes are included in each, but it also means you'll have to
+duplicate any changes that you've made in your main theme into these as well.
