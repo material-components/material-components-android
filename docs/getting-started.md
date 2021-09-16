@@ -95,8 +95,8 @@ for more information on Java 8 support and how to enable it for your app.
 Using `AppCompatActivity` will ensure that all the components work correctly. If
 you are unable to extend from `AppCompatActivity`, update your activities to use
 [`AppCompatDelegate`](https://developer.android.com/reference/androidx/appcompat/app/AppCompatDelegate).
-This will enable the `AppCompat` versions of components to be inflated among
-other important things.
+This will enable the AppCompat or Material versions of components to be inflated
+(depending on your theme), among other important things.
 
 ### 5. Change your app theme to inherit from a `Material3` theme
 
