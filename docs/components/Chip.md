@@ -38,7 +38,7 @@ interactive elements.
 
 ### Usage
 
-A `Chip` can be added in a layout like so:
+A `Chip` can be added in a layout with the following:
 
 ```xml
 <com.google.android.material.chip.Chip
@@ -48,7 +48,7 @@ A `Chip` can be added in a layout like so:
     android:text="@string/text"/>
 ```
 
-Changes to a chip can be observed like so:
+Changes to a chip can be observed with the following:
 
 ```kt
 chip.setOnClickListener {
@@ -94,9 +94,9 @@ chip.layoutDirection = View.LAYOUT_DIRECTION_LOCALE
 
 ### Grouping chips with `ChipGroup`
 
-Chips are mostly commonly used in groups. We recommend using `ChipGroup` as it
-is purpose-built to handle multi-chip layout and behavior patterns (as opposed
-to a `ViewGroup` such as `RecyclerView`). A `ChipGroup` contains a set of
+Chips are most commonly used in groups. We recommend using `ChipGroup` because
+it is purpose-built to handle multi-chip layouts and behavior patterns, as
+opposed to a `ViewGroup` such as `RecyclerView`. A `ChipGroup` contains a set of
 `Chip`s and manages their layout and multiple-exclusion scope, similarly to a
 `RadioGroup`.
 
@@ -156,15 +156,16 @@ The following image shows a group of chips with
 #### Multiple exclusion scope
 
 The `app:singleSelection` attribute can be set to true on a `ChipGroup` in order
-to toggle single-select and multi-select behavior of child chips.
+to toggle single-select and multi-select behaviors of child chips.
 
 The `app:selectionRequired` attribute can be set to true on a `ChipGroup` to
-prevent all child chips from being deselected (i.e. at least one option should
-be chosen).
+prevent all child chips from being deselected - at least one option should be
+chosen.
 
 #### Handling checked chips
 
-Changes to child chip checked/unchecked state can be observed like so:
+Changes to child chip's checked/unchecked state can be observed with the
+following:
 
 ```kt
 val checkedChipId = chipGroup.checkedChipId // Returns View.NO_ID if singleSelection = false
@@ -198,7 +199,7 @@ Input Chip is the default Material style for standalone `ChipDrawable`s, but you
 can apply any of the other styles using the `style` attribute. All the
 attributes on `Chip` can be applied to a `ChipDrawable` resource.
 
-A ChipDrawable can then be inflated from this resource like so:
+A ChipDrawable can then be inflated from this resource with the following:
 
 ```xml
 val chipDrawable = ChipDrawable.createFromResource(context, R.xml.chip)
@@ -367,7 +368,7 @@ In the layout:
 ## Suggestion chip
 
 Suggestion chips help narrow a user’s intent by presenting dynamically generated
-suggestions (ie: possible responses or search filters).
+suggestions, such as offering possible responses or providing search filters.
 
 ### Suggestion chip example
 
@@ -500,8 +501,8 @@ and
 
 ## Theming chips
 
-Chips support [Material Theming](https://material.io/components/chips/#theming)
-and can be customized in terms of color, typography and shape.
+Chips support [Material Theming](https://material.io/components/chips/#theming),
+which customizes color, typography and shape.
 
 ### Chip theming example
 
@@ -523,8 +524,8 @@ The following example shows chips with Material Theming.
 
 #### Implementing chip theming
 
-Using theme attributes and styles in `res/values/styles.xml` (themes all chips
-and affects other components):
+Use theme attributes and styles in `res/values/styles.xml`, which applies the
+theme to all chips and affects other components:
 
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
@@ -564,8 +565,8 @@ in `color/stroke_tint.xml`:
 </selector>
 ```
 
-or using a default style theme attribute, styles and a theme overlay (themes all
-chips but does not affect other components):
+Use a default style theme attribute, styles and a theme overlay. This applies
+the theme to all chips but does not affect other components:
 
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
@@ -585,7 +586,7 @@ chips but does not affect other components):
 </style>
 ```
 
-or using the style in the layout (affects only this specific chips):
+Use the style in the layout, which affects only specific chips:
 
 ```xml
 <com.google.android.material.chip.Chip
