@@ -104,7 +104,7 @@ If you'd like to use the large FAB, apply one of these style attributes:
 
 ### Types
 
-There are three types of FABS: 1\. [Regular FABs](#regular-fabs), 2\.
+There are four types of FABS: 1\. [Regular FABs](#regular-fabs), 2\.
 [Mini FABs](#mini-fabs), 3\. [Large FABs](#large-fabs) 4\.
 [Extended FABs](#extended-fabs)
 
@@ -422,7 +422,7 @@ API and source code:
     *   [Class description](https://developer.android.com/reference/com/google/android/material/floatingactionbutton/ExtendedFloatingActionButton)
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingactionbutton/ExtendedFloatingActionButton.java)
 
-The following example shows a regular, mini, and extended FABs with Material
+The following example shows a regular, mini, and extended FAB with Material
 Theming.
 
 !["3 square pink FABs with cut corners with brown plus icons: 56dp, 40dp, 56dp
@@ -430,8 +430,8 @@ with "Extended" label"](assets/fabs/fab_theming.png)
 
 #### Implementing FAB theming
 
-Using theme attributes and styles in `res/values/styles.xml` (themes all FABs
-and affects other components):
+Use theme attributes and styles in `res/values/styles.xml` to add themes to all
+FABs. This affects other components:
 
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
@@ -441,8 +441,8 @@ and affects other components):
 </style>
 ```
 
-Or using a default style theme attribute, styles and a theme overlay (themes all
-FABs but does not affect other components):
+Use a default style theme attribute, styles and a theme overlay. This themes all
+FABs in your app but does not affect other components:
 
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
@@ -465,7 +465,7 @@ FABs but does not affect other components):
 </style>
 ```
 
-or using one of the styles in the layout (affects only this FAB):
+Use one of the styles in the layout. That affects only this FAB:
 
 ```xml
 <com.google.android.material.floatingactionbutton.FloatingActionButton
