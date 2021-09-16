@@ -214,4 +214,42 @@
     <item name="colorControlNormal">?attr/colorOnSurfaceVariant</item>
   </style>
 
+  <!-- Style for a M3 ActionBar (inherited from AppCompat due to different
+       desired configuration compared to MaterialComponents ActionBars). -->
+  <style name="Base.Widget.Material3.ActionBar.Solid" parent="Widget.AppCompat.ActionBar.Solid">
+    <item name="titleTextStyle">@style/TextAppearance.Material3.ActionBar.Title</item>
+    <item name="subtitleTextStyle">@style/TextAppearance.Material3.ActionBar.Subtitle</item>
+    <item name="background">?attr/colorSurface</item>
+    <item name="backgroundStacked">?attr/colorSurface</item>
+    <item name="backgroundSplit">?attr/colorSurface</item>
+  </style>
+
+  <style name="Widget.Material3.ActionBar.Solid" parent="Base.Widget.Material3.ActionBar.Solid" />
+
+  <style name="Base.Widget.Material3.Light.ActionBar.Solid" parent="Widget.AppCompat.Light.ActionBar.Solid">
+    <item name="titleTextStyle">@style/TextAppearance.Material3.ActionBar.Title</item>
+    <item name="subtitleTextStyle">@style/TextAppearance.Material3.ActionBar.Subtitle</item>
+    <item name="background">?attr/colorSurface</item>
+    <item name="backgroundStacked">?attr/colorSurface</item>
+    <item name="backgroundSplit">?attr/colorSurface</item>
+  </style>
+
+  <style name="Widget.Material3.Light.ActionBar.Solid" parent="Base.Widget.Material3.Light.ActionBar.Solid" />
+
+  <style name="Base.Widget.Material3.ActionMode" parent="Widget.AppCompat.ActionMode">
+    <item name="titleTextStyle">@style/TextAppearance.Material3.ActionBar.Title</item>
+    <item name="subtitleTextStyle">@style/TextAppearance.Material3.ActionBar.Subtitle</item>
+    <item name="background">?attr/colorSurface</item>
+    <item name="backgroundSplit">?attr/colorSurface</item>
+  </style>
+
+  <style name="Widget.Material3.ActionMode" parent="Base.Widget.Material3.ActionMode" />
+
+  <style name="TextAppearance.Material3.ActionBar.Title" parent="TextAppearance.Material3.TitleLarge">
+    <item name="android:textColor">?attr/colorOnSurface</item>
+  </style>
+
+  <style name="TextAppearance.Material3.ActionBar.Subtitle" parent="TextAppearance.Material3.TitleMedium">
+    <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+  </style>
 </resources>

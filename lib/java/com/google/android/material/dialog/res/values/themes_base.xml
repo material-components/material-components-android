@@ -52,8 +52,8 @@
     <item name="colorOnErrorContainer">@color/m3_sys_color_light_on_error_container</item>
 
     <!-- Widget styles. -->
-    <!-- TODO: Populate actionBarStyle here -->
-    <!-- TODO: Populate actionModeStyle here -->
+    <item name="actionBarStyle">@style/Widget.Material3.Light.ActionBar.Solid</item>
+    <item name="actionModeStyle">@style/Widget.Material3.ActionMode</item>
     <item name="appBarLayoutStyle">@style/Widget.Material3.AppBarLayout</item>
     <item name="badgeStyle">@style/Widget.Material3.Badge</item>
     <item name="borderlessButtonStyle">@style/Widget.Material3.Button.TextButton</item>
@@ -212,8 +212,8 @@
     <item name="colorOnErrorContainer">@color/m3_sys_color_dark_on_error_container</item>
 
     <!-- Widget styles. -->
-    <!-- TODO: Populate actionBarStyle here -->
-    <!-- TODO: Populate actionModeStyle here -->
+    <item name="actionBarStyle">@style/Widget.Material3.ActionBar.Solid</item>
+    <item name="actionModeStyle">@style/Widget.Material3.ActionMode</item>
     <item name="appBarLayoutStyle">@style/Widget.Material3.AppBarLayout</item>
     <item name="badgeStyle">@style/Widget.Material3.Badge</item>
     <item name="borderlessButtonStyle">@style/Widget.Material3.Button.TextButton</item>
