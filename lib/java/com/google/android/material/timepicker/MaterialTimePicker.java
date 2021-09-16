@@ -28,6 +28,7 @@ import android.content.res.TypedArray;
 import android.os.Bundle;
 import androidx.fragment.app.DialogFragment;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityEventCompat;
 import android.text.TextUtils;
 import android.util.Pair;
 import android.util.TypedValue;
@@ -320,6 +321,8 @@ public final class MaterialTimePicker extends DialogFragment {
     Pair<Integer, Integer> buttonData = dataForMode(inputMode);
     modeButton.setIconResource(buttonData.first);
     modeButton.setContentDescription(getResources().getString(buttonData.second));
+    modeButton.sendAccessibilityEvent(
+        AccessibilityEventCompat.CONTENT_CHANGE_TYPE_CONTENT_DESCRIPTION);
   }
 
   private void updateCancelButtonVisibility() {
