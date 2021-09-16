@@ -35,6 +35,7 @@ import android.widget.FrameLayout;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
@@ -98,6 +99,7 @@ public class NavigationRailView extends NavigationBarView {
   static final int DEFAULT_MENU_GRAVITY = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
   static final int MAX_ITEM_COUNT = 7;
   private static final int DEFAULT_HEADER_GRAVITY = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
+  static final int NO_ITEM_MINIMUM_HEIGHT = -1;
 
   private final int topMargin;
   @Nullable private View headerView;
@@ -137,6 +139,13 @@ public class NavigationRailView extends NavigationBarView {
 
     setMenuGravity(
         attributes.getInt(R.styleable.NavigationRailView_menuGravity, DEFAULT_MENU_GRAVITY));
+
+    if (attributes.hasValue(R.styleable.NavigationRailView_itemMinHeight)) {
+      setItemMinimumHeight(
+          attributes.getDimensionPixelSize(
+              R.styleable.NavigationRailView_itemMinHeight, NO_ITEM_MINIMUM_HEIGHT));
+    }
+
     attributes.recycle();
 
     applyWindowInsets();
@@ -272,6 +281,24 @@ public class NavigationRailView extends NavigationBarView {
   /** Gets the current gravity setting for how destinations in the menu view will be grouped. */
   public int getMenuGravity() {
     return getNavigationRailMenuView().getMenuGravity();
+  }
+
+  /**
+   * Get the minimum height each item in the navigation rail's menu should be.
+   */
+  public int getItemMinimumHeight() {
+    NavigationRailMenuView menuView = (NavigationRailMenuView) getMenuView();
+    return menuView.getItemMinimumHeight();
+  }
+
+  /**
+   * Set the minimum height each item in the navigation rail's menu should use.
+   *
+   * If this is unset (-1), each item will be at least as tall as the navigation rail is wide.
+   */
+  public void setItemMinimumHeight(@Px int minHeight) {
+    NavigationRailMenuView menuView = (NavigationRailMenuView) getMenuView();
+    menuView.setItemMinimumHeight(minHeight);
   }
 
   @Override

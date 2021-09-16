@@ -19,6 +19,9 @@
   <attr name="navigationRailStyle" format="reference"/>
 
   <declare-styleable name="NavigationRailView">
+    <!-- The minimum height of each menu item. If not set, the min height  -->
+    <!-- will be the same as the width of the rail. -->
+    <attr name="itemMinHeight" format="dimension"/>
     <!-- Specifies the layout that will be used to create the header view, if any -->
     <attr name="headerLayout"/>
    <!-- Specifies how the navigation rail destinations should be aligned as a group. -->
