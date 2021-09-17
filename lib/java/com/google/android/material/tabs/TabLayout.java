@@ -2255,7 +2255,8 @@ public class TabLayout extends HorizontalScrollView {
       if (parent == null) {
         throw new IllegalArgumentException("Tab not attached to a TabLayout");
       }
-      return parent.getSelectedTabPosition() == position;
+      int selectedPosition = parent.getSelectedTabPosition();
+      return selectedPosition != INVALID_POSITION && selectedPosition == position;
     }
 
     /**
