@@ -150,6 +150,20 @@
             app:showText="false"/>
 
         <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="end"
+          android:labelFor="@+id/toggle_full_width_switch"
+          android:text="@string/cat_tabs_full_width_switch_label"/>
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+          android:id="@id/toggle_full_width_switch"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:checked="false"
+          app:showText="false"/>
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
