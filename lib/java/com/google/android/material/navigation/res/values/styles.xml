@@ -48,4 +48,7 @@
     <item name="itemTextColor">@color/mtrl_navigation_item_text_color</item>
   </style>
 
+  <style name="ShapeAppearance.Material3.NavigationBarView.ActiveIndicator" parent="ShapeAppearance.Material3.SmallComponent">
+    <item name="cornerSize">50%</item>
+  </style>
 </resources>

@@ -63,4 +63,27 @@
   <style name="Widget.MaterialComponents.NavigationRailView.PrimarySurface"
          parent="Widget.MaterialComponents.NavigationRailView.Colored"/>
 
+  <!-- Styles for Material3 NavigationRailView. -->
+  <style name="Widget.Material3.NavigationRailView" parent="Widget.MaterialComponents.NavigationRailView">
+    <item name="android:minWidth">@dimen/m3_navigation_rail_default_width</item>
+    <item name="android:background">?attr/colorSurface</item>
+    <item name="backgroundTint">@null</item>
+    <item name="elevation">@dimen/m3_sys_elevation_level0</item>
+    <item name="itemActiveIndicatorStyle">@style/Widget.Material3.NavigationRailView.ActiveIndicator</item>
+    <item name="itemRippleColor">@color/m3_navigation_bar_ripple_color_selector</item>
+    <item name="itemIconTint">@color/m3_navigation_bar_item_with_indicator_icon_tint</item>
+    <item name="itemTextColor">@color/m3_navigation_bar_item_with_indicator_label_tint</item>
+    <item name="itemPaddingTop">@dimen/m3_navigation_rail_item_padding_top</item>
+    <item name="itemPaddingBottom">@dimen/m3_navigation_rail_item_padding_bottom</item>
+    <item name="itemMinHeight">@dimen/m3_navigation_rail_item_min_height</item>
+  </style>
+
+  <style name="Widget.Material3.NavigationRailView.ActiveIndicator" parent="">
+    <item name="android:width">@dimen/m3_navigation_rail_item_active_indicator_width</item>
+    <item name="android:height">@dimen/m3_navigation_rail_item_active_indicator_height</item>
+    <item name="marginHorizontal">@dimen/m3_navigation_rail_item_active_indicator_margin_horizontal</item>
+    <item name="shapeAppearance">@style/ShapeAppearance.Material3.NavigationBarView.ActiveIndicator</item>
+    <item name="android:color">?attr/colorSecondaryContainer</item>
+  </style>
+
 </resources>

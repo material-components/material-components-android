@@ -69,9 +69,9 @@
     <item name="itemActiveIndicatorStyle">@style/Widget.Material3.BottomNavigationView.ActiveIndicator</item>
     <item name="itemTextAppearanceInactive">?attr/textAppearanceTitleSmall</item>
     <item name="itemTextAppearanceActive">?attr/textAppearanceTitleSmall</item>
-    <item name="itemRippleColor">@color/m3_bottom_nav_ripple_color_selector</item>
-    <item name="itemIconTint">@color/m3_bottom_nav_item_with_indicator_icon_tint</item>
-    <item name="itemTextColor">@color/m3_bottom_nav_item_with_indicator_label_tint</item>
+    <item name="itemRippleColor">@color/m3_navigation_bar_ripple_color_selector</item>
+    <item name="itemIconTint">@color/m3_navigation_bar_item_with_indicator_icon_tint</item>
+    <item name="itemTextColor">@color/m3_navigation_bar_item_with_indicator_label_tint</item>
     <item name="itemPaddingTop">@dimen/m3_bottom_nav_item_padding_top</item>
     <item name="itemPaddingBottom">@dimen/m3_bottom_nav_item_padding_bottom</item>
     <item name="android:minHeight">@dimen/m3_bottom_nav_min_height</item>
@@ -81,11 +81,7 @@
     <item name="android:width">@dimen/m3_bottom_nav_item_active_indicator_width</item>
     <item name="android:height">@dimen/m3_bottom_nav_item_active_indicator_height</item>
     <item name="marginHorizontal">@dimen/m3_bottom_nav_item_active_indicator_margin_horizontal</item>
-    <item name="shapeAppearance">@style/ShapeAppearance.Material3.BottomNavigationView.ActiveIndicator</item>
+    <item name="shapeAppearance">@style/ShapeAppearance.Material3.NavigationBarView.ActiveIndicator</item>
     <item name="android:color">?attr/colorSecondaryContainer</item>
-  </style>
-
-  <style name="ShapeAppearance.Material3.BottomNavigationView.ActiveIndicator" parent="ShapeAppearance.Material3.SmallComponent">
-    <item name="cornerSize">50%</item>
   </style>
 </resources>
