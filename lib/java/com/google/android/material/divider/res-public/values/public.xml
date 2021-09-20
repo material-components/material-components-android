@@ -15,9 +15,12 @@
 -->
 <resources>
   <public name="materialDividerStyle" type="attr"/>
+  <public name="materialDividerHeavyStyle" type="attr"/>
   <public name="dividerColor" type="attr"/>
   <public name="dividerThickness" type="attr"/>
   <public name="dividerInsetStart" type="attr"/>
   <public name="dividerInsetEnd" type="attr"/>
   <public name="Widget.MaterialComponents.MaterialDivider" type="style"/>
+  <public name="Widget.Material3.MaterialDivider" type="style"/>
+  <public name="Widget.Material3.MaterialDivider.Heavy" type="style"/>
 </resources>
