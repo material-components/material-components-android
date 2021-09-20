@@ -1343,7 +1343,9 @@ public class TabLayout extends HorizontalScrollView {
       this.tabSelectedIndicator =
           tabSelectedIndicator != null ? tabSelectedIndicator : new GradientDrawable();
       int indicatorHeight =
-          tabIndicatorHeight != -1 ? tabIndicatorHeight : tabSelectedIndicator.getIntrinsicHeight();
+          tabIndicatorHeight != -1
+              ? tabIndicatorHeight
+              : this.tabSelectedIndicator.getIntrinsicHeight();
       slidingTabIndicator.setSelectedIndicatorHeight(indicatorHeight);
     }
   }
