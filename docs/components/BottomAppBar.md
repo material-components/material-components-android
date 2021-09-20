@@ -30,25 +30,24 @@ page.
 ### Making bottom app bars accessible
 
 Android's bottom app bar component APIs provide support for the navigation icon,
-action items, overflow menu and more for informing the user as to what each
-action performs. While optional, their use is strongly encouraged.
+action items, overflow menu and more to tell the user what each action performs.
+While optional, their use is strongly encouraged.
 
 #### Content descriptions
 
-When using icons for navigation icons, action items and other elements of bottom
-app bars, you should set a content description on them so that screen readers
-like TalkBack are able to announce their purpose or action, if any.
+When using navigation icons, action items and other elements of bottom app bars,
+you should set a content description for them so that screen readers like
+TalkBack are able to announce their purpose or action.
 
 For an overall content description of the bottom app bar, set an
 `android:contentDescription` or use the `setContentDescription` method on the
 `BottomAppBar`.
 
-For the navigation icon, this can be achieved via the
-`app:navigationContentDescription` attribute or
+For the navigation icon, use the `app:navigationContentDescription` attribute or
 `setNavigationContentDescription` method.
 
-For action items and items within the overflow menu, the content description
-needs to be set in the menu:
+For action items and items within the overflow menu, set the content description
+in the menu:
 
 ```xml
 <menu ...>
@@ -182,8 +181,8 @@ bottomAppBar.setOnMenuItemClickListener { menuItem ->
 
 #### Applying scrolling behavior to the bottom app bar
 
-The following example shows the bottom app bar hiding upon scrolling the
-scrollable content down, and appearring upon scrolling up.
+The following example shows the bottom app bar hiding when scrolling the
+scrollable content down, and appearing when scrolling up.
 
 ```xml
 <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -274,8 +273,8 @@ and
 ## Theming bottom app bars
 
 Bottom app bars support
-[Material Theming](https://material.io/components/app-bars-bottom#theming) and
-can be customized in terms of color, typography and shape.
+[Material Theming](https://material.io/components/app-bars-bottom#theming) which
+can customize color, typography and shape.
 
 ### Bottom app bar theming example
 
@@ -298,8 +297,8 @@ The following example shows a bottom app bar with Material Theming.
 
 #### Implementing bottom app bar theming
 
-Using theme attributes in `res/values/styles.xml` (themes all bottom app bars
-and FABs and affects other components):
+Use theme attributes in `res/values/styles.xml`, which applies the theme to all
+bottom app bars and FABs and affects other components:
 
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
@@ -323,8 +322,8 @@ and FABs and affects other components):
 </style>
 ```
 
-or using default style theme attributes, styles and theme overlays (themes all
-bottom app bars and FABs but does not affect other components):
+Use default style theme attributes, styles and theme overlays, which applies the
+theme to all bottom app bars and FABs but does not affect other components:
 
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
@@ -354,7 +353,7 @@ bottom app bars and FABs but does not affect other components):
 </style>
 ```
 
-or using the styles in the layout (affects only this bottom app bar and FAB):
+Use the styles in the layout, which affects only this bottom app bar and FAB:
 
 ```xml
 <com.google.android.material.bottomappbar.BottomAppBar
