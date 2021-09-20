@@ -168,7 +168,7 @@ and
 
 Checkboxes support
 [Material Theming](https://material.io/components/selection-controls#theming)
-and can be customized in terms of color and typography.
+which can customize color and typography.
 
 ### Checkbox theming example
 
@@ -185,8 +185,8 @@ with pink fill and white checkmark"](assets/checkbox/checkbox_theming.png)
 
 #### Implementing checkbox theming
 
-Using theme attributes in `res/values/styles.xml` (themes all checkboxes and
-affects other components):
+Use theme attributes in `res/values/styles.xml`, which adds a theme to all
+checkboxes and affects other components:
 
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
@@ -197,8 +197,8 @@ affects other components):
 
 ```
 
-or using default style theme attributes, styles and theme overlays (themes all
-checkboxes but does not affect other components):
+Use default style theme attributes, styles and theme overlays, which will add a
+theme to all checkboxes but does not affect other components:
 
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
@@ -216,7 +216,7 @@ checkboxes but does not affect other components):
 </style>
 ```
 
-you can also change the checkbox colors via the `?attr/buttonTint` attribute:
+You can also change the checkbox colors via the `?attr/buttonTint` attribute:
 
 ```xml
 <style name="Widget.App.CheckBox" parent="Widget.Material3.CompoundButton.CheckBox">
@@ -234,7 +234,7 @@ and in `color/button_tint.xml`:
 </selector>
 ```
 
-or using the styles in the layout (affects only this checkbox):
+Use the styles in the layout. That affects only this checkbox:
 
 ```xml
 <CheckBox
