@@ -7,14 +7,14 @@ path: /docs/getting-started/
 
 # Getting started with Material Components for Android
 
+## 1. Migration guidance
+
 Take a look at our
 [guide](https://medium.com/androiddevelopers/migrating-to-material-components-for-android-ec6757795351)
-that helps you migrate your codebase from the Design Support Library to Material
+to help you migrate your codebase from the Design Support Library to Material
 Components for Android.
 
-## Instructions
-
-### 1. Depend on our library
+## 2. Maven library dependency
 
 Material Components for Android is available through Google's Maven Repository.
 To use it:
@@ -51,7 +51,7 @@ to find the latest version of the library.
 **Note:** In order to use the new `Material3` themes and component styles, you
 must depend on version `1.5.0-alpha03` or later.
 
-#### New Namespace and AndroidX
+### New Namespace and AndroidX
 
 If your app currently depends on the original Design Support Library, you can
 make use of the
@@ -67,7 +67,7 @@ the `com.android.support:design:28.0.0` dependency.
 **Note:** You should not use the `com.android.support` and
 `com.google.android.material` dependencies in your app at the same time.
 
-### 2. Compile your app with Android 12
+## 3. Android 12 compilation
 
 In order to use the latest versions of Material Components for Android and the
 AndroidX Jetpack libraries, you will have to install the latest version of
@@ -83,27 +83,26 @@ and
 [behavior changes](https://developer.android.com/about/versions/12/behavior-changes-all)
 for more tips and information.
 
-### 3. Consider compiling your app with Java 8
+## 4. Java 8 compilation
 
 The latest AndroidX Jetpack libraries now require your app to be compiled with
 Java 8. See the
 [Java 8 language features and APIs documentation](https://developer.android.com/studio/write/java8-support)
 for more information on Java 8 support and how to enable it for your app.
 
-### 4. Ensure you are using `AppCompatActivity`
+## 5. `AppCompatActivity`
 
-Using `AppCompatActivity` will ensure that all the components work correctly. If
-you are unable to extend from `AppCompatActivity`, update your activities to use
+Use `AppCompatActivity` to ensure that all the components work correctly. If you
+are unable to extend from `AppCompatActivity`, update your activities to use
 [`AppCompatDelegate`](https://developer.android.com/reference/androidx/appcompat/app/AppCompatDelegate).
 This will enable the AppCompat or Material versions of components to be inflated
 (depending on your theme), among other important things.
 
-### 5. Change your app theme to inherit from a `Material3` theme
+## 6. `Material3` theme inheritance
 
-Doing an app-wide migration by changing your app theme to inherit from a
-`Material3` theme is the recommended approach. However, be sure to test
-thoroughly afterwards, as components in existing layouts may change their look
-and behavior.
+We recommend you perform an app-wide migration by changing your app theme to
+inherit from a `Material3` theme. Be sure to test thoroughly afterwards, since
+this may change the appearance and behavior of existing layout components.
 
 **Note:** If you **can't** change your theme, you can continue to inherit from
 an `AppCompat` or `MaterialComponents` theme and add some new theme attributes
@@ -111,10 +110,10 @@ to your theme. See the
 [**AppCompat or MaterialComponents themes**](#appcompat-or-materialcomponents-themes)
 section for more details.
 
-#### **`Material3` themes**
+### **`Material3` themes**
 
-The following is the list of `Material3` themes you can use to get the latest
-component styles and theme-level attributes.
+Here are `Material3` themes you can use to get the latest component styles and
+theme-level attributes.
 
 *   `Theme.Material3.Light`
 *   `Theme.Material3.Light.NoActionBar`
@@ -123,7 +122,7 @@ component styles and theme-level attributes.
 *   `Theme.Material3.DayNight`
 *   `Theme.Material3.DayNight.NoActionBar`
 
-Update your app theme to inherit from one of these themes, e.g.:
+Update your app theme to inherit from one of these themes.:
 
 ```xml
 <style name="Theme.MyApp" parent="Theme.Material3.DayNight.NoActionBar">
@@ -136,7 +135,7 @@ a look at our [Theming](theming.md) guide, as well as our
 [Dark Theme](theming/Dark.md) guide for why it's important to inherit from the
 `DayNight` theme.
 
-Using a `Material3` theme enables a custom view inflater which replaces default
+`Material3` themes enable a custom view inflater, which replaces default
 components with their Material counterparts. Currently, this replaces the
 following XML components:
 
@@ -147,7 +146,7 @@ following XML components:
 *   `<AutoCompleteTextView` →
     [`MaterialAutoCompleteTextView`](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/textfield/MaterialAutoCompleteTextView.java)
 
-#### **`AppCompat` or `MaterialComponents` Themes**
+### **`AppCompat` or `MaterialComponents` Themes**
 
 You can incrementally test new Material components without changing your app
 theme. This allows you to keep your existing layouts looking and behaving the
@@ -228,7 +227,7 @@ theme, or you will encounter `ThemeEnforcement` errors:
 </style>
 ```
 
-### 6. Add a Material component to your app
+## 7. Add Material components
 
 Take a look at our [documentation](https://material.io/components?platform=android)
 for the full list of available Material components. Each component's page has
@@ -236,7 +235,7 @@ specific instructions on how to implement it in your app.
 
 Let's use [text fields](components/TextField.md) as an example.
 
-#### **Implementing a text field via XML**
+### **Implementing a text field via XML**
 
 The default
 [outlined text field](https://material.io/go/design-text-fields#outlined-text-field)
@@ -258,7 +257,7 @@ XML is defined as:
 theme, you will have to specify the text field style as well, via
 `style="@style/Widget.Material3.TextInputLayout.OutlinedBox"`
 
-Other text field styles are also provided. For example, if you want an
+Other text field styles are also provided. For example, if you want a
 [filled text field](https://material.io/go/design-text-fields#filled-text-field)
 in your layout, you can apply the `Material3` `filled` style to the text field
 in XML:
