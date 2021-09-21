@@ -31,10 +31,10 @@ page.
 
 The `Snackbar` class provides static `make` methods to produce a snackbar
 configured in the desired way. These methods take a `View`, which will be used
-to find a suitable ancestor `ViewGroup` to display the snackbar in, a text
-string to display, and a duration to display the snackbar for. A suitable
-ancestor `ViewGroup` will be either the nearest `CoordinatorLayout` to the
-`View` passed in, or the root `DecorView` if none could be found.
+to find a suitable ancestor `ViewGroup` to display the snackbar, a text string
+to display, and a duration to display the snackbar. A suitable ancestor
+`ViewGroup` will be either the nearest `CoordinatorLayout` to the `View` passed
+in, or the root `DecorView` if none could be found.
 
 Available duration presets are:
 
@@ -60,16 +60,17 @@ unnecessary.
 
 Calling `make` creates the snackbar, but doesn't cause it to be visible on the
 screen. To show it, use the `show` method on the returned `Snackbar` instance.
-Note that only one snackbar will be shown at a time. Showing a new snackbar will
+
+**Note**: Only one snackbar will be shown at a time. Showing a new snackbar will
 dismiss any previous ones first.
 
 To show a snackbar with a message and no action:
 
 ```kt
 // The view used to make the snackbar.
-// This should be contained within the view hierarchy you want to display the
-// snackbar. Generally it can be the view that was interacted with to trigger
-// the snackbar, such as a button that was clicked, or a card that was swiped.
+// This should be contained within the view hierarchy where you want to display
+// the snackbar. Generally it can be the view that triggered the snackbar,
+// such as a button that was clicked, or a card that was swiped.
 val contextView = findViewById<View>(R.id.context_view)
 
 Snackbar.make(contextView, R.string.text_label, Snackbar.LENGTH_SHORT)
@@ -95,7 +96,8 @@ Snackbar.make(contextView, R.string.text_label, Snackbar.LENGTH_LONG)
 
 By default, `Snackbar`s will be anchored to the bottom edge of their parent
 view. However, you can use the `setAnchorView` method to make a `Snackbar`
-appear above a specific view within your layout, e.g. a `FloatingActionButton`.
+appear above a specific view within your layout, for example a
+`FloatingActionButton`.
 
 ```kt
 Snackbar.make(...)
@@ -109,7 +111,7 @@ navigational elements at the bottom of the screen, such as a `BottomAppBar` or
 
 ### Related concepts
 
-Temporary bottom bars with other sorts of content layouts can be implemented by
+Temporary bottom bars can be implemented with other sorts of content layouts by
 subclassing
 [BaseTransientBottomBar](https://developer.android.com/reference/com/google/android/material/snackbar/BaseTransientBottomBar).
 
@@ -117,8 +119,8 @@ Android also provides a
 [Toast](https://developer.android.com/reference/android/widget/Toast.html) class
 with a similar API that can be used for displaying system-level notifications.
 Generally, snackbars are the preferred mechanism for displaying feedback
-messages to users, as they can be displayed in the context of the UI where the
-action occurred. Reserve `Toast` for cases where this cannot be done.
+messages to users, because they can be displayed in the context of the UI where
+the action occurred. Reserve `Toast` for cases where this cannot be done.
 
 ## Snackbar
 
@@ -207,7 +209,7 @@ and
 
 Snackbars support
 [Material Theming](https://material.io/design/material-theming/overview.html#using-material-theming)
-and can be customized in terms of color and typography.
+which can customize color and typography.
 
 ### Snackbar theming example
 
@@ -226,8 +228,8 @@ light grey screen"](assets/snackbar/snackbar_theming.png)
 
 #### Implementing snackbar theming
 
-Using theme attributes in `res/values/styles.xml` (themes all snackbars and
-affects other components):
+Use theme attributes in `res/values/styles.xml` to style all snackbars. This
+will affect other components:
 
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
@@ -238,8 +240,8 @@ affects other components):
 
 ```
 
-or using default style theme attributes, styles and theme overlays (themes all
-snackbars but does not affect other components):
+Use default style theme attributes, styles and theme overlays to style all
+snackbars. This will not affect other components:
 
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
@@ -262,7 +264,7 @@ snackbars but does not affect other components):
 </style>
 ```
 
-or in code (affects only this snackbar):
+Set style attributes in code, which only affects this snackbar:
 
 ```kt
 Snackbar.make(contextView, "Text label", Snackbar.LENGTH_LONG)
@@ -274,7 +276,7 @@ Snackbar.make(contextView, "Text label", Snackbar.LENGTH_LONG)
     .show()
 ```
 
-and in `values/colors.xml`:
+Set in `values/colors.xml`:
 
 ```xml
 <color name="backgroundTint">@color/shrine_pink_900</color>
