@@ -51,8 +51,8 @@ val picker =
 `minute` is a *[0, 60)* value and hour is a *[0, 23]* value regardless of which
 time format you choose.
 
-You can use either `TimeFormat.CLOCK_12H` or `TimeFormat.CLOCK_24H`, depending on the
-locale of the device:
+You can use either `TimeFormat.CLOCK_12H` or `TimeFormat.CLOCK_24H`, depending
+on the location of the device:
 
 ```
 val isSystem24Hour = is24HourFormat(this)
@@ -71,7 +71,7 @@ To show the time picker to the user:
  picker.show(fragmentManager, "tag");
 ```
 
-Subscribe to positive button click, negative button click, cancel and or dismiss events with the following calls:
+Subscribe to positive button click, negative button click, cancel and dismiss events with the following calls:
 
 ```
 picker.addOnPositiveButtonClickListener {
@@ -155,8 +155,8 @@ and
 ## Theming time pickers
 
 Time Pickers support
-[Material Theming](https://material.io/components/sliders#theming) and can be
-customized in terms of color and typography.
+[Material Theming](https://material.io/components/sliders#theming) which can
+customize color and typography.
 
 ### Time picker theming example
 
@@ -164,8 +164,7 @@ The following example shows a Time Picker with Material Theming.
 
 !["Time Picker pink interactive display, grey background, and brown icons and text."](assets/timepicker/timepicker_theming.png)
 
-Using theme attributes and styles in `res/values/styles.xml` (themes all time pickers
-and affects other components):
+Use theme attributes and styles in `res/values/styles.xml`, which styles all time pickers and affects other components:
 
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
