@@ -32,7 +32,7 @@ page.
 
 ![2 single point sliders](assets/slider/slider_basic.png)
 
-A `Slider` can be added in a layout like so:
+Add a `Slider` to a layout:
 
 ```xml
 <!-- Continuous slider -->
@@ -49,7 +49,7 @@ A `Slider` can be added in a layout like so:
     android:stepSize="10.0"  />
 ```
 
-Changes to a slider can be observed like so:
+Observe changes to a slider:
 
 ```kt
 slider.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
@@ -69,7 +69,7 @@ slider.addOnChangeListener { slider, value, fromUser ->
 
 ![2 range sliders](assets/slider/slider_basic_range.png)
 
-Similarly, a `RangeSlider` can be added in a layout like so:
+Add a `RangeSlider` to a layout:
 
 ```xml
 <!-- Continuous slider -->
@@ -99,7 +99,7 @@ And in `values/arrays.xml`:
 </resources>
 ```
 
-Changes to a range slider can be observed like so:
+Observe changes to a range slider:
 
 ```kt
 rangeSlider.addOnSliderTouchListener(object : RangeSlider.OnSliderTouchListener {
@@ -123,15 +123,15 @@ Sliders support setting content descriptors for use with screen readers. While
 optional, we strongly encourage their use.
 
 That can be done in XML via the `android:contentDescription` attribute or
-programmatically like so:
+programmatically:
 
 ```kt
 slider.contentDescription = contentDescription
 ```
 
-Additionaly, if using a `TextView` to display the value of the slider, you
-should set `android:labelFor` on it, so that screen readers announce that
-`TextView` refers to the slider.
+If using a `TextView` to display the value of the slider, you should set
+`android:labelFor` so that screen readers announce that `TextView` refers to the
+slider.
 
 ### Adding/removing the value label
 
@@ -152,7 +152,7 @@ By using a `LabelFormatter` you can display the selected value using letters to
 indicate magnitude (e.g.: 1.5K, 3M, 12B). That can be achieved through the
 `setLabelFormatter` method.
 
-The following example shows a slider for a price range in the USD currency.
+The following example shows a slider for a price range in USD currency.
 
 !["Range slider with range of $0 to $100. Left thumb is set at $20, right thumb
 at $70."](assets/slider/slider_price.png)
@@ -275,7 +275,7 @@ In the layout:
 
 ### Anatomy and key properties
 
-A slider has a track, one or two thumbs, and optional value label. A discrete
+A slider has a track, one or two thumbs, and an optional value label. A discrete
 slider also has tick marks.
 
 ![Slider anatomy diagram](assets/slider/slider_anatomy.png)
@@ -356,8 +356,8 @@ and
 ## Theming sliders
 
 Sliders support
-[Material Theming](https://material.io/components/sliders#theming) and can be
-customized in terms of color and typography.
+[Material Theming](https://material.io/components/sliders#theming) which can
+customize color and typography.
 
 ### Slider theming example
 
@@ -376,8 +376,8 @@ The following example shows a range slider with Material Theming.
 
 #### Implementing slider theming
 
-Using theme attributes and styles in `res/values/styles.xml` (themes all sliders
-and affects other components):
+Use theme attributes and styles in `res/values/styles.xml` which applies to all
+sliders and affects other components:
 
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
@@ -388,8 +388,8 @@ and affects other components):
 </style>
 ```
 
-or using a default style theme attribute, styles and a theme overlay (themes all
-sliders but does not affect other components):
+Use a default style theme attribute, styles and a theme overlay which applies to
+all sliders but does not affect other components:
 
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
@@ -420,7 +420,7 @@ sliders but does not affect other components):
 </style>
 ```
 
-or using the style in the layout (affects only this specific slider):
+Use the style in the layout, which affects only this specific slider:
 
 ```xml
 <com.google.android.material.slider.RangeSlider
