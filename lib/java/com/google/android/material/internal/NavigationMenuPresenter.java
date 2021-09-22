@@ -49,6 +49,7 @@ import androidx.annotation.Dimension;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
 import java.util.ArrayList;
@@ -80,8 +81,13 @@ public class NavigationMenuPresenter implements MenuPresenter {
   ColorStateList iconTintList;
   Drawable itemBackground;
   int itemHorizontalPadding;
+  @Px int itemVerticalPadding;
   int itemIconPadding;
   int itemIconSize;
+  @Px int dividerInsetStart;
+  @Px int dividerInsetEnd;
+  @Px int subheaderInsetStart;
+  @Px int subheaderInsetEnd;
   boolean hasCustomItemIconSize;
   boolean isBehindStatusBar = true;
   private int itemMaxLines;
@@ -303,6 +309,56 @@ public class NavigationMenuPresenter implements MenuPresenter {
     updateMenuView(false);
   }
 
+  @Px
+  public int getItemVerticalPadding() {
+    return itemVerticalPadding;
+  }
+
+  public void setItemVerticalPadding(@Px int itemVerticalPadding) {
+    this.itemVerticalPadding = itemVerticalPadding;
+    updateMenuView(false);
+  }
+
+  @Px
+  public int getDividerInsetStart() {
+    return this.dividerInsetStart;
+  }
+
+  public void setDividerInsetStart(@Px int dividerInsetStart) {
+    this.dividerInsetStart = dividerInsetStart;
+    updateMenuView(false);
+  }
+
+  @Px
+  public int getDividerInsetEnd() {
+    return this.dividerInsetEnd;
+  }
+
+  public void setDividerInsetEnd(@Px int dividerInsetEnd) {
+    this.dividerInsetEnd = dividerInsetEnd;
+    updateMenuView(false);
+  }
+
+  @Px
+  public int getSubheaderInsetStart() {
+    return this.subheaderInsetStart;
+  }
+
+  public void setSubheaderInsetStart(@Px int subheaderInsetStart) {
+    this.subheaderInsetStart = subheaderInsetStart;
+    updateMenuView(false);
+  }
+
+  @Px
+  public int getSubheaderInsetEnd() {
+    return this.subheaderInsetEnd;
+  }
+
+  public void setSubheaderInsetEnd(@Px int subheaderInsetEnd)  {
+    this.subheaderInsetEnd = subheaderInsetEnd;
+    updateMenuView(false);
+  }
+
   public int getItemIconPadding() {
     return itemIconPadding;
   }
@@ -519,7 +575,11 @@ public class NavigationMenuPresenter implements MenuPresenter {
                 itemBackground != null ? itemBackground.getConstantState().newDrawable() : null);
             NavigationMenuTextItem item = (NavigationMenuTextItem) items.get(position);
             itemView.setNeedsEmptyIcon(item.needsEmptyIcon);
-            itemView.setHorizontalPadding(itemHorizontalPadding);
+            itemView.setPadding(
+                itemHorizontalPadding,
+                itemVerticalPadding,
+                itemHorizontalPadding,
+                itemVerticalPadding);
             itemView.setIconPadding(itemIconPadding);
             if (hasCustomItemIconSize) {
               itemView.setIconSize(itemIconSize);
@@ -536,6 +596,12 @@ public class NavigationMenuPresenter implements MenuPresenter {
             if (subheaderTextAppearance != NO_TEXT_APPEARANCE_SET) {
               TextViewCompat.setTextAppearance(subHeader, subheaderTextAppearance);
             }
+            subHeader.setPadding(
+                subheaderInsetStart,
+                subHeader.getPaddingTop(),
+                subheaderInsetEnd,
+                subHeader.getPaddingBottom()
+            );
             if (subheaderColor != null) {
               subHeader.setTextColor(subheaderColor);
             }
@@ -544,7 +610,11 @@ public class NavigationMenuPresenter implements MenuPresenter {
         case VIEW_TYPE_SEPARATOR:
           {
             NavigationMenuSeparatorItem item = (NavigationMenuSeparatorItem) items.get(position);
-            holder.itemView.setPadding(0, item.getPaddingTop(), 0, item.getPaddingBottom());
+            holder.itemView.setPadding(
+                dividerInsetStart,
+                item.getPaddingTop(),
+                dividerInsetEnd,
+                item.getPaddingBottom());
             break;
           }
         case VIEW_TYPE_HEADER:

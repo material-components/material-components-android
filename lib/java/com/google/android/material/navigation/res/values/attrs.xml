@@ -92,6 +92,7 @@
   <declare-styleable name="NavigationView">
     <attr name="android:background"/>
     <attr name="android:fitsSystemWindows"/>
+    <attr name="android:layout_gravity"/>
     <attr name="android:maxWidth"/>
     <attr name="elevation"/>
     <!-- The menu resource to inflate and populate items from. -->
@@ -108,6 +109,8 @@
     <attr name="headerLayout"/>
     <!-- Horizontal padding (left and right) of navigation items, around the icon & text -->
     <attr name="itemHorizontalPadding" format="dimension"/>
+    <!-- Vertical padding (top and bottom) of navigation items. -->
+    <attr name="itemVerticalPadding" format="dimension"/>
     <!-- Padding between the icon and the text for navigation items that display an icon  -->
     <attr name="itemIconPadding" format="dimension"/>
     <!-- The size of the icon navigation items that display an icon  -->
@@ -145,5 +148,22 @@
          attributes declared in the shapeAppearance. Attribute declaration is in the Shape package.
     -->
     <attr name="shapeAppearanceOverlay"/>
+    <!-- Whether or not the navigation view should draw a scrim behind the top window
+         inset, usually the status bar, when drawing edge to edge. -->
+    <attr name="topInsetScrimEnabled" format="boolean"/>
+    <!-- Whether or not the navigation view should draw a scrim behind the bottom window
+         inset, usually the navigation area, when drawing edge to edge. -->
+    <attr name="bottomInsetScrimEnabled" format="boolean"/>
+    <!-- The distance between the start of the navigation view container and a menu divider. -->
+    <attr name="dividerInsetStart"/>
+    <!-- The distance between the end of the navigation view container and a menu divider. -->
+    <attr name="dividerInsetEnd"/>
+    <!-- The distance between the start of the navigation view container and a menu group label. -->
+    <attr name="subheaderInsetStart" format="dimension"/>
+    <!-- The distance between the end of the navigation view container and a menu group label. -->
+    <attr name="subheaderInsetEnd" format="dimension"/>
+    <!-- Corner size for the exposed corners (those not attatched to the side
+         of the screen) when the navigation view is placed inside a drawer layout.-->
+    <attr name="drawerLayoutCornerSize" format="dimension"/>
   </declare-styleable>
 </resources>
