@@ -110,6 +110,7 @@
   </style>
 
   <style name="MaterialAlertDialog.Material3" parent="MaterialAlertDialog.MaterialComponents">
+    <item name="android:layout">@layout/m3_alert_dialog</item>
     <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialAlertDialog.Material3</item>
   </style>
 
@@ -126,10 +127,15 @@
   <style name="MaterialAlertDialog.Material3.Title.Icon" parent="MaterialAlertDialog.MaterialComponents.Title.Icon">
     <item name="android:layout_width">@dimen/m3_alert_dialog_icon_size</item>
     <item name="android:layout_height">@dimen/m3_alert_dialog_icon_size</item>
+    <item name="android:layout_marginEnd" tools:ignore="NewApi">@dimen/m3_alert_dialog_icon_margin</item>
+    <item name="android:layout_marginRight">@dimen/m3_alert_dialog_icon_margin</item>
     <item name="tint">?attr/colorSecondary</item>
   </style>
 
   <style name="MaterialAlertDialog.Material3.Title.Icon.CenterStacked">
+    <item name="android:layout_marginEnd" tools:ignore="NewApi">0dp</item>
+    <item name="android:layout_marginRight">0dp</item>
+    <item name="android:layout_marginBottom">@dimen/m3_alert_dialog_icon_margin</item>
     <item name="android:layout_gravity">center</item>
   </style>
 
@@ -140,7 +146,8 @@
 
   <style name="MaterialAlertDialog.Material3.Title.Text.CenterStacked">
     <item name="android:layout_gravity">center</item>
-    <item name="android:textAlignment" tools:ignore="NewApi">center</item>
+    <item name="android:gravity">center</item>
+    <item name="android:textAlignment" tools:ignore="NewApi">gravity</item>
   </style>
 
   <style name="MaterialAlertDialog.Material3.Body.Text" parent="">
@@ -148,4 +155,9 @@
     <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
   </style>
 
+  <style name="MaterialAlertDialog.Material3.Body.Text.CenterStacked">
+    <item name="android:layout_gravity">center</item>
+    <item name="android:gravity">center</item>
+    <item name="android:textAlignment" tools:ignore="NewApi">gravity</item>
+  </style>
 </resources>

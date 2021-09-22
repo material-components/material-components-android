@@ -129,6 +129,7 @@
     <item name="materialAlertDialogTitlePanelStyle">@style/MaterialAlertDialog.Material3.Title.Panel</item>
     <item name="materialAlertDialogTitleIconStyle">@style/MaterialAlertDialog.Material3.Title.Icon</item>
     <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.Material3.Title.Text</item>
+    <item name="materialAlertDialogBodyTextStyle">@style/MaterialAlertDialog.Material3.Body.Text</item>
   </style>
 
   <!-- A theme overlay for Material3 Alert Dialog panels with a center aligned title text and icon. -->
@@ -136,6 +137,7 @@
     <item name="materialAlertDialogTitlePanelStyle">@style/MaterialAlertDialog.Material3.Title.Panel.CenterStacked</item>
     <item name="materialAlertDialogTitleIconStyle">@style/MaterialAlertDialog.Material3.Title.Icon.CenterStacked</item>
     <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.Material3.Title.Text.CenterStacked</item>
+    <item name="materialAlertDialogBodyTextStyle">@style/MaterialAlertDialog.Material3.Body.Text.CenterStacked</item>
   </style>
 
 </resources>
