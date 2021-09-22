@@ -32,7 +32,7 @@ brand color:
 
 <!-- Auto-generated accent color table starts. Do not edit below or remove this comment. -->
 
-Design Color Name      | Android Attribute         | Light Theme Baseline (Dynamic) Color | Dark Theme Baseline (Dynamic) Color
+Color Role             | Android Attribute         | Light Theme Baseline (Dynamic) Color | Dark Theme Baseline (Dynamic) Color
 ---------------------- | ------------------------- | ------------------------------------ | -----------------------------------
 Primary                | colorPrimary              | #ff6750a4</br>(system_accent1_600)   | #ffd0bcff</br>(system_accent1_200)
 On Primary             | colorOnPrimary            | white</br>(system_accent1_0)         | #ff381e72</br>(system_accent1_800)
@@ -59,7 +59,7 @@ combinations. These additional color attributes are as follows:
 
 <!-- Auto-generated additional color table starts. Do not edit below or remove this comment. -->
 
-Design Color Name  | Android Attribute       | Light Theme Baseline (Dynamic) Color | Dark Theme Baseline (Dynamic) Color
+Color Role         | Android Attribute       | Light Theme Baseline (Dynamic) Color | Dark Theme Baseline (Dynamic) Color
 ------------------ | ----------------------- | ------------------------------------ | -----------------------------------
 Error              | colorError              | #ffb3261e</br>(Same)                 | #fff2b8b5</br>(Same)
 On Error           | colorOnError            | white</br>(Same)                     | #ff601410</br>(Same)
