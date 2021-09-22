@@ -402,7 +402,7 @@ Element                            | Style
 
 Default style theme attribute: `?attr/tabStyle`
 
-Additional style theme attributes": `?attr/tabSecondaryStyle`
+Additional style theme attributes: `?attr/tabSecondaryStyle`
 
 See the full list of
 [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/tabs/res/values/styles.xml)
