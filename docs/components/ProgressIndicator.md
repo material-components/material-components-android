@@ -19,7 +19,7 @@ express an unspecified wait time or display the length of a process.
 *   [Using progress indicators](#using-progress-indicators)
 *   [Linear progress indicators](#linear-progress-indicators)
 *   [Circular progress indicators](#circular-progress-indicators)
-*   [Anatomy](#anatomy)
+*   [Anatomy and key properties](#anatomy-and-key-properties)
 *   [Theming progress indicators](#theming-progress-indicators)
 
 ## Using progress indicators
@@ -43,7 +43,7 @@ progress rather than the progress of each activity.
 indicators fill up grey
 tracks](assets/progressindicator/determinate_composite.gif)
 
-A determinate progress indicator can added in a layout like so:
+A determinate progress indicator can be added to a layout:
 
 ```xml
 <!-- Linear progress indicator -->
@@ -60,7 +60,7 @@ A determinate progress indicator can added in a layout like so:
 indicators travel along grey
 tracks](assets/progressindicator/indeterminate_composite.gif)
 
-An indeterminate progress indicator can be added like so:
+An indeterminate progress indicator can be added:
 
 ```xml
 <!-- Linear progress indicator -->
@@ -106,7 +106,7 @@ programmatically like so:
 progressIndicator.contentDescription = contentDescription
 ```
 
-### Showing/hiding the progressindicator
+### Showing/hiding the progress indicator
 
 By default, the progress indicator will be shown or hidden without animations.
 You can change the animation behaviors via `app:showAnimationBehavior` (or
@@ -204,19 +204,18 @@ In the layout:
 
 For linear progress indicator, there are two indeterminate animation types:
 
+*   `disjoint` - animates as repeated cycles with two disjoint segments in the
+    same color at a time.
+
 ![Disjointed indeterminate linear progress indicator animation: red indicator
 travels along track 2x then switches to
 yellow](assets/progressindicator/linear_multicolor_disjoint.gif){width="600"}
 
-*   `disjoint` - animates as repeated cycles with two disjoint segments in the
-    same color at a time.
-
-![Contiguous indeterminate linear progress indicator animation: red, yellow,
-blue indicators move sequentially and cover
-track](assets/progressindicator/linear_multicolor_contiguous.gif){width="600"}
-
 *   `contiguous` - animates as repeated cycles with three adjacent segments in
-    iterative different colors.
+    different colors. ![Contiguous indeterminate linear progress indicator
+    animation: red, yellow, blue indicators move sequentially and cover
+    track](assets/progressindicator/linear_multicolor_contiguous.gif)
+    {width="600"}
 
 **Note:** There is a minimum requirement of 3 indicator colors to use the
 **contiguous** animation. Otherwise, an IllegalArgumentException will be thrown.
@@ -335,10 +334,9 @@ and
 
 ## Theming
 
-Progress indicators support Material theming and can be customized in terms of
-color and size.
+Progress indicators support Material theming which can customize color and size.
 
-### Progress indicator theming example
+### Theming progress indicators
 
 API and source code:
 
@@ -357,8 +355,8 @@ circle"](assets/progressindicator/circular_theming.gif)
 
 #### Implementing progress indicator theming
 
-Using theme attributes and style sin `res/values/styles.xml` (themes all
-circular progress indicators and affects other components):
+Use theme attributes and styles in `res/values/styles.xml`, which applies to all
+circular progress indicators and affects other components:
 
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
@@ -367,8 +365,8 @@ circular progress indicators and affects other components):
 </style>
 ```
 
-or using a default stype theme attribute, styles and a theme overlay (themes all
-circular progress indicators but does not affect other components):
+Use a default type theme attribute, styles and a theme overlay, which applies to
+all circular progress indicators but does not affect other components:
 
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
@@ -386,8 +384,8 @@ circular progress indicators but does not affect other components):
 </style>
 ```
 
-or using the style in the layout (affects only this specific circular progress
-indicator):
+Use the style in the layout, which affects only this specific circular progress
+indicator:
 
 ```xml
 <com.google.android.material.progressindicator.CircularProgressIndicator
