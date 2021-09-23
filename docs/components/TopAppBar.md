@@ -10,7 +10,7 @@ path: /catalog/top-app-bars/
 # Top app bars
 
 [Top app bars](https://material.io/components/app-bars-top/#) display
-information and actions relating to the current screen.
+information and actions related to the current screen.
 
 !["Top app bar on a screen"](assets/topappbar/topappbar_hero.png)
 
@@ -32,14 +32,14 @@ page.
 ### Making top app bars accessible
 
 Android's top app bar component APIs provide support for the navigation icon,
-action items, overflow menu and more for informing the user as to what each
-action performs. While optional, their use is strongly encouraged.
+action items, overflow menu and more, to inform the user what each action
+performs. While optional, their use is strongly encouraged.
 
 #### Content descriptions
 
-When using icons for navigation icons, action items and other elements of top
-app bars, you should set a content description on them so that screen readers
-like TalkBack are able to announce their purpose or action, if any.
+When using icons for navigation, action items and other elements of top app
+bars, you should set a content description for them so that screen readers like
+TalkBack are able to announce their purpose or action.
 
 For an overall content description of the top app bar, set an
 `android:contentDescription` or use the `setContentDescription` method on the
@@ -65,7 +65,7 @@ needs to be set in the menu:
 ```
 
 For images within collapsing top app bars, set an `android:contentDescription`
-or use the `setContentDescription` method on the `ImageView`.
+or use the `setContentDescription` method for the `ImageView`.
 
 ### Types
 
@@ -204,12 +204,11 @@ topAppBar.setOnMenuItemClickListener { menuItem ->
 ```
 
 **Note:** The above example is the recommended approach and, in order for it to
-work, you need to be using a `Theme.Material3.*` theme containing the
-`NoActionBar` segment (eg. `Theme.Material3.Light.NoActionBar`). If not, an
-action bar will be added to the current `Activity` window. The `MaterialToolbar`
-can be set as the support action bar and thus receive various `Activity`
-callbacks, as shown in this
-[guide](https://developer.android.com/training/appbar).
+work, you need to use a `Theme.Material3.*` theme containing the `NoActionBar`
+segment, such as the `Theme.Material3.Light.NoActionBar`. If not, an action bar
+will be added to the current `Activity` window. The `MaterialToolbar` can be set
+as the support action bar and thus receive various `Activity` callbacks, as
+shown in this [guide](https://developer.android.com/training/appbar).
 
 #### Applying scrolling behavior to the top app bar
 
@@ -237,8 +236,8 @@ In the layout:
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 ```
 
-The following example shows the top app bar disappearring upon scrolling up, and
-appearring upon scrolling down.
+The following example shows the top app bar disappearing upon scrolling up, and
+appearing upon scrolling down.
 
 In the layout:
 
@@ -358,7 +357,7 @@ Element                            | Style
 
 Default style theme attribute: `?attr/toolbarStyle`
 
-Additional style theme attributes": `?attr/toolbarSurfaceStyle`
+Additional style theme attributes: `?attr/toolbarSurfaceStyle`
 
 #### `CollapsingToolbarLayout` styles
 
@@ -461,8 +460,8 @@ In the layout:
 
 #### Adding an image to a collapsing top app bar
 
-The following example shows a collapsing top app bar with an image background, a
-page title, a navigation icon, two action icons, and an overflow menu.
+A collapsing top app bar with an image background, a page title, a navigation
+icon, two action icons, and an overflow menu:
 
 ![App bar with image background and white icons. The page title is on a newline
 below the icons](assets/topappbar/topappbar_collapsing_image.png)
@@ -516,8 +515,8 @@ In `res/values/themes.xml`:
 
 #### Applying scrolling behavior to a collapsing top app bar
 
-The following example shows, when scrolling up, the collapsing top app bar
-transforming into a regular top app bar.
+When scrolling up, the collapsing top app bar transforms into a regular top app
+bar.
 
 In the layout:
 
@@ -718,7 +717,7 @@ Default style theme attribute: `actionModeStyle`
 
 The top app bar supports
 [Material Theming](https://material.io/components/app-bars-top/#theming) and can
-be customized in terms of color, typography and shape.
+customize color, typography and shape.
 
 ### Top app bar theming example
 
@@ -731,14 +730,14 @@ API and source code:
     *   [Class definition](https://developer.android.com/reference/com/google/android/material/appbar/MaterialToolbar)
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/appbar/MaterialToolbar.java)
 
-The following example shows a regular top app bar with Material Theming.
+A regular top app bar with Material Theming:
 
 !["Top app bar theming with pink and brown colors"](assets/topappbar/topappbar_theming.png)
 
 #### Implementing top app bar theming
 
-Using theme attributes in `res/values/styles.xml` (themes all top app bars and
-affects other components):
+Use theme attributes in `res/values/styles.xml`, which applies to all top app
+bars and affects other components:
 
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*.NoActionBar">
@@ -762,8 +761,8 @@ affects other components):
 </style>
 ```
 
-or using default style theme attributes, styles and theme overlays (themes all
-top app bars but does not affect other components):
+Use default style theme attributes, styles and theme overlays, which applies to
+all top app bars but does not affect other components:
 
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*.NoActionBar">
@@ -783,7 +782,7 @@ top app bars but does not affect other components):
 </style>
 ```
 
-or using one the style in the layout (affects only this top app bar):
+Use the style in the layout, which affects only this top app bar:
 
 ```xml
 <com.google.android.material.appbar.MaterialToolbar
