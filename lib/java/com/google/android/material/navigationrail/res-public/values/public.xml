@@ -17,6 +17,7 @@
 
 <!-- Definitions of attributes to be exposed as public -->
 <resources>
+  <public name="itemMinHeight" type="attr"/>
   <public name="navigationRailStyle" type="attr"/>
   <public name="menuGravity" type="attr"/>
   <public name="Widget.MaterialComponents.NavigationRailView" type="style"/>
@@ -24,4 +25,5 @@
   <public name="Widget.MaterialComponents.NavigationRailView.Colored" type="style"/>
   <public name="Widget.MaterialComponents.NavigationRailView.Colored.Compact" type="style"/>
   <public name="Widget.MaterialComponents.NavigationRailView.PrimarySurface" type="style"/>
+  <public name="Widget.Material3.NavigationRailView" type="style"/>
 </resources>
