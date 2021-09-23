@@ -17,7 +17,7 @@ date or range of dates.
 **Contents**
 
 *   [Using date pickers](#using-date-pickers)
-*   [Date picker](#date-pickers)
+*   [Calendar date picker](#calendar-date-picker)
 *   [Theming date pickers](#theming-date-pickers)
 
 ## Using date pickers
@@ -30,7 +30,7 @@ page.
 Date pickers let users select a date or range of dates. They should be suitable
 for the context in which they appear.
 
-Date pickers can be embedded into dialogs on mobile.
+Date pickers can be embedded into dialogs on mobile devices.
 
 ### Usage
 
@@ -122,7 +122,7 @@ Finally, you can get the user selection with `datePicker.selection`.
 
 ### Adding calendar constraints
 
-To constrain the calendar to the beginning to the end of this year:
+To constrain the calendar from the beginning to the end of this year:
 
 ```kt
 val today = MaterialDatePicker.todayInUtcMilliseconds()
@@ -143,7 +143,7 @@ val constraintsBuilder =
        .setEnd(decThisYear)
 ```
 
-To open picker at a default month:
+To open the picker at a default month:
 
 ```kt
 ...
@@ -169,12 +169,12 @@ val constraintsBuilder =
        .setValidator(DateValidatorPointForward.from(february))
 ```
 
-You can also use `DateValidatorPointBackward` or use a custom one by creating a
-class that implements `DateValidator`
+You can also use `DateValidatorPointBackward` or customize by creating a class
+that implements `DateValidator`
 ([example of a `DateValidatorWeekdays`](https://github.com/material-components/material-components-android/tree/master/catalog/java/io/material/catalog/datepicker/DateValidatorWeekdays.java)
 in the MDC catalog).
 
-Finally, to set the constraint to the picker's builder:
+Set the constraint to the picker's builder:
 
 ```kt
 MaterialDatePicker.Builder().datePicker()
@@ -186,7 +186,7 @@ MaterialDatePicker.Builder().datePicker()
 
 Material date pickers are fully accessible and compatible with screen readers.
 The title of your date picker will be read when the user launches the dialog.
-Use a descriptive title that for the task:
+Use a descriptive title for the task:
 
 ```kt
 val picker =
@@ -196,7 +196,7 @@ val picker =
    ...
 ```
 
-## Date pickers
+## Calendar date picker
 
 Calendar date pickers can be used to select dates in the near future or past,
 when it’s useful to see them in a calendar month format. They are displayed in a
@@ -237,7 +237,7 @@ Common use cases include:
 
 ### Date range picker example
 
-The following example shows a date range picker with a date selected.
+The following example shows a date range picker with a date range selected.
 
 ![Date range picker with September, 20 to September, 24 selected](assets/datepicker/datepickers_range_example.png)
 
@@ -370,8 +370,8 @@ and
 ## Theming date pickers
 
 Date pickers support
-[Material Theming](https://material.io/components/date-pickers#theming) and can
-be customized in terms of color, shape and typography.
+[Material Theming](https://material.io/components/date-pickers#theming) which
+can customize color, shape and typography.
 
 ### Date picker theming example
 
@@ -389,8 +389,8 @@ The following example shows a date picker with Material Theming.
 !["Date Picker pink interactive display, grey background, and brown icons and
 text."](assets/datepicker/datepickers_theming.png)
 
-Using theme attributes and styles in `res/values/styles.xml` (themes all date
-pickers and affects other components):
+Use theme attributes and styles in `res/values/styles.xm, which apply to all
+date pickers and affect other components:
 
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
@@ -410,8 +410,8 @@ pickers and affects other components):
 </style>
 ```
 
-or using a default style theme attribute, styles and a theme overlay (themes all
-date pickers but does not affect other components):
+Use a default style theme attribute, styles and a theme overlay which apply to
+all date pickers but do not affect other components:
 
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
@@ -429,7 +429,7 @@ date pickers but does not affect other components):
   </style>
 ```
 
-or setting the theme in code (affects only this date picker):
+Set the theme in code, which affects only this date picker:
 
 ```kt
 val picker =
