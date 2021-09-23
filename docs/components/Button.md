@@ -119,8 +119,8 @@ A text button has a text label, a transparent container and an optional icon.
 
 ![Text button anatomy diagram](assets/buttons/text_button_anatomy.png)
 
-1.  Text label
-2.  Icon (optional)
+1.  Label text
+2.  Icon
 
 #### Text label attributes
 
@@ -231,9 +231,8 @@ An outlined button has a text label, a stroked container and an optional icon.
 ![Outlined button anatomy diagram](assets/buttons/outlined_button_anatomy.png)
 
 1.  Container
-2.  Outline
-3.  Text label
-4.  Icon (optional)
+2.  Label text
+3.  Icon
 
 #### Text label attributes
 
@@ -347,8 +346,8 @@ A filled button has a text label, a filled container and an optional icon.
 ![Filled button anatomy diagram](assets/buttons/filled_button_anatomy.png)
 
 1.  Container
-2.  Text label
-3.  Icon (optional)
+2.  Label text
+3.  Icon
 
 #### Text label attributes
 
@@ -461,8 +460,8 @@ A filled button: tonal style has a text label, a filled container and an optiona
 ![Filled button: tonal style anatomy diagram](assets/buttons/filled_button_tonal_anatomy.png)
 
 1.  Container
-2.  Text label
-3.  Icon (optional)
+2.  Label text
+3.  Icon
 
 #### Text label attributes
 
@@ -569,8 +568,8 @@ An elevated button has a text label, a stroked container and an optional icon.
 ![Elevated button anatomy diagram](assets/buttons/elevated_button_anatomy.png)
 
 1.  Container
-2.  Text label
-3.  Icon (optional)
+2.  Label text
+3.  Icon
 
 #### Text label attributes
 
