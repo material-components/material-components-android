@@ -12,7 +12,7 @@ path: /catalog/navigation-drawer/
 [Navigation drawers](https://material.io/components/navigation-drawer) provide
 access to destinations in your app.
 
-![Nav drawer hero with profile pic, username, email, and user account options](assets/navigationdrawer/NavDrawer-hero.png)
+![A standard (left) and modal (right) Navigation drawer](assets/navigationdrawer/navigation-drawer-hero.png)
 
 **Contents**
 
@@ -48,7 +48,7 @@ navigation drawer type and parent `ViewGroup`.
 
 ### Adding a menu
 
-![Nav drawer with 3 menu items](assets/navigationdrawer/navigation_drawer_basic.png)
+![Nav drawer with 3 menu items](assets/navigationdrawer/navigation-drawer-basic.png)
 
 In the layout:
 
@@ -63,31 +63,36 @@ In `res/menu/navigation_drawer.xml`:
 ```xml
 <menu ...>
 
-    <group
-        android:id="@+id/group1"
-        android:checkableBehavior="single">
+  <item
+    android:id="@+id/main_item"
+    android:title="@string/mail_subheader_title">
+      <menu>
         <item
-            android:id="@+id/item1"
-            android:icon="@drawable/ic_favorite_24dp"
-            android:title="@string/title_1"
-            android:checked="true" />
+          android:id="@+id/inbox_item"
+          android:icon="@drawable/ic_inbox_24px"
+          android:title="@string/inbox_title"
+          android:checkable="true"/>
         <item
-            android:id="@+id/item2"
-            android:icon="@drawable/ic_favorite_24dp"
-            android:title="@string/title_2" />
+          android:id="@+id/outbox_item"
+          android:icon="@drawable/ic_outbox_24px"
+          android:title="@string/outbox_title"
+          android:checkable="true"/>
         <item
-            android:id="@+id/item3"
-            android:icon="@drawable/ic_favorite_24dp"
-            android:title="@string/title_3" />
-    </group>
+          android:id="@+id/favourites_item"
+          android:icon="@drawable/ic_favourites_24px"
+          android:title="@string/favourites_title"
+          android:checkable="true">
+      </menu>
+  </item>
 
 </menu>
 ```
 
 ### Adding a header
 
-![Nav drawer with "Header title", "Header text", and 3 items with heart icons.
-Item 1 is selected.](assets/navigationdrawer/navigation_drawer_header.png)
+![Nav drawer with "Header title", "Header text", a "Mail" subheader, and 3
+items. Item 1 is
+selected.](assets/navigationdrawer/navigation-drawer-header.png)
 
 In the layout:
 
@@ -112,7 +117,8 @@ In `res/layout/header_navigation_drawer.xml`:
         android:layout_marginTop="24dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        android:textAppearance="?attr/textAppearanceHeadline6"
+        android:textAppearance="?attr/textAppearanceHeadlineSmall"
+        android:textColor="?attr/colorOnSurface"
         android:text="@string/header_title" />
 
     <TextView
@@ -121,8 +127,8 @@ In `res/layout/header_navigation_drawer.xml`:
         android:layout_marginBottom="24dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        android:textAppearance="?attr/textAppearanceBody2"
-        android:textColor="@color/material_on_surface_emphasis_medium"
+        android:textAppearance="?attr/textAppearanceTitleSmall"
+        android:textColor="?attr/colorOnSurfaceVariant"
         android:text="@string/header_text" />
 
 </LinearLayout>
@@ -130,44 +136,66 @@ In `res/layout/header_navigation_drawer.xml`:
 
 ### Adding dividers and subtitles
 
-![Nav drawer with "Header title", "Header text", “Subtitle”, and 5 items with
-heart icons divided between 1 to 3, 4 to
-5](assets/navigationdrawer/navigation_drawer_dividers_subtitles.png)
+![Nav drawer with "Header title", "Header text", "Mail" subheader, and 6 items
+with a divider between items 3 and
+4](assets/navigationdrawer/navigation-drawer-dividers-subtitles.png)
 
-Dividers are automatically added between `<group>`s with unique IDs. When a
-sub-`<menu>` is added to an item it is treated as a subtitle.
+Dividers are automatically added between `<item>` groups with unique IDs or
+`<group>`s with unique IDs. When a sub-`<menu>` is added to an item it is
+treated as a subtitle.
 
 In `res/menu/navigation_drawer.xml`:
 
 ```xml
 <menu ...>
-
-    <group
-        android:id="@+id/group1"
-        ...>
-        ...
-    </group>
-
-    <group
-        android:id="@+id/group2"
-        android:checkableBehavior="single">
+  <item
+    android:id="@+id/main_item"
+    android:title="@string/mail_subheader_title">
+      <menu>
         <item
-            android:id="@+id/subtitle"
-            android:title="Subtitle">
-            <menu>
-                <item
-                    android:id="@+id/item4"
-                    android:icon="@drawable/ic_favorite_24dp"
-                    android:title="Item 4" />
-
-                <item
-                    android:id="@+id/item5"
-                    android:icon="@drawable/ic_favorite_24dp"
-                    android:title="Item 5" />
-
-            </menu>
-        </item>
-    </group>
+          android:id="@+id/search_item"
+          android:icon="@drawable/ic_search_24px"
+          android:title="@string/search_title"
+          android:checkable="true"
+          app:showAsAction="ifRoom"/>
+        <item
+          android:id="@+id/rotation_item"
+          android:icon="@drawable/ic_3d_rotation_24px"
+          android:title="@string/3d_title"
+          android:checkable="true"
+          app:showAsAction="ifRoom"/>
+        <item
+          android:id="@+id/accelerator_item"
+          android:icon="@drawable/ic_accelerator_24px"
+          android:title="@string/accelerator_title"
+          android:checkable="true"
+          app:showAsAction="ifRoom"/>
+        <item
+          android:id="@+id/dashboard_item"
+          android:icon="@drawable/ic_dashboard_24px"
+          android:title="@string/dashboard_title"
+          android:checkable="true"
+          app:showAsAction="ifRoom"/>
+      </menu>
+  </item>
+  <item
+    android:id="@+id/labels_item"
+    android:title="@string/labels_subheader_title">
+      <menu>
+        <item
+          android:id="@+id/label_one"
+          android:icon="@drawable/ic_label_24px"
+          android:title="@string/label_one_title"
+          android:checkable="true"
+          app:showAsAction="ifRoom"/>
+        <item
+          android:id="@+id/label_two"
+          android:icon="@drawable/ic_label_24px"
+          android:title="@string/label_two_title"
+          android:checkable="true"
+          app:showAsAction="ifRoom"/>
+      </menu>
+  </item>
 
 </menu>
 ```
@@ -213,16 +241,16 @@ Navigation drawers have a container, an optional header, optional dividers,
 items with inactive text, active text, and an active text overlay, optional
 subtitles, and an optional scrim.
 
-![Navigation drawer anatomy](assets/navigationdrawer/NavDrawer-anatomy.png)
+![Navigation drawer anatomy](assets/navigationdrawer/navigation-drawer-anatomy.png)
 
 1.  Container
-2.  Header (optional)
-3.  Divider (optional)
-4.  Active text overlay
-5.  Active text
-6.  Inactive text
-7.  Subtitle (optional)
-8.  Scrim (optional)
+2.  Subheader (optional)
+3.  Label text
+4.  Icon (optional)
+5.  Active indicator/Item shape
+6.  Badge text (not supported)
+7.  Divider
+8.  Scrim (modal drawer only)
 
 ### Container attributes
 
@@ -230,7 +258,7 @@ Element                 | Attribute(s)                                          
 ----------------------- | ------------------------------------------------------------------- | ------------------------------------------------ | -------------
 **Color**               | `android:background`                                                | `setBackground`<br>`getBackground`               | `?attr/colorSurface`
 **Shape**               | `app:shapeAppearance`<br>`app:shapeAppearanceOverlay`               | N/A                                              | `null`
-**Elevation**           | `app:elevation` (can be used on `NavigationView` or `DrawerLayout`) | `setElevation`<br>`getElevation`                 | `16dp` (`NavigationView`) or `10dp` (`DrawerLayout`)
+**Elevation**           | `app:elevation` (can be used on `NavigationView` or `DrawerLayout`) | `setElevation`<br>`getElevation`                 | `0dp` (`NavigationView`) or `1dp` (`DrawerLayout`)
 **Max width**           | `android:maxWidth`                                                  | N/A                                              | `280dp`
 **Fits system windows** | `android:fitsSystemWindows`                                         | `setFitsSystemWindows`<br>`getFitsSystemWindows` | `true`
 
@@ -242,45 +270,47 @@ Element    | Attribute          | Related method(s)                             
 
 ### Divider attributes
 
-Element     | Attribute                                                                                                                                                                                                                    | Related method(s) | Default value
------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- | -------------
-**Divider** | `android:listDivider` in app theme                                                                                                                                                                                           | N/A               | Varies per platform version
-**Height**  | N/A (see [layout](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/internal/res/layout/design_navigation_item_separator.xml)) | N/A               | `1dp`
+Element     | Attribute                                                                                                                                                                                                                    | Related method(s)                                                                                   | Default value
+----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | -------------
+**Divider** | `android:listDivider` in app theme                                                                                                                                                                                           | N/A                                                                                                 | Varies per platform version
+**Height**  | N/A (see [layout](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/internal/res/layout/design_navigation_item_separator.xml)) | N/A                                                                                                 | `1dp`
+**Inset**   | `app:dividerInsetStart`<br/>`app:dividerInsetEnd`                                                                                                                                                                            | `setDividerInsetStart`<br/>`getDividerInsetStart`<br/>`setDividerInsetEnd`<br/>`getDividerInsetEnd` | `28dp`<br/>`28dp`
 
-### Text overlay attributes
+### Item attributes
 
 Element                | Attribute(s)                                                                                                  | Related method(s)                                                                              | Default value
 ---------------------- | ------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | -------------
-**Color**              | `app:itemShapeFillColor`                                                                                      | N/A                                                                                            | `?attr/colorPrimary` at 12% opacity (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/navigation/res/color/mtrl_navigation_item_background_color.xml))
-**Shape**              | `app:itemShapeAppearance`<br>`app:itemShapeAppearanceOverlay`                                                 | N/A                                                                                            | `?attr/shapeAppearanceSmallComponent`<br>`null`
-**Insets**             | `app:itemShapeInsetStart`<br>`app:itemShapeInsetTop`<br>`app:itemShapeInsetEnd`<br>`app:itemShapeInsetBottom` | N/A                                                                                            | `8dp`<br>`4dp`<br>`8dp`<br>`4dp`
-**Horizontal padding** | `app:itemHorizontalPadding`                                                                                   | `setItemHorizontalPadding`<br>`setItemHorizontalPaddingResource`<br>`getItemHorizontalPadding` | `22dp`
+**Color**              | `app:itemShapeFillColor`                                                                                      | N/A                                                                                            | `?attr/colorSecondaryContainer`
+**Shape**              | `app:itemShapeAppearance`<br>`app:itemShapeAppearanceOverlay`                                                 | N/A                                                                                            | `?attr/shapeAppearanceSmallComponent`<br>`Corner size: 50%`
+**Insets**             | `app:itemShapeInsetStart`<br>`app:itemShapeInsetTop`<br>`app:itemShapeInsetEnd`<br>`app:itemShapeInsetBottom` | N/A                                                                                            | `12dp`<br>`0dp`<br>`12dp`<br>`0dp`
+**Horizontal padding** | `app:itemHorizontalPadding`                                                                                   | `setItemHorizontalPadding`<br>`setItemHorizontalPaddingResource`<br>`getItemHorizontalPadding` | `28dp`
+**Vertical padding**   | `app:itemVerticalPadding`                                                                                     | `setItemVerticalPadding`<br>`setItemVerticalPaddingResource`<br>`getItemVerticalPadding`       | `4dp`
 
 ### Text attributes
 
 Element         | Attribute                | Related method(s)                        | Default value
 --------------- | ------------------------ | ---------------------------------------- | -------------
-**Color**       | `app:itemTextColor`      | `setItemTextColor`<br>`getItemTextColor` | `?attr/colorPrimary` when active else `?attr/colorOnSurface` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/navigation/res/color/mtrl_navigation_item_text_color.xml))
-**Typograhphy** | `app:itemTextAppearance` | `setItemTextAppearance`                  | `?attr/textAppearanceSubtitle2`
+**Color**       | `app:itemTextColor`      | `setItemTextColor`<br>`getItemTextColor` | `?attr/colorOnSecondaryContainer` when active else `?attr/colorOnSurfaceVariant`
+**Typograhphy** | `app:itemTextAppearance` | `setItemTextAppearance`                  | `?attr/textAppearanceLabelLarge`
 **Max lines**   | `app:itemMaxLines`       | `setItemMaxLines`<br>`getItemMaxLines`   | `1`
 
 ### Icon attributes
 
 Element     | Attribute             | Related method(s)                                                            | Default value
 ----------- | --------------------- | ---------------------------------------------------------------------------- | -------------
-**Color**   | `app:itemIconTint`    | `setIconItemTintList`<br>`getIconItemTintList`                               | `?attr/colorPrimary` when active else `?attr/colorOnSurface` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/navigation/res/color/mtrl_navigation_item_icon_tint.xml))
+**Color**   | `app:itemIconTint`    | `setIconItemTintList`<br>`getIconItemTintList`                               | `?attr/colorOnSecondaryContainer` when active else `?attr/colorOnSurfaceVariant`
 **Size**    | `app:itemIconSize`    | `setItemIconSize`                                                            | `24dp`
-**Padding** | `app:itemIconPadding` | `setItemIconPadding`<br>`setItemIconPaddingResource`<br>`getItemIconPadding` | `14dp`
+**Padding** | `app:itemIconPadding` | `setItemIconPadding`<br>`setItemIconPaddingResource`<br>`getItemIconPadding` | `12dp`
 
 ### Subtitle attributes
 
-Element        | Attribute                     | Related method(s) | Default value
--------------- | ----------------------------- | ----------------- | -------------
-**Color**      | `app:subheaderColor`          | N/A               | `?android:textColorSecondary`
-**Typography** | `app:subheaderTextAppearance` | N/A               | `@style/TextAppearance.AppCompat.Body2`
-**Max lines**  | N/A                           | N/A               | `1`
-**Height**     | N/A                           | N/A               | `?attr/listPreferredItemHeightSmall`
-**Padding**    | N/A                           | N/A               | `?attr/listPreferredItemPaddingLeft` and `?attr/listPreferredItemPaddingRight`
+Element        | Attribute                                             | Related method(s)                                                                                           | Default value
+-------------- | ----------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | -------------
+**Color**      | `app:subheaderColor`                                  | N/A                                                                                                         | `?attr/colorOnSurfaceVariant`
+**Typography** | `app:subheaderTextAppearance`                         | N/A                                                                                                         | `?attr/textAppearanceTitleSmall`
+**Max lines**  | N/A                                                   | N/A                                                                                                         | `1`
+**Height**     | N/A                                                   | N/A                                                                                                         | `?attr/listPreferredItemHeightSmall`
+**Padding**    | `app:subheaderInsetStart`<br/>`app:subheaderInsetEnd` | `setSubheaderInsetStart`<br/>`getSubheaderInsetStart`<br/>`setSubheaderInsetEnd`<br/>`getSubheaderInsetEnd` | `28dp` and `28dp`
 
 ### Scrim attributes
 
@@ -291,12 +321,15 @@ Element   | Attribute | Related method(s)                 | Default value
 ### `NavigationView` styles
 
 Element           | Style
------------------ | ------------------------------------------
-**Default style** | `Widget.MaterialComponents.NavigationView`
+----------------- | ---------------------------------
+**Default style** | `Widget.Material3.NavigationView`
 
 Default style theme attribute: `?attr/navigationViewStyle`
 
 ### `DrawerLayout` styles
+Element           | Style
+----------------- | ---------------------------------
+**Default style** | `Widget.Material3.DrawerLayout`
 
 Default style theme attribute: `?attr/drawerLayoutStyle`
 
@@ -306,8 +339,6 @@ There are three types of navigation drawers: 1\.
 [Standard navigation drawer](#standard-navigation-drawer), 2\.
 [Modal navigation drawer](#modal-navigation-drawer), 3\.
 [Bottom navigation drawer](#bottom-navigation-drawer)
-
-![Standard, modal, and bottom navigation drawer examples](assets/navigationdrawer/Navigation-drawer_composite.png)
 
 ## Standard navigation drawer
 
@@ -326,9 +357,9 @@ API and source code:
 
 The following example shows a permanently visible standard navigation drawer.
 
-![Nav drawer with "Header title", "Header text", “Subtitle”, and 5 items with
-heart icons on left of
-screen.](assets/navigationdrawer/navigation_drawer_standard.png)
+![Nav drawer with "Header title", "Header text", “Subtitle”, and 3 items with
+icons on left of
+screen.](assets/navigationdrawer/navigation-drawer-standard.png)
 
 In the layout:
 
@@ -352,7 +383,7 @@ In the layout:
 In `res/values/themes.xml`:
 
 ```xml
-<style name="Theme.App" parent="Theme.MaterialComponents.DayNight.*">
+<style name="Theme.App" parent="Theme.Material3.DayNight.*">
     <item name="android:windowTranslucentStatus">true</item>
 </style>
 ```
@@ -388,10 +419,11 @@ API and source code:
 *   `DrawerLayout`
     *   [Class definition](https://developer.android.com/reference/kotlin/androidx/drawerlayout/widget/DrawerLayout)
 
-The following example shows a modal navigation drawer with a top app bar.
+The following example shows a modal navigation drawer.
 
-![2 views: screen with top app bar; nav drawer covering left side with scrim
-over remaining screen.](assets/navigationdrawer/navigation_drawer_modal.png)
+![A screen with a modal navigation drawer open. The drawer container "Header
+title", "Header text", and 6
+items.](assets/navigationdrawer/navigation-drawer-modal.png)
 
 In the layout:
 
@@ -407,24 +439,6 @@ In the layout:
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
-
-        <com.google.android.material.appbar.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/Widget.MaterialComponents.AppBarLayout.PrimarySurface"
-            android:fitsSystemWindows="true">
-
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/topAppBar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:title="@string/top_app_bar"
-                app:navigationIcon="@drawable/ic_menu_24dp"
-                style="@style/Widget.MaterialComponents.Toolbar.PrimarySurface"
-                android:background="@android:color/transparent"
-                android:elevation="0dp" />
-
-        </com.google.android.material.appbar.AppBarLayout>
 
         <!-- Screen content -->
         <!-- Use app:layout_behavior="@string/appbar_scrolling_view_behavior" to fit below top app bar -->
@@ -443,7 +457,7 @@ In the layout:
 In `res/values/themes.xml`:
 
 ```xml
-<style name="Theme.App" parent="Theme.MaterialComponents.DayNight.*">
+<style name="Theme.App" parent="Theme.Material3.DayNight.*">
     <item name="android:windowTranslucentStatus">true</item>
 </style>
 ```
@@ -537,7 +551,6 @@ In the layout:
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        style="@style/Widget.MaterialComponents.BottomAppBar.PrimarySurface"
         app:navigationIcon="@drawable/ic_menu_24dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
@@ -599,9 +612,9 @@ API and source code:
 
 The following example shows a navigation drawer with Material Theming.
 
-![Nav drawer with “Header”, “Header text”, “Subtitle” and 5 items: brown text
-and icons, pink
-containers.](assets/navigationdrawer/navigation_drawer_theming.png)
+![Nav drawer with “Header”, “Header text”, “Mail” subtitle and 6 items: brown
+text and icons, pink
+containers.](assets/navigationdrawer/navigation-drawer-theming.png)
 
 #### Implementing navigation drawer theming
 
@@ -610,39 +623,31 @@ Using theme attributes, default style theme attributes, and styles in
 components):
 
 ```xml
-<style name="Theme.App" parent="Theme.MaterialComponents.*">
+<style name="Theme.App" parent="Theme.Material3.*">
     ...
-    <item name="colorPrimary">@color/shrine_pink_100</item>
-    <item name="colorSurface">@color/shrine_pink_50</item>
-    <item name="colorOnSurface">@color/shrine_pink_900</item>
-    <item name="textAppearanceHeadline6">@style/TextAppearance.App.Headline6</item>
-    <item name="textAppearanceSubtitle2">@style/TextAppearance.App.Subtitle2</item>
-    <item name="textAppearanceBody2">@style/TextAppearance.App.Body2</item>
-    <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.App.SmallComponent</item>
-    <item name="navigationViewStyle">@style/Widget.App.NavigationView</item>
+    <item name="colorSecondaryContainer">@color/shrine_theme_light_secondaryContainer</item>
+    <item name="colorOnSecondaryContainer">@color/shrine_theme_light_onSecondaryContainer</item>
+    <item name="colorTertiaryContainer">@color/shrine_theme_light_tertiaryContainer</item>
+    <item name="colorOnTertiaryContainer">@color/shrine_theme_light_onTertiaryContainer</item>
+    <item name="colorSurface">@color/shrine_theme_light_surface</item>
+    <item name="colorOnSurface">@color/shrine_theme_light_onSurface</item>
+    <item name="colorOnSurfaceVariant">@color/shrine_theme_light_onSurfaceVariant</item>
+    <item name="colorOutline">@color/shrine_theme_light_outline</item>
+    <item name="textAppearanceTitleSmall">@style/TextAppearance.App.TitleSmall</item>
+    <item name="textAppearanceLabelLarge">@style/TextAppearance.App.LabelLarge</item>
 </style>
 
-<style name="TextAppearance.App.Headline6" parent="TextAppearance.MaterialComponents.Subtitle1">
+<style name="TextAppearance.App.TitleSmall" parent="TextAppearance.MaterialComponents.TitleSmall">
     <item name="fontFamily">@font/rubik</item>
     <item name="android:fontFamily">@font/rubik</item>
 </style>
 
-<style name="TextAppearance.App.Subtitle2" parent="TextAppearance.MaterialComponents.Subtitle1">
+<style name="TextAppearance.App.LabelLarge" parent="TextAppearance.MaterialComponents.LabelLarge">
     <item name="fontFamily">@font/rubik</item>
     <item name="android:fontFamily">@font/rubik</item>
 </style>
 
-<style name="TextAppearance.App.Body2" parent="TextAppearance.MaterialComponents.Subtitle1">
-    <item name="fontFamily">@font/rubik</item>
-    <item name="android:fontFamily">@font/rubik</item>
-</style>
-
-<style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
-    <item name="cornerFamily">cut</item>
-    <item name="cornerSize">4dp</item>
-</style>
-
-<style name="Widget.App.NavigationView" parent="Widget.MaterialComponents.NavigationView">
+<style name="Widget.App.NavigationView" parent="Widget.Material3.NavigationView">
     <item name="itemIconTint">@color/navigation_item_color</item>
     <item name="itemTextColor">@color/navigation_item_color</item>
     <item name="itemShapeFillColor">@color/navigation_item_background_color</item>
@@ -653,9 +658,9 @@ In `res/color/navigation_item_color.xml`:
 
 ```xml
 <selector ...>
-    <item android:color="?attr/colorOnSurface" android:state_checked="true"/>
+    <item android:color="?attr/colorOnTertiaryContainer" android:state_checked="true"/>
     <item android:alpha="@dimen/material_emphasis_disabled" android:color="?attr/colorOnSurface" android:state_enabled="false"/>
-    <item android:alpha="@dimen/material_emphasis_medium" android:color="?attr/colorOnSurface"/>
+    <item android:color="?attr/colorOnSurfaceVariant"/>
 </selector>
 
 ```
@@ -664,8 +669,8 @@ In `res/color/navigation_item_background_color.xml`:
 
 ```xml
 <selector ...>
-    <item android:alpha="@dimen/material_emphasis_disabled" android:color="?attr/colorPrimary" android:state_activated="true"/>
-    <item android:alpha="@dimen/material_emphasis_disabled" android:color="?attr/colorPrimary" android:state_checked="true"/>
+    <item android:alpha="@dimen/material_emphasis_disabled" android:color="?attr/colorTertiaryContainer" android:state_activated="true"/>
+    <item android:alpha="@dimen/material_emphasis_disabled" android:color="?attr/colorTertiaryContainer" android:state_checked="true"/>
     <item android:color="@android:color/transparent"/>
 </selector>
 ```
@@ -674,12 +679,12 @@ or using default style theme attributes, styles and theme overlays (themes all
 navigation drawers but does not affect other components):
 
 ```xml
-<style name="Theme.App" parent="Theme.MaterialComponents.*">
+<style name="Theme.App" parent="Theme.Material3.*">
     ...
     <item name="navigationViewStyle">@style/Widget.App.NavigationView</item>
 </style>
 
-<style name="Widget.App.NavigationView" parent="Widget.MaterialComponents.NavigationView">
+<style name="Widget.App.NavigationView" parent="Widget.Material3.NavigationView">
     <item name="materialThemeOverlay">@style/ThemeOverlay.App.NavigationView</item>
     <item name="itemIconTint">@color/navigation_item_color</item>
     <item name="itemTextColor">@color/navigation_item_color</item>
@@ -687,13 +692,16 @@ navigation drawers but does not affect other components):
 </style>
 
 <style name="ThemeOverlay.App.NavigationView" parent="">
-    <item name="colorPrimary">@color/shrine_pink_100</item>
-    <item name="colorSurface">@color/shrine_pink_50</item>
-    <item name="colorOnSurface">@color/shrine_pink_900</item>
-    <item name="textAppearanceHeadline6">@style/TextAppearance.App.Headline6</item>
-    <item name="textAppearanceSubtitle2">@style/TextAppearance.App.Subtitle2</item>
-    <item name="textAppearanceBody2">@style/TextAppearance.App.Body2</item>
-    <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.App.SmallComponent</item>
+    <item name="colorSecondaryContainer">@color/shrine_theme_light_secondaryContainer</item>
+    <item name="colorOnSecondaryContainer">@color/shrine_theme_light_onSecondaryContainer</item>
+    <item name="colorTertiaryContainer">@color/shrine_theme_light_tertiaryContainer</item>
+    <item name="colorOnTertiaryContainer">@color/shrine_theme_light_onTertiaryContainer</item>
+    <item name="colorSurface">@color/shrine_theme_light_surface</item>
+    <item name="colorOnSurface">@color/shrine_theme_light_onSurface</item>
+    <item name="colorOnSurfaceVariant">@color/shrine_theme_light_onSurfaceVariant</item>
+    <item name="colorOutline">@color/shrine_theme_light_outline</item>
+    <item name="textAppearanceTitleSmall">@style/TextAppearance.App.TitleSmall</item>
+    <item name="textAppearanceLabelLarge">@style/TextAppearance.App.LabelLarge</item>
 </style>
 ```
 
