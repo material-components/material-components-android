@@ -389,7 +389,7 @@ Element           | Style
 Default style theme attribute: `?attr/materialCardViewStyle`
 
 Additional style theme attributes: `?attr/materialCardViewOutlinedStyle`,
-`?attr/materialCardViewElevatedStyle`
+`?attr/materialCardViewFilledStyle`, `?attr/materialCardViewElevatedStyle`
 
 See the full list of
 [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/card/res/values/styles.xml)

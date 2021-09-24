@@ -363,6 +363,7 @@ public class ThemeTest {
           R.attr.materialButtonStyle,
           R.attr.materialCardViewStyle,
           R.attr.materialCardViewOutlinedStyle,
+          R.attr.materialCardViewFilledStyle,
           R.attr.materialCardViewElevatedStyle,
           R.attr.radioButtonStyle,
           R.attr.sliderStyle,
