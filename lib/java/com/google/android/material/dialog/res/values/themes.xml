@@ -117,9 +117,7 @@
     The default Material3 theme overlay used for AlertDialogs built via the
     alertDialogTheme attribute.
   -->
-  <style name="ThemeOverlay.Material3.Dialog.Alert" parent="Base.ThemeOverlay.Material3.Dialog.Alert">
-    <!-- TODO: Populate overriding background color -->
-  </style>
+  <style name="ThemeOverlay.Material3.Dialog.Alert" parent="Base.ThemeOverlay.Material3.Dialog.Alert" />
 
   <!--
     The default Material3 theme overlay for AlertDialogs built with the MaterialAlertDialogBuilder, via the
