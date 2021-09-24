@@ -637,12 +637,12 @@ components):
     <item name="textAppearanceLabelLarge">@style/TextAppearance.App.LabelLarge</item>
 </style>
 
-<style name="TextAppearance.App.TitleSmall" parent="TextAppearance.MaterialComponents.TitleSmall">
+<style name="TextAppearance.App.TitleSmall" parent="TextAppearance.Material3.TitleSmall">
     <item name="fontFamily">@font/rubik</item>
     <item name="android:fontFamily">@font/rubik</item>
 </style>
 
-<style name="TextAppearance.App.LabelLarge" parent="TextAppearance.MaterialComponents.LabelLarge">
+<style name="TextAppearance.App.LabelLarge" parent="TextAppearance.Material3.LabelLarge">
     <item name="fontFamily">@font/rubik</item>
     <item name="android:fontFamily">@font/rubik</item>
 </style>
