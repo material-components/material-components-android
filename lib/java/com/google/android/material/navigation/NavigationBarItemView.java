@@ -324,7 +324,7 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
       @FloatRange(from = 0F, to = 1F) final float newProgress) {
     // If the active indicator is disabled or this view is in the process of being initialized,
     // jump the active indicator to it's final state.
-    if (!activeIndicatorEnabled || !initialized) {
+    if (!activeIndicatorEnabled || !initialized || !ViewCompat.isAttachedToWindow(this)) {
       setActiveIndicatorProgress(newProgress, newProgress);
       return;
     }
