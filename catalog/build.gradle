@@ -48,6 +48,7 @@ def srcDirs = [
   'card',
   'checkbox',
   'chip',
+  'color',
   'datepicker',
   'dialog',
   'divider',

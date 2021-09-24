@@ -26,6 +26,7 @@ import io.material.catalog.button.ButtonsFragment;
 import io.material.catalog.card.CardFragment;
 import io.material.catalog.checkbox.CheckBoxFragment;
 import io.material.catalog.chip.ChipFragment;
+import io.material.catalog.color.ColorsFragment;
 import io.material.catalog.datepicker.DatePickerDemoLandingFragment;
 import io.material.catalog.dialog.DialogDemoLandingFragment;
 import io.material.catalog.divider.DividerFragment;
@@ -57,6 +58,7 @@ import io.material.catalog.transition.TransitionFragment;
       CardFragment.Module.class,
       CheckBoxFragment.Module.class,
       ChipFragment.Module.class,
+      ColorsFragment.Module.class,
       DatePickerDemoLandingFragment.Module.class,
       DialogDemoLandingFragment.Module.class,
       DividerFragment.Module.class,
