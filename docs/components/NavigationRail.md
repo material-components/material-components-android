@@ -10,7 +10,7 @@ path: /catalog/navigation-rail/
 # Navigation Rail
 
 [Navigation rail](https://material.io/components/navigation-rail/#) provides
-access to primary distinations in your app on tablet and desktop screens.
+access to primary destinations in your app on tablet and desktop screens.
 
 ![The navigation rail container is 80 dp wide by default.](assets/navigationrail/navigation-rail-default.png)
 
@@ -69,7 +69,7 @@ In `navigation_rail_menu.xml` inside a `menu` resource directory:
 ```
 
 **Note:** `NavigationRailView` displays three to no more than seven app
-destinations and, optionally, a header view. Each destination is represented by
+destinations, and can include a header view. Each destination is represented by
 an icon and a text label.
 
 In code:
@@ -93,7 +93,7 @@ NavigationBarView.OnNavigationItemSelectedListener { item ->
 }
 ```
 
-There's also a method for detecting when navigation items have been reselected:
+There's also a method for detecting if navigation items have been reselected:
 
 ```kt
 navigationRail.setOnNavigationItemReselectedListener { item ->
@@ -108,7 +108,7 @@ navigationRail.setOnNavigationItemReselectedListener { item ->
 }
 ```
 
-That results in:
+Which results in:
 
 ![The navigation rail container is 72 dp wide by default.](assets/navigationrail/navigation-rail-demo.png)
 
@@ -137,10 +137,10 @@ text labels for each navigation item. There are four visibility modes:
 *   `LABEL_VISIBILITY_LABELED`: The label is shown on all navigation items
 *   `LABEL_VISIBILITY_UNLABELED`: The label is hidden for all navigation items
 
-### Adding a header view (eg. Floating action button)
+### Adding a header view
 
-The rail provides a convenient container for anchoring a header view (such as a
-`FloatingActionButton`, logo, etc.) to the top of the rail, using the
+The rail provides a convenient container for anchoring a header view, such as a
+`FloatingActionButton` or a logo, to the top of the rail, using the
 `app:headerLayout` attribute.
 
 ![Navigation rail with badges](assets/navigationrail/navigation-rail-fab.png)
@@ -176,7 +176,7 @@ status.
 
 ![Navigation rail with badges](assets/navigationrail/navigation-rail-badges.png)
 
-Initialize and show a `BadgeDrawable` associated with `menuItemId`, subsequent
+Initialize and show a `BadgeDrawable` associated with `menuItemId`. Subsequent
 calls to this method will reuse the existing `BadgeDrawable`:
 
 ```kt
@@ -186,8 +186,8 @@ badge.isVisible = true
 badge.number = 99
 ```
 
-As best practice if you need to temporarily hide the badge (e.g. until the next
-notification is received), change the visibility of `BadgeDrawable`:
+As best practice, if you need to temporarily hide the badge, for example until
+the next notification is received, change the visibility of `BadgeDrawable`:
 
 ```kt
 val badgeDrawable = navigationRail.getBadge(menuItemId)
@@ -203,8 +203,7 @@ To remove any `BadgeDrawable`s that are no longer needed:
 navigationRail.removeBadge(menuItemId)
 ```
 
-See the [`BadgeDrawable`](BadgeDrawable.md) documentation for more information
-about it.
+See the [`BadgeDrawable`](BadgeDrawable.md) documentation for more information.
 
 ## Navigation rail example
 
@@ -274,16 +273,17 @@ The following is an anatomy diagram for the navigation rail:
 
 #### Container attributes
 
-Element       | **Attribute**        | **Related methods** | **Default value**
-------------- | -------------------- | ------------------- | -----------------
-**Color**     | `app:backgroundTint` | N/A                 | `?attr/colorSurface`
-**Elevation** | `app:elevation`      | `setElevation`      | `0dp`
+| **Element**   | **Attribute**        | **Related      | **Default value**    |
+:               :                      : methods**      :                      :
+| ------------- | -------------------- | -------------- | -------------------- |
+| **Color**     | `app:backgroundTint` | N/A            | `?attr/colorSurface` |
+| **Elevation** | `app:elevation`      | `setElevation` | `0dp`                |
 
-#### Header (eg. Floating action button) attributes
+#### Header attributes
 
-Element             | **Attribute**      | **Related methods**                                        | **Default value**
-------------------- | ------------------ | ---------------------------------------------------------- | -----------------
-**Header view**     | `app:headerLayout` | `addHeaderView`<br/>`removeHeaderView`<br/>`getHeaderView` | N/A
+**Element**     | **Attribute**      | **Related methods**                                        | **Default value**
+--------------- | ------------------ | ---------------------------------------------------------- | -----------------
+**Header view** | `app:headerLayout` | `addHeaderView`<br/>`removeHeaderView`<br/>`getHeaderView` | N/A
 
 See the
 [FAB documentation](https://github.com/material-components/material-components-android/tree/master/docs/components/FloatingActionButton.md)
@@ -291,7 +291,7 @@ for more attributes.
 
 #### Navigation item attributes
 
-Element                   | **Attribute**             | **Related methods**                                   | **Default value**
+**Element**               | **Attribute**             | **Related methods**                                   | **Default value**
 ------------------------- | ------------------------- | ----------------------------------------------------- | -----------------
 **Menu resource**         | `app:menu`                | `inflateMenu`<br/>`getMenu`                           | N/A
 **Ripple (inactive)**     | `app:itemRippleColor`     | `setItemRippleColor`<br/>`getItemRippleColor`         | `?attr/colorPrimary` at 12% (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/navigation/res/color/mtrl_navigation_bar_ripple_color.xml))
@@ -299,10 +299,9 @@ Element                   | **Attribute**             | **Related methods**     
 **Label visibility mode** | `app:labelVisibilityMode` | `setLabelVisibilityMode`<br/>`getLabelVisibilityMode` | `LABEL_VISIBILITY_AUTO`
 **Item minimum height**   | `app:itemMinHeight`       | `setItemMinimumHeight`<br/>`getItemMinimumHeight`     | `NO_ITEM_MINIMUM_HEIGHT`
 
-
 #### Active indicator attributes
 
-Element               | **Attribute**          | **Related methods**                                                                   | **Default value**
+**Element**           | **Attribute**          | **Related methods**                                                                   | **Default value**
 --------------------- | ---------------------- | ------------------------------------------------------------------------------------- | -----------------
 **Color**             | `android:color`        | `setItemActiveIndicatorColor`<br/>`getItemActiveIndicatorColor`                       | `?attr/colorSecondaryContainer`
 **Width**             | `android:width`        | `setItemActiveIndicatorWidth`<br/>`getItemActiveIndicatorWidth`                       | `56dp`
@@ -312,7 +311,7 @@ Element               | **Attribute**          | **Related methods**            
 
 #### Icon attributes
 
-Element              | **Attribute**                         | **Related methods**                                              | **Default value**
+**Element**          | **Attribute**                         | **Related methods**                                              | **Default value**
 -------------------- | ------------------------------------- | ---------------------------------------------------------------- | -----------------
 **Icon**             | `android:icon` in the `menu` resource | N/A                                                              | N/A
 **Size**             | `app:itemIconSize`                    | `setItemIconSize`<br/>`setItemIconSizeRes`<br/>`getItemIconSize` | `24dp`
@@ -321,7 +320,7 @@ Element              | **Attribute**                         | **Related methods
 
 #### Text label attributes
 
-Element                   | **Attribute**                          | **Related methods**                                                 | **Default value**
+**Element**               | **Attribute**                          | **Related methods**                                                 | **Default value**
 ------------------------- | -------------------------------------- | ------------------------------------------------------------------- | -----------------
 **Text label**            | `android:title` in the `menu` resource | N/A                                                                 | N/A
 **Color (inactive)**      | `app:itemTextColor`                    | `setItemTextColor`<br/>`getItemTextColor`                           | `?attr/colorOnSurfaceVariant`
@@ -331,7 +330,7 @@ Element                   | **Attribute**                          | **Related m
 
 #### Styles
 
-Element           | **Style**                             | **Container color**  | **Icon/Text label color (inactive)** | **Icon/Text label color (active)**
+**Element**       | **Style**                             | **Container color**  | **Icon/Text label color (inactive)** | **Icon/Text label color (active)**
 ----------------- | ------------------------------------- | -------------------- | ------------------------------------ | ----------------------------------
 **Default style** | `Widget.Material3.NavigationRailView` | `?attr/colorSurface` | `?attr/colorOnSurfaceVariant`        | `?attr/colorOnSurface`<br/>`?attr/colorOnSecondaryContainer`
 
@@ -346,8 +345,8 @@ and
 ## Theming a navigation rail
 
 Navigation rail supports
-[Material Theming](https://material.io/components/navigation-rail#theming) and
-can be customized in terms of color and typography.
+[Material Theming](https://material.io/components/navigation-rail#theming),
+which can customize color and typography.
 
 ### Navigation rail theming example
 
@@ -363,8 +362,8 @@ The following example shows a navigation rail with Material Theming.
 
 #### Implementing navigation rail theming
 
-Using theme attributes and a style in `res/values/styles.xml` (themes all
-navigation rails and affects other components):
+Use theme attributes and a style in `res/values/styles.xml` which apply to all
+navigation rails and affect other components:
 
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
@@ -384,8 +383,8 @@ navigation rails and affects other components):
 </style>
 ```
 
-Or using a default style theme attribute, styles, and a theme overlay (themes
-all navigation rails but does not affect other components):
+Use a default style theme attribute, styles, and a theme overlay, which apply to
+all navigation rails but do not affect other components:
 
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
@@ -413,8 +412,8 @@ all navigation rails but does not affect other components):
 </style>
 ```
 
-Or using the style in the layout (affects only this specific navigation rail
-bar):
+Or use the style in the layout, which affects only this specific navigation rail
+bar:
 
 ```xml
 <com.google.android.material.navigationrail.NavigationRailView
