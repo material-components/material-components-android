@@ -12,15 +12,14 @@ path: /catalog/chips/
 [Chips](https://material.io/components/chips) are compact elements that
 represent an input, attribute, or action.
 
-![Email with purple "Compose" header and grey chip with an email address on the
-"To" line](assets/chips/chips_hero.png)
+![Email with and grey chip with an email address on the "To" line](assets/chips/chips_hero.png)
 
 **Contents**
 
 *   [Using chips](#using-chips)
-*   [Input chip](#input-chip)
 *   [Assist chip](#assist-chip)
 *   [Filter chip](#filter-chip)
+*   [Input chip](#input-chip)
 *   [Suggestion chip](#suggestion-chip)
 *   [Theming chips](#theming-chips)
 
@@ -220,11 +219,11 @@ text.setSpan(span, 0, text.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 
 ### Types
 
-There are four types of chips: 1\. [input](#input-chip), 2\.
-[assist](#assist-chip), 3\. [filter](#filter-chip), 4\.
-[suggestion](#suggestion-chip)
+There are four types of chips: 1\. [assist](#assist-chip), 2\.
+[filter](#filter-chip), 3\. [input](#input-chip),
+4\.[suggestion](#suggestion-chip)
 
-![Examples of the four different chip types](assets/chips/chips_composite.png)
+![Examples of the four different chip types](assets/chips/chip_types.png)
 
 API and source code:
 
@@ -237,44 +236,6 @@ API and source code:
 *   `ChipDrawable`
     *   [Class definition](https://developer.android.com/reference/com/google/android/material/chip/ChipDrawable)
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/chip/ChipDrawable.java)
-
-## Input chip
-
-Input chips represent a discrete piece
-of information in compact form, such as an entity (person, place, or thing) or
-text. They enable user input and verify that input by converting text into
-chips.
-
-### Input chip example
-
-The following example shows three input chips.
-
-!["Input chips with texts Input 1 to 3."](assets/chips/chips_input.png)
-
-In the layout:
-
-```xml
-<com.google.android.material.chip.ChipGroup
-    ...>
-  <com.google.android.material.chip.Chip
-      android:id="@+id/chip_1"
-      style="@style/Widget.Material3.Chip.Input"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/text_input_1"/>
-
-  <com.google.android.material.chip.Chip
-      ...
-      style="@style/Widget.Material3.Chip.Input"
-      android:text="@string/text_input_2"/>
-
-  <com.google.android.material.chip.Chip
-      ...
-      style="@style/Widget.Material3.Chip.Input"
-      android:text="@string/text_input_3"/>
-
-</com.google.android.material.chip.ChipGroup>
-```
 
 ## Assist chip
 
@@ -365,6 +326,43 @@ In the layout:
 </com.google.android.material.chip.ChipGroup>
 ```
 
+## Input chip
+
+Input chips represent a discrete piece of information in compact form, such as
+an entity (person, place, or thing) or text. They enable user input and verify
+that input by converting text into chips.
+
+### Input chip example
+
+The following example shows three input chips.
+
+!["Input chips with texts Input 1 to 3."](assets/chips/chips_input.png)
+
+In the layout:
+
+```xml
+<com.google.android.material.chip.ChipGroup
+    ...>
+  <com.google.android.material.chip.Chip
+      android:id="@+id/chip_1"
+      style="@style/Widget.Material3.Chip.Input"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/text_input_1"/>
+
+  <com.google.android.material.chip.Chip
+      ...
+      style="@style/Widget.Material3.Chip.Input"
+      android:text="@string/text_input_2"/>
+
+  <com.google.android.material.chip.Chip
+      ...
+      style="@style/Widget.Material3.Chip.Input"
+      android:text="@string/text_input_3"/>
+
+</com.google.android.material.chip.ChipGroup>
+```
+
 ## Suggestion chip
 
 Suggestion chips help narrow a user’s intent by presenting dynamically generated
@@ -408,9 +406,9 @@ The following is an anatomy diagram of a chip:
 ![Chip anatomy diagram](assets/chips/chips_anatomy.png)
 
 1.  Container
-1.  Thumbnail (optional)
 1.  Text
 1.  Remove icon (optional)
+1.  Thumbnail (optional)
 
 #### Container attributes
 
