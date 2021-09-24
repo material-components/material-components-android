@@ -24,4 +24,6 @@
   <public name="Widget.MaterialComponents.BottomNavigationView" type="style"/>
   <public name="Widget.MaterialComponents.BottomNavigationView.Colored" type="style"/>
   <public name="Widget.MaterialComponents.BottomNavigationView.PrimarySurface" type="style"/>
+  <public name="Widget.Material3.BottomNavigationView" type="style"/>
+  <public name="Widget.Material3.BottomNavigationView.ActiveIndicator" type="style"/>
 </resources>
