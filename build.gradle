@@ -30,6 +30,7 @@ ext {
     constraintlayout      : '2.0.1',
     coordinatorlayout     : '1.1.0',
     core                  : '1.5.0',
+    drawerlayout          : '1.1.1',
     experimental          : '1.0.0',
     fragment              : '1.0.0',
     lifecycle             : '2.0.0',
@@ -99,6 +100,8 @@ def compatibility(name) {
       return "androidx.coordinatorlayout:coordinatorlayout:${androidXVersions.coordinatorlayout}"
     case "core":
       return "androidx.core:core:${androidXVersions.core}"
+    case "drawerlayout":
+      return "androidx.drawerlayout:drawerlayout:${androidXVersions.drawerlayout}"
     case "dynamicanimation":
       return "androidx.dynamicanimation:dynamicanimation:${androidXVersions.dynamicanimation}"
     case "fragment":

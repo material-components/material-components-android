@@ -69,7 +69,7 @@
     <item name="collapsingToolbarLayoutStyle">@style/Widget.Material3.CollapsingToolbar</item>
     <item name="collapsingToolbarLayoutMediumStyle">@style/Widget.Material3.CollapsingToolbar.Medium</item>
     <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.Material3.CollapsingToolbar.Large</item>
-    <!-- TODO: Populate drawerLayoutStyle here -->
+    <item name="drawerLayoutStyle">@style/Widget.Material3.DrawerLayout</item>
     <item name="extendedFloatingActionButtonStyle">?attr/extendedFloatingActionButtonPrimaryStyle</item>
     <item name="extendedFloatingActionButtonPrimaryStyle">@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Primary</item>
     <item name="extendedFloatingActionButtonSecondaryStyle">@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary</item>
@@ -91,8 +91,8 @@
     <item name="materialCardViewStyle">?attr/materialCardViewOutlinedStyle</item>
     <item name="materialCardViewOutlinedStyle">@style/Widget.Material3.CardView.Outlined</item>
     <item name="materialCardViewElevatedStyle">@style/Widget.Material3.CardView.Elevated</item>
-    <!-- TODO: Populate navigationViewStyle here -->
     <item name="navigationRailStyle">@style/Widget.Material3.NavigationRailView</item>
+    <item name="navigationViewStyle">@style/Widget.Material3.NavigationView</item>
     <item name="radioButtonStyle">@style/Widget.Material3.CompoundButton.RadioButton</item>
     <item name="sliderStyle">@style/Widget.Material3.Slider</item>
     <item name="snackbarStyle">@style/Widget.Material3.Snackbar</item>
@@ -230,7 +230,7 @@
     <item name="collapsingToolbarLayoutStyle">@style/Widget.Material3.CollapsingToolbar</item>
     <item name="collapsingToolbarLayoutMediumStyle">@style/Widget.Material3.CollapsingToolbar.Medium</item>
     <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.Material3.CollapsingToolbar.Large</item>
-    <!-- TODO: Populate drawerLayoutStyle here -->
+    <item name="drawerLayoutStyle">@style/Widget.Material3.DrawerLayout</item>
     <item name="extendedFloatingActionButtonStyle">?attr/extendedFloatingActionButtonPrimaryStyle</item>
     <item name="extendedFloatingActionButtonPrimaryStyle">@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Primary</item>
     <item name="extendedFloatingActionButtonSecondaryStyle">@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary</item>
@@ -252,8 +252,8 @@
     <item name="materialCardViewStyle">?attr/materialCardViewOutlinedStyle</item>
     <item name="materialCardViewOutlinedStyle">@style/Widget.Material3.CardView.Outlined</item>
     <item name="materialCardViewElevatedStyle">@style/Widget.Material3.CardView.Elevated</item>
-    <!-- TODO: Populate navigationViewStyle here -->
     <item name="navigationRailStyle">@style/Widget.Material3.NavigationRailView</item>
+    <item name="navigationViewStyle">@style/Widget.Material3.NavigationView</item>
     <item name="radioButtonStyle">@style/Widget.Material3.CompoundButton.RadioButton</item>
     <item name="sliderStyle">@style/Widget.Material3.Slider</item>
     <item name="snackbarStyle">@style/Widget.Material3.Snackbar</item>
