@@ -15,7 +15,7 @@ Badge                                         | Badge with number               
 --------------------------------------------- | ---------------------------------------------------- | ------------------------------------
 ![badge_icon](assets/badge/IconOnlyBadge.png) | ![badge_with_number_8](assets/badge/BadgeNumber.png) | ![badge_with_999+](assets/badge/BadgeNumberLongerThanMaxCharCount.png)
 
-NOTE: This component is still under development and may not support the full
+**Note:** This component is still under development and may not support the full
 range of customization Material Android components generally support (e.g.
 themed attributes).
 

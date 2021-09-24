@@ -43,7 +43,7 @@ The `shape` library provides some subclassed `CornerTreatment`s and
 Both `CornerTreatment` and `EdgeTreatment` can be subclassed to create custom
 corners and edges.
 
-Note: When subclassing `CornerTreatment` or `EdgeTreatment`, make sure to
+**Note:** When subclassing `CornerTreatment` or `EdgeTreatment`, make sure to
 implement the `Cloneable` interface to ensure that the `ShapeAppearanceModel`
 can create deep copies of the corner and edge treatments.
 
@@ -113,14 +113,14 @@ attribute; the `shapeAppearance` is read first, and then if there is anything
 specified in the `shapeAppearanceOverlay` attribute, it overrides what’s set in
 the `shapeAppearance`.
 
-Note: `shapeAppearance` styles require both `cornerSize` and `cornerFamily` to
-be set, while `shapeAppearanceOverlay` does not. This means that when defining a
-custom `shapeAppearance` style, you should either inherit from a parent if one
-exists, or set both `cornerSize` and `cornerFamily`. However, when defining a
-style to be used as a `shapeAppearanceOverlay`, you should generally set an
-empty parent by setting `parent=""`. This is because `shapeAppearanceOverlay`
-stacks on top of `shapeAppearance`, so all values will be set in the
-`shapeAppearance.`
+**Note:** `shapeAppearance` styles require both `cornerSize` and `cornerFamily`
+to be set, while `shapeAppearanceOverlay` does not. This means that when
+defining a custom `shapeAppearance` style, you should either inherit from a
+parent if one exists, or set both `cornerSize` and `cornerFamily`. However, when
+defining a style to be used as a `shapeAppearanceOverlay`, you should generally
+set an empty parent by setting `parent=""`. This is because
+`shapeAppearanceOverlay` stacks on top of `shapeAppearance`, so all values will
+be set in the `shapeAppearance.`
 
 ### Using `shapeAppearance` in the theme
 

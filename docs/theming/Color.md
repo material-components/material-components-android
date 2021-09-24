@@ -208,7 +208,7 @@ from the Material3 theme overlays above, by doing:
 DynamicColors.applyToActivitiesIfAvailable(this, R.style.ThemeOverlay_MyApp_DynamicColors_DayNight);
 ```
 
-Note: If you are applying your own non-dynamic theme overlays to override
+**Note:** If you are applying your own non-dynamic theme overlays to override
 Material colors in certain activities, fragments, layouts, etc., the dynamic
 colors will be overwritten by your theme overlays as well because dynamic colors
 are applied *before* activities are created. If that’s not the desired behavior
@@ -242,10 +242,10 @@ context = DynamicColors.wrapContextIfAvailable(context);
 This method will return a context with the dynamic color theme overlay applied,
 if dynamic colors are available on the device.
 
-Note: No matter which approach you follow, you will have to have M3 base themes
-(for example `Theme.Material3.DayNight.NoActionBar`) applied first to make
-dynamic color theme overlays work, because they use all of the same color theme
-attributes.
+**Note:** No matter which approach you follow, you will have to have M3 base
+themes (for example `Theme.Material3.DayNight.NoActionBar`) applied first to
+make dynamic color theme overlays work, because they use all of the same color
+theme attributes.
 
 ## Custom Colors
 
@@ -371,7 +371,7 @@ the input color, `colorToHarmonize`, towards the hue of `colorPrimary`. This
 will leave the input color recognizable while still meaningfully shifting it
 towards `colorPrimary`.
 
-Note: If the input color `colorToHarmonize` is the same as `colorPrimary`,
+**Note:** If the input color `colorToHarmonize` is the same as `colorPrimary`,
 harmonization won't happen and `colorToHarmonize` will be returned.
 
 ## Color role mapping utilities
