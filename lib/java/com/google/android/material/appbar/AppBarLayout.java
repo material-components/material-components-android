@@ -1427,10 +1427,11 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     }
 
     private int getChildIndexOnOffset(@NonNull T abl, final int offset) {
+      final int ablTopInset = abl.getTopInset();
       for (int i = 0, count = abl.getChildCount(); i < count; i++) {
         View child = abl.getChildAt(i);
-        int top = child.getTop();
-        int bottom = child.getBottom();
+        int top = child.getTop() - ablTopInset;
+        int bottom = child.getBottom() - ablTopInset;
 
         final LayoutParams lp = (LayoutParams) child.getLayoutParams();
         if (checkFlag(lp.getScrollFlags(), LayoutParams.SCROLL_FLAG_SNAP_MARGINS)) {
@@ -1453,16 +1454,12 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
         final View offsetChild = abl.getChildAt(offsetChildIndex);
         final LayoutParams lp = (LayoutParams) offsetChild.getLayoutParams();
         final int flags = lp.getScrollFlags();
+        final int ablTopInset = abl.getTopInset();
 
         if ((flags & LayoutParams.FLAG_SNAP) == LayoutParams.FLAG_SNAP) {
           // We're set the snap, so animate the offset to the nearest edge
-          int snapTop = -offsetChild.getTop();
-          int snapBottom = -offsetChild.getBottom();
-
-          if (offsetChildIndex == abl.getChildCount() - 1) {
-            // If this is the last child, we need to take the top inset into account
-            snapBottom += abl.getTopInset();
-          }
+          int snapTop = -offsetChild.getTop() + ablTopInset;
+          int snapBottom = -offsetChild.getBottom() + ablTopInset;
 
           if (checkFlag(flags, LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED)) {
             // If the view is set only exit until it is collapsed, we'll abide by that
