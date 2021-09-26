@@ -169,6 +169,8 @@
   <style name="Base.Widget.MaterialComponents.MaterialCalendar.NavigationButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog.Flush">
     <item name="android:textColor">@color/material_on_surface_emphasis_medium</item>
     <item name="iconTint">@color/material_on_surface_emphasis_medium</item>
+    <item name="android:paddingLeft">12dip</item>
+    <item name="android:paddingStart">12dip</item>
   </style>
 
   <style name="Widget.MaterialComponents.MaterialCalendar.YearNavigationButton" parent="Base.Widget.MaterialComponents.MaterialCalendar.NavigationButton"/>
