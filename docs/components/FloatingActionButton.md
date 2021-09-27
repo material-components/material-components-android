@@ -105,10 +105,13 @@ If you'd like to use the large FAB, apply one of these style attributes:
 ### Types
 
 There are four types of FABS: 1\. [Regular FABs](#regular-fabs), 2\.
-[Mini FABs](#mini-fabs), 3\. [Large FABs](#large-fabs) 4\.
-[Extended FABs](#extended-fabs)
+[Mini FABs](#mini-fabs), 3\. [Large FABs](#large-fabs)
 
 ![FAB types](assets/fabs/FAB_types.png)
+
+And 4\. [Extended FABs](#extended-fabs)
+
+![Extended FAB type](assets/fabs/extendedFAB_types.png)
 
 ## Regular FABs
 
@@ -261,7 +264,12 @@ fab.setOnClickListener {
 
 #### Anatomy
 
-![Large FAB anatomy diagram](#large-fabs)
+![Large FAB anatomy diagram](assets/fabs/largeFAB_anatomy-long.png)
+
+A large FAB has a container and an icon.
+
+1.  Container
+1.  Icon
 
 ### Regular, mini, and large FAB key properties
 
@@ -360,8 +368,8 @@ extendedFab.setOnClickListener {
 An extended FAB has a text label, a transparent container and an optional icon.
 
 1.  Container
-1.  Icon (Optional)
-1.  Text label
+2.  Text label
+3.  Icon (Optional)
 
 #### Container attributes
 
@@ -460,8 +468,8 @@ FABs in your app but does not affect other components:
 </style>
 
 <style name="ThemeOverlay.App.FloatingActionButton" parent="">
-    <item name="colorContainer">@color/shrine_pink_100</item>
-    <item name="colorOnContainer">@color/shrine_pink_900</item>
+    <item name="colorContainer">@color/purple_500</item>
+    <item name="colorOnContainer">@color/purple_700</item>
 </style>
 ```
 
