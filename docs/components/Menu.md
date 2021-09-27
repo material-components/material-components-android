@@ -12,7 +12,7 @@ path: /catalog/menus/
 [Menus](https://material.io/components/menus) display a list of choices on
 temporary surfaces.
 
-![Menu hero example showing two cascading menus](assets/menu/menus_hero.png)
+![Menu hero example](assets/menu/menus_hero.png)
 
 **Contents**
 
@@ -408,12 +408,12 @@ The following are menu anatomy diagrams showing all possible elements:
 
 ![Menus anatomy diagrams](assets/menu/menus_anatomy.png)
 
-1.  Container
-1.  Leading icon (optional)
-1.  Text
-1.  Divider (optional)
-1.  Command (not supported on Android)
-1.  Cascading menu indicator (optional)
+1.  List item
+2.  Leading icon
+3.  Trailing icon
+4.  Trailing text
+5.  Container
+6.  Divider
 
 #### Container attributes
 
@@ -542,11 +542,11 @@ The exposed dropdown menu is an `AutoCompleteTextView` within a
 
 ![Exposed dropdown menu anatomy diagram](assets/menu/menus_exposed_dropdown_anatomy.png)
 
-1.  Container
 1.  Text
-1.  Label
-1.  Selection/Input text
-1.  Trailing icon
+2.  Container
+3.  Label
+4.  Selection/Input text
+5.  Trailing icon
 
 #### `TextInputLayout` attributes (container, label, trailing icon)
 
