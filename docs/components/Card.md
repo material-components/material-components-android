@@ -44,7 +44,7 @@ more info.
 
 ### Making a card checkable
 
-![Elevated card with a checked button and a light purple overlay; secondary
+![Outlined card with a checked button and a light purple overlay; secondary
 title and Action 1 and Action 2 buttons](assets/cards/cards_checked.png)
 
 When a card is checked, it will show a checked icon and change its foreground
@@ -76,8 +76,8 @@ card.setOnLongClickListener {
 
 ### Making a card draggable
 
-![Elevated card with a light grey overlay; secondary title and Action 1 and
-Action 2 buttons](assets/cards/cards_dragged.png)
+![Outlined card with a light grey overlay; secondary title and Action 1 and
+Action 2 buttons, being dragged](assets/cards/cards_dragged.png)
 
 Cards have an `app:state_dragged` with foreground and elevation changes to
 convey motion. We recommend using
@@ -193,12 +193,13 @@ You can see an example
 
 ## Card
 
-On mobile, an outlined [card’s](https://material.io/components/cards/#specs)
-default elevation is `0dp`, with a raised dragged elevation of `8dp`. The
-Material Android library also provides an elevated card style, which has an
-elevation of `1dp`, with a raised dragged elevation of `2dp`.
+On mobile, an outlined or a filled
+[card’s](https://material.io/components/cards/#specs) default elevation is
+`0dp`, with a raised dragged elevation of `8dp`. The Material Android library
+also provides an elevated card style, which has an elevation of `1dp`, with a
+raised dragged elevation of `2dp`.
 
-![Elevated card with a secondary title and Action 1 and Action 2 buttons in
+![Outlined card with a secondary title and Action 1 and Action 2 buttons in
 purple](assets/cards/cards_basic.png)
 
 ### Card examples
@@ -211,7 +212,8 @@ API and source code:
 
 **Note:** You don't need to specify a style tag as long as you are using a
 Material Components Theme. If not, set the style to
-`Widget.Material3.CardView.Outlined` or `Widget.Material3.CardView.Elevated`.
+`Widget.Material3.CardView.Outlined`, `Widget.Material3.CardView.Filled` or
+`Widget.Material3.CardView.Elevated`.
 
 #### Outlined card
 
@@ -299,6 +301,25 @@ Action 2 buttons in purple"](assets/cards/cards_outlined.png)
 </com.google.android.material.card.MaterialCardView>
 ```
 
+#### Filled card
+
+The following example shows an filled card.
+
+!["Filled card with a photo, title, a secondary title, text, and Action 1 and
+Action 2 buttons in purple"](assets/cards/cards_filled.png)
+
+In the layout:
+
+```xml
+<com.google.android.material.card.MaterialCardView
+    ...
+    style="?attr/materialCardViewFilledStyle">
+
+    ...
+
+</com.google.android.material.card.MaterialCardView>
+```
+
 #### Elevated card
 
 The following example shows an elevated card.
@@ -323,17 +344,14 @@ In the layout:
 A card has a container and an optional thumbnail, header text, secondary text,
 media, supporting text, buttons and icons.
 
-![card anatomy diagram](assets/cards/card-anatomy.png)
+![card anatomy diagram](assets/cards/card_anatomy.png)
 
 1.  Container
-2.  Thumbnail
-3.  Header text
-4.  Secondary text
-5.  Media
-6.  Supporting text
-7.  Buttons
-8.  Icons
-9.  Checked icon (not shown)
+2.  Headline
+3.  Subhead
+4.  Supporting text
+5.  Image
+6.  Buttons
 
 **Note:** All the optional elements of a card's content (with the exception of
 the checked icon) are implemented through the use of other views/components, as
@@ -343,12 +361,12 @@ shown in the [card examples](#card-examples) section.
 
 Element              | Attribute                 | Related method(s)                                                   | Default value
 -------------------- | ------------------------- | ------------------------------------------------------------------- | -------------
-**Color**            | `app:cardBackgroundColor` | `setCardBackgroundColor`<br/>`getCardBackgroundColor`               | `?attr/colorSurface`
+**Color**            | `app:cardBackgroundColor` | `setCardBackgroundColor`<br/>`getCardBackgroundColor`               | `?attr/colorSurface` or `?attr/colorSurfaceVariant` (filled style)
 **Foreground color** | `app:cardForegroundColor` | `setCardForegroundColor`<br/>`getCardForegroundColor`               | `@android:color/transparent` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/card/res/color/m3_card_foreground_color.xml))
 **Stroke color**     | `app:strokeColor`         | `setStrokeColor`<br/>`getStrokeColor`<br/>`getStrokeColorStateList` | `?attr/colorOutline` (unchecked)<br/>`?attr/colorSecondary` (checked)
-**Stroke width**     | `app:strokeWidth`         | `setStrokeWidth`<br/>`getStrokeWidth`                               | `1dp` (outlined style)<br/>`0dp` (elevated style)
+**Stroke width**     | `app:strokeWidth`         | `setStrokeWidth`<br/>`getStrokeWidth`                               | `1dp` (outlined style)<br/>`0dp` (elevated or filled style)
 **Shape**            | `app:shapeAppearance`     | `setShapeAppearanceModel`<br/>`getShapeAppearanceModel`             | `?attr/shapeAppearanceMediumComponent`
-**Elevation**        | `app:cardElevation`       | `setCardElevation`<br/>`setCardMaxElevation`                        | `0dp` (outlined style)<br/>`1dp` (elevated style)
+**Elevation**        | `app:cardElevation`       | `setCardElevation`<br/>`setCardMaxElevation`                        | `0dp` (outlined or filled style)<br/>`1dp` (elevated style)
 **Ripple color**     | `app:rippleColor`         | `setRippleColor`<br/>`setRippleColorResource`<br/>`getRippleColor`  | `?attr/colorOnSurfaceVariant` at 20% opacity (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/card/res/color/m3_card_ripple_color.xml))
 
 **Note:** We recommend that cards on mobile have `8dp` margins.
@@ -444,7 +462,7 @@ theme to all cards but does not affect other components:
     <item name="materialCardViewStyle">@style/Widget.App.CardView</item>
 </style>
 
-<style name="Widget.App.CardView" parent="Widget.Material3.CardView.Outlined">
+<style name="Widget.App.CardView" parent="Widget.Material3.CardView.Elevated">
     <item name="materialThemeOverlay">@style/ThemeOverlay.App.Card</item>
     <item name="shapeAppearance">@style/ShapeAppearance.App.MediumComponent</item>
 </style>
