@@ -17,9 +17,7 @@ can contain critical information, require decisions, or involve multiple tasks.
 **Contents**
 
 *   [Using dialogs](#using-dialogs)
-*   [Alert dialog](#alert-dialog)
-*   [Simple dialog](#simple-dialog)
-*   [Confirmation dialog](#confirmation-dialog)
+*   [Basic dialog](#basic-dialog)
 *   [Full-screen dialog](#full-screen-dialog)
 *   [Theming](#theming-dialogs)
 
@@ -178,9 +176,11 @@ For specific button attributes, see the
 
 #### Scrim attributes
 
-Element         | **Attribute**                 | **Related methods** | **Default value**
---------------- | ----------------------------- | ------------------- | -----------------
-**Dim ammount** | `android:backgroundDimAmount` | N/A                 | 32%
+| Element  | **Attribute**                 | **Related | **Default value** |
+:          :                               : methods** :                   :
+| -------- | ----------------------------- | --------- | ----------------- |
+| **Dim    | `android:backgroundDimAmount` | N/A       | 32%               |
+: amount** :                               :           :                   :
 
 #### Theme overlays
 
@@ -210,8 +210,8 @@ and
 ## Theming dialogs
 
 A dialog supports
-[Material Theming](https://material.io/components/dialogs/#theming) and can be
-customized in terms of color, typography and shape.
+[Material Theming](https://material.io/components/dialogs/#theming) which can
+customize color, typography and shape.
 
 ### Dialog theming example
 
@@ -272,7 +272,7 @@ In `res/values/styles.xml`:
 </style>
 ```
 
-Or if you want to only change one specific dialog, pass the `themeResId` to the
+Or if you want to change only one specific dialog, pass the `themeResId` to the
 constructor:
 
 ```kt
