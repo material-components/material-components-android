@@ -18,9 +18,9 @@ access to destinations in your app.
 
 *   [Using navigation drawers](#using-navigation-drawers)
 *   [Anatomy](#anatomy)
-*   [Standard navigation drawers](#standard-navigation-drawers)
-*   [Modal navigation drawers](#modal-navigation-drawers)
-*   [Bottom navigation drawers](#bottom-navigation-drawers)
+*   [Standard navigation drawer](#standard-navigation-drawer)
+*   [Modal navigation drawer](#modal-navigation-drawer)
+*   [Bottom navigation drawer](#bottom-navigation-drawer)
 *   [Theming](#theming)
 
 ## Using navigation drawers
@@ -28,7 +28,7 @@ access to destinations in your app.
 Before you can use navigation drawers, you need to add a dependency to the
 Material Components for Android library. For more information, go to the
 [getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
-page. For modal navigation drawers you also need to add a dependency to tne
+page. For modal navigation drawers you also need to add a dependency to the
 AndroidX `DrawerLayout` library. For more information go to the
 [releases](https://developer.android.com/jetpack/androidx/releases/drawerlayout)
 page.
@@ -213,14 +213,14 @@ For more information on content labels, go to the
 #### Content descriptions
 
 A content description can be set on `<item>`s in the `NavigationView` menu so
-that screen readers like TalkBack are able to announce their purpose or action,
-if any. This can be done in XML using the `android:contentDescription` attribute
-or programmatically with
+that screen readers like TalkBack are able to announce their purpose or action.
+This can be done in XML using the `android:contentDescription` attribute or
+programmatically with
 `navigationView.menu.findItem(R.id.itemId)#setContentDescription` (on API 26 and
 above).
 
 Any `ImageView`s within the header layout should also have a content description
-set on them.
+set.
 
 #### Opening and closing navigation drawers
 
@@ -248,7 +248,7 @@ subtitles, and an optional scrim.
 3.  Label text
 4.  Icon (optional)
 5.  Active indicator/Item shape
-6.  Badge text (not supported)
+6.  Badge text (coming soon)
 7.  Divider
 8.  Scrim (modal drawer only)
 
@@ -288,11 +288,11 @@ Element                | Attribute(s)                                           
 
 ### Text attributes
 
-Element         | Attribute                | Related method(s)                        | Default value
---------------- | ------------------------ | ---------------------------------------- | -------------
-**Color**       | `app:itemTextColor`      | `setItemTextColor`<br>`getItemTextColor` | `?attr/colorOnSecondaryContainer` when active else `?attr/colorOnSurfaceVariant`
-**Typograhphy** | `app:itemTextAppearance` | `setItemTextAppearance`                  | `?attr/textAppearanceLabelLarge`
-**Max lines**   | `app:itemMaxLines`       | `setItemMaxLines`<br>`getItemMaxLines`   | `1`
+Element        | Attribute                | Related method(s)                        | Default value
+-------------- | ------------------------ | ---------------------------------------- | -------------
+**Color**      | `app:itemTextColor`      | `setItemTextColor`<br>`getItemTextColor` | `?attr/colorOnSecondaryContainer` when active else `?attr/colorOnSurfaceVariant`
+**Typography** | `app:itemTextAppearance` | `setItemTextAppearance`                  | `?attr/textAppearanceLabelLarge`
+**Max lines**  | `app:itemMaxLines`       | `setItemMaxLines`<br>`getItemMaxLines`   | `1`
 
 ### Icon attributes
 
@@ -344,8 +344,8 @@ There are three types of navigation drawers: 1\.
 
 [Standard navigation drawers](https://material.io/components/navigation-drawer#standard-drawer)
 allow interaction with both screen content and the drawer at the same time. They
-can be used on tablet and desktop, but they aren’t suitable for mobile due to
-limited screen size.
+can be used on tablet and desktop, but they aren’t suitable for mobile devices
+due to limited screen size.
 
 ### Standard navigation drawer example
 
@@ -406,8 +406,8 @@ In `res/layout/header_navigation_drawer.xml`:
 block interaction with the rest of an app’s content with a scrim. They are
 elevated above most of the app’s UI and don’t affect the screen’s layout grid.
 
-They are primarily for use on mobile where screen space is limited, and can be
-replaced by standard drawers on tablet and desktop.
+They are primarily used for mobile devices where screen space is limited, and
+can be replaced by standard drawers on tablet and desktop.
 
 ### Modal navigation drawer example
 
@@ -499,7 +499,7 @@ are modal drawers that are anchored to the bottom of the screen instead of the
 left or right edge. They are only used with bottom app bars.
 
 These drawers open upon tapping the navigation menu icon in the bottom app bar.
-They are only for use on mobile.
+They are only for use on mobile devices.
 
 ### Bottom navigation drawer example
 
@@ -599,8 +599,8 @@ For more information on bottom app bars see the
 ## Theming
 
 Navigation drawers support
-[Material Theming](https://material.io/components/text-fields/#theming) and can
-be customized in terms of color, typography and shape.
+[Material Theming](https://material.io/components/text-fields/#theming) which
+can customize color, typography and shape.
 
 ### Navigation drawer theming example
 
@@ -618,9 +618,9 @@ containers.](assets/navigationdrawer/navigation-drawer-theming.png)
 
 #### Implementing navigation drawer theming
 
-Using theme attributes, default style theme attributes, and styles in
-`res/values/styles.xml` (themes all navigation drawers and affects other
-components):
+Use theme attributes, default style theme attributes, and styles in
+`res/values/styles.xml`, which applies to all navigation drawers and affects
+other components:
 
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
@@ -675,8 +675,8 @@ In `res/color/navigation_item_background_color.xml`:
 </selector>
 ```
 
-or using default style theme attributes, styles and theme overlays (themes all
-navigation drawers but does not affect other components):
+Use default style theme attributes, styles and theme overlays which apply to all
+navigation drawers but do not affect other components:
 
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
@@ -705,7 +705,7 @@ navigation drawers but does not affect other components):
 </style>
 ```
 
-or using the style in the layout (affects only this navigation drawer):
+Use the style in the layout, which affects only this navigation drawer:
 
 ```xml
 <com.google.android.material.navigation.NavigationView
