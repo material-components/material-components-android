@@ -34,7 +34,7 @@ page.
 
 A
 [`TabLayout`](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/tabs/TabLayout.java)
-can be added to a layout like so:
+can be added to a layout:
 
 ```xml
 <com.google.android.material.tabs.TabLayout
@@ -70,7 +70,7 @@ can then be added as children of the `TabLayout` and adjusted as needed:
 </com.google.android.material.tabs.TabLayout>
 ```
 
-Changes to tab selection can be observed like so:
+Observe changes to tab selections:
 
 ```kt
 tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -92,12 +92,12 @@ tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
 ### Making tabs accessible
 
 The Android tab components support screen reader descriptions for tabs and
-badges . While optional, we strongly encourage their use.
+badges. While optional, we strongly encourage their use.
 
 #### Content descriptions
 
 Adding a content description to the entire `TabLayout` can be done in XML with
-the `android:contentDescription` attribute or programmatically like so:
+the `android:contentDescription` attribute or programmatically:
 
 ```kt
 tabLayout.contentDescription = contentDescription
@@ -122,7 +122,7 @@ badge.setContentDescriptionExceedsMaxBadgeNumberStringResource(R.string.content_
 
 ### Using tabs with ViewPager
 
-A `TabLayout` can be setup with a
+A `TabLayout` can be set up with a
 [`ViewPager`](https://developer.android.com/reference/kotlin/androidx/viewpager/widget/ViewPager)
 in order to:
 
@@ -130,9 +130,9 @@ in order to:
     etc.
 *   Synchronize the selected tab and tab indicator position with page swipes
 
-Firstly, your
+First, your
 [`PagerAdapter`](https://developer.android.com/reference/androidx/viewpager/widget/PagerAdapter)
-(or subclass) needs to overrride the `getPageTitle` function in order to set the
+(or subclass) needs to override the `getPageTitle` function in order to set the
 tab text label:
 
 ```kt
@@ -146,8 +146,7 @@ class Adapter : PagerAdapter() {
 }
 ```
 
-After the adapter has been set on the `ViewPager`, synchronize the `TabLayout`
-like so:
+After the adapter has been set on the `ViewPager`, synchronize the `TabLayout`:
 
 ```kt
 tabLayout.setupWithViewPager(viewPager)
@@ -412,8 +411,8 @@ and
 ## Theming tabs
 
 Tabs support
-[Material Theming](https://material.io/components/app-bars-bottom/#theming) and
-can be customized in terms of color and typography.
+[Material Theming](https://material.io/components/app-bars-bottom/#theming)
+which can customize color and typography.
 
 ### Tabs theming example
 
@@ -433,8 +432,8 @@ dark pink, the unselected text is grey.](assets/tabs/tabs_theming.png)
 
 #### Implementing tabs theming
 
-Using theme attributes and styles in `res/values/styles.xml` (themes all tabs
-and affects other components):
+Use theme attributes and styles in `res/values/styles.xml` which applies to all
+tabs and affects other components:
 
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
@@ -451,8 +450,8 @@ and affects other components):
 </style>
 ```
 
-or using default style theme attributes, styles and theme overlays (themes all
-tabs but does not affect other components):
+Use default style theme attributes, styles and theme overlays, which apply to
+all tabs but do not affect other components:
 
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
@@ -472,7 +471,7 @@ tabs but does not affect other components):
 </style>
 ```
 
-or using the style in the layout (affects only these tabs):
+Use the style in the layout, which affects only these tabs:
 
 ```xml
 <com.google.android.material.tabs.TabLayout
