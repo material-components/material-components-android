@@ -38,6 +38,23 @@
     <item name="colorOnError">@color/m3_sys_color_light_on_error</item>
     <item name="colorErrorContainer">@color/m3_sys_color_light_error_container</item>
     <item name="colorOnErrorContainer">@color/m3_sys_color_light_on_error_container</item>
+
+    <!-- Default Framework Text Colors. -->
+    <item name="android:textColorPrimary">@color/m3_default_color_primary_text</item>
+    <item name="android:textColorPrimaryInverse">@color/m3_dark_default_color_primary_text</item>
+    <item name="android:textColorSecondary">@color/m3_default_color_secondary_text</item>
+    <item name="android:textColorSecondaryInverse">@color/m3_dark_default_color_secondary_text</item>
+    <item name="android:textColorTertiary">@color/m3_default_color_secondary_text</item>
+    <item name="android:textColorTertiaryInverse">@color/m3_dark_default_color_secondary_text</item>
+    <item name="android:textColorPrimaryDisableOnly">@color/m3_primary_text_disable_only</item>
+    <item name="android:textColorPrimaryInverseDisableOnly">@color/m3_dark_primary_text_disable_only</item>
+    <item name="android:textColorHint">@color/m3_hint_foreground</item>
+    <item name="android:textColorHintInverse">@color/m3_dark_hint_foreground</item>
+    <item name="android:textColorHighlight">@color/m3_highlighted_text</item>
+    <item name="android:textColorHighlightInverse">@color/m3_dark_highlighted_text</item>
+    <item name="android:textColorLink">?attr/colorPrimary</item>
+    <item name="android:textColorLinkInverse">?attr/colorPrimaryInverse</item>
+    <item name="android:textColorAlertDialogListItem">@color/m3_default_color_primary_text</item>
   </style>
 
   <!--
@@ -58,6 +75,23 @@
     <item name="colorOnError">@color/m3_sys_color_dark_on_error</item>
     <item name="colorErrorContainer">@color/m3_sys_color_dark_error_container</item>
     <item name="colorOnErrorContainer">@color/m3_sys_color_dark_on_error_container</item>
+
+    <!-- Default Framework Text Colors. -->
+    <item name="android:textColorPrimary">@color/m3_dark_default_color_primary_text</item>
+    <item name="android:textColorPrimaryInverse">@color/m3_default_color_primary_text</item>
+    <item name="android:textColorSecondary">@color/m3_dark_default_color_secondary_text</item>
+    <item name="android:textColorSecondaryInverse">@color/m3_default_color_secondary_text</item>
+    <item name="android:textColorTertiary">@color/m3_dark_default_color_secondary_text</item>
+    <item name="android:textColorTertiaryInverse">@color/m3_default_color_secondary_text</item>
+    <item name="android:textColorPrimaryDisableOnly">@color/m3_dark_primary_text_disable_only</item>
+    <item name="android:textColorPrimaryInverseDisableOnly">@color/m3_primary_text_disable_only</item>
+    <item name="android:textColorHint">@color/m3_dark_hint_foreground</item>
+    <item name="android:textColorHintInverse">@color/m3_hint_foreground</item>
+    <item name="android:textColorHighlight">@color/m3_dark_highlighted_text</item>
+    <item name="android:textColorHighlightInverse">@color/m3_highlighted_text</item>
+    <item name="android:textColorLink">?attr/colorPrimary</item>
+    <item name="android:textColorLinkInverse">?attr/colorPrimaryInverse</item>
+    <item name="android:textColorAlertDialogListItem">@color/m3_dark_default_color_primary_text</item>
   </style>
 
   <!--
