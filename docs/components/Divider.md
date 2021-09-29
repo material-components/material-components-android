@@ -138,8 +138,7 @@ and
 ## Theming dividers
 
 Dividers support
-[Material Theming](https://material.io/components/selection-controls#theming)
-and can be customized in terms of color.
+[Material Theming](https://material.io/components/selection-controls#theming) and therefore can have their colors customized.
 
 ### Divider theming example
 
@@ -158,8 +157,8 @@ The following example shows a divider with Material Theming.
 
 #### Implementing divider theming
 
-Using theme attributes in `res/values/styles.xml` (themes all dividers and
-affects other components):
+Use theme attributes in `res/values/styles.xml`, which applies to all dividers
+and affects other components:
 
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
@@ -168,8 +167,8 @@ affects other components):
 </style>
 ```
 
-or using default style theme attributes, styles and theme overlays (themes all
-dividers but does not affect other components):
+Use default style theme attributes, styles and theme overlays, which apply to
+all dividers but do not affect other components:
 
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
@@ -195,7 +194,7 @@ attribute:
 </style>
 ```
 
-or using the style in the layout (affects only this divider):
+or use the style in the layout, which affects only this divider:
 
 ```xml
 <com.google.android.material.divider.MaterialDivider
