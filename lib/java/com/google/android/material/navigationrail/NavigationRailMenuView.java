@@ -47,6 +47,7 @@ public class NavigationRailMenuView extends NavigationBarMenuView {
 
     layoutParams.gravity = DEFAULT_MENU_GRAVITY;
     setLayoutParams(layoutParams);
+    setItemActiveIndicatorResizeable(true);
   }
 
   @Override
