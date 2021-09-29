@@ -18,6 +18,7 @@ package io.material.catalog.tableofcontents;
 
 import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
+import io.material.catalog.adaptive.AdaptiveFragment;
 import io.material.catalog.application.scope.FragmentScope;
 import io.material.catalog.bottomappbar.BottomAppBarFragment;
 import io.material.catalog.bottomnav.BottomNavigationFragment;
@@ -51,6 +52,7 @@ import io.material.catalog.transition.TransitionFragment;
 /** The Dagger module for {@link TocFragment} dependencies. */
 @dagger.Module(
     includes = {
+      AdaptiveFragment.Module.class,
       BottomAppBarFragment.Module.class,
       ButtonsFragment.Module.class,
       BottomNavigationFragment.Module.class,

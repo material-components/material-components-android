@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2021 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<androidx.slidingpanelayout.widget.SlidingPaneLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/sliding_pane_layout"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
+    <ScrollView
+      android:id="@+id/container"
+      android:layout_width="400dp"
+      android:layout_height="match_parent">
+
+      <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.AppBarLayout
+          android:id="@+id/app_bar_layout"
+          android:layout_width="0dp"
+          android:layout_weight="1"
+          android:layout_height="wrap_content"
+          android:fitsSystemWindows="true"
+          app:layout_constraintTop_toTopOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toEndOf="parent">
+
+          <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_collapseMode="pin"
+            app:menu="@menu/album_menu"
+            app:navigationIcon="@drawable/ic_arrow_back_black_24dp" />
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <ImageView
+          android:id="@+id/album_image"
+          android:layout_width="0dp"
+          android:layout_height="0dp"
+          android:contentDescription="@string/cat_music_player_album_cover_content_description"
+          android:scaleType="centerCrop"
+          app:layout_constraintDimensionRatio="H,4:3"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/app_bar_layout" />
+
+        <!-- Music Player -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+          android:id="@+id/music_player_container"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:background="@android:color/black"
+          android:theme="@style/ThemeOverlay.Catalog.MusicPlayer.Player"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/album_image">
+
+          <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/music_progress_indicator"
+            style="@style/Widget.Material3.LinearProgressIndicator"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="@string/cat_music_player_progress_indicator_content_description"
+            android:indeterminate="false"
+            android:progress="10"
+            app:indicatorSize="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+          <com.google.android.material.button.MaterialButton
+            style="@style/Widget.Catalog.MusicPlayer.Player.Button"
+            android:layout_width="@dimen/cat_music_player_button_size"
+            android:layout_height="@dimen/cat_music_player_button_size"
+            android:layout_marginStart="@dimen/cat_music_player_control_button_margin"
+            android:layout_marginLeft="@dimen/cat_music_player_control_button_margin"
+            android:contentDescription="@string/cat_music_player_rewind_button_content_description"
+            app:icon="@drawable/ic_fast_rewind_24dp"
+            app:layout_constraintBottom_toTopOf="@id/volume_slider"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/music_progress_indicator" />
+
+          <com.google.android.material.button.MaterialButton
+            android:id="@+id/music_play_button"
+            style="@style/Widget.Catalog.MusicPlayer.Player.Button"
+            android:layout_width="@dimen/cat_music_player_button_size"
+            android:layout_height="@dimen/cat_music_player_button_size"
+            android:contentDescription="@string/cat_music_player_pause_button_content_description"
+            app:icon="@drawable/ic_play_arrow_white_24dp"
+            app:layout_constraintBottom_toTopOf="@id/volume_slider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/music_progress_indicator" />
+
+          <com.google.android.material.button.MaterialButton
+            style="@style/Widget.Catalog.MusicPlayer.Player.Button"
+            android:layout_width="@dimen/cat_music_player_button_size"
+            android:layout_height="@dimen/cat_music_player_button_size"
+            android:layout_marginEnd="@dimen/cat_music_player_control_button_margin"
+            android:layout_marginRight="@dimen/cat_music_player_control_button_margin"
+            android:contentDescription="@string/cat_music_player_fast_forward_button_content_description"
+            app:icon="@drawable/ic_fast_forward_white_24dp"
+            app:layout_constraintBottom_toTopOf="@id/volume_slider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/music_progress_indicator" />
+
+          <com.google.android.material.button.MaterialButton
+            android:id="@+id/volume_down_button"
+            style="@style/Widget.Catalog.MusicPlayer.Player.Button"
+            android:layout_width="@dimen/cat_music_player_button_size"
+            android:layout_height="@dimen/cat_music_player_button_size"
+            android:layout_marginStart="@dimen/cat_music_player_volume_button_margin"
+            android:layout_marginLeft="@dimen/cat_music_player_volume_button_margin"
+            android:contentDescription="@string/cat_music_player_volume_down_button_content_description"
+            app:icon="@drawable/ic_volume_down_white_24dp"
+            app:layout_constraintBottom_toBottomOf="@id/volume_slider"
+            app:layout_constraintEnd_toStartOf="@id/volume_slider"
+            app:layout_constraintTop_toTopOf="@id/volume_slider" />
+
+          <com.google.android.material.slider.Slider
+            android:id="@+id/volume_slider"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:contentDescription="@string/cat_music_player_volume_slider_content_description"
+            android:value="3.5"
+            android:valueFrom="0"
+            android:valueTo="10"
+            app:labelBehavior="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintWidth_default="percent"
+            app:layout_constraintWidth_min="200dp"
+            app:layout_constraintWidth_percent="0.55"
+            app:thumbRadius="8dp"
+            app:trackHeight="3dp" />
+
+          <com.google.android.material.button.MaterialButton
+            android:id="@+id/volume_up_button"
+            style="@style/Widget.Catalog.MusicPlayer.Player.Button"
+            android:layout_width="@dimen/cat_music_player_button_size"
+            android:layout_height="@dimen/cat_music_player_button_size"
+            android:layout_marginEnd="@dimen/cat_music_player_volume_button_margin"
+            android:layout_marginRight="@dimen/cat_music_player_volume_button_margin"
+            android:contentDescription="@string/cat_music_player_volume_up_button_content_description"
+            app:icon="@drawable/ic_volume_up_white_24dp"
+            app:layout_constraintBottom_toBottomOf="@id/volume_slider"
+            app:layout_constraintStart_toEndOf="@id/volume_slider"
+            app:layout_constraintTop_toTopOf="@id/volume_slider" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Album info container. -->
+        <LinearLayout
+          android:id="@+id/album_info_container"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/music_player_container"
+          android:paddingStart="56dp"
+          android:paddingEnd="16dp"
+          android:paddingLeft="56dp"
+          android:paddingRight="16dp"
+          android:paddingTop="16dp"
+          android:paddingBottom="16dp"
+          android:gravity="center_vertical"
+          android:orientation="vertical">
+
+          <TextView
+            android:id="@+id/album_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textAppearance="?attr/textAppearanceBody1"
+            tools:text="Metamorphosis" />
+          <TextView
+            android:id="@+id/album_artist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textAppearance="?attr/textAppearanceBody2"
+            tools:text="Sandra Adams" />
+        </LinearLayout>
+      </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+  <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/song_recycler_view"
+    android:layout_width="100dp"
+    android:layout_weight="1"
+    android:layout_height="match_parent"
+    android:paddingTop="8dp"
+    android:orientation="vertical"
+    android:overScrollMode="never"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+</androidx.slidingpanelayout.widget.SlidingPaneLayout>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2021 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/hero_container"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:layout_marginStart="12dp"
+  android:layout_marginEnd="12dp"
+  android:layout_marginLeft="12dp"
+  android:layout_marginRight="12dp"
+  app:layout_behavior="@string/appbar_scrolling_view_behavior">
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/hero_constraint_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.card.MaterialCardView
+      android:id="@+id/hero_top_content"
+      android:visibility="gone"
+      android:layout_width="0dp"
+      android:layout_height="362dp"
+      app:layout_constrainedWidth="true"
+      android:layout_marginTop="16dp"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:strokeWidth="0dp"
+      app:cardBackgroundColor="?attr/colorSurfaceVariant"/>
+
+    <com.google.android.material.card.MaterialCardView
+      android:id="@+id/hero_main_content"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      app:layout_constraintHeight_min="437dp"
+      app:layout_constrainedWidth="true"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:strokeColor="?attr/colorSurfaceVariant"/>
+
+    <LinearLayout
+      android:id="@+id/hero_side_content_container"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      app:layout_constraintWidth_default="percent"
+      app:layout_constraintWidth_percent="1"
+      android:orientation="vertical"
+      android:layout_marginTop="16dp"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/hero_main_content">
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:textAppearance="?attr/textAppearanceHeadlineSmall"
+        android:text="@string/cat_hero_fragment_title"/>
+      <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/hero_side_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
