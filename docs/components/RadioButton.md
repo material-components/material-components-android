@@ -140,7 +140,7 @@ Element                    | Attribute                                  | Relate
 
 The color of the radio button defaults to `?attr/colorOnSurface` (unchecked) and
 `?attr/colorPrimary` (checked) defined in your app theme. If you want to
-override this behavior, as you might with a custom drawable that should not be
+override this behavior, you could use a custom drawable that should not be
 tinted, set `app:useMaterialThemeColors` to `false`:
 
 ```xml
@@ -184,7 +184,7 @@ and
 
 Radio buttons support
 [Material Theming](https://material.io/components/selection-controls#theming)
-and can be customized in terms of color and typography.
+which can customize color and typography.
 
 ### Radio button theming example
 
@@ -204,8 +204,8 @@ button"](assets/radiobutton/radiobutton_theming.png)
 
 #### Implementing radio button theming
 
-Using theme attributes in `res/values/styles.xml` (themes all radio buttons and
-affects other components):
+Use theme attributes in `res/values/styles.xml` which applies to all radio
+buttons and affects other components:
 
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
@@ -216,8 +216,8 @@ affects other components):
 
 ```
 
-or using default style theme attributes, styles and theme overlays (themes all
-radio buttons but does not affect other components):
+Use default style theme attributes, styles and theme overlays which apply to all
+radio buttons but do not affect other components:
 
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
@@ -235,7 +235,7 @@ radio buttons but does not affect other components):
 </style>
 ```
 
-you can also change the radio button colors via the `?attr/buttonTint`
+You can also change the radio button colors via the `?attr/buttonTint`
 attribute:
 
 ```xml
@@ -254,7 +254,7 @@ and in `color/button_tint.xml`:
 </selector>
 ```
 
-or using the styles in the layout (affects only this radio button):
+You can use the styles in the layout, which affects only this radio button:
 
 ```xml
 <RadioButton
