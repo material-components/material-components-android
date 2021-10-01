@@ -381,10 +381,12 @@
 
   <style name="Base.V14.ThemeOverlay.Material3.Dialog.Alert" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
     <item name="buttonBarButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog.Flush</item>
+    <item name="android:windowElevation" tools:ignore="NewApi">@dimen/m3_alert_dialog_elevation</item>
   </style>
 
   <style name="Base.V14.ThemeOverlay.Material3.MaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
     <item name="alertDialogStyle">@style/MaterialAlertDialog.Material3</item>
+    <item name="android:windowElevation" tools:ignore="NewApi">@dimen/m3_alert_dialog_elevation</item>
     <item name="android:checkedTextViewStyle" tools:ignore="NewApi">@style/Widget.Material3.CheckedTextView</item>
     <item name="buttonBarButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog</item>
     <item name="buttonBarPositiveButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog</item>

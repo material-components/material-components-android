@@ -46,10 +46,12 @@
   <!-- Material3 ThemeOverlays for Framework Alert Dialogs. -->
 
   <style name="Base.ThemeOverlay.Material3.Dialog.Alert.Framework" parent="Base.ThemeOverlay.MaterialComponents.Dialog.Alert.Framework">
+    <item name="android:windowElevation">@dimen/m3_alert_dialog_elevation</item>
     <item name="android:buttonBarButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog.Flush</item>
   </style>
 
   <style name="Base.ThemeOverlay.Material3.Light.Dialog.Alert.Framework" parent="Base.ThemeOverlay.MaterialComponents.Light.Dialog.Alert.Framework">
+    <item name="android:windowElevation">@dimen/m3_alert_dialog_elevation</item>
     <item name="android:buttonBarButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog.Flush</item>
   </style>
 </resources>
