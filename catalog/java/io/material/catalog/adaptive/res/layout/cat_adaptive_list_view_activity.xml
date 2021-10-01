@@ -21,7 +21,7 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent">
   <androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/list_view_activity_container"
+    android:id="@+id/list_view_activity_constraint_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
