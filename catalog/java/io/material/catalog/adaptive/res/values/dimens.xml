@@ -16,6 +16,6 @@
 -->
 
 <resources>
-  <dimen name="cat_adaptive_hero_margin_horizontal">12dp</dimen>
-  <dimen name="cat_adaptive_hero_margin_vertical">16dp</dimen>
+  <dimen name="cat_adaptive_margin_horizontal">12dp</dimen>
+  <dimen name="cat_adaptive_margin_vertical">16dp</dimen>
 </resources>

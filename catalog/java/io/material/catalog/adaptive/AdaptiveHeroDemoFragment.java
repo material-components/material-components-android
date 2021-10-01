@@ -71,9 +71,9 @@ public class AdaptiveHeroDemoFragment extends Fragment {
   /* Returns the constraint set to be used for the medium layout configuration. */
   private ConstraintSet getMediumLayout(@NonNull ConstraintLayout constraintLayout) {
     int marginVertical =
-        getResources().getDimensionPixelOffset(R.dimen.cat_adaptive_hero_margin_vertical);
+        getResources().getDimensionPixelOffset(R.dimen.cat_adaptive_margin_vertical);
     int marginHorizontal =
-        getResources().getDimensionPixelOffset(R.dimen.cat_adaptive_hero_margin_horizontal);
+        getResources().getDimensionPixelOffset(R.dimen.cat_adaptive_margin_horizontal);
     ConstraintSet constraintSet = new ConstraintSet();
     constraintSet.clone(constraintLayout);
     // Hero container.
@@ -112,7 +112,7 @@ public class AdaptiveHeroDemoFragment extends Fragment {
   /* Returns the constraint set to be used for the large layout configuration. */
   private ConstraintSet getLargeLayout(@NonNull ConstraintSet mediumLayout) {
     int marginHorizontal =
-        getResources().getDimensionPixelOffset(R.dimen.cat_adaptive_hero_margin_horizontal);
+        getResources().getDimensionPixelOffset(R.dimen.cat_adaptive_margin_horizontal);
     ConstraintSet constraintSet = new ConstraintSet();
     constraintSet.clone(mediumLayout);
     // Hero container.

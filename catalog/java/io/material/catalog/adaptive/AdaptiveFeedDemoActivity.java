@@ -32,6 +32,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.window.java.layout.WindowInfoRepositoryCallbackAdapter;
 import androidx.window.layout.DisplayFeature;
 import androidx.window.layout.FoldingFeature;
+import androidx.window.layout.FoldingFeature.Orientation;
 import androidx.window.layout.WindowInfoRepository;
 import androidx.window.layout.WindowLayoutInfo;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -142,10 +143,11 @@ public class AdaptiveFeedDemoActivity extends DemoActivity {
             if (foldingFeature.getState().equals(FoldingFeature.State.HALF_OPENED)
                 || foldingFeature.getState().equals(FoldingFeature.State.FLAT)) {
               feedFragment.setOpenLayout();
-              if (foldingFeature.getOrientation().equals(FoldingFeature.Orientation.VERTICAL)) {
+              Orientation orientation = foldingFeature.getOrientation();
+              if (orientation.equals(FoldingFeature.Orientation.VERTICAL)) {
                 // Device is open and fold is vertical.
                 feedFragment.updateFoldPosition(
-                    AdaptiveUtils.getFoldPosition(container, foldingFeature));
+                    AdaptiveUtils.getFoldPosition(container, foldingFeature, orientation));
               } else {
                 // Device is open and fold is horizontal.
                 feedFragment.updateFoldPosition(container.getWidth() / 2);

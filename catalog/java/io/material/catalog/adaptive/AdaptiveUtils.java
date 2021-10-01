@@ -27,6 +27,7 @@ import androidx.annotation.Nullable;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.window.layout.DisplayFeature;
 import androidx.window.layout.FoldingFeature;
+import androidx.window.layout.FoldingFeature.Orientation;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -134,12 +135,19 @@ class AdaptiveUtils {
   }
 
   /* Returns the position of the fold relative to the view. */
-  static int getFoldPosition(@NonNull View view, @NonNull FoldingFeature foldingFeature) {
+  static int getFoldPosition(
+      @NonNull View view,
+      @NonNull FoldingFeature foldingFeature,
+      @NonNull FoldingFeature.Orientation orientation) {
     Rect splitRect = getFeatureBoundsInWindow(foldingFeature, view);
+    int position = 0;
     if (splitRect != null) {
-      return view.getWidth() - splitRect.left;
+      position =
+          orientation.equals(Orientation.VERTICAL)
+              ? view.getWidth() - splitRect.left
+              : view.getHeight() - splitRect.top;
     }
-    return 0;
+    return position;
   }
 
   /**

@@ -28,29 +28,37 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.window.java.layout.WindowInfoRepositoryCallbackAdapter;
 import androidx.window.layout.DisplayFeature;
 import androidx.window.layout.FoldingFeature;
 import androidx.window.layout.FoldingFeature.Orientation;
 import androidx.window.layout.WindowInfoRepository;
 import androidx.window.layout.WindowLayoutInfo;
-import io.material.catalog.feature.DemoFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.navigationrail.NavigationRailView;
+import io.material.catalog.feature.DemoActivity;
 import java.util.List;
 import java.util.concurrent.Executor;
 
-/** A Fragment that displays a multi column expansion Adaptive demo. */
-public class AdaptiveMultiColumnExpansionFragment extends DemoFragment {
+/** An Activity which hosts the Adaptive supporting panel demo flow. */
+public class AdaptiveSupportingPanelDemoActivity extends DemoActivity {
 
+  private DrawerLayout drawerLayout;
+  private NavigationView modalNavDrawer;
+  private BottomNavigationView bottomNav;
+  private NavigationRailView navRail;
+  private NavigationView navDrawer;
+  private ExtendedFloatingActionButton navFab;
+
+  private AdaptiveSupportingPanelDemoFragment demoFragment;
   @Nullable private WindowInfoRepositoryCallbackAdapter windowInfoRepo;
   private final Consumer<WindowLayoutInfo> stateContainer = new StateContainer();
   private final Handler handler = new Handler(Looper.getMainLooper());
   private final Executor executor = command -> handler.post(() -> handler.post(command));
-
-  private ConstraintLayout constraintLayout;
-  private ConstraintSet closedLayout;
-  private ConstraintSet openLayout;
+  private Configuration configuration;
 
   @Nullable
   @Override
@@ -59,18 +67,40 @@ public class AdaptiveMultiColumnExpansionFragment extends DemoFragment {
       @Nullable ViewGroup viewGroup,
       @Nullable Bundle bundle) {
     View view =
-        layoutInflater.inflate(R.layout.cat_adaptive_multi_column_expansion, viewGroup, false);
-    constraintLayout = view.findViewById(R.id.constraint_layout);
-    closedLayout = new ConstraintSet();
-    closedLayout.clone(constraintLayout);
-    openLayout = new ConstraintSet();
-    openLayout.clone(constraintLayout);
-    openLayout.connect(R.id.text_content, ConstraintSet.START, R.id.fold, ConstraintSet.END, 0);
-    openLayout.connect(R.id.text_content, ConstraintSet.TOP, R.id.image, ConstraintSet.TOP, 0);
+        layoutInflater.inflate(R.layout.cat_adaptive_supporting_panel_activity, viewGroup, false);
     windowInfoRepo =
-        new WindowInfoRepositoryCallbackAdapter(
-            WindowInfoRepository.getOrCreate(requireActivity()));
+        new WindowInfoRepositoryCallbackAdapter(WindowInfoRepository.getOrCreate(this));
+    drawerLayout = view.findViewById(R.id.drawer_layout);
+    modalNavDrawer = view.findViewById(R.id.modal_nav_drawer);
+    bottomNav = view.findViewById(R.id.bottom_nav);
+    navRail = view.findViewById(R.id.nav_rail);
+    navDrawer = view.findViewById(R.id.nav_drawer);
+    navFab = view.findViewById(R.id.nav_fab);
     return view;
+  }
+
+  @Override
+  protected void onCreate(@Nullable Bundle bundle) {
+    super.onCreate(bundle);
+    configuration = getResources().getConfiguration();
+    demoFragment = new AdaptiveSupportingPanelDemoFragment();
+
+    // Update navigation views according to screen width size.
+    int screenWidth = configuration.screenWidthDp;
+    AdaptiveUtils.updateNavigationViewLayout(
+        screenWidth,
+        drawerLayout,
+        modalNavDrawer,
+        /* fab= */ null,
+        bottomNav,
+        navRail,
+        navDrawer,
+        navFab);
+
+    getSupportFragmentManager()
+        .beginTransaction()
+        .replace(R.id.fragment_container, demoFragment)
+        .commit();
   }
 
   @Override
@@ -95,43 +125,38 @@ public class AdaptiveMultiColumnExpansionFragment extends DemoFragment {
 
     @Override
     public void accept(WindowLayoutInfo windowLayoutInfo) {
+      if (demoFragment == null) {
+        return;
+      }
       List<DisplayFeature> displayFeatures = windowLayoutInfo.getDisplayFeatures();
-      boolean isClosed = true;
-
+      boolean isTableTop = false;
       for (DisplayFeature displayFeature : displayFeatures) {
         if (displayFeature instanceof FoldingFeature) {
           FoldingFeature foldingFeature = (FoldingFeature) displayFeature;
+          Orientation orientation = foldingFeature.getOrientation();
           if (foldingFeature.getState().equals(FoldingFeature.State.HALF_OPENED)
-              || foldingFeature.getState().equals(FoldingFeature.State.FLAT)) {
-            openLayout.applyTo(constraintLayout);
-            Orientation orientation = foldingFeature.getOrientation();
-            if (orientation.equals(FoldingFeature.Orientation.VERTICAL)) {
-              // Device is open and fold is vertical.
-              ConstraintLayout.getSharedValues()
-                  .fireNewValue(
-                      R.id.fold,
-                      AdaptiveUtils.getFoldPosition(constraintLayout, foldingFeature, orientation));
-            } else {
-              // Device is open and fold is horizontal.
-              ConstraintLayout.getSharedValues()
-                  .fireNewValue(R.id.fold, constraintLayout.getWidth() / 2);
-            }
-            isClosed = false;
+              && orientation.equals(Orientation.HORIZONTAL)) {
+            // Device is in table top mode.
+            demoFragment.updateTableTopLayout(
+                AdaptiveUtils.getFoldPosition(drawerLayout, foldingFeature, orientation));
+            isTableTop = true;
           }
         }
       }
-      if (isClosed) {
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-          // Device is closed and in portrait.
-          ConstraintLayout.getSharedValues().fireNewValue(R.id.fold, 0);
-          closedLayout.applyTo(constraintLayout);
+      if (!isTableTop) {
+        if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+          // Device is in portrait.
+          demoFragment.updatePortraitLayout();
         } else {
-          // Device is closed and in landscape.
-          openLayout.applyTo(constraintLayout);
-          ConstraintLayout.getSharedValues()
-              .fireNewValue(R.id.fold, constraintLayout.getWidth() / 2);
+          // Device is in landscape.
+          demoFragment.updateLandscapeLayout();
         }
       }
     }
+  }
+
+  @Override
+  protected boolean shouldShowDefaultDemoActionBar() {
+    return false;
   }
 }

@@ -74,6 +74,13 @@ public class AdaptiveFragment extends DemoLandingFragment {
             return new Intent(getContext(), AdaptiveHeroDemoActivity.class);
           }
         });
+    additionalDemos.add(
+        new Demo(R.string.cat_supporting_panel_title) {
+          @Override
+          public Intent createActivityIntent() {
+            return new Intent(getContext(), AdaptiveSupportingPanelDemoActivity.class);
+          }
+        });
     return additionalDemos;
   }
 
