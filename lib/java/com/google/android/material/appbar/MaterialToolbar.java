@@ -306,7 +306,10 @@ public class MaterialToolbar extends Toolbar {
    * Set ImageView.ScaleType for logo's ImageView.
    */
   public void setLogoScaleType(ImageView.ScaleType logoScaleType) {
-    this.logoScaleType = logoScaleType;
+    if (this.logoScaleType != logoScaleType) {
+      this.logoScaleType = logoScaleType;
+      requestLayout();
+    }
   }
 
   /**
@@ -323,7 +326,10 @@ public class MaterialToolbar extends Toolbar {
    * Set ImageView.adjustViewBounds for logo's ImageView.
    */
   public void setLogoAdjustViewBounds(boolean logoAdjustViewBounds) {
-    this.logoAdjustViewBounds = logoAdjustViewBounds;
+    if (this.logoAdjustViewBounds != logoAdjustViewBounds) {
+      this.logoAdjustViewBounds = logoAdjustViewBounds;
+      requestLayout();
+    }
   }
 
   /**
