@@ -34,6 +34,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.util.AttributeSet;
 import android.util.Pair;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
@@ -73,6 +74,20 @@ public class MaterialToolbar extends Toolbar {
   private boolean titleCentered;
   private boolean subtitleCentered;
 
+  private ImageView.ScaleType logoScaleType;
+  private boolean logoAdjustViewBounds;
+
+  private static final ImageView.ScaleType[] sScaleTypeArray = {
+      ImageView.ScaleType.MATRIX,
+      ImageView.ScaleType.FIT_XY,
+      ImageView.ScaleType.FIT_START,
+      ImageView.ScaleType.FIT_CENTER,
+      ImageView.ScaleType.FIT_END,
+      ImageView.ScaleType.CENTER,
+      ImageView.ScaleType.CENTER_CROP,
+      ImageView.ScaleType.CENTER_INSIDE
+  };
+
   public MaterialToolbar(@NonNull Context context) {
     this(context, null);
   }
@@ -97,6 +112,13 @@ public class MaterialToolbar extends Toolbar {
     titleCentered = a.getBoolean(R.styleable.MaterialToolbar_titleCentered, false);
     subtitleCentered = a.getBoolean(R.styleable.MaterialToolbar_subtitleCentered, false);
 
+    final int index = a.getInt(R.styleable.MaterialToolbar_logoScaleType, 3);
+    if (index >= 0) {
+      logoScaleType = (sScaleTypeArray[index]);
+    }
+
+    logoAdjustViewBounds = a.getBoolean(R.styleable.MaterialToolbar_logoAdjustViewBounds, false);
+
     a.recycle();
 
     initBackground(context);
@@ -107,6 +129,7 @@ public class MaterialToolbar extends Toolbar {
     super.onLayout(changed, left, top, right, bottom);
 
     maybeCenterTitleViews();
+    updateLogoImageView();
   }
 
   private void maybeCenterTitleViews() {
@@ -129,6 +152,15 @@ public class MaterialToolbar extends Toolbar {
 
     if (subtitleCentered && subtitleTextView != null) {
       layoutTitleCenteredHorizontally(subtitleTextView, titleBoundLimits);
+    }
+  }
+
+  private void updateLogoImageView() {
+    ImageView logoImageView = ToolbarUtils.getLogoImageView(this);
+
+    if (logoImageView != null) {
+      logoImageView.setAdjustViewBounds(logoAdjustViewBounds);
+      logoImageView.setScaleType(logoScaleType);
     }
   }
 
@@ -259,6 +291,39 @@ public class MaterialToolbar extends Toolbar {
       this.subtitleCentered = subtitleCentered;
       requestLayout();
     }
+  }
+
+  /**
+   * Returns scale type of logo's ImageView
+   *
+   * @see #setLogoScaleType(ImageView.ScaleType). Default - fitCenter
+   */
+  public ImageView.ScaleType getLogoScaleType() {
+    return logoScaleType;
+  }
+
+  /**
+   * Set ImageView.ScaleType for logo's ImageView.
+   */
+  public void setLogoScaleType(ImageView.ScaleType logoScaleType) {
+    this.logoScaleType = logoScaleType;
+  }
+
+  /**
+   * Returns logo's ImageView adjustViewBounds
+   *
+   * @see #setLogoAdjustViewBounds(boolean). Default - false
+   */
+  public boolean isLogoAdjustViewBounds() {
+    return logoAdjustViewBounds;
+  }
+
+
+  /**
+   * Set ImageView.adjustViewBounds for logo's ImageView.
+   */
+  public void setLogoAdjustViewBounds(boolean logoAdjustViewBounds) {
+    this.logoAdjustViewBounds = logoAdjustViewBounds;
   }
 
   /**
