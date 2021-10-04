@@ -1559,8 +1559,8 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
           int snapBottom = -offsetChild.getBottom();
 
           if (offsetChildIndex == abl.getChildCount() - 1) {
-            // If this is the last child, we need to take the top inset into account
-            snapBottom += abl.getTopInset();
+            // If this is the last child, we need to take the top inset and padding into account
+            snapBottom += abl.getTopInset() + abl.getPaddingTop();
           }
 
           if (checkFlag(flags, LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED)) {
