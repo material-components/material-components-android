@@ -176,16 +176,16 @@ For specific button attributes, see the
 
 #### Scrim attributes
 
-Element            | **Attribute**                 | **Related**<br/>**methods** | **Default value**
------------------- | ----------------------------- | ----------------------- | -----------------
-**Dim**<br/>**amount** | `android:backgroundDimAmount` | N/A                     | 32%
+Element        | **Attribute**                 | **Related methods** | **Default value**
+-------------- | ----------------------------- | ------------------- | -----------------
+**Dim amount** | `android:backgroundDimAmount` | N/A                 | 32%
 
 #### Theme overlays
 
-Element                            | **Theme overlay**
----------------------------------- | -----------------
-**Default**<br/>**theme**<br/>**overlay**  | `ThemeOverlay.Material3.MaterialAlertDialog`
-**Centered**<br/>**theme**<br/>**overlay** | `ThemeOverlay.Material3.MaterialAlertDialog.Centered`
+Element                    | **Theme overlay**
+-------------------------- | -----------------
+**Default theme overlay**  | `ThemeOverlay.Material3.MaterialAlertDialog`
+**Centered theme overlay** | `ThemeOverlay.Material3.MaterialAlertDialog.Centered`
 
 Default theme overlay attribute: `?attr/materialAlertDialogTheme`
 
