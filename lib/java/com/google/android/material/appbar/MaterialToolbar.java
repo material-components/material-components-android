@@ -70,13 +70,6 @@ public class MaterialToolbar extends Toolbar {
 
   private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_Toolbar;
 
-  @Nullable private Integer navigationIconTint;
-  private boolean titleCentered;
-  private boolean subtitleCentered;
-
-  private ImageView.ScaleType logoScaleType;
-  private boolean logoAdjustViewBounds;
-
   private static final ImageView.ScaleType[] sScaleTypeArray = {
       ImageView.ScaleType.MATRIX,
       ImageView.ScaleType.FIT_XY,
@@ -87,6 +80,13 @@ public class MaterialToolbar extends Toolbar {
       ImageView.ScaleType.CENTER_CROP,
       ImageView.ScaleType.CENTER_INSIDE
   };
+
+  @Nullable private Integer navigationIconTint;
+  private boolean titleCentered;
+  private boolean subtitleCentered;
+
+  private ImageView.ScaleType logoScaleType;
+  private boolean logoAdjustViewBounds;
 
   public MaterialToolbar(@NonNull Context context) {
     this(context, null);
@@ -113,9 +113,7 @@ public class MaterialToolbar extends Toolbar {
     subtitleCentered = a.getBoolean(R.styleable.MaterialToolbar_subtitleCentered, false);
 
     final int index = a.getInt(R.styleable.MaterialToolbar_logoScaleType, 3);
-    if (index >= 0) {
-      logoScaleType = (sScaleTypeArray[index]);
-    }
+    logoScaleType = (sScaleTypeArray[index]);
 
     logoAdjustViewBounds = a.getBoolean(R.styleable.MaterialToolbar_logoAdjustViewBounds, false);
 
@@ -303,7 +301,7 @@ public class MaterialToolbar extends Toolbar {
   }
 
   /**
-   * Set ImageView.ScaleType for logo's ImageView.
+   * Sets ImageView.ScaleType for logo's ImageView.
    */
   public void setLogoScaleType(ImageView.ScaleType logoScaleType) {
     if (this.logoScaleType != logoScaleType) {
@@ -323,7 +321,7 @@ public class MaterialToolbar extends Toolbar {
 
 
   /**
-   * Set ImageView.adjustViewBounds for logo's ImageView.
+   * Sets ImageView.adjustViewBounds for logo's ImageView.
    */
   public void setLogoAdjustViewBounds(boolean logoAdjustViewBounds) {
     if (this.logoAdjustViewBounds != logoAdjustViewBounds) {

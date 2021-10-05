@@ -274,7 +274,6 @@
     <attr name="subtitleCentered" format="boolean" />
     <!-- adjust view bounds for logo's imageView. Default is false.   -->
     <attr name="logoAdjustViewBounds" format="boolean" />
-
     <!-- scale type for logo's imageView. Default is fitCenter.   -->
     <attr name="logoScaleType">
       <!-- Scale using the image matrix when drawing. See
