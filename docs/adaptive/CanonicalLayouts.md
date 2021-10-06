@@ -20,9 +20,9 @@ path: /adaptive/canonicallayouts/
 
 The canonical layout demos found in the
 [MDC catalog](https://github.com/material-components/material-components-android/tree/master/catalog/java/io/material/catalog/)
-are examples of adaptive layouts where components and views change depending on
-device configuration, such as screen size, orientation, and/or presence of a
-physical fold.
+are examples of adaptive layouts in which components and views change depending
+on device configuration, such as screen size, orientation, and/or the presence
+of a physical fold.
 
 This doc discusses the general logic that can be applied to implementations like
 the one in the [general implementation section](#general-implementation), while
@@ -55,7 +55,7 @@ out their documentation:
 *   [BottomNavigation](../components/BottomNavigation.md)
 *   [NavigationRail](../components/NavigationRail.md)
 *   [NavigationDrawer](../components/NavigationDrawer.md)
-*   [FloatingActionButton](../FloatingActionButton.md)
+*   [FloatingActionButton](../components/FloatingActionButton.md)
 
 ## Demos
 
@@ -79,9 +79,9 @@ has implementations of the following canonical layouts:
 
 ## General implementation
 
-Each demo has a main `Activity` class that takes care of displaying the intended
-navigation component according to screen size, displays a main `Fragment`, and
-communicates with that `Fragment` class.
+Each demo has a main `Activity` class that displays the appropriate navigation
+component based on screen size, displays a main `Fragment`, and communicates
+with that `Fragment` class
 
 We use `ConstraintLayout` and `ConstraintSet` to allow the layouts to adapt to
 multiple screen and device configurations, and the `WindowManager` library to
@@ -247,7 +247,7 @@ landscape, or table top mode, respectively.
 
 ## List View demo
 
-The following shows screenshots of the List View demo in different devices and
+The following shows screenshots of the List View demo on different devices and
 screen sizes.
 
 Portrait:
@@ -311,7 +311,7 @@ with
 
 ## Feed demo
 
-The following shows screenshots of the Feed demo in different devices and screen
+The following shows screenshots of the Feed demo on different devices and screen
 sizes.
 
 Portrait:
@@ -392,7 +392,7 @@ responsible for updating the layout and the `ReactiveGuide` position.
 
 ## Single View Hero demo
 
-The following shows screenshots of the Single View Hero demo in different
+The following shows screenshots of the Single View Hero demo on different
 devices and screen sizes.
 
 Portrait:
@@ -446,7 +446,7 @@ changes are based only on screen size, it does not worry about foldable states.
 
 ## Supporting Panel demo
 
-The following shows screenshots of the Supporting Panel demo in different
+The following shows screenshots of the Supporting Panel demo on different
 devices and screen sizes.
 
 Portrait:
