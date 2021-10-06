@@ -55,7 +55,7 @@ out their documentation:
 *   [BottomNavigation](../components/BottomNavigation.md)
 *   [NavigationRail](../components/NavigationRail.md)
 *   [NavigationDrawer](../components/NavigationDrawer.md)
-*   [FloatingActionButton](../components/FloatingActionButton.md)
+*   [FloatingActionButton](../FloatingActionButton.md)
 
 ## Demos
 
