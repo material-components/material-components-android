@@ -4355,12 +4355,13 @@ public class TextInputLayout extends LinearLayout {
 
   private void setErrorIconVisible(boolean errorIconVisible) {
     errorIconView.setVisibility(errorIconVisible ? VISIBLE : GONE);
-    if (errorIconVisible && isEndIconVisible())
+    if (errorIconVisible && isEndIconVisible()) {
       setEndIconVisible(false);
-    else if (hasEndIcon() && getEndIconMode() == END_ICON_CLEAR_TEXT && editText != null &&
+    } else if (hasEndIcon() && getEndIconMode() == END_ICON_CLEAR_TEXT && editText != null &&
         !isEndIconVisible() && editText.getText().length() > 0 &&
-        (editText.hasFocus() || endIconView.hasFocus()))
+        (editText.hasFocus() || endIconView.hasFocus())) {
       setEndIconVisible(true);
+    }
     updateEndLayoutVisible();
     updateSuffixTextViewPadding();
     if (!hasEndIcon()) {
