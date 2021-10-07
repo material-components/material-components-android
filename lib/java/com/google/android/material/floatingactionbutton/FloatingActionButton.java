@@ -1483,4 +1483,15 @@ public class FloatingActionButton extends VisibilityAwareImageButton
       return compatPadding;
     }
   }
+
+  /**
+   * Sets the max image size for this button.
+   *
+   * @param imageSize maximum icon image size
+   * @attr ref com.google.android.material.R.styleable#FloatingActionButton_maxImageSize
+   */
+  public void setMaxImageSize(int imageSize) {
+      maxImageSize = imageSize;
+      getImpl().setMaxImageSize(imageSize);
+  }
 }
