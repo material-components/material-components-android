@@ -81,7 +81,7 @@ has implementations of the following canonical layouts:
 
 Each demo has a main `Activity` class that displays the appropriate navigation
 component based on screen size, displays a main `Fragment`, and communicates
-with that `Fragment` class
+with that `Fragment` class.
 
 We use `ConstraintLayout` and `ConstraintSet` to allow the layouts to adapt to
 multiple screen and device configurations, and the `WindowManager` library to
@@ -305,8 +305,7 @@ The `AdaptiveListViewDetailDemoFragment` class represents an opened email view.
 It inflates `cat_adaptive_list_view_detail_fragment.xml` and updates the email
 title according to the `emailId`.
 
-**Note:** You can also implement this demo to achieve something similar would be
-with
+**Note:** You can also implement this demo to achieve something similar with
 [`SlidingPaneLayout`](https://developer.android.com/guide/topics/ui/layout/twopane).
 
 ## Feed demo
