@@ -233,7 +233,6 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     compatPadding = a.getBoolean(R.styleable.FloatingActionButton_useCompatPadding, false);
     int minTouchTargetSize =
         getResources().getDimensionPixelSize(R.dimen.mtrl_fab_min_touch_target);
-    maxImageSize = a.getDimensionPixelSize(R.styleable.FloatingActionButton_maxImageSize, 0);
 
     MotionSpec showMotionSpec =
         MotionSpec.createFromAttribute(context, a, R.styleable.FloatingActionButton_showMotionSpec);
@@ -268,7 +267,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     getImpl().setEnsureMinTouchTargetSize(ensureMinTouchTargetSize);
 
     setScaleType(ScaleType.MATRIX);
-    setMaxImageSize(maxImageSize);
+    setMaxImageSize(a.getDimensionPixelSize(R.styleable.FloatingActionButton_maxImageSize, 0));
   }
 
   @Override
