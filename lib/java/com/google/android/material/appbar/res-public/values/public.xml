@@ -82,5 +82,6 @@
   <public name="maxLines" type="attr"/>
   <public name="titleCentered" type="attr"/>
   <public name="subtitleCentered" type="attr"/>
+  <public name="titlePositionInterpolator" type="attr"/>
 </resources>
 

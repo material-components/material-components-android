@@ -184,6 +184,11 @@ public final class CollapsingTextHelper {
     recalculate();
   }
 
+  @Nullable
+  public TimeInterpolator getPositionInterpolator() {
+    return positionInterpolator;
+  }
+
   public void setExpandedTextSize(float textSize) {
     if (expandedTextSize != textSize) {
       expandedTextSize = textSize;
