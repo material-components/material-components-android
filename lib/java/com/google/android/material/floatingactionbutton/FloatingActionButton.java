@@ -263,12 +263,12 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     getImpl().setElevation(elevation);
     getImpl().setHoveredFocusedTranslationZ(hoveredFocusedTranslationZ);
     getImpl().setPressedTranslationZ(pressedTranslationZ);
-    getImpl().setMaxImageSize(maxImageSize);
     getImpl().setShowMotionSpec(showMotionSpec);
     getImpl().setHideMotionSpec(hideMotionSpec);
     getImpl().setEnsureMinTouchTargetSize(ensureMinTouchTargetSize);
 
     setScaleType(ScaleType.MATRIX);
+    setMaxImageSize(maxImageSize);
   }
 
   @Override
@@ -565,6 +565,17 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   @Override
   public void setVisibility(int visibility) {
     super.setVisibility(visibility);
+  }
+
+  /**
+   * Sets the max image size for this button.
+   *
+   * @param imageSize maximum icon image size
+   * @attr ref com.google.android.material.R.styleable#FloatingActionButton_maxImageSize
+   */
+  public void setMaxImageSize(int imageSize) {
+    maxImageSize = imageSize;
+    getImpl().setMaxImageSize(imageSize);
   }
 
   /**
@@ -1482,16 +1493,5 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     public boolean isCompatPaddingEnabled() {
       return compatPadding;
     }
-  }
-
-  /**
-   * Sets the max image size for this button.
-   *
-   * @param imageSize maximum icon image size
-   * @attr ref com.google.android.material.R.styleable#FloatingActionButton_maxImageSize
-   */
-  public void setMaxImageSize(int imageSize) {
-      maxImageSize = imageSize;
-      getImpl().setMaxImageSize(imageSize);
   }
 }
