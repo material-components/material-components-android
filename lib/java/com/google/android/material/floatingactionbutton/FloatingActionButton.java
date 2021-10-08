@@ -234,6 +234,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     int minTouchTargetSize =
         getResources().getDimensionPixelSize(R.dimen.mtrl_fab_min_touch_target);
 
+    setMaxImageSize(a.getDimensionPixelSize(R.styleable.FloatingActionButton_maxImageSize, 0));
+
     MotionSpec showMotionSpec =
         MotionSpec.createFromAttribute(context, a, R.styleable.FloatingActionButton_showMotionSpec);
     MotionSpec hideMotionSpec =
@@ -267,7 +269,6 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     getImpl().setEnsureMinTouchTargetSize(ensureMinTouchTargetSize);
 
     setScaleType(ScaleType.MATRIX);
-    setMaxImageSize(a.getDimensionPixelSize(R.styleable.FloatingActionButton_maxImageSize, 0));
   }
 
   @Override
