@@ -242,7 +242,6 @@ public class TextInputLayout extends LinearLayout {
   @NonNull private ShapeAppearanceModel shapeAppearanceModel;
 
   private final int boxLabelCutoutPaddingPx;
-  private int boxLabelCutoutHeight;
   @BoxBackgroundMode private int boxBackgroundMode;
   private int boxCollapsedPaddingTopPx;
   private int boxStrokeWidthPx;
@@ -4127,21 +4126,11 @@ public class TextInputLayout extends LinearLayout {
     collapsingTextHelper.getCollapsedTextActualBounds(
         cutoutBounds, editText.getWidth(), editText.getGravity());
     applyCutoutPadding(cutoutBounds);
-    boxLabelCutoutHeight = boxStrokeWidthPx;
-    cutoutBounds.top = 0;
-    cutoutBounds.bottom = boxLabelCutoutHeight;
+
     // Offset the cutout bounds by the TextInputLayout's left padding to ensure that the cutout is
     // inset relative to the TextInputLayout's bounds.
     cutoutBounds.offset(-getPaddingLeft(), 0);
     ((CutoutDrawable) boxBackground).setCutout(cutoutBounds);
-  }
-
-  /** If stroke changed width, cutout bounds need to be recalculated. **/
-  private void updateCutout() {
-    if (cutoutEnabled() && !hintExpanded && boxLabelCutoutHeight != boxStrokeWidthPx) {
-      closeCutout();
-      openCutout();
-    }
   }
 
   private void closeCutout() {
@@ -4244,10 +4233,6 @@ public class TextInputLayout extends LinearLayout {
       boxStrokeWidthPx = boxStrokeWidthFocusedPx;
     } else {
       boxStrokeWidthPx = boxStrokeWidthDefaultPx;
-    }
-
-    if (boxBackgroundMode == BOX_BACKGROUND_OUTLINE) {
-      updateCutout();
     }
 
     // Update the text box's background color based on the current state.
