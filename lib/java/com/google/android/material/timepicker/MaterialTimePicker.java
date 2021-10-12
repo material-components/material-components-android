@@ -307,8 +307,8 @@ public final class MaterialTimePicker extends DialogFragment {
   }
 
   @Override
-  public void onStop() {
-    super.onStop();
+  public void onDestroyView() {
+    super.onDestroyView();
     activePresenter = null;
     timePickerClockPresenter = null;
     timePickerTextInputPresenter = null;
