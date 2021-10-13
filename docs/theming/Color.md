@@ -7,7 +7,7 @@ iconId: color
 path: /theming/color/
 -->
 
-# Color Theming
+# Color theming
 
 The Material 3 color theming system can be used to create a color scheme that
 reflects your brand or style.

@@ -6,7 +6,7 @@ excerpt: "Guide for building the adaptive canonical layouts"
 path: /adaptive/canonicallayouts/
 -->
 
-# Canonical Layouts
+# Canonical layouts
 
 **Contents**
 
