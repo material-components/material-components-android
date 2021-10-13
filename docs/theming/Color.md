@@ -133,7 +133,7 @@ elevated:
 *   [Date Picker](../components/DatePicker.md)
 *   [Time Picker](../components/TimePicker.md)
 
-##### SurfaceColors enums
+##### `SurfaceColors` enums
 
 If using Material Design Components is not an option in your use case, you may
 want to consider getting those tonal surface colors on the fly, by using the
@@ -148,7 +148,7 @@ This will return the calculated tonal surface color corresponding to the
 Surface1 definition and your `?attr/elevationOverlayColor` setting in your
 themes.
 
-##### MaterialShapeDrawable or ElevationOverlayProvider (*advanced*)
+##### `MaterialShapeDrawable` or `ElevationOverlayProvider` (*advanced*)
 
 If you have a complicated use case, you can check if
 `com.google.android.material.shape.MaterialShapeDrawable` or

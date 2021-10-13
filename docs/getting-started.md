@@ -122,7 +122,7 @@ theme-level attributes.
 *   `Theme.Material3.DayNight`
 *   `Theme.Material3.DayNight.NoActionBar`
 
-Update your app theme to inherit from one of these themes.:
+Update your app theme to inherit from one of these themes:
 
 ```xml
 <style name="Theme.MyApp" parent="Theme.Material3.DayNight.NoActionBar">
