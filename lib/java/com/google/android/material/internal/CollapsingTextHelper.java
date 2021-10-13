@@ -602,7 +602,11 @@ public final class CollapsingTextHelper {
             getCurrentColor(expandedShadowColor), getCurrentColor(collapsedShadowColor), fraction));
 
     if (fadeModeEnabled) {
-      int textAlpha = (int) (calculateFadeModeTextAlpha(fraction) * 255);
+      int originalAlpha = textPaint.getAlpha();
+
+      // Calculates new alpha as a ratio of original alpha based on position.
+      int textAlpha = (int) (calculateFadeModeTextAlpha(fraction) * originalAlpha);
+
       textPaint.setAlpha(textAlpha);
     }
 
