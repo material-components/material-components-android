@@ -133,7 +133,7 @@ Element                         | Attribute                      | Related metho
 
 Element           | Style
 ----------------- | ----------------------------------
-**Default style** | `Widget.Material3.TimePicker`
+**Default style** | `Widget.Material3.MaterialTimePicker`
 
 Default style theme attribute: `?attr/materialTimePickerStyle`
 
@@ -141,10 +141,10 @@ The style attributes are assigned to the following components:
 
 Element                          | Affected component                  | Default
 ------------------------         | ----------------------------------  | ---------------------
-**chipStyle**                    | Number inputs in the clock mode     | `@style/Widget.Material3.TimePicker.Display`
-**materialButtonOutlinedStyle**  | AM/PM toggle                        | `@style/Widget.Material3.TimePicker.Button`
-**imageButtonStyle**             | Keyboard/Text Input button          | `@style/Widget.Material3.TimePicker.ImageButton`
-**materialClockStyle**           | Clock Face of the Time Picker       | `@style/Widget.Material3.TimePicker.Clock`
+**chipStyle**                    | Number inputs in the clock mode     | `@style/Widget.Material3.MaterialTimePicker.Display`
+**materialButtonOutlinedStyle**  | AM/PM toggle                        | `@style/Widget.Material3.MaterialTimePicker.Button`
+**imageButtonStyle**             | Keyboard/Text Input button          | `@style/Widget.Material3.MaterialTimePicker.ImageButton`
+**materialClockStyle**           | Clock Face of the Time Picker       | `@style/Widget.Material3.MaterialTimePicker.Clock`
 
 
 See the full list of
@@ -177,7 +177,7 @@ Use theme attributes and styles in `res/values/styles.xml`, which styles all tim
 ```
 
 ```xml
-<style name="Widget.App.Chip" parent="Widget.Material3.TimePicker.Display">
+<style name="Widget.App.Chip" parent="Widget.Material3.MaterialTimePicker.Display">
   <item name="android:textColor">@color/shrine_diplay_text_color</item>
 </style>
 ```
@@ -196,7 +196,7 @@ In res/color/shrine_diplay_text_color.xml:
 ```
 
 ```xml
-<style name="Widget.App.TimePicker.Clock" parent="Widget.Material3.TimePicker.Clock">
+<style name="Widget.App.TimePicker.Clock" parent="Widget.Material3.MaterialTimePicker.Clock">
     <item name="clockFaceBackgroundColor">@color/...</item>
     <item name="clockHandColor">@color/...</item>
     <item name="clockNumberTextColor">@color/...</item>
