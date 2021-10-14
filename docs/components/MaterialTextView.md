@@ -57,5 +57,5 @@ The following additional attributes can be changed in `TextAppearance` and
 applied to a `MaterialTextView`:
 
 Feature     | Relevant attributes
-:---------- | :-------------------
+----------- | --------------------
 Line Height | `android:lineHeight`

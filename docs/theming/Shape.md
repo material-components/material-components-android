@@ -7,7 +7,7 @@ iconId: shape
 path: /theming/shape/
 -->
 
-# Shape Theming
+# Shape theming
 
 Material Design encourages brand expression through shapes. The Material
 Components library offers a `shape` library that can be used to create
@@ -19,7 +19,7 @@ mechanism with which to easily customize component shapes at the theme level.
 Shape theming offers a new dimension with which to customize the look and feel
 of your app.
 
-## Design & API Documentation
+## Design & API documentation
 
 -   [Material Design guidelines:
     Shape](https://material.io/go/design-shape)
@@ -52,7 +52,7 @@ can create deep copies of the corner and edge treatments.
 Components backed by `MaterialShapeDrawable`s can use themes across an
 application.
 
-#### Shape Theme Attributes
+#### Shape theme attributes
 
 Theme attributes can be set at the theme level to change the shape values that
 components use to set their shapes.
@@ -72,7 +72,7 @@ attributes rather than redefining theme level attributes.
 
 ## Usage
 
-### Building a Shape Appearance
+### Building a shape appearance
 
 Component shapes are backed by "shape appearances", which are style references
 that define aspects of the shape. `ShapeAppearanceModel` uses the
@@ -245,7 +245,7 @@ The `cornerFamily` attribute set in the `shapeAppearanceOverlay` will override
 the `cornerFamily` set in the card's `shapeAppearance`, so the card should now
 have 16dp cut corners instead of 16dp rounded corners.
 
-#### Supported Components
+#### Supported components
 
 Components that support shape theming have a `shapeAppearance` attribute, a
 `shapeAppearanceOverlay` attribute, and are backed by a `MaterialShapeDrawable`:

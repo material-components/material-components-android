@@ -128,7 +128,7 @@ The modes of behaviors are:
 
 When the hide animation behavior is not none, the visibility of the view will be
 changed after the animation finishes. Please use `setVisibilityAfterHide` method
-to set the target visibility as `Visibiltiy.INVISIBLE` (default) or
+to set the target visibility as `Visibility.INVISIBLE` (default) or
 `Visibility.GONE`.
 
 ### Rounded corners

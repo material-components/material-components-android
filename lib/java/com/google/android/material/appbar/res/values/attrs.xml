@@ -242,6 +242,10 @@
     <!-- Whether extra height should be added when the title text spans across
          multiple lines. Experimental Feature. -->
     <attr name="extraMultilineHeightEnabled" format="boolean" />
+
+    <!-- The interpolator to use when animating the title position from collapsed to expanded and
+         vice versa. -->
+    <attr name="titlePositionInterpolator" format="reference"/>
   </declare-styleable>
 
   <declare-styleable name="CollapsingToolbarLayout_Layout">

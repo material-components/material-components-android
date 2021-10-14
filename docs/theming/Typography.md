@@ -7,14 +7,14 @@ iconId: typography
 path: /theming/typography/
 -->
 
-# Typography Theming
+# Typography theming
 
 Material Design typography theming can be used to create typographic styles that
 reflect your brand or style by defining a set of type scales which will be used
 throughout your app. You can use type scales to customize the appearance of text
 in Material components.
 
-## Design & API Documentation
+## Design & API documentation
 
 -   [Material Design guidelines:
     Typography](https://material.io/go/design-typography/)
@@ -82,7 +82,7 @@ in your theme:
 16. If you don't need to support devices < 16 and aren't using AppCompat, you
 should set `android:fontFamily` instead of `fontFamily` or `app:fontFamily`.
 
-## Downloadable Fonts
+## Downloadable fonts
 
 Android O and Android Support Library 26 add support for [Downloadable
 Fonts](https://developer.android.com/guide/topics/ui/look-and-feel/downloadable-fonts.html).

@@ -7,7 +7,7 @@ iconId: dark
 path: /theming/dark/
 -->
 
-# Dark Theme
+# Dark theme
 
 The [Material dark theme system][dark-theme-mdc-spec] can be used to create a
 beautiful and functional dark theme for your app. A dark theme generally
@@ -22,7 +22,7 @@ Starting with [Android Q][dark-theme-dac-docs], users are now able to switch
 their device to a dark theme via a new system setting, which applies to both the
 Android system UI and apps running on the device.
 
-## Design & API Documentation
+## Design & API documentation
 
 -   [Material Design guidelines: Dark Theme][dark-theme-mdc-spec]
 -   [Android Q Dark Theme Documentation][dark-theme-dac-docs]
@@ -85,7 +85,7 @@ ways:
 *   Android Q: `Settings > Display > Dark Theme` (or Dark Theme tile in Notification Tray)
 *   Android P: `Settings > System > Developer options > Night mode`
 
-## Color Palette
+## Color palette
 
 At the core of any dark theme is a color palette that uses dark background
 colors and light foreground colors. The Material `Dark` themes make use of the
@@ -101,7 +101,7 @@ branded palette, including `colorPrimary`, `colorSecondary`, `colorTertiary`,
 and more. See the [Material Dark Theme spec][dark-theme-mdc-spec-ui-application]
 for guidance on how you can adjust your brand colors for a dark theme.
 
-## Elevation Overlays
+## Elevation overlays
 
 In addition to the color palette adjustments mentioned above, communicating the
 hierarchy of a UI via elevation requires some dark theme-specific
@@ -127,7 +127,7 @@ hierarchy with color.
 composite blend of the surface color with the overlay color and using that as
 the surface's background, instead of drawing another layer on the canvas.
 
-### Affected Components
+### Affected components
 
 The following is a list of Material components that support elevation overlays,
 because they use `colorSurface` for their background and can be elevated:
@@ -149,7 +149,7 @@ because they use `colorSurface` for their background and can be elevated:
 *   [Chip](../components/Chip.md)
 *   [Switch](../components/Switch.md)
 
-### Theme Attributes
+### Theme attributes
 
 In order to facilitate some orchestration around the elevation overlays, we have
 the following theme attributes:
@@ -163,7 +163,7 @@ Attribute Name              |Description                                        
 have to set these attributes yourself because the Material themes already set up
 the defaults, above.
 
-### Custom Views & Non-Material Components
+### Custom views & non-Material Components
 
 If you would like to apply elevation overlays to your custom views or any
 non-Material views that are elevated surfaces, you can use the

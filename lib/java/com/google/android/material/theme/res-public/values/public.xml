@@ -21,6 +21,9 @@
   <public name="Theme.Material3.Dark.NoActionBar" type="style"/>
   <public name="Theme.Material3.DayNight" type="style"/>
   <public name="Theme.Material3.DayNight.NoActionBar" type="style"/>
+  <public name="Theme.Material3.DynamicColors.Light" type="style"/>
+  <public name="Theme.Material3.DynamicColors.Dark" type="style"/>
+  <public name="Theme.Material3.DynamicColors.DayNight" type="style"/>
 
   <public name="ThemeOverlay.Material3" type="style"/>
   <public name="ThemeOverlay.Material3.Light" type="style"/>

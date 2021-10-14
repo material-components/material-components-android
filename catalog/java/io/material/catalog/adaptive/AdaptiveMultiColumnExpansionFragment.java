@@ -33,6 +33,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.window.java.layout.WindowInfoRepositoryCallbackAdapter;
 import androidx.window.layout.DisplayFeature;
 import androidx.window.layout.FoldingFeature;
+import androidx.window.layout.FoldingFeature.Orientation;
 import androidx.window.layout.WindowInfoRepository;
 import androidx.window.layout.WindowLayoutInfo;
 import io.material.catalog.feature.DemoFragment;
@@ -103,11 +104,13 @@ public class AdaptiveMultiColumnExpansionFragment extends DemoFragment {
           if (foldingFeature.getState().equals(FoldingFeature.State.HALF_OPENED)
               || foldingFeature.getState().equals(FoldingFeature.State.FLAT)) {
             openLayout.applyTo(constraintLayout);
-            if (foldingFeature.getOrientation().equals(FoldingFeature.Orientation.VERTICAL)) {
+            Orientation orientation = foldingFeature.getOrientation();
+            if (orientation.equals(FoldingFeature.Orientation.VERTICAL)) {
               // Device is open and fold is vertical.
               ConstraintLayout.getSharedValues()
                   .fireNewValue(
-                      R.id.fold, AdaptiveUtils.getFoldPosition(constraintLayout, foldingFeature));
+                      R.id.fold,
+                      AdaptiveUtils.getFoldPosition(constraintLayout, foldingFeature, orientation));
             } else {
               // Device is open and fold is horizontal.
               ConstraintLayout.getSharedValues()

@@ -39,6 +39,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.internal.TextWatcherAdapter;
+import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.textfield.TextInputLayout;
 import java.util.Arrays;
 
@@ -98,7 +99,7 @@ class ChipTextInputComboView extends FrameLayout implements Checkable {
     editText.setVisibility(checked ? VISIBLE : INVISIBLE);
     chip.setVisibility(checked ? GONE : VISIBLE);
     if (isChecked()) {
-      editText.requestFocus();
+      ViewUtils.requestFocusAndShowKeyboard(editText);
       if (!TextUtils.isEmpty(editText.getText())) {
         editText.setSelection(editText.getText().length());
       }
