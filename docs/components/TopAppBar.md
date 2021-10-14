@@ -705,6 +705,13 @@ Element            | Attribute                                    | Related meth
 **Height**         | `app:height`                                 | N/A               | `?attr/actionBarSize`
 **Overlay window** | `app:windowActionModeOverlay` (in app theme) | N/A               | `false`
 
+#### Toolbar logo attributes
+
+Element               | Attribute                                    | Related method(s) | Default value
+--------------------- | -------------------------------------------- | ----------------- | -------------
+**AdjustViewBounds**  | `app:logoAdjustViewBounds`                   | `setLogoAdjustViewBounds`<br>`isLogoAdjustViewBounds`     | `false`
+**ScaleType**         | `app:logoScaleType`                          | `setLogoScaleType`<br>`getLogoScaleType`     | `fitCenter`
+
 #### Styles
 
 Element           | Style
