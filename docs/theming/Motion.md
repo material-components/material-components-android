@@ -100,8 +100,8 @@ Android structures including Fragments, Activities and Views.
 #### Transition between Fragments
 
 In Fragment A and Fragment B's layouts, identify the start and end Views (as
-described in the [container transform overview](#material-container-transform))
-which will be shared. Add a matching `transitionName` to each of these Views.
+described in the [container transform overview](#container-transform)) which
+will be shared. Add a matching `transitionName` to each of these Views.
 
 ```xml
 <!--fragment_a.xml-->
@@ -237,8 +237,8 @@ package and are only available on API level 21 and above.
 
 In Activity A’s layout, identify the start View to be used as the “shared
 element” as described in the
-[container transform overview](#material-container-transform). Give the start
-view a `transitionName`.
+[container transform overview](#container-transform). Give the start view a
+`transitionName`.
 
 ```xml
 <!--activity_a.xml-->
