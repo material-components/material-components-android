@@ -35,11 +35,16 @@
   <public name="Widget.MaterialComponents.TimePicker.ImageButton" type="style" />
 
   <public name="ThemeOverlay.Material3.MaterialTimePicker" type="style" />
+  <public name="ThemeOverlay.Material3.MaterialTimePicker.Display.TextInputEditText" type="style"/>
 
   <public name="Widget.Material3.MaterialTimePicker" type="style" />
   <public name="Widget.Material3.MaterialTimePicker.Button" type="style" />
+  <public name="Widget.Material3.MaterialTimePicker.Clock" type="style"/>
   <public name="Widget.Material3.MaterialTimePicker.Display" type="style" />
+  <public name="Widget.Material3.MaterialTimePicker.Display.Divider" type="style"/>
+  <public name="Widget.Material3.MaterialTimePicker.Display.HelperText" type="style"/>
   <public name="Widget.Material3.MaterialTimePicker.Display.TextInputEditText" type="style" />
+  <public name="Widget.Material3.MaterialTimePicker.Display.TextInputLayout" type="style"/>
   <public name="Widget.Material3.MaterialTimePicker.ImageButton" type="style" />
-
+  <public name="TextAppearance.Material3.MaterialTimePicker.Title" type="style"/>
 </resources>

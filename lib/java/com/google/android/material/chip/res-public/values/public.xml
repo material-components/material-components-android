@@ -66,4 +66,5 @@
   <public name="Widget.Material3.Chip.Suggestion.Elevated" type="style"/>
   <public name="Widget.Material3.Chip.Assist" type="style"/>
   <public name="Widget.Material3.Chip.Assist.Elevated" type="style"/>
+  <public name="ShapeAppearanceOverlay.Material3.Chip" type="style"/>
 </resources>

@@ -62,4 +62,9 @@
   <public name="Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary" type="style"/>
   <public name="Widget.Material3.ExtendedFloatingActionButton.Icon.Tertiary" type="style"/>
   <public name="Widget.Material3.ExtendedFloatingActionButton.Icon.Surface" type="style"/>
+  <public name="ShapeAppearanceOverlay.Material3.FloatingActionButton" type="style"/>
+  <public name="ThemeOverlay.Material3.FloatingActionButton.Primary" type="style"/>
+  <public name="ThemeOverlay.Material3.FloatingActionButton.Secondary" type="style"/>
+  <public name="ThemeOverlay.Material3.FloatingActionButton.Surface" type="style"/>
+  <public name="ThemeOverlay.Material3.FloatingActionButton.Tertiary" type="style"/>
 </resources>

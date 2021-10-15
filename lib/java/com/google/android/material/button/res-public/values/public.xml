@@ -50,4 +50,10 @@
   <public name="Widget.Material3.Button.ElevatedButton" type="style"/>
   <public name="Widget.Material3.Button.ElevatedButton.Icon" type="style"/>
   <public name="Widget.Material3.Button.IconButton" type="style"/>
+  <public name="ShapeAppearanceOverlay.Material3.Button" type="style"/>
+  <public name="ThemeOverlay.Material3.Button" type="style"/>
+  <public name="ThemeOverlay.Material3.Button.ElevatedButton" type="style"/>
+  <public name="ThemeOverlay.Material3.Button.TextButton" type="style"/>
+  <public name="ThemeOverlay.Material3.Button.TextButton.Snackbar" type="style"/>
+  <public name="ThemeOverlay.Material3.Button.TonalButton" type="style"/>
 </resources>

@@ -65,6 +65,8 @@
   <public name="ThemeOverlay.MaterialComponents.Toolbar.Surface" type="style"/>
   <public name="ThemeOverlay.Material3.Toolbar.Surface" type="style"/>
   <public name="TextAppearance.Design.CollapsingToolbar.Expanded" type="style"/>
+  <public name="TextAppearance.Material3.ActionBar.Subtitle" type="style"/>
+  <public name="TextAppearance.Material3.ActionBar.Title" type="style"/>
   <public name="appbar_scrolling_view_behavior" type="string"/>
   <public name="expanded" type="attr"/>
   <public name="liftOnScroll" type="attr"/>

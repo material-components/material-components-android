@@ -26,4 +26,5 @@
   <public name="Widget.MaterialComponents.NavigationRailView.Colored.Compact" type="style"/>
   <public name="Widget.MaterialComponents.NavigationRailView.PrimarySurface" type="style"/>
   <public name="Widget.Material3.NavigationRailView" type="style"/>
+  <public name="Widget.Material3.NavigationRailView.ActiveIndicator" type="style"/>
 </resources>
