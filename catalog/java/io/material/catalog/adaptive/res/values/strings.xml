@@ -26,19 +26,6 @@
     Floating Action Button
   </string>
 
-  <string name="cat_multi_column_expansion_demo_title" description="Title of the Multi Column Expansion Catalog demo [CHAR_LIMIT=NONE]">
-    Multi Column Expansion Demo
-  </string>
-  <string name="cat_multi_column_expansion_demo_content_desc" description="Content description of the image in the multi column demo [CHAR_LIMIT=NONE]">
-    Abstract image
-  </string>
-  <string name="cat_multi_column_expansion_demo_image_title" description="Title of the image in the multi column demo [CHAR_LIMIT=NONE]">
-    Title
-  </string>
-  <string name="cat_multi_column_expansion_demo_image_subtitle" description="Subtitle of the image in the multi column demo [CHAR_LIMIT=NONE]">
-    Subtitle
-  </string>
-
   <string name="cat_adaptive_nav_button" description="The navigation button of an adaptive layout. [CHAR_LIMIT=50]">
     Expand/contract navigation bar
   </string>
