@@ -60,8 +60,8 @@ import com.google.android.material.shape.Shapeable;
  * stroked border, regardless of the {@code strokeWidth} value.
  *
  * <p>Cards implement {@link Checkable}, a default way to switch to {@code android:checked_state} is
- * not provided. Clients have to call {@link #setChecked(boolean)}. This shows the {@link
- * R.attr#checkedIcon app:checkedIcon} and changes the overlay color.
+ * not provided. Clients have to call {@link #setChecked(boolean)}. This shows the {@code
+ * app:checkedIcon} and changes the overlay color.
  *
  * <p>Cards also have a custom state meant to be used when a card is draggable {@code
  * app:dragged_state}. It's used by calling {@link #setDragged(boolean)}. This changes the overlay

@@ -88,8 +88,8 @@ public class ThemeTest {
   /**
    * These are color attribtues that all themes, including bridge themes, should have.
    *
-   * <p>All Light themes should match {@link R.style#Theme_MaterialComponents_Light} and all Dark
-   * themes should match {@link R.style#Theme_MaterialComponents}.
+   * <p>All Light themes should match {@code Theme.MaterialComponents.Light} and all Dark themes
+   * should match {@code Theme.MaterialComponents}.
    */
   private static final ImmutableList<Integer> MATERIAL_BRIDGE_COLOR_ATTRIBUTES =
       ImmutableList.of(
@@ -108,8 +108,8 @@ public class ThemeTest {
    * These are color attributes that all full themes should have in addition to {@link
    * #MATERIAL_BRIDGE_COLOR_ATTRIBUTES}.
    *
-   * <p>All Light full themes should match {@link R.style#Theme_MaterialComponents_Light} and all
-   * Dark themes should match {@link R.style#Theme_MaterialComponents}.
+   * <p>All Light full themes should match {@code Theme.MaterialComponents.Light} and all Dark
+   * themes should match {@code Theme.MaterialComponents}.
    */
   private static final ImmutableList<Integer> MATERIAL_NON_BRIDGE_COLOR_ATTRIBUTES =
       ImmutableList.of(
@@ -122,8 +122,8 @@ public class ThemeTest {
   /**
    * There are color attribtues that all theme overlays should have.
    *
-   * <p>All Light theme overlays shold match {@link R.style#Theme_MaterialComponents_Light} and all
-   * Dark theme overlays should match {@link R.style#Theme_MaterialComponents}.
+   * <p>All Light theme overlays shold match {@code Theme.MaterialComponents.Light} and all Dark
+   * theme overlays should match {@code Theme.MaterialComponents}.
    */
   private static final ImmutableList<Integer> MATERIAL_OVERLAY_COLOR_ATTRIBUTES =
       ImmutableList.of(
@@ -137,8 +137,8 @@ public class ThemeTest {
   /**
    * These are all the color attributes that all full themes should have.
    *
-   * <p>All Light full themes should match {@link R.style#Theme_MaterialComponents_Light} and all
-   * Dark full themes should match {@link R.style#Theme_MaterialComponents}.
+   * <p>All Light full themes should match {@code Theme.MaterialComponents.Light} and all Dark full
+   * themes should match {@code Theme.MaterialComponents}.
    */
   private static final ImmutableList<Integer> MATERIAL_FULL_COLOR_ATTRIBUTES =
       ImmutableList.<Integer>builder()
@@ -214,8 +214,8 @@ public class ThemeTest {
           .build();
 
   /**
-   * These are all the attributes where full themes should match {@link
-   * R.style#Theme_MaterialComponents} or {@link R.style#Theme_MaterialComponents_Light}.
+   * These are all the attributes where full themes should match {@code Theme.MaterialComponents} or
+   * {@code Theme.MaterialComponents.Light}.
    */
   private static final ImmutableList<Integer> MATERIAL_FULL_ATTRIBUTES =
       ImmutableList.<Integer>builder()
@@ -226,8 +226,8 @@ public class ThemeTest {
   /**
    * These are color attributes that all M3 themes should have.
    *
-   * <p>All M3 Light themes should match {@link R.style#Theme_Material3_Light} and all M3 Dark
-   * themes should match {@link R.style#Theme_Material3_Dark}.
+   * <p>All M3 Light themes should match {@code Theme.Material3.Light} and all M3 Dark themes should
+   * match {@code Theme.Material3.Dark}.
    */
   private static final ImmutableList<Integer> M3_ACCENT_COLOR_ATTRIBUTES =
       ImmutableList.of(
@@ -252,8 +252,8 @@ public class ThemeTest {
   /**
    * These are color attributes that all themes and theme overlays should have.
    *
-   * <p>All M3 Light themes should match {@link R.style#Theme_Material3_Light} and all M3 Dark
-   * themes should match {@link R.style#Theme_Material3_Dark}.
+   * <p>All M3 Light themes should match {@code Theme.Material3.Light} and all M3 Dark themes should
+   * match {@code Theme.Material3.Dark}.
    */
   private static final ImmutableList<Integer> M3_ADDITIONAL_COLOR_ATTRIBUTES =
       ImmutableList.of(
@@ -384,8 +384,8 @@ public class ThemeTest {
           R.attr.toolbarSurfaceStyle);
 
   /**
-   * These are all the attributes where full themes should match {@link
-   * R.style#Theme_Material3_Light} or {@link R.style#Theme_Material3_Dark}.
+   * These are all the attributes where full themes should match {@code Theme.Material3.Light} or
+   * {@code Theme_Material3_Dark}.
    */
   private static final ImmutableList<Integer> M3_FULL_ATTRIBUTES =
       ImmutableList.<Integer>builder()

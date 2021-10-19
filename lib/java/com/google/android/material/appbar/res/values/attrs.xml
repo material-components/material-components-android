@@ -54,7 +54,7 @@
          `RecyclerView`, etc.). Default is false. -->
     <attr name="liftOnScroll" format="boolean"/>
     <!-- The id of the view that the {@link AppBarLayout} should use to determine whether
-         it should be lifted (i.e., only if {@link R.attr#liftOnScroll} is set to true).
+         it should be lifted (i.e., only if {@code liftOnScroll} is set to true).
          If this id is not set, the {@link AppBarLayout} will use the target view provided
          by nested scrolling to determine whether it should be lifted. -->
     <attr name="liftOnScrollTargetViewId" format="reference"/>
@@ -64,9 +64,9 @@
   </declare-styleable>
 
   <declare-styleable name="AppBarLayoutStates">
-    <!-- @deprecated in favor of {@link R.attr#state_lifted}. -->
+    <!-- @deprecated in favor of {@code state_lifted}. -->
     <attr name="state_collapsed" format="boolean"/>
-    <!-- @deprecated in favor of {@link R.attr#state_liftable}. -->
+    <!-- @deprecated in favor of {@code state_liftable}. -->
     <attr name="state_collapsible" format="boolean"/>
     <!-- State value for {@link com.google.android.material.appbar.AppBarLayout} set when the view
          is lifted (elevated). -->
