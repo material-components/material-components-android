@@ -2300,14 +2300,13 @@ public class TextInputLayout extends LinearLayout {
     if (placeholderEnabled) {
       placeholderTextView = new AppCompatTextView(getContext());
       placeholderTextView.setId(R.id.textinput_placeholder);
+      ViewCompat.setImportantForAccessibility(
+          placeholderTextView, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO);
 
       placeholderFadeIn = createPlaceholderFadeTransition();
       placeholderFadeIn.setStartDelay(PLACEHOLDER_START_DELAY);
 
       placeholderFadeOut = createPlaceholderFadeTransition();
-
-      ViewCompat.setAccessibilityLiveRegion(
-          placeholderTextView, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
 
       setPlaceholderTextAppearance(placeholderTextAppearance);
       setPlaceholderTextColor(placeholderTextColor);
@@ -2344,6 +2343,9 @@ public class TextInputLayout extends LinearLayout {
       TransitionManager.beginDelayedTransition(inputFrame, placeholderFadeIn);
       placeholderTextView.setVisibility(VISIBLE);
       placeholderTextView.bringToFront();
+      if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
+        announceForAccessibility(placeholderText);
+      }
     }
   }
 
