@@ -4129,10 +4129,19 @@ public class TextInputLayout extends LinearLayout {
         cutoutBounds, editText.getWidth(), editText.getGravity());
     applyCutoutPadding(cutoutBounds);
 
-    // Offset the cutout bounds by the TextInputLayout's left padding to ensure that the cutout is
-    // inset relative to the TextInputLayout's bounds.
-    cutoutBounds.offset(-getPaddingLeft(), 0);
+    // Offset the cutout bounds by the TextInputLayout's paddings, half of the cutout height, and
+    // the box stroke width to ensure that the cutout is aligned with the actual collapsed text
+    // drawing area.
+    cutoutBounds.offset(
+        -getPaddingLeft(), -getPaddingTop() - cutoutBounds.height() / 2 + boxStrokeWidthPx);
     ((CutoutDrawable) boxBackground).setCutout(cutoutBounds);
+  }
+
+  private void recalculateCutout() {
+    if (cutoutEnabled() && !hintExpanded) {
+      closeCutout();
+      openCutout();
+    }
   }
 
   private void closeCutout() {
@@ -4230,11 +4239,18 @@ public class TextInputLayout extends LinearLayout {
       tintEndIconOnError(indicatorViewController.errorShouldBeShown());
     }
 
+    int originalBoxStrokeWidthPx = boxStrokeWidthPx;
     // Update the text box's stroke width based on the current state.
     if (hasFocus && isEnabled()) {
       boxStrokeWidthPx = boxStrokeWidthFocusedPx;
     } else {
       boxStrokeWidthPx = boxStrokeWidthDefaultPx;
+    }
+
+    if (boxStrokeWidthPx != originalBoxStrokeWidthPx
+        && boxBackgroundMode == BOX_BACKGROUND_OUTLINE) {
+      // If stroke width changes, cutout bounds need to be recalculated.
+      recalculateCutout();
     }
 
     // Update the text box's background color based on the current state.
