@@ -307,7 +307,10 @@ public final class MaterialTimePicker extends DialogFragment implements OnDouble
     activePresenter = null;
     timePickerClockPresenter = null;
     timePickerTextInputPresenter = null;
-    timePickerView = null;
+    if (timePickerView != null) {
+      timePickerView.setOnDoubleTapListener(null);
+      timePickerView = null;
+    }
   }
 
   @Override

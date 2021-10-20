@@ -133,12 +133,12 @@ class TimePickerView extends ConstraintLayout implements TimePickerControls {
             new SimpleOnGestureListener() {
               @Override
               public boolean onDoubleTap(MotionEvent e) {
-                boolean ret = super.onDoubleTap(e);
-                if (onDoubleTapListener != null) {
-                  onDoubleTapListener.onDoubleTap();
+                final OnDoubleTapListener listener = onDoubleTapListener;
+                if (listener != null) {
+                  listener.onDoubleTap();
+                  return true;
                 }
-
-                return ret;
+                return false;
               }
             });
 
