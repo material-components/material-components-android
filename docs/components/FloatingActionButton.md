@@ -18,8 +18,8 @@ represents the primary action of a screen.
 **Contents**
 
 *   [Using FABs](#using-fabs)
-*   [Regular FABs](#regular-fabs)
-*   [Mini FABs](#mini-fabs)
+*   [FABs](#fabs)
+*   [Small FABs](#small-fabs)
 *   [Large FABs](#large-fabs)
 *   [Extended FABs](#extended-fabs)
 *   [Theming FABs](#theming-fabs)
@@ -84,10 +84,10 @@ modes, a custom size, or for the large FAB by applying the desired style.
 There are three `app:fabSize` modes:
 
 *   `normal` - the normal sized button, 56dp.
-*   `mini` - the mini sized button, 40dp.
+*   `mini` - the small sized button, 40dp.
 *   `auto` (default) - the button size will change based on the window size. For
     small sized windows (largest screen dimension < 470dp) this will select a
-    mini sized button, and for larger sized windows it will select a normal
+    small sized button, and for larger sized windows it will select a normal
     sized button.
 
 Or, you can set a custom size via the `app:fabCustomSize` attribute. If set,
@@ -104,8 +104,8 @@ If you'd like to use the large FAB, apply one of these style attributes:
 
 ### Types
 
-There are four types of FABS: 1\. [Regular FABs](#regular-fabs), 2\.
-[Mini FABs](#mini-fabs), 3\. [Large FABs](#large-fabs)
+There are four types of FABS: 1\. [FABs](#fabs), 2\. [Small FABs](#small-fabs),
+3\. [Large FABs](#large-fabs)
 
 ![FAB types](assets/fabs/FAB_types.png)
 
@@ -113,9 +113,9 @@ And 4\. [Extended FABs](#extended-fabs)
 
 ![Extended FAB type](assets/fabs/extendedFAB_types.png)
 
-## Regular FABs
+## FABs
 
-Regular FABs are FABs that are not expanded and are a regular size.
+FABs are the default size and style for a primary action button.
 
 API and source code:
 
@@ -123,7 +123,7 @@ API and source code:
     *   [Class description](https://developer.android.com/reference/com/google/android/material/floatingactionbutton/FloatingActionButton)
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingactionbutton/FloatingActionButton.java)
 
-### Regular FAB example
+### FAB example
 
 The following example shows a regular FAB with a plus icon.
 
@@ -168,11 +168,11 @@ A regular FAB has a container and an icon.
 1.  Container
 1.  Icon
 
-## Mini FABs
+## Small FABs
 
-A mini FAB should be used on smaller screens.
+A small FAB should be used on smaller screens.
 
-Mini FABs can also be used to create visual continuity with other screen
+Small FABs can also be used to create visual continuity with other screen
 elements.
 
 API and source code:
@@ -181,9 +181,9 @@ API and source code:
     *   [Class description](https://developer.android.com/reference/com/google/android/material/floatingactionbutton/FloatingActionButton)
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingactionbutton/FloatingActionButton.java)
 
-### Mini FAB example
+### Small FAB example
 
-The following example shows a mini FAB with a plus icon.
+The following example shows a small FAB with a plus icon.
 
 ![40dp boxy purple FAB with dark plus icon](assets/fabs/fab_mini.png)
 
@@ -213,9 +213,9 @@ fab.setOnClickListener {
 
 #### Anatomy
 
-![Mini FAB anatomy diagram](assets/fabs/miniFAB_anatomy-long.png)
+![Small FAB anatomy diagram](assets/fabs/miniFAB_anatomy-long.png)
 
-A mini FAB has a container and an icon.
+A small FAB has a container and an icon.
 
 1.  Container
 1.  Icon
@@ -271,7 +271,7 @@ A large FAB has a container and an icon.
 1.  Container
 1.  Icon
 
-### Regular, mini, and large FAB key properties
+### Regular, small, and large FAB key properties
 
 #### Container attributes
 
@@ -430,7 +430,7 @@ API and source code:
     *   [Class description](https://developer.android.com/reference/com/google/android/material/floatingactionbutton/ExtendedFloatingActionButton)
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingactionbutton/ExtendedFloatingActionButton.java)
 
-The following example shows a regular, mini, and extended FAB with Material
+The following example shows a regular, small, and extended FAB with Material
 Theming.
 
 !["3 square pink FABs with cut corners with brown plus icons: 56dp, 40dp, 56dp
