@@ -24,7 +24,7 @@
   <item android:color="@android:color/transparent" android:state_checked="true"/>
 
   <!-- Focused -->
-  <item android:color="?attr/colorOnSurfaceVariant" android:state_focused="true"/>
+  <item android:color="?attr/colorOnSurface" android:state_focused="true"/>
 
   <!-- Other states -->
   <item android:color="?attr/colorOutline"/>

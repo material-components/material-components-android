@@ -17,5 +17,5 @@
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
   <item android:alpha="@dimen/material_emphasis_disabled" android:color="?attr/colorOnSurface" android:state_enabled="false"/>
-  <item android:color="?attr/colorOnSurfaceVariant"/>
+  <item android:color="?attr/colorOnSurface"/>
 </selector>
