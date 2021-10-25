@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2021 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+
+<resources>
+  <!-- Dynamic color palette – Primary -->
+  <color name="material_dynamic_primary0">@color/m3_ref_palette_dynamic_primary0</color>
+  <color name="material_dynamic_primary10">@color/m3_ref_palette_dynamic_primary10</color>
+  <color name="material_dynamic_primary20">@color/m3_ref_palette_dynamic_primary20</color>
+  <color name="material_dynamic_primary30">@color/m3_ref_palette_dynamic_primary30</color>
+  <color name="material_dynamic_primary40">@color/m3_ref_palette_dynamic_primary40</color>
+  <color name="material_dynamic_primary50">@color/m3_ref_palette_dynamic_primary50</color>
+  <color name="material_dynamic_primary60">@color/m3_ref_palette_dynamic_primary60</color>
+  <color name="material_dynamic_primary70">@color/m3_ref_palette_dynamic_primary70</color>
+  <color name="material_dynamic_primary80">@color/m3_ref_palette_dynamic_primary80</color>
+  <color name="material_dynamic_primary90">@color/m3_ref_palette_dynamic_primary90</color>
+  <color name="material_dynamic_primary95">@color/m3_ref_palette_dynamic_primary95</color>
+  <color name="material_dynamic_primary99">@color/m3_ref_palette_dynamic_primary99</color>
+  <color name="material_dynamic_primary100">@color/m3_ref_palette_dynamic_primary100</color>
+
+  <!-- Dynamic color palette – Secondary -->
+  <color name="material_dynamic_secondary0">@color/m3_ref_palette_dynamic_secondary0</color>
+  <color name="material_dynamic_secondary10">@color/m3_ref_palette_dynamic_secondary10</color>
+  <color name="material_dynamic_secondary20">@color/m3_ref_palette_dynamic_secondary20</color>
+  <color name="material_dynamic_secondary30">@color/m3_ref_palette_dynamic_secondary30</color>
+  <color name="material_dynamic_secondary40">@color/m3_ref_palette_dynamic_secondary40</color>
+  <color name="material_dynamic_secondary50">@color/m3_ref_palette_dynamic_secondary50</color>
+  <color name="material_dynamic_secondary60">@color/m3_ref_palette_dynamic_secondary60</color>
+  <color name="material_dynamic_secondary70">@color/m3_ref_palette_dynamic_secondary70</color>
+  <color name="material_dynamic_secondary80">@color/m3_ref_palette_dynamic_secondary80</color>
+  <color name="material_dynamic_secondary90">@color/m3_ref_palette_dynamic_secondary90</color>
+  <color name="material_dynamic_secondary95">@color/m3_ref_palette_dynamic_secondary95</color>
+  <color name="material_dynamic_secondary99">@color/m3_ref_palette_dynamic_secondary99</color>
+  <color name="material_dynamic_secondary100">@color/m3_ref_palette_dynamic_secondary100</color>
+
+  <!-- Dynamic color palette – Tertiary -->
+  <color name="material_dynamic_tertiary0">@color/m3_ref_palette_dynamic_tertiary0</color>
+  <color name="material_dynamic_tertiary10">@color/m3_ref_palette_dynamic_tertiary10</color>
+  <color name="material_dynamic_tertiary20">@color/m3_ref_palette_dynamic_tertiary20</color>
+  <color name="material_dynamic_tertiary30">@color/m3_ref_palette_dynamic_tertiary30</color>
+  <color name="material_dynamic_tertiary40">@color/m3_ref_palette_dynamic_tertiary40</color>
+  <color name="material_dynamic_tertiary50">@color/m3_ref_palette_dynamic_tertiary50</color>
+  <color name="material_dynamic_tertiary60">@color/m3_ref_palette_dynamic_tertiary60</color>
+  <color name="material_dynamic_tertiary70">@color/m3_ref_palette_dynamic_tertiary70</color>
+  <color name="material_dynamic_tertiary80">@color/m3_ref_palette_dynamic_tertiary80</color>
+  <color name="material_dynamic_tertiary90">@color/m3_ref_palette_dynamic_tertiary90</color>
+  <color name="material_dynamic_tertiary95">@color/m3_ref_palette_dynamic_tertiary95</color>
+  <color name="material_dynamic_tertiary99">@color/m3_ref_palette_dynamic_tertiary99</color>
+  <color name="material_dynamic_tertiary100">@color/m3_ref_palette_dynamic_tertiary100</color>
+
+  <!-- Dynamic color palette – Neutral -->
+  <color name="material_dynamic_neutral0">@color/m3_ref_palette_dynamic_neutral0</color>
+  <color name="material_dynamic_neutral10">@color/m3_ref_palette_dynamic_neutral10</color>
+  <color name="material_dynamic_neutral20">@color/m3_ref_palette_dynamic_neutral20</color>
+  <color name="material_dynamic_neutral30">@color/m3_ref_palette_dynamic_neutral30</color>
+  <color name="material_dynamic_neutral40">@color/m3_ref_palette_dynamic_neutral40</color>
+  <color name="material_dynamic_neutral50">@color/m3_ref_palette_dynamic_neutral50</color>
+  <color name="material_dynamic_neutral60">@color/m3_ref_palette_dynamic_neutral60</color>
+  <color name="material_dynamic_neutral70">@color/m3_ref_palette_dynamic_neutral70</color>
+  <color name="material_dynamic_neutral80">@color/m3_ref_palette_dynamic_neutral80</color>
+  <color name="material_dynamic_neutral90">@color/m3_ref_palette_dynamic_neutral90</color>
+  <color name="material_dynamic_neutral95">@color/m3_ref_palette_dynamic_neutral95</color>
+  <color name="material_dynamic_neutral99">@color/m3_ref_palette_dynamic_neutral99</color>
+  <color name="material_dynamic_neutral100">@color/m3_ref_palette_dynamic_neutral100</color>
+
+  <!-- Dynamic color palette – Neutral variant -->
+  <color name="material_dynamic_neutral_variant0">@color/m3_ref_palette_dynamic_neutral_variant0</color>
+  <color name="material_dynamic_neutral_variant10">@color/m3_ref_palette_dynamic_neutral_variant10</color>
+  <color name="material_dynamic_neutral_variant20">@color/m3_ref_palette_dynamic_neutral_variant20</color>
+  <color name="material_dynamic_neutral_variant30">@color/m3_ref_palette_dynamic_neutral_variant30</color>
+  <color name="material_dynamic_neutral_variant40">@color/m3_ref_palette_dynamic_neutral_variant40</color>
+  <color name="material_dynamic_neutral_variant50">@color/m3_ref_palette_dynamic_neutral_variant50</color>
+  <color name="material_dynamic_neutral_variant60">@color/m3_ref_palette_dynamic_neutral_variant60</color>
+  <color name="material_dynamic_neutral_variant70">@color/m3_ref_palette_dynamic_neutral_variant70</color>
+  <color name="material_dynamic_neutral_variant80">@color/m3_ref_palette_dynamic_neutral_variant80</color>
+  <color name="material_dynamic_neutral_variant90">@color/m3_ref_palette_dynamic_neutral_variant90</color>
+  <color name="material_dynamic_neutral_variant95">@color/m3_ref_palette_dynamic_neutral_variant95</color>
+  <color name="material_dynamic_neutral_variant99">@color/m3_ref_palette_dynamic_neutral_variant99</color>
+  <color name="material_dynamic_neutral_variant100">@color/m3_ref_palette_dynamic_neutral_variant100</color>
+</resources>

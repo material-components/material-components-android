@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2021 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+
+<resources>
+    <public name="material_dynamic_primary0" type="color"/>
+    <public name="material_dynamic_primary10" type="color"/>
+    <public name="material_dynamic_primary20" type="color"/>
+    <public name="material_dynamic_primary30" type="color"/>
+    <public name="material_dynamic_primary40" type="color"/>
+    <public name="material_dynamic_primary50" type="color"/>
+    <public name="material_dynamic_primary60" type="color"/>
+    <public name="material_dynamic_primary70" type="color"/>
+    <public name="material_dynamic_primary80" type="color"/>
+    <public name="material_dynamic_primary90" type="color"/>
+    <public name="material_dynamic_primary95" type="color"/>
+    <public name="material_dynamic_primary99" type="color"/>
+    <public name="material_dynamic_primary100" type="color"/>
+
+    <public name="material_dynamic_secondary0" type="color"/>
+    <public name="material_dynamic_secondary10" type="color"/>
+    <public name="material_dynamic_secondary20" type="color"/>
+    <public name="material_dynamic_secondary30" type="color"/>
+    <public name="material_dynamic_secondary40" type="color"/>
+    <public name="material_dynamic_secondary50" type="color"/>
+    <public name="material_dynamic_secondary60" type="color"/>
+    <public name="material_dynamic_secondary70" type="color"/>
+    <public name="material_dynamic_secondary80" type="color"/>
+    <public name="material_dynamic_secondary90" type="color"/>
+    <public name="material_dynamic_secondary95" type="color"/>
+    <public name="material_dynamic_secondary99" type="color"/>
+    <public name="material_dynamic_secondary100" type="color"/>
+
+    <public name="material_dynamic_tertiary0" type="color"/>
+    <public name="material_dynamic_tertiary10" type="color"/>
+    <public name="material_dynamic_tertiary20" type="color"/>
+    <public name="material_dynamic_tertiary30" type="color"/>
+    <public name="material_dynamic_tertiary40" type="color"/>
+    <public name="material_dynamic_tertiary50" type="color"/>
+    <public name="material_dynamic_tertiary60" type="color"/>
+    <public name="material_dynamic_tertiary70" type="color"/>
+    <public name="material_dynamic_tertiary80" type="color"/>
+    <public name="material_dynamic_tertiary90" type="color"/>
+    <public name="material_dynamic_tertiary95" type="color"/>
+    <public name="material_dynamic_tertiary99" type="color"/>
+    <public name="material_dynamic_tertiary100" type="color"/>
+
+    <public name="material_dynamic_neutral0" type="color"/>
+    <public name="material_dynamic_neutral10" type="color"/>
+    <public name="material_dynamic_neutral20" type="color"/>
+    <public name="material_dynamic_neutral30" type="color"/>
+    <public name="material_dynamic_neutral40" type="color"/>
+    <public name="material_dynamic_neutral50" type="color"/>
+    <public name="material_dynamic_neutral60" type="color"/>
+    <public name="material_dynamic_neutral70" type="color"/>
+    <public name="material_dynamic_neutral80" type="color"/>
+    <public name="material_dynamic_neutral90" type="color"/>
+    <public name="material_dynamic_neutral95" type="color"/>
+    <public name="material_dynamic_neutral99" type="color"/>
+    <public name="material_dynamic_neutral100" type="color"/>
+
+    <public name="material_dynamic_neutral_variant0" type="color"/>
+    <public name="material_dynamic_neutral_variant10" type="color"/>
+    <public name="material_dynamic_neutral_variant20" type="color"/>
+    <public name="material_dynamic_neutral_variant30" type="color"/>
+    <public name="material_dynamic_neutral_variant40" type="color"/>
+    <public name="material_dynamic_neutral_variant50" type="color"/>
+    <public name="material_dynamic_neutral_variant60" type="color"/>
+    <public name="material_dynamic_neutral_variant70" type="color"/>
+    <public name="material_dynamic_neutral_variant80" type="color"/>
+    <public name="material_dynamic_neutral_variant90" type="color"/>
+    <public name="material_dynamic_neutral_variant95" type="color"/>
+    <public name="material_dynamic_neutral_variant99" type="color"/>
+    <public name="material_dynamic_neutral_variant100" type="color"/>
+</resources>
