@@ -38,7 +38,11 @@
   <public name="enableEdgeToEdge" type="attr"/>
   <public name="gestureInsetBottomIgnored" type="attr"/>
   <public name="ThemeOverlay.Material3.BottomSheetDialog" type="style"/>
+  <public name="ThemeOverlay.Material3.DayNight.BottomSheetDialog" type="style"/>
   <public name="Widget.Material3.BottomSheet" type="style"/>
   <public name="Widget.Material3.BottomSheet.Modal" type="style"/>
+  <public name="Theme.Material3.Light.BottomSheetDialog" type="style"/>
+  <public name="Theme.Material3.Dark.BottomSheetDialog" type="style"/>
+  <public name="Theme.Material3.DayNight.BottomSheetDialog" type="style"/>
 </resources>
 

@@ -51,12 +51,11 @@ public class DynamicColors {
 
   /**
    * Applies dynamic colors to all activities with the theme overlay designated by the theme
-   * attribute {@link R.attr.dynamicColorThemeOverlay} by registering a
-   * {@link ActivityLifecycleCallbacks} to your application.
+   * attribute {@code dynamicColorThemeOverlay} by registering a {@link ActivityLifecycleCallbacks}
+   * to your application.
    *
    * @see #applyToActivitiesIfAvailable(Application, int, Precondition) for more detailed info and
-   *      examples.
-   *
+   *     examples.
    * @param application The target application.
    */
   public static void applyToActivitiesIfAvailable(@NonNull Application application) {
@@ -80,12 +79,11 @@ public class DynamicColors {
 
   /**
    * Applies dynamic colors to all activities with the theme overlay designated by the theme
-   * attribute {@link R.attr.dynamicColorThemeOverlay} according to the given precondition by
-   * registering a {@link ActivityLifecycleCallbacks} to your application.
+   * attribute {@code dynamicColorThemeOverlay} according to the given precondition by registering a
+   * {@link ActivityLifecycleCallbacks} to your application.
    *
    * @see #applyToActivitiesIfAvailable(Application, int, Precondition) for more detailed info and
-   *      examples.
-   *
+   *     examples.
    * @param application The target application.
    * @param precondition The precondition to decide if dynamic colors should be applied.
    */
@@ -126,7 +124,7 @@ public class DynamicColors {
 
   /**
    * Applies dynamic colors to the given activity with the theme overlay designated by the theme
-   * attribute {@link R.attr.dynamicColorThemeOverlay}.
+   * attribute {@code dynamicColorThemeOverlay}.
    *
    * @param activity The target activity.
    */
@@ -146,7 +144,7 @@ public class DynamicColors {
 
   /**
    * Applies dynamic colors to the given activity with the theme overlay designated by the theme
-   * attribute {@link R.attr.dynamicColorThemeOverlay} according to the given precondition.
+   * attribute {@code dynamicColorThemeOverlay} according to the given precondition.
    *
    * @param activity The target activity.
    * @param precondition The precondition to decide if dynamic colors should be applied.
@@ -170,11 +168,11 @@ public class DynamicColors {
   }
 
   /**
-   * Wraps the given context with the theme overlay designated by the theme attribute
-   * {@link R.attr.dynamicColorThemeOverlay}. The returned context can be used to create
-   * views with dynamic color support.
+   * Wraps the given context with the theme overlay designated by the theme attribute {@code
+   * dynamicColorThemeOverlay}. The returned context can be used to create views with dynamic color
+   * support.
    *
-   * If dynamic color support or the dynamic color theme overlay is not available, the original
+   * <p>If dynamic color support or the dynamic color theme overlay is not available, the original
    * context will be returned.
    *
    * @param originalContext The original context.

@@ -30,6 +30,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.constraintlayout.widget.ReactiveGuide;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.window.java.layout.WindowInfoRepositoryCallbackAdapter;
@@ -121,9 +122,13 @@ public class AdaptiveListViewDemoActivity extends DemoActivity {
     fragmentManager.beginTransaction().replace(listViewFragmentId, listViewFragment).commit();
   }
 
-  private void updateLandscapeLayout(int guidelinePosition) {
+  private void updateLandscapeLayout(int guidelinePosition, int foldWidth) {
     int listViewFragmentId = R.id.list_view_fragment_container;
     int detailViewFragmentId = R.id.list_view_detail_fragment_container;
+    ConstraintSet landscapeLayout = new ConstraintSet();
+    landscapeLayout.clone(constraintLayout);
+    landscapeLayout.setMargin(detailViewFragmentId, ConstraintSet.START, foldWidth);
+    landscapeLayout.applyTo(constraintLayout);
     guideline.setGuidelineEnd(guidelinePosition);
     listViewFragment.setDetailViewContainerId(detailViewFragmentId);
     fragmentManager
@@ -168,14 +173,15 @@ public class AdaptiveListViewDemoActivity extends DemoActivity {
             FoldingFeature foldingFeature = (FoldingFeature) displayFeature;
             Orientation orientation = foldingFeature.getOrientation();
             if (orientation.equals(FoldingFeature.Orientation.VERTICAL)) {
-              updateLandscapeLayout(
-                  AdaptiveUtils.getFoldPosition(drawerLayout, foldingFeature, orientation));
+              int foldPosition = foldingFeature.getBounds().left;
+              int foldWidth = foldingFeature.getBounds().right - foldPosition;
+              updateLandscapeLayout(foldPosition, foldWidth);
               hasVerticalFold = true;
             }
           }
         }
         if (!hasVerticalFold) {
-          updateLandscapeLayout(constraintLayout.getWidth() / 2);
+          updateLandscapeLayout(constraintLayout.getWidth() / 2, 0);
         }
       }
     }

@@ -900,8 +900,14 @@ public abstract class NavigationBarView extends FrameLayout {
     return menuInflater;
   }
 
+  /**
+   * Returns reference to the {@link NavigationBarPresenter}
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
   @NonNull
-  protected NavigationBarPresenter getPresenter() {
+  public NavigationBarPresenter getPresenter() {
     return presenter;
   }
 

@@ -27,6 +27,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.StringRes;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -48,10 +49,12 @@ public abstract class TextFieldControllableDemoFragment extends TextFieldDemoFra
             setAllTextFieldsError(errorText);
             toggleErrorButton.setText(
                 getResources().getString(R.string.cat_textfield_hide_error_text));
+            Snackbar.make(v, R.string.cat_textfield_show_error_text, Snackbar.LENGTH_SHORT).show();
           } else {
             setAllTextFieldsError(null);
             toggleErrorButton.setText(
                 getResources().getString(R.string.cat_textfield_show_error_text));
+            Snackbar.make(v, R.string.cat_textfield_hide_error_text, Snackbar.LENGTH_SHORT).show();
           }
         });
 
@@ -148,6 +151,9 @@ public abstract class TextFieldControllableDemoFragment extends TextFieldDemoFra
           for (TextInputLayout textfield : textfields) {
             textfield.setEnabled(isChecked);
           }
+          int messageId = isChecked
+              ? R.string.cat_textfield_label_enabled : R.string.cat_textfield_label_disabled;
+          Snackbar.make(buttonView, messageId, Snackbar.LENGTH_SHORT).show();
         });
   }
 

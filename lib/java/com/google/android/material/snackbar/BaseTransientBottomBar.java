@@ -375,6 +375,8 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     if (content instanceof SnackbarContentLayout) {
       ((SnackbarContentLayout) content)
           .updateActionTextColorAlphaIfNeeded(view.getActionTextColorAlpha());
+      ((SnackbarContentLayout) content).setMaxInlineActionWidth(view.getMaxInlineActionWidth());
+      ((SnackbarContentLayout) content).setMaxWidth(view.getMaxWidth());
     }
     view.addView(content);
 
@@ -1131,6 +1133,8 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     @AnimationMode private int animationMode;
     private final float backgroundOverlayColorAlpha;
     private final float actionTextColorAlpha;
+    private final int maxWidth;
+    private final int maxInlineActionWidth;
     private ColorStateList backgroundTint;
     private PorterDuff.Mode backgroundTintMode;
 
@@ -1158,6 +1162,9 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
           ViewUtils.parseTintMode(
               a.getInt(R.styleable.SnackbarLayout_backgroundTintMode, -1), PorterDuff.Mode.SRC_IN));
       actionTextColorAlpha = a.getFloat(R.styleable.SnackbarLayout_actionTextColorAlpha, 1);
+      maxWidth = a.getDimensionPixelSize(R.styleable.SnackbarLayout_android_maxWidth, -1);
+      maxInlineActionWidth =
+          a.getDimensionPixelSize(R.styleable.SnackbarLayout_maxActionInlineWidth, -1);
       a.recycle();
 
       setOnTouchListener(consumeAllTouchListener);
@@ -1266,6 +1273,14 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
     float getActionTextColorAlpha() {
       return actionTextColorAlpha;
+    }
+
+    int getMaxWidth() {
+      return maxWidth;
+    }
+
+    int getMaxInlineActionWidth() {
+      return maxInlineActionWidth;
     }
 
     @NonNull

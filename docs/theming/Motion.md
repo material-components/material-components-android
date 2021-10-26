@@ -52,7 +52,7 @@ the
 *   Supports Fragments, Views, Activities, and Windows
 *   Bug fixes not backported and may have different behavior across API Levels
 
-## Motion Resources
+## Motion resources
 
 *   [Design Guidelines](https://material.io/design/motion/the-motion-system.html)
 *   [Codelab](https://codelabs.developers.google.com/codelabs/material-motion-android)
@@ -100,8 +100,8 @@ Android structures including Fragments, Activities and Views.
 #### Transition between Fragments
 
 In Fragment A and Fragment B's layouts, identify the start and end Views (as
-described in the [container transform overview](#material-container-transform))
-which will be shared. Add a matching `transitionName` to each of these Views.
+described in the [container transform overview](#container-transform)) which
+will be shared. Add a matching `transitionName` to each of these Views.
 
 ```xml
 <!--fragment_a.xml-->
@@ -229,7 +229,7 @@ the animation is applied to the Fragment view as a whole, as opposed to each
 child view individually, which is the default behavior of the Android
 Transitions system.
 
-#### Transition between Activities
+#### Transition between activities
 
 **Note:** Activity and Window transitions require using Android Framework
 Transitions provided in the `com.google.android.material.transition.platform`
@@ -237,8 +237,8 @@ package and are only available on API level 21 and above.
 
 In Activity A’s layout, identify the start View to be used as the “shared
 element” as described in the
-[container transform overview](#material-container-transform). Give the start
-view a `transitionName`.
+[container transform overview](#container-transform). Give the start view a
+`transitionName`.
 
 ```xml
 <!--activity_a.xml-->
@@ -427,7 +427,7 @@ set properties which differ depending on whether or not the transition is
 entering or returning, create two `MaterialContainerTransforms` and set both the
 `sharedElementEnterTransition` and `sharedElementReturnTransition`.*
 
-#### Fade Through Variant
+#### Fade through Variant
 
 `MaterialContainerTransform` supports the "Container transform: fade through
 variant" mentioned in the
@@ -738,7 +738,7 @@ Element        | Attribute                | Related method(s)                 | 
 See the [Motion Theming section](#theming) for details on how to systematically
 update motion.
 
-## Fade Through
+## Fade through
 
 The **fade through** pattern is used for transitions between UI elements that do
 not have a strong relationship to each other.

@@ -102,12 +102,12 @@ import java.util.Arrays;
  *   <li>{@link android.R.attr#checkable android:checkable} - If true, the chip can be toggled. If
  *       false, the chip acts like a button.
  *   <li>{@link android.R.attr#text android:text} - Sets the text of the chip.
- *   <li>{@link R.attr#chipIcon app:chipIcon} - Sets the icon of the chip, or use @null to display
+ *   <li>{@code app:chipIcon} - Sets the icon of the chip, or use @null to display no icon. Usually
+ *       on the left.
+ *   <li>{@code app:checkedIcon} - Sets a custom icon to use when checked, or use @null to display
  *       no icon. Usually on the left.
- *   <li>{@link R.attr#checkedIcon app:checkedIcon} - Sets a custom icon to use when checked, or
- *       use @null to display no icon. Usually on the left.
- *   <li>{@link R.attr#closeIcon app:closeIcon} - Sets a custom icon that the user can click to
- *       close, or use @null to display no icon. Usually on the right.
+ *   <li>{@code app:closeIcon} - Sets a custom icon that the user can click to close, or use @null
+ *       to display no icon. Usually on the right.
  *   <li>{@link android.R.attr#ellipsize} - Does not support {@link
  *       android.text.TextUtils.TruncateAt#MARQUEE} because chip text should not scroll.
  * </ul>

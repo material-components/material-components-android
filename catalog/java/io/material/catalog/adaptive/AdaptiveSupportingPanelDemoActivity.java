@@ -137,8 +137,9 @@ public class AdaptiveSupportingPanelDemoActivity extends DemoActivity {
           if (foldingFeature.getState().equals(FoldingFeature.State.HALF_OPENED)
               && orientation.equals(Orientation.HORIZONTAL)) {
             // Device is in table top mode.
-            demoFragment.updateTableTopLayout(
-                AdaptiveUtils.getFoldPosition(drawerLayout, foldingFeature, orientation));
+            int foldPosition = foldingFeature.getBounds().top;
+            int foldWidth = foldingFeature.getBounds().bottom - foldPosition;
+            demoFragment.updateTableTopLayout(foldPosition, foldWidth);
             isTableTop = true;
           }
         }

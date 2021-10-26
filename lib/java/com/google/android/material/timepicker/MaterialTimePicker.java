@@ -18,6 +18,8 @@ package com.google.android.material.timepicker;
 
 import com.google.android.material.R;
 
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -46,6 +48,7 @@ import androidx.annotation.IntDef;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import com.google.android.material.button.MaterialButton;
@@ -58,7 +61,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /** A {@link Dialog} with a clock display and a clock face to choose the time. */
-public final class MaterialTimePicker extends DialogFragment {
+public final class MaterialTimePicker extends DialogFragment implements OnDoubleTapListener {
 
   private final Set<OnClickListener> positiveButtonListeners = new LinkedHashSet<>();
   private final Set<OnClickListener> negativeButtonListeners = new LinkedHashSet<>();
@@ -238,15 +241,7 @@ public final class MaterialTimePicker extends DialogFragment {
     ViewGroup root =
         (ViewGroup) layoutInflater.inflate(R.layout.material_timepicker_dialog, viewGroup);
     timePickerView = root.findViewById(R.id.material_timepicker_view);
-    timePickerView.setOnDoubleTapListener(
-        new OnDoubleTapListener() {
-          @Override
-          public void onDoubleTap() {
-            inputMode = INPUT_MODE_KEYBOARD;
-            updateInputMode(modeButton);
-            timePickerTextInputPresenter.resetChecked();
-          }
-        });
+    timePickerView.setOnDoubleTapListener(this);
     textInputStub = root.findViewById(R.id.material_textinput_timepicker);
     modeButton = root.findViewById(R.id.material_timepicker_mode_button);
     TextView headerTitle = root.findViewById(R.id.header_title);
@@ -307,12 +302,15 @@ public final class MaterialTimePicker extends DialogFragment {
   }
 
   @Override
-  public void onStop() {
-    super.onStop();
+  public void onDestroyView() {
+    super.onDestroyView();
     activePresenter = null;
     timePickerClockPresenter = null;
     timePickerTextInputPresenter = null;
-    timePickerView = null;
+    if (timePickerView != null) {
+      timePickerView.setOnDoubleTapListener(null);
+      timePickerView = null;
+    }
   }
 
   @Override
@@ -336,6 +334,15 @@ public final class MaterialTimePicker extends DialogFragment {
   public void setCancelable(boolean cancelable) {
     super.setCancelable(cancelable);
     updateCancelButtonVisibility();
+  }
+
+  /** @hide */
+  @RestrictTo(LIBRARY_GROUP)
+  @Override
+  public void onDoubleTap() {
+    inputMode = INPUT_MODE_KEYBOARD;
+    updateInputMode(modeButton);
+    timePickerTextInputPresenter.resetChecked();
   }
 
   private void updateInputMode(MaterialButton modeButton) {

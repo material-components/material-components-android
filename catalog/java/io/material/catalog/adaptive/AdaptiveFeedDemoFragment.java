@@ -39,7 +39,6 @@ public class AdaptiveFeedDemoFragment extends Fragment {
   private ReactiveGuide fold;
   private ConstraintLayout constraintLayout;
   private ConstraintSet closedLayout;
-  private ConstraintSet openLayout;
 
   @Nullable
   @Override
@@ -58,7 +57,6 @@ public class AdaptiveFeedDemoFragment extends Fragment {
     constraintLayout = view.findViewById(R.id.feed_constraint_layout);
     closedLayout = new ConstraintSet();
     closedLayout.clone(constraintLayout);
-    openLayout = getOpenLayout(constraintLayout);
     return view;
   }
 
@@ -79,14 +77,25 @@ public class AdaptiveFeedDemoFragment extends Fragment {
   }
 
   /* Returns the constraint set to be used for the open layout configuration. */
-  private ConstraintSet getOpenLayout(@NonNull ConstraintLayout constraintLayout) {
+  private ConstraintSet getOpenLayout(@NonNull ConstraintSet closedLayout, int foldWidth) {
+    int marginHorizontal =
+        getResources().getDimensionPixelOffset(R.dimen.cat_adaptive_margin_horizontal);
     ConstraintSet constraintSet = new ConstraintSet();
-    constraintSet.clone(constraintLayout);
+    constraintSet.clone(closedLayout);
     // Change top button to be on the right of the fold.
-    constraintSet.connect(R.id.top_button, ConstraintSet.START, R.id.fold, ConstraintSet.END);
+    constraintSet.connect(
+        R.id.top_button,
+        ConstraintSet.START,
+        R.id.fold,
+        ConstraintSet.END,
+        marginHorizontal + foldWidth);
     // Change small content list to be on the right of the fold and below top button.
     constraintSet.connect(
-        R.id.small_content_list, ConstraintSet.START, R.id.fold, ConstraintSet.END);
+        R.id.small_content_list,
+        ConstraintSet.START,
+        R.id.fold,
+        ConstraintSet.END,
+        marginHorizontal + foldWidth);
     constraintSet.connect(
         R.id.small_content_list, ConstraintSet.TOP, R.id.top_button, ConstraintSet.BOTTOM);
     constraintSet.setVisibility(R.id.highlight_content_card, View.GONE);
@@ -95,18 +104,21 @@ public class AdaptiveFeedDemoFragment extends Fragment {
     return constraintSet;
   }
 
-  /* Updates the fold guideline's distance from the end. */
-  void updateFoldPosition(int position) {
-   fold.setGuidelineEnd(position);
-  }
-
-  /* Applies the open layout configuration. */
-  void setOpenLayout() {
+  /**
+   * Applies the open layout configuration.
+   *
+   * @param foldPosition position of the fold
+   * @param foldWidth width of the fold if it's a hinge
+   */
+  void setOpenLayout(int foldPosition, int foldWidth) {
+    ConstraintSet openLayout = getOpenLayout(closedLayout, foldWidth);
     openLayout.applyTo(constraintLayout);
+    fold.setGuidelineEnd(foldPosition);
   }
 
   /* Applies the closed layout configuration. */
   void setClosedLayout() {
+    fold.setGuidelineEnd(0);
     closedLayout.applyTo(constraintLayout);
   }
 

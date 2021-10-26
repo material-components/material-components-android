@@ -6,7 +6,7 @@ excerpt: "Guide for building the adaptive canonical layouts"
 path: /adaptive/canonicallayouts/
 -->
 
-# Canonical Layouts
+# Canonical layouts
 
 **Contents**
 
@@ -204,35 +204,29 @@ private class StateContainer implements Consumer<WindowLayoutInfo> {
   @Override
   public void accept(WindowLayoutInfo windowLayoutInfo) {
 
-    List<DisplayFeature> displayFeatures = windowLayoutInfo.getDisplayFeatures();
+    List<DisplayFeature> displayFeatures = windowLayoutInfo
+      .getDisplayFeatures();
 
-      for (DisplayFeature displayFeature : displayFeatures) {
-        if (displayFeature instanceof FoldingFeature) {
-          FoldingFeature foldingFeature = (FoldingFeature) displayFeature;
+    for (DisplayFeature displayFeature : displayFeatures) {
+      if (displayFeature instanceof FoldingFeature) {
+        FoldingFeature foldingFeature = (FoldingFeature) displayFeature;
 
-          // Check for specific FoldingFeatures here and communicate with the
-          // demo fragment as needed.
+        // Check for specific FoldingFeatures here and communicate with the
+        // demo fragment as needed. Here's also where we can find the fold
+        // position.
           ...
-
-          // Here's also where we can find the fold position by using the
-          // AdaptiveUtils utility class:
-          Orientation foldOrientation = foldingFeature.getOrientation();
-          int foldPosition =
-              AdaptiveUtils.getFoldPosition(container, foldingFeature, foldOrientation));
-
-          ...
-        }
       }
+    }
       ...
+  }
 }
 ```
 
-Finding the position of the fold is useful for changing the position of a
+You can find the position of the fold and check whether it's a hinge by using
+`foldingFeature.getBounds()`. That is useful for changing the position of a
 guideline in order to rearrange views. In the demos, we make use of the
 [`ReactiveGuide`](https://github.com/androidx/constraintlayout/blob/main/constraintlayout/constraintlayout/src/main/java/androidx/constraintlayout/widget/ReactiveGuide.java)
-to do so. Take a look at
-[`AdaptiveUtils.java`](https://github.com/material-components/material-components-android/tree/master/catalog/java/io/material/catalog/adaptive/AdaptiveUtils.java)
-to see in detail how the `getFoldPosition` method is implemented.
+to do so.
 
 ### Using `ConstraintSet`
 

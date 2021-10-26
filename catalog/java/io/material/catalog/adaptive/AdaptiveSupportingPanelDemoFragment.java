@@ -38,7 +38,6 @@ public class AdaptiveSupportingPanelDemoFragment extends Fragment {
   private ConstraintLayout fragmentContainer;
   private ConstraintSet portraitLayout;
   private ConstraintSet landscapeLayout;
-  private ConstraintSet tableTopLayout;
   private ReactiveGuide guideline;
 
   @Nullable
@@ -63,7 +62,6 @@ public class AdaptiveSupportingPanelDemoFragment extends Fragment {
     portraitLayout = new ConstraintSet();
     portraitLayout.clone(fragmentContainer);
     landscapeLayout = getLandscapeLayout(fragmentContainer);
-    tableTopLayout = getTableTopLayout(fragmentContainer);
 
     return view;
   }
@@ -78,8 +76,14 @@ public class AdaptiveSupportingPanelDemoFragment extends Fragment {
     landscapeLayout.applyTo(fragmentContainer);
   }
 
-  /* Applies the table top layout configuration. */
-  void updateTableTopLayout(int foldPosition) {
+  /**
+   * Applies the table top layout configuration.
+   *
+   * @param foldPosition position of the fold
+   * @param foldWidth width of the fold if it's a hinge
+   */
+  void updateTableTopLayout(int foldPosition, int foldWidth) {
+    ConstraintSet tableTopLayout = getTableTopLayout(portraitLayout, foldWidth);
     tableTopLayout.applyTo(fragmentContainer);
     guideline.setGuidelineBegin(foldPosition);
   }
@@ -126,11 +130,11 @@ public class AdaptiveSupportingPanelDemoFragment extends Fragment {
   }
 
   /* Returns the constraint set to be used for the table top layout configuration. */
-  private ConstraintSet getTableTopLayout(@NonNull ConstraintLayout constraintLayout) {
+  private ConstraintSet getTableTopLayout(@NonNull ConstraintSet portraitLayout, int foldWidth) {
     int marginVertical =
         getResources().getDimensionPixelOffset(R.dimen.cat_adaptive_margin_vertical);
     ConstraintSet constraintSet = new ConstraintSet();
-    constraintSet.clone(constraintLayout);
+    constraintSet.clone(portraitLayout);
     constraintSet.setVisibility(R.id.horizontal_fold, View.VISIBLE);
     // Main content
     constraintSet.connect(
@@ -147,7 +151,8 @@ public class AdaptiveSupportingPanelDemoFragment extends Fragment {
         R.id.supporting_panel_side_container,
         ConstraintSet.TOP,
         R.id.horizontal_fold,
-        ConstraintSet.BOTTOM);
+        ConstraintSet.BOTTOM,
+        marginVertical + foldWidth);
 
     return constraintSet;
   }

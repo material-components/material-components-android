@@ -18,16 +18,12 @@ package io.material.catalog.adaptive;
 
 import io.material.catalog.R;
 
-import android.graphics.Rect;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.window.layout.DisplayFeature;
-import androidx.window.layout.FoldingFeature;
-import androidx.window.layout.FoldingFeature.Orientation;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -132,59 +128,5 @@ class AdaptiveUtils {
             drawerLayout.closeDrawer(modalDrawer);
           }
         });
-  }
-
-  /* Returns the position of the fold relative to the view. */
-  static int getFoldPosition(
-      @NonNull View view,
-      @NonNull FoldingFeature foldingFeature,
-      @NonNull FoldingFeature.Orientation orientation) {
-    Rect splitRect = getFeatureBoundsInWindow(foldingFeature, view);
-    int position = 0;
-    if (splitRect != null) {
-      position =
-          orientation.equals(Orientation.VERTICAL)
-              ? view.getWidth() - splitRect.left
-              : view.getHeight() - splitRect.top;
-    }
-    return position;
-  }
-
-  /**
-   * Gets the bounds of the display feature translated to the View's coordinate space and current
-   * position in the window. This will also include view padding in the calculations.
-   */
-  @Nullable
-  private static Rect getFeatureBoundsInWindow(
-      @NonNull DisplayFeature displayFeature, @NonNull View view) {
-    // The location of the view in window to be in the same coordinate space as the feature.
-    int[] viewLocationInWindow = new int[2];
-    view.getLocationInWindow(viewLocationInWindow);
-
-    // Intersect the feature rectangle in window with view rectangle to clip the bounds.
-    Rect viewRect =
-        new Rect(
-            viewLocationInWindow[0],
-            viewLocationInWindow[1],
-            viewLocationInWindow[0] + view.getWidth(),
-            viewLocationInWindow[1] + view.getHeight());
-    // Include padding.
-    viewRect.left += view.getPaddingLeft();
-    viewRect.top += view.getPaddingTop();
-    viewRect.right -= view.getPaddingRight();
-    viewRect.bottom -= view.getPaddingBottom();
-
-    Rect featureRectInView = new Rect(displayFeature.getBounds());
-    boolean intersects = featureRectInView.intersect(viewRect);
-
-    // Checks to see if the display feature overlaps with our view at all.
-    if ((featureRectInView.width() == 0 && featureRectInView.height() == 0) || !intersects) {
-      return null;
-    }
-
-    // Offset the feature coordinates to view coordinate space start point.
-    featureRectInView.offset(-viewLocationInWindow[0], -viewLocationInWindow[1]);
-
-    return featureRectInView;
   }
 }

@@ -83,9 +83,9 @@ import java.util.LinkedHashSet;
  * tint color and {@code ?attr/colorOnPrimary} for the text color. For unfilled buttons, this class
  * uses {@code ?attr/colorPrimary} for the text color and transparent for the background tint.
  *
- * <p>Add icons to the start, center, or end of this button using the {@link R.attr#icon app:icon},
- * {@link R.attr#iconPadding app:iconPadding}, {@link R.attr#iconTint app:iconTint}, {@link
- * R.attr#iconTintMode app:iconTintMode} and {@link R.attr#iconGravity app:iconGravity} attributes.
+ * <p>Add icons to the start, center, or end of this button using the {@code app:icon}, {@code
+ * app:iconPadding}, {@code app:iconTint}, {@code app:iconTintMode} and {@code app:iconGravity}
+ * attributes.
  *
  * <p>If a start-aligned icon is added to this button, please use a style like one of the ".Icon"
  * styles specified in the default MaterialButton styles. The ".Icon" styles adjust padding slightly
@@ -93,21 +93,18 @@ import java.util.LinkedHashSet;
  * button. If your icon is end-aligned, you cannot use a ".Icon" style and must instead manually
  * adjust your padding such that the visual adjustment is mirrored.
  *
- * <p>Specify background tint using the {@link R.attr#backgroundTint app:backgroundTint} and {@link
- * R.attr#backgroundTintMode app:backgroundTintMode} attributes, which accepts either a color or a
- * color state list.
+ * <p>Specify background tint using the {@code app:backgroundTint} and {@code
+ * app:backgroundTintMode} attributes, which accepts either a color or a color state list.
  *
- * <p>Ripple color / press state color can be specified using the {@link R.attr#rippleColor
- * app:rippleColor} attribute. Ripple opacity will be determined by the Android framework when
- * available. Otherwise, this color will be overlaid on the button at a 50% opacity when button is
- * pressed.
+ * <p>Ripple color / press state color can be specified using the {@code app:rippleColor} attribute.
+ * Ripple opacity will be determined by the Android framework when available. Otherwise, this color
+ * will be overlaid on the button at a 50% opacity when button is pressed.
  *
- * <p>Set the stroke color using the {@link R.attr#strokeColor app:strokeColor} attribute, which
- * accepts either a color or a color state list. Stroke width can be set using the {@link
- * R.attr#strokeWidth app:strokeWidth} attribute.
+ * <p>Set the stroke color using the {@code app:strokeColor} attribute, which accepts either a color
+ * or a color state list. Stroke width can be set using the {@code app:strokeWidth} attribute.
  *
- * <p>Specify the radius of all four corners of the button using the {@link R.attr#cornerRadius
- * app:cornerRadius} attribute.
+ * <p>Specify the radius of all four corners of the button using the {@code app:cornerRadius}
+ * attribute.
  */
 public class MaterialButton extends AppCompatButton implements Checkable, Shapeable {
 

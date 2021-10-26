@@ -72,7 +72,7 @@ public interface DateSelector<S> extends Parcelable {
   /**
    * Returns a list of longs whose time value represents days that should be marked selected.
    *
-   * <p>Uses {@link R.styleable#MaterialCalendar_daySelectedStyle} for styling.
+   * <p>Uses {@code R.styleable.MaterialCalendar_daySelectedStyle} for styling.
    */
   @NonNull
   Collection<Long> getSelectedDays();
@@ -80,7 +80,7 @@ public interface DateSelector<S> extends Parcelable {
   /**
    * Returns a list of ranges whose time values represent ranges that should be filled.
    *
-   * <p>Uses {@link R.styleable#MaterialCalendar_rangeFillColor} for styling.
+   * <p>Uses {@code R.styleable.MaterialCalendar_rangeFillColor} for styling.
    */
   @NonNull
   Collection<Pair<Long, Long>> getSelectedRanges();

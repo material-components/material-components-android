@@ -20,4 +20,6 @@
   <public name="ShapeAppearance.MaterialComponents.Tooltip" type="style"/>
   <public name="TextAppearance.MaterialComponents.Tooltip" type="style"/>
   <public name="Widget.MaterialComponents.Tooltip" type="style"/>
+  <public name="ShapeAppearance.Material3.Tooltip" type="style"/>
+  <public name="Widget.Material3.Tooltip" type="style"/>
 </resources>

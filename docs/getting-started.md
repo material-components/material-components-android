@@ -10,9 +10,9 @@ path: /docs/getting-started/
 ## 1. Migration guidance
 
 Take a look at our
-[guide](https://medium.com/androiddevelopers/migrating-to-material-components-for-android-ec6757795351)
-to help you migrate your codebase from the Design Support Library to Material
-Components for Android.
+[guide](https://material.io/blog/migrate-android-material-components) to help
+you migrate your codebase from the Design Support Library to Material Components
+for Android.
 
 ## 2. Maven library dependency
 
@@ -122,7 +122,7 @@ theme-level attributes.
 *   `Theme.Material3.DayNight`
 *   `Theme.Material3.DayNight.NoActionBar`
 
-Update your app theme to inherit from one of these themes.:
+Update your app theme to inherit from one of these themes:
 
 ```xml
 <style name="Theme.MyApp" parent="Theme.Material3.DayNight.NoActionBar">

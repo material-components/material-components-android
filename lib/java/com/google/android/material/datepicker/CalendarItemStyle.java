@@ -36,7 +36,7 @@ import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 
 /**
- * Loads and applies {@link R.styleable#MaterialCalendarDay} attributes to {@link TextView}
+ * Loads and applies {@code R.styleable.MaterialCalendarDay} attributes to {@link TextView}
  * instances.
  */
 final class CalendarItemStyle {
@@ -131,7 +131,7 @@ final class CalendarItemStyle {
         backgroundColor, textColor, strokeColor, strokeWidth, itemShape, insets);
   }
 
-  /** Applies the {@link R.styleable#MaterialCalendarDay} style to the provided {@code item} */
+  /** Applies the {@code R.styleable.MaterialCalendarDay} style to the provided {@code item} */
   void styleItem(@NonNull TextView item) {
     MaterialShapeDrawable backgroundDrawable = new MaterialShapeDrawable();
     MaterialShapeDrawable shapeMask = new MaterialShapeDrawable();

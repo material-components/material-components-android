@@ -131,7 +131,6 @@ public class AdaptiveFeedDemoActivity extends DemoActivity {
       }
 
       if (configuration.screenWidthDp < AdaptiveUtils.MEDIUM_SCREEN_WIDTH_SIZE) {
-        feedFragment.updateFoldPosition(0);
         feedFragment.setClosedLayout();
       } else {
         List<DisplayFeature> displayFeatures = windowLayoutInfo.getDisplayFeatures();
@@ -142,15 +141,15 @@ public class AdaptiveFeedDemoActivity extends DemoActivity {
             FoldingFeature foldingFeature = (FoldingFeature) displayFeature;
             if (foldingFeature.getState().equals(FoldingFeature.State.HALF_OPENED)
                 || foldingFeature.getState().equals(FoldingFeature.State.FLAT)) {
-              feedFragment.setOpenLayout();
               Orientation orientation = foldingFeature.getOrientation();
               if (orientation.equals(FoldingFeature.Orientation.VERTICAL)) {
+                int foldPosition = foldingFeature.getBounds().left;
+                int foldWidth = foldingFeature.getBounds().right - foldPosition;
                 // Device is open and fold is vertical.
-                feedFragment.updateFoldPosition(
-                    AdaptiveUtils.getFoldPosition(container, foldingFeature, orientation));
+                feedFragment.setOpenLayout(foldPosition, foldWidth);
               } else {
                 // Device is open and fold is horizontal.
-                feedFragment.updateFoldPosition(container.getWidth() / 2);
+                feedFragment.setOpenLayout(container.getWidth() / 2, 0);
               }
               isClosed = false;
             }
@@ -159,12 +158,10 @@ public class AdaptiveFeedDemoActivity extends DemoActivity {
         if (isClosed) {
           if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
             // Device is closed or not foldable and in portrait.
-            feedFragment.updateFoldPosition(0);
             feedFragment.setClosedLayout();
           } else {
             // Device is closed or not foldable and in landscape.
-            feedFragment.setOpenLayout();
-            feedFragment.updateFoldPosition(container.getWidth() / 2);
+            feedFragment.setOpenLayout(container.getWidth() / 2, 0);
           }
         }
       }

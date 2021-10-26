@@ -109,6 +109,14 @@
   <public name="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu" type="style"/>
   <public name="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu" type="style"/>
 
+  <public name="Widget.Material3.AutoCompleteTextView.FilledBox" type="style"/>
+  <public name="Widget.Material3.AutoCompleteTextView.FilledBox.Dense" type="style"/>
+  <public name="Widget.Material3.AutoCompleteTextView.OutlinedBox" type="style"/>
+  <public name="Widget.Material3.AutoCompleteTextView.OutlinedBox.Dense" type="style"/>
+  <public name="Widget.Material3.TextInputEditText.FilledBox" type="style"/>
+  <public name="Widget.Material3.TextInputEditText.FilledBox.Dense" type="style"/>
+  <public name="Widget.Material3.TextInputEditText.OutlinedBox" type="style"/>
+  <public name="Widget.Material3.TextInputEditText.OutlinedBox.Dense" type="style"/>
   <public name="Widget.Material3.TextInputLayout.FilledBox" type="style"/>
   <public name="Widget.Material3.TextInputLayout.FilledBox.Dense" type="style"/>
   <public name="Widget.Material3.TextInputLayout.OutlinedBox" type="style"/>
@@ -117,4 +125,15 @@
   <public name="Widget.Material3.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu" type="style"/>
   <public name="Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu" type="style"/>
   <public name="Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu" type="style"/>
+
+  <public name="ThemeOverlay.Material3.AutoCompleteTextView" type="style"/>
+  <public name="ThemeOverlay.Material3.AutoCompleteTextView.FilledBox" type="style"/>
+  <public name="ThemeOverlay.Material3.AutoCompleteTextView.FilledBox.Dense" type="style"/>
+  <public name="ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox" type="style"/>
+  <public name="ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox.Dense" type="style"/>
+  <public name="ThemeOverlay.Material3.TextInputEditText" type="style"/>
+  <public name="ThemeOverlay.Material3.TextInputEditText.FilledBox" type="style"/>
+  <public name="ThemeOverlay.Material3.TextInputEditText.FilledBox.Dense" type="style"/>
+  <public name="ThemeOverlay.Material3.TextInputEditText.OutlinedBox" type="style"/>
+  <public name="ThemeOverlay.Material3.TextInputEditText.OutlinedBox.Dense" type="style"/>
 </resources>

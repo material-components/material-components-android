@@ -31,8 +31,8 @@ import com.google.android.material.progressindicator.LinearProgressIndicator.Ind
 
 /**
  * This class contains the parameters for drawing a linear type progress indicator. The parameters
- * reflect the attributes defined in {@link R.styleable#BaseProgressIndicator} and {@link
- * R.styleable#LinearProgressIndicator}.
+ * reflect the attributes defined in {@code R.styleable.BaseProgressIndicator} and {@code
+ * R.styleable.LinearProgressIndicator}.
  */
 public final class LinearProgressIndicatorSpec extends BaseProgressIndicatorSpec {
 
@@ -47,10 +47,10 @@ public final class LinearProgressIndicatorSpec extends BaseProgressIndicatorSpec
   /**
    * Instantiates the spec for {@link LinearProgressIndicator}.
    *
-   * <p>If attributes in {@link R.styleable#LinearProgressIndicator} are missing, the values in the
-   * default style {@link R.style#Widget_MaterialComponents_LinearProgressIndicator} will be loaded.
-   * If attributes in {@link R.styleable#BaseProgressIndicator} are missing, the values in the
-   * default style {@link R.style#Widget_MaterialComponents_ProgressIndicator} will be loaded.
+   * <p>If attributes in {@code R.styleable.LinearProgressIndicator} are missing, the values in the
+   * default style {@code Widget.MaterialComponents.LinearProgressIndicator} will be loaded. If
+   * attributes in {@code R.styleable.BaseProgressIndicator} are missing, the values in the default
+   * style {@code Widget.MaterialComponents.ProgressIndicator} will be loaded.
    *
    * @param context Current themed context.
    * @param attrs Component's attributes set.

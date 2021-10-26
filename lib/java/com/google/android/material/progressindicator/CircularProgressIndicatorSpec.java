@@ -34,8 +34,8 @@ import com.google.android.material.progressindicator.CircularProgressIndicator.I
 
 /**
  * This class contains the parameters for drawing a circular type progress indicator. The parameters
- * reflect the attributes defined in {@link R.styleable#BaseProgressIndicator} and {@link
- * R.styleable#CircularProgressIndicator}.
+ * reflect the attributes defined in {@code R.styleable.BaseProgressIndicator} and {@code
+ * R.styleable.CircularProgressIndicator}.
  */
 public final class CircularProgressIndicatorSpec extends BaseProgressIndicatorSpec {
 
@@ -51,10 +51,10 @@ public final class CircularProgressIndicatorSpec extends BaseProgressIndicatorSp
   /**
    * Instantiates the spec for {@link CircularProgressIndicator}.
    *
-   * <p>If attributes in {@link R.styleable#CircularProgressIndicator} are missing, the values in
-   * the default style {@link R.style#Widget_MaterialComponents_CircularProgressIndicator} will be
-   * loaded. If attributes in {@link R.styleable#BaseProgressIndicator} are missing, the values in
-   * the default style {@link R.style#Widget_MaterialComponents_ProgressIndicator} will be loaded.
+   * <p>If attributes in {@code R.styleable.CircularProgressIndicator} are missing, the values in
+   * the default style {@code Widget.MaterialComponents.CircularProgressIndicator} will be loaded.
+   * If attributes in {@code R.styleable.BaseProgressIndicator} are missing, the values in the
+   * default style {@code Widget.MaterialComponents.ProgressIndicator} will be loaded.
    *
    * @param context Current themed context.
    * @param attrs Component's attributes set.

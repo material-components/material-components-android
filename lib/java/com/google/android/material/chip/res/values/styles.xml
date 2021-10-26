@@ -240,6 +240,7 @@
       @animator/m3_chip_state_list_anim
     </item>
     <item name="chipStrokeColor">@android:color/transparent</item>
+    <item name="chipBackgroundColor">@color/m3_elevated_chip_background_color</item>
   </style>
 
   <!-- Style for Assist Chips: each Assist Chip represents a set of automated
@@ -285,6 +286,7 @@
       @animator/m3_chip_state_list_anim
     </item>
     <item name="chipStrokeColor">@android:color/transparent</item>
+    <item name="chipBackgroundColor">@color/m3_elevated_chip_background_color</item>
   </style>
 
   <style name="Widget.Material3.Chip.Filter" parent="Base.Widget.Material3.Chip">
@@ -319,6 +321,7 @@
       @animator/m3_chip_state_list_anim
     </item>
     <item name="chipStrokeColor">@android:color/transparent</item>
+    <item name="chipBackgroundColor">@color/m3_elevated_chip_background_color</item>
   </style>
 
   <!-- M3 ChipGroup styles -->

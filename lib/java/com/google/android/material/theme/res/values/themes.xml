@@ -40,6 +40,10 @@
     <item name="windowNoTitle">true</item>
   </style>
 
+  <style name="Theme.Material3.DynamicColors.Light" parent="Theme.Material3.Light"/>
+
+  <style name="Theme.Material3.DynamicColors.Dark" parent="Theme.Material3.Dark"/>
+
   <!--
     Themes in the "Theme.MaterialComponents" family will contain a default full color scheme.
 

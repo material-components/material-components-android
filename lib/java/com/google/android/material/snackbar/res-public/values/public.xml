@@ -25,8 +25,8 @@
   <public name="Widget.MaterialComponents.Snackbar.TextView" type="style"/>
   <public name="animationMode" type="attr"/>
   <public name="maxActionInlineWidth" type="attr"/>
-
   <public name="Widget.Material3.Snackbar" type="style"/>
   <public name="Widget.Material3.Snackbar.FullWidth" type="style"/>
   <public name="Widget.Material3.Snackbar.TextView" type="style"/>
+  <public name="ThemeOverlay.Material3.Snackbar" type="style"/>
 </resources>
