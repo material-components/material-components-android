@@ -9,10 +9,14 @@ path: /docs/getting-started/
 
 ## 1. Migration guidance
 
-Take a look at our
+Take a look at our [guide](https://material.io/blog/migrating-material-3) to
+help you migrate your codebase using Material Components for Android to the new
+Material 3 system.
+
+Additionally, if you are still using the legacy Design Support Library, take a
+look at our
 [guide](https://material.io/blog/migrate-android-material-components) to help
-you migrate your codebase from the Design Support Library to Material Components
-for Android.
+you migrate your codebase to Material Components for Android.
 
 ## 2. Maven library dependency
 
@@ -103,6 +107,13 @@ This will enable the AppCompat or Material versions of components to be inflated
 We recommend you perform an app-wide migration by changing your app theme to
 inherit from a `Material3` theme. Be sure to test thoroughly afterwards, since
 this may change the appearance and behavior of existing layout components.
+
+Check out the new Material Theme Builder which can be used to generate your
+`Material3` app theme, with all of the Material Color System roles filled out
+based on your brand colors.
+
+-   [Web](https://material.io/material-theme-builder)
+-   [Figma](https://goo.gle/material-theme-builder-figma)
 
 **Note:** If you **can't** change your theme, you can continue to inherit from
 an `AppCompat` or `MaterialComponents` theme and add some new theme attributes
