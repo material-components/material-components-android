@@ -18,8 +18,7 @@ backgrounds, text, and more.
 
 ## Design & API Documentation
 
--   [Material Design guidelines:
-    Color](https://material.io/go/design-color-theming/)
+-   [Material Design guidelines: Color](https://material.io/go/design-color-theming/)
 
 ## Using The Color Theming System
 
@@ -86,10 +85,10 @@ enable this by default with setting `?attr/elevationOverlayColor` to
 
 Elevation overlays use the following theme attributes:
 
-Attribute Name              |Description                                                                          |Default Value
-----------------------------|-------------------------------------------------------------------------------------|-------------
-`elevationOverlayEnabled`   |Whether the elevation overlay functionality is enabled.                              |`true`
-`elevationOverlayColor`     |The color used for the elevation overlays, applied at an alpha based on elevation.   |`colorPrimary`
+Attribute Name            | Description                                                                        | Default Value
+------------------------- | ---------------------------------------------------------------------------------- | -------------
+`elevationOverlayEnabled` | Whether the elevation overlay functionality is enabled.                            | `true`
+`elevationOverlayColor`   | The color used for the elevation overlays, applied at an alpha based on elevation. | `colorPrimary`
 
 If inheriting from the `Theme.Material3` theme or a descendant, you most likely
 do not have to set these attributes yourself because Material themes use the
@@ -254,15 +253,15 @@ available. If you need different brand colors in your app, you may want to
 define custom colors for your theme. Keep in mind that the default Material 3
 styles generally use colors in the following combinations:
 
-| Container Color           | Content Color
-| ------------------------- | -------------------------------------------
-| Surface / Surface Variant | On Surface / On Surface Variant / Primary / Secondary / Error
-| Primary                   | On Primary
-| Primary Container         | On Primary Container
-| Secondary                 | On Secondary
-| Secondary Container       | On Secondary Container
-| Tertiary                  | On Tertiary
-| Tertiary Container        | On Tertiary Container
+Container Color           | Content Color
+------------------------- | -------------
+Surface / Surface Variant | On Surface / On Surface Variant / Primary / Secondary / Error
+Primary                   | On Primary
+Primary Container         | On Primary Container
+Secondary                 | On Secondary
+Secondary Container       | On Secondary Container
+Tertiary                  | On Tertiary
+Tertiary Container        | On Tertiary Container
 
 So if you change one of those colors, you may want to change their related
 colors to maintain the visual consistency and the contrast requirement of
@@ -385,12 +384,12 @@ will be shifted for each color role based on the theme `LightTheme` or
 
 #### `ColorRoles` properties
 
-| Name                    | Method                 | Description
-| ----------------------- | ---------------------- | -------------------------
-| **Accent**              | `getAccent`            | The accent color, used as the main color from the color role.
-| **On Accent**           | `getOnAccent`          | Used for content such as icons and text on top of the Accent color.
-| **Accent Container**    | `getAccentContainer`   | Used with less emphasis than the accent color.
-| **On Accent Container** | `getOnAccentContainer` | Used for content such as icons and text on top of the accent_container color.
+Name                    | Method                 | Description
+----------------------- | ---------------------- | -----------
+**Accent**              | `getAccent`            | The accent color, used as the main color from the color role.
+**On Accent**           | `getOnAccent`          | Used for content such as icons and text on top of the Accent color.
+**Accent Container**    | `getAccentContainer`   | Used with less emphasis than the accent color.
+**On Accent Container** | `getOnAccentContainer` | Used for content such as icons and text on top of the accent_container color.
 
 The library provides the following two helper methods in the `MaterialColors`
 class which return the above-mentioned `ColorRoles` object:
