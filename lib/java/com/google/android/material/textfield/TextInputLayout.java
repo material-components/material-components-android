@@ -2266,8 +2266,22 @@ public class TextInputLayout extends LinearLayout {
    * @see #getPlaceholderText()
    */
   public void setPlaceholderText(@Nullable final CharSequence placeholderText) {
-    // If placeholder text is null, disable placeholder if it's enabled.
-    if (placeholderEnabled && TextUtils.isEmpty(placeholderText)) {
+    if (placeholderTextView == null) {
+      placeholderTextView = new AppCompatTextView(getContext());
+      placeholderTextView.setId(R.id.textinput_placeholder);
+      ViewCompat.setImportantForAccessibility(
+          placeholderTextView, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO);
+
+      placeholderFadeIn = createPlaceholderFadeTransition();
+      placeholderFadeIn.setStartDelay(PLACEHOLDER_START_DELAY);
+      placeholderFadeOut = createPlaceholderFadeTransition();
+
+      setPlaceholderTextAppearance(placeholderTextAppearance);
+      setPlaceholderTextColor(placeholderTextColor);
+    }
+
+    // If placeholder text is null, disable placeholder.
+    if (TextUtils.isEmpty(placeholderText)) {
       setPlaceholderTextEnabled(false);
     } else {
       if (!placeholderEnabled) {
@@ -2298,18 +2312,6 @@ public class TextInputLayout extends LinearLayout {
 
     // Otherwise, adjust enabled state.
     if (placeholderEnabled) {
-      placeholderTextView = new AppCompatTextView(getContext());
-      placeholderTextView.setId(R.id.textinput_placeholder);
-      ViewCompat.setImportantForAccessibility(
-          placeholderTextView, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO);
-
-      placeholderFadeIn = createPlaceholderFadeTransition();
-      placeholderFadeIn.setStartDelay(PLACEHOLDER_START_DELAY);
-
-      placeholderFadeOut = createPlaceholderFadeTransition();
-
-      setPlaceholderTextAppearance(placeholderTextAppearance);
-      setPlaceholderTextColor(placeholderTextColor);
       addPlaceholderTextView();
     } else {
       removePlaceholderTextView();
