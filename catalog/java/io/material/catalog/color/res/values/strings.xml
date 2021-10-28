@@ -28,4 +28,11 @@
   <string name="cat_unelevated_button_text" translatable="false">Unelevated button</string>
   <string name="cat_color_hex_value_text" translatable="false">Color hex value: %1$s</string>
 
+  <string name="cat_color_harmonization" translatable="false">Color Harmonization Demo</string>
+  <string name="cat_color_dynamic_palette" translatable="false">Dynamic Palette Demo</string>
+
+  <string name="cat_color_copy" translatable="false">Copy colors</string>
+
+  <string name="cat_color_res" translatable="false">%1$s%2$s</string>
+
 </resources>

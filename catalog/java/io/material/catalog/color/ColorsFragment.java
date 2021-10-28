@@ -20,6 +20,7 @@ import io.material.catalog.R;
 
 import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
+import com.google.android.material.color.DynamicColors;
 import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
 import dagger.multibindings.IntoSet;
@@ -28,6 +29,8 @@ import io.material.catalog.application.scope.FragmentScope;
 import io.material.catalog.feature.Demo;
 import io.material.catalog.feature.DemoLandingFragment;
 import io.material.catalog.feature.FeatureDemo;
+import java.util.ArrayList;
+import java.util.List;
 
 /** A landing fragment that links to color demos for the Catalog app. */
 public class ColorsFragment extends DemoLandingFragment {
@@ -48,9 +51,32 @@ public class ColorsFragment extends DemoLandingFragment {
     return new Demo() {
       @Override
       public Fragment createFragment() {
-        return new ColorHarmonizationDemoFragment();
+        return new ColorMainDemoFragment();
       }
     };
+  }
+
+  @NonNull
+  @Override
+  public List<Demo> getAdditionalDemos() {
+    List<Demo> additionalDemos = new ArrayList<>();
+    if (DynamicColors.isDynamicColorAvailable()) {
+      additionalDemos.add(
+          new Demo(R.string.cat_color_dynamic_palette) {
+            @Override
+            public Fragment createFragment() {
+              return new ColorDynamicDemoFragment();
+            }
+          });
+    }
+    additionalDemos.add(
+        new Demo(R.string.cat_color_harmonization) {
+          @Override
+          public Fragment createFragment() {
+            return new ColorHarmonizationDemoFragment();
+          }
+        });
+    return additionalDemos;
   }
 
   /** The Dagger module for {@link ColorsFragment} dependencies. */
