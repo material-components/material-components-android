@@ -146,7 +146,7 @@ final class IndicatorViewController {
       captionToShow = CAPTION_STATE_NONE;
     }
     updateCaptionViewsVisibility(
-        captionDisplayed, captionToShow, shouldAnimateCaptionView(helperTextView, null));
+        captionDisplayed, captionToShow, shouldAnimateCaptionView(helperTextView, ""));
   }
 
   void showError(final CharSequence errorText) {
@@ -176,7 +176,7 @@ final class IndicatorViewController {
       }
     }
     updateCaptionViewsVisibility(
-        captionDisplayed, captionToShow, shouldAnimateCaptionView(errorView, null));
+        captionDisplayed, captionToShow, shouldAnimateCaptionView(errorView, ""));
   }
 
   /**
@@ -184,11 +184,11 @@ final class IndicatorViewController {
    * out, and have a different caption message.
    *
    * @param captionView The view that contains text for the caption underneath the text input area
-   * @param captionText The text for the caption view
+   * @param captionText The text for the caption view, empty if none
    * @return Whether the view should animate when setting the caption
    */
   private boolean shouldAnimateCaptionView(
-      @Nullable TextView captionView, @Nullable final CharSequence captionText) {
+      @Nullable TextView captionView, @NonNull final CharSequence captionText) {
     return ViewCompat.isLaidOut(textInputView)
         && textInputView.isEnabled()
         && (captionToShow != captionDisplayed
