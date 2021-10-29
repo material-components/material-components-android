@@ -71,7 +71,8 @@ public class MaterialAttributes {
               errorMessageComponent,
               context.getResources().getResourceName(attributeResId)));
     }
-    return typedValue.data;
+	if (tv.type == TypedValue.TYPE_STRING) return ContextCompat.getColor(context, typedValue.resourceId);
+    else return typedValue.data;
   }
 
   /**
