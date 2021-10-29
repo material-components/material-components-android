@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2021 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+     https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/coordinator"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+  <com.google.android.material.appbar.AppBarLayout
+      android:id="@+id/appbarlayout"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:fitsSystemWindows="true">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        style="?attr/catalogToolbarWithCloseButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_scrollFlags="scroll|enterAlways|snap"
+        app:layout_scrollEffect="compress"
+        app:title="@string/cat_topappbar_compress_toolbar_title" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_scrollFlags="scroll|enterAlways"
+        android:background="@android:color/transparent"
+        android:visibility="gone"
+        app:tabMode="scrollable">
+
+      <com.google.android.material.tabs.TabItem
+          android:layout_height="wrap_content"
+          android:layout_width="wrap_content"
+          android:text="@string/cat_topappbar_tabs_label_all"/>
+      <com.google.android.material.tabs.TabItem
+          android:layout_height="wrap_content"
+          android:layout_width="wrap_content"
+          android:text="@string/cat_topappbar_tabs_label_shopping"/>
+      <com.google.android.material.tabs.TabItem
+          android:layout_height="wrap_content"
+          android:layout_width="wrap_content"
+          android:text="@string/cat_topappbar_tabs_label_news"/>
+      <com.google.android.material.tabs.TabItem
+          android:layout_height="wrap_content"
+          android:layout_width="wrap_content"
+          android:text="@string/cat_topappbar_tabs_label_maps"/>
+      <com.google.android.material.tabs.TabItem
+          android:layout_height="wrap_content"
+          android:layout_width="wrap_content"
+          android:text="@string/cat_topappbar_tabs_label_images"/>
+      <com.google.android.material.tabs.TabItem
+          android:layout_height="wrap_content"
+          android:layout_width="wrap_content"
+          android:text="@string/cat_topappbar_tabs_label_updates"/>
+      <com.google.android.material.tabs.TabItem
+          android:layout_height="wrap_content"
+          android:layout_width="wrap_content"
+          android:text="@string/cat_topappbar_tabs_label_settings"/>
+      <com.google.android.material.tabs.TabItem
+          android:layout_height="wrap_content"
+          android:layout_width="wrap_content"
+          android:text="@string/cat_topappbar_tabs_label_plugins"/>
+      <com.google.android.material.tabs.TabItem
+          android:layout_height="wrap_content"
+          android:layout_width="wrap_content"
+          android:text="@string/cat_topappbar_tabs_label_more"/>
+
+    </com.google.android.material.tabs.TabLayout>
+
+  </com.google.android.material.appbar.AppBarLayout>
+
+  <androidx.core.widget.NestedScrollView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:orientation="vertical">
+
+      <ToggleButton
+          android:id="@+id/show_hide_tabs_button"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_horizontal"
+          android:layout_marginBottom="8dp"
+          android:checked="false"
+          android:textOn="@string/cat_topappbar_compress_hide_tabs_toggle_label"
+          android:textOff="@string/cat_topappbar_compress_show_tabs_toggle_label" />
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/cat_topappbar_lorem_ipsum"/>
+
+    </LinearLayout>
+
+  </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

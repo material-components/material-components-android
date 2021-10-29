@@ -23,7 +23,7 @@
   <string name="mtrl_picker_range_header_selected" description="Two dates separated by a dash representing a range [CHAR_LIMIT=60]">%1$s – %2$s</string>
   <string name="mtrl_picker_date_header_unselected" description="Placeholder for a single date [CHAR_LIMIT=60]">Selected date</string>
   <string name="mtrl_picker_date_header_selected" description="A single date [CHAR_LIMIT=60]">%1$s</string>
-  <string name="mtrl_picker_confirm" description="Button text to indicate that the widget will save the user's selection [CHAR_LIMIT=16]">@android:string/ok</string>
+  <string name="mtrl_picker_confirm" description="Button text to indicate that the widget will save the user's selection [CHAR_LIMIT=16]">OK</string>
   <string name="mtrl_picker_cancel" description="Button text to indicate that the widget will ignore the user's selection [CHAR_LIMIT=16]" translatable="false">@android:string/cancel</string>
   <string name="mtrl_picker_text_input_date_hint" description="Label for a single date selected by the user [CHAR_LIMIT=60]">Date</string>
   <string name="mtrl_picker_text_input_date_range_start_hint" description="Label for the start date in a range selected by the user [CHAR_LIMIT=60]">Start date</string>

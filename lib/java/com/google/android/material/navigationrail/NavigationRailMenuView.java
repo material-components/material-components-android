@@ -20,6 +20,7 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static com.google.android.material.navigationrail.NavigationRailView.DEFAULT_MENU_GRAVITY;
+import static com.google.android.material.navigationrail.NavigationRailView.NO_ITEM_MINIMUM_HEIGHT;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
@@ -28,6 +29,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
+import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import com.google.android.material.navigation.NavigationBarItemView;
 import com.google.android.material.navigation.NavigationBarMenuView;
@@ -36,6 +38,7 @@ import com.google.android.material.navigation.NavigationBarMenuView;
 @RestrictTo(LIBRARY_GROUP)
 public class NavigationRailMenuView extends NavigationBarMenuView {
 
+  @Px private int itemMinimumHeight = NO_ITEM_MINIMUM_HEIGHT;
   private final FrameLayout.LayoutParams layoutParams =
       new FrameLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
 
@@ -44,6 +47,7 @@ public class NavigationRailMenuView extends NavigationBarMenuView {
 
     layoutParams.gravity = DEFAULT_MENU_GRAVITY;
     setLayoutParams(layoutParams);
+    setItemActiveIndicatorResizeable(true);
   }
 
   @Override
@@ -88,8 +92,13 @@ public class NavigationRailMenuView extends NavigationBarMenuView {
 
   private int makeSharedHeightSpec(int parentWidthSpec, int maxHeight, int shareCount) {
     int maxAvailable = maxHeight / max(1, shareCount);
-    return MeasureSpec.makeMeasureSpec(
-        min(MeasureSpec.getSize(parentWidthSpec), maxAvailable), MeasureSpec.UNSPECIFIED);
+    // If the navigation rail has a min item height specified, make each item that height.
+    // Otherwise, use the width of the rail as the min item height.
+    int minHeight =
+        itemMinimumHeight != NO_ITEM_MINIMUM_HEIGHT
+            ? itemMinimumHeight
+            : MeasureSpec.getSize(parentWidthSpec);
+    return MeasureSpec.makeMeasureSpec(min(minHeight, maxAvailable), MeasureSpec.UNSPECIFIED);
   }
 
   private int measureShiftingChildHeights(int widthMeasureSpec, int maxHeight, int shareCount) {
@@ -150,6 +159,18 @@ public class NavigationRailMenuView extends NavigationBarMenuView {
 
   int getMenuGravity() {
     return layoutParams.gravity;
+  }
+
+  public void setItemMinimumHeight(@Px int minHeight) {
+    if (this.itemMinimumHeight != minHeight) {
+      this.itemMinimumHeight = minHeight;
+      requestLayout();
+    }
+  }
+
+  @Px
+  public int getItemMinimumHeight() {
+    return this.itemMinimumHeight;
   }
 
   boolean isTopGravity() {

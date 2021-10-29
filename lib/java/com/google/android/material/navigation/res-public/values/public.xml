@@ -21,6 +21,7 @@
 
   <public name="itemBackground" type="attr"/>
   <public name="itemHorizontalPadding" type="attr"/>
+  <public name="itemVerticalPadding" type="attr"/>
   <public name="itemTextAppearance" type="attr"/>
   <public name="itemIconPadding" type="attr"/>
   <public name="itemIconSize" type="attr"/>
@@ -35,8 +36,23 @@
   <public name="itemTextAppearanceInactive" type="attr"/>
   <public name="itemTextAppearanceActive" type="attr"/>
   <public name="labelVisibilityMode" type="attr"/>
+  <public name="topInsetScrimEnabled" type="attr"/>
+  <public name="bottomInsetScrimEnabled" type="attr"/>
   <public name="menu" type="attr"/>
   <public name="subheaderColor" type="attr"/>
   <public name="subheaderTextAppearance" type="attr"/>
+  <public name="subheaderInsetStart" type="attr"/>
+  <public name="subheaderInsetEnd" type="attr"/>
+  <public name="drawerLayoutCornerSize" type="attr"/>
   <public name="Widget.Design.NavigationView" type="style"/>
+  <public name="Widget.Material3.NavigationView" type="style"/>
+  <public name="ShapeAppearanceOverlay.Material3.NavigationView.Item" type="style"/>
+  <public name="ThemeOverlay.Material3.NavigationView" type="style"/>
+  <public name="Widget.Material3.DrawerLayout" type="style"/>
+
+  <public name="itemPaddingTop" type="attr"/>
+  <public name="itemPaddingBottom" type="attr"/>
+  <public name="itemActiveIndicatorStyle" type="attr"/>
+  <public name="marginHorizontal" type="attr"/>
+  <public name="ShapeAppearance.Material3.NavigationBarView.ActiveIndicator" type="style"/>
 </resources>

@@ -49,6 +49,7 @@ final class LinearIndeterminateDisjointAnimatorDelegate
 
   // The animator controls disjoint linear indeterminate animation.
   private ObjectAnimator animator;
+  private ObjectAnimator completeEndAnimator;
   private final Interpolator[] interpolatorArray;
 
   // The base spec.
@@ -58,7 +59,6 @@ final class LinearIndeterminateDisjointAnimatorDelegate
   private int indicatorColorIndex = 0;
   private boolean dirtyColors;
   private float animationFraction;
-  private boolean animatorCompleteEndRequested;
   AnimationCallback animatorCompleteCallback = null;
 
   public LinearIndeterminateDisjointAnimatorDelegate(
@@ -105,14 +105,20 @@ final class LinearIndeterminateDisjointAnimatorDelegate
               indicatorColorIndex = (indicatorColorIndex + 1) % baseSpec.indicatorColors.length;
               dirtyColors = true;
             }
-
+          });
+    }
+    if (completeEndAnimator == null) {
+      completeEndAnimator = ObjectAnimator.ofFloat(this, ANIMATION_FRACTION, 1);
+      completeEndAnimator.setDuration(TOTAL_DURATION_IN_MS);
+      completeEndAnimator.setInterpolator(null);
+      completeEndAnimator.addListener(
+          new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
               super.onAnimationEnd(animation);
-              if (animatorCompleteEndRequested) {
-                animator.setRepeatCount(ValueAnimator.INFINITE);
+              cancelAnimatorImmediately();
+              if (animatorCompleteCallback != null) {
                 animatorCompleteCallback.onAnimationEnd(drawable);
-                animatorCompleteEndRequested = false;
               }
             }
           });
@@ -128,13 +134,16 @@ final class LinearIndeterminateDisjointAnimatorDelegate
 
   @Override
   public void requestCancelAnimatorAfterCurrentCycle() {
+    // Do nothing if main animator complete end has been requested.
+    if (completeEndAnimator == null || completeEndAnimator.isRunning()) {
+      return;
+    }
+
+    cancelAnimatorImmediately();
     if (drawable.isVisible()) {
-      animatorCompleteEndRequested = true;
-      if (animator != null) {
-        animator.setRepeatCount(0);
-      }
-    } else {
-      cancelAnimatorImmediately();
+      completeEndAnimator.setFloatValues(animationFraction, 1);
+      completeEndAnimator.setDuration((long) (TOTAL_DURATION_IN_MS * (1 - animationFraction)));
+      completeEndAnimator.start();
     }
   }
 

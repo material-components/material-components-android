@@ -22,12 +22,14 @@ import android.app.Application;
 import android.app.Application.ActivityLifecycleCallbacks;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
+import androidx.annotation.ChecksSdkIntAtLeast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
-import androidx.core.os.BuildCompat;
 
 /**
  * Utility for applying dynamic colors to application/activities.
@@ -49,12 +51,11 @@ public class DynamicColors {
 
   /**
    * Applies dynamic colors to all activities with the theme overlay designated by the theme
-   * attribute {@link R.attr.dynamicColorThemeOverlay} by registering a
-   * {@link ActivityLifecycleCallbacks} to your application.
+   * attribute {@code dynamicColorThemeOverlay} by registering a {@link ActivityLifecycleCallbacks}
+   * to your application.
    *
    * @see #applyToActivitiesIfAvailable(Application, int, Precondition) for more detailed info and
-   *      examples.
-   *
+   *     examples.
    * @param application The target application.
    */
   public static void applyToActivitiesIfAvailable(@NonNull Application application) {
@@ -78,12 +79,11 @@ public class DynamicColors {
 
   /**
    * Applies dynamic colors to all activities with the theme overlay designated by the theme
-   * attribute {@link R.attr.dynamicColorThemeOverlay} according to the given precondition by
-   * registering a {@link ActivityLifecycleCallbacks} to your application.
+   * attribute {@code dynamicColorThemeOverlay} according to the given precondition by registering a
+   * {@link ActivityLifecycleCallbacks} to your application.
    *
    * @see #applyToActivitiesIfAvailable(Application, int, Precondition) for more detailed info and
-   *      examples.
-   *
+   *     examples.
    * @param application The target application.
    * @param precondition The precondition to decide if dynamic colors should be applied.
    */
@@ -124,7 +124,7 @@ public class DynamicColors {
 
   /**
    * Applies dynamic colors to the given activity with the theme overlay designated by the theme
-   * attribute {@link R.attr.dynamicColorThemeOverlay}.
+   * attribute {@code dynamicColorThemeOverlay}.
    *
    * @param activity The target activity.
    */
@@ -144,7 +144,7 @@ public class DynamicColors {
 
   /**
    * Applies dynamic colors to the given activity with the theme overlay designated by the theme
-   * attribute {@link R.attr.dynamicColorThemeOverlay} according to the given precondition.
+   * attribute {@code dynamicColorThemeOverlay} according to the given precondition.
    *
    * @param activity The target activity.
    * @param precondition The precondition to decide if dynamic colors should be applied.
@@ -168,11 +168,11 @@ public class DynamicColors {
   }
 
   /**
-   * Wraps the given context with the theme overlay designated by the theme attribute
-   * {@link R.attr.dynamicColorThemeOverlay}. The returned context can be used to create
-   * views with dynamic color support.
+   * Wraps the given context with the theme overlay designated by the theme attribute {@code
+   * dynamicColorThemeOverlay}. The returned context can be used to create views with dynamic color
+   * support.
    *
-   * If dynamic color support or the dynamic color theme overlay is not available, the original
+   * <p>If dynamic color support or the dynamic color theme overlay is not available, the original
    * context will be returned.
    *
    * @param originalContext The original context.
@@ -206,8 +206,9 @@ public class DynamicColors {
   /**
    * Returns {@code true} if dynamic colors are available on the current SDK level.
    */
+  @ChecksSdkIntAtLeast(api = VERSION_CODES.S)
   public static boolean isDynamicColorAvailable() {
-    return BuildCompat.isAtLeastS();
+    return VERSION.SDK_INT >= VERSION_CODES.S;
   }
 
   private static int getDefaultThemeOverlay(@NonNull Context context) {

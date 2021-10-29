@@ -218,6 +218,7 @@
 
   <style name="Widget.Material3.MaterialCalendar.HeaderTitle" parent="Widget.MaterialComponents.MaterialCalendar.HeaderTitle">
     <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    <item name="android:textAppearance">?attr/textAppearanceLabelMedium</item>
   </style>
 
   <style name="Widget.Material3.MaterialCalendar.HeaderSelection" parent="Widget.MaterialComponents.MaterialCalendar.HeaderSelection">
@@ -320,7 +321,10 @@
   </style>
 
   <style name="Widget.Material3.MaterialCalendar.YearNavigationButton" parent="Base.Widget.Material3.MaterialCalendar.NavigationButton"/>
-  <style name="Widget.Material3.MaterialCalendar.MonthNavigationButton" parent="Base.Widget.Material3.MaterialCalendar.NavigationButton"/>
+  <style name="Widget.Material3.MaterialCalendar.MonthNavigationButton" parent="Base.Widget.Material3.MaterialCalendar.NavigationButton">
+    <item name="iconPadding">0dp</item>
+    <item name="iconGravity">textStart</item>
+  </style>
 
   <style name="ThemeOverlay.Material3.MaterialCalendar.HeaderCancelButton" parent="ThemeOverlay.Material3.Button.TextButton">
      <item name="colorOnContainer">?attr/colorOnSurfaceVariant</item>

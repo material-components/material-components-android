@@ -17,14 +17,14 @@
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
   <!-- Disabled -->
-  <item android:alpha="@dimen/material_emphasis_disabled" android:color="?attr/colorOnSurface" android:state_enabled="false"/>
+  <item android:alpha="@dimen/material_emphasis_disabled_background" android:color="?attr/colorOnSurface" android:state_enabled="false"/>
 
   <!-- Selected -->
   <item android:color="@android:color/transparent" android:state_selected="true"/>
   <item android:color="@android:color/transparent" android:state_checked="true"/>
 
   <!-- Focused -->
-  <item android:color="?attr/colorOnSurface" android:state_focused="true"/>
+  <item android:color="?attr/colorOnSurfaceVariant" android:state_focused="true"/>
 
   <!-- Other states -->
   <item android:color="?attr/colorOutline"/>

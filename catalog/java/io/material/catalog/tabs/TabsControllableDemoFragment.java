@@ -134,6 +134,10 @@ public class TabsControllableDemoFragment extends DemoFragment {
     inlineToggle.setOnCheckedChangeListener(
         (buttonView, isChecked) -> setAllTabLayoutInline(isChecked));
 
+    SwitchCompat fullWidthToggle = view.findViewById(R.id.toggle_full_width_switch);
+    fullWidthToggle.setOnCheckedChangeListener(
+        (buttonView, isChecked) -> setAllTabLayoutFullWidthIndicators(isChecked));
+
     Spinner selectedIndicatorSpinner = (Spinner) view.findViewById(R.id.selector_spinner);
     ArrayAdapter<CharSequence> adapter =
         ArrayAdapter.createFromResource(
@@ -271,6 +275,12 @@ public class TabsControllableDemoFragment extends DemoFragment {
   private void setAllTabLayoutInline(boolean inline) {
     for (TabLayout tabLayout : tabLayouts) {
       tabLayout.setInlineLabel(inline);
+    }
+  }
+
+  private void setAllTabLayoutFullWidthIndicators(boolean fullWidth) {
+    for (TabLayout tabLayout : tabLayouts) {
+      tabLayout.setTabIndicatorFullWidth(fullWidth);
     }
   }
 

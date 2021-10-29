@@ -458,6 +458,7 @@ public class TabLayout extends HorizontalScrollView {
   @Mode int mode;
   boolean inlineLabel;
   boolean tabIndicatorFullWidth;
+  int tabIndicatorHeight = -1;
   @TabIndicatorAnimationMode int tabIndicatorAnimationMode;
   boolean unboundedRipple;
 
@@ -530,9 +531,9 @@ public class TabLayout extends HorizontalScrollView {
         a.getDimensionPixelSize(R.styleable.TabLayout_tabIndicatorHeight, -1));
     setSelectedTabIndicatorGravity(
         a.getInt(R.styleable.TabLayout_tabIndicatorGravity, INDICATOR_GRAVITY_BOTTOM));
-    setTabIndicatorFullWidth(a.getBoolean(R.styleable.TabLayout_tabIndicatorFullWidth, true));
     setTabIndicatorAnimationMode(
         a.getInt(R.styleable.TabLayout_tabIndicatorAnimationMode, INDICATOR_ANIMATION_MODE_LINEAR));
+    setTabIndicatorFullWidth(a.getBoolean(R.styleable.TabLayout_tabIndicatorFullWidth, true));
 
     tabPaddingStart =
         tabPaddingTop =
@@ -638,6 +639,7 @@ public class TabLayout extends HorizontalScrollView {
    */
   @Deprecated
   public void setSelectedTabIndicatorHeight(int height) {
+    tabIndicatorHeight = height;
     slidingTabIndicator.setSelectedIndicatorHeight(height);
   }
 
@@ -1106,6 +1108,7 @@ public class TabLayout extends HorizontalScrollView {
    */
   public void setTabIndicatorFullWidth(boolean tabIndicatorFullWidth) {
     this.tabIndicatorFullWidth = tabIndicatorFullWidth;
+    slidingTabIndicator.jumpIndicatorToSelectedPosition();
     ViewCompat.postInvalidateOnAnimation(slidingTabIndicator);
   }
 
@@ -1339,6 +1342,11 @@ public class TabLayout extends HorizontalScrollView {
     if (this.tabSelectedIndicator != tabSelectedIndicator) {
       this.tabSelectedIndicator =
           tabSelectedIndicator != null ? tabSelectedIndicator : new GradientDrawable();
+      int indicatorHeight =
+          tabIndicatorHeight != -1
+              ? tabIndicatorHeight
+              : this.tabSelectedIndicator.getIntrinsicHeight();
+      slidingTabIndicator.setSelectedIndicatorHeight(indicatorHeight);
     }
   }
 
@@ -2255,7 +2263,8 @@ public class TabLayout extends HorizontalScrollView {
       if (parent == null) {
         throw new IllegalArgumentException("Tab not attached to a TabLayout");
       }
-      return parent.getSelectedTabPosition() == position;
+      int selectedPosition = parent.getSelectedTabPosition();
+      return selectedPosition != INVALID_POSITION && selectedPosition == position;
     }
 
     /**

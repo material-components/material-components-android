@@ -28,7 +28,7 @@
     <item name="colorPrimary">@color/cat_music_player_primary</item>
   </style>
 
-  <style name="Widget.Catalog.MusicPlayer.Player.Button" parent="Widget.MaterialComponents.Button.TextButton.Icon">
+  <style name="Widget.Catalog.MusicPlayer.Player.Button" parent="Widget.Material3.Button.TextButton.Icon">
     <item name="android:insetTop">0dp</item>
     <item name="android:insetBottom">0dp</item>
     <item name="android:paddingLeft">16dp</item>

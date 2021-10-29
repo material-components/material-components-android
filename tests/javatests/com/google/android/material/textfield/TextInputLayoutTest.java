@@ -361,11 +361,11 @@ public class TextInputLayoutTest {
     final ViewStructureImpl structure = new ViewStructureImpl();
     layout.dispatchProvideAutofillStructure(structure, 0);
 
-    // 1 x EditText, 3 x TextView (prefix/suffix/placeholder).
-    assertEquals(4, structure.getChildCount());
+    // 1 x EditText, 2 x TextView (prefix/suffix).
+    assertEquals(3, structure.getChildCount());
 
     // Asserts the structure.
-    ViewStructureImpl childStructure = structure.getChildAt(1);
+    ViewStructureImpl childStructure = structure.getChildAt(0);
     assertEquals(EditText.class.getName(), childStructure.getClassName());
     assertEquals("Nested hint", childStructure.getHint().toString());
 
@@ -751,7 +751,7 @@ public class TextInputLayoutTest {
 
     textInputLayout.dispatchProvideAutofillStructure(structure, /* flags= */ 0);
 
-    final ViewStructureImpl editText = structure.getChildAt(1);
+    final ViewStructureImpl editText = structure.getChildAt(0);
     assertEquals(EditText.class.getName(), editText.getClassName());
     assertEquals(structure.getAutofillId(), textInputLayout.getAutofillId());
     assertEquals("Nested hint", editText.getHint().toString());
@@ -767,7 +767,7 @@ public class TextInputLayoutTest {
 
     textInputLayout.dispatchProvideAutofillStructure(structure, /* flags= */ 0);
 
-    final ViewStructureImpl editText = structure.getChildAt(1);
+    final ViewStructureImpl editText = structure.getChildAt(0);
     assertEquals(EditText.class.getName(), editText.getClassName());
     assertEquals(structure.getAutofillId(), textInputLayout.getAutofillId());
     assertEquals("Outer hint", editText.getHint().toString());

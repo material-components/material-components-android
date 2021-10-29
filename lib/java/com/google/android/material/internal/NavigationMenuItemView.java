@@ -281,7 +281,7 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
   }
 
   public void setHorizontalPadding(int padding) {
-    setPadding(padding, 0, padding, 0);
+    setPadding(padding, getPaddingTop(), padding, getPaddingBottom());
   }
 
   public void setIconPadding(int padding) {

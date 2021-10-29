@@ -831,7 +831,7 @@ abstract class BaseSlider<
    *
    * @param listener The callback to run when the slider changes
    */
-  public void addOnChangeListener(@Nullable L listener) {
+  public void addOnChangeListener(@NonNull L listener) {
     changeListeners.add(listener);
   }
 

@@ -17,7 +17,6 @@
 <com.google.android.material.navigationrail.NavigationRailView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/Widget.MaterialComponents.NavigationRailView.Colored"
     android:id="@+id/cat_navigation_rail"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"

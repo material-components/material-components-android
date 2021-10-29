@@ -42,6 +42,12 @@
   <string name="cat_card_clickable_desc">
     Cards can be clickable.
   </string>
+  <string name="cat_card_filled_style_desc">
+    This is a filled style card.
+  </string>
+  <string name="cat_card_elevated_style_desc">
+    This is an elevated style card.
+  </string>
   <string name="cat_card_elevation_desc">
         Cards use outlined styling with no elevation and with 8dp rounded corners.
   </string>

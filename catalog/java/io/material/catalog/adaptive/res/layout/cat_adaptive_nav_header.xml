@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2021 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:orientation="vertical"
+  android:padding="8dp"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:clipToPadding="false"
+  android:clipChildren="false">
+
+  <ImageButton
+    android:id="@+id/nav_button"
+    style="?attr/borderlessButtonStyle"
+    android:layout_width="@dimen/mtrl_min_touch_target_size"
+    android:layout_height="@dimen/mtrl_min_touch_target_size"
+    android:layout_gravity="start"
+    android:layout_marginStart="4dp"
+    android:layout_marginLeft="4dp"
+    android:layout_marginBottom="16dp"
+    android:background="?attr/actionBarItemBackground"
+    android:src="@drawable/ic_drawer_menu_24px"
+    android:contentDescription="@string/cat_adaptive_nav_button"/>
+
+  <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    android:id="@+id/nav_fab"
+    style="?attr/extendedFloatingActionButtonTertiaryStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    app:icon="@drawable/ic_create_24dp"
+    android:text="@string/cat_adaptive_nav_fab_text"/>
+</LinearLayout>

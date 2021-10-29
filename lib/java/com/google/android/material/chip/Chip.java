@@ -82,9 +82,6 @@ import com.google.android.material.ripple.RippleUtils;
 import com.google.android.material.shape.MaterialShapeUtils;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.shape.Shapeable;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.List;
 
 /**
@@ -96,7 +93,7 @@ import java.util.List;
  * accessibility navigation. The main chip and close icon are considered to be separate logical
  * sub-views, and contain their own navigation behavior and state.
  *
- * <p>All attributes from {@link R.styleable#Chip} are supported. Do not use the {@code
+ * <p>All attributes from {@code R.styleable.Chip} are supported. Do not use the {@code
  * android:background} attribute. It will be ignored because Chip manages its own background
  * Drawable. Also do not use the {@code android:drawableStart} and {@code android:drawableEnd}
  * attributes. They will be ignored because Chip manages its own start ({@code app:chipIcon}) and
@@ -106,13 +103,12 @@ import java.util.List;
  *   <li>{@link android.R.attr#checkable android:checkable} - If true, the chip can be toggled. If
  *       false, the chip acts like a button.
  *   <li>{@link android.R.attr#text android:text} - Sets the text of the chip.
- *   <li>{@link R.attr#chipIcon app:chipIcon} and {@link R.attr#chipIconEnabled app:chipIconEnabled}
- *       - Sets the icon of the chip. Usually on the left.
- *   <li>{@link R.attr#checkedIcon app:checkedIcon} and {@link R.attr#checkedIconEnabled
- *       app:checkedIconEnabled} - Sets a custom icon to use when checked. Usually on the left.
- *   <li>{@link R.attr#closeIcon app:closeIcon} and {@link R.attr#closeIconEnabled
- *       app:closeIconEnabled} - Sets a custom icon that the user can click to close. Usually on the
- *       right.
+ *   <li>{@code app:chipIcon} and {@code app:chipIconEnabled} - Sets the icon of the chip. Usually
+ *       on the left.
+ *   <li>{@code app:checkedIcon} and {@code app:checkedIconEnabled} - Sets a custom icon to use when
+ *       checked. Usually on the left.
+ *   <li>{@code app:closeIcon} and {@code app:closeIconEnabled} - Sets a custom icon that the user
+ *       can click to close. Usually on the right.
  * </ul>
  *
  * <p>You can register a listener on the main chip with {@link #setOnClickListener(OnClickListener)}
@@ -812,49 +808,12 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
     return super.onHoverEvent(event);
   }
 
-  // There is a bug which causes the AccessibilityEvent.TYPE_VIEW_HOVER_ENTER and
-  // AccessibilityEvent.TYPE_VIEW_HOVER_EXIT events to only fire the first time a chip gets focused.
-  // Until the accessibility focus bug is fixed in ExploreByTouchHelper, we simulate the correct
-  // behavior here. Once that bug is fixed we can remove this.
-  @SuppressLint("PrivateApi")
-  private boolean handleAccessibilityExit(@NonNull MotionEvent event) {
-    if (event.getAction() == MotionEvent.ACTION_HOVER_EXIT) {
-      try {
-        Field f = ExploreByTouchHelper.class.getDeclaredField("mHoveredVirtualViewId");
-        f.setAccessible(true);
-        int mHoveredVirtualViewId = (int) f.get(touchHelper);
-
-        if (mHoveredVirtualViewId != ExploreByTouchHelper.INVALID_ID) {
-          Method m =
-              ExploreByTouchHelper.class.getDeclaredMethod("updateHoveredVirtualView", int.class);
-          m.setAccessible(true);
-          m.invoke(touchHelper, ExploreByTouchHelper.INVALID_ID);
-          return true;
-        }
-      } catch (NoSuchMethodException e) {
-        // Multi-catch for reflection requires API level 19
-        Log.e(TAG, "Unable to send Accessibility Exit event", e);
-      } catch (IllegalAccessException e) {
-        // Multi-catch for reflection requires API level 19
-        Log.e(TAG, "Unable to send Accessibility Exit event", e);
-      } catch (InvocationTargetException e) {
-        // Multi-catch for reflection requires API level 19
-        Log.e(TAG, "Unable to send Accessibility Exit event", e);
-      } catch (NoSuchFieldException e) {
-        // Multi-catch for reflection requires API level 19
-        Log.e(TAG, "Unable to send Accessibility Exit event", e);
-      }
-    }
-    return false;
-  }
-
   @Override
   protected boolean dispatchHoverEvent(@NonNull MotionEvent event) {
     if (!touchHelperEnabled) {
       return super.dispatchHoverEvent(event);
     }
-    return handleAccessibilityExit(event)
-        || touchHelper.dispatchHoverEvent(event)
+    return touchHelper.dispatchHoverEvent(event)
         || super.dispatchHoverEvent(event);
   }
 

@@ -12,6 +12,7 @@ dependencies {
   api compatibility("coordinatorlayout")
   api compatibility("constraintlayout")
   api compatibility("core")
+  api compatibility("drawerlayout")
   api compatibility("dynamicanimation")
   api compatibility("experimental")
   api compatibility("fragment")

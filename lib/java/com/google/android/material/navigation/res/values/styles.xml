@@ -23,6 +23,9 @@
     <item name="android:background">?android:attr/windowBackground</item>
     <item name="android:fitsSystemWindows">true</item>
     <item name="android:maxWidth">@dimen/design_navigation_max_width</item>
+    <item name="subheaderInsetStart">?attr/listPreferredItemPaddingLeft</item>
+    <item name="subheaderInsetEnd">?attr/listPreferredItemPaddingRight</item>
+    <item name="drawerLayoutCornerSize">0dp</item>
   </style>
 
   <style name="Widget.MaterialComponents.NavigationView" parent="Widget.Design.NavigationView">
@@ -46,6 +49,50 @@
     <item name="itemShapeInsetBottom">@dimen/mtrl_navigation_item_shape_vertical_margin</item>
     <item name="itemTextAppearance">?attr/textAppearanceSubtitle2</item>
     <item name="itemTextColor">@color/mtrl_navigation_item_text_color</item>
+  </style>
+
+  <!-- Style for Material3 NavigationView. -->
+  <style name="Widget.Material3.NavigationView" parent="Widget.MaterialComponents.NavigationView">
+    <item name="subheaderColor">?attr/colorOnSurfaceVariant</item>
+    <item name="subheaderTextAppearance">?attr/textAppearanceTitleSmall</item>
+    <item name="elevation">@dimen/m3_sys_elevation_level0</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.NavigationView</item>
+    <item name="itemShapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Material3.NavigationView.Item</item>
+    <item name="itemShapeInsetStart">@dimen/m3_navigation_item_shape_inset_start</item>
+    <item name="itemShapeInsetTop">@dimen/m3_navigation_item_shape_inset_top</item>
+    <item name="itemShapeInsetEnd">@dimen/m3_navigation_item_shape_inset_end</item>
+    <item name="itemShapeInsetBottom">@dimen/m3_navigation_item_shape_inset_bottom</item>
+    <item name="itemIconPadding">@dimen/m3_navigation_item_icon_padding</item>
+    <item name="itemHorizontalPadding">@dimen/m3_navigation_item_horizontal_padding</item>
+    <item name="itemVerticalPadding">@dimen/m3_navigation_item_vertical_padding</item>
+    <item name="itemTextAppearance">?attr/textAppearanceLabelLarge</item>
+    <item name="itemIconTint">@color/m3_navigation_item_icon_tint</item>
+    <item name="itemShapeFillColor">@color/m3_navigation_item_background_color</item>
+    <item name="itemTextColor">@color/m3_navigation_item_text_color</item>
+    <item name="topInsetScrimEnabled">false</item>
+    <item name="bottomInsetScrimEnabled">false</item>
+    <item name="dividerInsetStart">@dimen/m3_navigation_menu_divider_horizontal_padding</item>
+    <item name="dividerInsetEnd">@dimen/m3_navigation_menu_divider_horizontal_padding</item>
+    <item name="subheaderInsetStart">@dimen/m3_navigation_menu_headline_horizontal_padding</item>
+    <item name="subheaderInsetEnd">@dimen/m3_navigation_menu_headline_horizontal_padding</item>
+    <item name="drawerLayoutCornerSize">@dimen/m3_navigation_drawer_layout_corner_size</item>
+  </style>
+
+  <style name="ShapeAppearanceOverlay.Material3.NavigationView.Item" parent="">
+    <item name="cornerSize">50%</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.NavigationView" parent="">
+    <item name="android:listDivider">?attr/colorOutline</item>
+  </style>
+
+  <style name="ShapeAppearance.Material3.NavigationBarView.ActiveIndicator" parent="ShapeAppearance.Material3.SmallComponent">
+    <item name="cornerSize">50%</item>
+  </style>
+
+  <!-- Style for Material3 DrawerLayout. -->
+  <style name="Widget.Material3.DrawerLayout" parent="android:Widget">
+    <item name="elevation">@dimen/m3_sys_elevation_level1</item>
   </style>
 
 </resources>

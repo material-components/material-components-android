@@ -44,14 +44,14 @@ import java.util.List;
 
 /**
  * A ChipGroup is used to hold multiple {@link Chip}s. By default, the chips are reflowed across
- * multiple lines. Set the {@link R.attr#singleLine app:singleLine} attribute to constrain the chips
- * to a single horizontal line. If you do so, you'll usually want to wrap this ChipGroup in a {@link
+ * multiple lines. Set the {@code app:singleLine} attribute to constrain the chips to a single
+ * horizontal line. If you do so, you'll usually want to wrap this ChipGroup in a {@link
  * android.widget.HorizontalScrollView}.
  *
- * <p>ChipGroup also supports a multiple-exclusion scope for a set of chips. When you set the {@link
- * R.attr#singleSelection app:singleSelection} attribute, checking one chip that belongs to a chip
- * group unchecks any previously checked chip within the same group. The behavior mirrors that of
- * {@link android.widget.RadioGroup}.
+ * <p>ChipGroup also supports a multiple-exclusion scope for a set of chips. When you set the {@code
+ * app:singleSelection} attribute, checking one chip that belongs to a chip group unchecks any
+ * previously checked chip within the same group. The behavior mirrors that of {@link
+ * android.widget.RadioGroup}.
  */
 public class ChipGroup extends FlowLayout {
 

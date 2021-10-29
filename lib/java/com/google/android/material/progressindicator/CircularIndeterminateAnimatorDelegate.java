@@ -127,7 +127,7 @@ final class CircularIndeterminateAnimatorDelegate
   @Override
   void requestCancelAnimatorAfterCurrentCycle() {
     // Do nothing if main animator complete end has been requested.
-    if (completeEndAnimator.isRunning()) {
+    if (completeEndAnimator == null || completeEndAnimator.isRunning()) {
       return;
     }
 

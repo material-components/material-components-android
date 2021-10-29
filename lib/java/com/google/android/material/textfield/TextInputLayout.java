@@ -242,7 +242,6 @@ public class TextInputLayout extends LinearLayout {
   @NonNull private ShapeAppearanceModel shapeAppearanceModel;
 
   private final int boxLabelCutoutPaddingPx;
-  private int boxLabelCutoutHeight;
   @BoxBackgroundMode private int boxBackgroundMode;
   private int boxCollapsedPaddingTopPx;
   private int boxStrokeWidthPx;
@@ -2279,8 +2278,22 @@ public class TextInputLayout extends LinearLayout {
    * @see #getPlaceholderText()
    */
   public void setPlaceholderText(@Nullable final CharSequence placeholderText) {
-    // If placeholder text is null, disable placeholder if it's enabled.
-    if (placeholderEnabled && TextUtils.isEmpty(placeholderText)) {
+    if (placeholderTextView == null) {
+      placeholderTextView = new AppCompatTextView(getContext());
+      placeholderTextView.setId(R.id.textinput_placeholder);
+      ViewCompat.setImportantForAccessibility(
+          placeholderTextView, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO);
+
+      placeholderFadeIn = createPlaceholderFadeTransition();
+      placeholderFadeIn.setStartDelay(PLACEHOLDER_START_DELAY);
+      placeholderFadeOut = createPlaceholderFadeTransition();
+
+      setPlaceholderTextAppearance(placeholderTextAppearance);
+      setPlaceholderTextColor(placeholderTextColor);
+    }
+
+    // If placeholder text is null, disable placeholder.
+    if (TextUtils.isEmpty(placeholderText)) {
       setPlaceholderTextEnabled(false);
     } else {
       if (!placeholderEnabled) {
@@ -2311,19 +2324,6 @@ public class TextInputLayout extends LinearLayout {
 
     // Otherwise, adjust enabled state.
     if (placeholderEnabled) {
-      placeholderTextView = new AppCompatTextView(getContext());
-      placeholderTextView.setId(R.id.textinput_placeholder);
-
-      placeholderFadeIn = createPlaceholderFadeTransition();
-      placeholderFadeIn.setStartDelay(PLACEHOLDER_START_DELAY);
-
-      placeholderFadeOut = createPlaceholderFadeTransition();
-
-      ViewCompat.setAccessibilityLiveRegion(
-          placeholderTextView, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
-
-      setPlaceholderTextAppearance(placeholderTextAppearance);
-      setPlaceholderTextColor(placeholderTextColor);
       addPlaceholderTextView();
     } else {
       removePlaceholderTextView();
@@ -2352,11 +2352,14 @@ public class TextInputLayout extends LinearLayout {
   }
 
   private void showPlaceholderText() {
-    if (placeholderTextView != null && placeholderEnabled) {
+    if (placeholderTextView != null && placeholderEnabled && !TextUtils.isEmpty(placeholderText)) {
       placeholderTextView.setText(placeholderText);
       TransitionManager.beginDelayedTransition(inputFrame, placeholderFadeIn);
       placeholderTextView.setVisibility(VISIBLE);
       placeholderTextView.bringToFront();
+      if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
+        announceForAccessibility(placeholderText);
+      }
     }
   }
 
@@ -4195,18 +4198,17 @@ public class TextInputLayout extends LinearLayout {
     collapsingTextHelper.getCollapsedTextActualBounds(
         cutoutBounds, editText.getWidth(), editText.getGravity());
     applyCutoutPadding(cutoutBounds);
-    boxLabelCutoutHeight = boxStrokeWidthPx;
-    cutoutBounds.top = 0;
-    cutoutBounds.bottom = boxLabelCutoutHeight;
-    // Offset the cutout bounds by the TextInputLayout's left padding to ensure that the cutout is
-    // inset relative to the TextInputLayout's bounds.
-    cutoutBounds.offset(-getPaddingLeft(), 0);
+
+    // Offset the cutout bounds by the TextInputLayout's paddings, half of the cutout height, and
+    // the box stroke width to ensure that the cutout is aligned with the actual collapsed text
+    // drawing area.
+    cutoutBounds.offset(
+        -getPaddingLeft(), -getPaddingTop() - cutoutBounds.height() / 2 + boxStrokeWidthPx);
     ((CutoutDrawable) boxBackground).setCutout(cutoutBounds);
   }
 
-  /** If stroke changed width, cutout bounds need to be recalculated. **/
-  private void updateCutout() {
-    if (cutoutEnabled() && !hintExpanded && boxLabelCutoutHeight != boxStrokeWidthPx) {
+  private void recalculateCutout() {
+    if (cutoutEnabled() && !hintExpanded) {
       closeCutout();
       openCutout();
     }
@@ -4307,6 +4309,7 @@ public class TextInputLayout extends LinearLayout {
       tintEndIconOnError(indicatorViewController.errorShouldBeShown());
     }
 
+    int originalBoxStrokeWidthPx = boxStrokeWidthPx;
     // Update the text box's stroke width based on the current state.
     if (hasFocus && isEnabled()) {
       boxStrokeWidthPx = boxStrokeWidthFocusedPx;
@@ -4314,8 +4317,10 @@ public class TextInputLayout extends LinearLayout {
       boxStrokeWidthPx = boxStrokeWidthDefaultPx;
     }
 
-    if (boxBackgroundMode == BOX_BACKGROUND_OUTLINE) {
-      updateCutout();
+    if (boxStrokeWidthPx != originalBoxStrokeWidthPx
+        && boxBackgroundMode == BOX_BACKGROUND_OUTLINE) {
+      // If stroke width changes, cutout bounds need to be recalculated.
+      recalculateCutout();
     }
 
     // Update the text box's background color based on the current state.

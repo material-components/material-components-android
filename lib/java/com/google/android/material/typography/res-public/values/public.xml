@@ -15,6 +15,37 @@
   ~ limitations under the License.
 -->
 <resources>
+  <public name="TextAppearance.Material3.DisplayLarge" type="style"/>
+  <public name="TextAppearance.Material3.DisplayMedium" type="style"/>
+  <public name="TextAppearance.Material3.DisplaySmall" type="style"/>
+  <public name="TextAppearance.Material3.HeadlineLarge" type="style"/>
+  <public name="TextAppearance.Material3.HeadlineMedium" type="style"/>
+  <public name="TextAppearance.Material3.HeadlineSmall" type="style"/>
+  <public name="TextAppearance.Material3.TitleLarge" type="style"/>
+  <public name="TextAppearance.Material3.TitleMedium" type="style"/>
+  <public name="TextAppearance.Material3.TitleSmall" type="style"/>
+  <public name="TextAppearance.Material3.BodyLarge" type="style"/>
+  <public name="TextAppearance.Material3.BodyMedium" type="style"/>
+  <public name="TextAppearance.Material3.BodySmall" type="style"/>
+  <public name="TextAppearance.Material3.LabelLarge" type="style"/>
+  <public name="TextAppearance.Material3.LabelMedium" type="style"/>
+  <public name="TextAppearance.Material3.LabelSmall" type="style"/>
+  <public name="textAppearanceDisplayLarge" type="attr"/>
+  <public name="textAppearanceDisplayMedium" type="attr"/>
+  <public name="textAppearanceDisplaySmall" type="attr"/>
+  <public name="textAppearanceHeadlineLarge" type="attr"/>
+  <public name="textAppearanceHeadlineMedium" type="attr"/>
+  <public name="textAppearanceHeadlineSmall" type="attr"/>
+  <public name="textAppearanceTitleLarge" type="attr"/>
+  <public name="textAppearanceTitleMedium" type="attr"/>
+  <public name="textAppearanceTitleSmall" type="attr"/>
+  <public name="textAppearanceBodyLarge" type="attr"/>
+  <public name="textAppearanceBodyMedium" type="attr"/>
+  <public name="textAppearanceBodySmall" type="attr"/>
+  <public name="textAppearanceLabelLarge" type="attr"/>
+  <public name="textAppearanceLabelMedium" type="attr"/>
+  <public name="textAppearanceLabelSmall" type="attr"/>
+
   <public name="TextAppearance.MaterialComponents.Headline1" type="style"/>
   <public name="TextAppearance.MaterialComponents.Headline2" type="style"/>
   <public name="TextAppearance.MaterialComponents.Headline3" type="style"/>

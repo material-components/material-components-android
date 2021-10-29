@@ -116,6 +116,10 @@ class TimePickerView extends ConstraintLayout implements TimePickerControls {
     hourView = findViewById(R.id.material_hour_tv);
     clockHandView = findViewById(R.id.material_clock_hand);
 
+    ViewCompat.setAccessibilityLiveRegion(
+        minuteView, ViewCompat.ACCESSIBILITY_LIVE_REGION_ASSERTIVE);
+    ViewCompat.setAccessibilityLiveRegion(hourView, ViewCompat.ACCESSIBILITY_LIVE_REGION_ASSERTIVE);
+
     setupDoubleTap();
 
     setUpDisplay();
@@ -129,12 +133,12 @@ class TimePickerView extends ConstraintLayout implements TimePickerControls {
             new SimpleOnGestureListener() {
               @Override
               public boolean onDoubleTap(MotionEvent e) {
-                boolean ret = super.onDoubleTap(e);
-                if (onDoubleTapListener != null) {
-                  onDoubleTapListener.onDoubleTap();
+                final OnDoubleTapListener listener = onDoubleTapListener;
+                if (listener != null) {
+                  listener.onDoubleTap();
+                  return true;
                 }
-
-                return ret;
+                return false;
               }
             });
 

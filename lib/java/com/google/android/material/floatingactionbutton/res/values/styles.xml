@@ -126,6 +126,10 @@
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.FloatingActionButton.Secondary</item>
   </style>
 
+  <style name="Widget.Material3.FloatingActionButton.Tertiary" parent="Base.Widget.Material3.FloatingActionButton">
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.FloatingActionButton.Tertiary</item>
+  </style>
+
   <style name="Widget.Material3.FloatingActionButton.Surface" parent="Base.Widget.Material3.FloatingActionButton">
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.FloatingActionButton.Surface</item>
   </style>
@@ -164,6 +168,10 @@
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.FloatingActionButton.Secondary</item>
   </style>
 
+  <style name="Widget.Material3.ExtendedFloatingActionButton.Tertiary" parent="Base.Widget.Material3.ExtendedFloatingActionButton">
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.FloatingActionButton.Tertiary</item>
+  </style>
+
   <style name="Widget.Material3.ExtendedFloatingActionButton.Surface" parent="Base.Widget.Material3.ExtendedFloatingActionButton">
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.FloatingActionButton.Surface</item>
   </style>
@@ -174,6 +182,10 @@
 
   <style name="Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary" parent="Base.Widget.Material3.ExtendedFloatingActionButton.Icon">
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.FloatingActionButton.Secondary</item>
+  </style>
+
+  <style name="Widget.Material3.ExtendedFloatingActionButton.Icon.Tertiary" parent="Base.Widget.Material3.ExtendedFloatingActionButton.Icon">
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.FloatingActionButton.Tertiary</item>
   </style>
 
   <style name="Widget.Material3.ExtendedFloatingActionButton.Icon.Surface" parent="Base.Widget.Material3.ExtendedFloatingActionButton.Icon">
@@ -194,6 +206,10 @@
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.FloatingActionButton.Secondary</item>
   </style>
 
+  <style name="Widget.Material3.FloatingActionButton.Large.Tertiary" parent="Base.Widget.Material3.FloatingActionButton.Large">
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.FloatingActionButton.Tertiary</item>
+  </style>
+
   <style name="Widget.Material3.FloatingActionButton.Large.Surface" parent="Base.Widget.Material3.FloatingActionButton.Large">
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.FloatingActionButton.Surface</item>
   </style>
@@ -211,6 +227,11 @@
   <style name="ThemeOverlay.Material3.FloatingActionButton.Secondary" parent="">
     <item name="colorContainer">?attr/colorSecondaryContainer</item>
     <item name="colorOnContainer">?attr/colorOnSecondaryContainer</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.FloatingActionButton.Tertiary" parent="">
+    <item name="colorContainer">?attr/colorTertiaryContainer</item>
+    <item name="colorOnContainer">?attr/colorOnTertiaryContainer</item>
   </style>
 
   <style name="ThemeOverlay.Material3.FloatingActionButton.Surface" parent="">

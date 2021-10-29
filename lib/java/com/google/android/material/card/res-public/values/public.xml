@@ -19,7 +19,13 @@
   <public name="checkedIconSize" type="attr"/>
   <public name="checkedIconMargin" type="attr"/>
   <public name="materialCardViewStyle" type="attr"/>
+  <public name="materialCardViewOutlinedStyle" type="attr"/>
+  <public name="materialCardViewFilledStyle" type="attr"/>
+  <public name="materialCardViewElevatedStyle" type="attr"/>
   <public name="state_dragged" type="attr" />
   <public name="Widget.MaterialComponents.CardView" type="style"/>
+  <public name="Widget.Material3.CardView.Outlined" type="style"/>
+  <public name="Widget.Material3.CardView.Filled" type="style"/>
+  <public name="Widget.Material3.CardView.Elevated" type="style"/>
 </resources>
 

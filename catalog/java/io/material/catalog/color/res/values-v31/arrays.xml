@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2021 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+
+  <array name="cat_dynamic_colors">
+    <item>@array/m3_colors_accent1_array</item>
+    <item>@array/m3_colors_accent2_array</item>
+    <item>@array/m3_colors_accent3_array</item>
+    <item>@array/m3_colors_neutral1_array</item>
+    <item>@array/m3_colors_neutral2_array</item>
+  </array>
+
+  <array name="m3_colors_accent1_array">
+    <item>@android:color/system_accent1_1000</item>
+    <item>@android:color/system_accent1_900</item>
+    <item>@android:color/system_accent1_800</item>
+    <item>@android:color/system_accent1_700</item>
+    <item>@android:color/system_accent1_600</item>
+    <item>@android:color/system_accent1_500</item>
+    <item>@android:color/system_accent1_400</item>
+    <item>@android:color/system_accent1_300</item>
+    <item>@android:color/system_accent1_200</item>
+    <item>@android:color/system_accent1_100</item>
+    <item>@android:color/system_accent1_50</item>
+    <item>@android:color/system_accent1_10</item>
+    <item>@android:color/system_accent1_0</item>
+  </array>
+
+  <array name="m3_colors_accent2_array">
+    <item>@android:color/system_accent2_1000</item>
+    <item>@android:color/system_accent2_900</item>
+    <item>@android:color/system_accent2_800</item>
+    <item>@android:color/system_accent2_700</item>
+    <item>@android:color/system_accent2_600</item>
+    <item>@android:color/system_accent2_500</item>
+    <item>@android:color/system_accent2_400</item>
+    <item>@android:color/system_accent2_300</item>
+    <item>@android:color/system_accent2_200</item>
+    <item>@android:color/system_accent2_100</item>
+    <item>@android:color/system_accent2_50</item>
+    <item>@android:color/system_accent2_10</item>
+    <item>@android:color/system_accent2_0</item>
+  </array>
+
+  <array name="m3_colors_accent3_array">
+    <item>@android:color/system_accent3_1000</item>
+    <item>@android:color/system_accent3_900</item>
+    <item>@android:color/system_accent3_800</item>
+    <item>@android:color/system_accent3_700</item>
+    <item>@android:color/system_accent3_600</item>
+    <item>@android:color/system_accent3_500</item>
+    <item>@android:color/system_accent3_400</item>
+    <item>@android:color/system_accent3_300</item>
+    <item>@android:color/system_accent3_200</item>
+    <item>@android:color/system_accent3_100</item>
+    <item>@android:color/system_accent3_50</item>
+    <item>@android:color/system_accent3_10</item>
+    <item>@android:color/system_accent3_0</item>
+  </array>
+
+  <array name="m3_colors_neutral1_array">
+    <item>@android:color/system_neutral1_1000</item>
+    <item>@android:color/system_neutral1_900</item>
+    <item>@android:color/system_neutral1_800</item>
+    <item>@android:color/system_neutral1_700</item>
+    <item>@android:color/system_neutral1_600</item>
+    <item>@android:color/system_neutral1_500</item>
+    <item>@android:color/system_neutral1_400</item>
+    <item>@android:color/system_neutral1_300</item>
+    <item>@android:color/system_neutral1_200</item>
+    <item>@android:color/system_neutral1_100</item>
+    <item>@android:color/system_neutral1_50</item>
+    <item>@android:color/system_neutral1_10</item>
+    <item>@android:color/system_neutral1_0</item>
+  </array>
+
+  <array name="m3_colors_neutral2_array">
+    <item>@android:color/system_neutral2_1000</item>
+    <item>@android:color/system_neutral2_900</item>
+    <item>@android:color/system_neutral2_800</item>
+    <item>@android:color/system_neutral2_700</item>
+    <item>@android:color/system_neutral2_600</item>
+    <item>@android:color/system_neutral2_500</item>
+    <item>@android:color/system_neutral2_400</item>
+    <item>@android:color/system_neutral2_300</item>
+    <item>@android:color/system_neutral2_200</item>
+    <item>@android:color/system_neutral2_100</item>
+    <item>@android:color/system_neutral2_50</item>
+    <item>@android:color/system_neutral2_10</item>
+    <item>@android:color/system_neutral2_0</item>
+  </array>
+</resources>

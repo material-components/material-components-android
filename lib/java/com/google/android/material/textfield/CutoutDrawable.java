@@ -16,6 +16,7 @@
 
 package com.google.android.material.textfield;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -86,11 +87,27 @@ class CutoutDrawable extends MaterialShapeDrawable {
   public void draw(@NonNull Canvas canvas) {
     preDraw(canvas);
     super.draw(canvas);
+    postDraw(canvas);
+  }
+
+  @Override
+  protected void drawStrokeShape(@NonNull Canvas canvas) {
+    if (cutoutBounds.isEmpty()) {
+      super.drawStrokeShape(canvas);
+      return;
+    }
+    Bitmap bitmap =
+        Bitmap.createBitmap(canvas.getWidth(), canvas.getHeight(), Bitmap.Config.ARGB_8888);
+    Canvas tempCanvas = new Canvas(bitmap);
+
+    // Draw the stroke on the temporary canvas
+    super.drawStrokeShape(tempCanvas);
 
     // Draw mask for the cutout.
-    canvas.drawRect(cutoutBounds, cutoutPaint);
+    tempCanvas.drawRect(cutoutBounds, cutoutPaint);
 
-    postDraw(canvas);
+    // Draw the temporary canvas back to the original canvas
+    canvas.drawBitmap(bitmap, 0, 0, null);
   }
 
   private void preDraw(@NonNull Canvas canvas) {

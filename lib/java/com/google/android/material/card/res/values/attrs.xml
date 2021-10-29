@@ -26,6 +26,9 @@
   <!-- Style to use for outlined MaterialCardView. -->
   <attr name="materialCardViewOutlinedStyle" format="reference"/>
 
+  <!-- Style to use for filled MaterialCardView. -->
+  <attr name="materialCardViewFilledStyle" format="reference"/>
+
   <!-- Style to use for elevated MaterialCardView. -->
   <attr name="materialCardViewElevatedStyle" format="reference"/>
 

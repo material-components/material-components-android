@@ -43,4 +43,7 @@
   <item name="mtrl_snackbar_background_overlay_color_alpha" format="float" type="dimen">0.8</item>
   <item name="mtrl_snackbar_action_text_color_alpha" format="float" type="dimen">0.5</item>
 
+  <dimen name="m3_snackbar_margin">8dp</dimen>
+  <item name="m3_snackbar_action_text_color_alpha" format="float" type="dimen">1.0</item>
+
 </resources>

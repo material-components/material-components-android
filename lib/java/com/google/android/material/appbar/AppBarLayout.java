@@ -1323,7 +1323,6 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
   // TODO(b/76413401): remove this base class and generic type after the widget migration is done
   protected static class BaseBehavior<T extends AppBarLayout> extends HeaderBehavior<T> {
     private static final int MAX_OFFSET_ANIMATION_DURATION = 600; // ms
-    private static final int INVALID_POSITION = -1;
 
     /** Callback to allow control over any {@link AppBarLayout} dragging. */
     // TODO(b/76413401): remove this base class and generic type after the widget migration
@@ -1345,9 +1344,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
 
     private ValueAnimator offsetAnimator;
 
-    private int offsetToChildIndexOnLayout = INVALID_POSITION;
-    private boolean offsetToChildIndexOnLayoutIsMinHeight;
-    private float offsetToChildIndexOnLayoutPerc;
+    private SavedState savedState;
 
     @Nullable private WeakReference<View> lastNestedScrollingChildRef;
     private BaseDragCallback onDragCallback;
@@ -1562,8 +1559,8 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
           int snapBottom = -offsetChild.getBottom();
 
           if (offsetChildIndex == abl.getChildCount() - 1) {
-            // If this is the last child, we need to take the top inset into account
-            snapBottom += abl.getTopInset();
+            // If this is the last child, we need to take the top inset and padding into account
+            snapBottom += abl.getTopInset() + abl.getPaddingTop();
           }
 
           if (checkFlag(flags, LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED)) {
@@ -1637,15 +1634,21 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
       // 2. offsets for restorations
       // 3. non-forced pending actions
       final int pendingAction = abl.getPendingAction();
-      if (offsetToChildIndexOnLayout >= 0 && (pendingAction & PENDING_ACTION_FORCE) == 0) {
-        View child = abl.getChildAt(offsetToChildIndexOnLayout);
-        int offset = -child.getBottom();
-        if (offsetToChildIndexOnLayoutIsMinHeight) {
-          offset += ViewCompat.getMinimumHeight(child) + abl.getTopInset();
+      if (savedState != null && (pendingAction & PENDING_ACTION_FORCE) == 0) {
+        if (savedState.fullyScrolled) {
+          // Keep fully scrolled.
+          setHeaderTopBottomOffset(parent, abl, -abl.getTotalScrollRange());
         } else {
-          offset += Math.round(child.getHeight() * offsetToChildIndexOnLayoutPerc);
+          // Not fully scrolled, restore the visible percetage of child layout.
+          View child = abl.getChildAt(savedState.firstVisibleChildIndex);
+          int offset = -child.getBottom();
+          if (savedState.firstVisibleChildAtMinimumHeight) {
+            offset += ViewCompat.getMinimumHeight(child) + abl.getTopInset();
+          } else {
+            offset += Math.round(child.getHeight() * savedState.firstVisibleChildPercentageShown);
+          }
+          setHeaderTopBottomOffset(parent, abl, offset);
         }
-        setHeaderTopBottomOffset(parent, abl, offset);
       } else if (pendingAction != PENDING_ACTION_NONE) {
         final boolean animate = (pendingAction & PENDING_ACTION_ANIMATE_ENABLED) != 0;
         if ((pendingAction & PENDING_ACTION_COLLAPSED) != 0) {
@@ -1666,7 +1669,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
 
       // Finally reset any pending states
       abl.resetPendingAction();
-      offsetToChildIndexOnLayout = INVALID_POSITION;
+      savedState = null;
 
       // We may have changed size, so let's constrain the top and bottom offset correctly,
       // just in case we're out of the bounds
@@ -2036,6 +2039,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
 
         if (child.getTop() + offset <= 0 && visBottom >= 0) {
           final SavedState ss = new SavedState(superState);
+          ss.fullyScrolled = -getTopAndBottomOffset() >= abl.getTotalScrollRange();
           ss.firstVisibleChildIndex = i;
           ss.firstVisibleChildAtMinimumHeight =
               visBottom == (ViewCompat.getMinimumHeight(child) + abl.getTopInset());
@@ -2052,25 +2056,24 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     public void onRestoreInstanceState(
         @NonNull CoordinatorLayout parent, @NonNull T appBarLayout, Parcelable state) {
       if (state instanceof SavedState) {
-        final SavedState ss = (SavedState) state;
-        super.onRestoreInstanceState(parent, appBarLayout, ss.getSuperState());
-        offsetToChildIndexOnLayout = ss.firstVisibleChildIndex;
-        offsetToChildIndexOnLayoutPerc = ss.firstVisibleChildPercentageShown;
-        offsetToChildIndexOnLayoutIsMinHeight = ss.firstVisibleChildAtMinimumHeight;
+        savedState = (SavedState) state;
+        super.onRestoreInstanceState(parent, appBarLayout, savedState.getSuperState());
       } else {
         super.onRestoreInstanceState(parent, appBarLayout, state);
-        offsetToChildIndexOnLayout = INVALID_POSITION;
+        savedState = null;
       }
     }
 
     /** A {@link Parcelable} implementation for {@link AppBarLayout}. */
     protected static class SavedState extends AbsSavedState {
+      boolean fullyScrolled;
       int firstVisibleChildIndex;
       float firstVisibleChildPercentageShown;
       boolean firstVisibleChildAtMinimumHeight;
 
       public SavedState(@NonNull Parcel source, ClassLoader loader) {
         super(source, loader);
+        fullyScrolled = source.readByte() != 0;
         firstVisibleChildIndex = source.readInt();
         firstVisibleChildPercentageShown = source.readFloat();
         firstVisibleChildAtMinimumHeight = source.readByte() != 0;
@@ -2083,6 +2086,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
       @Override
       public void writeToParcel(@NonNull Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
+        dest.writeByte((byte) (fullyScrolled ? 1 : 0));
         dest.writeInt(firstVisibleChildIndex);
         dest.writeFloat(firstVisibleChildPercentageShown);
         dest.writeByte((byte) (firstVisibleChildAtMinimumHeight ? 1 : 0));
