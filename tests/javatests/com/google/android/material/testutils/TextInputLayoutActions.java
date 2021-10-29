@@ -641,8 +641,8 @@ public class TextInputLayoutActions {
   public static ViewAction setBoxCornerRadii(
       final float topLeftCornerRadius,
       final float topRightCornerRadius,
-      final float bottomRightCornerRadius,
-      final float bottomLeftCornerRadius) {
+      final float bottomLeftCornerRadius,
+      final float bottomRightCornerRadius) {
     return new ViewAction() {
       @Override
       public Matcher<View> getConstraints() {
@@ -660,8 +660,8 @@ public class TextInputLayoutActions {
         layout.setBoxCornerRadii(
             topLeftCornerRadius,
             topRightCornerRadius,
-            bottomRightCornerRadius,
-            bottomLeftCornerRadius);
+            bottomLeftCornerRadius,
+            bottomRightCornerRadius);
       }
     };
   }
@@ -669,8 +669,8 @@ public class TextInputLayoutActions {
   public static ViewAction setBoxCornerRadii(
       @DimenRes final int topLeftCornerRadiusId,
       @DimenRes final int topRightCornerRadiusId,
-      @DimenRes final int bottomRightCornerRadiusId,
-      @DimenRes final int bottomLeftCornerRadiusId) {
+      @DimenRes final int bottomLeftCornerRadiusId,
+      @DimenRes final int bottomRightCornerRadiusId) {
     return new ViewAction() {
       @Override
       public Matcher<View> getConstraints() {
@@ -688,8 +688,8 @@ public class TextInputLayoutActions {
         layout.setBoxCornerRadiiResources(
             topLeftCornerRadiusId,
             topRightCornerRadiusId,
-            bottomRightCornerRadiusId,
-            bottomLeftCornerRadiusId);
+            bottomLeftCornerRadiusId,
+            bottomRightCornerRadiusId);
       }
     };
   }

@@ -1295,14 +1295,14 @@ public class TextInputLayout extends LinearLayout {
     if (boxBackground == null
         || boxBackground.getTopLeftCornerResolvedSize() != boxCornerRadiusTopStart
         || boxBackground.getTopRightCornerResolvedSize() != boxCornerRadiusTopEnd
-        || boxBackground.getBottomRightCornerResolvedSize() != boxCornerRadiusBottomEnd
-        || boxBackground.getBottomLeftCornerResolvedSize() != boxCornerRadiusBottomStart) {
+        || boxBackground.getBottomLeftCornerResolvedSize() != boxCornerRadiusBottomStart
+        || boxBackground.getBottomRightCornerResolvedSize() != boxCornerRadiusBottomEnd) {
       shapeAppearanceModel =
           shapeAppearanceModel.toBuilder()
               .setTopLeftCornerSize(boxCornerRadiusTopStart)
               .setTopRightCornerSize(boxCornerRadiusTopEnd)
-              .setBottomRightCornerSize(boxCornerRadiusBottomEnd)
               .setBottomLeftCornerSize(boxCornerRadiusBottomStart)
+              .setBottomRightCornerSize(boxCornerRadiusBottomEnd)
               .build();
       applyBoxAttributes();
     }
@@ -1335,7 +1335,7 @@ public class TextInputLayout extends LinearLayout {
    * @see #setBoxCornerRadii(float, float, float, float)
    */
   public float getBoxCornerRadiusBottomEnd() {
-    return boxBackground.getBottomLeftCornerResolvedSize();
+    return boxBackground.getBottomRightCornerResolvedSize();
   }
 
   /**
@@ -1345,7 +1345,7 @@ public class TextInputLayout extends LinearLayout {
    * @see #setBoxCornerRadii(float, float, float, float)
    */
   public float getBoxCornerRadiusBottomStart() {
-    return boxBackground.getBottomRightCornerResolvedSize();
+    return boxBackground.getBottomLeftCornerResolvedSize();
   }
 
   /**

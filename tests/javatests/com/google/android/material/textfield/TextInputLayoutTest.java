@@ -48,6 +48,7 @@ import static com.google.android.material.testutils.TextInputLayoutActions.setHi
 import static com.google.android.material.testutils.TextInputLayoutActions.setHintTextAppearance;
 import static com.google.android.material.testutils.TextInputLayoutActions.setPlaceholderText;
 import static com.google.android.material.testutils.TextInputLayoutActions.setTypeface;
+import static com.google.common.truth.Truth.assertThat;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -688,6 +689,29 @@ public class TextInputLayoutTest {
   }
 
   @Test
+  public void testSetBoxCornerRadii() {
+    float boxCornerRadiusTopStart = 0.5f;
+    float boxCornerRadiusTopEnd = 1f;
+    float boxCornerRadiusBottomStart = 1.5f;
+    float boxCornerRadiusBottomEnd = 2f;
+
+    // Set the outline box's corner radii.
+    onView(withId(R.id.textinput_box_outline))
+        .perform(
+            setBoxCornerRadii(
+                boxCornerRadiusTopStart,
+                boxCornerRadiusTopEnd,
+                boxCornerRadiusBottomStart,
+                boxCornerRadiusBottomEnd));
+
+    // Assert values match each respective corner.
+    onView(withId(R.id.textinput_box_outline)).check(isBoxCornerRadiusTopStart(boxCornerRadiusTopStart));
+    onView(withId(R.id.textinput_box_outline)).check(isBoxCornerRadiusTopEnd(boxCornerRadiusTopEnd));
+    onView(withId(R.id.textinput_box_outline)).check(isBoxCornerRadiusBottomStart(boxCornerRadiusBottomStart));
+    onView(withId(R.id.textinput_box_outline)).check(isBoxCornerRadiusBottomEnd(boxCornerRadiusBottomEnd));
+  }
+
+  @Test
   public void testBoxTopEndCornerRadiusChangesWithFloatValue() {
     float cornerRadiusSmall =
         activityTestRule.getActivity().getResources().getDimension(R.dimen.corner_radius_small);
@@ -801,11 +825,38 @@ public class TextInputLayoutTest {
     };
   }
 
+  private static ViewAssertion isBoxCornerRadiusTopStart(final float boxCornerRadiusTopStart) {
+    return (view, noViewFoundException) -> {
+      assertThat(view).isInstanceOf(TextInputLayout.class);
+      assertEquals(
+          boxCornerRadiusTopStart, ((TextInputLayout) view).getBoxCornerRadiusTopStart(), 0.01);
+    };
+  }
+
   private static ViewAssertion isBoxCornerRadiusTopEnd(final float boxCornerRadiusTopEnd) {
     return (view, noViewFoundException) -> {
-      assertTrue(view instanceof TextInputLayout);
+      assertThat(view).isInstanceOf(TextInputLayout.class);
       assertEquals(
           boxCornerRadiusTopEnd, ((TextInputLayout) view).getBoxCornerRadiusTopEnd(), 0.01);
+    };
+  }
+
+  private static ViewAssertion isBoxCornerRadiusBottomEnd(final float boxCornerRadiusBottomEnd) {
+    return (view, noViewFoundException) -> {
+      assertThat(view).isInstanceOf(TextInputLayout.class);
+      assertEquals(
+          boxCornerRadiusBottomEnd, ((TextInputLayout) view).getBoxCornerRadiusBottomEnd(), 0.01);
+    };
+  }
+
+  private static ViewAssertion isBoxCornerRadiusBottomStart(
+      final float boxCornerRadiusBottomStart) {
+    return (view, noViewFoundException) -> {
+      assertThat(view).isInstanceOf(TextInputLayout.class);
+      assertEquals(
+          boxCornerRadiusBottomStart,
+          ((TextInputLayout) view).getBoxCornerRadiusBottomStart(),
+          0.01);
     };
   }
 
