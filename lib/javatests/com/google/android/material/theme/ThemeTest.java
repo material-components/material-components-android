@@ -18,6 +18,7 @@ package com.google.android.material.theme;
 
 import com.google.android.material.R;
 
+import static android.os.Build.VERSION_CODES.LOLLIPOP;
 import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 import static com.google.common.truth.Truth.assertThat;
 
@@ -35,10 +36,12 @@ import org.junit.runner.RunWith;
 import org.robolectric.ParameterizedRobolectricTestRunner;
 import org.robolectric.ParameterizedRobolectricTestRunner.Parameter;
 import org.robolectric.ParameterizedRobolectricTestRunner.Parameters;
+import org.robolectric.annotation.Config;
 import org.robolectric.annotation.internal.DoNotInstrument;
 
 /** Tests for the Material themes. */
 @RunWith(ParameterizedRobolectricTestRunner.class)
+@Config(sdk = LOLLIPOP)
 @DoNotInstrument
 public class ThemeTest {
 
@@ -86,7 +89,7 @@ public class ThemeTest {
           new int[] {R.attr.colorOnPrimarySurface, R.attr.colorOnSurface});
 
   /**
-   * These are color attribtues that all themes, including bridge themes, should have.
+   * These are color attributes that all themes, including bridge themes, should have.
    *
    * <p>All Light themes should match {@code Theme.MaterialComponents.Light} and all Dark themes
    * should match {@code Theme.MaterialComponents}.
@@ -120,7 +123,7 @@ public class ThemeTest {
           R.attr.colorError);
 
   /**
-   * There are color attribtues that all theme overlays should have.
+   * There are color attributes that all theme overlays should have.
    *
    * <p>All Light theme overlays shold match {@code Theme.MaterialComponents.Light} and all Dark
    * theme overlays should match {@code Theme.MaterialComponents}.
@@ -316,7 +319,13 @@ public class ThemeTest {
           android.R.attr.textAppearanceMedium,
           android.R.attr.textAppearanceMediumInverse,
           android.R.attr.textAppearanceSmall,
-          android.R.attr.textAppearanceSmallInverse);
+          android.R.attr.textAppearanceSmallInverse,
+          android.R.attr.textAppearanceListItem,
+          android.R.attr.textAppearanceListItemSmall,
+          android.R.attr.textAppearanceListItemSecondary,
+          R.attr.textAppearanceListItem,
+          R.attr.textAppearanceListItemSmall,
+          R.attr.textAppearanceListItemSecondary);
 
   /** These are typography styles that should be the same for *all* M3 full themes. */
   private static final ImmutableList<Integer> M3_FULL_TYPOGRAPHY_ATTRIBUTES =
