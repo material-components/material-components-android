@@ -9,14 +9,14 @@ path: /docs/getting-started/
 
 ## 1. Migration guidance
 
-Take a look at our [guide](https://material.io/blog/migrating-material-3) to
-help you migrate your codebase using Material Components for Android to the new
-Material 3 system.
+Take a look at our [guide](https://material.io/blog/migrating-material-3) and
+[codelab](https://goo.gle/apply-dynamic-color) to help you migrate your codebase
+using Material Components for Android to the new Material 3 system.
 
 Additionally, if you are still using the legacy Design Support Library, take a
 look at our
-[guide](https://material.io/blog/migrate-android-material-components) to help
-you migrate your codebase to Material Components for Android.
+[legacy guide](https://material.io/blog/migrate-android-material-components) to
+help you migrate your codebase to Material Components for Android.
 
 ## 2. Maven library dependency
 
@@ -123,15 +123,20 @@ section for more details.
 
 ### **`Material3` themes**
 
-Here are `Material3` themes you can use to get the latest component styles and
-theme-level attributes.
+Here are the `Material3` themes you can use to get the latest component styles
+and theme-level attributes, as well as their `MaterialComponents` equivalents
+when applicable.
 
-*   `Theme.Material3.Light`
-*   `Theme.Material3.Light.NoActionBar`
-*   `Theme.Material3.Dark`
-*   `Theme.Material3.Dark.NoActionBar`
-*   `Theme.Material3.DayNight`
-*   `Theme.Material3.DayNight.NoActionBar`
+`Material3`                            | `MaterialComponents`
+-------------------------------------- | --------------------
+`Theme.Material3.Light`                | `Theme.MaterialComponents.Light`
+`Theme.Material3.Light.NoActionBar`    | `Theme.MaterialComponents.Light.NoActionBar`
+`Theme.Material3.Dark`                 | `Theme.MaterialComponents`
+`Theme.Material3.Dark.NoActionBar`     | `Theme.MaterialComponents.NoActionBar`
+`Theme.Material3.DayNight`             | `Theme.MaterialComponents.DayNight`
+`Theme.Material3.DayNight.NoActionBar` | `Theme.MaterialComponents.DayNight.NoActionBar`
+N/A                                    | `Theme.MaterialComponents.Light.DarkActionBar`
+N/A                                    | `Theme.MaterialComponents.DayNight.DarkActionBar`
 
 Update your app theme to inherit from one of these themes:
 
