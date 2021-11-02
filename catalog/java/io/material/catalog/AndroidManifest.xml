@@ -75,6 +75,21 @@
     <activity
       android:name="io.material.catalog.transition.TransitionSharedAxisEndDemoActivity"
       android:exported="true" />
+    <activity
+      android:name="io.material.catalog.adaptive.AdaptiveMusicPlayerDemoActivity"
+      android:exported="true" />
+    <activity
+      android:name="io.material.catalog.adaptive.AdaptiveListViewDemoActivity"
+      android:exported="true" />
+    <activity
+      android:name="io.material.catalog.adaptive.AdaptiveFeedDemoActivity"
+      android:exported="true" />
+    <activity
+      android:name="io.material.catalog.adaptive.AdaptiveHeroDemoActivity"
+      android:exported="true" />
+    <activity
+      android:name="io.material.catalog.adaptive.AdaptiveSupportingPanelDemoActivity"
+      android:exported="true" />
   </application>
 
 </manifest>

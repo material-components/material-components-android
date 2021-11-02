@@ -273,11 +273,10 @@ The following is an anatomy diagram for the navigation rail:
 
 #### Container attributes
 
-| **Element**   | **Attribute**        | **Related      | **Default value**    |
-:               :                      : methods**      :                      :
-| ------------- | -------------------- | -------------- | -------------------- |
-| **Color**     | `app:backgroundTint` | N/A            | `?attr/colorSurface` |
-| **Elevation** | `app:elevation`      | `setElevation` | `0dp`                |
+**Element**   | **Attribute**        | **Related methods** | **Default value**
+------------- | -------------------- | ------------------- | -----------------
+**Color**     | `app:backgroundTint` | N/A                 | `?attr/colorSurface`
+**Elevation** | `app:elevation`      | `setElevation`      | `0dp`
 
 #### Header attributes
 

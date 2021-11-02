@@ -30,6 +30,8 @@
   <string name="material_minute_selection" description="Description for button to switch to select the minute [CHAR_LIMIT=NONE]">Select minutes</string>
   <string name="material_clock_toggle_content_description" description="Description for the toggle to choose between AM and PM [CHAR_LIMIT=NONE] ">Select AM or PM</string>
 
+  <string name="mtrl_timepicker_confirm" description="Button text to indicate that the widget will save the user's selection [CHAR_LIMIT=16]">OK</string>
+
   <!-- Accessibility string used for describing the button in time picker that changes the dialog to text input mode. [CHAR LIMIT=NONE] -->
   <string name="material_timepicker_text_input_mode_description">Switch to text input mode for the time input.</string>
   <!-- Accessibility string used for describing the button in time picker that changes the dialog to circular clock mode. [CHAR LIMIT=NONE] -->

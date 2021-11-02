@@ -256,10 +256,10 @@ The following is an anatomy diagram for the bottom navigation bar:
 
 #### Container attributes
 
-**Element**   | **Attribute**        | **Related**<br/>**methods** | **Default value**
-------------- | -------------------- | --------------------------- | -----------------
-**Color**     | `app:backgroundTint` | N/A                         | `?attr/colorSurface`
-**Elevation** | `app:elevation`      | `setElevation`              | `3dp`
+**Element**   | **Attribute**        | **Related methods** | **Default value**
+------------- | -------------------- | ------------------- | -----------------
+**Color**     | `app:backgroundTint` | N/A                 | `?attr/colorSurface`
+**Elevation** | `app:elevation`      | `setElevation`      | `3dp`
 
 #### Navigation item attributes
 

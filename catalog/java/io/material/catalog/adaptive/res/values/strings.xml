@@ -111,4 +111,11 @@
     Title
   </string>
 
+  <string name="cat_supporting_panel_title" description="Title of the Supporting Panel Catalog demo [CHAR_LIMIT=NONE]">
+    Supporting Panel Demo
+  </string>
+  <string name="cat_supporting_panel_fragment_title" description="Title of an element of the Supporting Panel fragment [CHAR_LIMIT=NONE]">
+    Title
+  </string>
+
 </resources>
