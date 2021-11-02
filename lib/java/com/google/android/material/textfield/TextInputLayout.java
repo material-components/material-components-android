@@ -4458,8 +4458,11 @@ public class TextInputLayout extends LinearLayout {
         info.setError(showingError ? errorText : counterOverflowDesc);
       }
 
-      if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1 && editText != null) {
-        editText.setLabelFor(R.id.textinput_helper_text);
+      if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1) {
+        View helperTextView = layout.indicatorViewController.getHelperTextView();
+        if (helperTextView != null) {
+          info.setLabelFor(helperTextView);
+        }
       }
     }
   }
