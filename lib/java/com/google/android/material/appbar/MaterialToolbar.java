@@ -112,8 +112,12 @@ public class MaterialToolbar extends Toolbar {
     titleCentered = a.getBoolean(R.styleable.MaterialToolbar_titleCentered, false);
     subtitleCentered = a.getBoolean(R.styleable.MaterialToolbar_subtitleCentered, false);
 
-    final int index = a.getInt(R.styleable.MaterialToolbar_logoScaleType, 3);
-    logoScaleType = (sScaleTypeArray[index]);
+    final int index = a.getInt(R.styleable.MaterialToolbar_logoScaleType, -1);
+    if (index >= 0 && index < sScaleTypeArray.length) {
+      logoScaleType = (sScaleTypeArray[index]);
+    } else {
+      logoScaleType = ImageView.ScaleType.FIT_CENTER;
+    }
 
     logoAdjustViewBounds = a.getBoolean(R.styleable.MaterialToolbar_logoAdjustViewBounds, false);
 
