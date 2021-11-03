@@ -152,6 +152,7 @@
     <item name="android:textAppearance">?attr/textAppearanceLabelLarge</item>
     <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Material3.Chip</item>
     <item name="android:textColor">@color/m3_chip_text_color</item>
+    <item name="chipIconTint">@color/m3_chip_text_color</item>
     <item name="closeIconTint">@color/m3_chip_text_color</item>
     <item name="chipStrokeColor">@color/m3_chip_stroke_color</item>
     <item name="chipSurfaceColor">?attr/colorSurface</item>
@@ -159,6 +160,9 @@
     <item name="chipStrokeWidth">1dp</item>
     <item name="rippleColor">@color/m3_chip_ripple_color</item>
     <item name="checkedIcon">@drawable/ic_m3_chip_checked_circle</item>
+    <item name="android:stateListAnimator" tools:ignore="NewApi">
+      @animator/m3_chip_state_list_anim
+    </item>
   </style>
 
   <!-- Style for Input Chip: for user-entered information.
@@ -189,11 +193,37 @@
     <item name="chipEndPadding">4dp</item>
   </style>
 
+  <!-- Style for input Chip, to be used when placed against a background
+       that needs protection, such as an image. -->
+  <style name="Widget.Material3.Chip.Input.Elevated">
+    <item name="android:elevation" tools:ignore="NewApi">
+      @dimen/m3_chip_elevated_elevation
+    </item>
+    <item name="android:stateListAnimator" tools:ignore="NewApi">
+      @animator/m3_elevated_chip_state_list_anim
+    </item>
+    <item name="chipStrokeColor">@android:color/transparent</item>
+    <item name="chipBackgroundColor">@color/m3_elevated_chip_background_color</item>
+  </style>
+
   <!-- Style for input chips with system icons. For input chips with avatar
        style icons, use Widget.Material3.Chip.Input, instead. -->
   <style name="Widget.Material3.Chip.Input.Icon" parent="Widget.Material3.Chip.Input">
     <item name="chipIconSize">18dp</item>
     <item name="iconStartPadding">4dp</item>
+  </style>
+
+  <!-- Style for Input Chip with system icons, to be used when placed against a
+       background that needs protection, such as an image. -->
+  <style name="Widget.Material3.Chip.Input.Icon.Elevated">
+    <item name="android:elevation" tools:ignore="NewApi">
+      @dimen/m3_chip_elevated_elevation
+    </item>
+    <item name="android:stateListAnimator" tools:ignore="NewApi">
+      @animator/m3_elevated_chip_state_list_anim
+    </item>
+    <item name="chipStrokeColor">@android:color/transparent</item>
+    <item name="chipBackgroundColor">@color/m3_elevated_chip_background_color</item>
   </style>
 
   <!-- Style for Suggestion Chips: for suggested information.
@@ -237,7 +267,7 @@
       @dimen/m3_chip_elevated_elevation
     </item>
     <item name="android:stateListAnimator" tools:ignore="NewApi">
-      @animator/m3_chip_state_list_anim
+      @animator/m3_elevated_chip_state_list_anim
     </item>
     <item name="chipStrokeColor">@android:color/transparent</item>
     <item name="chipBackgroundColor">@color/m3_elevated_chip_background_color</item>
@@ -263,6 +293,7 @@
 
     <item name="enforceTextAppearance">false</item>
     <item name="android:textColor">@color/m3_chip_assist_text_color</item>
+    <item name="chipIconTint">@color/m3_assist_chip_icon_tint_color</item>
 
     <item name="chipMinHeight">32dp</item>
 
@@ -283,7 +314,7 @@
       @dimen/m3_chip_elevated_elevation
     </item>
     <item name="android:stateListAnimator" tools:ignore="NewApi">
-      @animator/m3_chip_state_list_anim
+      @animator/m3_elevated_chip_state_list_anim
     </item>
     <item name="chipStrokeColor">@android:color/transparent</item>
     <item name="chipBackgroundColor">@color/m3_elevated_chip_background_color</item>
@@ -318,7 +349,7 @@
     <item name="android:elevation" tools:ignore="NewApi">
       @dimen/m3_chip_elevated_elevation</item>
     <item name="android:stateListAnimator" tools:ignore="NewApi">
-      @animator/m3_chip_state_list_anim
+      @animator/m3_elevated_chip_state_list_anim
     </item>
     <item name="chipStrokeColor">@android:color/transparent</item>
     <item name="chipBackgroundColor">@color/m3_elevated_chip_background_color</item>

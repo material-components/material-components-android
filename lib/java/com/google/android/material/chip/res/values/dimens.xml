@@ -19,6 +19,8 @@
   <dimen name="mtrl_chip_pressed_translation_z">3dp</dimen>
   <dimen name="mtrl_chip_text_size">14sp</dimen>
 
+  <dimen name="m3_chip_checked_hovered_translation_z">1dp</dimen>
+
   <dimen name="m3_chip_dragged_translation_z">7dp</dimen>
   <dimen name="m3_chip_hovered_translation_z">2dp</dimen>
   <dimen name="m3_chip_disabled_translation_z">-1dp</dimen>
