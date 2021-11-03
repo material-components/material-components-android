@@ -64,7 +64,7 @@ public abstract class TextFieldControllableDemoFragment extends TextFieldDemoFra
     labelEditText.setOnEditorActionListener(
         (v, actionId, event) -> {
           if (actionId == EditorInfo.IME_ACTION_DONE) {
-            if (!checkTextInputIsNull(labelTextField)) {
+            if (!checkTextInputIsNull(labelTextField, /* showError= */ true)) {
               setAllTextFieldsLabel(String.valueOf(labelEditText.getText()));
               showToast(R.string.cat_textfield_toast_label_text);
             }
@@ -79,19 +79,9 @@ public abstract class TextFieldControllableDemoFragment extends TextFieldDemoFra
     inputErrorEditText.setOnEditorActionListener(
         (v, actionId, event) -> {
           if (actionId == EditorInfo.IME_ACTION_DONE) {
-            if (!checkTextInputIsNull(textInputError)) {
-              errorText = String.valueOf(inputErrorEditText.getText());
+            if (!checkTextInputIsNull(textInputError, /* showError= */ true)) {
+              updateErrorText(String.valueOf(inputErrorEditText.getText()), toggleErrorButton);
               showToast(R.string.cat_textfield_toast_error_text);
-              // if error already showing, call setError again to update its text.
-              if (toggleErrorButton
-                  .getText()
-                  .toString()
-                  .equals(getResources().getString(R.string.cat_textfield_hide_error_text))) {
-                for (TextInputLayout textfield : textfields) {
-                  setErrorIconClickListeners(textfield);
-                  textfield.setError(errorText);
-                }
-              }
             }
             return true;
           }
@@ -104,7 +94,7 @@ public abstract class TextFieldControllableDemoFragment extends TextFieldDemoFra
     helperTextEditText.setOnEditorActionListener(
         (v, actionId, event) -> {
           if (actionId == EditorInfo.IME_ACTION_DONE) {
-            if (!checkTextInputIsNull(helperTextTextField)) {
+            if (!checkTextInputIsNull(helperTextTextField, /* showError= */ true)) {
               setAllTextFieldsHelperText(String.valueOf(helperTextEditText.getText()));
               showToast(R.string.cat_textfield_toast_helper_text);
             }
@@ -119,7 +109,7 @@ public abstract class TextFieldControllableDemoFragment extends TextFieldDemoFra
     placeholderEditText.setOnEditorActionListener(
         (v, actionId, event) -> {
           if (actionId == EditorInfo.IME_ACTION_DONE) {
-            if (!checkTextInputIsNull(placeholderTextField)) {
+            if (!checkTextInputIsNull(placeholderTextField, /* showError= */ true)) {
               setAllTextFieldsPlaceholder(String.valueOf(placeholderEditText.getText()));
               showToast(R.string.cat_textfield_toast_placeholder_text);
             }
@@ -134,7 +124,7 @@ public abstract class TextFieldControllableDemoFragment extends TextFieldDemoFra
     counterEditText.setOnEditorActionListener(
         (v, actionId, event) -> {
           if (actionId == EditorInfo.IME_ACTION_DONE) {
-            if (!checkTextInputIsNull(counterMaxTextField)) {
+            if (!checkTextInputIsNull(counterMaxTextField, /* showError= */ true)) {
               int length = Integer.parseInt(counterEditText.getText().toString());
               setAllTextFieldsCounterMax(length);
               showToast(R.string.cat_textfield_toast_counter_text);
@@ -142,6 +132,37 @@ public abstract class TextFieldControllableDemoFragment extends TextFieldDemoFra
             return true;
           }
           return false;
+        });
+
+    // Initialize button for updating all customizable fields.
+    Button updateButton = view.findViewById(R.id.button_update);
+    updateButton.setOnClickListener(
+        v -> {
+          boolean updated = false;
+          if (!checkTextInputIsNull(labelTextField, /* showError= */ false)) {
+            setAllTextFieldsLabel(String.valueOf(labelEditText.getText()));
+            updated = true;
+          }
+          if (!checkTextInputIsNull(textInputError, /* showError= */ false)) {
+            updateErrorText(String.valueOf(inputErrorEditText.getText()), toggleErrorButton);
+            updated = true;
+          }
+          if (!checkTextInputIsNull(helperTextTextField, /* showError= */ false)) {
+            setAllTextFieldsHelperText(String.valueOf(helperTextEditText.getText()));
+            updated = true;
+          }
+          if (!checkTextInputIsNull(counterMaxTextField, /* showError= */ false)) {
+            int length = Integer.parseInt(counterEditText.getText().toString());
+            setAllTextFieldsCounterMax(length);
+            updated = true;
+          }
+          if (!checkTextInputIsNull(placeholderTextField, /* showError= */ false)) {
+            setAllTextFieldsPlaceholder(String.valueOf(placeholderEditText.getText()));
+            updated = true;
+          }
+          if (updated) {
+            showToast(R.string.cat_textfield_toast_update_button);
+          }
         });
 
     // Initializing switch to toggle between disabling or enabling text fields.
@@ -177,6 +198,20 @@ public abstract class TextFieldControllableDemoFragment extends TextFieldDemoFra
     }
   }
 
+  private void updateErrorText(String errorText, Button toggleErrorButton) {
+    this.errorText = errorText;
+    // if error already showing, call setError again to update its text.
+    if (toggleErrorButton
+        .getText()
+        .toString()
+        .equals(getResources().getString(R.string.cat_textfield_hide_error_text))) {
+      for (TextInputLayout textfield : textfields) {
+        setErrorIconClickListeners(textfield);
+        textfield.setError(errorText);
+      }
+    }
+  }
+
   private void setErrorIconClickListeners(TextInputLayout textfield) {
     textfield.setErrorIconOnClickListener(
         v -> showToast(R.string.cat_textfield_toast_error_icon_click));
@@ -205,11 +240,13 @@ public abstract class TextFieldControllableDemoFragment extends TextFieldDemoFra
     }
   }
 
-  private boolean checkTextInputIsNull(TextInputLayout textInputLayout) {
+  private boolean checkTextInputIsNull(TextInputLayout textInputLayout, boolean showError) {
     if (textInputLayout.getEditText().getText() == null
         || textInputLayout.getEditText().length() == 0) {
-      textInputLayout.setError(
-          getResources().getString(R.string.cat_textfield_null_input_error_text));
+      if (showError) {
+        textInputLayout.setError(
+            getResources().getString(R.string.cat_textfield_null_input_error_text));
+      }
       return true;
     }
     textInputLayout.setError(null);
