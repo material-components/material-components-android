@@ -70,7 +70,7 @@ public class MaterialToolbar extends Toolbar {
 
   private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_Toolbar;
 
-  private static final ImageView.ScaleType[] sScaleTypeArray = {
+  private static final ImageView.ScaleType[] LOGO_SCALE_TYPE_ARRAY = {
       ImageView.ScaleType.MATRIX,
       ImageView.ScaleType.FIT_XY,
       ImageView.ScaleType.FIT_START,
@@ -113,8 +113,8 @@ public class MaterialToolbar extends Toolbar {
     subtitleCentered = a.getBoolean(R.styleable.MaterialToolbar_subtitleCentered, false);
 
     final int index = a.getInt(R.styleable.MaterialToolbar_logoScaleType, -1);
-    if (index >= 0 && index < sScaleTypeArray.length) {
-      logoScaleType = (sScaleTypeArray[index]);
+    if (index >= 0 && index < LOGO_SCALE_TYPE_ARRAY.length) {
+      logoScaleType = (LOGO_SCALE_TYPE_ARRAY[index]);
     } else {
       logoScaleType = ImageView.ScaleType.FIT_CENTER;
     }
