@@ -19,6 +19,9 @@ package com.google.android.material.card;
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static com.google.android.material.card.MaterialCardView.CHECKED_ICON_GRAVITY_BOTTOM_END;
+import static com.google.android.material.card.MaterialCardView.CHECKED_ICON_GRAVITY_BOTTOM_START;
+import static com.google.android.material.card.MaterialCardView.CHECKED_ICON_GRAVITY_TOP_END;
 
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -45,6 +48,7 @@ import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
 import androidx.cardview.widget.CardView;
+import com.google.android.material.card.MaterialCardView.CheckedIconGravity;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.ripple.RippleUtils;
@@ -96,6 +100,7 @@ class MaterialCardViewHelper {
 
   @Dimension private int checkedIconMargin;
   @Dimension private int checkedIconSize;
+  @CheckedIconGravity private int checkedIconGravity;
   @Dimension private int strokeWidth;
 
   // If card is clickable, this is the clickableForegroundDrawable otherwise it draws the stroke.
@@ -161,6 +166,9 @@ class MaterialCardViewHelper {
         attributes.getDimensionPixelSize(R.styleable.MaterialCardView_checkedIconSize, 0));
     setCheckedIconMargin(
         attributes.getDimensionPixelSize(R.styleable.MaterialCardView_checkedIconMargin, 0));
+    checkedIconGravity =
+        attributes.getInteger(
+            R.styleable.MaterialCardView_checkedIconGravity, CHECKED_ICON_GRAVITY_TOP_END);
 
     rippleColor =
         MaterialResources.getColorStateList(
@@ -413,15 +421,30 @@ class MaterialCardViewHelper {
 
   void onMeasure(int measuredWidth, int measuredHeight) {
     if (clickableForegroundDrawable != null) {
-      int left = measuredWidth - checkedIconMargin - checkedIconSize;
-      int bottom = measuredHeight - checkedIconMargin - checkedIconSize;
+      int left =
+          isCheckedIconEnd()
+              ? measuredWidth - checkedIconMargin - checkedIconSize
+              : checkedIconMargin;
+      int bottom =
+          isCheckedIconBottom()
+              ? checkedIconMargin
+              : measuredHeight - checkedIconMargin - checkedIconSize;
+
       boolean isPreLollipop = VERSION.SDK_INT < VERSION_CODES.LOLLIPOP;
       if (isPreLollipop || materialCardView.getUseCompatPadding()) {
         bottom -= (int) Math.ceil(2f * calculateVerticalBackgroundPadding());
         left -= (int) Math.ceil(2f * calculateHorizontalBackgroundPadding());
       }
 
-      int right = checkedIconMargin;
+      int right =
+          isCheckedIconEnd()
+              ? checkedIconMargin
+              : measuredWidth - checkedIconMargin - checkedIconSize;
+      int top =
+          isCheckedIconBottom()
+              ? measuredHeight - checkedIconMargin - checkedIconSize
+              : checkedIconMargin;
+
       if (ViewCompat.getLayoutDirection(materialCardView) == ViewCompat.LAYOUT_DIRECTION_RTL) {
         // swap left and right
         int tmp = right;
@@ -430,7 +453,7 @@ class MaterialCardViewHelper {
       }
 
       clickableForegroundDrawable.setLayerInset(
-          CHECKED_ICON_LAYER_INDEX, left, checkedIconMargin /* top */, right, bottom);
+          CHECKED_ICON_LAYER_INDEX, left, top /* top */, right, bottom);
     }
   }
 
@@ -655,5 +678,24 @@ class MaterialCardViewHelper {
     if (checkedIcon != null) {
       checkedIcon.setAlpha(checked ? 255 : 0);
     }
+  }
+
+  @CheckedIconGravity
+  int getCheckedIconGravity() {
+    return checkedIconGravity;
+  }
+
+  void setCheckedIconGravity(@CheckedIconGravity int checkedIconGravity) {
+    this.checkedIconGravity = checkedIconGravity;
+  }
+
+  private boolean isCheckedIconEnd() {
+    return checkedIconGravity == CHECKED_ICON_GRAVITY_TOP_END
+        || checkedIconGravity == CHECKED_ICON_GRAVITY_BOTTOM_END;
+  }
+
+  private boolean isCheckedIconBottom() {
+    return checkedIconGravity == CHECKED_ICON_GRAVITY_BOTTOM_START
+        || checkedIconGravity == CHECKED_ICON_GRAVITY_BOTTOM_END;
   }
 }

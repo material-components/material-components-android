@@ -18,6 +18,7 @@
   <public name="cardForegroundColor" type="attr"/>
   <public name="checkedIconSize" type="attr"/>
   <public name="checkedIconMargin" type="attr"/>
+  <public name="checkedIconGravity" type="attr"/>
   <public name="materialCardViewStyle" type="attr"/>
   <public name="materialCardViewOutlinedStyle" type="attr"/>
   <public name="materialCardViewFilledStyle" type="attr"/>
