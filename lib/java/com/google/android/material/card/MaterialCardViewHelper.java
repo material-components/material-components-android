@@ -19,8 +19,6 @@ package com.google.android.material.card;
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
-import static com.google.android.material.card.MaterialCardView.CHECKED_ICON_GRAVITY_BOTTOM_END;
-import static com.google.android.material.card.MaterialCardView.CHECKED_ICON_GRAVITY_BOTTOM_START;
 import static com.google.android.material.card.MaterialCardView.CHECKED_ICON_GRAVITY_TOP_END;
 
 import android.content.res.ColorStateList;
@@ -38,6 +36,7 @@ import android.os.Build.VERSION_CODES;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.View;
 import androidx.annotation.ColorInt;
 import androidx.annotation.Dimension;
@@ -690,12 +689,10 @@ class MaterialCardViewHelper {
   }
 
   private boolean isCheckedIconEnd() {
-    return checkedIconGravity == CHECKED_ICON_GRAVITY_TOP_END
-        || checkedIconGravity == CHECKED_ICON_GRAVITY_BOTTOM_END;
+    return (checkedIconGravity & Gravity.END) == Gravity.END;
   }
 
   private boolean isCheckedIconBottom() {
-    return checkedIconGravity == CHECKED_ICON_GRAVITY_BOTTOM_START
-        || checkedIconGravity == CHECKED_ICON_GRAVITY_BOTTOM_END;
+    return (checkedIconGravity & Gravity.BOTTOM) == Gravity.BOTTOM;
   }
 }

@@ -30,6 +30,7 @@ import android.os.Build.VERSION_CODES;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
@@ -103,7 +104,7 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
    * @see #setCheckedIconGravity(int)
    * @see #getCheckedIconGravity()
    */
-  public static final int CHECKED_ICON_GRAVITY_TOP_START = 0x1;
+  public static final int CHECKED_ICON_GRAVITY_TOP_START = Gravity.TOP | Gravity.START;
 
   /**
    * Gravity used to position the checked icon at the bottom|start of the Card.
@@ -111,7 +112,7 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
    * @see #setCheckedIconGravity(int)
    * @see #getCheckedIconGravity()
    */
-  public static final int CHECKED_ICON_GRAVITY_BOTTOM_START = 0x2;
+  public static final int CHECKED_ICON_GRAVITY_BOTTOM_START = Gravity.BOTTOM | Gravity.START;
 
   /**
    * Gravity used to position the checked icon at the top|end of the Card.
@@ -119,7 +120,7 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
    * @see #setCheckedIconGravity(int)
    * @see #getCheckedIconGravity()
    */
-  public static final int CHECKED_ICON_GRAVITY_TOP_END = 0x3;
+  public static final int CHECKED_ICON_GRAVITY_TOP_END = Gravity.TOP | Gravity.END;
 
   /**
    * Gravity used to position the checked icon at the bottom|end of the Card.
@@ -127,7 +128,7 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
    * @see #setCheckedIconGravity(int)
    * @see #getCheckedIconGravity()
    */
-  public static final int CHECKED_ICON_GRAVITY_BOTTOM_END = 0x4;
+  public static final int CHECKED_ICON_GRAVITY_BOTTOM_END = Gravity.BOTTOM | Gravity.END;
 
   /** Positions the icon can be set to. */
   @IntDef({
