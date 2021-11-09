@@ -309,6 +309,20 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
     }
   }
 
+  /*
+  * This method should be called if the outlined ripple background should be updated. For example,
+  * if a new {@link ShapeAppearanceModel} is set on the text field.
+  */
+  void updateOutlinedRippleEffect(@NonNull AutoCompleteTextView editText) {
+    if (isEditable(editText)
+        || textInputLayout.getBoxBackgroundMode() != TextInputLayout.BOX_BACKGROUND_OUTLINE
+        || !(editText.getBackground() instanceof LayerDrawable)) {
+      return;
+    }
+
+    addRippleEffect(editText);
+  }
+
   /* Add ripple effect to non editable layouts. */
   private void addRippleEffect(@NonNull AutoCompleteTextView editText) {
     if (isEditable(editText)) {
