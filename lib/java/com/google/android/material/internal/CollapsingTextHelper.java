@@ -155,7 +155,6 @@ public final class CollapsingTextHelper {
   private float collapsedTextWidth;
   private float collapsedTextBlend;
   private float expandedTextBlend;
-  private float expandedFirstLineDrawX;
   private CharSequence textToDrawCollapsed;
   private int maxLines = 1;
   private float lineSpacingAdd = StaticLayoutBuilderCompat.DEFAULT_LINE_SPACING_ADD;
@@ -711,10 +710,6 @@ public final class CollapsingTextHelper {
     float measuredWidth = textToDraw != null
         ? textPaint.measureText(textToDraw, 0, textToDraw.length()) : 0;
     float width = textLayout != null && maxLines > 1 ? textLayout.getWidth() : measuredWidth;
-    expandedFirstLineDrawX =
-        textLayout != null
-            ? maxLines > 1 ? textLayout.getLineStart(0) : textLayout.getLineLeft(0)
-            : 0;
 
     final int expandedAbsGravity =
         GravityCompat.getAbsoluteGravity(
@@ -781,9 +776,6 @@ public final class CollapsingTextHelper {
     final int saveCount = canvas.save();
     // Compute where to draw textLayout for this frame
     if (textToDraw != null && drawTitle) {
-      float firstLineX = maxLines > 1 ? textLayout.getLineStart(0) : textLayout.getLineLeft(0);
-      final float currentExpandedX = currentDrawX + firstLineX - expandedFirstLineDrawX * 2;
-
       textPaint.setTextSize(currentTextSize);
       float x = currentDrawX;
       float y = currentDrawY;
@@ -812,7 +804,7 @@ public final class CollapsingTextHelper {
 
       if (shouldDrawMultiline()
           && (!fadeModeEnabled || expandedFraction > fadeModeThresholdFraction)) {
-        drawMultilineTransition(canvas, currentExpandedX, y);
+        drawMultilineTransition(canvas, currentDrawX - textLayout.getLineStart(0), y);
       } else {
         canvas.translate(x, y);
         textLayout.draw(canvas);
