@@ -665,12 +665,8 @@ public final class CollapsingTextHelper {
           TextUtils.ellipsize(textToDraw, textPaint, textLayout.getWidth(), TruncateAt.END);
     }
     if (textToDrawCollapsed != null) {
-      TextPaint collapsedTextPaint = new TextPaint(textPaint);
-      if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-        collapsedTextPaint.setLetterSpacing(collapsedLetterSpacing);
-      }
-      collapsedTextWidth =
-          collapsedTextPaint.measureText(textToDrawCollapsed, 0, textToDrawCollapsed.length());
+      getTextPaintCollapsed(tmpPaint);
+      collapsedTextWidth = measureTextWidth(tmpPaint, textToDrawCollapsed);
     } else {
       collapsedTextWidth = 0;
     }
@@ -708,11 +704,14 @@ public final class CollapsingTextHelper {
 
     calculateUsingTextSize(expandedTextSize, forceRecalculate);
     float expandedTextHeight = textLayout != null ? textLayout.getHeight() : 0;
+    float expandedTextWidth = 0;
+    if (textLayout != null && maxLines > 1) {
+      expandedTextWidth = textLayout.getWidth();
+    } else if (textToDraw != null) {
+      getTextPaintExpanded(tmpPaint);
+      expandedTextWidth = measureTextWidth(tmpPaint, textToDraw);
+    }
     expandedLineCount = textLayout != null ? textLayout.getLineCount() : 0;
-
-    float measuredWidth = textToDraw != null
-        ? textPaint.measureText(textToDraw, 0, textToDraw.length()) : 0;
-    float width = textLayout != null && maxLines > 1 ? textLayout.getWidth() : measuredWidth;
 
     final int expandedAbsGravity =
         GravityCompat.getAbsoluteGravity(
@@ -734,10 +733,10 @@ public final class CollapsingTextHelper {
 
     switch (expandedAbsGravity & GravityCompat.RELATIVE_HORIZONTAL_GRAVITY_MASK) {
       case Gravity.CENTER_HORIZONTAL:
-        expandedDrawX = expandedBounds.centerX() - (width / 2);
+        expandedDrawX = expandedBounds.centerX() - (expandedTextWidth / 2);
         break;
       case Gravity.RIGHT:
-        expandedDrawX = expandedBounds.right - width;
+        expandedDrawX = expandedBounds.right - expandedTextWidth;
         break;
       case Gravity.LEFT:
       default:
@@ -749,6 +748,10 @@ public final class CollapsingTextHelper {
     clearTexture();
     // Now reset the text size back to the original
     setInterpolatedTextSize(currentTextSize);
+  }
+
+  private float measureTextWidth(TextPaint textPaint, CharSequence textToDraw) {
+    return textPaint.measureText(textToDraw, 0, textToDraw.length());
   }
 
   private void interpolateBounds(float fraction) {
@@ -787,9 +790,9 @@ public final class CollapsingTextHelper {
       if (DEBUG_DRAW) {
         // Just a debug tool, which drawn a magenta rect in the text bounds
         canvas.drawRect(
-            currentBounds.left,
+            x,
             y,
-            currentBounds.right,
+            x + textLayout.getWidth() * scale,
             y + textLayout.getHeight() * scale,
             DEBUG_DRAW_PAINT);
       }
