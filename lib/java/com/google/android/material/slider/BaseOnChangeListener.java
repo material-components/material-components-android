@@ -17,15 +17,10 @@
 package com.google.android.material.slider;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RestrictTo;
-import androidx.annotation.RestrictTo.Scope;
 
 /**
  * Interface definition for a callback invoked when a slider's value is changed.
- *
- * @hide
  */
-@RestrictTo(Scope.LIBRARY_GROUP)
 public interface BaseOnChangeListener<S> {
 
   /** Called when the value of the slider changes. */
