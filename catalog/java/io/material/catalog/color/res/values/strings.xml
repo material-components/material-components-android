@@ -35,4 +35,36 @@
 
   <string name="cat_color_res" translatable="false">%1$s%2$s</string>
 
+  <string name="cat_color_role_background" translatable="false">Background</string>
+  <string name="cat_color_role_on_background" translatable="false">On Background</string>
+  <string name="cat_color_role_surface" translatable="false">Surface</string>
+  <string name="cat_color_role_on_surface" translatable="false">On Surface</string>
+  <string name="cat_color_role_surface_variant" translatable="false">Surface Variant</string>
+  <string name="cat_color_role_on_surface_variant" translatable="false">On Surface Variant</string>
+  <string name="cat_color_role_inverse_surface" translatable="false">Inverse Surface</string>
+  <string name="cat_color_role_inverse_on_surface" translatable="false">Inverse On Surface</string>
+
+  <string name="cat_color_surfaces" translatable="false">Surfaces</string>
+  <string name="cat_color_utility" translatable="false">Utility</string>
+  <string name="cat_color_content" translatable="false">Content</string>
+
+  <string name="cat_color_role_primary" translatable="false">Primary</string>
+  <string name="cat_color_role_on_primary" translatable="false">On Primary</string>
+  <string name="cat_color_role_primary_container" translatable="false">Primary Container</string>
+  <string name="cat_color_role_on_primary_container" translatable="false">On Primary Container</string>
+  <string name="cat_color_role_inverse_primary" translatable="false">Inverse Primary</string>
+  <string name="cat_color_role_secondary" translatable="false">Secondary</string>
+  <string name="cat_color_role_on_secondary" translatable="false">On Secondary</string>
+  <string name="cat_color_role_secondary_container" translatable="false">Secondary Container</string>
+  <string name="cat_color_role_on_secondary_container" translatable="false">On Secondary Container</string>
+  <string name="cat_color_role_tertiary" translatable="false">Tertiary</string>
+  <string name="cat_color_role_on_tertiary" translatable="false">On Tertiary</string>
+  <string name="cat_color_role_tertiary_container" translatable="false">Tertiary Container</string>
+  <string name="cat_color_role_on_tertiary_container" translatable="false">On Tertiary Container</string>
+  <string name="cat_color_role_error" translatable="false">Error</string>
+  <string name="cat_color_role_on_error" translatable="false">On Error</string>
+  <string name="cat_color_role_error_container" translatable="false">Error Container</string>
+  <string name="cat_color_role_on_error_container" translatable="false">On Error Container</string>
+  <string name="cat_color_role_outline" translatable="false">Outline</string>
+
 </resources>
