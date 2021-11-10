@@ -418,30 +418,32 @@ class MaterialCardViewHelper {
     this.checkedIconMargin = checkedIconMargin;
   }
 
-  void onMeasure(int measuredWidth, int measuredHeight) {
+  void recalculateCheckedIconPosition(int measuredWidth, int measuredHeight) {
     if (clickableForegroundDrawable != null) {
+      boolean isPreLollipop = VERSION.SDK_INT < VERSION_CODES.LOLLIPOP;
+      int verticalPaddingAdjustment = 0;
+      int horizontalPaddingAdjustment = 0;
+      if (isPreLollipop || materialCardView.getUseCompatPadding()) {
+        verticalPaddingAdjustment = (int) Math.ceil(2f * calculateVerticalBackgroundPadding());
+        horizontalPaddingAdjustment = (int) Math.ceil(2f * calculateHorizontalBackgroundPadding());
+      }
+
       int left =
           isCheckedIconEnd()
-              ? measuredWidth - checkedIconMargin - checkedIconSize
+              ? measuredWidth - checkedIconMargin - checkedIconSize - horizontalPaddingAdjustment
               : checkedIconMargin;
       int bottom =
           isCheckedIconBottom()
               ? checkedIconMargin
-              : measuredHeight - checkedIconMargin - checkedIconSize;
-
-      boolean isPreLollipop = VERSION.SDK_INT < VERSION_CODES.LOLLIPOP;
-      if (isPreLollipop || materialCardView.getUseCompatPadding()) {
-        bottom -= (int) Math.ceil(2f * calculateVerticalBackgroundPadding());
-        left -= (int) Math.ceil(2f * calculateHorizontalBackgroundPadding());
-      }
+              : measuredHeight - checkedIconMargin - checkedIconSize - verticalPaddingAdjustment;
 
       int right =
           isCheckedIconEnd()
               ? checkedIconMargin
-              : measuredWidth - checkedIconMargin - checkedIconSize;
+              : measuredWidth - checkedIconMargin - checkedIconSize - horizontalPaddingAdjustment;
       int top =
           isCheckedIconBottom()
-              ? measuredHeight - checkedIconMargin - checkedIconSize
+              ? measuredHeight - checkedIconMargin - checkedIconSize - verticalPaddingAdjustment
               : checkedIconMargin;
 
       if (ViewCompat.getLayoutDirection(materialCardView) == ViewCompat.LAYOUT_DIRECTION_RTL) {
@@ -451,8 +453,7 @@ class MaterialCardViewHelper {
         left = tmp;
       }
 
-      clickableForegroundDrawable.setLayerInset(
-          CHECKED_ICON_LAYER_INDEX, left, top /* top */, right, bottom);
+      clickableForegroundDrawable.setLayerInset(CHECKED_ICON_LAYER_INDEX, left, top, right, bottom);
     }
   }
 
@@ -686,6 +687,8 @@ class MaterialCardViewHelper {
 
   void setCheckedIconGravity(@CheckedIconGravity int checkedIconGravity) {
     this.checkedIconGravity = checkedIconGravity;
+    recalculateCheckedIconPosition(
+        materialCardView.getMeasuredWidth(), materialCardView.getMeasuredHeight());
   }
 
   private boolean isCheckedIconEnd() {

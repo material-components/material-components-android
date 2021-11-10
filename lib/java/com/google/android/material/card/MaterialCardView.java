@@ -204,7 +204,7 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
   @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    cardViewHelper.onMeasure(getMeasuredWidth(), getMeasuredHeight());
+    cardViewHelper.recalculateCheckedIconPosition(getMeasuredWidth(), getMeasuredHeight());
   }
 
   /**
