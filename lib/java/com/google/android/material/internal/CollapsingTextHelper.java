@@ -17,7 +17,9 @@
 package com.google.android.material.internal;
 
 import static androidx.core.util.Preconditions.checkNotNull;
+import static android.text.Layout.Alignment.ALIGN_CENTER;
 import static android.text.Layout.Alignment.ALIGN_NORMAL;
+import static android.text.Layout.Alignment.ALIGN_OPPOSITE;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -36,6 +38,7 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
+import android.text.Layout.Alignment;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.text.TextUtils;
@@ -820,7 +823,7 @@ public final class CollapsingTextHelper {
 
   private void drawMultilineTransition(@NonNull Canvas canvas, float currentExpandedX, float y) {
     int originalAlpha = textPaint.getAlpha();
-    // positon expanded text appropriately
+    // position expanded text appropriately
     canvas.translate(currentExpandedX, y);
     // Expanded text
     textPaint.setAlpha((int) (expandedTextBlend * originalAlpha));
@@ -967,11 +970,13 @@ public final class CollapsingTextHelper {
   private StaticLayout createStaticLayout(int maxLines, float availableWidth, boolean isRtl) {
     StaticLayout textLayout = null;
     try {
+      // In multiline mode, the text alignment should be controlled by the static layout.
+      Alignment textAlignment = maxLines == 1 ? ALIGN_NORMAL : getMultilineTextLayoutAlignment();
       textLayout =
           StaticLayoutBuilderCompat.obtain(text, textPaint, (int) availableWidth)
               .setEllipsize(TruncateAt.END)
               .setIsRtl(isRtl)
-              .setAlignment(ALIGN_NORMAL)
+              .setAlignment(textAlignment)
               .setIncludePad(false)
               .setMaxLines(maxLines)
               .setLineSpacing(lineSpacingAdd, lineSpacingMultiplier)
@@ -982,6 +987,21 @@ public final class CollapsingTextHelper {
     }
 
     return checkNotNull(textLayout);
+  }
+
+  private Alignment getMultilineTextLayoutAlignment() {
+    int absoluteGravity =
+        GravityCompat.getAbsoluteGravity(
+            expandedTextGravity,
+            isRtl ? ViewCompat.LAYOUT_DIRECTION_RTL : ViewCompat.LAYOUT_DIRECTION_LTR);
+    switch (absoluteGravity & Gravity.HORIZONTAL_GRAVITY_MASK) {
+      case Gravity.CENTER_HORIZONTAL:
+        return ALIGN_CENTER;
+      case Gravity.RIGHT:
+        return isRtl ? ALIGN_NORMAL : ALIGN_OPPOSITE;
+      default:
+        return isRtl ? ALIGN_OPPOSITE : ALIGN_NORMAL;
+    }
   }
 
   private void ensureExpandedTexture() {
