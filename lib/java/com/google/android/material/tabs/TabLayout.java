@@ -689,7 +689,7 @@ public class TabLayout extends HorizontalScrollView {
     if (scrollAnimator != null && scrollAnimator.isRunning()) {
       scrollAnimator.cancel();
     }
-    scrollTo(calculateScrollXForTab(position, positionOffset), 0);
+    scrollTo(position < 0 ? 0 : calculateScrollXForTab(position, positionOffset), 0);
 
     // Update the 'selected state' view as we scroll, if enabled
     if (updateSelectedText) {
@@ -1881,11 +1881,14 @@ public class TabLayout extends HorizontalScrollView {
   private int calculateScrollXForTab(int position, float positionOffset) {
     if (mode == MODE_SCROLLABLE || mode == MODE_AUTO) {
       final View selectedChild = slidingTabIndicator.getChildAt(position);
+      if (selectedChild == null) {
+        return 0;
+      }
       final View nextChild =
           position + 1 < slidingTabIndicator.getChildCount()
               ? slidingTabIndicator.getChildAt(position + 1)
               : null;
-      final int selectedWidth = selectedChild != null ? selectedChild.getWidth() : 0;
+      final int selectedWidth = selectedChild.getWidth();
       final int nextWidth = nextChild != null ? nextChild.getWidth() : 0;
 
       // base scroll amount: places center of tab in center of parent
