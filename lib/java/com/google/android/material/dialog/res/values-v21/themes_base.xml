@@ -15,8 +15,7 @@
     limitations under the License.
 -->
 <resources>
-
-  <!-- ThemeOverlay for Framework Alert Dialogs. -->
+  <!-- MaterialComponents ThemeOverlays for Framework Alert Dialogs. -->
 
   <style name="Base.ThemeOverlay.MaterialComponents.Dialog.Alert.Framework" parent="@android:style/Theme.Material.Dialog.Alert">
     <item name="android:buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush</item>

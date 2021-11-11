@@ -42,26 +42,26 @@
     <item name="textInputStyle">@style/Widget.Shrine.TextInputLayout</item>
   </style>
 
-  <style name="ShapeAppearance.Shrine.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+  <style name="ShapeAppearance.Shrine.SmallComponent" parent="ShapeAppearance.Material3.SmallComponent">
     <item name="cornerFamily">cut</item>
     <item name="cornerSize">4dp</item>
   </style>
 
-  <style name="ShapeAppearance.Shrine.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+  <style name="ShapeAppearance.Shrine.MediumComponent" parent="ShapeAppearance.Material3.MediumComponent">
     <item name="cornerFamily">cut</item>
     <item name="cornerSize">8dp</item>
   </style>
 
-  <style name="ShapeAppearance.Shrine.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+  <style name="ShapeAppearance.Shrine.LargeComponent" parent="ShapeAppearance.Material3.LargeComponent">
     <item name="cornerFamily">cut</item>
     <item name="cornerSize">24dp</item>
   </style>
 
-  <style name="Widget.Shrine.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
+  <style name="Widget.Shrine.FloatingActionButton" parent="Widget.Material3.FloatingActionButton.Primary">
     <item name="shapeAppearanceOverlay">@null</item>
   </style>
 
-  <style name="Widget.Shrine.Chip" parent="Widget.MaterialComponents.Chip.Choice">
+  <style name="Widget.Shrine.Chip" parent="Widget.Material3.Chip.Filter">
     <item name="chipCornerRadius">@null</item>
     <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Shrine.Chip</item>
   </style>
@@ -71,13 +71,13 @@
     <item name="cornerSize">4dp</item>
   </style>
 
-  <style name="Widget.Shrine.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox"/>
+  <style name="Widget.Shrine.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox"/>
 
-   <style name="Theme.Shrine.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+   <style name="Theme.Shrine.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
     <item name="bottomSheetStyle">@style/Widget.Shrine.BottomSheet.Modal</item>
   </style>
 
-  <style name="Widget.Shrine.BottomSheet.Modal" parent="Widget.MaterialComponents.BottomSheet.Modal">
+  <style name="Widget.Shrine.BottomSheet.Modal" parent="Widget.Material3.BottomSheet.Modal">
     <item name="android:background">?android:attr/colorBackground</item>
     <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Shrine.BottomSheet</item>
     <item name="backgroundTint">?attr/colorPrimary</item>
@@ -114,22 +114,22 @@
     <item name="textInputStyle">@style/Widget.Fortnightly.TextInputLayout</item>
   </style>
 
-  <style name="ShapeAppearance.Fortnightly.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+  <style name="ShapeAppearance.Fortnightly.SmallComponent" parent="ShapeAppearance.Material3.SmallComponent">
     <item name="cornerFamily">cut</item>
     <item name="cornerSize">0dp</item>
   </style>
 
-  <style name="ShapeAppearance.Fortnightly.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+  <style name="ShapeAppearance.Fortnightly.MediumComponent" parent="ShapeAppearance.Material3.MediumComponent">
     <item name="cornerFamily">cut</item>
     <item name="cornerSize">0dp</item>
   </style>
 
-  <style name="ShapeAppearance.Fortnightly.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+  <style name="ShapeAppearance.Fortnightly.LargeComponent" parent="ShapeAppearance.Material3.LargeComponent">
     <item name="cornerFamily">cut</item>
     <item name="cornerSize">0dp</item>
   </style>
 
-  <style name="Widget.Fortnightly.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
+  <style name="Widget.Fortnightly.FloatingActionButton" parent="Widget.Material3.FloatingActionButton.Primary">
     <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Fortnightly.FloatingActionButton</item>
   </style>
 
@@ -137,18 +137,18 @@
     <item name="cornerSize">@null</item>
   </style>
 
-  <style name="Widget.Fortnightly.Chip" parent="Widget.MaterialComponents.Chip.Choice">
+  <style name="Widget.Fortnightly.Chip" parent="Widget.Material3.Chip.Filter">
     <item name="shapeAppearanceOverlay">@null</item>
     <item name="chipCornerRadius">@null</item>
   </style>
 
-  <style name="Widget.Fortnightly.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox"/>
+  <style name="Widget.Fortnightly.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox"/>
 
-  <style name="Theme.Fortnightly.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+  <style name="Theme.Fortnightly.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
     <item name="bottomSheetStyle">@style/Widget.Fortnightly.BottomSheet.Modal</item>
   </style>
 
-  <style name="Widget.Fortnightly.BottomSheet.Modal" parent="Widget.MaterialComponents.BottomSheet.Modal">
+  <style name="Widget.Fortnightly.BottomSheet.Modal" parent="Widget.Material3.BottomSheet.Modal">
     <item name="shapeAppearance">?attr/shapeAppearanceLargeComponent</item>
     <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Fortnightly.BottomSheet</item>
     <item name="backgroundTint">?attr/colorPrimary</item>
@@ -186,33 +186,33 @@
     <item name="textInputStyle">@style/Widget.Crane.TextInputLayout</item>
   </style>
 
-  <style name="ShapeAppearance.Crane.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+  <style name="ShapeAppearance.Crane.SmallComponent" parent="ShapeAppearance.Material3.SmallComponent">
     <item name="cornerFamily">rounded</item>
     <item name="cornerSize">4dp</item>
   </style>
 
-  <style name="ShapeAppearance.Crane.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+  <style name="ShapeAppearance.Crane.MediumComponent" parent="ShapeAppearance.Material3.MediumComponent">
     <item name="cornerFamily">rounded</item>
     <item name="cornerSize">16dp</item>
   </style>
 
-  <style name="ShapeAppearance.Crane.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+  <style name="ShapeAppearance.Crane.LargeComponent" parent="ShapeAppearance.Material3.LargeComponent">
     <item name="cornerFamily">rounded</item>
     <item name="cornerSize">20dp</item>
   </style>
 
-  <style name="Widget.Crane.Chip" parent="Widget.MaterialComponents.Chip.Choice">
+  <style name="Widget.Crane.Chip" parent="Widget.Material3.Chip.Filter">
     <item name="shapeAppearanceOverlay">@null</item>
     <item name="chipCornerRadius">@null</item>
   </style>
 
-  <style name="Widget.Crane.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox"/>
+  <style name="Widget.Crane.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox"/>
 
-  <style name="Theme.Crane.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+  <style name="Theme.Crane.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
     <item name="bottomSheetStyle">@style/Widget.Crane.BottomSheet.Modal</item>
   </style>
 
-   <style name="Widget.Crane.BottomSheet.Modal" parent="Widget.MaterialComponents.BottomSheet.Modal">
+   <style name="Widget.Crane.BottomSheet.Modal" parent="Widget.Material3.BottomSheet.Modal">
     <item name="shapeAppearance">?attr/shapeAppearanceLargeComponent</item>
     <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Crane.BottomSheet</item>
     <item name="backgroundTint">?attr/colorPrimary</item>

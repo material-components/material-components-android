@@ -824,7 +824,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     }
 
     // Behavior attrs should be nullable in the framework
-    @SuppressWarnings("argument.type.incompatible")
+    @SuppressWarnings("nullness:argument")
     public ExtendedFloatingActionButtonBehavior(
         @NonNull Context context, @Nullable AttributeSet attrs) {
       super(context, attrs);
@@ -895,7 +895,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     }
 
     @Override
-    @SuppressWarnings({"unchecked"})
+    @SuppressWarnings("unchecked")
     // TODO: remove this stub method. Adding now to mantain compatibility since the override is
     // not correct.
     public boolean getInsetDodgeRect(

@@ -33,6 +33,7 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
+import androidx.annotation.ChecksSdkIntAtLeast;
 import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -50,7 +51,11 @@ import com.google.android.material.shape.Shapeable;
 @RestrictTo(LIBRARY_GROUP)
 class MaterialButtonHelper {
 
-  private static final boolean IS_LOLLIPOP = VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP;
+  @ChecksSdkIntAtLeast(api = VERSION_CODES.LOLLIPOP)
+  private static final boolean IS_MIN_LOLLIPOP = VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP;
+
+  private static final boolean IS_LOLLIPOP =
+      VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP && VERSION.SDK_INT <= VERSION_CODES.LOLLIPOP_MR1;
   private final MaterialButton materialButton;
   @NonNull private ShapeAppearanceModel shapeAppearanceModel;
 
@@ -218,7 +223,7 @@ class MaterialButtonHelper {
             ? MaterialColors.getColor(materialButton, R.attr.colorSurface)
             : Color.TRANSPARENT);
 
-    if (IS_LOLLIPOP) {
+    if (IS_MIN_LOLLIPOP) {
       maskDrawable = new MaterialShapeDrawable(shapeAppearanceModel);
       DrawableCompat.setTint(maskDrawable, Color.WHITE);
       rippleDrawable =
@@ -255,12 +260,13 @@ class MaterialButtonHelper {
   void setRippleColor(@Nullable ColorStateList rippleColor) {
     if (this.rippleColor != rippleColor) {
       this.rippleColor = rippleColor;
-      if (IS_LOLLIPOP && materialButton.getBackground() instanceof RippleDrawable) {
+      if (IS_MIN_LOLLIPOP && materialButton.getBackground() instanceof RippleDrawable) {
         ((RippleDrawable) materialButton.getBackground())
             .setColor(RippleUtils.sanitizeRippleDrawableColor(rippleColor));
-      } else if (!IS_LOLLIPOP && materialButton.getBackground() instanceof RippleDrawableCompat) {
-        ((RippleDrawableCompat) materialButton.getBackground()).setTintList(
-            RippleUtils.sanitizeRippleDrawableColor(rippleColor));
+      } else if (!IS_MIN_LOLLIPOP
+          && materialButton.getBackground() instanceof RippleDrawableCompat) {
+        ((RippleDrawableCompat) materialButton.getBackground())
+            .setTintList(RippleUtils.sanitizeRippleDrawableColor(rippleColor));
       }
     }
   }
@@ -326,7 +332,7 @@ class MaterialButtonHelper {
   @Nullable
   private MaterialShapeDrawable getMaterialShapeDrawable(boolean getSurfaceColorStrokeDrawable) {
     if (rippleDrawable != null && rippleDrawable.getNumberOfLayers() > 0) {
-      if (IS_LOLLIPOP) {
+      if (IS_MIN_LOLLIPOP) {
         InsetDrawable insetDrawable = (InsetDrawable) rippleDrawable.getDrawable(0);
         LayerDrawable layerDrawable = (LayerDrawable) insetDrawable.getDrawable();
         return (MaterialShapeDrawable)
@@ -359,14 +365,28 @@ class MaterialButtonHelper {
   }
 
   private void updateButtonShape(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
-    if (getMaterialShapeDrawable() != null) {
-      getMaterialShapeDrawable().setShapeAppearanceModel(shapeAppearanceModel);
-    }
-    if (getSurfaceColorStrokeDrawable() != null) {
-      getSurfaceColorStrokeDrawable().setShapeAppearanceModel(shapeAppearanceModel);
-    }
-    if (getMaskDrawable() != null) {
-      getMaskDrawable().setShapeAppearanceModel(shapeAppearanceModel);
+      // There seems to be a bug to drawables that is affecting Lollipop, since invalidation is not
+      // changing an existing drawable shape. This is a fallback.
+    if (IS_LOLLIPOP && !backgroundOverwritten) {
+      // Store padding before setting background, since background overwrites padding values
+      int paddingStart = ViewCompat.getPaddingStart(materialButton);
+      int paddingTop = materialButton.getPaddingTop();
+      int paddingEnd = ViewCompat.getPaddingEnd(materialButton);
+      int paddingBottom = materialButton.getPaddingBottom();
+      updateBackground();
+      // Set the stored padding values
+      ViewCompat.setPaddingRelative(
+          materialButton, paddingStart, paddingTop, paddingEnd, paddingBottom);
+    } else {
+      if (getMaterialShapeDrawable() != null) {
+        getMaterialShapeDrawable().setShapeAppearanceModel(shapeAppearanceModel);
+      }
+      if (getSurfaceColorStrokeDrawable() != null) {
+        getSurfaceColorStrokeDrawable().setShapeAppearanceModel(shapeAppearanceModel);
+      }
+      if (getMaskDrawable() != null) {
+        getMaskDrawable().setShapeAppearanceModel(shapeAppearanceModel);
+      }
     }
   }
 
@@ -431,5 +451,4 @@ class MaterialButtonHelper {
   public int getInsetTop() {
     return insetTop;
   }
-
 }

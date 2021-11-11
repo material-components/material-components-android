@@ -37,4 +37,17 @@
   </style>
 
   <style name="TextAppearance.MaterialComponents.Badge" parent="Base.TextAppearance.MaterialComponents.Badge"/>
+
+  <!-- M3 Badge -->
+  <style name="Widget.Material3.Badge" parent="Widget.MaterialComponents.Badge">
+    <!-- Badge "dot" without text -->
+    <item name="badgeRadius">@dimen/m3_badge_radius</item>
+    <item name="horizontalOffset">@dimen/m3_badge_horizontal_offset</item>
+    <item name="verticalOffset">@dimen/m3_badge_vertical_offset</item>
+
+    <!-- Badge with text -->
+    <item name="badgeWithTextRadius">@dimen/m3_badge_with_text_radius</item>
+    <item name="horizontalOffsetWithText">@dimen/m3_badge_with_text_horizontal_offset</item>
+    <item name="verticalOffsetWithText">@dimen/m3_badge_with_text_vertical_offset</item>
+  </style>
 </resources>

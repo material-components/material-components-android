@@ -17,6 +17,7 @@ package com.google.android.material.datepicker;
 
 import com.google.android.material.R;
 
+import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 import android.content.Context;
@@ -126,8 +127,15 @@ final class MaterialCalendarGridView extends GridView {
     MonthAdapter monthAdapter = getAdapter();
     DateSelector<?> dateSelector = monthAdapter.dateSelector;
     CalendarStyle calendarStyle = monthAdapter.calendarStyle;
-    Long firstOfMonth = monthAdapter.getItem(monthAdapter.firstPositionInMonth());
-    Long lastOfMonth = monthAdapter.getItem(monthAdapter.lastPositionInMonth());
+
+    // The grid view might get scrolled and some days are not rendered in item views.
+    int firstVisiblePositionInMonth =
+        max(monthAdapter.firstPositionInMonth(), getFirstVisiblePosition());
+    int lastVisiblePositionInMonth =
+        min(monthAdapter.lastPositionInMonth(), getLastVisiblePosition());
+
+    Long firstOfMonth = monthAdapter.getItem(firstVisiblePositionInMonth);
+    Long lastOfMonth = monthAdapter.getItem(lastVisiblePositionInMonth);
 
     for (Pair<Long, Long> range : dateSelector.getSelectedRanges()) {
       if (range.first == null || range.second == null) {
@@ -143,33 +151,33 @@ final class MaterialCalendarGridView extends GridView {
       int firstHighlightPosition;
       int rangeHighlightStart;
       if (startItem < firstOfMonth) {
-        firstHighlightPosition = monthAdapter.firstPositionInMonth();
+        firstHighlightPosition = firstVisiblePositionInMonth;
         rangeHighlightStart =
             monthAdapter.isFirstInRow(firstHighlightPosition)
                 ? 0
                 : !isRtl
-                    ? getChildAt(firstHighlightPosition - 1).getRight()
-                    : getChildAt(firstHighlightPosition - 1).getLeft();
+                    ? getChildAtPosition(firstHighlightPosition - 1).getRight()
+                    : getChildAtPosition(firstHighlightPosition - 1).getLeft();
       } else {
         dayCompute.setTimeInMillis(startItem);
         firstHighlightPosition = monthAdapter.dayToPosition(dayCompute.get(Calendar.DAY_OF_MONTH));
-        rangeHighlightStart = horizontalMidPoint(getChildAt(firstHighlightPosition));
+        rangeHighlightStart = horizontalMidPoint(getChildAtPosition(firstHighlightPosition));
       }
 
       int lastHighlightPosition;
       int rangeHighlightEnd;
       if (endItem > lastOfMonth) {
-        lastHighlightPosition = min(monthAdapter.lastPositionInMonth(), getChildCount() - 1);
+        lastHighlightPosition = lastVisiblePositionInMonth;
         rangeHighlightEnd =
             monthAdapter.isLastInRow(lastHighlightPosition)
                 ? getWidth()
                 : !isRtl
-                    ? getChildAt(lastHighlightPosition).getRight()
-                    : getChildAt(lastHighlightPosition).getLeft();
+                    ? getChildAtPosition(lastHighlightPosition).getRight()
+                    : getChildAtPosition(lastHighlightPosition).getLeft();
       } else {
         dayCompute.setTimeInMillis(endItem);
         lastHighlightPosition = monthAdapter.dayToPosition(dayCompute.get(Calendar.DAY_OF_MONTH));
-        rangeHighlightEnd = horizontalMidPoint(getChildAt(lastHighlightPosition));
+        rangeHighlightEnd = horizontalMidPoint(getChildAtPosition(lastHighlightPosition));
       }
 
       int firstRow = (int) monthAdapter.getItemId(firstHighlightPosition);
@@ -177,7 +185,7 @@ final class MaterialCalendarGridView extends GridView {
       for (int row = firstRow; row <= lastRow; row++) {
         int firstPositionInRow = row * getNumColumns();
         int lastPositionInRow = firstPositionInRow + getNumColumns() - 1;
-        View firstView = getChildAt(firstPositionInRow);
+        View firstView = getChildAtPosition(firstPositionInRow);
         int top = firstView.getTop() + calendarStyle.day.getTopInset();
         int bottom = firstView.getBottom() - calendarStyle.day.getBottomInset();
         int left;
@@ -225,6 +233,10 @@ final class MaterialCalendarGridView extends GridView {
     } else {
       super.onFocusChanged(true, direction, previouslyFocusedRect);
     }
+  }
+
+  private View getChildAtPosition(int position) {
+    return getChildAt(position - getFirstVisiblePosition());
   }
 
   private static boolean skipMonth(

@@ -96,13 +96,13 @@ import java.util.TreeMap;
  * methods.
  *
  * <p>Note: Styling must applied to each child button individually. It is recommended to use the
- * {@link R.attr#materialButtonOutlinedStyle} attribute for all child buttons. {@link
- * R.attr#materialButtonOutlinedStyle} will most closely match the Material Design guidelines for
- * this component, and supports the checked state for child buttons.
+ * {@code materialButtonOutlinedStyle} attribute for all child buttons. {@code
+ * materialButtonOutlinedStyle} will most closely match the Material Design guidelines for this
+ * component, and supports the checked state for child buttons.
  *
  * <p>Any {@link MaterialButton}s added to this view group are automatically marked as {@code
  * checkable}, and by default multiple buttons within the same group can be checked. To enforce that
- * only one button can be checked at a time, set the {@link R.attr#singleSelection
+ * only one button can be checked at a time, set the {@code
  * app:singleSelection} attribute to {@code true} on the MaterialButtonToggleGroup or call {@link
  * #setSingleSelection(boolean) setSingleSelection(true)}.
  *

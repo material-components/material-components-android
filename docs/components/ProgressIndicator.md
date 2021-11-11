@@ -19,7 +19,7 @@ express an unspecified wait time or display the length of a process.
 *   [Using progress indicators](#using-progress-indicators)
 *   [Linear progress indicators](#linear-progress-indicators)
 *   [Circular progress indicators](#circular-progress-indicators)
-*   [Anatomy](#anatomy)
+*   [Anatomy and key properties](#anatomy-and-key-properties)
 *   [Theming progress indicators](#theming-progress-indicators)
 
 ## Using progress indicators
@@ -34,8 +34,8 @@ loading an app, submitting a form, or saving updates. They communicate an app’
 state and indicate available actions, such as whether users can navigate away
 from the current screen.
 
-_**Note: When displaying progress for a sequence of processes, indicate overall
-progress rather than the progress of each activity.**_
+**Note:** When displaying progress for a sequence of processes, indicate overall
+progress rather than the progress of each activity.
 
 ### Usage
 
@@ -43,7 +43,7 @@ progress rather than the progress of each activity.**_
 indicators fill up grey
 tracks](assets/progressindicator/determinate_composite.gif)
 
-A determinate progress indicator can added in a layout like so:
+A determinate progress indicator can be added to a layout:
 
 ```xml
 <!-- Linear progress indicator -->
@@ -60,7 +60,7 @@ A determinate progress indicator can added in a layout like so:
 indicators travel along grey
 tracks](assets/progressindicator/indeterminate_composite.gif)
 
-An indeterminate progress indicator can be added like so:
+An indeterminate progress indicator can be added:
 
 ```xml
 <!-- Linear progress indicator -->
@@ -89,11 +89,9 @@ int progress = getLoadingProgress()
 indicator.setProgressCompat(progress, true)
 ```
 
-_**Note:** Once indeterminate progress indicators are switched to the
+**Note:** Once indeterminate progress indicators are switched to the
 determinate mode (or initialized as determinate), they can be set back to
-indeterminate mode via calling the `setIndeterminate(false)` method. However, in
-order to keep the smoothness of animation, they need to be set `INVISIBLE` or
-`GONE` via the `setVisibility` or `hide` methods first._
+indeterminate mode via calling the `setIndeterminate(true)` method.
 
 ### Making progress indicators accessible
 
@@ -108,7 +106,7 @@ programmatically like so:
 progressIndicator.contentDescription = contentDescription
 ```
 
-### Showing/hiding the progressindicator
+### Showing/hiding the progress indicator
 
 By default, the progress indicator will be shown or hidden without animations.
 You can change the animation behaviors via `app:showAnimationBehavior` (or
@@ -130,7 +128,7 @@ The modes of behaviors are:
 
 When the hide animation behavior is not none, the visibility of the view will be
 changed after the animation finishes. Please use `setVisibilityAfterHide` method
-to set the target visibility as `Visibiltiy.INVISIBLE` (default) or
+to set the target visibility as `Visibility.INVISIBLE` (default) or
 `Visibility.GONE`.
 
 ### Rounded corners
@@ -167,14 +165,17 @@ operations.
 *   Indeterminate operations display the indicator continually growing and
     shrinking along the track until the process is complete.
 
-Source code:
+API and source code:
 
-*   [`LinearProgressIndicator`](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/progressindicator/LinearProgressIndicator.java)
+*   `LinearProgressIndicator`
+    *   [Class description](https://developer.android.com/reference/com/google/android/material/progressindicator/LinearProgressIndicator)
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/progressindicator/LinearProgressIndicator.java)
 
 The following example shows a determinate linear progress indicator.
 
 ![Determinate linear progress indicator animation: purple indicator fills up
-grey track](assets/progressindicator/linear_determinate_compact.gif)
+grey
+track](assets/progressindicator/linear_determinate_compact.gif){width="600"}
 
 In the layout:
 
@@ -187,7 +188,8 @@ In the layout:
 The following example shows an indeterminate linear progress indicator.
 
 ![Indeterminate linear progress indicator animation: purple indicator travels
-along grey track](assets/progressindicator/linear_indeterminate_compact.gif)
+along grey
+track](assets/progressindicator/linear_indeterminate_compact.gif){width="600"}
 
 In the layout:
 
@@ -202,21 +204,20 @@ In the layout:
 
 For linear progress indicator, there are two indeterminate animation types:
 
-![Disjointed indeterminate linear progress indicator animation: red indicator
-travels along track 2x then switches to
-yellow](assets/progressindicator/linear_multicolor_disjoint.gif)
-
 *   `disjoint` - animates as repeated cycles with two disjoint segments in the
     same color at a time.
 
-![Contiguous indeterminate linear progress indicator animation: red, yellow,
-blue indicators move sequentially and cover
-track](assets/progressindicator/linear_multicolor_contiguous.gif)
+![Disjointed indeterminate linear progress indicator animation: red indicator
+travels along track 2x then switches to
+yellow](assets/progressindicator/linear_multicolor_disjoint.gif){width="600"}
 
 *   `contiguous` - animates as repeated cycles with three adjacent segments in
-    iterative different colors.
+    different colors. ![Contiguous indeterminate linear progress indicator
+    animation: red, yellow, blue indicators move sequentially and cover
+    track](assets/progressindicator/linear_multicolor_contiguous.gif)
+    {width="600"}
 
-Note: There is a minimum requirement of 3 indicator colors to use the
+**Note:** There is a minimum requirement of 3 indicator colors to use the
 **contiguous** animation. Otherwise, an IllegalArgumentException will be thrown.
 
 ## Circular progress indicators
@@ -233,15 +234,17 @@ processes.
 *   Indeterminate circular indicators grow and shrink in size while moving along
     the invisible track.
 
-Source code:
+API and source code:
 
-*   [`CircularProgressIndicator`](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/progressindicator/CircularProgressIndicator.java)
+*   `CircularProgressIndicator`
+    *   [Class description](https://developer.android.com/reference/com/google/android/material/progressindicator/CircularProgressIndicator)
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/progressindicator/CircularProgressIndicator.java)
 
 The following example shows a determinate circular progress indicator.
 
 ![Determinate circular progress indicator animation: purple indicator draws a
 circle clockwise from the
-top](assets/progressindicator/circular_determinate_compact.gif)
+top](assets/progressindicator/circular_determinate_compact.gif){width="600"}
 
 In the layout:
 
@@ -255,7 +258,7 @@ The following example shows an indeterminate circular progress indicator.
 
 ![Indeterminate circular progress indicator animation: purple indicator follows
 a circle clockwise from the
-top](assets/progressindicator/circular_indeterminate_compact.gif)
+top](assets/progressindicator/circular_indeterminate_compact.gif){width="600"}
 
 In the layout:
 
@@ -314,11 +317,11 @@ Element                           | Attribute                        | Related m
 
 Element                                | Style
 -------------------------------------- | -----
-**Default linear**<br/>**style**       | `Widget.MaterialComponents.LinearProgressIndicator`
-**Default circular**<br/>**style**     | `Widget.MaterialComponents.CircularProgressIndicator`
-**Medium circular**<br/>**style**      | `Widget.MaterialComponents.CircularProgressIndicator.Medium`
-**Small circular**<br/>**style**       | `Widget.MaterialComponents.CircularProgressIndicator.Small`
-**Extra small circular**<br/>**style** | `Widget.MaterialComponents.CircularProgressIndicator.ExtraSmall`
+**Default linear**<br/>**style**       | `Widget.Material3.LinearProgressIndicator`
+**Default circular**<br/>**style**     | `Widget.Material3.CircularProgressIndicator`
+**Medium circular**<br/>**style**      | `Widget.Material3.CircularProgressIndicator.Medium`
+**Small circular**<br/>**style**       | `Widget.Material3.CircularProgressIndicator.Small`
+**Extra small circular**<br/>**style** | `Widget.Material3.CircularProgressIndicator.ExtraSmall`
 
 Default linear style theme attribute: `?attr/linearProgressIndicatorStyle`
 
@@ -331,10 +334,18 @@ and
 
 ## Theming
 
-Progress indicators support Material theming and can be customized in terms of
-color and size.
+Progress indicators support Material theming which can customize color and size.
 
-### Progress indicator theming example
+### Theming progress indicators
+
+API and source code:
+
+*   `LinearProgressIndicator`
+    *   [Class description](https://developer.android.com/reference/com/google/android/material/progressindicator/LinearProgressIndicator)
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/progressindicator/LinearProgressIndicator.java)
+*   `CircularProgressIndicator`
+    *   [Class description](https://developer.android.com/reference/com/google/android/material/progressindicator/CircularProgressIndicator)
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/progressindicator/CircularProgressIndicator.java)
 
 The following example shows a circular progress indicator with Material Theming.
 
@@ -344,26 +355,26 @@ circle"](assets/progressindicator/circular_theming.gif)
 
 #### Implementing progress indicator theming
 
-Using theme attributes and style sin `res/values/styles.xml` (themes all
-circular progress indicators and affects other components):
+Use theme attributes and styles in `res/values/styles.xml`, which applies to all
+circular progress indicators and affects other components:
 
 ```xml
-<style name="Theme.App" parent="Theme.MaterialComponents.*">
+<style name="Theme.App" parent="Theme.Material3.*">
     ...
     <item name="colorPrimary">@color/shrine_pink_100</item>
 </style>
 ```
 
-or using a default stype theme attribute, styles and a theme overlay (themes all
-circular progress indicators but does not affect other components):
+Use a default type theme attribute, styles and a theme overlay, which applies to
+all circular progress indicators but does not affect other components:
 
 ```xml
-<style name="Theme.App" parent="Theme.MaterialComponents.*">
+<style name="Theme.App" parent="Theme.Material3.*">
     ...
     <item name="circularProgressIndicatorStyle">@style/Widget.App.CircularProgressIndicator</item>
 </style>
 
-<style name="Widget.App.CircularProgressIndicator" parent="Widget.MaterialComponents.CircularProgressIndicator">
+<style name="Widget.App.CircularProgressIndicator" parent="Widget.Material3.CircularProgressIndicator">
     <item name="materialThemeOverlay">@style/ThemeOverlay.App.CircularProgressIndicator</item>
     <item name="trackThickness">20dp</item>
 </style>
@@ -373,8 +384,8 @@ circular progress indicators but does not affect other components):
 </style>
 ```
 
-or using the style in the layout (affects only this specific circular progress
-indicator):
+Use the style in the layout, which affects only this specific circular progress
+indicator:
 
 ```xml
 <com.google.android.material.progressindicator.CircularProgressIndicator

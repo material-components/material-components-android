@@ -66,6 +66,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:layout_margin="1dp"
         android:hint="@string/cat_progress_indicator_deteriminate_progress_hint"
         android:inputType="number"
         tools:ignore="Autofill"/>
@@ -73,6 +74,7 @@
         android:id="@+id/update_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="1dp"
         android:text="@string/cat_progress_indicator_update"/>
     </LinearLayout>
   </LinearLayout>

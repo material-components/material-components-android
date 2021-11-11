@@ -120,14 +120,12 @@
 
   <declare-styleable name="CircularProgressIndicator">
     <!--
-      Defines the size (outer diameter) of the circular progress indicator. This
-      uses the central line of the indicator as reference. Ignored for linear
-      progress indicator.
+      Defines the size (outer diameter) of the circular progress indicator.
     -->
     <attr name="indicatorSize" format="dimension"/>
     <!--
       The extra space from the outer edge of the indicator to the edge of the
-      canvas. Ignored for linear progress indicator.
+      canvas.
     -->
     <attr name="indicatorInset" format="dimension"/>
     <!--

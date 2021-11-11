@@ -17,6 +17,7 @@
 <com.google.android.material.floatingactionbutton.FloatingActionButton
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="?attr/floatingActionButtonTertiaryStyle"
     android:id="@+id/cat_navigation_rail_fab"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"

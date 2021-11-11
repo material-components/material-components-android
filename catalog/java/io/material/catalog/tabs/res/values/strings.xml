@@ -37,10 +37,11 @@
   <string name="cat_tabs_animation_mode_linear">Linear</string>
   <string name="cat_tabs_animation_mode_elastic">Elastic</string>
   <string name="cat_tabs_inline_switch_label">Inline</string>
+  <string name="cat_tabs_full_width_switch_label">Full-width Indicator</string>
   <string name="cat_tabs_indicator_spinner_label">Indicator</string>
   <string name="cat_tabs_legacy_tabs_label">Legacy Tabs</string>
   <string name="cat_tabs_material_tabs_label">Material Tabs</string>
-  <string name="cat_tabs_colored_tabs_label">Material Tabs (Colored)</string>
+  <string name="cat_tabs_secondary_tabs_label">Material Tabs (Secondary)</string>
   <string name="cat_tabs_add_tab_button_label">Add Tab</string>
   <string name="cat_tabs_remove_tab_button_label">Remove Tab</string>
   <string name="cat_tabs_controllable_demo_title">Controllable Tabs Demo</string>

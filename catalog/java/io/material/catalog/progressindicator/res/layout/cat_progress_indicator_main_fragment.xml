@@ -24,8 +24,9 @@
   <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="@string/cat_progress_indicator_linear_indeterminate" />
+      android:text="@string/cat_progress_indicator_linear" />
   <com.google.android.material.progressindicator.LinearProgressIndicator
+      android:id="@+id/linear_indicator"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:indeterminate="true"/>
@@ -33,36 +34,23 @@
   <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="@string/cat_progress_indicator_circular_indeterminate" />
+      android:text="@string/cat_progress_indicator_circular" />
   <com.google.android.material.progressindicator.CircularProgressIndicator
+      android:id="@+id/circular_indicator"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_gravity="center"
       android:indeterminate="true"/>
 
-  <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/cat_progress_indicator_linear_determinate"/>
-  <com.google.android.material.progressindicator.LinearProgressIndicator
-      android:id="@+id/linear_determinate"
+  <com.google.android.material.switchmaterial.SwitchMaterial
+      android:id="@+id/determinate_mode_switch"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"/>
-
+      android:layout_height="wrap_content"
+      android:text="@string/cat_progress_indicator_set_to_determinate_mode"/>
   <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="@string/cat_progress_indicator_circular_determinate"/>
-  <com.google.android.material.progressindicator.CircularProgressIndicator
-      android:id="@+id/circular_determinate"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center"/>
-
-  <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/cat_progress_indicator_deteriminate_progress_prompt"/>
+      android:text="@string/cat_progress_indicator_determinate_progress_prompt"/>
   <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
@@ -78,6 +66,7 @@
         android:id="@+id/update_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="1dp"
         android:text="@string/cat_progress_indicator_update"/>
   </LinearLayout>
 </LinearLayout>

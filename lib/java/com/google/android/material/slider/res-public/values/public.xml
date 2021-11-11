@@ -36,4 +36,5 @@
   <public name="values" type="attr" />
 
   <public name="Widget.MaterialComponents.Slider" type="style"/>
+  <public name="Widget.Material3.Slider" type="style"/>
 </resources>

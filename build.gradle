@@ -19,17 +19,18 @@ allprojects {
 }
 
 ext {
-  compileSdkVersion = 30
+  compileSdkVersion = 31
   minSdkVersion = 14
-  targetSdkVersion = 29
+  targetSdkVersion = 31
 
   androidXVersions = [
     annotation            : '1.0.1',
-    appCompat             : '1.4.0-alpha02', // Need AppCompatDialogFragment constructor that takes a layout ID
+    appCompat             : '1.4.0-rc01', // Need AppCompatDialogFragment constructor that takes a layout ID
     cardView              : '1.0.0',
     constraintlayout      : '2.0.1',
     coordinatorlayout     : '1.1.0',
     core                  : '1.5.0',
+    drawerlayout          : '1.1.1',
     experimental          : '1.0.0',
     fragment              : '1.0.0',
     lifecycle             : '2.0.0',
@@ -45,6 +46,7 @@ ext {
   espressoVersion = '3.1.0'
   mockitoCoreVersion = '2.25.0'
   truthVersion = '0.45'
+  robolectricVersion = '4.3'
 
   // Enforce the use of prebuilt dependencies in all sub-projects. This is
   // required for the doclava dependency.
@@ -57,7 +59,7 @@ ext {
     ? project.property('mavenRepoUrl') : '/tmp/myRepo/')
 
   // Current version of the library (could be in-development/unreleased).
-  mdcLibraryVersion = '1.4.0-alpha02'
+  mdcLibraryVersion = '1.5.0-alpha05'
   mdcLibraryPackage = "com.google.android.material"
   mdcLibraryDir = "com/google/android/material"
 }
@@ -98,6 +100,8 @@ def compatibility(name) {
       return "androidx.coordinatorlayout:coordinatorlayout:${androidXVersions.coordinatorlayout}"
     case "core":
       return "androidx.core:core:${androidXVersions.core}"
+    case "drawerlayout":
+      return "androidx.drawerlayout:drawerlayout:${androidXVersions.drawerlayout}"
     case "dynamicanimation":
       return "androidx.dynamicanimation:dynamicanimation:${androidXVersions.dynamicanimation}"
     case "fragment":

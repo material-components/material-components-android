@@ -74,6 +74,7 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
   private static final int INVALID_ITEM_POSITION = -1;
   private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
 
+  private boolean initialized = false;
   private int itemPaddingTop;
   private int itemPaddingBottom;
   private float shiftAmount;
@@ -97,13 +98,21 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
   @Nullable private Drawable originalIconDrawable;
   @Nullable private Drawable wrappedIconDrawable;
 
+  private static final ActiveIndicatorTransform ACTIVE_INDICATOR_LABELED_TRANSFORM =
+      new ActiveIndicatorTransform();
+  private static final ActiveIndicatorTransform ACTIVE_INDICATOR_UNLABELED_TRANSFORM =
+      new ActiveIndicatorUnlabeledTransform();
+
   private ValueAnimator activeIndicatorAnimator;
+  private ActiveIndicatorTransform activeIndicatorTransform = ACTIVE_INDICATOR_LABELED_TRANSFORM;
   private float activeIndicatorProgress = 0F;
   private boolean activeIndicatorEnabled = false;
   // The desired width of the indicator. This is not necessarily the actual size of the rendered
   // indicator depending on whether the width of this view is wide enough to accommodate the full
   // desired width.
   private int activeIndicatorDesiredWidth = 0;
+  private int activeIndicatorDesiredHeight = 0;
+  private boolean activeIndicatorResizeable = false;
   // The margin from the start and end of this view which the active indicator should respect. If
   // the indicator width is greater than the total width minus the horizontal margins, the active
   // indicator will assume the max width of the view's total width minus horizontal margins.
@@ -198,6 +207,22 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
       TooltipCompat.setTooltipText(this, tooltipText);
     }
     setVisibility(itemData.isVisible() ? View.VISIBLE : View.GONE);
+    this.initialized = true;
+  }
+
+  /**
+   * Remove state so this View can be reused.
+   *
+   * Item Views are held in a pool and reused when the number of menu items to be shown changes.
+   * This will be called when this View is released from the pool.
+   *
+   * @see NavigationBarMenuView#buildMenuView()
+   */
+  void clear() {
+    this.removeBadge();
+    this.itemData = null;
+    this.activeIndicatorProgress = 0;
+    this.initialized = false;
   }
 
   /**
@@ -229,6 +254,8 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
   public void setLabelVisibilityMode(@NavigationBarView.LabelVisibility int mode) {
     if (labelVisibilityMode != mode) {
       labelVisibilityMode = mode;
+      updateActiveIndicatorTransform();
+      updateActiveIndicatorLayoutParams(getWidth());
       refreshChecked();
     }
   }
@@ -274,9 +301,17 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
         new Runnable() {
           @Override
           public void run() {
-            updateActiveIndicatorAvailableWidth(width);
+            updateActiveIndicatorLayoutParams(width);
           }
         });
+  }
+
+  private void updateActiveIndicatorTransform() {
+    if (isActiveIndicatorResizeableAndUnlabeled()) {
+      activeIndicatorTransform = ACTIVE_INDICATOR_UNLABELED_TRANSFORM;
+    } else {
+      activeIndicatorTransform = ACTIVE_INDICATOR_LABELED_TRANSFORM;
+    }
   }
 
   /**
@@ -290,14 +325,8 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
    */
   private void setActiveIndicatorProgress(
       @FloatRange(from = 0F, to = 1F) float progress, float target) {
-    // TODO: Consider refactoring into a transform class.
     if (activeIndicatorView != null) {
-      activeIndicatorView.setScaleX(AnimationUtils.lerp(.4f, 1f, progress));
-      // Animate the alpha of the indicator over the first 1/5th of the animation
-      float startAlphaFraction = target == 0F ? .8F : 0F;
-      float endAlphaFraction = target == 0F ? 1F : .2F;
-      activeIndicatorView.setAlpha(
-          AnimationUtils.lerp(0f, 1f, startAlphaFraction, endAlphaFraction, progress));
+      activeIndicatorTransform.updateForProgress(progress, target, activeIndicatorView);
     }
     activeIndicatorProgress = progress;
   }
@@ -305,7 +334,9 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
   /** If the active indicator is enabled, animate from it's current state to it's new state. */
   private void maybeAnimateActiveIndicatorToProgress(
       @FloatRange(from = 0F, to = 1F) final float newProgress) {
-    if (!activeIndicatorEnabled) {
+    // If the active indicator is disabled or this view is in the process of being initialized,
+    // jump the active indicator to it's final state.
+    if (!activeIndicatorEnabled || !initialized || !ViewCompat.isAttachedToWindow(this)) {
       setActiveIndicatorProgress(newProgress, newProgress);
       return;
     }
@@ -628,14 +659,18 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
    * Set the padding applied to the icon/active indicator container from the top of the item view.
    */
   public void setItemPaddingTop(int paddingTop) {
-    this.itemPaddingTop = paddingTop;
-    refreshChecked();
+    if (this.itemPaddingTop != paddingTop) {
+      this.itemPaddingTop = paddingTop;
+      refreshChecked();
+    }
   }
 
   /** Set the padding applied to the labels from the bottom of the item view. */
   public void setItemPaddingBottom(int paddingBottom) {
-    this.itemPaddingBottom = paddingBottom;
-    refreshChecked();
+    if (this.itemPaddingBottom != paddingBottom) {
+      this.itemPaddingBottom = paddingBottom;
+      refreshChecked();
+    }
   }
 
   /** Set whether or not this item should show an active indicator when checked. */
@@ -658,15 +693,16 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
    */
   public void setActiveIndicatorWidth(int width) {
     this.activeIndicatorDesiredWidth = width;
-    updateActiveIndicatorAvailableWidth(getWidth());
+    updateActiveIndicatorLayoutParams(getWidth());
   }
 
   /**
-   * Update the active indicator to always be within the width of this item layout.
+   * Update the active indicators width and height for the available width and label
+   * visibility mode.
    *
    * @param availableWidth The total width of this item layout.
    */
-  private void updateActiveIndicatorAvailableWidth(int availableWidth) {
+  private void updateActiveIndicatorLayoutParams(int availableWidth) {
     // Set width to the min of either the desired indicator width or the available width minus
     // a horizontal margin.
     if (activeIndicatorView == null) {
@@ -675,38 +711,42 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
 
     int newWidth =
         min(activeIndicatorDesiredWidth, availableWidth - (activeIndicatorMarginHorizontal * 2));
+
     LayoutParams indicatorParams = (LayoutParams) activeIndicatorView.getLayoutParams();
+    // If the label visibility is unlabeled, make the active indicator's height equal to it's width.
+    indicatorParams.height =
+        isActiveIndicatorResizeableAndUnlabeled() ? newWidth : activeIndicatorDesiredHeight;
     indicatorParams.width = newWidth;
     activeIndicatorView.setLayoutParams(indicatorParams);
+  }
+
+  private boolean isActiveIndicatorResizeableAndUnlabeled() {
+    return activeIndicatorResizeable
+        && labelVisibilityMode == NavigationBarView.LABEL_VISIBILITY_UNLABELED;
   }
 
   /**
    * Set the desired height of the active indicator.
    *
-   * <p>TODO: Consider adjusting based on available height.
+   * <p>TODO: Consider adjusting based on available height
    *
    * @param height The desired height of the active indicator.
    */
   public void setActiveIndicatorHeight(int height) {
-    if (activeIndicatorView == null) {
-      return;
-    }
-
-    LayoutParams indicatorParams = (LayoutParams) activeIndicatorView.getLayoutParams();
-    indicatorParams.height = height;
-    activeIndicatorView.setLayoutParams(indicatorParams);
+    activeIndicatorDesiredHeight = height;
+    updateActiveIndicatorLayoutParams(getWidth());
   }
 
   /**
    * Set the horizontal margin that will be maintained at the start and end of the active indicator,
    * making sure the indicator remains the given distance from the edge of this item view.
    *
-   * @see #updateActiveIndicatorAvailableWidth(int)
+   * @see #updateActiveIndicatorLayoutParams(int)
    * @param marginHorizontal The horizontal margin, in pixels.
    */
   public void setActiveIndicatorMarginHorizontal(@Px int marginHorizontal) {
     this.activeIndicatorMarginHorizontal = marginHorizontal;
-    updateActiveIndicatorAvailableWidth(getWidth());
+    updateActiveIndicatorLayoutParams(getWidth());
   }
 
   /** Get the drawable used as the active indicator. */
@@ -726,6 +766,11 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
     }
 
     activeIndicatorView.setBackgroundDrawable(activeIndicatorDrawable);
+  }
+
+  /** Set whether the indicator can be automatically resized. */
+  public void setActiveIndicatorResizeable(boolean resizeable) {
+    this.activeIndicatorResizeable = resizeable;
   }
 
   void setBadge(@NonNull BadgeDrawable badgeDrawable) {
@@ -846,4 +891,84 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
    */
   @LayoutRes
   protected abstract int getItemLayoutResId();
+
+  /**
+   * A class used to manipulate the {@link NavigationBarItemView}'s active indicator view when
+   * animating between hidden and shown.
+   *
+   * <p>By default, this class scales the indicator in the x direction to reveal the default pill
+   * shape.
+   *
+   * <p>Subclasses can override {@link #updateForProgress(float, float, View)} to manipulate the
+   * view in any way appropriate.
+   */
+  private static class ActiveIndicatorTransform {
+
+    private static final float SCALE_X_HIDDEN = .4F;
+    private static final float SCALE_X_SHOWN = 1F;
+
+    // The fraction of the animation's total duration over which the indicator will be faded in or
+    // out.
+    private static final float ALPHA_FRACTION = 1F / 5F;
+
+    /**
+     * Calculate the alpha value, based on a progress and target value, that has the indicator
+     * appear or disappear over the first 1/5th of the transform.
+     */
+    protected float calculateAlpha(
+        @FloatRange(from = 0F, to = 1F) float progress,
+        @FloatRange(from = 0F, to = 1F) float targetValue) {
+      // Animate the alpha of the indicator over the first ALPHA_FRACTION of the animation
+      float startAlphaFraction = targetValue == 0F ? 1F - ALPHA_FRACTION : 0F;
+      float endAlphaFraction = targetValue == 0F ? 1F : 0F + ALPHA_FRACTION;
+      return AnimationUtils.lerp(0F, 1F, startAlphaFraction, endAlphaFraction, progress);
+    }
+
+    protected float calculateScaleX(
+        @FloatRange(from = 0F, to = 1F) float progress,
+        @FloatRange(from = 0F, to = 1F) float targetValue) {
+      return AnimationUtils.lerp(SCALE_X_HIDDEN, SCALE_X_SHOWN, progress);
+    }
+
+    protected float calculateScaleY(
+        @FloatRange(from = 0F, to = 1F) float progress,
+        @FloatRange(from = 0F, to = 1F) float targetValue) {
+      return 1F;
+    }
+
+    /**
+     * Called whenever the {@code indicator} should update its parameters (scale, alpha, etc.) in
+     * response to a change in progress.
+     *
+     * @param progress A value between 0 and 1 where 0 represents a fully hidden indicator and 1
+     *     indicates a fully shown indicator.
+     * @param targetValue The final value towards which the progress is moving. This will be either
+     *     0 and 1 and can be used to determine whether the indicator is showing or hiding if show
+     *     and hide animations differ.
+     * @param indicator The active indicator {@link View}.
+     */
+    public void updateForProgress(
+        @FloatRange(from = 0F, to = 1F) float progress,
+        @FloatRange(from = 0F, to = 1F) float targetValue,
+        @NonNull View indicator) {
+      indicator.setScaleX(calculateScaleX(progress, targetValue));
+      indicator.setScaleY(calculateScaleY(progress, targetValue));
+      indicator.setAlpha(calculateAlpha(progress, targetValue));
+    }
+  }
+
+  /**
+   * A transform class used to animate the active indicator of a {@link NavigationBarItemView} that
+   * is unlabeled.
+   *
+   * <p>This differs from the default {@link ActiveIndicatorTransform} class by uniformly scaling in
+   * the X and Y axis.
+   */
+  private static class ActiveIndicatorUnlabeledTransform extends ActiveIndicatorTransform {
+
+    @Override
+    protected float calculateScaleY(float progress, float targetValue) {
+      return calculateScaleX(progress, targetValue);
+    }
+  }
 }

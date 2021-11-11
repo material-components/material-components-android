@@ -48,4 +48,29 @@
     <item name="colorControlNormal">?attr/colorOnPrimary</item>
     <item name="actionMenuTextColor">?attr/colorOnPrimary</item>
   </style>
+
+  <!-- M3 Styles -->
+
+  <style name="Widget.Material3.BottomAppBar" parent="Widget.MaterialComponents.BottomAppBar">
+    <item name="fabAnimationMode">slide</item>
+    <item name="fabCradleMargin">@dimen/m3_bottomappbar_fab_cradle_margin</item>
+    <item name="fabCradleRoundedCornerRadius">
+      @dimen/m3_bottomappbar_fab_cradle_rounded_corner_radius
+    </item>
+    <item name="fabCradleVerticalOffset">
+      @dimen/m3_bottomappbar_fab_cradle_vertical_offset
+    </item>
+
+    <item name="elevation">@dimen/m3_sys_elevation_level2</item>
+
+    <item name="backgroundTint">?attr/colorSurface</item>
+    <item name="navigationIconTint">?attr/colorOnSurfaceVariant</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.BottomAppBar</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.BottomAppBar" parent="">
+    <item name="colorControlNormal">?attr/colorOnSurface</item>
+    <item name="actionMenuTextColor">?attr/colorOnSurface</item>
+  </style>
+
 </resources>

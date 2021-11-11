@@ -60,7 +60,8 @@ public class WindowPreferencesManager {
   }
 
   public boolean isEdgeToEdgeEnabled() {
-    return getSharedPreferences().getBoolean(KEY_EDGE_TO_EDGE_ENABLED, false);
+    return getSharedPreferences()
+        .getBoolean(KEY_EDGE_TO_EDGE_ENABLED, VERSION.SDK_INT >= VERSION_CODES.Q);
   }
 
   @SuppressWarnings("RestrictTo")
@@ -73,18 +74,23 @@ public class WindowPreferencesManager {
     int statusBarColor = getStatusBarColor(isEdgeToEdgeEnabled());
     int navbarColor = getNavBarColor(isEdgeToEdgeEnabled());
 
-    boolean lightBackground = isColorLight(
-        MaterialColors.getColor(context, android.R.attr.colorBackground, Color.BLACK));
+    boolean lightBackground =
+        isColorLight(MaterialColors.getColor(context, android.R.attr.colorBackground, Color.BLACK));
+    boolean lightStatusBar = isColorLight(statusBarColor);
+    boolean showDarkStatusBarIcons =
+        lightStatusBar || (statusBarColor == TRANSPARENT && lightBackground);
     boolean lightNavbar = isColorLight(navbarColor);
     boolean showDarkNavbarIcons = lightNavbar || (navbarColor == TRANSPARENT && lightBackground);
 
     View decorView = window.getDecorView();
-    int currentStatusBar = VERSION.SDK_INT >= VERSION_CODES.M
-        ? decorView.getSystemUiVisibility() & SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        : 0;
-    int currentNavBar = showDarkNavbarIcons && VERSION.SDK_INT >= VERSION_CODES.O
-        ? SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-        : 0;
+    int currentStatusBar =
+        showDarkStatusBarIcons && VERSION.SDK_INT >= VERSION_CODES.M
+            ? SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            : 0;
+    int currentNavBar =
+        showDarkNavbarIcons && VERSION.SDK_INT >= VERSION_CODES.O
+            ? SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+            : 0;
 
     window.setNavigationBarColor(navbarColor);
     window.setStatusBarColor(statusBarColor);

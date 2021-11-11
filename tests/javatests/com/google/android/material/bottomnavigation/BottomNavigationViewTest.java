@@ -69,6 +69,9 @@ import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
 import com.google.android.material.navigation.NavigationBarItemView;
 import com.google.android.material.navigation.NavigationBarMenuView;
+import com.google.android.material.navigation.NavigationBarView;
+import com.google.android.material.navigation.NavigationBarView.OnItemReselectedListener;
+import com.google.android.material.navigation.NavigationBarView.OnItemSelectedListener;
 import com.google.android.material.testapp.BottomNavigationViewActivity;
 import com.google.android.material.testapp.R;
 import com.google.android.material.testutils.AccessibilityUtils;
@@ -138,9 +141,8 @@ public class BottomNavigationViewTest {
   @Test
   @LargeTest
   public void testNavigationSelectionListener() {
-    BottomNavigationView.OnNavigationItemSelectedListener mockedListener =
-        mock(BottomNavigationView.OnNavigationItemSelectedListener.class);
-    bottomNavigation.setOnNavigationItemSelectedListener(mockedListener);
+    OnItemSelectedListener mockedListener = mock(OnItemSelectedListener.class);
+    bottomNavigation.setOnItemSelectedListener(mockedListener);
 
     // Make the listener return true to allow selecting the item.
     when(mockedListener.onNavigationItemSelected(any(MenuItem.class))).thenReturn(true);
@@ -186,7 +188,7 @@ public class BottomNavigationViewTest {
 
     // Set null listener to test that the next click is not going to notify the
     // previously set listener and will allow selecting items.
-    bottomNavigation.setOnNavigationItemSelectedListener(null);
+    bottomNavigation.setOnItemSelectedListener(null);
 
     // Click one of our items
     onView(
@@ -205,9 +207,8 @@ public class BottomNavigationViewTest {
   @Test
   @SmallTest
   public void testSetSelectedItemId() {
-    BottomNavigationView.OnNavigationItemSelectedListener mockedListener =
-        mock(BottomNavigationView.OnNavigationItemSelectedListener.class);
-    bottomNavigation.setOnNavigationItemSelectedListener(mockedListener);
+    OnItemSelectedListener mockedListener = mock(OnItemSelectedListener.class);
+    bottomNavigation.setOnItemSelectedListener(mockedListener);
 
     // Make the listener return true to allow selecting the item.
     when(mockedListener.onNavigationItemSelected(any(MenuItem.class))).thenReturn(true);
@@ -240,7 +241,7 @@ public class BottomNavigationViewTest {
 
     // Set null listener to test that the next click is not going to notify the
     // previously set listener and will allow selecting items.
-    bottomNavigation.setOnNavigationItemSelectedListener(null);
+    bottomNavigation.setOnItemSelectedListener(null);
 
     // Select one of our items
     bottomNavigation.setSelectedItemId(R.id.destination_home);
@@ -253,10 +254,10 @@ public class BottomNavigationViewTest {
   @Test
   @SmallTest
   public void testNavigationReselectionListener() {
-    // Add an OnNavigationItemReselectedListener
-    BottomNavigationView.OnNavigationItemReselectedListener reselectedListener =
-        mock(BottomNavigationView.OnNavigationItemReselectedListener.class);
-    bottomNavigation.setOnNavigationItemReselectedListener(reselectedListener);
+    // Add an OnItemReselectedListener
+    OnItemReselectedListener reselectedListener =
+        mock(NavigationBarView.OnItemReselectedListener.class);
+    bottomNavigation.setOnItemReselectedListener(reselectedListener);
 
     // Select an item
     onView(
@@ -283,10 +284,9 @@ public class BottomNavigationViewTest {
     verify(reselectedListener, times(1))
         .onNavigationItemReselected(bottomNavigation.getMenu().findItem(R.id.destination_profile));
 
-    // Add an OnNavigationItemSelectedListener
-    BottomNavigationView.OnNavigationItemSelectedListener selectedListener =
-        mock(BottomNavigationView.OnNavigationItemSelectedListener.class);
-    bottomNavigation.setOnNavigationItemSelectedListener(selectedListener);
+    // Add an OnItemSelectedListener
+    OnItemSelectedListener selectedListener = mock(OnItemSelectedListener.class);
+    bottomNavigation.setOnItemSelectedListener(selectedListener);
     // Make the listener return true to allow selecting the item.
     when(selectedListener.onNavigationItemSelected(any(MenuItem.class))).thenReturn(true);
 
@@ -319,8 +319,8 @@ public class BottomNavigationViewTest {
     verify(reselectedListener, times(1))
         .onNavigationItemReselected(bottomNavigation.getMenu().findItem(R.id.destination_people));
 
-    // Remove the OnNavigationItemReselectedListener
-    bottomNavigation.setOnNavigationItemReselectedListener(null);
+    // Remove the OnItemReselectedListener
+    bottomNavigation.setOnItemReselectedListener(null);
 
     // Select the same item again
     onView(

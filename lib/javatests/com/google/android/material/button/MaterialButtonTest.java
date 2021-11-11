@@ -21,6 +21,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import androidx.core.graphics.drawable.DrawableCompat;
 import android.view.View.MeasureSpec;
 import androidx.annotation.Nullable;
@@ -36,9 +37,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
-/**
- * Tests for {@link com.google.android.material.button.MaterialButton}.
- */
+/** Tests for {@link com.google.android.material.button.MaterialButton}. */
 @RunWith(RobolectricTestRunner.class)
 public class MaterialButtonTest {
 
@@ -64,7 +63,20 @@ public class MaterialButtonTest {
 
     ShapeAppearanceModel newShapeAppearanceModel = materialButton.getShapeAppearanceModel();
 
+    assertThat(shapeAppearanceModel).isSameInstanceAs(newShapeAppearanceModel);
     assertThatCornerSizesMatch(shapeAppearanceModel, newShapeAppearanceModel);
+  }
+
+  @Test
+  @Config(sdk = Build.VERSION_CODES.LOLLIPOP)
+  public void testShapeRippleDrawableInLollipop() {
+    MaterialButton materialButton = new MaterialButton(context);
+    ShapeAppearanceModel shapeAppearanceModel = materialButton.getShapeAppearanceModel();
+
+    materialButton.setCornerRadius((int) LARGE_CORNER_SIZE);
+    ShapeAppearanceModel newShapeAppearanceModel = materialButton.getShapeAppearanceModel();
+    assertThat(shapeAppearanceModel).isNotSameInstanceAs(newShapeAppearanceModel);
+    assertThat(shapeAppearanceModel).isNotEqualTo(newShapeAppearanceModel);
   }
 
   @Test
@@ -140,16 +152,19 @@ public class MaterialButtonTest {
   @Config(minSdk = 23, maxSdk = 28)
   public void setIcon_iconNotUpdated_whenPositionChanged() {
     callCount = 0;
-    MaterialButton materialButton = new MaterialButton(context) {
+    MaterialButton materialButton =
+        new MaterialButton(context) {
 
-      @Override
-      public void setCompoundDrawablesRelative(@Nullable Drawable left,
-          @Nullable Drawable top, @Nullable Drawable right,
-          @Nullable Drawable bottom) {
-        super.setCompoundDrawablesRelative(left, top, right, bottom);
-        callCount++;
-      }
-    };
+          @Override
+          public void setCompoundDrawablesRelative(
+              @Nullable Drawable left,
+              @Nullable Drawable top,
+              @Nullable Drawable right,
+              @Nullable Drawable bottom) {
+            super.setCompoundDrawablesRelative(left, top, right, bottom);
+            callCount++;
+          }
+        };
 
     Drawable drawable = ContextCompat.getDrawable(context, android.R.drawable.btn_plus);
     setIcon(materialButton, makeMeasureSpec(200), drawable);

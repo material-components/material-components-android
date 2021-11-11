@@ -52,13 +52,12 @@ public final class ThemeEnforcement {
    * Safely retrieve styled attribute information in this Context's theme, after checking whether
    * the theme is compatible with the component's given style.
    *
-   * <p>Set a component's {@link R.attr#enforceMaterialTheme enforceMaterialTheme} attribute to
-   * <code>true</code> to ensure that the Context's theme inherits from {@link
-   * R.style#Theme_MaterialComponents Theme.MaterialComponents}. For example, you'll want to do this
-   * if the component uses a new attribute defined in <code>Theme.MaterialComponents</code> like
-   * {@link R.attr#colorSecondary colorSecondary}.
+   * <p>Set a component's {@code enforceMaterialTheme} attribute to <code>true</code> to ensure that
+   * the Context's theme inherits from {@code Theme.MaterialComponents}. For example, you'll want to
+   * do this if the component uses a new attribute defined in <code>
+   * Theme.MaterialComponents</code> like {@code colorSecondary}.
    *
-   * <p>If {@link R.attr#enforceTextAppearance} attribute is set to <code>true</code> and
+   * <p>If the {@code enforceTextAppearance} attribute is set to <code>true</code> and
    * textAppearanceResIndices parameter is specified and has non-negative values, this will also
    * check that a valid TextAppearance is set on this component for the text appearance resources
    * passed in.
@@ -87,18 +86,17 @@ public final class ThemeEnforcement {
    * androidx.appcompat.widget.TintTypedArray}, after checking whether the theme is compatible with
    * the component's given style.
    *
-   * <p>Set a component's {@link R.attr#enforceMaterialTheme enforceMaterialTheme} attribute to
-   * <code>true</code> to ensure that the Context's theme inherits from {@link
-   * R.style#Theme_MaterialComponents Theme.MaterialComponents}. For example, you'll want to do this
-   * if the component uses a new attribute defined in <code>Theme.MaterialComponents</code> like
-   * {@link R.attr#colorSecondary colorSecondary}.
+   * <p>Set a component's {@code enforceMaterialTheme} attribute to <code>true</code> to ensure that
+   * the Context's theme inherits from {@code Theme.MaterialComponents}. For example, you'll want to
+   * do this if the component uses a new attribute defined in <code>Theme.MaterialComponents</code>
+   * like {@code colorSecondary}.
    *
    * <p>New components should prefer to use {@link #obtainStyledAttributes(Context, AttributeSet,
-   * int[], int, int, int...)}, and use
-   * {@link com.google.android.material.resources.MaterialResources}
-   * as a replacement for the functionality in {@link androidx.appcompat.widget.TintTypedArray}.
+   * int[], int, int, int...)}, and use {@link
+   * com.google.android.material.resources.MaterialResources} as a replacement for the functionality
+   * in {@link androidx.appcompat.widget.TintTypedArray}.
    *
-   * <p>If {@link R.attr#enforceTextAppearance} attribute is set to <code>true</code> and
+   * <p>If the {@code enforceTextAppearance} attribute is set to <code>true</code> and
    * textAppearanceResIndices parameter is specified and has non-negative values, this will also
    * check that a valid TextAppearance is set on this component for the text appearance resources
    * passed in.

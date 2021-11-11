@@ -43,7 +43,6 @@
 
   <public name="ThemeOverlay.MaterialComponents.Dialog" type="style"/>
   <public name="ThemeOverlay.MaterialComponents.Dialog.Alert" type="style"/>
-  <public name="ThemeOverlay.MaterialComponents.Dialog.Alert.Centered" type="style"/>
 
   <public name="materialAlertDialogTheme" type="attr"/>
   <public name="materialAlertDialogTitlePanelStyle" type="attr"/>
@@ -63,6 +62,40 @@
   <public name="MaterialAlertDialog.MaterialComponents.Title.Panel.CenterStacked" type="style"/>
   <public name="MaterialAlertDialog.MaterialComponents.Title.Icon.CenterStacked" type="style"/>
   <public name="MaterialAlertDialog.MaterialComponents.Title.Text.CenterStacked" type="style"/>
+
+  <public name="Theme.Material3.Light.Dialog" type="style"/>
+  <public name="Theme.Material3.Light.Dialog.Alert" type="style"/>
+  <public name="Theme.Material3.Light.Dialog.MinWidth" type="style"/>
+  <public name="Theme.Material3.Light.DialogWhenLarge" type="style"/>
+
+  <public name="Theme.Material3.Dark.Dialog" type="style"/>
+  <public name="Theme.Material3.Dark.Dialog.Alert" type="style"/>
+  <public name="Theme.Material3.Dark.Dialog.MinWidth" type="style"/>
+  <public name="Theme.Material3.Dark.DialogWhenLarge" type="style"/>
+
+  <public name="Theme.Material3.DayNight.Dialog" type="style"/>
+  <public name="Theme.Material3.DayNight.Dialog.Alert" type="style"/>
+  <public name="Theme.Material3.DayNight.Dialog.MinWidth" type="style"/>
+  <public name="Theme.Material3.DayNight.DialogWhenLarge" type="style"/>
+
+  <public name="ThemeOverlay.Material3.Dialog" type="style"/>
+  <public name="ThemeOverlay.Material3.Dialog.Alert" type="style"/>
+  <public name="ThemeOverlay.Material3.MaterialAlertDialog" type="style"/>
+  <public name="ThemeOverlay.Material3.MaterialAlertDialog.Centered" type="style"/>
+
+  <public name="MaterialAlertDialog.Material3" type="style"/>
+  <public name="Widget.Material3.CheckedTextView" type="style"/>
+  <public name="ShapeAppearanceOverlay.MaterialAlertDialog.Material3" type="style"/>
+
+  <public name="MaterialAlertDialog.Material3.Title.Panel" type="style"/>
+  <public name="MaterialAlertDialog.Material3.Title.Icon" type="style"/>
+  <public name="MaterialAlertDialog.Material3.Title.Text" type="style"/>
+  <public name="MaterialAlertDialog.Material3.Body.Text" type="style"/>
+
+  <public name="MaterialAlertDialog.Material3.Title.Panel.CenterStacked" type="style"/>
+  <public name="MaterialAlertDialog.Material3.Title.Icon.CenterStacked" type="style"/>
+  <public name="MaterialAlertDialog.Material3.Title.Text.CenterStacked" type="style"/>
+  <public name="MaterialAlertDialog.Material3.Body.Text.CenterStacked" type="style"/>
 
 </resources>
 

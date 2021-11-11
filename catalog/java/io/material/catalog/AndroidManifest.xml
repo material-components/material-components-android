@@ -35,7 +35,8 @@
       android:value="${catalog_application_component}"/>
 
     <activity
-      android:name=".main.MainActivity">
+      android:name=".main.MainActivity"
+      android:exported="true">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <category android:name="android.intent.category.LAUNCHER"/>
@@ -44,18 +45,12 @@
     <activity
       android:name=".elevation.ElevationOverlayDemoActivity"
       android:exported="true"
-      android:label="@string/cat_elevation_overlay_title"
-      android:theme="@style/Theme.Catalog.Dark"/>
+      android:label="@string/cat_elevation_overlay_title" />
     <activity
       android:name=".topappbar.TopAppBarActionBarDemoActivity"
       android:exported="true"
       android:label="@string/cat_topappbar_action_bar_title"
-      android:theme="@style/Theme.MaterialComponents.DayNight"/>
-    <activity
-      android:name=".topappbar.TopAppBarDarkActionBarDemoActivity"
-      android:exported="true"
-      android:label="@string/cat_topappbar_dark_action_bar_title"
-      android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar"/>
+      android:theme="@style/Theme.Material3.DayNight"/>
     <activity
       android:name=".topappbar.TopAppBarScrollingTransparentStatusDemoActivity"
       android:exported="true"
@@ -65,9 +60,9 @@
       android:name=".card.CardSelectionModeActivity"
       android:exported="true"/>
     <activity
-      android:name=".transition.hero.TransitionMusicDemoActivity"
+      android:name=".musicplayer.MusicPlayerDemoActivity"
       android:exported="true"
-      android:theme="@style/Theme.Catalog.Music"/>
+      android:theme="@style/Theme.Catalog.MusicPlayer"/>
     <activity
       android:name=".transition.TransitionContainerTransformStartDemoActivity"
       android:exported="true"/>
@@ -79,6 +74,21 @@
       android:exported="true" />
     <activity
       android:name="io.material.catalog.transition.TransitionSharedAxisEndDemoActivity"
+      android:exported="true" />
+    <activity
+      android:name="io.material.catalog.adaptive.AdaptiveMusicPlayerDemoActivity"
+      android:exported="true" />
+    <activity
+      android:name="io.material.catalog.adaptive.AdaptiveListViewDemoActivity"
+      android:exported="true" />
+    <activity
+      android:name="io.material.catalog.adaptive.AdaptiveFeedDemoActivity"
+      android:exported="true" />
+    <activity
+      android:name="io.material.catalog.adaptive.AdaptiveHeroDemoActivity"
+      android:exported="true" />
+    <activity
+      android:name="io.material.catalog.adaptive.AdaptiveSupportingPanelDemoActivity"
       android:exported="true" />
   </application>
 

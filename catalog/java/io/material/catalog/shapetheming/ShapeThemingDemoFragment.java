@@ -20,7 +20,6 @@ import io.material.catalog.R;
 
 import android.os.Build;
 import android.os.Bundle;
-import androidx.appcompat.view.ContextThemeWrapper;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +27,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
+import androidx.appcompat.view.ContextThemeWrapper;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;

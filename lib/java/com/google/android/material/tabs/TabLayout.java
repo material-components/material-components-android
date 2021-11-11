@@ -458,6 +458,7 @@ public class TabLayout extends HorizontalScrollView {
   @Mode int mode;
   boolean inlineLabel;
   boolean tabIndicatorFullWidth;
+  int tabIndicatorHeight = -1;
   @TabIndicatorAnimationMode int tabIndicatorAnimationMode;
   boolean unboundedRipple;
 
@@ -530,9 +531,9 @@ public class TabLayout extends HorizontalScrollView {
         a.getDimensionPixelSize(R.styleable.TabLayout_tabIndicatorHeight, -1));
     setSelectedTabIndicatorGravity(
         a.getInt(R.styleable.TabLayout_tabIndicatorGravity, INDICATOR_GRAVITY_BOTTOM));
-    setTabIndicatorFullWidth(a.getBoolean(R.styleable.TabLayout_tabIndicatorFullWidth, true));
     setTabIndicatorAnimationMode(
         a.getInt(R.styleable.TabLayout_tabIndicatorAnimationMode, INDICATOR_ANIMATION_MODE_LINEAR));
+    setTabIndicatorFullWidth(a.getBoolean(R.styleable.TabLayout_tabIndicatorFullWidth, true));
 
     tabPaddingStart =
         tabPaddingTop =
@@ -625,6 +626,7 @@ public class TabLayout extends HorizontalScrollView {
    */
   public void setSelectedTabIndicatorColor(@ColorInt int color) {
     this.tabSelectedIndicatorColor = color;
+    updateTabViews(false);
   }
 
   /**
@@ -637,6 +639,7 @@ public class TabLayout extends HorizontalScrollView {
    */
   @Deprecated
   public void setSelectedTabIndicatorHeight(int height) {
+    tabIndicatorHeight = height;
     slidingTabIndicator.setSelectedIndicatorHeight(height);
   }
 
@@ -686,7 +689,7 @@ public class TabLayout extends HorizontalScrollView {
     if (scrollAnimator != null && scrollAnimator.isRunning()) {
       scrollAnimator.cancel();
     }
-    scrollTo(calculateScrollXForTab(position, positionOffset), 0);
+    scrollTo(position < 0 ? 0 : calculateScrollXForTab(position, positionOffset), 0);
 
     // Update the 'selected state' view as we scroll, if enabled
     if (updateSelectedText) {
@@ -1105,6 +1108,7 @@ public class TabLayout extends HorizontalScrollView {
    */
   public void setTabIndicatorFullWidth(boolean tabIndicatorFullWidth) {
     this.tabIndicatorFullWidth = tabIndicatorFullWidth;
+    slidingTabIndicator.jumpIndicatorToSelectedPosition();
     ViewCompat.postInvalidateOnAnimation(slidingTabIndicator);
   }
 
@@ -1338,6 +1342,11 @@ public class TabLayout extends HorizontalScrollView {
     if (this.tabSelectedIndicator != tabSelectedIndicator) {
       this.tabSelectedIndicator =
           tabSelectedIndicator != null ? tabSelectedIndicator : new GradientDrawable();
+      int indicatorHeight =
+          tabIndicatorHeight != -1
+              ? tabIndicatorHeight
+              : this.tabSelectedIndicator.getIntrinsicHeight();
+      slidingTabIndicator.setSelectedIndicatorHeight(indicatorHeight);
     }
   }
 
@@ -1872,11 +1881,14 @@ public class TabLayout extends HorizontalScrollView {
   private int calculateScrollXForTab(int position, float positionOffset) {
     if (mode == MODE_SCROLLABLE || mode == MODE_AUTO) {
       final View selectedChild = slidingTabIndicator.getChildAt(position);
+      if (selectedChild == null) {
+        return 0;
+      }
       final View nextChild =
           position + 1 < slidingTabIndicator.getChildCount()
               ? slidingTabIndicator.getChildAt(position + 1)
               : null;
-      final int selectedWidth = selectedChild != null ? selectedChild.getWidth() : 0;
+      final int selectedWidth = selectedChild.getWidth();
       final int nextWidth = nextChild != null ? nextChild.getWidth() : 0;
 
       // base scroll amount: places center of tab in center of parent
@@ -2254,7 +2266,8 @@ public class TabLayout extends HorizontalScrollView {
       if (parent == null) {
         throw new IllegalArgumentException("Tab not attached to a TabLayout");
       }
-      return parent.getSelectedTabPosition() == position;
+      int selectedPosition = parent.getSelectedTabPosition();
+      return selectedPosition != INVALID_POSITION && selectedPosition == position;
     }
 
     /**
@@ -2607,17 +2620,6 @@ public class TabLayout extends HorizontalScrollView {
         if (this.iconView == null) {
           inflateAndAddDefaultIconView();
         }
-        final Drawable icon =
-            (tab != null && tab.getIcon() != null)
-                ? DrawableCompat.wrap(tab.getIcon()).mutate()
-                : null;
-        if (icon != null) {
-          DrawableCompat.setTintList(icon, tabIconTint);
-          if (tabIconTintMode != null) {
-            DrawableCompat.setTintMode(icon, tabIconTintMode);
-          }
-        }
-
         if (this.textView == null) {
           inflateAndAddDefaultTextView();
           defaultMaxLines = TextViewCompat.getMaxLines(this.textView);
@@ -2820,6 +2822,13 @@ public class TabLayout extends HorizontalScrollView {
           (tab != null && tab.getIcon() != null)
               ? DrawableCompat.wrap(tab.getIcon()).mutate()
               : null;
+      if (icon != null) {
+        DrawableCompat.setTintList(icon, tabIconTint);
+        if (tabIconTintMode != null) {
+          DrawableCompat.setTintMode(icon, tabIconTintMode);
+        }
+      }
+
       final CharSequence text = tab != null ? tab.getText() : null;
 
       if (iconView != null) {
@@ -3250,14 +3259,21 @@ public class TabLayout extends HorizontalScrollView {
             indicatorBounds.left, indicatorTop, indicatorBounds.right, indicatorBottom);
         Drawable indicator = tabSelectedIndicator;
 
-        // If a tint color has been specified using TabLayout's setSelectedTabIndicatorColor, wrap
-        // the drawable and tint it as specified.
         if (tabSelectedIndicatorColor != Color.TRANSPARENT) {
+          // If a tint color has been specified using TabLayout's setSelectedTabIndicatorColor, wrap
+          // the drawable and tint it as specified.
           indicator = DrawableCompat.wrap(indicator);
           if (VERSION.SDK_INT == VERSION_CODES.LOLLIPOP) {
             indicator.setColorFilter(tabSelectedIndicatorColor, PorterDuff.Mode.SRC_IN);
           } else {
             DrawableCompat.setTint(indicator, tabSelectedIndicatorColor);
+          }
+        } else {
+          // Remove existing tint if setSelectedTabIndicatorColor to Color.Transparent.
+          if (VERSION.SDK_INT == VERSION_CODES.LOLLIPOP) {
+            indicator.setColorFilter(null);
+          } else {
+            DrawableCompat.setTintList(indicator, null);
           }
         }
 

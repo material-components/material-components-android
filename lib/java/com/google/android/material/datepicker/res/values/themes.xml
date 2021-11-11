@@ -52,4 +52,37 @@
     <item name="materialCalendarHeaderSelection">@style/Widget.MaterialComponents.MaterialCalendar.HeaderSelection.Fullscreen</item>
   </style>
 
+  <style name="ThemeOverlay.Material3.MaterialCalendar" parent="ThemeOverlay.Material3.Dialog">
+    <item name="android:windowElevation" tools:ignore="NewApi">@dimen/m3_datepicker_elevation</item>
+    <item name="materialCalendarStyle">@style/Widget.Material3.MaterialCalendar</item>
+
+    <!-- Header Styles -->
+    <item name="materialCalendarHeaderLayout">@style/Widget.Material3.MaterialCalendar.HeaderLayout</item>
+    <item name="materialCalendarHeaderDivider">@style/Widget.Material3.MaterialCalendar.HeaderDivider</item>
+    <item name="materialCalendarHeaderTitle">@style/Widget.Material3.MaterialCalendar.HeaderTitle</item>
+    <item name="materialCalendarHeaderSelection">@style/Widget.Material3.MaterialCalendar.HeaderSelection</item>
+    <item name="materialCalendarHeaderCancelButton">@style/Widget.Material3.MaterialCalendar.HeaderCancelButton</item>
+    <item name="materialCalendarHeaderConfirmButton">@style/Widget.Material3.Button.TextButton</item>
+    <item name="materialCalendarHeaderToggleButton">@style/Widget.Material3.MaterialCalendar.HeaderToggleButton</item>
+
+    <!-- Navigation Styles -->
+    <item name="materialCalendarYearNavigationButton">@style/Widget.Material3.MaterialCalendar.YearNavigationButton</item>
+    <item name="materialCalendarMonthNavigationButton">@style/Widget.Material3.MaterialCalendar.MonthNavigationButton</item>
+
+    <!-- Grid Styles -->
+    <item name="materialCalendarDayOfWeekLabel">@style/Widget.Material3.MaterialCalendar.DayOfWeekLabel</item>
+    <item name="materialCalendarDay">@style/Widget.Material3.MaterialCalendar.DayTextView</item>
+    <item name="materialCalendarMonth">@style/Widget.Material3.MaterialCalendar.MonthTextView</item>
+
+    <!-- Action Styles -->
+    <item name="buttonBarPositiveButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog</item>
+    <item name="buttonBarNegativeButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.MaterialCalendar.Fullscreen">
+    <item name="android:windowElevation" tools:ignore="NewApi">@dimen/m3_datepicker_elevation</item>
+    <item name="materialCalendarStyle">@style/Widget.Material3.MaterialCalendar.Fullscreen</item>
+    <item name="materialCalendarHeaderSelection">@style/Widget.Material3.MaterialCalendar.HeaderSelection.Fullscreen</item>
+  </style>
+
 </resources>

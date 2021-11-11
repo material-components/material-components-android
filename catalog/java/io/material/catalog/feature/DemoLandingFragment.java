@@ -46,7 +46,6 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.DimenRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
-import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
 import dagger.android.support.DaggerFragment;
 import java.util.Collections;
@@ -56,8 +55,8 @@ import java.util.List;
 public abstract class DemoLandingFragment extends DaggerFragment {
 
   private static final String FRAGMENT_DEMO_CONTENT = "fragment_demo_content";
-  @ColorInt private int colorControlNormal;
-  @ColorInt private int colorAccent;
+  @ColorInt private int menuIconColorUnchecked;
+  @ColorInt private int menuIconColorChecked;
 
   @Override
   public void onCreate(@Nullable Bundle bundle) {
@@ -91,10 +90,10 @@ public abstract class DemoLandingFragment extends DaggerFragment {
     TypedArray a =
         toolbarContext
             .getTheme()
-            .obtainStyledAttributes(new int[] {R.attr.colorControlNormal, R.attr.colorAccent});
-    colorControlNormal =
-        MaterialResources.getColorStateList(toolbarContext, a, 0).getDefaultColor();
-    colorAccent = a.getColor(1, 0);
+            .obtainStyledAttributes(new int[] {R.attr.colorOnSurfaceVariant, R.attr.colorPrimary});
+    menuIconColorUnchecked = a.getColor(0, 0);
+    menuIconColorChecked = a.getColor(1, 0);
+    a.recycle();
 
     TextView descriptionTextView = view.findViewById(R.id.cat_demo_landing_description);
     ViewGroup mainDemoContainer = view.findViewById(R.id.cat_demo_landing_main_demo_container);
@@ -254,7 +253,8 @@ public abstract class DemoLandingFragment extends DaggerFragment {
   private void setMenuItemChecked(MenuItem menuItem, boolean isChecked) {
     menuItem.setChecked(isChecked);
     MenuItemCompat.setIconTintList(
-        menuItem, ColorStateList.valueOf(isChecked ? colorAccent : colorControlNormal));
+        menuItem,
+        ColorStateList.valueOf(isChecked ? menuIconColorChecked : menuIconColorUnchecked));
   }
 
   /**

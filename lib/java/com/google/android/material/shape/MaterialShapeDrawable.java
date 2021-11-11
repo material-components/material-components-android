@@ -145,6 +145,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
   @Nullable private PorterDuffColorFilter tintFilter;
   @Nullable private PorterDuffColorFilter strokeTintFilter;
+  private int resolvedTintColor;
 
   @NonNull private final RectF pathBounds = new RectF();
 
@@ -437,6 +438,14 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   public void setStrokeWidth(float strokeWidth) {
     drawableState.strokeWidth = strokeWidth;
     invalidateSelf();
+  }
+
+  /**
+   * Get the tint color factoring in any other runtime modifications such as elevation overlays.
+   */
+  @ColorInt
+  public int getResolvedTintColor() {
+    return resolvedTintColor;
   }
 
   @Override
@@ -1051,7 +1060,16 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     drawShape(canvas, fillPaint, path, drawableState.shapeAppearanceModel, getBoundsAsRectF());
   }
 
-  private void drawStrokeShape(@NonNull Canvas canvas) {
+  /**
+   * Draw the stroke.
+   *
+   * <p>This method is made available to allow subclasses within the library to alter the stroke
+   * drawing like creating a cutout on it.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  protected void drawStrokeShape(@NonNull Canvas canvas) {
     drawShape(
         canvas, strokePaint, pathInsetByStroke, strokeShapeAppearance, getBoundsInsetByStroke());
   }
@@ -1253,6 +1271,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     if (requiresElevationOverlay) {
       int paintColor = paint.getColor();
       int tintColor = compositeElevationOverlayIfNeeded(paintColor);
+      resolvedTintColor = tintColor;
       if (tintColor != paintColor) {
         return new PorterDuffColorFilter(tintColor, PorterDuff.Mode.SRC_IN);
       }
@@ -1269,6 +1288,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     if (requiresElevationOverlay) {
       tintColor = compositeElevationOverlayIfNeeded(tintColor);
     }
+    resolvedTintColor = tintColor;
     return new PorterDuffColorFilter(tintColor, tintMode);
   }
 

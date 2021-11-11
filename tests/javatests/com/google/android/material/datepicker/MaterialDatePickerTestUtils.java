@@ -214,39 +214,48 @@ public final class MaterialDatePickerTestUtils {
 
   @VisibleForTesting
   public static void swipeEarlier(DialogFragment dialogFragment) {
-    int orientation = getPagingOrientation(dialogFragment);
-    if (orientation == LinearLayoutManager.HORIZONTAL) {
-      onMonthsGroup.perform(swipeRightAction());
+    if (isHorizontal(dialogFragment)) {
+      swipeRight(dialogFragment);
     } else {
-      onMonthsGroup.perform(swipeDownAction());
+      swipeDown(dialogFragment);
     }
+  }
+
+  @VisibleForTesting
+  public static void swipeLater(DialogFragment dialogFragment) {
+    if (isHorizontal(dialogFragment)) {
+      swipeLeft(dialogFragment);
+    } else {
+      swipeUp(dialogFragment);
+    }
+  }
+
+  @VisibleForTesting
+  public static void swipeLeft(DialogFragment dialogFragment) {
+    onMonthsGroup.perform(swipeAction(GeneralLocation.CENTER_RIGHT, GeneralLocation.CENTER_LEFT));
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
   }
 
-  static void swipeLater(DialogFragment dialogFragment) {
-    int orientation = getPagingOrientation(dialogFragment);
-    if (orientation == LinearLayoutManager.HORIZONTAL) {
-      onMonthsGroup.perform(swipeLeftAction());
-    } else {
-      onMonthsGroup.perform(swipeUpAction());
-    }
+  @VisibleForTesting
+  public static void swipeRight(DialogFragment dialogFragment) {
+    onMonthsGroup.perform(swipeAction(GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER_RIGHT));
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
   }
 
-  private static GeneralSwipeAction swipeLeftAction() {
-    return swipeAction(GeneralLocation.CENTER_RIGHT, GeneralLocation.CENTER_LEFT);
+  @VisibleForTesting
+  public static void swipeUp(DialogFragment dialogFragment) {
+    onMonthsGroup.perform(swipeAction(GeneralLocation.BOTTOM_CENTER, GeneralLocation.TOP_CENTER));
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
   }
 
-  private static GeneralSwipeAction swipeRightAction() {
-    return swipeAction(GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER_RIGHT);
+  @VisibleForTesting
+  public static void swipeDown(DialogFragment dialogFragment) {
+    onMonthsGroup.perform(swipeAction(GeneralLocation.TOP_CENTER, GeneralLocation.BOTTOM_CENTER));
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
   }
 
-  private static GeneralSwipeAction swipeUpAction() {
-    return swipeAction(GeneralLocation.BOTTOM_CENTER, GeneralLocation.TOP_CENTER);
-  }
-
-  private static GeneralSwipeAction swipeDownAction() {
-    return swipeAction(GeneralLocation.TOP_CENTER, GeneralLocation.BOTTOM_CENTER);
+  private static boolean isHorizontal(DialogFragment dialogFragment) {
+    return getPagingOrientation(dialogFragment) == LinearLayoutManager.HORIZONTAL;
   }
 
   private static GeneralSwipeAction swipeAction(

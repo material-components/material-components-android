@@ -603,6 +603,37 @@ public class BottomSheetBehaviorTest {
 
   @Test
   @MediumTest
+  public void testDraggableChange() {
+    getBehavior().setDraggable(false);
+    Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
+        // Drag (and not release)
+        .perform(
+            new DragAction(
+                GeneralLocation.VISIBLE_CENTER, GeneralLocation.TOP_CENTER, Press.FINGER))
+        // Check that the bottom sheet is NOT in STATE_DRAGGING
+        .check(
+            (view, e) -> {
+              assertThat(view, is(ViewMatchers.isDisplayed()));
+              BottomSheetBehavior<?> behavior = BottomSheetBehavior.from(view);
+              assertThat(behavior.getState(), not(is(BottomSheetBehavior.STATE_DRAGGING)));
+            });
+    getBehavior().setDraggable(true);
+    Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
+        // Drag (and not release)
+        .perform(
+            new DragAction(
+                GeneralLocation.VISIBLE_CENTER, GeneralLocation.TOP_CENTER, Press.FINGER))
+        // Check that the bottom sheet is in STATE_DRAGGING
+        .check(
+            (view, e) -> {
+              assertThat(view, is(ViewMatchers.isDisplayed()));
+              BottomSheetBehavior<?> behavior = BottomSheetBehavior.from(view);
+              assertThat(behavior.getState(), is(BottomSheetBehavior.STATE_DRAGGING));
+            });
+  }
+
+  @Test
+  @MediumTest
   public void testHalfExpandedToExpanded() throws Throwable {
     getBehavior().setFitToContents(false);
     checkSetState(BottomSheetBehavior.STATE_HALF_EXPANDED, ViewMatchers.isDisplayed());

@@ -20,6 +20,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import androidx.annotation.NonNull;
+import androidx.dynamicanimation.animation.DynamicAnimation;
 import androidx.dynamicanimation.animation.FloatPropertyCompat;
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
@@ -38,7 +39,7 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
 
   // Animation.
   private final SpringForce springForce;
-  private final SpringAnimation springAnimator;
+  private final SpringAnimation springAnimation;
   // Fraction of displayed indicator in the total width.
   private float indicatorFraction;
   // Whether to skip the spring animation on level change event.
@@ -57,8 +58,8 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
     springForce.setDampingRatio(SpringForce.DAMPING_RATIO_NO_BOUNCY);
     springForce.setStiffness(SPRING_FORCE_STIFFNESS);
 
-    springAnimator = new SpringAnimation(this, INDICATOR_LENGTH_IN_LEVEL);
-    springAnimator.setSpring(springForce);
+    springAnimation = new SpringAnimation(this, INDICATOR_LENGTH_IN_LEVEL);
+    springAnimation.setSpring(springForce);
 
     setGrowFraction(1f);
   }
@@ -88,6 +89,16 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
       @NonNull Context context, @NonNull CircularProgressIndicatorSpec spec) {
     return new DeterminateDrawable<>(
         context, /*baseSpec=*/ spec, new CircularDrawingDelegate(spec));
+  }
+
+  public void addSpringAnimationEndListener(
+      @NonNull DynamicAnimation.OnAnimationEndListener listener) {
+    springAnimation.addEndListener(listener);
+  }
+
+  public void removeSpringAnimationEndListener(
+      @NonNull DynamicAnimation.OnAnimationEndListener listener) {
+    springAnimation.removeEndListener(listener);
   }
 
   // ******************* Overridden methods *******************
@@ -128,25 +139,25 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
   @Override
   public void jumpToCurrentState() {
     // Set spring target value to the current level (may not be same as the desired level, depends
-    // on the completion of progress animator) and end the animator immediately.
-    springAnimator.skipToEnd();
+    // on the completion of progress animation) and end the animation immediately.
+    springAnimation.skipToEnd();
     setIndicatorFraction((float) getLevel() / MAX_DRAWABLE_LEVEL);
   }
 
   /**
    * When progress is updated, it changes the level of drawable's level and calls this method
-   * afterward. It sets the new progress value to animator and starts the animator.
+   * afterward. It sets the new progress value to animation and starts the animation.
    *
    * @param level New progress level.
    */
   @Override
   protected boolean onLevelChange(int level) {
     if (skipAnimationOnLevelChange) {
-      springAnimator.skipToEnd();
+      springAnimation.skipToEnd();
       setIndicatorFraction((float) level / MAX_DRAWABLE_LEVEL);
     } else {
-      springAnimator.setStartValue(getIndicatorFraction() * MAX_DRAWABLE_LEVEL);
-      springAnimator.animateToFinalPosition(level);
+      springAnimation.setStartValue(getIndicatorFraction() * MAX_DRAWABLE_LEVEL);
+      springAnimation.animateToFinalPosition(level);
     }
     return true;
   }

@@ -20,8 +20,8 @@ information, go to the
 [Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
 page.
 
-_**Note:** [Motion theming](#theming) will only be available in Material
-Components for Android version `1.4.0-alpha01` and above._
+**Note:** [Motion theming](#theming) is only be available in Material Components
+for Android version `1.4.0` and above.
 
 Material Components for Android provides support for all four motion patterns
 defined in the Material spec.
@@ -52,7 +52,7 @@ the
 *   Supports Fragments, Views, Activities, and Windows
 *   Bug fixes not backported and may have different behavior across API Levels
 
-## Motion Resources
+## Motion resources
 
 *   [Design Guidelines](https://material.io/design/motion/the-motion-system.html)
 *   [Codelab](https://codelabs.developers.google.com/codelabs/material-motion-android)
@@ -73,14 +73,14 @@ between two UI elements.
 
 `MaterialContainerTransform` is a
 [shared element transition](https://developer.android.com/training/transitions/start-activity#start-with-element).
-Unlike traditional Android shared elements, it is not designed around a singular
+Unlike traditional Android shared elements, it is not designed around a single
 piece of shared content, such as an image, to be moved between two scenes.
 Instead, the shared element here refers to the bounding container of a start
-`View` or `ViewGroup` (e.g. the entire row layout of an item in a list)
-transforming its size and shape into that of an end `View` or `ViewGroup` (e.g.
-the root `ViewGroup` of a full screen Fragment). These start and end container
-Views are the “shared element” of a container transform. While these containers
-are being transformed, their contents are swapped to create the transition.
+`View` or `ViewGroup` (such as the entire row layout of an item in a list)
+transforming its size and shape into that of an end `View` or `ViewGroup` (the
+root `ViewGroup` of a full screen Fragment). These start and end container Views
+are the “shared element” of a container transform. While these containers are
+being transformed, their contents are swapped to create the transition.
 
 !["Container transform gallery - normal speed and slow motion"](assets/motion/container_transform_lineup.gif)
 _Examples of the container transform:_
@@ -100,8 +100,8 @@ Android structures including Fragments, Activities and Views.
 #### Transition between Fragments
 
 In Fragment A and Fragment B's layouts, identify the start and end Views (as
-described in the [container transform overview](#material-container-transform))
-which will be shared. Add a matching `transitionName` to each of these Views.
+described in the [container transform overview](#container-transform)) which
+will be shared. Add a matching `transitionName` to each of these Views.
 
 ```xml
 <!--fragment_a.xml-->
@@ -116,11 +116,12 @@ which will be shared. Add a matching `transitionName` to each of these Views.
   android:transitionName="shared_element_container" />
 ```
 
-_**Note:** There cannot be more than a 1:1 mapping of `transitionNames` between
+**Note:** There cannot be more than a 1:1 mapping of `transitionNames` between
 the start and end layouts. If you have multiple Views in your start layout that
-could be mapped to an end View in your end layout (e.g. each `RecyclerView` item
-to a details screen), read about shared element mapping at
-[Continuous Shared Element Transitions: RecyclerView to ViewPager](https://android-developers.googleblog.com/2018/02/continuous-shared-element-transitions.html)._
+could be mapped to an end View in your end layout (for example, each
+`RecyclerView` item maps to a details screen), read about shared element mapping
+at
+[Continuous Shared Element Transitions: RecyclerView to ViewPager](https://android-developers.googleblog.com/2018/02/continuous-shared-element-transitions.html).
 
 Set Fragment B's `sharedElementEnterTransition` to a new
 `MaterialContainerTransform`. This can be done either before adding/replacing
@@ -166,18 +167,18 @@ Completing these steps should give you a working enter and return container
 transform when navigating from Fragment A to Fragment B and popping from
 Fragment B to Fragment A.
 
-_**Note:** Fragments are able to define enter and return shared element
+**Note:** Fragments are able to define enter and return shared element
 transitions. When only an enter shared element transition is set, it will be
-re-used when the Fragment is popped (returns). `MaterialContainerTransform`
+reused when the Fragment is popped (returns). `MaterialContainerTransform`
 internally configures the transition’s properties based on whether or not it’s
 entering or returning. If you need to customize either the enter or return style
-of the transition, see [Customizing the container transform](#customization)._
+of the transition, see [Customizing the container transform](#customization).
 
 When running this new transition, you might notice that Fragment A (everything
 besides the shared element) disappears as soon as the container transform
-starts. This is because FragmentA has been removed from its container. To “hold”
-FragmentA in place as the container transform plays, set FragmentA's exit
-transition to the the provided `Hold` transition.
+starts. This is because Fragment A has been removed from its container. To
+“hold” Fragment A in place as the container transform plays, set Fragment A's
+exit transition to the provided `Hold` transition.
 
 ```kt
 // FragmentA.kt
@@ -191,16 +192,16 @@ override fun onCreate(savedInstanceState: Bundle?) {
 }
 ```
 
-_**Note:** When setting a `Hold` or `MaterialElevationScale` transition, it’s
+**Note:** When setting a `Hold` or `MaterialElevationScale` transition, it’s
 important that the transition matches the duration of the
 `MaterialContainerTransform` it’s paired with. If explicitly setting a duration
 on `MaterialContainerTransform` with `setDuration`, use the same value.
 Otherwise, prefer the `MaterialContainerTransform(Context, boolean)` constructor
 which loads theme-based values upfront so `Hold` or `MaterialElevationScale`’s
-duration can be accurately set using `MaterialContainerTransform.getDuration`._
+duration can be accurately set using `MaterialContainerTransform.getDuration`.
 
 Alternatively, to subtly scale and fade Fragment A while the container transform
-is playing, set FragmentA's exit and reenter transitions to a
+is playing, set Fragment A's exit and reenter transitions to a
 `MaterialElevationScale` transition. This will help to reinforce the spatial
 relationship and navigational hierarchy of the two screens along the z-axis.
 
@@ -214,31 +215,30 @@ fun onCreate(savedInstanceState: Bundle?) {
 }
 ```
 
-We pass in `false` for the exit `MaterialElevationScale` `growing` constructor
-param, to scale down or shrink Fragment A when it is exiting during the enter
-container transform. Whereas we pass in `true` for the reenter
-`MaterialElevationScale` to scale up or expand Fragment A when it is reentering
-during the return container transform.
+Pass `false` for the exit `MaterialElevationScale` `growing` constructor param,
+to scale down or shrink Fragment A when it is exiting during the enter container
+transform. Pass `true` for the reenter `MaterialElevationScale` to scale up or
+expand Fragment A when it is reentering during the return container transform.
 
-_**Note:** When using `MaterialElevationScale`, make sure to mark the root view
+**Note:** When using `MaterialElevationScale`, make sure to mark the root view
 of your Fragment as a
 [transition group](https://developer.android.com/reference/android/view/ViewGroup#setTransitionGroup\(boolean\)),
 either with `android:transitionGroup="true"` for API level 21+ or
 `ViewGroupCompat#setTransitionGroup` for all API levels. This will ensure that
 the animation is applied to the Fragment view as a whole, as opposed to each
 child view individually, which is the default behavior of the Android
-Transitions system._
+Transitions system.
 
-#### Transition between Activities
+#### Transition between activities
 
-_**Note:** Activity and Window transitions require using Android Framework
+**Note:** Activity and Window transitions require using Android Framework
 Transitions provided in the `com.google.android.material.transition.platform`
-package and are only available on API level 21 and above._
+package and are only available on API level 21 and above.
 
 In Activity A’s layout, identify the start View to be used as the “shared
 element” as described in the
-[container transform overview](#material-container-transform). Give the start
-view a `transitionName`.
+[container transform overview](#container-transform). Give the start view a
+`transitionName`.
 
 ```xml
 <!--activity_a.xml-->
@@ -301,13 +301,13 @@ override fun onCreate(savedInstanceState: Bundle?) {
 }
 ```
 
-_**Note:** We are using `android.R.id.content` (the window’s root) as the shared
+**Note:** We are using `android.R.id.content` (the window’s root) as the shared
 element “container” in Activity B. This will cause the start view from Activity
 A to transition into the full screen of Activity B. If you have views in
 Activity A and Activity B that you do not want included as part of the
 transform, you can alternatively set the transition name on a `View`/`ViewGroup`
 in Activity B’s layout or include/exclude `View`s with helper methods on the
-Transition class (`Transition#addTarget`, `Transition#excludeChildren`, etc)._
+Transition class (`Transition#addTarget`, `Transition#excludeChildren`, etc).
 
 From Activity A, start the container transform by constructing an Intent with
 the following options.
@@ -353,8 +353,8 @@ fab.visibility = View.GONE
 bottomToolbar.visibility = View.VISIBLE
 ```
 
-This will perform a container transform from the start view transitioning to the
-end view. To return, set up the same transform, switching the start and end
+This will perform a container transform from the start view, transitioning to
+the end view. To return, set up the same transform, switching the start and end
 Views and undoing any property changes (setting the FAB back to `View.VISIBLE`
 and the `bottomToolbar` back to `View.GONE`) done by the first transform.
 
@@ -376,14 +376,14 @@ Element        | Attribute                | Related method(s)                 | 
 **Easing** | `motionEasingStandard`           | `getInterpolator`<br/>`setInterpolator`          | `cubic-bezier(0.4, 0.0, 0.2, 1)`<br/>`FastOutSlowIn`
 **Motion path** | `motionPath`           | `getPathMotion`<br/>`setPathMotion`          | `linear`
 
-_**Note:** By default, `MaterialContainerTransform` uses different durations
+**Note:** By default, `MaterialContainerTransform` uses different durations
 when incoming vs. outgoing. Calling `setDuration` on an instance of
 `MaterialContainerTransform` will override this behavior, causing the passed
 duration to be used both when incoming and outgoing. If you would like different
 durations for incoming and outgoing animations, you should create and set
 separate instances of `MaterialContainerTransform` for entering and returning
 transitions with the desired values. Alternatively, update the duration theme
-attributes._
+attributes.
 
 `MaterialContainerTransform` provides two constructors - an empty parameter
 constructor and a `(Context, boolean)` constructor. The `(Context, boolean)`
@@ -416,18 +416,18 @@ Element                                   | Related method(s)                   
 **Shape Mask Thresholds**                 | `getShapeMaskProgressThresholds`<br/>`setShapeMaskProgressThresholds` | `[0.0 - 0.75] enter`<br/>`[0.3 - 0.9] return`<br/>`[0.1 - 0.9] enter w. arc`<br/>`[0.2 - 0.9] return w. arc`
 **Debug Drawing**                         | `isDrawDebugEnabled()`<br/>`setDrawDebugEnabled()`                    | `false`
 
-_**Note:** All of these properties have defaults. In most cases, each property
+**Note:** All of these properties have defaults. In most cases, each property
 has a different default value depending on whether or not the transition is
-entering or returning._
+entering or returning.
 
-_When you manually set any of the above properties, the value set will be used
+*When you manually set any of the above properties, the value set will be used
 when the transition is both entering and returning (including when an enter
-transition is being re-used due to no return being set). If you need to manually
+transition is being reused due to no return being set). If you need to manually
 set properties which differ depending on whether or not the transition is
 entering or returning, create two `MaterialContainerTransforms` and set both the
-`sharedElementEnterTransition` and `sharedElementReturnTransition`._
+`sharedElementEnterTransition` and `sharedElementReturnTransition`.*
 
-#### Fade Through Variant
+#### Fade through Variant
 
 `MaterialContainerTransform` supports the "Container transform: fade through
 variant" mentioned in the
@@ -470,9 +470,9 @@ triggered when the target `View`'s visibility is changed or when the `View` is
 added or removed. This means `MaterialSharedAxis` requires a View to be changing
 in visibility or to be added or removed to trigger its animation.
 
-`MaterialSharedAxis` uses the concept of moving in the forward or backward
-direction. Below are the directions in which a `MaterialSharedAxis` will move
-for both the forward and backward directions along each axis.
+`MaterialSharedAxis` uses the concept of moving forward or backward. Below are
+the axes along which a `MaterialSharedAxis` will move, both forward and
+backward.
 
 #### Shared axis direction
 
@@ -482,12 +482,12 @@ Axis  | Forward           | Backward
 **Y** | Up on y-axis      | Down on y-axis
 **Z** | Forward on z-axis | Backward on z-axis
 
-_**Note:** Since a shared axis' direction is independent of whether its target
-is appearing or dissapearing (an appearing target will sometimes be moving
-forward when entering **and** forward when exiting), `MaterialSharedAxis` is not
-able to automatically reverse when only a target's enter transition is set. For
-this reason, you should manually configure and set a target's transitions (enter
-,exit, return, reenter) with the correct direction._
+**Note:** Since a shared axis' direction is independent of whether its target is
+appearing or disappearing (an appearing target will sometimes be moving forward
+when entering **and** forward when exiting), `MaterialSharedAxis` is not able to
+automatically reverse when only a target's enter transition is set. For this
+reason, you should manually configure and set a target's transitions (enter,
+exit, return, reenter) with the correct direction.
 
 A shared axis transition can be configured to transition between a number of
 Android structures including Fragments, Activities and Views.
@@ -497,8 +497,8 @@ Android structures including Fragments, Activities and Views.
 #### Transition between Fragments
 
 In the following example, we’re creating a shared axis Z transition between
-FragmentA and FragmentB. Moving from FragmentA to FragmentB should be a
-“forward” movement and returning from FragmentB to FragmentA should be a
+Fragment A and Fragment B. Moving from Fragment A to Fragment B should be a
+“forward” movement and returning from Fragment B to Fragment A should be a
 “backward” movement.
 
 In Fragment A, configure an enter and exit transition.
@@ -546,18 +546,18 @@ supportFragmentManager
   .commit()
 ```
 
-The above should give you a working shared axis transition between Fragment A
-and Fragment B. Changing the axis to `MaterialSharedAxis.X` or
+The instructions above should give you a working shared axis transition between
+Fragment A and Fragment B. Changing the axis to `MaterialSharedAxis.X` or
 `MaterialSharedAxis.Y` will create the same, coordinated interaction in their
 respective axis. Alternatively, try replacing `MaterialSharedAxis` with a
 `MaterialFadeThrough` for a transition between destinations or layouts that are
-_not_ spatially related.
+*not* spatially related.
 
 #### Transition between Activities
 
-_**Note:** Activity and Window transitions require using Android Framework
+**Note:** Activity and Window transitions require using Android Framework
 Transitions provided in the `com.google.android.material.transition.platform`
-package and are only available on API level 21 and above._
+package and are only available on API level 21 and above.
 
 Enable Activity transitions by either setting
 `android:windowActivityTransitions` to true in your theme or enabling them on an
@@ -565,7 +565,7 @@ Activity by Activity basis by setting the `Window.FEATURE_ACTIVITY_TRANSITIONS`
 flag.
 
 ```xml
-<style  name="MyTheme" parent="Theme.MaterialComponents.DayNight">
+<style  name="MyTheme" parent="Theme.Material3.DayNight.NoActionBar">
   ...
   <item  name="android:windowActivityTransitions">true</item>
 </style>
@@ -596,7 +596,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
   window.exitTransition = exit
 
   // TODO: Add a reenter transition in the backwards direction to animate
-  // ActivityB out and ActivityA back in in the opposite direction.
+  // Activity B out and Activity A back in in the opposite direction.
 
   super.onCreate(savedInstanceState)
   setContentView(R.layout.activity_a)
@@ -649,7 +649,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
 ```
 
 When you're ready to navigate from Activity A to Activity B, start Activity B
-like your normally would, passing in an `ActivityOptions` `Bundle`.
+like you normally would, passing in an `ActivityOptions` `Bundle`.
 
 ```kt
 val bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
@@ -691,7 +691,7 @@ is appearing or disappearing. By default, a `MaterialVisibility` implementation
 has a primary and secondary `VisibilityAnimatorProvider`. The primary provider
 can be modified while the secondary provider can be either modified, replaced or
 removed. This allows for the customization of Material motion while still
-adhering to a pattern's foundation and is refered to as a _variant_.
+adhering to a pattern's foundation and is referred to as a *variant*.
 
 #### Shared axis composition
 
@@ -738,7 +738,7 @@ Element        | Attribute                | Related method(s)                 | 
 See the [Motion Theming section](#theming) for details on how to systematically
 update motion.
 
-## Fade Through
+## Fade through
 
 The **fade through** pattern is used for transitions between UI elements that do
 not have a strong relationship to each other.
@@ -789,9 +789,9 @@ override fun onCreate(savedInstanceState: Bundle?) {
 }
 ```
 
-_**Note:** Since `MaterialFadeThrough` extends `Visibility`,
+**Note:** Since `MaterialFadeThrough` extends `Visibility`,
 `MaterialFadeThrough` is able to appropriately animate targets depending on
-whether they are apperaing or disappearing._
+whether they are appearing or disappearing.
 
 When you're ready to navigate between Fragment A and Fragment B, use a standard
 Fragment transaction or use the
@@ -806,9 +806,9 @@ supportFragmentManager
 
 #### Transition between Activities
 
-_**Note:** Activity and Window transitions require using Android Framework
+**Note:** Activity and Window transitions require using Android Framework
 Transitions provided in the `com.google.android.material.transition.platform`
-package and are only available on API level 21 and above._
+package and are only available on API level 21 and above.
 
 Enable Activity transitions by either setting
 `android:windowActivityTransitions` to true in your theme or enabling them on an
@@ -816,7 +816,7 @@ Activity-by-Activity basis by setting the `Window.FEATURE_ACTIVITY_TRANSITIONS`
 flag.
 
 ```xml
-<style name="MyTheme" parent="Theme.MaterialComponents.DayNight">
+<style name="MyTheme" parent="Theme.Material3.DayNight.NoActionBar">
   ...
   <item name="android:windowActivityTransitions">true</item>
 </style>
@@ -899,7 +899,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
 ```
 
 When you're ready to navigate from Activity A to Activity B, start Activity B as
-your normally would, passing in an `ActivityOptions` `Bundle`.
+you normally would, passing in an `ActivityOptions` `Bundle`.
 
 ```kt
 val bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
@@ -940,7 +940,7 @@ is appearing or disappearing. By default, a `MaterialVisibility` implementation
 has a primary and secondary `VisibilityAnimatorProvider`. The primary provider
 can be modified while the secondary provider can be either modified, replaced or
 removed. This allows for the customization of Material motion while still
-adhering to a pattern's foundation and is refered to as a _variant_.
+adhering to a pattern's foundation and is referred to as a *variant*.
 
 #### Fade through composition
 
@@ -950,9 +950,9 @@ Element                 | Primary transition | Secondary transition
 
 #### Fade through slide variant
 
-The below will create a fade through between Fragments which fades
-Fragment A out (without a scale) and fades Fragment B in with a _slide_ instead
-of a scale.
+The code below will create a fade through between Fragments which fades Fragment
+A out (without a scale) and fades Fragment B in with a *slide* instead of a
+scale.
 
 ```kt
 // FragmentA.kt
@@ -1029,7 +1029,7 @@ showButton.setOnClickListener {
 ```
 
 When reversing the transition, configure and trigger a `MaterialFade` in the
-same manner, making any adjustments to the transition that differ when entering
+same manner, making any adjustments to the transition that differ, when entering
 versus exiting.
 
 ```kt
@@ -1054,7 +1054,7 @@ is appearing or disappearing. By default, a `MaterialVisibility` implementation
 has a primary and secondary `VisibilityAnimatorProvider`. The primary provider
 can be modified while the secondary provider can be either modified, replaced or
 removed. This allows for the customization of Material motion while still
-adhering to a pattern's foundation and is refered to as a _variant_.
+adhering to a pattern's foundation and is referred to as a *variant*.
 
 #### Fade composition
 
@@ -1080,9 +1080,9 @@ update motion.
 Motion theming will only be available in Material Components for Android version
 `1.4.0-alpha01` and above.
 
-The Material motion system is backed by a limited number of slots which
-transitions use by default to create a consistent, branded feel. These slots are
-implemented as theme attributes, similar to color or shape attributes.
+The Material motion system is backed by a limited number of slots which create a
+consistent, branded feel. These slots are implemented as theme attributes,
+similar to color or shape attributes.
 
 ### Easing
 
@@ -1090,7 +1090,7 @@ Easing theme attributes define a set of curves that can be inflated and used as 
 
 Attribute        | Default value                | Description
 -------------- | ------------------------ | ---------------------------------
-**?attr/motionEasingStandard** | `cubic-bezier(0.4, 0.0, 0.2, 1)`<br/>`FastOutSlowIn`   | Easing used for elements that begin and end at rest.
+**?attr/motionEasingStandard** | `path(M 0,0 C 0.05, 0, 0.133333, 0.06, 0.166666, 0.4 C 0.208333, 0.82, 0.25, 1, 1, 1)`<br/>`FastOutExtraSlowIn`   | Easing used for elements that begin and end at rest.
 **?attr/motionEasingEmphasized** | `path(M 0,0 C 0.05, 0, 0.133333, 0.06, 0.166666, 0.4 C 0.208333, 0.82, 0.25, 1, 1, 1)`<br/>`FastOutExtraSlowIn`   | Easing used for elements that begin and end at rest but want extra attention drawn to the end of the animation.
 **?attr/motionEasingDecelerated** | `cubic-bezier(0.0, 0.0, 0.2, 1)`<br/>`LinearOutSlowIn`   | Easing used for incoming elements; motion begins at peak velocity and ends at rest.
 **?attr/motionEasingAccelerated** | `cubic-bezier(0.4, 0.0, 1, 1)`<br/>`FastOutLinearIn`   | Easing used for outgoing elements; motion begins at rest and ends at peak velocity.
@@ -1102,11 +1102,11 @@ For vector path curves, the curve must start at 0,0 and end at 1, 1. Vector path
 curves can be beneficial if you’d like to introduce 3-point (quintic) easing
 curves to your app in a backwards compatible way.
 
-To update an easing value override any of the attributes in your app’s theme
+To update an easing value, override any of the attributes in your app’s theme
 following the `<type>(value)` string format.
 
 ```
-<style name="Theme.MyTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+<style name="Theme.MyTheme" parent="Theme.Material3.DayNight.NoActionBar">
     ....
     <item name="motionEasingEmphasized">path(M 0,0 C .25, 0, .266666, .333334, .333334, .7166664 C .366667, .9666664, .3333334, 1, 1, 1)</item>
 </style>
@@ -1122,22 +1122,22 @@ animations.
 
 Attribute        | Default value                | Description
 -------------- | ------------------------ | ---------------------------------
-**?attr/motionDurationShort1** | `75ms`   | Duration for use with small motion areas such as icons and selection controls.
-**?attr/motionDurationShort2** | `150ms`   |
-**?attr/motionDurationMedium1** | `200ms`   | Duration for use with large motion areas such as bottom sheets and expanding chips.
-**?attr/motionDurationMedium2** | `250ms`   |
-**?attr/motionDurationLong1** | `300ms`   | Duration for use with elements that traverse a large portion of the screen, such as page transitions.
-**?attr/motionDurationLong2** | `350ms`   |
+**?attr/motionDurationShort1** | `100ms`   | Duration for use with small motion areas such as icons and selection controls.
+**?attr/motionDurationShort2** | `200ms`   |
+**?attr/motionDurationMedium1** | `300ms`   | Duration for use with large motion areas such as bottom sheets and expanding chips.
+**?attr/motionDurationMedium2** | `400ms`   |
+**?attr/motionDurationLong1** | `500ms`   | Duration for use with elements that traverse a large portion of the screen, such as page transitions.
+**?attr/motionDurationLong2** | `600ms`   |
 
-In general, durations should increase in duration as the area/traversal of an
-animation increases. Maintaining this rule when customizing duration attributes
-will ensure your transitions have a consistent sense of speed.
+In general, duration should increase as the area/traversal of an animation
+increases. Maintaining this rule when customizing duration attributes will
+ensure your transitions have a consistent sense of speed.
 
 To override a duration attribute, assign the attribute to your desired
 millisecond integer value.
 
 ```
-<style name="Theme.MyTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+<style name="Theme.MyTheme" parent="Theme.Material3.DayNight.NoActionBar">
     ....
     <item name="motionDurationLong2">450</item>
 </style>

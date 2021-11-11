@@ -27,6 +27,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.ViewCompat;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -116,6 +117,10 @@ class TimePickerView extends ConstraintLayout implements TimePickerControls {
     hourView = findViewById(R.id.material_hour_tv);
     clockHandView = findViewById(R.id.material_clock_hand);
 
+    ViewCompat.setAccessibilityLiveRegion(
+        minuteView, ViewCompat.ACCESSIBILITY_LIVE_REGION_ASSERTIVE);
+    ViewCompat.setAccessibilityLiveRegion(hourView, ViewCompat.ACCESSIBILITY_LIVE_REGION_ASSERTIVE);
+
     setupDoubleTap();
 
     setUpDisplay();
@@ -129,12 +134,12 @@ class TimePickerView extends ConstraintLayout implements TimePickerControls {
             new SimpleOnGestureListener() {
               @Override
               public boolean onDoubleTap(MotionEvent e) {
-                boolean ret = super.onDoubleTap(e);
-                if (onDoubleTapListener != null) {
-                  onDoubleTapListener.onDoubleTap();
+                final OnDoubleTapListener listener = onDoubleTapListener;
+                if (listener != null) {
+                  listener.onDoubleTap();
+                  return true;
                 }
-
-                return ret;
+                return false;
               }
             });
 
@@ -198,8 +203,12 @@ class TimePickerView extends ConstraintLayout implements TimePickerControls {
     Locale current = getResources().getConfiguration().locale;
     String minuteFormatted = String.format(current, TimeModel.ZERO_LEADING_NUMBER_FORMAT, minute);
     String hourFormatted = String.format(current, TimeModel.ZERO_LEADING_NUMBER_FORMAT, hourOfDay);
-    minuteView.setText(minuteFormatted);
-    hourView.setText(hourFormatted);
+    if (!TextUtils.equals(minuteView.getText(), minuteFormatted)) {
+      minuteView.setText(minuteFormatted);
+    }
+    if (!TextUtils.equals(hourView.getText(), hourFormatted)) {
+      hourView.setText(hourFormatted);
+    }
   }
 
   @Override

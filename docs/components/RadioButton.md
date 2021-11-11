@@ -34,10 +34,9 @@ Material Components for Android library. For more information, go to the
 [Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
 page.
 
-_**Note:** `<RadioButton>` is auto-inflated as
+**Note:** `<RadioButton>` is auto-inflated as
 `<com.google.android.material.button.MaterialRadioButton>` via
-`MaterialComponentsViewInflater` when using a non-Bridge
-`Theme.MaterialComponents.*` theme._
+`MaterialComponentsViewInflater` when using a `Theme.Material3.*` theme.
 
 ### Making radio buttons accessible
 
@@ -136,12 +135,12 @@ radioButton.setOnCheckedChangeListener { buttonView, isChecked
 Element                    | Attribute                                  | Related method(s)                                          | Default value
 -------------------------- | ------------------------------------------ | ---------------------------------------------------------- | -------------
 **To use material colors** | `app:useMaterialThemeColors`               | `setUseMaterialThemeColors`<br/>`isUseMaterialThemeColors` | `true` (ignored if `app:buttonTint` is set)
-**Color**                  | `app:buttonTint`                           | `setButtonTintList`<br/>`getButtonTintList`                | `null`
+**Color**                  | `app:buttonTint`                           | `setButtonTintList`<br/>`getButtonTintList`                | `?attr/colorOnSurface` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/color/res/color/m3_selection_control_button_tint.xml))
 **Min size**               | `android:minWidth`<br/>`android:minHeight` | `(set/get)MinWidth`<br/>`(set/get)MinHeight`               | `?attr/minTouchTargetSize`
 
 The color of the radio button defaults to `?attr/colorOnSurface` (unchecked) and
-`?attr/colorSecondary` (checked) defined in your app theme. If you want to
-override this behavior, as you might with a custom drawable that should not be
+`?attr/colorPrimary` (checked) defined in your app theme. If you want to
+override this behavior, you could use a custom drawable that should not be
 tinted, set `app:useMaterialThemeColors` to `false`:
 
 ```xml
@@ -157,7 +156,7 @@ Element        | Attribute                | Related method(s)                  |
 -------------- | ------------------------ | ---------------------------------- | -------------
 **Text label** | `android:text`           | `setText`<br/>`getText`            | `null`
 **Color**      | `android:textColor`      | `setTextColor`<br/>`getTextColors` | inherits from `AppCompatRadioButton`
-**Typography** | `android:textAppearance` | `setTextAppearance`                | inherits from `AppCompatRadioButton`
+**Typography** | `android:textAppearance` | `setTextAppearance`                | `?attr/textAppearanceBodyMedium`
 
 ### Radio button states
 
@@ -172,7 +171,7 @@ unselected](assets/radiobutton/radiobutton_states.png)
 
 Element           | Style
 ----------------- | ------------------------------------------------------
-**Default style** | `Widget.MaterialComponents.CompoundButton.RadioButton`
+**Default style** | `Widget.Material3.CompoundButton.RadioButton`
 
 Default style theme attribute: `?attr/radioButtonStyle`
 
@@ -185,7 +184,7 @@ and
 
 Radio buttons support
 [Material Theming](https://material.io/components/selection-controls#theming)
-and can be customized in terms of color and typography.
+which can customize color and typography.
 
 ### Radio button theming example
 
@@ -205,42 +204,42 @@ button"](assets/radiobutton/radiobutton_theming.png)
 
 #### Implementing radio button theming
 
-Using theme attributes in `res/values/styles.xml` (themes all radio buttons and
-affects other components):
+Use theme attributes in `res/values/styles.xml` which applies to all radio
+buttons and affects other components:
 
 ```xml
-<style name="Theme.App" parent="Theme.MaterialComponents.*">
+<style name="Theme.App" parent="Theme.Material3.*">
     ...
     <item name="colorOnSurface">@color/shrine_pink_900</item>
-    <item name="colorSecondary">@color/shrine_pink_100</item>
+    <item name="colorPrimary">@color/shrine_pink_100</item>
 </style>
 
 ```
 
-or using default style theme attributes, styles and theme overlays (themes all
-radio buttons but does not affect other components):
+Use default style theme attributes, styles and theme overlays which apply to all
+radio buttons but do not affect other components:
 
 ```xml
-<style name="Theme.App" parent="Theme.MaterialComponents.*">
+<style name="Theme.App" parent="Theme.Material3.*">
     ...
     <item name="radioButtonStyle">@style/Widget.App.RadioButton</item>
 </style>
 
-<style name="Widget.App.RadioButton" parent="Widget.MaterialComponents.CompoundButton.RadioButton">
+<style name="Widget.App.RadioButton" parent="Widget.Material3.CompoundButton.RadioButton">
     <item name="materialThemeOverlay">@style/ThemeOverlay.App.RadioButton</item>
 </style>
 
 <style name="ThemeOverlay.App.RadioButton" parent="">
     <item name="colorOnSurface">@color/shrine_pink_900</item>
-    <item name="colorSecondary">@color/shrine_pink_100</item>
+    <item name="colorPrimary">@color/shrine_pink_100</item>
 </style>
 ```
 
-you can also change the radio button colors via the `?attr/buttonTint`
+You can also change the radio button colors via the `?attr/buttonTint`
 attribute:
 
 ```xml
-<style name="Widget.App.RadioButton" parent="Widget.MaterialComponents.CompoundButton.RadioButton">
+<style name="Widget.App.RadioButton" parent="Widget.Material3.CompoundButton.RadioButton">
    <item name="buttonTint">@color/button_tint</item>
 </style>
 ```
@@ -255,7 +254,7 @@ and in `color/button_tint.xml`:
 </selector>
 ```
 
-or using the styles in the layout (affects only this radio button):
+You can use the styles in the layout, which affects only this radio button:
 
 ```xml
 <RadioButton

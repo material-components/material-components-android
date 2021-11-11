@@ -18,13 +18,13 @@ package com.google.android.material.textfield;
 
 import com.google.android.material.R;
 
-import androidx.appcompat.content.res.AppCompatResources;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import com.google.android.material.internal.TextWatcherAdapter;
 import com.google.android.material.textfield.TextInputLayout.OnEditTextAttachedListener;
@@ -77,14 +77,15 @@ class PasswordToggleEndIconDelegate extends EndIconDelegate {
         }
       };
 
-  PasswordToggleEndIconDelegate(@NonNull TextInputLayout textInputLayout) {
-    super(textInputLayout);
+  PasswordToggleEndIconDelegate(
+      @NonNull TextInputLayout textInputLayout, @DrawableRes int customEndIcon) {
+    super(textInputLayout, customEndIcon);
   }
 
   @Override
   void initialize() {
     textInputLayout.setEndIconDrawable(
-        AppCompatResources.getDrawable(context, R.drawable.design_password_eye));
+        customEndIcon == 0 ? R.drawable.design_password_eye : customEndIcon);
     textInputLayout.setEndIconContentDescription(
         textInputLayout.getResources().getText(R.string.password_toggle_content_description));
     textInputLayout.setEndIconOnClickListener(

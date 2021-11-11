@@ -17,7 +17,7 @@
 <resources>
   <string name="character_counter_content_description">%1$d van %2$d tekens opgegeven</string>
   <string name="character_counter_overflowed_content_description">Tekenlimiet heeft %1$d van %2$d overschreden</string>
-  <string name="password_toggle_content_description">Wachtwoord weergeven</string>
+  <string name="password_toggle_content_description">Wachtwoord tonen</string>
   <string name="clear_text_end_icon_content_description">Tekst wissen</string>
   <string name="exposed_dropdown_menu_content_description">Dropdownmenu weergeven</string>
   <string name="error_icon_content_description">Fout</string>

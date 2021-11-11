@@ -14,7 +14,8 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
+  <!-- Themes for MaterialComponents Dialogs. -->
 
   <!--
     Themes in the "Theme.MaterialComponents" family will contain a default full color scheme.
@@ -58,13 +59,13 @@
   <style name="ThemeOverlay.MaterialComponents.Dialog" parent="Base.ThemeOverlay.MaterialComponents.Dialog"/>
 
   <!--
-    The default theme overlay used by MaterialComponents for alert dialogs, via the
+    The default MaterialComponents theme overlay used for AlertDialogs built via the
     alertDialogTheme attribute.
   -->
   <style name="ThemeOverlay.MaterialComponents.Dialog.Alert" parent="Base.ThemeOverlay.MaterialComponents.Dialog.Alert"/>
 
   <!--
-    The default theme overlay used by MaterialComponents for AlertDialogs built with the MaterialAlertDialogBuilder, via the
+    The default MaterialComponents theme overlay for AlertDialogs built with the MaterialAlertDialogBuilder, via the
     materialAlertDialogTheme attribute.
   -->
   <style name="ThemeOverlay.MaterialComponents.MaterialAlertDialog" parent="Base.ThemeOverlay.MaterialComponents.MaterialAlertDialog">
@@ -73,11 +74,92 @@
     <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.MaterialComponents.Title.Text</item>
   </style>
 
-  <!-- A theme overlay for Alert Dialog panels with a center aligned title text and icon. -->
+  <!-- A theme overlay for MaterialComponents Alert Dialog panels with a center aligned title text and icon. -->
   <style name="ThemeOverlay.MaterialComponents.MaterialAlertDialog.Centered" parent="Base.ThemeOverlay.MaterialComponents.MaterialAlertDialog">
     <item name="materialAlertDialogTitlePanelStyle">@style/MaterialAlertDialog.MaterialComponents.Title.Panel.CenterStacked</item>
     <item name="materialAlertDialogTitleIconStyle">@style/MaterialAlertDialog.MaterialComponents.Title.Icon.CenterStacked</item>
     <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.MaterialComponents.Title.Text.CenterStacked</item>
+  </style>
+
+  <!-- Themes for M3 Dialogs. -->
+
+  <!--
+    Themes in the "Theme.Material3" family will contain a default full color scheme.
+
+    These theme declarations contain any version-independent specification. Items
+    that need to vary based on platform version should be defined in the corresponding
+    "Base.Theme" theme.
+  -->
+
+  <style name="Theme.Material3.Light.DialogWhenLarge" parent="Base.Theme.Material3.Light.Dialog"/>
+  <style name="Theme.Material3.Dark.DialogWhenLarge" parent="Base.Theme.Material3.Dark.Dialog"/>
+  <style name="Theme.Material3.Light.Dialog" parent="Base.Theme.Material3.Light.Dialog"/>
+  <style name="Theme.Material3.Dark.Dialog" parent="Base.Theme.Material3.Dark.Dialog"/>
+
+  <!--
+    Material theme for alert dialog windows, which is used by the AlertDialog class.
+    This is basically a dialog but sets the background to empty so it can do
+    two-tone backgrounds. For applications targeting Honeycomb or newer, this is the default
+    AlertDialog theme.
+  -->
+  <style name="Theme.Material3.Light.Dialog.Alert" parent="Base.Theme.Material3.Light.Dialog">
+    <item name="windowMinWidthMajor">@dimen/abc_dialog_min_width_major</item>
+    <item name="windowMinWidthMinor">@dimen/abc_dialog_min_width_minor</item>
+  </style>
+
+  <style name="Theme.Material3.Dark.Dialog.Alert" parent="Base.Theme.Material3.Dark.Dialog">
+    <item name="windowMinWidthMajor">@dimen/abc_dialog_min_width_major</item>
+    <item name="windowMinWidthMinor">@dimen/abc_dialog_min_width_minor</item>
+  </style>
+
+  <!--
+    Variant of Theme.Material3.Dialog that has a nice minimum width for a regular dialog.
+  -->
+  <style name="Theme.Material3.Light.Dialog.MinWidth" parent="Base.Theme.Material3.Light.Dialog">
+    <item name="windowMinWidthMajor">@dimen/abc_dialog_min_width_major</item>
+    <item name="windowMinWidthMinor">@dimen/abc_dialog_min_width_minor</item>
+  </style>
+
+  <style name="Theme.Material3.Dark.Dialog.MinWidth" parent="Base.Theme.Material3.Dark.Dialog">
+    <item name="windowMinWidthMajor">@dimen/abc_dialog_min_width_major</item>
+    <item name="windowMinWidthMinor">@dimen/abc_dialog_min_width_minor</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.Dialog" parent="Base.ThemeOverlay.Material3.Dialog"/>
+
+  <!--
+    The default Material3 theme overlay used for AlertDialogs built via the
+    alertDialogTheme attribute.
+  -->
+  <style name="ThemeOverlay.Material3.Dialog.Alert" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+    <item name="buttonBarButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog.Flush</item>
+    <item name="android:windowElevation" tools:ignore="NewApi">@dimen/m3_alert_dialog_elevation</item>
+  </style>
+
+  <!--
+    The default Material3 theme overlay for AlertDialogs built with the MaterialAlertDialogBuilder, via the
+    materialAlertDialogTheme attribute.
+    -->
+  <style name="ThemeOverlay.Material3.MaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+    <item name="alertDialogStyle">@style/MaterialAlertDialog.Material3</item>
+    <item name="android:windowElevation" tools:ignore="NewApi">@dimen/m3_alert_dialog_elevation</item>
+    <item name="android:checkedTextViewStyle" tools:ignore="NewApi">@style/Widget.Material3.CheckedTextView</item>
+    <item name="buttonBarButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog</item>
+    <item name="buttonBarPositiveButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog</item>
+    <item name="buttonBarNegativeButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog</item>
+    <item name="buttonBarNeutralButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog.Flush</item>
+    <item name="materialAlertDialogTitlePanelStyle">@style/MaterialAlertDialog.Material3.Title.Panel</item>
+    <item name="materialAlertDialogTitleIconStyle">@style/MaterialAlertDialog.Material3.Title.Icon</item>
+    <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.Material3.Title.Text</item>
+    <item name="materialAlertDialogBodyTextStyle">@style/MaterialAlertDialog.Material3.Body.Text</item>
+  </style>
+
+  <!-- A theme overlay for Material3 Alert Dialog panels with a center aligned title text and icon. -->
+  <style name="ThemeOverlay.Material3.MaterialAlertDialog.Centered">
+    <item name="materialAlertDialogTitlePanelStyle">@style/MaterialAlertDialog.Material3.Title.Panel.CenterStacked</item>
+    <item name="materialAlertDialogTitleIconStyle">@style/MaterialAlertDialog.Material3.Title.Icon.CenterStacked</item>
+    <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.Material3.Title.Text.CenterStacked</item>
+    <item name="materialAlertDialogBodyTextStyle">@style/MaterialAlertDialog.Material3.Body.Text.CenterStacked</item>
   </style>
 
 </resources>

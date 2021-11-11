@@ -122,49 +122,25 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
 
     // Horizontal position of the start adjusted based on the rounded corner radius.
     float adjustedStartX =
-        -trackLength / 2
-            + displayedCornerRadius
-            + startFraction * (trackLength - 2 * displayedCornerRadius);
+        -trackLength / 2 + startFraction * (trackLength - 2 * displayedCornerRadius);
     // Horizontal position of the end adjusted based on the rounded corner radius.
     float adjustedEndX =
         -trackLength / 2
-            + displayedCornerRadius
-            + endFraction * (trackLength - 2 * displayedCornerRadius);
+            + endFraction * (trackLength - 2 * displayedCornerRadius)
+            + 2 * displayedCornerRadius;
 
     // Sets up the paint.
     paint.setStyle(Style.FILL);
     paint.setAntiAlias(true);
     paint.setColor(color);
 
-    // Draws the rectangle as the indicator and the rounded corners.
-    canvas.drawRect(
-        adjustedStartX,
-        -displayedTrackThickness / 2,
-        adjustedEndX,
-        displayedTrackThickness / 2,
-        paint);
-    RectF cornerPatternRectBound =
+    RectF indicatorBound =
         new RectF(
-            -displayedCornerRadius,
-            -displayedCornerRadius,
-            displayedCornerRadius,
-            displayedCornerRadius);
-    drawRoundedEnd(
-        canvas,
-        paint,
-        displayedTrackThickness,
-        displayedCornerRadius,
-        adjustedStartX,
-        true,
-        cornerPatternRectBound);
-    drawRoundedEnd(
-        canvas,
-        paint,
-        displayedTrackThickness,
-        displayedCornerRadius,
-        adjustedEndX,
-        false,
-        cornerPatternRectBound);
+            adjustedStartX,
+            -displayedTrackThickness / 2,
+            adjustedEndX,
+            displayedTrackThickness / 2);
+    canvas.drawRoundRect(indicatorBound, displayedCornerRadius, displayedCornerRadius, paint);
   }
 
   /**
@@ -176,69 +152,18 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
   @Override
   void fillTrack(@NonNull Canvas canvas, @NonNull Paint paint) {
     int trackColor = MaterialColors.compositeARGBWithAlpha(spec.trackColor, drawable.getAlpha());
-    float adjustedStartX = -trackLength / 2 + displayedCornerRadius;
-    float adjustedEndX = -adjustedStartX;
 
     // Sets up the paint.
     paint.setStyle(Style.FILL);
     paint.setAntiAlias(true);
     paint.setColor(trackColor);
 
-    canvas.drawRect(
-        adjustedStartX,
-        -displayedTrackThickness / 2,
-        adjustedEndX,
-        displayedTrackThickness / 2,
-        paint);
-    RectF cornerPatternRectBound =
+    RectF trackBound =
         new RectF(
-            -displayedCornerRadius,
-            -displayedCornerRadius,
-            displayedCornerRadius,
-            displayedCornerRadius);
-    drawRoundedEnd(
-        canvas,
-        paint,
-        displayedTrackThickness,
-        displayedCornerRadius,
-        adjustedStartX,
-        true,
-        cornerPatternRectBound);
-    drawRoundedEnd(
-        canvas,
-        paint,
-        displayedTrackThickness,
-        displayedCornerRadius,
-        adjustedEndX,
-        false,
-        cornerPatternRectBound);
-  }
-
-  // The rounded corners are drawn in steps, since drawRoundRect() is only available in Api 21+.
-  private static void drawRoundedEnd(
-      Canvas canvas,
-      Paint paint,
-      float trackSize,
-      float cornerRadius,
-      float x,
-      boolean isStartPosition,
-      RectF cornerPatternRectBound) {
-    canvas.save();
-    canvas.translate(x, 0);
-    if (!isStartPosition) {
-      canvas.rotate(180);
-    }
-    // Draws the tiny rectangle between the two corners.
-    canvas.drawRect(
-        -cornerRadius, -trackSize / 2 + cornerRadius, 0, trackSize / 2 - cornerRadius, paint);
-    // Draws the upper corner.
-    canvas.save();
-    canvas.translate(0, -trackSize / 2 + cornerRadius);
-    canvas.drawArc(cornerPatternRectBound, 180, 90, true, paint);
-    canvas.restore();
-    // Draws the lower corner.
-    canvas.translate(0, trackSize / 2 - cornerRadius);
-    canvas.drawArc(cornerPatternRectBound, 180, -90, true, paint);
-    canvas.restore();
+            -trackLength / 2,
+            -displayedTrackThickness / 2,
+            trackLength / 2,
+            displayedTrackThickness / 2);
+    canvas.drawRoundRect(trackBound, displayedCornerRadius, displayedCornerRadius, paint);
   }
 }

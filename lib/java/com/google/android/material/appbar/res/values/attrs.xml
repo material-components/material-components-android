@@ -22,6 +22,21 @@
   <!-- Style to use for CollapsingToolbarLayouts in this theme. -->
   <attr name="collapsingToolbarLayoutStyle" format="reference"/>
 
+  <!-- Style to use for Medium CollapsingToolbarLayouts in this theme. -->
+  <attr name="collapsingToolbarLayoutMediumStyle" format="reference"/>
+
+  <!-- Style to use for Large CollapsingToolbarLayouts in this theme. -->
+  <attr name="collapsingToolbarLayoutLargeStyle" format="reference"/>
+
+  <!-- Size to use for Medium CollapsingToolbarLayouts in this theme. -->
+  <attr name="collapsingToolbarLayoutMediumSize" format="reference"/>
+
+  <!-- Size to use for Large CollapsingToolbarLayouts in this theme. -->
+  <attr name="collapsingToolbarLayoutLargeSize" format="reference"/>
+
+  <!-- Style to use for Surface Toolbars in this theme. -->
+  <attr name="toolbarSurfaceStyle" format="reference"/>
+
   <declare-styleable name="AppBarLayout">
     <!-- Deprecated. Elevation is now controlled via a state list animator. -->
     <attr name="elevation"/>
@@ -39,7 +54,7 @@
          `RecyclerView`, etc.). Default is false. -->
     <attr name="liftOnScroll" format="boolean"/>
     <!-- The id of the view that the {@link AppBarLayout} should use to determine whether
-         it should be lifted (i.e., only if {@link R.attr#liftOnScroll} is set to true).
+         it should be lifted (i.e., only if {@code liftOnScroll} is set to true).
          If this id is not set, the {@link AppBarLayout} will use the target view provided
          by nested scrolling to determine whether it should be lifted. -->
     <attr name="liftOnScrollTargetViewId" format="reference"/>
@@ -49,9 +64,9 @@
   </declare-styleable>
 
   <declare-styleable name="AppBarLayoutStates">
-    <!-- @deprecated in favor of {@link R.attr#state_lifted}. -->
+    <!-- @deprecated in favor of {@code state_lifted}. -->
     <attr name="state_collapsed" format="boolean"/>
-    <!-- @deprecated in favor of {@link R.attr#state_liftable}. -->
+    <!-- @deprecated in favor of {@code state_liftable}. -->
     <attr name="state_collapsible" format="boolean"/>
     <!-- State value for {@link com.google.android.material.appbar.AppBarLayout} set when the view
          is lifted (elevated). -->
@@ -221,6 +236,16 @@
     </attr>
     <!-- The maximum number of lines to display in the expanded state. Experimental Feature. -->
     <attr name="maxLines" format="integer" />
+    <!-- Whether the system window inset top should be applied regardless of
+         what the layout_height is set to. Experimental Feature. -->
+    <attr name="forceApplySystemWindowInsetTop" format="boolean" />
+    <!-- Whether extra height should be added when the title text spans across
+         multiple lines. Experimental Feature. -->
+    <attr name="extraMultilineHeightEnabled" format="boolean" />
+
+    <!-- The interpolator to use when animating the title position from collapsed to expanded and
+         vice versa. -->
+    <attr name="titlePositionInterpolator" format="reference"/>
   </declare-styleable>
 
   <declare-styleable name="CollapsingToolbarLayout_Layout">

@@ -33,4 +33,18 @@
     <item name="cornerSize">@dimen/mtrl_shape_corner_size_large_component</item>
   </style>
 
+  <style name="ShapeAppearance.Material3.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+    <item name="cornerFamily">@integer/m3_sys_shape_small_corner_family</item>
+    <item name="cornerSize">@dimen/m3_sys_shape_small_corner_size</item>
+  </style>
+
+  <style name="ShapeAppearance.Material3.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+    <item name="cornerFamily">@integer/m3_sys_shape_medium_corner_family</item>
+    <item name="cornerSize">@dimen/m3_sys_shape_medium_corner_size</item>
+  </style>
+
+  <style name="ShapeAppearance.Material3.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+    <item name="cornerFamily">@integer/m3_sys_shape_large_corner_family</item>
+    <item name="cornerSize">@dimen/m3_sys_shape_large_corner_size</item>
+  </style>
 </resources>

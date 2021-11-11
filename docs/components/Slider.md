@@ -30,9 +30,9 @@ page.
 
 ### Usage
 
-![Single point sliders](assets/slider/slider_basic.png)
+![2 single point sliders](assets/slider/slider_basic.png)
 
-A `Slider` can be added in a layout like so:
+Add a `Slider` to a layout:
 
 ```xml
 <!-- Continuous slider -->
@@ -49,7 +49,7 @@ A `Slider` can be added in a layout like so:
     android:stepSize="10.0"  />
 ```
 
-Changes to a slider can be observed like so:
+Observe changes to a slider:
 
 ```kt
 slider.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
@@ -67,9 +67,9 @@ slider.addOnChangeListener { slider, value, fromUser ->
 }
 ```
 
-![Range slider](assets/slider/slider_basic_range.png)
+![2 range sliders](assets/slider/slider_basic_range.png)
 
-Similarly, a `RangeSlider` can be added in a layout like so:
+Add a `RangeSlider` to a layout:
 
 ```xml
 <!-- Continuous slider -->
@@ -77,7 +77,7 @@ Similarly, a `RangeSlider` can be added in a layout like so:
     ...
     android:valueFrom="0.0"
     android:valueTo="100.0"
-    app:values="@array/initial_values"  />
+    app:values="@array/initial_slider_values"  />
 
 <!-- Discrete slider -->
 <com.google.android.material.slider.RangeSlider
@@ -99,7 +99,7 @@ And in `values/arrays.xml`:
 </resources>
 ```
 
-Changes to a range slider can be observed like so:
+Observe changes to a range slider:
 
 ```kt
 rangeSlider.addOnSliderTouchListener(object : RangeSlider.OnSliderTouchListener {
@@ -123,15 +123,15 @@ Sliders support setting content descriptors for use with screen readers. While
 optional, we strongly encourage their use.
 
 That can be done in XML via the `android:contentDescription` attribute or
-programmatically like so:
+programmatically:
 
 ```kt
 slider.contentDescription = contentDescription
 ```
 
-Additionaly, if using a `TextView` to display the value of the slider, you
-should set `android:labelFor` on it, so that screen readers announce that
-`TextView` refers to the slider.
+If using a `TextView` to display the value of the slider, you should set
+`android:labelFor` so that screen readers announce that `TextView` refers to the
+slider.
 
 ### Adding/removing the value label
 
@@ -152,7 +152,7 @@ By using a `LabelFormatter` you can display the selected value using letters to
 indicate magnitude (e.g.: 1.5K, 3M, 12B). That can be achieved through the
 `setLabelFormatter` method.
 
-The following example shows a slider for a price range in the USD currency.
+The following example shows a slider for a price range in USD currency.
 
 !["Range slider with range of $0 to $100. Left thumb is set at $20, right thumb
 at $70."](assets/slider/slider_price.png)
@@ -250,7 +250,7 @@ In the layout:
 ```xml
 <com.google.android.material.slider.Slider
     ...
-    android:stepSize="5.0" />
+    android:stepSize="10.0" />
 ```
 
 ### Discrete range slider
@@ -270,12 +270,12 @@ In the layout:
 ```xml
 <com.google.android.material.slider.RangeSlider
     ...
-    android:stepSize="5.0"  />
+    android:stepSize="10.0"  />
 ```
 
 ### Anatomy and key properties
 
-A slider has a track, one or two thumbs, and optional value label. A discrete
+A slider has a track, one or two thumbs, and an optional value label. A discrete
 slider also has tick marks.
 
 ![Slider anatomy diagram](assets/slider/slider_anatomy.png)
@@ -287,22 +287,22 @@ slider also has tick marks.
 
 #### Track attributes
 
-Element                                     | Attribute                | Related method(s)                                         | Default value
-------------------------------------------- | ------------------------ | --------------------------------------------------------- | -------------
-**Min value**                               | `android:valueFrom`      | `setValueFrom`<br/>`getValueFrom`                         | N/A
-**Max value**                               | `android:valueTo`        | `setValueTo`<br/>`getValueTo`                             | N/A
-**Step size (discrete)**                    | `android:stepSize`       | `setStepSize`<br/>`getStepSize`                           | N/A
-**Initial selected value (Slider)**         | `android:value`          | `setValue`<br/>`getValue`                                 | N/A
-**Initial selected values (RangeSlider)**   | `app:values`             | `setValues`<br/>`getValues`                               | N/A
-**Height**                                  | `app:trackHeight`        | `setTrackHeight`<br/>`getTrackHeight`                     | `4dp`
-**Color**                                   | `app:trackColor`         | `setTrackTintList`<br/>`getTrackTintList`                 | `null`
-**Color for track's active part**           | `app:trackColorActive`   | `setTrackActiveTintList`<br/>`getTrackActiveTintList`     | `?attr/colorPrimary`
-**Color for track's inactive part**         | `app:trackColorInactive` | `setTrackInactiveTintList`<br/>`getTrackInactiveTintList` | `?attr/colorPrimary` at 24%
-**Minimum separation for adjacent thumbs**  | `app:minSeparation`      | `setMinSeparation`<br/>`getMinSeparation`                 | `0dp`
+Element                                    | Attribute                | Related method(s)                                         | Default value
+------------------------------------------ | ------------------------ | --------------------------------------------------------- | -------------
+**Min value**                              | `android:valueFrom`      | `setValueFrom`<br/>`getValueFrom`                         | N/A
+**Max value**                              | `android:valueTo`        | `setValueTo`<br/>`getValueTo`                             | N/A
+**Step size (discrete)**                   | `android:stepSize`       | `setStepSize`<br/>`getStepSize`                           | N/A
+**Initial selected value (Slider)**        | `android:value`          | `setValue`<br/>`getValue`                                 | N/A
+**Initial selected values (RangeSlider)**  | `app:values`             | `setValues`<br/>`getValues`                               | N/A
+**Height**                                 | `app:trackHeight`        | `setTrackHeight`<br/>`getTrackHeight`                     | `4dp`
+**Color**                                  | `app:trackColor`         | `setTrackTintList`<br/>`getTrackTintList`                 | `null`
+**Color for track's active part**          | `app:trackColorActive`   | `setTrackActiveTintList`<br/>`getTrackActiveTintList`     | `?attr/colorPrimary`
+**Color for track's inactive part**        | `app:trackColorInactive` | `setTrackInactiveTintList`<br/>`getTrackInactiveTintList` | `?attr/colorSurfaceVariant`
+**Minimum separation for adjacent thumbs** | `app:minSeparation`      | `setMinSeparation`<br/>`getMinSeparation`                 | `0dp`
 
-_**Note:** `app:trackColor` takes precedence over `app:trackColorActive` and
+**Note:** `app:trackColor` takes precedence over `app:trackColorActive` and
 `app:trackColorInative`. It's a shorthand for setting both values to the same
-thing._
+thing.
 
 #### Thumb attributes
 
@@ -310,7 +310,7 @@ Element          | Attribute              | Related method(s)                   
 ---------------- | ---------------------- | --------------------------------------------------------------------------------- | -------------
 **Color**        | `app:thumbColor`       | `setThumbTintList`<br/>`getThumbTintList`                                         | `?attr/colorPrimary`
 **Radius**       | `app:thumbRadius`      | `setThumbRadiusResource`<br/>`setThumbRadius`<br/>`getThumbRadius`                | `10dp`
-**Elevation**    | `app:thumbElevation`   | `setThumbElevationResource`<br/>`setThumbElevation`<br/>`getThumbElevation`       | `1dp`
+**Elevation**    | `app:thumbElevation`   | `setThumbElevationResource`<br/>`setThumbElevation`<br/>`getThumbElevation`       | `2dp`
 **Halo color**   | `app:haloColor`        | `setHaloTintList`<br/>`getHaloTintList`                                           | `?attr/colorPrimary` at 24%
 **Halo radius**  | `app:haloRadius`       | `setHaloRadiusResource`<br/>`setHaloRadius`<br/>`getHaloRadius`                   | `24dp`
 **Stroke color** | `app:thumbStrokeColor` | `setThumbStrokeColor`<br/>`setThumbStrokeColorResource`<br/>`getThumbStrokeColor` | `null`
@@ -320,31 +320,31 @@ Element          | Attribute              | Related method(s)                   
 
 Element       | Attribute           | Related method(s)                           | Default value
 ------------- | ------------------- | ------------------------------------------- | -------------
-**Style**     | `app:labelStyle`    | N/A                                         | `@style/Widget.MaterialComponents.Tooltip`
+**Style**     | `app:labelStyle`    | N/A                                         | `@style/Widget.Material3.Tooltip`
 **Formatter** | N/A                 | `setLabelFormatter`<br/>`hasLabelFormatter` | `null`
 **Behavior**  | `app:labelBehavior` | `setLabelBehavior`<br/>`getLabelBehavior`   | `floating`
 
-_**Note:** The value label is a
-[Tooltip](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/tooltip/TooltipDrawable.java)._
+**Note:** The value label is a
+[Tooltip](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/tooltip/TooltipDrawable.java).
 
 #### Tick mark attributes
 
 Element                             | Attribute               | Related method(s)                                       | Default value
 ----------------------------------- | ----------------------- | ------------------------------------------------------- | -------------
 **Color**                           | `app:tickColor`         | `setTickTintList`<br/>`getTickTintList`                 | `null`
-**Color for track's active part**   | `app:tickColorActive`   | `setTickActiveTintList`<br/>`getTickActiveTintList`     | `?attr/colorOnPrimary` at 54%
-**Color for track's inactive part** | `app:tickColorInactive` | `setTickInactiveTintList`<br/>`getTickInactiveTintList` | `?attr/colorPrimary` at 54%
+**Color for track's active part**   | `app:tickColorActive`   | `setTickActiveTintList`<br/>`getTickActiveTintList`     | `?attr/colorSurfaceVariant`
+**Color for track's inactive part** | `app:tickColorInactive` | `setTickInactiveTintList`<br/>`getTickInactiveTintList` | `?attr/colorPrimary`
 **Tick visible**                    | `app:tickVisible`       | `setTickVisible`<br/>`isTickVisible()`                  | `true`
 
-_**Note:** `app:tickColor` takes precedence over `app:tickColorActive` and
+**Note:** `app:tickColor` takes precedence over `app:tickColorActive` and
 `app:tickColorInative`. It's a shorthand for setting both values to the same
-thing._
+thing.
 
 #### Styles
 
 Element           | Style
------------------ | ----------------------------------
-**Default style** | `Widget.MaterialComponents.Slider`
+----------------- | -------------------------
+**Default style** | `Widget.Material3.Slider`
 
 Default style theme attribute: `?attr/sliderStyle`
 
@@ -356,8 +356,8 @@ and
 ## Theming sliders
 
 Sliders support
-[Material Theming](https://material.io/components/sliders#theming) and can be
-customized in terms of color and typography.
+[Material Theming](https://material.io/components/sliders#theming) which can
+customize color and typography.
 
 ### Slider theming example
 
@@ -376,11 +376,11 @@ The following example shows a range slider with Material Theming.
 
 #### Implementing slider theming
 
-Using theme attributes and styles in `res/values/styles.xml` (themes all sliders
-and affects other components):
+Use theme attributes and styles in `res/values/styles.xml` which applies to all
+sliders and affects other components:
 
 ```xml
-<style name="Theme.App" parent="Theme.MaterialComponents.*">
+<style name="Theme.App" parent="Theme.Material3.*">
     ...
     <item name="colorPrimary">@color/shrine_pink_100</item>
     <item name="colorOnPrimary">@color/shrine_pink_900</item>
@@ -388,16 +388,16 @@ and affects other components):
 </style>
 ```
 
-or using a default style theme attribute, styles and a theme overlay (themes all
-sliders but does not affect other components):
+Use a default style theme attribute, styles and a theme overlay which applies to
+all sliders but does not affect other components:
 
 ```xml
-<style name="Theme.App" parent="Theme.MaterialComponents.*">
+<style name="Theme.App" parent="Theme.Material3.*">
     ...
     <item name="sliderStyle">@style/Widget.App.Slider</item>
 </style>
 
-<style name="Widget.App.Slider" parent="Widget.MaterialComponents.Slider">
+<style name="Widget.App.Slider" parent="Widget.Material3.Slider">
     <item name="materialThemeOverlay">@style/ThemeOverlay.App.Slider</item>
     <item name="labelStyle">@style/Widget.App.Tooltip</item>
   </style>
@@ -408,19 +408,19 @@ sliders but does not affect other components):
     <item name="colorOnSurface">@color/shrine_pink_100</item>
 </style>
 
-<style name="Widget.App.Tooltip" parent="Widget.MaterialComponents.Tooltip">
+<style name="Widget.App.Tooltip" parent="Widget.Material3.Tooltip">
     <item name="android:textAppearance">@style/TextAppearance.App.Tooltip</item>
     <item name="backgroundTint">@color/shrine_pink_900</item>
   </style>
 
-<style name="TextAppearance.App.Tooltip" parent="TextAppearance.MaterialComponents.Tooltip">
+<style name="TextAppearance.App.Tooltip" parent="TextAppearance.Material3.BodySmall">
   <item name="android:textColor">@color/shrine_pink_100</item>
   <item name="fontFamily">@font/rubik</item>
   <item name="android:fontFamily">@font/rubik</item>
 </style>
 ```
 
-or using the style in the layout (affects only this specific slider):
+Use the style in the layout, which affects only this specific slider:
 
 ```xml
 <com.google.android.material.slider.RangeSlider

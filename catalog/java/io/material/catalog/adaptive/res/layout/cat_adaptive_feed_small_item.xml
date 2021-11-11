@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2021 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/feed_small_content_container"
+  android:layout_width="match_parent"
+  android:layout_height="120dp"
+  android:layout_marginBottom="16dp"
+  app:strokeColor="?attr/colorSurfaceVariant">
+
+  <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp">
+
+    <TextView
+      android:id="@+id/feed_small_content_title"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_toStartOf="@id/feed_small_content_image"
+      android:layout_toLeftOf="@id/feed_small_content_image"
+      android:layout_alignParentStart="true"
+      android:layout_alignParentLeft="true"
+      android:text="@string/cat_feed_fragment_title"
+      android:textAppearance="?attr/textAppearanceHeadlineSmall"/>
+
+    <com.google.android.material.imageview.ShapeableImageView
+      android:id="@+id/feed_small_content_image"
+      android:layout_width="120dp"
+      android:layout_height="120dp"
+      android:layout_alignParentEnd="true"
+      android:layout_alignParentRight="true"
+      android:contentDescription="@string/cat_feed_sample_image_content_desc"
+      android:scaleType="centerCrop"
+      app:shapeAppearanceOverlay="?attr/shapeAppearanceMediumComponent"
+      android:background="@android:color/white"
+      app:backgroundTint="?attr/colorSurfaceVariant"/>
+
+  </RelativeLayout>
+</com.google.android.material.card.MaterialCardView>

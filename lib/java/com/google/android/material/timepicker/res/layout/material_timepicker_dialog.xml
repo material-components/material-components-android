@@ -25,7 +25,7 @@
 
   <TextView
     android:id="@+id/header_title"
-    style="?attr/textAppearanceOverline"
+    style="?attr/materialTimePickerTitleStyle"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="16dp"
@@ -99,7 +99,7 @@
     android:layout_marginTop="2dp"
     android:layout_marginEnd="8dp"
     android:minWidth="64dp"
-    android:text="@android:string/ok"
+    android:text="@string/mtrl_timepicker_confirm"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintTop_toTopOf="@id/material_timepicker_mode_button" />
 

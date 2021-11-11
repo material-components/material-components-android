@@ -99,6 +99,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
   private int itemActiveIndicatorHeight;
   private int itemActiveIndicatorMarginHorizontal;
   private ShapeAppearanceModel itemActiveIndicatorShapeAppearance;
+  private boolean itemActiveIndicatorResizeable = false;
   private ColorStateList itemActiveIndicatorColor;
 
   private NavigationBarPresenter presenter;
@@ -467,6 +468,26 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
   }
 
   /**
+   * Get whether the active indicator can be resized.
+   */
+  protected boolean isItemActiveIndicatorResizeable() {
+    return this.itemActiveIndicatorResizeable;
+  }
+
+  /**
+   * Set whether the active indicator can be resized. If true, the indicator will automatically
+   * change size in response to label visibility modes.
+   */
+  protected void setItemActiveIndicatorResizeable(boolean resizeable) {
+    this.itemActiveIndicatorResizeable = resizeable;
+    if (buttons != null) {
+      for (NavigationBarItemView item : buttons) {
+        item.setActiveIndicatorResizeable(resizeable);
+      }
+    }
+  }
+
+  /**
    * Get the color of the active indicator drawable.
    *
    * @return A {@link ColorStateList} used as the color of the active indicator.
@@ -630,7 +651,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
       for (NavigationBarItemView item : buttons) {
         if (item != null) {
           itemPool.release(item);
-          item.removeBadge();
+          item.clear();
         }
       }
     }
@@ -668,6 +689,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
       child.setActiveIndicatorHeight(itemActiveIndicatorHeight);
       child.setActiveIndicatorMarginHorizontal(itemActiveIndicatorMarginHorizontal);
       child.setActiveIndicatorDrawable(createItemActiveIndicatorDrawable());
+      child.setActiveIndicatorResizeable(itemActiveIndicatorResizeable);
       child.setActiveIndicatorEnabled(itemActiveIndicatorEnabled);
       if (itemBackground != null) {
         child.setItemBackground(itemBackground);

@@ -16,13 +16,18 @@
 -->
 <resources>
   <style name="Widget.MaterialComponents.ProgressIndicator" parent="android:Widget">
+    <item name="indicatorColor">?attr/colorPrimary</item>
     <item name="trackThickness">@dimen/mtrl_progress_track_thickness</item>
     <item name="android:indeterminateOnly">false</item>
   </style>
+
+  <!-- LinearProgressIndicator style -->
   <style name="Widget.MaterialComponents.LinearProgressIndicator" parent="Widget.MaterialComponents.ProgressIndicator">
     <item name="indeterminateAnimationType">disjoint</item>
     <item name="indicatorDirectionLinear">startToEnd</item>
   </style>
+
+  <!-- CircularProgressIndicator styles -->
   <style name="Widget.MaterialComponents.CircularProgressIndicator" parent="Widget.MaterialComponents.ProgressIndicator">
     <item name="trackThickness">@dimen/mtrl_progress_circular_track_thickness_medium</item>
     <item name="indicatorSize">@dimen/mtrl_progress_circular_size_medium</item>
@@ -30,7 +35,6 @@
     <item name="trackColor">@android:color/transparent</item>
     <item name="indicatorDirectionCircular">clockwise</item>
   </style>
-
   <style name="Widget.MaterialComponents.CircularProgressIndicator.Medium"/>
   <style name="Widget.MaterialComponents.CircularProgressIndicator.Small">
     <item name="trackThickness">@dimen/mtrl_progress_circular_track_thickness_small</item>
@@ -42,4 +46,15 @@
     <item name="indicatorSize">@dimen/mtrl_progress_circular_size_extra_small</item>
     <item name="indicatorInset">@dimen/mtrl_progress_circular_inset_extra_small</item>
   </style>
+
+  <!-- M3 LinearProgressIndicator style -->
+  <style name="Widget.Material3.LinearProgressIndicator" parent="Widget.MaterialComponents.LinearProgressIndicator">
+    <item name="trackColor">?attr/colorSurfaceVariant</item>
+  </style>
+
+  <!-- M3 CircularProgressIndicator styles -->
+  <style name="Widget.Material3.CircularProgressIndicator" parent="Widget.MaterialComponents.CircularProgressIndicator" />
+  <style name="Widget.Material3.CircularProgressIndicator.Medium" parent="Widget.MaterialComponents.CircularProgressIndicator.Medium"/>
+  <style name="Widget.Material3.CircularProgressIndicator.Small" parent="Widget.MaterialComponents.CircularProgressIndicator.Small"/>
+  <style name="Widget.Material3.CircularProgressIndicator.ExtraSmall" parent="Widget.MaterialComponents.CircularProgressIndicator.ExtraSmall"/>
 </resources>

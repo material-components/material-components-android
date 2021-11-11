@@ -91,36 +91,6 @@ public class ProgressIndicatorIndeterminateDemoFragment extends DemoFragment {
     circularProgressIndicator.setProgressCompat(progress, /*animated=*/ true);
   }
 
-  /**
-   * Resets the linear progress indicator to its initial state (indeterminate). This is called every
-   * time the "show" button is pressed.
-   */
-  protected void resetLinearProgressIndicator(
-      @NonNull LinearProgressIndicator linearProgressIndicator) {
-    // Reset to indeterminate if it was changed to determinate.
-    if (!linearProgressIndicator.isIndeterminate()) {
-      // Cannot set to indeterminate if the indicator is visible. Immediately set to
-      // INVISIBLE instead of waiting for animation from calling hide().
-      linearProgressIndicator.setVisibility(View.INVISIBLE);
-      linearProgressIndicator.setIndeterminate(true);
-    }
-  }
-
-  /**
-   * Resets the circular progress indicator to its initial state (indeterminate). This is called
-   * every time the "show" button is pressed.
-   */
-  protected void resetCircularProgressIndicator(
-      @NonNull CircularProgressIndicator circularProgressIndicator) {
-    // Reset to indeterminate if it was changed to determinate.
-    if (!circularProgressIndicator.isIndeterminate()) {
-      // Cannot set to indeterminate if the indicator is visible. Immediately set to
-      // INVISIBLE instead of waiting for animation from calling hide().
-      circularProgressIndicator.setVisibility(View.INVISIBLE);
-      circularProgressIndicator.setIndeterminate(true);
-    }
-  }
-
   private void initialize(View view) {
     List<LinearProgressIndicator> linearProgressIndicatorList =
         DemoUtils.findViewsWithType(view, LinearProgressIndicator.class);
@@ -150,11 +120,11 @@ public class ProgressIndicatorIndeterminateDemoFragment extends DemoFragment {
     showButton.setOnClickListener(
         v -> {
           for (LinearProgressIndicator indicator : linearProgressIndicatorList) {
-            resetLinearProgressIndicator(indicator);
+            indicator.setIndeterminate(true);
             indicator.show();
           }
           for (CircularProgressIndicator indicator : circularProgressIndicatorList) {
-            resetCircularProgressIndicator(indicator);
+            indicator.setIndeterminate(true);
             indicator.show();
           }
         });

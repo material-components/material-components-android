@@ -32,7 +32,7 @@ Phasellus in aliquet mi. Pellentesque habitant morbi tristique senectus et netus
   <string name="cat_bottomappbar_center">Center</string>
   <string name="cat_bottomappbar_fab_hide">Hide Fab</string>
   <string name="cat_bottomappbar_fab_show">Show Fab</string>
-  <string name="cat_bottomappbar_scroll_hide">Hide on scroll</string>
+  <string name="cat_bottomappbar_scroll_hide" description="Name of the FAB Hide on Scroll Mode switch [CHAR_LIMIT=NONE]">Hide bottom app bar on scroll</string>
   <string name="cat_bottomappbar_fab_anim_scale">Scale fab</string>
   <string name="cat_bottomappbar_fab_anim_slide">Slide fab</string>
   <string name="cat_bottomappbar_fab_circle">Circle</string>
@@ -46,5 +46,7 @@ Phasellus in aliquet mi. Pellentesque habitant morbi tristique senectus et netus
   <string name="cat_bottomappbar_navigation_button_content_description">Show navigation drawer</string>
   <string name="cat_bottomappbar_fab_button_content_description">FAB</string>
 
+  <string name="cat_bottomappbar_fab_alignment_mode" description="Name of the FAB Alignment Mode toggle button group [CHAR_LIMIT=NONE]">Fab Alignment Mode</string>
+  <string name="cat_bottomappbar_fab_animation_mode" description="Name of the FAB Animation Mode toggle button group [CHAR_LIMIT=NONE]">Fab Animation Mode</string>
+  <string name="cat_bottomappbar_fab_visibility_mode" description="Name of the FAB Visibility Mode toggle button group [CHAR_LIMIT=NONE]">Fab Visibility Mode</string>
 </resources>
-

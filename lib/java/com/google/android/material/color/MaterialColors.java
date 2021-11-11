@@ -15,6 +15,8 @@
  */
 package com.google.android.material.color;
 
+import com.google.android.material.R;
+
 import static android.graphics.Color.TRANSPARENT;
 
 import android.content.Context;
@@ -39,6 +41,18 @@ public class MaterialColors {
   public static final float ALPHA_DISABLED = 0.38F;
   public static final float ALPHA_LOW = 0.32F;
   public static final float ALPHA_DISABLED_LOW = 0.12F;
+
+  // TODO(b/199495444): token integration for color roles luminance values.
+  // Tone means degrees of lightness, in the range of 0 (inclusive) to 100 (inclusive).
+  private static final int TONE_ACCENT_LIGHT = 40;
+
+  private static final int TONE_ON_ACCENT_LIGHT = 100;
+  private static final int TONE_ACCENT_CONTAINER_LIGHT = 90;
+  private static final int TONE_ON_ACCENT_CONTAINER_LIGHT = 10;
+  private static final int TONE_ACCENT_DARK = 70;
+  private static final int TONE_ON_ACCENT_DARK = 10;
+  private static final int TONE_ACCENT_CONTAINER_DARK = 20;
+  private static final int TONE_ON_ACCENT_CONTAINER_DARK = 80;
 
   private MaterialColors() {
     // Private constructor to prevent unwanted construction.
@@ -159,5 +173,71 @@ public class MaterialColors {
   /** Determines if a color should be considered light or dark. */
   public static boolean isColorLight(@ColorInt int color) {
     return color != TRANSPARENT && ColorUtils.calculateLuminance(color) > 0.5;
+  }
+
+  /**
+   * Returns the color int of the given color harmonized with the context theme's colorPrimary.
+   *
+   * @param context The target context.
+   * @param colorToHarmonize The color to harmonize.
+   */
+  @ColorInt
+  public static int harmonizeWithPrimary(@NonNull Context context, @ColorInt int colorToHarmonize) {
+    return harmonize(
+        colorToHarmonize,
+        getColor(context, R.attr.colorPrimary, MaterialColors.class.getCanonicalName()));
+  }
+
+  /**
+   * A convenience function to harmonize any two colors provided, returns the color int of the
+   * harmonized color, or the original design color value if color harmonization is not available.
+   *
+   * @param colorToHarmonize The color to harmonize.
+   * @param colorToHarmonizeWith The primary color selected for harmonization.
+   */
+  @ColorInt
+  public static int harmonize(@ColorInt int colorToHarmonize, @ColorInt int colorToHarmonizeWith) {
+    return Blend.harmonize(colorToHarmonize, colorToHarmonizeWith);
+  }
+
+  /**
+   * Returns the {@link ColorRoles} object generated from the provided input color.
+   *
+   * @param context The target context.
+   * @param color The input color provided for generating its associated four color roles.
+   */
+  @NonNull
+  public static ColorRoles getColorRoles(@NonNull Context context, @ColorInt int color) {
+    return getColorRoles(
+        color,
+        MaterialAttributes.resolveBoolean(context, R.attr.isLightTheme, /* defaultValue= */ true));
+  }
+
+  /**
+   * Returns the {@link ColorRoles} object generated from the provided input color.
+   *
+   * @param color The input color provided for generating its associated four color roles.
+   * @param isLightTheme Whether the input is light themed or not, true if light theme is enabled.
+   */
+  @NonNull
+  public static ColorRoles getColorRoles(@ColorInt int color, boolean isLightTheme) {
+    return isLightTheme
+        ? new ColorRoles(
+            getColorRole(color, TONE_ACCENT_LIGHT),
+            getColorRole(color, TONE_ON_ACCENT_LIGHT),
+            getColorRole(color, TONE_ACCENT_CONTAINER_LIGHT),
+            getColorRole(color, TONE_ON_ACCENT_CONTAINER_LIGHT))
+        : new ColorRoles(
+            getColorRole(color, TONE_ACCENT_DARK),
+            getColorRole(color, TONE_ON_ACCENT_DARK),
+            getColorRole(color, TONE_ACCENT_CONTAINER_DARK),
+            getColorRole(color, TONE_ON_ACCENT_CONTAINER_DARK));
+  }
+
+  @ColorInt
+  private static int getColorRole(@ColorInt int color, @IntRange(from = 0, to = 100) int tone) {
+    Hct hctColor = Hct.fromInt(color);
+    hctColor.setTone(tone);
+    return hctColor.toInt();
   }
 }

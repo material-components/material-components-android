@@ -32,7 +32,7 @@
   <string name="mtrl_picker_text_input_day_abbr">j</string>
   <string name="mtrl_picker_save">Enregistrer</string>
   <string name="mtrl_picker_invalid_range">Plage non valide.</string>
-  <string name="mtrl_picker_out_of_range">Hors de portée : %1$s</string>
+  <string name="mtrl_picker_out_of_range">Hors limite : %1$s</string>
   <string name="mtrl_picker_invalid_format">Format incorrect.</string>
   <string name="mtrl_picker_invalid_format_use">Utiliser %1$s</string>
   <string name="mtrl_picker_invalid_format_example">Exemple : %1$s</string>

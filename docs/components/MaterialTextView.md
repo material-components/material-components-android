@@ -38,9 +38,9 @@ reference.
 </LinearLayout>
 ```
 
-Note: If you use our full themes (which we recommend), `TextView` will
+**Note:** If you use our full themes (which we recommend), `TextView` will
 auto-inflate to `MaterialTextView`, otherwise, you will need to specify
-`<com.google.android.material.textview` in your xml.
+`<com.google.android.material.textview.MaterialTextView` in your xml.
 
 ### Attributes
 
@@ -57,5 +57,5 @@ The following additional attributes can be changed in `TextAppearance` and
 applied to a `MaterialTextView`:
 
 Feature     | Relevant attributes
-:---------- | :-------------------
+----------- | --------------------
 Line Height | `android:lineHeight`

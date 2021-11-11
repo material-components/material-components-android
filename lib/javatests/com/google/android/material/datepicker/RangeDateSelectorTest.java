@@ -36,6 +36,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowLooper;
 
 @RunWith(RobolectricTestRunner.class)
@@ -63,16 +64,7 @@ public class RangeDateSelectorTest {
 
   @Test
   public void textInputValid() {
-    View root =
-        rangeDateSelector.onCreateTextInputView(
-            LayoutInflater.from(context),
-            null,
-            null,
-            new CalendarConstraints.Builder().build(),
-            new OnSelectionChangedListener<Pair<Long, Long>>() {
-              @Override
-              public void onSelectionChanged(Pair<Long, Long> selection) {}
-            });
+    View root = getRootView();
     TextInputLayout startTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_start);
     TextInputLayout endTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_end);
 
@@ -88,17 +80,7 @@ public class RangeDateSelectorTest {
 
   @Test
   public void textInputFormatError() {
-    View root =
-        rangeDateSelector.onCreateTextInputView(
-            LayoutInflater.from(context),
-            null,
-            null,
-            new CalendarConstraints.Builder().build(),
-            new OnSelectionChangedListener<Pair<Long, Long>>() {
-              @Override
-              public void onSelectionChanged(Pair<Long, Long> selection) {}
-            });
-
+    View root = getRootView();
     TextInputLayout startTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_start);
     TextInputLayout endTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_end);
     startTextInput.getEditText().setText("22/22/2010", BufferType.EDITABLE);
@@ -114,16 +96,7 @@ public class RangeDateSelectorTest {
   @Test
   public void textInputRangeError() {
     rangeDateSelector = new RangeDateSelector();
-    View root =
-        rangeDateSelector.onCreateTextInputView(
-            LayoutInflater.from(context),
-            null,
-            null,
-            new CalendarConstraints.Builder().build(),
-            new OnSelectionChangedListener<Pair<Long, Long>>() {
-              @Override
-              public void onSelectionChanged(Pair<Long, Long> selection) {}
-            });
+    View root = getRootView();
     TextInputLayout startTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_start);
     TextInputLayout endTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_end);
 
@@ -211,5 +184,45 @@ public class RangeDateSelectorTest {
       return;
     }
     Assert.fail();
+  }
+
+  @Test
+  @Config(qualifiers = "en-rUS")
+  public void textInputHintValidWithUSLocale() {
+    View root = getRootView();
+    TextInputLayout startTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_start);
+    TextInputLayout endTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_end);
+
+    activity.setContentView(root);
+    ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
+
+    assertThat(startTextInput.getPlaceholderText().toString()).isEqualTo("m/d/yy");
+    assertThat(endTextInput.getPlaceholderText().toString()).isEqualTo("m/d/yy");
+  }
+
+  @Test
+  @Config(qualifiers = "pt")
+  public void textInputHintValidWithPTLocale() {
+    View root = getRootView();
+    TextInputLayout startTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_start);
+    TextInputLayout endTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_end);
+
+    activity.setContentView(root);
+    ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
+
+    assertThat(startTextInput.getPlaceholderText().toString()).isEqualTo("dd-mm-aaaa");
+    assertThat(endTextInput.getPlaceholderText().toString()).isEqualTo("dd-mm-aaaa");
+  }
+
+  private View getRootView() {
+    return rangeDateSelector.onCreateTextInputView(
+        LayoutInflater.from(context),
+        null,
+        null,
+        new CalendarConstraints.Builder().build(),
+        new OnSelectionChangedListener<Pair<Long, Long>>() {
+          @Override
+          public void onSelectionChanged(Pair<Long, Long> selection) {}
+        });
   }
 }

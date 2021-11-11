@@ -20,20 +20,10 @@ import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 import io.material.catalog.application.scope.ActivityScope;
 import io.material.catalog.application.scope.FragmentScope;
-import io.material.catalog.transition.hero.TransitionMusicAlbumDemoFragment;
-import io.material.catalog.transition.hero.TransitionMusicDemoActivity;
 
 /** A module for transition demo dependencies. */
 @Module
 public abstract class TransitionDemoModule {
-
-  @ActivityScope
-  @ContributesAndroidInjector
-  abstract TransitionMusicDemoActivity contributeTransitionMusicDemoActivity();
-
-  @FragmentScope
-  @ContributesAndroidInjector
-  abstract TransitionMusicAlbumDemoFragment contributeTransitionMusicAlbumDemoFragment();
 
   @ActivityScope
   @ContributesAndroidInjector

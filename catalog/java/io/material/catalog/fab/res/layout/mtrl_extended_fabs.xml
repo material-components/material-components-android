@@ -30,13 +30,9 @@
     android:layout_height="wrap_content"
     android:layout_marginRight="24dp"
     android:layout_gravity="start|center"
-    android:paddingTop="32dp"
-    android:paddingBottom="32dp"
-    android:labelFor="@id/fab_with_icon_and_text"
-    android:text="@string/extended_fab_with_text" />
-
+    android:text="@string/m3_surface_fab_label" />
   <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-    android:id="@+id/fab_with_icon_and_text"
+    style="?attr/extendedFloatingActionButtonSurfaceStyle"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
@@ -48,34 +44,49 @@
   <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_marginRight="24dp"
     android:layout_gravity="start|center"
-    android:labelFor="@id/fab_with_text"
-    android:text="@string/extended_fab_without_icon" />
+    android:text="@string/m3_primary_fab_label" />
   <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-    android:id="@+id/fab_with_text"
-    style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
+    style="?attr/extendedFloatingActionButtonPrimaryStyle"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    android:layout_marginLeft="32dp"
-    android:layout_marginRight="32dp"
     android:layout_gravity="center"
     android:contentDescription="@string/cat_extended_fab_content_desc"
-    android:text="@string/extended_fab_label" />
+    android:text="@string/extended_fab_label"
+    app:icon="@drawable/ic_add_24px" />
 
   <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_marginRight="24dp"
     android:layout_gravity="start|center"
-    android:labelFor="@id/fab_with_icon"
-    android:text="@string/extended_fab_without_text" />
+    android:text="@string/m3_secondary_fab_label" />
   <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-    android:id="@+id/fab_with_icon"
+    style="?extendedFloatingActionButtonSecondaryStyle"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     android:layout_gravity="center"
     android:contentDescription="@string/cat_extended_fab_content_desc"
+    android:text="@string/extended_fab_label"
+    app:icon="@drawable/ic_add_24px"/>
+
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="24dp"
+    android:layout_gravity="start|center"
+    android:text="@string/m3_tertiary_fab_label" />
+  <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    style="?attr/extendedFloatingActionButtonTertiaryStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:layout_gravity="center"
+    android:contentDescription="@string/cat_extended_fab_content_desc"
+    android:text="@string/extended_fab_label"
     app:icon="@drawable/ic_add_24px" />
 
 </GridLayout>

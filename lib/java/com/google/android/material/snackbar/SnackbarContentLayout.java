@@ -20,7 +20,6 @@ import com.google.android.material.R;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
@@ -47,11 +46,6 @@ public class SnackbarContentLayout extends LinearLayout implements ContentViewCa
 
   public SnackbarContentLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
     super(context, attrs);
-    TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SnackbarLayout);
-    maxWidth = a.getDimensionPixelSize(R.styleable.SnackbarLayout_android_maxWidth, -1);
-    maxInlineActionWidth =
-        a.getDimensionPixelSize(R.styleable.SnackbarLayout_maxActionInlineWidth, -1);
-    a.recycle();
   }
 
   @Override
@@ -167,5 +161,9 @@ public class SnackbarContentLayout extends LinearLayout implements ContentViewCa
 
   public void setMaxInlineActionWidth(int width) {
     maxInlineActionWidth = width;
+  }
+
+  void setMaxWidth(int width) {
+    maxWidth = width;
   }
 }

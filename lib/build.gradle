@@ -12,6 +12,7 @@ dependencies {
   api compatibility("coordinatorlayout")
   api compatibility("constraintlayout")
   api compatibility("core")
+  api compatibility("drawerlayout")
   api compatibility("dynamicanimation")
   api compatibility("experimental")
   api compatibility("fragment")
@@ -26,7 +27,7 @@ dependencies {
   testImplementation "junit:junit:4.12"
   testImplementation "com.google.truth:truth:${truthVersion}"
   testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
-  testImplementation "org.robolectric:robolectric:4.3"
+  testImplementation "org.robolectric:robolectric:${robolectricVersion}"
 
   testAnnotationProcessor "com.google.auto.service:auto-service:1.0-rc4"
 }
@@ -50,6 +51,7 @@ def srcDirs = [
   'com/google/android/material/color',
   'com/google/android/material/datepicker',
   'com/google/android/material/dialog',
+  'com/google/android/material/divider',
   'com/google/android/material/drawable',
   'com/google/android/material/elevation',
   'com/google/android/material/expandable',

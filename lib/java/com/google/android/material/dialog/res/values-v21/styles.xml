@@ -14,12 +14,10 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<resources xmlns:tools="http://schemas.android.com/tools">
-
+<resources>
+  <!-- Styles for MaterialComponents Dialogs. -->
   <style name="Base.Widget.MaterialComponents.CheckedTextView" parent="android:Widget.Material.CheckedTextView"/>
-
   <style name="Base.ThemeOverlay.MaterialComponents.Dialog" parent="Base.V14.ThemeOverlay.MaterialComponents.Dialog">
     <item name="android:windowBackground">@drawable/mtrl_dialog_background</item>
   </style>
-
 </resources>

@@ -26,11 +26,19 @@
 
   <com.google.android.material.chip.Chip
     android:id="@+id/cat_progress_indicator_chip"
-    style="@style/Widget.MaterialComponents.Chip.Action"
+    style="@style/Widget.Material3.Chip.Assist"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:ellipsize="end"
     android:text="@string/cat_progress_indicator_standalone_indeterminate_chip"/>
+
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/cat_progress_indicator_button"
+    style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:ellipsize="end"
+    android:text="@string/cat_progress_indicator_standalone_indeterminate_button"/>
 
   <com.google.android.material.switchmaterial.SwitchMaterial
     android:id="@+id/cat_progress_indicator_standalone_chip_switch"

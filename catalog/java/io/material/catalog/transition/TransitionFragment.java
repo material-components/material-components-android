@@ -30,7 +30,7 @@ import io.material.catalog.application.scope.FragmentScope;
 import io.material.catalog.feature.Demo;
 import io.material.catalog.feature.DemoLandingFragment;
 import io.material.catalog.feature.FeatureDemo;
-import io.material.catalog.transition.hero.TransitionMusicDemoActivity;
+import io.material.catalog.musicplayer.MusicPlayerDemoActivity;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -53,7 +53,7 @@ public class TransitionFragment extends DemoLandingFragment {
     return new Demo() {
       @Override
       public Intent createActivityIntent() {
-        return new Intent(getContext(), TransitionMusicDemoActivity.class);
+        return new Intent(getContext(), MusicPlayerDemoActivity.class);
       }
     };
   }

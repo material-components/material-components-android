@@ -7,35 +7,37 @@ iconId: typography
 path: /theming/typography/
 -->
 
-# Typography Theming
+# Typography theming
 
 Material Design typography theming can be used to create typographic styles that
 reflect your brand or style by defining a set of type scales which will be used
-throughout your app. Material components use these type scales to style their
-individual text appearance.
+throughout your app. You can use type scales to customize the appearance of text
+in Material components.
 
-## Design & API Documentation
+## Design & API documentation
 
 -   [Material Design guidelines:
     Typography](https://material.io/go/design-typography/)
 
 ## Usage
 
-Attribute name            | Default style
-------------------------- | ---------------------
-`textAppearanceHeadline1` | Light 96sp
-`textAppearanceHeadline2` | Light 60sp
-`textAppearanceHeadline3` | Regular 48sp
-`textAppearanceHeadline4` | Regular 34sp
-`textAppearanceHeadline5` | Regular 24sp
-`textAppearanceHeadline6` | Medium 20sp
-`textAppearanceSubtitle1` | Regular 16sp
-`textAppearanceSubtitle2` | Medium 14sp
-`textAppearanceBody1`     | Regular 16sp
-`textAppearanceBody2`     | Regular 14sp
-`textAppearanceCaption`   | Regular 12sp
-`textAppearanceButton`    | Medium all caps 14sp
-`textAppearanceOverline`  | Regular all caps 10sp
+Attribute name                 | Default style
+------------------------------ | -------------
+`textAppearanceDisplayLarge`   | Regular 57sp
+`textAppearanceDisplayMedium`  | Regular 45sp
+`textAppearanceDisplaySmall`   | Regular 36sp
+`textAppearanceHeadlineLarge`  | Regular 32sp
+`textAppearanceHeadlineMedium` | Regular 28sp
+`textAppearanceHeadlineSmall`  | Regular 24sp
+`textAppearanceTitleLarge`     | Regular 22sp
+`textAppearanceTitleMedium`    | Medium 16sp
+`textAppearanceTitleSmall`     | Medium 14sp
+`textAppearanceBodyLarge`      | Regular 16sp
+`textAppearanceBodyMedium`     | Regular 14sp
+`textAppearanceBodySmall`      | Regular 12sp
+`textAppearanceLabelLarge`     | Medium 14sp
+`textAppearanceLabelMedium`    | Medium 12sp
+`textAppearanceLabelSmall`     | Medium 11sp
 
 ## Style values
 
@@ -57,7 +59,7 @@ You can change the look of any text style by creating a new style and setting it
 in your theme:
 
 ```xml
-<style name="TextAppearance.MyApp.Headline1" parent="TextAppearance.MaterialComponents.Headline1">
+<style name="TextAppearance.MyApp.DisplaySmall" parent="TextAppearance.Material3.DisplaySmall">
   ...
   <item name="fontFamily">@font/custom_font</item>
   <item name="android:textStyle">normal</item>
@@ -69,18 +71,18 @@ in your theme:
 ```
 
 ```xml
-<style name="Theme.MyApp" parent="Theme.MaterialComponents.Light">
+<style name="Theme.MyApp" parent="Theme.Material3.DayNight.NoActionBar">
   ...
-  <item name="textAppearanceHeadline1">@style/TextAppearance.MyApp.Headline1</item>
+  <item name="textAppearanceDisplaySmall">@style/TextAppearance.MyApp.DisplaySmall</item>
   ...
 </style>
 ```
 
-Note: `AppCompat` must be used to handle backwards compatibility for sdk < 16.
-If you don't need to support devices < 16 and aren't using AppCompat, you
+**Note:** `AppCompat` must be used to handle backwards compatibility for sdk <
+16. If you don't need to support devices < 16 and aren't using AppCompat, you
 should set `android:fontFamily` instead of `fontFamily` or `app:fontFamily`.
 
-## Downloadable Fonts
+## Downloadable fonts
 
 Android O and Android Support Library 26 add support for [Downloadable
 Fonts](https://developer.android.com/guide/topics/ui/look-and-feel/downloadable-fonts.html).
@@ -88,6 +90,6 @@ This allows you to easily use the entire Google Fonts Open Source collection
 without bundling a font with your apk. Find more information at
 https://developers.google.com/fonts/docs/android.
 
-Note: If you want to use a Downloadable Font before Android O, make sure you are
-using `AppCompatTextView` or that you are loading the font yourself with
+**Note:** If you want to use a Downloadable Font before Android O, make sure you
+are using `AppCompatTextView` or that you are loading the font yourself with
 `ResourcesCompat.getFont()`.

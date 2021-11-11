@@ -27,6 +27,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import io.material.catalog.feature.DemoFragment;
 
 /**
@@ -34,12 +35,14 @@ import io.material.catalog.feature.DemoFragment;
  * CircularProgressIndicator}.
  */
 public class ProgressIndicatorMainDemoFragment extends DemoFragment {
+
   @Override
   @NonNull
   public View onCreateDemoView(
       @NonNull LayoutInflater layoutInflater,
       @Nullable ViewGroup viewGroup,
       @Nullable Bundle bundle) {
+
     View view =
         layoutInflater.inflate(
             R.layout.cat_progress_indicator_main_fragment, viewGroup, false /* attachToRoot */);
@@ -50,21 +53,29 @@ public class ProgressIndicatorMainDemoFragment extends DemoFragment {
   }
 
   public void initialize(@NonNull View view) {
-    LinearProgressIndicator linearDeterminate = view.findViewById(R.id.linear_determinate);
-    CircularProgressIndicator circularDeterminate = view.findViewById(R.id.circular_determinate);
+    LinearProgressIndicator linearIndicator = view.findViewById(R.id.linear_indicator);
+    CircularProgressIndicator circularIndicator = view.findViewById(R.id.circular_indicator);
     EditText progressInput = view.findViewById(R.id.progress_input);
     Button updateButton = view.findViewById(R.id.update_button);
+    SwitchMaterial determinateSwitch = view.findViewById(R.id.determinate_mode_switch);
 
     updateButton.setOnClickListener(
         v -> {
           int progress;
           try {
             progress = Integer.parseInt(progressInput.getEditableText().toString());
-          } catch (Exception e) {
+          } catch (NumberFormatException e) {
             progress = 0;
+            progressInput.setText("0");
           }
-          linearDeterminate.setProgressCompat(progress, true);
-          circularDeterminate.setProgressCompat(progress, true);
+          linearIndicator.setProgressCompat(progress, true);
+          circularIndicator.setProgressCompat(progress, true);
+          determinateSwitch.setChecked(true);
+        });
+    determinateSwitch.setOnCheckedChangeListener(
+        (v, isChecked) -> {
+          linearIndicator.setIndeterminate(!isChecked);
+          circularIndicator.setIndeterminate(!isChecked);
         });
   }
 }

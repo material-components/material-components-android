@@ -12,12 +12,12 @@ path: /catalog/date-pickers/
 [Date pickers](https://material.io/components/date-pickers) let users select a
 date or range of dates.
 
-![Mobile date picker for November 2018 with "17" selected.](assets/datepicker/datepickers_hero.png)
+![Mobile date picker for September 2021 with "21" selected.](assets/datepicker/datepickers_hero.png)
 
 **Contents**
 
 *   [Using date pickers](#using-date-pickers)
-*   [Date picker](#date-pickers)
+*   [Calendar date picker](#calendar-date-picker)
 *   [Theming date pickers](#theming-date-pickers)
 
 ## Using date pickers
@@ -30,7 +30,7 @@ page.
 Date pickers let users select a date or range of dates. They should be suitable
 for the context in which they appear.
 
-Date pickers can be embedded into dialogs on mobile.
+Date pickers can be embedded into dialogs on mobile devices.
 
 ### Usage
 
@@ -122,7 +122,7 @@ Finally, you can get the user selection with `datePicker.selection`.
 
 ### Adding calendar constraints
 
-To constrain the calendar to the beginning to the end of this year:
+To constrain the calendar from the beginning to the end of this year:
 
 ```kt
 val today = MaterialDatePicker.todayInUtcMilliseconds()
@@ -143,7 +143,7 @@ val constraintsBuilder =
        .setEnd(decThisYear)
 ```
 
-To open picker at a default month:
+To open the picker at a default month:
 
 ```kt
 ...
@@ -169,12 +169,12 @@ val constraintsBuilder =
        .setValidator(DateValidatorPointForward.from(february))
 ```
 
-You can also use `DateValidatorPointBackward` or use a custom one by creating a
-class that implements `DateValidator`
+You can also use `DateValidatorPointBackward` or customize by creating a class
+that implements `DateValidator`
 ([example of a `DateValidatorWeekdays`](https://github.com/material-components/material-components-android/tree/master/catalog/java/io/material/catalog/datepicker/DateValidatorWeekdays.java)
 in the MDC catalog).
 
-Finally, to set the constraint to the picker's builder:
+Set the constraint to the picker's builder:
 
 ```kt
 MaterialDatePicker.Builder().datePicker()
@@ -186,7 +186,7 @@ MaterialDatePicker.Builder().datePicker()
 
 Material date pickers are fully accessible and compatible with screen readers.
 The title of your date picker will be read when the user launches the dialog.
-Use a descriptive title that for the task:
+Use a descriptive title for the task:
 
 ```kt
 val picker =
@@ -196,7 +196,7 @@ val picker =
    ...
 ```
 
-## Date pickers
+## Calendar date picker
 
 Calendar date pickers can be used to select dates in the near future or past,
 when it’s useful to see them in a calendar month format. They are displayed in a
@@ -211,7 +211,7 @@ Common use cases include:
 
 The following example shows a date picker with a date selected.
 
-![Date picker with March, 5 selected](assets/datepicker/datepickers_example.png)
+![Date picker with September, 21 selected](assets/datepicker/datepickers_example.png)
 
 In code:
 
@@ -237,9 +237,9 @@ Common use cases include:
 
 ### Date range picker example
 
-The following example shows a date range picker with a date selected.
+The following example shows a date range picker with a date range selected.
 
-![Date range picker with March, 1 to March, 5 selected](assets/datepicker/datepickers_range_example.png)
+![Date range picker with September, 20 to September, 24 selected](assets/datepicker/datepickers_range_example.png)
 
 In code:
 
@@ -276,90 +276,90 @@ The following diagram shows the elements of a date picker:
 
 Element        | Attribute                         | Related method(s)                          | Default value
 -------------- | --------------------------------- | ------------------------------------------ | -------------
-**Style**      | `app:materialCalendarHeaderTitle` | N/A                                        | `@style/Widget.MaterialComponents.MaterialCalendar.HeaderTitle`
+**Style**      | `app:materialCalendarHeaderTitle` | N/A                                        | `@style/Widget.Material3.MaterialCalendar.HeaderTitle`
 **Text label** | N/A                               | `Builder.setTitleText`<br/>`getHeaderText` | `Select Date`
-**Color**      | `android:textColor`               | N/A                                        | `?attr/colorOnPrimary`
-**Typography** | `android:textAppearance`          | N/A                                        | `?attr/textAppearanceOverline`
+**Color**      | `android:textColor`               | N/A                                        | `?attr/colorOnSurfaceVariant`
+**Typography** | `android:textAppearance`          | N/A                                        | `?attr/textAppearanceLabelMedium`
 
 ### Selected date
 
 Element        | Attribute                             | Related method(s) | Default value
 -------------- | ------------------------------------- | ----------------- | -------------
-**Style**      | `app:materialCalendarHeaderSelection` | N/A               | `@style/Widget.MaterialComponents.MaterialCalendar.HeaderSelection`
-**Color**      | `android:textColor`                   | N/A               | `?attr/colorOnPrimary`
-**Typography** | `android:textAppearance`              | N/A               | `?attr/textAppearanceHeadline4`
+**Style**      | `app:materialCalendarHeaderSelection` | N/A               | `@style/Widget.Material3.MaterialCalendar.HeaderSelection`
+**Color**      | `android:textColor`                   | N/A               | `?attr/colorOnSurface`
+**Typography** | `android:textAppearance`              | N/A               | `?attr/textAppearanceHeadlineLarge`
 
 ### Switch-to-keyboard input icon
 
 Element        | Attribute                                | Related method(s) | Default value
 -------------- | ---------------------------------------- | ----------------- | -------------
-**Style**      | `app:materialCalendarHeaderToggleButton` | N/A               | `@style/Widget.MaterialComponents.MaterialCalendar.HeaderToggleButton`
+**Style**      | `app:materialCalendarHeaderToggleButton` | N/A               | `@style/Widget.Material3.MaterialCalendar.HeaderToggleButton`
 **Background** | `android:background`                     | N/A               | `?attr/actionBarItemBackground`
-**Color**      | `android:tint`                           | N/A               | `?attr/colorOnPrimary`
+**Color**      | `android:tint`                           | N/A               | `?attr/colorOnSurfaceVariant`
 
 ### Year selection menu
 
 Element        | Attribute                                  | Related method(s) | Default value
 -------------- | ------------------------------------------ | ----------------- | -------------
-**Style**      | `app:materialCalendarYearNavigationButton` | N/A               | `@style/Widget.MaterialComponents.MaterialCalendar.YearNavigationButton`
-**Text color** | `android:textColor`                        | N/A               | `?attr/colorOnSurface` at 60%
-**Icon color** | `app:iconTint`                             | N/A               | `?attr/colorOnSurface` at 60%
+**Style**      | `app:materialCalendarYearNavigationButton` | N/A               | `@style/Widget.Material3.MaterialCalendar.YearNavigationButton`
+**Text color** | `android:textColor`                        | N/A               | `?attr/colorOnSurfaceVariant`
+**Icon color** | `app:iconTint`                             | N/A               | `?attr/colorOnSurfaceVariant`
 
 ### Month pagination
 
 Element        | Attribute                                   | Related method(s) | Default value
 -------------- | ------------------------------------------- | ----------------- | -------------
-**Style**      | `app:materialCalendarMonthNavigationButton` | N/A               | `@style/Widget.MaterialComponents.MaterialCalendar.MonthNavigationButton`
-**Text color** | `android:textColor`                         | N/A               | `?attr/colorOnSurface` at 60%
-**Icon color** | `app:iconTint`                              | N/A               | `?attr/colorOnSurface` at 60%
+**Style**      | `app:materialCalendarMonthNavigationButton` | N/A               | `@style/Widget.Material3.MaterialCalendar.MonthNavigationButton`
+**Text color** | `android:textColor`                         | N/A               | `?attr/colorOnSurfaceVariant`
+**Icon color** | `app:iconTint`                              | N/A               | `?attr/colorOnSurfaceVariant`
 
 ### Current date
 
 Element          | Attribute             | Related method(s) | Default value
 ---------------- | --------------------- | ----------------- | -------------
-**Style**        | `app:dayTodayStyle`   | N/A               | `@style/Widget.MaterialComponents.MaterialCalendar.Day.Today`
-**Text color**   | `app:itemTextColor`   | N/A               | `?attr/colorOnSurface` at 87%
-**Stroke color** | `app:itemStrokeColor` | N/A               | `?attr/colorOnSurface` at 87%
+**Style**        | `app:dayTodayStyle`   | N/A               | `@style/Widget.Material3.MaterialCalendar.Day.Today`
+**Text color**   | `app:itemTextColor`   | N/A               | `?attr/colorPrimary`
+**Stroke color** | `app:itemStrokeColor` | N/A               | `?attr/colorPrimary`
 **Stroke width** | `app:itemStrokeWidth` | N/A               | `1dp`
 
 ### Selected date
 
 Element              | Attribute              | Related method(s) | Default value
 -------------------- | ---------------------- | ----------------- | -------------
-**Style**            | `app:daySelectedStyle` | N/A               | `@style/Widget.MaterialComponents.MaterialCalendar.Day.Selected`
+**Style**            | `app:daySelectedStyle` | N/A               | `@style/Widget.Material3.MaterialCalendar.Day.Selected`
 **Background color** | `app:itemFillColor`    | N/A               | `?attr/colorPrimary`
 **Text color**       | `app:itemTextColor`    | N/A               | `?attr/colorOnPrimary`
-**Stroke color**     | `app:itemStrokeColor`  | N/A               | `@color/mtrl_calendar_item_stroke_color`
+**Stroke color**     | `app:itemStrokeColor`  | N/A               | N/A
 **Stroke width**     | `app:itemStrokeWidth`  | N/A               | `0dp`
 
 ### Selected range
 
 | Element   | Attribute            | Related method(s) | Default value        |
 | --------- | -------------------- | ----------------- | -------------------- |
-| **Color** | `app:rangeFillColor` | N/A               | `?attr/colorPrimary` |
-:           :                      :                   : at 12%               :
+| **Color** | `app:rangeFillColor` | N/A               | `?attr/colorSurfaceVariant` |
 
 ### Cancel button
 
 Element        | Attribute                                | Related method(s) | Default value
 -------------- | ---------------------------------------- | ----------------- | -------------
-**Style**      | `app:materialCalendarHeaderCancelButton` | N/A               | `@style/Widget.MaterialComponents.MaterialCalendar.HeaderCancelButton`
-**Text color** | `android:textColor`                      | N/A               | `@color/mtrl_text_btn_text_color_selector`
-**Icon color** | `app:iconTint`                           | N/A               | `?attr/colorOnPrimary`
+**Style**      | `app:materialCalendarHeaderCancelButton` | N/A               | `@style/Widget.Material3.MaterialCalendar.HeaderCancelButton`
+**Text color** | `android:textColor`                      | N/A               | `?attr/colorOnSurface` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/color/m3_text_button_foreground_color_selector.xml))
+**Icon color** | `app:iconTint`                           | N/A               | `?attr/colorOnSurfaceVariant`
 
 ### Styles and theme overlays
 
 Element                              | Style
 ------------------------------------ | -----
-**Default**<br/>**theme overlay**    | `ThemeOverlay.MaterialComponents.MaterialCalendar`
-**Default style**                    | `Widget.MaterialComponents.MaterialCalendar`
-**Fullscreen**<br/>**theme overlay** | `ThemeOverlay.MaterialComponents.MaterialCalendar.Fullscreen`
-**Full screen style**                | `Widget.MaterialComponents.MaterialCalendar.Fullscreen`
+**Default**<br/>**theme overlay**    | `ThemeOverlay.Material3.MaterialCalendar`
+**Default style**                    | `Widget.Material3.MaterialCalendar`
+**Fullscreen**<br/>**theme overlay** | `ThemeOverlay.Material3.MaterialCalendar.Fullscreen`
+**Full screen style**                | `Widget.Material3.MaterialCalendar.Fullscreen`
 
 Default style theme attribute (set inside the theme overlay):
 `?attr/materialCalendarStyle`
 
-Default theme attribute (set on the app's theme): `?attr/materialCalendarTheme`
+Default theme attribute (set on the app's theme): `?attr/materialCalendarTheme`,
+`?attr/materialCalendarFullscreenTheme` (fullscreen)
 
 See the full list of
 [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/datepicker/res/values/styles.xml),
@@ -370,8 +370,8 @@ and
 ## Theming date pickers
 
 Date pickers support
-[Material Theming](https://material.io/components/date-pickers#theming) and can
-be customized in terms of color, shape and typography.
+[Material Theming](https://material.io/components/date-pickers#theming) which
+can customize color, shape and typography.
 
 ### Date picker theming example
 
@@ -389,11 +389,11 @@ The following example shows a date picker with Material Theming.
 !["Date Picker pink interactive display, grey background, and brown icons and
 text."](assets/datepicker/datepickers_theming.png)
 
-Using theme attributes and styles in `res/values/styles.xml` (themes all date
-pickers and affects other components):
+Use theme attributes and styles in `res/values/styles.xm, which apply to all
+date pickers and affect other components:
 
 ```xml
-<style name="Theme.App" parent="Theme.MaterialComponents.*">
+<style name="Theme.App" parent="Theme.Material3.*">
     ...
     <item name="colorPrimary">@color/shrine_pink_100</item>
     <item name="colorOnPrimary">@color/shrine_pink_900</item>
@@ -401,25 +401,25 @@ pickers and affects other components):
     <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.App.MediumComponent</item>
 </style>
 
-<style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+<style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.Material3.SmallComponent">
     <item name="cornerFamily">cut</item>
 </style>
 
-<style name="ShapeAppearance.App.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+<style name="ShapeAppearance.App.MediumComponent" parent="ShapeAppearance.Material3.MediumComponent">
     <item name="cornerSize">16dp</item>
 </style>
 ```
 
-or using a default style theme attribute, styles and a theme overlay (themes all
-date pickers but does not affect other components):
+Use a default style theme attribute, styles and a theme overlay which apply to
+all date pickers but do not affect other components:
 
 ```xml
-<style name="Theme.App" parent="Theme.MaterialComponents.*">
+<style name="Theme.App" parent="Theme.Material3.*">
     ...
     <item name="materialCalendarTheme">@style/ThemeOverlay.App.DatePicker</item>
 </style>
 
-<style name="ThemeOverlay.App.DatePicker" parent="@style/ThemeOverlay.MaterialComponents.MaterialCalendar">
+<style name="ThemeOverlay.App.DatePicker" parent="@style/ThemeOverlay.Material3.MaterialCalendar">
     <item name="colorPrimary">@color/shrine_pink_100</item>
     <item name="colorOnPrimary">@color/shrine_pink_900</item>
     <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.App.SmallComponent</item>
@@ -429,7 +429,7 @@ date pickers but does not affect other components):
   </style>
 ```
 
-or setting the theme in code (affects only this date picker):
+Set the theme in code, which affects only this date picker:
 
 ```kt
 val picker =

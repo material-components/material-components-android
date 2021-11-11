@@ -236,7 +236,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
       };
 
   public BottomAppBar(@NonNull Context context) {
-    this(context, null, 0);
+    this(context, null);
   }
 
   public BottomAppBar(@NonNull Context context, @Nullable AttributeSet attrs) {
@@ -499,12 +499,42 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
 
   /** Animates the {@link BottomAppBar} so it hides off the screen. */
   public void performHide() {
-    getBehavior().slideDown(this);
+    performHide(/*animate=*/ true);
+  }
+
+  /**
+   *  Hides the {@link BottomAppBar}.
+   *
+   * @param animate {@code false} to hide the {@link BottomAppBar} immediately
+   *        without animation.
+   */
+  public void performHide(boolean animate) {
+    getBehavior().slideDown(this, animate);
   }
 
   /** Animates the {@link BottomAppBar} so it is shown on the screen. */
   public void performShow() {
-    getBehavior().slideUp(this);
+    performShow(/*animate=*/ true);
+  }
+
+  /**
+   * Shows the {@link BottomAppBar}.
+   *
+   * @param animate {@code false} to show the {@link BottomAppBar} immediately without
+   *     animation.
+   */
+  public void performShow(boolean animate) {
+    getBehavior().slideUp(this, animate);
+  }
+
+  /** Returns true if the {@link BottomAppBar} is scrolled down. */
+  public boolean isScrolledDown() {
+    return getBehavior().isScrolledDown();
+  }
+
+  /** Returns true if the {@link BottomAppBar} is scrolled up. */
+  public boolean isScrolledUp() {
+    return getBehavior().isScrolledUp();
   }
 
   @Override

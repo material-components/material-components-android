@@ -24,6 +24,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.time.Duration;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.TimeZone;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -120,6 +121,15 @@ public class MaterialDatePickerTest {
     datePickerBuilder3.setSelection(APRIL_2016);
     datePickerBuilder3.build();
     assertEquals(MARCH_2016, calendarConstraints3.getOpenAt().timeInMillis);
+
+    // A corner case that the selected day is in the same month of the end month.
+    MaterialDatePicker.Builder<Long> datePickerBuilder4 = MaterialDatePicker.Builder.datePicker();
+    CalendarConstraints calendarConstraints4 =
+        new CalendarConstraints.Builder().setStart(FEB_2016).setEnd(APRIL_2016).build();
+    datePickerBuilder4.setCalendarConstraints(calendarConstraints4);
+    datePickerBuilder4.setSelection(new GregorianCalendar(2016, APRIL, 20).getTimeInMillis());
+    datePickerBuilder4.build();
+    assertEquals(APRIL_2016, calendarConstraints4.getOpenAt().timeInMillis);
   }
 
   @Test

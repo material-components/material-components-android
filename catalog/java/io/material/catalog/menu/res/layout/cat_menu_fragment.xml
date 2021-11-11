@@ -70,7 +70,6 @@
         android:layout_marginRight="24dp"
         android:text="@string/show_menu"/>
 
-
     <TextView
         android:textStyle="bold"
         android:layout_width="wrap_content"

@@ -15,7 +15,108 @@
   ~ limitations under the License.
 -->
 <resources>
+  <!--
+    Material 3 theme overlay.
+  -->
+  <style name="ThemeOverlay.Material3" parent="ThemeOverlay.MaterialComponents"/>
 
+  <!--
+    Theme overlay that replaces colors with their light versions.
+  -->
+  <style name="ThemeOverlay.Material3.Light" parent="ThemeOverlay.MaterialComponents.Light">
+    <!-- Color palettes -->
+    <item name="android:colorBackground">@color/m3_sys_color_light_background</item>
+    <item name="colorOnBackground">@color/m3_sys_color_light_on_background</item>
+    <item name="colorSurface">@color/m3_sys_color_light_surface</item>
+    <item name="colorOnSurface">@color/m3_sys_color_light_on_surface</item>
+    <item name="colorSurfaceVariant">@color/m3_sys_color_light_surface_variant</item>
+    <item name="colorOnSurfaceVariant">@color/m3_sys_color_light_on_surface_variant</item>
+    <item name="colorSurfaceInverse">@color/m3_sys_color_light_inverse_surface</item>
+    <item name="colorOnSurfaceInverse">@color/m3_sys_color_light_inverse_on_surface</item>
+    <item name="colorOutline">@color/m3_sys_color_light_outline</item>
+    <item name="colorError">@color/m3_sys_color_light_error</item>
+    <item name="colorOnError">@color/m3_sys_color_light_on_error</item>
+    <item name="colorErrorContainer">@color/m3_sys_color_light_error_container</item>
+    <item name="colorOnErrorContainer">@color/m3_sys_color_light_on_error_container</item>
+
+    <!-- Default Framework Text Colors. -->
+    <item name="android:textColorPrimary">@color/m3_default_color_primary_text</item>
+    <item name="android:textColorPrimaryInverse">@color/m3_dark_default_color_primary_text</item>
+    <item name="android:textColorSecondary">@color/m3_default_color_secondary_text</item>
+    <item name="android:textColorSecondaryInverse">@color/m3_dark_default_color_secondary_text</item>
+    <item name="android:textColorTertiary">@color/m3_default_color_secondary_text</item>
+    <item name="android:textColorTertiaryInverse">@color/m3_dark_default_color_secondary_text</item>
+    <item name="android:textColorPrimaryDisableOnly">@color/m3_primary_text_disable_only</item>
+    <item name="android:textColorPrimaryInverseDisableOnly">@color/m3_dark_primary_text_disable_only</item>
+    <item name="android:textColorHint">@color/m3_hint_foreground</item>
+    <item name="android:textColorHintInverse">@color/m3_dark_hint_foreground</item>
+    <item name="android:textColorHighlight">@color/m3_highlighted_text</item>
+    <item name="android:textColorHighlightInverse">@color/m3_dark_highlighted_text</item>
+    <item name="android:textColorLink">?attr/colorPrimary</item>
+    <item name="android:textColorLinkInverse">?attr/colorPrimaryInverse</item>
+    <item name="android:textColorAlertDialogListItem">@color/m3_default_color_primary_text</item>
+  </style>
+
+  <!--
+    Theme overlay that replaces colors with their dark versions.
+  -->
+  <style name="ThemeOverlay.Material3.Dark" parent="ThemeOverlay.MaterialComponents.Dark">
+    <!-- Color palettes -->
+    <item name="android:colorBackground">@color/m3_sys_color_dark_background</item>
+    <item name="colorOnBackground">@color/m3_sys_color_dark_on_background</item>
+    <item name="colorSurface">@color/m3_sys_color_dark_surface</item>
+    <item name="colorOnSurface">@color/m3_sys_color_dark_on_surface</item>
+    <item name="colorSurfaceVariant">@color/m3_sys_color_dark_surface_variant</item>
+    <item name="colorOnSurfaceVariant">@color/m3_sys_color_dark_on_surface_variant</item>
+    <item name="colorSurfaceInverse">@color/m3_sys_color_dark_inverse_surface</item>
+    <item name="colorOnSurfaceInverse">@color/m3_sys_color_dark_inverse_on_surface</item>
+    <item name="colorOutline">@color/m3_sys_color_dark_outline</item>
+    <item name="colorError">@color/m3_sys_color_dark_error</item>
+    <item name="colorOnError">@color/m3_sys_color_dark_on_error</item>
+    <item name="colorErrorContainer">@color/m3_sys_color_dark_error_container</item>
+    <item name="colorOnErrorContainer">@color/m3_sys_color_dark_on_error_container</item>
+
+    <!-- Default Framework Text Colors. -->
+    <item name="android:textColorPrimary">@color/m3_dark_default_color_primary_text</item>
+    <item name="android:textColorPrimaryInverse">@color/m3_default_color_primary_text</item>
+    <item name="android:textColorSecondary">@color/m3_dark_default_color_secondary_text</item>
+    <item name="android:textColorSecondaryInverse">@color/m3_default_color_secondary_text</item>
+    <item name="android:textColorTertiary">@color/m3_dark_default_color_secondary_text</item>
+    <item name="android:textColorTertiaryInverse">@color/m3_default_color_secondary_text</item>
+    <item name="android:textColorPrimaryDisableOnly">@color/m3_dark_primary_text_disable_only</item>
+    <item name="android:textColorPrimaryInverseDisableOnly">@color/m3_primary_text_disable_only</item>
+    <item name="android:textColorHint">@color/m3_dark_hint_foreground</item>
+    <item name="android:textColorHintInverse">@color/m3_hint_foreground</item>
+    <item name="android:textColorHighlight">@color/m3_dark_highlighted_text</item>
+    <item name="android:textColorHighlightInverse">@color/m3_highlighted_text</item>
+    <item name="android:textColorLink">?attr/colorPrimary</item>
+    <item name="android:textColorLinkInverse">?attr/colorPrimaryInverse</item>
+    <item name="android:textColorAlertDialogListItem">@color/m3_dark_default_color_primary_text</item>
+  </style>
+
+  <!--
+    Theme overlay to support dynamic colors.
+  -->
+  <style name="ThemeOverlay.Material3.DynamicColors.Light" parent="ThemeOverlay.Material3.Light"/>
+  <style name="ThemeOverlay.Material3.DynamicColors.Dark" parent="ThemeOverlay.Material3.Dark"/>
+  <style name="ThemeOverlay.Material3.DynamicColors.DayNight" parent="ThemeOverlay.Material3.DynamicColors.Light" />
+
+  <!--
+    Theme overlay that replaces the normal control color, which by default is the same as the
+    secondary text color, with the primary text color.
+  -->
+  <style name="ThemeOverlay.Material3.ActionBar" parent="ThemeOverlay.MaterialComponents.ActionBar"/>
+
+  <!--
+    Theme overlay that replaces colors with their dark versions and replaces the normal
+    control color, which by default is the same as the secondary text color, with the primary
+    text color.
+  -->
+  <style name="ThemeOverlay.Material3.Dark.ActionBar" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar"/>
+
+  <!--
+    Material theme overlay.
+  -->
   <style name="ThemeOverlay.MaterialComponents" parent="ThemeOverlay.AppCompat"/>
 
   <!--

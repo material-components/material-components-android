@@ -164,6 +164,8 @@ class ClockFaceView extends RadialViewGroup implements OnRotateListener {
                     /* columnSpan= */ 1,
                     /* heading= */ false,
                     /* selected= */ host.isSelected()));
+
+            info.setClickable(true);
           }
         };
 

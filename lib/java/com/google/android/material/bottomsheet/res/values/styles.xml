@@ -64,4 +64,12 @@
     <item name="cornerSizeBottomLeft">0dp</item>
   </style>
 
- </resources>
+  <!-- Style for the M3 Bottom Sheet. -->
+  <style name="Widget.Material3.BottomSheet" parent="Widget.MaterialComponents.BottomSheet">
+    <item name="android:elevation" tools:ignore="NewApi">@dimen/m3_bottom_sheet_elevation</item>
+  </style>
+
+  <style name="Widget.Material3.BottomSheet.Modal">
+    <item name="android:elevation" tools:ignore="NewApi">@dimen/m3_bottom_sheet_modal_elevation</item>
+  </style>
+</resources>

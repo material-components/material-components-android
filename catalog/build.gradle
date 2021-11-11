@@ -9,8 +9,13 @@ dependencies {
   annotationProcessor 'com.google.dagger:dagger-android-processor:2.28.1'
 
   api 'androidx.multidex:multidex:2.0.1'
-  api 'androidx.constraintlayout:constraintlayout:1.1.3'
+  api 'androidx.constraintlayout:constraintlayout:2.1.0'
   api 'androidx.gridlayout:gridlayout:1.0.0'
+  api "androidx.multidex:multidex:2.0.1"
+  api "androidx.recyclerview:recyclerview:1.2.1"
+  api 'androidx.window:window:1.0.0-beta02'
+  api "androidx.window:window-java:1.0.0-beta02"
+  api "androidx.preference:preference:1.1.1"
 
   api 'com.google.guava:guava:27.0.1-android'
 
@@ -29,12 +34,13 @@ dependencies {
   testImplementation "junit:junit:4.12"
   testImplementation "com.google.truth:truth:${project.rootProject.ext.truthVersion}"
   testImplementation "org.mockito:mockito-core:${project.rootProject.ext.mockitoCoreVersion}"
-  testImplementation "org.robolectric:robolectric:4.3"
+  testImplementation "org.robolectric:robolectric:${project.rootProject.ext.robolectricVersion}"
 
   testAnnotationProcessor "com.google.auto.service:auto-service:1.0-rc4"
 }
 
 def srcDirs = [
+  'adaptive',
   'application',
   'application/attrs',
   'application/legacymultidex',
@@ -48,8 +54,10 @@ def srcDirs = [
   'card',
   'checkbox',
   'chip',
+  'color',
   'datepicker',
   'dialog',
+  'divider',
   'draggable',
   'elevation',
   'imageview',
@@ -59,6 +67,7 @@ def srcDirs = [
   'internal',
   'main',
   'menu',
+  'musicplayer',
   'navigationrail',
   'preferences',
   'progressindicator',
@@ -73,7 +82,6 @@ def srcDirs = [
   'timepicker',
   'topappbar',
   'transition',
-  'transition/hero',
   'windowpreferences'
 ]
 
@@ -87,8 +95,9 @@ android {
 
     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
+    multiDexEnabled true
     minSdkVersion 14
-    targetSdkVersion 29
+    targetSdkVersion 31
   }
 
   testOptions {

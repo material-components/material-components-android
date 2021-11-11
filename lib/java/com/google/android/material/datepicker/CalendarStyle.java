@@ -26,40 +26,40 @@ import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.resources.MaterialResources;
 
 /**
- * Data class for loaded {@link R.styleable#MaterialCalendar} and {@link
- * R.styleable#MaterialCalendarItem} attributes.
+ * Data class for loaded {@code R.styleable.MaterialCalendar} and {@code
+ * R.styleable.MaterialCalendarItem} attributes.
  */
 final class CalendarStyle {
 
   /**
-   * The {@link R.styleable#MaterialCalendarItem} style for days with no unique characteristics from
-   * {@link R.styleable#MaterialCalendar_dayStyle}.
+   * The {@code R.styleable.MaterialCalendarItem} style for days with no unique characteristics from
+   * {@code R.styleable.MaterialCalendar_dayStyle}.
    */
   @NonNull final CalendarItemStyle day;
   /**
-   * The {@link R.styleable#MaterialCalendarItem} style for selected days from {@link
-   * R.styleable#MaterialCalendar_daySelectedStyle}.
+   * The {@code R.styleable.MaterialCalendarItem} style for selected days from {@code
+   * R.styleable.MaterialCalendar_daySelectedStyle}.
    */
   @NonNull final CalendarItemStyle selectedDay;
   /**
-   * The {@link R.styleable#MaterialCalendarItem} style for today from {@link
-   * R.styleable#MaterialCalendar_dayTodayStyle}.
+   * The {@code R.styleable.MaterialCalendarItem} style for today from {@code
+   * R.styleable.MaterialCalendar_dayTodayStyle}.
    */
   @NonNull final CalendarItemStyle todayDay;
 
   /**
-   * The {@link R.styleable#MaterialCalendarItem} style for years with no unique characteristics
-   * from {@link R.styleable#MaterialCalendar_yearStyle}.
+   * The {@code R.styleable.MaterialCalendarItem} style for years with no unique characteristics
+   * from {@code R.styleable#MaterialCalendar_yearStyle}.
    */
   @NonNull final CalendarItemStyle year;
   /**
-   * The {@link R.styleable#MaterialCalendarItem} style for selected years from {@link
-   * R.styleable#MaterialCalendar_yearSelectedStyle}.
+   * The {@code R.styleable.MaterialCalendarItem} style for selected years from {@code
+   * R.styleable.MaterialCalendar_yearSelectedStyle}.
    */
   @NonNull final CalendarItemStyle selectedYear;
   /**
-   * The {@link R.styleable#MaterialCalendarItem} style for today's year from {@link
-   * R.styleable#MaterialCalendar_yearTodayStyle}.
+   * The {@code R.styleable.MaterialCalendarItem} style for today's year from {@code
+   * R.styleable.MaterialCalendar_yearTodayStyle}.
    */
   @NonNull final CalendarItemStyle todayYear;
 

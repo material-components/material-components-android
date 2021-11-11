@@ -23,9 +23,9 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
 import android.graphics.Color;
-import androidx.appcompat.view.ContextThemeWrapper;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import androidx.appcompat.view.ContextThemeWrapper;
 import com.google.android.material.theme.overlay.MaterialThemeOverlay;
 import org.junit.Before;
 import org.junit.Test;

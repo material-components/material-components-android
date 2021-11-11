@@ -138,6 +138,8 @@ public class RangeSlider extends BaseSlider<RangeSlider, OnChangeListener, OnSli
    *
    * @see #getMinSeparation()
    * @attr ref com.google.android.material.R.styleable#RangeSlider_minSeparation
+   * @throws IllegalStateException if used in conjunction with {@link #setStepSize(float)}, use
+   *     {@link #setMinSeparationValue(float)} instead.
    */
   public void setMinSeparation(@Dimension float minSeparation) {
     this.minSeparation = minSeparation;

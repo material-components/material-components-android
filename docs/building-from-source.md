@@ -23,8 +23,8 @@ Then, build the library's AARs using Gradle:
 ./gradlew publishToMavenLocal
 ```
 
-Note: To make sure that your local version of MDC-Android will get used and not
-conflict with existing releases, consider changing the version specified as
+**Note:** To make sure that your local version of MDC-Android will get used and
+not conflict with existing releases, consider changing the version specified as
 `mdcLibraryVersion` in the library's top-level `build.gradle` file to something
 unique before running the above command.
 

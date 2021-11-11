@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  Copyright 2021 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+
+  <string name="cat_adaptive_title" description="Title of the Adaptive Catalog demo [CHAR_LIMIT=NONE]">Adaptive</string>
+  <string name="cat_adaptive_description" description="Description of the Adaptive Catalog demo [CHAR_LIMIT=NONE]">
+    Adaptive layouts adapt to differences inherent in devices, such as
+    increased screen space, to feel continuous and cohesive throughout the suite
+    of uniquely shaped devices.
+  </string>
+  <string name="cat_adaptive_fab_content_desc" description="Content description of the Floating Action Button [CHAR_LIMIT=NONE]">
+    Floating Action Button
+  </string>
+
+  <string name="cat_adaptive_nav_button" description="The navigation button of an adaptive layout. [CHAR_LIMIT=50]">
+    Expand/contract navigation bar
+  </string>
+  <string name="cat_adaptive_menu_page_1_title" description="The title of a page in a navigation bar item. [CHAR_LIMIT=50]">
+    Page 1
+  </string>
+  <string name="cat_adaptive_menu_page_2_title" description="The title of a page in a navigation bar item. [CHAR_LIMIT=50]">
+    Page 2
+  </string>
+  <string name="cat_adaptive_menu_page_3_title" description="The title of a page in a navigation bar item. [CHAR_LIMIT=50]">
+    Page 3
+  </string>
+  <string name="cat_adaptive_menu_page_4_title" description="The title of a page in a navigation bar item. [CHAR_LIMIT=50]">
+    Page 4
+  </string>
+  <string name="cat_adaptive_fab" description="The title of the floating action button. [CHAR_LIMIT=50]">
+    Floating action button
+  </string>
+  <string name="cat_adaptive_nav_fab_text" description="The title of the navigation bar's floating action button. [CHAR_LIMIT=50]">
+    Compose
+  </string>
+
+  <string name="cat_feed_title" description="Title of the Feed Catalog demo [CHAR_LIMIT=NONE]">
+    Feed Demo
+  </string>
+  <string name="cat_feed_fragment_title" description="Title of an element of the Feed fragment [CHAR_LIMIT=NONE]">
+    Title
+  </string>
+  <string name="cat_feed_fragment_subhead" description="Subhead of the Feed fragment [CHAR_LIMIT=NONE]">
+    Subhead
+  </string>
+  <string name="cat_feed_sample_image_content_desc" description="Description of a sample image in the Feed dmeo [CHAR_LIMIT=NONE]">
+    Sample image
+  </string>
+
+  <string name="cat_list_view_title" description="Title of the List View Catalog demo [CHAR_LIMIT=NONE]">
+    List View Demo
+  </string>
+  <string name="cat_list_view_inbox_title" description="Title of the inbox. [CHAR_LIMIT=NONE]">
+    Inbox
+  </string>
+  <string name="cat_list_view_email_text" description="The text of an wmail [CHAR_LIMIT=NONE]">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+    Fringilla est ullamcorper eget nulla facilisi etiam dignissim. Tellus integer feugiat scelerisque varius morbi enim nunc faucibus a.
+    Nisi lacus sed viverra tellus in hac. Ridiculus mus mauris vitae ultricies leo integer malesuada.
+  </string>
+  <string name="cat_list_view_email_timestamp" description="The timestamp of an email. [CHAR_LIMIT=50]">
+    Now
+  </string>
+  <string name="cat_list_view_email_title" description="The title of an email. [CHAR_LIMIT=NONE]">
+    Email Title
+  </string>
+  <string name="cat_list_view_sender_title" description="The name of the sender of an email. [CHAR_LIMIT=NONE]">
+    John Doe
+  </string>
+  <string name="cat_list_view_menu_archive_button" description="Name of the archive email button. [CHAR_LIMIT=50]">
+    Archive
+  </string>
+  <string name="cat_list_view_menu_delete_button" description="Name of the detele email button. [CHAR_LIMIT=50]">
+    Delete
+  </string>
+  <string name="cat_list_view_menu_unread_button" description="Name of the mark as unread email button. [CHAR_LIMIT=50]">
+    Mark as unread
+  </string>
+
+  <string name="cat_hero_title" description="Title of the Hero Catalog demo [CHAR_LIMIT=NONE]">
+    Single View Hero Demo
+  </string>
+  <string name="cat_hero_fragment_title" description="Title of an element of the Hero fragment [CHAR_LIMIT=NONE]">
+    Title
+  </string>
+
+  <string name="cat_supporting_panel_title" description="Title of the Supporting Panel Catalog demo [CHAR_LIMIT=NONE]">
+    Supporting Panel Demo
+  </string>
+  <string name="cat_supporting_panel_fragment_title" description="Title of an element of the Supporting Panel fragment [CHAR_LIMIT=NONE]">
+    Title
+  </string>
+
+</resources>

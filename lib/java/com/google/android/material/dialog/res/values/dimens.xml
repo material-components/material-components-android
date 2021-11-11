@@ -22,4 +22,10 @@
   <dimen name="mtrl_alert_dialog_background_inset_bottom">80dp</dimen>
   <!-- 16dp from abc_dialog_material_background.xml -->
   <dimen name="appcompat_dialog_background_inset">16dp</dimen>
+
+  <dimen name="m3_alert_dialog_elevation">@dimen/m3_sys_elevation_level3</dimen>
+  <dimen name="m3_alert_dialog_corner_size">28dp</dimen>
+  <dimen name="m3_alert_dialog_icon_size">24dp</dimen>
+  <dimen name="m3_alert_dialog_icon_margin">16dp</dimen>
+  <dimen name="m3_alert_dialog_title_bottom_margin">10dp</dimen>
 </resources>

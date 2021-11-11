@@ -38,7 +38,7 @@ import com.google.android.material.progressindicator.BaseProgressIndicator.ShowA
 
 /**
  * This class contains the parameters shared between linear type and circular type. The parameters
- * reflect the attributes defined in {@link R.styleable#BaseProgressIndicator}.
+ * reflect the attributes defined in {@code R.styleable.BaseProgressIndicator}.
  */
 public abstract class BaseProgressIndicatorSpec {
   /** The thickness of the track and indicator. */

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2021 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+
+  <string name="cat_colors_title" translatable="false">Color</string>
+  <string name="cat_colors_description" translatable="false">
+    Material uses color to create meaningful experiences while also expressing hierarchy, state, and brand identity.
+  </string>
+  <string name="cat_color_label_enabled" translatable="false">Harmonization Enabled</string>
+  <string name="cat_button_label_proceed" translatable="false">Proceed</string>
+  <string name="cat_button_label_error" translatable="false">Error</string>
+  <string name="cat_button_text" translatable="false">Material button</string>
+  <string name="cat_unelevated_button_text" translatable="false">Unelevated button</string>
+  <string name="cat_color_hex_value_text" translatable="false">Color hex value: %1$s</string>
+
+  <string name="cat_color_harmonization" translatable="false">Color Harmonization Demo</string>
+  <string name="cat_color_dynamic_palette" translatable="false">Dynamic Palette Demo</string>
+
+  <string name="cat_color_copy" translatable="false">Copy colors</string>
+
+  <string name="cat_color_res" translatable="false">%1$s%2$s</string>
+
+  <string name="cat_color_role_background" translatable="false">Background</string>
+  <string name="cat_color_role_on_background" translatable="false">On Background</string>
+  <string name="cat_color_role_surface" translatable="false">Surface</string>
+  <string name="cat_color_role_on_surface" translatable="false">On Surface</string>
+  <string name="cat_color_role_surface_variant" translatable="false">Surface Variant</string>
+  <string name="cat_color_role_on_surface_variant" translatable="false">On Surface Variant</string>
+  <string name="cat_color_role_inverse_surface" translatable="false">Inverse Surface</string>
+  <string name="cat_color_role_inverse_on_surface" translatable="false">Inverse On Surface</string>
+
+  <string name="cat_color_surfaces" translatable="false">Surfaces</string>
+  <string name="cat_color_utility" translatable="false">Utility</string>
+  <string name="cat_color_content" translatable="false">Content</string>
+
+  <string name="cat_color_role_primary" translatable="false">Primary</string>
+  <string name="cat_color_role_on_primary" translatable="false">On Primary</string>
+  <string name="cat_color_role_primary_container" translatable="false">Primary Container</string>
+  <string name="cat_color_role_on_primary_container" translatable="false">On Primary Container</string>
+  <string name="cat_color_role_inverse_primary" translatable="false">Inverse Primary</string>
+  <string name="cat_color_role_secondary" translatable="false">Secondary</string>
+  <string name="cat_color_role_on_secondary" translatable="false">On Secondary</string>
+  <string name="cat_color_role_secondary_container" translatable="false">Secondary Container</string>
+  <string name="cat_color_role_on_secondary_container" translatable="false">On Secondary Container</string>
+  <string name="cat_color_role_tertiary" translatable="false">Tertiary</string>
+  <string name="cat_color_role_on_tertiary" translatable="false">On Tertiary</string>
+  <string name="cat_color_role_tertiary_container" translatable="false">Tertiary Container</string>
+  <string name="cat_color_role_on_tertiary_container" translatable="false">On Tertiary Container</string>
+  <string name="cat_color_role_error" translatable="false">Error</string>
+  <string name="cat_color_role_on_error" translatable="false">On Error</string>
+  <string name="cat_color_role_error_container" translatable="false">Error Container</string>
+  <string name="cat_color_role_on_error_container" translatable="false">On Error Container</string>
+  <string name="cat_color_role_outline" translatable="false">Outline</string>
+
+</resources>

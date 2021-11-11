@@ -17,6 +17,7 @@
 package com.google.android.material.textfield;
 
 import android.content.Context;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import com.google.android.material.internal.CheckableImageButton;
 import com.google.android.material.textfield.TextInputLayout.BoxBackgroundMode;
@@ -33,10 +34,14 @@ abstract class EndIconDelegate {
   Context context;
   CheckableImageButton endIconView;
 
-  EndIconDelegate(@NonNull TextInputLayout textInputLayout) {
+  @DrawableRes
+  final int customEndIcon;
+
+  EndIconDelegate(@NonNull TextInputLayout textInputLayout, @DrawableRes int customEndIcon) {
     this.textInputLayout = textInputLayout;
     context = textInputLayout.getContext();
     endIconView = textInputLayout.getEndIconView();
+    this.customEndIcon = customEndIcon;
   }
 
   /**

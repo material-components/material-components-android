@@ -20,6 +20,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -424,6 +425,26 @@ public class TextInputLayoutActions {
     };
   }
 
+  public static ViewAction setStartIconTintMode(final PorterDuff.Mode tintMode) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Set tint mode for the start icon";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setStartIconTintMode(tintMode);
+      }
+    };
+  }
+
   public static ViewAction setStartIconOnClickListener(final OnClickListener onClickListener) {
     return new ViewAction() {
       @Override
@@ -620,8 +641,8 @@ public class TextInputLayoutActions {
   public static ViewAction setBoxCornerRadii(
       final float topLeftCornerRadius,
       final float topRightCornerRadius,
-      final float bottomRightCornerRadius,
-      final float bottomLeftCornerRadius) {
+      final float bottomLeftCornerRadius,
+      final float bottomRightCornerRadius) {
     return new ViewAction() {
       @Override
       public Matcher<View> getConstraints() {
@@ -639,8 +660,8 @@ public class TextInputLayoutActions {
         layout.setBoxCornerRadii(
             topLeftCornerRadius,
             topRightCornerRadius,
-            bottomRightCornerRadius,
-            bottomLeftCornerRadius);
+            bottomLeftCornerRadius,
+            bottomRightCornerRadius);
       }
     };
   }
@@ -648,8 +669,8 @@ public class TextInputLayoutActions {
   public static ViewAction setBoxCornerRadii(
       @DimenRes final int topLeftCornerRadiusId,
       @DimenRes final int topRightCornerRadiusId,
-      @DimenRes final int bottomRightCornerRadiusId,
-      @DimenRes final int bottomLeftCornerRadiusId) {
+      @DimenRes final int bottomLeftCornerRadiusId,
+      @DimenRes final int bottomRightCornerRadiusId) {
     return new ViewAction() {
       @Override
       public Matcher<View> getConstraints() {
@@ -667,8 +688,8 @@ public class TextInputLayoutActions {
         layout.setBoxCornerRadiiResources(
             topLeftCornerRadiusId,
             topRightCornerRadiusId,
-            bottomRightCornerRadiusId,
-            bottomLeftCornerRadiusId);
+            bottomLeftCornerRadiusId,
+            bottomRightCornerRadiusId);
       }
     };
   }

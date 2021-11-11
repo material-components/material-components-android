@@ -20,4 +20,7 @@
   <integer name="mtrl_card_anim_duration_ms">120</integer>
   <integer name="mtrl_card_anim_delay_ms">75</integer>
 
+  <integer name="m3_card_anim_duration_ms">120</integer>
+  <integer name="m3_card_anim_delay_ms">75</integer>
+
 </resources>

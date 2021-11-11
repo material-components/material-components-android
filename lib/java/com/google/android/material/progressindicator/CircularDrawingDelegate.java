@@ -142,28 +142,9 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
     // Draws rounded corners if needed.
     if (displayedCornerRadius > 0 && Math.abs(arcDegree) < 360) {
       paint.setStyle(Style.FILL);
-      RectF cornerPatternRectBound =
-          new RectF(
-              -displayedCornerRadius,
-              -displayedCornerRadius,
-              displayedCornerRadius,
-              displayedCornerRadius);
+      drawRoundedEnd(canvas, paint, displayedTrackThickness, displayedCornerRadius, startDegree);
       drawRoundedEnd(
-          canvas,
-          paint,
-          displayedTrackThickness,
-          displayedCornerRadius,
-          startDegree,
-          true,
-          cornerPatternRectBound);
-      drawRoundedEnd(
-          canvas,
-          paint,
-          displayedTrackThickness,
-          displayedCornerRadius,
-          startDegree + arcDegree,
-          false,
-          cornerPatternRectBound);
+          canvas, paint, displayedTrackThickness, displayedCornerRadius, startDegree + arcDegree);
     }
   }
 
@@ -193,28 +174,17 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
   }
 
   private void drawRoundedEnd(
-      Canvas canvas,
-      Paint paint,
-      float trackSize,
-      float cornerRadius,
-      float positionInDeg,
-      boolean isStartPosition,
-      RectF cornerPatternRectBound) {
-    float startOrEndFactor = isStartPosition ? -1 : 1;
+      Canvas canvas, Paint paint, float trackSize, float cornerRadius, float positionInDeg) {
     canvas.save();
     canvas.rotate(positionInDeg);
-    canvas.drawRect(
-        adjustedRadius - trackSize / 2 + cornerRadius,
-        Math.min(0, startOrEndFactor * cornerRadius * arcDirectionFactor),
-        adjustedRadius + trackSize / 2 - cornerRadius,
-        Math.max(0, startOrEndFactor * cornerRadius * arcDirectionFactor),
-        paint);
-    canvas.translate(adjustedRadius - trackSize / 2 + cornerRadius, 0);
-    canvas.drawArc(
-        cornerPatternRectBound, 180, -startOrEndFactor * 90 * arcDirectionFactor, true, paint);
-    canvas.translate(trackSize - 2 * cornerRadius, 0);
-    canvas.drawArc(
-        cornerPatternRectBound, 0, startOrEndFactor * 90 * arcDirectionFactor, true, paint);
+
+    RectF cornersBound =
+        new RectF(
+            adjustedRadius - trackSize / 2,
+            cornerRadius,
+            adjustedRadius + trackSize / 2,
+            -cornerRadius);
+    canvas.drawRoundRect(cornersBound, cornerRadius, cornerRadius, paint);
     canvas.restore();
   }
 }

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2021 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/album_item_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="12dp"
+    android:paddingBottom="12dp"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:minHeight="?attr/listPreferredItemHeight"
+    android:foreground="?attr/selectableItemBackground"
+    android:background="?android:attr/colorBackground">
+
+  <com.google.android.material.imageview.ShapeableImageView
+      android:id="@+id/album_image"
+      android:layout_width="62dp"
+      android:layout_height="62dp"
+      android:scaleType="centerCrop"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:shapeAppearanceOverlay="?attr/shapeAppearanceMediumComponent" />
+
+  <TextView
+      android:id="@+id/album_title"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="16dp"
+      android:layout_marginLeft="16dp"
+      android:maxLines="1"
+      android:ellipsize="end"
+      android:textAppearance="?attr/textAppearanceHeadline6"
+      app:layout_constraintBottom_toTopOf="@+id/album_artist"
+      app:layout_constraintEnd_toStartOf="@id/album_duration"
+      app:layout_constraintStart_toEndOf="@id/album_image"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      tools:text="Ology" />
+
+  <TextView
+      android:id="@+id/album_artist"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="16dp"
+      android:layout_marginLeft="16dp"
+      android:maxLines="1"
+      android:ellipsize="end"
+      android:textAppearance="?attr/textAppearanceBody2"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/album_duration"
+      app:layout_constraintStart_toEndOf="@id/album_image"
+      app:layout_constraintTop_toBottomOf="@+id/album_title"
+      tools:text="Gallant" />
+
+  <TextView
+      android:id="@+id/album_duration"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/cat_music_player_album_duration"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintBaseline_toBaselineOf="@id/album_title"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

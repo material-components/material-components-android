@@ -23,7 +23,6 @@
   android:orientation="vertical">
 
   <com.google.android.material.bottomnavigation.BottomNavigationView
-    style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:menu="@menu/bottom_nav_animated_menu" />

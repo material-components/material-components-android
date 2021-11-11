@@ -11,13 +11,13 @@ path: /catalog/badging/
 
 ## Using badges
 
-Badge                                   | Badge with number                              | Badge with a maximum character count
---------------------------------------- | ---------------------------------------------- | ------------------------------------
-![badge_icon](assets/IconOnlyBadge.png) | ![badge_with_number_8](assets/BadgeNumber.png) | ![badge_with_999+](assets/BadgeNumberLongerThanMaxCharCount.png)
+Badge                                         | Badge with number                                    | Badge with a maximum character count
+--------------------------------------------- | ---------------------------------------------------- | ------------------------------------
+![badge_icon](assets/badge/IconOnlyBadge.png) | ![badge_with_number_8](assets/badge/BadgeNumber.png) | ![badge_with_999+](assets/badge/BadgeNumberLongerThanMaxCharCount.png)
 
-NOTE: This component is still under development and may not support the full
-range of customization Material Android components generally support (e.g.
-themed attributes).
+**Note:** This component is still under development and may not support the full
+range of customization Material Android components generally support, for
+instance, themed attributes.
 
 A `BadgeDrawable` represents dynamic information such as a number of pending
 requests in a [`BottomNavigationView`](BottomNavigation.md) or
@@ -34,8 +34,8 @@ requests in a [`BottomNavigationView`](BottomNavigation.md) or
 Create an instance of `BadgeDrawable` by calling `create(Context)` or
 `createFromAttributes(Context, AttributeSet, int, int)}`.
 
-How to add and display a `BadgeDrawable` on top of its anchor view depends on
-the API level:
+The approach used to add and display a `BadgeDrawable` on top of its anchor view
+depends on the API level:
 
 In API 18+ (APIs supported by
 [ViewOverlay](https://developer.android.com/reference/android/view/ViewOverlay))
@@ -43,10 +43,10 @@ In API 18+ (APIs supported by
 1.  Add `BadgeDrawable` as a
     [ViewOverlay](https://developer.android.com/reference/android/view/ViewOverlay)
     to the desired anchor view.
-1.  Update the `BadgeDrawable`'s coordinates (center and bounds) based on its
+2.  Update the `BadgeDrawable`'s coordinates (center and bounds) based on its
     anchor view using `#updateBadgeCoordinates(View)`.
 
-Both of the above steps have been encapsulated in a util method:
+Both steps have been encapsulated in a util method:
 
 ```java
 BadgeUtils.attachBadgeDrawable(badgeDrawable, anchor);
@@ -56,11 +56,11 @@ In Pre API-18
 
 1.  Set `BadgeDrawable` as the foreground of the anchor view's `FrameLayout`
     ancestor.
-1.  Update the `BadgeDrawable`'s coordinates (center and bounds) based on its
-    anchor view (relative to its `FrameLayout` ancestor's coordinate space),
+2.  Update the `BadgeDrawable`'s coordinates (center and bounds) based on its
+    anchor view, relative to its `FrameLayout` ancestor's coordinate space.
 
 Option 1: `BadgeDrawable` will dynamically create and wrap the anchor view in a
-`FrameLayout`, then insert the `FrameLayout` into the anchor view original
+`FrameLayout`, then insert the `FrameLayout` into the original anchor view
 position in the view hierarchy. Same syntax as API 18+
 
 ```java
@@ -76,17 +76,17 @@ can specify a `FrameLayout` to display the badge instead.
 
 ### `BadgeDrawable` Gravity Modes
 
-`BadgeDrawable` provides 4 pre-packaged gravity modes that control how the badge
-aligns with respect to its anchor view. By default (`TOP_END`), badge aligns to
-the top and end edges of the anchor (with some offsets). The other options are
+`BadgeDrawable` provides four pre-packaged gravity modes that control how the
+badge aligns with its anchor view. By default (`TOP_END`) badge aligns with the
+top and end edges of the anchor (with some offsets). The other options are
 `TOP_START`, `BOTTOM_START` and `BOTTOM_END`.
 
 ### `BadgeDrawable` center offsets
 
-By default, `BadgeDrawable` is aligned to the top and end edges of its anchor
+By default, `BadgeDrawable` is aligned with the top and end edges of its anchor
 view (with some offsets). Call `setBadgeGravity(int)` to change it to one of the
-other supported modes. To adjust the badge's offsets w.r.t. the anchor's center,
-use `setHoriziontalOffset(int)` or `setVerticalOffset(int)`
+other supported modes. To adjust the badge's offsets relative to the anchor's
+center, use `setHoriziontalOffset(int)` or `setVerticalOffset(int)`
 
 ### `BadgeDrawable` Attributes
 
@@ -100,6 +100,6 @@ Badge Gravity | `app:badgeGravity`
 ### Talkback Support
 
 `BadgeDrawable` provides a getter for its content description, which is based on
-the number (if any) being displayed. Users should specify content description:
+the number (if any) displayed. Users should specify content description:
 `setContentDescriptionNumberless(CharSequence)`
 `setContentDescriptionQuantityStringsResource(@StringRes)`
