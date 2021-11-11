@@ -32,6 +32,7 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.v4.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
@@ -231,6 +232,9 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   private boolean paddingLeftSystemWindowInsets;
   private boolean paddingRightSystemWindowInsets;
   private boolean paddingTopSystemWindowInsets;
+  private boolean marginLeftSystemWindowInsets;
+  private boolean marginRightSystemWindowInsets;
+  private boolean marginTopSystemWindowInsets;
 
   private int insetBottom;
   private int insetTop;
@@ -375,6 +379,12 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     // this is a breaking change from the old behavior the default is true.
     paddingTopSystemWindowInsets =
         a.getBoolean(R.styleable.BottomSheetBehavior_Layout_paddingTopSystemWindowInsets, true);
+    marginLeftSystemWindowInsets =
+        a.getBoolean(R.styleable.BottomSheetBehavior_Layout_marginLeftSystemWindowInsets, false);
+    marginRightSystemWindowInsets =
+        a.getBoolean(R.styleable.BottomSheetBehavior_Layout_marginRightSystemWindowInsets, false);
+    marginTopSystemWindowInsets =
+        a.getBoolean(R.styleable.BottomSheetBehavior_Layout_marginTopSystemWindowInsets, false);
 
     a.recycle();
     ViewConfiguration configuration = ViewConfiguration.get(context);
@@ -1462,6 +1472,10 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     if (!paddingBottomSystemWindowInsets
         && !paddingLeftSystemWindowInsets
         && !paddingRightSystemWindowInsets
+        && !paddingTopSystemWindowInsets
+        && !marginLeftSystemWindowInsets
+        && !marginRightSystemWindowInsets
+        && !marginTopSystemWindowInsets
         && !shouldHandleGestureInsets) {
       return;
     }
@@ -1471,7 +1485,11 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
           @Override
           public WindowInsetsCompat onApplyWindowInsets(
               View view, WindowInsetsCompat insets, RelativePadding initialPadding) {
-            insetTop = insets.getSystemWindowInsetTop();
+            Insets systemBarInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            Insets mandatoryGestureInsets =
+                insets.getInsets(WindowInsetsCompat.Type.mandatorySystemGestures());
+
+            insetTop = systemBarInsets.top;
 
             boolean isRtl = ViewUtils.isLayoutRtl(view);
 
@@ -1480,13 +1498,13 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
             int rightPadding = view.getPaddingRight();
 
             if (paddingBottomSystemWindowInsets) {
-              insetBottom = insets.getSystemWindowInsetBottom();
+              insetBottom = systemBarInsets.bottom;
               bottomPadding = initialPadding.bottom + insetBottom;
             }
 
             if (paddingLeftSystemWindowInsets) {
               leftPadding = isRtl ? initialPadding.end : initialPadding.start;
-              leftPadding += insets.getSystemWindowInsetLeft();
+              leftPadding += systemBarInsets.left;
             }
 
             if (paddingRightSystemWindowInsets) {
@@ -1494,10 +1512,24 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
               rightPadding += insets.getSystemWindowInsetRight();
             }
 
+            MarginLayoutParams mlp = (MarginLayoutParams) view.getLayoutParams();
+            if (marginLeftSystemWindowInsets) {
+              mlp.leftMargin = systemBarInsets.left;
+            }
+
+            if (marginRightSystemWindowInsets) {
+              mlp.rightMargin = systemBarInsets.right;
+            }
+
+            if (marginTopSystemWindowInsets) {
+              mlp.topMargin = systemBarInsets.top;
+            }
+
+            view.setLayoutParams(mlp);
             view.setPadding(leftPadding, view.getPaddingTop(), rightPadding, bottomPadding);
 
             if (shouldHandleGestureInsets) {
-              gestureInsetBottom = insets.getMandatorySystemGestureInsets().bottom;
+              gestureInsetBottom = mandatoryGestureInsets.bottom;
             }
 
             // Don't update the peek height to be above the navigation bar or gestures if these
