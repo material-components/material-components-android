@@ -24,7 +24,7 @@ ext {
   targetSdkVersion = 31
 
   androidXVersions = [
-    annotation            : '1.0.1',
+    annotation            : '1.2.0',
     appCompat             : '1.4.0-rc01', // Need AppCompatDialogFragment constructor that takes a layout ID
     cardView              : '1.0.0',
     constraintlayout      : '2.0.1',
