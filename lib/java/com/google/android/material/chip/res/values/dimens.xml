@@ -26,5 +26,6 @@
   <dimen name="m3_chip_disabled_translation_z">-1dp</dimen>
   <dimen name="m3_chip_corner_size">8dp</dimen>
   <dimen name="m3_chip_elevated_elevation">1dp</dimen>
+  <dimen name="m3_chip_icon_size">18dp</dimen>
 
 </resources>
