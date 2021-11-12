@@ -81,9 +81,6 @@
     <attr name="paddingLeftSystemWindowInsets" />
     <attr name="paddingRightSystemWindowInsets" />
     <attr name="paddingTopSystemWindowInsets" />
-    <attr name="marginLeftSystemWindowInsets" />
-    <attr name="marginRightSystemWindowInsets" />
-    <attr name="marginTopSystemWindowInsets" />
     <attr name="android:elevation"/>
     <attr name="android:maxWidth"/>
     <attr name="android:maxHeight"/>

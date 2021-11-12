@@ -22,8 +22,5 @@
   <public name="paddingLeftSystemWindowInsets" type="attr"/>
   <public name="paddingRightSystemWindowInsets" type="attr"/>
   <public name="paddingTopSystemWindowInsets" type="attr"/>
-  <public name="marginLeftSystemWindowInsets" type="attr"/>
-  <public name="marginRightSystemWindowInsets" type="attr"/>
-  <public name="marginTopSystemWindowInsets" type="attr"/>
   <public name="Widget.Design.ScrimInsetsFrameLayout" type="style"/>
 </resources>

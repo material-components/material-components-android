@@ -67,12 +67,6 @@
   <!-- Style for the M3 Bottom Sheet. -->
   <style name="Widget.Material3.BottomSheet" parent="Widget.MaterialComponents.BottomSheet">
     <item name="android:elevation" tools:ignore="NewApi">@dimen/m3_bottom_sheet_elevation</item>
-    <item name="marginLeftSystemWindowInsets">true</item>
-    <item name="marginRightSystemWindowInsets">true</item>
-    <item name="paddingBottomSystemWindowInsets">true</item>
-    <item name="paddingTopSystemWindowInsets">true</item>
-    <item name="paddingLeftSystemWindowInsets">false</item>
-    <item name="paddingRightSystemWindowInsets">false</item>
   </style>
 
   <style name="Widget.Material3.BottomSheet.Modal">
