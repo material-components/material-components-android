@@ -15,19 +15,62 @@
   limitations under the License.
   -->
 
-<RelativeLayout
+<ScrollView
   xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  android:layout_margin="16dp">
+  android:layout_height="wrap_content"
+  android:padding="8dp">
 
-  <TextView
-    android:layout_width="wrap_content"
+  <LinearLayout
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="24dp"
-    android:layout_marginBottom="24dp"
-    android:layout_gravity="center_vertical|end"
-    android:text="@string/cat_colors_title"/>
+    android:orientation="horizontal"
+    android:baselineAligned="false">
 
-</RelativeLayout>
+    <LinearLayout
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:padding="8dp"
+      android:layout_weight="1">
+
+      <LinearLayout
+        android:id="@+id/cat_colors_surfaces"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="@string/cat_color_surfaces" />
+      </LinearLayout>
+
+      <LinearLayout
+        android:id="@+id/cat_colors_utility"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="@string/cat_color_utility" />
+      </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+      android:id="@+id/cat_colors_content"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:padding="8dp"
+      android:layout_weight="1">
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/cat_color_content" />
+    </LinearLayout>
+  </LinearLayout>
+</ScrollView>

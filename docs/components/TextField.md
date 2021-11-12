@@ -75,6 +75,9 @@ content description via the `app:errorContentDescription` attribute or
 `setErrorContentDescription` method. That way the error will announce the
 content description instead of the error message.
 
+**Note:** Icons that don't have click listeners set on them work as decorative
+elements, and are therefore skipped by screen readers.
+
 #### Custom `EditText`
 
 If you are using a custom `EditText` as `TextInputLayout`'s child and your text
@@ -143,7 +146,7 @@ clear the input text.
 
 It is possible to set a custom `Drawable` as the text field's trailing icon via
 `app:endIconMode="custom"`. You should specify a drawable and content
-description for the icon, and, you have the option to specify custom behaviors.
+description for the icon, and you have the option to specify custom behaviors.
 
 In the layout:
 

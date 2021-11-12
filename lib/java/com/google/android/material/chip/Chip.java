@@ -18,12 +18,14 @@ package com.google.android.material.chip;
 
 import com.google.android.material.R;
 
+import static android.graphics.fonts.FontStyle.FONT_WEIGHT_MIN;
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Outline;
 import android.graphics.PorterDuff.Mode;
@@ -176,6 +178,9 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
         public void onFontRetrieved(@NonNull Typeface typeface, boolean fontResolvedSynchronously) {
           // Set text to re-trigger internal ellipsize width calculation.
           setText(chipDrawable.shouldDrawText() ? chipDrawable.getText() : getText());
+          if (!fontResolvedSynchronously) {
+            maybeUpdateFontWeightAdjustment();
+          }
           requestLayout();
           invalidate();
         }
@@ -1369,6 +1374,16 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
     TextAppearance textAppearance = getTextAppearance();
     if (textAppearance != null) {
       textAppearance.updateDrawState(getContext(), textPaint, fontCallback);
+      maybeUpdateFontWeightAdjustment();
+    }
+  }
+
+  private void maybeUpdateFontWeightAdjustment() {
+    Configuration config = getResources().getConfiguration();
+    if (VERSION.SDK_INT >= VERSION_CODES.S && config.fontWeightAdjustment >= FONT_WEIGHT_MIN) {
+      // Re-apply typeface to take into account fontWeightAdjustment, see similar logic used in
+      // TextView#onConfigurationChanged
+      setTypeface(getTypeface());
     }
   }
 

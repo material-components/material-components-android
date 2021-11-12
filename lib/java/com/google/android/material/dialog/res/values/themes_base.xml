@@ -160,6 +160,14 @@
     <item name="textAppearanceLabelMedium">@style/TextAppearance.Material3.LabelMedium</item>
     <item name="textAppearanceLabelSmall">@style/TextAppearance.Material3.LabelSmall</item>
 
+    <!-- Default Framework Text styles. -->
+    <item name="android:textAppearanceListItem">?attr/textAppearanceTitleMedium</item>
+    <item name="android:textAppearanceListItemSmall">?attr/textAppearanceTitleMedium</item>
+    <item name="android:textAppearanceListItemSecondary" tools:targetApi="21">?attr/textAppearanceBodyMedium</item>
+    <item name="textAppearanceListItem">?attr/textAppearanceTitleMedium</item>
+    <item name="textAppearanceListItemSmall">?attr/textAppearanceTitleMedium</item>
+    <item name="textAppearanceListItemSecondary">?attr/textAppearanceBodyMedium</item>
+
     <!-- Menu type styles. -->
     <item name="textAppearanceLargePopupMenu">?attr/textAppearanceBodyLarge</item>
     <item name="textAppearanceSmallPopupMenu">?attr/textAppearanceBodyLarge</item>
@@ -337,6 +345,14 @@
     <item name="textAppearanceLabelLarge">@style/TextAppearance.Material3.LabelLarge</item>
     <item name="textAppearanceLabelMedium">@style/TextAppearance.Material3.LabelMedium</item>
     <item name="textAppearanceLabelSmall">@style/TextAppearance.Material3.LabelSmall</item>
+
+    <!-- Default Framework Text styles. -->
+    <item name="android:textAppearanceListItem">?attr/textAppearanceTitleMedium</item>
+    <item name="android:textAppearanceListItemSmall">?attr/textAppearanceTitleMedium</item>
+    <item name="android:textAppearanceListItemSecondary" tools:targetApi="21">?attr/textAppearanceBodyMedium</item>
+    <item name="textAppearanceListItem">?attr/textAppearanceTitleMedium</item>
+    <item name="textAppearanceListItemSmall">?attr/textAppearanceTitleMedium</item>
+    <item name="textAppearanceListItemSecondary">?attr/textAppearanceBodyMedium</item>
 
     <!-- Menu type styles. -->
     <item name="textAppearanceLargePopupMenu">?attr/textAppearanceBodyLarge</item>

@@ -131,7 +131,7 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
           // If dropdown is non editable, layout click is what triggers showing/hiding the popup
           // list. Otherwise, arrow icon alone is what triggers it.
           if (event.getEventType() == TYPE_VIEW_CLICKED
-              && accessibilityManager.isTouchExplorationEnabled()
+              && accessibilityManager.isEnabled()
               && !isEditable(textInputLayout.getEditText())) {
             showHideDropdown(editText);
           }
@@ -307,6 +307,20 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
         editText.setDropDownBackgroundDrawable(filledPopupBackground);
       }
     }
+  }
+
+  /*
+  * This method should be called if the outlined ripple background should be updated. For example,
+  * if a new {@link ShapeAppearanceModel} is set on the text field.
+  */
+  void updateOutlinedRippleEffect(@NonNull AutoCompleteTextView editText) {
+    if (isEditable(editText)
+        || textInputLayout.getBoxBackgroundMode() != TextInputLayout.BOX_BACKGROUND_OUTLINE
+        || !(editText.getBackground() instanceof LayerDrawable)) {
+      return;
+    }
+
+    addRippleEffect(editText);
   }
 
   /* Add ripple effect to non editable layouts. */

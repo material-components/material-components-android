@@ -42,7 +42,9 @@ public final class ResourceNameLookup {
           try {
             int resId = field.getInt(null);
             String resName = field.getName();
-            resNameMapBuilder.put(resId, resName);
+            if (resId != 0) {
+              resNameMapBuilder.put(resId, resName);
+            }
           } catch (IllegalAccessException | IllegalArgumentException e) {
             continue;
           }

@@ -240,6 +240,7 @@ public class TextInputLayout extends LinearLayout {
   @Nullable private MaterialShapeDrawable boxBackground;
   @Nullable private MaterialShapeDrawable boxUnderline;
   @NonNull private ShapeAppearanceModel shapeAppearanceModel;
+  private boolean areCornerRadiiRtl;
 
   private final int boxLabelCutoutPaddingPx;
   @BoxBackgroundMode private int boxBackgroundMode;
@@ -1304,17 +1305,26 @@ public class TextInputLayout extends LinearLayout {
       float boxCornerRadiusTopEnd,
       float boxCornerRadiusBottomStart,
       float boxCornerRadiusBottomEnd) {
+    areCornerRadiiRtl = ViewUtils.isLayoutRtl(this);
+    float boxCornerRadiusTopLeft =
+        areCornerRadiiRtl ? boxCornerRadiusTopEnd : boxCornerRadiusTopStart;
+    float boxCornerRadiusTopRight =
+        areCornerRadiiRtl ? boxCornerRadiusTopStart : boxCornerRadiusTopEnd;
+    float boxCornerRadiusBottomLeft =
+        areCornerRadiiRtl ? boxCornerRadiusBottomEnd : boxCornerRadiusBottomStart;
+    float boxCornerRadiusBottomRight =
+        areCornerRadiiRtl ? boxCornerRadiusBottomStart : boxCornerRadiusBottomEnd;
     if (boxBackground == null
-        || boxBackground.getTopLeftCornerResolvedSize() != boxCornerRadiusTopStart
-        || boxBackground.getTopRightCornerResolvedSize() != boxCornerRadiusTopEnd
-        || boxBackground.getBottomRightCornerResolvedSize() != boxCornerRadiusBottomEnd
-        || boxBackground.getBottomLeftCornerResolvedSize() != boxCornerRadiusBottomStart) {
+        || boxBackground.getTopLeftCornerResolvedSize() != boxCornerRadiusTopLeft
+        || boxBackground.getTopRightCornerResolvedSize() != boxCornerRadiusTopRight
+        || boxBackground.getBottomLeftCornerResolvedSize() != boxCornerRadiusBottomLeft
+        || boxBackground.getBottomRightCornerResolvedSize() != boxCornerRadiusBottomRight) {
       shapeAppearanceModel =
           shapeAppearanceModel.toBuilder()
-              .setTopLeftCornerSize(boxCornerRadiusTopStart)
-              .setTopRightCornerSize(boxCornerRadiusTopEnd)
-              .setBottomRightCornerSize(boxCornerRadiusBottomEnd)
-              .setBottomLeftCornerSize(boxCornerRadiusBottomStart)
+              .setTopLeftCornerSize(boxCornerRadiusTopLeft)
+              .setTopRightCornerSize(boxCornerRadiusTopRight)
+              .setBottomLeftCornerSize(boxCornerRadiusBottomLeft)
+              .setBottomRightCornerSize(boxCornerRadiusBottomRight)
               .build();
       applyBoxAttributes();
     }
@@ -1327,7 +1337,9 @@ public class TextInputLayout extends LinearLayout {
    * @see #setBoxCornerRadii(float, float, float, float)
    */
   public float getBoxCornerRadiusTopStart() {
-    return boxBackground.getTopLeftCornerResolvedSize();
+    return ViewUtils.isLayoutRtl(this)
+        ? shapeAppearanceModel.getTopRightCornerSize().getCornerSize(tmpRectF)
+        : shapeAppearanceModel.getTopLeftCornerSize().getCornerSize(tmpRectF);
   }
 
   /**
@@ -1337,7 +1349,9 @@ public class TextInputLayout extends LinearLayout {
    * @see #setBoxCornerRadii(float, float, float, float)
    */
   public float getBoxCornerRadiusTopEnd() {
-    return boxBackground.getTopRightCornerResolvedSize();
+    return ViewUtils.isLayoutRtl(this)
+        ? shapeAppearanceModel.getTopLeftCornerSize().getCornerSize(tmpRectF)
+        : shapeAppearanceModel.getTopRightCornerSize().getCornerSize(tmpRectF);
   }
 
   /**
@@ -1347,7 +1361,9 @@ public class TextInputLayout extends LinearLayout {
    * @see #setBoxCornerRadii(float, float, float, float)
    */
   public float getBoxCornerRadiusBottomEnd() {
-    return boxBackground.getBottomLeftCornerResolvedSize();
+    return ViewUtils.isLayoutRtl(this)
+        ? shapeAppearanceModel.getBottomLeftCornerSize().getCornerSize(tmpRectF)
+        : shapeAppearanceModel.getBottomRightCornerSize().getCornerSize(tmpRectF);
   }
 
   /**
@@ -1357,7 +1373,9 @@ public class TextInputLayout extends LinearLayout {
    * @see #setBoxCornerRadii(float, float, float, float)
    */
   public float getBoxCornerRadiusBottomStart() {
-    return boxBackground.getBottomRightCornerResolvedSize();
+    return ViewUtils.isLayoutRtl(this)
+        ? shapeAppearanceModel.getBottomRightCornerSize().getCornerSize(tmpRectF)
+        : shapeAppearanceModel.getBottomLeftCornerSize().getCornerSize(tmpRectF);
   }
 
   /**
@@ -2748,9 +2766,9 @@ public class TextInputLayout extends LinearLayout {
     switch (boxBackgroundMode) {
       case BOX_BACKGROUND_OUTLINE:
         return (int) (collapsingTextHelper.getCollapsedTextHeight() / 2);
-      case BOX_BACKGROUND_FILLED:
       case BOX_BACKGROUND_NONE:
         return (int) collapsingTextHelper.getCollapsedTextHeight();
+      case BOX_BACKGROUND_FILLED:
       default:
         return 0;
     }
@@ -2762,7 +2780,7 @@ public class TextInputLayout extends LinearLayout {
       throw new IllegalStateException();
     }
     Rect bounds = tmpBoundsRect;
-    boolean isRtl = ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL;
+    boolean isRtl = ViewUtils.isLayoutRtl(this);
 
     bounds.bottom = rect.bottom;
     switch (boxBackgroundMode) {
@@ -2864,7 +2882,12 @@ public class TextInputLayout extends LinearLayout {
       return;
     }
 
-    boxBackground.setShapeAppearanceModel(shapeAppearanceModel);
+    if (boxBackground.getShapeAppearanceModel() != shapeAppearanceModel) {
+      boxBackground.setShapeAppearanceModel(shapeAppearanceModel);
+      // The outlined background of the dropdown menu is created in the end icon delegate, so it
+      // needs to be updated based on the new shape appearance model.
+      updateDropdownMenuBackground();
+    }
 
     if (canDrawOutlineStroke()) {
       boxBackground.setStroke(boxStrokeWidthPx, boxStrokeColor);
@@ -2898,6 +2921,17 @@ public class TextInputLayout extends LinearLayout {
 
   private boolean canDrawStroke() {
     return boxStrokeWidthPx > -1 && boxStrokeColor != Color.TRANSPARENT;
+  }
+
+  /*
+   * This method should be called if the outlined ripple background should be updated. For example,
+   * if a new {@link ShapeAppearanceModel} is set on the text field.
+   */
+  private void updateDropdownMenuBackground() {
+    if (endIconMode == END_ICON_DROPDOWN_MENU && boxBackgroundMode == BOX_BACKGROUND_OUTLINE) {
+      ((DropdownMenuEndIconDelegate) endIconDelegates.get(END_ICON_DROPDOWN_MENU))
+          .updateOutlinedRippleEffect((AutoCompleteTextView) editText);
+    }
   }
 
   void updateEditTextBackground() {
@@ -3118,6 +3152,30 @@ public class TextInputLayout extends LinearLayout {
     if (expandedHintEnabled != enabled) {
       expandedHintEnabled = enabled;
       updateLabelState(false);
+    }
+  }
+
+  @Override
+  public void onRtlPropertiesChanged(int layoutDirection) {
+    super.onRtlPropertiesChanged(layoutDirection);
+    boolean isLayoutDirectionRtl = layoutDirection == ViewCompat.LAYOUT_DIRECTION_RTL;
+    if (isLayoutDirectionRtl != areCornerRadiiRtl) {
+      // Switch corner radius values from LTR to RTL or vice versa.
+      boolean shouldCornersBeRtl = isLayoutDirectionRtl && !areCornerRadiiRtl;
+      float boxCornerRadiusTopLeft =
+          shapeAppearanceModel.getTopLeftCornerSize().getCornerSize(tmpRectF);
+      float boxCornerRadiusTopRight =
+          shapeAppearanceModel.getTopRightCornerSize().getCornerSize(tmpRectF);
+      float boxCornerRadiusBottomLeft =
+          shapeAppearanceModel.getBottomLeftCornerSize().getCornerSize(tmpRectF);
+      float boxCornerRadiusBottomRight =
+          shapeAppearanceModel.getBottomRightCornerSize().getCornerSize(tmpRectF);
+      setBoxCornerRadii(
+          shouldCornersBeRtl ? boxCornerRadiusTopLeft : boxCornerRadiusTopRight,
+          shouldCornersBeRtl ? boxCornerRadiusTopRight : boxCornerRadiusTopLeft,
+          shouldCornersBeRtl ? boxCornerRadiusBottomLeft : boxCornerRadiusBottomRight,
+          shouldCornersBeRtl ? boxCornerRadiusBottomRight : boxCornerRadiusBottomLeft
+      );
     }
   }
 
@@ -4534,8 +4592,11 @@ public class TextInputLayout extends LinearLayout {
         info.setError(showingError ? errorText : counterOverflowDesc);
       }
 
-      if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1 && editText != null) {
-        editText.setLabelFor(R.id.textinput_helper_text);
+      if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1) {
+        View helperTextView = layout.indicatorViewController.getHelperTextView();
+        if (helperTextView != null) {
+          info.setLabelFor(helperTextView);
+        }
       }
     }
   }

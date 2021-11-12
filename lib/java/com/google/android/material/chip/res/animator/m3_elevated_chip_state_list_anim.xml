@@ -28,36 +28,33 @@
 <!--        android:valueType="floatType"/>-->
 <!--  </item>-->
 
-  <!-- Selected & hovered state -->
+  <!-- Hovered state -->
   <item
-    android:state_enabled="true"
-    android:state_selected="true"
-    android:state_hovered="true">
+      android:state_enabled="true"
+      android:state_hovered="true">
     <objectAnimator
       android:duration="@integer/m3_chip_anim_duration"
       android:propertyName="translationZ"
-      android:valueTo="@dimen/m3_chip_checked_hovered_translation_z"
+      android:valueTo="@dimen/m3_chip_hovered_translation_z"
       android:valueType="floatType"/>
   </item>
 
-  <!-- Checked & hovered state -->
-  <item
-    android:state_enabled="true"
-    android:state_checked="true"
-    android:state_hovered="true">
-    <objectAnimator
-      android:duration="@integer/m3_chip_anim_duration"
-      android:propertyName="translationZ"
-      android:valueTo="@dimen/m3_chip_checked_hovered_translation_z"
-      android:valueType="floatType"/>
-  </item>
-
-  <!-- Other states -->
-  <item>
+  <!-- Enabled state -->
+  <item android:state_enabled="true">
     <objectAnimator
         android:duration="@integer/m3_chip_anim_duration"
         android:propertyName="translationZ"
         android:valueTo="0"
         android:valueType="floatType"/>
   </item>
+
+  <!-- Disabled state -->
+  <item>
+    <objectAnimator
+        android:duration="0"
+        android:propertyName="translationZ"
+        android:valueTo="@dimen/m3_chip_disabled_translation_z"
+        android:valueType="floatType"/>
+  </item>
+
 </selector>

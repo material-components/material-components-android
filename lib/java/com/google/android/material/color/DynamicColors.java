@@ -17,11 +17,13 @@ package com.google.android.material.color;
 
 import com.google.android.material.R;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.app.Application.ActivityLifecycleCallbacks;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
@@ -30,6 +32,9 @@ import androidx.annotation.ChecksSdkIntAtLeast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Utility for applying dynamic colors to application/activities.
@@ -37,6 +42,12 @@ import androidx.annotation.StyleRes;
 public class DynamicColors {
   private static final int[] DYNAMIC_COLOR_THEME_OVERLAY_ATTRIBUTE =
       new int[] { R.attr.dynamicColorThemeOverlay };
+
+  private static final Set<String> DYNAMIC_COLOR_SUPPORTED_MANUFACTURERS =
+      new HashSet<>(Arrays.asList(
+          "oppo", "realme", "oneplus", "vivo", "xiaomi", "motorola", "itel", "tecno mobile limited",
+          "infinix mobility limited", "hmd global", "sharp", "sony", "tcl", "lenovo", "google",
+          "robolectric"));
 
   private static final int USE_DEFAULT_THEME_OVERLAY = 0;
 
@@ -206,9 +217,11 @@ public class DynamicColors {
   /**
    * Returns {@code true} if dynamic colors are available on the current SDK level.
    */
+  @SuppressLint("DefaultLocale")
   @ChecksSdkIntAtLeast(api = VERSION_CODES.S)
   public static boolean isDynamicColorAvailable() {
-    return VERSION.SDK_INT >= VERSION_CODES.S;
+    return VERSION.SDK_INT >= VERSION_CODES.S
+        && DYNAMIC_COLOR_SUPPORTED_MANUFACTURERS.contains(Build.MANUFACTURER.toLowerCase());
   }
 
   private static int getDefaultThemeOverlay(@NonNull Context context) {
