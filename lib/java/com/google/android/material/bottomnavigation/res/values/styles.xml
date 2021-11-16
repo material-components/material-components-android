@@ -65,6 +65,7 @@
   <!-- Style for Material 3 Bottom Navigation View. -->
   <style name="Widget.Material3.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
     <item name="android:background">?attr/colorSurface</item>
+    <item name="backgroundTint">@null</item>
     <item name="elevation">@dimen/m3_sys_elevation_level2</item>
     <item name="itemActiveIndicatorStyle">@style/Widget.Material3.BottomNavigationView.ActiveIndicator</item>
     <item name="itemTextAppearanceInactive">?attr/textAppearanceTitleSmall</item>
