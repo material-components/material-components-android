@@ -18,7 +18,6 @@ package com.google.android.material.bottomsheet;
 
 import android.app.Dialog;
 import android.os.Bundle;
-
 import androidx.annotation.LayoutRes;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import android.view.View;
