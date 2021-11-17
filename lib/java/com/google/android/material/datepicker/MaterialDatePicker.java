@@ -50,6 +50,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.InsetDialogOnTouchListener;
 import com.google.android.material.internal.CheckableImageButton;
 import com.google.android.material.resources.MaterialAttributes;
@@ -133,7 +134,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
   private CharSequence negativeButtonText;
 
   private TextView headerSelectionText;
-  private CheckableImageButton headerToggleButton;
+  private MaterialButton headerToggleButton;
   @Nullable private MaterialShapeDrawable background;
   private Button confirmButton;
 
@@ -389,7 +390,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
 
   private void initHeaderToggle(Context context) {
     headerToggleButton.setTag(TOGGLE_BUTTON_TAG);
-    headerToggleButton.setImageDrawable(createHeaderToggleDrawable(context));
+    headerToggleButton.setIcon(createHeaderToggleDrawable(context));
     headerToggleButton.setChecked(inputMode != INPUT_MODE_CALENDAR);
 
     // By default, CheckableImageButton adds a delegate that reads checked state.
@@ -403,14 +404,13 @@ public final class MaterialDatePicker<S> extends DialogFragment {
             // Update confirm button in case in progress selection has been reset
             confirmButton.setEnabled(getDateSelector().isSelectionComplete());
 
-            headerToggleButton.toggle();
             updateToggleContentDescription(headerToggleButton);
             startPickerFragment();
           }
         });
   }
 
-  private void updateToggleContentDescription(@NonNull CheckableImageButton toggle) {
+  private void updateToggleContentDescription(@NonNull MaterialButton toggle) {
     String contentDescription =
         headerToggleButton.isChecked()
             ? toggle.getContext().getString(R.string.mtrl_picker_toggle_to_calendar_input_mode)
