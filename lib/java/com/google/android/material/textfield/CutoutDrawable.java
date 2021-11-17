@@ -96,18 +96,25 @@ class CutoutDrawable extends MaterialShapeDrawable {
       super.drawStrokeShape(canvas);
       return;
     }
-    Bitmap bitmap =
-        Bitmap.createBitmap(canvas.getWidth(), canvas.getHeight(), Bitmap.Config.ARGB_8888);
-    Canvas tempCanvas = new Canvas(bitmap);
+    try {
+      Bitmap bitmap =
+          Bitmap.createBitmap(canvas.getWidth(), canvas.getHeight(), Bitmap.Config.ARGB_8888);
+      Canvas tempCanvas = new Canvas(bitmap);
 
-    // Draw the stroke on the temporary canvas
-    super.drawStrokeShape(tempCanvas);
+      // Draw the stroke on the temporary canvas
+      super.drawStrokeShape(tempCanvas);
 
-    // Draw mask for the cutout.
-    tempCanvas.drawRect(cutoutBounds, cutoutPaint);
+      // Draw mask for the cutout.
+      tempCanvas.drawRect(cutoutBounds, cutoutPaint);
 
-    // Draw the temporary canvas back to the original canvas
-    canvas.drawBitmap(bitmap, 0, 0, null);
+      // Draw the temporary canvas back to the original canvas
+      canvas.drawBitmap(bitmap, 0, 0, null);
+    } catch (RuntimeException e) {
+      // Bitmap is too big to draw, directly paint cutout on the canvas.
+      // TODO(b/205774869): find a better way to only draw part of the stroke to avoid the issue.
+      super.drawStrokeShape(canvas);
+      canvas.drawRect(cutoutBounds, cutoutPaint);
+    }
   }
 
   private void preDraw(@NonNull Canvas canvas) {
