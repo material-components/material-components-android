@@ -35,10 +35,6 @@
     <item name="android:windowAnimationStyle">@style/Animation.MaterialComponents.BottomSheetDialog</item>
     <item name="bottomSheetStyle">@style/Widget.Material3.BottomSheet.Modal</item>
     <item name="enableEdgeToEdge">true</item>
-    <item name="paddingBottomSystemWindowInsets">true</item>
-    <item name="paddingLeftSystemWindowInsets">true</item>
-    <item name="paddingRightSystemWindowInsets">true</item>
-    <item name="paddingTopSystemWindowInsets">true</item>
   </style>
 
   <style name="Base.Theme.Material3.Light.BottomSheetDialog" parent="Base.V14.Theme.Material3.Light.BottomSheetDialog"/>
