@@ -20,8 +20,7 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   android:id="@+id/list_view_container"
   android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  android:layout_marginBottom="12dp">
+  android:layout_height="match_parent">
 
   <TextView
     android:id="@+id/inbox_title"

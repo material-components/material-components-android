@@ -76,6 +76,8 @@
     <item name="itemPaddingTop">@dimen/m3_navigation_rail_item_padding_top</item>
     <item name="itemPaddingBottom">@dimen/m3_navigation_rail_item_padding_bottom</item>
     <item name="itemMinHeight">@dimen/m3_navigation_rail_item_min_height</item>
+    <item name="itemTextAppearanceInactive">?attr/textAppearanceTitleSmall</item>
+    <item name="itemTextAppearanceActive">?attr/textAppearanceTitleSmall</item>
   </style>
 
   <style name="Widget.Material3.NavigationRailView.ActiveIndicator" parent="">
