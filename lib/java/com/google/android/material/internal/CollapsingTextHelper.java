@@ -599,21 +599,20 @@ public final class CollapsingTextHelper {
         currentDrawX = expandedDrawX;
         currentDrawY = expandedDrawY;
 
-        setInterpolatedTextSize(expandedTextSize);
+        setInterpolatedTextSize(/* fraction= */ 0);
       } else {
         textBlendFraction = 1F;
         currentDrawX = collapsedDrawX;
         currentDrawY = collapsedDrawY - max(0, currentOffsetY);
 
-        setInterpolatedTextSize(collapsedTextSize);
+        setInterpolatedTextSize(/* fraction= */ 1);
       }
     } else {
       textBlendFraction = fraction;
       currentDrawX = lerp(expandedDrawX, collapsedDrawX, fraction, positionInterpolator);
       currentDrawY = lerp(expandedDrawY, collapsedDrawY, fraction, positionInterpolator);
 
-      setInterpolatedTextSize(
-          lerp(expandedTextSize, collapsedTextSize, fraction, textSizeInterpolator));
+      setInterpolatedTextSize(fraction);
     }
 
     setCollapsedTextBlend(
@@ -703,10 +702,8 @@ public final class CollapsingTextHelper {
   }
 
   private void calculateBaseOffsets(boolean forceRecalculate) {
-    final float currentTextSize = this.currentTextSize;
-
     // We then calculate the collapsed text size, using the same logic
-    calculateUsingTextSize(collapsedTextSize, forceRecalculate);
+    calculateUsingTextSize(/* fraction= */ 1, forceRecalculate);
     if (textToDraw != null && textLayout != null) {
       textToDrawCollapsed =
           TextUtils.ellipsize(textToDraw, textPaint, textLayout.getWidth(), TruncateAt.END);
@@ -748,7 +745,7 @@ public final class CollapsingTextHelper {
         break;
     }
 
-    calculateUsingTextSize(expandedTextSize, forceRecalculate);
+    calculateUsingTextSize(/* fraction= */ 0, forceRecalculate);
     float expandedTextHeight = textLayout != null ? textLayout.getHeight() : 0;
     float expandedTextWidth = 0;
     if (textLayout != null && maxLines > 1) {
@@ -792,7 +789,7 @@ public final class CollapsingTextHelper {
     // The bounds have changed so we need to clear the texture
     clearTexture();
     // Now reset the text size back to the original
-    setInterpolatedTextSize(currentTextSize);
+    setInterpolatedTextSize(expandedFraction);
   }
 
   private float measureTextWidth(TextPaint textPaint, CharSequence textToDraw) {
@@ -923,8 +920,8 @@ public final class CollapsingTextHelper {
         .isRtl(text, 0, text.length());
   }
 
-  private void setInterpolatedTextSize(float textSize) {
-    calculateUsingTextSize(textSize);
+  private void setInterpolatedTextSize(float fraction) {
+    calculateUsingTextSize(fraction);
 
     // Use our texture if the scale isn't 1.0
     useTexture = USE_SCALING_TEXTURE && scale != 1f;
@@ -937,12 +934,12 @@ public final class CollapsingTextHelper {
     ViewCompat.postInvalidateOnAnimation(view);
   }
 
-  private void calculateUsingTextSize(final float textSize) {
-    calculateUsingTextSize(textSize, /* forceRecalculate= */ false);
+  private void calculateUsingTextSize(final float fraction) {
+    calculateUsingTextSize(fraction, /* forceRecalculate= */ false);
   }
 
   @SuppressWarnings("ReferenceEquality") // Matches the Typeface comparison in TextView
-  private void calculateUsingTextSize(final float textSize, boolean forceRecalculate) {
+  private void calculateUsingTextSize(final float fraction, boolean forceRecalculate) {
     if (text == null) {
       return;
     }
@@ -955,7 +952,7 @@ public final class CollapsingTextHelper {
     float newLetterSpacing;
     boolean updateDrawText = false;
 
-    if (isClose(textSize, collapsedTextSize)) {
+    if (isClose(fraction, /* targetValue= */ 1)) {
       newTextSize = collapsedTextSize;
       newLetterSpacing = collapsedLetterSpacing;
       scale = 1f;
@@ -971,12 +968,14 @@ public final class CollapsingTextHelper {
         currentTypeface = expandedTypeface;
         updateDrawText = true;
       }
-      if (isClose(textSize, expandedTextSize)) {
+      if (isClose(fraction, /* targetValue= */ 0)) {
         // If we're close to the expanded text size, snap to it and use a scale of 1
         scale = 1f;
       } else {
         // Else, we'll scale down from the expanded text size
-        scale = textSize / expandedTextSize;
+        scale =
+            lerp(expandedTextSize, collapsedTextSize, fraction, textSizeInterpolator)
+                / expandedTextSize;
       }
 
       float textSizeRatio = collapsedTextSize / expandedTextSize;
@@ -1185,10 +1184,10 @@ public final class CollapsingTextHelper {
 
   /**
    * Returns true if {@code value} is 'close' to it's closest decimal value. Close is currently
-   * defined as it's difference being < 0.001.
+   * defined as it's difference being < 0.00001.
    */
   private static boolean isClose(float value, float targetValue) {
-    return Math.abs(value - targetValue) < 0.001f;
+    return Math.abs(value - targetValue) < 0.00001f;
   }
 
   public ColorStateList getExpandedTextColor() {
