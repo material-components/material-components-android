@@ -712,8 +712,7 @@ public final class CollapsingTextHelper {
           TextUtils.ellipsize(textToDraw, textPaint, textLayout.getWidth(), TruncateAt.END);
     }
     if (textToDrawCollapsed != null) {
-      getTextPaintCollapsed(tmpPaint);
-      collapsedTextWidth = measureTextWidth(tmpPaint, textToDrawCollapsed);
+      collapsedTextWidth = measureTextWidth(textPaint, textToDrawCollapsed);
     } else {
       collapsedTextWidth = 0;
     }
@@ -755,8 +754,7 @@ public final class CollapsingTextHelper {
     if (textLayout != null && maxLines > 1) {
       expandedTextWidth = textLayout.getWidth();
     } else if (textToDraw != null) {
-      getTextPaintExpanded(tmpPaint);
-      expandedTextWidth = measureTextWidth(tmpPaint, textToDraw);
+      expandedTextWidth = measureTextWidth(textPaint, textToDraw);
     }
     expandedLineCount = textLayout != null ? textLayout.getLineCount() : 0;
 
