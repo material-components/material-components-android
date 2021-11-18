@@ -131,9 +131,10 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
           // If dropdown is non editable, layout click is what triggers showing/hiding the popup
           // list. Otherwise, arrow icon alone is what triggers it.
           if (event.getEventType() == TYPE_VIEW_CLICKED
-              && accessibilityManager.isTouchExplorationEnabled()
+              && accessibilityManager.isEnabled()
               && !isEditable(textInputLayout.getEditText())) {
             showHideDropdown(editText);
+            updateDropdownPopupDirty();
           }
         }
       };
@@ -152,7 +153,8 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
           autoCompleteTextView.addTextChangedListener(exposedDropdownEndIconTextWatcher);
           textInputLayout.setEndIconCheckable(true);
           textInputLayout.setErrorIconDrawable(null);
-          if (!isEditable(autoCompleteTextView)) {
+          if (!isEditable(autoCompleteTextView)
+              && accessibilityManager.isTouchExplorationEnabled()) {
             ViewCompat.setImportantForAccessibility(endIconView, IMPORTANT_FOR_ACCESSIBILITY_NO);
           }
           textInputLayout.setTextInputAccessibilityDelegate(accessibilityDelegate);
@@ -417,6 +419,7 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
                 dropdownPopupDirty = false;
               }
               showHideDropdown(editText);
+              updateDropdownPopupDirty();
             }
             return false;
           }
@@ -427,8 +430,7 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
           new OnDismissListener() {
             @Override
             public void onDismiss() {
-              dropdownPopupDirty = true;
-              dropdownPopupActivatedAt = System.currentTimeMillis();
+              updateDropdownPopupDirty();
               setEndIconChecked(false);
             }
           });
@@ -465,6 +467,11 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
     }
 
     return (AutoCompleteTextView) editText;
+  }
+
+  private void updateDropdownPopupDirty() {
+    dropdownPopupDirty = true;
+    dropdownPopupActivatedAt = System.currentTimeMillis();
   }
 
   private static boolean isEditable(@NonNull EditText editText) {
