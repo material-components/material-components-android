@@ -134,7 +134,8 @@
     <item name="android:textAppearance">?attr/textAppearanceLabelLarge</item>
     <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Material3.Button</item>
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Button</item>
-
+    <item name="android:stateListAnimator" tools:ignore="NewApi">@animator/m3_btn_state_list_anim</item>
+    <item name="elevation">@dimen/m3_btn_elevation</item>
     <item name="android:textColor">@color/m3_button_foreground_color_selector</item>
     <item name="iconTint">@color/m3_button_foreground_color_selector</item>
     <item name="iconSize">18dp</item>
