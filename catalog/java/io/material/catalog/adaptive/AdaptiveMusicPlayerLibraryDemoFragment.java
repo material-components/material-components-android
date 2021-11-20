@@ -28,10 +28,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.window.java.layout.WindowInfoRepositoryCallbackAdapter;
+import androidx.window.java.layout.WindowInfoTrackerCallbackAdapter;
 import androidx.window.layout.DisplayFeature;
 import androidx.window.layout.FoldingFeature;
-import androidx.window.layout.WindowInfoRepository;
+import androidx.window.layout.WindowInfoTracker;
 import androidx.window.layout.WindowLayoutInfo;
 import com.google.android.material.transition.Hold;
 import com.google.android.material.transition.MaterialContainerTransform;
@@ -44,7 +44,7 @@ import java.util.concurrent.Executor;
 /** An adaptive Fragment that hosts a toolbar and a child fragment with a list of music data. */
 public class AdaptiveMusicPlayerLibraryDemoFragment extends MusicPlayerLibraryDemoFragment {
 
-  @Nullable private WindowInfoRepositoryCallbackAdapter windowInfoRepo;
+  @Nullable private WindowInfoTrackerCallbackAdapter windowInfoTracker;
   private final Consumer<WindowLayoutInfo> stateContainer = new StateContainer();
   private final Handler handler = new Handler(Looper.getMainLooper());
   private final Executor executor = command -> handler.post(() -> handler.post(command));
@@ -56,25 +56,25 @@ public class AdaptiveMusicPlayerLibraryDemoFragment extends MusicPlayerLibraryDe
       @Nullable ViewGroup viewGroup,
       @Nullable Bundle bundle) {
     View view = layoutInflater.inflate(getDemoLayoutResId(), viewGroup, false);
-    windowInfoRepo =
-        new WindowInfoRepositoryCallbackAdapter(
-            WindowInfoRepository.getOrCreate(requireActivity()));
+    windowInfoTracker =
+        new WindowInfoTrackerCallbackAdapter(
+            WindowInfoTracker.getOrCreate(requireActivity()));
     return view;
   }
 
   @Override
   public void onStart() {
     super.onStart();
-    if (windowInfoRepo != null) {
-      windowInfoRepo.addWindowLayoutInfoListener(executor, stateContainer);
+    if (windowInfoTracker != null) {
+      windowInfoTracker.addWindowLayoutInfoListener(this.getActivity(), executor, stateContainer);
     }
   }
 
   @Override
   public void onStop() {
     super.onStop();
-    if (windowInfoRepo != null) {
-      windowInfoRepo.removeWindowLayoutInfoListener(stateContainer);
+    if (windowInfoTracker != null) {
+      windowInfoTracker.removeWindowLayoutInfoListener(stateContainer);
     }
   }
 
