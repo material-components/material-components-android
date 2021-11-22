@@ -124,6 +124,7 @@
 
   <!-- M3 filled button style. -->
   <style name="Widget.Material3.Button" parent="Widget.MaterialComponents.Button">
+    <item name="enforceTextAppearance">false</item>
     <item name="android:maxWidth">@dimen/m3_btn_max_width</item>
     <item name="android:paddingLeft">@dimen/m3_btn_padding_left</item>
     <item name="android:paddingRight">@dimen/m3_btn_padding_right</item>
@@ -174,6 +175,7 @@
 
   <!-- M3 text button style. -->
   <style name="Widget.Material3.Button.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
+    <item name="enforceTextAppearance">false</item>
     <item name="android:maxWidth">@dimen/m3_btn_max_width</item>
     <item name="android:paddingLeft">@dimen/m3_btn_text_btn_padding_left</item>
     <item name="android:paddingRight">@dimen/m3_btn_text_btn_padding_right</item>
