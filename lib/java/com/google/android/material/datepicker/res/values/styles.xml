@@ -234,7 +234,6 @@
 
   <style name="Widget.Material3.MaterialCalendar.HeaderCancelButton" parent="Widget.Material3.Button.TextButton">
     <item name="iconTint">?attr/colorOnSurfaceVariant</item>
-    <item name="rippleColor">@color/m3_button_ripple_color</item>
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.MaterialCalendar.HeaderCancelButton</item>
   </style>
 
@@ -306,7 +305,6 @@
     <item name="itemFillColor">?attr/colorPrimary</item>
     <item name="itemTextColor">?attr/colorOnPrimary</item>
     <item name="itemStrokeWidth">0dp</item>
-    <item name="itemStrokeColor">?attr/colorPrimary</item>
   </style>
 
   <style name="Widget.Material3.MaterialCalendar.Year.Today">
@@ -327,7 +325,7 @@
   </style>
 
   <style name="ThemeOverlay.Material3.MaterialCalendar.HeaderCancelButton" parent="ThemeOverlay.Material3.Button.TextButton">
-     <item name="colorOnContainer">?attr/colorOnSurfaceVariant</item>
+    <item name="colorOnContainer">?attr/colorOnSurfaceVariant</item>
   </style>
 
 </resources>

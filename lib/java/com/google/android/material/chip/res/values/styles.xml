@@ -149,10 +149,10 @@
   <!-- M3 Chips -->
 
   <style name="Base.Widget.Material3.Chip" parent="Base.Widget.MaterialComponents.Chip">
+    <item name="enforceTextAppearance">false</item>
     <item name="android:textAppearance">?attr/textAppearanceLabelLarge</item>
     <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Material3.Chip</item>
     <item name="android:textColor">@color/m3_chip_text_color</item>
-    <item name="chipIconTint">@color/m3_chip_text_color</item>
     <item name="closeIconTint">@color/m3_chip_text_color</item>
     <item name="chipStrokeColor">@color/m3_chip_stroke_color</item>
     <item name="chipSurfaceColor">?attr/colorSurface</item>
@@ -160,9 +160,12 @@
     <item name="chipStrokeWidth">1dp</item>
     <item name="rippleColor">@color/m3_chip_ripple_color</item>
     <item name="checkedIcon">@drawable/ic_m3_chip_checked_circle</item>
+    <item name="closeIcon">@drawable/ic_m3_chip_close</item>
+    <item name="chipIconSize">@dimen/m3_chip_icon_size</item>
     <item name="android:stateListAnimator" tools:ignore="NewApi">
       @animator/m3_chip_state_list_anim
     </item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Chip</item>
   </style>
 
   <!-- Style for Input Chip: for user-entered information.
@@ -209,7 +212,7 @@
   <!-- Style for input chips with system icons. For input chips with avatar
        style icons, use Widget.Material3.Chip.Input, instead. -->
   <style name="Widget.Material3.Chip.Input.Icon" parent="Widget.Material3.Chip.Input">
-    <item name="chipIconSize">18dp</item>
+    <item name="chipIconSize">@dimen/m3_chip_icon_size</item>
     <item name="iconStartPadding">4dp</item>
   </style>
 
@@ -243,8 +246,6 @@
     <item name="chipIconVisible">false</item>
     <item name="checkedIconVisible">false</item>
     <item name="closeIconVisible">false</item>
-
-    <item name="enforceTextAppearance">false</item>
 
     <item name="chipMinHeight">32dp</item>
 
@@ -291,9 +292,7 @@
     <item name="checkedIconVisible">false</item>
     <item name="closeIconVisible">false</item>
 
-    <item name="enforceTextAppearance">false</item>
     <item name="android:textColor">@color/m3_chip_assist_text_color</item>
-    <item name="chipIconTint">@color/m3_assist_chip_icon_tint_color</item>
 
     <item name="chipMinHeight">32dp</item>
 
@@ -305,6 +304,8 @@
     <item name="closeIconStartPadding">0dp</item>
     <item name="closeIconEndPadding">0dp</item>
     <item name="chipEndPadding">8dp</item>
+
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Chip.Assist</item>
   </style>
 
   <!-- Style for Assist Chip to be used against a background that needs
@@ -325,9 +326,7 @@
     <item name="chipIconVisible">false</item>
     <item name="closeIconVisible">false</item>
 
-    <item name="chipIconSize">18dp</item>
     <item name="checkedIcon">@drawable/ic_m3_chip_check</item>
-    <item name="enforceTextAppearance">false</item>
 
     <item name="chipMinHeight">32dp</item>
 
@@ -367,4 +366,13 @@
     <item name="cornerSize">8dp</item>
   </style>
 
+  <style name="ThemeOverlay.Material3.Chip" parent="">
+    <!-- To tint vector drawables used as leading icons -->
+    <item name="colorControlNormal">@color/m3_chip_text_color</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.Chip.Assist" parent="">
+    <!-- To tint vector drawables used as leading icons -->
+    <item name="colorControlNormal">@color/m3_assist_chip_icon_tint_color</item>
+  </style>
 </resources>

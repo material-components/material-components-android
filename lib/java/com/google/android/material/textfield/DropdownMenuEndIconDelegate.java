@@ -131,7 +131,7 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
           // If dropdown is non editable, layout click is what triggers showing/hiding the popup
           // list. Otherwise, arrow icon alone is what triggers it.
           if (event.getEventType() == TYPE_VIEW_CLICKED
-              && accessibilityManager.isEnabled()
+              && accessibilityManager.isTouchExplorationEnabled()
               && !isEditable(textInputLayout.getEditText())) {
             showHideDropdown(editText);
           }

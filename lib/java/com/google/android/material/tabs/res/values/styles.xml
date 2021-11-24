@@ -70,6 +70,7 @@
 
   <!-- Styles for M3 Tabs -->
   <style name="Base.Widget.Material3.TabLayout" parent="Widget.MaterialComponents.TabLayout">
+    <item name="enforceTextAppearance">false</item>
     <item name="tabIconTint">@color/m3_tabs_icon_color</item>
     <item name="tabTextAppearance">?attr/textAppearanceLabelLarge</item>
     <item name="tabTextColor">@color/m3_tabs_icon_color</item>
