@@ -19,13 +19,13 @@ package io.material.catalog.tableofcontents;
 import io.material.catalog.R;
 
 import androidx.fragment.app.FragmentActivity;
-import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.core.view.ViewCompat;
 import io.material.catalog.feature.FeatureDemo;
 import io.material.catalog.feature.FeatureDemoUtils;
 

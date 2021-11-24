@@ -26,13 +26,13 @@ import static org.junit.Assert.assertTrue;
 
 import android.content.Context;
 import android.graphics.RectF;
+import android.view.View;
+import android.widget.Checkable;
+import android.widget.LinearLayout;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionItemInfoCompat;
-import android.view.View;
-import android.widget.Checkable;
-import android.widget.LinearLayout;
 import androidx.test.core.app.ApplicationProvider;
 import com.google.android.material.button.MaterialButtonToggleGroup.OnButtonCheckedListener;
 import com.google.android.material.shape.ShapeAppearanceModel;

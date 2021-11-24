@@ -22,12 +22,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import android.content.Context;
+import androidx.appcompat.app.AppCompatActivity;
+import android.view.View;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionItemInfoCompat;
-import androidx.appcompat.app.AppCompatActivity;
-import android.view.View;
 import androidx.test.core.app.ApplicationProvider;
 import com.google.android.material.chip.ChipGroup.OnCheckedChangeListener;
 import org.junit.Before;

@@ -25,8 +25,6 @@ import static java.util.Calendar.PM;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import androidx.core.view.AccessibilityDelegateCompat;
-import androidx.core.view.ViewCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
@@ -40,6 +38,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.core.view.AccessibilityDelegateCompat;
+import androidx.core.view.ViewCompat;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.button.MaterialButtonToggleGroup.OnButtonCheckedListener;
 import com.google.android.material.chip.Chip;

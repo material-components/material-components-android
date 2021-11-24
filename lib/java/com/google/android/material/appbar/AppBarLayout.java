@@ -18,10 +18,10 @@ package com.google.android.material.appbar;
 
 import com.google.android.material.R;
 
-import static androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_SCROLL_BACKWARD;
-import static androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_SCROLL_FORWARD;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static androidx.core.math.MathUtils.clamp;
+import static androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_SCROLL_BACKWARD;
+import static androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_SCROLL_FORWARD;
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 import static java.lang.Math.abs;
 
@@ -40,12 +40,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.util.ObjectsCompat;
-import androidx.core.view.NestedScrollingChild;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.ViewCompat.NestedScrollType;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
-import androidx.core.view.accessibility.AccessibilityViewCommand;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.util.AttributeSet;
 import android.view.View;
@@ -66,6 +60,12 @@ import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.NestedScrollingChild;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.ViewCompat.NestedScrollType;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
+import androidx.core.view.accessibility.AccessibilityViewCommand;
 import androidx.customview.view.AbsSavedState;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.internal.ThemeEnforcement;

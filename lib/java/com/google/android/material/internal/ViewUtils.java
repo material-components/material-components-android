@@ -27,8 +27,6 @@ import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
@@ -43,6 +41,8 @@ import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 /**
  * Utils class for custom views.
@@ -97,8 +97,8 @@ public class ViewUtils {
   }
 
   /**
-   * Wrapper around {@link androidx.core.view.OnApplyWindowInsetsListener} which also passes
-   * the initial padding set on the view. Used with {@link #doOnApplyWindowInsets(View,
+   * Wrapper around {@link androidx.core.view.OnApplyWindowInsetsListener} which also passes the
+   * initial padding set on the view. Used with {@link #doOnApplyWindowInsets(View,
    * OnApplyWindowInsetsListener)}.
    */
   public interface OnApplyWindowInsetsListener {
@@ -142,8 +142,8 @@ public class ViewUtils {
   }
 
   /**
-   * Wrapper around {@link androidx.core.view.OnApplyWindowInsetsListener} that can
-   * automatically apply inset padding based on view attributes.
+   * Wrapper around {@link androidx.core.view.OnApplyWindowInsetsListener} that can automatically
+   * apply inset padding based on view attributes.
    */
   public static void doOnApplyWindowInsets(
       @NonNull View view, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
@@ -151,8 +151,8 @@ public class ViewUtils {
   }
 
   /**
-   * Wrapper around {@link androidx.core.view.OnApplyWindowInsetsListener} that can
-   * automatically apply inset padding based on view attributes.
+   * Wrapper around {@link androidx.core.view.OnApplyWindowInsetsListener} that can automatically
+   * apply inset padding based on view attributes.
    */
   public static void doOnApplyWindowInsets(
       @NonNull View view,
@@ -209,8 +209,8 @@ public class ViewUtils {
   }
 
   /**
-   * Wrapper around {@link androidx.core.view.OnApplyWindowInsetsListener} that records the
-   * initial padding of the view and requests that insets are applied when attached.
+   * Wrapper around {@link androidx.core.view.OnApplyWindowInsetsListener} that records the initial
+   * padding of the view and requests that insets are applied when attached.
    */
   public static void doOnApplyWindowInsets(
       @NonNull View view, @NonNull final OnApplyWindowInsetsListener listener) {

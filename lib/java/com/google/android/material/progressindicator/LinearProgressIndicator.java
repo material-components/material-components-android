@@ -20,7 +20,6 @@ import com.google.android.material.R;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import androidx.annotation.AttrRes;
 import androidx.annotation.IntDef;
@@ -28,6 +27,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
+import androidx.core.view.ViewCompat;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 

@@ -22,7 +22,6 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
 import android.content.res.Resources;
-import androidx.core.view.ViewCompat;
 import androidx.appcompat.view.menu.MenuBuilder;
 import android.view.Gravity;
 import android.view.View;
@@ -30,6 +29,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
+import androidx.core.view.ViewCompat;
 import com.google.android.material.navigation.NavigationBarItemView;
 import com.google.android.material.navigation.NavigationBarMenuView;
 

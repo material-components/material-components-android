@@ -22,14 +22,14 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
 import android.graphics.RectF;
-import androidx.core.view.AccessibilityDelegateCompat;
-import androidx.core.view.ViewCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.text.TextUtils.TruncateAt;
 import android.view.View;
 import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
+import androidx.core.view.AccessibilityDelegateCompat;
+import androidx.core.view.ViewCompat;
 import androidx.test.core.app.ApplicationProvider;
 import org.junit.Before;
 import org.junit.Rule;

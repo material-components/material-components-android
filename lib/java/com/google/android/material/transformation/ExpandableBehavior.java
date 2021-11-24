@@ -16,7 +16,6 @@
 package com.google.android.material.transformation;
 
 import android.content.Context;
-import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +26,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior;
+import androidx.core.view.ViewCompat;
 import com.google.android.material.expandable.ExpandableWidget;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

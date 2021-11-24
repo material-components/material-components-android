@@ -18,8 +18,8 @@ package com.google.android.material.textfield;
 
 import com.google.android.material.R;
 
-import static androidx.core.view.ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO;
 import static android.view.accessibility.AccessibilityEvent.TYPE_VIEW_CLICKED;
+import static androidx.core.view.ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -35,8 +35,6 @@ import android.graphics.drawable.RippleDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
@@ -53,6 +51,8 @@ import android.widget.Spinner;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.TextWatcherAdapter;
