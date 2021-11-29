@@ -33,11 +33,11 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.constraintlayout.widget.ReactiveGuide;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.window.java.layout.WindowInfoRepositoryCallbackAdapter;
+import androidx.window.java.layout.WindowInfoTrackerCallbackAdapter;
 import androidx.window.layout.DisplayFeature;
 import androidx.window.layout.FoldingFeature;
 import androidx.window.layout.FoldingFeature.Orientation;
-import androidx.window.layout.WindowInfoRepository;
+import androidx.window.layout.WindowInfoTracker;
 import androidx.window.layout.WindowLayoutInfo;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -61,7 +61,7 @@ public class AdaptiveListViewDemoActivity extends DemoActivity {
   private NavigationView navDrawer;
   private ExtendedFloatingActionButton navFab;
 
-  @Nullable private WindowInfoRepositoryCallbackAdapter windowInfoRepo;
+  @Nullable private WindowInfoTrackerCallbackAdapter windowInfoTracker;
   private final Consumer<WindowLayoutInfo> stateContainer = new StateContainer();
   private final Handler handler = new Handler(Looper.getMainLooper());
   private final Executor executor = command -> handler.post(() -> handler.post(command));
@@ -79,8 +79,8 @@ public class AdaptiveListViewDemoActivity extends DemoActivity {
       @Nullable ViewGroup viewGroup,
       @Nullable Bundle bundle) {
     View view = layoutInflater.inflate(R.layout.cat_adaptive_list_view_activity, viewGroup, false);
-    windowInfoRepo =
-        new WindowInfoRepositoryCallbackAdapter(WindowInfoRepository.getOrCreate(this));
+    windowInfoTracker =
+        new WindowInfoTrackerCallbackAdapter(WindowInfoTracker.getOrCreate(this));
     drawerLayout = view.findViewById(R.id.drawer_layout);
     constraintLayout = view.findViewById(R.id.list_view_activity_constraint_layout);
     modalNavDrawer = view.findViewById(R.id.modal_nav_drawer);
@@ -141,16 +141,16 @@ public class AdaptiveListViewDemoActivity extends DemoActivity {
   @Override
   public void onStart() {
     super.onStart();
-    if (windowInfoRepo != null) {
-      windowInfoRepo.addWindowLayoutInfoListener(executor, stateContainer);
+    if (windowInfoTracker != null) {
+      windowInfoTracker.addWindowLayoutInfoListener(this, executor, stateContainer);
     }
   }
 
   @Override
   public void onStop() {
     super.onStop();
-    if (windowInfoRepo != null) {
-      windowInfoRepo.removeWindowLayoutInfoListener(stateContainer);
+    if (windowInfoTracker != null) {
+      windowInfoTracker.removeWindowLayoutInfoListener(stateContainer);
     }
   }
 

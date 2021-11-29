@@ -124,7 +124,10 @@
 
   <!-- M3 filled button style. -->
   <style name="Widget.Material3.Button" parent="Widget.MaterialComponents.Button">
+    <item name="enforceTextAppearance">false</item>
     <item name="android:maxWidth">@dimen/m3_btn_max_width</item>
+    <item name="android:paddingLeft">@dimen/m3_btn_padding_left</item>
+    <item name="android:paddingRight">@dimen/m3_btn_padding_right</item>
     <item name="android:paddingTop">@dimen/m3_btn_padding_top</item>
     <item name="android:paddingBottom">@dimen/m3_btn_padding_bottom</item>
     <item name="android:insetTop">@dimen/m3_btn_inset</item>
@@ -132,7 +135,8 @@
     <item name="android:textAppearance">?attr/textAppearanceLabelLarge</item>
     <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Material3.Button</item>
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Button</item>
-
+    <item name="android:stateListAnimator" tools:ignore="NewApi">@animator/m3_btn_state_list_anim</item>
+    <item name="elevation">@dimen/m3_btn_elevation</item>
     <item name="android:textColor">@color/m3_button_foreground_color_selector</item>
     <item name="iconTint">@color/m3_button_foreground_color_selector</item>
     <item name="iconSize">18dp</item>
@@ -171,7 +175,10 @@
 
   <!-- M3 text button style. -->
   <style name="Widget.Material3.Button.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
+    <item name="enforceTextAppearance">false</item>
     <item name="android:maxWidth">@dimen/m3_btn_max_width</item>
+    <item name="android:paddingLeft">@dimen/m3_btn_text_btn_padding_left</item>
+    <item name="android:paddingRight">@dimen/m3_btn_text_btn_padding_right</item>
     <item name="android:paddingTop">@dimen/m3_btn_padding_top</item>
     <item name="android:paddingBottom">@dimen/m3_btn_padding_bottom</item>
     <item name="android:insetTop">@dimen/m3_btn_inset</item>
@@ -187,7 +194,8 @@
 
   <!-- M3 text button with a start-gravity icon style. -->
   <style name="Widget.Material3.Button.TextButton.Icon">
-    <!-- Text buttons have the same padding even when an icon is present -->
+    <item name="android:paddingLeft">@dimen/m3_btn_text_btn_icon_padding_left</item>
+    <item name="android:paddingRight">@dimen/m3_btn_text_btn_icon_padding_right</item>
   </style>
 
   <!-- M3 button style to show in the Dialog component.  -->
@@ -207,7 +215,8 @@
 
   <!-- M3 button with a start-gravity icon style to show in the Dialog component. -->
   <style name="Widget.Material3.Button.TextButton.Dialog.Icon">
-    <!-- Dialog text buttons have the same padding even when an icon is present -->
+    <item name="android:paddingLeft">@dimen/m3_btn_text_btn_icon_padding_left</item>
+    <item name="android:paddingRight">@dimen/m3_btn_text_btn_icon_padding_right</item>
   </style>
 
   <!-- M3 button style to show in the Snackbar component. -->

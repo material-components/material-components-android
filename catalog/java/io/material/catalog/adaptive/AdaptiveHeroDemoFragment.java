@@ -20,7 +20,6 @@ import io.material.catalog.R;
 
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
-import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -30,6 +29,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.core.view.ViewCompat;
 
 /** A Fragment that hosts a hero demo. */
 public class AdaptiveHeroDemoFragment extends Fragment {

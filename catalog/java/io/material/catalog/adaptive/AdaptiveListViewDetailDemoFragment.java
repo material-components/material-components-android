@@ -20,13 +20,13 @@ import io.material.catalog.R;
 
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
-import androidx.core.view.ViewCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
 import io.material.catalog.adaptive.AdaptiveListViewDemoFragment.EmailData;
 import io.material.catalog.adaptive.AdaptiveListViewDemoFragment.EmailData.Email;
 

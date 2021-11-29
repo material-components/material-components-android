@@ -22,10 +22,10 @@ import static com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROL
 import static org.junit.Assert.assertEquals;
 
 import android.graphics.Rect;
-import androidx.core.view.ViewCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.ViewCompat;
 import androidx.test.InstrumentationRegistry;
 import androidx.test.filters.MediumTest;
 import androidx.test.runner.AndroidJUnit4;

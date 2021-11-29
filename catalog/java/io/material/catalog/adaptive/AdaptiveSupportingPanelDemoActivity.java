@@ -29,11 +29,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.window.java.layout.WindowInfoRepositoryCallbackAdapter;
+import androidx.window.java.layout.WindowInfoTrackerCallbackAdapter;
 import androidx.window.layout.DisplayFeature;
 import androidx.window.layout.FoldingFeature;
 import androidx.window.layout.FoldingFeature.Orientation;
-import androidx.window.layout.WindowInfoRepository;
+import androidx.window.layout.WindowInfoTracker;
 import androidx.window.layout.WindowLayoutInfo;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -54,7 +54,7 @@ public class AdaptiveSupportingPanelDemoActivity extends DemoActivity {
   private ExtendedFloatingActionButton navFab;
 
   private AdaptiveSupportingPanelDemoFragment demoFragment;
-  @Nullable private WindowInfoRepositoryCallbackAdapter windowInfoRepo;
+  @Nullable private WindowInfoTrackerCallbackAdapter windowInfoTracker;
   private final Consumer<WindowLayoutInfo> stateContainer = new StateContainer();
   private final Handler handler = new Handler(Looper.getMainLooper());
   private final Executor executor = command -> handler.post(() -> handler.post(command));
@@ -68,8 +68,8 @@ public class AdaptiveSupportingPanelDemoActivity extends DemoActivity {
       @Nullable Bundle bundle) {
     View view =
         layoutInflater.inflate(R.layout.cat_adaptive_supporting_panel_activity, viewGroup, false);
-    windowInfoRepo =
-        new WindowInfoRepositoryCallbackAdapter(WindowInfoRepository.getOrCreate(this));
+    windowInfoTracker =
+        new WindowInfoTrackerCallbackAdapter(WindowInfoTracker.getOrCreate(this));
     drawerLayout = view.findViewById(R.id.drawer_layout);
     modalNavDrawer = view.findViewById(R.id.modal_nav_drawer);
     bottomNav = view.findViewById(R.id.bottom_nav);
@@ -106,16 +106,16 @@ public class AdaptiveSupportingPanelDemoActivity extends DemoActivity {
   @Override
   public void onStart() {
     super.onStart();
-    if (windowInfoRepo != null) {
-      windowInfoRepo.addWindowLayoutInfoListener(executor, stateContainer);
+    if (windowInfoTracker != null) {
+      windowInfoTracker.addWindowLayoutInfoListener(this, executor, stateContainer);
     }
   }
 
   @Override
   public void onStop() {
     super.onStop();
-    if (windowInfoRepo != null) {
-      windowInfoRepo.removeWindowLayoutInfoListener(stateContainer);
+    if (windowInfoTracker != null) {
+      windowInfoTracker.removeWindowLayoutInfoListener(stateContainer);
     }
   }
 

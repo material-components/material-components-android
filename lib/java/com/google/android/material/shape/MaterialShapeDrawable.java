@@ -456,6 +456,11 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   }
 
   @Override
+  public int getAlpha() {
+    return drawableState.alpha;
+  }
+
+  @Override
   public void setAlpha(@IntRange(from = 0, to = 255) int alpha) {
     if (drawableState.alpha != alpha) {
       drawableState.alpha = alpha;

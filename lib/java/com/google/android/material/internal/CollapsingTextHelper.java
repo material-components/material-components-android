@@ -26,6 +26,7 @@ import static java.lang.Math.min;
 
 import android.animation.TimeInterpolator;
 import android.content.res.ColorStateList;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -33,11 +34,10 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.graphics.fonts.FontStyle;
 import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import androidx.core.view.GravityCompat;
-import androidx.core.view.ViewCompat;
 import android.text.Layout.Alignment;
 import android.text.StaticLayout;
 import android.text.TextPaint;
@@ -54,6 +54,8 @@ import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.core.math.MathUtils;
 import androidx.core.text.TextDirectionHeuristicsCompat;
+import androidx.core.view.GravityCompat;
+import androidx.core.view.ViewCompat;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.internal.StaticLayoutBuilderCompat.StaticLayoutBuilderCompatException;
 import com.google.android.material.resources.CancelableFontCallback;
@@ -114,8 +116,13 @@ public final class CollapsingTextHelper {
   private float currentDrawX;
   private float currentDrawY;
   private Typeface collapsedTypeface;
+  private Typeface collapsedTypefaceBold;
+  private Typeface collapsedTypefaceDefault;
   private Typeface expandedTypeface;
+  private Typeface expandedTypefaceBold;
+  private Typeface expandedTypefaceDefault;
   private Typeface currentTypeface;
+  private int fontWeightAdjustment;
   private CancelableFontCallback expandedFontCallback;
   private CancelableFontCallback collapsedFontCallback;
 
@@ -176,6 +183,7 @@ public final class CollapsingTextHelper {
     currentBounds = new RectF();
 
     fadeModeThresholdFraction = calculateFadeModeThresholdFraction();
+    maybeUpdateFontWeightAdjustment(view.getContext().getResources().getConfiguration());
   }
 
   public void setTextSizeInterpolator(TimeInterpolator interpolator) {
@@ -455,8 +463,11 @@ public final class CollapsingTextHelper {
     if (collapsedFontCallback != null) {
       collapsedFontCallback.cancel();
     }
-    if (collapsedTypeface != typeface) {
-      collapsedTypeface = typeface;
+    if (collapsedTypefaceDefault != typeface) {
+      collapsedTypefaceDefault = typeface;
+      collapsedTypefaceBold = maybeCloneWithAdjustment(typeface);
+      collapsedTypeface = collapsedTypefaceBold == null
+          ? collapsedTypefaceDefault : collapsedTypefaceBold;
       return true;
     }
     return false;
@@ -469,8 +480,11 @@ public final class CollapsingTextHelper {
     if (expandedFontCallback != null) {
       expandedFontCallback.cancel();
     }
-    if (expandedTypeface != typeface) {
-      expandedTypeface = typeface;
+    if (expandedTypefaceDefault != typeface) {
+      expandedTypefaceDefault = typeface;
+      expandedTypefaceBold = maybeCloneWithAdjustment(typeface);
+      expandedTypeface = expandedTypefaceBold == null
+          ? expandedTypefaceDefault : expandedTypefaceBold;
       return true;
     }
     return false;
@@ -482,6 +496,38 @@ public final class CollapsingTextHelper {
 
   public Typeface getExpandedTypeface() {
     return expandedTypeface != null ? expandedTypeface : Typeface.DEFAULT;
+  }
+
+  public void maybeUpdateFontWeightAdjustment(@NonNull Configuration configuration) {
+    if (VERSION.SDK_INT >= VERSION_CODES.S) {
+      fontWeightAdjustment = configuration.fontWeightAdjustment;
+      if (collapsedTypefaceDefault != null) {
+        collapsedTypefaceBold = maybeCloneWithAdjustment(collapsedTypefaceDefault);
+      }
+      if (expandedTypefaceDefault != null) {
+        expandedTypefaceBold = maybeCloneWithAdjustment(expandedTypefaceDefault);
+      }
+      collapsedTypeface = collapsedTypefaceBold != null
+          ? collapsedTypefaceBold : collapsedTypefaceDefault;
+      expandedTypeface = expandedTypefaceBold != null
+          ? expandedTypefaceBold : expandedTypefaceDefault;
+      recalculate(/* forceRecalculate= */true);
+    }
+  }
+
+  private boolean shouldUseBoldTypefaces() {
+    return VERSION.SDK_INT >= VERSION_CODES.S && fontWeightAdjustment >= FontStyle.FONT_WEIGHT_MIN;
+  }
+
+  @Nullable
+  private Typeface maybeCloneWithAdjustment(@NonNull Typeface typeface) {
+    if (shouldUseBoldTypefaces()) {
+      return Typeface.create(
+          typeface,
+          typeface.getWeight() + fontWeightAdjustment,
+          typeface.isItalic());
+    }
+    return null;
   }
 
   /**
@@ -553,21 +599,20 @@ public final class CollapsingTextHelper {
         currentDrawX = expandedDrawX;
         currentDrawY = expandedDrawY;
 
-        setInterpolatedTextSize(expandedTextSize);
+        setInterpolatedTextSize(/* fraction= */ 0);
       } else {
         textBlendFraction = 1F;
         currentDrawX = collapsedDrawX;
         currentDrawY = collapsedDrawY - max(0, currentOffsetY);
 
-        setInterpolatedTextSize(collapsedTextSize);
+        setInterpolatedTextSize(/* fraction= */ 1);
       }
     } else {
       textBlendFraction = fraction;
       currentDrawX = lerp(expandedDrawX, collapsedDrawX, fraction, positionInterpolator);
       currentDrawY = lerp(expandedDrawY, collapsedDrawY, fraction, positionInterpolator);
 
-      setInterpolatedTextSize(
-          lerp(expandedTextSize, collapsedTextSize, fraction, textSizeInterpolator));
+      setInterpolatedTextSize(fraction);
     }
 
     setCollapsedTextBlend(
@@ -657,17 +702,14 @@ public final class CollapsingTextHelper {
   }
 
   private void calculateBaseOffsets(boolean forceRecalculate) {
-    final float currentTextSize = this.currentTextSize;
-
     // We then calculate the collapsed text size, using the same logic
-    calculateUsingTextSize(collapsedTextSize, forceRecalculate);
+    calculateUsingTextSize(/* fraction= */ 1, forceRecalculate);
     if (textToDraw != null && textLayout != null) {
       textToDrawCollapsed =
           TextUtils.ellipsize(textToDraw, textPaint, textLayout.getWidth(), TruncateAt.END);
     }
     if (textToDrawCollapsed != null) {
-      getTextPaintCollapsed(tmpPaint);
-      collapsedTextWidth = measureTextWidth(tmpPaint, textToDrawCollapsed);
+      collapsedTextWidth = measureTextWidth(textPaint, textToDrawCollapsed);
     } else {
       collapsedTextWidth = 0;
     }
@@ -703,14 +745,13 @@ public final class CollapsingTextHelper {
         break;
     }
 
-    calculateUsingTextSize(expandedTextSize, forceRecalculate);
+    calculateUsingTextSize(/* fraction= */ 0, forceRecalculate);
     float expandedTextHeight = textLayout != null ? textLayout.getHeight() : 0;
     float expandedTextWidth = 0;
     if (textLayout != null && maxLines > 1) {
       expandedTextWidth = textLayout.getWidth();
     } else if (textToDraw != null) {
-      getTextPaintExpanded(tmpPaint);
-      expandedTextWidth = measureTextWidth(tmpPaint, textToDraw);
+      expandedTextWidth = measureTextWidth(textPaint, textToDraw);
     }
     expandedLineCount = textLayout != null ? textLayout.getLineCount() : 0;
 
@@ -748,7 +789,7 @@ public final class CollapsingTextHelper {
     // The bounds have changed so we need to clear the texture
     clearTexture();
     // Now reset the text size back to the original
-    setInterpolatedTextSize(currentTextSize);
+    setInterpolatedTextSize(expandedFraction);
   }
 
   private float measureTextWidth(TextPaint textPaint, CharSequence textToDraw) {
@@ -879,8 +920,8 @@ public final class CollapsingTextHelper {
         .isRtl(text, 0, text.length());
   }
 
-  private void setInterpolatedTextSize(float textSize) {
-    calculateUsingTextSize(textSize);
+  private void setInterpolatedTextSize(float fraction) {
+    calculateUsingTextSize(fraction);
 
     // Use our texture if the scale isn't 1.0
     useTexture = USE_SCALING_TEXTURE && scale != 1f;
@@ -893,12 +934,12 @@ public final class CollapsingTextHelper {
     ViewCompat.postInvalidateOnAnimation(view);
   }
 
-  private void calculateUsingTextSize(final float textSize) {
-    calculateUsingTextSize(textSize, /* forceRecalculate= */ false);
+  private void calculateUsingTextSize(final float fraction) {
+    calculateUsingTextSize(fraction, /* forceRecalculate= */ false);
   }
 
   @SuppressWarnings("ReferenceEquality") // Matches the Typeface comparison in TextView
-  private void calculateUsingTextSize(final float textSize, boolean forceRecalculate) {
+  private void calculateUsingTextSize(final float fraction, boolean forceRecalculate) {
     if (text == null) {
       return;
     }
@@ -911,7 +952,7 @@ public final class CollapsingTextHelper {
     float newLetterSpacing;
     boolean updateDrawText = false;
 
-    if (isClose(textSize, collapsedTextSize)) {
+    if (isClose(fraction, /* targetValue= */ 1)) {
       newTextSize = collapsedTextSize;
       newLetterSpacing = collapsedLetterSpacing;
       scale = 1f;
@@ -927,12 +968,14 @@ public final class CollapsingTextHelper {
         currentTypeface = expandedTypeface;
         updateDrawText = true;
       }
-      if (isClose(textSize, expandedTextSize)) {
+      if (isClose(fraction, /* targetValue= */ 0)) {
         // If we're close to the expanded text size, snap to it and use a scale of 1
         scale = 1f;
       } else {
         // Else, we'll scale down from the expanded text size
-        scale = textSize / expandedTextSize;
+        scale =
+            lerp(expandedTextSize, collapsedTextSize, fraction, textSizeInterpolator)
+                / expandedTextSize;
       }
 
       float textSizeRatio = collapsedTextSize / expandedTextSize;
@@ -1141,10 +1184,10 @@ public final class CollapsingTextHelper {
 
   /**
    * Returns true if {@code value} is 'close' to it's closest decimal value. Close is currently
-   * defined as it's difference being < 0.001.
+   * defined as it's difference being < 0.00001.
    */
   private static boolean isClose(float value, float targetValue) {
-    return Math.abs(value - targetValue) < 0.001f;
+    return Math.abs(value - targetValue) < 0.00001f;
   }
 
   public ColorStateList getExpandedTextColor() {

@@ -20,11 +20,11 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import android.animation.TimeInterpolator;
 import android.content.Context;
 import androidx.core.graphics.PathParser;
-import androidx.core.view.animation.PathInterpolatorCompat;
 import android.util.TypedValue;
 import androidx.annotation.AttrRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
+import androidx.core.view.animation.PathInterpolatorCompat;
 import com.google.android.material.resources.MaterialAttributes;
 
 /**
