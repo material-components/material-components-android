@@ -38,10 +38,10 @@
 
   <!-- Style for the M3 card. -->
   <style name="Base.Widget.Material3.CardView" parent="Widget.MaterialComponents.CardView">
+    <item name="enforceMaterialTheme">true</item>
     <item name="android:stateListAnimator" tools:ignore="NewApi">
       @animator/m3_card_state_list_anim
     </item>
-    <item name="cardCornerRadius">@dimen/m3_card_corner_radius</item>
     <item name="cardElevation">@dimen/m3_card_elevation</item>
     <item name="cardForegroundColor">@color/m3_card_foreground_color</item>
     <item name="rippleColor">@color/m3_card_ripple_color</item>
