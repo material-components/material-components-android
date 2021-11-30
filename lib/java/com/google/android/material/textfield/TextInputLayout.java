@@ -26,6 +26,7 @@ import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -4140,6 +4141,12 @@ public class TextInputLayout extends LinearLayout {
     super.draw(canvas);
     drawHint(canvas);
     drawBoxUnderline(canvas);
+  }
+
+  @Override
+  protected void onConfigurationChanged(@NonNull Configuration newConfig) {
+    super.onConfigurationChanged(newConfig);
+    collapsingTextHelper.maybeUpdateFontWeightAdjustment(newConfig);
   }
 
   private void drawHint(@NonNull Canvas canvas) {
