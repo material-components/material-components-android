@@ -85,5 +85,7 @@
   <public name="titleCentered" type="attr"/>
   <public name="subtitleCentered" type="attr"/>
   <public name="titlePositionInterpolator" type="attr"/>
+  <public name="logoAdjustViewBounds" type="attr"/>
+  <public name="logoScaleType" type="attr"/>
 </resources>
 

@@ -23,6 +23,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
@@ -53,6 +54,11 @@ public class ToolbarUtils {
   }
 
   @Nullable
+  public static ImageView getLogoImageView(@NonNull Toolbar toolbar) {
+    return getImageView(toolbar, toolbar.getLogo());
+  }
+
+  @Nullable
   private static TextView getTextView(@NonNull Toolbar toolbar, CharSequence text) {
     for (int i = 0; i < toolbar.getChildCount(); i++) {
       View child = toolbar.getChildAt(i);
@@ -60,6 +66,22 @@ public class ToolbarUtils {
         TextView textView = (TextView) child;
         if (TextUtils.equals(textView.getText(), text)) {
           return textView;
+        }
+      }
+    }
+    return null;
+  }
+
+  @Nullable
+  private static ImageView getImageView(@NonNull Toolbar toolbar, @Nullable Drawable content) {
+    for (int i = 0; i < toolbar.getChildCount(); i++) {
+      View child = toolbar.getChildAt(i);
+      if (child instanceof ImageView) {
+        ImageView imageView = (ImageView) child;
+        if (content != null
+            && imageView.getDrawable().getConstantState().equals(content.getConstantState())
+        ) {
+          return imageView;
         }
       }
     }
