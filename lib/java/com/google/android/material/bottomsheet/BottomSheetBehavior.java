@@ -1469,7 +1469,6 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     if (!paddingBottomSystemWindowInsets
         && !paddingLeftSystemWindowInsets
         && !paddingRightSystemWindowInsets
-        && !paddingTopSystemWindowInsets
         && !marginLeftSystemWindowInsets
         && !marginRightSystemWindowInsets
         && !marginTopSystemWindowInsets
