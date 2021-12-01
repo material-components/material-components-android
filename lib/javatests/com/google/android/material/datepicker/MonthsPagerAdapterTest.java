@@ -126,10 +126,10 @@ public class MonthsPagerAdapterTest {
                 .build(),
             /* onDayClickListener= */ null);
     assertEquals(
-        feb2016.getLongName(context), monthsAdapter.getPageTitle(/* position= */ 0).toString());
+        feb2016.getLongName(), monthsAdapter.getPageTitle(/* position= */ 0).toString());
     assertEquals(
-        march2016.getLongName(context), monthsAdapter.getPageTitle(/* position= */ 1).toString());
+        march2016.getLongName(), monthsAdapter.getPageTitle(/* position= */ 1).toString());
     assertEquals(
-        april2016.getLongName(context), monthsAdapter.getPageTitle(/* position= */ 2).toString());
+        april2016.getLongName(), monthsAdapter.getPageTitle(/* position= */ 2).toString());
   }
 }

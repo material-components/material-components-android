@@ -15,7 +15,6 @@
  */
 package com.google.android.material.datepicker;
 
-import android.content.Context;
 import android.icu.text.DateFormat;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
@@ -26,17 +25,15 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.TimeZone;
 
 /** Util methods for formatting date strings for use in {@link MaterialDatePicker}. */
 class DateStrings {
 
   private DateStrings() {}
 
-  static String getYearMonth(Context context, long timeInMillis) {
-    int flags = DateUtils.FORMAT_SHOW_YEAR | DateUtils.FORMAT_NO_MONTH_DAY;
-    long offsetMillis = TimeZone.getDefault().getOffset(timeInMillis);
-    return DateUtils.formatDateTime(context, timeInMillis - offsetMillis, flags);
+  static String getYearMonth(long timeInMillis) {
+    int flags = DateUtils.FORMAT_SHOW_YEAR | DateUtils.FORMAT_NO_MONTH_DAY | DateUtils.FORMAT_UTC;
+    return DateUtils.formatDateTime(null, timeInMillis, flags);
   }
 
   static String getYearMonthDay(long timeInMillis) {
