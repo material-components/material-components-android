@@ -18,7 +18,6 @@ package com.google.android.material.bottomsheet;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import androidx.annotation.LayoutRes;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import android.view.View;
 import androidx.annotation.NonNull;
@@ -35,16 +34,6 @@ public class BottomSheetDialogFragment extends AppCompatDialogFragment {
    * BottomSheet is hidden and onStateChanged() is called.
    */
   private boolean waitingForDismissAllowingStateLoss;
-
-  /** {@inheritDoc} **/
-  public BottomSheetDialogFragment() {
-    super();
-  }
-
-  /** {@inheritDoc} **/
-  public BottomSheetDialogFragment(@LayoutRes int contentLayoutId) {
-    super(contentLayoutId);
-  }
 
   @NonNull
   @Override
