@@ -159,7 +159,6 @@
     <item name="materialAlertDialogTitlePanelStyle">@style/MaterialAlertDialog.Material3.Title.Panel.CenterStacked</item>
     <item name="materialAlertDialogTitleIconStyle">@style/MaterialAlertDialog.Material3.Title.Icon.CenterStacked</item>
     <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.Material3.Title.Text.CenterStacked</item>
-    <item name="materialAlertDialogBodyTextStyle">@style/MaterialAlertDialog.Material3.Body.Text.CenterStacked</item>
   </style>
 
 </resources>
