@@ -31,6 +31,8 @@ import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
@@ -64,6 +66,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
 import java.text.NumberFormat;
+import java.util.Locale;
 
 /**
  * {@code BadgeDrawable} contains all the layout and draw logic for a badge.
@@ -210,6 +213,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     @StringRes private int contentDescriptionExceedsMaxBadgeNumberRes;
     @BadgeGravity private int badgeGravity;
     private boolean isVisible;
+    private Locale numberLocale;
 
     @Dimension(unit = Dimension.PX)
     private int horizontalOffsetWithoutText;
@@ -241,6 +245,10 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       contentDescriptionExceedsMaxBadgeNumberRes =
           R.string.mtrl_exceed_max_badge_number_content_description;
       isVisible = true;
+      numberLocale =
+          VERSION.SDK_INT >= VERSION_CODES.N
+              ? Locale.getDefault(Locale.Category.FORMAT)
+              : Locale.getDefault();
     }
 
     protected SavedState(@NonNull Parcel in) {
@@ -259,6 +267,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       additionalHorizontalOffset = in.readInt();
       additionalVerticalOffset = in.readInt();
       isVisible = in.readInt() != 0;
+      numberLocale = (Locale) in.readSerializable();
     }
 
     public static final Creator<SavedState> CREATOR =
@@ -298,6 +307,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       dest.writeInt(additionalHorizontalOffset);
       dest.writeInt(additionalVerticalOffset);
       dest.writeInt(isVisible ? 1 : 0);
+      dest.writeSerializable(numberLocale);
     }
   }
 
@@ -371,6 +381,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
 
   private void restoreFromSavedState(@NonNull SavedState savedState) {
     setMaxCharacterCount(savedState.maxCharacterCount);
+    setBadgeNumberLocale(savedState.numberLocale);
 
     // Only set the badge number if it exists in the style.
     // Defaulting it to 0 means the badge will incorrectly show text when the user may want a
@@ -643,6 +654,20 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     savedState.badgeTextColor = badgeTextColor;
     if (textDrawableHelper.getTextPaint().getColor() != badgeTextColor) {
       textDrawableHelper.getTextPaint().setColor(badgeTextColor);
+      invalidateSelf();
+    }
+  }
+
+  /** Returns the {@link Locale} used to show badge numbers. */
+  @NonNull
+  public Locale getBadgeNumberLocale() {
+    return savedState.numberLocale;
+  }
+
+  /** Sets the {@link Locale} used to show badge numbers. */
+  public void setBadgeNumberLocale(@NonNull Locale locale) {
+    if (!locale.equals(savedState.numberLocale)) {
+      savedState.numberLocale = locale;
       invalidateSelf();
     }
   }
@@ -1137,15 +1162,16 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   private String getBadgeText() {
     // If number exceeds max count, show badgeMaxCount+ instead of the number.
     if (getNumber() <= maxBadgeNumber) {
-      return NumberFormat.getInstance().format(getNumber());
+      return NumberFormat.getInstance(savedState.numberLocale).format(getNumber());
     } else {
       Context context = contextRef.get();
       if (context == null) {
         return "";
       }
 
-      return context.getString(
-          R.string.mtrl_exceed_max_badge_number_suffix,
+      return String.format(
+          savedState.numberLocale,
+          context.getString(R.string.mtrl_exceed_max_badge_number_suffix),
           maxBadgeNumber,
           DEFAULT_EXCEED_MAX_BADGE_NUMBER_SUFFIX);
     }
