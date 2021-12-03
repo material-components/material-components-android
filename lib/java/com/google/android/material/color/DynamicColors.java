@@ -49,6 +49,9 @@ public class DynamicColors {
           "infinix mobility limited", "hmd global", "sharp", "sony", "tcl", "lenovo", "google",
           "robolectric"));
 
+  private static final Set<String> DYNAMIC_COLOR_SUPPORTED_BRANDS =
+      new HashSet<>(Arrays.asList("jio"));
+
   private static final int USE_DEFAULT_THEME_OVERLAY = 0;
 
   private static final Precondition ALWAYS_ALLOW = new Precondition() {
@@ -221,7 +224,8 @@ public class DynamicColors {
   @ChecksSdkIntAtLeast(api = VERSION_CODES.S)
   public static boolean isDynamicColorAvailable() {
     return VERSION.SDK_INT >= VERSION_CODES.S
-        && DYNAMIC_COLOR_SUPPORTED_MANUFACTURERS.contains(Build.MANUFACTURER.toLowerCase());
+        && (DYNAMIC_COLOR_SUPPORTED_MANUFACTURERS.contains(Build.MANUFACTURER.toLowerCase())
+        || DYNAMIC_COLOR_SUPPORTED_BRANDS.contains(Build.BRAND.toLowerCase()));
   }
 
   private static int getDefaultThemeOverlay(@NonNull Context context) {
