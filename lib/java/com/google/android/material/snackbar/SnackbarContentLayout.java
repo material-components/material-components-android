@@ -37,7 +37,6 @@ public class SnackbarContentLayout extends LinearLayout implements ContentViewCa
   private TextView messageView;
   private Button actionView;
 
-  private int maxWidth;
   private int maxInlineActionWidth;
 
   public SnackbarContentLayout(@NonNull Context context) {
@@ -76,11 +75,6 @@ public class SnackbarContentLayout extends LinearLayout implements ContentViewCa
   @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-    if (maxWidth > 0 && getMeasuredWidth() > maxWidth) {
-      widthMeasureSpec = MeasureSpec.makeMeasureSpec(maxWidth, MeasureSpec.EXACTLY);
-      super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    }
 
     final int multiLineVPadding =
         getResources().getDimensionPixelSize(R.dimen.design_snackbar_padding_vertical_2lines);
@@ -161,9 +155,5 @@ public class SnackbarContentLayout extends LinearLayout implements ContentViewCa
 
   public void setMaxInlineActionWidth(int width) {
     maxInlineActionWidth = width;
-  }
-
-  void setMaxWidth(int width) {
-    maxWidth = width;
   }
 }

@@ -376,7 +376,6 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
       ((SnackbarContentLayout) content)
           .updateActionTextColorAlphaIfNeeded(view.getActionTextColorAlpha());
       ((SnackbarContentLayout) content).setMaxInlineActionWidth(view.getMaxInlineActionWidth());
-      ((SnackbarContentLayout) content).setMaxWidth(view.getMaxWidth());
     }
     view.addView(content);
 
@@ -1220,6 +1219,15 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
       // Clear touch listener that consumes all touches if there is a custom click listener.
       setOnTouchListener(onClickListener != null ? null : consumeAllTouchListener);
       super.setOnClickListener(onClickListener);
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+      super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+      if (maxWidth > 0 && getMeasuredWidth() > maxWidth) {
+        widthMeasureSpec = MeasureSpec.makeMeasureSpec(maxWidth, MeasureSpec.EXACTLY);
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+      }
     }
 
     @Override
