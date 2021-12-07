@@ -20,12 +20,12 @@ import com.google.android.material.R;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
-import androidx.core.util.Pair;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.TextView.BufferType;
+import androidx.core.util.Pair;
 import androidx.test.core.app.ApplicationProvider;
 import com.google.android.material.internal.ParcelableTestUtils;
 import com.google.android.material.textfield.TextInputLayout;

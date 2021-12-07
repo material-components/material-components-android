@@ -21,7 +21,6 @@ import static android.graphics.Color.TRANSPARENT;
 
 import android.content.Context;
 import android.graphics.Color;
-import androidx.core.graphics.ColorUtils;
 import android.util.TypedValue;
 import android.view.View;
 import androidx.annotation.AttrRes;
@@ -29,6 +28,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
+import androidx.core.graphics.ColorUtils;
 import com.google.android.material.resources.MaterialAttributes;
 
 /**

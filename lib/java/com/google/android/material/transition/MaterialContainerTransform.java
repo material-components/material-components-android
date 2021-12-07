@@ -18,8 +18,8 @@ package com.google.android.material.transition;
 
 import com.google.android.material.R;
 
-import static androidx.core.util.Preconditions.checkNotNull;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static androidx.core.util.Preconditions.checkNotNull;
 import static com.google.android.material.transition.TransitionUtils.calculateArea;
 import static com.google.android.material.transition.TransitionUtils.convertToRelativeCornerSizes;
 import static com.google.android.material.transition.TransitionUtils.createColorShader;

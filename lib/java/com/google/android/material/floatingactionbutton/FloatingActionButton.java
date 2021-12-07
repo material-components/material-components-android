@@ -18,8 +18,8 @@ package com.google.android.material.floatingactionbutton;
 
 import com.google.android.material.R;
 
-import static androidx.core.util.Preconditions.checkNotNull;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static androidx.core.util.Preconditions.checkNotNull;
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 
 import android.animation.Animator.AnimatorListener;
@@ -36,8 +36,6 @@ import android.os.Build;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Parcelable;
-import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.widget.TintableImageSourceView;
 import androidx.appcompat.widget.AppCompatDrawableManager;
 import androidx.appcompat.widget.AppCompatImageHelper;
 import android.util.AttributeSet;
@@ -60,8 +58,10 @@ import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.TintableBackgroundView;
 import androidx.core.view.ViewCompat;
+import androidx.core.widget.TintableImageSourceView;
 import com.google.android.material.animation.MotionSpec;
 import com.google.android.material.animation.TransformationCallback;
 import com.google.android.material.appbar.AppBarLayout;
