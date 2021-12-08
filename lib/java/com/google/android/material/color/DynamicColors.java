@@ -32,9 +32,10 @@ import androidx.annotation.ChecksSdkIntAtLeast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.lang.reflect.Method;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Utility for applying dynamic colors to application/activities.
@@ -43,14 +44,66 @@ public class DynamicColors {
   private static final int[] DYNAMIC_COLOR_THEME_OVERLAY_ATTRIBUTE =
       new int[] { R.attr.dynamicColorThemeOverlay };
 
-  private static final Set<String> DYNAMIC_COLOR_SUPPORTED_MANUFACTURERS =
-      new HashSet<>(Arrays.asList(
-          "oppo", "realme", "oneplus", "vivo", "xiaomi", "motorola", "itel", "tecno mobile limited",
-          "infinix mobility limited", "hmd global", "sharp", "sony", "tcl", "lenovo", "google",
-          "robolectric"));
+  private static final DeviceSupportCondition DEFAULT_DEVICE_SUPPORT_CONDITION =
+      new DeviceSupportCondition() {
+        @Override
+        public boolean isSupported() {
+          return true;
+        }
+      };
 
-  private static final Set<String> DYNAMIC_COLOR_SUPPORTED_BRANDS =
-      new HashSet<>(Arrays.asList("jio"));
+  @SuppressLint("PrivateApi")
+  private static final DeviceSupportCondition SAMSUNG_DEVICE_SUPPORT_CONDITION =
+      new DeviceSupportCondition() {
+        private Long version;
+
+        @Override
+        public boolean isSupported() {
+          if (version == null) {
+            try {
+              Method method = Build.class.getDeclaredMethod("getLong", String.class);
+              method.setAccessible(true);
+              version = (long) method.invoke(null, "ro.build.version.oneui");
+            } catch (Exception e) {
+              version = -1L;
+            }
+          }
+          return version >= 40100L;
+        }
+      };
+
+  private static final Map<String, DeviceSupportCondition> DYNAMIC_COLOR_SUPPORTED_MANUFACTURERS;
+
+  static {
+    Map<String, DeviceSupportCondition> deviceMap = new HashMap<>();
+    deviceMap.put("oppo", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("realme", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("oneplus", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("vivo", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("xiaomi", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("motorola", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("itel", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("tecno mobile limited", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("infinix mobility limited", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("hmd global", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("sharp", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("sony", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("tcl", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("lenovo", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("google", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("robolectric", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("samsung", SAMSUNG_DEVICE_SUPPORT_CONDITION);
+    DYNAMIC_COLOR_SUPPORTED_MANUFACTURERS = Collections.unmodifiableMap(deviceMap);
+  }
+
+  private static final Map<String, DeviceSupportCondition> DYNAMIC_COLOR_SUPPORTED_BRANDS;
+
+  static {
+    Map<String, DeviceSupportCondition> deviceMap = new HashMap<>();
+    deviceMap.put("asus", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("jio", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    DYNAMIC_COLOR_SUPPORTED_BRANDS = Collections.unmodifiableMap(deviceMap);
+  }
 
   private static final int USE_DEFAULT_THEME_OVERLAY = 0;
 
@@ -223,9 +276,15 @@ public class DynamicColors {
   @SuppressLint("DefaultLocale")
   @ChecksSdkIntAtLeast(api = VERSION_CODES.S)
   public static boolean isDynamicColorAvailable() {
-    return VERSION.SDK_INT >= VERSION_CODES.S
-        && (DYNAMIC_COLOR_SUPPORTED_MANUFACTURERS.contains(Build.MANUFACTURER.toLowerCase())
-        || DYNAMIC_COLOR_SUPPORTED_BRANDS.contains(Build.BRAND.toLowerCase()));
+    if (VERSION.SDK_INT < VERSION_CODES.S) {
+      return false;
+    }
+    DeviceSupportCondition deviceSupportCondition =
+        DYNAMIC_COLOR_SUPPORTED_MANUFACTURERS.get(Build.MANUFACTURER.toLowerCase());
+    if (deviceSupportCondition == null) {
+      deviceSupportCondition = DYNAMIC_COLOR_SUPPORTED_BRANDS.get(Build.BRAND.toLowerCase());
+    }
+    return deviceSupportCondition != null && deviceSupportCondition.isSupported();
   }
 
   private static int getDefaultThemeOverlay(@NonNull Context context) {
@@ -285,5 +344,9 @@ public class DynamicColors {
 
     @Override
     public void onActivityDestroyed(@NonNull Activity activity) {}
+  }
+
+  private interface DeviceSupportCondition {
+    boolean isSupported();
   }
 }
