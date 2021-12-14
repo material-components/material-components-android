@@ -32,7 +32,7 @@ ext {
     core                  : '1.5.0',
     drawerlayout          : '1.1.1',
     experimental          : '1.0.0',
-    fragment              : '1.0.0',
+    fragment              : '1.2.5',
     lifecycle             : '2.0.0',
     recyclerView          : '1.0.0',
     recyclerViewSelection : '1.0.0',
