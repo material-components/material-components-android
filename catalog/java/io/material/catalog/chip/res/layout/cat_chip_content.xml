@@ -50,6 +50,7 @@
     android:layout_toRightOf="@id/cat_chip_input"
     android:ellipsize="end"
     android:text="@string/cat_chip_text"
+    app:checkedIconVisible="false"
     app:chipIcon="@drawable/ic_star_checkable_24"
     app:ensureMinTouchTargetSize="true"/>
 
@@ -83,6 +84,7 @@
     android:layout_toRightOf="@id/cat_chip_input_icon"
     android:ellipsize="end"
     android:text="@string/cat_chip_text"
+    app:checkedIconVisible="false"
     app:chipIcon="@drawable/ic_star_checkable_24"
     app:ensureMinTouchTargetSize="true"/>
 
