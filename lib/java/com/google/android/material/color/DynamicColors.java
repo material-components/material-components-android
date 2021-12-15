@@ -90,6 +90,7 @@ public class DynamicColors {
     deviceMap.put("sony", DEFAULT_DEVICE_SUPPORT_CONDITION);
     deviceMap.put("tcl", DEFAULT_DEVICE_SUPPORT_CONDITION);
     deviceMap.put("lenovo", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("lge", DEFAULT_DEVICE_SUPPORT_CONDITION);
     deviceMap.put("google", DEFAULT_DEVICE_SUPPORT_CONDITION);
     deviceMap.put("robolectric", DEFAULT_DEVICE_SUPPORT_CONDITION);
     deviceMap.put("samsung", SAMSUNG_DEVICE_SUPPORT_CONDITION);
