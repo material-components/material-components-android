@@ -183,8 +183,6 @@
     <item name="textAppearanceLargePopupMenu">?attr/textAppearanceBodyLarge</item>
     <item name="textAppearanceSmallPopupMenu">?attr/textAppearanceBodyLarge</item>
 
-    <!-- TODO: Populate font families here -->
-
     <!-- Shape styles. -->
     <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Material3.SmallComponent</item>
     <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.Material3.MediumComponent</item>
@@ -375,8 +373,6 @@
     <!-- Menu type styles. -->
     <item name="textAppearanceLargePopupMenu">?attr/textAppearanceBodyLarge</item>
     <item name="textAppearanceSmallPopupMenu">?attr/textAppearanceBodyLarge</item>
-
-    <!-- TODO: Populate font families here -->
 
     <!-- Shape styles. -->
     <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Material3.SmallComponent</item>
