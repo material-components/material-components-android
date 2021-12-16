@@ -83,7 +83,7 @@ to a `DividerItemDecoration`, that can be used as a divider between items of a
 
 A list with full-bleed dividers is displayed below:
 
-![Vertical list of five items with gray dividers between each item](assets/dividers/divider_itemdecoration.png)
+![Vertical list of five items with five gray dividers after each item](assets/dividers/divider_itemdecoration.png)
 
 In code:
 
@@ -95,13 +95,23 @@ recyclerView.addItemDecoration(divider)
 By default, dividers will be full-bleed. To achieve the look of an inset or
 middle divider:
 
-![Vertical list of five items with gray dividers that have a start inset](assets/dividers/divider_itemdecoration_inset.png)
+![Vertical list of five items with five gray dividers that have a start inset](assets/dividers/divider_itemdecoration_inset.png)
 
 In code:
 
 ```kt
 divider.setDividerInsetStart(insetStart)
 divider.setDividerInsetEnd(insetEnd)
+```
+
+Optionally, you can hide the last divider of a list:
+
+![Vertical list of five items with four gray dividers](assets/dividers/divider_itemdecoration_hiddendivider.png)
+
+In code:
+
+```kt
+divider.setLastItemDecorated(false)
 ```
 
 ### Making dividers accessible
@@ -113,12 +123,13 @@ precautions for the divider.
 
 ### Dividers attributes
 
-Element         | Attribute               | Related method(s)                                                                    | Default value
---------------- | ----------------------- | ------------------------------------------------------------------------------------ | -------------
-**Thickness**   | `app:dividerThickness`  | `setDividerThickness`<br/>`setDividerThicknessResource`<br/>`getDividerThickness`    | `1dp` for the regular divider <br/> `8dp` for the heavy divider
-**Color**       | `app:dividerColor`      | `setDividerColor`<br/>`setDividerColorResource`<br/>`getDividerColor`                | `colorOutline`
-**Start inset** | `app:dividerInsetStart` | `setDividerInsetStart`<br/>`setDividerInsetStartResource`<br/>`getDividerInsetStart` | `0dp`
-**End inset**   | `app:dividerInsetEnd`   | `setDividerInsetEnd`<br/>`setDividerInsetEndResource`<br/>`getDividerInsetEnd`       | `0dp`
+Element                 | Attribute               | Related method(s)                                                                    | Default value
+----------------------- | ----------------------  | ------------------------------------------------------------------------------------ | -------------
+**Thickness**           | `app:dividerThickness`  | `setDividerThickness`<br/>`setDividerThicknessResource`<br/>`getDividerThickness`    | `1dp` for the regular divider <br/> `8dp` for the heavy divider
+**Color**               | `app:dividerColor`      | `setDividerColor`<br/>`setDividerColorResource`<br/>`getDividerColor`                | `colorOutline`
+**Start inset**         | `app:dividerInsetStart` | `setDividerInsetStart`<br/>`setDividerInsetStartResource`<br/>`getDividerInsetStart` | `0dp`
+**End inset**           | `app:dividerInsetEnd`   | `setDividerInsetEnd`<br/>`setDividerInsetEndResource`<br/>`getDividerInsetEnd`       | `0dp`
+**Last item decorated** | `app:lastItemDecorated` | `setLastItemDecorated`<br/>`isLastItemDecorated`                                     | `true`
 
 ### Styles
 

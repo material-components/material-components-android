@@ -20,6 +20,7 @@
   <public name="dividerThickness" type="attr"/>
   <public name="dividerInsetStart" type="attr"/>
   <public name="dividerInsetEnd" type="attr"/>
+  <public name="lastItemDecorated" type="attr"/>
   <public name="Widget.MaterialComponents.MaterialDivider" type="style"/>
   <public name="Widget.Material3.MaterialDivider" type="style"/>
   <public name="Widget.Material3.MaterialDivider.Heavy" type="style"/>
