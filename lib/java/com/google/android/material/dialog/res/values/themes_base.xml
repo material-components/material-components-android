@@ -69,8 +69,6 @@
     <item name="android:textColorAlertDialogListItem">@color/m3_default_color_primary_text</item>
 
     <!-- Widget styles. -->
-    <item name="actionBarStyle">@style/Widget.Material3.Light.ActionBar.Solid</item>
-    <item name="actionModeStyle">@style/Widget.Material3.ActionMode</item>
     <item name="appBarLayoutStyle">@style/Widget.Material3.AppBarLayout</item>
     <item name="badgeStyle">@style/Widget.Material3.Badge</item>
     <item name="borderlessButtonStyle">@style/Widget.Material3.Button.TextButton</item>
@@ -129,9 +127,14 @@
     <item name="toolbarSurfaceStyle">@style/Widget.Material3.Toolbar.Surface</item>
 
     <!-- Top App Bars. -->
-    <item name="actionBarSize">@dimen/m3_appbar_size_compact</item>
     <item name="collapsingToolbarLayoutMediumSize">@dimen/m3_appbar_size_medium</item>
     <item name="collapsingToolbarLayoutLargeSize">@dimen/m3_appbar_size_large</item>
+
+    <!-- Action Bars. -->
+    <item name="actionBarPopupTheme">@style/ThemeOverlay.Material3.Light</item>
+    <item name="actionBarSize">@dimen/m3_appbar_size_compact</item>
+    <item name="actionBarStyle">@style/Widget.Material3.Light.ActionBar.Solid</item>
+    <item name="actionModeStyle">@style/Widget.Material3.ActionMode</item>
 
     <!-- Popup Menu styles. -->
     <item name="popupMenuBackground">@drawable/m3_popupmenu_background_overlay</item>
@@ -255,8 +258,6 @@
     <item name="android:textColorAlertDialogListItem">@color/m3_dark_default_color_primary_text</item>
 
     <!-- Widget styles. -->
-    <item name="actionBarStyle">@style/Widget.Material3.ActionBar.Solid</item>
-    <item name="actionModeStyle">@style/Widget.Material3.ActionMode</item>
     <item name="appBarLayoutStyle">@style/Widget.Material3.AppBarLayout</item>
     <item name="badgeStyle">@style/Widget.Material3.Badge</item>
     <item name="borderlessButtonStyle">@style/Widget.Material3.Button.TextButton</item>
@@ -315,9 +316,14 @@
     <item name="toolbarSurfaceStyle">@style/Widget.Material3.Toolbar.Surface</item>
 
     <!-- Top App Bars. -->
-    <item name="actionBarSize">@dimen/m3_appbar_size_compact</item>
     <item name="collapsingToolbarLayoutMediumSize">@dimen/m3_appbar_size_medium</item>
     <item name="collapsingToolbarLayoutLargeSize">@dimen/m3_appbar_size_large</item>
+
+    <!-- Action Bars. -->
+    <item name="actionBarPopupTheme">@style/ThemeOverlay.Material3.Dark</item>
+    <item name="actionBarSize">@dimen/m3_appbar_size_compact</item>
+    <item name="actionBarStyle">@style/Widget.Material3.ActionBar.Solid</item>
+    <item name="actionModeStyle">@style/Widget.Material3.ActionMode</item>
 
     <!-- Popup Menu styles. -->
     <item name="popupMenuBackground">@drawable/m3_popupmenu_background_overlay</item>
