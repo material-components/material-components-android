@@ -38,8 +38,6 @@ import android.os.Build;
 import android.os.Build.VERSION_CODES;
 import android.os.Parcel;
 import android.os.Parcelable;
-import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.util.ObjectsCompat;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.util.AttributeSet;
 import android.view.View;
@@ -60,6 +58,8 @@ import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.util.ObjectsCompat;
 import androidx.core.view.NestedScrollingChild;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.ViewCompat.NestedScrollType;
@@ -1526,11 +1526,10 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     }
 
     private int getChildIndexOnOffset(@NonNull T abl, final int offset) {
-      final int ablTopInset = abl.getTopInset() + abl.getPaddingTop();
       for (int i = 0, count = abl.getChildCount(); i < count; i++) {
         View child = abl.getChildAt(i);
-        int top = child.getTop() - ablTopInset;
-        int bottom = child.getBottom() - ablTopInset;
+        int top = child.getTop();
+        int bottom = child.getBottom();
 
         final LayoutParams lp = (LayoutParams) child.getLayoutParams();
         if (checkFlag(lp.getScrollFlags(), LayoutParams.SCROLL_FLAG_SNAP_MARGINS)) {
@@ -1547,18 +1546,29 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     }
 
     private void snapToChildIfNeeded(CoordinatorLayout coordinatorLayout, @NonNull T abl) {
-      final int offset = getTopBottomOffsetForScrollingSibling();
+      final int topInset = abl.getTopInset() + abl.getPaddingTop();
+      // The "baseline" of scrolling is the top of the first child. We "add" insets and paddings
+      // to the scrolling amount to align offsets and views with the same y-coordinate. (The origin
+      // is at the top of the AppBarLayout, so all the coordinates are with negative values.)
+      final int offset = getTopBottomOffsetForScrollingSibling() - topInset;
       final int offsetChildIndex = getChildIndexOnOffset(abl, offset);
       if (offsetChildIndex >= 0) {
         final View offsetChild = abl.getChildAt(offsetChildIndex);
         final LayoutParams lp = (LayoutParams) offsetChild.getLayoutParams();
         final int flags = lp.getScrollFlags();
-        final int ablTopInset = abl.getTopInset() + abl.getPaddingTop();
 
         if ((flags & LayoutParams.FLAG_SNAP) == LayoutParams.FLAG_SNAP) {
           // We're set the snap, so animate the offset to the nearest edge
-          int snapTop = -offsetChild.getTop() + ablTopInset;
-          int snapBottom = -offsetChild.getBottom() + ablTopInset;
+          int snapTop = -offsetChild.getTop();
+          int snapBottom = -offsetChild.getBottom();
+
+          // If the child is set to fit system windows, its top will include the inset area, we need
+          // to minus the inset from snapTop to make the calculation consistent.
+          if (offsetChildIndex == 0
+              && ViewCompat.getFitsSystemWindows(abl)
+              && ViewCompat.getFitsSystemWindows(offsetChild)) {
+            snapTop -= abl.getTopInset();
+          }
 
           if (checkFlag(flags, LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED)) {
             // If the view is set only exit until it is collapsed, we'll abide by that
@@ -1581,11 +1591,17 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
             snapBottom -= lp.bottomMargin;
           }
 
-          final int newOffset = offset < (snapBottom + snapTop) / 2 ? snapBottom : snapTop;
+          // Excludes insets and paddings from the offset. (Offsets use the top of child views as
+          // the origin.)
+          final int newOffset = calculateSnapOffset(offset, snapBottom, snapTop) + topInset;
           animateOffsetTo(
               coordinatorLayout, abl, clamp(newOffset, -abl.getTotalScrollRange(), 0), 0);
         }
       }
+    }
+
+    private int calculateSnapOffset(int value, int bottom, int top) {
+      return value < (bottom + top) / 2 ? bottom : top;
     }
 
     private static boolean checkFlag(final int flags, final int check) {

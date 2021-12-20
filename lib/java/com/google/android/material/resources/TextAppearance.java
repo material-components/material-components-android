@@ -26,8 +26,6 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.core.content.res.ResourcesCompat.FontCallback;
 import android.text.TextPaint;
 import android.util.Log;
 import androidx.annotation.FontRes;
@@ -37,6 +35,8 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.content.res.ResourcesCompat.FontCallback;
 import androidx.core.provider.FontsContractCompat.FontRequestCallback;
 
 /**

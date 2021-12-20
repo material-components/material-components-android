@@ -45,7 +45,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import androidx.core.graphics.drawable.DrawableCompat;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -71,6 +70,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.OnApplyWindowInsetsListener;
 import androidx.core.view.ViewCompat;
@@ -376,7 +376,6 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
       ((SnackbarContentLayout) content)
           .updateActionTextColorAlphaIfNeeded(view.getActionTextColorAlpha());
       ((SnackbarContentLayout) content).setMaxInlineActionWidth(view.getMaxInlineActionWidth());
-      ((SnackbarContentLayout) content).setMaxWidth(view.getMaxWidth());
     }
     view.addView(content);
 
@@ -766,10 +765,11 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
       recalculateAndUpdateMargins();
 
+      targetParent.addView(this.view);
+
       // Set view to INVISIBLE so it doesn't flash on the screen before the inset adjustment is
       // handled and the enter animation is started
       view.setVisibility(View.INVISIBLE);
-      targetParent.addView(this.view);
     }
 
     if (ViewCompat.isLaidOut(this.view)) {
@@ -1220,6 +1220,15 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
       // Clear touch listener that consumes all touches if there is a custom click listener.
       setOnTouchListener(onClickListener != null ? null : consumeAllTouchListener);
       super.setOnClickListener(onClickListener);
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+      super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+      if (maxWidth > 0 && getMeasuredWidth() > maxWidth) {
+        widthMeasureSpec = MeasureSpec.makeMeasureSpec(maxWidth, MeasureSpec.EXACTLY);
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+      }
     }
 
     @Override

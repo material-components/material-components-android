@@ -16,11 +16,11 @@
 
 package com.google.android.material.internal;
 
-import static androidx.core.util.Preconditions.checkNotNull;
 import static android.text.Layout.Alignment.ALIGN_CENTER;
 import static android.text.Layout.Alignment.ALIGN_NORMAL;
 import static android.text.Layout.Alignment.ALIGN_OPPOSITE;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static androidx.core.util.Preconditions.checkNotNull;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 

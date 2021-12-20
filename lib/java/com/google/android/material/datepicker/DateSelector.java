@@ -20,7 +20,6 @@ import com.google.android.material.R;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcelable;
-import androidx.core.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +30,7 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
+import androidx.core.util.Pair;
 import java.util.Collection;
 
 /**

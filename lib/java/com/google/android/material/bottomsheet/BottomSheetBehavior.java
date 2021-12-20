@@ -32,7 +32,6 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Parcel;
 import android.os.Parcelable;
-import androidx.core.graphics.Insets;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
@@ -55,6 +54,7 @@ import androidx.annotation.StringRes;
 import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams;
+import androidx.core.graphics.Insets;
 import androidx.core.math.MathUtils;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -1469,7 +1469,6 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     if (!paddingBottomSystemWindowInsets
         && !paddingLeftSystemWindowInsets
         && !paddingRightSystemWindowInsets
-        && !paddingTopSystemWindowInsets
         && !marginLeftSystemWindowInsets
         && !marginRightSystemWindowInsets
         && !marginTopSystemWindowInsets

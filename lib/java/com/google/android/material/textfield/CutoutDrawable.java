@@ -16,7 +16,6 @@
 
 package com.google.android.material.textfield;
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -24,9 +23,9 @@ import android.graphics.Paint.Style;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
+import android.graphics.Region.Op;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.shape.MaterialShapeDrawable;
@@ -39,7 +38,6 @@ import com.google.android.material.shape.ShapeAppearanceModel;
 class CutoutDrawable extends MaterialShapeDrawable {
   @NonNull private final Paint cutoutPaint;
   @NonNull private final RectF cutoutBounds;
-  private int savedLayer;
 
   CutoutDrawable() {
     this(null);
@@ -84,70 +82,19 @@ class CutoutDrawable extends MaterialShapeDrawable {
   }
 
   @Override
-  public void draw(@NonNull Canvas canvas) {
-    preDraw(canvas);
-    super.draw(canvas);
-    postDraw(canvas);
-  }
-
-  @Override
   protected void drawStrokeShape(@NonNull Canvas canvas) {
     if (cutoutBounds.isEmpty()) {
       super.drawStrokeShape(canvas);
-      return;
-    }
-    try {
-      Bitmap bitmap =
-          Bitmap.createBitmap(canvas.getWidth(), canvas.getHeight(), Bitmap.Config.ARGB_8888);
-      Canvas tempCanvas = new Canvas(bitmap);
-
-      // Draw the stroke on the temporary canvas
-      super.drawStrokeShape(tempCanvas);
-
-      // Draw mask for the cutout.
-      tempCanvas.drawRect(cutoutBounds, cutoutPaint);
-
-      // Draw the temporary canvas back to the original canvas
-      canvas.drawBitmap(bitmap, 0, 0, null);
-    } catch (RuntimeException e) {
-      // Bitmap is too big to draw, directly paint cutout on the canvas.
-      // TODO(b/205774869): find a better way to only draw part of the stroke to avoid the issue.
-      super.drawStrokeShape(canvas);
-      canvas.drawRect(cutoutBounds, cutoutPaint);
-    }
-  }
-
-  private void preDraw(@NonNull Canvas canvas) {
-    Callback callback = getCallback();
-
-    if (useHardwareLayer(callback)) {
-      View viewCallback = (View) callback;
-      // Make sure we're using a hardware layer.
-      if (viewCallback.getLayerType() != View.LAYER_TYPE_HARDWARE) {
-        viewCallback.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+    } else {
+      // Saves the canvas so we can restore the clip after drawing the stroke.
+      canvas.save();
+      if (VERSION.SDK_INT >= VERSION_CODES.O) {
+        canvas.clipOutRect(cutoutBounds);
+      } else {
+        canvas.clipRect(cutoutBounds, Op.DIFFERENCE);
       }
-    } else {
-      // If we're not using a hardware layer, save the canvas layer.
-      saveCanvasLayer(canvas);
+      super.drawStrokeShape(canvas);
+      canvas.restore();
     }
-  }
-
-  private void saveCanvasLayer(@NonNull Canvas canvas) {
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      savedLayer = canvas.saveLayer(0, 0, canvas.getWidth(), canvas.getHeight(), null);
-    } else {
-      savedLayer =
-          canvas.saveLayer(0, 0, canvas.getWidth(), canvas.getHeight(), null, Canvas.ALL_SAVE_FLAG);
-    }
-  }
-
-  private void postDraw(@NonNull Canvas canvas) {
-    if (!useHardwareLayer(getCallback())) {
-      canvas.restoreToCount(savedLayer);
-    }
-  }
-
-  private boolean useHardwareLayer(Callback callback) {
-    return callback instanceof View;
   }
 }
