@@ -27,5 +27,10 @@
   <dimen name="m3_alert_dialog_corner_size">28dp</dimen>
   <dimen name="m3_alert_dialog_icon_size">24dp</dimen>
   <dimen name="m3_alert_dialog_icon_margin">16dp</dimen>
-  <dimen name="m3_alert_dialog_title_bottom_margin">10dp</dimen>
+  <dimen name="m3_alert_dialog_title_bottom_margin">16dp</dimen>
+
+  <!-- equals 24dp - @dimen/m3_btn_padding_top (6dp) - @dimen/m3_btn_inset (4dp) -->
+  <dimen name="m3_alert_dialog_action_top_padding">14dp</dimen>
+  <!-- equals 24dp - @dimen/m3_btn_padding_bottom (6dp) - @dimen/m3_btn_inset (4dp) -->
+  <dimen name="m3_alert_dialog_action_bottom_padding">14dp</dimen>
 </resources>

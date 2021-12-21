@@ -31,8 +31,8 @@
       android:orientation="horizontal"
       android:paddingLeft="?attr/dialogPreferredPadding"
       android:paddingRight="?attr/dialogPreferredPadding"
-      android:paddingTop="18dp"
-      android:paddingBottom="18dp">
+      android:paddingTop="@dimen/m3_alert_dialog_action_top_padding"
+      android:paddingBottom="@dimen/m3_alert_dialog_action_bottom_padding">
 
     <Button
         android:id="@android:id/button3"
