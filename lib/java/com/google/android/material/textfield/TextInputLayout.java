@@ -1454,9 +1454,12 @@ public class TextInputLayout extends LinearLayout {
     onApplyBoxBackgroundMode();
     setTextInputAccessibilityDelegate(new AccessibilityDelegate(this));
 
-    // Use the EditText's typeface, and its text size for our expanded text.
+    // Use the EditText's typeface, text size, and letter spacing for our expanded text.
     collapsingTextHelper.setTypefaces(this.editText.getTypeface());
     collapsingTextHelper.setExpandedTextSize(this.editText.getTextSize());
+    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+      collapsingTextHelper.setExpandedLetterSpacing(this.editText.getLetterSpacing());
+    }
 
     final int editTextGravity = this.editText.getGravity();
     collapsingTextHelper.setCollapsedTextGravity(

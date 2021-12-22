@@ -229,6 +229,13 @@ public final class CollapsingTextHelper {
     }
   }
 
+  public void setExpandedLetterSpacing(float letterSpacing) {
+    if (expandedLetterSpacing != letterSpacing) {
+      expandedLetterSpacing = letterSpacing;
+      recalculate();
+    }
+  }
+
   public void setExpandedBounds(int left, int top, int right, int bottom) {
     if (!rectEquals(expandedBounds, left, top, right, bottom)) {
       expandedBounds.set(left, top, right, bottom);
