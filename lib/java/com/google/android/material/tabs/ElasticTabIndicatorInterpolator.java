@@ -44,7 +44,7 @@ class ElasticTabIndicatorInterpolator extends TabIndicatorInterpolator {
   }
 
   @Override
-  void setIndicatorBoundsForOffset(
+  void updateIndicatorForOffset(
       TabLayout tabLayout,
       View startTitle,
       View endTitle,

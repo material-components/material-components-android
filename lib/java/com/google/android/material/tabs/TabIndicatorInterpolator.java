@@ -37,9 +37,9 @@ import com.google.android.material.tabs.TabLayout.TabView;
  * TabLayout#isTabIndicatorFullWidth()} and linearly move the indicator between tabs.
  *
  * <p>Subclasses can override {@link #setIndicatorBoundsForTab(TabLayout, View, Drawable)} and
- * {@link #setIndicatorBoundsForOffset(TabLayout, View, View, float, Drawable)} (TabLayout, View,
- * View, float, Drawable)} to define how the indicator should be drawn for a single tab or at any
- * point between two tabs.
+ * {@link #updateIndicatorForOffset(TabLayout, View, View, float, Drawable)} (TabLayout, View, View,
+ * float, Drawable)} to define how the indicator should be drawn for a single tab or at any point
+ * between two tabs.
  *
  * <p>Additionally, subclasses can use the provided helpers {@link
  * #calculateIndicatorWidthForTab(TabLayout, View)} and {@link
@@ -152,7 +152,7 @@ class TabIndicatorInterpolator {
    * @param indicator The drawable to be drawn to indicate the selected tab. Update the drawable's
    *     bounds, color, etc as {@code offset} changes to show the indicator in the correct position.
    */
-  void setIndicatorBoundsForOffset(
+  void updateIndicatorForOffset(
       TabLayout tabLayout,
       View startTitle,
       View endTitle,
