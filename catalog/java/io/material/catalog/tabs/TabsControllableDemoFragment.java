@@ -130,6 +130,11 @@ public class TabsControllableDemoFragment extends DemoFragment {
     tabsAnimationModeElasticButton.setOnClickListener(
         v -> setAllTabAnimationModes(TabLayout.INDICATOR_ANIMATION_MODE_ELASTIC));
 
+    RadioButton tabsAnimationModeFadeButton =
+        view.findViewById(R.id.tabs_animation_mode_fade_button);
+    tabsAnimationModeFadeButton.setOnClickListener(
+        v -> setAllTabAnimationModes(TabLayout.INDICATOR_ANIMATION_MODE_FADE));
+
     SwitchCompat inlineToggle = view.findViewById(R.id.toggle_inline_switch);
     inlineToggle.setOnCheckedChangeListener(
         (buttonView, isChecked) -> setAllTabLayoutInline(isChecked));
