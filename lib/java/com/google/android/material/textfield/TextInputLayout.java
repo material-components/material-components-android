@@ -271,9 +271,7 @@ public class TextInputLayout extends LinearLayout {
 
   @NonNull private final CheckableImageButton startIconView;
   private ColorStateList startIconTintList;
-  private boolean hasStartIconTintList;
   private PorterDuff.Mode startIconTintMode;
-  private boolean hasStartIconTintMode;
   @Nullable private Drawable startDummyDrawable;
   private int startDummyDrawableWidth;
   private OnLongClickListener startIconOnLongClickListener;
@@ -388,9 +386,7 @@ public class TextInputLayout extends LinearLayout {
   private final LinkedHashSet<OnEndIconChangedListener> endIconChangedListeners =
       new LinkedHashSet<>();
   private ColorStateList endIconTintList;
-  private boolean hasEndIconTintList;
   private PorterDuff.Mode endIconTintMode;
-  private boolean hasEndIconTintMode;
   @Nullable private Drawable endDummyDrawable;
   private int endDummyDrawableWidth;
   private Drawable originalEditTextEndDrawable;
@@ -398,6 +394,7 @@ public class TextInputLayout extends LinearLayout {
   private OnLongClickListener errorIconOnLongClickListener;
   @NonNull private final CheckableImageButton errorIconView;
   private ColorStateList errorIconTintList;
+  private PorterDuff.Mode errorIconTintMode;
 
   private ColorStateList defaultHintTextColor;
   private ColorStateList focusedTextColor;
@@ -445,25 +442,45 @@ public class TextInputLayout extends LinearLayout {
     setAddStatesFromChildren(true);
 
     inputFrame = new FrameLayout(context);
-    inputFrame.setAddStatesFromChildren(true);
-    addView(inputFrame);
+    endIconFrame = new FrameLayout(context);
+
     startLayout = new LinearLayout(context);
+    endLayout = new LinearLayout(context);
+
+    prefixTextView = new AppCompatTextView(context);
+    suffixTextView = new AppCompatTextView(context);
+
+    startLayout.setVisibility(GONE);
+    endLayout.setVisibility(GONE);
+    endIconFrame.setVisibility(GONE);
+    prefixTextView.setVisibility(GONE);
+    suffixTextView.setVisibility(GONE);
+
+    final LayoutInflater layoutInflater = LayoutInflater.from(context);
+    startIconView =
+        (CheckableImageButton)
+            layoutInflater.inflate(R.layout.design_text_input_start_icon, startLayout, false);
+    errorIconView =
+        (CheckableImageButton)
+            layoutInflater.inflate(R.layout.design_text_input_end_icon, endLayout, false);
+    endIconView =
+        (CheckableImageButton)
+            layoutInflater.inflate(R.layout.design_text_input_end_icon, endIconFrame, false);
+
+    inputFrame.setAddStatesFromChildren(true);
+
     startLayout.setOrientation(HORIZONTAL);
     startLayout.setLayoutParams(
         new FrameLayout.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.MATCH_PARENT,
             Gravity.START | Gravity.LEFT));
-    inputFrame.addView(startLayout);
-    endLayout = new LinearLayout(context);
     endLayout.setOrientation(HORIZONTAL);
     endLayout.setLayoutParams(
         new FrameLayout.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.MATCH_PARENT,
             Gravity.END | Gravity.RIGHT));
-    inputFrame.addView(endLayout);
-    endIconFrame = new FrameLayout(context);
     endIconFrame.setLayoutParams(
         new FrameLayout.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -613,30 +630,26 @@ public class TextInputLayout extends LinearLayout {
     final CharSequence errorContentDescription =
         a.getText(R.styleable.TextInputLayout_errorContentDescription);
     final boolean errorEnabled = a.getBoolean(R.styleable.TextInputLayout_errorEnabled, false);
+
     // Initialize error icon view.
-    errorIconView =
-        (CheckableImageButton)
-            LayoutInflater.from(getContext())
-                .inflate(R.layout.design_text_input_end_icon, endLayout, false);
     errorIconView.setId(R.id.text_input_error_icon);
-    errorIconView.setVisibility(GONE);
     if (MaterialResources.isFontScaleAtLeast1_3(context)) {
       ViewGroup.MarginLayoutParams lp =
           (ViewGroup.MarginLayoutParams) errorIconView.getLayoutParams();
       MarginLayoutParamsCompat.setMarginStart(lp, 0);
     }
-    if (a.hasValue(R.styleable.TextInputLayout_errorIconDrawable)) {
-      setErrorIconDrawable(a.getDrawable(R.styleable.TextInputLayout_errorIconDrawable));
-    }
     if (a.hasValue(R.styleable.TextInputLayout_errorIconTint)) {
-      setErrorIconTintList(
+      errorIconTintList =
           MaterialResources.getColorStateList(
-              context, a, R.styleable.TextInputLayout_errorIconTint));
+              context, a, R.styleable.TextInputLayout_errorIconTint);
     }
     if (a.hasValue(R.styleable.TextInputLayout_errorIconTintMode)) {
-      setErrorIconTintMode(
+      errorIconTintMode =
           ViewUtils.parseTintMode(
-              a.getInt(R.styleable.TextInputLayout_errorIconTintMode, -1), null));
+              a.getInt(R.styleable.TextInputLayout_errorIconTintMode, -1), null);
+    }
+    if (a.hasValue(R.styleable.TextInputLayout_errorIconDrawable)) {
+      setErrorIconDrawable(a.getDrawable(R.styleable.TextInputLayout_errorIconDrawable));
     }
     errorIconView.setContentDescription(
         getResources().getText(R.string.error_icon_content_description));
@@ -671,11 +684,6 @@ public class TextInputLayout extends LinearLayout {
         a.getResourceId(R.styleable.TextInputLayout_counterOverflowTextAppearance, 0);
 
     // Initialize start icon view.
-    startIconView =
-        (CheckableImageButton)
-            LayoutInflater.from(getContext())
-                .inflate(R.layout.design_text_input_start_icon, startLayout, false);
-    startIconView.setVisibility(GONE);
     if (MaterialResources.isFontScaleAtLeast1_3(context)) {
       ViewGroup.MarginLayoutParams lp =
           (ViewGroup.MarginLayoutParams) startIconView.getLayoutParams();
@@ -683,6 +691,18 @@ public class TextInputLayout extends LinearLayout {
     }
     setStartIconOnClickListener(null);
     setStartIconOnLongClickListener(null);
+    // Default tint for a start icon or value specified by user.
+    if (a.hasValue(R.styleable.TextInputLayout_startIconTint)) {
+      startIconTintList =
+          MaterialResources.getColorStateList(
+              context, a, R.styleable.TextInputLayout_startIconTint);
+    }
+    // Default tint mode for a start icon or value specified by user.
+    if (a.hasValue(R.styleable.TextInputLayout_startIconTintMode)) {
+      startIconTintMode =
+          ViewUtils.parseTintMode(
+              a.getInt(R.styleable.TextInputLayout_startIconTintMode, -1), null);
+    }
     // Set up start icon if any.
     if (a.hasValue(R.styleable.TextInputLayout_startIconDrawable)) {
       setStartIconDrawable(a.getDrawable(R.styleable.TextInputLayout_startIconDrawable));
@@ -692,29 +712,11 @@ public class TextInputLayout extends LinearLayout {
       }
       setStartIconCheckable(a.getBoolean(R.styleable.TextInputLayout_startIconCheckable, true));
     }
-    // Default tint for a start icon or value specified by user.
-    if (a.hasValue(R.styleable.TextInputLayout_startIconTint)) {
-      setStartIconTintList(
-          MaterialResources.getColorStateList(
-              context, a, R.styleable.TextInputLayout_startIconTint));
-    }
-    // Default tint mode for a start icon or value specified by user.
-    if (a.hasValue(R.styleable.TextInputLayout_startIconTintMode)) {
-      setStartIconTintMode(
-          ViewUtils.parseTintMode(
-              a.getInt(R.styleable.TextInputLayout_startIconTintMode, -1), null));
-    }
 
     setBoxBackgroundMode(
         a.getInt(R.styleable.TextInputLayout_boxBackgroundMode, BOX_BACKGROUND_NONE));
 
     // Initialize end icon view.
-    endIconView =
-        (CheckableImageButton)
-            LayoutInflater.from(getContext())
-                .inflate(R.layout.design_text_input_end_icon, endIconFrame, false);
-    endIconFrame.addView(endIconView);
-    endIconView.setVisibility(GONE);
     if (MaterialResources.isFontScaleAtLeast1_3(context)) {
       ViewGroup.MarginLayoutParams lp =
           (ViewGroup.MarginLayoutParams) endIconView.getLayoutParams();
@@ -734,6 +736,20 @@ public class TextInputLayout extends LinearLayout {
     endIconDelegates.append(
         END_ICON_DROPDOWN_MENU, new DropdownMenuEndIconDelegate(this, endIconDrawableId));
     // Set up the end icon if any.
+    if (!a.hasValue(R.styleable.TextInputLayout_passwordToggleEnabled)) {
+      // Default tint for any end icon or value specified by user
+      if (a.hasValue(R.styleable.TextInputLayout_endIconTint)) {
+        endIconTintList =
+            MaterialResources.getColorStateList(
+                context, a, R.styleable.TextInputLayout_endIconTint);
+      }
+      // Default tint mode for any end icon or value specified by user
+      if (a.hasValue(R.styleable.TextInputLayout_endIconTintMode)) {
+        endIconTintMode =
+            ViewUtils.parseTintMode(
+                a.getInt(R.styleable.TextInputLayout_endIconTintMode, -1), null);
+      }
+    }
     if (a.hasValue(R.styleable.TextInputLayout_endIconMode)) {
       // Specific defaults depending on which end icon mode is set
       setEndIconMode(a.getInt(R.styleable.TextInputLayout_endIconMode, END_ICON_NONE));
@@ -744,40 +760,24 @@ public class TextInputLayout extends LinearLayout {
       setEndIconCheckable(a.getBoolean(R.styleable.TextInputLayout_endIconCheckable, true));
     } else if (a.hasValue(R.styleable.TextInputLayout_passwordToggleEnabled)) {
       // Support for deprecated attributes related to the password toggle end icon
+      if (a.hasValue(R.styleable.TextInputLayout_passwordToggleTint)) {
+        endIconTintList =
+            MaterialResources.getColorStateList(
+                context, a, R.styleable.TextInputLayout_passwordToggleTint);
+      }
+      if (a.hasValue(R.styleable.TextInputLayout_passwordToggleTintMode)) {
+        endIconTintMode =
+            ViewUtils.parseTintMode(
+                a.getInt(R.styleable.TextInputLayout_passwordToggleTintMode, -1), null);
+      }
       boolean passwordToggleEnabled =
           a.getBoolean(R.styleable.TextInputLayout_passwordToggleEnabled, false);
       setEndIconMode(passwordToggleEnabled ? END_ICON_PASSWORD_TOGGLE : END_ICON_NONE);
       setEndIconContentDescription(
           a.getText(R.styleable.TextInputLayout_passwordToggleContentDescription));
-      if (a.hasValue(R.styleable.TextInputLayout_passwordToggleTint)) {
-        setEndIconTintList(
-            MaterialResources.getColorStateList(
-                context, a, R.styleable.TextInputLayout_passwordToggleTint));
-      }
-      if (a.hasValue(R.styleable.TextInputLayout_passwordToggleTintMode)) {
-        setEndIconTintMode(
-            ViewUtils.parseTintMode(
-                a.getInt(R.styleable.TextInputLayout_passwordToggleTintMode, -1), null));
-      }
-    }
-
-    if (!a.hasValue(R.styleable.TextInputLayout_passwordToggleEnabled)) {
-      // Default tint for any end icon or value specified by user
-      if (a.hasValue(R.styleable.TextInputLayout_endIconTint)) {
-        setEndIconTintList(
-            MaterialResources.getColorStateList(
-                context, a, R.styleable.TextInputLayout_endIconTint));
-      }
-      // Default tint mode for any end icon or value specified by user
-      if (a.hasValue(R.styleable.TextInputLayout_endIconTintMode)) {
-        setEndIconTintMode(
-            ViewUtils.parseTintMode(
-                a.getInt(R.styleable.TextInputLayout_endIconTintMode, -1), null));
-      }
     }
 
     // Set up prefix view.
-    prefixTextView = new AppCompatTextView(context);
     prefixTextView.setId(R.id.textinput_prefix_text);
     prefixTextView.setLayoutParams(
         new FrameLayout.LayoutParams(
@@ -785,11 +785,7 @@ public class TextInputLayout extends LinearLayout {
     ViewCompat.setAccessibilityLiveRegion(
         prefixTextView, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
 
-    startLayout.addView(startIconView);
-    startLayout.addView(prefixTextView);
-
     // Set up suffix view.
-    suffixTextView = new AppCompatTextView(context);
     suffixTextView.setId(R.id.textinput_suffix_text);
     suffixTextView.setLayoutParams(
         new FrameLayout.LayoutParams(
@@ -799,23 +795,15 @@ public class TextInputLayout extends LinearLayout {
     ViewCompat.setAccessibilityLiveRegion(
         suffixTextView, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
 
-    endLayout.addView(suffixTextView);
-    endLayout.addView(errorIconView);
-    endLayout.addView(endIconFrame);
-
-    setHelperTextEnabled(helperTextEnabled);
-    setHelperText(helperText);
-    setHelperTextTextAppearance(helperTextTextAppearance);
-    setErrorEnabled(errorEnabled);
-    setErrorTextAppearance(errorTextAppearance);
     setErrorContentDescription(errorContentDescription);
-    setCounterTextAppearance(counterTextAppearance);
+
     setCounterOverflowTextAppearance(counterOverflowTextAppearance);
+    setHelperTextTextAppearance(helperTextTextAppearance);
+    setErrorTextAppearance(errorTextAppearance);
+    setCounterTextAppearance(counterTextAppearance);
     setPlaceholderText(placeholderText);
     setPlaceholderTextAppearance(placeholderTextAppearance);
-    setPrefixText(prefixText);
     setPrefixTextAppearance(prefixTextAppearance);
-    setSuffixText(suffixText);
     setSuffixTextAppearance(suffixTextAppearance);
 
     if (a.hasValue(R.styleable.TextInputLayout_errorTextColor)) {
@@ -844,7 +832,6 @@ public class TextInputLayout extends LinearLayout {
     if (a.hasValue(R.styleable.TextInputLayout_suffixTextColor)) {
       setSuffixTextColor(a.getColorStateList(R.styleable.TextInputLayout_suffixTextColor));
     }
-    setCounterEnabled(counterEnabled);
 
     setEnabled(a.getBoolean(R.styleable.TextInputLayout_android_enabled, true));
 
@@ -859,6 +846,28 @@ public class TextInputLayout extends LinearLayout {
     if (VERSION.SDK_INT >= VERSION_CODES.O) {
       ViewCompat.setImportantForAutofill(this, View.IMPORTANT_FOR_AUTOFILL_YES);
     }
+
+    startLayout.addView(startIconView);
+    startLayout.addView(prefixTextView);
+
+    endIconFrame.addView(endIconView);
+
+    endLayout.addView(suffixTextView);
+    endLayout.addView(errorIconView);
+    endLayout.addView(endIconFrame);
+
+    inputFrame.addView(startLayout);
+    inputFrame.addView(endLayout);
+
+    addView(inputFrame);
+
+    setHelperTextEnabled(helperTextEnabled);
+    setErrorEnabled(errorEnabled);
+    setCounterEnabled(counterEnabled);
+
+    setHelperText(helperText);
+    setPrefixText(prefixText);
+    setSuffixText(suffixText);
   }
 
   @Override
@@ -2038,7 +2047,8 @@ public class TextInputLayout extends LinearLayout {
    */
   public void setErrorIconDrawable(@Nullable Drawable errorIconDrawable) {
     errorIconView.setImageDrawable(errorIconDrawable);
-    setErrorIconVisible(errorIconDrawable != null && indicatorViewController.isErrorEnabled());
+    updateErrorIconVisibility();
+    applyIconTint(errorIconView, errorIconTintList, errorIconTintMode);
   }
 
   /**
@@ -2059,15 +2069,9 @@ public class TextInputLayout extends LinearLayout {
    * @attr ref com.google.android.material.R.styleable#TextInputLayout_errorIconTint
    */
   public void setErrorIconTintList(@Nullable ColorStateList errorIconTintList) {
-    this.errorIconTintList = errorIconTintList;
-    Drawable icon = errorIconView.getDrawable();
-    if (icon != null) {
-      icon = DrawableCompat.wrap(icon).mutate();
-      DrawableCompat.setTintList(icon, errorIconTintList);
-    }
-
-    if (errorIconView.getDrawable() != icon) {
-      errorIconView.setImageDrawable(icon);
+    if (this.errorIconTintList != errorIconTintList) {
+      this.errorIconTintList = errorIconTintList;
+      applyIconTint(errorIconView, this.errorIconTintList, errorIconTintMode);
     }
   }
 
@@ -2079,14 +2083,9 @@ public class TextInputLayout extends LinearLayout {
    * @attr ref com.google.android.material.R.styleable#TextInputLayout_errorIconTintMode
    */
   public void setErrorIconTintMode(@Nullable PorterDuff.Mode errorIconTintMode) {
-    Drawable icon = errorIconView.getDrawable();
-    if (icon != null) {
-      icon = DrawableCompat.wrap(icon).mutate();
-      DrawableCompat.setTintMode(icon, errorIconTintMode);
-    }
-
-    if (errorIconView.getDrawable() != icon) {
-      errorIconView.setImageDrawable(icon);
+    if (this.errorIconTintMode != errorIconTintMode) {
+      this.errorIconTintMode = errorIconTintMode;
+      applyIconTint(errorIconView, errorIconTintList, this.errorIconTintMode);
     }
   }
 
@@ -2481,6 +2480,7 @@ public class TextInputLayout extends LinearLayout {
 
   private void updatePrefixTextVisibility() {
     prefixTextView.setVisibility((prefixText != null && !isHintExpanded()) ? VISIBLE : GONE);
+    updateStartLayoutVisibility();
     updateDummyDrawables();
   }
 
@@ -2572,6 +2572,7 @@ public class TextInputLayout extends LinearLayout {
     if (oldSuffixVisibility != suffixTextView.getVisibility()) {
       getEndIconDelegate().onSuffixVisibilityChanged(visible);
     }
+    updateEndLayoutVisibility();
     updateDummyDrawables();
   }
 
@@ -3195,7 +3196,7 @@ public class TextInputLayout extends LinearLayout {
   public void setStartIconDrawable(@Nullable Drawable startIconDrawable) {
     startIconView.setImageDrawable(startIconDrawable);
     if (startIconDrawable != null) {
-      applyStartIconTint();
+      applyIconTint(startIconView, startIconTintList, startIconTintMode);
       setStartIconVisible(true);
       refreshStartIconDrawableState();
     } else {
@@ -3250,6 +3251,7 @@ public class TextInputLayout extends LinearLayout {
   public void setStartIconVisible(boolean visible) {
     if (isStartIconVisible() != visible) {
       startIconView.setVisibility(visible ? View.VISIBLE : View.GONE);
+      updateStartLayoutVisibility();
       updatePrefixTextViewPadding();
       updateDummyDrawables();
     }
@@ -3349,8 +3351,7 @@ public class TextInputLayout extends LinearLayout {
   public void setStartIconTintList(@Nullable ColorStateList startIconTintList) {
     if (this.startIconTintList != startIconTintList) {
       this.startIconTintList = startIconTintList;
-      hasStartIconTintList = true;
-      applyStartIconTint();
+      applyIconTint(startIconView, this.startIconTintList, startIconTintMode);
     }
   }
 
@@ -3365,8 +3366,7 @@ public class TextInputLayout extends LinearLayout {
   public void setStartIconTintMode(@Nullable PorterDuff.Mode startIconTintMode) {
     if (this.startIconTintMode != startIconTintMode) {
       this.startIconTintMode = startIconTintMode;
-      hasStartIconTintMode = true;
-      applyStartIconTint();
+      applyIconTint(startIconView, startIconTintList, this.startIconTintMode);
     }
   }
 
@@ -3393,7 +3393,7 @@ public class TextInputLayout extends LinearLayout {
               + " is not supported by the end icon mode "
               + endIconMode);
     }
-    applyEndIconTint();
+    applyIconTint(endIconView, endIconTintList, endIconTintMode);
   }
 
   /**
@@ -3472,6 +3472,7 @@ public class TextInputLayout extends LinearLayout {
   public void setEndIconVisible(boolean visible) {
     if (isEndIconVisible() != visible) {
       endIconView.setVisibility(visible ? View.VISIBLE : View.GONE);
+      updateEndLayoutVisibility();
       updateSuffixTextViewPadding();
       updateDummyDrawables();
     }
@@ -3551,7 +3552,7 @@ public class TextInputLayout extends LinearLayout {
   public void setEndIconDrawable(@Nullable Drawable endIconDrawable) {
     endIconView.setImageDrawable(endIconDrawable);
     if (endIconDrawable != null) {
-      applyEndIconTint();
+      applyIconTint(endIconView, endIconTintList, endIconTintMode);
       refreshEndIconDrawableState();
     }
   }
@@ -3621,8 +3622,7 @@ public class TextInputLayout extends LinearLayout {
   public void setEndIconTintList(@Nullable ColorStateList endIconTintList) {
     if (this.endIconTintList != endIconTintList) {
       this.endIconTintList = endIconTintList;
-      hasEndIconTintList = true;
-      applyEndIconTint();
+      applyIconTint(endIconView, this.endIconTintList, endIconTintMode);
     }
   }
 
@@ -3637,8 +3637,7 @@ public class TextInputLayout extends LinearLayout {
   public void setEndIconTintMode(@Nullable PorterDuff.Mode endIconTintMode) {
     if (this.endIconTintMode != endIconTintMode) {
       this.endIconTintMode = endIconTintMode;
-      hasEndIconTintMode = true;
-      applyEndIconTint();
+      applyIconTint(endIconView, endIconTintList, this.endIconTintMode);
     }
   }
 
@@ -3839,8 +3838,7 @@ public class TextInputLayout extends LinearLayout {
   @Deprecated
   public void setPasswordVisibilityToggleTintList(@Nullable ColorStateList tintList) {
     endIconTintList = tintList;
-    hasEndIconTintList = true;
-    applyEndIconTint();
+    applyIconTint(endIconView, endIconTintList, endIconTintMode);
   }
 
   /**
@@ -3855,8 +3853,7 @@ public class TextInputLayout extends LinearLayout {
   @Deprecated
   public void setPasswordVisibilityToggleTintMode(@Nullable PorterDuff.Mode mode) {
     endIconTintMode = mode;
-    hasEndIconTintMode = true;
-    applyEndIconTint();
+    applyIconTint(endIconView, endIconTintList, endIconTintMode);
   }
 
   /**
@@ -3894,6 +3891,23 @@ public class TextInputLayout extends LinearLayout {
     }
   }
 
+  private void updateEndLayoutVisibility() {
+    // Sync endIconFrame's visibility with the endIconView's.
+    endIconFrame.setVisibility(
+        (endIconView.getVisibility() == VISIBLE && !isErrorIconVisible()) ? VISIBLE : GONE);
+
+    boolean shouldBeVisible =
+        isEndIconVisible() || isErrorIconVisible() || suffixTextView.getVisibility() == VISIBLE;
+    endLayout.setVisibility(shouldBeVisible ? VISIBLE : GONE);
+  }
+
+  private void updateStartLayoutVisibility() {
+    // Set startLayout to visible if start icon or prefix text is present.
+    boolean shouldBeVisible =
+        startIconView.getVisibility() == VISIBLE || prefixTextView.getVisibility() == VISIBLE;
+    startLayout.setVisibility(shouldBeVisible ? VISIBLE : GONE);
+  }
+
   @NonNull
   CheckableImageButton getEndIconView() {
     return endIconView;
@@ -3908,15 +3922,6 @@ public class TextInputLayout extends LinearLayout {
     for (OnEditTextAttachedListener listener : editTextAttachedListeners) {
       listener.onEditTextAttached(this);
     }
-  }
-
-  private void applyStartIconTint() {
-    applyIconTint(
-        startIconView,
-        hasStartIconTintList,
-        startIconTintList,
-        hasStartIconTintMode,
-        startIconTintMode);
   }
 
   private boolean hasEndIcon() {
@@ -3938,13 +3943,8 @@ public class TextInputLayout extends LinearLayout {
           endIconDrawable, indicatorViewController.getErrorViewCurrentTextColor());
       endIconView.setImageDrawable(endIconDrawable);
     } else {
-      applyEndIconTint();
+      applyIconTint(endIconView, endIconTintList, endIconTintMode);
     }
-  }
-
-  private void applyEndIconTint() {
-    applyIconTint(
-        endIconView, hasEndIconTintList, endIconTintList, hasEndIconTintMode, endIconTintMode);
   }
 
   /*
@@ -4053,18 +4053,13 @@ public class TextInputLayout extends LinearLayout {
 
   private void applyIconTint(
       @NonNull CheckableImageButton iconView,
-      boolean hasIconTintList,
       ColorStateList iconTintList,
-      boolean hasIconTintMode,
       PorterDuff.Mode iconTintMode) {
     Drawable icon = iconView.getDrawable();
-    if (icon != null && (hasIconTintList || hasIconTintMode)) {
+    if (icon != null) {
       icon = DrawableCompat.wrap(icon).mutate();
-
-      if (hasIconTintList) {
-        DrawableCompat.setTintList(icon, iconTintList);
-      }
-      if (hasIconTintMode) {
+      DrawableCompat.setTintList(icon, iconTintList);
+      if (iconTintMode != null) {
         DrawableCompat.setTintMode(icon, iconTintMode);
       }
     }
@@ -4295,10 +4290,7 @@ public class TextInputLayout extends LinearLayout {
       boxStrokeColor = defaultStrokeColor;
     }
 
-    setErrorIconVisible(
-        getErrorIconDrawable() != null
-            && indicatorViewController.isErrorEnabled()
-            && indicatorViewController.errorShouldBeShown());
+    updateErrorIconVisibility();
 
     // Update icons tints
     refreshErrorIconDrawableState();
@@ -4358,9 +4350,13 @@ public class TextInputLayout extends LinearLayout {
     }
   }
 
-  private void setErrorIconVisible(boolean errorIconVisible) {
-    errorIconView.setVisibility(errorIconVisible ? VISIBLE : GONE);
-    endIconFrame.setVisibility(errorIconVisible ? GONE : VISIBLE);
+  private void updateErrorIconVisibility() {
+    boolean visible =
+        getErrorIconDrawable() != null
+            && indicatorViewController.isErrorEnabled()
+            && indicatorViewController.errorShouldBeShown();
+    errorIconView.setVisibility(visible ? VISIBLE : GONE);
+    updateEndLayoutVisibility();
     updateSuffixTextViewPadding();
     if (!hasEndIcon()) {
       updateDummyDrawables();
