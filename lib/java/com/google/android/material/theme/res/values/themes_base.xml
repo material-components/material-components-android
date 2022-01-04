@@ -24,7 +24,6 @@
 
     <!-- Color palettes -->
     <item name="colorPrimary">@color/m3_sys_color_light_primary</item>
-    <item name="colorPrimaryDark">?attr/colorPrimary</item>
     <item name="colorOnPrimary">@color/m3_sys_color_light_on_primary</item>
     <item name="colorPrimaryInverse">@color/m3_sys_color_light_inverse_primary</item>
     <item name="colorPrimaryContainer">@color/m3_sys_color_light_primary_container</item>
@@ -70,6 +69,11 @@
     <item name="android:textColorLink">?attr/colorPrimary</item>
     <item name="android:textColorLinkInverse">?attr/colorPrimaryInverse</item>
     <item name="android:textColorAlertDialogListItem">@color/m3_default_color_primary_text</item>
+
+    <!-- Deprecated Colors. -->
+    <item name="colorPrimaryDark">?attr/colorPrimary</item>
+    <item name="colorPrimaryVariant">?attr/colorPrimary</item>
+    <item name="colorSecondaryVariant">?attr/colorSecondary</item>
 
     <!-- Dialog themes. -->
     <item name="alertDialogTheme">@style/ThemeOverlay.Material3.Dialog.Alert</item>
@@ -221,7 +225,6 @@
 
     <!-- Color palettes -->
     <item name="colorPrimary">@color/m3_sys_color_dark_primary</item>
-    <item name="colorPrimaryDark">?attr/colorPrimary</item>
     <item name="colorOnPrimary">@color/m3_sys_color_dark_on_primary</item>
     <item name="colorPrimaryInverse">@color/m3_sys_color_dark_inverse_primary</item>
     <item name="colorPrimaryContainer">@color/m3_sys_color_dark_primary_container</item>
@@ -267,6 +270,11 @@
     <item name="android:textColorLink">?attr/colorPrimary</item>
     <item name="android:textColorLinkInverse">?attr/colorPrimaryInverse</item>
     <item name="android:textColorAlertDialogListItem">@color/m3_dark_default_color_primary_text</item>
+
+    <!-- Deprecated Colors. -->
+    <item name="colorPrimaryDark">?attr/colorPrimary</item>
+    <item name="colorPrimaryVariant">?attr/colorPrimary</item>
+    <item name="colorSecondaryVariant">?attr/colorSecondary</item>
 
     <!-- Dialog themes. -->
     <item name="alertDialogTheme">@style/ThemeOverlay.Material3.Dialog.Alert</item>
