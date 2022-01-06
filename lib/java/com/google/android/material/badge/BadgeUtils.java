@@ -33,7 +33,6 @@ import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
-import com.google.android.material.badge.BadgeDrawable.SavedState;
 import com.google.android.material.internal.ParcelableSparseArray;
 import com.google.android.material.internal.ToolbarUtils;
 
@@ -228,12 +227,12 @@ public class BadgeUtils {
   }
 
   /**
-   * Given a map of int keys to {@link BadgeDrawable.SavedState SavedStates}, creates a parcelable
+   * Given a map of int keys to {@link BadgeState.State SavedStates}, creates a parcelable
    * map of int keys to {@link BadgeDrawable BadgeDrawbles}. Useful for state restoration.
    *
    * @param context Current context
    * @param badgeStates A parcelable {@link SparseArray} that contains a map of int keys (e.g.
-   *     menuItemId) to {@link BadgeDrawable.SavedState states}.
+   *     menuItemId) to {@link BadgeState.State states}.
    * @return A {@link SparseArray} that contains a map of int keys (e.g. menuItemId) to {@code
    *     BadgeDrawable BadgeDrawbles}.
    */
@@ -243,7 +242,7 @@ public class BadgeUtils {
     SparseArray<BadgeDrawable> badgeDrawables = new SparseArray<>(badgeStates.size());
     for (int i = 0; i < badgeStates.size(); i++) {
       int key = badgeStates.keyAt(i);
-      BadgeDrawable.SavedState savedState = (SavedState) badgeStates.valueAt(i);
+      BadgeState.State savedState = (BadgeState.State) badgeStates.valueAt(i);
       if (savedState == null) {
         throw new IllegalArgumentException("BadgeDrawable's savedState cannot be null");
       }
