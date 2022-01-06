@@ -1101,6 +1101,11 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
       this.checked = checked;
       refreshDrawableState();
 
+      // Report checked state change to the parent toggle group, if there is one
+      if (getParent() instanceof MaterialButtonToggleGroup) {
+        ((MaterialButtonToggleGroup) getParent()).onButtonCheckedStateChanged(this, this.checked);
+      }
+
       // Avoid infinite recursions if setChecked() is called from a listener
       if (broadcasting) {
         return;
