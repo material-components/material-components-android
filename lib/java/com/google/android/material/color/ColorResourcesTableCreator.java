@@ -58,7 +58,7 @@ final class ColorResourcesTableCreator {
       new Comparator<ColorResource>() {
         @Override
         public int compare(ColorResource res1, ColorResource res2) {
-          return Short.compare(res1.entryId, res2.entryId);
+          return res1.entryId - res2.entryId;
         }
       };
 
