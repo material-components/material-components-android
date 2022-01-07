@@ -174,7 +174,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   @Nullable private WeakReference<FrameLayout> customBadgeParentRef;
 
   @NonNull
-  public BadgeState.State getSavedState() {
+  BadgeState.State getSavedState() {
     return state.getOverridingState();
   }
 
