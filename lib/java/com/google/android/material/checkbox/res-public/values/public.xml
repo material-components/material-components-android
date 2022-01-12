@@ -18,4 +18,6 @@
 <!-- Definitions of attributes to be exposed as public -->
 <resources>
   <public name="Widget.Material3.CompoundButton.CheckBox" type="style"/>
+
+  <public name="centerIfNoTextEnabled" type="attr"/>
 </resources>

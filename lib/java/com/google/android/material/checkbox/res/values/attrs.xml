@@ -23,5 +23,8 @@
     <attr name="useMaterialThemeColors"/>
     <!-- Tint for the checkbox. -->
     <attr name="buttonTint"/>
+    <!-- Whether the MaterialCheckBox button drawable (checkbox icon) will be
+         centered when there is no text set for the checkbox. Default is true. -->
+    <attr name="centerIfNoTextEnabled" format="boolean"/>
   </declare-styleable>
 </resources>

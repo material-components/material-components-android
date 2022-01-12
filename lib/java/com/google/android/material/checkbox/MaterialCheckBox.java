@@ -23,12 +23,18 @@ import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wra
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.Canvas;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import androidx.appcompat.widget.AppCompatCheckBox;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import androidx.annotation.Nullable;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.widget.CompoundButtonCompat;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.ThemeEnforcement;
+import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialResources;
 
 /**
@@ -52,6 +58,7 @@ public class MaterialCheckBox extends AppCompatCheckBox {
       };
   @Nullable private ColorStateList materialThemeColorsTintList;
   private boolean useMaterialThemeColors;
+  private boolean centerIfNoTextEnabled;
 
   public MaterialCheckBox(Context context) {
     this(context, null);
@@ -81,8 +88,37 @@ public class MaterialCheckBox extends AppCompatCheckBox {
 
     useMaterialThemeColors =
         attributes.getBoolean(R.styleable.MaterialCheckBox_useMaterialThemeColors, false);
+    centerIfNoTextEnabled =
+        attributes.getBoolean(R.styleable.MaterialCheckBox_centerIfNoTextEnabled, true);
 
     attributes.recycle();
+  }
+
+  @Override
+  protected void onDraw(Canvas canvas) {
+    // Horizontally center the button drawable and ripple when there's no text.
+    if (centerIfNoTextEnabled && TextUtils.isEmpty(getText())) {
+      Drawable drawable = CompoundButtonCompat.getButtonDrawable(this);
+      if (drawable != null) {
+        int direction = ViewUtils.isLayoutRtl(this) ? -1 : 1;
+        int dx = (getWidth() - drawable.getIntrinsicWidth()) / 2 * direction;
+
+        int saveCount = canvas.save();
+        canvas.translate(dx, 0);
+        super.onDraw(canvas);
+        canvas.restoreToCount(saveCount);
+
+        if (getBackground() != null) {
+          Rect bounds = drawable.getBounds();
+          DrawableCompat.setHotspotBounds(
+              getBackground(), bounds.left + dx, bounds.top, bounds.right + dx, bounds.bottom);
+        }
+
+        return;
+      }
+    }
+
+    super.onDraw(canvas);
   }
 
   @Override
@@ -111,6 +147,22 @@ public class MaterialCheckBox extends AppCompatCheckBox {
   /** Returns true if this {@link MaterialCheckBox} defaults to colors from a Material Theme. */
   public boolean isUseMaterialThemeColors() {
     return useMaterialThemeColors;
+  }
+
+  /**
+   * Sets whether this {@link MaterialCheckBox} should center the checkbox icon when there is no
+   * text. Default is true.
+   */
+  public void setCenterIfNoTextEnabled(boolean centerIfNoTextEnabled) {
+    this.centerIfNoTextEnabled = centerIfNoTextEnabled;
+  }
+
+  /**
+   * Returns true if this {@link MaterialCheckBox} will center the checkbox icon when there is no
+   * text.
+   */
+  public boolean isCenterIfNoTextEnabled() {
+    return centerIfNoTextEnabled;
   }
 
   private ColorStateList getMaterialThemeColorsTintList() {

@@ -26,4 +26,5 @@
   <string name="cat_checkbox_disabled">Disabled</string>
   <string name="cat_checkbox_enablable_description">Check this checkbox to control the enabled state of the boxes below.</string>
   <string name="cat_checkbox_toggle">Controlled by a checkbox</string>
+  <string name="cat_checkbox_no_text">Below is a checkbox with no text.</string>
 </resources>
