@@ -15,16 +15,6 @@
     limitations under the License.
 -->
 <resources>
-  <!-- MaterialComponents ThemeOverlays for Framework Alert Dialogs. -->
-
-  <style name="Base.ThemeOverlay.MaterialComponents.Dialog.Alert.Framework" parent="@android:style/Theme.Material.Dialog.Alert">
-    <item name="android:buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush</item>
-  </style>
-
-  <style name="Base.ThemeOverlay.MaterialComponents.Light.Dialog.Alert.Framework" parent="@android:style/Theme.Material.Light.Dialog.Alert">
-    <item name="android:buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush</item>
-  </style>
-
   <!-- Themes V21 and above specify an android:alertDialogTheme so that text
        buttons are used instead of filled buttons. The android:alertDialogTheme
        used by default by the framework pre-21 is not public and therefore we

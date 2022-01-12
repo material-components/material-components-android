@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Copyright 2020 The Android Open Source Project
+    Copyright 2022 The Android Open Source Project
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -15,6 +15,9 @@
     limitations under the License.
 -->
 <resources>
+  <style name="Base.ThemeOverlay.MaterialComponents.Dialog" parent="Base.V14.ThemeOverlay.MaterialComponents.Dialog">
+    <item name="android:windowBackground">@drawable/mtrl_dialog_background</item>
+  </style>
 
   <!--
     The default theme overlay used by Material3 for framework
@@ -29,6 +32,17 @@
   <style name="ThemeOverlay.Material3.Light.Dialog.Alert.Framework" parent="ThemeOverlay.MaterialComponents.Light.Dialog.Alert.Framework">
     <item name="android:windowElevation">@dimen/m3_alert_dialog_elevation</item>
     <item name="android:buttonBarButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog.Flush</item>
+  </style>
+
+  <!--
+    MaterialComponents ThemeOverlays for Framework Alert Dialogs.
+  -->
+  <style name="Base.ThemeOverlay.MaterialComponents.Dialog.Alert.Framework" parent="@android:style/Theme.Material.Dialog.Alert">
+    <item name="android:buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush</item>
+  </style>
+
+  <style name="Base.ThemeOverlay.MaterialComponents.Light.Dialog.Alert.Framework" parent="@android:style/Theme.Material.Light.Dialog.Alert">
+    <item name="android:buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush</item>
   </style>
 
   <!--
