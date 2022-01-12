@@ -31,7 +31,7 @@ To use it:
       allprojects {
         repositories {
           google()
-          jcenter()
+          mavenCentral()
         }
       }
     ```
