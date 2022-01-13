@@ -53,7 +53,7 @@ or
 to find the latest version of the library.
 
 **Note:** In order to use the new `Material3` themes and component styles, you
-must depend on version `1.5.0-alpha04` or later.
+should depend on version `1.5.0` or later.
 
 ### New Namespace and AndroidX
 
