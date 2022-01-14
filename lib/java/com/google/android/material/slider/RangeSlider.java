@@ -82,10 +82,19 @@ public class RangeSlider extends BaseSlider<RangeSlider, OnChangeListener, OnSli
    *
    * To check all the current values, use {@see RangeSlider#getValues()}.
    */
-  public interface OnChangeListener extends BaseOnChangeListener<RangeSlider> {}
+  public interface OnChangeListener extends BaseOnChangeListener<RangeSlider> {
+    @Override
+    void onValueChange(@NonNull RangeSlider slider, float value, boolean fromUser);
+  }
 
   /** Interface definition for a callback invoked when a slider's value is changed. */
-  public interface OnSliderTouchListener extends BaseOnSliderTouchListener<RangeSlider> {}
+  public interface OnSliderTouchListener extends BaseOnSliderTouchListener<RangeSlider> {
+    @Override
+    void onStartTrackingTouch(@NonNull RangeSlider slider);
+
+    @Override
+    void onStopTrackingTouch(@NonNull RangeSlider slider);
+  }
 
   /**
    * {@inheritDoc}
