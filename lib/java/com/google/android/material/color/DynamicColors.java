@@ -231,7 +231,8 @@ public class DynamicColors {
       theme = getDefaultThemeOverlay(activity);
     }
     if (theme != 0 && precondition.shouldApplyDynamicColors(activity, theme)) {
-      activity.setTheme(theme);
+      // Use applyStyle() instead of setTheme() due to Force Dark issue.
+      activity.getTheme().applyStyle(theme, /* force= */ true);
     }
   }
 
