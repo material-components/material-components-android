@@ -91,7 +91,8 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
   @StyleRes private int itemTextAppearanceActive;
   private Drawable itemBackground;
   private int itemBackgroundRes;
-  @NonNull private SparseArray<BadgeDrawable> badgeDrawables = new SparseArray<>(ITEM_POOL_SIZE);
+  @NonNull private final SparseArray<BadgeDrawable> badgeDrawables =
+      new SparseArray<>(ITEM_POOL_SIZE);
   private int itemPaddingTop = NO_PADDING;
   private int itemPaddingBottom = NO_PADDING;
   private boolean itemActiveIndicatorEnabled;
@@ -786,8 +787,14 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
     return badgeDrawables;
   }
 
-  void setBadgeDrawables(SparseArray<BadgeDrawable> badgeDrawables) {
-    this.badgeDrawables = badgeDrawables;
+  void restoreBadgeDrawables(SparseArray<BadgeDrawable> badgeDrawables) {
+    for (int i = 0; i < badgeDrawables.size(); i++) {
+      int key = badgeDrawables.keyAt(i);
+      if (this.badgeDrawables.indexOfKey(key) < 0) {
+        // badge doesn't exist yet, restore it
+        this.badgeDrawables.append(key, badgeDrawables.get(key));
+      }
+    }
     if (buttons != null) {
       for (NavigationBarItemView itemView : buttons) {
         itemView.setBadge(badgeDrawables.get(itemView.getId()));

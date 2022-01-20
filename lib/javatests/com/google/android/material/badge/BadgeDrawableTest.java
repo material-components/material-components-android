@@ -29,7 +29,6 @@ import androidx.annotation.StyleRes;
 import androidx.annotation.XmlRes;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.test.core.app.ApplicationProvider;
-import com.google.android.material.badge.BadgeDrawable.SavedState;
 import com.google.android.material.drawable.DrawableUtils;
 import java.util.Locale;
 import org.junit.Before;
@@ -65,7 +64,7 @@ public class BadgeDrawableTest {
     int testBadgeTextColor =
         ResourcesCompat.getColor(context.getResources(), android.R.color.white, context.getTheme());
     BadgeDrawable badgeDrawable = BadgeDrawable.create(context);
-    SavedState drawableState = badgeDrawable.getSavedState();
+    BadgeState.State drawableState = badgeDrawable.getSavedState();
     badgeDrawable.setNumber(TEST_BADGE_NUMBER);
     badgeDrawable.setBadgeGravity(BadgeDrawable.TOP_START);
 
@@ -92,7 +91,7 @@ public class BadgeDrawableTest {
     drawableState.writeToParcel(parcel, drawableState.describeContents());
     parcel.setDataPosition(0);
 
-    SavedState createdFromParcel = SavedState.CREATOR.createFromParcel(parcel);
+    BadgeState.State createdFromParcel = BadgeState.State.CREATOR.createFromParcel(parcel);
     BadgeDrawable restoredBadgeDrawable =
         BadgeDrawable.createFromSavedState(context, createdFromParcel);
     assertThat(restoredBadgeDrawable.getNumber()).isEqualTo(TEST_BADGE_NUMBER);
