@@ -32,6 +32,7 @@ page.
 API and source code:
 
 *   `MaterialDivider`
+    *   [Class definition](https://developer.android.com/reference/com/google/android/material/divider/MaterialDivider)
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/divider/MaterialDivider.java)
 
 The `MaterialDivider` is a view that can be used in layouts to separate content
@@ -75,6 +76,7 @@ divider.setDividerInsetEnd(insetEnd)
 API and source code:
 
 *   `MaterialDividerItemDecoration`
+    *   [Class definition](https://developer.android.com/reference/com/google/android/material/divider/MaterialDividerItemDecoration)
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/divider/MaterialDividerItemDecoration.java)
 
 The `MaterialDividerItemDecoration` is a `RecyclerView.ItemDecoration`, similar
@@ -154,8 +156,10 @@ Dividers support
 API and source code:
 
 *   `MaterialDivider`
+    *   [Class definition](https://developer.android.com/reference/com/google/android/material/divider/MaterialDivider)
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/divider/MaterialDivider.java)
 *   `MaterialDividerItemDecoration`
+    *   [Class definition](https://developer.android.com/reference/com/google/android/material/divider/MaterialDividerItemDecoration)
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/divider/MaterialDividerItemDecoration.java)
 
 The following example shows a divider with Material Theming.
