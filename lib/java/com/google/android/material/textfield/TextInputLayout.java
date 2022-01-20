@@ -200,6 +200,8 @@ public class TextInputLayout extends LinearLayout {
   EditText editText;
   private CharSequence originalHint;
 
+  private int minEms = NO_WIDTH;
+  private int maxEms = NO_WIDTH;
   private int minWidth = NO_WIDTH;
   private int maxWidth = NO_WIDTH;
 
@@ -507,10 +509,14 @@ public class TextInputLayout extends LinearLayout {
     hintAnimationEnabled = a.getBoolean(R.styleable.TextInputLayout_hintAnimationEnabled, true);
     expandedHintEnabled = a.getBoolean(R.styleable.TextInputLayout_expandedHintEnabled, true);
 
-    if (a.hasValue(R.styleable.TextInputLayout_android_minWidth)) {
+    if (a.hasValue(R.styleable.TextInputLayout_android_minEms)) {
+      setMinEms(a.getInt(R.styleable.TextInputLayout_android_minEms, NO_WIDTH));
+    } else if (a.hasValue(R.styleable.TextInputLayout_android_minWidth)) {
       setMinWidth(a.getDimensionPixelSize(R.styleable.TextInputLayout_android_minWidth, NO_WIDTH));
     }
-    if (a.hasValue(R.styleable.TextInputLayout_android_maxWidth)) {
+    if (a.hasValue(R.styleable.TextInputLayout_android_maxEms)) {
+      setMaxEms(a.getInt(R.styleable.TextInputLayout_android_maxEms, NO_WIDTH));
+    } else if (a.hasValue(R.styleable.TextInputLayout_android_maxWidth)) {
       setMaxWidth(a.getDimensionPixelSize(R.styleable.TextInputLayout_android_maxWidth, NO_WIDTH));
     }
 
@@ -1458,8 +1464,16 @@ public class TextInputLayout extends LinearLayout {
     }
 
     this.editText = editText;
-    setMinWidth(minWidth);
-    setMaxWidth(maxWidth);
+    if (minEms != NO_WIDTH) {
+      setMinEms(minEms);
+    } else {
+      setMinWidth(minWidth);
+    }
+    if (maxEms != NO_WIDTH) {
+      setMaxEms(maxEms);
+    } else {
+      setMaxWidth(maxWidth);
+    }
     onApplyBoxBackgroundMode();
     setTextInputAccessibilityDelegate(new AccessibilityDelegate(this));
 
@@ -1614,6 +1628,56 @@ public class TextInputLayout extends LinearLayout {
   }
 
   /**
+   * Sets the minimum width in terms of ems of the text field. The layout will be at least
+   * {@code minEms} wide if its {@code layout_width} is set to {@code wrap_content}.
+   *
+   * @param minEms The minimum width in terms of ems to be set
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_android_minEms
+   * @see #getMinEms()
+   */
+  public void setMinEms(int minEms) {
+    this.minEms = minEms;
+    if (editText != null && minEms != NO_WIDTH) {
+      editText.setMinEms(minEms);
+    }
+  }
+
+  /**
+   * Returns the text field's minimum width in terms of ems, or -1 if no minimum width is set.
+   *
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_android_minEms
+   * @see #setMinEms(int)
+   */
+  public int getMinEms() {
+    return minEms;
+  }
+
+  /**
+   * Sets the maximum width in terms of ems of the text field. The layout will be at most
+   * {@code maxEms} wide if its {@code layout_width} is set to {@code wrap_content}.
+   *
+   * @param maxEms The maximum width in terms of ems to be set
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_android_maxEms
+   * @see #getMaxEms()
+   */
+  public void setMaxEms(int maxEms) {
+    this.maxEms = maxEms;
+    if (editText != null && maxEms != NO_WIDTH) {
+      editText.setMaxEms(maxEms);
+    }
+  }
+
+  /**
+   * Returns the text field's maximum width in terms of ems, or -1 if no maximum width is set.
+   *
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_android_maxEms
+   * @see #setMaxEms(int)
+   */
+  public int getMaxEms() {
+    return maxEms;
+  }
+
+  /**
    * Sets the minimum width of the text field. The layout will be at least this dimension wide if
    * its {@code layout_width} is set to {@code wrap_content}.
    *
@@ -1688,7 +1752,7 @@ public class TextInputLayout extends LinearLayout {
    *
    * @attr ref com.google.android.material.R.styleable#TextInputLayout_android_maxWidth
    * @see #setMaxWidth(int)
-   * @see #setMaxWidthResource(int) (int)
+   * @see #setMaxWidthResource(int)
    */
   @Px
   public int getMaxWidth() {

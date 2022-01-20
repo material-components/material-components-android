@@ -319,9 +319,9 @@ The recommended default `android:layout_width` is `245dp`.
 
 By default, text fields have a maximum width of `488dp`, and a minimum width of
 `56dp` for layouts without a label. If a label is present, the minimum width
-recommended is `88dp`. `android:minWidth` and `android:maxWidth` should be set
-on the `TextInputLayout` instead of on the `TextInputEditText` to avoid
-unintended behaviors.
+recommended is `88dp`. `android:minWidth` and `android:maxWidth` (as well as
+`android:minEms` and `android:maxEms`) should be set on the `TextInputLayout`
+instead of on the `TextInputEditText` to avoid unintended behaviors.
 
 You can override those values in a custom style that inherits from a
 `TextInputLayout` style or by making changes directly on the layout:
