@@ -355,10 +355,17 @@ public class ChipDrawable extends MaterialShapeDrawable
     setText(a.getText(R.styleable.Chip_android_text));
     TextAppearance textAppearance =
         MaterialResources.getTextAppearance(context, a, R.styleable.Chip_android_textAppearance);
-    float textSize = a.getDimension(
-        R.styleable.Chip_android_textSize, textAppearance.getTextSize());
-    textAppearance.setTextSize(textSize);
-    setTextAppearance(textAppearance);
+    if (textAppearance != null) {
+      float textSize = a.getDimension(
+          R.styleable.Chip_android_textSize, textAppearance.getTextSize());
+      textAppearance.setTextSize(textSize);
+
+      ColorStateList textColor =
+          MaterialResources.getColorStateList(context, a, R.styleable.Chip_android_textColor);
+      textAppearance.setTextColor(textColor);
+
+      setTextAppearance(textAppearance);
+    }
 
     int ellipsize = a.getInt(R.styleable.Chip_android_ellipsize, 0);
     // Convert to supported TextUtils.TruncateAt values
@@ -1378,6 +1385,18 @@ public class ChipDrawable extends MaterialShapeDrawable
       textAppearance.setTextSize(size);
       textDrawableHelper.getTextPaint().setTextSize(size);
       onTextSizeChange();
+    }
+  }
+
+  public void setTextColor(@ColorInt int color) {
+    setTextColor(ColorStateList.valueOf(color));
+  }
+
+  public void setTextColor(@Nullable ColorStateList color) {
+    TextAppearance textAppearance = getTextAppearance();
+    if (textAppearance != null) {
+      textAppearance.setTextColor(color);
+      invalidateSelf();
     }
   }
 
