@@ -68,11 +68,11 @@ public class CatalogPreferencesDialogFragment extends BottomSheetDialogFragment
       @NonNull LayoutInflater layoutInflater,
       @Nullable ViewGroup viewGroup,
       @Nullable Bundle bundle) {
-    LinearLayout container =
-        (LinearLayout) layoutInflater.inflate(
-            R.layout.mtrl_preferences_dialog, viewGroup, false);
+    View container = layoutInflater.inflate(R.layout.mtrl_preferences_dialog, viewGroup, false);
+    LinearLayout preferencesLayout = container.findViewById(R.id.preferences_layout);
     for (CatalogPreference catalogPreference : preferences.getPreferences()) {
-      container.addView(createPreferenceView(layoutInflater, container, catalogPreference));
+      preferencesLayout.addView(
+          createPreferenceView(layoutInflater, preferencesLayout, catalogPreference));
     }
     return container;
   }

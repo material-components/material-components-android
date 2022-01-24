@@ -13,20 +13,25 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="match_parent"
-  android:layout_height="wrap_content"
-  android:orientation="vertical"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
   android:paddingTop="16dp"
   android:paddingLeft="16dp"
-  android:paddingRight="16dp">
-
-  <TextView
+  android:paddingRight="16dp"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:overScrollMode="always">
+  <LinearLayout
+    android:id="@+id/preferences_layout"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center"
-    android:paddingBottom="8dp"
-    android:text="@string/preferences_screen_title"
-    android:textAppearance="?attr/textAppearanceHeadline3"/>
+    android:layout_height="wrap_content">
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:paddingBottom="8dp"
+      android:text="@string/preferences_screen_title"
+      android:textAppearance="?attr/textAppearanceHeadline3"/>
+  </LinearLayout>
+</androidx.core.widget.NestedScrollView>
 
-</LinearLayout>
