@@ -293,12 +293,6 @@ public class MaterialButtonToggleGroup extends LinearLayout {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
   }
 
-  @NonNull
-  @Override
-  public CharSequence getAccessibilityClassName() {
-    return MaterialButtonToggleGroup.class.getName();
-  }
-
   @Override
   public void onInitializeAccessibilityNodeInfo(@NonNull AccessibilityNodeInfo info) {
     super.onInitializeAccessibilityNodeInfo(info);
