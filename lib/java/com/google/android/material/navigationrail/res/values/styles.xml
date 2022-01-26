@@ -38,6 +38,7 @@
     <item name="itemTextColor">@color/mtrl_navigation_bar_item_tint</item>
     <item name="labelVisibilityMode">auto</item>
     <item name="menuGravity">top</item>
+    <item name="android:fitsSystemWindows">true</item>
   </style>
 
   <style name="Widget.MaterialComponents.NavigationRailView.Compact">

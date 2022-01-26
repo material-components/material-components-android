@@ -36,6 +36,12 @@
       <!-- Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL -->
       <enum name="bottom" value="81"/>
     </attr>
+    <!-- Whether the navigation rail should apply padding to have its menu
+         items and optional header below the top window insets. -->
+    <attr name="paddingTopSystemWindowInsets"/>
+    <!-- Whether the navigation rail should apply padding to have its menu
+         items above the bottom window insets. -->
+    <attr name="paddingBottomSystemWindowInsets"/>
   </declare-styleable>
 
 </resources>

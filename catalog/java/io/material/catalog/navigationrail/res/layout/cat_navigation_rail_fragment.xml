@@ -16,8 +16,8 @@
   -->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  android:id="@+id/content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/content"
     android:baselineAligned="false"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -26,7 +26,8 @@
     android:id="@+id/cat_navigation_rail"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    app:menu="@menu/navigation_rail_menu"/>
+    app:menu="@menu/navigation_rail_menu"
+    android:fitsSystemWindows="false"/>
 
   <ScrollView
       android:layout_width="0dp"
