@@ -15,18 +15,43 @@
   ~ limitations under the License.
 -->
 <resources>
-  <public name="colorPrimaryVariant" type="attr"/>
-  <public name="colorSecondary" type="attr"/>
-  <public name="colorSecondaryVariant" type="attr"/>
-  <public name="colorSurface" type="attr"/>
   <public name="colorOnPrimary" type="attr"/>
+  <public name="colorPrimaryInverse" type="attr"/>
+  <public name="colorPrimaryContainer" type="attr"/>
+  <public name="colorOnPrimaryContainer" type="attr"/>
+
+  <public name="colorSecondary" type="attr"/>
   <public name="colorOnSecondary" type="attr"/>
+  <public name="colorSecondaryContainer" type="attr"/>
+  <public name="colorOnSecondaryContainer" type="attr"/>
+
+  <public name="colorTertiary" type="attr"/>
+  <public name="colorOnTertiary" type="attr"/>
+  <public name="colorTertiaryContainer" type="attr"/>
+  <public name="colorOnTertiaryContainer" type="attr"/>
+
   <public name="colorOnBackground" type="attr"/>
-  <public name="colorOnError" type="attr"/>
+
+  <public name="colorSurface" type="attr"/>
   <public name="colorOnSurface" type="attr"/>
+  <public name="colorSurfaceVariant" type="attr"/>
+  <public name="colorOnSurfaceVariant" type="attr"/>
+  <public name="colorSurfaceInverse" type="attr"/>
+  <public name="colorOnSurfaceInverse" type="attr"/>
+
+  <public name="colorOutline" type="attr"/>
+
+  <public name="colorOnError" type="attr"/>
+  <public name="colorErrorContainer" type="attr"/>
+  <public name="colorOnErrorContainer" type="attr"/>
+
   <public name="colorPrimarySurface" type="attr"/>
   <public name="colorOnPrimarySurface" type="attr"/>
+
   <public name="scrimBackground" type="attr"/>
+
+  <public name="colorPrimaryVariant" type="attr"/>
+  <public name="colorSecondaryVariant" type="attr"/>
 
   <public name="design_default_color_primary" type="color"/>
   <public name="design_default_color_primary_dark" type="color"/>
@@ -54,6 +79,7 @@
   <public name="material_emphasis_disabled_background" type="dimen"/>
 
   <public name="useMaterialThemeColors" type="attr"/>
+  <public name="dynamicColorThemeOverlay" type="attr"/>
 
   <public name="material_dynamic_primary0" type="color"/>
   <public name="material_dynamic_primary10" type="color"/>
