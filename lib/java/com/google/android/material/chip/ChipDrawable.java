@@ -42,6 +42,7 @@ import android.graphics.drawable.Drawable.Callback;
 import android.graphics.drawable.RippleDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
+import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.text.TextUtils;
@@ -358,6 +359,14 @@ public class ChipDrawable extends MaterialShapeDrawable
     float textSize = a.getDimension(
         R.styleable.Chip_android_textSize, textAppearance.getTextSize());
     textAppearance.setTextSize(textSize);
+
+    if (VERSION.SDK_INT < VERSION_CODES.M) {
+      // This is necessary to work around a bug that doesn't support themed color referenced in
+      // ColorStateList for API level < 23.
+      textAppearance.setTextColor(
+          MaterialResources.getColorStateList(context, a, R.styleable.Chip_android_textColor));
+    }
+
     setTextAppearance(textAppearance);
 
     int ellipsize = a.getInt(R.styleable.Chip_android_ellipsize, 0);
@@ -1378,6 +1387,18 @@ public class ChipDrawable extends MaterialShapeDrawable
       textAppearance.setTextSize(size);
       textDrawableHelper.getTextPaint().setTextSize(size);
       onTextSizeChange();
+    }
+  }
+
+  public void setTextColor(@ColorInt int color) {
+    setTextColor(ColorStateList.valueOf(color));
+  }
+
+  public void setTextColor(@Nullable ColorStateList color) {
+    TextAppearance textAppearance = getTextAppearance();
+    if (textAppearance != null) {
+      textAppearance.setTextColor(color);
+      invalidateSelf();
     }
   }
 
