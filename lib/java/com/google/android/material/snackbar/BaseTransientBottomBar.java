@@ -181,8 +181,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
   /** @hide */
   @RestrictTo(LIBRARY_GROUP)
-  @IntDef({LENGTH_INDEFINITE, LENGTH_SHORT, LENGTH_LONG})
-  @IntRange(from = 1)
+  @IntRange(from = LENGTH_INDEFINITE)
   @Retention(RetentionPolicy.SOURCE)
   public @interface Duration {}
 
