@@ -33,6 +33,7 @@ import androidx.appcompat.view.menu.MenuItemImpl;
 import androidx.appcompat.view.menu.MenuView;
 import androidx.appcompat.widget.TooltipCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -774,6 +775,13 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
   }
 
   void setBadge(@NonNull BadgeDrawable badgeDrawable) {
+    if (this.badgeDrawable == badgeDrawable) {
+      return;
+    }
+    if (hasBadge() && icon != null) {
+      Log.w("NavigationBar", "Multiple badges shouldn't be attached to one item.");
+      tryRemoveBadgeFromAnchor(icon);
+    }
     this.badgeDrawable = badgeDrawable;
     if (icon != null) {
       tryAttachBadgeToAnchor(icon);

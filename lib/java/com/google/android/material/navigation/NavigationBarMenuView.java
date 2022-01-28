@@ -797,7 +797,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
     }
     if (buttons != null) {
       for (NavigationBarItemView itemView : buttons) {
-        itemView.setBadge(badgeDrawables.get(itemView.getId()));
+        itemView.setBadge(this.badgeDrawables.get(itemView.getId()));
       }
     }
   }
