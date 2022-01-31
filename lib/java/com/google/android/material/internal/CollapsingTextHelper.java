@@ -523,16 +523,20 @@ public final class CollapsingTextHelper {
   }
 
   private boolean shouldUseBoldTypefaces() {
-    return VERSION.SDK_INT >= VERSION_CODES.S && fontWeightAdjustment >= FontStyle.FONT_WEIGHT_MIN;
+    return VERSION.SDK_INT >= VERSION_CODES.S
+        && fontWeightAdjustment != Configuration.FONT_WEIGHT_ADJUSTMENT_UNDEFINED
+        && fontWeightAdjustment != 0;
   }
 
   @Nullable
   private Typeface maybeCloneWithAdjustment(@NonNull Typeface typeface) {
     if (shouldUseBoldTypefaces()) {
-      return Typeface.create(
-          typeface,
-          typeface.getWeight() + fontWeightAdjustment,
-          typeface.isItalic());
+      int adjustedWeight =
+          MathUtils.clamp(
+              typeface.getWeight() + fontWeightAdjustment,
+              FontStyle.FONT_WEIGHT_MIN,
+              FontStyle.FONT_WEIGHT_MAX);
+      return Typeface.create(typeface, adjustedWeight, typeface.isItalic());
     }
     return null;
   }
