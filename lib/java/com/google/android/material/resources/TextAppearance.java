@@ -39,6 +39,7 @@ import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.content.res.ResourcesCompat.FontCallback;
+import androidx.core.math.MathUtils;
 import androidx.core.provider.FontsContractCompat.FontRequestCallback;
 
 /**
@@ -342,13 +343,17 @@ public class TextAppearance {
   public void updateTextPaintMeasureState(
       @NonNull Context context, @NonNull TextPaint textPaint, @NonNull Typeface typeface) {
     Configuration configuration = context.getResources().getConfiguration();
-    if (VERSION.SDK_INT >= VERSION_CODES.S
-        && configuration.fontWeightAdjustment >= FontStyle.FONT_WEIGHT_MIN) {
+    if (VERSION.SDK_INT >= VERSION_CODES.S) {
       int fontWeightAdjustment = configuration.fontWeightAdjustment;
-      typeface = Typeface.create(
-          typeface,
-          typeface.getWeight() + fontWeightAdjustment,
-          typeface.isItalic());
+      if (fontWeightAdjustment != Configuration.FONT_WEIGHT_ADJUSTMENT_UNDEFINED
+          && fontWeightAdjustment != 0) {
+        int adjustedWeight =
+            MathUtils.clamp(
+                typeface.getWeight() + fontWeightAdjustment,
+                FontStyle.FONT_WEIGHT_MIN,
+                FontStyle.FONT_WEIGHT_MAX);
+        typeface = Typeface.create(typeface, adjustedWeight, typeface.isItalic());
+      }
     }
     textPaint.setTypeface(typeface);
 
