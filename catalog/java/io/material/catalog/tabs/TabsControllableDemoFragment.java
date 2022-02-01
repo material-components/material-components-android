@@ -20,7 +20,6 @@ import io.material.catalog.R;
 
 import android.content.res.TypedArray;
 import android.os.Bundle;
-import androidx.core.view.ViewCompat;
 import androidx.appcompat.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +35,7 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.ViewCompat;
 import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.tabs.TabLayout;
@@ -130,9 +130,18 @@ public class TabsControllableDemoFragment extends DemoFragment {
     tabsAnimationModeElasticButton.setOnClickListener(
         v -> setAllTabAnimationModes(TabLayout.INDICATOR_ANIMATION_MODE_ELASTIC));
 
+    RadioButton tabsAnimationModeFadeButton =
+        view.findViewById(R.id.tabs_animation_mode_fade_button);
+    tabsAnimationModeFadeButton.setOnClickListener(
+        v -> setAllTabAnimationModes(TabLayout.INDICATOR_ANIMATION_MODE_FADE));
+
     SwitchCompat inlineToggle = view.findViewById(R.id.toggle_inline_switch);
     inlineToggle.setOnCheckedChangeListener(
         (buttonView, isChecked) -> setAllTabLayoutInline(isChecked));
+
+    SwitchCompat fullWidthToggle = view.findViewById(R.id.toggle_full_width_switch);
+    fullWidthToggle.setOnCheckedChangeListener(
+        (buttonView, isChecked) -> setAllTabLayoutFullWidthIndicators(isChecked));
 
     Spinner selectedIndicatorSpinner = (Spinner) view.findViewById(R.id.selector_spinner);
     ArrayAdapter<CharSequence> adapter =
@@ -271,6 +280,12 @@ public class TabsControllableDemoFragment extends DemoFragment {
   private void setAllTabLayoutInline(boolean inline) {
     for (TabLayout tabLayout : tabLayouts) {
       tabLayout.setInlineLabel(inline);
+    }
+  }
+
+  private void setAllTabLayoutFullWidthIndicators(boolean fullWidth) {
+    for (TabLayout tabLayout : tabLayouts) {
+      tabLayout.setTabIndicatorFullWidth(fullWidth);
     }
   }
 

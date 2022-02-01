@@ -30,7 +30,6 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Pair;
 import android.view.MotionEvent;
@@ -40,6 +39,7 @@ import androidx.annotation.Dimension;
 import androidx.annotation.FloatRange;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
+import androidx.core.view.ViewCompat;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -17,33 +17,47 @@
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-  <!-- Pressed state -->
+  <!-- TODO: Uncomment the below section when we implemented Dragged state -->
+<!--  <item-->
+<!--      android:state_enabled="true"-->
+<!--      app:state_dragged="true">-->
+<!--    <objectAnimator-->
+<!--        android:duration="@integer/m3_chip_anim_duration"-->
+<!--        android:propertyName="translationZ"-->
+<!--        android:valueTo="@dimen/m3_chip_dragged_translation_z"-->
+<!--        android:valueType="floatType"/>-->
+<!--  </item>-->
+
+  <!-- Selected & hovered state -->
   <item
-      android:state_enabled="true"
-      android:state_pressed="true">
+    android:state_enabled="true"
+    android:state_selected="true"
+    android:state_hovered="true">
     <objectAnimator
-        android:duration="@integer/m3_chip_anim_duration"
-        android:propertyName="translationZ"
-        android:valueTo="@dimen/m3_chip_pressed_translation_z"
-        android:valueType="floatType"/>
+      android:duration="@integer/m3_chip_anim_duration"
+      android:propertyName="translationZ"
+      android:valueTo="@dimen/m3_chip_checked_hovered_translation_z"
+      android:valueType="floatType"/>
   </item>
 
-  <!-- Enabled state -->
-  <item android:state_enabled="true">
+  <!-- Checked & hovered state -->
+  <item
+    android:state_enabled="true"
+    android:state_checked="true"
+    android:state_hovered="true">
     <objectAnimator
-        android:duration="@integer/m3_chip_anim_duration"
-        android:propertyName="translationZ"
-        android:valueTo="0"
-        android:valueType="floatType"/>
+      android:duration="@integer/m3_chip_anim_duration"
+      android:propertyName="translationZ"
+      android:valueTo="@dimen/m3_chip_checked_hovered_translation_z"
+      android:valueType="floatType"/>
   </item>
 
-  <!-- Disabled state -->
+  <!-- Other states -->
   <item>
     <objectAnimator
-        android:duration="0"
+        android:duration="@integer/m3_chip_anim_duration"
         android:propertyName="translationZ"
         android:valueTo="0"
         android:valueType="floatType"/>
   </item>
-
 </selector>

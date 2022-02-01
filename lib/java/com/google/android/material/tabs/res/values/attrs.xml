@@ -66,6 +66,10 @@
            This causes the indicator to look like it stretches between destinations
            an then shrinks back down to fit the size of it's target tab. -->
       <enum name="elastic" value="1"/>
+      <!-- Animate the selection indicator by sequentially fading it out from
+           its current destination and then fading it in at its new
+           destination. -->
+      <enum name="fade" value="2"/>
     </attr>
     <!-- The behavior mode for the Tabs in this layout -->
     <attr name="tabMode">

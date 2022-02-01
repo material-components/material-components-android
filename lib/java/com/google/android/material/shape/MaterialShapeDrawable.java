@@ -46,8 +46,6 @@ import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Looper;
-import androidx.core.graphics.drawable.TintAwareDrawable;
-import androidx.core.util.ObjectsCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import androidx.annotation.AttrRes;
@@ -58,6 +56,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
+import androidx.core.graphics.drawable.TintAwareDrawable;
+import androidx.core.util.ObjectsCompat;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.elevation.ElevationOverlayProvider;
 import com.google.android.material.shadow.ShadowRenderer;
@@ -442,10 +442,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
   /**
    * Get the tint color factoring in any other runtime modifications such as elevation overlays.
-   *
-   * @hide
    */
-  @RestrictTo(LIBRARY_GROUP)
   @ColorInt
   public int getResolvedTintColor() {
     return resolvedTintColor;
@@ -456,6 +453,11 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     // OPAQUE or TRANSPARENT are possible, but the complexity of determining this based on the
     // shape model outweighs the optimizations gained.
     return PixelFormat.TRANSLUCENT;
+  }
+
+  @Override
+  public int getAlpha() {
+    return drawableState.alpha;
   }
 
   @Override
@@ -1063,7 +1065,16 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     drawShape(canvas, fillPaint, path, drawableState.shapeAppearanceModel, getBoundsAsRectF());
   }
 
-  private void drawStrokeShape(@NonNull Canvas canvas) {
+  /**
+   * Draw the stroke.
+   *
+   * <p>This method is made available to allow subclasses within the library to alter the stroke
+   * drawing like creating a cutout on it.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  protected void drawStrokeShape(@NonNull Canvas canvas) {
     drawShape(
         canvas, strokePaint, pathInsetByStroke, strokeShapeAppearance, getBoundsInsetByStroke());
   }

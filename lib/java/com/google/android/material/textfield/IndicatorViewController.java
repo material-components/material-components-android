@@ -29,13 +29,14 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Typeface;
 import android.os.Build.VERSION;
-import androidx.core.view.ViewCompat;
-import androidx.core.widget.TextViewCompat;
+import android.os.Build.VERSION_CODES;
 import androidx.appcompat.widget.AppCompatTextView;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.View.AccessibilityDelegate;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -46,6 +47,8 @@ import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
+import androidx.core.view.ViewCompat;
+import androidx.core.widget.TextViewCompat;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.animation.AnimatorSetCompat;
 import com.google.android.material.resources.MaterialResources;
@@ -146,7 +149,7 @@ final class IndicatorViewController {
       captionToShow = CAPTION_STATE_NONE;
     }
     updateCaptionViewsVisibility(
-        captionDisplayed, captionToShow, shouldAnimateCaptionView(helperTextView, null));
+        captionDisplayed, captionToShow, shouldAnimateCaptionView(helperTextView, ""));
   }
 
   void showError(final CharSequence errorText) {
@@ -176,7 +179,7 @@ final class IndicatorViewController {
       }
     }
     updateCaptionViewsVisibility(
-        captionDisplayed, captionToShow, shouldAnimateCaptionView(errorView, null));
+        captionDisplayed, captionToShow, shouldAnimateCaptionView(errorView, ""));
   }
 
   /**
@@ -184,11 +187,11 @@ final class IndicatorViewController {
    * out, and have a different caption message.
    *
    * @param captionView The view that contains text for the caption underneath the text input area
-   * @param captionText The text for the caption view
+   * @param captionText The text for the caption view, empty if none
    * @return Whether the view should animate when setting the caption
    */
   private boolean shouldAnimateCaptionView(
-      @Nullable TextView captionView, @Nullable final CharSequence captionText) {
+      @Nullable TextView captionView, @NonNull final CharSequence captionText) {
     return ViewCompat.isLaidOut(textInputView)
         && textInputView.isEnabled()
         && (captionToShow != captionDisplayed
@@ -501,6 +504,20 @@ final class IndicatorViewController {
       setHelperTextAppearance(helperTextTextAppearance);
       setHelperTextViewTextColor(helperTextViewTextColor);
       addIndicator(helperTextView, HELPER_INDEX);
+      if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1) {
+        helperTextView.setAccessibilityDelegate(
+            new AccessibilityDelegate() {
+              @Override
+              public void onInitializeAccessibilityNodeInfo(
+                  View view, AccessibilityNodeInfo accessibilityNodeInfo) {
+                super.onInitializeAccessibilityNodeInfo(view, accessibilityNodeInfo);
+                View editText = textInputView.getEditText();
+                if (editText != null) {
+                  accessibilityNodeInfo.setLabeledBy(editText);
+                }
+              }
+            });
+      }
     } else {
       hideHelperText();
       removeIndicator(helperTextView, HELPER_INDEX);
@@ -509,6 +526,11 @@ final class IndicatorViewController {
       textInputView.updateTextInputBoxState();
     }
     helperTextEnabled = enabled;
+  }
+
+  @Nullable
+  View getHelperTextView() {
+    return helperTextView;
   }
 
   boolean errorIsDisplayed() {

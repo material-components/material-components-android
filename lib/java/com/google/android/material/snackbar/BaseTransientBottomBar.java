@@ -45,12 +45,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.view.AccessibilityDelegateCompat;
-import androidx.core.view.OnApplyWindowInsetsListener;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -76,6 +70,12 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.view.AccessibilityDelegateCompat;
+import androidx.core.view.OnApplyWindowInsetsListener;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import com.google.android.material.behavior.SwipeDismissBehavior;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.ThemeEnforcement;
@@ -181,8 +181,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
   /** @hide */
   @RestrictTo(LIBRARY_GROUP)
-  @IntDef({LENGTH_INDEFINITE, LENGTH_SHORT, LENGTH_LONG})
-  @IntRange(from = 1)
+  @IntRange(from = LENGTH_INDEFINITE)
   @Retention(RetentionPolicy.SOURCE)
   public @interface Duration {}
 
@@ -375,6 +374,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     if (content instanceof SnackbarContentLayout) {
       ((SnackbarContentLayout) content)
           .updateActionTextColorAlphaIfNeeded(view.getActionTextColorAlpha());
+      ((SnackbarContentLayout) content).setMaxInlineActionWidth(view.getMaxInlineActionWidth());
     }
     view.addView(content);
 
@@ -764,10 +764,11 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
       recalculateAndUpdateMargins();
 
+      targetParent.addView(this.view);
+
       // Set view to INVISIBLE so it doesn't flash on the screen before the inset adjustment is
       // handled and the enter animation is started
       view.setVisibility(View.INVISIBLE);
-      targetParent.addView(this.view);
     }
 
     if (ViewCompat.isLaidOut(this.view)) {
@@ -1131,6 +1132,8 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     @AnimationMode private int animationMode;
     private final float backgroundOverlayColorAlpha;
     private final float actionTextColorAlpha;
+    private final int maxWidth;
+    private final int maxInlineActionWidth;
     private ColorStateList backgroundTint;
     private PorterDuff.Mode backgroundTintMode;
 
@@ -1158,6 +1161,9 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
           ViewUtils.parseTintMode(
               a.getInt(R.styleable.SnackbarLayout_backgroundTintMode, -1), PorterDuff.Mode.SRC_IN));
       actionTextColorAlpha = a.getFloat(R.styleable.SnackbarLayout_actionTextColorAlpha, 1);
+      maxWidth = a.getDimensionPixelSize(R.styleable.SnackbarLayout_android_maxWidth, -1);
+      maxInlineActionWidth =
+          a.getDimensionPixelSize(R.styleable.SnackbarLayout_maxActionInlineWidth, -1);
       a.recycle();
 
       setOnTouchListener(consumeAllTouchListener);
@@ -1216,6 +1222,15 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     }
 
     @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+      super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+      if (maxWidth > 0 && getMeasuredWidth() > maxWidth) {
+        widthMeasureSpec = MeasureSpec.makeMeasureSpec(maxWidth, MeasureSpec.EXACTLY);
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+      }
+    }
+
+    @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
       super.onLayout(changed, l, t, r, b);
       if (onLayoutChangeListener != null) {
@@ -1266,6 +1281,14 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
     float getActionTextColorAlpha() {
       return actionTextColorAlpha;
+    }
+
+    int getMaxWidth() {
+      return maxWidth;
+    }
+
+    int getMaxInlineActionWidth() {
+      return maxInlineActionWidth;
     }
 
     @NonNull

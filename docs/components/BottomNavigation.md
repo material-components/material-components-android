@@ -27,7 +27,7 @@ to the Material Components for Android library. For more information, go to the
 [Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
 page.
 
-A typical layout would look something like this:
+A typical layout looks like this:
 
 ```xml
 <LinearLayout
@@ -68,7 +68,7 @@ The `@menu/bottom_navigation_menu` resource should point to a file named
 In code:
 
 ```kt
-BottomNavigationView.OnNavigationItemSelectedListener { item ->
+NavigationBarView.OnItemSelectedListener { item ->
     when(item.itemId) {
         R.id.item1 -> {
             // Respond to navigation item 1 click
@@ -86,7 +86,7 @@ BottomNavigationView.OnNavigationItemSelectedListener { item ->
 There's also a method for detecting when navigation items have been reselected:
 
 ```kt
-bottomNavigation.setOnNavigationItemReselectedListener { item ->
+bottomNavigation.setOnItemReselectedListener { item ->
     when(item.itemId) {
         R.id.item1 -> {
             // Respond to navigation item 1 reselection
@@ -150,8 +150,9 @@ badge.isVisible = true
 badge.number = 99
 ```
 
-As a best practice if you need to temporarily hide the badge (e.g. until the
-next notification is received), change the visibility of `BadgeDrawable`:
+As a best practice, if you need to temporarily hide the badge, for instance
+until the next notification is received, change the visibility of
+`BadgeDrawable`:
 
 ```kt
 val badgeDrawable = bottomNavigation.getBadge(menuItemId)
@@ -186,12 +187,7 @@ API and source code:
 
 The following example shows a bottom navigation bar with four icons:
 
-*   Favorites
-*   Music note
-*   Places
-*   News
-
-![Bottom navigation bar with favorites, music note, places, and news icons](assets/bottomnav/bottom-nav-generic.png)
+![Bottom navigation bar with four icons](assets/bottomnav/bottom-nav-generic.png)
 
 In `layout.xml`:
 
@@ -204,7 +200,6 @@ In `layout.xml`:
 
   <com.google.android.material.bottomnavigation.BottomNavigationView
       android:id="@+id/bottom_navigation"
-      style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       app:menu="@menu/bottom_navigation_menu" />
@@ -219,23 +214,23 @@ In `bottom_navigation_menu.xml` inside a `menu` resource directory:
   <item
       android:id="@+id/page_1"
       android:enabled="true"
-      android:icon="@drawable/ic_favorite"
-      android:title="@string/favorites"/>
+      android:icon="@drawable/ic_star"
+      android:title="@string/page_1"/>
   <item
       android:id="@+id/page_2"
       android:enabled="true"
-      android:icon="@drawable/ic_music"
-      android:title="@string/music"/>
+      android:icon="@drawable/ic_star"
+      android:title="@string/page_2"/>
   <item
       android:id="@+id/page_3"
       android:enabled="true"
-      android:icon="@drawable/ic_places"
-      android:title="@string/places"/>
+      android:icon="@drawable/ic_star"
+      android:title="@string/page_3"/>
   <item
       android:id="@+id/page_4"
       android:enabled="true"
-      android:icon="@drawable/ic_news"
-      android:title="@string/news"/>
+      android:icon="@drawable/ic_star"
+      android:title="@string/page_4"/>
 </menu>
 ```
 
@@ -252,62 +247,55 @@ The following is an anatomy diagram for the bottom navigation bar:
 ![Bottom navigation anatomy diagram](assets/bottomnav/bottom-nav-anatomy.png)
 
 *   (1) Container
-*   Navigation items:
-    *   (2) Inactive icon
-    *   (3) Inactive text label
-    *   (4) Active icon
-    *   (5) Active text label
+*   (2) Icon
+*   (3) Label text
+*   (4) Active indicator
+*   (5) Small badge (optional)
+*   (6) Large badge (optional)
+*   (7) Large badge number
 
 #### Container attributes
 
-Element       | **Attribute**        | **Related methods**      | **Default value**
-------------- | -------------------- | ------------------------ | -----------------
-**Color**     | `app:backgroundTint` | N/A                      | `?attr/colorSurface`
-**Elevation** | `app:elevation`      | `setElevation`           | `8dp`
+**Element**   | **Attribute**        | **Related methods** | **Default value**
+------------- | -------------------- | ------------------- | -----------------
+**Color**     | `app:backgroundTint` | N/A                 | `?attr/colorSurface`
+**Elevation** | `app:elevation`      | `setElevation`      | `3dp`
 
 #### Navigation item attributes
 
-Element                   | **Attribute**             | **Related methods**                                   | **Default value**
+**Element**               | **Attribute**             | **Related methods**                                   | **Default value**
 ------------------------- | ------------------------- | ----------------------------------------------------- | -----------------
 **Menu resource**         | `app:menu`                | `inflateMenu`<br/>`getMenu`                           | N/A
-**Ripple (inactive)**     | `app:itemRippleColor`     | `setItemRippleColor`<br/>`getItemRippleColor`         | `?attr/colorOnSurface` at 8% (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/navigation/res/color/mtrl_navigation_bar_ripple_color.xml))
-**Ripple (active)**       | "                         | "                                                     | `?attr/colorPrimary` at 8% (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/navigation/res/color/mtrl_navigation_bar_ripple_color.xml))
+**Ripple (inactive)**     | `app:itemRippleColor`     | `setItemRippleColor`<br/>`getItemRippleColor`         | Variations of `?attr/colorPrimary` and `?attr/colorOnSurfaceVariant` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/navigation/res/color/m3_navigation_bar_ripple_color_selector.xml))
+**Ripple (active)**       | "                         | "                                                     | Variations of `?attr/colorPrimary` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/navigation/res/color/m3_navigation_bar_ripple_color_selector.xml))
 **Label visibility mode** | `app:labelVisibilityMode` | `setLabelVisibilityMode`<br/>`getLabelVisibilityMode` | `LABEL_VISIBILITY_AUTO`
 
 #### Icon attributes
 
-Element              | **Attribute**                         | **Related methods**                                              | **Default value**
+**Element**          | **Attribute**                         | **Related methods**                                              | **Default value**
 -------------------- | ------------------------------------- | ---------------------------------------------------------------- | -----------------
 **Icon**             | `android:icon` in the `menu` resource | N/A                                                              | N/A
 **Size**             | `app:itemIconSize`                    | `setItemIconSize`<br/>`setItemIconSizeRes`<br/>`getItemIconSize` | `24dp`
-**Color (inactive)** | `app:itemIconTint`                    | `setItemIconTintList`<br/>`getItemIconTintList`                  | `?attr/colorOnSurface` at 60%
-**Color (active)**   | "                                     | "                                                                | `?attr/colorPrimary`
+**Color (inactive)** | `app:itemIconTint`                    | `setItemIconTintList`<br/>`getItemIconTintList`                  | `?attr/colorOnSurfaceVariant` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/navigation/res/color/m3_navigation_bar_item_with_indicator_icon_tint.xml))
+**Color (active)**   | "                                     | "                                                                | `?attr/colorOnSecondaryContainer` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/navigation/res/color/m3_navigation_bar_item_with_indicator_icon_tint.xml))
 
 #### Text label attributes
 
-Element                   | **Attribute**                          | **Related methods**                                                 | **Default value**
+**Element**               | **Attribute**                          | **Related methods**                                                 | **Default value**
 ------------------------- | -------------------------------------- | ------------------------------------------------------------------- | -----------------
 **Text label**            | `android:title` in the `menu` resource | N/A                                                                 | N/A
-**Color (inactive)**      | `app:itemTextColor`                    | `setItemTextColor`<br/>`getItemTextColor`                           | `?attr/colorOnSurface` at 60%
-**Color (active)**        | "                                      | "                                                                   | `?attr/colorPrimary`
-**Typography (inactive)** | `app:itemTextAppearanceInactive`       | `setItemTextAppearanceInactive`<br/>`getItemTextAppearanceInactive` | `?attr/textAppearanceCaption`
-**Typography (active)**   | `app:itemTextAppearanceActive`         | `setItemTextAppearanceActive`<br/>`getItemTextAppearanceActive`     | `?attr/textAppearanceCaption`
+**Color (inactive)**      | `app:itemTextColor`                    | `setItemTextColor`<br/>`getItemTextColor`                           | `?attr/colorOnSurfaceVariant` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/navigation/res/color/m3_navigation_bar_item_with_indicator_label_tint.xml))
+**Color (active)**        | "                                      | "                                                                   | `?attr/colorOnSurface` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/navigation/res/color/m3_navigation_bar_item_with_indicator_label_tint.xml))
+**Typography (inactive)** | `app:itemTextAppearanceInactive`       | `setItemTextAppearanceInactive`<br/>`getItemTextAppearanceInactive` | `?attr/textAppearanceTitleSmall`
+**Typography (active)**   | `app:itemTextAppearanceActive`         | `setItemTextAppearanceActive`<br/>`getItemTextAppearanceActive`     | `?attr/textAppearanceTitleSmall`
 
 #### Styles
 
-Element                        | **Style**                                                       | **Container color**                                                        | **Icon/Text label color (inactive)**                                                          | **Icon/Text label color (active)**
------------------------------- | --------------------------------------------------------------- | -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ----------------------------------
-**Default style**              | `Widget.MaterialComponents.BottomNavigationView`                | `?attr/colorSurface`                                                       | `?attr/colorOnSurface` at 60%                                                                 | `?attr/colorPrimary`
-**Colored style**              | `Widget.MaterialComponents.BottomNavigationView.Colored`        | `?attr/colorPrimary`                                                       | `?attr/colorOnPrimary` at 60%                                                                 | `?attr/colorOnPrimary`
-**Dark theme supported style** | `Widget.MaterialComponents.BottomNavigationView.PrimarySurface` | `?attr/colorPrimary` in light theme<br/>`?attr/colorSurface` in dark theme | `?attr/colorOnPrimary` at 60% in light theme<br/>`?attr/colorOnSurface` at 60% in light theme | `?attr/colorOnPrimary` in light theme<br/>`?attr/colorPrimary` in dark theme
+**Element**       | **Style**                               | **Container color**  | **Icon/Text label color (inactive)** | **Icon/Text label color (active)**
+----------------- | --------------------------------------- | -------------------- | ------------------------------------ | ----------------------------------
+**Default style** | `Widget.Material3.BottomNavigationView` | `?attr/colorSurface` | `?attr/colorOnSurfaceVariant`        | Icon: `?attr/colorOnSecondaryContainer` <br/> Text: `?attr/colorOnSurface`
 
 Default style theme attribute: `?attr/bottomNavigationStyle`
-
-**Note:** The `Widget.MaterialComponents.BottomNavigationView.PrimarySurface`
-style will automatically switch between between the component's primary colored
-style in light theme and surface colored style in dark theme. More information
-in the
-[Dark theme documentation](https://github.com/material-components/material-components-android/tree/master/docs/theming/Dark.md#primary-vs-surface-coloring-for-large-surfaces).
 
 See the full list of
 [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/bottomnavigation/res/values/styles.xml),
@@ -318,8 +306,8 @@ and
 ## Theming a bottom navigation bar
 
 Bottom navigation supports
-[Material Theming](https://material.io/components/bottom-navigation#theming) and
-can be customized in terms of color and typography.
+[Material Theming](https://material.io/components/bottom-navigation#theming),
+which can customize color and typography.
 
 ### Bottom navigation theming example
 
@@ -336,39 +324,38 @@ pink background](assets/bottomnav/bottom-nav-theming.png)
 
 #### Implementing bottom navigation theming
 
-Using theme attributes and a style in `res/values/styles.xml` (themes all bottom
-navigation bars and affects other components):
+Use theme attributes and a style in `res/values/styles.xml`, which applies to
+all bottom navigation bars and affects other components:
 
 ```xml
-<style name="Theme.App" parent="Theme.MaterialComponents.*">
+<style name="Theme.App" parent="Theme.Material3.*">
     ...
-    <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView.Colored</item>
-    <item name="colorPrimary">@color/shrine_pink_100</item>
-    <item name="colorOnPrimary">@color/shrine_pink_900</item>
+    <item name="colorSurface">@color/shrine_blue_100</item>
+    <item name="colorOnSurfaceVariant">@color/shrine_blue_900</item>
 </style>
 ```
 
-Or using a default style theme attribute, styles, and a theme overlay (themes
-all bottom navigation bars but does not affect other components):
+Use a default style theme attribute, styles, and a theme overlay, which apply to
+all bottom navigation bars but do not affect other components:
 
 ```xml
-<style name="Theme.App" parent="Theme.MaterialComponents.*">
+<style name="Theme.App" parent="Theme.Material3.*">
     ...
     <item name="bottomNavigationStyle">@style/Widget.App.BottomNavigationView</item>
 </style>
 
-<style name="Widget.App.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
+<style name="Widget.App.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
     <item name="materialThemeOverlay">@style/ThemeOverlay.App.BottomNavigationView</item>
 </style>
 
 <style name="ThemeOverlay.App.BottomNavigationView" parent="">
-    <item name="colorPrimary">@color/shrine_pink_100</item>
-    <item name="colorOnPrimary">@color/shrine_pink_900</item>
+    <item name="colorSurface">@color/shrine_blue_100</item>
+    <item name="colorOnSurfaceVariant">@color/shrine_blue_900</item>
 </style>
 ```
 
-Or using the style in the layout (affects only this specific bottom navigation
-bar):
+Use the style in the layout, which affects only this specific bottom navigation
+bar:
 
 ```xml
 <com.google.android.material.bottomnavigation.BottomNavigationView

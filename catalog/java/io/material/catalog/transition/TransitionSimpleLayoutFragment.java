@@ -18,7 +18,6 @@ package io.material.catalog.transition;
 
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
-import androidx.core.view.ViewCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +25,7 @@ import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
 
 /** A fragment that displays the provided layout. */
 public class TransitionSimpleLayoutFragment extends Fragment {

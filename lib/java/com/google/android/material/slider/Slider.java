@@ -40,13 +40,22 @@ import com.google.android.material.slider.Slider.OnSliderTouchListener;
 public class Slider extends BaseSlider<Slider, OnChangeListener, OnSliderTouchListener> {
 
   /** Interface definition for a callback invoked when a slider's value is changed. */
-  public interface OnChangeListener extends BaseOnChangeListener<Slider> {}
+  public interface OnChangeListener extends BaseOnChangeListener<Slider> {
+    @Override
+    void onValueChange(@NonNull Slider slider, float value, boolean fromUser);
+  }
 
   /**
    * Interface definition for callbacks invoked when a slider's touch event is being
    * started/stopped.
    */
-  public interface OnSliderTouchListener extends BaseOnSliderTouchListener<Slider> {}
+  public interface OnSliderTouchListener extends BaseOnSliderTouchListener<Slider> {
+    @Override
+    void onStartTrackingTouch(@NonNull Slider slider);
+
+    @Override
+    void onStopTrackingTouch(@NonNull Slider slider);
+  }
 
   public Slider(@NonNull Context context) {
     this(context, null);

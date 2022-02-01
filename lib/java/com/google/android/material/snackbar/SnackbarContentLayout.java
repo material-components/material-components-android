@@ -20,8 +20,6 @@ import com.google.android.material.R;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
-import android.content.res.TypedArray;
-import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
@@ -30,6 +28,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
+import androidx.core.view.ViewCompat;
 import com.google.android.material.color.MaterialColors;
 
 /** @hide */
@@ -38,7 +37,6 @@ public class SnackbarContentLayout extends LinearLayout implements ContentViewCa
   private TextView messageView;
   private Button actionView;
 
-  private int maxWidth;
   private int maxInlineActionWidth;
 
   public SnackbarContentLayout(@NonNull Context context) {
@@ -47,11 +45,6 @@ public class SnackbarContentLayout extends LinearLayout implements ContentViewCa
 
   public SnackbarContentLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
     super(context, attrs);
-    TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SnackbarLayout);
-    maxWidth = a.getDimensionPixelSize(R.styleable.SnackbarLayout_android_maxWidth, -1);
-    maxInlineActionWidth =
-        a.getDimensionPixelSize(R.styleable.SnackbarLayout_maxActionInlineWidth, -1);
-    a.recycle();
   }
 
   @Override
@@ -82,10 +75,11 @@ public class SnackbarContentLayout extends LinearLayout implements ContentViewCa
   @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-    if (maxWidth > 0 && getMeasuredWidth() > maxWidth) {
-      widthMeasureSpec = MeasureSpec.makeMeasureSpec(maxWidth, MeasureSpec.EXACTLY);
-      super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    if (getOrientation() == VERTICAL) {
+      // The layout is by default HORIZONTAL. We only change it to VERTICAL when the action view
+      // is too wide and ellipsizes the message text. When the condition is met, we should keep the
+      // layout as VERTICAL.
+      return;
     }
 
     final int multiLineVPadding =

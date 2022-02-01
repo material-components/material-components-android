@@ -2,17 +2,17 @@
 title: "Navigation Rail"
 layout: detail
 section: components
-excerpt: "Navigation rails provide ergonomic movement between primary destinations in apps running on a large screen device"
+excerpt: "Navigation rails provide access to primary destinations in your app on tablet and desktop screens.
 iconId: navigation_rail
 path: /catalog/navigation-rail/
 -->
 
 # Navigation Rail
 
-[Navigation rail](https://material.io/components/navigation-rail/#) allows
-movement between primary destinations in an app.
+[Navigation rail](https://material.io/components/navigation-rail/#) provides
+access to primary destinations in your app on tablet and desktop screens.
 
-![The navigation rail container is 72 dp wide by default.](assets/navigationrail/navigation-rail-default.png)
+![The navigation rail container is 80 dp wide by default.](assets/navigationrail/navigation-rail-default.png)
 
 **Contents**
 
@@ -37,12 +37,9 @@ A typical layout will look similar to this:
     app:menu="@menu/navigation_rail_menu" />
 ```
 
-**Note:** The width of a `NavigationRailView` will be 72dp wide by default. This
-can be changed to 52dp wide by setting the component style to
-`Widget.MaterialComponents.NavigationRailView.Compact` or
-`Widget.MaterialComponents.NavigationRailView.Colored.Compact` in the layout.
-The width of the rail can also be changed by setting the `android:layout_width`
-attribute to a specific DP value.
+**Note:** The width of a `NavigationRailView` will be 80dp wide by default.The
+width of the rail can be changed by setting the `android:layout_width`attribute
+to a specific DP value.
 
 In `navigation_rail_menu.xml` inside a `menu` resource directory:
 
@@ -72,7 +69,7 @@ In `navigation_rail_menu.xml` inside a `menu` resource directory:
 ```
 
 **Note:** `NavigationRailView` displays three to no more than seven app
-destinations and, optionally, a header view. Each destination is represented by
+destinations, and can include a header view. Each destination is represented by
 an icon and a text label.
 
 In code:
@@ -83,12 +80,12 @@ In code:
 // same listeners
 NavigationBarView.OnNavigationItemSelectedListener { item ->
     when(item.itemId) {
-        R.id.item1 -> {
-            // Respond to navigation item 1 click
+        R.id.alarms -> {
+            // Respond to alarm navigation item click
             true
         }
-        R.id.item2 -> {
-            // Respond to navigation item 2 click
+        R.id.schedule -> {
+            // Respond to schedule navigation item click
             true
         }
         else -> false
@@ -96,7 +93,7 @@ NavigationBarView.OnNavigationItemSelectedListener { item ->
 }
 ```
 
-There's also a method for detecting when navigation items have been reselected:
+There's also a method for detecting if navigation items have been reselected:
 
 ```kt
 navigationRail.setOnNavigationItemReselectedListener { item ->
@@ -111,7 +108,7 @@ navigationRail.setOnNavigationItemReselectedListener { item ->
 }
 ```
 
-That results in:
+Which results in:
 
 ![The navigation rail container is 72 dp wide by default.](assets/navigationrail/navigation-rail-demo.png)
 
@@ -140,10 +137,10 @@ text labels for each navigation item. There are four visibility modes:
 *   `LABEL_VISIBILITY_LABELED`: The label is shown on all navigation items
 *   `LABEL_VISIBILITY_UNLABELED`: The label is hidden for all navigation items
 
-### Adding a header view (eg. Floating action button)
+### Adding a header view
 
-The rail provides a convenient container for anchoring a header view (such as a
-`FloatingActionButton`, logo, etc.) to the top of the rail, using the
+The rail provides a convenient container for anchoring a header view, such as a
+`FloatingActionButton` or a logo, to the top of the rail, using the
 `app:headerLayout` attribute.
 
 ![Navigation rail with badges](assets/navigationrail/navigation-rail-fab.png)
@@ -179,7 +176,7 @@ status.
 
 ![Navigation rail with badges](assets/navigationrail/navigation-rail-badges.png)
 
-Initialize and show a `BadgeDrawable` associated with `menuItemId`, subsequent
+Initialize and show a `BadgeDrawable` associated with `menuItemId`. Subsequent
 calls to this method will reuse the existing `BadgeDrawable`:
 
 ```kt
@@ -189,8 +186,8 @@ badge.isVisible = true
 badge.number = 99
 ```
 
-As best practice if you need to temporarily hide the badge (e.g. until the next
-notification is received), change the visibility of `BadgeDrawable`:
+As best practice, if you need to temporarily hide the badge, for example until
+the next notification is received, change the visibility of `BadgeDrawable`:
 
 ```kt
 val badgeDrawable = navigationRail.getBadge(menuItemId)
@@ -206,8 +203,7 @@ To remove any `BadgeDrawable`s that are no longer needed:
 navigationRail.removeBadge(menuItemId)
 ```
 
-See the [`BadgeDrawable`](BadgeDrawable.md) documentation for more information
-about it.
+See the [`BadgeDrawable`](BadgeDrawable.md) documentation for more information.
 
 ## Navigation rail example
 
@@ -217,34 +213,12 @@ API and source code:
     *   [Class description](https://developer.android.com/reference/com/google/android/material/navigationrail/NavigationRailView)
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/navigationrail/NavigationRailView.java)
 
-The following example shows a navigation rail with four icons in dense layout:
+The following example shows a navigation rail with four icons:
 
 *   Alarms
 *   Schedule
 *   Timers
 *   Stopwatch
-
-!["In denser layouts, the rail can be reduced to 56 dp and text labels are
-omitted."](assets/navigationrail/navigation-rail-dense.png)
-
-In `layout.xml`:
-
-```xml
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-  <com.google.android.material.navigationrail.NavigationRailView
-      android:id="@+id/navigation_rail"
-      style="@style/Widget.MaterialComponents.NavigationRailView.Colored.Compact"
-      android:layout_width="wrap_content"
-      android:layout_height="match_parent"
-      app:menu="@menu/navigation_rail_menu" />
-
-</LinearLayout>
-```
 
 In `navigation_rail_menu.xml` inside a `menu` resource directory:
 
@@ -286,23 +260,29 @@ The following is an anatomy diagram for the navigation rail:
 ![Navigation rail anatomy diagram](assets/navigationrail/navigation-rail-anatomy.png)
 
 1.  Container
-2.  Header (eg. Floating action button) (optional)
-3.  A destination
-4.  Text label
-5.  Divider (optional)
+2.  Header - menu icon (optional)
+3.  Header - Floating action button (optional)
+4.  Icon - active
+5.  Active indicator
+6.  Label text - active (optional)
+7.  Icon - inactive
+8.  Label text - inactive (optional)
+9.  Large badge (optional)
+10. Large badge label (optional)
+11. Badge (optional)
 
 #### Container attributes
 
-Element       | **Attribute**        | **Related methods** | **Default value**
+**Element**   | **Attribute**        | **Related methods** | **Default value**
 ------------- | -------------------- | ------------------- | -----------------
 **Color**     | `app:backgroundTint` | N/A                 | `?attr/colorSurface`
-**Elevation** | `app:elevation`      | `setElevation`      | `8dp`
+**Elevation** | `app:elevation`      | `setElevation`      | `0dp`
 
-#### Header (eg. Floating action button) attributes
+#### Header attributes
 
-Element             | **Attribute**      | **Related methods**                                        | **Default value**
-------------------- | ------------------ | ---------------------------------------------------------- | -----------------
-**Header view**     | `app:headerLayout` | `addHeaderView`<br/>`removeHeaderView`<br/>`getHeaderView` | N/A
+**Element**     | **Attribute**      | **Related methods**                                        | **Default value**
+--------------- | ------------------ | ---------------------------------------------------------- | -----------------
+**Header view** | `app:headerLayout` | `addHeaderView`<br/>`removeHeaderView`<br/>`getHeaderView` | N/A
 
 See the
 [FAB documentation](https://github.com/material-components/material-components-android/tree/master/docs/components/FloatingActionButton.md)
@@ -310,47 +290,50 @@ for more attributes.
 
 #### Navigation item attributes
 
-Element                   | **Attribute**             | **Related methods**                                   | **Default value**
+**Element**               | **Attribute**             | **Related methods**                                   | **Default value**
 ------------------------- | ------------------------- | ----------------------------------------------------- | -----------------
 **Menu resource**         | `app:menu`                | `inflateMenu`<br/>`getMenu`                           | N/A
-**Ripple (inactive)**     | `app:itemRippleColor`     | `setItemRippleColor`<br/>`getItemRippleColor`         | `?attr/colorOnSurface` at 8% (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/navigation/res/color/mtrl_navigation_bar_ripple_color.xml))
-**Ripple (active)**       | `app:itemRippleColor`     | `setItemRippleColor`<br/>`getItemRippleColor`         | `?attr/colorPrimary` at 8% (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/navigation/res/color/mtrl_navigation_bar_ripple_color.xml))
+**Ripple (inactive)**     | `app:itemRippleColor`     | `setItemRippleColor`<br/>`getItemRippleColor`         | `?attr/colorPrimary` at 12% (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/navigation/res/color/mtrl_navigation_bar_ripple_color.xml))
+**Ripple (active)**       | `app:itemRippleColor`     | `setItemRippleColor`<br/>`getItemRippleColor`         | `?attr/colorPrimary` at 12% (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/navigation/res/color/mtrl_navigation_bar_ripple_color.xml))
 **Label visibility mode** | `app:labelVisibilityMode` | `setLabelVisibilityMode`<br/>`getLabelVisibilityMode` | `LABEL_VISIBILITY_AUTO`
+**Item minimum height**   | `app:itemMinHeight`       | `setItemMinimumHeight`<br/>`getItemMinimumHeight`     | `NO_ITEM_MINIMUM_HEIGHT`
+
+#### Active indicator attributes
+
+**Element**           | **Attribute**          | **Related methods**                                                                   | **Default value**
+--------------------- | ---------------------- | ------------------------------------------------------------------------------------- | -----------------
+**Color**             | `android:color`        | `setItemActiveIndicatorColor`<br/>`getItemActiveIndicatorColor`                       | `?attr/colorSecondaryContainer`
+**Width**             | `android:width`        | `setItemActiveIndicatorWidth`<br/>`getItemActiveIndicatorWidth`                       | `56dp`
+**Height**            | `android:height`       | `setItemActiveIndicatorHeight`<br/>`setItemActiveIndicatorHeight`                     | `32dp`
+**Shape**             | `app:shapeAppearance`  | `setItemActiveIndicatorShapeAppearance`<br/>`getItemActiveIndicatorShapeAppearance`   | `50% rounded`
+**Margin horizontal** | `app:marginHorizontal` | `setItemActiveIndicatorMarginHorizontal`<br/>`getItemActiveIndicatorMarginHorizontal` | `4dp`
 
 #### Icon attributes
 
-Element              | **Attribute**                         | **Related methods**                                              | **Default value**
+**Element**          | **Attribute**                         | **Related methods**                                              | **Default value**
 -------------------- | ------------------------------------- | ---------------------------------------------------------------- | -----------------
 **Icon**             | `android:icon` in the `menu` resource | N/A                                                              | N/A
 **Size**             | `app:itemIconSize`                    | `setItemIconSize`<br/>`setItemIconSizeRes`<br/>`getItemIconSize` | `24dp`
-**Color (inactive)** | `app:itemIconTint`                    | `setItemIconTintList`<br/>`getItemIconTintList`                  | `?attr/colorOnSurface` at 60%
-**Color (active)**   | `app:itemIconTint`                    | `setItemIconTintList`<br/>`getItemIconTintList`                  | `?attr/colorPrimary`
+**Color (inactive)** | `app:itemIconTint`                    | `setItemIconTintList`<br/>`getItemIconTintList`                  | `?attr/colorOnSurfaceVariant`
+**Color (active)**   | `app:itemIconTint`                    | `setItemIconTintList`<br/>`getItemIconTintList`                  | `?attr/colorOnSecondaryContainer`
 
 #### Text label attributes
 
-Element                   | **Attribute**                          | **Related methods**                                                 | **Default value**
+**Element**               | **Attribute**                          | **Related methods**                                                 | **Default value**
 ------------------------- | -------------------------------------- | ------------------------------------------------------------------- | -----------------
 **Text label**            | `android:title` in the `menu` resource | N/A                                                                 | N/A
-**Color (inactive)**      | `app:itemTextColor`                    | `setItemTextColor`<br/>`getItemTextColor`                           | `?attr/colorOnSurface` at 60%
-**Color (active)**        | `app:itemTextColor`                    | `setItemTextColor`<br/>`getItemTextColor`                           | `?attr/colorPrimary`
-**Typography (inactive)** | `app:itemTextAppearanceInactive`       | `setItemTextAppearanceInactive`<br/>`getItemTextAppearanceInactive` | `?attr/textAppearanceCaption`
-**Typography (active)**   | `app:itemTextAppearanceActive`         | `setItemTextAppearanceActive`<br/>`getItemTextAppearanceActive`     | `?attr/textAppearanceCaption`
+**Color (inactive)**      | `app:itemTextColor`                    | `setItemTextColor`<br/>`getItemTextColor`                           | `?attr/colorOnSurfaceVariant`
+**Color (active)**        | `app:itemTextColor`                    | `setItemTextColor`<br/>`getItemTextColor`                           | `?attr/colorOnSurface`
+**Typography (inactive)** | `app:itemTextAppearanceInactive`       | `setItemTextAppearanceInactive`<br/>`getItemTextAppearanceInactive` | `?attr/textAppearanceTitleSmall`
+**Typography (active)**   | `app:itemTextAppearanceActive`         | `setItemTextAppearanceActive`<br/>`getItemTextAppearanceActive`     | `?attr/textAppearanceTitleSmall`
 
 #### Styles
 
-Element                        | **Style**                                                     | **Container color**                                                        | **Icon/Text label color (inactive)**                                                          | **Icon/Text label color (active)**
------------------------------- | ------------------------------------------------------------- | -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ----------------------------------
-**Default style**              | `Widget.MaterialComponents.NavigationRailView`                | `?attr/colorSurface`                                                       | `?attr/colorOnSurface` at 60%                                                                 | `?attr/colorPrimary`
-**Colored style**              | `Widget.MaterialComponents.NavigationRailView.Colored`        | `?attr/colorPrimary`                                                       | `?attr/colorOnPrimary` at 60%                                                                 | `?attr/colorOnPrimary`
-**Dark theme supported style** | `Widget.MaterialComponents.NavigationRailView.PrimarySurface` | `?attr/colorPrimary` in light theme<br/>`?attr/colorSurface` in dark theme | `?attr/colorOnPrimary` at 60% in light theme<br/>`?attr/colorOnSurface` at 60% in light theme | `?attr/colorOnPrimary` in light theme<br/>`?attr/colorPrimary` in dark theme
+**Element**       | **Style**                             | **Container color**  | **Icon/Text label color (inactive)** | **Icon/Text label color (active)**
+----------------- | ------------------------------------- | -------------------- | ------------------------------------ | ----------------------------------
+**Default style** | `Widget.Material3.NavigationRailView` | `?attr/colorSurface` | `?attr/colorOnSurfaceVariant`        | `?attr/colorOnSurface`<br/>`?attr/colorOnSecondaryContainer`
 
 Default style theme attribute: `?attr/navigationRailStyle`
-
-**Note:** The `Widget.MaterialComponents.NavigationRailView.PrimarySurface`
-style will automatically switch between between the component's primary colored
-style in light theme and surface colored style in dark theme. More information
-in the
-[Dark theme documentation](https://github.com/material-components/material-components-android/tree/master/docs/theming/Dark.md#primary-vs-surface-coloring-for-large-surfaces).
 
 See the full list of
 [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/navigationrail/res/values/styles.xml),
@@ -361,8 +344,8 @@ and
 ## Theming a navigation rail
 
 Navigation rail supports
-[Material Theming](https://material.io/components/navigation-rail#theming) and
-can be customized in terms of color and typography.
+[Material Theming](https://material.io/components/navigation-rail#theming),
+which can customize color and typography.
 
 ### Navigation rail theming example
 
@@ -378,39 +361,58 @@ The following example shows a navigation rail with Material Theming.
 
 #### Implementing navigation rail theming
 
-Using theme attributes and a style in `res/values/styles.xml` (themes all bottom
-navigation rails and affects other components):
+Use theme attributes and a style in `res/values/styles.xml` which apply to all
+navigation rails and affect other components:
 
 ```xml
-<style name="Theme.App" parent="Theme.MaterialComponents.*">
+<style name="Theme.App" parent="Theme.Material3.*">
     ...
-    <item name="navigationRailStyle">@style/Widget.MaterialComponents.NavigationRailView.Colored</item>
-    <item name="colorPrimary">@color/shrine_pink_100</item>
-    <item name="colorOnPrimary">@color/shrine_pink_900</item>
+    <item name="colorPrimary">@color/shrine_theme_light_primary</item>
+    <item name="colorSecondaryContainer">@color/shrine_theme_light_secondaryContainer</item>
+    <item name="colorOnSecondaryContainer">@color/shrine_theme_light_onSecondaryContainer</item>
+    <item name="colorTertiaryContainer">@color/shrine_theme_light_tertiaryContainer</item>
+    <item name="colorOnTertiaryContainer">@color/shrine_theme_light_onTertiaryContainer</item>
+    <item name="colorError">@color/shrine_theme_light_error</item>
+    <item name="colorErrorContainer">@color/shrine_theme_light_errorContainer</item>
+    <item name="colorOnError">@color/shrine_theme_light_onError</item>
+    <item name="colorOnErrorContainer">@color/shrine_theme_light_onErrorContainer</item>
+    <item name="colorSurface">@color/shrine_theme_light_surface</item>
+    <item name="colorOnSurface">@color/shrine_theme_light_onSurface</item>
+    <item name="colorOnSurfaceVariant">@color/shrine_theme_light_onSurfaceVariant</item>
 </style>
 ```
 
-Or using a default style theme attribute, styles, and a theme overlay (themes
-all navigation rails but does not affect other components):
+Use a default style theme attribute, styles, and a theme overlay, which apply to
+all navigation rails but do not affect other components:
 
 ```xml
-<style name="Theme.App" parent="Theme.MaterialComponents.*">
+<style name="Theme.App" parent="Theme.Material3.*">
     ...
     <item name="navigationRailStyle">@style/Widget.App.NavigationRailView</item>
 </style>
 
-<style name="Widget.App.NavigationRailView" parent="Widget.MaterialComponents.NavigationRailView.Colored">
+<style name="Widget.App.NavigationRailView" parent="Widget.Material3.NavigationRailView">
     <item name="materialThemeOverlay">@style/ThemeOverlay.App.NavigationRailView</item>
 </style>
 
 <style name="ThemeOverlay.App.NavigationRailView" parent="">
-    <item name="colorPrimary">@color/shrine_pink_100</item>
-    <item name="colorOnPrimary">@color/shrine_pink_900</item>
+    <item name="colorPrimary">@color/shrine_theme_light_primary</item>
+    <item name="colorSecondaryContainer">@color/shrine_theme_light_secondaryContainer</item>
+    <item name="colorOnSecondaryContainer">@color/shrine_theme_light_onSecondaryContainer</item>
+    <item name="colorTertiaryContainer">@color/shrine_theme_light_tertiaryContainer</item>
+    <item name="colorOnTertiaryContainer">@color/shrine_theme_light_onTertiaryContainer</item>
+    <item name="colorError">@color/shrine_theme_light_error</item>
+    <item name="colorErrorContainer">@color/shrine_theme_light_errorContainer</item>
+    <item name="colorOnError">@color/shrine_theme_light_onError</item>
+    <item name="colorOnErrorContainer">@color/shrine_theme_light_onErrorContainer</item>
+    <item name="colorSurface">@color/shrine_theme_light_surface</item>
+    <item name="colorOnSurface">@color/shrine_theme_light_onSurface</item>
+    <item name="colorOnSurfaceVariant">@color/shrine_theme_light_onSurfaceVariant</item>
 </style>
 ```
 
-Or using the style in the layout (affects only this specific navigation rail
-bar):
+Or use the style in the layout, which affects only this specific navigation rail
+bar:
 
 ```xml
 <com.google.android.material.navigationrail.NavigationRailView

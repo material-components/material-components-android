@@ -32,11 +32,6 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Parcel;
 import android.os.Parcelable;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
-import androidx.core.view.accessibility.AccessibilityViewCommand;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
@@ -59,7 +54,13 @@ import androidx.annotation.StringRes;
 import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams;
+import androidx.core.graphics.Insets;
 import androidx.core.math.MathUtils;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
+import androidx.core.view.accessibility.AccessibilityViewCommand;
 import androidx.customview.view.AbsSavedState;
 import androidx.customview.widget.ViewDragHelper;
 import com.google.android.material.internal.ViewUtils;
@@ -231,6 +232,9 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   private boolean paddingLeftSystemWindowInsets;
   private boolean paddingRightSystemWindowInsets;
   private boolean paddingTopSystemWindowInsets;
+  private boolean marginLeftSystemWindowInsets;
+  private boolean marginRightSystemWindowInsets;
+  private boolean marginTopSystemWindowInsets;
 
   private int insetBottom;
   private int insetTop;
@@ -375,6 +379,12 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     // this is a breaking change from the old behavior the default is true.
     paddingTopSystemWindowInsets =
         a.getBoolean(R.styleable.BottomSheetBehavior_Layout_paddingTopSystemWindowInsets, true);
+    marginLeftSystemWindowInsets =
+        a.getBoolean(R.styleable.BottomSheetBehavior_Layout_marginLeftSystemWindowInsets, false);
+    marginRightSystemWindowInsets =
+        a.getBoolean(R.styleable.BottomSheetBehavior_Layout_marginRightSystemWindowInsets, false);
+    marginTopSystemWindowInsets =
+        a.getBoolean(R.styleable.BottomSheetBehavior_Layout_marginTopSystemWindowInsets, false);
 
     a.recycle();
     ViewConfiguration configuration = ViewConfiguration.get(context);
@@ -455,10 +465,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   private int getChildMeasureSpec(
-      int parentMeasureSpec,
-      int padding,
-      int maxSize,
-      int childDimension) {
+      int parentMeasureSpec, int padding, int maxSize, int childDimension) {
     int result = ViewGroup.getChildMeasureSpec(parentMeasureSpec, padding, childDimension);
     if (maxSize == NO_MAX_SIZE) {
       return result;
@@ -1462,6 +1469,9 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     if (!paddingBottomSystemWindowInsets
         && !paddingLeftSystemWindowInsets
         && !paddingRightSystemWindowInsets
+        && !marginLeftSystemWindowInsets
+        && !marginRightSystemWindowInsets
+        && !marginTopSystemWindowInsets
         && !shouldHandleGestureInsets) {
       return;
     }
@@ -1471,7 +1481,11 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
           @Override
           public WindowInsetsCompat onApplyWindowInsets(
               View view, WindowInsetsCompat insets, RelativePadding initialPadding) {
-            insetTop = insets.getSystemWindowInsetTop();
+            Insets systemBarInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            Insets mandatoryGestureInsets =
+                insets.getInsets(WindowInsetsCompat.Type.mandatorySystemGestures());
+
+            insetTop = systemBarInsets.top;
 
             boolean isRtl = ViewUtils.isLayoutRtl(view);
 
@@ -1480,24 +1494,45 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
             int rightPadding = view.getPaddingRight();
 
             if (paddingBottomSystemWindowInsets) {
-              insetBottom = insets.getSystemWindowInsetBottom();
+              insetBottom = systemBarInsets.bottom;
               bottomPadding = initialPadding.bottom + insetBottom;
             }
 
             if (paddingLeftSystemWindowInsets) {
               leftPadding = isRtl ? initialPadding.end : initialPadding.start;
-              leftPadding += insets.getSystemWindowInsetLeft();
+              leftPadding += systemBarInsets.left;
             }
 
             if (paddingRightSystemWindowInsets) {
               rightPadding = isRtl ? initialPadding.start : initialPadding.end;
-              rightPadding += insets.getSystemWindowInsetRight();
+              rightPadding += systemBarInsets.right;
             }
 
+            MarginLayoutParams mlp = (MarginLayoutParams) view.getLayoutParams();
+            boolean marginUpdated = false;
+
+            if (marginLeftSystemWindowInsets && mlp.leftMargin != systemBarInsets.left) {
+              mlp.leftMargin = systemBarInsets.left;
+              marginUpdated = true;
+            }
+
+            if (marginRightSystemWindowInsets && mlp.rightMargin != systemBarInsets.right) {
+              mlp.rightMargin = systemBarInsets.right;
+              marginUpdated = true;
+            }
+
+            if (marginTopSystemWindowInsets && mlp.topMargin != systemBarInsets.top) {
+              mlp.topMargin = systemBarInsets.top;
+              marginUpdated = true;
+            }
+
+            if (marginUpdated) {
+              view.setLayoutParams(mlp);
+            }
             view.setPadding(leftPadding, view.getPaddingTop(), rightPadding, bottomPadding);
 
             if (shouldHandleGestureInsets) {
-              gestureInsetBottom = insets.getMandatorySystemGestureInsets().bottom;
+              gestureInsetBottom = mandatoryGestureInsets.bottom;
             }
 
             // Don't update the peek height to be above the navigation bar or gestures if these
@@ -1518,7 +1553,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     return velocityTracker.getYVelocity(activePointerId);
   }
 
-  void settleToState(@NonNull View child, int state) {
+  void settleToState(@NonNull View child, @State int state) {
     int top;
     if (state == STATE_COLLAPSED) {
       top = collapsedOffset;
@@ -1534,12 +1569,19 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     } else if (hideable && state == STATE_HIDDEN) {
       top = parentHeight;
     } else {
-      throw new IllegalArgumentException("Illegal state argument: " + state);
+      // TODO(b/204062131): Possible illegal state when hideable is modified while the state is
+      // being updated.
+      Log.w(
+          TAG,
+          "The bottom sheet may be in an invalid state. Ensure `hideable` is true when using"
+              + " `STATE_HIDDEN`.");
+      return;
     }
     startSettlingAnimation(child, state, top, false);
   }
 
-  void startSettlingAnimation(View child, int state, int top, boolean settleFromViewDragHelper) {
+  void startSettlingAnimation(
+      View child, @State int state, int top, boolean settleFromViewDragHelper) {
     boolean startedSettling =
         viewDragHelper != null
             && (settleFromViewDragHelper
@@ -1598,7 +1640,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         }
 
         @Override
-        public void onViewDragStateChanged(int state) {
+        public void onViewDragStateChanged(@State int state) {
           if (state == ViewDragHelper.STATE_DRAGGING && draggable) {
             setStateInternal(STATE_DRAGGING);
           }
@@ -1914,7 +1956,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
      * @deprecated Use {@link #SavedState(Parcelable, BottomSheetBehavior)} instead.
      */
     @Deprecated
-    public SavedState(Parcelable superstate, int state) {
+    public SavedState(Parcelable superstate, @State int state) {
       super(superstate);
       this.state = state;
     }
@@ -2093,19 +2135,20 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   private void replaceAccessibilityActionForState(
-      V child, AccessibilityActionCompat action, int state) {
+      V child, AccessibilityActionCompat action, @State int state) {
     ViewCompat.replaceAccessibilityAction(
         child, action, null, createAccessibilityViewCommandForState(state));
   }
 
-  private int addAccessibilityActionForState(V child, @StringRes int stringResId, int state) {
+  private int addAccessibilityActionForState(
+      V child, @StringRes int stringResId, @State int state) {
     return ViewCompat.addAccessibilityAction(
         child,
         child.getResources().getString(stringResId),
         createAccessibilityViewCommandForState(state));
   }
 
-  private AccessibilityViewCommand createAccessibilityViewCommandForState(final int state) {
+  private AccessibilityViewCommand createAccessibilityViewCommandForState(@State final int state) {
     return new AccessibilityViewCommand() {
       @Override
       public boolean perform(@NonNull View view, @Nullable CommandArguments arguments) {

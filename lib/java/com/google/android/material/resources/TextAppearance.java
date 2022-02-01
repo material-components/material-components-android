@@ -20,14 +20,14 @@ import com.google.android.material.R;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.fonts.FontStyle;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.core.content.res.ResourcesCompat.FontCallback;
 import android.text.TextPaint;
 import android.util.Log;
 import androidx.annotation.FontRes;
@@ -37,6 +37,9 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.content.res.ResourcesCompat.FontCallback;
+import androidx.core.math.MathUtils;
 import androidx.core.provider.FontsContractCompat.FontRequestCallback;
 
 /**
@@ -228,11 +231,11 @@ public class TextAppearance {
    * @see #getFontAsync(Context, TextAppearanceFontCallback)
    */
   public void getFontAsync(
-      @NonNull Context context,
+      @NonNull final Context context,
       @NonNull final TextPaint textPaint,
       @NonNull final TextAppearanceFontCallback callback) {
     // Updates text paint using fallback font while waiting for font to be requested.
-    updateTextPaintMeasureState(textPaint, getFallbackFont());
+    updateTextPaintMeasureState(context, textPaint, getFallbackFont());
 
     getFontAsync(
         context,
@@ -240,7 +243,7 @@ public class TextAppearance {
           @Override
           public void onFontRetrieved(
               @NonNull Typeface typeface, boolean fontResolvedSynchronously) {
-            updateTextPaintMeasureState(textPaint, typeface);
+            updateTextPaintMeasureState(context, textPaint, typeface);
             callback.onFontRetrieved(typeface, fontResolvedSynchronously);
           }
 
@@ -326,7 +329,7 @@ public class TextAppearance {
       @NonNull TextPaint textPaint,
       @NonNull TextAppearanceFontCallback callback) {
     if (shouldLoadFontSynchronously(context)) {
-      updateTextPaintMeasureState(textPaint, getFont(context));
+      updateTextPaintMeasureState(context, textPaint, getFont(context));
     } else {
       getFontAsync(context, textPaint, callback);
     }
@@ -338,7 +341,20 @@ public class TextAppearance {
    * @see android.text.style.TextAppearanceSpan#updateMeasureState(TextPaint)
    */
   public void updateTextPaintMeasureState(
-      @NonNull TextPaint textPaint, @NonNull Typeface typeface) {
+      @NonNull Context context, @NonNull TextPaint textPaint, @NonNull Typeface typeface) {
+    Configuration configuration = context.getResources().getConfiguration();
+    if (VERSION.SDK_INT >= VERSION_CODES.S) {
+      int fontWeightAdjustment = configuration.fontWeightAdjustment;
+      if (fontWeightAdjustment != Configuration.FONT_WEIGHT_ADJUSTMENT_UNDEFINED
+          && fontWeightAdjustment != 0) {
+        int adjustedWeight =
+            MathUtils.clamp(
+                typeface.getWeight() + fontWeightAdjustment,
+                FontStyle.FONT_WEIGHT_MIN,
+                FontStyle.FONT_WEIGHT_MAX);
+        typeface = Typeface.create(typeface, adjustedWeight, typeface.isItalic());
+      }
+    }
     textPaint.setTypeface(typeface);
 
     int fake = textStyle & ~typeface.getStyle();

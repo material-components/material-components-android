@@ -45,11 +45,17 @@
     <!-- The text color for the hint when the text field is not activated (such
          as for the resting and disabled states). -->
     <attr name="android:textColorHint"/>
-    <!-- Makes the text field be at least this dimension wide if its width is
+    <!-- Makes the text field be at least this many ems wide if its width is
+         set to wrap_content. -->
+    <attr name="android:minEms"/>
+    <!-- Makes the text field be at most this many ems wide if its width is set
+         to wrap_content. -->
+    <attr name="android:maxEms"/>
+    <!-- Makes the text field be at least this dimension wide in pixels if its width is
          set to wrap_content. -->
     <attr name="android:minWidth"/>
-    <!-- Makes the text field be at most this dimension wide if its width is set
-         to wrap_content.  -->
+    <!-- Makes the text field be at most this dimension wide in pixels if its width is set
+         to wrap_content. -->
     <attr name="android:maxWidth"/>
 
     <!-- Whether the layout's floating label functionality is enabled. -->
@@ -238,7 +244,7 @@
     <attr name="boxStrokeErrorColor" format="color"/>
     <!-- The color to use for the box's background color when in filled box mode.
          If a non-stateful color resource is specified, default colors will be used for the hover
-         and disabled states.  -->
+         and disabled states. -->
     <attr name="boxBackgroundColor" format="color"/>
     <!-- The value to use for the box's stroke when in outline box mode, or for the underline stroke
          in filled mode. -->

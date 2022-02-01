@@ -20,12 +20,12 @@ import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.Matchers.any;
 
-import androidx.core.view.ViewCompat;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewStub;
 import androidx.annotation.LayoutRes;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.ViewCompat;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
 import androidx.test.rule.ActivityTestRule;

@@ -22,15 +22,15 @@ import static com.google.common.truth.Truth.assertThat;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Parcel;
-import androidx.core.content.res.ResourcesCompat;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
 import androidx.annotation.StyleRes;
 import androidx.annotation.XmlRes;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.test.core.app.ApplicationProvider;
-import com.google.android.material.badge.BadgeDrawable.SavedState;
 import com.google.android.material.drawable.DrawableUtils;
+import java.util.Locale;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,6 +44,7 @@ import org.robolectric.annotation.internal.DoNotInstrument;
 public class BadgeDrawableTest {
 
   private static final int TEST_BADGE_NUMBER = 26;
+  private static final Locale TEST_BADGE_NUMBER_LOCALE = new Locale("ar");
 
   private static final int TEST_BADGE_HORIZONTAL_OFFSET = 10;
   private static final int TEST_BADGE_VERTICAL_OFFSET = 5;
@@ -63,7 +64,7 @@ public class BadgeDrawableTest {
     int testBadgeTextColor =
         ResourcesCompat.getColor(context.getResources(), android.R.color.white, context.getTheme());
     BadgeDrawable badgeDrawable = BadgeDrawable.create(context);
-    SavedState drawableState = badgeDrawable.getSavedState();
+    BadgeState.State drawableState = badgeDrawable.getSavedState();
     badgeDrawable.setNumber(TEST_BADGE_NUMBER);
     badgeDrawable.setBadgeGravity(BadgeDrawable.TOP_START);
 
@@ -84,12 +85,13 @@ public class BadgeDrawableTest {
     badgeDrawable.setBackgroundColor(testBackgroundColor);
     badgeDrawable.setBadgeTextColor(testBadgeTextColor);
     badgeDrawable.setVisible(false);
+    badgeDrawable.setBadgeNumberLocale(TEST_BADGE_NUMBER_LOCALE);
 
     Parcel parcel = Parcel.obtain();
     drawableState.writeToParcel(parcel, drawableState.describeContents());
     parcel.setDataPosition(0);
 
-    SavedState createdFromParcel = SavedState.CREATOR.createFromParcel(parcel);
+    BadgeState.State createdFromParcel = BadgeState.State.CREATOR.createFromParcel(parcel);
     BadgeDrawable restoredBadgeDrawable =
         BadgeDrawable.createFromSavedState(context, createdFromParcel);
     assertThat(restoredBadgeDrawable.getNumber()).isEqualTo(TEST_BADGE_NUMBER);
@@ -110,6 +112,9 @@ public class BadgeDrawableTest {
 
     // badge visibility
     assertThat(restoredBadgeDrawable.isVisible()).isFalse();
+
+    // badge number locale
+    assertThat(restoredBadgeDrawable.getBadgeNumberLocale()).isEqualTo(TEST_BADGE_NUMBER_LOCALE);
   }
 
   // Verify that the hardcoded badge gravity attribute values match their piped Gravity counter

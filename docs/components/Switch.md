@@ -13,7 +13,7 @@ path: /catalog/switches/
 allow the user to select options.
 
 Switches toggle the state of a single setting on or off. They are the preferred
-way to adjust settings on mobile.
+way to adjust settings on mobile devices.
 
 ![White "Settings" menu with purple header and switches to turn on options, such
 as "Wi-fi" and "Bluetooth"](assets/switch/switch_hero.png)
@@ -31,11 +31,11 @@ Material Components for Android library. For more information, go to the
 [Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
 page.
 
-_**Note:** The `SwitchMaterial` widget provides a complete implementation of
+**Note:** The `SwitchMaterial` widget provides a complete implementation of
 Material Design's switch component. It extends from the support library's
 `SwitchCompat` widget, but not from the framework `Switch` widget. As such, it
 does not auto-inflate, unlike other selection controls, and must be explicitly
-specified in layouts._
+specified in layouts.
 
 Use switches to:
 
@@ -115,7 +115,7 @@ track:
 ![Switch anatomy diagram](assets/switch/switch_anatomy.png)
 
 1.  Thumb
-1.  Track
+2.  Track
 
 ### Switch attributes
 
@@ -189,8 +189,8 @@ and
 ## Theming switches
 
 Switches support
-[Material Theming](https://material.io/components/selection-controls#theming)
-and can be customized in terms of color and typography.
+[Material Theming](https://material.io/components/selection-controls#theming),
+which can customize color and typography.
 
 ### Switch theming example
 
@@ -206,8 +206,8 @@ The following example shows a list of switches with Material Theming.
 
 #### Implementing switch theming
 
-Using theme attributes in `res/values/styles.xml` (themes all switches and
-affects other components):
+Use theme attributes in `res/values/styles.xml`, which applies to all switches
+and affects other components:
 
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
@@ -218,8 +218,8 @@ affects other components):
 
 ```
 
-or using default style theme attributes, styles and theme overlays (themes all
-switches but does not affect other components):
+Use default style theme attributes, styles and theme overlays, which apply to
+all switches but do not affect other components:
 
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
@@ -237,7 +237,7 @@ switches but does not affect other components):
 </style>
 ```
 
-or using the styles in the layout (affects only this switch):
+Use the styles in the layout, which affects only this switch:
 
 ```xml
 <com.google.android.material.switchmaterial.SwitchMaterial

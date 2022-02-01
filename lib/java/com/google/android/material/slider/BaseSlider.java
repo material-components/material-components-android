@@ -18,8 +18,8 @@ package com.google.android.material.slider;
 
 import com.google.android.material.R;
 
-import static androidx.core.view.accessibility.AccessibilityNodeInfoCompat.RangeInfoCompat.RANGE_TYPE_FLOAT;
 import static androidx.core.math.MathUtils.clamp;
+import static androidx.core.view.accessibility.AccessibilityNodeInfoCompat.RangeInfoCompat.RANGE_TYPE_FLOAT;
 import static com.google.android.material.slider.LabelFormatter.LABEL_FLOATING;
 import static com.google.android.material.slider.LabelFormatter.LABEL_GONE;
 import static com.google.android.material.slider.LabelFormatter.LABEL_WITHIN_BOUNDS;
@@ -51,10 +51,6 @@ import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.RangeInfoCompat;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -76,6 +72,10 @@ import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.RangeInfoCompat;
 import androidx.customview.widget.ExploreByTouchHelper;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.drawable.DrawableUtils;
@@ -831,7 +831,7 @@ abstract class BaseSlider<
    *
    * @param listener The callback to run when the slider changes
    */
-  public void addOnChangeListener(@Nullable L listener) {
+  public void addOnChangeListener(@NonNull L listener) {
     changeListeners.add(listener);
   }
 

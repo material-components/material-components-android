@@ -36,12 +36,8 @@ public class CheckBoxMainDemoFragment extends DemoFragment {
   public View onCreateDemoView(
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
     View view = layoutInflater.inflate(R.layout.cat_checkbox, viewGroup, false /* attachToRoot */);
-    ViewGroup checkBoxDemoViewGroup = view.findViewById(R.id.main_viewGroup);
-    View toggledView =
-        layoutInflater.inflate(R.layout.cat_checkbox_toggled, checkBoxDemoViewGroup, false);
-    checkBoxDemoViewGroup.addView(toggledView);
-    List<CheckBox> toggledCheckBoxes =
-        DemoUtils.<CheckBox>findViewsWithType(toggledView, CheckBox.class);
+    ViewGroup toggleContainer = view.findViewById(R.id.checkbox_toggle_container);
+    List<CheckBox> toggledCheckBoxes = DemoUtils.findViewsWithType(toggleContainer, CheckBox.class);
 
     CheckBox checkBoxToggle = view.findViewById(R.id.checkbox_toggle);
     checkBoxToggle.setOnCheckedChangeListener(

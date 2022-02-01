@@ -12,16 +12,15 @@ path: /catalog/chips/
 [Chips](https://material.io/components/chips) are compact elements that
 represent an input, attribute, or action.
 
-![Email with purple "Compose" header and grey chip with an email address on the
-"To" line](assets/chips/chips_hero.png)
+![Email with and grey chip with an email address on the "To" line](assets/chips/chips_hero.png)
 
 **Contents**
 
 *   [Using chips](#using-chips)
-*   [Input chip](#input-chip)
-*   [Choice chip](#choice-chip)
+*   [Assist chip](#assist-chip)
 *   [Filter chip](#filter-chip)
-*   [Action chip](#action-chip)
+*   [Input chip](#input-chip)
+*   [Suggestion chip](#suggestion-chip)
 *   [Theming chips](#theming-chips)
 
 ## Using chips
@@ -38,7 +37,7 @@ interactive elements.
 
 ### Usage
 
-A `Chip` can be added in a layout like so:
+A `Chip` can be added in a layout with the following:
 
 ```xml
 <com.google.android.material.chip.Chip
@@ -48,7 +47,7 @@ A `Chip` can be added in a layout like so:
     android:text="@string/text"/>
 ```
 
-Changes to a chip can be observed like so:
+Changes to a chip can be observed with the following:
 
 ```kt
 chip.setOnClickListener {
@@ -72,7 +71,7 @@ accessibility services. Additional content labels are usually unnecessary.
 
 #### Touch target
 
-The `Widget.MaterialComponents.Chip.*` styles use an
+The `Widget.Material3.Chip.*` styles use an
 [InsetDrawable](https://developer.android.com/reference/android/graphics/drawable/InsetDrawable)
 to extend the chip's touch target when necessary to meet Android's recommended
 [accessibility touch target size](https://support.google.com/accessibility/android/answer/7101858).
@@ -94,9 +93,9 @@ chip.layoutDirection = View.LAYOUT_DIRECTION_LOCALE
 
 ### Grouping chips with `ChipGroup`
 
-Chips are mostly commonly used in groups. We recommend using `ChipGroup` as it
-is purpose-built to handle multi-chip layout and behavior patterns (as opposed
-to a `ViewGroup` such as `RecyclerView`). A `ChipGroup` contains a set of
+Chips are most commonly used in groups. We recommend using `ChipGroup` because
+it is purpose-built to handle multi-chip layouts and behavior patterns, as
+opposed to a `ViewGroup` such as `RecyclerView`. A `ChipGroup` contains a set of
 `Chip`s and manages their layout and multiple-exclusion scope, similarly to a
 `RadioGroup`.
 
@@ -104,8 +103,8 @@ to a `ViewGroup` such as `RecyclerView`). A `ChipGroup` contains a set of
 
 A `ChipGroup` rearranges chips across multiple rows by default.
 
-!["6 grey "Filter" chips spread across 2 lines: "Filters" 1 and 3 selected and
-are darker grey and include checkmarks."](assets/chips/chips_filter.png)
+!["6 white "Filter" chips spread across 2 lines: "Filters" 1 and 3 selected and
+are light purple and include checkmarks."](assets/chips/chips_filter.png)
 
 ```xml
 <com.google.android.material.chip.ChipGroup
@@ -122,7 +121,7 @@ A `ChipGroup` can also constrain its chips to a single row using the
 `app:singleLine` attribute. Using a single row may necessitate wrapping the
 `ChipGroup` with a `HorizontalScrollView`.
 
-!["Single line of grey chips: chips 1, 2, and 3 are fully visible, chip 4 is
+!["Single line of white chips: chips 1, 2, and 3 are fully visible, chip 4 is
 partly visible"](assets/chips/chips_singleline.png)
 
 ```xml
@@ -145,26 +144,27 @@ using the `app:chipSpacing` attribute. Different horizontal and vertical spacing
 can be set using the `app:chipSpacingHorizontal` and `app:chipSpacingVertical`
 attributes.
 
-_**Note:** The `app:chipMinTouchTargetSize` will overrule vertical chip spacing
-for lower amounts._
+**Note:** The `app:chipMinTouchTargetSize` will overrule vertical chip spacing
+for lower amounts.
 
 The following image shows a group of chips with
 `app:chipSpacingHorizontal="42dp"`.
 
-!["6 grey chips in 2 rows with 42dp horizontal spacing"](assets/chips/chips_spacing.png)
+!["6 white chips in 2 rows with 42dp horizontal spacing"](assets/chips/chips_spacing.png)
 
 #### Multiple exclusion scope
 
 The `app:singleSelection` attribute can be set to true on a `ChipGroup` in order
-to toggle single-select and multi-select behavior of child chips.
+to toggle single-select and multi-select behaviors of child chips.
 
 The `app:selectionRequired` attribute can be set to true on a `ChipGroup` to
-prevent all child chips from being deselected (i.e. at least one option should
-be chosen).
+prevent all child chips from being deselected - at least one option should be
+chosen.
 
 #### Handling checked chips
 
-Changes to child chip checked/unchecked state can be observed like so:
+Changes to child chip's checked/unchecked state can be observed with the
+following:
 
 ```kt
 val checkedChipId = chipGroup.checkedChipId // Returns View.NO_ID if singleSelection = false
@@ -194,11 +194,11 @@ In `res/xml/standalone_chip.xml`:
     android:text="@string/text"/>
 ```
 
-Entry Chip is the default Material style for standalone `ChipDrawable`s, but you
+Input Chip is the default Material style for standalone `ChipDrawable`s, but you
 can apply any of the other styles using the `style` attribute. All the
 attributes on `Chip` can be applied to a `ChipDrawable` resource.
 
-A ChipDrawable can then be inflated from this resource like so:
+A ChipDrawable can then be inflated from this resource with the following:
 
 ```xml
 val chipDrawable = ChipDrawable.createFromResource(context, R.xml.chip)
@@ -219,10 +219,11 @@ text.setSpan(span, 0, text.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 
 ### Types
 
-There are four types of chips: 1\. [input (entry)](#input-chip), 2\.
-[choice](#choice-chip), 3\. [filter](#filter-chip), 4\. [action](#action-chip)
+There are four types of chips: 1\. [assist](#assist-chip), 2\.
+[filter](#filter-chip), 3\. [input](#input-chip),
+4\.[suggestion](#suggestion-chip)
 
-![Examples of the four different chip types](assets/chips/chips_composite.png)
+![Examples of the four different chip types](assets/chips/chip_types.png)
 
 API and source code:
 
@@ -236,12 +237,100 @@ API and source code:
     *   [Class definition](https://developer.android.com/reference/com/google/android/material/chip/ChipDrawable)
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/chip/ChipDrawable.java)
 
+## Assist chip
+
+Assist chips represent smart or automated actions that can span multiple apps,
+such as opening a calendar event from the home screen. Assist chips function as
+though the user asked an assistant to complete the action.
+
+### Assist chip example
+
+The following example shows an activated assist chip.
+
+!["A selected action chip with its corresponding action, a visible popup textbox
+stating the chip has been activated."](assets/chips/chips_selected_assist.png)
+
+In the layout:
+
+```xml
+<TextView
+  android:id="@+id/textView_1"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:text="@string/label_1"
+  android:textAlignment="viewEnd"/>
+
+<com.google.android.material.chip.Chip
+  android:id="@+id/chip_1"
+  style="@style/Widget.Material3.Chip.Assist"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:text="@string/chip_text_1"
+  app:chipIcon="@drawable/circle_1"
+  app:ensureMinTouchTargetSize="true"/>
+```
+
+## Filter chip
+
+Filter chips use tags or descriptive words to filter content.
+
+Filter chips clearly delineate and display options in a compact area. They are a
+good alternative to toggle buttons or checkboxes.
+
+### Filter chip example
+
+The following example shows six filter chips.
+
+!["6 white "Filter" chips spread across 2 lines: "Filters" 1 and 3 selected and
+are light purple and include checkmarks."](assets/chips/chips_filter.png)
+
+In the layout:
+
+```xml
+<com.google.android.material.chip.ChipGroup
+    ...>
+  <com.google.android.material.chip.Chip
+      android:id="@+id/chip_1"
+      style="@style/Widget.Material3.Chip.Filter"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:checked="true"
+      android:text="@string/text_filter_1"/>
+
+  <com.google.android.material.chip.Chip
+      ...
+       style="@style/Widget.Material3.Chip.Filter"
+       android:text="@string/text_filter_2"/>
+
+  <com.google.android.material.chip.Chip
+      ...
+      style="@style/Widget.Material3.Chip.Filter"
+      android:checked="true"
+      android:text="@string/text_filter_3"/>
+
+  <com.google.android.material.chip.Chip
+      ...
+      style="@style/Widget.Material3.Chip.Filter"
+      android:text="@string/text_filter_4"/>
+
+  <com.google.android.material.chip.Chip
+      ...
+      style="@style/Widget.Material3.Chip.Filter"
+      android:text="@string/text_filter_5"/>
+
+  <com.google.android.material.chip.Chip
+      ...
+      style="@style/Widget.Material3.Chip.Filter"
+      android:text="@string/text_filter_6"/>
+
+</com.google.android.material.chip.ChipGroup>
+```
+
 ## Input chip
 
-Input chips (refered to as **entry** chips in Android) represent a complex piece
-of information in compact form, such as an entity (person, place, or thing) or
-text. They enable user input and verify that input by converting text into
-chips.
+Input chips represent a discrete piece of information in compact form, such as
+an entity (person, place, or thing) or text. They enable user input and verify
+that input by converting text into chips.
 
 ### Input chip example
 
@@ -256,190 +345,56 @@ In the layout:
     ...>
   <com.google.android.material.chip.Chip
       android:id="@+id/chip_1"
-      style="@style/Widget.MaterialComponents.Chip.Entry"
+      style="@style/Widget.Material3.Chip.Input"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/text_input_1"/>
 
   <com.google.android.material.chip.Chip
       ...
-      style="@style/Widget.MaterialComponents.Chip.Entry"
+      style="@style/Widget.Material3.Chip.Input"
       android:text="@string/text_input_2"/>
 
   <com.google.android.material.chip.Chip
       ...
-      style="@style/Widget.MaterialComponents.Chip.Entry"
+      style="@style/Widget.Material3.Chip.Input"
       android:text="@string/text_input_3"/>
 
 </com.google.android.material.chip.ChipGroup>
 ```
 
-## Choice chip
+## Suggestion chip
 
-Choice chips allow selection of a single chip from a set of options.
+Suggestion chips help narrow a user’s intent by presenting dynamically generated
+suggestions, such as offering possible responses or providing search filters.
 
-Choice chips clearly delineate and display options in a compact area. They are a
-good alternative to toggle buttons, radio buttons, and single select menus.
+### Suggestion chip example
 
-### Caveats
+The following example shows three suggestion chips.
 
-If you add choice chips to a dialog (which has 24dp elevation), disable the
-chips' elevation overlays to ensure that there is sufficient color contrast when
-the chips are checked.
-
-```xml
-<style name="Widget.MyApp.Chip.Choice" parent="Widget.MaterialComponents.Chip.Choice">
-  ...
-    <item name="materialThemeOverlay">@style/ThemeOverlay.MyApp.Chip.Choice</item>
-</style>
-
-<!-- Disabling elevation overlays because when chip's default background/surface
-     composite are combined with elevation overlays in a highly elevated dialog,
-     the resulting color becomes too light and causes contrast
-     issues. -->
-<style name="ThemeOverlay.MyApp.Chip.Choice" parent="">
-    <item name="elevationOverlayEnabled">false</item>
-</style>
-```
-
-### Choice chip example
-
-The following example shows four choice chips.
-
-!["4 choice chips, Choice 1 is selected with purple fill, Choices 2-4 unselected
-with grey fill"](assets/chips/chips_choice.png)
+!["3 suggestion chips, where suggestion 1 is unselected with a solid border and
+white background, suggestion 2 is selected with no border and a light purple
+background, and suggestion 3 is an unselected elevated suggestion with no border
+and a light grey background."](assets/chips/chips_suggestion.png)
 
 In the layout:
 
 ```xml
 <com.google.android.material.chip.ChipGroup
     ...>
+   <com.google.android.material.chip.Chip
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    style="@style/Widget.Material3.Chip.Suggestion"
+    android:text="@string/chip_text_1"/>
   <com.google.android.material.chip.Chip
-      android:id="@+id/chip_1"
-      style="@style/Widget.MaterialComponents.Chip.Choice"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:checked="true"
-      android:text="@string/text_choice_1"/>
-
+    ...
+    style="@style/Widget.Material3.Chip.Suggestion"
+    android:text="@string/chip_text_2"/>
   <com.google.android.material.chip.Chip
-      ...
-      style="@style/Widget.MaterialComponents.Chip.Choice"
-      android:text="@string/text_choice_2"/>
-
-  <com.google.android.material.chip.Chip
-      ...
-      style="@style/Widget.MaterialComponents.Chip.Choice"
-      android:text="@string/text_choice_3"/>
-
-  <com.google.android.material.chip.Chip
-      ...
-      style="@style/Widget.MaterialComponents.Chip.Choice"
-      android:text="@string/text_choice_4"/>
-
-</com.google.android.material.chip.ChipGroup>
-```
-
-## Filter chip
-
-Filter chips use tags or descriptive words to filter content.
-
-Filter chips clearly delineate and display options in a compact area. They are a
-good alternative to toggle buttons or checkboxes.
-
-### Filter chip example
-
-The following example shows six filter chips.
-
-!["6 grey "Filter" chips spread across 2 lines: "Filters" 1 and 3 selected and
-are darker grey and include checkmarks."](assets/chips/chips_filter.png)
-
-In the layout:
-
-```xml
-<com.google.android.material.chip.ChipGroup
-    ...>
-  <com.google.android.material.chip.Chip
-      android:id="@+id/chip_1"
-      style="@style/Widget.MaterialComponents.Chip.Choice"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:checked="true"
-      android:text="@string/text_filter_1"/>
-
-  <com.google.android.material.chip.Chip
-      ...
-      style="@style/Widget.MaterialComponents.Chip.Choice"
-       android:text="@string/text_filter_2"/>
-
-  <com.google.android.material.chip.Chip
-      ...
-      style="@style/Widget.MaterialComponents.Chip.Choice"
-      android:checked="true"
-      android:text="@string/text_filter_3"/>
-
-  <com.google.android.material.chip.Chip
-      ...
-      style="@style/Widget.MaterialComponents.Chip.Choice"
-      android:text="@string/text_filter_4"/>
-
-  <com.google.android.material.chip.Chip
-      ...
-      style="@style/Widget.MaterialComponents.Chip.Choice"
-      android:text="@string/text_filter_5"/>
-
-  <com.google.android.material.chip.Chip
-      ...
-      style="@style/Widget.MaterialComponents.Chip.Choice"
-      android:text="@string/text_filter_6"/>
-
-</com.google.android.material.chip.ChipGroup>
-```
-
-## Action chip
-
-Action chips offer actions related to primary content. They should appear
-dynamically and contextually in a UI.
-
-An alternative to action chips are buttons, which should appear persistently and
-consistently.
-
-### Action chip example
-
-The following example shows four action chips.
-
-!["Actions chips with texts Action 1 to 4 and icons."](assets/chips/chips_action.png)
-
-In the layout:
-
-```xml
-<com.google.android.material.chip.ChipGroup
-    ...>
-  <com.google.android.material.chip.Chip
-      android:id="@+id/chip_1"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      app:chipIconTint="@color/icon_tint"
-      app:chipIcon="@drawable/favorite"
-      android:text="@string/text_action_1"/>
-
-  <com.google.android.material.chip.Chip
-      ...
-      app:chipIconTint="@color/icon_tint"
-      app:chipIcon="@drawable/delete"
-      android:text="@string/text_action_2"/>
-
-  <com.google.android.material.chip.Chip
-      ...
-      app:chipIconTint="@color/icon_tint"
-      app:chipIcon="@drawable/alarm"
-      android:text="@string/text_action_3"/>
-
-  <com.google.android.material.chip.Chip
-      ...
-      app:chipIconTint="@color/icon_tint"
-      app:chipIcon="@drawable/location"
-      android:text="@string/text_action_4"/>
+    ...
+    style="@style/Widget.Material3.Chip.Suggestion.Elevated"
+    android:text="@string/chip_text_3"/>
 
 </com.google.android.material.chip.ChipGroup>
 ```
@@ -451,23 +406,23 @@ The following is an anatomy diagram of a chip:
 ![Chip anatomy diagram](assets/chips/chips_anatomy.png)
 
 1.  Container
-1.  Thumbnail (optional)
 1.  Text
 1.  Remove icon (optional)
+1.  Thumbnail (optional)
 
 #### Container attributes
 
 Element              | Attribute                                                       | Related method(s)                                                                                          | Default value
 -------------------- | --------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | -------------
-**Color**            | `app:chipBackgroundColor`                                       | `setChipBackgroundColor`<br/>`setChipBackgroundColorResource`<br/>`getChipBackgroundColor`                 | `?attr/colorOnSurface` at 10%
-**Ripple color**     | `app:rippleColor`                                               | `setRippleColor`<br/>`setRippleColorResource`<br/>`getRippleColor`                                         | `?attr/colorOnSurface` at 12%
-**Stroke width**     | `app:chipStrokeWidth`                                           | `setStrokeWidth`<br/>`setChipStrokeWidthResource`<br/>`getChipStrokeWidth`                                 | `0dp`
+**Color**            | `app:chipBackgroundColor`                                       | `setChipBackgroundColor`<br/>`setChipBackgroundColorResource`<br/>`getChipBackgroundColor`                 | `?attr/colorOnSurface`
+**Ripple color**     | `app:rippleColor`                                               | `setRippleColor`<br/>`setRippleColorResource`<br/>`getRippleColor`                                         | `?attr/colorOnSecondaryContainer` at 12%
+**Stroke width**     | `app:chipStrokeWidth`                                           | `setStrokeWidth`<br/>`setChipStrokeWidthResource`<br/>`getChipStrokeWidth`                                 | `1dp`
 **Stroke color**     | `app:chipStrokeColor`                                           | `setStrokeColor`<br/>`setChipStrokeColorResource`<br/>`getChipStrokeColor`                                 | `?attr/colorOnSurface`
 **Min height**       | `app:chipMinHeight`                                             | `setChipMinHeight`<br/>`setChipMinHeightResource`<br/>`getChipMinHeight`                                   | `32dp`
 **Padding**          | `app:chipStartPadding`<br/>`app:chipEndPadding`                 | `setChip*Padding`<br/>`setChip*PaddingResource`<br/>`getChip*Padding`                                      | `4dp` (start)<br/>`6dp` (end)
-**Shape**            | `app:shapeAppearance`<br/>`shapeAppearanceOverlay`              | `setShapeAppearanceModel`<br/>`getShapeAppearanceModel`                                                    | `?attr/shapeAppearanceSmallComponent` with 50% `cornerSize`
+**Shape**            | `app:shapeAppearance`<br/>`shapeAppearanceOverlay`              | `setShapeAppearanceModel`<br/>`getShapeAppearanceModel`                                                    | `?attr/shapeAppearanceSmallComponent` with 8dp `cornerSize`
 **Min touch target** | `app:chipMinTouchTargetSize`<br/>`app:ensureMinTouchTargetSize` | `ensureAccessibleTouchTarget`<br/>`setEnsureAccessibleTouchTarget`<br/>`shouldEnsureAccessibleTouchTarget` | `48dp`<br/>`true`
-**Checkable**        | `android:checkable`                                             | `setCheckable`<br/>`setCheckableResource`<br/>`isCheckable`                                                | `true` (entry, filter, choice)
+**Checkable**        | `android:checkable`                                             | `setCheckable`<br/>`setCheckableResource`<br/>`isCheckable`                                                | `true` (input, suggestion, filter)
 
 #### Thumbnail attributes
 
@@ -476,10 +431,10 @@ Element              | Attribute                                                
 Element        | Attribute                                       | Related method(s)                                                     | Default value
 -------------- | ----------------------------------------------- | --------------------------------------------------------------------- | -------------
 **Icon**       | `app:chipIcon`                                  | `setChipIconVisible`<br/>`isChipIconVisible`                          | `null`
-**Visibility** | `app:chipIconVisible`                           | `setChipIcon`<br/>`setChipIconResource`<br/>`getChipIcon`             | `true` (action and entry)
+**Visibility** | `app:chipIconVisible`                           | `setChipIcon`<br/>`setChipIconResource`<br/>`getChipIcon`             | `true` (input and assist)
 **Color**      | `app:chipIconTint`                              | `setChipIconTint`<br/>`setChipIconTintResource`<br/>`getChipIconTint` | `null`
-**Size**       | `app:chipIconSize`                              | `setChipIconSize`<br/>`setChipIconSizeResource`<br/>`getChipIconSize` | `24dp`
-**Padding**    | `app:iconStartPadding`<br/>`app:iconEndPadding` | `setIcon*Padding`<br/>`setIcon*PaddingResource`<br/>`getIcon*Padding` | `0dp`
+**Size**       | `app:chipIconSize`                              | `setChipIconSize`<br/>`setChipIconSizeResource`<br/>`getChipIconSize` | `18dp`
+**Padding**    | `app:iconStartPadding`<br/>`app:iconEndPadding` | `setIcon*Padding`<br/>`setIcon*PaddingResource`<br/>`getIcon*Padding` | `0dp`, `-2dp` (filter end padding)
 
 **Checked icon**
 
@@ -487,8 +442,8 @@ If visible, the checked icon overlays the chip icon.
 
 Element        | Attribute                | Related method(s)                                                              | Default value
 -------------- | ------------------------ | ------------------------------------------------------------------------------ | -------------
-**Icon**       | `app:checkedIcon`        | `setCheckedIconVisible`<br/>`isCheckedIconVisible`                             | `@drawable/ic_mtrl_chip_checked_circle`
-**Visibility** | `app:checkedIconVisible` | `setCheckedIcon`<br/>`setCheckedIconResource`<br/>`getCheckedIcon`             | `true` (entry, filter, choice)
+**Icon**       | `app:checkedIcon`        | `setCheckedIconVisible`<br/>`isCheckedIconVisible`                             | `@drawable/ic_m3_chip_checked_circle`
+**Visibility** | `app:checkedIconVisible` | `setCheckedIcon`<br/>`setCheckedIconResource`<br/>`getCheckedIcon`             | `true` (input, filter)
 **Color**      | `app:checkedIconTint`    | `setCheckedIconTint`<br/>`setCheckedIconTintResource`<br/>`getCheckedIconTint` | `null`
 
 #### Text attributes
@@ -496,8 +451,8 @@ Element        | Attribute                | Related method(s)                   
 Element        | Attribute                                       | Related method(s)                                                           | Default value
 -------------- | ----------------------------------------------- | --------------------------------------------------------------------------- | -------------
 **Text label** | `android:text`                                  | `setChipText`<br/>`setChipTextResource`<br/>`getChipText`                   | `null`
-**Color**      | `android:textColor`                             | `setTextColor`<br/>`getTextColors`                                          | `?attr/colorOnSurface` at 87%
-**Typography** | `android:textAppearance`                        | `setTextAppearance`<br/>`setTextAppearanceResource`<br/>`getTextAppearance` | `?attr/textAppearanceBody2`
+**Color**      | `android:textColor`                             | `setTextColor`<br/>`getTextColors`                                          | `?attr/colorOnSurfaceVariant`
+**Typography** | `android:textAppearance`                        | `setTextAppearance`<br/>`setTextAppearanceResource`<br/>`getTextAppearance` | `?attr/textAppearanceLabelLarge`
 **Padding**    | `app:textStartPadding`<br/>`app:textEndPadding` | `setText*Padding`<br/>`setText*PaddingResource`<br/>`getText*Padding`       | `8dp` (start)<br/>`6dp` (end)
 
 #### Remove (close) icon attributes
@@ -505,10 +460,10 @@ Element        | Attribute                                       | Related metho
 Element                 | Attribute                                                 | Related method(s)                                                                    | Default value
 ----------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------ | -------------
 **Icon**                | `app:closeIcon`                                           | `setCloseIcon`<br/>`setCloseIconResource`<br/>`getCloseIcon`                         | `@drawable/ic_mtrl_chip_close_circle`
-**Visibility**          | `app:closeIconVisible`                                    | `setCloseIconVisible`<br/>`isCloseIconVisible`                                       | `true` for entry
-**Color**               | `app:closeIconTint`                                       | `setCloseIconTint`<br/>`setCloseIconTintResource`<br/>`getCloseIconTint`             | `?attr/colorOnSurface` at 87%
+**Visibility**          | `app:closeIconVisible`                                    | `setCloseIconVisible`<br/>`isCloseIconVisible`                                       | `true` for input
+**Color**               | `app:closeIconTint`                                       | `setCloseIconTint`<br/>`setCloseIconTintResource`<br/>`getCloseIconTint`             | `?attr/colorOnSurfaceVariant`
 **Size**                | `app:closeIconSize`                                       | `setCloseIconSize`<br/>`setCloseIconSizeResource`<br/>`getCloseIconSize`             | `18dp`
-**Padding**             | `app:closeIconStartPadding`<br/>`app:closeIconEndPadding` | `setCloseIcon*Padding`<br/>`setCloseIcon*PaddingResource`<br/>`getCloseIcon*Padding` | `2dp`
+**Padding**             | `app:closeIconStartPadding`<br/>`app:closeIconEndPadding` | `setCloseIcon*Padding`<br/>`setCloseIcon*PaddingResource`<br/>`getCloseIcon*Padding` | `4dp` input end padding
 **Content description** | N/A                                                       | `setCloseIconContentDescription`<br/>`getCloseIconContentDescription`                | `@string/mtrl_chip_close_icon_content_description`
 
 #### `ChipGroup` attributes
@@ -522,20 +477,20 @@ Element       | Attribute                                                       
 #### Styles
 
 Element                         | Style
-------------------------------- | ---------------------------------------
-**Default style (action chip)** | `Widget.MaterialComponents.Chip.Action`
-**Input (entry) chip**          | `Widget.MaterialComponents.Chip.Entry`
-**Choice chip**                 | `Widget.MaterialComponents.Chip.Choice`
-**Filter chip**                 | `Widget.MaterialComponents.Chip.Filter`
-**`ChipGroup` style**           | `Widget.MaterialComponents.ChipGroup`
+------------------------------- | ----------------------------------
+**Default style (assist chip)** | `Widget.Material3.Chip.Assist`
+**Input chip**                  | `Widget.Material3.Chip.Input`
+**Suggestion chip**             | `Widget.Material3.Chip.Suggestion`
+**Filter chip**                 | `Widget.Material3.Chip.Filter`
+**`ChipGroup` style**           | `Widget.Material3.ChipGroup`
 
 #### Theme attributes
 
 Element            | Theme attribute             | Default style
 ------------------ | --------------------------- | -------------
-**`Chip`**         | `?attr/chipStyle`           | `Widget.MaterialComponents.Chip.Action`
-**`ChipGroup`**    | `?attr/chipGroupStyle`      | `Widget.MaterialComponents.ChipGroup`
-**`ChipDrawable`** | `?attr/chipStandaloneStyle` | `Widget.MaterialComponents.Chip.Entry`
+**`Chip`**         | `?attr/chipStyle`           | `Widget.Material3.Chip.Assist`
+**`ChipGroup`**    | `?attr/chipGroupStyle`      | `Widget.Material3.ChipGroup`
+**`ChipDrawable`** | `?attr/chipStandaloneStyle` | `Widget.Material3.Chip.Input`
 
 See the full list of
 [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/chip/res/values/styles.xml)
@@ -544,8 +499,8 @@ and
 
 ## Theming chips
 
-Chips support [Material Theming](https://material.io/components/chips/#theming)
-and can be customized in terms of color, typography and shape.
+Chips support [Material Theming](https://material.io/components/chips/#theming),
+which customizes color, typography and shape.
 
 ### Chip theming example
 
@@ -567,19 +522,19 @@ The following example shows chips with Material Theming.
 
 #### Implementing chip theming
 
-Using theme attributes and styles in `res/values/styles.xml` (themes all chips
-and affects other components):
+Use theme attributes and styles in `res/values/styles.xml`, which applies the
+theme to all chips and affects other components:
 
 ```xml
-<style name="Theme.App" parent="Theme.MaterialComponents.*">
+<style name="Theme.App" parent="Theme.Material3.*">
     ...
     <item name="colorOnSurface">@color/shrine_pink_100</item>
-    <item name="textAppearanceBody2">@style/TextAppearance.App.Body2</item>
+    <item name="textAppearanceBodyMedium">@style/TextAppearance.App.BodyMedium</item>
     <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.App.SmallComponent</item>
     <item name="chipStyle">@style/Widget.App.Chip</item>
 </style>
 
-<style name="Widget.App.Chip" parent="Widget.MaterialComponents.Chip.Entry">
+<style name="Widget.App.Chip" parent="Widget.Material3.Chip.Input">
     <item name="chipIconTint">@color/shrine_pink_900</item>
     <item name="chipBackgroundColor">@color/white</item>
     <item name="chipStrokeWidth">2dp</item>
@@ -588,12 +543,12 @@ and affects other components):
     <item name="shapeAppearanceOverlay">@null</item>
 </style>
 
-<style name="TextAppearance.App.Body2" parent="TextAppearance.MaterialComponents.Body2">
+<style name="TextAppearance.App.BodyMedium" parent="TextAppearance.Material3.BodyMedium">
     <item name="fontFamily">@font/rubik_regular</item>
     <item name="android:fontFamily">@font/rubik_regular</item>
 </style>
 
-<style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+<style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.Material3.SmallComponent">
     <item name="cornerFamily">cut</item>
     <item name="cornerSize">4dp</item>
 </style>
@@ -608,18 +563,18 @@ in `color/stroke_tint.xml`:
 </selector>
 ```
 
-or using a default style theme attribute, styles and a theme overlay (themes all
-chips but does not affect other components):
+Use a default style theme attribute, styles and a theme overlay. This applies
+the theme to all chips but does not affect other components:
 
 ```xml
-<style name="Theme.App" parent="Theme.MaterialComponents.*">
+<style name="Theme.App" parent="Theme.Material3.*">
     ...
     <item name="chipStyle">@style/Widget.App.Chip</item>
 </style>
 
-<style name="Widget.App.Chip" parent="Widget.MaterialComponents.Chip.Entry">
+<style name="Widget.App.Chip" parent="Widget.Material3.Chip.Input">
     <item name="materialThemeOverlay">@style/ThemeOverlay.App.Chip</item>
-    <item name="android:textAppearance">@style/TextAppearance.App.Body2</item>
+    <item name="android:textAppearance">@style/TextAppearance.App.BodyMedium</item>
     <item name="shapeAppearance">@style/ShapeAppearance.App.SmallComponent</item>
     ...
 </style>
@@ -629,7 +584,7 @@ chips but does not affect other components):
 </style>
 ```
 
-or using the style in the layout (affects only this specific chips):
+Use the style in the layout, which affects only specific chips:
 
 ```xml
 <com.google.android.material.chip.Chip

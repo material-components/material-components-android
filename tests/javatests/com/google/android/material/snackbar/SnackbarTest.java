@@ -41,13 +41,13 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import androidx.core.view.ViewCompat;
 import android.text.TextUtils;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.ViewCompat;
 import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.action.GeneralSwipeAction;

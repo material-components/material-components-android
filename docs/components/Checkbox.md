@@ -35,10 +35,10 @@ Material Components for Android library. For more information, go to the
 [Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
 page.
 
-_**Note:** `<CheckBox>` is auto-inflated as
+**Note:** `<CheckBox>` is auto-inflated as
 `<com.google.android.material.button.MaterialCheckBox>` via
-`MaterialComponentsViewInflater` when using a non-Bridge
-`Theme.MaterialComponents.*` theme._
+`MaterialComponentsViewInflater` when using a `Theme.Material3.*`
+theme.
 
 ### Making checkboxes accessible
 
@@ -54,8 +54,8 @@ Checkboxes allow the user to select one or more items from a set. Checkboxes can
 be used to turn an option on or off. Unlike radio buttons, changes in the states
 of one checkbox do not usually affect other checkboxes.
 
-_**Note:** Checkboxes do not support shape theming and are only rounded square
-checkboxes._
+**Note:** Checkboxes do not support shape theming and are only rounded square
+checkboxes.
 
 ### Checkboxes example
 
@@ -113,14 +113,15 @@ checkbox.setOnCheckedChangeListener { buttonView, isChecked
 
 ### Checkbox attributes
 
-Element                    | Attribute                                  | Related method(s)                                          | Default value
--------------------------- | ------------------------------------------ | ---------------------------------------------------------- | -------------
-**To use material colors** | `app:useMaterialThemeColors`               | `setUseMaterialThemeColors`<br/>`isUseMaterialThemeColors` | `true` (ignored if `app:buttonTint` is set)
-**Color**                  | `app:buttonTint`                           | `setButtonTintList`<br/>`getButtonTintList`                | `null`
-**Min size**               | `android:minWidth`<br/>`android:minHeight` | `(set/get)MinWidth`<br/>`(set/get)MinHeight`               | `?attr/minTouchTargetSize`
+Element                      | Attribute                                  | Related method(s)                                          | Default value
+--------------------------   | ------------------------------------------ | ---------------------------------------------------------- | -------------
+**To use material colors**   | `app:useMaterialThemeColors`               | `setUseMaterialThemeColors`<br/>`isUseMaterialThemeColors` | `true` (ignored if `app:buttonTint` is set)
+**Color**                    | `app:buttonTint`                           | `setButtonTintList`<br/>`getButtonTintList`                | `?attr/colorOnSurface` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/color/res/color/m3_selection_control_button_tint.xml))
+**Min size**                 | `android:minWidth`<br/>`android:minHeight` | `(set/get)MinWidth`<br/>`(set/get)MinHeight`               | `?attr/minTouchTargetSize`
+**Centered icon if no text** | `app:centerIfNoTextEnabled`                | `setCenterIfNoTextEnabled`<br/>`isCenterIfNoTextEnabled`   | `true`
 
 The color of the checkbox defaults to `?attr/colorOnSurface` (unchecked) and
-`?attr/colorSecondary` (checked) defined in your app theme. If you want to
+`?attr/colorPrimary` (checked) defined in your app theme. If you want to
 override this behavior, as you might with a custom drawable that should not be
 tinted, set `app:useMaterialThemeColors` to `false`:
 
@@ -137,7 +138,7 @@ Element        | Attribute                | Related method(s)                  |
 -------------- | ------------------------ | ---------------------------------- | -------------
 **Text label** | `android:text`           | `setText`<br/>`getText`            | `null`
 **Color**      | `android:textColor`      | `setTextColor`<br/>`getTextColors` | inherits from `AppCompatCheckBox`
-**Typography** | `android:textAppearance` | `setTextAppearance`                | inherits from `AppCompatCheckBox`
+**Typography** | `android:textAppearance` | `setTextAppearance`                | `?attr/textAppearanceBodyMedium`
 
 ### Checkbox states
 
@@ -148,14 +149,14 @@ enabled, disabled, hover, focused, and pressed states.
 pressed. Rows are selected, unselected, or
 indeterminite](assets/checkbox/checkbox_states.png)
 
-_**Note:** `MaterialCheckBox` does not support the indeterminate state. Only
-selected and unselected states are supported._
+**Note:** `MaterialCheckBox` does not support the indeterminate state. Only
+selected and unselected states are supported.
 
 ### Styles
 
 Element           | Style
 ----------------- | ---------------------------------------------------
-**Default style** | `Widget.MaterialComponents.CompoundButton.CheckBox`
+**Default style** | `Widget.Material3.CompoundButton.CheckBox`
 
 Default style theme attribute: `?attr/checkboxStyle`
 
@@ -168,7 +169,7 @@ and
 
 Checkboxes support
 [Material Theming](https://material.io/components/selection-controls#theming)
-and can be customized in terms of color and typography.
+which can customize color and typography.
 
 ### Checkbox theming example
 
@@ -185,11 +186,11 @@ with pink fill and white checkmark"](assets/checkbox/checkbox_theming.png)
 
 #### Implementing checkbox theming
 
-Using theme attributes in `res/values/styles.xml` (themes all checkboxes and
-affects other components):
+Use theme attributes in `res/values/styles.xml`, which adds a theme to all
+checkboxes and affects other components:
 
 ```xml
-<style name="Theme.App" parent="Theme.MaterialComponents.*">
+<style name="Theme.App" parent="Theme.Material3.*">
     ...
     <item name="colorOnSurface">@color/shrine_pink_900</item>
     <item name="colorSecondary">@color/shrine_pink_100</item>
@@ -197,16 +198,16 @@ affects other components):
 
 ```
 
-or using default style theme attributes, styles and theme overlays (themes all
-checkboxes but does not affect other components):
+Use default style theme attributes, styles and theme overlays, which will add a
+theme to all checkboxes but does not affect other components:
 
 ```xml
-<style name="Theme.App" parent="Theme.MaterialComponents.*">
+<style name="Theme.App" parent="Theme.Material3.*">
     ...
     <item name="checkboxStyle">@style/Widget.App.CheckBox</item>
 </style>
 
-<style name="Widget.App.CheckBox" parent="Widget.MaterialComponents.CompoundButton.CheckBox">
+<style name="Widget.App.CheckBox" parent="Widget.Material3.CompoundButton.CheckBox">
     <item name="materialThemeOverlay">@style/ThemeOverlay.App.CheckBox</item>
 </style>
 
@@ -216,10 +217,10 @@ checkboxes but does not affect other components):
 </style>
 ```
 
-you can also change the checkbox colors via the `?attr/buttonTint` attribute:
+You can also change the checkbox colors via the `?attr/buttonTint` attribute:
 
 ```xml
-<style name="Widget.App.CheckBox" parent="Widget.MaterialComponents.CompoundButton.CheckBox">
+<style name="Widget.App.CheckBox" parent="Widget.Material3.CompoundButton.CheckBox">
    <item name="buttonTint">@color/button_tint</item>
 </style>
 ```
@@ -228,13 +229,13 @@ and in `color/button_tint.xml`:
 
 ```xml
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:color=">@color/shrine_pink_900" android:state_checked="true"/>
+  <item android:color="@color/shrine_pink_900" android:state_checked="true"/>
   <item android:alpha="0.38" android:color="@color/shrine_pink_100" android:state_enabled="false"/>
   <item android:color="@color/shrine_pink_100"/>
 </selector>
 ```
 
-or using the styles in the layout (affects only this checkbox):
+Use the styles in the layout. That affects only this checkbox:
 
 ```xml
 <CheckBox

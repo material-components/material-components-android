@@ -31,11 +31,6 @@ import android.graphics.RadialGradient;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader.TileMode;
-import androidx.core.view.AccessibilityDelegateCompat;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionItemInfoCompat;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -49,6 +44,11 @@ import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
+import androidx.core.view.AccessibilityDelegateCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionItemInfoCompat;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.timepicker.ClockHandView.OnRotateListener;
 import java.util.Arrays;
@@ -164,6 +164,8 @@ class ClockFaceView extends RadialViewGroup implements OnRotateListener {
                     /* columnSpan= */ 1,
                     /* heading= */ false,
                     /* selected= */ host.isSelected()));
+
+            info.setClickable(true);
           }
         };
 
@@ -259,17 +261,18 @@ class ClockFaceView extends RadialViewGroup implements OnRotateListener {
       offsetDescendantRectToMyCoords(tv, textViewRect);
 
       scratch.set(textViewRect);
-      RadialGradient radialGradient = getGradientForTextView(selectorBox, scratch);
-      tv.getPaint().setShader(radialGradient);
+      if (RectF.intersects(selectorBox, scratch)) {
+        tv.getPaint().setShader(getGradient(selectorBox));
+        tv.setSelected(true);
+      } else {
+        tv.getPaint().setShader(null); // clear
+        tv.setSelected(false);
+      }
       tv.invalidate();
     }
   }
 
-  private RadialGradient getGradientForTextView(RectF selectorBox, RectF tvBox) {
-    if (!RectF.intersects(selectorBox, tvBox)) {
-      return null;
-    }
-
+  private RadialGradient getGradient(RectF selectorBox) {
     return new RadialGradient(
         (selectorBox.centerX() - scratch.left),
         (selectorBox.centerY() - scratch.top),

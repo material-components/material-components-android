@@ -20,7 +20,6 @@ import com.google.android.material.R;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcelable;
-import androidx.core.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +30,7 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
+import androidx.core.util.Pair;
 import java.util.Collection;
 
 /**
@@ -77,7 +77,7 @@ public interface DateSelector<S> extends Parcelable {
   /**
    * Returns a list of longs whose time value represents days that should be marked selected.
    *
-   * <p>Uses {@link R.styleable#MaterialCalendar_daySelectedStyle} for styling.
+   * <p>Uses {@code R.styleable.MaterialCalendar_daySelectedStyle} for styling.
    */
   @NonNull
   Collection<Long> getSelectedDays();
@@ -85,7 +85,7 @@ public interface DateSelector<S> extends Parcelable {
   /**
    * Returns a list of ranges whose time values represent ranges that should be filled.
    *
-   * <p>Uses {@link R.styleable#MaterialCalendar_rangeFillColor} for styling.
+   * <p>Uses {@code R.styleable.MaterialCalendar_rangeFillColor} for styling.
    */
   @NonNull
   Collection<Pair<Long, Long>> getSelectedRanges();

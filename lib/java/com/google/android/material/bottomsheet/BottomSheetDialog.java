@@ -30,11 +30,6 @@ import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
-import androidx.core.view.AccessibilityDelegateCompat;
-import androidx.core.view.OnApplyWindowInsetsListener;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.appcompat.app.AppCompatDialog;
 import android.util.TypedValue;
 import android.view.MotionEvent;
@@ -48,6 +43,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.AccessibilityDelegateCompat;
+import androidx.core.view.OnApplyWindowInsetsListener;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback;
 import com.google.android.material.shape.MaterialShapeDrawable;
 
@@ -55,10 +55,9 @@ import com.google.android.material.shape.MaterialShapeDrawable;
  * Base class for {@link android.app.Dialog}s styled as a bottom sheet.
  *
  * <p>Edge to edge window flags are automatically applied if the {@link
- * android.R.attr#navigationBarColor} is transparent or translucent and {@link
- * R.attr#enableEdgeToEdge} is true. These can be set in the theme that is passed to the
- * constructor, or will be taken from the theme of the context (ie. your application or activity
- * theme).
+ * android.R.attr#navigationBarColor} is transparent or translucent and {@code enableEdgeToEdge} is
+ * true. These can be set in the theme that is passed to the constructor, or will be taken from the
+ * theme of the context (ie. your application or activity theme).
  *
  * <p>In edge to edge mode, padding will be added automatically to the top when sliding under the
  * status bar. Padding can be applied automatically to the left, right, or bottom if any of

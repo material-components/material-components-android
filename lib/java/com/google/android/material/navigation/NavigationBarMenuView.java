@@ -24,10 +24,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
-import androidx.core.util.Pools;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuItemImpl;
@@ -45,6 +41,10 @@ import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
+import androidx.core.util.Pools;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
 import androidx.transition.AutoTransition;
 import androidx.transition.TransitionManager;
 import androidx.transition.TransitionSet;
@@ -91,7 +91,8 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
   @StyleRes private int itemTextAppearanceActive;
   private Drawable itemBackground;
   private int itemBackgroundRes;
-  @NonNull private SparseArray<BadgeDrawable> badgeDrawables = new SparseArray<>(ITEM_POOL_SIZE);
+  @NonNull private final SparseArray<BadgeDrawable> badgeDrawables =
+      new SparseArray<>(ITEM_POOL_SIZE);
   private int itemPaddingTop = NO_PADDING;
   private int itemPaddingBottom = NO_PADDING;
   private boolean itemActiveIndicatorEnabled;
@@ -99,6 +100,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
   private int itemActiveIndicatorHeight;
   private int itemActiveIndicatorMarginHorizontal;
   private ShapeAppearanceModel itemActiveIndicatorShapeAppearance;
+  private boolean itemActiveIndicatorResizeable = false;
   private ColorStateList itemActiveIndicatorColor;
 
   private NavigationBarPresenter presenter;
@@ -467,6 +469,26 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
   }
 
   /**
+   * Get whether the active indicator can be resized.
+   */
+  protected boolean isItemActiveIndicatorResizeable() {
+    return this.itemActiveIndicatorResizeable;
+  }
+
+  /**
+   * Set whether the active indicator can be resized. If true, the indicator will automatically
+   * change size in response to label visibility modes.
+   */
+  protected void setItemActiveIndicatorResizeable(boolean resizeable) {
+    this.itemActiveIndicatorResizeable = resizeable;
+    if (buttons != null) {
+      for (NavigationBarItemView item : buttons) {
+        item.setActiveIndicatorResizeable(resizeable);
+      }
+    }
+  }
+
+  /**
    * Get the color of the active indicator drawable.
    *
    * @return A {@link ColorStateList} used as the color of the active indicator.
@@ -668,6 +690,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
       child.setActiveIndicatorHeight(itemActiveIndicatorHeight);
       child.setActiveIndicatorMarginHorizontal(itemActiveIndicatorMarginHorizontal);
       child.setActiveIndicatorDrawable(createItemActiveIndicatorDrawable());
+      child.setActiveIndicatorResizeable(itemActiveIndicatorResizeable);
       child.setActiveIndicatorEnabled(itemActiveIndicatorEnabled);
       if (itemBackground != null) {
         child.setItemBackground(itemBackground);
@@ -764,11 +787,17 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
     return badgeDrawables;
   }
 
-  void setBadgeDrawables(SparseArray<BadgeDrawable> badgeDrawables) {
-    this.badgeDrawables = badgeDrawables;
+  void restoreBadgeDrawables(SparseArray<BadgeDrawable> badgeDrawables) {
+    for (int i = 0; i < badgeDrawables.size(); i++) {
+      int key = badgeDrawables.keyAt(i);
+      if (this.badgeDrawables.indexOfKey(key) < 0) {
+        // badge doesn't exist yet, restore it
+        this.badgeDrawables.append(key, badgeDrawables.get(key));
+      }
+    }
     if (buttons != null) {
       for (NavigationBarItemView itemView : buttons) {
-        itemView.setBadge(badgeDrawables.get(itemView.getId()));
+        itemView.setBadge(this.badgeDrawables.get(itemView.getId()));
       }
     }
   }

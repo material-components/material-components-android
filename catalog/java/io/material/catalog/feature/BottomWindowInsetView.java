@@ -18,11 +18,11 @@ package io.material.catalog.feature;
 
 
 import android.content.Context;
-import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
 
 /**
  * A View that measures itself to be as tall as the bottom window inset.

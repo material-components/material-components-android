@@ -80,4 +80,37 @@
       android:enabled="true"
       android:text="@string/cat_checkbox_enablable_description"
       android:textSize="@dimen/cat_checkbox_header_size"/>
+  <LinearLayout
+    android:id="@+id/checkbox_toggle_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/cat_checkbox_indent"
+    android:orientation="vertical">
+    <CheckBox
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:checked="true"
+      android:enabled="false"
+      android:text="@string/cat_checkbox_toggle"/>
+    <CheckBox
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:checked="false"
+      android:enabled="false"
+      android:text="@string/cat_checkbox_toggle"/>
+  </LinearLayout>
+  <ImageView
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/cat_checkbox_line_separator_thickness"
+    android:layout_marginTop="@dimen/cat_checkbox_line_separator_margin"
+    android:layout_marginBottom="@dimen/cat_checkbox_line_separator_margin"
+    android:background="?attr/colorSecondary"/>
+  <TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/cat_checkbox_no_text"
+    android:textSize="@dimen/cat_checkbox_header_size"/>
+  <CheckBox
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"/>
 </LinearLayout>

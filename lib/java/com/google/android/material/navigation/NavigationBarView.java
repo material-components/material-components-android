@@ -34,8 +34,6 @@ import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.view.ViewCompat;
 import androidx.appcompat.view.SupportMenuInflater;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuView;
@@ -56,6 +54,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.view.ViewCompat;
 import androidx.customview.view.AbsSavedState;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.internal.ThemeEnforcement;
@@ -900,8 +900,14 @@ public abstract class NavigationBarView extends FrameLayout {
     return menuInflater;
   }
 
+  /**
+   * Returns reference to the {@link NavigationBarPresenter}
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
   @NonNull
-  protected NavigationBarPresenter getPresenter() {
+  public NavigationBarPresenter getPresenter() {
     return presenter;
   }
 

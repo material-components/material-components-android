@@ -34,6 +34,7 @@ public class MaterialShapeDrawableTest {
   private static final float ELEVATION = 4;
   private static final float TRANSLATION_Z = 2;
   private static final float Z = ELEVATION + TRANSLATION_Z;
+  private static final int ALPHA = 127;
 
   private final Context context = ApplicationProvider.getApplicationContext();
 
@@ -131,5 +132,12 @@ public class MaterialShapeDrawableTest {
     assertThat(drawable.getElevation()).isEqualTo(ELEVATION);
     assertThat(drawable.getFillColor().getDefaultColor()).isEqualTo(colorSurface);
     assertThat(drawable.isElevationOverlayInitialized()).isTrue();
+  }
+
+  @Test
+  public void whenSetAlpha_returnsAlpha() {
+    materialShapeDrawable.setAlpha(ALPHA);
+
+    assertThat(materialShapeDrawable.getAlpha()).isEqualTo(ALPHA);
   }
 }

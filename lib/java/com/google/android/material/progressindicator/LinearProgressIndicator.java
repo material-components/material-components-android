@@ -20,7 +20,6 @@ import com.google.android.material.R;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import androidx.annotation.AttrRes;
 import androidx.annotation.IntDef;
@@ -28,13 +27,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
+import androidx.core.view.ViewCompat;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
  * This class implements the linear type progress indicators.
  *
- * <p>With the default style {@link R.style#Widget_MaterialComponents_LinearProgressIndicator}, 4dp
+ * <p>With the default style {@code Widget.MaterialComponents.LinearProgressIndicator}, 4dp
  * indicator/track thickness is used without animation is used for visibility change. Without
  * customization, primaryColor will be used as the indicator color; the track is the (first)
  * indicator color applying the disabledAlpha. The following attributes can be used to customize the

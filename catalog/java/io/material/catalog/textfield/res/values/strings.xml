@@ -68,7 +68,7 @@
 
   <string name="cat_textfield_customize_section_title" translatable="false">Customize text fields</string>
   <string name="cat_textfield_customize_section_description" translatable="false">
-    Enter values below to customize the text fields above. Press \"done\" to update each field.
+    Enter values below to customize the text fields above. Press the keyboard \"done\" button to update each field, or press the update button at the bottom to update all fields at once.
   </string>
   <string name="cat_textfield_label" translatable="false">Label</string>
   <string name="cat_textfield_password" translatable="false">Password</string>
@@ -94,9 +94,12 @@
 
   <string name="cat_textfield_show_leading_icon" translatable="false">Show leading icon</string>
   <string name="cat_textfield_hide_leading_icon" translatable="false">Hide leading icon</string>
+  <string name="cat_textfield_update_button" description="Button to update customizable fields.[CHAR_LIMIT=NONE]">Update</string>
 
   <string name="cat_textfield_label_enabled" description="Label on a switch to enable text fields.[CHAR_LIMIT=10]">Text fields enabled</string>
+  <string name="cat_textfield_label_disabled" translatable="false">Text fields disabled</string>
 
+  <string name="cat_textfield_toast_update_button" description="Announcement for when update button is clicked.[CHAR_LIMIT=NONE]">Text fields updated.</string>
   <string name="cat_textfield_toast_label_text" description="Announcement for when label is updated.[CHAR_LIMIT=NONE]">Labels updated.</string>
   <string name="cat_textfield_toast_error_text" description="Announcement for when error text is updated.[CHAR_LIMIT=NONE]">Error messages updated.</string>
   <string name="cat_textfield_toast_helper_text" description="Announcement for when helper text is updated.[CHAR_LIMIT=NONE]">Helper texts updated.</string>

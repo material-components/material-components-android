@@ -18,7 +18,6 @@ package io.material.catalog.musicplayer;
 
 import io.material.catalog.R;
 
-import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -28,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
 import io.material.catalog.musicplayer.AlbumsAdapter.AlbumViewHolder;
 import io.material.catalog.musicplayer.MusicData.Album;
 

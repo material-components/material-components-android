@@ -17,10 +17,10 @@
 package com.google.android.material.timepicker;
 
 import android.content.Context;
+import android.view.View;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
-import android.view.View;
 
 class ClickActionDelegate extends AccessibilityDelegateCompat {
   private final AccessibilityActionCompat clickAction;

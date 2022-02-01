@@ -21,9 +21,11 @@ import com.google.android.material.R;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 
+import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
@@ -33,11 +35,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.util.ObjectsCompat;
-import androidx.core.view.GravityCompat;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -56,7 +53,12 @@ import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.math.MathUtils;
+import androidx.core.util.ObjectsCompat;
+import androidx.core.view.GravityCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.elevation.ElevationOverlayProvider;
 import com.google.android.material.internal.CollapsingTextHelper;
@@ -277,6 +279,13 @@ public class CollapsingToolbarLayout extends FrameLayout {
       collapsingTextHelper.setMaxLines(a.getInt(R.styleable.CollapsingToolbarLayout_maxLines, 1));
     }
 
+    if (a.hasValue(R.styleable.CollapsingToolbarLayout_titlePositionInterpolator)) {
+      collapsingTextHelper.setPositionInterpolator(
+          android.view.animation.AnimationUtils.loadInterpolator(
+              context,
+              a.getResourceId(R.styleable.CollapsingToolbarLayout_titlePositionInterpolator, 0)));
+    }
+
     scrimAnimationDuration =
         a.getInt(
             R.styleable.CollapsingToolbarLayout_scrimAnimationDuration,
@@ -404,6 +413,12 @@ public class CollapsingToolbarLayout extends FrameLayout {
         statusBarScrim.draw(canvas);
       }
     }
+  }
+
+  @Override
+  protected void onConfigurationChanged(@NonNull Configuration newConfig) {
+    super.onConfigurationChanged(newConfig);
+    collapsingTextHelper.maybeUpdateFontWeightAdjustment(newConfig);
   }
 
   @Override
@@ -1438,6 +1453,27 @@ public class CollapsingToolbarLayout extends FrameLayout {
     // If we reach here then we don't have a min height set. Instead we'll take a
     // guess at 1/3 of our height being visible
     return getHeight() / 3;
+  }
+
+  /**
+   * Sets the interpolator to use when animating the title position from collapsed to expanded and
+   * vice versa.
+   *
+   * @param interpolator the interpolator to use.
+   * @attr ref
+   *     com.google.android.material.R.styleable#CollapsingToolbarLayout_titlePositionInterpolator
+   */
+  public void setTitlePositionInterpolator(@Nullable TimeInterpolator interpolator) {
+    collapsingTextHelper.setPositionInterpolator(interpolator);
+  }
+
+  /**
+   * Returns the interpolator being used to animate the title position from collapsed to expanded
+   * and vice versa.
+   */
+  @Nullable
+  public TimeInterpolator getTitlePositionInterpolator() {
+    return collapsingTextHelper.getPositionInterpolator();
   }
 
   /**

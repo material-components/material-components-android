@@ -24,6 +24,7 @@
   <dimen name="design_navigation_elevation">16dp</dimen>
   <dimen name="design_navigation_item_icon_padding">32dp</dimen>
   <dimen name="design_navigation_item_horizontal_padding">16dp</dimen>
+  <dimen name="design_navigation_item_vertical_padding">4dp</dimen>
 
   <dimen name="mtrl_navigation_elevation">0dp</dimen>
   <dimen name="mtrl_navigation_item_icon_padding">14dp</dimen>
@@ -31,4 +32,16 @@
   <dimen name="mtrl_navigation_item_horizontal_padding">22dp</dimen>
   <dimen name="mtrl_navigation_item_shape_horizontal_margin">8dp</dimen>
   <dimen name="mtrl_navigation_item_shape_vertical_margin">4dp</dimen>
+
+  <dimen name="m3_navigation_item_shape_inset_start">12dp</dimen>
+  <dimen name="m3_navigation_item_shape_inset_top">0dp</dimen>
+  <dimen name="m3_navigation_item_shape_inset_end">12dp</dimen>
+  <dimen name="m3_navigation_item_shape_inset_bottom">0dp</dimen>
+  <dimen name="m3_navigation_item_icon_padding">12dp</dimen>
+  <dimen name="m3_navigation_item_horizontal_padding">28dp</dimen>
+  <dimen name="m3_navigation_item_vertical_padding">4dp</dimen>
+  <dimen name="m3_navigation_menu_divider_horizontal_padding">28dp</dimen>
+  <dimen name="m3_navigation_menu_headline_horizontal_padding">28dp</dimen>
+  <dimen name="m3_navigation_drawer_layout_corner_size">16dp</dimen>
 </resources>
+

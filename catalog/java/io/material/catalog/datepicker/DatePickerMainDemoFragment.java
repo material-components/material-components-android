@@ -19,7 +19,6 @@ import io.material.catalog.R;
 
 import android.content.Context;
 import android.os.Bundle;
-import androidx.core.util.Pair;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import androidx.annotation.AttrRes;
 import androidx.annotation.Nullable;
+import androidx.core.util.Pair;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.CompositeDateValidator;
@@ -100,6 +100,8 @@ public class DatePickerMainDemoFragment extends DemoFragment {
     final RadioGroup opening = root.findViewById(R.id.cat_picker_opening_month_group);
     final RadioGroup selection = root.findViewById(R.id.cat_picker_selection_group);
     final RadioGroup inputMode = root.findViewById(R.id.cat_picker_input_mode_group);
+    final RadioGroup positiveButton = root.findViewById(R.id.cat_picker_positive_button_group);
+    final RadioGroup negativeButton = root.findViewById(R.id.cat_picker_negative_button_group);
 
     launcher.setOnClickListener(
         v -> {
@@ -112,6 +114,8 @@ public class DatePickerMainDemoFragment extends DemoFragment {
           int openingChoice = opening.getCheckedRadioButtonId();
           int selectionChoice = selection.getCheckedRadioButtonId();
           int inputModeChoices = inputMode.getCheckedRadioButtonId();
+          int positiveButtonChoice = positiveButton.getCheckedRadioButtonId();
+          int negativeButtonChoice = negativeButton.getCheckedRadioButtonId();
 
           MaterialDatePicker.Builder<?> builder =
               setupDateSelectorBuilder(selectionModeChoice, selectionChoice, inputModeChoices);
@@ -128,6 +132,14 @@ public class DatePickerMainDemoFragment extends DemoFragment {
 
           if (titleChoice == R.id.cat_picker_title_custom) {
             builder.setTitleText(R.string.cat_picker_title_custom);
+          }
+
+          if (positiveButtonChoice == R.id.cat_picker_positive_button_custom) {
+            builder.setPositiveButtonText(R.string.cat_picker_positive_button_text);
+          }
+
+          if (negativeButtonChoice == R.id.cat_picker_negative_button_custom) {
+            builder.setNegativeButtonText(R.string.cat_picker_negative_button_text);
           }
 
           try {

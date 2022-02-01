@@ -16,34 +16,50 @@
 -->
 
 <selector
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <!-- Hovered state -->
+  <item android:state_enabled="true" android:state_hovered="true">
+    <objectAnimator
+      android:duration="@integer/m3_card_anim_duration_ms"
+      android:propertyName="translationZ"
+      android:valueTo="@dimen/m3_card_hovered_z"
+      android:startDelay="@integer/m3_card_anim_delay_ms"
+      android:interpolator="@interpolator/mtrl_fast_out_slow_in"
+      android:valueType="floatType"
+      tools:targetApi="kitkat"/>
+  </item>
 
   <!-- Dragged state -->
-  <item
-      android:state_enabled="true"
-      app:state_dragged="true">
-    <set>
-      <objectAnimator
-          android:duration="@integer/m3_card_anim_duration_ms"
-          android:propertyName="translationZ"
-          android:valueTo="@dimen/m3_card_dragged_z"
-          android:startDelay="@integer/m3_card_anim_delay_ms"
-          android:interpolator="@interpolator/mtrl_fast_out_slow_in"
-          android:valueType="floatType"/>
-    </set>
+  <item android:state_enabled="true" app:state_dragged="true">
+    <objectAnimator
+      android:duration="@integer/m3_card_anim_duration_ms"
+      android:propertyName="translationZ"
+      android:valueTo="@dimen/m3_card_dragged_z"
+      android:startDelay="@integer/m3_card_anim_delay_ms"
+      android:interpolator="@interpolator/mtrl_fast_out_slow_in"
+      android:valueType="floatType"
+      tools:targetApi="kitkat"/>
   </item>
 
-  <!-- Base state (enabled, not Dragged) -->
+  <!-- Base state -->
   <item android:state_enabled="true">
-    <set>
-      <objectAnimator
-          android:duration="@integer/m3_card_anim_duration_ms"
-          android:propertyName="translationZ"
-          android:valueTo="0dp"
-          android:interpolator="@anim/mtrl_card_lowers_interpolator"
-          android:valueType="floatType"/>
-    </set>
+    <objectAnimator
+      android:duration="@integer/m3_card_anim_duration_ms"
+      android:propertyName="translationZ"
+      android:valueTo="0dp"
+      android:interpolator="@anim/mtrl_card_lowers_interpolator"
+      android:valueType="floatType"/>
   </item>
 
+  <!-- Disabled state -->
+  <item>
+    <objectAnimator
+      android:duration="0"
+      android:propertyName="translationZ"
+      android:valueTo="0dp"
+      android:valueType="floatType"/>
+  </item>
 </selector>

@@ -26,7 +26,6 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.SystemClock;
-import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewParent;
@@ -41,6 +40,7 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
+import androidx.core.view.ViewCompat;
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat.AnimationCallback;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.ThemeEnforcement;
@@ -52,7 +52,7 @@ import java.util.Arrays;
  * This class contains the common functions shared in different types of progress indicators. This
  * is an abstract class which is not meant for directly use.
  *
- * <p>With the default style {@link R.style#Widget_MaterialComponents_ProgressIndicator}, 4dp
+ * <p>With the default style {@code Widget.MaterialComponents.ProgressIndicator}, 4dp
  * indicator/track thickness and no animation is used for visibility change. Without customization,
  * primaryColor will be used as the indicator color; the indicator color applying disabledAlpha will
  * be used as the track color. The following attributes can be used to customize the progress

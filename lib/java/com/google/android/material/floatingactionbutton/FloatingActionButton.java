@@ -18,8 +18,8 @@ package com.google.android.material.floatingactionbutton;
 
 import com.google.android.material.R;
 
-import static androidx.core.util.Preconditions.checkNotNull;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static androidx.core.util.Preconditions.checkNotNull;
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 
 import android.animation.Animator.AnimatorListener;
@@ -36,10 +36,6 @@ import android.os.Build;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Parcelable;
-import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.view.TintableBackgroundView;
-import androidx.core.view.ViewCompat;
-import androidx.core.widget.TintableImageSourceView;
 import androidx.appcompat.widget.AppCompatDrawableManager;
 import androidx.appcompat.widget.AppCompatImageHelper;
 import android.util.AttributeSet;
@@ -62,6 +58,10 @@ import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.view.TintableBackgroundView;
+import androidx.core.view.ViewCompat;
+import androidx.core.widget.TintableImageSourceView;
 import com.google.android.material.animation.MotionSpec;
 import com.google.android.material.animation.TransformationCallback;
 import com.google.android.material.appbar.AppBarLayout;
@@ -233,7 +233,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     compatPadding = a.getBoolean(R.styleable.FloatingActionButton_useCompatPadding, false);
     int minTouchTargetSize =
         getResources().getDimensionPixelSize(R.dimen.mtrl_fab_min_touch_target);
-    maxImageSize = a.getDimensionPixelSize(R.styleable.FloatingActionButton_maxImageSize, 0);
+
+    setMaxImageSize(a.getDimensionPixelSize(R.styleable.FloatingActionButton_maxImageSize, 0));
 
     MotionSpec showMotionSpec =
         MotionSpec.createFromAttribute(context, a, R.styleable.FloatingActionButton_showMotionSpec);
@@ -263,7 +264,6 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     getImpl().setElevation(elevation);
     getImpl().setHoveredFocusedTranslationZ(hoveredFocusedTranslationZ);
     getImpl().setPressedTranslationZ(pressedTranslationZ);
-    getImpl().setMaxImageSize(maxImageSize);
     getImpl().setShowMotionSpec(showMotionSpec);
     getImpl().setHideMotionSpec(hideMotionSpec);
     getImpl().setEnsureMinTouchTargetSize(ensureMinTouchTargetSize);
@@ -565,6 +565,17 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   @Override
   public void setVisibility(int visibility) {
     super.setVisibility(visibility);
+  }
+
+  /**
+   * Sets the max image size for this button.
+   *
+   * @param imageSize maximum icon image size
+   * @attr ref com.google.android.material.R.styleable#FloatingActionButton_maxImageSize
+   */
+  public void setMaxImageSize(int imageSize) {
+    maxImageSize = imageSize;
+    getImpl().setMaxImageSize(imageSize);
   }
 
   /**

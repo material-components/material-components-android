@@ -18,7 +18,6 @@ package com.google.android.material.datepicker;
 import com.google.android.material.R;
 
 import android.content.Context;
-import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.LayoutParams;
 import android.view.LayoutInflater;
@@ -29,6 +28,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.core.view.ViewCompat;
 import com.google.android.material.datepicker.MaterialCalendar.OnDayClickListener;
 
 /**
@@ -37,7 +37,6 @@ import com.google.android.material.datepicker.MaterialCalendar.OnDayClickListene
  */
 class MonthsPagerAdapter extends RecyclerView.Adapter<MonthsPagerAdapter.ViewHolder> {
 
-  private final Context context;
   @NonNull private final CalendarConstraints calendarConstraints;
   private final DateSelector<?> dateSelector;
   private final OnDayClickListener onDayClickListener;
@@ -63,7 +62,6 @@ class MonthsPagerAdapter extends RecyclerView.Adapter<MonthsPagerAdapter.ViewHol
     int labelHeight =
         MaterialDatePicker.isFullscreen(context) ? MaterialCalendar.getDayHeight(context) : 0;
 
-    this.context = context;
     this.itemHeight = daysHeight + labelHeight;
     this.calendarConstraints = calendarConstraints;
     this.dateSelector = dateSelector;
@@ -106,7 +104,7 @@ class MonthsPagerAdapter extends RecyclerView.Adapter<MonthsPagerAdapter.ViewHol
   @Override
   public void onBindViewHolder(@NonNull MonthsPagerAdapter.ViewHolder viewHolder, int position) {
     Month month = calendarConstraints.getStart().monthsLater(position);
-    viewHolder.monthTitle.setText(month.getLongName(viewHolder.itemView.getContext()));
+    viewHolder.monthTitle.setText(month.getLongName());
     final MaterialCalendarGridView monthGrid = viewHolder.monthGrid.findViewById(R.id.month_grid);
 
     if (monthGrid.getAdapter() != null && month.equals(monthGrid.getAdapter().month)) {
@@ -141,7 +139,7 @@ class MonthsPagerAdapter extends RecyclerView.Adapter<MonthsPagerAdapter.ViewHol
 
   @NonNull
   CharSequence getPageTitle(int position) {
-    return getPageMonth(position).getLongName(context);
+    return getPageMonth(position).getLongName();
   }
 
   @NonNull

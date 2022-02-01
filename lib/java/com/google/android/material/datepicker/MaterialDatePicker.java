@@ -33,8 +33,6 @@ import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.core.util.Pair;
-import androidx.core.view.ViewCompat;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,6 +48,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
+import androidx.core.util.Pair;
+import androidx.core.view.ViewCompat;
 import com.google.android.material.dialog.InsetDialogOnTouchListener;
 import com.google.android.material.internal.CheckableImageButton;
 import com.google.android.material.resources.MaterialAttributes;
@@ -66,6 +66,10 @@ public final class MaterialDatePicker<S> extends DialogFragment {
   private static final String CALENDAR_CONSTRAINTS_KEY = "CALENDAR_CONSTRAINTS_KEY";
   private static final String TITLE_TEXT_RES_ID_KEY = "TITLE_TEXT_RES_ID_KEY";
   private static final String TITLE_TEXT_KEY = "TITLE_TEXT_KEY";
+  private static final String POSITIVE_BUTTON_TEXT_RES_ID_KEY = "POSITIVE_BUTTON_TEXT_RES_ID_KEY";
+  private static final String POSITIVE_BUTTON_TEXT_KEY = "POSITIVE_BUTTON_TEXT_KEY";
+  private static final String NEGATIVE_BUTTON_TEXT_RES_ID_KEY = "NEGATIVE_BUTTON_TEXT_RES_ID_KEY";
+  private static final String NEGATIVE_BUTTON_TEXT_KEY = "NEGATIVE_BUTTON_TEXT_KEY";
   private static final String INPUT_MODE_KEY = "INPUT_MODE_KEY";
   private static final String CLEARABLE_KEY = "CLEARABLE_KEY";
   private static final String DISMISS_ON_CLEAR_KEY = "DISMISS_ON_CLEAR_KEY";
@@ -128,6 +132,10 @@ public final class MaterialDatePicker<S> extends DialogFragment {
   private CharSequence titleText;
   private boolean fullscreen;
   @InputMode private int inputMode;
+  @StringRes private int positiveButtonTextResId;
+  private CharSequence positiveButtonText;
+  @StringRes private int negativeButtonTextResId;
+  private CharSequence negativeButtonText;
 
   private TextView headerSelectionText;
   private CheckableImageButton headerToggleButton;
@@ -149,6 +157,10 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     args.putInt(INPUT_MODE_KEY, options.inputMode);
     args.putBoolean(CLEARABLE_KEY, options.isClearable);
     args.putBoolean(DISMISS_ON_CLEAR_KEY, options.dismissOnClear);
+    args.putInt(POSITIVE_BUTTON_TEXT_RES_ID_KEY, options.positiveButtonTextResId);
+    args.putCharSequence(POSITIVE_BUTTON_TEXT_KEY, options.positiveButtonText);
+    args.putInt(NEGATIVE_BUTTON_TEXT_RES_ID_KEY, options.negativeButtonTextResId);
+    args.putCharSequence(NEGATIVE_BUTTON_TEXT_KEY, options.negativeButtonText);
     materialDatePickerDialogFragment.setArguments(args);
     return materialDatePickerDialogFragment;
   }
@@ -169,6 +181,10 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     bundle.putCharSequence(TITLE_TEXT_KEY, titleText);
     bundle.putBoolean(CLEARABLE_KEY, isClearable);
     bundle.putBoolean(DISMISS_ON_CLEAR_KEY, dismissOnClear);
+    bundle.putInt(POSITIVE_BUTTON_TEXT_RES_ID_KEY, positiveButtonTextResId);
+    bundle.putCharSequence(POSITIVE_BUTTON_TEXT_KEY, positiveButtonText);
+    bundle.putInt(NEGATIVE_BUTTON_TEXT_RES_ID_KEY, negativeButtonTextResId);
+    bundle.putCharSequence(NEGATIVE_BUTTON_TEXT_KEY, negativeButtonText);
   }
 
   @Override
@@ -183,6 +199,10 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     inputMode = activeBundle.getInt(INPUT_MODE_KEY);
     isClearable = activeBundle.getBoolean(CLEARABLE_KEY);
     dismissOnClear = activeBundle.getBoolean(DISMISS_ON_CLEAR_KEY);
+    positiveButtonTextResId = activeBundle.getInt(POSITIVE_BUTTON_TEXT_RES_ID_KEY);
+    positiveButtonText = activeBundle.getCharSequence(POSITIVE_BUTTON_TEXT_KEY);
+    negativeButtonTextResId = activeBundle.getInt(NEGATIVE_BUTTON_TEXT_RES_ID_KEY);
+    negativeButtonText = activeBundle.getCharSequence(NEGATIVE_BUTTON_TEXT_KEY);
   }
 
   private int getThemeResId(Context context) {
@@ -248,6 +268,11 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     confirmButton = root.findViewById(R.id.confirm_button);
     confirmButton.setEnabled(getDateSelector().isSelectionComplete());
     confirmButton.setTag(CONFIRM_BUTTON_TAG);
+    if (positiveButtonText != null) {
+      confirmButton.setText(positiveButtonText);
+    } else if (positiveButtonTextResId != 0) {
+      confirmButton.setText(positiveButtonTextResId);
+    }
     confirmButton.setOnClickListener(
         new View.OnClickListener() {
           @Override
@@ -262,6 +287,11 @@ public final class MaterialDatePicker<S> extends DialogFragment {
 
     Button cancelButton = root.findViewById(R.id.cancel_button);
     cancelButton.setTag(CANCEL_BUTTON_TAG);
+    if (negativeButtonText != null) {
+      cancelButton.setText(negativeButtonText);
+    } else if (negativeButtonTextResId != 0) {
+      cancelButton.setText(negativeButtonTextResId);
+    }
     cancelButton.setOnClickListener(
         new View.OnClickListener() {
           @Override
@@ -594,6 +624,10 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     CalendarConstraints calendarConstraints;
     int titleTextResId = 0;
     CharSequence titleText = null;
+    int positiveButtonTextResId = 0;
+    CharSequence positiveButtonText = null;
+    int negativeButtonTextResId = 0;
+    CharSequence negativeButtonText = null;
     @Nullable S selection = null;
     @InputMode int inputMode = INPUT_MODE_CALENDAR;
     boolean isClearable = false;
@@ -671,6 +705,54 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     public Builder<S> setTitleText(@Nullable CharSequence charSequence) {
       this.titleText = charSequence;
       this.titleTextResId = 0;
+      return this;
+    }
+
+    /**
+     * Sets the text used in the positive button
+     *
+     * @param textId resource id to be used as text in the positive button
+     */
+    @NonNull
+    public Builder<S> setPositiveButtonText(@StringRes int textId) {
+      this.positiveButtonTextResId = textId;
+      this.positiveButtonText = null;
+      return this;
+    }
+
+    /**
+     * Sets the text used in the positive button
+     *
+     * @param text text used in the positive button
+     */
+    @NonNull
+    public Builder<S> setPositiveButtonText(@Nullable CharSequence text) {
+      this.positiveButtonText = text;
+      this.positiveButtonTextResId = 0;
+      return this;
+    }
+
+    /**
+     * Sets the text used in the negative button
+     *
+     * @param textId resource id to be used as text in the negative button
+     */
+    @NonNull
+    public Builder<S> setNegativeButtonText(@StringRes int textId) {
+      this.negativeButtonTextResId = textId;
+      this.negativeButtonText = null;
+      return this;
+    }
+
+    /**
+     * Sets the text used in the negative button
+     *
+     * @param text text used in the negative button
+     */
+    @NonNull
+    public Builder<S> setNegativeButtonText(@Nullable CharSequence text) {
+      this.negativeButtonText = text;
+      this.negativeButtonTextResId = 0;
       return this;
     }
 

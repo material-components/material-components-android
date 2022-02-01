@@ -18,6 +18,7 @@ package io.material.catalog.tableofcontents;
 
 import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
+import io.material.catalog.adaptive.AdaptiveFragment;
 import io.material.catalog.application.scope.FragmentScope;
 import io.material.catalog.bottomappbar.BottomAppBarFragment;
 import io.material.catalog.bottomnav.BottomNavigationFragment;
@@ -26,6 +27,7 @@ import io.material.catalog.button.ButtonsFragment;
 import io.material.catalog.card.CardFragment;
 import io.material.catalog.checkbox.CheckBoxFragment;
 import io.material.catalog.chip.ChipFragment;
+import io.material.catalog.color.ColorsFragment;
 import io.material.catalog.datepicker.DatePickerDemoLandingFragment;
 import io.material.catalog.dialog.DialogDemoLandingFragment;
 import io.material.catalog.divider.DividerFragment;
@@ -50,6 +52,7 @@ import io.material.catalog.transition.TransitionFragment;
 /** The Dagger module for {@link TocFragment} dependencies. */
 @dagger.Module(
     includes = {
+      AdaptiveFragment.Module.class,
       BottomAppBarFragment.Module.class,
       ButtonsFragment.Module.class,
       BottomNavigationFragment.Module.class,
@@ -57,6 +60,7 @@ import io.material.catalog.transition.TransitionFragment;
       CardFragment.Module.class,
       CheckBoxFragment.Module.class,
       ChipFragment.Module.class,
+      ColorsFragment.Module.class,
       DatePickerDemoLandingFragment.Module.class,
       DialogDemoLandingFragment.Module.class,
       DividerFragment.Module.class,

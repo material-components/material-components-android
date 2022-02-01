@@ -26,17 +26,17 @@ import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import androidx.core.util.Preconditions;
-import androidx.core.view.ViewCompat;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
+import androidx.core.util.Preconditions;
+import androidx.core.view.ViewCompat;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 
 /**
- * Loads and applies {@link R.styleable#MaterialCalendarDay} attributes to {@link TextView}
+ * Loads and applies {@code R.styleable.MaterialCalendarDay} attributes to {@link TextView}
  * instances.
  */
 final class CalendarItemStyle {
@@ -131,7 +131,7 @@ final class CalendarItemStyle {
         backgroundColor, textColor, strokeColor, strokeWidth, itemShape, insets);
   }
 
-  /** Applies the {@link R.styleable#MaterialCalendarDay} style to the provided {@code item} */
+  /** Applies the {@code R.styleable.MaterialCalendarDay} style to the provided {@code item} */
   void styleItem(@NonNull TextView item) {
     MaterialShapeDrawable backgroundDrawable = new MaterialShapeDrawable();
     MaterialShapeDrawable shapeMask = new MaterialShapeDrawable();

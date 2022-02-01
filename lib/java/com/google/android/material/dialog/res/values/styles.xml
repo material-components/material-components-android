@@ -17,6 +17,8 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
+  <!-- Styles for MaterialComponents Dialogs. -->
+
   <style name="Base.Widget.MaterialComponents.CheckedTextView" parent="android:Widget"/>
 
   <style name="Widget.MaterialComponents.CheckedTextView" parent="Base.Widget.MaterialComponents.CheckedTextView">
@@ -50,7 +52,8 @@
     <item name="android:layout_height">32dip</item>
     <item name="android:scaleType">fitCenter</item>
     <item name="android:src">@null</item>
-    <item name="android:contentDescription">@string/icon_content_description</item>
+    <item name="android:contentDescription">@null</item>
+    <item name="android:importantForAccessibility" tools:targetApi="jelly_bean">no</item>
   </style>
 
   <style name="Base.MaterialAlertDialog.MaterialComponents.Title.Text" parent="RtlOverlay.DialogWindowTitle.AppCompat">
@@ -62,14 +65,14 @@
     <item name="android:singleLine">true</item>
   </style>
 
-  <style name="MaterialAlertDialog.MaterialComponents.Body.Text" parent="TextAppearance.MaterialComponents.Body2">
-    <item name="android:textAppearance">?attr/textAppearanceBody2</item>
-    <item name="android:textColor">@color/material_on_surface_emphasis_medium</item>
-  </style>
-
   <style name="MaterialAlertDialog.MaterialComponents.Title.Panel"
       parent="Base.MaterialAlertDialog.MaterialComponents.Title.Panel">
     <item name="android:orientation">horizontal</item>
+  </style>
+
+  <style name="MaterialAlertDialog.MaterialComponents.Title.Panel.CenterStacked"
+    parent="Base.MaterialAlertDialog.MaterialComponents.Title.Panel">
+    <item name="android:orientation">vertical</item>
   </style>
 
   <style name="MaterialAlertDialog.MaterialComponents.Title.Icon"
@@ -79,20 +82,15 @@
     <item name="android:layout_marginRight">8dip</item>
   </style>
 
+  <style name="MaterialAlertDialog.MaterialComponents.Title.Icon.CenterStacked"
+    parent="Base.MaterialAlertDialog.MaterialComponents.Title.Icon">
+    <item name="android:layout_gravity">center</item>
+  </style>
+
   <style name="MaterialAlertDialog.MaterialComponents.Title.Text"
       parent="Base.MaterialAlertDialog.MaterialComponents.Title.Text">
     <item name="android:layout_gravity">start|center_vertical</item>
     <item name="android:textAlignment" tools:ignore="NewApi">viewStart</item>
-  </style>
-
-  <style name="MaterialAlertDialog.MaterialComponents.Title.Panel.CenterStacked"
-      parent="Base.MaterialAlertDialog.MaterialComponents.Title.Panel">
-    <item name="android:orientation">vertical</item>
-  </style>
-
-  <style name="MaterialAlertDialog.MaterialComponents.Title.Icon.CenterStacked"
-      parent="Base.MaterialAlertDialog.MaterialComponents.Title.Icon">
-    <item name="android:layout_gravity">center</item>
   </style>
 
   <style name="MaterialAlertDialog.MaterialComponents.Title.Text.CenterStacked"
@@ -101,4 +99,72 @@
     <item name="android:textAlignment" tools:ignore="NewApi">center</item>
   </style>
 
+  <style name="MaterialAlertDialog.MaterialComponents.Body.Text" parent="TextAppearance.MaterialComponents.Body2">
+    <item name="android:textAppearance">?attr/textAppearanceBody2</item>
+    <item name="android:textColor">@color/material_on_surface_emphasis_medium</item>
+  </style>
+
+  <!-- Styles for M3 Dialogs. -->
+  <style name="Widget.Material3.CheckedTextView" parent="Widget.MaterialComponents.CheckedTextView">
+    <item name="android:textAppearance">?attr/textAppearanceBodyLarge</item>
+    <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+  </style>
+
+  <style name="MaterialAlertDialog.Material3" parent="MaterialAlertDialog.MaterialComponents">
+    <item name="enforceMaterialTheme">true</item>
+    <item name="android:layout">@layout/m3_alert_dialog</item>
+    <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialAlertDialog.Material3</item>
+  </style>
+
+  <style name="ShapeAppearanceOverlay.MaterialAlertDialog.Material3" parent="">
+    <item name="cornerSize">@dimen/m3_alert_dialog_corner_size</item>
+  </style>
+
+  <style name="MaterialAlertDialog.Material3.Title.Panel" parent="MaterialAlertDialog.MaterialComponents.Title.Panel"/>
+
+  <style name="MaterialAlertDialog.Material3.Title.Panel.CenterStacked">
+    <item name="android:orientation">vertical</item>
+  </style>
+
+  <style name="MaterialAlertDialog.Material3.Title.Icon" parent="MaterialAlertDialog.MaterialComponents.Title.Icon">
+    <item name="android:layout_width">@dimen/m3_alert_dialog_icon_size</item>
+    <item name="android:layout_height">@dimen/m3_alert_dialog_icon_size</item>
+    <item name="android:layout_marginEnd" tools:ignore="NewApi">@dimen/m3_alert_dialog_icon_margin</item>
+    <item name="android:layout_marginRight">@dimen/m3_alert_dialog_icon_margin</item>
+    <item name="android:theme">@style/ThemeOverlay.MaterialAlertDialog.Material3.Title.Icon</item>
+  </style>
+
+  <!-- Theme overlay to override icon colors if it's a vector drawable with default colors. -->
+  <style name="ThemeOverlay.MaterialAlertDialog.Material3.Title.Icon" parent="">
+    <item name="colorControlNormal">?attr/colorSecondary</item>
+  </style>
+
+  <style name="MaterialAlertDialog.Material3.Title.Icon.CenterStacked">
+    <item name="android:layout_marginEnd" tools:ignore="NewApi">0dp</item>
+    <item name="android:layout_marginRight">0dp</item>
+    <item name="android:layout_marginBottom">@dimen/m3_alert_dialog_icon_margin</item>
+    <item name="android:layout_gravity">center</item>
+  </style>
+
+  <style name="MaterialAlertDialog.Material3.Title.Text" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+    <item name="android:textAppearance">?attr/textAppearanceHeadlineSmall</item>
+    <item name="android:textColor">?attr/colorOnSurface</item>
+  </style>
+
+  <style name="MaterialAlertDialog.Material3.Title.Text.CenterStacked">
+    <item name="android:layout_gravity">center</item>
+    <item name="android:gravity">center</item>
+    <item name="android:textAlignment" tools:ignore="NewApi">gravity</item>
+  </style>
+
+  <style name="MaterialAlertDialog.Material3.Body.Text" parent="">
+    <item name="android:textAppearance">?attr/textAppearanceBodyMedium</item>
+    <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+  </style>
+
+  <style name="MaterialAlertDialog.Material3.Body.Text.CenterStacked">
+    <item name="android:layout_gravity">center</item>
+    <item name="android:gravity">center</item>
+    <item name="android:textAlignment" tools:ignore="NewApi">gravity</item>
+  </style>
 </resources>

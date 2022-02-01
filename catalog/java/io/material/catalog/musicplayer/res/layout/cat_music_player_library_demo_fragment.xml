@@ -30,7 +30,6 @@
       app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
   <com.google.android.material.appbar.AppBarLayout
-      style="@style/Widget.MaterialComponents.AppBarLayout.Surface"
       android:id="@+id/app_bar_layout"
       android:layout_width="match_parent"
       android:layout_height="?attr/actionBarSize">

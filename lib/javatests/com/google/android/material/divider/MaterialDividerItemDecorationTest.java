@@ -128,6 +128,18 @@ public final class MaterialDividerItemDecorationTest {
   }
 
   @Test
+  public void isLastItemDecorated_isTrueByDefault() {
+    assertThat(divider.isLastItemDecorated()).isTrue();
+  }
+
+  @Test
+  public void setLastItemNotDecorated_succeeds() {
+    divider.setLastItemDecorated(false);
+
+    assertThat(divider.isLastItemDecorated()).isFalse();
+  }
+
+  @Test
   public void getItemOffsets_verticalOrientation_returnsCorrectRect() {
     divider.getItemOffsets(rect, /* view= */ null, recyclerView, state);
 

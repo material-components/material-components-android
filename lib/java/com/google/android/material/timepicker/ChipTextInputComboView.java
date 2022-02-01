@@ -23,8 +23,6 @@ import android.content.res.Configuration;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.LocaleList;
-import androidx.core.view.AccessibilityDelegateCompat;
-import androidx.core.view.ViewCompat;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextUtils;
@@ -37,8 +35,11 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.AccessibilityDelegateCompat;
+import androidx.core.view.ViewCompat;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.internal.TextWatcherAdapter;
+import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.textfield.TextInputLayout;
 import java.util.Arrays;
 
@@ -98,7 +99,7 @@ class ChipTextInputComboView extends FrameLayout implements Checkable {
     editText.setVisibility(checked ? VISIBLE : INVISIBLE);
     chip.setVisibility(checked ? GONE : VISIBLE);
     if (isChecked()) {
-      editText.requestFocus();
+      ViewUtils.requestFocusAndShowKeyboard(editText);
       if (!TextUtils.isEmpty(editText.getText())) {
         editText.setSelection(editText.getText().length());
       }

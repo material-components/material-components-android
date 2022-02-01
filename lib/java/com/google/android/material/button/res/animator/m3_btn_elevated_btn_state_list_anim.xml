@@ -17,24 +17,6 @@
 <set xmlns:android="http://schemas.android.com/apk/res/android">
   <selector>
 
-    <!-- Pressed state -->
-    <item
-        android:state_enabled="true"
-        android:state_pressed="true">
-      <set>
-        <objectAnimator
-            android:duration="@integer/m3_btn_anim_duration_ms"
-            android:propertyName="translationZ"
-            android:valueTo="@dimen/m3_btn_translation_z_pressed"
-            android:valueType="floatType"/>
-        <objectAnimator
-            android:duration="0"
-            android:propertyName="elevation"
-            android:valueTo="@dimen/m3_btn_elevated_btn_elevation"
-            android:valueType="floatType"/>
-      </set>
-    </item>
-
     <!-- Hover state. This is triggered via mouse. -->
     <item
         android:state_enabled="true"
@@ -43,7 +25,7 @@
         <objectAnimator
             android:duration="@integer/m3_btn_anim_duration_ms"
             android:propertyName="translationZ"
-            android:valueTo="@dimen/m3_btn_translation_z_hovered_focused"
+            android:valueTo="@dimen/m3_btn_translation_z_hovered"
             android:valueType="floatType"/>
         <objectAnimator
             android:duration="0"
@@ -53,25 +35,7 @@
       </set>
     </item>
 
-    <!-- Focused state. This is triggered via keyboard. -->
-    <item
-        android:state_enabled="true"
-        android:state_focused="true">
-      <set>
-        <objectAnimator
-            android:duration="@integer/m3_btn_anim_duration_ms"
-            android:propertyName="translationZ"
-            android:valueTo="@dimen/m3_btn_translation_z_hovered_focused"
-            android:valueType="floatType"/>
-        <objectAnimator
-            android:duration="0"
-            android:propertyName="elevation"
-            android:valueTo="@dimen/m3_btn_elevated_btn_elevation"
-            android:valueType="floatType"/>
-      </set>
-    </item>
-
-    <!-- Base state (enabled, not pressed) -->
+    <!-- Base state (enabled) -->
     <item android:state_enabled="true">
       <set>
         <objectAnimator

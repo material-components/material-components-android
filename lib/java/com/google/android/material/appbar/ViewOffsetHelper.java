@@ -16,8 +16,8 @@
 
 package com.google.android.material.appbar;
 
-import androidx.core.view.ViewCompat;
 import android.view.View;
+import androidx.core.view.ViewCompat;
 
 /**
  * Utility helper for moving a {@link View} around using {@link View#offsetLeftAndRight(int)} and

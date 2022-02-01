@@ -24,8 +24,6 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
-import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration;
@@ -39,6 +37,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.view.ViewCompat;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.resources.MaterialResources;
 
@@ -66,6 +66,7 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
   private int orientation;
   private int insetStart;
   private int insetEnd;
+  private boolean lastItemDecorated;
 
   private final Rect tempRect = new Rect();
 
@@ -95,6 +96,8 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
     insetStart =
         attributes.getDimensionPixelOffset(R.styleable.MaterialDivider_dividerInsetStart, 0);
     insetEnd = attributes.getDimensionPixelOffset(R.styleable.MaterialDivider_dividerInsetEnd, 0);
+    lastItemDecorated =
+        attributes.getBoolean(R.styleable.MaterialDivider_lastItemDecorated, true);
 
     attributes.recycle();
 
@@ -259,6 +262,27 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
     return insetEnd;
   }
 
+  /**
+   * Sets whether the class should draw a divider after the last item of a {@link RecyclerView}.
+   *
+   * @param lastItemDecorated whether there's a divider after the last item of a recycler view.
+   * @see #isLastItemDecorated()
+   * @attr ref com.google.android.material.R.styleable#MaterialDivider_lastItemDecorated
+   */
+  public void setLastItemDecorated(boolean lastItemDecorated) {
+    this.lastItemDecorated = lastItemDecorated;
+  }
+
+  /**
+   * Whether there's a divider after the last item of a {@link RecyclerView}.
+   *
+   * @see #setLastItemDecorated(boolean)
+   * @attr ref com.google.android.material.R.styleable#MaterialDivider_shouldDecorateLastItem
+   */
+  public boolean isLastItemDecorated() {
+    return lastItemDecorated;
+  }
+
   @Override
   public void onDraw(
       @NonNull Canvas canvas, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
@@ -294,7 +318,8 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
     right -= isRtl ? insetStart : insetEnd;
 
     int childCount = parent.getChildCount();
-    for (int i = 0; i < childCount; i++) {
+    int dividerCount = lastItemDecorated ? childCount : childCount - 1;
+    for (int i = 0; i < dividerCount; i++) {
       View child = parent.getChildAt(i);
       parent.getDecoratedBoundsWithMargins(child, tempRect);
       // Take into consideration any translationY added to the view.

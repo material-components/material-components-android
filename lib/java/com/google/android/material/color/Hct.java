@@ -135,6 +135,13 @@ final class Hct {
   private static final float DL_MAX = 0.2f;
 
   /**
+   * The minimum color distance, in CAM16-UCS, between a requested color and an 'exact' match. This
+   * allows the binary search during gamut mapping to terminate much earlier when the error is
+   * infinitesimal.
+   */
+  private static final float DE_MAX_ERROR = 0.000000001f;
+
+  /**
    * When the delta between the floor & ceiling of a binary search for J, lightness in CAM16, is
    * less than this, the binary search terminates.
    */
@@ -236,7 +243,7 @@ final class Hct {
         }
       }
 
-      if (bestdL == 0 && bestdE == 0) {
+      if (bestdL == 0 && bestdE < DE_MAX_ERROR) {
         break;
       }
 

@@ -42,17 +42,17 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.os.Build;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionItemInfoCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.PointerIcon;
 import android.view.View;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionItemInfoCompat;
 import androidx.test.annotation.UiThreadTest;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.IdlingRegistry;
@@ -203,6 +203,99 @@ public class TabLayoutTest {
 
     assertEquals("Second tab is selected", 1, tabs.getSelectedTabPosition());
     assertTabCustomViewSelected(tabs);
+  }
+
+  @Test
+  @UiThreadTest
+  public void testTabSelectionSelectTab() {
+    final LayoutInflater inflater = LayoutInflater.from(activityTestRule.getActivity());
+    final TabLayout tabs = (TabLayout) inflater.inflate(R.layout.design_tabs, null);
+
+    final TabLayout.Tab tab1 = tabs.newTab();
+    tabs.addTab(tab1);
+    assertTrue(tab1.isSelected());
+    final TabLayout.Tab tab2 = tabs.newTab();
+    tabs.addTab(tab2);
+    assertFalse(tab2.isSelected());
+    final TabLayout.Tab tab3 = tabs.newTab();
+    tabs.addTab(tab3);
+    assertFalse(tab3.isSelected());
+
+    tabs.selectTab(tab3);
+    assertTrue(tab3.isSelected());
+    assertFalse(tab1.isSelected());
+    assertFalse(tab2.isSelected());
+
+    tabs.selectTab(tab2);
+    assertTrue(tab2.isSelected());
+    assertFalse(tab1.isSelected());
+    assertFalse(tab3.isSelected());
+
+    tabs.selectTab(tab1);
+    assertTrue(tab1.isSelected());
+    assertFalse(tab2.isSelected());
+    assertFalse(tab3.isSelected());
+  }
+
+  @Test
+  @UiThreadTest
+  public void testTabSelectionAddTab() {
+    final LayoutInflater inflater = LayoutInflater.from(activityTestRule.getActivity());
+    final TabLayout tabs = (TabLayout) inflater.inflate(R.layout.design_tabs, null);
+
+    final TabLayout.Tab tab1 = tabs.newTab();
+    tabs.addTab(tab1);
+    assertTrue(tab1.isSelected());
+    final TabLayout.Tab tab2 = tabs.newTab();
+    tabs.addTab(tab2, false);
+    assertFalse(tab2.isSelected());
+    final TabLayout.Tab tab3 = tabs.newTab();
+    tabs.addTab(tab3, true);
+    assertTrue(tab3.isSelected());
+    final TabLayout.Tab tab4 = tabs.newTab();
+    tabs.addTab(tab4);
+    assertFalse(tab4.isSelected());
+  }
+
+  @Test
+  @UiThreadTest
+  public void testTabSelectionRemoveTab() {
+    final LayoutInflater inflater = LayoutInflater.from(activityTestRule.getActivity());
+    final TabLayout tabs = (TabLayout) inflater.inflate(R.layout.design_tabs, null);
+
+    final TabLayout.Tab tab1 = tabs.newTab();
+    tabs.addTab(tab1);
+    assertTrue(tab1.isSelected());
+    final TabLayout.Tab tab2 = tabs.newTab();
+    tabs.addTab(tab2);
+    assertFalse(tab2.isSelected());
+    final TabLayout.Tab tab3 = tabs.newTab();
+    tabs.addTab(tab3, true);
+    assertTrue(tab3.isSelected());
+
+    tabs.removeTab(tab3);
+    assertTrue(tab2.isSelected());
+
+    tabs.removeTab(tab1);
+    assertTrue(tab2.isSelected());
+  }
+
+  @Test
+  @UiThreadTest
+  public void testTabSelectionNewTab() {
+    final LayoutInflater inflater = LayoutInflater.from(activityTestRule.getActivity());
+    final TabLayout tabs = (TabLayout) inflater.inflate(R.layout.design_tabs, null);
+
+    final TabLayout.Tab tab1 = tabs.newTab();
+    assertFalse(tab1.isSelected());
+    tabs.addTab(tab1);
+    assertTrue(tab1.isSelected());
+
+    tabs.addTab(tabs.newTab());
+    tabs.addTab(tabs.newTab());
+
+    tabs.removeAllTabs();
+    assertFalse(tabs.newTab().isSelected());
   }
 
   @Test

@@ -11,10 +11,10 @@ path: /docs/theming-guide/
 systematically customize Material Design to better reflect your product's
 brand.
 
-Once you have updated your app theme to inherit from a Material Components
-theme, as discussed in the [Getting Started](getting-started.md) guide, you can
-start to take advantage of the app-wide theming systems that are built into
-Material Components for Android.
+Once you have updated your app theme to inherit from a Material 3 theme, as
+discussed in the [Getting Started](getting-started.md) guide, you can start to
+take advantage of the app-wide theming systems that are built into Material
+Components for Android.
 
 For information on the individual Material Theming systems, take a look at the
 following guides:

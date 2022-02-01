@@ -17,11 +17,13 @@ package com.google.android.material.color;
 
 import com.google.android.material.R;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.app.Application.ActivityLifecycleCallbacks;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
@@ -30,6 +32,10 @@ import androidx.annotation.ChecksSdkIntAtLeast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
+import java.lang.reflect.Method;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Utility for applying dynamic colors to application/activities.
@@ -37,6 +43,68 @@ import androidx.annotation.StyleRes;
 public class DynamicColors {
   private static final int[] DYNAMIC_COLOR_THEME_OVERLAY_ATTRIBUTE =
       new int[] { R.attr.dynamicColorThemeOverlay };
+
+  private static final DeviceSupportCondition DEFAULT_DEVICE_SUPPORT_CONDITION =
+      new DeviceSupportCondition() {
+        @Override
+        public boolean isSupported() {
+          return true;
+        }
+      };
+
+  @SuppressLint("PrivateApi")
+  private static final DeviceSupportCondition SAMSUNG_DEVICE_SUPPORT_CONDITION =
+      new DeviceSupportCondition() {
+        private Long version;
+
+        @Override
+        public boolean isSupported() {
+          if (version == null) {
+            try {
+              Method method = Build.class.getDeclaredMethod("getLong", String.class);
+              method.setAccessible(true);
+              version = (long) method.invoke(null, "ro.build.version.oneui");
+            } catch (Exception e) {
+              version = -1L;
+            }
+          }
+          return version >= 40100L;
+        }
+      };
+
+  private static final Map<String, DeviceSupportCondition> DYNAMIC_COLOR_SUPPORTED_MANUFACTURERS;
+
+  static {
+    Map<String, DeviceSupportCondition> deviceMap = new HashMap<>();
+    deviceMap.put("oppo", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("realme", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("oneplus", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("vivo", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("xiaomi", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("motorola", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("itel", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("tecno mobile limited", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("infinix mobility limited", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("hmd global", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("sharp", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("sony", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("tcl", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("lenovo", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("lge", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("google", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("robolectric", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("samsung", SAMSUNG_DEVICE_SUPPORT_CONDITION);
+    DYNAMIC_COLOR_SUPPORTED_MANUFACTURERS = Collections.unmodifiableMap(deviceMap);
+  }
+
+  private static final Map<String, DeviceSupportCondition> DYNAMIC_COLOR_SUPPORTED_BRANDS;
+
+  static {
+    Map<String, DeviceSupportCondition> deviceMap = new HashMap<>();
+    deviceMap.put("asus", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("jio", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    DYNAMIC_COLOR_SUPPORTED_BRANDS = Collections.unmodifiableMap(deviceMap);
+  }
 
   private static final int USE_DEFAULT_THEME_OVERLAY = 0;
 
@@ -51,12 +119,11 @@ public class DynamicColors {
 
   /**
    * Applies dynamic colors to all activities with the theme overlay designated by the theme
-   * attribute {@link R.attr.dynamicColorThemeOverlay} by registering a
-   * {@link ActivityLifecycleCallbacks} to your application.
+   * attribute {@code dynamicColorThemeOverlay} by registering a {@link ActivityLifecycleCallbacks}
+   * to your application.
    *
    * @see #applyToActivitiesIfAvailable(Application, int, Precondition) for more detailed info and
-   *      examples.
-   *
+   *     examples.
    * @param application The target application.
    */
   public static void applyToActivitiesIfAvailable(@NonNull Application application) {
@@ -80,12 +147,11 @@ public class DynamicColors {
 
   /**
    * Applies dynamic colors to all activities with the theme overlay designated by the theme
-   * attribute {@link R.attr.dynamicColorThemeOverlay} according to the given precondition by
-   * registering a {@link ActivityLifecycleCallbacks} to your application.
+   * attribute {@code dynamicColorThemeOverlay} according to the given precondition by registering a
+   * {@link ActivityLifecycleCallbacks} to your application.
    *
    * @see #applyToActivitiesIfAvailable(Application, int, Precondition) for more detailed info and
-   *      examples.
-   *
+   *     examples.
    * @param application The target application.
    * @param precondition The precondition to decide if dynamic colors should be applied.
    */
@@ -126,7 +192,7 @@ public class DynamicColors {
 
   /**
    * Applies dynamic colors to the given activity with the theme overlay designated by the theme
-   * attribute {@link R.attr.dynamicColorThemeOverlay}.
+   * attribute {@code dynamicColorThemeOverlay}.
    *
    * @param activity The target activity.
    */
@@ -146,7 +212,7 @@ public class DynamicColors {
 
   /**
    * Applies dynamic colors to the given activity with the theme overlay designated by the theme
-   * attribute {@link R.attr.dynamicColorThemeOverlay} according to the given precondition.
+   * attribute {@code dynamicColorThemeOverlay} according to the given precondition.
    *
    * @param activity The target activity.
    * @param precondition The precondition to decide if dynamic colors should be applied.
@@ -165,16 +231,17 @@ public class DynamicColors {
       theme = getDefaultThemeOverlay(activity);
     }
     if (theme != 0 && precondition.shouldApplyDynamicColors(activity, theme)) {
-      activity.setTheme(theme);
+      // Use applyStyle() instead of setTheme() due to Force Dark issue.
+      activity.getTheme().applyStyle(theme, /* force= */ true);
     }
   }
 
   /**
-   * Wraps the given context with the theme overlay designated by the theme attribute
-   * {@link R.attr.dynamicColorThemeOverlay}. The returned context can be used to create
-   * views with dynamic color support.
+   * Wraps the given context with the theme overlay designated by the theme attribute {@code
+   * dynamicColorThemeOverlay}. The returned context can be used to create views with dynamic color
+   * support.
    *
-   * If dynamic color support or the dynamic color theme overlay is not available, the original
+   * <p>If dynamic color support or the dynamic color theme overlay is not available, the original
    * context will be returned.
    *
    * @param originalContext The original context.
@@ -208,9 +275,18 @@ public class DynamicColors {
   /**
    * Returns {@code true} if dynamic colors are available on the current SDK level.
    */
+  @SuppressLint("DefaultLocale")
   @ChecksSdkIntAtLeast(api = VERSION_CODES.S)
   public static boolean isDynamicColorAvailable() {
-    return VERSION.SDK_INT >= VERSION_CODES.S;
+    if (VERSION.SDK_INT < VERSION_CODES.S) {
+      return false;
+    }
+    DeviceSupportCondition deviceSupportCondition =
+        DYNAMIC_COLOR_SUPPORTED_MANUFACTURERS.get(Build.MANUFACTURER.toLowerCase());
+    if (deviceSupportCondition == null) {
+      deviceSupportCondition = DYNAMIC_COLOR_SUPPORTED_BRANDS.get(Build.BRAND.toLowerCase());
+    }
+    return deviceSupportCondition != null && deviceSupportCondition.isSupported();
   }
 
   private static int getDefaultThemeOverlay(@NonNull Context context) {
@@ -270,5 +346,9 @@ public class DynamicColors {
 
     @Override
     public void onActivityDestroyed(@NonNull Activity activity) {}
+  }
+
+  private interface DeviceSupportCondition {
+    boolean isSupported();
   }
 }

@@ -42,11 +42,8 @@ import android.graphics.drawable.Drawable.Callback;
 import android.graphics.drawable.RippleDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
+import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import androidx.core.graphics.ColorUtils;
-import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.graphics.drawable.TintAwareDrawable;
-import androidx.core.view.ViewCompat;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.text.TextUtils;
 import android.text.TextUtils.TruncateAt;
@@ -66,7 +63,11 @@ import androidx.annotation.Px;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.annotation.XmlRes;
+import androidx.core.graphics.ColorUtils;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.graphics.drawable.TintAwareDrawable;
 import androidx.core.text.BidiFormatter;
+import androidx.core.view.ViewCompat;
 import com.google.android.material.animation.MotionSpec;
 import com.google.android.material.canvas.CanvasCompat;
 import com.google.android.material.color.MaterialColors;
@@ -102,12 +103,12 @@ import java.util.Arrays;
  *   <li>{@link android.R.attr#checkable android:checkable} - If true, the chip can be toggled. If
  *       false, the chip acts like a button.
  *   <li>{@link android.R.attr#text android:text} - Sets the text of the chip.
- *   <li>{@link R.attr#chipIcon app:chipIcon} - Sets the icon of the chip, or use @null to display
+ *   <li>{@code app:chipIcon} - Sets the icon of the chip, or use @null to display no icon. Usually
+ *       on the left.
+ *   <li>{@code app:checkedIcon} - Sets a custom icon to use when checked, or use @null to display
  *       no icon. Usually on the left.
- *   <li>{@link R.attr#checkedIcon app:checkedIcon} - Sets a custom icon to use when checked, or
- *       use @null to display no icon. Usually on the left.
- *   <li>{@link R.attr#closeIcon app:closeIcon} - Sets a custom icon that the user can click to
- *       close, or use @null to display no icon. Usually on the right.
+ *   <li>{@code app:closeIcon} - Sets a custom icon that the user can click to close, or use @null
+ *       to display no icon. Usually on the right.
  *   <li>{@link android.R.attr#ellipsize} - Does not support {@link
  *       android.text.TextUtils.TruncateAt#MARQUEE} because chip text should not scroll.
  * </ul>
@@ -358,6 +359,14 @@ public class ChipDrawable extends MaterialShapeDrawable
     float textSize = a.getDimension(
         R.styleable.Chip_android_textSize, textAppearance.getTextSize());
     textAppearance.setTextSize(textSize);
+
+    if (VERSION.SDK_INT < VERSION_CODES.M) {
+      // This is necessary to work around a bug that doesn't support themed color referenced in
+      // ColorStateList for API level < 23.
+      textAppearance.setTextColor(
+          MaterialResources.getColorStateList(context, a, R.styleable.Chip_android_textColor));
+    }
+
     setTextAppearance(textAppearance);
 
     int ellipsize = a.getInt(R.styleable.Chip_android_ellipsize, 0);
@@ -1378,6 +1387,18 @@ public class ChipDrawable extends MaterialShapeDrawable
       textAppearance.setTextSize(size);
       textDrawableHelper.getTextPaint().setTextSize(size);
       onTextSizeChange();
+    }
+  }
+
+  public void setTextColor(@ColorInt int color) {
+    setTextColor(ColorStateList.valueOf(color));
+  }
+
+  public void setTextColor(@Nullable ColorStateList color) {
+    TextAppearance textAppearance = getTextAppearance();
+    if (textAppearance != null) {
+      textAppearance.setTextColor(color);
+      invalidateSelf();
     }
   }
 

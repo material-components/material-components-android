@@ -22,8 +22,8 @@ package com.google.android.material.transition.platform;
 
 import com.google.android.material.R;
 
-import static androidx.core.util.Preconditions.checkNotNull;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static androidx.core.util.Preconditions.checkNotNull;
 import static com.google.android.material.transition.platform.TransitionUtils.calculateArea;
 import static com.google.android.material.transition.platform.TransitionUtils.convertToRelativeCornerSizes;
 import static com.google.android.material.transition.platform.TransitionUtils.createColorShader;
@@ -55,7 +55,6 @@ import android.graphics.Region.Op;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import androidx.core.view.ViewCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -69,6 +68,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
+import androidx.core.view.ViewCompat;
 import android.transition.ArcMotion;
 import android.transition.PathMotion;
 import android.transition.Transition;

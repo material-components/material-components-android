@@ -19,6 +19,7 @@ package io.material.catalog.application;
 import android.app.Application;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import androidx.multidex.MultiDexApplication;
 import androidx.appcompat.app.AppCompatDelegate;
 import android.util.Log;
 import dagger.android.AndroidInjector;
@@ -29,7 +30,7 @@ import java.lang.reflect.InvocationTargetException;
 import javax.inject.Inject;
 
 /** Catalog application class that provides support for using dispatching Dagger injectors. */
-public class CatalogApplication extends Application implements HasAndroidInjector {
+public class CatalogApplication extends MultiDexApplication implements HasAndroidInjector {
 
   /** Logging tag */
   public static final String TAG = "CatalogApplication";

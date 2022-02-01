@@ -26,16 +26,17 @@ import static org.junit.Assert.assertTrue;
 
 import android.content.Context;
 import android.graphics.RectF;
+import android.view.View;
+import android.widget.Checkable;
+import android.widget.LinearLayout;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionItemInfoCompat;
-import android.view.View;
-import android.widget.Checkable;
-import android.widget.LinearLayout;
 import androidx.test.core.app.ApplicationProvider;
 import com.google.android.material.button.MaterialButtonToggleGroup.OnButtonCheckedListener;
 import com.google.android.material.shape.ShapeAppearanceModel;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -181,6 +182,59 @@ public class MaterialButtonToggleGroupTest {
     button.performClick();
 
     assertThat(((Checkable) button).isChecked()).isFalse();
+  }
+
+  @Test
+  public void singleSelection_doesNotMultiSelect() {
+    toggleGroup.setSingleSelection(true);
+
+    View button1 = toggleGroup.getChildAt(0);
+    button1.performClick();
+    View button2 = toggleGroup.getChildAt(1);
+    button2.performClick();
+
+    assertThat(((Checkable) button1).isChecked()).isFalse();
+    assertThat(((Checkable) button2).isChecked()).isTrue();
+  }
+
+  @Test
+  public void singleSelection_doesNotMultiSelect_programmatically() {
+    toggleGroup.setSingleSelection(true);
+
+    View button1 = toggleGroup.getChildAt(0);
+    int id1 = ViewCompat.generateViewId();
+    button1.setId(id1);
+
+    View button2 = toggleGroup.getChildAt(1);
+    int id2 = ViewCompat.generateViewId();
+    button2.setId(id2);
+
+    toggleGroup.check(id1);
+    toggleGroup.check(id2);
+
+    assertThat(((Checkable) button1).isChecked()).isFalse();
+    assertThat(((Checkable) button2).isChecked()).isTrue();
+  }
+
+  @Test
+  public void multiSelection_correctSelectedIds() {
+    toggleGroup.setSingleSelection(false);
+
+    View button1 = toggleGroup.getChildAt(0);
+    int id1 = ViewCompat.generateViewId();
+    button1.setId(id1);
+
+    View button2 = toggleGroup.getChildAt(1);
+    int id2 = ViewCompat.generateViewId();
+    button2.setId(id2);
+
+    toggleGroup.check(id1);
+    toggleGroup.check(id2);
+
+    List<Integer> checkedIds = toggleGroup.getCheckedButtonIds();
+    assertThat(checkedIds.contains(id1)).isTrue();
+    assertThat(checkedIds.contains(id2)).isTrue();
+    assertThat(checkedIds.size()).isEqualTo(2);
   }
 
   @Test

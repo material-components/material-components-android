@@ -25,4 +25,12 @@
   <dimen name="mtrl_navigation_rail_active_text_size" tools:ignore="SpUsage">14dp</dimen>
   <dimen name="mtrl_navigation_rail_icon_margin">14dp</dimen>
   <dimen name="mtrl_navigation_rail_text_bottom_margin">16dp</dimen>
+
+  <dimen name="m3_navigation_rail_default_width">80dp</dimen>
+  <dimen name="m3_navigation_rail_item_min_height">60dp</dimen>
+  <dimen name="m3_navigation_rail_item_padding_top">4dp</dimen>
+  <dimen name="m3_navigation_rail_item_padding_bottom">8dp</dimen>
+  <dimen name="m3_navigation_rail_item_active_indicator_width">56dp</dimen>
+  <dimen name="m3_navigation_rail_item_active_indicator_height">32dp</dimen>
+  <dimen name="m3_navigation_rail_item_active_indicator_margin_horizontal">4dp</dimen>
 </resources>

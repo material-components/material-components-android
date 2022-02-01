@@ -18,10 +18,10 @@ package com.google.android.material.appbar;
 
 import com.google.android.material.R;
 
-import static androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_SCROLL_BACKWARD;
-import static androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_SCROLL_FORWARD;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static androidx.core.math.MathUtils.clamp;
+import static androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_SCROLL_BACKWARD;
+import static androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_SCROLL_FORWARD;
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 import static java.lang.Math.abs;
 
@@ -38,14 +38,6 @@ import android.os.Build;
 import android.os.Build.VERSION_CODES;
 import android.os.Parcel;
 import android.os.Parcelable;
-import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.util.ObjectsCompat;
-import androidx.core.view.NestedScrollingChild;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.ViewCompat.NestedScrollType;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
-import androidx.core.view.accessibility.AccessibilityViewCommand;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.util.AttributeSet;
 import android.view.View;
@@ -66,8 +58,17 @@ import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.util.ObjectsCompat;
+import androidx.core.view.NestedScrollingChild;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.ViewCompat.NestedScrollType;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
+import androidx.core.view.accessibility.AccessibilityViewCommand;
 import androidx.customview.view.AbsSavedState;
 import com.google.android.material.animation.AnimationUtils;
+import com.google.android.material.appbar.AppBarLayout.BaseBehavior.SavedState;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.MaterialShapeUtils;
@@ -202,6 +203,8 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
   private int[] tmpStatesArray;
 
   @Nullable private Drawable statusBarForeground;
+
+  private Behavior behavior;
 
   public AppBarLayout(@NonNull Context context) {
     this(context, null);
@@ -533,10 +536,20 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
   }
 
   private void invalidateScrollRanges() {
+    // Saves the current scrolling state when we need to recalculate scroll ranges
+    SavedState savedState = behavior == null || totalScrollRange == INVALID_SCROLL_RANGE
+            ? null : behavior.saveScrollState(AbsSavedState.EMPTY_STATE, this);
     // Invalidate the scroll ranges
     totalScrollRange = INVALID_SCROLL_RANGE;
     downPreScrollRange = INVALID_SCROLL_RANGE;
     downScrollRange = INVALID_SCROLL_RANGE;
+    // Restores the previous scrolling state. Don't override if there's a previously saved state
+    // which has not be restored yet. Multiple re-measuring can happen before the scroll state
+    // is actually restored. We don't want to restore the state in-between those re-measuring,
+    // since they can be incorrect.
+    if (savedState != null) {
+      behavior.restoreScrollState(savedState, false);
+    }
   }
 
   @Override
@@ -558,7 +571,8 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
   @Override
   @NonNull
   public CoordinatorLayout.Behavior<AppBarLayout> getBehavior() {
-    return new AppBarLayout.Behavior();
+    behavior = new AppBarLayout.Behavior();
+    return behavior;
   }
 
   @RequiresApi(VERSION_CODES.LOLLIPOP)
@@ -1323,7 +1337,6 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
   // TODO(b/76413401): remove this base class and generic type after the widget migration is done
   protected static class BaseBehavior<T extends AppBarLayout> extends HeaderBehavior<T> {
     private static final int MAX_OFFSET_ANIMATION_DURATION = 600; // ms
-    private static final int INVALID_POSITION = -1;
 
     /** Callback to allow control over any {@link AppBarLayout} dragging. */
     // TODO(b/76413401): remove this base class and generic type after the widget migration
@@ -1345,9 +1358,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
 
     private ValueAnimator offsetAnimator;
 
-    private int offsetToChildIndexOnLayout = INVALID_POSITION;
-    private boolean offsetToChildIndexOnLayoutIsMinHeight;
-    private float offsetToChildIndexOnLayoutPerc;
+    private SavedState savedState;
 
     @Nullable private WeakReference<View> lastNestedScrollingChildRef;
     private BaseDragCallback onDragCallback;
@@ -1549,7 +1560,11 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     }
 
     private void snapToChildIfNeeded(CoordinatorLayout coordinatorLayout, @NonNull T abl) {
-      final int offset = getTopBottomOffsetForScrollingSibling();
+      final int topInset = abl.getTopInset() + abl.getPaddingTop();
+      // The "baseline" of scrolling is the top of the first child. We "add" insets and paddings
+      // to the scrolling amount to align offsets and views with the same y-coordinate. (The origin
+      // is at the top of the AppBarLayout, so all the coordinates are with negative values.)
+      final int offset = getTopBottomOffsetForScrollingSibling() - topInset;
       final int offsetChildIndex = getChildIndexOnOffset(abl, offset);
       if (offsetChildIndex >= 0) {
         final View offsetChild = abl.getChildAt(offsetChildIndex);
@@ -1561,9 +1576,12 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
           int snapTop = -offsetChild.getTop();
           int snapBottom = -offsetChild.getBottom();
 
-          if (offsetChildIndex == abl.getChildCount() - 1) {
-            // If this is the last child, we need to take the top inset into account
-            snapBottom += abl.getTopInset();
+          // If the child is set to fit system windows, its top will include the inset area, we need
+          // to minus the inset from snapTop to make the calculation consistent.
+          if (offsetChildIndex == 0
+              && ViewCompat.getFitsSystemWindows(abl)
+              && ViewCompat.getFitsSystemWindows(offsetChild)) {
+            snapTop -= abl.getTopInset();
           }
 
           if (checkFlag(flags, LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED)) {
@@ -1587,11 +1605,17 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
             snapBottom -= lp.bottomMargin;
           }
 
-          final int newOffset = offset < (snapBottom + snapTop) / 2 ? snapBottom : snapTop;
+          // Excludes insets and paddings from the offset. (Offsets use the top of child views as
+          // the origin.)
+          final int newOffset = calculateSnapOffset(offset, snapBottom, snapTop) + topInset;
           animateOffsetTo(
               coordinatorLayout, abl, clamp(newOffset, -abl.getTotalScrollRange(), 0), 0);
         }
       }
+    }
+
+    private int calculateSnapOffset(int value, int bottom, int top) {
+      return value < (bottom + top) / 2 ? bottom : top;
     }
 
     private static boolean checkFlag(final int flags, final int check) {
@@ -1637,15 +1661,24 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
       // 2. offsets for restorations
       // 3. non-forced pending actions
       final int pendingAction = abl.getPendingAction();
-      if (offsetToChildIndexOnLayout >= 0 && (pendingAction & PENDING_ACTION_FORCE) == 0) {
-        View child = abl.getChildAt(offsetToChildIndexOnLayout);
-        int offset = -child.getBottom();
-        if (offsetToChildIndexOnLayoutIsMinHeight) {
-          offset += ViewCompat.getMinimumHeight(child) + abl.getTopInset();
+      if (savedState != null && (pendingAction & PENDING_ACTION_FORCE) == 0) {
+        if (savedState.fullyScrolled) {
+          // Keep fully scrolled.
+          setHeaderTopBottomOffset(parent, abl, -abl.getTotalScrollRange());
+        } else if (savedState.fullyExpanded) {
+          // Keep fully expanded.
+          setHeaderTopBottomOffset(parent, abl, 0);
         } else {
-          offset += Math.round(child.getHeight() * offsetToChildIndexOnLayoutPerc);
+          // Not fully scrolled, restore the visible percetage of child layout.
+          View child = abl.getChildAt(savedState.firstVisibleChildIndex);
+          int offset = -child.getBottom();
+          if (savedState.firstVisibleChildAtMinimumHeight) {
+            offset += ViewCompat.getMinimumHeight(child) + abl.getTopInset();
+          } else {
+            offset += Math.round(child.getHeight() * savedState.firstVisibleChildPercentageShown);
+          }
+          setHeaderTopBottomOffset(parent, abl, offset);
         }
-        setHeaderTopBottomOffset(parent, abl, offset);
       } else if (pendingAction != PENDING_ACTION_NONE) {
         final boolean animate = (pendingAction & PENDING_ACTION_ANIMATE_ENABLED) != 0;
         if ((pendingAction & PENDING_ACTION_COLLAPSED) != 0) {
@@ -1666,7 +1699,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
 
       // Finally reset any pending states
       abl.resetPendingAction();
-      offsetToChildIndexOnLayout = INVALID_POSITION;
+      savedState = null;
 
       // We may have changed size, so let's constrain the top and bottom offset correctly,
       // just in case we're out of the bounds
@@ -2026,7 +2059,25 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
 
     @Override
     public Parcelable onSaveInstanceState(@NonNull CoordinatorLayout parent, @NonNull T abl) {
-      final Parcelable superState = super.onSaveInstanceState(parent, abl);
+      Parcelable superState = super.onSaveInstanceState(parent, abl);
+      SavedState scrollState = saveScrollState(superState, abl);
+      return scrollState == null ? superState : scrollState;
+    }
+
+    @Override
+    public void onRestoreInstanceState(
+        @NonNull CoordinatorLayout parent, @NonNull T appBarLayout, Parcelable state) {
+      if (state instanceof SavedState) {
+        restoreScrollState((SavedState) state, true);
+        super.onRestoreInstanceState(parent, appBarLayout, savedState.getSuperState());
+      } else {
+        super.onRestoreInstanceState(parent, appBarLayout, state);
+        savedState = null;
+      }
+    }
+
+    @Nullable
+    SavedState saveScrollState(@Nullable Parcelable superState, @NonNull T abl) {
       final int offset = getTopAndBottomOffset();
 
       // Try and find the first visible child...
@@ -2035,7 +2086,10 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
         final int visBottom = child.getBottom() + offset;
 
         if (child.getTop() + offset <= 0 && visBottom >= 0) {
-          final SavedState ss = new SavedState(superState);
+          final SavedState ss =
+              new SavedState(superState == null ? AbsSavedState.EMPTY_STATE : superState);
+          ss.fullyExpanded = offset == 0;
+          ss.fullyScrolled = !ss.fullyExpanded && -offset >= abl.getTotalScrollRange();
           ss.firstVisibleChildIndex = i;
           ss.firstVisibleChildAtMinimumHeight =
               visBottom == (ViewCompat.getMinimumHeight(child) + abl.getTopInset());
@@ -2043,34 +2097,27 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
           return ss;
         }
       }
-
-      // Else we'll just return the super state
-      return superState;
+      return null;
     }
 
-    @Override
-    public void onRestoreInstanceState(
-        @NonNull CoordinatorLayout parent, @NonNull T appBarLayout, Parcelable state) {
-      if (state instanceof SavedState) {
-        final SavedState ss = (SavedState) state;
-        super.onRestoreInstanceState(parent, appBarLayout, ss.getSuperState());
-        offsetToChildIndexOnLayout = ss.firstVisibleChildIndex;
-        offsetToChildIndexOnLayoutPerc = ss.firstVisibleChildPercentageShown;
-        offsetToChildIndexOnLayoutIsMinHeight = ss.firstVisibleChildAtMinimumHeight;
-      } else {
-        super.onRestoreInstanceState(parent, appBarLayout, state);
-        offsetToChildIndexOnLayout = INVALID_POSITION;
+    void restoreScrollState(@Nullable SavedState state, boolean force) {
+      if (savedState == null || force) {
+        savedState = state;
       }
     }
 
     /** A {@link Parcelable} implementation for {@link AppBarLayout}. */
     protected static class SavedState extends AbsSavedState {
+      boolean fullyScrolled;
+      boolean fullyExpanded;
       int firstVisibleChildIndex;
       float firstVisibleChildPercentageShown;
       boolean firstVisibleChildAtMinimumHeight;
 
       public SavedState(@NonNull Parcel source, ClassLoader loader) {
         super(source, loader);
+        fullyScrolled = source.readByte() != 0;
+        fullyExpanded = source.readByte() != 0;
         firstVisibleChildIndex = source.readInt();
         firstVisibleChildPercentageShown = source.readFloat();
         firstVisibleChildAtMinimumHeight = source.readByte() != 0;
@@ -2083,6 +2130,8 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
       @Override
       public void writeToParcel(@NonNull Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
+        dest.writeByte((byte) (fullyScrolled ? 1 : 0));
+        dest.writeByte((byte) (fullyExpanded ? 1 : 0));
         dest.writeInt(firstVisibleChildIndex);
         dest.writeFloat(firstVisibleChildPercentageShown);
         dest.writeByte((byte) (firstVisibleChildAtMinimumHeight ? 1 : 0));
