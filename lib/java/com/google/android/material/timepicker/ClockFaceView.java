@@ -31,11 +31,14 @@ import android.graphics.RadialGradient;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader.TileMode;
+import android.os.Bundle;
+import android.os.SystemClock;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver.OnPreDrawListener;
 import android.view.accessibility.AccessibilityNodeInfo;
@@ -47,6 +50,7 @@ import androidx.annotation.StringRes;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionItemInfoCompat;
 import com.google.android.material.resources.MaterialResources;
@@ -166,6 +170,22 @@ class ClockFaceView extends RadialViewGroup implements OnRotateListener {
                     /* selected= */ host.isSelected()));
 
             info.setClickable(true);
+            info.addAction(AccessibilityActionCompat.ACTION_CLICK);
+          }
+
+          @Override
+          public boolean performAccessibilityAction(View host, int action, Bundle args) {
+            if (action == AccessibilityNodeInfoCompat.ACTION_CLICK) {
+              long eventTime = SystemClock.uptimeMillis();
+              float x = host.getX() + host.getWidth() / 2f;
+              float y = host.getY() + host.getHeight() / 2f;
+              clockHandView.onTouchEvent(
+                  MotionEvent.obtain(eventTime, eventTime, MotionEvent.ACTION_DOWN, x, y, 0));
+              clockHandView.onTouchEvent(
+                  MotionEvent.obtain(eventTime, eventTime, MotionEvent.ACTION_UP, x, y, 0));
+              return true;
+            }
+            return super.performAccessibilityAction(host, action, args);
           }
         };
 

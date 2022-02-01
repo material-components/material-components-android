@@ -20,7 +20,7 @@
   android:layout_width="wrap_content"
   android:layout_height="wrap_content"
   android:textColor="?attr/colorOnSurface"
-  android:padding="16dp"
+  android:padding="@dimen/material_clock_number_text_padding"
   android:textSize="@dimen/material_clock_number_text_size"
   android:visibility="gone"
   tools:ignore="SpUsage" />
