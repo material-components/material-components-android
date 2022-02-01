@@ -120,6 +120,14 @@
 
   <style name="Widget.MaterialComponents.ActionBar.PrimarySurface" parent="Widget.MaterialComponents.ActionBar.Primary"/>
 
+  <style name="Widget.MaterialComponents.ActionMode" parent="Widget.AppCompat.ActionMode">
+    <item name="titleTextStyle">?attr/textAppearanceHeadline6</item>
+    <item name="subtitleTextStyle">?attr/textAppearanceSubtitle1</item>
+    <!-- Overrides minimum height in landscape to avoid headline6 and subtitle1 height concerns. -->
+    <item name="android:minHeight">@dimen/mtrl_toolbar_default_height</item>
+    <item name="maxButtonHeight">@dimen/mtrl_toolbar_default_height</item>
+  </style>
+
   <style name="ThemeOverlay.MaterialComponents.ActionBar.Primary" parent="ThemeOverlay.AppCompat.ActionBar">
     <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
     <item name="android:textColorSecondary">@color/material_on_primary_emphasis_medium</item>

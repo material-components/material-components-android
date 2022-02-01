@@ -441,6 +441,7 @@
     <item name="actionBarStyle">@style/Widget.MaterialComponents.ActionBar.Surface</item>
     <item name="actionBarTheme">@style/ThemeOverlay.MaterialComponents.ActionBar.Surface</item>
     <item name="actionOverflowMenuStyle">@style/Widget.MaterialComponents.PopupMenu.Overflow</item>
+    <item name="actionModeStyle">@style/Widget.MaterialComponents.ActionMode</item>
 
     <!-- Framework, AppCompat, or Design Widget styles -->
     <item name="appBarLayoutStyle">@style/Widget.MaterialComponents.AppBarLayout.Surface</item>
@@ -503,6 +504,7 @@
     <item name="actionBarPopupTheme">@style/ThemeOverlay.MaterialComponents.Light</item>
     <item name="actionBarStyle">@style/Widget.MaterialComponents.Light.ActionBar.Solid</item>
     <item name="actionOverflowMenuStyle">@style/Widget.MaterialComponents.PopupMenu.Overflow</item>
+    <item name="actionModeStyle">@style/Widget.MaterialComponents.ActionMode</item>
 
     <!-- Framework, AppCompat, or Design Widget styles -->
     <item name="appBarLayoutStyle">@style/Widget.MaterialComponents.AppBarLayout.Primary</item>
