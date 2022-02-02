@@ -34,7 +34,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
-import android.graphics.fonts.FontStyle;
 import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
@@ -61,6 +60,7 @@ import com.google.android.material.internal.StaticLayoutBuilderCompat.StaticLayo
 import com.google.android.material.resources.CancelableFontCallback;
 import com.google.android.material.resources.CancelableFontCallback.ApplyFont;
 import com.google.android.material.resources.TextAppearance;
+import com.google.android.material.resources.TypefaceUtils;
 
 /**
  * Helper class for rendering and animating collapsed text.
@@ -122,7 +122,6 @@ public final class CollapsingTextHelper {
   private Typeface expandedTypefaceBold;
   private Typeface expandedTypefaceDefault;
   private Typeface currentTypeface;
-  private int fontWeightAdjustment;
   private CancelableFontCallback expandedFontCallback;
   private CancelableFontCallback collapsedFontCallback;
 
@@ -472,7 +471,9 @@ public final class CollapsingTextHelper {
     }
     if (collapsedTypefaceDefault != typeface) {
       collapsedTypefaceDefault = typeface;
-      collapsedTypefaceBold = maybeCloneWithAdjustment(typeface);
+      collapsedTypefaceBold = TypefaceUtils.maybeCopyWithFontWeightAdjustment(
+          view.getContext().getResources().getConfiguration(),
+          typeface);
       collapsedTypeface = collapsedTypefaceBold == null
           ? collapsedTypefaceDefault : collapsedTypefaceBold;
       return true;
@@ -489,7 +490,9 @@ public final class CollapsingTextHelper {
     }
     if (expandedTypefaceDefault != typeface) {
       expandedTypefaceDefault = typeface;
-      expandedTypefaceBold = maybeCloneWithAdjustment(typeface);
+      expandedTypefaceBold = TypefaceUtils.maybeCopyWithFontWeightAdjustment(
+          view.getContext().getResources().getConfiguration(),
+          typeface);
       expandedTypeface = expandedTypefaceBold == null
           ? expandedTypefaceDefault : expandedTypefaceBold;
       return true;
@@ -507,12 +510,15 @@ public final class CollapsingTextHelper {
 
   public void maybeUpdateFontWeightAdjustment(@NonNull Configuration configuration) {
     if (VERSION.SDK_INT >= VERSION_CODES.S) {
-      fontWeightAdjustment = configuration.fontWeightAdjustment;
       if (collapsedTypefaceDefault != null) {
-        collapsedTypefaceBold = maybeCloneWithAdjustment(collapsedTypefaceDefault);
+        collapsedTypefaceBold = TypefaceUtils.maybeCopyWithFontWeightAdjustment(
+            configuration,
+            collapsedTypefaceDefault);
       }
       if (expandedTypefaceDefault != null) {
-        expandedTypefaceBold = maybeCloneWithAdjustment(expandedTypefaceDefault);
+        expandedTypefaceBold = TypefaceUtils.maybeCopyWithFontWeightAdjustment(
+            configuration,
+            expandedTypefaceDefault);
       }
       collapsedTypeface = collapsedTypefaceBold != null
           ? collapsedTypefaceBold : collapsedTypefaceDefault;
@@ -520,25 +526,6 @@ public final class CollapsingTextHelper {
           ? expandedTypefaceBold : expandedTypefaceDefault;
       recalculate(/* forceRecalculate= */true);
     }
-  }
-
-  private boolean shouldUseBoldTypefaces() {
-    return VERSION.SDK_INT >= VERSION_CODES.S
-        && fontWeightAdjustment != Configuration.FONT_WEIGHT_ADJUSTMENT_UNDEFINED
-        && fontWeightAdjustment != 0;
-  }
-
-  @Nullable
-  private Typeface maybeCloneWithAdjustment(@NonNull Typeface typeface) {
-    if (shouldUseBoldTypefaces()) {
-      int adjustedWeight =
-          MathUtils.clamp(
-              typeface.getWeight() + fontWeightAdjustment,
-              FontStyle.FONT_WEIGHT_MIN,
-              FontStyle.FONT_WEIGHT_MAX);
-      return Typeface.create(typeface, adjustedWeight, typeface.isItalic());
-    }
-    return null;
   }
 
   /**

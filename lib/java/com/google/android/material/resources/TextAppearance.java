@@ -20,12 +20,10 @@ import com.google.android.material.R;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.fonts.FontStyle;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.text.TextPaint;
@@ -39,7 +37,6 @@ import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.content.res.ResourcesCompat.FontCallback;
-import androidx.core.math.MathUtils;
 import androidx.core.provider.FontsContractCompat.FontRequestCallback;
 
 /**
@@ -342,18 +339,9 @@ public class TextAppearance {
    */
   public void updateTextPaintMeasureState(
       @NonNull Context context, @NonNull TextPaint textPaint, @NonNull Typeface typeface) {
-    Configuration configuration = context.getResources().getConfiguration();
-    if (VERSION.SDK_INT >= VERSION_CODES.S) {
-      int fontWeightAdjustment = configuration.fontWeightAdjustment;
-      if (fontWeightAdjustment != Configuration.FONT_WEIGHT_ADJUSTMENT_UNDEFINED
-          && fontWeightAdjustment != 0) {
-        int adjustedWeight =
-            MathUtils.clamp(
-                typeface.getWeight() + fontWeightAdjustment,
-                FontStyle.FONT_WEIGHT_MIN,
-                FontStyle.FONT_WEIGHT_MAX);
-        typeface = Typeface.create(typeface, adjustedWeight, typeface.isItalic());
-      }
+    Typeface boldTypeface = TypefaceUtils.maybeCopyWithFontWeightAdjustment(context, typeface);
+    if (boldTypeface != null) {
+      typeface = boldTypeface;
     }
     textPaint.setTypeface(typeface);
 
