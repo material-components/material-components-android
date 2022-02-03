@@ -38,7 +38,14 @@ public class TypefaceUtils {
 
   private TypefaceUtils() {}
 
-  // Clones a typeface with additional boldness (weight).
+  /** Clones a typeface with additional boldness (weight). */
+  @Nullable
+  public static Typeface maybeCopyWithFontWeightAdjustment(
+      @NonNull Context context, @NonNull Typeface typeface) {
+    return maybeCopyWithFontWeightAdjustment(context.getResources().getConfiguration(), typeface);
+  }
+
+  /** Clones a typeface with additional boldness (weight). */
   @Nullable
   public static Typeface maybeCopyWithFontWeightAdjustment(
       @NonNull Configuration configuration, @NonNull Typeface typeface) {
@@ -53,12 +60,5 @@ public class TypefaceUtils {
       return Typeface.create(typeface, adjustedWeight, typeface.isItalic());
     }
     return null;
-  }
-
-  // Clones a typeface with additional boldness (weight).
-  @Nullable
-  public static Typeface maybeCopyWithFontWeightAdjustment(
-      @NonNull Context context, @NonNull Typeface typeface) {
-    return maybeCopyWithFontWeightAdjustment(context.getResources().getConfiguration(), typeface);
   }
 }
