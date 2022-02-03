@@ -25,6 +25,7 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.LayerDrawable;
@@ -87,6 +88,10 @@ class MaterialCardViewHelper {
   private static final float CARD_VIEW_SHADOW_MULTIPLIER = 1.5f;
 
   private static final int CHECKED_ICON_LAYER_INDEX = 2;
+
+  // We need to create a dummy drawable to avoid LayerDrawable crashes on API 28-.
+  private static final Drawable CHECKED_ICON_NONE =
+      VERSION.SDK_INT <= VERSION_CODES.P ? new ColorDrawable() : null;
 
   @NonNull private final MaterialCardView materialCardView;
   @NonNull private final Rect userContentPadding = new Rect();
@@ -387,11 +392,12 @@ class MaterialCardViewHelper {
   }
 
   void setCheckedIcon(@Nullable Drawable checkedIcon) {
-    this.checkedIcon = checkedIcon;
     if (checkedIcon != null) {
       this.checkedIcon = DrawableCompat.wrap(checkedIcon).mutate();
       DrawableCompat.setTintList(this.checkedIcon, checkedIconTint);
       setChecked(materialCardView.isChecked());
+    } else {
+      this.checkedIcon = CHECKED_ICON_NONE;
     }
 
     if (clickableForegroundDrawable != null) {
