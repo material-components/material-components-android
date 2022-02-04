@@ -19,45 +19,69 @@
 
 <resources>
   <!-- Generated from token set (md.sys.shape) in default context. -->
-  <integer name="m3_sys_shape_corner_full_corner_family">0</integer>
-  <dimen name="m3_sys_shape_corner_full_corner_size">50%</dimen>
-  <integer name="m3_sys_shape_corner_none_corner_family">0</integer>
-  <dimen name="m3_sys_shape_corner_none_corner_size">0dp</dimen>
-  <integer name="m3_sys_shape_corner_large_corner_family">0</integer>
-  <dimen name="m3_sys_shape_corner_large_corner_size">16dp</dimen>
-  <integer name="m3_sys_shape_corner_small_corner_family">0</integer>
-  <dimen name="m3_sys_shape_corner_small_corner_size">8dp</dimen>
-  <integer name="m3_sys_shape_corner_medium_corner_family">0</integer>
-  <dimen name="m3_sys_shape_corner_medium_corner_size">12dp</dimen>
-  <integer name="m3_sys_shape_corner_large_end_corner_family">0</integer>
-  <dimen name="m3_sys_shape_corner_large_end_corner_size_top_left">0dp</dimen>
-  <dimen name="m3_sys_shape_corner_large_end_corner_size_top_right">16dp</dimen>
-  <dimen name="m3_sys_shape_corner_large_end_corner_size_bottom_left">0dp</dimen>
-  <dimen name="m3_sys_shape_corner_large_end_corner_size_bottom_right">16dp</dimen>
-  <integer name="m3_sys_shape_corner_large_top_corner_family">0</integer>
-  <dimen name="m3_sys_shape_corner_large_top_corner_size_top_left">16dp</dimen>
-  <dimen name="m3_sys_shape_corner_large_top_corner_size_top_right">16dp</dimen>
-  <dimen name="m3_sys_shape_corner_large_top_corner_size_bottom_left">0dp</dimen>
-  <dimen name="m3_sys_shape_corner_large_top_corner_size_bottom_right">0dp</dimen>
-  <integer name="m3_sys_shape_corner_extra_large_corner_family">0</integer>
-  <dimen name="m3_sys_shape_corner_extra_large_corner_size">28dp</dimen>
-  <integer name="m3_sys_shape_corner_extra_small_corner_family">0</integer>
-  <dimen name="m3_sys_shape_corner_extra_small_corner_size">4dp</dimen>
-  <integer name="m3_sys_shape_corner_extra_large_top_corner_family">0</integer>
-  <dimen name="m3_sys_shape_corner_extra_large_top_corner_size_top_left">28dp</dimen>
-  <dimen name="m3_sys_shape_corner_extra_large_top_corner_size_top_right">28dp</dimen>
-  <dimen name="m3_sys_shape_corner_extra_large_top_corner_size_bottom_left">0dp</dimen>
-  <dimen name="m3_sys_shape_corner_extra_large_top_corner_size_bottom_right">0dp</dimen>
-  <integer name="m3_sys_shape_corner_extra_small_top_corner_family">0</integer>
-  <dimen name="m3_sys_shape_corner_extra_small_top_corner_size_top_left">4dp</dimen>
-  <dimen name="m3_sys_shape_corner_extra_small_top_corner_size_top_right">4dp</dimen>
-  <dimen name="m3_sys_shape_corner_extra_small_top_corner_size_bottom_left">0dp</dimen>
-  <dimen name="m3_sys_shape_corner_extra_small_top_corner_size_bottom_right">0dp</dimen>
+  <style name="ShapeAppearance.M3.Sys.Shape.Corner.Full" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">50%</item>
+  </style>
+  <style name="ShapeAppearance.M3.Sys.Shape.Corner.None" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">0dp</item>
+  </style>
+  <style name="ShapeAppearance.M3.Sys.Shape.Corner.Large" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">16dp</item>
+  </style>
+  <style name="ShapeAppearance.M3.Sys.Shape.Corner.Small" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">8dp</item>
+  </style>
+  <style name="ShapeAppearance.M3.Sys.Shape.Corner.Medium" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">12dp</item>
+  </style>
+  <style name="ShapeAppearance.M3.Sys.Shape.Corner.Large.End" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">0dp</item>
+    <item name="cornerSizeTopRight">16dp</item>
+    <item name="cornerSizeBottomRight">16dp</item>
+  </style>
+  <style name="ShapeAppearance.M3.Sys.Shape.Corner.Large.Top" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">0dp</item>
+    <item name="cornerSizeTopLeft">16dp</item>
+    <item name="cornerSizeTopRight">16dp</item>
+  </style>
+  <style name="ShapeAppearance.M3.Sys.Shape.Corner.ExtraLarge" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">28dp</item>
+  </style>
+  <style name="ShapeAppearance.M3.Sys.Shape.Corner.ExtraSmall" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">4dp</item>
+  </style>
+  <style name="ShapeAppearance.M3.Sys.Shape.Corner.ExtraLarge.Top" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">0dp</item>
+    <item name="cornerSizeTopLeft">28dp</item>
+    <item name="cornerSizeTopRight">28dp</item>
+  </style>
+  <style name="ShapeAppearance.M3.Sys.Shape.Corner.ExtraSmall.Top" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">0dp</item>
+    <item name="cornerSizeTopLeft">4dp</item>
+    <item name="cornerSizeTopRight">4dp</item>
+  </style>
   <!-- Deprecated tokens -->
-  <integer name="m3_sys_shape_large_corner_family">0</integer>
-  <dimen name="m3_sys_shape_large_corner_size">8dp</dimen>
-  <integer name="m3_sys_shape_small_corner_family">0</integer>
-  <dimen name="m3_sys_shape_small_corner_size">4dp</dimen>
-  <integer name="m3_sys_shape_medium_corner_family">0</integer>
-  <dimen name="m3_sys_shape_medium_corner_size">8dp</dimen>
+  <style name="ShapeAppearance.M3.Sys.Shape.Large" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">8dp</item>
+  </style>
+  <style name="ShapeAppearance.M3.Sys.Shape.Small" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">4dp</item>
+  </style>
+  <style name="ShapeAppearance.M3.Sys.Shape.Medium" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">8dp</item>
+  </style>
 </resources>
