@@ -22,12 +22,15 @@ import android.app.Activity;
 import android.app.Application;
 import android.app.Application.ActivityLifecycleCallbacks;
 import android.content.Context;
+import android.content.res.Resources.Theme;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
+import android.view.View;
+import android.view.Window;
 import androidx.annotation.ChecksSdkIntAtLeast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -231,8 +234,7 @@ public class DynamicColors {
       theme = getDefaultThemeOverlay(activity);
     }
     if (theme != 0 && precondition.shouldApplyDynamicColors(activity, theme)) {
-      // Use applyStyle() instead of setTheme() due to Force Dark issue.
-      activity.getTheme().applyStyle(theme, /* force= */ true);
+      applyDynamicColorThemeOverlay(activity, theme);
     }
   }
 
@@ -295,6 +297,33 @@ public class DynamicColors {
     final int theme = dynamicColorAttributes.getResourceId(0, 0);
     dynamicColorAttributes.recycle();
     return theme;
+  }
+
+  private static void applyDynamicColorThemeOverlay(Activity activity, @StyleRes int theme) {
+    // Use applyStyle() instead of setTheme() due to Force Dark issue.
+    activity.getTheme().applyStyle(theme, /* force= */ true);
+
+    // Make sure theme is applied to the Window decorView similar to Activity#setTheme, to ensure
+    // that the dynamic colors will be applied to things like ContextMenu using the DecorContext.
+    Theme windowDecorViewTheme = getWindowDecorViewTheme(activity);
+    if (windowDecorViewTheme != null) {
+      windowDecorViewTheme.applyStyle(theme, /* force= */ true);
+    }
+  }
+
+  @Nullable
+  private static Theme getWindowDecorViewTheme(@NonNull Activity activity) {
+    Window window = activity.getWindow();
+    if (window != null) {
+      View decorView = window.getDecorView();
+      if (decorView != null) {
+        Context context = decorView.getContext();
+        if (context != null) {
+          return context.getTheme();
+        }
+      }
+    }
+    return null;
   }
 
   /**
