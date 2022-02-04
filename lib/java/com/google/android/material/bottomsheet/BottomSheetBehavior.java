@@ -1494,7 +1494,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
             int rightPadding = view.getPaddingRight();
 
             if (paddingBottomSystemWindowInsets) {
-              insetBottom = systemBarInsets.bottom;
+              Insets imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime());
+              insetBottom = systemBarInsets.bottom + imeInsets.bottom;
               bottomPadding = initialPadding.bottom + insetBottom;
             }
 
