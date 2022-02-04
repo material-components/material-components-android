@@ -87,10 +87,6 @@ public class FontMainDemoFragment extends DemoFragment {
     return R.array.cat_font_style_names_array;
   }
 
-  protected boolean descriptionAllCaps() {
-    return true;
-  }
-
   protected String convertFontFamilyToDescription(String fontFamily) {
     if (fontFamily == null) {
       return "Regular";
@@ -183,7 +179,6 @@ public class FontMainDemoFragment extends DemoFragment {
 
       nameView.setText(name);
       descriptionView.setText(createDescription(name, style));
-      descriptionView.setAllCaps(descriptionAllCaps());
 
       TextViewCompat.setTextAppearance(nameView, style);
     }
