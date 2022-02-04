@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright 2019 The Android Open Source Project
+  Copyright 2021 The Android Open Source Project
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -15,11 +15,11 @@
   limitations under the License.
 -->
 <resources>
-
-  <dimen name="mtrl_large_touch_target">100dp</dimen>
-  <dimen name="action_bar_size">16dp</dimen>
-  <dimen name="default_dimension">100dp</dimen>
-
-  <dimen name="material_text_size_sp">14sp</dimen>
-  <dimen name="material_text_size_dp">14dp</dimen>
+  <style name="TextAppearance.Test.UsesSP" parent="TextAppearance.Material3.TitleSmall">
+    <item name="android:textSize">@dimen/material_text_size_sp</item>
+  </style>
+  <style name="TextAppearance.Test.UsesDp" parent="TextAppearance.Material3.TitleSmall">
+    <item name="android:textSize">@dimen/material_text_size_dp</item>
+  </style>
+  <style name="TextAppearance.Test.NoTextSize" parent=""/>
 </resources>

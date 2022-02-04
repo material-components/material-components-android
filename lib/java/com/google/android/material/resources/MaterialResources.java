@@ -16,12 +16,16 @@
 
 package com.google.android.material.resources;
 
+import com.google.android.material.R;
+
+import static android.util.TypedValue.COMPLEX_UNIT_MASK;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -30,6 +34,7 @@ import android.util.TypedValue;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
+import androidx.annotation.StyleRes;
 import androidx.annotation.StyleableRes;
 
 /**
@@ -188,6 +193,60 @@ public class MaterialResources {
    */
   public static boolean isFontScaleAtLeast2_0(@NonNull Context context) {
     return context.getResources().getConfiguration().fontScale >= FONT_SCALE_2_0;
+  }
+
+  /**
+   * Return the {@code R.styleable.TextAppearance_android_textSize} value from a text appearance
+   * style at its density scaled value only.
+   *
+   * If the text size from the text appearance is using dp, the density scaled value will be
+   * returned. If the text size is using sp, the raw value will be scaled according to display
+   * density but not font scale, as if it were a dp value.
+   *
+   * This is used for components that do not scale their text due to being space constrained and
+   * instead offer alternative methods of showing scaled text.
+   */
+  public static int getUnscaledTextSize(
+      @NonNull Context context, @StyleRes int textAppearance, int defValue) {
+    if (textAppearance == 0) {
+      return defValue;
+    }
+
+    TypedArray a = context.obtainStyledAttributes(textAppearance, R.styleable.TextAppearance);
+    TypedValue v = new TypedValue();
+    boolean available = a.getValue(R.styleable.TextAppearance_android_textSize, v);
+    a.recycle();
+
+    if (!available) {
+      return defValue;
+    }
+
+    // If the resource is in scaled pixels (sp) manually unpack the resource and scale to density
+    // but not font scale.
+    if (getComplexUnit(v) == TypedValue.COMPLEX_UNIT_SP) {
+      // Get the raw value. If text size is set to 14sp in the dimen file, this will return 14.
+      // Scale the raw value using density and round to avoid truncating.
+      return Math.round(
+          TypedValue.complexToFloat(v.data) * context.getResources().getDisplayMetrics().density);
+    }
+
+    // If the resource is not is sp, return with regular resource system scaling.
+    return TypedValue.complexToDimensionPixelSize(
+        v.data, context.getResources().getDisplayMetrics());
+  }
+
+  /**
+   * Return the complex unit type for the given value.
+   *
+   * <p>This is a compat method of {@link TypedValue#getComplexUnit()}, which is only available on
+   * API 22 and above.
+   */
+  private static int getComplexUnit(TypedValue tv) {
+    if (Build.VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP_MR1) {
+      return tv.getComplexUnit();
+    } else {
+      return (COMPLEX_UNIT_MASK & (tv.data >> TypedValue.COMPLEX_UNIT_SHIFT));
+    }
   }
 
   /**
