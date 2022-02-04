@@ -17,7 +17,7 @@
 
 <resources>
 
-  <string name="cat_font_title">Fonts</string>
+  <string name="cat_font_title">Typography</string>
   <string name="cat_font_description">
     Roboto is the standard typeface on Android.
 
