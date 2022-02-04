@@ -30,4 +30,8 @@
     <item name="android:ellipsize">end</item>
   </style>
 
+  <style name="Widget.MaterialComponents.MaterialCalendar.HeaderToggleButton" parent="Base.Widget.MaterialComponents.MaterialCalendar.HeaderToggleButton">
+    <item name="android:layout_gravity">bottom|start</item>
+  </style>
+
 </resources>
