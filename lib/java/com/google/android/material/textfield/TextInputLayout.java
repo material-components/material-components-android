@@ -3455,6 +3455,9 @@ public class TextInputLayout extends LinearLayout {
    * @attr ref com.google.android.material.R.styleable#TextInputLayout_endIconMode
    */
   public void setEndIconMode(@EndIconMode int endIconMode) {
+    if (this.endIconMode == endIconMode) {
+      return;
+    }
     int previousEndIconMode = this.endIconMode;
     this.endIconMode = endIconMode;
     dispatchOnEndIconChanged(previousEndIconMode);
@@ -4133,7 +4136,14 @@ public class TextInputLayout extends LinearLayout {
     Drawable icon = iconView.getDrawable();
     if (icon != null) {
       icon = DrawableCompat.wrap(icon).mutate();
-      DrawableCompat.setTintList(icon, iconTintList);
+      if (iconTintList != null && iconTintList.isStateful()) {
+        // Make sure the right color for the current state is applied.
+        int color =
+            iconTintList.getColorForState(mergeIconState(iconView), iconTintList.getDefaultColor());
+        DrawableCompat.setTintList(icon, ColorStateList.valueOf(color));
+      } else {
+        DrawableCompat.setTintList(icon, iconTintList);
+      }
       if (iconTintMode != null) {
         DrawableCompat.setTintMode(icon, iconTintMode);
       }

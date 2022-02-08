@@ -48,8 +48,6 @@ class PasswordToggleEndIconDelegate extends EndIconDelegate {
         @Override
         public void onEditTextAttached(@NonNull TextInputLayout textInputLayout) {
           EditText editText = textInputLayout.getEditText();
-          textInputLayout.setEndIconVisible(true);
-          textInputLayout.setEndIconCheckable(true);
           endIconView.setChecked(!hasPasswordTransformation());
           // Make sure there's always only one password toggle text watcher added
           editText.removeTextChangedListener(textWatcher);
@@ -88,6 +86,8 @@ class PasswordToggleEndIconDelegate extends EndIconDelegate {
         customEndIcon == 0 ? R.drawable.design_password_eye : customEndIcon);
     textInputLayout.setEndIconContentDescription(
         textInputLayout.getResources().getText(R.string.password_toggle_content_description));
+    textInputLayout.setEndIconVisible(true);
+    textInputLayout.setEndIconCheckable(true);
     textInputLayout.setEndIconOnClickListener(
         new OnClickListener() {
           @Override

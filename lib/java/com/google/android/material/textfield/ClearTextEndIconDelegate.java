@@ -71,10 +71,9 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
         public void onEditTextAttached(@NonNull TextInputLayout textInputLayout) {
           EditText editText = textInputLayout.getEditText();
           textInputLayout.setEndIconVisible(shouldBeVisible());
-          // Make sure there's always only one clear text text watcher added
-          textInputLayout.setEndIconCheckable(false);
           editText.setOnFocusChangeListener(onFocusChangeListener);
           endIconView.setOnFocusChangeListener(onFocusChangeListener);
+          // Make sure there's always only one clear text text watcher added
           editText.removeTextChangedListener(clearTextEndIconTextWatcher);
           editText.addTextChangedListener(clearTextEndIconTextWatcher);
         }
@@ -91,6 +90,8 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
                   @Override
                   public void run() {
                     editText.removeTextChangedListener(clearTextEndIconTextWatcher);
+                    // Make sure icon view is visible.
+                    animateIcon(/* show= */ true);
                   }
                 });
             if (editText.getOnFocusChangeListener() == onFocusChangeListener) {
@@ -99,7 +100,6 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
             if (endIconView.getOnFocusChangeListener() == onFocusChangeListener) {
               endIconView.setOnFocusChangeListener(null);
             }
-
           }
         }
       };
@@ -118,6 +118,7 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
         customEndIcon == 0 ? R.drawable.mtrl_ic_cancel : customEndIcon);
     textInputLayout.setEndIconContentDescription(
         textInputLayout.getResources().getText(R.string.clear_text_end_icon_content_description));
+    textInputLayout.setEndIconCheckable(false);
     textInputLayout.setEndIconOnClickListener(
         new OnClickListener() {
           @Override

@@ -58,6 +58,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -219,7 +220,7 @@ public class TextInputLayoutIconsTest {
     onView(withId(R.id.textinput_no_icon))
         .perform(setEndIconMode(TextInputLayout.END_ICON_PASSWORD_TOGGLE));
 
-    // Assert password toggle is not checked.
+    // Assert password toggle is checked.
     onView(withId(R.id.textinput_no_icon)).check(matches(endIconIsChecked()));
   }
 
@@ -382,6 +383,7 @@ public class TextInputLayoutIconsTest {
     assertEquals(TextInputLayout.END_ICON_CLEAR_TEXT, textInputLayoutPassword.getEndIconMode());
     assertEquals(
         clearTextContentDesc, textInputLayoutPassword.getEndIconContentDescription().toString());
+    assertFalse(textInputLayoutPassword.isEndIconCheckable());
     // Assert the clear button is not displayed as there was no text
     onView(withId(R.id.textinput_password))
         .check(matches(doesNotShowEndIcon()));
@@ -394,6 +396,36 @@ public class TextInputLayoutIconsTest {
     // Assert icon works as expected
     onView(withId(R.id.textinput_password)).perform(clickIcon(true));
     assertEquals(0, textInputLayoutPassword.getEditText().getText().length());
+  }
+
+  @Test
+  public void testSwitchEndIcon_clearTextToPasswordToggle_succeeds() {
+    final Activity activity = activityTestRule.getActivity();
+    final EditText editTextClearIcon = activity.findViewById(R.id.textinput_edittext_clear);
+    final TextInputLayout textFieldClearIcon = activity.findViewById(R.id.textinput_clear);
+    final TextInputLayout textFieldPasswordIcon = activity.findViewById(R.id.textinput_password);
+    String passwordToggleContentDesc =
+        textFieldPasswordIcon.getEndIconContentDescription().toString();
+
+    // Set end icon as the password toggle on text field that has the clear text icon set
+    onView(withId(R.id.textinput_clear))
+        .perform(setEndIconMode(TextInputLayout.END_ICON_PASSWORD_TOGGLE));
+
+    // Assert the end icon mode is the password toggle icon
+    assertEquals(TextInputLayout.END_ICON_PASSWORD_TOGGLE, textFieldClearIcon.getEndIconMode());
+    assertEquals(
+        passwordToggleContentDesc, textFieldClearIcon.getEndIconContentDescription().toString());
+    assertTrue(textFieldClearIcon.isEndIconCheckable());
+    // Assert icon is displayed
+    onView(withId(R.id.textinput_clear)).check(matches(showsEndIcon()));
+    // Assert icon is checked since edit text's transformation method isn't password
+    onView(withId(R.id.textinput_clear)).check(matches(endIconIsChecked()));
+    // Set some text on the edit text
+    onView(withId(R.id.textinput_edittext_clear)).perform(typeText(INPUT_TEXT));
+    // Assert icon disguises text once clicked
+    onView(withId(R.id.textinput_clear)).perform(clickIcon(true));
+    onView(withId(R.id.textinput_clear)).check(matches(not(endIconIsChecked())));
+    assertNotEquals(INPUT_TEXT, editTextClearIcon.getLayout().getText().toString());
   }
 
   @Test
