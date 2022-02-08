@@ -29,7 +29,8 @@ import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionItemInfoCompat;
 import androidx.test.core.app.ApplicationProvider;
-import com.google.android.material.chip.ChipGroup.OnCheckedChangeListener;
+import com.google.android.material.chip.ChipGroup.OnCheckedStateChangeListener;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,6 +45,7 @@ public class ChipGroupTest {
   private static final int CHIP_GROUP_SPACING = 4;
   private ChipGroup chipgroup;
   private int checkedChangeCallCount;
+  private List<Integer> checkedIds;
   private final Context context = ApplicationProvider.getApplicationContext();
 
   @Before
@@ -65,13 +67,13 @@ public class ChipGroupTest {
   public void testSelection() {
     chipgroup.setSingleSelection(true);
     assertThat(chipgroup.isSingleSelection()).isTrue();
-    assertThat(chipgroup.getCheckedChipId()).isEqualTo(View.NO_ID);
+    assertThat(chipgroup.getCheckedChipIds()).isEmpty();
     int chipId = chipgroup.getChildAt(0).getId();
     assertThat(chipId).isNotEqualTo(View.NO_ID);
     chipgroup.check(chipId);
-    assertThat(chipId).isEqualTo(chipgroup.getCheckedChipId());
+    assertThat(chipId).isEqualTo(chipgroup.getCheckedChipIds().get(0));
     chipgroup.clearCheck();
-    assertThat(chipgroup.getCheckedChipId()).isEqualTo(View.NO_ID);
+    assertThat(chipgroup.getCheckedChipIds()).isEmpty();
   }
 
   @Test
@@ -104,7 +106,7 @@ public class ChipGroupTest {
     Chip chipNotChecked = new Chip(context);
     chipgroup.addView(chipNotChecked);
     assertThat(chipgroup.getCheckedChipIds()).hasSize(1);
-    int checkedId = chipgroup.getCheckedChipId();
+    int checkedId = chipgroup.getCheckedChipIds().get(0);
     assertThat(checkedId).isEqualTo(chipId);
 
     // Add a checked Chip
@@ -115,7 +117,7 @@ public class ChipGroupTest {
 
     int newChipId = chipChecked.getId();
     assertThat(chipgroup.getCheckedChipIds()).hasSize(1);
-    int checkedId2 = chipgroup.getCheckedChipId();
+    int checkedId2 = chipgroup.getCheckedChipIds().get(0);
     assertThat(checkedId2).isEqualTo(newChipId);
   }
 
@@ -137,12 +139,13 @@ public class ChipGroupTest {
     chipgroup.setSingleSelection(true);
     checkedChangeCallCount = 0;
 
-    chipgroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-      @Override
-      public void onCheckedChanged(ChipGroup group, int checkedId) {
-        checkedChangeCallCount++;
-      }
-    });
+    chipgroup.setOnCheckedStateChangeListener(
+        new OnCheckedStateChangeListener() {
+          @Override
+          public void onCheckedChanged(ChipGroup group, List<Integer> checkedIds) {
+            checkedChangeCallCount++;
+          }
+        });
 
     View chip = chipgroup.getChildAt(0);
     chip.performClick();
@@ -161,6 +164,36 @@ public class ChipGroupTest {
     chip.performClick();
 
     assertThat(((Chip) chip).isChecked()).isFalse();
+  }
+
+  @Test
+  public void multipleSelection_callsListener() {
+    chipgroup.setSingleSelection(false);
+
+    chipgroup.setOnCheckedStateChangeListener(
+        new OnCheckedStateChangeListener() {
+          @Override
+          public void onCheckedChanged(ChipGroup group, List<Integer> checkedIds) {
+            checkedChangeCallCount++;
+            ChipGroupTest.this.checkedIds = checkedIds;
+          }
+        });
+
+    View first = chipgroup.getChildAt(0);
+    View second = chipgroup.getChildAt(1);
+
+    first.performClick();
+
+    assertThat(checkedChangeCallCount).isEqualTo(1);
+    assertThat(checkedIds).hasSize(1);
+    assertThat(checkedIds).contains(first.getId());
+
+    second.performClick();
+
+    assertThat(checkedChangeCallCount).isEqualTo(2);
+    assertThat(checkedIds).hasSize(2);
+    assertThat(checkedIds).contains(first.getId());
+    assertThat(checkedIds).contains(second.getId());
   }
 
   @Test

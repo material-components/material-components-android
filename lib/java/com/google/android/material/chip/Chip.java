@@ -18,6 +18,7 @@ package com.google.android.material.chip;
 
 import com.google.android.material.R;
 
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 
 import android.annotation.SuppressLint;
@@ -64,6 +65,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.annotation.RequiresApi;
+import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.core.view.ViewCompat;
@@ -73,6 +75,7 @@ import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionIt
 import androidx.customview.widget.ExploreByTouchHelper;
 import com.google.android.material.animation.MotionSpec;
 import com.google.android.material.chip.ChipDrawable.Delegate;
+import com.google.android.material.internal.MaterialCheckable;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialResources;
@@ -112,8 +115,8 @@ import java.util.List;
  * </ul>
  *
  * <p>You can register a listener on the main chip with {@link #setOnClickListener(OnClickListener)}
- * or {@link #setOnCheckedChangeListener(OnCheckedChangeListener)}. You can register a listener on
- * the close icon with {@link #setOnCloseIconClickListener(OnClickListener)}.
+ * or {@link #setOnCheckedChangeListener(AppCompatCheckBox.OnCheckedChangeListener)}. You can
+ * register a listener on the close icon with {@link #setOnCloseIconClickListener(OnClickListener)}.
  *
  * <p>For proper rendering of the ancestor TextView in RTL mode, call {@link
  * #setLayoutDirection(int)} with <code>View.LAYOUT_DIRECTION_LOCALE</code>. By default, TextView's
@@ -123,7 +126,8 @@ import java.util.List;
  *
  * @see ChipDrawable
  */
-public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
+public class Chip extends AppCompatCheckBox
+    implements Delegate, Shapeable, MaterialCheckable<Chip> {
 
   private static final String TAG = "Chip";
 
@@ -147,7 +151,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
   @Nullable private RippleDrawable ripple;
 
   @Nullable private OnClickListener onCloseIconClickListener;
-  @Nullable private OnCheckedChangeListener onCheckedChangeListenerInternal;
+  @Nullable private MaterialCheckable.OnCheckedChangeListener<Chip> onCheckedChangeListenerInternal;
   private boolean deferredCheckedValue;
   private boolean closeIconPressed;
   private boolean closeIconHovered;
@@ -713,14 +717,6 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
     }
   }
 
-  /**
-   * Register a callback to be invoked when the checked state of this chip changes. This callback is
-   * used for internal purpose only.
-   */
-  void setOnCheckedChangeListenerInternal(OnCheckedChangeListener listener) {
-    onCheckedChangeListenerInternal = listener;
-  }
-
   /** Register a callback to be invoked when the close icon is clicked. */
   public void setOnCloseIconClickListener(OnClickListener listener) {
     this.onCloseIconClickListener = listener;
@@ -960,6 +956,14 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
       return PointerIcon.getSystemIcon(getContext(), PointerIcon.TYPE_HAND);
     }
     return null;
+  }
+
+  /** @hide */
+  @RestrictTo(LIBRARY_GROUP)
+  @Override
+  public void setInternalOnCheckedChangeListener(
+      @Nullable MaterialCheckable.OnCheckedChangeListener<Chip> listener) {
+    onCheckedChangeListenerInternal = listener;
   }
 
   /** Provides a virtual view hierarchy for the close icon. */
