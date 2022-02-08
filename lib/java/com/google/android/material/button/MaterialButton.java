@@ -448,12 +448,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     if (VERSION.SDK_INT == VERSION_CODES.LOLLIPOP && materialButtonHelper != null) {
       materialButtonHelper.updateMaskBounds(bottom - top, right - left);
     }
-  }
-
-  @Override
-  protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-    super.onSizeChanged(w, h, oldw, oldh);
-    updateIconPosition(w, h);
+    updateIconPosition(getMeasuredWidth(), getMeasuredHeight());
   }
 
   @Override
