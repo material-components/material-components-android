@@ -194,6 +194,13 @@ textField.addOnEndIconChangedListener {
 end/right compound `Drawable` on the `TextInputEditText`. The same applies to
 the now-deprecated `passwordToggle*` attributes.
 
+**Important:** Calling `setEndIconMode` will initialize the icon with its
+default features, such as default drawables, and in the case of the custom mode,
+an empty drawable. You can add customizations after calling `setEndIconMode`.
+The exception for this is if a drawable was specified in XML via the
+`app:endIconDrawable` attribute. An end icon drawable set in XML will take
+precedence and override an existing default icon.
+
 See the full list of
 [end icon modes](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/textfield/res/values/attrs.xml#L149).
 

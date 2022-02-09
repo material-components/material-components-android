@@ -3606,7 +3606,8 @@ public class TextInputLayout extends LinearLayout {
   }
 
   /**
-   * Set the icon to use for the end icon.
+   * Set the icon to use for the end icon. This method should be called after specifying an {@link
+   * TextInputLayout.EndIconMode} via {@link #setEndIconMode(int)}.
    *
    * <p>If you use an icon you should also set a description for its action using {@link
    * #setEndIconContentDescription(CharSequence)}. This is used for accessibility.
@@ -3619,7 +3620,8 @@ public class TextInputLayout extends LinearLayout {
   }
 
   /**
-   * Set the icon to use for the end icon.
+   * Set the icon to use for the end icon. This method should be called after specifying an {@link
+   * TextInputLayout.EndIconMode} via {@link #setEndIconMode(int)}.
    *
    * <p>If you use an icon you should also set a description for its action using {@link
    * #setEndIconContentDescription(CharSequence)}. This is used for accessibility.
