@@ -21,5 +21,6 @@
     android:id="@+id/cat_navigation_rail_fab"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    app:elevation="@dimen/m3_sys_elevation_level0"
     android:contentDescription="@string/cat_navigation_rail_fab_content_desc"
     app:srcCompat="@drawable/ic_add_24px"/>
