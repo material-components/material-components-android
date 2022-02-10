@@ -56,6 +56,7 @@ import androidx.core.text.TextDirectionHeuristicsCompat;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import com.google.android.material.animation.AnimationUtils;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.StaticLayoutBuilderCompat.StaticLayoutBuilderCompatException;
 import com.google.android.material.resources.CancelableFontCallback;
 import com.google.android.material.resources.CancelableFontCallback.ApplyFont;
@@ -136,6 +137,10 @@ public final class CollapsingTextHelper {
 
   private float scale;
   private float currentTextSize;
+  private float currentShadowRadius;
+  private float currentShadowDx;
+  private float currentShadowDy;
+  private int currentShadowColor;
 
   private int[] state;
 
@@ -471,11 +476,11 @@ public final class CollapsingTextHelper {
     }
     if (collapsedTypefaceDefault != typeface) {
       collapsedTypefaceDefault = typeface;
-      collapsedTypefaceBold = TypefaceUtils.maybeCopyWithFontWeightAdjustment(
-          view.getContext().getResources().getConfiguration(),
-          typeface);
-      collapsedTypeface = collapsedTypefaceBold == null
-          ? collapsedTypefaceDefault : collapsedTypefaceBold;
+      collapsedTypefaceBold =
+          TypefaceUtils.maybeCopyWithFontWeightAdjustment(
+              view.getContext().getResources().getConfiguration(), typeface);
+      collapsedTypeface =
+          collapsedTypefaceBold == null ? collapsedTypefaceDefault : collapsedTypefaceBold;
       return true;
     }
     return false;
@@ -490,11 +495,11 @@ public final class CollapsingTextHelper {
     }
     if (expandedTypefaceDefault != typeface) {
       expandedTypefaceDefault = typeface;
-      expandedTypefaceBold = TypefaceUtils.maybeCopyWithFontWeightAdjustment(
-          view.getContext().getResources().getConfiguration(),
-          typeface);
-      expandedTypeface = expandedTypefaceBold == null
-          ? expandedTypefaceDefault : expandedTypefaceBold;
+      expandedTypefaceBold =
+          TypefaceUtils.maybeCopyWithFontWeightAdjustment(
+              view.getContext().getResources().getConfiguration(), typeface);
+      expandedTypeface =
+          expandedTypefaceBold == null ? expandedTypefaceDefault : expandedTypefaceBold;
       return true;
     }
     return false;
@@ -511,20 +516,19 @@ public final class CollapsingTextHelper {
   public void maybeUpdateFontWeightAdjustment(@NonNull Configuration configuration) {
     if (VERSION.SDK_INT >= VERSION_CODES.S) {
       if (collapsedTypefaceDefault != null) {
-        collapsedTypefaceBold = TypefaceUtils.maybeCopyWithFontWeightAdjustment(
-            configuration,
-            collapsedTypefaceDefault);
+        collapsedTypefaceBold =
+            TypefaceUtils.maybeCopyWithFontWeightAdjustment(
+                configuration, collapsedTypefaceDefault);
       }
       if (expandedTypefaceDefault != null) {
-        expandedTypefaceBold = TypefaceUtils.maybeCopyWithFontWeightAdjustment(
-            configuration,
-            expandedTypefaceDefault);
+        expandedTypefaceBold =
+            TypefaceUtils.maybeCopyWithFontWeightAdjustment(configuration, expandedTypefaceDefault);
       }
-      collapsedTypeface = collapsedTypefaceBold != null
-          ? collapsedTypefaceBold : collapsedTypefaceDefault;
-      expandedTypeface = expandedTypefaceBold != null
-          ? expandedTypefaceBold : expandedTypefaceDefault;
-      recalculate(/* forceRecalculate= */true);
+      collapsedTypeface =
+          collapsedTypefaceBold != null ? collapsedTypefaceBold : collapsedTypefaceDefault;
+      expandedTypeface =
+          expandedTypefaceBold != null ? expandedTypefaceBold : expandedTypefaceDefault;
+      recalculate(/* forceRecalculate= */ true);
     }
   }
 
@@ -621,7 +625,7 @@ public final class CollapsingTextHelper {
       // If the collapsed and expanded text colors are different, blend them based on the
       // fraction
       textPaint.setColor(
-          blendColors(
+          blendARGB(
               getCurrentExpandedTextColor(), getCurrentCollapsedTextColor(), textBlendFraction));
     } else {
       textPaint.setColor(getCurrentCollapsedTextColor());
@@ -640,12 +644,15 @@ public final class CollapsingTextHelper {
       }
     }
 
+    // Calculates paint parameters for shadow layer.
+    currentShadowRadius = lerp(expandedShadowRadius, collapsedShadowRadius, fraction, null);
+    currentShadowDx = lerp(expandedShadowDx, collapsedShadowDx, fraction, null);
+    currentShadowDy = lerp(expandedShadowDy, collapsedShadowDy, fraction, null);
+    currentShadowColor =
+        blendARGB(
+            getCurrentColor(expandedShadowColor), getCurrentColor(collapsedShadowColor), fraction);
     textPaint.setShadowLayer(
-        lerp(expandedShadowRadius, collapsedShadowRadius, fraction, null),
-        lerp(expandedShadowDx, collapsedShadowDx, fraction, null),
-        lerp(expandedShadowDy, collapsedShadowDy, fraction, null),
-        blendColors(
-            getCurrentColor(expandedShadowColor), getCurrentColor(collapsedShadowColor), fraction));
+        currentShadowRadius, currentShadowDx, currentShadowDy, currentShadowColor);
 
     if (fadeModeEnabled) {
       int originalAlpha = textPaint.getAlpha();
@@ -659,8 +666,7 @@ public final class CollapsingTextHelper {
     ViewCompat.postInvalidateOnAnimation(view);
   }
 
-  private float calculateFadeModeTextAlpha(
-      @FloatRange(from = 0.0, to = 1.0) float fraction) {
+  private float calculateFadeModeTextAlpha(@FloatRange(from = 0.0, to = 1.0) float fraction) {
     if (fraction <= fadeModeThresholdFraction) {
       return AnimationUtils.lerp(
           /* startValue= */ 1,
@@ -870,10 +876,29 @@ public final class CollapsingTextHelper {
     canvas.translate(currentExpandedX, y);
     // Expanded text
     textPaint.setAlpha((int) (expandedTextBlend * originalAlpha));
+    // Workaround for API 31(+). Paint applies an inverse alpha of Paint object on the shadow layer
+    // when collapsing mode is scale and shadow color is opaque. The workaround is to set the shadow
+    // not opaque. Then Paint will respect to the color's alpha. Applying the shadow color for
+    // expanded text.
+    if (VERSION.SDK_INT >= VERSION_CODES.S) {
+      textPaint.setShadowLayer(
+          currentShadowRadius,
+          currentShadowDx,
+          currentShadowDy,
+          MaterialColors.compositeARGBWithAlpha(currentShadowColor, textPaint.getAlpha()));
+    }
     textLayout.draw(canvas);
 
     // Collapsed text
     textPaint.setAlpha((int) (collapsedTextBlend * originalAlpha));
+    // Workaround for API 31(+). Applying the shadow color for collapsed texct.
+    if (VERSION.SDK_INT >= VERSION_CODES.S) {
+      textPaint.setShadowLayer(
+          currentShadowRadius,
+          currentShadowDx,
+          currentShadowDy,
+          MaterialColors.compositeARGBWithAlpha(currentShadowColor, textPaint.getAlpha()));
+    }
     int lineBaseline = textLayout.getLineBaseline(0);
     canvas.drawText(
         textToDrawCollapsed,
@@ -882,6 +907,13 @@ public final class CollapsingTextHelper {
         /* x = */ 0,
         lineBaseline,
         textPaint);
+    // Reverse workaround for API 31(+). Applying opaque shadow color after the expanded text and
+    // the collapsed text are drawn.
+    if (VERSION.SDK_INT >= VERSION_CODES.S) {
+      textPaint.setShadowLayer(
+          currentShadowRadius, currentShadowDx, currentShadowDy, currentShadowColor);
+    }
+
     if (!fadeModeEnabled) {
       // Remove ellipsis for Cross-section animation
       String tmp = textToDrawCollapsed.toString().trim();
@@ -991,9 +1023,10 @@ public final class CollapsingTextHelper {
         // the collapsed width
         // Otherwise we'll just use the expanded width
 
-        availableWidth = scaledDownWidth > collapsedWidth
-            ? min(collapsedWidth / textSizeRatio, expandedWidth)
-            : expandedWidth;
+        availableWidth =
+            scaledDownWidth > collapsedWidth
+                ? min(collapsedWidth / textSizeRatio, expandedWidth)
+                : expandedWidth;
       }
     }
 
@@ -1197,18 +1230,27 @@ public final class CollapsingTextHelper {
   }
 
   /**
-   * Blend {@code color1} and {@code color2} using the given ratio.
+   * Blend between two ARGB colors using the given ratio.
    *
-   * @param ratio of which to blend. 0.0 will return {@code color1}, 0.5 will give an even blend,
-   *     1.0 will return {@code color2}.
+   * <p>A blend ratio of 0.0 will result in {@code color1}, 0.5 will give an even blend, 1.0 will
+   * result in {@code color2}.
+   *
+   * <p>This is different from the AndroidX implementation by rounding the blended channel values
+   * with {@link Math#round(float)}.
+   *
+   * @param color1 the first ARGB color
+   * @param color2 the second ARGB color
+   * @param ratio the blend ratio of {@code color1} to {@code color2}
    */
-  private static int blendColors(int color1, int color2, float ratio) {
-    final float inverseRatio = 1f - ratio;
-    float a = (Color.alpha(color1) * inverseRatio) + (Color.alpha(color2) * ratio);
-    float r = (Color.red(color1) * inverseRatio) + (Color.red(color2) * ratio);
-    float g = (Color.green(color1) * inverseRatio) + (Color.green(color2) * ratio);
-    float b = (Color.blue(color1) * inverseRatio) + (Color.blue(color2) * ratio);
-    return Color.argb((int) a, (int) r, (int) g, (int) b);
+  @ColorInt
+  private static int blendARGB(
+      @ColorInt int color1, @ColorInt int color2, @FloatRange(from = 0.0, to = 1.0) float ratio) {
+    final float inverseRatio = 1 - ratio;
+    float a = Color.alpha(color1) * inverseRatio + Color.alpha(color2) * ratio;
+    float r = Color.red(color1) * inverseRatio + Color.red(color2) * ratio;
+    float g = Color.green(color1) * inverseRatio + Color.green(color2) * ratio;
+    float b = Color.blue(color1) * inverseRatio + Color.blue(color2) * ratio;
+    return Color.argb(Math.round(a), Math.round(r), Math.round(g), Math.round(b));
   }
 
   private static float lerp(
