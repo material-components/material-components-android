@@ -708,10 +708,10 @@ Element            | Attribute                                    | Related meth
 
 #### Toolbar logo attributes
 
-Element               | Attribute                                    | Related method(s) | Default value
---------------------- | -------------------------------------------- | ----------------- | -------------
+Element               | Attribute                                    | Related method(s)                                         | Default value
+--------------------- | -------------------------------------------- | --------------------------------------------------------- | -------------
 **AdjustViewBounds**  | `app:logoAdjustViewBounds`                   | `setLogoAdjustViewBounds`<br>`isLogoAdjustViewBounds`     | `false`
-**ScaleType**         | `app:logoScaleType`                          | `setLogoScaleType`<br>`getLogoScaleType`     | `fitCenter`
+**ScaleType**         | `app:logoScaleType`                          | `setLogoScaleType`<br>`getLogoScaleType`                  | `fitCenter`
 
 #### Styles
 
