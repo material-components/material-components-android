@@ -315,7 +315,8 @@ public class DynamicColors {
   private static Theme getWindowDecorViewTheme(@NonNull Activity activity) {
     Window window = activity.getWindow();
     if (window != null) {
-      View decorView = window.getDecorView();
+      // Use peekDecorView() instead of getDecorView() to avoid locking the Window.
+      View decorView = window.peekDecorView();
       if (decorView != null) {
         Context context = decorView.getContext();
         if (context != null) {
