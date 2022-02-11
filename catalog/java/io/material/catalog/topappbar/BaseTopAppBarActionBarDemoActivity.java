@@ -51,6 +51,7 @@ public abstract class BaseTopAppBarActionBarDemoActivity extends DemoActivity {
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
     View view =
         layoutInflater.inflate(R.layout.cat_topappbar_action_bar_activity, viewGroup, false);
+    setSupportActionBar(view.findViewById(R.id.toolbar));
     TextView demoDescriptionTextView = view.findViewById(R.id.action_bar_demo_description);
     demoDescriptionTextView.setText(getActionBarDemoDescription());
     Button actionModeButton = view.findViewById(R.id.action_bar_demo_action_mode_button);
@@ -76,7 +77,7 @@ public abstract class BaseTopAppBarActionBarDemoActivity extends DemoActivity {
                         @Override
                         public boolean onActionItemClicked(
                             ActionMode actionMode, MenuItem menuItem) {
-                          return false;
+                          return handleActionModeMenuItem(menuItem);
                         }
 
                         @Override
@@ -92,6 +93,10 @@ public abstract class BaseTopAppBarActionBarDemoActivity extends DemoActivity {
           }
         });
     return view;
+  }
+
+  private boolean handleActionModeMenuItem(MenuItem item) {
+    return DemoUtils.showSnackbar(this, item);
   }
 
   @Override
