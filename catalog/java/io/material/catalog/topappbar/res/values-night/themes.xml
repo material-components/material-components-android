@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+  <!-- Base application theme. -->
+  <style name="Theme.Cat.ActionBar" parent="Theme.Material3.DayNight.NoActionBar">
+    <item name="windowActionModeOverlay">true</item>
+    <item name="actionBarTheme">@style/ThemeOverlay.Material3.Dark.ActionBar</item>
+    <item name="actionModeStyle">@style/Widget.App.ActionMode</item>
+    <item name="actionModeCloseDrawable">@drawable/ic_close_24dp</item>
+  </style>
+
+  <style name="Widget.App.ActionMode" parent="Widget.Material3.ActionMode">
+    <item name="titleTextStyle">?attr/textAppearanceHeadline6</item>
+    <item name="subtitleTextStyle">?attr/textAppearanceSubtitle1</item>
+    <item name="background">@color/material_grey_900</item>
+  </style>
+</resources>
