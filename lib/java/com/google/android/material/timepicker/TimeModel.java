@@ -91,7 +91,7 @@ class TimeModel implements Parcelable {
     this.hour = hour % 12 + (period == PM ? 12 : 0);
   }
 
-  public void setMinute(@IntRange(from = 0, to = 60) int minute) {
+  public void setMinute(@IntRange(from = 0, to = 59) int minute) {
     this.minute = minute % 60;
   }
 

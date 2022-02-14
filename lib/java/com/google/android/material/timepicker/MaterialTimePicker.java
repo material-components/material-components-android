@@ -49,6 +49,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
+import androidx.annotation.VisibleForTesting;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityEventCompat;
 import com.google.android.material.button.MaterialButton;
@@ -136,15 +137,32 @@ public final class MaterialTimePicker extends DialogFragment implements OnDouble
     return fragment;
   }
 
-  @IntRange(from = 0, to = 60)
+  /** Returns the minute in the range [0, 59]. */
+  @IntRange(from = 0, to = 59)
   public int getMinute() {
     return time.minute;
+  }
+
+  /** Sets the minute in the range [0, 59]. */
+  public void setMinute(@IntRange(from = 0, to = 59) int minute) {
+    time.setMinute(minute);
+    if (activePresenter != null) {
+      activePresenter.invalidate();
+    }
   }
 
   /** Returns the hour of day in the range [0, 23]. */
   @IntRange(from = 0, to = 23)
   public int getHour() {
     return time.hour % 24;
+  }
+
+  /** Sets the hour of day in the range [0, 23]. */
+  public void setHour(@IntRange(from = 0, to = 23) int hour) {
+    time.setHour(hour);
+    if (activePresenter != null) {
+      activePresenter.invalidate();
+    }
   }
 
   @InputMode
@@ -408,6 +426,11 @@ public final class MaterialTimePicker extends DialogFragment implements OnDouble
     return timePickerClockPresenter;
   }
 
+  @VisibleForTesting
+  void setActivePresenter(@Nullable TimePickerPresenter presenter) {
+    activePresenter = presenter;
+  }
+
   /** The supplied listener is called when the user confirms a valid selection. */
   public boolean addOnPositiveButtonClickListener(@NonNull OnClickListener listener) {
     return positiveButtonListeners.add(listener);
@@ -548,7 +571,7 @@ public final class MaterialTimePicker extends DialogFragment implements OnDouble
 
     /** Sets the minute with which to start the time picker. */
     @NonNull
-    public Builder setMinute(@IntRange(from = 0, to = 60) int minute) {
+    public Builder setMinute(@IntRange(from = 0, to = 59) int minute) {
       time.setMinute(minute);
       return this;
     }

@@ -18,7 +18,7 @@ package com.google.android.material.timepicker;
 
 interface TimePickerPresenter {
 
-  /** Do any final intialization */
+  /** Do any final initialization */
   void initialize();
 
   /** Refresh the data in the view based on the model */
