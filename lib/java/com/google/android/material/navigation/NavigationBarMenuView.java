@@ -69,7 +69,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
   private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
   private static final int[] DISABLED_STATE_SET = {-android.R.attr.state_enabled};
 
-  @NonNull private final TransitionSet set;
+  @Nullable private final TransitionSet set;
   @NonNull private final OnClickListener onClickListener;
   private final Pools.Pool<NavigationBarItemView> itemPool =
       new Pools.SynchronizedPool<>(ITEM_POOL_SIZE);
@@ -111,19 +111,23 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
 
     itemTextColorDefault = createDefaultColorStateList(android.R.attr.textColorSecondary);
 
-    set = new AutoTransition();
-    set.setOrdering(TransitionSet.ORDERING_TOGETHER);
-    set.setDuration(
-        MotionUtils.resolveThemeDuration(
-            getContext(),
-            R.attr.motionDurationLong1,
-            getResources().getInteger(R.integer.material_motion_duration_long_1)));
-    set.setInterpolator(
-        MotionUtils.resolveThemeInterpolator(
-            getContext(),
-            R.attr.motionEasingStandard,
-            AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR));
-    set.addTransition(new TextScale());
+    if (this.isInEditMode()) {
+      set = null;
+    } else {
+      set = new AutoTransition();
+      set.setOrdering(TransitionSet.ORDERING_TOGETHER);
+      set.setDuration(
+          MotionUtils.resolveThemeDuration(
+              getContext(),
+              R.attr.motionDurationLong1,
+              getResources().getInteger(R.integer.material_motion_duration_long_1)));
+      set.setInterpolator(
+          MotionUtils.resolveThemeInterpolator(
+              getContext(),
+              R.attr.motionEasingStandard,
+              AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR));
+      set.addTransition(new TextScale());
+    }
 
     onClickListener =
         new OnClickListener() {
@@ -736,7 +740,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
         selectedItemPosition = i;
       }
     }
-    if (previousSelectedId != selectedItemId) {
+    if (previousSelectedId != selectedItemId && set != null) {
       // Note: this has to be called before NavigationBarItemView#initialize().
       TransitionManager.beginDelayedTransition(this, set);
     }
