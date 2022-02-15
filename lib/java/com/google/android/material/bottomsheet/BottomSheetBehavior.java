@@ -217,10 +217,9 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   /** Peek height gesture inset buffer to ensure enough swipeable space. */
   private int peekHeightGestureInsetBuffer;
 
-  /** True if Behavior has a non-null value for the @shapeAppearance attribute */
-  private boolean shapeThemingEnabled;
-
   private MaterialShapeDrawable materialShapeDrawable;
+
+  @Nullable private ColorStateList backgroundTint;
 
   private int maxWidth = NO_MAX_SIZE;
 
@@ -311,16 +310,16 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         context.getResources().getDimensionPixelSize(R.dimen.mtrl_min_touch_target_size);
 
     TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BottomSheetBehavior_Layout);
-    this.shapeThemingEnabled = a.hasValue(R.styleable.BottomSheetBehavior_Layout_shapeAppearance);
-    boolean hasBackgroundTint = a.hasValue(R.styleable.BottomSheetBehavior_Layout_backgroundTint);
-    if (hasBackgroundTint) {
-      ColorStateList bottomSheetColor =
-          MaterialResources.getColorStateList(
-              context, a, R.styleable.BottomSheetBehavior_Layout_backgroundTint);
-      createMaterialShapeDrawable(context, attrs, hasBackgroundTint, bottomSheetColor);
-    } else {
-      createMaterialShapeDrawable(context, attrs, hasBackgroundTint);
+    if (a.hasValue(R.styleable.BottomSheetBehavior_Layout_backgroundTint)) {
+      this.backgroundTint = MaterialResources.getColorStateList(
+          context, a, R.styleable.BottomSheetBehavior_Layout_backgroundTint);
     }
+    if (a.hasValue(R.styleable.BottomSheetBehavior_Layout_shapeAppearance)) {
+      this.shapeAppearanceModelDefault =
+          ShapeAppearanceModel.builder(context, attrs, R.attr.bottomSheetStyle, DEF_STYLE_RES)
+              .build();
+    }
+    createMaterialShapeDrawableIfNeeded(context);
     createShapeValueAnimator();
 
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
@@ -499,17 +498,16 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       viewRef = new WeakReference<>(child);
       // Only set MaterialShapeDrawable as background if shapeTheming is enabled, otherwise will
       // default to android:background declared in styles or layout.
-      if (shapeThemingEnabled && materialShapeDrawable != null) {
-        ViewCompat.setBackground(child, materialShapeDrawable);
-      }
-      // Set elevation on MaterialShapeDrawable
       if (materialShapeDrawable != null) {
+        ViewCompat.setBackground(child, materialShapeDrawable);
         // Use elevation attr if set on bottomsheet; otherwise, use elevation of child view.
         materialShapeDrawable.setElevation(
             elevation == -1 ? ViewCompat.getElevation(child) : elevation);
         // Update the material shape based on initial state.
         isShapeExpanded = state == STATE_EXPANDED;
         materialShapeDrawable.setInterpolation(isShapeExpanded ? 0f : 1f);
+      } else if (backgroundTint != null) {
+        ViewCompat.setBackgroundTintList(child, backgroundTint);
       }
       updateAccessibilityActions();
       if (ViewCompat.getImportantForAccessibility(child)
@@ -1411,32 +1409,21 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     return viewDragHelper != null && (draggable || state == STATE_DRAGGING);
   }
 
-  private void createMaterialShapeDrawable(
-      @NonNull Context context, AttributeSet attrs, boolean hasBackgroundTint) {
-    this.createMaterialShapeDrawable(context, attrs, hasBackgroundTint, null);
-  }
+  private void createMaterialShapeDrawableIfNeeded(@NonNull Context context) {
+    if (shapeAppearanceModelDefault == null) {
+      return;
+    }
 
-  private void createMaterialShapeDrawable(
-      @NonNull Context context,
-      AttributeSet attrs,
-      boolean hasBackgroundTint,
-      @Nullable ColorStateList bottomSheetColor) {
-    if (this.shapeThemingEnabled) {
-      this.shapeAppearanceModelDefault =
-          ShapeAppearanceModel.builder(context, attrs, R.attr.bottomSheetStyle, DEF_STYLE_RES)
-              .build();
+    this.materialShapeDrawable = new MaterialShapeDrawable(shapeAppearanceModelDefault);
+    this.materialShapeDrawable.initializeElevationOverlay(context);
 
-      this.materialShapeDrawable = new MaterialShapeDrawable(shapeAppearanceModelDefault);
-      this.materialShapeDrawable.initializeElevationOverlay(context);
-
-      if (hasBackgroundTint && bottomSheetColor != null) {
-        materialShapeDrawable.setFillColor(bottomSheetColor);
-      } else {
-        // If the tint isn't set, use the theme default background color.
-        TypedValue defaultColor = new TypedValue();
-        context.getTheme().resolveAttribute(android.R.attr.colorBackground, defaultColor, true);
-        materialShapeDrawable.setTint(defaultColor.data);
-      }
+    if (backgroundTint != null) {
+      materialShapeDrawable.setFillColor(backgroundTint);
+    } else {
+      // If the tint isn't set, use the theme default background color.
+      TypedValue defaultColor = new TypedValue();
+      context.getTheme().resolveAttribute(android.R.attr.colorBackground, defaultColor, true);
+      materialShapeDrawable.setTint(defaultColor.data);
     }
   }
 

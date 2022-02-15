@@ -37,7 +37,7 @@
     <item name="behavior_skipCollapsed">false</item>
     <item name="shapeAppearance">@null</item>
     <item name="shapeAppearanceOverlay">@null</item>
-    <item name="backgroundTint">?android:attr/colorBackground</item>
+    <item name="backgroundTint">@null</item>
   </style>
 
   <style name="Widget.MaterialComponents.BottomSheet" parent="Widget.Design.BottomSheet.Modal">
