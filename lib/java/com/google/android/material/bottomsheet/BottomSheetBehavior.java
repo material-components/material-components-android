@@ -1466,6 +1466,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         child,
         new ViewUtils.OnApplyWindowInsetsListener() {
           @Override
+          @SuppressWarnings("deprecation") // getSystemWindowInsetBottom is used for adjustResize.
           public WindowInsetsCompat onApplyWindowInsets(
               View view, WindowInsetsCompat insets, RelativePadding initialPadding) {
             Insets systemBarInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -1481,7 +1482,9 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
             int rightPadding = view.getPaddingRight();
 
             if (paddingBottomSystemWindowInsets) {
-              insetBottom = systemBarInsets.bottom;
+              // Intentionally uses getSystemWindowInsetBottom to apply padding properly when
+              // adjustResize is used as the windowSoftInputMode.
+              insetBottom = insets.getSystemWindowInsetBottom();
               bottomPadding = initialPadding.bottom + insetBottom;
             }
 
