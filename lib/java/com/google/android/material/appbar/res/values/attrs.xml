@@ -276,6 +276,33 @@
          should be centered horizontally within the toolbar. Default is false.
     -->
     <attr name="subtitleCentered" format="boolean" />
+    <!-- adjust view bounds for logo's imageView. -->
+    <attr name="logoAdjustViewBounds" format="boolean" />
+    <!-- scale type for logo's imageView. -->
+    <attr name="logoScaleType">
+      <!-- Scale using the image matrix when drawing. See
+           {@link android.widget.ImageView#setImageMatrix(Matrix)}. -->
+      <enum name="matrix" value="0" />
+      <!-- Scale the image using {@link android.graphics.Matrix.ScaleToFit#FILL}. -->
+      <enum name="fitXY" value="1" />
+      <!-- Scale the image using {@link android.graphics.Matrix.ScaleToFit#START}. -->
+      <enum name="fitStart" value="2" />
+      <!-- Scale the image using {@link android.graphics.Matrix.ScaleToFit#CENTER}. -->
+      <enum name="fitCenter" value="3" />
+      <!-- Scale the image using {@link android.graphics.Matrix.ScaleToFit#END}. -->
+      <enum name="fitEnd" value="4" />
+      <!-- Center the image in the view, but perform no scaling. -->
+      <enum name="center" value="5" />
+      <!-- Scale the image uniformly (maintain the image's aspect ratio) so both dimensions
+           (width and height) of the image will be equal to or larger than the corresponding
+           dimension of the view (minus padding). The image is then centered in the view. -->
+      <enum name="centerCrop" value="6" />
+      <!-- Scale the image uniformly (maintain the image's aspect ratio) so that both
+           dimensions (width and height) of the image will be equal to or less than the
+           corresponding dimension of the view (minus padding). The image is then centered in
+           the view. -->
+      <enum name="centerInside" value="7" />
+    </attr>
   </declare-styleable>
 
 </resources>
