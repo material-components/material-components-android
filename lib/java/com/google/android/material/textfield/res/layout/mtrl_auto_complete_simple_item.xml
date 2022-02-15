@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright 2019 The Android Open Source Project
+  Copyright 2022 The Android Open Source Project
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -15,12 +15,12 @@
   limitations under the License.
   -->
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingBottom="13dp"
-    android:paddingTop="13dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:ellipsize="end"
-    android:maxLines="1"
-    android:textAppearance="?attr/textAppearanceSubtitle1"/>
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:paddingBottom="13dp"
+  android:paddingTop="13dp"
+  android:paddingLeft="16dp"
+  android:paddingRight="16dp"
+  android:ellipsize="end"
+  android:maxLines="1"
+  android:textAppearance="?attr/textAppearanceSubtitle1"/>

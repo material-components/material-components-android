@@ -301,6 +301,11 @@
 
   <declare-styleable name="MaterialAutoCompleteTextView" parent="AppCompatAutoCompleteTextView">
     <attr name="android:inputType"/>
+
+    <!-- The default layout used to inflate auto-complete items -->
+    <attr name="simpleItemLayout" format="reference"/>
+    <!-- The default auto-completion items in a string array -->
+    <attr name="simpleItems" format="reference"/>
   </declare-styleable>
 
 </resources>

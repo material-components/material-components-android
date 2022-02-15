@@ -37,7 +37,8 @@
         android:id="@+id/filled_exposed_dropdown"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="none"/>
+        android:inputType="none"
+        app:simpleItems="@array/cat_textfield_exposed_dropdown_content"/>
   </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -54,7 +55,8 @@
     <AutoCompleteTextView
         android:id="@+id/filled_exposed_dropdown_editable"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        app:simpleItems="@array/cat_textfield_exposed_dropdown_content"/>
   </com.google.android.material.textfield.TextInputLayout>
 
   <com.google.android.material.textfield.TextInputLayout
@@ -71,7 +73,8 @@
         android:id="@+id/outlined_exposed_dropdown"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="none"/>
+        android:inputType="none"
+        app:simpleItems="@array/cat_textfield_exposed_dropdown_content"/>
   </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -88,7 +91,8 @@
     <AutoCompleteTextView
         android:id="@+id/outlined_exposed_dropdown_editable"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        app:simpleItems="@array/cat_textfield_exposed_dropdown_content"/>
   </com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>

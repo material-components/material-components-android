@@ -35,8 +35,11 @@ import android.view.ViewParent;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Filterable;
 import android.widget.ListAdapter;
+import androidx.annotation.ArrayRes;
+import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.internal.ManufacturerUtils;
@@ -60,6 +63,7 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
   @NonNull private final ListPopupWindow modalListPopup;
   @Nullable private final AccessibilityManager accessibilityManager;
   @NonNull private final Rect tempRect = new Rect();
+  @LayoutRes private final int simpleItemLayout;
 
   public MaterialAutoCompleteTextView(@NonNull Context context) {
     this(context, null);
@@ -95,6 +99,10 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
       }
     }
 
+    simpleItemLayout = attributes.getResourceId(
+        R.styleable.MaterialAutoCompleteTextView_simpleItemLayout,
+        R.layout.mtrl_auto_complete_simple_item);
+
     accessibilityManager =
         (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
 
@@ -127,6 +135,11 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
           }
         });
 
+    if (attributes.hasValue(R.styleable.MaterialAutoCompleteTextView_simpleItems)) {
+      setSimpleItems(
+          attributes.getResourceId(R.styleable.MaterialAutoCompleteTextView_simpleItems, 0));
+    }
+
     attributes.recycle();
   }
 
@@ -143,6 +156,30 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
   public <T extends ListAdapter & Filterable> void setAdapter(@Nullable T adapter) {
     super.setAdapter(adapter);
     modalListPopup.setAdapter(getAdapter());
+  }
+
+  /**
+   * Sets the simple string items of auto-completion with the given string array resource. This
+   * method will create a default {@link ArrayAdapter} with a default item layout specified by
+   * {@code R.attr.simpleItemLayout} to display auto-complete items.
+   *
+   * @see #setSimpleItems(String[])
+   * @see #setAdapter(ListAdapter)
+   */
+  public void setSimpleItems(@ArrayRes int stringArrayResId) {
+    setSimpleItems(getResources().getStringArray(stringArrayResId));
+  }
+
+  /**
+   * Sets the simple string items of auto-completion with the given string array. This method will
+   * create a default {@link ArrayAdapter} with a default item layout specified by
+   * {@code R.attr.simpleItemLayout} to display auto-complete items.
+   *
+   * @see #setSimpleItems(int)
+   * @see #setAdapter(ListAdapter)
+   */
+  public void setSimpleItems(@NonNull String[] stringArray) {
+    setAdapter(new ArrayAdapter<>(getContext(), simpleItemLayout, stringArray));
   }
 
   @Override

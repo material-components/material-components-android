@@ -22,8 +22,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
@@ -41,37 +39,10 @@ public class TextFieldExposedDropdownMenuDemoFragment extends TextFieldControlla
     return R.layout.cat_textfield_exposed_dropdown_menu_content;
   }
 
-  @LayoutRes
-  public int getAdapterItemLayout() {
-    return R.layout.cat_exposed_dropdown_popup_item;
-  }
-
   @Override
   public View onCreateDemoView(
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
     View view = super.onCreateDemoView(layoutInflater, viewGroup, bundle);
-
-    ArrayAdapter<CharSequence> adapter =
-        new ArrayAdapter<>(
-            getContext(),
-            getAdapterItemLayout(),
-            getResources().getStringArray(R.array.cat_textfield_exposed_dropdown_content));
-
-    AutoCompleteTextView editTextFilledExposedDropdown =
-        view.findViewById(R.id.filled_exposed_dropdown);
-    editTextFilledExposedDropdown.setAdapter(adapter);
-
-    AutoCompleteTextView editTextFilledEditableExposedDropdown =
-        view.findViewById(R.id.filled_exposed_dropdown_editable);
-    editTextFilledEditableExposedDropdown.setAdapter(adapter);
-
-    AutoCompleteTextView editTextOutlinedExposedDropdown =
-        view.findViewById(R.id.outlined_exposed_dropdown);
-    editTextOutlinedExposedDropdown.setAdapter(adapter);
-
-    AutoCompleteTextView editTextOutlinedEditableExposedDropdown =
-        view.findViewById(R.id.outlined_exposed_dropdown_editable);
-    editTextOutlinedEditableExposedDropdown.setAdapter(adapter);
 
     // Initialize button for toggling the leading icon's visibility.
     Button toggleLeadingIconButton = view.findViewById(R.id.button_toggle_leading_icon);
