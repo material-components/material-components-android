@@ -194,6 +194,10 @@
     <item name="titleTextAppearance">?attr/textAppearanceTitleLarge</item>
     <item name="subtitleTextAppearance">?attr/textAppearanceTitleMedium</item>
     <item name="contentInsetStartWithNavigation">0dp</item>
+
+    <!-- On newer API levels, hide shadows while keeping elevation. -->
+    <item name="android:outlineAmbientShadowColor" tools:ignore="NewApi">@android:color/transparent</item>
+    <item name="android:outlineSpotShadowColor" tools:ignore="NewApi">@android:color/transparent</item>
   </style>
 
   <!-- Style for a M3 On Surface Toolbar (transparent background and on-surface
@@ -211,10 +215,6 @@
        navigation icon and menu icon coloring. -->
   <style name="Widget.Material3.Toolbar.Surface" parent="Widget.Material3.Toolbar.OnSurface">
     <item name="android:background">?attr/colorSurface</item>
-
-    <!-- On newer API levels, hide shadows while keeping elevation. -->
-    <item name="android:outlineAmbientShadowColor" tools:ignore="NewApi">@android:color/transparent</item>
-    <item name="android:outlineSpotShadowColor" tools:ignore="NewApi">@android:color/transparent</item>
   </style>
 
   <style name="ThemeOverlay.Material3.Toolbar.Surface" parent="">
