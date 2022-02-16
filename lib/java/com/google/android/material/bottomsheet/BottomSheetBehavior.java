@@ -107,6 +107,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
      *     expanded states and from -1 to 0 it is between hidden and collapsed states.
      */
     public abstract void onSlide(@NonNull View bottomSheet, float slideOffset);
+
+    void onLayout(@NonNull View bottomSheet) {}
   }
 
   /** The bottom sheet is dragging. */
@@ -553,6 +555,10 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     }
 
     nestedScrollingChildRef = new WeakReference<>(findScrollingChild(child));
+
+    for (int i = 0; i < callbacks.size(); i++) {
+      callbacks.get(i).onLayout(child);
+    }
     return true;
   }
 
