@@ -16,31 +16,6 @@
   -->
 <resources>
 
-  <style name="TextAppearance.Material3.TitleMedium" parent="Base.TextAppearance.Material3.TitleMedium">
-    <!-- Roboto Medium was added in this api level -->
-    <item name="android:textStyle">normal</item>
-  </style>
-
-  <style name="TextAppearance.Material3.TitleSmall" parent="Base.TextAppearance.Material3.TitleSmall">
-    <!-- Roboto Medium was added in this api level -->
-    <item name="android:textStyle">normal</item>
-  </style>
-
-  <style name="TextAppearance.Material3.LabelLarge" parent="Base.TextAppearance.Material3.LabelLarge">
-    <!-- Roboto Medium was added in this api level -->
-    <item name="android:textStyle">normal</item>
-  </style>
-
-  <style name="TextAppearance.Material3.LabelMedium" parent="Base.TextAppearance.Material3.LabelMedium">
-    <!-- Roboto Medium was added in this api level -->
-    <item name="android:textStyle">normal</item>
-  </style>
-
-  <style name="TextAppearance.Material3.LabelSmall" parent="Base.TextAppearance.Material3.LabelSmall">
-    <!-- Roboto Medium was added in this api level -->
-    <item name="android:textStyle">normal</item>
-  </style>
-
   <!-- Deprecated. -->
 
   <style name="TextAppearance.MaterialComponents.Headline6" parent="Base.TextAppearance.MaterialComponents.Headline6">
