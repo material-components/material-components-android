@@ -111,13 +111,6 @@ public class DynamicColors {
 
   private static final int USE_DEFAULT_THEME_OVERLAY = 0;
 
-  private static final Precondition ALWAYS_ALLOW = new Precondition() {
-    @Override
-    public boolean shouldApplyDynamicColors(@NonNull Activity activity, int theme) {
-      return true;
-    }
-  };
-
   private DynamicColors() {}
 
   /**
@@ -130,7 +123,7 @@ public class DynamicColors {
    * @param application The target application.
    */
   public static void applyToActivitiesIfAvailable(@NonNull Application application) {
-    applyToActivitiesIfAvailable(application, USE_DEFAULT_THEME_OVERLAY);
+    applyIfAvailable(new DynamicColorsOptions.Builder(application).build());
   }
 
   /**
@@ -145,7 +138,7 @@ public class DynamicColors {
    */
   public static void applyToActivitiesIfAvailable(
       @NonNull Application application, @StyleRes int theme) {
-    applyToActivitiesIfAvailable(application, theme, ALWAYS_ALLOW);
+    applyIfAvailable(new DynamicColorsOptions.Builder(application).setThemeOverlay(theme).build());
   }
 
   /**
@@ -160,7 +153,8 @@ public class DynamicColors {
    */
   public static void applyToActivitiesIfAvailable(
       @NonNull Application application, @NonNull Precondition precondition) {
-    applyToActivitiesIfAvailable(application, USE_DEFAULT_THEME_OVERLAY, precondition);
+    applyIfAvailable(
+        new DynamicColorsOptions.Builder(application).setPrecondition(precondition).build());
   }
 
   /**
@@ -189,8 +183,11 @@ public class DynamicColors {
    */
   public static void applyToActivitiesIfAvailable(
       @NonNull Application application, @StyleRes int theme, @NonNull Precondition precondition) {
-    application.registerActivityLifecycleCallbacks(
-        new DynamicColorsActivityLifecycleCallbacks(theme, precondition));
+    applyIfAvailable(
+        new DynamicColorsOptions.Builder(application)
+            .setThemeOverlay(theme)
+            .setPrecondition(precondition)
+            .build());
   }
 
   /**
@@ -200,7 +197,7 @@ public class DynamicColors {
    * @param activity The target activity.
    */
   public static void applyIfAvailable(@NonNull Activity activity) {
-    applyIfAvailable(activity, USE_DEFAULT_THEME_OVERLAY);
+    applyIfAvailable(new DynamicColorsOptions.Builder(activity).build());
   }
 
   /**
@@ -210,7 +207,7 @@ public class DynamicColors {
    * @param theme The resource ID of the theme overlay that provides dynamic color definition.
    */
   public static void applyIfAvailable(@NonNull Activity activity, @StyleRes int theme) {
-    applyIfAvailable(activity, theme, ALWAYS_ALLOW);
+    applyIfAvailable(new DynamicColorsOptions.Builder(activity).setThemeOverlay(theme).build());
   }
 
   /**
@@ -222,11 +219,41 @@ public class DynamicColors {
    */
   public static void applyIfAvailable(
       @NonNull Activity activity, @NonNull Precondition precondition) {
-    applyIfAvailable(activity, USE_DEFAULT_THEME_OVERLAY, precondition);
+    applyIfAvailable(
+        new DynamicColorsOptions.Builder(activity).setPrecondition(precondition).build());
+  }
+
+  /**
+   * Applies dynamic colors to the given application/activity with theme overlay according to the
+   * precondition specified in the dynamic colors options.
+   *
+   * @param dynamicColorsOptions The dynamic colors options object that specifies the theme resource
+   *     ID, precondition to decide if dynamic colors should be applied and the callback function
+   *     for after dynamic colors have been applied.
+   */
+  public static void applyIfAvailable(@NonNull DynamicColorsOptions dynamicColorsOptions) {
+    Application application = dynamicColorsOptions.getApplication();
+    Activity activity = dynamicColorsOptions.getActivity();
+    if (application != null) {
+      application.registerActivityLifecycleCallbacks(
+          new DynamicColorsActivityLifecycleCallbacks(dynamicColorsOptions));
+    } else if (activity != null) {
+      applyIfAvailable(
+          activity,
+          dynamicColorsOptions.getThemeOverlay(),
+          dynamicColorsOptions.getPrecondition(),
+          dynamicColorsOptions.getOnAppliedCallback());
+    } else {
+      // This should not happen according to the design of DynamicColorsOptions.
+      throw new IllegalArgumentException("Either Application or Activity is required.");
+    }
   }
 
   private static void applyIfAvailable(
-      @NonNull Activity activity, @StyleRes int theme, @NonNull Precondition precondition) {
+      @NonNull Activity activity,
+      @StyleRes int theme,
+      @NonNull Precondition precondition,
+      @NonNull OnAppliedCallback onAppliedCallback) {
     if (!isDynamicColorAvailable()) {
       return;
     }
@@ -235,6 +262,7 @@ public class DynamicColors {
     }
     if (theme != 0 && precondition.shouldApplyDynamicColors(activity, theme)) {
       applyDynamicColorThemeOverlay(activity, theme);
+      onAppliedCallback.onApplied(activity);
     }
   }
 
@@ -339,20 +367,29 @@ public class DynamicColors {
     boolean shouldApplyDynamicColors(@NonNull Activity activity, @StyleRes int theme);
   }
 
+  /** The interface that provides a callback method after dynamic colors have been applied. */
+  public interface OnAppliedCallback {
+
+    /** The callback method after dynamic colors have been applied. */
+    void onApplied(@NonNull Activity activity);
+  }
+
   private static class DynamicColorsActivityLifecycleCallbacks
       implements ActivityLifecycleCallbacks {
-    private final int dynamicColorThemeOverlay;
-    private final Precondition precondition;
+    private final DynamicColorsOptions dynamicColorsOptions;
 
-    DynamicColorsActivityLifecycleCallbacks(@StyleRes int theme, @NonNull Precondition condition) {
-      dynamicColorThemeOverlay = theme;
-      precondition = condition;
+    DynamicColorsActivityLifecycleCallbacks(@NonNull DynamicColorsOptions options) {
+      this.dynamicColorsOptions = options;
     }
 
     @Override
     public void onActivityPreCreated(@NonNull Activity activity,
         @Nullable Bundle savedInstanceState) {
-      applyIfAvailable(activity, dynamicColorThemeOverlay, precondition);
+      applyIfAvailable(
+          activity,
+          dynamicColorsOptions.getThemeOverlay(),
+          dynamicColorsOptions.getPrecondition(),
+          dynamicColorsOptions.getOnAppliedCallback());
     }
 
     @Override
