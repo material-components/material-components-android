@@ -88,16 +88,11 @@ class MonthAdapter extends BaseAdapter {
   }
 
   /**
-   * Returns the number of days in a month plus the amount required to off-set for the first day to
-   * the correct position within the week.
-   *
-   * <p>{@see MonthAdapter#firstPositionInMonth}.
-   *
-   * @return The maximum valid position index
+   * @return The maximum number of cells for a month with 6 rows
    */
   @Override
   public int getCount() {
-    return month.daysInMonth + firstPositionInMonth();
+    return 42;
   }
 
   @NonNull
