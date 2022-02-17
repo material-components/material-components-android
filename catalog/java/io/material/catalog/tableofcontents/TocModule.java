@@ -36,6 +36,7 @@ import io.material.catalog.fab.FabFragment;
 import io.material.catalog.font.FontFragment;
 import io.material.catalog.imageview.ShapeableImageViewFragment;
 import io.material.catalog.menu.MenuFragment;
+import io.material.catalog.navigationdrawer.NavigationDrawerFragment;
 import io.material.catalog.navigationrail.NavigationRailFragment;
 import io.material.catalog.preferences.CatalogPreferencesDialogFragment;
 import io.material.catalog.progressindicator.ProgressIndicatorFragment;
@@ -68,6 +69,7 @@ import io.material.catalog.transition.TransitionFragment;
       FabFragment.Module.class,
       FontFragment.Module.class,
       MenuFragment.Module.class,
+      NavigationDrawerFragment.Module.class,
       NavigationRailFragment.Module.class,
       ProgressIndicatorFragment.Module.class,
       RadioButtonFragment.Module.class,

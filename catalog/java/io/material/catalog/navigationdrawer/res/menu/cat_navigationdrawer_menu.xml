@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2018 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+      android:id="@+id/main_item"
+      android:title="@string/cat_navigationdrawer_header_mail">
+      <menu>
+        <item
+          android:id="@+id/search_item"
+          android:icon="@drawable/ic_search_24px"
+          android:title="@string/cat_navigationdrawer_search"
+          android:checkable="true"
+          app:showAsAction="ifRoom"/>
+        <item
+          android:id="@+id/rotation_item"
+          android:icon="@drawable/ic_3d_rotation_24px"
+          android:title="@string/cat_navigationdrawer_3d"
+          android:checkable="true"
+          app:showAsAction="ifRoom"/>
+        <item
+          android:id="@+id/accelerator_item"
+          android:icon="@drawable/ic_accelerator_24px"
+          android:title="@string/cat_navigationdrawer_accelerator"
+          android:checkable="true"
+          app:showAsAction="ifRoom"/>
+        <item
+          android:id="@+id/dashboard_item"
+          android:icon="@drawable/ic_dashboard_24px"
+          android:title="@string/cat_navigationdrawer_dashboard"
+          android:checkable="true"
+          app:showAsAction="ifRoom"/>
+      </menu>
+    </item>
+    <item
+      android:id="@+id/labels_item"
+      android:title="@string/cat_navigationdrawer_header_labels">
+      <menu>
+        <item
+          android:id="@+id/label_one"
+          android:icon="@drawable/ic_info_outline_24px"
+          android:title="@string/cat_navigationdrawer_label"
+          android:checkable="true"
+          app:showAsAction="ifRoom"/>
+        <item
+          android:id="@+id/label_two"
+          android:icon="@drawable/ic_info_outline_24px"
+          android:title="@string/cat_navigationdrawer_label"
+          android:checkable="true"
+          app:showAsAction="ifRoom"/>
+      </menu>
+    </item>
+</menu>
