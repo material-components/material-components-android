@@ -396,9 +396,10 @@ Landscape:
 
 !["Single View Hero demo landscape in landscape."](assets/canonical_layouts/hero_landscape.png)
 
-This demo is an example of a layout that shows a main content view followed by a
-list view of supporting items. In bigger screens it also reveals a large top
-content view on top, also called a hero view.
+This demo shows a large top content view on top of the layout, also called a
+hero view, as well as a main content view and a list view of supporting items.
+The hero and other containers take on different layout configurations depending
+on the screen size.
 
 ### Implementation
 

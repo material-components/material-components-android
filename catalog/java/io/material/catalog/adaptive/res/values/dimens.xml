@@ -18,4 +18,9 @@
 <resources>
   <dimen name="cat_adaptive_margin_horizontal">12dp</dimen>
   <dimen name="cat_adaptive_margin_vertical">16dp</dimen>
+  <dimen name="cat_adaptive_margin_none">0dp</dimen>
+
+  <dimen name="cat_adaptive_hero_margin">16dp</dimen>
+  <!-- Add 8dp to the existing 16dp margin to get 24dp. -->
+  <dimen name="cat_adaptive_hero_margin_horizontal_additional">8dp</dimen>
 </resources>

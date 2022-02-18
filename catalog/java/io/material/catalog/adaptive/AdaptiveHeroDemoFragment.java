@@ -51,9 +51,8 @@ public class AdaptiveHeroDemoFragment extends Fragment {
 
     // Set up constraint sets.
     ConstraintLayout constraintLayout = view.findViewById(R.id.hero_constraint_layout);
-    ConstraintSet smallLayout = new ConstraintSet();
-    smallLayout.clone(constraintLayout);
-    ConstraintSet mediumLayout = getMediumLayout(constraintLayout);
+    ConstraintSet smallLayout = getSmallLayout(constraintLayout);
+    ConstraintSet mediumLayout = getMediumLayout(smallLayout);
     ConstraintSet largeLayout = getLargeLayout(mediumLayout);
 
     int screenWidth = getResources().getConfiguration().screenWidthDp;
@@ -68,16 +67,25 @@ public class AdaptiveHeroDemoFragment extends Fragment {
     return view;
   }
 
-  /* Returns the constraint set to be used for the medium layout configuration. */
-  private ConstraintSet getMediumLayout(@NonNull ConstraintLayout constraintLayout) {
-    int marginVertical =
-        getResources().getDimensionPixelOffset(R.dimen.cat_adaptive_margin_vertical);
-    int marginHorizontal =
-        getResources().getDimensionPixelOffset(R.dimen.cat_adaptive_margin_horizontal);
+  /* Returns the constraint set to be used for the small layout configuration. */
+  private ConstraintSet getSmallLayout(@NonNull ConstraintLayout constraintLayout) {
     ConstraintSet constraintSet = new ConstraintSet();
+    // Use the constraint set from the constraint layout.
     constraintSet.clone(constraintLayout);
-    // Hero container.
-    constraintSet.setVisibility(R.id.hero_top_content, View.VISIBLE);
+    return constraintSet;
+  }
+
+  /* Returns the constraint set to be used for the medium layout configuration. */
+  private ConstraintSet getMediumLayout(@NonNull ConstraintSet smallLayout) {
+    int marginHorizontal = getResources().getDimensionPixelOffset(R.dimen.cat_adaptive_hero_margin);
+    int noMargin = getResources().getDimensionPixelOffset(R.dimen.cat_adaptive_margin_none);
+    int marginHorizontalAdditional =
+        getResources()
+            .getDimensionPixelOffset(R.dimen.cat_adaptive_hero_margin_horizontal_additional);
+
+    ConstraintSet constraintSet = new ConstraintSet();
+    constraintSet.clone(smallLayout);
+
     // Main content.
     constraintSet.connect(
         R.id.hero_main_content, ConstraintSet.TOP, R.id.hero_top_content, ConstraintSet.BOTTOM);
@@ -91,8 +99,11 @@ public class AdaptiveHeroDemoFragment extends Fragment {
         ConstraintSet.BOTTOM,
         ConstraintSet.PARENT_ID,
         ConstraintSet.BOTTOM);
-    constraintSet.setMargin(R.id.hero_main_content, ConstraintSet.TOP, marginVertical);
-    constraintSet.setMargin(R.id.hero_main_content, ConstraintSet.END, marginHorizontal);
+    constraintSet.setMargin(R.id.hero_top_content, ConstraintSet.START, noMargin);
+    constraintSet.setMargin(R.id.hero_top_content, ConstraintSet.LEFT, noMargin);
+    constraintSet.setMargin(R.id.hero_top_content, ConstraintSet.END, marginHorizontalAdditional);
+    constraintSet.setMargin(R.id.hero_top_content, ConstraintSet.RIGHT, marginHorizontalAdditional);
+
     // Side content.
     constraintSet.connect(
         R.id.hero_side_content_container,
@@ -106,13 +117,24 @@ public class AdaptiveHeroDemoFragment extends Fragment {
         ConstraintSet.END);
     constraintSet.constrainPercentWidth(R.id.hero_side_content_container, 0.4f);
 
+    constraintSet.setMargin(
+        R.id.hero_side_content_container, ConstraintSet.START, marginHorizontal);
+    constraintSet.setMargin(R.id.hero_side_content_container, ConstraintSet.LEFT, marginHorizontal);
+
+    // Add more margin to the right/end of the side content to make sure there is a 24dp margin on
+    // the right/end of the side content.
+    constraintSet.setMargin(
+        R.id.hero_side_content_container, ConstraintSet.RIGHT, marginHorizontalAdditional);
+    constraintSet.setMargin(
+        R.id.hero_side_content_container, ConstraintSet.END, marginHorizontalAdditional);
     return constraintSet;
   }
 
   /* Returns the constraint set to be used for the large layout configuration. */
   private ConstraintSet getLargeLayout(@NonNull ConstraintSet mediumLayout) {
-    int marginHorizontal =
-        getResources().getDimensionPixelOffset(R.dimen.cat_adaptive_margin_horizontal);
+    int noMargin = getResources().getDimensionPixelOffset(R.dimen.cat_adaptive_margin_none);
+    int marginHorizontal = getResources().getDimensionPixelOffset(R.dimen.cat_adaptive_hero_margin);
+
     ConstraintSet constraintSet = new ConstraintSet();
     constraintSet.clone(mediumLayout);
     // Hero container.
@@ -121,7 +143,7 @@ public class AdaptiveHeroDemoFragment extends Fragment {
         ConstraintSet.END,
         R.id.hero_side_content_container,
         ConstraintSet.START);
-    constraintSet.setMargin(R.id.hero_top_content, ConstraintSet.END, marginHorizontal);
+
     // Side content.
     constraintSet.connect(
         R.id.hero_side_content_container,
@@ -129,6 +151,12 @@ public class AdaptiveHeroDemoFragment extends Fragment {
         ConstraintSet.PARENT_ID,
         ConstraintSet.TOP);
 
+    // Remove the margin from the main content since it no longer is at the right/end side.
+    constraintSet.setMargin(R.id.hero_main_content, ConstraintSet.RIGHT, noMargin);
+    constraintSet.setMargin(R.id.hero_main_content, ConstraintSet.END, noMargin);
+
+    constraintSet.setMargin(R.id.hero_top_content, ConstraintSet.RIGHT, marginHorizontal);
+    constraintSet.setMargin(R.id.hero_top_content, ConstraintSet.END, marginHorizontal);
     return constraintSet;
   }
 
