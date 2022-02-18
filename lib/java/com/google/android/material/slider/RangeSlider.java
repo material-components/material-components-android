@@ -20,11 +20,13 @@ import com.google.android.material.R;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.AbsSavedState;
 import androidx.annotation.Dimension;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.internal.ThemeEnforcement;
@@ -121,6 +123,38 @@ public class RangeSlider extends BaseSlider<RangeSlider, OnChangeListener, OnSli
   @Override
   public List<Float> getValues() {
     return super.getValues();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void setCustomThumbDrawable(@DrawableRes int drawableResId) {
+    super.setCustomThumbDrawable(drawableResId);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void setCustomThumbDrawable(@NonNull Drawable drawable) {
+    super.setCustomThumbDrawable(drawable);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void setCustomThumbDrawablesForValues(@NonNull @DrawableRes int... drawableResIds) {
+    super.setCustomThumbDrawablesForValues(drawableResIds);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void setCustomThumbDrawablesForValues(@NonNull Drawable... drawables) {
+    super.setCustomThumbDrawablesForValues(drawables);
   }
 
   private static List<Float> convertToFloat(TypedArray values) {

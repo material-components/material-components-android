@@ -67,6 +67,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DimenRes;
 import androidx.annotation.Dimension;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.IntDef;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
@@ -293,7 +294,9 @@ abstract class BaseSlider<
   @NonNull private ColorStateList trackColorActive;
   @NonNull private ColorStateList trackColorInactive;
 
-  @NonNull private final MaterialShapeDrawable thumbDrawable = new MaterialShapeDrawable();
+  @NonNull private final MaterialShapeDrawable defaultThumbDrawable = new MaterialShapeDrawable();
+  @Nullable private Drawable customThumbDrawable;
+  @NonNull private List<Drawable> customThumbDrawablesForValues = Collections.emptyList();
 
   private float touchPosition;
   @SeparationUnit private int separationUnit = UNIT_PX;
@@ -379,7 +382,8 @@ abstract class BaseSlider<
     setClickable(true);
 
     // Set up the thumb drawable to always show the compat shadow.
-    thumbDrawable.setShadowCompatibilityMode(MaterialShapeDrawable.SHADOW_COMPAT_MODE_ALWAYS);
+    defaultThumbDrawable.setShadowCompatibilityMode(
+        MaterialShapeDrawable.SHADOW_COMPAT_MODE_ALWAYS);
 
     scaledTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
 
@@ -435,7 +439,7 @@ abstract class BaseSlider<
                 context, R.color.material_slider_active_track_color));
     ColorStateList thumbColor =
         MaterialResources.getColorStateList(context, a, R.styleable.Slider_thumbColor);
-    thumbDrawable.setFillColor(thumbColor);
+    defaultThumbDrawable.setFillColor(thumbColor);
 
     if (a.hasValue(R.styleable.Slider_thumbStrokeColor)) {
       setThumbStrokeColor(
@@ -801,6 +805,96 @@ abstract class BaseSlider<
     }
   }
 
+  /**
+   * Sets the custom thumb drawable which will be used for all value positions. Note that the custom
+   * drawable provided will be resized to match the thumb radius set by {@link #setThumbRadius(int)}
+   * or {@link #setThumbRadiusResource(int)}. Be aware that the image quality may be compromised
+   * during resizing.
+   *
+   * @see #setCustomThumbDrawable(Drawable)
+   * @see #setCustomThumbDrawablesForValues(int...)
+   * @see #setCustomThumbDrawablesForValues(Drawable...)
+   */
+  void setCustomThumbDrawable(@DrawableRes int drawableResId) {
+    setCustomThumbDrawable(getResources().getDrawable(drawableResId));
+  }
+
+  /**
+   * Sets the custom thumb drawable which will be used for all value positions. Note that the custom
+   * drawable provided will be resized to match the thumb radius set by {@link #setThumbRadius(int)}
+   * or {@link #setThumbRadiusResource(int)}. Be aware that the image quality may be compromised
+   * during resizing.
+   *
+   * @see #setCustomThumbDrawable(int)
+   * @see #setCustomThumbDrawablesForValues(int...)
+   * @see #setCustomThumbDrawablesForValues(Drawable...)
+   */
+  void setCustomThumbDrawable(@NonNull Drawable drawable) {
+    customThumbDrawable = initializeCustomThumbDrawable(drawable);
+    customThumbDrawablesForValues.clear();
+    postInvalidate();
+  }
+
+  /**
+   * Sets custom thumb drawables. The drawables provided will be used in its corresponding value
+   * position - i.e., the first drawable will be used to indicate the first value, and so on. If
+   * the number of drawables is less than the number of values, the default drawable will be used
+   * for the remaining values.
+   *
+   * <p>Note that the custom drawables provided will be resized to match the thumb radius set by
+   * {@link #setThumbRadius(int)} or {@link #setThumbRadiusResource(int)}. Be aware that the image
+   * quality may be compromised during resizing.
+   *
+   * @see #setCustomThumbDrawablesForValues(Drawable...)
+   */
+  void setCustomThumbDrawablesForValues(@NonNull @DrawableRes int... customThumbDrawableResIds) {
+    Drawable[] customThumbDrawables = new Drawable[customThumbDrawableResIds.length];
+    for (int i = 0; i < customThumbDrawableResIds.length; i++) {
+      customThumbDrawables[i] = getResources().getDrawable(customThumbDrawableResIds[i]);
+    }
+    setCustomThumbDrawablesForValues(customThumbDrawables);
+  }
+
+  /**
+   * Sets custom thumb drawables. The drawables provided will be used in its corresponding value
+   * position - i.e., the first drawable will be used to indicate the first value, and so on. If
+   * the number of drawables is less than the number of values, the default drawable will be used
+   * for the remaining values.
+   *
+   * <p>Note that the custom drawables provided will be resized to match the thumb radius set by
+   * {@link #setThumbRadius(int)} or {@link #setThumbRadiusResource(int)}. Be aware that the image
+   * quality may be compromised during resizing.
+   *
+   * @see #setCustomThumbDrawablesForValues(int...)
+   */
+  void setCustomThumbDrawablesForValues(@NonNull Drawable... customThumbDrawables) {
+    this.customThumbDrawable = null;
+    this.customThumbDrawablesForValues = new ArrayList<>();
+    for (Drawable originalDrawable : customThumbDrawables) {
+      this.customThumbDrawablesForValues.add(initializeCustomThumbDrawable(originalDrawable));
+    }
+    postInvalidate();
+  }
+
+  private Drawable initializeCustomThumbDrawable(Drawable originalDrawable) {
+    Drawable drawable = originalDrawable.mutate().getConstantState().newDrawable();
+    adjustCustomThumbDrawableBounds(drawable);
+    return drawable;
+  }
+
+  private void adjustCustomThumbDrawableBounds(Drawable drawable) {
+    int thumbDiameter = thumbRadius * 2;
+    int originalWidth = drawable.getIntrinsicWidth();
+    int originalHeight = drawable.getIntrinsicHeight();
+    if (originalWidth == -1 && originalHeight == -1) {
+      drawable.setBounds(0, 0, thumbDiameter, thumbDiameter);
+    } else {
+      float scaleRatio = (float) thumbDiameter / Math.max(originalWidth, originalHeight);
+      drawable.setBounds(
+          0, 0, (int) (originalWidth * scaleRatio), (int) (originalHeight * scaleRatio));
+    }
+  }
+
   /** Returns the index of the currently focused thumb */
   public int getFocusedThumbIndex() {
     return focusedThumbIdx;
@@ -898,7 +992,7 @@ abstract class BaseSlider<
    * @attr ref com.google.android.material.R.styleable#Slider_thumbElevation
    */
   public float getThumbElevation() {
-    return thumbDrawable.getElevation();
+    return defaultThumbDrawable.getElevation();
   }
 
   /**
@@ -908,7 +1002,7 @@ abstract class BaseSlider<
    * @attr ref com.google.android.material.R.styleable#Slider_thumbElevation
    */
   public void setThumbElevation(float elevation) {
-    thumbDrawable.setElevation(elevation);
+    defaultThumbDrawable.setElevation(elevation);
   }
 
   /**
@@ -947,9 +1041,16 @@ abstract class BaseSlider<
     thumbRadius = radius;
     maybeIncreaseTrackSidePadding();
 
-    thumbDrawable.setShapeAppearanceModel(
+    defaultThumbDrawable.setShapeAppearanceModel(
         ShapeAppearanceModel.builder().setAllCorners(CornerFamily.ROUNDED, thumbRadius).build());
-    thumbDrawable.setBounds(0, 0, thumbRadius * 2, thumbRadius * 2);
+    defaultThumbDrawable.setBounds(0, 0, thumbRadius * 2, thumbRadius * 2);
+
+    if (customThumbDrawable != null) {
+      adjustCustomThumbDrawableBounds(customThumbDrawable);
+    }
+    for (Drawable customDrawable : customThumbDrawablesForValues) {
+      adjustCustomThumbDrawableBounds(customDrawable);
+    }
 
     postInvalidate();
   }
@@ -974,7 +1075,7 @@ abstract class BaseSlider<
    * @see #getThumbStrokeColor()
    */
   public void setThumbStrokeColor(@Nullable ColorStateList thumbStrokeColor) {
-    thumbDrawable.setStrokeColor(thumbStrokeColor);
+    defaultThumbDrawable.setStrokeColor(thumbStrokeColor);
     postInvalidate();
   }
 
@@ -1003,7 +1104,7 @@ abstract class BaseSlider<
    * @see #setThumbStrokeColorResource(int)
    */
   public ColorStateList getThumbStrokeColor() {
-    return thumbDrawable.getStrokeColor();
+    return defaultThumbDrawable.getStrokeColor();
   }
 
   /**
@@ -1016,7 +1117,7 @@ abstract class BaseSlider<
    * @see #getThumbStrokeWidth()
    */
   public void setThumbStrokeWidth(float thumbStrokeWidth) {
-    thumbDrawable.setStrokeWidth(thumbStrokeWidth);
+    defaultThumbDrawable.setStrokeWidth(thumbStrokeWidth);
     postInvalidate();
   }
 
@@ -1044,7 +1145,7 @@ abstract class BaseSlider<
    * @see #setThumbStrokeWidthResource(int)
    */
   public float getThumbStrokeWidth() {
-    return thumbDrawable.getStrokeWidth();
+    return defaultThumbDrawable.getStrokeWidth();
   }
 
   /**
@@ -1194,7 +1295,7 @@ abstract class BaseSlider<
    */
   @NonNull
   public ColorStateList getThumbTintList() {
-    return thumbDrawable.getFillColor();
+    return defaultThumbDrawable.getFillColor();
   }
 
   /**
@@ -1204,11 +1305,11 @@ abstract class BaseSlider<
    * @attr ref com.google.android.material.R.styleable#Slider_thumbColor
    */
   public void setThumbTintList(@NonNull ColorStateList thumbColor) {
-    if (thumbColor.equals(thumbDrawable.getFillColor())) {
+    if (thumbColor.equals(defaultThumbDrawable.getFillColor())) {
       return;
     }
 
-    thumbDrawable.setFillColor(thumbColor);
+    defaultThumbDrawable.setFillColor(thumbColor);
     invalidate();
   }
 
@@ -1634,23 +1735,35 @@ abstract class BaseSlider<
   }
 
   private void drawThumbs(@NonNull Canvas canvas, int width, int top) {
-    // Clear out the track behind the thumb if we're in a disable state since the thumb is
-    // transparent.
-    if (!isEnabled()) {
-      for (Float value : values) {
-        canvas.drawCircle(
-            trackSidePadding + normalizeValue(value) * width, top, thumbRadius, thumbPaint);
+    for (int i = 0; i < values.size(); i++) {
+      float value = values.get(i);
+      if (customThumbDrawable != null) {
+        drawThumbDrawable(canvas, width, top, value, customThumbDrawable);
+      } else if (i < customThumbDrawablesForValues.size()) {
+        drawThumbDrawable(canvas, width, top, value, customThumbDrawablesForValues.get(i));
+      } else {
+        // Clear out the track behind the thumb if we're in a disable state since the thumb is
+        // transparent.
+        if (!isEnabled()) {
+          canvas.drawCircle(
+              trackSidePadding + normalizeValue(value) * width, top, thumbRadius, thumbPaint);
+        }
+        drawThumbDrawable(canvas, width, top, value, defaultThumbDrawable);
       }
     }
+  }
 
-    for (Float value : values) {
-      canvas.save();
-      canvas.translate(
-          trackSidePadding + (int) (normalizeValue(value) * width) - thumbRadius,
-          top - thumbRadius);
-      thumbDrawable.draw(canvas);
-      canvas.restore();
-    }
+  private void drawThumbDrawable(
+      @NonNull Canvas canvas, int width, int top, float value, @NonNull Drawable thumbDrawable) {
+    canvas.save();
+    canvas.translate(
+        trackSidePadding
+            + (int) (normalizeValue(value) * width)
+            - (thumbDrawable.getBounds().width() / 2f),
+        top
+            - (thumbDrawable.getBounds().height() / 2f));
+    thumbDrawable.draw(canvas);
+    canvas.restore();
   }
 
   private void maybeDrawHalo(@NonNull Canvas canvas, int width, int top) {
@@ -2121,8 +2234,8 @@ abstract class BaseSlider<
         label.setState(getDrawableState());
       }
     }
-    if (thumbDrawable.isStateful()) {
-      thumbDrawable.setState(getDrawableState());
+    if (defaultThumbDrawable.isStateful()) {
+      defaultThumbDrawable.setState(getDrawableState());
     }
     haloPaint.setColor(getColorForState(haloColor));
     haloPaint.setAlpha(HALO_ALPHA);

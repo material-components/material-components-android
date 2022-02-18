@@ -20,7 +20,9 @@ import com.google.android.material.R;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.slider.Slider.OnChangeListener;
@@ -102,6 +104,22 @@ public class Slider extends BaseSlider<Slider, OnChangeListener, OnSliderTouchLi
    */
   public void setValue(float value) {
     setValues(value);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void setCustomThumbDrawable(@DrawableRes int drawableResId) {
+    super.setCustomThumbDrawable(drawableResId);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void setCustomThumbDrawable(@NonNull Drawable drawable) {
+    super.setCustomThumbDrawable(drawable);
   }
 
   @Override
