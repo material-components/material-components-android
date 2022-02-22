@@ -107,13 +107,11 @@ public class DynamicColorsOptions {
     @NonNull private Precondition precondition = ALWAYS_ALLOW;
     @NonNull private OnAppliedCallback onAppliedCallback = NO_OP_CALLBACK;
 
-    /** Sets the Application to apply dynamic colors on. */
     public Builder(@NonNull Application application) {
       this.application = application;
       this.activity = null;
     }
 
-    /** Sets the Activity to apply dynamic colors on. */
     public Builder(@NonNull Activity activity) {
       this.activity = activity;
       this.application = null;
