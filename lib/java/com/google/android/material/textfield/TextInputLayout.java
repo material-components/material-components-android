@@ -2549,8 +2549,11 @@ public class TextInputLayout extends LinearLayout {
   }
 
   private void updatePrefixTextVisibility() {
-    prefixTextView.setVisibility((prefixText != null && !isHintExpanded()) ? VISIBLE : GONE);
+    int visibility = (prefixText != null && !isHintExpanded()) ? VISIBLE : GONE;
     updateStartLayoutVisibility();
+    // Set visibility after updating start layout's visibility so screen readers correctly announce
+    // when prefix text appears.
+    prefixTextView.setVisibility(visibility);
     updateDummyDrawables();
   }
 
@@ -2636,13 +2639,15 @@ public class TextInputLayout extends LinearLayout {
   }
 
   private void updateSuffixTextVisibility() {
-    int oldSuffixVisibility = suffixTextView.getVisibility();
-    boolean visible = suffixText != null && !isHintExpanded();
-    suffixTextView.setVisibility(visible ? VISIBLE : GONE);
-    if (oldSuffixVisibility != suffixTextView.getVisibility()) {
-      getEndIconDelegate().onSuffixVisibilityChanged(visible);
+    int oldVisibility = suffixTextView.getVisibility();
+    int newVisibility = (suffixText != null && !isHintExpanded()) ? VISIBLE : GONE;
+    if (oldVisibility != newVisibility) {
+      getEndIconDelegate().onSuffixVisibilityChanged(/* visible= */ newVisibility == VISIBLE);
     }
     updateEndLayoutVisibility();
+    // Set visibility after updating end layout's visibility so screen readers correctly announce
+    // when suffix text appears.
+    suffixTextView.setVisibility(newVisibility);
     updateDummyDrawables();
   }
 
@@ -3976,15 +3981,17 @@ public class TextInputLayout extends LinearLayout {
     endIconFrame.setVisibility(
         (endIconView.getVisibility() == VISIBLE && !isErrorIconVisible()) ? VISIBLE : GONE);
 
+    int suffixTextVisibility = (suffixText != null && !isHintExpanded()) ? VISIBLE : GONE;
     boolean shouldBeVisible =
-        isEndIconVisible() || isErrorIconVisible() || suffixTextView.getVisibility() == VISIBLE;
+        isEndIconVisible() || isErrorIconVisible() || suffixTextVisibility == VISIBLE;
     endLayout.setVisibility(shouldBeVisible ? VISIBLE : GONE);
   }
 
   private void updateStartLayoutVisibility() {
     // Set startLayout to visible if start icon or prefix text is present.
+    int prefixTextVisibility = (prefixText != null && !isHintExpanded()) ? VISIBLE : GONE;
     boolean shouldBeVisible =
-        startIconView.getVisibility() == VISIBLE || prefixTextView.getVisibility() == VISIBLE;
+        startIconView.getVisibility() == VISIBLE || prefixTextVisibility == VISIBLE;
     startLayout.setVisibility(shouldBeVisible ? VISIBLE : GONE);
   }
 
@@ -4598,9 +4605,18 @@ public class TextInputLayout extends LinearLayout {
       boolean isHintCollapsed = !layout.isHintExpanded();
       boolean showingError = !TextUtils.isEmpty(errorText);
       boolean contentInvalid = showingError || !TextUtils.isEmpty(counterOverflowDesc);
-
+      boolean isShowingPrefixText = layout.getPrefixTextView().getVisibility() == VISIBLE;
       String hint = hasHint ? hintText.toString() : "";
 
+      // Screen readers should follow visual order of the elements of the text field.
+      if (isShowingPrefixText) {
+        info.setLabelFor(layout.getPrefixTextView());
+        info.setTraversalAfter(layout.getPrefixTextView());
+      } else {
+        info.setTraversalAfter(layout.startIconView);
+      }
+
+      // Make sure text field has the appropriate announcements.
       if (showingText) {
         info.setText(inputText);
       } else if (!TextUtils.isEmpty(hint)) {
