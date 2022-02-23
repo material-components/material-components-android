@@ -48,12 +48,12 @@
   <string name="m3_sys_motion_easing_emphasized_accelerate" translatable="false">cubic-bezier(0.3, 0.0, 0.8, 0.2)</string>
   <string name="m3_sys_motion_easing_emphasized_decelerate" translatable="false">cubic-bezier(0.1, 0.7, 0.1, 1.0)</string>
   <!-- Deprecated tokens -->
-  <integer name="m3_sys_motion_duration_long1">500</integer>
-  <integer name="m3_sys_motion_duration_long2">600</integer>
   <integer name="m3_sys_motion_duration_short1">100</integer>
   <integer name="m3_sys_motion_duration_short2">200</integer>
   <integer name="m3_sys_motion_duration_medium1">300</integer>
   <integer name="m3_sys_motion_duration_medium2">400</integer>
+  <integer name="m3_sys_motion_duration_long1">500</integer>
+  <integer name="m3_sys_motion_duration_long2">600</integer>
   <string name="m3_sys_motion_easing_accelerated" translatable="false">cubic-bezier(0.4, 0.0, 1.0, 1.0)</string>
   <string name="m3_sys_motion_easing_decelerated" translatable="false">cubic-bezier(0.0, 0.0, 0.2, 1.0)</string>
 </resources>
