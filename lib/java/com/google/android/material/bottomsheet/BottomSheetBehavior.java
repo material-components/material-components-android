@@ -1592,7 +1592,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         settleRunnable = new SettleRunnable(child, state);
       }
       // If the SettleRunnable has not been posted, post it with the correct state.
-      if (settleRunnable.isPosted == false) {
+      if (!settleRunnable.isPosted) {
         settleRunnable.targetState = state;
         ViewCompat.postOnAnimation(child, settleRunnable);
         settleRunnable.isPosted = true;
@@ -1890,21 +1890,23 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   private class SettleRunnable implements Runnable {
 
-    private final View view;
+    private final WeakReference<View> viewRef;
 
     private boolean isPosted;
 
     @State int targetState;
 
     SettleRunnable(View view, @State int targetState) {
-      this.view = view;
+      this.viewRef = new WeakReference<>(view);
       this.targetState = targetState;
     }
 
     @Override
     public void run() {
-      if (viewDragHelper != null && viewDragHelper.continueSettling(true)) {
-        ViewCompat.postOnAnimation(view, this);
+      if (viewRef.get() != null
+          && viewDragHelper != null
+          && viewDragHelper.continueSettling(true)) {
+        ViewCompat.postOnAnimation(viewRef.get(), this);
       } else {
         setStateInternal(targetState);
       }
