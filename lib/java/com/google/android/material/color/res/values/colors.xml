@@ -53,4 +53,10 @@
   <!-- 32% opacity black -->
   <color name="mtrl_scrim_color">#52000000</color>
 
+  <!-- XML color harmonization palette, values to be replaced at runtime. -->
+  <color name="material_harmonized_color_error">#FFFFFF</color>
+  <color name="material_harmonized_color_on_error">#FFFFFF</color>
+  <color name="material_harmonized_color_error_container">#FFFFFF</color>
+  <color name="material_harmonized_color_on_error_container">#FFFFFF</color>
+
 </resources>

@@ -22,15 +22,12 @@ import android.app.Activity;
 import android.app.Application;
 import android.app.Application.ActivityLifecycleCallbacks;
 import android.content.Context;
-import android.content.res.Resources.Theme;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
-import android.view.View;
-import android.view.Window;
 import androidx.annotation.ChecksSdkIntAtLeast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,9 +37,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Utility for applying dynamic colors to application/activities.
- */
+/** Utility for applying dynamic colors to application/activities. */
 public class DynamicColors {
   private static final int[] DYNAMIC_COLOR_THEME_OVERLAY_ATTRIBUTE =
       new int[] { R.attr.dynamicColorThemeOverlay };
@@ -127,12 +122,11 @@ public class DynamicColors {
   }
 
   /**
-   * Applies dynamic colors to all activities with the given theme overlay by registering a
-   * {@link ActivityLifecycleCallbacks} to your application.
+   * Applies dynamic colors to all activities with the given theme overlay by registering a {@link
+   * ActivityLifecycleCallbacks} to your application.
    *
    * @see #applyToActivitiesIfAvailable(Application, int, Precondition) for more detailed info and
-   *      examples.
-   *
+   *     examples.
    * @param application The target application.
    * @param theme The resource ID of the theme overlay that provides dynamic color definition.
    */
@@ -161,8 +155,9 @@ public class DynamicColors {
    * Applies dynamic colors to all activities with the given theme overlay according to the given
    * precondition by registering a {@link ActivityLifecycleCallbacks} to your application.
    *
-   * A normal usage of this method should happen only once in {@link Application#onCreate()} or any
-   * methods that run before any of your activities are created. For example:
+   * <p>A normal usage of this method should happen only once in {@link Application#onCreate()} or
+   * any methods that run before any of your activities are created. For example:
+   *
    * <pre>
    * public class YourApplication extends Application {
    *   &#64;Override
@@ -172,9 +167,10 @@ public class DynamicColors {
    *   }
    * }
    * </pre>
-   * This method will try to apply the given dynamic color theme overlay in every activity's
-   * {@link ActivityLifecycleCallbacks#onActivityPreCreated(Activity, Bundle)} callback. Therefore,
-   * if you are applying any other theme overlays after that, you will need to be careful about not
+   *
+   * This method will try to apply the given dynamic color theme overlay in every activity's {@link
+   * ActivityLifecycleCallbacks#onActivityPreCreated(Activity, Bundle)} callback. Therefore, if you
+   * are applying any other theme overlays after that, you will need to be careful about not
    * overriding the colors or you may lose the dynamic color support.
    *
    * @param application The target application.
@@ -261,7 +257,7 @@ public class DynamicColors {
       theme = getDefaultThemeOverlay(activity);
     }
     if (theme != 0 && precondition.shouldApplyDynamicColors(activity, theme)) {
-      applyDynamicColorThemeOverlay(activity, theme);
+      ThemeUtils.applyThemeOverlay(activity, theme);
       onAppliedCallback.onApplied(activity);
     }
   }
@@ -325,34 +321,6 @@ public class DynamicColors {
     final int theme = dynamicColorAttributes.getResourceId(0, 0);
     dynamicColorAttributes.recycle();
     return theme;
-  }
-
-  private static void applyDynamicColorThemeOverlay(Activity activity, @StyleRes int theme) {
-    // Use applyStyle() instead of setTheme() due to Force Dark issue.
-    activity.getTheme().applyStyle(theme, /* force= */ true);
-
-    // Make sure theme is applied to the Window decorView similar to Activity#setTheme, to ensure
-    // that the dynamic colors will be applied to things like ContextMenu using the DecorContext.
-    Theme windowDecorViewTheme = getWindowDecorViewTheme(activity);
-    if (windowDecorViewTheme != null) {
-      windowDecorViewTheme.applyStyle(theme, /* force= */ true);
-    }
-  }
-
-  @Nullable
-  private static Theme getWindowDecorViewTheme(@NonNull Activity activity) {
-    Window window = activity.getWindow();
-    if (window != null) {
-      // Use peekDecorView() instead of getDecorView() to avoid locking the Window.
-      View decorView = window.peekDecorView();
-      if (decorView != null) {
-        Context context = decorView.getContext();
-        if (context != null) {
-          return context.getTheme();
-        }
-      }
-    }
-    return null;
   }
 
   /**
