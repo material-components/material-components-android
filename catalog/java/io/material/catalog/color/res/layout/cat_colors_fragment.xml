@@ -24,53 +24,68 @@
   <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:baselineAligned="false">
+    android:orientation="vertical">
 
     <LinearLayout
-      android:layout_width="0dp"
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:orientation="vertical"
-      android:padding="8dp"
-      android:layout_weight="1">
+      android:orientation="horizontal"
+      android:baselineAligned="false">
 
       <LinearLayout
-        android:id="@+id/cat_colors_surfaces"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+          android:id="@+id/cat_colors_surfaces"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical">
+
+          <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
+            android:text="@string/cat_color_surfaces" />
+        </LinearLayout>
+
+        <LinearLayout
+          android:id="@+id/cat_colors_utility"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical">
+
+          <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
+            android:text="@string/cat_color_utility" />
+        </LinearLayout>
+      </LinearLayout>
+
+      <LinearLayout
+        android:id="@+id/cat_colors_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:layout_weight="1">
 
         <TextView
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:text="@string/cat_color_surfaces" />
-      </LinearLayout>
-
-      <LinearLayout
-        android:id="@+id/cat_colors_utility"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:text="@string/cat_color_utility" />
+          android:paddingBottom="8dp"
+          android:text="@string/cat_color_content" />
       </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-      android:id="@+id/cat_colors_content"
-      android:layout_width="0dp"
+    <TextView
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:orientation="vertical"
       android:padding="8dp"
-      android:layout_weight="1">
-
-      <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/cat_color_content" />
-    </LinearLayout>
+      android:text="@string/cat_color_utility_note" />
   </LinearLayout>
 </ScrollView>

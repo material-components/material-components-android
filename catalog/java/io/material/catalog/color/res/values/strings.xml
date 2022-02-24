@@ -47,6 +47,7 @@
   <string name="cat_color_surfaces" translatable="false">Surfaces</string>
   <string name="cat_color_utility" translatable="false">Utility</string>
   <string name="cat_color_content" translatable="false">Content</string>
+  <string name="cat_color_utility_note" translatable="false">Note: When dynamic color is enabled, the Error color roles will look different from baseline because they will be harmonized with Primary by default.</string>
 
   <string name="cat_color_role_primary" translatable="false">Primary</string>
   <string name="cat_color_role_on_primary" translatable="false">On Primary</string>
