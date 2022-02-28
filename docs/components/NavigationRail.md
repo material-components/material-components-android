@@ -112,6 +112,14 @@ Which results in:
 
 ![The navigation rail container is 72 dp wide by default.](assets/navigationrail/navigation-rail-demo.png)
 
+By default, Navigation rail adds top and bottom padding according to top and
+bottom window insets—helping the header layout and menu items dodge system
+spaces. This is controlled by the `android:fitsSystemWindowInsets` attribute,
+which is set to true by default. To remove this behavior, set
+`android:fitsSystemWindowInsets` to `false` or opt in or out of the top and
+bottom insets independently by using `app:paddingTopSystemWindowInsets` and
+`app:paddingBottomSystemWindowInsets`.
+
 ### Making navigation rail accessible
 
 You should set an `android:title` for each of your `menu` items so that screen
@@ -273,10 +281,13 @@ The following is an anatomy diagram for the navigation rail:
 
 #### Container attributes
 
-**Element**   | **Attribute**        | **Related methods** | **Default value**
-------------- | -------------------- | ------------------- | -----------------
-**Color**     | `app:backgroundTint` | N/A                 | `?attr/colorSurface`
-**Elevation** | `app:elevation`      | `setElevation`      | `0dp`
+**Element**                             | **Attribute**                         | **Related methods**                               | **Default value**
+--------------------------------------- | ------------------------------------- | ------------------------------------------------- | -----------------
+**Color**                               | `app:backgroundTint`                  | N/A                                               | `?attr/colorSurface`
+**Elevation**                           | `app:elevation`                       | `setElevation`                                    | `0dp`
+**Fits system windows**                 | `android:fitsSystemWindows`           | `getFitsSystemWindows`<br/>`setFitsSystemWindows` | `true`
+**Padding top system window insets**    | `app:paddingTopSystemWindowInsets`    | N/A                                               | `null`
+**Padding bottom system window insets** | `app:paddingBottomSystemWindowInsets` | N/A                                               | `null`
 
 #### Header attributes
 
