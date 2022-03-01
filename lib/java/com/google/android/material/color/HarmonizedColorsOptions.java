@@ -59,9 +59,9 @@ public class HarmonizedColorsOptions {
     return context;
   }
 
-  /** Returns the int array of color resources for harmonization. */
+  /** Returns the int array of color resource ids for harmonization. */
   @NonNull
-  public int[] getColorResourcesIds() {
+  public int[] getColorResourceIds() {
     return colorResourceIds;
   }
 
@@ -92,9 +92,9 @@ public class HarmonizedColorsOptions {
       this.context = context;
     }
 
-    /** Sets the int array of color resources ids for harmonization. */
+    /** Sets the int array of color resource ids for harmonization. */
     @NonNull
-    public Builder setColorResourcesIds(@NonNull int[] colorResourceIds) {
+    public Builder setColorResourceIds(@NonNull int[] colorResourceIds) {
       this.colorResourceIds = colorResourceIds;
       return this;
     }

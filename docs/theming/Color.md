@@ -408,7 +408,7 @@ an array of resource ids for the color resources you'd like to harmonize, a
 ```
 HarmonizedColorsOptions options =
     new HarmonizedColorsOptions.Builder(activity)
-        .setColorResourcesIds(colorResources)
+        .setColorResourceIds(colorResources)
         .setColorAttributes(HarmonizedColorAttributes.create(attributes))
         .setColorAttributeToHarmonizeWith(colorAttributeResId)
         .build();

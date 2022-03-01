@@ -102,7 +102,7 @@ public class HarmonizedColors {
         MaterialColors.getColor(context, options.getColorAttributeToHarmonizeWith(), TAG);
 
     // Harmonize color resources.
-    for (int colorResourceId : options.getColorResourcesIds()) {
+    for (int colorResourceId : options.getColorResourceIds()) {
       int harmonizedColor =
           MaterialColors.harmonize(
               ContextCompat.getColor(context, colorResourceId), colorToHarmonizeWith);
