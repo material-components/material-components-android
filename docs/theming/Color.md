@@ -409,7 +409,7 @@ an array of resource ids for the color resources you'd like to harmonize, a
 HarmonizedColorsOptions options =
     new HarmonizedColorsOptions.Builder(activity)
         .setColorResourcesIds(colorResources)
-        .setColorAttributes(new HarmonizedColorAttributes.create(attributes))
+        .setColorAttributes(HarmonizedColorAttributes.create(attributes))
         .setColorAttributeToHarmonizeWith(colorAttributeResId)
         .build();
 ```
@@ -451,8 +451,10 @@ our theme overlay at `R.style.ThemeOverlay_Material3_HarmonizedColors`.
 
 You can also use color resources harmonization separate from dynamic colors if
 needed, but the general use case for color resources harmonization is after
-dynamic colors have been applied. Here's an example use case to harmonize M3
-Error colors by default in the Dynamic Colors callback:
+dynamic colors have been applied, to ensure visual cohesion for reserved colors
+(e.g. semantic colors) in a M3 theme with dynamic colors enabled. A Material
+suggested default when applying dynamic colors, is to harmonize M3 Error colors
+in the callback when constructing `DynamicColorsOptions`:
 
 ```
 DynamicColorsOptions dynamicColorOptions =
@@ -460,8 +462,8 @@ DynamicColorsOptions dynamicColorOptions =
         ...
         .setOnAppliedCallback(
             activity ->
-                        HarmonizedColors.applyIfAvailable(
-                            HarmonizedColorsOptions.createMaterialDefaults(activity)))
+                HarmonizedColors.applyIfAvailable(
+                    HarmonizedColorsOptions.createMaterialDefaults(activity)))
         .build()
 DynamicColors.applyIfAvailable(dynamicColorOptions);
 ```
