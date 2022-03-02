@@ -277,22 +277,26 @@ class ClockFaceView extends RadialViewGroup implements OnRotateListener {
         continue;
       }
       tv.getDrawingRect(textViewRect);
-      textViewRect.offset(tv.getPaddingLeft(), tv.getPaddingTop());
       offsetDescendantRectToMyCoords(tv, textViewRect);
 
-      scratch.set(textViewRect);
-      if (RectF.intersects(selectorBox, scratch)) {
-        tv.getPaint().setShader(getGradient(selectorBox));
-        tv.setSelected(true);
-      } else {
-        tv.getPaint().setShader(null); // clear
-        tv.setSelected(false);
-      }
+      // set selection
+      tv.setSelected(selectorBox.contains(textViewRect.centerX(), textViewRect.centerY()));
+
+      // set gradient
+      RadialGradient radialGradient = getGradientForTextView(selectorBox, textViewRect, tv);
+      tv.getPaint().setShader(radialGradient);
       tv.invalidate();
     }
   }
 
-  private RadialGradient getGradient(RectF selectorBox) {
+  @Nullable
+  private RadialGradient getGradientForTextView(RectF selectorBox, Rect tvBox, TextView tv) {
+    scratch.set(tvBox);
+    scratch.offset(tv.getPaddingLeft(), tv.getPaddingTop());
+    if (!RectF.intersects(selectorBox, scratch)) {
+      return null;
+    }
+
     return new RadialGradient(
         (selectorBox.centerX() - scratch.left),
         (selectorBox.centerY() - scratch.top),
