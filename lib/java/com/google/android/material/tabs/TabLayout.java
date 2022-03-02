@@ -28,6 +28,7 @@ import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wra
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
@@ -54,6 +55,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.ViewGroup;
@@ -776,6 +778,27 @@ public class TabLayout extends HorizontalScrollView {
       tab.setContentDescription(item.getContentDescription());
     }
     addTab(tab);
+  }
+
+  private boolean isScrollingEnabled() {
+    return getTabMode() == MODE_SCROLLABLE || getTabMode() == MODE_AUTO;
+  }
+
+  @Override
+  public boolean onInterceptTouchEvent(MotionEvent event) {
+    // When a touch event is intercepted and the tab mode is fixed, do not continue to process the
+    // touch event. This will prevent unexpected scrolling from occurring in corner cases (i.e. a
+    // layout in fixed mode that has padding should not scroll for the width of the padding).
+    return isScrollingEnabled() && super.onInterceptTouchEvent(event);
+  }
+
+  @SuppressLint("ClickableViewAccessibility")
+  @Override
+  public boolean onTouchEvent(MotionEvent event) {
+    if (event.getActionMasked() == MotionEvent.ACTION_SCROLL && !isScrollingEnabled()) {
+      return false;
+    }
+    return super.onTouchEvent(event);
   }
 
   /**
