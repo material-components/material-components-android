@@ -49,9 +49,13 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.core.util.Pair;
+import androidx.core.view.OnApplyWindowInsetsListener;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import com.google.android.material.dialog.InsetDialogOnTouchListener;
 import com.google.android.material.internal.CheckableImageButton;
+import com.google.android.material.internal.EdgeToEdgeUtils;
+import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import java.lang.annotation.Retention;
@@ -303,6 +307,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     if (fullscreen) {
       window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
       window.setBackgroundDrawable(background);
+      enableEdgeToEdge(window);
     } else {
       window.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
       int inset =
@@ -349,6 +354,32 @@ public final class MaterialDatePicker<S> extends DialogFragment {
   @Nullable
   public final S getSelection() {
     return getDateSelector().getSelection();
+  }
+
+  private void enableEdgeToEdge(Window window) {
+    final View headerLayout = requireView().findViewById(R.id.fullscreen_header);
+    EdgeToEdgeUtils.applyEdgeToEdge(
+        window, true, ViewUtils.getBackgroundColor(headerLayout), null);
+    final int originalPaddingTop = headerLayout.getPaddingTop();
+    final int originalHeaderHeight = headerLayout.getLayoutParams().height;
+    ViewCompat.setOnApplyWindowInsetsListener(
+        headerLayout,
+        new OnApplyWindowInsetsListener() {
+          @Override
+          public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
+            int topInset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top;
+            if (originalHeaderHeight >= 0) {
+              headerLayout.getLayoutParams().height = originalHeaderHeight + topInset;
+              headerLayout.setLayoutParams(headerLayout.getLayoutParams());
+            }
+            headerLayout.setPadding(
+                headerLayout.getPaddingLeft(),
+                originalPaddingTop + topInset,
+                headerLayout.getPaddingRight(),
+                headerLayout.getPaddingBottom());
+            return insets;
+          }
+        });
   }
 
   private void updateHeader() {

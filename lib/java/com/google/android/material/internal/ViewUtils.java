@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
@@ -338,5 +339,15 @@ public class ViewUtils {
     } else {
       viewTreeObserver.removeGlobalOnLayoutListener(victim);
     }
+  }
+
+  /**
+   * Returns the provided view's background color, if it has ColorDrawable as its background, or
+   * {@code null} if the background has a different drawable type.
+   */
+  @Nullable
+  public static Integer getBackgroundColor(@NonNull View view) {
+    return view.getBackground() instanceof ColorDrawable
+        ? ((ColorDrawable) view.getBackground()).getColor() : null;
   }
 }
