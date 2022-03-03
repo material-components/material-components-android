@@ -147,7 +147,7 @@ import java.util.LinkedHashSet;
  * <p>The {@link TextInputEditText} class is provided to be used as the input text child of this
  * layout. Using TextInputEditText instead of an EditText provides accessibility support for the
  * text field and allows TextInputLayout greater control over the visual aspects of the text field.
- * An example usage is as so:
+ * This is an example usage:
  *
  * <pre>
  * &lt;com.google.android.material.textfield.TextInputLayout
@@ -168,6 +168,11 @@ import java.util.LinkedHashSet;
  * not update TextInputLayout's hint. To avoid unintended behavior, call {@link
  * TextInputLayout#setHint(CharSequence)} and {@link TextInputLayout#getHint()} on TextInputLayout,
  * instead of on EditText.
+ *
+ * If you construct the {@link TextInputEditText} child of a {@link TextInputLayout}
+ * programmatically, you should use {@link TextInputLayout}'s `context` to create the view. This
+ * will allow {@link TextInputLayout} to pass along the appropriate styling to the
+ * {@link TextInputEditText}.
  *
  * <p>If the {@link EditText} child is not a {@link TextInputEditText}, make sure to set the {@link
  * EditText}'s {@code android:background} to {@code null} when using an outlined or filled text

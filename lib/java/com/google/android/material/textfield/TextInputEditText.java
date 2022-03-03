@@ -44,6 +44,11 @@ import com.google.android.material.internal.ThemeEnforcement;
  *
  * <p>Using this class allows us to display a hint in the IME when in 'extract' mode and provides
  * accessibility support for {@link com.google.android.material.textfield.TextInputLayout}.
+ *
+ * <p><strong>Note:</strong> If you programmatically construct a {@link TextInputEditText} as a
+ * child of a {@link TextInputLayout}, you should use {@link TextInputLayout}'s `context` to
+ * create the view. This will allow {@link TextInputLayout} to pass along the appropriate styling
+ * to the {@link TextInputEditText}.
  */
 public class TextInputEditText extends AppCompatEditText {
 
