@@ -44,15 +44,15 @@ public class MaterialColors {
 
   // TODO(b/199495444): token integration for color roles luminance values.
   // Tone means degrees of lightness, in the range of 0 (inclusive) to 100 (inclusive).
+  // Spec: https://m3.material.io/styles/color/the-color-system/color-roles
   private static final int TONE_ACCENT_LIGHT = 40;
-
   private static final int TONE_ON_ACCENT_LIGHT = 100;
   private static final int TONE_ACCENT_CONTAINER_LIGHT = 90;
   private static final int TONE_ON_ACCENT_CONTAINER_LIGHT = 10;
-  private static final int TONE_ACCENT_DARK = 70;
-  private static final int TONE_ON_ACCENT_DARK = 10;
-  private static final int TONE_ACCENT_CONTAINER_DARK = 20;
-  private static final int TONE_ON_ACCENT_CONTAINER_DARK = 80;
+  private static final int TONE_ACCENT_DARK = 80;
+  private static final int TONE_ON_ACCENT_DARK = 20;
+  private static final int TONE_ACCENT_CONTAINER_DARK = 30;
+  private static final int TONE_ON_ACCENT_CONTAINER_DARK = 90;
 
   private MaterialColors() {
     // Private constructor to prevent unwanted construction.
