@@ -279,7 +279,7 @@ good alternative to toggle buttons or checkboxes.
 
 ### Filter chip example
 
-The following example shows six filter chips.
+The following example shows filter chips.
 
 !["6 white "Filter" chips spread across 2 lines: "Filters" 1 and 3 selected and
 are light purple and include checkmarks."](assets/chips/chips_filter.png)
@@ -334,9 +334,9 @@ that input by converting text into chips.
 
 ### Input chip example
 
-The following example shows three input chips.
+The following example shows input chips.
 
-!["Input chips with texts Input 1 to 3."](assets/chips/chips_input.png)
+!["Input chips with texts Input 1 to 6."](assets/chips/chips_input.png)
 
 In the layout:
 
@@ -370,7 +370,7 @@ suggestions, such as offering possible responses or providing search filters.
 
 ### Suggestion chip example
 
-The following example shows three suggestion chips.
+The following example shows suggestion chips.
 
 !["3 suggestion chips, where suggestion 1 is unselected with a solid border and
 white background, suggestion 2 is selected with no border and a light purple
