@@ -1016,7 +1016,10 @@ abstract class BaseSlider<
   }
 
   /**
-   * Returns the radius of the thumb.
+   * Returns the radius of the thumb. Note that setting this will also affect custom drawables set
+   * through {@link #setCustomThumbDrawable(int)}, {@link #setCustomThumbDrawable(Drawable)},
+   * {@link #setCustomThumbDrawablesForValues(int...)}, and
+   * {@link #setCustomThumbDrawablesForValues(Drawable...)}.
    *
    * @see #setThumbRadius(int)
    * @see #setThumbRadiusResource(int)
@@ -1028,7 +1031,10 @@ abstract class BaseSlider<
   }
 
   /**
-   * Sets the radius of the thumb in pixels.
+   * Sets the radius of the thumb in pixels. Note that setting this will also affect custom
+   * drawables set through {@link #setCustomThumbDrawable(int)},
+   * {@link #setCustomThumbDrawable(Drawable)}, {@link #setCustomThumbDrawablesForValues(int...)},
+   * and {@link #setCustomThumbDrawablesForValues(Drawable...)}.
    *
    * @see #getThumbRadius()
    * @attr ref com.google.android.material.R.styleable#Slider_thumbRadius
@@ -1056,7 +1062,10 @@ abstract class BaseSlider<
   }
 
   /**
-   * Sets the radius of the thumb from a dimension resource.
+   * Sets the radius of the thumb from a dimension resource. Note that setting this will also affect
+   * custom drawables set through {@link #setCustomThumbDrawable(int)},
+   * {@link #setCustomThumbDrawable(Drawable)},  {@link #setCustomThumbDrawablesForValues(int...)},
+   * and {@link #setCustomThumbDrawablesForValues(Drawable...)}.
    *
    * @see #getThumbRadius()
    * @attr ref com.google.android.material.R.styleable#Slider_thumbRadius
