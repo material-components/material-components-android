@@ -117,10 +117,6 @@ class TimePickerView extends ConstraintLayout implements TimePickerControls {
     hourView = findViewById(R.id.material_hour_tv);
     clockHandView = findViewById(R.id.material_clock_hand);
 
-    ViewCompat.setAccessibilityLiveRegion(
-        minuteView, ViewCompat.ACCESSIBILITY_LIVE_REGION_ASSERTIVE);
-    ViewCompat.setAccessibilityLiveRegion(hourView, ViewCompat.ACCESSIBILITY_LIVE_REGION_ASSERTIVE);
-
     setupDoubleTap();
 
     setUpDisplay();
@@ -213,8 +209,17 @@ class TimePickerView extends ConstraintLayout implements TimePickerControls {
 
   @Override
   public void setActiveSelection(@ActiveSelection int selection) {
-    minuteView.setChecked(selection == MINUTE);
-    hourView.setChecked(selection == HOUR);
+    updateSelection(minuteView, selection == MINUTE);
+    updateSelection(hourView, selection == HOUR);
+  }
+
+  private void updateSelection(Chip chip, boolean isSelected) {
+    chip.setChecked(isSelected);
+    ViewCompat.setAccessibilityLiveRegion(
+        chip,
+        isSelected
+            ? ViewCompat.ACCESSIBILITY_LIVE_REGION_ASSERTIVE
+            : ViewCompat.ACCESSIBILITY_LIVE_REGION_NONE);
   }
 
   public void addOnRotateListener(OnRotateListener onRotateListener) {
