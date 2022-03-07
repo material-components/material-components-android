@@ -19,13 +19,47 @@ package com.google.android.material.textfield;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.view.ViewCompat;
 import com.google.android.material.internal.CheckableImageButton;
 import java.util.Arrays;
 
-class IconTintHelper {
-  private IconTintHelper() {}
+class IconHelper {
+  private IconHelper() {}
+
+  static void setIconOnClickListener(
+      @NonNull CheckableImageButton iconView,
+      @Nullable OnClickListener onClickListener,
+      @Nullable OnLongClickListener onLongClickListener) {
+    iconView.setOnClickListener(onClickListener);
+    setIconClickable(iconView, onLongClickListener);
+  }
+
+  static void setIconOnLongClickListener(
+      @NonNull CheckableImageButton iconView, @Nullable OnLongClickListener onLongClickListener) {
+    iconView.setOnLongClickListener(onLongClickListener);
+    setIconClickable(iconView, onLongClickListener);
+  }
+
+  private static void setIconClickable(
+      @NonNull CheckableImageButton iconView, @Nullable OnLongClickListener onLongClickListener) {
+    boolean iconClickable = ViewCompat.hasOnClickListeners(iconView);
+    boolean iconLongClickable = onLongClickListener != null;
+    boolean iconFocusable = iconClickable || iconLongClickable;
+    iconView.setFocusable(iconFocusable);
+    iconView.setClickable(iconClickable);
+    iconView.setPressable(iconClickable);
+    iconView.setLongClickable(iconLongClickable);
+    ViewCompat.setImportantForAccessibility(
+        iconView,
+        iconFocusable
+            ? ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES
+            : ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO);
+  }
 
   /**
    * Applies the given icon tint according to the merged view state of the host text input layout
