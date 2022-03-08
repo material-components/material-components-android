@@ -1055,6 +1055,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
       internalAutoHideListener = listener;
     }
 
+    // dereference of possibly-null reference lp
+    @SuppressWarnings("nullness:dereference.of.nullable")
     private boolean shouldUpdateVisibility(
         @NonNull View dependency, @NonNull FloatingActionButton child) {
       final CoordinatorLayout.LayoutParams lp =
@@ -1104,6 +1106,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
       return true;
     }
 
+    // dereference of possibly-null reference lp
+    @SuppressWarnings("nullness:dereference.of.nullable")
     private boolean updateFabVisibilityForBottomSheet(
         @NonNull View bottomSheet, @NonNull FloatingActionButton child) {
       if (!shouldUpdateVisibility(bottomSheet, child)) {
@@ -1165,6 +1169,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
      * offsets our layout position so that we're positioned correctly if we're on one of our
      * parent's edges.
      */
+    // dereference of possibly-null reference lp
+    @SuppressWarnings("nullness:dereference.of.nullable")
     private void offsetIfNeeded(
         @NonNull CoordinatorLayout parent, @NonNull FloatingActionButton fab) {
       final Rect padding = fab.shadowPadding;

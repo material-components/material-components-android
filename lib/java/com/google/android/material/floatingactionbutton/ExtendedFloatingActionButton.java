@@ -707,12 +707,16 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
    */
   static final Property<View, Float> WIDTH =
       new Property<View, Float>(Float.class, "width") {
+        // dereference of possibly-null reference object.getLayoutParams()
+        @SuppressWarnings("nullness:dereference.of.nullable")
         @Override
         public void set(@NonNull View object, @NonNull Float value) {
           object.getLayoutParams().width = value.intValue();
           object.requestLayout();
         }
 
+        // dereference of possibly-null reference object.getLayoutParams()
+        @SuppressWarnings("nullness:dereference.of.nullable")
         @NonNull
         @Override
         public Float get(@NonNull View object) {
@@ -726,12 +730,16 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
    */
   static final Property<View, Float> HEIGHT =
       new Property<View, Float>(Float.class, "height") {
+        // dereference of possibly-null reference object.getLayoutParams()
+        @SuppressWarnings("nullness:dereference.of.nullable")
         @Override
         public void set(@NonNull View object, @NonNull Float value) {
           object.getLayoutParams().height = value.intValue();
           object.requestLayout();
         }
 
+        // dereference of possibly-null reference object.getLayoutParams()
+        @SuppressWarnings("nullness:dereference.of.nullable")
         @NonNull
         @Override
         public Float get(@NonNull View object) {
@@ -945,6 +953,8 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
       internalAutoShrinkCallback = callback;
     }
 
+    // dereference of possibly-null reference lp
+    @SuppressWarnings("nullness:dereference.of.nullable")
     private boolean shouldUpdateVisibility(
         @NonNull View dependency, @NonNull ExtendedFloatingActionButton child) {
       final CoordinatorLayout.LayoutParams lp =
@@ -988,6 +998,8 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
       return true;
     }
 
+    // dereference of possibly-null reference lp
+    @SuppressWarnings("nullness:dereference.of.nullable")
     private boolean updateFabVisibilityForBottomSheet(
         @NonNull View bottomSheet, @NonNull ExtendedFloatingActionButton child) {
       if (!shouldUpdateVisibility(bottomSheet, child)) {
