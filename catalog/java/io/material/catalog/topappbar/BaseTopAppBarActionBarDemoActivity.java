@@ -114,4 +114,14 @@ public abstract class BaseTopAppBarActionBarDemoActivity extends DemoActivity {
   public int getActionBarDemoDescription() {
     return R.string.cat_topappbar_action_bar_description;
   }
+
+  @Override
+  protected boolean shouldSetUpContainerTransform() {
+    return false;
+  }
+
+  @Override
+  protected boolean shouldApplyEdgeToEdgePreference() {
+    return false;
+  }
 }

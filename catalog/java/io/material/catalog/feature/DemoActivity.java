@@ -65,8 +65,11 @@ public abstract class DemoActivity extends AppCompatActivity implements HasAndro
 
     safeInject();
     super.onCreate(bundle);
-    WindowPreferencesManager windowPreferencesManager = new WindowPreferencesManager(this);
-    windowPreferencesManager.applyEdgeToEdgePreference(getWindow());
+
+    if (shouldApplyEdgeToEdgePreference()) {
+      WindowPreferencesManager windowPreferencesManager = new WindowPreferencesManager(this);
+      windowPreferencesManager.applyEdgeToEdgePreference(getWindow());
+    }
 
     setContentView(R.layout.cat_demo_activity);
 
@@ -102,6 +105,10 @@ public abstract class DemoActivity extends AppCompatActivity implements HasAndro
   protected boolean shouldSetUpContainerTransform() {
     return VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP
         && getIntent().getStringExtra(EXTRA_TRANSITION_NAME) != null;
+  }
+
+  protected boolean shouldApplyEdgeToEdgePreference() {
+    return true;
   }
 
   @Override
