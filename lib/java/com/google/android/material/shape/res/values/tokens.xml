@@ -71,17 +71,4 @@
     <item name="cornerSizeTopLeft">4dp</item>
     <item name="cornerSizeTopRight">4dp</item>
   </style>
-  <!-- Deprecated tokens -->
-  <style name="ShapeAppearance.M3.Sys.Shape.Large" parent="">
-    <item name="cornerFamily">rounded</item>
-    <item name="cornerSize">8dp</item>
-  </style>
-  <style name="ShapeAppearance.M3.Sys.Shape.Medium" parent="">
-    <item name="cornerFamily">rounded</item>
-    <item name="cornerSize">8dp</item>
-  </style>
-  <style name="ShapeAppearance.M3.Sys.Shape.Small" parent="">
-    <item name="cornerFamily">rounded</item>
-    <item name="cornerSize">4dp</item>
-  </style>
 </resources>

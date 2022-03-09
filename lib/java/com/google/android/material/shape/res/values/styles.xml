@@ -33,7 +33,24 @@
     <item name="cornerSize">@dimen/mtrl_shape_corner_size_large_component</item>
   </style>
 
-  <style name="ShapeAppearance.Material3.SmallComponent" parent="ShapeAppearance.M3.Sys.Shape.Small"/>
-  <style name="ShapeAppearance.Material3.MediumComponent" parent="ShapeAppearance.M3.Sys.Shape.Medium"/>
-  <style name="ShapeAppearance.Material3.LargeComponent" parent="ShapeAppearance.M3.Sys.Shape.Large"/>
+  <style name="ShapeAppearance.Material3.Corner.None" parent="ShapeAppearance.M3.Sys.Shape.Corner.None"/>
+  <style name="ShapeAppearance.Material3.Corner.ExtraSmall" parent="ShapeAppearance.M3.Sys.Shape.Corner.ExtraSmall"/>
+  <style name="ShapeAppearance.Material3.Corner.Small" parent="ShapeAppearance.M3.Sys.Shape.Corner.Small"/>
+  <style name="ShapeAppearance.Material3.Corner.Medium" parent="ShapeAppearance.M3.Sys.Shape.Corner.Medium"/>
+  <style name="ShapeAppearance.Material3.Corner.Large" parent="ShapeAppearance.M3.Sys.Shape.Corner.Large"/>
+  <style name="ShapeAppearance.Material3.Corner.ExtraLarge" parent="ShapeAppearance.M3.Sys.Shape.Corner.ExtraLarge"/>
+  <style name="ShapeAppearance.Material3.Corner.Full" parent="ShapeAppearance.M3.Sys.Shape.Corner.Full"/>
+
+  <style name="ShapeAppearance.Material3.SmallComponent" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">4dp</item>
+  </style>
+  <style name="ShapeAppearance.Material3.MediumComponent" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">8dp</item>
+  </style>
+  <style name="ShapeAppearance.Material3.LargeComponent" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">8dp</item>
+  </style>
 </resources>
