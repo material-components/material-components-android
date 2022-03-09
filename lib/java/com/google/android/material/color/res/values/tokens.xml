@@ -86,6 +86,10 @@
   <color name="m3_sys_color_light_error_container">@color/m3_ref_palette_error90</color>
   <color name="m3_sys_color_light_on_error">@color/m3_ref_palette_error100</color>
   <color name="m3_sys_color_light_on_error_container">@color/m3_ref_palette_error10</color>
+  <!-- Generated from token set (md.ref.palette) in default context. -->
+  <!-- Brand palette – Black White -->
+  <color name="m3_ref_palette_white">#ffffffff</color>
+  <color name="m3_ref_palette_black">#ff000000</color>
   <!-- Generated from token set (md.ref.palette) in context (audience=3p). -->
   <!-- Baseline palette – Primary -->
   <color name="m3_ref_palette_primary100">#ffffffff</color>
