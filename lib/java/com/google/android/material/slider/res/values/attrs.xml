@@ -32,8 +32,10 @@
       <enum name="floating" value="0"/>
       <!-- Mode that draws the label within the bounds of the view. -->
       <enum name="withinBounds" value="1"/>
-      <!-- Mode that prevents the label from being drawn -->
+      <!-- Mode that prevents the label from being drawn. -->
       <enum name="gone" value="2"/>
+      <!-- Mode that always draws the label. -->
+      <enum name="visible" value="3"/>
     </attr>
     <!-- The style used for the label TooltipDrawable. -->
     <attr name="labelStyle" format="reference" />

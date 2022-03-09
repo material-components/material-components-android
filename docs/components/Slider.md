@@ -145,6 +145,7 @@ The modes of `app:labelBehavior` are:
     view
 *   `withinBounds` - draws the label floating within the bounds of this view
 *   `gone` - prevents the label from being drawn
+*   `visible` - always draws the label
 
 ### Setting a `LabelFormatter`
 

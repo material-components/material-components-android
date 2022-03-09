@@ -27,6 +27,7 @@ public interface LabelFormatter {
   int LABEL_FLOATING = 0;
   int LABEL_WITHIN_BOUNDS = 1;
   int LABEL_GONE = 2;
+  int LABEL_VISIBLE = 3;
 
   @NonNull
   String getFormattedValue(float value);
