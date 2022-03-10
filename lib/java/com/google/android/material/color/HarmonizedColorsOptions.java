@@ -18,20 +18,20 @@ package com.google.android.material.color;
 
 import com.google.android.material.R;
 
-import android.content.Context;
 import androidx.annotation.AttrRes;
+import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 
 /**
- * Wrapper class for specifying harmonization options, whether to harmonize an int array of color
- * resources, an int array of color attributes and/or harmonize with theme overlay.
+ * Wrapper class for specifying harmonization options, whether to harmonize an array of color
+ * resources, or a {@link HarmonizedColorAttributes}, along with the color attribute provided to
+ * harmonize with.
  */
 public class HarmonizedColorsOptions {
 
-  @NonNull private final Context context;
-  @NonNull private final int[] colorResourceIds;
+  @NonNull @ColorRes private final int[] colorResourceIds;
   @Nullable private final HarmonizedColorAttributes colorAttributes;
   @AttrRes private final int colorAttributeToHarmonizeWith;
 
@@ -40,73 +40,80 @@ public class HarmonizedColorsOptions {
    * Primary.
    */
   @NonNull
-  public static HarmonizedColorsOptions createMaterialDefaults(@NonNull Context context) {
-    return new HarmonizedColorsOptions.Builder(context)
+  public static HarmonizedColorsOptions createMaterialDefaults() {
+    return new HarmonizedColorsOptions.Builder()
         .setColorAttributes(HarmonizedColorAttributes.createMaterialDefaults())
         .build();
   }
 
   private HarmonizedColorsOptions(Builder builder) {
-    this.context = builder.context;
     this.colorResourceIds = builder.colorResourceIds;
     this.colorAttributes = builder.colorAttributes;
     this.colorAttributeToHarmonizeWith = builder.colorAttributeToHarmonizeWith;
   }
 
-  /** Returns the {@link Context} for harmonization. */
+  /** Returns the array of color resource ids that needs to be harmonized. */
   @NonNull
-  public Context getContext() {
-    return context;
-  }
-
-  /** Returns the int array of color resource ids for harmonization. */
-  @NonNull
+  @ColorRes
   public int[] getColorResourceIds() {
     return colorResourceIds;
   }
 
-  /** Returns the color attributes for harmonization. */
+  /** Returns the {@link HarmonizedColorAttributes} that needs to be harmonized. */
   @Nullable
   public HarmonizedColorAttributes getColorAttributes() {
     return colorAttributes;
   }
 
-  /** Returns the color attribute to harmonize with for harmonization. */
+  /**
+   * Returns the color attribute to harmonize color resources and {@link HarmonizedColorAttributes}
+   * with.
+   */
   @AttrRes
   public int getColorAttributeToHarmonizeWith() {
     return colorAttributeToHarmonizeWith;
   }
 
-  /**
-   * Builder class for specifying options when harmonizing colors. When building {@code
-   * ColorResourceHarmonizerOptions}, a {@link Context} is required.
-   */
+  /** Builder class for specifying options when harmonizing colors. */
   public static class Builder {
 
-    @NonNull private final Context context;
-    @NonNull private int[] colorResourceIds = new int[] {};
+    @NonNull @ColorRes private int[] colorResourceIds = new int[] {};
     @Nullable private HarmonizedColorAttributes colorAttributes;
     @AttrRes private int colorAttributeToHarmonizeWith = R.attr.colorPrimary;
 
-    public Builder(@NonNull Context context) {
-      this.context = context;
-    }
-
-    /** Sets the int array of color resource ids for harmonization. */
+    /**
+     * Sets the array of color resource ids for harmonization.
+     *
+     * @param colorResourceIds The array of color resource ids that needs to be harmonized.
+     */
     @NonNull
-    public Builder setColorResourceIds(@NonNull int[] colorResourceIds) {
+    public Builder setColorResourceIds(@NonNull @ColorRes int[] colorResourceIds) {
       this.colorResourceIds = colorResourceIds;
       return this;
     }
 
-    /** Sets the harmonized color attributes for harmonization. */
+    /**
+     * Sets the harmonized color attributes for harmonization.
+     *
+     * <p>This method will look up the color resource the attribute points to, and harmonizing the
+     * color resource directly. If you are looking to harmonize only color resources, in most cases
+     * when constructing {@link HarmonizedColorsOptions},
+     * @see #setColorResourceIds(int[]) should be enough.
+     *
+     * @param colorAttributes The {@link HarmonizedColorAttributes} that needs to be harmonized.
+     */
     @Nullable
     public Builder setColorAttributes(@Nullable HarmonizedColorAttributes colorAttributes) {
       this.colorAttributes = colorAttributes;
       return this;
     }
 
-    /** Sets the color attribute to harmonize with for harmonization. */
+    /**
+     * Sets the color attribute to harmonize with.
+     *
+     * @param colorAttributeToHarmonizeWith The color attribute provided to harmonize color
+     *     resources and {@link HarmonizedColorAttributes} with.
+     */
     @NonNull
     public Builder setColorAttributeToHarmonizeWith(@AttrRes int colorAttributeToHarmonizeWith) {
       this.colorAttributeToHarmonizeWith = colorAttributeToHarmonizeWith;

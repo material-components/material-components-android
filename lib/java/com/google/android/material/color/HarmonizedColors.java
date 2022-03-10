@@ -33,20 +33,41 @@ import androidx.core.content.ContextCompat;
 import java.util.HashMap;
 import java.util.Map;
 
-/** A harmonizer class for harmonizing color resources and attributes. */
+/**
+ * A class for harmonizing color resources and attributes.
+ *
+ * <p>This class is used for harmonizing color resources/attributes defined in xml at runtime. The
+ * values of harmonized resources/attributes will be overridden, and afterwards if you retrieve the
+ * value from the associated context, or inflate resources like layouts that are using those
+ * harmonized resources/attributes, the overridden values will be used instead.
+ *
+ * <p>If you need to harmonize color resources at runtime, see:
+ * {@link #applyToContextIfAvailable(Context, HarmonizedColorsOptions)}, and
+ * {@link #wrapContextIfAvailable(Context, HarmonizedColorsOptions)}
+ */
 public class HarmonizedColors {
 
   private HarmonizedColors() {}
 
   private static final String TAG = HarmonizedColors.class.getSimpleName();
 
-  /** Harmonizes the specified color resources, attributes, and theme overlay. */
+  /**
+   * Harmonizes the specified color resources, attributes, and theme overlay in the {@link
+   * Context} provided.
+   *
+   * <p>If harmonization is not available, provided color resources and attributes in {@link
+   * HarmonizedColorsOptions} will not be harmonized.
+   *
+   * @param context The target context.
+   * @param options The {@link HarmonizedColorsOptions} object that specifies the resource ids,
+   *        color attributes to be harmonized and the color attribute to harmonize with.
+   */
   @NonNull
-  public static void applyIfAvailable(@NonNull HarmonizedColorsOptions options) {
+  public static void applyToContextIfAvailable(
+      @NonNull Context context, @NonNull HarmonizedColorsOptions options) {
     if (!isHarmonizedColorAvailable()) {
       return;
     }
-    Context context = options.getContext();
     int themeOverlay = options.getThemeOverlayResourceId();
 
     if (addResourcesLoaderToContext(context, options) && themeOverlay != 0) {
@@ -57,12 +78,18 @@ public class HarmonizedColors {
   /**
    * Wraps the given Context from HarmonizedColorsOptions with the color resources being harmonized.
    *
-   * <p>If a theme overlay is not provided in HarmonizedColorAttributes, then the context provided
-   * in HarmonizedColorsOptions will be returned.
+   * <p>If harmonization is not available, provided color resources and attributes in {@link
+   * HarmonizedColorsOptions} will not be harmonized.
+   *
+   * @param context The target context.
+   * @param options The {@link HarmonizedColorsOptions} object that specifies the resource ids,
+   *     color attributes to be harmonized and the color attribute to harmonize with.
+   * @return the new context with resources being harmonized. If resources are not harmonized
+   *     successfully, the context passed in will be returned.
    */
   @NonNull
-  public static Context wrapContextIfAvailable(@NonNull HarmonizedColorsOptions options) {
-    Context context = options.getContext();
+  public static Context wrapContextIfAvailable(
+      @NonNull Context context, @NonNull HarmonizedColorsOptions options) {
     if (!isHarmonizedColorAvailable()) {
       return context;
     }
@@ -75,9 +102,16 @@ public class HarmonizedColors {
     return addResourcesLoaderToContext(newContext, options) ? newContext : context;
   }
 
-  /** Returns {@code true} if harmonized colors are available on the current SDK level. */
+  /**
+   * <p>If harmonization is not available, color will not be harmonized.
+   *
+   * @see #applyToContextIfAvailable(Context, HarmonizedColorsOptions)
+   * @see #wrapContextIfAvailable(Context, HarmonizedColorsOptions)
+   * @return {@code true} if harmonized colors are available on the current SDK level, otherwise
+   * {@code false} will be returned.
+   */
   @ChecksSdkIntAtLeast(api = VERSION_CODES.R)
-  private static boolean isHarmonizedColorAvailable() {
+  public static boolean isHarmonizedColorAvailable() {
     return VERSION.SDK_INT >= VERSION_CODES.R;
   }
 
@@ -85,7 +119,8 @@ public class HarmonizedColors {
   private static boolean addResourcesLoaderToContext(
       Context context, HarmonizedColorsOptions options) {
     ResourcesLoader resourcesLoader =
-        ColorResourcesLoaderCreator.create(context, createHarmonizedColorReplacementMap(options));
+        ColorResourcesLoaderCreator.create(
+            context, createHarmonizedColorReplacementMap(context, options));
     if (resourcesLoader != null) {
       context.getResources().addLoaders(resourcesLoader);
       return true;
@@ -95,8 +130,7 @@ public class HarmonizedColors {
 
   @RequiresApi(api = VERSION_CODES.LOLLIPOP)
   private static Map<Integer, Integer> createHarmonizedColorReplacementMap(
-      HarmonizedColorsOptions options) {
-    Context context = options.getContext();
+      Context context, HarmonizedColorsOptions options) {
     Map<Integer, Integer> colorReplacementMap = new HashMap<>();
     int colorToHarmonizeWith =
         MaterialColors.getColor(context, options.getColorAttributeToHarmonizeWith(), TAG);

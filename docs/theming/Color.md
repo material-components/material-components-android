@@ -228,24 +228,39 @@ If the app is running on Android S+, dynamic colors will be applied to the
 activity. You can also apply a custom theme overlay or a precondition as
 depicted in the application section above.
 
-##### Apply dynamic colors using `DynamicColorsOptions`
+##### Apply dynamic colors to all activities in the app using `DynamicColorsOptions`
 
-You also have the option to apply dynamic colors by passing in a
-`DynamicColorsOptions` object. When constructing `DynamicColorsOptions`, an
-Application or Activity is required as to where dynamic colors will be applied.
-You may optionally specify a customized theme overlay, likely inheriting from the
-`Material3` theme overlays above and/or a precondition, to have finer control over
-theme overlay deployment. You may also optionally specify a `OnAppliedCallback`
-function, which will be called after dynamic colors have been applied:
+You also have the option to apply dynamic colors to all activities in the app by
+passing in a `DynamicColorsOptions` object. When constructing
+`DynamicColorsOptions`, you may optionally specify a customized theme overlay,
+likely inheriting from the `Material3` theme overlays above and/or a
+precondition, to have finer control over theme overlay deployment. You may also
+optionally specify an `OnAppliedCallback` function, which will be called after
+dynamic colors have been applied:
 
 ```
 DynamicColorsOptions dynamicColorOptions =
-    new DynamicColorsOptions.Builder(application)
+    new DynamicColorsOptions.Builder()
         .setThemeOverlay(themeOverlay)
         .setPrecondition(precondition)
         .setOnAppliedCallback(onAppliedCallback)
         .build()
-DynamicColors.applyIfAvailable(dynamicColorOptions);
+DynamicColors.applyToActivitiesIfAvailable(application, dynamicColorOptions);
+```
+
+##### Apply dynamic colors to a specific activity using `DynamicColorsOptions`
+
+You can also apply dynamic colors to a specific activity in the app by passing
+in the specific activity and a `DynamicColorsOptions` object:
+
+```
+DynamicColorsOptions dynamicColorOptions =
+    new DynamicColorsOptions.Builder()
+        .setThemeOverlay(themeOverlay)
+        .setPrecondition(precondition)
+        .setOnAppliedCallback(onAppliedCallback)
+        .build()
+DynamicColors.applyToActivityIfAvailable(activity, dynamicColorOptions);
 ```
 
 ##### Apply dynamic colors to a specific fragment/view
@@ -394,30 +409,41 @@ harmonization won't happen and `colorToHarmonize` will be returned.
 
 ##### Color Resources Harmonization
 
-If you need to harmonize color resources at runtime and use the harmonized color
-resources in xml, call:
-
-```
-HarmonizedColors.applyIfAvailable(harmonizedColorsOptions);
-```
-To construct a `HarmonizedColorsOptions`, a `Context` is required to specify
-where the harmonized color resources will be applied. You can optionally pass in
-an array of resource ids for the color resources you'd like to harmonize, a
+We've provided the `HarmonizedColors` and `HarmonizedColorsOptions` classes in
+the `com.google.android.material.color` package for color resources
+harmonization. `HarmonizedColorsOptions.Builder` is a Builder class and to
+construct a `HarmonizedColorsOptions`. You can optionally pass in an array of
+resource ids for the color resources you'd like to harmonize, a
 `HarmonizedColorAttributes` object and/or the color attribute to harmonize with:
 
 ```
 HarmonizedColorsOptions options =
-    new HarmonizedColorsOptions.Builder(activity)
+    new HarmonizedColorsOptions.Builder()
         .setColorResourceIds(colorResources)
         .setColorAttributes(HarmonizedColorAttributes.create(attributes))
         .setColorAttributeToHarmonizeWith(colorAttributeResId)
         .build();
 ```
 
+In the `HarmonizedColorsOptions` class, we also provided a convenience method
+`createMaterialDefaults()`, with Error colors being harmonized by default.
+
+```
+HarmonizedColorsOptions options = HarmonizedColorsOptions.createMaterialDefaults();
+HarmonizedColors.applyToContextIfAvailable(context, options);
+```
+
+If you need to harmonize color resources at runtime to a context and use the
+harmonized color resources in xml, call:
+
+```
+HarmonizedColors.applyToContextIfAvailable(context, harmonizedColorsOptions);
+```
+
 To return a new `Context` with color resources being harmonized, call:
 
 ```
-HarmonizedColors.wrapContextIfAvailable(harmonizedColorsOptions);
+HarmonizedColors.wrapContextIfAvailable(context, harmonizedColorsOptions);
 ```
 
 ##### `HarmonizedColorAttributes`
@@ -430,14 +456,63 @@ Static Factory Methods                                                   | Descr
 
 If the first static factory method is used, the color resource's id and value of
 the attribute will be resolved at runtime and the color resources will be
-harmonized. If you're concerned about accidentally overwriting color resources,
-the second method should be used. In this method, instead of the color resource
-that the attributes are pointing to being harmonized directly, resources value
-in the theme overlay will be replaced instead.
+harmonized.
 
-If you would like to harmonize additional color attributes along with the
-attributes in `HarmonizedColorAttributes.createMaterialDefaults()`,
-the `HarmonizedColorAttributes` would look like:
+**Note:** The way we harmonize color attributes is by looking up the color
+resource the attribute points to, and harmonizing the color resource directly.
+If you are looking to harmonize only color resources, in most cases when
+constructing `HarmonizedColorsOptions`, the
+`setColorResourceIds(colorResources)` method should be enough.
+
+If you're concerned about accidentally overwriting color resources, the second
+static factory method should be used. In this method, instead of the color
+resource that the color attribute is pointing to in the main theme/context being
+harmonized directly, the color resources pointed by the color attributes after
+the theme overlay is applied will be harmonized. In the theme overlay, the color
+resources pointed by the color attributes are dummy values, to avoid color
+resources that the color attributs are pointing to in the main theme/context be
+overridden.
+
+Here is an example of how we harmonize Error colors with theme overlay, to avoid
+accidentally overriding the resources from the main theme/context. We have an
+array of color attributes defined as:
+
+```
+private static final int[] HARMONIZED_MATERIAL_ATTRIBUTES =
+      new int[] {
+        R.attr.colorError,
+        R.attr.colorOnError,
+        R.attr.colorErrorContainer,
+        R.attr.colorOnErrorContainer
+      };
+```
+
+And a theme overlay defined as:
+
+```
+<style name="ThemeOverlay.Material3.HarmonizedColors" parent="">
+    <item name="colorError">@color/material_harmonized_color_error</item>
+    <item name="colorOnError">@color/material_harmonized_color_on_error</item>
+    <item name="colorErrorContainer">@color/material_harmonized_color_error_container</item>
+    <item name="colorOnErrorContainer">@color/material_harmonized_color_on_error_container</item>
+</style>
+```
+
+With this theme overlay, instead of directly overwriting the resources that
+`colorError`, `colorOnError`, `colorErrorContainer`, and `colorOnErrorContainer`
+point to in the main theme/context, we would:
+
+1.  look up the resource values in the `Context` themed by the theme overlay
+2.  retrieve the harmonized resources with Primary
+3.  override `@color/material_harmonized_color_error`,
+    `@color/material_harmonized_color_on_error`, etc. with the harmonized colors
+
+That way the Error roles in the theme overlay would point to harmonized
+resources.
+
+If you would like to harmonize additional color attributes along with
+harmonizing Error roles by default, the `HarmonizedColorAttributes` would look
+like:
 
 ```
 HarmonizedColorAttributes.create(
@@ -462,10 +537,11 @@ DynamicColorsOptions dynamicColorOptions =
         ...
         .setOnAppliedCallback(
             activity ->
-                HarmonizedColors.applyIfAvailable(
-                    HarmonizedColorsOptions.createMaterialDefaults(activity)))
+                HarmonizedColors.applyToContextIfAvailable(
+                    activity,
+                    HarmonizedColorsOptions.createMaterialDefaults()))
         .build()
-DynamicColors.applyIfAvailable(dynamicColorOptions);
+DynamicColors.applyToActivityIfAvailable(activity, dynamicColorOptions);
 ```
 
 For color ressources harmonization in a fragment/view, you would use the context
@@ -478,10 +554,12 @@ harmonization:
 Context newContext = DynamicColors.wrapContextIfAvailable(getContext());
 
 HarmonizedColorsOptions options =
-    new HarmonizedColorsOptions.Builder(newContext)
+    new HarmonizedColorsOptions.Builder()
         .setColorResources(colorResources)
         .build();
-HarmonizedColors.wrapContextIfAvailable(options);
+Context harmonizedContext = HarmonizedColors.wrapContextIfAvailable(newContext, options);
+// Usage example with the new harmonizedContext.
+MaterialColors.getColor(harmonizedContext, R.attr.customColor, -1);
 ```
 
 **Note:** This is only supported for API 30 and above.

@@ -118,7 +118,7 @@ public class DynamicColors {
    * @param application The target application.
    */
   public static void applyToActivitiesIfAvailable(@NonNull Application application) {
-    applyIfAvailable(new DynamicColorsOptions.Builder(application).build());
+    applyToActivitiesIfAvailable(application, new DynamicColorsOptions.Builder().build());
   }
 
   /**
@@ -132,7 +132,8 @@ public class DynamicColors {
    */
   public static void applyToActivitiesIfAvailable(
       @NonNull Application application, @StyleRes int theme) {
-    applyIfAvailable(new DynamicColorsOptions.Builder(application).setThemeOverlay(theme).build());
+    applyToActivitiesIfAvailable(
+        application, new DynamicColorsOptions.Builder().setThemeOverlay(theme).build());
   }
 
   /**
@@ -147,8 +148,8 @@ public class DynamicColors {
    */
   public static void applyToActivitiesIfAvailable(
       @NonNull Application application, @NonNull Precondition precondition) {
-    applyIfAvailable(
-        new DynamicColorsOptions.Builder(application).setPrecondition(precondition).build());
+    applyToActivitiesIfAvailable(
+        application, new DynamicColorsOptions.Builder().setPrecondition(precondition).build());
   }
 
   /**
@@ -179,11 +180,26 @@ public class DynamicColors {
    */
   public static void applyToActivitiesIfAvailable(
       @NonNull Application application, @StyleRes int theme, @NonNull Precondition precondition) {
-    applyIfAvailable(
-        new DynamicColorsOptions.Builder(application)
+    applyToActivitiesIfAvailable(
+        application,
+        new DynamicColorsOptions.Builder()
             .setThemeOverlay(theme)
             .setPrecondition(precondition)
             .build());
+  }
+
+  /**
+   * Applies dynamic colors to the given application with {@link DynamicColorsOptions} provided.
+   *
+   * @param application The target application.
+   * @param dynamicColorsOptions The dynamic colors options object that specifies the theme resource
+   *     ID, precondition to decide if dynamic colors should be applied and the callback function
+   *     for after dynamic colors have been applied.
+   */
+  public static void applyToActivitiesIfAvailable(
+      @NonNull Application application, @NonNull DynamicColorsOptions dynamicColorsOptions) {
+    application.registerActivityLifecycleCallbacks(
+        new DynamicColorsActivityLifecycleCallbacks(dynamicColorsOptions));
   }
 
   /**
@@ -193,7 +209,7 @@ public class DynamicColors {
    * @param activity The target activity.
    */
   public static void applyIfAvailable(@NonNull Activity activity) {
-    applyIfAvailable(new DynamicColorsOptions.Builder(activity).build());
+    applyToActivityIfAvailable(activity, new DynamicColorsOptions.Builder().build());
   }
 
   /**
@@ -203,7 +219,8 @@ public class DynamicColors {
    * @param theme The resource ID of the theme overlay that provides dynamic color definition.
    */
   public static void applyIfAvailable(@NonNull Activity activity, @StyleRes int theme) {
-    applyIfAvailable(new DynamicColorsOptions.Builder(activity).setThemeOverlay(theme).build());
+    applyToActivityIfAvailable(
+        activity, new DynamicColorsOptions.Builder().setThemeOverlay(theme).build());
   }
 
   /**
@@ -215,37 +232,28 @@ public class DynamicColors {
    */
   public static void applyIfAvailable(
       @NonNull Activity activity, @NonNull Precondition precondition) {
-    applyIfAvailable(
-        new DynamicColorsOptions.Builder(activity).setPrecondition(precondition).build());
+    applyToActivityIfAvailable(
+        activity, new DynamicColorsOptions.Builder().setPrecondition(precondition).build());
   }
 
   /**
-   * Applies dynamic colors to the given application/activity with theme overlay according to the
-   * precondition specified in the dynamic colors options.
+   * Applies dynamic colors to the given activity with {@link DynamicColorsOptions} provided.
    *
+   * @param activity The target activity.
    * @param dynamicColorsOptions The dynamic colors options object that specifies the theme resource
    *     ID, precondition to decide if dynamic colors should be applied and the callback function
    *     for after dynamic colors have been applied.
    */
-  public static void applyIfAvailable(@NonNull DynamicColorsOptions dynamicColorsOptions) {
-    Application application = dynamicColorsOptions.getApplication();
-    Activity activity = dynamicColorsOptions.getActivity();
-    if (application != null) {
-      application.registerActivityLifecycleCallbacks(
-          new DynamicColorsActivityLifecycleCallbacks(dynamicColorsOptions));
-    } else if (activity != null) {
-      applyIfAvailable(
-          activity,
-          dynamicColorsOptions.getThemeOverlay(),
-          dynamicColorsOptions.getPrecondition(),
-          dynamicColorsOptions.getOnAppliedCallback());
-    } else {
-      // This should not happen according to the design of DynamicColorsOptions.
-      throw new IllegalArgumentException("Either Application or Activity is required.");
-    }
+  public static void applyToActivityIfAvailable(
+      @NonNull Activity activity, @NonNull DynamicColorsOptions dynamicColorsOptions) {
+    applyToActivityIfAvailable(
+        activity,
+        dynamicColorsOptions.getThemeOverlay(),
+        dynamicColorsOptions.getPrecondition(),
+        dynamicColorsOptions.getOnAppliedCallback());
   }
 
-  private static void applyIfAvailable(
+  private static void applyToActivityIfAvailable(
       @NonNull Activity activity,
       @StyleRes int theme,
       @NonNull Precondition precondition,
@@ -353,7 +361,7 @@ public class DynamicColors {
     @Override
     public void onActivityPreCreated(@NonNull Activity activity,
         @Nullable Bundle savedInstanceState) {
-      applyIfAvailable(
+      applyToActivityIfAvailable(
           activity,
           dynamicColorsOptions.getThemeOverlay(),
           dynamicColorsOptions.getPrecondition(),
