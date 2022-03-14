@@ -104,25 +104,4 @@
   <item name="m3_sys_motion_easing_emphasized_decelerate_control_y1" format="float" type="dimen">0.7</item>
   <item name="m3_sys_motion_easing_emphasized_decelerate_control_x2" format="float" type="dimen">0.1</item>
   <item name="m3_sys_motion_easing_emphasized_decelerate_control_y2" format="float" type="dimen">1.0</item>
-  <!-- Deprecated tokens -->
-  <integer name="m3_sys_motion_duration_short1">100</integer>
-  <integer name="m3_sys_motion_duration_short2">200</integer>
-  <integer name="m3_sys_motion_duration_medium1">300</integer>
-  <integer name="m3_sys_motion_duration_medium2">400</integer>
-  <integer name="m3_sys_motion_duration_long1">500</integer>
-  <integer name="m3_sys_motion_duration_long2">600</integer>
-  <!-- Easing string used in Material's MotionUtils class. -->
-  <string name="m3_sys_motion_easing_accelerated" translatable="false">cubic-bezier(0.4, 0.0, 1.0, 1.0)</string>
-  <!-- Control points used in <pathInterpolator> resources. -->
-  <item name="m3_sys_motion_easing_accelerated_control_x1" format="float" type="dimen">0.4</item>
-  <item name="m3_sys_motion_easing_accelerated_control_y1" format="float" type="dimen">0.0</item>
-  <item name="m3_sys_motion_easing_accelerated_control_x2" format="float" type="dimen">1.0</item>
-  <item name="m3_sys_motion_easing_accelerated_control_y2" format="float" type="dimen">1.0</item>
-  <!-- Easing string used in Material's MotionUtils class. -->
-  <string name="m3_sys_motion_easing_decelerated" translatable="false">cubic-bezier(0.0, 0.0, 0.2, 1.0)</string>
-  <!-- Control points used in <pathInterpolator> resources. -->
-  <item name="m3_sys_motion_easing_decelerated_control_x1" format="float" type="dimen">0.0</item>
-  <item name="m3_sys_motion_easing_decelerated_control_y1" format="float" type="dimen">0.0</item>
-  <item name="m3_sys_motion_easing_decelerated_control_x2" format="float" type="dimen">0.2</item>
-  <item name="m3_sys_motion_easing_decelerated_control_y2" format="float" type="dimen">1.0</item>
 </resources>
