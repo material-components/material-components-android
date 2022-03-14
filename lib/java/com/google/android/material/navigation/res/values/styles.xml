@@ -67,6 +67,7 @@
     <item name="itemVerticalPadding">@dimen/m3_navigation_item_vertical_padding</item>
     <item name="itemTextAppearance">?attr/textAppearanceLabelLarge</item>
     <item name="itemIconTint">@color/m3_navigation_item_icon_tint</item>
+    <item name="itemRippleColor">@color/m3_navigation_item_ripple_color</item>
     <item name="itemShapeFillColor">@color/m3_navigation_item_background_color</item>
     <item name="itemTextColor">@color/m3_navigation_item_text_color</item>
     <item name="topInsetScrimEnabled">false</item>

@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.RippleDrawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import androidx.appcompat.view.menu.MenuBuilder;
@@ -80,6 +81,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
   ColorStateList textColor;
   ColorStateList iconTintList;
   Drawable itemBackground;
+  RippleDrawable itemForeground;
   int itemHorizontalPadding;
   @Px int itemVerticalPadding;
   int itemIconPadding;
@@ -297,6 +299,11 @@ public class NavigationMenuPresenter implements MenuPresenter {
 
   public void setItemBackground(@Nullable Drawable itemBackground) {
     this.itemBackground = itemBackground;
+    updateMenuView(false);
+  }
+
+  public void setItemForeground(@Nullable RippleDrawable itemForeground) {
+    this.itemForeground = itemForeground;
     updateMenuView(false);
   }
 
@@ -573,6 +580,9 @@ public class NavigationMenuPresenter implements MenuPresenter {
             ViewCompat.setBackground(
                 itemView,
                 itemBackground != null ? itemBackground.getConstantState().newDrawable() : null);
+            if (itemForeground != null) {
+              itemView.setForeground(itemForeground.getConstantState().newDrawable());
+            }
             NavigationMenuTextItem item = (NavigationMenuTextItem) items.get(position);
             itemView.setNeedsEmptyIcon(item.needsEmptyIcon);
             itemView.setPadding(

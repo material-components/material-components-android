@@ -24,4 +24,5 @@
     android:paddingRight="?attr/listPreferredItemPaddingRight"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground"
+    android:defaultFocusHighlightEnabled="false"
     tools:ignore="UnusedAttribute"/>

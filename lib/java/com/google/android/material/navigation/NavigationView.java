@@ -31,6 +31,7 @@ import android.graphics.RectF;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
+import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
@@ -72,6 +73,7 @@ import com.google.android.material.internal.NavigationMenuPresenter;
 import com.google.android.material.internal.ScrimInsetsFrameLayout;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.resources.MaterialResources;
+import com.google.android.material.ripple.RippleUtils;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.MaterialShapeUtils;
 import com.google.android.material.shape.ShapeAppearanceModel;
@@ -236,6 +238,21 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     // appearance.
     if (itemBackground == null && hasShapeAppearance(a)) {
       itemBackground = createDefaultItemBackground(a);
+
+      ColorStateList itemRippleColor = MaterialResources.getColorStateList(
+          context, a, R.styleable.NavigationView_itemRippleColor);
+
+      // Use a ripple matching the item's shape as the foreground for api level 21+ and if a ripple
+      // color is set. Otherwise the selectableItemBackground foreground from the item layout will
+      // be used
+      if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP && itemRippleColor != null) {
+        Drawable itemRippleMask = createDefaultItemDrawable(a, null);
+        RippleDrawable ripple = new RippleDrawable(
+            RippleUtils.sanitizeRippleDrawableColor(itemRippleColor),
+            null,
+            itemRippleMask);
+        presenter.setItemForeground(ripple);
+      }
     }
 
     if (a.hasValue(R.styleable.NavigationView_itemHorizontalPadding)) {
@@ -403,18 +420,24 @@ public class NavigationView extends ScrimInsetsFrameLayout {
    * @param a The TintTypedArray containing the resolved NavigationView style attributes.
    */
   @NonNull
-  private final Drawable createDefaultItemBackground(@NonNull TintTypedArray a) {
+  private Drawable createDefaultItemBackground(@NonNull TintTypedArray a) {
+    ColorStateList fillColor = MaterialResources.getColorStateList(
+        getContext(), a, R.styleable.NavigationView_itemShapeFillColor);
+    return createDefaultItemDrawable(a, fillColor);
+  }
+
+  @NonNull
+  private Drawable createDefaultItemDrawable(
+      @NonNull TintTypedArray a, @Nullable ColorStateList fillColor) {
     int shapeAppearanceResId = a.getResourceId(R.styleable.NavigationView_itemShapeAppearance, 0);
     int shapeAppearanceOverlayResId =
         a.getResourceId(R.styleable.NavigationView_itemShapeAppearanceOverlay, 0);
     MaterialShapeDrawable materialShapeDrawable =
         new MaterialShapeDrawable(
             ShapeAppearanceModel.builder(
-                    getContext(), shapeAppearanceResId, shapeAppearanceOverlayResId)
+                getContext(), shapeAppearanceResId, shapeAppearanceOverlayResId)
                 .build());
-    materialShapeDrawable.setFillColor(
-        MaterialResources.getColorStateList(
-            getContext(), a, R.styleable.NavigationView_itemShapeFillColor));
+    materialShapeDrawable.setFillColor(fillColor);
 
     int insetLeft = a.getDimensionPixelSize(R.styleable.NavigationView_itemShapeInsetStart, 0);
     int insetTop = a.getDimensionPixelSize(R.styleable.NavigationView_itemShapeInsetTop, 0);

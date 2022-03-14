@@ -15,6 +15,7 @@
   ~ limitations under the License.
 -->
 <resources>
+  <attr name="itemRippleColor" format="color"/>
   <attr name="navigationViewStyle" format="reference"/>
 
   <declare-styleable name="NavigationBarView">
@@ -43,7 +44,7 @@
     <!-- The ColorStateList to use for a ripple background. This only exists because creating
          ripples in drawable xml based on theme colors is not supported pre-23. This will be ignored
          if itemBackground is set.-->
-    <attr name="itemRippleColor" format="color"/>
+    <attr name="itemRippleColor"/>
     <!-- The size to provide for the navigation item icons. -->
     <attr name="itemIconSize"/>
     <!-- The tint to apply to the navigation item icons. Attribute type definition is in navigation
@@ -104,6 +105,7 @@
     <!-- A background drawable to use for navigation items. If this is set, this overrides the
          default background drawable for items and the itemShape* attributes will be ignored -->
     <attr name="itemBackground" format="reference"/>
+    <attr name="itemRippleColor"/>
     <attr name="itemTextAppearance" format="reference"/>
     <!-- Layout resource to inflate as the header -->
     <attr name="headerLayout"/>
