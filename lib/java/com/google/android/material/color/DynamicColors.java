@@ -81,7 +81,9 @@ public class DynamicColors {
     deviceMap.put("xiaomi", DEFAULT_DEVICE_SUPPORT_CONDITION);
     deviceMap.put("motorola", DEFAULT_DEVICE_SUPPORT_CONDITION);
     deviceMap.put("itel", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("tecno", DEFAULT_DEVICE_SUPPORT_CONDITION);
     deviceMap.put("tecno mobile limited", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("infinix", DEFAULT_DEVICE_SUPPORT_CONDITION);
     deviceMap.put("infinix mobility limited", DEFAULT_DEVICE_SUPPORT_CONDITION);
     deviceMap.put("hmd global", DEFAULT_DEVICE_SUPPORT_CONDITION);
     deviceMap.put("sharp", DEFAULT_DEVICE_SUPPORT_CONDITION);
