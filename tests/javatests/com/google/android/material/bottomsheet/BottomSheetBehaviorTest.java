@@ -433,10 +433,7 @@ public class BottomSheetBehaviorTest {
     testSkipCollapsed();
   }
 
-  private void testSkipCollapsed_smallSwipe(int expectedState, float swipeViewHeightPercentage)
-      throws Throwable {
-    getBehavior().setSkipCollapsed(true);
-    checkSetState(BottomSheetBehavior.STATE_EXPANDED, ViewMatchers.isDisplayed());
+  private void testSkipCollapsed_smallSwipe(int expectedState, float swipeViewHeightPercentage) {
     Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
         .perform(
             DesignViewActions.withCustomConstraints(
@@ -476,9 +473,15 @@ public class BottomSheetBehaviorTest {
     }
   }
 
+  private void setSkipCollapsed() throws Throwable {
+    getBehavior().setSkipCollapsed(true);
+    checkSetState(BottomSheetBehavior.STATE_EXPANDED, ViewMatchers.isDisplayed());
+  }
+
   @Test
   @MediumTest
   public void testSkipCollapsed_smallSwipe_remainsExpanded() throws Throwable {
+    setSkipCollapsed();
     testSkipCollapsed_smallSwipe(
         BottomSheetBehavior.STATE_EXPANDED, /* swipeViewHeightPercentage = */ 0.5f);
   }
@@ -486,6 +489,7 @@ public class BottomSheetBehaviorTest {
   @Test
   @MediumTest
   public void testSkipCollapsedFullyExpanded_smallSwipe_remainsExpanded() throws Throwable {
+    setSkipCollapsed();
     getBehavior().setFitToContents(false);
     testSkipCollapsed_smallSwipe(
         BottomSheetBehavior.STATE_HALF_EXPANDED, /* swipeViewHeightPercentage = */ 0.5f);
@@ -494,6 +498,7 @@ public class BottomSheetBehaviorTest {
   @Test
   @MediumTest
   public void testSkipCollapsed_smallSwipePastThreshold_getsHidden() throws Throwable {
+    setSkipCollapsed();
     testSkipCollapsed_smallSwipe(
         BottomSheetBehavior.STATE_HIDDEN, /* swipeViewHeightPercentage = */ 0.75f);
   }
@@ -501,7 +506,29 @@ public class BottomSheetBehaviorTest {
   @Test
   @MediumTest
   public void testSkipCollapsedFullyExpanded_smallSwipePastThreshold_getsHidden() throws Throwable {
+    setSkipCollapsed();
     getBehavior().setFitToContents(false);
+    testSkipCollapsed_smallSwipe(
+        BottomSheetBehavior.STATE_HIDDEN, /* swipeViewHeightPercentage = */ 0.75f);
+  }
+
+  private void makeBottomSheetNotCollapsible() {
+    // Set a peek height that equals to expanded height so it always stays EXPANDED.
+    getBehavior().setPeekHeight(5000);
+  }
+
+  @Test
+  @MediumTest
+  public void testNotCollapsible_smallSwipe_remainsExpanded() {
+    makeBottomSheetNotCollapsible();
+    testSkipCollapsed_smallSwipe(
+        BottomSheetBehavior.STATE_EXPANDED, /* swipeViewHeightPercentage = */ 0.5f);
+  }
+
+  @Test
+  @MediumTest
+  public void testNotCollapsible_smallSwipePastThreshold_getsHidden() {
+    makeBottomSheetNotCollapsible();
     testSkipCollapsed_smallSwipe(
         BottomSheetBehavior.STATE_HIDDEN, /* swipeViewHeightPercentage = */ 0.75f);
   }
@@ -935,16 +962,22 @@ public class BottomSheetBehaviorTest {
   @Test
   @MediumTest
   public void testExpandedPeekHeight() throws Throwable {
+    registerIdlingResourceCallback();
     activityTestRule.runOnUiThread(
         () -> {
           // Make the peek height as tall as the bottom sheet.
-          BottomSheetBehavior<?> behavior = getBehavior();
-          behavior.setPeekHeight(getBottomSheet().getHeight());
-          assertThat(behavior.getState(), is(BottomSheetBehavior.STATE_COLLAPSED));
+          getBehavior().setPeekHeight(getBottomSheet().getHeight());
         });
-    // Both of these will not animate the sheet , but the state should be changed.
+    Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
+        .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
+    assertThat(getBehavior().getState(), is(BottomSheetBehavior.STATE_EXPANDED));
+    unregisterIdlingResourceCallback();
+    // Both of these will not animate the sheet, and the state should be fixed as EXPANDED.
     checkSetState(BottomSheetBehavior.STATE_EXPANDED, ViewMatchers.isDisplayed());
-    checkSetState(BottomSheetBehavior.STATE_COLLAPSED, ViewMatchers.isDisplayed());
+    checkSetState(
+        BottomSheetBehavior.STATE_COLLAPSED,
+        BottomSheetBehavior.STATE_EXPANDED,
+        ViewMatchers.isDisplayed());
   }
 
   @Test
@@ -962,12 +995,17 @@ public class BottomSheetBehaviorTest {
   }
 
   private void checkSetState(final int state, Matcher<View> matcher) throws Throwable {
+    checkSetState(state, state, matcher);
+  }
+
+  private void checkSetState(
+      final int stateToSet, final int stateToExpect, Matcher<View> matcher) throws Throwable {
     registerIdlingResourceCallback();
     try {
-      activityTestRule.runOnUiThread(() -> getBehavior().setState(state));
+      activityTestRule.runOnUiThread(() -> getBehavior().setState(stateToSet));
       Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
           .check(ViewAssertions.matches(matcher));
-      assertThat(getBehavior().getState(), is(state));
+      assertThat(getBehavior().getState(), is(stateToExpect));
       assertAccessibilityActions(getBehavior(), getBottomSheet());
     } finally {
       unregisterIdlingResourceCallback();

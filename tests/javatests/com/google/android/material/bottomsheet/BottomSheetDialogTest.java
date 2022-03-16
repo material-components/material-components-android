@@ -188,6 +188,9 @@ public class BottomSheetDialogTest {
     final DialogInterface.OnCancelListener onCancelListener =
         mock(DialogInterface.OnCancelListener.class);
     showDialog();
+    onView(ViewMatchers.withId(R.id.design_bottom_sheet))
+        .perform(setShortPeekHeight())
+        .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
     dialog.setOnCancelListener(onCancelListener);
     onView(ViewMatchers.withId(R.id.design_bottom_sheet))
         .perform(setState(BottomSheetBehavior.STATE_HIDDEN));
@@ -203,6 +206,33 @@ public class BottomSheetDialogTest {
         .onStateChanged(any(View.class), eq(BottomSheetBehavior.STATE_SETTLING));
     verify(callback, timeout(3000))
         .onStateChanged(any(View.class), eq(BottomSheetBehavior.STATE_COLLAPSED));
+  }
+
+  @Test
+  @MediumTest
+  public void testHideThenShowNotCollapsible() throws Throwable {
+    // Hide the bottom sheet and wait for the dialog to be canceled.
+    final DialogInterface.OnCancelListener onCancelListener =
+        mock(DialogInterface.OnCancelListener.class);
+    showDialog();
+    onView(ViewMatchers.withId(R.id.design_bottom_sheet))
+        .perform(setTallPeekHeight())
+        .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
+    dialog.setOnCancelListener(onCancelListener);
+    onView(ViewMatchers.withId(R.id.design_bottom_sheet))
+        .perform(setState(BottomSheetBehavior.STATE_HIDDEN));
+    verify(onCancelListener, timeout(3000)).onCancel(any(DialogInterface.class));
+    // Reshow the same dialog instance and wait for the bottom sheet to be collapsed.
+    final BottomSheetBehavior.BottomSheetCallback callback =
+        mock(BottomSheetBehavior.BottomSheetCallback.class);
+    BottomSheetBehavior.from(dialog.findViewById(R.id.design_bottom_sheet))
+        .addBottomSheetCallback(callback);
+    // Show the same dialog again.
+    activityTestRule.runOnUiThread(() -> dialog.show());
+    verify(callback, timeout(3000))
+        .onStateChanged(any(View.class), eq(BottomSheetBehavior.STATE_SETTLING));
+    verify(callback, timeout(3000))
+        .onStateChanged(any(View.class), eq(BottomSheetBehavior.STATE_EXPANDED));
   }
 
   private void showDialog() throws Throwable {
@@ -235,6 +265,26 @@ public class BottomSheetDialogTest {
       public void perform(UiController uiController, View view) {
         BottomSheetBehavior<?> behavior = BottomSheetBehavior.from(view);
         behavior.setPeekHeight(view.getHeight() + 100);
+      }
+    };
+  }
+
+  private static ViewAction setShortPeekHeight() {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return ViewMatchers.isDisplayed();
+      }
+
+      @Override
+      public String getDescription() {
+        return "set tall peek height";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        BottomSheetBehavior<?> behavior = BottomSheetBehavior.from(view);
+        behavior.setPeekHeight(view.getHeight() / 2);
       }
     };
   }

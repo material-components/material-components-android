@@ -277,6 +277,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   boolean hideable;
 
   private boolean skipCollapsed;
+  private boolean collapsible = true;
 
   private boolean draggable = true;
 
@@ -552,6 +553,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     fitToContentsOffset = max(0, parentHeight - childHeight);
     calculateHalfExpandedOffset();
     calculateCollapsedOffset();
+    onOffsetsUpdated();
 
     if (state == STATE_EXPANDED) {
       ViewCompat.offsetTopAndBottom(child, getExpandedOffset());
@@ -725,10 +727,12 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
           consumed[1] = dy;
           ViewCompat.offsetTopAndBottom(child, -dy);
           setStateInternal(STATE_DRAGGING);
-        } else {
+        } else if (!shouldSkipCollapsed()) {
           consumed[1] = currentTop - collapsedOffset;
           ViewCompat.offsetTopAndBottom(child, -consumed[1]);
           setStateInternal(STATE_COLLAPSED);
+        } else {
+          // Do nothing, the bottom sheet should be fixed.
         }
       }
     }
@@ -871,6 +875,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     }
     // Fix incorrect expanded settings depending on whether or not we are fitting sheet to contents.
     setStateInternal((this.fitToContents && state == STATE_HALF_EXPANDED) ? STATE_EXPANDED : state);
+    onOffsetsUpdated();
 
     updateAccessibilityActions();
   }
@@ -966,6 +971,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   private void updatePeekHeight(boolean animate) {
     if (viewRef != null) {
       calculateCollapsedOffset();
+      onOffsetsUpdated();
       if (state == STATE_COLLAPSED) {
         V view = viewRef.get();
         if (view != null) {
@@ -1204,6 +1210,10 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       Log.w(TAG, "Cannot set state: " + state);
       return;
     }
+    if (ensureExpandedStateIfNotCollapsible(state)) {
+      // setState() will be called again.
+      return;
+    }
     final int finalState;
     if (state == STATE_HALF_EXPANDED
         && fitToContents
@@ -1278,7 +1288,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       return;
     }
     this.state = state;
-    if (state == STATE_COLLAPSED
+    if ((collapsible && state == STATE_COLLAPSED)
         || state == STATE_EXPANDED
         || state == STATE_HALF_EXPANDED
         || (hideable && state == STATE_HIDDEN)) {
@@ -1352,6 +1362,19 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     }
   }
 
+  private void onOffsetsUpdated() {
+    collapsible = collapsedOffset != getExpandedOffset();
+    ensureExpandedStateIfNotCollapsible(state);
+  }
+
+  private boolean ensureExpandedStateIfNotCollapsible(@State int state) {
+    if (!collapsible && state == STATE_COLLAPSED) {
+      setState(STATE_EXPANDED);
+      return true;
+    }
+    return false;
+  }
+
   private void calculateHalfExpandedOffset() {
     this.halfExpandedOffset = (int) (parentHeight * (1 - halfExpandedRatio));
   }
@@ -1385,7 +1408,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   boolean shouldHide(@NonNull View child, float yvel) {
-    if (skipCollapsed) {
+    if (shouldSkipCollapsed()) {
       return true;
     }
     if (child.getTop() < collapsedOffset) {
@@ -1395,6 +1418,10 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     int peek = calculatePeekHeight();
     final float newTop = child.getTop() + yvel * HIDE_FRICTION;
     return Math.abs(newTop - collapsedOffset) / (float) peek > HIDE_THRESHOLD;
+  }
+
+  private boolean shouldSkipCollapsed() {
+    return !collapsible || skipCollapsed;
   }
 
   @Nullable
