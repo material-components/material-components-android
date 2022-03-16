@@ -43,6 +43,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.ColorInt;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.button.MaterialButtonToggleGroup.OnButtonCheckedListener;
 import com.google.android.material.color.MaterialColors;
@@ -95,7 +96,7 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
   private final EditText minuteEditText;
   private MaterialButtonToggleGroup toggle;
 
-  public TimePickerTextInputPresenter(LinearLayout timePickerView, TimeModel time) {
+  public TimePickerTextInputPresenter(final LinearLayout timePickerView, final TimeModel time) {
     this.timePickerView = timePickerView;
     this.time = time;
     Resources res = timePickerView.getResources();
@@ -137,9 +138,28 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
 
     controller = new TimePickerTextInputKeyController(hourTextInput, minuteTextInput, time);
     hourTextInput.setChipDelegate(
-        new ClickActionDelegate(timePickerView.getContext(), R.string.material_hour_selection));
+        new ClickActionDelegate(timePickerView.getContext(), R.string.material_hour_selection) {
+          @Override
+          public void onInitializeAccessibilityNodeInfo(
+              View host, AccessibilityNodeInfoCompat info) {
+            super.onInitializeAccessibilityNodeInfo(host, info);
+            info.setContentDescription(
+                host.getResources()
+                    .getString(
+                        R.string.material_hour_suffix, String.valueOf(time.getHourForDisplay())));
+          }
+        });
     minuteTextInput.setChipDelegate(
-        new ClickActionDelegate(timePickerView.getContext(), R.string.material_minute_selection));
+        new ClickActionDelegate(timePickerView.getContext(), R.string.material_minute_selection) {
+          @Override
+          public void onInitializeAccessibilityNodeInfo(
+              View host, AccessibilityNodeInfoCompat info) {
+            super.onInitializeAccessibilityNodeInfo(host, info);
+            info.setContentDescription(
+                host.getResources()
+                    .getString(R.string.material_minute_suffix, String.valueOf(time.minute)));
+          }
+        });
 
     initialize();
   }

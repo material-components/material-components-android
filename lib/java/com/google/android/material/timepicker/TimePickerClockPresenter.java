@@ -30,6 +30,7 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.view.View;
 import android.view.accessibility.AccessibilityManager;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import com.google.android.material.timepicker.ClockHandView.OnActionUpListener;
 import com.google.android.material.timepicker.ClockHandView.OnRotateListener;
 import com.google.android.material.timepicker.TimePickerControls.ActiveSelection;
@@ -56,8 +57,8 @@ class TimePickerClockPresenter
   private static final int DEGREES_PER_HOUR = 30;
   private static final int DEGREES_PER_MINUTE = 6;
 
-  private TimePickerView timePickerView;
-  private TimeModel time;
+  private final TimePickerView timePickerView;
+  private final TimeModel time;
   private float minuteRotation;
   private float hourRotation;
 
@@ -164,9 +165,28 @@ class TimePickerClockPresenter
     timePickerView.setHandRotation(isMinute ? minuteRotation : hourRotation, animate);
     timePickerView.setActiveSelection(selection);
     timePickerView.setMinuteHourDelegate(
-        new ClickActionDelegate(timePickerView.getContext(), R.string.material_hour_selection));
+        new ClickActionDelegate(timePickerView.getContext(), R.string.material_hour_selection) {
+          @Override
+          public void onInitializeAccessibilityNodeInfo(
+              View host, AccessibilityNodeInfoCompat info) {
+            super.onInitializeAccessibilityNodeInfo(host, info);
+            info.setContentDescription(
+                host.getResources()
+                    .getString(
+                        R.string.material_hour_suffix, String.valueOf(time.getHourForDisplay())));
+          }
+        });
     timePickerView.setHourClickDelegate(
-        new ClickActionDelegate(timePickerView.getContext(), R.string.material_minute_selection));
+        new ClickActionDelegate(timePickerView.getContext(), R.string.material_minute_selection) {
+          @Override
+          public void onInitializeAccessibilityNodeInfo(
+              View host, AccessibilityNodeInfoCompat info) {
+            super.onInitializeAccessibilityNodeInfo(host, info);
+            info.setContentDescription(
+                host.getResources()
+                    .getString(R.string.material_minute_suffix, String.valueOf(time.minute)));
+          }
+        });
   }
 
   @Override
@@ -182,7 +202,7 @@ class TimePickerClockPresenter
 
       AccessibilityManager am =
           getSystemService(timePickerView.getContext(), AccessibilityManager.class);
-      boolean isExploreByTouchEnabled = am.isTouchExplorationEnabled();
+      boolean isExploreByTouchEnabled = am != null && am.isTouchExplorationEnabled();
       if (!isExploreByTouchEnabled) {
         setSelection(MINUTE, /* animate= */ true);
       }
