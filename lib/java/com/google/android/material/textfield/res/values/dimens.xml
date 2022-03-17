@@ -34,8 +34,6 @@
   <dimen name="mtrl_textinput_box_stroke_width_focused">2dp</dimen>
   <dimen name="mtrl_textinput_box_label_cutout_padding">4dp</dimen>
 
-  <dimen name="mtrl_edittext_rectangle_top_offset">12dp</dimen>
-
   <!-- Dimens for edit text's top and bottom padding adjustments for large font scale settings. -->
   <dimen name="material_filled_edittext_font_1_3_padding_top">23dp</dimen>
   <dimen name="material_filled_edittext_font_1_3_padding_bottom">12dp</dimen>
