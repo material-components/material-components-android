@@ -221,7 +221,7 @@ calling the following method in your activities’ `onCreate()` method (or befor
 you inflate anything from it):
 
 ```
-DynamicColors.applyIfAvailable(this);
+DynamicColors.applyToActivityIfAvailable(this);
 ```
 
 If the app is running on Android S+, dynamic colors will be applied to the
