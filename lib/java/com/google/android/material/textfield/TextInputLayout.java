@@ -3628,7 +3628,6 @@ public class TextInputLayout extends LinearLayout {
    * We need to add a dummy drawable as the start and/or end compound drawables so that the text is
    * indented and doesn't display below the icon or suffix/prefix views.
    */
-  @SuppressWarnings("Var") // Need to add it to submit the cl with 1p clients change, will remove
   boolean updateDummyDrawables() {
     if (editText == null) {
       return false;

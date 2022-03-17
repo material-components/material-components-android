@@ -77,7 +77,7 @@ class EndCompoundLayout extends LinearLayout {
   private OnLongClickListener errorIconOnLongClickListener;
 
   @NonNull private final CheckableImageButton endIconView;
-  private final SparseArray<EndIconDelegate> endIconDelegates = new SparseArray<>();
+  private final EndIconDelegates endIconDelegates;
   @EndIconMode private int endIconMode = END_ICON_NONE;
   private final LinkedHashSet<OnEndIconChangedListener> endIconChangedListeners =
       new LinkedHashSet<>();
@@ -111,11 +111,12 @@ class EndCompoundLayout extends LinearLayout {
     LayoutInflater layoutInflater = LayoutInflater.from(getContext());
     errorIconView = createIconView(this, layoutInflater, R.id.text_input_error_icon);
     endIconView = createIconView(endIconFrame, layoutInflater, R.id.text_input_end_icon);
+    endIconDelegates = new EndIconDelegates(this, a);
 
     suffixTextView = new AppCompatTextView(getContext());
 
     initErrorIconView(a);
-    initEndIconDelegates(a);
+    initEndIconView(a);
     initSuffixTextView(a);
 
     endIconFrame.addView(endIconView);
@@ -162,21 +163,7 @@ class EndCompoundLayout extends LinearLayout {
     errorIconView.setFocusable(false);
   }
 
-  private void initEndIconDelegates(TintTypedArray a) {
-    int endIconDrawableId = a.getResourceId(R.styleable.TextInputLayout_endIconDrawable, 0);
-    endIconDelegates.append(END_ICON_CUSTOM, new CustomEndIconDelegate(this, endIconDrawableId));
-    endIconDelegates.append(END_ICON_NONE, new NoEndIconDelegate(this));
-    endIconDelegates.append(
-        END_ICON_PASSWORD_TOGGLE,
-        new PasswordToggleEndIconDelegate(
-            this,
-            endIconDrawableId == 0
-                ? a.getResourceId(R.styleable.TextInputLayout_passwordToggleDrawable, 0)
-                : endIconDrawableId));
-    endIconDelegates.append(
-        END_ICON_CLEAR_TEXT, new ClearTextEndIconDelegate(this, endIconDrawableId));
-    endIconDelegates.append(
-        END_ICON_DROPDOWN_MENU, new DropdownMenuEndIconDelegate(this, endIconDrawableId));
+  private void initEndIconView(TintTypedArray a) {
     // Set up the end icon if any.
     if (!a.hasValue(R.styleable.TextInputLayout_passwordToggleEnabled)) {
       // Default tint for any end icon or value specified by user
@@ -278,8 +265,7 @@ class EndCompoundLayout extends LinearLayout {
   }
 
   EndIconDelegate getEndIconDelegate() {
-    EndIconDelegate endIconDelegate = endIconDelegates.get(endIconMode);
-    return endIconDelegate != null ? endIconDelegate : endIconDelegates.get(END_ICON_NONE);
+    return endIconDelegates.get(endIconMode);
   }
 
   @EndIconMode
@@ -619,6 +605,48 @@ class EndCompoundLayout extends LinearLayout {
       endIconView.setImageDrawable(endIconDrawable);
     } else {
       applyIconTint(textInputLayout, endIconView, endIconTintList, endIconTintMode);
+    }
+  }
+
+  private static class EndIconDelegates {
+    private final SparseArray<EndIconDelegate> delegates = new SparseArray<>();
+
+    private final EndCompoundLayout endLayout;
+    private final int endIconDrawableId;
+    private final int passwordIconDrawableId;
+
+    EndIconDelegates(EndCompoundLayout endLayout, TintTypedArray a) {
+      this.endLayout = endLayout;
+      endIconDrawableId = a.getResourceId(R.styleable.TextInputLayout_endIconDrawable, 0);
+      passwordIconDrawableId =
+          a.getResourceId(R.styleable.TextInputLayout_passwordToggleDrawable, 0);
+    }
+
+    EndIconDelegate get(@EndIconMode int endIconMode) {
+      EndIconDelegate delegate = delegates.get(endIconMode);
+      if (delegate == null) {
+        delegate = create(endIconMode);
+        delegates.append(endIconMode, delegate);
+      }
+      return delegate;
+    }
+
+    private EndIconDelegate create(@EndIconMode int endIconMode) {
+      switch (endIconMode) {
+        case END_ICON_PASSWORD_TOGGLE:
+          return new PasswordToggleEndIconDelegate(
+              endLayout, endIconDrawableId == 0 ? passwordIconDrawableId : endIconDrawableId);
+        case END_ICON_CLEAR_TEXT:
+          return new ClearTextEndIconDelegate(endLayout, endIconDrawableId);
+        case END_ICON_DROPDOWN_MENU:
+          return new DropdownMenuEndIconDelegate(endLayout, endIconDrawableId);
+        case END_ICON_CUSTOM:
+          return new CustomEndIconDelegate(endLayout, endIconDrawableId);
+        case END_ICON_NONE:
+          return new NoEndIconDelegate(endLayout);
+        default:
+          throw new IllegalArgumentException("Invalid end icon mode: " + endIconMode);
+      }
     }
   }
 }
