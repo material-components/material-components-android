@@ -52,7 +52,7 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
 
         @Override
         public void afterTextChanged(@NonNull Editable s) {
-          if (textInputLayout.getSuffixText() != null) {
+          if (endLayout.getSuffixText() != null) {
             return;
           }
           animateIcon(shouldBeVisible());
@@ -107,19 +107,18 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
   private AnimatorSet iconInAnim;
   private ValueAnimator iconOutAnim;
 
-  ClearTextEndIconDelegate(
-      @NonNull TextInputLayout textInputLayout, @DrawableRes int customEndIcon) {
-    super(textInputLayout, customEndIcon);
+  ClearTextEndIconDelegate(@NonNull EndCompoundLayout endLayout, @DrawableRes int customEndIcon) {
+    super(endLayout, customEndIcon);
   }
 
   @Override
   void initialize() {
-    textInputLayout.setEndIconDrawable(
+    endLayout.setEndIconDrawable(
         customEndIcon == 0 ? R.drawable.mtrl_ic_cancel : customEndIcon);
-    textInputLayout.setEndIconContentDescription(
-        textInputLayout.getResources().getText(R.string.clear_text_end_icon_content_description));
-    textInputLayout.setEndIconCheckable(false);
-    textInputLayout.setEndIconOnClickListener(
+    endLayout.setEndIconContentDescription(
+        endLayout.getResources().getText(R.string.clear_text_end_icon_content_description));
+    endLayout.setEndIconCheckable(false);
+    endLayout.setEndIconOnClickListener(
         new OnClickListener() {
           @Override
           public void onClick(View v) {
@@ -128,24 +127,24 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
               text.clear();
             }
 
-            textInputLayout.refreshEndIconDrawableState();
+            endLayout.refreshEndIconDrawableState();
           }
         });
     textInputLayout.addOnEditTextAttachedListener(clearTextOnEditTextAttachedListener);
-    textInputLayout.addOnEndIconChangedListener(endIconChangedListener);
+    endLayout.addOnEndIconChangedListener(endIconChangedListener);
     initAnimators();
   }
 
   @Override
   void onSuffixVisibilityChanged(boolean visible) {
-    if (textInputLayout.getSuffixText() == null) {
+    if (endLayout.getSuffixText() == null) {
       return;
     }
     animateIcon(visible);
   }
 
   private void animateIcon(boolean show) {
-    boolean shouldSkipAnimation = textInputLayout.isEndIconVisible() == show;
+    boolean shouldSkipAnimation = endLayout.isEndIconVisible() == show;
     if (show && !iconInAnim.isRunning()) {
       iconOutAnim.cancel();
       iconInAnim.start();
@@ -170,7 +169,7 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
         new AnimatorListenerAdapter() {
           @Override
           public void onAnimationStart(Animator animation) {
-            textInputLayout.setEndIconVisible(true);
+            endLayout.setEndIconVisible(true);
           }
         });
     iconOutAnim = getAlphaAnimator(1, 0);
@@ -178,7 +177,7 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
         new AnimatorListenerAdapter() {
           @Override
           public void onAnimationEnd(Animator animation) {
-            textInputLayout.setEndIconVisible(false);
+            endLayout.setEndIconVisible(false);
           }
         });
   }

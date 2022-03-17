@@ -30,17 +30,19 @@ import com.google.android.material.textfield.TextInputLayout.BoxBackgroundMode;
  */
 abstract class EndIconDelegate {
 
-  TextInputLayout textInputLayout;
-  Context context;
-  CheckableImageButton endIconView;
+  final TextInputLayout textInputLayout;
+  final EndCompoundLayout endLayout;
+  final Context context;
+  final CheckableImageButton endIconView;
 
   @DrawableRes
   final int customEndIcon;
 
-  EndIconDelegate(@NonNull TextInputLayout textInputLayout, @DrawableRes int customEndIcon) {
-    this.textInputLayout = textInputLayout;
-    context = textInputLayout.getContext();
-    endIconView = textInputLayout.getEndIconView();
+  EndIconDelegate(@NonNull EndCompoundLayout endLayout, @DrawableRes int customEndIcon) {
+    this.textInputLayout = endLayout.textInputLayout;
+    this.endLayout = endLayout;
+    this.context = endLayout.getContext();
+    this.endIconView = endLayout.getEndIconView();
     this.customEndIcon = customEndIcon;
   }
 

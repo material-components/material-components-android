@@ -29,14 +29,14 @@ import androidx.annotation.NonNull;
  */
 class CustomEndIconDelegate extends EndIconDelegate {
 
-  CustomEndIconDelegate(@NonNull TextInputLayout textInputLayout, @DrawableRes int customEndIcon) {
-    super(textInputLayout, customEndIcon);
+  CustomEndIconDelegate(@NonNull EndCompoundLayout endLayout, @DrawableRes int customEndIcon) {
+    super(endLayout, customEndIcon);
   }
 
   @Override
   void initialize() {
-    textInputLayout.setEndIconDrawable(customEndIcon);
-    textInputLayout.setEndIconOnClickListener(null);
-    textInputLayout.setEndIconOnLongClickListener(null);
+    endLayout.setEndIconDrawable(customEndIcon);
+    endLayout.setEndIconOnClickListener(null);
+    endLayout.setEndIconOnLongClickListener(null);
   }
 }

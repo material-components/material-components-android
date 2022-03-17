@@ -100,7 +100,7 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
       new OnFocusChangeListener() {
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
-          textInputLayout.setEndIconActivated(hasFocus);
+          endLayout.setEndIconActivated(hasFocus);
           if (!hasFocus) {
             setEndIconChecked(false);
             dropdownPopupDirty = false;
@@ -203,8 +203,8 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
   private ValueAnimator fadeInAnim;
 
   DropdownMenuEndIconDelegate(
-      @NonNull TextInputLayout textInputLayout, @DrawableRes int customEndIcon) {
-    super(textInputLayout, customEndIcon);
+      @NonNull EndCompoundLayout endLayout, @DrawableRes int customEndIcon) {
+    super(endLayout, customEndIcon);
   }
 
   @Override
@@ -249,10 +249,10 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
         customEndIcon == 0
             ? (IS_LOLLIPOP ? R.drawable.mtrl_dropdown_arrow : R.drawable.mtrl_ic_arrow_drop_down)
             : customEndIcon;
-    textInputLayout.setEndIconDrawable(drawableResId);
-    textInputLayout.setEndIconContentDescription(
-        textInputLayout.getResources().getText(R.string.exposed_dropdown_menu_content_description));
-    textInputLayout.setEndIconOnClickListener(
+    endLayout.setEndIconDrawable(drawableResId);
+    endLayout.setEndIconContentDescription(
+        endLayout.getResources().getText(R.string.exposed_dropdown_menu_content_description));
+    endLayout.setEndIconOnClickListener(
         new OnClickListener() {
           @Override
           public void onClick(View v) {
@@ -261,7 +261,7 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
           }
         });
     textInputLayout.addOnEditTextAttachedListener(dropdownMenuOnEditTextAttachedListener);
-    textInputLayout.addOnEndIconChangedListener(endIconChangedListener);
+    endLayout.addOnEndIconChangedListener(endIconChangedListener);
     initAnimators();
     accessibilityManager =
         (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);

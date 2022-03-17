@@ -567,7 +567,7 @@ public class TextInputLayoutTest {
         .perform(setError(ERROR_MESSAGE_1));
 
     @ColorInt int hintColor = layout.getHintCurrentCollapsedTextColor();
-    @ColorInt int errorColor = layout.getErrorTextCurrentColor();
+    @ColorInt int errorColor = layout.getErrorCurrentTextColors();
 
     assertEquals(hintColor, errorColor);
   }

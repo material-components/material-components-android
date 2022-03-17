@@ -76,19 +76,19 @@ class PasswordToggleEndIconDelegate extends EndIconDelegate {
       };
 
   PasswordToggleEndIconDelegate(
-      @NonNull TextInputLayout textInputLayout, @DrawableRes int customEndIcon) {
-    super(textInputLayout, customEndIcon);
+      @NonNull EndCompoundLayout endLayout, @DrawableRes int customEndIcon) {
+    super(endLayout, customEndIcon);
   }
 
   @Override
   void initialize() {
-    textInputLayout.setEndIconDrawable(
+    endLayout.setEndIconDrawable(
         customEndIcon == 0 ? R.drawable.design_password_eye : customEndIcon);
-    textInputLayout.setEndIconContentDescription(
-        textInputLayout.getResources().getText(R.string.password_toggle_content_description));
-    textInputLayout.setEndIconVisible(true);
-    textInputLayout.setEndIconCheckable(true);
-    textInputLayout.setEndIconOnClickListener(
+    endLayout.setEndIconContentDescription(
+        endLayout.getResources().getText(R.string.password_toggle_content_description));
+    endLayout.setEndIconVisible(true);
+    endLayout.setEndIconCheckable(true);
+    endLayout.setEndIconOnClickListener(
         new OnClickListener() {
           @Override
           public void onClick(View v) {
@@ -108,11 +108,11 @@ class PasswordToggleEndIconDelegate extends EndIconDelegate {
               editText.setSelection(selection);
             }
 
-            textInputLayout.refreshEndIconDrawableState();
+            endLayout.refreshEndIconDrawableState();
           }
         });
     textInputLayout.addOnEditTextAttachedListener(onEditTextAttachedListener);
-    textInputLayout.addOnEndIconChangedListener(onEndIconChangedListener);
+    endLayout.addOnEndIconChangedListener(onEndIconChangedListener);
     EditText editText = textInputLayout.getEditText();
     if (isInputTypePassword(editText)) {
       // By default set the input to be disguised.
