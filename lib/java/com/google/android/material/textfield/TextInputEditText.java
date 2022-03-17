@@ -152,13 +152,15 @@ public class TextInputEditText extends AppCompatEditText {
     return textInputLayoutFocusedRectEnabled;
   }
 
+  private boolean shouldUseTextInputLayoutFocusedRect(@Nullable TextInputLayout textInputLayout) {
+    return textInputLayout != null && textInputLayoutFocusedRectEnabled;
+  }
+
   @Override
   public void getFocusedRect(@Nullable Rect r) {
     super.getFocusedRect(r);
     TextInputLayout textInputLayout = getTextInputLayout();
-    if (textInputLayout != null
-        && textInputLayoutFocusedRectEnabled
-        && r != null) {
+    if (shouldUseTextInputLayoutFocusedRect(textInputLayout) && r != null) {
       textInputLayout.getFocusedRect(parentRect);
       r.bottom = parentRect.bottom;
     }
@@ -166,31 +168,26 @@ public class TextInputEditText extends AppCompatEditText {
 
   @Override
   public boolean getGlobalVisibleRect(@Nullable Rect r, @Nullable Point globalOffset) {
-    boolean result = super.getGlobalVisibleRect(r, globalOffset);
     TextInputLayout textInputLayout = getTextInputLayout();
-    if (textInputLayout != null
-        && textInputLayoutFocusedRectEnabled
-        && r != null) {
-      textInputLayout.getGlobalVisibleRect(parentRect, globalOffset);
-      r.bottom = parentRect.bottom;
-    }
-    return result;
+    return shouldUseTextInputLayoutFocusedRect(textInputLayout)
+        ? textInputLayout.getGlobalVisibleRect(r, globalOffset)
+        : super.getGlobalVisibleRect(r, globalOffset);
   }
 
   @Override
   public boolean requestRectangleOnScreen(@Nullable Rect rectangle) {
-    boolean result = super.requestRectangleOnScreen(rectangle);
     TextInputLayout textInputLayout = getTextInputLayout();
-    if (textInputLayout != null && textInputLayoutFocusedRectEnabled) {
+    if (shouldUseTextInputLayoutFocusedRect(textInputLayout) && rectangle != null) {
+      int bottomOffset = textInputLayout.getHeight() - getHeight();
       parentRect.set(
-          0,
-          textInputLayout.getHeight()
-              - getResources().getDimensionPixelOffset(R.dimen.mtrl_edittext_rectangle_top_offset),
-          textInputLayout.getWidth(),
-          textInputLayout.getHeight());
-      textInputLayout.requestRectangleOnScreen(parentRect, true);
+          rectangle.left,
+          rectangle.top,
+          rectangle.right,
+          rectangle.bottom + bottomOffset);
+      return super.requestRectangleOnScreen(parentRect);
+    } else {
+      return super.requestRectangleOnScreen(rectangle);
     }
-     return result;
   }
 
   @Override
