@@ -16,25 +16,6 @@
 -->
 <resources>
 
-  <!-- Elements that begin and end at rest use standard easing. Can either be
-       in the format "cubic-bezier(x1, y1, x2, y2)" or "path(<path_data>)". -->
-  <attr name="motionEasingStandard" format="string"/>
-  <!-- In comparison to standard easing, emphasized easing draws extra attention
-       at the end of an animation. Can either be in the format
-       "cubic-bezier(x1, y1, x2, y2)" or "path(<path_data>)". -->
-  <attr name="motionEasingEmphasized" format="string"/>
-  <!-- Incoming elements are animated using decelerated easing, in which
-       transitions begin at peak velocity and end at rest. Can either be in the
-       format "cubic-bezier(x1, y1, x2, y2)" or "path(<path_data>)".-->
-  <attr name="motionEasingDecelerated" format="string"/>
-  <!-- Elements exiting a screen use accelerated easing, a transition in which
-       the element starts at rest and ends at peak velocity. Can either be in
-       the format "cubic-bezier(x1, y1, x2, y2)" or "path(<path_data>)". -->
-  <attr name="motionEasingAccelerated" format="string"/>
-  <!-- Linear easing is often used for simple fade animations. Can either be in
-       the format "cubic-bezier(x1, y1, x2, y2)" or "path(<path_data>)".-->
-  <attr name="motionEasingLinear" format="string"/>
-
   <!-- Elements with small transition areas, such as icons and selection
        controls, have short durations. -->
   <attr name="motionDurationShort1" format="integer"/>
@@ -68,5 +49,25 @@
        which is then applied to the view. Useful for cases where a view has
        shaped corners but doesn't implement the Shapeable interface. -->
   <attr name="transitionShapeAppearance" format="reference"/>
+
+  <!-- Deprecated. Prefer using ?attr/motionEasing*Interpolator attributes. -->
+  <!-- Elements that begin and end at rest use standard easing. Can either be
+       in the format "cubic-bezier(x1, y1, x2, y2)" or "path(<path_data>)". -->
+  <attr name="motionEasingStandard" format="string"/>
+  <!-- In comparison to standard easing, emphasized easing draws extra attention
+       at the end of an animation. Can either be in the format
+       "cubic-bezier(x1, y1, x2, y2)" or "path(<path_data>)". -->
+  <attr name="motionEasingEmphasized" format="string"/>
+  <!-- Incoming elements are animated using decelerated easing, in which
+       transitions begin at peak velocity and end at rest. Can either be in the
+       format "cubic-bezier(x1, y1, x2, y2)" or "path(<path_data>)".-->
+  <attr name="motionEasingDecelerated" format="string"/>
+  <!-- Elements exiting a screen use accelerated easing, a transition in which
+       the element starts at rest and ends at peak velocity. Can either be in
+       the format "cubic-bezier(x1, y1, x2, y2)" or "path(<path_data>)". -->
+  <attr name="motionEasingAccelerated" format="string"/>
+  <!-- Linear easing is often used for simple fade animations. Can either be in
+       the format "cubic-bezier(x1, y1, x2, y2)" or "path(<path_data>)".-->
+  <attr name="motionEasingLinear" format="string"/>
 
 </resources>
