@@ -180,7 +180,8 @@ public class NavigationRailView extends NavigationBarView {
               initialPadding.top += insets.getInsets(WindowInsetsCompat.Type.systemBars()).top;
             }
             if (shouldApplyWindowInsetPadding(paddingBottomSystemWindowInsets)) {
-              initialPadding.top += insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom;
+              initialPadding.bottom +=
+                  insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom;
             }
 
             boolean isRtl = ViewCompat.getLayoutDirection(view) == ViewCompat.LAYOUT_DIRECTION_RTL;
