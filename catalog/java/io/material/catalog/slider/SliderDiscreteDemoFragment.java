@@ -23,12 +23,12 @@ import androidx.appcompat.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
 import com.google.android.material.slider.BasicLabelFormatter;
-import com.google.android.material.slider.LabelFormatter;
 import com.google.android.material.slider.Slider;
 import io.material.catalog.feature.DemoFragment;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Fragment to display a few basic uses of the {@link Slider} widget in discrete mode for the
@@ -43,23 +43,25 @@ public class SliderDiscreteDemoFragment extends DemoFragment {
     View view =
         inflater.inflate(R.layout.cat_slider_demo_discrete, viewGroup, false /* attachToRoot */);
 
-    setUpSlider(view, R.id.switch_button_1, R.id.slider_1, null);
-    setUpSlider(view, R.id.switch_button_2, R.id.slider_2, null);
-    setUpSlider(view, R.id.switch_button_3, R.id.slider_3, null);
-    setUpSlider(view, R.id.switch_button_4, R.id.slider_4, new BasicLabelFormatter());
-    setUpSlider(view, R.id.switch_button_5, R.id.slider_5, null);
-    setUpSlider(view, R.id.switch_button_6, R.id.slider_6, null);
+    Slider withLabelFormatter = view.findViewById(R.id.slider_4);
+    withLabelFormatter.setLabelFormatter(new BasicLabelFormatter());
+    List<Slider> sliders = Arrays.asList(
+        view.findViewById(R.id.slider_1),
+        view.findViewById(R.id.slider_2),
+        view.findViewById(R.id.slider_3),
+        withLabelFormatter,
+        view.findViewById(R.id.slider_5),
+        view.findViewById(R.id.slider_6)
+    );
+    sliders.get(3).setLabelFormatter(new BasicLabelFormatter());
+    SwitchCompat switchButton = view.findViewById(R.id.switch_button);
+
+    switchButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
+      for (Slider slider : sliders) {
+        slider.setEnabled(isChecked);
+      }
+    });
 
     return view;
-  }
-
-  private void setUpSlider(
-      View view, @IdRes int switchId, @IdRes int sliderId, LabelFormatter labelFormatter) {
-    final Slider slider = view.findViewById(sliderId);
-    slider.setLabelFormatter(labelFormatter);
-    SwitchCompat switchButton = view.findViewById(switchId);
-    switchButton.setOnCheckedChangeListener(
-        (buttonView, isChecked) -> slider.setEnabled(isChecked));
-    switchButton.setChecked(true);
   }
 }

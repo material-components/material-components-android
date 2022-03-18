@@ -38,11 +38,6 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical">
 
-      <androidx.appcompat.widget.SwitchCompat
-          android:id="@+id/switch_button_1"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content" />
-
       <com.google.android.material.slider.Slider
           android:id="@+id/slider_1"
           android:layout_width="0dp"
@@ -65,11 +60,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical">
-
-      <androidx.appcompat.widget.SwitchCompat
-          android:id="@+id/switch_button_2"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content" />
 
       <com.google.android.material.slider.Slider
           android:id="@+id/slider_2"
@@ -94,11 +84,6 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical">
 
-      <androidx.appcompat.widget.SwitchCompat
-          android:id="@+id/switch_button_3"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content" />
-
       <com.google.android.material.slider.Slider
           android:id="@+id/slider_3"
           android:layout_width="0dp"
@@ -121,11 +106,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical">
-
-      <androidx.appcompat.widget.SwitchCompat
-          android:id="@+id/switch_button_4"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content" />
 
       <com.google.android.material.slider.Slider
           android:id="@+id/slider_4"
@@ -150,11 +130,6 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical">
 
-      <androidx.appcompat.widget.SwitchCompat
-          android:id="@+id/switch_button_5"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content" />
-
       <com.google.android.material.slider.Slider
           android:id="@+id/slider_5"
           android:layout_width="0dp"
@@ -178,11 +153,6 @@
       android:layout_height="wrap_content"
       android:gravity="center_vertical">
 
-      <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/switch_button_6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
       <com.google.android.material.slider.Slider
         android:id="@+id/slider_6"
         android:layout_width="0dp"
@@ -195,5 +165,13 @@
         android:stepSize="1"
         app:tickVisible="false"/>
     </LinearLayout>
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+      android:id="@+id/switch_button"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_horizontal"
+      android:checked="true"
+      android:text="@string/cat_slider_enabled"/>
   </LinearLayout>
 </ScrollView>
