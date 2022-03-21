@@ -67,6 +67,8 @@ class TimePickerView extends ConstraintLayout implements TimePickerControls {
     void onDoubleTap();
   }
 
+  static final String GENERIC_VIEW_ACCESSIBILITY_CLASS_NAME = "android.view.View";
+
   private final Chip minuteView;
   private final Chip hourView;
 
@@ -169,6 +171,9 @@ class TimePickerView extends ConstraintLayout implements TimePickerControls {
 
     minuteView.setOnClickListener(selectionListener);
     hourView.setOnClickListener(selectionListener);
+
+    minuteView.setAccessibilityClassName(GENERIC_VIEW_ACCESSIBILITY_CLASS_NAME);
+    hourView.setAccessibilityClassName(GENERIC_VIEW_ACCESSIBILITY_CLASS_NAME);
   }
 
   @Override

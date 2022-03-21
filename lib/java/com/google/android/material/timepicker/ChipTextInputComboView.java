@@ -18,6 +18,8 @@ package com.google.android.material.timepicker;
 
 import com.google.android.material.R;
 
+import static com.google.android.material.timepicker.TimePickerView.GENERIC_VIEW_ACCESSIBILITY_CLASS_NAME;
+
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Build.VERSION;
@@ -68,6 +70,7 @@ class ChipTextInputComboView extends FrameLayout implements Checkable {
     super(context, attrs, defStyleAttr);
     LayoutInflater inflater = LayoutInflater.from(context);
     chip = (Chip) inflater.inflate(R.layout.material_time_chip, this, false);
+    chip.setAccessibilityClassName(GENERIC_VIEW_ACCESSIBILITY_CLASS_NAME);
     textInputLayout = (TextInputLayout) inflater.inflate(R.layout.material_time_input, this, false);
     editText = textInputLayout.getEditText();
     editText.setVisibility(INVISIBLE);
