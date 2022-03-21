@@ -162,6 +162,7 @@ public class Chip extends AppCompatCheckBox
   @Dimension(unit = Dimension.PX)
   private int minTouchTargetSize;
 
+  @Nullable private CharSequence accessibilityClassName;
   private static final String BUTTON_ACCESSIBILITY_CLASS_NAME = "android.widget.Button";
   private static final String COMPOUND_BUTTON_ACCESSIBILITY_CLASS_NAME =
       "android.widget.CompoundButton";
@@ -1112,7 +1113,7 @@ public class Chip extends AppCompatCheckBox
   /**
    * Sets this chip's minimum height.
    *
-   * @param minHeight This chip's mininum height.
+   * @param minHeight This chip's minimum height.
    * @attr ref com.google.android.material.R.styleable#Chip_chipMinHeight
    */
   public void setChipMinHeight(float minHeight) {
@@ -2304,10 +2305,21 @@ public class Chip extends AppCompatCheckBox
     return true;
   }
 
+  /**
+   * Sets this chip's accessibility class name.
+   *
+   * @param className This chip's accessibility class name.
+   */
+  public void setAccessibilityClassName(@Nullable CharSequence className) {
+    accessibilityClassName = className;
+  }
+
   @Override
   @NonNull
   public CharSequence getAccessibilityClassName() {
-    if (isCheckable()) {
+    if (!TextUtils.isEmpty(accessibilityClassName)) {
+      return accessibilityClassName;
+    } else if (isCheckable()) {
       ViewParent parent = getParent();
       if (parent instanceof ChipGroup && ((ChipGroup) parent).isSingleSelection()) {
         return RADIO_BUTTON_ACCESSIBILITY_CLASS_NAME;
