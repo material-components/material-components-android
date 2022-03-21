@@ -37,6 +37,7 @@ import android.graphics.drawable.StateListDrawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
@@ -491,7 +492,7 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
   }
 
   private static boolean isEditable(@NonNull EditText editText) {
-    return editText.getKeyListener() != null;
+    return editText.getInputType() != InputType.TYPE_NULL;
   }
 
   private void setEndIconChecked(boolean checked) {
