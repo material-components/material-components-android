@@ -17,6 +17,7 @@ package com.google.android.material.datepicker;
 
 import com.google.android.material.R;
 
+import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -166,25 +167,25 @@ public class MonthAdapterTest {
   @Test
   public void usItemCount() {
     setupLocalizedCalendars(Locale.US);
-    assertEquals(30, monthFeb2016.getCount());
-    assertEquals(31, monthJuly2018.getCount());
-    assertEquals(33, monthFeb2019.getCount());
+    assertThat(monthFeb2016.getCount()).isAtLeast(30);
+    assertThat(monthJuly2018.getCount()).isAtLeast(31);
+    assertThat(monthFeb2019.getCount()).isAtLeast(33);
   }
 
   @Test
   public void frItemCount() {
     setupLocalizedCalendars(Locale.FRANCE);
-    assertEquals(29, monthFeb2016.getCount());
-    assertEquals(37, monthJuly2018.getCount());
-    assertEquals(32, monthFeb2019.getCount());
+    assertThat(monthFeb2016.getCount()).isAtLeast(29);
+    assertThat(monthJuly2018.getCount()).isAtLeast(37);
+    assertThat(monthFeb2019.getCount()).isAtLeast(32);
   }
 
   @Test
   public void ilItemCount() {
     setupLocalizedCalendars(ISRAEL);
-    assertEquals(30, monthFeb2016.getCount());
-    assertEquals(31, monthJuly2018.getCount());
-    assertEquals(33, monthFeb2019.getCount());
+    assertThat(monthFeb2016.getCount()).isAtLeast(30);
+    assertThat(monthJuly2018.getCount()).isAtLeast(31);
+    assertThat(monthFeb2019.getCount()).isAtLeast(33);
   }
 
   @Test
