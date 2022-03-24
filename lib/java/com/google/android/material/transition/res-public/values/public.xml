@@ -21,12 +21,6 @@
   <public name="motionEasingDecelerated" type="attr" />
   <public name="motionEasingAccelerated" type="attr" />
   <public name="motionEasingLinear" type="attr" />
-  <public name="motionDurationShort1" type="attr" />
-  <public name="motionDurationShort2" type="attr" />
-  <public name="motionDurationMedium1" type="attr" />
-  <public name="motionDurationMedium2" type="attr" />
-  <public name="motionDurationLong1" type="attr" />
-  <public name="motionDurationLong2" type="attr" />
   <public name="motionPath" type="attr" />
   <public name="transitionShapeAppearance" type="attr" />
 

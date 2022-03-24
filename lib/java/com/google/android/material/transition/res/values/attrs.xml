@@ -16,25 +16,6 @@
 -->
 <resources>
 
-  <!-- Elements with small transition areas, such as icons and selection
-       controls, have short durations. -->
-  <attr name="motionDurationShort1" format="integer"/>
-  <!-- Elements with small transition areas, such as icons and selection
-       controls, have short durations. -->
-  <attr name="motionDurationShort2" format="integer"/>
-  <!-- Elements with larger transition areas, such as bottom sheets and
-       expanding chips, have slightly longer durations. -->
-  <attr name="motionDurationMedium1" format="integer"/>
-  <!-- Elements with larger transition areas, such as bottom sheets and
-       expanding chips, have slightly longer durations. -->
-  <attr name="motionDurationMedium2" format="integer"/>
-  <!-- Animated elements that traverse a large portion of the screen have the
-       longest durations. -->
-  <attr name="motionDurationLong1" format="integer"/>
-  <!-- Animated elements that traverse a large portion of the screen have the
-       longest durations. -->
-  <attr name="motionDurationLong2" format="integer"/>
-
   <!-- Defines whether certain transitions such as the Container Transform move
        along a straight (linear) path or arced path. Can also be in the format
        of generic path data. -->

@@ -23,5 +23,20 @@
   <public name="motionEasingEmphasizedDecelerateInterpolator" type="attr" />
   <public name="motionEasingEmphasizedAccelerateInterpolator" type="attr" />
   <public name="motionEasingLinearInterpolator" type="attr" />
-
+  <public name="motionDurationShort1" type="attr" />
+  <public name="motionDurationShort2" type="attr" />
+  <public name="motionDurationShort3" type="attr" />
+  <public name="motionDurationShort4" type="attr" />
+  <public name="motionDurationMedium1" type="attr" />
+  <public name="motionDurationMedium2" type="attr" />
+  <public name="motionDurationMedium3" type="attr" />
+  <public name="motionDurationMedium4" type="attr" />
+  <public name="motionDurationLong1" type="attr" />
+  <public name="motionDurationLong2" type="attr" />
+  <public name="motionDurationLong3" type="attr" />
+  <public name="motionDurationLong4" type="attr" />
+  <public name="motionDurationExtraLong1" type="attr" />
+  <public name="motionDurationExtraLong2" type="attr" />
+  <public name="motionDurationExtraLong3" type="attr" />
+  <public name="motionDurationExtraLong4" type="attr" />
 </resources>

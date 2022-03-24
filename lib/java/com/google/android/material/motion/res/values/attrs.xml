@@ -38,4 +38,29 @@
   <!-- Linear is a constant rate of change for simple animations, such as fades. -->
   <attr name="motionEasingLinearInterpolator" format="reference" />
 
+  <!-- Short durations are used for animations with small transition areas,
+       such as selection controls. -->
+  <attr name="motionDurationShort1" format="integer"/>
+  <attr name="motionDurationShort2" format="integer"/>
+  <attr name="motionDurationShort3" format="integer"/>
+  <attr name="motionDurationShort4" format="integer"/>
+  <!--  Medium durations are used for animations that cover medium transition
+        areas such as an expanding FAB.-->
+  <attr name="motionDurationMedium1" format="integer"/>
+  <attr name="motionDurationMedium2" format="integer"/>
+  <attr name="motionDurationMedium3" format="integer"/>
+  <attr name="motionDurationMedium4" format="integer"/>
+  <!--  Long durations are used for animations that traverse a large portion
+        of the screen. -->
+  <attr name="motionDurationLong1" format="integer"/>
+  <attr name="motionDurationLong2" format="integer"/>
+  <attr name="motionDurationLong3" format="integer"/>
+  <attr name="motionDurationLong4" format="integer"/>
+  <!--  Extra long durations are usually used for ambient transitions that
+        don't involve user input. For example, an auto-advancing carousel. -->
+  <attr name="motionDurationExtraLong1" format="integer"/>
+  <attr name="motionDurationExtraLong2" format="integer"/>
+  <attr name="motionDurationExtraLong3" format="integer"/>
+  <attr name="motionDurationExtraLong4" format="integer"/>
+
 </resources>
