@@ -66,7 +66,7 @@ public class DynamicColors {
               version = -1L;
             }
           }
-          return version >= 40100L;
+          return version >= 40000L;
         }
       };
 
