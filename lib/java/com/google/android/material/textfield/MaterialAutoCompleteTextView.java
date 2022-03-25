@@ -158,6 +158,15 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
     modalListPopup.setAdapter(getAdapter());
   }
 
+  @Override
+  public void setInputType(int type) {
+    super.setInputType(type);
+    TextInputLayout textInputLayout = findTextInputLayoutAncestor();
+    if (textInputLayout != null) {
+      textInputLayout.updateDropdownMenuBackground();
+    }
+  }
+
   /**
    * Sets the simple string items of auto-completion with the given string array resource. This
    * method will create a default {@link ArrayAdapter} with a default item layout specified by

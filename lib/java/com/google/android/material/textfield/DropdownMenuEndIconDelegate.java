@@ -292,6 +292,19 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
     return boxBackgroundMode != TextInputLayout.BOX_BACKGROUND_NONE;
   }
 
+  /*
+   * This method should be called if the ripple background should be updated. For example,
+   * if a new {@link ShapeAppearanceModel} is set on the text field, or if a different
+   * {@link InputType} is set on the {@link AutoCompleteTextView}.
+   */
+  void updateBackground(@NonNull AutoCompleteTextView editText) {
+    if (isEditable(editText)) {
+      removeRippleEffect(editText);
+    } else {
+      addRippleEffect(editText);
+    }
+  }
+
   private void showHideDropdown(@Nullable AutoCompleteTextView editText) {
     if (editText == null) {
       return;
@@ -328,18 +341,15 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
     }
   }
 
-  /*
-  * This method should be called if the outlined ripple background should be updated. For example,
-  * if a new {@link ShapeAppearanceModel} is set on the text field.
-  */
-  void updateOutlinedRippleEffect(@NonNull AutoCompleteTextView editText) {
-    if (isEditable(editText)
-        || textInputLayout.getBoxBackgroundMode() != TextInputLayout.BOX_BACKGROUND_OUTLINE
-        || !(editText.getBackground() instanceof LayerDrawable)) {
+  /* Remove ripple effect from editable layouts if it's present. */
+  private void removeRippleEffect(@NonNull AutoCompleteTextView editText) {
+    if (!(editText.getBackground() instanceof LayerDrawable) || !isEditable(editText)) {
       return;
     }
-
-    addRippleEffect(editText);
+    int boxBackgroundMode = textInputLayout.getBoxBackgroundMode();
+    LayerDrawable layerDrawable = (LayerDrawable) editText.getBackground();
+    int backgroundLayerIndex = boxBackgroundMode == TextInputLayout.BOX_BACKGROUND_OUTLINE ? 1 : 0;
+    ViewCompat.setBackground(editText, layerDrawable.getDrawable(backgroundLayerIndex));
   }
 
   /* Add ripple effect to non editable layouts. */

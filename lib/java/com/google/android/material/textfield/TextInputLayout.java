@@ -2612,7 +2612,9 @@ public class TextInputLayout extends LinearLayout {
       boxBackground.setShapeAppearanceModel(shapeAppearanceModel);
       // The outlined background of the dropdown menu is created in the end icon delegate, so it
       // needs to be updated based on the new shape appearance model.
-      updateDropdownMenuBackground();
+      if (boxBackgroundMode == BOX_BACKGROUND_OUTLINE) {
+        updateDropdownMenuBackground();
+      }
     }
 
     if (canDrawOutlineStroke()) {
@@ -2656,13 +2658,15 @@ public class TextInputLayout extends LinearLayout {
   }
 
   /*
-   * This method should be called if the outlined ripple background should be updated. For example,
-   * if a new {@link ShapeAppearanceModel} is set on the text field.
+   * This method should be called when the {@link TextInputLayout} is acting as an exposed dropdown
+   * menu and its ripple background needs to be updated. For example, if a new
+   * {@link ShapeAppearanceModel} is set on the outlined text field, or if a different
+   * {@link InputType} is set on the layout's {@link AutoCompleteTextView}.
    */
-  private void updateDropdownMenuBackground() {
-    if (getEndIconMode() == END_ICON_DROPDOWN_MENU && boxBackgroundMode == BOX_BACKGROUND_OUTLINE) {
+  void updateDropdownMenuBackground() {
+    if (getEndIconMode() == END_ICON_DROPDOWN_MENU) {
       ((DropdownMenuEndIconDelegate) endLayout.getEndIconDelegate())
-          .updateOutlinedRippleEffect((AutoCompleteTextView) editText);
+          .updateBackground((AutoCompleteTextView) editText);
     }
   }
 

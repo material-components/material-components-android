@@ -28,6 +28,7 @@ import android.text.method.TransformationMethod;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
+import android.widget.AutoCompleteTextView;
 import androidx.annotation.ColorInt;
 import androidx.annotation.DimenRes;
 import androidx.test.espresso.UiController;
@@ -867,6 +868,28 @@ public class TextInputLayoutActions {
       public void perform(UiController uiController, View view) {
         TextInputLayout layout = (TextInputLayout) view;
         layout.setExpandedHintEnabled(expandedHintEnabled);
+      }
+    };
+  }
+
+  /** Sets the input type on an AutoCompleteTextView. */
+  public static ViewAction setInputType(final int inputType) {
+    return new ViewAction() {
+
+      @Override
+      public Matcher<View> getConstraints() {
+        return ViewMatchers.isAssignableFrom(AutoCompleteTextView.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Sets input type.";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) view;
+        autoCompleteTextView.setInputType(inputType);
       }
     };
   }
