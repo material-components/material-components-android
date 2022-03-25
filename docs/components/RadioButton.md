@@ -145,9 +145,9 @@ tinted, set `app:useMaterialThemeColors` to `false`:
 
 ```xml
 <RadioButton
-        ...
+    ...
     app:useMaterialThemeColors="false"
-    />
+/>
 ```
 
 ### Text label attributes
@@ -240,7 +240,7 @@ attribute:
 
 ```xml
 <style name="Widget.App.RadioButton" parent="Widget.Material3.CompoundButton.RadioButton">
-   <item name="buttonTint">@color/button_tint</item>
+    <item name="buttonTint">@color/button_tint</item>
 </style>
 ```
 
@@ -248,9 +248,9 @@ and in `color/button_tint.xml`:
 
 ```xml
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:color="@color/shrine_pink_900" android:state_checked="true"/>
-  <item android:alpha="0.38" android:color="@color/shrine_pink_100" android:state_enabled="false"/>
-  <item android:color="@color/shrine_pink_100"/>
+    <item android:color="@color/shrine_pink_900" android:state_checked="true"/>
+    <item android:alpha="0.38" android:color="@color/shrine_pink_100" android:state_enabled="false"/>
+    <item android:color="@color/shrine_pink_100"/>
 </selector>
 ```
 
@@ -258,7 +258,7 @@ You can use the styles in the layout, which affects only this radio button:
 
 ```xml
 <RadioButton
-        ...
+    ...
     style="@style/Widget.App.RadioButton"
-    />
+/>
 ```
