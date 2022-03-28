@@ -331,7 +331,7 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
   }
 
   private void setPopupBackground(@NonNull AutoCompleteTextView editText) {
-    if (IS_LOLLIPOP) {
+    if (IS_LOLLIPOP && editText.getDropDownBackground() == null) {
       int boxBackgroundMode = textInputLayout.getBoxBackgroundMode();
       if (boxBackgroundMode == TextInputLayout.BOX_BACKGROUND_OUTLINE) {
         editText.setDropDownBackgroundDrawable(outlinedPopupBackground);
