@@ -3995,7 +3995,8 @@ public class TextInputLayout extends LinearLayout {
   }
 
   private boolean shouldUpdateStartDummyDrawable() {
-    return (getStartIconDrawable() != null || getPrefixText() != null)
+    return (getStartIconDrawable() != null
+            || (getPrefixText() != null && getPrefixTextView().getVisibility() == VISIBLE))
         && (startLayout.getMeasuredWidth() > 0);
   }
 
