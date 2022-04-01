@@ -80,6 +80,7 @@ public class DynamicColors {
     deviceMap.put("vivo", DEFAULT_DEVICE_SUPPORT_CONDITION);
     deviceMap.put("xiaomi", DEFAULT_DEVICE_SUPPORT_CONDITION);
     deviceMap.put("motorola", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("nothing", DEFAULT_DEVICE_SUPPORT_CONDITION);
     deviceMap.put("itel", DEFAULT_DEVICE_SUPPORT_CONDITION);
     deviceMap.put("tecno", DEFAULT_DEVICE_SUPPORT_CONDITION);
     deviceMap.put("tecno mobile limited", DEFAULT_DEVICE_SUPPORT_CONDITION);
