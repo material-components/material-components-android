@@ -893,4 +893,26 @@ public class TextInputLayoutActions {
       }
     };
   }
+
+  /** Sets the raw input type on an AutoCompleteTextView. */
+  public static ViewAction setRawInputType(final int inputType) {
+    return new ViewAction() {
+
+      @Override
+      public Matcher<View> getConstraints() {
+        return ViewMatchers.isAssignableFrom(AutoCompleteTextView.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Sets raw input type.";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) view;
+        autoCompleteTextView.setRawInputType(inputType);
+      }
+    };
+  }
 }

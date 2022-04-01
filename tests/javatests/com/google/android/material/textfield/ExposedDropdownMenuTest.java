@@ -29,6 +29,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static com.google.android.material.testutils.TestUtilsActions.waitFor;
 import static com.google.android.material.testutils.TextInputLayoutActions.clickIcon;
 import static com.google.android.material.testutils.TextInputLayoutActions.setInputType;
+import static com.google.android.material.testutils.TextInputLayoutActions.setRawInputType;
 import static com.google.android.material.testutils.TextInputLayoutActions.skipAnimations;
 import static com.google.android.material.testutils.TextInputLayoutMatchers.endIconHasContentDescription;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -98,6 +99,23 @@ public class ExposedDropdownMenuTest {
     Drawable editableTypeBackground = editText.getBackground();
     // Switch back to uneditable.
     onView(withId(R.id.edittext_filled)).perform(setInputType(InputType.TYPE_NULL));
+
+    // Assert background updated.
+    assertThat(editableTypeBackground, not(instanceOf(LayerDrawable.class)));
+    // Assert second switch updated the background back to an instance of LayerDrawable.
+    assertThat(editText.getBackground(), instanceOf(LayerDrawable.class));
+  }
+
+  @Test
+  public void testSwitchingRawInputType_updatesBackground() {
+    final Activity activity = activityTestRule.getActivity();
+    AutoCompleteTextView editText = activity.findViewById(R.id.edittext_filled);
+
+    // Switch to an editable type.
+    onView(withId(R.id.edittext_filled)).perform(setRawInputType(InputType.TYPE_CLASS_TEXT));
+    Drawable editableTypeBackground = editText.getBackground();
+    // Switch back to uneditable.
+    onView(withId(R.id.edittext_filled)).perform(setRawInputType(InputType.TYPE_NULL));
 
     // Assert background updated.
     assertThat(editableTypeBackground, not(instanceOf(LayerDrawable.class)));

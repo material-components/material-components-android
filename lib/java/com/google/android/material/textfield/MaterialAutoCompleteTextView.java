@@ -161,10 +161,13 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
   @Override
   public void setInputType(int type) {
     super.setInputType(type);
-    TextInputLayout textInputLayout = findTextInputLayoutAncestor();
-    if (textInputLayout != null) {
-      textInputLayout.updateDropdownMenuBackground();
-    }
+    updateDropdownMenuBackground();
+  }
+
+  @Override
+  public void setRawInputType(int type) {
+    super.setRawInputType(type);
+    updateDropdownMenuBackground();
   }
 
   /**
@@ -280,6 +283,13 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
     width += iconWidth;
 
     return width;
+  }
+
+  private void updateDropdownMenuBackground() {
+    TextInputLayout textInputLayout = findTextInputLayoutAncestor();
+    if (textInputLayout != null) {
+      textInputLayout.updateDropdownMenuBackground();
+    }
   }
 
   @Nullable
