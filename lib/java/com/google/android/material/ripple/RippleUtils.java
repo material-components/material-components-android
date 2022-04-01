@@ -110,7 +110,7 @@ public class RippleUtils {
   @NonNull
   public static ColorStateList convertToRippleDrawableColor(@Nullable ColorStateList rippleColor) {
     if (USE_FRAMEWORK_RIPPLE) {
-      int size = 2;
+      int size = 3;
 
       final int[][] states = new int[size][];
       final int[] colors = new int[size];
@@ -124,6 +124,10 @@ public class RippleUtils {
       // Selected base state.
       states[i] = SELECTED_STATE_SET;
       colors[i] = getColorForState(rippleColor, SELECTED_PRESSED_STATE_SET);
+      i++;
+
+      states[i] = FOCUSED_STATE_SET;
+      colors[i] = getColorForState(rippleColor, FOCUSED_STATE_SET);
       i++;
 
       // Non-selected base state.
