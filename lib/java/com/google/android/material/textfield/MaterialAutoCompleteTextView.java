@@ -159,12 +159,6 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
   }
 
   @Override
-  public void setInputType(int type) {
-    super.setInputType(type);
-    updateDropdownMenuBackground();
-  }
-
-  @Override
   public void setRawInputType(int type) {
     super.setRawInputType(type);
     updateDropdownMenuBackground();
