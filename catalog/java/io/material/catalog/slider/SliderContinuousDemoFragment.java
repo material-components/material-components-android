@@ -19,14 +19,13 @@ package io.material.catalog.slider;
 import io.material.catalog.R;
 
 import android.os.Bundle;
-import androidx.appcompat.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
 import com.google.android.material.slider.Slider;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import io.material.catalog.feature.DemoFragment;
 
 /**
@@ -40,27 +39,28 @@ public class SliderContinuousDemoFragment extends DemoFragment {
       LayoutInflater inflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
     View view = inflater.inflate(R.layout.cat_slider_demo_continuous, viewGroup, false);
 
-    setUpSlider(view, R.id.switch_button_1, R.id.slider_1, R.id.value_1, "%.0f");
-    setUpSlider(view, R.id.switch_button_2, R.id.slider_2, R.id.value_2, "%.0f");
-    setUpSlider(view, R.id.switch_button_3, R.id.slider_3, R.id.value_3, "%.2f");
+    Slider sliderOne = view.findViewById(R.id.slider_1);
+    Slider sliderTwo = view.findViewById(R.id.slider_2);
+    Slider sliderThree = view.findViewById(R.id.slider_3);
+
+    SwitchMaterial switchButton = view.findViewById(R.id.switch_button);
+
+    switchButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
+      sliderOne.setEnabled(isChecked);
+      sliderTwo.setEnabled(isChecked);
+      sliderThree.setEnabled(isChecked);
+    });
+
+    setUpSlider(sliderOne, view.findViewById(R.id.value_1), "%.0f");
+    setUpSlider(sliderTwo, view.findViewById(R.id.value_2), "%.0f");
+    setUpSlider(sliderThree, view.findViewById(R.id.value_3), "%.2f");
 
     return view;
   }
 
-  private void setUpSlider(
-      View view,
-      @IdRes int switchId,
-      @IdRes int sliderId,
-      @IdRes int valueId,
-      final String valueFormat) {
-    final TextView sliderValue = view.findViewById(valueId);
-    final Slider slider = view.findViewById(sliderId);
-    slider.addOnChangeListener(
-        (slider1, value, fromUser) -> sliderValue.setText(String.format(valueFormat, value)));
+  private void setUpSlider(Slider slider, TextView textView, final String valueFormat) {
+    slider.addOnChangeListener((slider1, value, fromUser) -> textView
+        .setText(String.format(valueFormat, value)));
     slider.setValue(slider.getValueFrom());
-    SwitchCompat switchButton = view.findViewById(switchId);
-    switchButton.setOnCheckedChangeListener(
-        (buttonView, isChecked) -> slider.setEnabled(isChecked));
-    switchButton.setChecked(true);
   }
 }
