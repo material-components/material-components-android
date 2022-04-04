@@ -85,14 +85,34 @@ public class MaterialTextView extends AppCompatTextView {
 
   public MaterialTextView(
       @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-    this(context, attrs, defStyleAttr, 0);
+    super(wrap(context, attrs, defStyleAttr, /* defStyleRes= */ 0), attrs, defStyleAttr);
+    initialize(attrs, defStyleAttr, /* defStyleRes= */ 0);
   }
 
+  /**
+   * @deprecated Since {@link AppCompatTextView} does not provide a 4 arg constructor, the
+   *     defStyleRes argument will be ignored. Please use the 3 arg constructor instead. see
+   *     {@link #MaterialTextView(Context, AttributeSet, int)}
+   */
+  @Deprecated
   public MaterialTextView(
       @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
     super(wrap(context, attrs, defStyleAttr, defStyleRes), attrs, defStyleAttr);
+    initialize(attrs, defStyleAttr, defStyleRes);
+  }
+
+  @Override
+  public void setTextAppearance(@NonNull Context context, int resId) {
+    super.setTextAppearance(context, resId);
+
+    if (canApplyTextAppearanceLineHeight(context)) {
+      applyLineHeightFromViewAppearance(context.getTheme(), resId);
+    }
+  }
+
+  private void initialize(@Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
     // Ensure we are using the correctly themed context rather than the context that was passed in.
-    context = getContext();
+    Context context = getContext();
 
     if (canApplyTextAppearanceLineHeight(context)) {
       final Resources.Theme theme = context.getTheme();
@@ -103,15 +123,6 @@ public class MaterialTextView extends AppCompatTextView {
           applyLineHeightFromViewAppearance(theme, resId);
         }
       }
-    }
-  }
-
-  @Override
-  public void setTextAppearance(@NonNull Context context, int resId) {
-    super.setTextAppearance(context, resId);
-
-    if (canApplyTextAppearanceLineHeight(context)) {
-      applyLineHeightFromViewAppearance(context.getTheme(), resId);
     }
   }
 
