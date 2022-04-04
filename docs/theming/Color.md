@@ -18,7 +18,7 @@ backgrounds, text, and more.
 
 ## Design & API Documentation
 
--   [Material Design guidelines: Color](https://material.io/go/design-color-theming/)
+-   [Material Design guidelines: Color](https://m3.material.io/styles/color/overview/)
 
 ## Using The Color Theming System
 
