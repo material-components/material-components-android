@@ -33,6 +33,9 @@ import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
+import androidx.core.view.AccessibilityDelegateCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import com.google.android.material.internal.ParcelableSparseArray;
 import com.google.android.material.internal.ToolbarUtils;
 
@@ -96,7 +99,6 @@ public class BadgeUtils {
         anchor.getOverlay().add(badgeDrawable);
       }
     }
-
   }
 
   /**
@@ -131,9 +133,37 @@ public class BadgeUtils {
             if (menuItemView != null) {
               setToolbarOffset(badgeDrawable, toolbar.getResources());
               BadgeUtils.attachBadgeDrawable(badgeDrawable, menuItemView, customBadgeParent);
+              attachBadgeContentDescription(badgeDrawable, menuItemView);
             }
           }
         });
+  }
+
+  private static void attachBadgeContentDescription(
+      @NonNull final BadgeDrawable badgeDrawable, @NonNull View view) {
+    if (VERSION.SDK_INT >= VERSION_CODES.Q && ViewCompat.hasAccessibilityDelegate(view)) {
+      ViewCompat.setAccessibilityDelegate(
+          view,
+          new AccessibilityDelegateCompat(view.getAccessibilityDelegate()) {
+            @Override
+            public void onInitializeAccessibilityNodeInfo(
+                View host, AccessibilityNodeInfoCompat info) {
+              super.onInitializeAccessibilityNodeInfo(host, info);
+              info.setContentDescription(badgeDrawable.getContentDescription());
+            }
+          });
+    } else {
+      ViewCompat.setAccessibilityDelegate(
+          view,
+          new AccessibilityDelegateCompat() {
+            @Override
+            public void onInitializeAccessibilityNodeInfo(
+                View host, AccessibilityNodeInfoCompat info) {
+              super.onInitializeAccessibilityNodeInfo(host, info);
+              info.setContentDescription(badgeDrawable.getContentDescription());
+            }
+          });
+    }
   }
 
   /**
@@ -167,8 +197,26 @@ public class BadgeUtils {
     if (menuItemView != null) {
       removeToolbarOffset(badgeDrawable);
       detachBadgeDrawable(badgeDrawable, menuItemView);
+      detachBadgeContentDescription(menuItemView);
     } else {
       Log.w(LOG_TAG, "Trying to remove badge from a null menuItemView: " + menuItemId);
+    }
+  }
+
+  private static void detachBadgeContentDescription(@NonNull View view) {
+    if (VERSION.SDK_INT >= VERSION_CODES.Q && ViewCompat.hasAccessibilityDelegate(view)) {
+      ViewCompat.setAccessibilityDelegate(
+          view,
+          new AccessibilityDelegateCompat(view.getAccessibilityDelegate()) {
+            @Override
+            public void onInitializeAccessibilityNodeInfo(
+                View host, AccessibilityNodeInfoCompat info) {
+              super.onInitializeAccessibilityNodeInfo(host, info);
+              info.setContentDescription(null);
+            }
+          });
+    } else {
+      ViewCompat.setAccessibilityDelegate(view, null);
     }
   }
 
