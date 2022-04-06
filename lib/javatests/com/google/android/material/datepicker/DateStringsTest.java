@@ -15,7 +15,7 @@
  */
 package com.google.android.material.datepicker;
 
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 import android.os.Build.VERSION_CODES;
