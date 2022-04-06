@@ -23,12 +23,14 @@ import android.content.Context;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.TextView.BufferType;
 import androidx.core.util.Pair;
 import androidx.test.core.app.ApplicationProvider;
 import com.google.android.material.internal.ParcelableTestUtils;
 import com.google.android.material.textfield.TextInputLayout;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import org.junit.Assert;
 import org.junit.Before;
@@ -81,12 +83,13 @@ public class RangeDateSelectorTest {
   @Test
   public void textInputFormatError() {
     View root = getRootView();
+    ((ViewGroup) activity.findViewById(android.R.id.content)).addView(root);
+
     TextInputLayout startTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_start);
     TextInputLayout endTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_end);
     startTextInput.getEditText().setText("22/22/2010", BufferType.EDITABLE);
     endTextInput.getEditText().setText("555-555-5555", BufferType.EDITABLE);
 
-    activity.setContentView(root);
     ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
 
     assertThat(startTextInput.getError()).isNotNull();
@@ -210,8 +213,12 @@ public class RangeDateSelectorTest {
     activity.setContentView(root);
     ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
 
-    assertThat(startTextInput.getPlaceholderText().toString()).isEqualTo("dd-mm-aaaa");
-    assertThat(endTextInput.getPlaceholderText().toString()).isEqualTo("dd-mm-aaaa");
+    // Some JVMs format PT dates as dd-mm-aaaa, and some as dd/mm/aaaa. Derive the expected result
+    // programatically to account for the difference.
+    boolean slashDateFormat = new SimpleDateFormat().toLocalizedPattern().startsWith("dd/");
+    String expectedDateFormat = slashDateFormat ? "dd/mm/aaaa" : "dd-mm-aaaa";
+    assertThat(startTextInput.getPlaceholderText().toString()).isEqualTo(expectedDateFormat);
+    assertThat(endTextInput.getPlaceholderText().toString()).isEqualTo(expectedDateFormat);
   }
 
   private View getRootView() {
