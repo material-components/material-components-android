@@ -141,6 +141,8 @@ public final class MaterialDatePicker<S> extends DialogFragment {
   @Nullable private MaterialShapeDrawable background;
   private Button confirmButton;
 
+  private boolean edgeToEdgeEnabled;
+
   @NonNull
   static <S> MaterialDatePicker<S> newInstance(@NonNull Builder<S> options) {
     MaterialDatePicker<S> materialDatePickerDialogFragment = new MaterialDatePicker<>();
@@ -307,7 +309,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     if (fullscreen) {
       window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
       window.setBackgroundDrawable(background);
-      enableEdgeToEdge(window);
+      enableEdgeToEdgeIfNeeded(window);
     } else {
       window.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
       int inset =
@@ -356,7 +358,11 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     return getDateSelector().getSelection();
   }
 
-  private void enableEdgeToEdge(Window window) {
+  private void enableEdgeToEdgeIfNeeded(Window window) {
+    if (edgeToEdgeEnabled) {
+      // Avoid enabling edge-to-edge multiple times.
+      return;
+    }
     final View headerLayout = requireView().findViewById(R.id.fullscreen_header);
     EdgeToEdgeUtils.applyEdgeToEdge(
         window, true, ViewUtils.getBackgroundColor(headerLayout), null);
@@ -380,6 +386,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
             return insets;
           }
         });
+    edgeToEdgeEnabled = true;
   }
 
   private void updateHeader() {
