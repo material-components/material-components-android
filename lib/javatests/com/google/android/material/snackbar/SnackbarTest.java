@@ -18,6 +18,7 @@ package com.google.android.material.snackbar;
 
 import com.google.android.material.R;
 
+import static android.os.Build.VERSION_CODES.JELLY_BEAN;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
@@ -31,6 +32,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 import org.robolectric.annotation.LooperMode;
 import org.robolectric.annotation.internal.DoNotInstrument;
 import org.robolectric.shadow.api.Shadow;
@@ -40,6 +42,7 @@ import org.robolectric.shadows.ShadowAccessibilityManager;
 /** Tests for {@link com.google.android.material.snackbar.Snackbar}. */
 @RunWith(RobolectricTestRunner.class)
 @DoNotInstrument
+@Config(sdk = JELLY_BEAN)
 public class SnackbarTest {
 
   private Snackbar snackbar;
