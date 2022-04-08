@@ -572,7 +572,7 @@ Element                               | Attribute                               
 **Input text color**                  | `android:textColor`                                                 | `setTextColor`<br/>`getTextColors`<br/>`getCurrentTextColor` | `?android:textColorPrimary`
 **Cursor color**                      | N/A (color comes from the theme attr `?attr/colorControlActivated`) | N/A                                                          | `?attr/colorPrimary`
 **Dropdown menu<br/>container color** | N/A                                                                 | N/A                                                          | `?attr/colorSurface`
-**Dropdown menu elevation**           | `android:popupElevation`                                            | N/A                                                          | `8dp`
+**Dropdown menu elevation**           | `android:popupElevation`                                            | `getPopupElevation`                                          | `3dp`
 **Simple items**                      | `app:simpleItems`                                                   | `setSimpleItems`                                             | `null`
 **Simple item layout**                | `app:simpleItemLayout`                                              | N/A                                                          | `@layout/m3_auto_complete_simple_item`
 

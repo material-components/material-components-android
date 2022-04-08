@@ -446,21 +446,25 @@
   <style name="Widget.Material3.AutoCompleteTextView.OutlinedBox" parent="Widget.MaterialComponents.AutoCompleteTextView.OutlinedBox">
     <item name="android:textAppearance">?attr/textAppearanceBodyLarge</item>
     <item name="simpleItemLayout">@layout/m3_auto_complete_simple_item</item>
+    <item name="android:popupElevation" tools:ignore="NewApi">@dimen/m3_exposed_dropdown_menu_popup_elevation</item>
   </style>
 
   <style name="Widget.Material3.AutoCompleteTextView.OutlinedBox.Dense" parent="Widget.MaterialComponents.AutoCompleteTextView.OutlinedBox.Dense">
     <item name="android:textAppearance">?attr/textAppearanceBodyLarge</item>
     <item name="simpleItemLayout">@layout/m3_auto_complete_simple_item</item>
+    <item name="android:popupElevation" tools:ignore="NewApi">@dimen/m3_exposed_dropdown_menu_popup_elevation</item>
   </style>
 
   <style name="Widget.Material3.AutoCompleteTextView.FilledBox" parent="Widget.MaterialComponents.AutoCompleteTextView.FilledBox">
     <item name="android:textAppearance">?attr/textAppearanceBodyLarge</item>
     <item name="simpleItemLayout">@layout/m3_auto_complete_simple_item</item>
+    <item name="android:popupElevation" tools:ignore="NewApi">@dimen/m3_exposed_dropdown_menu_popup_elevation</item>
   </style>
 
   <style name="Widget.Material3.AutoCompleteTextView.FilledBox.Dense" parent="Widget.MaterialComponents.AutoCompleteTextView.FilledBox.Dense">
     <item name="android:textAppearance">?attr/textAppearanceBodyLarge</item>
     <item name="simpleItemLayout">@layout/m3_auto_complete_simple_item</item>
+    <item name="android:popupElevation" tools:ignore="NewApi">@dimen/m3_exposed_dropdown_menu_popup_elevation</item>
   </style>
 
   <!-- ThemeOverlays to be used internally in the TextInputLayout styles to automatically apply the correct TextInputEditText style to the TextInputEditText. -->

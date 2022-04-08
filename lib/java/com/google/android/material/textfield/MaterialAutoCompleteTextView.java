@@ -64,6 +64,7 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
   @Nullable private final AccessibilityManager accessibilityManager;
   @NonNull private final Rect tempRect = new Rect();
   @LayoutRes private final int simpleItemLayout;
+  private final float popupElevation;
 
   public MaterialAutoCompleteTextView(@NonNull Context context) {
     this(context, null);
@@ -103,6 +104,11 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
         R.styleable.MaterialAutoCompleteTextView_simpleItemLayout,
         R.layout.mtrl_auto_complete_simple_item);
 
+    popupElevation =
+        attributes.getDimensionPixelOffset(
+            R.styleable.MaterialAutoCompleteTextView_android_popupElevation,
+            R.dimen.mtrl_exposed_dropdown_menu_popup_elevation);
+
     accessibilityManager =
         (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
 
@@ -120,14 +126,14 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
 
             updateText(selectedItem);
 
-            OnItemClickListener userOnitemClickListener = getOnItemClickListener();
-            if (userOnitemClickListener != null) {
+            OnItemClickListener userOnItemClickListener = getOnItemClickListener();
+            if (userOnItemClickListener != null) {
               if (selectedView == null || position < 0) {
                 selectedView = modalListPopup.getSelectedView();
                 position = modalListPopup.getSelectedItemPosition();
                 id = modalListPopup.getSelectedItemId();
               }
-              userOnitemClickListener.onItemClick(
+              userOnItemClickListener.onItemClick(
                   modalListPopup.getListView(), selectedView, position, id);
             }
 
@@ -186,6 +192,16 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
    */
   public void setSimpleItems(@NonNull String[] stringArray) {
     setAdapter(new ArrayAdapter<>(getContext(), simpleItemLayout, stringArray));
+  }
+
+  /**
+   * Returns the elevation of the dropdown popup.
+   *
+   * @attr ref
+   *     com.google.android.material.R.styleable#MaterialAutoCompleteTextView_android_popupElevation
+   */
+  public float getPopupElevation() {
+    return popupElevation;
   }
 
   @Override

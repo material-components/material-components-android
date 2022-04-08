@@ -62,4 +62,6 @@
   <dimen name="mtrl_exposed_dropdown_menu_popup_elevation">8dp</dimen>
   <dimen name="mtrl_exposed_dropdown_menu_popup_vertical_padding">8dp</dimen>
   <dimen name="mtrl_exposed_dropdown_menu_popup_vertical_offset">-8dp</dimen>
+
+  <dimen name="m3_exposed_dropdown_menu_popup_elevation">@dimen/m3_sys_elevation_level2</dimen>
 </resources>

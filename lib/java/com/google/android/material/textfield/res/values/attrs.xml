@@ -301,6 +301,7 @@
 
   <declare-styleable name="MaterialAutoCompleteTextView" parent="AppCompatAutoCompleteTextView">
     <attr name="android:inputType"/>
+    <attr name="android:popupElevation"/>
 
     <!-- The default layout used to inflate auto-complete items -->
     <attr name="simpleItemLayout" format="reference"/>
