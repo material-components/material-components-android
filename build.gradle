@@ -194,6 +194,8 @@ subprojects {
         compileSdkVersion rootProject.ext.compileSdkVersion
 
         defaultConfig.minSdkVersion rootProject.ext.minSdkVersion
+        defaultConfig.targetSdkVersion rootProject.ext.targetSdkVersion
+
         // This disables the builds tools automatic vector -> PNG generation
         defaultConfig.generatedDensities = []
 
