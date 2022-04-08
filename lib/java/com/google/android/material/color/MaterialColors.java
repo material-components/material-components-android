@@ -28,6 +28,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.ColorUtils;
 import com.google.android.material.resources.MaterialAttributes;
 
@@ -66,7 +67,9 @@ public class MaterialColors {
    */
   @ColorInt
   public static int getColor(@NonNull View view, @AttrRes int colorAttributeResId) {
-    return MaterialAttributes.resolveOrThrow(view, colorAttributeResId);
+    return resolveColor(
+        view.getContext(),
+        MaterialAttributes.resolveTypedValueOrThrow(view, colorAttributeResId));
   }
 
   /**
@@ -77,7 +80,10 @@ public class MaterialColors {
   @ColorInt
   public static int getColor(
       Context context, @AttrRes int colorAttributeResId, String errorMessageComponent) {
-    return MaterialAttributes.resolveOrThrow(context, colorAttributeResId, errorMessageComponent);
+    return resolveColor(
+        context,
+        MaterialAttributes.resolveTypedValueOrThrow(
+            context, colorAttributeResId, errorMessageComponent));
   }
 
   /**
@@ -99,9 +105,19 @@ public class MaterialColors {
       @NonNull Context context, @AttrRes int colorAttributeResId, @ColorInt int defaultValue) {
     TypedValue typedValue = MaterialAttributes.resolve(context, colorAttributeResId);
     if (typedValue != null) {
-      return typedValue.data;
+      return resolveColor(context, typedValue);
     } else {
       return defaultValue;
+    }
+  }
+
+  private static int resolveColor(@NonNull Context context, @NonNull TypedValue typedValue) {
+    if (typedValue.resourceId != 0) {
+      // Color State List
+      return ContextCompat.getColor(context, typedValue.resourceId);
+    } else {
+      // Color Int
+      return typedValue.data;
     }
   }
 

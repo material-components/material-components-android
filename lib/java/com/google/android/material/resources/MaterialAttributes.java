@@ -50,12 +50,15 @@ public class MaterialAttributes {
     return null;
   }
 
-  /**
-   * Returns the {@link TypedValue} for the provided {@code attributeResId}.
-   *
-   * @throws IllegalArgumentException if the attribute is not present in the current theme.
-   */
-  public static int resolveOrThrow(
+  @NonNull
+  public static TypedValue resolveTypedValueOrThrow(
+      @NonNull View componentView, @AttrRes int attributeResId) {
+    return resolveTypedValueOrThrow(
+        componentView.getContext(), attributeResId, componentView.getClass().getCanonicalName());
+  }
+
+  @NonNull
+  public static TypedValue resolveTypedValueOrThrow(
       @NonNull Context context,
       @AttrRes int attributeResId,
       @NonNull String errorMessageComponent) {
@@ -71,7 +74,19 @@ public class MaterialAttributes {
               errorMessageComponent,
               context.getResources().getResourceName(attributeResId)));
     }
-    return typedValue.data;
+    return typedValue;
+  }
+
+  /**
+   * Returns the {@link TypedValue} for the provided {@code attributeResId}.
+   *
+   * @throws IllegalArgumentException if the attribute is not present in the current theme.
+   */
+  public static int resolveOrThrow(
+      @NonNull Context context,
+      @AttrRes int attributeResId,
+      @NonNull String errorMessageComponent) {
+    return resolveTypedValueOrThrow(context, attributeResId, errorMessageComponent).data;
   }
 
   /**
@@ -80,9 +95,9 @@ public class MaterialAttributes {
    *
    * @throws IllegalArgumentException if the attribute is not present in the current theme.
    */
-  public static int resolveOrThrow(@NonNull View componentView, @AttrRes int attributeResId) {
-    return resolveOrThrow(
-        componentView.getContext(), attributeResId, componentView.getClass().getCanonicalName());
+  public static int resolveOrThrow(
+      @NonNull View componentView, @AttrRes int attributeResId) {
+    return resolveTypedValueOrThrow(componentView, attributeResId).data;
   }
 
   /**
