@@ -20,6 +20,8 @@ import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -593,13 +595,15 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
       int localIconSize = iconSize == 0 ? icon.getIntrinsicHeight() : iconSize;
       int newIconTop =
-          (buttonHeight
-              - getTextHeight()
-              - getPaddingTop()
-              - localIconSize
-              - iconPadding
-              - getPaddingBottom())
-              / 2;
+          max(
+              0, // Always put the icon on top if the content height is taller than the button.
+              (buttonHeight
+                      - getTextHeight()
+                      - getPaddingTop()
+                      - localIconSize
+                      - iconPadding
+                      - getPaddingBottom())
+                  / 2);
 
       if (iconTop != newIconTop) {
         iconTop = newIconTop;
@@ -617,10 +621,14 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
       buttonText = getTransformationMethod().getTransformation(buttonText, this).toString();
     }
 
-    return Math.min((int) textPaint.measureText(buttonText), getLayout().getEllipsizedWidth());
+    return min((int) textPaint.measureText(buttonText), getLayout().getEllipsizedWidth());
   }
 
   private int getTextHeight() {
+    if (getLineCount() > 1) {
+      // If it's multi-line, return the internal text layout's height.
+      return getLayout().getHeight();
+    }
     Paint textPaint = getPaint();
     String buttonText = getText().toString();
     if (getTransformationMethod() != null) {
@@ -632,7 +640,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     Rect bounds = new Rect();
     textPaint.getTextBounds(buttonText, 0, buttonText.length(), bounds);
 
-    return Math.min(bounds.height(), getLayout().getHeight());
+    return min(bounds.height(), getLayout().getHeight());
   }
 
   private boolean isLayoutRTL() {
