@@ -537,7 +537,12 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
 
   private void invalidateScrollRanges() {
     // Saves the current scrolling state when we need to recalculate scroll ranges
-    SavedState savedState = behavior == null || totalScrollRange == INVALID_SCROLL_RANGE
+    // If the total scroll range is not known yet, the ABL is never scrolled.
+    // If there's a pending action, we should skip this step and respect the pending action.
+    SavedState savedState =
+        behavior == null
+            || totalScrollRange == INVALID_SCROLL_RANGE
+            || pendingAction != PENDING_ACTION_NONE
             ? null : behavior.saveScrollState(AbsSavedState.EMPTY_STATE, this);
     // Invalidate the scroll ranges
     totalScrollRange = INVALID_SCROLL_RANGE;
