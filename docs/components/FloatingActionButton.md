@@ -459,11 +459,11 @@ FABs in your app but does not affect other components:
     <item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
 </style>
 
-<style name="Widget.App.ExtendedFloatingActionButton" parent="Widget.Material3.ExtendedFloatingActionButton.Icon">
+<style name="Widget.App.ExtendedFloatingActionButton" parent="Widget.Material3.ExtendedFloatingActionButton.Icon.Primary">
     <item name="materialThemeOverlay">@style/ThemeOverlay.App.FloatingActionButton</item>
 </style>
 
-<style name="Widget.App.FloatingActionButton" parent="Widget.Material3.FloatingActionButton">
+<style name="Widget.App.FloatingActionButton" parent="Widget.Material3.FloatingActionButton.Primary">
     <item name="materialThemeOverlay">@style/ThemeOverlay.App.FloatingActionButton</item>
 </style>
 
