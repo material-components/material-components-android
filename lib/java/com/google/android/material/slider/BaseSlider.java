@@ -262,12 +262,13 @@ abstract class BaseSlider<
 
   private int minTrackSidePadding;
   private int defaultThumbRadius;
+  private int defaultTrackHeight;
 
+  private int minWidgetHeight;
   private int widgetHeight;
   private int labelBehavior;
   private int trackHeight;
   private int trackSidePadding;
-  private int trackTop;
   private int thumbRadius;
   private int haloRadius;
   private int labelPadding;
@@ -400,14 +401,13 @@ abstract class BaseSlider<
   }
 
   private void loadResources(@NonNull Resources resources) {
-    widgetHeight = resources.getDimensionPixelSize(R.dimen.mtrl_slider_widget_height);
+    minWidgetHeight = resources.getDimensionPixelSize(R.dimen.mtrl_slider_widget_height);
 
     minTrackSidePadding = resources.getDimensionPixelOffset(R.dimen.mtrl_slider_track_side_padding);
     trackSidePadding = minTrackSidePadding;
 
     defaultThumbRadius = resources.getDimensionPixelSize(R.dimen.mtrl_slider_thumb_radius);
-
-    trackTop = resources.getDimensionPixelOffset(R.dimen.mtrl_slider_track_top);
+    defaultTrackHeight = resources.getDimensionPixelSize(R.dimen.mtrl_slider_track_height);
 
     labelPadding = resources.getDimensionPixelSize(R.dimen.mtrl_slider_label_padding);
   }
@@ -506,12 +506,19 @@ abstract class BaseSlider<
         a.getResourceId(R.styleable.Slider_labelStyle, R.style.Widget_MaterialComponents_Tooltip));
   }
 
-  private void maybeIncreaseTrackSidePadding() {
-    int increasedSidePadding = max(thumbRadius - defaultThumbRadius, 0);
-    trackSidePadding = minTrackSidePadding + increasedSidePadding;
+  private boolean maybeIncreaseTrackSidePadding() {
+    int increasedSidePaddingByThumb = max(thumbRadius - defaultThumbRadius, 0);
+    int increasedSidePaddingByTrack = max((trackHeight - defaultTrackHeight) / 2, 0);
+    int newTrackSidePadding =
+        minTrackSidePadding + max(increasedSidePaddingByThumb, increasedSidePaddingByTrack);
+    if (trackSidePadding == newTrackSidePadding) {
+      return false;
+    }
+    trackSidePadding = newTrackSidePadding;
     if (ViewCompat.isLaidOut(this)) {
       updateTrackWidth(getWidth());
     }
+    return true;
   }
 
   private void validateValueFrom() {
@@ -1050,7 +1057,6 @@ abstract class BaseSlider<
     }
 
     thumbRadius = radius;
-    maybeIncreaseTrackSidePadding();
 
     defaultThumbDrawable.setShapeAppearanceModel(
         ShapeAppearanceModel.builder().setAllCorners(CornerFamily.ROUNDED, thumbRadius).build());
@@ -1063,7 +1069,7 @@ abstract class BaseSlider<
       adjustCustomThumbDrawableBounds(customDrawable);
     }
 
-    postInvalidate();
+    updateWidgetLayout();
   }
 
   /**
@@ -1273,8 +1279,32 @@ abstract class BaseSlider<
     if (this.trackHeight != trackHeight) {
       this.trackHeight = trackHeight;
       invalidateTrack();
+      updateWidgetLayout();
+    }
+  }
+
+  private void updateWidgetLayout() {
+    boolean sizeChanged = maybeIncreaseWidgetHeight();
+    boolean sidePaddingChanged = maybeIncreaseTrackSidePadding();
+    if (sizeChanged) {
+      requestLayout();
+    } else if (sidePaddingChanged) {
       postInvalidate();
     }
+  }
+
+  private boolean maybeIncreaseWidgetHeight() {
+    int topAndBottomPaddings = getPaddingTop() + getPaddingBottom();
+    int minHeightRequiredByTrack = trackHeight + topAndBottomPaddings;
+    int minHeightRequiredByThumb = thumbRadius * 2 + getPaddingTop() + getPaddingBottom();
+
+    int newWidgetHeight =
+        max(minWidgetHeight, max(minHeightRequiredByTrack, minHeightRequiredByThumb));
+    if (newWidgetHeight == widgetHeight) {
+      return false;
+    }
+    widgetHeight = newWidgetHeight;
+    return true;
   }
 
   /**
@@ -1624,7 +1654,7 @@ abstract class BaseSlider<
     float interval = trackWidth / (float) (tickCount - 1);
     for (int i = 0; i < tickCount * 2; i += 2) {
       ticksCoordinates[i] = trackSidePadding + i / 2 * interval;
-      ticksCoordinates[i + 1] = calculateTop();
+      ticksCoordinates[i + 1] = calculateTrackCenter();
     }
   }
 
@@ -1642,15 +1672,15 @@ abstract class BaseSlider<
       final Drawable background = getBackground();
       if (background instanceof RippleDrawable) {
         int x = (int) (normalizeValue(values.get(focusedThumbIdx)) * trackWidth + trackSidePadding);
-        int y = calculateTop();
+        int y = calculateTrackCenter();
         DrawableCompat.setHotspotBounds(
             background, x - haloRadius, y - haloRadius, x + haloRadius, y + haloRadius);
       }
     }
   }
 
-  private int calculateTop() {
-    return trackTop
+  private int calculateTrackCenter() {
+    return widgetHeight / 2
         + (labelBehavior == LABEL_WITHIN_BOUNDS || shouldAlwaysShowLabel()
             ? labels.get(0).getIntrinsicHeight()
             : 0);
@@ -1667,17 +1697,17 @@ abstract class BaseSlider<
 
     super.onDraw(canvas);
 
-    int top = calculateTop();
+    int yCenter = calculateTrackCenter();
 
-    drawInactiveTrack(canvas, trackWidth, top);
+    drawInactiveTrack(canvas, trackWidth, yCenter);
     if (max(getValues()) > valueFrom) {
-      drawActiveTrack(canvas, trackWidth, top);
+      drawActiveTrack(canvas, trackWidth, yCenter);
     }
 
     maybeDrawTicks(canvas);
 
     if ((thumbIsPressed || isFocused() || shouldAlwaysShowLabel()) && isEnabled()) {
-      maybeDrawHalo(canvas, trackWidth, top);
+      maybeDrawHalo(canvas, trackWidth, yCenter);
       // Draw labels if there is an active thumb or the labels are always visible.
       if (activeThumbIdx != -1 || shouldAlwaysShowLabel()) {
         ensureLabelsAdded();
@@ -1688,7 +1718,7 @@ abstract class BaseSlider<
       ensureLabelsRemoved();
     }
 
-    drawThumbs(canvas, trackWidth, top);
+    drawThumbs(canvas, trackWidth, yCenter);
   }
 
   /**
@@ -1705,17 +1735,17 @@ abstract class BaseSlider<
     return isRtl() ? new float[] {right, left} : new float[] {left, right};
   }
 
-  private void drawInactiveTrack(@NonNull Canvas canvas, int width, int top) {
+  private void drawInactiveTrack(@NonNull Canvas canvas, int width, int yCenter) {
     float[] activeRange = getActiveRange();
     float right = trackSidePadding + activeRange[1] * width;
     if (right < trackSidePadding + width) {
-      canvas.drawLine(right, top, trackSidePadding + width, top, inactiveTrackPaint);
+      canvas.drawLine(right, yCenter, trackSidePadding + width, yCenter, inactiveTrackPaint);
     }
 
     // Also draw inactive track to the left if there is any
     float left = trackSidePadding + activeRange[0] * width;
     if (left > trackSidePadding) {
-      canvas.drawLine(trackSidePadding, top, left, top, inactiveTrackPaint);
+      canvas.drawLine(trackSidePadding, yCenter, left, yCenter, inactiveTrackPaint);
     }
   }
 
@@ -1731,11 +1761,11 @@ abstract class BaseSlider<
     return normalized;
   }
 
-  private void drawActiveTrack(@NonNull Canvas canvas, int width, int top) {
+  private void drawActiveTrack(@NonNull Canvas canvas, int width, int yCenter) {
     float[] activeRange = getActiveRange();
     float right = trackSidePadding + activeRange[1] * width;
     float left = trackSidePadding + activeRange[0] * width;
-    canvas.drawLine(left, top, right, top, activeTrackPaint);
+    canvas.drawLine(left, yCenter, right, yCenter, activeTrackPaint);
   }
 
   private void maybeDrawTicks(@NonNull Canvas canvas) {
@@ -1765,21 +1795,21 @@ abstract class BaseSlider<
         inactiveTicksPaint);
   }
 
-  private void drawThumbs(@NonNull Canvas canvas, int width, int top) {
+  private void drawThumbs(@NonNull Canvas canvas, int width, int yCenter) {
     for (int i = 0; i < values.size(); i++) {
       float value = values.get(i);
       if (customThumbDrawable != null) {
-        drawThumbDrawable(canvas, width, top, value, customThumbDrawable);
+        drawThumbDrawable(canvas, width, yCenter, value, customThumbDrawable);
       } else if (i < customThumbDrawablesForValues.size()) {
-        drawThumbDrawable(canvas, width, top, value, customThumbDrawablesForValues.get(i));
+        drawThumbDrawable(canvas, width, yCenter, value, customThumbDrawablesForValues.get(i));
       } else {
         // Clear out the track behind the thumb if we're in a disable state since the thumb is
         // transparent.
         if (!isEnabled()) {
           canvas.drawCircle(
-              trackSidePadding + normalizeValue(value) * width, top, thumbRadius, thumbPaint);
+              trackSidePadding + normalizeValue(value) * width, yCenter, thumbRadius, thumbPaint);
         }
-        drawThumbDrawable(canvas, width, top, value, defaultThumbDrawable);
+        drawThumbDrawable(canvas, width, yCenter, value, defaultThumbDrawable);
       }
     }
   }
@@ -2178,7 +2208,7 @@ abstract class BaseSlider<
         trackSidePadding
             + (int) (normalizeValue(value) * trackWidth)
             - label.getIntrinsicWidth() / 2;
-    int top = calculateTop() - (labelPadding + thumbRadius);
+    int top = calculateTrackCenter() - (labelPadding + thumbRadius);
     label.setBounds(left, top - label.getIntrinsicHeight(), left + label.getIntrinsicWidth(), top);
 
     // Calculate the difference between the bounds of this view and the bounds of the root view to
@@ -2620,7 +2650,7 @@ abstract class BaseSlider<
 
   void updateBoundsForVirturalViewId(int virtualViewId, Rect virtualViewBounds) {
     int x = trackSidePadding + (int) (normalizeValue(getValues().get(virtualViewId)) * trackWidth);
-    int y = calculateTop();
+    int y = calculateTrackCenter();
 
     virtualViewBounds.set(x - thumbRadius, y - thumbRadius, x + thumbRadius, y + thumbRadius);
   }
