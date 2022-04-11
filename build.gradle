@@ -155,6 +155,9 @@ def getArchivesBaseName(name) {
 subprojects {
     tasks.withType(Test) {
         maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
+        forkEvery = 80
+        maxHeapSize = "2048m"
+        minHeapSize = "1024m"
     }
 }
 
