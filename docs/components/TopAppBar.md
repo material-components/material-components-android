@@ -260,6 +260,21 @@ In the layout:
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 ```
 
+### Status bar and edge-to-edge
+
+![Small top app bar with edge-to-edge status bar](assets/topappbar/topappbar_small.png)
+
+A common configuration for modern Top App Bars, as seen above, is to have a
+seamless color shared with the status bar. The best way to achieve this is to
+follow the
+[edge-to-edge guidance](https://developer.android.com/training/gestures/edge-to-edge),
+which will result in a transparent status bar that lets the background color of
+the Top App Bar show through.
+
+Make sure to set `android:fitsSystemWindows="true"` on your `AppBarLayout` (or
+`MaterialToolbar` if not using `AppBarLayout`), so that an extra inset is added
+to avoid overlap with the status bar.
+
 ### Center aligned top app bar example
 
 All of the same guidance and code from the sections above is relevant for Center
