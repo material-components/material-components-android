@@ -568,7 +568,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
       int localIconSize = iconSize == 0 ? icon.getIntrinsicWidth() : iconSize;
       int availableWidth = buttonWidth
-          - getTextWidth()
+          - getTextLayoutWidth()
           - ViewCompat.getPaddingEnd(this)
           - localIconSize
           - iconPadding
@@ -612,9 +612,18 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     }
   }
 
-  private int getTextWidth() {
+  private int getTextLayoutWidth() {
+    int maxWidth = 0;
+    int lineCount = getLineCount();
+    for (int line = 0; line < lineCount; line++) {
+      maxWidth = max(maxWidth, getTextWidth(getTextInLine(line)));
+    }
+    return maxWidth;
+  }
+
+  private int getTextWidth(CharSequence text) {
     Paint textPaint = getPaint();
-    String buttonText = getText().toString();
+    String buttonText = text.toString();
     if (getTransformationMethod() != null) {
       // if text is transformed, add that transformation to to ensure correct calculation
       // of icon padding.
@@ -641,6 +650,12 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     textPaint.getTextBounds(buttonText, 0, buttonText.length(), bounds);
 
     return min(bounds.height(), getLayout().getHeight());
+  }
+
+  private CharSequence getTextInLine(int line) {
+    int start = getLayout().getLineStart(line);
+    int end = getLayout().getLineEnd(line);
+    return getText().subSequence(start, end);
   }
 
   private boolean isLayoutRTL() {
