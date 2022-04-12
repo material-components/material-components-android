@@ -25,6 +25,7 @@ import static org.robolectric.Shadows.shadowOf;
 import android.content.Context;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityManager;
 import androidx.test.core.app.ApplicationProvider;
 import org.junit.Before;
@@ -54,25 +55,55 @@ public class ExposedDropdownMenuAccessibilityTest {
 
   private void inflateLayout() {
     View inflated = activity.getLayoutInflater().inflate(R.layout.test_exposed_dropdown_menu, null);
+    ((ViewGroup) activity.findViewById(android.R.id.content)).addView(inflated);
     dropdownEditable = inflated.findViewById(R.id.dropdown_editable);
     dropdownNonEditable = inflated.findViewById(R.id.dropdown_noneditable);
   }
 
   @Test
-  public void testEndIconInNonEditableMenu_inA11yMode_notImportantForA11y() {
-    accessibilityManager.setTouchExplorationEnabled(true);
+  public void testEndIconInNonEditableMenu_isImportantForA11y() {
+    accessibilityManager.setEnabled(true);
 
     inflateLayout();
 
-    assertThat(dropdownNonEditable.getEndIconView().isImportantForAccessibility(), is(false));
+    assertThat(dropdownNonEditable.getEndIconView().isImportantForAccessibility(), is(true));
   }
 
   @Test
-  public void testEndIconInEditableMenu_inA11yMode_isImportantForA11y() {
-    accessibilityManager.setTouchExplorationEnabled(true);
+  public void testEndIconInEditableMenu_isImportantForA11y() {
+    accessibilityManager.setEnabled(true);
 
     inflateLayout();
 
+    assertThat(dropdownEditable.getEndIconView().isImportantForAccessibility(), is(true));;
+  }
+
+  @Test
+  public void testEndIconInNonEditableMenu_inTouchExplorationMode_notImportantForA11y() {
+    inflateLayout();
+
+    accessibilityManager.setTouchExplorationEnabled(true);
+    boolean importantForA11yInTouchExplMode =
+        dropdownNonEditable.getEndIconView().isImportantForAccessibility();
+    accessibilityManager.setTouchExplorationEnabled(false);
+    accessibilityManager.setEnabled(false);
+
+    // Assert it was false in touch exploration mode.
+    assertThat(importantForA11yInTouchExplMode, is(false));
+    // Assert it switches back to true.
+    assertThat(dropdownNonEditable.getEndIconView().isImportantForAccessibility(), is(true));
+  }
+
+  @Test
+  public void testEndIconInEditableMenu_inTouchExplorationMode_alwaysImportantForA11y() {
+    inflateLayout();
+
+    accessibilityManager.setTouchExplorationEnabled(true);
+    boolean importantForA11yInTouchExplMode =
+        dropdownEditable.getEndIconView().isImportantForAccessibility();
+    accessibilityManager.setTouchExplorationEnabled(false);
+
+    assertThat(importantForA11yInTouchExplMode, is(true));
     assertThat(dropdownEditable.getEndIconView().isImportantForAccessibility(), is(true));
   }
 }
