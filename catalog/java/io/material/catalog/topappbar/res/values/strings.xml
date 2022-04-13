@@ -24,6 +24,7 @@
   <string name="cat_topappbar_scrolling_transparent_title" translatable="false">Scrolling Demo (transparent status bar)</string>
   <string name="cat_topappbar_collapsing_medium_title" translatable="false">Collapsing Demo (Medium)</string>
   <string name="cat_topappbar_collapsing_large_title" translatable="false">Collapsing Demo (Large)</string>
+  <string name="cat_topappbar_collapsing_large_middle_ellipsize_title" translatable="false">Collapsing Demo (Large Middle Ellipsize)</string>
   <string name="cat_topappbar_toolbar_title" translatable="false">Toolbar Demo</string>
   <string name="cat_topappbar_collapsing_multiline_title" translatable="false">Collapsing Demo (Multiline title)</string>
   <string name="cat_topappbar_action_bar_title" translatable="false">Action Bar Demo</string>
