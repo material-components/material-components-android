@@ -463,7 +463,8 @@ public final class CollapsingTextHelper {
         break;
       case 3:
         titleTextEllipsize = TruncateAt.MARQUEE;
-      default: // fall out
+        break;
+      default:
         titleTextEllipsize = TextUtils.TruncateAt.END;
         break;
     }
