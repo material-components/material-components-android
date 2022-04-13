@@ -152,6 +152,13 @@
     <!-- The text appearance of the CollapsingToolbarLayouts title when it is fully
          'collapsed' -->
     <attr name="collapsedTitleTextAppearance" format="reference"/>
+    <!-- The text ellipsize of the collapsedToolbarLayout title -->
+    <attr name="titleTextEllipsize" format="enum">
+      <enum name="start" value="0" />
+      <enum name="middle" value="1" />
+      <enum name="end" value="2" />
+      <enum name="marquee" value="3" />
+    </attr>
     <!-- The text color of the CollapsingToolbarLayout's title when it is fully
          'expanded' -->
     <attr name="expandedTitleTextColor" format="color|reference"/>

@@ -261,6 +261,12 @@ public class CollapsingToolbarLayout extends FrameLayout {
           a.getResourceId(R.styleable.CollapsingToolbarLayout_collapsedTitleTextAppearance, 0));
     }
 
+    // Now overlay any custom text Ellipsize
+    if (a.hasValue(R.styleable.CollapsingToolbarLayout_titleTextEllipsize)) {
+      collapsingTextHelper.setTitleTextEllipsize(
+          a.getInt(R.styleable.CollapsingToolbarLayout_titleTextEllipsize, 2));
+    }
+
     if (a.hasValue(R.styleable.CollapsingToolbarLayout_expandedTitleTextColor)) {
       collapsingTextHelper.setExpandedTextColor(
           MaterialResources.getColorStateList(

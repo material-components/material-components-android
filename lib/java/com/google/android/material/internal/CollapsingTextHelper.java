@@ -126,6 +126,8 @@ public final class CollapsingTextHelper {
   private CancelableFontCallback expandedFontCallback;
   private CancelableFontCallback collapsedFontCallback;
 
+  private TruncateAt titleTextEllipsize = TruncateAt.END;
+
   @Nullable private CharSequence text;
   @Nullable private CharSequence textToDraw;
   private boolean isRtl;
@@ -447,6 +449,26 @@ public final class CollapsingTextHelper {
     recalculate();
   }
 
+  public void setTitleTextEllipsize(int ellipsize) {
+    // Convert to supported TextUtils.TruncateAt values
+    switch (ellipsize) {
+      case 0:
+        titleTextEllipsize = TextUtils.TruncateAt.START;
+        break;
+      case 1:
+        titleTextEllipsize = TextUtils.TruncateAt.MIDDLE;
+        break;
+      case 2:
+        titleTextEllipsize = TextUtils.TruncateAt.END;
+        break;
+      case 3:
+        titleTextEllipsize = TruncateAt.MARQUEE;
+      default: // fall out
+        titleTextEllipsize = TextUtils.TruncateAt.END;
+        break;
+    }
+  }
+
   public void setCollapsedTypeface(Typeface typeface) {
     if (setCollapsedTypefaceInternal(typeface)) {
       recalculate();
@@ -710,7 +732,7 @@ public final class CollapsingTextHelper {
     calculateUsingTextSize(/* fraction= */ 1, forceRecalculate);
     if (textToDraw != null && textLayout != null) {
       textToDrawCollapsed =
-          TextUtils.ellipsize(textToDraw, textPaint, textLayout.getWidth(), TruncateAt.END);
+          TextUtils.ellipsize(textToDraw, textPaint, textLayout.getWidth(), titleTextEllipsize);
     }
     if (textToDrawCollapsed != null) {
       collapsedTextWidth = measureTextWidth(textPaint, textToDrawCollapsed);
@@ -1061,7 +1083,7 @@ public final class CollapsingTextHelper {
       Alignment textAlignment = maxLines == 1 ? ALIGN_NORMAL : getMultilineTextLayoutAlignment();
       textLayout =
           StaticLayoutBuilderCompat.obtain(text, textPaint, (int) availableWidth)
-              .setEllipsize(TruncateAt.END)
+              .setEllipsize(titleTextEllipsize)
               .setIsRtl(isRtl)
               .setAlignment(textAlignment)
               .setIncludePad(false)
