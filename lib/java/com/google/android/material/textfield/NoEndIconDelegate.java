@@ -28,7 +28,6 @@ class NoEndIconDelegate extends EndIconDelegate {
 
   @Override
   void initialize() {
-    endLayout.setEndIconOnClickListener(null);
     endLayout.setEndIconDrawable(null);
     endLayout.setEndIconContentDescription(null);
   }

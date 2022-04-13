@@ -36,7 +36,6 @@ class CustomEndIconDelegate extends EndIconDelegate {
   @Override
   void initialize() {
     endLayout.setEndIconDrawable(customEndIcon);
-    endLayout.setEndIconOnClickListener(null);
     endLayout.setEndIconOnLongClickListener(null);
   }
 }

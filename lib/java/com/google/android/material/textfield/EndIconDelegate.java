@@ -17,8 +17,13 @@
 package com.google.android.material.textfield;
 
 import android.content.Context;
+import android.text.Editable;
+import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
+import android.widget.EditText;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.google.android.material.internal.CheckableImageButton;
 import com.google.android.material.textfield.TextInputLayout.BoxBackgroundMode;
 
@@ -75,4 +80,45 @@ abstract class EndIconDelegate {
    * @param visible whether the icon should be set to visible
    */
   void onSuffixVisibilityChanged(boolean visible) {}
+
+  /**
+   * Overrides this method to provides an {@link OnClickListener} to handle click events of the end
+   * icon.
+   */
+  OnClickListener getOnIconClickListener() {
+    return null;
+  }
+
+  /**
+   * Overrides this method to provides an {@link OnFocusChangeListener} to handle focus change
+   * events of the edit text.
+   */
+  OnFocusChangeListener getOnEditTextFocusChangeListener() {
+    return null;
+  }
+
+  /**
+   * Overrides this method to provides an {@link OnFocusChangeListener} to handle focus change
+   * events of the end icon.
+   */
+  OnFocusChangeListener getOnIconViewFocusChangeListener() {
+    return null;
+  }
+
+  /** This method will be called when the edit text of the text input layout is attached. */
+  void onEditTextAttached(@Nullable EditText editText) {}
+
+  /**
+   * This method will be called before the input text is going to be changed.
+   *
+   * @see android.text.TextWatcher#beforeTextChanged(CharSequence, int, int, int)
+   */
+  void beforeEditTextChanged(CharSequence s, int start, int count, int after) {}
+
+  /**
+   * This method will be called after the input text is changed.
+   *
+   * @see android.text.TextWatcher#afterTextChanged(Editable)
+   */
+  void afterEditTextChanged(Editable s) {}
 }

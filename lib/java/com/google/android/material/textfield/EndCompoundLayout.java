@@ -35,12 +35,15 @@ import android.graphics.drawable.Drawable;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.TintTypedArray;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -55,9 +58,11 @@ import androidx.core.view.MarginLayoutParamsCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.TextViewCompat;
 import com.google.android.material.internal.CheckableImageButton;
+import com.google.android.material.internal.TextWatcherAdapter;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.textfield.TextInputLayout.EndIconMode;
+import com.google.android.material.textfield.TextInputLayout.OnEditTextAttachedListener;
 import com.google.android.material.textfield.TextInputLayout.OnEndIconChangedListener;
 import java.util.LinkedHashSet;
 
@@ -89,6 +94,44 @@ class EndCompoundLayout extends LinearLayout {
   @NonNull private final TextView suffixTextView;
 
   private boolean hintExpanded;
+
+  private EditText editText;
+
+  private final TextWatcher editTextWatcher =
+      new TextWatcherAdapter() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+          getEndIconDelegate().beforeEditTextChanged(s, start, count, after);
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+          getEndIconDelegate().afterEditTextChanged(s);
+        }
+      };
+
+  private final OnEditTextAttachedListener onEditTextAttachedListener =
+      new OnEditTextAttachedListener() {
+        @Override
+        public void onEditTextAttached(@NonNull TextInputLayout textInputLayout) {
+          if (editText == textInputLayout.getEditText()) {
+            return;
+          }
+          if (editText != null) {
+            editText.removeTextChangedListener(editTextWatcher);
+            if (editText.getOnFocusChangeListener()
+                == getEndIconDelegate().getOnEditTextFocusChangeListener()) {
+              editText.setOnFocusChangeListener(null);
+            }
+          }
+          editText = textInputLayout.getEditText();
+          if (editText != null) {
+            editText.addTextChangedListener(editTextWatcher);
+          }
+          getEndIconDelegate().onEditTextAttached(editText);
+          setOnFocusChangeListenersIfNeeded(getEndIconDelegate());
+        }
+      };
 
   EndCompoundLayout(TextInputLayout textInputLayout, TintTypedArray a) {
     super(textInputLayout.getContext());
@@ -124,6 +167,8 @@ class EndCompoundLayout extends LinearLayout {
     addView(suffixTextView);
     addView(endIconFrame);
     addView(errorIconView);
+
+    textInputLayout.addOnEditTextAttachedListener(onEditTextAttachedListener);
   }
 
   private CheckableImageButton createIconView(
@@ -281,14 +326,20 @@ class EndCompoundLayout extends LinearLayout {
     this.endIconMode = endIconMode;
     dispatchOnEndIconChanged(previousEndIconMode);
     setEndIconVisible(endIconMode != END_ICON_NONE);
-    if (getEndIconDelegate().isBoxBackgroundModeSupported(textInputLayout.getBoxBackgroundMode())) {
-      getEndIconDelegate().initialize();
+    EndIconDelegate delegate = getEndIconDelegate();
+    if (delegate.isBoxBackgroundModeSupported(textInputLayout.getBoxBackgroundMode())) {
+      delegate.initialize();
     } else {
       throw new IllegalStateException(
           "The current box background mode "
               + textInputLayout.getBoxBackgroundMode()
               + " is not supported by the end icon mode "
               + endIconMode);
+    }
+    setEndIconOnClickListener(delegate.getOnIconClickListener());
+    if (editText != null) {
+      delegate.onEditTextAttached(editText);
+      setOnFocusChangeListenersIfNeeded(delegate);
     }
     applyIconTint(textInputLayout, endIconView, endIconTintList, endIconTintMode);
   }
@@ -307,6 +358,18 @@ class EndCompoundLayout extends LinearLayout {
       @Nullable OnLongClickListener errorIconOnLongClickListener) {
     this.errorIconOnLongClickListener = errorIconOnLongClickListener;
     setIconOnLongClickListener(errorIconView, errorIconOnLongClickListener);
+  }
+
+  private void setOnFocusChangeListenersIfNeeded(EndIconDelegate delegate) {
+    if (editText == null) {
+      return;
+    }
+    if (delegate.getOnEditTextFocusChangeListener() != null) {
+      editText.setOnFocusChangeListener(delegate.getOnEditTextFocusChangeListener());
+    }
+    if (delegate.getOnIconViewFocusChangeListener() != null) {
+      endIconView.setOnFocusChangeListener(delegate.getOnIconViewFocusChangeListener());
+    }
   }
 
   void refreshErrorIconDrawableState() {

@@ -38,7 +38,6 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.text.Editable;
 import android.text.InputType;
-import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -51,6 +50,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.AutoCompleteTextView.OnDismissListener;
 import android.widget.EditText;
 import android.widget.Spinner;
+import androidx.annotation.ChecksSdkIntAtLeast;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -58,56 +58,21 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.color.MaterialColors;
-import com.google.android.material.internal.TextWatcherAdapter;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.textfield.TextInputLayout.AccessibilityDelegate;
 import com.google.android.material.textfield.TextInputLayout.BoxBackgroundMode;
-import com.google.android.material.textfield.TextInputLayout.OnEditTextAttachedListener;
 import com.google.android.material.textfield.TextInputLayout.OnEndIconChangedListener;
 
 /** Default initialization of the exposed dropdown menu {@link TextInputLayout.EndIconMode}. */
 class DropdownMenuEndIconDelegate extends EndIconDelegate {
 
+  @ChecksSdkIntAtLeast(api = VERSION_CODES.LOLLIPOP)
   private static final boolean IS_LOLLIPOP = VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP;
+
   private static final int ANIMATION_FADE_OUT_DURATION = 50;
   private static final int ANIMATION_FADE_IN_DURATION = 67;
 
-  private final TextWatcher exposedDropdownEndIconTextWatcher =
-      new TextWatcherAdapter() {
-
-        @Override
-        public void afterTextChanged(Editable s) {
-          final AutoCompleteTextView editText =
-              castAutoCompleteTextViewOrThrow(textInputLayout.getEditText());
-          // Don't show dropdown list if we're in a11y mode and the menu is editable.
-          if (accessibilityManager.isTouchExplorationEnabled()
-              && isEditable(editText)
-              && !endIconView.hasFocus()) {
-            editText.dismissDropDown();
-          }
-          editText.post(
-              new Runnable() {
-                @Override
-                public void run() {
-                  boolean isPopupShowing = editText.isPopupShowing();
-                  setEndIconChecked(isPopupShowing);
-                  dropdownPopupDirty = isPopupShowing;
-                }
-              });
-        }
-      };
-  private final OnFocusChangeListener onFocusChangeListener =
-      new OnFocusChangeListener() {
-        @Override
-        public void onFocusChange(View v, boolean hasFocus) {
-          endLayout.setEndIconActivated(hasFocus);
-          if (!hasFocus) {
-            setEndIconChecked(false);
-            dropdownPopupDirty = false;
-          }
-        }
-      };
   private final TextInputLayout.AccessibilityDelegate accessibilityDelegate =
       new AccessibilityDelegate(textInputLayout) {
         @Override
@@ -141,36 +106,6 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
           }
         }
       };
-  private final OnEditTextAttachedListener dropdownMenuOnEditTextAttachedListener =
-      new OnEditTextAttachedListener() {
-        @Override
-        public void onEditTextAttached(@NonNull TextInputLayout textInputLayout) {
-          AutoCompleteTextView autoCompleteTextView =
-              castAutoCompleteTextViewOrThrow(textInputLayout.getEditText());
-
-          float popupElevation =
-              (autoCompleteTextView instanceof MaterialAutoCompleteTextView)
-                  ? ((MaterialAutoCompleteTextView) autoCompleteTextView).getPopupElevation()
-                  : context
-                      .getResources()
-                      .getDimensionPixelOffset(R.dimen.m3_exposed_dropdown_menu_popup_elevation);
-          setPopupBackground(autoCompleteTextView, popupElevation);
-          addRippleEffect(autoCompleteTextView);
-          setUpDropdownShowHideBehavior(autoCompleteTextView);
-          autoCompleteTextView.setThreshold(0);
-          autoCompleteTextView.removeTextChangedListener(exposedDropdownEndIconTextWatcher);
-          autoCompleteTextView.addTextChangedListener(exposedDropdownEndIconTextWatcher);
-          textInputLayout.setEndIconCheckable(true);
-          textInputLayout.setErrorIconDrawable(null);
-          if (!isEditable(autoCompleteTextView)
-              && accessibilityManager.isTouchExplorationEnabled()) {
-            ViewCompat.setImportantForAccessibility(endIconView, IMPORTANT_FOR_ACCESSIBILITY_NO);
-          }
-          textInputLayout.setTextInputAccessibilityDelegate(accessibilityDelegate);
-
-          textInputLayout.setEndIconVisible(true);
-        }
-      };
 
   @SuppressLint("ClickableViewAccessibility") // There's an accessibility delegate that handles
   // interactions with the dropdown menu.
@@ -182,16 +117,6 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
               (AutoCompleteTextView) textInputLayout.getEditText();
           if (editText != null && previousIcon == TextInputLayout.END_ICON_DROPDOWN_MENU) {
             // Remove any listeners set on the edit text.
-            editText.post(
-                new Runnable() {
-                  @Override
-                  public void run() {
-                    editText.removeTextChangedListener(exposedDropdownEndIconTextWatcher);
-                  }
-                });
-            if (editText.getOnFocusChangeListener() == onFocusChangeListener) {
-              editText.setOnFocusChangeListener(null);
-            }
             editText.setOnTouchListener(null);
             if (IS_LOLLIPOP) {
               editText.setOnDismissListener(null);
@@ -199,6 +124,25 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
           }
         }
       };
+
+  private final OnClickListener onIconClickListener = new OnClickListener() {
+    @Override
+    public void onClick(View v) {
+      AutoCompleteTextView editText = (AutoCompleteTextView) textInputLayout.getEditText();
+      showHideDropdown(editText);
+    }
+  };
+
+  private final OnFocusChangeListener onEditTextFocusChangeListener = new OnFocusChangeListener() {
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+      endLayout.setEndIconActivated(hasFocus);
+      if (!hasFocus) {
+        setEndIconChecked(false);
+        dropdownPopupDirty = false;
+      }
+    }
+  };
 
   private boolean dropdownPopupDirty = false;
   private boolean isEndIconChecked = false;
@@ -223,15 +167,6 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
     endLayout.setEndIconDrawable(drawableResId);
     endLayout.setEndIconContentDescription(
         endLayout.getResources().getText(R.string.exposed_dropdown_menu_content_description));
-    endLayout.setEndIconOnClickListener(
-        new OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            AutoCompleteTextView editText = (AutoCompleteTextView) textInputLayout.getEditText();
-            showHideDropdown(editText);
-          }
-        });
-    textInputLayout.addOnEditTextAttachedListener(dropdownMenuOnEditTextAttachedListener);
     endLayout.addOnEndIconChangedListener(endIconChangedListener);
     initAnimators();
     accessibilityManager =
@@ -273,6 +208,61 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
     } else {
       addRippleEffect(editText);
     }
+  }
+
+  @Override
+  OnClickListener getOnIconClickListener() {
+    return onIconClickListener;
+  }
+
+  @Override
+  public void onEditTextAttached(@Nullable EditText editText) {
+    AutoCompleteTextView autoCompleteTextView = castAutoCompleteTextViewOrThrow(editText);
+
+    float popupElevation =
+        (autoCompleteTextView instanceof MaterialAutoCompleteTextView)
+            ? ((MaterialAutoCompleteTextView) autoCompleteTextView).getPopupElevation()
+            : context
+                .getResources()
+                .getDimensionPixelOffset(R.dimen.m3_exposed_dropdown_menu_popup_elevation);
+    setPopupBackground(autoCompleteTextView, popupElevation);
+    addRippleEffect(autoCompleteTextView);
+    setUpDropdownShowHideBehavior(autoCompleteTextView);
+    autoCompleteTextView.setThreshold(0);
+    textInputLayout.setEndIconCheckable(true);
+    textInputLayout.setErrorIconDrawable(null);
+    if (!isEditable(autoCompleteTextView) && accessibilityManager.isTouchExplorationEnabled()) {
+      ViewCompat.setImportantForAccessibility(endIconView, IMPORTANT_FOR_ACCESSIBILITY_NO);
+    }
+    textInputLayout.setTextInputAccessibilityDelegate(accessibilityDelegate);
+
+    textInputLayout.setEndIconVisible(true);
+  }
+
+  @Override
+  public void afterEditTextChanged(Editable s) {
+    final AutoCompleteTextView editText =
+        castAutoCompleteTextViewOrThrow(textInputLayout.getEditText());
+    // Don't show dropdown list if we're in a11y mode and the menu is editable.
+    if (accessibilityManager.isTouchExplorationEnabled()
+        && isEditable(editText)
+        && !endIconView.hasFocus()) {
+      editText.dismissDropDown();
+    }
+    editText.post(
+        new Runnable() {
+          @Override
+          public void run() {
+            boolean isPopupShowing = editText.isPopupShowing();
+            setEndIconChecked(isPopupShowing);
+            dropdownPopupDirty = isPopupShowing;
+          }
+        });
+  }
+
+  @Override
+  OnFocusChangeListener getOnEditTextFocusChangeListener() {
+    return onEditTextFocusChangeListener;
   }
 
   private void showHideDropdown(@Nullable AutoCompleteTextView editText) {
@@ -432,7 +422,6 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
             return false;
           }
         });
-    editText.setOnFocusChangeListener(onFocusChangeListener);
     if (IS_LOLLIPOP) {
       editText.setOnDismissListener(
           new OnDismissListener() {
