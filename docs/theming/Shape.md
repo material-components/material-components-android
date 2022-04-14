@@ -57,6 +57,10 @@ application.
 Theme attributes can be set at the theme level to change the shape values that
 components use to set their shapes.
 
+**Note:** These theme attributes will be deprecated soon for Material 3. New
+theme attribtues will be added and components styles will be updated to
+reference them, according to the new shape system guidelines coming soon.
+
 Attribute Name                   | Description            | Default Value
 -------------------------------- | ---------------------- | -------------
 `shapeAppearanceSmallComponent`  | Style reference that contains shape values that are used to style small components  | 4dp rounded
