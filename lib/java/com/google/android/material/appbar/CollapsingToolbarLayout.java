@@ -264,7 +264,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
 
     // Now overlay any custom text Ellipsize
     if (a.hasValue(R.styleable.CollapsingToolbarLayout_titleTextEllipsize)) {
-      setTitleEllipsize(a.getInt(R.styleable.CollapsingToolbarLayout_titleTextEllipsize, 2));
+      setTitleEllipsize(convertEllipsizeToTruncateAt(a.getInt(R.styleable.CollapsingToolbarLayout_titleTextEllipsize, -1)));
     }
 
     if (a.hasValue(R.styleable.CollapsingToolbarLayout_expandedTitleTextColor)) {
@@ -831,25 +831,20 @@ public class CollapsingToolbarLayout extends FrameLayout {
     collapsingTextHelper.setTitleTextEllipsize(ellipsize);
   }
 
-  private void setTitleEllipsize(int ellipsize) {
-    TruncateAt titleTextEllipsize = TruncateAt.END;
-
-    // Convert to supported TruncateAt values
+  // Convert to supported TruncateAt values
+  private TruncateAt convertEllipsizeToTruncateAt(int ellipsize) {
     switch (ellipsize) {
       case 0:
-        titleTextEllipsize = TruncateAt.START;
-        break;
+        return TruncateAt.START;
       case 1:
-        titleTextEllipsize = TruncateAt.MIDDLE;
-        break;
+        return TruncateAt.MIDDLE;
       case 2:
-        titleTextEllipsize = TruncateAt.END;
-        break;
+        return TruncateAt.END;
       case 3:
-        titleTextEllipsize = TruncateAt.MARQUEE;
-        break;
+        return TruncateAt.MARQUEE;
+      default:
+        return TruncateAt.END;
     }
-    setTitleEllipsize(titleTextEllipsize);
   }
 
   /**
