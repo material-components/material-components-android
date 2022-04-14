@@ -36,6 +36,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.text.TextUtils;
+import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -263,8 +264,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
 
     // Now overlay any custom text Ellipsize
     if (a.hasValue(R.styleable.CollapsingToolbarLayout_titleTextEllipsize)) {
-      collapsingTextHelper.setTitleTextEllipsize(
-          a.getInt(R.styleable.CollapsingToolbarLayout_titleTextEllipsize, 2));
+      setTitleEllipsize(a.getInt(R.styleable.CollapsingToolbarLayout_titleTextEllipsize, 2));
     }
 
     if (a.hasValue(R.styleable.CollapsingToolbarLayout_expandedTitleTextColor)) {
@@ -818,6 +818,38 @@ public class CollapsingToolbarLayout extends FrameLayout {
    */
   public boolean isTitleEnabled() {
     return collapsingTitleEnabled;
+  }
+
+
+  /**
+   * Set ellipsizing on the title text.
+   *
+   * @param ellipsize type of ellipsis behavior
+   * @attr ref R.styleable#CollapsingToolbarLayout_titleTextEllipsize
+   */
+  public void setTitleEllipsize(@NonNull TruncateAt ellipsize) {
+    collapsingTextHelper.setTitleTextEllipsize(ellipsize);
+  }
+
+  private void setTitleEllipsize(int ellipsize) {
+    TruncateAt titleTextEllipsize = TruncateAt.END;
+
+    // Convert to supported TruncateAt values
+    switch (ellipsize) {
+      case 0:
+        titleTextEllipsize = TruncateAt.START;
+        break;
+      case 1:
+        titleTextEllipsize = TruncateAt.MIDDLE;
+        break;
+      case 2:
+        titleTextEllipsize = TruncateAt.END;
+        break;
+      case 3:
+        titleTextEllipsize = TruncateAt.MARQUEE;
+        break;
+    }
+    setTitleEllipsize(titleTextEllipsize);
   }
 
   /**

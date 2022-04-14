@@ -449,25 +449,9 @@ public final class CollapsingTextHelper {
     recalculate();
   }
 
-  public void setTitleTextEllipsize(int ellipsize) {
-    // Convert to supported TextUtils.TruncateAt values
-    switch (ellipsize) {
-      case 0:
-        titleTextEllipsize = TextUtils.TruncateAt.START;
-        break;
-      case 1:
-        titleTextEllipsize = TextUtils.TruncateAt.MIDDLE;
-        break;
-      case 2:
-        titleTextEllipsize = TextUtils.TruncateAt.END;
-        break;
-      case 3:
-        titleTextEllipsize = TruncateAt.MARQUEE;
-        break;
-      default:
-        titleTextEllipsize = TextUtils.TruncateAt.END;
-        break;
-    }
+  public void setTitleTextEllipsize(TruncateAt ellipsize) {
+    titleTextEllipsize = ellipsize;
+    recalculate();
   }
 
   public void setCollapsedTypeface(Typeface typeface) {
