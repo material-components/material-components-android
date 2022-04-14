@@ -15,24 +15,17 @@
  */
 package com.google.android.material.motion;
 
-import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
-
 import android.animation.TimeInterpolator;
 import android.content.Context;
 import android.util.TypedValue;
+import android.view.animation.AnimationUtils;
 import androidx.annotation.AttrRes;
 import androidx.annotation.NonNull;
-import androidx.annotation.RestrictTo;
 import androidx.core.graphics.PathParser;
 import androidx.core.view.animation.PathInterpolatorCompat;
 import com.google.android.material.resources.MaterialAttributes;
 
-/**
- * A utility class for motion system functions.
- *
- * @hide
- */
-@RestrictTo(LIBRARY_GROUP)
+/** A utility class for motion system functions. */
 public class MotionUtils {
 
   // Constants corresponding to motionEasing* theme attr values.
@@ -43,61 +36,96 @@ public class MotionUtils {
 
   private MotionUtils() {}
 
+  /**
+   * Resolve a duration from a material duration theme attribute.
+   *
+   * @param context the context from where the theme attribute will be resolved.
+   * @param attrResId the {@code motionDuration*} theme attribute to resolve
+   * @param defaultDuration the duration to be returned if unable to resolve {@code attrResId}
+   * @return the resolved {@code int} duration which {@code attrResId} points to or the {@code
+   *     defaultDuration} if resolution was unsuccessful.
+   */
   public static int resolveThemeDuration(
       @NonNull Context context, @AttrRes int attrResId, int defaultDuration) {
     return MaterialAttributes.resolveInteger(context, attrResId, defaultDuration);
   }
 
+  /**
+   * Load an interpolator from a material easing theme attribute.
+   *
+   * @param context context from where the theme attribute will be resolved
+   * @param attrResId the {@code motionEasing*} theme attribute to resolve
+   * @param defaultInterpolator the interpolator to be returned if unable to resolve {@code
+   *     attrResId}.
+   * @return the resolved {@link TimeInterpolator} which {@code attrResId} points to or the {@code
+   *     defaultInterpolator} if resolution was unsuccessful.
+   */
   @NonNull
   public static TimeInterpolator resolveThemeInterpolator(
       @NonNull Context context,
       @AttrRes int attrResId,
       @NonNull TimeInterpolator defaultInterpolator) {
     TypedValue easingValue = new TypedValue();
-    if (context.getTheme().resolveAttribute(attrResId, easingValue, true)) {
-      if (easingValue.type != TypedValue.TYPE_STRING) {
-        throw new IllegalArgumentException("Motion easing theme attribute must be a string");
-      }
-
-      String easingString = String.valueOf(easingValue.string);
-
-      if (isEasingType(easingString, EASING_TYPE_CUBIC_BEZIER)) {
-        String controlPointsString = getEasingContent(easingString, EASING_TYPE_CUBIC_BEZIER);
-        String[] controlPoints = controlPointsString.split(",");
-        if (controlPoints.length != 4) {
-          throw new IllegalArgumentException(
-              "Motion easing theme attribute must have 4 control points if using bezier curve"
-                  + " format; instead got: "
-                  + controlPoints.length);
-        }
-
-        float controlX1 = getControlPoint(controlPoints, 0);
-        float controlY1 = getControlPoint(controlPoints, 1);
-        float controlX2 = getControlPoint(controlPoints, 2);
-        float controlY2 = getControlPoint(controlPoints, 3);
-        return PathInterpolatorCompat.create(controlX1, controlY1, controlX2, controlY2);
-      } else if (isEasingType(easingString, EASING_TYPE_PATH)) {
-        String path = getEasingContent(easingString, EASING_TYPE_PATH);
-        return PathInterpolatorCompat.create(PathParser.createPathFromPathData(path));
-      } else {
-        throw new IllegalArgumentException("Invalid motion easing type: " + easingString);
-      }
+    if (!context.getTheme().resolveAttribute(attrResId, easingValue, true)) {
+      return defaultInterpolator;
     }
-    return defaultInterpolator;
+
+    if (easingValue.type != TypedValue.TYPE_STRING) {
+      throw new IllegalArgumentException(
+          "Motion easing theme attribute must be an @interpolator resource for"
+              + " ?attr/motionEasing*Interpolator attributes or a string for"
+              + " ?attr/motionEasing* attributes.");
+    }
+
+    String easingString = String.valueOf(easingValue.string);
+    if (isLegacyEasingAttribute(easingString)) {
+      return getLegacyThemeInterpolator(easingString);
+    }
+
+    return AnimationUtils.loadInterpolator(context, easingValue.resourceId);
   }
 
-  private static boolean isEasingType(String easingString, String easingType) {
+  private static TimeInterpolator getLegacyThemeInterpolator(String easingString) {
+    if (isLegacyEasingType(easingString, EASING_TYPE_CUBIC_BEZIER)) {
+      String controlPointsString = getLegacyEasingContent(easingString, EASING_TYPE_CUBIC_BEZIER);
+      String[] controlPoints = controlPointsString.split(",");
+      if (controlPoints.length != 4) {
+        throw new IllegalArgumentException(
+            "Motion easing theme attribute must have 4 control points if using bezier curve"
+                + " format; instead got: "
+                + controlPoints.length);
+      }
+
+      float controlX1 = getLegacyControlPoint(controlPoints, 0);
+      float controlY1 = getLegacyControlPoint(controlPoints, 1);
+      float controlX2 = getLegacyControlPoint(controlPoints, 2);
+      float controlY2 = getLegacyControlPoint(controlPoints, 3);
+      return PathInterpolatorCompat.create(controlX1, controlY1, controlX2, controlY2);
+    } else if (isLegacyEasingType(easingString, EASING_TYPE_PATH)) {
+      String path = getLegacyEasingContent(easingString, EASING_TYPE_PATH);
+      return PathInterpolatorCompat.create(PathParser.createPathFromPathData(path));
+    } else {
+      throw new IllegalArgumentException("Invalid motion easing type: " + easingString);
+    }
+  }
+
+  private static boolean isLegacyEasingAttribute(String easingString) {
+    return isLegacyEasingType(easingString, EASING_TYPE_CUBIC_BEZIER)
+        || isLegacyEasingType(easingString, EASING_TYPE_PATH);
+  }
+
+  private static boolean isLegacyEasingType(String easingString, String easingType) {
     return easingString.startsWith(easingType + EASING_TYPE_FORMAT_START)
         && easingString.endsWith(EASING_TYPE_FORMAT_END);
   }
 
-  private static String getEasingContent(String easingString, String easingType) {
+  private static String getLegacyEasingContent(String easingString, String easingType) {
     return easingString.substring(
         easingType.length() + EASING_TYPE_FORMAT_START.length(),
         easingString.length() - EASING_TYPE_FORMAT_END.length());
   }
 
-  private static float getControlPoint(String[] controlPoints, int index) {
+  private static float getLegacyControlPoint(String[] controlPoints, int index) {
     float controlPoint = Float.parseFloat(controlPoints[index]);
     if (controlPoint < 0 || controlPoint > 1) {
       throw new IllegalArgumentException(
