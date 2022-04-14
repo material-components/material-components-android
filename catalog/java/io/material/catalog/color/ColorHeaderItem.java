@@ -19,15 +19,17 @@ package io.material.catalog.color;
 import android.content.Context;
 import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
+import java.util.Arrays;
 import java.util.List;
 
 /** A class for the headers in the color palette. */
 public class ColorHeaderItem implements ColorAdapterItem {
 
+  public static final String SYSTEM_PREFIX = "system_";
   private static final String COLOR_600 = "600";
 
-  @ColorRes private final int backgroundColor;
-  private final String name;
+  @ColorRes private final int backgroundColorRes;
+  private final String description;
 
   ColorHeaderItem(Context context, List<ColorItem> colors) {
     ColorItem sample = colors.get(0);
@@ -37,26 +39,31 @@ public class ColorHeaderItem implements ColorAdapterItem {
         break;
       }
     }
-    MaterialColorSpec materialColor = MaterialColorSpec.create(context, sample.getColorRes());
-    backgroundColor = materialColor.getResourceId();
-    name = materialColor.getName();
+    backgroundColorRes = sample.getColorRes();
+    description = sample.getColorResName();
   }
 
   @ColorRes
   int getBackgroundColorRes() {
-    return backgroundColor;
-  }
-
-  /** Returns the raw name of the color. */
-  @NonNull
-  public String getName() {
-    return name;
+    return backgroundColorRes;
   }
 
   /** Returns the display name for the header, e.g. Blue. */
   @NonNull
   public String getDisplayName() {
-    String name = getName();
+    String name;
+    int splitIndex = description.lastIndexOf("_");
+    if (description.startsWith(SYSTEM_PREFIX)) {
+      // Split the resource name into the color name and value, ie. system_accent1_500 to
+      // system_accent1 and 500.
+      name = description.substring(0, splitIndex);
+    } else {
+      // Get the name of the color an value without prefixes
+      String trimmedResName = description.substring(splitIndex + 1);
+      // Split the resource name into the color name and value, ie. blue500 to blue and 500.
+      List<String> parts = Arrays.asList(trimmedResName.split("(?<=\\D)(?=\\d)", -1));
+      name = parts.get(0);
+    }
     String headerColor = name.replace('_', ' ');
     return Character.toUpperCase(headerColor.charAt(0)) + headerColor.substring(1);
   }

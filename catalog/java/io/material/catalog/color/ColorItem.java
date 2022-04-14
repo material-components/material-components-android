@@ -25,27 +25,29 @@ import androidx.annotation.NonNull;
 public class ColorItem implements ColorAdapterItem {
 
   private final MaterialColorSpec colorSpec;
+  @ColorRes private final int colorRes;
 
   ColorItem(Context context, @ColorRes int colorRes) {
-    colorSpec = MaterialColorSpec.create(context, colorRes);
+    this.colorRes = colorRes;
+    colorSpec = MaterialColorSpec.createFromResource(context, colorRes);
   }
 
   /** Returns the resource ID of the color. */
   @NonNull
   @ColorRes
   public int getColorRes() {
-    return colorSpec.getResourceId();
+    return colorRes;
   }
 
   /** Returns the resource name of the color, e.g. system_accent1_100. */
   @NonNull
   public String getColorResName() {
-    return colorSpec.getResourceName();
+    return colorSpec.getDescription();
   }
 
   /** Returns the int value of the color. */
   @ColorInt
   int getColorValue() {
-    return colorSpec.getValue();
+    return colorSpec.getColorValue();
   }
 }

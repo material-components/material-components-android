@@ -21,7 +21,6 @@ import io.material.catalog.R;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,8 +43,6 @@ import io.material.catalog.feature.DemoFragment;
 
 /** A fragment that displays the Color Palette demo for the Catalog app. */
 public abstract class ColorPaletteDemoFragment extends DemoFragment {
-
-  private static final int GREY_10 = 0xFF202124;
 
   private ColorsAdapter adapter;
 
@@ -136,7 +133,7 @@ public abstract class ColorPaletteDemoFragment extends DemoFragment {
       int value = ContextCompat.getColor(context, colorItem.getColorRes());
       String colorResName = colorItem.getColorResName();
       String resQualifier =
-          colorResName.startsWith(MaterialColorSpec.SYSTEM_PREFIX) ? "@android:color/" : "@color/";
+          colorResName.startsWith(ColorHeaderItem.SYSTEM_PREFIX) ? "@android:color/" : "@color/";
 
       nameView.setText(
           context.getResources().getString(R.string.cat_color_res, resQualifier, colorResName));
@@ -151,12 +148,7 @@ public abstract class ColorPaletteDemoFragment extends DemoFragment {
 
     @ColorInt
     private int getTextColor(ColorItem colorItem) {
-      if (colorItem.getColorValue() < MaterialColorSpec.TEXT_COLOR_SWITCH_VALUE) {
-        // Use dark grey if color value is less than TEXT_COLOR_SWITCH_VALUE.
-        return GREY_10;
-      } else {
-        return Color.WHITE;
-      }
+      return ColorDemoUtils.getTextColor(colorItem.getColorValue());
     }
   }
 
@@ -173,9 +165,7 @@ public abstract class ColorPaletteDemoFragment extends DemoFragment {
         int value = ContextCompat.getColor(getContext(), colorItem.getColorRes());
         String colorResName = colorItem.getColorResName();
         String resQualifier =
-            colorResName.startsWith(MaterialColorSpec.SYSTEM_PREFIX)
-                ? "@android:color/"
-                : "@color/";
+            colorResName.startsWith(ColorHeaderItem.SYSTEM_PREFIX) ? "@android:color/" : "@color/";
         colorsText.append(String.format("#%06x", value & 0xFFFFFF)).append("\n");
         colorsText.append(resQualifier).append(colorResName).append("\n");
       }
