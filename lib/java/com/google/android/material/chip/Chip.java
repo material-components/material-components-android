@@ -44,6 +44,7 @@ import android.text.TextUtils;
 import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -1362,6 +1363,16 @@ public class Chip extends AppCompatCheckBox
     super.setTextAppearance(resId);
     if (chipDrawable != null) {
       chipDrawable.setTextAppearanceResource(resId);
+    }
+    updateTextPaintDrawState();
+  }
+
+  @Override
+  public void setTextSize(int unit, float size) {
+    super.setTextSize(unit, size);
+    if (chipDrawable != null) {
+      chipDrawable.setTextSize(
+          TypedValue.applyDimension(unit, size, getResources().getDisplayMetrics()));
     }
     updateTextPaintDrawState();
   }
