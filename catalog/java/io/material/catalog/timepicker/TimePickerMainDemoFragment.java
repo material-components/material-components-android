@@ -59,12 +59,14 @@ public class TimePickerMainDemoFragment extends DemoFragment {
 
     timeFormatToggle.addOnButtonCheckedListener(
         (group, checkedId, isChecked) -> {
-          boolean isSystem24Hour = DateFormat.is24HourFormat(getContext());
-          boolean is24Hour =
-              checkedId == R.id.time_format_24h
-                  || (checkedId == R.id.time_format_system && isSystem24Hour);
+          if (isChecked) {
+            boolean isSystem24Hour = DateFormat.is24HourFormat(getContext());
+            boolean is24Hour =
+                checkedId == R.id.time_format_24h
+                    || (checkedId == R.id.time_format_system && isSystem24Hour);
 
-          clockFormat = is24Hour ? TimeFormat.CLOCK_24H : TimeFormat.CLOCK_12H;
+            clockFormat = is24Hour ? TimeFormat.CLOCK_24H : TimeFormat.CLOCK_12H;
+          }
         });
 
     SwitchCompat frameworkSwitch = view.findViewById(R.id.framework_switch);
