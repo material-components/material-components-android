@@ -299,7 +299,7 @@ Element                        | **Style**                                      
 ------------------------------ | --------------------------------------------------------------- | -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ----------------------------------
 **Default style**              | `Widget.MaterialComponents.BottomNavigationView`                | `?attr/colorSurface`                                                       | `?attr/colorOnSurface` at 60%                                                                 | `?attr/colorPrimary`
 **Colored style**              | `Widget.MaterialComponents.BottomNavigationView.Colored`        | `?attr/colorPrimary`                                                       | `?attr/colorOnPrimary` at 60%                                                                 | `?attr/colorOnPrimary`
-**Dark theme supported style** | `Widget.MaterialComponents.BottomNavigationView.PrimarySurface` | `?attr/colorPrimary` in light theme<br/>`?attr/colorSurface` in dark theme | `?attr/colorOnPrimary` at 60% in light theme<br/>`?attr/colorOnSurface` at 60% in light theme | `?attr/colorOnPrimary` in light theme<br/>`?attr/colorPrimary` in dark theme
+**Dark theme supported style** | `Widget.MaterialComponents.BottomNavigationView.PrimarySurface` | `?attr/colorPrimary` in light theme<br/>`?attr/colorSurface` in dark theme | `?attr/colorOnPrimary` at 60% in light theme<br/>`?attr/colorOnSurface` at 60% in dark theme | `?attr/colorOnPrimary` in light theme<br/>`?attr/colorPrimary` in dark theme
 
 Default style theme attribute: `?attr/bottomNavigationStyle`
 
