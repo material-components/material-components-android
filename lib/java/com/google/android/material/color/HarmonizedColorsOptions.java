@@ -102,7 +102,7 @@ public class HarmonizedColorsOptions {
      *
      * @param colorAttributes The {@link HarmonizedColorAttributes} that needs to be harmonized.
      */
-    @Nullable
+    @NonNull
     public Builder setColorAttributes(@Nullable HarmonizedColorAttributes colorAttributes) {
       this.colorAttributes = colorAttributes;
       return this;
