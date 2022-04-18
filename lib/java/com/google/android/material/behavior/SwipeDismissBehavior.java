@@ -263,7 +263,7 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
         }
 
         @Override
-        public void onViewReleased(@NonNull View child, float xvel, float yvel) {
+        public void onViewReleased(@NonNull View child, float xVelocity, float yVelocity) {
           // Reset the active pointer ID
           activePointerId = INVALID_POINTER_ID;
 
@@ -271,9 +271,9 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
           int targetLeft;
           boolean dismiss = false;
 
-          if (shouldDismiss(child, xvel)) {
+          if (shouldDismiss(child, xVelocity)) {
             targetLeft =
-                child.getLeft() < originalCapturedViewLeft
+                xVelocity < 0f || child.getLeft() < originalCapturedViewLeft
                     ? originalCapturedViewLeft - childWidth
                     : originalCapturedViewLeft + childWidth;
             dismiss = true;
@@ -289,8 +289,8 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
           }
         }
 
-        private boolean shouldDismiss(@NonNull View child, float xvel) {
-          if (xvel != 0f) {
+        private boolean shouldDismiss(@NonNull View child, float xVelocity) {
+          if (xVelocity != 0f) {
             final boolean isRtl =
                 ViewCompat.getLayoutDirection(child) == ViewCompat.LAYOUT_DIRECTION_RTL;
 
@@ -300,11 +300,11 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
             } else if (swipeDirection == SWIPE_DIRECTION_START_TO_END) {
               // We only allow start-to-end swiping, so the fling needs to be in the
               // correct direction
-              return isRtl ? xvel < 0f : xvel > 0f;
+              return isRtl ? xVelocity < 0f : xVelocity > 0f;
             } else if (swipeDirection == SWIPE_DIRECTION_END_TO_START) {
               // We only allow end-to-start swiping, so the fling needs to be in the
               // correct direction
-              return isRtl ? xvel > 0f : xvel < 0f;
+              return isRtl ? xVelocity > 0f : xVelocity < 0f;
             }
           } else {
             final int distance = child.getLeft() - originalCapturedViewLeft;
