@@ -41,6 +41,24 @@
   <style name="ShapeAppearance.Material3.Corner.ExtraLarge" parent="ShapeAppearance.M3.Sys.Shape.Corner.ExtraLarge"/>
   <style name="ShapeAppearance.Material3.Corner.Full" parent="ShapeAppearance.M3.Sys.Shape.Corner.Full"/>
 
+  <style name="ShapeAppearanceOverlay.Material3.Corner.Top" parent="">
+    <item name="cornerSizeBottomLeft">0dp</item>
+    <item name="cornerSizeBottomRight">0dp</item>
+  </style>
+  <style name="ShapeAppearanceOverlay.Material3.Corner.Bottom" parent="">
+    <item name="cornerSizeTopLeft">0dp</item>
+    <item name="cornerSizeTopRight">0dp</item>
+  </style>
+    <style name="ShapeAppearanceOverlay.Material3.Corner.Left" parent="">
+    <item name="cornerSizeTopRight">0dp</item>
+    <item name="cornerSizeBottomRight">0dp</item>
+  </style>
+    <style name="ShapeAppearanceOverlay.Material3.Corner.Right" parent="">
+    <item name="cornerSizeTopLeft">0dp</item>
+    <item name="cornerSizeBottomLeft">0dp</item>
+  </style>
+
+  <!-- Deprecated: Consider using the ShapeAppearance styles above. -->
   <style name="ShapeAppearance.Material3.SmallComponent" parent="">
     <item name="cornerFamily">rounded</item>
     <item name="cornerSize">4dp</item>

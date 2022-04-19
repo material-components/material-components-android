@@ -20,9 +20,17 @@
   <public name="shapeAppearance" type="attr"/>
   <public name="shapeAppearanceOverlay" type="attr"/>
 
+  <!-- Deprecated: Use shapeCorner* attributes. -->
   <public name="shapeAppearanceSmallComponent" type="attr"/>
   <public name="shapeAppearanceMediumComponent" type="attr"/>
   <public name="shapeAppearanceLargeComponent" type="attr"/>
+
+  <public name="shapeCornerFamily" type="attr"/>
+  <public name="shapeAppearanceCornerExtraSmall" type="attr"/>
+  <public name="shapeAppearanceCornerSmall" type="attr"/>
+  <public name="shapeAppearanceCornerMedium" type="attr"/>
+  <public name="shapeAppearanceCornerLarge" type="attr"/>
+  <public name="shapeAppearanceCornerExtraLarge" type="attr"/>
 
   <public name="cornerSize" type="attr"/>
   <public name="cornerSizeTopLeft" type="attr"/>
@@ -42,4 +50,18 @@
   <public name="ShapeAppearance.Material3.SmallComponent" type="style"/>
   <public name="ShapeAppearance.Material3.MediumComponent" type="style"/>
   <public name="ShapeAppearance.Material3.LargeComponent" type="style"/>
+
+  <public name="ShapeAppearance.Material3.Corner.None" type="style"/>
+  <public name="ShapeAppearance.Material3.Corner.ExtraSmall" type="style"/>
+  <public name="ShapeAppearance.Material3.Corner.Small" type="style"/>
+  <public name="ShapeAppearance.Material3.Corner.Medium" type="style"/>
+  <public name="ShapeAppearance.Material3.Corner.Large" type="style"/>
+  <public name="ShapeAppearance.Material3.Corner.ExtraLarge" type="style"/>
+  <public name="ShapeAppearance.Material3.Corner.Full" type="style"/>
+
+  <public name="ShapeAppearanceOverlay.Material3.Corner.Top" type="style"/>
+  <public name="ShapeAppearanceOverlay.Material3.Corner.Bottom" type="style"/>
+  <public name="ShapeAppearanceOverlay.Material3.Corner.Left" type="style"/>
+  <public name="ShapeAppearanceOverlay.Material3.Corner.Right" type="style"/>
+
 </resources>
