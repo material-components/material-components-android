@@ -968,6 +968,19 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
   }
 
   /**
+   * Sets the view that the {@link AppBarLayout} should use to determine whether it should be
+   * lifted.
+   */
+  public void setLiftOnScrollTargetView(@Nullable View liftOnScrollTargetView) {
+    this.liftOnScrollTargetViewId = View.NO_ID;
+    if (liftOnScrollTargetView == null) {
+      clearLiftOnScrollTargetView();
+    } else {
+      this.liftOnScrollTargetView = new WeakReference<>(liftOnScrollTargetView);
+    }
+  }
+
+  /**
    * Sets the id of the view that the {@link AppBarLayout} should use to determine whether it should
    * be lifted.
    */
