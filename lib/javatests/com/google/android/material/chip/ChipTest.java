@@ -195,8 +195,8 @@ public class ChipTest {
     return dpToPx(ApplicationProvider.getApplicationContext(), MIN_SIZE_FOR_ALLY_DP);
   }
 
-  private void setupAndMeasureChip(boolean shouldEnsureMinTouchTargeSize) {
-    chip.setEnsureMinTouchTargetSize(shouldEnsureMinTouchTargeSize);
+  private void setupAndMeasureChip(boolean shouldEnsureMinTouchTargetSize) {
+    chip.setEnsureMinTouchTargetSize(shouldEnsureMinTouchTargetSize);
     int measureSpec =
         MeasureSpec.makeMeasureSpec((int) (getMinTouchTargetSize() * 2), MeasureSpec.AT_MOST);
     chip.measure(measureSpec, measureSpec);

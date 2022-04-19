@@ -1458,7 +1458,7 @@ public class ChipDrawable extends MaterialShapeDrawable
   /**
    * Sets this chip's minimum height using a resource id.
    *
-   * @param id The resource id of this chip's mininum height.
+   * @param id The resource id of this chip's minimum height.
    * @attr ref com.google.android.material.R.styleable#Chip_chipMinHeight
    */
   public void setChipMinHeightResource(@DimenRes int id) {
@@ -1468,7 +1468,7 @@ public class ChipDrawable extends MaterialShapeDrawable
   /**
    * Sets this chip's minimum height.
    *
-   * @param chipMinHeight This chip's mininum height.
+   * @param chipMinHeight This chip's minimum height.
    * @attr ref com.google.android.material.R.styleable#Chip_chipMinHeight
    */
   public void setChipMinHeight(float chipMinHeight) {
@@ -1777,7 +1777,7 @@ public class ChipDrawable extends MaterialShapeDrawable
 
   /**
    * Returns this chip's icon size. If a non-positive value is returned, the icon drawable's width
-   * and height (up to 24dp) will be used to measure its bounds intead.
+   * and height (up to 24dp) will be used to measure its bounds instead.
    *
    * @see #setChipIconSize(float)
    * @attr ref com.google.android.material.R.styleable#Chip_chipIconTint

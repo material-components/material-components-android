@@ -997,7 +997,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     }
 
     // The extra height is the amount that the path draws outside of the bounds of the shape. This
-    // happens for some shapes like TriangleEdgeTreament when it draws a triangle outside.
+    // happens for some shapes like TriangleEdgeTreatment when it draws a triangle outside.
     int pathExtraWidth = (int) (pathBounds.width() - getBounds().width());
     int pathExtraHeight = (int) (pathBounds.height() - getBounds().height());
 

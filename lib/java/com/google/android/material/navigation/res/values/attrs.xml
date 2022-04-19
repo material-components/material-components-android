@@ -164,7 +164,7 @@
     <attr name="subheaderInsetStart" format="dimension"/>
     <!-- The distance between the end of the navigation view container and a menu group label. -->
     <attr name="subheaderInsetEnd" format="dimension"/>
-    <!-- Corner size for the exposed corners (those not attatched to the side
+    <!-- Corner size for the exposed corners (those not attached to the side
          of the screen) when the navigation view is placed inside a drawer layout.-->
     <attr name="drawerLayoutCornerSize" format="dimension"/>
   </declare-styleable>

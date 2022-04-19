@@ -294,7 +294,7 @@ public class Chip extends AppCompatCheckBox
   }
 
   // TODO(b/80452017): Due to a11y bug, avoid setting custom ExploreByTouchHelper as delegate
-  // unless there's a close/trailing icon. Re-evaulate this once bug is fixed.
+  // unless there's a close/trailing icon. Re-evaluate this once bug is fixed.
   private void updateAccessibilityDelegate() {
     if (hasCloseIcon() && isCloseIconVisible() && onCloseIconClickListener != null) {
       ViewCompat.setAccessibilityDelegate(this, touchHelper);
@@ -1102,7 +1102,7 @@ public class Chip extends AppCompatCheckBox
   /**
    * Sets this chip's minimum height using a resource id.
    *
-   * @param id The resource id of this chip's mininum height.
+   * @param id The resource id of this chip's minimum height.
    * @attr ref com.google.android.material.R.styleable#Chip_chipMinHeight
    */
   public void setChipMinHeightResource(@DimenRes int id) {

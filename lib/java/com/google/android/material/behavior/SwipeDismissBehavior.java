@@ -162,7 +162,7 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
 
   /**
    * Set the sensitivity used for detecting the start of a swipe. This only takes effect if no touch
-   * handling has occured yet.
+   * handling has occurred yet.
    *
    * @param sensitivity Multiplier for how sensitive we should be about detecting the start of a
    *     drag. Larger values are more sensitive. 1.0f is normal.

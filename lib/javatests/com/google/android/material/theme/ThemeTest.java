@@ -125,7 +125,7 @@ public class ThemeTest {
   /**
    * There are color attributes that all theme overlays should have.
    *
-   * <p>All Light theme overlays shold match {@code Theme.MaterialComponents.Light} and all Dark
+   * <p>All Light theme overlays should match {@code Theme.MaterialComponents.Light} and all Dark
    * theme overlays should match {@code Theme.MaterialComponents}.
    */
   private static final ImmutableList<Integer> MATERIAL_OVERLAY_COLOR_ATTRIBUTES =

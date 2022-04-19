@@ -1775,7 +1775,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   @RestrictTo(LIBRARY_GROUP)
   @VisibleForTesting
   public void disableShapeAnimations() {
-    // Sets the shape value animator to null, prevents animations from occuring during testing.
+    // Sets the shape value animator to null, prevents animations from occurring during testing.
     interpolatorAnimator = null;
   }
 
@@ -1802,7 +1802,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   /**
-   * Checks weather an animation should be smooth after the bottomSheet is realeased after dragging.
+   * Checks whether an animation should be smooth after the bottomSheet is released after dragging.
    *
    * @hide
    */
@@ -1812,11 +1812,11 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   /**
-   * Checks weather an animation should be smooth after the bottomSheet is realeased after dragging.
+   * Checks whether the bottom sheet should be expanded after it has been released after dragging.
    *
    * @param dragDurationMillis how long the bottom sheet was dragged.
-   * @param yPositionPercentage position of the bottom sheet when realeased after dragging. Lower
-   *     values mean that view was realsed closer to the top of the screen.
+   * @param yPositionPercentage position of the bottom sheet when released after dragging. Lower
+   *     values mean that view was released closer to the top of the screen.
    * @hide
    */
   @RestrictTo(LIBRARY_GROUP)

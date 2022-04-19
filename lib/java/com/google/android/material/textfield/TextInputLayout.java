@@ -1830,11 +1830,11 @@ public class TextInputLayout extends LinearLayout {
    * screen readers or other accessibility systems are not able to read, so that they announce the
    * content description instead.
    *
-   * @param errorContentDecription Content description to set, or null to clear it
+   * @param errorContentDescription Content description to set, or null to clear it
    * @attr ref com.google.android.material.R.styleable#TextInputLayout_errorContentDescription
    */
-  public void setErrorContentDescription(@Nullable final CharSequence errorContentDecription) {
-    indicatorViewController.setErrorContentDescription(errorContentDecription);
+  public void setErrorContentDescription(@Nullable final CharSequence errorContentDescription) {
+    indicatorViewController.setErrorContentDescription(errorContentDescription);
   }
 
   /**

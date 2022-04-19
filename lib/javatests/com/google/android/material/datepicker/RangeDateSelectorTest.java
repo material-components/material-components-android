@@ -214,7 +214,7 @@ public class RangeDateSelectorTest {
     ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
 
     // Some JVMs format PT dates as dd-mm-aaaa, and some as dd/mm/aaaa. Derive the expected result
-    // programatically to account for the difference.
+    // programmatically to account for the difference.
     boolean slashDateFormat = new SimpleDateFormat().toLocalizedPattern().startsWith("dd/");
     String expectedDateFormat = slashDateFormat ? "dd/mm/aaaa" : "dd-mm-aaaa";
     assertThat(startTextInput.getPlaceholderText().toString()).isEqualTo(expectedDateFormat);

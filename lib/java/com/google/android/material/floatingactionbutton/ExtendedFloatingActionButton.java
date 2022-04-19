@@ -904,7 +904,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
 
     @Override
     @SuppressWarnings("unchecked")
-    // TODO: remove this stub method. Adding now to mantain compatibility since the override is
+    // TODO: remove this stub method. Adding now to maintain compatibility since the override is
     // not correct.
     public boolean getInsetDodgeRect(
         @NonNull CoordinatorLayout parent,

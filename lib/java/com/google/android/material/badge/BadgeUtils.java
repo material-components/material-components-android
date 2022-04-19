@@ -281,8 +281,8 @@ public class BadgeUtils {
    * @param context Current context
    * @param badgeStates A parcelable {@link SparseArray} that contains a map of int keys (e.g.
    *     menuItemId) to {@link BadgeState.State states}.
-   * @return A {@link SparseArray} that contains a map of int keys (e.g. menuItemId) to {@code
-   *     BadgeDrawable BadgeDrawbles}.
+   * @return A {@link SparseArray} that contains a map of int keys (e.g. menuItemId)
+   * to {@link BadgeDrawable BadgeDrawables}.
    */
   @NonNull
   public static SparseArray<BadgeDrawable> createBadgeDrawablesFromSavedStates(

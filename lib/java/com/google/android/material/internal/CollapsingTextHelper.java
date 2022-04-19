@@ -891,7 +891,7 @@ public final class CollapsingTextHelper {
 
     // Collapsed text
     textPaint.setAlpha((int) (collapsedTextBlend * originalAlpha));
-    // Workaround for API 31(+). Applying the shadow color for collapsed texct.
+    // Workaround for API 31(+). Applying the shadow color for collapsed text.
     if (VERSION.SDK_INT >= VERSION_CODES.S) {
       textPaint.setShadowLayer(
           currentShadowRadius,
