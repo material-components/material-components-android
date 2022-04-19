@@ -62,7 +62,7 @@ public class DatePickerDemoLandingFragment extends DemoLandingFragment {
     @Provides
     @ActivityScope
     static FeatureDemo provideFeatureDemo() {
-      return new FeatureDemo(R.string.cat_picker_demo_title, R.drawable.ic_dialog) {
+      return new FeatureDemo(R.string.cat_picker_demo_title, R.drawable.ic_placeholder) {
         @Override
         public Fragment createFragment() {
           return new DatePickerDemoLandingFragment();
