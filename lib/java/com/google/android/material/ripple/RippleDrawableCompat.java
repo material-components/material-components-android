@@ -50,7 +50,7 @@ public class RippleDrawableCompat extends Drawable implements Shapeable, TintAwa
 
   /**
    * Creates a {@link RippleDrawableCompat} with the given shape that will only draw when enabled
-   * and at leaste one of: presssed, focused, or hovered.
+   * and at least one of: pressed, focused, or hovered.
    *
    * @param shapeAppearanceModel The shape for the ripple.
    */

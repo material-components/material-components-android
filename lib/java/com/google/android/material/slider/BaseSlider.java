@@ -2648,7 +2648,7 @@ abstract class BaseSlider<
     }
   }
 
-  void updateBoundsForVirturalViewId(int virtualViewId, Rect virtualViewBounds) {
+  void updateBoundsForVirtualViewId(int virtualViewId, Rect virtualViewBounds) {
     int x = trackSidePadding + (int) (normalizeValue(getValues().get(virtualViewId)) * trackWidth);
     int y = calculateTrackCenter();
 
@@ -2668,7 +2668,7 @@ abstract class BaseSlider<
     @Override
     protected int getVirtualViewAt(float x, float y) {
       for (int i = 0; i < slider.getValues().size(); i++) {
-        slider.updateBoundsForVirturalViewId(i, virtualViewBounds);
+        slider.updateBoundsForVirtualViewId(i, virtualViewBounds);
         if (virtualViewBounds.contains((int) x, (int) y)) {
           return i;
         }
@@ -2718,7 +2718,7 @@ abstract class BaseSlider<
       }
       info.setContentDescription(contentDescription.toString());
 
-      slider.updateBoundsForVirturalViewId(virtualViewId, virtualViewBounds);
+      slider.updateBoundsForVirtualViewId(virtualViewId, virtualViewBounds);
       info.setBoundsInParent(virtualViewBounds);
     }
 

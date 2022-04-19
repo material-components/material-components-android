@@ -205,7 +205,7 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
             ? itemData.getTooltipText()
             : itemData.getTitle();
 
-    // Avoid calling tooltip for L and M devices because long pressing twuice may freeze devices.
+    // Avoid calling tooltip for L and M devices because long pressing twice may freeze devices.
     if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP || VERSION.SDK_INT > VERSION_CODES.M) {
       TooltipCompat.setTooltipText(this, tooltipText);
     }
@@ -281,7 +281,7 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
         itemData == null || TextUtils.isEmpty(itemData.getTooltipText())
             ? title
             : itemData.getTooltipText();
-    // Avoid calling tooltip for L and M devices because long pressing twuice may freeze devices.
+    // Avoid calling tooltip for L and M devices because long pressing twice may freeze devices.
     if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP || VERSION.SDK_INT > VERSION_CODES.M) {
       TooltipCompat.setTooltipText(this, tooltipText);
     }

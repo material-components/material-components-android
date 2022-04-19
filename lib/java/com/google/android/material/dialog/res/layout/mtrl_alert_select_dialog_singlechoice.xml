@@ -18,8 +18,8 @@
 <!--
     This layout file is used by the AlertDialog when displaying a single select list of items.
 
-    A left android:gravity will handle text alignemnt on API 16 and below while
-    android:textAlignemnt will be used on 17+. A start android:gravity is not added
+    A left android:gravity will handle text alignment on API 16 and below while
+    android:textAlignment will be used on 17+. A start android:gravity is not added
     to avoid text being aligned right while a drawable is aligned left in RTL configurations
     on API 16 and below.
 

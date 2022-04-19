@@ -105,7 +105,7 @@ class TabIndicatorInterpolator {
       return new RectF();
     }
 
-    // If the indicator should fit to the tab's content, calculate the content's widtd
+    // If the indicator should fit to the tab's content, calculate the content's width
     if (!tabLayout.isTabIndicatorFullWidth() && tab instanceof TabView) {
       return calculateTabViewContentBounds((TabView) tab, MIN_INDICATOR_WIDTH);
     }

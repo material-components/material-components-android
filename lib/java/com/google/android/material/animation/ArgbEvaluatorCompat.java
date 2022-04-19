@@ -33,7 +33,7 @@ public class ArgbEvaluatorCompat implements TypeEvaluator<Integer> {
    * android.animation.ValueAnimator#setEvaluator(TypeEvaluator)}. The same instance may be used in
    * multiple <code>Animator</code>s because it holds no state.
    *
-   * @return An instance of <code>ArgbEvalutor</code>.
+   * @return An instance of <code>ArgbEvaluator</code>.
    */
   @NonNull
   public static ArgbEvaluatorCompat getInstance() {

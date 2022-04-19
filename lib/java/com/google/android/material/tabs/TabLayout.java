@@ -635,7 +635,7 @@ public class TabLayout extends HorizontalScrollView {
    * <p>If the tab indicator color is not {@code Color.TRANSPARENT}, the indicator will be wrapped
    * and tinted right before it is drawn by {@link SlidingTabIndicator#draw(Canvas)}. If you'd like
    * the inherent color or the tinted color of a custom drawable to be used, make sure this color is
-   * set to {@code Color.TRANSPARENT} to avoid your color/tint being overriden.
+   * set to {@code Color.TRANSPARENT} to avoid your color/tint being overridden.
    *
    * @param color color to use for the indicator
    * @attr ref com.google.android.material.R.styleable#TabLayout_tabIndicatorColor
@@ -2925,7 +2925,7 @@ public class TabLayout extends HorizontalScrollView {
       }
 
       final CharSequence contentDesc = tab != null ? tab.contentDesc : null;
-      // Avoid calling tooltip for L and M devices because long pressing twuice may freeze devices.
+      // Avoid calling tooltip for L and M devices because long pressing twice may freeze devices.
       if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP || VERSION.SDK_INT > VERSION_CODES.M) {
         TooltipCompat.setTooltipText(this, hasText ? text : contentDesc);
       }
