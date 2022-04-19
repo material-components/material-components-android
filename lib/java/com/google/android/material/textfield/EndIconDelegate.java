@@ -51,10 +51,11 @@ abstract class EndIconDelegate {
     this.customEndIcon = customEndIcon;
   }
 
-  /**
-   * Default configurations for the specified end icon.
-   */
-  abstract void initialize();
+  /** Called when the associated end icon mode is set. */
+  abstract void setUp();
+
+  /** Called when the associated end icon mode is unset. */
+  void tearDown() {}
 
   /**
    * Whether the end icon should be tinted with the error color when the {@link TextInputLayout} is

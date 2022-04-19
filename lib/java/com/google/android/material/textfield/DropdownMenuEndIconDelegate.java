@@ -62,7 +62,6 @@ import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.textfield.TextInputLayout.AccessibilityDelegate;
 import com.google.android.material.textfield.TextInputLayout.BoxBackgroundMode;
-import com.google.android.material.textfield.TextInputLayout.OnEndIconChangedListener;
 
 /** Default initialization of the exposed dropdown menu {@link TextInputLayout.EndIconMode}. */
 class DropdownMenuEndIconDelegate extends EndIconDelegate {
@@ -107,23 +106,6 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
         }
       };
 
-  @SuppressLint("ClickableViewAccessibility") // There's an accessibility delegate that handles
-  // interactions with the dropdown menu.
-  private final OnEndIconChangedListener endIconChangedListener =
-      new OnEndIconChangedListener() {
-        @Override
-        public void onEndIconChanged(@NonNull TextInputLayout textInputLayout, int previousIcon) {
-          final AutoCompleteTextView editText =
-              (AutoCompleteTextView) textInputLayout.getEditText();
-          if (editText != null && previousIcon == TextInputLayout.END_ICON_DROPDOWN_MENU) {
-            // Remove any listeners set on the edit text.
-            editText.setOnTouchListener(null);
-            if (IS_LOLLIPOP) {
-              editText.setOnDismissListener(null);
-            }
-          }
-        }
-      };
 
   private final OnClickListener onIconClickListener = new OnClickListener() {
     @Override
@@ -157,7 +139,8 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
   }
 
   @Override
-  void initialize() {
+  void setUp() {
+
     // For lollipop+, the arrow icon changes orientation based on dropdown popup, otherwise it
     // always points down.
     int drawableResId =
@@ -167,7 +150,6 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
     endLayout.setEndIconDrawable(drawableResId);
     endLayout.setEndIconContentDescription(
         endLayout.getResources().getText(R.string.exposed_dropdown_menu_content_description));
-    endLayout.addOnEndIconChangedListener(endIconChangedListener);
     initAnimators();
     accessibilityManager =
         (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
@@ -184,6 +166,20 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
               }
             }
           });
+    }
+  }
+
+  @SuppressLint("ClickableViewAccessibility") // There's an accessibility delegate that handles
+  // interactions with the dropdown menu.
+  @Override
+  void tearDown() {
+    final AutoCompleteTextView editText = (AutoCompleteTextView) textInputLayout.getEditText();
+    if (editText != null) {
+      // Remove any listeners set on the edit text.
+      editText.setOnTouchListener(null);
+      if (IS_LOLLIPOP) {
+        editText.setOnDismissListener(null);
+      }
     }
   }
 

@@ -32,7 +32,6 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.animation.AnimationUtils;
-import com.google.android.material.textfield.TextInputLayout.OnEndIconChangedListener;
 
 /** Default initialization of the clear text end icon {@link TextInputLayout.EndIconMode}. */
 class ClearTextEndIconDelegate extends EndIconDelegate {
@@ -41,24 +40,6 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
   private static final int ANIMATION_SCALE_DURATION = 150;
   private static final float ANIMATION_SCALE_FROM_VALUE = 0.8f;
 
-  private final OnEndIconChangedListener endIconChangedListener =
-      new OnEndIconChangedListener() {
-        @Override
-        public void onEndIconChanged(@NonNull TextInputLayout textInputLayout, int previousIcon) {
-          final EditText editText = textInputLayout.getEditText();
-          if (editText != null && previousIcon == TextInputLayout.END_ICON_CLEAR_TEXT) {
-            // Remove any listeners set on the edit text.
-            editText.post(
-                new Runnable() {
-                  @Override
-                  public void run() {
-                    // Make sure icon view is visible.
-                    animateIcon(/* show= */ true);
-                  }
-                });
-          }
-        }
-      };
 
   private final OnClickListener onIconClickListener = new OnClickListener() {
     @Override
@@ -87,14 +68,28 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
   }
 
   @Override
-  void initialize() {
+  void setUp() {
     endLayout.setEndIconDrawable(
         customEndIcon == 0 ? R.drawable.mtrl_ic_cancel : customEndIcon);
     endLayout.setEndIconContentDescription(
         endLayout.getResources().getText(R.string.clear_text_end_icon_content_description));
     endLayout.setEndIconCheckable(false);
-    endLayout.addOnEndIconChangedListener(endIconChangedListener);
     initAnimators();
+  }
+
+  @Override
+  void tearDown() {
+    final EditText editText = textInputLayout.getEditText();
+    if (editText != null) {
+      editText.post(
+          new Runnable() {
+            @Override
+            public void run() {
+              // Make sure icon view is visible.
+              animateIcon(/* show= */ true);
+            }
+          });
+    }
   }
 
   @Override

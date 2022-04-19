@@ -26,23 +26,10 @@ import android.widget.EditText;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.google.android.material.textfield.TextInputLayout.OnEndIconChangedListener;
 
 /** Default initialization of the password toggle end icon. */
 class PasswordToggleEndIconDelegate extends EndIconDelegate {
 
-  private final OnEndIconChangedListener onEndIconChangedListener =
-      new OnEndIconChangedListener() {
-        @Override
-        public void onEndIconChanged(@NonNull TextInputLayout textInputLayout, int previousIcon) {
-          final EditText editText = textInputLayout.getEditText();
-          if (editText != null && previousIcon == TextInputLayout.END_ICON_PASSWORD_TOGGLE) {
-            // If the end icon was the password toggle add it back the PasswordTransformation
-            // in case it might have been removed to make the password visible.
-            editText.setTransformationMethod(PasswordTransformationMethod.getInstance());
-          }
-        }
-      };
 
   private final OnClickListener onIconClickListener = new OnClickListener() {
     @Override
@@ -73,17 +60,25 @@ class PasswordToggleEndIconDelegate extends EndIconDelegate {
   }
 
   @Override
-  void initialize() {
+  void setUp() {
     endLayout.setEndIconDrawable(
         customEndIcon == 0 ? R.drawable.design_password_eye : customEndIcon);
     endLayout.setEndIconContentDescription(
         endLayout.getResources().getText(R.string.password_toggle_content_description));
     endLayout.setEndIconVisible(true);
     endLayout.setEndIconCheckable(true);
-    endLayout.addOnEndIconChangedListener(onEndIconChangedListener);
     EditText editText = textInputLayout.getEditText();
     if (isInputTypePassword(editText)) {
       // By default set the input to be disguised.
+      editText.setTransformationMethod(PasswordTransformationMethod.getInstance());
+    }
+  }
+
+  @Override
+  void tearDown() {
+    EditText editText = textInputLayout.getEditText();
+    if (editText != null) {
+      // Add PasswordTransformation back since it may have been removed to make passwords visible.
       editText.setTransformationMethod(PasswordTransformationMethod.getInstance());
     }
   }

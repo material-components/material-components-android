@@ -322,13 +322,14 @@ class EndCompoundLayout extends LinearLayout {
     if (this.endIconMode == endIconMode) {
       return;
     }
+    getEndIconDelegate().tearDown();
     int previousEndIconMode = this.endIconMode;
     this.endIconMode = endIconMode;
     dispatchOnEndIconChanged(previousEndIconMode);
     setEndIconVisible(endIconMode != END_ICON_NONE);
     EndIconDelegate delegate = getEndIconDelegate();
     if (delegate.isBoxBackgroundModeSupported(textInputLayout.getBoxBackgroundMode())) {
-      delegate.initialize();
+      delegate.setUp();
     } else {
       throw new IllegalStateException(
           "The current box background mode "

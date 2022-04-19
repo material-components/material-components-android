@@ -27,7 +27,7 @@ class NoEndIconDelegate extends EndIconDelegate {
   }
 
   @Override
-  void initialize() {
+  void setUp() {
     endLayout.setEndIconDrawable(null);
     endLayout.setEndIconContentDescription(null);
   }
