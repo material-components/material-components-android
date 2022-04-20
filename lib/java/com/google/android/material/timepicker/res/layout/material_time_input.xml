@@ -17,7 +17,6 @@
 
 <com.google.android.material.textfield.TextInputLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="wrap_content"
   android:layout_height="wrap_content"
   app:errorIconDrawable="@null"
@@ -26,19 +25,15 @@
   app:shapeAppearanceOverlay="@null">
 
   <com.google.android.material.textfield.TextInputEditText
-    android:id="@+id/material_timepicker_edit_text"
     android:layout_width="96dp"
     android:textCursorDrawable="@drawable/material_cursor_drawable"
     android:layout_height="80dp"
-    android:paddingBottom="6dp"
-    tools:ignore="LabelFor" />
+    android:paddingBottom="6dp" />
 
   <TextView
-    android:labelFor="@+id/material_timepicker_edit_text"
     android:id="@+id/material_label"
     android:focusable="false"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    tools:ignore="LabelFor" />
+    android:layout_height="wrap_content" />
 
 </com.google.android.material.textfield.TextInputLayout>
