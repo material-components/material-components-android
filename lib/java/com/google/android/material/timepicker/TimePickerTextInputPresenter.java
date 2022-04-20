@@ -230,6 +230,7 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
   @Override
   public void show() {
     timePickerView.setVisibility(View.VISIBLE);
+    onSelectionChanged(time.selection);
   }
 
   @Override
