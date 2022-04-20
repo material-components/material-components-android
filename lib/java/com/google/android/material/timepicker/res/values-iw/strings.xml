@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2021 The Android Open Source Project
+  ~ Copyright (C) 2022 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,8 +15,8 @@
   ~ limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-  <string name="material_timepicker_pm">אחה\"צ</string>
-  <string name="material_timepicker_am">לפנה\"צ</string>
+  <string name="material_timepicker_pm">PM</string>
+  <string name="material_timepicker_am">AM</string>
   <string name="material_timepicker_select_time">בחר שעה</string>
   <string name="material_timepicker_minute">דקה</string>
   <string name="material_timepicker_hour">שעה</string>
@@ -25,6 +25,7 @@
   <string name="material_hour_selection">בחר שעה</string>
   <string name="material_minute_selection">בחר דקות</string>
   <string name="material_clock_toggle_content_description">יש לבחור ב-AM או ב-PM</string>
+  <string name="mtrl_timepicker_confirm">אישור</string>
   <string name="material_timepicker_text_input_mode_description">העבר למצב קלט טקסט לצורך הזנת השעה</string>
   <string name="material_timepicker_clock_mode_description">העבר למצב שעון לצורך הזנת השעה</string>
 </resources>

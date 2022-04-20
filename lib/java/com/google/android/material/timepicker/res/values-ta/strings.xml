@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2021 The Android Open Source Project
+  ~ Copyright (C) 2022 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@
   <string name="material_hour_selection">மணிநேரத்தைத் தேர்ந்தெடுக்க உதவும்</string>
   <string name="material_minute_selection">நிமிடத்தைத் தேர்ந்தெடுக்கவும்</string>
   <string name="material_clock_toggle_content_description">AM அல்லது PMமைத் தேர்ந்தெடுக்க உதவும்</string>
+  <string name="mtrl_timepicker_confirm">சரி</string>
   <string name="material_timepicker_text_input_mode_description">உரை உள்ளீட்டிற்காக, கடிகாரப் பயன்முறைக்கு மாற்றும்.</string>
   <string name="material_timepicker_clock_mode_description">நேர உள்ளீட்டிற்காக, கடிகாரப் பயன்முறைக்கு மாற்றும்.</string>
 </resources>

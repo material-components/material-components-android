@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2021 The Android Open Source Project
+  ~ Copyright (C) 2022 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@
   <string name="mtrl_picker_range_header_selected">%1$s – %2$s</string>
   <string name="mtrl_picker_date_header_unselected">Выбранная дата</string>
   <string name="mtrl_picker_date_header_selected">%1$s</string>
-  <string name="mtrl_picker_confirm">@android:string/ok</string>
+  <string name="mtrl_picker_confirm">ОК</string>
   <string name="mtrl_picker_text_input_date_hint">Дата</string>
   <string name="mtrl_picker_text_input_date_range_start_hint">Дата начала</string>
   <string name="mtrl_picker_text_input_date_range_end_hint">Дата окончания</string>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2021 The Android Open Source Project
+  ~ Copyright (C) 2022 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 -->
 <resources>
   <string name="character_counter_content_description">Уведзена сімвалаў: %1$d з %2$d</string>
-  <string name="character_counter_overflowed_content_description">Ліміт сімвалаў перавышаны: %1$d з %2$d</string>
+  <string name="character_counter_overflowed_content_description">Абмежаванне колькасці сімвалаў перавышана: %1$d з %2$d</string>
   <string name="password_toggle_content_description">Паказаць пароль</string>
   <string name="clear_text_end_icon_content_description">Ачысціць тэкст</string>
   <string name="exposed_dropdown_menu_content_description">Паказаць выпадное меню</string>

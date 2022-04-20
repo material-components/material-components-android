@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2021 The Android Open Source Project
+  ~ Copyright (C) 2022 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@
   <string name="material_hour_selection">時刻を選択してください</string>
   <string name="material_minute_selection">分を選択</string>
   <string name="material_clock_toggle_content_description">午前または午後を選択</string>
+  <string name="mtrl_timepicker_confirm">OK</string>
   <string name="material_timepicker_text_input_mode_description">時刻をテキストで入力するモードに切り替えます。</string>
   <string name="material_timepicker_clock_mode_description">時刻を時計で入力するモードに切り替えます。</string>
 </resources>

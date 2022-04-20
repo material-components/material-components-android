@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2021 The Android Open Source Project
+  ~ Copyright (C) 2022 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@
   <string name="material_hour_selection">Izberite uro</string>
   <string name="material_minute_selection">Izberite minute</string>
   <string name="material_clock_toggle_content_description">Izberite dopoldanski ali popoldanski čas.</string>
+  <string name="mtrl_timepicker_confirm">V redu</string>
   <string name="material_timepicker_text_input_mode_description">Preklopite na način za vnašanje besedila, da vnesete čas.</string>
   <string name="material_timepicker_clock_mode_description">Preklopite na način ure, da vnesete čas.</string>
 </resources>
