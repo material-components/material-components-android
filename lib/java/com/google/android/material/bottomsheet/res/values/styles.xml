@@ -73,6 +73,8 @@
     <item name="paddingTopSystemWindowInsets">true</item>
     <item name="paddingLeftSystemWindowInsets">false</item>
     <item name="paddingRightSystemWindowInsets">false</item>
+    <item name="shapeAppearance">?attr/shapeAppearanceCornerExtraLarge</item>
+    <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Material3.Corner.Top</item>
   </style>
 
   <style name="Widget.Material3.BottomSheet.Modal">
