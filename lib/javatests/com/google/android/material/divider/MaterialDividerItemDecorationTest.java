@@ -24,6 +24,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Rect;
 import androidx.recyclerview.widget.RecyclerView;
+import android.view.View;
 import android.widget.LinearLayout;
 import androidx.test.core.app.ApplicationProvider;
 import org.junit.Before;
@@ -46,6 +47,7 @@ public final class MaterialDividerItemDecorationTest {
   private final Context context = ApplicationProvider.getApplicationContext();
 
   @Mock private RecyclerView.State state;
+  @Mock private View view;
   @Mock private RecyclerView recyclerView;
   private Rect rect;
   private MaterialDividerItemDecoration divider;
@@ -141,7 +143,7 @@ public final class MaterialDividerItemDecorationTest {
 
   @Test
   public void getItemOffsets_verticalOrientation_returnsCorrectRect() {
-    divider.getItemOffsets(rect, /* view= */ null, recyclerView, state);
+    divider.getItemOffsets(rect, view, recyclerView, state);
 
     assertThat(rect).isEqualTo(new Rect(0, 0, 0, DIVIDER_THICKNESS));
   }
@@ -150,7 +152,7 @@ public final class MaterialDividerItemDecorationTest {
   public void getItemOffsets_horizontalOrientation_returnsCorrectRect() {
     divider.setOrientation(LinearLayout.HORIZONTAL);
 
-    divider.getItemOffsets(rect, /* view= */ null, recyclerView, state);
+    divider.getItemOffsets(rect, view, recyclerView, state);
 
     assertThat(rect).isEqualTo(new Rect(0, 0, DIVIDER_THICKNESS, 0));
   }

@@ -371,10 +371,12 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
       @NonNull RecyclerView parent,
       @NonNull RecyclerView.State state) {
     outRect.set(0, 0, 0, 0);
-    if (orientation == VERTICAL) {
-      outRect.bottom = dividerDrawable.getIntrinsicHeight() + thickness;
-    } else {
-      outRect.right = dividerDrawable.getIntrinsicWidth() + thickness;
+    if (lastItemDecorated || parent.getChildLayoutPosition(view) != state.getItemCount() - 1) {
+      if (orientation == VERTICAL) {
+        outRect.bottom = dividerDrawable.getIntrinsicHeight() + thickness;
+      } else {
+        outRect.right = dividerDrawable.getIntrinsicWidth() + thickness;
+      }
     }
   }
 }
