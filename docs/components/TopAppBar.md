@@ -236,6 +236,12 @@ In the layout:
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 ```
 
+**Note:** If your scrolling view (`RecyclerView`, `ListView`, etc.) is nested
+within another view (e.g., a `SwipeRefreshLayout`), you should make sure to set
+`app:liftOnScrollTargetViewId` on your `AppBarLayout` to the id of the scrolling
+view. This will ensure that the `AppBarLayout` is using the right view to
+determine whether it should lift or not, and it will help avoid flicker issues.
+
 The following example shows the top app bar disappearing upon scrolling up, and
 appearing upon scrolling down.
 
@@ -345,15 +351,16 @@ Element                                        | Attribute                      
 
 #### Scrolling behavior attributes
 
-Element                                                         | Attribute                    | Related method(s)                                                                                     | Default value
---------------------------------------------------------------- | ---------------------------- | ----------------------------------------------------------------------------------------------------- | -------------
-**`MaterialToolbar` or `CollapsingToolbarLayout` scroll flags** | `app:layout_scrollFlags`     | `setScrollFlags`<br>`getScrollFlags`<br>(on `AppBarLayout.LayoutParams`)                              | `noScroll`
-**`MaterialToolbar` collapse mode**                             | `app:collapseMode`           | `setCollapseMode`<br>`getCollapseMode`<br>(on `CollapsingToolbar`)                                    | `none`
-**`CollapsingToolbarLayout` content scrim color**               | `app:contentScrim`           | `setContentScrim`<br>`setContentScrimColor`<br>`setContentScrimResource`<br>`getContentScrim`         | `null`
-**`CollapsingToolbarLayout` status bar scrim color**            | `app:statusBarScrim`         | `setStatusBarScrim`<br>`setStatusBarScrimColor`<br>`setStatusBarScrimResource`<br>`getStatusBarScrim` | `@empty`
-**`CollapsingToolbarLayout` scrim animation duration**          | `app:scrimAnimationDuration` | `setScrimAnimationDuration`<br>`getScrimAnimationDuration`                                            | `600`
-**`CollapsingToolbarLayout` collapsing animation interpolator** | `app:titlePositionInterpolator` | `setTitlePositionInterpolator`                                            | `@null`
-**`AppBarLayout` lift on scroll**                               | `app:liftOnScroll`           | `setLiftOnScroll`<br>`isLiftOnScroll`                                                                 | `true`
+Element                                                         | Attribute                       | Related method(s)                                                                                     | Default value
+--------------------------------------------------------------- | ------------------------------- | ----------------------------------------------------------------------------------------------------- | -------------
+**`MaterialToolbar` or `CollapsingToolbarLayout` scroll flags** | `app:layout_scrollFlags`        | `setScrollFlags`<br>`getScrollFlags`<br>(on `AppBarLayout.LayoutParams`)                              | `noScroll`
+**`MaterialToolbar` collapse mode**                             | `app:collapseMode`              | `setCollapseMode`<br>`getCollapseMode`<br>(on `CollapsingToolbar`)                                    | `none`
+**`CollapsingToolbarLayout` content scrim color**               | `app:contentScrim`              | `setContentScrim`<br>`setContentScrimColor`<br>`setContentScrimResource`<br>`getContentScrim`         | `null`
+**`CollapsingToolbarLayout` status bar scrim color**            | `app:statusBarScrim`            | `setStatusBarScrim`<br>`setStatusBarScrimColor`<br>`setStatusBarScrimResource`<br>`getStatusBarScrim` | `@empty`
+**`CollapsingToolbarLayout` scrim animation duration**          | `app:scrimAnimationDuration`    | `setScrimAnimationDuration`<br>`getScrimAnimationDuration`                                            | `600`
+**`CollapsingToolbarLayout` collapsing animation interpolator** | `app:titlePositionInterpolator` | `setTitlePositionInterpolator`                                                                        | `@null`
+**`AppBarLayout` lift on scroll**                               | `app:liftOnScroll`              | `setLiftOnScroll`<br>`isLiftOnScroll`                                                                 | `true`
+**`AppBarLayout` lift on scroll target view**                   | `app:liftOnScrollTargetViewId`  | `setLiftOnScrollTargetViewId`<br>`getLiftOnScrollTargetViewId`                                        | `@null`
 
 #### `AppBarLayout` styles
 
