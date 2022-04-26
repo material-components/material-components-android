@@ -20,6 +20,7 @@ import com.google.android.material.R;
 import static android.graphics.Color.TRANSPARENT;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.util.TypedValue;
 import android.view.View;
@@ -111,6 +112,23 @@ public class MaterialColors {
     }
   }
 
+  /**
+   * Returns the color state list for the provided theme color attribute, or the default value if
+   * the attribute is not set in the current theme.
+   */
+  @NonNull
+  public static ColorStateList getColorStateList(
+      @NonNull Context context,
+      @AttrRes int colorAttributeResId,
+      @NonNull ColorStateList defaultValue) {
+    ColorStateList resolvedColor = null;
+    TypedValue typedValue = MaterialAttributes.resolve(context, colorAttributeResId);
+    if (typedValue != null) {
+      resolvedColor = resolveColorStateList(context, typedValue);
+    }
+    return resolvedColor == null ? defaultValue : resolvedColor;
+  }
+
   private static int resolveColor(@NonNull Context context, @NonNull TypedValue typedValue) {
     if (typedValue.resourceId != 0) {
       // Color State List
@@ -118,6 +136,15 @@ public class MaterialColors {
     } else {
       // Color Int
       return typedValue.data;
+    }
+  }
+
+  private static ColorStateList resolveColorStateList(
+      @NonNull Context context, @NonNull TypedValue typedValue) {
+    if (typedValue.resourceId != 0) {
+      return ContextCompat.getColorStateList(context, typedValue.resourceId);
+    } else {
+      return ColorStateList.valueOf(typedValue.data);
     }
   }
 

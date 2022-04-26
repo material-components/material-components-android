@@ -20,6 +20,7 @@ import com.google.android.material.R;
 
 import static com.google.android.material.textfield.IconHelper.applyIconTint;
 import static com.google.android.material.textfield.IconHelper.refreshIconDrawableState;
+import static com.google.android.material.textfield.IconHelper.setCompatRippleBackgroundIfNeeded;
 import static com.google.android.material.textfield.IconHelper.setIconOnClickListener;
 import static com.google.android.material.textfield.IconHelper.setIconOnLongClickListener;
 import static com.google.android.material.textfield.TextInputLayout.END_ICON_CLEAR_TEXT;
@@ -177,6 +178,7 @@ class EndCompoundLayout extends LinearLayout {
         (CheckableImageButton) inflater.inflate(
             R.layout.design_text_input_end_icon, root, false);
     iconView.setId(id);
+    setCompatRippleBackgroundIfNeeded(iconView);
     if (MaterialResources.isFontScaleAtLeast1_3(getContext())) {
       ViewGroup.MarginLayoutParams lp =
           (ViewGroup.MarginLayoutParams) iconView.getLayoutParams();
