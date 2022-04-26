@@ -354,7 +354,8 @@
     <item name="placeholderTextAppearance">?attr/textAppearanceBodyLarge</item>
     <item name="prefixTextAppearance">?attr/textAppearanceTitleMedium</item>
     <item name="suffixTextAppearance">?attr/textAppearanceTitleMedium</item>
-    <item name="shapeAppearanceOverlay">?attr/shapeAppearanceSmallComponent</item>
+    <item name="shapeAppearance">?attr/shapeAppearanceCornerExtraSmall</item>
+    <item name="shapeAppearanceOverlay">@null</item>
   </style>
 
   <!-- Style for a dense M3 Outlined text field. -->
@@ -402,7 +403,8 @@
     <item name="placeholderTextAppearance">?attr/textAppearanceBodyLarge</item>
     <item name="prefixTextAppearance">?attr/textAppearanceTitleMedium</item>
     <item name="suffixTextAppearance">?attr/textAppearanceTitleMedium</item>
-    <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Material3.TextField.Filled</item>
+    <item name="shapeAppearance">?attr/shapeAppearanceCornerExtraSmall</item>
+    <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Material3.Corner.Top</item>
   </style>
 
   <style name="Widget.Material3.TextInputLayout.FilledBox.Dense">
@@ -516,10 +518,5 @@
 
   <style name="ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox.Dense">
     <item name="autoCompleteTextViewStyle">@style/Widget.Material3.AutoCompleteTextView.OutlinedBox.Dense</item>
-  </style>
-
-  <style name="ShapeAppearanceOverlay.Material3.TextField.Filled" parent="ShapeAppearance.Material3.SmallComponent">
-    <item name="cornerSizeBottomLeft">0dp</item>
-    <item name="cornerSizeBottomRight">0dp</item>
   </style>
 </resources>
