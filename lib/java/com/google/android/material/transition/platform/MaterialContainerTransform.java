@@ -1015,7 +1015,7 @@ public final class MaterialContainerTransform extends Transition {
         R.attr.motionEasingEmphasizedInterpolator,
         AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
     TransitionUtils.maybeApplyThemeDuration(
-        this, context, entering ? R.attr.motionDurationExtraLong2 : R.attr.motionDurationMedium4);
+        this, context, entering ? R.attr.motionDurationLong2 : R.attr.motionDurationMedium4);
     if (!pathMotionCustom) {
       TransitionUtils.maybeApplyThemePath(this, context, R.attr.motionPath);
     }
