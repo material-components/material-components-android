@@ -80,10 +80,13 @@
     <item name="android:background">@null</item>
     <item name="android:layout_margin">@dimen/m3_snackbar_margin</item>
     <item name="animationMode">fade</item>
+    <item name="shapeAppearance">?attr/shapeAppearanceCornerExtraSmall</item>
   </style>
 
   <!-- Style for a full width M3 Snackbar. -->
-  <style name="Widget.Material3.Snackbar.FullWidth" parent="Base.Widget.Material3.Snackbar" />
+  <style name="Widget.Material3.Snackbar.FullWidth" parent="Base.Widget.Material3.Snackbar">
+    <item name="shapeAppearance">@style/ShapeAppearance.Material3.Corner.None</item>
+  </style>
 
   <style name="Widget.Material3.Snackbar.TextView" parent="Widget.MaterialComponents.Snackbar.TextView">
     <item name="android:alpha">@dimen/m3_snackbar_action_text_color_alpha</item>

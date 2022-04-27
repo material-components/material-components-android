@@ -33,6 +33,7 @@ import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
@@ -61,6 +62,7 @@ import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.FrameLayout;
+import androidx.annotation.ColorInt;
 import androidx.annotation.IdRes;
 import androidx.annotation.IntDef;
 import androidx.annotation.IntRange;
@@ -81,6 +83,8 @@ import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialResources;
+import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.ShapeAppearanceModel;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
@@ -1102,6 +1106,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
         };
 
     @Nullable private BaseTransientBottomBar<?> baseTransientBottomBar;
+    @Nullable ShapeAppearanceModel shapeAppearanceModel;
     @AnimationMode private int animationMode;
     private final float backgroundOverlayColorAlpha;
     private final float actionTextColorAlpha;
@@ -1127,6 +1132,13 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
             this, a.getDimensionPixelSize(R.styleable.SnackbarLayout_elevation, 0));
       }
       animationMode = a.getInt(R.styleable.SnackbarLayout_animationMode, ANIMATION_MODE_SLIDE);
+      if (a.hasValue(R.styleable.SnackbarLayout_shapeAppearance)
+          || a.hasValue(R.styleable.SnackbarLayout_shapeAppearanceOverlay)) {
+        shapeAppearanceModel =
+            ShapeAppearanceModel.builder(
+                    context, attrs, /* defStyleAttr= */ 0, /* defStyleRes= */ 0)
+                .build();
+      }
       backgroundOverlayColorAlpha =
           a.getFloat(R.styleable.SnackbarLayout_backgroundOverlayColorAlpha, 1);
       setBackgroundTintList(
@@ -1277,17 +1289,15 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
     @NonNull
     private Drawable createThemedBackground() {
-      float cornerRadius =
-          getResources().getDimension(R.dimen.mtrl_snackbar_background_corner_radius);
-
-      GradientDrawable background = new GradientDrawable();
-      background.setShape(GradientDrawable.RECTANGLE);
-      background.setCornerRadius(cornerRadius);
-
       int backgroundColor =
           MaterialColors.layer(
               this, R.attr.colorSurface, R.attr.colorOnSurface, getBackgroundOverlayColorAlpha());
-      background.setColor(backgroundColor);
+      // Only use newer MaterialShapeDrawable background approach if shape appearance is set, in
+      // order to preserve the original GradientDrawable background for pre-M3 Snackbars.
+      Drawable background =
+          shapeAppearanceModel != null
+              ? createMaterialShapeDrawableBackground(backgroundColor, shapeAppearanceModel)
+              : createGradientDrawableBackground(backgroundColor, getResources());
       if (backgroundTint != null) {
         Drawable wrappedDrawable = DrawableCompat.wrap(background);
         DrawableCompat.setTintList(wrappedDrawable, backgroundTint);
@@ -1296,6 +1306,25 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
         return DrawableCompat.wrap(background);
       }
     }
+  }
+
+  @NonNull
+  private static MaterialShapeDrawable createMaterialShapeDrawableBackground(
+      @ColorInt int backgroundColor, @NonNull ShapeAppearanceModel shapeAppearanceModel) {
+    MaterialShapeDrawable background = new MaterialShapeDrawable(shapeAppearanceModel);
+    background.setFillColor(ColorStateList.valueOf(backgroundColor));
+    return background;
+  }
+
+  @NonNull
+  private static GradientDrawable createGradientDrawableBackground(
+      @ColorInt int backgroundColor, @NonNull Resources resources) {
+    float cornerRadius = resources.getDimension(R.dimen.mtrl_snackbar_background_corner_radius);
+    GradientDrawable background = new GradientDrawable();
+    background.setShape(GradientDrawable.RECTANGLE);
+    background.setCornerRadius(cornerRadius);
+    background.setColor(backgroundColor);
+    return background;
   }
 
   /** Behavior for {@link BaseTransientBottomBar}. */
