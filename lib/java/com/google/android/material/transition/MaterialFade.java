@@ -37,12 +37,18 @@ public final class MaterialFade extends MaterialVisibility<FadeProvider> {
   private static final float DEFAULT_FADE_END_THRESHOLD_ENTER = 0.3f;
 
   @AttrRes
-  private static final int DEFAULT_THEMED_INCOMING_DURATION_ATTR = R.attr.motionDurationShort2;
+  private static final int DEFAULT_THEMED_INCOMING_DURATION_ATTR = R.attr.motionDurationMedium4;
 
   @AttrRes
-  private static final int DEFAULT_THEMED_OUTGOING_DURATION_ATTR = R.attr.motionDurationShort1;
+  private static final int DEFAULT_THEMED_OUTGOING_DURATION_ATTR = R.attr.motionDurationShort3;
 
-  @AttrRes private static final int DEFAULT_THEMED_EASING_ATTR = R.attr.motionEasingLinear;
+  @AttrRes
+  private static final int DEFAULT_THEMED_INCOMING_EASING_ATTR =
+      R.attr.motionEasingEmphasizedDecelerateInterpolator;
+
+  @AttrRes
+  private static final int DEFAULT_THEMED_OUTGOING_EASING_ATTR =
+      R.attr.motionEasingEmphasizedAccelerateInterpolator;
 
   public MaterialFade() {
     super(createPrimaryAnimatorProvider(), createSecondaryAnimatorProvider());
@@ -72,7 +78,9 @@ public final class MaterialFade extends MaterialVisibility<FadeProvider> {
   @AttrRes
   @Override
   int getEasingThemeAttrResId(boolean appearing) {
-    return DEFAULT_THEMED_EASING_ATTR;
+    return appearing
+        ? DEFAULT_THEMED_INCOMING_EASING_ATTR
+        : DEFAULT_THEMED_OUTGOING_EASING_ATTR;
   }
 
   @NonNull

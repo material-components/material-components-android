@@ -89,7 +89,9 @@ public final class MaterialSharedAxis extends MaterialVisibility<VisibilityAnima
   private final boolean forward;
 
   @AttrRes private static final int DEFAULT_THEMED_DURATION_ATTR = R.attr.motionDurationLong1;
-  @AttrRes private static final int DEFAULT_THEMED_EASING_ATTR = R.attr.motionEasingStandard;
+
+  @AttrRes
+  private static final int DEFAULT_THEMED_EASING_ATTR = R.attr.motionEasingEmphasizedInterpolator;
 
   public MaterialSharedAxis(@Axis int axis, boolean forward) {
     super(createPrimaryAnimatorProvider(axis, forward), createSecondaryAnimatorProvider());

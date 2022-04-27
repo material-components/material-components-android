@@ -33,7 +33,9 @@ public final class MaterialFadeThrough extends MaterialVisibility<FadeThroughPro
   private static final float DEFAULT_START_SCALE = 0.92f;
 
   @AttrRes private static final int DEFAULT_THEMED_DURATION_ATTR = R.attr.motionDurationLong1;
-  @AttrRes private static final int DEFAULT_THEMED_EASING_ATTR = R.attr.motionEasingStandard;
+
+  @AttrRes
+  private static final int DEFAULT_THEMED_EASING_ATTR = R.attr.motionEasingEmphasizedInterpolator;
 
   public MaterialFadeThrough() {
     super(createPrimaryAnimatorProvider(), createSecondaryAnimatorProvider());
