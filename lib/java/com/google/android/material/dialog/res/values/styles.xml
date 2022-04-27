@@ -113,7 +113,7 @@
   <style name="MaterialAlertDialog.Material3" parent="MaterialAlertDialog.MaterialComponents">
     <item name="enforceMaterialTheme">true</item>
     <item name="android:layout">@layout/m3_alert_dialog</item>
-    <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialAlertDialog.Material3</item>
+    <item name="shapeAppearance">?attr/shapeAppearanceCornerExtraLarge</item>
   </style>
 
   <style name="ShapeAppearanceOverlay.MaterialAlertDialog.Material3" parent="">
