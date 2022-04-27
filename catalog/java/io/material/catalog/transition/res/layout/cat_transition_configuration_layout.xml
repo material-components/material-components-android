@@ -165,11 +165,17 @@
           android:orientation="vertical">
 
         <RadioButton
+          android:id="@+id/radio_default"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="@string/cat_transition_config_default"
+          android:checked="true"/>
+
+        <RadioButton
             android:id="@+id/radio_fast_out_slow_in"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/cat_transition_config_fast_out_slow_in_title"
-            android:checked="true"/>
+            android:text="@string/cat_transition_config_fast_out_slow_in_title"/>
 
         <RadioButton
           android:id="@+id/radio_overshoot"

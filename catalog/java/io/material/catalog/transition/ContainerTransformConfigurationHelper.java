@@ -99,7 +99,9 @@ public class ContainerTransformConfigurationHelper {
     if (duration != NO_DURATION) {
       transform.setDuration(duration);
     }
-    transform.setInterpolator(getInterpolator());
+    if (getInterpolator() != null) {
+      transform.setInterpolator(getInterpolator());
+    }
     if (isArcMotionEnabled()) {
       transform.setPathMotion(new MaterialArcMotion());
     }
@@ -116,7 +118,9 @@ public class ContainerTransformConfigurationHelper {
     if (duration != NO_DURATION) {
       transform.setDuration(duration);
     }
-    transform.setInterpolator(getInterpolator());
+    if (getInterpolator() != null) {
+      transform.setInterpolator(getInterpolator());
+    }
     if (isArcMotionEnabled()) {
       transform.setPathMotion(
           new com.google.android.material.transition.platform.MaterialArcMotion());
@@ -302,6 +306,8 @@ public class ContainerTransformConfigurationHelper {
         setTextFloat(view.findViewById(R.id.y1_edit_text), currentInterp.controlY1);
         setTextFloat(view.findViewById(R.id.x2_edit_text), currentInterp.controlX2);
         setTextFloat(view.findViewById(R.id.y2_edit_text), currentInterp.controlY2);
+      } else {
+        interpolationGroup.check(R.id.radio_default);
       }
 
       // Show/hide custom text input fields depending on initial checked radio button.
@@ -452,8 +458,11 @@ public class ContainerTransformConfigurationHelper {
               } else if (checkedRadioButtonId == R.id.radio_bounce) {
                 interpolator = new BounceInterpolator();
                 dialog.dismiss();
-              } else {
+              } else if (checkedRadioButtonId == R.id.radio_fast_out_slow_in) {
                 interpolator = new FastOutSlowInInterpolator();
+                dialog.dismiss();
+              } else {
+                interpolator = null;
                 dialog.dismiss();
               }
             });

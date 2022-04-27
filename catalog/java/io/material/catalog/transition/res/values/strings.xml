@@ -51,6 +51,7 @@ Phasellus in aliquet mi. Pellentesque habitant morbi tristique senectus et netus
   <string name="cat_transition_config_enter_duration_title">Enter Duration</string>
   <string name="cat_transition_config_return_duration_title">Return Duration</string>
   <string name="cat_transition_config_interpolation_title">Interpolation</string>
+  <string name="cat_transition_config_default">Default</string>
   <string name="cat_transition_config_fast_out_slow_in_title">FastOutSlowIn</string>
   <string name="cat_transition_config_overshoot">Overshoot</string>
   <string name="cat_transition_config_anticipate_overshoot">AnticipateOvershoot</string>
