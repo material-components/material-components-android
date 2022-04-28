@@ -716,7 +716,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
         setUpBehavior((CoordinatorLayout.LayoutParams) lp);
       }
 
-      targetParent.addView(this.view);
+      this.view.addToTargetParent(targetParent);
       recalculateAndUpdateMargins();
 
       // Set view to INVISIBLE so it doesn't flash on the screen before the inset adjustment is
@@ -1116,6 +1116,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     private PorterDuff.Mode backgroundTintMode;
 
     @Nullable private Rect originalMargins;
+    private boolean addingToTargetParent;
 
     protected SnackbarBaseLayout(@NonNull Context context) {
       this(context, null);
@@ -1245,7 +1246,10 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     @Override
     public void setLayoutParams(ViewGroup.LayoutParams params) {
       super.setLayoutParams(params);
-      if (params instanceof MarginLayoutParams) {
+      if (!addingToTargetParent && params instanceof MarginLayoutParams) {
+        // Do not update the original margins when the layout is being added to its target parent,
+        // since the margins are just copied from the existing layout params, which can already be
+        // updated with extra margins.
         updateOriginalMargins((MarginLayoutParams) params);
         if (baseTransientBottomBar != null) {
           baseTransientBottomBar.updateMargins();
@@ -1276,6 +1280,12 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
     int getMaxInlineActionWidth() {
       return maxInlineActionWidth;
+    }
+
+    void addToTargetParent(ViewGroup targetParent) {
+      addingToTargetParent = true;
+      targetParent.addView(this);
+      addingToTargetParent = false;
     }
 
     private void setBaseTransientBottomBar(BaseTransientBottomBar<?> baseTransientBottomBar) {
