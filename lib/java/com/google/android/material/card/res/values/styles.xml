@@ -48,6 +48,7 @@
     <item name="strokeColor">@color/m3_card_stroke_color</item>
     <item name="strokeWidth">@dimen/m3_card_stroke_width</item>
     <item name="checkedIconTint">@color/m3_card_stroke_color</item>
+    <item name="shapeAppearance">?attr/shapeAppearanceCornerMedium</item>
   </style>
 
   <style name="Widget.Material3.CardView.Outlined" parent="Base.Widget.Material3.CardView"/>
