@@ -126,6 +126,8 @@ public final class CollapsingTextHelper {
   private CancelableFontCallback expandedFontCallback;
   private CancelableFontCallback collapsedFontCallback;
 
+  private TruncateAt titleTextEllipsize = TruncateAt.END;
+
   @Nullable private CharSequence text;
   @Nullable private CharSequence textToDraw;
   private boolean isRtl;
@@ -447,6 +449,16 @@ public final class CollapsingTextHelper {
     recalculate();
   }
 
+  public void setTitleTextEllipsize(@NonNull TruncateAt ellipsize) {
+    titleTextEllipsize = ellipsize;
+    recalculate();
+  }
+
+  @NonNull
+  public TruncateAt getTitleTextEllipsize() {
+    return titleTextEllipsize;
+  }
+
   public void setCollapsedTypeface(Typeface typeface) {
     if (setCollapsedTypefaceInternal(typeface)) {
       recalculate();
@@ -710,7 +722,7 @@ public final class CollapsingTextHelper {
     calculateUsingTextSize(/* fraction= */ 1, forceRecalculate);
     if (textToDraw != null && textLayout != null) {
       textToDrawCollapsed =
-          TextUtils.ellipsize(textToDraw, textPaint, textLayout.getWidth(), TruncateAt.END);
+          TextUtils.ellipsize(textToDraw, textPaint, textLayout.getWidth(), titleTextEllipsize);
     }
     if (textToDrawCollapsed != null) {
       collapsedTextWidth = measureTextWidth(textPaint, textToDrawCollapsed);
@@ -1061,7 +1073,7 @@ public final class CollapsingTextHelper {
       Alignment textAlignment = maxLines == 1 ? ALIGN_NORMAL : getMultilineTextLayoutAlignment();
       textLayout =
           StaticLayoutBuilderCompat.obtain(text, textPaint, (int) availableWidth)
-              .setEllipsize(TruncateAt.END)
+              .setEllipsize(titleTextEllipsize)
               .setIsRtl(isRtl)
               .setAlignment(textAlignment)
               .setIncludePad(false)

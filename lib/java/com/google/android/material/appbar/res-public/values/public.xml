@@ -87,5 +87,6 @@
   <public name="titlePositionInterpolator" type="attr"/>
   <public name="logoAdjustViewBounds" type="attr"/>
   <public name="logoScaleType" type="attr"/>
+  <public name="titleTextEllipsize" type="attr"/>
 </resources>
 

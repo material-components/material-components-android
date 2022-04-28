@@ -317,22 +317,23 @@ Element                          | Attribute                | Related method(s) 
 
 #### Title attributes
 
-Element                                                  | Attribute                                                                                    | Related method(s)                 | Default value
--------------------------------------------------------- | -------------------------------------------------------------------------------------------- | --------------------------------- | -------------
-**`MaterialToolbar` title text**                         | `app:title`                                                                                  | `setTitle`<br>`getTitle`          | `null`
-**`MaterialToolbar` subtitle text**                      | `app:subtitle`                                                                               | `setSubtitle`<br>`getSubtitle`    | `null`
-**`MaterialToolbar` title color**                        | `app:titleTextColor`                                                                         | `setTitleTextColor`               | `?attr/colorOnSurface`
-**`MaterialToolbar` subtitle color**                     | `app:subtitleTextColor`                                                                      | `setSubtitleTextColor`            | `?attr/colorOnSurfaceVariant`
-**`MaterialToolbar` title typography**                   | `app:titleTextAppearance`                                                                    | `setTitleTextAppearance`          | `?attr/textAppearanceTitleLarge`
-**`MaterialToolbar` subtitle typography**                | `app:subtitleTextAppearance`                                                                 | `setSubtitleTextAppearance`       | `?attr/textAppearanceTitleMedium`
-**`MaterialToolbar` title centering**                    | `app:titleCentered`                                                                          | `setTitleCentered`                | `false`
-**`MaterialToolbar` subtitle centering**                 | `app:subtitleCentered`                                                                       | `setSubtitleCentered`             | `false`
-**`CollapsingToolbarLayout` collapsed title typography** | `app:collapsedTitleTextAppearance`                                                           | `setCollapsedTitleTextAppearance` | `?attr/textAppearanceTitleLarge`
-**`CollapsingToolbarLayout` expanded title typography**  | `app:expandedTitleTextAppearance`                                                            | `setExpandedTitleTextAppearance`  | `?attr/textAppearanceHeadlineSmall` for Medium</br>`?attr/textAppearanceHeadlineMedium` for Large
-**`CollapsingToolbarLayout` collapsed title color**      | `android:textColor` (in `app:collapsedTitleTextAppearance`) or `app:collapsedTitleTextColor` | `setCollapsedTitleTextColor`      | `?attr/colorOnSurface`
-**`CollapsingToolbarLayout` expanded title color**       | `android:textColor` (in `app:expandedTitleTextAppearance`) or `app:expandedTitleTextColor`   | `setExpandedTitleTextColor`       | `?attr/colorOnSurface`
-**`CollapsingToolbarLayout` expanded title margins**     | `app:expandedTitleMargin*`                                                                   | `setExpandedTitleMargin*`         | `16dp`
-**`CollapsingToolbarLayout` title max lines**            | `app:maxLines`                                                                               | `setMaxLines`<br>`getMaxLines`    | `1`
+Element                                                  | Attribute                                                                                    | Related method(s)                          | Default value
+-------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------ | -------------
+**`MaterialToolbar` title text**                         | `app:title`                                                                                  | `setTitle`<br>`getTitle`                   | `null`
+**`MaterialToolbar` subtitle text**                      | `app:subtitle`                                                                               | `setSubtitle`<br>`getSubtitle`             | `null`
+**`MaterialToolbar` title color**                        | `app:titleTextColor`                                                                         | `setTitleTextColor`                        | `?attr/colorOnSurface`
+**`MaterialToolbar` subtitle color**                     | `app:subtitleTextColor`                                                                      | `setSubtitleTextColor`                     | `?attr/colorOnSurfaceVariant`
+**`MaterialToolbar` title typography**                   | `app:titleTextAppearance`                                                                    | `setTitleTextAppearance`                   | `?attr/textAppearanceTitleLarge`
+**`MaterialToolbar` subtitle typography**                | `app:subtitleTextAppearance`                                                                 | `setSubtitleTextAppearance`                | `?attr/textAppearanceTitleMedium`
+**`MaterialToolbar` title centering**                    | `app:titleCentered`                                                                          | `setTitleCentered`                         | `false`
+**`MaterialToolbar` subtitle centering**                 | `app:subtitleCentered`                                                                       | `setSubtitleCentered`                      | `false`
+**`CollapsingToolbarLayout` collapsed title typography** | `app:collapsedTitleTextAppearance`                                                           | `setCollapsedTitleTextAppearance`          | `?attr/textAppearanceTitleLarge`
+**`CollapsingToolbarLayout` expanded title typography**  | `app:expandedTitleTextAppearance`                                                            | `setExpandedTitleTextAppearance`           | `?attr/textAppearanceHeadlineSmall` for Medium</br>`?attr/textAppearanceHeadlineMedium` for Large
+**`CollapsingToolbarLayout` collapsed title color**      | `android:textColor` (in `app:collapsedTitleTextAppearance`) or `app:collapsedTitleTextColor` | `setCollapsedTitleTextColor`               | `?attr/colorOnSurface`
+**`CollapsingToolbarLayout` expanded title color**       | `android:textColor` (in `app:expandedTitleTextAppearance`) or `app:expandedTitleTextColor`   | `setExpandedTitleTextColor`                | `?attr/colorOnSurface`
+**`CollapsingToolbarLayout` expanded title margins**     | `app:expandedTitleMargin*`                                                                   | `setExpandedTitleMargin*`                  | `16dp`
+**`CollapsingToolbarLayout` title max lines**            | `app:maxLines`                                                                               | `setMaxLines`<br>`getMaxLines`             | `1`
+**`CollapsingToolbarLayout` title ellipsize**            | `app:titleTextEllipsize`                                                                     | `setTitleEllipsize`<br>`getTitleEllipsize` | `end`
 
 #### Action items attributes
 

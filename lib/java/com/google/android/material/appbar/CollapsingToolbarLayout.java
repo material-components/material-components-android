@@ -36,6 +36,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.text.TextUtils;
+import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -259,6 +260,13 @@ public class CollapsingToolbarLayout extends FrameLayout {
     if (a.hasValue(R.styleable.CollapsingToolbarLayout_collapsedTitleTextAppearance)) {
       collapsingTextHelper.setCollapsedTextAppearance(
           a.getResourceId(R.styleable.CollapsingToolbarLayout_collapsedTitleTextAppearance, 0));
+    }
+
+    // Now overlay any custom text Ellipsize
+    if (a.hasValue(R.styleable.CollapsingToolbarLayout_titleTextEllipsize)) {
+      setTitleEllipsize(
+          convertEllipsizeToTruncateAt(
+              a.getInt(R.styleable.CollapsingToolbarLayout_titleTextEllipsize, -1)));
     }
 
     if (a.hasValue(R.styleable.CollapsingToolbarLayout_expandedTitleTextColor)) {
@@ -812,6 +820,40 @@ public class CollapsingToolbarLayout extends FrameLayout {
    */
   public boolean isTitleEnabled() {
     return collapsingTitleEnabled;
+  }
+
+
+  /**
+   * Set ellipsizing on the title text.
+   *
+   * @param ellipsize type of ellipsis behavior
+   * @attr ref R.styleable#CollapsingToolbarLayout_titleTextEllipsize
+   */
+  public void setTitleEllipsize(@NonNull TruncateAt ellipsize) {
+    collapsingTextHelper.setTitleTextEllipsize(ellipsize);
+  }
+
+  /**
+   * Get ellipsizing currently applied on the title text.
+   */
+  @NonNull
+  public TruncateAt getTitleTextEllipsize() {
+    return collapsingTextHelper.getTitleTextEllipsize();
+  }
+
+  // Convert to supported TruncateAt values
+  private TruncateAt convertEllipsizeToTruncateAt(int ellipsize) {
+    switch (ellipsize) {
+      case 0:
+        return TruncateAt.START;
+      case 1:
+        return TruncateAt.MIDDLE;
+      case 3:
+        return TruncateAt.MARQUEE;
+      case 2:
+      default:
+        return TruncateAt.END;
+    }
   }
 
   /**
