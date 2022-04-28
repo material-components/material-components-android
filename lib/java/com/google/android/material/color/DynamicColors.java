@@ -74,27 +74,28 @@ public class DynamicColors {
 
   static {
     Map<String, DeviceSupportCondition> deviceMap = new HashMap<>();
-    deviceMap.put("oppo", DEFAULT_DEVICE_SUPPORT_CONDITION);
-    deviceMap.put("realme", DEFAULT_DEVICE_SUPPORT_CONDITION);
-    deviceMap.put("oneplus", DEFAULT_DEVICE_SUPPORT_CONDITION);
-    deviceMap.put("vivo", DEFAULT_DEVICE_SUPPORT_CONDITION);
-    deviceMap.put("xiaomi", DEFAULT_DEVICE_SUPPORT_CONDITION);
-    deviceMap.put("motorola", DEFAULT_DEVICE_SUPPORT_CONDITION);
-    deviceMap.put("nothing", DEFAULT_DEVICE_SUPPORT_CONDITION);
-    deviceMap.put("itel", DEFAULT_DEVICE_SUPPORT_CONDITION);
-    deviceMap.put("tecno", DEFAULT_DEVICE_SUPPORT_CONDITION);
-    deviceMap.put("tecno mobile limited", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("google", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("hmd global", DEFAULT_DEVICE_SUPPORT_CONDITION);
     deviceMap.put("infinix", DEFAULT_DEVICE_SUPPORT_CONDITION);
     deviceMap.put("infinix mobility limited", DEFAULT_DEVICE_SUPPORT_CONDITION);
-    deviceMap.put("hmd global", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("itel", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("kyocera", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("lenovo", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("lge", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("motorola", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("nothing", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("oneplus", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("oppo", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("realme", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("robolectric", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("samsung", SAMSUNG_DEVICE_SUPPORT_CONDITION);
     deviceMap.put("sharp", DEFAULT_DEVICE_SUPPORT_CONDITION);
     deviceMap.put("sony", DEFAULT_DEVICE_SUPPORT_CONDITION);
     deviceMap.put("tcl", DEFAULT_DEVICE_SUPPORT_CONDITION);
-    deviceMap.put("lenovo", DEFAULT_DEVICE_SUPPORT_CONDITION);
-    deviceMap.put("lge", DEFAULT_DEVICE_SUPPORT_CONDITION);
-    deviceMap.put("google", DEFAULT_DEVICE_SUPPORT_CONDITION);
-    deviceMap.put("robolectric", DEFAULT_DEVICE_SUPPORT_CONDITION);
-    deviceMap.put("samsung", SAMSUNG_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("tecno", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("tecno mobile limited", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("vivo", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("xiaomi", DEFAULT_DEVICE_SUPPORT_CONDITION);
     DYNAMIC_COLOR_SUPPORTED_MANUFACTURERS = Collections.unmodifiableMap(deviceMap);
   }
 
