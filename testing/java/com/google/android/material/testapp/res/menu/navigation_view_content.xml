@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2016 The Android Open Source Project
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2016 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -13,23 +12,39 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<menu
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <group android:checkableBehavior="single">
-        <item android:id="@+id/destination_home"
-              android:title="@string/navigate_home"
-              android:icon="@drawable/test_drawable_red" />
-        <item android:id="@+id/destination_profile"
-              android:title="@string/navigate_profile"
-              android:icon="@drawable/test_drawable_green" />
-        <item android:id="@+id/destination_people"
-              android:title="@string/navigate_people"
-              android:icon="@drawable/test_drawable_blue"
-              app:actionLayout="@layout/action_layout" />
-        <item android:id="@+id/destination_settings"
-              android:title="@string/navigate_settings" />
-        <item android:id="@+id/destination_custom"
-              app:actionLayout="@layout/action_layout_custom" />
-    </group>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+  <group android:checkableBehavior="single">
+    <item
+      android:id="@+id/destination_home"
+      android:icon="@drawable/test_drawable_red"
+      android:title="@string/navigate_home" />
+    <item
+      android:id="@+id/destination_profile"
+      android:icon="@drawable/test_drawable_green"
+      android:title="@string/navigate_profile" />
+    <item
+      android:id="@+id/destination_people"
+      android:icon="@drawable/test_drawable_blue"
+      android:title="@string/navigate_people"
+      app:actionLayout="@layout/action_layout" />
+    <item
+      android:id="@+id/destination_settings"
+      android:title="@string/navigate_settings" />
+    <item
+      android:id="@+id/subheader"
+      android:title="@string/subheader">
+      <menu>
+        <item
+          android:id="@+id/subheader_item"
+          android:icon="@drawable/test_drawable_red"
+          android:title="@string/subheader_item" />
+      </menu>
+    </item>
+    <item
+      android:id="@+id/destination_custom"
+      app:actionLayout="@layout/action_layout_custom"
+      tools:ignore="MenuTitle" />
+  </group>
 </menu>

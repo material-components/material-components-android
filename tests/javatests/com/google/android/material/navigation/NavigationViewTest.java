@@ -15,6 +15,7 @@
  */
 package com.google.android.material.navigation;
 
+import static android.os.Build.VERSION_CODES.KITKAT;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
@@ -61,6 +62,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import android.content.res.Resources;
 import android.os.Build;
+import android.os.Build.VERSION;
 import android.os.Parcelable;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.SwitchCompat;
@@ -74,11 +76,16 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.IdRes;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionItemInfoCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.test.espresso.matcher.ViewMatchers.Visibility;
 import androidx.test.filters.MediumTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
+import com.google.android.material.internal.NavigationMenuView;
 import com.google.android.material.testapp.NavigationViewActivity;
 import com.google.android.material.testapp.R;
 import com.google.android.material.testapp.custom.NavigationTestView;
@@ -135,7 +142,7 @@ public class NavigationViewTest {
     final Menu menu = navigationView.getMenu();
     assertNotNull("Menu should not be null", menu);
     assertEquals(
-        "Should have matching number of items", MENU_CONTENT_ITEM_IDS.length + 1, menu.size());
+        "Should have matching number of items", MENU_CONTENT_ITEM_IDS.length + 2, menu.size());
     for (int i = 0; i < MENU_CONTENT_ITEM_IDS.length; i++) {
       final MenuItem currItem = menu.getItem(i);
       assertEquals("ID for Item #" + i, MENU_CONTENT_ITEM_IDS[i], currItem.getItemId());
@@ -706,5 +713,52 @@ public class NavigationViewTest {
             hasDescendant(
                 allOf(isAssignableFrom(TextView.class), withEffectiveVisibility(Visibility.GONE))));
     onView(customItemMatcher).perform(click());
+  }
+
+  @Test
+  public void testAccessibility() throws Throwable {
+    if (VERSION.SDK_INT < KITKAT) {
+      // CollectionInfo and CollectionItemInfo only available on API 19+.
+      return;
+    }
+
+    // Open our drawer
+    onView(withId(R.id.drawer_layout)).perform(openDrawer(GravityCompat.START));
+
+    // Add header
+    onView(withId(R.id.start_drawer))
+        .perform(inflateHeaderView(R.layout.design_navigation_view_header1));
+
+    final NavigationViewActivity activity = activityTestRule.getActivity();
+    NavigationMenuView navigationMenuView = activity.findViewById(R.id.design_navigation_view);
+    AccessibilityNodeInfoCompat nodeInfo = AccessibilityNodeInfoCompat.obtain();
+    ViewCompat.onInitializeAccessibilityNodeInfo(navigationMenuView, nodeInfo);
+
+    CollectionInfoCompat collectionInfo = nodeInfo.getCollectionInfo();
+    assertEquals(8, collectionInfo.getRowCount());
+    assertEquals(1, collectionInfo.getColumnCount());
+
+    activityTestRule.runOnUiThread(
+        () -> {
+          verifyItemInfo(navigationMenuView.getChildAt(0), 0, true);
+          verifyItemInfo(navigationMenuView.getChildAt(1), 1, false);
+          verifyItemInfo(navigationMenuView.getChildAt(2), 2, false);
+          verifyItemInfo(navigationMenuView.getChildAt(3), 3, false);
+          verifyItemInfo(navigationMenuView.getChildAt(4), 4, false);
+          // index 5 = separator
+          verifyItemInfo(navigationMenuView.getChildAt(6), 5, true);
+          verifyItemInfo(navigationMenuView.getChildAt(7), 6, false);
+          verifyItemInfo(navigationMenuView.getChildAt(8), 7, false);
+        });
+  }
+
+  private void verifyItemInfo(View view, int rowIndex, boolean isHeader) {
+    AccessibilityNodeInfoCompat nodeInfo = AccessibilityNodeInfoCompat.obtain();
+    ViewCompat.onInitializeAccessibilityNodeInfo(view, nodeInfo);
+
+    CollectionItemInfoCompat itemInfo = nodeInfo.getCollectionItemInfo();
+    assertEquals(rowIndex, itemInfo.getRowIndex());
+    assertEquals(1, itemInfo.getColumnIndex());
+    assertEquals(isHeader, nodeInfo.isHeading());
   }
 }
