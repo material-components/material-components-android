@@ -499,14 +499,12 @@ public class ShapeAppearanceModel {
       @StyleRes int shapeAppearanceResId,
       @StyleRes int shapeAppearanceOverlayResId,
       @NonNull CornerSize defaultCornerSize) {
-    // The attributes in shapeAppearanceOverlay should be applied on top of shapeAppearance.
+    // Note: we need to wrap shape appearance and shape appearance overlay to workaround b/230755281
+    context = new ContextThemeWrapper(context, shapeAppearanceResId);
     if (shapeAppearanceOverlayResId != 0) {
-      context = new ContextThemeWrapper(context, shapeAppearanceResId);
-      shapeAppearanceResId = shapeAppearanceOverlayResId;
+      context = new ContextThemeWrapper(context, shapeAppearanceOverlayResId);
     }
-
-    TypedArray a =
-        context.obtainStyledAttributes(shapeAppearanceResId, R.styleable.ShapeAppearance);
+    TypedArray a = context.obtainStyledAttributes(R.styleable.ShapeAppearance);
 
     try {
       int cornerFamily = a.getInt(R.styleable.ShapeAppearance_cornerFamily, CornerFamily.ROUNDED);
