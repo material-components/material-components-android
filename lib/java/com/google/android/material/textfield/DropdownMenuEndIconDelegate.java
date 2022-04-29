@@ -21,6 +21,7 @@ import com.google.android.material.R;
 import static android.view.accessibility.AccessibilityEvent.TYPE_VIEW_CLICKED;
 import static androidx.core.view.ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO;
 import static androidx.core.view.ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES;
+import static com.google.android.material.textfield.EditTextUtils.isEditable;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -28,16 +29,9 @@ import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
-import android.graphics.drawable.RippleDrawable;
-import android.graphics.drawable.StateListDrawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.text.Editable;
-import android.text.InputType;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -57,9 +51,6 @@ import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import com.google.android.material.animation.AnimationUtils;
-import com.google.android.material.color.MaterialColors;
-import com.google.android.material.shape.MaterialShapeDrawable;
-import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.textfield.TextInputLayout.AccessibilityDelegate;
 import com.google.android.material.textfield.TextInputLayout.BoxBackgroundMode;
 
@@ -140,7 +131,6 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
 
   @Override
   void setUp() {
-
     // For lollipop+, the arrow icon changes orientation based on dropdown popup, otherwise it
     // always points down.
     int drawableResId =
@@ -193,19 +183,6 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
     return boxBackgroundMode != TextInputLayout.BOX_BACKGROUND_NONE;
   }
 
-  /*
-   * This method should be called if the ripple background should be updated. For example,
-   * if a new {@link ShapeAppearanceModel} is set on the text field, or if a different
-   * {@link InputType} is set on the {@link AutoCompleteTextView}.
-   */
-  void updateBackground(@NonNull AutoCompleteTextView editText) {
-    if (isEditable(editText)) {
-      removeRippleEffect(editText);
-    } else {
-      addRippleEffect(editText);
-    }
-  }
-
   @Override
   OnClickListener getOnIconClickListener() {
     return onIconClickListener;
@@ -214,15 +191,6 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
   @Override
   public void onEditTextAttached(@Nullable EditText editText) {
     AutoCompleteTextView autoCompleteTextView = castAutoCompleteTextViewOrThrow(editText);
-
-    float popupElevation =
-        (autoCompleteTextView instanceof MaterialAutoCompleteTextView)
-            ? ((MaterialAutoCompleteTextView) autoCompleteTextView).getPopupElevation()
-            : context
-                .getResources()
-                .getDimensionPixelOffset(R.dimen.m3_exposed_dropdown_menu_popup_elevation);
-    setPopupBackground(autoCompleteTextView, popupElevation);
-    addRippleEffect(autoCompleteTextView);
     setUpDropdownShowHideBehavior(autoCompleteTextView);
     autoCompleteTextView.setThreshold(0);
     textInputLayout.setEndIconCheckable(true);
@@ -286,120 +254,6 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
     }
   }
 
-  private void setPopupBackground(@NonNull AutoCompleteTextView editText, float popupElevation) {
-    if (IS_LOLLIPOP && editText.getDropDownBackground() == null) {
-      int boxBackgroundMode = textInputLayout.getBoxBackgroundMode();
-      float popupCornerRadius =
-          context
-              .getResources()
-              .getDimensionPixelOffset(R.dimen.mtrl_shape_corner_size_small_component);
-      int popupVerticalPadding =
-          context
-              .getResources()
-              .getDimensionPixelOffset(R.dimen.mtrl_exposed_dropdown_menu_popup_vertical_padding);
-
-      Drawable popupBackground =
-          boxBackgroundMode == TextInputLayout.BOX_BACKGROUND_OUTLINE
-              ? getPopUpMaterialShapeDrawable(
-                  popupCornerRadius, popupCornerRadius, popupElevation, popupVerticalPadding)
-              : getPopupBackgroundFilledMode(
-                  popupCornerRadius, popupElevation, popupVerticalPadding);
-      editText.setDropDownBackgroundDrawable(popupBackground);
-    }
-  }
-
-  /* Remove ripple effect from editable layouts if it's present. */
-  private void removeRippleEffect(@NonNull AutoCompleteTextView editText) {
-    if (!(editText.getBackground() instanceof LayerDrawable) || !isEditable(editText)) {
-      return;
-    }
-    int boxBackgroundMode = textInputLayout.getBoxBackgroundMode();
-    LayerDrawable layerDrawable = (LayerDrawable) editText.getBackground();
-    int backgroundLayerIndex = boxBackgroundMode == TextInputLayout.BOX_BACKGROUND_OUTLINE ? 1 : 0;
-    ViewCompat.setBackground(editText, layerDrawable.getDrawable(backgroundLayerIndex));
-  }
-
-  /* Add ripple effect to non editable layouts. */
-  private void addRippleEffect(@NonNull AutoCompleteTextView editText) {
-    if (isEditable(editText)) {
-      return;
-    }
-
-    int boxBackgroundMode = textInputLayout.getBoxBackgroundMode();
-    MaterialShapeDrawable boxBackground = textInputLayout.getBoxBackground();
-    int rippleColor = MaterialColors.getColor(editText, R.attr.colorControlHighlight);
-    int[][] states =
-        new int[][] {
-            new int[] {android.R.attr.state_pressed}, new int[] {},
-        };
-
-    if (boxBackgroundMode == TextInputLayout.BOX_BACKGROUND_OUTLINE) {
-      addRippleEffectOnOutlinedLayout(editText, rippleColor, states, boxBackground);
-    } else if (boxBackgroundMode == TextInputLayout.BOX_BACKGROUND_FILLED) {
-      addRippleEffectOnFilledLayout(editText, rippleColor, states, boxBackground);
-    }
-  }
-
-  private void addRippleEffectOnOutlinedLayout(
-      @NonNull AutoCompleteTextView editText,
-      int rippleColor,
-      int[][] states,
-      @NonNull MaterialShapeDrawable boxBackground) {
-    LayerDrawable editTextBackground;
-    int surfaceColor = MaterialColors.getColor(editText, R.attr.colorSurface);
-    MaterialShapeDrawable rippleBackground =
-        new MaterialShapeDrawable(boxBackground.getShapeAppearanceModel());
-    int pressedBackgroundColor = MaterialColors.layer(rippleColor, surfaceColor, 0.1f);
-    int[] rippleBackgroundColors = new int[] {pressedBackgroundColor, Color.TRANSPARENT};
-    rippleBackground.setFillColor(new ColorStateList(states, rippleBackgroundColors));
-
-    if (IS_LOLLIPOP) {
-      rippleBackground.setTint(surfaceColor);
-      int[] colors = new int[] {pressedBackgroundColor, surfaceColor};
-      ColorStateList rippleColorStateList = new ColorStateList(states, colors);
-      MaterialShapeDrawable mask =
-          new MaterialShapeDrawable(boxBackground.getShapeAppearanceModel());
-      mask.setTint(Color.WHITE);
-      Drawable rippleDrawable = new RippleDrawable(rippleColorStateList, rippleBackground, mask);
-      Drawable[] layers = {rippleDrawable, boxBackground};
-      editTextBackground = new LayerDrawable(layers);
-    } else {
-      Drawable[] layers = {rippleBackground, boxBackground};
-      editTextBackground = new LayerDrawable(layers);
-    }
-
-    ViewCompat.setBackground(editText, editTextBackground);
-  }
-
-  private void addRippleEffectOnFilledLayout(
-      @NonNull AutoCompleteTextView editText,
-      int rippleColor,
-      int[][] states,
-      @NonNull MaterialShapeDrawable boxBackground) {
-    int boxBackgroundColor = textInputLayout.getBoxBackgroundColor();
-    int pressedBackgroundColor = MaterialColors.layer(rippleColor, boxBackgroundColor, 0.1f);
-    int[] colors = new int[] {pressedBackgroundColor, boxBackgroundColor};
-
-    if (IS_LOLLIPOP) {
-      ColorStateList rippleColorStateList = new ColorStateList(states, colors);
-      Drawable editTextBackground =
-          new RippleDrawable(rippleColorStateList, boxBackground, boxBackground);
-      ViewCompat.setBackground(editText, editTextBackground);
-    } else {
-      MaterialShapeDrawable rippleBackground =
-          new MaterialShapeDrawable(boxBackground.getShapeAppearanceModel());
-      rippleBackground.setFillColor(new ColorStateList(states, colors));
-      Drawable[] layers = {boxBackground, rippleBackground};
-      LayerDrawable editTextBackground = new LayerDrawable(layers);
-      int start = ViewCompat.getPaddingStart(editText);
-      int top = editText.getPaddingTop();
-      int end = ViewCompat.getPaddingEnd(editText);
-      int bottom = editText.getPaddingBottom();
-      ViewCompat.setBackground(editText, editTextBackground);
-      ViewCompat.setPaddingRelative(editText, start, top, end, bottom);
-    }
-  }
-
   @SuppressLint("ClickableViewAccessibility") // There's an accessibility delegate that handles
   // interactions with the dropdown menu.
   private void setUpDropdownShowHideBehavior(@NonNull final AutoCompleteTextView editText) {
@@ -430,40 +284,6 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
     }
   }
 
-  private StateListDrawable getPopupBackgroundFilledMode(
-      float popupCornerRadius, float popupElevation, int popupVerticalPadding) {
-    // Background for the popup when it is being displayed above the layout.
-    MaterialShapeDrawable roundedCornersPopupBackground =
-        getPopUpMaterialShapeDrawable(
-            popupCornerRadius, popupCornerRadius, popupElevation, popupVerticalPadding);
-    // Background for the popup when it is being displayed below the layout.
-    MaterialShapeDrawable roundedBottomCornersPopupBackground =
-        getPopUpMaterialShapeDrawable(0, popupCornerRadius, popupElevation, popupVerticalPadding);
-
-    StateListDrawable popupBackground = new StateListDrawable();
-    popupBackground.addState(
-        new int[] {android.R.attr.state_above_anchor}, roundedCornersPopupBackground);
-    popupBackground.addState(new int[] {}, roundedBottomCornersPopupBackground);
-
-    return popupBackground;
-  }
-
-  private MaterialShapeDrawable getPopUpMaterialShapeDrawable(
-      float topCornerRadius, float bottomCornerRadius, float elevation, int verticalPadding) {
-    ShapeAppearanceModel shapeAppearanceModel =
-        ShapeAppearanceModel.builder()
-            .setTopLeftCornerSize(topCornerRadius)
-            .setTopRightCornerSize(topCornerRadius)
-            .setBottomLeftCornerSize(bottomCornerRadius)
-            .setBottomRightCornerSize(bottomCornerRadius)
-            .build();
-    MaterialShapeDrawable popupDrawable =
-        MaterialShapeDrawable.createWithElevationOverlay(context, elevation);
-    popupDrawable.setShapeAppearanceModel(shapeAppearanceModel);
-    popupDrawable.setPadding(0, verticalPadding, 0, verticalPadding);
-    return popupDrawable;
-  }
-
   private boolean isDropdownPopupActive() {
     long activeFor = System.currentTimeMillis() - dropdownPopupActivatedAt;
     return activeFor < 0 || activeFor > 300;
@@ -483,10 +303,6 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
   private void updateDropdownPopupDirty() {
     dropdownPopupDirty = true;
     dropdownPopupActivatedAt = System.currentTimeMillis();
-  }
-
-  private static boolean isEditable(@NonNull EditText editText) {
-    return editText.getInputType() != InputType.TYPE_NULL;
   }
 
   private void setEndIconChecked(boolean checked) {

@@ -19,6 +19,7 @@ package com.google.android.material.textfield;
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static com.google.android.material.textfield.EditTextUtils.isEditable;
 import static com.google.android.material.textfield.IndicatorViewController.COUNTER_INDEX;
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 
@@ -35,6 +36,9 @@ import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.RippleDrawable;
+import android.graphics.drawable.StateListDrawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Parcel;
@@ -195,6 +199,11 @@ public class TextInputLayout extends LinearLayout {
   private static final int INVALID_MAX_LENGTH = -1;
   private static final int NO_WIDTH = -1;
 
+  private static final int[][] EDIT_TEXT_BACKGROUND_RIPPLE_STATE =
+      new int[][] {
+          new int[] {android.R.attr.state_pressed}, new int[] {},
+      };
+
   private static final String LOG_TAG = "TextInputLayout";
 
   @NonNull private final FrameLayout inputFrame;
@@ -239,6 +248,10 @@ public class TextInputLayout extends LinearLayout {
   private boolean isProvidingHint;
 
   @Nullable private MaterialShapeDrawable boxBackground;
+  private MaterialShapeDrawable outlinedDropDownMenuBackground;
+  private StateListDrawable filledDropDownMenuBackground;
+  private boolean boxBackgroundApplied;
+
   @Nullable private MaterialShapeDrawable boxUnderlineDefault;
   @Nullable private MaterialShapeDrawable boxUnderlineFocused;
   @NonNull private ShapeAppearanceModel shapeAppearanceModel;
@@ -727,13 +740,14 @@ public class TextInputLayout extends LinearLayout {
 
   private void onApplyBoxBackgroundMode() {
     assignBoxBackgroundByMode();
-    setEditTextBoxBackground();
+    updateEditTextBoxBackgroundIfNeeded();
     updateTextInputBoxState();
     updateBoxCollapsedPaddingTop();
     adjustFilledEditTextPaddingForLargeFont();
     if (boxBackgroundMode != BOX_BACKGROUND_NONE) {
       updateInputLayoutMargins();
     }
+    setDropDownMenuBackgroundIfNeeded();
   }
 
   private void assignBoxBackgroundByMode() {
@@ -763,20 +777,145 @@ public class TextInputLayout extends LinearLayout {
     }
   }
 
-  private void setEditTextBoxBackground() {
-    // Set the EditText background to boxBackground if we should use that as the box background.
-    if (shouldUseEditTextBackgroundForBoxBackground()) {
-      ViewCompat.setBackground(editText, boxBackground);
+  void updateEditTextBoxBackgroundIfNeeded() {
+    if (editText == null
+        || boxBackground == null
+        // Only set boxBackground when edit text doesn't provide its own background.
+        || (!boxBackgroundApplied && editText.getBackground() != null)
+        || boxBackgroundMode == BOX_BACKGROUND_NONE) {
+      return;
+    }
+    ViewCompat.setBackground(editText, getEditTextBoxBackground());
+    boxBackgroundApplied = true;
+  }
+
+  @Nullable
+  private Drawable getEditTextBoxBackground() {
+    if (!(editText instanceof AutoCompleteTextView) || isEditable(editText)) {
+      return boxBackground;
+    }
+
+    int rippleColor = MaterialColors.getColor(editText, R.attr.colorControlHighlight);
+    if (boxBackgroundMode == TextInputLayout.BOX_BACKGROUND_OUTLINE) {
+      return getOutlinedBoxBackgroundWithRipple(
+          getContext(), boxBackground, rippleColor, EDIT_TEXT_BACKGROUND_RIPPLE_STATE);
+    } else if (boxBackgroundMode == TextInputLayout.BOX_BACKGROUND_FILLED) {
+      return getFilledBoxBackgroundWithRipple(
+          boxBackground, boxBackgroundColor, rippleColor, EDIT_TEXT_BACKGROUND_RIPPLE_STATE);
+    }
+    // Should not happen.
+    return null;
+  }
+
+  private static Drawable getOutlinedBoxBackgroundWithRipple(
+      Context context, MaterialShapeDrawable boxBackground, int rippleColor, int[][] states) {
+    LayerDrawable editTextBackground;
+    int surfaceColor = MaterialColors.getColor(context, R.attr.colorSurface, "TextInputLayout");
+    MaterialShapeDrawable rippleBackground =
+        new MaterialShapeDrawable(boxBackground.getShapeAppearanceModel());
+    int pressedBackgroundColor = MaterialColors.layer(rippleColor, surfaceColor, 0.1f);
+    int[] rippleBackgroundColors = new int[] { pressedBackgroundColor, Color.TRANSPARENT };
+    rippleBackground.setFillColor(new ColorStateList(states, rippleBackgroundColors));
+
+    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+      rippleBackground.setTint(surfaceColor);
+      int[] colors = new int[] {pressedBackgroundColor, surfaceColor};
+      ColorStateList rippleColorStateList = new ColorStateList(states, colors);
+      MaterialShapeDrawable mask =
+          new MaterialShapeDrawable(boxBackground.getShapeAppearanceModel());
+      mask.setTint(Color.WHITE);
+      Drawable rippleDrawable = new RippleDrawable(rippleColorStateList, rippleBackground, mask);
+      Drawable[] layers = {rippleDrawable, boxBackground};
+      editTextBackground = new LayerDrawable(layers);
+    } else {
+      Drawable[] layers = {rippleBackground, boxBackground};
+      editTextBackground = new LayerDrawable(layers);
+    }
+    return editTextBackground;
+  }
+
+  private static Drawable getFilledBoxBackgroundWithRipple(
+      MaterialShapeDrawable boxBackground,
+      int boxBackgroundColor,
+      int rippleColor,
+      int[][] states) {
+    int pressedBackgroundColor = MaterialColors.layer(rippleColor, boxBackgroundColor, 0.1f);
+    int[] colors = new int[] { pressedBackgroundColor, boxBackgroundColor };
+
+    Drawable editTextBackground;
+    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+      ColorStateList rippleColorStateList = new ColorStateList(states, colors);
+      editTextBackground = new RippleDrawable(rippleColorStateList, boxBackground, boxBackground);
+    } else {
+      MaterialShapeDrawable rippleBackground =
+          new MaterialShapeDrawable(boxBackground.getShapeAppearanceModel());
+      rippleBackground.setFillColor(new ColorStateList(states, colors));
+      Drawable[] layers = {boxBackground, rippleBackground};
+      editTextBackground = new LayerDrawable(layers);
+    }
+    return editTextBackground;
+  }
+
+  private void setDropDownMenuBackgroundIfNeeded() {
+    if (!(editText instanceof AutoCompleteTextView)) {
+      return;
+    }
+    AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) editText;
+    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP
+        && autoCompleteTextView.getDropDownBackground() == null) {
+      if (boxBackgroundMode == BOX_BACKGROUND_OUTLINE) {
+        autoCompleteTextView.setDropDownBackgroundDrawable(
+            getOrCreateOutlinedDropDownMenuBackground());
+      } else if (boxBackgroundMode == BOX_BACKGROUND_FILLED) {
+        autoCompleteTextView.setDropDownBackgroundDrawable(
+            getOrCreateFilledDropDownMenuBackground());
+      }
     }
   }
 
-  private boolean shouldUseEditTextBackgroundForBoxBackground() {
-    // When the text field's EditText's background is null, use the EditText's background for the
-    // box background.
-    return editText != null
-        && boxBackground != null
-        && editText.getBackground() == null
-        && boxBackgroundMode != BOX_BACKGROUND_NONE;
+  private Drawable getOrCreateOutlinedDropDownMenuBackground() {
+    if (outlinedDropDownMenuBackground == null) {
+      outlinedDropDownMenuBackground = getDropDownMaterialShapeDrawable(true);
+    }
+    return outlinedDropDownMenuBackground;
+  }
+
+  private Drawable getOrCreateFilledDropDownMenuBackground() {
+    if (filledDropDownMenuBackground == null) {
+      filledDropDownMenuBackground = new StateListDrawable();
+      filledDropDownMenuBackground.addState(
+          new int[] {android.R.attr.state_above_anchor},
+          getOrCreateOutlinedDropDownMenuBackground());
+      filledDropDownMenuBackground.addState(new int[] {}, getDropDownMaterialShapeDrawable(false));
+    }
+    return filledDropDownMenuBackground;
+  }
+
+  private MaterialShapeDrawable getDropDownMaterialShapeDrawable(boolean roundedTopCorners) {
+    float cornerRadius =
+        getResources().getDimensionPixelOffset(R.dimen.mtrl_shape_corner_size_small_component);
+    float topCornerRadius = roundedTopCorners ? cornerRadius : 0;
+
+    float elevation =
+        editText instanceof MaterialAutoCompleteTextView
+            ? ((MaterialAutoCompleteTextView) editText).getPopupElevation()
+            : getResources().getDimensionPixelOffset(
+                R.dimen.mtrl_exposed_dropdown_menu_popup_elevation);
+    int verticalPadding =
+        getResources()
+            .getDimensionPixelOffset(R.dimen.mtrl_exposed_dropdown_menu_popup_vertical_padding);
+    ShapeAppearanceModel shapeAppearanceModel =
+        ShapeAppearanceModel.builder()
+            .setTopLeftCornerSize(topCornerRadius)
+            .setTopRightCornerSize(topCornerRadius)
+            .setBottomLeftCornerSize(cornerRadius)
+            .setBottomRightCornerSize(cornerRadius)
+            .build();
+    MaterialShapeDrawable popupDrawable =
+        MaterialShapeDrawable.createWithElevationOverlay(getContext(), elevation);
+    popupDrawable.setShapeAppearanceModel(shapeAppearanceModel);
+    popupDrawable.setPadding(0, verticalPadding, 0, verticalPadding);
+    return popupDrawable;
   }
 
   private void updateBoxCollapsedPaddingTop() {
@@ -1260,6 +1399,7 @@ public class TextInputLayout extends LinearLayout {
     } else {
       setMaxWidth(maxWidth);
     }
+    boxBackgroundApplied = false;
     onApplyBoxBackgroundMode();
     setTextInputAccessibilityDelegate(new AccessibilityDelegate(this));
 
@@ -2610,11 +2750,6 @@ public class TextInputLayout extends LinearLayout {
 
     if (boxBackground.getShapeAppearanceModel() != shapeAppearanceModel) {
       boxBackground.setShapeAppearanceModel(shapeAppearanceModel);
-      // The outlined background of the dropdown menu is created in the end icon delegate, so it
-      // needs to be updated based on the new shape appearance model.
-      if (boxBackgroundMode == BOX_BACKGROUND_OUTLINE) {
-        updateDropdownMenuBackground();
-      }
     }
 
     if (canDrawOutlineStroke()) {
@@ -2623,12 +2758,9 @@ public class TextInputLayout extends LinearLayout {
 
     boxBackgroundColor = calculateBoxBackgroundColor();
     boxBackground.setFillColor(ColorStateList.valueOf(boxBackgroundColor));
-    if (getEndIconMode() == END_ICON_DROPDOWN_MENU) {
-      // Makes sure the exposed dropdown menu gets updated properly.
-      editText.getBackground().invalidateSelf();
-    }
+
     applyBoxUnderlineAttributes();
-    invalidate();
+    updateEditTextBoxBackgroundIfNeeded();
   }
 
   private void applyBoxUnderlineAttributes() {
@@ -2655,19 +2787,6 @@ public class TextInputLayout extends LinearLayout {
 
   private boolean canDrawStroke() {
     return boxStrokeWidthPx > -1 && boxStrokeColor != Color.TRANSPARENT;
-  }
-
-  /*
-   * This method should be called when the {@link TextInputLayout} is acting as an exposed dropdown
-   * menu and its ripple background needs to be updated. For example, if a new
-   * {@link ShapeAppearanceModel} is set on the outlined text field, or if a different
-   * {@link InputType} is set on the layout's {@link AutoCompleteTextView}.
-   */
-  void updateDropdownMenuBackground() {
-    if (getEndIconMode() == END_ICON_DROPDOWN_MENU) {
-      ((DropdownMenuEndIconDelegate) endLayout.getEndIconDelegate())
-          .updateBackground((AutoCompleteTextView) editText);
-    }
   }
 
   void updateEditTextBackground() {

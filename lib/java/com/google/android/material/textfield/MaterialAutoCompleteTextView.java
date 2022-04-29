@@ -167,7 +167,7 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
   @Override
   public void setRawInputType(int type) {
     super.setRawInputType(type);
-    updateDropdownMenuBackground();
+    onInputTypeChanged();
   }
 
   /**
@@ -295,10 +295,10 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
     return width;
   }
 
-  private void updateDropdownMenuBackground() {
+  private void onInputTypeChanged() {
     TextInputLayout textInputLayout = findTextInputLayoutAncestor();
     if (textInputLayout != null) {
-      textInputLayout.updateDropdownMenuBackground();
+      textInputLayout.updateEditTextBoxBackgroundIfNeeded();
     }
   }
 
