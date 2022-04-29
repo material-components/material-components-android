@@ -133,13 +133,11 @@
           android:textSize="16sp"/>
 
       <Button
-          style="?attr/materialButtonOutlinedStyle"
+          style="@style/Widget.Material3.Button.IconButton"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:contentDescription="@string/cat_button_icon_btn_text"
-          app:icon="@drawable/ic_dialogs_24px"
-          app:iconGravity="textStart"
-          app:iconPadding="0dp"/>
+          app:icon="@drawable/ic_dialogs_24px"/>
 
       <com.google.android.material.switchmaterial.SwitchMaterial
           android:id="@+id/cat_button_enabled_switch"
