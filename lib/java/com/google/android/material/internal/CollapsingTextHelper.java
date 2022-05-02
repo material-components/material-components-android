@@ -1045,7 +1045,13 @@ public final class CollapsingTextHelper {
     if (availableWidth > 0) {
       boolean textSizeChanged = currentTextSize != newTextSize;
       boolean letterSpacingChanged = currentLetterSpacing != newLetterSpacing;
-      updateDrawText = textSizeChanged || letterSpacingChanged || boundsChanged || updateDrawText;
+      boolean availableWidthChanged = textLayout != null && availableWidth != textLayout.getWidth();
+      updateDrawText =
+          textSizeChanged
+              || letterSpacingChanged
+              || availableWidthChanged
+              || boundsChanged
+              || updateDrawText;
       currentTextSize = newTextSize;
       currentLetterSpacing = newLetterSpacing;
       boundsChanged = false;
