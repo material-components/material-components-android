@@ -214,7 +214,7 @@ public class DatePickerMainDemoFragment extends DemoFragment {
 
       List<CalendarConstraints.DateValidator> validators = new ArrayList<>();
       validators.add(DateValidatorPointForward.from(lowerBound));
-      validators.add(new DateValidatorWeekdays());
+      validators.add(DateValidatorPointBackward.now());
 
       constraintsBuilder.setValidator(CompositeDateValidator.allOf(validators));
     } else if ((validationChoice == R.id.cat_picker_validation_multiple_range)) {
