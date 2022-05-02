@@ -16,20 +16,32 @@
 
 package com.google.android.material.ripple;
 
+import com.google.android.material.R;
+
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.InsetDrawable;
+import android.graphics.drawable.RippleDrawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.util.Log;
 import android.util.StateSet;
+import androidx.annotation.ChecksSdkIntAtLeast;
 import androidx.annotation.ColorInt;
+import androidx.annotation.DoNotInline;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.Px;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.graphics.ColorUtils;
+import com.google.android.material.color.MaterialColors;
 
 /**
  * Utils class for ripples.
@@ -39,6 +51,7 @@ import androidx.core.graphics.ColorUtils;
 @RestrictTo(Scope.LIBRARY_GROUP)
 public class RippleUtils {
 
+  @ChecksSdkIntAtLeast(api = VERSION_CODES.LOLLIPOP)
   public static final boolean USE_FRAMEWORK_RIPPLE = VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP;
 
   private static final int[] PRESSED_STATE_SET = {
@@ -239,6 +252,18 @@ public class RippleUtils {
     return enabled && interactedState;
   }
 
+  /**
+   * On API 21 and 22, the ripple implementation has a bug that it will be shown behind the
+   * container view under certain conditions. Adding a mask when creating {@link RippleDrawable}
+   * solves this. Besides that since {@link RippleDrawable} doesn't support radius setting on
+   * Lollipop, adding masks will make the circle ripple size fit into the view boundary.
+   */
+  @RequiresApi(VERSION_CODES.LOLLIPOP)
+  @NonNull
+  public static Drawable createOvalRippleLollipop(@NonNull Context context, @Px int padding) {
+    return RippleUtilsLollipop.createOvalRipple(context, padding);
+  }
+
   @ColorInt
   private static int getColorForState(@Nullable ColorStateList rippleColor, int[] state) {
     int color;
@@ -259,5 +284,24 @@ public class RippleUtils {
   private static int doubleAlpha(@ColorInt int color) {
     int alpha = Math.min(2 * Color.alpha(color), 255);
     return ColorUtils.setAlphaComponent(color, alpha);
+  }
+
+  @RequiresApi(VERSION_CODES.LOLLIPOP)
+  private static class RippleUtilsLollipop {
+
+    // Note: we need to return Drawable here to maintain API compatibility
+    @DoNotInline
+    private static Drawable createOvalRipple(@NonNull Context context, @Px int padding) {
+      GradientDrawable maskDrawable = new GradientDrawable();
+      maskDrawable.setColor(Color.WHITE);
+      maskDrawable.setShape(GradientDrawable.OVAL);
+      InsetDrawable maskWithPaddings =
+          new InsetDrawable(maskDrawable, padding, padding, padding, padding);
+      return new RippleDrawable(
+          MaterialColors.getColorStateList(
+              context, R.attr.colorControlHighlight, ColorStateList.valueOf(Color.TRANSPARENT)),
+          null,
+          maskWithPaddings);
+    }
   }
 }

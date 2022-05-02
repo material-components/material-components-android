@@ -20,6 +20,7 @@ import com.google.android.material.R;
 
 import static com.google.android.material.textfield.IconHelper.applyIconTint;
 import static com.google.android.material.textfield.IconHelper.refreshIconDrawableState;
+import static com.google.android.material.textfield.IconHelper.setCompatRippleBackgroundIfNeeded;
 import static com.google.android.material.textfield.IconHelper.setIconOnClickListener;
 import static com.google.android.material.textfield.IconHelper.setIconOnLongClickListener;
 
@@ -84,6 +85,7 @@ class StartCompoundLayout extends LinearLayout {
     startIconView =
         (CheckableImageButton)
             layoutInflater.inflate(R.layout.design_text_input_start_icon, this, false);
+    setCompatRippleBackgroundIfNeeded(startIconView);
 
     prefixTextView = new AppCompatTextView(getContext());
 
