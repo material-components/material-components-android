@@ -24,6 +24,7 @@
   <string name="mtrl_picker_date_header_unselected">選択した日付</string>
   <string name="mtrl_picker_date_header_selected">%1$s</string>
   <string name="mtrl_picker_confirm">OK</string>
+  <string name="mtrl_picker_cancel">キャンセル</string>
   <string name="mtrl_picker_text_input_date_hint">日付</string>
   <string name="mtrl_picker_text_input_date_range_start_hint">開始日</string>
   <string name="mtrl_picker_text_input_date_range_end_hint">終了日</string>

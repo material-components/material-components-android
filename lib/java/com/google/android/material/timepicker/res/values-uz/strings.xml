@@ -26,6 +26,7 @@
   <string name="material_minute_selection">Daqiqalarni tanlash</string>
   <string name="material_clock_toggle_content_description">Tushdan oldin yoki keyinligini tanlang</string>
   <string name="mtrl_timepicker_confirm">OK</string>
+  <string name="mtrl_timepicker_cancel">Bekor qilish</string>
   <string name="material_timepicker_text_input_mode_description">Vaqtni kiritish uchun matn kiritish rejimiga o‘ting.</string>
   <string name="material_timepicker_clock_mode_description">Vaqtni kiritish uchun soat rejimiga o‘ting.</string>
 </resources>

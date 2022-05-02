@@ -24,6 +24,7 @@
   <string name="mtrl_picker_date_header_unselected">Selected date</string>
   <string name="mtrl_picker_date_header_selected">%1$s</string>
   <string name="mtrl_picker_confirm">OK</string>
+  <string name="mtrl_picker_cancel">Cancel</string>
   <string name="mtrl_picker_text_input_date_hint">Date</string>
   <string name="mtrl_picker_text_input_date_range_start_hint">Start date</string>
   <string name="mtrl_picker_text_input_date_range_end_hint">End date</string>

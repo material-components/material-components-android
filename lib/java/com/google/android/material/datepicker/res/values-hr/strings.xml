@@ -24,6 +24,7 @@
   <string name="mtrl_picker_date_header_unselected">Odabrani datum</string>
   <string name="mtrl_picker_date_header_selected">%1$s</string>
   <string name="mtrl_picker_confirm">U redu</string>
+  <string name="mtrl_picker_cancel">Odustani</string>
   <string name="mtrl_picker_text_input_date_hint">Datum</string>
   <string name="mtrl_picker_text_input_date_range_start_hint">Datum početka</string>
   <string name="mtrl_picker_text_input_date_range_end_hint">Datum završetka</string>

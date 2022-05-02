@@ -24,6 +24,7 @@
   <string name="mtrl_picker_date_header_unselected">Valittu päivämäärä</string>
   <string name="mtrl_picker_date_header_selected">%1$s</string>
   <string name="mtrl_picker_confirm">OK</string>
+  <string name="mtrl_picker_cancel">Peru</string>
   <string name="mtrl_picker_text_input_date_hint">Päivämäärä</string>
   <string name="mtrl_picker_text_input_date_range_start_hint">Alkamispäivä</string>
   <string name="mtrl_picker_text_input_date_range_end_hint">Päättymispäivä</string>

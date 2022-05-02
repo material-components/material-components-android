@@ -26,6 +26,7 @@
   <string name="material_minute_selection">ମିନିଟ୍‍ ଚୟନ କରନ୍ତୁ</string>
   <string name="material_clock_toggle_content_description">Select AM or PM</string>
   <string name="mtrl_timepicker_confirm">OK</string>
+  <string name="mtrl_timepicker_cancel">Cancel</string>
   <string name="material_timepicker_text_input_mode_description">ସମୟ ଇନପୁଟ୍‍ ପାଇଁ ଟେକ୍ସଟ୍‍ ଇନପୁଟ୍‌କୁ ବଦଳାନ୍ତୁ।</string>
   <string name="material_timepicker_clock_mode_description">ସମୟ ଇନପୁଟ୍‍ ପାଇଁ ଘଣ୍ଟା ମୋଡ୍‌କୁ ବଦଳାନ୍ତୁ।</string>
 </resources>

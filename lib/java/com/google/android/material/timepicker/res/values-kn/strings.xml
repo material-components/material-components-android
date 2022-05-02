@@ -26,6 +26,7 @@
   <string name="material_minute_selection">ನಿಮಿಷಗಳನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
   <string name="material_clock_toggle_content_description">ಬೆಳಿಗ್ಗೆ ಅಥವಾ ಮಧ್ಯಾಹ್ನ ಆಯ್ಕೆಮಾಡಿ</string>
   <string name="mtrl_timepicker_confirm">ಸರಿ</string>
+  <string name="mtrl_timepicker_cancel">ರದ್ದುಮಾಡಿ</string>
   <string name="material_timepicker_text_input_mode_description">ಸಮಯವನ್ನು ನಮೂದಿಸಲು ಪಠ್ಯದ ನಮೂನೆಗೆ ಬದಲಿಸಿ.</string>
   <string name="material_timepicker_clock_mode_description">ಸಮಯವನ್ನು ನಮೂದಿಸಲು ಗಡಿಯಾರದ ನಮೂನೆಗೆ ಬದಲಿಸಿ.</string>
 </resources>

@@ -26,6 +26,7 @@
   <string name="material_minute_selection">분 선택</string>
   <string name="material_clock_toggle_content_description">오전 또는 오후를 선택하세요.</string>
   <string name="mtrl_timepicker_confirm">확인</string>
+  <string name="mtrl_timepicker_cancel">취소</string>
   <string name="material_timepicker_text_input_mode_description">시간 입력을 위해 텍스트 입력 모드로 전환합니다.</string>
   <string name="material_timepicker_clock_mode_description">시간 입력을 위해 시계 모드로 전환합니다.</string>
 </resources>

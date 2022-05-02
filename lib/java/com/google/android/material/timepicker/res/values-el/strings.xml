@@ -26,6 +26,7 @@
   <string name="material_minute_selection">Επιλογή λεπτών</string>
   <string name="material_clock_toggle_content_description">Επιλέξτε π.μ. ή μ.μ.</string>
   <string name="mtrl_timepicker_confirm">ΟΚ</string>
+  <string name="mtrl_timepicker_cancel">Ακύρωση</string>
   <string name="material_timepicker_text_input_mode_description">Κάντε εναλλαγή στη λειτουργία εισαγωγής κειμένου, για την εισαγωγή της ώρας.</string>
   <string name="material_timepicker_clock_mode_description">Κάντε εναλλαγή στη λειτουργία ρολογιού, για την εισαγωγή της ώρας.</string>
 </resources>

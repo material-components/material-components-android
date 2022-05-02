@@ -26,6 +26,7 @@
   <string name="material_minute_selection">Pilih menit</string>
   <string name="material_clock_toggle_content_description">Pilih AM atau PM</string>
   <string name="mtrl_timepicker_confirm">Oke</string>
+  <string name="mtrl_timepicker_cancel">Batal</string>
   <string name="material_timepicker_text_input_mode_description">Beralih ke mode masukan teks untuk masukan waktu.</string>
   <string name="material_timepicker_clock_mode_description">Beralih ke mode jam untuk masukan waktu.</string>
 </resources>

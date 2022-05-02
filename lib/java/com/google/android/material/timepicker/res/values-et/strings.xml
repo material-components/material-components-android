@@ -26,6 +26,7 @@
   <string name="material_minute_selection">Minutite valimine</string>
   <string name="material_clock_toggle_content_description">Valige AM või PM</string>
   <string name="mtrl_timepicker_confirm">OK</string>
+  <string name="mtrl_timepicker_cancel">Tühista</string>
   <string name="material_timepicker_text_input_mode_description">Aktiveerige kellaaja sisestamiseks tekstisisestusrežiim.</string>
   <string name="material_timepicker_clock_mode_description">Aktiveerige kellaaja sisestamiseks kellarežiim.</string>
 </resources>

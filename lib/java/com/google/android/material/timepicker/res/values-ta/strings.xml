@@ -26,6 +26,7 @@
   <string name="material_minute_selection">நிமிடத்தைத் தேர்ந்தெடுக்கவும்</string>
   <string name="material_clock_toggle_content_description">AM அல்லது PMமைத் தேர்ந்தெடுக்க உதவும்</string>
   <string name="mtrl_timepicker_confirm">சரி</string>
+  <string name="mtrl_timepicker_cancel">ரத்துசெய்</string>
   <string name="material_timepicker_text_input_mode_description">உரை உள்ளீட்டிற்காக, கடிகாரப் பயன்முறைக்கு மாற்றும்.</string>
   <string name="material_timepicker_clock_mode_description">நேர உள்ளீட்டிற்காக, கடிகாரப் பயன்முறைக்கு மாற்றும்.</string>
 </resources>

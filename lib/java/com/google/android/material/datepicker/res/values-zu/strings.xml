@@ -24,6 +24,7 @@
   <string name="mtrl_picker_date_header_unselected">Khetha idethi</string>
   <string name="mtrl_picker_date_header_selected">%1$s</string>
   <string name="mtrl_picker_confirm">KULUNGILE</string>
+  <string name="mtrl_picker_cancel">Khansela</string>
   <string name="mtrl_picker_text_input_date_hint">Idethi</string>
   <string name="mtrl_picker_text_input_date_range_start_hint">Idethi yokuqala</string>
   <string name="mtrl_picker_text_input_date_range_end_hint">Idethi yokuphela</string>

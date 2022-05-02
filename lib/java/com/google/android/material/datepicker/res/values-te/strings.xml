@@ -24,6 +24,7 @@
   <string name="mtrl_picker_date_header_unselected">ఎంచుకున్న తేది</string>
   <string name="mtrl_picker_date_header_selected">%1$s</string>
   <string name="mtrl_picker_confirm">సరే</string>
+  <string name="mtrl_picker_cancel">రద్దు చేయి</string>
   <string name="mtrl_picker_text_input_date_hint">తేదీ</string>
   <string name="mtrl_picker_text_input_date_range_start_hint">ప్రారంభ తేదీ</string>
   <string name="mtrl_picker_text_input_date_range_end_hint">ముగింపు తేదీ</string>

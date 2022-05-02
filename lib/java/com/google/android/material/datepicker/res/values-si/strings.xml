@@ -24,6 +24,7 @@
   <string name="mtrl_picker_date_header_unselected">තේරූ දිනය</string>
   <string name="mtrl_picker_date_header_selected">%1$s</string>
   <string name="mtrl_picker_confirm">හරි</string>
+  <string name="mtrl_picker_cancel">අවලංගු කරන්න</string>
   <string name="mtrl_picker_text_input_date_hint">දිනය</string>
   <string name="mtrl_picker_text_input_date_range_start_hint">ආරම්භක දිනය</string>
   <string name="mtrl_picker_text_input_date_range_end_hint">නිමා වන දිනය</string>

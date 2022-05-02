@@ -26,6 +26,7 @@
   <string name="material_minute_selection">ਮਿੰਟ ਚੁਣੋ</string>
   <string name="material_clock_toggle_content_description">AM ਜਾਂ PM ਚੁਣੋ</string>
   <string name="mtrl_timepicker_confirm">ਠੀਕ ਹੈ</string>
+  <string name="mtrl_timepicker_cancel">ਰੱਦ ਕਰੋ</string>
   <string name="material_timepicker_text_input_mode_description">ਸਮਾਂ ਇਨਪੁੱਟ ਕਰਨ ਲਈ ਲਿਖਤ ਇਨਪੁੱਟ ਮੋਡ \'ਤੇ ਸਵਿੱਚ ਕਰੋ।</string>
   <string name="material_timepicker_clock_mode_description">ਸਮਾਂ ਇਨਪੁੱਟ ਕਰਨ ਲਈ ਘੜੀ ਮੋਡ \'ਤੇ ਸਵਿੱਚ ਕਰੋ।</string>
 </resources>

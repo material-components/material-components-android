@@ -26,6 +26,7 @@
   <string name="material_minute_selection">မိနစ်များ ရွေးပါ</string>
   <string name="material_clock_toggle_content_description">AM (သို့) PM ရွေးရန်</string>
   <string name="mtrl_timepicker_confirm">OK</string>
+  <string name="mtrl_timepicker_cancel">မလုပ်တော့</string>
   <string name="material_timepicker_text_input_mode_description">အချိန်ထည့်သွင်းရန် စာသားထည့်သွင်းမှုမုဒ်သို့ ပြောင်းပါ။</string>
   <string name="material_timepicker_clock_mode_description">အချိန်ထည့်သွင်းမှုအတွက် နာရီမုဒ်သို့ ပြောင်းပါ။</string>
 </resources>

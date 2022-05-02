@@ -26,6 +26,7 @@
   <string name="material_minute_selection">Minuten selecteren</string>
   <string name="material_clock_toggle_content_description">Selecteer a.m. of p.m.</string>
   <string name="mtrl_timepicker_confirm">OK</string>
+  <string name="mtrl_timepicker_cancel">Annuleren</string>
   <string name="material_timepicker_text_input_mode_description">Schakel naar de tekstinvoermodus om de tijd in te voeren.</string>
   <string name="material_timepicker_clock_mode_description">Schakel naar de klokmodus om de tijd in te voeren.</string>
 </resources>

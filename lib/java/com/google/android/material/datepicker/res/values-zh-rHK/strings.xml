@@ -24,6 +24,7 @@
   <string name="mtrl_picker_date_header_unselected">已選取日期</string>
   <string name="mtrl_picker_date_header_selected">%1$s</string>
   <string name="mtrl_picker_confirm">確定</string>
+  <string name="mtrl_picker_cancel">取消</string>
   <string name="mtrl_picker_text_input_date_hint">日期</string>
   <string name="mtrl_picker_text_input_date_range_start_hint">開始日期</string>
   <string name="mtrl_picker_text_input_date_range_end_hint">結束日期</string>

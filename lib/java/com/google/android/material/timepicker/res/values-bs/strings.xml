@@ -26,6 +26,7 @@
   <string name="material_minute_selection">Odaberite minute</string>
   <string name="material_clock_toggle_content_description">Odaberite prijepodne ili poslijepodne</string>
   <string name="mtrl_timepicker_confirm">Uredu</string>
+  <string name="mtrl_timepicker_cancel">Otkaži</string>
   <string name="material_timepicker_text_input_mode_description">Prebacite u način unosa teksta za unos vremena.</string>
   <string name="material_timepicker_clock_mode_description">Prebacite u način rada kao sat za unos vremena.</string>
 </resources>

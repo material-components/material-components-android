@@ -26,6 +26,7 @@
   <string name="material_minute_selection">Dəqiqə seçin</string>
   <string name="material_clock_toggle_content_description">Gündüz və ya axşam seçin</string>
   <string name="mtrl_timepicker_confirm">OK</string>
+  <string name="mtrl_timepicker_cancel">Ləğv edin</string>
   <string name="material_timepicker_text_input_mode_description">Zamanı daxil etmək üçün mətnlə daxiletmə rejiminə keçin</string>
   <string name="material_timepicker_clock_mode_description">Zamanı daxil etmək üçün saat rejiminə keçin</string>
 </resources>

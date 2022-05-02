@@ -24,6 +24,7 @@
   <string name="mtrl_picker_date_header_unselected">የተመረጠው ቀን</string>
   <string name="mtrl_picker_date_header_selected">%1$s</string>
   <string name="mtrl_picker_confirm">እሺ</string>
+  <string name="mtrl_picker_cancel">ይቅር</string>
   <string name="mtrl_picker_text_input_date_hint">ቀን</string>
   <string name="mtrl_picker_text_input_date_range_start_hint">መጀመሪያ ቀን</string>
   <string name="mtrl_picker_text_input_date_range_end_hint">የማብቂያ ቀን</string>

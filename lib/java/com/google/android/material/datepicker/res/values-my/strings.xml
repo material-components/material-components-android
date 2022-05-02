@@ -24,6 +24,7 @@
   <string name="mtrl_picker_date_header_unselected">ရွေးထားသည့် ရက်စွဲ</string>
   <string name="mtrl_picker_date_header_selected">%1$s</string>
   <string name="mtrl_picker_confirm">OK</string>
+  <string name="mtrl_picker_cancel">ပယ်ဖျက်ရန်</string>
   <string name="mtrl_picker_text_input_date_hint">ရက်စွဲ</string>
   <string name="mtrl_picker_text_input_date_range_start_hint">စတင်ရက်</string>
   <string name="mtrl_picker_text_input_date_range_end_hint">ပြီးဆုံးရက်</string>

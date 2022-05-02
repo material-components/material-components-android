@@ -24,6 +24,7 @@
   <string name="mtrl_picker_date_header_unselected">Вибрана дата</string>
   <string name="mtrl_picker_date_header_selected">%1$s</string>
   <string name="mtrl_picker_confirm">OK</string>
+  <string name="mtrl_picker_cancel">Скасувати</string>
   <string name="mtrl_picker_text_input_date_hint">Дата</string>
   <string name="mtrl_picker_text_input_date_range_start_hint">Дата початку</string>
   <string name="mtrl_picker_text_input_date_range_end_hint">Дата завершення</string>

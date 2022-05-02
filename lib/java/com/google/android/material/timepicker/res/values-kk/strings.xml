@@ -26,6 +26,7 @@
   <string name="material_minute_selection">Минут таңдау</string>
   <string name="material_clock_toggle_content_description">\"AM\" немесе \"PM\" форматын таңдау</string>
   <string name="mtrl_timepicker_confirm">Жарайды</string>
+  <string name="mtrl_timepicker_cancel">Бас тарту</string>
   <string name="material_timepicker_text_input_mode_description">Уақытты енгізу үшін мәтін енгізу режиміне өтіңіз.</string>
   <string name="material_timepicker_clock_mode_description">Уақытты енгізу үшін сағат режиміне өтіңіз.</string>
 </resources>

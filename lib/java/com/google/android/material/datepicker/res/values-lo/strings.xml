@@ -24,6 +24,7 @@
   <string name="mtrl_picker_date_header_unselected">ເລືອກວັນທີ</string>
   <string name="mtrl_picker_date_header_selected">%1$s</string>
   <string name="mtrl_picker_confirm">ຕົກລົງ</string>
+  <string name="mtrl_picker_cancel">ຍົກເລີກ</string>
   <string name="mtrl_picker_text_input_date_hint">ວັນທີ</string>
   <string name="mtrl_picker_text_input_date_range_start_hint">ວັນທີເລີ່ມ</string>
   <string name="mtrl_picker_text_input_date_range_end_hint">ວັນທີສິ້ນສຸດ</string>

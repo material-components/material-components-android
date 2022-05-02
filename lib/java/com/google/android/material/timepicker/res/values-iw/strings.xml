@@ -26,6 +26,7 @@
   <string name="material_minute_selection">בחר דקות</string>
   <string name="material_clock_toggle_content_description">יש לבחור ב-AM או ב-PM</string>
   <string name="mtrl_timepicker_confirm">אישור</string>
+  <string name="mtrl_timepicker_cancel">ביטול</string>
   <string name="material_timepicker_text_input_mode_description">העבר למצב קלט טקסט לצורך הזנת השעה</string>
   <string name="material_timepicker_clock_mode_description">העבר למצב שעון לצורך הזנת השעה</string>
 </resources>

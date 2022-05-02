@@ -26,6 +26,7 @@
   <string name="material_minute_selection">تحديد الدقائق</string>
   <string name="material_clock_toggle_content_description">يُرجى اختيار صباحًا أو مساءً.</string>
   <string name="mtrl_timepicker_confirm">حسنًا</string>
+  <string name="mtrl_timepicker_cancel">إلغاء</string>
   <string name="material_timepicker_text_input_mode_description">يُرجى التبديل إلى وضع إدخال النص لإدخال الوقت.</string>
   <string name="material_timepicker_clock_mode_description">يُرجى التبديل إلى وضع الساعة لإدخال الوقت.</string>
 </resources>

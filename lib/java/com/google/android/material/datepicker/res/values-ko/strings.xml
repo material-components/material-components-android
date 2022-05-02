@@ -24,6 +24,7 @@
   <string name="mtrl_picker_date_header_unselected">선택한 날짜</string>
   <string name="mtrl_picker_date_header_selected">%1$s</string>
   <string name="mtrl_picker_confirm">확인</string>
+  <string name="mtrl_picker_cancel">취소</string>
   <string name="mtrl_picker_text_input_date_hint">날짜</string>
   <string name="mtrl_picker_text_input_date_range_start_hint">시작일</string>
   <string name="mtrl_picker_text_input_date_range_end_hint">종료일</string>

@@ -24,6 +24,7 @@
   <string name="mtrl_picker_date_header_unselected">التاريخ المحدَّد</string>
   <string name="mtrl_picker_date_header_selected">%1$s</string>
   <string name="mtrl_picker_confirm">حسنًا</string>
+  <string name="mtrl_picker_cancel">إلغاء</string>
   <string name="mtrl_picker_text_input_date_hint">التاريخ</string>
   <string name="mtrl_picker_text_input_date_range_start_hint">تاريخ البدء</string>
   <string name="mtrl_picker_text_input_date_range_end_hint">تاريخ الانتهاء</string>

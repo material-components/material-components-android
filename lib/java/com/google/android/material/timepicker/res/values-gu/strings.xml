@@ -26,6 +26,7 @@
   <string name="material_minute_selection">મિનિટ પસંદ કરો</string>
   <string name="material_clock_toggle_content_description">AM અથવા PM પસંદ કરો</string>
   <string name="mtrl_timepicker_confirm">ઓકે</string>
+  <string name="mtrl_timepicker_cancel">રદ કરો</string>
   <string name="material_timepicker_text_input_mode_description">સમય દાખલ કરવા માટે ટેક્સ્ટ ઇનપુટ મોડમાં સ્વિચ કરો.</string>
   <string name="material_timepicker_clock_mode_description">સમય દાખલ કરવા માટે ઘડિયાળ મોડમાં સ્વિચ કરો.</string>
 </resources>

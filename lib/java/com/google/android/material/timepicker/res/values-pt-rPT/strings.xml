@@ -26,6 +26,7 @@
   <string name="material_minute_selection">Selecionar minutos</string>
   <string name="material_clock_toggle_content_description">Selecionar AM ou PM</string>
   <string name="mtrl_timepicker_confirm">OK</string>
+  <string name="mtrl_timepicker_cancel">Cancelar</string>
   <string name="material_timepicker_text_input_mode_description">Mude para o modo de introdução de texto para a introdução da hora.</string>
   <string name="material_timepicker_clock_mode_description">Mude para o modo de relógio para a introdução da hora.</string>
 </resources>

@@ -24,6 +24,7 @@
   <string name="mtrl_picker_date_header_unselected">Tarehe uliyochagua</string>
   <string name="mtrl_picker_date_header_selected">%1$s</string>
   <string name="mtrl_picker_confirm">Sawa</string>
+  <string name="mtrl_picker_cancel">Ghairi</string>
   <string name="mtrl_picker_text_input_date_hint">Tarehe</string>
   <string name="mtrl_picker_text_input_date_range_start_hint">Tarehe ya kuanza</string>
   <string name="mtrl_picker_text_input_date_range_end_hint">Tarehe ya mwisho</string>

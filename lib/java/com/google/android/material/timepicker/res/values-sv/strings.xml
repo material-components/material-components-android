@@ -26,6 +26,7 @@
   <string name="material_minute_selection">Välj minuter</string>
   <string name="material_clock_toggle_content_description">Välj mellan FM och EM</string>
   <string name="mtrl_timepicker_confirm">OK</string>
+  <string name="mtrl_timepicker_cancel">Avbryt</string>
   <string name="material_timepicker_text_input_mode_description">Byt till textinmatningsläget och ange tid.</string>
   <string name="material_timepicker_clock_mode_description">Byt till klockläget och ange tid.</string>
 </resources>

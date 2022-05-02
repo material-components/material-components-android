@@ -24,6 +24,7 @@
   <string name="mtrl_picker_date_header_unselected">កាលបរិច្ឆេទដែលបាន​ជ្រើសរើស</string>
   <string name="mtrl_picker_date_header_selected">%1$s</string>
   <string name="mtrl_picker_confirm">យល់ព្រម</string>
+  <string name="mtrl_picker_cancel">បោះ​បង់</string>
   <string name="mtrl_picker_text_input_date_hint">កាលបរិច្ឆេទ</string>
   <string name="mtrl_picker_text_input_date_range_start_hint">កាល​បរិច្ឆេទ​ចាប់ផ្ដើម</string>
   <string name="mtrl_picker_text_input_date_range_end_hint">កាល​បរិច្ឆេទ​បញ្ចប់</string>

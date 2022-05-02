@@ -24,6 +24,7 @@
   <string name="mtrl_picker_date_header_unselected">Таңдалған күн</string>
   <string name="mtrl_picker_date_header_selected">%1$s</string>
   <string name="mtrl_picker_confirm">Жарайды</string>
+  <string name="mtrl_picker_cancel">Бас тарту</string>
   <string name="mtrl_picker_text_input_date_hint">Күні</string>
   <string name="mtrl_picker_text_input_date_range_start_hint">Басталу күні</string>
   <string name="mtrl_picker_text_input_date_range_end_hint">Аяқталу күні</string>

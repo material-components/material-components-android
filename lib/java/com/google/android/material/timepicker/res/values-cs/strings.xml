@@ -26,6 +26,7 @@
   <string name="material_minute_selection">Zvolte minuty</string>
   <string name="material_clock_toggle_content_description">Vyberte AM nebo PM</string>
   <string name="mtrl_timepicker_confirm">OK</string>
+  <string name="mtrl_timepicker_cancel">Zrušit</string>
   <string name="material_timepicker_text_input_mode_description">Chcete-li zadat čas, přepněte na režim textu.</string>
   <string name="material_timepicker_clock_mode_description">Chcete-li zadat čas, přepněte na režim hodin.</string>
 </resources>

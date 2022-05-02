@@ -24,6 +24,7 @@
   <string name="mtrl_picker_date_header_unselected">Data selectată</string>
   <string name="mtrl_picker_date_header_selected">%1$s</string>
   <string name="mtrl_picker_confirm">OK</string>
+  <string name="mtrl_picker_cancel">Anulați</string>
   <string name="mtrl_picker_text_input_date_hint">Dată</string>
   <string name="mtrl_picker_text_input_date_range_start_hint">Data de începere</string>
   <string name="mtrl_picker_text_input_date_range_end_hint">Data de încheiere</string>

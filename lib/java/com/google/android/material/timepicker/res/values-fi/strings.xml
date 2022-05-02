@@ -26,6 +26,7 @@
   <string name="material_minute_selection">Valitse minuutit</string>
   <string name="material_clock_toggle_content_description">Valitse AP tai IP</string>
   <string name="mtrl_timepicker_confirm">OK</string>
+  <string name="mtrl_timepicker_cancel">Peru</string>
   <string name="material_timepicker_text_input_mode_description">Vaihda ajan syöttämiseen tekstitilassa.</string>
   <string name="material_timepicker_clock_mode_description">Vaihda ajan syöttämiseen kellotilassa.</string>
 </resources>

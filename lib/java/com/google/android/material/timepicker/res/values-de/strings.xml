@@ -26,6 +26,7 @@
   <string name="material_minute_selection">Minuten auswählen</string>
   <string name="material_clock_toggle_content_description">Vormittags oder Nachmittags auswählen</string>
   <string name="mtrl_timepicker_confirm">OK</string>
+  <string name="mtrl_timepicker_cancel">Abbrechen</string>
   <string name="material_timepicker_text_input_mode_description">In den Texteingabemodus wechseln, um die Uhrzeit einzugeben.</string>
   <string name="material_timepicker_clock_mode_description">In den Uhrzeitmodus wechseln, um die Uhrzeit einzugeben.</string>
 </resources>

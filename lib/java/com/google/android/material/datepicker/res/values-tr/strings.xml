@@ -24,6 +24,7 @@
   <string name="mtrl_picker_date_header_unselected">Seçilen tarih</string>
   <string name="mtrl_picker_date_header_selected">%1$s</string>
   <string name="mtrl_picker_confirm">Tamam</string>
+  <string name="mtrl_picker_cancel">İptal</string>
   <string name="mtrl_picker_text_input_date_hint">Tarih</string>
   <string name="mtrl_picker_text_input_date_range_start_hint">Başlangıç tarihi</string>
   <string name="mtrl_picker_text_input_date_range_end_hint">Bitiş tarihi</string>

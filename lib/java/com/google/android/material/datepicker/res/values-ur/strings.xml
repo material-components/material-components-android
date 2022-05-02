@@ -24,6 +24,7 @@
   <string name="mtrl_picker_date_header_unselected">منتخب کردہ تاریخ</string>
   <string name="mtrl_picker_date_header_selected">%1$s</string>
   <string name="mtrl_picker_confirm">ٹھیک ہے</string>
+  <string name="mtrl_picker_cancel">منسوخ کریں</string>
   <string name="mtrl_picker_text_input_date_hint">تاریخ</string>
   <string name="mtrl_picker_text_input_date_range_start_hint">تاریخ آغاز</string>
   <string name="mtrl_picker_text_input_date_range_end_hint">تاریخ اختتام</string>

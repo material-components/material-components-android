@@ -24,6 +24,7 @@
   <string name="mtrl_picker_date_header_unselected">Atlasītais datums</string>
   <string name="mtrl_picker_date_header_selected">%1$s</string>
   <string name="mtrl_picker_confirm">Labi</string>
+  <string name="mtrl_picker_cancel">Atcelt</string>
   <string name="mtrl_picker_text_input_date_hint">Datums</string>
   <string name="mtrl_picker_text_input_date_range_start_hint">Sākuma datums</string>
   <string name="mtrl_picker_text_input_date_range_end_hint">Beigu datums</string>

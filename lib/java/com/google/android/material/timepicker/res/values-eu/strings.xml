@@ -26,6 +26,7 @@
   <string name="material_minute_selection">Hautatu minutuak</string>
   <string name="material_clock_toggle_content_description">Hautatu AM edo PM</string>
   <string name="mtrl_timepicker_confirm">Ados</string>
+  <string name="mtrl_timepicker_cancel">Utzi</string>
   <string name="material_timepicker_text_input_mode_description">Ordua idazteko, aldatu testua idazteko metodora.</string>
   <string name="material_timepicker_clock_mode_description">Aldatu erloju modura ordua zehazteko.</string>
 </resources>

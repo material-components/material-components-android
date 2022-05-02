@@ -24,6 +24,7 @@
   <string name="mtrl_picker_date_header_unselected">התאריך הנבחר</string>
   <string name="mtrl_picker_date_header_selected">%1$s</string>
   <string name="mtrl_picker_confirm">אישור</string>
+  <string name="mtrl_picker_cancel">ביטול</string>
   <string name="mtrl_picker_text_input_date_hint">תאריך</string>
   <string name="mtrl_picker_text_input_date_range_start_hint">תאריך התחלה</string>
   <string name="mtrl_picker_text_input_date_range_end_hint">תאריך סיום</string>

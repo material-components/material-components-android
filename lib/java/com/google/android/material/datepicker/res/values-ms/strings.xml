@@ -24,6 +24,7 @@
   <string name="mtrl_picker_date_header_unselected">Tarikh dipilih</string>
   <string name="mtrl_picker_date_header_selected">%1$s</string>
   <string name="mtrl_picker_confirm">OK</string>
+  <string name="mtrl_picker_cancel">Batal</string>
   <string name="mtrl_picker_text_input_date_hint">Tarikh</string>
   <string name="mtrl_picker_text_input_date_range_start_hint">Tarikh mula</string>
   <string name="mtrl_picker_text_input_date_range_end_hint">Tarikh tamat</string>

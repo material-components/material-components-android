@@ -26,6 +26,7 @@
   <string name="material_minute_selection">मिनेट चयन गर्नुहोस्</string>
   <string name="material_clock_toggle_content_description">पूर्वाह्न वा अपराह्न चयन गर्नुहोस्</string>
   <string name="mtrl_timepicker_confirm">ठिक छ</string>
+  <string name="mtrl_timepicker_cancel">रद्द गर्नुहोस्</string>
   <string name="material_timepicker_text_input_mode_description">समय इनपुट गर्न पाठ इनपुट मोडमा स्विच गर्नुहोस्।</string>
   <string name="material_timepicker_clock_mode_description">समय इनपुट गर्न घडी मोडमा स्विच गर्नुहोस्।</string>
 </resources>

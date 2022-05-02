@@ -26,6 +26,7 @@
   <string name="material_minute_selection">Perc kiválasztása</string>
   <string name="material_clock_toggle_content_description">Válassza ki, hogy délelőtt vagy délután</string>
   <string name="mtrl_timepicker_confirm">OK</string>
+  <string name="mtrl_timepicker_cancel">Mégse</string>
   <string name="material_timepicker_text_input_mode_description">Időbevitelhez váltson szövegbeviteli módba.</string>
   <string name="material_timepicker_clock_mode_description">Időbevitelhez váltson óramódba.</string>
 </resources>

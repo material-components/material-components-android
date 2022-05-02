@@ -24,6 +24,7 @@
   <string name="mtrl_picker_date_header_unselected">चयन गरिएको मिति</string>
   <string name="mtrl_picker_date_header_selected">%1$s</string>
   <string name="mtrl_picker_confirm">ठिक छ</string>
+  <string name="mtrl_picker_cancel">रद्द गर्नुहोस्</string>
   <string name="mtrl_picker_text_input_date_hint">मिति</string>
   <string name="mtrl_picker_text_input_date_range_start_hint">सुरु हुने मिति</string>
   <string name="mtrl_picker_text_input_date_range_end_hint">अन्त्य हुने मिति</string>

@@ -26,6 +26,7 @@
   <string name="material_minute_selection">Përzgjidh minutat</string>
   <string name="material_clock_toggle_content_description">Zgjidh paradite ose pasdite</string>
   <string name="mtrl_timepicker_confirm">Në rregull</string>
+  <string name="mtrl_timepicker_cancel">Anulo</string>
   <string name="material_timepicker_text_input_mode_description">Kalo te modaliteti i hyrjes së tekstit për hyrjen e kohës.</string>
   <string name="material_timepicker_clock_mode_description">Kalo te modaliteti i orës për hyrjen e kohës.</string>
 </resources>

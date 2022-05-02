@@ -26,6 +26,7 @@
   <string name="material_minute_selection">選取分鐘數</string>
   <string name="material_clock_toggle_content_description">選取上午或下午</string>
   <string name="mtrl_timepicker_confirm">確定</string>
+  <string name="mtrl_timepicker_cancel">取消</string>
   <string name="material_timepicker_text_input_mode_description">切換至文字輸入模式來輸入時間。</string>
   <string name="material_timepicker_clock_mode_description">切換至時鐘模式來輸入時間。</string>
 </resources>

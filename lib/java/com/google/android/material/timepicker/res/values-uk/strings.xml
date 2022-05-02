@@ -26,6 +26,7 @@
   <string name="material_minute_selection">Виберіть хвилини</string>
   <string name="material_clock_toggle_content_description">Виберіть ДП чи ПП</string>
   <string name="mtrl_timepicker_confirm">OK</string>
+  <string name="mtrl_timepicker_cancel">Скасувати</string>
   <string name="material_timepicker_text_input_mode_description">Перейти в текстовий режим, щоб ввести час.</string>
   <string name="material_timepicker_clock_mode_description">Перейти в режим годинника, щоб ввести час.</string>
 </resources>

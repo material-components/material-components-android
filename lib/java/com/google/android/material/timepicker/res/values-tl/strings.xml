@@ -26,6 +26,7 @@
   <string name="material_minute_selection">Pumili ng mga minuto</string>
   <string name="material_clock_toggle_content_description">Piliin ang AM o PM</string>
   <string name="mtrl_timepicker_confirm">OK</string>
+  <string name="mtrl_timepicker_cancel">Kanselahin</string>
   <string name="material_timepicker_text_input_mode_description">Lumipat sa pamamaraan ng pag-input ng text para sa input na oras.</string>
   <string name="material_timepicker_clock_mode_description">Lumipat sa mode ng orasan para sa input na oras.</string>
 </resources>
