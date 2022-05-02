@@ -17,10 +17,11 @@
 package io.material.catalog.color;
 
 import android.content.Context;
+import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
-import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
+import com.google.android.material.color.MaterialColors;
 
 /**
  * Represents a color value as defined in the Material Spec.
@@ -51,7 +52,14 @@ final class MaterialColorSpec {
   }
 
   static MaterialColorSpec createFromColorValue(
-      Context context, @StringRes int colorNameResId, @ColorInt int colorValue) {
-    return new MaterialColorSpec(context.getString(colorNameResId), colorValue);
+      String colorNameResource, @ColorInt int colorValue) {
+    return new MaterialColorSpec(colorNameResource, colorValue);
+  }
+
+  static MaterialColorSpec createFromAttrResId(
+      Context context, String colorNameResource, @AttrRes int attrRes) {
+    return createFromColorValue(
+        colorNameResource,
+        MaterialColors.getColor(context, attrRes, colorNameResource + "cannot be resolved."));
   }
 }

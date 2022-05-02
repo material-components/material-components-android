@@ -17,4 +17,6 @@
 
 <resources>
   <dimen name="cat_colors_header_space">32dp</dimen>
+  <dimen name="cat_colors_grid_item_padding">4dp</dimen>
+  <dimen name="cat_colors_grid_item_height">60dp</dimen>
 </resources>
