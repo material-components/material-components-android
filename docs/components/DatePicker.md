@@ -389,7 +389,7 @@ The following example shows a date picker with Material Theming.
 !["Date Picker pink interactive display, grey background, and brown icons and
 text."](assets/datepicker/datepickers_theming.png)
 
-Use theme attributes and styles in `res/values/styles.xm, which apply to all
+Use theme attributes and styles in `res/values/styles.xml`, which apply to all
 date pickers and affect other components:
 
 ```xml
