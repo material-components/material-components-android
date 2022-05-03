@@ -21,10 +21,8 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-/** A {@link DateValidator} that only allows dates from a given point onward to be clicked. */
+/** A {@link DateValidator} that enables all days of the week, except Saturday and Sunday. */
 public class DateValidatorWeekdays implements DateValidator {
-
-  DateValidatorWeekdays() {}
 
   private Calendar utc = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 
