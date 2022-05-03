@@ -133,11 +133,14 @@
     <item name="materialThemeOverlay">@style/ThemeOverlay.MaterialComponents.TimePicker.Display</item>
   </style>
 
-  <style name="Widget.Material3.MaterialTimePicker" parent="Widget.MaterialComponents.TimePicker" />
+  <style name="Widget.Material3.MaterialTimePicker" parent="Widget.MaterialComponents.TimePicker">
+    <item name="shapeAppearance">?attr/shapeAppearanceCornerExtraLarge</item>
+  </style>
 
   <style name="Widget.Material3.MaterialTimePicker.ImageButton" parent="Widget.MaterialComponents.TimePicker.ImageButton">
     <item name="iconTint">@color/m3_timepicker_secondary_text_button_text_color</item>
     <item name="rippleColor">@color/m3_timepicker_secondary_text_button_ripple_color</item>
+    <item name="shapeAppearance">@style/ShapeAppearance.Material3.Corner.Full</item>
   </style>
 
   <style name="Widget.Material3.MaterialTimePicker.Display" parent="Widget.MaterialComponents.TimePicker.Display">
@@ -147,6 +150,8 @@
     <item name="rippleColor">@color/m3_timepicker_display_ripple_color</item>
     <item name="chipStrokeColor">@color/m3_timepicker_display_stroke_color</item>
     <item name="chipStrokeWidth">@dimen/m3_timepicker_display_stroke_width</item>
+    <item name="shapeAppearance">?attr/shapeAppearanceCornerSmall</item>
+    <item name="shapeAppearanceOverlay">@null</item>
   </style>
 
   <style name="Widget.Material3.MaterialTimePicker.Display.Divider" parent="Widget.MaterialComponents.TimePicker.Display.Divider">
