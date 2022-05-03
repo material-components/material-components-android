@@ -133,7 +133,7 @@
     <item name="android:insetTop">@dimen/m3_btn_inset</item>
     <item name="android:insetBottom">@dimen/m3_btn_inset</item>
     <item name="android:textAppearance">?attr/textAppearanceLabelLarge</item>
-    <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Material3.Button</item>
+    <item name="shapeAppearance">@style/ShapeAppearance.Material3.Corner.Full</item>
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Button</item>
     <item name="android:stateListAnimator" tools:ignore="NewApi">@animator/m3_btn_state_list_anim</item>
     <item name="elevation">@dimen/m3_btn_elevation</item>
@@ -184,7 +184,7 @@
     <item name="android:insetTop">@dimen/m3_btn_inset</item>
     <item name="android:insetBottom">@dimen/m3_btn_inset</item>
     <item name="android:textAppearance">?attr/textAppearanceLabelLarge</item>
-    <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Material3.Button</item>
+    <item name="shapeAppearance">@style/ShapeAppearance.Material3.Corner.Full</item>
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Button.TextButton</item>
     <item name="android:textColor">@color/m3_text_button_foreground_color_selector</item>
     <item name="iconTint">@color/m3_text_button_foreground_color_selector</item>
@@ -274,6 +274,7 @@
     <item name="iconPadding">@dimen/m3_btn_icon_only_icon_padding</item>
   </style>
 
+  <!-- DEPRECATED -->
   <style name="ShapeAppearanceOverlay.Material3.Button" parent="">
     <item name="cornerSize">50%</item>
   </style>
