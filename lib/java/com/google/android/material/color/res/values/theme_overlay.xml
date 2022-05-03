@@ -23,4 +23,7 @@
     <item name="colorOnErrorContainer">@color/material_harmonized_color_on_error_container</item>
   </style>
 
+  <!-- Used to provide an empty theme overlay placeholder for harmonization. -->
+  <style name="ThemeOverlay.Material3.HarmonizedColors.Empty" parent="" />
+
 </resources>

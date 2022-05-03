@@ -16,8 +16,10 @@
 
 package com.google.android.material.color;
 
+import com.google.android.material.R;
+
 import android.content.Context;
-import android.content.ContextWrapper;
+import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.content.res.loader.ResourcesLoader;
 import android.os.Build.VERSION;
@@ -68,9 +70,11 @@ public class HarmonizedColors {
     if (!isHarmonizedColorAvailable()) {
       return;
     }
-    int themeOverlay = options.getThemeOverlayResourceId();
+    Map<Integer, Integer> colorReplacementMap =
+        createHarmonizedColorReplacementMap(context, options);
+    int themeOverlay = options.getThemeOverlayResourceId(/* defaultThemeOverlay= */ 0);
 
-    if (addResourcesLoaderToContext(context, options) && themeOverlay != 0) {
+    if (addResourcesLoaderToContext(context, colorReplacementMap) && themeOverlay != 0) {
       ThemeUtils.applyThemeOverlay(context, themeOverlay);
     }
   }
@@ -93,13 +97,19 @@ public class HarmonizedColors {
     if (!isHarmonizedColorAvailable()) {
       return context;
     }
-    int themeOverlay = options.getThemeOverlayResourceId();
-    Context newContext =
-        themeOverlay == 0
-            ? new ContextWrapper(context)
-            : new ContextThemeWrapper(context, themeOverlay);
+    // Retrieve colors from original context passed in before the resources are overridden below.
+    Map<Integer, Integer> colorReplacementMap =
+        createHarmonizedColorReplacementMap(context, options);
+    // Empty themeOverlay is used as default to prevent ContextThemeWrapper uses the default theme
+    // of the application to wrap Context.
+    int themeOverlay =
+        options.getThemeOverlayResourceId(R.style.ThemeOverlay_Material3_HarmonizedColors_Empty);
+    ContextThemeWrapper themeWrapper = new ContextThemeWrapper(context, themeOverlay);
+    // Because ContextThemeWrapper does not provide a new set of resources, override config to
+    // retrieve the new set of resources and to keep the original context's resources intact.
+    themeWrapper.applyOverrideConfiguration(new Configuration());
 
-    return addResourcesLoaderToContext(newContext, options) ? newContext : context;
+    return addResourcesLoaderToContext(themeWrapper, colorReplacementMap) ? themeWrapper : context;
   }
 
   /**
@@ -115,31 +125,18 @@ public class HarmonizedColors {
     return VERSION.SDK_INT >= VERSION_CODES.R;
   }
 
-  @RequiresApi(api = VERSION_CODES.R)
-  private static boolean addResourcesLoaderToContext(
-      Context context, HarmonizedColorsOptions options) {
-    ResourcesLoader resourcesLoader =
-        ColorResourcesLoaderCreator.create(
-            context, createHarmonizedColorReplacementMap(context, options));
-    if (resourcesLoader != null) {
-      context.getResources().addLoaders(resourcesLoader);
-      return true;
-    }
-    return false;
-  }
-
   @RequiresApi(api = VERSION_CODES.LOLLIPOP)
   private static Map<Integer, Integer> createHarmonizedColorReplacementMap(
-      Context context, HarmonizedColorsOptions options) {
+      Context originalContext, HarmonizedColorsOptions options) {
     Map<Integer, Integer> colorReplacementMap = new HashMap<>();
     int colorToHarmonizeWith =
-        MaterialColors.getColor(context, options.getColorAttributeToHarmonizeWith(), TAG);
+        MaterialColors.getColor(originalContext, options.getColorAttributeToHarmonizeWith(), TAG);
 
     // Harmonize color resources.
     for (int colorResourceId : options.getColorResourceIds()) {
       int harmonizedColor =
           MaterialColors.harmonize(
-              ContextCompat.getColor(context, colorResourceId), colorToHarmonizeWith);
+              ContextCompat.getColor(originalContext, colorResourceId), colorToHarmonizeWith);
       colorReplacementMap.put(colorResourceId, harmonizedColor);
     }
 
@@ -151,10 +148,11 @@ public class HarmonizedColors {
         // is not provided, look up resources value the theme attributes point to and
         // harmonize directly.
         int themeOverlay = colorAttributes.getThemeOverlay();
-        TypedArray themeAttributesTypedArray = context.obtainStyledAttributes(attributes);
+        TypedArray themeAttributesTypedArray = originalContext.obtainStyledAttributes(attributes);
         TypedArray themeOverlayAttributesTypedArray =
             themeOverlay != 0
-                ? new ContextThemeWrapper(context, themeOverlay).obtainStyledAttributes(attributes)
+                ? new ContextThemeWrapper(originalContext, themeOverlay)
+                    .obtainStyledAttributes(attributes)
                 : null;
         addHarmonizedColorAttributesToReplacementMap(
             colorReplacementMap,
@@ -169,6 +167,18 @@ public class HarmonizedColors {
       }
     }
     return colorReplacementMap;
+  }
+
+  @RequiresApi(api = VERSION_CODES.R)
+  private static boolean addResourcesLoaderToContext(
+      Context context, Map<Integer, Integer> colorReplacementMap) {
+    ResourcesLoader resourcesLoader =
+        ColorResourcesLoaderCreator.create(context, colorReplacementMap);
+    if (resourcesLoader != null) {
+      context.getResources().addLoaders(resourcesLoader);
+      return true;
+    }
+    return false;
   }
 
   // TypedArray.getType() requires API >= 21.

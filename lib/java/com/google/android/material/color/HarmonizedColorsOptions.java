@@ -127,7 +127,9 @@ public class HarmonizedColorsOptions {
   }
 
   @StyleRes
-  int getThemeOverlayResourceId() {
-    return this.colorAttributes != null ? colorAttributes.getThemeOverlay() : 0;
+  int getThemeOverlayResourceId(@StyleRes int defaultThemeOverlay) {
+    return (colorAttributes != null && colorAttributes.getThemeOverlay() != 0)
+        ? colorAttributes.getThemeOverlay()
+        : defaultThemeOverlay;
   }
 }
