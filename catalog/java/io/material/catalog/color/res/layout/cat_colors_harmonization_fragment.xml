@@ -17,7 +17,6 @@
 
 <ScrollView
   xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:layout_gravity="center_vertical">
@@ -30,82 +29,156 @@
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
-    <TextView
-      android:layout_width="wrap_content"
+    <LinearLayout
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:paddingTop="8dp"
-      android:text="@string/cat_button_text"
-      android:textAppearance="?attr/textAppearanceTitleMedium" />
+      android:orientation="horizontal"
+      android:baselineAligned="false">
 
-    <Button
-      android:id="@+id/material_button"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/cat_button_label_proceed" />
+      <LinearLayout
+        android:id="@+id/cat_colors_error"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:layout_weight="1">
 
-    <TextView
-      android:id="@+id/material_button_color_hex_value"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:paddingTop="8dp"
-      android:visibility="gone"
-      android:textAppearance="?attr/textAppearanceTitleMedium" />
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="@string/cat_color_role_error" />
+      </LinearLayout>
 
-    <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:paddingTop="16dp"
-      android:text="@string/cat_unelevated_button_text"
-      android:textAppearance="?attr/textAppearanceTitleMedium" />
+      <LinearLayout
+        android:id="@+id/cat_colors_harmonized_error"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:layout_weight="1">
 
-    <Button
-      android:id="@+id/material_unelevated_button"
-      style="@style/Widget.Material3.Button.UnelevatedButton"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/cat_button_label_error"/>
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="@string/cat_color_role_harmonized_error" />
+      </LinearLayout>
+    </LinearLayout>
 
-    <TextView
-      android:id="@+id/material_unelevated_button_color_hex_value"
-      android:layout_width="wrap_content"
+    <LinearLayout
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:paddingTop="8dp"
-      android:visibility="gone"
-      android:textAppearance="?attr/textAppearanceTitleMedium" />
+      android:orientation="horizontal"
+      android:baselineAligned="false">
 
-    <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:paddingTop="16dp"
-      android:text="@string/cat_textfield_filled_helper_text"
-      android:textAppearance="?attr/textAppearanceTitleMedium" />
+      <LinearLayout
+        android:id="@+id/cat_colors_yellow"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:layout_weight="1">
 
-    <com.google.android.material.textfield.TextInputLayout
-      style="?attr/textInputFilledStyle"
-      android:id="@+id/material_text_input_layout"
-      android:layout_width="@dimen/material_textinput_default_width"
+          <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/cat_color_role_yellow" />
+      </LinearLayout>
+
+      <LinearLayout
+        android:id="@+id/cat_colors_harmonized_yellow"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:layout_weight="1">
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="@string/cat_color_role_harmonized_yellow" />
+      </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_margin="4dp"
-      android:layout_gravity="center_horizontal"
-      android:hint="@string/cat_textfield_label"
-      app:counterEnabled="true"
-      app:counterMaxLength="10"
-      app:errorEnabled="true"
-      app:helperText="@string/cat_textfield_filled_helper_text"
-      app:helperTextEnabled="true"
-      app:placeholderText="@string/cat_textfield_placeholder_text">
-      <com.google.android.material.textfield.TextInputEditText
+      android:orientation="horizontal"
+      android:baselineAligned="false">
+
+      <LinearLayout
+        android:id="@+id/cat_colors_green"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:layout_weight="1">
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="@string/cat_color_role_green" />
+      </LinearLayout>
+
+      <LinearLayout
+        android:id="@+id/cat_colors_harmonized_green"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:layout_weight="1">
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="@string/cat_color_role_harmonized_green" />
+      </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      android:baselineAligned="false">
+
+      <LinearLayout
+        android:id="@+id/cat_colors_blue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:layout_weight="1">
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="@string/cat_color_role_blue" />
+      </LinearLayout>
+
+      <LinearLayout
+        android:id="@+id/cat_colors_harmonized_blue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:layout_weight="1">
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="@string/cat_color_role_harmonized_blue" />
+      </LinearLayout>
+    </LinearLayout>
+
+  <LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:padding="8dp" >
+      <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <TextView
-      android:id="@+id/material_text_input_color_hex_value"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:paddingTop="8dp"
-      android:visibility="gone"
-      android:textAppearance="?attr/textAppearanceTitleMedium" />
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+    </LinearLayout>
 
     <com.google.android.material.switchmaterial.SwitchMaterial
       android:id="@+id/cat_color_enabled_switch"
@@ -113,5 +186,101 @@
       android:layout_height="wrap_content"
       android:checked="false"
       android:text="@string/cat_color_label_enabled" />
+
+    <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:orientation="horizontal" >
+
+      <Button
+        android:id="@+id/red_button_dark"
+        style="@style/Widget.Material3.Button.UnelevatedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="@string/cat_red_button_dark" />
+
+      <Button
+        android:id="@+id/red_button_light"
+        style="@style/Widget.Material3.Button.UnelevatedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="@string/cat_red_button_light" />
+
+    </LinearLayout>
+
+    <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:orientation="horizontal" >
+
+      <Button
+        android:id="@+id/yellow_button_dark"
+        style="@style/Widget.Material3.Button.UnelevatedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="@string/cat_yellow_button_dark" />
+
+      <Button
+        android:id="@+id/yellow_button_light"
+        style="@style/Widget.Material3.Button.UnelevatedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="@string/cat_yellow_button_light" />
+
+    </LinearLayout>
+
+    <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:orientation="horizontal" >
+
+      <Button
+        android:id="@+id/green_button_dark"
+        style="@style/Widget.Material3.Button.UnelevatedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="@string/cat_green_button_dark" />
+
+      <Button
+        android:id="@+id/green_button_light"
+        style="@style/Widget.Material3.Button.UnelevatedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="@string/cat_green_button_light" />
+
+    </LinearLayout>
+
+    <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:orientation="horizontal" >
+
+      <Button
+        android:id="@+id/blue_button_dark"
+        style="@style/Widget.Material3.Button.UnelevatedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="@string/cat_blue_button_dark" />
+
+      <Button
+        android:id="@+id/blue_button_light"
+        style="@style/Widget.Material3.Button.UnelevatedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="@string/cat_blue_button_light" />
+
+    </LinearLayout>
   </LinearLayout>
 </ScrollView>

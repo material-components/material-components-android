@@ -18,7 +18,6 @@ package io.material.catalog.color;
 
 import io.material.catalog.R;
 
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -75,16 +74,8 @@ final class ColorRow {
     TextView colorRole = view.findViewById(textViewId);
 
     colorRole.setText(colorRoleTextResID);
-    colorRole.setTextColor(getTextColor(colorAttrResId));
-    colorRole.setBackgroundColor(MaterialColors.getColor(view, colorAttrResId));
-  }
-
-  private int getTextColor(@AttrRes int colorAttrResId) {
-    if (!MaterialColors.isColorLight(MaterialColors.getColor(catColorsSchemeRow, colorAttrResId))) {
-      // Use white text color if the color is considered dark.
-      return Color.WHITE;
-    } else {
-      return Color.BLACK;
-    }
+    colorRole.setTextColor(
+        ColorDemoUtils.getTextColor(MaterialColors.getColor(catColorsSchemeRow, colorAttrResId)));
+    colorRole.setBackgroundColor(MaterialColors.getColor(catColorsSchemeRow, colorAttrResId));
   }
 }
