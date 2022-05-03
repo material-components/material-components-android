@@ -18,28 +18,75 @@ package io.material.catalog.color;
 
 import io.material.catalog.R;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import androidx.annotation.ColorInt;
-import androidx.annotation.ColorRes;
-import androidx.annotation.LayoutRes;
+import android.widget.LinearLayout;
+import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.color.MaterialColors;
+import com.google.android.material.color.DynamicColors;
+import com.google.android.material.color.HarmonizedColors;
+import com.google.android.material.color.HarmonizedColorsOptions;
 import com.google.android.material.switchmaterial.SwitchMaterial;
-import com.google.android.material.textfield.TextInputLayout;
 import io.material.catalog.feature.DemoFragment;
+import java.util.ArrayList;
+import java.util.List;
 
 /** A fragment that displays the Color Harmonization demo for the Catalog app. */
 public class ColorHarmonizationDemoFragment extends DemoFragment {
 
-  private static final int GREEN_RESOURCE_ID = R.color.green40;
-  private static final int RED_RESOURCE_ID = R.color.red40;
-  private static final int BLUE_RESOURCE_ID = R.color.blue90;
+  private static final HarmonizableButtonData[] HARMONIZABLE_BUTTON_DATA_LIST =
+      new HarmonizableButtonData[] {
+        new HarmonizableButtonData(
+            R.id.red_button_dark, R.color.error_reference, /* isLightButton= */ false),
+        new HarmonizableButtonData(
+            R.id.red_button_light, R.color.error_reference, /* isLightButton= */ true),
+        new HarmonizableButtonData(
+            R.id.yellow_button_dark, R.color.yellow_reference, /* isLightButton= */ false),
+        new HarmonizableButtonData(
+            R.id.yellow_button_light, R.color.yellow_reference, /* isLightButton= */ true),
+        new HarmonizableButtonData(
+            R.id.green_button_dark, R.color.green_reference, /* isLightButton= */ false),
+        new HarmonizableButtonData(
+            R.id.green_button_light, R.color.green_reference, /* isLightButton= */ true),
+        new HarmonizableButtonData(
+            R.id.blue_button_dark, R.color.blue_reference, /* isLightButton= */ false),
+        new HarmonizableButtonData(
+            R.id.blue_button_light, R.color.blue_reference, /* isLightButton= */ true),
+      };
+  // TODO(b/231143697): Refactor this class to a DemoActivity and showcase harmonization using
+  // error color attributes.
+  private static final ColorHarmonizationGridRowData[] HARMONIZATION_GRID_ROW_DATA_LIST =
+      new ColorHarmonizationGridRowData[] {
+        new ColorHarmonizationGridRowData(
+            R.id.cat_colors_error,
+            R.id.cat_colors_harmonized_error,
+            R.color.error_reference,
+            R.array.cat_error_strings),
+        new ColorHarmonizationGridRowData(
+            R.id.cat_colors_yellow,
+            R.id.cat_colors_harmonized_yellow,
+            R.color.yellow_reference,
+            R.array.cat_yellow_strings),
+        new ColorHarmonizationGridRowData(
+            R.id.cat_colors_green,
+            R.id.cat_colors_harmonized_green,
+            R.color.green_reference,
+            R.array.cat_green_strings),
+        new ColorHarmonizationGridRowData(
+            R.id.cat_colors_blue,
+            R.id.cat_colors_harmonized_blue,
+            R.color.blue_reference,
+            R.array.cat_blue_strings)
+      };
+
+  private Context dynamicColorsContext;
+  private Context harmonizedContext;
+  private View demoView;
+
+  private final List<HarmonizableButton> harmonizableButtonList = new ArrayList<>();
 
   @Nullable
   @Override
@@ -47,59 +94,61 @@ public class ColorHarmonizationDemoFragment extends DemoFragment {
       @Nullable LayoutInflater layoutInflater,
       @Nullable ViewGroup viewGroup,
       @Nullable Bundle bundle) {
-    View view = layoutInflater.inflate(getColorsContent(), viewGroup, false /* attachToRoot */);
-    MaterialButton elevatedButton = view.findViewById(R.id.material_button);
-    MaterialButton unelevatedButton = view.findViewById(R.id.material_unelevated_button);
-    TextInputLayout textInputLayout = view.findViewById(R.id.material_text_input_layout);
-    TextView buttonColorHexValueText = view.findViewById(R.id.material_button_color_hex_value);
-    TextView unelevatedButtonColorHexValueText =
-        view.findViewById(R.id.material_unelevated_button_color_hex_value);
-    TextView textInputColorHexValueText =
-        view.findViewById(R.id.material_text_input_color_hex_value);
+    demoView =
+        layoutInflater.inflate(
+            R.layout.cat_colors_harmonization_fragment, viewGroup, false /* attachToRoot */);
 
-    elevatedButton.setBackgroundColor(getResources().getColor(GREEN_RESOURCE_ID));
-    unelevatedButton.setBackgroundColor(getResources().getColor(RED_RESOURCE_ID));
-    textInputLayout.setBoxBackgroundColor(getResources().getColor(BLUE_RESOURCE_ID));
+    dynamicColorsContext = DynamicColors.wrapContextIfAvailable(requireContext());
+    HarmonizedColorsOptions options =
+        new HarmonizedColorsOptions.Builder()
+            .setColorResourceIds(
+                new int[] {
+                  R.color.error_reference,
+                  R.color.yellow_reference,
+                  R.color.blue_reference,
+                  R.color.green_reference,
+                })
+            .build();
+    harmonizedContext = HarmonizedColors.wrapContextIfAvailable(dynamicColorsContext, options);
 
-    SwitchMaterial enabledSwitch = view.findViewById(R.id.cat_color_enabled_switch);
-    enabledSwitch.setOnCheckedChangeListener(
-        (buttonView, isChecked) -> {
-          buttonColorHexValueText.setVisibility(View.VISIBLE);
-          unelevatedButtonColorHexValueText.setVisibility(View.VISIBLE);
-          textInputColorHexValueText.setVisibility(View.VISIBLE);
-
-          int maybeHarmonizedGreen = maybeHarmonizeWithPrimary(GREEN_RESOURCE_ID, isChecked);
-          int maybeHarmonizedRed = maybeHarmonizeWithPrimary(RED_RESOURCE_ID, isChecked);
-          int maybeHarmonizedBlue = maybeHarmonizeWithPrimary(BLUE_RESOURCE_ID, isChecked);
-
-          elevatedButton.setBackgroundColor(maybeHarmonizedGreen);
-          unelevatedButton.setBackgroundColor(maybeHarmonizedRed);
-          textInputLayout.setBoxBackgroundColor(maybeHarmonizedBlue);
-
-          // The %06X gives us zero-padded hex (always 6 chars long).
-          buttonColorHexValueText.setText(
-              getColorHexValueText(R.string.cat_color_hex_value_text, maybeHarmonizedGreen));
-          unelevatedButtonColorHexValueText.setText(
-              getColorHexValueText(R.string.cat_color_hex_value_text, maybeHarmonizedRed));
-          textInputColorHexValueText.setText(
-              getColorHexValueText(R.string.cat_color_hex_value_text, maybeHarmonizedBlue));
-        });
-
-    return view;
+    for (ColorHarmonizationGridRowData colorHarmonizationGridRowData :
+        HARMONIZATION_GRID_ROW_DATA_LIST) {
+      createColorGridAndPopulateLayout(
+          dynamicColorsContext,
+          colorHarmonizationGridRowData,
+          colorHarmonizationGridRowData.getLeftLayoutId());
+      createColorGridAndPopulateLayout(
+          harmonizedContext,
+          colorHarmonizationGridRowData,
+          colorHarmonizationGridRowData.getRightLayoutId());
+    }
+    // Setup buttons text color based on current theme.
+    for (HarmonizableButtonData harmonizableButtonData : HARMONIZABLE_BUTTON_DATA_LIST) {
+      harmonizableButtonList.add(HarmonizableButton.create(demoView, harmonizableButtonData));
+    }
+    updateButtons(/* harmonize= */ false);
+    SwitchMaterial enabledSwitch = demoView.findViewById(R.id.cat_color_enabled_switch);
+    enabledSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> updateButtons(isChecked));
+    return demoView;
   }
 
-  private int maybeHarmonizeWithPrimary(@ColorRes int colorResId, boolean harmonize) {
-    return harmonize
-        ? MaterialColors.harmonizeWithPrimary(getContext(), getResources().getColor(colorResId))
-        : getResources().getColor(colorResId);
+  private void createColorGridAndPopulateLayout(
+      Context context,
+      ColorHarmonizationGridRowData colorHarmonizationGridRowData,
+      @IdRes int layoutId) {
+    ColorGrid colorGrid =
+        ColorGrid.createFromColorGridData(
+            ColorGridData.createFromColorResId(
+                context,
+                colorHarmonizationGridRowData.getColorResId(),
+                colorHarmonizationGridRowData.getColorNameIds()));
+    LinearLayout layout = demoView.findViewById(layoutId);
+    layout.addView(colorGrid.renderView(context, layout));
   }
 
-  private CharSequence getColorHexValueText(@StringRes int stringResId, @ColorInt int color) {
-    return getResources().getString(stringResId, String.format("#%06X", (0xFFFFFF & color)));
-  }
-
-  @LayoutRes
-  protected int getColorsContent() {
-    return R.layout.cat_colors_harmonization_fragment;
+  private void updateButtons(boolean harmonize) {
+    for (HarmonizableButton button : harmonizableButtonList) {
+      button.updateColors(harmonize);
+    }
   }
 }

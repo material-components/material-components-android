@@ -16,10 +16,9 @@
 -->
 <resources>
 
-  <color name="red40">#ffd93025</color>
-  <color name="green40">#ff1e8e3e</color>
-  <color name="blue90">#ffd9e6f9</color>
-  <color name="grey10">#ff202124</color>
-
+  <color name="error_reference">#ffba1b1b</color>
+  <color name="yellow_reference">#ffffbb29</color>
+  <color name="green_reference">#ff1ea446</color>
+  <color name="blue_reference">#ff1b6ef3</color>
 
 </resources>

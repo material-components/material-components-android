@@ -35,7 +35,7 @@ final class ColorGrid {
   @NonNull private final MaterialColorSpec materialColorSpecAccentContainer;
   @NonNull private final MaterialColorSpec materialColorSpecOnAccentContainer;
 
-  static ColorGrid createFromColorGridData(Context context, ColorGridData colorGridData) {
+  static ColorGrid createFromColorGridData(ColorGridData colorGridData) {
     ColorRoles colorRoles = colorGridData.getColorRoles();
     ColorRoleNames colorRoleNames = colorGridData.getColorRoleNames();
     MaterialColorSpec[] materialColorSpecs =

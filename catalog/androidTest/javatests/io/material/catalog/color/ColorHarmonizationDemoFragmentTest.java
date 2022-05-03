@@ -17,7 +17,7 @@
 package io.material.catalog.color;
 
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -32,7 +32,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-/** Tests for {@link ColorHarmonizationFragment} */
+/** Tests for {@link ColorHarmonizationDemoFragment} */
 @MediumTest
 @RunWith(AndroidJUnit4.class)
 public class ColorHarmonizationDemoFragmentTest {
@@ -57,11 +57,34 @@ public class ColorHarmonizationDemoFragmentTest {
   }
 
   @Test
-  public void checkColorHexValueTextIsShown() {
-    onView(withId(R.id.cat_color_enabled_switch)).perform(click());
+  public void checkButtonsAreShown() {
+    onView(withId(R.id.red_button_dark)).perform(scrollTo()).check(matches(isDisplayed()));
+    onView(withId(R.id.red_button_light)).perform(scrollTo()).check(matches(isDisplayed()));
+    onView(withId(R.id.yellow_button_dark)).perform(scrollTo()).check(matches(isDisplayed()));
+    onView(withId(R.id.yellow_button_light)).perform(scrollTo()).check(matches(isDisplayed()));
+    onView(withId(R.id.green_button_dark)).perform(scrollTo()).check(matches(isDisplayed()));
+    onView(withId(R.id.green_button_light)).perform(scrollTo()).check(matches(isDisplayed()));
+    onView(withId(R.id.blue_button_dark)).perform(scrollTo()).check(matches(isDisplayed()));
+    onView(withId(R.id.blue_button_light)).perform(scrollTo()).check(matches(isDisplayed()));
+  }
 
-    onView(withId(R.id.material_button_color_hex_value)).check(matches(isDisplayed()));
-    onView(withId(R.id.material_unelevated_button_color_hex_value)).check(matches(isDisplayed()));
-    onView(withId(R.id.material_text_input_color_hex_value)).check(matches(isDisplayed()));
+  @Test
+  public void checkColorPalettesAreShown() {
+    onView(withId(R.id.cat_colors_error)).perform(scrollTo()).check(matches(isDisplayed()));
+    onView(withId(R.id.cat_colors_harmonized_error))
+        .perform(scrollTo())
+        .check(matches(isDisplayed()));
+    onView(withId(R.id.cat_colors_yellow)).perform(scrollTo()).check(matches(isDisplayed()));
+    onView(withId(R.id.cat_colors_harmonized_yellow))
+        .perform(scrollTo())
+        .check(matches(isDisplayed()));
+    onView(withId(R.id.cat_colors_green)).perform(scrollTo()).check(matches(isDisplayed()));
+    onView(withId(R.id.cat_colors_harmonized_green))
+        .perform(scrollTo())
+        .check(matches(isDisplayed()));
+    onView(withId(R.id.cat_colors_blue)).perform(scrollTo()).check(matches(isDisplayed()));
+    onView(withId(R.id.cat_colors_harmonized_blue))
+        .perform(scrollTo())
+        .check(matches(isDisplayed()));
   }
 }

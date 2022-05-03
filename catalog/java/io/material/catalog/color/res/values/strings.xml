@@ -68,4 +68,60 @@
   <string name="cat_color_role_on_error_container" translatable="false">On Error Container</string>
   <string name="cat_color_role_outline" translatable="false">Outline</string>
 
+  <string name="cat_color_role_yellow" translatable="false">Yellow</string>
+  <string name="cat_color_role_on_yellow" translatable="false">On Yellow</string>
+  <string name="cat_color_role_yellow_container" translatable="false">Yellow Container</string>
+  <string name="cat_color_role_on_yellow_container" translatable="false">On Yellow Container</string>
+  <string name="cat_color_role_green" translatable="false">Green</string>
+  <string name="cat_color_role_on_green" translatable="false">On Green</string>
+  <string name="cat_color_role_green_container" translatable="false">Green Container</string>
+  <string name="cat_color_role_on_green_container" translatable="false">On Green Container</string>
+  <string name="cat_color_role_blue" translatable="false">Blue</string>
+  <string name="cat_color_role_on_blue" translatable="false">On Blue</string>
+  <string name="cat_color_role_blue_container" translatable="false">Blue Container</string>
+  <string name="cat_color_role_on_blue_container" translatable="false">On Blue Container</string>
+
+  <string name="cat_color_role__error" translatable="false">Error</string>
+  <string name="cat_color_role_harmonized_error" translatable="false">Harmonized Error</string>
+  <string name="cat_color_role_harmonized_yellow" translatable="false">Harmonized Yellow</string>
+  <string name="cat_color_role_harmonized_green" translatable="false">Harmonized Green</string>
+  <string name="cat_color_role_harmonized_blue" translatable="false">Harmonized Blue</string>
+
+  <string name="cat_red_button_dark" translatable="false">Error Button 1</string>
+  <string name="cat_red_button_light" translatable="false">Error Button 2</string>
+  <string name="cat_yellow_button_dark" translatable="false">Yellow Button 1</string>
+  <string name="cat_yellow_button_light" translatable="false">Yellow Button 2</string>
+  <string name="cat_green_button_dark" translatable="false">Green Button 1</string>
+  <string name="cat_green_button_light" translatable="false">Green Button 2</string>
+  <string name="cat_blue_button_dark" translatable="false">Blue Button 1</string>
+  <string name="cat_blue_button_light" translatable="false">Blue Button 2</string>
+
+  <string-array name="cat_error_strings">
+      <item>@string/cat_color_role_error</item>
+      <item>@string/cat_color_role_on_error</item>
+      <item>@string/cat_color_role_error_container</item>
+      <item>@string/cat_color_role_on_error_container</item>
+  </string-array>
+
+  <string-array name="cat_yellow_strings">
+    <item>@string/cat_color_role_yellow</item>
+    <item>@string/cat_color_role_on_yellow</item>
+    <item>@string/cat_color_role_yellow_container</item>
+    <item>@string/cat_color_role_on_yellow_container</item>
+  </string-array>
+
+  <string-array name="cat_green_strings">
+    <item>@string/cat_color_role_green</item>
+    <item>@string/cat_color_role_on_green</item>
+    <item>@string/cat_color_role_green_container</item>
+    <item>@string/cat_color_role_on_green_container</item>
+  </string-array>
+
+  <string-array name="cat_blue_strings">
+    <item>@string/cat_color_role_blue</item>
+    <item>@string/cat_color_role_on_blue</item>
+    <item>@string/cat_color_role_blue_container</item>
+    <item>@string/cat_color_role_on_blue_container</item>
+  </string-array>
+
 </resources>
