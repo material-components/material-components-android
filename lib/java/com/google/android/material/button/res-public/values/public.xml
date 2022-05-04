@@ -26,6 +26,7 @@
   <public name="iconTint" type="attr"/>
   <public name="iconTintMode" type="attr"/>
   <public name="materialButtonStyle" type="attr"/>
+  <public name="materialIconButtonStyle" type="attr"/>
   <public name="materialButtonOutlinedStyle" type="attr"/>
   <public name="materialButtonToggleGroupStyle" type="attr"/>
   <public name="Widget.MaterialComponents.Button" type="style"/>

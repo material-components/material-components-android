@@ -23,6 +23,7 @@ and make choices, with a single tap.
 *   [Outlined button](#outlined-button)
 *   [Text button](#text-button)
 *   [Toggle button](#toggle-button)
+*   [Icon button](#icon-button)
 *   [Theming](#theming-buttons)
 
 ## Using buttons
@@ -81,11 +82,11 @@ In the layout:
 
 ```xml
 <Button
+    style="@style/Widget.Material3.Button.ElevatedButton"
     android:id="@+id/elevatedButton"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="Elevated button"
-    style="@style/Widget.Material3.Button.ElevatedButton"
 />
 ```
 
@@ -108,9 +109,9 @@ In the layout:
 
 ```xml
 <Button
+    style="@style/Widget.Material3.Button.ElevatedButton.Icon"
     ...
     app:icon="@drawable/ic_add_24dp"
-    style="@style/Widget.Material3.Button.ElevatedButton.Icon"
 />
 ```
 
@@ -221,9 +222,9 @@ In the layout:
 
 ```xml
 <Button
+    style="@style/Widget.Material3.Button.Icon"
     ...
     app:icon="@drawable/ic_add_24dp"
-    style="@style/Widget.Material3.Button.Icon"
 />
 ```
 
@@ -308,11 +309,11 @@ In the layout:
 
 ```xml
 <Button
+    style="@style/Widget.Material3.Button.TonalButton"
     android:id="@+id/filledTonalButton"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="Filled tonal button"
-    style="@style/Widget.Material3.Button.TonalButton"
 />
 ```
 
@@ -336,9 +337,9 @@ In the layout:
 
 ```xml
 <Button
+    style="@style/Widget.Material3.Button.TonalButton.Icon"
     ...
     app:icon="@drawable/ic_add_24dp"
-    style="@style/Widget.Material3.Button.TonalButton.Icon"
 />
 ```
 
@@ -418,11 +419,11 @@ In the layout:
 
 ```xml
 <Button
+    style="?attr/materialButtonOutlinedStyle"
     android:id="@+id/outlinedButton"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="Outlined button"
-    style="?attr/materialButtonOutlinedStyle"
 />
 ```
 
@@ -445,9 +446,9 @@ In the layout:
 
 ```xml
 <Button
+    style="@style/Widget.Material3.Button.OutlinedButton.Icon"
     ...
     app:icon="@drawable/ic_add_24dp"
-    style="@style/Widget.Material3.Button.OutlinedButton.Icon"
 />
 ```
 
@@ -526,11 +527,11 @@ In the layout:
 
 ```xml
 <Button
+    style="@style/Widget.Material3.Button.TextButton"
     android:id="@+id/textButton"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="Text button"
-    style="@style/Widget.Material3.Button.TextButton"
 />
 ```
 
@@ -553,9 +554,9 @@ In the layout:
 
 ```xml
 <Button
+    style="@style/Widget.Material3.Button.TextButton.Icon"
     ...
     app:icon="@drawable/ic_add_24dp"
-    style="@style/Widget.Material3.Button.TextButton.Icon"
 />
 ```
 
@@ -653,25 +654,25 @@ In the layout:
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
     <Button
+        style="?attr/materialButtonOutlinedStyle"
         android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Button 1"
-        style="?attr/materialButtonOutlinedStyle"
     />
     <Button
+        style="?attr/materialButtonOutlinedStyle"
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Button 2"
-        style="?attr/materialButtonOutlinedStyle"
     />
     <Button
+        style="?attr/materialButtonOutlinedStyle"
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Button 3"
-        style="?attr/materialButtonOutlinedStyle"
     />
 </com.google.android.material.button.MaterialButtonToggleGroup>
 ```
@@ -711,19 +712,19 @@ In the layout:
 <com.google.android.material.button.MaterialButtonToggleGroup
     ...>
     <Button
+        style="@style/Widget.App.Button.OutlinedButton.IconOnly"
         ...
         app:icon="@drawable/ic_favorite_24dp"
-        style="@style/Widget.App.Button.OutlinedButton.IconOnly"
     />
     <Button
+        style="@style/Widget.App.Button.OutlinedButton.IconOnly"
         ...
         app:icon="@drawable/ic_add_24dp"
-        style="@style/Widget.App.Button.OutlinedButton.IconOnly"
     />
     <Button
+        style="@style/Widget.App.Button.OutlinedButton.IconOnly"
         ...
         app:icon="@drawable/ic_search_24dp"
-        style="@style/Widget.App.Button.OutlinedButton.IconOnly"
     />
 </com.google.android.material.button.MaterialButtonToggleGroup>
 ```
@@ -816,6 +817,64 @@ icon.setOnCheckedChangeListener { checkBox, isChecked ->
 }
 ```
 
+## Icon button
+
+[Icon buttons](https://material.io/components/buttons/#icon-buttons) help users
+take supplementary actions with a single tap.
+
+### Usage
+
+*   Icon buttons should be used when a compact button is required, such as in a
+    toolbar.
+*   Icon buttons can take the form of a wide range of system icons.
+*   Ensure the meaning of the icon is unambiguous.
+*   Ensure that the tooltip describes the button’s action, rather than
+    the icon.
+
+#### Icon button examples
+
+API and source code:
+
+*   `MaterialButton`
+    *   [Class description](https://developer.android.com/reference/com/google/android/material/button/MaterialButton)
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/MaterialButton.java)
+
+The following example shows a standard icon button.
+
+!["Standard icon button example for Android over a white background."](assets/buttons/icon-button-standard.png)
+
+In the layout:
+
+```xml
+<Button
+    style="?attr/materialIconButtonStyle"
+    android:id="@+id/iconButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+/>
+```
+
+In code:
+
+```kt
+iconButton.addOnButtonCheckedListener { iconButton, checkedId, isChecked ->
+    // Respond to button selection
+}
+```
+
+#### Styles & Theme attributes
+
+Element           | Style
+----------------- | ------------------------------------
+**Default style** | `Widget.Material3.Button.IconButton`
+
+Default style theme attribute: `?attr/materialIconButtonStyle`
+
+See the full list of
+[styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/values/styles.xml)
+and
+[attrs](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/values/attrs.xml).
+
 ## Theming buttons
 
 Buttons support
@@ -904,7 +963,7 @@ Use one of the styles in the layout. That will affect only this button:
 
 ```xml
 <Button
-    ...
     style="@style/Widget.App.Button"
+    ...
 />
 ```

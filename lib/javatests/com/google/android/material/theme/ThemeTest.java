@@ -368,6 +368,7 @@ public class ThemeTest {
           R.attr.floatingActionButtonLargeTertiaryStyle,
           R.attr.floatingActionButtonLargeSurfaceStyle,
           R.attr.linearProgressIndicatorStyle,
+          R.attr.materialIconButtonStyle,
           R.attr.materialButtonOutlinedStyle,
           R.attr.materialButtonStyle,
           R.attr.materialCardViewStyle,

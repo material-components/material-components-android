@@ -104,6 +104,7 @@
     <item name="floatingActionButtonLargeTertiaryStyle">@style/Widget.Material3.FloatingActionButton.Large.Tertiary</item>
     <item name="floatingActionButtonLargeSurfaceStyle">@style/Widget.Material3.FloatingActionButton.Large.Surface</item>
     <item name="linearProgressIndicatorStyle">@style/Widget.Material3.LinearProgressIndicator</item>
+    <item name="materialIconButtonStyle">@style/Widget.Material3.Button.IconButton</item>
     <item name="materialButtonOutlinedStyle">@style/Widget.Material3.Button.OutlinedButton</item>
     <item name="materialButtonStyle">@style/Widget.Material3.Button</item>
     <item name="materialCardViewStyle">?attr/materialCardViewOutlinedStyle</item>
@@ -328,6 +329,7 @@
     <item name="floatingActionButtonLargeTertiaryStyle">@style/Widget.Material3.FloatingActionButton.Large.Tertiary</item>
     <item name="floatingActionButtonLargeSurfaceStyle">@style/Widget.Material3.FloatingActionButton.Large.Surface</item>
     <item name="linearProgressIndicatorStyle">@style/Widget.Material3.LinearProgressIndicator</item>
+    <item name="materialIconButtonStyle">@style/Widget.Material3.Button.IconButton</item>
     <item name="materialButtonOutlinedStyle">@style/Widget.Material3.Button.OutlinedButton</item>
     <item name="materialButtonStyle">@style/Widget.Material3.Button</item>
     <item name="materialCardViewStyle">?attr/materialCardViewOutlinedStyle</item>
