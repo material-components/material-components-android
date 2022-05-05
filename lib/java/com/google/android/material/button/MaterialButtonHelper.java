@@ -143,11 +143,9 @@ class MaterialButtonHelper {
     MaterialShapeDrawable materialShapeDrawable = getMaterialShapeDrawable();
     if (materialShapeDrawable != null) {
       materialShapeDrawable.setElevation(elevation);
-      if (IS_LOLLIPOP) {
-        // Fix the issue that on Lollipop, when first assigned as View's background, RippleDrawable
-        // won't/can't propagate states to its content drawable. (It somehow works afterwards.)
-        materialShapeDrawable.setState(materialButton.getDrawableState());
-      }
+      // Workaround (b/231320562): Setting background will cause drawables wrapped inside a
+      // RippleDrawable lose their states, we need to reset the state here.
+      materialShapeDrawable.setState(materialButton.getDrawableState());
     }
   }
 
