@@ -992,24 +992,18 @@ public final class CollapsingTextHelper {
     float availableWidth;
     float newTextSize;
     float newLetterSpacing;
-    boolean updateDrawText = false;
+    Typeface newTypeface;
 
     if (isClose(fraction, /* targetValue= */ 1)) {
       newTextSize = collapsedTextSize;
       newLetterSpacing = collapsedLetterSpacing;
       scale = 1f;
-      if (currentTypeface != collapsedTypeface) {
-        currentTypeface = collapsedTypeface;
-        updateDrawText = true;
-      }
+      newTypeface = collapsedTypeface;
       availableWidth = collapsedWidth;
     } else {
       newTextSize = expandedTextSize;
       newLetterSpacing = expandedLetterSpacing;
-      if (currentTypeface != expandedTypeface) {
-        currentTypeface = expandedTypeface;
-        updateDrawText = true;
-      }
+      newTypeface = expandedTypeface;
       if (isClose(fraction, /* targetValue= */ 0)) {
         // If we're close to the expanded text size, snap to it and use a scale of 1
         scale = 1f;
@@ -1042,19 +1036,26 @@ public final class CollapsingTextHelper {
       }
     }
 
+    boolean updateDrawText;
     if (availableWidth > 0) {
       boolean textSizeChanged = currentTextSize != newTextSize;
       boolean letterSpacingChanged = currentLetterSpacing != newLetterSpacing;
+      boolean typefaceChanged = currentTypeface != newTypeface;
       boolean availableWidthChanged = textLayout != null && availableWidth != textLayout.getWidth();
       updateDrawText =
           textSizeChanged
               || letterSpacingChanged
               || availableWidthChanged
-              || boundsChanged
-              || updateDrawText;
+              || typefaceChanged
+              || boundsChanged;
       currentTextSize = newTextSize;
       currentLetterSpacing = newLetterSpacing;
+      currentTypeface = newTypeface;
       boundsChanged = false;
+      // Use linear text scaling if we're scaling the canvas
+      textPaint.setLinearText(scale != 1f);
+    } else {
+      updateDrawText = false;
     }
 
     if (textToDraw == null || updateDrawText) {
@@ -1063,8 +1064,6 @@ public final class CollapsingTextHelper {
       if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
         textPaint.setLetterSpacing(currentLetterSpacing);
       }
-      // Use linear text scaling if we're scaling the canvas
-      textPaint.setLinearText(scale != 1f);
 
       isRtl = calculateIsRtl(text);
       textLayout = createStaticLayout(shouldDrawMultiline() ? maxLines : 1, availableWidth, isRtl);
