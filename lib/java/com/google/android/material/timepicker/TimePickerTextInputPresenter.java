@@ -19,7 +19,6 @@ package com.google.android.material.timepicker;
 import com.google.android.material.R;
 
 import static android.view.View.GONE;
-import static androidx.core.content.ContextCompat.getSystemService;
 import static com.google.android.material.timepicker.TimeFormat.CLOCK_12H;
 import static java.util.Calendar.AM;
 import static java.util.Calendar.HOUR;
@@ -38,7 +37,6 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -48,6 +46,7 @@ import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.button.MaterialButtonToggleGroup.OnButtonCheckedListener;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.TextWatcherAdapter;
+import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.timepicker.TimePickerView.OnSelectionChange;
 import java.lang.reflect.Field;
 import java.util.Locale;
@@ -236,16 +235,10 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
   @Override
   public void hide() {
     View currentFocus = timePickerView.getFocusedChild();
-    // Hide keyboard in case it was showing.
-    if (currentFocus == null) {
-      timePickerView.setVisibility(GONE);
-      return;
+    if (currentFocus != null) {
+      ViewUtils.hideKeyboard(currentFocus);
     }
-    Context context = timePickerView.getContext();
-    InputMethodManager imm = getSystemService(context, InputMethodManager.class);
-    if (imm != null) {
-      imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
-    }
+
     timePickerView.setVisibility(GONE);
   }
 

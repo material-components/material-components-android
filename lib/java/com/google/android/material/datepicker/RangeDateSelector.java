@@ -232,9 +232,22 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
           }
         });
 
-    ViewUtils.requestFocusAndShowKeyboard(startEditText);
+    setUpKeyboardBehavior(startEditText, endEditText);
 
     return root;
+  }
+
+  private void setUpKeyboardBehavior(EditText startEditText, EditText endEditText) {
+    View.OnFocusChangeListener listener = (v, hasFocus) -> {
+      if (!startEditText.hasFocus() && !endEditText.hasFocus()) {
+        ViewUtils.hideKeyboard(v);
+      }
+    };
+
+    startEditText.setOnFocusChangeListener(listener);
+    endEditText.setOnFocusChangeListener(listener);
+
+    ViewUtils.requestFocusAndShowKeyboard(startEditText);
   }
 
   private boolean isValidRange(long start, long end) {

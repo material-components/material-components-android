@@ -133,9 +133,21 @@ public class SingleDateSelector implements DateSelector<Long> {
           }
         });
 
-    ViewUtils.requestFocusAndShowKeyboard(dateEditText);
+    setUpKeyboardBehavior(dateEditText);
 
     return root;
+  }
+
+  private void setUpKeyboardBehavior(EditText dateEditText) {
+    View.OnFocusChangeListener listener = (v, hasFocus) -> {
+      if (!dateEditText.hasFocus()) {
+        ViewUtils.hideKeyboard(v);
+      }
+    };
+
+    dateEditText.setOnFocusChangeListener(listener);
+
+    ViewUtils.requestFocusAndShowKeyboard(dateEditText);
   }
 
   @Override
