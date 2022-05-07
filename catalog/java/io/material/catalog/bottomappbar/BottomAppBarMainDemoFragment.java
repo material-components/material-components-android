@@ -220,7 +220,7 @@ public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBack
   }
 
   protected void setUpBottomDrawer(View view) {
-    View bottomDrawer = coordinatorLayout.findViewById(R.id.bottom_drawer);
+    View bottomDrawer = coordinatorLayout.findViewById(R.id.navigation_view);
     bottomDrawerBehavior = BottomSheetBehavior.from(bottomDrawer);
     bottomDrawerBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
 
