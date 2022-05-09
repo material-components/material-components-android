@@ -21,6 +21,8 @@
   <attr name="materialButtonStyle" format="reference"/>
   <!-- Style to use for Material Icon Only Buttons in this theme. -->
   <attr name="materialIconButtonStyle" format="reference"/>
+  <!-- Style to use for Filled Material Icon Only Buttons in this theme. -->
+  <attr name="materialIconButtonFilledStyle" format="reference"/>
   <!-- Style to use for Material Outlined Buttons in this theme. -->
   <attr name="materialButtonOutlinedStyle" format="reference"/>
   <!-- Style to use for MaterialButtonToggleGroups in this theme. -->
