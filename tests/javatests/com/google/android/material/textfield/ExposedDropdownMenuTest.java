@@ -40,6 +40,8 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNull;
 
 import android.app.Activity;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.text.InputType;
@@ -121,6 +123,27 @@ public class ExposedDropdownMenuTest {
     assertThat(editableTypeBackground, not(instanceOf(LayerDrawable.class)));
     // Assert second switch updated the background back to an instance of LayerDrawable.
     assertThat(editText.getBackground(), instanceOf(LayerDrawable.class));
+  }
+
+  @Test
+  public void testSetSimpleItemSelectedColor_succeeds() {
+    Activity activity = activityTestRule.getActivity();
+    MaterialAutoCompleteTextView editText = activity.findViewById(R.id.edittext_filled);
+
+    editText.setSimpleItemSelectedColor(Color.BLUE);
+
+    assertThat(editText.getSimpleItemSelectedColor(), is(Color.BLUE));
+  }
+
+  @Test
+  public void testSetSimpleItemSelectedRippleColor_succeeds() {
+    Activity activity = activityTestRule.getActivity();
+    MaterialAutoCompleteTextView editText = activity.findViewById(R.id.edittext_filled);
+
+    editText.setSimpleItemSelectedRippleColor(ColorStateList.valueOf(Color.BLUE));
+
+    assertThat(
+        editText.getSimpleItemSelectedRippleColor(), is(ColorStateList.valueOf(Color.BLUE)));
   }
 
   @Test

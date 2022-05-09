@@ -206,7 +206,7 @@ See the full list of
 
 ### Implementing an exposed dropdown menu
 
-!["Text field with an exposed dropdown menu."](assets/textfields/textfields_exposed_dropdown_menu.png)
+!["Text field with an exposed dropdown menu."](assets/menu/menus_exposed_dropdown_outlined.png)
 
 In the layout:
 
