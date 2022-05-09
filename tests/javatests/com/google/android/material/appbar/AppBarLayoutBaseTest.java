@@ -27,7 +27,9 @@ import static com.google.android.material.testutils.TestUtilsActions.setText;
 import static com.google.android.material.testutils.TestUtilsActions.setTitle;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import android.graphics.Color;
 import android.os.Build;
@@ -146,6 +148,16 @@ public abstract class AppBarLayoutBaseTest extends BaseDynamicCoordinatorLayoutT
           AccessibilityUtils.hasAction(
               mCoordinatorLayout, AccessibilityNodeInfoCompat.ACTION_SCROLL_BACKWARD),
           equalTo(hasScrollBackward));
+    }
+  }
+
+  protected void assertAccessibilityScrollable(boolean isScrollable) {
+    AccessibilityNodeInfoCompat info = AccessibilityNodeInfoCompat.obtain();
+    ViewCompat.onInitializeAccessibilityNodeInfo(mCoordinatorLayout, info);
+    if (isScrollable) {
+      assertTrue(info.isScrollable());
+    } else {
+      assertFalse(info.isScrollable());
     }
   }
 }

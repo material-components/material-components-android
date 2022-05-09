@@ -275,6 +275,7 @@ public class AppBarWithToolbarTest extends AppBarLayoutBaseTest {
     // Very top of screen, can scroll forward to collapse but can't scroll backward.
     assertAccessibilityHasScrollForwardAction(true);
     assertAccessibilityHasScrollBackwardAction(false);
+    assertAccessibilityScrollable(true);
 
     // Perform a swipe-up gesture across the horizontal center of the screen.
     performVerticalSwipeUpGesture(
@@ -287,6 +288,7 @@ public class AppBarWithToolbarTest extends AppBarLayoutBaseTest {
     // the bar will always be entered/expanded on scroll.
     assertAccessibilityHasScrollForwardAction(false);
     assertAccessibilityHasScrollBackwardAction(true);
+    assertAccessibilityScrollable(true);
   }
 
   @Test
@@ -306,6 +308,8 @@ public class AppBarWithToolbarTest extends AppBarLayoutBaseTest {
 
     assertAccessibilityHasScrollForwardAction(true);
     assertAccessibilityHasScrollBackwardAction(false);
+    assertAccessibilityScrollable(true);
+
     activityTestRule.runOnUiThread(
         () -> {
           mCoordinatorLayout.removeAllViews();
@@ -313,6 +317,7 @@ public class AppBarWithToolbarTest extends AppBarLayoutBaseTest {
 
     assertAccessibilityHasScrollForwardAction(false);
     assertAccessibilityHasScrollBackwardAction(false);
+    assertAccessibilityScrollable(false);
   }
 
   @Test
@@ -330,12 +335,16 @@ public class AppBarWithToolbarTest extends AppBarLayoutBaseTest {
 
     AppBarLayout.LayoutParams lp = (AppBarLayout.LayoutParams) mToolbar.getLayoutParams();
 
-    // Disable scrolling and update the a11y actions.
+    // Disable scrolling and call onLayout to update the a11y actions.
     lp.setScrollFlags(SCROLL_FLAG_NO_SCROLL);
     activityTestRule.runOnUiThread(
         () -> {
           mToolbar.setLayoutParams(lp);
+          final CoordinatorLayout.Behavior<AppBarLayout> behavior =
+              ((CoordinatorLayout.LayoutParams) mAppBar.getLayoutParams()).getBehavior();
+          behavior.onLayoutChild(mCoordinatorLayout, mAppBar, mAppBar.getLayoutDirection());
         });
+
     assertAccessibilityHasScrollForwardAction(false);
     assertAccessibilityHasScrollBackwardAction(false);
 
@@ -344,10 +353,14 @@ public class AppBarWithToolbarTest extends AppBarLayoutBaseTest {
     activityTestRule.runOnUiThread(
         () -> {
           mToolbar.setLayoutParams(lp);
+          final CoordinatorLayout.Behavior<AppBarLayout> behavior =
+              ((CoordinatorLayout.LayoutParams) mAppBar.getLayoutParams()).getBehavior();
+          behavior.onLayoutChild(mCoordinatorLayout, mAppBar, mAppBar.getLayoutDirection());
         });
     // Can scroll forward to collapse, and cannot expand because it's already expanded.
     assertAccessibilityHasScrollForwardAction(true);
     assertAccessibilityHasScrollBackwardAction(false);
+    assertAccessibilityScrollable(true);
 
     // Perform a swipe-up gesture across the horizontal center of the screen. The toolbar should be
     // collapsed.
@@ -361,5 +374,6 @@ public class AppBarWithToolbarTest extends AppBarLayoutBaseTest {
     // for SCROLL_FLAG_SCROLL, so it can't scroll backward.
     assertAccessibilityHasScrollForwardAction(false);
     assertAccessibilityHasScrollBackwardAction(false);
+    assertAccessibilityScrollable(false);
   }
 }
