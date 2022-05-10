@@ -149,7 +149,7 @@ public class MenuMainDemoFragment extends DemoFragment {
   public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
     TextView contextMenuTextView = (TextView) v;
     Context context = getContext();
-    menu.add(android.R.string.copy)
+    menu.add(R.string.context_menu_copy)
         .setOnMenuItemClickListener(
             item -> {
               ClipboardManager clipboard =
