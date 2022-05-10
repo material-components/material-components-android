@@ -280,6 +280,11 @@
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Button</item>
   </style>
 
+  <style name="Widget.Material3.Button.IconButton.Filled.Tonal">
+    <item name="rippleColor">@color/m3_tonal_button_ripple_color_selector</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Button.TonalButton</item>
+  </style>
+
   <!-- DEPRECATED -->
   <style name="ShapeAppearanceOverlay.Material3.Button" parent="">
     <item name="cornerSize">50%</item>

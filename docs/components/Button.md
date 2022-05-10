@@ -889,12 +889,30 @@ In the layout:
 />
 ```
 
+#### Filled Tonal Icon button
+
+The following example shows a tonal icon button.
+
+!["Filled tonal icon button example for Android over a white background."](assets/buttons/filled-tonal-icon-button.png)
+
+In the layout:
+
+```xml
+<Button
+    style="?attr/materialIconButtonFilledTonalStyle"
+    android:id="@+id/iconButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+/>
+```
+
 #### Styles & Theme attributes
 
-Element                | Style                                       | Theme Attribute
----------------------- | ------------------------------------------- | ---------------
-**Default style**      | `Widget.Material3.Button.IconButton`        | `?attr/materialIconButtonStyle`
-**Filled Icon Button** | `Widget.Material3.Button.IconButton.Filled` | `?attr/materialIconButtonFilledStyle`
+Element                      | Style                                             | Theme Attribute
+---------------------------- | ------------------------------------------------- | ---------------
+**Default style**            | `Widget.Material3.Button.IconButton`              | `?attr/materialIconButtonStyle`
+**Filled Icon Button**       | `Widget.Material3.Button.IconButton.Filled`       | `?attr/materialIconButtonFilledStyle`
+**Filled Tonal Icon Button** | `Widget.Material3.Button.IconButton.Filled.Tonal` | `?attr/materialIconButtonFilledTonalStyle`
 
 See the full list of
 [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/values/styles.xml)

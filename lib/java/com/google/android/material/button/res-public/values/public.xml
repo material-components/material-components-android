@@ -28,6 +28,7 @@
   <public name="materialButtonStyle" type="attr"/>
   <public name="materialIconButtonStyle" type="attr"/>
   <public name="materialIconButtonFilledStyle" type="attr"/>
+  <public name="materialIconButtonFilledTonalStyle" type="attr"/>
   <public name="materialButtonOutlinedStyle" type="attr"/>
   <public name="materialButtonToggleGroupStyle" type="attr"/>
   <public name="Widget.MaterialComponents.Button" type="style"/>
@@ -53,6 +54,7 @@
   <public name="Widget.Material3.Button.ElevatedButton.Icon" type="style"/>
   <public name="Widget.Material3.Button.IconButton" type="style"/>
   <public name="Widget.Material3.Button.IconButton.Filled" type="style"/>
+  <public name="Widget.Material3.Button.IconButton.Filled.Tonal" type="style"/>
   <public name="ShapeAppearanceOverlay.Material3.Button" type="style"/>
   <public name="ThemeOverlay.Material3.Button" type="style"/>
   <public name="ThemeOverlay.Material3.Button.ElevatedButton" type="style"/>
