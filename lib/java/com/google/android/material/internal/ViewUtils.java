@@ -19,6 +19,7 @@ package com.google.android.material.internal;
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static androidx.core.content.ContextCompat.getSystemService;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -95,6 +96,13 @@ public class ViewUtils {
             inputMethodManager.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
           }
         });
+  }
+
+  public static void hideKeyboard(@NonNull final View view) {
+    InputMethodManager imm = getSystemService(view.getContext(), InputMethodManager.class);
+    if (imm != null) {
+      imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
   }
 
   /**

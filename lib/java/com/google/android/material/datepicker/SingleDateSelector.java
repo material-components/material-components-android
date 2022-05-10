@@ -33,7 +33,6 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.core.util.Pair;
 import com.google.android.material.internal.ManufacturerUtils;
-import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.textfield.TextInputLayout;
 import java.text.SimpleDateFormat;
@@ -133,7 +132,7 @@ public class SingleDateSelector implements DateSelector<Long> {
           }
         });
 
-    ViewUtils.requestFocusAndShowKeyboard(dateEditText);
+    DateSelector.showKeyboardWithAutoHideBehavior(dateEditText);
 
     return root;
   }

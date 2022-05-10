@@ -35,7 +35,6 @@ import androidx.annotation.RestrictTo.Scope;
 import androidx.core.util.Pair;
 import androidx.core.util.Preconditions;
 import com.google.android.material.internal.ManufacturerUtils;
-import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.textfield.TextInputLayout;
 import java.text.SimpleDateFormat;
@@ -232,7 +231,7 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
           }
         });
 
-    ViewUtils.requestFocusAndShowKeyboard(startEditText);
+    DateSelector.showKeyboardWithAutoHideBehavior(startEditText, endEditText);
 
     return root;
   }
