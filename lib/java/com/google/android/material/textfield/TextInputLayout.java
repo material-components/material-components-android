@@ -4239,6 +4239,15 @@ public class TextInputLayout extends LinearLayout {
           info.setLabelFor(helperTextView);
         }
       }
+
+      layout.endLayout.getEndIconDelegate().onInitializeAccessibilityNodeInfo(host, info);
+    }
+
+    @Override
+    public void onPopulateAccessibilityEvent(
+        @NonNull View host, @NonNull AccessibilityEvent event) {
+      super.onPopulateAccessibilityEvent(host, event);
+      layout.endLayout.getEndIconDelegate().onPopulateAccessibilityEvent(host, event);
     }
   }
 }

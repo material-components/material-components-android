@@ -18,12 +18,15 @@ package com.google.android.material.textfield;
 
 import android.content.Context;
 import android.text.Editable;
+import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.view.accessibility.AccessibilityEvent;
 import android.widget.EditText;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import com.google.android.material.internal.CheckableImageButton;
 import com.google.android.material.textfield.TextInputLayout.BoxBackgroundMode;
 
@@ -122,4 +125,17 @@ abstract class EndIconDelegate {
    * @see android.text.TextWatcher#afterTextChanged(Editable)
    */
   void afterEditTextChanged(Editable s) {}
+
+  /**
+   * This method will be called when the associated {@link TextInputLayout} is initializing the
+   * accessibility node info.
+   */
+  void onInitializeAccessibilityNodeInfo(View host, @NonNull AccessibilityNodeInfoCompat info) {}
+
+  /**
+   * This method will be called when the associated {@link TextInputLayout} is populating a
+   * accessibility event.
+   */
+  void onPopulateAccessibilityEvent(View host, @NonNull AccessibilityEvent event) {}
 }
+
