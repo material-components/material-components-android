@@ -42,12 +42,18 @@
       app:layout_anchor="@id/bar"
       app:srcCompat="@drawable/ic_add_24px"/>
 
-  <com.google.android.material.navigation.NavigationView
-    android:id="@+id/navigation_view"
+  <FrameLayout
+    android:id="@+id/bottom_drawer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:menu="@menu/demo_primary"
     app:layout_behavior="@string/bottom_sheet_behavior"
-    style="@style/Widget.Material3.BottomSheet"/>
+    style="@style/Widget.Material3.BottomSheet">
+
+    <com.google.android.material.navigation.NavigationView
+      android:id="@+id/navigation_view"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:menu="@menu/demo_primary"/>
+  </FrameLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
