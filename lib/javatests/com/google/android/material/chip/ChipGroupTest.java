@@ -260,4 +260,17 @@ public class ChipGroupTest {
     assertEquals(1, itemInfo.getRowIndex());
     assertTrue(itemInfo.isSelected());
   }
+
+  @Test
+  public void getChipAccessibilityClassName_multipleChecked_buttonName() {
+    Chip chip = (Chip) chipgroup.getChildAt(0);
+    assertEquals("android.widget.Button", chip.getAccessibilityClassName().toString());
+  }
+
+  @Test
+  public void getChipAccessibilityClassName_singleChecked_radioButtonName() {
+    chipgroup.setSingleSelection(true);
+    Chip chip = (Chip) chipgroup.getChildAt(0);
+    assertEquals("android.widget.RadioButton", chip.getAccessibilityClassName().toString());
+  }
 }
