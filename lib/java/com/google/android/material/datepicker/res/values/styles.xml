@@ -15,7 +15,7 @@
     limitations under the License.
 -->
 
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
   <style name="MaterialAlertDialog.MaterialComponents.Picker.Date.Spinner" parent="android:Widget.DeviceDefault.DatePicker">
     <item name="backgroundInsetTop">@dimen/mtrl_alert_dialog_picker_background_inset</item>
@@ -203,13 +203,12 @@
     <item name="yearSelectedStyle">@style/Widget.Material3.MaterialCalendar.Year.Selected</item>
     <item name="yearTodayStyle">@style/Widget.Material3.MaterialCalendar.Year.Today</item>
     <item name="rangeFillColor">?attr/colorSurfaceVariant</item>
+    <item name="shapeAppearance">?attr/shapeAppearanceCornerExtraLarge</item>
   </style>
 
   <style name="Widget.Material3.MaterialCalendar.Fullscreen">
     <item name="android:windowFullscreen">true</item>
-    <item name="shapeAppearanceOverlay">
-      @style/ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar.Window.Fullscreen
-    </item>
+    <item name="shapeAppearance">@style/ShapeAppearance.Material3.Corner.None</item>
   </style>
 
   <style name="Widget.Material3.MaterialCalendar.HeaderLayout" parent="Widget.MaterialComponents.MaterialCalendar.HeaderLayout">
@@ -263,8 +262,7 @@
     <item name="itemTextColor">?attr/colorOnSurface</item>
     <item name="itemStrokeColor">@color/m3_calendar_item_stroke_color</item>
     <item name="itemStrokeWidth">1dp</item>
-    <item name="itemShapeAppearance">?attr/shapeAppearanceSmallComponent</item>
-    <item name="itemShapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar.Day</item>
+    <item name="itemShapeAppearance">@style/ShapeAppearance.Material3.Corner.Full</item>
   </style>
 
   <style name="Widget.Material3.MaterialCalendar.Day" parent="Widget.Material3.MaterialCalendar.Item">
@@ -294,9 +292,6 @@
   </style>
 
   <style name="Widget.Material3.MaterialCalendar.Year" parent="Widget.Material3.MaterialCalendar.Item">
-    <item name="itemShapeAppearanceOverlay">
-      @style/ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar.Year
-    </item>
     <item name="android:width">@dimen/mtrl_calendar_year_width</item>
     <item name="android:height">@dimen/mtrl_calendar_year_height</item>
     <item name="android:insetTop">@dimen/mtrl_calendar_year_vertical_padding</item>
