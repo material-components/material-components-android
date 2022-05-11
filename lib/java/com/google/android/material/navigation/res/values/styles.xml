@@ -57,7 +57,7 @@
     <item name="subheaderTextAppearance">?attr/textAppearanceTitleSmall</item>
     <item name="elevation">@dimen/m3_sys_elevation_level0</item>
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.NavigationView</item>
-    <item name="itemShapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Material3.NavigationView.Item</item>
+    <item name="itemShapeAppearance">@style/ShapeAppearance.Material3.Corner.Full</item>
     <item name="itemShapeInsetStart">@dimen/m3_navigation_item_shape_inset_start</item>
     <item name="itemShapeInsetTop">@dimen/m3_navigation_item_shape_inset_top</item>
     <item name="itemShapeInsetEnd">@dimen/m3_navigation_item_shape_inset_end</item>
@@ -87,9 +87,7 @@
     <item name="android:listDivider">?attr/colorOutline</item>
   </style>
 
-  <style name="ShapeAppearance.Material3.NavigationBarView.ActiveIndicator" parent="ShapeAppearance.Material3.SmallComponent">
-    <item name="cornerSize">50%</item>
-  </style>
+  <style name="ShapeAppearance.Material3.NavigationBarView.ActiveIndicator" parent="ShapeAppearance.Material3.Corner.Full"/>
 
   <!-- Style for Material3 DrawerLayout. -->
   <style name="Widget.Material3.DrawerLayout" parent="android:Widget">
