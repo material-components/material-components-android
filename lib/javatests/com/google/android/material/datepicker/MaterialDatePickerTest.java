@@ -20,6 +20,8 @@ import static com.google.common.truth.Truth.assertThat;
 import static java.util.Calendar.APRIL;
 import static java.util.Calendar.FEBRUARY;
 import static java.util.Calendar.MARCH;
+import static java.util.Calendar.MONDAY;
+import static java.util.Calendar.SUNDAY;
 import static org.junit.Assert.assertEquals;
 
 import java.time.Duration;
@@ -146,5 +148,34 @@ public class MaterialDatePickerTest {
         NEW_YORK_TIME_2019_12_31_11_59_00_PM, TimeZone.getTimeZone("America/New_York"));
     testThisMonthInUtcMillisecondsForLocalTime(
         NEW_ZEALAND_TIME_2020_01_11_09_00_00_AM, TimeZone.getTimeZone("NZ"));
+  }
+
+  @Test
+  public void testFirstDayOfWeekAsSunday() {
+    MaterialDatePicker.Builder<Long> datePickerBuilder = MaterialDatePicker.Builder.datePicker();
+    CalendarConstraints calendarConstraints =
+        new CalendarConstraints.Builder().setFirstDayOfWeek(SUNDAY).build();
+    datePickerBuilder.setCalendarConstraints(calendarConstraints);
+    datePickerBuilder.build();
+    assertEquals(SUNDAY, calendarConstraints.getFirstDayOfWeek());
+  }
+
+  @Test
+  public void testFirstDayOfWeekAsMonday() {
+    MaterialDatePicker.Builder<Long> datePickerBuilder = MaterialDatePicker.Builder.datePicker();
+    CalendarConstraints calendarConstraints =
+        new CalendarConstraints.Builder().setFirstDayOfWeek(MONDAY).build();
+    datePickerBuilder.setCalendarConstraints(calendarConstraints);
+    datePickerBuilder.build();
+    assertEquals(MONDAY, calendarConstraints.getFirstDayOfWeek());
+  }
+
+  @Test
+  public void testFirstDayOfWeekAsDefault() {
+    MaterialDatePicker.Builder<Long> datePickerBuilder = MaterialDatePicker.Builder.datePicker();
+    CalendarConstraints calendarConstraints = new CalendarConstraints.Builder().build();
+    datePickerBuilder.setCalendarConstraints(calendarConstraints);
+    datePickerBuilder.build();
+    assertEquals(0, calendarConstraints.getFirstDayOfWeek());
   }
 }

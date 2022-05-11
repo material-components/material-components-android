@@ -33,15 +33,12 @@ import java.util.Locale;
 /**
  * A single row adapter representing the days of the week for {@link Calendar}.
  *
- * <p>This {@link android.widget.Adapter} respects the {@link Calendar#getFirstDayOfWeek()}
- * determined by {@link Locale#getDefault()}.
- *
  * @hide
  */
 class DaysOfWeekAdapter extends BaseAdapter {
 
-  @NonNull private final Calendar calendar;
-  private final int daysInWeek;
+  @NonNull private final Calendar calendar = UtcDates.getUtcCalendar();
+  private final int daysInWeek = calendar.getMaximum(Calendar.DAY_OF_WEEK);
   private final int firstDayOfWeek;
   /** Style value from Calendar.NARROW_FORMAT unavailable before 1.8 */
   private static final int NARROW_FORMAT = 4;
@@ -49,10 +46,16 @@ class DaysOfWeekAdapter extends BaseAdapter {
   private static final int CALENDAR_DAY_STYLE =
       VERSION.SDK_INT >= VERSION_CODES.O ? NARROW_FORMAT : Calendar.SHORT;
 
+  /**
+   * <p>This {@link android.widget.Adapter} respects the {@link Calendar#getFirstDayOfWeek()}
+   * determined by {@link Locale#getDefault()}.
+   */
   public DaysOfWeekAdapter() {
-    calendar = UtcDates.getUtcCalendar();
-    daysInWeek = calendar.getMaximum(Calendar.DAY_OF_WEEK);
     firstDayOfWeek = calendar.getFirstDayOfWeek();
+  }
+
+  public DaysOfWeekAdapter(int firstDayOfWeek) {
+    this.firstDayOfWeek = firstDayOfWeek;
   }
 
   @Nullable
