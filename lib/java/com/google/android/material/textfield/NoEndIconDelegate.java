@@ -23,12 +23,6 @@ import androidx.annotation.NonNull;
  */
 class NoEndIconDelegate extends EndIconDelegate {
   NoEndIconDelegate(@NonNull EndCompoundLayout endLayout) {
-    super(endLayout, 0);
-  }
-
-  @Override
-  void setUp() {
-    endLayout.setEndIconDrawable(null);
-    endLayout.setEndIconContentDescription(null);
+    super(endLayout);
   }
 }

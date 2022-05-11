@@ -26,7 +26,6 @@ import android.text.Editable;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.widget.EditText;
-import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.animation.AnimationUtils;
@@ -59,16 +58,12 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
   private AnimatorSet iconInAnim;
   private ValueAnimator iconOutAnim;
 
-  ClearTextEndIconDelegate(@NonNull EndCompoundLayout endLayout, @DrawableRes int customEndIcon) {
-    super(endLayout, customEndIcon);
+  ClearTextEndIconDelegate(@NonNull EndCompoundLayout endLayout) {
+    super(endLayout);
   }
 
   @Override
   void setUp() {
-    endLayout.setEndIconDrawable(
-        customEndIcon == 0 ? R.drawable.mtrl_ic_cancel : customEndIcon);
-    endLayout.setEndIconContentDescription(
-        endLayout.getResources().getText(R.string.clear_text_end_icon_content_description));
     endLayout.setEndIconCheckable(false);
     initAnimators();
   }
@@ -80,6 +75,16 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
         // Make sure icon view is visible.
         animateIcon(/* show= */ true));
     }
+  }
+
+  @Override
+  int getIconDrawableResId() {
+    return R.drawable.mtrl_ic_cancel;
+  }
+
+  @Override
+  int getIconContentDescriptionResId() {
+    return R.string.clear_text_end_icon_content_description;
   }
 
   @Override

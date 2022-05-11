@@ -26,6 +26,7 @@ import android.widget.EditText;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import com.google.android.material.internal.CheckableImageButton;
 import com.google.android.material.textfield.TextInputLayout.BoxBackgroundMode;
@@ -43,22 +44,31 @@ abstract class EndIconDelegate {
   final Context context;
   final CheckableImageButton endIconView;
 
-  @DrawableRes
-  final int customEndIcon;
-
-  EndIconDelegate(@NonNull EndCompoundLayout endLayout, @DrawableRes int customEndIcon) {
+  EndIconDelegate(@NonNull EndCompoundLayout endLayout) {
     this.textInputLayout = endLayout.textInputLayout;
     this.endLayout = endLayout;
     this.context = endLayout.getContext();
     this.endIconView = endLayout.getEndIconView();
-    this.customEndIcon = customEndIcon;
   }
 
   /** Called when the associated end icon mode is set. */
-  abstract void setUp();
+  void setUp() {}
+  ;
 
   /** Called when the associated end icon mode is unset. */
   void tearDown() {}
+
+  /** Returns the icon resource ID that should be used. */
+  @DrawableRes
+  int getIconDrawableResId() {
+    return 0;
+  }
+
+  /** Returns the string resource ID that should be used as the content description. */
+  @StringRes
+  int getIconContentDescriptionResId() {
+    return 0;
+  }
 
   /**
    * Whether the end icon should be tinted with the error color when the {@link TextInputLayout} is
@@ -138,4 +148,3 @@ abstract class EndIconDelegate {
    */
   void onPopulateAccessibilityEvent(View host, @NonNull AccessibilityEvent event) {}
 }
-

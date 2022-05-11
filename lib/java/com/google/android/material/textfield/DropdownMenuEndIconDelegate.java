@@ -41,7 +41,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Spinner;
 import androidx.annotation.ChecksSdkIntAtLeast;
-import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
@@ -78,22 +77,12 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
   private ValueAnimator fadeOutAnim;
   private ValueAnimator fadeInAnim;
 
-  DropdownMenuEndIconDelegate(
-      @NonNull EndCompoundLayout endLayout, @DrawableRes int customEndIcon) {
-    super(endLayout, customEndIcon);
+  DropdownMenuEndIconDelegate(@NonNull EndCompoundLayout endLayout) {
+    super(endLayout);
   }
 
   @Override
   void setUp() {
-    // For lollipop+, the arrow icon changes orientation based on dropdown popup, otherwise it
-    // always points down.
-    int drawableResId =
-        customEndIcon == 0
-            ? (IS_LOLLIPOP ? R.drawable.mtrl_dropdown_arrow : R.drawable.mtrl_ic_arrow_drop_down)
-            : customEndIcon;
-    endLayout.setEndIconDrawable(drawableResId);
-    endLayout.setEndIconContentDescription(
-        endLayout.getResources().getText(R.string.exposed_dropdown_menu_content_description));
     initAnimators();
     accessibilityManager =
         (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
@@ -119,6 +108,18 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
         autoCompleteTextView.setOnDismissListener(null);
       }
     }
+  }
+
+  @Override
+  int getIconDrawableResId() {
+    // For lollipop+, the arrow icon changes orientation based on dropdown popup, otherwise it
+    // always points down.
+    return IS_LOLLIPOP ? R.drawable.mtrl_dropdown_arrow : R.drawable.mtrl_ic_arrow_drop_down;
+  }
+
+  @Override
+  int getIconContentDescriptionResId() {
+    return R.string.exposed_dropdown_menu_content_description;
   }
 
   @Override
