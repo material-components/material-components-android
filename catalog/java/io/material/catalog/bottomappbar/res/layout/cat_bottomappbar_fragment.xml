@@ -44,9 +44,9 @@
 
   <FrameLayout
       android:id="@+id/bottom_drawer"
+      style="@style/Widget.Material3.BottomSheet"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:elevation="16dp"
       app:behavior_hideable="true"
       app:layout_behavior="@string/bottom_sheet_behavior">
 
