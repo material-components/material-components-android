@@ -16,10 +16,12 @@
 
 package com.google.android.material.bottomsheet;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import android.view.View;
+import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -34,6 +36,13 @@ public class BottomSheetDialogFragment extends AppCompatDialogFragment {
    * BottomSheet is hidden and onStateChanged() is called.
    */
   private boolean waitingForDismissAllowingStateLoss;
+
+  public BottomSheetDialogFragment() {}
+
+  @SuppressLint("ValidFragment")
+  public BottomSheetDialogFragment(@LayoutRes int contentLayoutId) {
+    super(contentLayoutId);
+  }
 
   @NonNull
   @Override
