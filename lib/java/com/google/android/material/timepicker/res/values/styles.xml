@@ -70,6 +70,8 @@
   </style>
 
   <style name="Widget.MaterialComponents.TimePicker.Display.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+    <item name="shapeAppearance">?attr/shapeAppearanceMediumComponent</item>
+    <item name="shapeAppearanceOverlay">@null</item>
     <item name="materialThemeOverlay">@style/ThemeOverlay.MaterialComponents.TimePicker.Display.TextInputEditText</item>
   </style>
 
@@ -110,6 +112,7 @@
     <item name="android:textAlignment">center</item>
     <item name="strokeColor">@color/material_timepicker_button_stroke</item>
     <item name="strokeWidth">@dimen/mtrl_btn_stroke_size</item>
+    <item name="shapeAppearanceOverlay">?attr/shapeAppearanceMediumComponent</item>
   </style>
 
   <style name="TextAppearance.MaterialComponents.TimePicker.Title" parent="TextAppearance.MaterialComponents.Overline">
@@ -129,6 +132,8 @@
     <item name="iconTint">@color/m3_timepicker_button_text_color</item>
     <item name="rippleColor">@color/m3_timepicker_button_ripple_color</item>
     <item name="strokeColor">?attr/colorOutline</item>
+    <item name="shapeAppearance">?attr/shapeAppearanceCornerSmall</item>
+    <item name="shapeAppearanceOverlay">@null</item>
     <!-- Apply theme overlay to disable elevation overlays so we can get a purely colorSurface chip. -->
     <item name="materialThemeOverlay">@style/ThemeOverlay.MaterialComponents.TimePicker.Display</item>
   </style>
@@ -159,6 +164,7 @@
   </style>
 
   <style name="Widget.Material3.MaterialTimePicker.Display.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+    <item name="shapeAppearance">?attr/shapeAppearanceCornerSmall</item>
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.MaterialTimePicker.Display.TextInputEditText</item>
   </style>
 

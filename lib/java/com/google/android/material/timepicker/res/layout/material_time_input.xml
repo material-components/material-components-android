@@ -20,9 +20,7 @@
   android:layout_width="wrap_content"
   android:layout_height="wrap_content"
   app:errorIconDrawable="@null"
-  app:hintEnabled="false"
-  app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
-  app:shapeAppearanceOverlay="@null">
+  app:hintEnabled="false" >
 
   <com.google.android.material.textfield.TextInputEditText
     android:layout_width="96dp"
