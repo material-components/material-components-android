@@ -22,7 +22,6 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -34,15 +33,11 @@ import androidx.annotation.StringRes;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.transition.platform.MaterialContainerTransform;
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
-import dagger.android.AndroidInjection;
-import dagger.android.AndroidInjector;
-import dagger.android.DispatchingAndroidInjector;
-import dagger.android.HasAndroidInjector;
+import io.material.catalog.preferences.BaseCatalogActivity;
 import io.material.catalog.windowpreferences.WindowPreferencesManager;
-import javax.inject.Inject;
 
 /** Base Activity class that provides a demo screen structure for a single demo. */
-public abstract class DemoActivity extends AppCompatActivity implements HasAndroidInjector {
+public abstract class DemoActivity extends BaseCatalogActivity {
 
   public static final String EXTRA_DEMO_TITLE = "demo_title";
 
@@ -50,8 +45,6 @@ public abstract class DemoActivity extends AppCompatActivity implements HasAndro
 
   private Toolbar toolbar;
   private ViewGroup demoContainer;
-
-  @Inject DispatchingAndroidInjector<Object> androidInjector;
 
   @Override
   protected void onCreate(@Nullable Bundle bundle) {
@@ -63,7 +56,6 @@ public abstract class DemoActivity extends AppCompatActivity implements HasAndro
       getWindow().setSharedElementReturnTransition(buildContainerTransform(/* entering= */ false));
     }
 
-    safeInject();
     super.onCreate(bundle);
 
     if (shouldApplyEdgeToEdgePreference()) {
@@ -109,19 +101,6 @@ public abstract class DemoActivity extends AppCompatActivity implements HasAndro
 
   protected boolean shouldApplyEdgeToEdgePreference() {
     return true;
-  }
-
-  @Override
-  public AndroidInjector<Object> androidInjector() {
-    return androidInjector;
-  }
-
-  private void safeInject() {
-    try {
-      AndroidInjection.inject(this);
-    } catch (Exception e) {
-      // Ignore exception, not all DemoActivity subclasses need to inject
-    }
   }
 
   @RequiresApi(VERSION_CODES.LOLLIPOP)

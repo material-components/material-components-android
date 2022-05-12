@@ -75,7 +75,8 @@ class MonthAdapter extends BaseAdapter {
    * Returns a {@link Long} object for the given grid position
    *
    * @param position Index for the item. 0 matches the {@link Calendar#getFirstDayOfWeek()} for the
-   *     first week of the month represented by {@link Month}.
+   *     first week of the month represented by {@link Month} or {@link
+   *     CalendarConstraints#getFirstDayOfWeek()} if set.
    * @return A {@link Long} representing the day at the position or null if the position does not
    *     represent a valid day in the month.
    */
@@ -214,7 +215,7 @@ class MonthAdapter extends BaseAdapter {
    * be greater than 0.
    */
   int firstPositionInMonth() {
-    return month.daysFromStartOfWeekToFirstOfMonth();
+    return month.daysFromStartOfWeekToFirstOfMonth(calendarConstraints.getFirstDayOfWeek());
   }
 
   /**

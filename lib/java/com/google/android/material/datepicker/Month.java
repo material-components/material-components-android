@@ -102,8 +102,10 @@ final class Month implements Comparable<Month>, Parcelable {
     return new Month(UtcDates.getTodayCalendar());
   }
 
-  int daysFromStartOfWeekToFirstOfMonth() {
-    int difference = firstOfMonth.get(Calendar.DAY_OF_WEEK) - firstOfMonth.getFirstDayOfWeek();
+  int daysFromStartOfWeekToFirstOfMonth(int firstDayOfWeek) {
+    int difference =
+        firstOfMonth.get(Calendar.DAY_OF_WEEK)
+            - (firstDayOfWeek > 0 ? firstDayOfWeek : firstOfMonth.getFirstDayOfWeek());
     if (difference < 0) {
       difference = difference + daysInWeek;
     }

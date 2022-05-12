@@ -151,7 +151,8 @@
   <style name="Base.Widget.Material3.Chip" parent="Base.Widget.MaterialComponents.Chip">
     <item name="enforceTextAppearance">false</item>
     <item name="android:textAppearance">?attr/textAppearanceLabelLarge</item>
-    <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Material3.Chip</item>
+    <item name="shapeAppearance">?attr/shapeAppearanceCornerSmall</item>
+    <item name="shapeAppearanceOverlay">@null</item>
     <item name="android:textColor">@color/m3_chip_text_color</item>
     <item name="closeIconTint">@color/m3_chip_text_color</item>
     <item name="chipStrokeColor">@color/m3_chip_stroke_color</item>

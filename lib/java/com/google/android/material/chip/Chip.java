@@ -165,8 +165,6 @@ public class Chip extends AppCompatCheckBox
 
   @Nullable private CharSequence accessibilityClassName;
   private static final String BUTTON_ACCESSIBILITY_CLASS_NAME = "android.widget.Button";
-  private static final String COMPOUND_BUTTON_ACCESSIBILITY_CLASS_NAME =
-      "android.widget.CompoundButton";
   private static final String RADIO_BUTTON_ACCESSIBILITY_CLASS_NAME =
       "android.widget.RadioButton";
   private static final String GENERIC_VIEW_ACCESSIBILITY_CLASS_NAME = "android.view.View";
@@ -2335,7 +2333,7 @@ public class Chip extends AppCompatCheckBox
       if (parent instanceof ChipGroup && ((ChipGroup) parent).isSingleSelection()) {
         return RADIO_BUTTON_ACCESSIBILITY_CLASS_NAME;
       } else {
-        return COMPOUND_BUTTON_ACCESSIBILITY_CLASS_NAME;
+        return BUTTON_ACCESSIBILITY_CLASS_NAME;
       }
     } else if (isClickable()) {
       return BUTTON_ACCESSIBILITY_CLASS_NAME;

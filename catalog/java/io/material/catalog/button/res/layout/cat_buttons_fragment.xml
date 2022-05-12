@@ -132,12 +132,71 @@
           android:text="@string/cat_outlined_icon_btn_text"
           android:textSize="16sp"/>
 
-      <Button
-          style="@style/Widget.Material3.Button.IconButton"
-          android:layout_width="wrap_content"
+      <LinearLayout
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:contentDescription="@string/cat_button_icon_btn_text"
-          app:icon="@drawable/ic_dialogs_24px"/>
+          android:paddingTop="8dp"
+          android:paddingBottom="8dp"
+          android:gravity="center_horizontal"
+          android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+          <Button
+              style="?attr/materialIconButtonStyle"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:contentDescription="@string/cat_button_icon_btn_text"
+              app:icon="@drawable/ic_dialogs_24px"/>
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:paddingTop="4dp"
+              android:text="@string/cat_icon_btn_default_style"
+              android:textSize="12sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+          <Button
+              style="?attr/materialIconButtonFilledStyle"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:contentDescription="@string/cat_button_icon_btn_text"
+              app:icon="@drawable/ic_dialogs_24px"/>
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:paddingTop="4dp"
+              android:text="@string/cat_icon_btn_filled_style"
+              android:textSize="12sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+          <Button
+              style="?attr/materialIconButtonFilledTonalStyle"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:contentDescription="@string/cat_button_icon_btn_text"
+              app:icon="@drawable/ic_dialogs_24px"/>
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:paddingTop="4dp"
+              android:text="@string/cat_icon_btn_filled_tonal_style"
+              android:textSize="12sp"/>
+        </LinearLayout>
+      </LinearLayout>
 
       <com.google.android.material.switchmaterial.SwitchMaterial
           android:id="@+id/cat_button_enabled_switch"

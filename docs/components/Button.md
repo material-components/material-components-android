@@ -820,7 +820,15 @@ icon.setOnCheckedChangeListener { checkBox, isChecked ->
 ## Icon button
 
 [Icon buttons](https://material.io/components/buttons/#icon-buttons) help users
-take supplementary actions with a single tap.
+take supplementary actions with a single tap. There are two types of icon
+buttons: standard and contained.
+
+*   **Standard icon button:** By default icon buttons will not have a container.
+*   **Contained icon button:** Optionally, it is possible to have a container
+    around the icon.
+
+See [Icon button examples](#icon-button-examples) section below for more
+information.
 
 ### Usage
 
@@ -838,6 +846,8 @@ API and source code:
 *   `MaterialButton`
     *   [Class description](https://developer.android.com/reference/com/google/android/material/button/MaterialButton)
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/MaterialButton.java)
+
+#### Standard Icon button
 
 The following example shows a standard icon button.
 
@@ -862,13 +872,47 @@ iconButton.addOnButtonCheckedListener { iconButton, checkedId, isChecked ->
 }
 ```
 
+#### Filled Icon button
+
+The following example shows a contained icon button that is filled.
+
+!["Filled icon button example for Android over a white background."](assets/buttons/filled-icon-button.png)
+
+In the layout:
+
+```xml
+<Button
+    style="?attr/materialIconButtonFilledStyle"
+    android:id="@+id/iconButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+/>
+```
+
+#### Filled Tonal Icon button
+
+The following example shows a tonal icon button.
+
+!["Filled tonal icon button example for Android over a white background."](assets/buttons/filled-tonal-icon-button.png)
+
+In the layout:
+
+```xml
+<Button
+    style="?attr/materialIconButtonFilledTonalStyle"
+    android:id="@+id/iconButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+/>
+```
+
 #### Styles & Theme attributes
 
-Element           | Style
------------------ | ------------------------------------
-**Default style** | `Widget.Material3.Button.IconButton`
-
-Default style theme attribute: `?attr/materialIconButtonStyle`
+Element                      | Style                                             | Theme Attribute
+---------------------------- | ------------------------------------------------- | ---------------
+**Default style**            | `Widget.Material3.Button.IconButton`              | `?attr/materialIconButtonStyle`
+**Filled Icon Button**       | `Widget.Material3.Button.IconButton.Filled`       | `?attr/materialIconButtonFilledStyle`
+**Filled Tonal Icon Button** | `Widget.Material3.Button.IconButton.Filled.Tonal` | `?attr/materialIconButtonFilledTonalStyle`
 
 See the full list of
 [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/values/styles.xml)

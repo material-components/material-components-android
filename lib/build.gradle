@@ -24,7 +24,7 @@ dependencies {
 
   testImplementation "androidx.test:core:${testRunnerVersion}"
   testImplementation "androidx.test:runner:${testRunnerVersion}"
-  testImplementation "junit:junit:4.12"
+  testImplementation "junit:junit:4.13.2"
   testImplementation "com.google.truth:truth:${truthVersion}"
   testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
   testImplementation "org.robolectric:robolectric:${robolectricVersion}"
@@ -58,6 +58,7 @@ def srcDirs = [
   'com/google/android/material/floatingactionbutton',
   'com/google/android/material/imageview',
   'com/google/android/material/internal',
+  'com/google/android/material/materialswitch',
   'com/google/android/material/math',
   'com/google/android/material/menu',
   'com/google/android/material/motion',

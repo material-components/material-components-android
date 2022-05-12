@@ -25,9 +25,11 @@ import android.widget.EditText;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 
 /** Default initialization of the password toggle end icon. */
 class PasswordToggleEndIconDelegate extends EndIconDelegate {
+  private int iconResId = R.drawable.design_password_eye;
 
   @Nullable
   private EditText editText;
@@ -52,16 +54,15 @@ class PasswordToggleEndIconDelegate extends EndIconDelegate {
   };
 
   PasswordToggleEndIconDelegate(
-      @NonNull EndCompoundLayout endLayout, @DrawableRes int customEndIcon) {
-    super(endLayout, customEndIcon);
+      @NonNull EndCompoundLayout endLayout, @DrawableRes int overrideIconResId) {
+    super(endLayout);
+    if (overrideIconResId != 0) {
+      iconResId = overrideIconResId;
+    }
   }
 
   @Override
   void setUp() {
-    endLayout.setEndIconDrawable(
-        customEndIcon == 0 ? R.drawable.design_password_eye : customEndIcon);
-    endLayout.setEndIconContentDescription(
-        endLayout.getResources().getText(R.string.password_toggle_content_description));
     endLayout.setEndIconVisible(true);
     endLayout.setEndIconCheckable(true);
     if (isInputTypePassword(editText)) {
@@ -76,6 +77,18 @@ class PasswordToggleEndIconDelegate extends EndIconDelegate {
       // Add PasswordTransformation back since it may have been removed to make passwords visible.
       editText.setTransformationMethod(PasswordTransformationMethod.getInstance());
     }
+  }
+
+  @Override
+  @DrawableRes
+  int getIconDrawableResId() {
+    return iconResId;
+  }
+
+  @Override
+  @StringRes
+  int getIconContentDescriptionResId() {
+    return R.string.password_toggle_content_description;
   }
 
   @Override

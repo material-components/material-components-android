@@ -161,12 +161,12 @@ public class MonthTest {
   private void assertDaysFromStart(Map<Month, Integer> localizedStartOfWeekToStartOfMonth) {
     assertEquals(
         (int) localizedStartOfWeekToStartOfMonth.get(monthFeb2016),
-        monthFeb2016.daysFromStartOfWeekToFirstOfMonth());
+        monthFeb2016.daysFromStartOfWeekToFirstOfMonth(0));
     assertEquals(
         (int) localizedStartOfWeekToStartOfMonth.get(monthJul2018),
-        monthJul2018.daysFromStartOfWeekToFirstOfMonth());
+        monthJul2018.daysFromStartOfWeekToFirstOfMonth(0));
     assertEquals(
         (int) localizedStartOfWeekToStartOfMonth.get(monthFeb2019),
-        monthFeb2019.daysFromStartOfWeekToFirstOfMonth());
+        monthFeb2019.daysFromStartOfWeekToFirstOfMonth(0));
   }
 }

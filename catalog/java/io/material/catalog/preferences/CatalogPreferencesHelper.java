@@ -34,7 +34,8 @@ public class CatalogPreferencesHelper {
     fragmentManager = fragment.getParentFragmentManager();
     enabled =
         fragment.shouldShowDefaultDemoActionBar()
-            && fragment.getActivity() instanceof PreferencesActivity;
+            && fragment.getActivity() instanceof BaseCatalogActivity
+            && ((BaseCatalogActivity) fragment.getActivity()).isPreferencesEnabled();
 
     if (enabled) {
       fragment.setHasOptionsMenu(true);
@@ -65,9 +66,6 @@ public class CatalogPreferencesHelper {
   private void showPreferences() {
     new CatalogPreferencesDialogFragment().show(fragmentManager, "preferences");
   }
-
-  /** Implement this interface to include an Activity for preferences screen support. */
-  public interface PreferencesActivity {}
 
   /**
    * Implement this interface to allow a Fragment to be used with {@link CatalogPreferencesHelper}.

@@ -161,7 +161,9 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
             accessibilityNodeInfoCompat.setCollectionInfo(null);
           }
         });
-    daysHeader.setAdapter(new DaysOfWeekAdapter());
+    int firstDayOfWeek = calendarConstraints.getFirstDayOfWeek();
+    daysHeader.setAdapter(
+        firstDayOfWeek > 0 ? new DaysOfWeekAdapter(firstDayOfWeek) : new DaysOfWeekAdapter());
     daysHeader.setNumColumns(earliestMonth.daysInWeek);
     daysHeader.setEnabled(false);
 

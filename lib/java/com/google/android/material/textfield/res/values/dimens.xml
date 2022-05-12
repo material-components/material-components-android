@@ -64,4 +64,11 @@
   <dimen name="mtrl_exposed_dropdown_menu_popup_vertical_offset">-8dp</dimen>
 
   <dimen name="m3_exposed_dropdown_menu_popup_elevation">@dimen/m3_sys_elevation_level2</dimen>
+
+  <!-- Alphas for state colors of the dropdown menu items. Same as the ripple
+       alpha values but without the changes applied for different APIs. -->
+  <!-- Same as @dimen/m3_ripple_focused_alpha. -->
+  <item name="m3_simple_item_color_selected_alpha" format="float" type="dimen">0.12</item>
+  <!-- Same as @dimen/m3_ripple_hovered_alpha. -->
+  <item name="m3_simple_item_color_hovered_alpha" format="float" type="dimen">0.08</item>
 </resources>

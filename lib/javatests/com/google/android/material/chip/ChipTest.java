@@ -19,6 +19,7 @@ import com.google.android.material.R;
 
 import static com.google.android.material.internal.ViewUtils.dpToPx;
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.Assert.assertEquals;
 
 import android.content.Context;
 import android.graphics.RectF;
@@ -224,5 +225,16 @@ public class ChipTest {
     assertThat(chip.getShapeAppearanceModel().getBottomRightCornerSize().getCornerSize(bounds))
         .isWithin(DELTA)
         .of(0);
+  }
+
+  @Test
+  public void getChipAccessibilityClassName_clickable_buttonName() {
+    assertEquals("android.widget.Button", chip.getAccessibilityClassName().toString());
+  }
+
+  @Test
+  public void getChipAccessibilityClassName_nonClickable_viewName() {
+    chip.setClickable(false);
+    assertEquals("android.view.View", chip.getAccessibilityClassName().toString());
   }
 }

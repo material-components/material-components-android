@@ -24,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
@@ -31,6 +32,7 @@ import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.core.util.Pair;
+import com.google.android.material.internal.ViewUtils;
 import java.util.Collection;
 
 /**
@@ -101,4 +103,26 @@ public interface DateSelector<S> extends Parcelable {
       @Nullable Bundle bundle,
       @NonNull CalendarConstraints constraints,
       @NonNull OnSelectionChangedListener<S> listener);
+
+  static void showKeyboardWithAutoHideBehavior(@NonNull EditText... editTexts) {
+    if (editTexts.length == 0) {
+      return;
+    }
+
+    View.OnFocusChangeListener listener =
+        (view, hasFocus) -> {
+          for (EditText editText : editTexts) {
+            if (editText.hasFocus()) {
+              return;
+            }
+          }
+          ViewUtils.hideKeyboard(view);
+        };
+
+    for (EditText editText : editTexts) {
+      editText.setOnFocusChangeListener(listener);
+    }
+
+    ViewUtils.requestFocusAndShowKeyboard(editTexts[0]);
+  }
 }

@@ -37,6 +37,9 @@
   <string name="cat_filled_buttons_section_title">Filled buttons</string>
   <string name="cat_outlined_btn_text">Outlined buttons</string>
   <string name="cat_outlined_icon_btn_text">Icon only buttons</string>
+  <string name="cat_icon_btn_default_style">Standard</string>
+  <string name="cat_icon_btn_filled_style">Filled</string>
+  <string name="cat_icon_btn_filled_tonal_style">Tonal</string>
   <string name="cat_button_clicked">Button clicked</string>
   <string name="cat_snackbar_action_button_text">Done</string>
 

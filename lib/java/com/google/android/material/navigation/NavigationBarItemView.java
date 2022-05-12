@@ -360,12 +360,12 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
     activeIndicatorAnimator.setInterpolator(
         MotionUtils.resolveThemeInterpolator(
             getContext(),
-            R.attr.motionEasingStandard,
+            R.attr.motionEasingEmphasizedInterpolator,
             AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR));
     activeIndicatorAnimator.setDuration(
         MotionUtils.resolveThemeDuration(
             getContext(),
-            R.attr.motionDurationLong1,
+            R.attr.motionDurationLong2,
             getResources().getInteger(R.integer.material_motion_duration_long_1)));
     activeIndicatorAnimator.start();
   }
