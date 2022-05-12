@@ -906,6 +906,23 @@ In the layout:
 />
 ```
 
+#### Outlined Icon button
+
+The following example shows an outlined icon button.
+
+!["Outlined icon button example for Android over a white background."](assets/buttons/outlined-icon-button.png)
+
+In the layout:
+
+```xml
+<Button
+    style="?attr/materialIconButtonOutlinedStyle"
+    android:id="@+id/iconButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+/>
+```
+
 #### Styles & Theme attributes
 
 Element                      | Style                                             | Theme Attribute
@@ -913,6 +930,7 @@ Element                      | Style                                            
 **Default style**            | `Widget.Material3.Button.IconButton`              | `?attr/materialIconButtonStyle`
 **Filled Icon Button**       | `Widget.Material3.Button.IconButton.Filled`       | `?attr/materialIconButtonFilledStyle`
 **Filled Tonal Icon Button** | `Widget.Material3.Button.IconButton.Filled.Tonal` | `?attr/materialIconButtonFilledTonalStyle`
+**Outlined Icon Button**     | `Widget.Material3.Button.IconButton.Outlined`     | `?attr/materialIconButtonOutlinedStyle`
 
 See the full list of
 [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/values/styles.xml)

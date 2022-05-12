@@ -285,6 +285,11 @@
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Button.TonalButton</item>
   </style>
 
+  <style name="Widget.Material3.Button.IconButton.Outlined">
+    <item name="strokeColor">@color/m3_button_outline_color_selector</item>
+    <item name="strokeWidth">@dimen/m3_btn_stroke_size</item>
+  </style>
+
   <!-- DEPRECATED -->
   <style name="ShapeAppearanceOverlay.Material3.Button" parent="">
     <item name="cornerSize">50%</item>

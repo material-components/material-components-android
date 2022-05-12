@@ -196,6 +196,25 @@
               android:text="@string/cat_icon_btn_filled_tonal_style"
               android:textSize="12sp"/>
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+          <Button
+              style="?attr/materialIconButtonOutlinedStyle"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:contentDescription="@string/cat_button_icon_btn_text"
+              app:icon="@drawable/ic_dialogs_24px"/>
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:paddingTop="4dp"
+              android:text="@string/cat_icon_btn_outlined_style"
+              android:textSize="12sp"/>
+        </LinearLayout>
       </LinearLayout>
 
       <com.google.android.material.switchmaterial.SwitchMaterial
