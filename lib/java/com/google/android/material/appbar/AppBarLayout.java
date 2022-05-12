@@ -1732,17 +1732,14 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
         CoordinatorLayout coordinatorLayout, @NonNull T appBarLayout) {
       ViewCompat.removeAccessibilityAction(coordinatorLayout, ACTION_SCROLL_FORWARD.getId());
       ViewCompat.removeAccessibilityAction(coordinatorLayout, ACTION_SCROLL_BACKWARD.getId());
-      View scrollingView = findFirstScrollingChild(coordinatorLayout);
-      // Don't add a11y actions if there is no scrolling view that the abl depends on for scrolling
-      // or the abl has no scroll range.
-      if (scrollingView == null || appBarLayout.getTotalScrollRange() == 0) {
+      // Don't add a11y actions if the abl has no scroll range.
+      if (appBarLayout.getTotalScrollRange() == 0) {
         return;
       }
-      // Don't add actions if the scrolling view doesn't have the behavior that will cause the abl
-      // to scroll.
-      CoordinatorLayout.LayoutParams lp =
-          (CoordinatorLayout.LayoutParams) scrollingView.getLayoutParams();
-      if (!(lp.getBehavior() instanceof ScrollingViewBehavior)) {
+      // Don't add actions if a child view doesn't have the behavior that will cause the abl to
+      // scroll.
+      View scrollingView = getChildWithScrollingBehavior(coordinatorLayout);
+      if (scrollingView == null) {
         return;
       }
 
@@ -1767,6 +1764,21 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
 
       coordinatorLayoutA11yScrollable =
           addAccessibilityScrollActions(coordinatorLayout, appBarLayout, scrollingView);
+    }
+
+    @Nullable
+    private View getChildWithScrollingBehavior(CoordinatorLayout coordinatorLayout) {
+      final int childCount = coordinatorLayout.getChildCount();
+      for (int i = 0; i < childCount; i++) {
+        final View child = coordinatorLayout.getChildAt(i);
+
+        CoordinatorLayout.LayoutParams lp =
+            (CoordinatorLayout.LayoutParams) child.getLayoutParams();
+        if (lp.getBehavior() instanceof ScrollingViewBehavior) {
+          return child;
+        }
+      }
+      return null;
     }
 
     private boolean childrenHaveScrollFlags(AppBarLayout appBarLayout) {
