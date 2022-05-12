@@ -13,11 +13,18 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<resources>
-  <style name="Widget.Material3.CompoundButton.MaterialSwitch" parent="Widget.AppCompat.CompoundButton.Switch">
-    <item name="android:thumb">@drawable/mtrl_switch_thumb</item>
-    <item name="track">@drawable/mtrl_switch_track</item>
-    <item name="thumbTint">@color/mtrl_switch_thumb_tint</item>
-    <item name="trackTint">@color/mtrl_switch_track_tint</item>
-  </style>
-</resources>
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:width="@dimen/mtrl_switch_track_width"
+  android:height="@dimen/mtrl_switch_track_height"
+  android:viewportWidth="@integer/mtrl_switch_track_viewport_width"
+  android:viewportHeight="@integer/mtrl_switch_track_viewport_height"
+  tools:ignore="NewApi">
+
+  <path
+    android:name="track"
+    android:fillColor="#FFFFFFFF"
+    android:pathData="@string/mtrl_switch_track_path" />
+
+</vector>
