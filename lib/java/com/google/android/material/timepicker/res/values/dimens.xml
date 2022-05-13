@@ -36,6 +36,8 @@
   <dimen name="material_cursor_width">2dp</dimen>
 
   <dimen name="material_clock_size">256dp</dimen>
+  <!-- TextInputEditText doesn't properly center pre-S, so add padding fix -->
+  <dimen name="material_time_input_padding_bottom">6dp</dimen>
 
   <dimen name="material_time_picker_minimum_screen_height">560dp</dimen>
   <dimen name="material_time_picker_minimum_screen_width">340dp</dimen>
