@@ -87,6 +87,12 @@ class FloatingActionButtonImpl {
   private static final float SPEC_HIDE_SCALE = 0f;
   private static final float SPEC_HIDE_ICON_SCALE = 0f;
 
+  private static final int SHOW_ANIM_DURATION_ATTR = R.attr.motionDurationLong2;
+  private static final int SHOW_ANIM_EASING_ATTR = R.attr.motionEasingEmphasizedInterpolator;
+  private static final int HIDE_ANIM_DURATION_ATTR = R.attr.motionDurationMedium1;
+  private static final int HIDE_ANIM_EASING_ATTR =
+      R.attr.motionEasingEmphasizedAccelerateInterpolator;
+
   @Nullable ShapeAppearanceModel shapeAppearance;
   @Nullable MaterialShapeDrawable shapeDrawable;
   @Nullable Drawable rippleDrawable;
@@ -438,7 +444,11 @@ class FloatingActionButtonImpl {
       } else {
         set =
             createDefaultAnimator(
-                HIDE_OPACITY, HIDE_SCALE, HIDE_ICON_SCALE);
+                HIDE_OPACITY,
+                HIDE_SCALE,
+                HIDE_ICON_SCALE,
+                HIDE_ANIM_DURATION_ATTR,
+                HIDE_ANIM_EASING_ATTR);
       }
 
       set.addListener(
@@ -520,7 +530,11 @@ class FloatingActionButtonImpl {
       } else {
         set =
             createDefaultAnimator(
-                SHOW_OPACITY, SHOW_SCALE, SHOW_ICON_SCALE);
+                SHOW_OPACITY,
+                SHOW_SCALE,
+                SHOW_ICON_SCALE,
+                SHOW_ANIM_DURATION_ATTR,
+                SHOW_ANIM_EASING_ATTR);
       }
 
       set.addListener(
@@ -614,7 +628,8 @@ class FloatingActionButtonImpl {
    * are changed.
    */
   private AnimatorSet createDefaultAnimator(
-      final float targetOpacity, final float targetScale, final float targetIconScale) {
+      final float targetOpacity, final float targetScale, final float targetIconScale,
+      final int duration, final int interpolator) {
     AnimatorSet set = new AnimatorSet();
     List<Animator> animators = new ArrayList<>();
     ValueAnimator animator = ValueAnimator.ofFloat(0F, 1F);
@@ -644,14 +659,14 @@ class FloatingActionButtonImpl {
     set.setDuration(
         MotionUtils.resolveThemeDuration(
             view.getContext(),
-            R.attr.motionDurationLong1,
+            duration,
             view.getContext()
                 .getResources()
                 .getInteger(R.integer.material_motion_duration_long_1)));
     set.setInterpolator(
         MotionUtils.resolveThemeInterpolator(
             view.getContext(),
-            R.attr.motionEasingStandard,
+            interpolator,
             AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR));
     return set;
   }
