@@ -217,6 +217,7 @@ task generateJdiffReport(type: Javadoc) {
 }
 
 def R_CLASS_PATH = "build/generated/not_namespaced_r_class_sources/releaseUnitTest/processReleaseUnitTestResources/r/com/google/android/material/R.java"
+Attribute<String> ARTIFACT_TYPE = Attribute.of("artifactType", String.class)
 afterEvaluate {
   [generateJavadocs, generateApiXml].forEach { task ->
     task.dependsOn(':lib:processReleaseUnitTestResources')
@@ -226,6 +227,13 @@ afterEvaluate {
     if (releaseVariant == null) {
       return
     }
+
+    // Add transitive runtime dependencies to classpath
+    task.classpath += releaseVariant.runtimeConfiguration.incoming.artifactView { aView ->
+      aView.attributes.attribute(ARTIFACT_TYPE, "android-classes")
+    }.files
+
+    // Add project and compile dependencies to classpath
     releaseVariant.javaCompileProvider.configure { javaCompileProvider ->
       task.classpath += releaseVariant.getCompileClasspath(null)
       task.classpath += task.project.files(javaCompileProvider.destinationDir)
