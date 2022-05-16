@@ -74,7 +74,11 @@ final class ColorResourcesTableCreator {
               context.getResources().getResourceName(entry.getKey()),
               entry.getValue());
       if (colorResource.typeId != TYPE_ID_COLOR) {
-        throw new IllegalArgumentException("Non color resource found: " + colorResource.name);
+        throw new IllegalArgumentException(
+            "Non color resource found: name="
+                + colorResource.name
+                + ", typeId="
+                + Integer.toHexString(colorResource.typeId & 0xFF));
       }
       PackageInfo packageInfo;
       if (colorResource.packageId == ANDROID_PACKAGE_ID) {
