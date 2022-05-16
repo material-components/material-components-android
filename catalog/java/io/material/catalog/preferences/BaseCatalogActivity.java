@@ -41,6 +41,11 @@ public class BaseCatalogActivity extends AppCompatActivity implements HasAndroid
     return false;
   }
 
+  /** Returns {@code true} if color harmonization is enabled. */
+  public boolean isColorHarmonizationEnabled() {
+    return true;
+  }
+
   @Override
   public AndroidInjector<Object> androidInjector() {
     return androidInjector;

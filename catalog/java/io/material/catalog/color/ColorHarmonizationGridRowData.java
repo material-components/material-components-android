@@ -27,6 +27,7 @@ final class ColorHarmonizationGridRowData {
   @IdRes private final int rightLayoutId;
   @ColorRes private final int colorResId;
   @ArrayRes private final int colorNameIds;
+  private final int[] colorAttributeResIds;
 
   ColorHarmonizationGridRowData(
       @IdRes int leftLayoutId,
@@ -36,6 +37,19 @@ final class ColorHarmonizationGridRowData {
     this.leftLayoutId = leftLayoutId;
     this.rightLayoutId = rightLayoutId;
     this.colorResId = colorResId;
+    this.colorAttributeResIds = new int[] {};
+    this.colorNameIds = colorNameIds;
+  }
+
+  ColorHarmonizationGridRowData(
+      @IdRes int leftLayoutId,
+      @IdRes int rightLayoutId,
+      int[] colorAttributeResIds,
+      @ArrayRes int colorNameIds) {
+    this.leftLayoutId = leftLayoutId;
+    this.rightLayoutId = rightLayoutId;
+    this.colorResId = 0;
+    this.colorAttributeResIds = colorAttributeResIds;
     this.colorNameIds = colorNameIds;
   }
 
@@ -57,5 +71,9 @@ final class ColorHarmonizationGridRowData {
   @ArrayRes
   int getColorNameIds() {
     return colorNameIds;
+  }
+
+  int[] getColorAttributeResIds() {
+    return colorAttributeResIds;
   }
 }

@@ -94,6 +94,9 @@
     <activity
       android:name="io.material.catalog.adaptive.AdaptiveSupportingPanelDemoActivity"
       android:exported="true" />
+    <activity
+      android:name="io.material.catalog.color.ColorHarmonizationDemoActivity"
+      android:exported="true" />
   </application>
 
 </manifest>

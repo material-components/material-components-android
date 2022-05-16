@@ -18,9 +18,11 @@ package io.material.catalog.color;
 
 import io.material.catalog.R;
 
+import android.content.Intent;
 import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
 import com.google.android.material.color.DynamicColors;
+import com.google.android.material.color.HarmonizedColors;
 import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
 import dagger.multibindings.IntoSet;
@@ -69,13 +71,15 @@ public class ColorsFragment extends DemoLandingFragment {
             }
           });
     }
-    additionalDemos.add(
-        new Demo(R.string.cat_color_harmonization) {
-          @Override
-          public Fragment createFragment() {
-            return new ColorHarmonizationDemoFragment();
-          }
-        });
+    if (HarmonizedColors.isHarmonizedColorAvailable()) {
+      additionalDemos.add(
+          new Demo(R.string.cat_color_harmonization) {
+            @Override
+            public Intent createActivityIntent() {
+              return new Intent(getContext(), ColorHarmonizationDemoActivity.class);
+            }
+          });
+    }
     return additionalDemos;
   }
 

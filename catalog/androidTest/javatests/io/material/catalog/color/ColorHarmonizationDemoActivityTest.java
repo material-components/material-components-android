@@ -22,39 +22,21 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
-import androidx.fragment.app.Fragment;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.MediumTest;
-import io.material.catalog.main.MainActivity;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-/** Tests for {@link ColorHarmonizationDemoFragment} */
+/** Tests for {@link ColorHarmonizationDemoActivity} */
 @MediumTest
 @RunWith(AndroidJUnit4.class)
-public class ColorHarmonizationDemoFragmentTest {
+public class ColorHarmonizationDemoActivityTest {
 
   @Rule
-  public final ActivityScenarioRule<MainActivity> activityScenarioRule =
-      new ActivityScenarioRule<>(MainActivity.class);
-
-  @Before
-  public void setUpAndLaunchFragment() {
-    Fragment fragment = new ColorHarmonizationDemoFragment();
-
-    activityScenarioRule
-        .getScenario()
-        .onActivity(
-            activity ->
-                activity
-                    .getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(io.material.catalog.feature.R.id.container, fragment)
-                    .commit());
-  }
+  public final ActivityScenarioRule<ColorHarmonizationDemoActivity> activityScenarioRule =
+      new ActivityScenarioRule<>(ColorHarmonizationDemoActivity.class);
 
   @Test
   public void checkButtonsAreShown() {

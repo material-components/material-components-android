@@ -27,15 +27,16 @@ import android.widget.LinearLayout;
 import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
 import com.google.android.material.color.DynamicColors;
+import com.google.android.material.color.HarmonizedColorAttributes;
 import com.google.android.material.color.HarmonizedColors;
 import com.google.android.material.color.HarmonizedColorsOptions;
 import com.google.android.material.switchmaterial.SwitchMaterial;
-import io.material.catalog.feature.DemoFragment;
+import io.material.catalog.feature.DemoActivity;
 import java.util.ArrayList;
 import java.util.List;
 
 /** A fragment that displays the Color Harmonization demo for the Catalog app. */
-public class ColorHarmonizationDemoFragment extends DemoFragment {
+public class ColorHarmonizationDemoActivity extends DemoActivity {
 
   private static final HarmonizableButtonData[] HARMONIZABLE_BUTTON_DATA_LIST =
       new HarmonizableButtonData[] {
@@ -56,14 +57,18 @@ public class ColorHarmonizationDemoFragment extends DemoFragment {
         new HarmonizableButtonData(
             R.id.blue_button_light, R.color.blue_reference, /* isLightButton= */ true),
       };
-  // TODO(b/231143697): Refactor this class to a DemoActivity and showcase harmonization using
-  // error color attributes.
+
   private static final ColorHarmonizationGridRowData[] HARMONIZATION_GRID_ROW_DATA_LIST =
       new ColorHarmonizationGridRowData[] {
         new ColorHarmonizationGridRowData(
             R.id.cat_colors_error,
             R.id.cat_colors_harmonized_error,
-            R.color.error_reference,
+            new int[] {
+              R.attr.colorError,
+              R.attr.colorOnError,
+              R.attr.colorErrorContainer,
+              R.attr.colorOnErrorContainer
+            },
             R.array.cat_error_strings),
         new ColorHarmonizationGridRowData(
             R.id.cat_colors_yellow,
@@ -98,16 +103,14 @@ public class ColorHarmonizationDemoFragment extends DemoFragment {
         layoutInflater.inflate(
             R.layout.cat_colors_harmonization_fragment, viewGroup, false /* attachToRoot */);
 
-    dynamicColorsContext = DynamicColors.wrapContextIfAvailable(requireContext());
+    dynamicColorsContext = DynamicColors.wrapContextIfAvailable(this);
     HarmonizedColorsOptions options =
         new HarmonizedColorsOptions.Builder()
             .setColorResourceIds(
                 new int[] {
-                  R.color.error_reference,
-                  R.color.yellow_reference,
-                  R.color.blue_reference,
-                  R.color.green_reference,
+                  R.color.yellow_reference, R.color.blue_reference, R.color.green_reference,
                 })
+            .setColorAttributes(HarmonizedColorAttributes.createMaterialDefaults())
             .build();
     harmonizedContext = HarmonizedColors.wrapContextIfAvailable(dynamicColorsContext, options);
 
@@ -132,18 +135,37 @@ public class ColorHarmonizationDemoFragment extends DemoFragment {
     return demoView;
   }
 
+  // This will disable app-wide color harmonization, to not have conflicts with the harmonization
+  // logic within this demo.
+  @Override
+  public boolean isColorHarmonizationEnabled() {
+    return false;
+  }
+
   private void createColorGridAndPopulateLayout(
       Context context,
       ColorHarmonizationGridRowData colorHarmonizationGridRowData,
       @IdRes int layoutId) {
-    ColorGrid colorGrid =
-        ColorGrid.createFromColorGridData(
-            ColorGridData.createFromColorResId(
-                context,
-                colorHarmonizationGridRowData.getColorResId(),
-                colorHarmonizationGridRowData.getColorNameIds()));
+    ColorGrid colorGrid = createColorGrid(context, colorHarmonizationGridRowData);
     LinearLayout layout = demoView.findViewById(layoutId);
     layout.addView(colorGrid.renderView(context, layout));
+  }
+
+  private ColorGrid createColorGrid(
+      Context context, ColorHarmonizationGridRowData colorHarmonizationGridRowData) {
+    if (colorHarmonizationGridRowData.getColorAttributeResIds().length > 0
+        && colorHarmonizationGridRowData.getColorResId() == 0) {
+      return ColorGrid.createFromAttrResId(
+          context,
+          getResources().getStringArray(colorHarmonizationGridRowData.getColorNameIds()),
+          colorHarmonizationGridRowData.getColorAttributeResIds());
+    } else {
+      return ColorGrid.createFromColorGridData(
+          ColorGridData.createFromColorResId(
+              context,
+              colorHarmonizationGridRowData.getColorResId(),
+              colorHarmonizationGridRowData.getColorNameIds()));
+    }
   }
 
   private void updateButtons(boolean harmonize) {

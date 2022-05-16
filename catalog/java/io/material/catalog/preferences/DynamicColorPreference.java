@@ -94,9 +94,13 @@ public class DynamicColorPreference extends CatalogPreference {
         new DynamicColorsOptions.Builder()
             .setPrecondition(precondition)
             .setOnAppliedCallback(
-                activity ->
+                activity -> {
+                  if ((activity instanceof BaseCatalogActivity)
+                      && ((BaseCatalogActivity) activity).isColorHarmonizationEnabled()) {
                     HarmonizedColors.applyToContextIfAvailable(
-                        activity, HarmonizedColorsOptions.createMaterialDefaults()))
+                        activity, HarmonizedColorsOptions.createMaterialDefaults());
+                  }
+                })
             .build());
   }
 }
