@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.fragment.app.Fragment;
+import androidx.annotation.ChecksSdkIntAtLeast;
 import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
 import dagger.multibindings.IntoSet;
@@ -37,6 +38,10 @@ import java.util.List;
 
 /** A landing fragment that links to Transition demos for the Catalog app. */
 public class TransitionFragment extends DemoLandingFragment {
+
+  @ChecksSdkIntAtLeast(api = VERSION_CODES.LOLLIPOP)
+  private static final boolean PLATFORM_TRANSITIONS_AVAILABLE =
+      VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP;
 
   @Override
   public int getTitleResId() {
@@ -61,8 +66,7 @@ public class TransitionFragment extends DemoLandingFragment {
   @Override
   public List<Demo> getAdditionalDemos() {
     List<Demo> demos = new ArrayList<>();
-    boolean shouldAddPlatformDemos = VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP;
-    if (shouldAddPlatformDemos) {
+    if (PLATFORM_TRANSITIONS_AVAILABLE) {
       demos.add(
           new Demo(R.string.cat_transition_container_transform_activity_title) {
             @Override
@@ -86,7 +90,7 @@ public class TransitionFragment extends DemoLandingFragment {
               }
             }));
 
-    if (shouldAddPlatformDemos) {
+    if (PLATFORM_TRANSITIONS_AVAILABLE) {
       demos.add(
           new Demo(R.string.cat_transition_shared_axis_activity_title) {
             @Override
