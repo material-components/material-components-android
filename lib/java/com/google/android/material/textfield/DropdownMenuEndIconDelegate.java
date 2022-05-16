@@ -63,15 +63,18 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
   private final OnClickListener onIconClickListener = view -> showHideDropdown();
 
   private final OnFocusChangeListener onEditTextFocusChangeListener = (view, hasFocus) -> {
-    endLayout.setEndIconActivated(hasFocus);
+    editTextHasFocus = hasFocus;
+    refreshIconState();
     if (!hasFocus) {
       setEndIconChecked(false);
       dropdownPopupDirty = false;
     }
   };
 
-  private boolean dropdownPopupDirty = false;
-  private boolean isEndIconChecked = false;
+  private boolean editTextHasFocus;
+
+  private boolean dropdownPopupDirty;
+  private boolean isEndIconChecked;
   private long dropdownPopupActivatedAt = Long.MAX_VALUE;
   @Nullable private AccessibilityManager accessibilityManager;
   private ValueAnimator fadeOutAnim;
@@ -123,6 +126,26 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
   }
 
   @Override
+  boolean isIconCheckable() {
+    return true;
+  }
+
+  @Override
+  boolean isIconChecked() {
+    return isEndIconChecked;
+  }
+
+  @Override
+  boolean isIconActivable() {
+    return true;
+  }
+
+  @Override
+  boolean isIconActivated() {
+    return editTextHasFocus;
+  }
+
+  @Override
   boolean shouldTintIconOnError() {
     return true;
   }
@@ -141,7 +164,6 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
   public void onEditTextAttached(@Nullable EditText editText) {
     this.autoCompleteTextView = castAutoCompleteTextViewOrThrow(editText);
     setUpDropdownShowHideBehavior();
-    textInputLayout.setEndIconCheckable(true);
     textInputLayout.setErrorIconDrawable(null);
     if (!isEditable(editText) && accessibilityManager.isTouchExplorationEnabled()) {
       ViewCompat.setImportantForAccessibility(endIconView, IMPORTANT_FOR_ACCESSIBILITY_NO);
@@ -207,7 +229,7 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
         setEndIconChecked(!isEndIconChecked);
       } else {
         isEndIconChecked = !isEndIconChecked;
-        endIconView.toggle();
+        refreshIconState();
       }
       if (isEndIconChecked) {
         autoCompleteTextView.requestFocus();
@@ -279,7 +301,7 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
         new AnimatorListenerAdapter() {
           @Override
           public void onAnimationEnd(Animator animation) {
-            endIconView.setChecked(isEndIconChecked);
+            refreshIconState();
             fadeInAnim.start();
           }
         });

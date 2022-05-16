@@ -48,8 +48,7 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
     if (text != null) {
       text.clear();
     }
-
-    endLayout.refreshEndIconDrawableState();
+    refreshIconState();
   };
 
   private final OnFocusChangeListener onFocusChangeListener =
@@ -64,7 +63,6 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
 
   @Override
   void setUp() {
-    endLayout.setEndIconCheckable(false);
     initAnimators();
   }
 

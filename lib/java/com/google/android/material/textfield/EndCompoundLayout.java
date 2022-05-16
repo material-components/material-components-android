@@ -332,6 +332,7 @@ class EndCompoundLayout extends LinearLayout {
     EndIconDelegate delegate = getEndIconDelegate();
     setEndIconDrawable(getIconResId(delegate));
     setEndIconContentDescription(delegate.getIconContentDescriptionResId());
+    setEndIconCheckable(delegate.isIconCheckable());
     if (delegate.isBoxBackgroundModeSupported(textInputLayout.getBoxBackgroundMode())) {
       delegate.setUp();
     } else {
@@ -347,6 +348,29 @@ class EndCompoundLayout extends LinearLayout {
       setOnFocusChangeListenersIfNeeded(delegate);
     }
     applyIconTint(textInputLayout, endIconView, endIconTintList, endIconTintMode);
+    refreshIconState(/* force= */ true);
+  }
+
+  void refreshIconState(boolean force) {
+    boolean stateChanged = false;
+    EndIconDelegate delegate = getEndIconDelegate();
+    if (delegate.isIconCheckable()) {
+      boolean wasChecked = endIconView.isChecked();
+      if (wasChecked != delegate.isIconChecked()) {
+        endIconView.setChecked(!wasChecked);
+        stateChanged = true;
+      }
+    }
+    if (delegate.isIconActivable()) {
+      boolean wasActivated = endIconView.isActivated();
+      if (wasActivated != delegate.isIconActivated()) {
+        setEndIconActivated(!wasActivated);
+        stateChanged = true;
+      }
+    }
+    if (force || stateChanged) {
+      refreshEndIconDrawableState();
+    }
   }
 
   private int getIconResId(EndIconDelegate delegate) {

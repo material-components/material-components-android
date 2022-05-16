@@ -71,6 +71,40 @@ abstract class EndIconDelegate {
   }
 
   /**
+   * Returns true if the end icon should be checkable.
+   *
+   * @see TextInputLayout#setEndIconCheckable(boolean)
+   */
+  boolean isIconCheckable() {
+    return false;
+  }
+
+  /**
+   * Returns true if the end icon should be checked. You will need to override
+   * {@link #isIconCheckable()} to make this method work.
+   */
+  boolean isIconChecked() {
+    return false;
+  }
+
+  /**
+   * Returns true if the end icon should be activable.
+   */
+  boolean isIconActivable() {
+    return false;
+  }
+
+  /**
+   * Returns true if the end icon should be activated. You will need to override
+   * {@link #isIconActivable()} to make this method work.
+   *
+   * @see TextInputLayout#setEndIconActivated(boolean)
+   */
+  boolean isIconActivated() {
+    return false;
+  }
+
+  /**
    * Whether the end icon should be tinted with the error color when the {@link TextInputLayout} is
    * in error mode.
    */
@@ -147,4 +181,8 @@ abstract class EndIconDelegate {
    * accessibility event.
    */
   void onPopulateAccessibilityEvent(View host, @NonNull AccessibilityEvent event) {}
+
+  final void refreshIconState() {
+    endLayout.refreshIconState(/* force= */ false);
+  }
 }
