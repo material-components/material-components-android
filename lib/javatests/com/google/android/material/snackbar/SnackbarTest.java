@@ -16,7 +16,7 @@
 
 package com.google.android.material.snackbar;
 
-import com.google.android.material.R;
+import com.google.android.material.test.R;
 
 import static android.os.Build.VERSION_CODES.JELLY_BEAN;
 import static com.google.common.truth.Truth.assertThat;

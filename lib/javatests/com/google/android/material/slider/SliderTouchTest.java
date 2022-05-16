@@ -16,7 +16,7 @@
 
 package com.google.android.material.slider;
 
-import com.google.android.material.R;
+import com.google.android.material.test.R;
 
 import static com.google.android.material.slider.SliderHelper.calculateXPositionFromValue;
 import static com.google.android.material.slider.SliderHelper.dragSliderBetweenValues;

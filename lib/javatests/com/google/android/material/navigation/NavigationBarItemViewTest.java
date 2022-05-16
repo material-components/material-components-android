@@ -15,7 +15,7 @@
  */
 package com.google.android.material.navigation;
 
-import com.google.android.material.R;
+import com.google.android.material.test.R;
 
 import static android.os.Build.VERSION_CODES.O;
 import static com.google.common.truth.Truth.assertThat;

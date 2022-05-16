@@ -97,6 +97,7 @@ android {
     srcDirs.forEach {
       main.res.srcDirs += 'java/' + it + '/res'
       main.res.srcDirs += 'java/' + it + '/res-public'
+      test.res.srcDirs += 'javatests/' + it + '/res'
     }
 
     test.java.srcDir 'javatests'
@@ -110,15 +111,6 @@ android {
 
   defaultConfig {
     minSdkVersion 14
-  }
-}
-
-// Add the resource directories to the main sourceSet for all test tasks
-gradle.projectsEvaluated {
-  tasks.withType(Test) { task ->
-    srcDirs.forEach {
-      android.sourceSets.main.res.srcDirs += 'javatests/' + it + '/res'
-    }
   }
 }
 

@@ -16,7 +16,7 @@
 
 package com.google.android.material.button;
 
-import com.google.android.material.R;
+import com.google.android.material.test.R;
 
 import static android.view.View.GONE;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
