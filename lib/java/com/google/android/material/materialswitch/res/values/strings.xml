@@ -36,4 +36,6 @@
 
   <!-- Path data to draw the switch track. -->
   <string name="mtrl_switch_track_path" translatable="false">M0,16 A16,16 0 0,1 16,0 H36 A16,16 0 0,1 36,32 H16 A16,16 0 0,1 0,16</string>
+  <!-- Path data to draw the switch track decor. -->
+  <string name="mtrl_switch_track_decoration_path" translatable="false">M1,16 A15,15 0 0,1 16,1 H36 A15,15 0 0,1 36,31 H16 A15,15 0 0,1 1,16</string>
 </resources>

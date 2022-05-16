@@ -16,4 +16,19 @@
 <resources>
   <!-- Style to use for MaterialSwitch in the theme. -->
   <attr name="materialSwitchStyle" type="reference"/>
+
+  <!-- Drawable used for the track decoration that will be drawn upon the track.
+       By default it will draw an outline on the track in the unchecked state. -->
+  <attr name="trackDecoration" type="reference"/>
+  <!-- Tint that will be applied to the track decoration drawable.. -->
+  <attr name="trackDecorationTint" type="reference"/>
+  <!-- The blending mode used to apply the tint specified by trackDecorationTint
+       to trackDecoration. The default mode is SRC_IN if not specified. -->
+  <attr name="trackDecorationTintMode" type="reference"/>
+
+  <declare-styleable name="MaterialSwitch">
+    <attr name="trackDecoration"/>
+    <attr name="trackDecorationTint"/>
+    <attr name="trackDecorationTintMode"/>
+  </declare-styleable>
 </resources>
