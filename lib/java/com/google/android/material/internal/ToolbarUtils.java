@@ -90,12 +90,17 @@ public class ToolbarUtils {
 
   @Nullable
   private static ImageView getImageView(@NonNull Toolbar toolbar, @Nullable Drawable content) {
+    if (content == null) {
+      return null;
+    }
     for (int i = 0; i < toolbar.getChildCount(); i++) {
       View child = toolbar.getChildAt(i);
       if (child instanceof ImageView) {
         ImageView imageView = (ImageView) child;
-        if (content != null
-            && imageView.getDrawable().getConstantState().equals(content.getConstantState())) {
+        Drawable drawable = imageView.getDrawable();
+        if (drawable != null
+            && drawable.getConstantState() != null
+            && drawable.getConstantState().equals(content.getConstantState())) {
           return imageView;
         }
       }
