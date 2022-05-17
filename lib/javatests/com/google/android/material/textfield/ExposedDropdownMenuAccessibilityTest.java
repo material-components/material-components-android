@@ -16,7 +16,7 @@
 
 package com.google.android.material.textfield;
 
-import com.google.android.material.R;
+import com.google.android.material.test.R;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;

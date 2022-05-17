@@ -15,8 +15,9 @@
  */
 package com.google.android.material.chip;
 
-import com.google.android.material.R;
+import com.google.android.material.test.R;
 
+import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -24,6 +25,7 @@ import static org.junit.Assert.assertTrue;
 import android.content.Context;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
+import android.widget.CompoundButton;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
@@ -197,6 +199,29 @@ public class ChipGroupTest {
   }
 
   @Test
+  public void multipleSelection_chipListener() {
+    chipgroup.setSingleSelection(false);
+
+    Chip first = (Chip) chipgroup.getChildAt(0);
+    first.setOnCheckedChangeListener(this::onChipCheckedStateChanged);
+
+    Chip second = (Chip) chipgroup.getChildAt(1);
+    second.setOnCheckedChangeListener(this::onChipCheckedStateChanged);
+
+    first.performClick();
+    getInstrumentation().waitForIdleSync();
+
+    assertThat(checkedChangeCallCount).isEqualTo(1);
+    assertThat(checkedIds).containsExactly(first.getId());
+
+    second.performClick();
+    getInstrumentation().waitForIdleSync();
+
+    assertThat(checkedChangeCallCount).isEqualTo(2);
+    assertThat(checkedIds).containsExactly(first.getId(), second.getId());
+  }
+
+  @Test
   public void multiSelection_withSelectionRequired_unSelectsIfTwo() {
     chipgroup.setSingleSelection(false);
     chipgroup.setSelectionRequired(true);
@@ -259,5 +284,23 @@ public class ChipGroupTest {
     assertEquals(-1, itemInfo.getColumnIndex());
     assertEquals(1, itemInfo.getRowIndex());
     assertTrue(itemInfo.isSelected());
+  }
+
+  @Test
+  public void getChipAccessibilityClassName_multipleChecked_buttonName() {
+    Chip chip = (Chip) chipgroup.getChildAt(0);
+    assertEquals("android.widget.Button", chip.getAccessibilityClassName().toString());
+  }
+
+  @Test
+  public void getChipAccessibilityClassName_singleChecked_radioButtonName() {
+    chipgroup.setSingleSelection(true);
+    Chip chip = (Chip) chipgroup.getChildAt(0);
+    assertEquals("android.widget.RadioButton", chip.getAccessibilityClassName().toString());
+  }
+
+  private void onChipCheckedStateChanged(CompoundButton chip, boolean checked) {
+    checkedChangeCallCount++;
+    checkedIds = chipgroup.getCheckedChipIds();
   }
 }

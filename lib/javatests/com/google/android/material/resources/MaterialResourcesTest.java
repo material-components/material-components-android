@@ -16,7 +16,7 @@
 
 package com.google.android.material.resources;
 
-import com.google.android.material.R;
+import com.google.android.material.test.R;
 
 import static android.content.Context.WINDOW_SERVICE;
 import static com.google.common.truth.Truth.assertThat;
