@@ -15,7 +15,7 @@
  */
 package com.google.android.material.slider;
 
-import com.google.android.material.R;
+import com.google.android.material.test.R;
 
 import static org.robolectric.annotation.LooperMode.Mode.LEGACY;
 

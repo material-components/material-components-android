@@ -16,7 +16,7 @@
 
 package com.google.android.material.timepicker;
 
-import com.google.android.material.R;
+import com.google.android.material.test.R;
 
 import static android.os.Looper.getMainLooper;
 import static com.google.common.truth.Truth.assertThat;

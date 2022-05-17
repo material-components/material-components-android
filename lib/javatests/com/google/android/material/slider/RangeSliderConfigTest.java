@@ -15,7 +15,7 @@
  */
 package com.google.android.material.slider;
 
-import com.google.android.material.R;
+import com.google.android.material.test.R;
 
 import static android.os.Looper.getMainLooper;
 import static com.google.android.material.slider.BaseSlider.UNIT_PX;

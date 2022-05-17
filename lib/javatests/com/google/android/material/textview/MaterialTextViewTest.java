@@ -16,7 +16,7 @@
 
 package com.google.android.material.textview;
 
-import com.google.android.material.R;
+import com.google.android.material.test.R;
 
 import static com.google.common.truth.Truth.assertThat;
 

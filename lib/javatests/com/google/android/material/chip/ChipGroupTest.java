@@ -15,7 +15,7 @@
  */
 package com.google.android.material.chip;
 
-import com.google.android.material.R;
+import com.google.android.material.test.R;
 
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static com.google.common.truth.Truth.assertThat;

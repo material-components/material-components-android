@@ -20,6 +20,7 @@ import com.google.android.material.R;
 
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
@@ -36,6 +37,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.graphics.drawable.DrawableCompat;
 import com.google.android.material.internal.ThemeEnforcement;
+import com.google.android.material.internal.ViewUtils;
+import java.lang.reflect.Field;
 
 /**
  * A class that creates a Material Themed Switch. This class is intended to provide a brand new
@@ -44,6 +47,8 @@ import com.google.android.material.internal.ThemeEnforcement;
  */
 public class MaterialSwitch extends SwitchCompat {
   private static final int DEF_STYLE_RES = R.style.Widget_Material3_CompoundButton_MaterialSwitch;
+
+  @NonNull private final SwitchWidth switchWidth = SwitchWidth.create(this);
 
   @Nullable private Drawable trackDrawable;
   @Nullable private Drawable trackDecorationDrawable;
@@ -84,6 +89,40 @@ public class MaterialSwitch extends SwitchCompat {
     attributes.recycle();
 
     refreshTrackDrawable();
+  }
+
+  // TODO(b/227338106): remove this workaround and move to use setEnforceSwitchWidth(false) after
+  //                    AppCompat 1.6.0-stable is released.
+  @Override
+  public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    switchWidth.set(getSwitchMinWidth());
+  }
+
+  // TODO(b/227338106): remove this workaround and move to use setEnforceSwitchWidth(false) after
+  //                    AppCompat 1.6.0-stable is released.
+  @Override
+  public int getCompoundPaddingLeft() {
+    if (!ViewUtils.isLayoutRtl(this)) {
+      return super.getCompoundPaddingLeft();
+    }
+    // Compound paddings are used during onMeasure() to decide the component width, at that time
+    // the switch width is not overridden yet so we need to adjust the value to make measurement
+    // right. This can be removed after the workaround is removed.
+    return super.getCompoundPaddingLeft() - switchWidth.get() + getSwitchMinWidth();
+  }
+
+  // TODO(b/227338106): remove this workaround and move to use setEnforceSwitchWidth(false) after
+  //                    AppCompat 1.6.0-stable is released.
+  @Override
+  public int getCompoundPaddingRight() {
+    if (ViewUtils.isLayoutRtl(this)) {
+      return super.getCompoundPaddingRight();
+    }
+    // Compound paddings are used during onMeasure() to decide the component width, at that time
+    // the switch width is not overridden yet so we need to adjust the value to make measurement
+    // right. This can be removed after the workaround is removed.
+    return super.getCompoundPaddingRight() - switchWidth.get() + getSwitchMinWidth();
   }
 
   @Override
@@ -214,6 +253,9 @@ public class MaterialSwitch extends SwitchCompat {
     } else {
       finalTrackDrawable = trackDecorationDrawable;
     }
+    if (finalTrackDrawable != null) {
+      setSwitchMinWidth(finalTrackDrawable.getIntrinsicWidth());
+    }
     super.setTrackDrawable(finalTrackDrawable);
   }
 
@@ -230,5 +272,57 @@ public class MaterialSwitch extends SwitchCompat {
       DrawableCompat.setTintMode(drawable, tintMode);
     }
     return drawable;
+  }
+
+  // TODO(b/227338106): remove this workaround and move to use setEnforceSwitchWidth(false) after
+  //                    AppCompat 1.6.0-stable is released.
+  @SuppressLint("PrivateApi")
+  private static final class SwitchWidth {
+
+    @NonNull private final MaterialSwitch materialSwitch;
+    @Nullable private final Field switchWidthField;
+
+    @NonNull
+    static SwitchWidth create(@NonNull MaterialSwitch materialSwitch) {
+      return new SwitchWidth(materialSwitch, createSwitchWidthField());
+    }
+
+    private SwitchWidth(@NonNull MaterialSwitch materialSwitch, @Nullable Field switchWidthField) {
+      this.materialSwitch = materialSwitch;
+      this.switchWidthField = switchWidthField;
+    }
+
+    int get() {
+      try {
+        if (switchWidthField != null) {
+          return switchWidthField.getInt(materialSwitch);
+        }
+      } catch (IllegalAccessException e) {
+        // Fall through
+      }
+      // Return getSwitchMinWidth() so no width adjustment will be done.
+      return materialSwitch.getSwitchMinWidth();
+    }
+
+    void set(int switchWidth) {
+      try {
+        if (switchWidthField != null) {
+          switchWidthField.setInt(materialSwitch, switchWidth);
+        }
+      } catch (IllegalAccessException e) {
+        // Fall through
+      }
+    }
+
+    @Nullable
+    private static Field createSwitchWidthField() {
+      try {
+        Field switchWidthField = SwitchCompat.class.getDeclaredField("mSwitchWidth");
+        switchWidthField.setAccessible(true);
+        return switchWidthField;
+      } catch (NoSuchFieldException | SecurityException e) {
+        return null;
+      }
+    }
   }
 }
