@@ -49,6 +49,7 @@ public class MaterialSwitch extends SwitchCompat {
   private static final int DEF_STYLE_RES = R.style.Widget_Material3_CompoundButton_MaterialSwitch;
 
   @NonNull private final SwitchWidth switchWidth = SwitchWidth.create(this);
+  @NonNull private final ThumbPosition thumbPosition = new ThumbPosition();
 
   @Nullable private Drawable trackDrawable;
   @Nullable private Drawable trackDecorationDrawable;
@@ -239,6 +240,12 @@ public class MaterialSwitch extends SwitchCompat {
     return trackDecorationTintMode;
   }
 
+  // TODO(b/227338106): remove this workaround to use super.getThumbPosition() directly after
+  //                    AppCompat 1.6.0-stable is released.
+  private float getThumbPosition() {
+    return thumbPosition.get();
+  }
+
   private void refreshTrackDrawable() {
     trackDrawable = setDrawableTintListIfNeeded(trackDrawable, trackTintList, getTrackTintMode());
     trackDecorationDrawable = setDrawableTintListIfNeeded(
@@ -321,6 +328,38 @@ public class MaterialSwitch extends SwitchCompat {
         switchWidthField.setAccessible(true);
         return switchWidthField;
       } catch (NoSuchFieldException | SecurityException e) {
+        return null;
+      }
+    }
+  }
+
+  // TODO(b/227338106): remove this workaround to use super.getThumbPosition() directly after
+  //                    AppCompat 1.6.0-stable is released.
+  @SuppressLint("PrivateApi")
+  private final class ThumbPosition {
+    private final Field thumbPositionField;
+
+    private ThumbPosition() {
+      thumbPositionField = createThumbPositionField();
+    }
+
+    float get() {
+      try {
+        if (thumbPositionField != null) {
+          return thumbPositionField.getFloat(MaterialSwitch.this);
+        }
+      } catch (IllegalAccessException e) {
+        // Fall through
+      }
+      return isChecked() ? 1 : 0;
+    }
+
+    private Field createThumbPositionField() {
+      try {
+        Field thumbPositionField = SwitchCompat.class.getDeclaredField("mThumbPosition");
+        thumbPositionField.setAccessible(true);
+        return thumbPositionField;
+      } catch (Exception e) {
         return null;
       }
     }
