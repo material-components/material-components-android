@@ -55,6 +55,7 @@ import androidx.core.view.ViewCompat.NestedScrollType;
 import androidx.core.view.ViewCompat.ScrollAxis;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.customview.view.AbsSavedState;
+import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.animation.TransformationCallback;
 import com.google.android.material.behavior.HideBottomViewOnScrollBehavior;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -63,6 +64,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton.OnV
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.internal.ViewUtils.RelativePadding;
+import com.google.android.material.motion.MotionUtils;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.EdgeTreatment;
 import com.google.android.material.shape.MaterialShapeDrawable;
@@ -112,7 +114,11 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
 
   private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_BottomAppBar;
 
-  private static final long ANIMATION_DURATION = 300;
+  private static final int FAB_ALIGNMENT_ANIM_DURATION_DEFAULT = 300;
+  private static final int FAB_ALIGNMENT_ANIM_DURATION_ATTR = R.attr.motionDurationLong2;
+  private static final int FAB_ALIGNMENT_ANIM_EASING_ATTR =
+      R.attr.motionEasingEmphasizedInterpolator;
+  private static final float FAB_ALIGNMENT_ANIM_EASING_MIDPOINT = .2F;
 
   public static final int FAB_ALIGNMENT_MODE_CENTER = 0;
   public static final int FAB_ALIGNMENT_MODE_END = 1;
@@ -503,10 +509,9 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   }
 
   /**
-   *  Hides the {@link BottomAppBar}.
+   * Hides the {@link BottomAppBar}.
    *
-   * @param animate {@code false} to hide the {@link BottomAppBar} immediately
-   *        without animation.
+   * @param animate {@code false} to hide the {@link BottomAppBar} immediately without animation.
    */
   public void performHide(boolean animate) {
     getBehavior().slideDown(this, animate);
@@ -520,8 +525,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   /**
    * Shows the {@link BottomAppBar}.
    *
-   * @param animate {@code false} to show the {@link BottomAppBar} immediately without
-   *     animation.
+   * @param animate {@code false} to show the {@link BottomAppBar} immediately without animation.
    */
   public void performShow(boolean animate) {
     getBehavior().slideUp(this, animate);
@@ -633,6 +637,9 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
 
     AnimatorSet set = new AnimatorSet();
     set.playTogether(animators);
+    set.setInterpolator(
+        MotionUtils.resolveThemeInterpolator(
+            getContext(), FAB_ALIGNMENT_ANIM_EASING_ATTR, AnimationUtils.LINEAR_INTERPOLATOR));
     modeAnimator = set;
     modeAnimator.addListener(
         new AnimatorListenerAdapter() {
@@ -715,8 +722,13 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
       @FabAlignmentMode int targetMode, @NonNull List<Animator> animators) {
     ObjectAnimator animator =
         ObjectAnimator.ofFloat(findDependentFab(), "translationX", getFabTranslationX(targetMode));
-    animator.setDuration(ANIMATION_DURATION);
+    animator.setDuration(getFabAlignmentAnimationDuration());
     animators.add(animator);
+  }
+
+  private int getFabAlignmentAnimationDuration() {
+    return MotionUtils.resolveThemeDuration(
+        getContext(), FAB_ALIGNMENT_ANIM_DURATION_ATTR, FAB_ALIGNMENT_ANIM_DURATION_DEFAULT);
   }
 
   @Nullable
@@ -785,7 +797,9 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
       return;
     }
 
+    final float animationDuration = getFabAlignmentAnimationDuration();
     Animator fadeIn = ObjectAnimator.ofFloat(actionMenuView, "alpha", 1);
+    fadeIn.setDuration((long) (animationDuration * (1F - FAB_ALIGNMENT_ANIM_EASING_MIDPOINT)));
 
     float translationXDifference =
         actionMenuView.getTranslationX()
@@ -795,6 +809,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     if (Math.abs(translationXDifference) > 1) {
       // We need to fade the MenuView out and in because it's position is changing
       Animator fadeOut = ObjectAnimator.ofFloat(actionMenuView, "alpha", 0);
+      fadeOut.setDuration((long) (animationDuration * FAB_ALIGNMENT_ANIM_EASING_MIDPOINT));
 
       fadeOut.addListener(
           new AnimatorListenerAdapter() {
@@ -816,7 +831,6 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
           });
 
       AnimatorSet set = new AnimatorSet();
-      set.setDuration(ANIMATION_DURATION / 2);
       set.playSequentially(fadeOut, fadeIn);
       animators.add(set);
     } else if (actionMenuView.getAlpha() < 1) {
@@ -879,13 +893,14 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
       @FabAlignmentMode final int fabAlignmentMode,
       final boolean fabAttached,
       boolean shouldWaitForMenuReplacement) {
-    Runnable runnable = new Runnable() {
-      @Override
-      public void run() {
-        actionMenuView.setTranslationX(
-            getActionMenuViewTranslationX(actionMenuView, fabAlignmentMode, fabAttached));
-      }
-    };
+    Runnable runnable =
+        new Runnable() {
+          @Override
+          public void run() {
+            actionMenuView.setTranslationX(
+                getActionMenuViewTranslationX(actionMenuView, fabAlignmentMode, fabAttached));
+          }
+        };
     if (shouldWaitForMenuReplacement) {
       // Wait to ensure the actionMenuView has had it's menu inflated and is able to correctly
       // measure it's width before calculating and translating X.
@@ -1103,8 +1118,10 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
             child.setFabDiameter(height);
 
             // Assume symmetrical corners
-            float cornerSize = fab.getShapeAppearanceModel().getTopLeftCornerSize()
-                .getCornerSize(new RectF(fabContentRect));
+            float cornerSize =
+                fab.getShapeAppearanceModel()
+                    .getTopLeftCornerSize()
+                    .getCornerSize(new RectF(fabContentRect));
 
             child.setFabCornerSize(cornerSize);
 
