@@ -27,6 +27,7 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
+import androidx.core.view.accessibility.AccessibilityManagerCompat.TouchExplorationStateChangeListener;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import com.google.android.material.internal.CheckableImageButton;
 import com.google.android.material.textfield.TextInputLayout.BoxBackgroundMode;
@@ -130,7 +131,7 @@ abstract class EndIconDelegate {
   void onSuffixVisibilityChanged(boolean visible) {}
 
   /**
-   * Overrides this method to provides an {@link OnClickListener} to handle click events of the end
+   * Override this method to provide an {@link OnClickListener} to handle click events of the end
    * icon.
    */
   OnClickListener getOnIconClickListener() {
@@ -138,18 +139,26 @@ abstract class EndIconDelegate {
   }
 
   /**
-   * Overrides this method to provides an {@link OnFocusChangeListener} to handle focus change
-   * events of the edit text.
+   * Override this method to provide an {@link OnFocusChangeListener} to handle focus change events
+   * of the edit text.
    */
   OnFocusChangeListener getOnEditTextFocusChangeListener() {
     return null;
   }
 
   /**
-   * Overrides this method to provides an {@link OnFocusChangeListener} to handle focus change
-   * events of the end icon.
+   * Override this method to provide an {@link OnFocusChangeListener} to handle focus change events
+   * of the end icon.
    */
   OnFocusChangeListener getOnIconViewFocusChangeListener() {
+    return null;
+  }
+
+  /**
+   * Override this method to provide a {@link TouchExplorationStateChangeListener} to handle touch
+   * exploration state changes of the end icon.
+   */
+  TouchExplorationStateChangeListener getTouchExplorationStateChangeListener() {
     return null;
   }
 

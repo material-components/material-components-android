@@ -30,6 +30,7 @@ import static com.google.android.material.textfield.TextInputLayout.END_ICON_NON
 import static com.google.android.material.textfield.TextInputLayout.END_ICON_PASSWORD_TOGGLE;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -43,7 +44,9 @@ import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnAttachStateChangeListener;
 import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -57,6 +60,8 @@ import androidx.annotation.StyleRes;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.MarginLayoutParamsCompat;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityManagerCompat;
+import androidx.core.view.accessibility.AccessibilityManagerCompat.TouchExplorationStateChangeListener;
 import androidx.core.widget.TextViewCompat;
 import com.google.android.material.internal.CheckableImageButton;
 import com.google.android.material.internal.TextWatcherAdapter;
@@ -97,6 +102,8 @@ class EndCompoundLayout extends LinearLayout {
   private boolean hintExpanded;
 
   private EditText editText;
+  @Nullable private final AccessibilityManager accessibilityManager;
+  @Nullable private TouchExplorationStateChangeListener touchExplorationStateChangeListener;
 
   private final TextWatcher editTextWatcher =
       new TextWatcherAdapter() {
@@ -137,6 +144,9 @@ class EndCompoundLayout extends LinearLayout {
   EndCompoundLayout(TextInputLayout textInputLayout, TintTypedArray a) {
     super(textInputLayout.getContext());
 
+    accessibilityManager =
+        (AccessibilityManager) getContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
+
     this.textInputLayout = textInputLayout;
 
     setVisibility(GONE);
@@ -170,6 +180,18 @@ class EndCompoundLayout extends LinearLayout {
     addView(errorIconView);
 
     textInputLayout.addOnEditTextAttachedListener(onEditTextAttachedListener);
+    addOnAttachStateChangeListener(
+        new OnAttachStateChangeListener() {
+          @Override
+          public void onViewAttachedToWindow(View ignored) {
+            addTouchExplorationStateChangeListenerIfNeeded();
+          }
+
+          @Override
+          public void onViewDetachedFromWindow(View ignored) {
+            removeTouchExplorationStateChangeListenerIfNeeded();
+          }
+        });
   }
 
   private CheckableImageButton createIconView(
@@ -324,7 +346,7 @@ class EndCompoundLayout extends LinearLayout {
     if (this.endIconMode == endIconMode) {
       return;
     }
-    getEndIconDelegate().tearDown();
+    tearDownDelegate(getEndIconDelegate());
     int previousEndIconMode = this.endIconMode;
     this.endIconMode = endIconMode;
     dispatchOnEndIconChanged(previousEndIconMode);
@@ -334,7 +356,7 @@ class EndCompoundLayout extends LinearLayout {
     setEndIconContentDescription(delegate.getIconContentDescriptionResId());
     setEndIconCheckable(delegate.isIconCheckable());
     if (delegate.isBoxBackgroundModeSupported(textInputLayout.getBoxBackgroundMode())) {
-      delegate.setUp();
+      setUpDelegate(delegate);
     } else {
       throw new IllegalStateException(
           "The current box background mode "
@@ -370,6 +392,35 @@ class EndCompoundLayout extends LinearLayout {
     }
     if (force || stateChanged) {
       refreshEndIconDrawableState();
+    }
+  }
+
+  private void setUpDelegate(@NonNull EndIconDelegate delegate) {
+    delegate.setUp();
+
+    touchExplorationStateChangeListener = delegate.getTouchExplorationStateChangeListener();
+    addTouchExplorationStateChangeListenerIfNeeded();
+  }
+
+  private void tearDownDelegate(@NonNull EndIconDelegate delegate) {
+    removeTouchExplorationStateChangeListenerIfNeeded();
+    touchExplorationStateChangeListener = null;
+    delegate.tearDown();
+  }
+
+  private void addTouchExplorationStateChangeListenerIfNeeded() {
+    if (touchExplorationStateChangeListener != null
+        && accessibilityManager != null
+        && ViewCompat.isAttachedToWindow(this)) {
+      AccessibilityManagerCompat.addTouchExplorationStateChangeListener(
+          accessibilityManager, touchExplorationStateChangeListener);
+    }
+  }
+
+  private void removeTouchExplorationStateChangeListenerIfNeeded() {
+    if (touchExplorationStateChangeListener != null && accessibilityManager != null) {
+      AccessibilityManagerCompat.removeTouchExplorationStateChangeListener(
+          accessibilityManager, touchExplorationStateChangeListener);
     }
   }
 

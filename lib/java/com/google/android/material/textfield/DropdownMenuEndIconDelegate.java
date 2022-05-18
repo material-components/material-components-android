@@ -44,6 +44,7 @@ import androidx.annotation.ChecksSdkIntAtLeast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityManagerCompat.TouchExplorationStateChangeListener;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.textfield.TextInputLayout.BoxBackgroundMode;
@@ -71,8 +72,16 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
     }
   };
 
-  private boolean editTextHasFocus;
+  private final TouchExplorationStateChangeListener touchExplorationStateChangeListener =
+      (boolean enabled) -> {
+        if (autoCompleteTextView != null && !isEditable(autoCompleteTextView)) {
+          ViewCompat.setImportantForAccessibility(
+              endIconView,
+              enabled ? IMPORTANT_FOR_ACCESSIBILITY_NO : IMPORTANT_FOR_ACCESSIBILITY_YES);
+        }
+      };
 
+  private boolean editTextHasFocus;
   private boolean dropdownPopupDirty;
   private boolean isEndIconChecked;
   private long dropdownPopupActivatedAt = Long.MAX_VALUE;
@@ -89,15 +98,6 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
     initAnimators();
     accessibilityManager =
         (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
-    if (VERSION.SDK_INT >= VERSION_CODES.KITKAT) {
-      accessibilityManager.addTouchExplorationStateChangeListener(enabled -> {
-        if (autoCompleteTextView != null && !isEditable(autoCompleteTextView)) {
-          ViewCompat.setImportantForAccessibility(
-              endIconView,
-              enabled ? IMPORTANT_FOR_ACCESSIBILITY_NO : IMPORTANT_FOR_ACCESSIBILITY_YES);
-        }
-      });
-    }
   }
 
   @SuppressLint("ClickableViewAccessibility") // There's an accessibility delegate that handles
@@ -111,6 +111,11 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
         autoCompleteTextView.setOnDismissListener(null);
       }
     }
+  }
+
+  @Override
+  public TouchExplorationStateChangeListener getTouchExplorationStateChangeListener() {
+    return touchExplorationStateChangeListener;
   }
 
   @Override
