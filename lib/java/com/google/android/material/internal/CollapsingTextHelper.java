@@ -92,7 +92,6 @@ public final class CollapsingTextHelper {
 
   private final View view;
 
-  private boolean drawTitle;
   private float expandedFraction;
   private boolean fadeModeEnabled;
   private float fadeModeStartFraction;
@@ -246,7 +245,6 @@ public final class CollapsingTextHelper {
     if (!rectEquals(expandedBounds, left, top, right, bottom)) {
       expandedBounds.set(left, top, right, bottom);
       boundsChanged = true;
-      onBoundsChanged();
     }
   }
 
@@ -258,7 +256,6 @@ public final class CollapsingTextHelper {
     if (!rectEquals(collapsedBounds, left, top, right, bottom)) {
       collapsedBounds.set(left, top, right, bottom);
       boundsChanged = true;
-      onBoundsChanged();
     }
   }
 
@@ -268,9 +265,10 @@ public final class CollapsingTextHelper {
 
   public void getCollapsedTextActualBounds(@NonNull RectF bounds, int labelWidth, int textGravity) {
     isRtl = calculateIsRtl(text);
-    bounds.left = getCollapsedTextLeftBound(labelWidth, textGravity);
+    bounds.left = max(getCollapsedTextLeftBound(labelWidth, textGravity), collapsedBounds.left);
     bounds.top = collapsedBounds.top;
-    bounds.right = getCollapsedTextRightBound(bounds, labelWidth, textGravity);
+    bounds.right =
+        min(getCollapsedTextRightBound(bounds, labelWidth, textGravity), collapsedBounds.right);
     bounds.bottom = collapsedBounds.top + getCollapsedTextHeight();
   }
 
@@ -348,14 +346,6 @@ public final class CollapsingTextHelper {
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
       textPaint.setLetterSpacing(collapsedLetterSpacing);
     }
-  }
-
-  void onBoundsChanged() {
-    drawTitle =
-        collapsedBounds.width() > 0
-            && collapsedBounds.height() > 0
-            && expandedBounds.width() > 0
-            && expandedBounds.height() > 0;
   }
 
   public void setExpandedTextGravity(int gravity) {
@@ -839,7 +829,7 @@ public final class CollapsingTextHelper {
   public void draw(@NonNull Canvas canvas) {
     final int saveCount = canvas.save();
     // Compute where to draw textLayout for this frame
-    if (textToDraw != null && drawTitle) {
+    if (textToDraw != null && currentBounds.width() > 0 && currentBounds.height() > 0) {
       textPaint.setTextSize(currentTextSize);
       float x = currentDrawX;
       float y = currentDrawY;

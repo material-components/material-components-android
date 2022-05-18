@@ -3954,6 +3954,9 @@ public class TextInputLayout extends LinearLayout {
     final RectF cutoutBounds = tmpRectF;
     collapsingTextHelper.getCollapsedTextActualBounds(
         cutoutBounds, editText.getWidth(), editText.getGravity());
+    if (cutoutBounds.width() <= 0 || cutoutBounds.height() <= 0) {
+      return;
+    }
     applyCutoutPadding(cutoutBounds);
 
     // Offset the cutout bounds by the TextInputLayout's paddings, half of the cutout height, and
