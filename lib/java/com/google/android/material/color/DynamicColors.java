@@ -32,6 +32,7 @@ import androidx.annotation.ChecksSdkIntAtLeast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
+import androidx.core.os.BuildCompat;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.HashMap;
@@ -338,6 +339,9 @@ public class DynamicColors {
   public static boolean isDynamicColorAvailable() {
     if (VERSION.SDK_INT < VERSION_CODES.S) {
       return false;
+    }
+    if (BuildCompat.isAtLeastT()) {
+      return true;
     }
     DeviceSupportCondition deviceSupportCondition =
         DYNAMIC_COLOR_SUPPORTED_MANUFACTURERS.get(Build.MANUFACTURER.toLowerCase());
