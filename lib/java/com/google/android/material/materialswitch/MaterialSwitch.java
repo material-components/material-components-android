@@ -18,6 +18,7 @@ package com.google.android.material.materialswitch;
 
 import com.google.android.material.R;
 
+import static androidx.core.graphics.ColorUtils.blendARGB;
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 
 import android.annotation.SuppressLint;
@@ -27,7 +28,10 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import androidx.appcompat.content.res.AppCompatResources;
+import android.support.v7.graphics.drawable.AnimatedStateListDrawableCompat;
 import androidx.appcompat.widget.DrawableUtils;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.TintTypedArray;
@@ -39,6 +43,7 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 
 /**
  * A class that creates a Material Themed Switch. This class is intended to provide a brand new
@@ -54,6 +59,7 @@ public class MaterialSwitch extends SwitchCompat {
   @Nullable private Drawable trackDrawable;
   @Nullable private Drawable trackDecorationDrawable;
 
+  @Nullable private ColorStateList thumbTintList;
   @Nullable private ColorStateList trackTintList;
   @Nullable private ColorStateList trackDecorationTintList;
   @NonNull private PorterDuff.Mode trackDecorationTintMode;
@@ -70,6 +76,9 @@ public class MaterialSwitch extends SwitchCompat {
     super(wrap(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
     // Ensure we are using the correctly themed context rather than the context that was passed in.
     context = getContext();
+
+    thumbTintList = super.getThumbTintList();
+    super.setThumbTintList(null); // Always use our custom tinting logic
 
     trackDrawable = super.getTrackDrawable();
     trackTintList = super.getTrackTintList();
@@ -100,6 +109,16 @@ public class MaterialSwitch extends SwitchCompat {
     switchWidth.set(getSwitchMinWidth());
   }
 
+  @Override
+  public void invalidate() {
+    // ThumbPosition update will trigger invalidate(), update thumb/track tint here.
+    if (thumbPosition != null) {
+      // This may happen when super classes' constructors call this method.
+      updateDrawableTints();
+    }
+    super.invalidate();
+  }
+
   // TODO(b/227338106): remove this workaround and move to use setEnforceSwitchWidth(false) after
   //                    AppCompat 1.6.0-stable is released.
   @Override
@@ -124,6 +143,18 @@ public class MaterialSwitch extends SwitchCompat {
     // the switch width is not overridden yet so we need to adjust the value to make measurement
     // right. This can be removed after the workaround is removed.
     return super.getCompoundPaddingRight() - switchWidth.get() + getSwitchMinWidth();
+  }
+
+  @Override
+  public void setThumbTintList(@Nullable ColorStateList tint) {
+    thumbTintList = tint;
+    invalidate();
+  }
+
+  @Override
+  @Nullable
+  public ColorStateList getThumbTintList() {
+    return thumbTintList;
   }
 
   @Override
@@ -247,9 +278,13 @@ public class MaterialSwitch extends SwitchCompat {
   }
 
   private void refreshTrackDrawable() {
-    trackDrawable = setDrawableTintListIfNeeded(trackDrawable, trackTintList, getTrackTintMode());
-    trackDecorationDrawable = setDrawableTintListIfNeeded(
-        trackDecorationDrawable, trackDecorationTintList, trackDecorationTintMode);
+    trackDrawable =
+        createTintableDrawableIfNeeded(trackDrawable, trackTintList, getTrackTintMode());
+    trackDecorationDrawable =
+        createTintableDrawableIfNeeded(
+            trackDecorationDrawable, trackDecorationTintList, trackDecorationTintMode);
+
+    updateDrawableTints();
 
     Drawable finalTrackDrawable;
     if (trackDrawable != null && trackDecorationDrawable != null) {
@@ -266,17 +301,114 @@ public class MaterialSwitch extends SwitchCompat {
     super.setTrackDrawable(finalTrackDrawable);
   }
 
-  private static Drawable setDrawableTintListIfNeeded(
+  private void updateDrawableTints() {
+    if (thumbTintList == null && trackTintList == null && trackDecorationTintList == null) {
+      // Early return to avoid heavy operation.
+      return;
+    }
+
+    float thumbPosition = getThumbPosition();
+
+    int[] currentState = getDrawableState();
+    int[] currentStateUnchecked = getUncheckedState(currentState);
+    int[] currentStateChecked = getCheckedState(currentState);
+
+    if (trackTintList != null) {
+      setInterpolatedDrawableTintIfPossible(
+          trackDrawable, trackTintList, currentStateUnchecked, currentStateChecked, thumbPosition);
+    }
+
+    if (trackDecorationTintList != null) {
+      setInterpolatedDrawableTintIfPossible(
+          trackDecorationDrawable,
+          trackDecorationTintList,
+          currentStateUnchecked,
+          currentStateChecked,
+          thumbPosition);
+    }
+
+    if (thumbTintList != null) {
+      setInterpolatedDrawableTintIfPossible(
+          getThumbDrawable(),
+          thumbTintList,
+          currentStateUnchecked,
+          currentStateChecked,
+          thumbPosition);
+    }
+  }
+
+  /** Returns a new state that removes the checked state from the input state. */
+  private static int[] getUncheckedState(int[] state) {
+    int[] newState = new int[state.length];
+    int i = 0;
+    for (int subState : state) {
+      if (subState != android.R.attr.state_checked) {
+        newState[i++] = subState;
+      }
+    }
+    return newState;
+  }
+
+  /** Returns a new state that adds the checked state to the input state. */
+  private static int[] getCheckedState(int[] state) {
+    for (int i = 0; i < state.length; i++) {
+      if (state[i] == android.R.attr.state_checked) {
+        return state;
+      } else if (state[i] == 0) {
+        int[] newState = state.clone();
+        newState[i] = android.R.attr.state_checked;
+        return newState;
+      }
+    }
+    int[] newState = Arrays.copyOf(state, state.length + 1);
+    newState[state.length] = android.R.attr.state_checked;
+    return newState;
+  }
+
+  /**
+   * Tints the given drawable with the interpolated color according to the provided thumb position
+   * between unchecked and checked states. The reference color in unchecked and checked states will
+   * be retrieved from the given {@link ColorStateList} according to the provided states.
+   */
+  private static void setInterpolatedDrawableTintIfPossible(
+      @Nullable Drawable drawable,
+      @Nullable ColorStateList tint,
+      @NonNull int[] stateUnchecked,
+      @NonNull int[] stateChecked,
+      float thumbPosition) {
+    if (drawable == null || tint == null) {
+      return;
+    }
+    // TODO(b/232529333): remove this workaround after updating AppCompat version to 1.6.
+    if (drawable instanceof AnimatedStateListDrawableCompat
+        && VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
+      DrawableCompat.setTintList(
+          drawable,
+          ColorStateList.valueOf(
+              blendARGB(
+                  tint.getColorForState(stateUnchecked, 0),
+                  tint.getColorForState(stateChecked, 0),
+                  thumbPosition)));
+      return;
+    }
+    DrawableCompat.setTint(
+        drawable,
+        blendARGB(
+            tint.getColorForState(stateUnchecked, 0),
+            tint.getColorForState(stateChecked, 0),
+            thumbPosition));
+  }
+
+  private static Drawable createTintableDrawableIfNeeded(
       Drawable drawable, ColorStateList tintList, Mode tintMode) {
     if (drawable == null) {
       return null;
     }
     if (tintList != null) {
       drawable = DrawableCompat.wrap(drawable).mutate();
-    }
-    DrawableCompat.setTintList(drawable, tintList);
-    if (tintList != null && tintMode != null) {
-      DrawableCompat.setTintMode(drawable, tintMode);
+      if (tintMode != null) {
+        DrawableCompat.setTintMode(drawable, tintMode);
+      }
     }
     return drawable;
   }
