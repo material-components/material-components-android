@@ -21,8 +21,8 @@
   <!-- Generated from token set (md.sys.typescale) in default context. -->
   <!-- Display Large -->
   <style name="TextAppearance.M3.Sys.Typescale.DisplayLarge" parent="TextAppearance.AppCompat.Display3">
-    <item name="fontFamily">@string/m3_ref_typeface_brand_regular</item>
-    <item name="android:fontFamily">@string/m3_ref_typeface_brand_regular</item>
+    <item name="fontFamily">@macro/m3_ref_typeface_brand_regular</item>
+    <item name="android:fontFamily">@macro/m3_ref_typeface_brand_regular</item>
     <item name="android:textStyle">normal</item>
     <item name="android:textSize">57sp</item>
     <item name="android:letterSpacing">-0.00438596</item>
@@ -30,8 +30,8 @@
   </style>
   <!-- Display Medium -->
   <style name="TextAppearance.M3.Sys.Typescale.DisplayMedium" parent="TextAppearance.AppCompat.Display2">
-    <item name="fontFamily">@string/m3_ref_typeface_brand_regular</item>
-    <item name="android:fontFamily">@string/m3_ref_typeface_brand_regular</item>
+    <item name="fontFamily">@macro/m3_ref_typeface_brand_regular</item>
+    <item name="android:fontFamily">@macro/m3_ref_typeface_brand_regular</item>
     <item name="android:textStyle">normal</item>
     <item name="android:textSize">45sp</item>
     <item name="android:letterSpacing">0</item>
@@ -39,8 +39,8 @@
   </style>
   <!-- Display Small -->
   <style name="TextAppearance.M3.Sys.Typescale.DisplaySmall" parent="TextAppearance.AppCompat.Display1">
-    <item name="fontFamily">@string/m3_ref_typeface_brand_regular</item>
-    <item name="android:fontFamily">@string/m3_ref_typeface_brand_regular</item>
+    <item name="fontFamily">@macro/m3_ref_typeface_brand_regular</item>
+    <item name="android:fontFamily">@macro/m3_ref_typeface_brand_regular</item>
     <item name="android:textStyle">normal</item>
     <item name="android:textSize">36sp</item>
     <item name="android:letterSpacing">0</item>
@@ -48,8 +48,8 @@
   </style>
   <!-- Headline Large -->
   <style name="TextAppearance.M3.Sys.Typescale.HeadlineLarge" parent="TextAppearance.AppCompat.Display1">
-    <item name="fontFamily">@string/m3_ref_typeface_brand_regular</item>
-    <item name="android:fontFamily">@string/m3_ref_typeface_brand_regular</item>
+    <item name="fontFamily">@macro/m3_ref_typeface_brand_regular</item>
+    <item name="android:fontFamily">@macro/m3_ref_typeface_brand_regular</item>
     <item name="android:textStyle">normal</item>
     <item name="android:textSize">32sp</item>
     <item name="android:letterSpacing">0</item>
@@ -57,8 +57,8 @@
   </style>
   <!-- Headline Medium -->
   <style name="TextAppearance.M3.Sys.Typescale.HeadlineMedium" parent="TextAppearance.AppCompat.Headline">
-    <item name="fontFamily">@string/m3_ref_typeface_brand_regular</item>
-    <item name="android:fontFamily">@string/m3_ref_typeface_brand_regular</item>
+    <item name="fontFamily">@macro/m3_ref_typeface_brand_regular</item>
+    <item name="android:fontFamily">@macro/m3_ref_typeface_brand_regular</item>
     <item name="android:textStyle">normal</item>
     <item name="android:textSize">28sp</item>
     <item name="android:letterSpacing">0</item>
@@ -66,8 +66,8 @@
   </style>
   <!-- Headline Small -->
   <style name="TextAppearance.M3.Sys.Typescale.HeadlineSmall" parent="TextAppearance.AppCompat.Title">
-    <item name="fontFamily">@string/m3_ref_typeface_brand_regular</item>
-    <item name="android:fontFamily">@string/m3_ref_typeface_brand_regular</item>
+    <item name="fontFamily">@macro/m3_ref_typeface_brand_regular</item>
+    <item name="android:fontFamily">@macro/m3_ref_typeface_brand_regular</item>
     <item name="android:textStyle">normal</item>
     <item name="android:textSize">24sp</item>
     <item name="android:letterSpacing">0</item>
@@ -75,8 +75,8 @@
   </style>
   <!-- Title Large -->
   <style name="TextAppearance.M3.Sys.Typescale.TitleLarge" parent="TextAppearance.AppCompat.Title">
-    <item name="fontFamily">@string/m3_ref_typeface_brand_regular</item>
-    <item name="android:fontFamily">@string/m3_ref_typeface_brand_regular</item>
+    <item name="fontFamily">@macro/m3_ref_typeface_brand_regular</item>
+    <item name="android:fontFamily">@macro/m3_ref_typeface_brand_regular</item>
     <item name="android:textStyle">normal</item>
     <item name="android:textSize">22sp</item>
     <item name="android:letterSpacing">0</item>
@@ -84,8 +84,8 @@
   </style>
   <!-- Title Medium -->
   <style name="TextAppearance.M3.Sys.Typescale.TitleMedium" parent="TextAppearance.AppCompat.Subhead">
-    <item name="fontFamily">@string/m3_ref_typeface_plain_medium</item>
-    <item name="android:fontFamily">@string/m3_ref_typeface_plain_medium</item>
+    <item name="fontFamily">@macro/m3_ref_typeface_plain_medium</item>
+    <item name="android:fontFamily">@macro/m3_ref_typeface_plain_medium</item>
     <!-- Roboto Medium isn't available in pre-21. Setting text style to bold to achieve some level of bolding. -->
     <item name="android:textStyle">bold</item>
     <item name="android:textSize">16sp</item>
@@ -94,8 +94,8 @@
   </style>
   <!-- Title Small -->
   <style name="TextAppearance.M3.Sys.Typescale.TitleSmall" parent="TextAppearance.AppCompat.Subhead">
-    <item name="fontFamily">@string/m3_ref_typeface_plain_medium</item>
-    <item name="android:fontFamily">@string/m3_ref_typeface_plain_medium</item>
+    <item name="fontFamily">@macro/m3_ref_typeface_plain_medium</item>
+    <item name="android:fontFamily">@macro/m3_ref_typeface_plain_medium</item>
     <!-- Roboto Medium isn't available in pre-21. Setting text style to bold to achieve some level of bolding. -->
     <item name="android:textStyle">bold</item>
     <item name="android:textSize">14sp</item>
@@ -104,8 +104,8 @@
   </style>
   <!-- Body Large -->
   <style name="TextAppearance.M3.Sys.Typescale.BodyLarge" parent="TextAppearance.AppCompat.Body2">
-    <item name="fontFamily">@string/m3_ref_typeface_plain_regular</item>
-    <item name="android:fontFamily">@string/m3_ref_typeface_plain_regular</item>
+    <item name="fontFamily">@macro/m3_ref_typeface_plain_regular</item>
+    <item name="android:fontFamily">@macro/m3_ref_typeface_plain_regular</item>
     <item name="android:textStyle">normal</item>
     <item name="android:textSize">16sp</item>
     <item name="android:letterSpacing">0.03125</item>
@@ -113,8 +113,8 @@
   </style>
   <!-- Body Medium -->
   <style name="TextAppearance.M3.Sys.Typescale.BodyMedium" parent="TextAppearance.AppCompat.Body1">
-    <item name="fontFamily">@string/m3_ref_typeface_plain_regular</item>
-    <item name="android:fontFamily">@string/m3_ref_typeface_plain_regular</item>
+    <item name="fontFamily">@macro/m3_ref_typeface_plain_regular</item>
+    <item name="android:fontFamily">@macro/m3_ref_typeface_plain_regular</item>
     <item name="android:textStyle">normal</item>
     <item name="android:textSize">14sp</item>
     <item name="android:letterSpacing">0.01785714</item>
@@ -122,8 +122,8 @@
   </style>
   <!-- Body Small -->
   <style name="TextAppearance.M3.Sys.Typescale.BodySmall" parent="TextAppearance.AppCompat.Caption">
-    <item name="fontFamily">@string/m3_ref_typeface_plain_regular</item>
-    <item name="android:fontFamily">@string/m3_ref_typeface_plain_regular</item>
+    <item name="fontFamily">@macro/m3_ref_typeface_plain_regular</item>
+    <item name="android:fontFamily">@macro/m3_ref_typeface_plain_regular</item>
     <item name="android:textStyle">normal</item>
     <item name="android:textSize">12sp</item>
     <item name="android:letterSpacing">0.03333333</item>
@@ -131,8 +131,8 @@
   </style>
   <!-- Label Large -->
   <style name="TextAppearance.M3.Sys.Typescale.LabelLarge" parent="TextAppearance.AppCompat.Body1">
-    <item name="fontFamily">@string/m3_ref_typeface_plain_medium</item>
-    <item name="android:fontFamily">@string/m3_ref_typeface_plain_medium</item>
+    <item name="fontFamily">@macro/m3_ref_typeface_plain_medium</item>
+    <item name="android:fontFamily">@macro/m3_ref_typeface_plain_medium</item>
     <!-- Roboto Medium isn't available in pre-21. Setting text style to bold to achieve some level of bolding. -->
     <item name="android:textStyle">bold</item>
     <item name="android:textSize">14sp</item>
@@ -141,8 +141,8 @@
   </style>
   <!-- Label Medium -->
   <style name="TextAppearance.M3.Sys.Typescale.LabelMedium" parent="TextAppearance.AppCompat.Caption">
-    <item name="fontFamily">@string/m3_ref_typeface_plain_medium</item>
-    <item name="android:fontFamily">@string/m3_ref_typeface_plain_medium</item>
+    <item name="fontFamily">@macro/m3_ref_typeface_plain_medium</item>
+    <item name="android:fontFamily">@macro/m3_ref_typeface_plain_medium</item>
     <!-- Roboto Medium isn't available in pre-21. Setting text style to bold to achieve some level of bolding. -->
     <item name="android:textStyle">bold</item>
     <item name="android:textSize">12sp</item>
@@ -151,8 +151,8 @@
   </style>
   <!-- Label Small -->
   <style name="TextAppearance.M3.Sys.Typescale.LabelSmall" parent="TextAppearance.AppCompat.Caption">
-    <item name="fontFamily">@string/m3_ref_typeface_plain_medium</item>
-    <item name="android:fontFamily">@string/m3_ref_typeface_plain_medium</item>
+    <item name="fontFamily">@macro/m3_ref_typeface_plain_medium</item>
+    <item name="android:fontFamily">@macro/m3_ref_typeface_plain_medium</item>
     <!-- Roboto Medium isn't available in pre-21. Setting text style to bold to achieve some level of bolding. -->
     <item name="android:textStyle">bold</item>
     <item name="android:textSize">11sp</item>
@@ -161,9 +161,9 @@
   </style>
   <!-- Generated from token set (md.ref.typeface) in default context. -->
   <!-- Brand -->
-  <string name="m3_ref_typeface_brand_regular" translatable="false">sans-serif</string>
-  <string name="m3_ref_typeface_brand_medium" translatable="false">sans-serif-medium</string>
+  <macro name="m3_ref_typeface_brand_regular">sans-serif</macro>
+  <macro name="m3_ref_typeface_brand_medium">sans-serif-medium</macro>
   <!-- Plain -->
-  <string name="m3_ref_typeface_plain_regular" translatable="false">sans-serif</string>
-  <string name="m3_ref_typeface_plain_medium" translatable="false">sans-serif-medium</string>
+  <macro name="m3_ref_typeface_plain_regular">sans-serif</macro>
+  <macro name="m3_ref_typeface_plain_medium">sans-serif-medium</macro>
 </resources>

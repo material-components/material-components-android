@@ -19,7 +19,7 @@
 
 <resources>
   <!-- Generated from token set (md.sys.motion) in default context. -->
-  <integer name="m3_sys_motion_path">0</integer>
+  <macro name="m3_sys_motion_path">linear</macro>
   <integer name="m3_sys_motion_duration_50">50</integer>
   <integer name="m3_sys_motion_duration_100">100</integer>
   <integer name="m3_sys_motion_duration_150">150</integer>

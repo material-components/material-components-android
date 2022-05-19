@@ -186,7 +186,7 @@
     <!-- TODO: Populate font families here -->
 
     <!-- Shape attributes. -->
-    <item name="shapeCornerFamily">@integer/m3_sys_shape_corner_full_family</item>
+    <item name="shapeCornerFamily">@macro/m3_sys_shape_corner_full_family</item>
     <item name="shapeAppearanceCornerExtraSmall">@style/ShapeAppearance.Material3.Corner.ExtraSmall</item>
     <item name="shapeAppearanceCornerSmall">@style/ShapeAppearance.Material3.Corner.Small</item>
     <item name="shapeAppearanceCornerMedium">@style/ShapeAppearance.Material3.Corner.Medium</item>
@@ -227,7 +227,7 @@
     <item name="motionDurationExtraLong2">@integer/m3_sys_motion_duration_800</item>
     <item name="motionDurationExtraLong3">@integer/m3_sys_motion_duration_900</item>
     <item name="motionDurationExtraLong4">@integer/m3_sys_motion_duration_1000</item>
-    <item name="motionPath">@integer/m3_sys_motion_path</item>
+    <item name="motionPath">@macro/m3_sys_motion_path</item>
 
     <!-- Elevation overlays. -->
     <item name="elevationOverlayEnabled">true</item>
@@ -414,7 +414,7 @@
     <!-- TODO: Populate font families here -->
 
     <!-- Shape attributes. -->
-    <item name="shapeCornerFamily">@integer/m3_sys_shape_corner_full_family</item>
+    <item name="shapeCornerFamily">@macro/m3_sys_shape_corner_full_family</item>
     <item name="shapeAppearanceCornerExtraSmall">@style/ShapeAppearance.Material3.Corner.ExtraSmall</item>
     <item name="shapeAppearanceCornerSmall">@style/ShapeAppearance.Material3.Corner.Small</item>
     <item name="shapeAppearanceCornerMedium">@style/ShapeAppearance.Material3.Corner.Medium</item>
@@ -455,7 +455,7 @@
     <item name="motionDurationExtraLong2">@integer/m3_sys_motion_duration_800</item>
     <item name="motionDurationExtraLong3">@integer/m3_sys_motion_duration_900</item>
     <item name="motionDurationExtraLong4">@integer/m3_sys_motion_duration_1000</item>
-    <item name="motionPath">@integer/m3_sys_motion_path</item>
+    <item name="motionPath">@macro/m3_sys_motion_path</item>
 
     <!-- Elevation overlays. -->
     <item name="elevationOverlayEnabled">true</item>
