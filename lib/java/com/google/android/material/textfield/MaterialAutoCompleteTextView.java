@@ -41,6 +41,7 @@ import android.view.ViewParent;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Filterable;
 import android.widget.ListAdapter;
@@ -190,6 +191,12 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
   public void setRawInputType(int type) {
     super.setRawInputType(type);
     onInputTypeChanged();
+  }
+
+  @Override
+  public void setOnItemSelectedListener(@Nullable OnItemSelectedListener listener) {
+    super.setOnItemSelectedListener(listener);
+    modalListPopup.setOnItemSelectedListener(getOnItemSelectedListener());
   }
 
   /**
