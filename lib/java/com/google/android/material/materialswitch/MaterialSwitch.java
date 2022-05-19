@@ -31,7 +31,7 @@ import android.graphics.drawable.LayerDrawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.appcompat.content.res.AppCompatResources;
-import android.support.v7.graphics.drawable.AnimatedStateListDrawableCompat;
+import androidx.appcompat.graphics.drawable.AnimatedStateListDrawableCompat;
 import androidx.appcompat.widget.DrawableUtils;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.TintTypedArray;
@@ -273,7 +273,7 @@ public class MaterialSwitch extends SwitchCompat {
 
   // TODO(b/227338106): remove this workaround to use super.getThumbPosition() directly after
   //                    AppCompat 1.6.0-stable is released.
-  private float getThumbPosition() {
+  private float getThumbPos() {
     return thumbPosition.get();
   }
 
@@ -307,7 +307,7 @@ public class MaterialSwitch extends SwitchCompat {
       return;
     }
 
-    float thumbPosition = getThumbPosition();
+    float thumbPosition = getThumbPos();
 
     int[] currentState = getDrawableState();
     int[] currentStateUnchecked = getUncheckedState(currentState);
