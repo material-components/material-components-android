@@ -219,9 +219,25 @@ public class TextInputLayout extends LinearLayout {
 
   private final IndicatorViewController indicatorViewController = new IndicatorViewController(this);
 
+  /** Interface definition for a length counter. */
+  public interface LengthCounter {
+
+    /**
+     * Counts the length of the text and returns it.
+     *
+     * @param text The text to count the length for.
+     * @return The count that the counter should be updated with.
+     */
+    int countLength(@Nullable Editable text);
+  }
+
   boolean counterEnabled;
   private int counterMaxLength;
   private boolean counterOverflowed;
+
+  @NonNull
+  private LengthCounter lengthCounter = (Editable text) -> text != null ? text.length() : 0;
+
   @Nullable private TextView counterView;
   private int counterOverflowTextAppearance;
   private int counterTextAppearance;
@@ -1334,6 +1350,24 @@ public class TextInputLayout extends LinearLayout {
     return typeface;
   }
 
+  /**
+   * Set the counting method used to count the length of a text.
+   *
+   * @param lengthCounter the length counter to use.
+   */
+  public void setLengthCounter(@NonNull LengthCounter lengthCounter) {
+    this.lengthCounter = lengthCounter;
+  }
+
+  /**
+   * Returns the counting method used to count the length of the text. The default counter will
+   * count the number of characters.
+   */
+  @NonNull
+  public LengthCounter getLengthCounter() {
+    return lengthCounter;
+  }
+
   @Override
   @TargetApi(VERSION_CODES.O)
   public void dispatchProvideAutofillStructure(@NonNull ViewStructure structure, int flags) {
@@ -1422,10 +1456,10 @@ public class TextInputLayout extends LinearLayout {
           public void afterTextChanged(@NonNull Editable s) {
             updateLabelState(!restoringSavedState);
             if (counterEnabled) {
-              updateCounter(s.length());
+              updateCounter(s);
             }
             if (placeholderEnabled) {
-              updatePlaceholderText(s.length());
+              updatePlaceholderText(s);
             }
           }
 
@@ -1454,7 +1488,7 @@ public class TextInputLayout extends LinearLayout {
     }
 
     if (counterView != null) {
-      updateCounter(this.editText.getText().length());
+      updateCounter(this.editText.getText());
     }
     updateEditTextBackground();
 
@@ -2209,11 +2243,13 @@ public class TextInputLayout extends LinearLayout {
 
   private void updateCounter() {
     if (counterView != null) {
-      updateCounter(editText == null ? 0 : editText.getText().length());
+      updateCounter(editText == null ? null : editText.getText());
     }
   }
 
-  void updateCounter(int length) {
+  void updateCounter(@Nullable Editable text) {
+    int length = lengthCounter.countLength(text);
+
     boolean wasCounterOverflowed = counterOverflowed;
     if (counterMaxLength == INVALID_MAX_LENGTH) {
       counterView.setText(String.valueOf(length));
@@ -2326,11 +2362,12 @@ public class TextInputLayout extends LinearLayout {
   }
 
   private void updatePlaceholderText() {
-    updatePlaceholderText(editText == null ? 0 : editText.getText().length());
+    updatePlaceholderText(editText == null ? null : editText.getText());
   }
 
-  private void updatePlaceholderText(int inputTextLength) {
-    if (inputTextLength == 0 && !hintExpanded) {
+  private void updatePlaceholderText(@Nullable Editable text) {
+    int length = lengthCounter.countLength(text);
+    if (length == 0 && !hintExpanded) {
       showPlaceholderText();
     } else {
       hidePlaceholderText();
