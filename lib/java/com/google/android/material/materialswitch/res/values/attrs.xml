@@ -17,18 +17,60 @@
   <!-- Style to use for MaterialSwitch in the theme. -->
   <attr name="materialSwitchStyle" type="reference"/>
 
-  <!-- Drawable used for the track decoration that will be drawn upon the track.
-       By default it will draw an outline on the track in the unchecked state. -->
-  <attr name="trackDecoration" type="reference"/>
-  <!-- Tint that will be applied to the track decoration drawable.. -->
-  <attr name="trackDecorationTint" type="reference"/>
-  <!-- The blending mode used to apply the tint specified by trackDecorationTint
-       to trackDecoration. The default mode is SRC_IN if not specified. -->
-  <attr name="trackDecorationTintMode" type="reference"/>
+  <!-- MaterialSwitch-specific state to represent presence of a thumb icon. -->
+  <attr name="state_with_icon" format="boolean" />
 
   <declare-styleable name="MaterialSwitch">
-    <attr name="trackDecoration"/>
-    <attr name="trackDecorationTint"/>
-    <attr name="trackDecorationTintMode"/>
+    <!-- Drawable used for the thumb icon that will be drawn upon the thumb. -->
+    <attr name="thumbIcon" format="reference"/>
+    <!-- Tint that will be applied to the thumb icon drawable.. -->
+    <attr name="thumbIconTint" format="color"/>
+    <!-- The blending mode used to apply the tint specified by thumbIconTint
+         to thumbIcon. The default mode is SRC_IN if not specified. -->
+    <attr name="thumbIconTintMode">
+      <!-- The tint is drawn on top of the drawable.
+           [Sa + (1 - Sa)*Da, Rc = Sc + (1 - Sa)*Dc] -->
+      <enum name="src_over" value="3" />
+      <!-- The tint is masked by the alpha channel of the drawable. The drawable’s
+           color channels are thrown out. [Sa * Da, Sc * Da] -->
+      <enum name="src_in" value="5" />
+      <!-- The tint is drawn above the drawable, but with the drawable’s alpha
+           channel masking the result. [Da, Sc * Da + (1 - Sa) * Dc] -->
+      <enum name="src_atop" value="9" />
+      <!-- Multiplies the color and alpha channels of the drawable with those of
+           the tint. [Sa * Da, Sc * Dc] -->
+      <enum name="multiply" value="14" />
+      <!-- [Sa + Da - Sa * Da, Sc + Dc - Sc * Dc] -->
+      <enum name="screen" value="15" />
+      <!-- Combines the tint and drawable color and alpha channels, clamping the
+           result to valid color values. Saturate(S + D) -->
+      <enum name="add" value="16" />
+    </attr>
+    <!-- Drawable used for the track decoration that will be drawn upon the track.
+         By default it will draw an outline on the track in the unchecked state. -->
+    <attr name="trackDecoration" format="reference"/>
+    <!-- Tint that will be applied to the track decoration drawable.. -->
+    <attr name="trackDecorationTint" format="color"/>
+    <!-- The blending mode used to apply the tint specified by trackDecorationTint
+         to trackDecoration. The default mode is SRC_IN if not specified. -->
+    <attr name="trackDecorationTintMode">
+      <!-- The tint is drawn on top of the drawable.
+           [Sa + (1 - Sa)*Da, Rc = Sc + (1 - Sa)*Dc] -->
+      <enum name="src_over" value="3" />
+      <!-- The tint is masked by the alpha channel of the drawable. The drawable’s
+           color channels are thrown out. [Sa * Da, Sc * Da] -->
+      <enum name="src_in" value="5" />
+      <!-- The tint is drawn above the drawable, but with the drawable’s alpha
+           channel masking the result. [Da, Sc * Da + (1 - Sa) * Dc] -->
+      <enum name="src_atop" value="9" />
+      <!-- Multiplies the color and alpha channels of the drawable with those of
+           the tint. [Sa * Da, Sc * Dc] -->
+      <enum name="multiply" value="14" />
+      <!-- [Sa + Da - Sa * Da, Sc + Dc - Sc * Dc] -->
+      <enum name="screen" value="15" />
+      <!-- Combines the tint and drawable color and alpha channels, clamping the
+           result to valid color values. Saturate(S + D) -->
+      <enum name="add" value="16" />
+    </attr>
   </declare-styleable>
 </resources>

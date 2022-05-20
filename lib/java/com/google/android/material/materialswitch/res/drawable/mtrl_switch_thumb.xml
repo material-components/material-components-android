@@ -14,8 +14,8 @@
      limitations under the License.
 -->
 
-<animated-selector
-  xmlns:android="http://schemas.android.com/apk/res/android"
+<animated-selector xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:width="@dimen/mtrl_switch_thumb_size"
   android:height="@dimen/mtrl_switch_thumb_size"
@@ -32,12 +32,22 @@
     android:state_checked="true" />
 
   <item
+    android:id="@+id/with_icon"
+    android:drawable="@drawable/mtrl_switch_thumb_checked"
+    app:state_with_icon="true" />
+
+  <item
     android:id="@+id/unchecked"
     android:drawable="@drawable/mtrl_switch_thumb_unchecked" />
 
   <transition
     android:fromId="@+id/pressed"
     android:toId="@+id/checked"
+    android:drawable="@drawable/mtrl_switch_thumb_pressed_checked" />
+
+  <transition
+    android:fromId="@+id/pressed"
+    android:toId="@+id/with_icon"
     android:drawable="@drawable/mtrl_switch_thumb_pressed_checked" />
 
   <transition
@@ -54,6 +64,11 @@
     android:fromId="@+id/checked"
     android:toId="@+id/unchecked"
     android:drawable="@drawable/mtrl_switch_thumb_checked_unchecked" />
+
+  <transition
+    android:fromId="@+id/with_icon"
+    android:toId="@+id/pressed"
+    android:drawable="@drawable/mtrl_switch_thumb_checked_pressed" />
 
   <transition
     android:fromId="@+id/unchecked"
