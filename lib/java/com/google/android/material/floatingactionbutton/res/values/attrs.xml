@@ -108,6 +108,21 @@
   <!-- Style to use for Surface FloatingActionButtons in this theme. -->
   <attr name="floatingActionButtonSurfaceStyle" format="reference"/>
 
+  <!-- Style to use for Small FloatingActionButtons in this theme. -->
+  <attr name="floatingActionButtonSmallStyle" format="reference"/>
+
+  <!-- Style to use for Small Primary color FloatingActionButtons in this theme. -->
+  <attr name="floatingActionButtonSmallPrimaryStyle" format="reference"/>
+
+  <!-- Style to use for Small Secondary color FloatingActionButtons in this theme. -->
+  <attr name="floatingActionButtonSmallSecondaryStyle" format="reference"/>
+
+  <!-- Style to use for Small Tertiary color FloatingActionButtons in this theme. -->
+  <attr name="floatingActionButtonSmallTertiaryStyle" format="reference"/>
+
+  <!-- Style to use for Small Surface color FloatingActionButtons in this theme. -->
+  <attr name="floatingActionButtonSmallSurfaceStyle" format="reference"/>
+
   <!-- Style to use for Large FloatingActionButtons in this theme. -->
   <attr name="floatingActionButtonLargeStyle" format="reference"/>
 

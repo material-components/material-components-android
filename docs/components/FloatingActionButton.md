@@ -94,6 +94,14 @@ Or, you can set a custom size via the `app:fabCustomSize` attribute. If set,
 `app:fabSize` will be ignored, unless the custom size is cleared via the
 `clearCustomSize` method.
 
+If you'd like to use the small FAB, apply one of these style attributes:
+
+*   `?attr/floatingActionButtonSmallStyle`
+*   `?attr/floatingActionButtonSmallPrimaryStyle`
+*   `?attr/floatingActionButtonSmallSecondaryStyle`
+*   `?attr/floatingActionButtonSmallTertiaryStyle`
+*   `?attr/floatingActionButtonSmallSurfaceStyle`
+
 If you'd like to use the large FAB, apply one of these style attributes:
 
 *   `?attr/floatingActionButtonLargeStyle`
@@ -198,7 +206,7 @@ In the layout:
 
   <com.google.android.material.floatingactionbutton.FloatingActionButton
       ...
-      app:fabSize="mini"/>
+      style="?attr/floatingActionButtonSmallStyle"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 ```

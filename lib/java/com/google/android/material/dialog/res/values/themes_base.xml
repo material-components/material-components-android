@@ -98,6 +98,11 @@
     <item name="floatingActionButtonSecondaryStyle">@style/Widget.Material3.FloatingActionButton.Secondary</item>
     <item name="floatingActionButtonTertiaryStyle">@style/Widget.Material3.FloatingActionButton.Tertiary</item>
     <item name="floatingActionButtonSurfaceStyle">@style/Widget.Material3.FloatingActionButton.Surface</item>
+    <item name="floatingActionButtonSmallStyle">?attr/floatingActionButtonSmallPrimaryStyle</item>
+    <item name="floatingActionButtonSmallPrimaryStyle">@style/Widget.Material3.FloatingActionButton.Small.Primary</item>
+    <item name="floatingActionButtonSmallSecondaryStyle">@style/Widget.Material3.FloatingActionButton.Small.Secondary</item>
+    <item name="floatingActionButtonSmallTertiaryStyle">@style/Widget.Material3.FloatingActionButton.Small.Tertiary</item>
+    <item name="floatingActionButtonSmallSurfaceStyle">@style/Widget.Material3.FloatingActionButton.Small.Surface</item>
     <item name="floatingActionButtonLargeStyle">?attr/floatingActionButtonLargePrimaryStyle</item>
     <item name="floatingActionButtonLargePrimaryStyle">@style/Widget.Material3.FloatingActionButton.Large.Primary</item>
     <item name="floatingActionButtonLargeSecondaryStyle">@style/Widget.Material3.FloatingActionButton.Large.Secondary</item>
@@ -326,6 +331,11 @@
     <item name="floatingActionButtonSecondaryStyle">@style/Widget.Material3.FloatingActionButton.Secondary</item>
     <item name="floatingActionButtonTertiaryStyle">@style/Widget.Material3.FloatingActionButton.Tertiary</item>
     <item name="floatingActionButtonSurfaceStyle">@style/Widget.Material3.FloatingActionButton.Surface</item>
+    <item name="floatingActionButtonSmallStyle">?attr/floatingActionButtonSmallPrimaryStyle</item>
+    <item name="floatingActionButtonSmallPrimaryStyle">@style/Widget.Material3.FloatingActionButton.Small.Primary</item>
+    <item name="floatingActionButtonSmallSecondaryStyle">@style/Widget.Material3.FloatingActionButton.Small.Secondary</item>
+    <item name="floatingActionButtonSmallTertiaryStyle">@style/Widget.Material3.FloatingActionButton.Small.Tertiary</item>
+    <item name="floatingActionButtonSmallSurfaceStyle">@style/Widget.Material3.FloatingActionButton.Small.Surface</item>
     <item name="floatingActionButtonLargeStyle">?attr/floatingActionButtonLargePrimaryStyle</item>
     <item name="floatingActionButtonLargePrimaryStyle">@style/Widget.Material3.FloatingActionButton.Large.Primary</item>
     <item name="floatingActionButtonLargeSecondaryStyle">@style/Widget.Material3.FloatingActionButton.Large.Secondary</item>
