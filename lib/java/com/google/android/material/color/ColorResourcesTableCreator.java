@@ -46,10 +46,12 @@ final class ColorResourcesTableCreator {
   private static final short HEADER_TYPE_TYPE = 0x0201;
   private static final short HEADER_TYPE_TYPE_SPEC = 0x0202;
 
-  private static final byte TYPE_ID_COLOR = 0x06;
-
   private static final byte ANDROID_PACKAGE_ID = 0x01;
   private static final byte APPLICATION_PACKAGE_ID = 0x7F;
+
+  private static final String RESOURCE_TYPE_NAME_COLOR = "color";
+
+  private static byte typeIdColor;
 
   private static final PackageInfo ANDROID_PACKAGE_INFO =
       new PackageInfo(ANDROID_PACKAGE_ID, "android");
@@ -63,17 +65,24 @@ final class ColorResourcesTableCreator {
       };
 
   static byte[] create(Context context, Map<Integer, Integer> colorMapping) throws IOException {
+    if (colorMapping.entrySet().isEmpty()) {
+      throw new IllegalArgumentException("No color resources provided for harmonization.");
+    }
     PackageInfo applicationPackageInfo =
         new PackageInfo(APPLICATION_PACKAGE_ID, context.getPackageName());
 
     Map<PackageInfo, List<ColorResource>> colorResourceMap = new HashMap<>();
+    ColorResource colorResource = null;
     for (Map.Entry<Integer, Integer> entry : colorMapping.entrySet()) {
-      ColorResource colorResource =
+      colorResource =
           new ColorResource(
               entry.getKey(),
               context.getResources().getResourceName(entry.getKey()),
               entry.getValue());
-      if (colorResource.typeId != TYPE_ID_COLOR) {
+      if (!context
+          .getResources()
+          .getResourceTypeName(entry.getKey())
+          .equals(RESOURCE_TYPE_NAME_COLOR)) {
         throw new IllegalArgumentException(
             "Non color resource found: name="
                 + colorResource.name
@@ -93,6 +102,13 @@ final class ColorResourcesTableCreator {
         colorResourceMap.put(packageInfo, new ArrayList<ColorResource>());
       }
       colorResourceMap.get(packageInfo).add(colorResource);
+    }
+    // Resource Type Ids are assigned by aapt arbitrarily, for each new type the next available
+    // number is assigned and used. The type id will be the same for resources that are the same
+    // type.
+    typeIdColor = colorResource.typeId;
+    if (typeIdColor == 0) {
+      throw new IllegalArgumentException("No color resources found for harmonization.");
     }
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     new ResTable(colorResourceMap).writeTo(outputStream);
@@ -403,7 +419,7 @@ final class ColorResourcesTableCreator {
 
     void writeTo(ByteArrayOutputStream outputStream) throws IOException {
       header.writeTo(outputStream);
-      outputStream.write(new byte[] {TYPE_ID_COLOR, 0x00, 0x00, 0x00});
+      outputStream.write(new byte[] {typeIdColor, 0x00, 0x00, 0x00});
       outputStream.write(intToByteArray(entryCount));
       for (int entryFlag : entryFlags) {
         outputStream.write(intToByteArray(entryFlag));
@@ -465,7 +481,7 @@ final class ColorResourcesTableCreator {
 
     void writeTo(ByteArrayOutputStream outputStream) throws IOException {
       header.writeTo(outputStream);
-      outputStream.write(new byte[] {TYPE_ID_COLOR, 0x00, 0x00, 0x00});
+      outputStream.write(new byte[] {typeIdColor, 0x00, 0x00, 0x00});
       outputStream.write(intToByteArray(entryCount));
       outputStream.write(intToByteArray(getEntryStart()));
       outputStream.write(config);
