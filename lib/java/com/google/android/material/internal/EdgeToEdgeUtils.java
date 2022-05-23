@@ -102,18 +102,39 @@ public class EdgeToEdgeUtils {
     window.setStatusBarColor(statusBarColor);
     window.setNavigationBarColor(navigationBarColor);
 
-    boolean isLightStatusBar =
-        isUsingLightSystemBar(statusBarColor, isColorLight(statusBarOverlapBackgroundColor));
-    boolean isLightNavigationBar =
+    setLightStatusBar(
+        window,
+        isUsingLightSystemBar(statusBarColor, isColorLight(statusBarOverlapBackgroundColor)));
+    setLightNavigationBar(
+        window,
         isUsingLightSystemBar(
-            navigationBarColor, isColorLight(navigationBarOverlapBackgroundColor));
+            navigationBarColor, isColorLight(navigationBarOverlapBackgroundColor)));
+  }
 
+  /**
+   * Changes the foreground color of the status bars to light or dark so that the items on the bar
+   * can be read clearly.
+   *
+   * @param window Window that hosts the status bars
+   * @param isLight {@code true} to make the foreground color light
+   */
+  public static void setLightStatusBar(@NonNull Window window, boolean isLight) {
     WindowInsetsControllerCompat insetsController =
         WindowCompat.getInsetsController(window, window.getDecorView());
-    if (insetsController != null) {
-      insetsController.setAppearanceLightStatusBars(isLightStatusBar);
-      insetsController.setAppearanceLightNavigationBars(isLightNavigationBar);
-    }
+    insetsController.setAppearanceLightStatusBars(isLight);
+  }
+
+  /**
+   * Changes the foreground color of the navigation bars to light or dark so that the items on the
+   * bar can be read clearly.
+   *
+   * @param window Window that hosts the status bars
+   * @param isLight {@code true} to make the foreground color light.
+   */
+  public static void setLightNavigationBar(@NonNull Window window, boolean isLight) {
+    WindowInsetsControllerCompat insetsController =
+        WindowCompat.getInsetsController(window, window.getDecorView());
+    insetsController.setAppearanceLightNavigationBars(isLight);
   }
 
   @TargetApi(VERSION_CODES.LOLLIPOP)
