@@ -1243,6 +1243,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
       // The copy constructor called here only exists on API 19+.
       super(source);
       scrollFlags = source.scrollFlags;
+      scrollEffect = source.scrollEffect;
       scrollInterpolator = source.scrollInterpolator;
     }
 
