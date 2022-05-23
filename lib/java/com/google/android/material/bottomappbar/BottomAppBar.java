@@ -58,6 +58,7 @@ import androidx.customview.view.AbsSavedState;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.animation.TransformationCallback;
 import com.google.android.material.behavior.HideBottomViewOnScrollBehavior;
+import com.google.android.material.behavior.HideBottomViewOnScrollBehavior.OnScrollStateChangedListener;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton.OnVisibilityChangedListener;
@@ -539,6 +540,35 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   /** Returns true if the {@link BottomAppBar} is scrolled up. */
   public boolean isScrolledUp() {
     return getBehavior().isScrolledUp();
+  }
+
+  /**
+   * Add a listener that will be called when the bottom app bar scroll state changes.
+   * See {@link OnScrollStateChangedListener}.
+   *
+   * <p>Components that add a listener should take care to remove it when finished via {@link
+   * #removeOnScrollStateChangedListener(OnScrollStateChangedListener)}.
+   *
+   * @param listener listener to add
+   */
+  public void addOnScrollStateChangedListener(@NonNull OnScrollStateChangedListener listener) {
+    getBehavior().addOnScrollStateChangedListener(listener);
+  }
+
+  /**
+   * Remove a listener that was previously added via {@link
+   * #addOnScrollStateChangedListener(OnScrollStateChangedListener)}.
+   *
+   * @param listener listener to remove
+   */
+  public void removeOnScrollStateChangedListener(
+      @NonNull OnScrollStateChangedListener listener) {
+    getBehavior().removeOnScrollStateChangedListener(listener);
+  }
+
+  /** Remove all previously added {@link OnScrollStateChangedListener}s. */
+  public void clearOnScrollStateChangedListeners() {
+    getBehavior().clearOnScrollStateChangedListeners();
   }
 
   @Override

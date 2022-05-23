@@ -16,6 +16,8 @@
 
 package com.google.android.material.behavior;
 
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.TimeInterpolator;
@@ -25,12 +27,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewPropertyAnimator;
 import androidx.annotation.Dimension;
+import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior;
 import androidx.core.view.ViewCompat;
 import com.google.android.material.animation.AnimationUtils;
+import java.util.LinkedHashSet;
 
 /**
  * The {@link Behavior} for a View within a {@link CoordinatorLayout} to hide the view off the
@@ -38,14 +43,48 @@ import com.google.android.material.animation.AnimationUtils;
  */
 public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorLayout.Behavior<V> {
 
+  /**
+   * Interface definition for a listener to be notified when the bottom view scroll state
+   * changes.
+   */
+  public interface OnScrollStateChangedListener {
+
+    /**
+     * Called when the bottom view changes its scrolled state.
+     *
+     * @param bottomView The bottom view.
+     * @param newState The new state. This will be one of {@link #STATE_SCROLLED_UP} or {@link
+     *     #STATE_SCROLLED_DOWN}.
+     */
+    void onStateChanged(@NonNull View bottomView, @ScrollState int newState);
+  }
+
+  @NonNull
+  private final LinkedHashSet<OnScrollStateChangedListener> onScrollStateChangedListeners =
+      new LinkedHashSet<>();
+
   protected static final int ENTER_ANIMATION_DURATION = 225;
   protected static final int EXIT_ANIMATION_DURATION = 175;
 
-  private static final int STATE_SCROLLED_DOWN = 1;
-  private static final int STATE_SCROLLED_UP = 2;
+  /** State of the bottom view when it's scrolled down. */
+  public static final int STATE_SCROLLED_DOWN = 1;
+  /**
+   * State of the bottom view when it's scrolled up.
+   */
+  public static final int STATE_SCROLLED_UP = 2;
 
   private int height = 0;
-  private int currentState = STATE_SCROLLED_UP;
+
+  /**
+   * Positions the scroll state can be set to.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  @IntDef({STATE_SCROLLED_DOWN, STATE_SCROLLED_UP})
+  public @interface ScrollState {}
+
+  @ScrollState private int currentState = STATE_SCROLLED_UP;
   private int additionalHiddenOffsetY = 0;
   @Nullable private ViewPropertyAnimator currentAnimator;
 
@@ -135,7 +174,7 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
       currentAnimator.cancel();
       child.clearAnimation();
     }
-    currentState = STATE_SCROLLED_UP;
+    updateCurrentState(child, STATE_SCROLLED_UP);
     int targetTranslationY = 0;
     if (animate) {
       animateChildTo(
@@ -176,7 +215,7 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
       currentAnimator.cancel();
       child.clearAnimation();
     }
-    currentState = STATE_SCROLLED_DOWN;
+    updateCurrentState(child, STATE_SCROLLED_DOWN);
     int targetTranslationY = height + additionalHiddenOffsetY;
     if (animate) {
       animateChildTo(
@@ -186,6 +225,13 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
           AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR);
     } else {
       child.setTranslationY(targetTranslationY);
+    }
+  }
+
+  private void updateCurrentState(@NonNull V child, @ScrollState int state) {
+    currentState = state;
+    for (OnScrollStateChangedListener listener : onScrollStateChangedListeners) {
+      listener.onStateChanged(child, currentState);
     }
   }
 
@@ -204,5 +250,28 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
                     currentAnimator = null;
                   }
                 });
+  }
+
+  /**
+   * Adds a listener to be notified of bottom view scroll state changes.
+   *
+   * @param listener The listener to notify when bottom view scroll state changes.
+   */
+  public void addOnScrollStateChangedListener(@NonNull OnScrollStateChangedListener listener) {
+    onScrollStateChangedListeners.add(listener);
+  }
+
+  /**
+   * Removes a previously added listener.
+   *
+   * @param listener The listener to remove.
+   */
+  public void removeOnScrollStateChangedListener(@NonNull OnScrollStateChangedListener listener) {
+    onScrollStateChangedListeners.remove(listener);
+  }
+
+  /** Remove all previously added {@link OnScrollStateChangedListener}s. */
+  public void clearOnScrollStateChangedListeners() {
+    onScrollStateChangedListeners.clear();
   }
 }
