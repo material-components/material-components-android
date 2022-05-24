@@ -15,4 +15,12 @@
 -->
 <resources>
   <public name="materialSwitchStyle" type="attr"/>
+  <public name="Widget.Material3.CompoundButton.MaterialSwitch" type="style"/>
+
+  <public name="thumbIcon" type="attr"/>
+  <public name="thumbIconTint" type="attr"/>
+  <public name="thumbIconTintMode" type="attr"/>
+  <public name="trackDecoration" type="attr"/>
+  <public name="trackDecorationTint" type="attr"/>
+  <public name="trackDecorationTintMode" type="attr"/>
 </resources>

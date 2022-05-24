@@ -380,6 +380,7 @@ public class ThemeTest {
           R.attr.materialCardViewOutlinedStyle,
           R.attr.materialCardViewFilledStyle,
           R.attr.materialCardViewElevatedStyle,
+          R.attr.materialSwitchStyle,
           R.attr.radioButtonStyle,
           R.attr.sliderStyle,
           R.attr.snackbarStyle,
