@@ -19,13 +19,13 @@ package com.google.android.material.bottomsheet;
 import com.google.android.material.R;
 
 import static com.google.android.material.color.MaterialColors.isColorLight;
-import static com.google.android.material.internal.EdgeToEdgeUtils.setLightStatusBar;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
@@ -49,6 +49,7 @@ import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
+import com.google.android.material.internal.EdgeToEdgeUtils;
 import com.google.android.material.shape.MaterialShapeDrawable;
 
 /**
@@ -484,7 +485,8 @@ public class BottomSheetDialog extends AppCompatDialog {
         // If the bottomsheet is light, we should set light status bar so the icons are visible
         // since the bottomsheet is now under the status bar.
         if (window != null) {
-          setLightStatusBar(window, lightBottomSheet == null ? lightStatusBar : lightBottomSheet);
+          EdgeToEdgeUtils.setLightStatusBar(
+              window, lightBottomSheet == null ? lightStatusBar : lightBottomSheet);
         }
         // Smooth transition into status bar when drawing edge to edge.
         bottomSheet.setPadding(
@@ -496,7 +498,7 @@ public class BottomSheetDialog extends AppCompatDialog {
         // Reset the status bar icons to the original color because the bottomsheet is not under the
         // status bar.
         if (window != null) {
-          setLightStatusBar(window, lightStatusBar);
+          EdgeToEdgeUtils.setLightStatusBar(window, lightStatusBar);
         }
         bottomSheet.setPadding(
             bottomSheet.getPaddingLeft(),
@@ -504,6 +506,22 @@ public class BottomSheetDialog extends AppCompatDialog {
             bottomSheet.getPaddingRight(),
             bottomSheet.getPaddingBottom());
       }
+    }
+  }
+
+  /**
+   * @deprecated use {@link EdgeToEdgeUtils#setLightStatusBar(Window, boolean)} instead
+   */
+  @Deprecated
+  public static void setLightStatusBar(@NonNull View view, boolean isLight) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      int flags = view.getSystemUiVisibility();
+      if (isLight) {
+        flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+      } else {
+        flags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+      }
+      view.setSystemUiVisibility(flags);
     }
   }
 }
