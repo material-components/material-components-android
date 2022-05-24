@@ -27,6 +27,7 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
+import android.util.TypedValue;
 import androidx.appcompat.view.ContextThemeWrapper;
 import com.google.android.material.color.DynamicColors.Precondition;
 import com.google.android.material.resources.MaterialAttributes;
@@ -45,6 +46,7 @@ import org.robolectric.util.ReflectionHelpers;
 /** Tests the logic of {@link com.google.android.material.color.DynamicColors} utility class. */
 @RunWith(ParameterizedRobolectricTestRunner.class)
 public class DynamicColorsTest {
+
   @Parameter(0)
   public String testName;
 
@@ -58,7 +60,7 @@ public class DynamicColorsTest {
   @Parameters(name = "{0}")
   public static ImmutableList<Object[]> getTestData() {
     return ImmutableList.<Object[]>builder()
-        .add(new Object[] {"Test dynamic colors with Light Theme", R.style.Theme_Material3_Light})
+        .add(new Object[] {"Test dynamic colors with Light Theme", R.style.Test_Theme_BaseTheme})
         .build();
   }
 
@@ -75,51 +77,58 @@ public class DynamicColorsTest {
     DynamicColors.applyToActivitiesIfAvailable(mockApplication);
     mockApplication.capturedCallbacks.onActivityPreCreated(mockActivity, new Bundle());
 
-    // TODO(b/230848477): Update tests to make sure dynamic colors theme overlay is indeed applied.
-    assertThat(getThemeResId(mockActivity)).isEqualTo(baseTheme);
+    assertThat(getThemeId()).isEqualTo(R.id.dynamic_theme_id);
   }
 
   @Test
   public void testApplyOnApplicationWithCustomTheme() {
-    final int mockThemeOverlay = 0xABCDABCD;
-    DynamicColors.applyToActivitiesIfAvailable(mockApplication, mockThemeOverlay);
+    DynamicColors.applyToActivitiesIfAvailable(
+        mockApplication,
+        new DynamicColorsOptions.Builder()
+            .setThemeOverlay(R.style.Test_ThemeOverlay_CustomTheme)
+            .build());
     mockApplication.capturedCallbacks.onActivityPreCreated(mockActivity, new Bundle());
 
-    // TODO(b/230848477): Update tests to make sure dynamic colors theme overlay is indeed applied.
-    assertThat(getThemeResId(mockActivity)).isEqualTo(baseTheme);
+    assertThat(getThemeId()).isEqualTo(R.id.custom_theme_id);
   }
 
   @Test
   public void testApplyOnApplicationWithPreconditionFalse() {
     final MockPrecondition mockPrecondition = new MockPrecondition();
-    DynamicColors.applyToActivitiesIfAvailable(mockApplication, mockPrecondition);
+    DynamicColors.applyToActivitiesIfAvailable(
+        mockApplication,
+        new DynamicColorsOptions.Builder().setPrecondition(mockPrecondition).build());
     mockApplication.capturedCallbacks.onActivityPreCreated(mockActivity, new Bundle());
 
     assertThat(getThemeResId(mockActivity)).isEqualTo(baseTheme);
+    assertThat(getThemeId()).isEqualTo(R.id.default_theme_id);
   }
 
   @Test
   public void testApplyOnApplicationWithPreconditionTrue() {
     final MockPrecondition mockPrecondition = new MockPrecondition();
     mockPrecondition.shouldApplyDynamicColors = true;
-    DynamicColors.applyToActivitiesIfAvailable(mockApplication, mockPrecondition);
+    DynamicColors.applyToActivitiesIfAvailable(
+        mockApplication,
+        new DynamicColorsOptions.Builder().setPrecondition(mockPrecondition).build());
     mockApplication.capturedCallbacks.onActivityPreCreated(mockActivity, new Bundle());
 
-    // TODO(b/230848477): Update tests to make sure dynamic colors theme overlay is indeed applied.
-    assertThat(getThemeResId(mockActivity)).isEqualTo(baseTheme);
+    assertThat(getThemeId()).isEqualTo(R.id.dynamic_theme_id);
   }
 
   @Test
   public void testApplyOnApplicationWithCustomThemeAndPrecondition() {
-    final int mockThemeOverlay = 0xABCDABCD;
     final MockPrecondition mockPrecondition = new MockPrecondition();
     mockPrecondition.shouldApplyDynamicColors = true;
     DynamicColors.applyToActivitiesIfAvailable(
-        mockApplication, mockThemeOverlay, mockPrecondition);
+        mockApplication,
+        new DynamicColorsOptions.Builder()
+            .setPrecondition(mockPrecondition)
+            .setThemeOverlay(R.style.Test_ThemeOverlay_CustomTheme)
+            .build());
     mockApplication.capturedCallbacks.onActivityPreCreated(mockActivity, new Bundle());
 
-    // TODO(b/230848477): Update tests to make sure dynamic colors theme overlay is indeed applied.
-    assertThat(getThemeResId(mockActivity)).isEqualTo(baseTheme);
+    assertThat(getThemeId()).isEqualTo(R.id.custom_theme_id);
   }
 
   @Test
@@ -129,10 +138,15 @@ public class DynamicColorsTest {
     final MockPrecondition mockPrecondition = new MockPrecondition();
     mockPrecondition.shouldApplyDynamicColors = true;
     DynamicColors.applyToActivitiesIfAvailable(
-        mockApplication, mockThemeOverlay, mockPrecondition);
+        mockApplication,
+        new DynamicColorsOptions.Builder()
+            .setPrecondition(mockPrecondition)
+            .setThemeOverlay(mockThemeOverlay)
+            .build());
     mockApplication.capturedCallbacks.onActivityPreCreated(mockActivity, new Bundle());
 
     assertThat(getThemeResId(mockActivity)).isEqualTo(baseTheme);
+    assertThat(getThemeId()).isEqualTo(R.id.default_theme_id);
   }
 
   @Test
@@ -142,54 +156,64 @@ public class DynamicColorsTest {
     final MockPrecondition mockPrecondition = new MockPrecondition();
     mockPrecondition.shouldApplyDynamicColors = true;
     DynamicColors.applyToActivitiesIfAvailable(
-        mockApplication, mockThemeOverlay, mockPrecondition);
+        mockApplication,
+        new DynamicColorsOptions.Builder()
+            .setPrecondition(mockPrecondition)
+            .setThemeOverlay(mockThemeOverlay)
+            .build());
     mockApplication.capturedCallbacks.onActivityPreCreated(mockActivity, new Bundle());
 
     assertThat(getThemeResId(mockActivity)).isEqualTo(baseTheme);
+    assertThat(getThemeId()).isEqualTo(R.id.default_theme_id);
   }
 
   @Test
   public void testApplyOnActivityWithDefaultTheme() {
-    DynamicColors.applyIfAvailable(mockActivity);
+    DynamicColors.applyToActivityIfAvailable(mockActivity);
 
-    // TODO(b/230848477): Update tests to make sure dynamic colors theme overlay is indeed applied.
-    assertThat(getThemeResId(mockActivity)).isEqualTo(baseTheme);
+    assertThat(getThemeId()).isEqualTo(R.id.dynamic_theme_id);
   }
 
   @Test
   public void testApplyOnActivityWithCustomTheme() {
-    final int mockThemeOverlay = 0xABCDABCD;
-    DynamicColors.applyIfAvailable(mockActivity, mockThemeOverlay);
+    DynamicColors.applyToActivityIfAvailable(
+        mockActivity,
+        new DynamicColorsOptions.Builder()
+            .setThemeOverlay(R.style.Test_ThemeOverlay_CustomTheme)
+            .build());
 
-    // TODO(b/230848477): Update tests to make sure dynamic colors theme overlay is indeed applied.
-    assertThat(getThemeResId(mockActivity)).isEqualTo(baseTheme);
+    assertThat(getThemeId()).isEqualTo(R.id.custom_theme_id);
   }
 
   @Test
   public void testApplyOnActivityWithPreconditionFalse() {
     final MockPrecondition mockPrecondition = new MockPrecondition();
-    DynamicColors.applyIfAvailable(mockActivity, mockPrecondition);
+    DynamicColors.applyToActivityIfAvailable(
+        mockActivity, new DynamicColorsOptions.Builder().setPrecondition(mockPrecondition).build());
 
     assertThat(getThemeResId(mockActivity)).isEqualTo(baseTheme);
+    assertThat(getThemeId()).isEqualTo(R.id.default_theme_id);
   }
 
   @Test
   public void testApplyOnActivityWithPreconditionTrue() {
     final MockPrecondition mockPrecondition = new MockPrecondition();
     mockPrecondition.shouldApplyDynamicColors = true;
-    DynamicColors.applyIfAvailable(mockActivity, mockPrecondition);
+    DynamicColors.applyToActivityIfAvailable(
+        mockActivity, new DynamicColorsOptions.Builder().setPrecondition(mockPrecondition).build());
 
-    // TODO(b/230848477): Update tests to make sure dynamic colors theme overlay is indeed applied.
-    assertThat(getThemeResId(mockActivity)).isEqualTo(baseTheme);
+    assertThat(getThemeId()).isEqualTo(R.id.dynamic_theme_id);
   }
 
   @Test
   public void testApplyOnActivityWithNoDynamicColorAvailable() {
     setDynamicColorAvailability(false);
     final int mockThemeOverlay = 0xABCDABCD;
-    DynamicColors.applyIfAvailable(mockActivity, mockThemeOverlay);
+    DynamicColors.applyToActivityIfAvailable(
+        mockActivity, new DynamicColorsOptions.Builder().setThemeOverlay(mockThemeOverlay).build());
 
     assertThat(getThemeResId(mockActivity)).isEqualTo(baseTheme);
+    assertThat(getThemeId()).isEqualTo(R.id.default_theme_id);
   }
 
   @Test
@@ -234,6 +258,7 @@ public class DynamicColorsTest {
     Context context = DynamicColors.wrapContextIfAvailable(mockActivity, mockThemeOverlay);
 
     assertThat(getThemeResId(context)).isEqualTo(baseTheme);
+    assertThat(getThemeId()).isEqualTo(R.id.default_theme_id);
   }
 
   private void setDynamicColorAvailability(boolean available) {
@@ -242,8 +267,7 @@ public class DynamicColorsTest {
   }
 
   private void setSdkVersion(int sdkVersion) {
-    ReflectionHelpers.setStaticField(
-        Build.VERSION.class, "SDK_INT", sdkVersion);
+    ReflectionHelpers.setStaticField(Build.VERSION.class, "SDK_INT", sdkVersion);
   }
 
   @SuppressWarnings("RestrictTo")
@@ -275,5 +299,11 @@ public class DynamicColorsTest {
     public boolean shouldApplyDynamicColors(Activity activity, int theme) {
       return shouldApplyDynamicColors;
     }
+  }
+
+  private int getThemeId() {
+    TypedValue typedValue = new TypedValue();
+    mockActivity.getTheme().resolveAttribute(R.attr.themeId, typedValue, true);
+    return typedValue.resourceId;
   }
 }
