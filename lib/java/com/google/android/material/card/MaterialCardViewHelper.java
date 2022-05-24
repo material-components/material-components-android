@@ -195,10 +195,11 @@ class MaterialCardViewHelper {
     updateElevation();
     updateStroke();
 
-    materialCardView.setBackgroundInternal(insetDrawable(bgDrawable));
     fgDrawable =
         materialCardView.isClickable() ? getClickableForeground() : foregroundContentDrawable;
-    materialCardView.setForeground(insetDrawable(fgDrawable));
+
+    updateInsetBackground(bgDrawable);
+    updateInsetForeground(fgDrawable);
   }
 
   boolean isBackgroundOverwritten() {
@@ -320,11 +321,11 @@ class MaterialCardViewHelper {
   }
 
   void updateInsets() {
-    // No way to update the inset amounts for an InsetDrawable, so recreate insets as needed.
     if (!isBackgroundOverwritten()) {
-      materialCardView.setBackgroundInternal(insetDrawable(bgDrawable));
+      updateInsetBackground(bgDrawable);
     }
-    materialCardView.setForeground(insetDrawable(fgDrawable));
+
+    updateInsetForeground(fgDrawable);
   }
 
   void updateStroke() {
@@ -495,6 +496,20 @@ class MaterialCardViewHelper {
 
   ShapeAppearanceModel getShapeAppearanceModel() {
     return shapeAppearanceModel;
+  }
+
+  /**
+   * Attempts to update the {@link InsetDrawable} background to use the given {@link Drawable}.
+   * Changing the Drawable is only available in M+, so earlier versions will create a new
+   * InsetDrawable.
+   */
+  private void updateInsetBackground(Drawable insetBackground) {
+    if (VERSION.SDK_INT >= VERSION_CODES.M
+        && materialCardView.getBackground() instanceof InsetDrawable) {
+      ((InsetDrawable) materialCardView.getBackground()).setDrawable(insetBackground);
+    } else {
+      materialCardView.setBackgroundInternal(insetDrawable(insetBackground));
+    }
   }
 
   /**
