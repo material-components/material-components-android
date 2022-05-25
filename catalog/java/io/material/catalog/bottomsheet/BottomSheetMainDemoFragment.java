@@ -24,7 +24,6 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -43,15 +42,19 @@ import io.material.catalog.windowpreferences.WindowPreferencesManager;
 
 /** A fragment that displays the main BottomSheet demo for the Catalog app. */
 public class BottomSheetMainDemoFragment extends DemoFragment {
-
   private WindowPreferencesManager windowPreferencesManager;
   private BottomSheetDialog bottomSheetDialog;
   private WindowInsetsCompat windowInsets;
+  private int peekHeightPx;
+
+  private SwitchMaterial fullScreenSwitch;
+  private SwitchMaterial restrictExpansionSwitch;
 
   @Override
   public void onCreate(@Nullable Bundle bundle) {
     super.onCreate(bundle);
-    windowPreferencesManager = new WindowPreferencesManager(getContext());
+    windowPreferencesManager = new WindowPreferencesManager(requireContext());
+    peekHeightPx = getResources().getDimensionPixelSize(R.dimen.cat_bottom_sheet_peek_height);
   }
 
   @Override
@@ -60,13 +63,13 @@ public class BottomSheetMainDemoFragment extends DemoFragment {
     View view = layoutInflater.inflate(getDemoContent(), viewGroup, false /* attachToRoot */);
 
     // Set up BottomSheetDialog
-    bottomSheetDialog = new BottomSheetDialog(getContext());
+    bottomSheetDialog = new BottomSheetDialog(requireContext());
     bottomSheetDialog.setContentView(R.layout.cat_bottomsheet_content);
     // Opt in to perform swipe to dismiss animation when dismissing bottom sheet dialog.
     bottomSheetDialog.setDismissWithAnimation(true);
     windowPreferencesManager.applyEdgeToEdgePreference(bottomSheetDialog.getWindow());
     View bottomSheetInternal = bottomSheetDialog.findViewById(R.id.design_bottom_sheet);
-    BottomSheetBehavior.from(bottomSheetInternal).setPeekHeight(400);
+    BottomSheetBehavior.from(bottomSheetInternal).setPeekHeight(peekHeightPx);
     View button = view.findViewById(R.id.bottomsheet_button);
     button.setOnClickListener(
         v -> {
@@ -95,36 +98,25 @@ public class BottomSheetMainDemoFragment extends DemoFragment {
               });
         });
 
-    SwitchMaterial expansionSwitch = view.findViewById(R.id.cat_bottomsheet_expansion_switch);
-
-    SwitchMaterial fullScreenSwitch = view.findViewById(R.id.cat_fullscreen_switch);
+    fullScreenSwitch = view.findViewById(R.id.cat_fullscreen_switch);
     fullScreenSwitch.setOnCheckedChangeListener(
         (buttonView, isChecked) -> {
-          setBottomSheetHeights(view, isChecked);
-          expansionSwitch.setEnabled(!isChecked);
+          restrictExpansionSwitch.setEnabled(!isChecked);
+          updateBottomSheetHeights();
         });
 
-    View bottomSheetPersistent = view.findViewById(R.id.bottom_drawer);
-
-    expansionSwitch.setOnCheckedChangeListener(
+    restrictExpansionSwitch = view.findViewById(R.id.cat_bottomsheet_expansion_switch);
+    restrictExpansionSwitch.setOnCheckedChangeListener(
         (buttonView, isChecked) -> {
-          LayoutParams lp = bottomSheetInternal.getLayoutParams();
-          lp.height = isChecked ? 400 : getBottomSheetDialogDefaultHeight();
-          bottomSheetInternal.setLayoutParams(lp);
-
-          lp = bottomSheetPersistent.getLayoutParams();
-          lp.height = isChecked ? 400 : getBottomSheetPersistentDefaultHeight();
-          bottomSheetPersistent.setLayoutParams(lp);
-
           fullScreenSwitch.setEnabled(!isChecked);
-
-          view.requestLayout();
+          updateBottomSheetHeights();
         });
 
     TextView dialogText = bottomSheetInternal.findViewById(R.id.bottomsheet_state);
     BottomSheetBehavior.from(bottomSheetInternal)
         .addBottomSheetCallback(createBottomSheetCallback(dialogText));
     TextView bottomSheetText = view.findViewById(R.id.cat_persistent_bottomsheet_state);
+    View bottomSheetPersistent = view.findViewById(R.id.bottom_drawer);
     BottomSheetBehavior.from(bottomSheetPersistent)
         .addBottomSheetCallback(createBottomSheetCallback(bottomSheetText));
 
@@ -151,7 +143,7 @@ public class BottomSheetMainDemoFragment extends DemoFragment {
         view,
         (ignored, insets) -> {
           windowInsets = insets;
-          setBottomSheetHeights(view, fullScreenSwitch.isChecked());
+          updateBottomSheetHeights();
           return insets;
         });
 
@@ -166,11 +158,12 @@ public class BottomSheetMainDemoFragment extends DemoFragment {
     return getWindowHeight() * 3 / 5;
   }
 
-  private void setBottomSheetHeights(View view, boolean fullScreen) {
+  private void updateBottomSheetHeights() {
+    View view = getView();
     View bottomSheetChildView = view.findViewById(R.id.bottom_drawer);
     ViewGroup.LayoutParams params = bottomSheetChildView.getLayoutParams();
     BottomSheetBehavior<View> bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetChildView);
-    bottomSheetBehavior.setUpdateImportantForAccessibilityOnSiblings(fullScreen);
+    bottomSheetBehavior.setUpdateImportantForAccessibilityOnSiblings(fullScreenSwitch.isChecked());
     View modalBottomSheetChildView = bottomSheetDialog.findViewById(R.id.bottom_drawer_2);
     ViewGroup.LayoutParams layoutParams = modalBottomSheetChildView.getLayoutParams();
     BottomSheetBehavior<FrameLayout> modalBottomSheetBehavior = bottomSheetDialog.getBehavior();
@@ -178,11 +171,14 @@ public class BottomSheetMainDemoFragment extends DemoFragment {
     float halfExpandedRatio = 0.5f;
     int windowHeight = getWindowHeight();
     if (params != null && layoutParams != null) {
-      if (fullScreen) {
+      if (fullScreenSwitch.isEnabled() && fullScreenSwitch.isChecked()) {
         params.height = windowHeight;
         layoutParams.height = windowHeight;
         fitToContents = false;
         halfExpandedRatio = 0.7f;
+      } else if (restrictExpansionSwitch.isEnabled() && restrictExpansionSwitch.isChecked()) {
+        params.height = peekHeightPx;
+        layoutParams.height = peekHeightPx;
       } else {
         params.height = getBottomSheetPersistentDefaultHeight();
         layoutParams.height = getBottomSheetDialogDefaultHeight();
