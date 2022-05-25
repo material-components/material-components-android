@@ -15,10 +15,8 @@
  */
 package com.google.android.material.chip;
 
-import android.widget.CompoundButton.OnCheckedChangeListener;
-import com.google.android.material.test.R;
+import com.google.android.material.R;
 
-import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -26,7 +24,6 @@ import static org.junit.Assert.assertTrue;
 import android.content.Context;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
-import android.widget.CompoundButton;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
@@ -200,41 +197,6 @@ public class ChipGroupTest {
   }
 
   @Test
-  public void multipleSelection_chipListener() {
-    chipgroup.setSingleSelection(false);
-
-    Chip first = (Chip) chipgroup.getChildAt(0);
-    first.setOnCheckedChangeListener(
-        new OnCheckedChangeListener() {
-          @Override
-          public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            onChipCheckedStateChanged(buttonView, isChecked);
-          }
-        });
-
-    Chip second = (Chip) chipgroup.getChildAt(1);
-    second.setOnCheckedChangeListener(
-        new OnCheckedChangeListener() {
-          @Override
-          public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            onChipCheckedStateChanged(buttonView, isChecked);
-          }
-        });
-
-    first.performClick();
-    getInstrumentation().waitForIdleSync();
-
-    assertThat(checkedChangeCallCount).isEqualTo(1);
-    assertThat(checkedIds).containsExactly(first.getId());
-
-    second.performClick();
-    getInstrumentation().waitForIdleSync();
-
-    assertThat(checkedChangeCallCount).isEqualTo(2);
-    assertThat(checkedIds).containsExactly(first.getId(), second.getId());
-  }
-
-  @Test
   public void multiSelection_withSelectionRequired_unSelectsIfTwo() {
     chipgroup.setSingleSelection(false);
     chipgroup.setSelectionRequired(true);
@@ -297,10 +259,5 @@ public class ChipGroupTest {
     assertEquals(-1, itemInfo.getColumnIndex());
     assertEquals(1, itemInfo.getRowIndex());
     assertTrue(itemInfo.isSelected());
-  }
-
-  private void onChipCheckedStateChanged(CompoundButton chip, boolean checked) {
-    checkedChangeCallCount++;
-    checkedIds = chipgroup.getCheckedChipIds();
   }
 }
