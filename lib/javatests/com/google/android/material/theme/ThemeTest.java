@@ -16,7 +16,7 @@
 
 package com.google.android.material.theme;
 
-import com.google.android.material.test.R;
+import com.google.android.material.R;
 
 import static android.os.Build.VERSION_CODES.LOLLIPOP;
 import static androidx.test.core.app.ApplicationProvider.getApplicationContext;

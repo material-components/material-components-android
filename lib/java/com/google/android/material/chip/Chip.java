@@ -16,7 +16,6 @@
 
 package com.google.android.material.chip;
 
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
@@ -55,7 +54,6 @@ import android.view.ViewOutlineProvider;
 import android.view.ViewParent;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
-import android.widget.CompoundButton;
 import androidx.annotation.AnimatorRes;
 import androidx.annotation.BoolRes;
 import androidx.annotation.CallSuper;
@@ -153,7 +151,6 @@ public class Chip extends AppCompatCheckBox
   @Nullable private RippleDrawable ripple;
 
   @Nullable private OnClickListener onCloseIconClickListener;
-  @Nullable private CompoundButton.OnCheckedChangeListener onCheckedChangeListener;
   @Nullable private MaterialCheckable.OnCheckedChangeListener<Chip> onCheckedChangeListenerInternal;
   private boolean deferredCheckedValue;
   private boolean closeIconPressed;
@@ -254,19 +251,6 @@ public class Chip extends AppCompatCheckBox
       setMinHeight(minTouchTargetSize);
     }
     lastLayoutDirection = ViewCompat.getLayoutDirection(this);
-
-    super.setOnCheckedChangeListener(
-        new CompoundButton.OnCheckedChangeListener() {
-          @Override
-          public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            if (onCheckedChangeListenerInternal != null) {
-              onCheckedChangeListenerInternal.onCheckedChanged(Chip.this, isChecked);
-            }
-            if (onCheckedChangeListener != null) {
-              onCheckedChangeListener.onCheckedChanged(buttonView, isChecked);
-            }
-          }
-        });
   }
 
   @Override
@@ -723,15 +707,15 @@ public class Chip extends AppCompatCheckBox
       // Defer the setChecked() call until after initialization.
       deferredCheckedValue = checked;
     } else if (chipDrawable.isCheckable()) {
+      boolean wasChecked = isChecked();
       super.setChecked(checked);
-    }
-  }
 
-  @Override
-  public void setOnCheckedChangeListener(
-      @Nullable CompoundButton.OnCheckedChangeListener listener) {
-    // Do not call super here - the wrapped listener set in the constructor will call the listener.
-    onCheckedChangeListener = listener;
+      if (wasChecked != checked) {
+        if (onCheckedChangeListenerInternal != null) {
+          onCheckedChangeListenerInternal.onCheckedChanged(this, checked);
+        }
+      }
+    }
   }
 
   /** Register a callback to be invoked when the close icon is clicked. */
