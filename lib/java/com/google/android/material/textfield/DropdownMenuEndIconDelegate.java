@@ -192,8 +192,10 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
               editText.setOnDismissListener(null);
             }
           }
-          textInputLayout.removeOnAttachStateChangeListener(onAttachStateChangeListener);
-          removeTouchExplorationStateChangeListenerIfNeeded();
+          if (previousIcon == TextInputLayout.END_ICON_DROPDOWN_MENU) {
+            textInputLayout.removeOnAttachStateChangeListener(onAttachStateChangeListener);
+            removeTouchExplorationStateChangeListenerIfNeeded();
+          }
         }
       };
 
