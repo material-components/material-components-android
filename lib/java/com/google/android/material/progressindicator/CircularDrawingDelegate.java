@@ -19,6 +19,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Cap;
 import android.graphics.Paint.Style;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
@@ -62,9 +63,23 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
    */
   @Override
   public void adjustCanvas(
-      @NonNull Canvas canvas, @FloatRange(from = 0.0, to = 1.0) float trackThicknessFraction) {
+      @NonNull Canvas canvas,
+      @NonNull Rect bounds,
+      @FloatRange(from = 0.0, to = 1.0) float trackThicknessFraction) {
+    // Scales the actual drawing by the ratio of the given bounds to the preferred size.
+    float scaleX = (float) bounds.width() / getPreferredWidth();
+    float scaleY = (float) bounds.height() / getPreferredHeight();
+
+    // Calculates the scaled progress circle radius in x- and y-coordinate respectively.
     float outerRadiusWithInset = spec.indicatorSize / 2f + spec.indicatorInset;
-    canvas.translate(outerRadiusWithInset, outerRadiusWithInset);
+    float scaledOuterRadiusWithInsetX = outerRadiusWithInset * scaleX;
+    float scaledOuterRadiusWithInsetY = outerRadiusWithInset * scaleY;
+
+    // Move the origin (0, 0) of the canvas to the center of the progress circle.
+    canvas.translate(
+        scaledOuterRadiusWithInsetX + bounds.left, scaledOuterRadiusWithInsetY + bounds.top);
+
+    canvas.scale(scaleX, scaleY);
     // Rotates canvas so that arc starts at top.
     canvas.rotate(-90f);
 

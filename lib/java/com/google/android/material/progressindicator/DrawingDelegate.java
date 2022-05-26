@@ -18,6 +18,7 @@ package com.google.android.material.progressindicator;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
@@ -49,12 +50,15 @@ abstract class DrawingDelegate<S extends BaseProgressIndicatorSpec> {
    * Prepares the bound of the canvas for the actual drawing. Should be called before any drawing
    * (per frame).
    *
-   * @param canvas Canvas to draw.
+   * @param canvas Canvas to draw
+   * @param bounds Bounds that the drawable is supposed to be drawn within
    * @param trackThicknessFraction A fraction representing how much portion of the track thickness
-   *     should be used in the drawing.
+   *     should be used in the drawing
    */
   abstract void adjustCanvas(
-      @NonNull Canvas canvas, @FloatRange(from = 0.0, to = 1.0) float trackThicknessFraction);
+      @NonNull Canvas canvas,
+      @NonNull Rect bounds,
+      @FloatRange(from = 0.0, to = 1.0) float trackThicknessFraction);
 
   /**
    * Fills a part of the track with the designated indicator color. The filling part is defined with
@@ -86,8 +90,10 @@ abstract class DrawingDelegate<S extends BaseProgressIndicatorSpec> {
   }
 
   void validateSpecAndAdjustCanvas(
-      @NonNull Canvas canvas, @FloatRange(from = 0.0, to = 1.0) float trackThicknessFraction) {
+      @NonNull Canvas canvas,
+      @NonNull Rect bounds,
+      @FloatRange(from = 0.0, to = 1.0) float trackThicknessFraction) {
     spec.validateSpec();
-    adjustCanvas(canvas, trackThicknessFraction);
+    adjustCanvas(canvas, bounds, trackThicknessFraction);
   }
 }

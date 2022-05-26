@@ -60,18 +60,16 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
    */
   @Override
   public void adjustCanvas(
-      @NonNull Canvas canvas, @FloatRange(from = 0.0, to = 1.0) float trackThicknessFraction) {
-    // Gets clip bounds from canvas.
-    Rect clipBounds = canvas.getClipBounds();
-    trackLength = clipBounds.width();
+      @NonNull Canvas canvas,
+      @NonNull Rect bounds,
+      @FloatRange(from = 0.0, to = 1.0) float trackThicknessFraction) {
+    trackLength = bounds.width();
     float trackSize = spec.trackThickness;
 
     // Positions canvas to center of the clip bounds.
     canvas.translate(
-        clipBounds.left + clipBounds.width() / 2f,
-        clipBounds.top
-            + clipBounds.height() / 2f
-            + max(0f, (clipBounds.height() - spec.trackThickness) / 2f));
+        bounds.left + bounds.width() / 2f,
+        bounds.top + bounds.height() / 2f + max(0f, (bounds.height() - spec.trackThickness) / 2f));
 
     // Flips canvas horizontally if need to draw right to left.
     if (spec.drawHorizontallyInverse) {

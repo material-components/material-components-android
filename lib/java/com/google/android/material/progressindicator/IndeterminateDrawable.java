@@ -138,7 +138,7 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
     }
 
     canvas.save();
-    drawingDelegate.validateSpecAndAdjustCanvas(canvas, getGrowFraction());
+    drawingDelegate.validateSpecAndAdjustCanvas(canvas, getBounds(), getGrowFraction());
 
     // Draws the track.
     drawingDelegate.fillTrack(canvas, paint);
