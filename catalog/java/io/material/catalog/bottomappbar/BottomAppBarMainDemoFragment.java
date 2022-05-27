@@ -37,12 +37,12 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.shape.CutCornerTreatment;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.switchmaterial.SwitchMaterial;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.DemoUtils;
 import io.material.catalog.feature.OnBackPressedHandler;
@@ -177,7 +177,7 @@ public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBack
         v -> bar.setFabAnimationMode(BottomAppBar.FAB_ANIMATION_MODE_SLIDE));
 
     // Set up hide on scroll switch.
-    SwitchMaterial barScrollSwitch = view.findViewById(R.id.bar_scroll_switch);
+    MaterialSwitch barScrollSwitch = view.findViewById(R.id.bar_scroll_switch);
     barScrollSwitch.setChecked(bar.getHideOnScroll());
     barScrollSwitch.setOnCheckedChangeListener(
         (buttonView, isChecked) -> bar.setHideOnScroll(isChecked));

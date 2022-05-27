@@ -31,8 +31,8 @@ import androidx.annotation.Nullable;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.button.MaterialButtonToggleGroup.OnButtonCheckedListener;
+import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.switchmaterial.SwitchMaterial;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.DemoUtils;
 import java.util.List;
@@ -52,7 +52,7 @@ public class ButtonToggleGroupDemoFragment extends DemoFragment {
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
     View view =
         layoutInflater.inflate(getButtonToggleGroupContent(), viewGroup, /* attachToRoot= */ false);
-    SwitchMaterial requireSelectionToggle = view.findViewById(R.id.switch_toggle);
+    MaterialSwitch requireSelectionToggle = view.findViewById(R.id.switch_toggle);
     defaultInset = getResources().getDimensionPixelSize(R.dimen.mtrl_btn_inset);
     List<MaterialButtonToggleGroup> toggleGroups =
         DemoUtils.findViewsWithType(view, MaterialButtonToggleGroup.class);
@@ -63,7 +63,7 @@ public class ButtonToggleGroupDemoFragment extends DemoFragment {
           }
         });
 
-    SwitchMaterial verticalOrientationToggle = view.findViewById(R.id.orientation_switch_toggle);
+    MaterialSwitch verticalOrientationToggle = view.findViewById(R.id.orientation_switch_toggle);
     verticalOrientationToggle.setOnCheckedChangeListener(
         (buttonView, isChecked) -> {
           for (MaterialButtonToggleGroup toggleGroup : toggleGroups) {

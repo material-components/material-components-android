@@ -42,7 +42,7 @@
       android:layout_gravity="center"
       android:indeterminate="true"/>
 
-  <com.google.android.material.switchmaterial.SwitchMaterial
+  <com.google.android.material.materialswitch.MaterialSwitch
       android:id="@+id/determinate_mode_switch"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"

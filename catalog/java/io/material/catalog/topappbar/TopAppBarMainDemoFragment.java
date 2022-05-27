@@ -31,7 +31,7 @@ import androidx.annotation.Nullable;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.badge.BadgeUtils;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.google.android.material.materialswitch.MaterialSwitch;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.DemoUtils;
 
@@ -40,7 +40,7 @@ public class TopAppBarMainDemoFragment extends DemoFragment {
 
   private Toolbar toolbar;
   private BadgeDrawable badgeDrawable;
-  private SwitchMaterial editMenuToggle;
+  private MaterialSwitch editMenuToggle;
   private MaterialButton incrementBadgeNumber;
 
   @Override

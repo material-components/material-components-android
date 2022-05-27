@@ -30,7 +30,7 @@ import com.google.android.material.color.DynamicColors;
 import com.google.android.material.color.HarmonizedColorAttributes;
 import com.google.android.material.color.HarmonizedColors;
 import com.google.android.material.color.HarmonizedColorsOptions;
-import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.google.android.material.materialswitch.MaterialSwitch;
 import io.material.catalog.feature.DemoActivity;
 import java.util.ArrayList;
 import java.util.List;
@@ -130,7 +130,7 @@ public class ColorHarmonizationDemoActivity extends DemoActivity {
       harmonizableButtonList.add(HarmonizableButton.create(demoView, harmonizableButtonData));
     }
     updateButtons(/* harmonize= */ false);
-    SwitchMaterial enabledSwitch = demoView.findViewById(R.id.cat_color_enabled_switch);
+    MaterialSwitch enabledSwitch = demoView.findViewById(R.id.cat_color_enabled_switch);
     enabledSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> updateButtons(isChecked));
     return demoView;
   }

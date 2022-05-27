@@ -24,8 +24,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
+import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.slider.Slider;
-import com.google.android.material.switchmaterial.SwitchMaterial;
 import io.material.catalog.feature.DemoFragment;
 
 /**
@@ -43,7 +43,7 @@ public class SliderContinuousDemoFragment extends DemoFragment {
     Slider sliderTwo = view.findViewById(R.id.slider_2);
     Slider sliderThree = view.findViewById(R.id.slider_3);
 
-    SwitchMaterial switchButton = view.findViewById(R.id.switch_button);
+    MaterialSwitch switchButton = view.findViewById(R.id.switch_button);
 
     switchButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
       sliderOne.setEnabled(isChecked);

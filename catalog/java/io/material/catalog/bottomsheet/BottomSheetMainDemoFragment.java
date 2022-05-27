@@ -36,7 +36,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.google.android.material.materialswitch.MaterialSwitch;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.windowpreferences.WindowPreferencesManager;
 
@@ -47,8 +47,8 @@ public class BottomSheetMainDemoFragment extends DemoFragment {
   private WindowInsetsCompat windowInsets;
   private int peekHeightPx;
 
-  private SwitchMaterial fullScreenSwitch;
-  private SwitchMaterial restrictExpansionSwitch;
+  private MaterialSwitch fullScreenSwitch;
+  private MaterialSwitch restrictExpansionSwitch;
 
   @Override
   public void onCreate(@Nullable Bundle bundle) {
@@ -84,7 +84,7 @@ public class BottomSheetMainDemoFragment extends DemoFragment {
                           Toast.LENGTH_SHORT)
                       .show());
 
-          SwitchMaterial enabledSwitch =
+          MaterialSwitch enabledSwitch =
               bottomSheetInternal.findViewById(R.id.cat_bottomsheet_modal_enabled_switch);
           enabledSwitch.setOnCheckedChangeListener(
               (buttonSwitch, isSwitchChecked) -> {
@@ -127,7 +127,7 @@ public class BottomSheetMainDemoFragment extends DemoFragment {
                     v.getContext(), R.string.cat_bottomsheet_button_clicked, Toast.LENGTH_SHORT)
                 .show());
 
-    SwitchMaterial enabledSwitch = view.findViewById(R.id.cat_bottomsheet_enabled_switch);
+    MaterialSwitch enabledSwitch = view.findViewById(R.id.cat_bottomsheet_enabled_switch);
     enabledSwitch.setOnCheckedChangeListener(
         (buttonView, isChecked) -> {
           CharSequence updatedText =

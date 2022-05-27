@@ -45,7 +45,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:orientation="vertical">
-      <com.google.android.material.switchmaterial.SwitchMaterial
+      <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/cat_topappbar_switch_edit_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

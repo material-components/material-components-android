@@ -26,7 +26,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.google.android.material.materialswitch.MaterialSwitch;
 
 class SwitchRowView extends FrameLayout {
 
@@ -36,7 +36,7 @@ class SwitchRowView extends FrameLayout {
 
   private final TextView titleView;
   private final TextView subtitleView;
-  private final SwitchMaterial switchMaterial;
+  private final MaterialSwitch materialSwitch;
 
   public SwitchRowView(@NonNull Context context) {
     this(context, null);
@@ -61,11 +61,11 @@ class SwitchRowView extends FrameLayout {
     LayoutInflater.from(context).inflate(R.layout.switch_row_view, this);
     titleView = findViewById(R.id.switch_row_title);
     subtitleView = findViewById(R.id.switch_row_subtitle);
-    switchMaterial = findViewById(R.id.switch_row_switch);
+    materialSwitch = findViewById(R.id.switch_row_switch);
 
     titleView.setText(title);
     updateSubtitle();
-    switchMaterial.setOnCheckedChangeListener((buttonView, isChecked) -> updateSubtitle());
+    materialSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> updateSubtitle());
   }
 
   public CharSequence getTitle() {
@@ -104,7 +104,7 @@ class SwitchRowView extends FrameLayout {
   }
 
   private void updateSubtitle() {
-    subtitleView.setText(getSubtitleText(switchMaterial.isChecked()));
+    subtitleView.setText(getSubtitleText(materialSwitch.isChecked()));
   }
 
   private CharSequence getSubtitleText(boolean isChecked) {

@@ -23,9 +23,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.Nullable;
+import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.slider.BasicLabelFormatter;
 import com.google.android.material.slider.Slider;
-import com.google.android.material.switchmaterial.SwitchMaterial;
 import io.material.catalog.feature.DemoFragment;
 import java.util.Arrays;
 import java.util.List;
@@ -53,7 +53,7 @@ public class SliderDiscreteDemoFragment extends DemoFragment {
         view.findViewById(R.id.slider_5),
         view.findViewById(R.id.slider_6)
     );
-    SwitchMaterial switchButton = view.findViewById(R.id.switch_button);
+    MaterialSwitch switchButton = view.findViewById(R.id.switch_button);
 
     switchButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
       for (Slider slider : sliders) {

@@ -25,9 +25,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
-import com.google.android.material.switchmaterial.SwitchMaterial;
 import io.material.catalog.feature.DemoFragment;
 
 /**
@@ -57,7 +57,7 @@ public class ProgressIndicatorMainDemoFragment extends DemoFragment {
     CircularProgressIndicator circularIndicator = view.findViewById(R.id.circular_indicator);
     EditText progressInput = view.findViewById(R.id.progress_input);
     Button updateButton = view.findViewById(R.id.update_button);
-    SwitchMaterial determinateSwitch = view.findViewById(R.id.determinate_mode_switch);
+    MaterialSwitch determinateSwitch = view.findViewById(R.id.determinate_mode_switch);
 
     updateButton.setOnClickListener(
         v -> {

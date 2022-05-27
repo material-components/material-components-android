@@ -25,8 +25,8 @@ import android.view.ViewGroup;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import com.google.android.material.chip.Chip;
+import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.switchmaterial.SwitchMaterial;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.DemoUtils;
 import java.util.List;
@@ -58,7 +58,7 @@ public class ChipMainDemoFragment extends DemoFragment {
             });
       }
     }
-    SwitchMaterial longTextSwitch = view.findViewById(R.id.cat_chip_text_length_switch);
+    MaterialSwitch longTextSwitch = view.findViewById(R.id.cat_chip_text_length_switch);
     longTextSwitch.setOnCheckedChangeListener(
         (buttonView, isChecked) -> {
           CharSequence updatedText =
@@ -68,7 +68,7 @@ public class ChipMainDemoFragment extends DemoFragment {
           }
         });
 
-    SwitchMaterial enabledSwitch = view.findViewById(R.id.cat_chip_enabled_switch);
+    MaterialSwitch enabledSwitch = view.findViewById(R.id.cat_chip_enabled_switch);
     enabledSwitch.setOnCheckedChangeListener(
         (buttonView, isChecked) -> {
           for (Chip chip : chips) {

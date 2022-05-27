@@ -108,7 +108,7 @@
           android:text="@string/cat_bottomappbar_fab_hide" />
       </com.google.android.material.button.MaterialButtonToggleGroup>
 
-      <com.google.android.material.switchmaterial.SwitchMaterial
+      <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/bar_scroll_switch"
         android:layout_width="wrap_content"
         android:layout_height="0dp"

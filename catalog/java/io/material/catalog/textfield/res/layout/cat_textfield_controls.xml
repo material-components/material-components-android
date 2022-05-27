@@ -42,7 +42,7 @@
       android:text="@string/cat_textfield_show_leading_icon"
       android:visibility="gone"/>
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
+    <com.google.android.material.materialswitch.MaterialSwitch
       android:id="@+id/cat_textfield_enabled_switch"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"

@@ -107,7 +107,7 @@
           android:layout_height="wrap_content" />
     </LinearLayout>
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
+    <com.google.android.material.materialswitch.MaterialSwitch
       android:id="@+id/switch_button"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
