@@ -40,12 +40,12 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnAttachStateChangeListener;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.View.OnTouchListener;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
-import android.view.accessibility.AccessibilityManager.TouchExplorationStateChangeListener;
 import android.widget.AutoCompleteTextView;
 import android.widget.AutoCompleteTextView.OnDismissListener;
 import android.widget.EditText;
@@ -54,6 +54,8 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityManagerCompat;
+import androidx.core.view.accessibility.AccessibilityManagerCompat.TouchExplorationStateChangeListener;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.color.MaterialColors;
@@ -190,6 +192,38 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
               editText.setOnDismissListener(null);
             }
           }
+          if (previousIcon == TextInputLayout.END_ICON_DROPDOWN_MENU) {
+            textInputLayout.removeOnAttachStateChangeListener(onAttachStateChangeListener);
+            removeTouchExplorationStateChangeListenerIfNeeded();
+          }
+        }
+      };
+
+  private final OnAttachStateChangeListener onAttachStateChangeListener = new OnAttachStateChangeListener() {
+    @Override
+    public void onViewAttachedToWindow(View ignored) {
+      addTouchExplorationStateChangeListenerIfNeeded();
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(View ignored) {
+      removeTouchExplorationStateChangeListenerIfNeeded();
+    }
+  };
+
+  private final TouchExplorationStateChangeListener touchExplorationStateChangeListener =
+      new TouchExplorationStateChangeListener() {
+        @Override
+        public void onTouchExplorationStateChanged(boolean enabled) {
+          if (textInputLayout != null) {
+            final AutoCompleteTextView autoCompleteTextView =
+                (AutoCompleteTextView) textInputLayout.getEditText();
+            if (autoCompleteTextView != null && !isEditable(autoCompleteTextView)) {
+              ViewCompat.setImportantForAccessibility(
+                  endIconView,
+                  enabled ? IMPORTANT_FOR_ACCESSIBILITY_NO : IMPORTANT_FOR_ACCESSIBILITY_YES);
+            }
+          }
         }
       };
 
@@ -265,20 +299,8 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
     initAnimators();
     accessibilityManager =
         (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
-    if (VERSION.SDK_INT >= VERSION_CODES.KITKAT) {
-      accessibilityManager.addTouchExplorationStateChangeListener(
-          new TouchExplorationStateChangeListener() {
-            @Override
-            public void onTouchExplorationStateChanged(boolean enabled) {
-              if (textInputLayout.getEditText() != null
-                  && !isEditable(textInputLayout.getEditText())) {
-                ViewCompat.setImportantForAccessibility(
-                    endIconView,
-                    enabled ? IMPORTANT_FOR_ACCESSIBILITY_NO : IMPORTANT_FOR_ACCESSIBILITY_YES);
-              }
-            }
-          });
-    }
+    textInputLayout.addOnAttachStateChangeListener(onAttachStateChangeListener);
+    addTouchExplorationStateChangeListenerIfNeeded();
   }
 
   @Override
@@ -529,5 +551,21 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
         });
 
     return animator;
+  }
+
+  private void addTouchExplorationStateChangeListenerIfNeeded() {
+    if (accessibilityManager != null
+        && textInputLayout != null
+        && ViewCompat.isAttachedToWindow(textInputLayout)) {
+      AccessibilityManagerCompat.addTouchExplorationStateChangeListener(
+          accessibilityManager, touchExplorationStateChangeListener);
+    }
+  }
+
+  private void removeTouchExplorationStateChangeListenerIfNeeded() {
+    if (accessibilityManager != null) {
+      AccessibilityManagerCompat.removeTouchExplorationStateChangeListener(
+          accessibilityManager, touchExplorationStateChangeListener);
+    }
   }
 }
