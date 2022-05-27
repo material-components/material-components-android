@@ -16,6 +16,8 @@
 -->
 <resources>
   <style name="ThemeOverlay.Material3.DynamicColors.Light" parent="">
+    <item name="isMaterial3DynamicColorApplied">true</item>
+
     <!-- Color palettes -->
     <item name="colorPrimary">@color/m3_sys_color_dynamic_light_primary</item>
     <item name="colorOnPrimary">@color/m3_sys_color_dynamic_light_on_primary</item>
@@ -61,6 +63,8 @@
   </style>
 
   <style name="ThemeOverlay.Material3.DynamicColors.Dark" parent="">
+    <item name="isMaterial3DynamicColorApplied">true</item>
+    
     <!-- Color palettes -->
     <item name="colorPrimary">@color/m3_sys_color_dynamic_dark_primary</item>
     <item name="colorOnPrimary">@color/m3_sys_color_dynamic_dark_on_primary</item>
