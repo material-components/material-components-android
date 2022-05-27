@@ -15,7 +15,7 @@
  */
 package com.google.android.material.chip;
 
-import com.google.android.material.test.R;
+import com.google.android.material.R;
 
 import static com.google.android.material.internal.ViewUtils.dpToPx;
 import static com.google.common.truth.Truth.assertThat;

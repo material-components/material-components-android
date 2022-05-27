@@ -16,7 +16,6 @@
 
 package com.google.android.material.chip;
 
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;

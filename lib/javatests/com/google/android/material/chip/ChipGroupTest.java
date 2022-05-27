@@ -15,6 +15,7 @@
  */
 package com.google.android.material.chip;
 
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.google.android.material.test.R;
 
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
@@ -203,10 +204,20 @@ public class ChipGroupTest {
     chipgroup.setSingleSelection(false);
 
     Chip first = (Chip) chipgroup.getChildAt(0);
-    first.setOnCheckedChangeListener(this::onChipCheckedStateChanged);
+    first.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+      @Override
+      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        onChipCheckedStateChanged(buttonView, isChecked);
+      }
+    });
 
     Chip second = (Chip) chipgroup.getChildAt(1);
-    second.setOnCheckedChangeListener(this::onChipCheckedStateChanged);
+    second.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+      @Override
+      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        onChipCheckedStateChanged(buttonView, isChecked);
+      }
+    });
 
     first.performClick();
     getInstrumentation().waitForIdleSync();
@@ -284,19 +295,6 @@ public class ChipGroupTest {
     assertEquals(-1, itemInfo.getColumnIndex());
     assertEquals(1, itemInfo.getRowIndex());
     assertTrue(itemInfo.isSelected());
-  }
-
-  @Test
-  public void getChipAccessibilityClassName_multipleChecked_buttonName() {
-    Chip chip = (Chip) chipgroup.getChildAt(0);
-    assertEquals("android.widget.Button", chip.getAccessibilityClassName().toString());
-  }
-
-  @Test
-  public void getChipAccessibilityClassName_singleChecked_radioButtonName() {
-    chipgroup.setSingleSelection(true);
-    Chip chip = (Chip) chipgroup.getChildAt(0);
-    assertEquals("android.widget.RadioButton", chip.getAccessibilityClassName().toString());
   }
 
   private void onChipCheckedStateChanged(CompoundButton chip, boolean checked) {
