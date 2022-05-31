@@ -47,6 +47,7 @@ import java.util.List;
 
 @RequiresApi(21)
 class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
+  @Nullable private StateListAnimator stateListAnimator;
 
   FloatingActionButtonImplLollipop(
       FloatingActionButton view, ShadowViewDelegate shadowViewDelegate) {
@@ -104,51 +105,62 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
       // Animations produce NPE in version 21. Bluntly set the values instead in
       // #onDrawableStateChanged (matching the logic in the animations below).
       view.refreshDrawableState();
-    } else {
-      final StateListAnimator stateListAnimator = new StateListAnimator();
-
-      // Animate elevation and translationZ to our values when pressed, focused, and hovered
-      stateListAnimator.addState(
-          PRESSED_ENABLED_STATE_SET, createElevationAnimator(elevation, pressedTranslationZ));
-      stateListAnimator.addState(
-          HOVERED_FOCUSED_ENABLED_STATE_SET,
-          createElevationAnimator(elevation, hoveredFocusedTranslationZ));
-      stateListAnimator.addState(
-          FOCUSED_ENABLED_STATE_SET,
-          createElevationAnimator(elevation, hoveredFocusedTranslationZ));
-      stateListAnimator.addState(
-          HOVERED_ENABLED_STATE_SET,
-          createElevationAnimator(elevation, hoveredFocusedTranslationZ));
-
-      // Animate translationZ to 0 if not pressed, focused, or hovered
-      AnimatorSet set = new AnimatorSet();
-      List<Animator> animators = new ArrayList<>();
-      animators.add(ObjectAnimator.ofFloat(view, "elevation", elevation).setDuration(0));
-      if (Build.VERSION.SDK_INT >= 22 && Build.VERSION.SDK_INT <= 24) {
-        // This is a no-op animation which exists here only for introducing the duration
-        // because setting the delay (on the next animation) via "setDelay" or "after"
-        // can trigger a NPE between android versions 22 and 24 (due to a framework
-        // bug). The issue has been fixed in version 25.
-        animators.add(
-            ObjectAnimator.ofFloat(view, View.TRANSLATION_Z, view.getTranslationZ())
-                .setDuration(ELEVATION_ANIM_DELAY));
-      }
-      animators.add(
-          ObjectAnimator.ofFloat(view, View.TRANSLATION_Z, 0f)
-              .setDuration(ELEVATION_ANIM_DURATION));
-      set.playSequentially(animators.toArray(new Animator[0]));
-      set.setInterpolator(ELEVATION_ANIM_INTERPOLATOR);
-      stateListAnimator.addState(ENABLED_STATE_SET, set);
-
-      // Animate everything to 0 when disabled
-      stateListAnimator.addState(EMPTY_STATE_SET, createElevationAnimator(0f, 0f));
-
+    } else if (view.getStateListAnimator() == stateListAnimator) {
+      // FAB is using the default StateListAnimator created here. Updates it with the new elevation.
+      stateListAnimator = createDefaultStateListAnimator(
+          elevation, hoveredFocusedTranslationZ, pressedTranslationZ);
       view.setStateListAnimator(stateListAnimator);
     }
 
     if (shouldAddPadding()) {
       updatePadding();
     }
+  }
+
+  @NonNull
+  private StateListAnimator createDefaultStateListAnimator(
+      final float elevation,
+      final float hoveredFocusedTranslationZ,
+      final float pressedTranslationZ) {
+    StateListAnimator stateListAnimator = new StateListAnimator();
+
+    // Animate elevation and translationZ to our values when pressed, focused, and hovered
+    stateListAnimator.addState(
+        PRESSED_ENABLED_STATE_SET, createElevationAnimator(elevation, pressedTranslationZ));
+    stateListAnimator.addState(
+        HOVERED_FOCUSED_ENABLED_STATE_SET,
+        createElevationAnimator(elevation, hoveredFocusedTranslationZ));
+    stateListAnimator.addState(
+        FOCUSED_ENABLED_STATE_SET,
+        createElevationAnimator(elevation, hoveredFocusedTranslationZ));
+    stateListAnimator.addState(
+        HOVERED_ENABLED_STATE_SET,
+        createElevationAnimator(elevation, hoveredFocusedTranslationZ));
+
+    // Animate translationZ to 0 if not pressed, focused, or hovered
+    AnimatorSet set = new AnimatorSet();
+    List<Animator> animators = new ArrayList<>();
+    animators.add(ObjectAnimator.ofFloat(view, "elevation", elevation).setDuration(0));
+    if (Build.VERSION.SDK_INT >= 22 && Build.VERSION.SDK_INT <= 24) {
+      // This is a no-op animation which exists here only for introducing the duration
+      // because setting the delay (on the next animation) via "setDelay" or "after"
+      // can trigger a NPE between android versions 22 and 24 (due to a framework
+      // bug). The issue has been fixed in version 25.
+      animators.add(
+          ObjectAnimator.ofFloat(view, View.TRANSLATION_Z, view.getTranslationZ())
+              .setDuration(ELEVATION_ANIM_DELAY));
+    }
+    animators.add(
+        ObjectAnimator.ofFloat(view, View.TRANSLATION_Z, 0f)
+            .setDuration(ELEVATION_ANIM_DURATION));
+    set.playSequentially(animators.toArray(new Animator[0]));
+    set.setInterpolator(ELEVATION_ANIM_INTERPOLATOR);
+    stateListAnimator.addState(ENABLED_STATE_SET, set);
+
+    // Animate everything to 0 when disabled
+    stateListAnimator.addState(EMPTY_STATE_SET, createElevationAnimator(0f, 0f));
+
+    return stateListAnimator;
   }
 
   @NonNull
