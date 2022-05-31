@@ -71,6 +71,9 @@ public class MaterialSwitch extends SwitchCompat {
   @Nullable private ColorStateList trackDecorationTintList;
   @NonNull private PorterDuff.Mode trackDecorationTintMode;
 
+  private int[] currentStateUnchecked;
+  private int[] currentStateChecked;
+
   public MaterialSwitch(@NonNull Context context) {
     this(context, null);
   }
@@ -141,6 +144,9 @@ public class MaterialSwitch extends SwitchCompat {
     if (thumbIconDrawable != null) {
       mergeDrawableStates(drawableState, STATE_SET_WITH_ICON);
     }
+
+    currentStateUnchecked = getUncheckedState(drawableState);
+    currentStateChecked = getCheckedState(drawableState);
 
     return drawableState;
   }
@@ -497,10 +503,6 @@ public class MaterialSwitch extends SwitchCompat {
     }
 
     float thumbPosition = getThumbPos();
-
-    int[] currentState = getDrawableState();
-    int[] currentStateUnchecked = getUncheckedState(currentState);
-    int[] currentStateChecked = getCheckedState(currentState);
 
     if (thumbTintList != null) {
       setInterpolatedDrawableTintIfPossible(
