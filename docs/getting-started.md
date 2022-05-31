@@ -89,12 +89,22 @@ for more tips and information.
 
 ## 4. Java 8 compilation
 
-The latest AndroidX Jetpack libraries now require your app to be compiled with
-Java 8. See the
+The latest Material and AndroidX Jetpack libraries now require your app to be
+compiled with Java 8. See the
 [Java 8 language features and APIs documentation](https://developer.android.com/studio/write/java8-support)
 for more information on Java 8 support and how to enable it for your app.
 
-## 5. `AppCompatActivity`
+## 5. Gradle, AGP, and Android Studio
+
+When using MDC-Android version `1.7.0-alpha02` and above, you will need to make
+sure your project is built with the following minimum requirements, in order to
+support the latest build features such as XML `macro`:
+
+- [Gradle version 7.3.3](https://developer.android.com/studio/releases/gradle-plugin#updating-gradle)
+- [Android Gradle Plugin (AGP) version 7.2.0](https://developer.android.com/studio/releases/gradle-plugin#updating-gradle)
+- [Android Studio Chipmunk, version 2021.2.1](https://developer.android.com/studio/releases/gradle-plugin#agp-studio-compatibility)
+
+## 6. `AppCompatActivity`
 
 Use `AppCompatActivity` to ensure that all the components work correctly. If you
 are unable to extend from `AppCompatActivity`, update your activities to use
@@ -102,7 +112,7 @@ are unable to extend from `AppCompatActivity`, update your activities to use
 This will enable the AppCompat or Material versions of components to be inflated
 (depending on your theme), among other important things.
 
-## 6. `Material3` theme inheritance
+## 7. `Material3` theme inheritance
 
 We recommend you perform an app-wide migration by changing your app theme to
 inherit from a `Material3` theme. Be sure to test thoroughly afterwards, since
@@ -243,7 +253,7 @@ theme, or you will encounter `ThemeEnforcement` errors:
 </style>
 ```
 
-## 7. Add Material components
+## 8. Add Material components
 
 Take a look at our [documentation](https://material.io/components?platform=android)
 for the full list of available Material components. Each component's page has
