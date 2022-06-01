@@ -19,6 +19,8 @@ dependencies {
 
   api 'com.google.guava:guava:27.0.1-android'
 
+  api 'com.github.bumptech.glide:glide:4.13.2'
+
   api project(':lib')
 
   api compatibility("recyclerViewSelection")
