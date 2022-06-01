@@ -187,12 +187,7 @@ public class BottomSheetDialog extends AppCompatDialog {
         if (coordinator != null) {
           coordinator.setFitsSystemWindows(!drawEdgeToEdge);
         }
-        if (drawEdgeToEdge) {
-          // Automatically set up edge to edge flags if we should be drawing edge to edge.
-          int edgeToEdgeFlags =
-              View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-          window.getDecorView().setSystemUiVisibility(edgeToEdgeFlags);
-        }
+        WindowCompat.setDecorFitsSystemWindows(window, !drawEdgeToEdge);
       }
       if (edgeToEdgeCallback != null) {
         edgeToEdgeCallback.setWindow(window);
