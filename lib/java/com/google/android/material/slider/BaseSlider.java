@@ -1577,6 +1577,17 @@ abstract class BaseSlider<
   }
 
   @Override
+  public void setVisibility(int visibility) {
+    super.setVisibility(visibility);
+
+    if (visibility != VISIBLE) {
+      for (TooltipDrawable label : labels) {
+        ViewUtils.getContentViewOverlay(this).remove(label);
+      }
+    }
+  }
+
+  @Override
   public void setEnabled(boolean enabled) {
     super.setEnabled(enabled);
     // When we're disabled, set the layer type to hardware so we can clear the track out from behind
