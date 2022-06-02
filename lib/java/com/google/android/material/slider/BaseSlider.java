@@ -1579,7 +1579,8 @@ abstract class BaseSlider<
   @Override
   public void setVisibility(int visibility) {
     super.setVisibility(visibility);
-
+    // When the visibility is set to VISIBLE, onDraw() is called again which adds or removes labels
+    // according to the setting.
     if (visibility != VISIBLE) {
       for (TooltipDrawable label : labels) {
         ViewUtils.getContentViewOverlay(this).remove(label);
