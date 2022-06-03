@@ -323,20 +323,23 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
 
   @Override
   protected synchronized void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-    super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     DrawingDelegate<S> drawingDelegate = getCurrentDrawingDelegate();
     if (drawingDelegate == null) {
       return;
     }
-    int drawableMeasuredWidth = drawingDelegate.getPreferredWidth();
-    int drawableMeasuredHeight = drawingDelegate.getPreferredHeight();
-    setMeasuredDimension(
-        (drawableMeasuredWidth < 0
-            ? getMeasuredWidth()
-            : drawableMeasuredWidth + getPaddingLeft() + getPaddingRight()),
-        (drawableMeasuredHeight < 0
-            ? getMeasuredHeight()
-            : drawableMeasuredHeight + getPaddingTop() + getPaddingBottom()));
+    // ProgressBar.onMeasure() overrides the behavior of View.onMeasure(), but it doesn't support
+    // "unspecified" drawable size, i.e., when DrawingDelegate.getPreferredWidth/Height() is less
+    // than 0. Therefore, in this case, we fallback to the default View.onMeasure() logic. Since we
+    // cannot invoke it directly, we copied over the logic here.
+    int measuredWidth =
+        drawingDelegate.getPreferredWidth() < 0
+            ? getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec)
+            : drawingDelegate.getPreferredWidth() + getPaddingLeft() + getPaddingRight();
+    int measuredHeight =
+        drawingDelegate.getPreferredHeight() < 0
+            ? getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec)
+            : drawingDelegate.getPreferredHeight() + getPaddingTop() + getPaddingBottom();
+    setMeasuredDimension(measuredWidth, measuredHeight);
   }
 
   @Override
