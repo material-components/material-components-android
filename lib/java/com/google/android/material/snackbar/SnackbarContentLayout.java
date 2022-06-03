@@ -20,6 +20,7 @@ import com.google.android.material.R;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
+import android.text.Layout;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
@@ -86,7 +87,8 @@ public class SnackbarContentLayout extends LinearLayout implements ContentViewCa
         getResources().getDimensionPixelSize(R.dimen.design_snackbar_padding_vertical_2lines);
     final int singleLineVPadding =
         getResources().getDimensionPixelSize(R.dimen.design_snackbar_padding_vertical);
-    final boolean isMultiLine = messageView.getLayout().getLineCount() > 1;
+    final Layout messageLayout = messageView.getLayout();
+    final boolean isMultiLine = messageLayout != null && messageLayout.getLineCount() > 1;
 
     boolean remeasure = false;
     if (isMultiLine
