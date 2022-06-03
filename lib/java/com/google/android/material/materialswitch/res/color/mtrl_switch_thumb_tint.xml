@@ -17,25 +17,25 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
   <!-- State Disabled, Unchecked -->
   <item
-    android:alpha="@dimen/material_emphasis_disabled"
-    android:color="?attr/colorOnSurface"
+    android:alpha="@dimen/m3_comp_switch_disabled_handle_opacity"
+    android:color="@macro/m3_comp_switch_disabled_unselected_handle_color"
     android:state_enabled="false" android:state_checked="false"/>
 
   <!-- State Disabled, Checked -->
   <item
-    android:alpha="@dimen/material_emphasis_disabled"
-    android:color="?attr/colorSurface"
+    android:alpha="@dimen/m3_comp_switch_disabled_handle_opacity"
+    android:color="@macro/m3_comp_switch_disabled_selected_handle_color"
     android:state_enabled="false" android:state_checked="true"/>
 
   <!-- State Checked, Pressed -->
-  <item android:color="?attr/colorPrimaryContainer" android:state_checked="true" android:state_pressed="true"/>
+  <item android:color="@macro/m3_comp_switch_selected_pressed_handle_color" android:state_checked="true" android:state_pressed="true"/>
 
   <!-- State Checked -->
-  <item android:color="?attr/colorOnPrimary" android:state_checked="true"/>
+  <item android:color="@macro/m3_comp_switch_selected_handle_color" android:state_checked="true"/>
 
   <!-- State Unchecked, Pressed -->
-  <item android:color="?attr/colorOnSurfaceVariant" android:state_pressed="true"/>
+  <item android:color="@macro/m3_comp_switch_unselected_pressed_handle_color" android:state_pressed="true"/>
 
   <!-- State Unchecked -->
-  <item android:color="?attr/colorOutline"/>
+  <item android:color="@macro/m3_comp_switch_unselected_handle_color"/>
 </selector>
