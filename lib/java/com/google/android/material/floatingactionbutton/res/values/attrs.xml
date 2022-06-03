@@ -25,7 +25,7 @@
     <!-- Ripple color for the FAB. -->
     <attr name="rippleColor"/>
 
-    <!-- Size for the FAB. If fabCustomSize is set, this will be ignored. -->
+    <!-- Size for the FAB. If fabCustomSize is set, this will be ignored. Deprecated in M3. -->
     <attr name="fabSize">
       <!-- A size which will change based on the window size. -->
       <enum name="auto" value="-1"/>

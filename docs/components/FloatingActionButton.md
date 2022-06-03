@@ -78,21 +78,28 @@ extendedFab.shrink()
 
 ### Sizing FABs
 
-The `FloatingActionButton` can be sized either by using the discrete sizing
-modes, a custom size, or for the large FAB by applying the desired style.
+The `FloatingActionButton` can be sized either by using `app:fabCustomSize` or
+for the large/small FAB (M3 only) by applying the desired style. The
+`app:fabSize` discrete size mode is deprecated in Material3 style. If the
+`app:fabSize` is overridden in your FAB style, which inherits from one of these
+styles:
 
-There are three `app:fabSize` modes:
+*   `Widget.Material3.FloatingActionButton(.Large).Primary`
+*   `Widget.Material3.FloatingActionButton(.Large).Secondary`
+*   `Widget.Material3.FloatingActionButton(.Large).Tertiary`
+*   `Widget.Material3.FloatingActionButton(.Large).Surface`
 
-*   `normal` - the normal sized button, 56dp.
-*   `mini` - the small sized button, 40dp.
-*   `auto` (default) - the button size will change based on the window size. For
-    small sized windows (largest screen dimension < 470dp) this will select a
-    small sized button, and for larger sized windows it will select a normal
-    sized button.
+Please consider one of the following migration options:
 
-Or, you can set a custom size via the `app:fabCustomSize` attribute. If set,
-`app:fabSize` will be ignored, unless the custom size is cleared via the
-`clearCustomSize` method.
+*   If `normal` size is used, set the parent style to
+    `Widget.Material3.FloatingActionButton.{Color}` and remove `app:fabSize`.
+*   If `mini` size is used, set the parent style to
+    `Widget.Material3.FloatingActionButton.Small.{Color}` and remove
+    `app:fabSize`.
+*   If FAB size changes in runtime by either setting `fabSize` or
+    `fabCustomSize`, and relative sized corners are desired, set
+    `shapeAppearanceOverlay` as
+    `@style/ShapeAppearanceOverlay.Material3.FloatingActionButton` in the style.
 
 If you'd like to use the small FAB, apply one of these style attributes:
 
