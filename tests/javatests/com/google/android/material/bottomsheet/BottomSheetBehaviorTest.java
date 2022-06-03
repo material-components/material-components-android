@@ -22,6 +22,7 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.fail;
 
 import android.content.Context;
@@ -32,6 +33,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -959,6 +961,20 @@ public class BottomSheetBehaviorTest {
 
     View scrollingChild = getBehavior().findScrollingChild(disabledParent);
     assertThat(scrollingChild, is((View) enabledChild));
+  }
+
+  @Test
+  @SmallTest
+  public void testWontFindScrollingChildInvisible() {
+    Context context = activityTestRule.getActivity();
+    FrameLayout parent = new FrameLayout(context);
+    NestedScrollView invisibleChild = new NestedScrollView(context);
+    invisibleChild.setNestedScrollingEnabled(true);
+    invisibleChild.setVisibility(View.INVISIBLE);
+    parent.addView(invisibleChild);
+
+    View scrollingChild = getBehavior().findScrollingChild(parent);
+    assertThat(scrollingChild, nullValue());
   }
 
   private void checkSetState(final int state, Matcher<View> matcher) throws Throwable {

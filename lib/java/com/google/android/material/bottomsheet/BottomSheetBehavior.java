@@ -1424,6 +1424,9 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   @Nullable
   @VisibleForTesting
   View findScrollingChild(View view) {
+    if (view.getVisibility() != View.VISIBLE) {
+      return null;
+    }
     if (ViewCompat.isNestedScrollingEnabled(view)) {
       return view;
     }
