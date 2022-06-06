@@ -30,7 +30,7 @@
     android:layout_height="wrap_content"
     android:layout_marginRight="24dp"
     android:layout_gravity="start|center"
-    android:text="@string/m3_surface_fab_label" />
+    android:text="@string/m3_surface_extended_fab_label" />
   <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
     style="?attr/extendedFloatingActionButtonSurfaceStyle"
     android:layout_width="wrap_content"
@@ -46,7 +46,7 @@
     android:layout_height="wrap_content"
     android:layout_marginRight="24dp"
     android:layout_gravity="start|center"
-    android:text="@string/m3_primary_fab_label" />
+    android:text="@string/m3_primary_extended_fab_label" />
   <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
     style="?attr/extendedFloatingActionButtonPrimaryStyle"
     android:layout_width="wrap_content"
@@ -62,7 +62,7 @@
     android:layout_height="wrap_content"
     android:layout_marginRight="24dp"
     android:layout_gravity="start|center"
-    android:text="@string/m3_secondary_fab_label" />
+    android:text="@string/m3_secondary_extended_fab_label" />
   <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
     style="?extendedFloatingActionButtonSecondaryStyle"
     android:layout_width="wrap_content"
@@ -78,7 +78,7 @@
     android:layout_height="wrap_content"
     android:layout_marginRight="24dp"
     android:layout_gravity="start|center"
-    android:text="@string/m3_tertiary_fab_label" />
+    android:text="@string/m3_tertiary_extended_fab_label" />
   <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
     style="?attr/extendedFloatingActionButtonTertiaryStyle"
     android:layout_width="wrap_content"

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  Copyright 2017 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<!-- Padding is used to avoid clipping the FAB's shadows. This is not normally necessary for
+     full-screen containers. -->
+
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:clipToPadding="false"
+  tools:parentTag="android.widget.GridLayout">
+
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_columnSpan="3"
+    android:text="@string/m3_surface_fab_label"/>
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    style="?attr/floatingActionButtonSurfaceStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:layout_gravity="center"
+    android:contentDescription="@string/m3_surface_fab_content_desc"
+    app:srcCompat="@drawable/ic_add_24px"/>
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    style="?attr/floatingActionButtonSmallSurfaceStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:layout_gravity="center"
+    android:contentDescription="@string/m3_surface_small_fab_content_desc"
+    app:srcCompat="@drawable/ic_add_24px"/>
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    style="?attr/floatingActionButtonLargeSurfaceStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:layout_gravity="center"
+    android:contentDescription="@string/m3_surface_large_fab_content_desc"
+    app:srcCompat="@drawable/ic_add_24px" />
+
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="24dp"
+    android:layout_gravity="center"
+    android:layout_columnSpan="3"
+    android:text="@string/m3_primary_fab_label"/>
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    style="?attr/floatingActionButtonPrimaryStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:layout_gravity="center"
+    android:contentDescription="@string/m3_primary_fab_content_desc"
+    app:srcCompat="@drawable/ic_add_24px"/>
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    style="?attr/floatingActionButtonSmallPrimaryStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:layout_gravity="center"
+    android:contentDescription="@string/m3_primary_small_fab_content_desc"
+    app:srcCompat="@drawable/ic_add_24px"/>
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    style="?attr/floatingActionButtonLargePrimaryStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:layout_gravity="center"
+    android:contentDescription="@string/m3_primary_large_fab_content_desc"
+    app:srcCompat="@drawable/ic_add_24px" />
+
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="24dp"
+    android:layout_gravity="center"
+    android:layout_columnSpan="3"
+    android:text="@string/m3_secondary_fab_label"/>
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    style="?attr/floatingActionButtonSecondaryStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:layout_gravity="center"
+    android:contentDescription="@string/m3_secondary_fab_content_desc"
+    app:srcCompat="@drawable/ic_add_24px"/>
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    style="?attr/floatingActionButtonSmallSecondaryStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:layout_gravity="center"
+    android:contentDescription="@string/m3_secondary_small_fab_content_desc"
+    app:srcCompat="@drawable/ic_add_24px"/>
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    style="?attr/floatingActionButtonLargeSecondaryStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:layout_gravity="center"
+    android:contentDescription="@string/m3_secondary_large_fab_content_desc"
+    app:srcCompat="@drawable/ic_add_24px" />
+
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="24dp"
+    android:layout_gravity="center"
+    android:layout_columnSpan="3"
+    android:text="@string/m3_tertiary_fab_label"/>
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    style="?attr/floatingActionButtonTertiaryStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:layout_gravity="center"
+    android:contentDescription="@string/m3_tertiary_fab_content_desc"
+    app:srcCompat="@drawable/ic_add_24px"/>
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    style="?attr/floatingActionButtonSmallTertiaryStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:layout_gravity="center"
+    android:contentDescription="@string/m3_tertiary_small_fab_content_desc"
+    app:srcCompat="@drawable/ic_add_24px"/>
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    style="?attr/floatingActionButtonLargeTertiaryStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:layout_gravity="center"
+    android:contentDescription="@string/m3_tertiary_large_fab_content_desc"
+    app:srcCompat="@drawable/ic_add_24px" />
+</merge>

@@ -24,15 +24,16 @@
     android:orientation="vertical">
 
   <ScrollView
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="0dp"
     android:layout_weight="1">
     <GridLayout
       android:id="@+id/content"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_gravity="center_horizontal"
       android:columnCount="3"
-      android:rowCount="5">
+      android:rowCount="12">
     </GridLayout>
   </ScrollView>
 

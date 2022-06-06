@@ -17,61 +17,51 @@
 
 <resources>
 
-  <string name="cat_fab_title">Floating Action Button</string>
-  <string name="cat_fab_description">The Floating Action Button (FAB) represents your product\'s primary action, and should be considered a direct extension of its brand.</string>
-  <string name="cat_extended_fab_demo_title">Extended FAB</string>
-  <string name="cat_extended_fab_behavior_demo_title">Extended FAB Behavior</string>
+  <string name="cat_fab_title" translatable="false">Floating Action Button</string>
+  <string name="cat_fab_description" translatable="false">The Floating Action Button (FAB) represents your product\'s primary action, and should be considered a direct extension of its brand.</string>
+  <string name="cat_extended_fab_demo_title" translatable="false">Extended FAB</string>
+  <string name="cat_extended_fab_behavior_demo_title" translatable="false">Extended FAB Behavior</string>
 
-  <string name="regular_fab_label">Regular</string>
-  <string name="legacy_fab_label">Legacy</string>
-  <string name="theme_fab_label">Theme</string>
+  <string name="extended_fab_label" translatable="false">Extended FAB</string>
+  <string name="cat_extended_fab_content_desc" translatable="false">Extended FAB</string>
 
-  <string name="extended_fab_with_text">With icon and text</string>
-  <string name="extended_fab_without_icon">Without icon</string>
-  <string name="extended_fab_without_text">Without text</string>
-  <string name="extended_fab_label">Extended FAB</string>
+  <string name="hide_fabs_label" translatable="false">Hide FABs</string>
+  <string name="show_fabs_label" translatable="false">Show FABs</string>
+  <string name="rotate_fabs_label" translatable="false">Rotate FABs</string>
+  <string name="shrink_fabs_label" translatable="false">Shrink FABs</string>
+  <string name="extend_fabs_label" translatable="false">Extend FABs</string>
 
-  <string name="hide_fabs_label">Hide FABs</string>
-  <string name="show_fabs_label">Show FABs</string>
-  <string name="rotate_fabs_label">Rotate FABs</string>
-  <string name="shrink_fabs_label">Shrink FABs</string>
-  <string name="extend_fabs_label">Extend FABs</string>
-  <string name="hide_fab_on_scroll_label">Hide FAB on Scroll</string>
-  <string name="shrink_fab_on_scroll_label">Shrink FAB on Scroll</string>
+  <string name="cat_fab_clicked" translatable="false">FAB clicked</string>
+  <string name="cat_extended_fab_clicked" translatable="false">Extended FAB clicked</string>
 
-  <string name="cat_fab_clicked">FAB clicked</string>
-  <string name="cat_extended_fab_clicked">Extended FAB clicked</string>
+  <!-- FAB strings -->
+  <string name="m3_primary_fab_label" translatable="false">Primary (default, small, large)</string>
+  <string name="m3_secondary_fab_label" translatable="false">Secondary (default, small, large)</string>
+  <string name="m3_tertiary_fab_label" translatable="false">Tertiary (default, small, large)</string>
+  <string name="m3_surface_fab_label" translatable="false">Surface (default, small, large)</string>
+  <string name="m3_theme_fab_label" translatable="false">Theme (default, small, large)</string>
 
   <!-- Content descriptions for demo FABs. -->
-  <string name="cat_regular_fab_content_desc">Regular FAB</string>
-  <string name="cat_regular_fab_mini_content_desc">Regular mini FAB</string>
-  <string name="cat_legacy_fab_content_desc">Legacy FAB</string>
-  <string name="cat_legacy_fab_mini_content_desc">Legacy mini FAB</string>
-  <string name="cat_theme_fab_content_desc">Themed FAB</string>
-  <string name="cat_theme_fab_mini_content_desc">Mini themed FAB</string>
-  <string name="cat_extended_fab_content_desc">Extended FAB</string>
+  <string name="m3_primary_fab_content_desc" translatable="false">Primary FAB</string>
+  <string name="m3_primary_small_fab_content_desc" translatable="false">Primary small FAB</string>
+  <string name="m3_primary_large_fab_content_desc" translatable="false">Primary large FAB</string>
+  <string name="m3_secondary_fab_content_desc" translatable="false">Secondary FAB</string>
+  <string name="m3_secondary_small_fab_content_desc" translatable="false">Secondary small FAB</string>
+  <string name="m3_secondary_large_fab_content_desc" translatable="false">Secondary large FAB</string>
+  <string name="m3_tertiary_fab_content_desc" translatable="false">Tertiary FAB</string>
+  <string name="m3_tertiary_small_fab_content_desc" translatable="false">Tertiary small FAB</string>
+  <string name="m3_tertiary_large_fab_content_desc" translatable="false">Tertiary large FAB</string>
+  <string name="m3_surface_fab_content_desc" translatable="false">Surface FAB</string>
+  <string name="m3_surface_small_fab_content_desc" translatable="false">Surface small FAB</string>
+  <string name="m3_surface_large_fab_content_desc" translatable="false">Surface large FAB</string>
+  <string name="m3_theme_fab_content_desc" translatable="false">Theme FAB</string>
+  <string name="m3_theme_small_fab_content_desc" translatable="false">Theme small FAB</string>
+  <string name="m3_theme_large_fab_content_desc" translatable="false">Theme large FAB</string>
 
-  <!-- M3 FAB strings -->
-  <string name="m3_primary_fab_label">Primary</string>
-  <string name="m3_secondary_fab_label">Secondary</string>
-  <string name="m3_tertiary_fab_label">Tertiary</string>
-  <string name="m3_surface_fab_label">Surface</string>
-
-  <string name="m3_primary_fab_content_desc">Primary FAB</string>
-  <string name="m3_primary_fab_mini_content_desc">Primary mini FAB</string>
-  <string name="m3_secondary_fab_content_desc">Secondary FAB</string>
-  <string name="m3_secondary_fab_mini_content_desc">Secondary mini FAB</string>
-  <string name="m3_tertiary_fab_content_desc">Tertiary FAB</string>
-  <string name="m3_tertiary_fab_mini_content_desc">Tertiary mini FAB</string>
-  <string name="m3_surface_fab_content_desc">Surface FAB</string>
-  <string name="m3_surface_fab_mini_content_desc">Surface mini FAB</string>
-  <string name="m3_theme_large_fab_content_desc">Theme large FAB</string>
-
-  <string name="m3_large_fab_demo_title">Large FAB</string>
-
-  <string name="m3_large_primary_fab_content_desc">Large primary FAB</string>
-  <string name="m3_large_secondary_fab_content_desc">Large secondary FAB</string>
-  <string name="m3_large_tertiary_fab_content_desc">Large tertiary FAB</string>
-  <string name="m3_large_surface_fab_content_desc">Large surface FAB</string>
+  <!-- Extended FAB strings -->
+  <string name="m3_primary_extended_fab_label" translatable="false">Primary</string>
+  <string name="m3_secondary_extended_fab_label" translatable="false">Secondary</string>
+  <string name="m3_tertiary_extended_fab_label" translatable="false">Tertiary</string>
+  <string name="m3_surface_extended_fab_label" translatable="false">Surface</string>
 
 </resources>

@@ -95,11 +95,11 @@ public class FabMainDemoFragment extends DemoFragment {
 
   @LayoutRes
   protected int getFabsContent() {
-    return R.layout.mtrl_fabs;
+    return R.layout.m3_fabs;
   }
 
   @LayoutRes
   protected int getThemeFabLayoutResId() {
-    return R.layout.theme_fab;
+    return R.layout.m3_theme_fab;
   }
 }

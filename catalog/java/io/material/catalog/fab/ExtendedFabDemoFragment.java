@@ -93,6 +93,6 @@ public class ExtendedFabDemoFragment extends DemoFragment {
 
   @LayoutRes
   protected int getExtendedFabContent() {
-    return R.layout.mtrl_extended_fabs;
+    return R.layout.m3_extended_fabs;
   }
 }
