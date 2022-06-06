@@ -48,7 +48,7 @@ public class ForegroundLinearLayout extends LinearLayoutCompat {
 
   protected boolean mForegroundInPadding = true;
 
-  boolean foregroundBoundsChanged = false;
+  boolean foregroundBoundsChanged = true;
 
   public ForegroundLinearLayout(@NonNull Context context) {
     this(context, null);
@@ -157,6 +157,7 @@ public class ForegroundLinearLayout extends LinearLayoutCompat {
       }
 
       foreground = drawable;
+      foregroundBoundsChanged = true;
 
       if (drawable != null) {
         setWillNotDraw(false);
