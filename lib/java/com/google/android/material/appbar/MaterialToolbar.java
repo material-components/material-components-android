@@ -287,6 +287,22 @@ public class MaterialToolbar extends Toolbar {
   }
 
   /**
+   * Clears the tint list of the toolbar's navigation icon. E.g., if the navigation icon is an XML
+   * based vector drawable, calling this method will clear the {@code android:tint}.
+   *
+   * @see #setNavigationIconTint(int)
+   */
+  public void clearNavigationIconTint() {
+    this.navigationIconTint = null;
+    Drawable navigationIcon = getNavigationIcon();
+    if (navigationIcon != null) {
+      Drawable wrappedNavigationIcon = DrawableCompat.wrap(navigationIcon.mutate());
+      DrawableCompat.setTintList(wrappedNavigationIcon, null);
+      setNavigationIcon(navigationIcon);
+    }
+  }
+
+  /**
    * Gets the tint color of the toolbar's navigation icon, or null if no tint color has been set.
    *
    * @see #setNavigationIconTint(int)
