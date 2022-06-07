@@ -146,6 +146,8 @@
     <item name="rippleColor">@color/m3_button_ripple_color_selector</item>
     <item name="shapeAppearance">?attr/shapeAppearanceCornerLarge</item>
     <item name="shapeAppearanceOverlay">@null</item>
+    <item name="showMotionSpec">@animator/m3_extended_fab_show_motion_spec</item>
+    <item name="hideMotionSpec">@animator/m3_extended_fab_hide_motion_spec</item>
   </style>
 
   <style name="Base.Widget.Material3.ExtendedFloatingActionButton.Icon" parent="Base.Widget.Material3.ExtendedFloatingActionButton">
