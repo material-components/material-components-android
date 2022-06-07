@@ -19,6 +19,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
+  <com.google.android.material.checkbox.MaterialCheckBox
+    android:id="@+id/test_checkbox"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"/>
+
   <CheckBox
       android:id="@+id/test_checkbox_android_button_tint"
       android:layout_width="wrap_content"

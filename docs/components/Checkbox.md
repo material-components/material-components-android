@@ -35,6 +35,13 @@ Material Components for Android library. For more information, go to the
 [Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
 page.
 
+```xml
+<CheckBox
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/label"/>
+```
+
 **Note:** `<CheckBox>` is auto-inflated as
 `<com.google.android.material.button.MaterialCheckBox>` via
 `MaterialComponentsViewInflater` when using a `Theme.Material3.*`
@@ -46,6 +53,33 @@ Checkboxes support content labeling for accessibility and are readable by most
 screen readers, such as TalkBack. Text rendered in check boxes is automatically
 provided to accessibility services. Additional content labels are usually
 unnecessary.
+
+### Setting the error state on checkbox
+
+In the layout:
+
+```xml
+<CheckBox
+    ...
+    app:errorShown="true"/>
+```
+
+In code:
+
+```kt
+// Set error.
+checkbox.errorShown = true
+
+// Optional listener:
+checkbox.addOnErrorChangedListener { checkBox, errorShown ->
+    // Responds to when the checkbox enters/leaves error state
+  }
+}
+
+// To set a custom accessibility label:
+checkbox.errorAccessibilityLabel = "Error: custom error announcement."
+
+```
 
 ## Checkbox
 
@@ -75,24 +109,24 @@ In the layout:
 ```xml
 <CheckBox
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:checked="true"
     android:text="@string/label_1"/>
 <CheckBox
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:text="@string/label_2"/>
 <CheckBox
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:text="@string/label_3"/>
 <CheckBox
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:text="@string/label_4"/>
 <CheckBox
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:enabled="false"
     android:text="@string/label_5"/>
 ```

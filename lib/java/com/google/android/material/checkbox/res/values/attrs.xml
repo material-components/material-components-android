@@ -26,5 +26,18 @@
     <!-- Whether the MaterialCheckBox button drawable (checkbox icon) will be
          centered when there is no text set for the checkbox. Default is true. -->
     <attr name="centerIfNoTextEnabled" format="boolean"/>
+    <!-- Whether the checkbox should be in the error state. If true, it'll be
+         tinted with the error color. -->
+    <attr name="errorShown" format="boolean"/>
+    <!-- The error accessibility label that is announced by screen readers when
+         the checkbox is in the error state. -->
+    <attr name="errorAccessibilityLabel" format="string"/>
+  </declare-styleable>
+
+  <declare-styleable name="MaterialCheckBoxStates">
+    <!-- Error state of the checkbox. Behaves as part of existing states; a
+         checkbox is always one of checked/unchecked and can also be on error or
+         not. -->
+    <attr name="state_error" format="boolean"/>
   </declare-styleable>
 </resources>

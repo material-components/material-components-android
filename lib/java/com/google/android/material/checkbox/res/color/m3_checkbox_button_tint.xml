@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2021 The Android Open Source Project
+  ~ Copyright (C) 2022 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -14,13 +14,17 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+  <!-- Disabled -->
+  <item android:alpha="@dimen/material_emphasis_disabled" android:color="?attr/colorOnSurface" android:state_enabled="false"/>
 
-<!-- Definitions of attributes to be exposed as public -->
-<resources>
-  <public name="Widget.Material3.CompoundButton.CheckBox" type="style"/>
+  <!-- Error -->
+  <item android:color="?attr/colorError" app:state_error="true"/>
 
-  <public name="centerIfNoTextEnabled" type="attr"/>
-  <public name="errorShown" type="attr"/>
-  <public name="errorAccessibilityLabel" type="attr"/>
-  <public name="state_error" type="attr"/>
-</resources>
+  <!-- Checked -->
+  <item android:color="?attr/colorPrimary" android:state_checked="true"/>
+
+  <!-- Unchecked -->
+  <item android:color="?attr/colorOnSurface" android:state_checked="false"/>
+</selector>

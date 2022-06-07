@@ -29,13 +29,17 @@ import android.graphics.drawable.Drawable;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.accessibility.AccessibilityNodeInfo;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.widget.CompoundButtonCompat;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialResources;
+import java.util.LinkedHashSet;
 
 /**
  * A class that creates a Material Themed CheckBox.
@@ -49,16 +53,36 @@ public class MaterialCheckBox extends AppCompatCheckBox {
 
   private static final int DEF_STYLE_RES =
       R.style.Widget_MaterialComponents_CompoundButton_CheckBox;
-  private static final int[][] ENABLED_CHECKED_STATES =
+  private static final int[] ERROR_STATE_SET = {R.attr.state_error};
+  private static final int[][] CHECKBOX_STATES =
       new int[][] {
-        new int[] {android.R.attr.state_enabled, android.R.attr.state_checked}, // [0]
-        new int[] {android.R.attr.state_enabled, -android.R.attr.state_checked}, // [1]
-        new int[] {-android.R.attr.state_enabled, android.R.attr.state_checked}, // [2]
-        new int[] {-android.R.attr.state_enabled, -android.R.attr.state_checked} // [3]
+        new int[] {android.R.attr.state_enabled, R.attr.state_error}, // [0]
+        new int[] {android.R.attr.state_enabled, android.R.attr.state_checked}, // [1]
+        new int[] {android.R.attr.state_enabled, -android.R.attr.state_checked}, // [2]
+        new int[] {-android.R.attr.state_enabled, android.R.attr.state_checked}, // [3]
+        new int[] {-android.R.attr.state_enabled, -android.R.attr.state_checked} // [4]
       };
+  @NonNull private final LinkedHashSet<OnErrorChangedListener> onErrorChangedListeners =
+      new LinkedHashSet<>();
   @Nullable private ColorStateList materialThemeColorsTintList;
   private boolean useMaterialThemeColors;
   private boolean centerIfNoTextEnabled;
+  private boolean errorShown;
+  private CharSequence errorAccessibilityLabel;
+
+  /**
+   * Callback interface invoked when the checkbox error state changes.
+   */
+  public interface OnErrorChangedListener {
+
+    /**
+     * Called when the error state of a checkbox changes.
+     *
+     * @param checkBox the {@link MaterialCheckBox}
+     * @param errorShown whether the checkbox is on error
+     */
+    void onErrorChanged(@NonNull MaterialCheckBox checkBox, boolean errorShown);
+  }
 
   public MaterialCheckBox(Context context) {
     this(context, null);
@@ -90,6 +114,9 @@ public class MaterialCheckBox extends AppCompatCheckBox {
         attributes.getBoolean(R.styleable.MaterialCheckBox_useMaterialThemeColors, false);
     centerIfNoTextEnabled =
         attributes.getBoolean(R.styleable.MaterialCheckBox_centerIfNoTextEnabled, true);
+    errorShown = attributes.getBoolean(R.styleable.MaterialCheckBox_errorShown, false);
+    errorAccessibilityLabel =
+        attributes.getText(R.styleable.MaterialCheckBox_errorAccessibilityLabel);
 
     attributes.recycle();
   }
@@ -130,6 +157,121 @@ public class MaterialCheckBox extends AppCompatCheckBox {
     }
   }
 
+  @Override
+  protected int[] onCreateDrawableState(int extraSpace) {
+    final int[] drawableStates = super.onCreateDrawableState(extraSpace + 1);
+
+    if (isErrorShown()) {
+      mergeDrawableStates(drawableStates, ERROR_STATE_SET);
+    }
+
+    return drawableStates;
+  }
+
+  @Override
+  public void onInitializeAccessibilityNodeInfo(@Nullable AccessibilityNodeInfo info) {
+    super.onInitializeAccessibilityNodeInfo(info);
+    if (info == null) {
+      return;
+    }
+
+    if (isErrorShown()) {
+      info.setText(info.getText() + ", " + errorAccessibilityLabel);
+    }
+  }
+
+  /**
+   * Sets whether the checkbox should be on error state. If true, the error color will be applied to
+   * the checkbox.
+   *
+   * @param errorShown whether the checkbox should be on error state.
+   * @see #isErrorShown()
+   * @attr ref com.google.android.material.R.styleable#MaterialCheckBox_errorShown
+   */
+  public void setErrorShown(boolean errorShown) {
+    if (this.errorShown == errorShown) {
+      return;
+    }
+    this.errorShown = errorShown;
+    refreshDrawableState();
+    for (OnErrorChangedListener listener : onErrorChangedListeners) {
+      listener.onErrorChanged(this, this.errorShown);
+    }
+  }
+
+  /**
+   * Returns whether the checkbox is on error state.
+   *
+   * @see #setErrorShown(boolean)
+   * @attr ref com.google.android.material.R.styleable#MaterialCheckBox_errorShown
+   */
+  public boolean isErrorShown() {
+    return errorShown;
+  }
+
+  /**
+   * Sets the accessibility label to be used for the error state announcement by screen readers.
+   *
+   * @param resId resource ID of the error announcement text
+   * @see #setErrorShown(boolean)
+   * @see #getErrorAccessibilityLabel()
+   * @attr ref com.google.android.material.R.styleable#MaterialCheckBox_errorAccessibilityLabel
+   */
+  public void setErrorAccessibilityLabelResource(@StringRes int resId) {
+    setErrorAccessibilityLabel(resId != 0 ? getResources().getText(resId) : null);
+  }
+
+  /**
+   * Sets the accessibility label to be used for the error state announcement by screen readers.
+   *
+   * @param errorAccessibilityLabel the error announcement
+   * @see #setErrorShown(boolean)
+   * @see #getErrorAccessibilityLabel()
+   * @attr ref com.google.android.material.R.styleable#MaterialCheckBox_errorAccessibilityLabel
+   */
+  public void setErrorAccessibilityLabel(@Nullable CharSequence errorAccessibilityLabel) {
+    this.errorAccessibilityLabel = errorAccessibilityLabel;
+  }
+
+  /**
+   * Returns the accessibility label used for the error state announcement.
+   *
+   * @see #setErrorAccessibilityLabel(CharSequence)
+   * @attr ref com.google.android.material.R.styleable#MaterialCheckBox_errorAccessibilityLabel
+   */
+  @Nullable
+  public CharSequence getErrorAccessibilityLabel() {
+    return errorAccessibilityLabel;
+  }
+
+  /**
+   * Adds a {@link OnErrorChangedListener} that will be invoked when the checkbox error state
+   * changes.
+   *
+   * <p>Components that add a listener should take care to remove it when finished via {@link
+   * #removeOnErrorChangedListener(OnErrorChangedListener)}.
+   *
+   * @param listener listener to add
+   */
+  public void addOnErrorChangedListener(@NonNull OnErrorChangedListener listener) {
+    onErrorChangedListeners.add(listener);
+  }
+
+  /**
+   * Remove a listener that was previously added via {@link
+   * #addOnErrorChangedListener(OnErrorChangedListener)}
+   *
+   * @param listener listener to remove
+   */
+  public void removeOnErrorChangedListener(@NonNull OnErrorChangedListener listener) {
+    onErrorChangedListeners.remove(listener);
+  }
+
+  /** Remove all previously added {@link OnErrorChangedListener}s. */
+  public void clearOnErrorChangedListeners() {
+    onErrorChangedListeners.clear();
+  }
+
   /**
    * Forces the {@link MaterialCheckBox} to use colors from a Material Theme. Overrides any
    * specified ButtonTintList. If set to false, sets the tints to null. Use {@link
@@ -167,21 +309,24 @@ public class MaterialCheckBox extends AppCompatCheckBox {
 
   private ColorStateList getMaterialThemeColorsTintList() {
     if (materialThemeColorsTintList == null) {
-      int[] checkBoxColorsList = new int[ENABLED_CHECKED_STATES.length];
+      int[] checkBoxColorsList = new int[CHECKBOX_STATES.length];
       int colorControlActivated = MaterialColors.getColor(this, R.attr.colorControlActivated);
+      int colorError = MaterialColors.getColor(this, R.attr.colorError);
       int colorSurface = MaterialColors.getColor(this, R.attr.colorSurface);
       int colorOnSurface = MaterialColors.getColor(this, R.attr.colorOnSurface);
 
       checkBoxColorsList[0] =
-          MaterialColors.layer(colorSurface, colorControlActivated, MaterialColors.ALPHA_FULL);
+          MaterialColors.layer(colorSurface, colorError, MaterialColors.ALPHA_FULL);
       checkBoxColorsList[1] =
-          MaterialColors.layer(colorSurface, colorOnSurface, MaterialColors.ALPHA_MEDIUM);
+          MaterialColors.layer(colorSurface, colorControlActivated, MaterialColors.ALPHA_FULL);
       checkBoxColorsList[2] =
-          MaterialColors.layer(colorSurface, colorOnSurface, MaterialColors.ALPHA_DISABLED);
+          MaterialColors.layer(colorSurface, colorOnSurface, MaterialColors.ALPHA_MEDIUM);
       checkBoxColorsList[3] =
           MaterialColors.layer(colorSurface, colorOnSurface, MaterialColors.ALPHA_DISABLED);
+      checkBoxColorsList[4] =
+          MaterialColors.layer(colorSurface, colorOnSurface, MaterialColors.ALPHA_DISABLED);
 
-      materialThemeColorsTintList = new ColorStateList(ENABLED_CHECKED_STATES, checkBoxColorsList);
+      materialThemeColorsTintList = new ColorStateList(CHECKBOX_STATES, checkBoxColorsList);
     }
     return materialThemeColorsTintList;
   }

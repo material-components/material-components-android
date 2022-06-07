@@ -26,7 +26,8 @@
   <style name="Base.Widget.Material3.CompoundButton.CheckBox" parent="Widget.MaterialComponents.CompoundButton.CheckBox">
     <!-- Inherit default text color since the component doesn't draw a surface. -->
     <item name="android:textAppearance">?attr/textAppearanceBodyMedium</item>
-    <item name="buttonTint">@color/m3_selection_control_button_tint</item>
+    <item name="buttonTint">@color/m3_checkbox_button_tint</item>
+    <item name="errorAccessibilityLabel">@string/error_a11y_label</item>
   </style>
 
   <style name="Widget.Material3.CompoundButton.CheckBox" parent="Base.Widget.Material3.CompoundButton.CheckBox" />

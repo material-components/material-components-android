@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2021 The Android Open Source Project
+  ~ Copyright (C) 2022 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -14,13 +14,9 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-
-<!-- Definitions of attributes to be exposed as public -->
 <resources>
-  <public name="Widget.Material3.CompoundButton.CheckBox" type="style"/>
-
-  <public name="centerIfNoTextEnabled" type="attr"/>
-  <public name="errorShown" type="attr"/>
-  <public name="errorAccessibilityLabel" type="attr"/>
-  <public name="state_error" type="attr"/>
+  <!-- Following the "Error: <error message>" pattern of the edit text. -->
+  <string name="error_a11y_label" description="Screen reader announcement for when a checkbox is on error. [CHAR LIMIT=NONE]">
+    Error: invalid
+  </string>
 </resources>
