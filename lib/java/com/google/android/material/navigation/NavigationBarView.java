@@ -27,8 +27,6 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.RippleDrawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
@@ -60,7 +58,6 @@ import androidx.customview.view.AbsSavedState;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.resources.MaterialResources;
-import com.google.android.material.ripple.RippleUtils;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.MaterialShapeUtils;
 import com.google.android.material.shape.ShapeAppearanceModel;
@@ -128,7 +125,6 @@ public abstract class NavigationBarView extends FrameLayout {
   @NonNull private final NavigationBarMenu menu;
   @NonNull private final NavigationBarMenuView menuView;
   @NonNull private final NavigationBarPresenter presenter = new NavigationBarPresenter();
-  @Nullable private ColorStateList itemRippleColor;
   private MenuInflater menuInflater;
 
   private OnItemSelectedListener selectedListener;
@@ -490,7 +486,6 @@ public abstract class NavigationBarView extends FrameLayout {
    */
   public void setItemBackgroundResource(@DrawableRes int resId) {
     menuView.setItemBackgroundRes(resId);
-    itemRippleColor = null;
   }
 
   /**
@@ -515,7 +510,6 @@ public abstract class NavigationBarView extends FrameLayout {
    */
   public void setItemBackground(@Nullable Drawable background) {
     menuView.setItemBackground(background);
-    itemRippleColor = null;
   }
 
   /**
@@ -527,7 +521,7 @@ public abstract class NavigationBarView extends FrameLayout {
    */
   @Nullable
   public ColorStateList getItemRippleColor() {
-    return itemRippleColor;
+    return menuView.getItemRippleColor();
   }
 
   /**
@@ -539,33 +533,7 @@ public abstract class NavigationBarView extends FrameLayout {
    * @attr ref R.styleable#BottomNavigationView_itemRippleColor
    */
   public void setItemRippleColor(@Nullable ColorStateList itemRippleColor) {
-    if (this.itemRippleColor == itemRippleColor) {
-      // Clear the item background when setItemRippleColor(null) is called for consistency.
-      if (itemRippleColor == null && menuView.getItemBackground() != null) {
-        menuView.setItemBackground(null);
-      }
-      return;
-    }
-
-    this.itemRippleColor = itemRippleColor;
-    if (itemRippleColor == null) {
-      menuView.setItemBackground(null);
-    } else {
-      ColorStateList rippleDrawableColor =
-          RippleUtils.convertToRippleDrawableColor(itemRippleColor);
-      if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-        menuView.setItemBackground(new RippleDrawable(rippleDrawableColor, null, null));
-      } else {
-        GradientDrawable rippleDrawable = new GradientDrawable();
-        // TODO: Find a workaround for this. Currently on certain devices/versions, LayerDrawable
-        // will draw a black background underneath any layer with a non-opaque color,
-        // (e.g. ripple) unless we set the shape to be something that's not a perfect rectangle.
-        rippleDrawable.setCornerRadius(0.00001F);
-        Drawable rippleDrawableCompat = DrawableCompat.wrap(rippleDrawable);
-        DrawableCompat.setTintList(rippleDrawableCompat, rippleDrawableColor);
-        menuView.setItemBackground(rippleDrawableCompat);
-      }
-    }
+    menuView.setItemRippleColor(itemRippleColor);
   }
 
   /**

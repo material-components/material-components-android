@@ -27,6 +27,8 @@ import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.RippleDrawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.appcompat.view.menu.MenuItemImpl;
@@ -37,6 +39,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityNodeInfo;
@@ -65,6 +68,7 @@ import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.badge.BadgeUtils;
 import com.google.android.material.motion.MotionUtils;
 import com.google.android.material.resources.MaterialResources;
+import com.google.android.material.ripple.RippleUtils;
 
 /**
  * Provides a view that will be used to render destination items inside a {@link
@@ -78,6 +82,8 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
   private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
 
   private boolean initialized = false;
+  private ColorStateList itemRippleColor;
+  @Nullable Drawable itemBackground;
   private int itemPaddingTop;
   private int itemPaddingBottom;
   private float shiftAmount;
@@ -672,7 +678,82 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
     if (background != null && background.getConstantState() != null) {
       background = background.getConstantState().newDrawable().mutate();
     }
-    ViewCompat.setBackground(this, background);
+    this.itemBackground = background;
+    refreshItemBackground();
+  }
+
+  public void setItemRippleColor(@Nullable ColorStateList itemRippleColor) {
+    this.itemRippleColor = itemRippleColor;
+    refreshItemBackground();
+  }
+
+  /**
+   * Update this item's ripple behavior given the current configuration.
+   *
+   * <p>If an active indicator is being used, a ripple is added to the active indicator. Otherwise,
+   * if a custom background has not been set, a default background that works across all API levels
+   * is created and set.
+   */
+  private void refreshItemBackground() {
+    Drawable iconContainerBackgroundDrawable = null;
+    Drawable itemBackgroundDrawable = itemBackground;
+    boolean defaultHighlightEnabled = true;
+
+    if (itemRippleColor != null) {
+      Drawable maskDrawable = getActiveIndicatorDrawable();
+      if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP
+          && activeIndicatorEnabled
+          && getActiveIndicatorDrawable() != null
+          && iconContainer != null
+          && maskDrawable != null) {
+
+        // Remove the default focus highlight that highlights the entire view and rely on the
+        // active indicator ripple to communicate state.
+        defaultHighlightEnabled = false;
+        // Set the icon container's background to a ripple masked by the active indicator's
+        // drawable.
+        iconContainerBackgroundDrawable =
+            new RippleDrawable(
+                RippleUtils.sanitizeRippleDrawableColor(itemRippleColor), null, maskDrawable);
+      } else if (itemBackgroundDrawable == null) {
+        // If there has not been a custom background set, use a fallback item background to display
+        // state over the entire item.
+        itemBackgroundDrawable = createItemBackgroundCompat(itemRippleColor);
+      }
+    }
+    // Check that this item includes an icon container. If a NavigationBarView's subclass supplies
+    // a custom item layout, this can be null.
+    if (iconContainer != null) {
+      ViewCompat.setBackground(iconContainer, iconContainerBackgroundDrawable);
+    }
+    ViewCompat.setBackground(this, itemBackgroundDrawable);
+    if (VERSION.SDK_INT >= VERSION_CODES.O) {
+      setDefaultFocusHighlightEnabled(defaultHighlightEnabled);
+    }
+  }
+
+  /**
+   * Create a {@link Drawable} to be used as this item's background when a an active indicator is
+   * not in use or a custom item background has not been set.
+   *
+   * @return a {@link Drawable} that can be used as a background and display state.
+   */
+  private static Drawable createItemBackgroundCompat(@NonNull ColorStateList rippleColor) {
+    ColorStateList rippleDrawableColor = RippleUtils.convertToRippleDrawableColor(rippleColor);
+    Drawable backgroundDrawable;
+    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+      backgroundDrawable = new RippleDrawable(rippleDrawableColor, null, null);
+    } else {
+      GradientDrawable rippleDrawable = new GradientDrawable();
+      // TODO: Find a workaround for this. Currently on certain devices/versions, LayerDrawable
+      // will draw a black background underneath any layer with a non-opaque color,
+      // (e.g. ripple) unless we set the shape to be something that's not a perfect rectangle.
+      rippleDrawable.setCornerRadius(0.00001F);
+      Drawable rippleDrawableCompat = DrawableCompat.wrap(rippleDrawable);
+      DrawableCompat.setTintList(rippleDrawableCompat, rippleDrawableColor);
+      backgroundDrawable = rippleDrawableCompat;
+    }
+    return backgroundDrawable;
   }
 
   /**
@@ -696,6 +777,7 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
   /** Set whether or not this item should show an active indicator when checked. */
   public void setActiveIndicatorEnabled(boolean enabled) {
     this.activeIndicatorEnabled = enabled;
+    refreshItemBackground();
     if (activeIndicatorView != null) {
       activeIndicatorView.setVisibility(enabled ? View.VISIBLE : View.GONE);
       requestLayout();
@@ -786,6 +868,16 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
     }
 
     activeIndicatorView.setBackgroundDrawable(activeIndicatorDrawable);
+    refreshItemBackground();
+  }
+
+  @Override
+  public boolean dispatchTouchEvent(MotionEvent ev) {
+    // Pass touch events through to the icon container so the active indicator ripple can be shown.
+    if (iconContainer != null && activeIndicatorEnabled) {
+      iconContainer.dispatchTouchEvent(ev);
+    }
+    return super.dispatchTouchEvent(ev);
   }
 
   /** Set whether the indicator can be automatically resized. */

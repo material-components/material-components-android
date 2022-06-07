@@ -90,6 +90,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
   @StyleRes private int itemTextAppearanceInactive;
   @StyleRes private int itemTextAppearanceActive;
   private Drawable itemBackground;
+  @Nullable private ColorStateList itemRippleColor;
   private int itemBackgroundRes;
   @NonNull private final SparseArray<BadgeDrawable> badgeDrawables =
       new SparseArray<>(ITEM_POOL_SIZE);
@@ -563,6 +564,32 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
   }
 
   /**
+   * Sets the color of the item's ripple.
+   *
+   * This will only be used if there is not a custom background set on the item.
+   *
+   * @param itemRippleColor the color of the ripple
+   */
+  public void setItemRippleColor(@Nullable ColorStateList itemRippleColor) {
+    this.itemRippleColor = itemRippleColor;
+    if (buttons != null) {
+      for (NavigationBarItemView item : buttons) {
+        item.setItemRippleColor(itemRippleColor);
+      }
+    }
+  }
+
+  /**
+   * Returns the color to be used for the items ripple.
+   *
+   * @return the color for the items ripple
+   */
+  @Nullable
+  public ColorStateList getItemRippleColor() {
+    return itemRippleColor;
+  }
+
+  /**
    * Returns the drawable for the background of the menu items.
    *
    * @return the drawable for the background
@@ -701,6 +728,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
       } else {
         child.setItemBackground(itemBackgroundRes);
       }
+      child.setItemRippleColor(itemRippleColor);
       child.setShifting(shifting);
       child.setLabelVisibilityMode(labelVisibilityMode);
       MenuItemImpl item = (MenuItemImpl) menu.getItem(i);
