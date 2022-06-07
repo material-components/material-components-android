@@ -198,6 +198,19 @@ specifying any of these to true on the view:
 
 On API 21 and above the modal bottom sheet will be rendered fullscreen (edge to
 edge) if the navigation bar is transparent and `app:enableEdgeToEdge` is true.
+To enable edge-to-edge by default for modal bottom sheets, you can override
+`?attr/bottomSheetDialogTheme` like the below example:
+
+```
+<style name="AppTheme" parent="Theme.Material3.*">
+  ...
+  <item name="bottomSheetDialogTheme">@style/ThemeOverlay.App.BottomSheetDialog</item>
+</style>
+
+<style name="ThemeOverlay.App.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
+    <item name="android:navigationBarColor" tools:ignore="NewApi">@android:color/transparent</item>
+</style>
+```
 
 Insets can be added automatically if any of the padding attributes above are set
 to true in the style, either by updating the style passed to the constructor, or
