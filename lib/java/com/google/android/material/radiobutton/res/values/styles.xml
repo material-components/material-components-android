@@ -26,7 +26,7 @@
   <style name="Base.Widget.Material3.CompoundButton.RadioButton" parent="Widget.MaterialComponents.CompoundButton.RadioButton">
     <!-- Inherit default text color since the component doesn't draw a surface. -->
     <item name="android:textAppearance">?attr/textAppearanceBodyMedium</item>
-    <item name="buttonTint">@color/m3_selection_control_button_tint</item>
+    <item name="buttonTint">@color/m3_radiobutton_button_tint</item>
   </style>
 
   <style name="Widget.Material3.CompoundButton.RadioButton" parent="Base.Widget.Material3.CompoundButton.RadioButton"/>

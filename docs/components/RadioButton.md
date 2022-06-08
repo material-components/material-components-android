@@ -135,7 +135,7 @@ radioButton.setOnCheckedChangeListener { buttonView, isChecked
 Element                    | Attribute                                  | Related method(s)                                          | Default value
 -------------------------- | ------------------------------------------ | ---------------------------------------------------------- | -------------
 **To use material colors** | `app:useMaterialThemeColors`               | `setUseMaterialThemeColors`<br/>`isUseMaterialThemeColors` | `true` (ignored if `app:buttonTint` is set)
-**Color**                  | `app:buttonTint`                           | `setButtonTintList`<br/>`getButtonTintList`                | `?attr/colorOnSurface` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/color/res/color/m3_selection_control_button_tint.xml))
+**Color**                  | `app:buttonTint`                           | `setButtonTintList`<br/>`getButtonTintList`                | `?attr/colorOnSurface` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/radiobutton/res/color/m3_radiobutton_button_tint.xml))
 **Min size**               | `android:minWidth`<br/>`android:minHeight` | `(set/get)MinWidth`<br/>`(set/get)MinHeight`               | `?attr/minTouchTargetSize`
 
 The color of the radio button defaults to `?attr/colorOnSurface` (unchecked) and
