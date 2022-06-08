@@ -97,6 +97,8 @@
     <!-- Ripple color for the button. This may be a color state list, if the desired ripple color
          should be stateful. Attribute type definition is in resources package. -->
     <attr name="rippleColor"/>
+    <!-- Whether the button toggles the checked state when clicked. -->
+    <attr name="toggleCheckedStateOnClick" format="boolean"/>
   </declare-styleable>
 
   <declare-styleable name="MaterialButtonToggleGroup">

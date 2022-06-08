@@ -1212,9 +1212,31 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
   @Override
   public boolean performClick() {
-    toggle();
+    if (materialButtonHelper.isToggleCheckedStateOnClick()) {
+      toggle();
+    }
 
     return super.performClick();
+  }
+
+  /**
+   * Returns whether or not clicking the button will toggle the checked state.
+   *
+   * @see #setToggleCheckedStateOnClick(boolean)
+   * @attr ref R.styleable#toggleCheckedStateOnClick
+   */
+  public boolean isToggleCheckedStateOnClick() {
+    return materialButtonHelper.isToggleCheckedStateOnClick();
+  }
+
+  /**
+   * Sets whether or not to toggle the button checked state on click.
+   *
+   * @param toggleCheckedStateOnClick whether or not to toggle the checked state on click.
+   * @attr ref R.styleable#toggleCheckedStateOnClick
+   */
+  public void setToggleCheckedStateOnClick(boolean toggleCheckedStateOnClick) {
+    materialButtonHelper.setToggleCheckedStateOnClick(toggleCheckedStateOnClick);
   }
 
   /**

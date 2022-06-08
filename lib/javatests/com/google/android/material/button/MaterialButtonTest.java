@@ -149,6 +149,40 @@ public class MaterialButtonTest {
   }
 
   @Test
+  public void checkedStateTogglesOnClick() {
+    MaterialButton materialButton = new MaterialButton(context);
+    materialButton.setCheckable(true);
+
+    materialButton.performClick();
+    assertThat(materialButton.isChecked()).isTrue();
+
+    materialButton.performClick();
+    assertThat(materialButton.isChecked()).isFalse();
+  }
+
+  @Test
+  public void togglingCheckedStateTogglesOnClick() {
+    MaterialButton materialButton = new MaterialButton(context);
+    materialButton.setCheckable(true);
+    assertThat(materialButton.isChecked()).isFalse();
+
+    materialButton.setToggleCheckedStateOnClick(false);
+    materialButton.performClick();
+    assertThat(materialButton.isChecked()).isFalse();
+  }
+
+  @Test
+  public void setToggleCheckedStateOnClick() {
+    MaterialButton materialButton = new MaterialButton(context);
+    materialButton.setCheckable(true);
+
+    assertThat(materialButton.isToggleCheckedStateOnClick()).isTrue();
+
+    materialButton.setToggleCheckedStateOnClick(false);
+    assertThat(materialButton.isToggleCheckedStateOnClick()).isFalse();
+  }
+
+  @Test
   @Config(minSdk = 23, maxSdk = 28)
   public void setIcon_iconNotUpdated_whenPositionChanged() {
     callCount = 0;
