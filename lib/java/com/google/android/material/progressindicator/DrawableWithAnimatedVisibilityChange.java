@@ -257,14 +257,23 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
     }
 
     ValueAnimator animatorInAction = visible ? showAnimator : hideAnimator;
+    ValueAnimator animatorNotInAction = visible ? hideAnimator : showAnimator;
 
     if (!animate) {
+      // Stops the irrelevant animation.
+      if (animatorNotInAction.isRunning()) {
+        // Don't trigger animation callbacks to maintain behavioral compatibility with
+        // earlier versions of the library.
+        cancelAnimatorsWithoutCallbacks(animatorNotInAction);
+      }
+
+      // Fast-forwards the relevant animation to the end state.
       if (animatorInAction.isRunning()) {
         animatorInAction.end();
       } else {
-        // Show/hide animation should fast-forward to the end without callbacks.
-        endAnimatorWithoutCallbacks(animatorInAction);
+        endAnimatorsWithoutCallbacks(animatorInAction);
       }
+
       // Immediately updates the drawable's visibility without animation if not desired.
       return super.setVisible(visible, DEFAULT_DRAWABLE_RESTART);
     }
@@ -281,7 +290,7 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
         visible ? baseSpec.isShowAnimationEnabled() : baseSpec.isHideAnimationEnabled();
     if (!specAnimationEnabled) {
       // If no animation enabled in spec, end the animator without callbacks.
-      endAnimatorWithoutCallbacks(animatorInAction);
+      endAnimatorsWithoutCallbacks(animatorInAction);
       return changed;
     }
 
@@ -294,7 +303,16 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
     return changed;
   }
 
-  private void endAnimatorWithoutCallbacks(@NonNull ValueAnimator... animators) {
+  private void cancelAnimatorsWithoutCallbacks(@NonNull ValueAnimator... animators) {
+    boolean ignoreCallbacksOrig = ignoreCallbacks;
+    ignoreCallbacks = true;
+    for (ValueAnimator animator : animators) {
+      animator.cancel();
+    }
+    ignoreCallbacks = ignoreCallbacksOrig;
+  }
+
+  private void endAnimatorsWithoutCallbacks(@NonNull ValueAnimator... animators) {
     boolean ignoreCallbacksOrig = ignoreCallbacks;
     ignoreCallbacks = true;
     for (ValueAnimator animator : animators) {
