@@ -15,8 +15,6 @@
   ~ limitations under the License.
 -->
 <resources>
-  <public name="additionalPaddingStartForIcon" type="attr"/>
-  <public name="additionalPaddingEndForIcon" type="attr"/>
   <public name="checkedButton" type="attr"/>
   <public name="cornerRadius" type="attr"/>
   <public name="icon" type="attr"/>
