@@ -26,7 +26,7 @@
   <string name="material_minute_selection">Chagua dakika</string>
   <string name="material_clock_toggle_content_description">Chagua AM au PM</string>
   <string name="mtrl_timepicker_confirm">Sawa</string>
-  <string name="mtrl_timepicker_cancel">Cancel</string>
+  <string name="mtrl_timepicker_cancel">Ghairi</string>
   <string name="material_timepicker_text_input_mode_description">Badilisha iwe katika hali ya maandishi wakati wa kuweka muda.</string>
   <string name="material_timepicker_clock_mode_description">Badilisha umbo liwe la saa ya mishale wakati wa kuweka muda.</string>
 </resources>

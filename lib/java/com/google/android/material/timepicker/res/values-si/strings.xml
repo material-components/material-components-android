@@ -26,7 +26,7 @@
   <string name="material_minute_selection">මිනිත්තු තෝරන්න</string>
   <string name="material_clock_toggle_content_description">පෙරවරු හෝ පස්වරු තෝරන්න</string>
   <string name="mtrl_timepicker_confirm">හරි</string>
-  <string name="mtrl_timepicker_cancel">Cancel</string>
+  <string name="mtrl_timepicker_cancel">අවලංගු කරන්න</string>
   <string name="material_timepicker_text_input_mode_description">වේලා ආදානය සඳහා ආදාන ප්‍රකාරය වෙත මාරු වෙන්න.</string>
   <string name="material_timepicker_clock_mode_description">වේලා ආදානය සඳහා ඔරලෝසු ප්‍රකාරය වෙත මාරු වෙන්න.</string>
 </resources>

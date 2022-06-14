@@ -26,7 +26,7 @@
   <string name="material_minute_selection">Dakikayı seçin</string>
   <string name="material_clock_toggle_content_description">ÖÖ veya ÖS\'yi seçin</string>
   <string name="mtrl_timepicker_confirm">Tamam</string>
-  <string name="mtrl_timepicker_cancel">Cancel</string>
+  <string name="mtrl_timepicker_cancel">İptal</string>
   <string name="material_timepicker_text_input_mode_description">Zaman girişi için metin girişi moduna geçin.</string>
   <string name="material_timepicker_clock_mode_description">Zaman girişi için saat moduna geçin.</string>
 </resources>

@@ -26,7 +26,7 @@
   <string name="material_minute_selection">Angi minutter</string>
   <string name="material_clock_toggle_content_description">Velg AM eller PM</string>
   <string name="mtrl_timepicker_confirm">OK</string>
-  <string name="mtrl_timepicker_cancel">Cancel</string>
+  <string name="mtrl_timepicker_cancel">Avbryt</string>
   <string name="material_timepicker_text_input_mode_description">Bytt til tekstinndatamodus for tidsinndata.</string>
   <string name="material_timepicker_clock_mode_description">Bytt til klokkemodus for tidsinndata.</string>
 </resources>

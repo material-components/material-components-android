@@ -26,7 +26,7 @@
   <string name="material_minute_selection">मिनिटे निवडा</string>
   <string name="material_clock_toggle_content_description">AM किंवा PM निवडा</string>
   <string name="mtrl_timepicker_confirm">ओके</string>
-  <string name="mtrl_timepicker_cancel">Cancel</string>
+  <string name="mtrl_timepicker_cancel">रद्द करा</string>
   <string name="material_timepicker_text_input_mode_description">वेळ इनपुटसाठी मजकूर इनपुट मोडवर स्विच करा.</string>
   <string name="material_timepicker_clock_mode_description">वेळेच्या इनपुटसाठी घड्याळ मोडवर स्विच करा.</string>
 </resources>
