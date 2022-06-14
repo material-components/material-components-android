@@ -16,6 +16,8 @@
 
 package com.google.android.material.shape;
 
+import static java.lang.Math.min;
+
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Path;
@@ -132,9 +134,9 @@ public class ShapePath {
     operation.y = y;
     operations.add(operation);
 
+    // The previous endX and endY is the starting point for this shadow operation.
     LineShadowOperation shadowOperation = new LineShadowOperation(operation, getEndX(), getEndY());
 
-    // The previous endX and endY is the starting point for this shadow operation.
     addShadowCompatOperation(
         shadowOperation,
         ANGLE_UP + shadowOperation.getAngle(),
@@ -142,6 +144,46 @@ public class ShapePath {
 
     setEndX(x);
     setEndY(y);
+  }
+
+  /**
+   * Add two connected segments to the ShapePath. This is equivalent to call {@link #lineTo(float,
+   * float)} twice. If an inner corner is formed, this can also draw the compat shadow without
+   * overlapping.
+   */
+  public void lineTo(float x1, float y1, float x2, float y2) {
+    if ((Math.abs(x1 - getEndX()) < 0.001f && Math.abs(y1 - getEndY()) < 0.001f)
+        || (Math.abs(x1 - x2) < 0.001f && Math.abs(y1 - y2) < 0.001f)) {
+      lineTo(x2, y2);
+      return;
+    }
+    PathLineOperation operation1 = new PathLineOperation();
+    operation1.x = x1;
+    operation1.y = y1;
+    operations.add(operation1);
+    PathLineOperation operation2 = new PathLineOperation();
+    operation2.x = x2;
+    operation2.y = y2;
+    operations.add(operation2);
+
+    // The previous endX and endY is the starting point for this shadow operation.
+    InnerCornerShadowOperation shadowOperation =
+        new InnerCornerShadowOperation(operation1, operation2, getEndX(), getEndY());
+
+    if (shadowOperation.getSweepAngle() > 0) {
+      // If an outer corner is formed, add each segment separately.
+      lineTo(x1, y1);
+      lineTo(x2, y2);
+      return;
+    }
+
+    addShadowCompatOperation(
+        shadowOperation,
+        ANGLE_UP + shadowOperation.getStartAngle(),
+        ANGLE_UP + shadowOperation.getEndAngle());
+
+    setEndX(x2);
+    setEndY(y2);
   }
 
   /**
@@ -362,6 +404,7 @@ public class ShapePath {
   abstract static class ShadowCompatOperation {
 
     static final Matrix IDENTITY_MATRIX = new Matrix();
+    final Matrix renderMatrix = new Matrix();
 
     /** Draws the operation on the canvas */
     public final void draw(ShadowRenderer shadowRenderer, int shadowElevation, Canvas canvas) {
@@ -395,15 +438,104 @@ public class ShapePath {
       final float height = operation.y - startY;
       final float width = operation.x - startX;
       final RectF rect = new RectF(0, 0, (float) Math.hypot(height, width), 0);
-      final Matrix edgeTransform = new Matrix(transform);
       // transform & rotate the canvas so that the rect passed to drawEdgeShadow is horizontal.
-      edgeTransform.preTranslate(startX, startY);
-      edgeTransform.preRotate(getAngle());
-      shadowRenderer.drawEdgeShadow(canvas, edgeTransform, rect, shadowElevation);
+      renderMatrix.set(transform);
+      renderMatrix.preTranslate(startX, startY);
+      renderMatrix.preRotate(getAngle());
+      shadowRenderer.drawEdgeShadow(canvas, renderMatrix, rect, shadowElevation);
     }
 
     float getAngle() {
       return (float) Math.toDegrees(Math.atan((operation.y - startY) / (operation.x - startX)));
+    }
+  }
+
+  /**
+   * Sets up the correct shadow to be draw for two connected segments, which potentially contain an
+   * inner corner.
+   */
+  static class InnerCornerShadowOperation extends ShadowCompatOperation {
+
+    private final PathLineOperation operation1;
+    private final PathLineOperation operation2;
+    private final float startX;
+    private final float startY;
+
+    public InnerCornerShadowOperation(
+        PathLineOperation operation1, PathLineOperation operation2, float startX, float startY) {
+      this.operation1 = operation1;
+      this.operation2 = operation2;
+      this.startX = startX;
+      this.startY = startY;
+    }
+
+    @Override
+    public void draw(
+        Matrix transform, ShadowRenderer shadowRenderer, int shadowElevation, Canvas canvas) {
+      final float sweepAngle = getSweepAngle();
+      if (sweepAngle > 0) {
+        // An outer corner is formed, ignore.
+        return;
+      }
+
+      final double length1 = Math.hypot(operation1.x - startX, operation1.y - startY);
+      final double length2 = Math.hypot(operation2.x - operation1.x, operation2.y - operation1.y);
+      final float arcRadius = (float) min(shadowElevation, min(length1, length2));
+      final double retractLength = arcRadius * Math.tan(Math.toRadians(-sweepAngle / 2));
+      // Draws the retracted first line.
+      if (length1 > retractLength) {
+        final RectF rect1 = new RectF(0, 0, (float) (length1 - retractLength), 0);
+        renderMatrix.set(transform);
+        renderMatrix.preTranslate(startX, startY);
+        renderMatrix.preRotate(getStartAngle());
+        shadowRenderer.drawEdgeShadow(canvas, renderMatrix, rect1, shadowElevation);
+      }
+      // Draws the shadow connecting the lines.
+      final RectF rect = new RectF(0, 0, 2 * arcRadius, 2 * arcRadius);
+      renderMatrix.set(transform);
+      renderMatrix.preTranslate(operation1.x, operation1.y);
+      renderMatrix.preRotate(getStartAngle());
+      renderMatrix.preTranslate((float) (-retractLength - arcRadius), -2 * arcRadius);
+      shadowRenderer.drawInnerCornerShadow(
+          canvas,
+          renderMatrix,
+          rect,
+          (int) arcRadius,
+          ANGLE_UP + 180,
+          sweepAngle,
+          new float[] {(float) (arcRadius + retractLength), 2 * arcRadius});
+      // Draws the retracted second line.
+      if (length2 > retractLength) {
+        final RectF rect2 = new RectF(0, 0, (float) (length2 - retractLength), 0);
+        renderMatrix.set(transform);
+        renderMatrix.preTranslate(operation1.x, operation1.y);
+        renderMatrix.preRotate(getEndAngle());
+        renderMatrix.preTranslate((float) retractLength, 0);
+        shadowRenderer.drawEdgeShadow(canvas, renderMatrix, rect2, shadowElevation);
+      }
+    }
+
+    float getStartAngle() {
+      return (float) Math.toDegrees(Math.atan((operation1.y - startY) / (operation1.x - startX)));
+    }
+
+    float getEndAngle() {
+      return (float)
+          Math.toDegrees(Math.atan((operation2.y - operation1.y) / (operation2.x - operation1.x)));
+    }
+
+    /**
+     * Returns the sweep angle between the first line to the second line. The sweep angle is
+     * directional, i.e., when forming an outer angle, the sweep angle is positive; otherwise, it's
+     * negative.
+     */
+    float getSweepAngle() {
+      final float shadowAngle = (getEndAngle() - getStartAngle() + 360) % 360;
+      if (shadowAngle <= 180) {
+        return shadowAngle;
+      } else {
+        return shadowAngle - 360;
+      }
     }
   }
 

@@ -66,7 +66,7 @@ public class ShadowRenderer {
   private static final float[] cornerPositions = new float[] {0f, 0f, .5f, 1f};
 
   private final Path scratch = new Path();
-  private Paint transparentPaint = new Paint();
+  private final Paint transparentPaint = new Paint();
 
   public ShadowRenderer() {
     this(Color.BLACK);
@@ -160,13 +160,14 @@ public class ShadowRenderer {
     float midRatio = startRatio + ((1f - startRatio) / 2f);
     cornerPositions[1] = startRatio;
     cornerPositions[2] = midRatio;
-    RadialGradient shader = new RadialGradient(
-        bounds.centerX(),
-        bounds.centerY(),
-        radius,
-        cornerColors,
-        cornerPositions,
-        TileMode.CLAMP);
+    RadialGradient shader =
+        new RadialGradient(
+            bounds.centerX(),
+            bounds.centerY(),
+            radius,
+            cornerColors,
+            cornerPositions,
+            TileMode.CLAMP);
     cornerShadowPaint.setShader(shader);
     canvas.save();
     canvas.concat(matrix);
@@ -179,6 +180,36 @@ public class ShadowRenderer {
     }
 
     canvas.drawArc(bounds, startAngle, sweepAngle, true, cornerShadowPaint);
+    canvas.restore();
+  }
+
+  public void drawInnerCornerShadow(
+      @NonNull Canvas canvas,
+      @Nullable Matrix matrix,
+      @NonNull RectF bounds,
+      int elevation,
+      float startAngle,
+      float sweepAngle,
+      @NonNull float[] cornerPosition) {
+    // Draws the radial gradient corner shadow.
+    if (sweepAngle > 0) {
+      startAngle += sweepAngle;
+      sweepAngle = -sweepAngle;
+    }
+    drawCornerShadow(canvas, matrix, bounds, elevation, startAngle, sweepAngle);
+    // Draws the patched area between the corner and the arc.
+    Path shapeBounds = scratch;
+    shapeBounds.rewind();
+    shapeBounds.moveTo(cornerPosition[0], cornerPosition[1]);
+    shapeBounds.arcTo(bounds, startAngle, sweepAngle);
+    shapeBounds.close();
+
+    canvas.save();
+    canvas.concat(matrix);
+    canvas.scale(1, bounds.height() / bounds.width());
+
+    canvas.drawPath(shapeBounds, transparentPaint);
+    canvas.drawPath(shapeBounds, shadowPaint);
     canvas.restore();
   }
 
