@@ -21,8 +21,8 @@ of your app.
 
 ## Design & API documentation
 
--   [Material Design guidelines:
-    Shape](https://material.io/go/design-shape)
+-   [Material Design 3 guidelines:
+    Shape](https://m3.material.io/styles/shape/overview)
 
 ## How it works
 
@@ -52,20 +52,35 @@ can create deep copies of the corner and edge treatments.
 Components backed by `MaterialShapeDrawable`s can use themes across an
 application.
 
+#### Shape styles
+
+Style Name                                    | Description                           | Corner Sizes
+--------------------------------------------- | ------------------------------------- | ------------
+`ShapeAppearance.Material3.Corner.None`       | No corners (i.e., fully rectangular)  | 0dp
+`ShapeAppearance.Material3.Corner.ExtraSmall` | Shape with extra small corner size    | 4dp
+`ShapeAppearance.Material3.Corner.Small`      | Shape with small corner size          | 8dp
+`ShapeAppearance.Material3.Corner.Medium`     | Shape with medium corner size         | 12dp
+`ShapeAppearance.Material3.Corner.Large`      | Shape with large corner size          | 16dp
+`ShapeAppearance.Material3.Corner.ExtraLarge` | Shape with extra large corner size    | 28dp
+`ShapeAppearance.Material3.Corner.Full`       | Shape with full corner size </br> i.e., circle with rounded corners or rhombus with cut corners | 50%
+
+These are the shape styles providing the Material 3 shape scale. The shape
+families in these styles (i.e., `cornerFamily`) are mapped to the theme
+attribute `?attr/shapeCornerFamily`. See the section below for more details.
+
 #### Shape theme attributes
 
 Theme attributes can be set at the theme level to change the shape values that
 components use to set their shapes.
 
-**Note:** These theme attributes will be deprecated soon for Material 3. New
-theme attribtues will be added and components styles will be updated to
-reference them, according to the new shape system guidelines coming soon.
-
-Attribute Name                   | Description            | Default Value
--------------------------------- | ---------------------- | -------------
-`shapeAppearanceSmallComponent`  | Style reference that contains shape values that are used to style small components  | 4dp rounded
-`shapeAppearanceMediumComponent` | Style reference that contains shape values that are used to style medium components  | 8dp rounded
-`shapeAppearanceLargeComponent`  | Style reference that contains shape values that are used to style large components  | 8dp rounded
+Attribute Name                    | Description                                                                 | Default Value
+--------------------------------- | --------------------------------------------------------------------------- | ---------------------------------------------
+`shapeCornerFamily`               | The corner family for all shape appearance styles                           | `rounded`
+`shapeAppearanceCornerExtraSmall` | The style reference that contains shape appearance with extra small corners | `ShapeAppearance.Material3.Corner.ExtraSmall`
+`shapeAppearanceCornerSmall`      | The style reference that contains shape appearance with small corners       | `ShapeAppearance.Material3.Corner.Small`
+`shapeAppearanceCornerMedium`     | The style reference that contains shape appearance with medium corners      | `ShapeAppearance.Material3.Corner.Medium`
+`shapeAppearanceCornerLarge`      | The style reference that contains shape appearance with large corners       | `ShapeAppearance.Material3.Corner.Large`
+`shapeAppearanceCornerExtraLarge` | The style reference that contains shape appearance with extra large corners | `ShapeAppearance.Material3.Corner.ExtraLarge`
 
 Aside from defining these attributes in your theme, you likely will not need to
 reference these attributes at all; the widget styles are already mapped to the
@@ -73,6 +88,10 @@ appropriate theme attribute to create a seamless shape theming experience. To
 change individual shapes throughout your app, you should use the
 [shapeAppearance and shapeAppearanceOverlay](#shapeappearance-and-shapeappearanceoverlay-attributes)
 attributes rather than redefining theme level attributes.
+
+**Note**: There is no sanity check for the shape values mapped to these theme
+attributes. It is the developer's responsibility to guarantee the relative
+correctness, for example, "medium" is smaller than "large", etc.
 
 ## Usage
 
@@ -85,18 +104,18 @@ that define aspects of the shape. `ShapeAppearanceModel` uses the
 
 The following attributes can be used in a `shapeAppearance` style:
 
-Attribute Name            | Format    | Description      | Supported Values
-------------------------- | --------- | ---------------- | ----------------
-`cornerFamily`            | enum      | corner family to be used for all four corners | rounded, cut
-`cornerFamilyTopLeft`     | enum      | corner family to be used for the top left corner | rounded, cut
-`cornerFamilyTopRight`    | enum      | corner family to be used for the top right corner | rounded, cut
+Attribute Name            | Format    | Description                                          | Supported Values
+------------------------- | --------- | ---------------------------------------------------- | ----------------
+`cornerFamily`            | enum      | corner family to be used for all four corners        | rounded, cut
+`cornerFamilyTopLeft`     | enum      | corner family to be used for the top left corner     | rounded, cut
+`cornerFamilyTopRight`    | enum      | corner family to be used for the top right corner    | rounded, cut
 `cornerFamilyBottomRight` | enum      | corner family to be used for the bottom right corner | rounded, cut
-`cornerFamilyBottomLeft`  | enum      | corner family to be used for the bottom left corner | rounded, cut
-`cornerSize`              | dimension | corner size to be used for all four corners  | `dp` values
-`cornerSizeTopLeft`       | dimension | corner size to  be used for the top left corner | `dp` values
-`cornerSizeTopRight`      | dimension | corner size to  be used for the top right corner | `dp` values
-`cornerSizeBottomRight`   | dimension | corner size to  be used for the bottom right corner | `dp` values
-`cornerSizeBottomLeft`    | dimension | corner size to  be used for the bottom  left corner | `dp` values
+`cornerFamilyBottomLeft`  | enum      | corner family to be used for the bottom left corner  | rounded, cut
+`cornerSize`              | dimension | corner size to be used for all four corners          | `dp` values
+`cornerSizeTopLeft`       | dimension | corner size to  be used for the top left corner      | `dp` values
+`cornerSizeTopRight`      | dimension | corner size to  be used for the top right corner     | `dp` values
+`cornerSizeBottomRight`   | dimension | corner size to  be used for the bottom right corner  | `dp` values
+`cornerSizeBottomLeft`    | dimension | corner size to  be used for the bottom  left corner  | `dp` values
 
 To build a `shapeAppearance`, you need at least a **`cornerSize`** and
 **`cornerFamily`** value specified for each corner.
@@ -108,7 +127,7 @@ and `shapeAppearanceOverlay`:
 
 Attribute Name           | Description
 ------------------------ | --------------------------------------
-`shapeAppearance`        | Style reference that contains shape values that are used to style the component. Should point to a theme attribute style reference such as `?attr/shapeAppearanceSmallComponent`.
+`shapeAppearance`        | Style reference that contains shape values that are used to style the component. Should point to a theme attribute style reference such as `?attr/shapeAppearanceCornerExtraSmall`.
 `shapeAppearanceOverlay` | Style reference that contains shape values that layer on top of a `shapeAppearance` style. This attribute is intended for overrides on top of the themed shapeAppearance shape values, and should map to a custom style reference rather than a themed style reference.
 
 The `shapeAppearanceOverlay` attribute is provided to override components on a
@@ -134,38 +153,33 @@ in your theme. This will allow
 [components that support shape theming](#supported-components) to read the
 customized values and change their shapes accordingly.
 
-If you want to change the small and medium components' corners in your app to
-cut corners, define the shape theme attributes to point to custom style
-references that contain shape values:
+If you want to change the small and medium corners in your app to cut corners,
+define the shape theme attributes to point to custom style references that
+contain shape values:
 
 ```xml
 <style name="Theme.MyApp" parent="Theme.Material3.Light">
   ...
-  <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.MyApp.SmallComponent</item>
-  <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.MyApp.MediumComponent</item>
-  <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.MyApp.LargeComponent</item>
+  <item name="shapeAppearanceCornerSmall">@style/ShapeAppearance.MyApp.Corner.Small</item>
+  <item name="shapeAppearanceCornerMedium">@style/ShapeAppearance.MyApp.Corner.Medium</item>
   ...
 </style>
 ```
 
 The shape theme attributes should point to custom `shapeAppearance` styles that
-define both `cornerSize` and `cornerFamily`. These `shapeAppearance` styles
-might look something like this:
+define both `cornerSize` and `cornerFamily`. You can either define both
+attributes in a style from scratch or modify the corner family from a built-in
+shape style like this:
 
 ```xml
-<style name="ShapeAppearance.MyApp.SmallComponent" parent="ShapeAppearance.Material3.SmallComponent">
+<style name="ShapeAppearance.MyApp.Corner.Small" parent="">
   <item name="cornerFamily">cut</item>
   <item name="cornerSize">4dp</item>
 </style>
 
-<style name="ShapeAppearance.MyApp.MediumComponent" parent="ShapeAppearance.Material3.MediumComponent">
+<style name="ShapeAppearance.MyApp.Corner.Medium" parent="ShapeAppearance.Material3.Corner.Medium">
   <item name="cornerFamily">cut</item>
   <item name="cornerSize">8dp</item>
-</style>
-
-<style name="ShapeAppearance.MyApp.LargeComponent" parent="ShapeAppearance.Material3.LargeComponent">
-  <item name="cornerFamily">rounded</item>
-  <item name="cornerSize">4dp</item>
 </style>
 ```
 
@@ -262,7 +276,8 @@ Components that support shape theming have a `shapeAppearance` attribute, a
 *   [Extended Floating Action Button](../components/FloatingActionButton.md?#extended-fabs)
 *   [Floating Action Button](../components/FloatingActionButton.md)
 *   [Button](../components/Button.md)
-*   [Toggle Button](../components/Button.md?#toggle-button)
+*   [Time Picker](../components/TimePicker.md)
 *   [Navigation Drawer](../components/NavigationDrawer.md)
 *   [Slider](../components/Slider.md)
+*   [Snackbar](../components/Snackbar.md)
 *   [Text Field](../components/TextField.md)
