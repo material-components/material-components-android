@@ -840,7 +840,11 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   }
 
   private void recalculateAndUpdateMargins() {
-    extraBottomMarginAnchorView = calculateBottomMarginForAnchorView();
+    int newBottomMarginAnchorView = calculateBottomMarginForAnchorView();
+    if (newBottomMarginAnchorView == extraBottomMarginAnchorView) {
+      return;
+    }
+    extraBottomMarginAnchorView = newBottomMarginAnchorView;
     updateMargins();
   }
 
