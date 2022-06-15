@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import androidx.annotation.Nullable;
+import com.google.android.material.checkbox.MaterialCheckBox;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.DemoUtils;
 import java.util.List;
@@ -38,6 +39,8 @@ public class CheckBoxMainDemoFragment extends DemoFragment {
     View view = layoutInflater.inflate(R.layout.cat_checkbox, viewGroup, false /* attachToRoot */);
     ViewGroup toggleContainer = view.findViewById(R.id.checkbox_toggle_container);
     List<CheckBox> toggledCheckBoxes = DemoUtils.findViewsWithType(toggleContainer, CheckBox.class);
+    List<MaterialCheckBox> allCheckBoxes =
+        DemoUtils.findViewsWithType(view, MaterialCheckBox.class);
 
     CheckBox checkBoxToggle = view.findViewById(R.id.checkbox_toggle);
     checkBoxToggle.setOnCheckedChangeListener(
@@ -47,6 +50,13 @@ public class CheckBoxMainDemoFragment extends DemoFragment {
           }
         });
 
+    CheckBox checkBoxToggleError = view.findViewById(R.id.checkbox_toggle_error);
+    checkBoxToggleError.setOnCheckedChangeListener(
+        (CompoundButton buttonView, boolean isChecked) -> {
+          for (MaterialCheckBox cb : allCheckBoxes) {
+            cb.setErrorShown(isChecked);
+          }
+        });
     return view;
   }
 }

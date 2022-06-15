@@ -16,15 +16,23 @@
   -->
 
 <resources>
-  <string name="cat_checkbox_title">Checkbox</string>
-  <string name="cat_checkbox_description">
+  <string name="cat_checkbox_title" translatable="false">Checkbox</string>
+  <string name="cat_checkbox_description" translatable="false">
     The CheckBox provides a selectable element, usually part of a list,
     that toggles between two states.</string>
-  <string name="cat_checkbox_color_guide">CheckBox elements respond to changes in colorSecondary</string>
-  <string name="cat_checkbox_disabled_guide">CheckBox elements that are disabled cannot be interacted with and will appear faded</string>
-  <string name="cat_checkbox_enabled">Enabled</string>
-  <string name="cat_checkbox_disabled">Disabled</string>
-  <string name="cat_checkbox_enablable_description">Check this checkbox to control the enabled state of the boxes below.</string>
-  <string name="cat_checkbox_toggle">Controlled by a checkbox</string>
-  <string name="cat_checkbox_no_text">Below is a checkbox with no text.</string>
+  <string name="cat_checkbox_intro" translatable="false">
+    Below are Material checkboxes.</string>
+  <string name="cat_checkbox_disabled_guide" translatable="false">
+    CheckBox elements that are disabled cannot be interacted with and will
+    appear faded.</string>
+  <string name="cat_checkbox_enabled" translatable="false">Enabled</string>
+  <string name="cat_checkbox_disabled" translatable="false">Disabled</string>
+  <string name="cat_checkbox_enablable_description" translatable="false">
+    Check this checkbox to control the enabled state of the boxes below.</string>
+  <string name="cat_checkbox_toggle" translatable="false">
+    Controlled by a checkbox</string>
+  <string name="cat_checkbox_no_text" translatable="false">
+    Below is a checkbox with no text.</string>
+  <string name="cat_checkbox_toggle_error" translatable="false">
+    Check this checkbox to control the error state of all checkboxes in this page.</string>
 </resources>
