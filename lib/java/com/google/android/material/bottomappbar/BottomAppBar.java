@@ -18,6 +18,7 @@ package com.google.android.material.bottomappbar;
 
 import com.google.android.material.R;
 
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static com.google.android.material.shape.MaterialShapeDrawable.SHADOW_COMPAT_MODE_ALWAYS;
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 
@@ -47,6 +48,7 @@ import androidx.annotation.MenuRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
+import androidx.annotation.RestrictTo;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.AttachedBehavior;
 import androidx.core.graphics.drawable.DrawableCompat;
@@ -104,6 +106,7 @@ import java.util.List;
  *
  * @attr ref com.google.android.material.R.styleable#BottomAppBar_backgroundTint
  * @attr ref com.google.android.material.R.styleable#BottomAppBar_fabAlignmentMode
+ * @attr ref com.google.android.material.R.styleable#BottomAppBar_fabAnchorMode
  * @attr ref com.google.android.material.R.styleable#BottomAppBar_fabAnimationMode
  * @attr ref com.google.android.material.R.styleable#BottomAppBar_fabCradleMargin
  * @attr ref com.google.android.material.R.styleable#BottomAppBar_fabCradleRoundedCornerRadius
@@ -132,6 +135,22 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   @Retention(RetentionPolicy.SOURCE)
   public @interface FabAlignmentMode {}
 
+  /** The FAB is embedded inside the BottomAppBar. */
+  public static final int FAB_ANCHOR_MODE_EMBED = 0;
+  /** The FAB is cradled at the top of the BottomAppBar. */
+  public static final int FAB_ANCHOR_MODE_CRADLE = 1;
+
+  /**
+   * The fabAnchorMode determines the placement of the FAB within the BottomAppBar. The FAB can be
+   * cradled at the top of the BottomAppBar, or embedded within it.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  @IntDef({FAB_ANCHOR_MODE_EMBED, FAB_ANCHOR_MODE_CRADLE})
+  @Retention(RetentionPolicy.SOURCE)
+  public @interface FabAnchorMode {}
+
   public static final int FAB_ANIMATION_MODE_SCALE = 0;
   public static final int FAB_ANIMATION_MODE_SLIDE = 1;
 
@@ -153,6 +172,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   @Nullable private Animator menuAnimator;
   @FabAlignmentMode private int fabAlignmentMode;
   @FabAnimationMode private int fabAnimationMode;
+  @FabAnchorMode private int fabAnchorMode;
   private boolean hideOnScroll;
   private final boolean paddingBottomSystemWindowInsets;
   private final boolean paddingLeftSystemWindowInsets;
@@ -220,11 +240,16 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
         @Override
         public void onScaleChanged(@NonNull FloatingActionButton fab) {
           materialShapeDrawable.setInterpolation(
-              fab.getVisibility() == View.VISIBLE ? fab.getScaleY() : 0);
+              fab.getVisibility() == View.VISIBLE && fabAnchorMode == FAB_ANCHOR_MODE_CRADLE
+                  ? fab.getScaleY()
+                  : 0);
         }
 
         @Override
         public void onTranslationChanged(@NonNull FloatingActionButton fab) {
+          if (fabAnchorMode != FAB_ANCHOR_MODE_CRADLE) {
+            return;
+          }
           float horizontalOffset = fab.getTranslationX();
           if (getTopEdgeTreatment().getHorizontalOffset() != horizontalOffset) {
             getTopEdgeTreatment().setHorizontalOffset(horizontalOffset);
@@ -276,6 +301,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
         a.getInt(R.styleable.BottomAppBar_fabAlignmentMode, FAB_ALIGNMENT_MODE_CENTER);
     fabAnimationMode =
         a.getInt(R.styleable.BottomAppBar_fabAnimationMode, FAB_ANIMATION_MODE_SCALE);
+    fabAnchorMode = a.getInt(R.styleable.BottomAppBar_fabAnchorMode, FAB_ANCHOR_MODE_CRADLE);
     hideOnScroll = a.getBoolean(R.styleable.BottomAppBar_hideOnScroll, false);
     // Reading out if we are handling bottom padding, so we can apply it to the FAB.
     paddingBottomSystemWindowInsets =
@@ -335,7 +361,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
             if (leftInsetsChanged || rightInsetsChanged) {
               cancelAnimations();
 
-              setCutoutState();
+              setCutoutStateAndTranslateFab();
               setActionMenuViewPosition();
             }
 
@@ -405,8 +431,43 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   }
 
   /**
-   * Returns the current fabAlignmentMode, either {@link #FAB_ANIMATION_MODE_SCALE} or {@link
-   * #FAB_ANIMATION_MODE_SLIDE}.
+   * Returns the current {@code fabAnchorMode}, either {@link #FAB_ANCHOR_MODE_CRADLE} or {@link
+   * #FAB_ANCHOR_MODE_EMBED}.
+   */
+  @FabAnchorMode
+  public int getFabAnchorMode() {
+    return fabAnchorMode;
+  }
+
+  /**
+   * Sets the current {@code fabAnchorMode}.
+   *
+   * @param fabAnchorMode the desired fabAnchorMode, either {@link #FAB_ANCHOR_MODE_CRADLE} or
+   *     {@link #FAB_ANCHOR_MODE_EMBED}.
+   */
+  public void setFabAnchorMode(@FabAnchorMode int fabAnchorMode) {
+    this.fabAnchorMode = fabAnchorMode;
+    setCutoutStateAndTranslateFab();
+    View fab = findDependentView();
+    if (fab != null) {
+      updateFabAnchorGravity(this, fab);
+      fab.requestLayout();
+      materialShapeDrawable.invalidateSelf();
+    }
+  }
+
+  private static void updateFabAnchorGravity(BottomAppBar bar, View fab) {
+    CoordinatorLayout.LayoutParams fabLayoutParams =
+        (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
+    fabLayoutParams.anchorGravity = Gravity.CENTER;
+    if (bar.fabAnchorMode == FAB_ANCHOR_MODE_CRADLE) {
+      fabLayoutParams.anchorGravity |= Gravity.TOP;
+    }
+  }
+
+  /**
+   * Returns the current {@code fabAnimationMode}, either {@link #FAB_ANIMATION_MODE_SCALE} or
+   * {@link #FAB_ANIMATION_MODE_SLIDE}.
    */
   @FabAnimationMode
   public int getFabAnimationMode() {
@@ -414,8 +475,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   }
 
   /**
-   * Sets the current fabAlignmentMode. Determines which animation will be played when the fab is
-   * animated from from one {@link FabAlignmentMode} to another.
+   * Sets the current {@code fabAnimationMode}.
    *
    * @param fabAnimationMode the desired fabAlignmentMode, either {@link #FAB_ALIGNMENT_MODE_CENTER}
    *     or {@link #FAB_ALIGNMENT_MODE_END}.
@@ -441,7 +501,10 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   }
 
   /**
-   * Sets the cradle margin for the fab cutout. This is the space between the fab and the cutout.
+   * Sets the cradle margin for the fab cutout.
+   *
+   * This is the space between the fab and the cutout. If
+   * the fab anchor mode is not cradled, this will not be respected.
    */
   public void setFabCradleMargin(@Dimension float cradleMargin) {
     if (cradleMargin != getFabCradleMargin()) {
@@ -450,13 +513,19 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     }
   }
 
-  /** Returns the rounded corner radius for the cutout. A value of 0 will be a sharp edge. */
+  /**
+   * Returns the rounded corner radius for the cutout if it exists. A value of 0 will be a
+   * sharp edge.
+   */
   @Dimension
   public float getFabCradleRoundedCornerRadius() {
     return getTopEdgeTreatment().getFabCradleRoundedCornerRadius();
   }
 
-  /** Sets the rounded corner radius for the fab cutout. A value of 0 will be a sharp edge. */
+  /**
+   * Sets the rounded corner radius for the fab cutout. A value of 0 will be a sharp edge.
+   * This will not be visible until there is a cradle.
+   */
   public void setFabCradleRoundedCornerRadius(@Dimension float roundedCornerRadius) {
     if (roundedCornerRadius != getFabCradleRoundedCornerRadius()) {
       getTopEdgeTreatment().setFabCradleRoundedCornerRadius(roundedCornerRadius);
@@ -477,12 +546,13 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
    * Sets the vertical offset, in pixels, of the {@link FloatingActionButton} being cradled. An
    * offset of 0 indicates the vertical center of the {@link FloatingActionButton} is positioned on
    * the top edge.
+   * This will not be visible until there is a cradle.
    */
   public void setCradleVerticalOffset(@Dimension float verticalOffset) {
     if (verticalOffset != getCradleVerticalOffset()) {
       getTopEdgeTreatment().setCradleVerticalOffset(verticalOffset);
       materialShapeDrawable.invalidateSelf();
-      setCutoutState();
+      setCutoutStateAndTranslateFab();
     }
   }
 
@@ -629,7 +699,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
 
   /**
    * Sets the fab diameter. This will be called automatically by the {@link BottomAppBar.Behavior}
-   * if the fab is anchored to this {@link BottomAppBar}.
+   * if the fab is anchored to this {@link BottomAppBar}..
    */
   boolean setFabDiameter(@Px int diameter) {
     if (diameter != getTopEdgeTreatment().getFabDiameter()) {
@@ -871,7 +941,10 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   }
 
   private float getFabTranslationY() {
-    return -getTopEdgeTreatment().getCradleVerticalOffset();
+    if (fabAnchorMode == FAB_ANCHOR_MODE_CRADLE) {
+      return -getTopEdgeTreatment().getCradleVerticalOffset();
+    }
+    return 0;
   }
 
   private float getFabTranslationX(@FabAlignmentMode int fabAlignmentMode) {
@@ -1000,7 +1073,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     if (changed) {
       cancelAnimations();
 
-      setCutoutState();
+      setCutoutStateAndTranslateFab();
     }
 
     // Always ensure the MenuView is in the correct position after a layout.
@@ -1013,11 +1086,14 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
         materialShapeDrawable.getShapeAppearanceModel().getTopEdge();
   }
 
-  private void setCutoutState() {
+  private void setCutoutStateAndTranslateFab() {
     // Layout all elements related to the positioning of the fab.
     getTopEdgeTreatment().setHorizontalOffset(getFabTranslationX());
+    materialShapeDrawable.setInterpolation(
+        fabAttached && isFabVisibleOrWillBeShown() && fabAnchorMode == FAB_ANCHOR_MODE_CRADLE
+            ? 1
+            : 0);
     View fab = findDependentView();
-    materialShapeDrawable.setInterpolation(fabAttached && isFabVisibleOrWillBeShown() ? 1 : 0);
     if (fab != null) {
       fab.setTranslationY(getFabTranslationY());
       fab.setTranslationX(getFabTranslationX());
@@ -1164,10 +1240,12 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
               // Extra padding is added for the fake shadow on API < 21. Ensure we don't add too
               // much space by removing that extra padding.
               int bottomShadowPadding = (fab.getMeasuredHeight() - height) / 2;
-              int bottomMargin =
-                  child
-                      .getResources()
-                      .getDimensionPixelOffset(R.dimen.mtrl_bottomappbar_fab_bottom_margin);
+              int bottomMargin = 0;
+              if (child.fabAnchorMode == FAB_ANCHOR_MODE_CRADLE) {
+                bottomMargin = child
+                    .getResources()
+                    .getDimensionPixelOffset(R.dimen.mtrl_bottomappbar_fab_bottom_margin);
+              }
               // Should be moved above the bottom insets with space ignoring any shadow padding.
               int minBottomMargin = bottomMargin - bottomShadowPadding;
               fabLayoutParams.bottomMargin = child.getBottomInset() + minBottomMargin;
@@ -1201,12 +1279,12 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
       if (dependentView != null && !ViewCompat.isLaidOut(dependentView)) {
         // Set the initial position of the FloatingActionButton with the BottomAppBar vertical
         // offset.
-        CoordinatorLayout.LayoutParams fabLayoutParams =
-            (CoordinatorLayout.LayoutParams) dependentView.getLayoutParams();
-        fabLayoutParams.anchorGravity = Gravity.CENTER | Gravity.TOP;
+        updateFabAnchorGravity(child, dependentView);
 
         // Keep track of the original bottom margin for the fab. We will manage the margin if
         // nothing was set.
+        CoordinatorLayout.LayoutParams fabLayoutParams =
+            (CoordinatorLayout.LayoutParams) dependentView.getLayoutParams();
         originalBottomMargin = fabLayoutParams.bottomMargin;
 
         if (dependentView instanceof FloatingActionButton) {
@@ -1230,7 +1308,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
         }
 
         // Move the fab to the correct position
-        child.setCutoutState();
+        child.setCutoutStateAndTranslateFab();
       }
 
       // Now let the CoordinatorLayout lay out the BAB

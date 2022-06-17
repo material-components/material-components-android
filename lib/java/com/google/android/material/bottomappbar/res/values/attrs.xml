@@ -30,6 +30,13 @@
       <!-- Mode that aligns the fab to the end. -->
       <enum name="end" value="1"/>
     </attr>
+    <!-- The anchor mode of the fab relative to the BottomAppBar. -->
+    <attr name="fabAnchorMode">
+      <!-- Mode that anchors the fab embedded inside the BottomAppBar. -->
+      <enum name="embed" value="0"/>
+      <!-- Mode that anchors the fab to be cradled within the top edge of the BottomAppBar. -->
+      <enum name="cradle" value="1"/>
+    </attr>
     <!-- The animation mode that should be used when the fab animates between alignment modes. -->
     <attr name="fabAnimationMode">
       <!-- Mode that scales the fab down to a point, moves it, then scales the fab back to its normal size. -->

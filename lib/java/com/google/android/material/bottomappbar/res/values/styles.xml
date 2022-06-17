@@ -53,6 +53,7 @@
 
   <style name="Widget.Material3.BottomAppBar" parent="Widget.MaterialComponents.BottomAppBar">
     <item name="fabAnimationMode">slide</item>
+    <item name="fabAnchorMode">cradle</item>
     <item name="fabCradleMargin">@dimen/m3_bottomappbar_fab_cradle_margin</item>
     <item name="fabCradleRoundedCornerRadius">
       @dimen/m3_bottomappbar_fab_cradle_rounded_corner_radius

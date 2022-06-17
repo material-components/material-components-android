@@ -49,4 +49,7 @@ Phasellus in aliquet mi. Pellentesque habitant morbi tristique senectus et netus
   <string name="cat_bottomappbar_fab_alignment_mode" description="Name of the FAB Alignment Mode toggle button group [CHAR_LIMIT=NONE]">Fab Alignment Mode</string>
   <string name="cat_bottomappbar_fab_animation_mode" description="Name of the FAB Animation Mode toggle button group [CHAR_LIMIT=NONE]">Fab Animation Mode</string>
   <string name="cat_bottomappbar_fab_visibility_mode" description="Name of the FAB Visibility Mode toggle button group [CHAR_LIMIT=NONE]">Fab Visibility Mode</string>
+  <string name="cat_bottomappbar_fab_anchor_mode" description="Name of the FAB Anchor Mode toggle button group [CHAR_LIMIT=NONE]">Fab Anchor Mode</string>
+  <string name="cat_bottomappbar_button_embed" description="Name of the option to embed the FAB inside the BottomAppBar [CHAR_LIMIT=NONE]">Embed</string>
+  <string name="cat_bottomappbar_button_cradle" description="Name of the option to cradle the FAB on top of the BottomAppBar [CHAR_LIMIT=NONE]">Cradle</string>
 </resources>

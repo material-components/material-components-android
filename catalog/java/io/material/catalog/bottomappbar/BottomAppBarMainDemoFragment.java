@@ -152,10 +152,9 @@ public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBack
     }
 
     centerButton.setOnClickListener(
-        v -> {
-          bar.setFabAlignmentModeAndReplaceMenu(
-              BottomAppBar.FAB_ALIGNMENT_MODE_CENTER, R.menu.demo_primary);
-        });
+        v ->
+            bar.setFabAlignmentModeAndReplaceMenu(
+                BottomAppBar.FAB_ALIGNMENT_MODE_CENTER, R.menu.demo_primary));
     endButton.setOnClickListener(
         v ->
             bar.setFabAlignmentModeAndReplaceMenu(
@@ -175,6 +174,21 @@ public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBack
         v -> bar.setFabAnimationMode(BottomAppBar.FAB_ANIMATION_MODE_SCALE));
     slideButton.setOnClickListener(
         v -> bar.setFabAnimationMode(BottomAppBar.FAB_ANIMATION_MODE_SLIDE));
+
+    // Set up FAB anchor mode toggle buttons.
+    MaterialButton embedButton = view.findViewById(R.id.fab_anchor_mode_button_embed);
+    MaterialButton cradleButton = view.findViewById(R.id.fab_anchor_mode_button_cradle);
+
+    if (bar.getFabAnchorMode() == BottomAppBar.FAB_ANCHOR_MODE_EMBED) {
+      embedButton.setChecked(true);
+    } else {
+      cradleButton.setChecked(true);
+    }
+
+    embedButton.setOnClickListener(
+        v -> bar.setFabAnchorMode(BottomAppBar.FAB_ANCHOR_MODE_EMBED));
+    cradleButton.setOnClickListener(
+        v -> bar.setFabAnchorMode(BottomAppBar.FAB_ANCHOR_MODE_CRADLE));
 
     // Set up hide on scroll switch.
     MaterialSwitch barScrollSwitch = view.findViewById(R.id.bar_scroll_switch);

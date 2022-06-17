@@ -234,6 +234,7 @@ Element                          | Attribute                          | Related 
 -------------------------------- | ---------------------------------- | ---------------------------------------------------------------------- | -------------
 **Alignment mode**               | `app:fabAlignmentMode`             | `setFabAlignmentMode`<br>`getFabAlignmentMode`                         | `center`
 **Animation mode**               | `app:fabAnimationMode`             | `setFabAnimationMode`<br>`getFabAnimationMode`                         | `slide`
+**Anchor mode**                  | `app:fabAnchorMode`                | `setFabAnchorMode` <br> `getFabAnchorMode`                             | `cradle`
 **Cradle margin**                | `app:fabCradleMargin`              | `setFabCradleMargin`<br>`getFabCradleMargin`                           | `6dp`
 **Cradle rounded corner radius** | `app:fabCradleRoundedCornerRadius` | `setFabCradleRoundedCornerRadius`<br>`getFabCradleRoundedCornerRadius` | `4dp`
 **Cradle vertical offset**       | `app:fabCradleVerticalOffset`      | `setCradleVerticalOffset`<br>`getCradleVerticalOffset`                 | `12dp`
