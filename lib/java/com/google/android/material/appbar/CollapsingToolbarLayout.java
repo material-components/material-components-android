@@ -1399,6 +1399,24 @@ public class CollapsingToolbarLayout extends FrameLayout {
   }
 
   /**
+   * Sets the {@link StaticLayoutBuilderConfigurer} for the {@link android.text.StaticLayout} of the
+   * title text.
+   *
+   * <p>Note that the updates to the {@link android.text.StaticLayout.Builder} in the configure
+   * method (e.g., the text, alignment, max lines, line spacing, etc.) will take precedence over and
+   * overwrite any previous configurations made by the {@link CollapsingToolbarLayout} to the same
+   * properties.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  @RequiresApi(VERSION_CODES.M)
+  public void setStaticLayoutBuilderConfigurer(
+      @Nullable StaticLayoutBuilderConfigurer staticLayoutBuilderConfigurer) {
+    collapsingTextHelper.setStaticLayoutBuilderConfigurer(staticLayoutBuilderConfigurer);
+  }
+
+  /**
    * Sets whether {@code TextDirectionHeuristics} should be used to determine whether the title text
    * is RTL. Experimental Feature.
    */
@@ -1732,4 +1750,15 @@ public class CollapsingToolbarLayout extends FrameLayout {
       collapsingTextHelper.setExpansionFraction(Math.abs(verticalOffset) / (float) expandRange);
     }
   }
+
+  /**
+   * Interface that allows for further customization of the provided {@link
+   * android.text.StaticLayout}.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  @RequiresApi(VERSION_CODES.M)
+  public interface StaticLayoutBuilderConfigurer
+      extends com.google.android.material.internal.StaticLayoutBuilderConfigurer {}
 }

@@ -176,6 +176,7 @@ public final class CollapsingTextHelper {
   private float lineSpacingAdd = StaticLayoutBuilderCompat.DEFAULT_LINE_SPACING_ADD;
   private float lineSpacingMultiplier = StaticLayoutBuilderCompat.DEFAULT_LINE_SPACING_MULTIPLIER;
   private int hyphenationFrequency = StaticLayoutBuilderCompat.DEFAULT_HYPHENATION_FREQUENCY;
+  @Nullable private StaticLayoutBuilderConfigurer staticLayoutBuilderConfigurer;
 
   public CollapsingTextHelper(View view) {
     this.view = view;
@@ -1075,6 +1076,7 @@ public final class CollapsingTextHelper {
               .setMaxLines(maxLines)
               .setLineSpacing(lineSpacingAdd, lineSpacingMultiplier)
               .setHyphenationFrequency(hyphenationFrequency)
+              .setStaticLayoutBuilderConfigurer(staticLayoutBuilderConfigurer)
               .build();
     } catch (StaticLayoutBuilderCompatException e) {
       Log.e(TAG, e.getCause().getMessage(), e);
@@ -1218,6 +1220,15 @@ public final class CollapsingTextHelper {
   @RequiresApi(VERSION_CODES.M)
   public int getHyphenationFrequency() {
     return hyphenationFrequency;
+  }
+
+  @RequiresApi(VERSION_CODES.M)
+  public void setStaticLayoutBuilderConfigurer(
+      @Nullable StaticLayoutBuilderConfigurer staticLayoutBuilderConfigurer) {
+    if (this.staticLayoutBuilderConfigurer != staticLayoutBuilderConfigurer) {
+      this.staticLayoutBuilderConfigurer = staticLayoutBuilderConfigurer;
+      recalculate(/* forceRecalculate= */ true);
+    }
   }
 
   /**

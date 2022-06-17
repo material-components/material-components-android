@@ -84,6 +84,7 @@ final class StaticLayoutBuilderCompat {
   private boolean includePad;
   private boolean isRtl;
   @Nullable private TextUtils.TruncateAt ellipsize;
+  @Nullable private StaticLayoutBuilderConfigurer staticLayoutBuilderConfigurer;
 
   private StaticLayoutBuilderCompat(CharSequence source, TextPaint paint, int width) {
     this.source = source;
@@ -219,6 +220,17 @@ final class StaticLayoutBuilderCompat {
     return this;
   }
 
+  /**
+   * Set the {@link StaticLayoutBuilderConfigurer} which allows additional custom configurations on
+   * the static layout.
+   */
+  @NonNull
+  public StaticLayoutBuilderCompat setStaticLayoutBuilderConfigurer(
+      @Nullable StaticLayoutBuilderConfigurer staticLayoutBuilderConfigurer) {
+    this.staticLayoutBuilderConfigurer = staticLayoutBuilderConfigurer;
+    return this;
+  }
+
   /** A method that allows to create a StaticLayout with maxLines on all supported API levels. */
   public StaticLayout build() throws StaticLayoutBuilderCompatException {
     if (source == null) {
@@ -258,6 +270,9 @@ final class StaticLayoutBuilderCompat {
       }
       if (maxLines > 1) {
         builder.setHyphenationFrequency(hyphenationFrequency);
+      }
+      if (staticLayoutBuilderConfigurer != null) {
+        staticLayoutBuilderConfigurer.configure(builder);
       }
       return builder.build();
     }
