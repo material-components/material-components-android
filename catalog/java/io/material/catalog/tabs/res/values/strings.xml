@@ -45,6 +45,8 @@
   <string name="cat_tabs_secondary_tabs_label">Material Tabs (Secondary)</string>
   <string name="cat_tabs_add_tab_button_label">Add Tab</string>
   <string name="cat_tabs_remove_tab_button_label">Remove Tab</string>
+  <string name="cat_tabs_remove_first_tab_button_label">Remove First Tab</string>
+  <string name="cat_tabs_remove_last_tab_button_label">Remove Last Tab</string>
   <string name="cat_tabs_controllable_demo_title">Controllable Tabs Demo</string>
   <string name="cat_tabs_scrollable_demo_title">Scrollable Tabs Demo</string>
   <string name="cat_tabs_auto_demo_title">Auto Tabs Demo</string>

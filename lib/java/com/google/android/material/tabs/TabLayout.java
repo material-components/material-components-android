@@ -25,8 +25,6 @@ import static androidx.viewpager.widget.ViewPager.SCROLL_STATE_SETTLING;
 import static com.google.android.material.animation.AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR;
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -3007,10 +3005,6 @@ public class TabLayout extends HorizontalScrollView {
 
   class SlidingTabIndicator extends LinearLayout {
     ValueAnimator indicatorAnimator;
-    int selectedPosition = -1;
-    // selectionOffset is only used when a tab is being slid due to a viewpager swipe.
-    // selectionOffset is always the offset to the right of selectedPosition.
-    float selectionOffset;
 
     private int layoutDirection = -1;
 
@@ -3038,26 +3032,21 @@ public class TabLayout extends HorizontalScrollView {
     /**
      * Set the indicator position based on an offset between two adjacent tabs.
      *
-     * @param position The position from which the offset should be calculated.
-     * @param positionOffset The offset to the right of position where the indicator should be
-     *     drawn. This must be a value between 0.0 and 1.0.
+     * @param position Position index of the first tab (with less index) currently being displayed.
+     *     Tab position+1 will be visible if positionOffset is nonzero.
+     * @param positionOffset Value from [0, 1) indicating the offset from the tab at position.
      */
     void setIndicatorPositionFromTabPosition(int position, float positionOffset) {
       if (indicatorAnimator != null && indicatorAnimator.isRunning()) {
         indicatorAnimator.cancel();
       }
 
-      selectedPosition = position;
-      selectionOffset = positionOffset;
+      // The title view refers to the one indicated when offset is 0.
+      final View firstTitle = getChildAt(position);
+      // The title view refers to the one indicated when offset is 1.
+      final View nextTitle = getChildAt(position + 1);
 
-      final View selectedTitle = getChildAt(selectedPosition);
-      final View nextTitle = getChildAt(selectedPosition + 1);
-
-      tweenIndicatorPosition(selectedTitle, nextTitle, selectionOffset);
-    }
-
-    float getIndicatorPosition() {
-      return selectedPosition + selectionOffset;
+      tweenIndicatorPosition(firstTitle, nextTitle, positionOffset);
     }
 
     @Override
@@ -3144,7 +3133,7 @@ public class TabLayout extends HorizontalScrollView {
         // position of the indicator, since the tab widths are different. We need to modify the
         // animation's updateListener to pick up the new target positions.
         updateOrRecreateIndicatorAnimation(
-            /* recreateAnimation= */ false, selectedPosition, /* duration= */ -1);
+            /* recreateAnimation= */ false, getSelectedTabPosition(), /* duration= */ -1);
       } else {
         // If we've been laid out, update the indicator position
         jumpIndicatorToSelectedPosition();
@@ -3153,7 +3142,7 @@ public class TabLayout extends HorizontalScrollView {
 
     /** Immediately update the indicator position to the currently selected position. */
     private void jumpIndicatorToSelectedPosition() {
-      final View currentView = getChildAt(selectedPosition);
+      final View currentView = getChildAt(getSelectedTabPosition());
       tabIndicatorInterpolator.setIndicatorBoundsForTab(
           TabLayout.this, currentView, tabSelectedIndicator);
     }
@@ -3214,7 +3203,7 @@ public class TabLayout extends HorizontalScrollView {
      */
     private void updateOrRecreateIndicatorAnimation(
         boolean recreateAnimation, final int position, int duration) {
-      final View currentView = getChildAt(selectedPosition);
+      final View currentView = getChildAt(getSelectedTabPosition());
       final View targetView = getChildAt(position);
       if (targetView == null) {
         // If we don't have a view, just update the position now and return
@@ -3239,18 +3228,6 @@ public class TabLayout extends HorizontalScrollView {
         animator.setDuration(duration);
         animator.setFloatValues(0F, 1F);
         animator.addUpdateListener(updateListener);
-        animator.addListener(
-            new AnimatorListenerAdapter() {
-              @Override
-              public void onAnimationStart(Animator animator) {
-                selectedPosition = position;
-              }
-
-              @Override
-              public void onAnimationEnd(Animator animator) {
-                selectedPosition = position;
-              }
-            });
         animator.start();
       } else {
         // Reuse the existing animator. Updating the listener only modifies the target positions.
