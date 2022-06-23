@@ -164,6 +164,21 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   @Retention(RetentionPolicy.SOURCE)
   public @interface FabAnimationMode {}
 
+  /** The menu items are aligned automatically to avoid the FAB. */
+  public static final int MENU_ALIGNMENT_MODE_AUTO = 0;
+  /** The menu items are aligned to the start. */
+  public static final int MENU_ALIGNMENT_MODE_START = 1;
+
+  /**
+   * The menuAlignmentMode determines the alignment of the menu items in the BottomAppBar.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  @IntDef({MENU_ALIGNMENT_MODE_AUTO, MENU_ALIGNMENT_MODE_START})
+  @Retention(RetentionPolicy.SOURCE)
+  public @interface MenuAlignmentMode {}
+
   @Nullable private Integer navigationIconTint;
   private final int fabOffsetEndMode;
   private final MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable();
@@ -173,6 +188,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   @FabAlignmentMode private int fabAlignmentMode;
   @FabAnimationMode private int fabAnimationMode;
   @FabAnchorMode private int fabAnchorMode;
+  @MenuAlignmentMode private int menuAlignmentMode;
   private boolean hideOnScroll;
   private final boolean paddingBottomSystemWindowInsets;
   private final boolean paddingLeftSystemWindowInsets;
@@ -302,6 +318,8 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     fabAnimationMode =
         a.getInt(R.styleable.BottomAppBar_fabAnimationMode, FAB_ANIMATION_MODE_SCALE);
     fabAnchorMode = a.getInt(R.styleable.BottomAppBar_fabAnchorMode, FAB_ANCHOR_MODE_CRADLE);
+    menuAlignmentMode =
+        a.getInt(R.styleable.BottomAppBar_menuAlignmentMode, MENU_ALIGNMENT_MODE_AUTO);
     hideOnScroll = a.getBoolean(R.styleable.BottomAppBar_hideOnScroll, false);
     // Reading out if we are handling bottom padding, so we can apply it to the FAB.
     paddingBottomSystemWindowInsets =
@@ -482,6 +500,32 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
    */
   public void setFabAnimationMode(@FabAnimationMode int fabAnimationMode) {
     this.fabAnimationMode = fabAnimationMode;
+  }
+
+  /**
+   * Sets the current {@code menuAlignmentMode}. Determines where the menu items in the BottomAppBar
+   * will be aligned.
+   *
+   * @param menuAlignmentMode the desired menuAlignmentMode, either {@link
+   *     #MENU_ALIGNMENT_MODE_AUTO} or {@link #MENU_ALIGNMENT_MODE_START}.
+   */
+  public void setMenuAlignmentMode(@MenuAlignmentMode int menuAlignmentMode) {
+    if (this.menuAlignmentMode != menuAlignmentMode) {
+      this.menuAlignmentMode = menuAlignmentMode;
+      ActionMenuView menu = getActionMenuView();
+      if (menu != null) {
+        translateActionMenuView(menu, fabAlignmentMode, isFabVisibleOrWillBeShown());
+      }
+    }
+  }
+
+  /**
+   * Returns the current menuAlignmentMode, either {@link #MENU_ALIGNMENT_MODE_AUTO} or {@link
+   * #MENU_ALIGNMENT_MODE_START}.
+   */
+  @MenuAlignmentMode
+  public int getMenuAlignmentMode() {
+    return menuAlignmentMode;
   }
 
   public void setBackgroundTint(@Nullable ColorStateList backgroundTint) {
@@ -1023,7 +1067,8 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
       @NonNull ActionMenuView actionMenuView,
       @FabAlignmentMode int fabAlignmentMode,
       boolean fabAttached) {
-    if (fabAlignmentMode != FAB_ALIGNMENT_MODE_END || !fabAttached) {
+    if (menuAlignmentMode != MENU_ALIGNMENT_MODE_START
+        && (fabAlignmentMode != FAB_ALIGNMENT_MODE_END || !fabAttached)) {
       return 0;
     }
 
@@ -1034,8 +1079,8 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     for (int i = 0; i < getChildCount(); i++) {
       View view = getChildAt(i);
       boolean isAlignedToStart =
-          view.getLayoutParams() instanceof Toolbar.LayoutParams
-              && (((Toolbar.LayoutParams) view.getLayoutParams()).gravity
+          view.getLayoutParams() instanceof LayoutParams
+              && (((LayoutParams) view.getLayoutParams()).gravity
                       & Gravity.RELATIVE_HORIZONTAL_GRAVITY_MASK)
                   == Gravity.START;
       if (isAlignedToStart) {

@@ -245,10 +245,11 @@ for more attributes.
 
 #### Action item(s) attributes
 
-Element        | Attribute  | Related method(s)          | Default value
--------------- | ---------- | -------------------------- | -------------
-**Menu**       | `app:menu` | `replaceMenu`<br>`getMenu` | `null`
-**Icon color** | N/A        | N/A                        | `?attr/colorControlNormal` (as `Drawable` tint)
+Element            | Attribute               | Related method(s)                                  | Default value
+------------------ | ----------------------- | -------------------------------------------------- | -------------
+**Menu**           | `app:menu`              | `replaceMenu`<br>`getMenu`                         | `null`
+**Icon color**     | N/A                     | N/A                                                | `?attr/colorControlNormal` (as `Drawable` tint)
+**Alignment mode** | `app:menuAlignmentMode` | `setMenuAlignmentMode` <br> `getMenuAlignmentMode` | `auto`
 
 ### Overflow menu attributes
 

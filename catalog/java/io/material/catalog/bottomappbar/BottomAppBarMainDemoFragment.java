@@ -190,6 +190,21 @@ public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBack
     cradleButton.setOnClickListener(
         v -> bar.setFabAnchorMode(BottomAppBar.FAB_ANCHOR_MODE_CRADLE));
 
+    // Set up menu alignment toggle buttons.
+    MaterialButton menuAlignmentAutoButton = view.findViewById(R.id.menu_alignment_auto);
+    MaterialButton menuAlignmentStartButton = view.findViewById(R.id.menu_alignment_start);
+
+    if (bar.getMenuAlignmentMode() == BottomAppBar.MENU_ALIGNMENT_MODE_AUTO) {
+      menuAlignmentAutoButton.setChecked(true);
+    } else {
+      menuAlignmentStartButton.setChecked(true);
+    }
+
+    menuAlignmentAutoButton.setOnClickListener(
+        v -> bar.setMenuAlignmentMode(BottomAppBar.MENU_ALIGNMENT_MODE_AUTO));
+    menuAlignmentStartButton.setOnClickListener(
+        v -> bar.setMenuAlignmentMode(BottomAppBar.MENU_ALIGNMENT_MODE_START));
+
     // Set up hide on scroll switch.
     MaterialSwitch barScrollSwitch = view.findViewById(R.id.bar_scroll_switch);
     barScrollSwitch.setChecked(bar.getHideOnScroll());

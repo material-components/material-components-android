@@ -58,6 +58,14 @@
     <attr name="paddingLeftSystemWindowInsets"/>
     <!-- Whether the BottomAppBar should apply padding to be to the left of the right window insets. -->
     <attr name="paddingRightSystemWindowInsets"/>
+    <!-- The alignment of the BottomAppBar menu items. -->
+    <attr name="menuAlignmentMode">
+      <!-- Mode that aligns the menu automatically to avoid the FAB. Menu will be aligned at the end
+           when the FAB is center aligned, and start when the FAB is end aligned. -->
+      <enum name="auto" value="0"/>
+      <!-- Mode that aligns the menu to the start. -->
+      <enum name="start" value="1"/>
+    </attr>
   </declare-styleable>
 
   <!-- Style to use for BottomAppBar in this theme. -->
