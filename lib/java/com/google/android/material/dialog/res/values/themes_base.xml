@@ -237,7 +237,7 @@
 
     <!-- Elevation overlays. -->
     <item name="elevationOverlayEnabled">true</item>
-    <item name="elevationOverlayColor">?attr/colorPrimary</item>
+    <item name="elevationOverlayColor">@macro/m3_sys_color_light_surface_tint</item>
 
     <!-- Dialog themes. -->
     <item name="alertDialogTheme">@style/ThemeOverlay.Material3.Dialog.Alert</item>
@@ -471,7 +471,7 @@
 
     <!-- Elevation overlays. -->
     <item name="elevationOverlayEnabled">true</item>
-    <item name="elevationOverlayColor">?attr/colorPrimary</item>
+    <item name="elevationOverlayColor">@macro/m3_sys_color_dark_surface_tint</item>
 
     <!-- Dialog themes. -->
     <item name="alertDialogTheme">@style/ThemeOverlay.Material3.Dialog.Alert</item>
