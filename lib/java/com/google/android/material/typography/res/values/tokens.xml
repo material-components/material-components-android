@@ -159,6 +159,7 @@
     <item name="android:letterSpacing">0.04545455</item>
     <item name="android:textAllCaps">false</item>
   </style>
+
   <!-- Generated from token set (md.ref.typeface) in default context. -->
   <!-- Brand -->
   <macro name="m3_ref_typeface_brand_regular">sans-serif</macro>

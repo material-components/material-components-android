@@ -47,6 +47,7 @@
   <color name="m3_sys_color_dynamic_dark_on_background">@color/m3_ref_palette_dynamic_neutral90</color>
   <!-- Hairline colors -->
   <color name="m3_sys_color_dynamic_dark_outline">@color/m3_ref_palette_dynamic_neutral_variant60</color>
+
   <!-- Generated from token set (md.sys.color) in context (theme=light). -->
   <!-- Primary colors -->
   <color name="m3_sys_color_dynamic_light_primary">@color/m3_ref_palette_dynamic_primary40</color>
@@ -76,6 +77,7 @@
   <color name="m3_sys_color_dynamic_light_on_background">@color/m3_ref_palette_dynamic_neutral10</color>
   <!-- Hairline colors -->
   <color name="m3_sys_color_dynamic_light_outline">@color/m3_ref_palette_dynamic_neutral_variant50</color>
+
   <!-- Generated from token set (md.ref.palette) in default context. -->
   <!-- Baseline palette – Primary -->
   <color name="m3_ref_palette_dynamic_primary100">@android:color/system_accent1_0</color>

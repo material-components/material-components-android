@@ -53,6 +53,7 @@
   <color name="m3_sys_color_dark_error_container">@color/m3_ref_palette_error30</color>
   <color name="m3_sys_color_dark_on_error">@color/m3_ref_palette_error20</color>
   <color name="m3_sys_color_dark_on_error_container">@color/m3_ref_palette_error80</color>
+
   <!-- Generated from token set (md.sys.color) in context (theme=light). -->
   <!-- Primary colors -->
   <color name="m3_sys_color_light_primary">@color/m3_ref_palette_primary40</color>
@@ -88,6 +89,7 @@
   <color name="m3_sys_color_light_error_container">@color/m3_ref_palette_error90</color>
   <color name="m3_sys_color_light_on_error">@color/m3_ref_palette_error100</color>
   <color name="m3_sys_color_light_on_error_container">@color/m3_ref_palette_error10</color>
+
   <!-- Generated from token set (md.ref.palette) in default context. -->
   <!-- Baseline palette – Primary -->
   <color name="m3_ref_palette_primary100">#ffffffff</color>
