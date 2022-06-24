@@ -25,6 +25,7 @@
   <public name="fabAlignmentModeEndMargin" type="attr"/>
   <public name="menuAlignmentMode" type="attr"/>
   <public name="hideOnScroll" type="attr"/>
+  <public name="removeEmbeddedFabElevation" type="attr"/>
   <public name="Widget.MaterialComponents.BottomAppBar" type="style"/>
   <public name="Widget.MaterialComponents.BottomAppBar.Colored" type="style"/>
   <public name="Widget.MaterialComponents.BottomAppBar.PrimarySurface" type="style"/>

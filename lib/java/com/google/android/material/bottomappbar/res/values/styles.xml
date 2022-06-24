@@ -61,7 +61,6 @@
     <item name="fabCradleVerticalOffset">
       @dimen/m3_bottomappbar_fab_cradle_vertical_offset
     </item>
-
     <item name="elevation">@dimen/m3_sys_elevation_level2</item>
 
     <item name="backgroundTint">?attr/colorSurface</item>

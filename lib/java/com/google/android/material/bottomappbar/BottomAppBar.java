@@ -184,7 +184,6 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
 
   @Nullable private Animator modeAnimator;
   @Nullable private Animator menuAnimator;
-  @MenuAlignmentMode private int menuAlignmentMode;
   @FabAlignmentMode private int fabAlignmentMode;
   @FabAnimationMode private int fabAnimationMode;
   @FabAnchorMode private int fabAnchorMode;
@@ -195,6 +194,8 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   private final int fabOffsetEndMode;
   @Px private int fabAlignmentModeEndMargin;
 
+  @MenuAlignmentMode private int menuAlignmentMode;
+  private final boolean removeEmbeddedFabElevation;
   private boolean hideOnScroll;
   private final boolean paddingBottomSystemWindowInsets;
   private final boolean paddingLeftSystemWindowInsets;
@@ -324,6 +325,9 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     fabAnimationMode =
         a.getInt(R.styleable.BottomAppBar_fabAnimationMode, FAB_ANIMATION_MODE_SCALE);
     fabAnchorMode = a.getInt(R.styleable.BottomAppBar_fabAnchorMode, FAB_ANCHOR_MODE_CRADLE);
+    removeEmbeddedFabElevation =
+        a.getBoolean(R.styleable.BottomAppBar_removeEmbeddedFabElevation, true);
+
     menuAlignmentMode =
         a.getInt(R.styleable.BottomAppBar_menuAlignmentMode, MENU_ALIGNMENT_MODE_AUTO);
     hideOnScroll = a.getBoolean(R.styleable.BottomAppBar_hideOnScroll, false);
@@ -1375,6 +1379,10 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
 
         if (dependentView instanceof FloatingActionButton) {
           FloatingActionButton fab = ((FloatingActionButton) dependentView);
+          if (child.fabAnchorMode == FAB_ANCHOR_MODE_EMBED && child.removeEmbeddedFabElevation) {
+            ViewCompat.setElevation(fab, 0);
+            fab.setCompatElevation(0);
+          }
 
           // TODO (b/185233196): Update to use FABs default animator with motion theming.
           // If there is no motion spec set on the anchored fab, set one which scales the fab to

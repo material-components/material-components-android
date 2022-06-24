@@ -239,6 +239,7 @@ Element                          | Attribute                          | Related 
 **Cradle rounded corner radius** | `app:fabCradleRoundedCornerRadius` | `setFabCradleRoundedCornerRadius`<br>`getFabCradleRoundedCornerRadius` | `4dp`
 **Cradle vertical offset**       | `app:fabCradleVerticalOffset`      | `setCradleVerticalOffset`<br>`getCradleVerticalOffset`                 | `12dp`
 **End margin**                   | `app:fabAlignmentModeEndMargin`    | `setFabAlignmentModeEndMargin` <br> `getFabAlignmentModeEndMargin`     | N/A
+**Embedded elevation**           | `app:removeEmbeddedFabElevation`   | N/A   | `true`
 
 See the
 [FAB documentation](https://github.com/material-components/material-components-android/tree/master/docs/components/FloatingActionButton.md)

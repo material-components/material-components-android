@@ -52,6 +52,8 @@
     <attr name="fabCradleVerticalOffset" format="dimension"/>
     <!-- The end margin of the fab when the fab is end-aligned. -->
     <attr name="fabAlignmentModeEndMargin" format="dimension"/>
+    <!-- Whether or not to remove elevation for embedded fabs in the bottom app bar. -->
+    <attr name="removeEmbeddedFabElevation" format="boolean"/>
     <!-- Whether the BottomAppBar should hide when a NestedScrollView is scrolled. -->
     <attr name="hideOnScroll" format="boolean"/>
     <!-- Whether the BottomAppBar should apply padding to be above the bottom window insets. -->
