@@ -180,15 +180,21 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   public @interface MenuAlignmentMode {}
 
   @Nullable private Integer navigationIconTint;
-  private final int fabOffsetEndMode;
   private final MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable();
 
   @Nullable private Animator modeAnimator;
   @Nullable private Animator menuAnimator;
+  @MenuAlignmentMode private int menuAlignmentMode;
   @FabAlignmentMode private int fabAlignmentMode;
   @FabAnimationMode private int fabAnimationMode;
   @FabAnchorMode private int fabAnchorMode;
-  @MenuAlignmentMode private int menuAlignmentMode;
+
+  /** No end margin for the FAB. */
+  private static final int NO_FAB_END_MARGIN = -1;
+
+  private final int fabOffsetEndMode;
+  @Px private int fabAlignmentModeEndMargin;
+
   private boolean hideOnScroll;
   private final boolean paddingBottomSystemWindowInsets;
   private final boolean paddingLeftSystemWindowInsets;
@@ -328,6 +334,9 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
         a.getBoolean(R.styleable.BottomAppBar_paddingLeftSystemWindowInsets, false);
     paddingRightSystemWindowInsets =
         a.getBoolean(R.styleable.BottomAppBar_paddingRightSystemWindowInsets, false);
+    fabAlignmentModeEndMargin =
+        a.getDimensionPixelOffset(
+            R.styleable.BottomAppBar_fabAlignmentModeEndMargin, NO_FAB_END_MARGIN);
 
     a.recycle();
 
@@ -596,6 +605,29 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     if (verticalOffset != getCradleVerticalOffset()) {
       getTopEdgeTreatment().setCradleVerticalOffset(verticalOffset);
       materialShapeDrawable.invalidateSelf();
+      setCutoutStateAndTranslateFab();
+    }
+  }
+
+  /**
+   * Returns the {@link FloatingActionButton} end margin pixel offset for the fab if it is set.
+   *
+   * <p>An end margin of -1 indicates that the default margin will be used.
+   */
+  @Px
+  public int getFabAlignmentModeEndMargin() {
+    return fabAlignmentModeEndMargin;
+  }
+
+  /**
+   * Sets the end margin, in pixels, of the {@link FloatingActionButton}. This will only have an
+   * effect if the fab alignment mode is {@link #FAB_ALIGNMENT_MODE_END}.
+   *
+   * <p>An offset of -1 will use the default margin.
+   */
+  public void setFabAlignmentModeEndMargin(@Px int margin) {
+    if (fabAlignmentModeEndMargin != margin) {
+      fabAlignmentModeEndMargin = margin;
       setCutoutStateAndTranslateFab();
     }
   }
@@ -994,8 +1026,17 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   private float getFabTranslationX(@FabAlignmentMode int fabAlignmentMode) {
     boolean isRtl = ViewUtils.isLayoutRtl(this);
     if (fabAlignmentMode == FAB_ALIGNMENT_MODE_END) {
+      View fab = findDependentView();
       int systemEndInset = isRtl ? leftInset : rightInset;
-      int totalEndInset = fabOffsetEndMode + systemEndInset;
+      int totalEndInset = systemEndInset;
+      if (fabAlignmentModeEndMargin != NO_FAB_END_MARGIN && fab != null) {
+        totalEndInset += fab.getMeasuredWidth() / 2 + fabAlignmentModeEndMargin;
+      } else {
+        // If no fab end margin is specified, it follows the previous behaviour of
+        // translating by fabOffsetEndMode instead of a clear-cut margin.
+        // This will result in a different padding for different FAB sizes.
+        totalEndInset += fabOffsetEndMode;
+      }
       return (getMeasuredWidth() / 2 - totalEndInset) * (isRtl ? -1 : 1);
     } else {
       return 0;
