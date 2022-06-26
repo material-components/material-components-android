@@ -24,15 +24,12 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
-
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration;
-
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
-
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DimenRes;
@@ -42,7 +39,6 @@ import androidx.annotation.Px;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
-
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.resources.MaterialResources;
 
@@ -65,11 +61,9 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
   private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_MaterialDivider;
   private static final int EMPTY_ITEMS_RECYCLER_VIEW = 0;
 
-  @NonNull
-  private Drawable dividerDrawable;
+  @NonNull private Drawable dividerDrawable;
   private int thickness;
-  @ColorInt
-  private int color;
+  @ColorInt private int color;
   private int orientation;
   private int insetStart;
   private int insetEnd;
@@ -113,6 +107,7 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
     setOrientation(orientation);
   }
 
+
   /**
    * Sets the orientation for this divider. This should be called if {@link
    * RecyclerView.LayoutManager} changes orientation.
@@ -121,7 +116,7 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
    * orientation a horizontal divider.
    *
    * @param orientation The orientation of the {@link RecyclerView} this divider is associated with:
-   *                    {@link #HORIZONTAL} or {@link #VERTICAL}
+   *     {@link #HORIZONTAL} or {@link #VERTICAL}
    */
   public void setOrientation(int orientation) {
     if (orientation != HORIZONTAL && orientation != VERTICAL) {
@@ -139,8 +134,8 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
    * Sets the thickness of the divider.
    *
    * @param thickness The thickness value to be set.
-   * @attr ref com.google.android.material.R.styleable#MaterialDivider_dividerThickness
    * @see #getDividerThickness()
+   * @attr ref com.google.android.material.R.styleable#MaterialDivider_dividerThickness
    */
   public void setDividerThickness(@Px int thickness) {
     this.thickness = thickness;
@@ -150,8 +145,8 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
    * Sets the thickness of the divider.
    *
    * @param thicknessId The id of the thickness dimension resource to be set.
-   * @attr ref com.google.android.material.R.styleable#MaterialDivider_dividerThickness
    * @see #getDividerThickness()
+   * @attr ref com.google.android.material.R.styleable#MaterialDivider_dividerThickness
    */
   public void setDividerThicknessResource(@NonNull Context context, @DimenRes int thicknessId) {
     setDividerThickness(context.getResources().getDimensionPixelSize(thicknessId));
@@ -160,8 +155,8 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
   /**
    * Returns the thickness set on the divider.
    *
-   * @attr ref com.google.android.material.R.styleable#MaterialDivider_dividerThickness
    * @see #setDividerThickness(int)
+   * @attr ref com.google.android.material.R.styleable#MaterialDivider_dividerThickness
    */
   @Px
   public int getDividerThickness() {
@@ -172,8 +167,8 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
    * Sets the color of the divider.
    *
    * @param color The color to be set.
-   * @attr ref com.google.android.material.R.styleable#MaterialDivider_dividerColor
    * @see #getDividerColor()
+   * @attr ref com.google.android.material.R.styleable#MaterialDivider_dividerColor
    */
   public void setDividerColor(@ColorInt int color) {
     this.color = color;
@@ -185,8 +180,8 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
    * Sets the color of the divider.
    *
    * @param colorId The id of the color resource to be set.
-   * @attr ref com.google.android.material.R.styleable#MaterialDivider_dividerColor
    * @see #getDividerColor()
+   * @attr ref com.google.android.material.R.styleable#MaterialDivider_dividerColor
    */
   public void setDividerColorResource(@NonNull Context context, @ColorRes int colorId) {
     setDividerColor(ContextCompat.getColor(context, colorId));
@@ -195,8 +190,8 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
   /**
    * Returns the divider color.
    *
-   * @attr ref com.google.android.material.R.styleable#MaterialDivider_dividerColor
    * @see #setDividerColor(int)
+   * @attr ref com.google.android.material.R.styleable#MaterialDivider_dividerColor
    */
   @ColorInt
   public int getDividerColor() {
@@ -207,8 +202,8 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
    * Sets the start inset of the divider.
    *
    * @param insetStart The start inset to be set.
-   * @attr ref com.google.android.material.R.styleable#MaterialDivider_dividerInsetStart
    * @see #getDividerInsetStart()
+   * @attr ref com.google.android.material.R.styleable#MaterialDivider_dividerInsetStart
    */
   public void setDividerInsetStart(@Px int insetStart) {
     this.insetStart = insetStart;
@@ -218,8 +213,8 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
    * Sets the start inset of the divider.
    *
    * @param insetStartId The id of the inset dimension resource to be set.
-   * @attr ref com.google.android.material.R.styleable#MaterialDivider_dividerInsetStart
    * @see #getDividerInsetStart()
+   * @attr ref com.google.android.material.R.styleable#MaterialDivider_dividerInsetStart
    */
   public void setDividerInsetStartResource(@NonNull Context context, @DimenRes int insetStartId) {
     setDividerInsetStart(context.getResources().getDimensionPixelOffset(insetStartId));
@@ -228,8 +223,8 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
   /**
    * Returns the divider's start inset.
    *
-   * @attr ref com.google.android.material.R.styleable#MaterialDivider_dividerInsetStart
    * @see #setDividerInsetStart(int)
+   * @attr ref com.google.android.material.R.styleable#MaterialDivider_dividerInsetStart
    */
   @Px
   public int getDividerInsetStart() {
@@ -240,8 +235,8 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
    * Sets the end inset of the divider.
    *
    * @param insetEnd The end inset to be set.
-   * @attr ref com.google.android.material.R.styleable#MaterialDivider_dividerInsetEnd
    * @see #getDividerInsetEnd()
+   * @attr ref com.google.android.material.R.styleable#MaterialDivider_dividerInsetEnd
    */
   public void setDividerInsetEnd(@Px int insetEnd) {
     this.insetEnd = insetEnd;
@@ -251,8 +246,8 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
    * Sets the end inset of the divider.
    *
    * @param insetEndId The id of the inset dimension resource to be set.
-   * @attr ref com.google.android.material.R.styleable#MaterialDivider_dividerInsetEnd
    * @see #getDividerInsetEnd()
+   * @attr ref com.google.android.material.R.styleable#MaterialDivider_dividerInsetEnd
    */
   public void setDividerInsetEndResource(@NonNull Context context, @DimenRes int insetEndId) {
     setDividerInsetEnd(context.getResources().getDimensionPixelOffset(insetEndId));
@@ -261,8 +256,8 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
   /**
    * Returns the divider's end inset.
    *
-   * @attr ref com.google.android.material.R.styleable#MaterialDivider_dividerInsetEnd
    * @see #setDividerInsetEnd(int)
+   * @attr ref com.google.android.material.R.styleable#MaterialDivider_dividerInsetEnd
    */
   @Px
   public int getDividerInsetEnd() {
@@ -273,8 +268,8 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
    * Sets whether the class should draw a divider after the last item of a {@link RecyclerView}.
    *
    * @param lastItemDecorated whether there's a divider after the last item of a recycler view.
-   * @attr ref com.google.android.material.R.styleable#MaterialDivider_lastItemDecorated
    * @see #isLastItemDecorated()
+   * @attr ref com.google.android.material.R.styleable#MaterialDivider_lastItemDecorated
    */
   public void setLastItemDecorated(boolean lastItemDecorated) {
     this.lastItemDecorated = lastItemDecorated;
@@ -283,8 +278,8 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
   /**
    * Whether there's a divider after the last item of a {@link RecyclerView}.
    *
-   * @attr ref com.google.android.material.R.styleable#MaterialDivider_shouldDecorateLastItem
    * @see #setLastItemDecorated(boolean)
+   * @attr ref com.google.android.material.R.styleable#MaterialDivider_shouldDecorateLastItem
    */
   public boolean isLastItemDecorated() {
     return lastItemDecorated;
