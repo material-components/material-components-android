@@ -107,7 +107,6 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
     setOrientation(orientation);
   }
 
-
   /**
    * Sets the orientation for this divider. This should be called if {@link
    * RecyclerView.LayoutManager} changes orientation.
