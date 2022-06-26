@@ -59,6 +59,7 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
   public static final int VERTICAL = LinearLayout.VERTICAL;
 
   private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_MaterialDivider;
+  private static final int EMPTY_ITEMS_RECYCLER_VIEW = 0;
 
   @NonNull private Drawable dividerDrawable;
   private int thickness;
@@ -317,8 +318,7 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
     left += isRtl ? insetEnd : insetStart;
     right -= isRtl ? insetStart : insetEnd;
 
-    int childCount = parent.getChildCount();
-    int dividerCount = lastItemDecorated ? childCount : childCount - 1;
+    int dividerCount = lastItemDecorated ? getDividerCount(parent) : getDividerCount(parent) - 1;
     for (int i = 0; i < dividerCount; i++) {
       View child = parent.getChildAt(i);
       parent.getDecoratedBoundsWithMargins(child, tempRect);
@@ -362,6 +362,16 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
       dividerDrawable.draw(canvas);
     }
     canvas.restore();
+  }
+
+  private int getDividerCount(RecyclerView recyclerView) {
+    int dividerCount;
+    if (recyclerView.getAdapter() != null) {
+      dividerCount = recyclerView.getAdapter().getItemCount();
+    } else {
+      dividerCount = EMPTY_ITEMS_RECYCLER_VIEW;
+    }
+    return dividerCount;
   }
 
   @Override
