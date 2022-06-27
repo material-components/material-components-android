@@ -19,7 +19,7 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="NewApi">
   <!-- Generated from token set (md.sys.typescale) in default context. -->
-  <!-- Display Large -->
+  <!-- Display styles - Display Large -->
   <style name="TextAppearance.M3.Sys.Typescale.DisplayLarge" parent="TextAppearance.AppCompat.Display3">
     <item name="fontFamily">@macro/m3_ref_typeface_brand_regular</item>
     <item name="android:fontFamily">@macro/m3_ref_typeface_brand_regular</item>
@@ -30,7 +30,7 @@
     <item name="android:lineHeight">64sp</item>
     <item name="android:textAllCaps">false</item>
   </style>
-  <!-- Display Medium -->
+  <!-- Display styles - Display Medium -->
   <style name="TextAppearance.M3.Sys.Typescale.DisplayMedium" parent="TextAppearance.AppCompat.Display2">
     <item name="fontFamily">@macro/m3_ref_typeface_brand_regular</item>
     <item name="android:fontFamily">@macro/m3_ref_typeface_brand_regular</item>
@@ -41,7 +41,7 @@
     <item name="android:lineHeight">52sp</item>
     <item name="android:textAllCaps">false</item>
   </style>
-  <!-- Display Small -->
+  <!-- Display styles - Display Small -->
   <style name="TextAppearance.M3.Sys.Typescale.DisplaySmall" parent="TextAppearance.AppCompat.Display1">
     <item name="fontFamily">@macro/m3_ref_typeface_brand_regular</item>
     <item name="android:fontFamily">@macro/m3_ref_typeface_brand_regular</item>
@@ -52,7 +52,7 @@
     <item name="android:lineHeight">44sp</item>
     <item name="android:textAllCaps">false</item>
   </style>
-  <!-- Headline Large -->
+  <!-- Headline styles - Headline Large -->
   <style name="TextAppearance.M3.Sys.Typescale.HeadlineLarge" parent="TextAppearance.AppCompat.Display1">
     <item name="fontFamily">@macro/m3_ref_typeface_brand_regular</item>
     <item name="android:fontFamily">@macro/m3_ref_typeface_brand_regular</item>
@@ -63,7 +63,7 @@
     <item name="android:lineHeight">40sp</item>
     <item name="android:textAllCaps">false</item>
   </style>
-  <!-- Headline Medium -->
+  <!-- Headline styles - Headline Medium -->
   <style name="TextAppearance.M3.Sys.Typescale.HeadlineMedium" parent="TextAppearance.AppCompat.Headline">
     <item name="fontFamily">@macro/m3_ref_typeface_brand_regular</item>
     <item name="android:fontFamily">@macro/m3_ref_typeface_brand_regular</item>
@@ -74,7 +74,7 @@
     <item name="android:lineHeight">36sp</item>
     <item name="android:textAllCaps">false</item>
   </style>
-  <!-- Headline Small -->
+  <!-- Headline styles - Headline Small -->
   <style name="TextAppearance.M3.Sys.Typescale.HeadlineSmall" parent="TextAppearance.AppCompat.Title">
     <item name="fontFamily">@macro/m3_ref_typeface_brand_regular</item>
     <item name="android:fontFamily">@macro/m3_ref_typeface_brand_regular</item>
@@ -85,7 +85,7 @@
     <item name="android:lineHeight">32sp</item>
     <item name="android:textAllCaps">false</item>
   </style>
-  <!-- Title Large -->
+  <!-- Title styles - Title Large -->
   <style name="TextAppearance.M3.Sys.Typescale.TitleLarge" parent="TextAppearance.AppCompat.Title">
     <item name="fontFamily">@macro/m3_ref_typeface_brand_regular</item>
     <item name="android:fontFamily">@macro/m3_ref_typeface_brand_regular</item>
@@ -96,7 +96,7 @@
     <item name="android:lineHeight">28sp</item>
     <item name="android:textAllCaps">false</item>
   </style>
-  <!-- Title Medium -->
+  <!-- Title styles - Title Medium -->
   <style name="TextAppearance.M3.Sys.Typescale.TitleMedium" parent="TextAppearance.AppCompat.Subhead">
     <item name="fontFamily">@macro/m3_ref_typeface_plain_medium</item>
     <item name="android:fontFamily">@macro/m3_ref_typeface_plain_medium</item>
@@ -107,7 +107,7 @@
     <item name="android:lineHeight">24sp</item>
     <item name="android:textAllCaps">false</item>
   </style>
-  <!-- Title Small -->
+  <!-- Title styles - Title Small -->
   <style name="TextAppearance.M3.Sys.Typescale.TitleSmall" parent="TextAppearance.AppCompat.Subhead">
     <item name="fontFamily">@macro/m3_ref_typeface_plain_medium</item>
     <item name="android:fontFamily">@macro/m3_ref_typeface_plain_medium</item>
@@ -118,7 +118,7 @@
     <item name="android:lineHeight">20sp</item>
     <item name="android:textAllCaps">false</item>
   </style>
-  <!-- Body Large -->
+  <!-- Body styles - Body Large -->
   <style name="TextAppearance.M3.Sys.Typescale.BodyLarge" parent="TextAppearance.AppCompat.Body2">
     <item name="fontFamily">@macro/m3_ref_typeface_plain_regular</item>
     <item name="android:fontFamily">@macro/m3_ref_typeface_plain_regular</item>
@@ -129,7 +129,7 @@
     <item name="android:lineHeight">24sp</item>
     <item name="android:textAllCaps">false</item>
   </style>
-  <!-- Body Medium -->
+  <!-- Body styles - Body Medium -->
   <style name="TextAppearance.M3.Sys.Typescale.BodyMedium" parent="TextAppearance.AppCompat.Body1">
     <item name="fontFamily">@macro/m3_ref_typeface_plain_regular</item>
     <item name="android:fontFamily">@macro/m3_ref_typeface_plain_regular</item>
@@ -140,7 +140,7 @@
     <item name="android:lineHeight">20sp</item>
     <item name="android:textAllCaps">false</item>
   </style>
-  <!-- Body Small -->
+  <!-- Body styles - Body Small -->
   <style name="TextAppearance.M3.Sys.Typescale.BodySmall" parent="TextAppearance.AppCompat.Caption">
     <item name="fontFamily">@macro/m3_ref_typeface_plain_regular</item>
     <item name="android:fontFamily">@macro/m3_ref_typeface_plain_regular</item>
@@ -151,7 +151,7 @@
     <item name="android:lineHeight">16sp</item>
     <item name="android:textAllCaps">false</item>
   </style>
-  <!-- Label Large -->
+  <!-- Label styles - Label Large -->
   <style name="TextAppearance.M3.Sys.Typescale.LabelLarge" parent="TextAppearance.AppCompat.Body1">
     <item name="fontFamily">@macro/m3_ref_typeface_plain_medium</item>
     <item name="android:fontFamily">@macro/m3_ref_typeface_plain_medium</item>
@@ -162,7 +162,7 @@
     <item name="android:lineHeight">20sp</item>
     <item name="android:textAllCaps">false</item>
   </style>
-  <!-- Label Medium -->
+  <!-- Label styles - Label Medium -->
   <style name="TextAppearance.M3.Sys.Typescale.LabelMedium" parent="TextAppearance.AppCompat.Caption">
     <item name="fontFamily">@macro/m3_ref_typeface_plain_medium</item>
     <item name="android:fontFamily">@macro/m3_ref_typeface_plain_medium</item>
@@ -173,7 +173,7 @@
     <item name="android:lineHeight">16sp</item>
     <item name="android:textAllCaps">false</item>
   </style>
-  <!-- Label Small -->
+  <!-- Label styles - Label Small -->
   <style name="TextAppearance.M3.Sys.Typescale.LabelSmall" parent="TextAppearance.AppCompat.Caption">
     <item name="fontFamily">@macro/m3_ref_typeface_plain_medium</item>
     <item name="android:fontFamily">@macro/m3_ref_typeface_plain_medium</item>

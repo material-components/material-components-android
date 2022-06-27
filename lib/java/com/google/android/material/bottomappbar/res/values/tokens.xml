@@ -19,7 +19,7 @@
 
 <resources>
   <!-- Generated from token set (md.comp.bottom-app-bar) in default context. -->
-  <!-- Container -->
+  <!-- Enabled - Container -->
   <macro name="m3_comp_bottom_app_bar_container_color">?attr/colorSurface</macro>
   <style name="ShapeAppearance.M3.Comp.BottomAppBar.Container.Shape" parent="ShapeAppearance.M3.Sys.Shape.Corner.None"/>
   <dimen name="m3_comp_bottom_app_bar_container_elevation">@dimen/m3_sys_elevation_level2</dimen>
