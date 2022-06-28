@@ -104,18 +104,16 @@
 
   <!-- M3 Regular FABs -->
   <style name="Base.Widget.Material3.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
-    <item name="backgroundTint">@color/m3_fab_background_color_selector</item>
-    <item name="tint">@color/m3_fab_foreground_color_selector</item>
-    <item name="rippleColor">@color/m3_fab_ripple_color_selector</item>
-    <item name="enforceMaterialTheme">true</item>
+    <item name="backgroundTint">@color/m3_button_background_color_selector</item>
     <item name="borderWidth">@dimen/m3_fab_border_width</item>
-    <item name="elevation">@dimen/m3_comp_fab_primary_container_elevation</item>
-    <item name="hoveredFocusedTranslationZ">@dimen/m3_comp_fab_primary_hover_container_elevation</item>
-    <item name="pressedTranslationZ">@dimen/m3_comp_fab_primary_pressed_container_elevation</item>
-    <item name="fabCustomSize">@dimen/m3_comp_fab_primary_container_height</item>
-    <item name="maxImageSize">@dimen/m3_comp_fab_primary_icon_size</item>
-    <item name="shapeAppearance">@macro/m3_comp_fab_primary_container_shape</item>
+    <item name="elevation">6dp</item>
+    <item name="enforceMaterialTheme">true</item>
+    <item name="hoveredFocusedTranslationZ">@dimen/m3_fab_translation_z_hovered_focused</item>
+    <item name="pressedTranslationZ">@dimen/m3_fab_translation_z_pressed</item>
+    <item name="rippleColor">@color/m3_button_ripple_color_selector</item>
+    <item name="shapeAppearance">?attr/shapeAppearanceCornerLarge</item>
     <item name="shapeAppearanceOverlay">@null</item>
+    <item name="tint">@color/m3_button_foreground_color_selector</item>
     <!--Remove the motion spec and allow FloatingActionButtonImpl to create a theme-based animation-->
     <item name="showMotionSpec">@null</item>
     <item name="hideMotionSpec">@null</item>
@@ -167,42 +165,42 @@
   </style>
 
   <style name="Widget.Material3.ExtendedFloatingActionButton.Primary" parent="Base.Widget.Material3.ExtendedFloatingActionButton">
-    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.ExtendedFloatingActionButton.Primary</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.FloatingActionButton.Primary</item>
   </style>
 
   <style name="Widget.Material3.ExtendedFloatingActionButton.Secondary" parent="Base.Widget.Material3.ExtendedFloatingActionButton">
-    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.ExtendedFloatingActionButton.Secondary</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.FloatingActionButton.Secondary</item>
   </style>
 
   <style name="Widget.Material3.ExtendedFloatingActionButton.Tertiary" parent="Base.Widget.Material3.ExtendedFloatingActionButton">
-    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.ExtendedFloatingActionButton.Tertiary</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.FloatingActionButton.Tertiary</item>
   </style>
 
   <style name="Widget.Material3.ExtendedFloatingActionButton.Surface" parent="Base.Widget.Material3.ExtendedFloatingActionButton">
-    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.ExtendedFloatingActionButton.Surface</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.FloatingActionButton.Surface</item>
   </style>
 
   <style name="Widget.Material3.ExtendedFloatingActionButton.Icon.Primary" parent="Base.Widget.Material3.ExtendedFloatingActionButton.Icon">
-    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.ExtendedFloatingActionButton.Primary</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.FloatingActionButton.Primary</item>
   </style>
 
   <style name="Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary" parent="Base.Widget.Material3.ExtendedFloatingActionButton.Icon">
-    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.ExtendedFloatingActionButton.Secondary</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.FloatingActionButton.Secondary</item>
   </style>
 
   <style name="Widget.Material3.ExtendedFloatingActionButton.Icon.Tertiary" parent="Base.Widget.Material3.ExtendedFloatingActionButton.Icon">
-    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.ExtendedFloatingActionButton.Tertiary</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.FloatingActionButton.Tertiary</item>
   </style>
 
   <style name="Widget.Material3.ExtendedFloatingActionButton.Icon.Surface" parent="Base.Widget.Material3.ExtendedFloatingActionButton.Icon">
-    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.ExtendedFloatingActionButton.Surface</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.FloatingActionButton.Surface</item>
   </style>
 
   <!-- M3 Small FABs -->
   <style name="Base.Widget.Material3.FloatingActionButton.Small" parent="Base.Widget.Material3.FloatingActionButton">
-    <item name="fabCustomSize">@dimen/m3_comp_fab_primary_small_container_height</item>
-    <item name="maxImageSize">@dimen/m3_comp_fab_primary_small_icon_size</item>
-    <item name="shapeAppearance">@macro/m3_comp_fab_primary_small_container_shape</item>
+    <item name="fabCustomSize">@dimen/m3_small_fab_size</item>
+    <item name="maxImageSize">@dimen/m3_small_fab_max_image_size</item>
+    <item name="shapeAppearance">?attr/shapeAppearanceCornerMedium</item>
     <item name="shapeAppearanceOverlay">@null</item>
   </style>
 
@@ -224,9 +222,9 @@
 
   <!-- M3 Large FABs -->
   <style name="Base.Widget.Material3.FloatingActionButton.Large" parent="Base.Widget.Material3.FloatingActionButton">
-    <item name="fabCustomSize">@dimen/m3_comp_fab_primary_large_container_height</item>
-    <item name="maxImageSize">@dimen/m3_comp_fab_primary_large_icon_size</item>
-    <item name="shapeAppearance">@macro/m3_comp_fab_primary_large_container_shape</item>
+    <item name="fabCustomSize">@dimen/m3_large_fab_size</item>
+    <item name="maxImageSize">@dimen/m3_large_fab_max_image_size</item>
+    <item name="shapeAppearance">?attr/shapeAppearanceCornerExtraLarge</item>
     <item name="shapeAppearanceOverlay">@null</item>
   </style>
 
@@ -258,41 +256,21 @@
   </style>
 
   <style name="ThemeOverlay.Material3.FloatingActionButton.Primary" parent="">
-    <item name="colorContainer">@macro/m3_comp_fab_primary_container_color</item>
-    <item name="colorOnContainer">@macro/m3_comp_fab_primary_icon_color</item>
-  </style>
-
-  <style name="ThemeOverlay.Material3.FloatingActionButton.Secondary" parent="">
-    <item name="colorContainer">@macro/m3_comp_fab_secondary_container_color</item>
-    <item name="colorOnContainer">@macro/m3_comp_fab_secondary_icon_color</item>
-  </style>
-
-  <style name="ThemeOverlay.Material3.FloatingActionButton.Tertiary" parent="">
-    <item name="colorContainer">@macro/m3_comp_fab_tertiary_container_color</item>
-    <item name="colorOnContainer">@macro/m3_comp_fab_tertiary_icon_color</item>
-  </style>
-
-  <style name="ThemeOverlay.Material3.FloatingActionButton.Surface" parent="">
-    <item name="colorContainer">@macro/m3_comp_fab_surface_container_color</item>
-    <item name="colorOnContainer">@macro/m3_comp_fab_surface_icon_color</item>
-  </style>
-
-  <style name="ThemeOverlay.Material3.ExtendedFloatingActionButton.Primary" parent="">
     <item name="colorContainer">?attr/colorPrimaryContainer</item>
     <item name="colorOnContainer">?attr/colorOnPrimaryContainer</item>
   </style>
 
-  <style name="ThemeOverlay.Material3.ExtendedFloatingActionButton.Secondary" parent="">
+  <style name="ThemeOverlay.Material3.FloatingActionButton.Secondary" parent="">
     <item name="colorContainer">?attr/colorSecondaryContainer</item>
     <item name="colorOnContainer">?attr/colorOnSecondaryContainer</item>
   </style>
 
-  <style name="ThemeOverlay.Material3.ExtendedFloatingActionButton.Tertiary" parent="">
+  <style name="ThemeOverlay.Material3.FloatingActionButton.Tertiary" parent="">
     <item name="colorContainer">?attr/colorTertiaryContainer</item>
     <item name="colorOnContainer">?attr/colorOnTertiaryContainer</item>
   </style>
 
-  <style name="ThemeOverlay.Material3.ExtendedFloatingActionButton.Surface" parent="">
+  <style name="ThemeOverlay.Material3.FloatingActionButton.Surface" parent="">
     <item name="colorContainer">?attr/colorSurface</item>
     <item name="colorOnContainer">?attr/colorPrimary</item>
   </style>
