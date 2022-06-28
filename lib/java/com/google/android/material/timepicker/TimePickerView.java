@@ -103,17 +103,15 @@ class TimePickerView extends ConstraintLayout implements TimePickerControls {
     LayoutInflater.from(context).inflate(R.layout.material_timepicker, this);
     clockFace = findViewById(R.id.material_clock_face);
     toggle = findViewById(R.id.material_clock_period_toggle);
-    toggle.addOnButtonCheckedListener(
-        new OnButtonCheckedListener() {
-          @Override
-          public void onButtonChecked(
-              MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
-            int period = checkedId == R.id.material_clock_period_pm_button ? PM : AM;
-            if (onPeriodChangeListener != null && isChecked) {
-              onPeriodChangeListener.onPeriodChange(period);
-            }
-          }
-        });
+
+    toggle.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
+      if (!isChecked) return;
+
+      if (onPeriodChangeListener != null) {
+        int period = checkedId == R.id.material_clock_period_pm_button ? PM : AM;
+        onPeriodChangeListener.onPeriodChange(period);
+      }
+    });
 
     minuteView = findViewById(R.id.material_minute_tv);
     hourView = findViewById(R.id.material_hour_tv);

@@ -194,15 +194,13 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
   private void setupPeriodToggle() {
     toggle = timePickerView.findViewById(R.id.material_clock_period_toggle);
 
-    toggle.addOnButtonCheckedListener(
-        new OnButtonCheckedListener() {
-          @Override
-          public void onButtonChecked(
-              MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
-            int period = checkedId == R.id.material_clock_period_pm_button ? PM : AM;
-            time.setPeriod(period);
-          }
-        });
+    toggle.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
+      if (!isChecked) return;
+
+      int period = checkedId == R.id.material_clock_period_pm_button ? PM : AM;
+      time.setPeriod(period);
+    });
+
     toggle.setVisibility(View.VISIBLE);
     updateSelection();
   }
