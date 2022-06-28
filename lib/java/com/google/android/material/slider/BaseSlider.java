@@ -55,7 +55,9 @@ import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+
 import androidx.appcompat.content.res.AppCompatResources;
+
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -67,6 +69,7 @@ import android.view.ViewParent;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.SeekBar;
+
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DimenRes;
@@ -82,6 +85,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.RangeInfoCompat;
 import androidx.customview.widget.ExploreByTouchHelper;
+
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.drawable.DrawableUtils;
 import com.google.android.material.internal.DescendantOffsetUtils;
@@ -93,6 +97,7 @@ import com.google.android.material.shape.CornerFamily;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.tooltip.TooltipDrawable;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.math.BigDecimal;
@@ -193,9 +198,9 @@ import java.util.List;
  * @attr ref com.google.android.material.R.styleable#Slider_trackHeight
  */
 abstract class BaseSlider<
-        S extends BaseSlider<S, L, T>,
-        L extends BaseOnChangeListener<S>,
-        T extends BaseOnSliderTouchListener<S>>
+    S extends BaseSlider<S, L, T>,
+    L extends BaseOnChangeListener<S>,
+    T extends BaseOnSliderTouchListener<S>>
     extends View {
 
   private static final String TAG = BaseSlider.class.getSimpleName();
@@ -234,13 +239,20 @@ abstract class BaseSlider<
   private static final long LABEL_ANIMATION_ENTER_DURATION = 83L;
   private static final long LABEL_ANIMATION_EXIT_DURATION = 117L;
 
-  @NonNull private final Paint inactiveTrackPaint;
-  @NonNull private final Paint activeTrackPaint;
-  @NonNull private final Paint thumbPaint;
-  @NonNull private final Paint haloPaint;
-  @NonNull private final Paint inactiveTicksPaint;
-  @NonNull private final Paint activeTicksPaint;
-  @NonNull private final AccessibilityHelper accessibilityHelper;
+  @NonNull
+  private final Paint inactiveTrackPaint;
+  @NonNull
+  private final Paint activeTrackPaint;
+  @NonNull
+  private final Paint thumbPaint;
+  @NonNull
+  private final Paint haloPaint;
+  @NonNull
+  private final Paint inactiveTicksPaint;
+  @NonNull
+  private final Paint activeTicksPaint;
+  @NonNull
+  private final AccessibilityHelper accessibilityHelper;
   private final AccessibilityManager accessibilityManager;
   private AccessibilityEventSender accessibilityEventSender;
 
@@ -248,10 +260,14 @@ abstract class BaseSlider<
     TooltipDrawable createTooltipDrawable();
   }
 
-  @NonNull private final TooltipDrawableFactory labelMaker;
-  @NonNull private final List<TooltipDrawable> labels = new ArrayList<>();
-  @NonNull private final List<L> changeListeners = new ArrayList<>();
-  @NonNull private final List<T> touchListeners = new ArrayList<>();
+  @NonNull
+  private final TooltipDrawableFactory labelMaker;
+  @NonNull
+  private final List<TooltipDrawable> labels = new ArrayList<>();
+  @NonNull
+  private final List<L> changeListeners = new ArrayList<>();
+  @NonNull
+  private final List<T> touchListeners = new ArrayList<>();
 
   // Whether the labels are showing or in the process of animating in.
   private boolean labelsAreAnimatedIn = false;
@@ -263,11 +279,13 @@ abstract class BaseSlider<
   private int minTrackSidePadding;
   private int defaultThumbRadius;
   private int defaultTrackHeight;
+  private int defaultTickHeight;
 
   private int minWidgetHeight;
   private int widgetHeight;
   private int labelBehavior;
   private int trackHeight;
+  private int tickHeight;
   private int trackSidePadding;
   private int thumbRadius;
   private int haloRadius;
@@ -286,6 +304,7 @@ abstract class BaseSlider<
   // The index of the currently focused thumb.
   private int focusedThumbIdx = -1;
   private float stepSize = 0.0f;
+  private float tickSize = 0.0f;
   private float[] ticksCoordinates;
   private boolean tickVisible = true;
   private int trackWidth;
@@ -293,18 +312,27 @@ abstract class BaseSlider<
   private boolean isLongPress = false;
   private boolean dirtyConfig;
 
-  @NonNull private ColorStateList haloColor;
-  @NonNull private ColorStateList tickColorActive;
-  @NonNull private ColorStateList tickColorInactive;
-  @NonNull private ColorStateList trackColorActive;
-  @NonNull private ColorStateList trackColorInactive;
+  @NonNull
+  private ColorStateList haloColor;
+  @NonNull
+  private ColorStateList tickColorActive;
+  @NonNull
+  private ColorStateList tickColorInactive;
+  @NonNull
+  private ColorStateList trackColorActive;
+  @NonNull
+  private ColorStateList trackColorInactive;
 
-  @NonNull private final MaterialShapeDrawable defaultThumbDrawable = new MaterialShapeDrawable();
-  @Nullable private Drawable customThumbDrawable;
-  @NonNull private List<Drawable> customThumbDrawablesForValues = Collections.emptyList();
+  @NonNull
+  private final MaterialShapeDrawable defaultThumbDrawable = new MaterialShapeDrawable();
+  @Nullable
+  private Drawable customThumbDrawable;
+  @NonNull
+  private List<Drawable> customThumbDrawablesForValues = Collections.emptyList();
 
   private float touchPosition;
-  @SeparationUnit private int separationUnit = UNIT_PX;
+  @SeparationUnit
+  private int separationUnit = UNIT_PX;
 
   /**
    * Determines the behavior of the label which can be any of the following.
@@ -322,11 +350,13 @@ abstract class BaseSlider<
    */
   @IntDef({LABEL_FLOATING, LABEL_WITHIN_BOUNDS, LABEL_GONE, LABEL_VISIBLE})
   @Retention(RetentionPolicy.SOURCE)
-  @interface LabelBehavior {}
+  @interface LabelBehavior {
+  }
 
   @IntDef({UNIT_PX, UNIT_VALUE})
   @Retention(RetentionPolicy.SOURCE)
-  @interface SeparationUnit {}
+  @interface SeparationUnit {
+  }
 
   public BaseSlider(@NonNull Context context) {
     this(context, null);
@@ -408,6 +438,7 @@ abstract class BaseSlider<
 
     defaultThumbRadius = resources.getDimensionPixelSize(R.dimen.mtrl_slider_thumb_radius);
     defaultTrackHeight = resources.getDimensionPixelSize(R.dimen.mtrl_slider_track_height);
+    defaultTickHeight = defaultTrackHeight / 2;
 
     labelPadding = resources.getDimensionPixelSize(R.dimen.mtrl_slider_label_padding);
   }
@@ -420,6 +451,8 @@ abstract class BaseSlider<
     valueTo = a.getFloat(R.styleable.Slider_android_valueTo, 1.0f);
     setValues(valueFrom);
     stepSize = a.getFloat(R.styleable.Slider_android_stepSize, 0.0f);
+    tickSize = a.getFloat(R.styleable.Slider_tickSize, 0.0f);
+
 
     boolean hasTrackColor = a.hasValue(R.styleable.Slider_trackColor);
 
@@ -434,14 +467,14 @@ abstract class BaseSlider<
         trackColorInactive != null
             ? trackColorInactive
             : AppCompatResources.getColorStateList(
-                context, R.color.material_slider_inactive_track_color));
+            context, R.color.material_slider_inactive_track_color));
     ColorStateList trackColorActive =
         MaterialResources.getColorStateList(context, a, trackColorActiveRes);
     setTrackActiveTintList(
         trackColorActive != null
             ? trackColorActive
             : AppCompatResources.getColorStateList(
-                context, R.color.material_slider_active_track_color));
+            context, R.color.material_slider_active_track_color));
     ColorStateList thumbColor =
         MaterialResources.getColorStateList(context, a, R.styleable.Slider_thumbColor);
     defaultThumbDrawable.setFillColor(thumbColor);
@@ -471,14 +504,14 @@ abstract class BaseSlider<
         tickColorInactive != null
             ? tickColorInactive
             : AppCompatResources.getColorStateList(
-                context, R.color.material_slider_inactive_tick_marks_color));
+            context, R.color.material_slider_inactive_tick_marks_color));
     ColorStateList tickColorActive =
         MaterialResources.getColorStateList(context, a, tickColorActiveRes);
     setTickActiveTintList(
         tickColorActive != null
             ? tickColorActive
             : AppCompatResources.getColorStateList(
-                context, R.color.material_slider_active_tick_marks_color));
+            context, R.color.material_slider_active_tick_marks_color));
 
     setThumbRadius(a.getDimensionPixelSize(R.styleable.Slider_thumbRadius, 0));
     setHaloRadius(a.getDimensionPixelSize(R.styleable.Slider_haloRadius, 0));
@@ -486,6 +519,7 @@ abstract class BaseSlider<
     setThumbElevation(a.getDimension(R.styleable.Slider_thumbElevation, 0));
 
     setTrackHeight(a.getDimensionPixelSize(R.styleable.Slider_trackHeight, 0));
+    setTickHeight(a.getDimensionPixelSize(R.styleable.Slider_tickHeight, 0));
 
     setLabelBehavior(a.getInt(R.styleable.Slider_labelBehavior, LABEL_FLOATING));
 
@@ -544,7 +578,7 @@ abstract class BaseSlider<
     // We're using BigDecimal here to avoid floating point rounding errors.
     double result =
         new BigDecimal(Float.toString(value))
-            .divide(new BigDecimal(Float.toString(stepSize)), MathContext.DECIMAL64)
+            .divide(new BigDecimal(Float.toString(tickSize)), MathContext.DECIMAL64)
             .doubleValue();
 
     // If the result is a whole number, it means the value is a multiple of stepSize.
@@ -552,9 +586,9 @@ abstract class BaseSlider<
   }
 
   private void validateStepSize() {
-    if (stepSize > 0.0f && !valueLandsOnTick(valueTo)) {
+    if (tickSize > 0.0f && !valueLandsOnTick(valueTo)) {
       throw new IllegalStateException(
-          String.format(EXCEPTION_ILLEGAL_STEP_SIZE, stepSize, valueFrom, valueTo));
+          String.format(EXCEPTION_ILLEGAL_STEP_SIZE, tickSize, valueFrom, valueTo));
     }
   }
 
@@ -564,7 +598,7 @@ abstract class BaseSlider<
         throw new IllegalStateException(
             String.format(EXCEPTION_ILLEGAL_VALUE, value, valueFrom, valueTo));
       }
-      if (stepSize > 0.0f && !valueLandsOnTick(value)) {
+      if (tickSize > 0.0f && !valueLandsOnTick(value)) {
         throw new IllegalStateException(
             String.format(EXCEPTION_ILLEGAL_DISCRETE_VALUE, value, valueFrom, stepSize, stepSize));
       }
@@ -625,8 +659,8 @@ abstract class BaseSlider<
   /**
    * Returns the slider's {@code valueFrom} value.
    *
-   * @see #setValueFrom(float)
    * @attr ref com.google.android.material.R.styleable#Slider_android_valueFrom
+   * @see #setValueFrom(float)
    */
   public float getValueFrom() {
     return valueFrom;
@@ -639,8 +673,8 @@ abstract class BaseSlider<
    * is not the case, an {@link IllegalStateException} will be thrown when the view is laid out.
    *
    * @param valueFrom The minimum value for the slider's range of values
-   * @see #getValueFrom()
    * @attr ref com.google.android.material.R.styleable#Slider_android_valueFrom
+   * @see #getValueFrom()
    */
   public void setValueFrom(float valueFrom) {
     this.valueFrom = valueFrom;
@@ -651,8 +685,8 @@ abstract class BaseSlider<
   /**
    * Returns the slider's {@code valueTo} value.
    *
-   * @see #setValueTo(float)
    * @attr ref com.google.android.material.R.styleable#Slider_android_valueTo
+   * @see #setValueTo(float)
    */
   public float getValueTo() {
     return valueTo;
@@ -665,8 +699,8 @@ abstract class BaseSlider<
    * is not the case, an {@link IllegalStateException} will be thrown when the view is laid out.
    *
    * @param valueTo The maximum value for the slider's range of values
-   * @see #getValueTo()
    * @attr ref com.google.android.material.R.styleable#Slider_android_valueTo
+   * @see #getValueTo()
    */
   public void setValueTo(float valueTo) {
     this.valueTo = valueTo;
@@ -780,8 +814,8 @@ abstract class BaseSlider<
    * <p>A step size of 0 means that the slider is operating in continuous mode. A step size greater
    * than 0 means that the slider is operating in discrete mode.
    *
-   * @see #setStepSize(float)
    * @attr ref com.google.android.material.R.styleable#Slider_android_stepSize
+   * @see #setStepSize(float)
    */
   public float getStepSize() {
     return stepSize;
@@ -800,10 +834,10 @@ abstract class BaseSlider<
    * <p>Setting this value to a negative value will result in an {@link IllegalArgumentException}.
    *
    * @param stepSize The interval value at which ticks must be drawn. Set to 0 to operate the slider
-   *     in continuous mode and not have any ticks.
+   *                 in continuous mode and not have any ticks.
    * @throws IllegalArgumentException If the step size is less than 0
-   * @see #getStepSize()
    * @attr ref com.google.android.material.R.styleable#Slider_android_stepSize
+   * @see #getStepSize()
    */
   public void setStepSize(float stepSize) {
     if (stepSize < 0.0f) {
@@ -907,12 +941,16 @@ abstract class BaseSlider<
     }
   }
 
-  /** Returns the index of the currently focused thumb */
+  /**
+   * Returns the index of the currently focused thumb
+   */
   public int getFocusedThumbIndex() {
     return focusedThumbIdx;
   }
 
-  /** Sets the index of the currently focused thumb */
+  /**
+   * Sets the index of the currently focused thumb
+   */
   public void setFocusedThumbIndex(int index) {
     if (index < 0 || index >= values.size()) {
       throw new IllegalArgumentException("index out of range");
@@ -926,7 +964,9 @@ abstract class BaseSlider<
     activeThumbIdx = index;
   }
 
-  /** Returns the index of the currently active thumb, or -1 if no thumb is active */
+  /**
+   * Returns the index of the currently active thumb, or -1 if no thumb is active
+   */
   public int getActiveThumbIndex() {
     return activeThumbIdx;
   }
@@ -950,7 +990,9 @@ abstract class BaseSlider<
     changeListeners.remove(listener);
   }
 
-  /** Removes all instances of attached to this slider */
+  /**
+   * Removes all instances of attached to this slider
+   */
   public void clearOnChangeListeners() {
     changeListeners.clear();
   }
@@ -973,7 +1015,9 @@ abstract class BaseSlider<
     touchListeners.remove(listener);
   }
 
-  /** Removes all instances of touch listeners attached to this slider */
+  /**
+   * Removes all instances of touch listeners attached to this slider
+   */
   public void clearOnSliderTouchListeners() {
     touchListeners.clear();
   }
@@ -999,9 +1043,9 @@ abstract class BaseSlider<
   /**
    * Returns the elevation of the thumb.
    *
+   * @attr ref com.google.android.material.R.styleable#Slider_thumbElevation
    * @see #setThumbElevation(float)
    * @see #setThumbElevationResource(int)
-   * @attr ref com.google.android.material.R.styleable#Slider_thumbElevation
    */
   public float getThumbElevation() {
     return defaultThumbDrawable.getElevation();
@@ -1010,8 +1054,8 @@ abstract class BaseSlider<
   /**
    * Sets the elevation of the thumb.
    *
-   * @see #getThumbElevation()
    * @attr ref com.google.android.material.R.styleable#Slider_thumbElevation
+   * @see #getThumbElevation()
    */
   public void setThumbElevation(float elevation) {
     defaultThumbDrawable.setElevation(elevation);
@@ -1020,8 +1064,8 @@ abstract class BaseSlider<
   /**
    * Sets the elevation of the thumb from a dimension resource.
    *
-   * @see #getThumbElevation()
    * @attr ref com.google.android.material.R.styleable#Slider_thumbElevation
+   * @see #getThumbElevation()
    */
   public void setThumbElevationResource(@DimenRes int elevation) {
     setThumbElevation(getResources().getDimension(elevation));
@@ -1033,9 +1077,9 @@ abstract class BaseSlider<
    * #setCustomThumbDrawablesForValues(int...)}, and {@link
    * #setCustomThumbDrawablesForValues(Drawable...)}.
    *
+   * @attr ref com.google.android.material.R.styleable#Slider_thumbRadius
    * @see #setThumbRadius(int)
    * @see #setThumbRadiusResource(int)
-   * @attr ref com.google.android.material.R.styleable#Slider_thumbRadius
    */
   @Dimension
   public int getThumbRadius() {
@@ -1048,8 +1092,8 @@ abstract class BaseSlider<
    * #setCustomThumbDrawable(Drawable)}, {@link #setCustomThumbDrawablesForValues(int...)}, and
    * {@link #setCustomThumbDrawablesForValues(Drawable...)}.
    *
-   * @see #getThumbRadius()
    * @attr ref com.google.android.material.R.styleable#Slider_thumbRadius
+   * @see #getThumbRadius()
    */
   public void setThumbRadius(@IntRange(from = 0) @Dimension int radius) {
     if (radius == thumbRadius) {
@@ -1078,8 +1122,8 @@ abstract class BaseSlider<
    * #setCustomThumbDrawable(Drawable)}, {@link #setCustomThumbDrawablesForValues(int...)}, and
    * {@link #setCustomThumbDrawablesForValues(Drawable...)}.
    *
-   * @see #getThumbRadius()
    * @attr ref com.google.android.material.R.styleable#Slider_thumbRadius
+   * @see #getThumbRadius()
    */
   public void setThumbRadiusResource(@DimenRes int radius) {
     setThumbRadius(getResources().getDimensionPixelSize(radius));
@@ -1171,9 +1215,9 @@ abstract class BaseSlider<
   /**
    * Returns the radius of the halo.
    *
+   * @attr ref com.google.android.material.R.styleable#Slider_haloRadius
    * @see #setHaloRadius(int)
    * @see #setHaloRadiusResource(int)
-   * @attr ref com.google.android.material.R.styleable#Slider_haloRadius
    */
   @Dimension()
   public int getHaloRadius() {
@@ -1183,8 +1227,8 @@ abstract class BaseSlider<
   /**
    * Sets the radius of the halo in pixels.
    *
-   * @see #getHaloRadius()
    * @attr ref com.google.android.material.R.styleable#Slider_haloRadius
+   * @see #getHaloRadius()
    */
   public void setHaloRadius(@IntRange(from = 0) @Dimension int radius) {
     if (radius == haloRadius) {
@@ -1204,8 +1248,8 @@ abstract class BaseSlider<
   /**
    * Sets the radius of the halo from a dimension resource.
    *
-   * @see #getHaloRadius()
    * @attr ref com.google.android.material.R.styleable#Slider_haloRadius
+   * @see #getHaloRadius()
    */
   public void setHaloRadiusResource(@DimenRes int radius) {
     setHaloRadius(getResources().getDimensionPixelSize(radius));
@@ -1214,8 +1258,8 @@ abstract class BaseSlider<
   /**
    * Returns the {@link LabelBehavior} used.
    *
-   * @see #setLabelBehavior(int)
    * @attr ref com.google.android.material.R.styleable#Slider_labelBehavior
+   * @see #setLabelBehavior(int)
    */
   @LabelBehavior
   public int getLabelBehavior() {
@@ -1225,9 +1269,9 @@ abstract class BaseSlider<
   /**
    * Determines the {@link LabelBehavior} used.
    *
+   * @attr ref com.google.android.material.R.styleable#Slider_labelBehavior
    * @see LabelBehavior
    * @see #getLabelBehavior()
-   * @attr ref com.google.android.material.R.styleable#Slider_labelBehavior
    */
   public void setLabelBehavior(@LabelBehavior int labelBehavior) {
     if (this.labelBehavior != labelBehavior) {
@@ -1239,20 +1283,24 @@ abstract class BaseSlider<
   /**
    * Returns whether the labels should be always shown based on the {@link LabelBehavior}.
    *
-   * @see LabelBehavior
    * @attr ref com.google.android.material.R.styleable#Slider_labelBehavior
+   * @see LabelBehavior
    */
   private boolean shouldAlwaysShowLabel() {
     return this.labelBehavior == LABEL_VISIBLE;
   }
 
-  /** Returns the side padding of the track. */
+  /**
+   * Returns the side padding of the track.
+   */
   @Dimension()
   public int getTrackSidePadding() {
     return trackSidePadding;
   }
 
-  /** Returns the width of the track in pixels. */
+  /**
+   * Returns the width of the track in pixels.
+   */
   @Dimension()
   public int getTrackWidth() {
     return trackWidth;
@@ -1261,8 +1309,8 @@ abstract class BaseSlider<
   /**
    * Returns the height of the track in pixels.
    *
-   * @see #setTrackHeight(int)
    * @attr ref com.google.android.material.R.styleable#Slider_trackHeight
+   * @see #setTrackHeight(int)
    */
   @Dimension()
   public int getTrackHeight() {
@@ -1272,12 +1320,20 @@ abstract class BaseSlider<
   /**
    * Set the height of the track in pixels.
    *
-   * @see #getTrackHeight()
    * @attr ref com.google.android.material.R.styleable#Slider_trackHeight
+   * @see #getTrackHeight()
    */
   public void setTrackHeight(@IntRange(from = 0) @Dimension int trackHeight) {
     if (this.trackHeight != trackHeight) {
       this.trackHeight = trackHeight;
+      invalidateTrack();
+      updateWidgetLayout();
+    }
+  }
+
+  public void setTickHeight(@IntRange(from = 0) @Dimension int tickHeight) {
+    if (this.tickHeight != tickHeight) {
+      this.tickHeight = tickHeight;
       invalidateTrack();
       updateWidgetLayout();
     }
@@ -1310,8 +1366,8 @@ abstract class BaseSlider<
   /**
    * Returns the color of the halo.
    *
-   * @see #setHaloTintList(ColorStateList)
    * @attr ref com.google.android.material.R.styleable#Slider_haloColor
+   * @see #setHaloTintList(ColorStateList)
    */
   @NonNull
   public ColorStateList getHaloTintList() {
@@ -1321,8 +1377,8 @@ abstract class BaseSlider<
   /**
    * Sets the color of the halo.
    *
-   * @see #getHaloTintList()
    * @attr ref com.google.android.material.R.styleable#Slider_haloColor
+   * @see #getHaloTintList()
    */
   public void setHaloTintList(@NonNull ColorStateList haloColor) {
     if (haloColor.equals(this.haloColor)) {
@@ -1344,8 +1400,8 @@ abstract class BaseSlider<
   /**
    * Returns the color of the thumb.
    *
-   * @see #setThumbTintList(ColorStateList)
    * @attr ref com.google.android.material.R.styleable#Slider_thumbColor
+   * @see #setThumbTintList(ColorStateList)
    */
   @NonNull
   public ColorStateList getThumbTintList() {
@@ -1355,8 +1411,8 @@ abstract class BaseSlider<
   /**
    * Sets the color of the thumb.
    *
-   * @see #getThumbTintList()
    * @attr ref com.google.android.material.R.styleable#Slider_thumbColor
+   * @see #getThumbTintList()
    */
   public void setThumbTintList(@NonNull ColorStateList thumbColor) {
     if (thumbColor.equals(defaultThumbDrawable.getFillColor())) {
@@ -1371,13 +1427,13 @@ abstract class BaseSlider<
    * Returns the color of the tick if the active and inactive parts aren't different.
    *
    * @throws IllegalStateException If {@code tickColorActive} and {@code tickColorInactive} have
-   *     been set to different values.
+   *                               been set to different values.
+   * @attr ref com.google.android.material.R.styleable#Slider_tickColor
    * @see #setTickTintList(ColorStateList)
    * @see #setTickInactiveTintList(ColorStateList)
    * @see #setTickActiveTintList(ColorStateList)
    * @see #getTickInactiveTintList()
    * @see #getTickActiveTintList()
-   * @attr ref com.google.android.material.R.styleable#Slider_tickColor
    */
   @NonNull
   public ColorStateList getTickTintList() {
@@ -1392,10 +1448,10 @@ abstract class BaseSlider<
   /**
    * Sets the color of the tick marks.
    *
+   * @attr ref com.google.android.material.R.styleable#Slider_tickColor
    * @see #setTickInactiveTintList(ColorStateList)
    * @see #setTickActiveTintList(ColorStateList)
    * @see #getTickTintList()
-   * @attr ref com.google.android.material.R.styleable#Slider_tickColor
    */
   public void setTickTintList(@NonNull ColorStateList tickColor) {
     setTickInactiveTintList(tickColor);
@@ -1405,10 +1461,10 @@ abstract class BaseSlider<
   /**
    * Returns the color of the ticks on the active portion of the track.
    *
+   * @attr ref com.google.android.material.R.styleable#Slider_tickColorActive
    * @see #setTickActiveTintList(ColorStateList)
    * @see #setTickTintList(ColorStateList)
    * @see #getTickTintList()
-   * @attr ref com.google.android.material.R.styleable#Slider_tickColorActive
    */
   @NonNull
   public ColorStateList getTickActiveTintList() {
@@ -1418,9 +1474,9 @@ abstract class BaseSlider<
   /**
    * Sets the color of the ticks on the active portion of the track.
    *
+   * @attr ref com.google.android.material.R.styleable#Slider_tickColorActive
    * @see #getTickActiveTintList()
    * @see #setTickTintList(ColorStateList)
-   * @attr ref com.google.android.material.R.styleable#Slider_tickColorActive
    */
   public void setTickActiveTintList(@NonNull ColorStateList tickColor) {
     if (tickColor.equals(tickColorActive)) {
@@ -1434,10 +1490,10 @@ abstract class BaseSlider<
   /**
    * Returns the color of the ticks on the inactive portion of the track.
    *
+   * @attr ref com.google.android.material.R.styleable#Slider_tickColorInactive
    * @see #setTickInactiveTintList(ColorStateList)
    * @see #setTickTintList(ColorStateList)
    * @see #getTickTintList()
-   * @attr ref com.google.android.material.R.styleable#Slider_tickColorInactive
    */
   @NonNull
   public ColorStateList getTickInactiveTintList() {
@@ -1447,9 +1503,9 @@ abstract class BaseSlider<
   /**
    * Sets the color of the ticks on the inactive portion of the track.
    *
+   * @attr ref com.google.android.material.R.styleable#Slider_tickColorInactive
    * @see #getTickInactiveTintList()
    * @see #setTickTintList(ColorStateList)
-   * @attr ref com.google.android.material.R.styleable#Slider_tickColorInactive
    */
   public void setTickInactiveTintList(@NonNull ColorStateList tickColor) {
     if (tickColor.equals(tickColorInactive)) {
@@ -1463,8 +1519,8 @@ abstract class BaseSlider<
   /**
    * Returns whether the tick marks are visible. Only used when the slider is in discrete mode.
    *
-   * @see #setTickVisible(boolean)
    * @attr ref com.google.android.material.R.styleable#Slider_tickVisible
+   * @see #setTickVisible(boolean)
    */
   public boolean isTickVisible() {
     return tickVisible;
@@ -1487,13 +1543,13 @@ abstract class BaseSlider<
    * Returns the color of the track if the active and inactive parts aren't different.
    *
    * @throws IllegalStateException If {@code trackColorActive} and {@code trackColorInactive} have
-   *     been set to different values.
+   *                               been set to different values.
+   * @attr ref com.google.android.material.R.styleable#Slider_trackColor
    * @see #setTrackTintList(ColorStateList)
    * @see #setTrackInactiveTintList(ColorStateList)
    * @see #setTrackActiveTintList(ColorStateList)
    * @see #getTrackInactiveTintList()
    * @see #getTrackActiveTintList()
-   * @attr ref com.google.android.material.R.styleable#Slider_trackColor
    */
   @NonNull
   public ColorStateList getTrackTintList() {
@@ -1508,10 +1564,10 @@ abstract class BaseSlider<
   /**
    * Sets the color of the track.
    *
+   * @attr ref com.google.android.material.R.styleable#Slider_trackColor
    * @see #setTrackInactiveTintList(ColorStateList)
    * @see #setTrackActiveTintList(ColorStateList)
    * @see #getTrackTintList()
-   * @attr ref com.google.android.material.R.styleable#Slider_trackColor
    */
   public void setTrackTintList(@NonNull ColorStateList trackColor) {
     setTrackInactiveTintList(trackColor);
@@ -1521,10 +1577,10 @@ abstract class BaseSlider<
   /**
    * Returns the color of the active portion of the track.
    *
+   * @attr ref com.google.android.material.R.styleable#Slider_trackColorActive
    * @see #setTrackActiveTintList(ColorStateList)
    * @see #setTrackTintList(ColorStateList)
    * @see #getTrackTintList()
-   * @attr ref com.google.android.material.R.styleable#Slider_trackColorActive
    */
   @NonNull
   public ColorStateList getTrackActiveTintList() {
@@ -1534,9 +1590,9 @@ abstract class BaseSlider<
   /**
    * Sets the color of the active portion of the track.
    *
+   * @attr ref com.google.android.material.R.styleable#Slider_trackColorActive
    * @see #getTrackActiveTintList()
    * @see #setTrackTintList(ColorStateList)
-   * @attr ref com.google.android.material.R.styleable#Slider_trackColorActive
    */
   public void setTrackActiveTintList(@NonNull ColorStateList trackColor) {
     if (trackColor.equals(trackColorActive)) {
@@ -1550,10 +1606,10 @@ abstract class BaseSlider<
   /**
    * Returns the color of the inactive portion of the track.
    *
+   * @attr ref com.google.android.material.R.styleable#Slider_trackColorInactive
    * @see #setTrackInactiveTintList(ColorStateList)
    * @see #setTrackTintList(ColorStateList)
    * @see #getTrackTintList()
-   * @attr ref com.google.android.material.R.styleable#Slider_trackColorInactive
    */
   @NonNull
   public ColorStateList getTrackInactiveTintList() {
@@ -1563,9 +1619,9 @@ abstract class BaseSlider<
   /**
    * Sets the color of the inactive portion of the track.
    *
+   * @attr ref com.google.android.material.R.styleable#Slider_trackColorInactive
    * @see #getTrackInactiveTintList()
    * @see #setTrackTintList(ColorStateList)
-   * @attr ref com.google.android.material.R.styleable#Slider_trackColorInactive
    */
   public void setTrackInactiveTintList(@NonNull ColorStateList trackColor) {
     if (trackColor.equals(trackColorInactive)) {
@@ -1639,8 +1695,8 @@ abstract class BaseSlider<
         MeasureSpec.makeMeasureSpec(
             widgetHeight
                 + (labelBehavior == LABEL_WITHIN_BOUNDS || shouldAlwaysShowLabel()
-                    ? labels.get(0).getIntrinsicHeight()
-                    : 0),
+                ? labels.get(0).getIntrinsicHeight()
+                : 0),
             MeasureSpec.EXACTLY));
   }
 
@@ -1695,8 +1751,8 @@ abstract class BaseSlider<
   private int calculateTrackCenter() {
     return widgetHeight / 2
         + (labelBehavior == LABEL_WITHIN_BOUNDS || shouldAlwaysShowLabel()
-            ? labels.get(0).getIntrinsicHeight()
-            : 0);
+        ? labels.get(0).getIntrinsicHeight()
+        : 0);
   }
 
   @Override
@@ -1745,7 +1801,7 @@ abstract class BaseSlider<
     float right = normalizeValue(max);
 
     // In RTL we draw things in reverse, so swap the left and right range values
-    return isRtl() ? new float[] {right, left} : new float[] {left, right};
+    return isRtl() ? new float[]{right, left} : new float[]{left, right};
   }
 
   private void drawInactiveTrack(@NonNull Canvas canvas, int width, int yCenter) {
@@ -1950,7 +2006,7 @@ abstract class BaseSlider<
    * Calculates the index the closest tick coordinates that the thumb should snap to.
    *
    * @param coordinates Tick coordinates defined in {@code #setTicksCoordinates()}.
-   * @param position Actual thumb position.
+   * @param position    Actual thumb position.
    * @return Index of the closest tick coordinate.
    */
   private static int pivotIndex(float[] coordinates, float position) {
@@ -1958,8 +2014,8 @@ abstract class BaseSlider<
   }
 
   private double snapPosition(float position) {
-    if (stepSize > 0.0f) {
-      int stepCount = (int) ((valueTo - valueFrom) / stepSize);
+    if (tickSize > 0.0f) {
+      int stepCount = (int) ((valueTo - valueFrom) / tickSize);
       return Math.round(position * stepCount) / (double) stepCount;
     }
 
@@ -2051,7 +2107,9 @@ abstract class BaseSlider<
     return true;
   }
 
-  /** Thumbs cannot cross each other, clamp the value to a bound or the value next to it. */
+  /**
+   * Thumbs cannot cross each other, clamp the value to a bound or the value next to it.
+   */
   private float getClampedValue(int idx, float value) {
     float minSeparation = getMinSeparation();
     minSeparation = separationUnit == UNIT_PX ? dimenToValue(minSeparation) : minSeparation;
@@ -2116,9 +2174,9 @@ abstract class BaseSlider<
    * Create an animator that shows or hides all slider labels.
    *
    * @param enter True if this animator should show (reveal) labels. False if this animator should
-   *     hide labels.
+   *              hide labels.
    * @return A value animator that, when run, will animate all labels in or out using {@link
-   *     TooltipDrawable#setRevealFraction(float)}.
+   * TooltipDrawable#setRevealFraction(float)}.
    */
   private ValueAnimator createLabelAnimator(boolean enter) {
     float startFraction = enter ? 0F : 1F;
@@ -2237,8 +2295,8 @@ abstract class BaseSlider<
   private void invalidateTrack() {
     inactiveTrackPaint.setStrokeWidth(trackHeight);
     activeTrackPaint.setStrokeWidth(trackHeight);
-    inactiveTicksPaint.setStrokeWidth(trackHeight / 2.0f);
-    activeTicksPaint.setStrokeWidth(trackHeight / 2.0f);
+    inactiveTicksPaint.setStrokeWidth(tickHeight == 0 ? trackHeight / 2 : tickHeight);
+    activeTicksPaint.setStrokeWidth(tickHeight == 0 ? trackHeight / 2 : tickHeight);
   }
 
   /**
@@ -2479,7 +2537,9 @@ abstract class BaseSlider<
     }
   }
 
-  /** Returns a small valid step increment to use when adding an offset to an existing value */
+  /**
+   * Returns a small valid step increment to use when adding an offset to an existing value
+   */
   private float calculateStepIncrement() {
     return stepSize == 0 ? 1 : stepSize;
   }
@@ -2570,7 +2630,9 @@ abstract class BaseSlider<
     postDelayed(accessibilityEventSender, TIMEOUT_SEND_ACCESSIBILITY_EVENT);
   }
 
-  /** Command for sending an accessibility event. */
+  /**
+   * Command for sending an accessibility event.
+   */
   private class AccessibilityEventSender implements Runnable {
     int virtualViewId = -1;
 
@@ -2758,50 +2820,48 @@ abstract class BaseSlider<
       }
 
       switch (action) {
-        case android.R.id.accessibilityActionSetProgress:
-          {
-            if (arguments == null
-                || !arguments.containsKey(
-                    AccessibilityNodeInfoCompat.ACTION_ARGUMENT_PROGRESS_VALUE)) {
-              return false;
-            }
-            float value =
-                arguments.getFloat(AccessibilityNodeInfoCompat.ACTION_ARGUMENT_PROGRESS_VALUE);
-            if (slider.snapThumbToValue(virtualViewId, value)) {
-              slider.updateHaloHotspot();
-              slider.postInvalidate();
-              invalidateVirtualView(virtualViewId);
-              return true;
-            }
+        case android.R.id.accessibilityActionSetProgress: {
+          if (arguments == null
+              || !arguments.containsKey(
+              AccessibilityNodeInfoCompat.ACTION_ARGUMENT_PROGRESS_VALUE)) {
             return false;
           }
+          float value =
+              arguments.getFloat(AccessibilityNodeInfoCompat.ACTION_ARGUMENT_PROGRESS_VALUE);
+          if (slider.snapThumbToValue(virtualViewId, value)) {
+            slider.updateHaloHotspot();
+            slider.postInvalidate();
+            invalidateVirtualView(virtualViewId);
+            return true;
+          }
+          return false;
+        }
         case AccessibilityNodeInfoCompat.ACTION_SCROLL_FORWARD:
-        case AccessibilityNodeInfoCompat.ACTION_SCROLL_BACKWARD:
-          {
-            float increment = slider.calculateStepIncrement(20);
-            if (action == AccessibilityNodeInfoCompat.ACTION_SCROLL_BACKWARD) {
-              increment = -increment;
-            }
-
-            // Swap the increment if we're in RTL.
-            if (slider.isRtl()) {
-              increment = -increment;
-            }
-
-            List<Float> values = slider.getValues();
-            float clamped =
-                clamp(
-                    values.get(virtualViewId) + increment,
-                    slider.getValueFrom(),
-                    slider.getValueTo());
-            if (slider.snapThumbToValue(virtualViewId, clamped)) {
-              slider.updateHaloHotspot();
-              slider.postInvalidate();
-              invalidateVirtualView(virtualViewId);
-              return true;
-            }
-            return false;
+        case AccessibilityNodeInfoCompat.ACTION_SCROLL_BACKWARD: {
+          float increment = slider.calculateStepIncrement(20);
+          if (action == AccessibilityNodeInfoCompat.ACTION_SCROLL_BACKWARD) {
+            increment = -increment;
           }
+
+          // Swap the increment if we're in RTL.
+          if (slider.isRtl()) {
+            increment = -increment;
+          }
+
+          List<Float> values = slider.getValues();
+          float clamped =
+              clamp(
+                  values.get(virtualViewId) + increment,
+                  slider.getValueFrom(),
+                  slider.getValueTo());
+          if (slider.snapThumbToValue(virtualViewId, clamped)) {
+            slider.updateHaloHotspot();
+            slider.postInvalidate();
+            invalidateVirtualView(virtualViewId);
+            return true;
+          }
+          return false;
+        }
         default:
           return false;
       }

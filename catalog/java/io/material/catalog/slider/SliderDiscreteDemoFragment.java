@@ -51,7 +51,8 @@ public class SliderDiscreteDemoFragment extends DemoFragment {
         view.findViewById(R.id.slider_3),
         withLabelFormatter,
         view.findViewById(R.id.slider_5),
-        view.findViewById(R.id.slider_6)
+        view.findViewById(R.id.slider_6),
+        view.findViewById(R.id.slider_7)
     );
     MaterialSwitch switchButton = view.findViewById(R.id.switch_button);
 

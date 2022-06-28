@@ -166,6 +166,32 @@
         app:tickVisible="false"/>
     </LinearLayout>
 
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:paddingTop="@dimen/cat_slider_title_top_padding"
+      android:text="@string/cat_slider_title_7" />
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center_vertical">
+
+      <com.google.android.material.slider.Slider
+        android:id="@+id/slider_7"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/cat_slider_left_margin"
+        android:layout_marginLeft="@dimen/cat_slider_left_margin"
+        android:layout_weight="1"
+        android:stepSize="25"
+        android:valueFrom="0"
+        android:valueTo="100"
+        app:tickHeight="9dp"
+        app:tickSize="5" />
+
+    </LinearLayout>
+
     <com.google.android.material.materialswitch.MaterialSwitch
       android:id="@+id/switch_button"
       android:layout_width="wrap_content"

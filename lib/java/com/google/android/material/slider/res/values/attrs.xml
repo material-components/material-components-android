@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2019 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,21 +20,23 @@
     <attr name="android:valueTo" />
     <attr name="android:stepSize" />
     <!-- Whether the Slider is enabled. -->
-    <attr name="android:enabled"/>
+    <attr name="android:enabled" />
     <!-- The color of the slider's halo. -->
     <attr name="haloColor" format="color" />
     <!-- The radius of the halo. -->
     <attr name="haloRadius" format="dimension" />
     <!-- Determines if Slider should increase its default height to include space for the label. -->
+    <!--    The Movement Tick Size-->
+    <attr name="tickSize" format="float"/>
     <attr name="labelBehavior">
       <!-- Mode that draws the label floating above the bounds of this view. -->
-      <enum name="floating" value="0"/>
+      <enum name="floating" value="0" />
       <!-- Mode that draws the label within the bounds of the view. -->
-      <enum name="withinBounds" value="1"/>
+      <enum name="withinBounds" value="1" />
       <!-- Mode that prevents the label from being drawn. -->
-      <enum name="gone" value="2"/>
+      <enum name="gone" value="2" />
       <!-- Mode that always draws the label. -->
-      <enum name="visible" value="3"/>
+      <enum name="visible" value="3" />
     </attr>
     <!-- The style used for the label TooltipDrawable. -->
     <attr name="labelStyle" format="reference" />
@@ -67,6 +68,8 @@
     <attr name="trackColorInactive" format="color" />
     <!-- The height of the track. -->
     <attr name="trackHeight" format="dimension" />
+    <!-- The height of the track. -->
+    <attr name="tickHeight" format="dimension" />
   </declare-styleable>
 
   <declare-styleable name="RangeSlider">
@@ -74,7 +77,7 @@
 
     <!-- If there is more than one thumb, and the slider is
          not discrete the thumbs will be separated by this dimen -->
-    <attr name="minSeparation" format="dimension"/>
+    <attr name="minSeparation" format="dimension" />
   </declare-styleable>
 
   <!-- Style to use for Slider in this theme. -->
