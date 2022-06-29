@@ -41,7 +41,6 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.ViewCompat;
 import com.google.android.material.button.MaterialButtonToggleGroup;
-import com.google.android.material.button.MaterialButtonToggleGroup.OnButtonCheckedListener;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.timepicker.ClockHandView.OnActionUpListener;
 import com.google.android.material.timepicker.ClockHandView.OnRotateListener;
@@ -103,17 +102,17 @@ class TimePickerView extends ConstraintLayout implements TimePickerControls {
     LayoutInflater.from(context).inflate(R.layout.material_timepicker, this);
     clockFace = findViewById(R.id.material_clock_face);
     toggle = findViewById(R.id.material_clock_period_toggle);
-    toggle.addOnButtonCheckedListener(
-        new OnButtonCheckedListener() {
-          @Override
-          public void onButtonChecked(
-              MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
-            int period = checkedId == R.id.material_clock_period_pm_button ? PM : AM;
-            if (onPeriodChangeListener != null && isChecked) {
-              onPeriodChangeListener.onPeriodChange(period);
-            }
-          }
-        });
+
+    toggle.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
+      if (!isChecked) {
+        return;
+      }
+
+      int period = checkedId == R.id.material_clock_period_pm_button ? PM : AM;
+      if (onPeriodChangeListener != null) {
+        onPeriodChangeListener.onPeriodChange(period);
+      }
+    });
 
     minuteView = findViewById(R.id.material_minute_tv);
     hourView = findViewById(R.id.material_hour_tv);
