@@ -92,6 +92,7 @@
     <item name="borderlessButtonStyle">@style/Widget.Material3.Button.TextButton</item>
     <item name="bottomAppBarStyle">@style/Widget.Material3.BottomAppBar</item>
     <item name="bottomNavigationStyle">@style/Widget.Material3.BottomNavigationView</item>
+    <item name="bottomSheetDragHandleStyle">@style/Widget.Material3.BottomSheet.DragHandle</item>
     <item name="buttonBarButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog</item>
     <item name="checkboxStyle">@style/Widget.Material3.CompoundButton.CheckBox</item>
     <item name="chipStyle">@style/Widget.Material3.Chip.Assist</item>
@@ -328,6 +329,7 @@
     <item name="borderlessButtonStyle">@style/Widget.Material3.Button.TextButton</item>
     <item name="bottomAppBarStyle">@style/Widget.Material3.BottomAppBar</item>
     <item name="bottomNavigationStyle">@style/Widget.Material3.BottomNavigationView</item>
+    <item name="bottomSheetDragHandleStyle">@style/Widget.Material3.BottomSheet.DragHandle</item>
     <item name="buttonBarButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog</item>
     <item name="checkboxStyle">@style/Widget.Material3.CompoundButton.CheckBox</item>
     <item name="chipStyle">@style/Widget.Material3.Chip.Assist</item>

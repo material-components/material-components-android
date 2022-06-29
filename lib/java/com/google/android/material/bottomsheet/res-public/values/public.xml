@@ -22,6 +22,7 @@
   <public name="Theme.Design.BottomSheetDialog" type="style"/>
   <public name="bottomSheetDialogTheme" type="attr"/>
   <public name="bottomSheetStyle" type="attr"/>
+  <public name="bottomSheetDragHandleStyle" type="attr"/>
   <public name="behavior_peekHeight" type="attr"/>
   <public name="backgroundTint" type="attr"/>
   <public name="behavior_fitToContents" type="attr"/>
@@ -41,6 +42,7 @@
   <public name="ThemeOverlay.Material3.DayNight.BottomSheetDialog" type="style"/>
   <public name="Widget.Material3.BottomSheet" type="style"/>
   <public name="Widget.Material3.BottomSheet.Modal" type="style"/>
+  <public name="Widget.Material3.BottomSheet.DragHandle" type="style"/>
   <public name="Theme.Material3.Light.BottomSheetDialog" type="style"/>
   <public name="Theme.Material3.Dark.BottomSheetDialog" type="style"/>
   <public name="Theme.Material3.DayNight.BottomSheetDialog" type="style"/>

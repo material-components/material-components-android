@@ -80,4 +80,15 @@
   <style name="Widget.Material3.BottomSheet.Modal">
     <item name="android:elevation" tools:ignore="NewApi">@dimen/m3_bottom_sheet_modal_elevation</item>
   </style>
+
+  <!-- The default M3 style of BottomSheetDragHandleView -->
+  <style name="Widget.Material3.BottomSheet.DragHandle" parent="">
+    <item name="android:scaleType">center</item>
+    <item name="android:contentDescription">@string/bottomsheet_drag_handle_content_description</item>
+    <item name="android:minWidth">@dimen/mtrl_min_touch_target_size</item>
+    <item name="android:minHeight">@dimen/mtrl_min_touch_target_size</item>
+    <item name="android:paddingBottom">@dimen/m3_bottom_sheet_drag_handle_bottom_padding</item>
+    <item name="srcCompat">@drawable/mtrl_bottomsheet_drag_handle</item>
+    <item name="tint">?attr/colorOnSurfaceVariant</item>
+  </style>
 </resources>

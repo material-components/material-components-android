@@ -65,11 +65,16 @@
       app:behavior_peekHeight="200dp"
       app:layout_behavior="@string/bottom_sheet_behavior">
 
+    <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+      android:id="@+id/drag_handle"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"/>
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_below="@id/drag_handle"
         android:layout_centerHorizontal="true"
         android:text="@string/cat_bottomsheet_persistent"
         android:textColor="?attr/colorOnSurface"

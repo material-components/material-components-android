@@ -19,6 +19,11 @@
     android:id="@+id/bottom_drawer_2"
     android:layout_width="match_parent"
     android:layout_height="600dp">
+
+    <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"/>
+
     <TextView
         android:id="@+id/bottomsheet_state"
         android:layout_width="match_parent"

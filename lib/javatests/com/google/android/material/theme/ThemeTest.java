@@ -343,6 +343,7 @@ public class ThemeTest {
           R.attr.borderlessButtonStyle,
           R.attr.bottomAppBarStyle,
           R.attr.bottomNavigationStyle,
+          R.attr.bottomSheetDragHandleStyle,
           R.attr.buttonBarButtonStyle,
           R.attr.checkboxStyle,
           R.attr.chipStyle,

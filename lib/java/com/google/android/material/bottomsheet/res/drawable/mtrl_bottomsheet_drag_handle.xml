@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2017 The Android Open Source Project
+  ~ Copyright (C) 2022 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -14,16 +14,10 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-<resources>
 
-  <dimen name="design_bottom_sheet_modal_elevation">16dp</dimen>
-  <dimen name="design_bottom_sheet_elevation">8dp</dimen>
-  <dimen name="design_bottom_sheet_peek_height_min">64dp</dimen>
-
-  <dimen name="material_bottom_sheet_max_width">640dp</dimen>
-
-  <dimen name="m3_bottom_sheet_elevation">@dimen/m3_sys_elevation_level2</dimen>
-  <dimen name="m3_bottom_sheet_modal_elevation">@dimen/m3_sys_elevation_level3</dimen>
-
-  <dimen name="m3_bottom_sheet_drag_handle_bottom_padding">20dp</dimen>
-</resources>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+  <size android:height="4dp" android:width="32dp" />
+  <corners android:radius="2dp" />
+  <solid android:color="#FFF" />
+</shape>
