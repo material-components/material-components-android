@@ -59,7 +59,6 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
   public static final int VERTICAL = LinearLayout.VERTICAL;
 
   private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_MaterialDivider;
-  private static final int EMPTY_ITEMS_RECYCLER_VIEW = 0;
 
   @NonNull private Drawable dividerDrawable;
   private int thickness;
@@ -318,15 +317,18 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
     left += isRtl ? insetEnd : insetStart;
     right -= isRtl ? insetStart : insetEnd;
 
-    int dividerCount = lastItemDecorated ? getDividerCount(parent) : getDividerCount(parent) - 1;
+    int itemCount = parent.getAdapter() == null ? 0 : parent.getAdapter().getItemCount();
+    int dividerCount = lastItemDecorated ? itemCount : itemCount - 1;
     for (int i = 0; i < dividerCount; i++) {
       View child = parent.getChildAt(i);
-      parent.getDecoratedBoundsWithMargins(child, tempRect);
-      // Take into consideration any translationY added to the view.
-      int bottom = tempRect.bottom + Math.round(child.getTranslationY());
-      int top = bottom - dividerDrawable.getIntrinsicHeight() - thickness;
-      dividerDrawable.setBounds(left, top, right, bottom);
-      dividerDrawable.draw(canvas);
+      if (child != null) {
+        parent.getDecoratedBoundsWithMargins(child, tempRect);
+        // Take into consideration any translationY added to the view.
+        int bottom = tempRect.bottom + Math.round(child.getTranslationY());
+        int top = bottom - dividerDrawable.getIntrinsicHeight() - thickness;
+        dividerDrawable.setBounds(left, top, right, bottom);
+        dividerDrawable.draw(canvas);
+      }
     }
     canvas.restore();
   }
@@ -362,16 +364,6 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
       dividerDrawable.draw(canvas);
     }
     canvas.restore();
-  }
-
-  private int getDividerCount(RecyclerView recyclerView) {
-    int dividerCount;
-    if (recyclerView.getAdapter() != null) {
-      dividerCount = recyclerView.getAdapter().getItemCount();
-    } else {
-      dividerCount = EMPTY_ITEMS_RECYCLER_VIEW;
-    }
-    return dividerCount;
   }
 
   @Override
