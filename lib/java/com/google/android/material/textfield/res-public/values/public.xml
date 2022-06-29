@@ -28,17 +28,10 @@
   <public name="boxBackgroundColor" type="attr"/>
   <public name="boxBackgroundMode" type="attr"/>
   <public name="boxCollapsedPaddingTop" type="attr"/>
-  <public name="boxCollapsedPaddingBottom" type="attr"/>
   <public name="boxCornerRadiusTopStart" type="attr"/>
   <public name="boxCornerRadiusTopEnd" type="attr"/>
   <public name="boxCornerRadiusBottomStart" type="attr"/>
   <public name="boxCornerRadiusBottomEnd" type="attr"/>
-  <public name="boxExpandedPaddingTop" type="attr"/>
-  <public name="boxExpandedPaddingBottom" type="attr"/>
-  <public name="boxPaddingStart" type="attr"/>
-  <public name="boxPaddingTop" type="attr"/>
-  <public name="boxPaddingEnd" type="attr"/>
-  <public name="boxPaddingBottom" type="attr"/>
   <public name="boxStrokeColor" type="attr"/>
   <public name="boxStrokeErrorColor" type="attr"/>
   <public name="boxStrokeWidth" type="attr"/>
