@@ -102,6 +102,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.nio.file.ClosedFileSystemException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -1847,7 +1848,11 @@ abstract class BaseSlider<
     int rightPivotIndex = pivotIndex(ticksCoordinates, activeRange[1]);
 
     // Draw inactive ticks to the left of the smallest thumb.
-    canvas.drawPoints(ticksCoordinates, 0, leftPivotIndex * 2, inactiveTicksPaint);
+    canvas.drawPoints(
+        ticksCoordinates,
+        0,
+        leftPivotIndex * 2,
+        inactiveTicksPaint);
 
     // Draw active ticks between the thumbs.
     canvas.drawPoints(
@@ -2009,11 +2014,14 @@ abstract class BaseSlider<
    * @param position    Actual thumb position.
    * @return Index of the closest tick coordinate.
    */
-  private static int pivotIndex(float[] coordinates, float position) {
-    return Math.round(position * (coordinates.length / 2 - 1));
+  private int pivotIndex(float[] coordinates, float position) {
+    int stepCount = (int) ((valueTo - valueFrom) / stepSize);
+    float stepSizeW = (float) 1 / (float) stepCount;
+    return (int) Math.ceil(position / stepSizeW);
   }
 
   private double snapPosition(float position) {
+
     if (tickSize > 0.0f) {
       int stepCount = (int) ((valueTo - valueFrom) / tickSize);
       return Math.round(position * stepCount) / (double) stepCount;
