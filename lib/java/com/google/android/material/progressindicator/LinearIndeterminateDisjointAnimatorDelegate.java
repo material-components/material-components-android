@@ -70,13 +70,13 @@ final class LinearIndeterminateDisjointAnimatorDelegate
     interpolatorArray =
         new Interpolator[] {
           AnimationUtilsCompat.loadInterpolator(
-              context, R.animator.linear_indeterminate_line1_head_interpolator),
+              context, R.anim.linear_indeterminate_line1_head_interpolator),
           AnimationUtilsCompat.loadInterpolator(
-              context, R.animator.linear_indeterminate_line1_tail_interpolator),
+              context, R.anim.linear_indeterminate_line1_tail_interpolator),
           AnimationUtilsCompat.loadInterpolator(
-              context, R.animator.linear_indeterminate_line2_head_interpolator),
+              context, R.anim.linear_indeterminate_line2_head_interpolator),
           AnimationUtilsCompat.loadInterpolator(
-              context, R.animator.linear_indeterminate_line2_tail_interpolator)
+              context, R.anim.linear_indeterminate_line2_tail_interpolator)
         };
   }
 
