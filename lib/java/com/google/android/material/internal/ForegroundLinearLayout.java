@@ -124,7 +124,6 @@ public class ForegroundLinearLayout extends LinearLayoutCompat {
     return super.verifyDrawable(who) || (who == foreground);
   }
 
-  @RequiresApi(11)
   @Override
   public void jumpDrawablesToCurrentState() {
     super.jumpDrawablesToCurrentState();
@@ -157,6 +156,7 @@ public class ForegroundLinearLayout extends LinearLayoutCompat {
       }
 
       foreground = drawable;
+      foregroundBoundsChanged = true;
 
       if (drawable != null) {
         setWillNotDraw(false);
