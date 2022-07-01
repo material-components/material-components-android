@@ -662,7 +662,7 @@ public class TextInputLayout extends LinearLayout {
 
     endLayout = new EndCompoundLayout(this, a);
 
-    setEnabled(a.getBoolean(R.styleable.TextInputLayout_android_enabled, true));
+    final boolean enabled = a.getBoolean(R.styleable.TextInputLayout_android_enabled, true);
 
     a.recycle();
 
@@ -680,6 +680,11 @@ public class TextInputLayout extends LinearLayout {
     inputFrame.addView(endLayout);
 
     addView(inputFrame);
+
+    // TextInputLayout#setEnabled sets the enabled state not only for TextInputLayout itself but
+    // also for child views, so the method is called (and should be called) only after all child
+    // views have been added.
+    setEnabled(enabled);
 
     setHelperTextEnabled(helperTextEnabled);
     setErrorEnabled(errorEnabled);
