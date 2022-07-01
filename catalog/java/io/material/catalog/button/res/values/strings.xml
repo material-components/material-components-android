@@ -41,6 +41,8 @@
   <string name="cat_icon_btn_filled_style">Filled</string>
   <string name="cat_icon_btn_filled_tonal_style">Tonal</string>
   <string name="cat_icon_btn_outlined_style">Outlined</string>
+  <string  description="A label for Toggleable Icon Buttons switch. [CHAR LIMIT=NONE]"
+          name="cat_button_label_toggleable_icon_buttons">Toggleable Icon Buttons</string>
   <string name="cat_button_clicked">Button clicked</string>
   <string name="cat_snackbar_action_button_text">Done</string>
 

@@ -133,6 +133,7 @@
           android:textSize="16sp"/>
 
       <LinearLayout
+          android:id="@+id/material_icon_only_buttons_view"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:paddingTop="8dp"
@@ -216,6 +217,14 @@
               android:textSize="12sp"/>
         </LinearLayout>
       </LinearLayout>
+
+      <com.google.android.material.materialswitch.MaterialSwitch
+          android:id="@+id/cat_button_toggleable_icon_buttons"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="16dp"
+          android:checked="false"
+          android:text="@string/cat_button_label_toggleable_icon_buttons"/>
 
       <com.google.android.material.materialswitch.MaterialSwitch
           android:id="@+id/cat_button_enabled_switch"
