@@ -1,11 +1,11 @@
 buildscript {
-  ext.kotlinVersion = '1.3.50'
+  ext.kotlinVersion = '1.7.0'
   repositories {
     google()
     mavenCentral()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:7.2.0'
+    classpath 'com.android.tools.build:gradle:7.2.1'
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
   }
 }
@@ -24,19 +24,19 @@ ext {
   targetSdkVersion = 31
 
   androidXVersions = [
-    annotation            : '1.2.0',
-    appCompat             : '1.4.0',
+    annotation            : '1.4.0',
+    appCompat             : '1.4.2',
     cardView              : '1.0.0',
-    constraintlayout      : '2.0.1',
-    coordinatorlayout     : '1.1.0',
-    core                  : '1.6.0',
+    constraintlayout      : '2.1.4',
+    coordinatorlayout     : '1.2.0',
+    core                  : '1.8.0',
     drawerlayout          : '1.1.1',
-    experimental          : '1.0.0',
-    fragment              : '1.2.5',
-    lifecycle             : '2.0.0',
-    recyclerView          : '1.0.0',
-    recyclerViewSelection : '1.0.0',
-    transition            : '1.2.0',
+    experimental          : '1.2.0',
+    fragment              : '1.5.0',
+    lifecycle             : '2.5.0',
+    recyclerView          : '1.2.1',
+    recyclerViewSelection : '1.1.0',
+    transition            : '1.4.1',
     vectorDrawable        : '1.1.0',
     viewpager2            : '1.0.0',
     dynamicanimation      : '1.0.0',
@@ -44,9 +44,9 @@ ext {
 
   testRunnerVersion = '1.4.0'
   espressoVersion = '3.1.0'
-  mockitoCoreVersion = '2.25.0'
-  truthVersion = '0.45'
-  robolectricVersion = '4.8-alpha-1'
+  mockitoCoreVersion = '4.6.1'
+  truthVersion = '1.1.3'
+  robolectricVersion = '4.8.1'
 
   // Enforce the use of prebuilt dependencies in all sub-projects. This is
   // required for the doclava dependency.

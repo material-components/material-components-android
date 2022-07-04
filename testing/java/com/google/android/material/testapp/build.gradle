@@ -8,7 +8,7 @@ dependencies {
   api project(fromPath("testing/java/com/google/android/material/testapp/base"))
   api project(fromPath("testing/java/com/google/android/material/testapp/custom"))
 
-  api 'androidx.multidex:multidex:2.0.0'
+  api 'androidx.multidex:multidex:2.0.1'
 }
 
 android {
