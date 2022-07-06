@@ -30,6 +30,8 @@ import android.view.ViewGroup;
 import android.widget.ToggleButton;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.tabs.TabLayout;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.DemoUtils;
@@ -55,6 +57,10 @@ public class TopAppBarCompressEffectFragment extends DemoFragment {
     Toolbar toolbar = view.findViewById(R.id.toolbar);
     AppCompatActivity activity = (AppCompatActivity) getActivity();
     activity.setSupportActionBar(toolbar);
+
+    AppBarLayout appBarLayout = view.findViewById(R.id.appbarlayout);
+    appBarLayout.setStatusBarForeground(
+        MaterialShapeDrawable.createWithElevationOverlay(requireContext()));
 
     TabLayout tabs = view.findViewById(R.id.tabs);
     ToggleButton showHideTabsButton = view.findViewById(R.id.show_hide_tabs_button);
