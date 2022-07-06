@@ -108,8 +108,8 @@ class TimePickerView extends ConstraintLayout implements TimePickerControls {
         return;
       }
 
-      int period = checkedId == R.id.material_clock_period_pm_button ? PM : AM;
       if (onPeriodChangeListener != null) {
+        int period = checkedId == R.id.material_clock_period_pm_button ? PM : AM;
         onPeriodChangeListener.onPeriodChange(period);
       }
     });
