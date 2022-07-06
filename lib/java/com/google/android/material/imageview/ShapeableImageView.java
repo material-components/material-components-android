@@ -108,6 +108,8 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
         context.obtainStyledAttributes(
             attrs, R.styleable.ShapeableImageView, defStyle, DEF_STYLE_RES);
 
+    setLayerType(LAYER_TYPE_HARDWARE, null);
+
     strokeColor =
         MaterialResources.getColorStateList(
             context, attributes, R.styleable.ShapeableImageView_strokeColor);
@@ -148,18 +150,6 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
       setOutlineProvider(new OutlineProvider());
     }
-  }
-
-  @Override
-  protected void onDetachedFromWindow() {
-    setLayerType(LAYER_TYPE_NONE, null);
-    super.onDetachedFromWindow();
-  }
-
-  @Override
-  protected void onAttachedToWindow() {
-    super.onAttachedToWindow();
-    setLayerType(LAYER_TYPE_HARDWARE, null);
   }
 
   @Override
