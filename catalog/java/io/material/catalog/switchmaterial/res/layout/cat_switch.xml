@@ -16,68 +16,82 @@
   limitations under the License.
   -->
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
+  <LinearLayout
     android:id="@+id/main_viewGroup"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/cat_switch_padding"
-    android:orientation="vertical">
-  <GridLayout
+    android:orientation="vertical"
+    android:padding="@dimen/cat_switch_padding">
+
+    <GridLayout
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:columnCount="2"
       android:useDefaultMargins="true">
-    <TextView
+
+      <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_columnSpan="2"
         android:text="@string/cat_switch_color_guide"
-        android:textSize="@dimen/cat_switch_header_size"/>
-    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:textSize="@dimen/cat_switch_header_size" />
+
+      <com.google.android.material.switchmaterial.SwitchMaterial
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:checked="true"
         android:enabled="true"
-        android:text="@string/cat_switch_enabled"/>
-    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:text="@string/cat_switch_enabled" />
+
+      <com.google.android.material.switchmaterial.SwitchMaterial
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:checked="false"
         android:enabled="true"
-        android:text="@string/cat_switch_enabled"/>
-    <TextView
+        android:text="@string/cat_switch_enabled" />
+
+      <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_columnSpan="2"
         android:text="@string/cat_switch_disabled_guide"
-        android:textSize="@dimen/cat_switch_header_size"/>
-    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:textSize="@dimen/cat_switch_header_size" />
+
+      <com.google.android.material.switchmaterial.SwitchMaterial
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:checked="true"
         android:enabled="false"
-        android:text="@string/cat_switch_disabled"/>
-    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:text="@string/cat_switch_disabled" />
+
+      <com.google.android.material.switchmaterial.SwitchMaterial
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:checked="false"
         android:enabled="false"
-        android:text="@string/cat_switch_disabled"/>
-  </GridLayout>
-  <ImageView
+        android:text="@string/cat_switch_disabled" />
+    </GridLayout>
+
+    <ImageView
       android:layout_width="match_parent"
       android:layout_height="@dimen/cat_switch_line_separator_thickness"
       android:layout_marginTop="@dimen/cat_switch_line_separator_margin"
       android:layout_marginBottom="@dimen/cat_switch_line_separator_margin"
-      android:background="?attr/colorSecondary"/>
-  <com.google.android.material.switchmaterial.SwitchMaterial
+      android:background="?attr/colorSecondary" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
       android:id="@+id/switch_toggle"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:checked="false"
       android:enabled="true"
       android:text="@string/cat_switch_toggleable_description"
-      android:textSize="@dimen/cat_switch_header_size"/>
-</LinearLayout>
+      android:textSize="@dimen/cat_switch_header_size" />
+  </LinearLayout>
+
+</ScrollView>

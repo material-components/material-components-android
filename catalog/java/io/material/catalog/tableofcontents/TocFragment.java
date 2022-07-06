@@ -147,13 +147,6 @@ public class TocFragment extends DaggerFragment {
     return view;
   }
 
-  @Override
-  public void onDestroyView() {
-    super.onDestroyView();
-
-    ((AppCompatActivity) getActivity()).setSupportActionBar(null);
-  }
-
   private void addGridTopDividerVisibilityListener() {
     appBarLayout.addOnOffsetChangedListener(
         (appBarLayout, verticalOffset) -> {
