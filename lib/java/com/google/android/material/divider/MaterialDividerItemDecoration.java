@@ -317,18 +317,16 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
     left += isRtl ? insetEnd : insetStart;
     right -= isRtl ? insetStart : insetEnd;
 
-    int itemCount = parent.getAdapter() == null ? 0 : parent.getAdapter().getItemCount();
-    int dividerCount = lastItemDecorated ? itemCount : itemCount - 1;
+    int childCount = parent.getChildCount();
+    int dividerCount = lastItemDecorated ? childCount : childCount - 1;
     for (int i = 0; i < dividerCount; i++) {
       View child = parent.getChildAt(i);
-      if (child != null) {
-        parent.getDecoratedBoundsWithMargins(child, tempRect);
-        // Take into consideration any translationY added to the view.
-        int bottom = tempRect.bottom + Math.round(child.getTranslationY());
-        int top = bottom - dividerDrawable.getIntrinsicHeight() - thickness;
-        dividerDrawable.setBounds(left, top, right, bottom);
-        dividerDrawable.draw(canvas);
-      }
+      parent.getDecoratedBoundsWithMargins(child, tempRect);
+      // Take into consideration any translationY added to the view.
+      int bottom = tempRect.bottom + Math.round(child.getTranslationY());
+      int top = bottom - dividerDrawable.getIntrinsicHeight() - thickness;
+      dividerDrawable.setBounds(left, top, right, bottom);
+      dividerDrawable.draw(canvas);
     }
     canvas.restore();
   }
