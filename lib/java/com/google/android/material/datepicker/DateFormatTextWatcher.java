@@ -52,23 +52,22 @@ abstract class DateFormatTextWatcher extends TextWatcherAdapter {
     this.constraints = constraints;
     this.outOfRange = textInputLayout.getContext().getString(R.string.mtrl_picker_out_of_range);
     setErrorCallback =
-        new Runnable() {
-          @Override
-          public void run() {
-            TextInputLayout textLayout = DateFormatTextWatcher.this.textInputLayout;
-            DateFormat df = DateFormatTextWatcher.this.dateFormat;
-            Context context = textLayout.getContext();
-            String invalidFormat = context.getString(R.string.mtrl_picker_invalid_format);
-            String useLine =
-                String.format(
-                    context.getString(R.string.mtrl_picker_invalid_format_use), formatHint);
-            String exampleLine =
-                String.format(
-                    context.getString(R.string.mtrl_picker_invalid_format_example),
-                    df.format(new Date(UtcDates.getTodayCalendar().getTimeInMillis())));
-            textLayout.setError(invalidFormat + "\n" + useLine + "\n" + exampleLine);
-            onInvalidDate();
-          }
+        () -> {
+          TextInputLayout textLayout = DateFormatTextWatcher.this.textInputLayout;
+          DateFormat df = DateFormatTextWatcher.this.dateFormat;
+          Context context = textLayout.getContext();
+          String invalidFormat = context.getString(R.string.mtrl_picker_invalid_format);
+          String useLine =
+              String.format(
+                  context.getString(R.string.mtrl_picker_invalid_format_use),
+                  sanitizeDateString(formatHint));
+          String exampleLine =
+              String.format(
+                  context.getString(R.string.mtrl_picker_invalid_format_example),
+                  sanitizeDateString(
+                      df.format(new Date(UtcDates.getTodayCalendar().getTimeInMillis()))));
+          textLayout.setError(invalidFormat + "\n" + useLine + "\n" + exampleLine);
+          onInvalidDate();
         };
   }
 
@@ -104,14 +103,16 @@ abstract class DateFormatTextWatcher extends TextWatcherAdapter {
   }
 
   private Runnable createRangeErrorCallback(final long milliseconds) {
-    return new Runnable() {
-      @Override
-      public void run() {
-        textInputLayout.setError(
-            String.format(outOfRange, DateStrings.getDateString(milliseconds)));
-        onInvalidDate();
-      }
+    return () -> {
+      String dateString = DateStrings.getDateString(milliseconds);
+      textInputLayout.setError(String.format(outOfRange, sanitizeDateString(dateString)));
+      onInvalidDate();
     };
+  }
+
+  private String sanitizeDateString(String dateString) {
+    // Replace all regular spaces with non-breaking spaces so the date wraps as a single unit.
+    return dateString.replace(' ', '\u00A0');
   }
 
   public void runValidation(View view, Runnable validation) {
