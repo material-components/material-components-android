@@ -105,8 +105,8 @@
   <!-- M3 Regular FABs -->
 
   <style name="Base.Widget.Material3.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
-    <item name="backgroundTint">@color/m3_fab_background_color_selector</item>
-    <item name="tint">@color/m3_fab_foreground_color_selector</item>
+    <item name="backgroundTint">@color/m3_fab_efab_background_color_selector</item>
+    <item name="tint">@color/m3_fab_efab_foreground_color_selector</item>
     <item name="rippleColor">@color/m3_fab_ripple_color_selector</item>
     <item name="enforceMaterialTheme">true</item>
     <item name="borderWidth">@dimen/m3_fab_border_width</item>
@@ -222,15 +222,20 @@
   <!-- M3 Extended FABs -->
 
   <style name="Base.Widget.Material3.ExtendedFloatingActionButton" parent="Widget.MaterialComponents.ExtendedFloatingActionButton">
-    <item name="android:minHeight">@dimen/m3_extended_fab_min_height</item>
-    <item name="android:textAppearance">?attr/textAppearanceLabelLarge</item>
-    <item name="android:textColor">@color/m3_button_foreground_color_selector</item>
-    <item name="backgroundTint">@color/m3_button_background_color_selector</item>
-    <item name="enforceMaterialTheme">true</item>
-    <item name="iconTint">@color/m3_button_foreground_color_selector</item>
-    <item name="rippleColor">@color/m3_button_ripple_color_selector</item>
-    <item name="shapeAppearance">?attr/shapeAppearanceCornerLarge</item>
+    <item name="backgroundTint">@color/m3_fab_efab_background_color_selector</item>
+    <item name="iconTint">@color/m3_fab_efab_foreground_color_selector</item>
+    <item name="android:textColor">@color/m3_fab_efab_foreground_color_selector</item>
+    <item name="rippleColor">@color/m3_efab_ripple_color_selector</item>
+    <item name="android:minHeight">@dimen/m3_comp_extended_fab_primary_container_height</item>
+    <item name="elevation">@dimen/m3_comp_extended_fab_primary_container_elevation</item>
+    <item name="android:stateListAnimator" tools:ignore="NewApi">
+      @animator/m3_extended_fab_state_list_animator
+    </item>
+    <item name="iconSize">@dimen/m3_comp_extended_fab_primary_icon_size</item>
+    <item name="android:textAppearance">@macro/m3_comp_extended_fab_primary_label_text_type</item>
+    <item name="shapeAppearance">@macro/m3_comp_extended_fab_primary_container_shape</item>
     <item name="shapeAppearanceOverlay">@null</item>
+    <item name="enforceMaterialTheme">true</item>
     <item name="showMotionSpec">@animator/m3_extended_fab_show_motion_spec</item>
     <item name="hideMotionSpec">@animator/m3_extended_fab_hide_motion_spec</item>
   </style>
@@ -286,23 +291,23 @@
   <!-- Extended FAB Overlays -->
 
   <style name="ThemeOverlay.Material3.ExtendedFloatingActionButton.Primary" parent="">
-    <item name="colorContainer">?attr/colorPrimaryContainer</item>
-    <item name="colorOnContainer">?attr/colorOnPrimaryContainer</item>
+    <item name="colorContainer">@macro/m3_comp_extended_fab_primary_container_color</item>
+    <item name="colorOnContainer">@macro/m3_comp_extended_fab_primary_icon_color</item>
   </style>
 
   <style name="ThemeOverlay.Material3.ExtendedFloatingActionButton.Secondary" parent="">
-    <item name="colorContainer">?attr/colorSecondaryContainer</item>
-    <item name="colorOnContainer">?attr/colorOnSecondaryContainer</item>
+    <item name="colorContainer">@macro/m3_comp_extended_fab_secondary_container_color</item>
+    <item name="colorOnContainer">@macro/m3_comp_extended_fab_secondary_icon_color</item>
   </style>
 
   <style name="ThemeOverlay.Material3.ExtendedFloatingActionButton.Tertiary" parent="">
-    <item name="colorContainer">?attr/colorTertiaryContainer</item>
-    <item name="colorOnContainer">?attr/colorOnTertiaryContainer</item>
+    <item name="colorContainer">@macro/m3_comp_extended_fab_tertiary_container_color</item>
+    <item name="colorOnContainer">@macro/m3_comp_extended_fab_tertiary_icon_color</item>
   </style>
 
   <style name="ThemeOverlay.Material3.ExtendedFloatingActionButton.Surface" parent="">
-    <item name="colorContainer">?attr/colorSurface</item>
-    <item name="colorOnContainer">?attr/colorPrimary</item>
+    <item name="colorContainer">@macro/m3_comp_extended_fab_surface_container_color</item>
+    <item name="colorOnContainer">@macro/m3_comp_extended_fab_surface_icon_color</item>
   </style>
 
 </resources>
