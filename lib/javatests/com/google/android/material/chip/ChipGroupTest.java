@@ -17,6 +17,8 @@ package com.google.android.material.chip;
 
 import com.google.android.material.test.R;
 
+import static android.view.View.GONE;
+import static android.view.View.INVISIBLE;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -261,6 +263,40 @@ public class ChipGroupTest {
     assertEquals(1, itemInfo.getColumnIndex());
     assertEquals(0, itemInfo.getRowIndex());
     assertTrue(itemInfo.isSelected());
+    assertEquals(1, chipgroup.getIndexOfChip(secondChild));
+  }
+
+  @Test
+  @Config(minSdk = 23, maxSdk = 28)
+  public void isSingleLine_initializesAccessibilityNodeInfo_invisibleChip() {
+    chipgroup.setSingleLine(true);
+    AccessibilityNodeInfoCompat groupInfoCompat = AccessibilityNodeInfoCompat.obtain();
+    // onLayout must be triggered for rowCount
+    chipgroup.layout(0, 0, 100, 100);
+
+    ViewCompat.onInitializeAccessibilityNodeInfo(chipgroup, groupInfoCompat);
+
+    CollectionInfoCompat collectionInfo = groupInfoCompat.getCollectionInfo();
+    assertEquals(chipgroup.getChildCount(), collectionInfo.getColumnCount());
+    assertEquals(1, collectionInfo.getRowCount());
+
+    Chip firstChild = (Chip) chipgroup.getChildAt(0);
+    firstChild.setVisibility(INVISIBLE);
+    Chip secondChild = (Chip) chipgroup.getChildAt(1);
+    secondChild.setVisibility(GONE);
+    Chip thirdChild = (Chip) chipgroup.getChildAt(2);
+    AccessibilityNodeInfoCompat chipInfoCompat = AccessibilityNodeInfoCompat.obtain();
+    ViewCompat.onInitializeAccessibilityNodeInfo(thirdChild, chipInfoCompat);
+
+    CollectionItemInfoCompat itemInfo = chipInfoCompat.getCollectionItemInfo();
+    assertEquals(0, itemInfo.getColumnIndex());
+    assertEquals(0, itemInfo.getRowIndex());
+    assertEquals(-1, chipgroup.getIndexOfChip(firstChild));
+    assertEquals(-1, chipgroup.getIndexOfChip(secondChild));
+    assertEquals(0, chipgroup.getIndexOfChip(thirdChild));
+
+    ViewCompat.onInitializeAccessibilityNodeInfo(chipgroup, groupInfoCompat);
+    assertEquals(1, groupInfoCompat.getCollectionInfo().getColumnCount());
   }
 
   @Test

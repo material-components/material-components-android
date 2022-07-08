@@ -174,7 +174,7 @@ public class ChipGroup extends FlowLayout {
     super.onInitializeAccessibilityNodeInfo(info);
     AccessibilityNodeInfoCompat infoCompat = AccessibilityNodeInfoCompat.wrap(info);
     // -1 for an unknown number of columns in a reflowing layout
-    int columnCount = isSingleLine() ? getChipCount() : -1;
+    int columnCount = isSingleLine() ? getVisibleChipCount() : -1;
     infoCompat.setCollectionInfo(
         CollectionInfoCompat.obtain(
             /* rowCount= */ getRowCount(),
@@ -354,10 +354,10 @@ public class ChipGroup extends FlowLayout {
     onCheckedStateChangeListener = listener;
   }
 
-  private int getChipCount() {
+  private int getVisibleChipCount() {
     int count = 0;
     for (int i = 0; i < getChildCount(); i++) {
-      if (this.getChildAt(i) instanceof Chip) {
+      if (getChildAt(i) instanceof Chip && isChildVisible(i)) {
         count++;
       }
     }
@@ -367,7 +367,7 @@ public class ChipGroup extends FlowLayout {
   /**
    * Returns the index of the Chip within the Chip children.
    *
-   * <p>Non-Chip children are ignored when computing the index.
+   * <p>Non-Chip and non-visible children are ignored when computing the index.
    */
   int getIndexOfChip(@Nullable View child) {
     if (!(child instanceof Chip)) {
@@ -375,8 +375,9 @@ public class ChipGroup extends FlowLayout {
     }
     int index = 0;
     for (int i = 0; i < getChildCount(); i++) {
-      if (this.getChildAt(i) instanceof Chip) {
-        Chip chip = (Chip) getChildAt(i);
+      View current = getChildAt(i);
+      if (current instanceof Chip && isChildVisible(i)) {
+        Chip chip = (Chip) current;
         if (chip == child) {
           return index;
         }
@@ -384,6 +385,10 @@ public class ChipGroup extends FlowLayout {
       }
     }
     return -1;
+  }
+
+  private boolean isChildVisible(int i) {
+    return getChildAt(i).getVisibility() == VISIBLE;
   }
 
   /** Sets the horizontal and vertical spacing between visible chips in this group. */
