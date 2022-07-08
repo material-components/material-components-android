@@ -677,6 +677,10 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     int range = 0;
     for (int i = 0, z = getChildCount(); i < z; i++) {
       final View child = getChildAt(i);
+      if (child.getVisibility() == GONE) {
+        // Gone views should not be included in the scroll range calculation.
+        continue;
+      }
       final LayoutParams lp = (LayoutParams) child.getLayoutParams();
       final int childHeight = child.getMeasuredHeight();
       final int flags = lp.scrollFlags;
@@ -725,6 +729,10 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     int range = 0;
     for (int i = getChildCount() - 1; i >= 0; i--) {
       final View child = getChildAt(i);
+      if (child.getVisibility() == GONE) {
+        // Gone views should not be included in the scroll range calculation.
+        continue;
+      }
       final LayoutParams lp = (LayoutParams) child.getLayoutParams();
       final int childHeight = child.getMeasuredHeight();
       final int flags = lp.scrollFlags;
@@ -768,6 +776,10 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     int range = 0;
     for (int i = 0, z = getChildCount(); i < z; i++) {
       final View child = getChildAt(i);
+      if (child.getVisibility() == GONE) {
+        // Gone views should not be included in the scroll range calculation.
+        continue;
+      }
       final LayoutParams lp = (LayoutParams) child.getLayoutParams();
       int childHeight = child.getMeasuredHeight();
       childHeight += lp.topMargin + lp.bottomMargin;
