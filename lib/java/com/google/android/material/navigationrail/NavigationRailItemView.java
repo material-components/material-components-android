@@ -46,9 +46,7 @@ final class NavigationRailItemView extends NavigationBarItemView {
       int bestHeight = max(measuredHeight, preferredHeight);
 
       // Set view to use measured width, but use the best height possible
-      setMeasuredDimension(
-          getMeasuredWidthAndState(),
-          View.resolveSizeAndState(bestHeight, heightMeasureSpec, /* childMeasuredState= */ 0));
+      setMeasuredDimension(getMeasuredWidthAndState(), bestHeight);
     }
   }
 

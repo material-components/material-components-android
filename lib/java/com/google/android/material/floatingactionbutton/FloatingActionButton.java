@@ -278,8 +278,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     imagePadding = (preferredSize - maxImageSize) / 2;
     getImpl().updatePadding();
 
-    final int w = resolveAdjustedSize(preferredSize, widthMeasureSpec);
-    final int h = resolveAdjustedSize(preferredSize, heightMeasureSpec);
+    final int w = View.resolveSize(preferredSize, widthMeasureSpec);
+    final int h = View.resolveSize(preferredSize, heightMeasureSpec);
 
     // As we want to stay circular, we set both dimensions to be the
     // smallest resolved dimension
@@ -287,7 +287,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
 
     // We add the shadow's padding to the measured dimension
     setMeasuredDimension(
-        d + shadowPadding.left + shadowPadding.right, d + shadowPadding.top + shadowPadding.bottom);
+        d + shadowPadding.left + shadowPadding.right,
+        d + shadowPadding.top + shadowPadding.bottom);
   }
 
   /**
@@ -910,32 +911,6 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   @Nullable
   public Drawable getContentBackground() {
     return getImpl().getContentBackground();
-  }
-
-  private static int resolveAdjustedSize(int desiredSize, int measureSpec) {
-    int result = desiredSize;
-    int specMode = MeasureSpec.getMode(measureSpec);
-    int specSize = MeasureSpec.getSize(measureSpec);
-    switch (specMode) {
-      case MeasureSpec.UNSPECIFIED:
-        // Parent says we can be as big as we want. Just don't be larger
-        // than max size imposed on ourselves.
-        result = desiredSize;
-        break;
-      case MeasureSpec.AT_MOST:
-        // Parent says we can be as big as we want, up to specSize.
-        // Don't be larger than specSize, and don't be larger than
-        // the max size imposed on ourselves.
-        result = Math.min(desiredSize, specSize);
-        break;
-      case MeasureSpec.EXACTLY:
-        // No choice. Do what we are told.
-        result = specSize;
-        break;
-      default:
-        throw new IllegalArgumentException();
-    }
-    return result;
   }
 
   @Override
