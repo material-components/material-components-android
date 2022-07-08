@@ -30,6 +30,9 @@
     <item name="paddingBottomSystemWindowInsets">true</item>
     <item name="paddingLeftSystemWindowInsets">true</item>
     <item name="paddingRightSystemWindowInsets">true</item>
+    <item name="fabAnchorMode">cradle</item>
+    <item name="fabAlignmentMode">center</item>
+    <item name="menuAlignmentMode">auto</item>
   </style>
 
   <style name="Widget.MaterialComponents.BottomAppBar.Colored" parent="Widget.MaterialComponents.BottomAppBar">
@@ -52,8 +55,14 @@
   <!-- M3 Styles -->
 
   <style name="Widget.Material3.BottomAppBar" parent="Widget.MaterialComponents.BottomAppBar">
+    <item name="android:minHeight">@dimen/m3_bottomappbar_height</item>
+    <item name="maxButtonHeight">@dimen/m3_bottomappbar_height</item>
     <item name="fabAnimationMode">slide</item>
-    <item name="fabAnchorMode">cradle</item>
+    <item name="fabAnchorMode">embed</item>
+    <item name="removeEmbeddedFabElevation">true</item>
+    <item name="fabAlignmentMode">end</item>
+    <item name="menuAlignmentMode">start</item>
+    <item name="fabAlignmentModeEndMargin">@dimen/m3_bottomappbar_fab_end_margin</item>
     <item name="fabCradleMargin">@dimen/m3_bottomappbar_fab_cradle_margin</item>
     <item name="fabCradleRoundedCornerRadius">
       @dimen/m3_bottomappbar_fab_cradle_rounded_corner_radius
@@ -71,6 +80,27 @@
   <style name="ThemeOverlay.Material3.BottomAppBar" parent="">
     <item name="colorControlNormal">?attr/colorOnSurface</item>
     <item name="actionMenuTextColor">?attr/colorOnSurface</item>
+  </style>
+
+  <style name="Widget.Material3.BottomAppBar.Legacy" parent="Widget.MaterialComponents.BottomAppBar">
+    <item name="fabAnimationMode">slide</item>
+    <item name="fabAnchorMode">cradle</item>
+    <item name="removeEmbeddedFabElevation">false</item>
+    <item name="fabAlignmentMode">center</item>
+    <item name="menuAlignmentMode">auto</item>
+    <item name="fabAlignmentModeEndMargin">@null</item>
+    <item name="fabCradleMargin">@dimen/m3_bottomappbar_fab_cradle_margin</item>
+    <item name="fabCradleRoundedCornerRadius">
+      @dimen/m3_bottomappbar_fab_cradle_rounded_corner_radius
+    </item>
+    <item name="fabCradleVerticalOffset">
+      @dimen/m3_bottomappbar_fab_cradle_vertical_offset
+    </item>
+    <item name="elevation">@dimen/m3_comp_bottom_app_bar_container_elevation</item>
+
+    <item name="backgroundTint">@macro/m3_comp_bottom_app_bar_container_color</item>
+    <item name="navigationIconTint">?attr/colorOnSurfaceVariant</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.BottomAppBar</item>
   </style>
 
 </resources>
