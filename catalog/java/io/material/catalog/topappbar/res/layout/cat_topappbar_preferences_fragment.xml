@@ -37,15 +37,10 @@
 
   </com.google.android.material.appbar.AppBarLayout>
 
-  <androidx.core.widget.NestedScrollView
+  <FrameLayout
+      android:id="@+id/cat_topappbar_preferences_container"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-    <FrameLayout
-        android:id="@+id/cat_topappbar_preferences_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-  </androidx.core.widget.NestedScrollView>
+      app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
