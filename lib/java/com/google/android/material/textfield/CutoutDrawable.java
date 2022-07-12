@@ -36,7 +36,6 @@ import com.google.android.material.shape.ShapeAppearanceModel;
  * outline mode.
  */
 class CutoutDrawable extends MaterialShapeDrawable {
-  @NonNull private final Paint cutoutPaint;
   @NonNull private final RectF cutoutBounds;
 
   CutoutDrawable() {
@@ -45,15 +44,7 @@ class CutoutDrawable extends MaterialShapeDrawable {
 
   CutoutDrawable(@Nullable ShapeAppearanceModel shapeAppearanceModel) {
     super(shapeAppearanceModel != null ? shapeAppearanceModel : new ShapeAppearanceModel());
-    cutoutPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    setPaintStyles();
     cutoutBounds = new RectF();
-  }
-
-  private void setPaintStyles() {
-    cutoutPaint.setStyle(Style.FILL_AND_STROKE);
-    cutoutPaint.setColor(Color.WHITE);
-    cutoutPaint.setXfermode(new PorterDuffXfermode(Mode.DST_OUT));
   }
 
   boolean hasCutout() {
