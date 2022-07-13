@@ -31,11 +31,13 @@ import android.os.Build.VERSION_CODES;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Xml;
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.XmlRes;
+import androidx.core.graphics.drawable.DrawableCompat;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -51,6 +53,29 @@ import org.xmlpull.v1.XmlPullParserException;
 public final class DrawableUtils {
 
   private DrawableUtils() {}
+
+  /**
+   * Tints the given {@link Drawable} with the given color. If the color is transparent, this
+   * method will remove any set tints on the drawable.
+   */
+  public static void setTint(@NonNull Drawable drawable, @ColorInt int color) {
+    boolean hasTint = color != Color.TRANSPARENT;
+    if (VERSION.SDK_INT == VERSION_CODES.LOLLIPOP) {
+      // On API 21, AppCompat's WrappedDrawableApi21 class only supports tinting certain types of
+      // drawables. Replicates the logic here to support all types of drawables.
+      if (hasTint) {
+        drawable.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+      } else {
+        drawable.setColorFilter(null);
+      }
+    } else {
+      if (hasTint) {
+        DrawableCompat.setTint(drawable, color);
+      } else {
+        DrawableCompat.setTintList(drawable, null);
+      }
+    }
+  }
 
   /** Returns a tint filter for the given tint and mode. */
   @Nullable

@@ -34,7 +34,6 @@ import android.content.res.TypedArray;
 import android.database.DataSetObserver;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -92,6 +91,7 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.badge.BadgeUtils;
+import com.google.android.material.drawable.DrawableUtils;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialResources;
@@ -196,6 +196,8 @@ public class TabLayout extends HorizontalScrollView {
   private static final int INVALID_WIDTH = -1;
 
   private static final int ANIMATION_DURATION = 300;
+
+  private static final int SELECTED_INDICATOR_HEIGHT_DEFAULT = -1;
 
   private static final Pools.Pool<Tab> tabPool = new Pools.SynchronizedPool<>(16);
 
@@ -450,7 +452,7 @@ public class TabLayout extends HorizontalScrollView {
   ColorStateList tabTextColors;
   ColorStateList tabIconTint;
   ColorStateList tabRippleColorStateList;
-  @NonNull Drawable tabSelectedIndicator = new GradientDrawable();
+  @NonNull Drawable tabSelectedIndicator;
   private int tabSelectedIndicatorColor = Color.TRANSPARENT;
 
   android.graphics.PorterDuff.Mode tabIconTintMode;
@@ -472,7 +474,7 @@ public class TabLayout extends HorizontalScrollView {
   @Mode int mode;
   boolean inlineLabel;
   boolean tabIndicatorFullWidth;
-  int tabIndicatorHeight = -1;
+  int tabIndicatorHeight = SELECTED_INDICATOR_HEIGHT_DEFAULT;
   @TabIndicatorAnimationMode int tabIndicatorAnimationMode;
   boolean unboundedRipple;
 
@@ -640,6 +642,7 @@ public class TabLayout extends HorizontalScrollView {
    */
   public void setSelectedTabIndicatorColor(@ColorInt int color) {
     this.tabSelectedIndicatorColor = color;
+    DrawableUtils.setTint(tabSelectedIndicator, tabSelectedIndicatorColor);
     updateTabViews(false);
   }
 
@@ -1377,15 +1380,16 @@ public class TabLayout extends HorizontalScrollView {
    * @see #setSelectedTabIndicator(int)
    */
   public void setSelectedTabIndicator(@Nullable Drawable tabSelectedIndicator) {
-    if (this.tabSelectedIndicator != tabSelectedIndicator) {
-      this.tabSelectedIndicator =
-          tabSelectedIndicator != null ? tabSelectedIndicator : new GradientDrawable();
-      int indicatorHeight =
-          tabIndicatorHeight != -1
-              ? tabIndicatorHeight
-              : this.tabSelectedIndicator.getIntrinsicHeight();
-      slidingTabIndicator.setSelectedIndicatorHeight(indicatorHeight);
+    if (tabSelectedIndicator == null) {
+      tabSelectedIndicator = new GradientDrawable();
     }
+    this.tabSelectedIndicator = DrawableCompat.wrap(tabSelectedIndicator).mutate();
+    DrawableUtils.setTint(this.tabSelectedIndicator, tabSelectedIndicatorColor);
+    int indicatorHeight =
+        tabIndicatorHeight == SELECTED_INDICATOR_HEIGHT_DEFAULT
+            ? this.tabSelectedIndicator.getIntrinsicHeight()
+            : tabIndicatorHeight;
+    slidingTabIndicator.setSelectedIndicatorHeight(indicatorHeight);
   }
 
   /**
@@ -3274,27 +3278,7 @@ public class TabLayout extends HorizontalScrollView {
         Rect indicatorBounds = tabSelectedIndicator.getBounds();
         tabSelectedIndicator.setBounds(
             indicatorBounds.left, indicatorTop, indicatorBounds.right, indicatorBottom);
-        Drawable indicator = tabSelectedIndicator;
-
-        if (tabSelectedIndicatorColor != Color.TRANSPARENT) {
-          // If a tint color has been specified using TabLayout's setSelectedTabIndicatorColor, wrap
-          // the drawable and tint it as specified.
-          indicator = DrawableCompat.wrap(indicator);
-          if (VERSION.SDK_INT == VERSION_CODES.LOLLIPOP) {
-            indicator.setColorFilter(tabSelectedIndicatorColor, PorterDuff.Mode.SRC_IN);
-          } else {
-            DrawableCompat.setTint(indicator, tabSelectedIndicatorColor);
-          }
-        } else {
-          // Remove existing tint if setSelectedTabIndicatorColor to Color.Transparent.
-          if (VERSION.SDK_INT == VERSION_CODES.LOLLIPOP) {
-            indicator.setColorFilter(null);
-          } else {
-            DrawableCompat.setTintList(indicator, null);
-          }
-        }
-
-        indicator.draw(canvas);
+        tabSelectedIndicator.draw(canvas);
       }
 
       // Draw the tab item contents (icon and label) on top of the background + indicator layers
