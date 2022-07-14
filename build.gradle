@@ -19,13 +19,13 @@ allprojects {
 }
 
 ext {
-  compileSdkVersion = 31
+  compileSdkVersion = 32
   minSdkVersion = 14
-  targetSdkVersion = 31
+  targetSdkVersion = 32
 
   androidXVersions = [
     annotation            : '1.2.0',
-    appCompat             : '1.4.0',
+    appCompat             : '1.5.0-beta01', // To include SwitchCompat fixes
     cardView              : '1.0.0',
     constraintlayout      : '2.0.1',
     coordinatorlayout     : '1.1.0',

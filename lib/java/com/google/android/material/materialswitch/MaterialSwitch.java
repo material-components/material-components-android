@@ -21,7 +21,6 @@ import com.google.android.material.R;
 import static androidx.core.graphics.ColorUtils.blendARGB;
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
@@ -31,7 +30,6 @@ import android.graphics.drawable.LayerDrawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.appcompat.content.res.AppCompatResources;
-import androidx.appcompat.graphics.drawable.AnimatedStateListDrawableCompat;
 import androidx.appcompat.widget.DrawableUtils;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.TintTypedArray;
@@ -42,8 +40,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.graphics.drawable.DrawableCompat;
 import com.google.android.material.internal.ThemeEnforcement;
-import com.google.android.material.internal.ViewUtils;
-import java.lang.reflect.Field;
 import java.util.Arrays;
 
 /**
@@ -54,9 +50,6 @@ import java.util.Arrays;
 public class MaterialSwitch extends SwitchCompat {
   private static final int DEF_STYLE_RES = R.style.Widget_Material3_CompoundButton_MaterialSwitch;
   private static final int[] STATE_SET_WITH_ICON = { R.attr.state_with_icon };
-
-  @NonNull private final SwitchWidth switchWidth = SwitchWidth.create(this);
-  @NonNull private final ThumbPosition thumbPosition = new ThumbPosition();
 
   @Nullable private Drawable thumbDrawable;
   @Nullable private Drawable thumbIconDrawable;
@@ -115,25 +108,15 @@ public class MaterialSwitch extends SwitchCompat {
 
     attributes.recycle();
 
+    setEnforceSwitchWidth(false);
+
     refreshThumbDrawable();
     refreshTrackDrawable();
   }
 
-  // TODO(b/227338106): remove this workaround and move to use setEnforceSwitchWidth(false) after
-  //                    AppCompat 1.6.0-stable is released.
-  @Override
-  public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-    super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    switchWidth.set(getSwitchMinWidth());
-  }
-
   @Override
   public void invalidate() {
-    // ThumbPosition update will trigger invalidate(), update thumb/track tint here.
-    if (thumbPosition != null) {
-      // This may happen when super classes' constructors call this method.
-      updateDrawableTints();
-    }
+    updateDrawableTints();
     super.invalidate();
   }
 
@@ -149,32 +132,6 @@ public class MaterialSwitch extends SwitchCompat {
     currentStateChecked = getCheckedState(drawableState);
 
     return drawableState;
-  }
-
-  // TODO(b/227338106): remove this workaround and move to use setEnforceSwitchWidth(false) after
-  //                    AppCompat 1.6.0-stable is released.
-  @Override
-  public int getCompoundPaddingLeft() {
-    if (!ViewUtils.isLayoutRtl(this)) {
-      return super.getCompoundPaddingLeft();
-    }
-    // Compound paddings are used during onMeasure() to decide the component width, at that time
-    // the switch width is not overridden yet so we need to adjust the value to make measurement
-    // right. This can be removed after the workaround is removed.
-    return super.getCompoundPaddingLeft() - switchWidth.get() + getSwitchMinWidth();
-  }
-
-  // TODO(b/227338106): remove this workaround and move to use setEnforceSwitchWidth(false) after
-  //                    AppCompat 1.6.0-stable is released.
-  @Override
-  public int getCompoundPaddingRight() {
-    if (ViewUtils.isLayoutRtl(this)) {
-      return super.getCompoundPaddingRight();
-    }
-    // Compound paddings are used during onMeasure() to decide the component width, at that time
-    // the switch width is not overridden yet so we need to adjust the value to make measurement
-    // right. This can be removed after the workaround is removed.
-    return super.getCompoundPaddingRight() - switchWidth.get() + getSwitchMinWidth();
   }
 
   @Override
@@ -405,12 +362,6 @@ public class MaterialSwitch extends SwitchCompat {
     return trackDecorationTintMode;
   }
 
-  // TODO(b/227338106): remove this workaround to use super.getThumbPosition() directly after
-  //                    AppCompat 1.6.0-stable is released.
-  private float getThumbPos() {
-    return thumbPosition.get();
-  }
-
   private void refreshThumbDrawable() {
     thumbDrawable =
         createTintableDrawableIfNeeded(thumbDrawable, thumbTintList, getThumbTintMode());
@@ -502,7 +453,7 @@ public class MaterialSwitch extends SwitchCompat {
       return;
     }
 
-    float thumbPosition = getThumbPos();
+    float thumbPosition = getThumbPosition();
 
     if (thumbTintList != null) {
       setInterpolatedDrawableTintIfPossible(
@@ -575,18 +526,7 @@ public class MaterialSwitch extends SwitchCompat {
     if (drawable == null || tint == null) {
       return;
     }
-    // TODO(b/232529333): remove this workaround after updating AppCompat version to 1.6.
-    if (drawable instanceof AnimatedStateListDrawableCompat
-        && VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
-      DrawableCompat.setTintList(
-          drawable,
-          ColorStateList.valueOf(
-              blendARGB(
-                  tint.getColorForState(stateUnchecked, 0),
-                  tint.getColorForState(stateChecked, 0),
-                  thumbPosition)));
-      return;
-    }
+
     DrawableCompat.setTint(
         drawable,
         blendARGB(
@@ -607,89 +547,5 @@ public class MaterialSwitch extends SwitchCompat {
       }
     }
     return drawable;
-  }
-
-  // TODO(b/227338106): remove this workaround and move to use setEnforceSwitchWidth(false) after
-  //                    AppCompat 1.6.0-stable is released.
-  @SuppressLint("PrivateApi")
-  private static final class SwitchWidth {
-
-    @NonNull private final MaterialSwitch materialSwitch;
-    @Nullable private final Field switchWidthField;
-
-    @NonNull
-    static SwitchWidth create(@NonNull MaterialSwitch materialSwitch) {
-      return new SwitchWidth(materialSwitch, createSwitchWidthField());
-    }
-
-    private SwitchWidth(@NonNull MaterialSwitch materialSwitch, @Nullable Field switchWidthField) {
-      this.materialSwitch = materialSwitch;
-      this.switchWidthField = switchWidthField;
-    }
-
-    int get() {
-      try {
-        if (switchWidthField != null) {
-          return switchWidthField.getInt(materialSwitch);
-        }
-      } catch (IllegalAccessException e) {
-        // Fall through
-      }
-      // Return getSwitchMinWidth() so no width adjustment will be done.
-      return materialSwitch.getSwitchMinWidth();
-    }
-
-    void set(int switchWidth) {
-      try {
-        if (switchWidthField != null) {
-          switchWidthField.setInt(materialSwitch, switchWidth);
-        }
-      } catch (IllegalAccessException e) {
-        // Fall through
-      }
-    }
-
-    @Nullable
-    private static Field createSwitchWidthField() {
-      try {
-        Field switchWidthField = SwitchCompat.class.getDeclaredField("mSwitchWidth");
-        switchWidthField.setAccessible(true);
-        return switchWidthField;
-      } catch (NoSuchFieldException | SecurityException e) {
-        return null;
-      }
-    }
-  }
-
-  // TODO(b/227338106): remove this workaround to use super.getThumbPosition() directly after
-  //                    AppCompat 1.6.0-stable is released.
-  @SuppressLint("PrivateApi")
-  private final class ThumbPosition {
-    private final Field thumbPositionField;
-
-    private ThumbPosition() {
-      thumbPositionField = createThumbPositionField();
-    }
-
-    float get() {
-      try {
-        if (thumbPositionField != null) {
-          return thumbPositionField.getFloat(MaterialSwitch.this);
-        }
-      } catch (IllegalAccessException e) {
-        // Fall through
-      }
-      return isChecked() ? 1 : 0;
-    }
-
-    private Field createThumbPositionField() {
-      try {
-        Field thumbPositionField = SwitchCompat.class.getDeclaredField("mThumbPosition");
-        thumbPositionField.setAccessible(true);
-        return thumbPositionField;
-      } catch (Exception e) {
-        return null;
-      }
-    }
   }
 }

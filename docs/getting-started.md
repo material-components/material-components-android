@@ -75,7 +75,7 @@ the `com.android.support:design:28.0.0` dependency.
 
 In order to use the latest versions of Material Components for Android and the
 AndroidX Jetpack libraries, you will have to install the latest version of
-Android Studio and update your app's `compileSdkVersion` to `31`.
+Android Studio and update your app's `compileSdkVersion` to `32`.
 
 As part of migrating to Android 12, you'll need to add `android:exported` to any
 activities, services, or broadcast receivers in your manifest that use intent
