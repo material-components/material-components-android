@@ -17,11 +17,6 @@
 package com.google.android.material.textfield;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Paint.Style;
-import android.graphics.PorterDuff.Mode;
-import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.graphics.Region.Op;
 import android.os.Build.VERSION;
@@ -36,7 +31,6 @@ import com.google.android.material.shape.ShapeAppearanceModel;
  * outline mode.
  */
 class CutoutDrawable extends MaterialShapeDrawable {
-  @NonNull private final Paint cutoutPaint;
   @NonNull private final RectF cutoutBounds;
 
   CutoutDrawable() {
@@ -45,15 +39,7 @@ class CutoutDrawable extends MaterialShapeDrawable {
 
   CutoutDrawable(@Nullable ShapeAppearanceModel shapeAppearanceModel) {
     super(shapeAppearanceModel != null ? shapeAppearanceModel : new ShapeAppearanceModel());
-    cutoutPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    setPaintStyles();
     cutoutBounds = new RectF();
-  }
-
-  private void setPaintStyles() {
-    cutoutPaint.setStyle(Style.FILL_AND_STROKE);
-    cutoutPaint.setColor(Color.WHITE);
-    cutoutPaint.setXfermode(new PorterDuffXfermode(Mode.DST_OUT));
   }
 
   boolean hasCutout() {
