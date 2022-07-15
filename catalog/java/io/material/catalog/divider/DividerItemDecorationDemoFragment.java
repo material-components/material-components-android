@@ -33,10 +33,6 @@ import io.material.catalog.feature.DemoFragment;
 /** Demo of the MaterialDividerItemDecoration. */
 public class DividerItemDecorationDemoFragment extends DemoFragment {
 
-  private RecyclerView recyclerView;
-  private DividerAdapter adapter;
-  private RecyclerView.LayoutManager layoutManager;
-
   @Nullable
   @Override
   public View onCreateDemoView(
@@ -47,23 +43,33 @@ public class DividerItemDecorationDemoFragment extends DemoFragment {
         layoutInflater.inflate(
             R.layout.cat_divider_recyclerview_fragment, viewGroup, /* attachToRoot */ false);
 
-    recyclerView = view.findViewById(R.id.divider_recyclerview);
-    layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+    RecyclerView recyclerViewHorizontal = view.findViewById(R.id.divider_recyclerview_horizontal);
+    RecyclerView recyclerViewVertical = view.findViewById(R.id.divider_recyclerview_vertical);
+
+    setUpDividers(recyclerViewHorizontal, LinearLayoutManager.HORIZONTAL);
+    setUpDividers(recyclerViewVertical, LinearLayoutManager.VERTICAL);
+
+    return view;
+  }
+
+  private void setUpDividers(@NonNull RecyclerView recyclerView, int orientation) {
+    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(),
+        orientation, false);
     recyclerView.setLayoutManager(layoutManager);
 
     MaterialDividerItemDecoration divider =
-        new MaterialDividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL);
+        new MaterialDividerItemDecoration(getContext(), orientation);
     recyclerView.addItemDecoration(divider);
 
-    adapter = new DividerAdapter();
+    DividerAdapter adapter = new DividerAdapter();
     recyclerView.setAdapter(adapter);
-
-    return view;
   }
 
   /** A RecyclerView adapter. */
   private static final class DividerAdapter
       extends RecyclerView.Adapter<DividerAdapter.MyViewHolder> {
+
+    private static final int ITEM_COUNT = 20;
 
     /** Provide a reference to the views for each data item. */
     private static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -95,7 +101,7 @@ public class DividerItemDecorationDemoFragment extends DemoFragment {
 
     @Override
     public int getItemCount() {
-      return 30;
+      return ITEM_COUNT;
     }
   }
 }
