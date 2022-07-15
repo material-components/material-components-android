@@ -352,10 +352,11 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
     bottom -= insetEnd;
 
     int childCount = parent.getChildCount();
-    for (int i = 0; i < childCount; i++) {
+    int dividerCount = lastItemDecorated ? childCount : childCount - 1;
+    for (int i = 0; i < dividerCount; i++) {
       View child = parent.getChildAt(i);
-      parent.getLayoutManager().getDecoratedBoundsWithMargins(child, tempRect);
-      // Take into consideration any translationY added to the view.
+      parent.getDecoratedBoundsWithMargins(child, tempRect);
+      // Take into consideration any translationX added to the view.
       int right = tempRect.right + Math.round(child.getTranslationX());
       int left = right - dividerDrawable.getIntrinsicWidth() - thickness;
       dividerDrawable.setBounds(left, top, right, bottom);
