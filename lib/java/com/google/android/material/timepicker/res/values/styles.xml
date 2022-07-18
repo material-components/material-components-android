@@ -27,6 +27,7 @@
     <item name="ensureMinTouchTargetSize">false</item>
     <item name="android:textAlignment">center</item>
     <item name="android:textAppearance">?attr/textAppearanceHeadline3</item>
+    <item name="android:includeFontPadding">true</item>
     <!-- No need to scale here since the text is already readable -->
     <item name="android:textSize" tools:ignore="SpUsage">56dp</item>
     <item name="shapeAppearanceOverlay">?shapeAppearanceMediumComponent</item>
@@ -34,13 +35,14 @@
   </style>
 
   <style name="Widget.MaterialComponents.TimePicker.Display.Divider" parent="">
-    <item name="android:includeFontPadding">false</item>
+    <item name="android:includeFontPadding">true</item>
     <item name="android:lineSpacingExtra">0dp</item>
     <item name="android:maxEms">1</item>
     <item name="android:text">@string/material_clock_display_divider</item>
     <item name="android:textAppearance">?attr/textAppearanceHeadline3</item>
     <item name="android:textColor">?attr/colorOnSurface</item>
     <item name="android:textSize">56dp</item>
+    <item name="android:gravity">center</item>
   </style>
 
   <style name="Widget.MaterialComponents.TimePicker.ImageButton" parent="">
@@ -84,7 +86,7 @@
   <style name="Widget.MaterialComponents.TimePicker.Display.TextInputEditText" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
     <item name="android:textAppearance">?attr/textAppearanceHeadline3</item>
     <item name="android:textSize" tools:ignore="SpUsage">56dp</item>
-    <item name="android:paddingTop">4dp</item>
+    <item name="android:paddingTop">0dp</item>
     <item name="android:paddingBottom">0dp</item>
     <item name="android:inputType">number</item>
     <item name="android:maxLength">2</item>
@@ -160,7 +162,7 @@
   </style>
 
   <style name="Widget.Material3.MaterialTimePicker.Display.Divider" parent="Widget.MaterialComponents.TimePicker.Display.Divider">
-    <item name="android:textAppearance">?attr/textAppearanceHeadlineMedium</item>
+    <item name="android:textAppearance">?attr/textAppearanceDisplayLarge</item>
   </style>
 
   <style name="Widget.Material3.MaterialTimePicker.Display.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
@@ -175,9 +177,9 @@
   </style>
 
   <style name="Widget.Material3.MaterialTimePicker.Display.TextInputEditText" parent="Widget.Material3.TextInputEditText.OutlinedBox">
-    <item name="android:textAppearance">?attr/textAppearanceHeadlineMedium</item>
+    <item name="android:textAppearance">?attr/textAppearanceDisplayLarge</item>
     <item name="android:textSize" tools:ignore="SpUsage">56dp</item>
-    <item name="android:paddingTop">4dp</item>
+    <item name="android:paddingTop">0dp</item>
     <item name="android:paddingBottom">0dp</item>
     <item name="android:inputType">number</item>
     <item name="android:maxLength">2</item>

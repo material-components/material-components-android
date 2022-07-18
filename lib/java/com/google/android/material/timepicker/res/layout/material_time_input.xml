@@ -20,13 +20,12 @@
   android:layout_width="wrap_content"
   android:layout_height="wrap_content"
   app:errorIconDrawable="@null"
-  app:hintEnabled="false" >
+  app:hintEnabled="false">
 
   <com.google.android.material.textfield.TextInputEditText
-    android:layout_width="96dp"
-    android:textCursorDrawable="@drawable/material_cursor_drawable"
-    android:layout_height="80dp"
-    android:paddingBottom="@dimen/material_time_input_padding_bottom" />
+    android:layout_width="@dimen/material_clock_display_width"
+    android:layout_height="@dimen/material_clock_display_height"
+    android:textCursorDrawable="@drawable/material_cursor_drawable" />
 
   <TextView
     android:id="@+id/material_label"
