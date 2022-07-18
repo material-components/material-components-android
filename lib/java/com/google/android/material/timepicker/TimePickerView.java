@@ -257,27 +257,7 @@ class TimePickerView extends ConstraintLayout implements TimePickerControls {
   protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
     super.onVisibilityChanged(changedView, visibility);
     if (changedView == this && visibility == VISIBLE) {
-      updateToggleConstraints();
       hourView.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
-    }
-  }
-
-  @Override
-  protected void onAttachedToWindow() {
-    super.onAttachedToWindow();
-    updateToggleConstraints();
-  }
-
-  private void updateToggleConstraints() {
-    if (toggle.getVisibility() == VISIBLE) {
-      // The clock display would normally be centered, clear the constraint on one side to make
-      // room for the toggle
-      ConstraintSet constraintSet = new ConstraintSet();
-      constraintSet.clone(this);
-      boolean isLtr = ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_LTR;
-      int sideToClear = isLtr ? ConstraintSet.RIGHT : ConstraintSet.LEFT;
-      constraintSet.clear(R.id.material_clock_display, sideToClear);
-      constraintSet.applyTo(this);
     }
   }
 

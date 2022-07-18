@@ -19,15 +19,11 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   android:id="@+id/material_clock_period_toggle"
-  android:layout_width="@dimen/material_clock_period_toggle_width"
-  android:layout_height="@dimen/material_clock_period_toggle_height"
-  android:layout_marginStart="@dimen/material_clock_period_toggle_margin_left"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
   android:orientation="vertical"
   android:contentDescription="@string/material_clock_toggle_content_description"
   app:checkedButton="@id/material_clock_period_am_button"
-  app:layout_constraintStart_toEndOf="@id/material_clock_display"
-  app:layout_constraintTop_toTopOf="parent"
-  android:visibility="gone"
   app:selectionRequired="true"
   app:singleSelection="true">
 

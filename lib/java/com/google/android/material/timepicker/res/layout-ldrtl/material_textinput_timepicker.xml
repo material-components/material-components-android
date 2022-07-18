@@ -34,7 +34,7 @@
     android:layout_width="@dimen/material_clock_period_toggle_width"
     android:layout_height="@dimen/material_clock_period_toggle_height"
     android:layout_marginStart="0dp"
-    android:layout_marginEnd="@dimen/material_clock_period_toggle_margin_left" />
+    android:layout_marginEnd="@dimen/material_clock_period_toggle_horizontal_gap" />
 
   <include layout="@layout/material_timepicker_textinput_display" />
 
