@@ -41,13 +41,16 @@ import android.widget.TextView;
 import androidx.annotation.ArrayRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.DimenRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.core.view.MarginLayoutParamsCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.core.view.ViewCompat;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
 import dagger.android.support.DaggerFragment;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -62,6 +65,10 @@ public abstract class DemoLandingFragment extends DaggerFragment {
   public void onCreate(@Nullable Bundle bundle) {
     super.onCreate(bundle);
     setHasOptionsMenu(true);
+
+    if (bundle == null && isFavoriteLaunch()) {
+      startDefaultDemoIfNeeded();
+    }
   }
 
   @SuppressWarnings("RestrictTo")
@@ -97,10 +104,6 @@ public abstract class DemoLandingFragment extends DaggerFragment {
 
     TextView descriptionTextView = view.findViewById(R.id.cat_demo_landing_description);
     ViewGroup mainDemoContainer = view.findViewById(R.id.cat_demo_landing_main_demo_container);
-    ViewGroup additionalDemosSection =
-        view.findViewById(R.id.cat_demo_landing_additional_demos_section);
-    ViewGroup additionalDemosContainer =
-        view.findViewById(R.id.cat_demo_landing_additional_demos_container);
 
     // Links should be added whether or not the feature is restricted.
     addLinks(layoutInflater, view);
@@ -108,6 +111,8 @@ public abstract class DemoLandingFragment extends DaggerFragment {
     // If this fragments demos is restricted, due to conditions set by the subclass, exit early
     // without showing any demos and just show the restricted message.
     if (isRestricted()) {
+      ViewGroup additionalDemosSection =
+          view.findViewById(R.id.cat_demo_landing_additional_demos_section);
       descriptionTextView.setText(getRestrictedMessageId());
       mainDemoContainer.setVisibility(View.GONE);
       additionalDemosSection.setVisibility(View.GONE);
@@ -115,15 +120,30 @@ public abstract class DemoLandingFragment extends DaggerFragment {
     }
 
     descriptionTextView.setText(getDescriptionResId());
-    addDemoView(layoutInflater, mainDemoContainer, getMainDemo(), false);
-    List<Demo> additionalDemos = getAdditionalDemos();
-    for (Demo additionalDemo : additionalDemos) {
-      addDemoView(layoutInflater, additionalDemosContainer, additionalDemo, true);
-    }
-    additionalDemosSection.setVisibility(additionalDemos.isEmpty() ? View.GONE : View.VISIBLE);
+    clearAndAddDemoViews(view, layoutInflater);
 
     DemoUtils.addBottomSpaceInsetsIfNeeded((ViewGroup) view, viewGroup);
     return view;
+  }
+
+  private void clearAndAddDemoViews(View view, LayoutInflater layoutInflater) {
+    ViewGroup mainDemoContainer = view.findViewById(R.id.cat_demo_landing_main_demo_container);
+    ViewGroup additionalDemosSection =
+        view.findViewById(R.id.cat_demo_landing_additional_demos_section);
+    ViewGroup additionalDemosContainer =
+        view.findViewById(R.id.cat_demo_landing_additional_demos_container);
+
+    mainDemoContainer.removeAllViews();
+    additionalDemosContainer.removeAllViews();
+
+    String defaultDemoClassName = FeatureDemoUtils.getDefaultDemo(requireContext());
+    addDemoView(layoutInflater, mainDemoContainer, getMainDemo(), false, defaultDemoClassName);
+    List<Demo> additionalDemos = getAdditionalDemos();
+    for (Demo additionalDemo : additionalDemos) {
+      addDemoView(
+          layoutInflater, additionalDemosContainer, additionalDemo, true, defaultDemoClassName);
+    }
+    additionalDemosSection.setVisibility(additionalDemos.isEmpty() ? View.GONE : View.VISIBLE);
   }
 
   private void addLinks(LayoutInflater layoutInflater, View view) {
@@ -149,19 +169,34 @@ public abstract class DemoLandingFragment extends DaggerFragment {
   }
 
   private void addDemoView(
-      LayoutInflater layoutInflater, ViewGroup demoContainer, Demo demo, boolean isAdditional) {
+      LayoutInflater layoutInflater,
+      ViewGroup demoContainer,
+      Demo demo,
+      boolean isAdditional,
+      String defaultDemoClassName) {
     View demoView = layoutInflater.inflate(R.layout.cat_demo_landing_row, demoContainer, false);
 
     View rootView = demoView.findViewById(R.id.cat_demo_landing_row_root);
     TextView titleTextView = demoView.findViewById(R.id.cat_demo_landing_row_title);
     TextView subtitleTextView = demoView.findViewById(R.id.cat_demo_landing_row_subtitle);
+    MaterialButton favoriteButton = demoView.findViewById(R.id.cat_demo_landing_row_favorite);
 
     String transitionName = getString(demo.getTitleResId());
     ViewCompat.setTransitionName(rootView, transitionName);
-    rootView.setOnClickListener(v -> startDemo(v, demo, transitionName));
+    rootView.setOnClickListener(v -> startDemo(demo, v, transitionName));
 
     titleTextView.setText(demo.getTitleResId());
-    subtitleTextView.setText(getDemoClassName(demo));
+    String demoClassName = demo.getDemoClassName();
+    subtitleTextView.setText(demoClassName);
+    favoriteButton.setChecked(defaultDemoClassName.equals(demoClassName));
+    favoriteButton.setOnClickListener(
+        v -> {
+          updateFavoriteDemoLandingPreference(favoriteButton.isChecked());
+          updateFavoriteDemoPreference(demo, favoriteButton.isChecked());
+          // Make sure the favorite icons in the demo rows and toolbar are in the correct state.
+          clearAndAddDemoViews(requireView(), layoutInflater);
+          requireActivity().invalidateOptionsMenu();
+        });
 
     if (isAdditional) {
       setMarginStart(titleTextView, R.dimen.cat_list_text_margin_from_icon_large);
@@ -171,28 +206,27 @@ public abstract class DemoLandingFragment extends DaggerFragment {
     demoContainer.addView(demoView);
   }
 
-  private String getDemoClassName(Demo demo) {
-    if (demo.createFragment() != null) {
-      return demo.createFragment().getClass().getSimpleName();
-    } else if (demo.createActivityIntent() != null) {
-      String className = demo.createActivityIntent().getComponent().getClassName();
-      return className.substring(className.lastIndexOf('.') + 1);
-    } else {
-      throw new IllegalStateException("Demo must implement createFragment or createActivityIntent");
-    }
+  private void startDemo(@NonNull Demo demo) {
+    startDemo(demo, null, null);
   }
 
-  private void startDemo(View sharedElement, Demo demo, String transitionName) {
-    if (demo.createFragment() != null) {
-      startDemoFragment(sharedElement, demo.createFragment(), transitionName);
-    } else if (demo.createActivityIntent() != null) {
-      startDemoActivity(sharedElement, demo.createActivityIntent(), transitionName);
-    } else {
-      throw new IllegalStateException("Demo must implement createFragment or createActivityIntent");
+  private void startDemo(
+      @NonNull Demo demo, @Nullable View sharedElement, @Nullable String transitionName) {
+    Fragment fragment = demo.createFragment();
+    if (fragment != null) {
+      startDemoFragment(fragment, sharedElement, transitionName);
+      return;
     }
+    Intent activityIntent = demo.createActivityIntent();
+    if (activityIntent != null) {
+      startDemoActivity(activityIntent, sharedElement, transitionName);
+      return;
+    }
+    throw new IllegalStateException("Demo must implement createFragment or createActivityIntent");
   }
 
-  private void startDemoFragment(View sharedElement, Fragment fragment, String transitionName) {
+  private void startDemoFragment(
+      Fragment fragment, @Nullable View sharedElement, @Nullable String transitionName) {
     Bundle args = new Bundle();
     args.putString(DemoFragment.ARG_DEMO_TITLE, getString(getTitleResId()));
     args.putString(FeatureDemoUtils.ARG_TRANSITION_NAME, transitionName);
@@ -201,11 +235,15 @@ public abstract class DemoLandingFragment extends DaggerFragment {
         getActivity(), fragment, FRAGMENT_DEMO_CONTENT, sharedElement, transitionName);
   }
 
-  private void startDemoActivity(View sharedElement, Intent intent, String transitionName) {
+  private void startDemoActivity(
+      Intent intent, @Nullable View sharedElement, @Nullable String transitionName) {
     intent.putExtra(DemoActivity.EXTRA_DEMO_TITLE, getString(getTitleResId()));
-    intent.putExtra(DemoActivity.EXTRA_TRANSITION_NAME, transitionName);
 
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP
+        && sharedElement != null
+        && transitionName != null) {
+      intent.putExtra(DemoActivity.EXTRA_TRANSITION_NAME, transitionName);
+
       // Set up shared element transition and disable overlay so views don't show above system bars
       FragmentActivity activity = getActivity();
       activity.setExitSharedElementCallback(new MaterialContainerTransformSharedElementCallback());
@@ -217,6 +255,42 @@ public abstract class DemoLandingFragment extends DaggerFragment {
     } else {
       startActivity(intent);
     }
+  }
+
+  private void updateFavoriteDemoLandingPreference(boolean isChecked) {
+    FeatureDemoUtils.saveDefaultDemoLanding(
+        requireContext(), isChecked ? getClass().getName() : "");
+  }
+
+  private void updateFavoriteDemoPreference(Demo demo, boolean isChecked) {
+    FeatureDemoUtils.saveDefaultDemo(requireContext(), isChecked ? demo.getDemoClassName() : "");
+  }
+
+  private void clearFavoriteDemoPreference() {
+    FeatureDemoUtils.saveDefaultDemo(requireContext(), "");
+  }
+
+  private void startDefaultDemoIfNeeded() {
+    String defaultDemo = FeatureDemoUtils.getDefaultDemo(requireContext());
+    if (!defaultDemo.isEmpty()) {
+      List<Demo> allDemos = new ArrayList<>();
+      allDemos.add(getMainDemo());
+      allDemos.addAll(getAdditionalDemos());
+      for (Demo demo : allDemos) {
+        if (demo.getDemoClassName().equals(defaultDemo)) {
+          startDemo(demo);
+          return;
+        }
+      }
+    }
+  }
+
+  private boolean isFavoriteLaunch() {
+    Bundle arguments = getArguments();
+    if (arguments != null) {
+      return arguments.getBoolean(FeatureDemo.KEY_FAVORITE_LAUNCH);
+    }
+    return false;
   }
 
   private void setMarginStart(View view, @DimenRes int marginResId) {
@@ -234,7 +308,8 @@ public abstract class DemoLandingFragment extends DaggerFragment {
   @Override
   public void onPrepareOptionsMenu(Menu menu) {
     MenuItem item = menu.findItem(R.id.favorite_toggle);
-    boolean isChecked = FeatureDemoUtils.getDefaultDemo(getContext()).equals(getClass().getName());
+    boolean isChecked =
+        FeatureDemoUtils.getDefaultDemoLanding(requireContext()).equals(getClass().getName());
     setMenuItemChecked(item, isChecked);
   }
 
@@ -242,8 +317,10 @@ public abstract class DemoLandingFragment extends DaggerFragment {
   public boolean onOptionsItemSelected(MenuItem menuItem) {
     if (menuItem.getItemId() == R.id.favorite_toggle) {
       boolean isChecked = !menuItem.isChecked();
-      FeatureDemoUtils.saveDefaultDemo(getContext(), isChecked ? getClass().getName() : "");
+      updateFavoriteDemoLandingPreference(isChecked);
+      clearFavoriteDemoPreference();
       setMenuItemChecked(menuItem, isChecked);
+      clearAndAddDemoViews(requireView(), getLayoutInflater());
       return true;
     }
 

@@ -57,9 +57,22 @@
       android:layout_below="@+id/cat_demo_landing_row_title"
       android:layout_toEndOf="@+id/cat_demo_landing_row_icon"
       android:layout_toRightOf="@+id/cat_demo_landing_row_icon"
+      android:layout_toStartOf="@+id/cat_demo_landing_row_favorite"
+      android:layout_toLeftOf="@+id/cat_demo_landing_row_favorite"
       android:ellipsize="end"
       android:maxLines="1"
       android:textAppearance="?attr/textAppearanceCaption"
       tools:text="MainDemoFragment"/>
+
+  <Button
+      style="?attr/materialIconButtonStyle"
+      android:id="@+id/cat_demo_landing_row_favorite"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentEnd="true"
+      android:checkable="true"
+      android:contentDescription="@string/cat_demo_landing_favorite"
+      android:saveEnabled="false"
+      app:icon="@drawable/ic_favorite_vd_theme_24px"/>
 
 </RelativeLayout>

@@ -70,16 +70,8 @@ public class TocFragment extends DaggerFragment {
 
     windowPreferencesManager = new WindowPreferencesManager(getContext());
 
-    String defaultDemo = FeatureDemoUtils.getDefaultDemo(getContext());
-    if (!defaultDemo.isEmpty() && bundle == null) {
-      for (FeatureDemo demo : featureDemos) {
-        Fragment fragment = demo.createFragment();
-        String key = fragment.getClass().getName();
-        if (key.equals(defaultDemo)) {
-          FeatureDemoUtils.startFragment(getActivity(), fragment, "fragment_content");
-          return;
-        }
-      }
+    if (bundle == null) {
+      startDefaultDemoLandingIfNeeded();
     }
   }
 
@@ -194,5 +186,22 @@ public class TocFragment extends DaggerFragment {
           windowPreferencesManager.toggleEdgeToEdgeEnabled();
           getActivity().recreate();
         });
+  }
+
+  private void startDefaultDemoLandingIfNeeded() {
+    String defaultDemoLanding = FeatureDemoUtils.getDefaultDemoLanding(requireContext());
+    if (!defaultDemoLanding.isEmpty()) {
+      for (FeatureDemo demo : featureDemos) {
+        Fragment fragment = demo.createFragment();
+        String key = fragment.getClass().getName();
+        if (key.equals(defaultDemoLanding)) {
+          Bundle args = fragment.getArguments() != null ? fragment.getArguments() : new Bundle();
+          args.putBoolean(FeatureDemo.KEY_FAVORITE_LAUNCH, true);
+          fragment.setArguments(args);
+          FeatureDemoUtils.startFragment(getActivity(), fragment, "fragment_content");
+          return;
+        }
+      }
+    }
   }
 }

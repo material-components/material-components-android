@@ -26,6 +26,8 @@ import java.lang.annotation.RetentionPolicy;
 /** Represents a single feature to demo. */
 public abstract class FeatureDemo {
 
+  public static final String KEY_FAVORITE_LAUNCH = "KEY_FAVORITE_LAUNCH";
+
   /** Status flag that denotes the demo and component are ready for use. */
   public static final int STATUS_READY = 0;
 
