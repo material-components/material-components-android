@@ -57,6 +57,7 @@ public class BottomSheetDragHandleView extends AppCompatImageView
 
   private boolean accessibilityServiceEnabled;
   private boolean interactable;
+  private boolean clickToExpand;
 
   private final String clickToExpandActionLabel =
       getResources().getString(R.string.bottomsheet_action_expand);
@@ -104,7 +105,7 @@ public class BottomSheetDragHandleView extends AppCompatImageView
           public void onPopulateAccessibilityEvent(View host, @NonNull AccessibilityEvent event) {
             super.onPopulateAccessibilityEvent(host, event);
             if (event.getEventType() == TYPE_VIEW_CLICKED) {
-              toggleBottomSheetIfPossible();
+              expandOrCollapseBottomSheetIfPossible();
             }
           }
         });
@@ -148,15 +149,16 @@ public class BottomSheetDragHandleView extends AppCompatImageView
   }
 
   private void onBottomSheetStateChanged(@BottomSheetBehavior.State int state) {
-    String label =
-        state == BottomSheetBehavior.STATE_COLLAPSED
-            ? clickToExpandActionLabel
-            : clickToCollapseActionLabel;
+    if (state == BottomSheetBehavior.STATE_COLLAPSED) {
+      clickToExpand = true;
+    } else if (state == BottomSheetBehavior.STATE_EXPANDED) {
+      clickToExpand = false;
+    } // Else keep the original settings
     ViewCompat.replaceAccessibilityAction(
         this,
         AccessibilityActionCompat.ACTION_CLICK,
-        label,
-        (v, args) -> toggleBottomSheetIfPossible());
+        clickToExpand ? clickToExpandActionLabel : clickToCollapseActionLabel,
+        (v, args) -> expandOrCollapseBottomSheetIfPossible());
   }
 
   private void updateInteractableState() {
@@ -169,14 +171,41 @@ public class BottomSheetDragHandleView extends AppCompatImageView
     setClickable(interactable);
   }
 
-  private boolean toggleBottomSheetIfPossible() {
+  /**
+   * Expands or collapses the associated bottom sheet according to the current state and the
+   * previous state when the drag handle is interactable, .
+   *
+   * <p>If the current state is COLLAPSED or EXPANDED and the bottom sheet can be half-expanded, it
+   * will make the bottom sheet HALF_EXPANDED; if the bottom sheet cannot be half-expanded, it will
+   * be EXPANDED (when it's COLLAPSED) or COLLAPSED (when it's EXPANDED) instead. On the other hand
+   * when the bottom sheet is HALF_EXPANDED, it will make the bottom sheet either COLLAPSED (when
+   * the previous state was EXPANDED) or EXPANDED (when the previous state was COLLAPSED.)
+   */
+  private boolean expandOrCollapseBottomSheetIfPossible() {
     if (!interactable) {
       return false;
     }
     announceAccessibilityEvent(clickFeedback);
-    boolean collapsed = bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED;
-    bottomSheetBehavior.setState(
-        collapsed ? BottomSheetBehavior.STATE_EXPANDED : BottomSheetBehavior.STATE_COLLAPSED);
+    boolean canHalfExpand =
+        !bottomSheetBehavior.isFitToContents()
+            && !bottomSheetBehavior.shouldSkipHalfExpandedStateWhenDragging();
+    int currentState = bottomSheetBehavior.getState();
+    int nextState;
+    if (currentState == BottomSheetBehavior.STATE_COLLAPSED) {
+      nextState =
+          canHalfExpand
+              ? BottomSheetBehavior.STATE_HALF_EXPANDED
+              : BottomSheetBehavior.STATE_EXPANDED;
+    } else if (currentState == BottomSheetBehavior.STATE_EXPANDED) {
+      nextState =
+          canHalfExpand
+              ? BottomSheetBehavior.STATE_HALF_EXPANDED
+              : BottomSheetBehavior.STATE_COLLAPSED;
+    } else {
+      nextState =
+          clickToExpand ? BottomSheetBehavior.STATE_EXPANDED : BottomSheetBehavior.STATE_COLLAPSED;
+    }
+    bottomSheetBehavior.setState(nextState);
     return true;
   }
 
