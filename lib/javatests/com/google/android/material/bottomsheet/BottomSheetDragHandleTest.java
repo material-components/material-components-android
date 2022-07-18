@@ -122,6 +122,79 @@ public class BottomSheetDragHandleTest {
         .isEqualTo(BottomSheetBehavior.STATE_COLLAPSED);
   }
 
+  @Test
+  public void test_collapsedBottomSheetMoveToHalfExpanded_whenClickedAndFitToContentsFalse() {
+    activity.bottomSheetBehavior.setFitToContents(false);
+    activity.bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+    activity.addViewToBottomSheet(dragHandleView);
+    shadowOf(accessibilityManager).setEnabled(true);
+    dragHandleView.performClick();
+
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+
+    assertThat(activity.bottomSheetBehavior.getState())
+        .isEqualTo(BottomSheetBehavior.STATE_HALF_EXPANDED);
+  }
+
+  @Test
+  public void test_expandedBottomSheetMoveToHalfExpanded_whenClickedAndFitToContentsFalse() {
+    activity.bottomSheetBehavior.setFitToContents(false);
+    activity.bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+    activity.addViewToBottomSheet(dragHandleView);
+    shadowOf(accessibilityManager).setEnabled(true);
+
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+
+    dragHandleView.performClick();
+
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+
+    assertThat(activity.bottomSheetBehavior.getState())
+        .isEqualTo(BottomSheetBehavior.STATE_HALF_EXPANDED);
+  }
+
+  @Test
+  public void test_halfExpandedBottomSheetMoveToExpanded_whenPreviouslyCollapsed() {
+    activity.bottomSheetBehavior.setFitToContents(false);
+    activity.bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+    activity.addViewToBottomSheet(dragHandleView);
+    shadowOf(accessibilityManager).setEnabled(true);
+
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+
+    dragHandleView.performClick();
+
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+
+    dragHandleView.performClick();
+
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+
+    assertThat(activity.bottomSheetBehavior.getState())
+        .isEqualTo(BottomSheetBehavior.STATE_EXPANDED);
+  }
+
+  @Test
+  public void test_halfExpandedBottomSheetMoveToCollapsed_whenPreviouslyExpanded() {
+    activity.bottomSheetBehavior.setFitToContents(false);
+    activity.bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+    activity.addViewToBottomSheet(dragHandleView);
+    shadowOf(accessibilityManager).setEnabled(true);
+
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+
+    dragHandleView.performClick();
+
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+
+    dragHandleView.performClick();
+
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+
+    assertThat(activity.bottomSheetBehavior.getState())
+        .isEqualTo(BottomSheetBehavior.STATE_COLLAPSED);
+  }
+
   private void assertImportantForAccessibility(boolean important) {
     if (important) {
       assertThat(ViewCompat.getImportantForAccessibility(dragHandleView))
