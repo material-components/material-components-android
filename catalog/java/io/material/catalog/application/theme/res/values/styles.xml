@@ -39,11 +39,4 @@
     <item name="android:contentDescription">@string/cat_choose_preferences_description</item>
   </style>
 
-  <style name="Widget.Catalog.EdgeToEdgeButton" parent="Widget.Catalog.TocButton">
-    <item name="android:id">@id/cat_edge_to_edge_button</item>
-    <item name="android:layout_gravity">center_vertical|start</item>
-    <item name="srcCompat">@drawable/ic_edge_to_edge_enable_24dp</item>
-    <item name="android:contentDescription">@string/cat_edge_to_edge_enable_description</item>
-  </style>
-
 </resources>

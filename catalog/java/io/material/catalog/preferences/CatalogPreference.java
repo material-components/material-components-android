@@ -159,7 +159,7 @@ public abstract class CatalogPreference {
     @StringRes
     public final int description;
 
-    public Option(int id, @DrawableRes int icon, int description) {
+    public Option(int id, @DrawableRes int icon, @StringRes int description) {
       this.id = id;
       this.icon = icon;
       this.description = description;

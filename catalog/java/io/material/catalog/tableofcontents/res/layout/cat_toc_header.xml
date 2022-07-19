@@ -44,9 +44,6 @@
   </LinearLayout>
 
   <ImageButton
-      style="@style/Widget.Catalog.EdgeToEdgeButton"/>
-
-  <ImageButton
       style="@style/Widget.Catalog.ChoosePreferencesButton"/>
 
 </FrameLayout>

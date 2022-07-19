@@ -28,7 +28,8 @@ public abstract class BaseCatalogPreferences {
       ImmutableList.of(
           new ThemePreference(),
           new ShapeCornerFamilyPreference(),
-          new ShapeCornerSizePreference());
+          new ShapeCornerSizePreference(),
+          new EdgeToEdgePreference());
 
   public final void applyPreferences(Context context) {
     for (CatalogPreference preference : getPreferences()) {

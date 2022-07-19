@@ -32,4 +32,7 @@
   <string name="dynamic_color_preference_description" translatable="false">Dynamic Colors</string>
   <string name="dynamic_color_preference_option_on" translatable="false">On</string>
   <string name="dynamic_color_preference_option_off" translatable="false">Off</string>
+  <string name="edge_to_edge_preference_description" description="Title of edge to edge mode toggle [CHAR LIMIT=NONE]">Edge To Edge</string>
+  <string name="edge_to_edge_preference_option_on" description="Option to enable edge to edge mode [CHAR LIMIT=NONE]">On</string>
+  <string name="edge_to_edge_preference_option_off" description="Option to disable edge to edge mode [CHAR LIMIT=NONE]">Off</string>
 </resources>

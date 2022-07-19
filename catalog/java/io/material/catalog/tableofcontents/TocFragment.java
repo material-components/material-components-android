@@ -18,6 +18,7 @@ package io.material.catalog.tableofcontents;
 
 import io.material.catalog.R;
 
+import android.annotation.SuppressLint;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
@@ -40,7 +41,6 @@ import dagger.android.support.DaggerFragment;
 import io.material.catalog.feature.FeatureDemo;
 import io.material.catalog.feature.FeatureDemoUtils;
 import io.material.catalog.preferences.CatalogPreferencesDialogFragment;
-import io.material.catalog.windowpreferences.WindowPreferencesManager;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -57,24 +57,21 @@ public class TocFragment extends DaggerFragment {
   @Inject Set<FeatureDemo> featureDemos;
   @Inject TocResourceProvider tocResourceProvider;
 
-  private WindowPreferencesManager windowPreferencesManager;
   private AppBarLayout appBarLayout;
   private View gridTopDivider;
   private RecyclerView recyclerView;
   private ImageButton preferencesButton;
-  private ImageButton edgeToEdgeButton;
 
   @Override
   public void onCreate(@Nullable Bundle bundle) {
     super.onCreate(bundle);
-
-    windowPreferencesManager = new WindowPreferencesManager(getContext());
 
     if (bundle == null) {
       startDefaultDemoLandingIfNeeded();
     }
   }
 
+  @SuppressLint("MissingInflatedId")
   @Nullable
   @Override
   public View onCreateView(
@@ -94,7 +91,6 @@ public class TocFragment extends DaggerFragment {
     gridTopDivider = view.findViewById(R.id.cat_toc_grid_top_divider);
     recyclerView = view.findViewById(R.id.cat_toc_grid);
     preferencesButton = view.findViewById(R.id.cat_toc_preferences_button);
-    edgeToEdgeButton = view.findViewById(R.id.cat_edge_to_edge_button);
 
     ViewCompat.setOnApplyWindowInsetsListener(
         view,
@@ -135,7 +131,6 @@ public class TocFragment extends DaggerFragment {
 
     initPreferencesButton();
 
-    initEdgeToEdgeButton();
     return view;
   }
 
@@ -164,28 +159,6 @@ public class TocFragment extends DaggerFragment {
     preferencesButton.setOnClickListener(
         v -> new CatalogPreferencesDialogFragment().show(
             getParentFragmentManager(), "preferences-screen"));
-  }
-
-  private void initEdgeToEdgeButton() {
-    if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
-      // Hide button because setting system ui flags is not supported pre-Lollipop.
-      edgeToEdgeButton.setVisibility(View.GONE);
-      return;
-    }
-    edgeToEdgeButton.setImageResource(
-        windowPreferencesManager.isEdgeToEdgeEnabled()
-            ? R.drawable.ic_edge_to_edge_disable_24dp
-            : R.drawable.ic_edge_to_edge_enable_24dp);
-    edgeToEdgeButton.setContentDescription(
-        getString(
-            windowPreferencesManager.isEdgeToEdgeEnabled()
-                ? R.string.cat_edge_to_edge_enable_description
-                : R.string.cat_edge_to_edge_disable_description));
-    edgeToEdgeButton.setOnClickListener(
-        v -> {
-          windowPreferencesManager.toggleEdgeToEdgeEnabled();
-          getActivity().recreate();
-        });
   }
 
   private void startDefaultDemoLandingIfNeeded() {
