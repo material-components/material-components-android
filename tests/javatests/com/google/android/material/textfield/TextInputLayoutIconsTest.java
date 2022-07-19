@@ -34,6 +34,7 @@ import static com.google.android.material.testutils.TestUtilsMatchers.withCompou
 import static com.google.android.material.testutils.TextInputLayoutActions.clickIcon;
 import static com.google.android.material.testutils.TextInputLayoutActions.longClickIcon;
 import static com.google.android.material.testutils.TextInputLayoutActions.setCustomEndIconContent;
+import static com.google.android.material.testutils.TextInputLayoutActions.setEndIconMinSize;
 import static com.google.android.material.testutils.TextInputLayoutActions.setEndIconMode;
 import static com.google.android.material.testutils.TextInputLayoutActions.setEndIconOnClickListener;
 import static com.google.android.material.testutils.TextInputLayoutActions.setEndIconOnLongClickListener;
@@ -42,6 +43,7 @@ import static com.google.android.material.testutils.TextInputLayoutActions.setEr
 import static com.google.android.material.testutils.TextInputLayoutActions.setPrefixText;
 import static com.google.android.material.testutils.TextInputLayoutActions.setStartIcon;
 import static com.google.android.material.testutils.TextInputLayoutActions.setStartIconContentDescription;
+import static com.google.android.material.testutils.TextInputLayoutActions.setStartIconMinSize;
 import static com.google.android.material.testutils.TextInputLayoutActions.setStartIconOnClickListener;
 import static com.google.android.material.testutils.TextInputLayoutActions.setStartIconOnLongClickListener;
 import static com.google.android.material.testutils.TextInputLayoutActions.setStartIconTintList;
@@ -62,6 +64,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 import android.app.Activity;
@@ -924,6 +927,40 @@ public class TextInputLayoutIconsTest {
         .check(matches(withCompoundDrawable(1, top)))
         .check(matches(withCompoundDrawable(2, end)))
         .check(matches(withCompoundDrawable(3, bottom)));
+  }
+
+  @Test
+  public void testStartIconIconSize() {
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout textInputLayout =
+        activity.findViewById(R.id.textinput_starticon);
+
+    onView(
+        withId(R.id.textinput_starticon)).perform(setStartIconMinSize(50));
+    assertEquals(50, textInputLayout.getStartIconMinSize());
+  }
+
+  @Test
+  public void testStartIconInvalidIconSize() {
+    assertThrows(IllegalArgumentException.class, () -> onView(
+        withId(R.id.textinput_starticon)).perform(setStartIconMinSize(-1)));
+  }
+
+  @Test
+  public void testEndIconIconSize() {
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout textInputLayout =
+        activity.findViewById(R.id.textinput_suffix);
+
+    onView(
+        withId(R.id.textinput_suffix)).perform(setEndIconMinSize(50));
+    assertEquals(50, textInputLayout.getEndIconMinSize());
+  }
+
+  @Test
+  public void testEndIconInvalidIconSize() {
+    assertThrows(IllegalArgumentException.class, () -> onView(
+        withId(R.id.textinput_suffix)).perform(setEndIconMinSize(-1)));
   }
 
   private static ViewAssertion isPasswordToggledVisible(final boolean isToggledVisible) {

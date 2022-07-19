@@ -177,6 +177,8 @@
       <!-- [Sa + Da - Sa * Da, Sc + Dc - Sc * Dc] -->
       <enum name="screen" value="15"/>
     </attr>
+    <!-- The minimum size of the start icon. -->
+    <attr name="startIconMinSize" format="dimension"/>
     <!-- The end icon mode of the TextInputLayout. It will display one of the end icons detailed
          below, or no end icon. -->
     <attr name="endIconMode">
@@ -216,6 +218,8 @@
       <!-- [Sa + Da - Sa * Da, Sc + Dc - Sc * Dc] -->
       <enum name="screen" value="15"/>
     </attr>
+    <!-- The minimum size of the end icon -->
+    <attr name="endIconMinSize" format="dimension"/>
 
     <!-- Whether the text input area should be drawn as a filled box, an outline box, or not as a box.-->
     <attr name="boxBackgroundMode">

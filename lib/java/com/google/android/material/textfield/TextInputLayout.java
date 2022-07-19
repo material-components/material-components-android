@@ -68,6 +68,7 @@ import androidx.annotation.ColorRes;
 import androidx.annotation.DimenRes;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IntDef;
+import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
@@ -3145,6 +3146,29 @@ public class TextInputLayout extends LinearLayout {
   }
 
   /**
+   * Sets the width and height of the start icon.
+   *
+   * @param iconSize new dimension for width and height of the start icon in pixels.
+   * @attr ref android.support.design.button.R.styleable#TextInputLayout_startIconSize
+   * @see #getStartIconMinSize()
+   */
+  public void setStartIconMinSize(@IntRange(from = 0) int iconSize) {
+    startLayout.setStartIconMinSize(iconSize);
+  }
+
+  /**
+   * Returns the size of the start icon.
+   *
+   * @return Returns the size of the start icon in pixels.
+   * @attr ref android.support.design.button.R.styleable#TextInputLayout_startIconSize
+   * @see #setStartIconMinSize(int)
+   */
+  public int getStartIconMinSize() {
+    return startLayout.getStartIconMinSize();
+  }
+
+
+  /**
    * Sets the start icon's functionality that is performed when the start icon is clicked. The icon
    * will not be clickable if its click and long click listeners are null.
    *
@@ -3455,6 +3479,28 @@ public class TextInputLayout extends LinearLayout {
   @Nullable
   public Drawable getEndIconDrawable() {
     return endLayout.getEndIconDrawable();
+  }
+
+  /**
+   * Sets the width and height of the end icon.
+   *
+   * @param iconSize new dimension for width and height of the end icon in pixels.
+   * @attr ref android.support.design.button.R.styleable#TextInputLayout_endIconSize
+   * @see #getEndIconMinSize()
+   */
+  public void setEndIconMinSize(@IntRange(from = 0) int iconSize) {
+    endLayout.setEndIconMinSize(iconSize);
+  }
+
+  /**
+   * Returns the minimum size of the end icon.
+   *
+   * @return Returns the size of the end icon in pixels.
+   * @attr ref android.support.design.button.R.styleable#TextInputLayout_endIconSize
+   * @see #setEndIconMinSize(int)
+   */
+  public int getEndIconMinSize() {
+    return endLayout.getEndIconMinSize();
   }
 
   /**

@@ -25,6 +25,6 @@
     android:layout_gravity="center_vertical|end|right"
     android:layout_marginStart="@dimen/mtrl_textinput_end_icon_margin_start"
     android:background="?attr/actionBarItemBackground"
-    android:minHeight="48dp"
-    android:minWidth="48dp"
+    android:minHeight="@dimen/mtrl_min_touch_target_size"
+    android:minWidth="@dimen/mtrl_min_touch_target_size"
     tools:ignore="Overdraw"/>

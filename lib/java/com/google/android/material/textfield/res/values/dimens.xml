@@ -71,4 +71,5 @@
   <item name="m3_simple_item_color_selected_alpha" format="float" type="dimen">0.12</item>
   <!-- Same as @dimen/m3_ripple_hovered_alpha. -->
   <item name="m3_simple_item_color_hovered_alpha" format="float" type="dimen">0.08</item>
+
 </resources>

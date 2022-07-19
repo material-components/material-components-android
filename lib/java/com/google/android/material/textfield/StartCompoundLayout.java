@@ -21,6 +21,7 @@ import com.google.android.material.R;
 import static com.google.android.material.textfield.IconHelper.applyIconTint;
 import static com.google.android.material.textfield.IconHelper.refreshIconDrawableState;
 import static com.google.android.material.textfield.IconHelper.setCompatRippleBackgroundIfNeeded;
+import static com.google.android.material.textfield.IconHelper.setIconMinSize;
 import static com.google.android.material.textfield.IconHelper.setIconOnClickListener;
 import static com.google.android.material.textfield.IconHelper.setIconOnLongClickListener;
 
@@ -41,6 +42,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.Px;
 import androidx.annotation.StyleRes;
 import androidx.core.view.MarginLayoutParamsCompat;
 import androidx.core.view.ViewCompat;
@@ -56,6 +58,7 @@ import com.google.android.material.resources.MaterialResources;
  */
 @SuppressLint("ViewConstructor")
 class StartCompoundLayout extends LinearLayout {
+
   private final TextInputLayout textInputLayout;
 
   private final TextView prefixTextView;
@@ -64,6 +67,7 @@ class StartCompoundLayout extends LinearLayout {
   private final CheckableImageButton startIconView;
   private ColorStateList startIconTintList;
   private PorterDuff.Mode startIconTintMode;
+  private int startIconMinSize;
   private OnLongClickListener startIconOnLongClickListener;
 
   private boolean hintExpanded;
@@ -126,6 +130,10 @@ class StartCompoundLayout extends LinearLayout {
       }
       setStartIconCheckable(a.getBoolean(R.styleable.TextInputLayout_startIconCheckable, true));
     }
+    setStartIconMinSize(
+        a.getDimensionPixelSize(
+            R.styleable.TextInputLayout_startIconMinSize,
+            getResources().getDimensionPixelSize(R.dimen.mtrl_min_touch_target_size)));
   }
 
   private void initPrefixTextView(TintTypedArray a) {
@@ -261,6 +269,20 @@ class StartCompoundLayout extends LinearLayout {
       this.startIconTintMode = startIconTintMode;
       applyIconTint(textInputLayout, startIconView, startIconTintList, this.startIconTintMode);
     }
+  }
+
+  void setStartIconMinSize(@Px int iconSize) {
+    if (iconSize < 0) {
+      throw new IllegalArgumentException("startIconSize cannot be less than 0");
+    }
+    if (iconSize != startIconMinSize) {
+      startIconMinSize = iconSize;
+      setIconMinSize(startIconView, iconSize);
+    }
+  }
+
+  int getStartIconMinSize() {
+    return startIconMinSize;
   }
 
   void setupAccessibilityNodeInfo(@NonNull AccessibilityNodeInfoCompat info) {

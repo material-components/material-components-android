@@ -915,4 +915,48 @@ public class TextInputLayoutActions {
       }
     };
   }
+
+  /** Sets start icon minimum size. */
+  public static ViewAction setStartIconMinSize(int iconSize) {
+    return new ViewAction() {
+
+      @Override
+      public Matcher<View> getConstraints() {
+        return ViewMatchers.isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Sets start icon min size.";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setStartIconMinSize(iconSize);
+      }
+    };
+  }
+
+  /** Sets end icon minimum size. */
+  public static ViewAction setEndIconMinSize(int iconSize) {
+    return new ViewAction() {
+
+      @Override
+      public Matcher<View> getConstraints() {
+        return ViewMatchers.isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Sets end icon min size.";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setEndIconMinSize(iconSize);
+      }
+    };
+  }
 }

@@ -27,6 +27,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.Px;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
 import com.google.android.material.internal.CheckableImageButton;
@@ -34,6 +35,7 @@ import com.google.android.material.ripple.RippleUtils;
 import java.util.Arrays;
 
 class IconHelper {
+
   private IconHelper() {}
 
   static void setIconOnClickListener(
@@ -141,5 +143,11 @@ class IconHelper {
           RippleUtils.createOvalRippleLollipop(
               iconView.getContext(), (int) dpToPx(iconView.getContext(), 4)));
     }
+  }
+
+  /** Sets the minimum size for the icon. */
+  static void setIconMinSize(@NonNull CheckableImageButton iconView, @Px int iconSize) {
+    iconView.setMinimumWidth(iconSize);
+    iconView.setMinimumHeight(iconSize);
   }
 }

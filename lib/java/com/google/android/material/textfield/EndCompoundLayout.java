@@ -21,6 +21,7 @@ import com.google.android.material.R;
 import static com.google.android.material.textfield.IconHelper.applyIconTint;
 import static com.google.android.material.textfield.IconHelper.refreshIconDrawableState;
 import static com.google.android.material.textfield.IconHelper.setCompatRippleBackgroundIfNeeded;
+import static com.google.android.material.textfield.IconHelper.setIconMinSize;
 import static com.google.android.material.textfield.IconHelper.setIconOnClickListener;
 import static com.google.android.material.textfield.IconHelper.setIconOnLongClickListener;
 import static com.google.android.material.textfield.TextInputLayout.END_ICON_CLEAR_TEXT;
@@ -44,7 +45,6 @@ import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnAttachStateChangeListener;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.EditText;
@@ -55,6 +55,7 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.Px;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.core.graphics.drawable.DrawableCompat;
@@ -94,6 +95,7 @@ class EndCompoundLayout extends LinearLayout {
       new LinkedHashSet<>();
   private ColorStateList endIconTintList;
   private PorterDuff.Mode endIconTintMode;
+  private int endIconMinSize;
   private OnLongClickListener endIconOnLongClickListener;
 
   @Nullable private CharSequence suffixText;
@@ -274,6 +276,10 @@ class EndCompoundLayout extends LinearLayout {
       setEndIconContentDescription(
           a.getText(R.styleable.TextInputLayout_passwordToggleContentDescription));
     }
+    setEndIconMinSize(
+        a.getDimensionPixelSize(
+            R.styleable.TextInputLayout_endIconMinSize,
+            getResources().getDimensionPixelSize(R.dimen.mtrl_min_touch_target_size)));
   }
 
   private void initSuffixTextView(TintTypedArray a) {
@@ -544,6 +550,21 @@ class EndCompoundLayout extends LinearLayout {
       this.endIconTintMode = endIconTintMode;
       applyIconTint(textInputLayout, endIconView, endIconTintList, this.endIconTintMode);
     }
+  }
+
+  void setEndIconMinSize(@Px int iconSize) {
+    if (iconSize < 0) {
+      throw new IllegalArgumentException("endIconSize cannot be less than 0");
+    }
+    if (iconSize != endIconMinSize) {
+      endIconMinSize = iconSize;
+      setIconMinSize(endIconView, iconSize);
+      setIconMinSize(errorIconView, iconSize);
+    }
+  }
+
+  int getEndIconMinSize() {
+    return endIconMinSize;
   }
 
   void addOnEndIconChangedListener(@NonNull OnEndIconChangedListener listener) {
