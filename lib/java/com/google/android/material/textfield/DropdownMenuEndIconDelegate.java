@@ -106,7 +106,7 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
   void tearDown() {
     if (autoCompleteTextView != null) {
       // Remove any listeners set on the edit text.
-      autoCompleteTextView.setOnTouchListener(null);
+      autoCompleteTextView.setOnClickListener(null);
       if (IS_LOLLIPOP) {
         autoCompleteTextView.setOnDismissListener(null);
       }
@@ -251,15 +251,12 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
   // interactions with the dropdown menu.
   private void setUpDropdownShowHideBehavior() {
     // Set whole layout clickable.
-    autoCompleteTextView.setOnTouchListener((view, event) -> {
-      if (event.getAction() == MotionEvent.ACTION_UP) {
-        if (isDropdownPopupActive()) {
-          dropdownPopupDirty = false;
-        }
-        showHideDropdown();
-        updateDropdownPopupDirty();
+    autoCompleteTextView.setOnClickListener(view -> {
+      if (isDropdownPopupActive()) {
+        dropdownPopupDirty = false;
       }
-      return false;
+      showHideDropdown();
+      updateDropdownPopupDirty();
     });
     if (IS_LOLLIPOP) {
       autoCompleteTextView.setOnDismissListener(() -> {
