@@ -17,11 +17,11 @@
 
 <resources>
   <style name="ThemeOverlay.Shapes.Rounded" parent="">
-    <item name="cornerFamily">rounded</item>
+    <item name="shapeCornerFamily">rounded</item>
   </style>
 
   <style name="ThemeOverlay.Shapes.Cut" parent="">
-    <item name="cornerFamily">cut</item>
+    <item name="shapeCornerFamily">cut</item>
   </style>
 
 </resources>
