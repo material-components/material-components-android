@@ -86,6 +86,7 @@ abstract class HeaderScrollingViewBehavior extends ViewOffsetBehavior<View> {
         if (shouldHeaderOverlapScrollingChild()) {
           child.setTranslationY(-headerHeight);
         } else {
+          child.setTranslationY(0);
           height -= headerHeight;
         }
         final int heightMeasureSpec =
