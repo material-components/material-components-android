@@ -19,4 +19,14 @@
   <string name="error_a11y_label" description="Screen reader announcement for when a checkbox is on error. [CHAR LIMIT=NONE]">
     Error: invalid
   </string>
+  <string name="mtrl_checkbox_button_path_group_name" translatable="false">button</string>
+  <string name="mtrl_checkbox_button_path_name" translatable="false">button path</string>
+  <string name="mtrl_checkbox_button_icon_path_group_name" translatable="false">icon</string>
+  <string name="mtrl_checkbox_button_icon_path_name" translatable="false">icon path</string>
+  <!-- Path data to draw a square when the checkbox is checked. -->
+  <string name="mtrl_checkbox_button_path_checked" translatable="false">M23,7H9C7.9,7,7,7.9,7,9v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V9C25,7.9,24.1,7,23,7z</string>
+  <!-- Path data to draw an outlined square when the checkbox is unchecked. -->
+  <string name="mtrl_checkbox_button_path_unchecked" translatable="false">M23,7H9C7.9,7,7,7.9,7,9v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V9C25,7.9,24.1,7,23,7z M23,23H9V9h14V23z</string>
+  <!-- Path data to draw a checkmark icon when the checkbox is checked. -->
+  <string name="mtrl_checkbox_button_icon_path_checked" translatable="false">M14,18.2 11.4,15.6 10,17 14,21 22,13 20.6,11.6z</string>
 </resources>

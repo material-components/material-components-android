@@ -27,20 +27,17 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import androidx.appcompat.content.res.AppCompatResources;
-import androidx.appcompat.widget.DrawableUtils;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.TintTypedArray;
 import android.util.AttributeSet;
-import android.view.Gravity;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.graphics.drawable.DrawableCompat;
+import com.google.android.material.internal.DrawableUtils;
 import com.google.android.material.internal.ThemeEnforcement;
-import java.util.Arrays;
+import com.google.android.material.internal.ViewUtils;
 
 /**
  * A class that creates a Material Themed Switch. This class is intended to provide a brand new
@@ -95,7 +92,7 @@ public class MaterialSwitch extends SwitchCompat {
     thumbIconDrawable = attributes.getDrawable(R.styleable.MaterialSwitch_thumbIcon);
     thumbIconTintList = attributes.getColorStateList(R.styleable.MaterialSwitch_thumbIconTint);
     thumbIconTintMode =
-        DrawableUtils.parseTintMode(
+        ViewUtils.parseTintMode(
             attributes.getInt(R.styleable.MaterialSwitch_thumbIconTintMode, -1), Mode.SRC_IN);
 
     trackDecorationDrawable =
@@ -103,7 +100,7 @@ public class MaterialSwitch extends SwitchCompat {
     trackDecorationTintList =
         attributes.getColorStateList(R.styleable.MaterialSwitch_trackDecorationTint);
     trackDecorationTintMode =
-        DrawableUtils.parseTintMode(
+        ViewUtils.parseTintMode(
             attributes.getInt(R.styleable.MaterialSwitch_trackDecorationTintMode, -1), Mode.SRC_IN);
 
     attributes.recycle();
@@ -128,8 +125,8 @@ public class MaterialSwitch extends SwitchCompat {
       mergeDrawableStates(drawableState, STATE_SET_WITH_ICON);
     }
 
-    currentStateUnchecked = getUncheckedState(drawableState);
-    currentStateChecked = getCheckedState(drawableState);
+    currentStateUnchecked = DrawableUtils.getUncheckedState(drawableState);
+    currentStateChecked = DrawableUtils.getCheckedState(drawableState);
 
     return drawableState;
   }
@@ -364,67 +361,26 @@ public class MaterialSwitch extends SwitchCompat {
 
   private void refreshThumbDrawable() {
     thumbDrawable =
-        createTintableDrawableIfNeeded(thumbDrawable, thumbTintList, getThumbTintMode());
+        DrawableUtils.createTintableDrawableIfNeeded(
+            thumbDrawable, thumbTintList, getThumbTintMode());
     thumbIconDrawable =
-        createTintableDrawableIfNeeded(thumbIconDrawable, thumbIconTintList, thumbIconTintMode);
+        DrawableUtils.createTintableDrawableIfNeeded(
+            thumbIconDrawable, thumbIconTintList, thumbIconTintMode);
 
     updateDrawableTints();
 
-    super.setThumbDrawable(compositeThumbAndIconDrawable(thumbDrawable, thumbIconDrawable));
+    super.setThumbDrawable(
+        DrawableUtils.compositeTwoLayeredDrawable(thumbDrawable, thumbIconDrawable));
 
     refreshDrawableState();
   }
 
-  @Nullable
-  private static Drawable compositeThumbAndIconDrawable(
-      @Nullable Drawable thumbDrawable, @Nullable Drawable thumbIconDrawable) {
-    if (thumbDrawable == null) {
-      return thumbIconDrawable;
-    }
-    if (thumbIconDrawable == null) {
-      return thumbDrawable;
-    }
-    LayerDrawable drawable = new LayerDrawable(new Drawable[]{thumbDrawable, thumbIconDrawable});
-    int iconNewWidth;
-    int iconNewHeight;
-    if (thumbIconDrawable.getIntrinsicWidth() <= thumbDrawable.getIntrinsicWidth()
-        && thumbIconDrawable.getIntrinsicHeight() <= thumbDrawable.getIntrinsicHeight()) {
-      // If the icon is smaller than the thumb in both its width and height, keep icon's size.
-      iconNewWidth = thumbIconDrawable.getIntrinsicWidth();
-      iconNewHeight = thumbIconDrawable.getIntrinsicHeight();
-    } else {
-      float thumbIconRatio =
-          (float) thumbIconDrawable.getIntrinsicWidth() / thumbIconDrawable.getIntrinsicHeight();
-      float thumbRatio =
-          (float) thumbDrawable.getIntrinsicWidth() / thumbDrawable.getIntrinsicHeight();
-      if (thumbIconRatio >= thumbRatio) {
-        // If the icon is wider in ratio than the thumb, shrink it according to its width.
-        iconNewWidth = thumbDrawable.getIntrinsicWidth();
-        iconNewHeight = (int) (iconNewWidth / thumbIconRatio);
-      } else {
-        // If the icon is taller in ratio than the thumb, shrink it according to its height.
-        iconNewHeight = thumbDrawable.getIntrinsicHeight();
-        iconNewWidth = (int) (thumbIconRatio * iconNewHeight);
-      }
-    }
-    // Centers the icon inside the thumb. Before M there's no layer gravity support, we need to use
-    // layer insets to adjust the icon position manually.
-    if (VERSION.SDK_INT >= VERSION_CODES.M) {
-      drawable.setLayerSize(1, iconNewWidth, iconNewHeight);
-      drawable.setLayerGravity(1, Gravity.CENTER);
-    } else {
-      int horizontalInset = (thumbDrawable.getIntrinsicWidth() - iconNewWidth) / 2;
-      int verticalInset = (thumbDrawable.getIntrinsicHeight() - iconNewHeight) / 2;
-      drawable.setLayerInset(1, horizontalInset, verticalInset, horizontalInset, verticalInset);
-    }
-    return drawable;
-  }
-
   private void refreshTrackDrawable() {
     trackDrawable =
-        createTintableDrawableIfNeeded(trackDrawable, trackTintList, getTrackTintMode());
+        DrawableUtils.createTintableDrawableIfNeeded(
+            trackDrawable, trackTintList, getTrackTintMode());
     trackDecorationDrawable =
-        createTintableDrawableIfNeeded(
+        DrawableUtils.createTintableDrawableIfNeeded(
             trackDecorationDrawable, trackDecorationTintList, trackDecorationTintMode);
 
     updateDrawableTints();
@@ -484,34 +440,6 @@ public class MaterialSwitch extends SwitchCompat {
     }
   }
 
-  /** Returns a new state that removes the checked state from the input state. */
-  private static int[] getUncheckedState(int[] state) {
-    int[] newState = new int[state.length];
-    int i = 0;
-    for (int subState : state) {
-      if (subState != android.R.attr.state_checked) {
-        newState[i++] = subState;
-      }
-    }
-    return newState;
-  }
-
-  /** Returns a new state that adds the checked state to the input state. */
-  private static int[] getCheckedState(int[] state) {
-    for (int i = 0; i < state.length; i++) {
-      if (state[i] == android.R.attr.state_checked) {
-        return state;
-      } else if (state[i] == 0) {
-        int[] newState = state.clone();
-        newState[i] = android.R.attr.state_checked;
-        return newState;
-      }
-    }
-    int[] newState = Arrays.copyOf(state, state.length + 1);
-    newState[state.length] = android.R.attr.state_checked;
-    return newState;
-  }
-
   /**
    * Tints the given drawable with the interpolated color according to the provided thumb position
    * between unchecked and checked states. The reference color in unchecked and checked states will
@@ -533,19 +461,5 @@ public class MaterialSwitch extends SwitchCompat {
             tint.getColorForState(stateUnchecked, 0),
             tint.getColorForState(stateChecked, 0),
             thumbPosition));
-  }
-
-  private static Drawable createTintableDrawableIfNeeded(
-      Drawable drawable, ColorStateList tintList, Mode tintMode) {
-    if (drawable == null) {
-      return null;
-    }
-    if (tintList != null) {
-      drawable = DrawableCompat.wrap(drawable).mutate();
-      if (tintMode != null) {
-        DrawableCompat.setTintMode(drawable, tintMode);
-      }
-    }
-    return drawable;
   }
 }

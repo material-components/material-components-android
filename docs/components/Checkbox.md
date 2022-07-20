@@ -147,17 +147,22 @@ checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
 
 ### Checkbox attributes
 
+The checkbox is composed of an `app:buttonCompat` button drawable (the squared
+icon) and an `app:buttonIcon` icon drawable (the checkmark icon) layered on top
+of it.
+
 Element                      | Attribute                                  | Related method(s)                                          | Default value
 --------------------------   | ------------------------------------------ | ---------------------------------------------------------- | -------------
 **To use material colors**   | `app:useMaterialThemeColors`               | `setUseMaterialThemeColors`<br/>`isUseMaterialThemeColors` | `true` (ignored if `app:buttonTint` is set)
-**Color**                    | `app:buttonTint`                           | `setButtonTintList`<br/>`getButtonTintList`                | `?attr/colorOnSurface` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/checkbox/res/color/m3_checkbox_button_tint.xml))
+**Button drawable**          | `app:buttonCompat`                         | `setButtonDrawable`<br/>`getButtonDrawable`                | [@mtrl_checkbox_button](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/checkbox/res/drawable/mtrl_checkbox_button.xml)
+**Button tint**              | `app:buttonTint`                           | `setButtonTintList`<br/>`getButtonTintList`                | `?attr/colorOnSurface` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/checkbox/res/color/m3_checkbox_button_tint.xml))
+**Button icon drawable**     | `app:buttonIcon`                           | `setButtonIconDrawable`<br/>`getButtonIconDrawable`        | [@mtrl_checkbox_button_icon](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/checkbox/res/drawable/mtrl_checkbox_button_icon.xml)
+**Button icon tint**         | `app:buttonIconTint`                       | `setButtonIconTintList`<br/>`getButtonIconTintList`        | `?attr/colorOnPrimary` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/checkbox/res/color/m3_checkbox_button_icon_tint.xml))
 **Min size**                 | `android:minWidth`<br/>`android:minHeight` | `(set/get)MinWidth`<br/>`(set/get)MinHeight`               | `?attr/minTouchTargetSize`
 **Centered icon if no text** | `app:centerIfNoTextEnabled`                | `setCenterIfNoTextEnabled`<br/>`isCenterIfNoTextEnabled`   | `true`
 
-The color of the checkbox defaults to `?attr/colorOnSurface` (unchecked) and
-`?attr/colorPrimary` (checked) defined in your app theme. If you want to
-override this behavior, as you might with a custom drawable that should not be
-tinted, set `app:useMaterialThemeColors` to `false`:
+**Note:** If you'd like to change the default colors, override the above tint
+attributes or set them to `@null` and `app:useMaterialThemeColors` to `false`.
 
 ```xml
 <CheckBox
@@ -165,6 +170,11 @@ tinted, set `app:useMaterialThemeColors` to `false`:
     app:useMaterialThemeColors="false"
     />
 ```
+
+**Note:** If setting a custom `app:buttonCompat`, make sure to also set
+`app:buttonIcon` if an icon is desired. The checkbox does not support having a
+custom `app:buttonCompat` and preserving the default `app:buttonIcon` checkmark
+at the same time.
 
 ### Text label attributes
 

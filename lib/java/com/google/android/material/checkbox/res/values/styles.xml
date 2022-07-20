@@ -26,8 +26,16 @@
   <style name="Base.Widget.Material3.CompoundButton.CheckBox" parent="Widget.MaterialComponents.CompoundButton.CheckBox">
     <!-- Inherit default text color since the component doesn't draw a surface. -->
     <item name="android:textAppearance">?attr/textAppearanceBodyMedium</item>
-    <item name="buttonTint">@color/m3_checkbox_button_tint</item>
     <item name="errorAccessibilityLabel">@string/error_a11y_label</item>
+    <item name="buttonTint">@color/m3_checkbox_button_tint</item>
+    <item name="buttonIconTint">@color/m3_checkbox_button_icon_tint</item>
+    <!-- We null the button and icon here to preserve pre-existing behaviors of
+         when the checkbox didn't have the concept of an icon drawable separate
+         from the button drawable. Both default drawables will be set in
+         MaterialCheckBox. -->
+    <item name="buttonCompat">@null</item>
+    <item name="android:button">@null</item>
+    <item name="buttonIcon">@null</item>
   </style>
 
   <style name="Widget.Material3.CompoundButton.CheckBox" parent="Base.Widget.Material3.CompoundButton.CheckBox" />
