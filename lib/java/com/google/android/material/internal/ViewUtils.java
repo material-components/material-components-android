@@ -25,6 +25,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
+import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Build.VERSION;
@@ -42,9 +43,13 @@ import android.view.inputmethod.InputMethodManager;
 import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Utils class for custom views.
@@ -55,6 +60,78 @@ import androidx.core.view.WindowInsetsCompat;
 public class ViewUtils {
 
   private ViewUtils() {}
+
+  @RequiresApi(VERSION_CODES.JELLY_BEAN)
+  public static final int EDGE_TO_EDGE_FLAGS =
+      View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+
+  public static void showKeyboard(@NonNull View view) {
+    showKeyboard(view, /* useWindowInsetsController= */ true);
+  }
+
+  public static void showKeyboard(@NonNull View view, boolean useWindowInsetsController) {
+    if (useWindowInsetsController) {
+      WindowInsetsControllerCompat windowController = ViewCompat.getWindowInsetsController(view);
+      if (windowController != null) {
+        windowController.show(WindowInsetsCompat.Type.ime());
+        return;
+      }
+    }
+    getInputMethodManager(view).showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+  }
+
+  public static void hideKeyboard(@NonNull View view) {
+    hideKeyboard(view, /* useWindowInsetsController= */ true);
+  }
+
+  public static void hideKeyboard(@NonNull View view, boolean useWindowInsetsController) {
+    if (useWindowInsetsController) {
+      WindowInsetsControllerCompat windowController = ViewCompat.getWindowInsetsController(view);
+      if (windowController != null) {
+        windowController.hide(WindowInsetsCompat.Type.ime());
+        return;
+      }
+    }
+    InputMethodManager imm = getInputMethodManager(view);
+    if (imm != null) {
+      imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+  }
+
+  @Nullable
+  private static InputMethodManager getInputMethodManager(@NonNull View view) {
+    return getSystemService(view.getContext(), InputMethodManager.class);
+  }
+
+  public static void setBoundsFromRect(@NonNull View view, @NonNull Rect rect) {
+    view.setLeft(rect.left);
+    view.setTop(rect.top);
+    view.setRight(rect.right);
+    view.setBottom(rect.bottom);
+  }
+
+  @NonNull
+  public static Rect calculateRectFromBounds(@NonNull View view) {
+    return calculateRectFromBounds(view, 0);
+  }
+
+  @NonNull
+  public static Rect calculateRectFromBounds(@NonNull View view, int offsetY) {
+    return new Rect(
+        view.getLeft(), view.getTop() + offsetY, view.getRight(), view.getBottom() + offsetY);
+  }
+
+  @NonNull
+  public static List<View> getChildren(@Nullable View view) {
+    List<View> children = new ArrayList<>();
+    if (view instanceof ViewGroup) {
+      ViewGroup viewGroup = (ViewGroup) view;
+      for (int i = 0; i < viewGroup.getChildCount(); i++) {
+        children.add(viewGroup.getChildAt(i));
+      }
+    }
+    return children;
+  }
 
   public static PorterDuff.Mode parseTintMode(int value, PorterDuff.Mode defaultMode) {
     switch (value) {
@@ -96,13 +173,6 @@ public class ViewUtils {
             inputMethodManager.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
           }
         });
-  }
-
-  public static void hideKeyboard(@NonNull final View view) {
-    InputMethodManager imm = getSystemService(view.getContext(), InputMethodManager.class);
-    if (imm != null) {
-      imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
   }
 
   /**
@@ -356,6 +426,7 @@ public class ViewUtils {
   @Nullable
   public static Integer getBackgroundColor(@NonNull View view) {
     return view.getBackground() instanceof ColorDrawable
-        ? ((ColorDrawable) view.getBackground()).getColor() : null;
+        ? ((ColorDrawable) view.getBackground()).getColor()
+        : null;
   }
 }
