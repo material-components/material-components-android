@@ -21,8 +21,35 @@
       be ignored. This value should be set to false when using custom drawables
       that should not be tinted. This value is ignored if a buttonTint is set. -->
     <attr name="useMaterialThemeColors"/>
-    <!-- Tint for the checkbox. -->
+    <!-- Tint for the checkbox button. Set to null if using custom drawables
+         that should not be tinted. -->
     <attr name="buttonTint"/>
+    <!-- Icon of the checkbox button. -->
+    <attr name="buttonIcon" format="reference"/>
+    <!-- Tint for the icon of the checkbox button, if present. Set to null if
+         using custom drawables that should not be tinted. -->
+    <attr name="buttonIconTint" format="reference|color"/>
+    <!-- The blending mode used to apply the tint specified by buttonIconTint
+         to buttonIcon. The default mode is SRC_IN if not specified. -->
+    <attr name="buttonIconTintMode">
+      <!-- The tint is drawn on top of the drawable.
+           [Sa + (1 - Sa)*Da, Rc = Sc + (1 - Sa)*Dc] -->
+      <enum name="src_over" value="3" />
+      <!-- The tint is masked by the alpha channel of the drawable. The drawable’s
+           color channels are thrown out. [Sa * Da, Sc * Da] -->
+      <enum name="src_in" value="5" />
+      <!-- The tint is drawn above the drawable, but with the drawable’s alpha
+           channel masking the result. [Da, Sc * Da + (1 - Sa) * Dc] -->
+      <enum name="src_atop" value="9" />
+      <!-- Multiplies the color and alpha channels of the drawable with those of
+           the tint. [Sa * Da, Sc * Dc] -->
+      <enum name="multiply" value="14" />
+      <!-- [Sa + Da - Sa * Da, Sc + Dc - Sc * Dc] -->
+      <enum name="screen" value="15" />
+      <!-- Combines the tint and drawable color and alpha channels, clamping the
+           result to valid color values. Saturate(S + D) -->
+      <enum name="add" value="16" />
+    </attr>
     <!-- Whether the MaterialCheckBox button drawable (checkbox icon) will be
          centered when there is no text set for the checkbox. Default is true. -->
     <attr name="centerIfNoTextEnabled" format="boolean"/>
