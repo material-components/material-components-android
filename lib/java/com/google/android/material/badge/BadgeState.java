@@ -163,7 +163,7 @@ public final class BadgeState {
             : storedState.horizontalOffsetWithoutText;
 
     currentState.verticalOffsetWithoutText =
-        storedState.horizontalOffsetWithoutText == null
+        storedState.verticalOffsetWithoutText == null
             ? a.getDimensionPixelOffset(R.styleable.Badge_verticalOffset, 0)
             : storedState.verticalOffsetWithoutText;
 
