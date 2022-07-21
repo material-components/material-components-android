@@ -1583,6 +1583,9 @@ abstract class BaseSlider<
     // according to the setting.
     if (visibility != VISIBLE) {
       ViewOverlayImpl contentViewOverlay = ViewUtils.getContentViewOverlay(this);
+      if (contentViewOverlay == null) {
+        return;
+      }
       for (TooltipDrawable label : labels) {
         contentViewOverlay.remove(label);
       }
@@ -2372,6 +2375,7 @@ abstract class BaseSlider<
     return super.onKeyDown(keyCode, event);
   }
 
+  @Nullable
   private Boolean onKeyDownNoActiveThumb(int keyCode, @NonNull KeyEvent event) {
     switch (keyCode) {
       case KeyEvent.KEYCODE_TAB:
@@ -2459,6 +2463,7 @@ abstract class BaseSlider<
     return moveFocus(direction);
   }
 
+  @Nullable
   private Float calculateIncrementForKey(int keyCode) {
     // If this is a long press, increase the increment so it will only take around 20 steps.
     // Otherwise choose the smallest valid increment.
