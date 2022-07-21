@@ -277,9 +277,9 @@ Apply the `BottomSheetBehavior` to a direct child `View` of `CoordinatorLayout`:
 
   <FrameLayout
     android:id="@+id/standard_bottom_sheet"
+    style="@style/Widget.Material3.BottomSheet"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    style="?attr/bottomSheetStyle"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <!-- Drag handle for accessibility -->
@@ -430,6 +430,11 @@ Attribute                | Related method(s)                 | Default value
 **Default style (modal)** | `@style/Widget.Material3.BottomSheet.Modal`
 
 Default style theme attribute:`?attr/bottomSheetStyle`
+
+Note: The `?attr/bottomSheetStyle` default style theme attribute is for modal
+bottom sheets only. There is no default style theme attribute for standard
+bottom sheets, because `BottomSheetBehavior`s don't have a designated associated
+`View`.
 
 ### Theme overlays
 
