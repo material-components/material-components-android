@@ -44,7 +44,7 @@ val picker =
         .setTimeFormat(TimeFormat.CLOCK_12H)
         .setHour(12)
         .setMinute(10)
-        .setTitle("Select Appointment time")
+        .setTitleText("Select Appointment time")
         .build()
 ```
 
@@ -99,7 +99,7 @@ Use a descriptive title that for the task:
 ```kt
 val picker =
    MaterialTimePicker.Builder()
-       .setTitle("Select Appointment time")
+       .setTitleText("Select Appointment time")
    ...
 ```
 
