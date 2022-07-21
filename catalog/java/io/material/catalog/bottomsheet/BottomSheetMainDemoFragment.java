@@ -109,6 +109,8 @@ public class BottomSheetMainDemoFragment extends DemoFragment {
     restrictExpansionSwitch.setOnCheckedChangeListener(
         (buttonView, isChecked) -> {
           fullScreenSwitch.setEnabled(!isChecked);
+          view.findViewById(R.id.drag_handle).setEnabled(!isChecked);
+          bottomSheetInternal.findViewById(R.id.drag_handle).setEnabled(!isChecked);
           updateBottomSheetHeights();
         });
 
