@@ -271,18 +271,19 @@
     <item name="android:insetLeft">@dimen/m3_btn_inset</item>
     <item name="android:insetRight">@dimen/m3_btn_inset</item>
     <item name="iconSize">@dimen/m3_btn_icon_only_default_size</item>
+    <item name="iconTint">@color/m3_icon_button_icon_color_selector</item>
     <item name="iconPadding">@dimen/m3_btn_icon_only_icon_padding</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Button.IconButton</item>
   </style>
 
   <style name="Widget.Material3.Button.IconButton.Filled">
     <item name="backgroundTint">@color/m3_filled_icon_button_container_color_selector</item>
-    <item name="iconTint">@color/m3_filled_icon_button_icon_color_selector</item>
-    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Button</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Button.IconButton.Filled</item>
   </style>
 
   <style name="Widget.Material3.Button.IconButton.Filled.Tonal">
     <item name="rippleColor">@color/m3_tonal_button_ripple_color_selector</item>
-    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Button.TonalButton</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Button.IconButton.Filled.Tonal</item>
   </style>
 
   <style name="Widget.Material3.Button.IconButton.Outlined">
@@ -321,6 +322,21 @@
   <style name="ThemeOverlay.Material3.Button.ElevatedButton" parent="ThemeOverlay.Material3.Button.TextButton">
     <!-- The colors used by the color selectors -->
     <item name="colorContainer">?attr/colorSurface</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.Button.IconButton" parent="ThemeOverlay.Material3.Button.TextButton">
+    <!-- The colors used by the color selectors -->
+    <item name="colorOnContainerUnchecked">?attr/colorOnSurfaceVariant</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.Button.IconButton.Filled" parent="ThemeOverlay.Material3.Button">
+    <!-- The colors used by the color selectors -->
+    <item name="colorOnContainerUnchecked">?attr/colorPrimary</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.Button.IconButton.Filled.Tonal" parent="ThemeOverlay.Material3.Button.TonalButton">
+    <!-- The colors used by the color selectors -->
+    <item name="colorOnContainerUnchecked">?attr/colorOnSurfaceVariant</item>
   </style>
 
 </resources>

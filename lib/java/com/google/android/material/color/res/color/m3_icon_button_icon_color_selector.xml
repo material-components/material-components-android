@@ -14,7 +14,11 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-<resources>
-  <public name="side_sheet_behavior" type="string"/>
-  <public name="Widget.Material3.SideSheet" type="style"/>
-</resources>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+  <!-- Disabled state -->
+  <item android:color="?attr/colorOnSurface" android:alpha="@dimen/material_emphasis_disabled" android:state_enabled="false"/>
+  <!-- Checkable, unchecked state -->
+  <item android:color="?attr/colorOnContainerUnchecked" android:state_checkable="true" android:state_checked="false"/>
+  <!-- Default, Enabled state -->
+  <item android:color="?attr/colorOnContainer"/>
+</selector>
