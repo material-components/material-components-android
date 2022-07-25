@@ -19,8 +19,6 @@ package com.google.android.material.tabs;
 import static androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_DRAGGING;
 import static androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_IDLE;
 import static androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_SETTLING;
-import static java.lang.Math.max;
-import static java.lang.Math.min;
 
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.annotation.NonNull;
@@ -170,63 +168,23 @@ public final class TabLayoutMediator {
 
   @SuppressWarnings("WeakerAccess")
   void populateTabsFromPagerAdapter() {
-    if (adapter == null) {
-      return;
-    }
-    updateTabsFromPagerAdapter(0, max(adapter.getItemCount(), tabLayout.getTabCount()));
-  }
+    tabLayout.removeAllTabs();
 
-  void insertTabsFromPagerAdapter(int start, int itemCount) {
-    updateTabsFromPagerAdapter(start, itemCount, /* insert= */ true, /* remove= */ false);
-  }
-
-  void removeTabsFromPagerAdapter(int start, int itemCount) {
-    updateTabsFromPagerAdapter(start, itemCount, /* insert= */ false, /* remove= */ true);
-  }
-
-  void updateTabsFromPagerAdapter(int start, int itemCount) {
-    updateTabsFromPagerAdapter(start, itemCount, /* insert= */ true, /* remove= */ true);
-  }
-
-  private void updateTabsFromPagerAdapter(
-      int start, int itemCount, boolean insert, boolean remove) {
-    if (adapter == null) {
-      return;
-    }
-
-    if (remove) {
-      int tabViewCount = tabLayout.getTabCount();
-      // Ensure we won't go over the index bound
-      int removeItemCount = min(itemCount, tabViewCount - start);
-      if (removeItemCount == tabViewCount) {
-        tabLayout.removeAllTabs();
-      } else {
-        for (int i = 0; i < removeItemCount; i++) {
-          tabLayout.removeTabAt(start);
-        }
-      }
-    }
-
-    int adapterCount = adapter.getItemCount();
-    if (insert) {
-      // Ensure we won't go over the index bound
-      int insertItemCount = min(itemCount, adapterCount - start);
-      for (int i = start; i < start + insertItemCount; i++) {
+    if (adapter != null) {
+      int adapterCount = adapter.getItemCount();
+      for (int i = 0; i < adapterCount; i++) {
         TabLayout.Tab tab = tabLayout.newTab();
         tabConfigurationStrategy.onConfigureTab(tab, i);
-        tabLayout.addTab(tab, i, false);
+        tabLayout.addTab(tab, false);
       }
-    }
-
-    if (adapterCount == 0) {
-      return;
-    }
-
-    // Make sure we reflect the currently set ViewPager item
-    int lastItem = tabLayout.getTabCount() - 1;
-    int currItem = min(viewPager.getCurrentItem(), lastItem);
-    if (currItem != tabLayout.getSelectedTabPosition()) {
-      tabLayout.selectTab(tabLayout.getTabAt(currItem));
+      // Make sure we reflect the currently set ViewPager item
+      if (adapterCount > 0) {
+        int lastItem = tabLayout.getTabCount() - 1;
+        int currItem = Math.min(viewPager.getCurrentItem(), lastItem);
+        if (currItem != tabLayout.getSelectedTabPosition()) {
+          tabLayout.selectTab(tabLayout.getTabAt(currItem));
+        }
+      }
     }
   }
 
@@ -331,28 +289,27 @@ public final class TabLayoutMediator {
 
     @Override
     public void onItemRangeChanged(int positionStart, int itemCount) {
-      updateTabsFromPagerAdapter(positionStart, itemCount);
+      populateTabsFromPagerAdapter();
     }
 
     @Override
     public void onItemRangeChanged(int positionStart, int itemCount, @Nullable Object payload) {
-      updateTabsFromPagerAdapter(positionStart, itemCount);
+      populateTabsFromPagerAdapter();
     }
 
     @Override
     public void onItemRangeInserted(int positionStart, int itemCount) {
-      insertTabsFromPagerAdapter(positionStart, itemCount);
+      populateTabsFromPagerAdapter();
     }
 
     @Override
     public void onItemRangeRemoved(int positionStart, int itemCount) {
-      removeTabsFromPagerAdapter(positionStart, itemCount);
+      populateTabsFromPagerAdapter();
     }
 
     @Override
     public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
-      removeTabsFromPagerAdapter(fromPosition, itemCount);
-      insertTabsFromPagerAdapter(toPosition, itemCount);
+      populateTabsFromPagerAdapter();
     }
   }
 }
