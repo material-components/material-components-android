@@ -17,39 +17,60 @@
 
 <resources>
 
-  <style name="ThemeOverlay.ShapeSize.Small" parent="">
-    <item name="shapeAppearanceSmallComponent">@style/ShapeAppearanceComponent.SmallCornerSize</item>
-    <item name="shapeAppearanceMediumComponent">@style/ShapeAppearanceComponent.SmallCornerSize</item>
-    <item name="shapeAppearanceLargeComponent">@style/ShapeAppearanceComponent.ExtraSmall</item>
+  <style name="ThemeOverlay.ShapeCornerSize.None" parent="">
+    <item name="shapeAppearanceCornerExtraSmall">@style/ShapeAppearance.Material3.Corner.None</item>
+    <item name="shapeAppearanceCornerSmall">@style/ShapeAppearance.Material3.Corner.None</item>
+    <item name="shapeAppearanceCornerMedium">@style/ShapeAppearance.Material3.Corner.None</item>
+    <item name="shapeAppearanceCornerLarge">@style/ShapeAppearance.Material3.Corner.None</item>
+    <item name="shapeAppearanceCornerExtraLarge">@style/ShapeAppearance.Material3.Corner.None</item>
   </style>
 
-  <style name="ThemeOverlay.ShapeSize.Medium" parent="">
-    <item name="shapeAppearanceSmallComponent">@style/ShapeAppearanceComponent.MediumCornerSize</item>
-    <item name="shapeAppearanceMediumComponent">@style/ShapeAppearanceComponent.MediumCornerSize</item>
-    <item name="shapeAppearanceLargeComponent">@style/ShapeAppearanceComponent.SmallCornerSize</item>
+  <style name="ThemeOverlay.ShapeCornerSize.ExtraSmall" parent="">
+    <item name="shapeAppearanceCornerExtraSmall">@style/ShapeAppearance.Material3.Corner.ExtraSmall</item>
+    <item name="shapeAppearanceCornerSmall">@style/ShapeAppearance.Material3.Corner.ExtraSmall</item>
+    <item name="shapeAppearanceCornerMedium">@style/ShapeAppearance.Material3.Corner.ExtraSmall</item>
+    <item name="shapeAppearanceCornerLarge">@style/ShapeAppearance.Material3.Corner.ExtraSmall</item>
+    <item name="shapeAppearanceCornerExtraLarge">@style/ShapeAppearance.Material3.Corner.ExtraSmall</item>
   </style>
 
-  <style name="ThemeOverlay.ShapeSize.Large" parent="">
-    <item name="shapeAppearanceSmallComponent">@style/ShapeAppearanceComponent.LargeCornerSize</item>
-    <item name="shapeAppearanceMediumComponent">@style/ShapeAppearanceComponent.LargeCornerSize</item>
-    <item name="shapeAppearanceLargeComponent">@style/ShapeAppearanceComponent.MediumCornerSize</item>
+  <style name="ThemeOverlay.ShapeCornerSize.Small" parent="">
+    <item name="shapeAppearanceCornerExtraSmall">@style/ShapeAppearance.Material3.Corner.Small</item>
+    <item name="shapeAppearanceCornerSmall">@style/ShapeAppearance.Material3.Corner.Small</item>
+    <item name="shapeAppearanceCornerMedium">@style/ShapeAppearance.Material3.Corner.Small</item>
+    <item name="shapeAppearanceCornerLarge">@style/ShapeAppearance.Material3.Corner.Small</item>
+    <item name="shapeAppearanceCornerExtraLarge">@style/ShapeAppearance.Material3.Corner.Small</item>
   </style>
 
-  <style name="ShapeAppearanceComponent.ExtraSmall" parent="">
-    <item name="cornerSize">0dp</item>
+  <style name="ThemeOverlay.ShapeCornerSize.Medium" parent="">
+    <item name="shapeAppearanceCornerExtraSmall">@style/ShapeAppearance.Material3.Corner.Medium</item>
+    <item name="shapeAppearanceCornerSmall">@style/ShapeAppearance.Material3.Corner.Medium</item>
+    <item name="shapeAppearanceCornerMedium">@style/ShapeAppearance.Material3.Corner.Medium</item>
+    <item name="shapeAppearanceCornerLarge">@style/ShapeAppearance.Material3.Corner.Medium</item>
+    <item name="shapeAppearanceCornerExtraLarge">@style/ShapeAppearance.Material3.Corner.Medium</item>
   </style>
 
-  <style name="ShapeAppearanceComponent.SmallCornerSize" parent="">
-    <item name="cornerSize">4dp</item>
+  <style name="ThemeOverlay.ShapeCornerSize.Large" parent="">
+    <item name="shapeAppearanceCornerExtraSmall">@style/ShapeAppearance.Material3.Corner.Large</item>
+    <item name="shapeAppearanceCornerSmall">@style/ShapeAppearance.Material3.Corner.Large</item>
+    <item name="shapeAppearanceCornerMedium">@style/ShapeAppearance.Material3.Corner.Large</item>
+    <item name="shapeAppearanceCornerLarge">@style/ShapeAppearance.Material3.Corner.Large</item>
+    <item name="shapeAppearanceCornerExtraLarge">@style/ShapeAppearance.Material3.Corner.Large</item>
   </style>
 
-  <style name="ShapeAppearanceComponent.MediumCornerSize" parent="">
-    <item name="cornerSize">8dp</item>
+  <style name="ThemeOverlay.ShapeCornerSize.ExtraLarge" parent="">
+    <item name="shapeAppearanceCornerExtraSmall">@style/ShapeAppearance.Material3.Corner.ExtraLarge</item>
+    <item name="shapeAppearanceCornerSmall">@style/ShapeAppearance.Material3.Corner.ExtraLarge</item>
+    <item name="shapeAppearanceCornerMedium">@style/ShapeAppearance.Material3.Corner.ExtraLarge</item>
+    <item name="shapeAppearanceCornerLarge">@style/ShapeAppearance.Material3.Corner.ExtraLarge</item>
+    <item name="shapeAppearanceCornerExtraLarge">@style/ShapeAppearance.Material3.Corner.ExtraLarge</item>
   </style>
 
-  <style name="ShapeAppearanceComponent.LargeCornerSize" parent="">
-    <item name="cornerSize">16dp</item>
-
+  <style name="ThemeOverlay.ShapeCornerSize.Full" parent="">
+    <item name="shapeAppearanceCornerExtraSmall">@style/ShapeAppearance.Material3.Corner.Full</item>
+    <item name="shapeAppearanceCornerSmall">@style/ShapeAppearance.Material3.Corner.Full</item>
+    <item name="shapeAppearanceCornerMedium">@style/ShapeAppearance.Material3.Corner.Full</item>
+    <item name="shapeAppearanceCornerLarge">@style/ShapeAppearance.Material3.Corner.Full</item>
+    <item name="shapeAppearanceCornerExtraLarge">@style/ShapeAppearance.Material3.Corner.Full</item>
   </style>
 
 </resources>

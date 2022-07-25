@@ -25,9 +25,13 @@
   <string name="shape_corner_family_preference_option_cut" translatable="false">Cut</string>
   <string name="shape_corner_family_preference_option_default" translatable="false">Default</string>
   <string name="shape_corner_size_preference_description" translatable="false">Shape Corner Size</string>
-  <string name="shape_corner_size_preference_option_small" translatable="false">Small</string>
-  <string name="shape_corner_size_preference_option_medium" translatable="false">Medium</string>
-  <string name="shape_corner_size_preference_option_large" translatable="false">Large</string>
+  <string name="shape_corner_size_preference_option_none" translatable="false">None</string>
+  <string name="shape_corner_size_preference_option_extra_small" translatable="false">XS</string>
+  <string name="shape_corner_size_preference_option_small" translatable="false">S</string>
+  <string name="shape_corner_size_preference_option_medium" translatable="false">M</string>
+  <string name="shape_corner_size_preference_option_large" translatable="false">L</string>
+  <string name="shape_corner_size_preference_option_extra_large" translatable="false">XL</string>
+  <string name="shape_corner_size_preference_option_full" translatable="false">Full</string>
   <string name="shape_corner_size_preference_option_default" translatable="false">Default</string>
   <string name="dynamic_color_preference_description" translatable="false">Dynamic Colors</string>
   <string name="dynamic_color_preference_option_on" translatable="false">On</string>

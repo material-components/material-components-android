@@ -27,16 +27,28 @@ import com.google.common.collect.ImmutableList;
  * Shape corner size preference to change the corner size among small, medium, and large.
  */
 public class ShapeCornerSizePreference extends CatalogPreference {
-  private static final int OPTION_ID_SMALL = 1;
-  private static final int OPTION_ID_MEDIUM = 2;
-  private static final int OPTION_ID_LARGE = 3;
-  private static final int OPTION_ID_DEFAULT = 4;
+  private static final int OPTION_ID_NONE = 1;
+  private static final int OPTION_ID_EXTRA_SMALL = 2;
+  private static final int OPTION_ID_SMALL = 3;
+  private static final int OPTION_ID_MEDIUM = 4;
+  private static final int OPTION_ID_LARGE = 5;
+  private static final int OPTION_ID_EXTRA_LARGE = 6;
+  private static final int OPTION_ID_FULL = 7;
+  private static final int OPTION_ID_DEFAULT = 8;
 
   private static final SparseIntArray OPTION_ID_TO_THEME_OVERLAY = new SparseIntArray();
+
   static {
-    OPTION_ID_TO_THEME_OVERLAY.append(OPTION_ID_SMALL, R.style.ThemeOverlay_ShapeSize_Small);
-    OPTION_ID_TO_THEME_OVERLAY.append(OPTION_ID_MEDIUM, R.style.ThemeOverlay_ShapeSize_Medium);
-    OPTION_ID_TO_THEME_OVERLAY.append(OPTION_ID_LARGE, R.style.ThemeOverlay_ShapeSize_Large);
+    OPTION_ID_TO_THEME_OVERLAY.append(OPTION_ID_NONE, R.style.ThemeOverlay_ShapeCornerSize_None);
+    OPTION_ID_TO_THEME_OVERLAY.append(
+        OPTION_ID_EXTRA_SMALL, R.style.ThemeOverlay_ShapeCornerSize_ExtraSmall);
+    OPTION_ID_TO_THEME_OVERLAY.append(OPTION_ID_SMALL, R.style.ThemeOverlay_ShapeCornerSize_Small);
+    OPTION_ID_TO_THEME_OVERLAY.append(
+        OPTION_ID_MEDIUM, R.style.ThemeOverlay_ShapeCornerSize_Medium);
+    OPTION_ID_TO_THEME_OVERLAY.append(OPTION_ID_LARGE, R.style.ThemeOverlay_ShapeCornerSize_Large);
+    OPTION_ID_TO_THEME_OVERLAY.append(
+        OPTION_ID_EXTRA_LARGE, R.style.ThemeOverlay_ShapeCornerSize_ExtraLarge);
+    OPTION_ID_TO_THEME_OVERLAY.append(OPTION_ID_FULL, R.style.ThemeOverlay_ShapeCornerSize_Full);
     OPTION_ID_TO_THEME_OVERLAY.append(OPTION_ID_DEFAULT, ThemeOverlayUtils.NO_THEME_OVERLAY);
   }
 
@@ -48,18 +60,16 @@ public class ShapeCornerSizePreference extends CatalogPreference {
 
   private static final ImmutableList<Option> OPTIONS =
       ImmutableList.of(
+          new Option(OPTION_ID_NONE, 0, R.string.shape_corner_size_preference_option_none),
           new Option(
-              OPTION_ID_SMALL,
-              0,
-              R.string.shape_corner_size_preference_option_small),
+              OPTION_ID_EXTRA_SMALL, 0, R.string.shape_corner_size_preference_option_extra_small),
+          new Option(OPTION_ID_SMALL, 0, R.string.shape_corner_size_preference_option_small),
+          new Option(OPTION_ID_MEDIUM, 0, R.string.shape_corner_size_preference_option_medium),
+          new Option(OPTION_ID_LARGE, 0, R.string.shape_corner_size_preference_option_large),
           new Option(
-              OPTION_ID_MEDIUM,
-              0,
-              R.string.shape_corner_size_preference_option_medium),
+              OPTION_ID_EXTRA_LARGE, 0, R.string.shape_corner_size_preference_option_extra_large),
           new Option(
-              OPTION_ID_LARGE,
-              0,
-              R.string.shape_corner_size_preference_option_large),
+              OPTION_ID_FULL, 0, R.string.shape_corner_size_preference_option_full),
           DEFAULT_OPTION);
 
   public ShapeCornerSizePreference() {
@@ -81,8 +91,7 @@ public class ShapeCornerSizePreference extends CatalogPreference {
   @Override
   protected void apply(@NonNull Context context, @NonNull Option selectedOption) {
     ThemeOverlayUtils.setThemeOverlay(
-        R.id.theme_feature_corner_size,
-        OPTION_ID_TO_THEME_OVERLAY.get(selectedOption.id));
+        R.id.theme_feature_corner_size, OPTION_ID_TO_THEME_OVERLAY.get(selectedOption.id));
   }
 
   @Override
