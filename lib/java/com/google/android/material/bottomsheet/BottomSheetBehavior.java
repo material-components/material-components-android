@@ -202,7 +202,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   @SaveFlags private int saveFlags = SAVE_NONE;
 
-  private static final int SIGNIFICANT_VEL_THRESHOLD = 500;
+  @VisibleForTesting static final int DEFAULT_SIGNIFICANT_VEL_THRESHOLD = 500;
 
   private static final float HIDE_THRESHOLD = 0.5f;
 
@@ -217,6 +217,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   private boolean updateImportantForAccessibilityOnSiblings = false;
 
   private float maximumVelocity;
+
+  private int significantVelocityThreshold;
 
   /** Peek height set by the user. */
   private int peekHeight;
@@ -381,6 +383,11 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
           a.getDimensionPixelOffset(
               R.styleable.BottomSheetBehavior_Layout_behavior_expandedOffset, 0));
     }
+
+    setSignificantVelocityThreshold(
+        a.getInt(
+            R.styleable.BottomSheetBehavior_Layout_behavior_significantVelocityThreshold,
+            DEFAULT_SIGNIFICANT_VEL_THRESHOLD));
 
     // Reading out if we are handling padding, so we can apply it to the content.
     paddingBottomSystemWindowInsets =
@@ -1124,6 +1131,28 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     return draggable;
   }
 
+  /*
+   * Sets the velocity threshold considered significant enough to trigger a slide
+   * to the next stable state.
+   *
+   * @param significantVelocityThreshold The velocity threshold that warrants a vertical swipe.
+   * @see #getSignificantVelocityThreshold()
+   * @attr ref com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_significantVelocityThreshold
+   */
+  public void setSignificantVelocityThreshold(int significantVelocityThreshold) {
+    this.significantVelocityThreshold = significantVelocityThreshold;
+  }
+
+  /*
+   * Returns the significant velocity threshold.
+   *
+   * @see #setSignificantVelocityThreshold(int)
+   * @attr ref com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_significantVelocityThreshold
+   */
+  public int getSignificantVelocityThreshold() {
+    return this.significantVelocityThreshold;
+  }
+
   /**
    * Sets save flags to be preserved in bottomsheet on configuration change.
    *
@@ -1686,7 +1715,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
           } else if (hideable && shouldHide(releasedChild, yvel)) {
             // Hide if the view was either released low or it was a significant vertical swipe
             // otherwise settle to closest expanded state.
-            if ((Math.abs(xvel) < Math.abs(yvel) && yvel > SIGNIFICANT_VEL_THRESHOLD)
+            if ((Math.abs(xvel) < Math.abs(yvel) && yvel > significantVelocityThreshold)
                 || releasedLow(releasedChild)) {
               targetState = STATE_HIDDEN;
             } else if (fitToContents) {
