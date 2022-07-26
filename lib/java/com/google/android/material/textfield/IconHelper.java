@@ -25,6 +25,7 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
+import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
@@ -149,5 +150,29 @@ class IconHelper {
   static void setIconMinSize(@NonNull CheckableImageButton iconView, @Px int iconSize) {
     iconView.setMinimumWidth(iconSize);
     iconView.setMinimumHeight(iconSize);
+  }
+
+  static void setIconScaleType(
+      @NonNull CheckableImageButton iconView, @NonNull ImageView.ScaleType scaleType) {
+    iconView.setScaleType(scaleType);
+  }
+
+  static ImageView.ScaleType convertScaleType(int scaleType) {
+    switch (scaleType) {
+      case 0:
+        return ImageView.ScaleType.FIT_XY;
+      case 1:
+        return ImageView.ScaleType.FIT_START;
+      case 2:
+        return ImageView.ScaleType.FIT_CENTER;
+      case 3:
+        return ImageView.ScaleType.FIT_END;
+      case 5:
+        return ImageView.ScaleType.CENTER_CROP;
+      case 6:
+        return ImageView.ScaleType.CENTER_INSIDE;
+      default:
+        return ImageView.ScaleType.CENTER;
+    }
   }
 }

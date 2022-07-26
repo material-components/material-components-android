@@ -19,11 +19,13 @@ package com.google.android.material.textfield;
 import com.google.android.material.R;
 
 import static com.google.android.material.textfield.IconHelper.applyIconTint;
+import static com.google.android.material.textfield.IconHelper.convertScaleType;
 import static com.google.android.material.textfield.IconHelper.refreshIconDrawableState;
 import static com.google.android.material.textfield.IconHelper.setCompatRippleBackgroundIfNeeded;
 import static com.google.android.material.textfield.IconHelper.setIconMinSize;
 import static com.google.android.material.textfield.IconHelper.setIconOnClickListener;
 import static com.google.android.material.textfield.IconHelper.setIconOnLongClickListener;
+import static com.google.android.material.textfield.IconHelper.setIconScaleType;
 
 import android.annotation.SuppressLint;
 import android.content.res.ColorStateList;
@@ -38,6 +40,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -68,6 +71,7 @@ class StartCompoundLayout extends LinearLayout {
   private ColorStateList startIconTintList;
   private PorterDuff.Mode startIconTintMode;
   private int startIconMinSize;
+  @NonNull private ScaleType startIconScaleType;
   private OnLongClickListener startIconOnLongClickListener;
 
   private boolean hintExpanded;
@@ -134,6 +138,10 @@ class StartCompoundLayout extends LinearLayout {
         a.getDimensionPixelSize(
             R.styleable.TextInputLayout_startIconMinSize,
             getResources().getDimensionPixelSize(R.dimen.mtrl_min_touch_target_size)));
+    if (a.hasValue(R.styleable.TextInputLayout_startIconScaleType)) {
+      setStartIconScaleType(
+          convertScaleType(a.getInt(R.styleable.TextInputLayout_startIconScaleType, -1)));
+    }
   }
 
   private void initPrefixTextView(TintTypedArray a) {
@@ -283,6 +291,16 @@ class StartCompoundLayout extends LinearLayout {
 
   int getStartIconMinSize() {
     return startIconMinSize;
+  }
+
+  void setStartIconScaleType(@NonNull ScaleType startIconScaleType) {
+    this.startIconScaleType = startIconScaleType;
+    setIconScaleType(startIconView, startIconScaleType);
+  }
+
+  @NonNull
+  ScaleType getStartIconScaleType() {
+    return startIconScaleType;
   }
 
   void setupAccessibilityNodeInfo(@NonNull AccessibilityNodeInfoCompat info) {

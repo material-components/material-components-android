@@ -61,6 +61,7 @@ import android.view.accessibility.AccessibilityEvent;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.ColorInt;
@@ -3501,6 +3502,52 @@ public class TextInputLayout extends LinearLayout {
    */
   public int getEndIconMinSize() {
     return endLayout.getEndIconMinSize();
+  }
+
+  /**
+   * Sets {@link ImageView.ScaleType} for the start icon's ImageButton.
+   *
+   * @param scaleType {@link ImageView.ScaleType} for the start icon's ImageButton.
+   * @attr ref android.support.design.button.R.styleable#TextInputLayout_startIconScaleType
+   * @see #getStartIconScaleType()
+   */
+  public void setStartIconScaleType(@NonNull ScaleType scaleType) {
+    startLayout.setStartIconScaleType(scaleType);
+  }
+
+  /**
+   * Returns the {@link ImageView.ScaleType} for the start icon's ImageButton.
+   *
+   * @return Returns the {@link ImageView.ScaleType} for the start icon's ImageButton.
+   * @attr ref android.support.design.button.R.styleable#TextInputLayout_startIconScaleType
+   * @see #setStartIconScaleType(ScaleType)
+   */
+  @NonNull
+  public ScaleType getStartIconScaleType() {
+    return startLayout.getStartIconScaleType();
+  }
+
+  /**
+   * Sets {@link ImageView.ScaleType} for the end icon's ImageButton.
+   *
+   * @param scaleType {@link ImageView.ScaleType} for the end icon's ImageButton.
+   * @attr ref android.support.design.button.R.styleable#TextInputLayout_endIconScaleType
+   * @see #getEndIconScaleType()
+   */
+  public void setEndIconScaleType(@NonNull ScaleType scaleType) {
+    endLayout.setEndIconScaleType(scaleType);
+  }
+
+  /**
+   * Returns the {@link ImageView.ScaleType} for the end icon's ImageButton.
+   *
+   * @return Returns the {@link ImageView.ScaleType} for the end icon's ImageButton.
+   * @attr ref android.support.design.button.R.styleable#TextInputLayout_endIconScaleType
+   * @see #setEndIconScaleType(ScaleType)
+   */
+  @NonNull
+  public ScaleType getEndIconScaleType() {
+    return endLayout.getEndIconScaleType();
   }
 
   /**

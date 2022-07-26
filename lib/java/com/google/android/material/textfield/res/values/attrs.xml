@@ -179,6 +179,28 @@
     </attr>
     <!-- The minimum size of the start icon. -->
     <attr name="startIconMinSize" format="dimension"/>
+    <!-- The scale type of the start icon. -->
+    <attr name="startIconScaleType">
+      <!-- Scale the image using {@link android.graphics.Matrix.ScaleToFit#FILL}. -->
+      <enum name="fitXY" value="0" />
+      <!-- Scale the image using {@link android.graphics.Matrix.ScaleToFit#START}. -->
+      <enum name="fitStart" value="1" />
+      <!-- Scale the image using {@link android.graphics.Matrix.ScaleToFit#CENTER}. -->
+      <enum name="fitCenter" value="2" />
+      <!-- Scale the image using {@link android.graphics.Matrix.ScaleToFit#END}. -->
+      <enum name="fitEnd" value="3" />
+      <!-- Center the image in the view, but perform no scaling. -->
+      <enum name="center" value="4" />
+      <!-- Scale the image uniformly (maintain the image's aspect ratio) so both dimensions
+           (width and height) of the image will be equal to or larger than the corresponding
+           dimension of the view (minus padding). The image is then centered in the view. -->
+      <enum name="centerCrop" value="5" />
+      <!-- Scale the image uniformly (maintain the image's aspect ratio) so that both
+           dimensions (width and height) of the image will be equal to or less than the
+           corresponding dimension of the view (minus padding). The image is then centered in
+           the view. -->
+      <enum name="centerInside" value="6" />
+    </attr>
     <!-- The end icon mode of the TextInputLayout. It will display one of the end icons detailed
          below, or no end icon. -->
     <attr name="endIconMode">
@@ -220,6 +242,28 @@
     </attr>
     <!-- The minimum size of the end icon -->
     <attr name="endIconMinSize" format="dimension"/>
+    <!-- The scale type of the end icon. -->
+    <attr name="endIconScaleType">
+      <!-- Scale the image using {@link android.graphics.Matrix.ScaleToFit#FILL}. -->
+      <enum name="fitXY" value="0" />
+      <!-- Scale the image using {@link android.graphics.Matrix.ScaleToFit#START}. -->
+      <enum name="fitStart" value="1" />
+      <!-- Scale the image using {@link android.graphics.Matrix.ScaleToFit#CENTER}. -->
+      <enum name="fitCenter" value="2" />
+      <!-- Scale the image using {@link android.graphics.Matrix.ScaleToFit#END}. -->
+      <enum name="fitEnd" value="3" />
+      <!-- Center the image in the view, but perform no scaling. -->
+      <enum name="center" value="4" />
+      <!-- Scale the image uniformly (maintain the image's aspect ratio) so both dimensions
+           (width and height) of the image will be equal to or larger than the corresponding
+           dimension of the view (minus padding). The image is then centered in the view. -->
+      <enum name="centerCrop" value="5" />
+      <!-- Scale the image uniformly (maintain the image's aspect ratio) so that both
+           dimensions (width and height) of the image will be equal to or less than the
+           corresponding dimension of the view (minus padding). The image is then centered in
+           the view. -->
+      <enum name="centerInside" value="6" />
+    </attr>
 
     <!-- Whether the text input area should be drawn as a filled box, an outline box, or not as a box.-->
     <attr name="boxBackgroundMode">
