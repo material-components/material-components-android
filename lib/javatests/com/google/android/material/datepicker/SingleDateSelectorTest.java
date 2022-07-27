@@ -52,7 +52,8 @@ public class SingleDateSelectorTest {
         new MonthAdapter(
             Month.create(2016, Calendar.FEBRUARY),
             singleDateSelector,
-            new CalendarConstraints.Builder().build());
+            new CalendarConstraints.Builder().build(),
+            /* dayViewDecorator= */ null);
     gridView.setAdapter(adapter);
   }
 

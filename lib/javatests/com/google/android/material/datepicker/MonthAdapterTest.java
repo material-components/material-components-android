@@ -56,13 +56,21 @@ public class MonthAdapterTest {
     CalendarConstraints defaultConstraints = new CalendarConstraints.Builder().build();
     SingleDateSelector singleDateSelector = new SingleDateSelector();
     Month feb2016 = Month.create(2016, Calendar.FEBRUARY);
-    monthFeb2016 = new MonthAdapter(feb2016, singleDateSelector, defaultConstraints);
+    monthFeb2016 =
+        new MonthAdapter(
+            feb2016, singleDateSelector, defaultConstraints, /* dayViewDecorator= */ null);
     Month july2018 = Month.create(2018, Calendar.JULY);
-    monthJuly2018 = new MonthAdapter(july2018, singleDateSelector, defaultConstraints);
+    monthJuly2018 =
+        new MonthAdapter(
+            july2018, singleDateSelector, defaultConstraints, /* dayViewDecorator= */ null);
     Month feb2019 = Month.create(2019, Calendar.FEBRUARY);
-    monthFeb2019 = new MonthAdapter(feb2019, singleDateSelector, defaultConstraints);
+    monthFeb2019 =
+        new MonthAdapter(
+            feb2019, singleDateSelector, defaultConstraints, /* dayViewDecorator= */ null);
     Month march2019 = Month.create(2019, Calendar.MARCH);
-    monthMarch2019 = new MonthAdapter(march2019, singleDateSelector, defaultConstraints);
+    monthMarch2019 =
+        new MonthAdapter(
+            march2019, singleDateSelector, defaultConstraints, /* dayViewDecorator= */ null);
   }
 
   @Test

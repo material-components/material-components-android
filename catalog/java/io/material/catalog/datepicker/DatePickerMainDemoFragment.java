@@ -142,6 +142,8 @@ public class DatePickerMainDemoFragment extends DemoFragment {
             builder.setNegativeButtonText(R.string.cat_picker_negative_button_text);
           }
 
+          builder.setDayViewDecorator(new CircleIndicatorDecorator());
+
           try {
             builder.setCalendarConstraints(constraintsBuilder.build());
             MaterialDatePicker<?> picker = builder.build();

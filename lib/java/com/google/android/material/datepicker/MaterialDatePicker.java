@@ -68,6 +68,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
   private static final String OVERRIDE_THEME_RES_ID = "OVERRIDE_THEME_RES_ID";
   private static final String DATE_SELECTOR_KEY = "DATE_SELECTOR_KEY";
   private static final String CALENDAR_CONSTRAINTS_KEY = "CALENDAR_CONSTRAINTS_KEY";
+  private static final String DAY_VIEW_DECORATOR_KEY = "DAY_VIEW_DECORATOR_KEY";
   private static final String TITLE_TEXT_RES_ID_KEY = "TITLE_TEXT_RES_ID_KEY";
   private static final String TITLE_TEXT_KEY = "TITLE_TEXT_KEY";
   private static final String POSITIVE_BUTTON_TEXT_RES_ID_KEY = "POSITIVE_BUTTON_TEXT_RES_ID_KEY";
@@ -126,6 +127,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
   @Nullable private DateSelector<S> dateSelector;
   private PickerFragment<S> pickerFragment;
   @Nullable private CalendarConstraints calendarConstraints;
+  @Nullable private DayViewDecorator dayViewDecorator;
   private MaterialCalendar<S> calendar;
   @StringRes private int titleTextResId;
   private CharSequence titleText;
@@ -150,6 +152,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     args.putInt(OVERRIDE_THEME_RES_ID, options.overrideThemeResId);
     args.putParcelable(DATE_SELECTOR_KEY, options.dateSelector);
     args.putParcelable(CALENDAR_CONSTRAINTS_KEY, options.calendarConstraints);
+    args.putParcelable(DAY_VIEW_DECORATOR_KEY, options.dayViewDecorator);
     args.putInt(TITLE_TEXT_RES_ID_KEY, options.titleTextResId);
     args.putCharSequence(TITLE_TEXT_KEY, options.titleText);
     args.putInt(INPUT_MODE_KEY, options.inputMode);
@@ -173,6 +176,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
       constraintsBuilder.setOpenAt(calendar.getCurrentMonth().timeInMillis);
     }
     bundle.putParcelable(CALENDAR_CONSTRAINTS_KEY, constraintsBuilder.build());
+    bundle.putParcelable(DAY_VIEW_DECORATOR_KEY, dayViewDecorator);
     bundle.putInt(TITLE_TEXT_RES_ID_KEY, titleTextResId);
     bundle.putCharSequence(TITLE_TEXT_KEY, titleText);
     bundle.putInt(POSITIVE_BUTTON_TEXT_RES_ID_KEY, positiveButtonTextResId);
@@ -188,6 +192,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     overrideThemeResId = activeBundle.getInt(OVERRIDE_THEME_RES_ID);
     dateSelector = activeBundle.getParcelable(DATE_SELECTOR_KEY);
     calendarConstraints = activeBundle.getParcelable(CALENDAR_CONSTRAINTS_KEY);
+    dayViewDecorator = activeBundle.getParcelable(DAY_VIEW_DECORATOR_KEY);
     titleTextResId = activeBundle.getInt(TITLE_TEXT_RES_ID_KEY);
     titleText = activeBundle.getCharSequence(TITLE_TEXT_KEY);
     inputMode = activeBundle.getInt(INPUT_MODE_KEY);
@@ -398,7 +403,9 @@ public final class MaterialDatePicker<S> extends DialogFragment {
 
   private void startPickerFragment() {
     int themeResId = getThemeResId(requireContext());
-    calendar = MaterialCalendar.newInstance(getDateSelector(), themeResId, calendarConstraints);
+    calendar =
+        MaterialCalendar.newInstance(
+            getDateSelector(), themeResId, calendarConstraints, dayViewDecorator);
     pickerFragment =
         headerToggleButton.isChecked()
             ? MaterialTextInputPicker.newInstance(
@@ -594,6 +601,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     int overrideThemeResId = 0;
 
     CalendarConstraints calendarConstraints;
+    @Nullable DayViewDecorator dayViewDecorator;
     int titleTextResId = 0;
     CharSequence titleText = null;
     int positiveButtonTextResId = 0;
@@ -653,6 +661,13 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     @NonNull
     public Builder<S> setCalendarConstraints(CalendarConstraints bounds) {
       this.calendarConstraints = bounds;
+      return this;
+    }
+
+    /** Sets the {@link DayViewDecorator}. */
+    @NonNull
+    public Builder<S> setDayViewDecorator(@Nullable DayViewDecorator dayViewDecorator) {
+      this.dayViewDecorator = dayViewDecorator;
       return this;
     }
 

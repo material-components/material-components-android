@@ -69,6 +69,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
   private static final String THEME_RES_ID_KEY = "THEME_RES_ID_KEY";
   private static final String GRID_SELECTOR_KEY = "GRID_SELECTOR_KEY";
   private static final String CALENDAR_CONSTRAINTS_KEY = "CALENDAR_CONSTRAINTS_KEY";
+  private static final String DAY_VIEW_DECORATOR_KEY = "DAY_VIEW_DECORATOR_KEY";
   private static final String CURRENT_MONTH_KEY = "CURRENT_MONTH_KEY";
   private static final int SMOOTH_SCROLL_MAX = 3;
 
@@ -83,6 +84,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
   @StyleRes private int themeResId;
   @Nullable private DateSelector<S> dateSelector;
   @Nullable private CalendarConstraints calendarConstraints;
+  @Nullable private DayViewDecorator dayViewDecorator;
   @Nullable private Month current;
   private CalendarSelector calendarSelector;
   private CalendarStyle calendarStyle;
@@ -96,11 +98,21 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
       @NonNull DateSelector<T> dateSelector,
       @StyleRes int themeResId,
       @NonNull CalendarConstraints calendarConstraints) {
+    return newInstance(dateSelector, themeResId, calendarConstraints, null);
+  }
+
+  @NonNull
+  public static <T> MaterialCalendar<T> newInstance(
+      @NonNull DateSelector<T> dateSelector,
+      @StyleRes int themeResId,
+      @NonNull CalendarConstraints calendarConstraints,
+      @Nullable DayViewDecorator dayViewDecorator) {
     MaterialCalendar<T> materialCalendar = new MaterialCalendar<>();
     Bundle args = new Bundle();
     args.putInt(THEME_RES_ID_KEY, themeResId);
     args.putParcelable(GRID_SELECTOR_KEY, dateSelector);
     args.putParcelable(CALENDAR_CONSTRAINTS_KEY, calendarConstraints);
+    args.putParcelable(DAY_VIEW_DECORATOR_KEY, dayViewDecorator);
     args.putParcelable(CURRENT_MONTH_KEY, calendarConstraints.getOpenAt());
     materialCalendar.setArguments(args);
     return materialCalendar;
@@ -112,6 +124,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
     bundle.putInt(THEME_RES_ID_KEY, themeResId);
     bundle.putParcelable(GRID_SELECTOR_KEY, dateSelector);
     bundle.putParcelable(CALENDAR_CONSTRAINTS_KEY, calendarConstraints);
+    bundle.putParcelable(DAY_VIEW_DECORATOR_KEY, dayViewDecorator);
     bundle.putParcelable(CURRENT_MONTH_KEY, current);
   }
 
@@ -122,6 +135,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
     themeResId = activeBundle.getInt(THEME_RES_ID_KEY);
     dateSelector = activeBundle.getParcelable(GRID_SELECTOR_KEY);
     calendarConstraints = activeBundle.getParcelable(CALENDAR_CONSTRAINTS_KEY);
+    dayViewDecorator = activeBundle.getParcelable(DAY_VIEW_DECORATOR_KEY);
     current = activeBundle.getParcelable(CURRENT_MONTH_KEY);
   }
 
@@ -190,6 +204,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
             themedContext,
             dateSelector,
             calendarConstraints,
+            dayViewDecorator,
             new OnDayClickListener() {
 
               @Override

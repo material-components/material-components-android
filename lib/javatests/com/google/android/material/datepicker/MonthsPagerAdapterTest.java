@@ -62,6 +62,7 @@ public class MonthsPagerAdapterTest {
                 .setEnd(april2016.timeInMillis)
                 .setOpenAt(march2016.timeInMillis)
                 .build(),
+            /* dayViewDecorator= */ null,
             /* onDayClickListener= */ null);
     assertEquals(3, monthsAdapter.getItemCount());
     assertEquals(1, monthsAdapter.getPosition(march2016));
@@ -78,6 +79,7 @@ public class MonthsPagerAdapterTest {
                 .setEnd(feb2016.timeInMillis)
                 .setOpenAt(feb2016.timeInMillis)
                 .build(),
+            /* dayViewDecorator= */ null,
             /* onDayClickListener= */ null);
     assertEquals(1, monthsAdapter.getItemCount());
     assertEquals(0, monthsAdapter.getPosition(feb2016));
@@ -96,6 +98,7 @@ public class MonthsPagerAdapterTest {
             .setEnd(march2016.timeInMillis)
             .setOpenAt(april2016.timeInMillis)
             .build(),
+        /* dayViewDecorator= */ null,
         /* onDayClickListener= */ null);
   }
 
@@ -110,6 +113,7 @@ public class MonthsPagerAdapterTest {
             .setEnd(feb2016.timeInMillis)
             .setOpenAt(march2016.timeInMillis)
             .build(),
+        /* dayViewDecorator= */ null,
         /* onDayClickListener= */ null);
   }
 
@@ -124,6 +128,7 @@ public class MonthsPagerAdapterTest {
                 .setEnd(april2016.timeInMillis)
                 .setOpenAt(march2016.timeInMillis)
                 .build(),
+            /* dayViewDecorator= */ null,
             /* onDayClickListener= */ null);
     assertEquals(
         feb2016.getLongName(), monthsAdapter.getPageTitle(/* position= */ 0).toString());
