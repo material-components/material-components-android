@@ -17,10 +17,10 @@
 
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="wrap_content"
-  android:layout_height="wrap_content"
+  android:layout_width="@dimen/mtrl_min_touch_target_size"
+  android:layout_height="@dimen/mtrl_min_touch_target_size"
+  android:gravity="center"
   android:textColor="?attr/colorOnSurface"
-  android:padding="@dimen/material_clock_number_text_padding"
   android:textSize="@dimen/material_clock_number_text_size"
   android:visibility="gone"
   tools:ignore="SpUsage" />

@@ -18,11 +18,13 @@ package com.google.android.material.timepicker;
 
 import com.google.android.material.R;
 
+import static com.google.android.material.timepicker.RadialViewGroup.LEVEL_1;
+import static com.google.android.material.timepicker.RadialViewGroup.LEVEL_2;
+import static com.google.android.material.timepicker.RadialViewGroup.LEVEL_RADIUS_RATIO;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
-import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
@@ -40,6 +42,9 @@ import androidx.annotation.FloatRange;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.core.view.ViewCompat;
+import com.google.android.material.internal.ViewUtils;
+import com.google.android.material.math.MathUtils;
+import com.google.android.material.timepicker.RadialViewGroup.Level;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,12 +52,13 @@ import java.util.List;
 class ClockHandView extends View {
 
   private static final int ANIMATION_DURATION = 200;
-  private ValueAnimator rotationAnimator;
+  private final ValueAnimator rotationAnimator = new ValueAnimator();
   private boolean animatingOnTouchUp;
   private float downX;
   private float downY;
   private boolean isInTapRegion;
-  private int scaledTouchSlop;
+  private final int scaledTouchSlop;
+  private boolean isMultiLevel;
 
   /** A listener whenever the hand is rotated. */
   public interface OnRotateListener {
@@ -82,6 +88,8 @@ class ClockHandView extends View {
 
   private double degRad;
   private int circleRadius;
+
+  @Level private int currentLevel = LEVEL_1;
 
   public ClockHandView(Context context) {
     this(context, null);
@@ -118,8 +126,10 @@ class ClockHandView extends View {
   @Override
   protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
     super.onLayout(changed, left, top, right, bottom);
-    // Refresh selector position.
-    setHandRotation(getHandRotation());
+    if (!rotationAnimator.isRunning()) {
+      // Refresh selector position.
+      setHandRotation(getHandRotation());
+    }
   }
 
   public void setHandRotation(@FloatRange(from = 0f, to = 360f) float degrees) {
@@ -137,15 +147,13 @@ class ClockHandView extends View {
     }
 
     Pair<Float, Float> animationValues = getValuesForAnimation(degrees);
-    rotationAnimator = ValueAnimator.ofFloat(animationValues.first, animationValues.second);
+    rotationAnimator.setFloatValues(animationValues.first, animationValues.second);
     rotationAnimator.setDuration(ANIMATION_DURATION);
-    rotationAnimator.addUpdateListener(new AnimatorUpdateListener() {
-      @Override
-      public void onAnimationUpdate(ValueAnimator animation) {
-        float animatedValue = (float) animation.getAnimatedValue();
-        setHandRotationInternal(animatedValue, true);
-      }
-    });
+    rotationAnimator.addUpdateListener(
+        animation -> {
+          float animatedValue = (float) animation.getAnimatedValue();
+          setHandRotationInternal(animatedValue, true);
+        });
 
     rotationAnimator.addListener(new AnimatorListenerAdapter() {
       @Override
@@ -186,8 +194,9 @@ class ClockHandView extends View {
     degRad = Math.toRadians(angDeg);
     int yCenter = getHeight() / 2;
     int xCenter = getWidth() / 2;
-    float selCenterX = xCenter + circleRadius * (float) Math.cos(degRad);
-    float selCenterY = yCenter + circleRadius * (float) Math.sin(degRad);
+    int leveledCircleRadius = getLeveledCircleRadius(currentLevel);
+    float selCenterX = xCenter + leveledCircleRadius * (float) Math.cos(degRad);
+    float selCenterY = yCenter + leveledCircleRadius * (float) Math.sin(degRad);
     selectorBox.set(
         selCenterX - selectorRadius,
         selCenterY - selectorRadius,
@@ -230,8 +239,9 @@ class ClockHandView extends View {
     int xCenter = getWidth() / 2;
 
     // Calculate the current radius at which to place the selection circle.
-    float selCenterX = xCenter + circleRadius * (float) Math.cos(degRad);
-    float selCenterY = yCenter + circleRadius * (float) Math.sin(degRad);
+    int leveledCircleRadius = getLeveledCircleRadius(currentLevel);
+    float selCenterX = xCenter + leveledCircleRadius * (float) Math.cos(degRad);
+    float selCenterY = yCenter + leveledCircleRadius * (float) Math.sin(degRad);
 
     // Draw the selection circle.
     paint.setStrokeWidth(0);
@@ -241,7 +251,7 @@ class ClockHandView extends View {
     // edge of the selection circle.
     double sin = Math.sin(degRad);
     double cos = Math.cos(degRad);
-    float lineLength = circleRadius - selectorRadius;
+    float lineLength = leveledCircleRadius - selectorRadius;
     float linePointX = xCenter + (int) (lineLength * cos);
     float linePointY = yCenter + (int) (lineLength * sin);
 
@@ -299,8 +309,10 @@ class ClockHandView extends View {
         if (changedDuringTouch) {
           forceSelection = true;
         }
-
         actionUp = action == MotionEvent.ACTION_UP;
+        if (isMultiLevel) {
+          adjustLevel(x, y);
+        }
         break;
       default:
         break;
@@ -312,6 +324,15 @@ class ClockHandView extends View {
     }
 
     return true;
+  }
+
+  private void adjustLevel(float x, float y) {
+    int xCenter = getWidth() / 2;
+    int yCenter = getHeight() / 2;
+    float selectionRadius = MathUtils.dist(xCenter, yCenter, x, y);
+    int level2CircleRadius = getLeveledCircleRadius(LEVEL_2);
+    float buffer = ViewUtils.dpToPx(getContext(), 12);
+    currentLevel = selectionRadius <= level2CircleRadius + buffer ? LEVEL_2 : LEVEL_1;
   }
 
   private boolean handleTouchInput(
@@ -340,5 +361,28 @@ class ClockHandView extends View {
       degrees += 360;
     }
     return degrees;
+  }
+
+  @Level
+  int getCurrentLevel() {
+    return currentLevel;
+  }
+
+  void setCurrentLevel(@Level int level) {
+    currentLevel = level;
+    invalidate();
+  }
+
+  void setMultiLevel(boolean isMultiLevel) {
+    if (this.isMultiLevel && !isMultiLevel) {
+      currentLevel = LEVEL_1; // reset
+    }
+    this.isMultiLevel = isMultiLevel;
+    invalidate();
+  }
+
+  @Dimension
+  private int getLeveledCircleRadius(@Level int level) {
+    return level == LEVEL_2 ? Math.round(circleRadius * LEVEL_RADIUS_RATIO) : circleRadius;
   }
 }

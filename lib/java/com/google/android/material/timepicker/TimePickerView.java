@@ -44,6 +44,7 @@ import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.timepicker.ClockHandView.OnActionUpListener;
 import com.google.android.material.timepicker.ClockHandView.OnRotateListener;
+import com.google.android.material.timepicker.RadialViewGroup.Level;
 import java.util.Locale;
 
 /**
@@ -276,5 +277,14 @@ class TimePickerView extends ConstraintLayout implements TimePickerControls {
       constraintSet.clear(R.id.material_clock_display, sideToClear);
       constraintSet.applyTo(this);
     }
+  }
+
+  @Level
+  int getCurrentLevel() {
+    return clockFace.getCurrentLevel();
+  }
+
+  void setCurrentLevel(@Level int level) {
+    clockFace.setCurrentLevel(level);
   }
 }

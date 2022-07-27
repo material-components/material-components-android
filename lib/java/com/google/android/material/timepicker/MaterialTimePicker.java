@@ -19,6 +19,7 @@ package com.google.android.material.timepicker;
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static com.google.android.material.timepicker.TimeFormat.CLOCK_24H;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -118,7 +119,9 @@ public final class MaterialTimePicker extends DialogFragment implements OnDouble
     MaterialTimePicker fragment = new MaterialTimePicker();
     Bundle args = new Bundle();
     args.putParcelable(TIME_MODEL_EXTRA, options.time);
-    args.putInt(INPUT_MODE_EXTRA, options.inputMode);
+    if (options.inputMode != null) {
+      args.putInt(INPUT_MODE_EXTRA, options.inputMode);
+    }
     args.putInt(TITLE_RES_EXTRA, options.titleTextResId);
     if (options.titleText != null) {
       args.putCharSequence(TITLE_TEXT_EXTRA, options.titleText);
@@ -240,7 +243,8 @@ public final class MaterialTimePicker extends DialogFragment implements OnDouble
     if (time == null) {
       time = new TimeModel();
     }
-    inputMode = bundle.getInt(INPUT_MODE_EXTRA, INPUT_MODE_CLOCK);
+    int defaultInputMode = time.format == CLOCK_24H ? INPUT_MODE_KEYBOARD : INPUT_MODE_CLOCK;
+    inputMode = bundle.getInt(INPUT_MODE_EXTRA, defaultInputMode);
     titleResId = bundle.getInt(TITLE_RES_EXTRA, 0);
     titleText = bundle.getCharSequence(TITLE_TEXT_EXTRA);
     positiveButtonTextResId = bundle.getInt(POSITIVE_BUTTON_TEXT_RES_EXTRA, 0);
@@ -538,7 +542,7 @@ public final class MaterialTimePicker extends DialogFragment implements OnDouble
 
     private TimeModel time = new TimeModel();
 
-    private int inputMode;
+    @Nullable private Integer inputMode;
     @StringRes
     private int titleTextResId = 0;
     private CharSequence titleText;

@@ -18,6 +18,8 @@ package com.google.android.material.timepicker;
 
 import com.google.android.material.R;
 
+import static android.view.MotionEvent.ACTION_DOWN;
+import static android.view.MotionEvent.ACTION_UP;
 import static androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat.SELECTION_MODE_SINGLE;
 import static java.lang.Math.abs;
 import static java.lang.Math.max;
@@ -72,6 +74,7 @@ class ClockFaceView extends RadialViewGroup implements OnRotateListener {
   private final ClockHandView clockHandView;
   private final Rect textViewRect = new Rect();
   private final RectF scratch = new RectF();
+  private final Rect scratchLineBounds = new Rect();
 
   private final SparseArray<TextView> textViewPool = new SparseArray<>();
   private final AccessibilityDelegateCompat valueAccessibilityDelegate;
@@ -176,13 +179,12 @@ class ClockFaceView extends RadialViewGroup implements OnRotateListener {
           @Override
           public boolean performAccessibilityAction(View host, int action, Bundle args) {
             if (action == AccessibilityNodeInfoCompat.ACTION_CLICK) {
-              long eventTime = SystemClock.uptimeMillis();
-              float x = host.getX() + host.getWidth() / 2f;
-              float y = host.getY() + host.getHeight() / 2f;
-              clockHandView.onTouchEvent(
-                  MotionEvent.obtain(eventTime, eventTime, MotionEvent.ACTION_DOWN, x, y, 0));
-              clockHandView.onTouchEvent(
-                  MotionEvent.obtain(eventTime, eventTime, MotionEvent.ACTION_UP, x, y, 0));
+              long time = SystemClock.uptimeMillis();
+              host.getHitRect(textViewRect);
+              float x = textViewRect.centerX();
+              float y = textViewRect.centerY();
+              clockHandView.onTouchEvent(MotionEvent.obtain(time, time, ACTION_DOWN, x, y, 0));
+              clockHandView.onTouchEvent(MotionEvent.obtain(time, time, ACTION_UP, x, y, 0));
               return true;
             }
             return super.performAccessibilityAction(host, action, args);
@@ -209,6 +211,8 @@ class ClockFaceView extends RadialViewGroup implements OnRotateListener {
   }
 
   private void updateTextViews(@StringRes int contentDescription) {
+    boolean isMultiLevel = false;
+
     LayoutInflater inflater = LayoutInflater.from(getContext());
     int size = textViewPool.size();
     for (int i = 0; i < max(values.length, size); ++i) {
@@ -225,9 +229,15 @@ class ClockFaceView extends RadialViewGroup implements OnRotateListener {
         addView(textView);
       }
 
-      textView.setVisibility(VISIBLE);
       textView.setText(values[i]);
       textView.setTag(R.id.material_value_index, i);
+
+      int level = (i / INITIAL_CAPACITY) + LEVEL_1;
+      textView.setTag(R.id.material_clock_level, level);
+      if (level > LEVEL_1) {
+        isMultiLevel = true;
+      }
+
       ViewCompat.setAccessibilityDelegate(textView, valueAccessibilityDelegate);
 
       textView.setTextColor(textColor);
@@ -235,6 +245,16 @@ class ClockFaceView extends RadialViewGroup implements OnRotateListener {
         Resources res = getResources();
         textView.setContentDescription(res.getString(contentDescription, values[i]));
       }
+    }
+
+    clockHandView.setMultiLevel(isMultiLevel);
+  }
+
+  @Override
+  protected void updateLayoutParams() {
+    super.updateLayoutParams();
+    for (int i = 0; i < textViewPool.size(); ++i) {
+      textViewPool.get(i).setVisibility(VISIBLE);
     }
   }
 
@@ -271,28 +291,52 @@ class ClockFaceView extends RadialViewGroup implements OnRotateListener {
 
   private void findIntersectingTextView() {
     RectF selectorBox = clockHandView.getCurrentSelectorBox();
+    TextView selected = getSelectedTextView(selectorBox);
     for (int i = 0; i < textViewPool.size(); ++i) {
       TextView tv = textViewPool.get(i);
       if (tv == null) {
         continue;
       }
-      tv.getDrawingRect(textViewRect);
-      offsetDescendantRectToMyCoords(tv, textViewRect);
 
       // set selection
-      tv.setSelected(selectorBox.contains(textViewRect.centerX(), textViewRect.centerY()));
+      tv.setSelected(tv == selected);
 
       // set gradient
-      RadialGradient radialGradient = getGradientForTextView(selectorBox, textViewRect, tv);
+      RadialGradient radialGradient = getGradientForTextView(selectorBox, tv);
       tv.getPaint().setShader(radialGradient);
       tv.invalidate();
     }
   }
 
   @Nullable
-  private RadialGradient getGradientForTextView(RectF selectorBox, Rect tvBox, TextView tv) {
-    scratch.set(tvBox);
-    scratch.offset(tv.getPaddingLeft(), tv.getPaddingTop());
+  private TextView getSelectedTextView(RectF selectorBox) {
+    float minArea = Float.MAX_VALUE;
+    TextView selected = null;
+
+    for (int i = 0; i < textViewPool.size(); ++i) {
+      TextView tv = textViewPool.get(i);
+      if (tv == null) {
+        continue;
+      }
+      tv.getHitRect(textViewRect);
+      scratch.set(textViewRect);
+      scratch.union(selectorBox);
+      float area = scratch.width() * scratch.height();
+      if (area < minArea) { // the smallest enclosing rectangle is the selection (most overlap)
+        minArea = area;
+        selected = tv;
+      }
+    }
+
+    return selected;
+  }
+
+  @Nullable
+  private RadialGradient getGradientForTextView(RectF selectorBox, TextView tv) {
+    tv.getHitRect(textViewRect);
+    scratch.set(textViewRect);
+    tv.getLineBounds(0, scratchLineBounds);
+    scratch.inset(scratchLineBounds.left, scratchLineBounds.top);
     if (!RectF.intersects(selectorBox, scratch)) {
       return null;
     }
@@ -333,5 +377,14 @@ class ClockFaceView extends RadialViewGroup implements OnRotateListener {
 
   private static float max3(float a, float b, float c) {
     return max(max(a, b), c);
+  }
+
+  @Level
+  int getCurrentLevel() {
+    return clockHandView.getCurrentLevel();
+  }
+
+  void setCurrentLevel(@Level int level) {
+    clockHandView.setCurrentLevel(level);
   }
 }

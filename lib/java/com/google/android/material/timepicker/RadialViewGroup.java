@@ -30,6 +30,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.ColorInt;
 import androidx.annotation.Dimension;
+import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -37,17 +38,34 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.view.ViewCompat;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.RelativeCornerSize;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
- * A View Group evenly distributes children in a circle.
+ * A View Group evenly distributes children in circles.
  *
  * <P> Children that set {@code android:tag="skip"} can be positioned anywhere in the container.
+ * <P> Children that set {@code android:tag="level"} can be positioned in multiple circles.
  */
 class RadialViewGroup extends ConstraintLayout {
 
   private static final String SKIP_TAG = "skip";
-  private final Runnable updateLayoutParametersRunnable;
 
+  static final int LEVEL_1 = 1;
+  static final int LEVEL_2 = 2;
+  static final float LEVEL_RADIUS_RATIO = .66f;
+
+  /** Position views in circles, {@code LEVEL_1} for outer, {@code LEVEL_2} for inner. */
+  @IntDef({LEVEL_1, LEVEL_2})
+  @Retention(RetentionPolicy.SOURCE)
+  @interface Level {}
+
+  private final Runnable updateLayoutParametersRunnable;
   private int radius;
   private MaterialShapeDrawable background;
 
@@ -116,31 +134,39 @@ class RadialViewGroup extends ConstraintLayout {
   }
 
   protected void updateLayoutParams() {
-    // Subtracting 1 since we shouldn't count the view we use as the center of the circle.
-    int skippedChildren = 1;
-    int childCount = getChildCount();
-    for (int i = 0; i < childCount; i++) {
-      View childAt = getChildAt(i);
-      // TODO: Add a more robust way to skip children
-      if (shouldSkipView(childAt)) {
-        skippedChildren++;
-      }
-    }
-
     ConstraintSet constraintSet = new ConstraintSet();
     constraintSet.clone(this);
-    float currentAngle = 0;
-    for (int i = 0; i < childCount; i++) {
+    Map<Integer, List<View>> levels = new HashMap<>();
+    for (int i = 0; i < getChildCount(); i++) {
       View childAt = getChildAt(i);
       if (childAt.getId() == R.id.circle_center || shouldSkipView(childAt)) {
         continue;
       }
 
-      constraintSet.constrainCircle(childAt.getId(), R.id.circle_center, radius, currentAngle);
-      currentAngle += (360 / (float) (childCount - skippedChildren));
+      Integer level = (Integer) childAt.getTag(R.id.material_clock_level);
+      if (level == null) {
+        level = LEVEL_1;
+      }
+      if (!levels.containsKey(level)) {
+        levels.put(level, new ArrayList<>()); // initialize if empty
+      }
+      levels.get(level).add(childAt);
+    }
+
+    for (Entry<Integer, List<View>> entry : levels.entrySet()) {
+      addConstraints(entry.getValue(), constraintSet, getLeveledRadius(entry.getKey()));
     }
 
     constraintSet.applyTo(RadialViewGroup.this);
+  }
+
+  private void addConstraints(
+      final List<View> views, final ConstraintSet constraintSet, int leveledRadius) {
+    float currentAngle = 0;
+    for (View view : views) {
+      constraintSet.constrainCircle(view.getId(), R.id.circle_center, leveledRadius, currentAngle);
+      currentAngle += (360f / views.size());
+    }
   }
 
   public void setRadius(@Dimension int radius) {
@@ -151,6 +177,11 @@ class RadialViewGroup extends ConstraintLayout {
   @Dimension
   public int getRadius() {
     return radius;
+  }
+
+  @Dimension
+  int getLeveledRadius(@Level int level) {
+    return level == LEVEL_2 ? Math.round(radius * LEVEL_RADIUS_RATIO) : radius;
   }
 
   private static boolean shouldSkipView(View child) {

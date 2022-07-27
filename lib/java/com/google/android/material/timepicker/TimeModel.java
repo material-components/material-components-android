@@ -47,7 +47,6 @@ class TimeModel implements Parcelable {
   @ActiveSelection int selection;
   @ClockPeriod int period;
 
-
   public TimeModel() {
     this(CLOCK_12H);
   }

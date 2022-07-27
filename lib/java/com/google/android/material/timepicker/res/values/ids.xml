@@ -19,6 +19,8 @@
 
   <item name="material_clock_face" type="id"/>
 
+  <item name="material_clock_level" type="id"/>
+
   <item name="selection_type" type="id"/>
 
   <item name="material_value_index" type="id"/>
