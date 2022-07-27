@@ -29,12 +29,9 @@
     <item name="errorAccessibilityLabel">@string/error_a11y_label</item>
     <item name="buttonTint">@color/m3_checkbox_button_tint</item>
     <item name="buttonIconTint">@color/m3_checkbox_button_icon_tint</item>
-    <!-- We null the button and icon here to preserve pre-existing behaviors of
-         when the checkbox didn't have the concept of an icon drawable separate
-         from the button drawable. Both default drawables will be set in
-         MaterialCheckBox. -->
-    <item name="buttonCompat">@null</item>
-    <item name="android:button">@null</item>
+    <!-- We null the icon here to preserve pre-existing behaviors of when the
+         didn't have the concept of an icon drawable separate from the button
+         drawable. The default icon drawable will be set in MaterialCheckBox. -->
     <item name="buttonIcon">@null</item>
   </style>
 

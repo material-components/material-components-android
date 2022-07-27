@@ -31,6 +31,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
 import androidx.annotation.StyleableRes;
+import com.google.android.material.resources.MaterialAttributes;
 
 /**
  * Utility methods to check Theme compatibility with components.
@@ -221,6 +222,11 @@ public final class ThemeEnforcement {
 
   public static boolean isMaterialTheme(@NonNull Context context) {
     return isTheme(context, MATERIAL_CHECK_ATTRS);
+  }
+
+  public static boolean isMaterial3Theme(@NonNull Context context) {
+    return MaterialAttributes
+        .resolveBoolean(context, R.attr.isMaterial3Theme, false);
   }
 
   private static boolean isTheme(@NonNull Context context, @NonNull int[] themeAttributes) {

@@ -20,8 +20,10 @@ import com.google.android.material.R;
 
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuff.Mode;
@@ -81,6 +83,11 @@ public class MaterialCheckBox extends AppCompatCheckBox {
         new int[] {-android.R.attr.state_enabled, android.R.attr.state_checked}, // [3]
         new int[] {-android.R.attr.state_enabled, -android.R.attr.state_checked} // [4]
       };
+
+  @SuppressLint("DiscouragedApi")
+  private static final int FRAMEWORK_BUTTON_DRAWABLE_RES_ID =
+      Resources.getSystem().getIdentifier("btn_check_material_anim", "drawable", "android");
+
   @NonNull private final LinkedHashSet<OnErrorChangedListener> onErrorChangedListeners =
       new LinkedHashSet<>();
   @Nullable private ColorStateList materialThemeColorsTintList;
@@ -91,7 +98,7 @@ public class MaterialCheckBox extends AppCompatCheckBox {
 
   @Nullable private Drawable buttonDrawable;
   @Nullable private Drawable buttonIconDrawable;
-  private boolean usingDefaultButtonDrawable;
+  private boolean usingMaterialButtonDrawable;
 
   @Nullable ColorStateList buttonTintList;
   @Nullable ColorStateList buttonIconTintList;
@@ -165,10 +172,13 @@ public class MaterialCheckBox extends AppCompatCheckBox {
             context, attrs, R.styleable.MaterialCheckBox, defStyleAttr, DEF_STYLE_RES);
 
     buttonIconDrawable = attributes.getDrawable(R.styleable.MaterialCheckBox_buttonIcon);
-    // If there's not a custom drawable set, we set our own.
-    if (buttonDrawable == null) {
+    // If there's not a custom drawable set, we override the default legacy one and set our own.
+    if (buttonDrawable != null
+        && ThemeEnforcement.isMaterial3Theme(context)
+        && isButtonDrawableLegacy(attributes)) {
+      super.setButtonDrawable(null);
       buttonDrawable = AppCompatResources.getDrawable(context, R.drawable.mtrl_checkbox_button);
-      usingDefaultButtonDrawable = true;
+      usingMaterialButtonDrawable = true;
       if (buttonIconDrawable == null) {
         buttonIconDrawable =
             AppCompatResources.getDrawable(context, R.drawable.mtrl_checkbox_button_icon);
@@ -366,7 +376,7 @@ public class MaterialCheckBox extends AppCompatCheckBox {
   @Override
   public void setButtonDrawable(@Nullable Drawable drawable) {
     buttonDrawable = drawable;
-    usingDefaultButtonDrawable = false;
+    usingMaterialButtonDrawable = false;
     refreshButtonDrawable();
   }
 
@@ -559,7 +569,7 @@ public class MaterialCheckBox extends AppCompatCheckBox {
    * the color change between states.
    */
   private void setUpDefaultButtonDrawableAnimationIfNeeded() {
-    if (!usingDefaultButtonDrawable) {
+    if (!usingMaterialButtonDrawable) {
       return;
     }
 
@@ -599,6 +609,18 @@ public class MaterialCheckBox extends AppCompatCheckBox {
       return super.getButtonTintList();
     }
     return ((TintableCompoundButton) this).getSupportButtonTintList();
+  }
+
+  private boolean isButtonDrawableLegacy(TintTypedArray attributes) {
+    int buttonResourceId = attributes.getResourceId(R.styleable.MaterialCheckBox_android_button, 0);
+    int buttonCompatResourceId =
+        attributes.getResourceId(R.styleable.MaterialCheckBox_buttonCompat, 0);
+    if (VERSION.SDK_INT < 21) {
+      return buttonResourceId == R.drawable.abc_btn_check_material
+          && buttonCompatResourceId == R.drawable.abc_btn_check_material_anim;
+    } else {
+      return buttonResourceId == FRAMEWORK_BUTTON_DRAWABLE_RES_ID && buttonCompatResourceId == 0;
+    }
   }
 
   private ColorStateList getMaterialThemeColorsTintList() {
