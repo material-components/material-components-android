@@ -60,6 +60,8 @@ import com.google.android.material.shape.OffsetEdgeTreatment;
  *
  * <p>Note: {@link #setRelativeToView(View)} should be called so {@code TooltipDrawable} can
  * calculate where it is being drawn within the visible display.
+ *
+ * @hide
  */
 @RestrictTo(LIBRARY_GROUP)
 public class TooltipDrawable extends MaterialShapeDrawable implements TextDrawableDelegate {
