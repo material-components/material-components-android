@@ -1066,6 +1066,24 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   /**
+   * Calculates the current offset of the bottom sheet.
+   *
+   * This method should be called when the child view is laid out. If not, 0 will be returned.
+   *
+   * @return The offset of the bottom sheet, as a float value between -1 and 1. A negative value
+   * corresponds to a hidden state, a zero value corresponds to a collapsed state, and a positive
+   * value corresponds to an expanded state.
+   */
+  public float calculateSlideOffset() {
+    View bottomSheet = viewRef.get();
+    if (bottomSheet != null) {
+      return calculateSlideOffset(bottomSheet.getTop());
+    }
+
+    return 0;
+  }
+
+  /**
    * Sets whether this bottom sheet can hide.
    *
    * @param hideable {@code true} to make this bottom sheet hideable.
@@ -1407,6 +1425,13 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   private void calculateHalfExpandedOffset() {
     this.halfExpandedOffset = (int) (parentHeight * (1 - halfExpandedRatio));
+  }
+
+  private float calculateSlideOffset(int top) {
+      return
+          (top > collapsedOffset || collapsedOffset == getExpandedOffset())
+              ? (float) (collapsedOffset - top) / (parentHeight - collapsedOffset)
+              : (float) (collapsedOffset - top) / (collapsedOffset - getExpandedOffset());
   }
 
   private void reset() {
@@ -1806,10 +1831,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   void dispatchOnSlide(int top) {
     View bottomSheet = viewRef.get();
     if (bottomSheet != null && !callbacks.isEmpty()) {
-      float slideOffset =
-          (top > collapsedOffset || collapsedOffset == getExpandedOffset())
-              ? (float) (collapsedOffset - top) / (parentHeight - collapsedOffset)
-              : (float) (collapsedOffset - top) / (collapsedOffset - getExpandedOffset());
+      float slideOffset = calculateSlideOffset(top);
       for (int i = 0; i < callbacks.size(); i++) {
         callbacks.get(i).onSlide(bottomSheet, slideOffset);
       }
