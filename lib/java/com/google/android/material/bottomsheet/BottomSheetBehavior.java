@@ -1068,7 +1068,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   /**
    * Calculates the current offset of the bottom sheet.
    *
-   * This method should be called when the child view is laid out. If not, 0 will be returned.
+   * This method should be called when the child view is laid out. If not, {@code Float.MIN_VALUE} will be returned.
    *
    * @return The offset of the bottom sheet, as a float value between -1 and 1. A negative value
    * corresponds to a hidden state, a zero value corresponds to a collapsed state, and a positive
@@ -1080,7 +1080,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       return calculateSlideOffset(bottomSheet.getTop());
     }
 
-    return 0;
+    return Float.MIN_VALUE;
   }
 
   /**
