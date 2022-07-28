@@ -1075,6 +1075,10 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    * value corresponds to an expanded state.
    */
   public float calculateSlideOffset() {
+    if (viewRef == null) {
+      return Float.MIN_VALUE;
+    }
+
     View bottomSheet = viewRef.get();
     if (bottomSheet != null) {
       return calculateSlideOffset(bottomSheet.getTop());
