@@ -70,6 +70,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_alignParentEnd="true"
+      android:layout_alignParentRight="true"
       android:checkable="true"
       android:contentDescription="@string/cat_demo_landing_favorite"
       android:saveEnabled="false"
