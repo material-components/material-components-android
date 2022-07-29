@@ -800,14 +800,10 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
             }
           }
         } else {
-          if (shouldSkipHalfExpandedStateWhenDragging()) {
+          if (shouldSkipHalfExpandedStateWhenDragging() || Math.abs(currentTop - halfExpandedOffset) >= Math.abs(currentTop - collapsedOffset)) {
             targetState = STATE_COLLAPSED;
           } else {
-            if (Math.abs(currentTop - halfExpandedOffset) < Math.abs(currentTop - collapsedOffset)) {
-              targetState = STATE_HALF_EXPANDED;
-            } else {
-              targetState = STATE_COLLAPSED;
-            }
+            targetState = STATE_HALF_EXPANDED;
           }
         }
       }
@@ -817,14 +813,10 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       } else {
         // Settle to nearest height.
         int currentTop = child.getTop();
-        if (shouldSkipHalfExpandedStateWhenDragging()) {
+        if (shouldSkipHalfExpandedStateWhenDragging() || Math.abs(currentTop - halfExpandedOffset) >= Math.abs(currentTop - collapsedOffset)) {
           targetState = STATE_COLLAPSED;
         } else {
-          if (Math.abs(currentTop - halfExpandedOffset) < Math.abs(currentTop - collapsedOffset)) {
-            targetState = STATE_HALF_EXPANDED;
-          } else {
-            targetState = STATE_COLLAPSED;
-          }
+          targetState = STATE_HALF_EXPANDED;
         }
       }
     }
