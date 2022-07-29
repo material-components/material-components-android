@@ -41,9 +41,39 @@ public class DrawableUtils {
 
   private DrawableUtils() {}
 
+  /**
+   * Wraps and mutates the passed in drawable so that it may be used for tinting if a tintList is
+   * present. Also applies the tintMode if present.
+   */
   @Nullable
   public static Drawable createTintableDrawableIfNeeded(
       @Nullable Drawable drawable, @Nullable ColorStateList tintList, @Nullable Mode tintMode) {
+    return createTintableMutatedDrawableIfNeeded(
+        drawable, tintList, tintMode, /* forceMutate= */ false);
+  }
+
+  /**
+   * Wraps and mutates the passed in drawable so that it may be used for tinting if a tintList is
+   * present. Also applies the tintMode if present. If there's not a tintList and the API level is <
+   * 21, it'll still mutate the drawable.
+   *
+   * <p>Use this method instead of the above if the passed in drawable will be a child of a {@link
+   * LayerDrawable} in APIs < 21, its tintList may be null, and it may be mutated, in order to
+   * prevent issue where the drawable may not have its constant state set up properly.
+   */
+  @Nullable
+  public static Drawable createTintableMutatedDrawableIfNeeded(
+      @Nullable Drawable drawable, @Nullable ColorStateList tintList, @Nullable Mode tintMode) {
+    return createTintableMutatedDrawableIfNeeded(
+        drawable, tintList, tintMode, VERSION.SDK_INT < VERSION_CODES.LOLLIPOP);
+  }
+
+  @Nullable
+  private static Drawable createTintableMutatedDrawableIfNeeded(
+      @Nullable Drawable drawable,
+      @Nullable ColorStateList tintList,
+      @Nullable Mode tintMode,
+      boolean forceMutate) {
     if (drawable == null) {
       return null;
     }
@@ -52,6 +82,8 @@ public class DrawableUtils {
       if (tintMode != null) {
         DrawableCompat.setTintMode(drawable, tintMode);
       }
+    } else if (forceMutate) {
+      drawable.mutate();
     }
     return drawable;
   }
