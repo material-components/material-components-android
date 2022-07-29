@@ -16,8 +16,7 @@ in Material components.
 
 ## Design & API documentation
 
--   [Material Design guidelines:
-    Typography](https://material.io/go/design-typography/)
+-   [Material Design guidelines: Typography](https://m3.material.io/styles/typography/overview/)
 
 ## Usage
 
