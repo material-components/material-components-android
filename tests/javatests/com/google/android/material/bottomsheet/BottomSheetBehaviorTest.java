@@ -948,6 +948,23 @@ public class BottomSheetBehaviorTest {
     checkSetState(BottomSheetBehavior.STATE_EXPANDED, ViewMatchers.isDisplayed());
     checkSetState(BottomSheetBehavior.STATE_COLLAPSED, ViewMatchers.isDisplayed());
   }
+  
+  @Test
+  @SmallTest
+  public void testCalculateSlideOffset() {
+    activityTestRule.runOnUiThread(
+        () -> {
+          BottomSheetBehavior<?> behavior = getBehavior();
+          behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+          assertThat(behavior.calculateSlideOffset(), is(1f));
+          behavior.setState(BottomSheetBehavior.STATE_HALF_EXPANDED);
+          assertThat(behavior.calculateSlideOffset(), is(0.5f));
+          behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+          assertThat(behavior.calculateSlideOffset(), is(0f));
+          behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+          assertThat(behavior.calculateSlideOffset(), is(-1f));
+        });
+  }
 
   @Test
   @SmallTest
