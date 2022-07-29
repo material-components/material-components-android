@@ -26,8 +26,7 @@
   <dimen name="material_clock_hand_stroke_width">2dp</dimen>
   <dimen name="material_clock_hand_padding">4dp</dimen>
   <dimen name="material_clock_hand_center_dot_radius">4dp</dimen>
-  <!-- TODO(b/158490859) revisit number scaling -->
-  <dimen name="material_clock_number_text_size">15dp</dimen>
+  <dimen name="material_clock_number_text_size">15sp</dimen>
 
   <!-- cursor dimens -->
   <dimen name="material_cursor_inset_bottom">-6dp</dimen>
