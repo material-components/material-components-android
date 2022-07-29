@@ -16,6 +16,8 @@
 
 package com.google.android.material.timepicker;
 
+import com.google.android.material.R;
+
 import static com.google.android.material.timepicker.TimeFormat.CLOCK_12H;
 import static com.google.android.material.timepicker.TimeFormat.CLOCK_24H;
 import static java.util.Calendar.AM;
@@ -26,6 +28,7 @@ import android.content.res.Resources;
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.IntRange;
+import androidx.annotation.StringRes;
 import com.google.android.material.timepicker.TimePickerControls.ActiveSelection;
 import com.google.android.material.timepicker.TimePickerControls.ClockPeriod;
 import java.util.Arrays;
@@ -108,6 +111,11 @@ class TimeModel implements Parcelable {
     }
 
     return hour;
+  }
+
+  @StringRes
+  public int getHourContentDescriptionResId() {
+    return format == CLOCK_24H ? R.string.material_hour_24h_suffix : R.string.material_hour_suffix;
   }
 
   public MaxInputValidator getMinuteInputValidator() {

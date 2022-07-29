@@ -144,7 +144,8 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
             info.setContentDescription(
                 host.getResources()
                     .getString(
-                        R.string.material_hour_suffix, String.valueOf(time.getHourForDisplay())));
+                        time.getHourContentDescriptionResId(),
+                        String.valueOf(time.getHourForDisplay())));
           }
         });
     minuteTextInput.setChipDelegate(

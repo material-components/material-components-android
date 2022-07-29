@@ -169,7 +169,7 @@ class TimePickerClockPresenter
     time.selection = selection;
     timePickerView.setValues(
         isMinute ? MINUTE_CLOCK_VALUES : getHourClockValues(),
-        isMinute ? R.string.material_minute_suffix : R.string.material_hour_suffix);
+        isMinute ? R.string.material_minute_suffix : time.getHourContentDescriptionResId());
     updateCurrentLevel();
     timePickerView.setHandRotation(isMinute ? minuteRotation : hourRotation, animate);
     timePickerView.setActiveSelection(selection);
@@ -182,7 +182,8 @@ class TimePickerClockPresenter
             info.setContentDescription(
                 host.getResources()
                     .getString(
-                        R.string.material_hour_suffix, String.valueOf(time.getHourForDisplay())));
+                        time.getHourContentDescriptionResId(),
+                        String.valueOf(time.getHourForDisplay())));
           }
         });
     timePickerView.setHourClickDelegate(

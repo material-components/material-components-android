@@ -16,6 +16,8 @@
 
 package com.google.android.material.timepicker;
 
+import com.google.android.material.test.R;
+
 import static com.google.android.material.timepicker.TimeFormat.CLOCK_12H;
 import static com.google.android.material.timepicker.TimeFormat.CLOCK_24H;
 import static com.google.common.truth.Truth.assertThat;
@@ -42,5 +44,20 @@ public class TimeModelTest {
 
     assertThat(timeModel.getHourInputValidator().getMax()).isEqualTo(24);
     assertThat(timeModel.getMinuteInputValidator().getMax()).isEqualTo(59);
+  }
+
+  @Test
+  public void timeModel_with12HFormat_returnsCorrectHourContentDescription() {
+    TimeModel timeModel = new TimeModel(CLOCK_12H);
+
+    assertThat(timeModel.getHourContentDescriptionResId()).isEqualTo(R.string.material_hour_suffix);
+  }
+
+  @Test
+  public void timeModel_with24HFormat_returnsCorrectHourContentDescription() {
+    TimeModel timeModel = new TimeModel(CLOCK_24H);
+
+    assertThat(timeModel.getHourContentDescriptionResId())
+        .isEqualTo(R.string.material_hour_24h_suffix);
   }
 }
