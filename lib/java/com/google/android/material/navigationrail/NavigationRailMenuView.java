@@ -63,9 +63,8 @@ public class NavigationRailMenuView extends NavigationBarMenuView {
     }
 
     // Set view to use parent width, but wrap all item heights
-    int parentWidth = MeasureSpec.getSize(widthMeasureSpec);
     setMeasuredDimension(
-        View.resolveSizeAndState(parentWidth, widthMeasureSpec, /* childMeasuredState= */ 0),
+        MeasureSpec.getSize(widthMeasureSpec),
         View.resolveSizeAndState(measuredHeight, heightMeasureSpec, /* childMeasuredState= */ 0));
   }
 
@@ -118,7 +117,7 @@ public class NavigationRailMenuView extends NavigationBarMenuView {
 
   private int measureSharedChildHeights(
       int widthMeasureSpec, int maxHeight, int shareCount, View selectedView) {
-    int childHeightSpec = makeSharedHeightSpec(widthMeasureSpec, maxHeight, shareCount);
+    int childHeightSpec;
     if (selectedView == null) {
       childHeightSpec = makeSharedHeightSpec(widthMeasureSpec, maxHeight, shareCount);
     } else {

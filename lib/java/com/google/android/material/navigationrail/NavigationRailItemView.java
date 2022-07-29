@@ -22,7 +22,6 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static java.lang.Math.max;
 
 import android.content.Context;
-import android.view.View;
 import androidx.annotation.DimenRes;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
@@ -46,9 +45,7 @@ final class NavigationRailItemView extends NavigationBarItemView {
       int bestHeight = max(measuredHeight, preferredHeight);
 
       // Set view to use measured width, but use the best height possible
-      setMeasuredDimension(
-          getMeasuredWidthAndState(),
-          View.resolveSizeAndState(bestHeight, heightMeasureSpec, /* childMeasuredState= */ 0));
+      setMeasuredDimension(getMeasuredWidthAndState(), bestHeight);
     }
   }
 

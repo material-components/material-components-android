@@ -141,10 +141,8 @@ public class BottomNavigationMenuView extends NavigationBarMenuView {
       params.width = child.getMeasuredWidth();
       totalWidth += child.getMeasuredWidth();
     }
-    setMeasuredDimension(
-        View.resolveSizeAndState(
-            totalWidth, MeasureSpec.makeMeasureSpec(totalWidth, MeasureSpec.EXACTLY), 0),
-        View.resolveSizeAndState(parentHeight, heightMeasureSpec, 0));
+
+    setMeasuredDimension(totalWidth, parentHeight);
   }
 
   @Override
