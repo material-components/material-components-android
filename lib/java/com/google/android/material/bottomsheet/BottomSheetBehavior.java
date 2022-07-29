@@ -768,10 +768,14 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         targetState = STATE_EXPANDED;
       } else {
         int currentTop = child.getTop();
-        if (currentTop > halfExpandedOffset) {
-          targetState = STATE_HALF_EXPANDED;
-        } else {
+        if (currentTop < halfExpandedOffset) {
           targetState = STATE_EXPANDED;
+        } else {
+          if (shouldSkipHalfExpandedStateWhenDragging()) {
+            targetState = STATE_EXPANDED;
+          } else {
+            targetState = STATE_HALF_EXPANDED;
+          }
         }
       }
     } else if (hideable && shouldHide(child, getYVelocity())) {
@@ -796,10 +800,14 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
             }
           }
         } else {
-          if (Math.abs(currentTop - halfExpandedOffset) < Math.abs(currentTop - collapsedOffset)) {
-            targetState = STATE_HALF_EXPANDED;
-          } else {
+          if (shouldSkipHalfExpandedStateWhenDragging()) {
             targetState = STATE_COLLAPSED;
+          } else {
+            if (Math.abs(currentTop - halfExpandedOffset) < Math.abs(currentTop - collapsedOffset)) {
+              targetState = STATE_HALF_EXPANDED;
+            } else {
+              targetState = STATE_COLLAPSED;
+            }
           }
         }
       }
@@ -809,10 +817,14 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       } else {
         // Settle to nearest height.
         int currentTop = child.getTop();
-        if (Math.abs(currentTop - halfExpandedOffset) < Math.abs(currentTop - collapsedOffset)) {
-          targetState = STATE_HALF_EXPANDED;
-        } else {
+        if (shouldSkipHalfExpandedStateWhenDragging()) {
           targetState = STATE_COLLAPSED;
+        } else {
+          if (Math.abs(currentTop - halfExpandedOffset) < Math.abs(currentTop - collapsedOffset)) {
+            targetState = STATE_HALF_EXPANDED;
+          } else {
+            targetState = STATE_COLLAPSED;
+          }
         }
       }
     }
