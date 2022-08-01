@@ -32,6 +32,7 @@ import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.accessibility.AccessibilityEvent;
 import android.widget.Checkable;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -257,6 +258,7 @@ class TimePickerView extends ConstraintLayout implements TimePickerControls {
     super.onVisibilityChanged(changedView, visibility);
     if (changedView == this && visibility == VISIBLE) {
       updateToggleConstraints();
+      hourView.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
     }
   }
 
