@@ -19,7 +19,6 @@ package com.google.android.material.animation;
 import android.animation.TimeInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
-import androidx.annotation.FloatRange;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
@@ -54,22 +53,21 @@ public class AnimationUtils {
   }
 
   /**
-   * Linear interpolation between {@code startValue} and {@code endValue} when {@code fraction} is
-   * between {@code startFraction} and {@code endFraction}.
+   * Linear interpolation between {@code outputMin} and {@code outputMax} when {@code value} is
+   * between {@code inputMin} and {@code inputMax}.
+   *
+   * <p>Note that {@code value} will be coerced into {@code inputMin} and {@code inputMax}.This
+   * function can handle input and output ranges that span positive and negative numbers.
    */
   public static float lerp(
-      float startValue,
-      float endValue,
-      @FloatRange(from = 0.0, to = 1.0) float startFraction,
-      @FloatRange(from = 0.0, to = 1.0) float endFraction,
-      @FloatRange(from = 0.0, to = 1.0) float fraction) {
-    if (fraction < startFraction) {
-      return startValue;
+      float outputMin, float outputMax, float inputMin, float inputMax, float value) {
+    if (value <= inputMin) {
+      return outputMin;
     }
-    if (fraction > endFraction) {
-      return endValue;
+    if (value >= inputMax) {
+      return outputMax;
     }
 
-    return lerp(startValue, endValue, (fraction - startFraction) / (endFraction - startFraction));
+    return lerp(outputMin, outputMax, (value - inputMin) / (inputMax - inputMin));
   }
 }
