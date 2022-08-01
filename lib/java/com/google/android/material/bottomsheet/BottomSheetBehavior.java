@@ -725,7 +725,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       }
     } else if (dy < 0) { // Downward
       if (!target.canScrollVertically(-1)) {
-        if (newTop <= collapsedOffset || (hideable && shouldEnableHidingGestures())) {
+        if (newTop <= collapsedOffset || (hideable && isHideableWhenDragging())) {
           if (!draggable) {
             // Prevent dragging
             return;
@@ -1441,7 +1441,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     if (skipCollapsed) {
       return true;
     }
-    if (!shouldEnableHidingGestures()) {
+    if (!isHideableWhenDragging()) {
       return false;
     }
     if (child.getTop() < collapsedOffset) {
@@ -1790,7 +1790,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
           return MathUtils.clamp(
               top,
               getExpandedOffset(),
-              (hideable && shouldEnableHidingGestures()) ? parentHeight : collapsedOffset);
+              (hideable && isHideableWhenDragging()) ? parentHeight : collapsedOffset);
         }
 
         @Override
@@ -1800,7 +1800,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
         @Override
         public int getViewVerticalDragRange(@NonNull View child) {
-          if (hideable && shouldEnableHidingGestures()) {
+          if (hideable && isHideableWhenDragging()) {
             return parentHeight;
           } else {
             return collapsedOffset;
@@ -1878,7 +1878,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    * @hide
    */
   @RestrictTo(LIBRARY_GROUP)
-  public boolean shouldEnableHidingGestures() {
+  public boolean isHideableWhenDragging() {
     return true;
   }
 
@@ -2136,7 +2136,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
               child, R.string.bottomsheet_action_expand_halfway, STATE_HALF_EXPANDED);
     }
 
-    if ((hideable && shouldEnableHidingGestures()) && state != STATE_HIDDEN) {
+    if ((hideable && isHideableWhenDragging()) && state != STATE_HIDDEN) {
       replaceAccessibilityActionForState(
           child, AccessibilityActionCompat.ACTION_DISMISS, STATE_HIDDEN);
     }
