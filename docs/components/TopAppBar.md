@@ -281,6 +281,18 @@ Make sure to set `android:fitsSystemWindows="true"` on your `AppBarLayout` (or
 `MaterialToolbar` if not using `AppBarLayout`), so that an extra inset is added
 to avoid overlap with the status bar.
 
+If your `AppBarLayout` scrolls and content is visible under the status bar, you
+can set the `AppBarLayout`'s `statusBarForeground` to a `MaterialShapeDrawable`
+to let `AppBarLayout` automatically match the status bar color to its own
+background.
+
+In code:
+
+```
+appBarLayout.setStatusBarForeground(
+    MaterialShapeDrawable.createWithElevationOverlay(getContext()));
+```
+
 ### Center aligned top app bar example
 
 All of the same guidance and code from the sections above is relevant for Center
