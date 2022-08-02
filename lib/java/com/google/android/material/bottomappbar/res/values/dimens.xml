@@ -28,6 +28,7 @@
   <dimen name="m3_bottomappbar_fab_cradle_rounded_corner_radius">4dp</dimen>
   <dimen name="m3_bottomappbar_fab_cradle_vertical_offset">12dp</dimen>
   <dimen name="m3_bottomappbar_fab_end_margin">16dp</dimen>
+  <dimen name="m3_bottomappbar_horizontal_padding">4dp</dimen>
 
   <dimen name="m3_bottomappbar_height">@dimen/m3_comp_bottom_app_bar_container_height</dimen>
 </resources>

@@ -71,7 +71,7 @@ public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBack
 
   @Override
   public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
-    menuInflater.inflate(R.menu.demo_primary, menu);
+    menuInflater.inflate(R.menu.demo_primary_alternate, menu);
   }
 
   @Override
