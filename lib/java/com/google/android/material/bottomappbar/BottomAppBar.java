@@ -494,6 +494,9 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     if (bar.fabAnchorMode == FAB_ANCHOR_MODE_CRADLE) {
       fabLayoutParams.anchorGravity |= Gravity.TOP;
     }
+    if (bar.fabAnchorMode == FAB_ANCHOR_MODE_EMBED) {
+      fabLayoutParams.anchorGravity |= Gravity.BOTTOM;
+    }
   }
 
   /**
@@ -1138,7 +1141,15 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
 
     int actionMenuViewStart = isRtl ? actionMenuView.getRight() : actionMenuView.getLeft();
     int systemStartInset = isRtl ? rightInset : -leftInset;
-    int end = actionMenuViewStart + systemStartInset;
+    // If there's no navigation icon, we want to add margin since we are translating the menu items
+    // to the start.
+    int marginStart = 0;
+    if (getNavigationIcon() == null) {
+      int horizontalMargin =
+          getResources().getDimensionPixelOffset(R.dimen.m3_bottomappbar_horizontal_padding);
+      marginStart = isRtl ? horizontalMargin : -horizontalMargin;
+    }
+    int end = actionMenuViewStart + systemStartInset + marginStart;
 
     return toolbarLeftContentEnd - end;
   }
@@ -1300,26 +1311,32 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
             BottomAppBar child = viewRef.get();
 
             // If the child BAB no longer exists, remove the listener.
-            if (child == null || !(v instanceof FloatingActionButton)) {
+            if (child == null
+                || !(v instanceof FloatingActionButton
+                    || v instanceof ExtendedFloatingActionButton)) {
               v.removeOnLayoutChangeListener(this);
               return;
             }
 
-            FloatingActionButton fab = ((FloatingActionButton) v);
+            int height = v.getHeight();
+            if (v instanceof FloatingActionButton) {
+              FloatingActionButton fab = ((FloatingActionButton) v);
 
-            fab.getMeasuredContentRect(fabContentRect);
-            int height = fabContentRect.height();
+              fab.getMeasuredContentRect(fabContentRect);
 
-            // Set the cutout diameter based on the height of the fab.
-            child.setFabDiameter(height);
+              height = fabContentRect.height();
 
-            // Assume symmetrical corners
-            float cornerSize =
-                fab.getShapeAppearanceModel()
-                    .getTopLeftCornerSize()
-                    .getCornerSize(new RectF(fabContentRect));
+              // Set the cutout diameter based on the height of the fab.
+              child.setFabDiameter(height);
 
-            child.setFabCornerSize(cornerSize);
+              // Assume symmetrical corners
+              float cornerSize =
+                  fab.getShapeAppearanceModel()
+                      .getTopLeftCornerSize()
+                      .getCornerSize(new RectF(fabContentRect));
+
+              child.setFabCornerSize(cornerSize);
+            }
 
             CoordinatorLayout.LayoutParams fabLayoutParams =
                 (CoordinatorLayout.LayoutParams) v.getLayoutParams();
@@ -1329,19 +1346,27 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
             if (originalBottomMargin == 0) {
               // Extra padding is added for the fake shadow on API < 21. Ensure we don't add too
               // much space by removing that extra padding.
-              int bottomShadowPadding = (fab.getMeasuredHeight() - height) / 2;
+              int bottomShadowPadding = (v.getMeasuredHeight() - height) / 2;
               int bottomMargin = 0;
               if (child.fabAnchorMode == FAB_ANCHOR_MODE_CRADLE) {
-                bottomMargin = child
-                    .getResources()
-                    .getDimensionPixelOffset(R.dimen.mtrl_bottomappbar_fab_bottom_margin);
+                bottomMargin =
+                    child
+                        .getResources()
+                        .getDimensionPixelOffset(R.dimen.mtrl_bottomappbar_fab_bottom_margin);
+                // Should be moved above the bottom insets with space ignoring any shadow padding.
+                int minBottomMargin = bottomMargin - bottomShadowPadding;
+                fabLayoutParams.bottomMargin = child.getBottomInset() + minBottomMargin;
+              } else if (child.fabAnchorMode == FAB_ANCHOR_MODE_EMBED) {
+                // We want to add a margin of half of the height of the bottom app bar, minus half
+                // the height of the fab to the bottom of the fab. Since the height of the bottom
+                // app bar does not include the bottom inset, must add it to the height.
+                fabLayoutParams.bottomMargin =
+                    (child.getMeasuredHeight() + child.getBottomInset() - v.getMeasuredHeight())
+                        / 2;
               }
-              // Should be moved above the bottom insets with space ignoring any shadow padding.
-              int minBottomMargin = bottomMargin - bottomShadowPadding;
-              fabLayoutParams.bottomMargin = child.getBottomInset() + minBottomMargin;
               fabLayoutParams.leftMargin = child.getLeftInset();
               fabLayoutParams.rightMargin = child.getRightInset();
-              boolean isRtl = ViewUtils.isLayoutRtl(fab);
+              boolean isRtl = ViewUtils.isLayoutRtl(v);
               if (isRtl) {
                 fabLayoutParams.leftMargin += child.fabOffsetEndMode;
               } else {
@@ -1394,12 +1419,11 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
             fab.setHideMotionSpecResource(R.animator.mtrl_fab_hide_motion_spec);
           }
 
-          // Always update the BAB if the fab is laid out.
-          fab.addOnLayoutChangeListener(fabLayoutListener);
-
           // Ensure the FAB is correctly linked to this BAB so the animations can run correctly
           child.addFabAnimationListeners(fab);
         }
+        // Always update the BAB if the fab/efab is laid out.
+        dependentView.addOnLayoutChangeListener(fabLayoutListener);
 
         // Move the fab to the correct position
         child.setCutoutStateAndTranslateFab();

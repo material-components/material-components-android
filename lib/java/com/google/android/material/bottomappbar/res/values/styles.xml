@@ -74,12 +74,28 @@
 
     <item name="backgroundTint">@macro/m3_comp_bottom_app_bar_container_color</item>
     <item name="navigationIconTint">?attr/colorOnSurfaceVariant</item>
+    <item name="android:paddingLeft">@dimen/m3_bottomappbar_horizontal_padding</item>
+    <item name="android:paddingStart">@dimen/m3_bottomappbar_horizontal_padding</item>
+    <item name="android:paddingRight">@dimen/m3_bottomappbar_horizontal_padding</item>
+    <item name="android:paddingEnd">@dimen/m3_bottomappbar_horizontal_padding</item>
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.BottomAppBar</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.BottomAppBar.Legacy" parent="">
+    <item name="colorControlNormal">?attr/colorOnSurface</item>
+    <item name="actionMenuTextColor">?attr/colorOnSurface</item>
   </style>
 
   <style name="ThemeOverlay.Material3.BottomAppBar" parent="">
     <item name="colorControlNormal">?attr/colorOnSurface</item>
     <item name="actionMenuTextColor">?attr/colorOnSurface</item>
+    <item name="toolbarNavigationButtonStyle">@style/Widget.Material3.BottomAppBar.Button.Navigation</item>
+  </style>
+
+  <style name="Widget.Material3.BottomAppBar.Button.Navigation" parent="Widget.AppCompat.Toolbar.Button.Navigation">
+    <item name="android:minWidth">@dimen/mtrl_min_touch_target_size</item>
+    <item name="android:scaleType">center</item>
+    <item name="android:background">?attr/controlBackground</item>
   </style>
 
   <style name="Widget.Material3.BottomAppBar.Legacy" parent="Widget.MaterialComponents.BottomAppBar">
@@ -100,7 +116,7 @@
 
     <item name="backgroundTint">@macro/m3_comp_bottom_app_bar_container_color</item>
     <item name="navigationIconTint">?attr/colorOnSurfaceVariant</item>
-    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.BottomAppBar</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.BottomAppBar.Legacy</item>
   </style>
 
 </resources>
