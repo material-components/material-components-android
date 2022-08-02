@@ -105,6 +105,16 @@
   <!-- Indicates that the picker will start with text input mode [CHAR LIMIT=25] -->
   <string name="cat_picker_input_mode_text">Text Input</string>
 
+  <!-- Grouping label for a set of radio buttons that choose the day view
+       decorator [CHAR LIMIT=75] -->
+  <string name="cat_picker_day_view_decorator">Day View Decorator</string>
+  <!-- Indicates that the picker will use no day view decorator [CHAR LIMIT=50] -->
+  <string name="cat_picker_day_view_decorator_none">None</string>
+  <!-- Indicates that the picker will use a dots day view decorator [CHAR LIMIT=50] -->
+  <string name="cat_picker_day_view_decorator_dots">Dots</string>
+  <!-- Indicates that the picker will use a dots day view decorator [CHAR LIMIT=50] -->
+  <string name="cat_picker_day_view_decorator_highlights">Highlights</string>
+
   <!-- Grouping label for a set of radio buttons that choose the positive button [CHAR LIMIT=50] -->
   <string name="cat_picker_positive_button">Picker Positive Button</string>
   <!-- Indicates that the default title will be used [CHAR LIMIT=25] -->

@@ -28,6 +28,7 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import androidx.core.util.Preconditions;
 import androidx.core.view.ViewCompat;
@@ -131,13 +132,25 @@ final class CalendarItemStyle {
         backgroundColor, textColor, strokeColor, strokeWidth, itemShape, insets);
   }
 
-  /** Applies the {@code R.styleable.MaterialCalendarDay} style to the provided {@code item} */
+  /**
+   * Applies the {@code R.styleable.MaterialCalendarDay} style to the provided {@code item}, with no
+   * {@code backgroundColorOverride}.
+   */
   void styleItem(@NonNull TextView item) {
+    styleItem(item, /* backgroundColorOverride= */ null);
+  }
+
+  /**
+   * Applies the {@code R.styleable.MaterialCalendarDay} style to the provided {@code item},
+   * factoring in the {@code backgroundColorOverride} if not null.
+   */
+  void styleItem(@NonNull TextView item, @Nullable ColorStateList backgroundColorOverride) {
     MaterialShapeDrawable backgroundDrawable = new MaterialShapeDrawable();
     MaterialShapeDrawable shapeMask = new MaterialShapeDrawable();
     backgroundDrawable.setShapeAppearanceModel(itemShape);
     shapeMask.setShapeAppearanceModel(itemShape);
-    backgroundDrawable.setFillColor(backgroundColor);
+    backgroundDrawable.setFillColor(
+        backgroundColorOverride != null ? backgroundColorOverride : backgroundColor);
     backgroundDrawable.setStroke(strokeWidth, strokeColor);
     item.setTextColor(textColor);
     Drawable d;

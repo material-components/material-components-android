@@ -100,6 +100,8 @@ public class DatePickerMainDemoFragment extends DemoFragment {
     final RadioGroup opening = root.findViewById(R.id.cat_picker_opening_month_group);
     final RadioGroup selection = root.findViewById(R.id.cat_picker_selection_group);
     final RadioGroup inputMode = root.findViewById(R.id.cat_picker_input_mode_group);
+    final RadioGroup dayViewDecoratorGroup =
+        root.findViewById(R.id.cat_picker_day_view_decorator_group);
     final RadioGroup positiveButton = root.findViewById(R.id.cat_picker_positive_button_group);
     final RadioGroup negativeButton = root.findViewById(R.id.cat_picker_negative_button_group);
 
@@ -114,6 +116,7 @@ public class DatePickerMainDemoFragment extends DemoFragment {
           int openingChoice = opening.getCheckedRadioButtonId();
           int selectionChoice = selection.getCheckedRadioButtonId();
           int inputModeChoices = inputMode.getCheckedRadioButtonId();
+          int dayViewDecoratorChoice = dayViewDecoratorGroup.getCheckedRadioButtonId();
           int positiveButtonChoice = positiveButton.getCheckedRadioButtonId();
           int negativeButtonChoice = negativeButton.getCheckedRadioButtonId();
 
@@ -142,7 +145,7 @@ public class DatePickerMainDemoFragment extends DemoFragment {
             builder.setNegativeButtonText(R.string.cat_picker_negative_button_text);
           }
 
-          builder.setDayViewDecorator(new CircleIndicatorDecorator());
+          setupDayViewDecorator(builder, dayViewDecoratorChoice);
 
           try {
             builder.setCalendarConstraints(constraintsBuilder.build());
@@ -244,6 +247,15 @@ public class DatePickerMainDemoFragment extends DemoFragment {
       constraintsBuilder.setValidator(CompositeDateValidator.anyOf(validatorsMultple));
     }
     return constraintsBuilder;
+  }
+
+  private void setupDayViewDecorator(
+      MaterialDatePicker.Builder<?> builder, int dayViewDecoratorChoice) {
+    if (dayViewDecoratorChoice == R.id.cat_picker_day_view_decorator_dots) {
+      builder.setDayViewDecorator(new CircleIndicatorDecorator());
+    } else if (dayViewDecoratorChoice == R.id.cat_picker_day_view_decorator_highlights) {
+      builder.setDayViewDecorator(new BackgroundHighlightDecorator());
+    }
   }
 
   private static int resolveOrThrow(Context context, @AttrRes int attributeResId) {

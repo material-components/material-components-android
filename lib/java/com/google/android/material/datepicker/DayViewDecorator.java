@@ -16,6 +16,7 @@
 package com.google.android.material.datepicker;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
 import androidx.annotation.NonNull;
@@ -110,6 +111,28 @@ public abstract class DayViewDecorator implements Parcelable {
    */
   @Nullable
   public Drawable getCompoundDrawableBottom(
+      @NonNull Context context, int year, int month, int day, boolean valid, boolean selected) {
+    return null;
+  }
+
+  /**
+   * Override this method to return a custom color to be applied to the background drawable of the
+   * day view corresponding to the provided date.
+   *
+   * @param context The context of the day view
+   * @param year The year number corresponding to the day view (see {@link java.util.Calendar.YEAR})
+   * @param month The month number (0-11) corresponding to the day view (see {@link
+   *     java.util.Calendar.MONTH})
+   * @param day The day of month number corresponding to the day view (see {@link
+   *     java.util.Calendar.DAY_OF_MONTH})
+   * @param valid Boolean for whether the day view is in a valid state (if not valid, the day view
+   *     will likely look and behave disabled)
+   * @param selected Boolean for whether the day view is in a selected state (if selected, the day
+   *     view will likely have a filled color background)
+   * @return The background color {@link ColorStateList} or null
+   */
+  @Nullable
+  public ColorStateList getBackgroundColor(
       @NonNull Context context, int year, int month, int day, boolean valid, boolean selected) {
     return null;
   }

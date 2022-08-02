@@ -18,6 +18,7 @@ package com.google.android.material.datepicker;
 import com.google.android.material.R;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -204,12 +205,15 @@ class MonthAdapter extends BaseAdapter {
       dayTextView.setEnabled(false);
       style = calendarStyle.invalidDay;
     }
-    style.styleItem(dayTextView);
 
     if (dayViewDecorator != null && dayNumber != NO_DAY_NUMBER) {
       Context context = dayTextView.getContext();
       int year = month.year;
       int month = this.month.month;
+
+      ColorStateList backgroundColorOverride =
+          dayViewDecorator.getBackgroundColor(context, year, month, dayNumber, valid, selected);
+      style.styleItem(dayTextView, backgroundColorOverride);
 
       Drawable drawableLeft =
           dayViewDecorator.getCompoundDrawableLeft(
@@ -223,6 +227,8 @@ class MonthAdapter extends BaseAdapter {
           dayViewDecorator.getCompoundDrawableBottom(
               context, year, month, dayNumber, valid, selected);
       dayTextView.setCompoundDrawables(drawableLeft, drawableTop, drawableRight, drawableBottom);
+    } else {
+      style.styleItem(dayTextView);
     }
   }
 
