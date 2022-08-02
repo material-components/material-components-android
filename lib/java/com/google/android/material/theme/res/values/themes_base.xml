@@ -52,6 +52,8 @@
 
     <!-- Framework Colors. -->
     <item name="android:windowBackground">?android:attr/colorBackground</item>
+    <item name="colorControlNormal">?attr/colorOnSurfaceVariant</item>
+    <item name="colorControlActivated">?attr/colorPrimary</item>
 
     <!-- Default Framework Text Colors. -->
     <item name="android:textColorPrimary">@color/m3_default_color_primary_text</item>
@@ -289,6 +291,8 @@
 
     <!-- Framework Colors. -->
     <item name="android:windowBackground">?android:attr/colorBackground</item>
+    <item name="colorControlNormal">?attr/colorOnSurfaceVariant</item>
+    <item name="colorControlActivated">?attr/colorPrimary</item>
 
     <!-- Default Framework Text Colors. -->
     <item name="android:textColorPrimary">@color/m3_dark_default_color_primary_text</item>
