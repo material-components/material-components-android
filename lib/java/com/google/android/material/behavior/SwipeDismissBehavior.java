@@ -89,6 +89,8 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
   private float sensitivity = 0f;
   private boolean sensitivitySet;
 
+  private boolean ignoreCancelEvent = false;
+
   int swipeDirection = SWIPE_DIRECTION_ANY;
   float dragDismissThreshold = DEFAULT_DRAG_DISMISS_THRESHOLD;
   float alphaStartSwipeDistance = DEFAULT_ALPHA_START_DISTANCE;
@@ -212,6 +214,12 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
   @Override
   public boolean onTouchEvent(CoordinatorLayout parent, V child, MotionEvent event) {
     if (viewDragHelper != null) {
+      // Ignore ACTION_CANCEL event from the CoordinatorLayout when the SwipeDismissBehavior calls
+      // requestDisallowInterceptTouchEvent in onViewCaptured
+      if (ignoreCancelEvent && event.getActionMasked() == MotionEvent.ACTION_CANCEL) {
+        ignoreCancelEvent = false;
+        return true;
+      }
       viewDragHelper.processTouchEvent(event);
       return true;
     }
@@ -251,7 +259,11 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
           // intercepting
           final ViewParent parent = capturedChild.getParent();
           if (parent != null) {
+            //Ignore ACTION_CANCEL event from the CoordinatorLayout when the SwipeDismissBehavior
+            // calls requestDisallowInterceptTouchEvent in onViewCaptured
+            ignoreCancelEvent = true;
             parent.requestDisallowInterceptTouchEvent(true);
+            ignoreCancelEvent = false;
           }
         }
 
