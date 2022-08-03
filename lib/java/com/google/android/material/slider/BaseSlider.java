@@ -233,6 +233,8 @@ abstract class BaseSlider<
 
   private static final long LABEL_ANIMATION_ENTER_DURATION = 83L;
   private static final long LABEL_ANIMATION_EXIT_DURATION = 117L;
+  @Dimension
+  private static final int MIN_TOUCH_TARGET_DP = 48;
 
   @NonNull private final Paint inactiveTrackPaint;
   @NonNull private final Paint activeTrackPaint;
@@ -263,6 +265,9 @@ abstract class BaseSlider<
   private int minTrackSidePadding;
   private int defaultThumbRadius;
   private int defaultTrackHeight;
+
+  @Dimension(unit = Dimension.PX)
+  private int minTouchTargetSize;
 
   private int minWidgetHeight;
   private int widgetHeight;
@@ -420,6 +425,14 @@ abstract class BaseSlider<
     valueTo = a.getFloat(R.styleable.Slider_android_valueTo, 1.0f);
     setValues(valueFrom);
     stepSize = a.getFloat(R.styleable.Slider_android_stepSize, 0.0f);
+
+    float defaultMinTouchTargetSize =
+        (float) Math.ceil(ViewUtils.dpToPx(getContext(), MIN_TOUCH_TARGET_DP));
+    minTouchTargetSize =
+        (int)
+            Math.ceil(
+                a.getDimension(
+                    R.styleable.Slider_minTouchTargetSize, defaultMinTouchTargetSize));
 
     boolean hasTrackColor = a.hasValue(R.styleable.Slider_trackColor);
 
@@ -2670,8 +2683,11 @@ abstract class BaseSlider<
   void updateBoundsForVirtualViewId(int virtualViewId, Rect virtualViewBounds) {
     int x = trackSidePadding + (int) (normalizeValue(getValues().get(virtualViewId)) * trackWidth);
     int y = calculateTrackCenter();
+    int touchTargetRadius =
+        (thumbRadius > minTouchTargetSize ? thumbRadius : minTouchTargetSize) / 2;
 
-    virtualViewBounds.set(x - thumbRadius, y - thumbRadius, x + thumbRadius, y + thumbRadius);
+    virtualViewBounds.set(
+        x - touchTargetRadius, y - touchTargetRadius, x + touchTargetRadius, y + touchTargetRadius);
   }
 
   private static class AccessibilityHelper extends ExploreByTouchHelper {

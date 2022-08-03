@@ -133,6 +133,9 @@ If using a `TextView` to display the value of the slider, you should set
 `android:labelFor` so that screen readers announce that `TextView` refers to the
 slider.
 
+The minimum touch target size of the thumb is 48dp by default. If a different
+size is needed, please set `minTouchTargetSize` in the style or the layout.
+
 ### Adding/removing the value label
 
 By default, the slider will show a value label above the thumb when it's

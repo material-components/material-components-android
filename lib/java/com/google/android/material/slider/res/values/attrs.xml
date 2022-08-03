@@ -49,6 +49,8 @@
     <attr name="thumbStrokeColor" format="color" />
     <!-- The stroke width for the thumb. -->
     <attr name="thumbStrokeWidth" format="dimension" />
+    <!-- The minimum size of the thumb's touch target. -->
+    <attr name="minTouchTargetSize"/>
     <!-- The color of the slider's tick marks. Only used when the slider is in discrete mode. -->
     <attr name="tickColor" format="color" />
     <!-- The color of the slider's tick marks for the active portion of the track. Only used when
