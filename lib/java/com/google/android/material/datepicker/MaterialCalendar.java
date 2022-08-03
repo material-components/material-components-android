@@ -90,6 +90,8 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
   private CalendarStyle calendarStyle;
   private RecyclerView yearSelector;
   private RecyclerView recyclerView;
+  private View monthPrev;
+  private View monthNext;
   private View yearFrame;
   private View dayFrame;
 
@@ -363,9 +365,13 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
               ((YearGridAdapter) yearSelector.getAdapter()).getPositionForYear(current.year));
       yearFrame.setVisibility(View.VISIBLE);
       dayFrame.setVisibility(View.GONE);
+      monthPrev.setVisibility(View.GONE);
+      monthNext.setVisibility(View.GONE);
     } else if (selector == CalendarSelector.DAY) {
       yearFrame.setVisibility(View.GONE);
       dayFrame.setVisibility(View.VISIBLE);
+      monthPrev.setVisibility(View.VISIBLE);
+      monthNext.setVisibility(View.VISIBLE);
       // When visibility is toggled, the RecyclerView default opens to its lowest available id.
       // This id is always one month earlier than current, so we force it to current.
       setCurrentMonth(current);
@@ -399,9 +405,9 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
           }
         });
 
-    final MaterialButton monthPrev = root.findViewById(R.id.month_navigation_previous);
+    monthPrev = root.findViewById(R.id.month_navigation_previous);
     monthPrev.setTag(NAVIGATION_PREV_TAG);
-    final MaterialButton monthNext = root.findViewById(R.id.month_navigation_next);
+    monthNext = root.findViewById(R.id.month_navigation_next);
     monthNext.setTag(NAVIGATION_NEXT_TAG);
 
     yearFrame = root.findViewById(R.id.mtrl_calendar_year_selector_frame);
