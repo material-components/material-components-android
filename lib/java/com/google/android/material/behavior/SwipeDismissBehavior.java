@@ -359,17 +359,18 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
         @Override
         public void onViewPositionChanged(@NonNull View child, int left, int top, int dx, int dy) {
           final float startAlphaDistance =
-              originalCapturedViewLeft + child.getWidth() * alphaStartSwipeDistance;
+              child.getWidth() * alphaStartSwipeDistance;
           final float endAlphaDistance =
-              originalCapturedViewLeft + child.getWidth() * alphaEndSwipeDistance;
+              child.getWidth() * alphaEndSwipeDistance;
+          final float currentDistance = Math.abs(left - originalCapturedViewLeft);
 
-          if (left <= startAlphaDistance) {
+          if (currentDistance <= startAlphaDistance) {
             child.setAlpha(1f);
-          } else if (left >= endAlphaDistance) {
+          } else if (currentDistance >= endAlphaDistance) {
             child.setAlpha(0f);
           } else {
             // We're between the start and end distances
-            final float distance = fraction(startAlphaDistance, endAlphaDistance, left);
+            final float distance = fraction(startAlphaDistance, endAlphaDistance, currentDistance);
             child.setAlpha(clamp(0f, 1f - distance, 1f));
           }
         }
