@@ -14,6 +14,10 @@ navigation and key actions at the bottom of mobile screens.
 
 ![Purple bottom app bar with floating action button](assets/bottomappbar/bottom-app-bar-hero.png)
 
+**Note:** This doc reflects the Bottom App Bar after the changes in 1.7 to
+reflect the current M3 style. Use `Widget.Material3.BottomAppBar.Legacy` to
+revert back to the previous style.
+
 **Contents**
 
 *   [Using bottom app bars](#using-bottom-app-bars)
@@ -79,8 +83,8 @@ API and source code:
     *   [Class definition](https://developer.android.com/reference/com/google/android/material/floatingactionbutton/FloatingActionButton)
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingactionbutton/FloatingActionButton.java)
 
-The following example shows a bottom app bar with an action icon, a cradled FAB,
-and an overflow menu.
+The following example shows a bottom app bar with a navigation icon, 3 action
+icons, and an embedded FAB.
 
 ![Purple bottom app bar with grey icons and purple inset floating action button](assets/bottomappbar/bottomappbar_basic.png)
 
@@ -128,21 +132,26 @@ In `menu/bottom_app_bar.xml`:
 ```xml
 <menu
       ...>
+    <item
+      android:id="@+id/accelerator"
+      android:icon="@drawable/ic_accelerator_24px"
+      android:title="@string/accelerator"
+      android:contentDescription="@string/content_description_accelerator"
+      app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/search"
-        android:icon="@drawable/ic_search_24dp"
-        android:title="@string/search"
-        android:contentDescription="@string/content_description_search"
-        app:showAsAction="ifRoom"
-        />
+      android:id="@+id/rotation"
+      android:icon="@drawable/ic_3d_rotation_24px"
+      android:title="@string/rotation"
+      android:contentDescription="@string/content_description_rotation"
+      app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/more"
-        android:title="@string/more"
-        android:contentDescription="@string/content_description_more"
-        app:showAsAction="never"
-        />
+      android:id="@+id/dashboard"
+      android:icon="@drawable/ic_dashboard_24px"
+      android:title="@string/dashboard"
+      android:contentDescription="@string/content_description_dashboard"
+      app:showAsAction="ifRoom"/>
 
 </menu>
 ```
@@ -166,12 +175,16 @@ bottomAppBar.setNavigationOnClickListener {
 
 bottomAppBar.setOnMenuItemClickListener { menuItem ->
     when (menuItem.itemId) {
-        R.id.search -> {
-            // Handle search icon press
+        R.id.accelerator -> {
+            // Handle accelerator icon press
             true
         }
-        R.id.more -> {
-            // Handle more item (inside overflow menu) press
+        R.id.rotation -> {
+            // Handle rotation icon press
+            true
+        }
+        R.id.dashboard -> {
+            // Handle dashboard icon press
             true
         }
         else -> false
@@ -208,9 +221,9 @@ floating action button (FAB), action item(s) and an overflow menu.
 ![Bottom app bar anatomy diagram](assets/bottomappbar/bottom-app-bar-anatomy.png)
 
 1.  Container
-2.  Navigation icon (optional)
-3.  Floating action button (FAB) (optional)
-4.  Action item(s) (optional)
+2.  Floating action button (FAB) (optional)
+3.  Action item(s) (optional)
+4.  Navigation icon (optional)
 5.  Overflow menu (optional)
 
 ### Container attributes
@@ -219,7 +232,7 @@ Element       | Attribute            | Related method(s)                        
 ------------- | -------------------- | ------------------------------------------ | -------------
 **Color**     | `app:backgroundTint` | `setBackgroundTint`<br>`getBackgroundTint` | `?attr/colorSurface`
 **Elevation** | `app:elevation`      | `setElevation`                             | `3dp`
-**Height**    | `android:minHeight`  | `setMinimumHeight`<br>`getMinimumHeight`   | `56dp` (default) and `64dp` (w600dp)
+**Height**    | `android:minHeight`  | `setMinimumHeight`<br>`getMinimumHeight`   | `80dp`
 
 ### Navigation icon attributes
 
@@ -232,14 +245,14 @@ Element   | Attribute                | Related method(s)                        
 
 Element                          | Attribute                          | Related method(s)                                                      | Default value
 -------------------------------- | ---------------------------------- | ---------------------------------------------------------------------- | -------------
-**Alignment mode**               | `app:fabAlignmentMode`             | `setFabAlignmentMode`<br>`getFabAlignmentMode`                         | `center`
+**Alignment mode**               | `app:fabAlignmentMode`             | `setFabAlignmentMode`<br>`getFabAlignmentMode`                         | `end`
 **Animation mode**               | `app:fabAnimationMode`             | `setFabAnimationMode`<br>`getFabAnimationMode`                         | `slide`
-**Anchor mode**                  | `app:fabAnchorMode`                | `setFabAnchorMode` <br> `getFabAnchorMode`                             | `cradle`
+**Anchor mode**                  | `app:fabAnchorMode`                | `setFabAnchorMode` <br> `getFabAnchorMode`                             | `embed`
 **Cradle margin**                | `app:fabCradleMargin`              | `setFabCradleMargin`<br>`getFabCradleMargin`                           | `6dp`
 **Cradle rounded corner radius** | `app:fabCradleRoundedCornerRadius` | `setFabCradleRoundedCornerRadius`<br>`getFabCradleRoundedCornerRadius` | `4dp`
 **Cradle vertical offset**       | `app:fabCradleVerticalOffset`      | `setCradleVerticalOffset`<br>`getCradleVerticalOffset`                 | `12dp`
-**End margin**                   | `app:fabAlignmentModeEndMargin`    | `setFabAlignmentModeEndMargin` <br> `getFabAlignmentModeEndMargin`     | N/A
-**Embedded elevation**           | `app:removeEmbeddedFabElevation`   | N/A   | `true`
+**End margin**                   | `app:fabAlignmentModeEndMargin`    | `setFabAlignmentModeEndMargin` <br> `getFabAlignmentModeEndMargin`     | `16dp`
+**Embedded elevation**           | `app:removeEmbeddedFabElevation`   | N/A                                                                    | `true`
 
 See the
 [FAB documentation](https://github.com/material-components/material-components-android/tree/master/docs/components/FloatingActionButton.md)
@@ -251,7 +264,7 @@ Element            | Attribute               | Related method(s)                
 ------------------ | ----------------------- | -------------------------------------------------- | -------------
 **Menu**           | `app:menu`              | `replaceMenu`<br>`getMenu`                         | `null`
 **Icon color**     | N/A                     | N/A                                                | `?attr/colorControlNormal` (as `Drawable` tint)
-**Alignment mode** | `app:menuAlignmentMode` | `setMenuAlignmentMode` <br> `getMenuAlignmentMode` | `auto`
+**Alignment mode** | `app:menuAlignmentMode` | `setMenuAlignmentMode` <br> `getMenuAlignmentMode` | `start`
 
 ### Overflow menu attributes
 
