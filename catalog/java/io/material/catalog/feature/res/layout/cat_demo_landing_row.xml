@@ -15,65 +15,74 @@
   limitations under the License.
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cat_demo_landing_row_root"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:minHeight="@dimen/cat_list_two_line_row_height"
-    android:paddingLeft="@dimen/cat_list_horizontal_padding"
-    android:paddingRight="@dimen/cat_list_horizontal_padding"
-    android:background="?attr/selectableItemBackground"
-    android:clickable="true"
-    android:focusable="true"
-    android:gravity="center_vertical">
+<androidx.constraintlayout.widget.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/cat_demo_landing_row_root"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:background="?attr/selectableItemBackground"
+  android:clickable="true"
+  android:focusable="true"
+  android:paddingHorizontal="@dimen/cat_list_horizontal_padding"
+  android:paddingVertical="@dimen/cat_list_vertical_padding">
 
   <ImageView
-      android:id="@+id/cat_demo_landing_row_icon"
-      android:layout_width="@dimen/cat_list_icon_size"
-      android:layout_height="@dimen/cat_list_icon_size"
-      app:srcCompat="@drawable/ic_demo_play_circle_outline_vd_theme_24px"/>
+    android:id="@+id/cat_demo_landing_row_icon"
+    android:layout_width="@dimen/cat_list_icon_size"
+    android:layout_height="@dimen/cat_list_icon_size"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:srcCompat="@drawable/ic_demo_play_circle_outline_vd_theme_24px" />
 
   <TextView
-      android:id="@+id/cat_demo_landing_row_title"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="@dimen/cat_list_text_margin_from_icon"
-      android:layout_marginLeft="@dimen/cat_list_text_margin_from_icon"
-      android:layout_toEndOf="@+id/cat_demo_landing_row_icon"
-      android:layout_toRightOf="@+id/cat_demo_landing_row_icon"
-      android:textAppearance="?attr/textAppearanceBody2"
-      android:ellipsize="end"
-      android:maxLines="1"
-      tools:text="Demo"/>
+    android:id="@+id/cat_demo_landing_row_title"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:ellipsize="end"
+    android:maxLines="1"
+    android:textAlignment="viewStart"
+    android:textAppearance="?attr/textAppearanceBody2"
+    tools:text="Demo" />
 
   <TextView
-      android:id="@+id/cat_demo_landing_row_subtitle"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="@dimen/cat_list_text_margin_from_icon"
-      android:layout_marginLeft="@dimen/cat_list_text_margin_from_icon"
-      android:layout_below="@+id/cat_demo_landing_row_title"
-      android:layout_toEndOf="@+id/cat_demo_landing_row_icon"
-      android:layout_toRightOf="@+id/cat_demo_landing_row_icon"
-      android:layout_toStartOf="@+id/cat_demo_landing_row_favorite"
-      android:layout_toLeftOf="@+id/cat_demo_landing_row_favorite"
-      android:ellipsize="end"
-      android:maxLines="1"
-      android:textAppearance="?attr/textAppearanceCaption"
-      tools:text="MainDemoFragment"/>
+    android:id="@+id/cat_demo_landing_row_subtitle"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:ellipsize="end"
+    android:maxLines="1"
+    android:textAlignment="viewStart"
+    android:textAppearance="?attr/textAppearanceCaption"
+    tools:text="MainDemoFragment" />
 
   <Button
-      style="?attr/materialIconButtonStyle"
-      android:id="@+id/cat_demo_landing_row_favorite"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_alignParentEnd="true"
-      android:layout_alignParentRight="true"
-      android:checkable="true"
-      android:contentDescription="@string/cat_demo_landing_favorite"
-      android:saveEnabled="false"
-      app:icon="@drawable/ic_favorite_vd_theme_24px"/>
+    android:id="@+id/cat_demo_landing_row_favorite"
+    style="?attr/materialIconButtonStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:checkable="true"
+    android:contentDescription="@string/cat_demo_landing_favorite"
+    android:saveEnabled="false"
+    app:icon="@drawable/ic_favorite_vd_theme_24px"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
 
-</RelativeLayout>
+  <androidx.constraintlayout.helper.widget.Flow
+    android:id="@+id/cat_demo_landing_row_titles"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/cat_list_text_margin_from_icon"
+    android:layout_marginLeft="@dimen/cat_list_text_margin_from_icon"
+    android:layout_marginEnd="@dimen/cat_list_text_margin_from_button"
+    android:layout_marginRight="@dimen/cat_list_text_margin_from_button"
+    android:orientation="vertical"
+    app:constraint_referenced_ids="cat_demo_landing_row_title,cat_demo_landing_row_subtitle"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toStartOf="@+id/cat_demo_landing_row_favorite"
+    app:layout_constraintStart_toEndOf="@+id/cat_demo_landing_row_icon"
+    app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

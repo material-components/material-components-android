@@ -17,9 +17,10 @@
 
 <resources>
   <dimen name="cat_list_horizontal_padding">16dp</dimen>
-  <dimen name="cat_list_two_line_row_height">72dp</dimen>
+  <dimen name="cat_list_vertical_padding">12dp</dimen>
   <dimen name="cat_list_divider_size">1dp</dimen>
   <dimen name="cat_list_icon_size">40dp</dimen>
   <dimen name="cat_list_text_margin_from_icon">16dp</dimen>
   <dimen name="cat_list_text_margin_from_icon_large">24dp</dimen>
+  <dimen name="cat_list_text_margin_from_button">16dp</dimen>
 </resources>

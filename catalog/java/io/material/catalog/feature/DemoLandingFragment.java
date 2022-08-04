@@ -177,6 +177,7 @@ public abstract class DemoLandingFragment extends DaggerFragment {
     View demoView = layoutInflater.inflate(R.layout.cat_demo_landing_row, demoContainer, false);
 
     View rootView = demoView.findViewById(R.id.cat_demo_landing_row_root);
+    View titlesView = demoView.findViewById(R.id.cat_demo_landing_row_titles);
     TextView titleTextView = demoView.findViewById(R.id.cat_demo_landing_row_title);
     TextView subtitleTextView = demoView.findViewById(R.id.cat_demo_landing_row_subtitle);
     MaterialButton favoriteButton = demoView.findViewById(R.id.cat_demo_landing_row_favorite);
@@ -199,8 +200,7 @@ public abstract class DemoLandingFragment extends DaggerFragment {
         });
 
     if (isAdditional) {
-      setMarginStart(titleTextView, R.dimen.cat_list_text_margin_from_icon_large);
-      setMarginStart(subtitleTextView, R.dimen.cat_list_text_margin_from_icon_large);
+      setMarginStart(titlesView, R.dimen.cat_list_text_margin_from_icon_large);
     }
 
     demoContainer.addView(demoView);
