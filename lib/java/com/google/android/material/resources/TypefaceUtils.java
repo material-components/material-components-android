@@ -51,7 +51,8 @@ public class TypefaceUtils {
       @NonNull Configuration configuration, @NonNull Typeface typeface) {
     if (VERSION.SDK_INT >= VERSION_CODES.S
         && configuration.fontWeightAdjustment != Configuration.FONT_WEIGHT_ADJUSTMENT_UNDEFINED
-        && configuration.fontWeightAdjustment != 0) {
+        && configuration.fontWeightAdjustment != 0
+        && typeface != null) {
       int adjustedWeight =
           MathUtils.clamp(
               typeface.getWeight() + configuration.fontWeightAdjustment,
