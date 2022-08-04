@@ -1186,6 +1186,34 @@ public class CollapsingToolbarLayout extends FrameLayout {
   }
 
   /**
+   * Sets the text size of the expanded title.
+   *
+   * @param textSize The text size of the expanded title.
+   */
+  public void setExpandedTitleTextSize(float textSize) {
+    collapsingTextHelper.setExpandedTextSize(textSize);
+  }
+
+  /** Returns the text size of the expanded title. */
+  public float getExpandedTitleTextSize() {
+    return collapsingTextHelper.getExpandedTextSize();
+  }
+
+  /**
+   * Sets the text size of the collapsed title.
+   *
+   * @param textSize The text size of the collapsed title.
+   */
+  public void setCollapsedTitleTextSize(float textSize) {
+    collapsingTextHelper.setCollapsedTextSize(textSize);
+  }
+
+  /** Returns the text size of the collapsed title. */
+  public float getCollapsedTitleTextSize() {
+    return collapsingTextHelper.getCollapsedTextSize();
+  }
+
+  /**
    * Set the typeface to use for the collapsed title.
    *
    * @param typeface typeface to use, or {@code null} to use the default.
