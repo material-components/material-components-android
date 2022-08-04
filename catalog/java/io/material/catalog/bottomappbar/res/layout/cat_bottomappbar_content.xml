@@ -43,51 +43,6 @@
       <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/cat_bottomappbar_fab_alignment_mode"
-        android:textAppearance="?attr/textAppearanceBody1" />
-      <com.google.android.material.button.MaterialButtonToggleGroup
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <Button
-          android:id="@+id/fab_position_button_center"
-          style="?attr/materialButtonOutlinedStyle"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/cat_bottomappbar_center" />
-        <Button
-          android:id="@+id/fab_position_button_end"
-          style="?attr/materialButtonOutlinedStyle"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/cat_bottomappbar_end" />
-      </com.google.android.material.button.MaterialButtonToggleGroup>
-
-      <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/cat_bottomappbar_fab_animation_mode"
-        android:textAppearance="?attr/textAppearanceBody1" />
-      <com.google.android.material.button.MaterialButtonToggleGroup
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <Button
-          android:id="@+id/fab_animation_mode_button_scale"
-          style="?attr/materialButtonOutlinedStyle"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/cat_bottomappbar_fab_anim_scale" />
-        <Button
-          android:id="@+id/fab_animation_mode_button_slide"
-          style="?attr/materialButtonOutlinedStyle"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/cat_bottomappbar_fab_anim_slide" />
-      </com.google.android.material.button.MaterialButtonToggleGroup>
-
-      <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/cat_bottomappbar_fab_visibility_mode"
         android:textAppearance="?attr/textAppearanceBody1" />
@@ -106,52 +61,6 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="@string/cat_bottomappbar_fab_hide" />
-      </com.google.android.material.button.MaterialButtonToggleGroup>
-
-      <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/cat_bottomappbar_fab_anchor_mode"
-        android:textAppearance="?attr/textAppearanceBody1" />
-      <com.google.android.material.button.MaterialButtonToggleGroup
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <Button
-          android:id="@+id/fab_anchor_mode_button_embed"
-          style="?attr/materialButtonOutlinedStyle"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/cat_bottomappbar_button_embed" />
-        <Button
-          android:id="@+id/fab_anchor_mode_button_cradle"
-          style="?attr/materialButtonOutlinedStyle"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/cat_bottomappbar_button_cradle" />
-      </com.google.android.material.button.MaterialButtonToggleGroup>
-
-      <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/cat_bottomappbar_menu_alignment"
-        android:textAppearance="?attr/textAppearanceBody1" />
-      <com.google.android.material.button.MaterialButtonToggleGroup
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <Button
-          android:id="@+id/menu_alignment_auto"
-          style="?attr/materialButtonOutlinedStyle"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/cat_bottomappbar_button_menu_alignment_auto" />
-        <Button
-          android:id="@+id/menu_alignment_start"
-          style="?attr/materialButtonOutlinedStyle"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/cat_bottomappbar_button_menu_alignment_start" />
       </com.google.android.material.button.MaterialButtonToggleGroup>
 
       <com.google.android.material.materialswitch.MaterialSwitch
