@@ -260,6 +260,10 @@ public class MaterialCheckBox extends AppCompatCheckBox {
 
     currentStateChecked = DrawableUtils.getCheckedState(drawableStates);
 
+    if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
+      jumpDrawablesToCurrentState();
+    }
+
     return drawableStates;
   }
 
