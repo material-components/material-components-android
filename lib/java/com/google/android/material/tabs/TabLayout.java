@@ -2885,26 +2885,24 @@ public class TabLayout extends HorizontalScrollView {
       }
 
       final boolean hasText = !TextUtils.isEmpty(text);
+      final boolean showingText;
       if (textView != null) {
+        showingText = hasText && tab.labelVisibilityMode == TAB_LABEL_VISIBILITY_LABELED;
+        textView.setText(hasText ? text : null);
+        textView.setVisibility(showingText ? VISIBLE : GONE);
+
         if (hasText) {
-          textView.setText(text);
-          if (tab.labelVisibilityMode == TAB_LABEL_VISIBILITY_LABELED) {
-            textView.setVisibility(VISIBLE);
-          } else {
-            textView.setVisibility(GONE);
-          }
           setVisibility(VISIBLE);
-        } else {
-          textView.setVisibility(GONE);
-          textView.setText(null);
         }
+      } else {
+        showingText = false;
       }
 
       if (iconView != null) {
         MarginLayoutParams lp = ((MarginLayoutParams) iconView.getLayoutParams());
         int iconMargin = 0;
-        if (hasText && iconView.getVisibility() == VISIBLE) {
-          // If we're showing both text and icon, add some margin bottom to the icon
+        if (showingText && iconView.getVisibility() == VISIBLE) {
+          // If we're showing both text and icon, add some margin to the icon
           iconMargin = (int) ViewUtils.dpToPx(getContext(), DEFAULT_GAP_TEXT_ICON);
         }
         if (inlineLabel) {
