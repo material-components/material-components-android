@@ -16,10 +16,10 @@
   limitations under the License.
   -->
 
-<ScrollView
-  xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
-  android:layout_height="match_parent">
+  android:layout_height="match_parent"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
 
   <LinearLayout
     android:id="@+id/main_viewGroup"
@@ -31,13 +31,13 @@
     <GridLayout
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:columnCount="2"
+      android:columnCount="3"
       android:useDefaultMargins="true">
 
       <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_columnSpan="2"
+        android:layout_columnSpan="3"
         android:text="@string/cat_checkbox_intro" />
 
       <CheckBox
@@ -54,10 +54,17 @@
         android:enabled="true"
         android:text="@string/cat_checkbox_enabled" />
 
+      <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:checkedState="indeterminate"
+        android:enabled="true"
+        android:text="@string/cat_checkbox_enabled" />
+
       <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_columnSpan="2"
+        android:layout_columnSpan="3"
         android:text="@string/cat_checkbox_disabled_guide" />
 
       <CheckBox
@@ -71,6 +78,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:checked="false"
+        android:enabled="false"
+        android:text="@string/cat_checkbox_disabled" />
+
+      <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:checkedState="indeterminate"
         android:enabled="false"
         android:text="@string/cat_checkbox_disabled" />
     </GridLayout>
@@ -109,6 +123,53 @@
         android:checked="false"
         android:enabled="false"
         android:text="@string/cat_checkbox_toggle" />
+    </LinearLayout>
+
+    <com.google.android.material.divider.MaterialDivider
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/cat_checkbox_line_separator_margin"
+      android:layout_marginBottom="@dimen/cat_checkbox_line_separator_margin" />
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:text="@string/cat_indeterminate_description" />
+
+    <CheckBox
+      android:id="@+id/checkbox_parent"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      app:checkedState="indeterminate"
+      android:text="@string/cat_checkbox_indeterminate" />
+
+    <LinearLayout
+      android:id="@+id/checkbox_indeterminate_container"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/cat_checkbox_indent"
+      android:orientation="vertical">
+
+      <CheckBox
+        android:id="@+id/checkbox_child_1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:checked="true"
+        android:text="@string/cat_checkbox_indeterminate_child" />
+
+      <CheckBox
+        android:id="@+id/checkbox_child_2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:checked="false"
+        android:text="@string/cat_checkbox_indeterminate_child" />
+
+      <CheckBox
+        android:id="@+id/checkbox_child_3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:checked="false"
+        android:text="@string/cat_checkbox_indeterminate_child" />
     </LinearLayout>
 
     <com.google.android.material.divider.MaterialDivider

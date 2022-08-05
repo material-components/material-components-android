@@ -16,11 +16,16 @@
 -->
 <animated-selector xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   tools:ignore="NewApi">
   <item
     android:id="@+id/checked"
     android:drawable="@drawable/mtrl_ic_checkbox_checked"
     android:state_checked="true"/>
+  <item
+    android:id="@+id/indeterminate"
+    android:drawable="@drawable/mtrl_ic_checkbox_checked"
+    app:state_indeterminate="true"/>
   <item
     android:id="@+id/unchecked"
     android:drawable="@drawable/mtrl_ic_checkbox_unchecked"
@@ -33,5 +38,14 @@
   <transition
     android:fromId="@+id/unchecked"
     android:toId="@+id/checked"
+    android:drawable="@drawable/mtrl_checkbox_button_unchecked_checked" />
+
+  <transition
+    android:fromId="@+id/indeterminate"
+    android:toId="@+id/unchecked"
+    android:drawable="@drawable/mtrl_checkbox_button_checked_unchecked" />
+  <transition
+    android:fromId="@+id/unchecked"
+    android:toId="@+id/indeterminate"
     android:drawable="@drawable/mtrl_checkbox_button_unchecked_checked" />
 </animated-selector>

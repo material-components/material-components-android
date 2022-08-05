@@ -31,6 +31,14 @@
     Check this checkbox to control the enabled state of the boxes below.</string>
   <string name="cat_checkbox_toggle" translatable="false">
     Controlled by a checkbox</string>
+  <string name="cat_indeterminate_description" translatable="false">
+    The checkboxes below have a parent/child relationship. The parent\'s state
+    depends on the state of the children.
+  </string>
+  <string name="cat_checkbox_indeterminate" translatable="false">
+    Parent checkbox</string>
+  <string name="cat_checkbox_indeterminate_child" translatable="false">
+    Child checkbox</string>
   <string name="cat_checkbox_no_text" translatable="false">
     Below is a checkbox with no text.</string>
   <string name="cat_checkbox_toggle_error" translatable="false">

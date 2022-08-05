@@ -73,13 +73,36 @@ checkbox.errorShown = true
 // Optional listener:
 checkbox.addOnErrorChangedListener { checkBox, errorShown ->
     // Responds to when the checkbox enters/leaves error state
-  }
 }
 
 // To set a custom accessibility label:
 checkbox.errorAccessibilityLabel = "Error: custom error announcement."
 
 ```
+
+### Making a checkbox indeterminate
+
+In the layout:
+
+```xml
+<CheckBox
+    ...
+    app:checkedState="indeterminate"/>
+```
+
+In code:
+
+```kt
+// You can set the state of the checkbox (STATE_CHECKED, STATE_UNCHECKED,
+// or STATE_INDETERMINATE) via setCheckedState.
+checkBox.setCheckedState(MaterialCheckbox.STATE_INDETERMINATE);
+
+// Checkbox state listener.
+checkbox.addOnCheckedStateChangedListener { checkBox, state ->
+  // Responds to when the checkbox changes state.
+}
+```
+
 
 ## Checkbox
 
@@ -192,9 +215,6 @@ enabled, disabled, hover, focused, and pressed states.
 ![Checkbox states in an array. Columns are enabled, disabled, hover, focused,
 pressed. Rows are selected, unselected, or
 indeterminite](assets/checkbox/checkbox_states.png)
-
-**Note:** `MaterialCheckBox` does not support the indeterminate state. Only
-selected and unselected states are supported.
 
 ### Styles
 
