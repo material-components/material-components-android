@@ -18,7 +18,12 @@ package io.material.catalog.datepicker;
 import io.material.catalog.R;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -135,6 +140,9 @@ public class DatePickerMainDemoFragment extends DemoFragment {
 
           if (titleChoice == R.id.cat_picker_title_custom) {
             builder.setTitleText(R.string.cat_picker_title_custom);
+          } else if (titleChoice == R.id.cat_picker_title_with_description) {
+            builder.setTheme(R.style.ThemeOverlay_Catalog_MaterialCalendar_WithDescription);
+            builder.setTitleText(getTitleWithDescription());
           }
 
           if (positiveButtonChoice == R.id.cat_picker_positive_button_custom) {
@@ -247,6 +255,25 @@ public class DatePickerMainDemoFragment extends DemoFragment {
       constraintsBuilder.setValidator(CompositeDateValidator.anyOf(validatorsMultple));
     }
     return constraintsBuilder;
+  }
+
+  private CharSequence getTitleWithDescription() {
+    Context context = requireContext();
+    String alarmTimes = context.getString(R.string.cat_picker_title_description_colored);
+    String titleAndDescriptionText =
+        context.getString(R.string.cat_picker_title_description_main) + alarmTimes;
+    SpannableString spannable = new SpannableString(titleAndDescriptionText);
+    int alarmTimesColor = resolveOrThrow(context, R.attr.colorPrimary);
+    int spanStart = titleAndDescriptionText.indexOf(alarmTimes);
+    int spanEnd = spanStart + alarmTimes.length();
+    spannable.setSpan(
+        new ForegroundColorSpan(alarmTimesColor),
+        spanStart,
+        spanEnd,
+        Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+    spannable.setSpan(
+        new StyleSpan(Typeface.BOLD), spanStart, spanEnd, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+    return spannable;
   }
 
   private void setupDayViewDecorator(

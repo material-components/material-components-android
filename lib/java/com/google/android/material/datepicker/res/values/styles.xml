@@ -48,7 +48,13 @@
   </style>
 
   <style name="Widget.MaterialComponents.MaterialCalendar.HeaderLayout" parent="android:Widget">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">@dimen/mtrl_calendar_header_height</item>
     <item name="android:background">?attr/colorPrimary</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.MaterialCalendar.HeaderLayout.Fullscreen">
+    <item name="android:layout_height">@dimen/mtrl_calendar_header_height_fullscreen</item>
   </style>
 
   <style name="Widget.MaterialComponents.MaterialCalendar.HeaderDivider" parent="android:Widget">
@@ -67,6 +73,9 @@
   </style>
 
   <style name="Widget.MaterialComponents.MaterialCalendar.HeaderSelection" parent="Widget.AppCompat.TextView">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_gravity">top|start</item>
     <item name="android:textAppearance">?attr/textAppearanceHeadline4</item>
     <item name="android:textColor">?attr/colorOnPrimary</item>
     <item name="android:maxLines">@integer/mtrl_calendar_selection_text_lines</item>
@@ -213,6 +222,10 @@
 
   <style name="Widget.Material3.MaterialCalendar.HeaderLayout" parent="Widget.MaterialComponents.MaterialCalendar.HeaderLayout">
     <item name="android:background">@android:color/transparent</item>
+  </style>
+
+  <style name="Widget.Material3.MaterialCalendar.HeaderLayout.Fullscreen">
+    <item name="android:layout_height">@dimen/mtrl_calendar_header_height_fullscreen</item>
   </style>
 
   <style name="Widget.Material3.MaterialCalendar.HeaderDivider" parent="Widget.MaterialComponents.MaterialCalendar.HeaderDivider">

@@ -24,6 +24,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
@@ -34,6 +35,7 @@ import android.os.Bundle;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.content.res.AppCompatResources;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -138,12 +140,15 @@ public final class MaterialDatePicker<S> extends DialogFragment {
   @StringRes private int negativeButtonTextResId;
   private CharSequence negativeButtonText;
 
+  private TextView headerTitleTextView;
   private TextView headerSelectionText;
   private CheckableImageButton headerToggleButton;
   @Nullable private MaterialShapeDrawable background;
   private Button confirmButton;
 
   private boolean edgeToEdgeEnabled;
+  @Nullable private CharSequence fullTitleText;
+  @Nullable private CharSequence singleLineTitleText;
 
   @NonNull
   static <S> MaterialDatePicker<S> newInstance(@NonNull Builder<S> options) {
@@ -200,6 +205,10 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     positiveButtonText = activeBundle.getCharSequence(POSITIVE_BUTTON_TEXT_KEY);
     negativeButtonTextResId = activeBundle.getInt(NEGATIVE_BUTTON_TEXT_RES_ID_KEY);
     negativeButtonText = activeBundle.getCharSequence(NEGATIVE_BUTTON_TEXT_KEY);
+
+    fullTitleText =
+        titleText != null ? titleText : requireContext().getResources().getText(titleTextResId);
+    singleLineTitleText = getFirstLineBySeparator(fullTitleText);
   }
 
   private int getThemeResId(Context context) {
@@ -254,12 +263,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     ViewCompat.setAccessibilityLiveRegion(
         headerSelectionText, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
     headerToggleButton = root.findViewById(R.id.mtrl_picker_header_toggle);
-    TextView titleTextView = root.findViewById(R.id.mtrl_picker_title_text);
-    if (titleText != null) {
-      titleTextView.setText(titleText);
-    } else {
-      titleTextView.setText(titleTextResId);
-    }
+    headerTitleTextView = root.findViewById(R.id.mtrl_picker_title_text);
     initHeaderToggle(context);
 
     confirmButton = root.findViewById(R.id.confirm_button);
@@ -394,6 +398,12 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     edgeToEdgeEnabled = true;
   }
 
+  private void updateTitle(boolean textInputMode) {
+    // Set up title text forcing single line for landscape text input mode due to space constraints.
+    headerTitleTextView.setText(
+        textInputMode && isLandscape() ? singleLineTitleText : fullTitleText);
+  }
+
   private void updateHeader() {
     String headerText = getHeaderText();
     headerSelectionText.setContentDescription(
@@ -406,11 +416,13 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     calendar =
         MaterialCalendar.newInstance(
             getDateSelector(), themeResId, calendarConstraints, dayViewDecorator);
+    boolean textInputMode = headerToggleButton.isChecked();
     pickerFragment =
-        headerToggleButton.isChecked()
+        textInputMode
             ? MaterialTextInputPicker.newInstance(
                 getDateSelector(), themeResId, calendarConstraints)
             : calendar;
+    updateTitle(textInputMode);
     updateHeader();
 
     FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
@@ -481,6 +493,19 @@ public final class MaterialDatePicker<S> extends DialogFragment {
         new int[] {},
         AppCompatResources.getDrawable(context, R.drawable.material_ic_edit_black_24dp));
     return toggleDrawable;
+  }
+
+  @Nullable
+  private static CharSequence getFirstLineBySeparator(@Nullable CharSequence charSequence) {
+    if (charSequence != null) {
+      String[] lines = TextUtils.split(String.valueOf(charSequence), "\n");
+      return lines.length > 1 ? lines[0] : charSequence;
+    }
+    return null;
+  }
+
+  private boolean isLandscape() {
+    return getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
   }
 
   static boolean isFullscreen(@NonNull Context context) {

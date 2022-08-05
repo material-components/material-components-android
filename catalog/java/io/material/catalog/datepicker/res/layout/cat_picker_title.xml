@@ -49,6 +49,14 @@
         android:layout_marginLeft="@dimen/cat_picker_demo_padding"
         android:text="@string/cat_picker_title_custom"
         android:textAppearance="?attr/textAppearanceBody1"/>
+    <RadioButton
+        android:id="@+id/cat_picker_title_with_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/cat_picker_demo_padding"
+        android:layout_marginLeft="@dimen/cat_picker_demo_padding"
+        android:text="@string/cat_picker_title_with_description"
+        android:textAppearance="?attr/textAppearanceBody1"/>
 
   </RadioGroup>
 </LinearLayout>

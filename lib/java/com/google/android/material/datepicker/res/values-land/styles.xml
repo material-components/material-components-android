@@ -24,6 +24,9 @@
   </style>
 
   <style name="Widget.MaterialComponents.MaterialCalendar.HeaderSelection" parent="Widget.AppCompat.TextView">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_gravity">top|start</item>
     <item name="android:textAppearance">?attr/textAppearanceHeadline6</item>
     <item name="android:textColor">?attr/colorOnPrimary</item>
     <item name="android:maxLines">@integer/mtrl_calendar_selection_text_lines</item>

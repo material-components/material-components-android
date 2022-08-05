@@ -50,6 +50,7 @@
   <style name="ThemeOverlay.MaterialComponents.MaterialCalendar.Fullscreen" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
     <item name="android:windowIsFloating">false</item>
     <item name="materialCalendarStyle">@style/Widget.MaterialComponents.MaterialCalendar.Fullscreen</item>
+    <item name="materialCalendarHeaderLayout">@style/Widget.MaterialComponents.MaterialCalendar.HeaderLayout.Fullscreen</item>
     <item name="materialCalendarHeaderSelection">@style/Widget.MaterialComponents.MaterialCalendar.HeaderSelection.Fullscreen</item>
   </style>
 
@@ -84,6 +85,7 @@
     <item name="android:windowIsFloating">false</item>
     <item name="android:windowElevation" tools:ignore="NewApi">@dimen/m3_datepicker_elevation</item>
     <item name="materialCalendarStyle">@style/Widget.Material3.MaterialCalendar.Fullscreen</item>
+    <item name="materialCalendarHeaderLayout">@style/Widget.Material3.MaterialCalendar.HeaderLayout.Fullscreen</item>
     <item name="materialCalendarHeaderSelection">@style/Widget.Material3.MaterialCalendar.HeaderSelection.Fullscreen</item>
   </style>
 

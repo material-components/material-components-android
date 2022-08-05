@@ -79,6 +79,12 @@
   <string name="cat_picker_title_default">Default</string>
   <!-- Indicates that a custom title will be used [CHAR LIMIT=25] -->
   <string name="cat_picker_title_custom">Custom</string>
+  <!-- Indicates that a custom title with description will be used [CHAR LIMIT=25] -->
+  <string name="cat_picker_title_with_description">With Description</string>
+  <!-- First part of the title and description for the date picker header [CHAR LIMIT=200] -->
+  <string name="cat_picker_title_description_main">"Select dates\n\nSelect the range of dates that you want to pause for the alarm that is set at "</string>
+  <!-- Second part of the description for the date picker header [CHAR LIMIT=60] -->
+  <string name="cat_picker_title_description_colored">6:30pm on Tues, Wed, Thurs.</string>
 
   <!-- Grouping label for a set of radio buttons that choose the selection [CHAR LIMIT=50] -->
   <string name="cat_picker_selection">Default Selection</string>

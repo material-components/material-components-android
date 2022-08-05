@@ -23,4 +23,24 @@
     <item name="textInputStyle">@style/Widget.Material3.TextInputLayout.OutlinedBox</item>
   </style>
 
+  <style name="ThemeOverlay.Catalog.MaterialCalendar.WithDescription" parent="@style/ThemeOverlay.Material3.MaterialCalendar">
+    <item name="materialCalendarHeaderLayout">@style/Widget.Catalog.MaterialCalendar.HeaderLayout.WithDescription</item>
+    <item name="materialCalendarHeaderTitle">@style/Widget.Catalog.MaterialCalendar.HeaderTitle.WithDescription</item>
+    <item name="materialCalendarHeaderSelection">@style/Widget.Catalog.MaterialCalendar.HeaderSelection.WithDescription</item>
+  </style>
+
+  <style name="Widget.Catalog.MaterialCalendar.HeaderLayout.WithDescription" parent="@style/Widget.Material3.MaterialCalendar.HeaderLayout">
+    <item name="android:layout_height">168dp</item>
+  </style>
+
+  <style name="Widget.Catalog.MaterialCalendar.HeaderTitle.WithDescription" parent="@style/Widget.Material3.MaterialCalendar.HeaderTitle">
+    <item name="android:maxLines">@integer/cat_picker_demo_description_header_title_max_lines</item>
+    <item name="autoSizeTextType">none</item>
+  </style>
+
+  <style name="Widget.Catalog.MaterialCalendar.HeaderSelection.WithDescription" parent="@style/Widget.Material3.MaterialCalendar.HeaderSelection">
+    <item name="android:layout_gravity">bottom|start</item>
+    <item name="android:layout_marginBottom">12dp</item>
+  </style>
+
 </resources>

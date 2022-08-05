@@ -18,13 +18,11 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
-  android:layout_height="@dimen/mtrl_calendar_header_height_fullscreen">
+  android:layout_height="wrap_content">
 
   <LinearLayout
     android:id="@+id/fullscreen_header"
     style="?attr/materialCalendarHeaderLayout"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/mtrl_calendar_header_height_fullscreen"
     android:layout_gravity="top|center_horizontal"
     android:orientation="horizontal"
     android:paddingStart="@dimen/mtrl_calendar_header_content_padding_fullscreen"
