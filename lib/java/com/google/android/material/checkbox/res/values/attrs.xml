@@ -61,12 +61,24 @@
     <!-- The error accessibility label that is announced by screen readers when
          the checkbox is in the error state. -->
     <attr name="errorAccessibilityLabel" format="string"/>
+    <!-- The state of the checkbox. Can be unchecked, checked, or indeterminate. -->
+    <attr name="checkedState">
+      <!-- The unchecked state of the checkbox. -->
+      <enum name="unchecked" value="0"/>
+      <!-- The checked state of the checkbox. -->
+      <enum name="checked" value="1"/>
+      <!-- The indeterminate state of the checkbox. -->
+      <enum name="indeterminate" value="2"/>
+    </attr>
   </declare-styleable>
 
   <declare-styleable name="MaterialCheckBoxStates">
     <!-- Error state of the checkbox. Behaves as part of existing states; a
-         checkbox is always one of checked/unchecked and can also be on error or
-         not. -->
+         checkbox is always one of checked/unchecked/indeterminate and can also
+         be on error or not. -->
     <attr name="state_error" format="boolean"/>
+    <!-- Indeterminate state of the checkbox. Behaves as a third state; a
+         checkbox can be checked, unchecked, or indeterminate. -->
+    <attr name="state_indeterminate" format="boolean"/>
   </declare-styleable>
 </resources>
