@@ -75,6 +75,7 @@ public class DynamicColors {
 
   static {
     Map<String, DeviceSupportCondition> deviceMap = new HashMap<>();
+    deviceMap.put("fcnt", DEFAULT_DEVICE_SUPPORT_CONDITION);
     deviceMap.put("google", DEFAULT_DEVICE_SUPPORT_CONDITION);
     deviceMap.put("hmd global", DEFAULT_DEVICE_SUPPORT_CONDITION);
     deviceMap.put("infinix", DEFAULT_DEVICE_SUPPORT_CONDITION);
