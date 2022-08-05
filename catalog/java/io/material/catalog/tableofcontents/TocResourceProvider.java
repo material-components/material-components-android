@@ -20,11 +20,11 @@ import io.material.catalog.R;
 
 import androidx.annotation.LayoutRes;
 
-/** A helper class that facilitates overriding of certain resources in the Catalog app. */
+/** A helper class that facilitates resource overrides in the Catalog app. */
 public class TocResourceProvider {
 
   @LayoutRes
-  protected int getHeaderContent() {
-    return R.layout.cat_toc_header;
+  protected int getLogoLayout() {
+    return R.layout.cat_toc_logo;
   }
 }

@@ -17,4 +17,5 @@
 <resources>
   <string name="toolbar_navigation_close_description">Close demo</string>
   <string name="cat_choose_preferences_description">Open preferences dialog</string>
+  <string name="cat_search_description">Open the search bar</string>
 </resources>

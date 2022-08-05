@@ -18,7 +18,6 @@ package io.material.catalog.tableofcontents;
 
 import io.material.catalog.R;
 
-import android.annotation.SuppressLint;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
@@ -26,17 +25,26 @@ import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.SearchView.OnQueryTextListener;
 import androidx.appcompat.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import androidx.annotation.Dimension;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.ContextCompat;
 import androidx.core.math.MathUtils;
 import androidx.core.view.ViewCompat;
+import androidx.transition.Transition;
+import androidx.transition.TransitionManager;
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.transition.MaterialSharedAxis;
 import dagger.android.support.DaggerFragment;
 import io.material.catalog.feature.FeatureDemo;
 import io.material.catalog.feature.FeatureDemoUtils;
@@ -54,13 +62,21 @@ public class TocFragment extends DaggerFragment {
   private static final int GRID_SPAN_COUNT_MIN = 1;
   private static final int GRID_SPAN_COUNT_MAX = 4;
 
+  @Dimension(unit = Dimension.DP)
+  private static final int CATALOG_NARROW_SCREEN_SIZE_CUTOFF = 350;
+
   @Inject Set<FeatureDemo> featureDemos;
   @Inject TocResourceProvider tocResourceProvider;
 
   private AppBarLayout appBarLayout;
   private View gridTopDivider;
-  private RecyclerView recyclerView;
+  private ConstraintLayout headerContainer;
   private ImageButton preferencesButton;
+  private SearchView searchView;
+  private ImageButton searchButton;
+  private TocAdapter tocAdapter;
+  private Transition openSearchViewTransition;
+  private Transition closeSearchViewTransition;
 
   @Override
   public void onCreate(@Nullable Bundle bundle) {
@@ -71,9 +87,9 @@ public class TocFragment extends DaggerFragment {
     }
   }
 
-  @SuppressLint("MissingInflatedId")
   @Nullable
   @Override
+  @SuppressWarnings("MissingInflatedId")
   public View onCreateView(
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
     View view =
@@ -85,12 +101,18 @@ public class TocFragment extends DaggerFragment {
     activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
 
     ViewGroup content = view.findViewById(R.id.content);
-    View.inflate(getContext(), tocResourceProvider.getHeaderContent(), content);
+    View.inflate(getContext(), R.layout.cat_toc_header, content);
 
     appBarLayout = view.findViewById(R.id.cat_toc_app_bar_layout);
     gridTopDivider = view.findViewById(R.id.cat_toc_grid_top_divider);
-    recyclerView = view.findViewById(R.id.cat_toc_grid);
+    headerContainer = view.findViewById(R.id.cat_toc_header_container);
+    RecyclerView recyclerView = view.findViewById(R.id.cat_toc_grid);
     preferencesButton = view.findViewById(R.id.cat_toc_preferences_button);
+    searchView = view.findViewById(R.id.cat_toc_search_view);
+    searchButton = view.findViewById(R.id.cat_toc_search_button);
+
+    // Inflate logo into the header container.
+    View.inflate(getContext(), tocResourceProvider.getLogoLayout(), headerContainer);
 
     ViewCompat.setOnApplyWindowInsetsListener(
         view,
@@ -126,12 +148,44 @@ public class TocFragment extends DaggerFragment {
                 getContext().getString(feature1.getTitleResId()),
                 getContext().getString(feature2.getTitleResId())));
 
-    TocAdapter tocAdapter = new TocAdapter(getActivity(), featureList);
+    tocAdapter = new TocAdapter(getActivity(), featureList);
     recyclerView.setAdapter(tocAdapter);
 
+    adjustLogoConstraintsForNarrowScreenWidths();
+
     initPreferencesButton();
+    initSearchButton();
+    initSearchView();
+    initSearchViewTransitions();
 
     return view;
+  }
+
+  private void adjustLogoConstraintsForNarrowScreenWidths() {
+    // Adjust logo constraints so that the logo text does not overlap with the search image button.
+    if (getScreenWidth() < CATALOG_NARROW_SCREEN_SIZE_CUTOFF) {
+      ConstraintSet narrowHeaderConstraintSet = createNarrowHeaderConstraintSet(headerContainer);
+      narrowHeaderConstraintSet.applyTo(headerContainer);
+    }
+  }
+
+  @Dimension(unit = Dimension.DP)
+  private int getScreenWidth() {
+    return getResources().getConfiguration().screenWidthDp;
+  }
+
+  private ConstraintSet createNarrowHeaderConstraintSet(ConstraintLayout constraintLayout) {
+    ConstraintSet constraintSet = new ConstraintSet();
+    constraintSet.clone(constraintLayout);
+    constraintSet.connect(
+        R.id.header_logo, ConstraintSet.END, R.id.cat_toc_search_button, ConstraintSet.START);
+    // Add a bit of space on the start side of the logo to compensate for the extra 12dp of space
+    // the search icon button includes on each side because of its 48dp minimum touch target width.
+    constraintSet.setMargin(
+        R.id.header_logo,
+        ConstraintSet.START,
+        getResources().getDimensionPixelOffset(R.dimen.cat_toc_header_additional_start_margin));
+    return constraintSet;
   }
 
   private void addGridTopDividerVisibilityListener() {
@@ -157,8 +211,76 @@ public class TocFragment extends DaggerFragment {
 
   private void initPreferencesButton() {
     preferencesButton.setOnClickListener(
-        v -> new CatalogPreferencesDialogFragment().show(
-            getParentFragmentManager(), "preferences-screen"));
+        v ->
+            new CatalogPreferencesDialogFragment()
+                .show(getParentFragmentManager(), "preferences-screen"));
+  }
+
+  private void initSearchButton() {
+    searchButton.setOnClickListener(v -> openSearchView());
+  }
+
+  private void initSearchView() {
+    searchView.setOnClickListener(v -> closeSearchView());
+
+    searchView.setOnQueryTextListener(
+        new OnQueryTextListener() {
+          @Override
+          public boolean onQueryTextSubmit(String query) {
+            return false;
+          }
+
+          @Override
+          public boolean onQueryTextChange(String newText) {
+            tocAdapter.getFilter().filter(newText);
+            return false;
+          }
+        });
+  }
+
+  private void initSearchViewTransitions() {
+    openSearchViewTransition = createSearchViewTransition(true);
+    closeSearchViewTransition = createSearchViewTransition(false);
+  }
+
+  private void openSearchView() {
+    TransitionManager.beginDelayedTransition(headerContainer, openSearchViewTransition);
+
+    headerContainer.setVisibility(View.GONE);
+    searchView.setVisibility(View.VISIBLE);
+
+    searchView.requestFocus();
+  }
+
+  private void closeSearchView() {
+    TransitionManager.beginDelayedTransition(headerContainer, closeSearchViewTransition);
+
+    headerContainer.setVisibility(View.VISIBLE);
+    searchView.setVisibility(View.GONE);
+
+    clearSearchView();
+  }
+
+  @NonNull
+  private MaterialSharedAxis createSearchViewTransition(boolean entering) {
+    MaterialSharedAxis sharedAxisTransition =
+        new MaterialSharedAxis(MaterialSharedAxis.X, entering);
+
+    sharedAxisTransition.addTarget(headerContainer);
+    sharedAxisTransition.addTarget(searchView);
+    return sharedAxisTransition;
+  }
+
+  @Override
+  public void onPause() {
+    super.onPause();
+    clearSearchView();
+  }
+
+  private void clearSearchView() {
+    if (searchView != null) {
+      searchView.setQuery("", true);
+    }
   }
 
   private void startDefaultDemoLandingIfNeeded() {

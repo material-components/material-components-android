@@ -20,4 +20,5 @@
   <dimen name="cat_toc_toolbar_image_offset">16dp</dimen>
   <dimen name="cat_toc_grid_divider_size">1dp</dimen>
   <dimen name="cat_toc_item_size">180dp</dimen>
+  <dimen name="cat_toc_header_additional_start_margin">12dp</dimen>
 </resources>

@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
   <!-- For the catalog we know that toolbars will always be on top of a "surface" color,
        so it's better for them to have no background, especially because it's common for
@@ -27,16 +27,9 @@
   </style>
 
   <style name="Widget.Catalog.TocButton" parent="Widget.AppCompat.ImageButton">
-    <item name="android:layout_width">@dimen/mtrl_min_touch_target_size</item>
-    <item name="android:layout_height">@dimen/mtrl_min_touch_target_size</item>
+    <item name="android:minWidth">@dimen/mtrl_min_touch_target_size</item>
+    <item name="android:minHeight">@dimen/mtrl_min_touch_target_size</item>
     <item name="android:background">?attr/actionBarItemBackground</item>
-  </style>
-
-  <style name="Widget.Catalog.ChoosePreferencesButton" parent="Widget.Catalog.TocButton">
-    <item name="android:id">@id/cat_toc_preferences_button</item>
-    <item name="android:layout_gravity">center_vertical|end</item>
-    <item name="srcCompat">@drawable/ic_settings_24px</item>
-    <item name="android:contentDescription">@string/cat_choose_preferences_description</item>
   </style>
 
 </resources>
