@@ -54,6 +54,39 @@ screen readers, such as TalkBack. Text rendered in check boxes is automatically
 provided to accessibility services. Additional content labels are usually
 unnecessary.
 
+### Checking a checkbox
+
+In the layout:
+
+```xml
+<CheckBox
+    ...
+    android:checked="true"/>
+```
+
+In code:
+
+```kt
+// To check a checkbox
+checkbox.isChecked = true
+
+// To listen for a checkbox's checked/unchecked state changes
+checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
+    // Responds to checkbox being checked/unchecked
+}
+
+// Alternatively, you can check a checkbox via setCheckedState
+checkBox.setCheckedState(MaterialCheckbox.STATE_CHECKED);
+
+// To uncheck:
+checkBox.setCheckedState(MaterialCheckbox.STATE_UNCHECKED);
+
+// And to listen for changes:
+checkbox.addOnCheckedStateChangedListener { checkBox, state ->
+  // Responds to when the checkbox changes state.
+}
+```
+
 ### Setting the error state on checkbox
 
 In the layout:
@@ -122,77 +155,146 @@ API and source code:
     *   [Class definition](https://developer.android.com/reference/com/google/android/material/checkbox/MaterialCheckBox)
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/checkbox/MaterialCheckBox.java)
 
-The following example shows a list of five checkboxes.
+The following example shows a list of checkboxes with a parent/children
+relationship.
 
-![Example of 5 checkboxes, the first one is checked and the last one is
-disabled.](assets/checkbox/checkbox_example.png)
+The first checkbox (the parent) will be checked if all children are checked,
+unchecked if all of the children are unchecked, and indeterminate if only some
+of the children are checked.
+
+![Example of 5 checkboxes, the first one is the parent and the ones below it are
+the children.](assets/checkbox/checkbox_example.png)
 
 In the layout:
 
 ```xml
 <CheckBox
+    android:id="@+id/checkbox_parent"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:checked="true"
-    android:text="@string/label_1"/>
-<CheckBox
+    app:checkedState="indeterminate"
+    android:text="@string/label_parent"/>
+
+<LinearLayout
+    android:id="@+id/checkbox_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="@string/label_2"/>
-<CheckBox
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="@string/label_3"/>
-<CheckBox
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="@string/label_4"/>
-<CheckBox
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:enabled="false"
-    android:text="@string/label_5"/>
+    android:layout_marginStart="@dimen/checkbox_margin"
+    android:orientation="vertical">
+
+  <CheckBox
+      android:id="@+id/checkbox_child_1"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/label_child_1"/>
+
+  <CheckBox
+      android:id="@+id/checkbox_child_2"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/label_child_2"/>
+
+  <CheckBox
+      android:id="@+id/checkbox_child_3"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/label_child_3"/>
+
+
+  <CheckBox
+      android:id="@+id/checkbox_child_4"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/label_child_4"/>
+
+</LinearLayout>
 ```
 
 In code:
 
 ```kt
-// To check a checkbox
-checkbox.isChecked = true
+// Class variable
+private var isUpdatingChildren = false
 
-// To listen for a checkbox's checked/unchecked state changes
-checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
-    // Responds to checkbox being checked/unchecked
+...
+
+// Parent's checked state changed listener
+val parentOnCheckedStateChangedListener =
+  OnCheckedStateChangedListener { checkBox: MaterialCheckBox, state: Int ->
+    val isChecked = checkBox.isChecked
+    if (state != MaterialCheckBox.STATE_INDETERMINATE) {
+      isUpdatingChildren = true
+      for (child in childrenCheckBoxes) {
+        child.isChecked = isChecked
+      }
+      isUpdatingChildren = false
+    }
+  }
+checkBoxParent.addOnCheckedStateChangedListener(parentOnCheckedStateChangedListener)
+
+// Checked state changed listener for each child
+val childOnCheckedStateChangedListener =
+  OnCheckedStateChangedListener { checkBox: MaterialCheckBox?, state: Int ->
+    if (!isUpdatingChildren) {
+      setParentState(checkBoxParent, childrenCheckBoxes, parentOnCheckedStateChangedListener)
+    }
+  }
+for (child in childrenCheckBoxes) {
+  (child as MaterialCheckBox)
+    .addOnCheckedStateChangedListener(childOnCheckedStateChangedListener)
 }
+
+// Set first child to be checked
+firstChild.isChecked = true
+// Set parent's state
+setParentState(checkBoxParent, childrenCheckBoxes, parentOnCheckedStateChangedListener)
+
+...
+
+private fun setParentState(
+  checkBoxParent: MaterialCheckBox,
+  childrenCheckBoxes: List<CheckBox>,
+  parentOnCheckedStateChangedListener: OnCheckedStateChangedListener
+) {
+  val checkedCount = childrenCheckBoxes.stream().filter { obj: CheckBox -> obj.isChecked }
+    .count()
+    .toInt()
+  val allChecked = checkedCount == childrenCheckBoxes.size
+  val noneChecked = checkedCount == 0
+  checkBoxParent.removeOnCheckedStateChangedListener(parentOnCheckedStateChangedListener)
+  if (allChecked) {
+    checkBoxParent.isChecked = true
+  } else if (noneChecked) {
+    checkBoxParent.isChecked = false
+  } else {
+    checkBoxParent.checkedState = MaterialCheckBox.STATE_INDETERMINATE
+  }
+  checkBoxParent.addOnCheckedStateChangedListener(parentOnCheckedStateChangedListener)
+}
+
 ```
 
-## Key properties
+## Anatomy and key properties
+
+The following is an anatomy diagram that shows a checkbox container and icon:
+
+![Checkbox anatomy diagram](assets/checkbox/checkbox_anatomy.png)
+
+1.  Container
+2.  Icon
 
 ### Checkbox attributes
 
-The checkbox is composed of an `app:buttonCompat` button drawable (the squared
-icon) and an `app:buttonIcon` icon drawable (the checkmark icon) layered on top
-of it.
+The checkbox is composed of an `app:buttonCompat` drawable (the container) and
+an `app:buttonIcon` drawable (the icon) layered on top of it.
 
 Element                      | Attribute                                  | Related method(s)                                          | Default value
 --------------------------   | ------------------------------------------ | ---------------------------------------------------------- | -------------
-**To use material colors**   | `app:useMaterialThemeColors`               | `setUseMaterialThemeColors`<br/>`isUseMaterialThemeColors` | `true` (ignored if `app:buttonTint` is set)
-**Button drawable**          | `app:buttonCompat`                         | `setButtonDrawable`<br/>`getButtonDrawable`                | [@mtrl_checkbox_button](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/checkbox/res/drawable/mtrl_checkbox_button.xml)
 **Button tint**              | `app:buttonTint`                           | `setButtonTintList`<br/>`getButtonTintList`                | `?attr/colorOnSurface` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/checkbox/res/color/m3_checkbox_button_tint.xml))
 **Button icon drawable**     | `app:buttonIcon`                           | `setButtonIconDrawable`<br/>`getButtonIconDrawable`        | [@mtrl_checkbox_button_icon](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/checkbox/res/drawable/mtrl_checkbox_button_icon.xml)
 **Button icon tint**         | `app:buttonIconTint`                       | `setButtonIconTintList`<br/>`getButtonIconTintList`        | `?attr/colorOnPrimary` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/checkbox/res/color/m3_checkbox_button_icon_tint.xml))
 **Min size**                 | `android:minWidth`<br/>`android:minHeight` | `(set/get)MinWidth`<br/>`(set/get)MinHeight`               | `?attr/minTouchTargetSize`
 **Centered icon if no text** | `app:centerIfNoTextEnabled`                | `setCenterIfNoTextEnabled`<br/>`isCenterIfNoTextEnabled`   | `true`
-
-**Note:** If you'd like to change the default colors, override the above tint
-attributes or set them to `@null` and `app:useMaterialThemeColors` to `false`.
-
-```xml
-<CheckBox
-        ...
-    app:useMaterialThemeColors="false"
-    />
-```
 
 **Note:** If setting a custom `app:buttonCompat`, make sure to also set
 `app:buttonIcon` if an icon is desired. The checkbox does not support having a
@@ -209,12 +311,19 @@ Element        | Attribute                | Related method(s)                  |
 
 ### Checkbox states
 
-Checkboxes can be selected, unselected, or indeterminate. Checkboxes have
-enabled, disabled, hover, focused, and pressed states.
+Checkboxes can be selected, unselected, or indeterminate, and those states on
+error. Checkboxes have enabled, disabled, hover, focused, and pressed states.
 
 ![Checkbox states in an array. Columns are enabled, disabled, hover, focused,
-pressed. Rows are selected, unselected, or
-indeterminite](assets/checkbox/checkbox_states.png)
+pressed. Rows are selected, unselected, or indeterminite, and selected on error,
+unselected on error, or indeterminate on
+error.](assets/checkbox/checkbox_states.png)
+
+1.  Enabled
+2.  Disabled
+3.  Hover
+4.  Focused
+5.  Pressed
 
 ### Styles
 
@@ -245,8 +354,8 @@ API and source code:
 
 The following example shows a checkbox with Material Theming.
 
-!["5 checkboxes with brown text and box outlines, checkbox 1 is selected box
-with pink fill and white checkmark"](assets/checkbox/checkbox_theming.png)
+!["A parent checkbox and 4 children checkboxes. They container is pink, the
+outline is brown, and the icon is white."](assets/checkbox/checkbox_theming.png)
 
 #### Implementing checkbox theming
 
@@ -256,8 +365,10 @@ checkboxes and affects other components:
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
     ...
-    <item name="colorOnSurface">@color/shrine_pink_900</item>
-    <item name="colorSecondary">@color/shrine_pink_100</item>
+    <item name="colorOnSurface">@color/shrine_on_surface</item>
+    <item name="colorPrimary">@color/shrine_primary</item>
+    <item name="colorSurface">@color/shrine_surface</item>
+    <item name="colorOnPrimary">@color/shrine_on_primary</item>
 </style>
 
 ```
@@ -276,26 +387,46 @@ theme to all checkboxes but does not affect other components:
 </style>
 
 <style name="ThemeOverlay.App.CheckBox" parent="">
-    <item name="colorOnSurface">@color/shrine_pink_900</item>
-    <item name="colorSecondary">@color/shrine_pink_100</item>
+    <!-- Container colors -->
+    <item name="colorOnSurface">@color/shrine_on_surface</item>
+    <item name="colorPrimary">@color/shrine_primary</item>
+    <item name="colorError">@color/shrine_error</item>
+    <!-- Icon colors -->
+    <item name="colorSurface">@color/shrine_surface</item>
+    <item name="colorOnPrimary">@color/shrine_on_primary</item>
+    <item name="colorOnError">@color/shrine_on_error</item>
 </style>
 ```
 
-You can also change the checkbox colors via the `?attr/buttonTint` attribute:
+You can also change the checkbox colors via the `?attr/buttonTint` and
+`?attr/buttonIconTint` attributes:
 
 ```xml
 <style name="Widget.App.CheckBox" parent="Widget.Material3.CompoundButton.CheckBox">
    <item name="buttonTint">@color/button_tint</item>
+   <item name="buttonIconTint">@color/button_icon_tint</item>
 </style>
 ```
 
-and in `color/button_tint.xml`:
+in `color/button_tint.xml`:
 
 ```xml
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:color="@color/shrine_pink_900" android:state_checked="true"/>
-  <item android:alpha="0.38" android:color="@color/shrine_pink_100" android:state_enabled="false"/>
-  <item android:color="@color/shrine_pink_100"/>
+  <item android:alpha="0.38" android:color="@color/shrine_on_surface" android:state_enabled="false"/>
+  <item android:color="@color/shrine_error" app:state_error="true"/>
+  <item android:color="@color/shrine_primary" app:state_indeterminate="true"/>
+  <item android:color="@color/shrine_primary" android:state_checked="true"/>
+</selector>
+```
+
+an in `color/button_icon_tint.xml`:
+
+```xml
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+  <item android:color="@color/shrine_surface" android:state_enabled="false"/>
+  <item android:color="@color/shrine_on_error" app:state_error="true"/>
+  <item android:color="@color/shrine_on_primary" app:state_indeterminate="true"/>
+  <item android:color="@color/shrine_on_primary" android:state_checked="true"/>
 </selector>
 ```
 
