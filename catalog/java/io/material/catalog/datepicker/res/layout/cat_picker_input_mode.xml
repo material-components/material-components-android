@@ -27,7 +27,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:text="@string/cat_picker_input_mode"
-      android:textAppearance="?attr/textAppearanceHeadline5"/>
+      android:textAppearance="?attr/textAppearanceTitleLarge"/>
   <RadioGroup
       android:id="@+id/cat_picker_input_mode_group"
       android:layout_width="match_parent"
@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:checked="true"
         android:text="@string/cat_picker_input_mode_calendar"
-        android:textAppearance="?attr/textAppearanceBody1"/>
+        android:textAppearance="?attr/textAppearanceBodyLarge"/>
     <RadioButton
         android:id="@+id/cat_picker_input_mode_text"
         android:layout_width="wrap_content"
@@ -47,7 +47,7 @@
         android:layout_marginStart="@dimen/cat_picker_demo_padding"
         android:layout_marginLeft="@dimen/cat_picker_demo_padding"
         android:text="@string/cat_picker_input_mode_text"
-        android:textAppearance="?attr/textAppearanceBody1"/>
+        android:textAppearance="?attr/textAppearanceBodyLarge"/>
 
   </RadioGroup>
 </LinearLayout>
