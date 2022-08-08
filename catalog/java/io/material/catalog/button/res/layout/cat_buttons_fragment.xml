@@ -150,7 +150,7 @@
               style="?attr/materialIconButtonStyle"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:contentDescription="@string/cat_button_icon_btn_text"
+              android:contentDescription="@string/cat_standard_icon_btn_desc"
               app:icon="@drawable/ic_dialogs_24px"/>
           <TextView
               android:layout_width="wrap_content"
@@ -169,7 +169,7 @@
               style="?attr/materialIconButtonFilledStyle"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:contentDescription="@string/cat_button_icon_btn_text"
+              android:contentDescription="@string/cat_filled_icon_btn_desc"
               app:icon="@drawable/ic_dialogs_24px"/>
           <TextView
               android:layout_width="wrap_content"
@@ -188,7 +188,7 @@
               style="?attr/materialIconButtonFilledTonalStyle"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:contentDescription="@string/cat_button_icon_btn_text"
+              android:contentDescription="@string/cat_filled_tonal_icon_btn_desc"
               app:icon="@drawable/ic_dialogs_24px"/>
           <TextView
               android:layout_width="wrap_content"
@@ -207,7 +207,7 @@
               style="?attr/materialIconButtonOutlinedStyle"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:contentDescription="@string/cat_button_icon_btn_text"
+              android:contentDescription="@string/cat_outlined_icon_btn_desc"
               app:icon="@drawable/ic_dialogs_24px"/>
           <TextView
               android:layout_width="wrap_content"
