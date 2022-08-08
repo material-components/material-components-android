@@ -21,12 +21,12 @@ import io.material.catalog.R;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
+
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.SearchView.OnQueryTextListener;
 import androidx.appcompat.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -224,7 +224,7 @@ public class TocFragment extends DaggerFragment {
     searchView.setOnClickListener(v -> closeSearchView());
 
     searchView.setOnQueryTextListener(
-        new OnQueryTextListener() {
+        new SearchView.OnQueryTextListener() {
           @Override
           public boolean onQueryTextSubmit(String query) {
             return false;
