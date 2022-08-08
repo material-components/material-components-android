@@ -19,7 +19,7 @@
   android:layout_width="match_parent"
   android:layout_height="wrap_content">
 
-  <android.support.v7.widget.SearchView
+  <androidx.appcompat.widget.SearchView
     android:id="@+id/cat_toc_search_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
