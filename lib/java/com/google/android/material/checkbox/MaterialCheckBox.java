@@ -55,7 +55,7 @@ import androidx.core.widget.TintableCompoundButton;
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat.AnimationCallback;
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
 import com.google.android.material.color.MaterialColors;
-import com.google.android.material.internal.DrawableUtils;
+import com.google.android.material.drawable.DrawableUtils;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialResources;
