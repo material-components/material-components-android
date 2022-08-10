@@ -249,6 +249,10 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     View root = layoutInflater.inflate(layout, viewGroup);
     Context context = root.getContext();
 
+    if (dayViewDecorator != null) {
+      dayViewDecorator.initialize(context);
+    }
+
     if (fullscreen) {
       View frame = root.findViewById(R.id.mtrl_calendar_frame);
       frame.setLayoutParams(

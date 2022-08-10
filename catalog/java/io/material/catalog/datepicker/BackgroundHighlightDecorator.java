@@ -38,26 +38,23 @@ class BackgroundHighlightDecorator extends DayViewDecorator {
 
   @Nullable private ColorStateList backgroundHighlightColor;
 
-  @Nullable
   @Override
-  public ColorStateList getBackgroundColor(@NonNull Context context, int year, int month, int day,
-      boolean valid, boolean selected) {
-    return valid && !selected && shouldShowHighlight(year, month, day)
-        ? getOrCreateBackgroundHighlightColor(context)
-        : null;
+  public void initialize(@NonNull Context context) {
+    int highlightColor =
+        MaterialColors.getColor(
+            context,
+            R.attr.colorTertiaryContainer,
+            BackgroundHighlightDecorator.class.getSimpleName());
+    backgroundHighlightColor = ColorStateList.valueOf(highlightColor);
   }
 
-  @NonNull
-  private ColorStateList getOrCreateBackgroundHighlightColor(Context context) {
-    if (backgroundHighlightColor == null) {
-      int highlightColor =
-          MaterialColors.getColor(
-              context,
-              R.attr.colorTertiaryContainer,
-              BackgroundHighlightDecorator.class.getSimpleName());
-      backgroundHighlightColor = ColorStateList.valueOf(highlightColor);
-    }
-    return backgroundHighlightColor;
+  @Nullable
+  @Override
+  public ColorStateList getBackgroundColor(
+      @NonNull Context context, int year, int month, int day, boolean valid, boolean selected) {
+    return valid && !selected && shouldShowHighlight(year, month, day)
+        ? backgroundHighlightColor
+        : null;
   }
 
   private boolean shouldShowHighlight(int year, int month, int day) {

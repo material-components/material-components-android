@@ -24,7 +24,6 @@ import android.graphics.drawable.InsetDrawable;
 import android.os.Parcel;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.graphics.ColorUtils;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.ViewUtils;
@@ -38,7 +37,7 @@ public class TestCircleIndicatorDecorator extends DayViewDecorator {
   private final Calendar startDay;
   private final List<Calendar> indicatorDays;
 
-  @Nullable private IndicatorDrawables indicatorDrawables;
+  private IndicatorDrawables indicatorDrawables;
 
   public TestCircleIndicatorDecorator(Calendar startDay) {
     this.startDay = startDay;
@@ -48,33 +47,24 @@ public class TestCircleIndicatorDecorator extends DayViewDecorator {
   }
 
   @Override
+  public void initialize(@NonNull Context context) {
+    indicatorDrawables = new IndicatorDrawables(context);
+  }
+
+  @Override
   public Drawable getCompoundDrawableTop(
       @NonNull Context context, int year, int month, int day, boolean valid, boolean selected) {
-    return getOrCreateIndicatorDrawables(context).topSpacerDrawable;
+    return indicatorDrawables.topSpacerDrawable;
   }
 
   @Override
   public Drawable getCompoundDrawableBottom(
       @NonNull Context context, int year, int month, int day, boolean valid, boolean selected) {
-    return selectIndicatorDrawable(
-        getOrCreateIndicatorDrawables(context), year, month, day, valid, selected);
-  }
-
-  @NonNull
-  private IndicatorDrawables getOrCreateIndicatorDrawables(Context context) {
-    if (indicatorDrawables == null) {
-      indicatorDrawables = new IndicatorDrawables(context);
-    }
-    return indicatorDrawables;
+    return selectIndicatorDrawable(year, month, day, valid, selected);
   }
 
   private Drawable selectIndicatorDrawable(
-      IndicatorDrawables indicatorDrawables,
-      int year,
-      int month,
-      int day,
-      boolean valid,
-      boolean selected) {
+      int year, int month, int day, boolean valid, boolean selected) {
     if (!shouldShowIndicator(year, month, day)) {
       return indicatorDrawables.indicatorDrawableNone;
     }

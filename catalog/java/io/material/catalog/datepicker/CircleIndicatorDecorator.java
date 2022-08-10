@@ -28,7 +28,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.datepicker.DayViewDecorator;
 import java.util.ArrayList;
@@ -43,36 +42,27 @@ class CircleIndicatorDecorator extends DayViewDecorator {
   private final List<Calendar> indicatorDays =
       new ArrayList<>(Arrays.asList(addDays(today, 1), addDays(today, 3), addDays(today, -2)));
 
-  @Nullable private IndicatorDrawables indicatorDrawables;
+  private IndicatorDrawables indicatorDrawables;
+
+  @Override
+  public void initialize(@NonNull Context context) {
+    indicatorDrawables = new IndicatorDrawables(context);
+  }
 
   @Override
   public Drawable getCompoundDrawableTop(
       @NonNull Context context, int year, int month, int day, boolean valid, boolean selected) {
-    return getOrCreateIndicatorDrawables(context).topSpacerDrawable;
+    return indicatorDrawables.topSpacerDrawable;
   }
 
   @Override
   public Drawable getCompoundDrawableBottom(
       @NonNull Context context, int year, int month, int day, boolean valid, boolean selected) {
-    return selectIndicatorDrawable(
-        getOrCreateIndicatorDrawables(context), year, month, day, valid, selected);
-  }
-
-  @NonNull
-  private IndicatorDrawables getOrCreateIndicatorDrawables(Context context) {
-    if (indicatorDrawables == null) {
-      indicatorDrawables = new IndicatorDrawables(context);
-    }
-    return indicatorDrawables;
+    return selectIndicatorDrawable(year, month, day, valid, selected);
   }
 
   private Drawable selectIndicatorDrawable(
-      IndicatorDrawables indicatorDrawables,
-      int year,
-      int month,
-      int day,
-      boolean valid,
-      boolean selected) {
+      int year, int month, int day, boolean valid, boolean selected) {
     if (!valid || !shouldShowIndicator(year, month, day)) {
       return indicatorDrawables.indicatorDrawableNone;
     }

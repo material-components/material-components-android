@@ -28,6 +28,16 @@ import androidx.annotation.Nullable;
 public abstract class DayViewDecorator implements Parcelable {
 
   /**
+   * Optionally override this method to do any initializing for your {@code DayViewDecorator}
+   * instance.
+   *
+   * <p>This method will be called whenever the date picker view is created, which can be important
+   * if, e.g., your decorator's compound drawables are dependent on configurations such as screen
+   * orientation.
+   */
+  public void initialize(@NonNull Context context) {}
+
+  /**
    * Override this method to return a left compound drawable for the day view corresponding to the
    * provided date.
    *

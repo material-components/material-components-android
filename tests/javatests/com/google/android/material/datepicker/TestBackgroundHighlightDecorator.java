@@ -33,7 +33,7 @@ public class TestBackgroundHighlightDecorator extends DayViewDecorator {
   private final Calendar startDay;
   private final List<Calendar> highlightDays;
 
-  @Nullable private ColorStateList backgroundHighlightColor;
+  private ColorStateList backgroundHighlightColor;
 
   public TestBackgroundHighlightDecorator(Calendar startDay) {
     this.startDay = startDay;
@@ -42,29 +42,24 @@ public class TestBackgroundHighlightDecorator extends DayViewDecorator {
             Arrays.asList(addDays(startDay, 1), addDays(startDay, 3), addDays(startDay, -2)));
   }
 
+  @Override
+  public void initialize(@NonNull Context context) {
+    backgroundHighlightColor = ColorStateList.valueOf(getBackgroundHighlightColor(context));
+  }
+
   @Nullable
   @Override
   public ColorStateList getBackgroundColor(
       @NonNull Context context, int year, int month, int day, boolean valid, boolean selected) {
     return valid && !selected && shouldShowHighlight(year, month, day)
-        ? getOrCreateBackgroundHighlightColor(context)
+        ? backgroundHighlightColor
         : null;
-  }
-
-  @NonNull
-  private ColorStateList getOrCreateBackgroundHighlightColor(Context context) {
-    if (backgroundHighlightColor == null) {
-      backgroundHighlightColor = ColorStateList.valueOf(getBackgroundHighlightColor(context));
-    }
-    return backgroundHighlightColor;
   }
 
   @ColorInt
   private int getBackgroundHighlightColor(Context context) {
     return MaterialColors.getColor(
-        context,
-        R.attr.colorTertiaryContainer,
-        getFallbackBackgroundHighlightColor(context));
+        context, R.attr.colorTertiaryContainer, getFallbackBackgroundHighlightColor(context));
   }
 
   @ColorInt
