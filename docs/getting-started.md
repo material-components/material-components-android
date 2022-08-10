@@ -102,7 +102,7 @@ support the latest build features such as XML `macro`:
 
 - [Gradle version 7.3.3](https://developer.android.com/studio/releases/gradle-plugin#updating-gradle)
 - [Android Gradle Plugin (AGP) version 7.2.0](https://developer.android.com/studio/releases/gradle-plugin#updating-gradle)
-- [Android Studio Chipmunk, version 2021.2.1](https://developer.android.com/studio/releases/gradle-plugin#agp-studio-compatibility)
+- [Android Studio Chipmunk, version 2021.2.1](https://developer.android.com/studio/releases/gradle-plugin#android_gradle_plugin_and_android_studio_compatibility)
 
 ## 6. `AppCompatActivity`
 
