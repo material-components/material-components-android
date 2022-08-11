@@ -16,18 +16,13 @@
 -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/material_clock_display"
   android:layout_width="wrap_content"
   android:layout_height="wrap_content"
-  android:layout_marginTop="8dp"
   android:layoutDirection="ltr"
   android:orientation="horizontal"
   android:baselineAligned="false"
-  app:layout_constraintTop_toTopOf="parent"
-  app:layout_constraintLeft_toLeftOf="parent"
-  app:layout_constraintRight_toRightOf="parent"
   tools:ignore="UnusedAttribute">
 
   <include

@@ -16,9 +16,22 @@
 -->
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/material_timepicker_container"
   android:layout_width="wrap_content"
-  android:layout_height="wrap_content">
+  android:layout_height="wrap_content"
+  tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
+  <androidx.constraintlayout.helper.widget.Flow
+    android:id="@+id/material_clock_display_and_toggle"
+    android:layout_width="0dp"
+    android:layout_height="@dimen/material_clock_period_toggle_height"
+    android:orientation="horizontal"
+    app:constraint_referenced_ids="material_clock_display,material_clock_period_toggle"
+    app:flow_horizontalGap="@dimen/material_clock_period_toggle_horizontal_gap"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
 
   <include
     android:id="@+id/material_clock_display"
@@ -32,10 +45,10 @@
     android:id="@+id/material_clock_face"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginTop="36dp"
+    android:layout_marginTop="28dp"
     android:layout_gravity="center"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/material_clock_display" />
+    app:layout_constraintTop_toBottomOf="@+id/material_clock_display_and_toggle" />
 
 </merge>

@@ -16,38 +16,34 @@
 -->
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/material_timepicker_container"
   android:layout_width="wrap_content"
-  android:layout_height="wrap_content">
+  android:layout_height="wrap_content"
+  tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
-  <androidx.constraintlayout.widget.Guideline
-    android:layout_width="wrap_content"
+  <androidx.constraintlayout.helper.widget.Flow
+    android:id="@+id/material_clock_display_and_toggle"
+    android:layout_width="0dp"
     android:layout_height="wrap_content"
-    android:id="@+id/guideline"
-    app:layout_constraintGuide_begin="16dp"
-    android:orientation="horizontal"/>
+    android:layout_marginTop="20dp"
+    android:orientation="vertical"
+    app:constraint_referenced_ids="material_clock_display,material_clock_period_toggle"
+    app:flow_verticalGap="@dimen/material_clock_period_toggle_vertical_gap"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
 
   <include
     android:id="@+id/material_clock_display"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    app:layout_constraintBottom_toTopOf="@+id/material_clock_period_toggle"
-    android:layout_marginTop="4dp"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintVertical_chainStyle="packed"
-    layout="@layout/material_clock_display"
-    app:layout_constraintTop_toTopOf="@+id/guideline" />
+    layout="@layout/material_clock_display" />
 
   <include
     android:id="@+id/material_clock_period_toggle"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
-    android:layout_marginTop="12dp"
-    app:layout_constraintVertical_chainStyle="packed"
-    app:layout_constraintTop_toBottomOf="@+id/material_clock_display"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintLeft_toLeftOf="@+id/material_clock_display"
-    app:layout_constraintRight_toRightOf="@+id/material_clock_display"
     layout="@layout/material_clock_period_toggle_land" />
 
   <com.google.android.material.timepicker.ClockFaceView
@@ -55,7 +51,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/clock_face_margin_start"
-    app:layout_constraintStart_toEndOf="@+id/material_clock_display"
+    app:layout_constraintStart_toEndOf="@+id/material_clock_display_and_toggle"
     app:layout_constraintTop_toTopOf="parent" />
 
 </merge>
