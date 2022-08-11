@@ -276,15 +276,9 @@ public class MaterialCheckBox extends AppCompatCheckBox {
 
     refreshButtonDrawable();
 
-    // This is needed due to a KitKat bug where the drawable states don't get updated correctly
-    // in time.
-    if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
-      post(
-          () -> {
-            if (buttonIconDrawable != null) {
-              buttonIconDrawable.invalidateSelf();
-            }
-          });
+    // This is needed due to a pre-21 bug where the drawable states don't get updated correctly.
+    if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP && buttonIconDrawable != null) {
+      post(() -> buttonIconDrawable.jumpToCurrentState());
     }
   }
 
@@ -338,11 +332,15 @@ public class MaterialCheckBox extends AppCompatCheckBox {
 
     currentStateChecked = DrawableUtils.getCheckedState(drawableStates);
 
-    if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
-      jumpDrawablesToCurrentState();
-    }
+    updateIconTintIfNeeded();
 
     return drawableStates;
+  }
+
+  @Override
+  public void setEnabled(boolean enabled) {
+    super.setEnabled(enabled);
+    updateIconTintIfNeeded();
   }
 
   @Override
@@ -468,7 +466,6 @@ public class MaterialCheckBox extends AppCompatCheckBox {
     }
     this.errorShown = errorShown;
     refreshDrawableState();
-    jumpDrawablesToCurrentState();
     for (OnErrorChangedListener listener : onErrorChangedListeners) {
       listener.onErrorChanged(this, this.errorShown);
     }
@@ -735,14 +732,6 @@ public class MaterialCheckBox extends AppCompatCheckBox {
     refreshDrawableState();
   }
 
-  @Override
-  public void jumpDrawablesToCurrentState() {
-    super.jumpDrawablesToCurrentState();
-    if (buttonIconDrawable != null) {
-      buttonIconDrawable.jumpToCurrentState();
-    }
-  }
-
   /**
    * Set the transition animation from checked to unchecked programmatically so that we can control
    * the color change between states.
@@ -779,6 +768,19 @@ public class MaterialCheckBox extends AppCompatCheckBox {
 
     if (buttonIconDrawable != null && buttonIconTintList != null) {
       DrawableCompat.setTintList(buttonIconDrawable, buttonIconTintList);
+    }
+  }
+
+  /*
+   * Update the icon tint due to a pre-21 bug where the drawable states don't get updated correctly.
+   */
+  private void updateIconTintIfNeeded() {
+    if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP
+        && buttonIconDrawable != null
+        && buttonIconTintList != null) {
+      buttonIconDrawable.setColorFilter(
+          DrawableUtils.updateTintFilter(
+              buttonIconDrawable, buttonIconTintList, buttonIconTintMode));
     }
   }
 
