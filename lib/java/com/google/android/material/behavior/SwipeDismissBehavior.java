@@ -85,11 +85,10 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
   ViewDragHelper viewDragHelper;
   OnDismissListener listener;
   private boolean interceptingEvents;
+  private boolean ignoreCancelEvent = false;
 
   private float sensitivity = 0f;
   private boolean sensitivitySet;
-
-  private boolean ignoreCancelEvent = false;
 
   int swipeDirection = SWIPE_DIRECTION_ANY;
   float dragDismissThreshold = DEFAULT_DRAG_DISMISS_THRESHOLD;
