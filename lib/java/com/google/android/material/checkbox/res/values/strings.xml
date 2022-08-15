@@ -26,7 +26,7 @@
     Not checked
   </string>
   <string name="mtrl_checkbox_state_description_indeterminate" description="Description for when checkbox is indeterminate. [CHAR LIMIT=32]">
-    Indeterminate
+    Partially checked
   </string>
 
   <!-- Drawables strings. -->
