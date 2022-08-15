@@ -19,6 +19,7 @@
   android:layout_width="wrap_content"
   android:layout_height="wrap_content"
   android:paddingTop="8dp"
+  android:layoutDirection="ltr"
   tools:showIn="@layout/material_textinput_timepicker">
 
   <include
