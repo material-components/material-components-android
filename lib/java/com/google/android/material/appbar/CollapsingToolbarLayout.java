@@ -617,11 +617,13 @@ public class CollapsingToolbarLayout extends FrameLayout {
     }
 
     if (extraMultilineHeightEnabled && collapsingTextHelper.getMaxLines() > 1) {
-      // Need to update title and bounds in order to calculate line count and text height.
       updateTitleFromToolbarIfNeeded();
-      updateTextBounds(0, 0, getMeasuredWidth(), getMeasuredHeight(), /* forceRecalculate= */ true);
 
-      int lineCount = collapsingTextHelper.getExpandedLineCount();
+      final int availableWidth = getMeasuredWidth() - expandedMarginStart - expandedMarginEnd;
+      final int lineCount = availableWidth > 0
+          ? collapsingTextHelper.calculateExpandedTextLineCount(availableWidth)
+          : 0;
+
       if (lineCount > 1) {
         // Add extra height based on the amount of height beyond the first line of title text.
         int expandedTextHeight = Math.round(collapsingTextHelper.getExpandedTextFullHeight());
@@ -668,7 +670,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
       getViewOffsetHelper(getChildAt(i)).onViewLayout();
     }
 
-    updateTextBounds(left, top, right, bottom, /* forceRecalculate= */false);
+    updateTextBounds(left, top, right, bottom);
 
     updateTitleFromToolbarIfNeeded();
 
@@ -680,15 +682,14 @@ public class CollapsingToolbarLayout extends FrameLayout {
     }
   }
 
-  private void updateTextBounds(
-      int left, int top, int right, int bottom, boolean forceRecalculate) {
+  private void updateTextBounds(int left, int top, int right, int bottom) {
     // Update the collapsed bounds by getting its transformed bounds
     if (collapsingTitleEnabled && dummyView != null) {
       // We only draw the title if the dummy view is being displayed (Toolbar removes
       // views if there is no space)
       drawCollapsingTitle = dummyView.isAttachedToWindow() && dummyView.getVisibility() == VISIBLE;
 
-      if (drawCollapsingTitle || forceRecalculate) {
+      if (drawCollapsingTitle) {
         final boolean isRtl = getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
 
         // Update the collapsed bounds
@@ -702,7 +703,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
             bottom - top - expandedMarginBottom);
 
         // Now recalculate using the new bounds
-        collapsingTextHelper.recalculate(forceRecalculate);
+        collapsingTextHelper.recalculate();
       }
     }
   }
