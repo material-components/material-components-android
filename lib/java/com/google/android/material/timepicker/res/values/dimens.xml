@@ -16,6 +16,8 @@
 -->
 
 <resources>
+  <dimen name="material_clock_display_width">96dp</dimen>
+  <dimen name="material_clock_display_height">80dp</dimen>
   <dimen name="material_clock_display_padding">24dp</dimen>
   <dimen name="material_clock_period_toggle_height">96dp</dimen>
   <dimen name="material_clock_period_toggle_width">52dp</dimen>
@@ -30,13 +32,10 @@
   <dimen name="material_clock_number_text_size">15sp</dimen>
 
   <!-- cursor dimens -->
-  <dimen name="material_cursor_inset_bottom">-6dp</dimen>
-  <dimen name="material_cursor_inset_top">-12dp</dimen>
+  <dimen name="material_cursor_inset">-4dp</dimen>
   <dimen name="material_cursor_width">2dp</dimen>
 
   <dimen name="material_clock_size">256dp</dimen>
-  <!-- TextInputEditText doesn't properly center pre-S, so add padding fix -->
-  <dimen name="material_time_input_padding_bottom">6dp</dimen>
 
   <dimen name="material_time_picker_minimum_screen_height">560dp</dimen>
   <dimen name="material_time_picker_minimum_screen_width">340dp</dimen>
