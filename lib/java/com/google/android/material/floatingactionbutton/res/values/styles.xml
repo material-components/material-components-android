@@ -238,6 +238,8 @@
     <item name="enforceMaterialTheme">true</item>
     <item name="showMotionSpec">@animator/m3_extended_fab_show_motion_spec</item>
     <item name="hideMotionSpec">@animator/m3_extended_fab_hide_motion_spec</item>
+    <item name="extendMotionSpec">@animator/m3_extended_fab_change_size_expand_motion_spec</item>
+    <item name="shrinkMotionSpec">@animator/m3_extended_fab_change_size_collapse_motion_spec</item>
   </style>
 
   <style name="Widget.Material3.ExtendedFloatingActionButton.Primary" parent="Base.Widget.Material3.ExtendedFloatingActionButton">
