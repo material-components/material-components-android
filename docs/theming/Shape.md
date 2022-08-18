@@ -21,8 +21,7 @@ of your app.
 
 ## Design & API documentation
 
--   [Material Design 3 guidelines:
-    Shape](https://m3.material.io/styles/shape/overview)
+-   [Material Design 3 guidelines: Shape](https://m3.material.io/styles/shape/overview)
 
 ## How it works
 
@@ -104,18 +103,18 @@ that define aspects of the shape. `ShapeAppearanceModel` uses the
 
 The following attributes can be used in a `shapeAppearance` style:
 
-Attribute Name            | Format    | Description                                          | Supported Values
-------------------------- | --------- | ---------------------------------------------------- | ----------------
-`cornerFamily`            | enum      | corner family to be used for all four corners        | rounded, cut
-`cornerFamilyTopLeft`     | enum      | corner family to be used for the top left corner     | rounded, cut
-`cornerFamilyTopRight`    | enum      | corner family to be used for the top right corner    | rounded, cut
-`cornerFamilyBottomRight` | enum      | corner family to be used for the bottom right corner | rounded, cut
-`cornerFamilyBottomLeft`  | enum      | corner family to be used for the bottom left corner  | rounded, cut
-`cornerSize`              | dimension | corner size to be used for all four corners          | `dp` values
-`cornerSizeTopLeft`       | dimension | corner size to  be used for the top left corner      | `dp` values
-`cornerSizeTopRight`      | dimension | corner size to  be used for the top right corner     | `dp` values
-`cornerSizeBottomRight`   | dimension | corner size to  be used for the bottom right corner  | `dp` values
-`cornerSizeBottomLeft`    | dimension | corner size to  be used for the bottom  left corner  | `dp` values
+Attribute Name            | Format              | Description                                          | Supported Values
+------------------------- |---------------------| ---------------------------------------------------- | ----------------
+`cornerFamily`            | enum                | corner family to be used for all four corners        | `rounded`, `cut`
+`cornerFamilyTopLeft`     | enum                | corner family to be used for the top left corner     | `rounded`, `cut`
+`cornerFamilyTopRight`    | enum                | corner family to be used for the top right corner    | `rounded`, `cut`
+`cornerFamilyBottomRight` | enum                | corner family to be used for the bottom right corner | `rounded`, `cut`
+`cornerFamilyBottomLeft`  | enum                | corner family to be used for the bottom left corner  | `rounded`, `cut`
+`cornerSize`              | dimension\|fraction | corner size to be used for all four corners          | dimension values, percentage
+`cornerSizeTopLeft`       | dimension\|fraction | corner size to  be used for the top left corner      | dimension values, percentage
+`cornerSizeTopRight`      | dimension\|fraction | corner size to  be used for the top right corner     | dimension values, percentage
+`cornerSizeBottomRight`   | dimension\|fraction | corner size to  be used for the bottom right corner  | dimension values, percentage
+`cornerSizeBottomLeft`    | dimension\|fraction | corner size to  be used for the bottom  left corner  | dimension values, percentage
 
 To build a `shapeAppearance`, you need at least a **`cornerSize`** and
 **`cornerFamily`** value specified for each corner.
