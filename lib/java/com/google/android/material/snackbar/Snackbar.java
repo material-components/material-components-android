@@ -52,12 +52,12 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
  * bottom of the screen on mobile and lower left on larger devices. Snackbars appear above all other
  * elements on screen and only one can be displayed at a time.
  *
- * <p>They automatically disappear after a timeout or after user interaction elsewhere on the
- * screen, particularly after interactions that summon a new surface or activity. Snackbars can be
- * swiped off screen.
- *
  * <p>Snackbars can contain an action which is set via {@link #setAction(CharSequence,
  * android.view.View.OnClickListener)}.
+ *
+ * <p>Snackbars automatically disappear after a timeout. They can also be dismissed by being swiped
+ * off screen, by action click, from a new snackbar being displayed, or manually via a call to
+ * {@link #dismiss()}.
  *
  * <p>To be notified when a snackbar has been shown or dismissed, you can provide a {@link Callback}
  * via {@link BaseTransientBottomBar#addCallback(BaseCallback)}.
