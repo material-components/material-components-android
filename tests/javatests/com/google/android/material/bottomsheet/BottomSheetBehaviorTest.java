@@ -950,6 +950,14 @@ public class BottomSheetBehaviorTest {
   }
 
   @Test
+  @MediumTest
+  public void testCalculateSlideOffset() throws Throwable {
+    checkSlideOffset(BottomSheetBehavior.STATE_EXPANDED, 1f);
+    checkSlideOffset(BottomSheetBehavior.STATE_COLLAPSED, 0f);
+    checkSlideOffset(BottomSheetBehavior.STATE_HIDDEN, -1f);
+  }
+
+  @Test
   @SmallTest
   public void testFindScrollingChildEnabled() {
     Context context = activityTestRule.getActivity();
@@ -985,6 +993,20 @@ public class BottomSheetBehaviorTest {
           .check(ViewAssertions.matches(matcher));
       assertThat(getBehavior().getState(), is(state));
       assertAccessibilityActions(getBehavior(), getBottomSheet());
+    } finally {
+      unregisterIdlingResourceCallback();
+    }
+  }
+
+  private void checkSlideOffset(final int state, float slideOffset)
+      throws Throwable {
+    registerIdlingResourceCallback();
+    try {
+      activityTestRule.runOnUiThread(() -> getBehavior().setState(state));
+      // An "always-passing" check to wait until UI thread is idle.
+      Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
+          .check(ViewAssertions.matches(ViewMatchers.withId(R.id.bottom_sheet)));
+      assertThat(getBehavior().calculateSlideOffset(), is(slideOffset));
     } finally {
       unregisterIdlingResourceCallback();
     }
