@@ -42,7 +42,6 @@ public class BottomNavigationMenuView extends NavigationBarMenuView {
   private final int activeItemMinWidth;
 
   private boolean itemHorizontalTranslationEnabled;
-  private int[] tempChildWidths;
 
   public BottomNavigationMenuView(@NonNull Context context) {
     super(context);
@@ -62,8 +61,6 @@ public class BottomNavigationMenuView extends NavigationBarMenuView {
         res.getDimensionPixelSize(R.dimen.design_bottom_navigation_active_item_max_width);
     activeItemMinWidth =
         res.getDimensionPixelSize(R.dimen.design_bottom_navigation_active_item_min_width);
-
-    tempChildWidths = new int[BottomNavigationView.MAX_ITEM_COUNT];
   }
 
   @Override
@@ -74,6 +71,7 @@ public class BottomNavigationMenuView extends NavigationBarMenuView {
     final int visibleCount = menu.getVisibleItems().size();
     // Use total item counts to measure children
     final int totalCount = getChildCount();
+    final int[] tempChildWidths = new int[totalCount];
 
     int parentHeight = MeasureSpec.getSize(heightMeasureSpec);
     final int heightSpec = MeasureSpec.makeMeasureSpec(parentHeight, MeasureSpec.EXACTLY);
