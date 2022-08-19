@@ -322,7 +322,7 @@ public class ShapeAppearancePathProvider {
   }
 
   private float angleOfEdge(int index) {
-    return 90 * (index + 1 % 4);
+    return 90 * ((index + 1) % 4);
   }
 
   void setEdgeIntersectionCheckEnable(boolean enable) {
