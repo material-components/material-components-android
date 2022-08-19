@@ -33,6 +33,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.lang.reflect.Constructor;
 
 /**
@@ -122,6 +123,7 @@ final class StaticLayoutBuilderCompat {
    * @return this builder, useful for chaining
    */
   @NonNull
+  @CanIgnoreReturnValue
   public StaticLayoutBuilderCompat setAlignment(@NonNull Alignment alignment) {
     this.alignment = alignment;
     return this;
@@ -136,6 +138,7 @@ final class StaticLayoutBuilderCompat {
    * @see android.widget.TextView#setIncludeFontPadding
    */
   @NonNull
+  @CanIgnoreReturnValue
   public StaticLayoutBuilderCompat setIncludePad(boolean includePad) {
     this.includePad = includePad;
     return this;
@@ -147,6 +150,7 @@ final class StaticLayoutBuilderCompat {
    * @return this builder, useful for chaining
    */
   @NonNull
+  @CanIgnoreReturnValue
   public StaticLayoutBuilderCompat setStart(@IntRange(from = 0) int start) {
     this.start = start;
     return this;
@@ -159,6 +163,7 @@ final class StaticLayoutBuilderCompat {
    * @see android.widget.TextView#setIncludeFontPadding
    */
   @NonNull
+  @CanIgnoreReturnValue
   public StaticLayoutBuilderCompat setEnd(@IntRange(from = 0) int end) {
     this.end = end;
     return this;
@@ -173,6 +178,7 @@ final class StaticLayoutBuilderCompat {
    * @see android.widget.TextView#setMaxLines
    */
   @NonNull
+  @CanIgnoreReturnValue
   public StaticLayoutBuilderCompat setMaxLines(@IntRange(from = 0) int maxLines) {
     this.maxLines = maxLines;
     return this;
@@ -187,6 +193,7 @@ final class StaticLayoutBuilderCompat {
    * @see android.widget.TextView#setLineSpacing(float, float)
    */
   @NonNull
+  @CanIgnoreReturnValue
   public StaticLayoutBuilderCompat setLineSpacing(float spacingAdd, float lineSpacingMultiplier) {
     this.lineSpacingAdd = spacingAdd;
     this.lineSpacingMultiplier = lineSpacingMultiplier;
@@ -201,6 +208,7 @@ final class StaticLayoutBuilderCompat {
    * @see android.widget.TextView#setHyphenationFrequency(int)
    */
   @NonNull
+  @CanIgnoreReturnValue
   public StaticLayoutBuilderCompat setHyphenationFrequency(int hyphenationFrequency) {
     this.hyphenationFrequency = hyphenationFrequency;
     return this;
@@ -215,6 +223,7 @@ final class StaticLayoutBuilderCompat {
    * @see android.widget.TextView#setEllipsize
    */
   @NonNull
+  @CanIgnoreReturnValue
   public StaticLayoutBuilderCompat setEllipsize(@Nullable TextUtils.TruncateAt ellipsize) {
     this.ellipsize = ellipsize;
     return this;
@@ -225,6 +234,7 @@ final class StaticLayoutBuilderCompat {
    * the static layout.
    */
   @NonNull
+  @CanIgnoreReturnValue
   public StaticLayoutBuilderCompat setStaticLayoutBuilderConfigurer(
       @Nullable StaticLayoutBuilderConfigurer staticLayoutBuilderConfigurer) {
     this.staticLayoutBuilderConfigurer = staticLayoutBuilderConfigurer;

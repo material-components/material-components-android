@@ -24,6 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.core.util.ObjectsCompat;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.Arrays;
 import java.util.Calendar;
 
@@ -267,6 +268,7 @@ public final class CalendarConstraints implements Parcelable {
      * }</pre>
      */
     @NonNull
+    @CanIgnoreReturnValue
     public Builder setStart(long month) {
       start = month;
       return this;
@@ -294,6 +296,7 @@ public final class CalendarConstraints implements Parcelable {
      * }</pre>
      */
     @NonNull
+    @CanIgnoreReturnValue
     public Builder setEnd(long month) {
       end = month;
       return this;
@@ -321,6 +324,7 @@ public final class CalendarConstraints implements Parcelable {
      * }</pre>
      */
     @NonNull
+    @CanIgnoreReturnValue
     public Builder setOpenAt(long month) {
       openAt = month;
       return this;
@@ -334,6 +338,7 @@ public final class CalendarConstraints implements Parcelable {
      */
     @RestrictTo(LIBRARY_GROUP)
     @NonNull
+    @CanIgnoreReturnValue
     public Builder setFirstDayOfWeek(int firstDayOfWeek) {
       this.firstDayOfWeek = firstDayOfWeek;
       return this;
@@ -344,6 +349,7 @@ public final class CalendarConstraints implements Parcelable {
      * to all dates as valid.
      */
     @NonNull
+    @CanIgnoreReturnValue
     public Builder setValidator(@NonNull DateValidator validator) {
       this.validator = validator;
       return this;

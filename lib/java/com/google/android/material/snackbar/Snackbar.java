@@ -46,6 +46,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 /**
  * Snackbars provide lightweight feedback about an operation. They show a brief message at the
@@ -298,6 +299,7 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
    * @param message The new text for this {@link BaseTransientBottomBar}.
    */
   @NonNull
+  @CanIgnoreReturnValue
   public Snackbar setText(@NonNull CharSequence message) {
     getMessageView().setText(message);
     return this;
@@ -309,6 +311,7 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
    * @param resId The new text for this {@link BaseTransientBottomBar}.
    */
   @NonNull
+  @CanIgnoreReturnValue
   public Snackbar setText(@StringRes int resId) {
     return setText(getContext().getText(resId));
   }
@@ -320,6 +323,7 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
    * @param listener callback to be invoked when the action is clicked
    */
   @NonNull
+  @CanIgnoreReturnValue
   public Snackbar setAction(@StringRes int resId, View.OnClickListener listener) {
     return setAction(getContext().getText(resId), listener);
   }
@@ -331,6 +335,7 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
    * @param listener callback to be invoked when the action is clicked
    */
   @NonNull
+  @CanIgnoreReturnValue
   public Snackbar setAction(
       @Nullable CharSequence text, @Nullable final View.OnClickListener listener) {
     final TextView tv = getActionView();
@@ -377,6 +382,7 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
    * #setText(int)}.
    */
   @NonNull
+  @CanIgnoreReturnValue
   public Snackbar setTextColor(ColorStateList colors) {
     getMessageView().setTextColor(colors);
     return this;
@@ -387,6 +393,7 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
    * #setText(int)}.
    */
   @NonNull
+  @CanIgnoreReturnValue
   public Snackbar setTextColor(@ColorInt int color) {
     getMessageView().setTextColor(color);
     return this;
@@ -397,6 +404,7 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
    * #setText(int)}.
    */
   @NonNull
+  @CanIgnoreReturnValue
   public Snackbar setTextMaxLines(int maxLines) {
     getMessageView().setMaxLines(maxLines);
     return this;
@@ -407,16 +415,18 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
    * View.OnClickListener)}.
    */
   @NonNull
+  @CanIgnoreReturnValue
   public Snackbar setActionTextColor(ColorStateList colors) {
     getActionView().setTextColor(colors);
     return this;
   }
 
   /**
-   * Sets the max width of the action to be in the same line as the message.
-   * If the width is exceeded the action would go to the next line.
+   * Sets the max width of the action to be in the same line as the message. If the width is
+   * exceeded the action would go to the next line.
    */
   @NonNull
+  @CanIgnoreReturnValue
   public Snackbar setMaxInlineActionWidth(@Dimension int width) {
     getContentLayout().setMaxInlineActionWidth(width);
     return this;
@@ -427,6 +437,7 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
    * View.OnClickListener)}.
    */
   @NonNull
+  @CanIgnoreReturnValue
   public Snackbar setActionTextColor(@ColorInt int color) {
     getActionView().setTextColor(color);
     return this;
@@ -434,18 +445,21 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
 
   /** Sets the tint color of the background Drawable. */
   @NonNull
+  @CanIgnoreReturnValue
   public Snackbar setBackgroundTint(@ColorInt int color) {
     return setBackgroundTintList(ColorStateList.valueOf(color));
   }
 
   /** Sets the tint color state list of the background Drawable. */
   @NonNull
+  @CanIgnoreReturnValue
   public Snackbar setBackgroundTintList(@Nullable ColorStateList colorStateList) {
     view.setBackgroundTintList(colorStateList);
     return this;
   }
 
   @NonNull
+  @CanIgnoreReturnValue
   public Snackbar setBackgroundTintMode(@Nullable PorterDuff.Mode mode) {
     view.setBackgroundTintMode(mode);
     return this;
@@ -464,6 +478,7 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
    */
   @Deprecated
   @NonNull
+  @CanIgnoreReturnValue
   public Snackbar setCallback(@Nullable Callback callback) {
     // The logic in this method emulates what we had before support for multiple
     // registered callbacks.

@@ -21,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
 import com.google.android.material.color.DynamicColors.OnAppliedCallback;
 import com.google.android.material.color.DynamicColors.Precondition;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 /** Wrapper class for specifying dynamic colors options when applying dynamic colors. */
 public class DynamicColorsOptions {
@@ -76,6 +77,7 @@ public class DynamicColorsOptions {
 
     /** Sets the resource ID of the theme overlay that provides dynamic color definition. */
     @NonNull
+    @CanIgnoreReturnValue
     public Builder setThemeOverlay(@StyleRes int themeOverlay) {
       this.themeOverlay = themeOverlay;
       return this;
@@ -83,6 +85,7 @@ public class DynamicColorsOptions {
 
     /** Sets the precondition that decides if dynamic colors should be applied. */
     @NonNull
+    @CanIgnoreReturnValue
     public Builder setPrecondition(@NonNull Precondition precondition) {
       this.precondition = precondition;
       return this;
@@ -90,6 +93,7 @@ public class DynamicColorsOptions {
 
     /** Sets the callback method for after the dynamic colors have been applied. */
     @NonNull
+    @CanIgnoreReturnValue
     public Builder setOnAppliedCallback(@NonNull OnAppliedCallback onAppliedCallback) {
       this.onAppliedCallback = onAppliedCallback;
       return this;

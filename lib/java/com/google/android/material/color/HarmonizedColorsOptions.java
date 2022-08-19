@@ -23,6 +23,7 @@ import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 /**
  * Wrapper class for specifying harmonization options, whether to harmonize an array of color
@@ -87,6 +88,7 @@ public class HarmonizedColorsOptions {
      * @param colorResourceIds The array of color resource ids that needs to be harmonized.
      */
     @NonNull
+    @CanIgnoreReturnValue
     public Builder setColorResourceIds(@NonNull @ColorRes int[] colorResourceIds) {
       this.colorResourceIds = colorResourceIds;
       return this;
@@ -98,11 +100,12 @@ public class HarmonizedColorsOptions {
      * <p>This method will look up the color resource the attribute points to, and harmonizing the
      * color resource directly. If you are looking to harmonize only color resources, in most cases
      * when constructing {@link HarmonizedColorsOptions},
-     * @see #setColorResourceIds(int[]) should be enough.
      *
+     * @see #setColorResourceIds(int[]) should be enough.
      * @param colorAttributes The {@link HarmonizedColorAttributes} that needs to be harmonized.
      */
     @NonNull
+    @CanIgnoreReturnValue
     public Builder setColorAttributes(@Nullable HarmonizedColorAttributes colorAttributes) {
       this.colorAttributes = colorAttributes;
       return this;
@@ -115,6 +118,7 @@ public class HarmonizedColorsOptions {
      *     resources and {@link HarmonizedColorAttributes} with.
      */
     @NonNull
+    @CanIgnoreReturnValue
     public Builder setColorAttributeToHarmonizeWith(@AttrRes int colorAttributeToHarmonizeWith) {
       this.colorAttributeToHarmonizeWith = colorAttributeToHarmonizeWith;
       return this;

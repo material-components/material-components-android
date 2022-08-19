@@ -5,6 +5,8 @@ dependencies {
   api compatibility("core")
 
   api project(fromPath("lib"))
+
+  implementation "com.google.errorprone:error_prone_annotations:${errorproneVersion}"
 }
 
 android {

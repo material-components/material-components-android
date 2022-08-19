@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.TextView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 /**
  * Sample code for a custom snackbar that shows two separate text views and two images in the main
@@ -33,6 +34,7 @@ public class CustomSnackbar extends BaseTransientBottomBar<CustomSnackbar> {
   }
 
   /** Sets the title of this custom snackbar. */
+  @CanIgnoreReturnValue
   public CustomSnackbar setTitle(String title) {
     TextView titleView = getView().findViewById(R.id.custom_snackbar_title);
     titleView.setText(title);
@@ -40,6 +42,7 @@ public class CustomSnackbar extends BaseTransientBottomBar<CustomSnackbar> {
   }
 
   /** Sets the subtitle of this custom snackbar. */
+  @CanIgnoreReturnValue
   public CustomSnackbar setSubtitle(String subtitle) {
     TextView subtitleView = getView().findViewById(R.id.custom_snackbar_subtitle);
     subtitleView.setText(subtitle);

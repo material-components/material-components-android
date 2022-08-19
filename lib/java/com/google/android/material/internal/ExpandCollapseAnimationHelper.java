@@ -29,6 +29,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import com.google.android.material.animation.AnimationUtils;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -98,30 +99,35 @@ public class ExpandCollapseAnimationHelper {
   }
 
   @NonNull
+  @CanIgnoreReturnValue
   public ExpandCollapseAnimationHelper setDuration(long duration) {
     this.duration = duration;
     return this;
   }
 
   @NonNull
+  @CanIgnoreReturnValue
   public ExpandCollapseAnimationHelper addListener(@NonNull AnimatorListenerAdapter listener) {
     listeners.add(listener);
     return this;
   }
 
   @NonNull
+  @CanIgnoreReturnValue
   public ExpandCollapseAnimationHelper addEndAnchoredViews(@NonNull View... views) {
     Collections.addAll(endAnchoredViews, views);
     return this;
   }
 
   @NonNull
+  @CanIgnoreReturnValue
   public ExpandCollapseAnimationHelper addEndAnchoredViews(@NonNull Collection<View> views) {
     endAnchoredViews.addAll(views);
     return this;
   }
 
   @NonNull
+  @CanIgnoreReturnValue
   public ExpandCollapseAnimationHelper setAdditionalUpdateListener(
       @Nullable AnimatorUpdateListener additionalUpdateListener) {
     this.additionalUpdateListener = additionalUpdateListener;
@@ -129,12 +135,14 @@ public class ExpandCollapseAnimationHelper {
   }
 
   @NonNull
+  @CanIgnoreReturnValue
   public ExpandCollapseAnimationHelper setCollapsedViewOffsetY(int collapsedViewOffsetY) {
     this.collapsedViewOffsetY = collapsedViewOffsetY;
     return this;
   }
 
   @NonNull
+  @CanIgnoreReturnValue
   public ExpandCollapseAnimationHelper setExpandedViewOffsetY(int expandedViewOffsetY) {
     this.expandedViewOffsetY = expandedViewOffsetY;
     return this;
