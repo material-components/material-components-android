@@ -79,6 +79,7 @@
     <item name="tabIndicatorColor">?attr/colorPrimary</item>
     <item name="tabRippleColor">@color/m3_tabs_ripple_color</item>
     <item name="tabIndicatorFullWidth">false</item>
+    <item name="tabIndicatorAnimationDuration">?attr/motionDurationLong2</item>
   </style>
 
   <style name="Widget.Material3.TabLayout" parent="Base.Widget.Material3.TabLayout"/>

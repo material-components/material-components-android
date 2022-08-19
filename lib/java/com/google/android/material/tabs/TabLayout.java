@@ -25,6 +25,7 @@ import static androidx.viewpager.widget.ViewPager.SCROLL_STATE_SETTLING;
 import static com.google.android.material.animation.AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR;
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 
+import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -94,6 +95,7 @@ import com.google.android.material.badge.BadgeUtils;
 import com.google.android.material.drawable.DrawableUtils;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
+import com.google.android.material.motion.MotionUtils;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.ripple.RippleUtils;
 import com.google.android.material.shape.MaterialShapeDrawable;
@@ -480,6 +482,7 @@ public class TabLayout extends HorizontalScrollView {
   boolean unboundedRipple;
 
   private TabIndicatorInterpolator tabIndicatorInterpolator;
+  private final TimeInterpolator tabIndicatorTimeInterpolator;
 
   @Nullable private BaseOnTabSelectedListener selectedListener;
 
@@ -607,6 +610,9 @@ public class TabLayout extends HorizontalScrollView {
 
     tabIndicatorAnimationDuration =
         a.getInt(R.styleable.TabLayout_tabIndicatorAnimationDuration, ANIMATION_DURATION);
+    tabIndicatorTimeInterpolator =
+        MotionUtils.resolveThemeInterpolator(
+            context, R.attr.motionEasingEmphasizedInterpolator, FAST_OUT_SLOW_IN_INTERPOLATOR);
 
     requestedTabMinWidth =
         a.getDimensionPixelSize(R.styleable.TabLayout_tabMinWidth, INVALID_WIDTH);
@@ -1818,7 +1824,7 @@ public class TabLayout extends HorizontalScrollView {
   private void ensureScrollAnimator() {
     if (scrollAnimator == null) {
       scrollAnimator = new ValueAnimator();
-      scrollAnimator.setInterpolator(FAST_OUT_SLOW_IN_INTERPOLATOR);
+      scrollAnimator.setInterpolator(tabIndicatorTimeInterpolator);
       scrollAnimator.setDuration(tabIndicatorAnimationDuration);
       scrollAnimator.addUpdateListener(
           new ValueAnimator.AnimatorUpdateListener() {
@@ -3238,7 +3244,7 @@ public class TabLayout extends HorizontalScrollView {
       if (recreateAnimation) {
         // Create & start a new indicatorAnimator.
         ValueAnimator animator = indicatorAnimator = new ValueAnimator();
-        animator.setInterpolator(FAST_OUT_SLOW_IN_INTERPOLATOR);
+        animator.setInterpolator(tabIndicatorTimeInterpolator);
         animator.setDuration(duration);
         animator.setFloatValues(0F, 1F);
         animator.addUpdateListener(updateListener);
