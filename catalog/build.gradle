@@ -25,6 +25,8 @@ dependencies {
 
   api compatibility("recyclerViewSelection")
 
+  implementation "com.google.errorprone:error_prone_annotations:${errorproneVersion}"
+
   androidTestImplementation "androidx.test:core:${project.rootProject.ext.testRunnerVersion}"
   androidTestImplementation "androidx.test:runner:${project.rootProject.ext.testRunnerVersion}"
   androidTestImplementation "androidx.test:rules:${project.rootProject.ext.testRunnerVersion}"

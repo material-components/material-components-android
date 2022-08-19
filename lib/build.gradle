@@ -22,6 +22,8 @@ dependencies {
   api compatibility("vectordrawable")
   api compatibility("viewpager2")
 
+  implementation "com.google.errorprone:error_prone_annotations:${errorproneVersion}"
+
   testImplementation "androidx.test:core:${testRunnerVersion}"
   testImplementation "androidx.test:runner:${testRunnerVersion}"
   testImplementation "junit:junit:4.13.2"
