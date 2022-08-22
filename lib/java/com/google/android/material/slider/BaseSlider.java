@@ -246,11 +246,7 @@ abstract class BaseSlider<
   private final AccessibilityManager accessibilityManager;
   private AccessibilityEventSender accessibilityEventSender;
 
-  private interface TooltipDrawableFactory {
-    TooltipDrawable createTooltipDrawable();
-  }
-
-  @NonNull private final TooltipDrawableFactory labelMaker;
+  private int labelStyle;
   @NonNull private final List<TooltipDrawable> labels = new ArrayList<>();
   @NonNull private final List<L> changeListeners = new ArrayList<>();
   @NonNull private final List<T> touchListeners = new ArrayList<>();
@@ -371,22 +367,6 @@ abstract class BaseSlider<
     activeTicksPaint.setStrokeCap(Cap.ROUND);
 
     loadResources(context.getResources());
-
-    // Because there's currently no way to copy the TooltipDrawable we use this to make more if more
-    // thumbs are added.
-    labelMaker =
-        new TooltipDrawableFactory() {
-          @Override
-          public TooltipDrawable createTooltipDrawable() {
-            final TypedArray a =
-                ThemeEnforcement.obtainStyledAttributes(
-                    getContext(), attrs, R.styleable.Slider, defStyleAttr, DEF_STYLE_RES);
-            TooltipDrawable d = parseLabelDrawable(getContext(), a);
-            a.recycle();
-            return d;
-          }
-        };
-
     processAttributes(context, attrs, defStyleAttr);
 
     setFocusable(true);
@@ -421,6 +401,10 @@ abstract class BaseSlider<
     TypedArray a =
         ThemeEnforcement.obtainStyledAttributes(
             context, attrs, R.styleable.Slider, defStyleAttr, DEF_STYLE_RES);
+
+    labelStyle = a.getResourceId(
+        R.styleable.Slider_labelStyle, R.style.Widget_MaterialComponents_Tooltip);
+
     valueFrom = a.getFloat(R.styleable.Slider_android_valueFrom, 0.0f);
     valueTo = a.getFloat(R.styleable.Slider_android_valueTo, 1.0f);
     setValues(valueFrom);
@@ -507,16 +491,6 @@ abstract class BaseSlider<
     }
 
     a.recycle();
-  }
-
-  @NonNull
-  private static TooltipDrawable parseLabelDrawable(
-      @NonNull Context context, @NonNull TypedArray a) {
-    return TooltipDrawable.createFromAttributes(
-        context,
-        null,
-        0,
-        a.getResourceId(R.styleable.Slider_labelStyle, R.style.Widget_MaterialComponents_Tooltip));
   }
 
   private boolean maybeIncreaseTrackSidePadding() {
@@ -773,7 +747,10 @@ abstract class BaseSlider<
 
     // If there's not enough labels, add more.
     while (labels.size() < values.size()) {
-      TooltipDrawable tooltipDrawable = labelMaker.createTooltipDrawable();
+      // Because there's currently no way to copy the TooltipDrawable we use this to make more
+      // if more thumbs are added.
+      TooltipDrawable tooltipDrawable =
+          TooltipDrawable.createFromAttributes(getContext(), null, 0, labelStyle);
       labels.add(tooltipDrawable);
       if (ViewCompat.isAttachedToWindow(this)) {
         attachLabelToContentView(tooltipDrawable);
