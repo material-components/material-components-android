@@ -16,6 +16,8 @@
 
 package com.google.android.material.behavior;
 
+import com.google.android.material.R;
+
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.animation.Animator;
@@ -35,6 +37,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior;
 import androidx.core.view.ViewCompat;
 import com.google.android.material.animation.AnimationUtils;
+import com.google.android.material.motion.MotionUtils;
 import java.util.LinkedHashSet;
 
 /**
@@ -63,8 +66,16 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
   private final LinkedHashSet<OnScrollStateChangedListener> onScrollStateChangedListeners =
       new LinkedHashSet<>();
 
-  protected static final int ENTER_ANIMATION_DURATION = 225;
-  protected static final int EXIT_ANIMATION_DURATION = 175;
+  private static final int DEFAULT_ENTER_ANIMATION_DURATION_MS = 225;
+  private static final int DEFAULT_EXIT_ANIMATION_DURATION_MS = 175;
+  private static final int ENTER_ANIM_DURATION_ATTR = R.attr.motionDurationLong2;
+  private static final int EXIT_ANIM_DURATION_ATTR = R.attr.motionDurationMedium4;
+  private static final int ENTER_EXIT_ANIM_EASING_ATTR = R.attr.motionEasingEmphasizedInterpolator;
+
+  private final int enterAnimDuration;
+  private final int exitAnimDuration;
+  private final TimeInterpolator enterAnimInterpolator;
+  private final TimeInterpolator exitAnimInterpolator;
 
   /** State of the bottom view when it's scrolled down. */
   public static final int STATE_SCROLLED_DOWN = 1;
@@ -88,10 +99,21 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
   private int additionalHiddenOffsetY = 0;
   @Nullable private ViewPropertyAnimator currentAnimator;
 
-  public HideBottomViewOnScrollBehavior() {}
-
   public HideBottomViewOnScrollBehavior(Context context, AttributeSet attrs) {
     super(context, attrs);
+
+    enterAnimDuration =
+        MotionUtils.resolveThemeDuration(
+            context, ENTER_ANIM_DURATION_ATTR, DEFAULT_ENTER_ANIMATION_DURATION_MS);
+    exitAnimDuration =
+        MotionUtils.resolveThemeDuration(
+            context, EXIT_ANIM_DURATION_ATTR, DEFAULT_EXIT_ANIMATION_DURATION_MS);
+    enterAnimInterpolator =
+        MotionUtils.resolveThemeInterpolator(
+            context, ENTER_EXIT_ANIM_EASING_ATTR, AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR);
+    exitAnimInterpolator =
+        MotionUtils.resolveThemeInterpolator(
+            context, ENTER_EXIT_ANIM_EASING_ATTR, AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR);
   }
 
   @Override
@@ -177,11 +199,7 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
     updateCurrentState(child, STATE_SCROLLED_UP);
     int targetTranslationY = 0;
     if (animate) {
-      animateChildTo(
-          child,
-          targetTranslationY,
-          ENTER_ANIMATION_DURATION,
-          AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR);
+      animateChildTo(child, targetTranslationY, enterAnimDuration, enterAnimInterpolator);
     } else {
       child.setTranslationY(targetTranslationY);
     }
@@ -218,11 +236,7 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
     updateCurrentState(child, STATE_SCROLLED_DOWN);
     int targetTranslationY = height + additionalHiddenOffsetY;
     if (animate) {
-      animateChildTo(
-          child,
-          targetTranslationY,
-          EXIT_ANIMATION_DURATION,
-          AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR);
+      animateChildTo(child, targetTranslationY, exitAnimDuration, exitAnimInterpolator);
     } else {
       child.setTranslationY(targetTranslationY);
     }
