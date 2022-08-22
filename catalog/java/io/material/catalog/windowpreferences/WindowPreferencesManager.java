@@ -21,6 +21,8 @@ import android.content.SharedPreferences;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.view.Window;
+import android.view.WindowInsets;
+import androidx.core.view.ViewCompat;
 import com.google.android.material.internal.EdgeToEdgeUtils;
 
 /** Helper that saves the current window preferences for the Catalog. */
@@ -55,5 +57,21 @@ public class WindowPreferencesManager {
 
   private SharedPreferences getSharedPreferences() {
     return context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+  }
+
+  public void onApplyWindowInsetsListener(Window window) {
+    ViewCompat.setOnApplyWindowInsetsListener(window.getDecorView(), (v, insets) -> {
+      if (VERSION.SDK_INT >= VERSION_CODES.R)
+        v.setPadding(insets.getInsets(WindowInsets.Type.systemBars()).left,
+            0,
+            insets.getInsets(WindowInsets.Type.systemBars()).right,
+            insets.getInsets(WindowInsets.Type.systemBars()).bottom);
+      else
+        v.setPadding(insets.getStableInsetLeft(),
+            0,
+            insets.getStableInsetRight(),
+            insets.getStableInsetBottom());
+      return insets;
+    });
   }
 }

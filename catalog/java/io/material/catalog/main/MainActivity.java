@@ -52,6 +52,7 @@ public class MainActivity extends BaseCatalogActivity {
     super.onCreate(savedInstanceState);
     WindowPreferencesManager windowPreferencesManager = new WindowPreferencesManager(this);
     windowPreferencesManager.applyEdgeToEdgePreference(getWindow());
+    windowPreferencesManager.onApplyWindowInsetsListener(getWindow());
 
     setContentView(R.layout.cat_main_activity);
 
