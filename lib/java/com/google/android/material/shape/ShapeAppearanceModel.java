@@ -559,7 +559,6 @@ public class ShapeAppearanceModel {
     }
   }
 
-  // Constant corner size value to indicate that shape should use 50% height corner radii
   public static final CornerSize PILL = new RelativeCornerSize(0.5f);
 
   CornerTreatment topLeftCorner;
