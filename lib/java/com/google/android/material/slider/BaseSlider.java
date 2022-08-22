@@ -34,6 +34,7 @@ import static java.util.Collections.min;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
@@ -88,6 +89,7 @@ import com.google.android.material.internal.DescendantOffsetUtils;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewOverlayImpl;
 import com.google.android.material.internal.ViewUtils;
+import com.google.android.material.motion.MotionUtils;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.CornerFamily;
 import com.google.android.material.shape.MaterialShapeDrawable;
@@ -231,8 +233,15 @@ abstract class BaseSlider<
   static final int UNIT_VALUE = 1;
   static final int UNIT_PX = 0;
 
-  private static final long LABEL_ANIMATION_ENTER_DURATION = 83L;
-  private static final long LABEL_ANIMATION_EXIT_DURATION = 117L;
+  private static final int DEFAULT_LABEL_ANIMATION_ENTER_DURATION = 83;
+  private static final int DEFAULT_LABEL_ANIMATION_EXIT_DURATION = 117;
+  private static final int LABEL_ANIMATION_ENTER_DURATION_ATTR = R.attr.motionDurationLong2;
+  private static final int LABEL_ANIMATION_EXIT_DURATION_ATTR = R.attr.motionDurationMedium1;
+  private static final int LABEL_ANIMATION_ENTER_EASING_ATTR =
+      R.attr.motionEasingEmphasizedInterpolator;
+  private static final int LABEL_ANIMATION_EXIT_EASING_ATTR =
+      R.attr.motionEasingEmphasizedAccelerateInterpolator;
+
   @Dimension
   private static final int MIN_TOUCH_TARGET_DP = 48;
 
@@ -2145,11 +2154,21 @@ abstract class BaseSlider<
             enter ? labelsOutAnimator : labelsInAnimator, startFraction);
     float endFraction = enter ? 1F : 0F;
     ValueAnimator animator = ValueAnimator.ofFloat(startFraction, endFraction);
-    animator.setDuration(enter ? LABEL_ANIMATION_ENTER_DURATION : LABEL_ANIMATION_EXIT_DURATION);
-    animator.setInterpolator(
-        enter
-            ? AnimationUtils.DECELERATE_INTERPOLATOR
-            : AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR);
+    int duration;
+    TimeInterpolator interpolator;
+    if (enter) {
+      duration = MotionUtils.resolveThemeDuration(getContext(),
+          LABEL_ANIMATION_ENTER_DURATION_ATTR, DEFAULT_LABEL_ANIMATION_ENTER_DURATION);
+      interpolator = MotionUtils.resolveThemeInterpolator(getContext(),
+          LABEL_ANIMATION_ENTER_EASING_ATTR, AnimationUtils.DECELERATE_INTERPOLATOR);
+    } else {
+      duration = MotionUtils.resolveThemeDuration(getContext(),
+          LABEL_ANIMATION_EXIT_DURATION_ATTR, DEFAULT_LABEL_ANIMATION_EXIT_DURATION);
+      interpolator = MotionUtils.resolveThemeInterpolator(getContext(),
+          LABEL_ANIMATION_EXIT_EASING_ATTR, AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR);
+    }
+    animator.setDuration(duration);
+    animator.setInterpolator(interpolator);
     animator.addUpdateListener(
         new AnimatorUpdateListener() {
           @Override
