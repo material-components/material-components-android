@@ -318,15 +318,16 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
     right -= isRtl ? insetStart : insetEnd;
 
     int childCount = parent.getChildCount();
-    int dividerCount = lastItemDecorated ? childCount : childCount - 1;
-    for (int i = 0; i < dividerCount; i++) {
+    for (int i = 0; i < childCount; i++) {
       View child = parent.getChildAt(i);
-      parent.getDecoratedBoundsWithMargins(child, tempRect);
-      // Take into consideration any translationY added to the view.
-      int bottom = tempRect.bottom + Math.round(child.getTranslationY());
-      int top = bottom - dividerDrawable.getIntrinsicHeight() - thickness;
-      dividerDrawable.setBounds(left, top, right, bottom);
-      dividerDrawable.draw(canvas);
+      if (shouldDrawDivider(parent, child)) {
+        parent.getDecoratedBoundsWithMargins(child, tempRect);
+        // Take into consideration any translationY added to the view.
+        int bottom = tempRect.bottom + Math.round(child.getTranslationY());
+        int top = bottom - thickness;
+        dividerDrawable.setBounds(left, top, right, bottom);
+        dividerDrawable.draw(canvas);
+      }
     }
     canvas.restore();
   }
@@ -352,15 +353,16 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
     bottom -= insetEnd;
 
     int childCount = parent.getChildCount();
-    int dividerCount = lastItemDecorated ? childCount : childCount - 1;
-    for (int i = 0; i < dividerCount; i++) {
+    for (int i = 0; i < childCount; i++) {
       View child = parent.getChildAt(i);
-      parent.getDecoratedBoundsWithMargins(child, tempRect);
-      // Take into consideration any translationX added to the view.
-      int right = tempRect.right + Math.round(child.getTranslationX());
-      int left = right - dividerDrawable.getIntrinsicWidth() - thickness;
-      dividerDrawable.setBounds(left, top, right, bottom);
-      dividerDrawable.draw(canvas);
+      if (shouldDrawDivider(parent, child)) {
+        parent.getDecoratedBoundsWithMargins(child, tempRect);
+        // Take into consideration any translationX added to the view.
+        int right = tempRect.right + Math.round(child.getTranslationX());
+        int left = right - thickness;
+        dividerDrawable.setBounds(left, top, right, bottom);
+        dividerDrawable.draw(canvas);
+      }
     }
     canvas.restore();
   }
@@ -372,12 +374,32 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
       @NonNull RecyclerView parent,
       @NonNull RecyclerView.State state) {
     outRect.set(0, 0, 0, 0);
-    if (lastItemDecorated || parent.getChildLayoutPosition(view) != state.getItemCount() - 1) {
+    if (shouldAddOffset(parent, view, state)) {
       if (orientation == VERTICAL) {
-        outRect.bottom = dividerDrawable.getIntrinsicHeight() + thickness;
+        outRect.bottom = thickness;
       } else {
-        outRect.right = dividerDrawable.getIntrinsicWidth() + thickness;
+        outRect.right = thickness;
       }
     }
+  }
+
+  private boolean shouldDrawDivider(@NonNull RecyclerView parent, @NonNull View child) {
+    if (lastItemDecorated) {
+      return true;
+    }
+    int position = parent.getChildAdapterPosition(child);
+    RecyclerView.Adapter<?> adapter = parent.getAdapter();
+    return position != RecyclerView.NO_POSITION
+        && adapter != null
+        && position != adapter.getItemCount() - 1;
+  }
+
+  private boolean shouldAddOffset(
+      @NonNull RecyclerView parent, @NonNull View child, @NonNull RecyclerView.State state) {
+    if (lastItemDecorated) {
+      return true;
+    }
+    int position = parent.getChildAdapterPosition(child);
+    return position != RecyclerView.NO_POSITION && position != state.getItemCount() - 1;
   }
 }
