@@ -1265,7 +1265,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   @Override
   public Behavior getBehavior() {
     if (behavior == null) {
-      behavior = new Behavior(getContext());
+      behavior = new Behavior();
     }
     return behavior;
   }
@@ -1376,11 +1376,11 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
           }
         };
 
-    public Behavior(@NonNull Context context) {
-      this(context, null);
+    public Behavior() {
+      fabContentRect = new Rect();
     }
 
-    public Behavior(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public Behavior(Context context, AttributeSet attrs) {
       super(context, attrs);
       fabContentRect = new Rect();
     }
