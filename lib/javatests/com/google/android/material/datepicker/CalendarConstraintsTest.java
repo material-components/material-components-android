@@ -159,4 +159,20 @@ public class CalendarConstraintsTest {
         IllegalArgumentException.class,
         () -> new CalendarConstraints.Builder().setFirstDayOfWeek(SATURDAY + 1).build());
   }
+
+  @Test
+  public void setStart_succeeds() {
+    CalendarConstraints calendarConstraints =
+        new CalendarConstraints.Builder().setStart(FEB_2016).build();
+
+    assertThat(calendarConstraints.getStart().timeInMillis).isEqualTo(FEB_2016);
+  }
+
+  @Test
+  public void setEnd_succeeds() {
+    CalendarConstraints calendarConstraints =
+        new CalendarConstraints.Builder().setEnd(FEB_2016).build();
+
+    assertThat(calendarConstraints.getEnd().timeInMillis).isEqualTo(FEB_2016);
+  }
 }

@@ -96,13 +96,13 @@ public final class CalendarConstraints implements Parcelable {
 
   /** Returns the earliest month allowed by this set of bounds. */
   @NonNull
-  Month getStart() {
+  public Month getStart() {
     return start;
   }
 
   /** Returns the latest month allowed by this set of bounds. */
   @NonNull
-  Month getEnd() {
+  public Month getEnd() {
     return end;
   }
 
