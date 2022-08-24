@@ -96,6 +96,7 @@ import com.google.android.material.internal.CollapsingTextHelper;
 import com.google.android.material.internal.DescendantOffsetUtils;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
+import com.google.android.material.motion.MotionUtils;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
@@ -4251,8 +4252,13 @@ public class TextInputLayout extends LinearLayout {
     }
     if (this.animator == null) {
       this.animator = new ValueAnimator();
-      this.animator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-      this.animator.setDuration(LABEL_SCALE_ANIMATION_DURATION);
+      this.animator.setInterpolator(
+          MotionUtils.resolveThemeInterpolator(getContext(),
+              R.attr.motionEasingEmphasizedInterpolator,
+              AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR));
+      this.animator.setDuration(
+          MotionUtils.resolveThemeDuration(getContext(),
+              R.attr.motionDurationMedium4, LABEL_SCALE_ANIMATION_DURATION));
       this.animator.addUpdateListener(
           new ValueAnimator.AnimatorUpdateListener() {
             @Override
