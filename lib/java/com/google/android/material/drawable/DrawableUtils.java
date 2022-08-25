@@ -22,6 +22,8 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources.NotFoundException;
 import android.graphics.Color;
+import android.graphics.Outline;
+import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffColorFilter;
@@ -276,5 +278,28 @@ public final class DrawableUtils {
       }
     }
     return newState;
+  }
+
+  /**
+   * Sets the Outline to a {@link android.graphics.Path path}, if possible.
+   */
+  public static boolean setOutlineToPath(@NonNull final Outline outline, @NonNull final Path path) {
+    if (VERSION.SDK_INT >= VERSION_CODES.R) {
+      outline.setPath(path);
+      return true;
+    }
+
+    if (VERSION.SDK_INT >= VERSION_CODES.Q) {
+      // As of Android Q, the restriction that the path must be convex is removed.
+      outline.setConvexPath(path);
+      return true;
+    }
+
+    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP && path.isConvex()) {
+      outline.setConvexPath(path);
+      return true;
+    }
+
+    return false;
   }
 }

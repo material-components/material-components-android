@@ -59,6 +59,7 @@ import androidx.annotation.StyleRes;
 import androidx.core.graphics.drawable.TintAwareDrawable;
 import androidx.core.util.ObjectsCompat;
 import com.google.android.material.color.MaterialColors;
+import com.google.android.material.drawable.DrawableUtils;
 import com.google.android.material.elevation.ElevationOverlayProvider;
 import com.google.android.material.shadow.ShadowRenderer;
 import com.google.android.material.shape.ShapeAppearanceModel.CornerSizeUnaryOperator;
@@ -1212,14 +1213,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     }
 
     calculatePath(getBoundsAsRectF(), path);
-    if (path.isConvex() || Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-      try {
-        outline.setConvexPath(path);
-      } catch (IllegalArgumentException ignored) {
-        // The change to support concave paths was done late in the release cycle. People
-        // using pre-releases of Q would experience a crash here.
-      }
-    }
+    DrawableUtils.setOutlineToPath(outline, path);
   }
 
   private void calculatePath(@NonNull RectF bounds, @NonNull Path path) {

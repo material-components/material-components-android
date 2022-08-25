@@ -39,6 +39,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.core.graphics.ColorUtils;
+import com.google.android.material.drawable.DrawableUtils;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.shape.ShapeAppearancePathProvider;
 
@@ -154,9 +155,7 @@ class BorderDrawable extends Drawable {
     copyBounds(rect);
     rectF.set(rect);
     pathProvider.calculatePath(shapeAppearanceModel, 1f, rectF, shapePath);
-    if (shapePath.isConvex()) {
-      outline.setConvexPath(shapePath);
-    }
+    DrawableUtils.setOutlineToPath(outline, shapePath);
   }
 
   @Override
