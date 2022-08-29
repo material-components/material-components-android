@@ -18,6 +18,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
   <item
+      android:id="@+id/menu_search"
       android:icon="@drawable/ic_search_24px"
       android:title="@string/cat_bottomappbar_search"
       app:showAsAction="ifRoom"/>

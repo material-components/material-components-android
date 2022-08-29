@@ -18,6 +18,7 @@ package io.material.catalog.bottomappbar;
 
 import io.material.catalog.R;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -184,6 +185,7 @@ public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBack
         babBackground.getShapeAppearanceModel().toBuilder().setTopEdge(topEdge).build());
   }
 
+  @SuppressLint("NewApi")
   protected void setUpBottomDrawer(View view) {
     View bottomDrawer = coordinatorLayout.findViewById(R.id.bottom_drawer);
     bottomDrawerBehavior = BottomSheetBehavior.from(bottomDrawer);
@@ -193,6 +195,7 @@ public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBack
         v -> bottomDrawerBehavior.setState(BottomSheetBehavior.STATE_HALF_EXPANDED));
     bar.setNavigationIcon(R.drawable.ic_drawer_menu_24px);
     bar.replaceMenu(R.menu.demo_primary);
+    bar.getMenu().findItem(R.id.menu_search).getActionView().requestFocus();
   }
 
   private void showSnackbar(CharSequence text) {
