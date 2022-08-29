@@ -19,6 +19,7 @@ import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
+import android.animation.TimeInterpolator;
 import android.content.Context;
 import android.text.Layout;
 import android.util.AttributeSet;
@@ -30,13 +31,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.core.view.ViewCompat;
+import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.color.MaterialColors;
+import com.google.android.material.motion.MotionUtils;
 
 /** @hide */
 @RestrictTo(LIBRARY_GROUP)
 public class SnackbarContentLayout extends LinearLayout implements ContentViewCallback {
   private TextView messageView;
   private Button actionView;
+  private final TimeInterpolator contentInterpolator;
 
   private int maxInlineActionWidth;
 
@@ -46,6 +50,11 @@ public class SnackbarContentLayout extends LinearLayout implements ContentViewCa
 
   public SnackbarContentLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
     super(context, attrs);
+    contentInterpolator =
+        MotionUtils.resolveThemeInterpolator(
+            context,
+            R.attr.motionEasingEmphasizedInterpolator,
+            AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
   }
 
   @Override
@@ -142,22 +151,26 @@ public class SnackbarContentLayout extends LinearLayout implements ContentViewCa
   @Override
   public void animateContentIn(int delay, int duration) {
     messageView.setAlpha(0f);
-    messageView.animate().alpha(1f).setDuration(duration).setStartDelay(delay).start();
+    messageView.animate().alpha(1f).setDuration(duration).
+        setInterpolator(contentInterpolator).setStartDelay(delay).start();
 
     if (actionView.getVisibility() == VISIBLE) {
       actionView.setAlpha(0f);
-      actionView.animate().alpha(1f).setDuration(duration).setStartDelay(delay).start();
+      actionView.animate().alpha(1f).setDuration(duration).
+          setInterpolator(contentInterpolator).setStartDelay(delay).start();
     }
   }
 
   @Override
   public void animateContentOut(int delay, int duration) {
     messageView.setAlpha(1f);
-    messageView.animate().alpha(0f).setDuration(duration).setStartDelay(delay).start();
+    messageView.animate().alpha(0f).setDuration(duration).
+        setInterpolator(contentInterpolator).setStartDelay(delay).start();
 
     if (actionView.getVisibility() == VISIBLE) {
       actionView.setAlpha(1f);
-      actionView.animate().alpha(0f).setDuration(duration).setStartDelay(delay).start();
+      actionView.animate().alpha(0f).setDuration(duration).
+          setInterpolator(contentInterpolator).setStartDelay(delay).start();
     }
   }
 
