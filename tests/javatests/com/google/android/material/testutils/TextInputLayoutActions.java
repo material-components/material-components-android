@@ -31,10 +31,13 @@ import android.view.View.OnLongClickListener;
 import android.widget.AutoCompleteTextView;
 import androidx.annotation.ColorInt;
 import androidx.annotation.DimenRes;
+import androidx.annotation.NonNull;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.matcher.ViewMatchers;
 import com.google.android.material.internal.CheckableImageButton;
+import com.google.android.material.shape.CornerFamily;
+import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.testapp.R;
 import com.google.android.material.textfield.TextInputLayout;
 import org.hamcrest.Matcher;
@@ -635,6 +638,49 @@ public class TextInputLayoutActions {
       public void perform(UiController uiController, View view) {
         TextInputLayout layout = (TextInputLayout) view;
         layout.setBoxBackgroundColor(backgroundColor);
+      }
+    };
+  }
+
+  /** Sets the {@link ShapeAppearanceModel} of the text field's box background. */
+  public static ViewAction setShapeAppearanceModel(
+      @NonNull ShapeAppearanceModel shapeAppearanceModel) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Sets the box's shape appearance";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setShapeAppearanceModel(shapeAppearanceModel);
+      }
+    };
+  }
+
+  /** Sets the corner family for all corners of the text field. */
+  public static ViewAction setBoxCornerFamily(@CornerFamily final int cornerFamily) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Sets the box's corner family";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setBoxCornerFamily(cornerFamily);
       }
     };
   }

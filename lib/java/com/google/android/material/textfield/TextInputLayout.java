@@ -98,6 +98,8 @@ import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.motion.MotionUtils;
 import com.google.android.material.resources.MaterialResources;
+import com.google.android.material.shape.CornerFamily;
+import com.google.android.material.shape.CornerTreatment;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import java.lang.annotation.Retention;
@@ -1218,6 +1220,46 @@ public class TextInputLayout extends LinearLayout {
    */
   public int getBoxBackgroundColor() {
     return boxBackgroundColor;
+  }
+
+  /**
+   * Sets the {@link ShapeAppearanceModel} of the text field's box background.
+   *
+   * @param shapeAppearanceModel the desired shape appearance model.
+   * @see #getShapeAppearanceModel()
+   */
+  public void setShapeAppearanceModel(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
+    if (boxBackground != null && boxBackground.getShapeAppearanceModel() != shapeAppearanceModel) {
+      this.shapeAppearanceModel = shapeAppearanceModel;
+      applyBoxAttributes();
+    }
+  }
+
+  /**
+   * Returns the {@link ShapeAppearanceModel} of the text field's box background.
+   *
+   * @see #setShapeAppearanceModel(ShapeAppearanceModel)
+   */
+  @NonNull
+  public ShapeAppearanceModel getShapeAppearanceModel() {
+    return shapeAppearanceModel;
+  }
+
+  /**
+   * Sets the box's corner family for all corners of the text field.
+   *
+   * @param cornerFamily the {@link CornerFamily} to be used. May be one of {@link
+   *     CornerFamily#ROUNDED} or {@link CornerFamily#CUT}.
+   */
+  public void setBoxCornerFamily(@CornerFamily int cornerFamily) {
+    shapeAppearanceModel =
+        shapeAppearanceModel.toBuilder()
+            .setTopLeftCorner(cornerFamily, shapeAppearanceModel.getTopLeftCornerSize())
+            .setTopRightCorner(cornerFamily, shapeAppearanceModel.getTopRightCornerSize())
+            .setBottomLeftCorner(cornerFamily, shapeAppearanceModel.getBottomLeftCornerSize())
+            .setBottomRightCorner(cornerFamily, shapeAppearanceModel.getBottomRightCornerSize())
+            .build();
+    applyBoxAttributes();
   }
 
   /**
@@ -3040,9 +3082,8 @@ public class TextInputLayout extends LinearLayout {
   public void onRtlPropertiesChanged(int layoutDirection) {
     super.onRtlPropertiesChanged(layoutDirection);
     boolean isLayoutDirectionRtl = layoutDirection == ViewCompat.LAYOUT_DIRECTION_RTL;
-    if (isLayoutDirectionRtl != areCornerRadiiRtl) {
+   if (isLayoutDirectionRtl != areCornerRadiiRtl) {
       // Switch corner radius values from LTR to RTL or vice versa.
-      boolean shouldCornersBeRtl = isLayoutDirectionRtl && !areCornerRadiiRtl;
       float boxCornerRadiusTopLeft =
           shapeAppearanceModel.getTopLeftCornerSize().getCornerSize(tmpRectF);
       float boxCornerRadiusTopRight =
@@ -3051,12 +3092,29 @@ public class TextInputLayout extends LinearLayout {
           shapeAppearanceModel.getBottomLeftCornerSize().getCornerSize(tmpRectF);
       float boxCornerRadiusBottomRight =
           shapeAppearanceModel.getBottomRightCornerSize().getCornerSize(tmpRectF);
-      setBoxCornerRadii(
-          shouldCornersBeRtl ? boxCornerRadiusTopLeft : boxCornerRadiusTopRight,
-          shouldCornersBeRtl ? boxCornerRadiusTopRight : boxCornerRadiusTopLeft,
-          shouldCornersBeRtl ? boxCornerRadiusBottomLeft : boxCornerRadiusBottomRight,
-          shouldCornersBeRtl ? boxCornerRadiusBottomRight : boxCornerRadiusBottomLeft);
-    }
+      CornerTreatment topLeftTreatment =
+          shapeAppearanceModel.getTopLeftCorner();
+      CornerTreatment topRightTreatment =
+          shapeAppearanceModel.getTopRightCorner();
+      CornerTreatment bottomLeftTreatment =
+          shapeAppearanceModel.getBottomLeftCorner();
+      CornerTreatment bottomRightTreatment =
+          shapeAppearanceModel.getBottomRightCorner();
+
+      ShapeAppearanceModel newShapeAppearanceModel =
+          ShapeAppearanceModel.builder()
+              .setTopLeftCorner(topRightTreatment)
+              .setTopRightCorner(topLeftTreatment)
+              .setBottomLeftCorner(bottomRightTreatment)
+              .setBottomRightCorner(bottomLeftTreatment)
+              .setTopLeftCornerSize(boxCornerRadiusTopRight)
+              .setTopRightCornerSize(boxCornerRadiusTopLeft)
+              .setBottomLeftCornerSize(boxCornerRadiusBottomRight)
+              .setBottomRightCornerSize(boxCornerRadiusBottomLeft)
+              .build();
+     areCornerRadiiRtl = isLayoutDirectionRtl;
+     setShapeAppearanceModel(newShapeAppearanceModel);
+   }
   }
 
   @Override
