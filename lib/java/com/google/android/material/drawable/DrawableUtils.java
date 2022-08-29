@@ -157,14 +157,14 @@ public final class DrawableUtils {
    * 21, it'll still mutate the drawable.
    *
    * <p>Use this method instead of the above if the passed in drawable will be a child of a {@link
-   * LayerDrawable} in APIs < 21, its tintList may be null, and it may be mutated, in order to
+   * LayerDrawable} in APIs < 23, its tintList may be null, and it may be mutated, in order to
    * prevent issue where the drawable may not have its constant state set up properly.
    */
   @Nullable
   public static Drawable createTintableMutatedDrawableIfNeeded(
       @Nullable Drawable drawable, @Nullable ColorStateList tintList, @Nullable Mode tintMode) {
     return createTintableMutatedDrawableIfNeeded(
-        drawable, tintList, tintMode, VERSION.SDK_INT < VERSION_CODES.LOLLIPOP);
+        drawable, tintList, tintMode, VERSION.SDK_INT < VERSION_CODES.M);
   }
 
   @Nullable
