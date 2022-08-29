@@ -161,7 +161,7 @@
   </style>
 
   <style name="Widget.Material3.MaterialTimePicker.Display.Divider" parent="Widget.MaterialComponents.TimePicker.Display.Divider">
-    <item name="android:textAppearance">?attr/textAppearanceHeadlineMedium</item>
+    <item name="android:textAppearance">?attr/textAppearanceDisplayLarge</item>
   </style>
 
   <style name="Widget.Material3.MaterialTimePicker.Display.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
@@ -176,7 +176,7 @@
   </style>
 
   <style name="Widget.Material3.MaterialTimePicker.Display.TextInputEditText" parent="Widget.Material3.TextInputEditText.OutlinedBox">
-    <item name="android:textAppearance">?attr/textAppearanceHeadlineMedium</item>
+    <item name="android:textAppearance">?attr/textAppearanceDisplayLarge</item>
     <item name="android:textSize" tools:ignore="SpUsage">56dp</item>
     <item name="android:paddingTop">0dp</item>
     <item name="android:paddingBottom">0dp</item>
