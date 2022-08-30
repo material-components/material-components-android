@@ -139,7 +139,7 @@ public class MaterialButtonToggleGroup extends LinearLayout {
     void onButtonChecked(MaterialButtonToggleGroup group, @IdRes int checkedId, boolean isChecked);
   }
 
-  private static final String LOG_TAG = MaterialButtonToggleGroup.class.getSimpleName();
+  private static final String LOG_TAG = "MButtonToggleGroup";
   private static final int DEF_STYLE_RES =
       R.style.Widget_MaterialComponents_MaterialButtonToggleGroup;
 
