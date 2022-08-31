@@ -493,12 +493,13 @@ instead of on the `EditText` in order to avoid unintended behaviors.
 
 #### Input text attributes
 
-Element              | Attribute                                                           | Related method(s)                                            | Default value
--------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------ | -------------
-**Input text**       | `android:text`                                                      | `setText`<br/>`getText`                                      | `@null`
-**Typography**       | `android:textAppearance`                                            | `setTextAppearance`                                          | `?attr/textAppearanceBodyLarge`
-**Input text color** | `android:textColor`                                                 | `setTextColor`<br/>`getTextColors`<br/>`getCurrentTextColor` | `?attr/colorOnSurface`
-**Cursor color**     | N/A (color comes from the theme attr `?attr/colorControlActivated`) | N/A                                                          | `?attr/colorPrimary`
+Element                  | Attribute                                                                | Related method(s)                                            | Default value
+------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------ | -------------
+**Input text**           | `android:text`                                                           | `setText`<br/>`getText`                                      | `@null`
+**Typography**           | `android:textAppearance`                                                 | `setTextAppearance`                                          | `?attr/textAppearanceBodyLarge`
+**Input text color**     | `android:textColor`                                                      | `setTextColor`<br/>`getTextColors`<br/>`getCurrentTextColor` | `?attr/colorOnSurface`
+**Cursor color**         | N/A (color comes from the theme attr `?attr/colorControlActivated`)      | N/A                                                          | `?attr/colorPrimary`
+**Text highlight color** | N/A (color comes from the theme attr `?android:attr/textColorHighlight`) | N/A                                                          | [`@color/m3_highlighted_text`](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/color/res/color/m3_highlighted_text.xml)
 
 **Note:** The input text attributes should be set on the `TextInputEditText`.
 
@@ -676,12 +677,13 @@ instead of on the `EditText` in order to avoid unintended behaviors.
 
 #### Input text attributes
 
-Element              | Attribute                                                           | Related method(s)                                            | Default value
--------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------ | -------------
-**Input text**       | `android:text`                                                      | `setText`<br/>`getText`                                      | `@null`
-**Typography**       | `android:textAppearance`                                            | `setTextAppearance`                                          | `?attr/textAppearanceBodyLarge`
-**Input text color** | `android:textColor`                                                 | `setTextColor`<br/>`getTextColors`<br/>`getCurrentTextColor` | `?attr/colorOnSurface`
-**Cursor color**     | N/A (color comes from the theme attr `?attr/colorControlActivated`) | N/A                                                          | `?attr/colorPrimary`
+Element                  | Attribute                                                                | Related method(s)                                            | Default value
+------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------ | -------------
+**Input text**           | `android:text`                                                           | `setText`<br/>`getText`                                      | `@null`
+**Typography**           | `android:textAppearance`                                                 | `setTextAppearance`                                          | `?attr/textAppearanceBodyLarge`
+**Input text color**     | `android:textColor`                                                      | `setTextColor`<br/>`getTextColors`<br/>`getCurrentTextColor` | `?attr/colorOnSurface`
+**Cursor color**         | N/A (color comes from the theme attr `?attr/colorControlActivated`)      | N/A                                                          | `?attr/colorPrimary`
+**Text highlight color** | N/A (color comes from the theme attr `?android:attr/textColorHighlight`) | N/A                                                          | [`@color/m3_highlighted_text`](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/color/res/color/m3_highlighted_text.xml)
 
 **Note:** The input text attributes should be set on the `TextInputEditText`.
 
