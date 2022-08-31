@@ -177,6 +177,24 @@ public class AppBarLayoutTest {
     assertThat(appBarLayout.getDownNestedScrollRange()).isEqualTo(0);
   }
 
+  @Test
+  public void testSetScrollEffectNone_returnsNull() {
+    AppBarLayout.LayoutParams lp =
+        (AppBarLayout.LayoutParams) firstScrollableChild.getLayoutParams();
+    lp.setScrollEffect(LayoutParams.SCROLL_EFFECT_NONE);
+
+    assertThat(lp.getScrollEffect()).isEqualTo(null);
+  }
+
+  @Test
+  public void testSetScrollEffectCompress() {
+    AppBarLayout.LayoutParams lp =
+        (AppBarLayout.LayoutParams) firstScrollableChild.getLayoutParams();
+    lp.setScrollEffect(LayoutParams.SCROLL_EFFECT_COMPRESS);
+
+    assertThat(lp.getScrollEffect()).isInstanceOf(AppBarLayout.CompressChildScrollEffect.class);
+  }
+
   private static int getChildScrollRange(View child) {
     final LayoutParams lp = (LayoutParams) child.getLayoutParams();
     return getChildFullHeight(child, lp)

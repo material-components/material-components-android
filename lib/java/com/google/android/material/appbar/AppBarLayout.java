@@ -1199,14 +1199,24 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
      * No effect should be placed on this view. It will scroll 1:1 with the AppBarLayout/scrolling
      * content.
      */
-    private static final int SCROLL_EFFECT_NONE = 0;
+    public static final int SCROLL_EFFECT_NONE = 0;
 
     /**
      * An effect that will "compress" this view as it hits the scroll ceiling (typically the top of
      * the screen). This is a parallax effect that masks this view and decreases its scroll ratio
      * in relation to the AppBarLayout's offset.
      */
-    private static final int SCROLL_EFFECT_COMPRESS = 1;
+    public static final int SCROLL_EFFECT_COMPRESS = 1;
+
+    /**
+     * The scroll effect to be applied when the AppBarLayout's offset changes.
+     *
+     * @hide
+     */
+    @RestrictTo(LIBRARY_GROUP)
+    @IntDef({SCROLL_EFFECT_NONE, SCROLL_EFFECT_COMPRESS})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface ScrollEffect {}
 
     private ChildScrollEffect scrollEffect;
 
@@ -1219,7 +1229,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
 
       int scrollEffectInt =
           a.getInt(R.styleable.AppBarLayout_Layout_layout_scrollEffect, SCROLL_EFFECT_NONE);
-      setScrollEffect(createScrollEffectFromInt(scrollEffectInt));
+      setScrollEffect(scrollEffectInt);
 
       if (a.hasValue(R.styleable.AppBarLayout_Layout_layout_scrollInterpolator)) {
         int resId = a.getResourceId(R.styleable.AppBarLayout_Layout_layout_scrollInterpolator, 0);
@@ -1311,6 +1321,17 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
      */
     public void setScrollEffect(@Nullable ChildScrollEffect scrollEffect) {
       this.scrollEffect = scrollEffect;
+    }
+
+    /**
+     * Set the scroll effect to be applied when the AppBarLayout's offset changes.
+     *
+     * @param scrollEffect An {@code AppBarLayoutChildScrollEffect} implementation. If
+     * {@link #SCROLL_EFFECT_NONE} is passed, the scroll effect will be cleared and no
+     * effect will be applied.
+     */
+    public void setScrollEffect(@ScrollEffect int scrollEffect) {
+      this.scrollEffect = createScrollEffectFromInt(scrollEffect);
     }
 
     /**
