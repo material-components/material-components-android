@@ -44,7 +44,6 @@ import com.google.android.material.shape.AbsoluteCornerSize;
 import com.google.android.material.shape.CornerSize;
 import com.google.android.material.shape.RelativeCornerSize;
 import com.google.android.material.shape.ShapeAppearanceModel;
-import com.google.android.material.shape.ShapeAppearanceModel.CornerSizeUnaryOperator;
 
 class TransitionUtils {
 
@@ -123,15 +122,7 @@ class TransitionUtils {
   static ShapeAppearanceModel convertToRelativeCornerSizes(
       ShapeAppearanceModel shapeAppearanceModel, final RectF bounds) {
     return shapeAppearanceModel.withTransformedCornerSizes(
-        new CornerSizeUnaryOperator() {
-          @NonNull
-          @Override
-          public CornerSize apply(@NonNull CornerSize cornerSize) {
-            return cornerSize instanceof RelativeCornerSize
-                ? cornerSize
-                : new RelativeCornerSize(cornerSize.getCornerSize(bounds) / bounds.height());
-          }
-        });
+        cornerSize -> RelativeCornerSize.createFromCornerSize(bounds, cornerSize));
   }
 
   // TODO: rethink how to interpolate more than just corner size

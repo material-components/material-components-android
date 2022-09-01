@@ -16,22 +16,44 @@
 
 package com.google.android.material.shape;
 
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static java.lang.Math.min;
+
 import android.graphics.RectF;
 import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
 import java.util.Arrays;
 
 /**
- * A {@link CornerSize} that takes a percent and computes the size used based on the height of the
- * shape.
+ * A {@link CornerSize} that takes a percent and computes the size used based on the length of the
+ * shortest edge adjacent to the corner.
  */
 public final class RelativeCornerSize implements CornerSize {
 
   private final float percent;
 
   /**
+   * Creates a relative corner size from a given corner size.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  @NonNull
+  public static RelativeCornerSize createFromCornerSize(
+      @NonNull final RectF bounds, @NonNull final CornerSize cornerSize) {
+    return cornerSize instanceof RelativeCornerSize
+        ? (RelativeCornerSize) cornerSize
+        : new RelativeCornerSize(cornerSize.getCornerSize(bounds) / getMaxCornerSize(bounds));
+  }
+
+  private static float getMaxCornerSize(@NonNull RectF bounds) {
+    return min(bounds.width(), bounds.height());
+  }
+
+  /**
    * @param percent The relative size of the corner in range [0,1] where 0 is no size and 1 is the
-   *     full bounds height.
+   *     largest possible corner size.
    */
   public RelativeCornerSize(@FloatRange(from = 0.0f, to = 1.0f) float percent) {
     this.percent = percent;
@@ -45,7 +67,7 @@ public final class RelativeCornerSize implements CornerSize {
 
   @Override
   public float getCornerSize(@NonNull RectF bounds) {
-    return percent * bounds.height();
+    return percent * getMaxCornerSize(bounds);
   }
 
   @Override
