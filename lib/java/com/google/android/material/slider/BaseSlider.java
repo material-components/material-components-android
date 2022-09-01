@@ -1744,14 +1744,13 @@ abstract class BaseSlider<
 
     maybeDrawTicks(canvas);
 
-    if ((thumbIsPressed || isFocused() || shouldAlwaysShowLabel()) && isEnabled()) {
-      maybeDrawHalo(canvas, trackWidth, yCenter);
-      // Draw labels if there is an active thumb or the labels are always visible.
-      if (activeThumbIdx != -1 || shouldAlwaysShowLabel()) {
-        ensureLabelsAdded();
-      } else {
-        ensureLabelsRemoved();
-      }
+    if ((thumbIsPressed || isFocused()) && isEnabled()) {
+      maybeDrawCompatHalo(canvas, trackWidth, yCenter);
+    }
+
+    // Draw labels if there is an active thumb or the labels are always visible.
+    if ((activeThumbIdx != -1 || shouldAlwaysShowLabel()) && isEnabled()) {
+      ensureLabelsAdded();
     } else {
       ensureLabelsRemoved();
     }
@@ -1864,7 +1863,7 @@ abstract class BaseSlider<
     canvas.restore();
   }
 
-  private void maybeDrawHalo(@NonNull Canvas canvas, int width, int top) {
+  private void maybeDrawCompatHalo(@NonNull Canvas canvas, int width, int top) {
     // Only draw the halo for devices that aren't using the ripple.
     if (shouldDrawCompatHalo()) {
       int centerX = (int) (trackSidePadding + normalizeValue(values.get(focusedThumbIdx)) * width);
