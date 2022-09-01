@@ -95,6 +95,14 @@ MaterialDatePicker.Builder().datePicker()
     .setInputMode(MaterialDatePicker.INPUT_MODE_TEXT)
 ```
 
+A `DayViewDecorator` can be set allowing customizing the day of month views within the picker ([example of a `DayViewDecorator`](https://github.com/material-components/material-components-android/tree/master/catalog/java/io/material/catalog/datepicker/CircleIndicatorDecorator.java)):
+
+```kt
+MaterialDatePicker.Builder().datePicker()
+      ...
+    .setDayViewDecorator(new CircleIndicatorDecorator())
+```
+
 To show the picker to the user:
 
 ```kt
