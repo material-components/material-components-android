@@ -21,6 +21,8 @@ import com.google.android.material.R;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static com.google.android.material.card.MaterialCardView.CHECKED_ICON_GRAVITY_TOP_END;
 
+import android.animation.TimeInterpolator;
+import android.animation.ValueAnimator;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -48,8 +50,10 @@ import androidx.annotation.StyleRes;
 import androidx.cardview.widget.CardView;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
+import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.card.MaterialCardView.CheckedIconGravity;
 import com.google.android.material.color.MaterialColors;
+import com.google.android.material.motion.MotionUtils;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.ripple.RippleUtils;
 import com.google.android.material.shape.CornerTreatment;
@@ -122,6 +126,13 @@ class MaterialCardViewHelper {
   private boolean isBackgroundOverwritten = false;
   private boolean checkable;
 
+  @Nullable private ValueAnimator iconAnimator;
+  private final TimeInterpolator iconFadeAnimInterpolator;
+  private final int iconFadeAnimDuration;
+  private float checkedAnimationProgress = 0F;
+
+  public static final int DEFAULT_FADE_ANIM_DURATION = 300;
+
   public MaterialCardViewHelper(
       @NonNull MaterialCardView card,
       AttributeSet attrs,
@@ -145,6 +156,15 @@ class MaterialCardViewHelper {
 
     foregroundContentDrawable = new MaterialShapeDrawable();
     setShapeAppearanceModel(shapeAppearanceModelBuilder.build());
+
+    iconFadeAnimInterpolator =
+        MotionUtils.resolveThemeInterpolator(
+            materialCardView.getContext(),
+            R.attr.motionEasingLinearInterpolator,
+            AnimationUtils.LINEAR_INTERPOLATOR);
+    iconFadeAnimDuration =
+        MotionUtils.resolveThemeDuration(
+            materialCardView.getContext(), R.attr.motionDurationShort4, DEFAULT_FADE_ANIM_DURATION);
 
     cardViewAttributes.recycle();
   }
@@ -280,6 +300,28 @@ class MaterialCardViewHelper {
     if (previousFgDrawable != fgDrawable) {
       updateInsetForeground(fgDrawable);
     }
+  }
+
+  public void animateCheckedIcon(boolean checked) {
+    float targetCheckedProgress = checked ? 1F : 0F;
+    float delta = checked ? 1F - checkedAnimationProgress : checkedAnimationProgress;
+    if (iconAnimator != null) {
+      iconAnimator.cancel();
+      iconAnimator = null;
+    }
+    iconAnimator = ValueAnimator.ofFloat(checkedAnimationProgress, targetCheckedProgress);
+    iconAnimator.addUpdateListener(
+        animation -> {
+          float progress = (float) animation.getAnimatedValue();
+          int alpha = (int) (255F * progress);
+          checkedIcon.setAlpha(alpha);
+          checkedAnimationProgress = progress;
+        });
+    iconAnimator.setInterpolator(iconFadeAnimInterpolator);
+    // Cut the total duration if this animation is starting after interrupting an in-progress
+    // animation.
+    iconAnimator.setDuration((long) (iconFadeAnimDuration * delta));
+    iconAnimator.start();
   }
 
   void setCornerRadius(float cornerRadius) {
@@ -681,8 +723,17 @@ class MaterialCardViewHelper {
   }
 
   public void setChecked(boolean checked) {
+    setChecked(checked, /* animate= */ false);
+  }
+
+  public void setChecked(boolean checked, boolean animate) {
     if (checkedIcon != null) {
-      checkedIcon.setAlpha(checked ? 255 : 0);
+      if (animate) {
+        animateCheckedIcon(checked);
+      } else {
+        checkedIcon.setAlpha(checked ? 255 : 0);
+        checkedAnimationProgress = checked ? 1F : 0F;
+      }
     }
   }
 

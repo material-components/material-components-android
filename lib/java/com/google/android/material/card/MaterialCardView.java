@@ -477,7 +477,7 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
       checked = !checked;
       refreshDrawableState();
       forceRippleRedrawIfNeeded();
-      cardViewHelper.setChecked(checked);
+      cardViewHelper.setChecked(checked, /* animate= */ true);
       if (onCheckedChangeListener != null) {
         onCheckedChangeListener.onCheckedChanged(this, checked);
       }
