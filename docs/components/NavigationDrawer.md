@@ -417,7 +417,7 @@ API and source code:
     *   [Class definition](https://developer.android.com/reference/com/google/android/material/navigation/NavigationView)
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/navigation/NavigationView.java)
 *   `DrawerLayout`
-    *   [Class definition](https://developer.android.com/reference/kotlin/androidx/drawerlayout/widget/DrawerLayout)
+    *   [Class definition](https://developer.android.com/reference/androidx/drawerlayout/widget/DrawerLayout)
 
 The following example shows a modal navigation drawer.
 

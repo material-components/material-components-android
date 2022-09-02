@@ -123,7 +123,7 @@ badge.setContentDescriptionExceedsMaxBadgeNumberStringResource(R.string.content_
 ### Using tabs with ViewPager
 
 A `TabLayout` can be set up with a
-[`ViewPager`](https://developer.android.com/reference/kotlin/androidx/viewpager/widget/ViewPager)
+[`ViewPager`](https://developer.android.com/reference/androidx/viewpager/widget/ViewPager)
 in order to:
 
 *   Dynamically create `TabItem`s based on the number of pages, their titles,
