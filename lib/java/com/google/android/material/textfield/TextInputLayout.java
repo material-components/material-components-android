@@ -1593,8 +1593,7 @@ public class TextInputLayout extends LinearLayout {
 
     // Set the expanded and collapsed labels to the default text color.
     if (defaultHintTextColor != null) {
-      collapsingTextHelper.setCollapsedTextColor(defaultHintTextColor);
-      collapsingTextHelper.setExpandedTextColor(defaultHintTextColor);
+      collapsingTextHelper.setCollapsedAndExpandedTextColor(defaultHintTextColor);
     }
 
     // Set the collapsed and expanded label text colors based on the current state.
@@ -1604,12 +1603,13 @@ public class TextInputLayout extends LinearLayout {
               ? defaultHintTextColor.getColorForState(
                   new int[] {-android.R.attr.state_enabled}, disabledColor)
               : disabledColor;
-      collapsingTextHelper.setCollapsedTextColor(ColorStateList.valueOf(disabledHintColor));
-      collapsingTextHelper.setExpandedTextColor(ColorStateList.valueOf(disabledHintColor));
+      collapsingTextHelper.setCollapsedAndExpandedTextColor(
+          ColorStateList.valueOf(disabledHintColor));
     } else if (shouldShowError()) {
-      collapsingTextHelper.setCollapsedTextColor(indicatorViewController.getErrorViewTextColors());
+      collapsingTextHelper.setCollapsedAndExpandedTextColor(
+          indicatorViewController.getErrorViewTextColors());
     } else if (counterOverflowed && counterView != null) {
-      collapsingTextHelper.setCollapsedTextColor(counterView.getTextColors());
+      collapsingTextHelper.setCollapsedAndExpandedTextColor(counterView.getTextColors());
     } else if (hasFocus && focusedTextColor != null) {
       collapsingTextHelper.setCollapsedTextColor(focusedTextColor);
     } // If none of these states apply, leave the expanded and collapsed colors as they are.

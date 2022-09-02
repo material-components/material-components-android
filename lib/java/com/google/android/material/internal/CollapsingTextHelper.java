@@ -235,6 +235,14 @@ public final class CollapsingTextHelper {
     }
   }
 
+  public void setCollapsedAndExpandedTextColor(@Nullable ColorStateList textColor) {
+    if (collapsedTextColor != textColor || expandedTextColor != textColor) {
+      collapsedTextColor = textColor;
+      expandedTextColor = textColor;
+      recalculate();
+    }
+  }
+
   public void setExpandedLetterSpacing(float letterSpacing) {
     if (expandedLetterSpacing != letterSpacing) {
       expandedLetterSpacing = letterSpacing;
