@@ -2688,7 +2688,7 @@ public class TabLayout extends HorizontalScrollView {
         if (tabTextColors != null) {
           this.textView.setTextColor(tabTextColors);
         }
-        updateTextAndIcon(this.textView, this.iconView);
+        updateTextAndIcon(this.textView, this.iconView, /* addDefaultMargins= */ true);
 
         tryUpdateBadgeAnchor();
         addOnLayoutChangeListener(iconView);
@@ -2696,7 +2696,7 @@ public class TabLayout extends HorizontalScrollView {
       } else {
         // Else, we'll see if there is a TextView or ImageView present and update them
         if (customTextView != null || customIconView != null) {
-          updateTextAndIcon(customTextView, customIconView);
+          updateTextAndIcon(customTextView, customIconView, /* addDefaultMargins= */ false);
         }
       }
 
@@ -2870,14 +2870,16 @@ public class TabLayout extends HorizontalScrollView {
     final void updateOrientation() {
       setOrientation(inlineLabel ? HORIZONTAL : VERTICAL);
       if (customTextView != null || customIconView != null) {
-        updateTextAndIcon(customTextView, customIconView);
+        updateTextAndIcon(customTextView, customIconView, /* addDefaultMargins= */ false);
       } else {
-        updateTextAndIcon(textView, iconView);
+        updateTextAndIcon(textView, iconView, /* addDefaultMargins= */ true);
       }
     }
 
     private void updateTextAndIcon(
-        @Nullable final TextView textView, @Nullable final ImageView iconView) {
+        @Nullable final TextView textView,
+        @Nullable final ImageView iconView,
+        final boolean addDefaultMargins) {
       final Drawable icon =
           (tab != null && tab.getIcon() != null)
               ? DrawableCompat.wrap(tab.getIcon()).mutate()
@@ -2916,7 +2918,7 @@ public class TabLayout extends HorizontalScrollView {
         showingText = false;
       }
 
-      if (iconView != null) {
+      if (addDefaultMargins && iconView != null) {
         MarginLayoutParams lp = ((MarginLayoutParams) iconView.getLayoutParams());
         int iconMargin = 0;
         if (showingText && iconView.getVisibility() == VISIBLE) {
