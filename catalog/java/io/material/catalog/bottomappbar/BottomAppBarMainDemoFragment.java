@@ -27,6 +27,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityEvent;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,6 +35,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomappbar.BottomAppBarTopEdgeTreatment;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -53,6 +55,7 @@ import java.util.List;
 public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBackPressedHandler {
 
   protected BottomAppBar bar;
+  protected View barNavView;
   protected CoordinatorLayout coordinatorLayout;
   protected FloatingActionButton fab;
 
@@ -100,6 +103,7 @@ public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBack
     coordinatorLayout = view.findViewById(R.id.coordinator_layout);
     bar = view.findViewById(R.id.bar);
     ((AppCompatActivity) getActivity()).setSupportActionBar(bar);
+    barNavView = bar.getChildAt(0);
 
     setUpBottomDrawer(view);
 
@@ -151,6 +155,18 @@ public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBack
   @Override
   public boolean onBackPressed() {
     if (bottomDrawerBehavior.getState() != BottomSheetBehavior.STATE_HIDDEN) {
+      bottomDrawerBehavior.addBottomSheetCallback(
+          new BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+              if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+                barNavView.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
+              }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {}
+          });
       bottomDrawerBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
       return true;
     }
@@ -187,12 +203,11 @@ public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBack
   protected void setUpBottomDrawer(View view) {
     View bottomDrawer = coordinatorLayout.findViewById(R.id.bottom_drawer);
     bottomDrawerBehavior = BottomSheetBehavior.from(bottomDrawer);
+    bottomDrawerBehavior.setUpdateImportantForAccessibilityOnSiblings(true);
     bottomDrawerBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
 
     bar.setNavigationOnClickListener(
         v -> bottomDrawerBehavior.setState(BottomSheetBehavior.STATE_HALF_EXPANDED));
-    bar.setNavigationIcon(R.drawable.ic_drawer_menu_24px);
-    bar.replaceMenu(R.menu.demo_primary);
   }
 
   private void showSnackbar(CharSequence text) {
