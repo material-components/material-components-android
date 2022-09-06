@@ -23,10 +23,10 @@
   <!-- Hovered state -->
   <item android:state_enabled="true" android:state_hovered="true">
     <objectAnimator
-      android:duration="@integer/m3_card_anim_duration_ms"
-      android:interpolator="@interpolator/mtrl_fast_out_slow_in"
+      android:duration="?attr/motionDurationMedium4"
+      android:interpolator="?attr/motionEasingEmphasizedInterpolator"
       android:propertyName="translationZ"
-      android:startDelay="@integer/m3_card_anim_delay_ms"
+      android:startDelay="?attr/motionDurationMedium1"
       android:valueTo="@dimen/m3_card_elevated_hovered_z"
       android:valueType="floatType"
       tools:targetApi="kitkat"/>
@@ -35,10 +35,10 @@
   <!-- Dragged state  -->
   <item android:state_enabled="true" app:state_dragged="true">
     <objectAnimator
-      android:duration="@integer/m3_card_anim_duration_ms"
-      android:interpolator="@interpolator/mtrl_fast_out_slow_in"
+      android:duration="?attr/motionDurationMedium4"
+      android:interpolator="?attr/motionEasingEmphasizedInterpolator"
       android:propertyName="translationZ"
-      android:startDelay="@integer/m3_card_anim_delay_ms"
+      android:startDelay="?attr/motionDurationMedium1"
       android:valueTo="@dimen/m3_card_elevated_dragged_z"
       android:valueType="floatType"
       tools:targetApi="kitkat"/>
@@ -48,10 +48,10 @@
   <item>
     <set>
       <objectAnimator
-          android:duration="@integer/m3_card_anim_duration_ms"
+          android:duration="?attr/motionDurationLong2"
           android:propertyName="translationZ"
           android:valueTo="0dp"
-          android:interpolator="@anim/mtrl_card_lowers_interpolator"
+          android:interpolator="?attr/motionEasingEmphasizedInterpolator"
           android:valueType="floatType"/>
     </set>
   </item>
