@@ -97,6 +97,7 @@ public class DynamicColors {
     deviceMap.put("tecno", DEFAULT_DEVICE_SUPPORT_CONDITION);
     deviceMap.put("tecno mobile limited", DEFAULT_DEVICE_SUPPORT_CONDITION);
     deviceMap.put("vivo", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("wingtech", DEFAULT_DEVICE_SUPPORT_CONDITION);
     deviceMap.put("xiaomi", DEFAULT_DEVICE_SUPPORT_CONDITION);
     DYNAMIC_COLOR_SUPPORTED_MANUFACTURERS = Collections.unmodifiableMap(deviceMap);
   }
