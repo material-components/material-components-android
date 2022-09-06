@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">წუთი</string>
   <string name="material_timepicker_hour">საათი</string>
   <string name="material_hour_suffix">%1$s საათი</string>
+  <string name="material_hour_24h_suffix">%1$s საათი</string>
   <string name="material_minute_suffix">%1$s წუთი</string>
   <string name="material_hour_selection">აირჩიეთ საათი</string>
   <string name="material_minute_selection">აირჩიეთ წუთები</string>

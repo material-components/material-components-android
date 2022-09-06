@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">នាទី​</string>
   <string name="material_timepicker_hour">ម៉ោង</string>
   <string name="material_hour_suffix">ម៉ោង %1$s</string>
+  <string name="material_hour_24h_suffix">%1$s ម៉ោង</string>
   <string name="material_minute_suffix">%1$s នាទី</string>
   <string name="material_hour_selection">ជ្រើសរើសម៉ោង</string>
   <string name="material_minute_selection">ជ្រើស​នាទី</string>

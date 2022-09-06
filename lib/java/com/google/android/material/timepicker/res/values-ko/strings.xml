@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">분</string>
   <string name="material_timepicker_hour">시간</string>
   <string name="material_hour_suffix">%1$s시 정각</string>
+  <string name="material_hour_24h_suffix">%1$s시간</string>
   <string name="material_minute_suffix">%1$s분</string>
   <string name="material_hour_selection">시간 선택</string>
   <string name="material_minute_selection">분 선택</string>

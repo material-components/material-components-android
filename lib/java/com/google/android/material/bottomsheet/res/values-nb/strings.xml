@@ -16,4 +16,8 @@
 -->
 <resources>
   <string name="bottomsheet_action_expand_halfway">Vis halve feltet nederst</string>
+  <string name="bottomsheet_drag_handle_content_description">Håndtak</string>
+  <string name="bottomsheet_action_expand">Vis feltet nederst</string>
+  <string name="bottomsheet_action_collapse">Skjul feltet nederst</string>
+  <string name="bottomsheet_drag_handle_clicked">Dobbelttrykket på håndtaket</string>
 </resources>

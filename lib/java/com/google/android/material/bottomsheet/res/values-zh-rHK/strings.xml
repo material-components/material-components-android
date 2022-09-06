@@ -16,4 +16,8 @@
 -->
 <resources>
   <string name="bottomsheet_action_expand_halfway">展開一半</string>
+  <string name="bottomsheet_drag_handle_content_description">拖曳控點</string>
+  <string name="bottomsheet_action_expand">展開頁底面板</string>
+  <string name="bottomsheet_action_collapse">收合頁底面板</string>
+  <string name="bottomsheet_drag_handle_clicked">㩒咗兩下拖曳控點</string>
 </resources>

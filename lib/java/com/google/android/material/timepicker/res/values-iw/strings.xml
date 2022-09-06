@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">דקה</string>
   <string name="material_timepicker_hour">שעה</string>
   <string name="material_hour_suffix">השעה %1$s</string>
+  <string name="material_hour_24h_suffix">%1$s שעות</string>
   <string name="material_minute_suffix">%1$s דקות</string>
   <string name="material_hour_selection">בחר שעה</string>
   <string name="material_minute_selection">בחר דקות</string>

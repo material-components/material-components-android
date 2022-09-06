@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">Minuta</string>
   <string name="material_timepicker_hour">Hodina</string>
   <string name="material_hour_suffix">%1$s</string>
+  <string name="material_hour_24h_suffix">%1$s hodin</string>
   <string name="material_minute_suffix">%1$s min</string>
   <string name="material_hour_selection">Vyberte hodinu</string>
   <string name="material_minute_selection">Zvolte minuty</string>

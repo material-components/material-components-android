@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">Dakika</string>
   <string name="material_timepicker_hour">Saat</string>
   <string name="material_hour_suffix">Saat %1$s</string>
+  <string name="material_hour_24h_suffix">%1$s saat</string>
   <string name="material_minute_suffix">%1$s dakika</string>
   <string name="material_hour_selection">Saat seçin</string>
   <string name="material_minute_selection">Dakikayı seçin</string>

@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">Phút</string>
   <string name="material_timepicker_hour">Giờ</string>
   <string name="material_hour_suffix">%1$s giờ</string>
+  <string name="material_hour_24h_suffix">%1$s giờ</string>
   <string name="material_minute_suffix">%1$s phút</string>
   <string name="material_hour_selection">Chọn giờ</string>
   <string name="material_minute_selection">Chọn phút</string>

@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">Րոպե</string>
   <string name="material_timepicker_hour">Ժամ</string>
   <string name="material_hour_suffix">Ժամը %1$s է</string>
+  <string name="material_hour_24h_suffix">%1$s ժամ</string>
   <string name="material_minute_suffix">%1$s րոպե</string>
   <string name="material_hour_selection">Ընտրել ժամը</string>
   <string name="material_minute_selection">Ընտրեք րոպեն</string>

@@ -27,7 +27,7 @@
   <string name="mtrl_picker_cancel">Жокко чыгаруу</string>
   <string name="mtrl_picker_text_input_date_hint">Күн</string>
   <string name="mtrl_picker_text_input_date_range_start_hint">Баштоо күнү</string>
-  <string name="mtrl_picker_text_input_date_range_end_hint">Аяктоо күнү</string>
+  <string name="mtrl_picker_text_input_date_range_end_hint">Качан аяктайт</string>
   <string name="mtrl_picker_text_input_year_abbr">ж</string>
   <string name="mtrl_picker_text_input_month_abbr">а</string>
   <string name="mtrl_picker_text_input_day_abbr">к</string>

@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">මිනිත්තු</string>
   <string name="material_timepicker_hour">පැය</string>
   <string name="material_hour_suffix">%1$sයි</string>
+  <string name="material_hour_24h_suffix">පැය %1$sක්</string>
   <string name="material_minute_suffix">මිනිත්තු %1$sයි</string>
   <string name="material_hour_selection">පැය තෝරන්න</string>
   <string name="material_minute_selection">මිනිත්තු තෝරන්න</string>

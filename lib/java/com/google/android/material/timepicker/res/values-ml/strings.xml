@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">മിനിറ്റ്</string>
   <string name="material_timepicker_hour">മണിക്കൂര്‍</string>
   <string name="material_hour_suffix">%1$s മണി</string>
+  <string name="material_hour_24h_suffix">%1$s മണി</string>
   <string name="material_minute_suffix">%1$s മിനിറ്റ്</string>
   <string name="material_hour_selection">മണിക്കൂർ തിരഞ്ഞെടുക്കുക</string>
   <string name="material_minute_selection">മിനിറ്റ് തിരഞ്ഞെടുക്കുക</string>

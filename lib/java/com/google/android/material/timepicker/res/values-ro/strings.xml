@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">Minut</string>
   <string name="material_timepicker_hour">Ora</string>
   <string name="material_hour_suffix">Ora %1$s</string>
+  <string name="material_hour_24h_suffix">%1$s ore</string>
   <string name="material_minute_suffix">%1$s minute</string>
   <string name="material_hour_selection">Selectați ora</string>
   <string name="material_minute_selection">Selectați minutele</string>

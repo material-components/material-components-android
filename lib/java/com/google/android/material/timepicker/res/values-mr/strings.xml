@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">मिनिट</string>
   <string name="material_timepicker_hour">तास</string>
   <string name="material_hour_suffix">%1$s वाजता</string>
+  <string name="material_hour_24h_suffix">%1$s तास</string>
   <string name="material_minute_suffix">%1$s मिनिटे</string>
   <string name="material_hour_selection">वेळ निवडा</string>
   <string name="material_minute_selection">मिनिटे निवडा</string>

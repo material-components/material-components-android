@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">منٹ</string>
   <string name="material_timepicker_hour">گھنٹہ</string>
   <string name="material_hour_suffix">%1$s بجے</string>
+  <string name="material_hour_24h_suffix">%1$s گھنٹے</string>
   <string name="material_minute_suffix">%1$s منٹ</string>
   <string name="material_hour_selection">گھنٹہ منتخب کریں</string>
   <string name="material_minute_selection">منٹ منتخب کریں</string>

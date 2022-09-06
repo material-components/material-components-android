@@ -16,4 +16,8 @@
 -->
 <resources>
   <string name="bottomsheet_action_expand_halfway">Ծավալել կիսով չափ</string>
+  <string name="bottomsheet_drag_handle_content_description">Տեղափոխման նշիչ</string>
+  <string name="bottomsheet_action_expand">Ծավալել ներքևի էկրանը</string>
+  <string name="bottomsheet_action_collapse">Ծալել ներքևի էկրանը</string>
+  <string name="bottomsheet_drag_handle_clicked">Կրկնակի հպում տեղափոխման նշիչին</string>
 </resources>

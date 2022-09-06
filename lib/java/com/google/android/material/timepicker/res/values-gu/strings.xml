@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">મિનિટ</string>
   <string name="material_timepicker_hour">કલાક</string>
   <string name="material_hour_suffix">%1$s વાગ્યા છે</string>
+  <string name="material_hour_24h_suffix">%1$s કલાક</string>
   <string name="material_minute_suffix">%1$s મિનિટ</string>
   <string name="material_hour_selection">સમય પસંદ કરો</string>
   <string name="material_minute_selection">મિનિટ પસંદ કરો</string>

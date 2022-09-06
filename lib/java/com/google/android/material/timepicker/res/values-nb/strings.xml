@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">Minutt</string>
   <string name="material_timepicker_hour">Time</string>
   <string name="material_hour_suffix">%1$s null-null</string>
+  <string name="material_hour_24h_suffix">%1$s timer</string>
   <string name="material_minute_suffix">%1$s minutter</string>
   <string name="material_hour_selection">Velg time</string>
   <string name="material_minute_selection">Angi minutter</string>

@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">Minuto</string>
   <string name="material_timepicker_hour">Oras</string>
   <string name="material_hour_suffix">%1$s o\'clock</string>
+  <string name="material_hour_24h_suffix">%1$s (na) oras</string>
   <string name="material_minute_suffix">%1$s (na) minuto</string>
   <string name="material_hour_selection">Pumili ng oras</string>
   <string name="material_minute_selection">Pumili ng mga minuto</string>

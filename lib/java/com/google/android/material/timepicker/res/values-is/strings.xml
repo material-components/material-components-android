@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">Mínúta</string>
   <string name="material_timepicker_hour">Klukkustund</string>
   <string name="material_hour_suffix">klukkan %1$s</string>
+  <string name="material_hour_24h_suffix">%1$s klst.</string>
   <string name="material_minute_suffix">%1$s mínútur</string>
   <string name="material_hour_selection">Velja tíma</string>
   <string name="material_minute_selection">Veldu mínútur</string>

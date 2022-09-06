@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">Iminithi</string>
   <string name="material_timepicker_hour">Ihora</string>
   <string name="material_hour_suffix">%1$s ezimpondweni</string>
+  <string name="material_hour_24h_suffix">amahora angu-%1$s</string>
   <string name="material_minute_suffix">amaminithi angu-%1$s</string>
   <string name="material_hour_selection">Khetha ihora</string>
   <string name="material_minute_selection">Khetha amaminithi</string>

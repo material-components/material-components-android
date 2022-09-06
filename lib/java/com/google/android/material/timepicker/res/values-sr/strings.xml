@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">Минут</string>
   <string name="material_timepicker_hour">Сат</string>
   <string name="material_hour_suffix">%1$s с</string>
+  <string name="material_hour_24h_suffix">%1$s с</string>
   <string name="material_minute_suffix">%1$s мин</string>
   <string name="material_hour_selection">Изаберите сат</string>
   <string name="material_minute_selection">Изаберите минуте</string>

@@ -16,4 +16,8 @@
 -->
 <resources>
   <string name="bottomsheet_action_expand_halfway">Udvid halvdelen</string>
+  <string name="bottomsheet_drag_handle_content_description">Håndtag</string>
+  <string name="bottomsheet_action_expand">Udvid feltet i bunden</string>
+  <string name="bottomsheet_action_collapse">Skjul feltet i bunden</string>
+  <string name="bottomsheet_drag_handle_clicked">Du har trykket to gange på håndtaget</string>
 </resources>

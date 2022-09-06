@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">Perc</string>
   <string name="material_timepicker_hour">Óra</string>
   <string name="material_hour_suffix">%1$s óra</string>
+  <string name="material_hour_24h_suffix">%1$s óra</string>
   <string name="material_minute_suffix">%1$s perc</string>
   <string name="material_hour_selection">Óra kiválasztása</string>
   <string name="material_minute_selection">Perc kiválasztása</string>

@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">Minute</string>
   <string name="material_timepicker_hour">Hour</string>
   <string name="material_hour_suffix">%1$s o\'clock</string>
+  <string name="material_hour_24h_suffix">%1$s hours</string>
   <string name="material_minute_suffix">%1$s minutes</string>
   <string name="material_hour_selection">Select hour</string>
   <string name="material_minute_selection">ମିନିଟ୍‍ ଚୟନ କରନ୍ତୁ</string>

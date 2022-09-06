@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">నిమిషం</string>
   <string name="material_timepicker_hour">గంట</string>
   <string name="material_hour_suffix">%1$s అవుతుంది</string>
+  <string name="material_hour_24h_suffix">%1$s గంటలు</string>
   <string name="material_minute_suffix">%1$s నిమిషాలు</string>
   <string name="material_hour_selection">గంటను ఎంచుకోండి</string>
   <string name="material_minute_selection">నిమిషాలను ఎంచుకోండి</string>

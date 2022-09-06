@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">Menit</string>
   <string name="material_timepicker_hour">Jam</string>
   <string name="material_hour_suffix">Pukul %1$s</string>
+  <string name="material_hour_24h_suffix">%1$s jam</string>
   <string name="material_minute_suffix">%1$s menit</string>
   <string name="material_hour_selection">Pilih jam</string>
   <string name="material_minute_selection">Pilih menit</string>

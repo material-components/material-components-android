@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">分钟</string>
   <string name="material_timepicker_hour">小时</string>
   <string name="material_hour_suffix">%1$s 点</string>
+  <string name="material_hour_24h_suffix">%1$s 小时</string>
   <string name="material_minute_suffix">%1$s 分</string>
   <string name="material_hour_selection">选择小时</string>
   <string name="material_minute_selection">选择分钟</string>

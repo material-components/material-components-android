@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">Minutė</string>
   <string name="material_timepicker_hour">Valanda</string>
   <string name="material_hour_suffix">%1$s val.</string>
+  <string name="material_hour_24h_suffix">%1$s val.</string>
   <string name="material_minute_suffix">%1$s min.</string>
   <string name="material_hour_selection">Pasirinkite valandą</string>
   <string name="material_minute_selection">Pasirinkite minutes</string>

@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">Λεπτό</string>
   <string name="material_timepicker_hour">Ώρα</string>
   <string name="material_hour_suffix">%1$s ακριβώς</string>
+  <string name="material_hour_24h_suffix">%1$s ώρες</string>
   <string name="material_minute_suffix">%1$s λεπτά</string>
   <string name="material_hour_selection">Επιλογή ώρας</string>
   <string name="material_minute_selection">Επιλογή λεπτών</string>

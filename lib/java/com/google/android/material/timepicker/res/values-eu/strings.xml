@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">Minutua</string>
   <string name="material_timepicker_hour">Ordua</string>
   <string name="material_hour_suffix">%1$s(r)ak dira</string>
+  <string name="material_hour_24h_suffix">%1$s ordu</string>
   <string name="material_minute_suffix">%1$s minutu</string>
   <string name="material_hour_selection">Hautatu ordua</string>
   <string name="material_minute_selection">Hautatu minutuak</string>

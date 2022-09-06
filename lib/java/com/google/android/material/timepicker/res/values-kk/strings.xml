@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">Mинут</string>
   <string name="material_timepicker_hour">Сағат</string>
   <string name="material_hour_suffix">Сағат: %1$s</string>
+  <string name="material_hour_24h_suffix">Сағат: %1$s</string>
   <string name="material_minute_suffix">%1$s минут</string>
   <string name="material_hour_selection">Сағатты таңдау</string>
   <string name="material_minute_selection">Минут таңдау</string>

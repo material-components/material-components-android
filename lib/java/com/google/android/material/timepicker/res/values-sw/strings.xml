@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">Dakika</string>
   <string name="material_timepicker_hour">Saa</string>
   <string name="material_hour_suffix">Saa %1$s kamili</string>
+  <string name="material_hour_24h_suffix">Saa %1$s</string>
   <string name="material_minute_suffix">Dakika %1$s</string>
   <string name="material_hour_selection">Chagua saa</string>
   <string name="material_minute_selection">Chagua dakika</string>

@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">ນາທີ</string>
   <string name="material_timepicker_hour">ຊົ່ວໂມງ</string>
   <string name="material_hour_suffix">%1$s ໂມງ</string>
+  <string name="material_hour_24h_suffix">%1$s ຊົ່ວໂມງ</string>
   <string name="material_minute_suffix">%1$s ນາທີ</string>
   <string name="material_hour_selection">ເລືອກຊົ່ວໂມງ</string>
   <string name="material_minute_selection">ເລືອກນາ​ທີ</string>

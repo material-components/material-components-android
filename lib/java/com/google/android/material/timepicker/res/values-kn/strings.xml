@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">ನಿಮಿಷ</string>
   <string name="material_timepicker_hour">ಗಂಟೆ</string>
   <string name="material_hour_suffix">%1$s ಗಂಟೆ</string>
+  <string name="material_hour_24h_suffix">%1$s ಗಂಟೆಗಳು</string>
   <string name="material_minute_suffix">%1$s ನಿಮಿಷಗಳು</string>
   <string name="material_hour_selection">ಸಮಯವನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
   <string name="material_minute_selection">ನಿಮಿಷಗಳನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>

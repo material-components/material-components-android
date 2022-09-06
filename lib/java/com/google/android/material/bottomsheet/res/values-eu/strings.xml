@@ -16,4 +16,8 @@
 -->
 <resources>
   <string name="bottomsheet_action_expand_halfway">Zabaldu erdiraino</string>
+  <string name="bottomsheet_drag_handle_content_description">Arrastatzeko kontrol-puntua</string>
+  <string name="bottomsheet_action_expand">Zabaldu pantailaren behealdean ainguratutako orria</string>
+  <string name="bottomsheet_action_collapse">Tolestu pantailaren behealdean ainguratutako orria</string>
+  <string name="bottomsheet_drag_handle_clicked">Birritan sakatu da arrastatzeko kontrol-puntua</string>
 </resources>

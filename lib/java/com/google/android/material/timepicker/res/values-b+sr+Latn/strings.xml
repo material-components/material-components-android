@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">Minut</string>
   <string name="material_timepicker_hour">Sat</string>
   <string name="material_hour_suffix">%1$s s</string>
+  <string name="material_hour_24h_suffix">%1$s s</string>
   <string name="material_minute_suffix">%1$s min</string>
   <string name="material_hour_selection">Izaberite sat</string>
   <string name="material_minute_selection">Izaberite minute</string>

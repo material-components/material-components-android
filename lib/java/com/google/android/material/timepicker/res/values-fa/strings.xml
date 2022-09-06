@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">دقیقه</string>
   <string name="material_timepicker_hour">ساعت</string>
   <string name="material_hour_suffix">ساعت %1$s</string>
+  <string name="material_hour_24h_suffix">%1$s ساعت</string>
   <string name="material_minute_suffix">%1$s دقیقه</string>
   <string name="material_hour_selection">انتخاب ساعت</string>
   <string name="material_minute_selection">انتخاب دقیقه</string>

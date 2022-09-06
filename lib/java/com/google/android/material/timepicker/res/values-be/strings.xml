@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">Хвіліна</string>
   <string name="material_timepicker_hour">Гадзіна</string>
   <string name="material_hour_suffix">%1$s гадз</string>
+  <string name="material_hour_24h_suffix">%1$s гадз</string>
   <string name="material_minute_suffix">%1$s хв</string>
   <string name="material_hour_selection">Выберыце гадзіну</string>
   <string name="material_minute_selection">Выберыце хвіліны</string>

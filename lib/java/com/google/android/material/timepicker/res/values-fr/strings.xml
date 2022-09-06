@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">Minute</string>
   <string name="material_timepicker_hour">Heure</string>
   <string name="material_hour_suffix">%1$s h</string>
+  <string name="material_hour_24h_suffix">%1$s heures</string>
   <string name="material_minute_suffix">%1$s min</string>
   <string name="material_hour_selection">Sélectionnez une heure</string>
   <string name="material_minute_selection">Sélectionner des minutes</string>

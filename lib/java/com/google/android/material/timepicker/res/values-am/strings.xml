@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">ደቂቃ</string>
   <string name="material_timepicker_hour">ሰዓት</string>
   <string name="material_hour_suffix">%1$s ሰዓት</string>
+  <string name="material_hour_24h_suffix">%1$s ሰዓታት</string>
   <string name="material_minute_suffix">%1$s ደቂቃዎች</string>
   <string name="material_hour_selection">ሰዓትን ይምረጡ</string>
   <string name="material_minute_selection">ደቂቃዎችን ይምረጡ</string>

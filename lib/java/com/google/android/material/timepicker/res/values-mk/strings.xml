@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">Минута</string>
   <string name="material_timepicker_hour">Час</string>
   <string name="material_hour_suffix">%1$s часот</string>
+  <string name="material_hour_24h_suffix">%1$s часа</string>
   <string name="material_minute_suffix">%1$s минути</string>
   <string name="material_hour_selection">Изберете час</string>
   <string name="material_minute_selection">Избери минути</string>

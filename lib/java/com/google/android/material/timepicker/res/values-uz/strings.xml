@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">Daqiqa</string>
   <string name="material_timepicker_hour">Soat</string>
   <string name="material_hour_suffix">%1$s soat</string>
+  <string name="material_hour_24h_suffix">%1$s soat</string>
   <string name="material_minute_suffix">%1$s daqiqa</string>
   <string name="material_hour_selection">Soatni tanlang</string>
   <string name="material_minute_selection">Daqiqalarni tanlash</string>

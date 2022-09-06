@@ -18,7 +18,7 @@
   <string name="character_counter_content_description">%2$dలో %1$d అక్షరాలు నమోదు చేయబడ్డాయి</string>
   <string name="character_counter_overflowed_content_description">అక్షర పరిధి %2$dలో %1$dను అధిగమించింది</string>
   <string name="password_toggle_content_description">పాస్‌వర్డ్‌ను చూపు</string>
-  <string name="clear_text_end_icon_content_description">రాసినదాన్ని తీసివేయి</string>
+  <string name="clear_text_end_icon_content_description">రాసినదాన్ని తీసివేయండి</string>
   <string name="exposed_dropdown_menu_content_description">డ్రాప్‌డౌన్ మెనూను చూపు</string>
   <string name="error_icon_content_description">ఎర్రర్</string>
 </resources>

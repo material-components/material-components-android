@@ -16,4 +16,8 @@
 -->
 <resources>
   <string name="bottomsheet_action_expand_halfway">Kembangkan helaian bawah</string>
+  <string name="bottomsheet_drag_handle_content_description">Pemegang seret</string>
+  <string name="bottomsheet_action_expand">Kembangkan helaian bawah</string>
+  <string name="bottomsheet_action_collapse">Kuncupkan helaian bawah</string>
+  <string name="bottomsheet_drag_handle_clicked">Pemegang seret diketik dua kali</string>
 </resources>

@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">Minūte</string>
   <string name="material_timepicker_hour">Stunda</string>
   <string name="material_hour_suffix">plkst. %1$s</string>
+  <string name="material_hour_24h_suffix">%1$s stundas</string>
   <string name="material_minute_suffix">%1$s min</string>
   <string name="material_hour_selection">Atlasiet stundu</string>
   <string name="material_minute_selection">Atlasiet minūtes.</string>

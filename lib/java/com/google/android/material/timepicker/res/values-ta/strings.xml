@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">நிமிடம்</string>
   <string name="material_timepicker_hour">மணிநேரம்</string>
   <string name="material_hour_suffix">%1$s மணி</string>
+  <string name="material_hour_24h_suffix">%1$s மணிநேரம்</string>
   <string name="material_minute_suffix">%1$s நிமிடங்கள்</string>
   <string name="material_hour_selection">மணிநேரத்தைத் தேர்ந்தெடுக்க உதவும்</string>
   <string name="material_minute_selection">நிமிடத்தைத் தேர்ந்தெடுக்கவும்</string>

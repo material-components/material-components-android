@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">Minuut</string>
   <string name="material_timepicker_hour">Uur</string>
   <string name="material_hour_suffix">%1$s-uur</string>
+  <string name="material_hour_24h_suffix">%1$s uur</string>
   <string name="material_minute_suffix">%1$s minute</string>
   <string name="material_hour_selection">Kies uur</string>
   <string name="material_minute_selection">Kies minute</string>

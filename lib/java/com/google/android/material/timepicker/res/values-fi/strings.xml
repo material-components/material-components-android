@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">Minuutti</string>
   <string name="material_timepicker_hour">Tunnit</string>
   <string name="material_hour_suffix">klo %1$s</string>
+  <string name="material_hour_24h_suffix">%1$s tuntia</string>
   <string name="material_minute_suffix">%1$s minuuttia</string>
   <string name="material_hour_selection">Valitse tunti</string>
   <string name="material_minute_selection">Valitse minuutit</string>

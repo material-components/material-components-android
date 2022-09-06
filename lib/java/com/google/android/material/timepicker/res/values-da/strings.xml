@@ -21,6 +21,7 @@
   <string name="material_timepicker_minute">Minut</string>
   <string name="material_timepicker_hour">Time</string>
   <string name="material_hour_suffix">klokken %1$s</string>
+  <string name="material_hour_24h_suffix">%1$s timer</string>
   <string name="material_minute_suffix">%1$s minutter</string>
   <string name="material_hour_selection">Vælg time</string>
   <string name="material_minute_selection">Vælg minutter</string>
