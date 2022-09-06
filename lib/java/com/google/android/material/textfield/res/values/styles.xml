@@ -23,12 +23,12 @@
 
     <item name="boxBackgroundMode">none</item>
     <item name="boxStrokeColor">@color/design_box_stroke_color</item>
+    <item name="errorIconDrawable">@null</item>
+    <item name="startIconTint">@color/design_icon_tint</item>
+    <item name="endIconTint">@color/design_icon_tint</item>
     <item name="passwordToggleDrawable">@drawable/design_password_eye</item>
     <item name="passwordToggleTint">@color/design_icon_tint</item>
     <item name="passwordToggleContentDescription">@string/password_toggle_content_description</item>
-    <item name="errorIconDrawable">@null</item>
-    <item name="endIconTint">@color/design_icon_tint</item>
-    <item name="startIconTint">@color/design_icon_tint</item>
 
     <item name="counterTextAppearance">@style/TextAppearance.Design.Counter</item>
     <item name="counterOverflowTextAppearance">@style/TextAppearance.Design.Counter.Overflow</item>
@@ -345,6 +345,7 @@
     <item name="errorIconTint">?attr/colorError</item>
     <item name="startIconTint">@color/m3_textfield_indicator_text_color</item>
     <item name="endIconTint">@color/m3_textfield_indicator_text_color</item>
+    <item name="passwordToggleDrawable">@drawable/m3_password_eye</item>
 
     <item name="counterTextAppearance">?attr/textAppearanceBodySmall</item>
     <item name="counterOverflowTextAppearance">?attr/textAppearanceBodySmall</item>
@@ -394,6 +395,7 @@
     <item name="errorIconTint">?attr/colorError</item>
     <item name="startIconTint">@color/m3_textfield_indicator_text_color</item>
     <item name="endIconTint">@color/m3_textfield_indicator_text_color</item>
+    <item name="passwordToggleDrawable">@drawable/m3_password_eye</item>
 
     <item name="counterTextAppearance">?attr/textAppearanceBodySmall</item>
     <item name="counterOverflowTextAppearance">?attr/textAppearanceBodySmall</item>

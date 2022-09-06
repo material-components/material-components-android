@@ -25,6 +25,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.TimeInterpolator;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Typeface;
@@ -51,6 +52,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.widget.TextViewCompat;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.animation.AnimatorSetCompat;
+import com.google.android.material.motion.MotionUtils;
 import com.google.android.material.resources.MaterialResources;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -65,10 +67,17 @@ import java.util.List;
 final class IndicatorViewController {
 
   /** Duration for the caption's vertical translation animation. */
-  private static final int CAPTION_TRANSLATE_Y_ANIMATION_DURATION = 217;
+  private static final int DEFAULT_CAPTION_TRANSLATION_Y_ANIMATION_DURATION = 217;
 
-  /** Duration for the caption's opacity fade animation. */
-  private static final int CAPTION_OPACITY_FADE_ANIMATION_DURATION = 167;
+  /** Duration for the caption's fade animation. */
+  private static final int DEFAULT_CAPTION_FADE_ANIMATION_DURATION = 167;
+
+  private final int captionTranslationYAnimationDuration;
+  private final int captionFadeInAnimationDuration;
+  private final int captionFadeOutAnimationDuration;
+  @NonNull private final TimeInterpolator captionTranslationYAnimationInterpolator;
+  @NonNull private final TimeInterpolator captionFadeInAnimationInterpolator;
+  @NonNull private final TimeInterpolator captionFadeOutAnimationInterpolator;
 
   /**
    * Values for indicator indices. Indicators are views below the text input area, like a caption
@@ -126,6 +135,28 @@ final class IndicatorViewController {
     this.textInputView = textInputView;
     this.captionTranslationYPx =
         context.getResources().getDimensionPixelSize(R.dimen.design_textinput_caption_translate_y);
+    captionTranslationYAnimationDuration =
+        MotionUtils.resolveThemeDuration(
+            context, R.attr.motionDurationShort4, DEFAULT_CAPTION_TRANSLATION_Y_ANIMATION_DURATION);
+    captionFadeInAnimationDuration =
+        MotionUtils.resolveThemeDuration(
+            context, R.attr.motionDurationMedium4, DEFAULT_CAPTION_FADE_ANIMATION_DURATION);
+    captionFadeOutAnimationDuration =
+        MotionUtils.resolveThemeDuration(
+            context, R.attr.motionDurationShort4, DEFAULT_CAPTION_FADE_ANIMATION_DURATION);
+    captionTranslationYAnimationInterpolator =
+        MotionUtils.resolveThemeInterpolator(
+            context,
+            R.attr.motionEasingEmphasizedDecelerateInterpolator,
+            AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR);
+    captionFadeInAnimationInterpolator =
+        MotionUtils.resolveThemeInterpolator(
+            context,
+            R.attr.motionEasingEmphasizedDecelerateInterpolator,
+            AnimationUtils.LINEAR_INTERPOLATOR);
+    captionFadeOutAnimationInterpolator =
+        MotionUtils.resolveThemeInterpolator(
+            context, R.attr.motionEasingLinearInterpolator, AnimationUtils.LINEAR_INTERPOLATOR);
   }
 
   void showHelper(final CharSequence helperText) {
@@ -319,16 +350,18 @@ final class IndicatorViewController {
   private ObjectAnimator createCaptionOpacityAnimator(TextView captionView, boolean display) {
     float endValue = display ? 1f : 0f;
     ObjectAnimator opacityAnimator = ObjectAnimator.ofFloat(captionView, View.ALPHA, endValue);
-    opacityAnimator.setDuration(CAPTION_OPACITY_FADE_ANIMATION_DURATION);
-    opacityAnimator.setInterpolator(AnimationUtils.LINEAR_INTERPOLATOR);
+    opacityAnimator.setDuration(display ? captionFadeInAnimationDuration
+        : captionFadeOutAnimationDuration);
+    opacityAnimator.setInterpolator(display ? captionFadeInAnimationInterpolator
+        : captionFadeOutAnimationInterpolator);
     return opacityAnimator;
   }
 
   private ObjectAnimator createCaptionTranslationYAnimator(TextView captionView) {
     ObjectAnimator translationYAnimator =
         ObjectAnimator.ofFloat(captionView, TRANSLATION_Y, -captionTranslationYPx, 0f);
-    translationYAnimator.setDuration(CAPTION_TRANSLATE_Y_ANIMATION_DURATION);
-    translationYAnimator.setInterpolator(AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR);
+    translationYAnimator.setDuration(captionTranslationYAnimationDuration);
+    translationYAnimator.setInterpolator(captionTranslationYAnimationInterpolator);
     return translationYAnimator;
   }
 

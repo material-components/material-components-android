@@ -21,6 +21,7 @@ import com.google.android.material.R;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
+import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.text.Editable;
 import android.view.View.OnClickListener;
@@ -29,13 +30,18 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.animation.AnimationUtils;
+import com.google.android.material.motion.MotionUtils;
 
 /** Default initialization of the clear text end icon {@link TextInputLayout.EndIconMode}. */
 class ClearTextEndIconDelegate extends EndIconDelegate {
 
-  private static final int ANIMATION_FADE_DURATION = 100;
-  private static final int ANIMATION_SCALE_DURATION = 150;
+  private static final int DEFAULT_ANIMATION_FADE_DURATION = 100;
+  private static final int DEFAULT_ANIMATION_SCALE_DURATION = 150;
   private static final float ANIMATION_SCALE_FROM_VALUE = 0.8f;
+  private final int animationFadeDuration;
+  private final int animationScaleDuration;
+  @NonNull private final TimeInterpolator animationFadeInterpolator;
+  @NonNull private final TimeInterpolator animationScaleInterpolator;
 
   @Nullable
   private EditText editText;
@@ -59,6 +65,22 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
 
   ClearTextEndIconDelegate(@NonNull EndCompoundLayout endLayout) {
     super(endLayout);
+    animationFadeDuration =
+        MotionUtils.resolveThemeDuration(
+            endLayout.getContext(), R.attr.motionDurationShort3, DEFAULT_ANIMATION_FADE_DURATION);
+    animationScaleDuration =
+        MotionUtils.resolveThemeDuration(
+            endLayout.getContext(), R.attr.motionDurationShort3, DEFAULT_ANIMATION_SCALE_DURATION);
+    animationFadeInterpolator =
+        MotionUtils.resolveThemeInterpolator(
+            endLayout.getContext(),
+            R.attr.motionEasingLinearInterpolator,
+            AnimationUtils.LINEAR_INTERPOLATOR);
+    animationScaleInterpolator =
+        MotionUtils.resolveThemeInterpolator(
+            endLayout.getContext(),
+            R.attr.motionEasingEmphasizedInterpolator,
+            AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR);
   }
 
   @Override
@@ -163,8 +185,8 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
 
   private ValueAnimator getAlphaAnimator(float... values) {
     ValueAnimator animator = ValueAnimator.ofFloat(values);
-    animator.setInterpolator(AnimationUtils.LINEAR_INTERPOLATOR);
-    animator.setDuration(ANIMATION_FADE_DURATION);
+    animator.setInterpolator(animationFadeInterpolator);
+    animator.setDuration(animationFadeDuration);
     animator.addUpdateListener(animation -> {
       float alpha = (float) animation.getAnimatedValue();
       endIconView.setAlpha(alpha);
@@ -175,8 +197,8 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
 
   private ValueAnimator getScaleAnimator() {
     ValueAnimator animator = ValueAnimator.ofFloat(ANIMATION_SCALE_FROM_VALUE, 1);
-    animator.setInterpolator(AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR);
-    animator.setDuration(ANIMATION_SCALE_DURATION);
+    animator.setInterpolator(animationScaleInterpolator);
+    animator.setDuration(animationScaleDuration);
     animator.addUpdateListener(animation -> {
       float scale = (float) animation.getAnimatedValue();
       endIconView.setScaleX(scale);

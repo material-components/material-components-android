@@ -198,8 +198,8 @@ public class TextInputLayout extends LinearLayout {
   /** Duration for the label's scale up and down animations. */
   private static final int LABEL_SCALE_ANIMATION_DURATION = 167;
 
-  private static final long PLACEHOLDER_FADE_DURATION = 87;
-  private static final long PLACEHOLDER_START_DELAY = 67;
+  private static final int DEFAULT_PLACEHOLDER_FADE_DURATION = 87;
+  private static final int PLACEHOLDER_START_DELAY = 67;
 
   private static final int INVALID_MAX_LENGTH = -1;
   private static final int NO_WIDTH = -1;
@@ -2406,8 +2406,10 @@ public class TextInputLayout extends LinearLayout {
 
   private Fade createPlaceholderFadeTransition() {
     Fade placeholderFadeTransition = new Fade();
-    placeholderFadeTransition.setDuration(PLACEHOLDER_FADE_DURATION);
-    placeholderFadeTransition.setInterpolator(AnimationUtils.LINEAR_INTERPOLATOR);
+    placeholderFadeTransition.setDuration(MotionUtils.resolveThemeDuration(getContext(),
+        R.attr.motionDurationShort2, DEFAULT_PLACEHOLDER_FADE_DURATION));
+    placeholderFadeTransition.setInterpolator(MotionUtils.resolveThemeInterpolator(getContext(),
+        R.attr.motionEasingLinearInterpolator, AnimationUtils.LINEAR_INTERPOLATOR));
     return placeholderFadeTransition;
   }
 
