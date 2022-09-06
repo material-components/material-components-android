@@ -732,7 +732,7 @@ public class MaterialCheckBox extends AppCompatCheckBox {
     updateButtonTints();
 
     super.setButtonDrawable(
-        DrawableUtils.compositeTwoLayeredDrawable(buttonDrawable, buttonIconDrawable));
+        DrawableUtils.compositeDrawables(buttonDrawable, buttonIconDrawable));
 
     refreshDrawableState();
   }

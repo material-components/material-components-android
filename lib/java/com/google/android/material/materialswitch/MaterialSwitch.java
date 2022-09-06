@@ -27,10 +27,17 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
+import androidx.annotation.Px;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.TintTypedArray;
+
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.util.AttributeSet;
+import android.util.Log;
+
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -45,11 +52,15 @@ import com.google.android.material.internal.ViewUtils;
  * {@link com.google.android.material.switchmaterial.SwitchMaterial} class.
  */
 public class MaterialSwitch extends SwitchCompat {
+
+  private static final String TAG = MaterialSwitch.class.getSimpleName();
+
   private static final int DEF_STYLE_RES = R.style.Widget_Material3_CompoundButton_MaterialSwitch;
   private static final int[] STATE_SET_WITH_ICON = { R.attr.state_with_icon };
 
   @Nullable private Drawable thumbDrawable;
   @Nullable private Drawable thumbIconDrawable;
+  @Px private int thumbIconSize;
 
   @Nullable private Drawable trackDrawable;
   @Nullable private Drawable trackDecorationDrawable;
@@ -90,6 +101,8 @@ public class MaterialSwitch extends SwitchCompat {
             context, attrs, R.styleable.MaterialSwitch, defStyleAttr, DEF_STYLE_RES);
 
     thumbIconDrawable = attributes.getDrawable(R.styleable.MaterialSwitch_thumbIcon);
+    thumbIconSize = attributes.getDimensionPixelSize(
+        R.styleable.MaterialSwitch_thumbIconSize, DrawableUtils.INTRINSIC_SIZE);
     thumbIconTintList = attributes.getColorStateList(R.styleable.MaterialSwitch_thumbIconTint);
     thumbIconTintMode =
         ViewUtils.parseTintMode(
@@ -192,6 +205,29 @@ public class MaterialSwitch extends SwitchCompat {
   @Nullable
   public Drawable getThumbIconDrawable() {
     return thumbIconDrawable;
+  }
+
+  /**
+   * Sets the size of the thumb icon.
+   *
+   * @param size Thumb icon size
+   * @attr ref com.google.android.material.R.styleable#MaterialSwitch_thumbIconSize
+   */
+  @RequiresApi(VERSION_CODES.M)
+  public void setThumbIconSize(@Px final int size) {
+    thumbIconSize = size;
+    refreshThumbDrawable();
+  }
+
+  /**
+   * Returns the size of the thumb icon.
+   *
+   * @attr ref com.google.android.material.R.styleable#MaterialSwitch_thumbIconSize
+   */
+  @RequiresApi(VERSION_CODES.M)
+  @Px
+  public int getThumbIconSize() {
+    return thumbIconSize;
   }
 
   /**
@@ -369,8 +405,23 @@ public class MaterialSwitch extends SwitchCompat {
 
     updateDrawableTints();
 
-    super.setThumbDrawable(
-        DrawableUtils.compositeTwoLayeredDrawable(thumbDrawable, thumbIconDrawable));
+    final Drawable thumbWithIconDrawable;
+    if (VERSION.SDK_INT >= VERSION_CODES.M) {
+      thumbWithIconDrawable = DrawableUtils.compositeDrawables(
+          thumbDrawable, thumbIconDrawable, thumbIconSize, thumbIconSize);
+    } else {
+      if (thumbIconDrawable != null && thumbIconSize != DrawableUtils.INTRINSIC_SIZE
+          && (thumbIconDrawable.getIntrinsicWidth() != thumbIconSize
+          || thumbIconDrawable.getIntrinsicHeight() != thumbIconSize)) {
+        Log.w(TAG, "Custom thumb icon size is not supported for API < 23. The intrinsic " +
+            "size of the thumb icon will be used instead.");
+      }
+
+      thumbWithIconDrawable = DrawableUtils.compositeDrawables(
+          thumbDrawable, thumbIconDrawable);
+    }
+
+    super.setThumbDrawable(thumbWithIconDrawable);
 
     refreshDrawableState();
   }
