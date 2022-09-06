@@ -4206,6 +4206,7 @@ public class TextInputLayout extends LinearLayout {
 
     final boolean hasFocus = isFocused() || (editText != null && editText.hasFocus());
     final boolean isHovered = isHovered() || (editText != null && editText.isHovered());
+    final boolean isOnError = shouldShowError() || (counterView != null && counterOverflowed);
 
     // Update the text box's stroke color based on the current state.
     if (!isEnabled()) {
@@ -4228,6 +4229,10 @@ public class TextInputLayout extends LinearLayout {
       boxStrokeColor = hoveredStrokeColor;
     } else {
       boxStrokeColor = defaultStrokeColor;
+    }
+
+    if (VERSION.SDK_INT >= VERSION_CODES.Q) {
+      updateCursorColor(isOnError);
     }
 
     endLayout.onTextInputBoxStateUpdated();
@@ -4284,6 +4289,25 @@ public class TextInputLayout extends LinearLayout {
     } else {
       boxStrokeColor = defaultStrokeErrorColor;
     }
+  }
+
+  @TargetApi(VERSION_CODES.Q)
+  private void updateCursorColor(boolean isOnError) {
+    ColorStateList cursorColor =
+        MaterialColors.getColorStateListOrNull(getContext(), R.attr.colorControlActivated);
+    if (editText == null || editText.getTextCursorDrawable() == null || cursorColor == null) {
+      // If there's no cursor or if its color is null, return.
+      return;
+    }
+
+    Drawable cursorDrawable = editText.getTextCursorDrawable();
+    if (isOnError) {
+      // Use the stroke error color for the cursor error color, or the box stroke color if
+      // strokeErrorColor is null.
+      cursorColor =
+          strokeErrorColor != null ? strokeErrorColor : ColorStateList.valueOf(boxStrokeColor);
+    }
+    DrawableCompat.setTintList(cursorDrawable, cursorColor);
   }
 
   private void expandHint(boolean animate) {

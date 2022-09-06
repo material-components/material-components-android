@@ -29,6 +29,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.ColorUtils;
 import com.google.android.material.resources.MaterialAttributes;
@@ -127,6 +128,24 @@ public class MaterialColors {
       resolvedColor = resolveColorStateList(context, typedValue);
     }
     return resolvedColor == null ? defaultValue : resolvedColor;
+  }
+
+  /**
+   * Returns the color state list for the provided theme color attribute, or null if the attribute
+   * is not set in the current theme.
+   */
+  @Nullable
+  public static ColorStateList getColorStateListOrNull(
+      @NonNull Context context, @AttrRes int colorAttributeResId) {
+    TypedValue typedValue = MaterialAttributes.resolve(context, colorAttributeResId);
+    if (typedValue == null) {
+      return null;
+    } else if (typedValue.resourceId != 0) {
+      return ContextCompat.getColorStateList(context, typedValue.resourceId);
+    } else if (typedValue.data != 0) {
+      return ColorStateList.valueOf(typedValue.data);
+    }
+    return null;
   }
 
   private static int resolveColor(@NonNull Context context, @NonNull TypedValue typedValue) {
