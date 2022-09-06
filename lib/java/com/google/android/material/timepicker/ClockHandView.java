@@ -24,6 +24,7 @@ import static com.google.android.material.timepicker.RadialViewGroup.LEVEL_RADIU
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -42,8 +43,10 @@ import androidx.annotation.FloatRange;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.core.view.ViewCompat;
+import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.math.MathUtils;
+import com.google.android.material.motion.MotionUtils;
 import com.google.android.material.timepicker.RadialViewGroup.Level;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +54,9 @@ import java.util.List;
 /** A Class to draw the hand on a Clock face. */
 class ClockHandView extends View {
 
-  private static final int ANIMATION_DURATION = 200;
+  private static final int DEFAULT_ANIMATION_DURATION = 200;
+  private final int animationDuration;
+  private final TimeInterpolator animationInterpolator;
   private final ValueAnimator rotationAnimator = new ValueAnimator();
   private boolean animatingOnTouchUp;
   private float downX;
@@ -108,6 +113,14 @@ class ClockHandView extends View {
             defStyleAttr,
             R.style.Widget_MaterialComponents_TimePicker_Clock);
 
+    animationDuration =
+        MotionUtils.resolveThemeDuration(
+            context, R.attr.motionDurationLong2, DEFAULT_ANIMATION_DURATION);
+    animationInterpolator =
+        MotionUtils.resolveThemeInterpolator(
+            context,
+            R.attr.motionEasingEmphasizedInterpolator,
+            AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
     circleRadius = a.getDimensionPixelSize(R.styleable.ClockHandView_materialCircleRadius, 0);
     selectorRadius = a.getDimensionPixelSize(R.styleable.ClockHandView_selectorSize, 0);
     Resources res = getResources();
@@ -148,7 +161,8 @@ class ClockHandView extends View {
 
     Pair<Float, Float> animationValues = getValuesForAnimation(degrees);
     rotationAnimator.setFloatValues(animationValues.first, animationValues.second);
-    rotationAnimator.setDuration(ANIMATION_DURATION);
+    rotationAnimator.setDuration(animationDuration);
+    rotationAnimator.setInterpolator(animationInterpolator);
     rotationAnimator.addUpdateListener(
         animation -> {
           float animatedValue = (float) animation.getAnimatedValue();
