@@ -122,6 +122,8 @@
 
   <!-- Styles for M3 Buttons. -->
 
+  <style name="Widget.Material3.MaterialButtonToggleGroup" parent="Widget.MaterialComponents.MaterialButtonToggleGroup" />
+
   <!-- M3 filled button style. -->
   <style name="Widget.Material3.Button" parent="Widget.MaterialComponents.Button">
     <item name="enforceTextAppearance">false</item>
