@@ -75,6 +75,7 @@
     <item name="paddingRightSystemWindowInsets">false</item>
     <item name="shapeAppearance">?attr/shapeAppearanceCornerExtraLarge</item>
     <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Material3.Corner.Top</item>
+    <item name="shouldRemoveExpandedCorners">false</item>
   </style>
 
   <style name="Widget.Material3.BottomSheet.Modal">

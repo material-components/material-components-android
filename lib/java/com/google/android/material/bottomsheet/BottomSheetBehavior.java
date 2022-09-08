@@ -253,10 +253,12 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   private int insetBottom;
   private int insetTop;
 
+  private boolean shouldRemoveExpandedCorners;
+
   /** Default Shape Appearance to be used in bottomsheet */
   private ShapeAppearanceModel shapeAppearanceModelDefault;
 
-  private boolean isShapeExpanded;
+  private boolean expandedCornersRemoved;
 
   private final StateSettlingTracker stateSettlingTracker = new StateSettlingTracker();
 
@@ -406,6 +408,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         a.getBoolean(R.styleable.BottomSheetBehavior_Layout_marginRightSystemWindowInsets, false);
     marginTopSystemWindowInsets =
         a.getBoolean(R.styleable.BottomSheetBehavior_Layout_marginTopSystemWindowInsets, false);
+    shouldRemoveExpandedCorners =
+        a.getBoolean(R.styleable.BottomSheetBehavior_Layout_shouldRemoveExpandedCorners, true);
 
     a.recycle();
     ViewConfiguration configuration = ViewConfiguration.get(context);
@@ -525,9 +529,6 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         // Use elevation attr if set on bottomsheet; otherwise, use elevation of child view.
         materialShapeDrawable.setElevation(
             elevation == -1 ? ViewCompat.getElevation(child) : elevation);
-        // Update the material shape based on initial state.
-        isShapeExpanded = state == STATE_EXPANDED;
-        materialShapeDrawable.setInterpolation(isShapeExpanded ? 0f : 1f);
       } else if (backgroundTint != null) {
         ViewCompat.setBackgroundTintList(child, backgroundTint);
       }
@@ -573,6 +574,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     } else if (state == STATE_DRAGGING || state == STATE_SETTLING) {
       ViewCompat.offsetTopAndBottom(child, savedTop - child.getTop());
     }
+    updateDrawableForTargetState(state, /* animate= */ false);
 
     nestedScrollingChildRef = new WeakReference<>(findScrollingChild(child));
 
@@ -881,6 +883,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     // Fix incorrect expanded settings depending on whether or not we are fitting sheet to contents.
     setStateInternal((this.fitToContents && state == STATE_HALF_EXPANDED) ? STATE_EXPANDED : state);
 
+    updateDrawableForTargetState(state, /* animate= */ true);
     updateAccessibilityActions();
   }
 
@@ -1050,6 +1053,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       throw new IllegalArgumentException("offset must be greater than or equal to 0");
     }
     this.expandedOffset = offset;
+    updateDrawableForTargetState(state, /* animate= */ true);
   }
 
   /**
@@ -1371,33 +1375,44 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       updateImportantForAccessibility(false);
     }
 
-    updateDrawableForTargetState(state);
+    updateDrawableForTargetState(state, /* animate= */ true);
     for (int i = 0; i < callbacks.size(); i++) {
       callbacks.get(i).onStateChanged(bottomSheet, state);
     }
     updateAccessibilityActions();
   }
 
-  private void updateDrawableForTargetState(@State int state) {
+  private void updateDrawableForTargetState(@State int state, boolean animate) {
     if (state == STATE_SETTLING) {
       // Special case: we want to know which state we're settling to, so wait for another call.
       return;
     }
 
-    boolean expand = state == STATE_EXPANDED;
-    if (isShapeExpanded != expand) {
-      isShapeExpanded = expand;
-      if (materialShapeDrawable != null && interpolatorAnimator != null) {
-        if (interpolatorAnimator.isRunning()) {
-          interpolatorAnimator.reverse();
-        } else {
-          float to = expand ? 0f : 1f;
-          float from = 1f - to;
-          interpolatorAnimator.setFloatValues(from, to);
-          interpolatorAnimator.start();
-        }
-      }
+    boolean removeCorners = isExpandedAndShouldRemoveCorners();
+    if (expandedCornersRemoved == removeCorners || materialShapeDrawable == null) {
+      return;
     }
+    expandedCornersRemoved = removeCorners;
+    if (animate && interpolatorAnimator != null) {
+      if (interpolatorAnimator.isRunning()) {
+        interpolatorAnimator.reverse();
+      } else {
+        float to = removeCorners ? 0f : 1f;
+        float from = 1f - to;
+        interpolatorAnimator.setFloatValues(from, to);
+        interpolatorAnimator.start();
+      }
+    } else {
+      if (interpolatorAnimator != null && interpolatorAnimator.isRunning()) {
+        interpolatorAnimator.cancel();
+      }
+      materialShapeDrawable.setInterpolation(expandedCornersRemoved ? 0f : 1f);
+    }
+  }
+
+  private boolean isExpandedAndShouldRemoveCorners() {
+    // Only remove corners when it's full screen.
+    return state == STATE_EXPANDED && (shouldRemoveExpandedCorners || getExpandedOffset() == 0);
   }
 
   private int calculatePeekHeight() {
@@ -1649,7 +1664,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     if (settling) {
       setStateInternal(STATE_SETTLING);
       // STATE_SETTLING won't animate the material shape, so do that here with the target state.
-      updateDrawableForTargetState(state);
+      updateDrawableForTargetState(state, /* animate= */ true);
       stateSettlingTracker.continueSettlingToState(state);
     } else {
       setStateInternal(state);
