@@ -44,6 +44,8 @@
     <item name="cornerSize">12dp</item>
   </style>
   <macro name="m3_sys_shape_corner_medium_family">rounded</macro>
+  <!-- Asymmetric shape token "md.sys.shape.corner.large.end" is explicitly ignored. Please use corresponding shape appearance and the right shape appearance overlay. -->
+  <!-- Asymmetric shape token "md.sys.shape.corner.large.top" is explicitly ignored. Please use corresponding shape appearance and the top shape appearance overlay. -->
   <style name="ShapeAppearance.M3.Sys.Shape.Corner.ExtraLarge" parent="">
     <item name="cornerFamily">?attr/shapeCornerFamily</item>
     <item name="cornerSize">28dp</item>
@@ -54,4 +56,6 @@
     <item name="cornerSize">4dp</item>
   </style>
   <macro name="m3_sys_shape_corner_extra_small_family">rounded</macro>
+  <!-- Asymmetric shape token "md.sys.shape.corner.extra-large.top" is explicitly ignored. Please use corresponding shape appearance and the top shape appearance overlay. -->
+  <!-- Asymmetric shape token "md.sys.shape.corner.extra-small.top" is explicitly ignored. Please use corresponding shape appearance and the top shape appearance overlay. -->
 </resources>
