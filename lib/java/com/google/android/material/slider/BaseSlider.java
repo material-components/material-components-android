@@ -2748,6 +2748,9 @@ abstract class BaseSlider<
         contentDescription.append(startOrEndDescription(virtualViewId));
         contentDescription.append(slider.formatValue(value));
       }
+
+      contentDescription.append(" Value is" + slider.formatValue(value));
+
       info.setContentDescription(contentDescription.toString());
 
       slider.updateBoundsForVirtualViewId(virtualViewId, virtualViewBounds);
