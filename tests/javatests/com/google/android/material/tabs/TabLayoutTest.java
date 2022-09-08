@@ -498,6 +498,20 @@ public class TabLayoutTest {
     Espresso.unregisterIdlingResources(idler);
   }
 
+  @Test
+  @UiThreadTest
+  public void testSetCustomTabReplacesCustomView() {
+    final LayoutInflater inflater = LayoutInflater.from(activityTestRule.getActivity());
+    final TabLayout tabLayout = (TabLayout) inflater.inflate(R.layout.design_tabs, null);
+    final TabLayout.Tab tab = tabLayout.newTab();
+    tab.setCustomView(R.layout.design_tab_item_custom);
+    tabLayout.addTab(tab);
+    tab.setCustomView(R.layout.design_tab_item_custom_alternate);
+    
+    assertNull(tabLayout.findViewById(R.id.my_custom_tab));
+    assertNotNull(tabLayout.findViewById(R.id.my_custom_alternate_tab));
+  }
+
   /**
    * Tests that the indicator animation still functions as intended when modifying the animator's
    * update listener, instead of removing/recreating the animator itself.

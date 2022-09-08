@@ -2649,6 +2649,12 @@ public class TabLayout extends HorizontalScrollView {
           if (customParent != null) {
             ((ViewGroup) customParent).removeView(custom);
           }
+          if (customView != null) {
+            final ViewParent customViewParent = customView.getParent();
+            if (customViewParent != null) {
+              ((ViewGroup) customViewParent).removeView(customView);
+            }
+          }
           addView(custom);
         }
         customView = custom;
