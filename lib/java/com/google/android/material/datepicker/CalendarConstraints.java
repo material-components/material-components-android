@@ -96,13 +96,13 @@ public final class CalendarConstraints implements Parcelable {
 
   /** Returns the earliest month allowed by this set of bounds. */
   @NonNull
-  public Month getStart() {
+  Month getStart() {
     return start;
   }
 
   /** Returns the latest month allowed by this set of bounds. */
   @NonNull
-  public Month getEnd() {
+  Month getEnd() {
     return end;
   }
 
@@ -136,6 +136,25 @@ public final class CalendarConstraints implements Parcelable {
    */
   int getYearSpan() {
     return yearSpan;
+  }
+
+  /** Returns the earliest time in milliseconds allowed by this set of bounds. */
+  public long getStartMs() {
+    return start.timeInMillis;
+  }
+
+  /** Returns the latest time in milliseconds allowed by this set of bounds. */
+  public long getEndMs() {
+    return end.timeInMillis;
+  }
+
+  /**
+   * Returns the openAt time in milliseconds within this set of bounds. Returns null if not
+   * available.
+   */
+  @Nullable
+  public Long getOpenAtMs() {
+    return openAt == null ? null : openAt.timeInMillis;
   }
 
   @Override

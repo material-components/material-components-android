@@ -175,4 +175,28 @@ public class CalendarConstraintsTest {
 
     assertThat(calendarConstraints.getEnd().timeInMillis).isEqualTo(FEB_2016);
   }
+
+  @Test
+  public void getStartMs_succeeds() {
+    CalendarConstraints calendarConstraints =
+        new CalendarConstraints.Builder().setStart(FEB_2016).build();
+
+    assertThat(calendarConstraints.getStartMs()).isEqualTo(FEB_2016);
+  }
+
+  @Test
+  public void getEndMs_succeeds() {
+    CalendarConstraints calendarConstraints =
+        new CalendarConstraints.Builder().setEnd(FEB_2016).build();
+
+    assertThat(calendarConstraints.getEndMs()).isEqualTo(FEB_2016);
+  }
+
+  @Test
+  public void getOpenAtMs_succeeds() {
+    CalendarConstraints calendarConstraints =
+        new CalendarConstraints.Builder().setOpenAt(FEB_2016).build();
+
+    assertThat(calendarConstraints.getOpenAtMs()).isEqualTo(FEB_2016);
+  }
 }
