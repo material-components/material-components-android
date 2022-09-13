@@ -49,9 +49,9 @@
       android:layout_height="wrap_content"
       app:layout_behavior="@string/bottom_sheet_behavior">
     <com.google.android.material.bottomsheet.BottomSheetDragHandleView
-      android:id="@+id/drag_handle"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"/>
+        android:id="@+id/drag_handle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view"
         android:layout_width="match_parent"
