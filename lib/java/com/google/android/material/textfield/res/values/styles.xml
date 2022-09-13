@@ -332,30 +332,31 @@
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox</item>
 
     <item name="boxStrokeColor">@color/m3_textfield_stroke_color</item>
-    <item name="boxStrokeErrorColor">?attr/colorError</item>
+    <item name="boxStrokeErrorColor">@macro/m3_comp_outlined_text_field_error_outline_color</item>
     <item name="helperTextTextColor">@color/m3_textfield_indicator_text_color</item>
     <item name="counterTextColor">@color/m3_textfield_indicator_text_color</item>
-    <item name="counterOverflowTextColor">?attr/colorError</item>
+    <item name="counterOverflowTextColor">@macro/m3_comp_outlined_text_field_error_supporting_text_color</item>
     <item name="hintTextColor">@color/m3_textfield_label_color</item>
     <item name="android:textColorHint">@color/m3_textfield_label_color</item>
     <item name="placeholderTextColor">@color/m3_textfield_indicator_text_color</item>
     <item name="prefixTextColor">@color/m3_textfield_indicator_text_color</item>
     <item name="suffixTextColor">@color/m3_textfield_indicator_text_color</item>
-    <item name="errorTextColor">?attr/colorError</item>
-    <item name="errorIconTint">?attr/colorError</item>
+    <item name="errorTextColor">@macro/m3_comp_outlined_text_field_error_supporting_text_color</item>
+    <item name="errorIconTint">@macro/m3_comp_outlined_text_field_error_trailing_icon_color</item>
     <item name="startIconTint">@color/m3_textfield_indicator_text_color</item>
     <item name="endIconTint">@color/m3_textfield_indicator_text_color</item>
     <item name="passwordToggleDrawable">@drawable/m3_password_eye</item>
 
-    <item name="counterTextAppearance">?attr/textAppearanceBodySmall</item>
-    <item name="counterOverflowTextAppearance">?attr/textAppearanceBodySmall</item>
-    <item name="errorTextAppearance">?attr/textAppearanceBodySmall</item>
-    <item name="helperTextTextAppearance">?attr/textAppearanceBodySmall</item>
-    <item name="hintTextAppearance">?attr/textAppearanceBodySmall</item>
-    <item name="placeholderTextAppearance">?attr/textAppearanceBodyLarge</item>
+    <item name="counterTextAppearance">@macro/m3_comp_outlined_text_field_supporting_text_type</item>
+    <item name="counterOverflowTextAppearance">@macro/m3_comp_outlined_text_field_supporting_text_type</item>
+    <item name="errorTextAppearance">@macro/m3_comp_outlined_text_field_supporting_text_type</item>
+    <item name="helperTextTextAppearance">@macro/m3_comp_outlined_text_field_supporting_text_type</item>
+    <item name="hintTextAppearance">@macro/m3_comp_outlined_text_field_supporting_text_type</item>
+    <!-- Using same token from input text text appearance. -->
+    <item name="placeholderTextAppearance">@macro/m3_comp_outlined_text_field_input_text_type</item>
     <item name="prefixTextAppearance">?attr/textAppearanceTitleMedium</item>
     <item name="suffixTextAppearance">?attr/textAppearanceTitleMedium</item>
-    <item name="shapeAppearance">?attr/shapeAppearanceCornerExtraSmall</item>
+    <item name="shapeAppearance">@macro/m3_comp_outlined_text_field_container_shape</item>
     <item name="shapeAppearanceOverlay">@null</item>
   </style>
 
@@ -381,31 +382,33 @@
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.TextInputEditText.FilledBox</item>
 
     <item name="boxStrokeColor">@color/m3_textfield_stroke_color</item>
-    <item name="boxStrokeErrorColor">?attr/colorError</item>
+    <item name="boxStrokeErrorColor">@macro/m3_comp_filled_text_field_error_active_indicator_color</item>
     <item name="boxBackgroundColor">@color/m3_textfield_filled_background_color</item>
     <item name="helperTextTextColor">@color/m3_textfield_indicator_text_color</item>
     <item name="counterTextColor">@color/m3_textfield_indicator_text_color</item>
-    <item name="counterOverflowTextColor">?attr/colorError</item>
+    <item name="counterOverflowTextColor">@macro/m3_comp_filled_text_field_error_supporting_text_color</item>
     <item name="hintTextColor">@color/m3_textfield_label_color</item>
     <item name="android:textColorHint">@color/m3_textfield_label_color</item>
     <item name="placeholderTextColor">@color/m3_textfield_indicator_text_color</item>
     <item name="prefixTextColor">@color/m3_textfield_indicator_text_color</item>
     <item name="suffixTextColor">@color/m3_textfield_indicator_text_color</item>
-    <item name="errorTextColor">?attr/colorError</item>
-    <item name="errorIconTint">?attr/colorError</item>
+    <item name="errorTextColor">@macro/m3_comp_filled_text_field_error_supporting_text_color</item>
+    <item name="errorIconTint">@macro/m3_comp_filled_text_field_error_trailing_icon_color</item>
     <item name="startIconTint">@color/m3_textfield_indicator_text_color</item>
     <item name="endIconTint">@color/m3_textfield_indicator_text_color</item>
     <item name="passwordToggleDrawable">@drawable/m3_password_eye</item>
 
-    <item name="counterTextAppearance">?attr/textAppearanceBodySmall</item>
-    <item name="counterOverflowTextAppearance">?attr/textAppearanceBodySmall</item>
-    <item name="errorTextAppearance">?attr/textAppearanceBodySmall</item>
-    <item name="helperTextTextAppearance">?attr/textAppearanceBodySmall</item>
-    <item name="hintTextAppearance">?attr/textAppearanceBodySmall</item>
-    <item name="placeholderTextAppearance">?attr/textAppearanceBodyLarge</item>
+   <!-- Using outlined tokens with same values. -->
+    <item name="counterTextAppearance">@macro/m3_comp_outlined_text_field_supporting_text_type</item>
+    <item name="counterOverflowTextAppearance">@macro/m3_comp_outlined_text_field_supporting_text_type</item>
+    <item name="errorTextAppearance">@macro/m3_comp_outlined_text_field_supporting_text_type</item>
+    <item name="helperTextTextAppearance">@macro/m3_comp_outlined_text_field_supporting_text_type</item>
+    <item name="hintTextAppearance">@macro/m3_comp_outlined_text_field_supporting_text_type</item>
+   <!-- Using same token from input text text appearance. -->
+    <item name="placeholderTextAppearance">@macro/m3_comp_filled_text_field_input_text_type</item>
     <item name="prefixTextAppearance">?attr/textAppearanceTitleMedium</item>
     <item name="suffixTextAppearance">?attr/textAppearanceTitleMedium</item>
-    <item name="shapeAppearance">?attr/shapeAppearanceCornerExtraSmall</item>
+    <item name="shapeAppearance">@macro/m3_comp_filled_text_field_container_shape</item>
     <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Material3.Corner.Top</item>
   </style>
 
@@ -427,61 +430,61 @@
 
   <!-- Styles for the M3 TextInputEditText. -->
   <style name="Widget.Material3.TextInputEditText.OutlinedBox" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
-    <item name="android:textAppearance">?attr/textAppearanceBodyLarge</item>
+    <item name="android:textAppearance">@macro/m3_comp_outlined_text_field_input_text_type</item>
     <item name="android:textColor">@color/m3_textfield_input_text_color</item>
   </style>
 
   <style name="Widget.Material3.TextInputEditText.OutlinedBox.Dense" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox.Dense">
-    <item name="android:textAppearance">?attr/textAppearanceBodyLarge</item>
+    <item name="android:textAppearance">@macro/m3_comp_outlined_text_field_input_text_type</item>
     <item name="android:textColor">@color/m3_textfield_input_text_color</item>
   </style>
 
   <style name="Widget.Material3.TextInputEditText.FilledBox" parent="Widget.MaterialComponents.TextInputEditText.FilledBox">
-    <item name="android:textAppearance">?attr/textAppearanceBodyLarge</item>
+    <item name="android:textAppearance">@macro/m3_comp_filled_text_field_input_text_type</item>
     <item name="android:textColor">@color/m3_textfield_input_text_color</item>
   </style>
 
   <style name="Widget.Material3.TextInputEditText.FilledBox.Dense" parent="Widget.MaterialComponents.TextInputEditText.FilledBox.Dense">
-    <item name="android:textAppearance">?attr/textAppearanceBodyLarge</item>
+    <item name="android:textAppearance">@macro/m3_comp_filled_text_field_input_text_type</item>
     <item name="android:textColor">@color/m3_textfield_input_text_color</item>
   </style>
 
   <!-- Styles for the M3 AutoCompleteTextView. -->
   <style name="Widget.Material3.AutoCompleteTextView.OutlinedBox" parent="Widget.MaterialComponents.AutoCompleteTextView.OutlinedBox">
-    <item name="android:textAppearance">?attr/textAppearanceBodyLarge</item>
-    <item name="simpleItemSelectedColor">?attr/colorSurfaceVariant</item>
+    <item name="android:textAppearance">@macro/m3_comp_outlined_autocomplete_text_field_input_text_type</item>
+    <item name="simpleItemSelectedColor">@macro/m3_comp_outlined_autocomplete_menu_list_item_selected_container_color</item>
     <item name="simpleItemSelectedRippleColor">@color/m3_simple_item_ripple_color</item>
     <item name="simpleItemLayout">@layout/m3_auto_complete_simple_item</item>
-    <item name="android:popupElevation" tools:ignore="NewApi">@dimen/m3_exposed_dropdown_menu_popup_elevation</item>
+    <item name="android:popupElevation" tools:ignore="NewApi">@dimen/m3_comp_outlined_autocomplete_menu_container_elevation</item>
   </style>
 
   <style name="Widget.Material3.AutoCompleteTextView.OutlinedBox.Dense" parent="Widget.MaterialComponents.AutoCompleteTextView.OutlinedBox.Dense">
-    <item name="android:textAppearance">?attr/textAppearanceBodyLarge</item>
-    <item name="simpleItemSelectedColor">?attr/colorSurfaceVariant</item>
+    <item name="android:textAppearance">@macro/m3_comp_outlined_autocomplete_text_field_input_text_type</item>
+    <item name="simpleItemSelectedColor">@macro/m3_comp_outlined_autocomplete_menu_list_item_selected_container_color</item>
     <item name="simpleItemSelectedRippleColor">@color/m3_simple_item_ripple_color</item>
     <item name="simpleItemLayout">@layout/m3_auto_complete_simple_item</item>
-    <item name="android:popupElevation" tools:ignore="NewApi">@dimen/m3_exposed_dropdown_menu_popup_elevation</item>
+    <item name="android:popupElevation" tools:ignore="NewApi">@dimen/m3_comp_outlined_autocomplete_menu_container_elevation</item>
   </style>
 
   <style name="Widget.Material3.AutoCompleteTextView.FilledBox" parent="Widget.MaterialComponents.AutoCompleteTextView.FilledBox">
-    <item name="android:textAppearance">?attr/textAppearanceBodyLarge</item>
-    <item name="simpleItemSelectedColor">?attr/colorSurfaceVariant</item>
+    <item name="android:textAppearance">@macro/m3_comp_filled_autocomplete_text_field_input_text_type</item>
+    <item name="simpleItemSelectedColor">@macro/m3_comp_filled_autocomplete_menu_list_item_selected_container_color</item>
     <item name="simpleItemSelectedRippleColor">@color/m3_simple_item_ripple_color</item>
     <item name="simpleItemLayout">@layout/m3_auto_complete_simple_item</item>
-    <item name="android:popupElevation" tools:ignore="NewApi">@dimen/m3_exposed_dropdown_menu_popup_elevation</item>
+    <item name="android:popupElevation" tools:ignore="NewApi">@dimen/m3_comp_filled_autocomplete_menu_container_elevation</item>
   </style>
 
   <style name="Widget.Material3.AutoCompleteTextView.FilledBox.Dense" parent="Widget.MaterialComponents.AutoCompleteTextView.FilledBox.Dense">
-    <item name="android:textAppearance">?attr/textAppearanceBodyLarge</item>
-    <item name="simpleItemSelectedColor">?attr/colorSurfaceVariant</item>
+    <item name="android:textAppearance">@macro/m3_comp_filled_autocomplete_text_field_input_text_type</item>
+    <item name="simpleItemSelectedColor">@macro/m3_comp_filled_autocomplete_menu_list_item_selected_container_color</item>
     <item name="simpleItemSelectedRippleColor">@color/m3_simple_item_ripple_color</item>
     <item name="simpleItemLayout">@layout/m3_auto_complete_simple_item</item>
-    <item name="android:popupElevation" tools:ignore="NewApi">@dimen/m3_exposed_dropdown_menu_popup_elevation</item>
+    <item name="android:popupElevation" tools:ignore="NewApi">@dimen/m3_comp_filled_autocomplete_menu_container_elevation</item>
   </style>
 
   <!-- ThemeOverlays to be used internally in the TextInputLayout styles to automatically apply the correct TextInputEditText style to the TextInputEditText. -->
   <style name="Base.ThemeOverlay.Material3.TextInputEditText" parent="ThemeOverlay.MaterialComponents.TextInputEditText">
-    <item name="colorControlActivated">?attr/colorPrimary</item>
+    <item name="colorControlActivated">@macro/m3_comp_outlined_text_field_caret_color</item>
   </style>
 
   <style name="ThemeOverlay.Material3.TextInputEditText" parent="Base.ThemeOverlay.Material3.TextInputEditText">
@@ -507,7 +510,7 @@
   <!-- ThemeOverlays to be used internally in the TextInputLayout M3 box styles to automatically
        apply the correct box style to the AutocompleteTextView. -->
   <style name="Base.ThemeOverlay.Material3.AutoCompleteTextView" parent="ThemeOverlay.MaterialComponents.AutoCompleteTextView">
-    <item name="colorControlActivated">?attr/colorPrimary</item>
+    <item name="colorControlActivated">@macro/m3_comp_outlined_autocomplete_text_field_caret_color</item>
   </style>
 
   <style name="ThemeOverlay.Material3.AutoCompleteTextView" parent="Base.ThemeOverlay.Material3.AutoCompleteTextView">

@@ -16,11 +16,11 @@
 -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
   <!-- Disabled -->
-  <item android:alpha="@dimen/material_emphasis_disabled" android:color="?attr/colorOnSurface" android:state_enabled="false"/>
+  <item android:alpha="@dimen/m3_comp_outlined_text_field_disabled_label_text_opacity" android:color="@macro/m3_comp_outlined_text_field_disabled_label_text_color" android:state_enabled="false"/>
 
   <!-- Focused -->
-  <item android:color="?attr/colorPrimary" android:state_focused="true"/>
+  <item android:color="@macro/m3_comp_outlined_text_field_focus_label_text_color" android:state_focused="true"/>
 
   <!-- Normal -->
-  <item android:color="?attr/colorOnSurfaceVariant"/>
+  <item android:color="@macro/m3_comp_outlined_text_field_label_text_color"/>
 </selector>

@@ -30,8 +30,8 @@
 
   <dimen name="mtrl_textinput_box_corner_radius_small">0dp</dimen>
   <dimen name="mtrl_textinput_box_corner_radius_medium">4dp</dimen>
-  <dimen name="mtrl_textinput_box_stroke_width_default">1dp</dimen>
-  <dimen name="mtrl_textinput_box_stroke_width_focused">2dp</dimen>
+  <dimen name="mtrl_textinput_box_stroke_width_default">@dimen/m3_comp_outlined_text_field_outline_width</dimen>
+  <dimen name="mtrl_textinput_box_stroke_width_focused">@dimen/m3_comp_outlined_text_field_focus_outline_width</dimen>
   <dimen name="mtrl_textinput_box_label_cutout_padding">4dp</dimen>
 
   <!-- Dimens for edit text's top and bottom padding adjustments for large font scale settings. -->
@@ -62,8 +62,6 @@
   <dimen name="mtrl_exposed_dropdown_menu_popup_elevation">8dp</dimen>
   <dimen name="mtrl_exposed_dropdown_menu_popup_vertical_padding">8dp</dimen>
   <dimen name="mtrl_exposed_dropdown_menu_popup_vertical_offset">-8dp</dimen>
-
-  <dimen name="m3_exposed_dropdown_menu_popup_elevation">@dimen/m3_sys_elevation_level2</dimen>
 
   <!-- Alphas for state colors of the dropdown menu items. Same as the ripple
        alpha values but without the changes applied for different APIs. -->

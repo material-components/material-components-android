@@ -926,7 +926,7 @@ public class TextInputLayout extends LinearLayout {
         editText instanceof MaterialAutoCompleteTextView
             ? ((MaterialAutoCompleteTextView) editText).getPopupElevation()
             : getResources().getDimensionPixelOffset(
-                R.dimen.mtrl_exposed_dropdown_menu_popup_elevation);
+                R.dimen.m3_comp_outlined_autocomplete_menu_container_elevation);
     int verticalPadding =
         getResources()
             .getDimensionPixelOffset(R.dimen.mtrl_exposed_dropdown_menu_popup_vertical_padding);

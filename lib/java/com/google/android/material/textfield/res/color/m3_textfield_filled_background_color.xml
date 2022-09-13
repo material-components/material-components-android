@@ -16,5 +16,5 @@
 -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
   <item android:alpha="@dimen/material_emphasis_disabled" android:color="?attr/colorOnSurfaceInverse" android:state_enabled="false"/>
-  <item android:color="?attr/colorSurfaceVariant"/>
+  <item android:color="@macro/m3_comp_filled_text_field_container_color"/>
 </selector>
