@@ -138,11 +138,7 @@ class MonthAdapter extends BaseAdapter {
       Locale locale = dayTextView.getResources().getConfiguration().locale;
       dayTextView.setText(String.format(locale, "%d", dayNumber));
       long dayInMillis = month.getDay(dayNumber);
-      if (month.year == Month.current().year) {
-        dayTextView.setContentDescription(DateStrings.getMonthDayOfWeekDay(dayInMillis));
-      } else {
-        dayTextView.setContentDescription(DateStrings.getYearMonthDayOfWeekDay(dayInMillis));
-      }
+      dayTextView.setContentDescription(DateStrings.getOptionalYearMonthDayOfWeekDay(dayInMillis));
       dayTextView.setVisibility(View.VISIBLE);
       dayTextView.setEnabled(true);
     }
@@ -208,6 +204,7 @@ class MonthAdapter extends BaseAdapter {
 
     if (dayViewDecorator != null && dayNumber != NO_DAY_NUMBER) {
       Context context = dayTextView.getContext();
+      long dayInMillis = month.getDay(dayNumber);
       int year = month.year;
       int month = this.month.month;
 
@@ -227,6 +224,17 @@ class MonthAdapter extends BaseAdapter {
           dayViewDecorator.getCompoundDrawableBottom(
               context, year, month, dayNumber, valid, selected);
       dayTextView.setCompoundDrawables(drawableLeft, drawableTop, drawableRight, drawableBottom);
+
+      CharSequence decoratorContentDescription =
+          dayViewDecorator.getContentDescription(
+              context,
+              year,
+              month,
+              dayNumber,
+              valid,
+              selected,
+              DateStrings.getOptionalYearMonthDayOfWeekDay(dayInMillis));
+      dayTextView.setContentDescription(decoratorContentDescription);
     } else {
       style.styleItem(dayTextView);
     }

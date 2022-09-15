@@ -28,6 +28,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.datepicker.DayViewDecorator;
 import java.util.ArrayList;
@@ -59,6 +60,24 @@ class CircleIndicatorDecorator extends DayViewDecorator {
   public Drawable getCompoundDrawableBottom(
       @NonNull Context context, int year, int month, int day, boolean valid, boolean selected) {
     return selectIndicatorDrawable(year, month, day, valid, selected);
+  }
+
+  @Nullable
+  @Override
+  public CharSequence getContentDescription(
+      @NonNull Context context,
+      int year,
+      int month,
+      int day,
+      boolean valid,
+      boolean selected,
+      @Nullable CharSequence originalContentDescription) {
+    if (!valid || !shouldShowIndicator(year, month, day)) {
+      return originalContentDescription;
+    }
+    return String.format(
+        context.getString(R.string.cat_picker_day_view_decorator_dots_content_description),
+        originalContentDescription);
   }
 
   private Drawable selectIndicatorDrawable(

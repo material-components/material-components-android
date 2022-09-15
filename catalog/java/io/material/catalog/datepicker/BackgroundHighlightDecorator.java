@@ -57,6 +57,24 @@ class BackgroundHighlightDecorator extends DayViewDecorator {
         : null;
   }
 
+  @Nullable
+  @Override
+  public CharSequence getContentDescription(
+      @NonNull Context context,
+      int year,
+      int month,
+      int day,
+      boolean valid,
+      boolean selected,
+      @Nullable CharSequence originalContentDescription) {
+    if (!valid || !shouldShowHighlight(year, month, day)) {
+      return originalContentDescription;
+    }
+    return String.format(
+        context.getString(R.string.cat_picker_day_view_decorator_highlights_content_description),
+        originalContentDescription);
+  }
+
   private boolean shouldShowHighlight(int year, int month, int day) {
     for (Calendar calendar : highlightDays) {
       if (calendar.get(Calendar.YEAR) == year
