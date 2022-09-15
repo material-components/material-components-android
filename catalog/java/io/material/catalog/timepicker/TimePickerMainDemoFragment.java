@@ -17,9 +17,15 @@ package io.material.catalog.timepicker;
 
 import io.material.catalog.R;
 
+import static com.google.android.material.timepicker.MaterialTimePicker.INPUT_MODE_CLOCK;
+import static com.google.android.material.timepicker.MaterialTimePicker.INPUT_MODE_KEYBOARD;
+import static com.google.android.material.timepicker.TimeFormat.CLOCK_12H;
+import static com.google.android.material.timepicker.TimeFormat.CLOCK_24H;
+
 import android.os.Bundle;
 import androidx.appcompat.widget.SwitchCompat;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,11 +43,14 @@ import java.util.Locale;
 /** A fragment that displays the main Picker demos for the Catalog app. */
 public class TimePickerMainDemoFragment extends DemoFragment {
 
+  private static final String TAG = TimePickerMainDemoFragment.class.getSimpleName();
+
   private int hour;
   private int minute;
 
   private final SimpleDateFormat formatter = new SimpleDateFormat("hh:mm a", Locale.getDefault());
   @TimeFormat private int clockFormat;
+  @Nullable private Integer timeInputMode;
   private TextView textView;
 
   @Override
@@ -51,37 +60,70 @@ public class TimePickerMainDemoFragment extends DemoFragment {
     ViewGroup view =
         (ViewGroup) layoutInflater.inflate(R.layout.time_picker_main_demo, viewGroup, false);
 
-    Button button = view.findViewById(R.id.timepicker_button);
     textView = view.findViewById(R.id.timepicker_time);
-    MaterialButtonToggleGroup timeFormatToggle = view.findViewById(R.id.time_format_toggle);
-    clockFormat = TimeFormat.CLOCK_12H;
-    timeFormatToggle.check(R.id.time_format_12h);
 
+    MaterialButtonToggleGroup timeFormatToggle = view.findViewById(R.id.time_format_toggle);
     timeFormatToggle.addOnButtonCheckedListener(
         (group, checkedId, isChecked) -> {
           if (isChecked) {
-            boolean isSystem24Hour = DateFormat.is24HourFormat(getContext());
-            boolean is24Hour =
-                checkedId == R.id.time_format_24h
-                    || (checkedId == R.id.time_format_system && isSystem24Hour);
+            if (checkedId == R.id.time_format_12h) {
+              clockFormat = CLOCK_12H;
+            } else if (checkedId == R.id.time_format_24h) {
+              clockFormat = CLOCK_24H;
+            } else if (checkedId == R.id.time_format_system) {
+              boolean isSystem24Hour = DateFormat.is24HourFormat(getContext());
+              clockFormat = isSystem24Hour ? CLOCK_24H : CLOCK_12H;
+            } else {
+              Log.d(TAG, "Invalid time format selection: " + checkedId);
+            }
+          }
+        });
 
-            clockFormat = is24Hour ? TimeFormat.CLOCK_24H : TimeFormat.CLOCK_12H;
+    MaterialButtonToggleGroup timeInputModeToggle = view.findViewById(R.id.time_input_mode_toggle);
+    timeInputModeToggle.addOnButtonCheckedListener(
+        (group, checkedId, isChecked) -> {
+          if (isChecked) {
+            if (checkedId == R.id.time_input_mode_clock) {
+              timeInputMode = INPUT_MODE_CLOCK;
+            } else if (checkedId == R.id.time_input_mode_keyboard) {
+              timeInputMode = INPUT_MODE_KEYBOARD;
+            } else if (checkedId == R.id.time_input_mode_default) {
+              timeInputMode = null;
+            } else {
+              Log.d(TAG, "Invalid time input mode selection: " + checkedId);
+            }
           }
         });
 
     SwitchCompat frameworkSwitch = view.findViewById(R.id.framework_switch);
+    frameworkSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+      for (int i = 0; i < timeInputModeToggle.getChildCount(); i++) {
+        View child = timeInputModeToggle.getChildAt(i);
+        child.setEnabled(!isChecked);
+      }
+    });
+
+    timeFormatToggle.check(R.id.time_format_system);
+    timeInputModeToggle.check(R.id.time_input_mode_default);
+    frameworkSwitch.setChecked(false);
+
+    Button button = view.findViewById(R.id.timepicker_button);
     button.setOnClickListener(v -> {
       if (frameworkSwitch.isChecked()) {
         showFrameworkTimepicker();
         return;
       }
 
-      MaterialTimePicker materialTimePicker = new MaterialTimePicker.Builder()
+      MaterialTimePicker.Builder materialTimePickerBuilder = new MaterialTimePicker.Builder()
           .setTimeFormat(clockFormat)
           .setHour(hour)
-          .setMinute(minute)
-          .build();
+          .setMinute(minute);
 
+      if (timeInputMode != null) {
+        materialTimePickerBuilder.setInputMode(timeInputMode);
+      }
+
+      MaterialTimePicker materialTimePicker = materialTimePickerBuilder.build();
       materialTimePicker.show(requireFragmentManager(), "fragment_tag");
 
       materialTimePicker.addOnPositiveButtonClickListener(dialog -> {
@@ -102,7 +144,7 @@ public class TimePickerMainDemoFragment extends DemoFragment {
                 TimePickerMainDemoFragment.this.onTimeSet(hourOfDay, minute),
             hour,
             minute,
-            clockFormat == TimeFormat.CLOCK_24H);
+            clockFormat == CLOCK_24H);
     timePickerDialog.show();
   }
 
