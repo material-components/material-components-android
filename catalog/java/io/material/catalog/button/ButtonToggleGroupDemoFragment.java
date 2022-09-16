@@ -81,6 +81,16 @@ public class ButtonToggleGroupDemoFragment extends DemoFragment {
           }
         });
 
+    MaterialSwitch disableToggle = view.findViewById(R.id.switch_disable);
+    disableToggle.setOnCheckedChangeListener(
+        (buttonView, isChecked) -> {
+          for (int i = 0; i < toggleGroups.size(); ++i) {
+            MaterialButtonToggleGroup materialButtonToggleGroup = toggleGroups.get(i);
+            materialButtonToggleGroup.setEnabled(!isChecked);
+          }
+        });
+
+
     for (MaterialButtonToggleGroup toggleGroup : toggleGroups) {
       toggleGroup.addOnButtonCheckedListener(
           new OnButtonCheckedListener() {

@@ -36,29 +36,33 @@
         android:textAppearance="?attr/textAppearanceSubtitle1"/>
 
     <com.google.android.material.button.MaterialButtonToggleGroup
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:singleSelection="true">
+
+      <Button
+        style="?attr/materialButtonOutlinedStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:singleSelection="true">
+        android:text="@string/cat_button_label_private" />
+
       <Button
-          style="?attr/materialButtonOutlinedStyle"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/cat_button_label_private"/>
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cat_button_label_team" />
+
       <Button
-          style="?attr/materialButtonOutlinedStyle"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/cat_button_label_team"/>
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cat_button_label_everyone" />
+
       <Button
-          style="?attr/materialButtonOutlinedStyle"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/cat_button_label_everyone"/>
-      <Button
-          style="?attr/materialButtonOutlinedStyle"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/cat_button_label_custom"/>
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cat_button_label_custom" />
     </com.google.android.material.button.MaterialButtonToggleGroup>
 
     <TextView
@@ -162,6 +166,16 @@
         android:checked="false"
         android:enabled="true"
         android:text="@string/cat_button_vertical_orientation" />
+
+    <com.google.android.material.materialswitch.MaterialSwitch
+      android:id="@+id/switch_disable"
+      android:paddingTop="16dp"
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"
+      android:layout_gravity="center"
+      android:checked="false"
+      android:enabled="true"
+      android:text="@string/cat_button_disable" />
 
   </LinearLayout>
 </ScrollView>
