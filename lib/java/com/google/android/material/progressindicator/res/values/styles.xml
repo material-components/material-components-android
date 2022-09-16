@@ -49,11 +49,16 @@
 
   <!-- M3 LinearProgressIndicator style -->
   <style name="Widget.Material3.LinearProgressIndicator" parent="Widget.MaterialComponents.LinearProgressIndicator">
-    <item name="trackColor">?attr/colorSurfaceVariant</item>
+    <item name="trackThickness">@dimen/m3_comp_linear_progress_indicator_active_indicator_height</item>
+    <item name="trackColor">@macro/m3_comp_linear_progress_indicator_track_color</item>
+    <item name="indicatorColor">@macro/m3_comp_linear_progress_indicator_active_indicator_color</item>
   </style>
 
   <!-- M3 CircularProgressIndicator styles -->
-  <style name="Widget.Material3.CircularProgressIndicator" parent="Widget.MaterialComponents.CircularProgressIndicator" />
+  <style name="Widget.Material3.CircularProgressIndicator" parent="Widget.MaterialComponents.CircularProgressIndicator">
+    <item name="trackThickness">@dimen/m3_comp_circular_progress_indicator_active_indicator_width</item>
+    <item name="indicatorColor">@macro/m3_comp_circular_progress_indicator_active_indicator_color</item>
+  </style>
   <style name="Widget.Material3.CircularProgressIndicator.Medium" parent="Widget.MaterialComponents.CircularProgressIndicator.Medium"/>
   <style name="Widget.Material3.CircularProgressIndicator.Small" parent="Widget.MaterialComponents.CircularProgressIndicator.Small"/>
   <style name="Widget.Material3.CircularProgressIndicator.ExtraSmall" parent="Widget.MaterialComponents.CircularProgressIndicator.ExtraSmall"/>

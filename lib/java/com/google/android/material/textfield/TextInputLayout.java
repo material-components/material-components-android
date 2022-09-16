@@ -175,10 +175,10 @@ import java.util.LinkedHashSet;
  * TextInputLayout#setHint(CharSequence)} and {@link TextInputLayout#getHint()} on TextInputLayout,
  * instead of on EditText.
  *
- * If you construct the {@link TextInputEditText} child of a {@link TextInputLayout}
- * programmatically, you should use {@link TextInputLayout}'s `context` to create the view. This
- * will allow {@link TextInputLayout} to pass along the appropriate styling to the
- * {@link TextInputEditText}.
+ * <p>If you construct the {@link TextInputEditText} child of a {@link TextInputLayout}
+ * programmatically, you should use {@link TextInputLayout}'s {@code context} to create the view.
+ * This will allow {@link TextInputLayout} to pass along the appropriate styling to the {@link
+ * TextInputEditText}.
  *
  * <p>If the {@link EditText} child is not a {@link TextInputEditText}, make sure to set the {@link
  * EditText}'s {@code android:background} to {@code null} when using an outlined or filled text
@@ -187,9 +187,9 @@ import java.util.LinkedHashSet;
  *
  * <p><strong>Note:</strong> The actual view hierarchy present under TextInputLayout is
  * <strong>NOT</strong> guaranteed to match the view hierarchy as written in XML. As a result, calls
- * to getParent() on children of the TextInputLayout -- such as a TextInputEditText -- may not
- * return the TextInputLayout itself, but rather an intermediate View. If you need to access a View
- * directly, set an {@code android:id} and use {@link View#findViewById(int)}.
+ * to {@code getParent()} on children of the TextInputLayout -- such as a TextInputEditText -- may
+ * not return the TextInputLayout itself, but rather an intermediate View. If you need to access a
+ * View directly, set an {@code android:id} and use {@link View#findViewById(int)}.
  */
 public class TextInputLayout extends LinearLayout {
 
@@ -926,7 +926,7 @@ public class TextInputLayout extends LinearLayout {
         editText instanceof MaterialAutoCompleteTextView
             ? ((MaterialAutoCompleteTextView) editText).getPopupElevation()
             : getResources().getDimensionPixelOffset(
-                R.dimen.mtrl_exposed_dropdown_menu_popup_elevation);
+                R.dimen.m3_comp_outlined_autocomplete_menu_container_elevation);
     int verticalPadding =
         getResources()
             .getDimensionPixelOffset(R.dimen.mtrl_exposed_dropdown_menu_popup_vertical_padding);
