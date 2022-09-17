@@ -100,6 +100,19 @@ class DateStrings {
     return UtcDates.getFullFormat(locale).format(new Date(timeInMillis));
   }
 
+  /**
+   * Does not show year if date is within current year.
+   *
+   * @param timeInMillis milliseconds since UTC epoch.
+   * @return Formatted date string.
+   */
+  static String getOptionalYearMonthDayOfWeekDay(long timeInMillis) {
+    if (isDateWithinCurrentYear(timeInMillis)) {
+      return getMonthDayOfWeekDay(timeInMillis);
+    }
+    return getYearMonthDayOfWeekDay(timeInMillis);
+  }
+
   static String getDateString(long timeInMillis) {
     return getDateString(timeInMillis, null);
   }
@@ -116,17 +129,20 @@ class DateStrings {
    * @return Formatted date string.
    */
   static String getDateString(long timeInMillis, @Nullable SimpleDateFormat userDefinedDateFormat) {
-    Calendar currentCalendar = UtcDates.getTodayCalendar();
-    Calendar calendarDate = UtcDates.getUtcCalendar();
-    calendarDate.setTimeInMillis(timeInMillis);
-
     if (userDefinedDateFormat != null) {
       Date date = new Date(timeInMillis);
       return userDefinedDateFormat.format(date);
-    } else if (currentCalendar.get(Calendar.YEAR) == calendarDate.get(Calendar.YEAR)) {
+    } else if (isDateWithinCurrentYear(timeInMillis)) {
       return getMonthDay(timeInMillis);
     }
     return getYearMonthDay(timeInMillis);
+  }
+
+  private static boolean isDateWithinCurrentYear(long timeInMillis) {
+    Calendar currentCalendar = UtcDates.getTodayCalendar();
+    Calendar calendarDate = UtcDates.getUtcCalendar();
+    calendarDate.setTimeInMillis(timeInMillis);
+    return currentCalendar.get(Calendar.YEAR) == calendarDate.get(Calendar.YEAR);
   }
 
   static Pair<String, String> getDateRangeString(@Nullable Long start, @Nullable Long end) {

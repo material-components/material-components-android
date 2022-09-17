@@ -46,17 +46,41 @@
       app:layout_constraintStart_toEndOf="@id/timepicker_button"
       app:layout_constraintTop_toTopOf="@id/timepicker_button" />
 
+    <TextView
+      android:id="@+id/time_format_label"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="16dp"
+      android:layout_marginLeft="16dp"
+      android:layout_marginTop="16dp"
+      android:layout_marginEnd="16dp"
+      android:layout_marginRight="16dp"
+      android:text="@string/time_format_label"
+      android:textAlignment="center"
+      android:textAppearance="?attr/textAppearanceBodyLarge"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
+
     <com.google.android.material.button.MaterialButtonToggleGroup
       android:id="@+id/time_format_toggle"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_margin="16dp"
+      android:layout_marginTop="8dp"
       android:orientation="horizontal"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/time_format_label"
       app:selectionRequired="true"
       app:singleSelection="true">
+
+      <Button
+        android:id="@+id/time_format_system"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/time_format_system" />
+
       <Button
         android:id="@+id/time_format_12h"
         style="?attr/materialButtonOutlinedStyle"
@@ -71,12 +95,71 @@
         android:layout_height="wrap_content"
         android:text="@string/time_format_24" />
 
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+    <TextView
+      android:id="@+id/time_input_mode_label"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="16dp"
+      android:layout_marginLeft="16dp"
+      android:layout_marginTop="16dp"
+      android:layout_marginEnd="16dp"
+      android:layout_marginRight="16dp"
+      android:text="@string/time_input_mode_label"
+      android:textAlignment="center"
+      android:textAppearance="?attr/textAppearanceBodyLarge"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/time_format_toggle" />
+
+    <TextView
+      android:id="@+id/time_input_mode_note"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="16dp"
+      android:layout_marginLeft="16dp"
+      android:layout_marginEnd="16dp"
+      android:layout_marginRight="16dp"
+      android:text="@string/time_input_mode_note"
+      android:textAlignment="center"
+      android:textAppearance="?attr/textAppearanceBodySmall"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/time_input_mode_label" />
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+      android:id="@+id/time_input_mode_toggle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="8dp"
+      android:orientation="horizontal"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/time_input_mode_note"
+      app:selectionRequired="true"
+      app:singleSelection="true">
+
       <Button
-        android:id="@+id/time_format_system"
+        android:id="@+id/time_input_mode_default"
         style="?attr/materialButtonOutlinedStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/time_format_system" />
+        android:text="@string/time_input_mode_default" />
+
+      <Button
+        android:id="@+id/time_input_mode_clock"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/time_input_mode_clock" />
+
+      <Button
+        android:id="@+id/time_input_mode_keyboard"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/time_input_mode_keyboard" />
 
     </com.google.android.material.button.MaterialButtonToggleGroup>
 
@@ -88,7 +171,7 @@
       android:text="@string/use_framework_dialog"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/time_format_toggle" />
+      app:layout_constraintTop_toBottomOf="@+id/time_input_mode_toggle" />
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -118,7 +118,7 @@
   <string name="cat_picker_day_view_decorator_none">None</string>
   <!-- Indicates that the picker will use a dots day view decorator [CHAR LIMIT=50] -->
   <string name="cat_picker_day_view_decorator_dots">Dots</string>
-  <!-- Indicates that the picker will use a dots day view decorator [CHAR LIMIT=50] -->
+  <!-- Indicates that the picker will use a highlights day view decorator [CHAR LIMIT=50] -->
   <string name="cat_picker_day_view_decorator_highlights">Highlights</string>
 
   <!-- Grouping label for a set of radio buttons that choose the positive button [CHAR LIMIT=50] -->
@@ -139,4 +139,9 @@
   <string name="cat_picker_positive_button_text">DONE</string>
   <!-- The custom negative button text -->
   <string name="cat_picker_negative_button_text">Negative</string>
+
+  <!-- The custom dots day view decorator's content description [CHAR LIMIT=120] -->
+  <string name="cat_picker_day_view_decorator_dots_content_description">%s Dotted</string>
+  <!-- The custom highlights day view decorator's content description [CHAR LIMIT=120] -->
+  <string name="cat_picker_day_view_decorator_highlights_content_description">%s Highlighted</string>
 </resources>

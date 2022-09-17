@@ -21,7 +21,12 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
+import android.content.Context;
+import android.os.Parcel;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.test.core.app.ApplicationProvider;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -259,6 +264,71 @@ public class MonthAdapterTest {
     localizedDaysOfPositionsInFebruary2019.put(6, 2);
     localizedDaysOfPositionsInFebruary2019.put(32, 28);
     assertDaysOfPositions(localizedDaysOfPositionsInFebruary2019);
+  }
+
+  @Test
+  public void dayViewDecorator_withIndicator_hasUpdatedContentDescription() {
+    DayViewDecorator decorator = getDecoratedMonthAdapter().dayViewDecorator;
+
+    CharSequence decoratorContentDescription =
+        decorator.getContentDescription(
+            ApplicationProvider.getApplicationContext(),
+            2018,
+            Calendar.JANUARY,
+            17,
+            true,
+            false,
+            "Original content description");
+    assertTrue("Original content description Test".contentEquals(decoratorContentDescription));
+  }
+
+  @Test
+  public void dayViewDecorator_withoutIndicator_hasOriginalContentDescription() {
+    DayViewDecorator decorator = getDecoratedMonthAdapter().dayViewDecorator;
+
+    CharSequence decoratorContentDescription =
+        decorator.getContentDescription(
+            ApplicationProvider.getApplicationContext(),
+            2018,
+            Calendar.JANUARY,
+            16,
+            true,
+            false,
+            "Original content description");
+    assertTrue("Original content description".contentEquals(decoratorContentDescription));
+  }
+
+  private MonthAdapter getDecoratedMonthAdapter() {
+    return new MonthAdapter(
+        Month.create(2018, Calendar.JANUARY),
+        new SingleDateSelector(),
+        new CalendarConstraints.Builder().build(),
+        new DayViewDecorator() {
+          @Nullable
+          @Override
+          public CharSequence getContentDescription(
+              @NonNull Context context,
+              int year,
+              int month,
+              int day,
+              boolean valid,
+              boolean selected,
+              @Nullable CharSequence originalContentDescription) {
+            if (year == 2018 && month == Calendar.JANUARY && day == 17) {
+              return originalContentDescription + " Test";
+            }
+            return super.getContentDescription(
+                context, year, month, day, valid, selected, originalContentDescription);
+          }
+
+          @Override
+          public int describeContents() {
+            return 0;
+          }
+
+          @Override
+          public void writeToParcel(@NonNull Parcel dest, int flags) {}
+        });
   }
 
   private void assertDaysOfPositions(Map<Integer, Integer> localizedDaysOfPositionsInFebruary2019) {
