@@ -42,22 +42,22 @@
       app:layout_anchor="@id/bar"
       app:srcCompat="@drawable/ic_add_24px"/>
 
-  <RelativeLayout
+  <LinearLayout
       android:id="@+id/bottom_drawer"
       style="@style/Widget.Material3.BottomSheet"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:orientation="vertical"
+      app:behavior_hideable="true"
       app:layout_behavior="@string/bottom_sheet_behavior">
     <com.google.android.material.bottomsheet.BottomSheetDragHandleView
-        android:id="@+id/drag_handle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/drag_handle"
         app:menu="@menu/demo_primary"/>
-  </RelativeLayout>
+  </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
