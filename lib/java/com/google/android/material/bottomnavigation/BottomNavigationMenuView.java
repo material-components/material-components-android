@@ -32,6 +32,8 @@ import androidx.annotation.RestrictTo;
 import androidx.core.view.ViewCompat;
 import com.google.android.material.navigation.NavigationBarItemView;
 import com.google.android.material.navigation.NavigationBarMenuView;
+import java.util.ArrayList;
+import java.util.List;
 
 /** @hide For internal use only. */
 @RestrictTo(LIBRARY_GROUP)
@@ -42,7 +44,7 @@ public class BottomNavigationMenuView extends NavigationBarMenuView {
   private final int activeItemMinWidth;
 
   private boolean itemHorizontalTranslationEnabled;
-  private int[] tempChildWidths;
+  private final List<Integer> tempChildWidths = new ArrayList<>();
 
   public BottomNavigationMenuView(@NonNull Context context) {
     super(context);
@@ -63,7 +65,6 @@ public class BottomNavigationMenuView extends NavigationBarMenuView {
     activeItemMinWidth =
         res.getDimensionPixelSize(R.dimen.design_bottom_navigation_active_item_min_width);
 
-    tempChildWidths = new int[BottomNavigationView.MAX_ITEM_COUNT];
   }
 
   @Override
@@ -74,6 +75,7 @@ public class BottomNavigationMenuView extends NavigationBarMenuView {
     final int visibleCount = menu.getVisibleItems().size();
     // Use total item counts to measure children
     final int totalCount = getChildCount();
+    tempChildWidths.clear();
 
     int parentHeight = MeasureSpec.getSize(heightMeasureSpec);
     final int heightSpec = MeasureSpec.makeMeasureSpec(parentHeight, MeasureSpec.EXACTLY);
@@ -99,33 +101,33 @@ public class BottomNavigationMenuView extends NavigationBarMenuView {
       int extra = width - activeWidth - inactiveWidth * inactiveCount;
 
       for (int i = 0; i < totalCount; i++) {
+        int tempChildWidth = 0;
         if (getChildAt(i).getVisibility() != View.GONE) {
-          tempChildWidths[i] = (i == getSelectedItemPosition()) ? activeWidth : inactiveWidth;
+          tempChildWidth = (i == getSelectedItemPosition()) ? activeWidth : inactiveWidth;
           // Account for integer division which sometimes leaves some extra pixel spaces.
           // e.g. If the nav was 10px wide, and 3 children were measured to be 3px-3px-3px, there
           // would be a 1px gap somewhere, which this fills in.
           if (extra > 0) {
-            tempChildWidths[i]++;
+            tempChildWidth++;
             extra--;
           }
-        } else {
-          tempChildWidths[i] = 0;
         }
+        tempChildWidths.add(tempChildWidth);
       }
     } else {
       final int maxAvailable = width / (visibleCount == 0 ? 1 : visibleCount);
       final int childWidth = Math.min(maxAvailable, activeItemMaxWidth);
       int extra = width - childWidth * visibleCount;
       for (int i = 0; i < totalCount; i++) {
+        int tempChildWidth = 0;
         if (getChildAt(i).getVisibility() != View.GONE) {
-          tempChildWidths[i] = childWidth;
+          tempChildWidth = childWidth;
           if (extra > 0) {
-            tempChildWidths[i]++;
+            tempChildWidth++;
             extra--;
           }
-        } else {
-          tempChildWidths[i] = 0;
         }
+        tempChildWidths.add(tempChildWidth);
       }
     }
 
@@ -136,7 +138,7 @@ public class BottomNavigationMenuView extends NavigationBarMenuView {
         continue;
       }
       child.measure(
-          MeasureSpec.makeMeasureSpec(tempChildWidths[i], MeasureSpec.EXACTLY), heightSpec);
+          MeasureSpec.makeMeasureSpec(tempChildWidths.get(i), MeasureSpec.EXACTLY), heightSpec);
       ViewGroup.LayoutParams params = child.getLayoutParams();
       params.width = child.getMeasuredWidth();
       totalWidth += child.getMeasuredWidth();

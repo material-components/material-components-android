@@ -88,7 +88,7 @@ import com.google.android.material.shape.MaterialShapeDrawable;
  * </pre>
  */
 public class BottomNavigationView extends NavigationBarView {
-  static final int MAX_ITEM_COUNT = 5;
+  private static final int MAX_ITEM_COUNT = 5;
 
   public BottomNavigationView(@NonNull Context context) {
     this(context, null);
