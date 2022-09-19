@@ -15,6 +15,6 @@
   ~ limitations under the License.
 -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:color="?attr/colorPrimary" android:state_enabled="true"/>
-  <item android:alpha="@dimen/material_emphasis_disabled" android:color="?attr/colorOnSurface"/>
+  <item android:color="@macro/m3_comp_slider_active_track_color" android:state_enabled="true"/>
+  <item android:alpha="@dimen/m3_comp_slider_disabled_active_track_opacity" android:color="@macro/m3_comp_slider_disabled_active_track_color"/>
 </selector>

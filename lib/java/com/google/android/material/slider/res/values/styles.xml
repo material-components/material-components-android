@@ -34,14 +34,21 @@
   <style name="Widget.MaterialComponents.Slider" parent="Base.Widget.MaterialComponents.Slider"/>
 
   <style name="Widget.Material3.Slider" parent="Widget.MaterialComponents.Slider">
-    <item name="haloColor">@color/m3_slider_halo_color</item>
-    <item name="labelStyle">@style/Widget.Material3.Tooltip</item>
+    <item name="haloColor">@color/m3_slider_halo_color</item>  <!-- TODO(b/246836765): Check with designer regarding the new style -->
+    <item name="labelStyle">@style/Widget.Material3.Slider.Label</item>
     <item name="thumbColor">@color/m3_slider_thumb_color</item>
-    <item name="tickColorActive">@color/m3_slider_inactive_track_color</item>
-    <item name="tickColorInactive">@color/m3_slider_active_track_color</item>
+    <item name="tickColorActive">@color/m3_slider_inactive_track_color</item> <!-- TODO(b/246836765): Update to the new style -->
+    <item name="tickColorInactive">@color/m3_slider_active_track_color</item> <!-- TODO(b/246836765): Update to the new style -->
     <item name="trackColorActive">@color/m3_slider_active_track_color</item>
     <item name="trackColorInactive">@color/m3_slider_inactive_track_color</item>
+    <item name="trackHeight">@dimen/m3_slider_inactive_track_height</item> <!-- TODO(b/246836765): Update to the new style -->
     <item name="thumbElevation">@dimen/m3_slider_thumb_elevation</item>
+  </style>
+
+  <!-- TODO(b/246836765): Update to the new style -->
+  <style name="Widget.Material3.Slider.Label" parent="Widget.Material3.Tooltip">
+    <item name="android:textColor">@macro/m3_comp_slider_label_label_text_color</item>
+    <item name="backgroundTint">@macro/m3_comp_slider_label_container_color</item>
   </style>
 
 </resources>
