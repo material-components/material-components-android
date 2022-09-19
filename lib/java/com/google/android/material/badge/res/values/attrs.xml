@@ -43,6 +43,7 @@
     <attr name="badgeTextColor" format="color"/>
     <attr name="maxCharacterCount" format="integer"/>
     <attr name="number" format="integer"/>
+    <attr name="text" format="string"/>
     <attr name="badgeGravity">
       <!-- Gravity.TOP | Gravity.END -->
       <enum name="TOP_END" value ="8388661"/>

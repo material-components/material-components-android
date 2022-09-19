@@ -57,6 +57,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
 import java.text.NumberFormat;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * {@code BadgeDrawable} contains all the layout and draw logic for a badge.
@@ -144,9 +145,6 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   /** The badge is positioned along the bottom and start edges of its anchor view */
   public static final int BOTTOM_START = Gravity.BOTTOM | Gravity.START;
 
-  /** Maximum value of number that can be displayed in a circular badge. */
-  private static final int MAX_CIRCULAR_BADGE_NUMBER_COUNT = 9;
-
   @StyleRes private static final int DEFAULT_STYLE = R.style.Widget_MaterialComponents_Badge;
   @AttrRes private static final int DEFAULT_THEME_ATTR = R.attr.badgeStyle;
 
@@ -155,6 +153,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
    * number and display is as the badge text instead.
    */
   static final String DEFAULT_EXCEED_MAX_BADGE_NUMBER_SUFFIX = "+";
+  static final String DEFAULT_EXCEED_MAX_BADGE_TEXT_SUFFIX = "…";
 
   /**
    * The badge offset begins at the edge of the anchor.
@@ -258,7 +257,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
 
     onMaxCharacterCountUpdated();
 
-    onNumberUpdated();
+    onBadgeTextUpdated();
     onAlphaUpdated();
     onBackgroundColorUpdated();
     onBadgeTextColorUpdated();
@@ -490,13 +489,13 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     }
   }
 
-  /** Returns whether this badge will display a number. */
+  /** Returns whether the badge will display a number. */
   public boolean hasNumber() {
-    return state.hasNumber();
+    return !state.hasText() && state.hasNumber();
   }
 
   /**
-   * Returns this badge's number. Only non-negative integer numbers will be returned because the
+   * Returns the badge's number. Only non-negative integer numbers will be returned because the
    * setter clamps negative values to 0.
    *
    * <p>WARNING: Do not call this method if you are planning to compare to BADGE_NUMBER_NONE
@@ -505,11 +504,11 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
    * @attr ref com.google.android.material.R.styleable#Badge_number
    */
   public int getNumber() {
-    return hasNumber() ? state.getNumber() : 0;
+    return state.hasNumber() ? state.getNumber() : 0;
   }
 
   /**
-   * Sets this badge's number. Only non-negative integer numbers are supported. If the number is
+   * Sets the badge's number. Only non-negative integer numbers are supported. If the number is
    * negative, it will be clamped to 0. The specified value will be displayed, unless its number of
    * digits exceeds {@code maxCharacterCount} in which case a truncated version will be shown.
    *
@@ -524,19 +523,63 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     }
   }
 
-  /** Resets any badge number so that a numberless badge will be displayed. */
+  /** Clears the badge's number. */
   public void clearNumber() {
-    if (hasNumber()) {
+    if (state.hasNumber()) {
       state.clearNumber();
       onNumberUpdated();
     }
   }
 
   private void onNumberUpdated() {
-    textDrawableHelper.setTextSizeDirty(true);
-    onBadgeShapeAppearanceUpdated();
-    updateCenterAndBounds();
-    invalidateSelf();
+    // The text has priority over the number so when the number changes, the badge is updated
+    // only if there is no text.
+    if (!hasText()) {
+      onBadgeTextUpdated();
+    }
+  }
+
+  /** Returns whether the badge will display a text. */
+  public boolean hasText() {
+    return state.hasText();
+  }
+
+  /**
+   * Returns the badge's text.
+   *
+   * @see #setText(String)
+   * @attr ref com.google.android.material.R.styleable#Badge_text
+   */
+  public String getText() {
+    return state.getText();
+  }
+
+  /**
+   * Sets the badge's text.
+   *
+   * @see #getText()
+   * @attr ref com.google.android.material.R.styleable#Badge_text
+   */
+  public void setText(String text) {
+    if (!Objects.equals(state.getText(), text)) {
+      state.setText(text);
+      onTextUpdated();
+    }
+  }
+
+  /**
+   * Clears the badge's text.
+   */
+  public void clearText() {
+    if (state.hasText()) {
+      state.clearText();
+      onTextUpdated();
+    }
+  }
+
+  private void onTextUpdated() {
+    // The text has priority over the number so any text change updates the badge text.
+    onBadgeTextUpdated();
   }
 
   /**
@@ -643,8 +686,8 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       return;
     }
     shapeDrawable.draw(canvas);
-    if (hasNumber()) {
-      drawText(canvas);
+    if (hasBadgeText()) {
+      drawBadgeText(canvas);
     }
   }
 
@@ -664,14 +707,32 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     return super.onStateChange(state);
   }
 
+  /**
+   * Specifies the content description if the text is set for the badge. If the text is set
+   * for the badge and the content description is {@code null}, the badge text will be used as
+   * the content description by default.
+   */
+  public void setContentDescriptionForText(CharSequence charSequence) {
+    state.setContentDescriptionForText(charSequence);
+  }
+
+  /**
+   * Specifies the content description if no text or number is set for the badge.
+   */
   public void setContentDescriptionNumberless(CharSequence charSequence) {
     state.setContentDescriptionNumberless(charSequence);
   }
 
+  /**
+   * Specifies the content description if the number is set for the badge.
+   */
   public void setContentDescriptionQuantityStringsResource(@PluralsRes int stringsResource) {
     state.setContentDescriptionQuantityStringsResource(stringsResource);
   }
 
+  /**
+   * Specifies the content description if the badge number exceeds the maximum value.
+   */
   public void setContentDescriptionExceedsMaxBadgeNumberStringResource(
       @StringRes int stringsResource) {
     state.setContentDescriptionExceedsMaxBadgeNumberStringResource(stringsResource);
@@ -682,27 +743,47 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     if (!isVisible()) {
       return null;
     }
-    if (hasNumber()) {
-      if (state.getContentDescriptionQuantityStrings() != 0) {
-        Context context = contextRef.get();
-        if (context == null) {
-          return null;
-        }
-        if (getNumber() <= maxBadgeNumber) {
-          return context
-              .getResources()
-              .getQuantityString(
-                  state.getContentDescriptionQuantityStrings(), getNumber(), getNumber());
-        } else {
-          return context.getString(
-              state.getContentDescriptionExceedsMaxBadgeNumberStringResource(), maxBadgeNumber);
-        }
-      } else {
+
+    if (hasText()) {
+      return getTextContentDescription();
+    } else if (hasNumber()) {
+      return getNumberContentDescription();
+    } else {
+      return getEmptyContentDescription();
+    }
+  }
+
+  private CharSequence getNumberContentDescription() {
+    if (state.getContentDescriptionQuantityStrings() != 0) {
+      Context context = contextRef.get();
+      if (context == null) {
         return null;
       }
+      if (getNumber() <= maxBadgeNumber) {
+        return context
+            .getResources()
+            .getQuantityString(
+                state.getContentDescriptionQuantityStrings(), getNumber(), getNumber());
+      } else {
+        return context.getString(
+            state.getContentDescriptionExceedsMaxBadgeNumberStringResource(), maxBadgeNumber);
+      }
     } else {
-      return state.getContentDescriptionNumberless();
+      return null;
     }
+  }
+
+  private CharSequence getTextContentDescription() {
+    final CharSequence contentDescription = state.getContentDescriptionForText();
+    if (contentDescription != null) {
+      return contentDescription;
+    } else {
+      return getText();
+    }
+  }
+
+  private CharSequence getEmptyContentDescription() {
+    return state.getContentDescriptionNumberless();
   }
 
   /**
@@ -986,8 +1067,9 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   }
 
   private int getTotalVerticalOffsetForState() {
-    int vOffset =
-        hasNumber() ? state.getVerticalOffsetWithText() : state.getVerticalOffsetWithoutText();
+    int vOffset = hasBadgeText()
+        ? state.getVerticalOffsetWithText()
+        : state.getVerticalOffsetWithoutText();
     // If the offset alignment mode is at the edge of the anchor, we want to move the badge
     // so that its origin is at the edge.
     if (state.offsetAlignmentMode == OFFSET_ALIGNMENT_MODE_EDGE) {
@@ -997,44 +1079,42 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   }
 
   private int getTotalHorizontalOffsetForState() {
-    int hOffset =
-        hasNumber() ? state.getHorizontalOffsetWithText() : state.getHorizontalOffsetWithoutText();
+    int hOffset = hasBadgeText()
+        ? state.getHorizontalOffsetWithText()
+        : state.getHorizontalOffsetWithoutText();
     // If the offset alignment mode is legacy, then we want to add the legacy inset to the offset.
     if (state.offsetAlignmentMode == OFFSET_ALIGNMENT_MODE_LEGACY) {
-      hOffset += hasNumber() ? state.horizontalInsetWithText : state.horizontalInset;
+      hOffset += hasBadgeText() ? state.horizontalInsetWithText : state.horizontalInset;
     }
     return hOffset + state.getAdditionalHorizontalOffset();
   }
 
   private void calculateCenterAndBounds(@NonNull Rect anchorRect, @NonNull View anchorView) {
-    cornerRadius = !hasNumber() ? state.badgeRadius : state.badgeWithTextRadius;
+    cornerRadius = hasBadgeText() ? state.badgeWithTextRadius : state.badgeRadius;
     if (cornerRadius != BADGE_RADIUS_NOT_SPECIFIED) {
-      halfBadgeHeight = cornerRadius;
       halfBadgeWidth = cornerRadius;
+      halfBadgeHeight = cornerRadius;
     } else {
-      halfBadgeHeight =
-          Math.round(!hasNumber() ? state.badgeHeight / 2 : state.badgeWithTextHeight / 2);
       halfBadgeWidth =
-          Math.round(!hasNumber() ? state.badgeWidth / 2 : state.badgeWithTextWidth / 2);
-    }
-    String badgeText = getBadgeText();
-    // If the badge has a number, we want to make sure that the badge is at least tall/wide
-    // enough to encompass the text with padding.
-    if (hasNumber()) {
+          Math.round(hasBadgeText() ? state.badgeWithTextWidth / 2 : state.badgeWidth / 2);
       halfBadgeHeight =
-          Math.max(
-              halfBadgeHeight,
-               textDrawableHelper.getTextHeight(badgeText) / 2f + state.badgeVerticalPadding);
-
-      // If the badge has text, it should at least have the same width as it does height
-      halfBadgeWidth = Math.max(halfBadgeWidth, halfBadgeHeight);
+          Math.round(hasBadgeText() ? state.badgeWithTextHeight / 2 : state.badgeHeight / 2);
     }
 
-    if (getNumber() > MAX_CIRCULAR_BADGE_NUMBER_COUNT) {
+    // If the badge has a text, we want to make sure that the badge is at least tall/wide enough
+    // to encompass the text with padding.
+    if (hasBadgeText()) {
+      final String badgeText = getBadgeText();
+
       halfBadgeWidth =
           Math.max(
               halfBadgeWidth,
               textDrawableHelper.getTextWidth(badgeText) / 2f + state.badgeWidePadding);
+
+      halfBadgeHeight =
+          Math.max(
+              halfBadgeHeight,
+              textDrawableHelper.getTextHeight(badgeText) / 2f + state.badgeVerticalPadding);
     }
 
     int totalVerticalOffset = getTotalVerticalOffsetForState();
@@ -1073,28 +1153,71 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     }
   }
 
-  private void drawText(Canvas canvas) {
-    Rect textBounds = new Rect();
-    String badgeText = getBadgeText();
-    textDrawableHelper.getTextPaint().getTextBounds(badgeText, 0, badgeText.length(), textBounds);
+  private void drawBadgeText(Canvas canvas) {
+    final String badgeText = getBadgeText();
+    if (badgeText != null) {
+      Rect textBounds = new Rect();
+      textDrawableHelper.getTextPaint().getTextBounds(badgeText, 0, badgeText.length(), textBounds);
 
-    // The text is centered horizontally using Paint.Align.Center. We calculate the correct
-    // y-coordinate ourselves using textbounds.exactCenterY, but this can look askew at low
-    // screen densities due to canvas.drawText rounding the coordinates to the nearest integer.
-    // To mitigate this, we round the y-coordinate following these rules:
-    // If the badge.bottom is <= 0, the text is drawn above its original origin (0,0) so
-    // we round down the y-coordinate since we want to keep it above its new origin.
-    // If the badge.bottom is positive, we round up for the opposite reason.
-    float exactCenterY = badgeCenterY - textBounds.exactCenterY();
-    canvas.drawText(
-        badgeText,
-        badgeCenterX,
-        textBounds.bottom <= 0 ? (int) exactCenterY : Math.round(exactCenterY),
-        textDrawableHelper.getTextPaint());
+      // The text is centered horizontally using Paint.Align.Center. We calculate the correct
+      // y-coordinate ourselves using textbounds.exactCenterY, but this can look askew at low
+      // screen densities due to canvas.drawText rounding the coordinates to the nearest integer.
+      // To mitigate this, we round the y-coordinate following these rules:
+      // If the badge.bottom is <= 0, the text is drawn above its original origin (0,0) so
+      // we round down the y-coordinate since we want to keep it above its new origin.
+      // If the badge.bottom is positive, we round up for the opposite reason.
+      float exactCenterY = badgeCenterY - textBounds.exactCenterY();
+      canvas.drawText(
+          badgeText,
+          badgeCenterX,
+          textBounds.bottom <= 0 ? (int) exactCenterY : Math.round(exactCenterY),
+          textDrawableHelper.getTextPaint());
+    }
+  }
+
+  /** @hide */
+  @RestrictTo(LIBRARY_GROUP)
+  public boolean hasBadgeText() {
+    return hasText() || hasNumber();
+  }
+
+  /** @hide */
+  @Nullable
+  @RestrictTo(LIBRARY_GROUP)
+  public String getBadgeText() {
+    if (hasText()) {
+      return getTextBadgeText();
+    } else if (hasNumber()) {
+      return getNumberBadgeText();
+    } else {
+      return null;
+    }
+  }
+
+  @Nullable
+  private String getTextBadgeText() {
+    String text = getText();
+    final int maxCharacterCount = getMaxCharacterCount();
+
+    if (text != null && text.length() > maxCharacterCount) {
+      Context context = contextRef.get();
+      if (context == null) {
+        return "";
+      }
+
+      text = text.substring(0, maxCharacterCount - 1);
+      return String.format(
+          context.getString(R.string.mtrl_exceed_max_badge_text_suffix),
+          text,
+          DEFAULT_EXCEED_MAX_BADGE_TEXT_SUFFIX
+      );
+    } else {
+      return text;
+    }
   }
 
   @NonNull
-  private String getBadgeText() {
+  private String getNumberBadgeText() {
     // If number exceeds max count, show badgeMaxCount+ instead of the number.
     if (getNumber() <= maxBadgeNumber) {
       return NumberFormat.getInstance(state.getNumberLocale()).format(getNumber());
@@ -1110,6 +1233,25 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
           maxBadgeNumber,
           DEFAULT_EXCEED_MAX_BADGE_NUMBER_SUFFIX);
     }
+  }
+
+  /** @hide */
+  @RestrictTo(LIBRARY_GROUP)
+  public void clearBadgeText() {
+    if (hasText()) {
+      clearText();
+    }
+
+    if (hasNumber()) {
+      clearNumber();
+    }
+  }
+
+  private void onBadgeTextUpdated() {
+    textDrawableHelper.setTextSizeDirty(true);
+    onBadgeShapeAppearanceUpdated();
+    updateCenterAndBounds();
+    invalidateSelf();
   }
 
   private void updateMaxBadgeNumber() {

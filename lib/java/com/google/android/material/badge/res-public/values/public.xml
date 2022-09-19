@@ -21,6 +21,7 @@
   <public name="badgeTextAppearance" type="attr"/>
   <public name="maxCharacterCount" type="attr"/>
   <public name="number" type="attr"/>
+  <public name="text" type="attr"/>
   <public name="badgeGravity" type="attr"/>
   <public name="horizontalOffset" type="attr"/>
   <public name="verticalOffset" type="attr"/>

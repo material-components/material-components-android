@@ -90,22 +90,27 @@ center, use `setHorizontalOffset(int)` or `setVerticalOffset(int)`
 
 ### `BadgeDrawable` Attributes
 
-| Feature               | Relevant attributes                                                                                              |
-| --------------------- | -----------------------------------------------------------------------------------------------------------------|
-| Color                 | `app:backgroundColor` <br> `app:badgeTextColor`                                                                  |
-| Width                 | `app:badgeWidth` <br> `app:badgeWithTextWidth`                                                                   |
-| Height                | `app:badgeHeight` <br> `app:badgeWithTextHeight`                                                                 |
-| Shape                 | `app:badgeShapeAppearance` <br> `app:badgeShapeAppearanceOverlay` <br> `app:badgeWithTextShapeAppearance` <br> `app:badgeWithTextShapeAppearanceOverlay`                                                                                                  |
-| Label                 | `app:number`                                                                                                     |
-| Label Length          | `app:maxCharacterCount`                                                                                          |
-| Label Text Color      | `app:badgeTextColor`                                                                                             |
-| Label Text Appearance | `app:badgeTextAppearance`                                                                                        |
-| Badge Gravity         | `app:badgeGravity`                                                                                               |
-| Offset Alignment      | `app:offsetAlignmentMode`                                                                                        |
+| Feature               | Relevant attributes                                                                                                                                      |
+|-----------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Color                 | `app:backgroundColor` <br> `app:badgeTextColor`                                                                                                          |
+| Width                 | `app:badgeWidth` <br> `app:badgeWithTextWidth`                                                                                                           |
+| Height                | `app:badgeHeight` <br> `app:badgeWithTextHeight`                                                                                                         |
+| Shape                 | `app:badgeShapeAppearance` <br> `app:badgeShapeAppearanceOverlay` <br> `app:badgeWithTextShapeAppearance` <br> `app:badgeWithTextShapeAppearanceOverlay` |
+| Label                 | `app:text` (for text) <br> `app:number` (for numbers)                                                                                                    |
+| Label Length          | `app:maxCharacterCount`                                                                                                                                  |
+| Label Text Color      | `app:badgeTextColor`                                                                                                                                     |
+| Label Text Appearance | `app:badgeTextAppearance`                                                                                                                                |
+| Badge Gravity         | `app:badgeGravity`                                                                                                                                       |
+| Offset Alignment      | `app:offsetAlignmentMode`                                                                                                                                |
+
+**Note:** `app:text` takes precedence over `app:number`.
 
 ### Talkback Support
 
-`BadgeDrawable` provides a getter for its content description, which is based on
-the number (if any) displayed. Users should specify content description:
-`setContentDescriptionNumberless(CharSequence)`
-`setContentDescriptionQuantityStringsResource(@StringRes)`
+`BadgeDrawable` provides a getter for its content description, which is based on the displayed
+number or text (if any). To specify the content description, the developer is provided
+with the following methods:
+-   `setContentDescriptionForText(CharSequence)`
+-   `setContentDescriptionQuantityStringsResource(@PluralsRes int)`
+-   `setContentDescriptionExceedsMaxBadgeNumberStringResource(@StringRes int)`
+-   `setContentDescriptionNumberless(CharSequence)`

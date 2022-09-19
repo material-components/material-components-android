@@ -115,9 +115,14 @@ badge states:
 
 ```kt
 val badge = tab.getOrCreateBadge()
+
+// For badges with a number
 badge.setContentDescriptionNumberless(contentDescription)
 badge.setContentDescriptionQuantityStringsResource(R.string.content_description)
 badge.setContentDescriptionExceedsMaxBadgeNumberStringResource(R.string.content_description)
+
+// For badges with a text
+badge.setContentDescriptionForText(contentDescription)
 ```
 
 ### Using tabs with ViewPager

@@ -140,6 +140,8 @@ public final class BadgeState {
 
     currentState.alpha = storedState.alpha == State.NOT_SET ? 255 : storedState.alpha;
 
+    currentState.contentDescriptionForText = storedState.contentDescriptionForText;
+
     currentState.contentDescriptionNumberless =
         storedState.contentDescriptionNumberless == null
             ? context.getString(R.string.mtrl_badge_numberless_content_description)
@@ -161,6 +163,12 @@ public final class BadgeState {
         storedState.maxCharacterCount == State.NOT_SET
             ? a.getInt(R.styleable.Badge_maxCharacterCount, DEFAULT_MAX_BADGE_CHARACTER_COUNT)
             : storedState.maxCharacterCount;
+
+    if (storedState.text != null) {
+      currentState.text = storedState.text;
+    } else if (a.hasValue(R.styleable.Badge_text)) {
+      currentState.text = a.getString(R.styleable.Badge_text);
+    }
 
     // Only set the badge number if it exists in the style.
     // Defaulting it to 0 means the badge will incorrectly show text when the user may want a
@@ -320,6 +328,23 @@ public final class BadgeState {
 
   void clearNumber() {
     setNumber(State.BADGE_NUMBER_NONE);
+  }
+
+  boolean hasText() {
+    return currentState.text != null;
+  }
+
+  String getText() {
+    return currentState.text;
+  }
+
+  void setText(String text) {
+    overridingState.text = text;
+    currentState.text = text;
+  }
+
+  void clearText() {
+    setText(null);
   }
 
   int getAlpha() {
@@ -505,6 +530,15 @@ public final class BadgeState {
     currentState.contentDescriptionExceedsMaxBadgeNumberRes = stringsResource;
   }
 
+  CharSequence getContentDescriptionForText() {
+    return currentState.contentDescriptionForText;
+  }
+
+  void setContentDescriptionForText(CharSequence contentDescription) {
+    overridingState.contentDescriptionForText = contentDescription;
+    currentState.contentDescriptionForText = contentDescription;
+  }
+
   Locale getNumberLocale() {
     return currentState.numberLocale;
   }
@@ -542,13 +576,17 @@ public final class BadgeState {
     @StyleRes private Integer badgeWithTextShapeAppearanceOverlayResId;
 
     private int alpha = 255;
-    private int number = NOT_SET;
-    private int maxCharacterCount = NOT_SET;
-    private Locale numberLocale;
 
+    @Nullable private String text;
+    @Nullable private CharSequence contentDescriptionForText;
+
+    private int number = NOT_SET;
+    private Locale numberLocale;
     @Nullable private CharSequence contentDescriptionNumberless;
     @PluralsRes private int contentDescriptionQuantityStrings;
     @StringRes private int contentDescriptionExceedsMaxBadgeNumberRes;
+
+    private int maxCharacterCount = NOT_SET;
 
     @BadgeGravity private Integer badgeGravity;
     private Boolean isVisible = true;
@@ -583,8 +621,10 @@ public final class BadgeState {
       badgeWithTextShapeAppearanceResId = (Integer) in.readSerializable();
       badgeWithTextShapeAppearanceOverlayResId = (Integer) in.readSerializable();
       alpha = in.readInt();
+      text = in.readString();
       number = in.readInt();
       maxCharacterCount = in.readInt();
+      contentDescriptionForText = in.readString();
       contentDescriptionNumberless = in.readString();
       contentDescriptionQuantityStrings = in.readInt();
       badgeGravity = (Integer) in.readSerializable();
@@ -629,10 +669,12 @@ public final class BadgeState {
       dest.writeSerializable(badgeWithTextShapeAppearanceResId);
       dest.writeSerializable(badgeWithTextShapeAppearanceOverlayResId);
       dest.writeInt(alpha);
+      dest.writeString(text);
       dest.writeInt(number);
       dest.writeInt(maxCharacterCount);
+      dest.writeString(contentDescriptionForText != null ? contentDescriptionForText.toString() : null);
       dest.writeString(
-          contentDescriptionNumberless == null ? null : contentDescriptionNumberless.toString());
+          contentDescriptionNumberless != null ? contentDescriptionNumberless.toString() : null);
       dest.writeInt(contentDescriptionQuantityStrings);
       dest.writeSerializable(badgeGravity);
       dest.writeSerializable(horizontalOffsetWithoutText);

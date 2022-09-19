@@ -190,8 +190,8 @@ calls to this method will reuse the existing `BadgeDrawable`:
 ```kt
 var badge = navigationRail.getOrCreateBadge(menuItemId)
 badge.isVisible = true
-// An icon only badge will be displayed unless a number is set:
-badge.number = 99
+// An icon only badge will be displayed unless a number or text is set:
+badge.number = 99  // or badge.text = "New"
 ```
 
 As best practice, if you need to temporarily hide the badge, for example until
@@ -201,7 +201,7 @@ the next notification is received, change the visibility of `BadgeDrawable`:
 val badgeDrawable = navigationRail.getBadge(menuItemId)
     if (badgeDrawable != null) {
         badgeDrawable.isVisible = false
-        badgeDrawable.clearNumber()
+        badgeDrawable.clearNumber()  // or badgeDrawable.clearText()
     }
 ```
 
