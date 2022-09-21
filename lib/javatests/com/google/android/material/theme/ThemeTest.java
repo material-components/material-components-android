@@ -272,6 +272,7 @@ public class ThemeTest {
           R.attr.colorOnSurfaceInverse,
           // Outline color.
           R.attr.colorOutline,
+          R.attr.colorOutlineVariant,
           // Error colors.
           R.attr.colorError,
           R.attr.colorOnError,

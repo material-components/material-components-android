@@ -72,6 +72,8 @@
 
   <!-- A color meant to be used in element outlines. -->
   <attr name="colorOutline" format="color"/>
+  <!-- A color meant to be used in element outlines on the surface-variant color. -->
+  <attr name="colorOutlineVariant" format="color"/>
 
   <!-- A color that passes accessibility guidelines for text/iconography when drawn on top of
        error. -->

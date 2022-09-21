@@ -41,6 +41,7 @@
     <item name="colorSurfaceInverse">@color/m3_sys_color_dynamic_light_inverse_surface</item>
     <item name="colorOnSurfaceInverse">@color/m3_sys_color_dynamic_light_inverse_on_surface</item>
     <item name="colorOutline">@color/m3_sys_color_dynamic_light_outline</item>
+    <item name="colorOutlineVariant">@color/m3_sys_color_dynamic_light_outline_variant</item>
     <item name="colorError">@color/m3_sys_color_light_error</item>
     <item name="colorOnError">@color/m3_sys_color_light_on_error</item>
     <item name="colorErrorContainer">@color/m3_sys_color_light_error_container</item>
@@ -64,7 +65,7 @@
 
   <style name="ThemeOverlay.Material3.DynamicColors.Dark" parent="">
     <item name="isMaterial3DynamicColorApplied">true</item>
-    
+
     <!-- Color palettes -->
     <item name="colorPrimary">@color/m3_sys_color_dynamic_dark_primary</item>
     <item name="colorOnPrimary">@color/m3_sys_color_dynamic_dark_on_primary</item>
@@ -88,6 +89,7 @@
     <item name="colorSurfaceInverse">@color/m3_sys_color_dynamic_dark_inverse_surface</item>
     <item name="colorOnSurfaceInverse">@color/m3_sys_color_dynamic_dark_inverse_on_surface</item>
     <item name="colorOutline">@color/m3_sys_color_dynamic_dark_outline</item>
+    <item name="colorOutlineVariant">@color/m3_sys_color_dynamic_dark_outline_variant</item>
     <item name="colorError">@color/m3_sys_color_dark_error</item>
     <item name="colorOnError">@color/m3_sys_color_dark_on_error</item>
     <item name="colorErrorContainer">@color/m3_sys_color_dark_error_container</item>

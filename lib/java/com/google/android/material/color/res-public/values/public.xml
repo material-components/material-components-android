@@ -40,6 +40,7 @@
   <public name="colorOnSurfaceInverse" type="attr"/>
 
   <public name="colorOutline" type="attr"/>
+  <public name="colorOutlineVariant" type="attr"/>
 
   <public name="colorOnError" type="attr"/>
   <public name="colorErrorContainer" type="attr"/>
