@@ -22,7 +22,7 @@
   <target android:name="@string/mtrl_checkbox_button_icon_path_group_name">
     <aapt:attr name="android:animation">
       <objectAnimator
-        android:duration="@integer/m3_sys_motion_duration_150"
+        android:duration="@integer/m3_sys_motion_duration_short3"
         android:interpolator="?attr/motionEasingEmphasizedAccelerateInterpolator"
         android:propertyName="scaleX"
         android:valueFrom="1.0"
@@ -33,7 +33,7 @@
   <target android:name="@string/mtrl_checkbox_button_icon_path_group_name">
     <aapt:attr name="android:animation">
       <objectAnimator
-        android:duration="@integer/m3_sys_motion_duration_150"
+        android:duration="@integer/m3_sys_motion_duration_short3"
         android:interpolator="?attr/motionEasingEmphasizedAccelerateInterpolator"
         android:propertyName="scaleY"
         android:valueFrom="1.0"
@@ -44,7 +44,7 @@
   <target android:name="@string/mtrl_checkbox_button_icon_path_name">
     <aapt:attr name="android:animation">
       <objectAnimator
-        android:duration="@integer/m3_sys_motion_duration_50"
+        android:duration="@integer/m3_sys_motion_duration_short1"
         android:interpolator="?attr/motionEasingLinearInterpolator"
         android:propertyName="fillAlpha"
         android:valueFrom="1.0"

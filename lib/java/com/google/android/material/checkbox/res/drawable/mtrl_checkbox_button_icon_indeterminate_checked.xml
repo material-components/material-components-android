@@ -22,7 +22,7 @@
   <target android:name="@string/mtrl_checkbox_button_icon_path_name">
     <aapt:attr name="android:animation">
       <objectAnimator
-        android:duration="@integer/m3_sys_motion_duration_350"
+        android:duration="@integer/m3_sys_motion_duration_medium3"
         android:interpolator="?attr/motionEasingEmphasizedAccelerateInterpolator"
         android:propertyName="pathData"
         android:valueFrom="@string/mtrl_checkbox_button_icon_path_indeterminate"
