@@ -911,7 +911,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
    * Set the distance between the end of a menu subheader and the end of the NavigationView.
    */
   public void setSubheaderInsetEnd(@Px int subheaderInsetEnd) {
-    presenter.setSubheaderInsetStart(subheaderInsetEnd);
+    presenter.setSubheaderInsetEnd(subheaderInsetEnd);
   }
 
   private MenuInflater getMenuInflater() {
