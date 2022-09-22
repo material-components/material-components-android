@@ -33,7 +33,7 @@
   <string name="mtrl_picker_text_input_day_abbr">ቀ</string>
   <string name="mtrl_picker_save">አስቀምጥ</string>
   <string name="mtrl_picker_invalid_range">ልክ ያልኾነ ክልል።</string>
-  <string name="mtrl_picker_out_of_range">ከክልል ውጪ፦ %1$s</string>
+  <string name="mtrl_picker_out_of_range">ከክልል ውጭ፦ %1$s</string>
   <string name="mtrl_picker_invalid_format">ልክ ያልሆነ ቅርጸት</string>
   <string name="mtrl_picker_invalid_format_use">%1$s ን ይጠቀሙ</string>
   <string name="mtrl_picker_invalid_format_example">ምሳሌ፦ %1$s</string>
