@@ -228,11 +228,12 @@ floating action button (FAB), action item(s) and an overflow menu.
 
 ### Container attributes
 
-Element       | Attribute            | Related method(s)                          | Default value
-------------- | -------------------- | ------------------------------------------ | -------------
-**Color**     | `app:backgroundTint` | `setBackgroundTint`<br>`getBackgroundTint` | `?attr/colorSurface`
-**Elevation** | `app:elevation`      | `setElevation`                             | `3dp`
-**Height**    | `android:minHeight`  | `setMinimumHeight`<br>`getMinimumHeight`   | `80dp`
+Element       | Attribute                | Related method(s)                          | Default value
+------------- | ------------------------ | ------------------------------------------ | -------------
+**Color**     | `app:backgroundTint`     | `setBackgroundTint`<br>`getBackgroundTint` | `?attr/colorSurface`
+**Elevation** | `app:elevation`          | `setElevation`                             | `3dp`
+**Height**    | `android:minHeight`      | `setMinimumHeight`<br>`getMinimumHeight`   | `80dp`
+**Shadows**   | `app:addElevationShadow` | N/A                                        | `false`
 
 ### Navigation icon attributes
 

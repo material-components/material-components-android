@@ -19,7 +19,7 @@ package com.google.android.material.bottomappbar;
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
-import static com.google.android.material.shape.MaterialShapeDrawable.SHADOW_COMPAT_MODE_ALWAYS;
+import static com.google.android.material.shape.MaterialShapeDrawable.SHADOW_COMPAT_MODE_NEVER;
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 
 import android.animation.Animator;
@@ -29,10 +29,13 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.appcompat.widget.ActionMenuView;
@@ -342,6 +345,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
         a.getDimensionPixelOffset(
             R.styleable.BottomAppBar_fabAlignmentModeEndMargin, NO_FAB_END_MARGIN);
 
+    boolean addElevationShadow = a.getBoolean(R.styleable.BottomAppBar_addElevationShadow, true);
     a.recycle();
 
     fabOffsetEndMode =
@@ -352,7 +356,16 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     ShapeAppearanceModel shapeAppearanceModel =
         ShapeAppearanceModel.builder().setTopEdge(topEdgeTreatment).build();
     materialShapeDrawable.setShapeAppearanceModel(shapeAppearanceModel);
-    materialShapeDrawable.setShadowCompatibilityMode(SHADOW_COMPAT_MODE_ALWAYS);
+    if (addElevationShadow) {
+      materialShapeDrawable.setShadowCompatibilityMode(
+          MaterialShapeDrawable.SHADOW_COMPAT_MODE_ALWAYS);
+    } else {
+      materialShapeDrawable.setShadowCompatibilityMode(SHADOW_COMPAT_MODE_NEVER);
+      if (VERSION.SDK_INT >= VERSION_CODES.P) {
+        setOutlineAmbientShadowColor(Color.TRANSPARENT);
+        setOutlineSpotShadowColor(Color.TRANSPARENT);
+      }
+    }
     materialShapeDrawable.setPaintStyle(Style.FILL);
     materialShapeDrawable.initializeElevationOverlay(context);
     setElevation(elevation);

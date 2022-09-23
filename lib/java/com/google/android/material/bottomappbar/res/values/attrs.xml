@@ -54,6 +54,8 @@
     <attr name="fabAlignmentModeEndMargin" format="dimension"/>
     <!-- Whether or not to remove elevation for embedded fabs in the bottom app bar. -->
     <attr name="removeEmbeddedFabElevation" format="boolean"/>
+    <!-- Whether or not to add shadows for the bottom app bar. -->
+    <attr name="addElevationShadow" format="boolean"/>
     <!-- Whether the BottomAppBar should hide when a NestedScrollView is scrolled. -->
     <attr name="hideOnScroll" format="boolean"/>
     <!-- Whether the BottomAppBar should apply padding to be above the bottom window insets. -->
