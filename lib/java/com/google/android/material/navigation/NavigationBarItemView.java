@@ -26,6 +26,7 @@ import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
@@ -636,6 +637,8 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
   public void setTextAppearanceActive(@StyleRes int activeTextAppearance) {
     setTextAppearanceWithoutFontScaling(largeLabel, activeTextAppearance);
     calculateTextScaleFactors(smallLabel.getTextSize(), largeLabel.getTextSize());
+    // TODO(b/246765947): Use component tokens to control font weight
+    largeLabel.setTypeface(largeLabel.getTypeface(), Typeface.BOLD);
   }
 
   /**
