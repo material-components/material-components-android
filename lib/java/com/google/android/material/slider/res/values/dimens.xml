@@ -21,6 +21,8 @@
   <dimen name="mtrl_slider_track_side_padding">16dp</dimen>
   <dimen name="mtrl_slider_track_height">4dp</dimen>
 
+  <dimen name="mtrl_slider_tick_radius">1dp</dimen>
+
   <dimen name="mtrl_slider_thumb_radius">10dp</dimen>
   <dimen name="mtrl_slider_thumb_elevation">1dp</dimen>
 

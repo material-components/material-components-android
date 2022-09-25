@@ -333,12 +333,14 @@ Element       | Attribute           | Related method(s)                         
 
 #### Tick mark attributes
 
-Element                             | Attribute               | Related method(s)                                       | Default value
------------------------------------ | ----------------------- | ------------------------------------------------------- | -------------
-**Color**                           | `app:tickColor`         | `setTickTintList`<br/>`getTickTintList`                 | `null`
-**Color for track's active part**   | `app:tickColorActive`   | `setTickActiveTintList`<br/>`getTickActiveTintList`     | `?attr/colorSurfaceVariant`
-**Color for track's inactive part** | `app:tickColorInactive` | `setTickInactiveTintList`<br/>`getTickInactiveTintList` | `?attr/colorPrimary`
-**Tick visible**                    | `app:tickVisible`       | `setTickVisible`<br/>`isTickVisible()`                  | `true`
+Element                             | Attribute                | Related method(s)                                       | Default value
+----------------------------------- |--------------------------|---------------------------------------------------------| -------------
+**Color**                           | `app:tickColor`          | `setTickTintList`<br/>`getTickTintList`                 | `null`
+**Color for tick's active part**    | `app:tickColorActive`    | `setTickActiveTintList`<br/>`getTickActiveTintList`     | `?attr/colorSurfaceVariant`
+**Color for tick's inactive part**  | `app:tickColorInactive`  | `setTickInactiveTintList`<br/>`getTickInactiveTintList` | `?attr/colorPrimary`
+**Radius for tick's active part**   | `app:tickRadiusActive`   | `setTickActiveRadius`<br/>`getTickActiveRadius`         | `1dp`
+**Radius for tick's inactive part** | `app:tickRadiusInactive` | `setTickInactiveRadius`<br/>`getTickInactiveRadius`     | `1dp`
+**Tick visible**                    | `app:tickVisible`        | `setTickVisible`<br/>`isTickVisible()`                  | `true`
 
 **Note:** `app:tickColor` takes precedence over `app:tickColorActive` and
 `app:tickColorInative`. It's a shorthand for setting both values to the same
