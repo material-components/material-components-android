@@ -776,7 +776,7 @@ public class MaterialButtonToggleGroup extends LinearLayout {
   }
 
   /**
-   * setEnable this {@link MaterialButtonToggleGroup} and all it's {@link MaterialButton} children
+   * Enables this {@link MaterialButtonToggleGroup} and all its {@link MaterialButton} children
    *
    * @param enabled boolean to setEnable {@link MaterialButtonToggleGroup}
    */
