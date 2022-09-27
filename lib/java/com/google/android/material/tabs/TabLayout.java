@@ -451,7 +451,9 @@ public class TabLayout extends HorizontalScrollView {
   int tabPaddingEnd;
   int tabPaddingBottom;
 
-  int tabTextAppearance;
+  private final int defaultTabTextAppearance;
+  private final int tabTextAppearance;
+  private int selectedTabTextAppearance = -1;
   ColorStateList tabTextColors;
   ColorStateList tabIconTint;
   ColorStateList tabRippleColorStateList;
@@ -460,6 +462,7 @@ public class TabLayout extends HorizontalScrollView {
 
   android.graphics.PorterDuff.Mode tabIconTintMode;
   float tabTextSize;
+  float selectedTabTextSize;
   float tabTextMultiLineSize;
 
   final int tabBackgroundResId;
@@ -566,6 +569,11 @@ public class TabLayout extends HorizontalScrollView {
     tabPaddingBottom =
         a.getDimensionPixelSize(R.styleable.TabLayout_tabPaddingBottom, tabPaddingBottom);
 
+    if (ThemeEnforcement.isMaterial3Theme(context)) {
+      defaultTabTextAppearance = R.attr.textAppearanceLabelLarge;
+    } else {
+      defaultTabTextAppearance = R.attr.textAppearanceButton;
+    }
     tabTextAppearance =
         a.getResourceId(R.styleable.TabLayout_tabTextAppearance, R.style.TextAppearance_Design_Tab);
 
@@ -584,6 +592,43 @@ public class TabLayout extends HorizontalScrollView {
               androidx.appcompat.R.styleable.TextAppearance_android_textColor);
     } finally {
       ta.recycle();
+    }
+
+    if (a.hasValue(R.styleable.TabLayout_tabSelectedTextAppearance)) {
+      selectedTabTextAppearance =
+          a.getResourceId(R.styleable.TabLayout_tabSelectedTextAppearance, tabTextAppearance);
+    }
+
+    if (selectedTabTextAppearance != -1) {
+      // If there is a selected tab text appearance specified, we take the selected tab text size
+      // and selected color from it.
+      @SuppressLint("CustomViewStyleable")
+      final TypedArray selectedTabTA =
+          context.obtainStyledAttributes(
+              selectedTabTextAppearance, androidx.appcompat.R.styleable.TextAppearance);
+
+      try {
+        selectedTabTextSize =
+            selectedTabTA.getDimensionPixelSize(
+                androidx.appcompat.R.styleable.TextAppearance_android_textSize,
+                (int) tabTextSize);
+        ColorStateList selectedTabTextColor =
+            MaterialResources.getColorStateList(
+                context,
+                selectedTabTA,
+                androidx.appcompat.R.styleable.TextAppearance_android_textColor);
+        // Merge the selected tab color if it's set in the selected tab text appearance.
+        if (selectedTabTextColor != null) {
+          tabTextColors =
+              createColorStateList(
+                  tabTextColors.getDefaultColor(),
+                  selectedTabTextColor.getColorForState(
+                      new int[] {android.R.attr.state_selected},
+                      selectedTabTextColor.getDefaultColor()));
+        }
+      } finally {
+        selectedTabTA.recycle();
+      }
     }
 
     if (a.hasValue(R.styleable.TabLayout_tabTextColor)) {
@@ -1900,11 +1945,14 @@ public class TabLayout extends HorizontalScrollView {
       // Setting selectedTab before dispatching 'tab unselected' events, so that currentTab's state
       // will be interpreted as unselected
       selectedTab = tab;
-      if (currentTab != null) {
+      // If the current tab is still attached to the TabLayout.
+      if (currentTab != null && currentTab.parent != null) {
         dispatchTabUnselected(currentTab);
+        currentTab.view.update();
       }
       if (tab != null) {
         dispatchTabSelected(tab);
+        tab.view.update();
       }
     }
   }
@@ -2690,7 +2738,12 @@ public class TabLayout extends HorizontalScrollView {
           inflateAndAddDefaultTextView();
           defaultMaxLines = TextViewCompat.getMaxLines(this.textView);
         }
-        TextViewCompat.setTextAppearance(this.textView, tabTextAppearance);
+        TextViewCompat.setTextAppearance(this.textView, defaultTabTextAppearance);
+        if (isSelected() && selectedTabTextAppearance != -1) {
+          TextViewCompat.setTextAppearance(this.textView, selectedTabTextAppearance);
+        } else {
+          TextViewCompat.setTextAppearance(this.textView, tabTextAppearance);
+        }
         if (tabTextColors != null) {
           this.textView.setTextColor(tabTextColors);
         }

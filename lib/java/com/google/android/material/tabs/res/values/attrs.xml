@@ -96,6 +96,8 @@
     <!-- {@deprecated Instead, provide a ColorStateList to the tabTextColor attribute with a
          selected color set.}  -->
     <attr name="tabSelectedTextColor" format="color"/>
+    <!-- A reference to a TextAppearance style to be applied to selected tab. -->
+    <attr name="tabSelectedTextAppearance" format="reference"/>
     <!-- The preferred padding along the start edge of tabs. -->
     <attr name="tabPaddingStart" format="dimension"/>
     <!-- The preferred padding along the top edge of tabs. -->
