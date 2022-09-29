@@ -2747,9 +2747,9 @@ abstract class BaseSlider<
       if (values.size() > 1) {
         contentDescription.append(startOrEndDescription(virtualViewId));
         contentDescription.append(slider.formatValue(value));
+      } else if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O){
+          contentDescription.append(" Value is" + slider.formatValue(value));
       }
-
-      contentDescription.append(" Value is" + slider.formatValue(value));
 
       info.setContentDescription(contentDescription.toString());
 
