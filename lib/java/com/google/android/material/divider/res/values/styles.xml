@@ -23,7 +23,8 @@
 
   <!-- Default style for the Material3 divider. -->
   <style name="Widget.Material3.MaterialDivider" parent="Widget.MaterialComponents.MaterialDivider">
-    <item name="dividerColor">?attr/colorOutline</item>
+    <item name="dividerColor">@macro/m3_comp_divider_color</item>
+    <item name="dividerThickness">@dimen/m3_comp_divider_thickness</item>
   </style>
 
   <!-- Heavy style for the Material3 divider. -->

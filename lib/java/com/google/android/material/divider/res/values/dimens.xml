@@ -15,6 +15,7 @@
 -->
 
 <resources>
+  <!-- Dimen for pre-M3 style. -->
   <dimen name="material_divider_thickness">1dp</dimen>
   <dimen name="m3_divider_heavy_thickness">8dp</dimen>
 </resources>
