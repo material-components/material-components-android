@@ -58,6 +58,9 @@
          If this id is not set, the {@link AppBarLayout} will use the target view provided
          by nested scrolling to determine whether it should be lifted. -->
     <attr name="liftOnScrollTargetViewId" format="reference"/>
+    <!-- The color of the app bar when lifted, if lift on scroll is enabled. If null, the color is
+         determined by the elevation overlay. -->
+    <attr name="liftOnScrollColor" format="color"/>
     <!-- The drawable to display in front of the layout's content, but behind the status bar.
          Only works on Lollipop when used together with android:fitSystemWindows="true". -->
     <attr name="statusBarForeground" format="color"/>

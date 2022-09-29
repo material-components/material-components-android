@@ -29,6 +29,7 @@ import androidx.core.view.ViewCompat;
 import androidx.test.InstrumentationRegistry;
 import androidx.test.filters.MediumTest;
 import androidx.test.runner.AndroidJUnit4;
+import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.testapp.R;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -375,5 +376,36 @@ public class AppBarWithToolbarTest extends AppBarLayoutBaseTest {
     assertAccessibilityHasScrollForwardAction(false);
     assertAccessibilityHasScrollBackwardAction(false);
     assertAccessibilityScrollable(false);
+  }
+
+  /** Tests the lift on scroll color of the app bar layout. */
+  @Test
+  public void testLiftOnScrollColor() throws Throwable {
+    configureContent(
+        R.layout.design_appbar_toolbar_liftonscroll_color,
+        R.string.design_appbar_toolbar_scroll_tabs_pin);
+
+    final int[] appbarOnScreenXY = new int[2];
+    mAppBar.getLocationOnScreen(appbarOnScreenXY);
+
+    final int originalAppbarBottom = appbarOnScreenXY[1] + mAppBar.getHeight();
+    final int centerX = appbarOnScreenXY[0] + mAppBar.getWidth() / 2;
+
+    final int appbarHeight = mAppBar.getHeight();
+    final int longSwipeAmount = 3 * appbarHeight / 2;
+
+    assertEquals(0, ((MaterialShapeDrawable) mAppBar.getBackground()).getAlpha());
+
+    // Perform a swipe-up gesture across the horizontal center of the screen.
+    performVerticalSwipeUpGesture(
+        R.id.coordinator_layout,
+        centerX,
+        originalAppbarBottom + 3 * longSwipeAmount / 2,
+        longSwipeAmount);
+
+    assertEquals(255, ((MaterialShapeDrawable) mAppBar.getBackground()).getAlpha());
+    assertEquals(
+        mAppBar.getResources().getColor(R.color.material_blue_grey_950),
+        ((MaterialShapeDrawable) mAppBar.getBackground()).getFillColor().getDefaultColor());
   }
 }
