@@ -2259,7 +2259,7 @@ public class TextInputLayout extends LinearLayout {
    */
   @Nullable
   public ColorStateList getCounterOverflowTextColor() {
-    return counterTextColor;
+    return counterOverflowTextColor;
   }
 
   /**
