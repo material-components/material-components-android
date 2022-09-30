@@ -72,7 +72,7 @@ class CircleIndicatorDecorator extends DayViewDecorator {
       boolean valid,
       boolean selected,
       @Nullable CharSequence originalContentDescription) {
-    if (!valid || !shouldShowIndicator(year, month, day)) {
+    if (!valid || selected || !shouldShowIndicator(year, month, day)) {
       return originalContentDescription;
     }
     return String.format(

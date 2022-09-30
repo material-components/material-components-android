@@ -190,6 +190,7 @@ class MonthAdapter extends BaseAdapter {
     if (valid) {
       dayTextView.setEnabled(true);
       selected = isSelected(date);
+      dayTextView.setSelected(selected);
       if (selected) {
         style = calendarStyle.selectedDay;
       } else if (UtcDates.getTodayCalendar().getTimeInMillis() == date) {

@@ -67,7 +67,7 @@ class BackgroundHighlightDecorator extends DayViewDecorator {
       boolean valid,
       boolean selected,
       @Nullable CharSequence originalContentDescription) {
-    if (!valid || !shouldShowHighlight(year, month, day)) {
+    if (!valid || selected || !shouldShowHighlight(year, month, day)) {
       return originalContentDescription;
     }
     return String.format(
