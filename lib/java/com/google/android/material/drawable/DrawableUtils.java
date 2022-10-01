@@ -22,6 +22,8 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources.NotFoundException;
 import android.graphics.Color;
+import android.graphics.Outline;
+import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffColorFilter;
@@ -276,5 +278,23 @@ public final class DrawableUtils {
       }
     }
     return newState;
+  }
+
+  /** Sets the Outline to a {@link android.graphics.Path path}, if possible. */
+  public static void setOutlineToPath(@NonNull final Outline outline, @NonNull final Path path) {
+    if (VERSION.SDK_INT >= VERSION_CODES.R) {
+      outline.setPath(path);
+    } else if (VERSION.SDK_INT >= VERSION_CODES.Q) {
+      try {
+        // As of Android Q, the restriction that the path must be convex is removed, but the API is
+        // misnamed until the introduction of setPath() in R, so we have to use setConvexPath for Q.
+        outline.setConvexPath(path);
+      } catch (IllegalArgumentException ignored) {
+        // The change to support concave paths was done late in the release cycle. People
+        // using pre-releases of Q would experience a crash here.
+      }
+    } else if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP && path.isConvex()) {
+      outline.setConvexPath(path);
+    }
   }
 }
