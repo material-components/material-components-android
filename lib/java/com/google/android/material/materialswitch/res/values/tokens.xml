@@ -33,7 +33,6 @@
   <style name="ShapeAppearance.M3.Comp.Switch.Handle.Shape" parent="ShapeAppearance.M3.Sys.Shape.Corner.Full"/>
   <macro name="m3_comp_switch_selected_handle_color">?attr/colorOnPrimary</macro>
   <macro name="m3_comp_switch_unselected_handle_color">?attr/colorOutline</macro>
-  <dimen name="m3_comp_switch_handle_elevation">@dimen/m3_sys_elevation_level1</dimen>
   <!-- Enabled - State layer -->
   <style name="ShapeAppearance.M3.Comp.Switch.StateLayer.Shape" parent="ShapeAppearance.M3.Sys.Shape.Corner.Full"/>
   <!-- Disabled - Icon -->
@@ -51,8 +50,6 @@
   <item name="m3_comp_switch_disabled_selected_handle_opacity" format="float" type="dimen">1</item>
   <macro name="m3_comp_switch_disabled_selected_handle_color">?attr/colorSurface</macro>
   <macro name="m3_comp_switch_disabled_unselected_handle_color">?attr/colorOnSurface</macro>
-  <item name="m3_comp_switch_disabled_handle_opacity" format="float" type="dimen">0.38</item>
-  <dimen name="m3_comp_switch_disabled_handle_elevation">@dimen/m3_sys_elevation_level0</dimen>
   <!-- Hovered - Icon -->
   <macro name="m3_comp_switch_selected_hover_icon_color">?attr/colorOnPrimaryContainer</macro>
   <macro name="m3_comp_switch_unselected_hover_icon_color">?attr/colorSurfaceVariant</macro>
