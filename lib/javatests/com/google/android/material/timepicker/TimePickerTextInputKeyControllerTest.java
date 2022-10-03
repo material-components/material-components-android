@@ -77,6 +77,50 @@ public class TimePickerTextInputKeyControllerTest {
     assertThat(timeModel.selection).isEqualTo(HOUR);
   }
 
+  @Test
+  public void controller_clearPrefilledText_shouldClearWhenSelection0() {
+    EditText editText = hourInput.getTextInput().getEditText();
+    editText.setText("00");
+    editText.setSelection(0);
+    pressKeys(editText, KeyEvent.KEYCODE_0);
+    shadowOf(getMainLooper()).idle();
+
+    assertThat(editText.getText().length()).isEqualTo(0);
+  }
+
+  @Test
+  public void controller_clearPrefilledText_shouldNotClearWhenSelection1() {
+    EditText editText = hourInput.getTextInput().getEditText();
+    editText.setText("00");
+    editText.setSelection(1);
+    pressKeys(editText, KeyEvent.KEYCODE_0);
+    shadowOf(getMainLooper()).idle();
+
+    assertThat(editText.getText().length()).isEqualTo(2);
+  }
+
+  @Test
+  public void controller_clearPrefilledText_shouldNotClearWhenSelection2() {
+    EditText editText = hourInput.getTextInput().getEditText();
+    editText.setText("00");
+    editText.setSelection(2);
+    pressKeys(editText, KeyEvent.KEYCODE_0);
+    shadowOf(getMainLooper()).idle();
+
+    assertThat(editText.getText().length()).isEqualTo(2);
+  }
+
+  @Test
+  public void controller_clearPrefilledText_shouldNotClearWhenPartialText() {
+    EditText editText = hourInput.getTextInput().getEditText();
+    editText.setText("0");
+    editText.setSelection(0);
+    pressKeys(editText, KeyEvent.KEYCODE_0);
+    shadowOf(getMainLooper()).idle();
+
+    assertThat(editText.getText().length()).isEqualTo(1);
+  }
+
   private static void pressKeys(EditText editText, int... keycodes) {
     for (int key : keycodes) {
       editText.dispatchKeyEvent(new KeyEvent(0, 0, KeyEvent.ACTION_DOWN, key, 0));
