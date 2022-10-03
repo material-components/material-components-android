@@ -112,8 +112,6 @@ class TimePickerTextInputKeyController implements OnEditorActionListener, OnKeyL
       return true;
     }
 
-    clearPrefilledText(editText);
-
     return false;
   }
 
@@ -135,15 +133,6 @@ class TimePickerTextInputKeyController implements OnEditorActionListener, OnKeyL
       return true;
     }
 
-    clearPrefilledText(editText);
-
     return false;
-  }
-
-  // Improve UX by auto-clearing existing text when entering new time
-  private void clearPrefilledText(EditText editText) {
-    if (editText.getSelectionStart() == 0 && editText.length() == 2) {
-      editText.getText().clear();
-    }
   }
 }
