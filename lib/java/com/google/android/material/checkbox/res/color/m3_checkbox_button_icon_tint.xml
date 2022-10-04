@@ -17,17 +17,17 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto">
   <!-- Disabled -->
-  <item android:color="?attr/colorSurface" android:state_enabled="false"/>
+  <item android:color="@macro/m3_comp_checkbox_selected_disabled_icon_color" android:state_enabled="false"/>
 
   <!-- Error -->
-  <item android:color="?attr/colorOnError" app:state_error="true"/>
+  <item android:color="@macro/m3_comp_checkbox_selected_error_icon_color" app:state_error="true"/>
 
   <!-- Indeterminate -->
-  <item android:color="?attr/colorOnPrimary" app:state_indeterminate="true"/>
+  <item android:color="@macro/m3_comp_checkbox_selected_icon_color" app:state_indeterminate="true"/>
 
   <!-- Checked -->
-  <item android:color="?attr/colorOnPrimary" android:state_checked="true"/>
+  <item android:color="@macro/m3_comp_checkbox_selected_icon_color" android:state_checked="true"/>
 
   <!-- Unchecked -->
-  <item android:color="?attr/colorOnPrimary" android:state_checked="false"/>
+  <item android:color="@macro/m3_comp_checkbox_selected_icon_color" android:state_checked="false"/>
 </selector>

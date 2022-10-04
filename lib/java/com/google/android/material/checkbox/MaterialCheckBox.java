@@ -411,6 +411,11 @@ public class MaterialCheckBox extends AppCompatCheckBox {
       }
 
       broadcasting = false;
+
+      // This is needed due to a pre-21 bug where the drawable states don't get updated correctly.
+      if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP && buttonIconDrawable != null) {
+        refreshDrawableState();
+      }
     }
   }
 
