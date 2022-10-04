@@ -19,6 +19,10 @@ package com.google.android.material.bottomsheet;
 import com.google.android.material.test.R;
 
 import static android.content.Context.ACCESSIBILITY_SERVICE;
+import static androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_COLLAPSE;
+import static androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_DISMISS;
+import static androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_EXPAND;
+import static com.google.android.material.bottomsheet.BottomSheetBehavior.VIEW_INDEX_ACCESSIBILITY_DELEGATE_VIEW;
 import static com.google.common.truth.Truth.assertThat;
 import static org.robolectric.Shadows.shadowOf;
 
@@ -32,8 +36,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.platform.app.InstrumentationRegistry;
+import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -195,6 +201,140 @@ public class BottomSheetDragHandleTest {
         .isEqualTo(BottomSheetBehavior.STATE_COLLAPSED);
   }
 
+  @Test
+  public void test_customActionExpand() {
+    activity.bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+    activity.addViewToBottomSheet(dragHandleView);
+    shadowOf(accessibilityManager).setEnabled(true);
+
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+
+    ViewCompat.performAccessibilityAction(dragHandleView, ACTION_EXPAND.getId(), /* args= */ null);
+
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+
+    assertThat(activity.bottomSheetBehavior.getState())
+        .isEqualTo(BottomSheetBehavior.STATE_EXPANDED);
+  }
+
+  @Test
+  public void test_customActionHalfExpand() {
+    activity.bottomSheetBehavior.setFitToContents(false);
+    activity.bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+    activity.addViewToBottomSheet(dragHandleView);
+    shadowOf(accessibilityManager).setEnabled(true);
+
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+
+    ViewCompat.performAccessibilityAction(
+        dragHandleView, getHalfExpandActionId(), /* args= */ null);
+
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+
+    assertThat(activity.bottomSheetBehavior.getState())
+        .isEqualTo(BottomSheetBehavior.STATE_HALF_EXPANDED);
+  }
+
+  @Test
+  public void test_customActionCollapse() {
+    activity.bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+    activity.addViewToBottomSheet(dragHandleView);
+    shadowOf(accessibilityManager).setEnabled(true);
+
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+
+    ViewCompat.performAccessibilityAction(
+        dragHandleView, ACTION_COLLAPSE.getId(), /* args= */ null);
+
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+
+    assertThat(activity.bottomSheetBehavior.getState())
+        .isEqualTo(BottomSheetBehavior.STATE_COLLAPSED);
+  }
+
+  @Test
+  public void test_customActionDismiss() {
+    activity.bottomSheetBehavior.setHideable(true);
+    activity.bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+    activity.addViewToBottomSheet(dragHandleView);
+    shadowOf(accessibilityManager).setEnabled(true);
+
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+
+    ViewCompat.performAccessibilityAction(dragHandleView, ACTION_DISMISS.getId(), /* args= */ null);
+
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+
+    assertThat(activity.bottomSheetBehavior.getState()).isEqualTo(BottomSheetBehavior.STATE_HIDDEN);
+  }
+
+  @Test
+  public void test_customActionSetInCollapsedStateWhenHalfExpandableAndHideable() {
+    activity.bottomSheetBehavior.setFitToContents(false);
+    activity.bottomSheetBehavior.setHideable(true);
+    activity.bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+    activity.addViewToBottomSheet(dragHandleView);
+    shadowOf(accessibilityManager).setEnabled(true);
+
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+
+    assertThat(hasAccessibilityAction(dragHandleView, getHalfExpandActionId())).isTrue();
+    assertThat(hasAccessibilityAction(dragHandleView, ACTION_EXPAND.getId())).isTrue();
+    assertThat(hasAccessibilityAction(dragHandleView, ACTION_DISMISS.getId())).isTrue();
+    assertThat(hasAccessibilityAction(dragHandleView, ACTION_COLLAPSE.getId())).isFalse();
+  }
+
+  @Test
+  public void test_customActionSetInExpandedStateWhenHalfExpandableAndNotHideable() {
+    activity.bottomSheetBehavior.setHideable(false);
+    activity.bottomSheetBehavior.setFitToContents(false);
+    activity.bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+    activity.addViewToBottomSheet(dragHandleView);
+    shadowOf(accessibilityManager).setEnabled(true);
+
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+
+    assertThat(hasAccessibilityAction(dragHandleView, getHalfExpandActionId())).isTrue();
+    assertThat(hasAccessibilityAction(dragHandleView, ACTION_EXPAND.getId())).isFalse();
+    assertThat(hasAccessibilityAction(dragHandleView, ACTION_DISMISS.getId())).isFalse();
+    assertThat(hasAccessibilityAction(dragHandleView, ACTION_COLLAPSE.getId())).isTrue();
+  }
+
+  @Test
+  public void test_customActionSetInCollapsedStateWhenNotHideable() {
+    activity.bottomSheetBehavior.setHideable(false);
+    activity.bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+    activity.addViewToBottomSheet(dragHandleView);
+    shadowOf(accessibilityManager).setEnabled(true);
+
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+
+    assertThat(getHalfExpandActionId()).isEqualTo(View.NO_ID);
+    assertThat(hasAccessibilityAction(dragHandleView, ACTION_EXPAND.getId())).isTrue();
+    assertThat(hasAccessibilityAction(dragHandleView, ACTION_DISMISS.getId())).isFalse();
+    assertThat(hasAccessibilityAction(dragHandleView, ACTION_COLLAPSE.getId())).isFalse();
+  }
+
+  @Test
+  public void test_customActionSetInExpandedStateWhenHideable() {
+    activity.bottomSheetBehavior.setHideable(true);
+    activity.bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+    activity.addViewToBottomSheet(dragHandleView);
+    shadowOf(accessibilityManager).setEnabled(true);
+
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+
+    assertThat(getHalfExpandActionId()).isEqualTo(View.NO_ID);
+    assertThat(hasAccessibilityAction(dragHandleView, ACTION_EXPAND.getId())).isFalse();
+    assertThat(hasAccessibilityAction(dragHandleView, ACTION_DISMISS.getId())).isTrue();
+    assertThat(hasAccessibilityAction(dragHandleView, ACTION_COLLAPSE.getId())).isTrue();
+  }
+
+  private int getHalfExpandActionId() {
+    return activity.bottomSheetBehavior.expandHalfwayActionIds.get(
+        VIEW_INDEX_ACCESSIBILITY_DELEGATE_VIEW, View.NO_ID);
+  }
+
   private void assertImportantForAccessibility(boolean important) {
     if (important) {
       assertThat(ViewCompat.getImportantForAccessibility(dragHandleView))
@@ -203,6 +343,21 @@ public class BottomSheetDragHandleTest {
       assertThat(ViewCompat.getImportantForAccessibility(dragHandleView))
           .isEqualTo(ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO);
     }
+  }
+
+  // TODO(b/250622249): remove duplicated methods after sharing test util classes
+  private static boolean hasAccessibilityAction(View view, int actionId) {
+    return getAccessibilityActionList(view).stream().anyMatch(action -> action.getId() == actionId);
+  }
+
+  private static ArrayList<AccessibilityActionCompat> getAccessibilityActionList(View view) {
+    @SuppressWarnings({"unchecked"})
+    ArrayList<AccessibilityActionCompat> actions =
+        (ArrayList<AccessibilityActionCompat>) view.getTag(R.id.tag_accessibility_actions);
+    if (actions == null) {
+      actions = new ArrayList<>();
+    }
+    return actions;
   }
 
   private static class TestActivity extends AppCompatActivity {

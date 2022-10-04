@@ -139,9 +139,11 @@ public class BottomSheetDragHandleView extends AppCompatImageView
   private void setBottomSheetBehavior(@Nullable BottomSheetBehavior<?> behavior) {
     if (bottomSheetBehavior != null) {
       bottomSheetBehavior.removeBottomSheetCallback(bottomSheetCallback);
+      bottomSheetBehavior.setAccessibilityDelegateView(null);
     }
     bottomSheetBehavior = behavior;
     if (bottomSheetBehavior != null) {
+      bottomSheetBehavior.setAccessibilityDelegateView(this);
       onBottomSheetStateChanged(bottomSheetBehavior.getState());
       bottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback);
     }

@@ -34,6 +34,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.SparseIntArray;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -212,6 +213,11 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   private static final int NO_MAX_SIZE = -1;
 
+  private static final int VIEW_INDEX_BOTTOM_SHEET = 0;
+
+  @VisibleForTesting
+  static final int VIEW_INDEX_ACCESSIBILITY_DELEGATE_VIEW = 1;
+
   private boolean fitToContents = true;
 
   private boolean updateImportantForAccessibilityOnSiblings = false;
@@ -303,6 +309,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   int parentHeight;
 
   @Nullable WeakReference<V> viewRef;
+  @Nullable WeakReference<View> accessibilityDelegateViewRef;
 
   @Nullable WeakReference<View> nestedScrollingChildRef;
 
@@ -318,7 +325,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   @Nullable private Map<View, Integer> importantForAccessibilityMap;
 
-  private int expandHalfwayActionId = View.NO_ID;
+  @VisibleForTesting
+  final SparseIntArray expandHalfwayActionIds = new SparseIntArray();
 
   public BottomSheetBehavior() {}
 
@@ -2156,30 +2164,43 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     }
   }
 
-  private void updateAccessibilityActions() {
-    if (viewRef == null) {
+  void setAccessibilityDelegateView(@Nullable View accessibilityDelegateView) {
+    if (accessibilityDelegateView == null && accessibilityDelegateViewRef != null) {
+      clearAccessibilityAction(
+          accessibilityDelegateViewRef.get(), VIEW_INDEX_ACCESSIBILITY_DELEGATE_VIEW);
+      accessibilityDelegateViewRef = null;
       return;
     }
-    V child = viewRef.get();
-    if (child == null) {
-      return;
-    }
-    ViewCompat.removeAccessibilityAction(child, AccessibilityNodeInfoCompat.ACTION_COLLAPSE);
-    ViewCompat.removeAccessibilityAction(child, AccessibilityNodeInfoCompat.ACTION_EXPAND);
-    ViewCompat.removeAccessibilityAction(child, AccessibilityNodeInfoCompat.ACTION_DISMISS);
+    accessibilityDelegateViewRef = new WeakReference<>(accessibilityDelegateView);
+    updateAccessibilityActions(accessibilityDelegateView, VIEW_INDEX_ACCESSIBILITY_DELEGATE_VIEW);
+  }
 
-    if (expandHalfwayActionId != View.NO_ID) {
-      ViewCompat.removeAccessibilityAction(child, expandHalfwayActionId);
+  private void updateAccessibilityActions() {
+    if (viewRef != null) {
+      updateAccessibilityActions(viewRef.get(), VIEW_INDEX_BOTTOM_SHEET);
     }
+    if (accessibilityDelegateViewRef != null) {
+      updateAccessibilityActions(
+          accessibilityDelegateViewRef.get(), VIEW_INDEX_ACCESSIBILITY_DELEGATE_VIEW);
+    }
+  }
+
+  private void updateAccessibilityActions(View view, int viewIndex) {
+    if (view == null) {
+      return;
+    }
+    clearAccessibilityAction(view, viewIndex);
+
     if (!fitToContents && state != STATE_HALF_EXPANDED) {
-      expandHalfwayActionId =
+      expandHalfwayActionIds.put(
+          viewIndex,
           addAccessibilityActionForState(
-              child, R.string.bottomsheet_action_expand_halfway, STATE_HALF_EXPANDED);
+              view, R.string.bottomsheet_action_expand_halfway, STATE_HALF_EXPANDED));
     }
 
     if ((hideable && isHideableWhenDragging()) && state != STATE_HIDDEN) {
       replaceAccessibilityActionForState(
-          child, AccessibilityActionCompat.ACTION_DISMISS, STATE_HIDDEN);
+          view, AccessibilityActionCompat.ACTION_DISMISS, STATE_HIDDEN);
     }
 
     switch (state) {
@@ -2187,36 +2208,54 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         {
           int nextState = fitToContents ? STATE_COLLAPSED : STATE_HALF_EXPANDED;
           replaceAccessibilityActionForState(
-              child, AccessibilityActionCompat.ACTION_COLLAPSE, nextState);
+              view, AccessibilityActionCompat.ACTION_COLLAPSE, nextState);
           break;
         }
       case STATE_HALF_EXPANDED:
         {
           replaceAccessibilityActionForState(
-              child, AccessibilityActionCompat.ACTION_COLLAPSE, STATE_COLLAPSED);
+              view, AccessibilityActionCompat.ACTION_COLLAPSE, STATE_COLLAPSED);
           replaceAccessibilityActionForState(
-              child, AccessibilityActionCompat.ACTION_EXPAND, STATE_EXPANDED);
+              view, AccessibilityActionCompat.ACTION_EXPAND, STATE_EXPANDED);
           break;
         }
       case STATE_COLLAPSED:
         {
           int nextState = fitToContents ? STATE_EXPANDED : STATE_HALF_EXPANDED;
           replaceAccessibilityActionForState(
-              child, AccessibilityActionCompat.ACTION_EXPAND, nextState);
+              view, AccessibilityActionCompat.ACTION_EXPAND, nextState);
           break;
         }
-      default: // fall out
+      case STATE_HIDDEN:
+      case STATE_DRAGGING:
+      case STATE_SETTLING:
+        // Accessibility actions are not applicable, do nothing
+    }
+  }
+
+  private void clearAccessibilityAction(View view, int viewIndex) {
+    if (view == null) {
+      return;
+    }
+    ViewCompat.removeAccessibilityAction(view, AccessibilityNodeInfoCompat.ACTION_COLLAPSE);
+    ViewCompat.removeAccessibilityAction(view, AccessibilityNodeInfoCompat.ACTION_EXPAND);
+    ViewCompat.removeAccessibilityAction(view, AccessibilityNodeInfoCompat.ACTION_DISMISS);
+
+    int expandHalfwayActionId = expandHalfwayActionIds.get(viewIndex, View.NO_ID);
+    if (expandHalfwayActionId != View.NO_ID) {
+      ViewCompat.removeAccessibilityAction(view, expandHalfwayActionId);
+      expandHalfwayActionIds.delete(viewIndex);
     }
   }
 
   private void replaceAccessibilityActionForState(
-      V child, AccessibilityActionCompat action, @State int state) {
+      View child, AccessibilityActionCompat action, @State int state) {
     ViewCompat.replaceAccessibilityAction(
         child, action, null, createAccessibilityViewCommandForState(state));
   }
 
   private int addAccessibilityActionForState(
-      V child, @StringRes int stringResId, @State int state) {
+      View child, @StringRes int stringResId, @State int state) {
     return ViewCompat.addAccessibilityAction(
         child,
         child.getResources().getString(stringResId),
