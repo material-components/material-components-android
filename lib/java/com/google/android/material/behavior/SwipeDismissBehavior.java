@@ -85,6 +85,7 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
   ViewDragHelper viewDragHelper;
   OnDismissListener listener;
   private boolean interceptingEvents;
+  private boolean requestingDisallowInterceptTouchEvent;
 
   private float sensitivity = 0f;
   private boolean sensitivitySet;
@@ -204,7 +205,8 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
 
     if (dispatchEventToHelper) {
       ensureViewDragHelper(parent);
-      return viewDragHelper.shouldInterceptTouchEvent(event);
+      return !requestingDisallowInterceptTouchEvent
+          && viewDragHelper.shouldInterceptTouchEvent(event);
     }
     return false;
   }
@@ -212,7 +214,11 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
   @Override
   public boolean onTouchEvent(CoordinatorLayout parent, V child, MotionEvent event) {
     if (viewDragHelper != null) {
-      viewDragHelper.processTouchEvent(event);
+      // Don't process CANCEL sent for requesting disallow intercept touch event.
+      if (!requestingDisallowInterceptTouchEvent
+          || event.getActionMasked() != MotionEvent.ACTION_CANCEL) {
+        viewDragHelper.processTouchEvent(event);
+      }
       return true;
     }
     return false;
@@ -251,7 +257,12 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
           // intercepting
           final ViewParent parent = capturedChild.getParent();
           if (parent != null) {
+            // The requestDisallowInterceptTouchEvent() will send a CANCEL event to all children's
+            // onInterceptTouchEvent(). This breaks the ongoing dragging event sequence. We
+            // temporarily ignore all CANCEL event while requesting.
+            requestingDisallowInterceptTouchEvent = true;
             parent.requestDisallowInterceptTouchEvent(true);
+            requestingDisallowInterceptTouchEvent = false;
           }
         }
 
