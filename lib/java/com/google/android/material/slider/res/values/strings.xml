@@ -16,6 +16,7 @@
   -->
 
 <resources>
-  <string name="material_slider_range_start" description="Content description for the thumb with the minimum value in a Range slider. [CHAR_LIMIT=NONE]">Range start, </string>
-  <string name="material_slider_range_end" description="Content description for the thumb with the maximum value in a Range slider. [CHAR_LIMIT=NONE]">Range end, </string>
+  <string name="material_slider_range_start" description="Content description for the thumb with the minimum value in a Range slider. [CHAR_LIMIT=NONE]">Range start</string>
+  <string name="material_slider_range_end" description="Content description for the thumb with the maximum value in a Range slider. [CHAR_LIMIT=NONE]">Range end</string>
+  <string name="material_slider_value" description="Content description for the thumb with the value in a regular slider. [CHAR_LIMIT=NONE]">Value</string>
 </resources>

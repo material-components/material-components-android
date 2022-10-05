@@ -103,6 +103,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * The slider can function either as a continuous slider, or as a discrete slider. The mode of
@@ -242,8 +243,7 @@ abstract class BaseSlider<
   private static final int LABEL_ANIMATION_EXIT_EASING_ATTR =
       R.attr.motionEasingEmphasizedAccelerateInterpolator;
 
-  @Dimension
-  private static final int MIN_TOUCH_TARGET_DP = 48;
+  @Dimension private static final int MIN_TOUCH_TARGET_DP = 48;
 
   @NonNull private final Paint inactiveTrackPaint;
   @NonNull private final Paint activeTrackPaint;
@@ -411,8 +411,8 @@ abstract class BaseSlider<
         ThemeEnforcement.obtainStyledAttributes(
             context, attrs, R.styleable.Slider, defStyleAttr, DEF_STYLE_RES);
 
-    labelStyle = a.getResourceId(
-        R.styleable.Slider_labelStyle, R.style.Widget_MaterialComponents_Tooltip);
+    labelStyle =
+        a.getResourceId(R.styleable.Slider_labelStyle, R.style.Widget_MaterialComponents_Tooltip);
 
     valueFrom = a.getFloat(R.styleable.Slider_android_valueFrom, 0.0f);
     valueTo = a.getFloat(R.styleable.Slider_android_valueTo, 1.0f);
@@ -424,8 +424,7 @@ abstract class BaseSlider<
     minTouchTargetSize =
         (int)
             Math.ceil(
-                a.getDimension(
-                    R.styleable.Slider_minTouchTargetSize, defaultMinTouchTargetSize));
+                a.getDimension(R.styleable.Slider_minTouchTargetSize, defaultMinTouchTargetSize));
 
     boolean hasTrackColor = a.hasValue(R.styleable.Slider_trackColor);
 
@@ -1668,7 +1667,7 @@ abstract class BaseSlider<
 
     float interval = trackWidth / (float) (tickCount - 1);
     for (int i = 0; i < tickCount * 2; i += 2) {
-      ticksCoordinates[i] = trackSidePadding + i / 2 * interval;
+      ticksCoordinates[i] = trackSidePadding + i / 2f * interval;
       ticksCoordinates[i + 1] = calculateTrackCenter();
     }
   }
@@ -2133,15 +2132,27 @@ abstract class BaseSlider<
     int duration;
     TimeInterpolator interpolator;
     if (enter) {
-      duration = MotionUtils.resolveThemeDuration(getContext(),
-          LABEL_ANIMATION_ENTER_DURATION_ATTR, DEFAULT_LABEL_ANIMATION_ENTER_DURATION);
-      interpolator = MotionUtils.resolveThemeInterpolator(getContext(),
-          LABEL_ANIMATION_ENTER_EASING_ATTR, AnimationUtils.DECELERATE_INTERPOLATOR);
+      duration =
+          MotionUtils.resolveThemeDuration(
+              getContext(),
+              LABEL_ANIMATION_ENTER_DURATION_ATTR,
+              DEFAULT_LABEL_ANIMATION_ENTER_DURATION);
+      interpolator =
+          MotionUtils.resolveThemeInterpolator(
+              getContext(),
+              LABEL_ANIMATION_ENTER_EASING_ATTR,
+              AnimationUtils.DECELERATE_INTERPOLATOR);
     } else {
-      duration = MotionUtils.resolveThemeDuration(getContext(),
-          LABEL_ANIMATION_EXIT_DURATION_ATTR, DEFAULT_LABEL_ANIMATION_EXIT_DURATION);
-      interpolator = MotionUtils.resolveThemeInterpolator(getContext(),
-          LABEL_ANIMATION_EXIT_EASING_ATTR, AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR);
+      duration =
+          MotionUtils.resolveThemeDuration(
+              getContext(),
+              LABEL_ANIMATION_EXIT_DURATION_ATTR,
+              DEFAULT_LABEL_ANIMATION_EXIT_DURATION);
+      interpolator =
+          MotionUtils.resolveThemeInterpolator(
+              getContext(),
+              LABEL_ANIMATION_EXIT_EASING_ATTR,
+              AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR);
     }
     animator.setDuration(duration);
     animator.setInterpolator(interpolator);
@@ -2742,11 +2753,13 @@ abstract class BaseSlider<
       if (slider.getContentDescription() != null) {
         contentDescription.append(slider.getContentDescription()).append(",");
       }
-      // Add the range to the content description.
+      // Add the range/value to the content description.
+      String verbalValue = slider.formatValue(value);
+      String verbalValueType = slider.getContext().getString(R.string.material_slider_value);
       if (values.size() > 1) {
-        contentDescription.append(startOrEndDescription(virtualViewId));
-        contentDescription.append(slider.formatValue(value));
+        verbalValueType = startOrEndDescription(virtualViewId);
       }
+      contentDescription.append(String.format(Locale.US, "%s, %s", verbalValueType, verbalValue));
       info.setContentDescription(contentDescription.toString());
 
       slider.updateBoundsForVirtualViewId(virtualViewId, virtualViewBounds);
