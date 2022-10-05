@@ -106,9 +106,6 @@ class ChipTextInputComboView extends FrameLayout implements Checkable {
     chip.setVisibility(checked ? GONE : VISIBLE);
     if (isChecked()) {
       ViewUtils.requestFocusAndShowKeyboard(editText);
-      if (!TextUtils.isEmpty(editText.getText())) {
-        editText.setSelection(editText.getText().length());
-      }
     }
   }
 
@@ -118,10 +115,11 @@ class ChipTextInputComboView extends FrameLayout implements Checkable {
   }
 
   public void setText(CharSequence text) {
-    chip.setText(formatText(text));
-    if (!TextUtils.isEmpty(editText.getText())) {
+    String formattedText = formatText(text);
+    chip.setText(formattedText);
+    if (!TextUtils.isEmpty(formattedText)) {
       editText.removeTextChangedListener(watcher);
-      editText.setText(null);
+      editText.setText(formattedText);
       editText.addTextChangedListener(watcher);
     }
   }
